@@ -2,7 +2,7 @@ import {Offset, useOffset} from "./useOffset";
 
 const OFFSET_WIDTH = 4
 
-interface PaddingStyles {
+export interface Padding {
   padding?: number | string
   paddingTop?: number
   paddingLeft?: number
@@ -19,7 +19,7 @@ export const usePadding = (params: number | Offset) => {
     }
   }
 
-  const result: PaddingStyles = {}
+  const result: Padding = {}
 
   const { top, bottom, left, right } = offsets
 

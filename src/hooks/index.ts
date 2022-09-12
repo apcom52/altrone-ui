@@ -1,1 +1,1 @@
-export { useOffset, useMargin, usePadding } from './useOffset'
+export { useOffset, useMargin, usePadding, Padding, Margin, OffsetObject } from './useOffset'

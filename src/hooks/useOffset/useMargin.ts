@@ -2,7 +2,7 @@ import {Offset, useOffset} from "./useOffset";
 
 const OFFSET_WIDTH = 4
 
-interface MarginStyles {
+export interface Margin {
   margin?: number | string
   marginTop?: number
   marginLeft?: number
@@ -19,7 +19,7 @@ export const useMargin = (params: number | Offset) => {
     }
   }
 
-  const result: MarginStyles = {}
+  const result: Margin = {}
 
   const { top, bottom, left, right } = offsets
 
