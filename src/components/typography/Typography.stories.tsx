@@ -1,8 +1,8 @@
 import { Heading, Paragraph, Blockquote } from './index'
+import {withAltrone} from "../../hocs/withAltrone/withAltrone";
 
 const Template = ({component, ...args}) => {
-  const Component = component
-  return <Component {...args} />
+  return withAltrone(component, {})(args)
 }
 
 export const HeadingExample = Template.bind({})
