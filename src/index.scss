@@ -9,6 +9,16 @@
 }
 
 .altrone {
+  --background: #ffffff;
+  --textColor: #202124;
+
   display: block;
   font-family: OpenSans, sans-serif;
+  background-color: var(--background);
+  color: var(--textColor);
+}
+
+.altrone--dark {
+  --background: #202124;
+  --textColor: #ffffff;
 }
