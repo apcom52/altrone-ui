@@ -1,5 +1,5 @@
 import { Heading, Paragraph, Blockquote } from './index'
-import {withAltrone} from "../../hocs/withAltrone/withAltrone";
+import {withAltrone} from "../../hocs";
 
 const Template = ({component, ...args}) => {
   return withAltrone(component, {})(args)
