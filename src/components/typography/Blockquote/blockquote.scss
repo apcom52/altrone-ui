@@ -1,0 +1,33 @@
+.alt-blockquote {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  padding: calc(var(--gap) * 2) calc(var(--gap) * 6);
+  border-radius: 8px;
+
+  &:before {
+    position: absolute;
+    content: '';
+    left: var(--gap);
+    top: var(--gap);
+    bottom: var(--gap);
+    height: calc(100% - var(--gap) * 2);
+    width: 4px;
+    border-radius: 4px;
+    background-color: var(--dividerColor);
+    transition: height 0.3s ease;
+  }
+}
+
+.alt-blockquote__content {
+  margin: 0;
+  color: var(--textColor);
+}
+
+.alt-blockquote__author {
+  font-size: 12px;
+  color: var(--secondaryTextColor);
+}
+
+.altrone--dark {
+}

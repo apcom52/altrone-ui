@@ -1,0 +1,27 @@
+@font-face {
+  font-family: "OpenSans";
+  src: url("assets/fonts/OpenSans.ttf");
+}
+
+@font-face {
+  font-family: "OpenSans Italic";
+  src: url("assets/fonts/OpenSans_italic.ttf");
+}
+
+.altrone {
+  --background: #ffffff;
+  --textColor: #202124;
+  --secondaryTextColor: #6B7A99;
+  --dividerColor: #6b7a99;
+  --gap: 4px;
+
+  display: block;
+  font-family: OpenSans, sans-serif;
+  background-color: var(--background);
+  color: var(--textColor);
+}
+
+.altrone--dark {
+  --background: #202124;
+  --textColor: #ffffff;
+}
