@@ -10,10 +10,22 @@
 
 .altrone {
   --background: #ffffff;
+  --surface: #fafafa;
   --textColor: #202124;
-  --secondaryTextColor: #6B7A99;
+  --secondaryTextColor: #6b8a99;
   --dividerColor: #6b7a99;
   --gap: 4px;
+
+  --accent: #5f91f8;
+  --textColorOnAccent: #ffffff;
+
+  --success: #4caf50;
+  --textColorOnSuccess: #ffffff;
+
+  --danger: #f44336;
+  --textColorOnDanger: #ffffff;
+
+  --transitionDuration: 0.2s;
 
   display: block;
   font-family: OpenSans, sans-serif;
@@ -22,6 +34,7 @@
 }
 
 .altrone--dark {
-  --background: #202124;
+  --background: #010b18;
+  --surface: #212121;
   --textColor: #ffffff;
 }
