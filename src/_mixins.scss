@@ -1,6 +1,12 @@
-@mixin withFocus {
+@mixin useFocus {
   &:focus, &:focus-visible {
     box-shadow: 0 0 0 3px var(--accent);
     outline: 0;
+  }
+}
+
+@mixin useInteraction() {
+  &:hover, &:focus, &:focus-visible {
+    @content;
   }
 }

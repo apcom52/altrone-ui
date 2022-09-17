@@ -1,5 +1,21 @@
 @import '../../../_mixins';
 
+@mixin useTransparentVariant($textColor, $interactionTextColor) {
+  &.alt-button--variant-transparent {
+    --buttonTextColor: var(--#{$textColor});
+
+    @include useInteraction() {
+      --buttonTextColor: var(--#{$interactionTextColor});
+    }
+  }
+}
+
+@mixin useTextVariant($textColor) {
+  &.alt-button--variant-text {
+    --buttonTextColor: var(--#{$textColor});
+  }
+}
+
 .alt-button {
   --buttonBackgroundColor: var(--surface);
   --buttonTextColor: var(--textColor);
@@ -37,23 +53,61 @@
     opacity: 0.5;
   }
 
-  @include withFocus();
+  @include useFocus();
 }
 
 .alt-button--style-primary {
   --buttonBackgroundColor: var(--accent);
   --buttonTextColor: var(--textColorOnAccent);
   --buttonShadowColor: var(--accentBorderColor);
+
+  @include useTransparentVariant(accent, textColorOnAccent);
+  @include useTextVariant(accent);
 }
 
 .alt-button--style-success {
   --buttonBackgroundColor: var(--success);
   --buttonTextColor: var(--textColorOnSuccess);
   --buttonShadowColor: var(--successBorderColor);
+
+  @include useTransparentVariant(success, textColorOnSuccess);
+  @include useTextVariant(success);
 }
 
 .alt-button--style-danger {
   --buttonBackgroundColor: var(--danger);
   --buttonTextColor: var(--textColorOnDanger);
   --buttonShadowColor: var(--dangerBorderColor);
+
+  @include useTransparentVariant(success, textColorOnDanger);
+  @include useTextVariant(danger);
+}
+
+.alt-button--variant-borders {
+  background-color: transparent;
+  box-shadow: none;
+  border: 2px solid var(--buttonBackgroundColor);
+  color: var(--buttonBackgroundColor);
+}
+
+.alt-button--variant-transparent {
+  background-color: transparent;
+  box-shadow: none;
+  transition: transform var(--transitionDuration) ease,
+      opacity var(--transitionDuration) ease,
+      box-shadow var(--transitionDuration) ease,
+      background-color var(--transitionDuration) ease;
+
+  @include useInteraction() {
+    background-color: var(--buttonBackgroundColor);
+  }
+}
+
+.alt-button--variant-text {
+  background-color: transparent;
+  box-shadow: none;
+
+  @include useInteraction {
+    opacity: 0.8;
+  }
 }

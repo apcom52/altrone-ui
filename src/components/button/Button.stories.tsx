@@ -1,7 +1,7 @@
 import {withAltrone} from "../../hocs";
 import {Theme} from "../../types";
 import {Button} from "./Button";
-import {ButtonStyle} from "./Button/Button";
+import {ButtonStyle, ButtonVariant} from "./Button/Button";
 
 const Template = ({component, dark, ...args}) => {
   return withAltrone(component, {
@@ -23,6 +23,10 @@ ButtonExample.argTypes = {
     control: 'select',
     options: [ButtonStyle.default, ButtonStyle.primary, ButtonStyle.success, ButtonStyle.danger]
   },
+  variant: {
+    control: 'select',
+    options: [ButtonVariant.default, ButtonVariant.borders, ButtonVariant.transparent, ButtonVariant.text]
+  }
 }
 
 export default {
