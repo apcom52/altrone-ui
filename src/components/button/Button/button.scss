@@ -29,8 +29,8 @@
   background-color: var(--buttonBackgroundColor);
   color: var(--buttonTextColor);
   border: none;
+  height: var(--controlHeight);
   box-shadow: 0 1px 0 0 var(--buttonShadowColor);
-  height: 34px;
   padding: 6px 16px;
   transition: transform var(--transitionDuration) ease,
           opacity var(--transitionDuration) ease,
@@ -43,7 +43,6 @@
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
-  height: var(--controlHeight);
 
   &:active {
     transform: translateY(2px);
