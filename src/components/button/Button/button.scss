@@ -1,0 +1,59 @@
+@import '../../../_mixins';
+
+.alt-button {
+  --buttonBackgroundColor: var(--surface);
+  --buttonTextColor: var(--textColor);
+  --buttonShadowColor: var(--borderColor);
+
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  background-color: var(--buttonBackgroundColor);
+  color: var(--buttonTextColor);
+  border: none;
+  box-shadow: 0 1px 0 0 var(--buttonShadowColor);
+  height: 34px;
+  padding: 6px 16px;
+  transition: transform var(--transitionDuration) ease,
+          opacity var(--transitionDuration) ease,
+          box-shadow var(--transitionDuration) ease;
+  user-select: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:active {
+    transform: translateY(2px);
+    box-shadow: 0 0.25px 0 0 rgba(black, 0.1);
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  @include withFocus();
+}
+
+.alt-button--style-primary {
+  --buttonBackgroundColor: var(--accent);
+  --buttonTextColor: var(--textColorOnAccent);
+  --buttonShadowColor: var(--accentBorderColor);
+}
+
+.alt-button--style-success {
+  --buttonBackgroundColor: var(--success);
+  --buttonTextColor: var(--textColorOnSuccess);
+  --buttonShadowColor: var(--successBorderColor);
+}
+
+.alt-button--style-danger {
+  --buttonBackgroundColor: var(--danger);
+  --buttonTextColor: var(--textColorOnDanger);
+  --buttonShadowColor: var(--dangerBorderColor);
+}
