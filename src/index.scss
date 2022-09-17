@@ -30,11 +30,16 @@
   --textColorOnDanger: #ffffff;
 
   --transitionDuration: 0.2s;
+  --controlHeight: 34px;
 
   display: block;
   font-family: OpenSans, sans-serif;
   background-color: var(--background);
   color: var(--textColor);
+
+  * {
+    box-sizing: border-box;
+  }
 }
 
 .altrone--dark {
