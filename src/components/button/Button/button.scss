@@ -1,0 +1,113 @@
+@import '../../../_mixins';
+
+@mixin useTransparentVariant($textColor, $interactionTextColor) {
+  &.alt-button--variant-transparent {
+    --buttonTextColor: var(--#{$textColor});
+
+    @include useInteraction() {
+      --buttonTextColor: var(--#{$interactionTextColor});
+    }
+  }
+}
+
+@mixin useTextVariant($textColor) {
+  &.alt-button--variant-text {
+    --buttonTextColor: var(--#{$textColor});
+  }
+}
+
+.alt-button {
+  --buttonBackgroundColor: var(--surface);
+  --buttonTextColor: var(--textColor);
+  --buttonShadowColor: var(--borderColor);
+
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  background-color: var(--buttonBackgroundColor);
+  color: var(--buttonTextColor);
+  border: none;
+  box-shadow: 0 1px 0 0 var(--buttonShadowColor);
+  height: 34px;
+  padding: 6px 16px;
+  transition: transform var(--transitionDuration) ease,
+          opacity var(--transitionDuration) ease,
+          box-shadow var(--transitionDuration) ease;
+  user-select: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:active {
+    transform: translateY(2px);
+    box-shadow: 0 0.25px 0 0 rgba(black, 0.1);
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  @include useFocus();
+}
+
+.alt-button--style-primary {
+  --buttonBackgroundColor: var(--accent);
+  --buttonTextColor: var(--textColorOnAccent);
+  --buttonShadowColor: var(--accentBorderColor);
+
+  @include useTransparentVariant(accent, textColorOnAccent);
+  @include useTextVariant(accent);
+}
+
+.alt-button--style-success {
+  --buttonBackgroundColor: var(--success);
+  --buttonTextColor: var(--textColorOnSuccess);
+  --buttonShadowColor: var(--successBorderColor);
+
+  @include useTransparentVariant(success, textColorOnSuccess);
+  @include useTextVariant(success);
+}
+
+.alt-button--style-danger {
+  --buttonBackgroundColor: var(--danger);
+  --buttonTextColor: var(--textColorOnDanger);
+  --buttonShadowColor: var(--dangerBorderColor);
+
+  @include useTransparentVariant(success, textColorOnDanger);
+  @include useTextVariant(danger);
+}
+
+.alt-button--variant-borders {
+  background-color: transparent;
+  box-shadow: none;
+  border: 2px solid var(--buttonBackgroundColor);
+  color: var(--buttonBackgroundColor);
+}
+
+.alt-button--variant-transparent {
+  background-color: transparent;
+  box-shadow: none;
+  transition: transform var(--transitionDuration) ease,
+      opacity var(--transitionDuration) ease,
+      box-shadow var(--transitionDuration) ease,
+      background-color var(--transitionDuration) ease;
+
+  @include useInteraction() {
+    background-color: var(--buttonBackgroundColor);
+  }
+}
+
+.alt-button--variant-text {
+  background-color: transparent;
+  box-shadow: none;
+
+  @include useInteraction {
+    opacity: 0.8;
+  }
+}
