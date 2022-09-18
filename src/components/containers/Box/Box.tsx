@@ -7,7 +7,7 @@ interface BoxProps extends WithoutDefaultOffsets, WithAltroneOffsets {
   tagName?: keyof JSX.IntrinsicElements
 }
 
-const Box = ({ margin = ZERO_MARGIN, padding = ZERO_PADDING, children, tagName = 'div', ...props }: BoxProps) => {
+const Box = ({ margin = ZERO_MARGIN, padding = ZERO_PADDING, children, tagName = 'div', style, ...props }: BoxProps) => {
   const marginStyles = useMargin(margin)
   const paddingStyles = usePadding(padding)
 
@@ -16,7 +16,8 @@ const Box = ({ margin = ZERO_MARGIN, padding = ZERO_PADDING, children, tagName =
   // @ts-ignore
   return <TagName style={{
     ...marginStyles,
-    ...paddingStyles
+    ...paddingStyles,
+    ...style
   }}
     {...props}
   >
