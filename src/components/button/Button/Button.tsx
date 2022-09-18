@@ -18,11 +18,22 @@ export enum ButtonVariant {
   text = 'text'
 }
 
+export enum ButtonSize {
+  small = 'small',
+  medium = 'medium',
+  large = 'large',
+  xlarge = 'xlarge'
+}
+
 interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLButtonElement>>, 'style' | 'target'>, WithAltroneOffsets {
   style?: ButtonStyle
   variant?: ButtonVariant
   href?: string
   target?: HTMLAnchorElement['target'],
+  fluid?: boolean
+  leftIcon?: JSX.Element
+  rightIcon?: JSX.Element
+  size?: ButtonSize
 }
 
 const ButtonComponents = [
@@ -30,17 +41,32 @@ const ButtonComponents = [
   'a'
 ]
 
-const Button = ({ children, style = ButtonStyle.default, variant = ButtonVariant.default, href, className, ...props }: ButtonProps) => {
+const Button = ({
+  children,
+  style = ButtonStyle.default,
+  variant = ButtonVariant.default,
+  href,
+  className,
+  fluid = false,
+  leftIcon,
+  rightIcon,
+  size = ButtonSize.medium,
+  ...props
+}: ButtonProps) => {
   return <Box
     tagName={ButtonComponents[href ? 1 : 0] as keyof JSX.IntrinsicElements}
     className={clsx('alt-button', className, {
       [`alt-button--style-${style}`]: style !== ButtonStyle.default,
       [`alt-button--variant-${variant}`]: variant !== ButtonVariant.default,
+      [`alt-button--size-${size}`]: size !== ButtonSize.medium,
+      'alt-button--fluid': fluid,
     })}
     href={href}
     {...props}
   >
+    { leftIcon ? <span className='alt-button__leftIcon'>{leftIcon}</span> : null }
     {children}
+    { rightIcon ? <span className='alt-button__rightIcon'>{rightIcon}</span> : null }
   </Box>
 }
 

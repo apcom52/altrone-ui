@@ -16,6 +16,24 @@
   }
 }
 
+@mixin useButtonSize($height, $fontSize, $paddingVertical, $paddingHorizontal, $iconGap, $iconShift) {
+  height: var(--#{$height});
+  font-size: $fontSize;
+  padding: $paddingVertical $paddingHorizontal;
+
+  .alt-button__leftIcon {
+    left: $paddingHorizontal + $iconShift;
+    margin-right: $iconGap;
+    margin-left: $iconShift;
+  }
+
+  .alt-button__rightIcon {
+    right: $paddingHorizontal + $iconShift;
+    margin-left: $iconGap;
+    margin-right: $iconShift;
+  }
+}
+
 .alt-button {
   --buttonBackgroundColor: var(--surface);
   --buttonTextColor: var(--textColor);
@@ -25,13 +43,11 @@
   position: relative;
   align-items: center;
   justify-content: center;
-  border-radius: 7px;
+  border-radius: 8px;
   background-color: var(--buttonBackgroundColor);
   color: var(--buttonTextColor);
   border: none;
-  height: var(--controlHeight);
   box-shadow: 0 1px 0 0 var(--buttonShadowColor);
-  padding: 6px 16px;
   transition: transform var(--transitionDuration) ease,
           opacity var(--transitionDuration) ease,
           box-shadow var(--transitionDuration) ease;
@@ -39,7 +55,6 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
@@ -55,6 +70,7 @@
   }
 
   @include useFocus();
+  @include useButtonSize(controlHeight, 14px, 6px, 16px, 8px, -4px);
 }
 
 .alt-button--style-primary {
@@ -110,5 +126,36 @@
 
   @include useInteraction {
     opacity: 0.8;
+  }
+}
+
+.alt-button__leftIcon, .alt-button__rightIcon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.5em;
+}
+
+.alt-button--size-small {
+  @include useButtonSize(smallControlHeight, 13px, 4px, 10px, 4px, -4px);
+}
+
+.alt-button--size-large {
+  @include useButtonSize(largeControlHeight, 16px, 10px, 20px, 10px, -6px);
+}
+
+.alt-button--size-xlarge {
+  @include useButtonSize(xlargeControlHeight, 20px, 12px, 20px, 14px, -8px);
+}
+
+.alt-button--fluid {
+  position: relative;
+  width: 100%;
+
+  .alt-button__leftIcon {
+    position: absolute;
+  }
+
+  .alt-button__rightIcon {
+    position: absolute;
   }
 }
