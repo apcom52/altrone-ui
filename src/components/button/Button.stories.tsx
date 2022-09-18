@@ -1,7 +1,7 @@
 import {withAltrone} from "../../hocs";
 import {Theme} from "../../types";
 import {Button} from "./Button";
-import {ButtonStyle, ButtonVariant} from "./Button/Button";
+import {ButtonSize, ButtonStyle, ButtonVariant} from "./Button/Button";
 import {Icon} from "../icons";
 
 const Template = ({component, dark, leftIcon, rightIcon, ...args}) => {
@@ -23,6 +23,7 @@ ButtonExample.args = {
   children: 'Action button',
   disabled: false,
   style: ButtonStyle.default,
+  size: ButtonSize.medium,
   leftIcon: '',
   rightIcon: '',
   href: '',
@@ -37,6 +38,10 @@ ButtonExample.argTypes = {
   variant: {
     control: 'select',
     options: [ButtonVariant.default, ButtonVariant.borders, ButtonVariant.transparent, ButtonVariant.text]
+  },
+  size: {
+    control: 'select',
+    options: ['small', 'medium', 'large', 'xlarge']
   }
 }
 

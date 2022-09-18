@@ -16,6 +16,22 @@
   }
 }
 
+@mixin useButtonSize($height, $fontSize, $paddingVertical, $paddingHorizontal, $iconGap, $iconShift) {
+  height: var(--#{$height});
+  font-size: $fontSize;
+  padding: $paddingVertical $paddingHorizontal;
+
+  .alt-button__leftIcon {
+    margin-right: $iconGap;
+    margin-left: $iconShift;
+  }
+
+  .alt-button__rightIcon {
+    margin-left: $iconGap;
+    margin-right: $iconShift;
+  }
+}
+
 .alt-button {
   --buttonBackgroundColor: var(--surface);
   --buttonTextColor: var(--textColor);
@@ -29,9 +45,7 @@
   background-color: var(--buttonBackgroundColor);
   color: var(--buttonTextColor);
   border: none;
-  height: var(--controlHeight);
   box-shadow: 0 1px 0 0 var(--buttonShadowColor);
-  padding: 6px 16px;
   transition: transform var(--transitionDuration) ease,
           opacity var(--transitionDuration) ease,
           box-shadow var(--transitionDuration) ease;
@@ -39,7 +53,6 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
@@ -55,6 +68,7 @@
   }
 
   @include useFocus();
+  @include useButtonSize(controlHeight, 14px, 6px, 16px, 8px, -4px);
 }
 
 .alt-button--style-primary {
@@ -119,12 +133,14 @@
   font-size: 1.5em;
 }
 
-.alt-button__leftIcon {
-  margin-right: 8px;
-  margin-left: -4px;
+.alt-button--size-small {
+  @include useButtonSize(smallControlHeight, 13px, 4px, 10px, 4px, -4px);
 }
 
-.alt-button__rightIcon {
-  margin-left: 8px;
-  margin-right: -4px;
+.alt-button--size-large {
+  @include useButtonSize(largeControlHeight, 16px, 10px, 20px, 10px, -6px);
+}
+
+.alt-button--size-xlarge {
+  @include useButtonSize(xlargeControlHeight, 20px, 12px, 20px, 14px, -8px);
 }
