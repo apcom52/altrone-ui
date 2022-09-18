@@ -25,7 +25,7 @@
   position: relative;
   align-items: center;
   justify-content: center;
-  border-radius: 7px;
+  border-radius: 8px;
   background-color: var(--buttonBackgroundColor);
   color: var(--buttonTextColor);
   border: none;
@@ -111,4 +111,20 @@
   @include useInteraction {
     opacity: 0.8;
   }
+}
+
+.alt-button__leftIcon, .alt-button__rightIcon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.5em;
+}
+
+.alt-button__leftIcon {
+  margin-right: 8px;
+  margin-left: -4px;
+}
+
+.alt-button__rightIcon {
+  margin-left: 8px;
+  margin-right: -4px;
 }
