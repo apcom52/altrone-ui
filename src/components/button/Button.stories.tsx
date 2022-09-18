@@ -27,7 +27,8 @@ ButtonExample.args = {
   leftIcon: '',
   rightIcon: '',
   href: '',
-  dark: false
+  dark: false,
+  fluid: false,
 }
 
 ButtonExample.argTypes = {

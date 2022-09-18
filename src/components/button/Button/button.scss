@@ -22,11 +22,13 @@
   padding: $paddingVertical $paddingHorizontal;
 
   .alt-button__leftIcon {
+    left: $paddingHorizontal + $iconShift;
     margin-right: $iconGap;
     margin-left: $iconShift;
   }
 
   .alt-button__rightIcon {
+    right: $paddingHorizontal + $iconShift;
     margin-left: $iconGap;
     margin-right: $iconShift;
   }
@@ -143,4 +145,17 @@
 
 .alt-button--size-xlarge {
   @include useButtonSize(xlargeControlHeight, 20px, 12px, 20px, 14px, -8px);
+}
+
+.alt-button--fluid {
+  position: relative;
+  width: 100%;
+
+  .alt-button__leftIcon {
+    position: absolute;
+  }
+
+  .alt-button__rightIcon {
+    position: absolute;
+  }
 }
