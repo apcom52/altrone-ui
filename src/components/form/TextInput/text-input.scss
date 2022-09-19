@@ -1,0 +1,44 @@
+@import '../../../_mixins';
+
+.alt-text-input {
+  --height: var(--controlHeight);
+
+  display: inline-flex;
+  position: relative;
+}
+
+.alt-text-input__control {
+  margin: 0;
+  background-color: var(--surface);
+  height: var(--height);
+  line-height: var(--height);
+  font-size: 14px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  box-shadow: 0 0 0 1px var(--borderColor);
+  transition: box-shadow var(--transitionDuration) ease;
+
+  @include useFocus();
+}
+
+.alt-text-input__left-island {
+  display: flex;
+  position: absolute;
+  left: 4px;
+  height: var(--height);
+  line-height: var(--height);
+  align-items: center;
+}
+
+.alt-text-input__right-island {
+  display: flex;
+  position: absolute;
+  right: 4px;
+  height: var(--height);
+  line-height: var(--height);
+  align-items: center;
+}
