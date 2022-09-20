@@ -10,3 +10,8 @@
     @content;
   }
 }
+
+@mixin useDisabledUserSelect {
+  -webkit-user-select: none;
+  user-select: none;
+}
