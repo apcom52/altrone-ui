@@ -23,7 +23,8 @@ export interface InputIsland {
   content: string | JSX.Element | JSX.Element[] | InputIslandAction[]
 }
 
-export interface TextInputProps extends WithoutDefaultOffsets<React.HTMLProps<HTMLInputElement>>, WithAltroneOffsets {
+export interface TextInputProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLInputElement>>, 'onChange'>, WithAltroneOffsets {
+  onChange: (value: string) => void
   classNames?: {
     control?: string
   }
@@ -38,6 +39,7 @@ export interface TextInputProps extends WithoutDefaultOffsets<React.HTMLProps<HT
 }
 
 const TextInput = ({
+  onChange,
   className,
   classNames = {},
   prefix,
@@ -93,6 +95,7 @@ const TextInput = ({
         paddingLeft: leftPadding,
         paddingRight: rightPadding
       }}
+      onChange={(e) => onChange(e.target.value)}
       {...props}
     />
     { _leftIsland && <div className='alt-text-input__left-island' ref={leftIslandRef}>{_leftIsland}</div> }

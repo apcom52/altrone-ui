@@ -49,6 +49,7 @@
   align-items: center;
   user-select: none;
   pointer-events: none;
+  transition: right var(--transitionDuration) ease;
 
   @include useDisabledUserSelect();
 }
@@ -142,6 +143,6 @@
 
 .alt-text-input--required {
   .alt-text-input__right-island {
-    padding-right: 10px;
+    right: 18px;
   }
 }
