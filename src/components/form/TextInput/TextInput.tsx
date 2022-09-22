@@ -11,19 +11,19 @@ export enum InputIslandType {
   components
 }
 
-interface InputIslandAction {
+export interface InputIslandAction {
   title: string
   icon: JSX.Element,
   onClick: () => void
   disabled?: boolean
 }
 
-interface InputIsland {
+export interface InputIsland {
   type: InputIslandType
   content: string | JSX.Element | JSX.Element[] | InputIslandAction[]
 }
 
-interface TextInputProps extends WithoutDefaultOffsets<React.HTMLProps<HTMLInputElement>>, WithAltroneOffsets {
+export interface TextInputProps extends WithoutDefaultOffsets<React.HTMLProps<HTMLInputElement>>, WithAltroneOffsets {
   classNames?: {
     control?: string
   }
@@ -33,9 +33,24 @@ interface TextInputProps extends WithoutDefaultOffsets<React.HTMLProps<HTMLInput
   suffix?: string
   leftIcon?: JSX.Element
   rightIcon?: JSX.Element
+  errorText?: string
+  hintText?: string
 }
 
-const TextInput = ({ className, classNames = {}, prefix, leftIcon, leftIsland, suffix, rightIcon, rightIsland, style, ...props}: TextInputProps) => {
+const TextInput = ({
+  className,
+  classNames = {},
+  prefix,
+  leftIcon,
+  leftIsland,
+  suffix,
+  rightIcon,
+  rightIsland,
+  style,
+  errorText,
+  hintText,
+  ...props
+}: TextInputProps) => {
   const _leftIsland = useInputIsland(leftIsland, leftIcon, prefix)
   const _rightIsland = useInputIsland(rightIsland, rightIcon, suffix)
 
@@ -64,7 +79,9 @@ const TextInput = ({ className, classNames = {}, prefix, leftIcon, leftIsland, s
   }, [_rightIsland, rightIslandRef.current])
 
   return <div
-    className={clsx('alt-text-input', className)}
+    className={clsx('alt-text-input', className, {
+      'alt-text-input--invalid': errorText
+    })}
   >
     <input
       className={clsx('alt-text-input__control', classNames.control)}
@@ -77,6 +94,8 @@ const TextInput = ({ className, classNames = {}, prefix, leftIcon, leftIsland, s
     />
     { _leftIsland && <div className='alt-text-input__left-island' ref={leftIslandRef}>{_leftIsland}</div> }
     { _rightIsland && <div className='alt-text-input__right-island' ref={rightIslandRef}>{_rightIsland}</div> }
+    {hintText && <div className='alt-text-input__hint-text'>{hintText}</div>}
+    {errorText && <div className='alt-text-input__error-text'>{errorText}</div>}
   </div>
 }
 

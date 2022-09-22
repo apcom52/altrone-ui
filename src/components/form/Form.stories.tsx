@@ -14,6 +14,8 @@ export const TextInputExample = Template.bind({})
 TextInputExample.args = {
   component: TextInput,
   placeholder: 'Type something',
+  hintText: '',
+  errorText: '',
   dark: false
 }
 

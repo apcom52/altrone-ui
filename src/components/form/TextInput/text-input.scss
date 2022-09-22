@@ -6,6 +6,7 @@
 
   display: inline-flex;
   position: relative;
+  flex-direction: column;
 }
 
 .alt-text-input__control {
@@ -21,7 +22,7 @@
   border: none;
   border-radius: 8px;
   padding: 6px 12px;
-  box-shadow: 0 0 0 1px var(--borderColor);
+  box-shadow: 0 0 0 1px var(--surfaceTrasparent);
   transition: box-shadow var(--transitionDuration) ease;
 
   @include useFocus();
@@ -104,5 +105,30 @@
 
   @include useInteraction() {
     background-color: var(--surfaceTrasparentHover);
+  }
+}
+
+.alt-text-input__hint-text, .alt-text-input__error-text {
+  font-size: 12px;
+  line-height: 14px;
+  margin-top: 4px;
+}
+
+.alt-text-input__hint-text {
+  color: var(--secondaryTextColor);
+}
+
+.alt-text-input__error-text {
+  color: var(--danger);
+
+}
+
+.alt-text-input--invalid {
+  .alt-text-input__control {
+    box-shadow: 0 0 0 1px var(--danger);
+
+    &:focus, &:focus-visible {
+      box-shadow: 0 0 0 2px var(--danger);
+    }
   }
 }
