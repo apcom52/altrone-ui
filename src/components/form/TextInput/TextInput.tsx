@@ -49,6 +49,7 @@ const TextInput = ({
   style,
   errorText,
   hintText,
+  required,
   ...props
 }: TextInputProps) => {
   const _leftIsland = useInputIsland(leftIsland, leftIcon, prefix)
@@ -80,7 +81,8 @@ const TextInput = ({
 
   return <div
     className={clsx('alt-text-input', className, {
-      'alt-text-input--invalid': errorText
+      'alt-text-input--invalid': errorText,
+      'alt-text-input--required': required,
     })}
   >
     <input
@@ -91,11 +93,13 @@ const TextInput = ({
         paddingLeft: leftPadding,
         paddingRight: rightPadding
       }}
+      {...props}
     />
     { _leftIsland && <div className='alt-text-input__left-island' ref={leftIslandRef}>{_leftIsland}</div> }
     { _rightIsland && <div className='alt-text-input__right-island' ref={rightIslandRef}>{_rightIsland}</div> }
     {hintText && <div className='alt-text-input__hint-text'>{hintText}</div>}
     {errorText && <div className='alt-text-input__error-text'>{errorText}</div>}
+    {required && <div className='alt-text-input__required-mark'>*</div>}
   </div>
 }
 

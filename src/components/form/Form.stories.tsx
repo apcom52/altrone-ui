@@ -16,6 +16,7 @@ TextInputExample.args = {
   placeholder: 'Type something',
   hintText: '',
   errorText: '',
+  required: false,
   dark: false
 }
 
@@ -55,6 +56,7 @@ TextInputWithBothIslandsExample.args = {
       onClick: () => alert('Increase clicked')
     }]
   },
+  required: false,
   dark: false
 }
 

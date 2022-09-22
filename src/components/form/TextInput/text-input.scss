@@ -120,7 +120,14 @@
 
 .alt-text-input__error-text {
   color: var(--danger);
+}
 
+.alt-text-input__required-mark {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  font-size: 16px;
+  color: var(--danger);
 }
 
 .alt-text-input--invalid {
@@ -130,5 +137,11 @@
     &:focus, &:focus-visible {
       box-shadow: 0 0 0 2px var(--danger);
     }
+  }
+}
+
+.alt-text-input--required {
+  .alt-text-input__right-island {
+    padding-right: 10px;
   }
 }
