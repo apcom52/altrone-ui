@@ -51,7 +51,6 @@
   transition: transform var(--transitionDuration) ease,
           opacity var(--transitionDuration) ease,
           box-shadow var(--transitionDuration) ease;
-  user-select: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -70,6 +69,7 @@
   }
 
   @include useFocus();
+  @include useDisabledUserSelect();
   @include useButtonSize(controlHeight, 14px, 6px, 16px, 8px, -4px);
 }
 

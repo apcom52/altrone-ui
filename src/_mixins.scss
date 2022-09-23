@@ -1,6 +1,6 @@
 @mixin useFocus {
   &:focus, &:focus-visible {
-    box-shadow: 0 0 0 3px var(--accent);
+    box-shadow: 0 0 0 3px var(--accentFocus);
     outline: 0;
   }
 }
@@ -9,4 +9,9 @@
   &:hover, &:focus, &:focus-visible {
     @content;
   }
+}
+
+@mixin useDisabledUserSelect {
+  -webkit-user-select: none;
+  user-select: none;
 }
