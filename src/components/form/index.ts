@@ -1,1 +1,1 @@
-export { TextInput } from './TextInput'
+export { TextInput, TextInputProps, InputIslandType, InputIslandAction, InputIsland } from './TextInput'
