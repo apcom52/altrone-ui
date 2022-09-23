@@ -3,6 +3,7 @@ import {Theme} from "../../types";
 import {PasswordInput, TextInput} from "./index";
 import {Icon} from "../icons";
 import {InputIslandType} from "./TextInput/TextInput";
+import {NumberInput} from "./NumberInput";
 
 const Template = ({component, dark, ...args}) => {
   return withAltrone(component, {
@@ -66,6 +67,14 @@ export const PasswordInputExample = Template.bind({})
 PasswordInputExample.args = {
   component: PasswordInput,
   placeholder: 'Type your password',
+  dark: false,
+  showControls: true
+}
+
+export const NumberInputExample = Template.bind({})
+NumberInputExample.args = {
+  component: NumberInput,
+  value: 2,
   dark: false,
   showControls: true
 }
