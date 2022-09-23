@@ -1,6 +1,6 @@
 import {withAltrone} from "../../hocs";
 import {Theme} from "../../types";
-import {TextInput} from "./index";
+import {PasswordInput, TextInput} from "./index";
 import {Icon} from "../icons";
 import {InputIslandType} from "./TextInput/TextInput";
 
@@ -60,6 +60,14 @@ TextInputWithBothIslandsExample.args = {
   required: false,
   disabled: false,
   dark: false
+}
+
+export const PasswordInputExample = Template.bind({})
+PasswordInputExample.args = {
+  component: PasswordInput,
+  placeholder: 'Type your password',
+  dark: false,
+  showControls: true
 }
 
 export default {
