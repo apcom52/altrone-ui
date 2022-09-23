@@ -24,8 +24,9 @@ export interface InputIsland {
   content: string | JSX.Element | JSX.Element[] | InputIslandAction[]
 }
 
-export interface TextInputProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLInputElement>>, 'onChange'>, WithAltroneOffsets {
-  onChange: (value: string) => void
+export interface TextInputProps<ValueType> extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLInputElement>>, 'onChange' | 'value'>, WithAltroneOffsets {
+  value: unknown
+  onChange: (value: unknown) => void
   classNames?: {
     control?: string
   }
@@ -58,7 +59,7 @@ const TextInput = ({
   required,
   disabled,
   ...props
-}: TextInputProps) => {
+}: TextInputProps<string>) => {
   const _leftIsland = useInputIsland(leftIsland, leftIcon, prefix, disabled)
   const _rightIsland = useInputIsland(rightIsland, rightIcon, suffix, disabled)
 
