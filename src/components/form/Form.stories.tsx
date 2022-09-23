@@ -39,7 +39,8 @@ TextInputWithRightIslandExample.args = {
 export const TextInputWithBothIslandsExample = Template.bind({})
 TextInputWithBothIslandsExample.args = {
   component: TextInput,
-  placeholder: 'Type something',
+  placeholder: 'Type something Type something Type something Type something Type something ' +
+    'Type something Type something Type something Type something Type something Type something Type something',
   leftIsland: {
     type: InputIslandType.components,
     content: <b>{'q>:'}</b>
@@ -57,6 +58,7 @@ TextInputWithBothIslandsExample.args = {
     }]
   },
   required: false,
+  disabled: false,
   dark: false
 }
 

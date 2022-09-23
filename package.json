@@ -66,6 +66,7 @@
   "homepage": "https://github.com/apcom52/altrone-ui#readme",
   "dependencies": {
     "material-symbols": "^0.2.11",
-    "normalize": "^0.3.1"
+    "normalize": "^0.3.1",
+    "rooks": "^7.4.0"
   }
 }

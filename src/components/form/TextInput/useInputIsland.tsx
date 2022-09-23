@@ -1,7 +1,7 @@
 import {useMemo} from "react";
 import {InputIslandType} from "./TextInput";
 
-export function useInputIsland(island, icon, text) {
+export function useInputIsland(island, icon, text, disabled = false) {
   return useMemo(() => {
     const { type, content } = island || {}
 
@@ -17,7 +17,7 @@ export function useInputIsland(island, icon, text) {
             title={action.title}
             className='alt-text-input__action-button'
             onClick={action.onClick}
-            disabled={action.disabled}
+            disabled={disabled || action.disabled}
           >
             {action.icon}
           </button>
@@ -28,5 +28,5 @@ export function useInputIsland(island, icon, text) {
     }
 
     return null
-  }, [icon, text, island])
+  }, [icon, text, island, disabled])
 }

@@ -4,15 +4,16 @@
   --height: var(--controlHeight);
   --fontSize: 14px;
 
-  display: inline-flex;
+  display: flex;
   position: relative;
   flex-direction: column;
 }
 
 .alt-text-input__control {
-  margin: 0;
-  background-color: var(--surface);
   height: var(--height);
+  margin: 0;
+  padding: 6px 12px;
+  background-color: var(--surface);
   font-size: var(--fontSize);
   line-height: var(--height);
   color: var(--textColor);
@@ -21,9 +22,8 @@
   appearance: none;
   border: none;
   border-radius: 8px;
-  padding: 6px 12px;
   box-shadow: 0 0 0 1px var(--surfaceTrasparent);
-  transition: box-shadow var(--transitionDuration) ease;
+  transition: box-shadow var(--transitionDuration) ease, opacity var(--transitionDuration) ease;
 
   @include useFocus();
 }
@@ -31,7 +31,7 @@
 .alt-text-input__left-island {
   display: flex;
   position: absolute;
-  left: 8px;
+  padding-left: 8px;
   height: var(--height);
   line-height: var(--height);
   align-items: center;
@@ -43,13 +43,14 @@
 .alt-text-input__right-island {
   display: flex;
   position: absolute;
-  right: 8px;
+  right: 0;
   height: var(--height);
+  padding-right: 8px;
   line-height: var(--height);
   align-items: center;
   user-select: none;
   pointer-events: none;
-  transition: right var(--transitionDuration) ease;
+  transition: padding-right var(--transitionDuration) ease;
 
   @include useDisabledUserSelect();
 }
@@ -100,12 +101,19 @@
   cursor: pointer;
   transition: background-color var(--transitionDuration) ease;
 
+  @include useFocus();
+
   & + & {
     margin-left: 1px;
   }
 
   @include useInteraction() {
     background-color: var(--surfaceTrasparentHover);
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.75;
   }
 }
 
@@ -143,6 +151,16 @@
 
 .alt-text-input--required {
   .alt-text-input__right-island {
-    right: 18px;
+    padding-right: 18px;
+  }
+}
+
+.alt-text-input--disabled {
+  .alt-text-input__control {
+    opacity: 0.5;
+  }
+
+  .alt-text-input__left-island, .alt-text-input__right-island {
+    pointer-events: none;
   }
 }
