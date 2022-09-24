@@ -67,6 +67,7 @@
   "dependencies": {
     "material-symbols": "^0.2.11",
     "normalize": "^0.3.1",
+    "react-number-format": "^5.0.0-beta.5",
     "rooks": "^7.4.0"
   }
 }

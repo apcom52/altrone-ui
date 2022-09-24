@@ -4,11 +4,28 @@ import {PasswordInput, TextInput} from "./index";
 import {Icon} from "../icons";
 import {InputIslandType} from "./TextInput/TextInput";
 import {NumberInput} from "./NumberInput";
+import {useCallback, useEffect, useState} from "react";
 
-const Template = ({component, dark, ...args}) => {
+const Template = ({component, dark, value = '', ...args}) => {
+  const [_value, setValue] = useState(value)
+
+  console.log('value', _value);
+
+  useEffect(() => {
+    setValue(value)
+  }, [value])
+
+  const onChange = useCallback((value) => {
+    setValue(value)
+  }, [])
+
   return withAltrone(component, {
     theme: dark ? Theme.dark : Theme.light
-  })(args)
+  })({
+    ...args,
+    value: _value,
+    onChange
+  })
 }
 
 export const TextInputExample = Template.bind({})
@@ -74,7 +91,11 @@ PasswordInputExample.args = {
 export const NumberInputExample = Template.bind({})
 NumberInputExample.args = {
   component: NumberInput,
-  value: 2,
+  value: 0,
+  digitsAfterDecimal: 0,
+  step: 3,
+  min: 0,
+  max: 10,
   dark: false,
   showControls: true
 }
