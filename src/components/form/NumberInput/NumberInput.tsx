@@ -38,6 +38,16 @@ const NumberInput = ({
     setFormattedValue(value.toFixed(digitsAfterDecimal))
   }, [value, digitsAfterDecimal])
 
+  useEffect(() => {
+    if (min !== undefined && value < min) {
+      onChange(min)
+    }
+
+    if (max !== undefined && value > max) {
+      onChange(max)
+    }
+  }, [min, max, onChange, value])
+
   const onAllowedCheck = useCallback(({ floatValue }) => {
     if (min !== undefined && floatValue < min) {
       return false

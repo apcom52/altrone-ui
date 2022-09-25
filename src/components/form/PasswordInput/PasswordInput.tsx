@@ -2,7 +2,7 @@ import {InputIslandType, TextInput, TextInputProps} from "../index";
 import {memo, useCallback, useState} from "react";
 import {Icon} from "../../icons";
 
-interface PasswordInputProps extends TextInputProps<string> {
+interface PasswordInputProps extends TextInputProps {
   showControls?: boolean
 }
 
