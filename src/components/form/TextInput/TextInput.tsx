@@ -37,6 +37,7 @@ export interface TextInputProps extends Omit<WithoutDefaultOffsets<React.HTMLPro
   rightIcon?: JSX.Element
   errorText?: string
   hintText?: string
+  Component?: JSX.Element
 }
 
 const DEFAULT_HORIZONTAL_PADDING = 12
@@ -57,6 +58,7 @@ const TextInput = ({
   hintText,
   required,
   disabled,
+  Component,
   ...props
 }: TextInputProps) => {
   const _leftIsland = useInputIsland(leftIsland, leftIcon, prefix, disabled)
@@ -98,7 +100,7 @@ const TextInput = ({
     ref={wrapperRef}
     data-testid='text-input'
   >
-    <input
+    {Component || <input
       className={clsx('alt-text-input__control', classNames.control)}
       style={{
         ...style,
@@ -109,7 +111,7 @@ const TextInput = ({
       disabled={disabled}
       required={required}
       {...props}
-    />
+    />}
     { _leftIsland && <div className='alt-text-input__left-island' ref={leftIslandRef}>{_leftIsland}</div> }
     { _rightIsland && <div className='alt-text-input__right-island' ref={rightIslandRef}>{_rightIsland}</div> }
     {hintText && <div className='alt-text-input__hint-text'>{hintText}</div>}

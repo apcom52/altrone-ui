@@ -9944,6 +9944,13 @@ react-merge-refs@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-merge-refs/-/react-merge-refs-1.1.0.tgz#73d88b892c6c68cbb7a66e0800faa374f4c38b06"
   integrity sha512-alTKsjEL0dKH/ru1Iyn7vliS2QRcBp9zZPGoWxUOvRGWPUYgjo+V01is7p04It6KhgrzhJGnIj9GgX8W4bZoCQ==
 
+react-number-format@^5.0.0-beta.5:
+  version "5.0.0-beta.5"
+  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-5.0.0-beta.5.tgz#2b60ae341a7641d487c3f9eca663a3c0e7b80864"
+  integrity sha512-ieqr8cUAkteVyWjTx7gBL2P/lXdfw9LxUVMDvo4jqNe1yrOP8JWcRHya9iTbiTZDBAmCMCllfjUPWzpreH05hg==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-refresh@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.11.0.tgz#77198b944733f0f1f1a90e791de4541f9f074046"
