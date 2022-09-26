@@ -1,8 +1,6 @@
 import {withAltrone} from "../../hocs";
 import {Theme} from "../../types";
 import {Icon} from "./index";
-import {ButtonStyle} from "../button/Button/Button";
-import {ButtonExample} from "../button/Button.stories";
 
 const Template = ({component, dark, ...args}) => {
   return withAltrone(component, {
