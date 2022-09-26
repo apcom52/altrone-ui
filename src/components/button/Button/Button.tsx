@@ -25,7 +25,7 @@ export enum ButtonSize {
   xlarge = 'xlarge'
 }
 
-interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLButtonElement>>, 'style' | 'target'>, WithAltroneOffsets {
+interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLButtonElement>>, 'style' | 'target' | 'size'>, WithAltroneOffsets {
   style?: ButtonStyle
   variant?: ButtonVariant
   href?: string
