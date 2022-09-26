@@ -1,5 +1,5 @@
 import {memo} from "react";
-import {WithAltroneOffsets, WithoutDefaultOffsets} from "../../../types";
+import {Size, WithAltroneOffsets, WithoutDefaultOffsets} from "../../../types";
 import clsx from "clsx";
 import {Box} from "../../containers";
 import './button.scss'
@@ -18,13 +18,6 @@ export enum ButtonVariant {
   text = 'text'
 }
 
-export enum ButtonSize {
-  small = 'small',
-  medium = 'medium',
-  large = 'large',
-  xlarge = 'xlarge'
-}
-
 interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLButtonElement>>, 'style' | 'target'>, WithAltroneOffsets {
   style?: ButtonStyle
   variant?: ButtonVariant
@@ -33,7 +26,7 @@ interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLBut
   fluid?: boolean
   leftIcon?: JSX.Element
   rightIcon?: JSX.Element
-  size?: ButtonSize
+  size?: Size
 }
 
 const ButtonComponents = [
