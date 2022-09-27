@@ -57,6 +57,8 @@
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
+  white-space: nowrap;
+  min-width: 60px;
 
   &:active {
     transform: translateY(2px);
@@ -71,6 +73,10 @@
   @include useFocus();
   @include useDisabledUserSelect();
   @include useButtonSize(controlHeight, 14px, 6px, 16px, 8px, -4px);
+}
+
+.alt-button--with-icons {
+
 }
 
 .alt-button--style-primary {

@@ -16,6 +16,12 @@
   user-select: none;
 }
 
+@mixin useGlassSurface {
+  background-color: var(--surfaceGlass);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
 @mixin useFontSize($role, $size: '', $withStyle: true) {
   --fontSize: var(--#{$role}#{$size}FontSize);
   --lineHeight: var(--#{$role}#{$size}LineHeight);
