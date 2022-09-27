@@ -42,6 +42,81 @@
   --largeControlHeight: 42px;
   --xlargeControlHeight: 54px;
 
+  --controlFontSizeSmall: 13px;
+  --controlFontSize: 16px;
+  --controlFontSizeLarge: 18px;
+  --controlFontSizeXLarge: 24px;
+
+  /* ---- */
+
+  --bodySmallFontSize: 12px;
+  --bodySmallLineHeight: 16px;
+  --bodySmallFontWeight: 400;
+
+  --bodyFontSize: 14px;
+  --bodyLineHeight: 20px;
+  --bodyFontWeight: 400;
+
+  --bodyLargeFontSize: 16px;
+  --bodyLageLineHeight: 24px;
+  --bodyLargeFontWeight: 400;
+
+  /* ---- */
+
+  --labelSmallFontSize: 11px;
+  --labelSmallLineHeight: 16px;
+  --labelSmallFontWeight: 500;
+
+  --labelFontSize: 12px;
+  --labelLineHeight: 16px;
+  --labelFontWeight: 500;
+
+  --labelLargeFontSize: 14px;
+  --labelLageLineHeight: 20px;
+  --labelLargeFontWeight: 500;
+
+  /* ---- */
+
+  --titleSmallFontSize: 14px;
+  --titleSmallLineHeight: 20px;
+  --titleSmallFontWeight: 500;
+
+  --titleFontSize: 16px;
+  --titleLineHeight: 24px;
+  --titleFontWeight: 500;
+
+  --titleLargeFontSize: 22px;
+  --titleLageLineHeight: 28px;
+  --titleLargeFontWeight: 400;
+
+  /* ---- */
+
+  --headlineSmallFontSize: 24px;
+  --headlineSmallLineHeight: 32px;
+  --headlineSmallFontWeight: 400;
+
+  --headlineFontSize: 28px;
+  --headlineLineHeight: 36px;
+  --headlineFontWeight: 400;
+
+  --headlineLargeFontSize: 32px;
+  --headlineLageLineHeight: 40px;
+  --headlineLargeFontWeight: 400;
+
+  /* ---- */
+
+  --displaySmallFontSize: 36px;
+  --displaySmallLineHeight: 44px;
+  --displaySmallFontWeight: 400;
+
+  --displayFontSize: 45px;
+  --displayLineHeight: 52px;
+  --displayFontWeight: 400;
+
+  --displayLargeFontSize: 57px;
+  --displayLageLineHeight: 64px;
+  --displayLargeFontWeight: 400;
+
   display: block;
   font-family: OpenSans, sans-serif;
   background-color: var(--background);

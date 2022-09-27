@@ -1,5 +1,5 @@
 import {memo, useEffect, useRef, useState} from "react";
-import {WithAltroneOffsets, WithoutDefaultOffsets} from "../../../types";
+import {Size, WithAltroneOffsets, WithoutDefaultOffsets} from "../../../types";
 import './text-input.scss';
 import clsx from "clsx";
 import {useInputIsland} from "./useInputIsland";
@@ -24,7 +24,7 @@ export interface InputIsland {
   content: string | JSX.Element | JSX.Element[] | InputIslandAction[]
 }
 
-export interface TextInputProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLInputElement>>, 'onChange'>, WithAltroneOffsets {
+export interface TextInputProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLInputElement>>, 'onChange' | 'size'>, WithAltroneOffsets {
   onChange: (value: string) => void
   classNames?: {
     control?: string
@@ -37,6 +37,7 @@ export interface TextInputProps extends Omit<WithoutDefaultOffsets<React.HTMLPro
   rightIcon?: JSX.Element
   errorText?: string
   hintText?: string
+  size?: Size
   Component?: JSX.Element
 }
 
@@ -59,6 +60,7 @@ const TextInput = ({
   required,
   disabled,
   Component,
+  size = Size.medium,
   ...props
 }: TextInputProps) => {
   const _leftIsland = useInputIsland(leftIsland, leftIcon, prefix, disabled)
@@ -81,7 +83,7 @@ const TextInput = ({
     } else {
       setLeftPadding(DEFAULT_HORIZONTAL_PADDING)
     }
-  }, [_leftIsland, leftIslandWidth, wrapperLeft])
+  }, [_leftIsland, leftIslandWidth, wrapperLeft, size])
 
   useEffect(() => {
     if (_rightIsland) {
@@ -89,13 +91,14 @@ const TextInput = ({
     } else {
       setRightPadding(DEFAULT_HORIZONTAL_PADDING)
     }
-  }, [_rightIsland, rightIslandWidth, wrapperRight])
+  }, [_rightIsland, rightIslandWidth, wrapperRight, size])
 
   return <div
     className={clsx('alt-text-input', className, {
       'alt-text-input--invalid': errorText,
       'alt-text-input--required': required,
       'alt-text-input--disabled': disabled,
+      [`alt-text-input--size-${size}`]: size !== Size.medium
     })}
     ref={wrapperRef}
     data-testid='text-input'
@@ -114,8 +117,8 @@ const TextInput = ({
     />}
     { _leftIsland && <div className='alt-text-input__left-island' ref={leftIslandRef}>{_leftIsland}</div> }
     { _rightIsland && <div className='alt-text-input__right-island' ref={rightIslandRef}>{_rightIsland}</div> }
-    {hintText && <div className='alt-text-input__hint-text'>{hintText}</div>}
     {errorText && <div className='alt-text-input__error-text'>{errorText}</div>}
+    {hintText && <div className='alt-text-input__hint-text'>{hintText}</div>}
     {required && <div className='alt-text-input__required-mark'>*</div>}
   </div>
 }

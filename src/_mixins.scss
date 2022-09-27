@@ -21,3 +21,15 @@
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
 }
+
+@mixin useFontSize($role, $size: '', $withStyle: true) {
+  --fontSize: var(--#{$role}#{$size}FontSize);
+  --lineHeight: var(--#{$role}#{$size}LineHeight);
+  --fontWeight: var(--#{$role}#{$size}FontWeight);
+
+  @if($withStyle) {
+    font-size: var(--fontSize);
+    line-height: var(--lineHeight);
+    font-weight: var(--fontWeight);
+  }
+}
