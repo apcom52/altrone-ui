@@ -1,5 +1,5 @@
 import {memo} from "react";
-import {WithAltroneOffsets, WithoutDefaultOffsets} from "../../../types";
+import {Size, WithAltroneOffsets, WithoutDefaultOffsets} from "../../../types";
 import clsx from "clsx";
 import {Box} from "../../containers";
 import './button.scss'
@@ -18,14 +18,7 @@ export enum ButtonVariant {
   text = 'text'
 }
 
-export enum ButtonSize {
-  small = 'small',
-  medium = 'medium',
-  large = 'large',
-  xlarge = 'xlarge'
-}
-
-interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLButtonElement>>, 'style' | 'target'>, WithAltroneOffsets {
+interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLButtonElement>>, 'style' | 'target' | 'size'>, WithAltroneOffsets {
   style?: ButtonStyle
   variant?: ButtonVariant
   href?: string
@@ -33,7 +26,7 @@ interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLBut
   fluid?: boolean
   leftIcon?: JSX.Element
   rightIcon?: JSX.Element
-  size?: ButtonSize
+  size?: Size
 }
 
 const ButtonComponents = [
@@ -50,7 +43,7 @@ const Button = ({
   fluid = false,
   leftIcon,
   rightIcon,
-  size = ButtonSize.medium,
+  size = Size.medium,
   ...props
 }: ButtonProps) => {
   return <Box
@@ -58,7 +51,7 @@ const Button = ({
     className={clsx('alt-button', className, {
       [`alt-button--style-${style}`]: style !== ButtonStyle.default,
       [`alt-button--variant-${variant}`]: variant !== ButtonVariant.default,
-      [`alt-button--size-${size}`]: size !== ButtonSize.medium,
+      [`alt-button--size-${size}`]: size !== Size.medium,
       'alt-button--fluid': fluid,
     })}
     href={href}

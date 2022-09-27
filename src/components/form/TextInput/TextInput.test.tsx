@@ -1,8 +1,9 @@
-import {act, fireEvent, render, screen} from "@testing-library/react";
+import {act, fireEvent, render, screen, waitFor} from "@testing-library/react";
 import '@testing-library/jest-dom'
 import {TextInput} from "./index";
 import {InputIslandType} from "./TextInput";
 import {Icon} from "../../icons";
+import {Size} from "../../../types";
 
 const onChange = () => null
 const textIsland = {
@@ -164,5 +165,16 @@ describe('Form.TextInput', () => {
 
     expect(firstComponent.parentElement.parentElement).toHaveClass('alt-text-input__left-island')
     expect(secondComponent.parentElement.parentElement).toHaveClass('alt-text-input__right-island')
+  })
+
+  test('should use correct classNames for different sizes', async () => {
+    const { container, rerender } = render(<TextInput value='' onChange={() => null} size={Size.small} />)
+    expect(container.firstChild).toHaveClass('alt-text-input--size-small')
+
+    await waitFor(() => rerender(<TextInput value='' onChange={() => null} size={Size.large} />))
+    expect(container.firstChild).toHaveClass('alt-text-input--size-large')
+
+    await waitFor(() => rerender(<TextInput value='' onChange={() => null} size={Size.xlarge} />))
+    expect(container.firstChild).toHaveClass('alt-text-input--size-xlarge')
   })
 })
