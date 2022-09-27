@@ -15,3 +15,15 @@
   -webkit-user-select: none;
   user-select: none;
 }
+
+@mixin useFontSize($role, $size: '', $withStyle: true) {
+  --fontSize: var(--#{$role}#{$size}FontSize);
+  --lineHeight: var(--#{$role}#{$size}LineHeight);
+  --fontWeight: var(--#{$role}#{$size}FontWeight);
+
+  @if($withStyle) {
+    font-size: var(--fontSize);
+    line-height: var(--lineHeight);
+    font-weight: var(--fontWeight);
+  }
+}
