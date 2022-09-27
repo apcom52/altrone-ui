@@ -117,8 +117,8 @@ const TextInput = ({
     />}
     { _leftIsland && <div className='alt-text-input__left-island' ref={leftIslandRef}>{_leftIsland}</div> }
     { _rightIsland && <div className='alt-text-input__right-island' ref={rightIslandRef}>{_rightIsland}</div> }
-    {hintText && <div className='alt-text-input__hint-text'>{hintText}</div>}
     {errorText && <div className='alt-text-input__error-text'>{errorText}</div>}
+    {hintText && <div className='alt-text-input__hint-text'>{hintText}</div>}
     {required && <div className='alt-text-input__required-mark'>*</div>}
   </div>
 }
