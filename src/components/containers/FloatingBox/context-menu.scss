@@ -1,0 +1,64 @@
+@import '../../../_mixins';
+
+.alt-context-menu-list {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  max-width: 300px;
+  padding: 0;
+}
+
+.alt-context-menu-item {
+  display: flex;
+  align-items: center;
+  @include useFontSize(label, Large);
+  border-radius: 6px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 5px 8px 5px 6px;
+  color: var(--textColor);
+  margin: 0;
+
+  @include useInteraction {
+    background-color: var(--accent);
+    color: var(--textColorOnAccent);
+
+    .alt-context-menu-item__hint {
+      color: var(--textColorOnAccent);
+    }
+  }
+
+  & + & {
+    margin-top: 2px;
+  }
+}
+
+.alt-context-menu-item__icon {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  font-size: 20px;
+  font-weight: 400;
+  margin-right: 6px;
+}
+
+.alt-context-menu-item__title {
+  text-align: left;
+  flex-grow: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.alt-context-menu-item__childrenArrow {
+  display: inline-flex;
+  font-size: 1.5em;
+  justify-content: flex-end;
+}
+
+.alt-context-menu-item__hint {
+  color: var(--secondaryTextColor);
+  margin-left: 10px;
+}

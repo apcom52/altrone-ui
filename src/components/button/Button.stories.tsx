@@ -1,7 +1,7 @@
 import {withAltrone} from "../../hocs";
-import {Theme} from "../../types";
+import {Size, Theme} from "../../types";
 import {Button} from "./Button";
-import {ButtonSize, ButtonStyle, ButtonVariant} from "./Button/Button";
+import {ButtonStyle, ButtonVariant} from "./Button/Button";
 import {Icon} from "../icons";
 
 const Template = ({component, dark, leftIcon, rightIcon, ...args}) => {
@@ -23,12 +23,39 @@ ButtonExample.args = {
   children: 'Action button',
   disabled: false,
   style: ButtonStyle.default,
-  size: ButtonSize.medium,
+  size: Size.medium,
   leftIcon: '',
   rightIcon: '',
   href: '',
   dark: false,
   fluid: false,
+}
+
+export const ButtonDropdownExample = Template.bind({})
+ButtonDropdownExample.args = {
+  component: Button,
+  children: 'Button with dropdown actions',
+  dark: false,
+  dropdown: [{
+    title: 'Settings',
+    icon: <Icon i='settings' />,
+    onClick: () => alert('action 1')
+  }, {
+    title: 'Shopping cart with very long label',
+    icon: <Icon i='add_shopping_cart' />,
+    onClick: () => alert('action 2')
+  }, {
+    title: 'Shopping cart with very long label very very very long label',
+    icon: <Icon i='add_shopping_cart' />,
+    hint: 'Ctrl+V',
+    onClick: () => alert('action 2')
+  }, {
+    title: 'Log out',
+    onClick: () => alert('action 2'),
+    children: [{
+
+    }]
+  }]
 }
 
 ButtonExample.argTypes = {

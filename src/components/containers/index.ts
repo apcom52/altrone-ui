@@ -1,2 +1,2 @@
 export { Box } from './Box'
-export { FloatingBox } from './FloatingBox'
+export { FloatingBox, ContextMenu } from './FloatingBox'
