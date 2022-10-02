@@ -7,7 +7,7 @@ export interface ContextAction {
   danger?: boolean
 }
 
-export interface ParentContextAction extends Omit<ContextAction, 'onClick' | 'hint'> {
+export interface ParentContextAction extends Omit<ContextAction, 'onClick' | 'hint' | 'danger'> {
   children: ContextAction[]
 }
 

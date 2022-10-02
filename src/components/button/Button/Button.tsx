@@ -5,8 +5,9 @@ import {
   WithoutDefaultOffsets
 } from "../../../types";
 import clsx from "clsx";
-import {Box, FloatingBox, ContextMenu} from "../../containers";
+import {Box, FloatingBox} from "../../containers";
 import './button.scss'
+import {ContextMenu} from "../../list";
 
 export enum ButtonStyle {
   default,
@@ -92,11 +93,7 @@ const Button = forwardRef(({
       { rightIcon ? <span className='alt-button__rightIcon'>{rightIcon}</span> : null }
     </Box>
     {isDropdownVisible ? <FloatingBox targetRef={buttonRef.current} onClose={hideDropdown} placement='bottom'>
-      <ContextMenu.Menu>
-        {dropdown.map((item, itemIndex) => (
-          item.onClick ? <ContextMenu.MenuItem key={itemIndex} {...item} /> : <ContextMenu.ParentMenuItem key={itemIndex} {...item} />
-        ))}
-      </ContextMenu.Menu>
+      <ContextMenu menu={dropdown} />
     </FloatingBox> : null}
   </>
 })

@@ -50,12 +50,21 @@ ButtonDropdownExample.args = {
     hint: 'Ctrl+V',
     onClick: () => alert('action 2')
   }, {
+    title: 'Remove item',
+    icon: <Icon i='delete' />,
+    onClick: () => alert('action 2'),
+    danger: true
+  }, {
     title: 'Log out',
     children: [{
       title: 'Shopping cart with very long label very very very long label',
       icon: <Icon i='add_shopping_cart' />,
       hint: 'Ctrl+V',
-      onClick: () => alert('child action')
+      onClick: () => alert('child action'),
+    }, {
+      title: 'Disabled item',
+      onClick: () => null,
+      disabled: true
     }]
   }]
 }

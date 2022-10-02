@@ -21,6 +21,11 @@
   margin: 0;
   @include useDisabledUserSelect();
 
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
   @include useInteraction {
     background-color: var(--accent);
     color: var(--textColorOnAccent);
@@ -62,4 +67,13 @@
 .alt-context-menu-item__hint {
   color: var(--secondaryTextColor);
   margin-left: 10px;
+}
+
+.alt-context-menu-item--danger {
+  color: var(--danger);
+
+  &:hover, &:focus {
+    background-color: var(--danger);
+    color: var(--textColorOnDanger);
+  }
 }
