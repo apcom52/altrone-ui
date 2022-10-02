@@ -1,5 +1,5 @@
 import {withAltrone} from "../../hocs";
-import {Theme} from "../../types";
+import {Size, Theme} from "../../types";
 import {PasswordInput, TextInput} from "./index";
 import {Icon} from "../icons";
 import {InputIslandType} from "./TextInput/TextInput";
@@ -43,6 +43,7 @@ TextInputWithLeftIslandExample.args = {
   component: TextInput,
   placeholder: 'Type something',
   prefix: 'search:',
+  size: Size.medium,
   dark: false
 }
 
@@ -51,6 +52,7 @@ TextInputWithRightIslandExample.args = {
   component: TextInput,
   placeholder: 'Type something',
   rightIcon: <Icon i='search' />,
+  size: Size.medium,
   dark: false
 }
 
@@ -77,6 +79,7 @@ TextInputWithBothIslandsExample.args = {
   },
   required: false,
   disabled: false,
+  size: Size.medium,
   dark: false
 }
 
@@ -85,6 +88,7 @@ PasswordInputExample.args = {
   component: PasswordInput,
   placeholder: 'Type your password',
   dark: false,
+  size: Size.medium,
   showControls: true
 }
 
@@ -96,6 +100,7 @@ NumberInputExample.args = {
   step: 3,
   min: 0,
   max: 10,
+  size: Size.medium,
   dark: false,
   showControls: true
 }

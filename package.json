@@ -65,9 +65,11 @@
   },
   "homepage": "https://github.com/apcom52/altrone-ui#readme",
   "dependencies": {
+    "@popperjs/core": "^2.11.6",
     "material-symbols": "^0.2.11",
     "normalize": "^0.3.1",
     "react-number-format": "^5.0.0-beta.5",
+    "react-popper": "^2.3.0",
     "rooks": "^7.4.0"
   }
 }
