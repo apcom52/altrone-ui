@@ -1,5 +1,5 @@
 import {Button} from './index'
-import {render, screen, fireEvent} from "@testing-library/react";
+import {render, screen, fireEvent, waitFor} from "@testing-library/react";
 import '@testing-library/jest-dom'
 import {ButtonStyle, ButtonVariant} from "./Button";
 import {Icon} from "../../icons";
@@ -51,5 +51,13 @@ describe('Button.Button', () => {
     expect(right).toBeInTheDocument()
     expect(bothLeft).toBeInTheDocument()
     expect(bothRight).toBeInTheDocument()
+  })
+
+  test('should open dropdown', async () => {
+    const { rerender } = render(<Button dropdown={[{ title: 'Action', onClick: () => null }]}>Dropdown button</Button>)
+    const button = screen.getByText('Dropdown button')
+    await waitFor(() => fireEvent.click(button))
+    rerender(<Button dropdown={[{ title: 'Action', onClick: () => null }]}>Dropdown button</Button>)
+    expect(screen.getByText('Action')).toBeInTheDocument()
   })
 })
