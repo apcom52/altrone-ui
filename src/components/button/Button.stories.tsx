@@ -51,9 +51,11 @@ ButtonDropdownExample.args = {
     onClick: () => alert('action 2')
   }, {
     title: 'Log out',
-    onClick: () => alert('action 2'),
     children: [{
-
+      title: 'Shopping cart with very long label very very very long label',
+      icon: <Icon i='add_shopping_cart' />,
+      hint: 'Ctrl+V',
+      onClick: () => alert('child action')
     }]
   }]
 }

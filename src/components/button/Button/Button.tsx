@@ -94,7 +94,7 @@ const Button = forwardRef(({
     {isDropdownVisible ? <FloatingBox targetRef={buttonRef.current} onClose={hideDropdown} placement='bottom'>
       <ContextMenu.Menu>
         {dropdown.map((item, itemIndex) => (
-          <ContextMenu.MenuItem key={itemIndex} {...item} />
+          item.onClick ? <ContextMenu.MenuItem key={itemIndex} {...item} /> : <ContextMenu.ParentMenuItem key={itemIndex} {...item} />
         ))}
       </ContextMenu.Menu>
     </FloatingBox> : null}
