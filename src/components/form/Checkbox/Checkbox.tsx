@@ -3,12 +3,13 @@ import './checkbox.scss'
 import {Icon} from "../../icons";
 import clsx from "clsx";
 
-interface CheckboxProps extends React.HTMLProps<HTMLInputElement> {
+interface CheckboxProps extends Omit<React.HTMLProps<HTMLInputElement>, 'onChange'> {
   danger?: boolean
   CheckIconComponent?: JSX.Element
+  onChange: (checked: boolean) => void
 }
 
-const Checkbox = ({ disabled, id, checked = false, danger = false, children, CheckIconComponent, className, ...props }: CheckboxProps) => {
+const Checkbox = ({ disabled, id, checked = false, danger = false, children, CheckIconComponent, className, onChange, ...props }: CheckboxProps) => {
   const generatedCheckboxId = useId()
 
   const checkboxId = id || generatedCheckboxId
@@ -23,6 +24,7 @@ const Checkbox = ({ disabled, id, checked = false, danger = false, children, Che
       disabled={disabled}
       {...props}
       className='alt-checkbox__input'
+      onChange={e => onChange(e.target.checked)}
     />
     <div className='alt-checkbox__control'>
       {checked ? <div className='alt-checkbox__icon'>{CheckIconComponent || <Icon i='check' />}</div> : null}

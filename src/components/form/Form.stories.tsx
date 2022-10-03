@@ -118,9 +118,9 @@ CheckboxExample.args = {
 export const CheckboxListExample = Template.bind({})
 CheckboxListExample.args = {
   component: CheckboxList,
-  children: [<Checkbox>First option</Checkbox>, <Checkbox>Second option</Checkbox>, <Checkbox>Third option</Checkbox>, <Checkbox>Forth option</Checkbox>,
-    <Checkbox>First option</Checkbox>, <Checkbox>Second option</Checkbox>, <Checkbox>Third option</Checkbox>, <Checkbox>Forth option</Checkbox>,
-    <Checkbox>First option</Checkbox>, <Checkbox>Second option</Checkbox>, <Checkbox>Third option</Checkbox>, <Checkbox>Forth option</Checkbox>],
+  children: [<Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>,
+    <Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>,
+    <Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>],
   dark: false,
 }
 CheckboxListExample.argTypes = {
