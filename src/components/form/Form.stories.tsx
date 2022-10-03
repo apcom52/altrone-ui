@@ -1,15 +1,12 @@
 import {withAltrone} from "../../hocs";
 import {Size, Theme} from "../../types";
-import {PasswordInput, TextInput} from "./index";
+import {PasswordInput, TextInput, NumberInput, Checkbox} from "./index";
 import {Icon} from "../icons";
 import {InputIslandType} from "./TextInput/TextInput";
-import {NumberInput} from "./NumberInput";
 import {useCallback, useEffect, useState} from "react";
 
 const Template = ({component, dark, value = '', ...args}) => {
   const [_value, setValue] = useState(value)
-
-  console.log('value', _value);
 
   useEffect(() => {
     setValue(value)
@@ -103,6 +100,17 @@ NumberInputExample.args = {
   size: Size.medium,
   dark: false,
   showControls: true
+}
+
+export const CheckboxExample = Template.bind({})
+CheckboxExample.args = {
+  component: Checkbox,
+  value: 0,
+  checked: false,
+  disabled: false,
+  danger: false,
+  label: 'Example',
+  dark: false,
 }
 
 export default {
