@@ -1,15 +1,14 @@
 import {withAltrone} from "../../hocs";
-import {Size, Theme} from "../../types";
-import {PasswordInput, TextInput} from "./index";
+import {Direction, Size, Theme} from "../../types";
+import {PasswordInput, TextInput, NumberInput, Checkbox, CheckboxList} from "./index";
 import {Icon} from "../icons";
 import {InputIslandType} from "./TextInput/TextInput";
-import {NumberInput} from "./NumberInput";
 import {useCallback, useEffect, useState} from "react";
+import {ButtonStyle} from "../button/Button/Button";
+import {ButtonExample} from "../button/Button.stories";
 
 const Template = ({component, dark, value = '', ...args}) => {
   const [_value, setValue] = useState(value)
-
-  console.log('value', _value);
 
   useEffect(() => {
     setValue(value)
@@ -103,6 +102,32 @@ NumberInputExample.args = {
   size: Size.medium,
   dark: false,
   showControls: true
+}
+
+export const CheckboxExample = Template.bind({})
+CheckboxExample.args = {
+  component: Checkbox,
+  value: 0,
+  checked: false,
+  disabled: false,
+  danger: false,
+  children: 'Example',
+  dark: false,
+}
+
+export const CheckboxListExample = Template.bind({})
+CheckboxListExample.args = {
+  component: CheckboxList,
+  children: [<Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>,
+    <Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>,
+    <Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>],
+  dark: false,
+}
+CheckboxListExample.argTypes = {
+  direction: {
+    control: 'select',
+    options: [Direction.horizontal, Direction.vertical]
+  }
 }
 
 export default {
