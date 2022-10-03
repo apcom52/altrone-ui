@@ -4,12 +4,11 @@ import {Icon} from "../../icons";
 import clsx from "clsx";
 
 interface CheckboxProps extends React.HTMLProps<HTMLInputElement> {
-  label?: string
   danger?: boolean
   CheckIconComponent?: JSX.Element
 }
 
-const Checkbox = ({ disabled, id, checked, danger = false, label = '', CheckIconComponent, className, ...props }: CheckboxProps) => {
+const Checkbox = ({ disabled, id, checked = false, danger = false, children, CheckIconComponent, className, ...props }: CheckboxProps) => {
   const generatedCheckboxId = useId()
 
   const checkboxId = id || generatedCheckboxId
@@ -27,7 +26,7 @@ const Checkbox = ({ disabled, id, checked, danger = false, label = '', CheckIcon
     />
     <div className='alt-checkbox__control'>
       {checked ? <div className='alt-checkbox__icon'>{CheckIconComponent || <Icon i='check' />}</div> : null}
-      {label && <div className='alt-checkbox__label'>{label}</div>}
+      {children && <div className='alt-checkbox__label'>{children}</div>}
     </div>
   </label>
 }

@@ -1,9 +1,11 @@
 import {withAltrone} from "../../hocs";
-import {Size, Theme} from "../../types";
-import {PasswordInput, TextInput, NumberInput, Checkbox} from "./index";
+import {Direction, Size, Theme} from "../../types";
+import {PasswordInput, TextInput, NumberInput, Checkbox, CheckboxList} from "./index";
 import {Icon} from "../icons";
 import {InputIslandType} from "./TextInput/TextInput";
 import {useCallback, useEffect, useState} from "react";
+import {ButtonStyle} from "../button/Button/Button";
+import {ButtonExample} from "../button/Button.stories";
 
 const Template = ({component, dark, value = '', ...args}) => {
   const [_value, setValue] = useState(value)
@@ -109,8 +111,23 @@ CheckboxExample.args = {
   checked: false,
   disabled: false,
   danger: false,
-  label: 'Example',
+  children: 'Example',
   dark: false,
+}
+
+export const CheckboxListExample = Template.bind({})
+CheckboxListExample.args = {
+  component: CheckboxList,
+  children: [<Checkbox>First option</Checkbox>, <Checkbox>Second option</Checkbox>, <Checkbox>Third option</Checkbox>, <Checkbox>Forth option</Checkbox>,
+    <Checkbox>First option</Checkbox>, <Checkbox>Second option</Checkbox>, <Checkbox>Third option</Checkbox>, <Checkbox>Forth option</Checkbox>,
+    <Checkbox>First option</Checkbox>, <Checkbox>Second option</Checkbox>, <Checkbox>Third option</Checkbox>, <Checkbox>Forth option</Checkbox>],
+  dark: false,
+}
+CheckboxListExample.argTypes = {
+  direction: {
+    control: 'select',
+    options: [Direction.horizontal, Direction.vertical]
+  }
 }
 
 export default {
