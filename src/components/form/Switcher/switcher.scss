@@ -1,0 +1,89 @@
+@import '../../../_mixins';
+
+.alt-switcher {
+  --switcherColor: var(--borderColor);
+  --switcherActiveColor: var(--accent);
+  --switcherDotActiveColor: var(--textColorOnAccent);
+  --text: var(--textColor);
+
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--text);
+
+  @include useFontSize(label, Large);
+  @include useDisabledUserSelect();
+}
+
+.alt-switcher__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  &:checked + .alt-switcher__indicator {
+    background-color: var(--switcherActiveColor);
+    box-shadow: none;
+
+    &:before {
+      background-color: var(--switcherDotActiveColor);
+      left: calc(100% - 13px);
+    }
+  }
+}
+
+.alt-switcher__indicator {
+  position: relative;
+  width: 40px;
+  height: 18px;
+  margin-right: 6px;
+  border-radius: 30px;
+  box-shadow: inset 0 0 0 1px var(--switcherColor);
+  box-sizing: border-box;
+  transition: background-color var(--transitionDuration) ease;
+
+  &:before {
+    position: absolute;
+    content: '';
+    width: 10px;
+    height: 10px;
+    top: 4px;
+    left: 4px;
+    border-radius: 50%;
+    background-color: var(--switcherColor);
+    transition: left var(--transitionDuration) ease, background-color var(--transitionDuration) ease;
+  }
+}
+
+.alt-switcher__label {
+  flex: 1;
+}
+
+.alt-switcher--danger {
+  --switcherColor: var(--danger);
+  --switcherActiveColor: var(--danger);
+  --switcherDotActiveColor: var(--textColorOnDanger);
+  --text: var(--danger);
+}
+
+.alt-switcher--danger {
+  --switcherColor: var(--borderColor);
+  --switcherActiveColor: var(--borderColor);
+  --switcherDotActiveColor: var(--textColorOnAccent);
+  --text: var(--borderColor);
+
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.alt-switcher--pin-end {
+  .alt-switcher__indicator {
+    order: 1;
+    margin-right: 0;
+    margin-left: 6px;
+  }
+}

@@ -1,11 +1,12 @@
 import {withAltrone} from "../../hocs";
 import {Direction, Size, Theme} from "../../types";
-import {PasswordInput, TextInput, NumberInput, Checkbox, CheckboxList} from "./index";
+import {PasswordInput, TextInput, NumberInput, Checkbox, CheckboxList, Switcher} from "./index";
 import {Icon} from "../icons";
 import {InputIslandType} from "./TextInput/TextInput";
 import {useCallback, useEffect, useState} from "react";
 import {ButtonStyle} from "../button/Button/Button";
 import {ButtonExample} from "../button/Button.stories";
+import {Align} from "../../types/Align";
 
 const Template = ({component, dark, value = '', ...args}) => {
   const [_value, setValue] = useState(value)
@@ -127,6 +128,22 @@ CheckboxListExample.argTypes = {
   direction: {
     control: 'select',
     options: [Direction.horizontal, Direction.vertical]
+  }
+}
+
+export const SwitcherExample = Template.bind({})
+SwitcherExample.args = {
+  component: Switcher,
+  children: 'Example',
+  checked: false,
+  danger: false,
+  disabled: false,
+  dark: false,
+}
+SwitcherExample.argTypes = {
+  align: {
+    control: 'select',
+    options: [Align.start, Align.end]
   }
 }
 
