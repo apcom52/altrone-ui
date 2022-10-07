@@ -133,6 +133,7 @@ SelectExample.args = {
   component: Select,
   value: 'uk',
   dark: false,
+  fluid: false,
   options: [{
     label: 'The United Kingdom',
     value: 'uk'

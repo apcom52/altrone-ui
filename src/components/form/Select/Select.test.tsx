@@ -31,12 +31,13 @@ describe('Form.Select', () => {
     await waitFor(() => fireEvent.click(select))
     rerender(<Select options={DATA} value={value} onChange={onChange} />)
 
-    const menu = screen.getByTestId('alt-test-select-menu')
+    let menu = screen.getByTestId('alt-test-select-menu')
     expect(menu).toBeInTheDocument()
 
     const spain = screen.getByText('Spain')
     await waitFor(() => fireEvent.click(spain))
     rerender(<Select options={DATA} value={value} onChange={onChange} />)
+    menu = screen.queryByTestId('alt-test-select-menu')
 
     expect(menu).toBeInTheDocument()
     expect(value).toBe('uk')
@@ -44,6 +45,8 @@ describe('Form.Select', () => {
     const france = screen.getByText('France')
     await waitFor(() => fireEvent.click(france))
     rerender(<Select options={DATA} value={value} onChange={onChange} />)
+
+    menu = screen.queryByTestId('alt-test-select-menu')
 
     expect(menu).not.toBeInTheDocument()
     expect(value).toBe('france')
