@@ -12,6 +12,15 @@ interface FloatingBoxProps extends WithoutDefaultOffsets {
   placement?: Options['placement']
   popperProps?: Omit<Partial<Options>, "modifiers">
   useParentWidth?: boolean
+  minWidth?: number
+}
+
+const setPopperWidth = (state , minWidth) => {
+  const targetRefWidth = state.elements.reference.clientWidth
+
+  state.elements.popper.style.width = `${
+    minWidth ? (targetRefWidth < minWidth ? minWidth : targetRefWidth) : targetRefWidth
+  }px`;
 }
 
 const FloatingBox = ({
@@ -21,6 +30,7 @@ const FloatingBox = ({
   placement = 'auto',
   popperProps,
   useParentWidth = false,
+  minWidth,
   children
 }: FloatingBoxProps) => {
   const [floatingBoxElement, setFloatingBoxElement] = useState(null)
@@ -46,20 +56,18 @@ const FloatingBox = ({
         name: "sameWidth",
         enabled: true,
         fn: ({ state }) => {
-          state.styles.popper.width = `${state.rects.reference.width}px`;
+          setPopperWidth(state, minWidth)
         },
         phase: "beforeWrite",
         requires: ["computeStyles"],
         effect: ({ state }) => {
-          state.elements.popper.style.width = `${
-            state.elements.reference.clientWidth
-          }px`;
+          setPopperWidth(state, minWidth)
         }
       })
     }
 
     return result
-  }, [offsets, useParentWidth])
+  }, [offsets, useParentWidth, minWidth])
 
   const { styles, attributes } = usePopper(targetRef, floatingBoxElement, {
     modifiers,
