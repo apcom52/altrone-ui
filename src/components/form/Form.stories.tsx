@@ -1,11 +1,9 @@
 import {withAltrone} from "../../hocs";
 import {Direction, Size, Theme} from "../../types";
-import {PasswordInput, TextInput, NumberInput, Checkbox, CheckboxList} from "./index";
+import {PasswordInput, TextInput, NumberInput, Checkbox, CheckboxList, Select} from "./index";
 import {Icon} from "../icons";
 import {InputIslandType} from "./TextInput/TextInput";
 import {useCallback, useEffect, useState} from "react";
-import {ButtonStyle} from "../button/Button/Button";
-import {ButtonExample} from "../button/Button.stories";
 
 const Template = ({component, dark, value = '', ...args}) => {
   const [_value, setValue] = useState(value)
@@ -128,6 +126,27 @@ CheckboxListExample.argTypes = {
     control: 'select',
     options: [Direction.horizontal, Direction.vertical]
   }
+}
+
+export const SelectExample = Template.bind({})
+SelectExample.args = {
+  component: Select,
+  value: 'uk',
+  dark: false,
+  options: [{
+    label: 'The United Kingdom',
+    value: 'uk'
+  }, {
+    label: 'The United States of America',
+    value: 'use'
+  }, {
+    label: 'Spain',
+    value: 'spain',
+    disabled: true
+  }, {
+    label: 'France',
+    value: 'france'
+  }]
 }
 
 export default {

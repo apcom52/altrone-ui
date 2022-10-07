@@ -1,5 +1,6 @@
-import {memo} from "react";
+import {memo, useMemo} from "react";
 import {Option, OptionParent} from "../../../types";
+import button from "../../button/Button/Button";
 
 interface SelectProps<T extends number | string | boolean = string> extends Omit<React.HTMLProps<HTMLSelectElement>, 'value' | 'onChange'> {
   value: T
@@ -11,8 +12,14 @@ interface SelectProps<T extends number | string | boolean = string> extends Omit
   ItemComponent?: (item: Option<T>, checked: boolean) => Element
 }
 
-const Select = ({}: SelectProps) => {
-  return null
+const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent }: SelectProps) => {
+  const selectedOption = useMemo(() => {
+    return options.find(option => option.value === value)
+  }, [value, options])
+
+  return <button>
+    {selectedOption ? selectedOption.label : null}
+  </button>
 }
 
 export default memo(Select)
