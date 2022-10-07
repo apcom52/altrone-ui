@@ -36,7 +36,21 @@
   width: 100%;
   flex-direction: column;
   color: var(--textColor);
+  gap: 8px;
+}
+
+.alt-select-group {
+  display: flex;
+  flex-direction: column;
   gap: 2px;
+}
+
+.alt-select-group__title {
+  padding-top: 2px;
+  margin-left: 4px;
+  color: var(--secondaryTextColor);
+  padding-left: 4px;
+  @include useFontSize(label, Small);
 }
 
 .alt-select-option {

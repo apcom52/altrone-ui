@@ -136,17 +136,50 @@ SelectExample.args = {
   fluid: false,
   options: [{
     label: 'The United Kingdom',
-    value: 'uk'
+    value: 'uk',
+    parent: 'nato'
   }, {
     label: 'The United States of America',
-    value: 'use'
+    value: 'use',
+    parent: 'nato'
   }, {
     label: 'Spain',
     value: 'spain',
+    parent: 'eu',
     disabled: true
   }, {
     label: 'France',
+    parent: 'eu',
     value: 'france'
+  }, {
+    label: 'Turkey',
+    parent: 'nato',
+    value: 'turkey',
+  }, {
+    label: 'Russia',
+    value: 'russia'
+  }, {
+    label: 'Japan',
+    parent: 'nato',
+    value: 'japan'
+  }, {
+    label: 'China',
+    value: 'china'
+  }, {
+    label: 'Brazil',
+    value: 'brazil'
+  }, {
+    label: 'Germany',
+    parent: 'eu',
+    value: 'germany'
+  }],
+  parents: [{
+    label: "European Union",
+    value: 'eu',
+    disabled: true
+  }, {
+    label: 'NATO',
+    value: 'nato'
   }]
 }
 
