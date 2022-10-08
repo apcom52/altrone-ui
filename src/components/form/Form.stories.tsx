@@ -134,6 +134,7 @@ SelectExample.args = {
   value: 'uk',
   dark: false,
   fluid: false,
+  searchable: false,
   options: [{
     label: 'The United Kingdom',
     value: 'uk',

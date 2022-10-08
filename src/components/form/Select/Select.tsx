@@ -1,10 +1,11 @@
-import {memo, useMemo, useRef, useState} from "react";
+import {memo, useEffect, useMemo, useRef, useState} from "react";
 import {Option, OptionParent} from "../../../types";
 import button from "../../button/Button/Button";
 import {FloatingBox} from "../../containers";
 import './select.scss';
 import {Icon} from "../../icons";
 import clsx from "clsx";
+import {TextInput} from "../TextInput";
 
 interface SelectProps<T extends number | string | boolean = string> extends Omit<React.HTMLProps<HTMLSelectElement>, 'value' | 'onChange'> {
   value: T
@@ -12,7 +13,7 @@ interface SelectProps<T extends number | string | boolean = string> extends Omit
   onChange: (value: T) => void
   parents?: OptionParent[]
   searchable?: boolean
-  searchFunc?: (searchTerm: string, item: T) => boolean
+  searchFunc?: (searchTerm: string, item: Option<T>) => boolean
   ItemComponent?: (item: Option<T>, checked: boolean) => Element;
   fluid?: boolean
   classNames?: {
@@ -27,7 +28,10 @@ const DEFAULT_KEY = '_default'
 
 const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent, disabled, fluid = false, classNames = {} }: SelectProps) => {
   const [isSelectVisible, setIsSelectVisible] = useState(false)
-  const selectRef = useRef<HTMLButtonElement>(null)
+  const [isSearchMode, setIsSearchMode] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const selectRef = useRef<HTMLButtonElement | HTMLInputElement>(null)
 
   const [groupedItems, parentKeys]: [Record<string, (OptionParent | Option)[]>, string[]] = useMemo(() => {
     const result = {
@@ -37,7 +41,17 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
       }],
     }
 
-    for (const option of options) {
+    let filteredOptions = [...options]
+
+    if (searchable && searchTerm) {
+      if (searchFunc) {
+        filteredOptions = filteredOptions.filter(option => searchFunc(searchTerm, option))
+      } else {
+        filteredOptions = filteredOptions.filter(option => option.label.trim().toLowerCase().indexOf(searchTerm.trim().toLowerCase()) > -1)
+      }
+    }
+
+    for (const option of filteredOptions) {
       if (option.parent) {
         if (result[option.parent]) {
           result[option.parent].push(option)
@@ -53,22 +67,53 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
     const parentKeys = Object.keys(result).filter(pK => pK !== DEFAULT_KEY)
 
     return [result, [...parentKeys, DEFAULT_KEY]]
-  }, [options, parents])
+  }, [options, parents, searchable, searchTerm, searchFunc])
 
   const selectedOption = useMemo(() => {
     return options.find(option => option.value === value)
   }, [value, options])
 
-  const onSelectOption = (value) => {
-    onChange(value)
+  const onSelectMenuClose = () => {
     setIsSelectVisible(false)
+    setIsSearchMode(false)
   }
 
+  const onSelectOption = (value) => {
+    onChange(value)
+    onSelectMenuClose()
+  }
+
+  const onSelectClick = () => {
+    setTimeout(() => {
+      setIsSelectVisible(true)
+    }, 10)
+
+    if (searchable) {
+      setIsSearchMode(true)
+    }
+  }
+
+  const onInputBlur = () => {
+    if (!isSelectVisible) {
+      setIsSearchMode(false)
+    }
+  }
+
+  const preventSelectMenuClose = (e) => {
+    return e.target === selectRef.current
+  }
+
+  useEffect(() => {
+    if (!isSearchMode) {
+      setSearchTerm('')
+    }
+  }, [isSearchMode])
+
   return <>
-    <button
+    {(!searchable || (searchable && !isSearchMode)) ? <button
       ref={selectRef}
       disabled={disabled}
-      onClick={() => setIsSelectVisible(true)}
+      onClick={onSelectClick}
       data-testid='alt-test-select'
       className={clsx('alt-select', classNames.select, {
         'alt-select--fluid': fluid,
@@ -82,12 +127,21 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
         {selectedOption ? selectedOption.label : null}
       </div>
       <div className='alt-select__arrow'><Icon i='expand_more' /></div>
-    </button>
+    </button> : <TextInput
+      ref={selectRef}
+      placeholder='Search...'
+      value={searchTerm}
+      onChange={setSearchTerm}
+      rightIcon={<Icon i='search' />}
+      onBlur={onInputBlur}
+      autoFocus
+    />}
     {isSelectVisible && <FloatingBox
       placement='bottom'
       targetRef={selectRef.current}
-      onClose={() => setIsSelectVisible(false)}
+      onClose={onSelectMenuClose}
       minWidth={200}
+      preventClose={(searchable && isSearchMode) ? preventSelectMenuClose : undefined}
       useParentWidth
     >
       <div className={clsx('alt-select-menu', classNames.menu)} data-testid='alt-test-select-menu'>
@@ -97,7 +151,7 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
           const isSingle = groupedValueKeys.length === 1
 
           return <div className='alt-select-group'>
-            {!isSingle && <div className='alt-select-group__title'>{groupInfo.label}</div>}
+            {(!isSingle && options.length) ? <div className='alt-select-group__title'>{groupInfo.label}</div> : null}
             {options.map((option, optionIndex) => (
               <button
                 key={optionIndex}
@@ -114,8 +168,6 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
             ))}
           </div>
         })}
-
-
       </div>
     </FloatingBox>}
   </>

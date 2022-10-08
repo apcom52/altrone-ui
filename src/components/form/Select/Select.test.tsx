@@ -55,6 +55,10 @@ describe('Form.Select', () => {
     expect(selectValue).toHaveTextContent('France')
   })
 
+  test('should select groups shows properly', async () => {
+
+  })
+
   test('should search works correctly',  async () => {
     let value = 'uk'
 
