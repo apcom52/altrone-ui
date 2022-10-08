@@ -13,6 +13,7 @@ interface FloatingBoxProps extends WithoutDefaultOffsets {
   popperProps?: Omit<Partial<Options>, "modifiers">
   useParentWidth?: boolean
   minWidth?: number
+  preventClose?: (e: MouseEvent) => boolean
 }
 
 const setPopperWidth = (state , minWidth) => {
@@ -31,7 +32,8 @@ const FloatingBox = ({
   popperProps,
   useParentWidth = false,
   minWidth,
-  children
+  children,
+  preventClose
 }: FloatingBoxProps) => {
   const [floatingBoxElement, setFloatingBoxElement] = useState(null)
 
@@ -75,7 +77,13 @@ const FloatingBox = ({
     ...popperProps
   })
 
-  useOutsideClick({ current: floatingBoxElement }, () => {
+  useOutsideClick({ current: floatingBoxElement }, (e) => {
+    if (preventClose) {
+      if (preventClose(e)) {
+        return
+      }
+    }
+    
     setTimeout(() => {
       onClose()
     }, 1)
