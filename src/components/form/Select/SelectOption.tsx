@@ -17,8 +17,6 @@ export interface SelectOptionProps {
 const SelectOption = ({ label, value, disabled = false, selected = false, onSelect, className, inSelectHeader = false }: SelectOptionProps) => {
   const ComponentName = inSelectHeader ? 'div' : 'button';
 
-  console.log(label, disabled);
-
   if (inSelectHeader && value === undefined) {
     return <div>Select an option</div>
   }

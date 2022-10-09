@@ -10,6 +10,46 @@ const DATA: Option[] = [
   { label: 'France', value: 'france' },
 ]
 
+const DATA_WITH_PARENTS: Option[] = [{
+  label: 'The United Kingdom',
+  value: 'uk',
+  parent: 'nato'
+}, {
+  label: 'The United States of America',
+  value: 'use',
+  parent: 'nato'
+}, {
+  label: 'Spain',
+  value: 'spain',
+  parent: 'eu',
+  disabled: true
+}, {
+  label: 'France',
+  parent: 'eu',
+  value: 'france'
+}, {
+  label: 'Turkey',
+  parent: 'nato',
+  value: 'turkey',
+}, {
+  label: 'Russia',
+  value: 'russia'
+}, {
+  label: 'Japan',
+  parent: 'nato',
+  value: 'japan'
+}, {
+  label: 'China',
+  value: 'china'
+}, {
+  label: 'Brazil',
+  value: 'brazil'
+}, {
+  label: 'Germany',
+  parent: 'eu',
+  value: 'germany'
+}]
+
 describe('Form.Select', () => {
   test('should renders correctly', () => {
     render(<Select options={DATA} value='uk' onChange={() => null} />)
@@ -55,7 +95,37 @@ describe('Form.Select', () => {
   })
 
   test('should select groups shows properly', async () => {
+    const { rerender } = render(<Select options={DATA_WITH_PARENTS} value='uk' onChange={() => null} parents={[{
+      label: "European Union",
+      value: 'eu',
+      disabled: true
+    }, {
+      label: 'NATO',
+      value: 'nato'
+    }]} />)
 
+    const select = screen.getByTestId('alt-test-select')
+    await waitFor(() => fireEvent.click(select))
+
+    rerender(<Select options={DATA_WITH_PARENTS} value='uk' onChange={() => null} parents={[{
+      label: "European Union",
+      value: 'eu',
+      disabled: true
+    }, {
+      label: 'NATO',
+      value: 'nato'
+    }]} />)
+
+    const euGroup = await screen.findByText('European Union')
+    const natoGroup = await screen.findByText('NATO')
+    const otherGroup = await screen.findByText('Others')
+
+    expect(euGroup).toBeInTheDocument()
+    expect(euGroup.parentNode.children).toHaveLength(4)
+    expect(natoGroup).toBeInTheDocument()
+    expect(natoGroup.parentNode.children).toHaveLength(5)
+    expect(otherGroup).toBeInTheDocument()
+    expect(otherGroup.parentNode.children).toHaveLength(4)
   })
 
   test('should search works correctly',  async () => {
