@@ -4,6 +4,9 @@ import {PasswordInput, TextInput, NumberInput, Checkbox, CheckboxList, Select} f
 import {Icon} from "../icons";
 import {InputIslandType} from "./TextInput/TextInput";
 import {useCallback, useEffect, useState} from "react";
+import {SelectOptionProps} from "./Select";
+import button from "../button/Button/Button";
+import clsx from "clsx";
 
 const Template = ({component, dark, value = '', ...args}) => {
   const [_value, setValue] = useState(value)
@@ -23,6 +26,19 @@ const Template = ({component, dark, value = '', ...args}) => {
     value: _value,
     onChange
   })
+}
+
+const CustomSelectItem = ({ label, value, onSelect, inSelectHeader, parent, selected, disabled, className}: SelectOptionProps) => {
+  const ComponentName = inSelectHeader ? 'div' : 'button'
+
+  return <ComponentName
+    className={clsx('alt-select-option', {
+      'alt-select-option--selected': selected
+    })}
+    onClick={() => onSelect(value)}
+  >
+    <div className='alt-select-option__label'>{value} {label}</div>
+  </ComponentName>
 }
 
 export const TextInputExample = Template.bind({})
@@ -135,6 +151,7 @@ SelectExample.args = {
   dark: false,
   fluid: false,
   searchable: false,
+  disabled: false,
   options: [{
     label: 'The United Kingdom',
     value: 'uk',
@@ -182,6 +199,64 @@ SelectExample.args = {
     label: 'NATO',
     value: 'nato'
   }]
+}
+
+export const CustomSelectExample = Template.bind({})
+CustomSelectExample.args = {
+  component: Select,
+  value: 'uk',
+  dark: false,
+  fluid: false,
+  searchable: false,
+  disabled: false,
+  options: [{
+    label: 'The United Kingdom',
+    value: '🇬🇧',
+    parent: 'nato'
+  }, {
+    label: 'The United States of America',
+    value: '🇺🇸',
+    parent: 'nato'
+  }, {
+    label: 'Spain',
+    value: '🇪🇸',
+    parent: 'eu',
+    disabled: true
+  }, {
+    label: 'France',
+    parent: 'eu',
+    value: '🇫🇷'
+  }, {
+    label: 'Turkey',
+    parent: 'nato',
+    value: '🇹🇷',
+  }, {
+    label: 'Russia',
+    value: '🇷🇺'
+  }, {
+    label: 'Japan',
+    parent: 'nato',
+    value: '🇯🇵'
+  }, {
+    label: 'China',
+    value: '🇨🇳'
+  }, {
+    label: 'Brazil',
+    value: '🇧🇷'
+  }, {
+    label: 'Germany',
+    parent: 'eu',
+    value: '🇩🇪'
+  }],
+  parents: [{
+    label: "European Union",
+    value: 'eu',
+    disabled: true
+  }, {
+    label: 'NATO',
+    value: 'nato'
+  }],
+  ItemComponent: CustomSelectItem
 }
 
 export default {

@@ -1,4 +1,4 @@
-import {memo, useEffect, useMemo, useRef, useState} from "react";
+import {createElement, memo, useEffect, useMemo, useRef, useState} from "react";
 import {Option, OptionParent} from "../../../types";
 import button from "../../button/Button/Button";
 import {FloatingBox} from "../../containers";
@@ -6,6 +6,7 @@ import './select.scss';
 import {Icon} from "../../icons";
 import clsx from "clsx";
 import {TextInput} from "../TextInput";
+import SelectOption from "./SelectOption";
 
 interface SelectProps<T extends number | string | boolean = string> extends Omit<React.HTMLProps<HTMLSelectElement>, 'value' | 'onChange'> {
   value: T
@@ -26,7 +27,7 @@ interface SelectProps<T extends number | string | boolean = string> extends Omit
 
 const DEFAULT_KEY = '_default'
 
-const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent, disabled, fluid = false, classNames = {} }: SelectProps) => {
+const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, fluid = false, classNames = {} }: SelectProps) => {
   const [isSelectVisible, setIsSelectVisible] = useState(false)
   const [isSearchMode, setIsSearchMode] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
@@ -70,7 +71,7 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
   }, [options, parents, searchable, searchTerm, searchFunc])
 
   const selectedOption = useMemo(() => {
-    return options.find(option => option.value === value)
+    return options.find(option => option.value === value) || {}
   }, [value, options])
 
   const onSelectMenuClose = () => {
@@ -86,7 +87,7 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
   const onSelectClick = () => {
     setTimeout(() => {
       setIsSelectVisible(true)
-    }, 10)
+    }, 0)
 
     if (searchable) {
       setIsSearchMode(true)
@@ -117,14 +118,22 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
       data-testid='alt-test-select'
       className={clsx('alt-select', classNames.select, {
         'alt-select--fluid': fluid,
-        'alt-select--active': isSelectVisible
+        'alt-select--active': isSelectVisible,
+        'alt-select--disabled': disabled
       })}
     >
       <div
         className={clsx('alt-select__value', classNames.currentValue)}
         data-testid='alt-test-select-current-value'
       >
-        {selectedOption ? selectedOption.label : null}
+        {createElement(ItemComponent, {
+          label: selectedOption?.label,
+          value: selectedOption?.value,
+          selected: false,
+          disabled: false,
+          onSelect: () => null,
+          inSelectHeader: true
+        })}
       </div>
       <div className='alt-select__arrow'><Icon i='expand_more' /></div>
     </button> : <TextInput
@@ -142,6 +151,7 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
       onClose={onSelectMenuClose}
       minWidth={200}
       preventClose={(searchable && isSearchMode) ? preventSelectMenuClose : undefined}
+      data-testid='alt-test-select-search'
       useParentWidth
     >
       <div className={clsx('alt-select-menu', classNames.menu)} data-testid='alt-test-select-menu'>
@@ -150,21 +160,18 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
           const [groupInfo, ...options] = group
           const isSingle = groupedValueKeys.length === 1
 
-          return <div className='alt-select-group'>
+          return <div className='alt-select-group' key={groupValue}>
             {(!isSingle && options.length) ? <div className='alt-select-group__title'>{groupInfo.label}</div> : null}
             {options.map((option, optionIndex) => (
-              <button
-                key={optionIndex}
-                className={clsx('alt-select-option', classNames.option, {
-                  'alt-select-option--selected': option.value === value
-                })}
-                title={option.label}
-                disabled={option.disabled || groupInfo.disabled}
-                onClick={() => onSelectOption(option.value)}
-              >
-                <div className='alt-select-option__icon'><Icon i='check' /></div>
-                <div className='alt-select-option__label'>{option.label}</div>
-              </button>
+              createElement(ItemComponent, {
+                key: optionIndex,
+                label: option.label,
+                value: option.value,
+                selected: option.value === value,
+                disabled: option.disabled || groupInfo.disabled,
+                onSelect: onSelectOption,
+                inSelectHeader: true
+              })
             ))}
           </div>
         })}

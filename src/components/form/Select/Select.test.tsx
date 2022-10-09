@@ -31,13 +31,12 @@ describe('Form.Select', () => {
     await waitFor(() => fireEvent.click(select))
     rerender(<Select options={DATA} value={value} onChange={onChange} />)
 
-    let menu = screen.getByTestId('alt-test-select-menu')
+    let menu = await screen.findByTestId('alt-test-select-menu')
     expect(menu).toBeInTheDocument()
 
-    const spain = screen.getByText('Spain')
-    await waitFor(() => fireEvent.click(spain))
+    await waitFor(() => fireEvent.click(select))
     rerender(<Select options={DATA} value={value} onChange={onChange} />)
-    menu = screen.queryByTestId('alt-test-select-menu')
+    menu = await screen.findByTestId('alt-test-select-menu')
 
     expect(menu).toBeInTheDocument()
     expect(value).toBe('uk')
@@ -72,14 +71,26 @@ describe('Form.Select', () => {
     await waitFor(() => fireEvent.click(select))
     rerender(<Select options={DATA} value={value} onChange={onChange} searchable />)
 
-    const menu = screen.getByTestId('alt-test-select-menu')
-    const search = screen.getByTestId('alt-test-select-search')
+    let menu = await screen.findByTestId('alt-test-select-menu')
+    const search = await screen.findByRole('textbox')
     expect(menu).toBeInTheDocument()
     expect(search).toBeInTheDocument()
 
-    await waitFor(() => fireEvent.input(search, { value: 'the' }))
+    await waitFor(() => fireEvent.change(search, { target: { value: 'the' }}))
     rerender(<Select options={DATA} value={value} onChange={onChange} searchable />)
+    menu = await screen.findByTestId('alt-test-select-menu')
 
-    expect(menu.children).toHaveLength(2)
+    expect(menu.children[0].children).toHaveLength(2)
+  })
+
+  test('should disabled works correctly', async () => {
+    const onChange = jest.fn()
+
+    render(<Select options={DATA} value='uk' disabled onChange={onChange} />)
+    const select = screen.getByTestId('alt-test-select')
+
+    await waitFor(() => fireEvent.click(select))
+
+    expect(onChange).toBeCalledTimes(0)
   })
 })

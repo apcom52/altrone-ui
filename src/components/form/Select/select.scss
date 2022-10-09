@@ -14,6 +14,7 @@
 
   @include useFontSize(label, Large);
   @include useFocus();
+  @include useDisabledUserSelect();
 }
 
 .alt-select__value {
@@ -22,6 +23,15 @@
   text-overflow: ellipsis;
   overflow: hidden;
   flex: 1;
+
+  .alt-select-option {
+    pointer-events: none;
+    padding: 0;
+
+    .alt-select-option__icon {
+      display: none;
+    }
+  }
 }
 
 .alt-select__arrow {
@@ -76,22 +86,11 @@
     --background: var(--accent);
     --text: var(--textColorOnAccent)
   }
-
-  &:disabled {
-    --text: var(--secondaryTextColor);
-
-    pointer-events: none;
-    opacity: 0.5;
-
-    &:hover, &.alt-select-option--selected {
-      --background: var(--secondaryTextColor);
-      --text: var(--textColorOnAccent);
-    }
-  }
 }
 
 .alt-select-option__icon {
   width: 20px;
+  min-width: 20px;
   height: 20px;
   visibility: hidden;
   font-size: 20px;
@@ -111,6 +110,18 @@
   }
 }
 
+.alt-select-option--disabled {
+  --text: var(--secondaryTextColor);
+
+  pointer-events: none;
+  opacity: 0.5;
+
+  &:hover, &.alt-select-option--selected {
+    --background: var(--secondaryTextColor);
+    --text: var(--textColorOnAccent);
+  }
+}
+
 .alt-select--fluid {
   width: 100%;
 }
@@ -118,5 +129,14 @@
 .alt-select--active {
   .alt-select__arrow {
     transform: rotate(-180deg);
+  }
+}
+
+.alt-select--disabled {
+  pointer-events: none;
+  opacity: 0.5;
+
+  .alt-select__value {
+    color: var(--secondaryTextColor);
   }
 }
