@@ -1,12 +1,21 @@
 import {withAltrone} from "../../hocs";
 import {Direction, Size, Theme} from "../../types";
-import {PasswordInput, TextInput, NumberInput, Checkbox, CheckboxList, Select} from "./index";
+import {
+  PasswordInput,
+  TextInput,
+  NumberInput,
+  Checkbox,
+  CheckboxList,
+  Select,
+  Switcher,
+  InputIslandType
+} from "./index";
 import {Icon} from "../icons";
-import {InputIslandType} from "./TextInput/TextInput";
-import {useCallback, useEffect, useState} from "react";
 import {SelectOptionProps} from "./Select";
 import button from "../button/Button/Button";
 import clsx from "clsx";
+import {useCallback, useEffect, useState} from "react";
+import {Align} from "../../types/Align";
 
 const Template = ({component, dark, value = '', ...args}) => {
   const [_value, setValue] = useState(value)
@@ -256,7 +265,23 @@ CustomSelectExample.args = {
     label: 'NATO',
     value: 'nato'
   }],
-  ItemComponent: CustomSelectItem
+  ItemComponent: CustomSelectItem,
+}
+
+export const SwitcherExample = Template.bind({})
+SwitcherExample.args = {
+  component: Switcher,
+  children: 'Example',
+  checked: false,
+  danger: false,
+  disabled: false,
+  dark: false,
+}
+SwitcherExample.argTypes = {
+  align: {
+    control: 'select',
+    options: [Align.start, Align.end]
+  }
 }
 
 export default {
