@@ -213,7 +213,7 @@ SelectExample.args = {
 export const CustomSelectExample = Template.bind({})
 CustomSelectExample.args = {
   component: Select,
-  value: 'uk',
+  value: '🇫🇷',
   dark: false,
   fluid: false,
   searchable: false,
