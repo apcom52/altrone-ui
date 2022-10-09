@@ -26,15 +26,23 @@
   --accentFocus: rgba(3, 164, 244, 0.75);
   --accentHover: #9bd1ee;
   --accentBorderColor: #0288D1;
+  --accentHighlight: #B3E5FC;
+  --accentText: #03A9F4;
+
   --textColorOnAccent: #ffffff;
 
   --success: #4caf50;
   --successBorderColor: #388e3c;
+  --successText: #4CAE50;
   --textColorOnSuccess: #ffffff;
 
   --danger: #E53935;
   --dangerBorderColor: #C62828;
+  --dangerText: #F44336;
   --textColorOnDanger: #ffffff;
+
+  --disabledText: #9E9E9E;
+  --placeholderText: #BDBDBD;
 
   --transitionDuration: 0.2s;
 
