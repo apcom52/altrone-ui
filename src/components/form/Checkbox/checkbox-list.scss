@@ -1,0 +1,11 @@
+.alt-checkbox-list {
+  display: flex;
+  flex-direction: row;
+  row-gap: 8px;
+  column-gap: 16px;
+  flex-wrap: wrap;
+}
+
+.alt-checkbox-list--vertical {
+  flex-direction: column;
+}

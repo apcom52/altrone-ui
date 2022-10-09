@@ -1,15 +1,24 @@
 import {withAltrone} from "../../hocs";
-import {Size, Theme} from "../../types";
-import {PasswordInput, TextInput} from "./index";
+import {Direction, Size, Theme} from "../../types";
+import {
+  PasswordInput,
+  TextInput,
+  NumberInput,
+  Checkbox,
+  CheckboxList,
+  Select,
+  Switcher,
+  InputIslandType
+} from "./index";
 import {Icon} from "../icons";
-import {InputIslandType} from "./TextInput/TextInput";
-import {NumberInput} from "./NumberInput";
+import {SelectOptionProps} from "./Select";
+import button from "../button/Button/Button";
+import clsx from "clsx";
 import {useCallback, useEffect, useState} from "react";
+import {Align} from "../../types/Align";
 
 const Template = ({component, dark, value = '', ...args}) => {
   const [_value, setValue] = useState(value)
-
-  console.log('value', _value);
 
   useEffect(() => {
     setValue(value)
@@ -26,6 +35,19 @@ const Template = ({component, dark, value = '', ...args}) => {
     value: _value,
     onChange
   })
+}
+
+const CustomSelectItem = ({ label, value, onSelect, inSelectHeader, parent, selected, disabled, className}: SelectOptionProps) => {
+  const ComponentName = inSelectHeader ? 'div' : 'button'
+
+  return <ComponentName
+    className={clsx('alt-select-option', {
+      'alt-select-option--selected': selected
+    })}
+    onClick={() => onSelect(value)}
+  >
+    <div className='alt-select-option__label'>{value} {label}</div>
+  </ComponentName>
 }
 
 export const TextInputExample = Template.bind({})
@@ -103,6 +125,163 @@ NumberInputExample.args = {
   size: Size.medium,
   dark: false,
   showControls: true
+}
+
+export const CheckboxExample = Template.bind({})
+CheckboxExample.args = {
+  component: Checkbox,
+  value: 0,
+  checked: false,
+  disabled: false,
+  danger: false,
+  children: 'Example',
+  dark: false,
+}
+
+export const CheckboxListExample = Template.bind({})
+CheckboxListExample.args = {
+  component: CheckboxList,
+  children: [<Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>,
+    <Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>,
+    <Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>],
+  dark: false,
+}
+CheckboxListExample.argTypes = {
+  direction: {
+    control: 'select',
+    options: [Direction.horizontal, Direction.vertical]
+  }
+}
+
+export const SelectExample = Template.bind({})
+SelectExample.args = {
+  component: Select,
+  value: 'uk',
+  dark: false,
+  fluid: false,
+  searchable: false,
+  disabled: false,
+  options: [{
+    label: 'The United Kingdom',
+    value: 'uk',
+    parent: 'nato'
+  }, {
+    label: 'The United States of America',
+    value: 'use',
+    parent: 'nato'
+  }, {
+    label: 'Spain',
+    value: 'spain',
+    parent: 'eu',
+    disabled: true
+  }, {
+    label: 'France',
+    parent: 'eu',
+    value: 'france'
+  }, {
+    label: 'Turkey',
+    parent: 'nato',
+    value: 'turkey',
+  }, {
+    label: 'Russia',
+    value: 'russia'
+  }, {
+    label: 'Japan',
+    parent: 'nato',
+    value: 'japan'
+  }, {
+    label: 'China',
+    value: 'china'
+  }, {
+    label: 'Brazil',
+    value: 'brazil'
+  }, {
+    label: 'Germany',
+    parent: 'eu',
+    value: 'germany'
+  }],
+  parents: [{
+    label: "European Union",
+    value: 'eu',
+    disabled: true
+  }, {
+    label: 'NATO',
+    value: 'nato'
+  }]
+}
+
+export const CustomSelectExample = Template.bind({})
+CustomSelectExample.args = {
+  component: Select,
+  value: '🇫🇷',
+  dark: false,
+  fluid: false,
+  searchable: false,
+  disabled: false,
+  options: [{
+    label: 'The United Kingdom',
+    value: '🇬🇧',
+    parent: 'nato'
+  }, {
+    label: 'The United States of America',
+    value: '🇺🇸',
+    parent: 'nato'
+  }, {
+    label: 'Spain',
+    value: '🇪🇸',
+    parent: 'eu',
+    disabled: true
+  }, {
+    label: 'France',
+    parent: 'eu',
+    value: '🇫🇷'
+  }, {
+    label: 'Turkey',
+    parent: 'nato',
+    value: '🇹🇷',
+  }, {
+    label: 'Russia',
+    value: '🇷🇺'
+  }, {
+    label: 'Japan',
+    parent: 'nato',
+    value: '🇯🇵'
+  }, {
+    label: 'China',
+    value: '🇨🇳'
+  }, {
+    label: 'Brazil',
+    value: '🇧🇷'
+  }, {
+    label: 'Germany',
+    parent: 'eu',
+    value: '🇩🇪'
+  }],
+  parents: [{
+    label: "European Union",
+    value: 'eu',
+    disabled: true
+  }, {
+    label: 'NATO',
+    value: 'nato'
+  }],
+  ItemComponent: CustomSelectItem,
+}
+
+export const SwitcherExample = Template.bind({})
+SwitcherExample.args = {
+  component: Switcher,
+  children: 'Example',
+  checked: false,
+  danger: false,
+  disabled: false,
+  dark: false,
+}
+SwitcherExample.argTypes = {
+  align: {
+    control: 'select',
+    options: [Align.start, Align.end]
+  }
 }
 
 export default {
