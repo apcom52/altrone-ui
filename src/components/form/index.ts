@@ -2,4 +2,5 @@ export { TextInput, TextInputProps, InputIslandType, InputIslandAction, InputIsl
 export { PasswordInput } from './PasswordInput'
 export { NumberInput } from './NumberInput'
 export { Checkbox, CheckboxList } from './Checkbox'
+export { Select } from './Select'
 export { Switcher } from './Switcher'

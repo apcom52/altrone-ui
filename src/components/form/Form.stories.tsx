@@ -1,11 +1,20 @@
 import {withAltrone} from "../../hocs";
 import {Direction, Size, Theme} from "../../types";
-import {PasswordInput, TextInput, NumberInput, Checkbox, CheckboxList, Switcher} from "./index";
+import {
+  PasswordInput,
+  TextInput,
+  NumberInput,
+  Checkbox,
+  CheckboxList,
+  Select,
+  Switcher,
+  InputIslandType
+} from "./index";
 import {Icon} from "../icons";
-import {InputIslandType} from "./TextInput/TextInput";
+import {SelectOptionProps} from "./Select";
+import button from "../button/Button/Button";
+import clsx from "clsx";
 import {useCallback, useEffect, useState} from "react";
-import {ButtonStyle} from "../button/Button/Button";
-import {ButtonExample} from "../button/Button.stories";
 import {Align} from "../../types/Align";
 
 const Template = ({component, dark, value = '', ...args}) => {
@@ -26,6 +35,19 @@ const Template = ({component, dark, value = '', ...args}) => {
     value: _value,
     onChange
   })
+}
+
+const CustomSelectItem = ({ label, value, onSelect, inSelectHeader, parent, selected, disabled, className}: SelectOptionProps) => {
+  const ComponentName = inSelectHeader ? 'div' : 'button'
+
+  return <ComponentName
+    className={clsx('alt-select-option', {
+      'alt-select-option--selected': selected
+    })}
+    onClick={() => onSelect(value)}
+  >
+    <div className='alt-select-option__label'>{value} {label}</div>
+  </ComponentName>
 }
 
 export const TextInputExample = Template.bind({})
@@ -129,6 +151,121 @@ CheckboxListExample.argTypes = {
     control: 'select',
     options: [Direction.horizontal, Direction.vertical]
   }
+}
+
+export const SelectExample = Template.bind({})
+SelectExample.args = {
+  component: Select,
+  value: 'uk',
+  dark: false,
+  fluid: false,
+  searchable: false,
+  disabled: false,
+  options: [{
+    label: 'The United Kingdom',
+    value: 'uk',
+    parent: 'nato'
+  }, {
+    label: 'The United States of America',
+    value: 'use',
+    parent: 'nato'
+  }, {
+    label: 'Spain',
+    value: 'spain',
+    parent: 'eu',
+    disabled: true
+  }, {
+    label: 'France',
+    parent: 'eu',
+    value: 'france'
+  }, {
+    label: 'Turkey',
+    parent: 'nato',
+    value: 'turkey',
+  }, {
+    label: 'Russia',
+    value: 'russia'
+  }, {
+    label: 'Japan',
+    parent: 'nato',
+    value: 'japan'
+  }, {
+    label: 'China',
+    value: 'china'
+  }, {
+    label: 'Brazil',
+    value: 'brazil'
+  }, {
+    label: 'Germany',
+    parent: 'eu',
+    value: 'germany'
+  }],
+  parents: [{
+    label: "European Union",
+    value: 'eu',
+    disabled: true
+  }, {
+    label: 'NATO',
+    value: 'nato'
+  }]
+}
+
+export const CustomSelectExample = Template.bind({})
+CustomSelectExample.args = {
+  component: Select,
+  value: '🇫🇷',
+  dark: false,
+  fluid: false,
+  searchable: false,
+  disabled: false,
+  options: [{
+    label: 'The United Kingdom',
+    value: '🇬🇧',
+    parent: 'nato'
+  }, {
+    label: 'The United States of America',
+    value: '🇺🇸',
+    parent: 'nato'
+  }, {
+    label: 'Spain',
+    value: '🇪🇸',
+    parent: 'eu',
+    disabled: true
+  }, {
+    label: 'France',
+    parent: 'eu',
+    value: '🇫🇷'
+  }, {
+    label: 'Turkey',
+    parent: 'nato',
+    value: '🇹🇷',
+  }, {
+    label: 'Russia',
+    value: '🇷🇺'
+  }, {
+    label: 'Japan',
+    parent: 'nato',
+    value: '🇯🇵'
+  }, {
+    label: 'China',
+    value: '🇨🇳'
+  }, {
+    label: 'Brazil',
+    value: '🇧🇷'
+  }, {
+    label: 'Germany',
+    parent: 'eu',
+    value: '🇩🇪'
+  }],
+  parents: [{
+    label: "European Union",
+    value: 'eu',
+    disabled: true
+  }, {
+    label: 'NATO',
+    value: 'nato'
+  }],
+  ItemComponent: CustomSelectItem,
 }
 
 export const SwitcherExample = Template.bind({})

@@ -11,6 +11,17 @@ interface FloatingBoxProps extends WithoutDefaultOffsets {
   offset?: number
   placement?: Options['placement']
   popperProps?: Omit<Partial<Options>, "modifiers">
+  useParentWidth?: boolean
+  minWidth?: number
+  preventClose?: (e: MouseEvent) => boolean
+}
+
+const setPopperWidth = (state , minWidth) => {
+  const targetRefWidth = state.elements.reference.clientWidth
+
+  state.elements.popper.style.width = `${
+    minWidth ? (targetRefWidth < minWidth ? minWidth : targetRefWidth) : targetRefWidth
+  }px`;
 }
 
 const FloatingBox = ({
@@ -19,7 +30,10 @@ const FloatingBox = ({
   offset = 4,
   placement = 'auto',
   popperProps,
-  children
+  useParentWidth = false,
+  minWidth,
+  children,
+  preventClose
 }: FloatingBoxProps) => {
   const [floatingBoxElement, setFloatingBoxElement] = useState(null)
 
@@ -31,20 +45,45 @@ const FloatingBox = ({
     }
   }, [placement, offset])
 
-  const { styles, attributes } = usePopper(targetRef, floatingBoxElement, {
-    modifiers: [
-      {
-        name: 'offset',
-        options: {
-          offset: offsets
-        }
+  const modifiers = useMemo(() => {
+    const result = [{
+      name: 'offset',
+      options: {
+        offset: offsets
       }
-    ],
+    }]
+
+    if (useParentWidth) {
+      result.push({
+        name: "sameWidth",
+        enabled: true,
+        fn: ({ state }) => {
+          setPopperWidth(state, minWidth)
+        },
+        phase: "beforeWrite",
+        requires: ["computeStyles"],
+        effect: ({ state }) => {
+          setPopperWidth(state, minWidth)
+        }
+      })
+    }
+
+    return result
+  }, [offsets, useParentWidth, minWidth])
+
+  const { styles, attributes } = usePopper(targetRef, floatingBoxElement, {
+    modifiers,
     placement,
     ...popperProps
   })
 
-  useOutsideClick({ current: floatingBoxElement }, () => {
+  useOutsideClick({ current: floatingBoxElement }, (e) => {
+    if (preventClose) {
+      if (preventClose(e)) {
+        return
+      }
+    }
+    
     setTimeout(() => {
       onClose()
     }, 1)

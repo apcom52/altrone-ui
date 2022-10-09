@@ -1,4 +1,4 @@
-import {memo, useEffect, useRef, useState} from "react";
+import {forwardRef, memo, useEffect, useRef, useState} from "react";
 import {Size, WithAltroneOffsets, WithoutDefaultOffsets} from "../../../types";
 import './text-input.scss';
 import clsx from "clsx";
@@ -44,7 +44,7 @@ export interface TextInputProps extends Omit<WithoutDefaultOffsets<React.HTMLPro
 const DEFAULT_HORIZONTAL_PADDING = 12
 const DEFAULT_ISLAND_OFFSET = 8
 
-const TextInput = ({
+const TextInput = forwardRef<HTMLInputElement>(({
   onChange,
   className,
   classNames = {},
@@ -62,7 +62,7 @@ const TextInput = ({
   Component,
   size = Size.medium,
   ...props
-}: TextInputProps) => {
+}: TextInputProps, ref) => {
   const _leftIsland = useInputIsland(leftIsland, leftIcon, prefix, disabled)
   const _rightIsland = useInputIsland(rightIsland, rightIcon, suffix, disabled)
 
@@ -113,6 +113,7 @@ const TextInput = ({
       onChange={(e) => onChange(e.target.value)}
       disabled={disabled}
       required={required}
+      ref={ref}
       {...props}
     />}
     { _leftIsland && <div className='alt-text-input__left-island' ref={leftIslandRef}>{_leftIsland}</div> }
@@ -121,6 +122,6 @@ const TextInput = ({
     {hintText && <div className='alt-text-input__hint-text'>{hintText}</div>}
     {required && <div className='alt-text-input__required-mark'>*</div>}
   </div>
-}
+})
 
 export default memo(TextInput)
