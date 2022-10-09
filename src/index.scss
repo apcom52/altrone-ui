@@ -18,23 +18,31 @@
   --textColor: #202124;
   --secondaryTextColor: #6b8a99;
 
-  --dividerColor: #ECEFF1;
-  --borderColor: #b0bec5;
+  --dividerColor: #EEEEEE;
+  --borderColor: #ECEFF1;
   --gap: 4px;
 
   --accent: #03A9F4;
   --accentFocus: rgba(3, 164, 244, 0.75);
   --accentHover: #9bd1ee;
   --accentBorderColor: #0288D1;
+  --accentHighlight: rgba(3, 164, 244, 0.25);
+  --accentText: #03A9F4;
+
   --textColorOnAccent: #ffffff;
 
   --success: #4caf50;
   --successBorderColor: #388e3c;
+  --successText: #4CAE50;
   --textColorOnSuccess: #ffffff;
 
   --danger: #E53935;
   --dangerBorderColor: #C62828;
+  --dangerText: #F44336;
   --textColorOnDanger: #ffffff;
+
+  --disabledText: #9E9E9E;
+  --placeholderText: #BDBDBD;
 
   --transitionDuration: 0.2s;
 
@@ -135,10 +143,12 @@
   --surfaceTrasparentHover: rgba(107, 138, 153, 0.4);
   --surfaceGlass: rgba(33, 33, 33, 0.8);
 
-  --textColor: #ffffff;
+  --textColor: #FAFAFA;
 
-  --borderColor: #455A64;
+  --borderColor: #37474F;
+  --dividerColor: #455A64;
 
   --accent: #0288d1;
   --accentBorderColor: #01579b;
+  --accentHighlight: rgba(1, 87, 155, 0.5);
 }
