@@ -29,5 +29,64 @@
 .alt-calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  grid-row-gap: 8px;
+  grid-column-gap: 16px;
+  padding: 16px;
   text-align: center;
+}
+
+.alt-calendar__weekday {
+  @include useFontSize(label, Large);
+  margin-bottom: 8px;
+}
+
+.alt-calendar__day {
+  --background: transparent;
+  --text: var(--textColor);
+
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: var(--background);
+  color: var(--text);
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transitionDuration) ease;
+
+  @include useFontSize(body, Large);
+  @include useFocus();
+
+  &:hover {
+    --background: var(--accentHighlight);
+  }
+}
+
+.alt-calendar__day--another-month {
+  --text: var(--secondaryTextColor);
+  opacity: 0.5;
+
+  &:hover {
+    background-color: var(--surfaceTrasparentHover);
+  }
+}
+
+.alt-calendar__day--today {
+
+}
+
+.alt-calendar__day--selected {
+  --background: var(--accent);
+  --text: var(--textColorOnAccent);
+  box-shadow: 0 2px 15px 0 rgba(black, 0.15);
+
+  &:hover {
+    --background: var(--accent);
+  }
+}
+
+.alt-calendar__day--today:not(.alt-calendar__day--selected) {
+  --text: var(--accent);
 }
