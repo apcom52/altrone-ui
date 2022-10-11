@@ -1,0 +1,33 @@
+@import '../../../_mixins';
+
+.alt-date-picker {
+  display: flex;
+  align-items: center;
+  padding: 5px 6px 5px 12px;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 0 0 1px var(--borderColor);
+  background-color: var(--surface);
+  cursor: pointer;
+  transition: box-shadow var(--transitionDuration) ease;
+
+  @include useFocus();
+}
+
+.alt-date-picker__value {
+  @include useFontSize(label, Large);
+  color: var(--textColor);
+  text-align: left;
+}
+
+.alt-date-picker__icon {
+  margin-left: 16px;
+  font-size: 24px;
+  color: var(--secondaryTextColor);
+}
+
+.alt-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+}

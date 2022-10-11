@@ -8,7 +8,7 @@ import {
   CheckboxList,
   Select,
   Switcher,
-  InputIslandType
+  InputIslandType, DatePicker
 } from "./index";
 import {Icon} from "../icons";
 import {SelectOptionProps} from "./Select";
@@ -17,7 +17,7 @@ import clsx from "clsx";
 import {useCallback, useEffect, useState} from "react";
 import {Align} from "../../types/Align";
 
-const Template = ({component, dark, value = '', ...args}) => {
+const Template = ({component, dark, value = '', locale, ...args}) => {
   const [_value, setValue] = useState(value)
 
   useEffect(() => {
@@ -29,7 +29,8 @@ const Template = ({component, dark, value = '', ...args}) => {
   }, [])
 
   return withAltrone(component, {
-    theme: dark ? Theme.dark : Theme.light
+    theme: dark ? Theme.dark : Theme.light,
+    locale
   })({
     ...args,
     value: _value,
@@ -282,6 +283,15 @@ SwitcherExample.argTypes = {
     control: 'select',
     options: [Align.start, Align.end]
   }
+}
+
+export const DatePickerExample = Template.bind({})
+DatePickerExample.args = {
+  value: new Date(),
+  component: DatePicker,
+  locale: 'en-US',
+  disabled: false,
+  dark: false,
 }
 
 export default {
