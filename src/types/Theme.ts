@@ -7,4 +7,5 @@ export interface ThemeConfig {
   theme: Theme
   accent: string
   offset: number
+  locale: string
 }
