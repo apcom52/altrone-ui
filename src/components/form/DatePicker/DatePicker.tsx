@@ -6,6 +6,7 @@ import './date-picker.scss'
 import {FloatingBox} from "../../containers";
 import {Calendar} from "./index";
 import {Button} from "../../button";
+import clsx from "clsx";
 
 interface DatePickerProps {
   value: Date
@@ -25,8 +26,8 @@ const DatePicker = ({ value, onChange }: DatePickerProps) => {
   })
 
   const currentMonthFormat = new Intl.DateTimeFormat(locale, {
-    day: 'numeric',
-    month: 'long'
+    month: 'long',
+    year: "numeric"
   })
 
   return <>
@@ -35,16 +36,15 @@ const DatePicker = ({ value, onChange }: DatePickerProps) => {
       <div className='alt-date-picker__icon'><Icon i='calendar_month' /></div>
     </button>
     {isDatePickerVisible && <FloatingBox targetRef={inputRef.current} placement='bottom' onClose={() => setIsDatePickerVisible(false)}>
-      <div>
-        <button>{currentMonthFormat.format(value)}</button>
-        <button>{value.getFullYear()}</button>
-        <div>
-          <button><Icon i='arrow_back_ios' /></button>
-          <button><Icon i='arrow_forward_ios' /></button>
+      <div className='alt-date-picker__header'>
+        <button className={clsx('alt-date-picker__currentMonth')}>{currentMonthFormat.format(value)}</button>
+        <div className='alt-date-picker__navigation'>
+          <button className='alt-date-picker__navigation-button'><Icon i='arrow_back_ios' /></button>
+          <button className='alt-date-picker__navigation-button'><Icon i='arrow_forward_ios' /></button>
         </div>
       </div>
       <Calendar date={value} onChange={onChange} />
-      <div>
+      <div className='alt-date-picker__footer'>
         <Button>Today</Button>
         <Button style={ButtonStyle.primary}>Apply</Button>
       </div>

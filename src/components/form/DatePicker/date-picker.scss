@@ -26,6 +26,66 @@
   color: var(--secondaryTextColor);
 }
 
+.alt-date-picker__header {
+  display: flex;
+  align-items: center;
+  padding: 12px 12px 0;
+}
+
+.alt-date-picker__currentMonth {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  color: var(--textColor);
+  border-radius: 12px;
+  padding: 6px 12px;
+  margin-left: -6px;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+  white-space: nowrap;
+
+  @include useFontSize(headline);
+  font-weight: 600;
+
+  @include useInteraction {
+    background-color: var(--accentHighlight);
+  }
+}
+
+.alt-date-picker__navigation {
+  margin-left: auto;
+}
+
+.alt-date-picker__navigation-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color var(--transitionDuration) ease;
+  padding: 4px 8px;
+
+  @include useInteraction {
+    color: var(--accent);
+  }
+}
+
+.alt-date-picker__currentMonth--mode-month {
+
+}
+
+.alt-date-picker__footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 20px 20px;
+}
+
 .alt-calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -38,6 +98,14 @@
 .alt-calendar__weekday {
   @include useFontSize(label, Large);
   margin-bottom: 8px;
+  overflow: hidden;
+  max-width: 36px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.alt-calendar__weekday--weekend {
+  color: var(--danger);
 }
 
 .alt-calendar__day {

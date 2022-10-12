@@ -81,7 +81,9 @@ const Calendar = ({ date, onChange }: CalendarProps) => {
 
   return <div className='alt-calendar'>
     {weekdayDateMap.map((day, dayIndex) => (
-      <span className='alt-calendar__weekday' key={dayIndex}>{weekdayDateFormat.format(day)}</span>
+      <span className={clsx('alt-calendar__weekday', {
+        'alt-calendar__weekday--weekend': dayIndex > 4
+      })} key={dayIndex}>{weekdayDateFormat.format(day)}</span>
     ))}
     {calendar}
   </div>
