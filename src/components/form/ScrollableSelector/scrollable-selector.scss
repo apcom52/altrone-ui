@@ -38,6 +38,12 @@
   background-color: transparent;
   opacity: 0.75;
   @include useFontSize(label, Large);
+
+  &:disabled {
+    color: var(--disabledText);
+    opacity: 0.5;
+    cursor: default;
+  }
 }
 
 .alt-scrollable-selector__option--selected {

@@ -28,7 +28,7 @@ const ScrollableSelector = ({ value, options = [], width = '100%', disabled = fa
   return <div ref={selectorRef} className={clsx('alt-scrollable-selector', {
     'alt-scrollable-selector--align-start': align === Align.start,
     'alt-scrollable-selector--align-end': align === Align.end,
-  })} style={{ width }}>
+  })} style={{ width }} data-testid='alt-test-scrollable-selector'>
     {options.map((option, optionIndex) => (
       <button
         key={optionIndex}
@@ -36,6 +36,7 @@ const ScrollableSelector = ({ value, options = [], width = '100%', disabled = fa
           'alt-scrollable-selector__option--selected': value === option.value
         })}
         onClick={() => onChange(option.value)}
+        disabled={disabled || option.disabled}
       >
         {option.label}
       </button>
