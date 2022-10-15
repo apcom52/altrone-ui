@@ -36,7 +36,7 @@ const Template = ({component, dark, value = '', locale, ...args}) => {
   })({
     ...args,
     value: _value,
-    onChange
+    onChange,
   })
 }
 

@@ -4,7 +4,8 @@ import button from "../../button/Button/Button";
 import clsx from "clsx";
 
 export interface CalendarProps {
-  date: Date
+  currentMonth: Date
+  selectedDate: Date
   onChange: (value: Date) => void
 }
 
@@ -12,14 +13,13 @@ const makeDateString = date => {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() + 1}`
 }
 
-const Calendar = ({ date, onChange }: CalendarProps) => {
+const Calendar = ({ currentMonth, selectedDate, onChange }: CalendarProps) => {
   const { locale } = useThemeContext()
 
   const today = new Date()
   const todayString = makeDateString(today)
 
-  const [calendarDate, setCalendarDate] = useState(date || today)
-  const valueString = makeDateString(calendarDate)
+  const valueString = makeDateString(selectedDate)
 
   const weekdayDateMap = [
     new Date('2020-01-06T00:00:00.000Z'),
@@ -38,46 +38,55 @@ const Calendar = ({ date, onChange }: CalendarProps) => {
   const calendar = useMemo(() => {
     const weeks = []
 
-    const prevMonthLastDay = new Date(calendarDate.getFullYear(), calendarDate.getMonth(), 0)
-    const firstDay = new Date(calendarDate.getFullYear(), calendarDate.getMonth(), 1)
-    const lastDay = new Date(calendarDate.getFullYear(), calendarDate.getMonth() + 1, 0)
+    const prevMonthLastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 0)
+    const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)
+    const lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0)
 
-    const renderDay = (dayNumber: number, dayString: string, isAnotherMonth: boolean = false) => {
-      return <button className={clsx('alt-calendar__day', {
-        'alt-calendar__day--another-month': isAnotherMonth,
-        'alt-calendar__day--selected': valueString === dayString,
-        'alt-calendar__day--today': todayString === dayString
-      })}>{dayNumber}</button>
+    console.log('prevMonthLastDay', prevMonthLastDay, '->', currentMonth, firstDay, lastDay);
+
+    const renderDay = (date: Date, dayNumber: number, dayString: string, isAnotherMonth: boolean = false) => {
+      return <button
+        className={clsx('alt-calendar__day', {
+          'alt-calendar__day--another-month': isAnotherMonth,
+          'alt-calendar__day--selected': valueString === dayString,
+          'alt-calendar__day--today': todayString === dayString
+        })}
+        onClick={() => onChange(date)}
+      >{dayNumber}</button>
     }
 
     for (let day = firstDay.getDate(); day <= lastDay.getDate(); day++) {
-      const dayString = makeDateString(new Date(calendarDate.getFullYear(), calendarDate.getMonth(), day))
+      const currentDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
+      const dayOfWeek = firstDay.getDay() === 0 ? 7 : firstDay.getDay()
+      const dayString = makeDateString(currentDate)
+
+      console.log({ day, weekDay: currentDate.getDay() });
 
       if (day === 1) {
-        for (let prevMonth = 0; prevMonth < firstDay.getDay() - 1; prevMonth++) {
-          const dayNumber = prevMonthLastDay.getDate() - firstDay.getDay() + 2 + prevMonth
+        for (let prevMonth = dayOfWeek - 1; prevMonth > 0; prevMonth--) {
+          const dayNumber = prevMonthLastDay.getDate() - prevMonth
 
           weeks.push(
-            renderDay(dayNumber, makeDateString(new Date(calendarDate.getFullYear(), calendarDate.getMonth() - 1, dayNumber)), true)
+            renderDay(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, dayNumber), dayNumber, makeDateString(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, dayNumber)), true)
           )
         }
 
-        weeks.push(renderDay(day, dayString))
+        weeks.push(renderDay(currentDate, day, dayString))
       } else if (day === lastDay.getDate()) {
-        weeks.push(renderDay(day, dayString))
+        weeks.push(renderDay(currentDate, day, dayString))
 
         for (let nextMonth = 1; nextMonth <= 7 - lastDay.getDay(); nextMonth++) {
           weeks.push(
-            renderDay(nextMonth, makeDateString(new Date(calendarDate.getFullYear(), calendarDate.getMonth() + 1, nextMonth)), true)
+            renderDay(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, nextMonth), nextMonth, makeDateString(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, nextMonth)), true)
           )
         }
       } else {
-        weeks.push(renderDay(day, dayString))
+        weeks.push(renderDay(currentDate, day, dayString))
       }
     }
 
     return weeks
-  }, [calendarDate, onChange, todayString, valueString])
+  }, [currentMonth, onChange, todayString, valueString])
 
   return <div className='alt-calendar'>
     {weekdayDateMap.map((day, dayIndex) => (
