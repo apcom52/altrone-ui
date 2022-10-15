@@ -39,8 +39,8 @@
   background-color: transparent;
   border: none;
   color: var(--textColor);
-  border-radius: 12px;
-  padding: 6px 12px;
+  border-radius: 8px;
+  padding: 6px 16px;
   margin-left: -6px;
   cursor: pointer;
   overflow: hidden;
@@ -54,10 +54,15 @@
   @include useInteraction {
     background-color: var(--accentHighlight);
   }
+
+  &:disabled {
+    pointer-events: none;
+  }
 }
 
 .alt-date-picker__navigation {
   margin-left: auto;
+  margin-right: -4px;
 }
 
 .alt-date-picker__navigation-button {
@@ -70,6 +75,7 @@
   cursor: pointer;
   transition: color var(--transitionDuration) ease;
   padding: 4px 8px;
+  color: var(--textColor);
 
   @include useInteraction {
     color: var(--accent);
@@ -83,7 +89,11 @@
 .alt-date-picker__footer {
   display: flex;
   justify-content: flex-end;
-  padding: 16px 20px 16px;
+  padding: 16px;
+}
+
+.alt-date-picker__apply {
+  margin-left: 16px;
 }
 
 .alt-calendar {
@@ -157,4 +167,22 @@
 
 .alt-calendar__day--today:not(.alt-calendar__day--selected) {
   --text: var(--accent);
+}
+
+.alt-year-picker {
+  display: flex;
+  justify-content: center;
+}
+
+.alt-month-picker {
+  position: relative;
+  display: grid;
+  grid-template-columns: 160px 1px 80px;
+}
+
+.alt-month-picker__separator {
+  width: 1px;
+  margin-top: 25px;
+  height: 200px;
+  background-color: var(--dividerColor);
 }

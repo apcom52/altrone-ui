@@ -4,10 +4,11 @@ import {Icon} from "../../icons";
 import {useThemeContext} from "../../../contexts";
 import './date-picker.scss'
 import {FloatingBox} from "../../containers";
-import {Calendar} from "./index";
+import {Calendar, YearPicker} from "./index";
 import {Button} from "../../button";
 import clsx from "clsx";
 import {TextInputProps} from "../TextInput";
+import MonthPicker from "./MonthPicker";
 
 export enum Picker {
   day = 'day',
@@ -19,19 +20,27 @@ interface DatePickerProps extends Pick<TextInputProps, 'errorText' | 'hintText' 
   value: Date
   onChange: (value: Date) => void
   picker?: Picker
+  minYear?: number
+  maxYear?: number
 }
 
-const DatePicker = ({ value, onChange }: DatePickerProps) => {
+const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxYear = 2050 }: DatePickerProps) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(value ? new Date(value.getFullYear(), value.getMonth(), 1) :  new Date())
+  const [currentView, setCurrentView] = useState<Picker>(picker)
   let { locale } = useThemeContext()
 
   const inputRef = useRef<HTMLButtonElement>(null)
 
-  const valueDateFormat = new Intl.DateTimeFormat(locale, {
-    day: "numeric",
-    month: "long",
-    year: "numeric"
+  const valueDateFormat = new Intl.DateTimeFormat(locale, picker === Picker.year ? {
+    year: 'numeric'
+  } : picker === Picker.month ? {
+    year: 'numeric',
+    month: 'long'
+  }: {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
   })
 
   const currentMonthFormat = new Intl.DateTimeFormat(locale, {
@@ -47,11 +56,25 @@ const DatePicker = ({ value, onChange }: DatePickerProps) => {
     setCurrentMonth(old => new Date(old.getFullYear(), old.getMonth() - 1, old.getDate()))
   }
 
+  const onTodayClick = () => {
+    const today = new Date()
+    setCurrentMonth(new Date(today.getFullYear(), today.getMonth(), 1))
+    onChange(today)
+  }
+
+  const onApplyClick = () => {
+    setIsDatePickerVisible(false)
+  }
+
   useEffect(() => {
     if (value) {
       setCurrentMonth(new Date(value.getFullYear(), value.getMonth(), 1))
     }
   }, [value])
+
+  useEffect(() => {
+    setCurrentView(picker)
+  }, [picker])
 
   return <>
     <button className='alt-date-picker' ref={inputRef} onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}>
@@ -60,16 +83,45 @@ const DatePicker = ({ value, onChange }: DatePickerProps) => {
     </button>
     {isDatePickerVisible && <FloatingBox targetRef={inputRef.current} placement='bottom' onClose={() => setIsDatePickerVisible(false)}>
       <div className='alt-date-picker__header'>
-        <button className={clsx('alt-date-picker__currentMonth')}>{currentMonthFormat.format(currentMonth)}</button>
-        <div className='alt-date-picker__navigation'>
+        <button
+          className={clsx('alt-date-picker__currentMonth')}
+          disabled={currentView !== Picker.day}
+        >
+          {currentView === Picker.year
+            ? 'Choose an year'
+            : currentView === Picker.month
+              ? 'Choose a month'
+              : currentMonthFormat.format(currentMonth)
+          }
+        </button>
+        {currentView === Picker.day && <div className='alt-date-picker__navigation'>
           <button className='alt-date-picker__navigation-button' onClick={onPrevMonthClick}><Icon i='arrow_back_ios' /></button>
           <button className='alt-date-picker__navigation-button' onClick={onNextMonthClick}><Icon i='arrow_forward_ios' /></button>
-        </div>
+        </div>}
       </div>
-      <Calendar currentMonth={currentMonth} selectedDate={value} onChange={onChange} />
+      { currentView === Picker.day && <Calendar
+        currentMonth={currentMonth}
+        selectedDate={value as Date}
+        onChange={onChange}
+      /> }
+      { currentView === Picker.month && <MonthPicker
+        currentMonth={currentMonth}
+        selectedDate={value as Date}
+        onChange={onChange}
+        minYear={minYear}
+        maxYear={maxYear}
+      /> }
+      { currentView === Picker.year && <YearPicker
+        currentMonth={currentMonth}
+        selectedDate={value}
+        onChange={onChange}
+        minYear={minYear}
+        maxYear={maxYear}
+      /> }
       <div className='alt-date-picker__footer'>
-        <Button>Today</Button>
-        <Button style={ButtonStyle.primary}>Apply</Button>
+        { currentView === Picker.day && <Button onClick={onTodayClick}>Today</Button>}
+        { currentView === Picker.month && <Button onClick={onTodayClick}>Current month</Button>}
+        <Button style={ButtonStyle.primary} className='alt-date-picker__apply' onClick={onApplyClick}>Apply</Button>
       </div>
     </FloatingBox>}
   </>

@@ -18,6 +18,7 @@ import button from "../button/Button/Button";
 import clsx from "clsx";
 import {useCallback, useEffect, useState} from "react";
 import {Align} from "../../types/Align";
+import {Picker} from "./DatePicker/DatePicker";
 
 const Template = ({component, dark, value = '', locale, ...args}) => {
   const [_value, setValue] = useState(value)
@@ -295,6 +296,13 @@ DatePickerExample.args = {
   disabled: false,
   dark: false,
 }
+DatePickerExample.argTypes = {
+  picker: {
+    control: 'select',
+    value: Picker.day,
+    options: [Picker.day, Picker.month, Picker.year]
+  }
+}
 
 export const ScrollableSelectorExample = Template.bind({})
 ScrollableSelectorExample.args = {
@@ -322,7 +330,7 @@ ScrollableSelectorExample.argTypes = {
   align: {
     control: 'select',
     options: [Align.start, Align.center, Align.end]
-  }
+  },
 }
 
 export default {
