@@ -20,6 +20,7 @@
 
   --dividerColor: #EEEEEE;
   --borderColor: #ECEFF1;
+  --shadow: rgba(0, 0, 0, 0.15);
   --gap: 4px;
 
   --accent: #03A9F4;
@@ -138,10 +139,12 @@
 
 .altrone--dark {
   --background: #010b18;
-  --surface: #212121;
+  --surface: #121212;
   --surfaceTrasparent: rgba(107, 138, 153, 0.3);
   --surfaceTrasparentHover: rgba(107, 138, 153, 0.4);
   --surfaceGlass: rgba(33, 33, 33, 0.8);
+
+  --shadow: rgba(255, 255, 255, 0.15);
 
   --textColor: #FAFAFA;
 

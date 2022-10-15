@@ -1,0 +1,95 @@
+@import '../../../_mixins';
+
+.alt-scrollable-selector {
+  --optionHeight: 34px;
+
+  display: flex;
+  flex-direction: column;
+  padding-top: calc(var(--optionHeight) * 3);
+  max-height: calc(var(--optionHeight) * 7 + var(--optionHeight) / 2);
+  overflow-y: auto;
+  padding-bottom: calc(var(--optionHeight) * 3.5);
+  padding-left: 8px;
+  width: 100px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @include useDisabledUserSelect();
+}
+
+.alt-scrollable-selector__option {
+  position: relative;
+  height: var(--optionHeight);
+  min-height: var(--optionHeight);
+  max-width: 80%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: none;
+  margin: 0;
+  color: var(--secondaryTextColor);
+  transition: padding var(--transitionDuration) ease, font-size var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
+  border-radius: 12px;
+  cursor: pointer;
+  background-color: transparent;
+  opacity: 0.75;
+  @include useFontSize(label, Large);
+
+  &:disabled {
+    color: var(--disabledText);
+    opacity: 0.5;
+    cursor: default;
+  }
+}
+
+.alt-scrollable-selector__option--selected {
+  background-color: var(--surface);
+  color: var(--textColor);
+  font-weight: 600;
+  font-size: 16px;
+  box-shadow: 0 5px 15px 0 var(--shadow);
+  opacity: 1;
+}
+
+.alt-scrollable-selector__footer {
+
+}
+
+.alt-scrollable-selector--align-start {
+  padding-left: 0;
+  padding-right: 8px;
+
+  .alt-scrollable-selector__option {
+    max-width: 100%;
+    width: auto;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    text-align: left;
+    padding-left: 16px;
+  }
+
+  .alt-scrollable-selector__option--selected {
+    padding-left: 20px;
+  }
+}
+
+.alt-scrollable-selector--align-end {
+  padding-right: 0;
+
+  .alt-scrollable-selector__option {
+    max-width: 100%;
+    width: 100%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    text-align: right;
+    padding-right: 16px;
+  }
+
+  .alt-scrollable-selector__option--selected {
+    padding-right: 20px;
+  }
+}
