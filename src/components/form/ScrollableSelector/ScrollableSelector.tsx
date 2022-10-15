@@ -1,19 +1,19 @@
-import {memo, useEffect, useRef} from "react";
+import {FC, memo, useEffect, useRef} from "react";
 import {Option} from "../../../types";
 import {Align} from "../../../types/Align";
 import clsx from "clsx";
 import './scrollable-selector.scss';
 
-interface ScrollableSelectorProps {
-  value: string | number
-  options: Option[]
-  onChange: (value: string | number) => void
+interface ScrollableSelectorProps<T> {
+  value: T
+  options: Option<T>[]
+  onChange: (value: T) => void
   disabled?: boolean
   width?: number | string
   align?: Align
 }
 
-const ScrollableSelector = ({ value, options = [], width = '100%', disabled = false, align = Align.center, onChange }: ScrollableSelectorProps) => {
+const ScrollableSelector = <T extends any = string>({ value, options = [], width = '100%', disabled = false, align = Align.center, onChange }: ScrollableSelectorProps<T>) => {
   const selectorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
