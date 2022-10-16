@@ -27,23 +27,30 @@
   --accentFocus: rgba(3, 164, 244, 0.75);
   --accentHover: #9bd1ee;
   --accentBorderColor: #0288D1;
-  --accentHighlight: rgba(3, 164, 244, 0.25);
   --accentText: #03A9F4;
+
+  --highlight: rgba(3, 164, 244, 0.25);
+  --textOnHighlight: #202124;
 
   --textColorOnAccent: #ffffff;
 
   --success: #4caf50;
   --successBorderColor: #388e3c;
   --successText: #4CAE50;
+  --successHighlight: rgba(76, 175, 80, 0.25);
+  --textOnSuccessHighlight: #202124;
   --textColorOnSuccess: #ffffff;
 
   --danger: #E53935;
   --dangerBorderColor: #C62828;
   --dangerText: #F44336;
+  --dangerHighlight: rgba(229, 57, 53, 0.25);
+  --textOnDangerHighlight: #202124;
   --textColorOnDanger: #ffffff;
 
   --disabledText: #9E9E9E;
   --placeholderText: #BDBDBD;
+  --importantText: #E53935;
 
   --transitionDuration: 0.2s;
 
@@ -153,5 +160,10 @@
 
   --accent: #0288d1;
   --accentBorderColor: #01579b;
-  --accentHighlight: rgba(1, 87, 155, 0.5);
+
+  --textOnHighlight: #FAFAFA;
+
+  --textOnSuccessHighlight: #FAFAFA;
+
+  --textOnDangerHighlight: #FAFAFA;
 }

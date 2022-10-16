@@ -54,12 +54,14 @@
   font-weight: 500;
 
   @include useInteraction {
-    background-color: var(--accentHighlight);
+    background-color: var(--highlight);
+    color: var(--textOnHighlight);
   }
 }
 
 .alt-date-picker__currentMonth--selected {
-  background-color: var(--accentHighlight);
+  background-color: var(--highlight);
+  color: var(--textOnHighlight);
 }
 
 .alt-date-picker__title {
@@ -124,7 +126,7 @@
 }
 
 .alt-calendar__weekday--weekend {
-  color: var(--danger);
+  color: var(--importantText);
 }
 
 .alt-calendar__day {
@@ -147,7 +149,7 @@
   @include useFocus();
 
   &:hover {
-    --background: var(--accentHighlight);
+    --background: var(--highlight);
   }
 }
 
