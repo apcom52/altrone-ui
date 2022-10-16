@@ -1,0 +1,23 @@
+@import '../../../_mixins';
+
+.alt-chips {
+  display: flex;
+  align-items: center;
+  row-gap: 4px;
+  column-gap: 6px;
+  flex-wrap: wrap;
+}
+
+.alt-chips--direction-vertical {
+
+}
+
+.alt-chip {
+  margin: 0;
+  padding: 3px 8px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+
+  @include useFontSize(label, Large);
+}
