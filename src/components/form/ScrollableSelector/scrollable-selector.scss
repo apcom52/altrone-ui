@@ -5,6 +5,7 @@
 
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding-top: calc(var(--optionHeight) * 3);
   max-height: calc(var(--optionHeight) * 7 + var(--optionHeight) / 2);
   overflow-y: auto;
@@ -26,13 +27,14 @@
   height: var(--optionHeight);
   min-height: var(--optionHeight);
   max-width: 80%;
+  width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   border: none;
   margin: 0;
   color: var(--secondaryTextColor);
-  transition: padding var(--transitionDuration) ease, font-size var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
+  transition: padding var(--transitionDuration) ease, font-size var(--transitionDuration) ease;
   border-radius: 12px;
   cursor: pointer;
   background-color: transparent;
@@ -60,12 +62,13 @@
 }
 
 .alt-scrollable-selector--align-start {
+  align-items: flex-start;
   padding-left: 0;
   padding-right: 8px;
 
   .alt-scrollable-selector__option {
     max-width: 100%;
-    width: auto;
+    width: 100%;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     text-align: left;
@@ -79,6 +82,7 @@
 
 .alt-scrollable-selector--align-end {
   padding-right: 0;
+  align-items: flex-end;
 
   .alt-scrollable-selector__option {
     max-width: 100%;
