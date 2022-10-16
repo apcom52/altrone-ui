@@ -8,7 +8,9 @@ import {
   CheckboxList,
   Select,
   Switcher,
-  InputIslandType
+  InputIslandType,
+  DatePicker,
+  ScrollableSelector
 } from "./index";
 import {Icon} from "../icons";
 import {SelectOptionProps} from "./Select";
@@ -16,8 +18,9 @@ import button from "../button/Button/Button";
 import clsx from "clsx";
 import {useCallback, useEffect, useState} from "react";
 import {Align} from "../../types/Align";
+import {Picker} from "./DatePicker/DatePicker";
 
-const Template = ({component, dark, value = '', ...args}) => {
+const Template = ({component, dark, value = '', locale, ...args}) => {
   const [_value, setValue] = useState(value)
 
   useEffect(() => {
@@ -29,11 +32,12 @@ const Template = ({component, dark, value = '', ...args}) => {
   }, [])
 
   return withAltrone(component, {
-    theme: dark ? Theme.dark : Theme.light
+    theme: dark ? Theme.dark : Theme.light,
+    locale
   })({
     ...args,
     value: _value,
-    onChange
+    onChange,
   })
 }
 
@@ -282,6 +286,51 @@ SwitcherExample.argTypes = {
     control: 'select',
     options: [Align.start, Align.end]
   }
+}
+
+export const DatePickerExample = Template.bind({})
+DatePickerExample.args = {
+  value: new Date(),
+  component: DatePicker,
+  locale: 'en-US',
+  disabled: false,
+  dark: false,
+}
+DatePickerExample.argTypes = {
+  picker: {
+    control: 'select',
+    value: Picker.day,
+    options: [Picker.day, Picker.month, Picker.year]
+  }
+}
+
+export const ScrollableSelectorExample = Template.bind({})
+ScrollableSelectorExample.args = {
+  component: ScrollableSelector,
+  options: [
+    { label: 'January', value: 1 },
+    { label: 'February', value: 2 },
+    { label: 'March', value: 3 },
+    { label: 'April', value: 4 },
+    { label: 'May', value: 5 },
+    { label: 'June', value: 6 },
+    { label: 'July', value: 7 },
+    { label: 'August', value: 8 },
+    { label: 'September', value: 9 },
+    { label: 'October', value: 10 },
+    { label: 'November', value: 11 },
+    { label: 'December', value: 12 },
+  ],
+  value: 1,
+  width: '100%',
+  disabled: false,
+  dark: false,
+}
+ScrollableSelectorExample.argTypes = {
+  align: {
+    control: 'select',
+    options: [Align.start, Align.center, Align.end]
+  },
 }
 
 export default {
