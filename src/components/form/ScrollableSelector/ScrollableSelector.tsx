@@ -1,4 +1,4 @@
-import {FC, memo, useEffect, useRef} from "react";
+import {memo, useEffect, useRef} from "react";
 import {Option} from "../../../types";
 import {Align} from "../../../types/Align";
 import clsx from "clsx";
@@ -41,7 +41,6 @@ const ScrollableSelector = <T extends any = string>({ value, options = [], width
         {option.label}
       </button>
     ))}
-    <div className='alt-scrollable-selector__footer' />
   </div>
 }
 

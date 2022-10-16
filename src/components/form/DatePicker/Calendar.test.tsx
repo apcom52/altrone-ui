@@ -3,7 +3,7 @@ import '@testing-library/jest-dom'
 import {Calendar} from "./index";
 
 describe('Form.DatePicker', () => {
-  test('should renders correct number of weeks', async () => {
+  test('calendar should renders correct number of weeks', async () => {
     const date = new Date(2022, 9, 8);
     render(<Calendar currentMonth={date} selectedDate={date} onChange={() => null} />)
 
@@ -24,7 +24,7 @@ describe('Form.DatePicker', () => {
     expect(daysFromAnotherMonths).toBe(11)
   })
 
-  test('should calculate day numbers from another month correctly', () => {
+  test('calendar should calculate day numbers from another month correctly', () => {
     const date = new Date(2022, 9, 8);
     render(<Calendar currentMonth={date} selectedDate={date} onChange={() => null} />)
 
@@ -44,7 +44,7 @@ describe('Form.DatePicker', () => {
     expect(daysOfNovember).toStrictEqual(['1', '2', '3', '4', '5', '6'])
   })
 
-  test('should highlight selected day correctly', () => {
+  test('calendar should highlight selected day correctly', () => {
     const date = new Date(2022, 9, 8);
     render(<Calendar currentMonth={date} selectedDate={date} onChange={() => null} />)
 
@@ -53,7 +53,7 @@ describe('Form.DatePicker', () => {
     expect(selectedDate).toHaveClass('alt-calendar__day--selected')
   })
 
-  test('should onChange works correctly', async () => {
+  test('calendar should onChange works correctly', async () => {
     let value = new Date(2022, 9, 8);
     const onChange = (date) => {
       value = date
