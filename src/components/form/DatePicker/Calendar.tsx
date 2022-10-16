@@ -42,16 +42,16 @@ const Calendar = ({ currentMonth, selectedDate, onChange }: CalendarProps) => {
     const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)
     const lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0)
 
-    console.log('prevMonthLastDay', prevMonthLastDay, '->', currentMonth, firstDay, lastDay);
-
     const renderDay = (date: Date, dayNumber: number, dayString: string, isAnotherMonth: boolean = false) => {
       return <button
+        key={dayString}
         className={clsx('alt-calendar__day', {
           'alt-calendar__day--another-month': isAnotherMonth,
           'alt-calendar__day--selected': valueString === dayString,
           'alt-calendar__day--today': todayString === dayString
         })}
         onClick={() => onChange(date)}
+        data-testid='alt-test-calendar-day'
       >{dayNumber}</button>
     }
 
@@ -59,8 +59,6 @@ const Calendar = ({ currentMonth, selectedDate, onChange }: CalendarProps) => {
       const currentDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
       const dayOfWeek = firstDay.getDay() === 0 ? 7 : firstDay.getDay()
       const dayString = makeDateString(currentDate)
-
-      console.log({ day, weekDay: currentDate.getDay() });
 
       if (day === 1) {
         for (let prevMonth = dayOfWeek - 1; prevMonth > 0; prevMonth--) {
@@ -90,9 +88,15 @@ const Calendar = ({ currentMonth, selectedDate, onChange }: CalendarProps) => {
 
   return <div className='alt-calendar'>
     {weekdayDateMap.map((day, dayIndex) => (
-      <span className={clsx('alt-calendar__weekday', {
-        'alt-calendar__weekday--weekend': dayIndex > 4
-      })} key={dayIndex}>{weekdayDateFormat.format(day)}</span>
+      <span
+        key={dayIndex}
+        className={clsx('alt-calendar__weekday', {
+          'alt-calendar__weekday--weekend': dayIndex > 4
+        })}
+        data-testid='alt-test-calendar-weekday'
+      >
+        {weekdayDateFormat.format(day)}
+      </span>
     ))}
     {calendar}
   </div>
