@@ -6,12 +6,13 @@
   padding: 5px 6px 5px 12px;
   border-radius: 8px;
   border: none;
-  box-shadow: 0 0 0 1px var(--borderColor);
+  box-shadow: inset 0 0 0 1px var(--borderColor);
   background-color: var(--surface);
   cursor: pointer;
   transition: box-shadow var(--transitionDuration) ease;
 
   @include useFocus();
+  @include useDisabledUserSelect();
 }
 
 .alt-date-picker__value {
@@ -30,6 +31,7 @@
   display: flex;
   align-items: center;
   padding: 4px 12px 0;
+  @include useDisabledUserSelect();
 }
 
 .alt-date-picker__currentMonth {
@@ -54,10 +56,17 @@
   @include useInteraction {
     background-color: var(--accentHighlight);
   }
+}
 
-  &:disabled {
-    pointer-events: none;
-  }
+.alt-date-picker__currentMonth--selected {
+  background-color: var(--accentHighlight);
+}
+
+.alt-date-picker__title {
+  width: 100%;
+  @include useFontSize(title);
+  text-align: center;
+  cursor: default;
 }
 
 .alt-date-picker__navigation {
@@ -172,12 +181,15 @@
 .alt-year-picker {
   display: flex;
   justify-content: center;
+  margin-top: 16px;
+  min-width: 200px;
 }
 
 .alt-month-picker {
   position: relative;
   display: grid;
   grid-template-columns: 160px 1px 80px;
+  margin-top: 16px;
 }
 
 .alt-month-picker__separator {

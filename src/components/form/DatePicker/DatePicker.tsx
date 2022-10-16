@@ -63,7 +63,15 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
   }
 
   const onApplyClick = () => {
-    setIsDatePickerVisible(false)
+    if (picker === Picker.day && currentView !== Picker.day) {
+      setCurrentView(Picker.day)
+    } else {
+      setIsDatePickerVisible(false)
+    }
+  }
+
+  const onCurrentDateClick = () => {
+    setCurrentView(view => view === Picker.day ? Picker.month : Picker.day)
   }
 
   useEffect(() => {
@@ -83,17 +91,16 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
     </button>
     {isDatePickerVisible && <FloatingBox targetRef={inputRef.current} placement='bottom' onClose={() => setIsDatePickerVisible(false)}>
       <div className='alt-date-picker__header'>
-        <button
-          className={clsx('alt-date-picker__currentMonth')}
-          disabled={currentView !== Picker.day}
+        {picker === Picker.day && <button
+          className={clsx('alt-date-picker__currentMonth', {
+            'alt-date-picker__currentMonth--selected': currentView !== Picker.day
+          })}
+          onClick={onCurrentDateClick}
         >
-          {currentView === Picker.year
-            ? 'Choose an year'
-            : currentView === Picker.month
-              ? 'Choose a month'
-              : currentMonthFormat.format(currentMonth)
-          }
-        </button>
+          {currentMonthFormat.format(currentMonth)}
+        </button>}
+        {picker === Picker.month && <div className='alt-date-picker__title'>Choose a month</div>}
+        {picker === Picker.year && <div className='alt-date-picker__title'>Choose an year</div>}
         {currentView === Picker.day && <div className='alt-date-picker__navigation'>
           <button className='alt-date-picker__navigation-button' onClick={onPrevMonthClick}><Icon i='arrow_back_ios' /></button>
           <button className='alt-date-picker__navigation-button' onClick={onNextMonthClick}><Icon i='arrow_forward_ios' /></button>
