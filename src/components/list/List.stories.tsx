@@ -1,12 +1,25 @@
 import {withAltrone} from "../../hocs";
 import {Chips} from "./Chips";
 import {Direction, Theme} from "../../types";
+import {useCallback, useEffect, useState} from "react";
 
-const Template = ({component, dark, leftIcon, rightIcon, ...args}) => {
+const Template = ({component, dark, values, ...args}) => {
+  const [_value, setValue] = useState(values)
+
+  useEffect(() => {
+    setValue(values)
+  }, [values])
+
+  const onChange = useCallback((value) => {
+    setValue(value)
+  }, [])
+
   return withAltrone(component, {
     theme: dark ? Theme.dark : Theme.light
   })({
     ...args,
+    values: _value,
+    onChange,
   })
 }
 
@@ -32,7 +45,7 @@ ChipsExample.args = {
     label: 'Australia',
     value: 5
   }],
-  value: [1, 3],
+  values: [1, 3],
   dark: false,
 }
 ChipsExample.argTypes = {
