@@ -1,4 +1,4 @@
-export interface Option<T extends any  = string> {
+export interface Option<T extends any = any> {
   label: string
   value: T,
   disabled?: boolean

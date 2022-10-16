@@ -27,6 +27,7 @@
 
   @include useFocus();
   @include useDisabledUserSelect();
+  @include useFontSize(label, Large);
 
   &:hover {
     background-color: var(--highlight);
@@ -34,7 +35,11 @@
     border-color: transparent;
   }
 
-  @include useFontSize(label, Large);
+  &:disabled {
+    pointer-events: none;
+    color: var(--disabledText);
+    opacity: 0.5;
+  }
 }
 
 .alt-chip__icon {
@@ -53,6 +58,11 @@
 
   &:hover {
     background-color: var(--accent);
+    color: var(--textColorOnAccent);
+  }
+
+  &:disabled {
+    background-color: var(--disabledText);
     color: var(--textColorOnAccent);
   }
 

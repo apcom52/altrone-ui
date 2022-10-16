@@ -23,9 +23,12 @@ const Chips = ({ options = [], values = [], onChange, SelectedIcon, direction = 
     }
   }, [values, onChange])
 
-  return <div className={clsx('alt-chips', {
-    'alt-chips--direction-vertical': direction === Direction.vertical
-  })}>
+  return <div
+    className={clsx('alt-chips', {
+      'alt-chips--direction-vertical': direction === Direction.vertical
+    })}
+    data-testid='alt-test-chips'
+  >
     {options.map((option, optionIndex) => {
       const isSelected = values.indexOf(option.value) > -1
 
@@ -36,6 +39,7 @@ const Chips = ({ options = [], values = [], onChange, SelectedIcon, direction = 
         })}
         disabled={option.disabled}
         onClick={() => onChipClick(option.value)}
+        data-testid='alt-test-chip'
       >
         {isSelected && <div className='alt-chip__icon'>{SelectedIcon || <Icon i='check'/>}</div>}
         <div className='alt-chip__label'>{option.label}</div>
