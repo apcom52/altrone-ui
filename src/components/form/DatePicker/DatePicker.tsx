@@ -4,11 +4,10 @@ import {Icon} from "../../icons";
 import {useThemeContext} from "../../../contexts";
 import './date-picker.scss'
 import {FloatingBox} from "../../containers";
-import {Calendar, YearPicker} from "./index";
+import {Calendar, YearPicker, MonthPicker} from "./index";
 import {Button} from "../../button";
 import clsx from "clsx";
 import {TextInputProps} from "../TextInput";
-import MonthPicker from "./MonthPicker";
 
 export enum Picker {
   day = 'day',
