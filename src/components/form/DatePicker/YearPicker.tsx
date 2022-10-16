@@ -25,7 +25,7 @@ const YearPicker = ({ selectedDate, onChange, minYear, maxYear }: YearPickerProp
     onChange(new Date(year, 1, 1))
   }
 
-  return <div className='alt-year-picker'>
+  return <div className='alt-year-picker' data-testid='alt-test-year-picker'>
     <ScrollableSelector value={selectedDate.getFullYear()} options={years} onChange={onSelectYear} />
   </div>
 }

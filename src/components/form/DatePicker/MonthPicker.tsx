@@ -46,7 +46,7 @@ const MonthPicker = ({ selectedDate, onChange, minYear, maxYear }: YearPickerPro
     onChange(new Date(selectedDate.getFullYear(), month, 1))
   }
 
-  return <div className='alt-month-picker'>
+  return <div className='alt-month-picker' data-testid='alt-test-month-picker'>
     <ScrollableSelector value={selectedDate.getMonth()} align={Align.end} options={months} onChange={onSelectMonth} />
     <div className='alt-month-picker__separator' />
     <ScrollableSelector value={selectedDate.getFullYear()} align={Align.start} options={years} onChange={onSelectYear} />
