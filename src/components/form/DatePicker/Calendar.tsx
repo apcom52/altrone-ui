@@ -62,10 +62,10 @@ const Calendar = ({ currentMonth, selectedDate, onChange }: CalendarProps) => {
 
       if (day === 1) {
         for (let prevMonth = dayOfWeek - 1; prevMonth > 0; prevMonth--) {
-          const dayNumber = prevMonthLastDay.getDate() - prevMonth
+          const prevMonthDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, prevMonthLastDay.getDate() - prevMonth + 1)
 
           weeks.push(
-            renderDay(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, dayNumber), dayNumber, makeDateString(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, dayNumber)), true)
+            renderDay(prevMonthDate, prevMonthDate.getDate(), makeDateString(prevMonthDate), true)
           )
         }
 
