@@ -1,9 +1,9 @@
 import {WithoutDefaultOffsets} from "../../../types";
 import {memo, useMemo, useState} from "react";
-import { usePopper } from 'react-popper';
+import {usePopper} from 'react-popper';
 import './floating-box.scss';
 import {useOutsideClick} from "rooks";
-import { Options } from "@popperjs/core";
+import {Options} from "@popperjs/core";
 
 interface FloatingBoxProps extends WithoutDefaultOffsets {
   targetRef: Element
@@ -83,7 +83,7 @@ const FloatingBox = ({
         return
       }
     }
-    
+
     setTimeout(() => {
       onClose()
     }, 1)
@@ -93,6 +93,7 @@ const FloatingBox = ({
     className='alt-floating-box'
     ref={setFloatingBoxElement}
     style={styles.popper}
+    data-testid='alt-test-floating-box'
     {...attributes.popper}
   >
     {children}

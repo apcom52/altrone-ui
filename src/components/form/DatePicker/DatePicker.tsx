@@ -4,7 +4,7 @@ import {Icon} from "../../icons";
 import {useThemeContext} from "../../../contexts";
 import './date-picker.scss'
 import {FloatingBox} from "../../containers";
-import {Calendar, YearPicker, MonthPicker} from "./index";
+import {Calendar, MonthPicker, YearPicker} from "./index";
 import {Button} from "../../button";
 import clsx from "clsx";
 import {TextInputProps} from "../TextInput";
@@ -84,7 +84,12 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
   }, [picker])
 
   return <>
-    <button className='alt-date-picker' ref={inputRef} onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}>
+    <button
+      className='alt-date-picker'
+      ref={inputRef}
+      onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}
+      data-testid='alt-test-datepicker'
+    >
       <div className='alt-date-picker__value'>{value && valueDateFormat.format(value)}</div>
       <div className='alt-date-picker__icon'><Icon i='calendar_month' /></div>
     </button>
@@ -95,14 +100,27 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
             'alt-date-picker__currentMonth--selected': currentView !== Picker.day
           })}
           onClick={onCurrentDateClick}
+          data-testid='alt-test-datepicker-header'
         >
           {currentMonthFormat.format(currentMonth)}
         </button>}
         {picker === Picker.month && <div className='alt-date-picker__title'>Choose a month</div>}
         {picker === Picker.year && <div className='alt-date-picker__title'>Choose an year</div>}
         {currentView === Picker.day && <div className='alt-date-picker__navigation'>
-          <button className='alt-date-picker__navigation-button' onClick={onPrevMonthClick}><Icon i='arrow_back_ios' /></button>
-          <button className='alt-date-picker__navigation-button' onClick={onNextMonthClick}><Icon i='arrow_forward_ios' /></button>
+          <button
+            className='alt-date-picker__navigation-button'
+            onClick={onPrevMonthClick}
+            data-testid='alt-test-datepicker-prev'
+          >
+            <Icon i='arrow_back_ios' />
+          </button>
+          <button
+            className='alt-date-picker__navigation-button'
+            onClick={onNextMonthClick}
+            data-testid='alt-test-datepicker-next'
+          >
+            <Icon i='arrow_forward_ios' />
+          </button>
         </div>}
       </div>
       { currentView === Picker.day && <Calendar
@@ -125,9 +143,16 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
         maxYear={maxYear}
       /> }
       <div className='alt-date-picker__footer'>
-        { currentView === Picker.day && <Button onClick={onTodayClick}>Today</Button>}
-        { currentView === Picker.month && <Button onClick={onTodayClick}>Current month</Button>}
-        <Button style={ButtonStyle.primary} className='alt-date-picker__apply' onClick={onApplyClick}>Apply</Button>
+        { currentView === Picker.day && <Button onClick={onTodayClick} data-testid='alt-test-datepicker-today'>Today</Button>}
+        { currentView === Picker.month && <Button onClick={onTodayClick} data-testid='alt-test-datepicker-currentMonth'>Current month</Button>}
+        <Button
+          style={ButtonStyle.primary}
+          className='alt-date-picker__apply'
+          onClick={onApplyClick}
+          data-testid='alt-test-datepicker-apply'
+        >
+          Apply
+        </Button>
       </div>
     </FloatingBox>}
   </>

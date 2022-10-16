@@ -86,7 +86,7 @@ const Calendar = ({ currentMonth, selectedDate, onChange }: CalendarProps) => {
     return weeks
   }, [currentMonth, onChange, todayString, valueString])
 
-  return <div className='alt-calendar'>
+  return <div className='alt-calendar' data-testid='alt-test-calendar'>
     {weekdayDateMap.map((day, dayIndex) => (
       <span
         key={dayIndex}
