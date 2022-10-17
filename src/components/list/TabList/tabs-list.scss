@@ -1,0 +1,54 @@
+@import '../../../_mixins';
+
+.alt-tab-list {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  height: var(--controlHeight);
+  background-color: var(--surfaceTrasparent);
+  border-radius: 12px;
+  width: fit-content;
+  padding: 4px;
+  gap: 2px;
+
+  @include useDisabledUserSelect();
+}
+
+.alt-tab-list__active-background {
+  position: absolute;
+  width: 100px;
+  height: 26px;
+  top: 4px;
+  left: 4px;
+  background-color: var(--surface);
+  border-radius: 8px;
+  box-shadow: 0 4px 5px 0 var(--shadow);
+  z-index: 0;
+  transition: left 0.3s ease, width 0.3s ease;
+}
+
+.alt-tab {
+  height: 28px;
+  margin: 0;
+  border-radius: 8px;
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  color: var(--textColor);
+  background: transparent;
+  line-height: 28px;
+  padding: 0 24px;
+  white-space: nowrap;
+  z-index: 1;
+
+  @include useFontSize(label, Large);
+  @include useFocus();
+}
+
+.alt-tab--selected {
+}
+
+.alt-tab-list--fluid {
+  width: 100%;
+}
