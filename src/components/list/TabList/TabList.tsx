@@ -2,6 +2,7 @@ import {memo, useCallback, useEffect, useRef, useState} from "react";
 import './tabs-list.scss';
 import clsx from "clsx";
 import {useResizeObserver} from "../../../hooks";
+import {Icon} from "../../icons";
 
 export enum TabListVariant {
   default = 'default',
@@ -9,17 +10,21 @@ export enum TabListVariant {
   solid = 'solid'
 }
 
+type TabValue = number | string
+
 interface TabListProps {
-  selected: number | string;
+  selected: TabValue;
   tabs: {
     label: string
-    value: number | string
+    value: TabValue
     disabled?: boolean
     href?: string
   }[];
-  onChange: (value: number | string) => void;
+  onChange: (value: TabValue) => void;
   variant?: TabListVariant;
   fluid?: boolean;
+  showCloseButtons?: boolean
+  onCloseTab?: (value: TabValue) => void
 }
 
 const TabList = ({ selected, tabs = [], variant = TabListVariant.default, onChange, fluid = false }: TabListProps) => {
@@ -28,15 +33,17 @@ const TabList = ({ selected, tabs = [], variant = TabListVariant.default, onChan
   const [activeBackgroundStyles, setActiveBackgroundStyles] = useState({})
 
   const setBackgroundPosition = useCallback(() => {
-    if (selectedTabRef.current) {
+    if (selectedTabRef.current && variant !== TabListVariant.solid) {
+      const offset = variant === TabListVariant.border ? 20 : 0
+
       setActiveBackgroundStyles({
-        left: selectedTabRef.current.offsetLeft,
-        width: selectedTabRef.current.offsetWidth
+        left: selectedTabRef.current.offsetLeft + offset,
+        width: selectedTabRef.current.offsetWidth - offset * 2
       })
     } else {
       setActiveBackgroundStyles({})
     }
-  }, [])
+  }, [variant])
 
   const tabsListObserver = useResizeObserver(tabListRef)
 
@@ -48,10 +55,11 @@ const TabList = ({ selected, tabs = [], variant = TabListVariant.default, onChan
     className={clsx('alt-tab-list', {
       'alt-tab-list--fluid': fluid,
       'alt-tab-list--variant-borders': variant === TabListVariant.border,
+      'alt-tab-list--variant-solid': variant === TabListVariant.solid,
     })}
     ref={tabListRef}
   >
-    <div className='alt-tab-list__active-background' style={activeBackgroundStyles} />
+    {variant !== TabListVariant.solid && <div className='alt-tab-list__active-background' style={activeBackgroundStyles} />}
     {tabs.map((tab, tabIndex) => {
       const isSelected = tab.value === selected
       return <button
@@ -63,6 +71,7 @@ const TabList = ({ selected, tabs = [], variant = TabListVariant.default, onChan
         onClick={() => onChange(tab.value)}
       >
         {tab.label}
+        <button className='alt-tab__close'><Icon i='close' /></button>
       </button>
     })}
   </div>

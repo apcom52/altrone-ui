@@ -96,8 +96,8 @@ TabsExample.args = {
   fluid: false,
   dark: false,
 }
-ChipsExample.argTypes = {
-  direction: {
+TabsExample.argTypes = {
+  variant: {
     control: 'select',
     options: [TabListVariant.default, TabListVariant.border, TabListVariant.solid]
   }

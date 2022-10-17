@@ -32,7 +32,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 5px 0 var(--shadow);
   z-index: 0;
-  transition: left 0.3s ease, width 0.3s ease;
+  transition: left 0.2s ease, width 0.2s ease;
 }
 
 .alt-tab {
@@ -42,7 +42,7 @@
   appearance: none;
   border: none;
   cursor: pointer;
-  color: var(--textColor);
+  color: var(--secondaryTextColor);
   background: transparent;
   line-height: 28px;
   padding: 0 24px;
@@ -54,6 +54,7 @@
 }
 
 .alt-tab--selected {
+  color: var(--textColor);
 }
 
 .alt-tab-list--fluid {
@@ -62,4 +63,71 @@
 
 .alt-tab-list--variant-borders {
   background-color: transparent;
+
+  .alt-tab {
+    padding: 0 24px;
+  }
+
+  .alt-tab-list__active-background {
+    top: 30px;
+    height: 4px;
+    box-shadow: none;
+    background-color: var(--accent);
+    border-radius: 4px;
+  }
+}
+
+.alt-tab-list--variant-solid {
+  justify-content: stretch;
+  border-radius: 0;
+  padding: 0;
+  gap: 0;
+
+  .alt-tab {
+    position: relative;
+    height: 100%;
+    flex: 1;
+    border-radius: 0;
+
+    &:not(:last-of-type) {
+      border-right: 1px solid var(--borderColor);
+    }
+
+    .alt-tab__close {
+      display: none;
+    }
+
+    &:hover {
+      .alt-tab__close {
+        display: flex;
+      }
+    }
+  }
+
+  .alt-tab--selected {
+    background-color: var(--surfaceTrasparentHover);
+  }
+}
+
+.alt-tab__close {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  background-color: transparent;
+  left: 10px;
+  top: 9px;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  color: var(--textColor);
+  cursor: pointer;
+
+  @include useInteraction() {
+    background-color: var(--surfaceTrasparentHover);
+  }
 }
