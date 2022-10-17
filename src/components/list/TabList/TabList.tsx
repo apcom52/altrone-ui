@@ -1,6 +1,7 @@
-import {memo, useLayoutEffect, useRef, useState} from "react";
+import {memo, useCallback, useEffect, useRef, useState} from "react";
 import './tabs-list.scss';
 import clsx from "clsx";
+import {useResizeObserver} from "../../../hooks";
 
 export enum TabListVariant {
   default = 'default',
@@ -22,25 +23,34 @@ interface TabListProps {
 }
 
 const TabList = ({ selected, tabs = [], variant = TabListVariant.default, onChange, fluid = false }: TabListProps) => {
+  const tabListRef = useRef(null)
   const selectedTabRef = useRef(null)
   const [activeBackgroundStyles, setActiveBackgroundStyles] = useState({})
 
-  useLayoutEffect(() => {
-    setTimeout(() => {
-      if (selectedTabRef.current) {
-        setActiveBackgroundStyles({
-          left: selectedTabRef.current.offsetLeft,
-          width: selectedTabRef.current.offsetWidth
-        })
-      } else {
-        setActiveBackgroundStyles({})
-      }
-    }, 50)
-  }, [selected, fluid, selectedTabRef.current])
+  const setBackgroundPosition = useCallback(() => {
+    if (selectedTabRef.current) {
+      setActiveBackgroundStyles({
+        left: selectedTabRef.current.offsetLeft,
+        width: selectedTabRef.current.offsetWidth
+      })
+    } else {
+      setActiveBackgroundStyles({})
+    }
+  }, [])
 
-  return <div className={clsx('alt-tab-list', {
-    'alt-tab-list--fluid': fluid
-  })}>
+  const tabsListObserver = useResizeObserver(tabListRef)
+
+  useEffect(() => {
+    setBackgroundPosition()
+  }, [selected, setBackgroundPosition, tabsListObserver])
+
+  return <div
+    className={clsx('alt-tab-list', {
+      'alt-tab-list--fluid': fluid,
+      'alt-tab-list--variant-borders': variant === TabListVariant.border,
+    })}
+    ref={tabListRef}
+  >
     <div className='alt-tab-list__active-background' style={activeBackgroundStyles} />
     {tabs.map((tab, tabIndex) => {
       const isSelected = tab.value === selected
