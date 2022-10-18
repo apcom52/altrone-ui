@@ -155,3 +155,11 @@
     color: var(--textColor);
   }
 }
+
+.alt-tab-list--align-start {
+  justify-content: flex-start;
+}
+
+.alt-tab-list--align-end {
+  justify-content: flex-end;
+}

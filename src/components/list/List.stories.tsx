@@ -2,6 +2,7 @@ import {withAltrone} from "../../hocs";
 import {Direction, Theme} from "../../types";
 import {useCallback, useEffect, useState} from "react";
 import {Chips, TabList, TabListVariant} from './index'
+import {Align} from "../../types/Align";
 
 const Template = ({component, dark, values, value, ...args}) => {
   const [_value, setValue] = useState(values)
@@ -122,6 +123,10 @@ TabsExample.argTypes = {
   variant: {
     control: 'select',
     options: [TabListVariant.default, TabListVariant.border, TabListVariant.solid]
+  },
+  align: {
+    control: 'select',
+    options: [Align.start, Align.center, Align.end]
   }
 }
 

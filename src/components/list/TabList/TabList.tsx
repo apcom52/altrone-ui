@@ -3,6 +3,7 @@ import './tabs-list.scss';
 import clsx from "clsx";
 import {useResizeObserver} from "../../../hooks";
 import {Icon} from "../../icons";
+import {Align} from "../../../types/Align";
 
 export enum TabListVariant {
   default = 'default',
@@ -27,6 +28,7 @@ interface TabListProps {
   showAddTabButton?: boolean
   onCloseTab?: (value: TabValue) => void
   onAddTab?: () => void
+  align?: Align
 }
 
 const TabList = ({
@@ -38,7 +40,8 @@ const TabList = ({
   showAddTabButton = true,
   onChange,
   onCloseTab,
-  onAddTab
+  onAddTab,
+  align = Align.center
 }: TabListProps) => {
   const tabListRef = useRef(null)
   const selectedTabRef = useRef(null)
@@ -61,7 +64,7 @@ const TabList = ({
 
   useEffect(() => {
     setBackgroundPosition()
-  }, [selected, setBackgroundPosition, tabsListObserver])
+  }, [selected, setBackgroundPosition, tabsListObserver, align])
 
   const onCloseClick = (e, value) => {
     if (variant === TabListVariant.solid && onCloseTab) {
@@ -75,6 +78,8 @@ const TabList = ({
       'alt-tab-list--fluid': fluid,
       'alt-tab-list--variant-borders': variant === TabListVariant.border,
       'alt-tab-list--variant-solid': variant === TabListVariant.solid,
+      'alt-tab-list--align-start': align === Align.start,
+      'alt-tab-list--align-end': align === Align.end,
     })}
     ref={tabListRef}
   >
