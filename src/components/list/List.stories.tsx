@@ -111,7 +111,8 @@ TabsExample.args = {
     value: 1
   }, {
     label: 'My home',
-    value: 2
+    value: 2,
+    disabled: true,
   }, {
     label: 'Help and support',
     value: 3

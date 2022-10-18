@@ -51,6 +51,11 @@
 
   @include useFontSize(label, Large);
   @include useFocus();
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
 
 .alt-tab--selected {
@@ -61,7 +66,7 @@
   width: 100%;
 }
 
-.alt-tab-list--variant-borders {
+.alt-tab-list--variant-border {
   background-color: transparent;
 
   .alt-tab {
