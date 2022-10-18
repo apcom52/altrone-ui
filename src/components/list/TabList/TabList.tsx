@@ -24,10 +24,22 @@ interface TabListProps {
   variant?: TabListVariant;
   fluid?: boolean;
   showCloseButtons?: boolean
+  showAddTabButton?: boolean
   onCloseTab?: (value: TabValue) => void
+  onAddTab?: () => void
 }
 
-const TabList = ({ selected, tabs = [], variant = TabListVariant.default, onChange, fluid = false }: TabListProps) => {
+const TabList = ({
+  selected,
+  tabs = [],
+  variant = TabListVariant.default,
+  fluid = false,
+  showCloseButtons = true,
+  showAddTabButton = true,
+  onChange,
+  onCloseTab,
+  onAddTab
+}: TabListProps) => {
   const tabListRef = useRef(null)
   const selectedTabRef = useRef(null)
   const [activeBackgroundStyles, setActiveBackgroundStyles] = useState({})
@@ -51,6 +63,13 @@ const TabList = ({ selected, tabs = [], variant = TabListVariant.default, onChan
     setBackgroundPosition()
   }, [selected, setBackgroundPosition, tabsListObserver])
 
+  const onCloseClick = (e, value) => {
+    if (variant === TabListVariant.solid && onCloseTab) {
+      e.stopPropagation()
+      onCloseTab(value)
+    }
+  }
+
   return <div
     className={clsx('alt-tab-list', {
       'alt-tab-list--fluid': fluid,
@@ -71,9 +90,13 @@ const TabList = ({ selected, tabs = [], variant = TabListVariant.default, onChan
         onClick={() => onChange(tab.value)}
       >
         {tab.label}
-        <button className='alt-tab__close'><Icon i='close' /></button>
+        {(variant === TabListVariant.solid && showCloseButtons && onCloseTab)
+          && <button className='alt-tab__close' onClick={(e) => onCloseClick(e, tab.value)}><Icon i='close' /></button>}
       </button>
     })}
+    {(variant === TabListVariant.solid && showAddTabButton && onAddTab) && <button className='alt-tab-list__add' onClick={onAddTab}>
+      <Icon i='add' />
+    </button>}
   </div>
 }
 

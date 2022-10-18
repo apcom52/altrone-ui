@@ -82,15 +82,18 @@
   border-radius: 0;
   padding: 0;
   gap: 0;
+  overflow: hidden;
+  max-width: 100%;
 
   .alt-tab {
     position: relative;
     height: 100%;
+    padding-left: 36px;
     flex: 1;
     border-radius: 0;
 
-    &:not(:last-of-type) {
-      border-right: 1px solid var(--borderColor);
+    & + .alt-tab {
+      border-left: 1px solid var(--borderColor);
     }
 
     .alt-tab__close {
@@ -105,7 +108,7 @@
   }
 
   .alt-tab--selected {
-    background-color: var(--surfaceTrasparentHover);
+    background-color: var(--surface);
   }
 }
 
@@ -129,5 +132,26 @@
 
   @include useInteraction() {
     background-color: var(--surfaceTrasparentHover);
+  }
+}
+
+.alt-tab-list__add {
+  display: flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-left: 1px solid var(--borderColor);
+  background-color: transparent;
+  font-size: 24px;
+  color: var(--secondaryTextColor);
+  cursor: pointer;
+
+  @include useInteraction {
+    color: var(--textColor);
   }
 }

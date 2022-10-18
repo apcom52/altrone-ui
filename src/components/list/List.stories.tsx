@@ -24,23 +24,45 @@ const Template = ({component, dark, values, value, ...args}) => {
   })
 }
 
-const TabsTemplate = ({component, dark, selected, ...args}) => {
+const TabsTemplate = ({component, dark, selected, tabs = [], ...args}) => {
   const [_value, setValue] = useState(selected)
+  const [tabsCounter, setTabsCounter] = useState(5)
+  const [_tabs, setTabs] = useState(tabs)
 
   useEffect(() => {
     setValue(selected)
   }, [selected])
 
+  useEffect(() => {
+    setTabs(tabs)
+  }, [tabs])
+
   const onChange = useCallback((value) => {
     setValue(value)
   }, [])
+
+  const onAddTab = () => {
+    setTabs(old => [...old, {
+      label: 'Tab ' + tabsCounter,
+      value: tabsCounter
+    }])
+
+    setTabsCounter(old => old + 1)
+  }
+
+  const onCloseTab = (value) => {
+    setTabs(tabs => tabs.filter(tab => tab.value !== value))
+  }
 
   return withAltrone(component, {
     theme: dark ? Theme.dark : Theme.light
   })({
     ...args,
     selected: _value,
+    tabs: _tabs,
     onChange,
+    onAddTab,
+    onCloseTab
   })
 }
 
