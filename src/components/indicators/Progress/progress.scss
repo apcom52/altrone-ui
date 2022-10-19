@@ -1,0 +1,26 @@
+@import '../../../_mixins';
+
+.alt-progress {
+  display: flex;
+  position: relative;
+  height: 20px;
+  border-radius: 12px;
+  background-color: var(--surface);
+  overflow: hidden;
+}
+
+.alt-progress__active {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background-color: var(--accent);
+}
+
+.alt-progress--size-small {
+  height: 12px;
+}
+
+.alt-progress--size-large {
+  height: 34px;
+}
