@@ -20,14 +20,14 @@
 
   --dividerColor: #EEEEEE;
   --borderColor: #ECEFF1;
-  --shadow: rgba(0, 0, 0, 0.15);
+  --shadow: rgba(0, 0, 0, 0.1);
   --gap: 4px;
 
   --accent: #03A9F4;
   --accentFocus: rgba(3, 164, 244, 0.75);
   --accentHover: #9bd1ee;
-  --accentBorderColor: #0288D1;
-  --accentText: #03A9F4;
+  --accentBorderColor: rgba(3, 164, 244, 0.15);
+  --accentText: #007ac1;
 
   --highlight: rgba(3, 164, 244, 0.25);
   --textOnHighlight: #202124;
@@ -35,16 +35,16 @@
   --textColorOnAccent: #ffffff;
 
   --success: #4caf50;
-  --successBorderColor: #388e3c;
-  --successText: #4CAE50;
-  --successHighlight: rgba(76, 175, 80, 0.25);
+  --successBorderColor: rgba(76, 175, 80, 0.15);
+  --successText: #087f23;
+  --successHighlight: rgba(76, 175, 80, 0.35);
   --textOnSuccessHighlight: #202124;
   --textColorOnSuccess: #ffffff;
 
   --danger: #E53935;
-  --dangerBorderColor: #C62828;
-  --dangerText: #F44336;
-  --dangerHighlight: rgba(229, 57, 53, 0.25);
+  --dangerBorderColor: rgba(229, 57, 53, 0.15);
+  --dangerText: #ba000d;
+  --dangerHighlight: rgba(229, 57, 53, 0.35);
   --textOnDangerHighlight: #202124;
   --textColorOnDanger: #ffffff;
 
