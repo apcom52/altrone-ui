@@ -32,11 +32,13 @@ const Message = ({ title, children, style = MessageStyle.default, role = Message
     'alt-message--style-success': style === MessageStyle.success,
     'alt-message--style-danger': style === MessageStyle.danger,
     'alt-message--only-title': !children
-  })}>
+  })}
+    data-testid='alt-test-message'
+  >
     <div className='alt-message__icon'>{IconComponent || <Icon i={role} />}</div>
     <div className='alt-message__content'>
-      {title && <div className='alt-message__title'>{title}</div>}
-      <div className='alt-message__description'>{children}</div>
+      {title && <div className='alt-message__title' data-testid='alt-test-message-title'>{title}</div>}
+      {children && <div className='alt-message__description' data-testid='alt-test-message-description'>{children}</div>}
     </div>
   </div>
 }
