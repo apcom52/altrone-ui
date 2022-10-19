@@ -17,10 +17,38 @@
   background-color: var(--accent);
 }
 
+.alt-progress__segment {
+  flex: 1;
+  border: 1px solid var(--borderColor);
+  background-color: var(--surface);
+  border-radius: 2px;
+
+  &:first-child {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+  }
+
+  &:last-child {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+  }
+}
+
+.alt-progress__segment--active {
+  background-color: var(--accent);
+  border-color: var(--accentBorderColor);
+}
+
 .alt-progress--size-small {
   height: 12px;
 }
 
 .alt-progress--size-large {
   height: 34px;
+}
+
+.alt-progress--variant-segmented {
+  background-color: transparent;
+  gap: 2px;
+  overflow: unset;
 }
