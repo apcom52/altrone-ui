@@ -1,5 +1,5 @@
 import {withAltrone} from "../../hocs";
-import {Size, Theme} from "../../types";
+import {Role, Size, Theme} from "../../types";
 import {Progress} from "./Progress";
 import {ProgressVariant} from "./Progress/Progress";
 
@@ -26,6 +26,10 @@ ProgressExample.argTypes = {
   size: {
     control: 'select',
     options: [Size.small, Size.medium, Size.large]
+  },
+  role: {
+    control: 'select',
+    options: [Role.default, Role.primary, Role.success, Role.danger]
   }
 }
 

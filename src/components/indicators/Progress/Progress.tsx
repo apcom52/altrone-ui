@@ -2,6 +2,7 @@ import {memo} from "react";
 import './progress.scss';
 import {Size} from "../../../types";
 import clsx from "clsx";
+import {Role} from "../../../types/Role";
 
 export enum ProgressVariant {
   default = 'default',
@@ -12,16 +13,20 @@ interface ProgressProps {
   value: number
   max?: number
   size?: Size
-  danger?: boolean
+  role?: Role
+  variant?: ProgressVariant
 }
 
-const Progress = ({ variant = ProgressVariant.default, value = 0, max = 100, danger = false, size = Size.medium }) => {
+const Progress = ({ variant = ProgressVariant.default, value = 0, max = 100, role = Role.default, size = Size.medium }) => {
   const percent = Math.round(value / max * 100)
 
   return <div className={clsx('alt-progress', {
     'alt-progress--size-small': size === Size.small,
     'alt-progress--size-large': size === Size.large,
-    'alt-progress--variant-segmented': variant === ProgressVariant.segmented
+    'alt-progress--variant-segmented': variant === ProgressVariant.segmented,
+    'alt-progress--primary': role === Role.primary,
+    'alt-progress--success': role === Role.success,
+    'alt-progress--danger': role === Role.danger
   })}>
     {variant === ProgressVariant.default && <div
       className='alt-progress__active'
