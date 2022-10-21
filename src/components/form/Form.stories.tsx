@@ -345,7 +345,7 @@ RadioListExample.args = {
     { label: 'May', value: 5 },
     { label: 'June', value: 6 },
     { label: 'July', value: 7 },
-    { label: 'August', value: 8 },
+    { label: 'August', value: 8, disabled: true },
     { label: 'September', value: 9 },
     { label: 'October', value: 10 },
     { label: 'November', value: 11 },

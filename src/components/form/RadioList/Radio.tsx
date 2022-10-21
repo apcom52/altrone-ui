@@ -10,7 +10,7 @@ export interface RadioProps extends Option {
 const Radio = ({ name, checked, label, disabled, value, onChange }: RadioProps) => {
   const id = useId()
 
-  return <label htmlFor={id} className='alt-radio'>
+  return <label htmlFor={id} className='alt-radio' data-testid='alt-test-radio'>
     <input
       type="radio"
       name={name}

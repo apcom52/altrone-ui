@@ -16,9 +16,12 @@ interface RadioListProps {
 }
 
 const RadioList = ({ value, options = [], disabled = false, direction = Direction.horizontal, onChange, name }: RadioListProps) => {
-  return <div className={clsx('alt-radio-list', {
-    'alt-radio-list--vertical': direction === Direction.vertical
-  })}>
+  return <div
+    className={clsx('alt-radio-list', {
+      'alt-radio-list--vertical': direction === Direction.vertical
+    })}
+    data-testid='alt-test-radiolist'
+  >
     {options.map((option, optionIndex) => (
       <Radio
         key={optionIndex}

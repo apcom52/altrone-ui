@@ -38,6 +38,21 @@
     animation-fill-mode: forwards;
     box-shadow: 0 3px 15px 0 var(--shadow);
   }
+
+  &:disabled + .alt-radio__control {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  &:disabled:checked + .alt-radio__control {
+    .alt-radio__label {
+      color: var(--disabledText);
+    }
+
+    & > .alt-radio__icon:after {
+      background-color: var(--secondaryTextColor);
+    }
+  }
 }
 
 .alt-radio__control {
@@ -58,6 +73,7 @@
 
 .alt-radio__label {
   @include useFontSize(label, Large);
+  color: var(--textColor);
 }
 
 @keyframes radio-icon-animation {
