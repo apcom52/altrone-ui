@@ -173,8 +173,5 @@ describe('Form.TextInput', () => {
 
     await waitFor(() => rerender(<TextInput value='' onChange={() => null} size={Size.large} />))
     expect(container.firstChild).toHaveClass('alt-text-input--size-large')
-
-    await waitFor(() => rerender(<TextInput value='' onChange={() => null} size={Size.xlarge} />))
-    expect(container.firstChild).toHaveClass('alt-text-input--size-xlarge')
   })
 })
