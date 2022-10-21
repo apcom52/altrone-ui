@@ -22,7 +22,7 @@ const Radio = ({ name, checked, label, disabled, value, onChange }: RadioProps) 
       id={id}
     />
     <div className='alt-radio__control'>
-      <div className='alt-radio__indicator' />
+      <div className='alt-radio__icon' />
       <div className='alt-radio__label'>{label}</div>
     </div>
   </label>
