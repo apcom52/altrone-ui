@@ -6,13 +6,7 @@
 }
 
 .alt-checkbox__input {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  @include useNonStandardAppearance();
 
   &:checked + .alt-checkbox__control:before {
     background-color: var(--checkedColor);
@@ -57,6 +51,7 @@
     box-sizing: border-box;
     border: 1px solid var(--borders);
     transition: box-shadow var(--transitionDuration) ease;
+    background-color: var(--surface);
   }
 }
 

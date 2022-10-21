@@ -33,3 +33,13 @@
     font-weight: var(--fontWeight);
   }
 }
+
+@mixin useNonStandardAppearance {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
