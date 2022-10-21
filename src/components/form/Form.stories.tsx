@@ -1,16 +1,17 @@
 import {withAltrone} from "../../hocs";
 import {Direction, Size, Theme} from "../../types";
 import {
-  PasswordInput,
-  TextInput,
-  NumberInput,
   Checkbox,
   CheckboxList,
+  DatePicker,
+  InputIslandType,
+  NumberInput,
+  PasswordInput,
+  RadioList,
+  ScrollableSelector,
   Select,
   Switcher,
-  InputIslandType,
-  DatePicker,
-  ScrollableSelector
+  TextInput
 } from "./index";
 import {Icon} from "../icons";
 import {SelectOptionProps} from "./Select";
@@ -330,6 +331,34 @@ ScrollableSelectorExample.argTypes = {
   align: {
     control: 'select',
     options: [Align.start, Align.center, Align.end]
+  },
+}
+
+export const RadioListExample = Template.bind({})
+RadioListExample.args = {
+  component: RadioList,
+  options: [
+    { label: 'January', value: 1 },
+    { label: 'February', value: 2 },
+    { label: 'March', value: 3 },
+    { label: 'April', value: 4 },
+    { label: 'May', value: 5 },
+    { label: 'June', value: 6 },
+    { label: 'July', value: 7 },
+    { label: 'August', value: 8 },
+    { label: 'September', value: 9 },
+    { label: 'October', value: 10 },
+    { label: 'November', value: 11 },
+    { label: 'December', value: 12 },
+  ],
+  value: 2,
+  disabled: false,
+  dark: false,
+}
+ScrollableSelectorExample.argTypes = {
+  direction: {
+    control: 'select',
+    options: [Direction.horizontal, Direction.vertical]
   },
 }
 
