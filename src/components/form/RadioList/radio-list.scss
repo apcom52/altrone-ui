@@ -36,6 +36,7 @@
     transform: scale(0);
     animation: radio-icon-animation var(--transitionDuration) ease 0ms;
     animation-fill-mode: forwards;
+    box-shadow: 0 3px 15px 0 var(--shadow);
   }
 }
 

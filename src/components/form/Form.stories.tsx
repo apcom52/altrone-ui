@@ -355,7 +355,7 @@ RadioListExample.args = {
   disabled: false,
   dark: false,
 }
-ScrollableSelectorExample.argTypes = {
+RadioListExample.argTypes = {
   direction: {
     control: 'select',
     options: [Direction.horizontal, Direction.vertical]
