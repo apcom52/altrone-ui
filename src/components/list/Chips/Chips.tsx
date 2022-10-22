@@ -40,6 +40,7 @@ const Chips = ({ options = [], values = [], onChange, SelectedIcon, direction = 
         disabled={option.disabled}
         onClick={() => onChipClick(option.value)}
         data-testid='alt-test-chip'
+        type='button'
       >
         {isSelected && <div className='alt-chip__icon'>{SelectedIcon || <Icon i='check'/>}</div>}
         <div className='alt-chip__label'>{option.label}</div>

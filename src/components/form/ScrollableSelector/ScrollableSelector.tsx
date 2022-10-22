@@ -37,6 +37,7 @@ const ScrollableSelector = <T extends any = string>({ value, options = [], width
         })}
         onClick={() => onChange(option.value)}
         disabled={disabled || option.disabled}
+        type='button'
       >
         {option.label}
       </button>

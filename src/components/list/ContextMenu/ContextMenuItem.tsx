@@ -10,6 +10,7 @@ const ContextMenuItem = (action: ContextAction) => {
     onClick={action.onClick}
     disabled={action.disabled}
     title={action.title}
+    type='button'
   >
     <div className='alt-context-menu-item__icon'>{action.icon}</div>
     <div className='alt-context-menu-item__title'>{action.title}</div>

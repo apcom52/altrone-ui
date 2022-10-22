@@ -12,7 +12,12 @@ const ContextParentMenuItem = (action: ParentContextAction) => {
   const altroneRef = useRef(document.body.querySelector('.altrone'))
 
   return <>
-    <button className='alt-context-menu-item' ref={itemRef} onClick={() => setIsChildrenContextMenuVisible(true)}>
+    <button
+      className='alt-context-menu-item'
+      ref={itemRef}
+      onClick={() => setIsChildrenContextMenuVisible(true)}
+      type='button'
+    >
       <div className='alt-context-menu-item__icon'>{action.icon}</div>
       <div className='alt-context-menu-item__title'>{action.title}</div>
       <div className='alt-context-menu-item__childrenArrow'><Icon i='keyboard_arrow_right' /></div>

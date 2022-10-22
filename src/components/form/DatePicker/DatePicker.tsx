@@ -89,6 +89,7 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
       ref={inputRef}
       onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}
       data-testid='alt-test-datepicker'
+      type='button'
     >
       <div className='alt-date-picker__value'>{value && valueDateFormat.format(value)}</div>
       <div className='alt-date-picker__icon'><Icon i='calendar_month' /></div>
@@ -101,6 +102,7 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
           })}
           onClick={onCurrentDateClick}
           data-testid='alt-test-datepicker-header'
+          type='button'
         >
           {currentMonthFormat.format(currentMonth)}
         </button>}
@@ -111,6 +113,7 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
             className='alt-date-picker__navigation-button'
             onClick={onPrevMonthClick}
             data-testid='alt-test-datepicker-prev'
+            type='button'
           >
             <Icon i='arrow_back_ios' />
           </button>
@@ -118,6 +121,7 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
             className='alt-date-picker__navigation-button'
             onClick={onNextMonthClick}
             data-testid='alt-test-datepicker-next'
+            type='button'
           >
             <Icon i='arrow_forward_ios' />
           </button>

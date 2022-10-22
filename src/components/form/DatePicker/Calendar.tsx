@@ -10,7 +10,6 @@ export interface CalendarProps {
 }
 
 const makeDateString = (date = new Date()) => {
-  console.log('makeDateString', date);
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() + 1}`
 }
 
@@ -53,6 +52,7 @@ const Calendar = ({ currentMonth, selectedDate = new Date(), onChange }: Calenda
         })}
         onClick={() => onChange(date)}
         data-testid='alt-test-calendar-day'
+        type='button'
       >{dayNumber}</button>
     }
 

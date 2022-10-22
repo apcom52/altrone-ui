@@ -103,13 +103,14 @@ const TabList = ({
         onClick={() => onChange(tab.value)}
         data-testid='alt-test-tab'
         disabled={tab.disabled}
+        type='button'
       >
         {tab.label}
         {(variant === TabListVariant.solid && showCloseButtons && onCloseTab)
-          && <button className='alt-tab__close' onClick={(e) => onCloseClick(e, tab.value)} data-testid='alt-test-tab-close'><Icon i='close' /></button>}
+          && <button className='alt-tab__close' type='button' onClick={(e) => onCloseClick(e, tab.value)} data-testid='alt-test-tab-close'><Icon i='close' /></button>}
       </Component>
     })}
-    {(variant === TabListVariant.solid && showAddTabButton && onAddTab) && <button className='alt-tab-list__add' onClick={onAddTab} data-testid='alt-test-tab-list-add'>
+    {(variant === TabListVariant.solid && showAddTabButton && onAddTab) && <button className='alt-tab-list__add' onClick={onAddTab} data-testid='alt-test-tab-list-add' type='button'>
       <Icon i='add' />
     </button>}
   </div>
