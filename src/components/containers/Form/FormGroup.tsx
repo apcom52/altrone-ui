@@ -51,6 +51,7 @@ const FormGroup = ({ variant = FormGroupVariant.default, align = Align.start, ch
         'alt-form-group--align-end': align === Align.end
       })}
       style={{ gridTemplateColumns }}
+      data-testid='alt-test-form-group'
     >
       {children}
     </div>

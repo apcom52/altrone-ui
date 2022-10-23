@@ -65,7 +65,7 @@ const FormTemplate = args => {
           <TextInput value={surname} onChange={setSurname} />
         </FormField>
       </FormGroup>
-      <FormGroup variant={FormGroupVariant.linear}>
+      <FormGroup variant={FormGroupVariant.linear} weights={[1, 1, 2]}>
         <FormField label='Gender'>
           <Select value={gender} onChange={setGender} options={GENDERS} />
         </FormField>
