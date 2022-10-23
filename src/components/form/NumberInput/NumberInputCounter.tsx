@@ -35,6 +35,7 @@ const NumberInputCounter = ({ value, onChange, min, max, step = 1 }: NumberInput
       className='alt-number-input-counter__increase'
       onClick={onIncreaseClick}
       disabled={isIncreaseDisabled}
+      type='button'
     >
       <Icon i='expand_less' />
     </button>
@@ -42,6 +43,7 @@ const NumberInputCounter = ({ value, onChange, min, max, step = 1 }: NumberInput
       className='alt-number-input-counter__decrease'
       onClick={onDecreaseClick}
       disabled={isDecreaseDisabled}
+      type='button'
     >
       <Icon i='expand_more' />
     </button>

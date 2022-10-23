@@ -1,9 +1,5 @@
 import {forwardRef, memo, Ref, useCallback, useRef, useState} from "react";
-import {
-  Size,
-  WithAltroneOffsets,
-  WithoutDefaultOffsets
-} from "../../../types";
+import {Size, WithAltroneOffsets, WithoutDefaultOffsets} from "../../../types";
 import clsx from "clsx";
 import {Box, FloatingBox} from "../../containers";
 import './button.scss'
@@ -52,6 +48,7 @@ const Button = forwardRef(({
   size = Size.medium,
   dropdown = [],
   onClick,
+  type = 'button',
   ...props
 }: ButtonProps, ref: Ref<HTMLButtonElement>) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false)
@@ -86,6 +83,7 @@ const Button = forwardRef(({
       }}
       href={href}
       onClick={isDropdownButton ? showDropdown : onClick}
+      type={type}
       {...props}
     >
       { leftIcon ? <span className='alt-button__leftIcon'>{leftIcon}</span> : null }

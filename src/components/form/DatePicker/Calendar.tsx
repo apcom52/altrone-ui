@@ -9,17 +9,17 @@ export interface CalendarProps {
   onChange: (value: Date) => void
 }
 
-const makeDateString = date => {
+const makeDateString = (date = new Date()) => {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() + 1}`
 }
 
-const Calendar = ({ currentMonth, selectedDate, onChange }: CalendarProps) => {
+const Calendar = ({ currentMonth, selectedDate = new Date(), onChange }: CalendarProps) => {
   const { locale } = useThemeContext()
 
   const today = new Date()
   const todayString = makeDateString(today)
 
-  const valueString = makeDateString(selectedDate)
+  const valueString = selectedDate ? makeDateString(selectedDate) : ''
 
   const weekdayDateMap = [
     new Date('2020-01-06T00:00:00.000Z'),
@@ -52,6 +52,7 @@ const Calendar = ({ currentMonth, selectedDate, onChange }: CalendarProps) => {
         })}
         onClick={() => onChange(date)}
         data-testid='alt-test-calendar-day'
+        type='button'
       >{dayNumber}</button>
     }
 

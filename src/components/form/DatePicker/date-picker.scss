@@ -3,12 +3,14 @@
 .alt-date-picker {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 5px 6px 5px 12px;
   border-radius: 8px;
   border: none;
   box-shadow: inset 0 0 0 1px var(--borderColor);
   background-color: var(--surface);
   cursor: pointer;
+  gap: 16px;
   transition: box-shadow var(--transitionDuration) ease;
 
   @include useFocus();
@@ -22,7 +24,6 @@
 }
 
 .alt-date-picker__icon {
-  margin-left: 16px;
   font-size: 24px;
   color: var(--secondaryTextColor);
 }
