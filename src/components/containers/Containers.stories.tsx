@@ -1,4 +1,4 @@
-import {Box, Form, FormField, FormGroup} from './index'
+import {Box, Form, FormField, FormGroup, FormGroupVariant} from './index'
 import {withAltrone} from "../../hocs";
 import {Theme} from "../../types";
 import {useState} from "react";
@@ -6,7 +6,8 @@ import clsx from "clsx";
 import {Button} from "../button";
 import FloatingBox from "./FloatingBox/FloatingBox";
 import {Heading, Paragraph} from "../typography";
-import {DatePicker, Select, TextInput} from "../form";
+import {DatePicker, Select, Switcher, TextInput} from "../form";
+import {Align} from "../../types/Align";
 
 const Template = ({component, dark, ...args}) => {
     return withAltrone(component, {
@@ -49,10 +50,13 @@ const FormTemplate = args => {
   const [surname, setSurname] = useState('')
   const [birthDate, setBirthDate] = useState(null)
   const [gender, setGender] = useState('')
+  const [music, setMusic] = useState('')
+  const [movies, setMovies] = useState('')
+  const [books, setBooks] = useState('')
 
   return <div className='altrone'>
     <Form>
-      <FormGroup>
+      <FormGroup variant={FormGroupVariant.linear} disabled>
         <FormField label='First name' required>
           <TextInput value={name} onChange={setName} />
         </FormField>
@@ -60,15 +64,31 @@ const FormTemplate = args => {
           <TextInput value={surname} onChange={setSurname} />
         </FormField>
       </FormGroup>
-      <FormGroup>
-        <FormField label='First name' required>
+      <FormGroup variant={FormGroupVariant.linear}>
+        <FormField label='Gender'>
           <Select value={gender} onChange={setGender} options={GENDERS} />
         </FormField>
-        <FormField label='Last name' required>
+        <FormField label='Birth date' required>
           <DatePicker value={birthDate} onChange={setBirthDate} />
         </FormField>
       </FormGroup>
-      <input type='submit' />
+      <FormGroup variant={FormGroupVariant.row} required>
+        <FormField label='Describe your favorite music and albums'>
+          <TextInput value={music} onChange={setMusic} />
+        </FormField>
+        <FormField label='Movies' required>
+          <TextInput value={movies} onChange={setMovies} />
+        </FormField>
+        <FormField label='Books'>
+          <TextInput value={books} onChange={setBooks} />
+        </FormField>
+      </FormGroup>
+      <Switcher value={false} align={Align.end}>Agree with Privacy Policy</Switcher>
+      <FormGroup variant={FormGroupVariant.row} required>
+        <FormField label='Describe your favorite music and albums'>
+          just a text
+        </FormField>
+      </FormGroup>
     </Form>
   </div>
 }

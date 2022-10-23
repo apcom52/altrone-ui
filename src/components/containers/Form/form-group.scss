@@ -1,0 +1,9 @@
+.alt-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.alt-form-group--variant-linear {
+  flex-direction: row;
+}
