@@ -48,6 +48,7 @@ const GENDERS = [{
 const FormTemplate = args => {
   const [name, setName] = useState('')
   const [surname, setSurname] = useState('')
+  const [fatherName, setFatherName] = useState('')
   const [birthDate, setBirthDate] = useState(null)
   const [gender, setGender] = useState('')
   const [music, setMusic] = useState('')
@@ -70,6 +71,9 @@ const FormTemplate = args => {
         </FormField>
         <FormField label='Birth date' required>
           <DatePicker value={birthDate} onChange={setBirthDate} />
+        </FormField>
+        <FormField label='Father name'>
+          <TextInput value={fatherName} onChange={setFatherName} />
         </FormField>
       </FormGroup>
       <FormGroup variant={FormGroupVariant.row} required>

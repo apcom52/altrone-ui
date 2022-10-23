@@ -1,4 +1,4 @@
-import {memo} from "react";
+import {memo, useMemo} from "react";
 import './form-group.scss';
 import {Align} from "../../../types/Align";
 import clsx from "clsx";
@@ -13,20 +13,45 @@ export enum FormGroupVariant {
 interface FormGroupProps extends React.HTMLProps<HTMLDivElement>, FormContextProps {
   variant?: FormGroupVariant
   align?: Align
+  weights?: number[]
 }
 
-const FormGroup = ({ variant = FormGroupVariant.default, align = Align.start, children, className, required, disabled }: FormGroupProps) => {
+const FormGroup = ({ variant = FormGroupVariant.default, align = Align.start, children, className, required, disabled, weights = [] }: FormGroupProps) => {
   const context = useFormContext()
+
+  const gridTemplateColumns = useMemo(() => {
+    if (variant !== FormGroupVariant.linear) {
+      return undefined
+    }
+
+    if (!children?.length) {
+      return '1fr';
+    }
+
+    if (weights.length === 0) {
+      return `repeat(${children.length}, 1fr)`;
+    }
+
+    const sizes = []
+    for (let childrenIndex = 0; childrenIndex < children.length; childrenIndex++) {
+      sizes.push((weights[childrenIndex] !== undefined ? weights[childrenIndex] : 1) + 'fr')
+    }
+
+    return sizes.join(' ')
+  }, [variant, children, weights])
 
   return <FormContext.Provider value={{
     required: required || context.required,
     disabled: disabled || context.disabled
   }}>
-    <div className={clsx('alt-form-group', className, {
-      'alt-form-group--variant-linear': variant === FormGroupVariant.linear,
-      'alt-form-group--variant-row': variant === FormGroupVariant.row,
-      'alt-form-group--align-end': align === Align.end
-    })}>
+    <div
+      className={clsx('alt-form-group', className, {
+        'alt-form-group--variant-linear': variant === FormGroupVariant.linear,
+        'alt-form-group--variant-row': variant === FormGroupVariant.row,
+        'alt-form-group--align-end': align === Align.end
+      })}
+      style={{ gridTemplateColumns }}
+    >
       {children}
     </div>
   </FormContext.Provider>
