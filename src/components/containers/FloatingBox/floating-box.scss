@@ -1,15 +1,14 @@
 @import '../../../_mixins';
 
 .alt-floating-box {
-  display: inline-flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+  display: block;
   position: absolute;
   border-radius: 8px;
   font-size: 12px;
   padding: 4px;
-  box-shadow: inset 0 0 0 1px var(--surfaceTrasparent), 0 2px 10px 0 rgba(black, 0.1);
+  box-shadow: inset 0 0 0 1px var(--surfaceTrasparent), 0 3px 25px 0 rgba(black, 0.1);
   color: var(--textColor);
+  z-index: 1000;
 
   @include useGlassSurface();
 }
