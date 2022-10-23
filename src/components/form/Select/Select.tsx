@@ -121,6 +121,7 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
         'alt-select--active': isSelectVisible,
         'alt-select--disabled': disabled
       })}
+      type='button'
     >
       <div
         className={clsx('alt-select__value', classNames.currentValue)}

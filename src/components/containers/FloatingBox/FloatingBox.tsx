@@ -4,6 +4,7 @@ import {usePopper} from 'react-popper';
 import './floating-box.scss';
 import {useOutsideClick} from "rooks";
 import {Options} from "@popperjs/core";
+import {createPortal} from "react-dom";
 
 interface FloatingBoxProps extends WithoutDefaultOffsets {
   targetRef: Element
@@ -89,7 +90,11 @@ const FloatingBox = ({
     }, 1)
   })
 
-  return <div
+  if (!targetRef) {
+    return null
+  }
+
+  return createPortal(<div
     className='alt-floating-box'
     ref={setFloatingBoxElement}
     style={styles.popper}
@@ -97,7 +102,7 @@ const FloatingBox = ({
     {...attributes.popper}
   >
     {children}
-  </div>
+  </div>, targetRef.closest('.altrone') || document.body)
 }
 
 export default memo(FloatingBox)

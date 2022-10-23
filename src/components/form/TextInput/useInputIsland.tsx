@@ -18,6 +18,7 @@ export function useInputIsland(island, icon, text, disabled = false) {
             className='alt-text-input__action-button'
             onClick={action.onClick}
             disabled={disabled || action.disabled}
+            type='button'
           >
             {action.icon}
           </button>
