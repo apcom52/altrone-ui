@@ -1,0 +1,29 @@
+@import '../../../_mixins';
+
+.alt-data-table-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.alt-data-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  @include useFontSize(label, Large);
+  font-weight: 500;
+}
+
+.alt-data-table__row {
+  width: 100%;
+}
+
+.alt-data-table__cell {
+  padding: 8px 16px;
+  border: 1px solid var(--borderColor);
+}
+
+.alt-data-table__cell--header {
+  font-weight: 550;
+  text-align: center;
+}
