@@ -16,6 +16,11 @@ export const DataTableExample = Template.bind({})
 DataTableExample.args = {
   component: DataTable,
   data: DATA,
+  sortKeys: [
+    'iso',
+    'name',
+    'continent'
+  ],
   columns: [{
     accessor: 'iso',
     label: 'ISO Code'

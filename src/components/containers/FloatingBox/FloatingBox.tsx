@@ -102,7 +102,7 @@ const FloatingBox = ({
     {...attributes.popper}
   >
     {children}
-  </div>, targetRef.closest('.altrone') || document.body)
+  </div>, targetRef?.closest('.altrone') || document.body)
 }
 
 export default memo(FloatingBox)

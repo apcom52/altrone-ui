@@ -1,0 +1,20 @@
+@import '../../../_mixins';
+
+.alt-data-table-sorting {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 16px 20px;
+}
+
+.alt-data-table-sorting__title {
+  @include useFontSize(label, Large);
+  text-align: center;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.alt-data-table-sorting__footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
