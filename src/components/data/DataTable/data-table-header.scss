@@ -1,0 +1,19 @@
+.alt-data-table-header {
+  display: flex;
+  height: 42px;
+  padding: 4px;
+  background-color: var(--surface);
+  border: 1px solid var(--borderColor);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+}
+
+.alt-data-table-header__filters {
+  flex: 1;
+}
+
+.alt-data-table-header__search {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+}
