@@ -35,7 +35,7 @@ const DataTableHeader = () => {
           variant={ButtonVariant.transparent}
           onClick={() => setIsSortVisible(true)}
         >
-          Sort by {currentSortingColumn && <strong className='alt-data-table-header__filter-value'>{currentSortingColumn.label || currentSortingColumn.accessor}</strong>}
+          {sortBy ? 'Sorted' : 'Sort'} by {currentSortingColumn && <strong className='alt-data-table-header__filter-value'>{currentSortingColumn.label || currentSortingColumn.accessor}</strong>}
         </Button>
       )}
       <Button ref={filterRef} leftIcon={<Icon i='filter_alt' style='outlined' />} variant={ButtonVariant.transparent} onClick={() => setIsFilterVisible(true)}>Filters</Button>

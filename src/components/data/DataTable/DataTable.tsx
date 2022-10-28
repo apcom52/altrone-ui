@@ -51,6 +51,7 @@ interface DataTableProps<T = any> {
   showSearch?: boolean
   searchBy?: string
   sortKeys: string[]
+  sortFunc: (optionA: unknown, optionB: unknown, field: string, direction: SortType) => number
   searchFunc?: (item: unknown, field: string, query: string) => unknown[]
 }
 
@@ -59,6 +60,14 @@ export const useDataTableContext = () => useContext(DataTableContext)
 
 const defaultSearchFunc = (item, field, query) => {
   return item[field].toString().toLowerCase().startsWith(query.toLowerCase())
+}
+
+const defaultSortFunc = (optionA, optionB, field, direction) => {
+  if (direction === 'asc') {
+    return optionA[field] > optionB[field] ? 1 : -1
+  } else {
+    return optionA[field] < optionB[field] ? 1 : -1
+  }
 }
 
 const DataTable = ({
@@ -81,8 +90,12 @@ const DataTable = ({
       result = result.filter(item => searchFunc(item, searchBy, search.trim()))
     }
 
+    if (sortBy) {
+      result.sort((optionA, optionB) => defaultSortFunc(optionA, optionB, sortBy, sortType))
+    }
+
     return result
-  }, [data, search, showSearch, searchFunc, searchBy])
+  }, [data, search, showSearch, searchFunc, searchBy, sortBy, sortType])
 
   return <DataTableContext.Provider value={{
     data: filteredData,

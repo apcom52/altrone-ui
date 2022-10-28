@@ -20,4 +20,8 @@
 
 .alt-data-table-header__filter-value {
   margin-left: 0.5ch;
+  max-width: 75px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
