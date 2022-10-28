@@ -7,6 +7,7 @@ import {useDataTableContext} from "./DataTable";
 import {FloatingBox} from "../../containers";
 import DataTableSorting from "./DataTableSorting";
 import {Icon} from "../../icons";
+import DataTableFiltering from "./DataTableFiltering";
 
 const DataTableHeader = () => {
   const { search, setSearch, sortKeys, sortBy, columns } = useDataTableContext()
@@ -26,6 +27,10 @@ const DataTableHeader = () => {
     setIsSortVisible(false)
   }
 
+  const closeFilteringPopup = () => {
+    setIsFilterVisible(false)
+  }
+
   return <div className='alt-data-table-header'>
     <div className='alt-data-table-header__filters'>
       {sortKeys.length > 0 && (
@@ -38,16 +43,23 @@ const DataTableHeader = () => {
           {sortBy ? 'Sorted' : 'Sort'} by {currentSortingColumn && <strong className='alt-data-table-header__filter-value'>{currentSortingColumn.label || currentSortingColumn.accessor}</strong>}
         </Button>
       )}
-      <Button ref={filterRef} leftIcon={<Icon i='filter_alt' style='outlined' />} variant={ButtonVariant.transparent} onClick={() => setIsFilterVisible(true)}>Filters</Button>
+      <Button
+        ref={filterRef}
+        leftIcon={<Icon i='filter_alt' style='outlined' />}
+        variant={ButtonVariant.transparent}
+        onClick={() => setIsFilterVisible(true)}
+      >
+        Filters
+      </Button>
     </div>
     <div className='alt-data-table-header__search'>
       <TextInput placeholder='Search' value={search} onChange={setSearch} />
     </div>
-    {isSortVisible && sortKeys.length && <FloatingBox targetRef={sortRef.current} onClose={closeSortingPopup}>
+    {isSortVisible && sortKeys.length && <FloatingBox targetRef={sortRef.current} onClose={closeSortingPopup} maxHeight={500}>
       <DataTableSorting onClose={closeSortingPopup} />
     </FloatingBox>}
-    {isFilterVisible && <FloatingBox targetRef={filterRef.current} onClose={() => setIsFilterVisible(false)}>
-      Sorting settings here
+    {isFilterVisible && <FloatingBox targetRef={filterRef.current} onClose={closeFilteringPopup} maxHeight={600}>
+      <DataTableFiltering onClose={closeFilteringPopup} />
     </FloatingBox>}
   </div>
 }

@@ -14,6 +14,8 @@ interface FloatingBoxProps extends WithoutDefaultOffsets {
   popperProps?: Omit<Partial<Options>, "modifiers">
   useParentWidth?: boolean
   minWidth?: number
+  maxHeight?: number | string
+  useParentRef?: boolean
   preventClose?: (e: MouseEvent) => boolean
 }
 
@@ -33,8 +35,10 @@ const FloatingBox = ({
   popperProps,
   useParentWidth = false,
   minWidth,
+  maxHeight = 'auto',
   children,
-  preventClose
+  preventClose,
+  useParentRef = false
 }: FloatingBoxProps) => {
   const [floatingBoxElement, setFloatingBoxElement] = useState(null)
 
@@ -97,12 +101,15 @@ const FloatingBox = ({
   return createPortal(<div
     className='alt-floating-box'
     ref={setFloatingBoxElement}
-    style={styles.popper}
+    style={{
+      ...styles.popper,
+      maxHeight
+    }}
     data-testid='alt-test-floating-box'
     {...attributes.popper}
   >
     {children}
-  </div>, targetRef?.closest('.altrone') || document.body)
+  </div>, useParentRef ? (targetRef?.closest('.altrone') || document.body) : targetRef.parentElement)
 }
 
 export default memo(FloatingBox)

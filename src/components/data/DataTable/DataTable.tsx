@@ -12,6 +12,7 @@ interface DataTableContextType {
   columns: {
     accessor: string
     label?: string
+    width?: number | string
   }[]
   page: number
   setPage: (page: number) => void
@@ -23,6 +24,21 @@ interface DataTableContextType {
   setSortBy: (sortBy: string | null) => void
   sortType: SortType
   setSortType: (sortType: SortType) => void
+  filters: DataTableFilter[]
+  appliedFilters: DataTableAppliedFilter[]
+  setAppliedFilters: (filters: DataTableAppliedFilter[]) => void
+}
+
+interface DataTableFilter {
+  accessor: string
+  type: 'select' | 'checkboxList' | 'datepicker'
+  label?: string
+  defaultValue?: unknown
+}
+
+interface DataTableAppliedFilter {
+  accessor: string
+  value: unknown
 }
 
 const DEFAULT_DATA_TABLE_CONTEXT: DataTableContextType = {
@@ -38,6 +54,9 @@ const DEFAULT_DATA_TABLE_CONTEXT: DataTableContextType = {
   sortType: 'asc',
   setSortBy: () => null,
   setSortType: () => null,
+  filters: [],
+  appliedFilters: [],
+  setAppliedFilters: () => null
 }
 
 interface DataTableProps<T = any> {
@@ -53,6 +72,7 @@ interface DataTableProps<T = any> {
   sortKeys: string[]
   sortFunc: (optionA: unknown, optionB: unknown, field: string, direction: SortType) => number
   searchFunc?: (item: unknown, field: string, query: string) => unknown[]
+  filters: DataTableFilter[]
 }
 
 const DataTableContext = createContext<DataTableContextType>(DEFAULT_DATA_TABLE_CONTEXT)
@@ -77,12 +97,14 @@ const DataTable = ({
   showSearch = true,
   searchBy = 'name',
   searchFunc = defaultSearchFunc,
-  sortKeys = []
+  sortKeys = [],
+  filters = []
 }: DataTableProps) => {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
   const [sortBy, setSortBy] = useState(null)
   const [sortType, setSortType] = useState<SortType>('asc')
+  const [appliedFilters, setAppliedFilters] = useState<DataTableAppliedFilter[]>([])
 
   const filteredData = useMemo(() => {
     let result = [...data]
@@ -109,7 +131,10 @@ const DataTable = ({
     sortBy,
     setSortBy,
     sortType,
-    setSortType
+    setSortType,
+    filters,
+    appliedFilters,
+    setAppliedFilters
   }}>
     <div className='alt-data-table-wrapper'>
       <DataTableHeader />

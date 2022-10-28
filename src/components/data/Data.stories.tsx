@@ -36,6 +36,13 @@ DataTableExample.args = {
   }, {
     accessor: 'currency'
   }],
+  filters: [{
+    accessor: 'continent',
+    type: 'select',
+  }, {
+    accessor: 'currency',
+    type: 'checkboxList'
+  }],
   dark: false,
 }
 
