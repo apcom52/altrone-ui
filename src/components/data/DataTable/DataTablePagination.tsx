@@ -16,8 +16,7 @@ const DataTablePagination = () => {
       <Icon i='arrow_back_ios' />
     </Button>
     <div className='alt-data-table-pagination__progress'>
-      <span className='alt-data-table-pagination__currentPage'>{page}</span>
-      / {totalPages}
+      <span className='alt-data-table-pagination__currentPage'>{page}</span> / {totalPages}
     </div>
     <Button
       disabled={page >= totalPages}

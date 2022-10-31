@@ -42,7 +42,7 @@ const DataTableFiltering = ({ onClose }: DataTableFilteringProps) => {
         }
 
         const onChange = (value) => {
-          const _filters = [...appliedFilters]
+          let _filters = [...appliedFilters]
           if (filter.type === 'select') {
             if (currentFilterIndex === -1) {
               _filters.push({
@@ -61,6 +61,9 @@ const DataTableFiltering = ({ onClose }: DataTableFilteringProps) => {
             } else {
               if (_filters[currentFilterIndex].value?.indexOf(value) > -1) {
                 _filters[currentFilterIndex].value = _filters[currentFilterIndex].value.filter(filterValue => filterValue !== value)
+                if (_filters[currentFilterIndex].value.length === 0) {
+                  _filters = _filters.filter((_, filterIndex) => filterIndex !== currentFilterIndex)
+                }
               } else {
                 _filters[currentFilterIndex].value.push(value)
               }
@@ -74,7 +77,7 @@ const DataTableFiltering = ({ onClose }: DataTableFilteringProps) => {
           {filter.type === 'select' && <Select options={selectOptions} value={currentFilterValue} onChange={onChange} />}
           {filter.type === 'checkboxList' && <CheckboxList direction={Direction.vertical}>
             {selectOptions.map((checkbox, checkboxIndex) => (
-              <Checkbox key={checkboxIndex} value={checkbox.value} onChange={() => null}>{checkbox.label}</Checkbox>
+              <Checkbox key={checkboxIndex} value={checkbox.value} checked={currentFilterValue?.indexOf(checkbox.value) > -1} onChange={() => onChange(checkbox.value)}>{checkbox.label}</Checkbox>
             ))}
           </CheckboxList>}
         </FormField>
