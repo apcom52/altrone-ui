@@ -22,13 +22,16 @@
 .alt-data-table__cell {
   padding: 8px 16px;
   border: 1px solid var(--borderColor);
+  @include useFontSize(body);
 }
 
 .alt-data-table__cell--header {
   position: relative;
-  font-weight: 550;
   text-align: center;
   padding: 8px 24px;
+
+  @include useFontSize(label, Large);
+  font-weight: 600;
 }
 
 .alt-data-table__sort-indicator {

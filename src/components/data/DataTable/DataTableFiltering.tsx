@@ -12,7 +12,7 @@ interface DataTableFilteringProps {
 }
 
 const DataTableFiltering = ({ onClose }: DataTableFilteringProps) => {
-  const { columns, filters, data, appliedFilters, setAppliedFilters } = useDataTableContext()
+  const { filters, initialData, appliedFilters, setAppliedFilters } = useDataTableContext()
 
   return <div className='alt-data-table-filtering'>
     <div className='alt-data-table-filtering__title'>Filtering</div>
@@ -20,7 +20,7 @@ const DataTableFiltering = ({ onClose }: DataTableFilteringProps) => {
       {filters.map((filter, filterIndex) => {
         const options = new Set<Option>()
 
-        data.forEach((row) => {
+        initialData.forEach((row) => {
           options.add(row[filter.accessor]);
         })
 
@@ -29,8 +29,49 @@ const DataTableFiltering = ({ onClose }: DataTableFilteringProps) => {
           value: variant
         }))
 
+        const currentFilterIndex = appliedFilters.findIndex(appliedFilter => appliedFilter.accessor === filter.accessor)
+        let currentFilterValue = null
+
+        switch (filter.type) {
+          case 'select':
+            currentFilterValue = appliedFilters[currentFilterIndex]?.value || null
+            break;
+          case 'checkboxList':
+            currentFilterValue = appliedFilters[currentFilterIndex]?.value || []
+            break;
+        }
+
+        const onChange = (value) => {
+          const _filters = [...appliedFilters]
+          if (filter.type === 'select') {
+            if (currentFilterIndex === -1) {
+              _filters.push({
+                accessor: filter.accessor,
+                value
+              })
+            } else {
+              _filters[currentFilterIndex].value = value
+            }
+          } else if (filter.type === 'checkboxList') {
+            if (currentFilterIndex === -1) {
+              _filters.push({
+                accessor: filter.accessor,
+                value: [value]
+              })
+            } else {
+              if (_filters[currentFilterIndex].value?.indexOf(value) > -1) {
+                _filters[currentFilterIndex].value = _filters[currentFilterIndex].value.filter(filterValue => filterValue !== value)
+              } else {
+                _filters[currentFilterIndex].value.push(value)
+              }
+            }
+          }
+
+          setAppliedFilters(_filters)
+        }
+
         return <FormField label={filter.label || filter.accessor}>
-          {filter.type === 'select' && <Select options={selectOptions} value={null} onChange={() => null} />}
+          {filter.type === 'select' && <Select options={selectOptions} value={currentFilterValue} onChange={onChange} />}
           {filter.type === 'checkboxList' && <CheckboxList direction={Direction.vertical}>
             {selectOptions.map((checkbox, checkboxIndex) => (
               <Checkbox key={checkboxIndex} value={checkbox.value} onChange={() => null}>{checkbox.label}</Checkbox>

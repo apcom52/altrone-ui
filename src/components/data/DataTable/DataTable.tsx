@@ -9,6 +9,7 @@ type SortType = 'asc' | 'desc'
 
 interface DataTableContextType {
   data: any[]
+  initialData: any[]
   columns: {
     accessor: string
     label?: string
@@ -38,11 +39,12 @@ interface DataTableFilter {
 
 interface DataTableAppliedFilter {
   accessor: string
-  value: unknown
+  value: any | any[]
 }
 
 const DEFAULT_DATA_TABLE_CONTEXT: DataTableContextType = {
   data: [],
+  initialData: [],
   columns: [],
   page: 1,
   setPage: () => null,
@@ -82,6 +84,14 @@ const defaultSearchFunc = (item, field, query) => {
   return item[field].toString().toLowerCase().startsWith(query.toLowerCase())
 }
 
+const defaultSelectFilter = (item, field, value) => {
+  return item[field] === value
+}
+
+const defaultCheckboxesFilter = (item, field, value = []) => {
+  return value.indexOf(item[field]) > -1
+}
+
 const defaultSortFunc = (optionA, optionB, field, direction) => {
   if (direction === 'asc') {
     return optionA[field] > optionB[field] ? 1 : -1
@@ -116,11 +126,31 @@ const DataTable = ({
       result.sort((optionA, optionB) => defaultSortFunc(optionA, optionB, sortBy, sortType))
     }
 
+    if (appliedFilters) {
+      for (const filter of appliedFilters) {
+        const filterConfig = filters.find(_filter => _filter.accessor === filter.accessor)
+
+        if (!filterConfig) {
+          continue
+        }
+
+        switch (filterConfig.type) {
+          case "select":
+            result = result.filter(item => defaultSelectFilter(item, filterConfig.accessor, filter.value))
+            break
+          case 'checkboxList':
+            result = result.filter(item => defaultCheckboxesFilter(item, filterConfig.accessor, filter.value))
+            break
+        }
+      }
+    }
+
     return result
-  }, [data, search, showSearch, searchFunc, searchBy, sortBy, sortType])
+  }, [data, search, showSearch, searchFunc, searchBy, sortBy, sortType, appliedFilters, filters])
 
   return <DataTableContext.Provider value={{
     data: filteredData,
+    initialData: data,
     columns,
     page,
     setPage,

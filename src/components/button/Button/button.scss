@@ -54,7 +54,6 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  font-weight: 500;
   cursor: pointer;
   text-decoration: none;
   white-space: nowrap;
@@ -73,6 +72,7 @@
   @include useFocus();
   @include useDisabledUserSelect();
   @include useButtonSize(controlHeight, 14px, 6px, 16px, 8px, -4px);
+  @include useFontSize(label, Large);
 }
 
 .alt-button--with-icons {

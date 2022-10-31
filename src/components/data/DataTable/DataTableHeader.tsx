@@ -10,7 +10,7 @@ import {Icon} from "../../icons";
 import DataTableFiltering from "./DataTableFiltering";
 
 const DataTableHeader = () => {
-  const { search, setSearch, sortKeys, sortBy, columns } = useDataTableContext()
+  const { search, setSearch, sortKeys, sortBy, columns, appliedFilters } = useDataTableContext()
   const [isSortVisible, setIsSortVisible] = useState(false)
   const [isFilterVisible, setIsFilterVisible] = useState(false)
 
@@ -36,7 +36,7 @@ const DataTableHeader = () => {
       {sortKeys.length > 0 && (
         <Button
           ref={sortRef}
-          leftIcon={<Icon i='sort' />}
+          leftIcon={<Icon i='swap_vert' />}
           variant={ButtonVariant.transparent}
           onClick={() => setIsSortVisible(true)}
         >
@@ -45,20 +45,20 @@ const DataTableHeader = () => {
       )}
       <Button
         ref={filterRef}
-        leftIcon={<Icon i='filter_alt' style='outlined' />}
+        leftIcon={<Icon i='tune' style='outlined' />}
         variant={ButtonVariant.transparent}
         onClick={() => setIsFilterVisible(true)}
       >
-        Filters
+        Filters {appliedFilters.length > 0 && <strong className='alt-data-table-header__filter-value'>({appliedFilters.length})</strong>}
       </Button>
     </div>
     <div className='alt-data-table-header__search'>
       <TextInput placeholder='Search' value={search} onChange={setSearch} />
     </div>
-    {isSortVisible && sortKeys.length && <FloatingBox targetRef={sortRef.current} onClose={closeSortingPopup} maxHeight={500}>
+    {isSortVisible && sortKeys.length && <FloatingBox targetRef={sortRef.current} onClose={closeSortingPopup} minWidth={250} useParentWidth>
       <DataTableSorting onClose={closeSortingPopup} />
     </FloatingBox>}
-    {isFilterVisible && <FloatingBox targetRef={filterRef.current} onClose={closeFilteringPopup} maxHeight={600}>
+    {isFilterVisible && <FloatingBox targetRef={filterRef.current} onClose={closeFilteringPopup} minWidth={250} useParentWidth>
       <DataTableFiltering onClose={closeFilteringPopup} />
     </FloatingBox>}
   </div>
