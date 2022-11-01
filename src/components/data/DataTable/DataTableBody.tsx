@@ -10,7 +10,7 @@ const DataTableBody = () => {
 
   return <tbody>
     {data.slice(start, end).map((row, rowIndex) => (
-      <tr key={rowIndex}>
+      <tr key={rowIndex} data-testid='alt-test-datatable-row'>
         {columns.map((column, columnIndex) => {
           const props = {
 
@@ -24,7 +24,7 @@ const DataTableBody = () => {
           let content = null
 
           if (column.Component) {
-            const CellComponent = column.Component as JSX.Element
+            const CellComponent = column.Component as keyof JSX.IntrinsicElements
             content = <CellComponent {...props} />
           } else {
             content = <DataTableCell {...props} />

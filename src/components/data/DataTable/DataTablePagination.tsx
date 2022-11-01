@@ -8,7 +8,7 @@ const DataTablePagination = () => {
 
   const totalPages = Math.ceil(data.length / limit)
 
-  return <div className='alt-data-table-pagination'>
+  return <div className='alt-data-table-pagination' data-testid='alt-test-datatable-pagination'>
     <Button
       disabled={page <= 1}
       onClick={() => setPage(page - 1)}
@@ -16,7 +16,10 @@ const DataTablePagination = () => {
       <Icon i='arrow_back_ios' />
     </Button>
     <div className='alt-data-table-pagination__progress'>
-      <span className='alt-data-table-pagination__currentPage'>{page}</span> / {totalPages}
+      <span
+        className='alt-data-table-pagination__currentPage'
+        data-testid='alt-test-datatable-currentPage'
+      >{page}</span> / {totalPages}
     </div>
     <Button
       disabled={page >= totalPages}

@@ -14,7 +14,7 @@ interface DataTableFilteringProps {
 const DataTableFiltering = ({ onClose }: DataTableFilteringProps) => {
   const { filters, initialData, appliedFilters, setAppliedFilters } = useDataTableContext()
 
-  return <div className='alt-data-table-filtering'>
+  return <div className='alt-data-table-filtering' data-testid='alt-test-datatable-filtering-popup'>
     <div className='alt-data-table-filtering__title'>Filtering</div>
     <FormGroup>
       {filters.map((filter, filterIndex) => {

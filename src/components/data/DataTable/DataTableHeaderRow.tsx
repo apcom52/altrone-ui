@@ -6,7 +6,7 @@ const DataTableHeaderRow = () => {
   const { data, columns, sortBy, sortType } = useDataTableContext()
 
   return <thead>
-  <tr className='alt-data-table__row'>
+  <tr className='alt-data-table__row' data-testid='alt-test-datatable-thead'>
     {columns.map((column, columnIndex) => (
       <th
         key={columnIndex}

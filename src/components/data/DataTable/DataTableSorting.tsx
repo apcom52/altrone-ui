@@ -25,7 +25,7 @@ const DataTableSorting = ({ onClose }: DataTableSortingProps) => {
     }, [])
   }, [columns, sortKeys])
 
-  return <div className='alt-data-table-sorting'>
+  return <div className='alt-data-table-sorting' data-testid='alt-test-datatable-sorting'>
     <div className='alt-data-table-sorting__title'>Sorting</div>
     <FormGroup>
       <FormField label='Field'>

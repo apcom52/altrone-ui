@@ -75,7 +75,6 @@ const Button = forwardRef(({
       })}
       ref={(node: HTMLButtonElement) => {
         buttonRef.current = node
-        console.log('typeof', typeof ref);
         if (typeof ref === 'function') {
           ref(node)
         } else if (ref) {

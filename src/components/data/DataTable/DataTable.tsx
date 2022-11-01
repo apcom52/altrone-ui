@@ -6,7 +6,14 @@ import DataTableHeaderRow from "./DataTableHeaderRow";
 import DataTableFooter from "./DataTableFooter";
 import {DataTableAppliedFilter, DataTableContext, DataTableFilter} from "../../../contexts";
 import {Sort} from "../../../types";
-import {defaultCheckboxesFilter, defaultSearchFunc, defaultSelectFilter, defaultSortFunc} from "./functions";
+import {
+  DataTableSearchFunc,
+  DataTableSortFunc,
+  defaultCheckboxesFilter,
+  defaultSearchFunc,
+  defaultSelectFilter,
+  defaultSortFunc
+} from "./functions";
 
 export interface DataTableColumn {
   accessor: string
@@ -19,20 +26,18 @@ interface DataTableProps<T = any> {
   data: T[]
   columns: DataTableColumn[]
   limit?: number
-  showSearch?: boolean
   searchBy?: string
-  sortKeys: string[]
-  sortFunc: (optionA: unknown, optionB: unknown, field: string, direction: Sort) => number
-  searchFunc?: (item: unknown, field: string, query: string) => unknown[]
-  filters: DataTableFilter[]
+  sortKeys?: string[]
+  sortFunc?: (params: DataTableSortFunc) => number
+  searchFunc?: (params: DataTableSearchFunc) => unknown[]
+  filters?: DataTableFilter[]
 }
 
 const DataTable = ({
   data = [],
   columns = [],
   limit = 20,
-  showSearch = true,
-  searchBy = 'name',
+  searchBy,
   searchFunc = defaultSearchFunc,
   sortKeys = [],
   filters = []
@@ -45,8 +50,8 @@ const DataTable = ({
 
   const filteredData = useMemo(() => {
     let result = [...data]
-    if (showSearch && searchFunc && search.trim()) {
-      result = result.filter(item => searchFunc(item, searchBy, search.trim()))
+    if (searchBy && searchFunc && search.trim()) {
+      result = result.filter(item => searchFunc({ item, field: searchBy, query: search.trim() }))
     }
 
     if (sortBy) {
@@ -73,7 +78,9 @@ const DataTable = ({
     }
 
     return result
-  }, [data, search, showSearch, searchFunc, searchBy, sortBy, sortType, appliedFilters, filters])
+  }, [data, search, searchFunc, searchBy, sortBy, sortType, appliedFilters, filters])
+
+  const isHeaderVisible = sortKeys.length || filters.length || searchBy
 
   return <DataTableContext.Provider value={{
     data: filteredData,
@@ -82,6 +89,7 @@ const DataTable = ({
     page,
     setPage,
     limit,
+    searchBy,
     search,
     setSearch,
     sortKeys,
@@ -93,8 +101,8 @@ const DataTable = ({
     appliedFilters,
     setAppliedFilters
   }}>
-    <div className='alt-data-table-wrapper'>
-      <DataTableHeader />
+    <div className='alt-data-table-wrapper' data-testid='alt-test-datatable'>
+      { isHeaderVisible && <DataTableHeader /> }
       {data.length && <table className='alt-data-table'>
         <DataTableHeaderRow />
         <DataTableBody />

@@ -46,6 +46,7 @@ DataTableExample.args = {
     accessor: 'currency',
     type: 'select'
   }],
+  searchBy: 'name',
   dark: false,
 }
 

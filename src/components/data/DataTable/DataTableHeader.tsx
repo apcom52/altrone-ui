@@ -10,7 +10,7 @@ import DataTableFiltering from "./DataTableFiltering";
 import {useDataTableContext} from "../../../contexts";
 
 const DataTableHeader = () => {
-  const { search, setSearch, sortKeys, sortBy, columns, appliedFilters } = useDataTableContext()
+  const { search, setSearch, sortKeys, sortBy, columns, appliedFilters, filters, searchBy } = useDataTableContext()
   const [isSortVisible, setIsSortVisible] = useState(false)
   const [isFilterVisible, setIsFilterVisible] = useState(false)
 
@@ -43,18 +43,18 @@ const DataTableHeader = () => {
           {sortBy ? 'Sorted' : 'Sort'} by {currentSortingColumn && <strong className='alt-data-table-header__filter-value'>{currentSortingColumn.label || currentSortingColumn.accessor}</strong>}
         </Button>
       )}
-      <Button
+      {filters.length > 0 && <Button
         ref={filterRef}
         leftIcon={<Icon i='tune' style='outlined' />}
         variant={ButtonVariant.transparent}
         onClick={() => setIsFilterVisible(true)}
       >
         Filters {appliedFilters.length > 0 && <strong className='alt-data-table-header__filter-value'>({appliedFilters.length})</strong>}
-      </Button>
+      </Button>}
     </div>
-    <div className='alt-data-table-header__search'>
+    {searchBy && <div className='alt-data-table-header__search' data-testid='alt-test-datatable-search'>
       <TextInput placeholder='Search' value={search} onChange={setSearch} />
-    </div>
+    </div>}
     {isSortVisible && sortKeys.length && <FloatingBox targetRef={sortRef.current} onClose={closeSortingPopup} minWidth={250} useParentWidth>
       <DataTableSorting onClose={closeSortingPopup} />
     </FloatingBox>}

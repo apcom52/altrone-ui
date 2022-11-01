@@ -21,6 +21,7 @@ export interface DataTableContextType {
   page: number
   setPage: (page: number) => void
   limit: number
+  searchBy: string
   search: string
   setSearch: (search: string) => void
   sortKeys: string[]
@@ -40,6 +41,7 @@ const DEFAULT_DATA_TABLE_CONTEXT: DataTableContextType = {
   page: 1,
   setPage: () => null,
   limit: 20,
+  searchBy: '',
   search: '',
   setSearch: () => null,
   sortKeys: [],
