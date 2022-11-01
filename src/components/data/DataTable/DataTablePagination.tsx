@@ -1,7 +1,7 @@
 import {memo} from "react";
 import {Button} from "../../button";
 import {Icon} from "../../icons";
-import {useDataTableContext} from "./DataTable";
+import {useDataTableContext} from "../../../contexts";
 
 const DataTablePagination = () => {
   const { data, page, setPage, limit } = useDataTableContext()

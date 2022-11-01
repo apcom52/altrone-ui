@@ -3,9 +3,9 @@ import {FormField, FormGroup} from "../../containers";
 import {Checkbox, CheckboxList, Select} from "../../form";
 import './data-table-filtering.scss';
 import {Direction, Option} from "../../../types";
-import {useDataTableContext} from "./DataTable";
 import {Button} from "../../button";
 import {ButtonStyle} from "../../button/Button/Button";
+import {useDataTableContext} from "../../../contexts";
 
 interface DataTableFilteringProps {
   onClose: () => void

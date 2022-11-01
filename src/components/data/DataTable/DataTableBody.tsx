@@ -1,5 +1,6 @@
 import {memo} from "react";
-import {useDataTableContext} from "./DataTable";
+import {useDataTableContext} from "../../../contexts";
+import DataTableCell from "./DataTableCell";
 
 const DataTableBody = () => {
   const { data, columns, page, limit } = useDataTableContext()
@@ -7,19 +8,30 @@ const DataTableBody = () => {
   const start = (page - 1) * limit
   const end = page * limit
 
-  console.log(start, end);
-
   return <tbody>
     {data.slice(start, end).map((row, rowIndex) => (
       <tr key={rowIndex}>
-        {columns.map((column, columnIndex) => (
-          <td
-            key={columnIndex}
-            className='alt-data-table__cell'
-          >
-            {row[column.accessor].toString()}
-          </td>
-        ))}
+        {columns.map((column, columnIndex) => {
+          const props = {
+
+            accessor: column.accessor,
+            item: row,
+            value: row[column.accessor],
+            rowIndex,
+            columnIndex
+          }
+
+          let content = null
+
+          if (column.Component) {
+            const CellComponent = column.Component as JSX.Element
+            content = <CellComponent {...props} />
+          } else {
+            content = <DataTableCell {...props} />
+          }
+
+          return <td key={columnIndex} className='alt-data-table__cell'>{content}</td>
+        })}
       </tr>
     ))}
   </tbody>

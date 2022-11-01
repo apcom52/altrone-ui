@@ -23,7 +23,10 @@ DataTableExample.args = {
   ],
   columns: [{
     accessor: 'iso',
-    label: 'ISO Code'
+    label: 'ISO Code',
+    Component: ({ value }) => <td>
+      <code>{value}</code>
+    </td>
   }, {
     accessor: 'name',
   }, {

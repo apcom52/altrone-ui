@@ -1,6 +1,6 @@
 import {memo} from "react";
-import {useDataTableContext} from "./DataTable";
 import {Icon} from "../../icons";
+import {useDataTableContext} from "../../../contexts";
 
 const DataTableHeaderRow = () => {
   const { data, columns, sortBy, sortType } = useDataTableContext()

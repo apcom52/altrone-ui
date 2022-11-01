@@ -3,9 +3,9 @@ import {FormField, FormGroup} from "../../containers";
 import {RadioList, Select} from "../../form";
 import './data-table-sorting.scss';
 import {Direction} from "../../../types";
-import {useDataTableContext} from "./DataTable";
 import {Button} from "../../button";
 import {ButtonStyle} from "../../button/Button/Button";
+import {useDataTableContext} from "../../../contexts";
 
 interface DataTableSortingProps {
   onClose: () => void

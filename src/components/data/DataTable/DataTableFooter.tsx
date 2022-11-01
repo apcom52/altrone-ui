@@ -1,7 +1,7 @@
 import {memo} from "react";
 import './data-table-footer.scss';
 import DataTablePagination from "./DataTablePagination";
-import {useDataTableContext} from "./DataTable";
+import {useDataTableContext} from "../../../contexts";
 
 const DataTableFooter = () => {
   const { data, initialData } = useDataTableContext()

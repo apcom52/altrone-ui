@@ -6,3 +6,4 @@ export { ContextAction, ContextSeparator, ParentContextAction, ContextMenu } fro
 export { Direction } from './Direction'
 export { Option, OptionParent } from './Option'
 export { Role } from './Role'
+export { Sort } from './Sort'

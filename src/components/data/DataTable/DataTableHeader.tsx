@@ -3,11 +3,11 @@ import './data-table-header.scss';
 import {Button} from "../../button";
 import {ButtonVariant} from "../../button/Button/Button";
 import {TextInput} from "../../form";
-import {useDataTableContext} from "./DataTable";
 import {FloatingBox} from "../../containers";
 import DataTableSorting from "./DataTableSorting";
 import {Icon} from "../../icons";
 import DataTableFiltering from "./DataTableFiltering";
+import {useDataTableContext} from "../../../contexts";
 
 const DataTableHeader = () => {
   const { search, setSearch, sortKeys, sortBy, columns, appliedFilters } = useDataTableContext()
