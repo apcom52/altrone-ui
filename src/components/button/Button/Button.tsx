@@ -78,7 +78,7 @@ const Button = forwardRef(({
         if (typeof ref === 'function') {
           ref(node)
         } else if (ref) {
-          ref.current = ref
+          ref.current = node
         }
       }}
       href={href}

@@ -1,0 +1,42 @@
+@import '../../../_mixins';
+
+.alt-data-table-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 12px;
+}
+
+.alt-data-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  @include useFontSize(label, Large);
+  font-weight: 500;
+}
+
+.alt-data-table__row {
+  width: 100%;
+}
+
+.alt-data-table__cell {
+  padding: 8px 16px;
+  border: 1px solid var(--borderColor);
+  @include useFontSize(body);
+}
+
+.alt-data-table__cell--header {
+  position: relative;
+  text-align: center;
+  padding: 8px 24px;
+
+  @include useFontSize(label, Large);
+  font-weight: 600;
+}
+
+.alt-data-table__sort-indicator {
+  position: absolute;
+  font-size: 20px;
+  left: 8px;
+  top: 8px;
+}

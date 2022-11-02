@@ -1,0 +1,42 @@
+@import '../../../_mixins';
+
+.alt-data-table-footer {
+  display: flex;
+  align-items: center;
+  height: 42px;
+  padding: 4px;
+  background-color: var(--surface);
+  border: 1px solid var(--borderColor);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+
+  @include useDisabledUserSelect();
+}
+
+.alt-data-table-footer__status {
+  flex: 1;
+
+  @include useFontSize(label);
+  margin-left: 16px;
+}
+
+.alt-data-table-footer__pagination {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.alt-data-table-pagination {
+  display: flex;
+  align-items: center;
+
+  @include useFontSize(label, Large);
+}
+
+.alt-data-table-pagination__progress {
+  margin: 0 12px;
+}
+
+.alt-data-table-pagination__currentPage {
+  font-weight: 600;
+}

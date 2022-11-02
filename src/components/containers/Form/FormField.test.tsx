@@ -13,14 +13,4 @@ describe('Form.FormField', () => {
     const input = screen.getByRole('textbox')
     expect(input).toBeInTheDocument()
   })
-
-  test('should disabled prop works correctly', () => {
-    render(<Form><FormField disabled>
-      <TextInput value='' onChange={() => null} />
-      <TextInput value='' onChange={() => null} />
-    </FormField></Form>)
-
-    const input = screen.queryAllByRole('textbox')
-    expect(input[0]).toHaveAttribute('disabled', '')
-  })
 })
