@@ -1,8 +1,10 @@
 import {withAltrone} from "../../hocs";
 import {Direction, Theme} from "../../types";
 import {useCallback, useEffect, useState} from "react";
-import {Chips, TabList, TabListVariant} from './index'
+import {Chips, TabList, TabListVariant, Toolbar, ToolbarGroup, ToolbarSeparator} from './index'
 import {Align} from "../../types/Align";
+import {Icon} from "../icons";
+import ToolbarAction from "./Toolbar/ToolbarAction";
 
 const Template = ({component, dark, values, value, ...args}) => {
   const [_value, setValue] = useState(values)
@@ -129,6 +131,43 @@ TabsExample.argTypes = {
     control: 'select',
     options: [Align.start, Align.center, Align.end]
   }
+}
+
+export const ToolbarExample = Template.bind({})
+ToolbarExample.args = {
+  component: Toolbar,
+  children: <>
+    <ToolbarGroup>
+      <ToolbarAction icon={<Icon i='undo' />} label='Undo command' />
+      <ToolbarAction icon={<Icon i='redo' />} label='Redo' />
+    </ToolbarGroup>
+    <ToolbarSeparator />
+    <ToolbarGroup>
+      <ToolbarAction icon={<Icon i='add' />} label='Create document' />
+      <ToolbarAction icon={<Icon i='folder_open' />} label='Open folder' />
+      <ToolbarAction icon={<Icon i='cloud_upload' />} label='Save' />
+      <ToolbarAction icon={<Icon i='expand_more' />} label='More...' />
+    </ToolbarGroup>
+
+    <ToolbarGroup fluid>
+      <ToolbarAction icon={<Icon i='skip_previous' />} label='Previous song' />
+      <ToolbarAction icon={<Icon i='stop' />} label='Stop' />
+      <ToolbarAction icon={<Icon i='play_arrow' />} label='Play' />
+      <ToolbarAction icon={<Icon i='pause' />} label='Pause' />
+      <ToolbarAction icon={<Icon i='skip_next' />} label='Next song' />
+    </ToolbarGroup>
+
+    <ToolbarGroup>
+      <ToolbarAction icon={<Icon i='replay' />} label='Repeat' />
+      <ToolbarAction icon={<Icon i='shuffle' />} label='Shuffle' />
+    </ToolbarGroup>
+
+    <ToolbarGroup fluid align={Align.end}>
+      <ToolbarAction icon={<Icon i='play_circle' />} label='Play' />
+      <ToolbarAction icon={<Icon i='ios_share' />} label='Share' />
+    </ToolbarGroup>
+  </>,
+  dark: false
 }
 
 export default {

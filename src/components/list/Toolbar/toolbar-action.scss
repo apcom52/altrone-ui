@@ -1,0 +1,44 @@
+@import '../../../_mixins';
+
+.alt-toolbar-action {
+  display: flex;
+  min-width: 60px;
+  max-width: 120px;
+  margin: 0;
+  padding: 4px 8px;
+  background-color: transparent;
+  border: none;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  color: var(--textColor);
+  transition: transform var(--transitionDuration) ease;
+
+  &:hover, &:focus {
+    .alt-toolbar-action__icon {
+      background-color: var(--surfaceTrasparent);
+    }
+  }
+
+  &:active {
+    transform: translateY(2px);
+  }
+
+  @include useFocus();
+}
+
+.alt-toolbar-action__icon {
+  font-size: 24px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background-color var(--transitionDuration) ease;
+}
+
+.alt-toolbar-action__label {
+  width: 100%;
+  margin-top: 4px;
+  @include useFontSize(label, Small);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

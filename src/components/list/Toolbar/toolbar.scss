@@ -1,0 +1,43 @@
+@import '../../../_mixins';
+
+.alt-toolbar {
+  display: flex;
+  position: absolute;
+  width: calc(100% - 24px);
+  align-items: flex-start;
+  padding: 4px;
+  background-color: var(--surfaceTrasparent);
+  backdrop-filter: blur(16px);
+  border-radius: 12px;
+  box-shadow: 0 3px 15px 0 var(--shadow);
+  gap: 24px;
+  overflow: hidden;
+}
+
+.alt-toolbar-group {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  margin-left: -4px;
+  margin-right: -4px;
+}
+
+.alt-toolbar-group--fluid {
+  flex-grow: 1;
+}
+
+.alt-toolbar-group--align-start {
+  justify-content: flex-start;
+}
+
+.alt-toolbar-group--align-end {
+  justify-content: flex-end;
+}
+
+.alt-toolbar-separator {
+  width: 1px;
+  height: 48px;
+  margin-top: 6px;
+  border-left: 1px solid var(--borderColor);
+}
