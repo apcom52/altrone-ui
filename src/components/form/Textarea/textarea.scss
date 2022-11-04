@@ -1,0 +1,20 @@
+@import '../../../_mixins';
+
+.alt-textarea {
+  min-height: calc(var(--height) * 3);
+  max-height: calc(var(--height) * 10);
+  margin: 0;
+  padding: 6px 12px;
+  background-color: var(--surface);
+  color: var(--textColor);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px var(--surfaceTrasparent);
+  transition: box-shadow var(--transitionDuration) ease, opacity var(--transitionDuration) ease;
+  resize: vertical;
+
+  @include useFontSize(body);
+}
