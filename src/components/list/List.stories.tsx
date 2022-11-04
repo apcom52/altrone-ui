@@ -1,8 +1,10 @@
 import {withAltrone} from "../../hocs";
 import {Direction, Theme} from "../../types";
 import {useCallback, useEffect, useState} from "react";
-import {Chips, TabList, TabListVariant} from './index'
+import {Chips, TabList, TabListVariant, Toolbar, ToolbarGroup, ToolbarSeparator} from './index'
 import {Align} from "../../types/Align";
+import {Icon} from "../icons";
+import ToolbarAction from "./Toolbar/ToolbarAction";
 
 const Template = ({component, dark, values, value, ...args}) => {
   const [_value, setValue] = useState(values)
@@ -16,7 +18,14 @@ const Template = ({component, dark, values, value, ...args}) => {
   }, [])
 
   return withAltrone(component, {
-    theme: dark ? Theme.dark : Theme.light
+    theme: dark ? Theme.dark : Theme.light,
+    style: {
+      height: 250,
+      backgroundImage: 'url(https://4kwallpapers.com/images/wallpapers/windows-11-flow-dark-mode-dark-background-pink-3840x2160-5747.jpg)',
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center'
+    }
   })({
     ...args,
     values: _value,
@@ -129,6 +138,124 @@ TabsExample.argTypes = {
     control: 'select',
     options: [Align.start, Align.center, Align.end]
   }
+}
+
+export const ToolbarExample = Template.bind({})
+ToolbarExample.args = {
+  component: Toolbar,
+  children: <>
+    <ToolbarGroup>
+      <ToolbarAction icon={<Icon i='local_grocery_store' />} label='Music store' />
+      <ToolbarAction icon={<Icon i='queue_music' />} label='Collection' />
+      <ToolbarAction icon={<Icon i='favorite' />} label='Favorite' />
+    </ToolbarGroup>
+    <ToolbarSeparator />
+    <ToolbarGroup collapsible>
+      <ToolbarAction icon={<Icon i='interpreter_mode' />} label='Artists' />
+      <ToolbarAction icon={<Icon i='library_music' />} label='Albums' />
+      <ToolbarAction icon={<Icon i='lyrics' />} label='Songs' />
+      <ToolbarAction icon={<Icon i='album' />} label='Playlists' />
+    </ToolbarGroup>
+
+    <ToolbarGroup collapsible>
+      <ToolbarAction icon={<Icon i='skip_previous' />} label='Previous song' />
+      <ToolbarAction icon={<Icon i='stop' />} label='Stop' danger />
+      <ToolbarAction icon={<Icon i='play_arrow' />} label='Play' />
+      <ToolbarAction icon={<Icon i='pause' />} label='Pause' />
+      <ToolbarAction icon={<Icon i='skip_next' />} label='Next song' />
+    </ToolbarGroup>
+
+    <ToolbarGroup>
+      <ToolbarAction icon={<Icon i='replay' />} label='Repeat' disabled />
+      <ToolbarAction icon={<Icon i='shuffle' />} label='Shuffle' active />
+    </ToolbarGroup>
+
+    <ToolbarGroup fluid align={Align.end}>
+      <ToolbarAction icon={<Icon i='play_circle' />} label='Play' />
+      <ToolbarAction icon={<Icon i='ios_share' />} label='Share' />
+      <ToolbarAction icon={<Icon i='search' />} label='Search' />
+    </ToolbarGroup>
+  </>,
+  dark: false,
+  menu: [{
+    label: 'File',
+    submenu: [{
+      title: 'New document',
+      onClick: () => null,
+    }, {
+      title: 'Open',
+      onClick: () => null,
+    }, {
+      title: 'Open recent',
+      children: [{
+        title: 'File 1',
+        onClick: () => null,
+      }, {
+        title: 'File 2',
+        onClick: () => null,
+      }, {
+        title: 'File 3',
+        onClick: () => null,
+      }, {
+        title: 'File 4',
+        onClick: () => null,
+      }]
+    }, {
+      title: 'Rename document',
+      onClick: () => null,
+    }, {
+      title: 'Close application',
+      onClick: () => null,
+    }]
+  }, {
+    label: 'Edit',
+    submenu: [{
+      title: 'Cut',
+      onClick: () => null,
+    }, {
+      title: 'Copy',
+      onClick: () => null,
+    }, {
+      title: 'Duplicate',
+      onClick: () => null,
+    }, {
+      title: 'Paste',
+      onClick: () => null,
+    }]
+  }, {
+    label: 'Format',
+    submenu: [{
+      title: 'Reset to defaults',
+      onClick: () => null,
+    }, {
+      title: 'Text',
+      onClick: () => null,
+    }, {
+      title: 'Images',
+      onClick: () => null,
+    }, {
+      title: 'Advanced formatting',
+      onClick: () => null,
+    }]
+  }, {
+    label: 'Help',
+    submenu: [{
+      title: 'Search',
+      onClick: () => null,
+    }, {
+      title: 'Help',
+      onClick: () => null,
+    }, {
+      title: 'About application',
+      onClick: () => null,
+    }]
+  }],
+  floated: false,
+  offset: {
+    x: 100,
+    y: 8
+  },
+  width: 'calc(100% - 100px - 16px)'
 }
 
 export default {
