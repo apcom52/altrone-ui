@@ -13,6 +13,7 @@
   cursor: pointer;
   color: var(--textColor);
   transition: transform var(--transitionDuration) ease;
+  border-radius: 12px;
 
   &:hover, &:focus {
     .alt-toolbar-action__icon {
@@ -41,4 +42,36 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.alt-toolbar-action--disabled {
+  color: var(--disabledText);
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.alt-toolbar-action--active {
+  background-color: var(--surface);
+  box-shadow: 0 3px 15px 0 var(--shadow);
+
+  &:hover, &:focus {
+    .alt-toolbar-action__icon {
+      background-color: transparent;
+    }
+  }
+}
+
+.alt-toolbar-action--danger {
+  color: var(--dangerText);
+
+  &:hover, &:focus {
+    .alt-toolbar-action__icon {
+      background-color: var(--dangerHighlight);
+    }
+  }
+}
+
+.alt-toolbar-action--expand-invisible {
+  position: absolute;
+  visibility: hidden;
 }

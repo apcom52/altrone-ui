@@ -2,16 +2,24 @@
 
 .alt-toolbar {
   display: flex;
-  position: absolute;
-  width: calc(100% - 24px);
-  align-items: flex-start;
-  padding: 4px;
-  background-color: var(--surfaceTrasparent);
-  backdrop-filter: blur(16px);
-  border-radius: 12px;
+  flex-direction: column;
+  padding: 4px 12px 0;
   box-shadow: 0 3px 15px 0 var(--shadow);
-  gap: 24px;
+
+  @include useGlassSurface();
+}
+
+.alt-toolbar__menu {
+  display: flex;
+}
+
+.alt-toolbar__main {
+  display: flex;
+  align-items: flex-start;
+  max-height: 68px;
+  padding-bottom: 4px;
   overflow: hidden;
+  gap: 24px;
 }
 
 .alt-toolbar-group {
@@ -19,8 +27,6 @@
   position: relative;
   align-items: center;
   justify-content: center;
-  margin-left: -4px;
-  margin-right: -4px;
 }
 
 .alt-toolbar-group--fluid {
@@ -35,9 +41,26 @@
   justify-content: flex-end;
 }
 
+.alt-toolbar-group--collapsible {
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.alt-toolbar-group--invisible {
+  position: absolute;
+  visibility: hidden;
+}
+
 .alt-toolbar-separator {
   width: 1px;
   height: 48px;
   margin-top: 6px;
   border-left: 1px solid var(--borderColor);
+}
+
+.alt-toolbar--floated {
+  position: fixed;
+  width: 100%;
+  border-radius: 12px;
+  padding: 4px 4px 0;
 }
