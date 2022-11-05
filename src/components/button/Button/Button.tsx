@@ -1,5 +1,5 @@
 import {forwardRef, memo, Ref, useCallback, useRef, useState} from "react";
-import {Size, WithAltroneOffsets, WithoutDefaultOffsets} from "../../../types";
+import {ContextMenu as ContextMenuType, Size, WithAltroneOffsets, WithoutDefaultOffsets} from "../../../types";
 import clsx from "clsx";
 import {Box, FloatingBox} from "../../containers";
 import './button.scss'
@@ -19,7 +19,7 @@ export enum ButtonVariant {
   text = 'text'
 }
 
-interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLButtonElement>>, 'style' | 'target' | 'size'>, WithAltroneOffsets {
+export interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLButtonElement>>, 'style' | 'target' | 'size'>, WithAltroneOffsets {
   style?: ButtonStyle
   variant?: ButtonVariant
   href?: string
@@ -28,7 +28,7 @@ interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLBut
   leftIcon?: JSX.Element
   rightIcon?: JSX.Element
   size?: Size
-  dropdown?: ContextMenu
+  dropdown?: ContextMenuType
 }
 
 const ButtonComponents = [

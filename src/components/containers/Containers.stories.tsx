@@ -1,4 +1,4 @@
-import {Box, Form, FormField, FormGroup, FormGroupVariant} from './index'
+import {Box, Form, FormField, FormGroup, FormGroupVariant, Modal} from './index'
 import {withAltrone} from "../../hocs";
 import {Theme} from "../../types";
 import {useState} from "react";
@@ -97,6 +97,37 @@ const FormTemplate = args => {
   </div>
 }
 
+const ModalTemplate = args => {
+  const [isModalVisible, setIsModalVisible] = useState(false)
+
+  return <div className='altrone'>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <Button onClick={() => setIsModalVisible(true)}>Open modal</Button>
+    {isModalVisible && <Modal onClose={() => setIsModalVisible(false)} {...args} />}
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+  </div>
+}
+
 export const BoxExample = Template.bind({})
 BoxExample.args = {
   component: Box,
@@ -114,6 +145,12 @@ FloatingBoxExample.args = {
 
 export const FormExample = FormTemplate.bind({})
 FormExample.args = {
+  dark: false
+}
+
+export const ModalExample = ModalTemplate.bind({})
+ModalExample.args = {
+  title: 'Modal title',
   dark: false
 }
 

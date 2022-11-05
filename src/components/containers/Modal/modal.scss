@@ -1,0 +1,31 @@
+@import '../../../_mixins';
+
+.alt-util--no-scroll {
+  overflow: hidden;
+}
+
+.alt-modal {
+  display: flex;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 100px 0;
+  overflow-y: visible;
+  background-color: var(--blackout);
+}
+
+.alt-modal__body {
+  display: flex;
+  width: 300px;
+  min-height: 100px;
+  height: auto;
+  flex-direction: column;
+  border-radius: 12px;
+  box-shadow: 0 3px 15px 0 var(--shadow);
+
+  @include useGlassSurface();
+}

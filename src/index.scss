@@ -49,6 +49,8 @@
   --placeholderText: #BDBDBD;
   --importantText: #E53935;
 
+  --blackout: rgba(0, 0, 0, 0.4);
+
   --transitionDuration: 0.2s;
 
   --smallControlHeight: 28px;
@@ -139,6 +141,10 @@
   * {
     box-sizing: border-box;
   }
+}
+
+::backdrop {
+  --blackout: rgba(0, 0, 0, 0.4);
 }
 
 .altrone--dark {
