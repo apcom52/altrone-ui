@@ -11,6 +11,7 @@ import {
   ScrollableSelector,
   Select,
   Switcher,
+  Textarea,
   TextInput
 } from "./index";
 import {Icon} from "../icons";
@@ -360,6 +361,15 @@ RadioListExample.argTypes = {
     control: 'select',
     options: [Direction.horizontal, Direction.vertical]
   },
+}
+
+export const TextareaExample = Template.bind({})
+TextareaExample.args = {
+  component: Textarea,
+  placeholder: 'Type your password',
+  dark: false,
+  size: Size.medium,
+  showControls: true
 }
 
 export default {

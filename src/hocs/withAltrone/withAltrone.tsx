@@ -4,7 +4,7 @@ import {Theme, ThemeConfig} from "../../types";
 import {ThemeContext} from "../../contexts";
 
 export const withAltrone = (Component, config: ThemeConfig) => (props) => {
-  let { theme, locale = 'en-US' } = config
+  let { theme, locale = 'en-US', style } = config
 
   try {
     // @ts-ignore
@@ -19,7 +19,7 @@ export const withAltrone = (Component, config: ThemeConfig) => (props) => {
   }}>
     <div className={clsx('altrone', {
       'altrone--dark': theme === Theme.dark
-    })}>
+    })} style={style}>
       <Component {...props} />
     </div>
   </ThemeContext.Provider>

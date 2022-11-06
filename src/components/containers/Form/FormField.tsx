@@ -1,4 +1,4 @@
-import {cloneElement, memo} from "react";
+import {memo} from "react";
 import './form-field.scss';
 import clsx from "clsx";
 import {FormContextProps, useFormContext} from "../../../contexts";
@@ -16,18 +16,19 @@ const FormField = ({ className, label, children, required = false, disabled}: Fo
   return <div className={clsx('alt-form-field', className)}>
     {label && <div className='alt-form-field__label'>{label} {isRequired   && <span className='alt-form-field__required-mark'>*</span>}</div>}
     <div className='alt-form-field__control'>
-      {typeof children === 'object'
-        ? Array.isArray(children)
-          ? children.map((childElement) => (
-            cloneElement(childElement, {
-              disabled: disabled || context.disabled
-            })
-          ))
-          : cloneElement(children, {
-            disabled: disabled || context.disabled
-          })
-        : children
-      }
+      {children}
+      {/*{typeof children === 'object'*/}
+      {/*  ? Array.isArray(children)*/}
+      {/*    ? children.map((childElement) => (*/}
+      {/*      cloneElement(childElement, {*/}
+      {/*        disabled: disabled || context.disabled*/}
+      {/*      })*/}
+      {/*    ))*/}
+      {/*    : cloneElement(children, {*/}
+      {/*      disabled: disabled || context.disabled*/}
+      {/*    })*/}
+      {/*  : children*/}
+      {/*}*/}
     </div>
   </div>
 }

@@ -1,3 +1,5 @@
+import {CSSProperties} from "react";
+
 export enum Theme {
   light = 'light',
   dark = 'dark'
@@ -8,4 +10,5 @@ export interface ThemeConfig {
   accent: string
   offset: number
   locale: string
+  style?: CSSProperties
 }
