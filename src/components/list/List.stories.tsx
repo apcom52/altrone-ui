@@ -1,10 +1,11 @@
 import {withAltrone} from "../../hocs";
 import {Direction, Theme} from "../../types";
 import {useCallback, useEffect, useState} from "react";
-import {Chips, TabList, TabListVariant, Toolbar, ToolbarGroup, ToolbarSeparator} from './index'
+import {Chips, NavigationList, TabList, TabListVariant, Toolbar, ToolbarGroup, ToolbarSeparator} from './index'
 import {Align} from "../../types/Align";
 import {Icon} from "../icons";
 import ToolbarAction from "./Toolbar/ToolbarAction";
+import clsx from "clsx";
 
 const Template = ({component, dark, values, value, ...args}) => {
   const [_value, setValue] = useState(values)
@@ -74,6 +75,32 @@ const TabsTemplate = ({component, dark, selected, tabs = [], ...args}) => {
     onAddTab,
     onCloseTab
   })
+}
+
+const NavigationListTemplate = ({component, dark, selected, ...args}) => {
+  const [_value, setValue] = useState(selected)
+
+  useEffect(() => {
+    setValue(selected)
+  }, [selected])
+
+  const onChange = useCallback((value) => {
+    setValue(value)
+  }, [])
+
+  return <div className={clsx('altrone', {
+    'altrone--dark': dark
+  })} style={{
+    display: 'grid',
+    minHeight: '900px',
+    gridTemplateColumns: '250px 1fr',
+    backgroundImage: 'url(https://img.freepik.com/free-photo/beautiful-view-greenery-bridge-forest-perfect-background_181624-17827.jpg?w=2000)',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center'
+  }}>
+    <NavigationList selected={_value} onChange={onChange} {...args} />
+  </div>
 }
 
 export const ChipsExample = Template.bind({})
@@ -256,6 +283,80 @@ ToolbarExample.args = {
     y: 8
   },
   width: 'calc(100% - 100px - 16px)'
+}
+
+export const NavigationListExample = NavigationListTemplate.bind({})
+NavigationListExample.args = {
+  title: 'Notes',
+  selected: 'appearance',
+  dark: false,
+  list: [
+    {
+      label: 'My notes',
+      value: 'my',
+      icon: <Icon i='collections_bookmark' />,
+      submenu: [{
+        label: 'Recent notes',
+        value: 'recent',
+        icon: <Icon i='collections_bookmark' />,
+      }, {
+        label: 'All notes',
+        value: 'all'
+      }]
+    }, {
+      label: 'Shared notes',
+      value: 'shared',
+      icon: <Icon i='folder_shared' />
+    }, {
+      label: 'Favorites',
+      value: 'favorites',
+      icon: <Icon i='favorite_border' />
+    },  {
+      label: 'Settings',
+      value: 'settings',
+      icon: <Icon i='settings' />,
+      submenu: [
+        {
+          label: 'Appearance',
+          value: 'appearance',
+          icon: <Icon i='palette' />,
+          submenu: []
+        }, {
+          label: 'Privacy',
+          value: 'privacy',
+          icon: <Icon i='lock' />,
+          submenu: []
+        }, {
+          label: 'Settings for username@mail.com',
+          value: 'account',
+          icon: <Icon i='person' />,
+          submenu: [{
+            label: 'Account information',
+            value: 'info'
+          }, {
+            label: 'Sync',
+            value: 'sync'
+          }, {
+            label: 'Credentials',
+            value: 'cred'
+          }, {
+            label: 'Log out',
+            value: 'logout'
+          }]
+        }, {
+          label: 'Accessibility',
+          value: 'preferences',
+          icon: <Icon i='settings_accessibility' />,
+          submenu: []
+        }, {
+          label: 'About application',
+          value: 'about',
+          icon: <Icon i='collections_bookmark' />,
+          submenu: []
+        },
+      ]
+    }
+  ]
 }
 
 export default {
