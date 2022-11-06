@@ -7,8 +7,6 @@ export enum Theme {
 
 export interface ThemeConfig {
   theme: Theme
-  accent: string
-  offset: number
   locale: string
   style?: CSSProperties
 }
