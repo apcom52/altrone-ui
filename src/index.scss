@@ -1,0 +1,172 @@
+@font-face {
+  font-family: "OpenSans";
+  src: url("assets/fonts/OpenSans.ttf");
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+.altrone {
+  --background: #ffffff;
+  --surface: #fafafa;
+  --surfaceTrasparent: rgba(107, 138, 153, 0.2);
+  --surfaceTrasparentHover: rgba(107, 138, 153, 0.3);
+  --surfaceGlass: rgba(250, 250, 250, 0.8);
+
+  --textColor: #202124;
+  --secondaryTextColor: #6b8a99;
+
+  --dividerColor: #EEEEEE;
+  --borderColor: #ECEFF1;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --gap: 4px;
+
+  --accent: #03A9F4;
+  --accentFocus: rgba(3, 164, 244, 0.75);
+  --accentHover: #9bd1ee;
+  --accentBorderColor: rgba(3, 164, 244, 0.15);
+  --accentText: #007ac1;
+
+  --highlight: rgba(3, 164, 244, 0.25);
+  --textOnHighlight: #202124;
+
+  --textColorOnAccent: #ffffff;
+
+  --success: #4caf50;
+  --successBorderColor: rgba(76, 175, 80, 0.15);
+  --successText: #087f23;
+  --successHighlight: rgba(76, 175, 80, 0.35);
+  --textOnSuccessHighlight: #202124;
+  --textColorOnSuccess: #ffffff;
+
+  --danger: #E53935;
+  --dangerBorderColor: rgba(229, 57, 53, 0.15);
+  --dangerText: #ba000d;
+  --dangerHighlight: rgba(229, 57, 53, 0.35);
+  --textOnDangerHighlight: #202124;
+  --textColorOnDanger: #ffffff;
+
+  --disabledText: #9E9E9E;
+  --placeholderText: #BDBDBD;
+  --importantText: #E53935;
+
+  --blackout: rgba(0, 0, 0, 0.4);
+
+  --transitionDuration: 0.2s;
+
+  --smallControlHeight: 28px;
+  --controlHeight: 34px;
+  --largeControlHeight: 42px;
+  --xlargeControlHeight: 54px;
+
+  --controlFontSizeSmall: 13px;
+  --controlFontSize: 16px;
+  --controlFontSizeLarge: 18px;
+  --controlFontSizeXLarge: 24px;
+
+  /* ---- */
+
+  --bodySmallFontSize: 14px;
+  --bodySmallLineHeight: 18px;
+  --bodySmallFontWeight: 400;
+
+  --bodyFontSize: 16px;
+  --bodyLineHeight: 22px;
+  --bodyFontWeight: 400;
+
+  --bodyLargeFontSize: 18px;
+  --bodyLageLineHeight: 26px;
+  --bodyLargeFontWeight: 400;
+
+  /* ---- */
+
+  --labelSmallFontSize: 11px;
+  --labelSmallLineHeight: 16px;
+  --labelSmallFontWeight: 500;
+
+  --labelFontSize: 12px;
+  --labelLineHeight: 16px;
+  --labelFontWeight: 500;
+
+  --labelLargeFontSize: 14px;
+  --labelLargeLineHeight: 20px;
+  --labelLargeFontWeight: 500;
+
+  /* ---- */
+
+  --titleSmallFontSize: 14px;
+  --titleSmallLineHeight: 20px;
+  --titleSmallFontWeight: 500;
+
+  --titleFontSize: 16px;
+  --titleLineHeight: 24px;
+  --titleFontWeight: 500;
+
+  --titleLargeFontSize: 22px;
+  --titleLageLineHeight: 28px;
+  --titleLargeFontWeight: 400;
+
+  /* ---- */
+
+  --headlineSmallFontSize: 24px;
+  --headlineSmallLineHeight: 32px;
+  --headlineSmallFontWeight: 400;
+
+  --headlineFontSize: 28px;
+  --headlineLineHeight: 36px;
+  --headlineFontWeight: 400;
+
+  --headlineLargeFontSize: 32px;
+  --headlineLageLineHeight: 40px;
+  --headlineLargeFontWeight: 400;
+
+  /* ---- */
+
+  --displaySmallFontSize: 36px;
+  --displaySmallLineHeight: 44px;
+  --displaySmallFontWeight: 400;
+
+  --displayFontSize: 45px;
+  --displayLineHeight: 52px;
+  --displayFontWeight: 400;
+
+  --displayLargeFontSize: 57px;
+  --displayLageLineHeight: 64px;
+  --displayLargeFontWeight: 400;
+
+  display: block;
+  font-family: "Open Sans", sans-serif;
+  background-color: var(--background);
+  color: var(--textColor);
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+::backdrop {
+  --blackout: rgba(0, 0, 0, 0.2);
+}
+
+.altrone--dark {
+  --background: #010b18;
+  --surface: #121212;
+  --surfaceTrasparent: rgba(18, 18, 18, 0.7);
+  --surfaceTrasparentHover: rgba(107, 138, 153, 0.4);
+  --surfaceGlass: rgba(33, 33, 33, 0.8);
+
+  --shadow: rgba(0, 0, 15, 0.5);
+
+  --textColor: #FAFAFA;
+
+  --borderColor: #37474F;
+  --dividerColor: #455A64;
+
+  --accent: #0288d1;
+  --accentBorderColor: #01579b;
+
+  --textOnHighlight: #FAFAFA;
+
+  --textOnSuccessHighlight: #FAFAFA;
+
+  --textOnDangerHighlight: #FAFAFA;
+}
