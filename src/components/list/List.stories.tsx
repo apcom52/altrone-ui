@@ -93,7 +93,7 @@ const NavigationListTemplate = ({component, dark, selected, ...args}) => {
   })} style={{
     display: 'grid',
     minHeight: '900px',
-    gridTemplateColumns: '350px 1fr',
+    gridTemplateColumns: '250px 1fr',
     backgroundImage: 'url(https://img.freepik.com/free-photo/beautiful-view-greenery-bridge-forest-perfect-background_181624-17827.jpg?w=2000)',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
@@ -288,6 +288,8 @@ ToolbarExample.args = {
 export const NavigationListExample = NavigationListTemplate.bind({})
 NavigationListExample.args = {
   title: 'Notes',
+  selected: 'appearance',
+  dark: false,
   list: [
     {
       label: 'My notes',
@@ -312,7 +314,47 @@ NavigationListExample.args = {
     },  {
       label: 'Settings',
       value: 'settings',
-      icon: <Icon i='settings' />
+      icon: <Icon i='settings' />,
+      submenu: [
+        {
+          label: 'Appearance',
+          value: 'appearance',
+          icon: <Icon i='palette' />,
+          submenu: []
+        }, {
+          label: 'Privacy',
+          value: 'privacy',
+          icon: <Icon i='lock' />,
+          submenu: []
+        }, {
+          label: 'Settings for username@mail.com',
+          value: 'account',
+          icon: <Icon i='person' />,
+          submenu: [{
+            label: 'Account information',
+            value: 'info'
+          }, {
+            label: 'Sync',
+            value: 'sync'
+          }, {
+            label: 'Credentials',
+            value: 'cred'
+          }, {
+            label: 'Log out',
+            value: 'logout'
+          }]
+        }, {
+          label: 'Accessibility',
+          value: 'preferences',
+          icon: <Icon i='settings_accessibility' />,
+          submenu: []
+        }, {
+          label: 'About application',
+          value: 'about',
+          icon: <Icon i='collections_bookmark' />,
+          submenu: []
+        },
+      ]
     }
   ]
 }

@@ -1,52 +1,50 @@
 @import '../../../_mixins';
 
-.alt-navigation-list-item {
+.alt-navigation-list-sub-item {
   display: flex;
   align-items: center;
-  margin: 0 -8px;
-  padding: 8px;
+  margin: 0;
+  padding: 8px 12px;
   border-radius: 8px;
   border: none;
   background-color: transparent;
   cursor: pointer;
-  color: var(--textColor);
+  color: var(--secondaryTextColor);
   transition: background-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
 
-  @include useFontSize(title);
+  @include useFontSize(title, Small);
+  @include useFocus();
   font-weight: 500;
 
-  @include useFocus();
-
   &:hover {
-    background-color: var(--highlight);
+    background-color: var(--surfaceTrasparent);
   }
 }
 
-.alt-navigation-list-item__icon {
+.alt-navigation-list-sub-item__icon {
   margin-right: 8px;
   font-size: 20px;
-  color: var(--accentText);
 }
 
-.alt-navigation-list-item__label {
+.alt-navigation-list-sub-item__label {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
 
-.alt-navigation-list-item__arrowIcon {
+.alt-navigation-list-sub-item__arrowIcon {
   transition: transform var(--transitionDuration) ease;
   transform-origin: center;
   margin-left: auto;
   color: var(--secondaryTextColor);
 }
 
-.alt-navigation-list-item--selected {
+.alt-navigation-list-sub-item--selected {
   background-color: var(--background);
   color: var(--textColor);
   box-shadow: 0 3px 15px 0 var(--shadow);
 
-  .alt-navigation-list-item__arrowIcon {
+  .alt-navigation-list-sub-item__arrowIcon {
     margin-left: auto;
     color: var(--secondaryTextColor);
   }
@@ -56,10 +54,10 @@
   }
 }
 
-.alt-navigation-list-item--expanded {
+.alt-navigation-list-sub-item--expanded {
   background-color: var(--surfaceTrasparentHover);
 
-  .alt-navigation-list-item__arrowIcon {
+  .alt-navigation-list-sub-item__arrowIcon {
     transform: rotate(90deg);
   }
 

@@ -9,6 +9,7 @@
   overflow-y: auto;
   scrollbar-gutter: stable;
   box-shadow: 3px 0 15px 0 var(--shadow);
+  border-right: 1px solid var(--borderColor);
 
   @include useGlassSurface();
 }
@@ -24,4 +25,8 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+
+  .alt-navigation-list__navigation {
+    padding-left: 12px;
+  }
 }

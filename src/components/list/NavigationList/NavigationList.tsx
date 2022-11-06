@@ -1,6 +1,8 @@
-import {memo} from "react";
+import {memo, useMemo} from "react";
 import './navigation-list.scss';
 import NavigationListItem from "./NavigationListItem";
+import NavigationListSubItem from "./NavigationListSubItem";
+import NavigationListSubSubItem from "./NavigationListSubSubItem";
 
 interface SubSubNavigationItem {
   label: string
@@ -28,8 +30,8 @@ interface BaseNavigationItemInterface {
 }
 
 export interface NavigationItemProps extends BaseNavigationItemInterface, NavigationItem {}
-export interface SubNavigationItemProps extends BaseNavigationItemInterface, SubNavigationItem {}
-export interface SubSubNavigationItemProps extends BaseNavigationItemInterface, SubNavigationItem {}
+export interface NavigationSubItemProps extends BaseNavigationItemInterface, SubNavigationItem {}
+export interface NavigationSubSubItemProps extends Omit<BaseNavigationItemInterface, 'onExpand'>, SubSubNavigationItem {}
 
 interface NavigationListProps {
   list: NavigationItem[]
@@ -42,17 +44,72 @@ interface NavigationListProps {
 }
 
 const NavigationList = ({ list = [], selected, onChange, title, NavigationItemComponent, NavigationSubItemComponent, NavigationSubSubItemComponent }: NavigationListProps) => {
+  const [selectedItem, selectedSubItem, selectedSubSubItem] = useMemo(() => {
+    for (const item of list) {
+      if (item.value === selected) {
+        return [item.value, null, null]
+      }
+
+      if (item?.submenu?.length) {
+        for (const subitem of item.submenu) {
+          if (subitem.value === selected) {
+            return [item.value, subitem.value, null]
+          }
+
+          if (subitem?.submenu?.length) {
+            for (const subsubitem of subitem.submenu) {
+              if (subsubitem.value === selected) {
+                return [item.value, subitem.value, subsubitem.value]
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return [null, null, null]
+  }, [selected, list])
+
   return <div className='alt-navigation-list'>
     {title && <div className='alt-navigation-list__title'>{title}</div>}
     <nav className='alt-navigation-list__navigation'>
       {list.map((item, itemIndex) => {
         const itemProps: NavigationItemProps = {
-          selected: item.value === selected,
+          selected: item.value === selectedItem,
           onClick: () => onChange(item.value),
           ...item
         }
 
-        return NavigationItemComponent ? <NavigationItemComponent key={itemIndex} /> : <NavigationListItem {...itemProps} />
+        return <>
+          {NavigationItemComponent ? <NavigationItemComponent key={itemIndex} {...itemProps} /> : <NavigationListItem key={itemIndex} {...itemProps} />}
+          {(selectedItem === item.value && item.submenu?.length > 0) && <div className='alt-navigation-list__navigation'>
+            {item.submenu?.map((subitem, subitemIndex) => {
+              const subItemProps: NavigationSubItemProps = {
+              selected: subitem.value === selectedSubItem,
+              onClick: () => onChange(subitem.value),
+              ...subitem
+            }
+
+              return <>
+                {NavigationSubItemComponent ? <NavigationSubItemComponent key={itemIndex} {...subItemProps} /> : <NavigationListSubItem key={subitemIndex} {...subItemProps} />}
+
+                {(selectedSubItem === subitem.value && subitem.submenu?.length > 0) && <div className='alt-navigation-list__navigation'>
+                  {subitem.submenu?.map((subsubitem, subsubitemIndex) => {
+                    const subsubItemProps: NavigationSubSubItemProps = {
+                      selected: subsubitem.value === selectedSubSubItem,
+                      onClick: () => onChange(subsubitem.value),
+                      ...subsubitem
+                    }
+
+                    return <>
+                      {NavigationSubItemComponent ? <NavigationSubSubItemComponent key={itemIndex} {...subsubItemProps} /> : <NavigationListSubSubItem key={subsubitemIndex} {...subsubItemProps} />}
+                    </>
+                  })}
+                </div>}
+              </>
+            })}
+          </div>}
+        </>
       })}
     </nav>
   </div>
