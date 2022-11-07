@@ -5,6 +5,7 @@ import './modal.scss';
 import {Icon} from "../../icons";
 import {Button} from "../../button";
 import clsx from "clsx";
+import {useWindowSize} from "../../../hooks";
 
 interface ModalProps {
   title: string
@@ -26,6 +27,8 @@ interface ModalProps {
 }
 
 const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, actions = [], showClose = true, showCancel = true, closeOnOverlay = true }: ModalProps) => {
+  const { ltePhoneL, gtPhoneL } = useWindowSize()
+
   const wrapperRef = useRef(null)
 
   useEffect(() => {
@@ -78,16 +81,17 @@ const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, ac
       'alt-modal--fluid': fluid
     })}>
       <div className="alt-modal__title">{title}</div>
-      {showClose && <button className='alt-modal__close' type='button' onClick={onClose}><Icon i='close' /></button>}
+      {showClose && gtPhoneL && <button className='alt-modal__close' type='button' onClick={onClose}><Icon i='close' /></button>}
       <div className="alt-modal__content">
         {children}
       </div>
       {(showCancel || actions.length > 0) && <div className='alt-modal__footer'>
         {renderActions(leftActions)}
         <div className="alt-modal__footer-separator" />
-        {showCancel && <Button onClick={onClose}>Cancel</Button>}
+        {(showCancel && gtPhoneL) || (showClose || ltePhoneL) && <Button onClick={onClose} className='alt-modal__cancel'>Cancel</Button>}
         {renderActions(rightActions)}
       </div>}
+      {ltePhoneL && <div className='alt-modal-wrapper__handle' />}
     </div>
   </div>
 }

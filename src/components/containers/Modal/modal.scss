@@ -20,6 +20,26 @@
   overflow-x: hidden;
   background-color: var(--blackout);
   z-index: 1000;
+
+  @include less($l-phone) {
+    display: flex;
+    height: fit-content;
+    max-height: 100vh;
+    flex-direction: column;
+    padding: 100px 0 0;
+    justify-content: initial;
+  }
+}
+
+.alt-modal-wrapper__handle {
+  position: absolute;
+  width: 100px;
+  height: 6px;
+  top: -14px;
+  left: calc(50% - 50px);
+  margin: auto auto 8px;
+  background-color: var(--background);
+  border-radius: 4px;
 }
 
 .alt-modal {
@@ -38,6 +58,13 @@
 
   @include useGlassSurface();
   @include useDisabledUserSelect();
+
+  @include less($l-phone) {
+    max-width: 100vw;
+    margin: auto 0 0;
+    padding: 16px;
+    border-radius: 12px 12px 0 0;
+  }
 }
 
 .alt-modal__title {
@@ -46,6 +73,11 @@
   @include useFontSize(label, Large);
   line-height: 28px;
   font-weight: 600;
+
+  @include less($l-phone) {
+    @include useFontSize(title, Large);
+    font-weight: 600;
+  }
 }
 
 .alt-modal__close {
@@ -80,10 +112,26 @@
   align-items: center;
   margin-top: 16px;
   gap: 6px;
+
+  @include less($l-phone) {
+    flex-direction: column;
+
+    .alt-button {
+      width: 100%;
+    }
+  }
 }
 
 .alt-modal__footer-separator {
   flex: 1;
+
+  @include less($l-phone) {
+    display: none;
+  }
+}
+
+.alt-modal__cancel {
+  order: 1;
 }
 
 .alt-modal--size-small {
