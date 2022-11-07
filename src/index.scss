@@ -1,12 +1,4 @@
-@font-face {
-  font-family: "OpenSans";
-  src: url("assets/fonts/OpenSans.ttf");
-}
-
-@font-face {
-  font-family: "OpenSans Italic";
-  src: url("assets/fonts/OpenSans_italic.ttf");
-}
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 
 .altrone {
   --background: #ffffff;
@@ -52,6 +44,8 @@
   --placeholderText: #BDBDBD;
   --importantText: #E53935;
 
+  --blackout: rgba(0, 0, 0, 0.4);
+
   --transitionDuration: 0.2s;
 
   --smallControlHeight: 28px;
@@ -66,16 +60,16 @@
 
   /* ---- */
 
-  --bodySmallFontSize: 12px;
-  --bodySmallLineHeight: 16px;
+  --bodySmallFontSize: 14px;
+  --bodySmallLineHeight: 18px;
   --bodySmallFontWeight: 400;
 
-  --bodyFontSize: 14px;
-  --bodyLineHeight: 20px;
+  --bodyFontSize: 16px;
+  --bodyLineHeight: 22px;
   --bodyFontWeight: 400;
 
-  --bodyLargeFontSize: 16px;
-  --bodyLageLineHeight: 24px;
+  --bodyLargeFontSize: 18px;
+  --bodyLageLineHeight: 26px;
   --bodyLargeFontWeight: 400;
 
   /* ---- */
@@ -135,7 +129,7 @@
   --displayLargeFontWeight: 400;
 
   display: block;
-  font-family: OpenSans, sans-serif;
+  font-family: "Open Sans", sans-serif;
   background-color: var(--background);
   color: var(--textColor);
 
@@ -144,14 +138,18 @@
   }
 }
 
+::backdrop {
+  --blackout: rgba(0, 0, 0, 0.2);
+}
+
 .altrone--dark {
   --background: #010b18;
   --surface: #121212;
-  --surfaceTrasparent: rgba(107, 138, 153, 0.3);
+  --surfaceTrasparent: rgba(18, 18, 18, 0.7);
   --surfaceTrasparentHover: rgba(107, 138, 153, 0.4);
   --surfaceGlass: rgba(33, 33, 33, 0.8);
 
-  --shadow: rgba(255, 255, 255, 0.15);
+  --shadow: rgba(0, 0, 15, 0.5);
 
   --textColor: #FAFAFA;
 

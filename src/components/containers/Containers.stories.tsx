@@ -1,12 +1,12 @@
-import {Box, Form, FormField, FormGroup, FormGroupVariant} from './index'
+import {Box, Form, FormField, FormGroup, FormGroupVariant, Modal} from './index'
 import {withAltrone} from "../../hocs";
-import {Theme} from "../../types";
+import {Role, Size, Theme} from "../../types";
 import {useState} from "react";
 import clsx from "clsx";
 import {Button} from "../button";
 import FloatingBox from "./FloatingBox/FloatingBox";
 import {Heading, Paragraph} from "../typography";
-import {DatePicker, Select, Switcher, TextInput} from "../form";
+import {DatePicker, NumberInput, RadioList, Select, Switcher, TextInput} from "../form";
 import {Align} from "../../types/Align";
 
 const Template = ({component, dark, ...args}) => {
@@ -97,6 +97,37 @@ const FormTemplate = args => {
   </div>
 }
 
+const ModalTemplate = args => {
+  const [isModalVisible, setIsModalVisible] = useState(false)
+
+  return <div className={args.dark ? 'altrone altrone--dark' : 'altrone'}>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <Button onClick={() => setIsModalVisible(true)}>Open modal</Button>
+    {isModalVisible && <Modal onClose={() => setIsModalVisible(false)} {...args} />}
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
+      neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
+  </div>
+}
+
 export const BoxExample = Template.bind({})
 BoxExample.args = {
   component: Box,
@@ -115,6 +146,51 @@ FloatingBoxExample.args = {
 export const FormExample = FormTemplate.bind({})
 FormExample.args = {
   dark: false
+}
+
+export const ModalExample = ModalTemplate.bind({})
+ModalExample.args = {
+  title: 'Modal title',
+  children: <>
+    <p>Fill information about you</p>
+    <Form>
+      <FormGroup variant={FormGroupVariant.row}>
+        <FormField label='Your name'>
+          <TextInput placeholder='First name and surname' />
+        </FormField>
+        <FormField label='Age'>
+          <NumberInput value={18} onChange={() => null} />
+        </FormField>
+        <FormField label='Gender'>
+          <RadioList options={[{
+            label: 'Male',
+            value: 0
+          }, {
+            label: 'Female',
+            value: 1
+          }]} value={0} />
+        </FormField>
+      </FormGroup>
+    </Form>
+  </>,
+  actions: [{
+    label: 'Reset',
+    align: Align.start,
+    onClick: () => null
+  }, {
+    label: 'Approve',
+    align: Align.end,
+    role: Role.success,
+    onClick: () => null
+  }],
+  fluid: false,
+  dark: false
+}
+ModalExample.argTypes = {
+  size: {
+    control: 'select',
+    options: [Size.small, Size.medium, Size.large]
+  },
 }
 
 export default {
