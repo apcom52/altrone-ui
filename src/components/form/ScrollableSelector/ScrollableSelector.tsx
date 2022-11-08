@@ -11,9 +11,10 @@ interface ScrollableSelectorProps<T> {
   disabled?: boolean
   width?: number | string
   align?: Align
+  className?: string
 }
 
-const ScrollableSelector = <T extends any = string>({ value, options = [], width = '100%', disabled = false, align = Align.center, onChange }: ScrollableSelectorProps<T>) => {
+const ScrollableSelector = <T extends any = string>({ value, options = [], width = '100%', disabled = false, align = Align.center, onChange, className }: ScrollableSelectorProps<T>) => {
   const selectorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -25,7 +26,7 @@ const ScrollableSelector = <T extends any = string>({ value, options = [], width
     })
   }, [value])
 
-  return <div ref={selectorRef} className={clsx('alt-scrollable-selector', {
+  return <div ref={selectorRef} className={clsx('alt-scrollable-selector', className, {
     'alt-scrollable-selector--align-start': align === Align.start,
     'alt-scrollable-selector--align-end': align === Align.end,
   })} style={{ width }} data-testid='alt-test-scrollable-selector'>
