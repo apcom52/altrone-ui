@@ -1,12 +1,16 @@
 import {createElement, memo, useEffect, useMemo, useRef, useState} from "react";
 import {Option, OptionParent} from "../../../types";
-import button from "../../button/Button/Button";
+import button, {ButtonStyle} from "../../button/Button/Button";
 import {FloatingBox} from "../../containers";
 import './select.scss';
 import {Icon} from "../../icons";
 import clsx from "clsx";
 import {TextInput} from "../TextInput";
 import SelectOption from "./SelectOption";
+import {useWindowSize} from "../../../hooks";
+import {FloatingBoxMobileBehaviour} from "../../containers/FloatingBox/FloatingBox";
+import {ScrollableSelector} from "../ScrollableSelector";
+import {Button} from "../../button";
 
 interface SelectProps<T extends number | string | boolean = string> extends Omit<React.HTMLProps<HTMLSelectElement>, 'value' | 'onChange'> {
   value: T
@@ -28,6 +32,8 @@ interface SelectProps<T extends number | string | boolean = string> extends Omit
 const DEFAULT_KEY = '_default'
 
 const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, fluid = false, classNames = {} }: SelectProps) => {
+  const { ltePhoneL, gtPhoneL } = useWindowSize()
+
   const [isSelectVisible, setIsSelectVisible] = useState(false)
   const [isSearchMode, setIsSearchMode] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
@@ -154,8 +160,9 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
       preventClose={(searchable && isSearchMode) ? preventSelectMenuClose : undefined}
       data-testid='alt-test-select-search'
       useParentWidth
+      mobileBehaviour={FloatingBoxMobileBehaviour.modal}
     >
-      <div className={clsx('alt-select-menu', classNames.menu)} data-testid='alt-test-select-menu'>
+      {gtPhoneL && <div className={clsx('alt-select-menu', classNames.menu)} data-testid='alt-test-select-menu'>
         {parentKeys.map((groupValue, groupIndex, groupedValueKeys) => {
           const group = groupedItems[groupValue]
           const [groupInfo, ...options] = group
@@ -176,7 +183,17 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
             ))}
           </div>
         })}
-      </div>
+      </div>}
+      {ltePhoneL && <>
+        <div className='alt-select-menu__title'>Select a value</div>
+        <ScrollableSelector
+          className='alt-select-menu__selector'
+          options={options}
+          value={value}
+          onChange={onChange}
+        />
+        <Button style={ButtonStyle.primary} onClick={() => setIsSelectVisible(false)} fluid>Apply</Button>
+      </>}
     </FloatingBox>}
   </>
 }
