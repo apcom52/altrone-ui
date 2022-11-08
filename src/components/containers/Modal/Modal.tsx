@@ -8,9 +8,9 @@ import clsx from "clsx";
 import {useWindowSize} from "../../../hooks";
 
 interface ModalProps {
-  title: string
   children: JSX.Element | JSX.Element[]
   onClose: () => void
+  title?: string
   size?: Size
   fluid?: boolean
   actions?: {
@@ -80,7 +80,7 @@ const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, ac
       'alt-modal--size-large': size === Size.large,
       'alt-modal--fluid': fluid
     })}>
-      <div className="alt-modal__title">{title}</div>
+      {title && <div className="alt-modal__title">{title}</div>}
       {showClose && gtPhoneL && <button className='alt-modal__close' type='button' onClick={onClose}><Icon i='close' /></button>}
       <div className="alt-modal__content">
         {children}
