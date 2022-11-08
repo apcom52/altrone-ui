@@ -5,6 +5,13 @@ import './floating-box.scss';
 import {useOutsideClick} from "rooks";
 import {Options} from "@popperjs/core";
 import {createPortal} from "react-dom";
+import {useWindowSize} from "../../../hooks";
+import {Modal} from "../Modal";
+
+export enum FloatingBoxMobileBehaviour {
+  default = 'default',
+  modal = 'modal'
+}
 
 interface FloatingBoxProps extends WithoutDefaultOffsets {
   targetRef: Element
@@ -17,6 +24,7 @@ interface FloatingBoxProps extends WithoutDefaultOffsets {
   maxHeight?: number | string
   useParentRef?: boolean
   preventClose?: (e: MouseEvent) => boolean
+  mobileBehaviour?: FloatingBoxMobileBehaviour
 }
 
 const setPopperWidth = (state , minWidth) => {
@@ -38,8 +46,10 @@ const FloatingBox = ({
   maxHeight = 'auto',
   children,
   preventClose,
-  useParentRef = false
+  useParentRef = false,
+  mobileBehaviour = FloatingBoxMobileBehaviour.default
 }: FloatingBoxProps) => {
+  const { ltePhoneL } = useWindowSize()
   const [floatingBoxElement, setFloatingBoxElement] = useState(null)
 
   const offsets: [number, number] = useMemo(() => {
@@ -96,6 +106,12 @@ const FloatingBox = ({
 
   if (!targetRef) {
     return null
+  }
+
+  if (mobileBehaviour === FloatingBoxMobileBehaviour.modal && ltePhoneL) {
+    return <Modal onClose={onClose} showClose={false} showCancel={false}>
+      {children}
+    </Modal>
   }
 
   return createPortal(<div
