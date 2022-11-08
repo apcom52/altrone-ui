@@ -7,8 +7,9 @@
 }
 
 .alt-form-field__label {
-  margin-bottom: 2px;
+  margin-bottom: 6px;
   @include useFontSize(label, Large);
+  font-weight: 500;
 }
 
 .alt-form-field__required-mark {
@@ -18,7 +19,7 @@
 .alt-form-field__control {
   width: 100%;
 
-  > * {
+  > *:not(.alt-floating-box) {
     width: 100%;
   }
 }

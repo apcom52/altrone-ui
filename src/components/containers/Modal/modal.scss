@@ -1,0 +1,147 @@
+@import '../../../_mixins';
+
+.alt-util--no-scroll {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+
+.alt-modal-wrapper {
+  display: flex;
+  position: fixed;
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 100px 0 50px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--blackout);
+  z-index: 1000;
+
+  @include less($l-phone) {
+    display: flex;
+    height: fit-content;
+    max-height: 100vh;
+    flex-direction: column;
+    padding: 100px 0 0;
+    justify-content: initial;
+  }
+}
+
+.alt-modal-wrapper__handle {
+  position: absolute;
+  width: 100px;
+  height: 6px;
+  top: -14px;
+  left: calc(50% - 50px);
+  margin: auto auto 8px;
+  background-color: var(--background);
+  border-radius: 4px;
+}
+
+.alt-modal {
+  display: flex;
+  position: relative;
+  width: 500px;
+  max-width: calc(100% - 20px);
+  margin: 0 8px;
+  height: auto;
+  padding: 8px;
+  flex-direction: column;
+  border-radius: 12px;
+  box-shadow: 0 3px 15px 0 var(--shadow);
+  transform: translate3d(0, 0, 0);
+  transition: width var(--transitionDuration) ease;
+
+  @include useGlassSurface();
+  @include useDisabledUserSelect();
+
+  @include less($l-phone) {
+    max-width: 100vw;
+    margin: auto 0 0;
+    padding: 16px;
+    border-radius: 12px 12px 0 0;
+  }
+}
+
+.alt-modal__title {
+  text-align: center;
+
+  @include useFontSize(label, Large);
+  line-height: 28px;
+  font-weight: 600;
+
+  @include less($l-phone) {
+    @include useFontSize(title, Large);
+    font-weight: 600;
+  }
+}
+
+.alt-modal__close {
+  display: flex;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 12px;
+  right: 8px;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surfaceTrasparent);
+  border: none;
+  color: var(--textColor);
+  font-size: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color var(--transitionDuration) ease;
+
+  &:hover {
+    background-color: var(--surfaceTrasparentHover);
+  }
+}
+
+.alt-modal__content {
+  padding: 12px 8px;
+}
+
+.alt-modal__footer {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+  gap: 6px;
+
+  @include less($l-phone) {
+    flex-direction: column;
+
+    .alt-button {
+      width: 100%;
+    }
+  }
+}
+
+.alt-modal__footer-separator {
+  flex: 1;
+
+  @include less($l-phone) {
+    display: none;
+  }
+}
+
+.alt-modal__cancel {
+  order: 1;
+}
+
+.alt-modal--size-small {
+  width: 300px;
+}
+
+.alt-modal--size-large {
+  width: 800px;
+}
+
+.alt-modal--fluid {
+  width: 100%;
+}

@@ -43,3 +43,45 @@
   -moz-appearance: none;
   appearance: none;
 }
+
+$xl-desktop: 1920px;
+$l-desktop: 1600px;
+$m-desktop: 1440px;
+$s-desktop: 1366px;
+$xs-desktop: 1280px;
+$l-tablet: 1024px;
+$m-tablet: 834px;
+$s-tablet: 768px;
+$l-phone: 430px;
+$m-phone: 393px;
+$s-phone: 320px;
+
+@mixin less($br) {
+  @media (max-width: $br) {
+    @content;
+  }
+}
+
+@mixin strict-less($br) {
+  @media (max-width: $br - 1px) {
+    @content;
+  }
+}
+
+@mixin more($br) {
+  @media (min-width: $br) {
+    @content;
+  }
+}
+
+@mixin strict-more($br) {
+  @media (min-width: $br - 1px) {
+    @content;
+  }
+}
+
+@mixin between($from, $to) {
+  @media (min-width: $from) and (max-width: $to) {
+    @content;
+  }
+}

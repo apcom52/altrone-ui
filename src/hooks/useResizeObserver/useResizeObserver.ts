@@ -2,6 +2,8 @@ import {RefObject, useEffect, useRef, useState} from "react";
 
 export type DOMRectValues = Pick<DOMRectReadOnly, 'bottom' | 'height' | 'left' | 'right' | 'top' | 'width'>
 
+const defaultReturn = {}
+
 export const useResizeObserver = (elementRef: RefObject<HTMLElement>) => {
   const resizeTimeout = useRef(null)
   const observerRef = useRef<ResizeObserver>(null)
@@ -37,5 +39,5 @@ export const useResizeObserver = (elementRef: RefObject<HTMLElement>) => {
     }
   }, [elementRef.current])
 
-  return DOMRect
+  return DOMRect || defaultReturn as DOMRectValues
 }

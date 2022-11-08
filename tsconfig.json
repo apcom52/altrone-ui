@@ -1,0 +1,6 @@
+{
+  "declarationDir": "types",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+  }
+}
