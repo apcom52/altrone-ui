@@ -77,3 +77,12 @@
     color: var(--textColorOnDanger);
   }
 }
+
+.alt-context-menu-item--parent-selected {
+  background-color: var(--surfaceTrasparent);
+
+  &:hover, &:focus {
+    background-color: var(--surfaceTrasparent);
+    color: var(--textColor);
+  }
+}

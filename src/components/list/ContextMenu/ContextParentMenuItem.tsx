@@ -4,6 +4,7 @@ import {Icon} from "../../icons";
 import {createPortal} from "react-dom";
 import {FloatingBox} from "../../containers";
 import {ContextMenu} from "./index";
+import clsx from "clsx";
 
 const ContextParentMenuItem = (action: ParentContextAction) => {
   const [isChildrenContextMenuVisible, setIsChildrenContextMenuVisible] = useState(false)
@@ -13,7 +14,9 @@ const ContextParentMenuItem = (action: ParentContextAction) => {
 
   return <>
     <button
-      className='alt-context-menu-item'
+      className={clsx('alt-context-menu-item', {
+        'alt-context-menu-item--parent-selected': isChildrenContextMenuVisible
+      })}
       ref={itemRef}
       onClick={() => setIsChildrenContextMenuVisible(true)}
       type='button'
