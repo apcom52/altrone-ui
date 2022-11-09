@@ -1,5 +1,4 @@
 import {memo, useEffect, useRef, useState} from "react";
-import button, {ButtonStyle} from "../../button/Button/Button";
 import {Icon} from "../../icons";
 import {useThemeContext} from "../../../contexts";
 import './date-picker.scss'
@@ -8,6 +7,7 @@ import {Calendar, MonthPicker, YearPicker} from "./index";
 import {Button} from "../../button";
 import clsx from "clsx";
 import {TextInputProps} from "../TextInput";
+import {Role} from "../../../types";
 
 export enum Picker {
   day = 'day',
@@ -150,7 +150,7 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
         { currentView === Picker.day && <Button onClick={onTodayClick} data-testid='alt-test-datepicker-today'>Today</Button>}
         { currentView === Picker.month && <Button onClick={onTodayClick} data-testid='alt-test-datepicker-currentMonth'>Current month</Button>}
         <Button
-          style={ButtonStyle.primary}
+          role={Role.primary}
           className='alt-date-picker__apply'
           onClick={onApplyClick}
           data-testid='alt-test-datepicker-apply'

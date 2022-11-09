@@ -2,9 +2,8 @@ import {memo} from "react";
 import {FormField, FormGroup} from "../../containers";
 import {Checkbox, CheckboxList, Select} from "../../form";
 import './data-table-filtering.scss';
-import {Direction, Option} from "../../../types";
+import {Direction, Option, Role} from "../../../types";
 import {Button} from "../../button";
-import {ButtonStyle} from "../../button/Button/Button";
 import {useDataTableContext} from "../../../contexts";
 
 interface DataTableFilteringProps {
@@ -85,7 +84,7 @@ const DataTableFiltering = ({ onClose }: DataTableFilteringProps) => {
     </FormGroup>
     <div className='alt-data-table-sorting__footer'>
       {appliedFilters.length > 0 && <Button onClick={() => setAppliedFilters([])}>Reset filters</Button>}
-      <Button style={ButtonStyle.primary} onClick={onClose}>Apply</Button>
+      <Button role={Role.primary} onClick={onClose}>Apply</Button>
     </div>
   </div>
 }
