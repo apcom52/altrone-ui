@@ -60,7 +60,7 @@ const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, ac
         key={actionIndex}
         leftIcon={action.leftIcon}
         rightIcon={action.rightIcon}
-        style={action.role}
+        role={action.role}
         onClick={action.onClick}
       >
         {action.label}

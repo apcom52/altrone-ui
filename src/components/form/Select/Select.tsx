@@ -1,6 +1,5 @@
 import {createElement, memo, useEffect, useMemo, useRef, useState} from "react";
-import {Option, OptionParent} from "../../../types";
-import button, {ButtonStyle} from "../../button/Button/Button";
+import {Option, OptionParent, Role} from "../../../types";
 import {FloatingBox} from "../../containers";
 import './select.scss';
 import {Icon} from "../../icons";
@@ -192,7 +191,7 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
           value={value}
           onChange={onChange}
         />
-        <Button style={ButtonStyle.primary} onClick={() => setIsSelectVisible(false)} fluid>Apply</Button>
+        <Button role={Role.primary} onClick={() => setIsSelectVisible(false)} fluid>Apply</Button>
       </>}
     </FloatingBox>}
   </>

@@ -80,7 +80,7 @@
 
 }
 
-.alt-button--style-primary {
+.alt-button--role-primary {
   --buttonBackgroundColor: var(--accent);
   --buttonTextColor: var(--textColorOnAccent);
   --buttonShadowColor: var(--accentBorderColor);
@@ -89,7 +89,7 @@
   @include useTextVariant(accent);
 }
 
-.alt-button--style-success {
+.alt-button--role-success {
   --buttonBackgroundColor: var(--success);
   --buttonTextColor: var(--textColorOnSuccess);
   --buttonShadowColor: var(--successBorderColor);
@@ -98,7 +98,7 @@
   @include useTextVariant(success);
 }
 
-.alt-button--style-danger {
+.alt-button--role-danger {
   --buttonBackgroundColor: var(--danger);
   --buttonTextColor: var(--textColorOnDanger);
   --buttonShadowColor: var(--dangerBorderColor);

@@ -1,16 +1,9 @@
 import {forwardRef, memo, Ref, useCallback, useRef, useState} from "react";
-import {ContextMenu as ContextMenuType, Size, WithAltroneOffsets, WithoutDefaultOffsets} from "../../../types";
+import {ContextMenu as ContextMenuType, Role, Size, WithAltroneOffsets, WithoutDefaultOffsets} from "../../../types";
 import clsx from "clsx";
 import {Box, FloatingBox} from "../../containers";
 import './button.scss'
 import {ContextMenu} from "../../list";
-
-export enum ButtonStyle {
-  default,
-  primary = 'primary',
-  success = 'success',
-  danger = 'danger',
-}
 
 export enum ButtonVariant {
   default,
@@ -20,7 +13,7 @@ export enum ButtonVariant {
 }
 
 export interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLButtonElement>>, 'style' | 'target' | 'size'>, WithAltroneOffsets {
-  style?: ButtonStyle
+  role?: Role
   variant?: ButtonVariant
   href?: string
   target?: HTMLAnchorElement['target'],
@@ -38,7 +31,7 @@ const ButtonComponents = [
 
 const Button = forwardRef(({
   children,
-  style = ButtonStyle.default,
+  role = Role.default,
   variant = ButtonVariant.default,
   href,
   className,
@@ -68,7 +61,7 @@ const Button = forwardRef(({
     <Box
       tagName={ButtonComponents[href ? 1 : 0] as keyof JSX.IntrinsicElements}
       className={clsx('alt-button', className, {
-        [`alt-button--style-${style}`]: style !== ButtonStyle.default,
+        [`alt-button--role-${role}`]: role !== Role.default,
         [`alt-button--variant-${variant}`]: variant !== ButtonVariant.default,
         [`alt-button--size-${size}`]: size !== Size.medium,
         'alt-button--fluid': fluid,
