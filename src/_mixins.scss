@@ -1,7 +1,11 @@
+@mixin useFocusStyles {
+  box-shadow: 0 0 0 3px var(--accentFocus);
+  outline: 0;
+}
+
 @mixin useFocus {
   &:focus, &:focus-visible {
-    box-shadow: 0 0 0 3px var(--accentFocus);
-    outline: 0;
+    @include useFocusStyles();
   }
 }
 
