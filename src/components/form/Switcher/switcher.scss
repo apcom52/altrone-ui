@@ -16,17 +16,11 @@
 }
 
 .alt-switcher__input {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  @include useNonStandardAppearance();
 
   &:checked + .alt-switcher__indicator {
     background-color: var(--switcherActiveColor);
-    box-shadow: none;
+    border-color: var(--switcherActiveColor);
 
     &:before {
       background-color: var(--switcherDotActiveColor);
@@ -41,22 +35,26 @@
   height: 26px;
   margin-right: 12px;
   border-radius: 13px;
-  box-shadow: inset 0 0 0 1px var(--switcherColor);
+  border: 1px solid var(--switcherColor);
   box-sizing: border-box;
-  transition: background-color var(--transitionDuration) ease;
+  transition: background-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
 
   &:before {
     position: absolute;
     content: '';
     width: 18px;
     height: 18px;
-    top: 4px;
+    top: 3px;
     left: 4px;
     border-radius: 50%;
     background-color: var(--switcherColor);
     transition: left var(--transitionDuration) ease, background-color var(--transitionDuration) ease;
     box-shadow: 0 3px 15px 0 var(--shadow);
   }
+}
+
+.alt-switcher__input:focus + .alt-switcher__indicator, .alt-switcher__input:focus-visible + .alt-switcher__indicator {
+  @include useFocusStyles();
 }
 
 .alt-switcher__label {
