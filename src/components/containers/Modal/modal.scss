@@ -53,8 +53,9 @@
   flex-direction: column;
   border-radius: 12px;
   box-shadow: 0 3px 15px 0 var(--shadow);
-  transform: translate3d(0, 0, 0);
-  transition: width var(--transitionDuration) ease;
+  transition: width var(--transitionDuration) ease, opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-50px);
 
   @include useGlassSurface();
   @include useDisabledUserSelect();
@@ -64,6 +65,7 @@
     margin: auto 0 0;
     padding: 16px;
     border-radius: 12px 12px 0 0;
+    transform: translateY(150px);
   }
 }
 
@@ -105,6 +107,10 @@
 
 .alt-modal__content {
   padding: 12px 8px;
+
+  @include less($l-phone) {
+    padding: 12px 0;
+  }
 }
 
 .alt-modal__footer {
@@ -131,7 +137,9 @@
 }
 
 .alt-modal__cancel {
-  order: 1;
+  @include less($l-phone) {
+    order: 1;
+  }
 }
 
 .alt-modal--size-small {
@@ -144,4 +152,9 @@
 
 .alt-modal--fluid {
   width: 100%;
+}
+
+.alt-modal--opened {
+  opacity: 1;
+  transform: translateY(0);
 }

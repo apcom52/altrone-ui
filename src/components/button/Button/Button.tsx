@@ -4,6 +4,7 @@ import clsx from "clsx";
 import {Box, FloatingBox} from "../../containers";
 import './button.scss'
 import {ContextMenu} from "../../list";
+import {FloatingBoxMobileBehaviour} from "../../containers/FloatingBox/FloatingBox";
 
 export enum ButtonVariant {
   default,
@@ -83,7 +84,7 @@ const Button = forwardRef(({
       {children}
       { rightIcon ? <span className='alt-button__rightIcon'>{rightIcon}</span> : null }
     </Box>
-    {isDropdownVisible ? <FloatingBox targetRef={buttonRef.current} onClose={hideDropdown} placement='bottom'>
+    {isDropdownVisible ? <FloatingBox targetRef={buttonRef.current} onClose={hideDropdown} placement='bottom' mobileBehaviour={FloatingBoxMobileBehaviour.modal}>
       <ContextMenu menu={dropdown} />
     </FloatingBox> : null}
   </>
