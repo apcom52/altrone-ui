@@ -1,7 +1,7 @@
 @import '../../../_mixins';
 
 .alt-switcher {
-  --switcherColor: var(--borderColor);
+  --switcherColor: var(--secondaryTextColor);
   --switcherActiveColor: var(--accent);
   --switcherDotActiveColor: var(--textColorOnAccent);
   --text: var(--textColor);
@@ -30,17 +30,17 @@
 
     &:before {
       background-color: var(--switcherDotActiveColor);
-      left: calc(100% - 13px);
+      left: calc(100% - 22px);
     }
   }
 }
 
 .alt-switcher__indicator {
   position: relative;
-  width: 40px;
-  height: 18px;
-  margin-right: 6px;
-  border-radius: 30px;
+  width: 48px;
+  height: 26px;
+  margin-right: 12px;
+  border-radius: 13px;
   box-shadow: inset 0 0 0 1px var(--switcherColor);
   box-sizing: border-box;
   transition: background-color var(--transitionDuration) ease;
@@ -48,13 +48,14 @@
   &:before {
     position: absolute;
     content: '';
-    width: 10px;
-    height: 10px;
+    width: 18px;
+    height: 18px;
     top: 4px;
     left: 4px;
     border-radius: 50%;
     background-color: var(--switcherColor);
     transition: left var(--transitionDuration) ease, background-color var(--transitionDuration) ease;
+    box-shadow: 0 3px 15px 0 var(--shadow);
   }
 }
 
@@ -70,10 +71,10 @@
 }
 
 .alt-switcher--disabled {
-  --switcherColor: var(--borderColor);
-  --switcherActiveColor: var(--borderColor);
-  --switcherDotActiveColor: var(--textColorOnAccent);
-  --text: var(--borderColor);
+  --switcherColor: var(--disabledText);
+  --switcherActiveColor: var(--disabledText);
+  --switcherDotActiveColor: var(--surface);
+  --text: var(--disabledText);
 
   cursor: default;
   pointer-events: none;
