@@ -89,3 +89,17 @@ $s-phone: 320px;
     @content;
   }
 }
+
+@mixin useScrollbars() {
+  &::-webkit-scrollbar {
+    width: 4px;
+    border-radius: 4px;
+    height: 8px;
+    background-color: var(--surfaceTrasparent); /* or add it to the track */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--textColor);
+    border-radius: 4px;
+  }
+}

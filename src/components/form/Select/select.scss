@@ -46,8 +46,9 @@
   width: 100%;
   flex-direction: column;
   color: var(--textColor);
-  max-height: 400px;
+  max-height: 250px;
   overflow-y: auto;
+  overflow-y: overlay;
   gap: 8px;
 }
 
