@@ -4,12 +4,13 @@
   display: flex;
   position: relative;
   width: 100%;
+  margin: 0;
+  padding: 4px 6px 4px 12px;
   align-items: center;
   color: var(--textColor);
   border-radius: 8px;
   background-color: var(--surface);
   border: 1px solid var(--borderColor);
-  padding: 6px 6px 6px 12px;
   box-sizing: border-box;
   cursor: pointer;
 

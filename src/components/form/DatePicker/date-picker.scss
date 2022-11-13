@@ -5,6 +5,7 @@
   position: relative;
   width: 100%;
   height: 34px;
+  margin: 0;
   padding: 4px 6px 4px 12px;
   align-items: center;
   justify-content: space-between;
@@ -25,6 +26,10 @@
   @include useFontSize(label, Large);
   color: var(--textColor);
   text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .alt-date-picker__placeholder {
