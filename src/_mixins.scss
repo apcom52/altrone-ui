@@ -27,6 +27,8 @@
 }
 
 @mixin useFontSize($role, $size: '', $withStyle: true) {
+  font-family: "Open Sans", sans-serif;
+
   --fontSize: var(--#{$role}#{$size}FontSize);
   --lineHeight: var(--#{$role}#{$size}LineHeight);
   --fontWeight: var(--#{$role}#{$size}FontWeight);
@@ -101,5 +103,19 @@ $s-phone: 320px;
   &::-webkit-scrollbar-thumb {
     background-color: var(--textColor);
     border-radius: 4px;
+  }
+}
+
+@mixin useSoftShadow() {
+  &:after {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    left: 0;
+    height: 4px;
+    content: '';
+    background: radial-gradient(at top center, var(--shadow) 0%, transparent 70%, transparent 100%);
+
+    @content;
   }
 }

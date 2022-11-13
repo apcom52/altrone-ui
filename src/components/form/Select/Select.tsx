@@ -30,7 +30,7 @@ interface SelectProps<T extends number | string | boolean = string> extends Omit
 
 const DEFAULT_KEY = '_default'
 
-const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, fluid = false, classNames = {} }: SelectProps) => {
+const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, fluid = true, classNames = {} }: SelectProps) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize()
 
   const [isSelectVisible, setIsSelectVisible] = useState(false)
