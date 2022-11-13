@@ -10,6 +10,7 @@ import {useWindowSize} from "../../../hooks";
 import {FloatingBoxMobileBehaviour} from "../../containers/FloatingBox/FloatingBox";
 import {ScrollableSelector} from "../ScrollableSelector";
 import {Button} from "../../button";
+import SelectPlaceholder from "./SelectPlaceholder";
 
 interface SelectProps<T extends number | string | boolean = string> extends Omit<React.HTMLProps<HTMLSelectElement>, 'value' | 'onChange'> {
   value: T
@@ -19,7 +20,6 @@ interface SelectProps<T extends number | string | boolean = string> extends Omit
   searchable?: boolean
   searchFunc?: (searchTerm: string, item: Option<T>) => boolean
   ItemComponent?: (item: Option<T>, checked: boolean) => Element;
-  fluid?: boolean
   classNames?: {
     select?: string
     currentValue?: string
@@ -30,7 +30,7 @@ interface SelectProps<T extends number | string | boolean = string> extends Omit
 
 const DEFAULT_KEY = '_default'
 
-const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, fluid = true, classNames = {} }: SelectProps) => {
+const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, classNames = {}, placeholder = 'Select an option' }: SelectProps) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize()
 
   const [isSelectVisible, setIsSelectVisible] = useState(false)
@@ -76,7 +76,7 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
   }, [options, parents, searchable, searchTerm, searchFunc])
 
   const selectedOption = useMemo(() => {
-    return options.find(option => option.value === value) || {}
+    return options.find(option => option.value === value) || null
   }, [value, options])
 
   const onSelectMenuClose = () => {
@@ -122,7 +122,6 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
       onClick={onSelectClick}
       data-testid='alt-test-select'
       className={clsx('alt-select', classNames.select, {
-        'alt-select--fluid': fluid,
         'alt-select--active': isSelectVisible,
         'alt-select--disabled': disabled
       })}
@@ -132,14 +131,14 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
         className={clsx('alt-select__value', classNames.currentValue)}
         data-testid='alt-test-select-current-value'
       >
-        {createElement(ItemComponent, {
+        {selectedOption ? createElement(ItemComponent, {
           label: selectedOption?.label,
           value: selectedOption?.value,
           selected: false,
           disabled: false,
           onSelect: () => null,
           inSelectHeader: true
-        })}
+        }) : <SelectPlaceholder>{placeholder}</SelectPlaceholder>}
       </div>
       <div className='alt-select__arrow'><Icon i='expand_more' /></div>
     </button> : <TextInput
