@@ -2,6 +2,7 @@
 
 .alt-select {
   display: flex;
+  position: relative;
   align-items: center;
   color: var(--textColor);
   border-radius: 8px;
@@ -15,6 +16,7 @@
   @include useFontSize(label, Large);
   @include useFocus();
   @include useDisabledUserSelect();
+  @include useSoftShadow();
 }
 
 .alt-select__value {
