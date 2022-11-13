@@ -292,7 +292,7 @@ SwitcherExample.argTypes = {
 
 export const DatePickerExample = Template.bind({})
 DatePickerExample.args = {
-  value: new Date(),
+  value: null,
   component: DatePicker,
   locale: 'en-US',
   disabled: false,

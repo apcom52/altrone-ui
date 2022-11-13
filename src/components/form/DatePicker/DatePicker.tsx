@@ -21,9 +21,11 @@ interface DatePickerProps extends Pick<TextInputProps, 'errorText' | 'hintText' 
   picker?: Picker
   minYear?: number
   maxYear?: number
+  disabled?: boolean
+  placeholder?: string
 }
 
-const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxYear = 2050 }: DatePickerProps) => {
+const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxYear = 2050, disabled = false, placeholder = 'Select a date' }: DatePickerProps) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(value ? new Date(value.getFullYear(), value.getMonth(), 1) :  new Date())
   const [currentView, setCurrentView] = useState<Picker>(picker)
@@ -90,8 +92,9 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
       onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}
       data-testid='alt-test-datepicker'
       type='button'
+      disabled={disabled}
     >
-      <div className='alt-date-picker__value'>{value && valueDateFormat.format(value)}</div>
+      {value ? <div className='alt-date-picker__value'>{valueDateFormat.format(value)}</div> : <div className="alt-date-picker__placeholder">{placeholder}</div> }
       <div className='alt-date-picker__icon'><Icon i='calendar_month' /></div>
     </button>
     {isDatePickerVisible && <FloatingBox targetRef={inputRef.current} placement='bottom' onClose={() => setIsDatePickerVisible(false)}>

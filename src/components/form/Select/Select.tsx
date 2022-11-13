@@ -20,7 +20,6 @@ interface SelectProps<T extends number | string | boolean = string> extends Omit
   searchable?: boolean
   searchFunc?: (searchTerm: string, item: Option<T>) => boolean
   ItemComponent?: (item: Option<T>, checked: boolean) => Element;
-  fluid?: boolean
   classNames?: {
     select?: string
     currentValue?: string
@@ -31,7 +30,7 @@ interface SelectProps<T extends number | string | boolean = string> extends Omit
 
 const DEFAULT_KEY = '_default'
 
-const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, fluid = true, classNames = {}, placeholder = 'Select an option' }: SelectProps) => {
+const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, classNames = {}, placeholder = 'Select an option' }: SelectProps) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize()
 
   const [isSelectVisible, setIsSelectVisible] = useState(false)
@@ -123,7 +122,6 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
       onClick={onSelectClick}
       data-testid='alt-test-select'
       className={clsx('alt-select', classNames.select, {
-        'alt-select--fluid': fluid,
         'alt-select--active': isSelectVisible,
         'alt-select--disabled': disabled
       })}

@@ -3,12 +3,12 @@
 .alt-select {
   display: flex;
   position: relative;
+  width: 100%;
   align-items: center;
   color: var(--textColor);
   border-radius: 8px;
   background-color: var(--surface);
-  box-shadow: 0 0 0 1px var(--surfaceTrasparent);
-  border: none;
+  border: 1px solid var(--borderColor);
   padding: 6px 6px 6px 12px;
   box-sizing: border-box;
   cursor: pointer;
