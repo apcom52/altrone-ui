@@ -1,3 +1,4 @@
+
 import {memo, ReactNode, useEffect, useLayoutEffect, useMemo, useRef} from "react";
 import {Align} from "../../../types/Align";
 import {Role, Size} from "../../../types";
@@ -79,6 +80,7 @@ const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, ac
     ))
   }
 
+
   const handleClose = () => {
     modalRef.current?.classList.remove(CLS_OPENED)
 
@@ -101,6 +103,7 @@ const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, ac
     })} ref={modalRef}>
       {title && <div className="alt-modal__title">{title}</div>}
       {showClose && gtPhoneL && <button className='alt-modal__close' type='button' onClick={handleClose}><Icon i='close' /></button>}
+
       <div className="alt-modal__content">
         {children}
       </div>

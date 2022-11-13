@@ -20,7 +20,7 @@
   overflow-x: hidden;
   background-color: var(--blackout);
   z-index: 1000;
-
+  
   @include less($l-phone) {
     display: flex;
     height: fit-content;
