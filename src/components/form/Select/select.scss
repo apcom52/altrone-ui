@@ -2,19 +2,22 @@
 
 .alt-select {
   display: flex;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 4px 6px 4px 12px;
   align-items: center;
   color: var(--textColor);
   border-radius: 8px;
   background-color: var(--surface);
-  box-shadow: 0 0 0 1px var(--surfaceTrasparent);
-  border: none;
-  padding: 6px 6px 6px 12px;
+  border: 1px solid var(--borderColor);
   box-sizing: border-box;
   cursor: pointer;
 
   @include useFontSize(label, Large);
   @include useFocus();
   @include useDisabledUserSelect();
+  @include useSoftShadow();
 }
 
 .alt-select__value {
@@ -46,8 +49,9 @@
   width: 100%;
   flex-direction: column;
   color: var(--textColor);
-  max-height: 400px;
+  max-height: 250px;
   overflow-y: auto;
+  overflow-y: overlay;
   gap: 8px;
 }
 
@@ -106,6 +110,17 @@
   overflow: hidden;
 }
 
+.alt-select-menu__title {
+  @include useFontSize(title);
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.alt-select-menu__selector {
+  margin-bottom: 20px;
+}
+
 .alt-select-option--selected {
   .alt-select-option__icon {
     visibility: visible;
@@ -141,4 +156,8 @@
   .alt-select__value {
     color: var(--secondaryTextColor);
   }
+}
+
+.alt-select-placeholder {
+  color: var(--placeholderText);
 }

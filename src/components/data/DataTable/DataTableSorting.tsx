@@ -2,9 +2,8 @@ import {memo, useMemo} from "react";
 import {FormField, FormGroup} from "../../containers";
 import {RadioList, Select} from "../../form";
 import './data-table-sorting.scss';
-import {Direction} from "../../../types";
+import {Direction, Role} from "../../../types";
 import {Button} from "../../button";
-import {ButtonStyle} from "../../button/Button/Button";
 import {useDataTableContext} from "../../../contexts";
 
 interface DataTableSortingProps {
@@ -49,7 +48,7 @@ const DataTableSorting = ({ onClose }: DataTableSortingProps) => {
     </FormGroup>
     <div className='alt-data-table-sorting__footer'>
       {sortBy && <Button onClick={() => setSortBy(null)}>Reset sorting</Button>}
-      <Button style={ButtonStyle.primary} onClick={onClose}>Apply</Button>
+      <Button role={Role.primary} onClick={onClose}>Apply</Button>
     </div>
   </div>
 }

@@ -1,5 +1,4 @@
 import {memo, useEffect, useRef, useState} from "react";
-import button, {ButtonStyle} from "../../button/Button/Button";
 import {Icon} from "../../icons";
 import {useThemeContext} from "../../../contexts";
 import './date-picker.scss'
@@ -8,6 +7,7 @@ import {Calendar, MonthPicker, YearPicker} from "./index";
 import {Button} from "../../button";
 import clsx from "clsx";
 import {TextInputProps} from "../TextInput";
+import {Role} from "../../../types";
 
 export enum Picker {
   day = 'day',
@@ -21,9 +21,11 @@ interface DatePickerProps extends Pick<TextInputProps, 'errorText' | 'hintText' 
   picker?: Picker
   minYear?: number
   maxYear?: number
+  disabled?: boolean
+  placeholder?: string
 }
 
-const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxYear = 2050 }: DatePickerProps) => {
+const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxYear = 2050, disabled = false, placeholder = 'Select a date' }: DatePickerProps) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(value ? new Date(value.getFullYear(), value.getMonth(), 1) :  new Date())
   const [currentView, setCurrentView] = useState<Picker>(picker)
@@ -90,8 +92,9 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
       onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}
       data-testid='alt-test-datepicker'
       type='button'
+      disabled={disabled}
     >
-      <div className='alt-date-picker__value'>{value && valueDateFormat.format(value)}</div>
+      {value ? <div className='alt-date-picker__value'>{valueDateFormat.format(value)}</div> : <div className="alt-date-picker__placeholder">{placeholder}</div> }
       <div className='alt-date-picker__icon'><Icon i='calendar_month' /></div>
     </button>
     {isDatePickerVisible && <FloatingBox targetRef={inputRef.current} placement='bottom' onClose={() => setIsDatePickerVisible(false)}>
@@ -150,7 +153,7 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
         { currentView === Picker.day && <Button onClick={onTodayClick} data-testid='alt-test-datepicker-today'>Today</Button>}
         { currentView === Picker.month && <Button onClick={onTodayClick} data-testid='alt-test-datepicker-currentMonth'>Current month</Button>}
         <Button
-          style={ButtonStyle.primary}
+          role={Role.primary}
           className='alt-date-picker__apply'
           onClick={onApplyClick}
           data-testid='alt-test-datepicker-apply'

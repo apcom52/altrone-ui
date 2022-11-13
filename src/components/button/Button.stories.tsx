@@ -1,7 +1,7 @@
 import {withAltrone} from "../../hocs";
-import {Size, Theme} from "../../types";
+import {Role, Size, Theme} from "../../types";
 import {Button} from "./Button";
-import {ButtonStyle, ButtonVariant} from "./Button/Button";
+import {ButtonVariant} from "./Button/Button";
 import {Icon} from "../icons";
 
 const Template = ({component, dark, leftIcon, rightIcon, ...args}) => {
@@ -22,7 +22,7 @@ ButtonExample.args = {
   component: Button,
   children: 'Action button',
   disabled: false,
-  style: ButtonStyle.default,
+  role: Role.default,
   size: Size.medium,
   leftIcon: '',
   rightIcon: '',
@@ -70,9 +70,9 @@ ButtonDropdownExample.args = {
 }
 
 ButtonExample.argTypes = {
-  style: {
+  role: {
     control: 'select',
-    options: [ButtonStyle.default, ButtonStyle.primary, ButtonStyle.success, ButtonStyle.danger]
+    options: [Role.default, Role.primary, Role.success, Role.danger]
   },
   variant: {
     control: 'select',
@@ -87,12 +87,4 @@ ButtonExample.argTypes = {
 export default {
   component: ButtonExample,
   title: 'Button',
-  parameters: {
-    style: [
-      { name: 'default', value: ButtonStyle.default },
-      { name: 'primary', value: ButtonStyle.primary },
-      { name: 'success', value: ButtonStyle.success },
-      { name: 'danger', value: ButtonStyle.danger },
-    ]
-  }
 }

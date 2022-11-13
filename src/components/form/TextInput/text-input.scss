@@ -32,6 +32,10 @@
   &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
     display: none;
   }
+
+  &::placeholder {
+    color: var(--placeholderText);
+  }
 }
 
 .alt-text-input__left-island {

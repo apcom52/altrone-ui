@@ -1,7 +1,7 @@
 import {Blockquote, Heading, Message, Paragraph} from './index'
 import {withAltrone} from "../../hocs";
-import {Theme} from "../../types";
-import {MessageRole, MessageStyle} from "./Message/Message";
+import {Role, Theme} from "../../types";
+import {Icon} from "../icons";
 
 const Template = ({component, dark, ...args}) => {
   return withAltrone(component, {
@@ -43,16 +43,13 @@ MessageExample.args = {
        quisquam quod sint, vel?
      </Paragraph>
   </>,
+  IconComponent: <Icon i='warning' />,
   dark: false
 }
 MessageExample.argTypes = {
-  style: {
-    control: 'select',
-    options: [MessageStyle.default, MessageStyle.primary, MessageStyle.success, MessageStyle.danger]
-  },
   role: {
     control: 'select',
-    options: [MessageRole.attention, MessageRole.danger, MessageRole.completed, MessageRole.help, MessageRole.failed, MessageRole.warning]
+    options: [Role.default, Role.primary, Role.success, Role.danger]
   },
 }
 

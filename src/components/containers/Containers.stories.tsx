@@ -4,7 +4,7 @@ import {Role, Size, Theme} from "../../types";
 import {useState} from "react";
 import clsx from "clsx";
 import {Button} from "../button";
-import FloatingBox from "./FloatingBox/FloatingBox";
+import FloatingBox, {FloatingBoxMobileBehaviour} from "./FloatingBox/FloatingBox";
 import {Heading, Paragraph} from "../typography";
 import {DatePicker, NumberInput, RadioList, Select, Switcher, TextInput} from "../form";
 import {Align} from "../../types/Align";
@@ -30,7 +30,7 @@ const FloatingBoxTemplate = args => {
     <Button onClick={() => {
       setIsVisible(old => !old)
     }} ref={setButtonRef}>Open floating box</Button>
-    {isVisible && <FloatingBox targetRef={buttonRef} onClose={() => setIsVisible(false)}>
+    {isVisible && <FloatingBox targetRef={buttonRef} onClose={() => setIsVisible(false)} mobileBehaviour={FloatingBoxMobileBehaviour.modal}>
       <Heading level={6}>Wants more?</Heading>
       <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium adipisci aliquid amet consequuntur distinctio ducimus enim error et ex illum minus molestiae mollitia nemo nulla obcaecati, provident quia reprehenderit voluptatem!</Paragraph>
     </FloatingBox>}

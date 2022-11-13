@@ -1,15 +1,17 @@
-import {memo, ReactNode, useEffect, useMemo, useRef} from "react";
+
+import {memo, ReactNode, useEffect, useLayoutEffect, useMemo, useRef} from "react";
 import {Align} from "../../../types/Align";
 import {Role, Size} from "../../../types";
 import './modal.scss';
 import {Icon} from "../../icons";
 import {Button} from "../../button";
 import clsx from "clsx";
+import {useWindowSize} from "../../../hooks";
 
 interface ModalProps {
-  title: string
   children: JSX.Element | JSX.Element[]
   onClose: () => void
+  title?: string
   size?: Size
   fluid?: boolean
   actions?: {
@@ -25,15 +27,28 @@ interface ModalProps {
   closeOnOverlay?: boolean
 }
 
+const CLS_OPENED = 'alt-modal--opened'
+const CLS_UTIL_NOSCROLL = 'alt-util--no-scroll'
+const HIDE_DURATION = 300
+
 const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, actions = [], showClose = true, showCancel = true, closeOnOverlay = true }: ModalProps) => {
-  const wrapperRef = useRef(null)
+  const { ltePhoneL, gtPhoneL } = useWindowSize()
+
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const modalRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    document.body.classList.add('alt-util--no-scroll')
+    document.body.classList.add(CLS_UTIL_NOSCROLL)
 
     return () => {
-      document.body.classList.remove('alt-util--no-scroll')
+      document.body.classList.remove(CLS_UTIL_NOSCROLL)
     }
+  }, [])
+
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      modalRef.current?.classList.add(CLS_OPENED)
+    }, 0)
   }, [])
 
   const [leftActions, rightActions] = useMemo(() => {
@@ -57,7 +72,7 @@ const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, ac
         key={actionIndex}
         leftIcon={action.leftIcon}
         rightIcon={action.rightIcon}
-        style={action.role}
+        role={action.role}
         onClick={action.onClick}
       >
         {action.label}
@@ -65,9 +80,18 @@ const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, ac
     ))
   }
 
+
+  const handleClose = () => {
+    modalRef.current?.classList.remove(CLS_OPENED)
+
+    setTimeout(() => {
+      onClose()
+    }, HIDE_DURATION)
+  }
+
   const onBackdropClick = e => {
     if (closeOnOverlay && e.target === wrapperRef.current) {
-      onClose()
+      handleClose()
     }
   }
 
@@ -76,18 +100,20 @@ const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, ac
       'alt-modal--size-small': size === Size.small,
       'alt-modal--size-large': size === Size.large,
       'alt-modal--fluid': fluid
-    })}>
-      <div className="alt-modal__title">{title}</div>
-      {showClose && <button className='alt-modal__close' type='button' onClick={onClose}><Icon i='close' /></button>}
+    })} ref={modalRef}>
+      {title && <div className="alt-modal__title">{title}</div>}
+      {showClose && gtPhoneL && <button className='alt-modal__close' type='button' onClick={handleClose}><Icon i='close' /></button>}
+
       <div className="alt-modal__content">
         {children}
       </div>
       {(showCancel || actions.length > 0) && <div className='alt-modal__footer'>
         {renderActions(leftActions)}
         <div className="alt-modal__footer-separator" />
-        {showCancel && <Button onClick={onClose}>Cancel</Button>}
+        {((showCancel && gtPhoneL) || (showClose || ltePhoneL)) && <Button onClick={handleClose} className='alt-modal__cancel'>Cancel</Button>}
         {renderActions(rightActions)}
       </div>}
+      {ltePhoneL && <div className='alt-modal-wrapper__handle' />}
     </div>
   </div>
 }

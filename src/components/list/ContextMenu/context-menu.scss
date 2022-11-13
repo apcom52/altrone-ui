@@ -38,6 +38,10 @@
   & + & {
     margin-top: 2px;
   }
+
+  @include less($l-phone) {
+    padding: 12px;
+  }
 }
 
 .alt-context-menu-item__icon {
@@ -61,12 +65,17 @@
 .alt-context-menu-item__childrenArrow {
   display: inline-flex;
   font-size: 1.5em;
+  margin-right: -8px;
   justify-content: flex-end;
 }
 
 .alt-context-menu-item__hint {
   color: var(--secondaryTextColor);
   margin-left: 10px;
+
+  @include less($l-phone) {
+    display: none;
+  }
 }
 
 .alt-context-menu-item--danger {
@@ -75,5 +84,14 @@
   &:hover, &:focus {
     background-color: var(--danger);
     color: var(--textColorOnDanger);
+  }
+}
+
+.alt-context-menu-item--parent-selected {
+  background-color: var(--surfaceTrasparent);
+
+  &:hover, &:focus {
+    background-color: var(--surfaceTrasparent);
+    color: var(--textColor);
   }
 }

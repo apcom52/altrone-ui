@@ -1,7 +1,11 @@
+@mixin useFocusStyles {
+  box-shadow: 0 0 0 3px var(--accentFocus);
+  outline: 0;
+}
+
 @mixin useFocus {
   &:focus, &:focus-visible {
-    box-shadow: 0 0 0 3px var(--accentFocus);
-    outline: 0;
+    @include useFocusStyles();
   }
 }
 
@@ -23,6 +27,8 @@
 }
 
 @mixin useFontSize($role, $size: '', $withStyle: true) {
+  font-family: "Open Sans", sans-serif;
+
   --fontSize: var(--#{$role}#{$size}FontSize);
   --lineHeight: var(--#{$role}#{$size}LineHeight);
   --fontWeight: var(--#{$role}#{$size}FontWeight);
@@ -42,4 +48,74 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+}
+
+$xl-desktop: 1920px;
+$l-desktop: 1600px;
+$m-desktop: 1440px;
+$s-desktop: 1366px;
+$xs-desktop: 1280px;
+$l-tablet: 1024px;
+$m-tablet: 834px;
+$s-tablet: 768px;
+$l-phone: 430px;
+$m-phone: 393px;
+$s-phone: 320px;
+
+@mixin less($br) {
+  @media (max-width: $br) {
+    @content;
+  }
+}
+
+@mixin strict-less($br) {
+  @media (max-width: $br - 1px) {
+    @content;
+  }
+}
+
+@mixin more($br) {
+  @media (min-width: $br) {
+    @content;
+  }
+}
+
+@mixin strict-more($br) {
+  @media (min-width: $br - 1px) {
+    @content;
+  }
+}
+
+@mixin between($from, $to) {
+  @media (min-width: $from) and (max-width: $to) {
+    @content;
+  }
+}
+
+@mixin useScrollbars() {
+  &::-webkit-scrollbar {
+    width: 4px;
+    border-radius: 4px;
+    height: 8px;
+    background-color: var(--surfaceTrasparent); /* or add it to the track */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--textColor);
+    border-radius: 4px;
+  }
+}
+
+@mixin useSoftShadow() {
+  &:after {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    left: 0;
+    height: 4px;
+    content: '';
+    background: radial-gradient(at top center, var(--shadow) 0%, transparent 70%, transparent 100%);
+
+    @content;
+  }
 }

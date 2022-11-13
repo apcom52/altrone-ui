@@ -2,24 +2,39 @@
 
 .alt-date-picker {
   display: flex;
+  position: relative;
+  width: 100%;
+  height: 34px;
+  margin: 0;
+  padding: 4px 6px 4px 12px;
   align-items: center;
   justify-content: space-between;
-  padding: 5px 6px 5px 12px;
   border-radius: 8px;
-  border: none;
-  box-shadow: inset 0 0 0 1px var(--borderColor);
   background-color: var(--surface);
+  border: 1px solid var(--borderColor);
+  box-sizing: border-box;
   cursor: pointer;
   gap: 16px;
   transition: box-shadow var(--transitionDuration) ease;
 
   @include useFocus();
   @include useDisabledUserSelect();
+  @include useSoftShadow();
 }
 
 .alt-date-picker__value {
   @include useFontSize(label, Large);
   color: var(--textColor);
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.alt-date-picker__placeholder {
+  @include useFontSize(label, Large);
+  color: var(--placeholderText);
   text-align: left;
 }
 
