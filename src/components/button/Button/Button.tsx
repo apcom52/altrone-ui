@@ -23,6 +23,7 @@ export interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<
   rightIcon?: JSX.Element
   size?: Size
   dropdown?: ContextMenuType
+  isIcon?: boolean
 }
 
 const ButtonComponents = [
@@ -43,6 +44,7 @@ const Button = forwardRef(({
   dropdown = [],
   onClick,
   type = 'button',
+  isIcon = false,
   ...props
 }: ButtonProps, ref: Ref<HTMLButtonElement>) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false)
@@ -66,6 +68,7 @@ const Button = forwardRef(({
         [`alt-button--variant-${variant}`]: variant !== ButtonVariant.default,
         [`alt-button--size-${size}`]: size !== Size.medium,
         'alt-button--fluid': fluid,
+        'alt-button--icon': isIcon
       })}
       ref={(node: HTMLButtonElement) => {
         buttonRef.current = node
