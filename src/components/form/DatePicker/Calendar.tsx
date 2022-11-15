@@ -2,6 +2,7 @@ import {useThemeContext} from "../../../contexts";
 import {memo, useMemo} from "react";
 import button from "../../button/Button/Button";
 import clsx from "clsx";
+import {useWindowSize} from "../../../hooks";
 
 export interface CalendarProps {
   currentMonth: Date
@@ -15,6 +16,7 @@ const makeDateString = (date = new Date()) => {
 
 const Calendar = ({ currentMonth, selectedDate = new Date(), onChange }: CalendarProps) => {
   const { locale } = useThemeContext()
+  const { ltePhoneL } = useWindowSize()
 
   const today = new Date()
   const todayString = makeDateString(today)
@@ -32,7 +34,7 @@ const Calendar = ({ currentMonth, selectedDate = new Date(), onChange }: Calenda
   ];
 
   const weekdayDateFormat = new Intl.DateTimeFormat(locale, {
-    weekday: 'short'
+    weekday: ltePhoneL ? 'narrow' : 'short'
   })
 
   const calendar = useMemo(() => {
