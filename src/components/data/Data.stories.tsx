@@ -21,6 +21,7 @@ DataTableExample.args = {
     'name',
     'continent'
   ],
+  mobileColumns: ['name'],
   columns: [{
     accessor: 'iso',
     label: 'ISO Code',
