@@ -38,7 +38,7 @@ const DataTableHeader = () => {
   }
 
   return <div className='alt-data-table-header'>
-    {ltePhoneL && !isSearchVisible && <div className='alt-data-table-header__filters'>
+    {!ltePhoneL || (ltePhoneL && !isSearchVisible) && <div className='alt-data-table-header__filters'>
         {sortKeys.length > 0 && (
           <Button
             ref={sortRef}

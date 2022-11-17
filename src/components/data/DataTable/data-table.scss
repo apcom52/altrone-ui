@@ -45,3 +45,23 @@
   left: 8px;
   top: 8px;
 }
+
+.alt-data-table-mobile-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.alt-data-table-mobile-cell {
+  width: calc(50% - 6px);
+}
+
+.alt-data-table-mobile-cell__label {
+  @include useFontSize(label, Large);
+  color: var(--secondaryTextColor);
+}
+
+.alt-data-table-mobile-cell__value {
+  @include useFontSize(body);
+}

@@ -18,6 +18,10 @@
 
   @include useFontSize(label);
   margin-left: 16px;
+
+  @include less($l-phone) {
+    margin-left: 12px;
+  }
 }
 
 .alt-data-table-footer__pagination {
@@ -31,10 +35,18 @@
   align-items: center;
 
   @include useFontSize(label, Large);
+
+  @include less($l-phone) {
+    margin-right: -8px;
+  }
 }
 
 .alt-data-table-pagination__progress {
-  margin: 0 12px;
+  margin: 0 4px;
+
+  @include less($l-phone) {
+    white-space: nowrap;
+  }
 }
 
 .alt-data-table-pagination__currentPage {
