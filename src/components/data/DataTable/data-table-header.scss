@@ -16,6 +16,10 @@
   display: flex;
   justify-content: flex-end;
   flex: 1;
+
+  & + .alt-button {
+    margin-left: 4px;
+  }
 }
 
 .alt-data-table-header__filter-value {
