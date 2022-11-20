@@ -1,5 +1,4 @@
 import {memo, useEffect, useRef, useState} from "react";
-import button, {ButtonStyle} from "../../button/Button/Button";
 import {Icon} from "../../icons";
 import {useThemeContext} from "../../../contexts";
 import './date-picker.scss'
@@ -8,6 +7,9 @@ import {Calendar, MonthPicker, YearPicker} from "./index";
 import {Button} from "../../button";
 import clsx from "clsx";
 import {TextInputProps} from "../TextInput";
+import {Role} from "../../../types";
+import {FloatingBoxMobileBehaviour} from "../../containers/FloatingBox/FloatingBox";
+import {useWindowSize} from "../../../hooks";
 
 export enum Picker {
   day = 'day',
@@ -21,13 +23,17 @@ interface DatePickerProps extends Pick<TextInputProps, 'errorText' | 'hintText' 
   picker?: Picker
   minYear?: number
   maxYear?: number
+  disabled?: boolean
+  placeholder?: string
 }
 
-const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxYear = 2050 }: DatePickerProps) => {
+const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxYear = 2050, disabled = false, placeholder = 'Select a date' }: DatePickerProps) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(value ? new Date(value.getFullYear(), value.getMonth(), 1) :  new Date())
   const [currentView, setCurrentView] = useState<Picker>(picker)
   let { locale } = useThemeContext()
+
+  const { ltePhoneL } = useWindowSize()
 
   const inputRef = useRef<HTMLButtonElement>(null)
 
@@ -90,13 +96,19 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
       onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}
       data-testid='alt-test-datepicker'
       type='button'
+      disabled={disabled}
     >
-      <div className='alt-date-picker__value'>{value && valueDateFormat.format(value)}</div>
+      {value ? <div className='alt-date-picker__value'>{valueDateFormat.format(value)}</div> : <div className="alt-date-picker__placeholder">{placeholder}</div> }
       <div className='alt-date-picker__icon'><Icon i='calendar_month' /></div>
     </button>
-    {isDatePickerVisible && <FloatingBox targetRef={inputRef.current} placement='bottom' onClose={() => setIsDatePickerVisible(false)}>
+    {isDatePickerVisible && <FloatingBox
+      targetRef={inputRef.current}
+      placement='bottom'
+      onClose={() => setIsDatePickerVisible(false)}
+      mobileBehaviour={FloatingBoxMobileBehaviour.modal}
+    >
       <div className='alt-date-picker__header'>
-        {picker === Picker.day && <button
+        {!ltePhoneL && picker === Picker.day && <button
           className={clsx('alt-date-picker__currentMonth', {
             'alt-date-picker__currentMonth--selected': currentView !== Picker.day
           })}
@@ -106,9 +118,10 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
         >
           {currentMonthFormat.format(currentMonth)}
         </button>}
+        {ltePhoneL && picker === Picker.day && <div className='alt-date-picker__title'>{currentMonthFormat.format(currentMonth)}</div>}
         {picker === Picker.month && <div className='alt-date-picker__title'>Choose a month</div>}
         {picker === Picker.year && <div className='alt-date-picker__title'>Choose an year</div>}
-        {currentView === Picker.day && <div className='alt-date-picker__navigation'>
+        {!ltePhoneL && currentView === Picker.day && <div className='alt-date-picker__navigation'>
           <button
             className='alt-date-picker__navigation-button'
             onClick={onPrevMonthClick}
@@ -146,18 +159,28 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
         minYear={minYear}
         maxYear={maxYear}
       /> }
-      <div className='alt-date-picker__footer'>
+      {!ltePhoneL && <div className='alt-date-picker__footer'>
         { currentView === Picker.day && <Button onClick={onTodayClick} data-testid='alt-test-datepicker-today'>Today</Button>}
         { currentView === Picker.month && <Button onClick={onTodayClick} data-testid='alt-test-datepicker-currentMonth'>Current month</Button>}
         <Button
-          style={ButtonStyle.primary}
+          role={Role.primary}
           className='alt-date-picker__apply'
           onClick={onApplyClick}
           data-testid='alt-test-datepicker-apply'
         >
           Apply
         </Button>
-      </div>
+      </div>}
+      {ltePhoneL && <div className={clsx('alt-date-picker__footer', {
+        'alt-date-picker__footer--compact': currentView !== Picker.day
+      })}>
+        {currentView === Picker.day && <Button onClick={onPrevMonthClick} className='alt-date-picker__mobilePrevMonth' isIcon><Icon i='arrow_back' /></Button>}
+        {currentView === Picker.day && <Button onClick={onCurrentDateClick} className='alt-date-picker__mobileMonthName'>Select a month</Button>}
+        {currentView === Picker.day && <Button onClick={onNextMonthClick} className='alt-date-picker__mobileNextMonth' isIcon><Icon i='arrow_forward' /></Button>}
+        {currentView !== Picker.year && <Button onClick={onTodayClick} className='alt-date-picker__mobileToday' leftIcon={<Icon i='today' />}>{currentView === Picker.day ? 'Today' : 'Current month'}</Button>}
+        {(currentView === Picker.day || picker !== Picker.day) && <Button onClick={onApplyClick} className='alt-date-picker__mobileApply' role={Role.primary}>Apply</Button>}
+        {currentView !== Picker.day && picker === Picker.day && <Button onClick={onApplyClick} className='alt-date-picker__mobileApply' role={Role.primary} leftIcon={<Icon i='arrow_back_ios' />}>Back</Button>}
+      </div>}
     </FloatingBox>}
   </>
 }

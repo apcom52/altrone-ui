@@ -2,24 +2,39 @@
 
 .alt-date-picker {
   display: flex;
+  position: relative;
+  width: 100%;
+  height: 34px;
+  margin: 0;
+  padding: 4px 6px 4px 12px;
   align-items: center;
   justify-content: space-between;
-  padding: 5px 6px 5px 12px;
   border-radius: 8px;
-  border: none;
-  box-shadow: inset 0 0 0 1px var(--borderColor);
   background-color: var(--surface);
+  border: 1px solid var(--borderColor);
+  box-sizing: border-box;
   cursor: pointer;
   gap: 16px;
   transition: box-shadow var(--transitionDuration) ease;
 
   @include useFocus();
   @include useDisabledUserSelect();
+  @include useSoftShadow();
 }
 
 .alt-date-picker__value {
   @include useFontSize(label, Large);
   color: var(--textColor);
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.alt-date-picker__placeholder {
+  @include useFontSize(label, Large);
+  color: var(--placeholderText);
   text-align: left;
 }
 
@@ -70,6 +85,10 @@
   @include useFontSize(title);
   text-align: center;
   cursor: default;
+
+  @include less($l-phone) {
+    margin-bottom: 20px;
+  }
 }
 
 .alt-date-picker__navigation {
@@ -102,6 +121,22 @@
   display: flex;
   justify-content: flex-end;
   padding: 16px;
+
+  @include less($l-phone) {
+    display: grid;
+    grid-template-areas: 'prev month next' 'today today today' 'apply apply apply';
+    grid-template-columns: 40px 1fr 40px;
+    grid-gap: 8px;
+    padding: 0;
+  }
+}
+
+.alt-date-picker__footer--compact {
+  @include less($l-phone) {
+    margin-top: 16px;
+    grid-template-areas: 'today' 'apply';
+    grid-template-columns: 1fr;
+  }
 }
 
 .alt-date-picker__apply {
@@ -115,6 +150,11 @@
   grid-column-gap: 16px;
   padding: 16px;
   text-align: center;
+
+  @include less($l-phone) {
+    margin: 0 -16px;
+    grid-column-gap: 4px;
+  }
 }
 
 .alt-calendar__weekday {
@@ -124,6 +164,10 @@
   max-width: 36px;
   white-space: nowrap;
   text-overflow: ellipsis;
+
+  @include less($l-phone) {
+    @include useFontSize(label, Small);
+  }
 }
 
 .alt-calendar__weekday--weekend {
@@ -151,6 +195,10 @@
 
   &:hover {
     --background: var(--highlight);
+  }
+
+  @include less($l-phone) {
+    @include useFontSize(body);
   }
 }
 
@@ -191,7 +239,7 @@
 .alt-month-picker {
   position: relative;
   display: grid;
-  grid-template-columns: 160px 1px 80px;
+  grid-template-columns: 160px 1px 100px;
   margin-top: 16px;
 }
 
@@ -200,4 +248,24 @@
   margin-top: 25px;
   height: 200px;
   background-color: var(--dividerColor);
+}
+
+.alt-date-picker__mobilePrevMonth {
+  grid-area: prev;
+}
+
+.alt-date-picker__mobileNextMonth {
+  grid-area: next;
+}
+
+.alt-date-picker__mobileMonthName {
+  grid-area: month;
+}
+
+.alt-date-picker__mobileToday {
+  grid-area: today;
+}
+
+.alt-date-picker__mobileApply {
+  grid-area: apply;
 }

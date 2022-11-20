@@ -76,38 +76,19 @@
   @include useFontSize(label, Large);
 }
 
+.alt-button__leftIcon, .alt-button__rightIcon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.5em;
+}
+
 .alt-button--with-icons {
 
 }
 
-.alt-button--style-primary {
-  --buttonBackgroundColor: var(--accent);
-  --buttonTextColor: var(--textColorOnAccent);
-  --buttonShadowColor: var(--accentBorderColor);
-
-  @include useTransparentVariant(accent, textColorOnAccent);
-  @include useTextVariant(accent);
-}
-
-.alt-button--style-success {
-  --buttonBackgroundColor: var(--success);
-  --buttonTextColor: var(--textColorOnSuccess);
-  --buttonShadowColor: var(--successBorderColor);
-
-  @include useTransparentVariant(success, textColorOnSuccess);
-  @include useTextVariant(success);
-}
-
-.alt-button--style-danger {
-  --buttonBackgroundColor: var(--danger);
-  --buttonTextColor: var(--textColorOnDanger);
-  --buttonShadowColor: var(--dangerBorderColor);
-
-  @include useTransparentVariant(success, textColorOnDanger);
-  @include useTextVariant(danger);
-}
-
 .alt-button--variant-borders {
+  --buttonBackgroundColor: var(--textColor);
+
   background-color: transparent;
   box-shadow: none;
   border: 2px solid var(--buttonBackgroundColor);
@@ -134,13 +115,39 @@
   @include useInteraction {
     opacity: 0.8;
   }
+
+  &:active {
+    box-shadow: unset;
+  }
 }
 
-.alt-button__leftIcon, .alt-button__rightIcon {
-  display: inline-flex;
-  align-items: center;
-  font-size: 1.5em;
+.alt-button--role-primary {
+  --buttonBackgroundColor: var(--accent);
+  --buttonTextColor: var(--textColorOnAccent);
+  --buttonShadowColor: var(--accentBorderColor);
+
+  @include useTransparentVariant(accent, textColorOnAccent);
+  @include useTextVariant(accent);
 }
+
+.alt-button--role-success {
+  --buttonBackgroundColor: var(--success);
+  --buttonTextColor: var(--textColorOnSuccess);
+  --buttonShadowColor: var(--successBorderColor);
+
+  @include useTransparentVariant(success, textColorOnSuccess);
+  @include useTextVariant(success);
+}
+
+.alt-button--role-danger {
+  --buttonBackgroundColor: var(--danger);
+  --buttonTextColor: var(--textColorOnDanger);
+  --buttonShadowColor: var(--dangerBorderColor);
+
+  @include useTransparentVariant(danger, textColorOnDanger);
+  @include useTextVariant(danger);
+}
+
 
 .alt-button--size-small {
   @include useButtonSize(smallControlHeight, 13px, 4px, 10px, 4px, -4px);
@@ -165,4 +172,10 @@
   .alt-button__rightIcon {
     position: absolute;
   }
+}
+
+.alt-button--icon {
+  font-size: 24px;
+  padding: 6px 12px;
+  min-width: auto;
 }

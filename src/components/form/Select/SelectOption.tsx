@@ -17,10 +17,6 @@ export interface SelectOptionProps {
 const SelectOption = ({ label, value, disabled = false, selected = false, onSelect, className, inSelectHeader = false }: SelectOptionProps) => {
   const ComponentName = inSelectHeader ? 'div' : 'button';
 
-  if (inSelectHeader && value === undefined) {
-    return <div>Select an option</div>
-  }
-
   return <ComponentName
     className={clsx('alt-select-option', className, {
       'alt-select-option--selected': selected,

@@ -1,4 +1,5 @@
 import {Sort} from "../../../types";
+import {DataTableColumn} from "./DataTable";
 
 export interface DataTableSearchFunc {
   item: unknown,
@@ -39,3 +40,10 @@ export const defaultCheckboxesFilter = ({ item, field, value = [] }: DataTableFi
   return value.indexOf(item[field]) > -1
 }
 
+export const filterVisibleColumns = (columns: DataTableColumn[], mobileColumns: string[], isMobile: boolean) => {
+  if (!isMobile) {
+    return columns
+  }
+
+  return columns.filter(column => mobileColumns.indexOf(column.accessor) > -1)
+}

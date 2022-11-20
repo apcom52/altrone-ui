@@ -1,16 +1,10 @@
 import {forwardRef, memo, Ref, useCallback, useRef, useState} from "react";
-import {ContextMenu as ContextMenuType, Size, WithAltroneOffsets, WithoutDefaultOffsets} from "../../../types";
+import {ContextMenu as ContextMenuType, Role, Size, WithAltroneOffsets, WithoutDefaultOffsets} from "../../../types";
 import clsx from "clsx";
 import {Box, FloatingBox} from "../../containers";
 import './button.scss'
 import {ContextMenu} from "../../list";
-
-export enum ButtonStyle {
-  default,
-  primary = 'primary',
-  success = 'success',
-  danger = 'danger',
-}
+import {FloatingBoxMobileBehaviour} from "../../containers/FloatingBox/FloatingBox";
 
 export enum ButtonVariant {
   default,
@@ -20,7 +14,7 @@ export enum ButtonVariant {
 }
 
 export interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLButtonElement>>, 'style' | 'target' | 'size'>, WithAltroneOffsets {
-  style?: ButtonStyle
+  role?: Role
   variant?: ButtonVariant
   href?: string
   target?: HTMLAnchorElement['target'],
@@ -29,6 +23,7 @@ export interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<
   rightIcon?: JSX.Element
   size?: Size
   dropdown?: ContextMenuType
+  isIcon?: boolean
 }
 
 const ButtonComponents = [
@@ -38,7 +33,7 @@ const ButtonComponents = [
 
 const Button = forwardRef(({
   children,
-  style = ButtonStyle.default,
+  role = Role.default,
   variant = ButtonVariant.default,
   href,
   className,
@@ -49,6 +44,7 @@ const Button = forwardRef(({
   dropdown = [],
   onClick,
   type = 'button',
+  isIcon = false,
   ...props
 }: ButtonProps, ref: Ref<HTMLButtonElement>) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false)
@@ -68,10 +64,11 @@ const Button = forwardRef(({
     <Box
       tagName={ButtonComponents[href ? 1 : 0] as keyof JSX.IntrinsicElements}
       className={clsx('alt-button', className, {
-        [`alt-button--style-${style}`]: style !== ButtonStyle.default,
+        [`alt-button--role-${role}`]: role !== Role.default,
         [`alt-button--variant-${variant}`]: variant !== ButtonVariant.default,
         [`alt-button--size-${size}`]: size !== Size.medium,
         'alt-button--fluid': fluid,
+        'alt-button--icon': isIcon
       })}
       ref={(node: HTMLButtonElement) => {
         buttonRef.current = node
@@ -90,7 +87,7 @@ const Button = forwardRef(({
       {children}
       { rightIcon ? <span className='alt-button__rightIcon'>{rightIcon}</span> : null }
     </Box>
-    {isDropdownVisible ? <FloatingBox targetRef={buttonRef.current} onClose={hideDropdown} placement='bottom'>
+    {isDropdownVisible ? <FloatingBox targetRef={buttonRef.current} onClose={hideDropdown} placement='bottom' mobileBehaviour={FloatingBoxMobileBehaviour.modal}>
       <ContextMenu menu={dropdown} />
     </FloatingBox> : null}
   </>

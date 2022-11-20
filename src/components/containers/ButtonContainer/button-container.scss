@@ -1,0 +1,27 @@
+.alt-button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.alt-button-container--vertical {
+  flex-direction: column;
+  gap: 6px;
+}
+
+.alt-button-container--align-center {
+  justify-content: center;
+}
+
+.alt-button-container--align-end {
+  justify-content: flex-end;
+}
+
+.alt-button-container--mobile-fluid {
+  flex-direction: column;
+  gap: 6px;
+
+  .alt-button {
+    width: 100%;
+  }
+}
