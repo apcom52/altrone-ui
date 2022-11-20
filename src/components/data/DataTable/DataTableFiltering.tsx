@@ -5,6 +5,8 @@ import './data-table-filtering.scss';
 import {Direction, Option, Role} from "../../../types";
 import {Button} from "../../button";
 import {useDataTableContext} from "../../../contexts";
+import ButtonContainer from "../../containers/ButtonContainer/ButtonContainer";
+import {Align} from "../../../types/Align";
 
 interface DataTableFilteringProps {
   onClose: () => void
@@ -82,10 +84,10 @@ const DataTableFiltering = ({ onClose }: DataTableFilteringProps) => {
         </FormField>
       })}
     </FormGroup>
-    <div className='alt-data-table-sorting__footer'>
+    <ButtonContainer align={Align.end} className='alt-data-table-sorting__footer' mobileFluid>
       {appliedFilters.length > 0 && <Button onClick={() => setAppliedFilters([])}>Reset filters</Button>}
       <Button role={Role.primary} onClick={onClose}>Apply</Button>
-    </div>
+    </ButtonContainer>
   </div>
 }
 

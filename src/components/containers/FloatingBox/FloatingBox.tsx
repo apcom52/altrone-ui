@@ -109,9 +109,9 @@ const FloatingBox = ({
   }
 
   if (mobileBehaviour === FloatingBoxMobileBehaviour.modal && ltePhoneL) {
-    return <Modal onClose={onClose} showClose={false} showCancel={false}>
+    return createPortal(<Modal onClose={onClose} showClose={false} showCancel={false}>
       {children}
-    </Modal>
+    </Modal>, targetRef?.closest('.altrone') || document.body)
   }
 
   return createPortal(<div

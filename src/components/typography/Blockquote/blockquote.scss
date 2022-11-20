@@ -1,9 +1,14 @@
+@import '../../../_mixins';
+
 .alt-blockquote {
   display: flex;
   position: relative;
   flex-direction: column;
-  padding: calc(var(--gap) * 2) calc(var(--gap) * 6);
-  border-radius: 8px;
+  padding: 8px 24px;
+  margin: 0;
+  border-radius: 12px;
+
+  @include useFontSize(body);
 
   &:before {
     position: absolute;
@@ -13,8 +18,8 @@
     bottom: var(--gap);
     height: calc(100% - var(--gap) * 2);
     width: 4px;
-    border-radius: 4px;
-    background-color: var(--dividerColor);
+    border-radius: 6px;
+    background-color: var(--borderColor);
     transition: height 0.3s ease;
   }
 }
@@ -25,8 +30,10 @@
 }
 
 .alt-blockquote__author {
-  font-size: 12px;
   color: var(--secondaryTextColor);
+  font-style: italic;
+
+  @include useFontSize(body, Small);
 }
 
 .altrone--dark {

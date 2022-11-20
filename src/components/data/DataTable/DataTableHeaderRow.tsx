@@ -1,23 +1,31 @@
-import {memo} from "react";
+import {memo, useMemo} from "react";
 import {Icon} from "../../icons";
 import {useDataTableContext} from "../../../contexts";
+import {useWindowSize} from "../../../hooks";
+import {filterVisibleColumns} from "./functions";
 
 const DataTableHeaderRow = () => {
-  const { data, columns, sortBy, sortType } = useDataTableContext()
+  const { columns, sortBy, sortType, mobileColumns } = useDataTableContext()
+  const { ltePhoneL } = useWindowSize()
+
+  const visibleColumns = useMemo(() => {
+    return filterVisibleColumns(columns, mobileColumns, ltePhoneL)
+  }, [columns, ltePhoneL, mobileColumns])
 
   return <thead>
-  <tr className='alt-data-table__row' data-testid='alt-test-datatable-thead'>
-    {columns.map((column, columnIndex) => (
-      <th
-        key={columnIndex}
-        className='alt-data-table__cell alt-data-table__cell--header'
-        style={{ width: column.width || 'unset' }}
-      >
-        {column.label || column.accessor.toString()}
-        {sortBy === column.accessor && <div className='alt-data-table__sort-indicator'><Icon i={sortType === 'desc' ? 'arrow_drop_down' : 'arrow_drop_up'} /></div>}
-      </th>
-    ))}
-  </tr>
+    <tr className='alt-data-table__row' data-testid='alt-test-datatable-thead'>
+      {visibleColumns.map((column, columnIndex) => (
+        <th
+          key={columnIndex}
+          className='alt-data-table__cell alt-data-table__cell--header'
+          style={{ width: column.width || 'unset' }}
+          colSpan={columnIndex === visibleColumns.length - 1 ? 2 : undefined}
+        >
+          {column.label || column.accessor.toString()}
+          {sortBy === column.accessor && <div className='alt-data-table__sort-indicator'><Icon i={sortType === 'desc' ? 'arrow_drop_down' : 'arrow_drop_up'} /></div>}
+        </th>
+      ))}
+    </tr>
   </thead>
 }
 

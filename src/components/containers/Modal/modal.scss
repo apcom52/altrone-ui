@@ -20,7 +20,7 @@
   overflow-x: hidden;
   background-color: var(--blackout);
   z-index: 1000;
-  
+
   @include less($l-phone) {
     display: flex;
     height: fit-content;
@@ -77,7 +77,7 @@
   font-weight: 600;
 
   @include less($l-phone) {
-    @include useFontSize(title, Large);
+    @include useFontSize(title);
     font-weight: 600;
   }
 }

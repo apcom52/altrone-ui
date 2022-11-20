@@ -31,6 +31,7 @@ interface DataTableProps<T = any> {
   sortFunc?: (params: DataTableSortFunc) => number
   searchFunc?: (params: DataTableSearchFunc) => unknown[]
   filters?: DataTableFilter[]
+  mobileColumns?: string[]
 }
 
 const DataTable = ({
@@ -40,7 +41,8 @@ const DataTable = ({
   searchBy,
   searchFunc = defaultSearchFunc,
   sortKeys = [],
-  filters = []
+  filters = [],
+  mobileColumns = [columns[0].accessor],
 }: DataTableProps) => {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
@@ -99,7 +101,8 @@ const DataTable = ({
     setSortType,
     filters,
     appliedFilters,
-    setAppliedFilters
+    setAppliedFilters,
+    mobileColumns
   }}>
     <div className='alt-data-table-wrapper' data-testid='alt-test-datatable'>
       { isHeaderVisible && <DataTableHeader /> }

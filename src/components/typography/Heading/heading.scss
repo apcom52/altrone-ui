@@ -1,28 +1,30 @@
-h1, h2, h3, h4, h5, h6 {
-  line-height: 1.2;
-  margin: 0.75em 0 0;
+@import '../../../_mixins';
+
+.alt-heading {
+  margin: 0;
+  line-height: 1.25;
 }
 
-h1 {
-  font-size: 40px;
+.alt-heading--level-1 {
+  @include useFontSize(headline, Large);
 }
 
-h2 {
-  font-size: 32px;
+.alt-heading--level-2 {
+  @include useFontSize(headline);
 }
 
-h3 {
-  font-size: 26px;
+.alt-heading--level-3 {
+  @include useFontSize(headline, Small);
 }
 
-h4 {
-  font-size: 22px;
+.alt-heading--level-4 {
+  @include useFontSize(title, Large);
 }
 
-h5 {
-  font-size: 18px;
+.alt-heading--level-5 {
+  @include useFontSize(title);
 }
 
-h6 {
-  font-size: 16px;
+.alt-heading--level-6 {
+  @include useFontSize(title, Small);
 }
