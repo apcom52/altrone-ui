@@ -31,6 +31,19 @@ ButtonExample.args = {
   fluid: false,
 }
 
+export const ButtonIconExample = Template.bind({})
+ButtonIconExample.args = {
+  component: Button,
+  children: <Icon i='check' />,
+  disabled: false,
+  leftIcon: '',
+  rightIcon: '',
+  href: '',
+  dark: false,
+  fluid: false,
+  isIcon: true
+}
+
 export const ButtonDropdownExample = Template.bind({})
 ButtonDropdownExample.args = {
   component: Button,
@@ -80,7 +93,22 @@ ButtonExample.argTypes = {
   },
   size: {
     control: 'select',
-    options: ['small', 'medium', 'large', 'xlarge']
+    options: ['small', 'medium', 'large']
+  }
+}
+
+ButtonIconExample.argTypes = {
+  role: {
+    control: 'select',
+    options: [Role.default, Role.primary, Role.success, Role.danger]
+  },
+  variant: {
+    control: 'select',
+    options: [ButtonVariant.default, ButtonVariant.borders, ButtonVariant.transparent, ButtonVariant.text]
+  },
+  size: {
+    control: 'select',
+    options: ['small', 'medium', 'large']
   }
 }
 
