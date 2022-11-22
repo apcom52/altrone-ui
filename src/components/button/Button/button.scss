@@ -150,15 +150,28 @@
 
 
 .alt-button--size-small {
-  @include useButtonSize(smallControlHeight, 13px, 4px, 10px, 4px, -4px);
+  @include useFontSize(label);
+  min-width: 40px;
+  padding: 4px 12px;
+  height: 26px;
+
+  &.alt-button--icon {
+    font-size: 22px;
+    padding: 4px 8px;
+  }
 }
 
 .alt-button--size-large {
-  @include useButtonSize(largeControlHeight, 16px, 10px, 20px, 10px, -6px);
-}
+  @include useFontSize(body);
+  min-width: 80px;
+  padding: 8px 20px;
+  height: 42px;
+  font-weight: 500;
 
-.alt-button--size-xlarge {
-  @include useButtonSize(xlargeControlHeight, 20px, 12px, 20px, 14px, -8px);
+  &.alt-button--icon {
+    font-size: 28px;
+    padding: 8px 16px;
+  }
 }
 
 .alt-button--fluid {
@@ -178,4 +191,5 @@
   font-size: 24px;
   padding: 6px 12px;
   min-width: auto;
+  text-shadow: 0 3px 6px var(--shadow);
 }
