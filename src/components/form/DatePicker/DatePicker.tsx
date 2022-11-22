@@ -7,7 +7,7 @@ import {Calendar, MonthPicker, YearPicker} from "./index";
 import {Button} from "../../button";
 import clsx from "clsx";
 import {TextInputProps} from "../TextInput";
-import {Role} from "../../../types";
+import {Role, Size} from "../../../types";
 import {FloatingBoxMobileBehaviour} from "../../containers/FloatingBox/FloatingBox";
 import {useWindowSize} from "../../../hooks";
 
@@ -25,9 +25,10 @@ interface DatePickerProps extends Pick<TextInputProps, 'errorText' | 'hintText' 
   maxYear?: number
   disabled?: boolean
   placeholder?: string
+  size?: Size
 }
 
-const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxYear = 2050, disabled = false, placeholder = 'Select a date' }: DatePickerProps) => {
+const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxYear = 2050, disabled = false, placeholder = 'Select a date', size = Size.medium }: DatePickerProps) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(value ? new Date(value.getFullYear(), value.getMonth(), 1) :  new Date())
   const [currentView, setCurrentView] = useState<Picker>(picker)
@@ -91,7 +92,9 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
 
   return <>
     <button
-      className='alt-date-picker'
+      className={clsx('alt-date-picker', {
+        [`alt-date-picker--size-${size}`]: size !== Size.medium
+      })}
       ref={inputRef}
       onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}
       data-testid='alt-test-datepicker'

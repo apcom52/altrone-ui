@@ -316,6 +316,10 @@ DatePickerExample.argTypes = {
     control: 'select',
     value: Picker.day,
     options: [Picker.day, Picker.month, Picker.year]
+  },
+  size: {
+    control: 'select',
+    options: ['small', 'medium', 'large']
   }
 }
 
