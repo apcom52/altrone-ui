@@ -1,5 +1,5 @@
 import {createElement, memo, useEffect, useMemo, useRef, useState} from "react";
-import {Option, OptionParent, Role} from "../../../types";
+import {Option, OptionParent, Role, Size} from "../../../types";
 import {FloatingBox} from "../../containers";
 import './select.scss';
 import {Icon} from "../../icons";
@@ -20,6 +20,7 @@ interface SelectProps<T extends number | string | boolean = string> extends Omit
   searchable?: boolean
   searchFunc?: (searchTerm: string, item: Option<T>) => boolean
   ItemComponent?: (item: Option<T>, checked: boolean) => Element;
+  size?: Size
   classNames?: {
     select?: string
     currentValue?: string
@@ -30,7 +31,7 @@ interface SelectProps<T extends number | string | boolean = string> extends Omit
 
 const DEFAULT_KEY = '_default'
 
-const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, classNames = {}, placeholder = 'Select an option' }: SelectProps) => {
+const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, size = Size.medium, classNames = {}, placeholder = 'Select an option' }: SelectProps) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize()
 
   const [isSelectVisible, setIsSelectVisible] = useState(false)
@@ -123,7 +124,8 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
       data-testid='alt-test-select'
       className={clsx('alt-select', classNames.select, {
         'alt-select--active': isSelectVisible,
-        'alt-select--disabled': disabled
+        'alt-select--disabled': disabled,
+        [`alt-select--size-${size}`]: size !== Size.medium
       })}
       type='button'
     >

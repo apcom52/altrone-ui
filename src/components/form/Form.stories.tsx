@@ -216,6 +216,12 @@ SelectExample.args = {
     value: 'nato'
   }]
 }
+SelectExample.argTypes = {
+  size: {
+    control: 'select',
+    options: ['small', 'medium', 'large']
+  }
+}
 
 export const CustomSelectExample = Template.bind({})
 CustomSelectExample.args = {
@@ -273,6 +279,12 @@ CustomSelectExample.args = {
     value: 'nato'
   }],
   ItemComponent: CustomSelectItem,
+}
+CustomSelectExample.argTypes = {
+  size: {
+    control: 'select',
+    options: ['small', 'medium', 'large']
+  }
 }
 
 export const SwitcherExample = Template.bind({})
