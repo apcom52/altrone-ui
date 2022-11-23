@@ -18,7 +18,7 @@ const DataTableHeader = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [isSearchVisible, setIsSearchVisible] = useState(false)
 
-  const { ltePhoneL } = useWindowSize()
+  const { ltePhoneL, gtPhoneL } = useWindowSize()
 
   const currentSortingColumn = useMemo(() => {
     if (!sortBy) return null
@@ -38,7 +38,7 @@ const DataTableHeader = () => {
   }
 
   return <div className='alt-data-table-header'>
-    {!ltePhoneL || (ltePhoneL && !isSearchVisible) && <div className='alt-data-table-header__filters'>
+    {(gtPhoneL || (ltePhoneL && !isSearchVisible)) && <div className='alt-data-table-header__filters'>
         {sortKeys.length > 0 && (
           <Button
             ref={sortRef}
