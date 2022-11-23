@@ -18,3 +18,15 @@
 
   @include useFontSize(body);
 }
+
+.alt-text-input--size-small {
+  .alt-textarea {
+    @include useFontSize(body, Small);
+  }
+}
+
+.alt-text-input--size-large {
+  .alt-textarea {
+    @include useFontSize(body, Large);
+  }
+}
