@@ -161,3 +161,22 @@
 .alt-select-placeholder {
   color: var(--placeholderText);
 }
+
+.alt-select--size-small {
+  padding: 0 6px 0 12px;
+
+  .alt-select__value .alt-select-option {
+    @include useFontSize(body, Small);
+    font-weight: 500;
+  }
+}
+
+.alt-select--size-large {
+  padding: 0 6px 0 12px;
+
+  .alt-select__value .alt-select-option {
+    @include useFontSize(body, Large);
+    line-height: 40px;
+    font-weight: 500;
+  }
+}

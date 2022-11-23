@@ -3,16 +3,18 @@ import clsx from "clsx";
 import {TextInputProps} from "../TextInput";
 import '../TextInput/text-input.scss';
 import './textarea.scss';
+import {Size} from "../../../types";
 
-interface TextareaProps extends Pick<TextInputProps, 'value' | 'onChange' | 'className' | 'classNames' | 'required' | 'disabled' | 'errorText' | 'hintText'> {
+interface TextareaProps extends Pick<TextInputProps, 'value' | 'onChange' | 'className' | 'classNames' | 'required' | 'disabled' | 'errorText' | 'hintText' | 'size'> {
 }
 
-const Textarea = ({ value, onChange, className, classNames, required, disabled, errorText, hintText, ...props }: TextareaProps) => {
+const Textarea = ({ value, onChange, className, classNames, required, disabled, errorText, hintText, size, ...props }: TextareaProps) => {
   return <div
     className={clsx('alt-text-input', className, {
       'alt-text-input--invalid': errorText,
       'alt-text-input--required': required,
       'alt-text-input--disabled': disabled,
+      [`alt-text-input--size-${size}`]: size !== Size.medium
     })}
     data-testid='alt-test-textarea'
   >

@@ -63,6 +63,7 @@ TextInputExample.args = {
   hintText: '',
   errorText: '',
   required: false,
+  size: Size.medium,
   dark: false
 }
 
@@ -215,6 +216,12 @@ SelectExample.args = {
     value: 'nato'
   }]
 }
+SelectExample.argTypes = {
+  size: {
+    control: 'select',
+    options: ['small', 'medium', 'large']
+  }
+}
 
 export const CustomSelectExample = Template.bind({})
 CustomSelectExample.args = {
@@ -273,6 +280,12 @@ CustomSelectExample.args = {
   }],
   ItemComponent: CustomSelectItem,
 }
+CustomSelectExample.argTypes = {
+  size: {
+    control: 'select',
+    options: ['small', 'medium', 'large']
+  }
+}
 
 export const SwitcherExample = Template.bind({})
 SwitcherExample.args = {
@@ -303,6 +316,10 @@ DatePickerExample.argTypes = {
     control: 'select',
     value: Picker.day,
     options: [Picker.day, Picker.month, Picker.year]
+  },
+  size: {
+    control: 'select',
+    options: ['small', 'medium', 'large']
   }
 }
 
