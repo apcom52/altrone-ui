@@ -1,5 +1,5 @@
 import {withAltrone} from "../../hocs";
-import {Direction, Theme} from "../../types";
+import {Direction, Size, Theme} from "../../types";
 import {useCallback, useEffect, useState} from "react";
 import {Chips, NavigationList, TabList, TabListVariant, Toolbar, ToolbarGroup, ToolbarSeparator} from './index'
 import {Align} from "../../types/Align";
@@ -132,6 +132,10 @@ ChipsExample.argTypes = {
   direction: {
     control: 'select',
     options: [Direction.horizontal, Direction.vertical]
+  },
+  size: {
+    control: 'select',
+    options: [Size.small, Size.medium, Size.large]
   }
 }
 

@@ -1,5 +1,5 @@
 import {memo, useCallback} from "react";
-import {Direction, Option} from "../../../types";
+import {Direction, Option, Size} from "../../../types";
 import clsx from "clsx";
 import {Icon} from "../../icons";
 import './chips.scss';
@@ -10,9 +10,10 @@ interface ChipsProps {
   onChange: (values: any[]) => void
   SelectedIcon?: JSX.Element
   direction?: Direction
+  size?: Size
 }
 
-const Chips = ({ options = [], values = [], onChange, SelectedIcon, direction = Direction.horizontal }: ChipsProps) => {
+const Chips = ({ options = [], values = [], onChange, SelectedIcon, direction = Direction.horizontal, size = Size.medium }: ChipsProps) => {
   const onChipClick = useCallback((value) => {
     const chipIsSelected = values.findIndex(chipValue => value === chipValue)
 
@@ -25,7 +26,8 @@ const Chips = ({ options = [], values = [], onChange, SelectedIcon, direction = 
 
   return <div
     className={clsx('alt-chips', {
-      'alt-chips--direction-vertical': direction === Direction.vertical
+      'alt-chips--direction-vertical': direction === Direction.vertical,
+      [`alt-chips--size-${size}`]: size !== Size.medium
     })}
     data-testid='alt-test-chips'
   >

@@ -24,7 +24,7 @@
   align-items: center;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color var(--transitionDuration) ease;
+  transition: background-color var(--transitionDuration) ease, border-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
 
   @include useFocus();
   @include useDisabledUserSelect();
@@ -72,5 +72,40 @@
 
   .alt-chip__label {
     margin-left: 2px;
+  }
+}
+
+.alt-chips--size-small {
+  .alt-chip {
+    padding: 4px 8px;
+
+    @include useFontSize(label);
+  }
+
+  .alt-chip__icon {
+    font-size: 22px;
+    left: 4px;
+  }
+
+  .alt-chip--selected {
+    padding-left: 26px;
+  }
+}
+
+.alt-chips--size-large {
+  .alt-chip {
+    padding: 9px 16px;
+
+    @include useFontSize(body);
+    font-weight: 500;
+  }
+
+  .alt-chip__icon {
+    font-size: 26px;
+    left: 8px;
+  }
+
+  .alt-chip--selected {
+    padding-left: 36px;
   }
 }
