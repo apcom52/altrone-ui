@@ -5,7 +5,9 @@
     "search": "Search",
     "back": "Back",
     "asc": "Ascending",
-    "desc": "Descending"
+    "desc": "Descending",
+    "more": "Show more",
+    "less": "Show less"
   },
   "containers": {
     "modal": {
@@ -30,7 +32,8 @@
       "direction": "Direction",
       "filters": "Filters",
       "filtering": "Filtering",
-      "resetFilters": "Reset filters"
+      "resetFilters": "Reset filters",
+      "resetSorting": "Reset sorting"
     }
   },
   "form": {
@@ -42,7 +45,7 @@
       "placeholder": "Select date"
     },
     "select": {
-      "placeholder": "Select value"
+      "placeholder": "Select an option"
     }
   }
 }
