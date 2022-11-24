@@ -1,0 +1,48 @@
+{
+  "common": {
+    "apply": "Применить",
+    "cancel": "Отмена",
+    "search": "Поиск",
+    "back": "Назад",
+    "asc": "По возрастанию",
+    "desc": "По убыванию"
+  },
+  "containers": {
+    "modal": {
+      "closeModal": "Закрыть окно"
+    }
+  },
+  "data": {
+    "dataTable": {
+      "lines": {
+        "zero": "{{count}} строк",
+        "one": "{{count}} строка",
+        "two": "{{count}} строки",
+        "few": "{{count}} строки",
+        "many": "{{count}} строк",
+        "other": "{{count}} строки"
+      },
+      "total": "Всего: {{count}}",
+      "sortedBy": "Отсортировано по",
+      "sort": "Сортировка",
+      "sorting": "Сортировка",
+      "field": "Колонка",
+      "direction": "Направление",
+      "filters": "Фильтры",
+      "filtering": "Фильтры",
+      "resetFilters": "Сбросить фильтры"
+    }
+  },
+  "form": {
+    "datePicker": {
+      "chooseMonth": "Выберите месяц",
+      "chooseYear": "Выберите год",
+      "today": "Сегодня",
+      "currentMonth": "Текущий месяц",
+      "placeholder": "Выберите дату"
+    },
+    "select": {
+      "placeholder": "Выберите значение"
+    }
+  }
+}

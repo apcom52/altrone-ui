@@ -1,0 +1,48 @@
+{
+  "common": {
+    "apply": "Apply",
+    "cancel": "Cancel",
+    "search": "Search",
+    "back": "Back",
+    "asc": "Ascending",
+    "desc": "Descending"
+  },
+  "containers": {
+    "modal": {
+      "closeModal": "Close modal"
+    }
+  },
+  "data": {
+    "dataTable": {
+      "lines": {
+        "zero": "{{count}} lines",
+        "one": "{{count}} line",
+        "two": "{{count}} lines",
+        "few": "{{count}} lines",
+        "many": "{{count}} lines",
+        "other": "{{count}} lines"
+      },
+      "total": "Total: {{count}}",
+      "sortedBy": "Sorted by",
+      "sort": "Sort",
+      "sorting": "Sorting",
+      "field": "Field",
+      "direction": "Direction",
+      "filters": "Filters",
+      "filtering": "Filtering",
+      "resetFilters": "Reset filters"
+    }
+  },
+  "form": {
+    "datePicker": {
+      "chooseMonth": "Select month",
+      "chooseYear": "Select year",
+      "today": "Today",
+      "currentMonth": "Current month",
+      "placeholder": "Select date"
+    },
+    "select": {
+      "placeholder": "Select value"
+    }
+  }
+}
