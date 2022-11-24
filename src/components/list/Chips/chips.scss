@@ -3,8 +3,8 @@
 .alt-chips {
   display: flex;
   align-items: center;
-  row-gap: 4px;
-  column-gap: 6px;
+  row-gap: 2px;
+  column-gap: 4px;
   flex-wrap: wrap;
 }
 
@@ -15,13 +15,14 @@
 
 .alt-chip {
   display: flex;
+  position: relative;
   margin: 0;
-  padding: 3px 8px;
+  padding: 6px 12px;
   background-color: var(--surface);
   border: 1px solid var(--borderColor);
   color: var(--textColor);
   align-items: center;
-  border-radius: 12px;
+  border-radius: 8px;
   cursor: pointer;
   transition: background-color var(--transitionDuration) ease;
 
@@ -30,8 +31,8 @@
   @include useFontSize(label, Large);
 
   &:hover {
-    background-color: var(--highlight);
-    color: var(--textOnHighlight);
+    background-color: var(--accent);
+    color: var(--textColorOnAccent);
     border-color: transparent;
   }
 
@@ -43,7 +44,9 @@
 }
 
 .alt-chip__icon {
-  font-size: 20px;
+  position: absolute;
+  font-size: 24px;
+  left: 6px;
 }
 
 .alt-chip__label {
@@ -55,6 +58,7 @@
   background-color: var(--accent);
   color: var(--textColorOnAccent);
   border-color: transparent;
+  padding-left: 30px;
 
   &:hover {
     background-color: var(--accent);
