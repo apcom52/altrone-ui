@@ -16,6 +16,7 @@
   },
   "data": {
     "dataTable": {
+      "showing": "Showing",
       "lines": {
         "zero": "{{count}} lines",
         "one": "{{count}} line",

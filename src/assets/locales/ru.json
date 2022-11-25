@@ -16,6 +16,7 @@
   },
   "data": {
     "dataTable": {
+      "showing": "Показывается",
       "lines": {
         "zero": "{{count}} строк",
         "one": "{{count}} строка",
