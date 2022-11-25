@@ -22,7 +22,7 @@ import {useCallback, useEffect, useState} from "react";
 import {Align} from "../../types/Align";
 import {Picker} from "./DatePicker/DatePicker";
 
-const Template = ({component, dark, value = '', locale, ...args}) => {
+const Template = ({component, dark, value = '', locale, lang = 'en', ...args}) => {
   const [_value, setValue] = useState(value)
 
   useEffect(() => {
@@ -35,7 +35,8 @@ const Template = ({component, dark, value = '', locale, ...args}) => {
 
   return withAltrone(component, {
     theme: dark ? Theme.dark : Theme.light,
-    locale
+    locale,
+    lang
   })({
     ...args,
     value: _value,
@@ -168,6 +169,7 @@ SelectExample.args = {
   fluid: false,
   searchable: false,
   disabled: false,
+  lang: 'en',
   options: [{
     label: 'The United Kingdom',
     value: 'uk',
@@ -308,6 +310,7 @@ DatePickerExample.args = {
   value: null,
   component: DatePicker,
   locale: 'en-US',
+  lang: 'en',
   disabled: false,
   dark: false,
 }
