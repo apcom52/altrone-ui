@@ -6,7 +6,7 @@ import {Icon} from "../../icons";
 import clsx from "clsx";
 import {TextInput} from "../TextInput";
 import SelectOption from "./SelectOption";
-import {useWindowSize} from "../../../hooks";
+import {useLocalization, useWindowSize} from "../../../hooks";
 import {FloatingBoxMobileBehaviour} from "../../containers/FloatingBox/FloatingBox";
 import {ScrollableSelector} from "../ScrollableSelector";
 import {Button} from "../../button";
@@ -31,8 +31,9 @@ interface SelectProps<T extends number | string | boolean = string> extends Omit
 
 const DEFAULT_KEY = '_default'
 
-const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, size = Size.medium, classNames = {}, placeholder = 'Select an option' }: SelectProps) => {
+const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, size = Size.medium, classNames = {}, placeholder }: SelectProps) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize()
+  const t = useLocalization()
 
   const [isSelectVisible, setIsSelectVisible] = useState(false)
   const [isSearchMode, setIsSearchMode] = useState(false)
@@ -140,7 +141,7 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
           disabled: false,
           onSelect: () => null,
           inSelectHeader: true
-        }) : <SelectPlaceholder>{placeholder}</SelectPlaceholder>}
+        }) : <SelectPlaceholder>{placeholder || t('form.select.placeholder')}</SelectPlaceholder>}
       </div>
       <div className='alt-select__arrow'><Icon i='expand_more' /></div>
     </button> : <TextInput
@@ -186,14 +187,14 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
         })}
       </div>}
       {ltePhoneL && <>
-        <div className='alt-select-menu__title'>Select a value</div>
+        <div className='alt-select-menu__title'>{t('form.select.placeholder')}</div>
         <ScrollableSelector
           className='alt-select-menu__selector'
           options={options}
           value={value}
           onChange={onChange}
         />
-        <Button role={Role.primary} onClick={() => setIsSelectVisible(false)} fluid>Apply</Button>
+        <Button role={Role.primary} onClick={() => setIsSelectVisible(false)} fluid>{t('common.apply')}</Button>
       </>}
     </FloatingBox>}
   </>

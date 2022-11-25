@@ -12,7 +12,7 @@ type translationOptions = {
 }
 
 export const useLocalization = () => {
-  const { locale, lang } = useThemeContext()
+  const { lang } = useThemeContext()
 
   const dictionary = useMemo(() => {
     return lang === 'ru' ? ru : en
@@ -35,5 +35,5 @@ export const useLocalization = () => {
     }
 
     return localeString
-  }, [dictionary, locale])
+  }, [dictionary])
 }
