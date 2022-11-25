@@ -171,6 +171,8 @@ SelectExample.args = {
   searchable: false,
   disabled: false,
   lang: 'en',
+  errorText: '',
+  hintText: '',
   options: [{
     label: 'The United Kingdom',
     value: 'uk',

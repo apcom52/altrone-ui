@@ -11,8 +11,9 @@ import {FloatingBoxMobileBehaviour} from "../../containers/FloatingBox/FloatingB
 import {ScrollableSelector} from "../ScrollableSelector";
 import {Button} from "../../button";
 import SelectPlaceholder from "./SelectPlaceholder";
+import {BasicInput, BasicInputProps} from "../BasicInput";
 
-interface SelectProps<T extends number | string | boolean = string> extends Omit<React.HTMLProps<HTMLSelectElement>, 'value' | 'onChange'> {
+interface SelectProps<T extends number | string | boolean = string> extends Omit<React.HTMLProps<HTMLSelectElement>, 'value' | 'onChange'>, BasicInputProps {
   value: T
   options: Option<T>[]
   onChange: (value: T) => void
@@ -31,7 +32,7 @@ interface SelectProps<T extends number | string | boolean = string> extends Omit
 
 const DEFAULT_KEY = '_default'
 
-const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, size = Size.medium, classNames = {}, placeholder }: SelectProps) => {
+const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, size = Size.medium, classNames = {}, placeholder, hintText, errorText }: SelectProps) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize()
   const t = useLocalization()
 
@@ -117,7 +118,12 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
     }
   }, [isSearchMode])
 
-  return <>
+  return <BasicInput
+    hintText={hintText}
+    errorText={errorText}
+    disabled={disabled}
+    size={size}
+  >
     {(!searchable || (searchable && !isSearchMode)) ? <button
       ref={selectRef}
       disabled={disabled}
@@ -126,7 +132,6 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
       className={clsx('alt-select', classNames.select, {
         'alt-select--active': isSelectVisible,
         'alt-select--disabled': disabled,
-        [`alt-select--size-${size}`]: size !== Size.medium
       })}
       type='button'
     >
@@ -197,7 +202,7 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
         <Button role={Role.primary} onClick={() => setIsSelectVisible(false)} fluid>{t('common.apply')}</Button>
       </>}
     </FloatingBox>}
-  </>
+  </BasicInput>
 }
 
 export default memo(Select)

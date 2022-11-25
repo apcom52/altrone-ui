@@ -129,23 +129,6 @@
   }
 }
 
-.alt-text-input__hint-text, .alt-text-input__error-text {
-  @include useFontSize(label, Small);
-  margin-top: 4px;
-}
-
-.alt-text-input__hint-text {
-  color: var(--secondaryTextColor);
-}
-
-.alt-text-input__error-text {
-  color: var(--danger);
-
-  & + .alt-text-input__hint-text {
-    margin-top: 0;
-  }
-}
-
 .alt-text-input__required-mark {
   position: absolute;
   top: 0;
@@ -154,7 +137,7 @@
   color: var(--danger);
 }
 
-.alt-text-input--invalid {
+.alt-base-input--invalid {
   .alt-text-input__control {
     box-shadow: 0 0 0 1px var(--danger);
 
@@ -180,8 +163,10 @@
   }
 }
 
-.alt-text-input--size-small {
-  --height: 26px;
+.alt-basic-input--size-small {
+  .alt-text-input {
+    --height: 26px;
+  }
 
   .alt-text-input__control {
     @include useFontSize(body, Small);
@@ -196,8 +181,10 @@
   }
 }
 
-.alt-text-input--size-large {
-  --height: 42px;
+.alt-basic-input--size-large {
+  .alt-text-input {
+    --height: 42px;
+  }
 
   .alt-text-input__control {
     @include useFontSize(body, Large);
@@ -206,9 +193,4 @@
   .alt-text-input__text-island {
     @include useFontSize(body, Large);
   }
-}
-
-.alt-text-input--size-xlarge {
-  --height: var(--xlargeControlHeight);
-  --fontSize: 20px;
 }
