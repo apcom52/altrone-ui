@@ -2,6 +2,7 @@ import {memo, useState} from "react";
 import {Direction} from "../../../types";
 import clsx from "clsx";
 import './checkbox-list.scss';
+import {useLocalization} from "../../../hooks";
 
 interface CheckboxListProps extends React.HTMLProps<HTMLDivElement> {
   direction?: Direction
@@ -9,6 +10,8 @@ interface CheckboxListProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 const CheckboxList = ({ children = [], direction = Direction.horizontal, className, limit = 5, ...props }: CheckboxListProps) => {
+  const t = useLocalization()
+
   const length = Array.isArray(children) ? children.length : 1
   const [isExpanded, setIsExpanded] = useState(length <= limit)
 
@@ -30,7 +33,7 @@ const CheckboxList = ({ children = [], direction = Direction.horizontal, classNa
     {visibleChildren}
     {length > limit && <div className='alt-checkbox-list__actions'>
       <button className='alt-checkbox-list__expand' onClick={onExpandClick}>
-        {isExpanded ? 'Show less' : 'Show more'}
+        {isExpanded ? t('common.less') : t('common.more')}
       </button>
     </div>}
   </div>
