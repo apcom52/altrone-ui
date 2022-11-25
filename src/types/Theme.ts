@@ -9,4 +9,5 @@ export interface ThemeConfig {
   theme: Theme
   locale: string
   style?: CSSProperties
+  lang?: string
 }

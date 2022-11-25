@@ -1,0 +1,1 @@
+export { useLocalization } from './useLocalization'
