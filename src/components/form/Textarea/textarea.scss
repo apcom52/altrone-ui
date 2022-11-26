@@ -1,8 +1,8 @@
 @import '../../../_mixins';
 
 .alt-textarea {
-  min-height: calc(var(--height) * 3);
-  max-height: calc(var(--height) * 10);
+  min-height: 5em;
+  max-height: 45em;
   margin: 0;
   padding: 6px 12px;
   background-color: var(--surface);
@@ -17,16 +17,23 @@
   resize: vertical;
 
   @include useFontSize(body);
+  @include useFocus();
 }
 
-.alt-text-input--size-small {
+.alt-basic-input--size-small {
   .alt-textarea {
     @include useFontSize(body, Small);
   }
 }
 
-.alt-text-input--size-large {
+.alt-basic-input--size-large {
   .alt-textarea {
     @include useFontSize(body, Large);
+  }
+}
+
+.alt-basic-input--invalid {
+  .alt-textarea {
+    @include useInvalid();
   }
 }

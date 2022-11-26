@@ -139,11 +139,7 @@
 
 .alt-base-input--invalid {
   .alt-text-input__control {
-    box-shadow: 0 0 0 1px var(--danger);
-
-    &:focus, &:focus-visible {
-      box-shadow: 0 0 0 2px var(--danger);
-    }
+    @include useInvalid();
   }
 }
 

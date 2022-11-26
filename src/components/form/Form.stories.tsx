@@ -394,7 +394,8 @@ TextareaExample.args = {
   placeholder: 'Type your password',
   dark: false,
   size: Size.medium,
-  showControls: true
+  errorText: '',
+  hintText: ''
 }
 
 export default {
