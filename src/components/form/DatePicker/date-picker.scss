@@ -300,3 +300,9 @@
     font-size: 28px;
   }
 }
+
+.alt-basic-input--invalid {
+  .alt-date-picker {
+    @include useInvalid();
+  }
+}

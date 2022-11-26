@@ -143,6 +143,8 @@ CheckboxExample.args = {
   disabled: false,
   danger: false,
   children: 'Example',
+  hintText: '',
+  errorText: '',
   dark: false,
 }
 

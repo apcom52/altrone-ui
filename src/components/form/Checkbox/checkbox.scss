@@ -22,7 +22,7 @@
   }
 
   &:focus + .alt-checkbox__control:before {
-    box-shadow: 0 0 0 3px var(--accentFocus);
+    @include useFocusStyles();
     border: none;
   }
 }
@@ -80,5 +80,16 @@
     --borders: var(--danger);
     --iconColor: var(--textColorOnDanger);
     --labelColor: var(--danger);
+  }
+}
+
+.alt-basic-input--invalid {
+  .alt-checkbox__control {
+    --checkedColor: var(--danger);
+    --borders: var(--danger);
+  }
+
+  .alt-checkbox__input:focus + .alt-checkbox__control:before {
+    box-shadow: 0 0 0 2px var(--danger);
   }
 }
