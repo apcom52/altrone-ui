@@ -269,10 +269,12 @@
   grid-area: apply;
 }
 
-.alt-date-picker--size-small {
-  padding: 0 6px 0 12px;
-  height: 26px;
-  @include useFontSize(body, Small);
+.alt-basic-input--size-small {
+  .alt-date-picker {
+    padding: 0 6px 0 12px;
+    height: 26px;
+    @include useFontSize(body, Small);
+  }
 
   .alt-date-picker__value, .alt-date-picker__placeholder {
     font-weight: 500;
@@ -283,10 +285,12 @@
   }
 }
 
-.alt-date-picker--size-large {
-  padding: 8px 6px 8px 12px;
-  height: 42px;
-  @include useFontSize(body, Large);
+.alt-basic-input--size-large {
+  .alt-date-picker {
+    padding: 8px 6px 8px 12px;
+    height: 42px;
+    @include useFontSize(body, Large);
+  }
 
   .alt-date-picker__value, .alt-date-picker__placeholder {
     font-weight: 500;

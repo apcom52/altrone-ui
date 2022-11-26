@@ -316,6 +316,8 @@ DatePickerExample.args = {
   lang: 'en',
   disabled: false,
   dark: false,
+  errorText: '',
+  hintText: '',
 }
 DatePickerExample.argTypes = {
   picker: {
