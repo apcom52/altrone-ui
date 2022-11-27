@@ -86,3 +86,15 @@
     margin-left: 6px;
   }
 }
+
+.alt-basic-input--invalid {
+  .alt-switcher__input + .alt-switcher__indicator {
+    border-color: transparent;
+    box-shadow: 0 0 0 1px var(--danger);
+  }
+
+  .alt-switcher__input:focus + .alt-switcher__indicator {
+    border-color: transparent;
+    box-shadow: 0 0 0 2px var(--danger);
+  }
+}

@@ -298,6 +298,8 @@ export const SwitcherExample = Template.bind({})
 SwitcherExample.args = {
   component: Switcher,
   children: 'Example',
+  errorText: '',
+  hintText: '',
   checked: false,
   danger: false,
   disabled: false,
