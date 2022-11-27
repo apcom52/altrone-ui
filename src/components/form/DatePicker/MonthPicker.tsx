@@ -5,7 +5,7 @@ import {YearPickerProps} from "./YearPicker";
 import {useThemeContext} from "../../../contexts";
 import {Align} from "../../../types/Align";
 
-const MonthPicker = ({ selectedDate, onChange, minYear, maxYear }: YearPickerProps) => {
+const MonthPicker = ({ selectedDate = new Date(), onChange, minYear, maxYear }: YearPickerProps) => {
   const { locale } = useThemeContext()
 
   const monthFormat = useMemo(() => {

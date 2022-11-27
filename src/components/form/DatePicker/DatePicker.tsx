@@ -27,6 +27,8 @@ interface DatePickerProps extends Pick<TextInputProps, 'errorText' | 'hintText' 
   placeholder?: string
 }
 
+const today = new Date()
+
 const DatePicker = ({ value, onChange, picker = Picker.day, minDate = new Date(1900, 0, 0), maxDate = new Date(2050, 13, 0), disabled = false, placeholder, size = Size.medium, hintText, errorText, className }: DatePickerProps) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(value ? new Date(value.getFullYear(), value.getMonth(), 1) :  new Date())
@@ -151,19 +153,19 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minDate = new Date(1
       </div>
       { currentView === Picker.day && <Calendar
         currentMonth={currentMonth}
-        selectedDate={value as Date}
+        selectedDate={(value || today) as Date}
         onChange={onChange}
       /> }
       { currentView === Picker.month && <MonthPicker
         currentMonth={currentMonth}
-        selectedDate={value as Date}
+        selectedDate={(value || today) as Date}
         onChange={onChange}
         minYear={minDate.getFullYear()}
         maxYear={maxDate.getFullYear()}
       /> }
       { currentView === Picker.year && <YearPicker
         currentMonth={currentMonth}
-        selectedDate={value}
+        selectedDate={(value || today) as Date}
         onChange={onChange}
         minYear={minDate.getFullYear()}
         maxYear={maxDate.getFullYear()}
