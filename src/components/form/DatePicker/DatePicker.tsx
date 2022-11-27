@@ -22,12 +22,14 @@ interface DatePickerProps extends Pick<TextInputProps, 'errorText' | 'hintText' 
   value: Date
   onChange: (value: Date) => void
   picker?: Picker
-  minYear?: number
-  maxYear?: number
+  minDate?: Date
+  maxDate?: Date
   placeholder?: string
 }
 
-const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxYear = 2050, disabled = false, placeholder, size = Size.medium, hintText, errorText, className }: DatePickerProps) => {
+const today = new Date()
+
+const DatePicker = ({ value, onChange, picker = Picker.day, minDate = new Date(1900, 0, 0), maxDate = new Date(2050, 13, 0), disabled = false, placeholder, size = Size.medium, hintText, errorText, className }: DatePickerProps) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(value ? new Date(value.getFullYear(), value.getMonth(), 1) :  new Date())
   const [currentView, setCurrentView] = useState<Picker>(picker)
@@ -151,22 +153,22 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
       </div>
       { currentView === Picker.day && <Calendar
         currentMonth={currentMonth}
-        selectedDate={value as Date}
+        selectedDate={(value || today) as Date}
         onChange={onChange}
       /> }
       { currentView === Picker.month && <MonthPicker
         currentMonth={currentMonth}
-        selectedDate={value as Date}
+        selectedDate={(value || today) as Date}
         onChange={onChange}
-        minYear={minYear}
-        maxYear={maxYear}
+        minYear={minDate.getFullYear()}
+        maxYear={maxDate.getFullYear()}
       /> }
       { currentView === Picker.year && <YearPicker
         currentMonth={currentMonth}
-        selectedDate={value}
+        selectedDate={(value || today) as Date}
         onChange={onChange}
-        minYear={minYear}
-        maxYear={maxYear}
+        minYear={minDate.getFullYear()}
+        maxYear={maxDate.getFullYear()}
       /> }
       {!ltePhoneL && <div className='alt-date-picker__footer'>
         { currentView === Picker.day && <Button onClick={onTodayClick} data-testid='alt-test-datepicker-today'>{t('form.datePicker.today')}</Button>}
