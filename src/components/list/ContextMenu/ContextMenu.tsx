@@ -1,4 +1,4 @@
-import {ContextMenu as ContextMenuType, ParentContextAction} from "../../../types";
+import {ContextMenuType as ContextMenuType, ParentContextAction} from "../../../types";
 import {memo, useCallback, useState} from "react";
 import {ContextMenuItem, ContextParentMenuItem} from "./index";
 import './context-menu.scss'

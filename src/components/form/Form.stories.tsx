@@ -143,6 +143,8 @@ CheckboxExample.args = {
   disabled: false,
   danger: false,
   children: 'Example',
+  hintText: '',
+  errorText: '',
   dark: false,
 }
 
@@ -171,6 +173,8 @@ SelectExample.args = {
   searchable: false,
   disabled: false,
   lang: 'en',
+  errorText: '',
+  hintText: '',
   options: [{
     label: 'The United Kingdom',
     value: 'uk',
@@ -294,6 +298,8 @@ export const SwitcherExample = Template.bind({})
 SwitcherExample.args = {
   component: Switcher,
   children: 'Example',
+  errorText: '',
+  hintText: '',
   checked: false,
   danger: false,
   disabled: false,
@@ -314,6 +320,8 @@ DatePickerExample.args = {
   lang: 'en',
   disabled: false,
   dark: false,
+  errorText: '',
+  hintText: '',
 }
 DatePickerExample.argTypes = {
   picker: {
@@ -390,7 +398,8 @@ TextareaExample.args = {
   placeholder: 'Type your password',
   dark: false,
   size: Size.medium,
-  showControls: true
+  errorText: '',
+  hintText: ''
 }
 
 export default {

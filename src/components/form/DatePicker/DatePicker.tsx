@@ -10,6 +10,7 @@ import {TextInputProps} from "../TextInput";
 import {Role, Size} from "../../../types";
 import {FloatingBoxMobileBehaviour} from "../../containers/FloatingBox/FloatingBox";
 import {useLocalization, useWindowSize} from "../../../hooks";
+import {BasicInput, BasicInputProps} from "../BasicInput";
 
 export enum Picker {
   day = 'day',
@@ -17,18 +18,16 @@ export enum Picker {
   year = 'year'
 }
 
-interface DatePickerProps extends Pick<TextInputProps, 'errorText' | 'hintText' | 'size' | 'disabled'> {
+interface DatePickerProps extends Pick<TextInputProps, 'errorText' | 'hintText' | 'size' | 'disabled'>, BasicInputProps {
   value: Date
   onChange: (value: Date) => void
   picker?: Picker
   minYear?: number
   maxYear?: number
-  disabled?: boolean
   placeholder?: string
-  size?: Size
 }
 
-const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxYear = 2050, disabled = false, placeholder, size = Size.medium }: DatePickerProps) => {
+const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxYear = 2050, disabled = false, placeholder, size = Size.medium, hintText, errorText, className }: DatePickerProps) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(value ? new Date(value.getFullYear(), value.getMonth(), 1) :  new Date())
   const [currentView, setCurrentView] = useState<Picker>(picker)
@@ -91,11 +90,14 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
     setCurrentView(picker)
   }, [picker])
 
-  return <>
+  return <BasicInput
+    disabled={disabled}
+    hintText={hintText}
+    errorText={errorText}
+    size={size}
+  >
     <button
-      className={clsx('alt-date-picker', {
-        [`alt-date-picker--size-${size}`]: size !== Size.medium
-      })}
+      className={clsx('alt-date-picker', className)}
       ref={inputRef}
       onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}
       data-testid='alt-test-datepicker'
@@ -189,7 +191,7 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minYear = 1900, maxY
         {currentView !== Picker.day && picker === Picker.day && <Button onClick={onApplyClick} className='alt-date-picker__mobileApply' role={Role.primary} leftIcon={<Icon i='arrow_back_ios' />}>{t('common.back')}</Button>}
       </div>}
     </FloatingBox>}
-  </>
+  </BasicInput>
 }
 
 export default memo(DatePicker)

@@ -1,0 +1,1 @@
+export { default as BasicInput, BasicInputProps } from './BasicInput';

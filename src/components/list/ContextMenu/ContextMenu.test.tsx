@@ -1,6 +1,6 @@
-import {fireEvent, render, screen, waitFor} from "@testing-library/react";
+import {render, screen} from "@testing-library/react";
 import '@testing-library/jest-dom'
-import {ContextMenu as ContextMenuType} from "../../../types";
+import {ContextMenuType as ContextMenuType} from "../../../types";
 import {ContextMenu} from "./index";
 
 const CONTEXT_MENU_DATA: ContextMenuType = [{

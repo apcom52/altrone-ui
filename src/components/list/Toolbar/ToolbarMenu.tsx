@@ -1,5 +1,5 @@
 import {memo, useRef, useState} from "react";
-import {ContextMenu as ContextMenuType} from "../../../types";
+import {ContextMenuType as ContextMenuType} from "../../../types";
 import clsx from "clsx";
 import './toolbar-menu.scss';
 import {FloatingBox} from "../../containers";

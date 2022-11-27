@@ -13,4 +13,4 @@ export interface ParentContextAction extends Omit<ContextAction, 'onClick' | 'hi
 
 export type ContextSeparator = '-'
 
-export type ContextMenu = (ContextAction | ParentContextAction)[]
+export type ContextMenuType = (ContextAction | ParentContextAction)[]
