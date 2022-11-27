@@ -1,8 +1,7 @@
 import {useThemeContext} from "../../contexts";
 import {useCallback, useMemo} from "react";
 import {get} from "lodash";
-import en from '../../assets/locales/en.json';
-import ru from '../../assets/locales/ru.json';
+import { en, ru } from '../../assets/locales';
 
 type translationOptions = {
   defaultValue?: string

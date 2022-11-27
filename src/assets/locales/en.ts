@@ -1,4 +1,4 @@
-{
+export default {
   "common": {
     "apply": "Apply",
     "cancel": "Cancel",

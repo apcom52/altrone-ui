@@ -2,12 +2,11 @@
   "name": "altrone-ui",
   "version": "1.0.0-beta.3",
   "description": "React UI Kit",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
-  "types": "dist/index.d.ts",
   "devDependencies": {
     "@babel/core": "^7.18.9",
     "@babel/preset-env": "^7.18.9",
@@ -32,24 +31,24 @@
     "@types/react": "^18.0.15",
     "babel-jest": "^29.0.3",
     "babel-loader": "^8.2.5",
-    "clsx": "^1.2.1",
     "husky": "^8.0.0",
     "jest": "^28.1.3",
     "jest-environment-jsdom": "^29.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rollup": "^2.77.0",
+    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-scss": "3",
     "rollup-plugin-terser": "^7.0.2",
-    "sass": "^1.54.9",
     "sass-loader": "^13.0.2",
     "storybook": "^6.5.9",
     "storybook-addon-sass-postcss": "^0.1.3",
     "typescript": "^4.7.4"
   },
   "scripts": {
-    "rollup": "rollup -c --silent",
+    "build": "rollup -c --silent",
     "test": "jest",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
@@ -71,11 +70,13 @@
   "homepage": "https://github.com/apcom52/altrone-ui#readme",
   "dependencies": {
     "@popperjs/core": "^2.11.6",
+    "clsx": "^1.2.1",
     "lodash": "^4.17.21",
     "material-symbols": "^0.2.11",
     "normalize": "^0.3.1",
     "react-number-format": "^5.0.0-beta.5",
     "react-popper": "^2.3.0",
-    "rooks": "^7.4.0"
+    "rooks": "^7.4.0",
+    "sass": "^1.54.9"
   }
 }
