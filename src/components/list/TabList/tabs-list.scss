@@ -91,11 +91,14 @@
   max-width: 100%;
 
   .alt-tab {
+    display: flex;
     position: relative;
     height: 100%;
+    align-items: center;
     padding-left: 36px;
     flex: 1;
     border-radius: 0;
+    justify-content: center;
 
     & + .alt-tab {
       border-left: 1px solid var(--borderColor);
@@ -114,6 +117,7 @@
 
   .alt-tab--selected {
     background-color: var(--surface);
+    font-weight: 600;
   }
 }
 
@@ -124,7 +128,7 @@
   justify-content: center;
   width: 16px;
   height: 16px;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: transparent;
   left: 10px;
   top: 9px;
@@ -152,7 +156,7 @@
   appearance: none;
   border-left: 1px solid var(--borderColor);
   background-color: transparent;
-  font-size: 24px;
+  font-size: 22px;
   color: var(--secondaryTextColor);
   cursor: pointer;
 

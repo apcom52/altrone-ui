@@ -7,6 +7,7 @@ import {Button} from "../../button";
 import {useDataTableContext} from "../../../contexts";
 import ButtonContainer from "../../containers/ButtonContainer/ButtonContainer";
 import {Align} from "../../../types/Align";
+import {useLocalization} from "../../../hooks";
 
 interface DataTableFilteringProps {
   onClose: () => void
@@ -14,9 +15,10 @@ interface DataTableFilteringProps {
 
 const DataTableFiltering = ({ onClose }: DataTableFilteringProps) => {
   const { filters, initialData, appliedFilters, setAppliedFilters } = useDataTableContext()
+  const t = useLocalization()
 
   return <div className='alt-data-table-filtering' data-testid='alt-test-datatable-filtering-popup'>
-    <div className='alt-data-table-filtering__title'>Filtering</div>
+    <div className='alt-data-table-filtering__title'>{t('data.dataTable.filtering')}</div>
     <FormGroup>
       {filters.map((filter, filterIndex) => {
         const options = new Set<Option>()
@@ -85,8 +87,8 @@ const DataTableFiltering = ({ onClose }: DataTableFilteringProps) => {
       })}
     </FormGroup>
     <ButtonContainer align={Align.end} className='alt-data-table-sorting__footer' mobileFluid>
-      {appliedFilters.length > 0 && <Button onClick={() => setAppliedFilters([])}>Reset filters</Button>}
-      <Button role={Role.primary} onClick={onClose}>Apply</Button>
+      {appliedFilters.length > 0 && <Button onClick={() => setAppliedFilters([])}>{t('data.dataTable.resetFilters')}</Button>}
+      <Button role={Role.primary} onClick={onClose}>{t('common.apply')}</Button>
     </ButtonContainer>
   </div>
 }

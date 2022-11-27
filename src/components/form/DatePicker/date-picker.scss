@@ -20,10 +20,10 @@
   @include useFocus();
   @include useDisabledUserSelect();
   @include useSoftShadow();
+  @include useFontSize(label, Large);
 }
 
 .alt-date-picker__value {
-  @include useFontSize(label, Large);
   color: var(--textColor);
   text-align: left;
   white-space: nowrap;
@@ -33,13 +33,12 @@
 }
 
 .alt-date-picker__placeholder {
-  @include useFontSize(label, Large);
   color: var(--placeholderText);
   text-align: left;
 }
 
 .alt-date-picker__icon {
-  font-size: 24px;
+  font-size: 1.5em;
   color: var(--secondaryTextColor);
 }
 
@@ -268,4 +267,42 @@
 
 .alt-date-picker__mobileApply {
   grid-area: apply;
+}
+
+.alt-basic-input--size-small {
+  .alt-date-picker {
+    padding: 0 6px 0 12px;
+    height: 26px;
+    @include useFontSize(body, Small);
+  }
+
+  .alt-date-picker__value, .alt-date-picker__placeholder {
+    font-weight: 500;
+  }
+
+  .alt-date-picker__icon {
+    font-size: 20px;
+  }
+}
+
+.alt-basic-input--size-large {
+  .alt-date-picker {
+    padding: 8px 6px 8px 12px;
+    height: 42px;
+    @include useFontSize(body, Large);
+  }
+
+  .alt-date-picker__value, .alt-date-picker__placeholder {
+    font-weight: 500;
+  }
+
+  .alt-date-picker__icon {
+    font-size: 28px;
+  }
+}
+
+.alt-basic-input--invalid {
+  .alt-date-picker {
+    @include useInvalid();
+  }
 }

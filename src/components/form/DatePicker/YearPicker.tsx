@@ -8,7 +8,7 @@ export interface YearPickerProps extends CalendarProps {
   maxYear: number
 }
 
-const YearPicker = ({ selectedDate, onChange, minYear, maxYear }: YearPickerProps) => {
+const YearPicker = ({ selectedDate = new Date(), onChange, minYear, maxYear }: YearPickerProps) => {
   const years = useMemo(() => {
     const result: Option<number>[] = []
     for (let year = minYear; year <= maxYear; year++) {

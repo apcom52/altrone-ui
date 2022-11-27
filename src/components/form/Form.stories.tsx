@@ -22,7 +22,7 @@ import {useCallback, useEffect, useState} from "react";
 import {Align} from "../../types/Align";
 import {Picker} from "./DatePicker/DatePicker";
 
-const Template = ({component, dark, value = '', locale, ...args}) => {
+const Template = ({component, dark, value = '', locale, lang = 'en', ...args}) => {
   const [_value, setValue] = useState(value)
 
   useEffect(() => {
@@ -35,7 +35,8 @@ const Template = ({component, dark, value = '', locale, ...args}) => {
 
   return withAltrone(component, {
     theme: dark ? Theme.dark : Theme.light,
-    locale
+    locale,
+    lang
   })({
     ...args,
     value: _value,
@@ -63,6 +64,7 @@ TextInputExample.args = {
   hintText: '',
   errorText: '',
   required: false,
+  size: Size.medium,
   dark: false
 }
 
@@ -141,12 +143,15 @@ CheckboxExample.args = {
   disabled: false,
   danger: false,
   children: 'Example',
+  hintText: '',
+  errorText: '',
   dark: false,
 }
 
 export const CheckboxListExample = Template.bind({})
 CheckboxListExample.args = {
   component: CheckboxList,
+  lang: 'en',
   children: [<Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>,
     <Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>,
     <Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>],
@@ -167,6 +172,9 @@ SelectExample.args = {
   fluid: false,
   searchable: false,
   disabled: false,
+  lang: 'en',
+  errorText: '',
+  hintText: '',
   options: [{
     label: 'The United Kingdom',
     value: 'uk',
@@ -214,6 +222,12 @@ SelectExample.args = {
     label: 'NATO',
     value: 'nato'
   }]
+}
+SelectExample.argTypes = {
+  size: {
+    control: 'select',
+    options: ['small', 'medium', 'large']
+  }
 }
 
 export const CustomSelectExample = Template.bind({})
@@ -273,11 +287,19 @@ CustomSelectExample.args = {
   }],
   ItemComponent: CustomSelectItem,
 }
+CustomSelectExample.argTypes = {
+  size: {
+    control: 'select',
+    options: ['small', 'medium', 'large']
+  }
+}
 
 export const SwitcherExample = Template.bind({})
 SwitcherExample.args = {
   component: Switcher,
   children: 'Example',
+  errorText: '',
+  hintText: '',
   checked: false,
   danger: false,
   disabled: false,
@@ -292,17 +314,24 @@ SwitcherExample.argTypes = {
 
 export const DatePickerExample = Template.bind({})
 DatePickerExample.args = {
-  value: null,
+  value: undefined,
   component: DatePicker,
   locale: 'en-US',
+  lang: 'en',
   disabled: false,
   dark: false,
+  errorText: '',
+  hintText: '',
 }
 DatePickerExample.argTypes = {
   picker: {
     control: 'select',
     value: Picker.day,
     options: [Picker.day, Picker.month, Picker.year]
+  },
+  size: {
+    control: 'select',
+    options: ['small', 'medium', 'large']
   }
 }
 
@@ -369,7 +398,8 @@ TextareaExample.args = {
   placeholder: 'Type your password',
   dark: false,
   size: Size.medium,
-  showControls: true
+  errorText: '',
+  hintText: ''
 }
 
 export default {
