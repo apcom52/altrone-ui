@@ -13,6 +13,7 @@
   border: 1px solid var(--borderColor);
   box-sizing: border-box;
   cursor: pointer;
+  transition: box-shadow var(--transitionDuration) ease;
 
   @include useFontSize(label, Large);
   @include useFocus();
@@ -160,4 +161,33 @@
 
 .alt-select-placeholder {
   color: var(--placeholderText);
+}
+
+.alt-basic-input--size-small {
+  .alt-select {
+    padding: 0 6px 0 12px;
+  }
+
+  .alt-select__value .alt-select-option {
+    @include useFontSize(body, Small);
+    font-weight: 500;
+  }
+}
+
+.alt-basic-input--size-large {
+  .alt-select {
+    padding: 0 6px 0 12px;
+  }
+
+  .alt-select__value .alt-select-option {
+    @include useFontSize(body, Large);
+    line-height: 40px;
+    font-weight: 500;
+  }
+}
+
+.alt-basic-input--invalid {
+  .alt-select {
+    @include useInvalid();
+  }
 }

@@ -1,18 +1,19 @@
 import {createElement, memo, useEffect, useMemo, useRef, useState} from "react";
-import {Option, OptionParent, Role} from "../../../types";
+import {Option, OptionParent, Role, Size} from "../../../types";
 import {FloatingBox} from "../../containers";
 import './select.scss';
 import {Icon} from "../../icons";
 import clsx from "clsx";
 import {TextInput} from "../TextInput";
 import SelectOption from "./SelectOption";
-import {useWindowSize} from "../../../hooks";
+import {useLocalization, useWindowSize} from "../../../hooks";
 import {FloatingBoxMobileBehaviour} from "../../containers/FloatingBox/FloatingBox";
 import {ScrollableSelector} from "../ScrollableSelector";
 import {Button} from "../../button";
 import SelectPlaceholder from "./SelectPlaceholder";
+import {BasicInput, BasicInputProps} from "../BasicInput";
 
-interface SelectProps<T extends number | string | boolean = string> extends Omit<React.HTMLProps<HTMLSelectElement>, 'value' | 'onChange'> {
+interface SelectProps<T extends number | string | boolean = string> extends Omit<React.HTMLProps<HTMLSelectElement>, 'value' | 'onChange'>, BasicInputProps {
   value: T
   options: Option<T>[]
   onChange: (value: T) => void
@@ -20,6 +21,7 @@ interface SelectProps<T extends number | string | boolean = string> extends Omit
   searchable?: boolean
   searchFunc?: (searchTerm: string, item: Option<T>) => boolean
   ItemComponent?: (item: Option<T>, checked: boolean) => Element;
+  size?: Size
   classNames?: {
     select?: string
     currentValue?: string
@@ -30,8 +32,9 @@ interface SelectProps<T extends number | string | boolean = string> extends Omit
 
 const DEFAULT_KEY = '_default'
 
-const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, classNames = {}, placeholder = 'Select an option' }: SelectProps) => {
+const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, size = Size.medium, classNames = {}, placeholder, hintText, errorText }: SelectProps) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize()
+  const t = useLocalization()
 
   const [isSelectVisible, setIsSelectVisible] = useState(false)
   const [isSearchMode, setIsSearchMode] = useState(false)
@@ -115,7 +118,12 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
     }
   }, [isSearchMode])
 
-  return <>
+  return <BasicInput
+    hintText={hintText}
+    errorText={errorText}
+    disabled={disabled}
+    size={size}
+  >
     {(!searchable || (searchable && !isSearchMode)) ? <button
       ref={selectRef}
       disabled={disabled}
@@ -123,7 +131,7 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
       data-testid='alt-test-select'
       className={clsx('alt-select', classNames.select, {
         'alt-select--active': isSelectVisible,
-        'alt-select--disabled': disabled
+        'alt-select--disabled': disabled,
       })}
       type='button'
     >
@@ -138,7 +146,7 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
           disabled: false,
           onSelect: () => null,
           inSelectHeader: true
-        }) : <SelectPlaceholder>{placeholder}</SelectPlaceholder>}
+        }) : <SelectPlaceholder>{placeholder || t('form.select.placeholder')}</SelectPlaceholder>}
       </div>
       <div className='alt-select__arrow'><Icon i='expand_more' /></div>
     </button> : <TextInput
@@ -184,17 +192,17 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
         })}
       </div>}
       {ltePhoneL && <>
-        <div className='alt-select-menu__title'>Select a value</div>
+        <div className='alt-select-menu__title'>{t('form.select.placeholder')}</div>
         <ScrollableSelector
           className='alt-select-menu__selector'
           options={options}
           value={value}
           onChange={onChange}
         />
-        <Button role={Role.primary} onClick={() => setIsSelectVisible(false)} fluid>Apply</Button>
+        <Button role={Role.primary} onClick={() => setIsSelectVisible(false)} fluid>{t('common.apply')}</Button>
       </>}
     </FloatingBox>}
-  </>
+  </BasicInput>
 }
 
 export default memo(Select)

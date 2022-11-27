@@ -4,7 +4,7 @@ import {Theme, ThemeConfig} from "../../types";
 import {ThemeContext} from "../../contexts";
 
 export const withAltrone = (Component, config: ThemeConfig) => (props) => {
-  let { theme, locale = 'en-US', style } = config
+  let { theme, locale = 'en-US', style, lang = document.documentElement.lang || 'en' } = config
 
   try {
     // @ts-ignore
@@ -15,7 +15,8 @@ export const withAltrone = (Component, config: ThemeConfig) => (props) => {
 
   return <ThemeContext.Provider value={{
     theme,
-    locale
+    locale,
+    lang
   }}>
     <div className={clsx('altrone', {
       'altrone--dark': theme === Theme.dark

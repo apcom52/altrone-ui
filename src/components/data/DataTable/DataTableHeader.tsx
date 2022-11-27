@@ -8,7 +8,7 @@ import DataTableSorting from "./DataTableSorting";
 import {Icon} from "../../icons";
 import DataTableFiltering from "./DataTableFiltering";
 import {useDataTableContext} from "../../../contexts";
-import {useWindowSize} from "../../../hooks";
+import {useLocalization, useWindowSize} from "../../../hooks";
 import {FloatingBoxMobileBehaviour} from "../../containers/FloatingBox/FloatingBox";
 import {Role} from "../../../types";
 
@@ -18,7 +18,9 @@ const DataTableHeader = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [isSearchVisible, setIsSearchVisible] = useState(false)
 
-  const { ltePhoneL } = useWindowSize()
+  const t = useLocalization()
+
+  const { ltePhoneL, gtPhoneL } = useWindowSize()
 
   const currentSortingColumn = useMemo(() => {
     if (!sortBy) return null
@@ -38,7 +40,7 @@ const DataTableHeader = () => {
   }
 
   return <div className='alt-data-table-header'>
-    {!ltePhoneL || (ltePhoneL && !isSearchVisible) && <div className='alt-data-table-header__filters'>
+    {(gtPhoneL || (ltePhoneL && !isSearchVisible)) && <div className='alt-data-table-header__filters'>
         {sortKeys.length > 0 && (
           <Button
             ref={sortRef}
@@ -49,7 +51,7 @@ const DataTableHeader = () => {
           >
             {ltePhoneL
               ? <Icon i='swap_vert' />
-              : <>{sortBy ? 'Sorted' : 'Sort'} by {currentSortingColumn && <strong className='alt-data-table-header__filter-value'>{currentSortingColumn.label || currentSortingColumn.accessor}</strong>}</>
+              : <>{sortBy ? t('data.dataTable.sortedBy') : t('data.dataTable.sort')} {currentSortingColumn && <strong className='alt-data-table-header__filter-value'>{currentSortingColumn.label || currentSortingColumn.accessor}</strong>}</>
             }
           </Button>
         )}
@@ -63,7 +65,7 @@ const DataTableHeader = () => {
         >
           {ltePhoneL
             ? <Icon i='tune' style='outlined' />
-            : <>Filters {appliedFilters.length > 0 && <strong className='alt-data-table-header__filter-value'>({appliedFilters.length})</strong>}</>
+            : <>{t('data.dataTable.filters')} {appliedFilters.length > 0 && <strong className='alt-data-table-header__filter-value'>({appliedFilters.length})</strong>}</>
           }
         </Button>}
     </div>}
@@ -72,7 +74,7 @@ const DataTableHeader = () => {
         ltePhoneL
           ? <Button variant={ButtonVariant.transparent} isIcon onClick={() => setIsSearchVisible(true)}><Icon i='search' /></Button>
           : <div className='alt-data-table-header__search' data-testid='alt-test-datatable-search'>
-            <TextInput placeholder='Search' value={search} onChange={setSearch} />
+            <TextInput placeholder={t('common.search')} value={search} onChange={setSearch} />
           </div>
       : null
     }
@@ -88,7 +90,7 @@ const DataTableHeader = () => {
           </Button>
 
           <div className='alt-data-table-header__search' data-testid='alt-test-datatable-search'>
-            <TextInput placeholder='Search' value={search} onChange={setSearch} />
+            <TextInput placeholder={t('common.search')} value={search} onChange={setSearch} />
           </div>
           <Button
             ref={sortRef}

@@ -5,6 +5,9 @@ import './data-table-sorting.scss';
 import {Direction, Role} from "../../../types";
 import {Button} from "../../button";
 import {useDataTableContext} from "../../../contexts";
+import {useLocalization} from "../../../hooks";
+import ButtonContainer from "../../containers/ButtonContainer/ButtonContainer";
+import {Align} from "../../../types/Align";
 
 interface DataTableSortingProps {
   onClose: () => void
@@ -12,6 +15,7 @@ interface DataTableSortingProps {
 
 const DataTableSorting = ({ onClose }: DataTableSortingProps) => {
   const { columns, sortKeys, sortBy, sortType, setSortType, setSortBy } = useDataTableContext()
+  const t = useLocalization()
 
   const sortKeysOptions = useMemo(() => {
     return sortKeys.map((keyName) => {
@@ -25,30 +29,32 @@ const DataTableSorting = ({ onClose }: DataTableSortingProps) => {
   }, [columns, sortKeys])
 
   return <div className='alt-data-table-sorting' data-testid='alt-test-datatable-sorting'>
-    <div className='alt-data-table-sorting__title'>Sorting</div>
+    <div className='alt-data-table-sorting__title'>{t('data.dataTable.sorting')}</div>
     <FormGroup>
-      <FormField label='Field'>
+      <FormField label={t('data.dataTable.field')}>
         <Select options={sortKeysOptions} value={sortBy} onChange={setSortBy} />
       </FormField>
-      <FormField label='Direction'>
+      <FormField label={t('data.dataTable.direction')}>
         <RadioList
           value={sortType}
           direction={Direction.vertical}
           onChange={setSortType}
           name='sort-direction'
           options={[{
-            label: 'Ascending',
+            label: t('common.asc'),
             value: 'asc'
           }, {
-            label: 'Descending',
+            label: t('common.desc'),
             value: 'desc'
           }]}
         />
       </FormField>
     </FormGroup>
     <div className='alt-data-table-sorting__footer'>
-      {sortBy && <Button onClick={() => setSortBy(null)}>Reset sorting</Button>}
-      <Button role={Role.primary} onClick={onClose}>Apply</Button>
+      <ButtonContainer align={Align.end} direction={Direction.vertical}>
+        {sortBy && <Button onClick={() => setSortBy(null)}>{t('data.dataTable.resetSorting')}</Button>}
+        <Button role={Role.primary} onClick={onClose}>{t('common.apply')}</Button>
+      </ButtonContainer>
     </div>
   </div>
 }

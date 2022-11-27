@@ -1,4 +1,7 @@
-export { TextInput, TextInputProps, InputIslandType, InputIslandAction, InputIsland } from './TextInput'
+export { BasicInput } from './BasicInput'
+export type { BasicInputProps } from './BasicInput';
+export { TextInput, InputIslandType } from './TextInput'
+export type { TextInputProps, InputIslandAction, InputIsland } from './TextInput';
 export { PasswordInput } from './PasswordInput'
 export { NumberInput } from './NumberInput'
 export { Checkbox, CheckboxList } from './Checkbox'

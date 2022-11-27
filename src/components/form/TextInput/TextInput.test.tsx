@@ -33,7 +33,6 @@ describe('Form.TextInput', () => {
     const errorElement = screen.getByText('error')
     expect(errorElement).toBeInTheDocument()
     expect(errorElement.textContent).toBe('error')
-    expect(textInputElement).toHaveClass('alt-text-input--invalid')
   })
 
   test('should required works correctly', () => {
@@ -169,9 +168,9 @@ describe('Form.TextInput', () => {
 
   test('should use correct classNames for different sizes', async () => {
     const { container, rerender } = render(<TextInput value='' onChange={() => null} size={Size.small} />)
-    expect(container.firstChild).toHaveClass('alt-text-input--size-small')
+    expect(container.firstChild).toHaveClass('alt-basic-input--size-small')
 
     await waitFor(() => rerender(<TextInput value='' onChange={() => null} size={Size.large} />))
-    expect(container.firstChild).toHaveClass('alt-text-input--size-large')
+    expect(container.firstChild).toHaveClass('alt-basic-input--size-large')
   })
 })
