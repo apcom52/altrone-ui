@@ -1,7 +1,7 @@
 import {useThemeContext} from "../../contexts";
 import {useCallback, useMemo} from "react";
 import {get} from "lodash";
-import { en, ru } from '../../assets/locales';
+import {en, ru} from '../../assets/locales';
 
 type translationOptions = {
   defaultValue?: string
@@ -23,7 +23,6 @@ export const useLocalization = () => {
 
     if (plural) {
       const rule = new Intl.PluralRules(lang).select(value)
-      console.log({ rule });
       localeString = get(dictionary, t + `.${rule}`, defaultValue || t)
     } else {
       localeString = get(dictionary, t, defaultValue || t)
