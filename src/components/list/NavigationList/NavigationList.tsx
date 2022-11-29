@@ -1,4 +1,4 @@
-import {memo, useMemo} from "react";
+import {memo, useEffect, useMemo} from "react";
 import './navigation-list.scss';
 import NavigationListItem from "./NavigationListItem";
 import NavigationListSubItem from "./NavigationListSubItem";
@@ -44,7 +44,7 @@ interface NavigationListProps {
 }
 
 const NavigationList = ({ list = [], selected, onChange, title, NavigationItemComponent, NavigationSubItemComponent, NavigationSubSubItemComponent }: NavigationListProps) => {
-  const [selectedItem, selectedSubItem, selectedSubSubItem] = useMemo(() => {
+    const [selectedItem, selectedSubItem, selectedSubSubItem] = useMemo(() => {
     for (const item of list) {
       if (item.value === selected) {
         return [item.value, null, null]
@@ -69,6 +69,34 @@ const NavigationList = ({ list = [], selected, onChange, title, NavigationItemCo
 
     return [null, null, null]
   }, [selected, list])
+
+  useEffect(() => {
+    if (!selectedItem || selectedSubSubItem || !list.length) {
+      return
+    }
+
+    if (selectedItem && !selectedSubItem) {
+      const firstLevelItem = list.find(item => item.value === selectedItem)
+
+      if (firstLevelItem && firstLevelItem.submenu?.length) {
+        onChange(firstLevelItem.submenu?.[0].value)
+        return
+      }
+    }
+
+    if (selectedItem && selectedSubItem && !selectedSubSubItem) {
+      const firstLevelItem = list.find(item => item.value === selectedItem)
+
+      if (!firstLevelItem) {
+        return
+      }
+      const secondLevelItem = firstLevelItem.submenu?.find(item => item.value === selectedSubItem)
+      if (secondLevelItem && secondLevelItem.submenu?.length) {
+        onChange(secondLevelItem.submenu?.[0].value)
+        return
+      }
+    }
+  }, [list, selectedItem, selectedSubItem, selectedSubSubItem, onChange])
 
   return <div className='alt-navigation-list'>
     {title && <div className='alt-navigation-list__title'>{title}</div>}
