@@ -27,6 +27,10 @@ const ToolbarGroup = ({ children, fluid = false, align = Align.center, collapsib
   const expandButton = useRef(null)
   const { width } = useResizeObserver(collapsible ? { current: toolbarRef } : { current: null })
 
+  const onCloseMenu = () => {
+    setIsContextVisible(false)
+  }
+
   useLayoutEffect(() => {
     if (!width || !groupRef.current || collapsible === false || !invisibleExpandButton.current) {
       return
@@ -96,9 +100,9 @@ const ToolbarGroup = ({ children, fluid = false, align = Align.center, collapsib
       placement='bottom'
       targetRef={expandButton.current}
       useParentRef
-      onClose={() => setIsContextVisible(false)}
+      onClose={onCloseMenu}
     >
-      <ContextMenu menu={context} />
+      <ContextMenu onClose={onCloseMenu} menu={context} />
     </FloatingBox>}
   </div>
 }
