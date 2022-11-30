@@ -93,7 +93,11 @@ const FloatingBox = ({
     ...popperProps
   })
 
-  useOutsideClick({ current: floatingBoxElement }, (e) => {
+  useOutsideClick({ current: floatingBoxElement }, (e: MouseEvent) => {
+    if ((e.target as Element)?.closest('.alt-floating-box')) {
+      return
+    }
+
     if (preventClose) {
       if (preventClose(e)) {
         return
