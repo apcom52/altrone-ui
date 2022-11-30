@@ -14,6 +14,7 @@ export enum FloatingBoxMobileBehaviour {
 }
 
 interface FloatingBoxProps extends WithoutDefaultOffsets {
+  // TODO: rename to target
   targetRef: Element
   onClose: () => void
   offset?: number
