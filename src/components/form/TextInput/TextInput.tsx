@@ -25,7 +25,8 @@ export interface InputIsland {
   content: string | JSX.Element | JSX.Element[] | InputIslandAction[]
 }
 
-export interface TextInputProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLInputElement>>, 'onChange' | 'size'>, WithAltroneOffsets {
+export interface TextInputProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLInputElement>>, 'value' | 'onChange' | 'size'>, WithAltroneOffsets {
+  value: string
   onChange: (value: string) => void
   classNames?: {
     control?: string

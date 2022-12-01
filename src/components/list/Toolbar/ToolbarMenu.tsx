@@ -47,7 +47,7 @@ const ToolbarMenu = ({ menu = [] }: ToolbarMenuProps) => {
         return e.target?.closest('.alt-toolbar-menu') === menuRef.current
       }}
     >
-      <ContextMenu menu={menu[currentMenuIndex].submenu || []} />
+      <ContextMenu onClose={onCloseSubmenu} menu={menu[currentMenuIndex].submenu || []} />
     </FloatingBox>}
   </div>
 }

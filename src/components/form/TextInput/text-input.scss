@@ -190,3 +190,9 @@
     @include useFontSize(body, Large);
   }
 }
+
+.alt-data-table-header-wrapper {
+  th {
+    padding: 0;
+  }
+}

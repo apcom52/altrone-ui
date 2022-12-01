@@ -38,7 +38,7 @@ const DataTable = ({
   data = [],
   columns = [],
   limit = 20,
-  searchBy,
+  searchBy = '',
   searchFunc = defaultSearchFunc,
   sortKeys = [],
   filters = [],
@@ -46,7 +46,7 @@ const DataTable = ({
 }: DataTableProps) => {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
-  const [sortBy, setSortBy] = useState(null)
+  const [sortBy, setSortBy] = useState<string>()
   const [sortType, setSortType] = useState<Sort>(Sort.asc)
   const [appliedFilters, setAppliedFilters] = useState<DataTableAppliedFilter[]>([])
 
@@ -104,14 +104,14 @@ const DataTable = ({
     setAppliedFilters,
     mobileColumns
   }}>
-    <div className='alt-data-table-wrapper' data-testid='alt-test-datatable'>
-      { isHeaderVisible && <DataTableHeader /> }
-      {data.length && <table className='alt-data-table'>
+    <table className='alt-data-table' data-testid='alt-test-datatable'>
+      <thead>
+        { isHeaderVisible && <DataTableHeader /> }
         <DataTableHeaderRow />
-        <DataTableBody />
-      </table>}
+      </thead>
+      <DataTableBody />
       <DataTableFooter />
-    </div>
+    </table>
   </DataTableContext.Provider>
 }
 

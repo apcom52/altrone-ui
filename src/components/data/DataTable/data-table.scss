@@ -37,6 +37,17 @@
 .alt-data-table__cell--show-more {
   text-align: center;
   width: 50px;
+  cursor: pointer;
+  border-radius: 6px;
+
+  @include useDisabledUserSelect();
+  @include useFocus();
+
+  &:focus, &:focus-visible {
+    transform: scaleX(1.01);
+    border-color: transparent;
+    margin: -1px;
+  }
 }
 
 .alt-data-table__sort-indicator {

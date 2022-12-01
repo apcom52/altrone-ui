@@ -12,6 +12,10 @@
   border-right: 1px solid var(--borderColor);
 
   @include useGlassSurface();
+
+  .alt-navigation-list {
+    padding-right: 0;
+  }
 }
 
 .alt-navigation-list__title {
