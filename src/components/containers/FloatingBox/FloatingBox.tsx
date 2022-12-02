@@ -94,19 +94,23 @@ const FloatingBox = ({
   })
 
   useOutsideClick({ current: floatingBoxElement }, (e: MouseEvent) => {
+    console.log('clicked outside');
     if ((e.target as Element)?.closest('.alt-floating-box')) {
+      console.log('first cond');
       return
     }
 
     if (preventClose) {
       if (preventClose(e)) {
+        console.log('second cond');
         return
       }
     }
 
+    console.log('should closed');
     setTimeout(() => {
       onClose()
-    }, 1)
+    }, 0)
   })
 
   if (!targetRef) {

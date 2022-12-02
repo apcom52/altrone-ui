@@ -4,24 +4,36 @@ import '@testing-library/jest-dom'
 import {ButtonVariant} from "./Button";
 import {Icon} from "../../icons";
 import {Role} from "../../../types";
+import {RefObject} from "react";
 
 describe('Button.Button', () => {
-  test('should be rendered', () => {
-    render(<Button>Example button</Button>)
-    const element = screen.getByText('Example button')
-    expect(element).toBeInTheDocument()
+  beforeEach(() => {
+    jest.useFakeTimers()
   })
 
-  test('should apply correct classNames', () => {
-    render(<Button role={Role.primary} variant={ButtonVariant.borders}>Example button</Button>)
+  afterEach(() => {
+    jest.runOnlyPendingTimers()
+    jest.useRealTimers()
+  })
+
+  test('should renders correctly', () => {
+    const { container, rerender } = render(<Button>Example button</Button>)
     const element = screen.getByText('Example button')
-    expect(element.className).toBe('alt-button alt-button--role-primary alt-button--variant-borders')
+    expect(element).toBeInTheDocument()
+
+    expect(container.innerHTML).toBe('<button class="alt-button" type="button">Example button</button>')
+
+    rerender(<Button className='custom-class'>Button with custom className</Button>)
+    const customButton = screen.getByText('Button with custom className')
+    expect(customButton).toHaveClass('custom-class')
   })
 
   test('if href was passed then tagName should be a', () => {
-    render(<Button role={Role.primary} variant={ButtonVariant.borders} href='https://google.com'>Example button</Button>)
+    const { container, rerender } = render(<Button role={Role.primary} variant={ButtonVariant.borders} href='https://google.com'>Example button</Button>)
     const element = screen.getByText('Example button')
     expect(element.tagName).toBe('A')
+
+    expect(container.innerHTML).toBe('<a class="alt-button alt-button--role-primary alt-button--variant-borders" href="https://google.com">Example button</a>')
   })
 
   test('should handle onClick', () => {
@@ -55,10 +67,50 @@ describe('Button.Button', () => {
   })
 
   test('should open dropdown', async () => {
-    const { rerender } = render(<Button dropdown={[{ title: 'Action', onClick: () => null }]}>Dropdown button</Button>)
+    jest.useFakeTimers()
+    const { container, rerender } = render(<Button dropdown={[{ title: 'Action', onClick: () => null }]}>Dropdown button</Button>)
     const button = screen.getByText('Dropdown button')
+    console.log(container.outerHTML);
     await waitFor(() => fireEvent.click(button))
+
+    console.log('-------');
     rerender(<Button dropdown={[{ title: 'Action', onClick: () => null }]}>Dropdown button</Button>)
-    expect(screen.getByText('Action')).toBeInTheDocument()
+
+    console.log(container.outerHTML);
+    const clickedButton = screen.getByText('Dropdown button')
+    const actionButton = screen.getByText('Action')
+    expect(actionButton).toBeInTheDocument()
+
+    await waitFor(() => fireEvent.click(actionButton))
+
+    expect(container).toContainHTML('<button class="alt-button" type="button">Dropdown button</button>')
+
+
+    // const actionButton = screen.getByText('Action')
+    //
+    // await waitFor(() => fireEvent.click(actionButton))
+    // rerender(<Button dropdown={[{ title: 'Action', onClick: () => null }]}>Dropdown button</Button>)
+    // console.log(container.outerHTML);
+    // expect(screen.getByText('Action')).toBeInTheDocument()
+    // jest.useRealTimers()
+  })
+
+  test('should ref works correctly', async () => {
+    const ref: RefObject<HTMLButtonElement> = { current: null }
+
+    let refValue: RefObject<HTMLButtonElement> = { current: null }
+    const refFunction = (refElement: HTMLButtonElement) => {
+      refValue = {
+        current: refElement
+      }
+    }
+
+    const { rerender } = render(<Button ref={ref}>Button</Button>)
+    expect(ref.current?.tagName).toBe('BUTTON')
+    expect(ref.current?.innerHTML).toBe('Button')
+
+    rerender(<Button ref={refFunction}>Function</Button>)
+    expect(refValue.current?.tagName).toBe('BUTTON')
+    expect(refValue.current?.innerHTML).toBe('Function')
   })
 })
