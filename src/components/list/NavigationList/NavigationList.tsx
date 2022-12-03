@@ -1,4 +1,4 @@
-import {memo, useEffect, useMemo} from "react";
+import {Fragment, memo, useEffect, useMemo} from "react";
 import './navigation-list.scss';
 import NavigationListItem from "./NavigationListItem";
 import NavigationListSubItem from "./NavigationListSubItem";
@@ -108,8 +108,8 @@ const NavigationList = ({ list = [], selected, onChange, title, NavigationItemCo
           ...item
         }
 
-        return <>
-          {NavigationItemComponent ? <NavigationItemComponent key={itemIndex} {...itemProps} /> : <NavigationListItem key={itemIndex} {...itemProps} />}
+        return <Fragment key={itemIndex}>
+          {NavigationItemComponent ? <NavigationItemComponent {...itemProps} /> : <NavigationListItem {...itemProps} />}
           {(selectedItem === item.value && item.submenu?.length > 0) && <div className='alt-navigation-list__navigation'>
             {item.submenu?.map((subitem, subitemIndex) => {
               const subItemProps: NavigationSubItemProps = {
@@ -118,8 +118,8 @@ const NavigationList = ({ list = [], selected, onChange, title, NavigationItemCo
               ...subitem
             }
 
-              return <>
-                {NavigationSubItemComponent ? <NavigationSubItemComponent key={itemIndex} {...subItemProps} /> : <NavigationListSubItem key={subitemIndex} {...subItemProps} />}
+              return <Fragment key={subitemIndex}>
+                {NavigationSubItemComponent ? <NavigationSubItemComponent {...subItemProps} /> : <NavigationListSubItem {...subItemProps} />}
 
                 {(selectedSubItem === subitem.value && subitem.submenu?.length > 0) && <div className='alt-navigation-list__navigation'>
                   {subitem.submenu?.map((subsubitem, subsubitemIndex) => {
@@ -129,15 +129,15 @@ const NavigationList = ({ list = [], selected, onChange, title, NavigationItemCo
                       ...subsubitem
                     }
 
-                    return <>
-                      {NavigationSubItemComponent ? <NavigationSubSubItemComponent key={itemIndex} {...subsubItemProps} /> : <NavigationListSubSubItem key={subsubitemIndex} {...subsubItemProps} />}
-                    </>
+                    return <Fragment key={subsubitemIndex}>
+                      {NavigationSubItemComponent ? <NavigationSubSubItemComponent {...subsubItemProps} /> : <NavigationListSubSubItem {...subsubItemProps} />}
+                    </Fragment>
                   })}
                 </div>}
-              </>
+              </Fragment>
             })}
           </div>}
-        </>
+        </Fragment>
       })}
     </nav>
   </div>

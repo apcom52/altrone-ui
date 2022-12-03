@@ -7,15 +7,6 @@ import {Role} from "../../../types";
 import {RefObject} from "react";
 
 describe('Button.Button', () => {
-  beforeEach(() => {
-    jest.useFakeTimers()
-  })
-
-  afterEach(() => {
-    jest.runOnlyPendingTimers()
-    jest.useRealTimers()
-  })
-
   test('should renders correctly', () => {
     const { container, rerender } = render(<Button>Example button</Button>)
     const element = screen.getByText('Example button')
@@ -67,32 +58,17 @@ describe('Button.Button', () => {
   })
 
   test('should open dropdown', async () => {
-    jest.useFakeTimers()
     const { container, rerender } = render(<Button dropdown={[{ title: 'Action', onClick: () => null }]}>Dropdown button</Button>)
     const button = screen.getByText('Dropdown button')
-    console.log(container.outerHTML);
     await waitFor(() => fireEvent.click(button))
 
-    console.log('-------');
     rerender(<Button dropdown={[{ title: 'Action', onClick: () => null }]}>Dropdown button</Button>)
-
-    console.log(container.outerHTML);
-    const clickedButton = screen.getByText('Dropdown button')
     const actionButton = screen.getByText('Action')
     expect(actionButton).toBeInTheDocument()
 
     await waitFor(() => fireEvent.click(actionButton))
 
     expect(container).toContainHTML('<button class="alt-button" type="button">Dropdown button</button>')
-
-
-    // const actionButton = screen.getByText('Action')
-    //
-    // await waitFor(() => fireEvent.click(actionButton))
-    // rerender(<Button dropdown={[{ title: 'Action', onClick: () => null }]}>Dropdown button</Button>)
-    // console.log(container.outerHTML);
-    // expect(screen.getByText('Action')).toBeInTheDocument()
-    // jest.useRealTimers()
   })
 
   test('should ref works correctly', async () => {
