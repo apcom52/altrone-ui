@@ -1,5 +1,4 @@
-
-import {memo, ReactNode, useEffect, useLayoutEffect, useMemo, useRef} from "react";
+import {memo, PropsWithChildren, ReactNode, useEffect, useLayoutEffect, useMemo, useRef} from "react";
 import {Align} from "../../../types/Align";
 import {Role, Size} from "../../../types";
 import './modal.scss';
@@ -8,8 +7,7 @@ import {Button} from "../../button";
 import clsx from "clsx";
 import {useWindowSize} from "../../../hooks";
 
-interface ModalProps {
-  children: JSX.Element | JSX.Element[]
+interface ModalProps extends PropsWithChildren {
   onClose: () => void
   title?: string
   size?: Size
@@ -25,13 +23,14 @@ interface ModalProps {
   showClose?: boolean
   showCancel?: boolean
   closeOnOverlay?: boolean
+  reduceMotion?: boolean
 }
 
 const CLS_OPENED = 'alt-modal--opened'
 const CLS_UTIL_NOSCROLL = 'alt-util--no-scroll'
 const HIDE_DURATION = 300
 
-const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, actions = [], showClose = true, showCancel = true, closeOnOverlay = true }: ModalProps) => {
+const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, actions = [], showClose = true, showCancel = true, closeOnOverlay = true, reduceMotion = false }: ModalProps) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize()
 
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -83,10 +82,13 @@ const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, ac
 
   const handleClose = () => {
     modalRef.current?.classList.remove(CLS_OPENED)
-
-    setTimeout(() => {
+    if (reduceMotion) {
       onClose()
-    }, HIDE_DURATION)
+    } else {
+      setTimeout(() => {
+        onClose()
+      }, HIDE_DURATION)
+    }
   }
 
   const onBackdropClick = e => {
@@ -99,18 +101,19 @@ const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, ac
     <div className={clsx('alt-modal', {
       'alt-modal--size-small': size === Size.small,
       'alt-modal--size-large': size === Size.large,
-      'alt-modal--fluid': fluid
-    })} ref={modalRef}>
-      {title && <div className="alt-modal__title">{title}</div>}
-      {showClose && gtPhoneL && <button className='alt-modal__close' type='button' onClick={handleClose}><Icon i='close' /></button>}
+      'alt-modal--fluid': fluid,
+      [CLS_OPENED]: reduceMotion
+    })} ref={modalRef} data-testid='alt-test-modal'>
+      {title && <div className="alt-modal__title" data-testid='alt-test-modal-title'>{title}</div>}
+      {showClose && gtPhoneL && <button className='alt-modal__close' type='button' onClick={handleClose} data-testid='alt-test-modal-close'><Icon i='close' /></button>}
 
-      <div className="alt-modal__content">
+      <div className="alt-modal__content" data-testid='alt-test-modal-content'>
         {children}
       </div>
       {(showCancel || actions.length > 0) && <div className='alt-modal__footer'>
         {renderActions(leftActions)}
         <div className="alt-modal__footer-separator" />
-        {((showCancel && gtPhoneL) || (showClose || ltePhoneL)) && <Button onClick={handleClose} className='alt-modal__cancel'>Cancel</Button>}
+        {((showCancel && gtPhoneL) || (showClose || ltePhoneL)) && <Button onClick={handleClose} className='alt-modal__cancel' data-testid='alt-test-modal-cancel'>Cancel</Button>}
         {renderActions(rightActions)}
       </div>}
       {ltePhoneL && <div className='alt-modal-wrapper__handle' />}

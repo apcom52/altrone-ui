@@ -27,13 +27,15 @@ const ToolbarMenu = ({ menu = [] }: ToolbarMenuProps) => {
     setCurrentMenuIndex(-1)
   }
 
-  return <div className='alt-toolbar-menu' ref={menuRef}>
+  return <div className='alt-toolbar-menu' ref={menuRef} data-testid='alt-test-toolbarMenu'>
     {menu.map((item, itemIndex) => {
       return <button
+        key={itemIndex}
         className={clsx('alt-toolbar-menu__item', {
           'alt-toolbar-menu__item--active': itemIndex === currentMenuIndex
         })}
         onClick={() => onMenuItemClick(itemIndex)}
+        data-testid='alt-test-toolbarMenu-item'
       >
         {item.label}
       </button>

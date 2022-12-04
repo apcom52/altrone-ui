@@ -74,6 +74,7 @@ const ToolbarGroup = ({ children, fluid = false, align = Align.center, collapsib
     'alt-toolbar-group--align-end': align === Align.end,
     'alt-toolbar-group--collapsible': collapsible
   })}
+    data-testid='alt-test-toolbarGroup'
     ref={groupRef}
   >
     {!collapsible ? children : Array.isArray(children) ?

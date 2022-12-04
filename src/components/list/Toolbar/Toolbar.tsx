@@ -34,6 +34,7 @@ const Toolbar = ({ children, floated = false, menu = [], offset = defaultOffset,
         left: offset.x + 'px',
         width
       } : {}}
+      data-testid='alt-test-toolbar'
     >
       {menu.length > 0 && <ToolbarMenu menu={menu} />}
       <div className='alt-toolbar__main'>
