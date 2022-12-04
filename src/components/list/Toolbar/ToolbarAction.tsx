@@ -24,6 +24,7 @@ const ToolbarAction = forwardRef(({ icon, label, onClick, active = false, disabl
     disabled={disabled}
     ref={ref}
     onClick={onClick}
+    data-testid='alt-test-toolbarAction'
   >
     <div className='alt-toolbar-action__icon'>{icon}</div>
     <div className='alt-toolbar-action__label'>{label}</div>
