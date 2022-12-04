@@ -16,7 +16,9 @@ const ButtonContainer = ({ direction = Direction.horizontal, align = Align.start
     'alt-button-container--align-center': align === Align.center,
     'alt-button-container--align-end': align === Align.end,
     'alt-button-container--mobile-fluid': mobileFluid
-  })}>
+  })}
+    data-testid='alt-test-buttoncontainer'
+  >
     {children}
   </div>
 }

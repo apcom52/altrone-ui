@@ -35,7 +35,7 @@ const DataTableBody = () => {
             columnIndex
           }
 
-          let content = null
+          let content;
 
           if (column.Component) {
             const CellComponent = column.Component as keyof JSX.IntrinsicElements
@@ -46,7 +46,7 @@ const DataTableBody = () => {
 
           return <td key={columnIndex} className='alt-data-table__cell'>{content}</td>
         })}
-        {ltePhoneL && <td className='alt-data-table__cell alt-data-table__cell--show-more' onClick={() => setSelectedRowIndex(rowIndex)}>
+        {ltePhoneL && <td className='alt-data-table__cell alt-data-table__cell--show-more' tabIndex={0} onClick={() => setSelectedRowIndex(rowIndex)}>
           <Icon i='arrow_forward_ios' />
         </td>}
       </tr>

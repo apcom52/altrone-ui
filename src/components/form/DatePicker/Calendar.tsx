@@ -77,8 +77,14 @@ const Calendar = ({ currentMonth, selectedDate = new Date(), onChange }: Calenda
         weeks.push(renderDay(currentDate, day, dayString))
 
         for (let nextMonth = 1; nextMonth <= 7 - lastDay.getDay(); nextMonth++) {
+          const nextMonthCurrentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, nextMonth)
+
+          if (nextMonth === 1 && nextMonthCurrentDate.getDay() === 1) {
+            break;
+          }
+
           weeks.push(
-            renderDay(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, nextMonth), nextMonth, makeDateString(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, nextMonth)), true)
+            renderDay(nextMonthCurrentDate, nextMonth, makeDateString(nextMonthCurrentDate), true)
           )
         }
       } else {

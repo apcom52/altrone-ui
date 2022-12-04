@@ -86,7 +86,7 @@ const Button = forwardRef(({
       }}
       href={href}
       onClick={isDropdownButton ? showDropdown : onClick}
-      type={type}
+      type={href ? undefined : type}
       {...props}
     >
       { leftIcon ? <span className='alt-button__leftIcon'>{leftIcon}</span> : null }
@@ -94,7 +94,7 @@ const Button = forwardRef(({
       { rightIcon ? <span className='alt-button__rightIcon'>{rightIcon}</span> : null }
     </Box>
     {isDropdownVisible ? <FloatingBox targetRef={buttonRef.current} onClose={hideDropdown} placement='bottom' mobileBehaviour={FloatingBoxMobileBehaviour.modal}>
-      <ContextMenu menu={dropdown} />
+      <ContextMenu onClose={hideDropdown} menu={dropdown} />
     </FloatingBox> : null}
   </>
 })

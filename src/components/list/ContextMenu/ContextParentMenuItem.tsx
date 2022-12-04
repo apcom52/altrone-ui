@@ -9,9 +9,10 @@ import {useWindowSize} from "../../../hooks";
 
 interface ContextParentMenuItem extends ParentContextAction {
   onClick: (action: ParentContextAction | null) => void
+  onClose: () => void
 }
 
-const ContextParentMenuItem = ({ onClick, ...action }: ContextParentMenuItem) => {
+const ContextParentMenuItem = ({ onClick, onClose, ...action }: ContextParentMenuItem) => {
   const { gtPhoneL } = useWindowSize()
 
   const [isChildrenContextMenuVisible, setIsChildrenContextMenuVisible] = useState(false)
@@ -44,8 +45,8 @@ const ContextParentMenuItem = ({ onClick, ...action }: ContextParentMenuItem) =>
       <div className='alt-context-menu-item__title'>{action.title}</div>
       <div className='alt-context-menu-item__childrenArrow'><Icon i='keyboard_arrow_right' /></div>
     </button>
-    {gtPhoneL && isChildrenContextMenuVisible && createPortal(<FloatingBox targetRef={itemRef.current} placement='right' onClose={() => setIsChildrenContextMenuVisible(false)} offset={8}>
-      <ContextMenu menu={action.children} />
+    {gtPhoneL && isChildrenContextMenuVisible && createPortal(<FloatingBox targetRef={itemRef.current} placement='right' useParentRef={true} onClose={() => setIsChildrenContextMenuVisible(false)} offset={8}>
+      <ContextMenu onClose={onClose} menu={action.children} />
     </FloatingBox>, altroneRef.current)}
   </>
 }

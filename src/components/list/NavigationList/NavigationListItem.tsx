@@ -11,6 +11,7 @@ const NavigationListItem = ({ label, value, icon, submenu = [], onClick, selecte
       'alt-navigation-list-item--expanded': selected && submenu.length,
     })}
     onClick={() => onClick(value)}
+    title={label}
   >
     {icon && <div className='alt-navigation-list-item__icon'>{icon}</div>}
     <div className='alt-navigation-list-item__label'>{label}</div>

@@ -52,3 +52,11 @@
 .alt-data-table-pagination__currentPage {
   font-weight: 600;
 }
+
+.alt-data-table-footer-wrapper {
+  padding: 0;
+
+  td {
+    text-align: left;
+  }
+}

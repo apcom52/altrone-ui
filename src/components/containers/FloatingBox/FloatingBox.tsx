@@ -1,5 +1,5 @@
 import {WithoutDefaultOffsets} from "../../../types";
-import {memo, useMemo, useState} from "react";
+import {forwardRef, useMemo, useState} from "react";
 import {usePopper} from 'react-popper';
 import './floating-box.scss';
 import {useOutsideClick} from "rooks";
@@ -14,6 +14,7 @@ export enum FloatingBoxMobileBehaviour {
 }
 
 interface FloatingBoxProps extends WithoutDefaultOffsets {
+  // TODO: rename to target
   targetRef: Element
   onClose: () => void
   offset?: number
@@ -35,7 +36,7 @@ const setPopperWidth = (state , minWidth) => {
   }px`;
 }
 
-const FloatingBox = ({
+const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
   targetRef,
   onClose,
   offset = 4,
@@ -48,17 +49,21 @@ const FloatingBox = ({
   preventClose,
   useParentRef = false,
   mobileBehaviour = FloatingBoxMobileBehaviour.default
-}: FloatingBoxProps) => {
+}, ref) => {
   const { ltePhoneL } = useWindowSize()
-  const [floatingBoxElement, setFloatingBoxElement] = useState(null)
+  const [floatingBoxElement, setFloatingBoxElement] = useState<HTMLDivElement | null>(null)
+
+  if (floatingBoxElement) {
+    if (typeof ref === 'function') {
+      ref(floatingBoxElement)
+    } else if (ref) {
+      ref.current = floatingBoxElement
+    }
+  }
 
   const offsets: [number, number] = useMemo(() => {
-    if (['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end'].indexOf(placement) > -1) {
-      return [0, offset]
-    } else {
-      return [0, offset]
-    }
-  }, [placement, offset])
+    return [0, offset]
+  }, [offset])
 
   const modifiers = useMemo(() => {
     const result = [{
@@ -83,6 +88,10 @@ const FloatingBox = ({
       })
     }
 
+    if (ref) {
+      ref.modifiers = result
+    }
+
     return result
   }, [offsets, useParentWidth, minWidth])
 
@@ -92,21 +101,17 @@ const FloatingBox = ({
     ...popperProps
   })
 
-  useOutsideClick({ current: floatingBoxElement }, (e) => {
-    if (preventClose) {
-      if (preventClose(e)) {
-        return
-      }
+  useOutsideClick({ current: floatingBoxElement }, (e: MouseEvent) => {
+    if ((e.target as Element)?.closest('.alt-floating-box')) {
+      return
     }
 
-    setTimeout(() => {
-      onClose()
-    }, 1)
-  })
+    if (preventClose && preventClose(e)) {
+      return
+    }
 
-  if (!targetRef) {
-    return null
-  }
+    onClose()
+  })
 
   if (mobileBehaviour === FloatingBoxMobileBehaviour.modal && ltePhoneL) {
     return createPortal(<Modal onClose={onClose} showClose={false} showCancel={false}>
@@ -116,7 +121,14 @@ const FloatingBox = ({
 
   return createPortal(<div
     className='alt-floating-box'
-    ref={setFloatingBoxElement}
+    ref={(node: HTMLDivElement) => {
+      setFloatingBoxElement(node)
+      if (typeof ref === 'function') {
+        ref(node)
+      } else if (ref) {
+        ref.current = node
+      }
+    }}
     style={{
       ...styles.popper,
       maxHeight
@@ -125,7 +137,7 @@ const FloatingBox = ({
     {...attributes.popper}
   >
     {children}
-  </div>, useParentRef ? (targetRef?.closest('.altrone') || document.body) : targetRef.parentElement)
-}
+  </div>, (useParentRef || !targetRef) ? (targetRef?.closest('.altrone') || document.body) : targetRef.parentElement)
+})
 
-export default memo(FloatingBox)
+export default FloatingBox
