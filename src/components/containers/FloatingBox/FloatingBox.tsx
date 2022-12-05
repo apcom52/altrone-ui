@@ -110,7 +110,9 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
       return
     }
 
-    onClose()
+    setTimeout(() => {
+      onClose()
+    }, 1)
   })
 
   if (mobileBehaviour === FloatingBoxMobileBehaviour.modal && ltePhoneL) {
