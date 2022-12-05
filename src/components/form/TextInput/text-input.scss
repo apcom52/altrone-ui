@@ -8,6 +8,8 @@
   position: relative;
   flex-direction: column;
   font-size: var(--fontSize);
+
+  @include useSoftShadow();
 }
 
 .alt-text-input__control {
@@ -15,7 +17,7 @@
   height: var(--height);
   margin: 0;
   padding: 6px 12px;
-  background-color: var(--surface);
+  background-color: var(--background);
   font-size: var(--fontSize);
   color: var(--textColor);
   -webkit-appearance: none;
