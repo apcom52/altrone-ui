@@ -1,1 +1,0 @@
-export { withAltrone } from './withAltrone'

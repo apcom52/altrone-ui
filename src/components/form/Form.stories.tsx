@@ -1,4 +1,4 @@
-import {withAltrone} from "../../hocs";
+import {Altrone} from "../../hocs";
 import {Direction, Size, Theme} from "../../types";
 import {
   Checkbox,
@@ -21,8 +21,9 @@ import clsx from "clsx";
 import {useCallback, useEffect, useState} from "react";
 import {Align} from "../../types/Align";
 import {Picker} from "./DatePicker/DatePicker";
+import {userEvent, within} from "@storybook/testing-library";
 
-const Template = ({component, dark, value = '', locale, lang = 'en', ...args}) => {
+const Template = ({Component, dark, value = '', locale, lang = 'en', ...args}) => {
   const [_value, setValue] = useState(value)
 
   useEffect(() => {
@@ -33,15 +34,9 @@ const Template = ({component, dark, value = '', locale, lang = 'en', ...args}) =
     setValue(value)
   }, [])
 
-  return withAltrone(component, {
-    theme: dark ? Theme.dark : Theme.light,
-    locale,
-    lang
-  })({
-    ...args,
-    value: _value,
-    onChange,
-  })
+  return <Altrone locale={locale} lang={lang} theme={dark ? Theme.dark : Theme.light}>
+    <Component {...args} value={_value} onChange={onChange} />
+  </Altrone>
 }
 
 const CustomSelectItem = ({ label, value, onSelect, inSelectHeader, parent, selected, disabled, className}: SelectOptionProps) => {
@@ -59,7 +54,7 @@ const CustomSelectItem = ({ label, value, onSelect, inSelectHeader, parent, sele
 
 export const TextInputExample = Template.bind({})
 TextInputExample.args = {
-  component: TextInput,
+  Component: TextInput,
   placeholder: 'Type something',
   hintText: '',
   errorText: '',
@@ -68,9 +63,15 @@ TextInputExample.args = {
   dark: false
 }
 
+TextInputExample.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+
+  await userEvent.type(canvas.getByRole('textbox'), 'inputed text');
+}
+
 export const TextInputWithLeftIslandExample = Template.bind({})
 TextInputWithLeftIslandExample.args = {
-  component: TextInput,
+  Component: TextInput,
   placeholder: 'Type something',
   prefix: 'search:',
   size: Size.medium,
@@ -79,7 +80,7 @@ TextInputWithLeftIslandExample.args = {
 
 export const TextInputWithRightIslandExample = Template.bind({})
 TextInputWithRightIslandExample.args = {
-  component: TextInput,
+  Component: TextInput,
   placeholder: 'Type something',
   rightIcon: <Icon i='search' />,
   size: Size.medium,
@@ -88,7 +89,7 @@ TextInputWithRightIslandExample.args = {
 
 export const TextInputWithBothIslandsExample = Template.bind({})
 TextInputWithBothIslandsExample.args = {
-  component: TextInput,
+  Component: TextInput,
   placeholder: 'Type something Type something Type something Type something Type something ' +
     'Type something Type something Type something Type something Type something Type something Type something',
   leftIsland: {
@@ -115,7 +116,7 @@ TextInputWithBothIslandsExample.args = {
 
 export const PasswordInputExample = Template.bind({})
 PasswordInputExample.args = {
-  component: PasswordInput,
+  Component: PasswordInput,
   placeholder: 'Type your password',
   dark: false,
   size: Size.medium,
@@ -124,7 +125,7 @@ PasswordInputExample.args = {
 
 export const NumberInputExample = Template.bind({})
 NumberInputExample.args = {
-  component: NumberInput,
+  Component: NumberInput,
   value: 0,
   digitsAfterDecimal: 0,
   step: 3,
@@ -137,7 +138,7 @@ NumberInputExample.args = {
 
 export const CheckboxExample = Template.bind({})
 CheckboxExample.args = {
-  component: Checkbox,
+  Component: Checkbox,
   value: 0,
   checked: false,
   disabled: false,
@@ -150,7 +151,7 @@ CheckboxExample.args = {
 
 export const CheckboxListExample = Template.bind({})
 CheckboxListExample.args = {
-  component: CheckboxList,
+  Component: CheckboxList,
   lang: 'en',
   children: [<Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>,
     <Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>,
@@ -166,7 +167,7 @@ CheckboxListExample.argTypes = {
 
 export const SelectExample = Template.bind({})
 SelectExample.args = {
-  component: Select,
+  Component: Select,
   value: 'uk',
   dark: false,
   fluid: false,
@@ -232,7 +233,7 @@ SelectExample.argTypes = {
 
 export const CustomSelectExample = Template.bind({})
 CustomSelectExample.args = {
-  component: Select,
+  Component: Select,
   value: '🇫🇷',
   dark: false,
   fluid: false,
@@ -296,7 +297,7 @@ CustomSelectExample.argTypes = {
 
 export const SwitcherExample = Template.bind({})
 SwitcherExample.args = {
-  component: Switcher,
+  Component: Switcher,
   children: 'Example',
   errorText: '',
   hintText: '',
@@ -315,7 +316,7 @@ SwitcherExample.argTypes = {
 export const DatePickerExample = Template.bind({})
 DatePickerExample.args = {
   value: undefined,
-  component: DatePicker,
+  Component: DatePicker,
   locale: 'en-US',
   lang: 'en',
   disabled: false,
@@ -337,7 +338,7 @@ DatePickerExample.argTypes = {
 
 export const ScrollableSelectorExample = Template.bind({})
 ScrollableSelectorExample.args = {
-  component: ScrollableSelector,
+  Component: ScrollableSelector,
   options: [
     { label: 'January', value: 1 },
     { label: 'February', value: 2 },
@@ -366,7 +367,7 @@ ScrollableSelectorExample.argTypes = {
 
 export const RadioListExample = Template.bind({})
 RadioListExample.args = {
-  component: RadioList,
+  Component: RadioList,
   options: [
     { label: 'January', value: 1 },
     { label: 'February', value: 2 },
@@ -394,7 +395,7 @@ RadioListExample.argTypes = {
 
 export const TextareaExample = Template.bind({})
 TextareaExample.args = {
-  component: Textarea,
+  Component: Textarea,
   placeholder: 'Type your password',
   dark: false,
   size: Size.medium,

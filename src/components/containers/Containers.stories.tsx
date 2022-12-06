@@ -1,5 +1,5 @@
 import {Box, Form, FormField, FormGroup, FormGroupVariant, Modal} from './index'
-import {withAltrone} from "../../hocs";
+import {Altrone} from "../../hocs";
 import {Role, Size, Theme} from "../../types";
 import {useState} from "react";
 import clsx from "clsx";
@@ -9,12 +9,11 @@ import {Heading, Paragraph} from "../typography";
 import {DatePicker, NumberInput, RadioList, Select, Switcher, TextInput} from "../form";
 import {Align} from "../../types/Align";
 
-const Template = ({component, dark, ...args}) => {
-    return withAltrone(component, {
-    theme: dark ? Theme.dark : Theme.light,
-  })({
-    ...args,
-  })
+const Template = ({ Component, dark, ...args }) => {
+
+  return <Altrone theme={dark ? Theme.dark : Theme.light}>
+    <Component {...args} />
+  </Altrone>
 }
 
 const FloatingBoxTemplate = args => {
@@ -55,7 +54,7 @@ const FormTemplate = args => {
   const [movies, setMovies] = useState('')
   const [books, setBooks] = useState('')
 
-  return <div className='altrone'>
+  return <Altrone theme={args.dark ? Theme.dark : Theme.light}>
     <Form>
       <FormGroup variant={FormGroupVariant.linear} disabled>
         <FormField label='First name' required>
@@ -94,13 +93,13 @@ const FormTemplate = args => {
         </FormField>
       </FormGroup>
     </Form>
-  </div>
+  </Altrone>
 }
 
 const ModalTemplate = args => {
   const [isModalVisible, setIsModalVisible] = useState(false)
 
-  return <div className={args.dark ? 'altrone altrone--dark' : 'altrone'}>
+  return <Altrone theme={args.dark ? Theme.dark : Theme.light}>
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
       neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
     <Button onClick={() => setIsModalVisible(true)}>Open modal</Button>
@@ -125,12 +124,12 @@ const ModalTemplate = args => {
       neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse, fuga ipsa iste maxime
       neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A deserunt temporibus velit.</p>
-  </div>
+  </Altrone>
 }
 
 export const BoxExample = Template.bind({})
 BoxExample.args = {
-  component: Box,
+  Component: Box,
   tagName: 'div',
   children: 'Hello world',
   margin: 5,
