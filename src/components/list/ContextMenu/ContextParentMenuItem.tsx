@@ -34,7 +34,7 @@ const ContextParentMenuItem = ({ onClick, onClose, ...action }: ContextParentMen
       ref={itemRef}
       onClick={() => {
         if (gtPhoneL) {
-          setIsChildrenContextMenuVisible(true)
+          setIsChildrenContextMenuVisible(old => !old)
         } else {
           onClick(action)
         }
