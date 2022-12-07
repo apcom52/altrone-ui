@@ -1,5 +1,4 @@
-
-import {memo, ReactNode, useEffect, useLayoutEffect, useMemo, useRef} from "react";
+import {memo, ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef} from "react";
 import {Align} from "../../../types/Align";
 import {Role, Size} from "../../../types";
 import './modal.scss';
@@ -39,9 +38,11 @@ const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, ac
 
   useEffect(() => {
     document.body.classList.add(CLS_UTIL_NOSCROLL)
+    document.body.addEventListener('keypress', onESCPress)
 
     return () => {
       document.body.classList.remove(CLS_UTIL_NOSCROLL)
+      document.body.removeEventListener('keypress', onESCPress)
     }
   }, [])
 
@@ -80,14 +81,19 @@ const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, ac
     ))
   }
 
-
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     modalRef.current?.classList.remove(CLS_OPENED)
 
     setTimeout(() => {
       onClose()
     }, HIDE_DURATION)
-  }
+  }, [onClose]);
+
+  const onESCPress = useCallback((e) => {
+    if (e.key === 'Escape') {
+      handleClose()
+    }
+  }, [onClose])
 
   const onBackdropClick = e => {
     if (closeOnOverlay && e.target === wrapperRef.current) {
