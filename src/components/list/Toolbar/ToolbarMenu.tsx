@@ -44,7 +44,7 @@ const ToolbarMenu = ({ menu = [] }: ToolbarMenuProps) => {
       targetElement={currentMenuItemNode}
       placement='bottom'
       onClose={onCloseSubmenu}
-      useParentRef
+      useRootContainer
       preventClose={e => {
         return e.target?.closest('.alt-toolbar-menu') === menuRef.current
       }}

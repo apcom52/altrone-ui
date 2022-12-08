@@ -23,7 +23,7 @@ interface FloatingBoxProps extends WithoutDefaultOffsets {
   useParentWidth?: boolean
   minWidth?: number
   maxHeight?: number | string
-  useParentRef?: boolean
+  useRootContainer?: boolean
   preventClose?: (e: MouseEvent) => boolean
   mobileBehaviour?: FloatingBoxMobileBehaviour
 }
@@ -47,7 +47,7 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
   maxHeight = 'auto',
   children,
   preventClose,
-  useParentRef = false,
+  useRootContainer = false,
   mobileBehaviour = FloatingBoxMobileBehaviour.default
 }, ref) => {
   const { ltePhoneL } = useWindowSize()
@@ -139,7 +139,7 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
     {...attributes.popper}
   >
     {children}
-  </div>, (useParentRef || !targetElement) ? (targetElement?.closest('.altrone') || document.body) : targetElement.parentElement)
+  </div>, (useRootContainer || !targetElement) ? (targetElement?.closest('.altrone') || document.body) : targetElement.parentElement)
 })
 
 export default FloatingBox
