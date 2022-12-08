@@ -1,4 +1,4 @@
-import {memo, ReactNode, PropsWithChildren, useCallback, useEffect, useLayoutEffect, useMemo, useRef} from "react";
+import {memo, PropsWithChildren, ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef} from "react";
 import {Align} from "../../../types/Align";
 import {Role, Size} from "../../../types";
 import './modal.scss';
@@ -90,7 +90,7 @@ const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, ac
         onClose()
       }, HIDE_DURATION)
     }
-  }
+  }, [])
 
   const onESCPress = useCallback((e) => {
     if (e.key === 'Escape') {
