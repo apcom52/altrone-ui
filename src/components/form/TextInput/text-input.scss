@@ -8,8 +8,6 @@
   position: relative;
   flex-direction: column;
   font-size: var(--fontSize);
-
-  @include useSoftShadow();
 }
 
 .alt-text-input__control {
@@ -38,6 +36,8 @@
   &::placeholder {
     color: var(--placeholderText);
   }
+
+  @include useSoftShadow();
 }
 
 .alt-text-input__left-island {

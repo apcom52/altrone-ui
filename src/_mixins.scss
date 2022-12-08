@@ -107,17 +107,7 @@ $s-phone: 320px;
 }
 
 @mixin useSoftShadow() {
-  &:after {
-    position: absolute;
-    top: 100%;
-    width: 100%;
-    left: 0;
-    height: 4px;
-    content: '';
-    background: radial-gradient(at top center, var(--shadow) 0%, transparent 70%, transparent 100%);
-
-    @content;
-  }
+  box-shadow: 0 1px 0 0 var(--borderColor);
 }
 
 @mixin useInvalid() {
