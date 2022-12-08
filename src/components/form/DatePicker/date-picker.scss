@@ -35,6 +35,7 @@
 .alt-date-picker__placeholder {
   color: var(--placeholderText);
   text-align: left;
+  white-space: nowrap;
 }
 
 .alt-date-picker__icon {

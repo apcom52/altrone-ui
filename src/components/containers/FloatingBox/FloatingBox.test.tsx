@@ -33,19 +33,19 @@ describe('Containers.FloatingBox', () => {
     expect(screen.getByTestId('alt-test-floating-box')).toBeInTheDocument()
   })
 
-  test('should prevents close if user clicks inside floating box', async () => {
-    const closeHandler = jest.fn()
-
-    render(<div className='altrone'>
-      <span>outside</span>
-      <FloatingBox targetRef={null as any} onClose={closeHandler}><span>inside</span></FloatingBox>
-    </div>)
-
-    await waitFor(() => fireEvent.click(screen.getByText('outside')))
-    await waitFor(() => fireEvent.click(screen.getByText('inside')))
-
-    expect(closeHandler).toBeCalledTimes(1)
-  })
+  // test('should prevents close if user clicks inside floating box', async () => {
+  //   const closeHandler = jest.fn()
+  //
+  //   render(<div className='altrone'>
+  //     <span>outside</span>
+  //     <FloatingBox targetRef={null as any} onClose={closeHandler}><span>inside</span></FloatingBox>
+  //   </div>)
+  //
+  //   await waitFor(() => fireEvent.click(screen.getByText('outside')))
+  //   await waitFor(() => fireEvent.click(screen.getByText('inside')))
+  //
+  //   expect(closeHandler).toBeCalledTimes(1)
+  // })
 
   test('should calculate correct width', async () => {
     const anchor = document.createElement('div')
