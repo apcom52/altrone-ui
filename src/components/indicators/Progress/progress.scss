@@ -8,8 +8,11 @@
   position: relative;
   height: 20px;
   border-radius: 12px;
-  background-color: var(--surface);
+  background-color: var(--background);
   overflow: hidden;
+  border: 1px solid var(--borderColor);
+
+  @include useSoftShadow();
 }
 
 .alt-progress__active {

@@ -22,6 +22,7 @@ import {useCallback, useEffect, useState} from "react";
 import {Align} from "../../types/Align";
 import {Picker} from "./DatePicker/DatePicker";
 import {userEvent, within} from "@storybook/testing-library";
+import {CheckboxStory} from "./Checkbox/Checkbox.stories";
 
 const Template = ({Component, dark, value = '', locale, lang = 'en', ...args}) => {
   const [_value, setValue] = useState(value)
@@ -136,7 +137,7 @@ NumberInputExample.args = {
   showControls: true
 }
 
-export const CheckboxExample = Template.bind({})
+export const CheckboxExample = CheckboxStory.bind({})
 CheckboxExample.args = {
   Component: Checkbox,
   value: 0,

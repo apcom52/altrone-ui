@@ -71,11 +71,6 @@
   margin-right: 6px;
 
   @include useSoftShadow();
-
-  &:active {
-    box-shadow: none;
-    transform: translateY(1px);
-  }
 }
 
 .alt-radio__label {
