@@ -23,7 +23,7 @@ export const CheckboxListStory = ({ dark = false, ...args }) => {
   }
 
   return <Altrone theme={dark ? Theme.dark : Theme.light}>
-    <CheckboxList>
+    <CheckboxList {...args}>
       {['Queue', 'Word', 'Eye', 'Rain', 'Tree', 'Yellow', 'Unique', 'Isolation', 'Ominous', 'Pepper'].map((label, labelIndex) => {
         return <Checkbox key={labelIndex} onChange={() => {
           checked.indexOf(label) > -1 ? uncheckOption(label) : checkOption(label)
