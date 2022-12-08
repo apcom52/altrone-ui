@@ -20,8 +20,8 @@
 .alt-radio__input {
   @include useNonStandardAppearance();
 
-  &:focus + .alt-radio__control {
-    @include useFocus();
+  &:focus + .alt-radio__control > .alt-radio__icon {
+    @include useFocusStyles();
   }
 
   &:checked + .alt-radio__control > .alt-radio__icon:after {

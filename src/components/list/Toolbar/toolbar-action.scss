@@ -12,7 +12,7 @@
   flex-direction: column;
   cursor: pointer;
   color: var(--textColor);
-  transition: transform var(--transitionDuration) ease;
+  transition: transform var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
   border-radius: 12px;
 
   &:hover, &:focus {
@@ -25,7 +25,10 @@
     transform: translateY(2px);
   }
 
-  @include useFocus();
+  &:focus, &:focus-visible {
+    outline: 0;
+    box-shadow: inset 0 0 0 3px var(--accentFocus);;
+  }
 }
 
 .alt-toolbar-action__icon {
