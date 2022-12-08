@@ -20,8 +20,8 @@
 .alt-radio__input {
   @include useNonStandardAppearance();
 
-  &:focus + .alt-radio__control {
-    @include useFocus();
+  &:focus + .alt-radio__control > .alt-radio__icon {
+    @include useFocusStyles();
   }
 
   &:checked + .alt-radio__control > .alt-radio__icon:after {
@@ -66,9 +66,16 @@
   width: 16px;
   height: 16px;
   border: 1px solid var(--borderColor);
-  background-color: var(--surface);
+  background-color: var(--background);
   border-radius: 50%;
   margin-right: 6px;
+
+  @include useSoftShadow();
+
+  &:active {
+    box-shadow: none;
+    transform: translateY(1px);
+  }
 }
 
 .alt-radio__label {

@@ -109,10 +109,10 @@ const DataTableHeader = () => {
         </div>
       </th>
     </tr>
-    {isSortVisible && sortKeys.length && <FloatingBox targetRef={sortRef.current} onClose={closeSortingPopup} minWidth={250} mobileBehaviour={FloatingBoxMobileBehaviour.modal} useParentWidth useParentRef={true}>
+    {isSortVisible && sortKeys.length && <FloatingBox targetElement={sortRef.current} onClose={closeSortingPopup} minWidth={250} mobileBehaviour={FloatingBoxMobileBehaviour.modal} useParentWidth useRootContainer={true}>
       <DataTableSorting onClose={closeSortingPopup} />
     </FloatingBox>}
-    {isFilterVisible && <FloatingBox targetRef={filterRef.current} onClose={closeFilteringPopup} minWidth={250} mobileBehaviour={FloatingBoxMobileBehaviour.modal} useParentWidth useParentRef={true}>
+    {isFilterVisible && <FloatingBox targetElement={filterRef.current} onClose={closeFilteringPopup} minWidth={250} mobileBehaviour={FloatingBoxMobileBehaviour.modal} useParentWidth useRootContainer={true}>
       <DataTableFiltering onClose={closeFilteringPopup} />
     </FloatingBox>}
   </>

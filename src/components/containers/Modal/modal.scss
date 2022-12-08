@@ -86,7 +86,9 @@
   display: flex;
   position: absolute;
   width: 20px;
+  max-width: 20px;
   height: 20px;
+  max-height: 20px;
   top: 12px;
   right: 8px;
   margin: 0;
@@ -98,11 +100,14 @@
   font-size: 16px;
   border-radius: 50%;
   cursor: pointer;
-  transition: background-color var(--transitionDuration) ease;
+  transition: background-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
+  padding: 0;
 
   &:hover {
     background-color: var(--surfaceTrasparentHover);
   }
+
+  @include useFocus();
 }
 
 .alt-modal__content {

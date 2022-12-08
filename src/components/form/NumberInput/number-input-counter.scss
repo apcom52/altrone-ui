@@ -19,7 +19,8 @@
   height: 15px;
   margin: 0;
   transition: background-color var(--transitionDuration) ease,
-    opacity var(--transitionDuration) ease;
+    opacity var(--transitionDuration) ease,
+    box-shadow var(--transitionDuration) ease;
   cursor: pointer;
   width: 16px;
   color: var(--textColor);
@@ -39,6 +40,10 @@
   border-top-left-radius: var(--smoothness);
   border-top-right-radius: var(--smoothness);
   border-bottom: 1px solid var(--borderColor);
+
+  &:focus, &:focus-visible {
+    border-bottom-color: transparent;
+  }
 }
 
 .alt-number-input-counter__decrease {

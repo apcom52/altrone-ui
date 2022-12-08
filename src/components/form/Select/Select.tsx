@@ -160,14 +160,15 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
     />}
     {isSelectVisible && <FloatingBox
       placement='bottom'
-      targetRef={selectRef.current}
+      targetElement={selectRef.current}
       onClose={onSelectMenuClose}
       minWidth={200}
       preventClose={(searchable && isSearchMode) ? preventSelectMenuClose : undefined}
       data-testid='alt-test-select-search'
       useParentWidth
       mobileBehaviour={FloatingBoxMobileBehaviour.modal}
-      useParentRef={true}
+      useRootContainer={true}
+      closeOnAnotherFloatingBoxClick
     >
       {gtPhoneL && <div className={clsx('alt-select-menu', classNames.menu)} data-testid='alt-test-select-menu'>
         {parentKeys.map((groupValue, groupIndex, groupedValueKeys) => {

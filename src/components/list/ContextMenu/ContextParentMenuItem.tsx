@@ -34,7 +34,7 @@ const ContextParentMenuItem = ({ onClick, onClose, ...action }: ContextParentMen
       ref={itemRef}
       onClick={() => {
         if (gtPhoneL) {
-          setIsChildrenContextMenuVisible(true)
+          setIsChildrenContextMenuVisible(old => !old)
         } else {
           onClick(action)
         }
@@ -45,7 +45,7 @@ const ContextParentMenuItem = ({ onClick, onClose, ...action }: ContextParentMen
       <div className='alt-context-menu-item__title'>{action.title}</div>
       <div className='alt-context-menu-item__childrenArrow'><Icon i='keyboard_arrow_right' /></div>
     </button>
-    {gtPhoneL && isChildrenContextMenuVisible && createPortal(<FloatingBox targetRef={itemRef.current} placement='right' useParentRef={true} onClose={() => setIsChildrenContextMenuVisible(false)} offset={8}>
+    {gtPhoneL && isChildrenContextMenuVisible && createPortal(<FloatingBox targetElement={itemRef.current} placement='right' useRootContainer={true} onClose={() => setIsChildrenContextMenuVisible(false)} offset={8}>
       <ContextMenu onClose={onClose} menu={action.children} />
     </FloatingBox>, altroneRef.current)}
   </>
