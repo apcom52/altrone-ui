@@ -1,16 +1,9 @@
-import {withAltrone} from "../../hocs";
-import {Theme} from "../../types";
 import {Icon} from "./index";
+import {BasicTemplate} from "../BasicTemplate.stories";
 
-const Template = ({component, dark, ...args}) => {
-  return withAltrone(component, {
-    theme: dark ? Theme.dark : Theme.light
-  })(args)
-}
-
-export const IconExample = Template.bind({})
+export const IconExample = BasicTemplate.bind({})
 IconExample.args = {
-  component: Icon,
+  Component: Icon,
   i: 'face',
   size: 32,
   dark: false,

@@ -7,7 +7,11 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
-    "storybook-addon-sass-postcss"
+    "storybook-addon-sass-postcss",
+    "@storybook/addon-a11y"
   ],
-  "framework": "@storybook/react"
+  "framework": "@storybook/react",
+  "features": {
+    interactionsDebugger: true,
+  },
 }

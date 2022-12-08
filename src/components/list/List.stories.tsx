@@ -1,13 +1,12 @@
-import {withAltrone} from "../../hocs";
+import {Altrone} from "../../hocs";
 import {Direction, Size, Theme} from "../../types";
 import {useCallback, useEffect, useState} from "react";
 import {Chips, NavigationList, TabList, TabListVariant, Toolbar, ToolbarGroup, ToolbarSeparator} from './index'
 import {Align} from "../../types/Align";
 import {Icon} from "../icons";
 import ToolbarAction from "./Toolbar/ToolbarAction";
-import clsx from "clsx";
 
-const Template = ({component, dark, values, value, ...args}) => {
+const Template = ({Component, dark, values, value, ...args}) => {
   const [_value, setValue] = useState(values)
 
   useEffect(() => {
@@ -18,24 +17,18 @@ const Template = ({component, dark, values, value, ...args}) => {
     setValue(value)
   }, [])
 
-  return withAltrone(component, {
-    theme: dark ? Theme.dark : Theme.light,
-    style: {
-      height: 250,
-      backgroundImage: 'url(https://4kwallpapers.com/images/wallpapers/windows-11-flow-dark-mode-dark-background-pink-3840x2160-5747.jpg)',
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center'
-    }
-  })({
-    ...args,
-    values: _value,
-    value: _value,
-    onChange,
-  })
+  return <Altrone theme={dark ? Theme.dark : Theme.light} style={{
+    height: 250,
+    backgroundImage: 'url(https://4kwallpapers.com/images/wallpapers/windows-11-flow-dark-mode-dark-background-pink-3840x2160-5747.jpg)',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center'
+  }}>
+    <Component {...args} values={_value} value={_value} onChange={onChange} />
+  </Altrone>
 }
 
-const TabsTemplate = ({component, dark, selected, tabs = [], ...args}) => {
+const TabsTemplate = ({Component, dark, selected, tabs = [], ...args}) => {
   const [_value, setValue] = useState(selected)
   const [tabsCounter, setTabsCounter] = useState(5)
   const [_tabs, setTabs] = useState(tabs)
@@ -65,19 +58,12 @@ const TabsTemplate = ({component, dark, selected, tabs = [], ...args}) => {
     setTabs(tabs => tabs.filter(tab => tab.value !== value))
   }
 
-  return withAltrone(component, {
-    theme: dark ? Theme.dark : Theme.light
-  })({
-    ...args,
-    selected: _value,
-    tabs: _tabs,
-    onChange,
-    onAddTab,
-    onCloseTab
-  })
+  return <Altrone theme={dark ? Theme.dark : Theme.light}>
+    <Component {...args} selected={_value} tabs={_tabs} onChange={onChange} onAddTab={onAddTab} onCloseTab={onCloseTab} />
+  </Altrone>
 }
 
-const NavigationListTemplate = ({component, dark, selected, ...args}) => {
+const NavigationListTemplate = ({dark, selected, ...args}) => {
   const [_value, setValue] = useState(selected)
 
   useEffect(() => {
@@ -88,9 +74,7 @@ const NavigationListTemplate = ({component, dark, selected, ...args}) => {
     setValue(value)
   }, [])
 
-  return <div className={clsx('altrone', {
-    'altrone--dark': dark
-  })} style={{
+  return <Altrone theme={dark ? Theme.dark : Theme.light} style={{
     display: 'grid',
     minHeight: '900px',
     gridTemplateColumns: '250px 1fr',
@@ -100,12 +84,12 @@ const NavigationListTemplate = ({component, dark, selected, ...args}) => {
     backgroundPosition: 'center'
   }}>
     <NavigationList selected={_value} onChange={onChange} {...args} />
-  </div>
+  </Altrone>
 }
 
 export const ChipsExample = Template.bind({})
 ChipsExample.args = {
-  component: Chips,
+  Component: Chips,
   options: [{
     label: 'North America',
     value: 0
@@ -141,7 +125,7 @@ ChipsExample.argTypes = {
 
 export const TabsExample = TabsTemplate.bind({})
 TabsExample.args = {
-  component: TabList,
+  Component: TabList,
   selected: 0,
   tabs: [{
     label: 'Dashboard',
@@ -173,7 +157,7 @@ TabsExample.argTypes = {
 
 export const ToolbarExample = Template.bind({})
 ToolbarExample.args = {
-  component: Toolbar,
+  Component: Toolbar,
   children: <>
     <ToolbarGroup>
       <ToolbarAction icon={<Icon i='local_grocery_store' />} label='Music store' />

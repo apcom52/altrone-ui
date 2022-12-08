@@ -1,19 +1,11 @@
-import {withAltrone} from "../../hocs";
-import {Role, Size, Theme} from "../../types";
+import {Role, Size} from "../../types";
 import {Progress} from "./Progress";
 import {ProgressVariant} from "./Progress/Progress";
+import {BasicTemplate} from "../BasicTemplate.stories";
 
-const Template = ({component, dark, ...args}) => {
-  return withAltrone(component, {
-    theme: dark ? Theme.dark : Theme.light
-  })({
-    ...args,
-  })
-}
-
-export const ProgressExample = Template.bind({})
+export const ProgressExample = BasicTemplate.bind({})
 ProgressExample.args = {
-  component: Progress,
+  Component: Progress,
   value: 30,
   max: 100,
   dark: false,

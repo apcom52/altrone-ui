@@ -1,25 +1,22 @@
-import {withAltrone} from "../../hocs";
+import {Altrone} from "../../hocs";
 import {Role, Size, Theme} from "../../types";
 import {Button} from "./Button";
 import {ButtonVariant} from "./Button/Button";
 import {Icon} from "../icons";
+import ButtonVariantsStory, {testButtonVariants_focus} from './Button/ButtonVariants.stories'
 
-const Template = ({component, dark, leftIcon, rightIcon, ...args}) => {
+const Template = ({Component, dark, leftIcon, rightIcon, ...args}) => {
   const _leftIcon = leftIcon ? <Icon i={leftIcon} /> : null
   const _rightIcon = rightIcon ? <Icon i={rightIcon} /> : null
 
-  return withAltrone(component, {
-    theme: dark ? Theme.dark : Theme.light
-  })({
-    ...args,
-    leftIcon: _leftIcon,
-    rightIcon: _rightIcon
-  })
+  return <Altrone theme={dark ? Theme.dark : Theme.light}>
+    <Component {...args} leftIcon={_leftIcon} rightIcon={_rightIcon} />
+  </Altrone>
 }
 
 export const ButtonExample = Template.bind({})
 ButtonExample.args = {
-  component: Button,
+  Component: Button,
   children: 'Action button',
   disabled: false,
   role: Role.default,
@@ -33,7 +30,7 @@ ButtonExample.args = {
 
 export const ButtonIconExample = Template.bind({})
 ButtonIconExample.args = {
-  component: Button,
+  Component: Button,
   children: <Icon i='check' />,
   disabled: false,
   leftIcon: '',
@@ -46,7 +43,7 @@ ButtonIconExample.args = {
 
 export const ButtonDropdownExample = Template.bind({})
 ButtonDropdownExample.args = {
-  component: Button,
+  Component: Button,
   children: 'Button with dropdown actions',
   dark: false,
   dropdown: [{
@@ -112,7 +109,17 @@ ButtonIconExample.argTypes = {
   }
 }
 
+export const ButtonVariantsExample = args => <ButtonVariantsStory {...args} />
+ButtonVariantsExample.play = testButtonVariants_focus
+
 export default {
   component: ButtonExample,
-  title: 'Button',
+  title: 'Actions',
+  decorators: [
+    (Story) => (
+      <Altrone>
+        <Story />
+      </Altrone>
+    )
+  ]
 }
