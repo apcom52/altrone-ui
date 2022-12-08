@@ -168,6 +168,7 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
       useParentWidth
       mobileBehaviour={FloatingBoxMobileBehaviour.modal}
       useRootContainer={true}
+      closeOnAnotherFloatingBoxClick
     >
       {gtPhoneL && <div className={clsx('alt-select-menu', classNames.menu)} data-testid='alt-test-select-menu'>
         {parentKeys.map((groupValue, groupIndex, groupedValueKeys) => {

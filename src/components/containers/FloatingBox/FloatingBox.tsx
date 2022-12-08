@@ -26,6 +26,7 @@ interface FloatingBoxProps extends WithoutDefaultOffsets {
   useRootContainer?: boolean
   preventClose?: (e: MouseEvent) => boolean
   mobileBehaviour?: FloatingBoxMobileBehaviour
+  closeOnAnotherFloatingBoxClick?: boolean
 }
 
 const setPopperWidth = (state , minWidth) => {
@@ -48,7 +49,8 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
   children,
   preventClose,
   useRootContainer = false,
-  mobileBehaviour = FloatingBoxMobileBehaviour.default
+  mobileBehaviour = FloatingBoxMobileBehaviour.default,
+  closeOnAnotherFloatingBoxClick = false
 }, ref) => {
   const { ltePhoneL } = useWindowSize()
   const [floatingBoxElement, setFloatingBoxElement] = useState<HTMLDivElement | null>(null)
@@ -102,7 +104,7 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
   })
 
   useOutsideClick({ current: floatingBoxElement }, (e: MouseEvent) => {
-    if ((e.target as Element)?.closest('.alt-floating-box')) {
+    if (!closeOnAnotherFloatingBoxClick && (e.target as Element)?.closest('.alt-floating-box')) {
       return
     }
 
