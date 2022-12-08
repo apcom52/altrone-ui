@@ -22,7 +22,7 @@ import {useCallback, useEffect, useState} from "react";
 import {Align} from "../../types/Align";
 import {Picker} from "./DatePicker/DatePicker";
 import {userEvent, within} from "@storybook/testing-library";
-import {CheckboxStory} from "./Checkbox/Checkbox.stories";
+import {CheckboxListStory, CheckboxStory} from "./Checkbox/Checkbox.stories";
 
 const Template = ({Component, dark, value = '', locale, lang = 'en', ...args}) => {
   const [_value, setValue] = useState(value)
@@ -150,19 +150,19 @@ CheckboxExample.args = {
   dark: false,
 }
 
-export const CheckboxListExample = Template.bind({})
+export const CheckboxListExample = CheckboxListStory.bind({})
 CheckboxListExample.args = {
   Component: CheckboxList,
   lang: 'en',
-  children: [<Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>,
-    <Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>,
-    <Checkbox onChange={() => null}>First option</Checkbox>, <Checkbox onChange={() => null}>Second option</Checkbox>, <Checkbox onChange={() => null}>Third option</Checkbox>, <Checkbox onChange={() => null}>Forth option</Checkbox>],
   dark: false,
 }
 CheckboxListExample.argTypes = {
   direction: {
     control: 'select',
     options: [Direction.horizontal, Direction.vertical]
+  },
+  dark: {
+    control: 'boolean'
   }
 }
 
