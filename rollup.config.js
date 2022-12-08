@@ -30,12 +30,12 @@ export default [
         transforms: ['typescript', 'jsx'],
       }),
       terser(), //minification,
-      copy({
-        targets: [{
-          src: 'src/assets',
-          dest: 'dist'
-        }]
-      })
+      // copy({
+      //   targets: [{
+      //     src: 'src/assets',
+      //     dest: 'dist'
+      //   }]
+      // })
     ],
     external: ["react", "react-dom"]
   },

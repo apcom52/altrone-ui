@@ -86,7 +86,7 @@ const Button = forwardRef(({
       }}
       href={href}
       onClick={isDropdownButton ? showDropdown : onClick}
-      type={type}
+      type={href ? undefined : type}
       {...props}
     >
       { leftIcon ? <span className='alt-button__leftIcon'>{leftIcon}</span> : null }
