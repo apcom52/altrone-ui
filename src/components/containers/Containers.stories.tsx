@@ -30,7 +30,7 @@ const FloatingBoxTemplate = args => {
     <Button onClick={() => {
       setIsVisible(old => !old)
     }} ref={setButtonRef}>Open floating box</Button>
-    {isVisible && <FloatingBox targetRef={buttonRef} onClose={() => setIsVisible(false)} mobileBehaviour={FloatingBoxMobileBehaviour.modal}>
+    {isVisible && <FloatingBox targetElement={buttonRef} onClose={() => setIsVisible(false)} mobileBehaviour={FloatingBoxMobileBehaviour.modal}>
       <Heading level={6}>Wants more?</Heading>
       <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium adipisci aliquid amet consequuntur distinctio ducimus enim error et ex illum minus molestiae mollitia nemo nulla obcaecati, provident quia reprehenderit voluptatem!</Paragraph>
     </FloatingBox>}

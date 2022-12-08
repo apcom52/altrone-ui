@@ -15,7 +15,7 @@ export enum FloatingBoxMobileBehaviour {
 
 interface FloatingBoxProps extends WithoutDefaultOffsets {
   // TODO: rename to target
-  targetRef: Element
+  targetElement: Element
   onClose: () => void
   offset?: number
   placement?: Options['placement']
@@ -37,7 +37,7 @@ const setPopperWidth = (state , minWidth) => {
 }
 
 const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
-  targetRef,
+  targetElement,
   onClose,
   offset = 4,
   placement = 'auto',
@@ -95,7 +95,7 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
     return result
   }, [offsets, useParentWidth, minWidth])
 
-  const { styles, attributes } = usePopper(targetRef, floatingBoxElement, {
+  const { styles, attributes } = usePopper(targetElement, floatingBoxElement, {
     modifiers,
     placement,
     ...popperProps
@@ -118,7 +118,7 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
   if (mobileBehaviour === FloatingBoxMobileBehaviour.modal && ltePhoneL) {
     return createPortal(<Modal onClose={onClose} showClose={false} showCancel={false}>
       {children}
-    </Modal>, targetRef?.closest('.altrone') || document.body)
+    </Modal>, targetElement?.closest('.altrone') || document.body)
   }
 
   return createPortal(<div
@@ -139,7 +139,7 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
     {...attributes.popper}
   >
     {children}
-  </div>, (useParentRef || !targetRef) ? (targetRef?.closest('.altrone') || document.body) : targetRef.parentElement)
+  </div>, (useParentRef || !targetElement) ? (targetElement?.closest('.altrone') || document.body) : targetElement.parentElement)
 })
 
 export default FloatingBox

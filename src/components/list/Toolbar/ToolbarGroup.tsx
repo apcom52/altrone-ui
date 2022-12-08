@@ -99,7 +99,7 @@ const ToolbarGroup = ({ children, fluid = false, align = Align.center, collapsib
     </div>}
     {isContextVisible && context.length > 0 && <FloatingBox
       placement='bottom'
-      targetRef={expandButton.current}
+      targetElement={expandButton.current}
       useParentRef
       onClose={onCloseMenu}
     >

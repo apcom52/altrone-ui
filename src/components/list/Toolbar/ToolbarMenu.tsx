@@ -41,7 +41,7 @@ const ToolbarMenu = ({ menu = [] }: ToolbarMenuProps) => {
       </button>
     })}
     {currentMenuIndex > -1 && <FloatingBox
-      targetRef={currentMenuItemNode}
+      targetElement={currentMenuItemNode}
       placement='bottom'
       onClose={onCloseSubmenu}
       useParentRef
