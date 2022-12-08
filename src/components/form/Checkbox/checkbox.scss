@@ -51,7 +51,14 @@
     box-sizing: border-box;
     border: 1px solid var(--borders);
     transition: box-shadow var(--transitionDuration) ease;
-    background-color: var(--surface);
+    background-color: var(--background);
+
+    @include useSoftShadow();
+  }
+
+  &:active:before {
+    box-shadow: none;
+    transform: translateY(1px);
   }
 }
 
