@@ -15,7 +15,7 @@ export enum FloatingBoxMobileBehaviour {
 
 interface FloatingBoxProps extends WithoutDefaultOffsets {
   // TODO: rename to target
-  targetRef: Element
+  targetElement: Element
   onClose: () => void
   offset?: number
   placement?: Options['placement']
@@ -23,9 +23,10 @@ interface FloatingBoxProps extends WithoutDefaultOffsets {
   useParentWidth?: boolean
   minWidth?: number
   maxHeight?: number | string
-  useParentRef?: boolean
+  useRootContainer?: boolean
   preventClose?: (e: MouseEvent) => boolean
   mobileBehaviour?: FloatingBoxMobileBehaviour
+  closeOnAnotherFloatingBoxClick?: boolean
 }
 
 const setPopperWidth = (state , minWidth) => {
@@ -37,7 +38,7 @@ const setPopperWidth = (state , minWidth) => {
 }
 
 const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
-  targetRef,
+  targetElement,
   onClose,
   offset = 4,
   placement = 'auto',
@@ -47,8 +48,9 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
   maxHeight = 'auto',
   children,
   preventClose,
-  useParentRef = false,
-  mobileBehaviour = FloatingBoxMobileBehaviour.default
+  useRootContainer = false,
+  mobileBehaviour = FloatingBoxMobileBehaviour.default,
+  closeOnAnotherFloatingBoxClick = false
 }, ref) => {
   const { ltePhoneL } = useWindowSize()
   const [floatingBoxElement, setFloatingBoxElement] = useState<HTMLDivElement | null>(null)
@@ -95,14 +97,14 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
     return result
   }, [offsets, useParentWidth, minWidth])
 
-  const { styles, attributes } = usePopper(targetRef, floatingBoxElement, {
+  const { styles, attributes } = usePopper(targetElement, floatingBoxElement, {
     modifiers,
     placement,
     ...popperProps
   })
 
   useOutsideClick({ current: floatingBoxElement }, (e: MouseEvent) => {
-    if ((e.target as Element)?.closest('.alt-floating-box')) {
+    if (!closeOnAnotherFloatingBoxClick && (e.target as Element)?.closest('.alt-floating-box')) {
       return
     }
 
@@ -118,7 +120,7 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
   if (mobileBehaviour === FloatingBoxMobileBehaviour.modal && ltePhoneL) {
     return createPortal(<Modal onClose={onClose} showClose={false} showCancel={false}>
       {children}
-    </Modal>, targetRef?.closest('.altrone') || document.body)
+    </Modal>, targetElement?.closest('.altrone') || document.body)
   }
 
   return createPortal(<div
@@ -139,7 +141,7 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
     {...attributes.popper}
   >
     {children}
-  </div>, (useParentRef || !targetRef) ? (targetRef?.closest('.altrone') || document.body) : targetRef.parentElement)
+  </div>, (useRootContainer || !targetElement) ? (targetElement?.closest('.altrone') || document.body) : targetElement.parentElement)
 })
 
 export default FloatingBox

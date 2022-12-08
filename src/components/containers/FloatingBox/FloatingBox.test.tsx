@@ -5,7 +5,7 @@ import {Button} from "../../button";
 
 describe('Containers.FloatingBox', () => {
   test('should returns null in target is undefined', () => {
-    const { container } = render(<FloatingBox targetRef={null} onClose={() => null}>demo</FloatingBox>)
+    const { container } = render(<FloatingBox targetElement={null} onClose={() => null}>demo</FloatingBox>)
 
     expect(container).toContainHTML('')
   })
@@ -14,7 +14,7 @@ describe('Containers.FloatingBox', () => {
     const { rerender } = render(<div className='altrone'>
       <Button className='close'>close</Button>
       <Button className='not-close'>not close</Button>
-      <FloatingBox targetRef={null as any} onClose={() => null} preventClose={(e) => {
+      <FloatingBox targetElement={null as any} onClose={() => null} preventClose={(e) => {
         return e.target?.classList.contains('not-close')
       }}>demo</FloatingBox>
     </div>)
@@ -25,7 +25,7 @@ describe('Containers.FloatingBox', () => {
     rerender(<div className='altrone'>
       <Button className='close'>close</Button>
       <Button className='not-close'>not close</Button>
-      <FloatingBox targetRef={null as any} onClose={() => null} preventClose={(e) => {
+      <FloatingBox targetElement={null as any} onClose={() => null} preventClose={(e) => {
         return e.target?.classList.contains('not-close')
       }}>demo</FloatingBox>
     </div>)
@@ -56,7 +56,7 @@ describe('Containers.FloatingBox', () => {
     const ref = {}
 
     render(<>
-      <FloatingBox targetRef={anchor} onClose={() => null} useParentWidth ref={ref}>demo</FloatingBox>
+      <FloatingBox targetElement={anchor} onClose={() => null} useParentWidth ref={ref}>demo</FloatingBox>
     </>)
 
     expect(ref.modifiers.find(m => m.name === 'sameWidth')).not.toBe(undefined)
