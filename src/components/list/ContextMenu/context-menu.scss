@@ -35,6 +35,8 @@
     }
   }
 
+  @include useFocus();
+
   & + & {
     margin-top: 2px;
   }

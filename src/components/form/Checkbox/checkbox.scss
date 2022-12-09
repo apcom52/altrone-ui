@@ -50,8 +50,10 @@
     border-radius: 4px;
     box-sizing: border-box;
     border: 1px solid var(--borders);
-    transition: box-shadow var(--transitionDuration) ease;
-    background-color: var(--surface);
+    transition: box-shadow var(--transitionDuration) ease, background-color var(--transitionDuration) ease;
+    background-color: var(--background);
+
+    @include useSoftShadow();
   }
 }
 

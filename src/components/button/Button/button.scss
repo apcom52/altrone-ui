@@ -93,6 +93,10 @@
   box-shadow: none;
   border: 2px solid var(--buttonBackgroundColor);
   color: var(--buttonBackgroundColor);
+
+  &:active {
+    box-shadow: none;
+  }
 }
 
 .alt-button--variant-transparent {
@@ -105,6 +109,10 @@
 
   @include useInteraction() {
     background-color: var(--buttonBackgroundColor);
+  }
+
+  &:active {
+    box-shadow: none;
   }
 }
 
@@ -171,6 +179,16 @@
   &.alt-button--icon {
     font-size: 28px;
     padding: 8px 16px;
+  }
+
+  .alt-button__leftIcon {
+    margin-left: -8px;
+    margin-right: 8px;
+  }
+
+  .alt-button__rightIcon {
+    margin-left: 8px;
+    margin-right: -8px;
   }
 }
 
