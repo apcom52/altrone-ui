@@ -1,40 +1,34 @@
 import {Blockquote, Heading, Message, Paragraph} from './index'
-import {withAltrone} from "../../hocs";
-import {Role, Theme} from "../../types";
+import {Role} from "../../types";
 import {Icon} from "../icons";
+import {BasicTemplate} from "../BasicTemplate.stories";
 
-const Template = ({component, dark, ...args}) => {
-  return withAltrone(component, {
-    theme: dark ? Theme.dark : Theme.light
-  })(args)
-}
-
-export const HeadingExample = Template.bind({})
+export const HeadingExample = BasicTemplate.bind({})
 HeadingExample.args = {
-  component: Heading,
+  Component: Heading,
   level: 1,
   children: 'Heading',
   dark: false
 }
 
-export const ParagraphExample = Template.bind({})
+export const ParagraphExample = BasicTemplate.bind({})
 ParagraphExample.args = {
-  component: Paragraph,
+  Component: Paragraph,
   children: 'Paragraph',
   dark: false
 }
 
-export const BlockquoteExample = Template.bind({})
+export const BlockquoteExample = BasicTemplate.bind({})
 BlockquoteExample.args = {
-  component: Blockquote,
+  Component: Blockquote,
   author: '',
   children: 'Blockquote is here',
   dark: false
 }
 
-export const MessageExample = Template.bind({})
+export const MessageExample = BasicTemplate.bind({})
 MessageExample.args = {
-  component: Message,
+  Component: Message,
   title: 'Very important message',
   children: <>
      <Paragraph>
