@@ -93,6 +93,10 @@
   box-shadow: none;
   border: 2px solid var(--buttonBackgroundColor);
   color: var(--buttonBackgroundColor);
+
+  &:active {
+    box-shadow: none;
+  }
 }
 
 .alt-button--variant-transparent {
@@ -105,6 +109,10 @@
 
   @include useInteraction() {
     background-color: var(--buttonBackgroundColor);
+  }
+
+  &:active {
+    box-shadow: none;
   }
 }
 

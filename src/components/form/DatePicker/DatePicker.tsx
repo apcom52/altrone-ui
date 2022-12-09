@@ -21,6 +21,7 @@ export enum Picker {
 interface DatePickerProps extends Pick<TextInputProps, 'errorText' | 'hintText' | 'size' | 'disabled'>, BasicInputProps {
   value: Date
   onChange: (value: Date) => void
+  id?: string
   picker?: Picker
   minDate?: Date
   maxDate?: Date
@@ -29,7 +30,7 @@ interface DatePickerProps extends Pick<TextInputProps, 'errorText' | 'hintText' 
 
 const today = new Date()
 
-const DatePicker = ({ value, onChange, picker = Picker.day, minDate = new Date(1900, 0, 0), maxDate = new Date(2050, 13, 0), disabled = false, placeholder, size = Size.medium, hintText, errorText, className }: DatePickerProps) => {
+const DatePicker = ({ value, onChange, id, picker = Picker.day, minDate = new Date(1900, 0, 0), maxDate = new Date(2050, 13, 0), disabled = false, placeholder, size = Size.medium, hintText, errorText, className }: DatePickerProps) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(value ? new Date(value.getFullYear(), value.getMonth(), 1) :  new Date())
   const [currentView, setCurrentView] = useState<Picker>(picker)
@@ -100,6 +101,7 @@ const DatePicker = ({ value, onChange, picker = Picker.day, minDate = new Date(1
   >
     <button
       className={clsx('alt-date-picker', className)}
+      id={id}
       ref={inputRef}
       onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}
       data-testid='alt-test-datepicker'

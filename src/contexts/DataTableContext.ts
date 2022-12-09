@@ -4,7 +4,7 @@ import {DataTableColumn} from "../components/data/DataTable";
 
 export interface DataTableFilter {
   accessor: string
-  type: 'select' | 'checkboxList' | 'datepicker'
+  type: 'select' | 'checkboxList'
   label?: string
   defaultValue?: unknown
 }

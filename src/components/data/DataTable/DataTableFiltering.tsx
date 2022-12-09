@@ -76,13 +76,23 @@ const DataTableFiltering = ({ onClose }: DataTableFilteringProps) => {
           setAppliedFilters(_filters)
         }
 
-        return <FormField label={filter.label || filter.accessor}>
-          {filter.type === 'select' && <Select options={selectOptions} value={currentFilterValue} onChange={onChange} />}
-          {filter.type === 'checkboxList' && <CheckboxList direction={Direction.vertical}>
-            {selectOptions.map((checkbox, checkboxIndex) => (
-              <Checkbox key={checkboxIndex} value={checkbox.value} checked={currentFilterValue?.indexOf(checkbox.value) > -1} onChange={() => onChange(checkbox.value)}>{checkbox.label}</Checkbox>
-            ))}
-          </CheckboxList>}
+        let children = <></>
+
+        switch(filter.type) {
+          case 'select':
+            children = <Select options={selectOptions} value={currentFilterValue} onChange={onChange} />
+            break;
+          case 'checkboxList':
+            children = <CheckboxList direction={Direction.vertical}>
+              {selectOptions.map((checkbox, checkboxIndex) => (
+                <Checkbox key={checkboxIndex} value={checkbox.value} checked={currentFilterValue?.indexOf(checkbox.value) > -1} onChange={() => onChange(checkbox.value)}>{checkbox.label}</Checkbox>
+              ))}
+            </CheckboxList>
+            break;
+        }
+
+        return <FormField key={filterIndex} label={filter.label || filter.accessor}>
+          {children}
         </FormField>
       })}
     </FormGroup>

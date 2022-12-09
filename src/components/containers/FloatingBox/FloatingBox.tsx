@@ -15,7 +15,7 @@ export enum FloatingBoxMobileBehaviour {
 
 interface FloatingBoxProps extends WithoutDefaultOffsets {
   // TODO: rename to target
-  targetElement: Element
+  targetElement: HTMLElement | null
   onClose: () => void
   offset?: number
   placement?: Options['placement']
