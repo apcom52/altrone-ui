@@ -67,18 +67,3 @@ export const ButtonVariantsStory = args => {
     </table>
   </>
 }
-
-export const testButtonVariants_focus = async ({ canvasElement }) => {
-  // const canvas = within(canvasElement);
-  //
-  // const onFocus = jest.fn()
-  // const onBlur = jest.fn()
-  // const onClick = jest.fn()
-  //
-  // const button = canvas.getByTestId('alt-test-button')
-  //
-  // await button.focus()
-}
-
-
-export default ButtonVariantsStory

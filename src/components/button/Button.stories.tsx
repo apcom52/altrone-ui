@@ -3,7 +3,7 @@ import {Role, Size, Theme} from "../../types";
 import {Button} from "./Button";
 import {ButtonVariant} from "./Button/Button";
 import {Icon} from "../icons";
-import ButtonVariantsStory, {testButtonVariants_focus} from './Button/ButtonVariants.stories'
+import {ButtonVariantsStory} from './Button/ButtonVariants.stories'
 
 const Template = ({Component, dark, leftIcon, rightIcon, ...args}) => {
   const _leftIcon = leftIcon ? <Icon i={leftIcon} /> : null
@@ -110,7 +110,6 @@ ButtonIconExample.argTypes = {
 }
 
 export const ButtonVariantsExample = args => <ButtonVariantsStory {...args} />
-ButtonVariantsExample.play = testButtonVariants_focus
 
 export default {
   component: ButtonExample,
