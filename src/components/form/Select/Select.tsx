@@ -13,7 +13,7 @@ import {Button} from "../../button";
 import SelectPlaceholder from "./SelectPlaceholder";
 import {BasicInput, BasicInputProps} from "../BasicInput";
 
-interface SelectProps<T extends number | string | boolean = string> extends Omit<React.HTMLProps<HTMLSelectElement>, 'value' | 'onChange'>, BasicInputProps {
+interface SelectProps<T extends number | string | boolean = string> extends Omit<React.HTMLProps<HTMLSelectElement>, 'value' | 'onChange' | 'size'>, BasicInputProps {
   value: T
   options: Option<T>[]
   onChange: (value: T) => void
@@ -32,7 +32,7 @@ interface SelectProps<T extends number | string | boolean = string> extends Omit
 
 const DEFAULT_KEY = '_default'
 
-const Select = ({ value, options = [], onChange, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, size = Size.medium, classNames = {}, placeholder, hintText, errorText }: SelectProps) => {
+const Select = ({ value, options = [], onChange, id, parents, searchable = false, searchFunc, ItemComponent = SelectOption, disabled = false, size = Size.medium, classNames = {}, placeholder, hintText, errorText }: SelectProps) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize()
   const t = useLocalization()
 
@@ -126,6 +126,7 @@ const Select = ({ value, options = [], onChange, parents, searchable = false, se
   >
     {(!searchable || (searchable && !isSearchMode)) ? <button
       ref={selectRef}
+      id={id}
       disabled={disabled}
       onClick={onSelectClick}
       data-testid='alt-test-select'

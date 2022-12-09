@@ -17,7 +17,7 @@ const FormField = ({ className, label, children, required = false, disabled}: Fo
   return <div className={clsx('alt-form-field', className)}>
     {label && <label htmlFor={id} className='alt-form-field__label'>{label} {isRequired && <span className='alt-form-field__required-mark'>*</span>}</label>}
     <div className='alt-form-field__control'>
-      {typeof children === 'object' ? cloneElement(children, { id }) : children}
+      {typeof children === 'object' ? cloneElement(children, { id, disabled }) : children}
     </div>
   </div>
 }
