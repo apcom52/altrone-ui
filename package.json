@@ -2,7 +2,8 @@
   "name": "altrone-ui",
   "version": "1.0.0-rc",
   "description": "React UI Kit",
-  "module": "dist/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
@@ -51,7 +52,7 @@
     "typescript": "^4.7.4"
   },
   "scripts": {
-    "build": "rollup -c --silent",
+    "build": "rollup -c",
     "test": "jest",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",

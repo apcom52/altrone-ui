@@ -4,10 +4,13 @@ import {Button} from "./Button";
 import {ButtonVariant} from "./Button/Button";
 import {Icon} from "../icons";
 import {ButtonVariantsStory} from './Button/ButtonVariants.stories'
+import * as alt from '../../../dist';
 
 const Template = ({Component, dark, leftIcon, rightIcon, ...args}) => {
   const _leftIcon = leftIcon ? <Icon i={leftIcon} /> : null
   const _rightIcon = rightIcon ? <Icon i={rightIcon} /> : null
+
+  console.log('alt', alt);
 
   return <Altrone theme={dark ? Theme.dark : Theme.light}>
     <Component {...args} leftIcon={_leftIcon} rightIcon={_rightIcon} />
