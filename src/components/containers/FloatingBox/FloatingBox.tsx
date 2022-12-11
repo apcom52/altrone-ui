@@ -7,6 +7,7 @@ import {Options} from "@popperjs/core";
 import {createPortal} from "react-dom";
 import {useWindowSize} from "../../../hooks";
 import {Modal} from "../Modal";
+import clsx from "clsx";
 
 export enum FloatingBoxMobileBehaviour {
   default = 'default',
@@ -14,7 +15,6 @@ export enum FloatingBoxMobileBehaviour {
 }
 
 interface FloatingBoxProps extends WithoutDefaultOffsets {
-  // TODO: rename to target
   targetElement: HTMLElement | null
   onClose: () => void
   offset?: number
@@ -27,6 +27,7 @@ interface FloatingBoxProps extends WithoutDefaultOffsets {
   preventClose?: (e: MouseEvent) => boolean
   mobileBehaviour?: FloatingBoxMobileBehaviour
   closeOnAnotherFloatingBoxClick?: boolean
+  className?: string
 }
 
 const setPopperWidth = (state , minWidth) => {
@@ -50,7 +51,8 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
   preventClose,
   useRootContainer = false,
   mobileBehaviour = FloatingBoxMobileBehaviour.default,
-  closeOnAnotherFloatingBoxClick = false
+  closeOnAnotherFloatingBoxClick = false,
+  className
 }, ref) => {
   const { ltePhoneL } = useWindowSize()
   const [floatingBoxElement, setFloatingBoxElement] = useState<HTMLDivElement | null>(null)
@@ -124,7 +126,7 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(({
   }
 
   return createPortal(<div
-    className='alt-floating-box'
+    className={clsx('alt-floating-box', className)}
     ref={(node: HTMLDivElement) => {
       setFloatingBoxElement(node)
       if (typeof ref === 'function') {

@@ -14,6 +14,7 @@ import {
   defaultSelectFilter,
   defaultSortFunc
 } from "./functions";
+import clsx from "clsx";
 
 export interface DataTableColumn {
   accessor: string
@@ -32,6 +33,7 @@ interface DataTableProps<T = any> {
   searchFunc?: (params: DataTableSearchFunc) => unknown[]
   filters?: DataTableFilter[]
   mobileColumns?: string[]
+  className?: string
 }
 
 const DataTable = ({
@@ -43,6 +45,7 @@ const DataTable = ({
   sortKeys = [],
   filters = [],
   mobileColumns = [columns[0].accessor],
+  className
 }: DataTableProps) => {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
@@ -104,7 +107,7 @@ const DataTable = ({
     setAppliedFilters,
     mobileColumns
   }}>
-    <table className='alt-data-table' data-testid='alt-test-datatable'>
+    <table className={clsx('alt-data-table', className)} data-testid='alt-test-datatable'>
       <thead>
         { isHeaderVisible && <DataTableHeader /> }
         <DataTableHeaderRow />
