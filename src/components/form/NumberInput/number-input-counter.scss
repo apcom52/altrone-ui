@@ -1,11 +1,11 @@
 @import "../../../_mixins";
 
 .alt-number-input-counter {
-  --smoothness: 4px;
+  --smoothness: 6px;
 
   display: flex;
   flex-direction: column;
-  margin-right: -2px;
+  margin-right: -3px;
 }
 
 .alt-number-input-counter__increase, .alt-number-input-counter__decrease {
@@ -16,8 +16,7 @@
   border: none;
   font-size: 16px;
   line-height: 15px;
-  height: 15px;
-  margin: 0;
+  height: 13px;
   transition: background-color var(--transitionDuration) ease,
     opacity var(--transitionDuration) ease,
     box-shadow var(--transitionDuration) ease;

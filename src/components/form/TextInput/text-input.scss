@@ -92,8 +92,8 @@
   display: flex;
   align-items: center;
   pointer-events: initial;
-  margin-left: -4px;
-  margin-right: -4px;
+  margin-left: -2px;
+  margin-right: -2px;
 }
 
 .alt-text-input__action-button {
@@ -110,7 +110,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.25em;
-  border-radius: 8px;
+  border-radius: 6px;
   pointer-events: auto;
   cursor: pointer;
   transition: background-color var(--transitionDuration) ease;
@@ -118,7 +118,7 @@
   @include useFocus();
 
   & + & {
-    margin-left: 1px;
+    margin-left: 2px;
   }
 
   @include useInteraction() {
