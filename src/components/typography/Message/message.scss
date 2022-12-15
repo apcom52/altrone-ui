@@ -33,19 +33,19 @@
   }
 }
 
-.alt-message--style-primary {
+.alt-message--role-primary {
   background-color: var(--highlight);
   color: var(--accentText);
   border-color: var(--accentBorderColor);
 }
 
-.alt-message--style-success {
+.alt-message--role-success {
   background-color: var(--successHighlight);
   color: var(--successText);
   border-color: var(--successBorderColor);
 }
 
-.alt-message--style-danger {
+.alt-message--role-danger {
   background-color: var(--dangerHighlight);
   color: var(--dangerText);
   border-color: var(--dangerBorderColor);
