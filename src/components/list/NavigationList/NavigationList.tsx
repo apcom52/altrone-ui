@@ -3,6 +3,7 @@ import './navigation-list.scss';
 import NavigationListItem from "./NavigationListItem";
 import NavigationListSubItem from "./NavigationListSubItem";
 import NavigationListSubSubItem from "./NavigationListSubSubItem";
+import clsx from "clsx";
 
 interface SubSubNavigationItem {
   label: string
@@ -38,12 +39,13 @@ interface NavigationListProps {
   selected: unknown
   onChange: (selectedValue: unknown) => void
   title?: string
+  className?: string
   NavigationItemComponent?: JSX.Element
   NavigationSubItemComponent?: JSX.Element
   NavigationSubSubItemComponent?: JSX.Element
 }
 
-const NavigationList = ({ list = [], selected, onChange, title, NavigationItemComponent, NavigationSubItemComponent, NavigationSubSubItemComponent }: NavigationListProps) => {
+const NavigationList = ({ list = [], selected, onChange, title, className, NavigationItemComponent, NavigationSubItemComponent, NavigationSubSubItemComponent }: NavigationListProps) => {
     const [selectedItem, selectedSubItem, selectedSubSubItem] = useMemo(() => {
     for (const item of list) {
       if (item.value === selected) {
@@ -98,7 +100,7 @@ const NavigationList = ({ list = [], selected, onChange, title, NavigationItemCo
     }
   }, [list, selectedItem, selectedSubItem, selectedSubSubItem, onChange])
 
-  return <div className='alt-navigation-list'>
+  return <div className={clsx('alt-navigation-list', className)}>
     {title && <div className='alt-navigation-list__title'>{title}</div>}
     <nav className='alt-navigation-list__navigation'>
       {list.map((item, itemIndex) => {

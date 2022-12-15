@@ -13,9 +13,16 @@ const packageJson = require("./package.json");
 export default [
   {
     input: "src/index.ts",
-    output: [{
+    cache: false,
+    output: [
+      {
+        file: packageJson.main,
+        format: "cjs",
+        sourcemap: true
+      },
+      {
         file: packageJson.module,
-        format: 'esm',
+        format: "esm",
         sourcemap: true
       }
     ],
@@ -23,13 +30,16 @@ export default [
       peerDepsExternal(),
       resolve(),
       commonjs(),
-      scss({ input: 'src/index.scss' }),
-      typescript({ tsconfig: "./tsconfig.json" }),
-      sucrase({
-        exclude: ['node_modules/**'],
-        transforms: ['typescript', 'jsx'],
+      typescript({
+        tsconfig: "./tsconfig.json",
+        exclude: ['**/*.test.tsx', '**/*.stories.tsx']
       }),
-      terser(), //minification,
+      scss({ input: 'src/index.scss' }),
+      // sucrase({
+      //   exclude: ['node_modules/**'],
+      //   transforms: ['typescript', 'jsx'],
+      // }),
+      // terser(), //minification,
       // copy({
       //   targets: [{
       //     src: 'src/assets',
