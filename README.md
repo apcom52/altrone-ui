@@ -5,10 +5,12 @@ Altrone UI is a component library for fast developing beautiful and functional w
 ## Links
 
 [Releases](https://github.com/apcom52/altrone-ui/releases)
+[Documentation (in development)](https://apcom52.github.io/altrone-docs/)
 
 ## Installation
 
-To install the library, enter the command 
+To install the library, enter the command:
+
 `npm i altrone-ui`
 
 ## Documentation
