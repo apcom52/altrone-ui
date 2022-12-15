@@ -1,0 +1,174 @@
+@import '../../../_mixins';
+
+.alt-tab-list {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  height: var(--controlHeight);
+  background-color: var(--surfaceTrasparent);
+  border-radius: 12px;
+  width: fit-content;
+  min-width: fit-content;
+  padding: 4px;
+  gap: 2px;
+
+  @include useDisabledUserSelect();
+
+  &.alt-service--resizing {
+    .alt-tab-list__active-background {
+      transition: none;
+    }
+  }
+}
+
+.alt-tab-list__active-background {
+  position: absolute;
+  width: 100px;
+  height: 26px;
+  top: 4px;
+  left: 4px;
+  background-color: var(--surface);
+  border-radius: 8px;
+  box-shadow: 0 4px 5px 0 var(--shadow);
+  z-index: 0;
+  transition: left 0.2s ease, width 0.2s ease;
+}
+
+.alt-tab {
+  height: 28px;
+  margin: 0;
+  border-radius: 8px;
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  color: var(--secondaryTextColor);
+  background: transparent;
+  line-height: 28px;
+  padding: 0 24px;
+  white-space: nowrap;
+  z-index: 1;
+
+  @include useFontSize(label, Large);
+  @include useFocus();
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.alt-tab--selected {
+  color: var(--textColor);
+}
+
+.alt-tab-list--fluid {
+  width: 100%;
+}
+
+.alt-tab-list--variant-border {
+  background-color: transparent;
+
+  .alt-tab {
+    padding: 0 24px;
+  }
+
+  .alt-tab-list__active-background {
+    top: 30px;
+    height: 4px;
+    box-shadow: none;
+    background-color: var(--accent);
+    border-radius: 4px;
+  }
+}
+
+.alt-tab-list--variant-solid {
+  justify-content: stretch;
+  border-radius: 0;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+  max-width: 100%;
+
+  .alt-tab {
+    display: flex;
+    position: relative;
+    height: 100%;
+    align-items: center;
+    padding-left: 36px;
+    flex: 1;
+    border-radius: 0;
+    justify-content: center;
+
+    & + .alt-tab {
+      border-left: 1px solid var(--borderColor);
+    }
+
+    .alt-tab__close {
+      display: none;
+    }
+
+    &:hover {
+      .alt-tab__close {
+        display: flex;
+      }
+    }
+  }
+
+  .alt-tab--selected {
+    background-color: var(--surface);
+    font-weight: 600;
+  }
+}
+
+.alt-tab__close {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background-color: transparent;
+  left: 10px;
+  top: 9px;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  color: var(--textColor);
+  cursor: pointer;
+
+  @include useInteraction() {
+    background-color: var(--surfaceTrasparentHover);
+  }
+}
+
+.alt-tab-list__add {
+  display: flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-left: 1px solid var(--borderColor);
+  background-color: transparent;
+  font-size: 22px;
+  color: var(--secondaryTextColor);
+  cursor: pointer;
+
+  @include useInteraction {
+    color: var(--textColor);
+  }
+}
+
+.alt-tab-list--align-start {
+  justify-content: flex-start;
+}
+
+.alt-tab-list--align-end {
+  justify-content: flex-end;
+}

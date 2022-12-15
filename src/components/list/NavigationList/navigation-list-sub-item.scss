@@ -1,0 +1,67 @@
+@import '../../../_mixins';
+
+.alt-navigation-list-sub-item {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: var(--secondaryTextColor);
+  transition: background-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
+
+  @include useFontSize(title, Small);
+  @include useFocus();
+  font-weight: 500;
+
+  &:hover {
+    background-color: var(--surfaceTrasparent);
+  }
+}
+
+.alt-navigation-list-sub-item__icon {
+  margin-right: 8px;
+  font-size: 20px;
+}
+
+.alt-navigation-list-sub-item__label {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.alt-navigation-list-sub-item__arrowIcon {
+  transition: transform var(--transitionDuration) ease;
+  transform-origin: center;
+  margin-left: auto;
+  color: var(--secondaryTextColor);
+}
+
+.alt-navigation-list-sub-item--selected {
+  background-color: var(--background);
+  color: var(--textColor);
+  box-shadow: 0 3px 15px 0 var(--shadow);
+
+  .alt-navigation-list-sub-item__arrowIcon {
+    margin-left: auto;
+    color: var(--secondaryTextColor);
+  }
+
+  &:hover {
+    background-color: var(--background);
+  }
+}
+
+.alt-navigation-list-sub-item--expanded {
+  background-color: var(--surfaceTrasparentHover);
+
+  .alt-navigation-list-sub-item__arrowIcon {
+    transform: rotate(90deg);
+  }
+
+  &:hover {
+    background-color: var(--surfaceTrasparentHover);
+  }
+}

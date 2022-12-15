@@ -1,0 +1,56 @@
+@import '../../../_mixins';
+
+.alt-message {
+  display: flex;
+  align-items: flex-start;
+  background-color: var(--surfaceTrasparent);
+  backdrop-filter: blur(16px);
+  border-radius: 24px;
+  padding: 16px 16px;
+  color: var(--textColor);
+  border: 1px solid var(--borderColor);
+  box-shadow: 0 3px 15px 0 var(--shadow);
+}
+
+.alt-message__icon {
+  font-size: 36px;
+  margin-right: 16px;
+}
+
+.alt-message__content {
+}
+
+.alt-message__title {
+  @include useFontSize(title);
+}
+
+.alt-message__description {
+  margin-top: 14px;
+  @include useFontSize(body);
+
+  *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.alt-message--role-primary {
+  background-color: var(--highlight);
+  color: var(--accentText);
+  border-color: var(--accentBorderColor);
+}
+
+.alt-message--role-success {
+  background-color: var(--successHighlight);
+  color: var(--successText);
+  border-color: var(--successBorderColor);
+}
+
+.alt-message--role-danger {
+  background-color: var(--dangerHighlight);
+  color: var(--dangerText);
+  border-color: var(--dangerBorderColor);
+}
+
+.alt-message--only-title {
+  align-items: center;
+}

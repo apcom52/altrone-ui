@@ -1,0 +1,30 @@
+@import '../../../_mixins';
+
+.alt-heading {
+  margin: 0.5em 0;
+  line-height: 1.25;
+}
+
+.alt-heading--level-1 {
+  @include useFontSize(display);
+}
+
+.alt-heading--level-2 {
+  @include useFontSize(headline, Large);
+}
+
+.alt-heading--level-3 {
+  @include useFontSize(headline);
+}
+
+.alt-heading--level-4 {
+  @include useFontSize(headline, Small);
+}
+
+.alt-heading--level-5 {
+  @include useFontSize(title, Large);
+}
+
+.alt-heading--level-6 {
+  @include useFontSize(title);
+}

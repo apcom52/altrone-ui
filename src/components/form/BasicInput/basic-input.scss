@@ -1,0 +1,24 @@
+@import '../../../_mixins';
+
+.alt-basic-input {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.alt-basic-input__hint-text, .alt-basic-input__error-text {
+  @include useFontSize(body, Small);
+  margin-top: 4px;
+}
+
+.alt-basic-input__hint-text {
+  color: var(--secondaryTextColor);
+}
+
+.alt-basic-input__error-text {
+  color: var(--danger);
+
+  & + .alt-basic-input__hint-text {
+    margin-top: 0;
+  }
+}

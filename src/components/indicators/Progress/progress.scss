@@ -1,0 +1,67 @@
+@import '../../../_mixins';
+
+.alt-progress {
+  --activeColor: var(--textColor);
+  --activeBorderColor: var(--borderColor);
+
+  display: flex;
+  position: relative;
+  height: 20px;
+  border-radius: 12px;
+  background-color: var(--background);
+  overflow: hidden;
+  border: 1px solid var(--borderColor);
+
+  @include useSoftShadow();
+}
+
+.alt-progress__active {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  border-radius: 12px;
+  background-color: var(--activeColor);
+}
+
+.alt-progress__segment {
+  flex: 1;
+  border: 1px solid var(--borderColor);
+  background-color: var(--surface);
+  border-radius: 2px;
+}
+
+.alt-progress__segment--active {
+  background-color: var(--activeColor);
+  border-color: var(--activeBorderColor);
+}
+
+.alt-progress--size-small {
+  height: 10px;
+}
+
+.alt-progress--size-large {
+  height: 34px;
+}
+
+.alt-progress--variant-segmented {
+  background-color: transparent;
+  gap: 2px;
+  overflow: unset;
+  border-radius: 0;
+}
+
+.alt-progress--primary {
+  --activeColor: var(--accent);
+  --activeBorderColor: var(--accentBorderColor);
+}
+
+.alt-progress--success {
+  --activeColor: var(--success);
+  --activeBorderColor: var(--successBorderColor);
+}
+
+.alt-progress--danger {
+  --activeColor: var(--danger);
+  --activeBorderColor: var(--dangerBorderColor);
+}

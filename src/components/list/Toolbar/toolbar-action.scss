@@ -1,0 +1,80 @@
+@import '../../../_mixins';
+
+.alt-toolbar-action {
+  display: flex;
+  min-width: 60px;
+  max-width: 120px;
+  margin: 0;
+  padding: 4px 8px;
+  background-color: transparent;
+  border: none;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  color: var(--textColor);
+  transition: transform var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
+  border-radius: 12px;
+
+  &:hover, &:focus {
+    .alt-toolbar-action__icon {
+      background-color: var(--surfaceTrasparent);
+    }
+  }
+
+  &:active {
+    transform: translateY(2px);
+  }
+
+  &:focus, &:focus-visible {
+    outline: 0;
+    box-shadow: inset 0 0 0 3px var(--accentFocus);;
+  }
+}
+
+.alt-toolbar-action__icon {
+  font-size: 24px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background-color var(--transitionDuration) ease;
+}
+
+.alt-toolbar-action__label {
+  width: 100%;
+  margin-top: 4px;
+  @include useFontSize(label, Small);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.alt-toolbar-action--disabled {
+  color: var(--disabledText);
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.alt-toolbar-action--active {
+  background-color: var(--surface);
+  box-shadow: 0 3px 15px 0 var(--shadow);
+
+  &:hover, &:focus {
+    .alt-toolbar-action__icon {
+      background-color: transparent;
+    }
+  }
+}
+
+.alt-toolbar-action--danger {
+  color: var(--dangerText);
+
+  &:hover, &:focus {
+    .alt-toolbar-action__icon {
+      background-color: var(--dangerHighlight);
+    }
+  }
+}
+
+.alt-toolbar-action--expand-invisible {
+  position: absolute;
+  visibility: hidden;
+}

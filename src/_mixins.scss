@@ -1,0 +1,119 @@
+@mixin useFocusStyles {
+  box-shadow: 0 0 0 3px var(--accentFocus);
+  outline: 0;
+}
+
+@mixin useFocus {
+  &:focus, &:focus-visible {
+    @include useFocusStyles();
+  }
+}
+
+@mixin useInteraction() {
+  &:hover, &:focus, &:focus-visible {
+    @content;
+  }
+}
+
+@mixin useDisabledUserSelect {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+@mixin useGlassSurface {
+  background-color: var(--surfaceGlass);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+@mixin useFontSize($role, $size: '', $withStyle: true) {
+  font-family: "Open Sans", sans-serif;
+
+  --fontSize: var(--#{$role}#{$size}FontSize);
+  --lineHeight: var(--#{$role}#{$size}LineHeight);
+  --fontWeight: var(--#{$role}#{$size}FontWeight);
+
+  @if($withStyle) {
+    font-size: var(--fontSize);
+    line-height: var(--lineHeight);
+    font-weight: var(--fontWeight);
+  }
+}
+
+@mixin useNonStandardAppearance {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+$xl-desktop: 1920px;
+$l-desktop: 1600px;
+$m-desktop: 1440px;
+$s-desktop: 1366px;
+$xs-desktop: 1280px;
+$l-tablet: 1024px;
+$m-tablet: 834px;
+$s-tablet: 768px;
+$l-phone: 430px;
+$m-phone: 393px;
+$s-phone: 320px;
+
+@mixin less($br) {
+  @media (max-width: $br) {
+    @content;
+  }
+}
+
+@mixin strict-less($br) {
+  @media (max-width: $br - 1px) {
+    @content;
+  }
+}
+
+@mixin more($br) {
+  @media (min-width: $br) {
+    @content;
+  }
+}
+
+@mixin strict-more($br) {
+  @media (min-width: $br - 1px) {
+    @content;
+  }
+}
+
+@mixin between($from, $to) {
+  @media (min-width: $from) and (max-width: $to) {
+    @content;
+  }
+}
+
+@mixin useScrollbars() {
+  &::-webkit-scrollbar {
+    width: 4px;
+    border-radius: 4px;
+    height: 8px;
+    background-color: var(--surfaceTrasparent); /* or add it to the track */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--textColor);
+    border-radius: 4px;
+  }
+}
+
+@mixin useSoftShadow() {
+  box-shadow: 0 1px 0 0 var(--borderColor);
+}
+
+@mixin useInvalid() {
+  box-shadow: 0 0 0 1px var(--danger);
+
+  &:focus, &:focus-visible {
+    box-shadow: 0 0 0 2px var(--danger);
+  }
+}

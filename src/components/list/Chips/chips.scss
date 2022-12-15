@@ -1,0 +1,111 @@
+@import '../../../_mixins';
+
+.alt-chips {
+  display: flex;
+  align-items: center;
+  row-gap: 2px;
+  column-gap: 4px;
+  flex-wrap: wrap;
+}
+
+.alt-chips--direction-vertical {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.alt-chip {
+  display: flex;
+  position: relative;
+  margin: 0;
+  padding: 6px 12px;
+  background-color: var(--surface);
+  border: 1px solid var(--borderColor);
+  color: var(--textColor);
+  align-items: center;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color var(--transitionDuration) ease, border-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
+
+  @include useFocus();
+  @include useDisabledUserSelect();
+  @include useFontSize(label, Large);
+
+  &:hover {
+    background-color: var(--accent);
+    color: var(--textColorOnAccent);
+    border-color: transparent;
+  }
+
+  &:disabled {
+    pointer-events: none;
+    color: var(--disabledText);
+    opacity: 0.5;
+  }
+}
+
+.alt-chip__icon {
+  position: absolute;
+  font-size: 24px;
+  left: 6px;
+}
+
+.alt-chip__label {
+  margin-left: 0;
+  transition: margin-left var(--transitionDuration) ease;
+}
+
+.alt-chip--selected {
+  background-color: var(--accent);
+  color: var(--textColorOnAccent);
+  border-color: transparent;
+  padding-left: 30px;
+
+  &:hover {
+    background-color: var(--accent);
+    color: var(--textColorOnAccent);
+  }
+
+  &:disabled {
+    background-color: var(--disabledText);
+    color: var(--textColorOnAccent);
+  }
+
+  .alt-chip__label {
+    margin-left: 2px;
+  }
+}
+
+.alt-chips--size-small {
+  .alt-chip {
+    padding: 4px 8px;
+
+    @include useFontSize(label);
+  }
+
+  .alt-chip__icon {
+    font-size: 22px;
+    left: 4px;
+  }
+
+  .alt-chip--selected {
+    padding-left: 26px;
+  }
+}
+
+.alt-chips--size-large {
+  .alt-chip {
+    padding: 9px 16px;
+
+    @include useFontSize(body);
+    font-weight: 500;
+  }
+
+  .alt-chip__icon {
+    font-size: 26px;
+    left: 8px;
+  }
+
+  .alt-chip--selected {
+    padding-left: 36px;
+  }
+}

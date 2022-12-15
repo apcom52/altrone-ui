@@ -1,0 +1,69 @@
+@import '../../../_mixins';
+
+.alt-navigation-list-item {
+  display: flex;
+  align-items: center;
+  margin: 0 -8px;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: var(--textColor);
+  transition: background-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
+
+  @include useFontSize(body);
+  font-weight: 500;
+
+  @include useFocus();
+
+  &:hover {
+    background-color: var(--highlight);
+  }
+}
+
+.alt-navigation-list-item__icon {
+  margin-right: 8px;
+  font-size: 20px;
+  color: var(--accentText);
+}
+
+.alt-navigation-list-item__label {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.alt-navigation-list-item__arrowIcon {
+  transition: transform var(--transitionDuration) ease;
+  transform-origin: center;
+  margin-left: auto;
+  color: var(--secondaryTextColor);
+}
+
+.alt-navigation-list-item--selected {
+  background-color: var(--background);
+  color: var(--textColor);
+  box-shadow: 0 3px 15px 0 var(--shadow);
+
+  .alt-navigation-list-item__arrowIcon {
+    margin-left: auto;
+    color: var(--secondaryTextColor);
+  }
+
+  &:hover {
+    background-color: var(--background);
+  }
+}
+
+.alt-navigation-list-item--expanded {
+  background-color: var(--surfaceTrasparentHover);
+
+  .alt-navigation-list-item__arrowIcon {
+    transform: rotate(90deg);
+  }
+
+  &:hover {
+    background-color: var(--surfaceTrasparentHover);
+  }
+}

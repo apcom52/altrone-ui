@@ -1,0 +1,88 @@
+@import '../../../_mixins';
+
+.alt-radio-list {
+  display: flex;
+  flex-direction: row;
+  row-gap: 8px;
+  column-gap: 16px;
+  flex-wrap: wrap;
+}
+
+.alt-radio-list--vertical {
+  flex-direction: column;
+}
+
+.alt-radio {
+  display: flex;
+  align-items: center;
+}
+
+.alt-radio__input {
+  @include useNonStandardAppearance();
+
+  &:focus + .alt-radio__control > .alt-radio__icon {
+    @include useFocusStyles();
+  }
+
+  &:checked + .alt-radio__control > .alt-radio__icon:after {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 10px;
+    height: 10px;
+    content: '';
+    border-radius: 50%;
+    background-color: var(--textColor);
+    transform: scale(0);
+    animation: radio-icon-animation var(--transitionDuration) ease 0ms;
+    animation-fill-mode: forwards;
+    box-shadow: 0 3px 15px 0 var(--shadow);
+  }
+
+  &:disabled + .alt-radio__control {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  &:disabled:checked + .alt-radio__control {
+    .alt-radio__label {
+      color: var(--disabledText);
+    }
+
+    & > .alt-radio__icon:after {
+      background-color: var(--secondaryTextColor);
+    }
+  }
+}
+
+.alt-radio__control {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.alt-radio__icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--borderColor);
+  background-color: var(--background);
+  border-radius: 50%;
+  margin-right: 6px;
+
+  @include useSoftShadow();
+}
+
+.alt-radio__label {
+  @include useFontSize(label, Large);
+  color: var(--textColor);
+}
+
+@keyframes radio-icon-animation {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

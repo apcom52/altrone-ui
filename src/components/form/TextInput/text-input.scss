@@ -1,0 +1,200 @@
+@import '../../../_mixins';
+
+.alt-text-input {
+  --height: var(--controlHeight);
+  --fontSize: var(--controlFontSize);
+
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  font-size: var(--fontSize);
+}
+
+.alt-text-input__control {
+  width: 100%;
+  height: var(--height);
+  margin: 0;
+  padding: 6px 12px;
+  background-color: var(--background);
+  font-size: var(--fontSize);
+  color: var(--textColor);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 8px;
+  border: 1px solid var(--borderColor);
+  transition: box-shadow var(--transitionDuration) ease, opacity var(--transitionDuration) ease;
+
+  @include useFocus();
+  @include useFontSize(body);
+  line-height: var(--height);
+
+  &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+    display: none;
+  }
+
+  &::placeholder {
+    color: var(--placeholderText);
+  }
+
+  @include useSoftShadow();
+}
+
+.alt-text-input__left-island {
+  display: flex;
+  position: absolute;
+  padding-left: 8px;
+  height: var(--height);
+  line-height: var(--height);
+  align-items: center;
+  pointer-events: none;
+
+  @include useDisabledUserSelect();
+}
+
+.alt-text-input__right-island {
+  display: flex;
+  position: absolute;
+  right: 0;
+  height: var(--height);
+  padding-right: 8px;
+  line-height: var(--height);
+  align-items: center;
+  user-select: none;
+  pointer-events: none;
+  transition: padding-right var(--transitionDuration) ease;
+
+  @include useDisabledUserSelect();
+}
+
+.alt-text-input__text-island {
+  display: flex;
+  pointer-events: none;
+  font-size: 1em;
+  color: var(--secondaryTextColor);
+}
+
+.alt-text-input__icon-island {
+  pointer-events: none;
+  display: flex;
+  font-size: 1.375em;
+  color: var(--secondaryTextColor);
+}
+
+.alt-text-input__components-island {
+  display: flex;
+  align-items: center;
+  font-size: 1em;
+  pointer-events: initial;
+}
+
+.alt-text-input__actions-island {
+  display: flex;
+  align-items: center;
+  pointer-events: initial;
+  margin-left: -2px;
+  margin-right: -2px;
+}
+
+.alt-text-input__action-button {
+  display: flex;
+  padding: 4px calc(var(--fontSize) / 3);
+  height: calc(var(--height) - 8px);
+  max-height: calc(var(--height) / 1.5);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  background-color: var(--surfaceTrasparent);
+  color: var(--textColor);
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25em;
+  border-radius: 6px;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: background-color var(--transitionDuration) ease;
+
+  @include useFocus();
+
+  & + & {
+    margin-left: 2px;
+  }
+
+  @include useInteraction() {
+    background-color: var(--surfaceTrasparentHover);
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.75;
+  }
+}
+
+.alt-text-input__required-mark {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  font-size: 16px;
+  color: var(--danger);
+}
+
+.alt-base-input--invalid {
+  .alt-text-input__control {
+    @include useInvalid();
+  }
+}
+
+.alt-text-input--required {
+  .alt-text-input__right-island {
+    padding-right: 18px;
+  }
+}
+
+.alt-text-input--disabled {
+  .alt-text-input__control {
+    opacity: 0.5;
+  }
+
+  .alt-text-input__left-island, .alt-text-input__right-island {
+    pointer-events: none;
+  }
+}
+
+.alt-basic-input--size-small {
+  .alt-text-input {
+    --height: 26px;
+  }
+
+  .alt-text-input__control {
+    @include useFontSize(body, Small);
+  }
+
+  .alt-text-input__text-island {
+    @include useFontSize(body, Small);
+  }
+
+  .alt-text-input__icon-island {
+    font-size: 1.25em;
+  }
+}
+
+.alt-basic-input--size-large {
+  .alt-text-input {
+    --height: 42px;
+  }
+
+  .alt-text-input__control {
+    @include useFontSize(body, Large);
+  }
+
+  .alt-text-input__text-island {
+    @include useFontSize(body, Large);
+  }
+}
+
+.alt-data-table-header-wrapper {
+  th {
+    padding: 0;
+  }
+}

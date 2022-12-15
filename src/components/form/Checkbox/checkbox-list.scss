@@ -1,0 +1,32 @@
+@import '../../../_mixins';
+
+.alt-checkbox-list {
+  display: flex;
+  flex-direction: row;
+  row-gap: 8px;
+  column-gap: 16px;
+  flex-wrap: wrap;
+}
+
+.alt-checkbox-list--vertical {
+  flex-direction: column;
+}
+
+.alt-checkbox-list__actions {
+  width: 100%;
+}
+
+.alt-checkbox-list__expand {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-align: left;
+  color: var(--accent);
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+
+  @include useFontSize(label, Large);
+  @include useFocus();
+}

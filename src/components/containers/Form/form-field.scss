@@ -1,0 +1,45 @@
+@import '../../../_mixins';
+
+.alt-form-field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.alt-form-field__label {
+  margin-bottom: 6px;
+  @include useFontSize(label, Large);
+  font-weight: 600;
+}
+
+.alt-form-field__required-mark {
+  color: var(--importantText);
+}
+
+.alt-form-field__control {
+  width: 100%;
+
+  > *:not(.alt-floating-box) {
+    width: 100%;
+  }
+}
+
+.alt-form-group--variant-row {
+  .alt-form-field {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .alt-form-field__label {
+    color: var(--secondaryTextColor);
+    max-width: 40%;
+    width: 100%;
+    font-weight: 500;
+  }
+
+  .alt-form-field__control {
+    max-width: 60%;
+    width: 100%;
+  }
+}

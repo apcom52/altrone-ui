@@ -1,0 +1,97 @@
+@import '../../../_mixins';
+
+.alt-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.alt-checkbox__input {
+  @include useNonStandardAppearance();
+
+  &:checked + .alt-checkbox__control:before {
+    background-color: var(--checkedColor);
+    border: none;
+  }
+
+  &:disabled + .alt-checkbox__control {
+    --checkedColor: var(--secondaryTextColor);
+    --labelColor: var(--secondaryTextColor);
+
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  &:focus + .alt-checkbox__control:before {
+    @include useFocusStyles();
+    border: none;
+  }
+}
+
+.alt-checkbox__control {
+  --checkedColor: var(--accent);
+  --borders: var(--borderColor);
+  --iconColor: var(--textColorOnAccent);
+  --labelColor: var(--textColor);
+
+  display: flex;
+  position: relative;
+  align-items: flex-start;
+  color: var(--labelColor);
+  cursor: pointer;
+
+  @include useDisabledUserSelect();
+
+  &:before {
+    content: '';
+    width: 16px;
+    min-width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border: 1px solid var(--borders);
+    transition: box-shadow var(--transitionDuration) ease, background-color var(--transitionDuration) ease;
+    background-color: var(--background);
+
+    @include useSoftShadow();
+  }
+}
+
+.alt-checkbox__icon {
+  position: absolute;
+  left: 0;
+  height: 16px;
+  width: 16px;
+  top: 2px;
+  font-size: 16px;
+  color: var(--iconColor);
+
+  .alt-icon {
+    transform: scale(1.25);
+  }
+}
+
+.alt-checkbox__label {
+  @include useFontSize(label, Large, true);
+  margin-left: 6px;
+}
+
+.alt-checkbox--danger {
+  .alt-checkbox__control {
+    --checkedColor: var(--danger);
+    --borders: var(--danger);
+    --iconColor: var(--textColorOnDanger);
+    --labelColor: var(--danger);
+  }
+}
+
+.alt-basic-input--invalid {
+  .alt-checkbox__control {
+    --checkedColor: var(--danger);
+    --borders: var(--danger);
+  }
+
+  .alt-checkbox__input:focus + .alt-checkbox__control:before {
+    box-shadow: 0 0 0 2px var(--danger);
+  }
+}

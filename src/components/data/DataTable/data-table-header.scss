@@ -1,0 +1,40 @@
+.alt-data-table-header {
+  display: flex;
+  width: 100%;
+  height: 42px;
+  padding: 4px;
+  background-color: var(--surface);
+  border: 1px solid var(--borderColor);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  justify-content: space-between;
+}
+
+.alt-data-table-header__filters {
+  width: fit-content;
+}
+
+.alt-data-table-header__search {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 300px;
+
+  & + .alt-button {
+    margin-left: 4px;
+  }
+}
+
+.alt-data-table-header__filter-value {
+  margin-left: 0.5ch;
+  max-width: 75px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.alt-data-table-header-wrapper {
+  th {
+    text-align: left;
+  }
+}

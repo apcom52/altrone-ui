@@ -1,0 +1,75 @@
+@import "../../../_mixins";
+
+.alt-number-input-counter {
+  --smoothness: 6px;
+
+  display: flex;
+  flex-direction: column;
+  margin-right: -3px;
+}
+
+.alt-number-input-counter__increase, .alt-number-input-counter__decrease {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surfaceTrasparent);
+  border: none;
+  font-size: 16px;
+  line-height: 15px;
+  height: 13px;
+  transition: background-color var(--transitionDuration) ease,
+    opacity var(--transitionDuration) ease,
+    box-shadow var(--transitionDuration) ease;
+  cursor: pointer;
+  width: 16px;
+  color: var(--textColor);
+
+  @include useFocus();
+  @include useInteraction() {
+    background-color: var(--surfaceTrasparentHover);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.alt-number-input-counter__increase {
+  border-top-left-radius: var(--smoothness);
+  border-top-right-radius: var(--smoothness);
+  border-bottom: 1px solid var(--borderColor);
+
+  &:focus, &:focus-visible {
+    border-bottom-color: transparent;
+  }
+}
+
+.alt-number-input-counter__decrease {
+  border-bottom-left-radius: var(--smoothness);
+  border-bottom-right-radius: var(--smoothness);
+}
+
+.alt-text-input--size-small {
+  .alt-number-input-counter__increase, .alt-number-input-counter__decrease {
+    height: 12px;
+    font-size: 14px;
+  }
+}
+
+.alt-text-input--size-large {
+  .alt-number-input-counter__increase, .alt-number-input-counter__decrease {
+    height: 18px;
+    width: 20px;
+    font-size: 18px;
+  }
+}
+
+.alt-text-input--size-xlarge {
+  .alt-number-input-counter__increase, .alt-number-input-counter__decrease {
+    --smoothness: 6px;
+    height: 24px;
+    width: 24px;
+    font-size: 24px;
+  }
+}
