@@ -7,10 +7,11 @@ interface MessageProps extends Omit<React.HTMLProps<HTMLDivElement>, 'title' | '
   title?: string
   role?: Role
   IconComponent?: JSX.Element
+  className?: string
 }
 
-const Message = ({ title, children, role = Role.default, IconComponent }: MessageProps) => {
-  return <div className={clsx('alt-message', {
+const Message = ({ title, children, role = Role.default, IconComponent, className }: MessageProps) => {
+  return <div className={clsx('alt-message', className, {
     'alt-message--role-primary': role === Role.primary,
     'alt-message--role-success': role === Role.success,
     'alt-message--role-danger': role === Role.danger,

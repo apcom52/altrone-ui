@@ -24,13 +24,14 @@ interface ModalProps extends PropsWithChildren {
   showCancel?: boolean
   closeOnOverlay?: boolean
   reduceMotion?: boolean
+  className?: string
 }
 
 const CLS_OPENED = 'alt-modal--opened'
 const CLS_UTIL_NOSCROLL = 'alt-util--no-scroll'
 const HIDE_DURATION = 300
 
-const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, actions = [], showClose = true, showCancel = true, closeOnOverlay = true, reduceMotion = false }: ModalProps) => {
+const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, actions = [], showClose = true, showCancel = true, closeOnOverlay = true, reduceMotion = false, className }: ModalProps) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize()
 
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -105,7 +106,7 @@ const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, ac
   }
 
   return <div className='alt-modal-wrapper' ref={wrapperRef} onClick={closeOnOverlay && onBackdropClick}>
-    <div className={clsx('alt-modal', {
+    <div className={clsx('alt-modal', className, {
       'alt-modal--size-small': size === Size.small,
       'alt-modal--size-large': size === Size.large,
       'alt-modal--fluid': fluid,

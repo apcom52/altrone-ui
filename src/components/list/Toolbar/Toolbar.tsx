@@ -18,14 +18,15 @@ interface ToolbarProps {
   menu?: ToolbarMenuProps['menu']
   offset?: Point
   width?: number | string
+  className?: string
 }
 
-const Toolbar = ({ children, floated = false, menu = [], offset = defaultOffset, width }: ToolbarProps) => {
+const Toolbar = ({ children, floated = false, menu = [], offset = defaultOffset, width, className }: ToolbarProps) => {
   const [toolbarRef, setToolbarRef] = useState(null)
 
   return <ToolbarContext.Provider value={toolbarRef}>
     <div
-      className={clsx('alt-toolbar', {
+      className={clsx('alt-toolbar', className, {
         'alt-toolbar--floated': floated
       })}
       ref={node => setToolbarRef(node)}

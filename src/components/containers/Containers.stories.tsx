@@ -1,4 +1,4 @@
-import {Box, Form, FormField, FormGroup, FormGroupVariant, Modal} from './index'
+import {Box, Form, FormField, FormGroup, FormGroupVariant, Modal} from '../index'
 import {Altrone} from "../../hocs";
 import {Role, Size, Theme} from "../../types";
 import {useState} from "react";
