@@ -1,6 +1,7 @@
 import {forwardRef, memo, Ref, useCallback, useRef, useState} from "react";
 import {
   ContextMenuType as ContextMenuType,
+  Indicator,
   Role,
   Size,
   WithAltroneOffsets,
@@ -30,6 +31,7 @@ export interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<
   size?: Size
   dropdown?: ContextMenuType
   isIcon?: boolean
+  indicator?: Indicator
 }
 
 const ButtonComponents = [
@@ -51,6 +53,7 @@ const Button = forwardRef(({
   onClick,
   type = 'button',
   isIcon = false,
+  indicator = undefined,
   ...props
 }: ButtonProps, ref: Ref<HTMLButtonElement>) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false)
@@ -91,6 +94,9 @@ const Button = forwardRef(({
     >
       { leftIcon ? <span className='alt-button__leftIcon'>{leftIcon}</span> : null }
       {children}
+      {indicator && <div className={clsx('alt-button__indicator', {
+        'alt-button__indicator--position-corner': indicator.position === 'corner'
+      })}>{indicator.value}</div>}
       { rightIcon ? <span className='alt-button__rightIcon'>{rightIcon}</span> : null }
     </Box>
     {isDropdownVisible ? <FloatingBox targetElement={buttonRef.current} onClose={hideDropdown} placement='bottom' mobileBehaviour={FloatingBoxMobileBehaviour.modal}>

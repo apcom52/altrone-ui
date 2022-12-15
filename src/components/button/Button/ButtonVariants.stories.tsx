@@ -38,7 +38,7 @@ export const ButtonVariantsStory = args => {
         <tr key={roleIndex}>
           <td><strong>{role}</strong></td>
           {variants.map((variant, variantIndex) => (
-            <td key={variantIndex}>
+            <td key={variantIndex} style={{ border: '1px solid lightgray', padding: 10 }}>
               <ButtonContainer>
                 <Button variant={variant} role={role}>Action</Button>
                 <Button size={Size.small} variant={variant} role={role}>Action</Button>
@@ -59,6 +59,11 @@ export const ButtonVariantsStory = args => {
                 <Button variant={variant} role={role} isIcon><Icon i='laptop' /></Button>
                 <Button size={Size.small} variant={variant} role={role} isIcon><Icon i='laptop' /></Button>
                 <Button size={Size.large} variant={variant} role={role} isIcon><Icon i='laptop' /></Button>
+
+                <Button variant={variant} role={role} indicator={{ position: 'baseline' }}>Action</Button>
+                <Button variant={variant} role={role} indicator={{ position: 'corner' }}>Action</Button>
+                <Button variant={variant} role={role} indicator={{ position: 'baseline', value: 99 }}>Action</Button>
+                <Button variant={variant} role={role} indicator={{ position: 'corner', value: 99 }}>Action</Button>
               </ButtonContainer>
             </td>
           ))}

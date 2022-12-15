@@ -39,6 +39,13 @@
   --buttonTextColor: var(--textColor);
   --buttonShadowColor: var(--borderColor);
 
+  --indicatorBaselineBackground: var(--surfaceTrasparent);
+  --indicatorBaselineText: var(--buttonTextColor);
+  --indicatorBaselineDot: var(--danger);
+  --indicatorCornerBackground: var(--danger);
+  --indicatorCornerText: var(--textColorOnDanger);
+  --indicatorCornerDot: var(--danger);
+
   display: inline-flex;
   position: relative;
   margin: 0;
@@ -210,4 +217,60 @@
   padding: 6px 12px;
   min-width: auto;
   text-shadow: 0 3px 6px var(--shadow);
+}
+
+.alt-button__indicator {
+  margin-left: 8px;
+  margin-right: -8px;
+  padding: 2px 4px;
+  background-color: var(--indicatorBaselineBackground);
+  color: var(--indicatorBaselineText);
+  border-radius: 6px;
+  min-width: 18px;
+
+  &:not(.alt-button__indicator--position-corner) + .alt-button__rightIcon {
+    display: inline-block;
+    margin-left: 16px;
+  }
+
+  @include useFontSize(label, Small);
+
+  &:empty {
+    display: block;
+    width: 8px;
+    padding: 0;
+    height: 8px;
+    min-height: 6px;
+    border-radius: 50%;
+    background-color: var(--indicatorBaselineDot);
+    min-width: unset;
+  }
+}
+
+.alt-button__indicator--position-corner {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  margin: 0;
+  padding: 1px 3px;
+  box-shadow: 0 0 5px 0 var(--shadow);
+  background-color: var(--indicatorCornerBackground);
+  color: var(--indicatorCornerText);
+
+  &:empty {
+    top: -2px;
+    right: -2px;
+    background-color: var(--indicatorCornerDot);
+  }
+}
+
+.alt-button--variant-borders {
+  &.alt-button--role-primary .alt-button__indicator {
+    background-color: var(--highlight);
+    color: var(--accentText);
+
+    &:empty {
+      background-color: var(--accent);
+    }
+  }
 }
