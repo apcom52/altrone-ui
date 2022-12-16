@@ -4,7 +4,7 @@ import {Button} from "./index";
 import ButtonContainer from "../../containers/ButtonContainer/ButtonContainer";
 import {Icon} from "../../icons";
 
-export const ButtonVariantsStory = args => {
+export const ButtonVariantsStory = ({dark = false, ...args}) => {
   const variants = [ButtonVariant.default, ButtonVariant.borders, ButtonVariant.transparent, ButtonVariant.text]
   const roles = [Role.default, Role.primary, Role.success, Role.danger]
 
@@ -64,6 +64,11 @@ export const ButtonVariantsStory = args => {
                 <Button variant={variant} role={role} indicator={{ position: 'corner' }}>Action</Button>
                 <Button variant={variant} role={role} indicator={{ position: 'baseline', value: 99 }}>Action</Button>
                 <Button variant={variant} role={role} indicator={{ position: 'corner', value: 99 }}>Action</Button>
+
+                <Button isIcon variant={variant} role={role} indicator={{ position: 'baseline' }}><Icon i='face' /></Button>
+                <Button isIcon variant={variant} role={role} indicator={{ position: 'corner' }}><Icon i='face' /></Button>
+                <Button isIcon variant={variant} role={role} indicator={{ position: 'baseline', value: 99 }}><Icon i='face' /></Button>
+                <Button isIcon variant={variant} role={role} indicator={{ position: 'corner', value: 99 }}><Icon i='face' /></Button>
               </ButtonContainer>
             </td>
           ))}

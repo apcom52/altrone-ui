@@ -39,12 +39,14 @@
   --buttonTextColor: var(--textColor);
   --buttonShadowColor: var(--borderColor);
 
-  --indicatorBaselineBackground: var(--surfaceTrasparent);
+  --indicatorBaselineBackground: var(--surfaceTrasparentHover);
   --indicatorBaselineText: var(--buttonTextColor);
   --indicatorBaselineDot: var(--danger);
+
   --indicatorCornerBackground: var(--danger);
   --indicatorCornerText: var(--textColorOnDanger);
   --indicatorCornerDot: var(--danger);
+  --indicatorCorderBorder: transparent;
 
   display: inline-flex;
   position: relative;
@@ -141,8 +143,23 @@
   --buttonTextColor: var(--textColorOnAccent);
   --buttonShadowColor: var(--accentBorderColor);
 
+  --indicatorBaselineDot: var(--textColorOnAccent);
+  --indicatorCorderBorder: var(--background);
+
   @include useTransparentVariant(accent, textColorOnAccent);
   @include useTextVariant(accent);
+
+  &.alt-button--variant-borders, &.alt-button--variant-text, &.alt-button--variant-transparent {
+    --indicatorBaselineBackground: var(--danger);
+    --indicatorBaselineText: var(--textColorOnDanger);
+    --indicatorBaselineDot: var(--danger);
+  }
+
+  &.alt-button--variant-transparent {
+    &:hover, &:focus {
+      --indicatorBaselineBackground: var(--surfaceTrasparentHover);
+    }
+  }
 }
 
 .alt-button--role-success {
@@ -150,8 +167,23 @@
   --buttonTextColor: var(--textColorOnSuccess);
   --buttonShadowColor: var(--successBorderColor);
 
+  --indicatorBaselineDot: var(--textColorOnSuccess);
+  --indicatorCorderBorder: var(--background);
+
   @include useTransparentVariant(success, textColorOnSuccess);
   @include useTextVariant(success);
+
+  &.alt-button--variant-borders, &.alt-button--variant-text, &.alt-button--variant-transparent {
+    --indicatorBaselineBackground: var(--danger);
+    --indicatorBaselineText: var(--textColorOnDanger);
+    --indicatorBaselineDot: var(--danger);
+  }
+
+  &.alt-button--variant-transparent {
+    &:hover, &:focus {
+      --indicatorBaselineBackground: var(--surfaceTrasparentHover);
+    }
+  }
 }
 
 .alt-button--role-danger {
@@ -159,8 +191,23 @@
   --buttonTextColor: var(--textColorOnDanger);
   --buttonShadowColor: var(--dangerBorderColor);
 
+  --indicatorBaselineDot: var(--textColorOnSuccess);
+  --indicatorCorderBorder: var(--background);
+
   @include useTransparentVariant(danger, textColorOnDanger);
   @include useTextVariant(danger);
+
+  &.alt-button--variant-borders, &.alt-button--variant-text, &.alt-button--variant-transparent {
+    --indicatorBaselineBackground: var(--danger);
+    --indicatorBaselineText: var(--textColorOnDanger);
+    --indicatorBaselineDot: var(--danger);
+  }
+
+  &.alt-button--variant-transparent {
+    &:hover, &:focus {
+      --indicatorBaselineBackground: var(--surfaceTrasparentHover);
+    }
+  }
 }
 
 
@@ -261,16 +308,10 @@
     top: -2px;
     right: -2px;
     background-color: var(--indicatorCornerDot);
+    box-shadow: 0 0 0 2px var(--indicatorCorderBorder);
   }
 }
 
-.alt-button--variant-borders {
-  &.alt-button--role-primary .alt-button__indicator {
-    background-color: var(--highlight);
-    color: var(--accentText);
-
-    &:empty {
-      background-color: var(--accent);
-    }
-  }
+.alt-button--icon .alt-button__indicator {
+  margin-left: 4px;
 }

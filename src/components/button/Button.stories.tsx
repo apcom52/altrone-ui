@@ -122,6 +122,11 @@ ButtonIconExample.argTypes = {
 }
 
 export const ButtonVariantsExample = args => <ButtonVariantsStory {...args} />
+ButtonVariantsExample.argTypes = {
+  dark: {
+    control: 'switcher'
+  }
+}
 
 export default {
   component: ButtonExample,
