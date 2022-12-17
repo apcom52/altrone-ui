@@ -6,6 +6,7 @@ import {Icon} from "../../icons";
 import {Button} from "../../button";
 import clsx from "clsx";
 import {useWindowSize} from "../../../hooks";
+import ReactDOM from "react-dom";
 
 interface ModalProps extends PropsWithChildren {
   onClose: () => void
@@ -105,7 +106,7 @@ const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, ac
     }
   }
 
-  return <div className='alt-modal-wrapper' ref={wrapperRef} onClick={closeOnOverlay && onBackdropClick}>
+  return ReactDOM.createPortal(<div className='alt-modal-wrapper' ref={wrapperRef} onClick={closeOnOverlay && onBackdropClick}>
     <div className={clsx('alt-modal', className, {
       'alt-modal--size-small': size === Size.small,
       'alt-modal--size-large': size === Size.large,
@@ -126,7 +127,7 @@ const Modal = ({ title, children, onClose, size = Size.medium, fluid = false, ac
       </div>}
       {ltePhoneL && <div className='alt-modal-wrapper__handle' />}
     </div>
-  </div>
+  </div>, document.body.querySelector('.altrone') || document.body);
 }
 
 export default memo(Modal)
