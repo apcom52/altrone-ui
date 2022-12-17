@@ -1,7 +1,7 @@
 import * as React from 'react';
 import React__default, { createContext, useContext, useRef, useState, useEffect, useMemo, useCallback, forwardRef, memo, useLayoutEffect, useId, cloneElement, Fragment, createElement } from 'react';
 import * as ReactDOM from 'react-dom';
-import { createPortal } from 'react-dom';
+import ReactDOM__default, { createPortal } from 'react-dom';
 
 var Theme;
 (function (Theme) {
@@ -35,6 +35,13 @@ var Sort;
     Sort["asc"] = "asc";
     Sort["desc"] = "desc";
 })(Sort || (Sort = {}));
+
+var Align;
+(function (Align) {
+    Align["start"] = "start";
+    Align["center"] = "center";
+    Align["end"] = "end";
+})(Align || (Align = {}));
 
 var DEFAULT_OFFSET = 4;
 var ZERO_MARGIN = {};
@@ -21618,13 +21625,6 @@ raf$1.exports.polyfill = function(object) {
   object.cancelAnimationFrame = caf;
 };
 
-var Align;
-(function (Align) {
-    Align["start"] = "start";
-    Align["center"] = "center";
-    Align["end"] = "end";
-})(Align || (Align = {}));
-
 var Icon = function (_a) {
     var i = _a.i, size = _a.size, className = _a.className, _b = _a.style, style = _b === void 0 ? 'outlined' : _b, props = __rest$1(_a, ["i", "size", "className", "style"]);
     return jsxRuntime.exports.jsx(Box$1, __assign({ tagName: 'span', className: clsx('alt-icon', "material-symbols-".concat(style), className), style: { fontSize: size || '1em' } }, props, { children: i }));
@@ -21692,13 +21692,13 @@ var Modal = function (_a) {
             handleClose();
         }
     };
-    return jsxRuntime.exports.jsx("div", __assign({ className: 'alt-modal-wrapper', ref: wrapperRef, onClick: closeOnOverlay && onBackdropClick }, { children: jsxRuntime.exports.jsxs("div", __assign({ className: clsx('alt-modal', className, (_b = {
+    return ReactDOM__default.createPortal(jsxRuntime.exports.jsx("div", __assign({ className: 'alt-modal-wrapper', ref: wrapperRef, onClick: closeOnOverlay && onBackdropClick }, { children: jsxRuntime.exports.jsxs("div", __assign({ className: clsx('alt-modal', className, (_b = {
                     'alt-modal--size-small': size === Size.small,
                     'alt-modal--size-large': size === Size.large,
                     'alt-modal--fluid': fluid
                 },
                 _b[CLS_OPENED] = reduceMotion,
-                _b)), ref: modalRef, "data-testid": 'alt-test-modal' }, { children: [title && jsxRuntime.exports.jsx("div", __assign({ className: "alt-modal__title", "data-testid": 'alt-test-modal-title' }, { children: title })), showClose && gtPhoneL && jsxRuntime.exports.jsx("button", __assign({ className: 'alt-modal__close', type: 'button', onClick: handleClose, "data-testid": 'alt-test-modal-close' }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'close' }) })), jsxRuntime.exports.jsx("div", __assign({ className: "alt-modal__content", "data-testid": 'alt-test-modal-content' }, { children: children })), (showCancel || actions.length > 0) && jsxRuntime.exports.jsxs("div", __assign({ className: 'alt-modal__footer' }, { children: [renderActions(leftActions), jsxRuntime.exports.jsx("div", { className: "alt-modal__footer-separator" }), ((showCancel && gtPhoneL) || (showClose || ltePhoneL)) && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: handleClose, className: 'alt-modal__cancel', "data-testid": 'alt-test-modal-cancel' }, { children: "Cancel" })), renderActions(rightActions)] })), ltePhoneL && jsxRuntime.exports.jsx("div", { className: 'alt-modal-wrapper__handle' })] })) }));
+                _b)), ref: modalRef, "data-testid": 'alt-test-modal' }, { children: [title && jsxRuntime.exports.jsx("div", __assign({ className: "alt-modal__title", "data-testid": 'alt-test-modal-title' }, { children: title })), showClose && gtPhoneL && jsxRuntime.exports.jsx("button", __assign({ className: 'alt-modal__close', type: 'button', onClick: handleClose, "data-testid": 'alt-test-modal-close' }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'close' }) })), jsxRuntime.exports.jsx("div", __assign({ className: "alt-modal__content", "data-testid": 'alt-test-modal-content' }, { children: children })), (showCancel || actions.length > 0) && jsxRuntime.exports.jsxs("div", __assign({ className: 'alt-modal__footer' }, { children: [renderActions(leftActions), jsxRuntime.exports.jsx("div", { className: "alt-modal__footer-separator" }), ((showCancel && gtPhoneL) || (showClose || ltePhoneL)) && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: handleClose, className: 'alt-modal__cancel', "data-testid": 'alt-test-modal-cancel' }, { children: "Cancel" })), renderActions(rightActions)] })), ltePhoneL && jsxRuntime.exports.jsx("div", { className: 'alt-modal-wrapper__handle' })] })) })), document.body.querySelector('.altrone') || document.body);
 };
 var Modal$1 = memo(Modal);
 
@@ -21831,6 +21831,17 @@ var FormField = function (_a) {
     return jsxRuntime.exports.jsxs("div", __assign({ className: clsx('alt-form-field', className) }, { children: [label && jsxRuntime.exports.jsxs("label", __assign({ htmlFor: id, className: 'alt-form-field__label' }, { children: [label, " ", isRequired && jsxRuntime.exports.jsx("span", __assign({ className: 'alt-form-field__required-mark' }, { children: "*" }))] })), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-form-field__control' }, { children: typeof children === 'object' ? cloneElement(children, { id: id, disabled: disabled }) : children }))] }));
 };
 var FormField$1 = memo(FormField);
+
+var ButtonContainer = function (_a) {
+    var _b = _a.direction, direction = _b === void 0 ? Direction.horizontal : _b, _c = _a.align, align = _c === void 0 ? Align.start : _c, className = _a.className, children = _a.children, _d = _a.mobileFluid, mobileFluid = _d === void 0 ? false : _d;
+    return jsxRuntime.exports.jsx("div", __assign({ className: clsx('alt-button-container', className, {
+            'alt-button-container--vertical': direction === Direction.vertical,
+            'alt-button-container--align-center': align === Align.center,
+            'alt-button-container--align-end': align === Align.end,
+            'alt-button-container--mobile-fluid': mobileFluid
+        }), "data-testid": 'alt-test-buttoncontainer' }, { children: children }));
+};
+var ButtonContainer$1 = memo(ButtonContainer);
 
 var ContextMenu = function (_a) {
     var menu = _a.menu, onClose = _a.onClose;
@@ -23756,17 +23767,6 @@ var Textarea = function (_a) {
 };
 var Textarea$1 = memo(Textarea);
 
-var ButtonContainer = function (_a) {
-    var _b = _a.direction, direction = _b === void 0 ? Direction.horizontal : _b, _c = _a.align, align = _c === void 0 ? Align.start : _c, className = _a.className, children = _a.children, _d = _a.mobileFluid, mobileFluid = _d === void 0 ? false : _d;
-    return jsxRuntime.exports.jsx("div", __assign({ className: clsx('alt-button-container', className, {
-            'alt-button-container--vertical': direction === Direction.vertical,
-            'alt-button-container--align-center': align === Align.center,
-            'alt-button-container--align-end': align === Align.end,
-            'alt-button-container--mobile-fluid': mobileFluid
-        }), "data-testid": 'alt-test-buttoncontainer' }, { children: children }));
-};
-var ButtonContainer$1 = memo(ButtonContainer);
-
 var DataTableSorting = function (_a) {
     var onClose = _a.onClose;
     var _b = useDataTableContext(), columns = _b.columns, sortKeys = _b.sortKeys, sortBy = _b.sortBy, sortType = _b.sortType, setSortType = _b.setSortType, setSortBy = _b.setSortBy;
@@ -24110,5 +24110,5 @@ var Message = function (_a) {
 };
 var Message$1 = memo(Message);
 
-export { Altrone, BasicInput$1 as BasicInput, Blockquote$1 as Blockquote, Box$1 as Box, Button$1 as Button, ButtonVariant, Checkbox$1 as Checkbox, CheckboxList$1 as CheckboxList, Chips$1 as Chips, ContextMenu$1 as ContextMenu, DEFAULT_OFFSET, DEFAULT_THEME, DataTable$1 as DataTable, DataTableContext, DatePicker$1 as DatePicker, Direction, FloatingBox, Form$1 as Form, FormContext, FormField$1 as FormField, FormGroup$1 as FormGroup, FormGroupVariant, HORIZONTAL_MARGIN, Heading$1 as Heading, Icon$1 as Icon, InputIslandType, Message$1 as Message, Modal$1 as Modal, NavigationList$1 as NavigationList, NumberInput$1 as NumberInput, PADDING, Paragraph$1 as Paragraph, PasswordInput$1 as PasswordInput, Progress$1 as Progress, RadioList$1 as RadioList, Role, ScrollableSelector$1 as ScrollableSelector, Select$1 as Select, Size, Sort, Switcher$1 as Switcher, TabList$1 as TabList, TabListVariant, TextInput$1 as TextInput, Textarea$1 as Textarea, Theme, ThemeContext, Toolbar$1 as Toolbar, ToolbarGroup$1 as ToolbarGroup, ToolbarSeparator$1 as ToolbarSeparator, VERTICAL_MARGIN, ZERO_MARGIN, ZERO_PADDING, useDataTableContext, useFormContext, useLocalization, useMargin, useOffset, usePadding, useResizeObserver, useThemeContext, useWindowSize };
+export { Align, Altrone, BasicInput$1 as BasicInput, Blockquote$1 as Blockquote, Box$1 as Box, Button$1 as Button, ButtonContainer$1 as ButtonContainer, ButtonVariant, Checkbox$1 as Checkbox, CheckboxList$1 as CheckboxList, Chips$1 as Chips, ContextMenu$1 as ContextMenu, DEFAULT_OFFSET, DEFAULT_THEME, DataTable$1 as DataTable, DataTableContext, DatePicker$1 as DatePicker, Direction, FloatingBox, Form$1 as Form, FormContext, FormField$1 as FormField, FormGroup$1 as FormGroup, FormGroupVariant, HORIZONTAL_MARGIN, Heading$1 as Heading, Icon$1 as Icon, InputIslandType, Message$1 as Message, Modal$1 as Modal, NavigationList$1 as NavigationList, NumberInput$1 as NumberInput, PADDING, Paragraph$1 as Paragraph, PasswordInput$1 as PasswordInput, Progress$1 as Progress, RadioList$1 as RadioList, Role, ScrollableSelector$1 as ScrollableSelector, Select$1 as Select, Size, Sort, Switcher$1 as Switcher, TabList$1 as TabList, TabListVariant, TextInput$1 as TextInput, Textarea$1 as Textarea, Theme, ThemeContext, Toolbar$1 as Toolbar, ToolbarGroup$1 as ToolbarGroup, ToolbarSeparator$1 as ToolbarSeparator, VERTICAL_MARGIN, ZERO_MARGIN, ZERO_PADDING, useDataTableContext, useFormContext, useLocalization, useMargin, useOffset, usePadding, useResizeObserver, useThemeContext, useWindowSize };
 //# sourceMappingURL=index.es.js.map
