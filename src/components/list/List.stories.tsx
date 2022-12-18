@@ -160,13 +160,13 @@ ToolbarExample.args = {
   Component: Toolbar,
   children: <>
     <ToolbarGroup>
-      <ToolbarAction icon={<Icon i='local_grocery_store' />} label='Music store' />
-      <ToolbarAction icon={<Icon i='queue_music' />} label='Collection' />
-      <ToolbarAction icon={<Icon i='favorite' />} label='Favorite' />
+      <ToolbarAction icon={<Icon i='local_grocery_store' />} label='Music store' indicator={{ position: 'baseline', value: 15 }} />
+      <ToolbarAction icon={<Icon i='queue_music' />} label='Collection' indicator={{ position: 'baseline' }} />
+      <ToolbarAction icon={<Icon i='favorite' />} label='Favorite' indicator={{ position: 'corner' }} />
     </ToolbarGroup>
     <ToolbarSeparator />
     <ToolbarGroup collapsible>
-      <ToolbarAction icon={<Icon i='interpreter_mode' />} label='Artists' />
+      <ToolbarAction icon={<Icon i='interpreter_mode' />} label='Artists' indicator={{ position: 'corner', value: 22 }} />
       <ToolbarAction icon={<Icon i='library_music' />} label='Albums' />
       <ToolbarAction icon={<Icon i='lyrics' />} label='Songs' />
       <ToolbarAction icon={<Icon i='album' />} label='Playlists' />

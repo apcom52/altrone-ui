@@ -30,8 +30,8 @@ const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionProps>(({ icon,
   >
     <div className='alt-toolbar-action__icon'>{icon}</div>
     <div className='alt-toolbar-action__label'>{label}</div>
-    {indicator && <div className={clsx('alt-button__indicator', {
-      'alt-button__indicator--position-corner': indicator.position === 'corner'
+    {indicator && <div className={clsx('alt-toolbar-action__indicator', {
+      'alt-toolbar-action__indicator--position-corner': indicator.position === 'corner'
     })}>{indicator.value}</div>}
   </button>
 })
