@@ -129,17 +129,30 @@ TabsExample.args = {
   selected: 0,
   tabs: [{
     label: 'Dashboard',
-    value: 0
+    value: 0,
+    indicator: {
+      position: 'baseline',
+      value: 15
+    }
   }, {
     label: 'Accessories',
-    value: 1
+    value: 1,
+    indicator: {
+      position: 'baseline',
+    }
   }, {
     label: 'My home',
     value: 2,
-    disabled: true,
+    indicator: {
+      position: 'corner',
+      value: 9
+    }
   }, {
     label: 'Help and support',
-    value: 3
+    value: 3,
+    indicator: {
+      position: 'corner',
+    }
   }],
   fluid: false,
   dark: false,

@@ -4,6 +4,7 @@ import clsx from "clsx";
 import {useResizeObserver} from "../../../hooks";
 import {Icon} from "../../icons";
 import {Align} from "../../../types/Align";
+import {Indicator} from "../../../types";
 
 export enum TabListVariant {
   default = 'default',
@@ -20,6 +21,7 @@ interface TabListProps {
     value: TabValue
     disabled?: boolean
     href?: string
+    indicator?: Indicator
   }[];
   onChange: (value: TabValue) => void;
   variant?: TabListVariant;
@@ -41,7 +43,7 @@ const TabList = ({
   onChange,
   onCloseTab,
   onAddTab,
-  align = Align.center
+  align = Align.center,
 }: TabListProps) => {
   const tabListRef = useRef(null)
   const selectedTabRef = useRef(null)
@@ -106,6 +108,9 @@ const TabList = ({
         type='button'
       >
         {tab.label}
+        {tab.indicator && <div className={clsx('alt-tab__indicator', {
+          'alt-tab__indicator--position-corner': tab.indicator.position === 'corner'
+        })}>{tab.indicator.value}</div>}
         {(variant === TabListVariant.solid && showCloseButtons && onCloseTab)
           && <button className='alt-tab__close' type='button' onClick={(e) => onCloseClick(e, tab.value)} data-testid='alt-test-tab-close'><Icon i='close' /></button>}
       </Component>
