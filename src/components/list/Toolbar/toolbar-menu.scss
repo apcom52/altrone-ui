@@ -20,6 +20,7 @@
 
   &:hover, &:focus, &.alt-toolbar-menu__item--active {
     background-color: var(--surfaceTrasparent);
-    @include useFocusStyles();
   }
+
+  @include useFocus();
 }
