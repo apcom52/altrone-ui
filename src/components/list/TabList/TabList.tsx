@@ -43,8 +43,8 @@ const TabList = ({
   onAddTab,
   align = Align.center
 }: TabListProps) => {
-  const tabListRef = useRef(null)
-  const selectedTabRef = useRef(null)
+  const tabListRef = useRef<HTMLDivElement>(null)
+  const selectedTabRef = useRef<HTMLButtonElement>(null)
   const [activeBackgroundStyles, setActiveBackgroundStyles] = useState({})
 
   const setBackgroundPosition = useCallback(() => {
@@ -66,7 +66,7 @@ const TabList = ({
     setBackgroundPosition()
   }, [selected, setBackgroundPosition, tabsListObserver, align])
 
-  const onCloseClick = (e, value) => {
+  const onCloseClick = (e: React.MouseEvent, value: TabValue) => {
     if (variant === TabListVariant.solid && onCloseTab) {
       e.stopPropagation()
       onCloseTab(value)

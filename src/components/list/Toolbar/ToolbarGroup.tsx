@@ -1,6 +1,6 @@
 import {memo, ReactNode, useLayoutEffect, useRef, useState} from "react";
 import clsx from "clsx";
-import {Align} from "../../../types/Align";
+import {Align} from "../../../types";
 import {useResizeObserver} from "../../../hooks";
 import ToolbarAction from "./ToolbarAction";
 import {Icon} from "../../icons";
@@ -21,7 +21,7 @@ const ToolbarGroup = ({ children, fluid = false, align = Align.center, collapsib
 
   const toolbarRef = useToolbarContext()
 
-  const groupRef = useRef(null)
+  const groupRef = useRef<HTMLDivElement>(null)
   const preventRerender = useRef(false)
   const invisibleExpandButton = useRef(null)
   const expandButton = useRef(null)
