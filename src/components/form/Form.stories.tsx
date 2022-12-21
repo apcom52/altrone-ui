@@ -60,6 +60,7 @@ TextInputExample.args = {
   hintText: '',
   errorText: '',
   required: false,
+  disabled: false,
   size: Size.medium,
   dark: false
 }

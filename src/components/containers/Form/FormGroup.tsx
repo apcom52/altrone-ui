@@ -16,7 +16,7 @@ interface FormGroupProps extends React.HTMLProps<HTMLDivElement>, FormContextPro
   weights?: number[]
 }
 
-const FormGroup = ({ variant = FormGroupVariant.default, align = Align.start, children, className, required, disabled, weights = [] }: FormGroupProps) => {
+const FormGroup = ({ variant = FormGroupVariant.default, align = Align.start, children, className, required, weights = [] }: FormGroupProps) => {
   const context = useFormContext()
 
   const gridTemplateColumns = useMemo(() => {
@@ -42,7 +42,6 @@ const FormGroup = ({ variant = FormGroupVariant.default, align = Align.start, ch
 
   return <FormContext.Provider value={{
     required: required || context.required,
-    disabled: disabled || context.disabled
   }}>
     <div
       className={clsx('alt-form-group', className, {
