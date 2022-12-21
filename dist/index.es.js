@@ -21782,8 +21782,8 @@ var FloatingBox = forwardRef(function (_a, ref) {
 });
 
 var Form = function (_a) {
-    var className = _a.className, children = _a.children, required = _a.required, disabled = _a.disabled, props = __rest$1(_a, ["className", "children", "required", "disabled"]);
-    return jsxRuntime.exports.jsx(FormContext.Provider, __assign({ value: { required: required, disabled: disabled } }, { children: jsxRuntime.exports.jsx("form", __assign({ className: clsx('alt-form', className), "data-testid": 'alt-test-form' }, props, { children: children })) }));
+    var className = _a.className, children = _a.children, required = _a.required, props = __rest$1(_a, ["className", "children", "required"]);
+    return jsxRuntime.exports.jsx(FormContext.Provider, __assign({ value: { required: required, } }, { children: jsxRuntime.exports.jsx("form", __assign({ className: clsx('alt-form', className), "data-testid": 'alt-test-form' }, props, { children: children })) }));
 };
 var Form$1 = memo(Form);
 
@@ -21794,7 +21794,7 @@ var FormGroupVariant;
     FormGroupVariant["row"] = "row";
 })(FormGroupVariant || (FormGroupVariant = {}));
 var FormGroup = function (_a) {
-    var _b = _a.variant, variant = _b === void 0 ? FormGroupVariant.default : _b, _c = _a.align, align = _c === void 0 ? Align.start : _c, children = _a.children, className = _a.className, required = _a.required, disabled = _a.disabled, _d = _a.weights, weights = _d === void 0 ? [] : _d;
+    var _b = _a.variant, variant = _b === void 0 ? FormGroupVariant.default : _b, _c = _a.align, align = _c === void 0 ? Align.start : _c, children = _a.children, className = _a.className, required = _a.required, _d = _a.weights, weights = _d === void 0 ? [] : _d;
     var context = useFormContext();
     var gridTemplateColumns = useMemo(function () {
         if (variant !== FormGroupVariant.linear) {
@@ -21814,7 +21814,6 @@ var FormGroup = function (_a) {
     }, [variant, children, weights]);
     return jsxRuntime.exports.jsx(FormContext.Provider, __assign({ value: {
             required: required || context.required,
-            disabled: disabled || context.disabled
         } }, { children: jsxRuntime.exports.jsx("div", __assign({ className: clsx('alt-form-group', className, {
                 'alt-form-group--variant-linear': variant === FormGroupVariant.linear,
                 'alt-form-group--variant-row': variant === FormGroupVariant.row,
@@ -21824,11 +21823,11 @@ var FormGroup = function (_a) {
 var FormGroup$1 = memo(FormGroup);
 
 var FormField = function (_a) {
-    var className = _a.className, label = _a.label, children = _a.children, _b = _a.required, required = _b === void 0 ? false : _b, disabled = _a.disabled;
+    var className = _a.className, label = _a.label, children = _a.children, _b = _a.required, required = _b === void 0 ? false : _b;
     var context = useFormContext();
     var id = useId();
     var isRequired = required || context.required;
-    return jsxRuntime.exports.jsxs("div", __assign({ className: clsx('alt-form-field', className) }, { children: [label && jsxRuntime.exports.jsxs("label", __assign({ htmlFor: id, className: 'alt-form-field__label' }, { children: [label, " ", isRequired && jsxRuntime.exports.jsx("span", __assign({ className: 'alt-form-field__required-mark' }, { children: "*" }))] })), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-form-field__control' }, { children: typeof children === 'object' ? cloneElement(children, { id: id, disabled: disabled }) : children }))] }));
+    return jsxRuntime.exports.jsxs("div", __assign({ className: clsx('alt-form-field', className) }, { children: [label && jsxRuntime.exports.jsxs("label", __assign({ htmlFor: id, className: 'alt-form-field__label' }, { children: [label, " ", isRequired && jsxRuntime.exports.jsx("span", __assign({ className: 'alt-form-field__required-mark' }, { children: "*" }))] })), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-form-field__control' }, { children: typeof children === 'object' ? cloneElement(children, __assign({ id: id }, children.props)) : children }))] }));
 };
 var FormField$1 = memo(FormField);
 
