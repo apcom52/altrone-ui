@@ -296,26 +296,47 @@ NavigationListExample.args = {
       label: 'My notes',
       value: 'my',
       icon: <Icon i='collections_bookmark' />,
+      indicator: {
+        position: 'baseline',
+        value: 15
+      },
       submenu: [{
         label: 'Recent notes',
         value: 'recent',
         icon: <Icon i='collections_bookmark' />,
+        indicator: {
+          position: 'baseline',
+          value: 15
+        },
       }, {
         label: 'All notes',
-        value: 'all'
+        value: 'all',
+        indicator: {
+          position: 'baseline',
+        },
       }]
     }, {
       label: 'Shared notes',
       value: 'shared',
-      icon: <Icon i='folder_shared' />
+      icon: <Icon i='folder_shared' />,
+      indicator:  {
+        position: 'baseline',
+      },
     }, {
       label: 'Favorites',
       value: 'favorites',
-      icon: <Icon i='favorite_border' />
+      icon: <Icon i='favorite_border' />,
+      indicator: {
+        position: 'corner'
+      },
     },  {
       label: 'Settings',
       value: 'settings',
       icon: <Icon i='settings' />,
+      indicator: {
+        position: 'corner',
+        value: 15
+      },
       submenu: [
         {
           label: 'Appearance',
@@ -326,17 +347,28 @@ NavigationListExample.args = {
           label: 'Privacy',
           value: 'privacy',
           icon: <Icon i='lock' />,
-          submenu: []
+          submenu: [],
+          indicator: {
+            position: 'corner',
+          },
         }, {
           label: 'Settings for username@mail.com',
           value: 'account',
           icon: <Icon i='person' />,
+          indicator: {
+            position: 'corner',
+            value: 15
+          },
           submenu: [{
             label: 'Account information',
             value: 'info'
           }, {
             label: 'Sync',
-            value: 'sync'
+            value: 'sync',
+            indicator: {
+              type: 'baseline',
+              value: 5
+            }
           }, {
             label: 'Credentials',
             value: 'cred'
