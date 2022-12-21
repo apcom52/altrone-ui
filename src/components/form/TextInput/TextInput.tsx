@@ -1,5 +1,5 @@
 import {forwardRef, memo, useEffect, useRef, useState} from "react";
-import {Size, WithAltroneOffsets, WithoutDefaultOffsets} from "../../../types";
+import {Size} from "../../../types";
 import './text-input.scss';
 import clsx from "clsx";
 import {useInputIsland} from "./useInputIsland";
@@ -25,7 +25,7 @@ export interface InputIsland {
   content: string | JSX.Element | JSX.Element[] | InputIslandAction[]
 }
 
-export interface TextInputProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLInputElement>>, 'value' | 'onChange' | 'size'>, WithAltroneOffsets {
+export interface TextInputProps extends Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'onChange' | 'size'> {
   value: string
   onChange: (value: string) => void
   classNames?: {
@@ -46,7 +46,7 @@ export interface TextInputProps extends Omit<WithoutDefaultOffsets<React.HTMLPro
 const DEFAULT_HORIZONTAL_PADDING = 12
 const DEFAULT_ISLAND_OFFSET = 8
 
-const TextInput = forwardRef<HTMLInputElement>(({
+const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
   onChange,
   className,
   classNames = {},
@@ -64,7 +64,7 @@ const TextInput = forwardRef<HTMLInputElement>(({
   Component,
   size = Size.medium,
   ...props
-}: TextInputProps, ref) => {
+}, ref) => {
   const _leftIsland = useInputIsland(leftIsland, leftIcon, prefix, disabled)
   const _rightIsland = useInputIsland(rightIsland, rightIcon, suffix, disabled)
 

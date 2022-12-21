@@ -21,5 +21,5 @@ interface ModalProps extends PropsWithChildren {
     reduceMotion?: boolean;
     className?: string;
 }
-declare const _default: import("react").MemoExoticComponent<({ title, children, onClose, size, fluid, actions, showClose, showCancel, closeOnOverlay, reduceMotion, className }: ModalProps) => JSX.Element>;
+declare const _default: import("react").MemoExoticComponent<({ title, children, onClose, size, fluid, actions, showClose, showCancel, closeOnOverlay, reduceMotion, className }: ModalProps) => import("react").ReactPortal>;
 export default _default;

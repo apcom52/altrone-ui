@@ -95,6 +95,12 @@ type Point = {
     y: number;
 };
 
+declare enum Align {
+    start = "start",
+    center = "center",
+    end = "end"
+}
+
 declare const DEFAULT_OFFSET = 4;
 declare const ZERO_MARGIN: Offset;
 declare const ZERO_PADDING: Offset;
@@ -144,7 +150,7 @@ interface DataTableProps<T = any> {
     mobileColumns?: string[];
     className?: string;
 }
-declare const _default$v: react.MemoExoticComponent<({ data, columns, limit, searchBy, searchFunc, sortKeys, filters, mobileColumns, className }: DataTableProps<any>) => JSX.Element>;
+declare const _default$w: react.MemoExoticComponent<({ data, columns, limit, searchBy, searchFunc, sortKeys, filters, mobileColumns, className }: DataTableProps<any>) => JSX.Element>;
 
 interface DataTableFilter {
     accessor: string;
@@ -290,12 +296,12 @@ interface ButtonProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLBut
     dropdown?: ContextMenuType;
     isIcon?: boolean;
 }
-declare const _default$u: react.MemoExoticComponent<react.ForwardRefExoticComponent<ButtonProps & react.RefAttributes<HTMLButtonElement>>>;
+declare const _default$v: react.MemoExoticComponent<react.ForwardRefExoticComponent<ButtonProps & react.RefAttributes<HTMLButtonElement>>>;
 
 interface BoxProps extends WithoutDefaultOffsets, WithAltroneOffsets {
     tagName?: keyof JSX.IntrinsicElements;
 }
-declare const _default$t: react.MemoExoticComponent<react.ForwardRefExoticComponent<BoxProps & react.RefAttributes<unknown>>>;
+declare const _default$u: react.MemoExoticComponent<react.ForwardRefExoticComponent<BoxProps & react.RefAttributes<unknown>>>;
 
 declare enum FloatingBoxMobileBehaviour {
     default = "default",
@@ -320,13 +326,7 @@ declare const FloatingBox: react.ForwardRefExoticComponent<FloatingBoxProps & re
 
 interface FormProps extends Omit<React.HTMLProps<HTMLFormElement>, 'required' | 'disabled'>, FormContextProps {
 }
-declare const _default$s: react.MemoExoticComponent<({ className, children, required, disabled, ...props }: FormProps) => JSX.Element>;
-
-declare enum Align {
-    start = "start",
-    center = "center",
-    end = "end"
-}
+declare const _default$t: react.MemoExoticComponent<({ className, children, required, disabled, ...props }: FormProps) => JSX.Element>;
 
 declare enum FormGroupVariant {
     default = "default",
@@ -338,14 +338,14 @@ interface FormGroupProps extends React.HTMLProps<HTMLDivElement>, FormContextPro
     align?: Align;
     weights?: number[];
 }
-declare const _default$r: react.MemoExoticComponent<({ variant, align, children, className, required, disabled, weights }: FormGroupProps) => JSX.Element>;
+declare const _default$s: react.MemoExoticComponent<({ variant, align, children, className, required, disabled, weights }: FormGroupProps) => JSX.Element>;
 
 interface FormFieldProps extends Omit<React.HTMLProps<HTMLDivElement>, 'children'>, FormContextProps {
     children: ReactElement;
     label?: string;
     required?: boolean;
 }
-declare const _default$q: react.MemoExoticComponent<({ className, label, children, required, disabled }: FormFieldProps) => JSX.Element>;
+declare const _default$r: react.MemoExoticComponent<({ className, label, children, required, disabled }: FormFieldProps) => JSX.Element>;
 
 interface ModalProps extends PropsWithChildren {
     onClose: () => void;
@@ -366,7 +366,14 @@ interface ModalProps extends PropsWithChildren {
     reduceMotion?: boolean;
     className?: string;
 }
-declare const _default$p: react.MemoExoticComponent<({ title, children, onClose, size, fluid, actions, showClose, showCancel, closeOnOverlay, reduceMotion, className }: ModalProps) => JSX.Element>;
+declare const _default$q: react.MemoExoticComponent<({ title, children, onClose, size, fluid, actions, showClose, showCancel, closeOnOverlay, reduceMotion, className }: ModalProps) => react.ReactPortal>;
+
+interface ButtonContainerProps extends React.HTMLProps<HTMLDivElement> {
+    direction?: Direction;
+    align?: Align;
+    mobileFluid?: boolean;
+}
+declare const _default$p: react.MemoExoticComponent<({ direction, align, className, children, mobileFluid }: ButtonContainerProps) => JSX.Element>;
 
 interface BasicInputProps<T = string> {
     errorText?: string;
@@ -393,7 +400,7 @@ interface InputIsland {
     type: InputIslandType;
     content: string | JSX.Element | JSX.Element[] | InputIslandAction[];
 }
-interface TextInputProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTMLInputElement>>, 'value' | 'onChange' | 'size'>, WithAltroneOffsets {
+interface TextInputProps extends Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'onChange' | 'size'> {
     value: string;
     onChange: (value: string) => void;
     classNames?: {
@@ -410,7 +417,7 @@ interface TextInputProps extends Omit<WithoutDefaultOffsets<React.HTMLProps<HTML
     size?: Size;
     Component?: JSX.Element;
 }
-declare const _default$n: react.MemoExoticComponent<react.ForwardRefExoticComponent<react.RefAttributes<HTMLInputElement>>>;
+declare const _default$n: react.MemoExoticComponent<react.ForwardRefExoticComponent<Pick<TextInputProps, "onClick" | "title" | "disabled" | "height" | "width" | "value" | "children" | "accept" | "acceptCharset" | "action" | "allowFullScreen" | "allowTransparency" | "alt" | "as" | "async" | "autoComplete" | "autoFocus" | "autoPlay" | "capture" | "cellPadding" | "cellSpacing" | "charSet" | "challenge" | "checked" | "cite" | "classID" | "cols" | "colSpan" | "content" | "controls" | "coords" | "crossOrigin" | "data" | "dateTime" | "default" | "defer" | "download" | "encType" | "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "frameBorder" | "headers" | "high" | "href" | "hrefLang" | "htmlFor" | "httpEquiv" | "integrity" | "keyParams" | "keyType" | "kind" | "label" | "list" | "loop" | "low" | "manifest" | "marginHeight" | "marginWidth" | "max" | "maxLength" | "media" | "mediaGroup" | "method" | "min" | "minLength" | "multiple" | "muted" | "name" | "noValidate" | "open" | "optimum" | "pattern" | "placeholder" | "playsInline" | "poster" | "preload" | "readOnly" | "rel" | "required" | "reversed" | "rows" | "rowSpan" | "sandbox" | "scope" | "scoped" | "scrolling" | "seamless" | "selected" | "shape" | "size" | "sizes" | "span" | "src" | "srcDoc" | "srcLang" | "srcSet" | "start" | "step" | "summary" | "target" | "type" | "useMap" | "wmode" | "wrap" | "defaultChecked" | "defaultValue" | "suppressContentEditableWarning" | "suppressHydrationWarning" | "accessKey" | "className" | "contentEditable" | "contextMenu" | "dir" | "draggable" | "hidden" | "id" | "lang" | "nonce" | "slot" | "spellCheck" | "style" | "tabIndex" | "translate" | "radioGroup" | "role" | "about" | "datatype" | "inlist" | "prefix" | "property" | "resource" | "typeof" | "vocab" | "autoCapitalize" | "autoCorrect" | "autoSave" | "color" | "itemProp" | "itemScope" | "itemType" | "itemID" | "itemRef" | "results" | "security" | "unselectable" | "inputMode" | "is" | "aria-activedescendant" | "aria-atomic" | "aria-autocomplete" | "aria-busy" | "aria-checked" | "aria-colcount" | "aria-colindex" | "aria-colspan" | "aria-controls" | "aria-current" | "aria-describedby" | "aria-details" | "aria-disabled" | "aria-dropeffect" | "aria-errormessage" | "aria-expanded" | "aria-flowto" | "aria-grabbed" | "aria-haspopup" | "aria-hidden" | "aria-invalid" | "aria-keyshortcuts" | "aria-label" | "aria-labelledby" | "aria-level" | "aria-live" | "aria-modal" | "aria-multiline" | "aria-multiselectable" | "aria-orientation" | "aria-owns" | "aria-placeholder" | "aria-posinset" | "aria-pressed" | "aria-readonly" | "aria-relevant" | "aria-required" | "aria-roledescription" | "aria-rowcount" | "aria-rowindex" | "aria-rowspan" | "aria-selected" | "aria-setsize" | "aria-sort" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "dangerouslySetInnerHTML" | "onCopy" | "onCopyCapture" | "onCut" | "onCutCapture" | "onPaste" | "onPasteCapture" | "onCompositionEnd" | "onCompositionEndCapture" | "onCompositionStart" | "onCompositionStartCapture" | "onCompositionUpdate" | "onCompositionUpdateCapture" | "onFocus" | "onFocusCapture" | "onBlur" | "onBlurCapture" | "onChange" | "onChangeCapture" | "onBeforeInput" | "onBeforeInputCapture" | "onInput" | "onInputCapture" | "onReset" | "onResetCapture" | "onSubmit" | "onSubmitCapture" | "onInvalid" | "onInvalidCapture" | "onLoad" | "onLoadCapture" | "onError" | "onErrorCapture" | "onKeyDown" | "onKeyDownCapture" | "onKeyPress" | "onKeyPressCapture" | "onKeyUp" | "onKeyUpCapture" | "onAbort" | "onAbortCapture" | "onCanPlay" | "onCanPlayCapture" | "onCanPlayThrough" | "onCanPlayThroughCapture" | "onDurationChange" | "onDurationChangeCapture" | "onEmptied" | "onEmptiedCapture" | "onEncrypted" | "onEncryptedCapture" | "onEnded" | "onEndedCapture" | "onLoadedData" | "onLoadedDataCapture" | "onLoadedMetadata" | "onLoadedMetadataCapture" | "onLoadStart" | "onLoadStartCapture" | "onPause" | "onPauseCapture" | "onPlay" | "onPlayCapture" | "onPlaying" | "onPlayingCapture" | "onProgress" | "onProgressCapture" | "onRateChange" | "onRateChangeCapture" | "onResize" | "onResizeCapture" | "onSeeked" | "onSeekedCapture" | "onSeeking" | "onSeekingCapture" | "onStalled" | "onStalledCapture" | "onSuspend" | "onSuspendCapture" | "onTimeUpdate" | "onTimeUpdateCapture" | "onVolumeChange" | "onVolumeChangeCapture" | "onWaiting" | "onWaitingCapture" | "onAuxClick" | "onAuxClickCapture" | "onClickCapture" | "onContextMenu" | "onContextMenuCapture" | "onDoubleClick" | "onDoubleClickCapture" | "onDrag" | "onDragCapture" | "onDragEnd" | "onDragEndCapture" | "onDragEnter" | "onDragEnterCapture" | "onDragExit" | "onDragExitCapture" | "onDragLeave" | "onDragLeaveCapture" | "onDragOver" | "onDragOverCapture" | "onDragStart" | "onDragStartCapture" | "onDrop" | "onDropCapture" | "onMouseDown" | "onMouseDownCapture" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseMoveCapture" | "onMouseOut" | "onMouseOutCapture" | "onMouseOver" | "onMouseOverCapture" | "onMouseUp" | "onMouseUpCapture" | "onSelect" | "onSelectCapture" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerUp" | "onPointerUpCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerOver" | "onPointerOverCapture" | "onPointerOut" | "onPointerOutCapture" | "onGotPointerCapture" | "onGotPointerCaptureCapture" | "onLostPointerCapture" | "onLostPointerCaptureCapture" | "onScroll" | "onScrollCapture" | "onWheel" | "onWheelCapture" | "onAnimationStart" | "onAnimationStartCapture" | "onAnimationEnd" | "onAnimationEndCapture" | "onAnimationIteration" | "onAnimationIterationCapture" | "onTransitionEnd" | "onTransitionEndCapture" | "key" | "leftIcon" | "rightIcon" | "errorText" | "hintText" | "classNames" | "leftIsland" | "rightIsland" | "suffix" | "Component"> & react.RefAttributes<HTMLInputElement>>>;
 
 interface PasswordInputProps extends TextInputProps {
     showControls?: boolean;
@@ -663,4 +670,4 @@ interface MessageProps extends Omit<React.HTMLProps<HTMLDivElement>, 'title' | '
 }
 declare const _default: react.MemoExoticComponent<({ title, children, role, IconComponent, className }: MessageProps) => JSX.Element>;
 
-export { Altrone, _default$o as BasicInput, BasicInputProps, _default$2 as Blockquote, _default$t as Box, _default$u as Button, ButtonVariant, _default$k as Checkbox, _default$j as CheckboxList, _default$9 as Chips, ContextAction, _default$a as ContextMenu, ContextMenuType, ContextSeparator, DEFAULT_OFFSET, DEFAULT_THEME, _default$v as DataTable, DataTableAppliedFilter, DataTableContext, DataTableContextType, DataTableFilter, _default$g as DatePicker, Direction, FloatingBox, _default$s as Form, FormContext, FormContextProps, _default$q as FormField, _default$r as FormGroup, FormGroupVariant, HORIZONTAL_MARGIN, _default$3 as Heading, _default$c as Icon, InputIsland, InputIslandAction, InputIslandType, Margin, _default as Message, _default$p as Modal, _default$4 as NavigationList, _default$l as NumberInput, OffsetObject, Option, OptionParent, PADDING, Padding, _default$1 as Paragraph, ParentContextAction, _default$m as PasswordInput, Point, _default$b as Progress, _default$e as RadioList, Role, _default$f as ScrollableSelector, _default$i as Select, Size, Sort, _default$h as Switcher, _default$8 as TabList, TabListVariant, _default$n as TextInput, TextInputProps, _default$d as Textarea, Theme, ThemeConfig, ThemeContext, _default$7 as Toolbar, _default$6 as ToolbarGroup, _default$5 as ToolbarSeparator, VERTICAL_MARGIN, WithAltroneOffsets, WithoutDefaultOffsets, ZERO_MARGIN, ZERO_PADDING, useDataTableContext, useFormContext, useLocalization, useMargin, useOffset, usePadding, useResizeObserver, useThemeContext, useWindowSize };
+export { Align, Altrone, _default$o as BasicInput, BasicInputProps, _default$2 as Blockquote, _default$u as Box, _default$v as Button, _default$p as ButtonContainer, ButtonVariant, _default$k as Checkbox, _default$j as CheckboxList, _default$9 as Chips, ContextAction, _default$a as ContextMenu, ContextMenuType, ContextSeparator, DEFAULT_OFFSET, DEFAULT_THEME, _default$w as DataTable, DataTableAppliedFilter, DataTableContext, DataTableContextType, DataTableFilter, _default$g as DatePicker, Direction, FloatingBox, _default$t as Form, FormContext, FormContextProps, _default$r as FormField, _default$s as FormGroup, FormGroupVariant, HORIZONTAL_MARGIN, _default$3 as Heading, _default$c as Icon, InputIsland, InputIslandAction, InputIslandType, Margin, _default as Message, _default$q as Modal, _default$4 as NavigationList, _default$l as NumberInput, OffsetObject, Option, OptionParent, PADDING, Padding, _default$1 as Paragraph, ParentContextAction, _default$m as PasswordInput, Point, _default$b as Progress, _default$e as RadioList, Role, _default$f as ScrollableSelector, _default$i as Select, Size, Sort, _default$h as Switcher, _default$8 as TabList, TabListVariant, _default$n as TextInput, TextInputProps, _default$d as Textarea, Theme, ThemeConfig, ThemeContext, _default$7 as Toolbar, _default$6 as ToolbarGroup, _default$5 as ToolbarSeparator, VERTICAL_MARGIN, WithAltroneOffsets, WithoutDefaultOffsets, ZERO_MARGIN, ZERO_PADDING, useDataTableContext, useFormContext, useLocalization, useMargin, useOffset, usePadding, useResizeObserver, useThemeContext, useWindowSize };

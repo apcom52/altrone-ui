@@ -28,6 +28,7 @@ function _interopNamespace(e) {
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var React__namespace = /*#__PURE__*/_interopNamespace(React);
 var ReactDOM__namespace = /*#__PURE__*/_interopNamespace(ReactDOM);
+var ReactDOM__default = /*#__PURE__*/_interopDefaultLegacy(ReactDOM);
 
 exports.Theme = void 0;
 (function (Theme) {
@@ -61,6 +62,13 @@ exports.Sort = void 0;
     Sort["asc"] = "asc";
     Sort["desc"] = "desc";
 })(exports.Sort || (exports.Sort = {}));
+
+exports.Align = void 0;
+(function (Align) {
+    Align["start"] = "start";
+    Align["center"] = "center";
+    Align["end"] = "end";
+})(exports.Align || (exports.Align = {}));
 
 var DEFAULT_OFFSET = 4;
 var ZERO_MARGIN = {};
@@ -21644,13 +21652,6 @@ raf$1.exports.polyfill = function(object) {
   object.cancelAnimationFrame = caf;
 };
 
-var Align;
-(function (Align) {
-    Align["start"] = "start";
-    Align["center"] = "center";
-    Align["end"] = "end";
-})(Align || (Align = {}));
-
 var Icon = function (_a) {
     var i = _a.i, size = _a.size, className = _a.className, _b = _a.style, style = _b === void 0 ? 'outlined' : _b, props = __rest$1(_a, ["i", "size", "className", "style"]);
     return jsxRuntime.exports.jsx(Box$1, __assign({ tagName: 'span', className: clsx('alt-icon', "material-symbols-".concat(style), className), style: { fontSize: size || '1em' } }, props, { children: i }));
@@ -21684,7 +21685,7 @@ var Modal = function (_a) {
         var leftActions = [];
         var rightActions = [];
         actions.forEach(function (action) {
-            if (action.align === Align.start) {
+            if (action.align === exports.Align.start) {
                 leftActions.push(action);
             }
             else {
@@ -21718,13 +21719,13 @@ var Modal = function (_a) {
             handleClose();
         }
     };
-    return jsxRuntime.exports.jsx("div", __assign({ className: 'alt-modal-wrapper', ref: wrapperRef, onClick: closeOnOverlay && onBackdropClick }, { children: jsxRuntime.exports.jsxs("div", __assign({ className: clsx('alt-modal', className, (_b = {
+    return ReactDOM__default["default"].createPortal(jsxRuntime.exports.jsx("div", __assign({ className: 'alt-modal-wrapper', ref: wrapperRef, onClick: closeOnOverlay && onBackdropClick }, { children: jsxRuntime.exports.jsxs("div", __assign({ className: clsx('alt-modal', className, (_b = {
                     'alt-modal--size-small': size === exports.Size.small,
                     'alt-modal--size-large': size === exports.Size.large,
                     'alt-modal--fluid': fluid
                 },
                 _b[CLS_OPENED] = reduceMotion,
-                _b)), ref: modalRef, "data-testid": 'alt-test-modal' }, { children: [title && jsxRuntime.exports.jsx("div", __assign({ className: "alt-modal__title", "data-testid": 'alt-test-modal-title' }, { children: title })), showClose && gtPhoneL && jsxRuntime.exports.jsx("button", __assign({ className: 'alt-modal__close', type: 'button', onClick: handleClose, "data-testid": 'alt-test-modal-close' }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'close' }) })), jsxRuntime.exports.jsx("div", __assign({ className: "alt-modal__content", "data-testid": 'alt-test-modal-content' }, { children: children })), (showCancel || actions.length > 0) && jsxRuntime.exports.jsxs("div", __assign({ className: 'alt-modal__footer' }, { children: [renderActions(leftActions), jsxRuntime.exports.jsx("div", { className: "alt-modal__footer-separator" }), ((showCancel && gtPhoneL) || (showClose || ltePhoneL)) && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: handleClose, className: 'alt-modal__cancel', "data-testid": 'alt-test-modal-cancel' }, { children: "Cancel" })), renderActions(rightActions)] })), ltePhoneL && jsxRuntime.exports.jsx("div", { className: 'alt-modal-wrapper__handle' })] })) }));
+                _b)), ref: modalRef, "data-testid": 'alt-test-modal' }, { children: [title && jsxRuntime.exports.jsx("div", __assign({ className: "alt-modal__title", "data-testid": 'alt-test-modal-title' }, { children: title })), showClose && gtPhoneL && jsxRuntime.exports.jsx("button", __assign({ className: 'alt-modal__close', type: 'button', onClick: handleClose, "data-testid": 'alt-test-modal-close' }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'close' }) })), jsxRuntime.exports.jsx("div", __assign({ className: "alt-modal__content", "data-testid": 'alt-test-modal-content' }, { children: children })), (showCancel || actions.length > 0) && jsxRuntime.exports.jsxs("div", __assign({ className: 'alt-modal__footer' }, { children: [renderActions(leftActions), jsxRuntime.exports.jsx("div", { className: "alt-modal__footer-separator" }), ((showCancel && gtPhoneL) || (showClose || ltePhoneL)) && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: handleClose, className: 'alt-modal__cancel', "data-testid": 'alt-test-modal-cancel' }, { children: "Cancel" })), renderActions(rightActions)] })), ltePhoneL && jsxRuntime.exports.jsx("div", { className: 'alt-modal-wrapper__handle' })] })) })), document.body.querySelector('.altrone') || document.body);
 };
 var Modal$1 = React.memo(Modal);
 
@@ -21820,7 +21821,7 @@ exports.FormGroupVariant = void 0;
     FormGroupVariant["row"] = "row";
 })(exports.FormGroupVariant || (exports.FormGroupVariant = {}));
 var FormGroup = function (_a) {
-    var _b = _a.variant, variant = _b === void 0 ? exports.FormGroupVariant.default : _b, _c = _a.align, align = _c === void 0 ? Align.start : _c, children = _a.children, className = _a.className, required = _a.required, disabled = _a.disabled, _d = _a.weights, weights = _d === void 0 ? [] : _d;
+    var _b = _a.variant, variant = _b === void 0 ? exports.FormGroupVariant.default : _b, _c = _a.align, align = _c === void 0 ? exports.Align.start : _c, children = _a.children, className = _a.className, required = _a.required, disabled = _a.disabled, _d = _a.weights, weights = _d === void 0 ? [] : _d;
     var context = useFormContext();
     var gridTemplateColumns = React.useMemo(function () {
         if (variant !== exports.FormGroupVariant.linear) {
@@ -21844,7 +21845,7 @@ var FormGroup = function (_a) {
         } }, { children: jsxRuntime.exports.jsx("div", __assign({ className: clsx('alt-form-group', className, {
                 'alt-form-group--variant-linear': variant === exports.FormGroupVariant.linear,
                 'alt-form-group--variant-row': variant === exports.FormGroupVariant.row,
-                'alt-form-group--align-end': align === Align.end
+                'alt-form-group--align-end': align === exports.Align.end
             }), style: { gridTemplateColumns: gridTemplateColumns }, "data-testid": 'alt-test-form-group' }, { children: children })) }));
 };
 var FormGroup$1 = React.memo(FormGroup);
@@ -21857,6 +21858,17 @@ var FormField = function (_a) {
     return jsxRuntime.exports.jsxs("div", __assign({ className: clsx('alt-form-field', className) }, { children: [label && jsxRuntime.exports.jsxs("label", __assign({ htmlFor: id, className: 'alt-form-field__label' }, { children: [label, " ", isRequired && jsxRuntime.exports.jsx("span", __assign({ className: 'alt-form-field__required-mark' }, { children: "*" }))] })), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-form-field__control' }, { children: typeof children === 'object' ? React.cloneElement(children, { id: id, disabled: disabled }) : children }))] }));
 };
 var FormField$1 = React.memo(FormField);
+
+var ButtonContainer = function (_a) {
+    var _b = _a.direction, direction = _b === void 0 ? exports.Direction.horizontal : _b, _c = _a.align, align = _c === void 0 ? exports.Align.start : _c, className = _a.className, children = _a.children, _d = _a.mobileFluid, mobileFluid = _d === void 0 ? false : _d;
+    return jsxRuntime.exports.jsx("div", __assign({ className: clsx('alt-button-container', className, {
+            'alt-button-container--vertical': direction === exports.Direction.vertical,
+            'alt-button-container--align-center': align === exports.Align.center,
+            'alt-button-container--align-end': align === exports.Align.end,
+            'alt-button-container--mobile-fluid': mobileFluid
+        }), "data-testid": 'alt-test-buttoncontainer' }, { children: children }));
+};
+var ButtonContainer$1 = React.memo(ButtonContainer);
 
 var ContextMenu = function (_a) {
     var menu = _a.menu, onClose = _a.onClose;
@@ -21939,7 +21951,7 @@ exports.TabListVariant = void 0;
     TabListVariant["solid"] = "solid";
 })(exports.TabListVariant || (exports.TabListVariant = {}));
 var TabList = function (_a) {
-    var selected = _a.selected, _b = _a.tabs, tabs = _b === void 0 ? [] : _b, _c = _a.variant, variant = _c === void 0 ? exports.TabListVariant.default : _c, _d = _a.fluid, fluid = _d === void 0 ? false : _d, _e = _a.showCloseButtons, showCloseButtons = _e === void 0 ? true : _e, _f = _a.showAddTabButton, showAddTabButton = _f === void 0 ? true : _f, onChange = _a.onChange, onCloseTab = _a.onCloseTab, onAddTab = _a.onAddTab, _g = _a.align, align = _g === void 0 ? Align.center : _g;
+    var selected = _a.selected, _b = _a.tabs, tabs = _b === void 0 ? [] : _b, _c = _a.variant, variant = _c === void 0 ? exports.TabListVariant.default : _c, _d = _a.fluid, fluid = _d === void 0 ? false : _d, _e = _a.showCloseButtons, showCloseButtons = _e === void 0 ? true : _e, _f = _a.showAddTabButton, showAddTabButton = _f === void 0 ? true : _f, onChange = _a.onChange, onCloseTab = _a.onCloseTab, onAddTab = _a.onAddTab, _g = _a.align, align = _g === void 0 ? exports.Align.center : _g;
     var tabListRef = React.useRef(null);
     var selectedTabRef = React.useRef(null);
     var _h = React.useState({}), activeBackgroundStyles = _h[0], setActiveBackgroundStyles = _h[1];
@@ -21974,8 +21986,8 @@ var TabList = function (_a) {
             'alt-tab-list--fluid': fluid,
             'alt-tab-list--variant-border': variant === exports.TabListVariant.border,
             'alt-tab-list--variant-solid': variant === exports.TabListVariant.solid,
-            'alt-tab-list--align-start': align === Align.start,
-            'alt-tab-list--align-end': align === Align.end,
+            'alt-tab-list--align-start': align === exports.Align.start,
+            'alt-tab-list--align-end': align === exports.Align.end,
         }), ref: tabListRef, "data-testid": 'alt-test-tab-list' }, { children: [variant !== exports.TabListVariant.solid && jsxRuntime.exports.jsx("div", { className: 'alt-tab-list__active-background', style: activeBackgroundStyles }), tabs.map(function (tab, tabIndex) {
                 var isSelected = tab.value === selected;
                 return jsxRuntime.exports.jsxs(Component, __assign({ className: clsx('alt-tab', {
@@ -22041,7 +22053,7 @@ var ToolbarAction = React.forwardRef(function (_a, ref) {
 var ToolbarAction$1 = React.memo(ToolbarAction);
 
 var ToolbarGroup = function (_a) {
-    var children = _a.children, _b = _a.fluid, fluid = _b === void 0 ? false : _b, _c = _a.align, align = _c === void 0 ? Align.center : _c, _d = _a.collapsible, collapsible = _d === void 0 ? false : _d;
+    var children = _a.children, _b = _a.fluid, fluid = _b === void 0 ? false : _b, _c = _a.align, align = _c === void 0 ? exports.Align.center : _c, _d = _a.collapsible, collapsible = _d === void 0 ? false : _d;
     var _e = React.useState([]), context = _e[0], setContext = _e[1];
     var _f = React.useState(false), isContextVisible = _f[0], setIsContextVisible = _f[1];
     var toolbarRef = useToolbarContext();
@@ -22083,8 +22095,8 @@ var ToolbarGroup = function (_a) {
     }, [width, collapsible]);
     return jsxRuntime.exports.jsxs("div", __assign({ className: clsx('alt-toolbar-group', {
             'alt-toolbar-group--fluid': fluid,
-            'alt-toolbar-group--align-start': align === Align.start,
-            'alt-toolbar-group--align-end': align === Align.end,
+            'alt-toolbar-group--align-start': align === exports.Align.start,
+            'alt-toolbar-group--align-end': align === exports.Align.end,
             'alt-toolbar-group--collapsible': collapsible
         }), "data-testid": 'alt-test-toolbarGroup', ref: groupRef }, { children: [!collapsible ? children : Array.isArray(children) ?
                 children.slice(0, children.length - context.length)
@@ -23419,7 +23431,7 @@ var SelectOption = function (_a) {
 var SelectOption$1 = React.memo(SelectOption);
 
 var ScrollableSelector = function (_a) {
-    var value = _a.value, _b = _a.options, options = _b === void 0 ? [] : _b, _c = _a.width, width = _c === void 0 ? '100%' : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.align, align = _e === void 0 ? Align.center : _e, onChange = _a.onChange, className = _a.className;
+    var value = _a.value, _b = _a.options, options = _b === void 0 ? [] : _b, _c = _a.width, width = _c === void 0 ? '100%' : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.align, align = _e === void 0 ? exports.Align.center : _e, onChange = _a.onChange, className = _a.className;
     var selectorRef = React.useRef(null);
     React.useEffect(function () {
         var _a;
@@ -23430,8 +23442,8 @@ var ScrollableSelector = function (_a) {
         });
     }, [value]);
     return jsxRuntime.exports.jsx("div", __assign({ ref: selectorRef, className: clsx('alt-scrollable-selector', className, {
-            'alt-scrollable-selector--align-start': align === Align.start,
-            'alt-scrollable-selector--align-end': align === Align.end,
+            'alt-scrollable-selector--align-start': align === exports.Align.start,
+            'alt-scrollable-selector--align-end': align === exports.Align.end,
         }), style: { width: width }, "data-testid": 'alt-test-scrollable-selector' }, { children: options.map(function (option, optionIndex) { return (jsxRuntime.exports.jsx("button", __assign({ className: clsx('alt-scrollable-selector__option', {
                 'alt-scrollable-selector__option--selected': value === option.value
             }), onClick: function () { return onChange(option.value); }, disabled: disabled || option.disabled, type: 'button' }, { children: option.label }), optionIndex)); }) }));
@@ -23551,12 +23563,12 @@ var Select = function (_a) {
 var Select$1 = React.memo(Select);
 
 var Switcher = function (_a) {
-    var children = _a.children, _b = _a.danger, danger = _b === void 0 ? false : _b, _c = _a.align, align = _c === void 0 ? Align.start : _c, onChange = _a.onChange, id = _a.id, className = _a.className, disabled = _a.disabled, errorText = _a.errorText, hintText = _a.hintText, props = __rest$1(_a, ["children", "danger", "align", "onChange", "id", "className", "disabled", "errorText", "hintText"]);
+    var children = _a.children, _b = _a.danger, danger = _b === void 0 ? false : _b, _c = _a.align, align = _c === void 0 ? exports.Align.start : _c, onChange = _a.onChange, id = _a.id, className = _a.className, disabled = _a.disabled, errorText = _a.errorText, hintText = _a.hintText, props = __rest$1(_a, ["children", "danger", "align", "onChange", "id", "className", "disabled", "errorText", "hintText"]);
     var generatedSwitcherId = React.useId();
     var switcherId = id || generatedSwitcherId;
     return jsxRuntime.exports.jsx(BasicInput$1, __assign({ errorText: errorText, hintText: hintText }, { children: jsxRuntime.exports.jsxs("label", __assign({ htmlFor: switcherId, className: clsx('alt-switcher', className, {
                 'alt-switcher--danger': danger,
-                'alt-switcher--pin-end': align === Align.end,
+                'alt-switcher--pin-end': align === exports.Align.end,
                 'alt-switcher--disabled': disabled
             }) }, { children: [jsxRuntime.exports.jsx("input", __assign({ id: switcherId, type: "checkbox", disabled: disabled }, props, { className: 'alt-switcher__input', onChange: function (e) { return onChange(e.target.checked); } })), jsxRuntime.exports.jsx("div", { className: 'alt-switcher__indicator' }), children && jsxRuntime.exports.jsx("div", __assign({ className: 'alt-switcher__label' }, { children: children }))] })) }));
 };
@@ -23754,7 +23766,7 @@ var MonthPicker = function (_a) {
     var onSelectMonth = function (month) {
         onChange(new Date(selectedDate.getFullYear(), month, 1));
     };
-    return jsxRuntime.exports.jsxs("div", __assign({ className: 'alt-month-picker', "data-testid": 'alt-test-month-picker' }, { children: [jsxRuntime.exports.jsx(ScrollableSelector$1, { value: selectedDate.getMonth(), align: Align.end, options: months, onChange: onSelectMonth }), jsxRuntime.exports.jsx("div", { className: 'alt-month-picker__separator' }), jsxRuntime.exports.jsx(ScrollableSelector$1, { value: selectedDate.getFullYear(), align: Align.start, options: years, onChange: onSelectYear })] }));
+    return jsxRuntime.exports.jsxs("div", __assign({ className: 'alt-month-picker', "data-testid": 'alt-test-month-picker' }, { children: [jsxRuntime.exports.jsx(ScrollableSelector$1, { value: selectedDate.getMonth(), align: exports.Align.end, options: months, onChange: onSelectMonth }), jsxRuntime.exports.jsx("div", { className: 'alt-month-picker__separator' }), jsxRuntime.exports.jsx(ScrollableSelector$1, { value: selectedDate.getFullYear(), align: exports.Align.start, options: years, onChange: onSelectYear })] }));
 };
 var MonthPicker$1 = React.memo(MonthPicker);
 
@@ -23782,17 +23794,6 @@ var Textarea = function (_a) {
 };
 var Textarea$1 = React.memo(Textarea);
 
-var ButtonContainer = function (_a) {
-    var _b = _a.direction, direction = _b === void 0 ? exports.Direction.horizontal : _b, _c = _a.align, align = _c === void 0 ? Align.start : _c, className = _a.className, children = _a.children, _d = _a.mobileFluid, mobileFluid = _d === void 0 ? false : _d;
-    return jsxRuntime.exports.jsx("div", __assign({ className: clsx('alt-button-container', className, {
-            'alt-button-container--vertical': direction === exports.Direction.vertical,
-            'alt-button-container--align-center': align === Align.center,
-            'alt-button-container--align-end': align === Align.end,
-            'alt-button-container--mobile-fluid': mobileFluid
-        }), "data-testid": 'alt-test-buttoncontainer' }, { children: children }));
-};
-var ButtonContainer$1 = React.memo(ButtonContainer);
-
 var DataTableSorting = function (_a) {
     var onClose = _a.onClose;
     var _b = useDataTableContext(), columns = _b.columns, sortKeys = _b.sortKeys, sortBy = _b.sortBy, sortType = _b.sortType, setSortType = _b.setSortType, setSortBy = _b.setSortBy;
@@ -23812,7 +23813,7 @@ var DataTableSorting = function (_a) {
                                 }, {
                                     label: t('common.desc'),
                                     value: 'desc'
-                                }] }) }))] }), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-data-table-sorting__footer' }, { children: jsxRuntime.exports.jsxs(ButtonContainer$1, __assign({ align: Align.end, direction: exports.Direction.vertical }, { children: [sortBy && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: function () { return setSortBy(null); } }, { children: t('data.dataTable.resetSorting') })), jsxRuntime.exports.jsx(Button$1, __assign({ role: exports.Role.primary, onClick: onClose }, { children: t('common.apply') }))] })) }))] }));
+                                }] }) }))] }), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-data-table-sorting__footer' }, { children: jsxRuntime.exports.jsxs(ButtonContainer$1, __assign({ align: exports.Align.end, direction: exports.Direction.vertical }, { children: [sortBy && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: function () { return setSortBy(null); } }, { children: t('data.dataTable.resetSorting') })), jsxRuntime.exports.jsx(Button$1, __assign({ role: exports.Role.primary, onClick: onClose }, { children: t('common.apply') }))] })) }))] }));
 };
 var DataTableSorting$1 = React.memo(DataTableSorting);
 
@@ -23885,7 +23886,7 @@ var DataTableFiltering = function (_a) {
                             break;
                     }
                     return jsxRuntime.exports.jsx(FormField$1, __assign({ label: filter.label || filter.accessor }, { children: children }), filterIndex);
-                }) }), jsxRuntime.exports.jsxs(ButtonContainer$1, __assign({ align: Align.end, className: 'alt-data-table-sorting__footer', mobileFluid: true }, { children: [appliedFilters.length > 0 && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: function () { return setAppliedFilters([]); } }, { children: t('data.dataTable.resetFilters') })), jsxRuntime.exports.jsx(Button$1, __assign({ role: exports.Role.primary, onClick: onClose }, { children: t('common.apply') }))] }))] }));
+                }) }), jsxRuntime.exports.jsxs(ButtonContainer$1, __assign({ align: exports.Align.end, className: 'alt-data-table-sorting__footer', mobileFluid: true }, { children: [appliedFilters.length > 0 && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: function () { return setAppliedFilters([]); } }, { children: t('data.dataTable.resetFilters') })), jsxRuntime.exports.jsx(Button$1, __assign({ role: exports.Role.primary, onClick: onClose }, { children: t('common.apply') }))] }))] }));
 };
 var DataTableFiltering$1 = React.memo(DataTableFiltering);
 
@@ -24141,6 +24142,7 @@ exports.BasicInput = BasicInput$1;
 exports.Blockquote = Blockquote$1;
 exports.Box = Box$1;
 exports.Button = Button$1;
+exports.ButtonContainer = ButtonContainer$1;
 exports.Checkbox = Checkbox$1;
 exports.CheckboxList = CheckboxList$1;
 exports.Chips = Chips$1;

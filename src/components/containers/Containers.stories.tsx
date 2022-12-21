@@ -155,19 +155,19 @@ ModalExample.args = {
     <Form>
       <FormGroup variant={FormGroupVariant.row}>
         <FormField label='Your name'>
-          <TextInput placeholder='First name and surname' />
+          <TextInput value='' onChange={() => null} placeholder='First name and surname' />
         </FormField>
         <FormField label='Age'>
           <NumberInput value={18} onChange={() => null} />
         </FormField>
         <FormField label='Gender'>
-          <RadioList options={[{
+          <RadioList name='gender' options={[{
             label: 'Male',
             value: 0
           }, {
             label: 'Female',
             value: 1
-          }]} value={0} />
+          }]} value={0} onChange={() => null} />
         </FormField>
       </FormGroup>
     </Form>
