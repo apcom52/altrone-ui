@@ -129,17 +129,30 @@ TabsExample.args = {
   selected: 0,
   tabs: [{
     label: 'Dashboard',
-    value: 0
+    value: 0,
+    indicator: {
+      position: 'baseline',
+      value: 15
+    }
   }, {
     label: 'Accessories',
-    value: 1
+    value: 1,
+    indicator: {
+      position: 'baseline',
+    }
   }, {
     label: 'My home',
     value: 2,
-    disabled: true,
+    indicator: {
+      position: 'corner',
+      value: 9
+    }
   }, {
     label: 'Help and support',
-    value: 3
+    value: 3,
+    indicator: {
+      position: 'corner',
+    }
   }],
   fluid: false,
   dark: false,
@@ -160,13 +173,13 @@ ToolbarExample.args = {
   Component: Toolbar,
   children: <>
     <ToolbarGroup>
-      <ToolbarAction icon={<Icon i='local_grocery_store' />} label='Music store' />
-      <ToolbarAction icon={<Icon i='queue_music' />} label='Collection' />
-      <ToolbarAction icon={<Icon i='favorite' />} label='Favorite' />
+      <ToolbarAction icon={<Icon i='local_grocery_store' />} label='Music store' indicator={{ position: 'baseline', value: 15 }} />
+      <ToolbarAction icon={<Icon i='queue_music' />} label='Collection' indicator={{ position: 'baseline' }} />
+      <ToolbarAction icon={<Icon i='favorite' />} label='Favorite' indicator={{ position: 'corner' }} />
     </ToolbarGroup>
     <ToolbarSeparator />
     <ToolbarGroup collapsible>
-      <ToolbarAction icon={<Icon i='interpreter_mode' />} label='Artists' />
+      <ToolbarAction icon={<Icon i='interpreter_mode' />} label='Artists' indicator={{ position: 'corner', value: 22 }} />
       <ToolbarAction icon={<Icon i='library_music' />} label='Albums' />
       <ToolbarAction icon={<Icon i='lyrics' />} label='Songs' />
       <ToolbarAction icon={<Icon i='album' />} label='Playlists' />
@@ -283,26 +296,47 @@ NavigationListExample.args = {
       label: 'My notes',
       value: 'my',
       icon: <Icon i='collections_bookmark' />,
+      indicator: {
+        position: 'baseline',
+        value: 15
+      },
       submenu: [{
         label: 'Recent notes',
         value: 'recent',
         icon: <Icon i='collections_bookmark' />,
+        indicator: {
+          position: 'baseline',
+          value: 15
+        },
       }, {
         label: 'All notes',
-        value: 'all'
+        value: 'all',
+        indicator: {
+          position: 'baseline',
+        },
       }]
     }, {
       label: 'Shared notes',
       value: 'shared',
-      icon: <Icon i='folder_shared' />
+      icon: <Icon i='folder_shared' />,
+      indicator:  {
+        position: 'baseline',
+      },
     }, {
       label: 'Favorites',
       value: 'favorites',
-      icon: <Icon i='favorite_border' />
+      icon: <Icon i='favorite_border' />,
+      indicator: {
+        position: 'corner'
+      },
     },  {
       label: 'Settings',
       value: 'settings',
       icon: <Icon i='settings' />,
+      indicator: {
+        position: 'corner',
+        value: 15
+      },
       submenu: [
         {
           label: 'Appearance',
@@ -313,17 +347,28 @@ NavigationListExample.args = {
           label: 'Privacy',
           value: 'privacy',
           icon: <Icon i='lock' />,
-          submenu: []
+          submenu: [],
+          indicator: {
+            position: 'corner',
+          },
         }, {
           label: 'Settings for username@mail.com',
           value: 'account',
           icon: <Icon i='person' />,
+          indicator: {
+            position: 'corner',
+            value: 15
+          },
           submenu: [{
             label: 'Account information',
             value: 'info'
           }, {
             label: 'Sync',
-            value: 'sync'
+            value: 'sync',
+            indicator: {
+              type: 'baseline',
+              value: 5
+            }
           }, {
             label: 'Credentials',
             value: 'cred'

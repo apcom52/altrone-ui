@@ -3,7 +3,7 @@ import {memo} from "react";
 import {NavigationSubSubItemProps} from "./NavigationList";
 import clsx from "clsx";
 
-const NavigationListSubSubItem = ({ label, value, onClick, selected = false }: NavigationSubSubItemProps) => {
+const NavigationListSubSubItem = ({ label, value, onClick, selected = false, indicator }: NavigationSubSubItemProps) => {
   return <button
     className={clsx('alt-navigation-list-sub-sub-item', {
       'alt-navigation-list-sub-sub-item--selected': selected
@@ -11,6 +11,7 @@ const NavigationListSubSubItem = ({ label, value, onClick, selected = false }: N
     onClick={() => onClick(value)}
   >
     {label}
+    {indicator && <div className='alt-navigation-list-sub-sub-item__indicator'>({indicator.value})</div>}
   </button>
 }
 

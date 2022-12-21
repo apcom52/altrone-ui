@@ -4,10 +4,12 @@ import NavigationListItem from "./NavigationListItem";
 import NavigationListSubItem from "./NavigationListSubItem";
 import NavigationListSubSubItem from "./NavigationListSubSubItem";
 import clsx from "clsx";
+import {Indicator} from "../../../types";
 
 interface SubSubNavigationItem {
   label: string
   value: unknown
+  indicator?: Indicator
 }
 
 interface SubNavigationItem {
@@ -15,6 +17,7 @@ interface SubNavigationItem {
   value: unknown
   icon?: JSX.Element
   submenu?: SubSubNavigationItem[]
+  indicator?: Indicator
 }
 
 interface NavigationItem {
@@ -22,6 +25,7 @@ interface NavigationItem {
   value: unknown
   icon?: JSX.Element
   submenu?: SubNavigationItem[]
+  indicator?: Indicator
 }
 
 interface BaseNavigationItemInterface {

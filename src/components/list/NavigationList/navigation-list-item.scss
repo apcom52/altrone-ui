@@ -2,6 +2,7 @@
 
 .alt-navigation-list-item {
   display: flex;
+  position: relative;
   align-items: center;
   margin: 0 -8px;
   padding: 8px;
@@ -66,4 +67,41 @@
   &:hover {
     background-color: var(--surfaceTrasparentHover);
   }
+}
+
+.alt-navigation-list-item__indicator {
+  margin-left: auto;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background-color: var(--surfaceTrasparentHover);
+
+  @include useFontSize(label, Small);
+  font-weight: 600;
+
+  &:empty {
+    width: 8px;
+    height: 8px;
+    max-width: 8px;
+    border-radius: 50%;
+    padding: 0;
+    background-color: var(--danger);
+  }
+}
+
+.alt-navigation-list-item__indicator + .alt-navigation-list-item__arrowIcon {
+  margin-left: 8px;
+}
+
+.alt-navigation-list-item__indicator--position-corner {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+}
+
+.alt-navigation-list-item__indicator--position-corner + .alt-navigation-list-item__arrowIcon {
+  margin-left: auto;
+}
+
+.alt-navigation-list-item__indicator--position-corner:not(:empty) + .alt-navigation-list-item__arrowIcon {
+  display: none;
 }

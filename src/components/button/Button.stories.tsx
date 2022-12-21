@@ -4,16 +4,18 @@ import {Button} from "./Button";
 import {ButtonVariant} from "./Button/Button";
 import {Icon} from "../icons";
 import {ButtonVariantsStory} from './Button/ButtonVariants.stories'
-import * as alt from '../../../dist';
 
-const Template = ({Component, dark, leftIcon, rightIcon, ...args}) => {
+const Template = ({Component, dark, leftIcon, rightIcon, indicator = false, indicatorPosition, indicatorValue, ...args}) => {
   const _leftIcon = leftIcon ? <Icon i={leftIcon} /> : null
   const _rightIcon = rightIcon ? <Icon i={rightIcon} /> : null
 
-  console.log('alt', alt);
+  console.log({ leftIcon, rightIcon });
 
   return <Altrone theme={dark ? Theme.dark : Theme.light}>
-    <Component {...args} leftIcon={_leftIcon} rightIcon={_rightIcon} />
+    <Component {...args} leftIcon={_leftIcon} rightIcon={_rightIcon} indicator={indicator && {
+      position: indicatorPosition,
+      value: indicatorValue
+    }} />
   </Altrone>
 }
 
@@ -29,6 +31,9 @@ ButtonExample.args = {
   href: '',
   dark: false,
   fluid: false,
+  indicator: false,
+  indicatorValue: '',
+  indicatorPosition: 'corner'
 }
 
 export const ButtonIconExample = Template.bind({})
@@ -94,6 +99,10 @@ ButtonExample.argTypes = {
   size: {
     control: 'select',
     options: ['small', 'medium', 'large']
+  },
+  indicatorPosition: {
+    control: 'select',
+    options: ['corner', 'baseline']
   }
 }
 
@@ -113,6 +122,11 @@ ButtonIconExample.argTypes = {
 }
 
 export const ButtonVariantsExample = args => <ButtonVariantsStory {...args} />
+ButtonVariantsExample.argTypes = {
+  dark: {
+    control: 'switcher'
+  }
+}
 
 export default {
   component: ButtonExample,
