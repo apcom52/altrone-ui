@@ -115,7 +115,6 @@ declare const useThemeContext: () => ThemeConfig;
 
 interface FormContextProps {
     required?: boolean;
-    disabled?: boolean;
 }
 declare const FormContext: react.Context<FormContextProps>;
 declare const useFormContext: () => FormContextProps;
@@ -326,7 +325,7 @@ declare const FloatingBox: react.ForwardRefExoticComponent<FloatingBoxProps & re
 
 interface FormProps extends Omit<React.HTMLProps<HTMLFormElement>, 'required' | 'disabled'>, FormContextProps {
 }
-declare const _default$t: react.MemoExoticComponent<({ className, children, required, disabled, ...props }: FormProps) => JSX.Element>;
+declare const _default$t: react.MemoExoticComponent<({ className, children, required, ...props }: FormProps) => JSX.Element>;
 
 declare enum FormGroupVariant {
     default = "default",
@@ -338,14 +337,14 @@ interface FormGroupProps extends React.HTMLProps<HTMLDivElement>, FormContextPro
     align?: Align;
     weights?: number[];
 }
-declare const _default$s: react.MemoExoticComponent<({ variant, align, children, className, required, disabled, weights }: FormGroupProps) => JSX.Element>;
+declare const _default$s: react.MemoExoticComponent<({ variant, align, children, className, required, weights }: FormGroupProps) => JSX.Element>;
 
 interface FormFieldProps extends Omit<React.HTMLProps<HTMLDivElement>, 'children'>, FormContextProps {
     children: ReactElement;
     label?: string;
     required?: boolean;
 }
-declare const _default$r: react.MemoExoticComponent<({ className, label, children, required, disabled }: FormFieldProps) => JSX.Element>;
+declare const _default$r: react.MemoExoticComponent<({ className, label, children, required }: FormFieldProps) => JSX.Element>;
 
 interface ModalProps extends PropsWithChildren {
     onClose: () => void;

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Align } from "../../../types/Align";
+import { Align } from "../../../types";
 interface ToolbarGroupProps {
     align?: Align;
     fluid?: boolean;

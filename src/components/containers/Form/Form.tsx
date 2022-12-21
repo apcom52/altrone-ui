@@ -7,8 +7,8 @@ interface FormProps extends Omit<React.HTMLProps<HTMLFormElement>, 'required' | 
 
 }
 
-const Form = ({ className, children, required, disabled, ...props}: FormProps) => {
-  return <FormContext.Provider value={{ required, disabled }}>
+const Form = ({ className, children, required, ...props}: FormProps) => {
+  return <FormContext.Provider value={{ required, }}>
     <form className={clsx('alt-form', className)} data-testid='alt-test-form' {...props}>
       {children}
     </form>

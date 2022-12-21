@@ -72,7 +72,7 @@ const FormTemplate = args => {
           <DatePicker value={birthDate} onChange={setBirthDate} />
         </FormField>
         <FormField label='Father name'>
-          <TextInput value={fatherName} onChange={setFatherName} />
+          <TextInput value={fatherName} onChange={setFatherName} disabled />
         </FormField>
       </FormGroup>
       <FormGroup variant={FormGroupVariant.row} required>

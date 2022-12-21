@@ -6,5 +6,5 @@ interface FormFieldProps extends Omit<React.HTMLProps<HTMLDivElement>, 'children
     label?: string;
     required?: boolean;
 }
-declare const _default: import("react").MemoExoticComponent<({ className, label, children, required, disabled }: FormFieldProps) => JSX.Element>;
+declare const _default: import("react").MemoExoticComponent<({ className, label, children, required }: FormFieldProps) => JSX.Element>;
 export default _default;

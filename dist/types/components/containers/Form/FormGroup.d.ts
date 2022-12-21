@@ -12,5 +12,5 @@ interface FormGroupProps extends React.HTMLProps<HTMLDivElement>, FormContextPro
     align?: Align;
     weights?: number[];
 }
-declare const _default: import("react").MemoExoticComponent<({ variant, align, children, className, required, disabled, weights }: FormGroupProps) => JSX.Element>;
+declare const _default: import("react").MemoExoticComponent<({ variant, align, children, className, required, weights }: FormGroupProps) => JSX.Element>;
 export default _default;

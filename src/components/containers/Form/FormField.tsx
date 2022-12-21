@@ -9,7 +9,7 @@ interface FormFieldProps extends Omit<React.HTMLProps<HTMLDivElement>, 'children
   required?: boolean
 }
 
-const FormField = ({ className, label, children, required = false, disabled}: FormFieldProps) => {
+const FormField = ({ className, label, children, required = false}: FormFieldProps) => {
   const context = useFormContext()
   const id = useId()
   const isRequired = required || context.required
@@ -17,7 +17,7 @@ const FormField = ({ className, label, children, required = false, disabled}: Fo
   return <div className={clsx('alt-form-field', className)}>
     {label && <label htmlFor={id} className='alt-form-field__label'>{label} {isRequired && <span className='alt-form-field__required-mark'>*</span>}</label>}
     <div className='alt-form-field__control'>
-      {typeof children === 'object' ? cloneElement(children, { id, disabled }) : children}
+      {typeof children === 'object' ? cloneElement(children, { id, ...children.props }) : children}
     </div>
   </div>
 }
