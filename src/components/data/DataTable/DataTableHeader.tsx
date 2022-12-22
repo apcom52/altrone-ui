@@ -1,7 +1,6 @@
 import {memo, useMemo, useRef, useState} from "react";
 import './data-table-header.scss';
-import {Button} from "../../button";
-import {ButtonVariant} from "../../button/Button/Button";
+import {Button, ButtonVariant} from "../../button";
 import {TextInput} from "../../form";
 import {FloatingBox} from "../../containers";
 import DataTableSorting from "./DataTableSorting";
@@ -11,8 +10,13 @@ import {useDataTableContext} from "../../../contexts";
 import {useLocalization, useWindowSize} from "../../../hooks";
 import {FloatingBoxMobileBehaviour} from "../../containers/FloatingBox/FloatingBox";
 import {Role} from "../../../types";
+import {DataTableAction} from "./DataTable";
 
-const DataTableHeader = () => {
+interface DataTableHeaderProps {
+  actions: DataTableAction[];
+}
+
+const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
   const { search, setSearch, sortKeys, sortBy, columns, appliedFilters, filters, searchBy, mobileColumns } = useDataTableContext()
   const [isSortVisible, setIsSortVisible] = useState(false)
   const [isFilterVisible, setIsFilterVisible] = useState(false)
@@ -43,34 +47,57 @@ const DataTableHeader = () => {
     <tr className='alt-data-table-header-wrapper'>
       <th colSpan={ltePhoneL ? mobileColumns.length + 1 : columns.length}>
         <div className='alt-data-table-header'>
-          {(gtPhoneL || (ltePhoneL && !isSearchVisible)) && <div className='alt-data-table-header__filters'>
-              {sortKeys.length > 0 && (
-                <Button
-                  ref={sortRef}
-                  leftIcon={ltePhoneL ? null : <Icon i='swap_vert' />}
-                  variant={ButtonVariant.transparent}
-                  onClick={() => setIsSortVisible(true)}
-                  isIcon={ltePhoneL}
-                >
-                  {ltePhoneL
-                    ? <Icon i='swap_vert' />
-                    : <>{sortBy ? t('data.dataTable.sortedBy') : t('data.dataTable.sort')} {currentSortingColumn && <strong className='alt-data-table-header__filter-value'>{currentSortingColumn.label || currentSortingColumn.accessor}</strong>}</>
-                  }
-                </Button>
-              )}
-              {filters.length > 0 && <Button
-                ref={filterRef}
-                leftIcon={ltePhoneL ? null : <Icon i='tune' style='outlined' />}
-                variant={ButtonVariant.transparent}
-                onClick={() => setIsFilterVisible(true)}
+          {(gtPhoneL || (ltePhoneL && !isSearchVisible)) && <div className='alt-data-table-header__actions'>
+            {actions.map((action, actionIndex) => {
+              let actionType = 'button';
+              if (action.contextMenu) {
+                actionType = 'contextMenu';
+              } else if (action.content) {
+                actionType = 'popup';
+              }
+
+              return <Button
+                key={actionIndex}
+                title={action.label}
+                leftIcon={!action.isIcon && action.icon}
+                variant={ButtonVariant.text}
+                isIcon={action.isIcon}
+                onClick={actionType === 'button' && action.onClick}
+              >
+                {action.isIcon ? action.icon : action.label}
+              </Button>
+            })}
+            {sortKeys.length > 0 && (
+              <Button
+                ref={sortRef}
+                leftIcon={ltePhoneL ? null : <Icon i='swap_vert' />}
+                variant={ButtonVariant.text}
+                onClick={() => setIsSortVisible(true)}
                 isIcon={ltePhoneL}
-                role={ltePhoneL && appliedFilters.length > 0 && Role.primary}
               >
                 {ltePhoneL
-                  ? <Icon i='tune' style='outlined' />
-                  : <>{t('data.dataTable.filters')} {appliedFilters.length > 0 && <strong className='alt-data-table-header__filter-value'>({appliedFilters.length})</strong>}</>
+                  ? <Icon i='swap_vert' />
+                  : <>{sortBy ? t('data.dataTable.sortedBy') : t('data.dataTable.sort')} {currentSortingColumn && <strong className='alt-data-table-header__filter-value'>{currentSortingColumn.label || currentSortingColumn.accessor}</strong>}</>
                 }
-              </Button>}
+              </Button>
+            )}
+            {filters.length > 0 && <Button
+              ref={filterRef}
+              leftIcon={ltePhoneL ? null : <Icon i='tune' style='outlined' />}
+              variant={ButtonVariant.transparent}
+              onClick={() => setIsFilterVisible(true)}
+              isIcon={ltePhoneL}
+              role={ltePhoneL && appliedFilters.length > 0 && Role.primary}
+              indicator={appliedFilters.length > 0 && {
+                position: 'baseline',
+                value: appliedFilters.length
+              }}
+            >
+              {ltePhoneL
+                ? <Icon i='tune' style='outlined' />
+                : <>{t('data.dataTable.filters')}</>
+              }
+            </Button>}
           </div>}
           {(searchBy && !isSearchVisible)
             ?
