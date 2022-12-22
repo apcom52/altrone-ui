@@ -94,6 +94,21 @@ DataTableWithActionsExample.args = {
     icon: <Icon i='add' />,
     content: (args) => <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab dolorem, ea incidunt numquam officia
       officiis optio pariatur quidem rerum veniam. Asperiores eaque enim et eum id omnis praesentium quidem saepe!</Paragraph>
+  }, {
+    label: 'Select',
+    icon: <Icon i='check_box_outline_blank' />,
+    isIcon: true,
+    onClick: () => alert('button action')
+  }, {
+    label: 'Select',
+    icon: <Icon i='check_box_outline_blank' />,
+    isIcon: true,
+    onClick: () => alert('button action')
+  }, {
+    label: 'Select',
+    icon: <Icon i='check_box_outline_blank' />,
+    isIcon: true,
+    onClick: () => alert('button action')
   }],
   sortKeys: [
     'iso',

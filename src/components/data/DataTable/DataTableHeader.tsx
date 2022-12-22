@@ -78,8 +78,7 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
           {(searchBy && isSearchVisible)
             ? <>
                 <Button
-                  ref={sortRef}
-                  variant={ButtonVariant.transparent}
+                  variant={ButtonVariant.text}
                   onClick={() => setIsSearchVisible(false)}
                   isIcon={ltePhoneL}
                 >
@@ -87,11 +86,10 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
                 </Button>
 
                 <div className='alt-data-table-header__search' data-testid='alt-test-datatable-search'>
-                  <TextInput placeholder={t('common.search')} value={search} onChange={setSearch} fluid />
+                  <TextInput placeholder={t('common.search')} value={search} onChange={setSearch} />
                 </div>
                 <Button
-                  ref={sortRef}
-                  variant={ButtonVariant.transparent}
+                  variant={ButtonVariant.text}
                   onClick={() => setSearch('')}
                   isIcon={ltePhoneL}
                 >
