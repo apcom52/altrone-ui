@@ -62,7 +62,7 @@ const DataTable = ({
 }: DataTableProps) => {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
-  const [sortBy, setSortBy] = useState<string>()
+  const [sortBy, setSortBy] = useState<string | null>(null)
   const [sortType, setSortType] = useState<Sort>(Sort.asc)
   const [appliedFilters, setAppliedFilters] = useState<DataTableAppliedFilter[]>([])
 
