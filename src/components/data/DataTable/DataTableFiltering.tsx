@@ -2,18 +2,14 @@ import {memo} from "react";
 import {FormField, FormGroup} from "../../containers";
 import {Checkbox, CheckboxList, Select} from "../../form";
 import './data-table-filtering.scss';
-import {Direction, Option, Role} from "../../../types";
+import {Align, Direction, Option, Role} from "../../../types";
 import {Button} from "../../button";
 import {useDataTableContext} from "../../../contexts";
 import ButtonContainer from "../../containers/ButtonContainer/ButtonContainer";
-import {Align} from "../../../types/Align";
 import {useLocalization} from "../../../hooks";
+import {DataTablePopupActionProps} from "./DataTable";
 
-interface DataTableFilteringProps {
-  onClose: () => void
-}
-
-const DataTableFiltering = ({ onClose }: DataTableFilteringProps) => {
+const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
   const { filters, initialData, appliedFilters, setAppliedFilters } = useDataTableContext()
   const t = useLocalization()
 
@@ -98,7 +94,7 @@ const DataTableFiltering = ({ onClose }: DataTableFilteringProps) => {
     </FormGroup>
     <ButtonContainer align={Align.end} className='alt-data-table-sorting__footer' mobileFluid>
       {appliedFilters.length > 0 && <Button onClick={() => setAppliedFilters([])}>{t('data.dataTable.resetFilters')}</Button>}
-      <Button role={Role.primary} onClick={onClose}>{t('common.apply')}</Button>
+      <Button role={Role.primary} onClick={closePopup}>{t('common.apply')}</Button>
     </ButtonContainer>
   </div>
 }

@@ -1,19 +1,14 @@
 import {memo, useMemo} from "react";
-import {FormField, FormGroup} from "../../containers";
+import {ButtonContainer, FormField, FormGroup} from "../../containers";
 import {RadioList, Select} from "../../form";
 import './data-table-sorting.scss';
-import {Direction, Role} from "../../../types";
+import {Align, Direction, Role} from "../../../types";
 import {Button} from "../../button";
 import {useDataTableContext} from "../../../contexts";
 import {useLocalization} from "../../../hooks";
-import ButtonContainer from "../../containers/ButtonContainer/ButtonContainer";
-import {Align} from "../../../types/Align";
+import {DataTablePopupActionProps} from "./DataTable";
 
-interface DataTableSortingProps {
-  onClose: () => void
-}
-
-const DataTableSorting = ({ onClose }: DataTableSortingProps) => {
+const DataTableSorting = ({ closePopup }: DataTablePopupActionProps) => {
   const { columns, sortKeys, sortBy, sortType, setSortType, setSortBy } = useDataTableContext()
   const t = useLocalization()
 
@@ -32,7 +27,7 @@ const DataTableSorting = ({ onClose }: DataTableSortingProps) => {
     <div className='alt-data-table-sorting__title'>{t('data.dataTable.sorting')}</div>
     <FormGroup>
       <FormField label={t('data.dataTable.field')}>
-        <Select options={sortKeysOptions} value={sortBy} onChange={setSortBy} />
+        <Select options={sortKeysOptions} value={sortBy || ''} onChange={setSortBy} />
       </FormField>
       <FormField label={t('data.dataTable.direction')}>
         <RadioList
@@ -53,7 +48,7 @@ const DataTableSorting = ({ onClose }: DataTableSortingProps) => {
     <div className='alt-data-table-sorting__footer'>
       <ButtonContainer align={Align.end} direction={Direction.vertical}>
         {sortBy && <Button onClick={() => setSortBy(null)}>{t('data.dataTable.resetSorting')}</Button>}
-        <Button role={Role.primary} onClick={onClose}>{t('common.apply')}</Button>
+        <Button role={Role.primary} onClick={closePopup}>{t('common.apply')}</Button>
       </ButtonContainer>
     </div>
   </div>

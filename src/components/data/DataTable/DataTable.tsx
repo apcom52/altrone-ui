@@ -37,13 +37,17 @@ interface DataTableProps<T = any> {
   actions?: DataTableAction[];
 }
 
+export interface DataTablePopupActionProps {
+  closePopup: () => void;
+}
+
 export interface DataTableAction {
   icon: JSX.Element;
   label: string;
   onClick?: () => void;
   isIcon?: boolean;
   danger?: boolean;
-  content?: JSX.Element;
+  content?: (args: DataTablePopupActionProps) => JSX.Element
   contextMenu?: ContextMenuType;
   indicator?: Indicator;
 }

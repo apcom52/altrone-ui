@@ -1,4 +1,4 @@
-import {cloneElement, memo, useCallback, useRef, useState} from "react";
+import {memo, useCallback, useRef, useState} from "react";
 import {DataTableAction as DataTableActionType} from "./DataTable";
 import {Button, ButtonVariant} from "../../button";
 import {FloatingBox} from "../../containers";
@@ -42,7 +42,7 @@ const DataTableAction = ({ label, content, onClick, icon, isIcon = false, indica
       useParentWidth
     >
       <div className='alt-data-table-action'>
-        {content && cloneElement(content, { closePopup })}
+        {content?.({ closePopup })}
       </div>
     </FloatingBox>}
   </>
