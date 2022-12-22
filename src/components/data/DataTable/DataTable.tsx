@@ -38,7 +38,7 @@ interface DataTableProps<T = any> {
 }
 
 export interface DataTableAction {
-  icon: ReactNode;
+  icon: JSX.Element;
   label: string;
   onClick?: () => void;
   isIcon?: boolean;

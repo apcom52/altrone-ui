@@ -67,6 +67,27 @@ DataTableWithActionsExample.args = {
   }, {
     label: 'Add',
     icon: <Icon i='add' />,
+    contextMenu: [{
+      title: 'New row',
+      icon: <Icon i='table_rows' />,
+      onClick: () => null
+    }, {
+      title: 'New column',
+      icon: <Icon i='view_column' />,
+      onClick: () => null
+    }, {
+      title: 'Delete',
+      icon: <Icon i='' />,
+      children: [{
+        title: 'Delete selected rows',
+        icon: <Icon i='delete' />,
+        onClick: () => null
+      }, {
+        title: 'Delete selected columns',
+        icon: <Icon i='delete' />,
+        onClick: () => null
+      }]
+    }]
   }],
   sortKeys: [
     'iso',

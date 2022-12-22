@@ -10,10 +10,11 @@ import {useDataTableContext} from "../../../contexts";
 import {useLocalization, useWindowSize} from "../../../hooks";
 import {FloatingBoxMobileBehaviour} from "../../containers/FloatingBox/FloatingBox";
 import {Role} from "../../../types";
-import {DataTableAction} from "./DataTable";
+import {DataTableAction as DataTableActionType} from "./DataTable";
+import DataTableAction from "./DataTableAction";
 
 interface DataTableHeaderProps {
-  actions: DataTableAction[];
+  actions: DataTableActionType[];
 }
 
 const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
@@ -48,25 +49,9 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
       <th colSpan={ltePhoneL ? mobileColumns.length + 1 : columns.length}>
         <div className='alt-data-table-header'>
           {(gtPhoneL || (ltePhoneL && !isSearchVisible)) && <div className='alt-data-table-header__actions'>
-            {actions.map((action, actionIndex) => {
-              let actionType = 'button';
-              if (action.contextMenu) {
-                actionType = 'contextMenu';
-              } else if (action.content) {
-                actionType = 'popup';
-              }
-
-              return <Button
-                key={actionIndex}
-                title={action.label}
-                leftIcon={!action.isIcon && action.icon}
-                variant={ButtonVariant.text}
-                isIcon={action.isIcon}
-                onClick={actionType === 'button' && action.onClick}
-              >
-                {action.isIcon ? action.icon : action.label}
-              </Button>
-            })}
+            {actions.map((action, actionIndex) => (
+              <DataTableAction key={actionIndex} {...action} />
+            ))}
             {sortKeys.length > 0 && (
               <Button
                 ref={sortRef}
