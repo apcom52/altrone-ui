@@ -43,7 +43,7 @@ export interface DataTableAction {
   onClick?: () => void;
   isIcon?: boolean;
   danger?: boolean;
-  content?: ReactNode;
+  content?: JSX.Element;
   contextMenu?: ContextMenuType;
   indicator?: Indicator;
 }

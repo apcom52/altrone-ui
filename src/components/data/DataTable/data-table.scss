@@ -76,3 +76,7 @@
 .alt-data-table-mobile-cell__value {
   @include useFontSize(body);
 }
+
+.alt-data-table-action {
+  padding: 8px;
+}
