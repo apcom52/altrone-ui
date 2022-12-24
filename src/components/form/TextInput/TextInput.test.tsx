@@ -11,7 +11,19 @@ const textIsland = {
   content: 'the end'
 }
 
+class ResizeObserver {
+  observe() {
+  }
+  unobserve() {
+  }
+  disconnect() {
+  }
+}
+
 describe('Form.TextInput', () => {
+  beforeEach(() => {
+    window.ResizeObserver = ResizeObserver
+  })
 
   test('should render correctly', () => {
     render(<TextInput value='test' onChange={() => null} />)
