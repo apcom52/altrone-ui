@@ -48,7 +48,20 @@ const COLUMNS: DataTableColumn[] = [{
   )
 }]
 
+class ResizeObserver {
+  observe() {
+  }
+  unobserve() {
+  }
+  disconnect() {
+  }
+}
+
 describe('Data.DataTable', () => {
+  beforeEach(() => {
+    window.ResizeObserver = ResizeObserver
+  })
+
   test('should renders correctly', () => {
     render(<DataTable data={DATA} columns={COLUMNS} />)
 

@@ -5,6 +5,7 @@ import clsx from "clsx";
 import {useInputIsland} from "./useInputIsland";
 import {useBoundingclientrect} from "rooks";
 import {BasicInput} from "../BasicInput";
+import {useResizeObserver} from "../../../hooks";
 
 export enum InputIslandType {
   text,
@@ -76,6 +77,10 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
   const { width: leftIslandWidth = 0 } = useBoundingclientrect(leftIslandRef) || {}
   const { width: rightIslandWidth = 0  } = useBoundingclientrect(rightIslandRef) || {}
 
+  const leftIslandResizeObserver = useResizeObserver(leftIslandRef)
+  const rightIslandResizeObserver = useResizeObserver(rightIslandRef)
+  const textFieldResizeObserver = useResizeObserver(wrapperRef)
+
   const [leftPadding, setLeftPadding] = useState(DEFAULT_HORIZONTAL_PADDING)
   const [rightPadding, setRightPadding] = useState(DEFAULT_HORIZONTAL_PADDING)
 
@@ -85,7 +90,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
     } else {
       setLeftPadding(DEFAULT_HORIZONTAL_PADDING)
     }
-  }, [_leftIsland, leftIslandWidth, wrapperLeft, size])
+  }, [_leftIsland, leftIslandWidth, wrapperLeft, size, leftIslandResizeObserver, textFieldResizeObserver])
 
   useEffect(() => {
     if (_rightIsland) {
@@ -93,7 +98,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
     } else {
       setRightPadding(DEFAULT_HORIZONTAL_PADDING)
     }
-  }, [_rightIsland, rightIslandWidth, wrapperRight, size])
+  }, [_rightIsland, rightIslandWidth, wrapperRight, size, rightIslandResizeObserver, textFieldResizeObserver])
 
   return <BasicInput
     hintText={hintText}

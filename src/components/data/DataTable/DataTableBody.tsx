@@ -46,8 +46,10 @@ const DataTableBody = () => {
 
           return <td key={columnIndex} className='alt-data-table__cell'>{content}</td>
         })}
-        {ltePhoneL && <td className='alt-data-table__cell alt-data-table__cell--show-more' tabIndex={0} onClick={() => setSelectedRowIndex(rowIndex)}>
-          <Icon i='arrow_forward_ios' />
+        {ltePhoneL && <td className='alt-data-table__cell alt-data-table__cell--show-more'>
+          <button type='button' className='alt-data-table__showMore' onClick={() => setSelectedRowIndex(rowIndex)}>
+            <Icon i='arrow_forward_ios' />
+          </button>
         </td>}
       </tr>
     ))}

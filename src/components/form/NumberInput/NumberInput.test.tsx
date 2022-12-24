@@ -1,8 +1,21 @@
-import {act, fireEvent, render, renderHook, screen, waitFor} from "@testing-library/react";
+import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 import '@testing-library/jest-dom'
 import NumberInput from "./NumberInput";
 
+class ResizeObserver {
+  observe() {
+  }
+  unobserve() {
+  }
+  disconnect() {
+  }
+}
+
 describe('Form.PasswordInput', () => {
+  beforeEach(() => {
+    window.ResizeObserver = ResizeObserver
+  })
+
   test('should renders correctly', () => {
     render(<NumberInput value={0} onChange={() => null} />)
     const element = screen.getByRole('textbox')

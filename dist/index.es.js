@@ -22265,6 +22265,9 @@ var TextInput = forwardRef(function (_a, ref) {
     var _d = useBoundingclientrect(wrapperRef) || {}, _e = _d.left, wrapperLeft = _e === void 0 ? 0 : _e, _f = _d.right, wrapperRight = _f === void 0 ? 0 : _f;
     var _g = (useBoundingclientrect(leftIslandRef) || {}).width, leftIslandWidth = _g === void 0 ? 0 : _g;
     var _h = (useBoundingclientrect(rightIslandRef) || {}).width, rightIslandWidth = _h === void 0 ? 0 : _h;
+    var leftIslandResizeObserver = useResizeObserver(leftIslandRef);
+    var rightIslandResizeObserver = useResizeObserver(rightIslandRef);
+    var textFieldResizeObserver = useResizeObserver(wrapperRef);
     var _j = useState(DEFAULT_HORIZONTAL_PADDING), leftPadding = _j[0], setLeftPadding = _j[1];
     var _k = useState(DEFAULT_HORIZONTAL_PADDING), rightPadding = _k[0], setRightPadding = _k[1];
     useEffect(function () {
@@ -22274,7 +22277,7 @@ var TextInput = forwardRef(function (_a, ref) {
         else {
             setLeftPadding(DEFAULT_HORIZONTAL_PADDING);
         }
-    }, [_leftIsland, leftIslandWidth, wrapperLeft, size]);
+    }, [_leftIsland, leftIslandWidth, wrapperLeft, size, leftIslandResizeObserver, textFieldResizeObserver]);
     useEffect(function () {
         if (_rightIsland) {
             setRightPadding(DEFAULT_ISLAND_OFFSET + rightIslandWidth);
@@ -22282,7 +22285,7 @@ var TextInput = forwardRef(function (_a, ref) {
         else {
             setRightPadding(DEFAULT_HORIZONTAL_PADDING);
         }
-    }, [_rightIsland, rightIslandWidth, wrapperRight, size]);
+    }, [_rightIsland, rightIslandWidth, wrapperRight, size, rightIslandResizeObserver, textFieldResizeObserver]);
     return jsxRuntime.exports.jsx(BasicInput$1, __assign({ hintText: hintText, errorText: errorText, disabled: disabled, size: size }, { children: jsxRuntime.exports.jsxs("div", __assign({ className: clsx('alt-text-input', {
                 'alt-text-input--required': required,
                 'alt-text-input--disabled': disabled,
@@ -23960,7 +23963,7 @@ var DataTableBody = function () {
                             content = jsxRuntime.exports.jsx(DataTableCell$1, __assign({}, props));
                         }
                         return jsxRuntime.exports.jsx("td", __assign({ className: 'alt-data-table__cell' }, { children: content }), columnIndex);
-                    }), ltePhoneL && jsxRuntime.exports.jsx("td", __assign({ className: 'alt-data-table__cell alt-data-table__cell--show-more', tabIndex: 0, onClick: function () { return setSelectedRowIndex(rowIndex); } }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'arrow_forward_ios' }) }))] }), rowIndex)); }), selectedRowIndex > -1 && ltePhoneL && jsxRuntime.exports.jsx(Modal$1, __assign({ onClose: function () { return setSelectedRowIndex(-1); }, title: 'Detailed information' }, { children: jsxRuntime.exports.jsx("div", __assign({ className: 'alt-data-table-mobile-grid' }, { children: columns.map(function (column, columnIndex) {
+                    }), ltePhoneL && jsxRuntime.exports.jsx("td", __assign({ className: 'alt-data-table__cell alt-data-table__cell--show-more' }, { children: jsxRuntime.exports.jsx("button", __assign({ type: 'button', className: 'alt-data-table__showMore', onClick: function () { return setSelectedRowIndex(rowIndex); } }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'arrow_forward_ios' }) })) }))] }), rowIndex)); }), selectedRowIndex > -1 && ltePhoneL && jsxRuntime.exports.jsx(Modal$1, __assign({ onClose: function () { return setSelectedRowIndex(-1); }, title: 'Detailed information' }, { children: jsxRuntime.exports.jsx("div", __assign({ className: 'alt-data-table-mobile-grid' }, { children: columns.map(function (column, columnIndex) {
                         var CustomComponent = column.Component;
                         return jsxRuntime.exports.jsxs("div", __assign({ className: "alt-data-table-mobile-cell" }, { children: [jsxRuntime.exports.jsx("div", __assign({ className: 'alt-data-table-mobile-cell__label' }, { children: column.label || column.accessor })), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-data-table-mobile-cell__value' }, { children: column.Component ?
                                         jsxRuntime.exports.jsx(CustomComponent, __assign({}, column, { value: data[selectedRowIndex][column.accessor] })) : data[selectedRowIndex][column.accessor].toString() }))] }), columnIndex);
@@ -24109,5 +24112,5 @@ var Message = function (_a) {
 };
 var Message$1 = memo(Message);
 
-export { Align, Altrone, BasicInput$1 as BasicInput, Blockquote$1 as Blockquote, Box$1 as Box, Button$1 as Button, ButtonContainer$1 as ButtonContainer, ButtonVariant, Checkbox$1 as Checkbox, CheckboxList$1 as CheckboxList, Chips$1 as Chips, ContextMenu$1 as ContextMenu, DEFAULT_OFFSET, DEFAULT_THEME, DataTable$1 as DataTable, DataTableContext, DatePicker$1 as DatePicker, Direction, FloatingBox, Form$1 as Form, FormContext, FormField$1 as FormField, FormGroup$1 as FormGroup, FormGroupVariant, HORIZONTAL_MARGIN, Heading$1 as Heading, Icon$1 as Icon, InputIslandType, Message$1 as Message, Modal$1 as Modal, NavigationList$1 as NavigationList, NumberInput$1 as NumberInput, PADDING, Paragraph$1 as Paragraph, PasswordInput$1 as PasswordInput, Progress$1 as Progress, RadioList$1 as RadioList, Role, ScrollableSelector$1 as ScrollableSelector, Select$1 as Select, Size, Sort, Switcher$1 as Switcher, TabList$1 as TabList, TabListVariant, TextInput$1 as TextInput, Textarea$1 as Textarea, Theme, ThemeContext, Toolbar$1 as Toolbar, ToolbarGroup$1 as ToolbarGroup, ToolbarSeparator$1 as ToolbarSeparator, VERTICAL_MARGIN, ZERO_MARGIN, ZERO_PADDING, useDataTableContext, useFormContext, useLocalization, useMargin, useOffset, usePadding, useResizeObserver, useThemeContext, useWindowSize };
+export { Align, Altrone, BasicInput$1 as BasicInput, Blockquote$1 as Blockquote, Box$1 as Box, Button$1 as Button, ButtonContainer$1 as ButtonContainer, ButtonVariant, Checkbox$1 as Checkbox, CheckboxList$1 as CheckboxList, Chips$1 as Chips, ContextMenu$1 as ContextMenu, DEFAULT_OFFSET, DEFAULT_THEME, DataTable$1 as DataTable, DataTableContext, DatePicker$1 as DatePicker, Direction, FloatingBox, FloatingBoxMobileBehaviour, Form$1 as Form, FormContext, FormField$1 as FormField, FormGroup$1 as FormGroup, FormGroupVariant, HORIZONTAL_MARGIN, Heading$1 as Heading, Icon$1 as Icon, InputIslandType, Message$1 as Message, Modal$1 as Modal, NavigationList$1 as NavigationList, NumberInput$1 as NumberInput, PADDING, Paragraph$1 as Paragraph, PasswordInput$1 as PasswordInput, Progress$1 as Progress, ProgressVariant, RadioList$1 as RadioList, Role, ScrollableSelector$1 as ScrollableSelector, Select$1 as Select, Size, Sort, Switcher$1 as Switcher, TabList$1 as TabList, TabListVariant, TextInput$1 as TextInput, Textarea$1 as Textarea, Theme, ThemeContext, Toolbar$1 as Toolbar, ToolbarGroup$1 as ToolbarGroup, ToolbarSeparator$1 as ToolbarSeparator, VERTICAL_MARGIN, ZERO_MARGIN, ZERO_PADDING, useDataTableContext, useFormContext, useLocalization, useMargin, useOffset, usePadding, useResizeObserver, useThemeContext, useWindowSize };
 //# sourceMappingURL=index.es.js.map

@@ -1,8 +1,7 @@
 import {memo} from "react";
 import './progress.scss';
-import {Size} from "../../../types";
+import {Role, Size} from "../../../types";
 import clsx from "clsx";
-import {Role} from "../../../types/Role";
 
 export enum ProgressVariant {
   default = 'default',

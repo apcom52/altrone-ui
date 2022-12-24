@@ -49,6 +49,11 @@
   gap: 2px;
   overflow: unset;
   border-radius: 0;
+  border: none;
+  box-shadow: none;
+
+  --activeColor: var(--textColor);
+  --activeBorderColor: var(--textColor);
 }
 
 .alt-progress--primary {

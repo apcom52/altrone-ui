@@ -50,7 +50,20 @@ const DATA_WITH_PARENTS: Option[] = [{
   value: 'germany'
 }]
 
+class ResizeObserver {
+  observe() {
+  }
+  unobserve() {
+  }
+  disconnect() {
+  }
+}
+
 describe('Form.Select', () => {
+  beforeEach(() => {
+    window.ResizeObserver = ResizeObserver
+  })
+
   test('should renders correctly', () => {
     render(<Select options={DATA} value='uk' onChange={() => null} />)
     const select = screen.getByTestId('alt-test-select')
