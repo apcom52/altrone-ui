@@ -1,7 +1,6 @@
 /// <reference types="react" />
 import './progress.scss';
-import { Size } from "../../../types";
-import { Role } from "../../../types/Role";
+import { Role, Size } from "../../../types";
 export declare enum ProgressVariant {
     default = "default",
     segmented = "segmented"

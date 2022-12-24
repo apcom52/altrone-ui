@@ -21729,17 +21729,17 @@ var Modal = function (_a) {
 };
 var Modal$1 = React.memo(Modal);
 
-var FloatingBoxMobileBehaviour;
+exports.FloatingBoxMobileBehaviour = void 0;
 (function (FloatingBoxMobileBehaviour) {
     FloatingBoxMobileBehaviour["default"] = "default";
     FloatingBoxMobileBehaviour["modal"] = "modal";
-})(FloatingBoxMobileBehaviour || (FloatingBoxMobileBehaviour = {}));
+})(exports.FloatingBoxMobileBehaviour || (exports.FloatingBoxMobileBehaviour = {}));
 var setPopperWidth = function (state, minWidth) {
     var targetRefWidth = state.elements.reference.clientWidth;
     state.elements.popper.style.width = "".concat(minWidth ? (targetRefWidth < minWidth ? minWidth : targetRefWidth) : targetRefWidth, "px");
 };
 var FloatingBox = React.forwardRef(function (_a, ref) {
-    var targetElement = _a.targetElement, onClose = _a.onClose, _b = _a.offset, offset = _b === void 0 ? 4 : _b, _c = _a.placement, placement = _c === void 0 ? 'auto' : _c, popperProps = _a.popperProps, _d = _a.useParentWidth, useParentWidth = _d === void 0 ? false : _d, minWidth = _a.minWidth, _e = _a.maxHeight, maxHeight = _e === void 0 ? 'auto' : _e, children = _a.children, preventClose = _a.preventClose, _f = _a.useRootContainer, useRootContainer = _f === void 0 ? false : _f, _g = _a.mobileBehaviour, mobileBehaviour = _g === void 0 ? FloatingBoxMobileBehaviour.default : _g, _h = _a.closeOnAnotherFloatingBoxClick, closeOnAnotherFloatingBoxClick = _h === void 0 ? false : _h, className = _a.className;
+    var targetElement = _a.targetElement, onClose = _a.onClose, _b = _a.offset, offset = _b === void 0 ? 4 : _b, _c = _a.placement, placement = _c === void 0 ? 'auto' : _c, popperProps = _a.popperProps, _d = _a.useParentWidth, useParentWidth = _d === void 0 ? false : _d, minWidth = _a.minWidth, _e = _a.maxHeight, maxHeight = _e === void 0 ? 'auto' : _e, children = _a.children, preventClose = _a.preventClose, _f = _a.useRootContainer, useRootContainer = _f === void 0 ? false : _f, _g = _a.mobileBehaviour, mobileBehaviour = _g === void 0 ? exports.FloatingBoxMobileBehaviour.default : _g, _h = _a.closeOnAnotherFloatingBoxClick, closeOnAnotherFloatingBoxClick = _h === void 0 ? false : _h, className = _a.className;
     var ltePhoneL = useWindowSize().ltePhoneL;
     var _j = React.useState(null), floatingBoxElement = _j[0], setFloatingBoxElement = _j[1];
     if (floatingBoxElement) {
@@ -21794,7 +21794,7 @@ var FloatingBox = React.forwardRef(function (_a, ref) {
             onClose();
         }, 1);
     });
-    if (mobileBehaviour === FloatingBoxMobileBehaviour.modal && ltePhoneL) {
+    if (mobileBehaviour === exports.FloatingBoxMobileBehaviour.modal && ltePhoneL) {
         return ReactDOM.createPortal(jsxRuntime.exports.jsx(Modal$1, __assign({ onClose: onClose, showClose: false, showCancel: false }, { children: children })), (targetElement === null || targetElement === void 0 ? void 0 : targetElement.closest('.altrone')) || document.body);
     }
     return ReactDOM.createPortal(jsxRuntime.exports.jsx("div", __assign({ className: clsx('alt-floating-box', className), ref: function (node) {
@@ -22238,7 +22238,7 @@ var Button = React.forwardRef(function (_a, ref) {
                     else if (ref) {
                         ref.current = node;
                     }
-                }, href: href, onClick: isDropdownButton ? showDropdown : onClick, type: href ? undefined : type }, props, { children: [leftIcon ? jsxRuntime.exports.jsx("span", __assign({ className: 'alt-button__leftIcon' }, { children: leftIcon })) : null, children, rightIcon ? jsxRuntime.exports.jsx("span", __assign({ className: 'alt-button__rightIcon' }, { children: rightIcon })) : null] })), isDropdownVisible ? jsxRuntime.exports.jsx(FloatingBox, __assign({ targetElement: buttonRef.current, onClose: hideDropdown, placement: 'bottom', mobileBehaviour: FloatingBoxMobileBehaviour.modal }, { children: jsxRuntime.exports.jsx(ContextMenu$1, { onClose: hideDropdown, menu: dropdown }) })) : null] });
+                }, href: href, onClick: isDropdownButton ? showDropdown : onClick, type: href ? undefined : type }, props, { children: [leftIcon ? jsxRuntime.exports.jsx("span", __assign({ className: 'alt-button__leftIcon' }, { children: leftIcon })) : null, children, rightIcon ? jsxRuntime.exports.jsx("span", __assign({ className: 'alt-button__rightIcon' }, { children: rightIcon })) : null] })), isDropdownVisible ? jsxRuntime.exports.jsx(FloatingBox, __assign({ targetElement: buttonRef.current, onClose: hideDropdown, placement: 'bottom', mobileBehaviour: exports.FloatingBoxMobileBehaviour.modal }, { children: jsxRuntime.exports.jsx(ContextMenu$1, { onClose: hideDropdown, menu: dropdown }) })) : null] });
 });
 var Button$1 = React.memo(Button);
 
@@ -22292,6 +22292,9 @@ var TextInput = React.forwardRef(function (_a, ref) {
     var _d = useBoundingclientrect(wrapperRef) || {}, _e = _d.left, wrapperLeft = _e === void 0 ? 0 : _e, _f = _d.right, wrapperRight = _f === void 0 ? 0 : _f;
     var _g = (useBoundingclientrect(leftIslandRef) || {}).width, leftIslandWidth = _g === void 0 ? 0 : _g;
     var _h = (useBoundingclientrect(rightIslandRef) || {}).width, rightIslandWidth = _h === void 0 ? 0 : _h;
+    var leftIslandResizeObserver = useResizeObserver(leftIslandRef);
+    var rightIslandResizeObserver = useResizeObserver(rightIslandRef);
+    var textFieldResizeObserver = useResizeObserver(wrapperRef);
     var _j = React.useState(DEFAULT_HORIZONTAL_PADDING), leftPadding = _j[0], setLeftPadding = _j[1];
     var _k = React.useState(DEFAULT_HORIZONTAL_PADDING), rightPadding = _k[0], setRightPadding = _k[1];
     React.useEffect(function () {
@@ -22301,7 +22304,7 @@ var TextInput = React.forwardRef(function (_a, ref) {
         else {
             setLeftPadding(DEFAULT_HORIZONTAL_PADDING);
         }
-    }, [_leftIsland, leftIslandWidth, wrapperLeft, size]);
+    }, [_leftIsland, leftIslandWidth, wrapperLeft, size, leftIslandResizeObserver, textFieldResizeObserver]);
     React.useEffect(function () {
         if (_rightIsland) {
             setRightPadding(DEFAULT_ISLAND_OFFSET + rightIslandWidth);
@@ -22309,7 +22312,7 @@ var TextInput = React.forwardRef(function (_a, ref) {
         else {
             setRightPadding(DEFAULT_HORIZONTAL_PADDING);
         }
-    }, [_rightIsland, rightIslandWidth, wrapperRight, size]);
+    }, [_rightIsland, rightIslandWidth, wrapperRight, size, rightIslandResizeObserver, textFieldResizeObserver]);
     return jsxRuntime.exports.jsx(BasicInput$1, __assign({ hintText: hintText, errorText: errorText, disabled: disabled, size: size }, { children: jsxRuntime.exports.jsxs("div", __assign({ className: clsx('alt-text-input', {
                 'alt-text-input--required': required,
                 'alt-text-input--disabled': disabled,
@@ -23544,7 +23547,7 @@ var Select = function (_a) {
                             disabled: false,
                             onSelect: function () { return null; },
                             inSelectHeader: true
-                        }) : jsxRuntime.exports.jsx(SelectPlaceholder$1, { children: placeholder || t('form.select.placeholder') }) })), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-select__arrow' }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'expand_more' }) }))] })) : jsxRuntime.exports.jsx(TextInput$1, { ref: selectRef, placeholder: 'Search...', value: searchTerm, onChange: setSearchTerm, rightIcon: jsxRuntime.exports.jsx(Icon$1, { i: 'search' }), onBlur: onInputBlur, autoFocus: true }), isSelectVisible && jsxRuntime.exports.jsxs(FloatingBox, __assign({ placement: 'bottom', targetElement: selectRef.current, onClose: onSelectMenuClose, minWidth: 200, preventClose: (searchable && isSearchMode) ? preventSelectMenuClose : undefined, "data-testid": 'alt-test-select-search', useParentWidth: true, mobileBehaviour: FloatingBoxMobileBehaviour.modal, useRootContainer: true, closeOnAnotherFloatingBoxClick: true }, { children: [gtPhoneL && jsxRuntime.exports.jsx("div", __assign({ className: clsx('alt-select-menu', classNames.menu), "data-testid": 'alt-test-select-menu' }, { children: parentKeys.map(function (groupValue, groupIndex, groupedValueKeys) {
+                        }) : jsxRuntime.exports.jsx(SelectPlaceholder$1, { children: placeholder || t('form.select.placeholder') }) })), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-select__arrow' }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'expand_more' }) }))] })) : jsxRuntime.exports.jsx(TextInput$1, { ref: selectRef, placeholder: 'Search...', value: searchTerm, onChange: setSearchTerm, rightIcon: jsxRuntime.exports.jsx(Icon$1, { i: 'search' }), onBlur: onInputBlur, autoFocus: true }), isSelectVisible && jsxRuntime.exports.jsxs(FloatingBox, __assign({ placement: 'bottom', targetElement: selectRef.current, onClose: onSelectMenuClose, minWidth: 200, preventClose: (searchable && isSearchMode) ? preventSelectMenuClose : undefined, "data-testid": 'alt-test-select-search', useParentWidth: true, mobileBehaviour: exports.FloatingBoxMobileBehaviour.modal, useRootContainer: true, closeOnAnotherFloatingBoxClick: true }, { children: [gtPhoneL && jsxRuntime.exports.jsx("div", __assign({ className: clsx('alt-select-menu', classNames.menu), "data-testid": 'alt-test-select-menu' }, { children: parentKeys.map(function (groupValue, groupIndex, groupedValueKeys) {
                             var group = groupedItems[groupValue];
                             var groupInfo = group[0], options = group.slice(1);
                             var isSingle = groupedValueKeys.length === 1;
@@ -23635,7 +23638,7 @@ var DatePicker = function (_a) {
     }, [picker]);
     return jsxRuntime.exports.jsxs(BasicInput$1, __assign({ disabled: disabled, hintText: hintText, errorText: errorText, size: size }, { children: [jsxRuntime.exports.jsxs("button", __assign({ className: clsx('alt-date-picker', className), id: id, ref: inputRef, onClick: function () { return setIsDatePickerVisible(!isDatePickerVisible); }, "data-testid": 'alt-test-datepicker', type: 'button', disabled: disabled }, { children: [value
                         ? jsxRuntime.exports.jsx("div", __assign({ className: 'alt-date-picker__value' }, { children: valueDateFormat.format(value) }))
-                        : jsxRuntime.exports.jsx("div", __assign({ className: "alt-date-picker__placeholder" }, { children: placeholder || t('form.datePicker.placeholder') })), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-date-picker__icon' }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'calendar_month' }) }))] })), isDatePickerVisible && jsxRuntime.exports.jsxs(FloatingBox, __assign({ targetElement: inputRef.current, placement: 'bottom', onClose: function () { return setIsDatePickerVisible(false); }, mobileBehaviour: FloatingBoxMobileBehaviour.modal, closeOnAnotherFloatingBoxClick: true }, { children: [jsxRuntime.exports.jsxs("div", __assign({ className: 'alt-date-picker__header' }, { children: [!ltePhoneL && picker === Picker.day && jsxRuntime.exports.jsx("button", __assign({ className: clsx('alt-date-picker__currentMonth', {
+                        : jsxRuntime.exports.jsx("div", __assign({ className: "alt-date-picker__placeholder" }, { children: placeholder || t('form.datePicker.placeholder') })), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-date-picker__icon' }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'calendar_month' }) }))] })), isDatePickerVisible && jsxRuntime.exports.jsxs(FloatingBox, __assign({ targetElement: inputRef.current, placement: 'bottom', onClose: function () { return setIsDatePickerVisible(false); }, mobileBehaviour: exports.FloatingBoxMobileBehaviour.modal, closeOnAnotherFloatingBoxClick: true }, { children: [jsxRuntime.exports.jsxs("div", __assign({ className: 'alt-date-picker__header' }, { children: [!ltePhoneL && picker === Picker.day && jsxRuntime.exports.jsx("button", __assign({ className: clsx('alt-date-picker__currentMonth', {
                                     'alt-date-picker__currentMonth--selected': currentView !== Picker.day
                                 }), onClick: onCurrentDateClick, "data-testid": 'alt-test-datepicker-header', type: 'button' }, { children: currentMonthFormat.format(currentMonth) })), ltePhoneL && picker === Picker.day && jsxRuntime.exports.jsx("div", __assign({ className: 'alt-date-picker__title' }, { children: currentMonthFormat.format(currentMonth) })), picker === Picker.month && jsxRuntime.exports.jsx("div", __assign({ className: 'alt-date-picker__title' }, { children: t('form.datePicker.chooseMonth') })), picker === Picker.year && jsxRuntime.exports.jsx("div", __assign({ className: 'alt-date-picker__title' }, { children: t('form.datePicker.chooseYear') })), !ltePhoneL && currentView === Picker.day && jsxRuntime.exports.jsxs("div", __assign({ className: 'alt-date-picker__navigation' }, { children: [jsxRuntime.exports.jsx("button", __assign({ className: 'alt-date-picker__navigation-button', onClick: onPrevMonthClick, "data-testid": 'alt-test-datepicker-prev', type: 'button' }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'arrow_back_ios' }) })), jsxRuntime.exports.jsx("button", __assign({ className: 'alt-date-picker__navigation-button', onClick: onNextMonthClick, "data-testid": 'alt-test-datepicker-next', type: 'button' }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'arrow_forward_ios' }) }))] }))] })), currentView === Picker.day && jsxRuntime.exports.jsx(Calendar$1, { currentMonth: currentMonth, selectedDate: (value || today), onChange: onChange }), currentView === Picker.month && jsxRuntime.exports.jsx(MonthPicker$1, { currentMonth: currentMonth, selectedDate: (value || today), onChange: onChange, minYear: minDate.getFullYear(), maxYear: maxDate.getFullYear() }), currentView === Picker.year && jsxRuntime.exports.jsx(YearPicker$1, { currentMonth: currentMonth, selectedDate: (value || today), onChange: onChange, minYear: minDate.getFullYear(), maxYear: maxDate.getFullYear() }), !ltePhoneL && jsxRuntime.exports.jsxs("div", __assign({ className: 'alt-date-picker__footer' }, { children: [currentView === Picker.day && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onTodayClick, "data-testid": 'alt-test-datepicker-today' }, { children: t('form.datePicker.today') })), currentView === Picker.month && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onTodayClick, "data-testid": 'alt-test-datepicker-currentMonth' }, { children: t('form.datePicker.currentMonth') })), jsxRuntime.exports.jsx(Button$1, __assign({ role: exports.Role.primary, className: 'alt-date-picker__apply', onClick: onApplyClick, "data-testid": 'alt-test-datepicker-apply' }, { children: t('common.apply') }))] })), ltePhoneL && jsxRuntime.exports.jsxs("div", __assign({ className: clsx('alt-date-picker__footer', {
                             'alt-date-picker__footer--compact': currentView !== Picker.day
@@ -23920,7 +23923,7 @@ var DataTableHeader = function () {
                                         : jsxRuntime.exports.jsx("div", __assign({ className: 'alt-data-table-header__search', "data-testid": 'alt-test-datatable-search' }, { children: jsxRuntime.exports.jsx(TextInput$1, { placeholder: t('common.search'), value: search, onChange: setSearch }) }))
                                 : null, (searchBy && isSearchVisible)
                                 ? jsxRuntime.exports.jsxs(jsxRuntime.exports.Fragment, { children: [jsxRuntime.exports.jsx(Button$1, __assign({ ref: sortRef, variant: exports.ButtonVariant.transparent, onClick: function () { return setIsSearchVisible(false); }, isIcon: ltePhoneL }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'arrow_forward_ios' }) })), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-data-table-header__search', "data-testid": 'alt-test-datatable-search' }, { children: jsxRuntime.exports.jsx(TextInput$1, { placeholder: t('common.search'), value: search, onChange: setSearch, fluid: true }) })), jsxRuntime.exports.jsx(Button$1, __assign({ ref: sortRef, variant: exports.ButtonVariant.transparent, onClick: function () { return setSearch(''); }, isIcon: ltePhoneL }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'backspace' }) }))] })
-                                : null] })) })) })), isSortVisible && sortKeys.length && jsxRuntime.exports.jsx(FloatingBox, __assign({ targetElement: sortRef.current, onClose: closeSortingPopup, minWidth: 250, mobileBehaviour: FloatingBoxMobileBehaviour.modal, useParentWidth: true, useRootContainer: true }, { children: jsxRuntime.exports.jsx(DataTableSorting$1, { onClose: closeSortingPopup }) })), isFilterVisible && jsxRuntime.exports.jsx(FloatingBox, __assign({ targetElement: filterRef.current, onClose: closeFilteringPopup, minWidth: 250, mobileBehaviour: FloatingBoxMobileBehaviour.modal, useParentWidth: true, useRootContainer: true }, { children: jsxRuntime.exports.jsx(DataTableFiltering$1, { onClose: closeFilteringPopup }) }))] });
+                                : null] })) })) })), isSortVisible && sortKeys.length && jsxRuntime.exports.jsx(FloatingBox, __assign({ targetElement: sortRef.current, onClose: closeSortingPopup, minWidth: 250, mobileBehaviour: exports.FloatingBoxMobileBehaviour.modal, useParentWidth: true, useRootContainer: true }, { children: jsxRuntime.exports.jsx(DataTableSorting$1, { onClose: closeSortingPopup }) })), isFilterVisible && jsxRuntime.exports.jsx(FloatingBox, __assign({ targetElement: filterRef.current, onClose: closeFilteringPopup, minWidth: 250, mobileBehaviour: exports.FloatingBoxMobileBehaviour.modal, useParentWidth: true, useRootContainer: true }, { children: jsxRuntime.exports.jsx(DataTableFiltering$1, { onClose: closeFilteringPopup }) }))] });
 };
 var DataTableHeader$1 = React.memo(DataTableHeader);
 
@@ -23987,7 +23990,7 @@ var DataTableBody = function () {
                             content = jsxRuntime.exports.jsx(DataTableCell$1, __assign({}, props));
                         }
                         return jsxRuntime.exports.jsx("td", __assign({ className: 'alt-data-table__cell' }, { children: content }), columnIndex);
-                    }), ltePhoneL && jsxRuntime.exports.jsx("td", __assign({ className: 'alt-data-table__cell alt-data-table__cell--show-more', tabIndex: 0, onClick: function () { return setSelectedRowIndex(rowIndex); } }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'arrow_forward_ios' }) }))] }), rowIndex)); }), selectedRowIndex > -1 && ltePhoneL && jsxRuntime.exports.jsx(Modal$1, __assign({ onClose: function () { return setSelectedRowIndex(-1); }, title: 'Detailed information' }, { children: jsxRuntime.exports.jsx("div", __assign({ className: 'alt-data-table-mobile-grid' }, { children: columns.map(function (column, columnIndex) {
+                    }), ltePhoneL && jsxRuntime.exports.jsx("td", __assign({ className: 'alt-data-table__cell alt-data-table__cell--show-more' }, { children: jsxRuntime.exports.jsx("button", __assign({ type: 'button', className: 'alt-data-table__showMore', onClick: function () { return setSelectedRowIndex(rowIndex); } }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'arrow_forward_ios' }) })) }))] }), rowIndex)); }), selectedRowIndex > -1 && ltePhoneL && jsxRuntime.exports.jsx(Modal$1, __assign({ onClose: function () { return setSelectedRowIndex(-1); }, title: 'Detailed information' }, { children: jsxRuntime.exports.jsx("div", __assign({ className: 'alt-data-table-mobile-grid' }, { children: columns.map(function (column, columnIndex) {
                         var CustomComponent = column.Component;
                         return jsxRuntime.exports.jsxs("div", __assign({ className: "alt-data-table-mobile-cell" }, { children: [jsxRuntime.exports.jsx("div", __assign({ className: 'alt-data-table-mobile-cell__label' }, { children: column.label || column.accessor })), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-data-table-mobile-cell__value' }, { children: column.Component ?
                                         jsxRuntime.exports.jsx(CustomComponent, __assign({}, column, { value: data[selectedRowIndex][column.accessor] })) : data[selectedRowIndex][column.accessor].toString() }))] }), columnIndex);
@@ -24083,22 +24086,22 @@ var DataTable = function (_a) {
 };
 var DataTable$1 = React.memo(DataTable);
 
-var ProgressVariant;
+exports.ProgressVariant = void 0;
 (function (ProgressVariant) {
     ProgressVariant["default"] = "default";
     ProgressVariant["segmented"] = "segmented";
-})(ProgressVariant || (ProgressVariant = {}));
+})(exports.ProgressVariant || (exports.ProgressVariant = {}));
 var Progress = function (_a) {
-    var _b = _a.variant, variant = _b === void 0 ? ProgressVariant.default : _b, _c = _a.value, value = _c === void 0 ? 0 : _c, _d = _a.max, max = _d === void 0 ? 100 : _d, _e = _a.role, role = _e === void 0 ? exports.Role.default : _e, _f = _a.size, size = _f === void 0 ? exports.Size.medium : _f, className = _a.className;
+    var _b = _a.variant, variant = _b === void 0 ? exports.ProgressVariant.default : _b, _c = _a.value, value = _c === void 0 ? 0 : _c, _d = _a.max, max = _d === void 0 ? 100 : _d, _e = _a.role, role = _e === void 0 ? exports.Role.default : _e, _f = _a.size, size = _f === void 0 ? exports.Size.medium : _f, className = _a.className;
     var percent = Math.round(value / max * 100);
     return jsxRuntime.exports.jsxs("div", __assign({ className: clsx('alt-progress', className, {
             'alt-progress--size-small': size === exports.Size.small,
             'alt-progress--size-large': size === exports.Size.large,
-            'alt-progress--variant-segmented': variant === ProgressVariant.segmented,
+            'alt-progress--variant-segmented': variant === exports.ProgressVariant.segmented,
             'alt-progress--primary': role === exports.Role.primary,
             'alt-progress--success': role === exports.Role.success,
             'alt-progress--danger': role === exports.Role.danger
-        }), "data-testid": 'alt-test-progress' }, { children: [variant === ProgressVariant.default && jsxRuntime.exports.jsx("div", { className: 'alt-progress__active', style: { width: percent + '%' }, "data-testid": 'alt-test-progress-active' }), variant === ProgressVariant.segmented && (new Array(max).fill(0).map(function (_, segmentIndex) {
+        }), "data-testid": 'alt-test-progress' }, { children: [variant === exports.ProgressVariant.default && jsxRuntime.exports.jsx("div", { className: 'alt-progress__active', style: { width: percent + '%' }, "data-testid": 'alt-test-progress-active' }), variant === exports.ProgressVariant.segmented && (new Array(max).fill(0).map(function (_, segmentIndex) {
                 return jsxRuntime.exports.jsx("div", { className: clsx('alt-progress__segment', {
                         'alt-progress__segment--active': segmentIndex < value
                     }), "data-testid": 'alt-test-progress-segment' }, segmentIndex);
