@@ -1,21 +1,21 @@
 import {memo, useMemo, useRef, useState} from "react";
 import './data-table-header.scss';
-import {Button} from "../../button";
-import {ButtonVariant} from "../../button/Button/Button";
+import {Button, ButtonVariant} from "../../button";
 import {TextInput} from "../../form";
-import {FloatingBox} from "../../containers";
 import DataTableSorting from "./DataTableSorting";
 import {Icon} from "../../icons";
 import DataTableFiltering from "./DataTableFiltering";
 import {useDataTableContext} from "../../../contexts";
 import {useLocalization, useWindowSize} from "../../../hooks";
-import {FloatingBoxMobileBehaviour} from "../../containers/FloatingBox/FloatingBox";
-import {Role} from "../../../types";
+import {DataTableAction as DataTableActionType} from "./DataTable";
+import DataTableAction from "./DataTableAction";
 
-const DataTableHeader = () => {
+interface DataTableHeaderProps {
+  actions: DataTableActionType[];
+}
+
+const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
   const { search, setSearch, sortKeys, sortBy, columns, appliedFilters, filters, searchBy, mobileColumns } = useDataTableContext()
-  const [isSortVisible, setIsSortVisible] = useState(false)
-  const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [isSearchVisible, setIsSearchVisible] = useState(false)
 
   const t = useLocalization()
@@ -31,46 +31,40 @@ const DataTableHeader = () => {
   const sortRef = useRef()
   const filterRef = useRef()
 
-  const closeSortingPopup = () => {
-    setIsSortVisible(false)
-  }
+  const dataTableActions = useMemo(() => {
+    const result: DataTableActionType[] = [...actions]
 
-  const closeFilteringPopup = () => {
-    setIsFilterVisible(false)
-  }
+    if (sortKeys.length) {
+      result.push({
+        label: t('data.dataTable.sort'),
+        icon: <Icon i='swap_vert' />,
+        content: (args) => <DataTableSorting {...args} />,
+      })
+    }
+
+    if (filters.length) {
+      result.push({
+        label: t('data.dataTable.filters'),
+        icon: <Icon i='tune' style='outlined' />,
+        content: (args) => <DataTableFiltering {...args} />,
+        indicator: appliedFilters.length > 0 ? {
+          position: 'baseline',
+          value: appliedFilters.length
+        } : undefined
+      })
+    }
+
+    return result;
+  }, [actions, sortKeys, sortBy, currentSortingColumn, filters, appliedFilters])
 
   return <>
     <tr className='alt-data-table-header-wrapper'>
       <th colSpan={ltePhoneL ? mobileColumns.length + 1 : columns.length}>
         <div className='alt-data-table-header'>
-          {(gtPhoneL || (ltePhoneL && !isSearchVisible)) && <div className='alt-data-table-header__filters'>
-              {sortKeys.length > 0 && (
-                <Button
-                  ref={sortRef}
-                  leftIcon={ltePhoneL ? null : <Icon i='swap_vert' />}
-                  variant={ButtonVariant.transparent}
-                  onClick={() => setIsSortVisible(true)}
-                  isIcon={ltePhoneL}
-                >
-                  {ltePhoneL
-                    ? <Icon i='swap_vert' />
-                    : <>{sortBy ? t('data.dataTable.sortedBy') : t('data.dataTable.sort')} {currentSortingColumn && <strong className='alt-data-table-header__filter-value'>{currentSortingColumn.label || currentSortingColumn.accessor}</strong>}</>
-                  }
-                </Button>
-              )}
-              {filters.length > 0 && <Button
-                ref={filterRef}
-                leftIcon={ltePhoneL ? null : <Icon i='tune' style='outlined' />}
-                variant={ButtonVariant.transparent}
-                onClick={() => setIsFilterVisible(true)}
-                isIcon={ltePhoneL}
-                role={ltePhoneL && appliedFilters.length > 0 && Role.primary}
-              >
-                {ltePhoneL
-                  ? <Icon i='tune' style='outlined' />
-                  : <>{t('data.dataTable.filters')} {appliedFilters.length > 0 && <strong className='alt-data-table-header__filter-value'>({appliedFilters.length})</strong>}</>
-                }
-              </Button>}
+          {(gtPhoneL || (ltePhoneL && !isSearchVisible)) && <div className='alt-data-table-header__actions'>
+            {dataTableActions.map((action, actionIndex) => (
+              <DataTableAction key={actionIndex} {...action} />
+            ))}
           </div>}
           {(searchBy && !isSearchVisible)
             ?
@@ -84,8 +78,7 @@ const DataTableHeader = () => {
           {(searchBy && isSearchVisible)
             ? <>
                 <Button
-                  ref={sortRef}
-                  variant={ButtonVariant.transparent}
+                  variant={ButtonVariant.text}
                   onClick={() => setIsSearchVisible(false)}
                   isIcon={ltePhoneL}
                 >
@@ -93,11 +86,10 @@ const DataTableHeader = () => {
                 </Button>
 
                 <div className='alt-data-table-header__search' data-testid='alt-test-datatable-search'>
-                  <TextInput placeholder={t('common.search')} value={search} onChange={setSearch} fluid />
+                  <TextInput placeholder={t('common.search')} value={search} onChange={setSearch} />
                 </div>
                 <Button
-                  ref={sortRef}
-                  variant={ButtonVariant.transparent}
+                  variant={ButtonVariant.text}
                   onClick={() => setSearch('')}
                   isIcon={ltePhoneL}
                 >
@@ -109,12 +101,6 @@ const DataTableHeader = () => {
         </div>
       </th>
     </tr>
-    {isSortVisible && sortKeys.length && <FloatingBox targetElement={sortRef.current} onClose={closeSortingPopup} minWidth={250} mobileBehaviour={FloatingBoxMobileBehaviour.modal} useParentWidth useRootContainer={true}>
-      <DataTableSorting onClose={closeSortingPopup} />
-    </FloatingBox>}
-    {isFilterVisible && <FloatingBox targetElement={filterRef.current} onClose={closeFilteringPopup} minWidth={250} mobileBehaviour={FloatingBoxMobileBehaviour.modal} useParentWidth useRootContainer={true}>
-      <DataTableFiltering onClose={closeFilteringPopup} />
-    </FloatingBox>}
   </>
 }
 

@@ -5,7 +5,7 @@ import DataTableBody from "./DataTableBody";
 import DataTableHeaderRow from "./DataTableHeaderRow";
 import DataTableFooter from "./DataTableFooter";
 import {DataTableAppliedFilter, DataTableContext, DataTableFilter} from "../../../contexts";
-import {Sort} from "../../../types";
+import {ContextMenuType, Indicator, Sort} from "../../../types";
 import {
   DataTableSearchFunc,
   DataTableSortFunc,
@@ -34,6 +34,22 @@ interface DataTableProps<T = any> {
   filters?: DataTableFilter[]
   mobileColumns?: string[]
   className?: string
+  actions?: DataTableAction[];
+}
+
+export interface DataTablePopupActionProps {
+  closePopup: () => void;
+}
+
+export interface DataTableAction {
+  icon: JSX.Element;
+  label: string;
+  onClick?: () => void;
+  isIcon?: boolean;
+  danger?: boolean;
+  content?: (args: DataTablePopupActionProps) => JSX.Element
+  contextMenu?: ContextMenuType;
+  indicator?: Indicator;
 }
 
 const DataTable = ({
@@ -45,11 +61,12 @@ const DataTable = ({
   sortKeys = [],
   filters = [],
   mobileColumns = [columns[0].accessor],
-  className
+  className,
+  actions = []
 }: DataTableProps) => {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
-  const [sortBy, setSortBy] = useState<string>()
+  const [sortBy, setSortBy] = useState<string | null>(null)
   const [sortType, setSortType] = useState<Sort>(Sort.asc)
   const [appliedFilters, setAppliedFilters] = useState<DataTableAppliedFilter[]>([])
 
@@ -109,7 +126,7 @@ const DataTable = ({
   }}>
     <table className={clsx('alt-data-table', className)} data-testid='alt-test-datatable'>
       <thead>
-        { isHeaderVisible && <DataTableHeader /> }
+        { isHeaderVisible && <DataTableHeader actions={actions} /> }
         <DataTableHeaderRow />
       </thead>
       <DataTableBody />

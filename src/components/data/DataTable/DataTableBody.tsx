@@ -8,7 +8,7 @@ import {Modal} from "../../containers";
 
 const DataTableBody = () => {
   const { data, columns, page, limit, mobileColumns } = useDataTableContext()
-  const { ltePhoneL } = useWindowSize()
+  const { ltePhoneL = false } = useWindowSize()
 
   const [selectedRowIndex, setSelectedRowIndex] = useState(-1)
 
