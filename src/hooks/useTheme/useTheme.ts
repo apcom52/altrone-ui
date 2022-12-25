@@ -1,4 +1,3 @@
-import {ThemeConfig} from "../../types";
+import { ThemeConfig } from '../../types';
 
-export function useTheme(config: ThemeConfig) {
-}
+export function useTheme(config: ThemeConfig) {}

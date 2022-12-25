@@ -1,9 +1,9 @@
-import {createContext, useContext} from "react";
+import { createContext, useContext } from 'react';
 
 export interface FormContextProps {
-  required?: boolean
-  disabled?: boolean
+  required?: boolean;
+  disabled?: boolean;
 }
 
-export const FormContext = createContext<FormContextProps>({})
-export const useFormContext = () => useContext(FormContext)
+export const FormContext = createContext<FormContextProps>({});
+export const useFormContext = () => useContext(FormContext);

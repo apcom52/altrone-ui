@@ -1,15 +1,21 @@
-import '../../index.scss'
-import clsx from "clsx";
-import {Theme, ThemeConfig} from "../../types";
-import {ThemeContext} from "../../contexts";
-import {FC, PropsWithChildren} from "react";
+import '../../index.scss';
+import clsx from 'clsx';
+import { Theme, ThemeConfig } from '../../types';
+import { ThemeContext } from '../../contexts';
+import { FC, PropsWithChildren } from 'react';
 
-export const Altrone: FC<PropsWithChildren<Partial<ThemeConfig>>> = ({ children, theme = Theme.light, locale = 'en-US', lang = 'en', style = {} }) => {
+export const Altrone: FC<PropsWithChildren<Partial<ThemeConfig>>> = ({
+  children,
+  theme = Theme.light,
+  locale = 'en-US',
+  lang = 'en',
+  style = {}
+}) => {
   try {
     // @ts-ignore
-    Intl.getCanonicalLocales(locale)
+    Intl.getCanonicalLocales(locale);
   } catch (err) {
-    locale = 'en-US'
+    locale = 'en-US';
   }
 
   // let themeConfig = useThemeContext() || {}
@@ -18,25 +24,31 @@ export const Altrone: FC<PropsWithChildren<Partial<ThemeConfig>>> = ({ children,
   //
   // let isFirstWrap = Boolean(themeConfig.locale)
 
-  let isFirstWrap = true
+  let isFirstWrap = true;
 
-  return isFirstWrap
-    ? <ThemeContext.Provider value={{
-      theme,
-      locale,
-      lang
-    }}>
-      <div className={clsx('altrone', {
-        'altrone--dark': theme === Theme.dark
-      })} style={style}>
-        {children}
-      </div>
-    </ThemeContext.Provider>
-    : <ThemeContext.Provider value={{
+  return isFirstWrap ? (
+    <ThemeContext.Provider
+      value={{
         theme,
         locale,
         lang
       }}>
+      <div
+        className={clsx('altrone', {
+          'altrone--dark': theme === Theme.dark
+        })}
+        style={style}>
         {children}
-      </ThemeContext.Provider>
-}
+      </div>
+    </ThemeContext.Provider>
+  ) : (
+    <ThemeContext.Provider
+      value={{
+        theme,
+        locale,
+        lang
+      }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};

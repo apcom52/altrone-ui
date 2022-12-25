@@ -1,8 +1,8 @@
-import {memo, useMemo} from "react";
+import { memo, useMemo } from 'react';
 import './form-group.scss';
-import {Align} from "../../../types/Align";
-import clsx from "clsx";
-import {FormContext, FormContextProps, useFormContext} from "../../../contexts";
+import { Align } from '../../../types/Align';
+import clsx from 'clsx';
+import { FormContext, FormContextProps, useFormContext } from '../../../contexts';
 
 export enum FormGroupVariant {
   default = 'default',
@@ -11,17 +11,25 @@ export enum FormGroupVariant {
 }
 
 interface FormGroupProps extends React.HTMLProps<HTMLDivElement>, FormContextProps {
-  variant?: FormGroupVariant
-  align?: Align
-  weights?: number[]
+  variant?: FormGroupVariant;
+  align?: Align;
+  weights?: number[];
 }
 
-const FormGroup = ({ variant = FormGroupVariant.default, align = Align.start, children, className, required, disabled, weights = [] }: FormGroupProps) => {
-  const context = useFormContext()
+const FormGroup = ({
+  variant = FormGroupVariant.default,
+  align = Align.start,
+  children,
+  className,
+  required,
+  disabled,
+  weights = []
+}: FormGroupProps) => {
+  const context = useFormContext();
 
   const gridTemplateColumns = useMemo(() => {
     if (variant !== FormGroupVariant.linear) {
-      return undefined
+      return undefined;
     }
 
     if (!children?.length) {
@@ -32,30 +40,34 @@ const FormGroup = ({ variant = FormGroupVariant.default, align = Align.start, ch
       return `repeat(${children.length}, 1fr)`;
     }
 
-    const sizes = []
+    const sizes = [];
     for (let childrenIndex = 0; childrenIndex < children.length; childrenIndex++) {
-      sizes.push((weights[childrenIndex] !== undefined ? weights[childrenIndex] : 1) + 'fr')
+      sizes.push((weights[childrenIndex] !== undefined ? weights[childrenIndex] : 1) + 'fr');
     }
 
-    return sizes.join(' ')
-  }, [variant, children, weights])
+    return sizes.join(' ');
+  }, [variant, children, weights]);
 
-  return <FormContext.Provider value={{
-    required: required || context.required,
-    disabled: disabled || context.disabled
-  }}>
-    <div
-      className={clsx('alt-form-group', className, {
-        'alt-form-group--variant-linear': variant === FormGroupVariant.linear,
-        'alt-form-group--variant-row': variant === FormGroupVariant.row,
-        'alt-form-group--align-end': align === Align.end
-      })}
-      style={{ gridTemplateColumns }}
-      data-testid='alt-test-form-group'
+  return (
+    <FormContext.Provider
+      value={{
+        required: required || context.required,
+        disabled: disabled || context.disabled
+      }}
     >
-      {children}
-    </div>
-  </FormContext.Provider>
-}
+      <div
+        className={clsx('alt-form-group', className, {
+          'alt-form-group--variant-linear': variant === FormGroupVariant.linear,
+          'alt-form-group--variant-row': variant === FormGroupVariant.row,
+          'alt-form-group--align-end': align === Align.end
+        })}
+        style={{ gridTemplateColumns }}
+        data-testid="alt-test-form-group"
+      >
+        {children}
+      </div>
+    </FormContext.Provider>
+  );
+};
 
-export default memo(FormGroup)
+export default memo(FormGroup);

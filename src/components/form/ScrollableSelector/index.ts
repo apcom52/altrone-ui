@@ -1,1 +1,1 @@
-export { default as ScrollableSelector } from './ScrollableSelector'
+export { default as ScrollableSelector } from './ScrollableSelector';

@@ -1,1 +1,1 @@
-export { default as TabList, TabListVariant } from './TabList'
+export { default as TabList, TabListVariant } from './TabList';
