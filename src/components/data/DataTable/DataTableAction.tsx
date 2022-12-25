@@ -1,5 +1,5 @@
 import {memo, useCallback, useRef, useState} from "react";
-import {DataTableAction as DataTableActionType} from "./DataTable";
+import type {DataTableAction as DataTableActionType} from "./DataTable";
 import {Button, ButtonVariant} from "../../button";
 import {FloatingBox} from "../../containers";
 import {FloatingBoxMobileBehaviour} from "../../containers/FloatingBox/FloatingBox";
