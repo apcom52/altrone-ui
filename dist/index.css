@@ -152,7 +152,8 @@ textarea {
  * 1. Show the overflow in Edge.
  */
 button,
-input { /* 1 */
+input {
+  /* 1 */
   overflow: visible;
 }
 
@@ -161,7 +162,8 @@ input { /* 1 */
  * 1. Remove the inheritance of text transform in Firefox.
  */
 button,
-select { /* 1 */
+select {
+  /* 1 */
   text-transform: none;
 }
 
@@ -169,9 +171,9 @@ select { /* 1 */
  * Correct the inability to style clickable types in iOS and Safari.
  */
 button,
-[type=button],
-[type=reset],
-[type=submit] {
+[type='button'],
+[type='reset'],
+[type='submit'] {
   -webkit-appearance: button;
 }
 
@@ -179,9 +181,9 @@ button,
  * Remove the inner border and padding in Firefox.
  */
 button::-moz-focus-inner,
-[type=button]::-moz-focus-inner,
-[type=reset]::-moz-focus-inner,
-[type=submit]::-moz-focus-inner {
+[type='button']::-moz-focus-inner,
+[type='reset']::-moz-focus-inner,
+[type='submit']::-moz-focus-inner {
   border-style: none;
   padding: 0;
 }
@@ -190,9 +192,9 @@ button::-moz-focus-inner,
  * Restore the focus styles unset by the previous rule.
  */
 button:-moz-focusring,
-[type=button]:-moz-focusring,
-[type=reset]:-moz-focusring,
-[type=submit]:-moz-focusring {
+[type='button']:-moz-focusring,
+[type='reset']:-moz-focusring,
+[type='submit']:-moz-focusring {
   outline: 1px dotted ButtonText;
 }
 
@@ -236,8 +238,8 @@ textarea {
  * 1. Add the correct box sizing in IE 10.
  * 2. Remove the padding in IE 10.
  */
-[type=checkbox],
-[type=radio] {
+[type='checkbox'],
+[type='radio'] {
   box-sizing: border-box; /* 1 */
   padding: 0; /* 2 */
 }
@@ -245,8 +247,8 @@ textarea {
 /**
  * Correct the cursor style of increment and decrement buttons in Chrome.
  */
-[type=number]::-webkit-inner-spin-button,
-[type=number]::-webkit-outer-spin-button {
+[type='number']::-webkit-inner-spin-button,
+[type='number']::-webkit-outer-spin-button {
   height: auto;
 }
 
@@ -254,7 +256,7 @@ textarea {
  * 1. Correct the odd appearance in Chrome and Safari.
  * 2. Correct the outline style in Safari.
  */
-[type=search] {
+[type='search'] {
   -webkit-appearance: textfield; /* 1 */
   outline-offset: -2px; /* 2 */
 }
@@ -262,7 +264,7 @@ textarea {
 /**
  * Remove the inner padding in Chrome and Safari on macOS.
  */
-[type=search]::-webkit-search-decoration {
+[type='search']::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 
@@ -308,78 +310,78 @@ template {
 }
 
 @font-face {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   src: url(assets/fonts/OpenSans-Light.ttf);
   font-weight: 300;
 }
 @font-face {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   src: url(assets/fonts/OpenSans-LightItalic.ttf);
   font-weight: 300;
   font-style: italic;
 }
 @font-face {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   src: url(assets/fonts/OpenSans-Regular.ttf);
   font-weight: 400;
 }
 @font-face {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   src: url(assets/fonts/OpenSans-Italic.ttf);
   font-weight: 400;
   font-style: italic;
 }
 @font-face {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   src: url(assets/fonts/OpenSans-Medium.ttf);
   font-weight: 500;
 }
 @font-face {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   src: url(assets/fonts/OpenSans-MediumItalic.ttf);
   font-weight: 500;
   font-style: italic;
 }
 @font-face {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   src: url(assets/fonts/OpenSans-SemiBold.ttf);
   font-weight: 600;
 }
 @font-face {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   src: url(assets/fonts/OpenSans-SemiBoldItalic.ttf);
   font-weight: 600;
   font-style: italic;
 }
 @font-face {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   src: url(assets/fonts/OpenSans-SemiBold.ttf);
   font-weight: 600;
 }
 @font-face {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   src: url(assets/fonts/OpenSans-SemiBoldItalic.ttf);
   font-weight: 600;
   font-style: italic;
 }
 @font-face {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   src: url(assets/fonts/OpenSans-Bold.ttf);
   font-weight: 700;
 }
 @font-face {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   src: url(assets/fonts/OpenSans-BoldItalic.ttf);
   font-weight: 700;
   font-style: italic;
 }
 @font-face {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   src: url(assets/fonts/OpenSans-ExtraBold.ttf);
   font-weight: 800;
 }
 @font-face {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   src: url(assets/fonts/OpenSans-ExtraBoldItalic.ttf);
   font-weight: 800;
   font-style: italic;
@@ -392,11 +394,11 @@ template {
   --surfaceGlass: rgba(250, 250, 250, 0.8);
   --textColor: #202124;
   --secondaryTextColor: #6b8a99;
-  --dividerColor: #EEEEEE;
-  --borderColor: #ECEFF1;
+  --dividerColor: #eeeeee;
+  --borderColor: #eceff1;
   --shadow: rgba(0, 0, 0, 0.1);
   --gap: 4px;
-  --accent: #03A9F4;
+  --accent: #03a9f4;
   --accentFocus: rgba(3, 164, 244, 0.75);
   --accentHover: #9bd1ee;
   --accentBorderColor: rgba(3, 164, 244, 0.15);
@@ -410,15 +412,15 @@ template {
   --successHighlight: rgba(76, 175, 80, 0.35);
   --textOnSuccessHighlight: #202124;
   --textColorOnSuccess: #ffffff;
-  --danger: #E53935;
+  --danger: #e53935;
   --dangerBorderColor: rgba(229, 57, 53, 0.15);
   --dangerText: #ba000d;
   --dangerHighlight: rgba(229, 57, 53, 0.35);
   --textOnDangerHighlight: #202124;
   --textColorOnDanger: #ffffff;
-  --disabledText: #9E9E9E;
-  --placeholderText: #BDBDBD;
-  --importantText: #E53935;
+  --disabledText: #9e9e9e;
+  --placeholderText: #bdbdbd;
+  --importantText: #e53935;
   --blackout: rgba(0, 0, 0, 0.4);
   --transitionDuration: 0.2s;
   --smallControlHeight: 28px;
@@ -480,7 +482,7 @@ template {
   --displayLargeLineHeight: 64px;
   --displayLargeFontWeight: 700;
   display: block;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   color: var(--textColor);
 }
 .altrone * {
@@ -508,14 +510,14 @@ template {
   --surfaceTrasparentHover: rgba(107, 138, 153, 0.4);
   --surfaceGlass: rgba(33, 33, 33, 0.8);
   --shadow: rgba(0, 0, 15, 0.5);
-  --textColor: #FAFAFA;
-  --borderColor: #37474F;
-  --dividerColor: #455A64;
+  --textColor: #fafafa;
+  --borderColor: #37474f;
+  --dividerColor: #455a64;
   --accent: #0288d1;
   --accentBorderColor: #01579b;
-  --textOnHighlight: #FAFAFA;
-  --textOnSuccessHighlight: #FAFAFA;
-  --textOnDangerHighlight: #FAFAFA;
+  --textOnHighlight: #fafafa;
+  --textOnSuccessHighlight: #fafafa;
+  --textOnDangerHighlight: #fafafa;
 }
 
 .alt-data-table-wrapper {
@@ -528,7 +530,7 @@ template {
 .alt-data-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -545,7 +547,7 @@ template {
 .alt-data-table__cell {
   padding: 8px 16px;
   border: 1px solid var(--borderColor);
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodyFontSize);
   --lineHeight: var(--bodyLineHeight);
   --fontWeight: var(--bodyFontWeight);
@@ -558,7 +560,7 @@ template {
   position: relative;
   text-align: center;
   padding: 8px 24px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -576,11 +578,13 @@ template {
   -webkit-user-select: none;
   user-select: none;
 }
-.alt-data-table__cell--show-more:focus, .alt-data-table__cell--show-more:focus-visible {
+.alt-data-table__cell--show-more:focus,
+.alt-data-table__cell--show-more:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
-.alt-data-table__cell--show-more:focus, .alt-data-table__cell--show-more:focus-visible {
+.alt-data-table__cell--show-more:focus,
+.alt-data-table__cell--show-more:focus-visible {
   transform: scaleX(1.01);
   border-color: transparent;
   margin: -1px;
@@ -605,7 +609,7 @@ template {
 }
 
 .alt-data-table-mobile-cell__label {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -616,7 +620,7 @@ template {
 }
 
 .alt-data-table-mobile-cell__value {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodyFontSize);
   --lineHeight: var(--bodyLineHeight);
   --fontWeight: var(--bodyFontWeight);
@@ -626,14 +630,14 @@ template {
 }
 
 @font-face {
-  font-family: "Material Symbols Outlined";
+  font-family: 'Material Symbols Outlined';
   font-style: normal;
   font-weight: 100 700;
   font-display: block;
-  src: url("~material-symbols/material-symbols-outlined.woff2") format("woff2");
+  src: url('~material-symbols/material-symbols-outlined.woff2') format('woff2');
 }
 .material-symbols-outlined {
-  font-family: "Material Symbols Outlined";
+  font-family: 'Material Symbols Outlined';
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
@@ -647,18 +651,18 @@ template {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  font-feature-settings: "liga";
+  font-feature-settings: 'liga';
 }
 
 @font-face {
-  font-family: "Material Symbols Rounded";
+  font-family: 'Material Symbols Rounded';
   font-style: normal;
   font-weight: 100 700;
   font-display: block;
-  src: url("~material-symbols/material-symbols-rounded.woff2") format("woff2");
+  src: url('~material-symbols/material-symbols-rounded.woff2') format('woff2');
 }
 .material-symbols-rounded {
-  font-family: "Material Symbols Rounded";
+  font-family: 'Material Symbols Rounded';
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
@@ -672,18 +676,18 @@ template {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  font-feature-settings: "liga";
+  font-feature-settings: 'liga';
 }
 
 @font-face {
-  font-family: "Material Symbols Sharp";
+  font-family: 'Material Symbols Sharp';
   font-style: normal;
   font-weight: 100 700;
   font-display: block;
-  src: url("~material-symbols/material-symbols-sharp.woff2") format("woff2");
+  src: url('~material-symbols/material-symbols-sharp.woff2') format('woff2');
 }
 .material-symbols-sharp {
-  font-family: "Material Symbols Sharp";
+  font-family: 'Material Symbols Sharp';
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
@@ -697,7 +701,7 @@ template {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  font-feature-settings: "liga";
+  font-feature-settings: 'liga';
 }
 
 .alt-icon {
@@ -717,7 +721,7 @@ template {
   /* Support for Firefox. */
   -moz-osx-font-smoothing: grayscale;
   /* Support for IE. */
-  font-feature-settings: "liga";
+  font-feature-settings: 'liga';
   font-size: 1em;
 }
 
@@ -735,7 +739,8 @@ template {
   color: var(--buttonTextColor);
   border: none;
   box-shadow: 0 1px 0 0 var(--buttonShadowColor);
-  transition: transform var(--transitionDuration) ease, opacity var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
+  transition: transform var(--transitionDuration) ease, opacity var(--transitionDuration) ease,
+    box-shadow var(--transitionDuration) ease;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -748,7 +753,7 @@ template {
   height: var(--controlHeight);
   font-size: 14px;
   padding: 6px 16px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -764,7 +769,8 @@ template {
   pointer-events: none;
   opacity: 0.5;
 }
-.alt-button:focus, .alt-button:focus-visible {
+.alt-button:focus,
+.alt-button:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
@@ -779,7 +785,8 @@ template {
   margin-right: -4px;
 }
 
-.alt-button__leftIcon, .alt-button__rightIcon {
+.alt-button__leftIcon,
+.alt-button__rightIcon {
   display: inline-flex;
   align-items: center;
   font-size: 1.5em;
@@ -799,9 +806,12 @@ template {
 .alt-button--variant-transparent {
   background-color: transparent;
   box-shadow: none;
-  transition: transform var(--transitionDuration) ease, opacity var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease, background-color var(--transitionDuration) ease;
+  transition: transform var(--transitionDuration) ease, opacity var(--transitionDuration) ease,
+    box-shadow var(--transitionDuration) ease, background-color var(--transitionDuration) ease;
 }
-.alt-button--variant-transparent:hover, .alt-button--variant-transparent:focus, .alt-button--variant-transparent:focus-visible {
+.alt-button--variant-transparent:hover,
+.alt-button--variant-transparent:focus,
+.alt-button--variant-transparent:focus-visible {
   background-color: var(--buttonBackgroundColor);
 }
 .alt-button--variant-transparent:active {
@@ -812,7 +822,9 @@ template {
   background-color: transparent;
   box-shadow: none;
 }
-.alt-button--variant-text:hover, .alt-button--variant-text:focus, .alt-button--variant-text:focus-visible {
+.alt-button--variant-text:hover,
+.alt-button--variant-text:focus,
+.alt-button--variant-text:focus-visible {
   opacity: 0.8;
 }
 .alt-button--variant-text:active {
@@ -827,7 +839,9 @@ template {
 .alt-button--role-primary.alt-button--variant-transparent {
   --buttonTextColor: var(--accent);
 }
-.alt-button--role-primary.alt-button--variant-transparent:hover, .alt-button--role-primary.alt-button--variant-transparent:focus, .alt-button--role-primary.alt-button--variant-transparent:focus-visible {
+.alt-button--role-primary.alt-button--variant-transparent:hover,
+.alt-button--role-primary.alt-button--variant-transparent:focus,
+.alt-button--role-primary.alt-button--variant-transparent:focus-visible {
   --buttonTextColor: var(--textColorOnAccent);
 }
 .alt-button--role-primary.alt-button--variant-text {
@@ -842,7 +856,9 @@ template {
 .alt-button--role-success.alt-button--variant-transparent {
   --buttonTextColor: var(--success);
 }
-.alt-button--role-success.alt-button--variant-transparent:hover, .alt-button--role-success.alt-button--variant-transparent:focus, .alt-button--role-success.alt-button--variant-transparent:focus-visible {
+.alt-button--role-success.alt-button--variant-transparent:hover,
+.alt-button--role-success.alt-button--variant-transparent:focus,
+.alt-button--role-success.alt-button--variant-transparent:focus-visible {
   --buttonTextColor: var(--textColorOnSuccess);
 }
 .alt-button--role-success.alt-button--variant-text {
@@ -857,7 +873,9 @@ template {
 .alt-button--role-danger.alt-button--variant-transparent {
   --buttonTextColor: var(--danger);
 }
-.alt-button--role-danger.alt-button--variant-transparent:hover, .alt-button--role-danger.alt-button--variant-transparent:focus, .alt-button--role-danger.alt-button--variant-transparent:focus-visible {
+.alt-button--role-danger.alt-button--variant-transparent:hover,
+.alt-button--role-danger.alt-button--variant-transparent:focus,
+.alt-button--role-danger.alt-button--variant-transparent:focus-visible {
   --buttonTextColor: var(--textColorOnDanger);
 }
 .alt-button--role-danger.alt-button--variant-text {
@@ -865,7 +883,7 @@ template {
 }
 
 .alt-button--size-small {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelFontSize);
   --lineHeight: var(--labelLineHeight);
   --fontWeight: var(--labelFontWeight);
@@ -882,7 +900,7 @@ template {
 }
 
 .alt-button--size-large {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodyFontSize);
   --lineHeight: var(--bodyLineHeight);
   --fontWeight: var(--bodyFontWeight);
@@ -948,7 +966,7 @@ template {
   border-radius: 8px;
   border: 1px solid var(--borderColor);
   transition: box-shadow var(--transitionDuration) ease, opacity var(--transitionDuration) ease;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodyFontSize);
   --lineHeight: var(--bodyLineHeight);
   --fontWeight: var(--bodyFontWeight);
@@ -958,11 +976,13 @@ template {
   line-height: var(--height);
   box-shadow: 0 1px 0 0 var(--borderColor);
 }
-.alt-text-input__control:focus, .alt-text-input__control:focus-visible {
+.alt-text-input__control:focus,
+.alt-text-input__control:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
-.alt-text-input__control::-webkit-outer-spin-button, .alt-text-input__control::-webkit-inner-spin-button {
+.alt-text-input__control::-webkit-outer-spin-button,
+.alt-text-input__control::-webkit-inner-spin-button {
   display: none;
 }
 .alt-text-input__control::placeholder {
@@ -1044,14 +1064,17 @@ template {
   cursor: pointer;
   transition: background-color var(--transitionDuration) ease;
 }
-.alt-text-input__action-button:focus, .alt-text-input__action-button:focus-visible {
+.alt-text-input__action-button:focus,
+.alt-text-input__action-button:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
 .alt-text-input__action-button + .alt-text-input__action-button {
   margin-left: 2px;
 }
-.alt-text-input__action-button:hover, .alt-text-input__action-button:focus, .alt-text-input__action-button:focus-visible {
+.alt-text-input__action-button:hover,
+.alt-text-input__action-button:focus,
+.alt-text-input__action-button:focus-visible {
   background-color: var(--surfaceTrasparentHover);
 }
 .alt-text-input__action-button:disabled {
@@ -1070,7 +1093,8 @@ template {
 .alt-base-input--invalid .alt-text-input__control {
   box-shadow: 0 0 0 1px var(--danger);
 }
-.alt-base-input--invalid .alt-text-input__control:focus, .alt-base-input--invalid .alt-text-input__control:focus-visible {
+.alt-base-input--invalid .alt-text-input__control:focus,
+.alt-base-input--invalid .alt-text-input__control:focus-visible {
   box-shadow: 0 0 0 2px var(--danger);
 }
 
@@ -1081,7 +1105,8 @@ template {
 .alt-text-input--disabled .alt-text-input__control {
   opacity: 0.5;
 }
-.alt-text-input--disabled .alt-text-input__left-island, .alt-text-input--disabled .alt-text-input__right-island {
+.alt-text-input--disabled .alt-text-input__left-island,
+.alt-text-input--disabled .alt-text-input__right-island {
   pointer-events: none;
 }
 
@@ -1089,7 +1114,7 @@ template {
   --height: 26px;
 }
 .alt-basic-input--size-small .alt-text-input__control {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodySmallFontSize);
   --lineHeight: var(--bodySmallLineHeight);
   --fontWeight: var(--bodySmallFontWeight);
@@ -1098,7 +1123,7 @@ template {
   font-weight: var(--fontWeight);
 }
 .alt-basic-input--size-small .alt-text-input__text-island {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodySmallFontSize);
   --lineHeight: var(--bodySmallLineHeight);
   --fontWeight: var(--bodySmallFontWeight);
@@ -1114,7 +1139,7 @@ template {
   --height: 42px;
 }
 .alt-basic-input--size-large .alt-text-input__control {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodyLargeFontSize);
   --lineHeight: var(--bodyLargeLineHeight);
   --fontWeight: var(--bodyLargeFontWeight);
@@ -1123,7 +1148,7 @@ template {
   font-weight: var(--fontWeight);
 }
 .alt-basic-input--size-large .alt-text-input__text-island {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodyLargeFontSize);
   --lineHeight: var(--bodyLargeLineHeight);
   --fontWeight: var(--bodyLargeFontWeight);
@@ -1142,8 +1167,9 @@ template {
   flex-direction: column;
 }
 
-.alt-basic-input__hint-text, .alt-basic-input__error-text {
-  font-family: "Open Sans", sans-serif;
+.alt-basic-input__hint-text,
+.alt-basic-input__error-text {
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodySmallFontSize);
   --lineHeight: var(--bodySmallLineHeight);
   --fontWeight: var(--bodySmallFontWeight);
@@ -1183,7 +1209,7 @@ template {
   -webkit-user-select: none;
   user-select: none;
   box-shadow: 0 1px 0 0 var(--borderColor);
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -1191,7 +1217,8 @@ template {
   line-height: var(--lineHeight);
   font-weight: var(--fontWeight);
 }
-.alt-date-picker:focus, .alt-date-picker:focus-visible {
+.alt-date-picker:focus,
+.alt-date-picker:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
@@ -1239,7 +1266,7 @@ template {
   text-overflow: ellipsis;
   max-width: 250px;
   white-space: nowrap;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--headlineFontSize);
   --lineHeight: var(--headlineLineHeight);
   --fontWeight: var(--headlineFontWeight);
@@ -1248,7 +1275,9 @@ template {
   font-weight: var(--fontWeight);
   font-weight: 500;
 }
-.alt-date-picker__currentMonth:hover, .alt-date-picker__currentMonth:focus, .alt-date-picker__currentMonth:focus-visible {
+.alt-date-picker__currentMonth:hover,
+.alt-date-picker__currentMonth:focus,
+.alt-date-picker__currentMonth:focus-visible {
   background-color: var(--highlight);
   color: var(--textOnHighlight);
 }
@@ -1260,7 +1289,7 @@ template {
 
 .alt-date-picker__title {
   width: 100%;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--titleFontSize);
   --lineHeight: var(--titleLineHeight);
   --fontWeight: var(--titleFontWeight);
@@ -1293,7 +1322,9 @@ template {
   padding: 4px 8px;
   color: var(--textColor);
 }
-.alt-date-picker__navigation-button:hover, .alt-date-picker__navigation-button:focus, .alt-date-picker__navigation-button:focus-visible {
+.alt-date-picker__navigation-button:hover,
+.alt-date-picker__navigation-button:focus,
+.alt-date-picker__navigation-button:focus-visible {
   color: var(--accent);
 }
 
@@ -1305,7 +1336,7 @@ template {
 @media (max-width: 430px) {
   .alt-date-picker__footer {
     display: grid;
-    grid-template-areas: "prev month next" "today today today" "apply apply apply";
+    grid-template-areas: 'prev month next' 'today today today' 'apply apply apply';
     grid-template-columns: 40px 1fr 40px;
     grid-gap: 8px;
     padding: 0;
@@ -1315,7 +1346,7 @@ template {
 @media (max-width: 430px) {
   .alt-date-picker__footer--compact {
     margin-top: 16px;
-    grid-template-areas: "today" "apply";
+    grid-template-areas: 'today' 'apply';
     grid-template-columns: 1fr;
   }
 }
@@ -1340,7 +1371,7 @@ template {
 }
 
 .alt-calendar__weekday {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -1355,7 +1386,7 @@ template {
 }
 @media (max-width: 430px) {
   .alt-calendar__weekday {
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Open Sans', sans-serif;
     --fontSize: var(--labelSmallFontSize);
     --lineHeight: var(--labelSmallLineHeight);
     --fontWeight: var(--labelSmallFontWeight);
@@ -1383,7 +1414,7 @@ template {
   border: none;
   cursor: pointer;
   transition: background-color var(--transitionDuration) ease;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodyLargeFontSize);
   --lineHeight: var(--bodyLargeLineHeight);
   --fontWeight: var(--bodyLargeFontWeight);
@@ -1391,7 +1422,8 @@ template {
   line-height: var(--lineHeight);
   font-weight: var(--fontWeight);
 }
-.alt-calendar__day:focus, .alt-calendar__day:focus-visible {
+.alt-calendar__day:focus,
+.alt-calendar__day:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
@@ -1400,7 +1432,7 @@ template {
 }
 @media (max-width: 430px) {
   .alt-calendar__day {
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Open Sans', sans-serif;
     --fontSize: var(--bodyFontSize);
     --lineHeight: var(--bodyLineHeight);
     --fontWeight: var(--bodyFontWeight);
@@ -1475,7 +1507,7 @@ template {
 .alt-basic-input--size-small .alt-date-picker {
   padding: 0 6px 0 12px;
   height: 26px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodySmallFontSize);
   --lineHeight: var(--bodySmallLineHeight);
   --fontWeight: var(--bodySmallFontWeight);
@@ -1483,7 +1515,8 @@ template {
   line-height: var(--lineHeight);
   font-weight: var(--fontWeight);
 }
-.alt-basic-input--size-small .alt-date-picker__value, .alt-basic-input--size-small .alt-date-picker__placeholder {
+.alt-basic-input--size-small .alt-date-picker__value,
+.alt-basic-input--size-small .alt-date-picker__placeholder {
   font-weight: 500;
 }
 .alt-basic-input--size-small .alt-date-picker__icon {
@@ -1493,7 +1526,7 @@ template {
 .alt-basic-input--size-large .alt-date-picker {
   padding: 8px 6px 8px 12px;
   height: 42px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodyLargeFontSize);
   --lineHeight: var(--bodyLargeLineHeight);
   --fontWeight: var(--bodyLargeFontWeight);
@@ -1501,7 +1534,8 @@ template {
   line-height: var(--lineHeight);
   font-weight: var(--fontWeight);
 }
-.alt-basic-input--size-large .alt-date-picker__value, .alt-basic-input--size-large .alt-date-picker__placeholder {
+.alt-basic-input--size-large .alt-date-picker__value,
+.alt-basic-input--size-large .alt-date-picker__placeholder {
   font-weight: 500;
 }
 .alt-basic-input--size-large .alt-date-picker__icon {
@@ -1511,7 +1545,8 @@ template {
 .alt-basic-input--invalid .alt-date-picker {
   box-shadow: 0 0 0 1px var(--danger);
 }
-.alt-basic-input--invalid .alt-date-picker:focus, .alt-basic-input--invalid .alt-date-picker:focus-visible {
+.alt-basic-input--invalid .alt-date-picker:focus,
+.alt-basic-input--invalid .alt-date-picker:focus-visible {
   box-shadow: 0 0 0 2px var(--danger);
 }
 
@@ -1623,7 +1658,7 @@ template {
   user-select: none;
 }
 .alt-checkbox__control:before {
-  content: "";
+  content: '';
   width: 16px;
   min-width: 16px;
   height: 16px;
@@ -1631,7 +1666,8 @@ template {
   border-radius: 4px;
   box-sizing: border-box;
   border: 1px solid var(--borders);
-  transition: box-shadow var(--transitionDuration) ease, background-color var(--transitionDuration) ease;
+  transition: box-shadow var(--transitionDuration) ease,
+    background-color var(--transitionDuration) ease;
   background-color: var(--background);
   box-shadow: 0 1px 0 0 var(--borderColor);
 }
@@ -1650,7 +1686,7 @@ template {
 }
 
 .alt-checkbox__label {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -1701,7 +1737,7 @@ template {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -1709,7 +1745,8 @@ template {
   line-height: var(--lineHeight);
   font-weight: var(--fontWeight);
 }
-.alt-checkbox-list__expand:focus, .alt-checkbox-list__expand:focus-visible {
+.alt-checkbox-list__expand:focus,
+.alt-checkbox-list__expand:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
@@ -1751,7 +1788,7 @@ template {
   cursor: pointer;
   background-color: transparent;
   opacity: 0.75;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -1843,7 +1880,7 @@ template {
   left: 2px;
   width: 10px;
   height: 10px;
-  content: "";
+  content: '';
   border-radius: 50%;
   background-color: var(--textColor);
   transform: scale(0);
@@ -1880,7 +1917,7 @@ template {
 }
 
 .alt-radio__label {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -1913,7 +1950,7 @@ template {
   box-shadow: 0 0 0 1px var(--surfaceTrasparent);
   transition: box-shadow var(--transitionDuration) ease, opacity var(--transitionDuration) ease;
   resize: vertical;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodyFontSize);
   --lineHeight: var(--bodyLineHeight);
   --fontWeight: var(--bodyFontWeight);
@@ -1922,13 +1959,14 @@ template {
   font-weight: var(--fontWeight);
   box-shadow: 0 1px 0 0 var(--borderColor);
 }
-.alt-textarea:focus, .alt-textarea:focus-visible {
+.alt-textarea:focus,
+.alt-textarea:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
 
 .alt-basic-input--size-small .alt-textarea {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodySmallFontSize);
   --lineHeight: var(--bodySmallLineHeight);
   --fontWeight: var(--bodySmallFontWeight);
@@ -1938,7 +1976,7 @@ template {
 }
 
 .alt-basic-input--size-large .alt-textarea {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodyLargeFontSize);
   --lineHeight: var(--bodyLargeLineHeight);
   --fontWeight: var(--bodyLargeFontWeight);
@@ -1950,7 +1988,8 @@ template {
 .alt-basic-input--invalid .alt-textarea {
   box-shadow: 0 0 0 1px var(--danger);
 }
-.alt-basic-input--invalid .alt-textarea:focus, .alt-basic-input--invalid .alt-textarea:focus-visible {
+.alt-basic-input--invalid .alt-textarea:focus,
+.alt-basic-input--invalid .alt-textarea:focus-visible {
   box-shadow: 0 0 0 2px var(--danger);
 }
 
@@ -1963,7 +2002,7 @@ template {
   align-items: center;
   cursor: pointer;
   color: var(--text);
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -2000,11 +2039,12 @@ template {
   border-radius: 13px;
   border: 1px solid var(--switcherColor);
   box-sizing: border-box;
-  transition: background-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
+  transition: background-color var(--transitionDuration) ease,
+    box-shadow var(--transitionDuration) ease;
 }
 .alt-switcher__indicator:before {
   position: absolute;
-  content: "";
+  content: '';
   width: 18px;
   height: 18px;
   top: 3px;
@@ -2015,7 +2055,8 @@ template {
   box-shadow: 0 3px 15px 0 var(--shadow);
 }
 
-.alt-switcher__input:focus + .alt-switcher__indicator, .alt-switcher__input:focus-visible + .alt-switcher__indicator {
+.alt-switcher__input:focus + .alt-switcher__indicator,
+.alt-switcher__input:focus-visible + .alt-switcher__indicator {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
@@ -2064,7 +2105,7 @@ template {
 
 .alt-form-field__label {
   margin-bottom: 6px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -2121,7 +2162,7 @@ template {
   box-sizing: border-box;
   cursor: pointer;
   transition: box-shadow var(--transitionDuration) ease;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -2132,7 +2173,8 @@ template {
   user-select: none;
   box-shadow: 0 1px 0 0 var(--borderColor);
 }
-.alt-select:focus, .alt-select:focus-visible {
+.alt-select:focus,
+.alt-select:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
@@ -2181,7 +2223,7 @@ template {
   margin-left: 4px;
   color: var(--secondaryTextColor);
   padding-left: 4px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelSmallFontSize);
   --lineHeight: var(--labelSmallLineHeight);
   --fontWeight: var(--labelSmallFontWeight);
@@ -2204,7 +2246,7 @@ template {
   margin: 0;
   color: var(--text);
   cursor: pointer;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -2214,9 +2256,10 @@ template {
   -webkit-user-select: none;
   user-select: none;
 }
-.alt-select-option:hover, .alt-select-option.alt-select-option--selected {
+.alt-select-option:hover,
+.alt-select-option.alt-select-option--selected {
   --background: var(--accent);
-  --text: var(--textColorOnAccent) ;
+  --text: var(--textColorOnAccent);
 }
 
 .alt-select-option__icon {
@@ -2236,7 +2279,7 @@ template {
 }
 
 .alt-select-menu__title {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--titleFontSize);
   --lineHeight: var(--titleLineHeight);
   --fontWeight: var(--titleFontWeight);
@@ -2261,7 +2304,8 @@ template {
   pointer-events: none;
   opacity: 0.5;
 }
-.alt-select-option--disabled:hover, .alt-select-option--disabled.alt-select-option--selected {
+.alt-select-option--disabled:hover,
+.alt-select-option--disabled.alt-select-option--selected {
   --background: var(--secondaryTextColor);
   --text: var(--textColorOnAccent);
 }
@@ -2290,7 +2334,7 @@ template {
   padding: 0 6px 0 12px;
 }
 .alt-basic-input--size-small .alt-select__value .alt-select-option {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodySmallFontSize);
   --lineHeight: var(--bodySmallLineHeight);
   --fontWeight: var(--bodySmallFontWeight);
@@ -2304,7 +2348,7 @@ template {
   padding: 0 6px 0 12px;
 }
 .alt-basic-input--size-large .alt-select__value .alt-select-option {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodyLargeFontSize);
   --lineHeight: var(--bodyLargeLineHeight);
   --fontWeight: var(--bodyLargeFontWeight);
@@ -2318,7 +2362,8 @@ template {
 .alt-basic-input--invalid .alt-select {
   box-shadow: 0 0 0 1px var(--danger);
 }
-.alt-basic-input--invalid .alt-select:focus, .alt-basic-input--invalid .alt-select:focus-visible {
+.alt-basic-input--invalid .alt-select:focus,
+.alt-basic-input--invalid .alt-select:focus-visible {
   box-shadow: 0 0 0 2px var(--danger);
 }
 
@@ -2449,10 +2494,11 @@ template {
   align-items: center;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color var(--transitionDuration) ease, border-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
+  transition: background-color var(--transitionDuration) ease,
+    border-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
   -webkit-user-select: none;
   user-select: none;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -2460,7 +2506,8 @@ template {
   line-height: var(--lineHeight);
   font-weight: var(--fontWeight);
 }
-.alt-chip:focus, .alt-chip:focus-visible {
+.alt-chip:focus,
+.alt-chip:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
@@ -2506,7 +2553,7 @@ template {
 
 .alt-chips--size-small .alt-chip {
   padding: 4px 8px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelFontSize);
   --lineHeight: var(--labelLineHeight);
   --fontWeight: var(--labelFontWeight);
@@ -2524,7 +2571,7 @@ template {
 
 .alt-chips--size-large .alt-chip {
   padding: 9px 16px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodyFontSize);
   --lineHeight: var(--bodyLineHeight);
   --fontWeight: var(--bodyFontWeight);
@@ -2630,7 +2677,7 @@ template {
 
 .alt-modal__title {
   text-align: center;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -2642,7 +2689,7 @@ template {
 }
 @media (max-width: 430px) {
   .alt-modal__title {
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Open Sans', sans-serif;
     --fontSize: var(--titleFontSize);
     --lineHeight: var(--titleLineHeight);
     --fontWeight: var(--titleFontWeight);
@@ -2671,13 +2718,15 @@ template {
   font-size: 16px;
   border-radius: 50%;
   cursor: pointer;
-  transition: background-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
+  transition: background-color var(--transitionDuration) ease,
+    box-shadow var(--transitionDuration) ease;
   padding: 0;
 }
 .alt-modal__close:hover {
   background-color: var(--surfaceTrasparentHover);
 }
-.alt-modal__close:focus, .alt-modal__close:focus-visible {
+.alt-modal__close:focus,
+.alt-modal__close:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
@@ -2758,7 +2807,7 @@ template {
 
 .alt-navigation-list__title {
   margin-bottom: 16px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--headlineLargeFontSize);
   --lineHeight: var(--headlineLargeLineHeight);
   --fontWeight: var(--headlineLargeFontWeight);
@@ -2788,7 +2837,7 @@ template {
 .alt-context-menu-item {
   display: flex;
   align-items: center;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -2809,14 +2858,19 @@ template {
   pointer-events: none;
   opacity: 0.5;
 }
-.alt-context-menu-item:hover, .alt-context-menu-item:focus, .alt-context-menu-item:focus-visible {
+.alt-context-menu-item:hover,
+.alt-context-menu-item:focus,
+.alt-context-menu-item:focus-visible {
   background-color: var(--accent);
   color: var(--textColorOnAccent);
 }
-.alt-context-menu-item:hover .alt-context-menu-item__hint, .alt-context-menu-item:focus .alt-context-menu-item__hint, .alt-context-menu-item:focus-visible .alt-context-menu-item__hint {
+.alt-context-menu-item:hover .alt-context-menu-item__hint,
+.alt-context-menu-item:focus .alt-context-menu-item__hint,
+.alt-context-menu-item:focus-visible .alt-context-menu-item__hint {
   color: var(--textColorOnAccent);
 }
-.alt-context-menu-item:focus, .alt-context-menu-item:focus-visible {
+.alt-context-menu-item:focus,
+.alt-context-menu-item:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
@@ -2867,7 +2921,8 @@ template {
 .alt-context-menu-item--danger {
   color: var(--danger);
 }
-.alt-context-menu-item--danger:hover, .alt-context-menu-item--danger:focus {
+.alt-context-menu-item--danger:hover,
+.alt-context-menu-item--danger:focus {
   background-color: var(--danger);
   color: var(--textColorOnDanger);
 }
@@ -2875,7 +2930,8 @@ template {
 .alt-context-menu-item--parent-selected {
   background-color: var(--surfaceTrasparent);
 }
-.alt-context-menu-item--parent-selected:hover, .alt-context-menu-item--parent-selected:focus {
+.alt-context-menu-item--parent-selected:hover,
+.alt-context-menu-item--parent-selected:focus {
   background-color: var(--surfaceTrasparent);
   color: var(--textColor);
 }
@@ -2925,7 +2981,7 @@ template {
   padding: 0 24px;
   white-space: nowrap;
   z-index: 1;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -2933,7 +2989,8 @@ template {
   line-height: var(--lineHeight);
   font-weight: var(--fontWeight);
 }
-.alt-tab:focus, .alt-tab:focus-visible {
+.alt-tab:focus,
+.alt-tab:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
@@ -3014,7 +3071,9 @@ template {
   color: var(--textColor);
   cursor: pointer;
 }
-.alt-tab__close:hover, .alt-tab__close:focus, .alt-tab__close:focus-visible {
+.alt-tab__close:hover,
+.alt-tab__close:focus,
+.alt-tab__close:focus-visible {
   background-color: var(--surfaceTrasparentHover);
 }
 
@@ -3034,7 +3093,9 @@ template {
   color: var(--secondaryTextColor);
   cursor: pointer;
 }
-.alt-tab-list__add:hover, .alt-tab-list__add:focus, .alt-tab-list__add:focus-visible {
+.alt-tab-list__add:hover,
+.alt-tab-list__add:focus,
+.alt-tab-list__add:focus-visible {
   color: var(--textColor);
 }
 
@@ -3064,7 +3125,7 @@ template {
 }
 
 .alt-message__title {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--titleFontSize);
   --lineHeight: var(--titleLineHeight);
   --fontWeight: var(--titleFontWeight);
@@ -3075,7 +3136,7 @@ template {
 
 .alt-message__description {
   margin-top: 14px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodyFontSize);
   --lineHeight: var(--bodyLineHeight);
   --fontWeight: var(--bodyFontWeight);
@@ -3115,7 +3176,7 @@ template {
 }
 
 .alt-heading--level-1 {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--displayFontSize);
   --lineHeight: var(--displayLineHeight);
   --fontWeight: var(--displayFontWeight);
@@ -3125,7 +3186,7 @@ template {
 }
 
 .alt-heading--level-2 {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--headlineLargeFontSize);
   --lineHeight: var(--headlineLargeLineHeight);
   --fontWeight: var(--headlineLargeFontWeight);
@@ -3135,7 +3196,7 @@ template {
 }
 
 .alt-heading--level-3 {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--headlineFontSize);
   --lineHeight: var(--headlineLineHeight);
   --fontWeight: var(--headlineFontWeight);
@@ -3145,7 +3206,7 @@ template {
 }
 
 .alt-heading--level-4 {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--headlineSmallFontSize);
   --lineHeight: var(--headlineSmallLineHeight);
   --fontWeight: var(--headlineSmallFontWeight);
@@ -3155,7 +3216,7 @@ template {
 }
 
 .alt-heading--level-5 {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--titleLargeFontSize);
   --lineHeight: var(--titleLargeLineHeight);
   --fontWeight: var(--titleLargeFontWeight);
@@ -3165,7 +3226,7 @@ template {
 }
 
 .alt-heading--level-6 {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--titleFontSize);
   --lineHeight: var(--titleLineHeight);
   --fontWeight: var(--titleFontWeight);
@@ -3181,7 +3242,7 @@ template {
   padding: 8px 24px;
   margin: 0;
   border-radius: 12px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodyFontSize);
   --lineHeight: var(--bodyLineHeight);
   --fontWeight: var(--bodyFontWeight);
@@ -3191,7 +3252,7 @@ template {
 }
 .alt-blockquote:before {
   position: absolute;
-  content: "";
+  content: '';
   left: var(--gap);
   top: var(--gap);
   bottom: var(--gap);
@@ -3210,7 +3271,7 @@ template {
 .alt-blockquote__author {
   color: var(--secondaryTextColor);
   font-style: italic;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodySmallFontSize);
   --lineHeight: var(--bodySmallLineHeight);
   --fontWeight: var(--bodySmallFontWeight);
@@ -3221,7 +3282,7 @@ template {
 
 .alt-paragraph {
   margin: 1em 0;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodyFontSize);
   --lineHeight: var(--bodyLineHeight);
   --fontWeight: var(--bodyFontWeight);
@@ -3275,7 +3336,8 @@ template {
   margin-right: -3px;
 }
 
-.alt-number-input-counter__increase, .alt-number-input-counter__decrease {
+.alt-number-input-counter__increase,
+.alt-number-input-counter__decrease {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3284,19 +3346,29 @@ template {
   font-size: 16px;
   line-height: 15px;
   height: 13px;
-  transition: background-color var(--transitionDuration) ease, opacity var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
+  transition: background-color var(--transitionDuration) ease,
+    opacity var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
   cursor: pointer;
   width: 16px;
   color: var(--textColor);
 }
-.alt-number-input-counter__increase:focus, .alt-number-input-counter__increase:focus-visible, .alt-number-input-counter__decrease:focus, .alt-number-input-counter__decrease:focus-visible {
+.alt-number-input-counter__increase:focus,
+.alt-number-input-counter__increase:focus-visible,
+.alt-number-input-counter__decrease:focus,
+.alt-number-input-counter__decrease:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
-.alt-number-input-counter__increase:hover, .alt-number-input-counter__increase:focus, .alt-number-input-counter__increase:focus-visible, .alt-number-input-counter__decrease:hover, .alt-number-input-counter__decrease:focus, .alt-number-input-counter__decrease:focus-visible {
+.alt-number-input-counter__increase:hover,
+.alt-number-input-counter__increase:focus,
+.alt-number-input-counter__increase:focus-visible,
+.alt-number-input-counter__decrease:hover,
+.alt-number-input-counter__decrease:focus,
+.alt-number-input-counter__decrease:focus-visible {
   background-color: var(--surfaceTrasparentHover);
 }
-.alt-number-input-counter__increase:disabled, .alt-number-input-counter__decrease:disabled {
+.alt-number-input-counter__increase:disabled,
+.alt-number-input-counter__decrease:disabled {
   opacity: 0.5;
   pointer-events: none;
 }
@@ -3306,7 +3378,8 @@ template {
   border-top-right-radius: var(--smoothness);
   border-bottom: 1px solid var(--borderColor);
 }
-.alt-number-input-counter__increase:focus, .alt-number-input-counter__increase:focus-visible {
+.alt-number-input-counter__increase:focus,
+.alt-number-input-counter__increase:focus-visible {
   border-bottom-color: transparent;
 }
 
@@ -3315,18 +3388,21 @@ template {
   border-bottom-right-radius: var(--smoothness);
 }
 
-.alt-text-input--size-small .alt-number-input-counter__increase, .alt-text-input--size-small .alt-number-input-counter__decrease {
+.alt-text-input--size-small .alt-number-input-counter__increase,
+.alt-text-input--size-small .alt-number-input-counter__decrease {
   height: 12px;
   font-size: 14px;
 }
 
-.alt-text-input--size-large .alt-number-input-counter__increase, .alt-text-input--size-large .alt-number-input-counter__decrease {
+.alt-text-input--size-large .alt-number-input-counter__increase,
+.alt-text-input--size-large .alt-number-input-counter__decrease {
   height: 18px;
   width: 20px;
   font-size: 18px;
 }
 
-.alt-text-input--size-xlarge .alt-number-input-counter__increase, .alt-text-input--size-xlarge .alt-number-input-counter__decrease {
+.alt-text-input--size-xlarge .alt-number-input-counter__increase,
+.alt-text-input--size-xlarge .alt-number-input-counter__decrease {
   --smoothness: 6px;
   height: 24px;
   width: 24px;
@@ -3348,7 +3424,7 @@ template {
 
 .alt-data-table-footer__status {
   flex: 1;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelFontSize);
   --lineHeight: var(--labelLineHeight);
   --fontWeight: var(--labelFontWeight);
@@ -3372,7 +3448,7 @@ template {
 .alt-data-table-pagination {
   display: flex;
   align-items: center;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -3421,13 +3497,15 @@ template {
   transition: transform var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
   border-radius: 12px;
 }
-.alt-toolbar-action:hover .alt-toolbar-action__icon, .alt-toolbar-action:focus .alt-toolbar-action__icon {
+.alt-toolbar-action:hover .alt-toolbar-action__icon,
+.alt-toolbar-action:focus .alt-toolbar-action__icon {
   background-color: var(--surfaceTrasparent);
 }
 .alt-toolbar-action:active {
   transform: translateY(2px);
 }
-.alt-toolbar-action:focus, .alt-toolbar-action:focus-visible {
+.alt-toolbar-action:focus,
+.alt-toolbar-action:focus-visible {
   outline: 0;
   box-shadow: inset 0 0 0 3px var(--accentFocus);
 }
@@ -3442,7 +3520,7 @@ template {
 .alt-toolbar-action__label {
   width: 100%;
   margin-top: 4px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelSmallFontSize);
   --lineHeight: var(--labelSmallLineHeight);
   --fontWeight: var(--labelSmallFontWeight);
@@ -3464,14 +3542,16 @@ template {
   background-color: var(--surface);
   box-shadow: 0 3px 15px 0 var(--shadow);
 }
-.alt-toolbar-action--active:hover .alt-toolbar-action__icon, .alt-toolbar-action--active:focus .alt-toolbar-action__icon {
+.alt-toolbar-action--active:hover .alt-toolbar-action__icon,
+.alt-toolbar-action--active:focus .alt-toolbar-action__icon {
   background-color: transparent;
 }
 
 .alt-toolbar-action--danger {
   color: var(--dangerText);
 }
-.alt-toolbar-action--danger:hover .alt-toolbar-action__icon, .alt-toolbar-action--danger:focus .alt-toolbar-action__icon {
+.alt-toolbar-action--danger:hover .alt-toolbar-action__icon,
+.alt-toolbar-action--danger:focus .alt-toolbar-action__icon {
   background-color: var(--dangerHighlight);
 }
 
@@ -3495,7 +3575,7 @@ template {
   color: var(--textColor);
   cursor: pointer;
   transition: background-color var(--transitionDuration) ease;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -3503,7 +3583,9 @@ template {
   line-height: var(--lineHeight);
   font-weight: var(--fontWeight);
 }
-.alt-toolbar-menu__item:hover, .alt-toolbar-menu__item:focus, .alt-toolbar-menu__item.alt-toolbar-menu__item--active {
+.alt-toolbar-menu__item:hover,
+.alt-toolbar-menu__item:focus,
+.alt-toolbar-menu__item.alt-toolbar-menu__item--active {
   background-color: var(--surfaceTrasparent);
 }
 
@@ -3517,8 +3599,9 @@ template {
   background-color: transparent;
   cursor: pointer;
   color: var(--textColor);
-  transition: background-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
-  font-family: "Open Sans", sans-serif;
+  transition: background-color var(--transitionDuration) ease,
+    box-shadow var(--transitionDuration) ease;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--bodyFontSize);
   --lineHeight: var(--bodyLineHeight);
   --fontWeight: var(--bodyFontWeight);
@@ -3527,7 +3610,8 @@ template {
   font-weight: var(--fontWeight);
   font-weight: 500;
 }
-.alt-navigation-list-item:focus, .alt-navigation-list-item:focus-visible {
+.alt-navigation-list-item:focus,
+.alt-navigation-list-item:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
@@ -3587,8 +3671,9 @@ template {
   background-color: transparent;
   cursor: pointer;
   color: var(--secondaryTextColor);
-  transition: background-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
-  font-family: "Open Sans", sans-serif;
+  transition: background-color var(--transitionDuration) ease,
+    box-shadow var(--transitionDuration) ease;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--titleSmallFontSize);
   --lineHeight: var(--titleSmallLineHeight);
   --fontWeight: var(--titleSmallFontWeight);
@@ -3597,7 +3682,8 @@ template {
   font-weight: var(--fontWeight);
   font-weight: 500;
 }
-.alt-navigation-list-sub-item:focus, .alt-navigation-list-sub-item:focus-visible {
+.alt-navigation-list-sub-item:focus,
+.alt-navigation-list-sub-item:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
@@ -3658,8 +3744,9 @@ template {
   background-color: transparent;
   cursor: pointer;
   color: var(--secondaryTextColor);
-  transition: background-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
-  font-family: "Open Sans", sans-serif;
+  transition: background-color var(--transitionDuration) ease,
+    box-shadow var(--transitionDuration) ease;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelFontSize);
   --lineHeight: var(--labelLineHeight);
   --fontWeight: var(--labelFontWeight);
@@ -3668,7 +3755,8 @@ template {
   font-weight: var(--fontWeight);
   font-weight: 500;
 }
-.alt-navigation-list-sub-sub-item:focus, .alt-navigation-list-sub-sub-item:focus-visible {
+.alt-navigation-list-sub-sub-item:focus,
+.alt-navigation-list-sub-sub-item:focus-visible {
   box-shadow: 0 0 0 3px var(--accentFocus);
   outline: 0;
 }
@@ -3680,7 +3768,7 @@ template {
   position: absolute;
   width: 4px;
   height: calc(100% - 8px);
-  content: "";
+  content: '';
   left: 0;
   top: 4px;
   border-radius: 4px;
@@ -3703,7 +3791,7 @@ template {
 }
 
 .alt-data-table-filtering__title {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);
@@ -3728,7 +3816,7 @@ template {
 }
 
 .alt-data-table-sorting__title {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   --fontSize: var(--labelLargeFontSize);
   --lineHeight: var(--labelLargeLineHeight);
   --fontWeight: var(--labelLargeFontWeight);

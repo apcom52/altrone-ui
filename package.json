@@ -92,5 +92,13 @@
     "react-popper": "^2.3.0",
     "rooks": "^7.4.0",
     "sass": "^1.54.9"
+  },
+  "prettier": {
+    "semi": true,
+    "tabWidth": 2,
+    "printWidth": 100,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "jsxBracketSameLine": true
   }
 }

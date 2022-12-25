@@ -1,25 +1,27 @@
 /// <reference types="react" />
-import { WithoutDefaultOffsets } from "../../../types";
+import { WithoutDefaultOffsets } from '../../../types';
 import './floating-box.scss';
-import { Options } from "@popperjs/core";
+import { Options } from '@popperjs/core';
 export declare enum FloatingBoxMobileBehaviour {
-    default = "default",
-    modal = "modal"
+  default = 'default',
+  modal = 'modal'
 }
 interface FloatingBoxProps extends WithoutDefaultOffsets {
-    targetElement: HTMLElement | null;
-    onClose: () => void;
-    offset?: number;
-    placement?: Options['placement'];
-    popperProps?: Omit<Partial<Options>, "modifiers">;
-    useParentWidth?: boolean;
-    minWidth?: number;
-    maxHeight?: number | string;
-    useRootContainer?: boolean;
-    preventClose?: (e: MouseEvent) => boolean;
-    mobileBehaviour?: FloatingBoxMobileBehaviour;
-    closeOnAnotherFloatingBoxClick?: boolean;
-    className?: string;
+  targetElement: HTMLElement | null;
+  onClose: () => void;
+  offset?: number;
+  placement?: Options['placement'];
+  popperProps?: Omit<Partial<Options>, 'modifiers'>;
+  useParentWidth?: boolean;
+  minWidth?: number;
+  maxHeight?: number | string;
+  useRootContainer?: boolean;
+  preventClose?: (e: MouseEvent) => boolean;
+  mobileBehaviour?: FloatingBoxMobileBehaviour;
+  closeOnAnotherFloatingBoxClick?: boolean;
+  className?: string;
 }
-declare const FloatingBox: import("react").ForwardRefExoticComponent<FloatingBoxProps & import("react").RefAttributes<HTMLDivElement>>;
+declare const FloatingBox: import('react').ForwardRefExoticComponent<
+  FloatingBoxProps & import('react').RefAttributes<HTMLDivElement>
+>;
 export default FloatingBox;

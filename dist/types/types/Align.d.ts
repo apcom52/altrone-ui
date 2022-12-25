@@ -1,5 +1,5 @@
 export declare enum Align {
-    start = "start",
-    center = "center",
-    end = "end"
+  start = 'start',
+  center = 'center',
+  end = 'end'
 }

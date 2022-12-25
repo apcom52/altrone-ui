@@ -1,11 +1,11 @@
-import {memo, ReactNode} from "react";
+import { memo, ReactNode } from 'react';
 
 interface SelectPlaceholderProps {
-  children: string | ReactNode
+  children: string | ReactNode;
 }
 
 const SelectPlaceholder = ({ children }: SelectPlaceholderProps) => {
-  return <div className='alt-select-placeholder'>{children}</div>
-}
+  return <div className="alt-select-placeholder">{children}</div>;
+};
 
-export default memo(SelectPlaceholder)
+export default memo(SelectPlaceholder);

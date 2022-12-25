@@ -1,1 +1,1 @@
-export { Altrone } from './Altrone'
+export { Altrone } from './Altrone';
