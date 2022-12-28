@@ -24,6 +24,10 @@
   background-color: var(--surfaceGlass);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
+
+  @supports (-moz-box-align: unset) {
+    background-color: var(--surface);
+  }
 }
 
 @mixin useFontSize($role, $size: '', $withStyle: true) {
