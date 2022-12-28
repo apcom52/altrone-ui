@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import { WithAltroneOffsets, WithoutDefaultOffsets } from "../../../types";
-import './blockquote.scss';
+import "./blockquote.scss";
 interface BlockquoteProps extends WithoutDefaultOffsets, WithAltroneOffsets {
     cite?: string;
     author?: string;

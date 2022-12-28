@@ -21877,9 +21877,9 @@ var ContextParentMenuItem = function (_a) {
             onClick(null);
         }
     }, [gtPhoneL, onClick]);
-    var altroneRef = useRef(document.body.querySelector('.altrone'));
-    return jsxRuntime.exports.jsxs(jsxRuntime.exports.Fragment, { children: [jsxRuntime.exports.jsxs("button", __assign({ className: clsx('alt-context-menu-item', {
-                    'alt-context-menu-item--parent-selected': isChildrenContextMenuVisible
+    var altroneRef = useRef(document.body.querySelector(".altrone") || document.body);
+    return (jsxRuntime.exports.jsxs(jsxRuntime.exports.Fragment, { children: [jsxRuntime.exports.jsxs("button", __assign({ className: clsx("alt-context-menu-item", {
+                    "alt-context-menu-item--parent-selected": isChildrenContextMenuVisible,
                 }), ref: itemRef, onClick: function () {
                     if (gtPhoneL) {
                         setIsChildrenContextMenuVisible(function (old) { return !old; });
@@ -21887,7 +21887,9 @@ var ContextParentMenuItem = function (_a) {
                     else {
                         onClick(action);
                     }
-                }, type: 'button' }, { children: [jsxRuntime.exports.jsx("div", __assign({ className: 'alt-context-menu-item__icon' }, { children: action.icon })), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-context-menu-item__title' }, { children: action.title })), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-context-menu-item__childrenArrow' }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'keyboard_arrow_right' }) }))] })), gtPhoneL && isChildrenContextMenuVisible && createPortal(jsxRuntime.exports.jsx(FloatingBox, __assign({ targetElement: itemRef.current, placement: 'right', useRootContainer: true, onClose: function () { return setIsChildrenContextMenuVisible(false); }, offset: 8 }, { children: jsxRuntime.exports.jsx(ContextMenu$1, { onClose: onClose, menu: action.children }) })), altroneRef.current)] });
+                }, type: "button" }, { children: [jsxRuntime.exports.jsx("div", __assign({ className: "alt-context-menu-item__icon" }, { children: action.icon })), jsxRuntime.exports.jsx("div", __assign({ className: "alt-context-menu-item__title" }, { children: action.title })), jsxRuntime.exports.jsx("div", __assign({ className: "alt-context-menu-item__childrenArrow" }, { children: jsxRuntime.exports.jsx(Icon$1, { i: "keyboard_arrow_right" }) }))] })), gtPhoneL &&
+                isChildrenContextMenuVisible &&
+                createPortal(jsxRuntime.exports.jsx(FloatingBox, __assign({ targetElement: itemRef.current, placement: "right", useRootContainer: true, onClose: function () { return setIsChildrenContextMenuVisible(false); }, offset: 8 }, { children: jsxRuntime.exports.jsx(ContextMenu$1, { onClose: onClose, menu: action.children }) })), altroneRef.current)] }));
 };
 var ContextParentMenuItem$1 = memo(ContextParentMenuItem);
 
@@ -21903,16 +21905,16 @@ var Chips = function (_a) {
             onChange(__spreadArray(__spreadArray([], values, true), [value], false));
         }
     }, [values, onChange]);
-    return jsxRuntime.exports.jsx("div", __assign({ className: clsx('alt-chips', (_b = {
-                'alt-chips--direction-vertical': direction === Direction.vertical
+    return (jsxRuntime.exports.jsx("div", __assign({ className: clsx("alt-chips", (_b = {
+                "alt-chips--direction-vertical": direction === Direction.vertical
             },
             _b["alt-chips--size-".concat(size)] = size !== Size.medium,
-            _b)), "data-testid": 'alt-test-chips' }, { children: options.map(function (option, optionIndex) {
+            _b)), "data-testid": "alt-test-chips" }, { children: options.map(function (option, optionIndex) {
             var isSelected = values.indexOf(option.value) > -1;
-            return jsxRuntime.exports.jsxs("button", __assign({ className: clsx('alt-chip', {
-                    'alt-chip--selected': isSelected
-                }), disabled: option.disabled, onClick: function () { return onChipClick(option.value); }, "data-testid": 'alt-test-chip', type: 'button' }, { children: [isSelected && jsxRuntime.exports.jsx("div", __assign({ className: 'alt-chip__icon' }, { children: SelectedIcon || jsxRuntime.exports.jsx(Icon$1, { i: 'check' }) })), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-chip__label' }, { children: option.label }))] }), optionIndex);
-        }) }));
+            return (jsxRuntime.exports.jsxs("button", __assign({ className: clsx("alt-chip", {
+                    "alt-chip--selected": isSelected,
+                }), disabled: option.disabled, onClick: function () { return onChipClick(option.value); }, "data-testid": "alt-test-chip", type: "button" }, { children: [isSelected && (jsxRuntime.exports.jsx("div", __assign({ className: "alt-chip__icon" }, { children: SelectedIcon || jsxRuntime.exports.jsx(Icon$1, { i: "check" }) }))), jsxRuntime.exports.jsx("div", __assign({ className: "alt-chip__label" }, { children: option.label }))] }), optionIndex));
+        }) })));
 };
 var Chips$1 = memo(Chips);
 
@@ -23907,8 +23909,9 @@ var DataTableCell = function (_a) {
 var DataTableCell$1 = memo(DataTableCell);
 
 var defaultSearchFunc = function (_a) {
+    var _b;
     var item = _a.item, field = _a.field, query = _a.query;
-    return item[field].toString().toLowerCase().startsWith(query.toLowerCase());
+    return (_b = item[field]) === null || _b === void 0 ? void 0 : _b.toString().toLowerCase().startsWith(query.toLowerCase());
 };
 var defaultSortFunc = function (_a) {
     var itemA = _a.itemA, itemB = _a.itemB, field = _a.field, direction = _a.direction;
@@ -23928,6 +23931,7 @@ var defaultCheckboxesFilter = function (_a) {
     return value.indexOf(item[field]) > -1;
 };
 var filterVisibleColumns = function (columns, mobileColumns, isMobile) {
+    if (isMobile === void 0) { isMobile = false; }
     if (!isMobile) {
         return columns;
     }
@@ -24091,7 +24095,7 @@ var Heading$1 = memo(Heading);
 
 var Blockquote = function (_a) {
     var children = _a.children, className = _a.className, author = _a.author, _b = _a.classNames, classNames = _b === void 0 ? {} : _b, innerProps = _a.innerProps, cite = _a.cite, props = __rest$1(_a, ["children", "className", "author", "classNames", "innerProps", "cite"]);
-    return jsxRuntime.exports.jsxs("figure", __assign({ className: clsx('alt-blockquote', className) }, props, { children: [jsxRuntime.exports.jsx(Box$1, __assign({ tagName: 'blockquote', cite: cite, className: clsx('alt-blockquote__content', classNames.content) }, innerProps === null || innerProps === void 0 ? void 0 : innerProps.content, { children: children })), author && jsxRuntime.exports.jsx("figcaption", { children: jsxRuntime.exports.jsx("cite", __assign({ className: clsx('alt-blockquote__author', classNames.author) }, innerProps === null || innerProps === void 0 ? void 0 : innerProps.author, { children: author })) })] }));
+    return (jsxRuntime.exports.jsxs("figure", __assign({ className: clsx("alt-blockquote", className) }, props, { children: [jsxRuntime.exports.jsx("blockquote", __assign({ cite: cite, className: clsx("alt-blockquote__content", classNames.content) }, { children: children })), author && (jsxRuntime.exports.jsx("figcaption", { children: jsxRuntime.exports.jsx("cite", __assign({ className: clsx("alt-blockquote__author", classNames.author) }, innerProps === null || innerProps === void 0 ? void 0 : innerProps.author, { children: author })) }))] })));
 };
 var Blockquote$1 = memo(Blockquote);
 
