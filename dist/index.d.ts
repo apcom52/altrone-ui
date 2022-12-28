@@ -125,8 +125,8 @@ interface DataTableSearchFunc {
     query: string;
 }
 interface DataTableSortFunc {
-    itemA: unknown;
-    itemB: unknown;
+    itemA: object;
+    itemB: object;
     field: string;
     direction: Sort;
 }
@@ -550,13 +550,13 @@ declare const _default$a: react.MemoExoticComponent<({ menu, onClose }: ContextM
 
 interface ChipsProps {
     options: Option[];
-    values: any[];
+    values: unknown[];
     onChange: (values: any[]) => void;
     SelectedIcon?: JSX.Element;
     direction?: Direction;
     size?: Size;
 }
-declare const _default$9: react.MemoExoticComponent<({ options, values, onChange, SelectedIcon, direction, size }: ChipsProps) => JSX.Element>;
+declare const _default$9: react.MemoExoticComponent<({ options, values, onChange, SelectedIcon, direction, size, }: ChipsProps) => JSX.Element>;
 
 declare enum TabListVariant {
     default = "default",
