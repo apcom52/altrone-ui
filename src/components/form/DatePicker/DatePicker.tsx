@@ -51,7 +51,7 @@ const DatePicker = ({
     value ? new Date(value.getFullYear(), value.getMonth(), 1) : new Date()
   );
   const [currentView, setCurrentView] = useState<Picker>(picker);
-  let { locale } = useThemeContext();
+  const { locale } = useThemeContext();
 
   const { ltePhoneL } = useWindowSize();
   const t = useLocalization();
@@ -126,8 +126,7 @@ const DatePicker = ({
         onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}
         data-testid="alt-test-datepicker"
         type="button"
-        disabled={disabled}
-      >
+        disabled={disabled}>
         {value ? (
           <div className="alt-date-picker__value">{valueDateFormat.format(value)}</div>
         ) : (
@@ -145,8 +144,7 @@ const DatePicker = ({
           placement="bottom"
           onClose={() => setIsDatePickerVisible(false)}
           mobileBehaviour={FloatingBoxMobileBehaviour.modal}
-          closeOnAnotherFloatingBoxClick
-        >
+          closeOnAnotherFloatingBoxClick>
           <div className="alt-date-picker__header">
             {!ltePhoneL && picker === Picker.day && (
               <button
@@ -155,8 +153,7 @@ const DatePicker = ({
                 })}
                 onClick={onCurrentDateClick}
                 data-testid="alt-test-datepicker-header"
-                type="button"
-              >
+                type="button">
                 {currentMonthFormat.format(currentMonth)}
               </button>
             )}
@@ -177,16 +174,14 @@ const DatePicker = ({
                   className="alt-date-picker__navigation-button"
                   onClick={onPrevMonthClick}
                   data-testid="alt-test-datepicker-prev"
-                  type="button"
-                >
+                  type="button">
                   <Icon i="arrow_back_ios" />
                 </button>
                 <button
                   className="alt-date-picker__navigation-button"
                   onClick={onNextMonthClick}
                   data-testid="alt-test-datepicker-next"
-                  type="button"
-                >
+                  type="button">
                   <Icon i="arrow_forward_ios" />
                 </button>
               </div>
@@ -197,6 +192,8 @@ const DatePicker = ({
               currentMonth={currentMonth}
               selectedDate={(value || today) as Date}
               onChange={onChange}
+              minDate={minDate}
+              maxDate={maxDate}
             />
           )}
           {currentView === Picker.month && (
@@ -233,8 +230,7 @@ const DatePicker = ({
                 role={Role.primary}
                 className="alt-date-picker__apply"
                 onClick={onApplyClick}
-                data-testid="alt-test-datepicker-apply"
-              >
+                data-testid="alt-test-datepicker-apply">
                 {t('common.apply')}
               </Button>
             </div>
@@ -243,14 +239,12 @@ const DatePicker = ({
             <div
               className={clsx('alt-date-picker__footer', {
                 'alt-date-picker__footer--compact': currentView !== Picker.day
-              })}
-            >
+              })}>
               {currentView === Picker.day && (
                 <Button
                   onClick={onPrevMonthClick}
                   className="alt-date-picker__mobilePrevMonth"
-                  isIcon
-                >
+                  isIcon>
                   <Icon i="arrow_back" />
                 </Button>
               )}
@@ -263,8 +257,7 @@ const DatePicker = ({
                 <Button
                   onClick={onNextMonthClick}
                   className="alt-date-picker__mobileNextMonth"
-                  isIcon
-                >
+                  isIcon>
                   <Icon i="arrow_forward" />
                 </Button>
               )}
@@ -272,8 +265,7 @@ const DatePicker = ({
                 <Button
                   onClick={onTodayClick}
                   className="alt-date-picker__mobileToday"
-                  leftIcon={<Icon i="today" />}
-                >
+                  leftIcon={<Icon i="today" />}>
                   {currentView === Picker.day
                     ? t('form.datePicker.today')
                     : t('form.datePicker.currentMonth')}
@@ -283,8 +275,7 @@ const DatePicker = ({
                 <Button
                   onClick={onApplyClick}
                   className="alt-date-picker__mobileApply"
-                  role={Role.primary}
-                >
+                  role={Role.primary}>
                   {t('common.apply')}
                 </Button>
               )}
@@ -293,8 +284,7 @@ const DatePicker = ({
                   onClick={onApplyClick}
                   className="alt-date-picker__mobileApply"
                   role={Role.primary}
-                  leftIcon={<Icon i="arrow_back_ios" />}
-                >
+                  leftIcon={<Icon i="arrow_back_ios" />}>
                   {t('common.back')}
                 </Button>
               )}

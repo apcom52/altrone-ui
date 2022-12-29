@@ -211,6 +211,12 @@
   }
 }
 
+.alt-calendar__day--disabled {
+  --text: var(--secondaryTextColor);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .alt-calendar__day--today {
 
 }

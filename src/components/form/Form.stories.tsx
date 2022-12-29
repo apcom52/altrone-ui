@@ -59,8 +59,7 @@ const CustomSelectItem = ({
       className={clsx('alt-select-option', {
         'alt-select-option--selected': selected
       })}
-      onClick={() => onSelect(value)}
-    >
+      onClick={() => onSelect(value)}>
       <div className="alt-select-option__label">
         {value} {label}
       </div>
@@ -370,7 +369,9 @@ DatePickerExample.args = {
   disabled: false,
   dark: false,
   errorText: '',
-  hintText: ''
+  hintText: '',
+  minDate: new Date(2022, 11, 20),
+  maxDate: new Date(2022, 11, 29)
 };
 DatePickerExample.argTypes = {
   picker: {
