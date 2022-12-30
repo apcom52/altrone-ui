@@ -1,5 +1,5 @@
 import { Altrone } from '../../hocs';
-import { Direction, Size, Theme } from '../../types';
+import { Align, Direction, Size, Theme } from '../../types';
 import {
   Checkbox,
   CheckboxList,
@@ -16,10 +16,8 @@ import {
 } from './index';
 import { Icon } from '../icons';
 import { SelectOptionProps } from './Select';
-import button from '../button/Button/Button';
 import clsx from 'clsx';
-import { useCallback, useEffect, useState } from 'react';
-import { Align } from '../../types/Align';
+import { useState } from 'react';
 import { Picker } from './DatePicker/DatePicker';
 import { userEvent, within } from '@storybook/testing-library';
 import { CheckboxListStory, CheckboxStory } from './Checkbox/Checkbox.stories';
@@ -27,17 +25,9 @@ import { CheckboxListStory, CheckboxStory } from './Checkbox/Checkbox.stories';
 const Template = ({ Component, dark, value = '', locale, lang = 'en', ...args }) => {
   const [_value, setValue] = useState(value);
 
-  useEffect(() => {
-    setValue(value);
-  }, [value]);
-
-  const onChange = useCallback((value) => {
-    setValue(value);
-  }, []);
-
   return (
     <Altrone locale={locale} lang={lang} theme={dark ? Theme.dark : Theme.light}>
-      <Component {...args} value={_value} onChange={onChange} />
+      <Component {...args} value={_value} onChange={setValue} />
     </Altrone>
   );
 };
@@ -362,7 +352,7 @@ SwitcherExample.argTypes = {
 
 export const DatePickerExample = Template.bind({});
 DatePickerExample.args = {
-  value: undefined,
+  value: new Date(2022, 11, 15),
   Component: DatePicker,
   locale: 'en-US',
   lang: 'en',

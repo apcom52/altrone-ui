@@ -117,6 +117,14 @@ const DatePicker = ({
     setCurrentView(picker);
   }, [picker]);
 
+  useEffect(() => {
+    if (value < minDate) {
+      onChange(minDate);
+    } else if (value > maxDate) {
+      onChange(maxDate);
+    }
+  }, [value, minDate, maxDate, onChange]);
+
   return (
     <BasicInput disabled={disabled} hintText={hintText} errorText={errorText} size={size}>
       <button
