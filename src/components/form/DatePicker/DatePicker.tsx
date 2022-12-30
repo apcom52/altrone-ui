@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from '../../icons';
 import { useThemeContext } from '../../../contexts';
 import './date-picker.scss';
@@ -125,6 +125,13 @@ const DatePicker = ({
     }
   }, [value, minDate, maxDate, onChange]);
 
+  const [minMonth, maxMonth] = useMemo(() => {
+    return [
+      new Date(minDate?.getFullYear(), minDate?.getMonth(), 1),
+      new Date(maxDate?.getFullYear(), maxDate?.getMonth(), 1)
+    ];
+  }, [minDate, maxDate]);
+
   return (
     <BasicInput disabled={disabled} hintText={hintText} errorText={errorText} size={size}>
       <button
@@ -182,14 +189,16 @@ const DatePicker = ({
                   className="alt-date-picker__navigation-button"
                   onClick={onPrevMonthClick}
                   data-testid="alt-test-datepicker-prev"
-                  type="button">
+                  type="button"
+                  disabled={currentMonth <= minMonth}>
                   <Icon i="arrow_back_ios" />
                 </button>
                 <button
                   className="alt-date-picker__navigation-button"
                   onClick={onNextMonthClick}
                   data-testid="alt-test-datepicker-next"
-                  type="button">
+                  type="button"
+                  disabled={currentMonth >= maxMonth}>
                   <Icon i="arrow_forward_ios" />
                 </button>
               </div>

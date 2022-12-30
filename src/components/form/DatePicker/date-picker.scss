@@ -111,6 +111,11 @@
   @include useInteraction {
     color: var(--accent);
   }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
 
 .alt-date-picker__currentMonth--mode-month {
