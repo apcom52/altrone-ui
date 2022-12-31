@@ -168,7 +168,7 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(
       </div>,
       useRootContainer || !targetElement
         ? targetElement?.closest(".altrone") || document.body
-        : targetElement.parentElement
+        : targetElement.parentElement || document.body
     );
   }
 );
