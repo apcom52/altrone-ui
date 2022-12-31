@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import './date-picker.scss';
+import "./date-picker.scss";
 import { TextInputProps } from "../TextInput";
 import { BasicInputProps } from "../BasicInput";
 export declare enum Picker {
@@ -7,7 +7,7 @@ export declare enum Picker {
     month = "month",
     year = "year"
 }
-interface DatePickerProps extends Pick<TextInputProps, 'errorText' | 'hintText' | 'size' | 'disabled'>, BasicInputProps {
+interface DatePickerProps extends Pick<TextInputProps, "errorText" | "hintText" | "size" | "disabled">, BasicInputProps {
     value: Date;
     onChange: (value: Date) => void;
     id?: string;
@@ -16,5 +16,5 @@ interface DatePickerProps extends Pick<TextInputProps, 'errorText' | 'hintText' 
     maxDate?: Date;
     placeholder?: string;
 }
-declare const _default: import("react").MemoExoticComponent<({ value, onChange, id, picker, minDate, maxDate, disabled, placeholder, size, hintText, errorText, className }: DatePickerProps) => JSX.Element>;
+declare const _default: import("react").MemoExoticComponent<({ value, onChange, id, picker, minDate, maxDate, disabled, placeholder, size, hintText, errorText, className, }: DatePickerProps) => JSX.Element>;
 export default _default;

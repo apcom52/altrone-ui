@@ -21736,14 +21736,18 @@ exports.FloatingBoxMobileBehaviour = void 0;
 })(exports.FloatingBoxMobileBehaviour || (exports.FloatingBoxMobileBehaviour = {}));
 var setPopperWidth = function (state, minWidth) {
     var targetRefWidth = state.elements.reference.clientWidth;
-    state.elements.popper.style.width = "".concat(minWidth ? (targetRefWidth < minWidth ? minWidth : targetRefWidth) : targetRefWidth, "px");
+    state.elements.popper.style.width = "".concat(minWidth
+        ? targetRefWidth < minWidth
+            ? minWidth
+            : targetRefWidth
+        : targetRefWidth, "px");
 };
 var FloatingBox = React.forwardRef(function (_a, ref) {
-    var targetElement = _a.targetElement, onClose = _a.onClose, _b = _a.offset, offset = _b === void 0 ? 4 : _b, _c = _a.placement, placement = _c === void 0 ? 'auto' : _c, popperProps = _a.popperProps, _d = _a.useParentWidth, useParentWidth = _d === void 0 ? false : _d, minWidth = _a.minWidth, _e = _a.maxHeight, maxHeight = _e === void 0 ? 'auto' : _e, children = _a.children, preventClose = _a.preventClose, _f = _a.useRootContainer, useRootContainer = _f === void 0 ? false : _f, _g = _a.mobileBehaviour, mobileBehaviour = _g === void 0 ? exports.FloatingBoxMobileBehaviour.default : _g, _h = _a.closeOnAnotherFloatingBoxClick, closeOnAnotherFloatingBoxClick = _h === void 0 ? false : _h, className = _a.className;
+    var targetElement = _a.targetElement, onClose = _a.onClose, _b = _a.offset, offset = _b === void 0 ? 4 : _b, _c = _a.placement, placement = _c === void 0 ? "auto" : _c, popperProps = _a.popperProps, _d = _a.useParentWidth, useParentWidth = _d === void 0 ? false : _d, minWidth = _a.minWidth, _e = _a.maxHeight, maxHeight = _e === void 0 ? "auto" : _e, children = _a.children, preventClose = _a.preventClose, _f = _a.useRootContainer, useRootContainer = _f === void 0 ? false : _f, _g = _a.mobileBehaviour, mobileBehaviour = _g === void 0 ? exports.FloatingBoxMobileBehaviour.default : _g, _h = _a.closeOnAnotherFloatingBoxClick, closeOnAnotherFloatingBoxClick = _h === void 0 ? false : _h, className = _a.className;
     var ltePhoneL = useWindowSize().ltePhoneL;
     var _j = React.useState(null), floatingBoxElement = _j[0], setFloatingBoxElement = _j[1];
     if (floatingBoxElement) {
-        if (typeof ref === 'function') {
+        if (typeof ref === "function") {
             ref(floatingBoxElement);
         }
         else if (ref) {
@@ -21754,12 +21758,14 @@ var FloatingBox = React.forwardRef(function (_a, ref) {
         return [0, offset];
     }, [offset]);
     var modifiers = React.useMemo(function () {
-        var result = [{
-                name: 'offset',
+        var result = [
+            {
+                name: "offset",
                 options: {
-                    offset: offsets
-                }
-            }];
+                    offset: offsets,
+                },
+            },
+        ];
         if (useParentWidth) {
             result.push({
                 name: "sameWidth",
@@ -21773,7 +21779,7 @@ var FloatingBox = React.forwardRef(function (_a, ref) {
                 effect: function (_a) {
                     var state = _a.state;
                     setPopperWidth(state, minWidth);
-                }
+                },
             });
         }
         if (ref) {
@@ -21784,7 +21790,8 @@ var FloatingBox = React.forwardRef(function (_a, ref) {
     var _k = usePopper(targetElement, floatingBoxElement, __assign({ modifiers: modifiers, placement: placement }, popperProps)), styles = _k.styles, attributes = _k.attributes;
     useOutsideClick({ current: floatingBoxElement }, function (e) {
         var _a;
-        if (!closeOnAnotherFloatingBoxClick && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.closest('.alt-floating-box'))) {
+        if (!closeOnAnotherFloatingBoxClick &&
+            ((_a = e.target) === null || _a === void 0 ? void 0 : _a.closest(".alt-floating-box"))) {
             return;
         }
         if (preventClose && preventClose(e)) {
@@ -21795,17 +21802,19 @@ var FloatingBox = React.forwardRef(function (_a, ref) {
         }, 1);
     });
     if (mobileBehaviour === exports.FloatingBoxMobileBehaviour.modal && ltePhoneL) {
-        return ReactDOM.createPortal(jsxRuntime.exports.jsx(Modal$1, __assign({ onClose: onClose, showClose: false, showCancel: false }, { children: children })), (targetElement === null || targetElement === void 0 ? void 0 : targetElement.closest('.altrone')) || document.body);
+        return ReactDOM.createPortal(jsxRuntime.exports.jsx(Modal$1, __assign({ onClose: onClose, showClose: false, showCancel: false }, { children: children })), (targetElement === null || targetElement === void 0 ? void 0 : targetElement.closest(".altrone")) || document.body);
     }
-    return ReactDOM.createPortal(jsxRuntime.exports.jsx("div", __assign({ className: clsx('alt-floating-box', className), ref: function (node) {
+    return ReactDOM.createPortal(jsxRuntime.exports.jsx("div", __assign({ className: clsx("alt-floating-box", className), ref: function (node) {
             setFloatingBoxElement(node);
-            if (typeof ref === 'function') {
+            if (typeof ref === "function") {
                 ref(node);
             }
             else if (ref) {
                 ref.current = node;
             }
-        }, style: __assign(__assign({}, styles.popper), { maxHeight: maxHeight }), "data-testid": 'alt-test-floating-box' }, attributes.popper, { children: children })), (useRootContainer || !targetElement) ? ((targetElement === null || targetElement === void 0 ? void 0 : targetElement.closest('.altrone')) || document.body) : targetElement.parentElement);
+        }, style: __assign(__assign({}, styles.popper), { maxHeight: maxHeight }), "data-testid": "alt-test-floating-box" }, attributes.popper, { children: children })), useRootContainer || !targetElement
+        ? (targetElement === null || targetElement === void 0 ? void 0 : targetElement.closest(".altrone")) || document.body
+        : targetElement.parentElement || document.body);
 });
 
 var Form = function (_a) {
@@ -23358,7 +23367,7 @@ function NumericFormat(props) {
 }
 
 var NumberInput = function (_a) {
-    var _b = _a.value, value = _b === void 0 ? 0 : _b, _c = _a.showControls, showControls = _c === void 0 ? true : _c, rightIsland = _a.rightIsland, onChange = _a.onChange, _d = _a.allowNegative, allowNegative = _d === void 0 ? false : _d, _e = _a.allowLeadingZeros, allowLeadingZeros = _e === void 0 ? false : _e, _f = _a.decimalSeparator, decimalSeparator = _f === void 0 ? ',' : _f, _g = _a.digitsAfterDecimal, digitsAfterDecimal = _g === void 0 ? 0 : _g, _h = _a.step, step = _h === void 0 ? 1 : _h, min = _a.min, max = _a.max, props = __rest$1(_a, ["value", "showControls", "rightIsland", "onChange", "allowNegative", "allowLeadingZeros", "decimalSeparator", "digitsAfterDecimal", "step", "min", "max"]);
+    var _b = _a.value, value = _b === void 0 ? 0 : _b, _c = _a.showControls, showControls = _c === void 0 ? true : _c, rightIsland = _a.rightIsland, onChange = _a.onChange, _d = _a.allowNegative, allowNegative = _d === void 0 ? false : _d, _e = _a.allowLeadingZeros, allowLeadingZeros = _e === void 0 ? false : _e, _f = _a.decimalSeparator, decimalSeparator = _f === void 0 ? "," : _f, _g = _a.digitsAfterDecimal, digitsAfterDecimal = _g === void 0 ? 0 : _g, _h = _a.step, step = _h === void 0 ? 1 : _h, min = _a.min, max = _a.max, props = __rest$1(_a, ["value", "showControls", "rightIsland", "onChange", "allowNegative", "allowLeadingZeros", "decimalSeparator", "digitsAfterDecimal", "step", "min", "max"]);
     var _j = React.useState(function () {
         return value.toFixed(digitsAfterDecimal);
     }), formattedValue = _j[0], setFormattedValue = _j[1];
@@ -23387,10 +23396,12 @@ var NumberInput = function (_a) {
         var floatValue = _a.floatValue;
         onChange(floatValue);
     }, [onChange]);
-    return jsxRuntime.exports.jsx(TextInput$1, __assign({ value: formattedValue, onChange: function () { return null; } }, props, { rightIsland: showControls ? {
-            type: exports.InputIslandType.components,
-            content: jsxRuntime.exports.jsx(NumberInputCounter$1, { value: value, onChange: onChange, step: step, min: min, max: max })
-        } : rightIsland, Component: jsxRuntime.exports.jsx(NumericFormat, { value: value, onValueChange: onValueChange, thousandSeparator: ' ', className: 'alt-text-input__control', allowLeadingZeros: allowLeadingZeros, allowNegative: allowNegative, decimalSeparator: decimalSeparator, decimalScale: digitsAfterDecimal, isAllowed: onAllowedCheck }), step: (1 / (Math.pow(10, digitsAfterDecimal))).toString() }));
+    return (jsxRuntime.exports.jsx(TextInput$1, __assign({ value: formattedValue, onChange: function () { return null; } }, props, { rightIsland: showControls
+            ? {
+                type: exports.InputIslandType.components,
+                content: (jsxRuntime.exports.jsx(NumberInputCounter$1, { value: value, onChange: onChange, step: step, min: min, max: max })),
+            }
+            : rightIsland, Component: jsxRuntime.exports.jsx(NumericFormat, { value: value, onValueChange: onValueChange, thousandSeparator: " ", className: "alt-text-input__control", allowLeadingZeros: allowLeadingZeros, allowNegative: allowNegative, decimalSeparator: decimalSeparator, decimalScale: digitsAfterDecimal, isAllowed: onAllowedCheck }), step: (1 / Math.pow(10, digitsAfterDecimal)).toString() })));
 };
 var NumberInput$1 = React.memo(NumberInput);
 
@@ -23398,9 +23409,9 @@ var Checkbox = function (_a) {
     var disabled = _a.disabled, id = _a.id, _b = _a.checked, checked = _b === void 0 ? false : _b, _c = _a.danger, danger = _c === void 0 ? false : _c, children = _a.children, CheckIconComponent = _a.CheckIconComponent, className = _a.className, onChange = _a.onChange, hintText = _a.hintText, errorText = _a.errorText, props = __rest$1(_a, ["disabled", "id", "checked", "danger", "children", "CheckIconComponent", "className", "onChange", "hintText", "errorText"]);
     var generatedCheckboxId = React.useId();
     var checkboxId = id || generatedCheckboxId;
-    return jsxRuntime.exports.jsx(BasicInput$1, __assign({ hintText: hintText, errorText: errorText, disabled: disabled }, { children: jsxRuntime.exports.jsxs("label", __assign({ htmlFor: checkboxId, className: clsx('alt-checkbox', className, {
-                'alt-checkbox--danger': danger
-            }) }, { children: [jsxRuntime.exports.jsx("input", __assign({ id: checkboxId, type: "checkbox", checked: checked, disabled: disabled }, props, { className: 'alt-checkbox__input', onChange: function (e) { return onChange(e.target.checked); } })), jsxRuntime.exports.jsxs("div", __assign({ className: 'alt-checkbox__control' }, { children: [checked ? jsxRuntime.exports.jsx("div", __assign({ className: 'alt-checkbox__icon' }, { children: CheckIconComponent || jsxRuntime.exports.jsx(Icon$1, { i: 'check' }) })) : null, children && jsxRuntime.exports.jsx("div", __assign({ className: 'alt-checkbox__label' }, { children: children }))] }))] })) }));
+    return (jsxRuntime.exports.jsx(BasicInput$1, __assign({ hintText: hintText, errorText: errorText, disabled: disabled }, { children: jsxRuntime.exports.jsxs("label", __assign({ htmlFor: checkboxId, className: clsx("alt-checkbox", className, {
+                "alt-checkbox--danger": danger,
+            }) }, { children: [jsxRuntime.exports.jsx("input", __assign({ id: checkboxId, type: "checkbox", checked: checked, disabled: disabled }, props, { className: "alt-checkbox__input", onChange: function (e) { return onChange(e.target.checked); } })), jsxRuntime.exports.jsxs("div", __assign({ className: "alt-checkbox__control" }, { children: [checked ? (jsxRuntime.exports.jsx("div", __assign({ className: "alt-checkbox__icon" }, { children: CheckIconComponent || jsxRuntime.exports.jsx(Icon$1, { i: "check" }) }))) : null, children && jsxRuntime.exports.jsx("div", __assign({ className: "alt-checkbox__label" }, { children: children }))] }))] })) })));
 };
 var Checkbox$1 = React.memo(Checkbox);
 
@@ -23594,19 +23605,23 @@ var DatePicker = function (_a) {
     var ltePhoneL = useWindowSize().ltePhoneL;
     var t = useLocalization();
     var inputRef = React.useRef(null);
-    var valueDateFormat = new Intl.DateTimeFormat(locale, picker === Picker.year ? {
-        year: 'numeric'
-    } : picker === Picker.month ? {
-        year: 'numeric',
-        month: 'long'
-    } : {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
+    var valueDateFormat = new Intl.DateTimeFormat(locale, picker === Picker.year
+        ? {
+            year: "numeric",
+        }
+        : picker === Picker.month
+            ? {
+                year: "numeric",
+                month: "long",
+            }
+            : {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+            });
     var currentMonthFormat = new Intl.DateTimeFormat(locale, {
-        month: 'long',
-        year: "numeric"
+        month: "long",
+        year: "numeric",
     });
     var onNextMonthClick = function () {
         setCurrentMonth(function (old) { return new Date(old.getFullYear(), old.getMonth() + 1, old.getDate()); });
@@ -23628,7 +23643,7 @@ var DatePicker = function (_a) {
         }
     };
     var onCurrentDateClick = function () {
-        setCurrentView(function (view) { return view === Picker.day ? Picker.month : Picker.day; });
+        setCurrentView(function (view) { return (view === Picker.day ? Picker.month : Picker.day); });
     };
     React.useEffect(function () {
         if (value) {
@@ -23638,13 +23653,13 @@ var DatePicker = function (_a) {
     React.useEffect(function () {
         setCurrentView(picker);
     }, [picker]);
-    return jsxRuntime.exports.jsxs(BasicInput$1, __assign({ disabled: disabled, hintText: hintText, errorText: errorText, size: size }, { children: [jsxRuntime.exports.jsxs("button", __assign({ className: clsx('alt-date-picker', className), id: id, ref: inputRef, onClick: function () { return setIsDatePickerVisible(!isDatePickerVisible); }, "data-testid": 'alt-test-datepicker', type: 'button', disabled: disabled }, { children: [value
-                        ? jsxRuntime.exports.jsx("div", __assign({ className: 'alt-date-picker__value' }, { children: valueDateFormat.format(value) }))
-                        : jsxRuntime.exports.jsx("div", __assign({ className: "alt-date-picker__placeholder" }, { children: placeholder || t('form.datePicker.placeholder') })), jsxRuntime.exports.jsx("div", __assign({ className: 'alt-date-picker__icon' }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'calendar_month' }) }))] })), isDatePickerVisible && jsxRuntime.exports.jsxs(FloatingBox, __assign({ targetElement: inputRef.current, placement: 'bottom', onClose: function () { return setIsDatePickerVisible(false); }, mobileBehaviour: exports.FloatingBoxMobileBehaviour.modal, closeOnAnotherFloatingBoxClick: true }, { children: [jsxRuntime.exports.jsxs("div", __assign({ className: 'alt-date-picker__header' }, { children: [!ltePhoneL && picker === Picker.day && jsxRuntime.exports.jsx("button", __assign({ className: clsx('alt-date-picker__currentMonth', {
-                                    'alt-date-picker__currentMonth--selected': currentView !== Picker.day
-                                }), onClick: onCurrentDateClick, "data-testid": 'alt-test-datepicker-header', type: 'button' }, { children: currentMonthFormat.format(currentMonth) })), ltePhoneL && picker === Picker.day && jsxRuntime.exports.jsx("div", __assign({ className: 'alt-date-picker__title' }, { children: currentMonthFormat.format(currentMonth) })), picker === Picker.month && jsxRuntime.exports.jsx("div", __assign({ className: 'alt-date-picker__title' }, { children: t('form.datePicker.chooseMonth') })), picker === Picker.year && jsxRuntime.exports.jsx("div", __assign({ className: 'alt-date-picker__title' }, { children: t('form.datePicker.chooseYear') })), !ltePhoneL && currentView === Picker.day && jsxRuntime.exports.jsxs("div", __assign({ className: 'alt-date-picker__navigation' }, { children: [jsxRuntime.exports.jsx("button", __assign({ className: 'alt-date-picker__navigation-button', onClick: onPrevMonthClick, "data-testid": 'alt-test-datepicker-prev', type: 'button' }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'arrow_back_ios' }) })), jsxRuntime.exports.jsx("button", __assign({ className: 'alt-date-picker__navigation-button', onClick: onNextMonthClick, "data-testid": 'alt-test-datepicker-next', type: 'button' }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'arrow_forward_ios' }) }))] }))] })), currentView === Picker.day && jsxRuntime.exports.jsx(Calendar$1, { currentMonth: currentMonth, selectedDate: (value || today), onChange: onChange }), currentView === Picker.month && jsxRuntime.exports.jsx(MonthPicker$1, { currentMonth: currentMonth, selectedDate: (value || today), onChange: onChange, minYear: minDate.getFullYear(), maxYear: maxDate.getFullYear() }), currentView === Picker.year && jsxRuntime.exports.jsx(YearPicker$1, { currentMonth: currentMonth, selectedDate: (value || today), onChange: onChange, minYear: minDate.getFullYear(), maxYear: maxDate.getFullYear() }), !ltePhoneL && jsxRuntime.exports.jsxs("div", __assign({ className: 'alt-date-picker__footer' }, { children: [currentView === Picker.day && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onTodayClick, "data-testid": 'alt-test-datepicker-today' }, { children: t('form.datePicker.today') })), currentView === Picker.month && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onTodayClick, "data-testid": 'alt-test-datepicker-currentMonth' }, { children: t('form.datePicker.currentMonth') })), jsxRuntime.exports.jsx(Button$1, __assign({ role: exports.Role.primary, className: 'alt-date-picker__apply', onClick: onApplyClick, "data-testid": 'alt-test-datepicker-apply' }, { children: t('common.apply') }))] })), ltePhoneL && jsxRuntime.exports.jsxs("div", __assign({ className: clsx('alt-date-picker__footer', {
-                            'alt-date-picker__footer--compact': currentView !== Picker.day
-                        }) }, { children: [currentView === Picker.day && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onPrevMonthClick, className: 'alt-date-picker__mobilePrevMonth', isIcon: true }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'arrow_back' }) })), currentView === Picker.day && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onCurrentDateClick, className: 'alt-date-picker__mobileMonthName' }, { children: t('form.datePicker.chooseMonth') })), currentView === Picker.day && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onNextMonthClick, className: 'alt-date-picker__mobileNextMonth', isIcon: true }, { children: jsxRuntime.exports.jsx(Icon$1, { i: 'arrow_forward' }) })), currentView !== Picker.year && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onTodayClick, className: 'alt-date-picker__mobileToday', leftIcon: jsxRuntime.exports.jsx(Icon$1, { i: 'today' }) }, { children: currentView === Picker.day ? t('form.datePicker.today') : t('form.datePicker.currentMonth') })), (currentView === Picker.day || picker !== Picker.day) && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onApplyClick, className: 'alt-date-picker__mobileApply', role: exports.Role.primary }, { children: t('common.apply') })), currentView !== Picker.day && picker === Picker.day && jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onApplyClick, className: 'alt-date-picker__mobileApply', role: exports.Role.primary, leftIcon: jsxRuntime.exports.jsx(Icon$1, { i: 'arrow_back_ios' }) }, { children: t('common.back') }))] }))] }))] }));
+    return (jsxRuntime.exports.jsxs(BasicInput$1, __assign({ disabled: disabled, hintText: hintText, errorText: errorText, size: size }, { children: [jsxRuntime.exports.jsxs("button", __assign({ className: clsx("alt-date-picker", className), id: id, ref: inputRef, onClick: function () { return setIsDatePickerVisible(!isDatePickerVisible); }, "data-testid": "alt-test-datepicker", type: "button", disabled: disabled }, { children: [value ? (jsxRuntime.exports.jsx("div", __assign({ className: "alt-date-picker__value" }, { children: valueDateFormat.format(value) }))) : (jsxRuntime.exports.jsx("div", __assign({ className: "alt-date-picker__placeholder" }, { children: placeholder || t("form.datePicker.placeholder") }))), jsxRuntime.exports.jsx("div", __assign({ className: "alt-date-picker__icon" }, { children: jsxRuntime.exports.jsx(Icon$1, { i: "calendar_month" }) }))] })), isDatePickerVisible && (jsxRuntime.exports.jsxs(FloatingBox, __assign({ targetElement: inputRef.current, placement: "bottom", onClose: function () { return setIsDatePickerVisible(false); }, mobileBehaviour: exports.FloatingBoxMobileBehaviour.modal, closeOnAnotherFloatingBoxClick: true }, { children: [jsxRuntime.exports.jsxs("div", __assign({ className: "alt-date-picker__header" }, { children: [!ltePhoneL && picker === Picker.day && (jsxRuntime.exports.jsx("button", __assign({ className: clsx("alt-date-picker__currentMonth", {
+                                    "alt-date-picker__currentMonth--selected": currentView !== Picker.day,
+                                }), onClick: onCurrentDateClick, "data-testid": "alt-test-datepicker-header", type: "button" }, { children: currentMonthFormat.format(currentMonth) }))), ltePhoneL && picker === Picker.day && (jsxRuntime.exports.jsx("div", __assign({ className: "alt-date-picker__title" }, { children: currentMonthFormat.format(currentMonth) }))), picker === Picker.month && (jsxRuntime.exports.jsx("div", __assign({ className: "alt-date-picker__title" }, { children: t("form.datePicker.chooseMonth") }))), picker === Picker.year && (jsxRuntime.exports.jsx("div", __assign({ className: "alt-date-picker__title" }, { children: t("form.datePicker.chooseYear") }))), !ltePhoneL && currentView === Picker.day && (jsxRuntime.exports.jsxs("div", __assign({ className: "alt-date-picker__navigation" }, { children: [jsxRuntime.exports.jsx("button", __assign({ className: "alt-date-picker__navigation-button", onClick: onPrevMonthClick, "data-testid": "alt-test-datepicker-prev", type: "button" }, { children: jsxRuntime.exports.jsx(Icon$1, { i: "arrow_back_ios" }) })), jsxRuntime.exports.jsx("button", __assign({ className: "alt-date-picker__navigation-button", onClick: onNextMonthClick, "data-testid": "alt-test-datepicker-next", type: "button" }, { children: jsxRuntime.exports.jsx(Icon$1, { i: "arrow_forward_ios" }) }))] })))] })), currentView === Picker.day && (jsxRuntime.exports.jsx(Calendar$1, { currentMonth: currentMonth, selectedDate: (value || today), onChange: onChange })), currentView === Picker.month && (jsxRuntime.exports.jsx(MonthPicker$1, { currentMonth: currentMonth, selectedDate: (value || today), onChange: onChange, minYear: minDate.getFullYear(), maxYear: maxDate.getFullYear() })), currentView === Picker.year && (jsxRuntime.exports.jsx(YearPicker$1, { currentMonth: currentMonth, selectedDate: (value || today), onChange: onChange, minYear: minDate.getFullYear(), maxYear: maxDate.getFullYear() })), !ltePhoneL && (jsxRuntime.exports.jsxs("div", __assign({ className: "alt-date-picker__footer" }, { children: [currentView === Picker.day && (jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onTodayClick, "data-testid": "alt-test-datepicker-today" }, { children: t("form.datePicker.today") }))), currentView === Picker.month && (jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onTodayClick, "data-testid": "alt-test-datepicker-currentMonth" }, { children: t("form.datePicker.currentMonth") }))), jsxRuntime.exports.jsx(Button$1, __assign({ role: exports.Role.primary, className: "alt-date-picker__apply", onClick: onApplyClick, "data-testid": "alt-test-datepicker-apply" }, { children: t("common.apply") }))] }))), ltePhoneL && (jsxRuntime.exports.jsxs("div", __assign({ className: clsx("alt-date-picker__footer", {
+                            "alt-date-picker__footer--compact": currentView !== Picker.day,
+                        }) }, { children: [currentView === Picker.day && (jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onPrevMonthClick, className: "alt-date-picker__mobilePrevMonth", isIcon: true }, { children: jsxRuntime.exports.jsx(Icon$1, { i: "arrow_back" }) }))), currentView === Picker.day && (jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onCurrentDateClick, className: "alt-date-picker__mobileMonthName" }, { children: t("form.datePicker.chooseMonth") }))), currentView === Picker.day && (jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onNextMonthClick, className: "alt-date-picker__mobileNextMonth", isIcon: true }, { children: jsxRuntime.exports.jsx(Icon$1, { i: "arrow_forward" }) }))), currentView !== Picker.year && (jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onTodayClick, className: "alt-date-picker__mobileToday", leftIcon: jsxRuntime.exports.jsx(Icon$1, { i: "today" }) }, { children: currentView === Picker.day
+                                    ? t("form.datePicker.today")
+                                    : t("form.datePicker.currentMonth") }))), (currentView === Picker.day || picker !== Picker.day) && (jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onApplyClick, className: "alt-date-picker__mobileApply", role: exports.Role.primary }, { children: t("common.apply") }))), currentView !== Picker.day && picker === Picker.day && (jsxRuntime.exports.jsx(Button$1, __assign({ onClick: onApplyClick, className: "alt-date-picker__mobileApply", role: exports.Role.primary, leftIcon: jsxRuntime.exports.jsx(Icon$1, { i: "arrow_back_ios" }) }, { children: t("common.back") })))] })))] })))] })));
 };
 var DatePicker$1 = React.memo(DatePicker);
 

@@ -310,10 +310,10 @@ interface FloatingBoxProps extends WithoutDefaultOffsets {
     targetElement: HTMLElement | null;
     onClose: () => void;
     offset?: number;
-    placement?: Options['placement'];
+    placement?: Options["placement"];
     popperProps?: Omit<Partial<Options>, "modifiers">;
     useParentWidth?: boolean;
-    minWidth?: number;
+    minWidth?: number | string;
     maxHeight?: number | string;
     useRootContainer?: boolean;
     preventClose?: (e: MouseEvent) => boolean;
@@ -423,7 +423,7 @@ interface PasswordInputProps extends TextInputProps {
 }
 declare const _default$m: react.MemoExoticComponent<({ showControls, rightIsland, ...props }: PasswordInputProps) => JSX.Element>;
 
-interface NumberInputProps extends Omit<TextInputProps, 'value' | 'onChange' | 'step' | 'min' | 'max'> {
+interface NumberInputProps extends Omit<TextInputProps, "value" | "onChange" | "step" | "min" | "max" | "ref"> {
     value: number;
     onChange: (value: number) => void;
     showControls?: boolean;
@@ -437,7 +437,7 @@ interface NumberInputProps extends Omit<TextInputProps, 'value' | 'onChange' | '
 }
 declare const _default$l: react.MemoExoticComponent<({ value, showControls, rightIsland, onChange, allowNegative, allowLeadingZeros, decimalSeparator, digitsAfterDecimal, step, min, max, ...props }: NumberInputProps) => JSX.Element>;
 
-interface CheckboxProps extends Omit<React.HTMLProps<HTMLInputElement>, 'onChange' | 'size'>, BasicInputProps {
+interface CheckboxProps extends Omit<React.HTMLProps<HTMLInputElement>, "onChange" | "size" | "ref">, Omit<BasicInputProps, "size"> {
     danger?: boolean;
     CheckIconComponent?: JSX.Element;
     onChange: (checked: boolean) => void;
@@ -480,7 +480,7 @@ declare enum Picker {
     month = "month",
     year = "year"
 }
-interface DatePickerProps extends Pick<TextInputProps, 'errorText' | 'hintText' | 'size' | 'disabled'>, BasicInputProps {
+interface DatePickerProps extends Pick<TextInputProps, "errorText" | "hintText" | "size" | "disabled">, BasicInputProps {
     value: Date;
     onChange: (value: Date) => void;
     id?: string;
@@ -489,7 +489,7 @@ interface DatePickerProps extends Pick<TextInputProps, 'errorText' | 'hintText' 
     maxDate?: Date;
     placeholder?: string;
 }
-declare const _default$g: react.MemoExoticComponent<({ value, onChange, id, picker, minDate, maxDate, disabled, placeholder, size, hintText, errorText, className }: DatePickerProps) => JSX.Element>;
+declare const _default$g: react.MemoExoticComponent<({ value, onChange, id, picker, minDate, maxDate, disabled, placeholder, size, hintText, errorText, className, }: DatePickerProps) => JSX.Element>;
 
 interface ScrollableSelectorProps<T> {
     value: T;

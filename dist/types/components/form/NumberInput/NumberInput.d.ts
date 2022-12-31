@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import { TextInputProps } from "../index";
-interface NumberInputProps extends Omit<TextInputProps, 'value' | 'onChange' | 'step' | 'min' | 'max'> {
+interface NumberInputProps extends Omit<TextInputProps, "value" | "onChange" | "step" | "min" | "max" | "ref"> {
     value: number;
     onChange: (value: number) => void;
     showControls?: boolean;

@@ -8,6 +8,14 @@ Altrone UI is a component library for fast developing beautiful and functional w
 
 [Documentation (in development)](https://apcom52.github.io/altrone-docs/)
 
+## Roadmap
+| Quarter  | Releases | Planned features  |
+|---|---|---|
+| January - March 2023  | Updates for 1.0  | DataTable actions, selectable rows of DataTable, Indicators, NavigationList action, Progress updates, build optimization |
+| April - June 2023  | 2.0 Release   | FileUploader, Breadcrumbs, Pagination, Carousel, ToolSelector, Spoiler, Surfaces, TextInput suggestions, Multiple Select, Loading State for Button and TextInput  |
+| July - September 2023  | Updates for 2.0  | DatePicker ranges, new features for FormField, accessibility features |
+| October - December 2023  | 3.0 Release  | Charts, ColorPicker, Range Slider, Notification, new features for another components, new accessibility features|
+
 ## Installation
 
 To install the library, enter the command:
