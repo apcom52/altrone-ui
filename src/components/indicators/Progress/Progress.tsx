@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import './progress.scss';
-import { Size } from '../../../types';
+import { Role, Size } from '../../../types';
 import clsx from 'clsx';
-import { Role } from '../../../types/Role';
+import { ProgressSegment, ProgressSegmentProps } from './ProgressSegment';
 
 export enum ProgressVariant {
   default = 'default',
@@ -16,6 +16,7 @@ interface ProgressProps {
   role?: Role;
   variant?: ProgressVariant;
   className?: string;
+  ProgressSegmentComponent?: React.FC<ProgressSegmentProps>;
 }
 
 const Progress = ({
@@ -24,7 +25,8 @@ const Progress = ({
   max = 100,
   role = Role.default,
   size = Size.medium,
-  className
+  className,
+  ProgressSegmentComponent = ProgressSegment
 }: ProgressProps) => {
   const percent = Math.round((value / max) * 100);
 
@@ -38,8 +40,7 @@ const Progress = ({
         'alt-progress--success': role === Role.success,
         'alt-progress--danger': role === Role.danger
       })}
-      data-testid="alt-test-progress"
-    >
+      data-testid="alt-test-progress">
       {variant === ProgressVariant.default && (
         <div
           className="alt-progress__active"
@@ -50,12 +51,10 @@ const Progress = ({
       {variant === ProgressVariant.segmented &&
         new Array(max).fill(0).map((_, segmentIndex) => {
           return (
-            <div
+            <ProgressSegmentComponent
               key={segmentIndex}
-              className={clsx('alt-progress__segment', {
-                'alt-progress__segment--active': segmentIndex < value
-              })}
-              data-testid="alt-test-progress-segment"
+              index={segmentIndex}
+              isActive={segmentIndex < value}
             />
           );
         })}
