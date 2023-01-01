@@ -4,17 +4,7 @@ import { ScrollableSelector } from '../ScrollableSelector';
 import { useThemeContext } from '../../../contexts';
 import { CalendarProps } from './Calendar';
 
-export interface MonthPickerProps extends CalendarProps {
-  minDate: Date;
-  maxDate: Date;
-}
-
-const MonthPicker = ({
-  selectedDate = new Date(),
-  onChange,
-  minDate,
-  maxDate
-}: MonthPickerProps) => {
+const MonthPicker = ({ selectedDate = new Date(), onChange, minDate, maxDate }: CalendarProps) => {
   const { locale } = useThemeContext();
 
   const monthFormat = useMemo(() => {
@@ -23,9 +13,23 @@ const MonthPicker = ({
     });
   }, [locale]);
 
+  const currentYear = selectedDate.getFullYear();
+
   const months = useMemo(() => {
     const result: Option<number>[] = [];
-    for (let month = 0; month <= 11; month++) {
+
+    let startMonth = 0;
+    let endMonth = 11;
+
+    if (currentYear <= minDate.getFullYear()) {
+      startMonth = minDate.getMonth();
+    }
+
+    if (currentYear >= maxDate.getFullYear()) {
+      endMonth = maxDate.getMonth();
+    }
+
+    for (let month = startMonth; month <= endMonth; month++) {
       result.push({
         label: monthFormat.format(new Date(2000, month, 1)),
         value: month
@@ -33,7 +37,7 @@ const MonthPicker = ({
     }
 
     return result;
-  }, [monthFormat, minDate, maxDate]);
+  }, [monthFormat, minDate, maxDate, currentYear]);
 
   const years = useMemo(() => {
     const result: Option<number>[] = [];
@@ -47,12 +51,12 @@ const MonthPicker = ({
     return result;
   }, [minDate, maxDate]);
 
-  const onSelectYear = (year) => {
-    onChange(new Date(year, selectedDate.getMonth(), 1));
+  const onSelectYear = (year: unknown) => {
+    onChange(new Date(Number(year), selectedDate.getMonth(), 1));
   };
 
-  const onSelectMonth = (month) => {
-    onChange(new Date(selectedDate.getFullYear(), month, 1));
+  const onSelectMonth = (month: unknown) => {
+    onChange(new Date(selectedDate.getFullYear(), Number(month), 1));
   };
 
   return (
@@ -65,7 +69,7 @@ const MonthPicker = ({
       />
       <div className="alt-month-picker__separator" />
       <ScrollableSelector
-        value={selectedDate.getFullYear()}
+        value={currentYear}
         align={Align.start}
         options={years}
         onChange={onSelectYear}

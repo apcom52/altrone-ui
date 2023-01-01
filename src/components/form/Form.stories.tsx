@@ -360,8 +360,8 @@ DatePickerExample.args = {
   dark: false,
   errorText: '',
   hintText: '',
-  minDate: new Date(2022, 11, 20),
-  maxDate: new Date(2023, 1, 15)
+  minDate: new Date(2022, 2, 20),
+  maxDate: new Date(2022, 9, 15)
 };
 DatePickerExample.argTypes = {
   picker: {

@@ -218,8 +218,8 @@ const DatePicker = ({
               currentMonth={currentMonth}
               selectedDate={(value || today) as Date}
               onChange={onChange}
-              minYear={minDate.getFullYear()}
-              maxYear={maxDate.getFullYear()}
+              minDate={minDate}
+              maxDate={maxDate}
             />
           )}
           {currentView === Picker.year && (
