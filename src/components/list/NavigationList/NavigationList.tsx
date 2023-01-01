@@ -4,7 +4,8 @@ import NavigationListItem from './NavigationListItem';
 import NavigationListSubItem from './NavigationListSubItem';
 import NavigationListSubSubItem from './NavigationListSubSubItem';
 import clsx from 'clsx';
-import { Indicator } from '../../../types';
+import { ContextMenuType, Indicator, Role, Size } from '../../../types';
+import { Button, ButtonVariant } from '../../button';
 
 interface SubSubNavigationItem {
   label: string;
@@ -34,6 +35,15 @@ interface BaseNavigationItemInterface {
   onExpand?: (value: unknown) => void;
 }
 
+interface NavigationListAction {
+  icon: JSX.Element;
+  title?: string;
+  disabled?: boolean;
+  danger?: boolean;
+  onClick?: () => void;
+  contextMenu?: ContextMenuType;
+}
+
 export interface NavigationItemProps extends BaseNavigationItemInterface, NavigationItem {}
 export interface NavigationSubItemProps extends BaseNavigationItemInterface, SubNavigationItem {}
 export interface NavigationSubSubItemProps
@@ -46,6 +56,7 @@ interface NavigationListProps {
   onChange: (selectedValue: unknown) => void;
   title?: string;
   className?: string;
+  action?: NavigationListAction;
   NavigationItemComponent?: JSX.Element;
   NavigationSubItemComponent?: JSX.Element;
   NavigationSubSubItemComponent?: JSX.Element;
@@ -57,6 +68,7 @@ const NavigationList = ({
   onChange,
   title,
   className,
+  action,
   NavigationItemComponent,
   NavigationSubItemComponent,
   NavigationSubSubItemComponent
@@ -120,6 +132,19 @@ const NavigationList = ({
   return (
     <div className={clsx('alt-navigation-list', className)}>
       {title && <div className="alt-navigation-list__title">{title}</div>}
+      {action && (
+        <Button
+          className="alt-navigation-list__action"
+          onClick={action.onClick}
+          dropdown={action.contextMenu}
+          variant={ButtonVariant.text}
+          role={action.danger ? Role.danger : Role.primary}
+          disabled={action.disabled}
+          size={Size.large}
+          isIcon>
+          {action.icon}
+        </Button>
+      )}
       <nav className="alt-navigation-list__navigation">
         {list.map((item, itemIndex) => {
           const itemProps: NavigationItemProps = {
