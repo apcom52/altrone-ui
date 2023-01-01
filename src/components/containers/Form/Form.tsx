@@ -13,7 +13,7 @@ const Form = ({ className, children, required, ...props }: FormProps) => {
       <form className={clsx('alt-form', className)} data-testid="alt-test-form" {...props}>
         {children}
       </form>
-    </FormContext.Provider>;
+    </FormContext.Provider>
   );
 };
 

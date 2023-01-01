@@ -60,16 +60,7 @@ const FormGroup = ({
         })}
         style={{ gridTemplateColumns }}
         data-testid="alt-test-form-group">
-        <div
-          className={clsx('alt-form-group', className, {
-            'alt-form-group--variant-linear': variant === FormGroupVariant.linear,
-            'alt-form-group--variant-row': variant === FormGroupVariant.row,
-            'alt-form-group--align-end': align === Align.end
-          })}
-          style={{ gridTemplateColumns }}
-          data-testid="alt-test-form-group">
-          {children}
-        </div>
+        {children}
       </div>
     </FormContext.Provider>
   );
