@@ -1,2 +1,2 @@
-export { default as Progress } from './Progress';
+export { default as Progress, ProgressVariant } from './Progress';
 export type { ProgressSegmentProps } from './ProgressSegment';

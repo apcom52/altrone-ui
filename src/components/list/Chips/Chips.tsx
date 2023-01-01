@@ -6,7 +6,7 @@ import './chips.scss';
 
 interface ChipsProps {
   options: Option[];
-  values: any[];
+  values: unknown[];
   onChange: (values: any[]) => void;
   SelectedIcon?: JSX.Element;
   direction?: Direction;
@@ -22,7 +22,7 @@ const Chips = ({
   size = Size.medium
 }: ChipsProps) => {
   const onChipClick = useCallback(
-    (value) => {
+    (value: unknown) => {
       const chipIsSelected = values.findIndex((chipValue) => value === chipValue);
 
       if (chipIsSelected > -1) {
@@ -40,8 +40,7 @@ const Chips = ({
         'alt-chips--direction-vertical': direction === Direction.vertical,
         [`alt-chips--size-${size}`]: size !== Size.medium
       })}
-      data-testid="alt-test-chips"
-    >
+      data-testid="alt-test-chips">
       {options.map((option, optionIndex) => {
         const isSelected = values.indexOf(option.value) > -1;
 
@@ -54,8 +53,7 @@ const Chips = ({
             disabled={option.disabled}
             onClick={() => onChipClick(option.value)}
             data-testid="alt-test-chip"
-            type="button"
-          >
+            type="button">
             {isSelected && (
               <div className="alt-chip__icon">{SelectedIcon || <Icon i="check" />}</div>
             )}

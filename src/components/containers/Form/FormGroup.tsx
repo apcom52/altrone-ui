@@ -22,7 +22,6 @@ const FormGroup = ({
   children,
   className,
   required,
-  disabled,
   weights = []
 }: FormGroupProps) => {
   const context = useFormContext();
@@ -51,10 +50,8 @@ const FormGroup = ({
   return (
     <FormContext.Provider
       value={{
-        required: required || context.required,
-        disabled: disabled || context.disabled
-      }}
-    >
+        required: required || context.required
+      }}>
       <div
         className={clsx('alt-form-group', className, {
           'alt-form-group--variant-linear': variant === FormGroupVariant.linear,
@@ -62,9 +59,17 @@ const FormGroup = ({
           'alt-form-group--align-end': align === Align.end
         })}
         style={{ gridTemplateColumns }}
-        data-testid="alt-test-form-group"
-      >
-        {children}
+        data-testid="alt-test-form-group">
+        <div
+          className={clsx('alt-form-group', className, {
+            'alt-form-group--variant-linear': variant === FormGroupVariant.linear,
+            'alt-form-group--variant-row': variant === FormGroupVariant.row,
+            'alt-form-group--align-end': align === Align.end
+          })}
+          style={{ gridTemplateColumns }}
+          data-testid="alt-test-form-group">
+          {children}
+        </div>
       </div>
     </FormContext.Provider>
   );

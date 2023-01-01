@@ -1,13 +1,12 @@
 import { Box, Form, FormField, FormGroup, FormGroupVariant, Modal } from '../index';
 import { Altrone } from '../../hocs';
-import { Role, Size, Theme } from '../../types';
+import { Role, Size, Theme, Align } from '../../types';
 import { useState } from 'react';
 import clsx from 'clsx';
 import { Button } from '../button';
 import FloatingBox, { FloatingBoxMobileBehaviour } from './FloatingBox/FloatingBox';
 import { Heading, Paragraph } from '../typography';
 import { DatePicker, NumberInput, RadioList, Select, Switcher, TextInput } from '../form';
-import { Align } from '../../types/Align';
 
 const Template = ({ Component, dark, ...args }) => {
   return (
@@ -30,22 +29,19 @@ const FloatingBoxTemplate = (args) => {
       }}
       className={clsx('altrone', {
         'altrone--dark': args.dark
-      })}
-    >
+      })}>
       <Button
         onClick={() => {
           setIsVisible((old) => !old);
         }}
-        ref={setButtonRef}
-      >
+        ref={setButtonRef}>
         Open floating box
       </Button>
       {isVisible && (
         <FloatingBox
           targetElement={buttonRef}
           onClose={() => setIsVisible(false)}
-          mobileBehaviour={FloatingBoxMobileBehaviour.modal}
-        >
+          mobileBehaviour={FloatingBoxMobileBehaviour.modal}>
           <Heading level={6}>Wants more?</Heading>
           <Paragraph>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium adipisci aliquid
@@ -98,7 +94,7 @@ const FormTemplate = (args) => {
             <DatePicker value={birthDate} onChange={setBirthDate} />
           </FormField>
           <FormField label="Father name">
-            <TextInput value={fatherName} onChange={setFatherName} />
+            <TextInput value={fatherName} onChange={setFatherName} disabled />
           </FormField>
         </FormGroup>
         <FormGroup variant={FormGroupVariant.row} required>

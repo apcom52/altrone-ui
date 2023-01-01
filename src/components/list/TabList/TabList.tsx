@@ -45,8 +45,8 @@ const TabList = ({
   onAddTab,
   align = Align.center
 }: TabListProps) => {
-  const tabListRef = useRef(null);
-  const selectedTabRef = useRef(null);
+  const tabListRef = useRef<HTMLDivElement>(null);
+  const selectedTabRef = useRef<HTMLButtonElement>(null);
   const [activeBackgroundStyles, setActiveBackgroundStyles] = useState({});
 
   const setBackgroundPosition = useCallback(() => {
@@ -68,7 +68,7 @@ const TabList = ({
     setBackgroundPosition();
   }, [selected, setBackgroundPosition, tabsListObserver, align]);
 
-  const onCloseClick = (e, value) => {
+  const onCloseClick = (e: React.MouseEvent, value: TabValue) => {
     if (variant === TabListVariant.solid && onCloseTab) {
       e.stopPropagation();
       onCloseTab(value);
@@ -92,8 +92,7 @@ const TabList = ({
         'alt-tab-list--align-end': align === Align.end
       })}
       ref={tabListRef}
-      data-testid="alt-test-tab-list"
-    >
+      data-testid="alt-test-tab-list">
       {variant !== TabListVariant.solid && (
         <div className="alt-tab-list__active-background" style={activeBackgroundStyles} />
       )}
@@ -109,15 +108,13 @@ const TabList = ({
             onClick={() => onChange(tab.value)}
             data-testid="alt-test-tab"
             disabled={tab.disabled}
-            type="button"
-          >
+            type="button">
             {tab.label}
             {tab.indicator && (
               <div
                 className={clsx('alt-tab__indicator', {
                   'alt-tab__indicator--position-corner': tab.indicator.position === 'corner'
-                })}
-              >
+                })}>
                 {tab.indicator.value}
               </div>
             )}
@@ -126,8 +123,7 @@ const TabList = ({
                 className="alt-tab__close"
                 type="button"
                 onClick={(e) => onCloseClick(e, tab.value)}
-                data-testid="alt-test-tab-close"
-              >
+                data-testid="alt-test-tab-close">
                 <Icon i="close" />
               </button>
             )}
@@ -139,8 +135,7 @@ const TabList = ({
           className="alt-tab-list__add"
           onClick={onAddTab}
           data-testid="alt-test-tab-list-add"
-          type="button"
-        >
+          type="button">
           <Icon i="add" />
         </button>
       )}

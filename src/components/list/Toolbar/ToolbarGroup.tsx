@@ -1,6 +1,6 @@
 import { memo, ReactNode, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { Align } from '../../../types/Align';
+import { Align } from '../../../types';
 import { useResizeObserver } from '../../../hooks';
 import ToolbarAction from './ToolbarAction';
 import { Icon } from '../../icons';
@@ -26,7 +26,7 @@ const ToolbarGroup = ({
 
   const toolbarRef = useToolbarContext();
 
-  const groupRef = useRef(null);
+  const groupRef = useRef<HTMLDivElement>(null);
   const preventRerender = useRef(false);
   const invisibleExpandButton = useRef(null);
   const expandButton = useRef(null);
@@ -84,8 +84,7 @@ const ToolbarGroup = ({
         'alt-toolbar-group--collapsible': collapsible
       })}
       data-testid="alt-test-toolbarGroup"
-      ref={groupRef}
-    >
+      ref={groupRef}>
       {!collapsible
         ? children
         : Array.isArray(children)
@@ -115,8 +114,7 @@ const ToolbarGroup = ({
           placement="bottom"
           targetElement={expandButton.current}
           useRootContainer
-          onClose={onCloseMenu}
-        >
+          onClose={onCloseMenu}>
           <ContextMenu onClose={onCloseMenu} menu={context} />
         </FloatingBox>
       )}

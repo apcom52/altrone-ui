@@ -1,6 +1,5 @@
 import { WithAltroneOffsets, WithoutDefaultOffsets } from '../../../types';
 import { memo } from 'react';
-import { Box } from '../../containers/Box';
 import './blockquote.scss';
 import clsx from 'clsx';
 
@@ -28,20 +27,14 @@ const Blockquote = ({
 }: BlockquoteProps) => {
   return (
     <figure className={clsx('alt-blockquote', className)} {...props}>
-      <Box
-        tagName="blockquote"
-        cite={cite}
-        className={clsx('alt-blockquote__content', classNames.content)}
-        {...innerProps?.content}
-      >
+      <blockquote cite={cite} className={clsx('alt-blockquote__content', classNames.content)}>
         {children}
-      </Box>
+      </blockquote>
       {author && (
         <figcaption>
           <cite
             className={clsx('alt-blockquote__author', classNames.author)}
-            {...innerProps?.author}
-          >
+            {...innerProps?.author}>
             {author}
           </cite>
         </figcaption>

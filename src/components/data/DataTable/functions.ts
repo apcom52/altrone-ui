@@ -8,12 +8,12 @@ export interface DataTableSearchFunc {
 }
 
 export const defaultSearchFunc = ({ item, field, query }: DataTableSearchFunc) => {
-  return item[field].toString().toLowerCase().startsWith(query.toLowerCase());
+  return item[field]?.toString().toLowerCase().startsWith(query.toLowerCase());
 };
 
 export interface DataTableSortFunc {
-  itemA: unknown;
-  itemB: unknown;
+  itemA: object;
+  itemB: object;
   field: string;
   direction: Sort;
 }
@@ -43,7 +43,7 @@ export const defaultCheckboxesFilter = ({ item, field, value = [] }: DataTableFi
 export const filterVisibleColumns = (
   columns: DataTableColumn[],
   mobileColumns: string[],
-  isMobile: boolean
+  isMobile = false
 ) => {
   if (!isMobile) {
     return columns;

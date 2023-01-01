@@ -2,7 +2,17 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import PasswordInput from './PasswordInput';
 
+class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
 describe('Form.PasswordInput', () => {
+  beforeEach(() => {
+    window.ResizeObserver = ResizeObserver;
+  });
+
   test('should renders correctly', () => {
     render(<PasswordInput onChange={() => null} title="password" data-testid="input" />);
     const element = screen.getByTitle('password');

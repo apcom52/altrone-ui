@@ -24,7 +24,7 @@ const ContextParentMenuItem = ({ onClick, onClose, ...action }: ContextParentMen
     }
   }, [gtPhoneL, onClick]);
 
-  const altroneRef = useRef(document.body.querySelector('.altrone'));
+  const altroneRef = useRef(document.body.querySelector('.altrone') || document.body);
 
   return (
     <>
@@ -40,8 +40,7 @@ const ContextParentMenuItem = ({ onClick, onClose, ...action }: ContextParentMen
             onClick(action);
           }
         }}
-        type="button"
-      >
+        type="button">
         <div className="alt-context-menu-item__icon">{action.icon}</div>
         <div className="alt-context-menu-item__title">{action.title}</div>
         <div className="alt-context-menu-item__childrenArrow">
@@ -56,8 +55,7 @@ const ContextParentMenuItem = ({ onClick, onClose, ...action }: ContextParentMen
             placement="right"
             useRootContainer={true}
             onClose={() => setIsChildrenContextMenuVisible(false)}
-            offset={8}
-          >
+            offset={8}>
             <ContextMenu onClose={onClose} menu={action.children} />
           </FloatingBox>,
           altroneRef.current

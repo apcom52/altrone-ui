@@ -35,19 +35,26 @@
 }
 
 .alt-data-table__cell--show-more {
-  text-align: center;
+  position: relative;
   width: 50px;
-  cursor: pointer;
+  padding: 0;
+}
+
+.alt-data-table__showMore {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
   border-radius: 6px;
+  border: none;
+  background-color: transparent;
+  color: var(--textColor);
+  cursor: pointer;
 
   @include useDisabledUserSelect();
   @include useFocus();
-
-  &:focus, &:focus-visible {
-    transform: scaleX(1.01);
-    border-color: transparent;
-    margin: -1px;
-  }
 }
 
 .alt-data-table__sort-indicator {

@@ -4,7 +4,20 @@ import Form from './Form';
 import { FormField } from './index';
 import { TextInput } from '../../form';
 
+class ResizeObserver {
+  observe() {
+  }
+  unobserve() {
+  }
+  disconnect() {
+  }
+}
+
 describe('Form.FormField', () => {
+  beforeEach(() => {
+    window.ResizeObserver = ResizeObserver
+  })
+
   test('should renders correctly', () => {
     render(
       <Form>
