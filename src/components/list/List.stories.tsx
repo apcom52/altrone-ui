@@ -111,8 +111,7 @@ const NavigationListTemplate = ({ dark, selected, ...args }) => {
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center'
-      }}
-    >
+      }}>
       <NavigationList selected={_value} onChange={onChange} {...args} />
     </Altrone>
   );
@@ -382,6 +381,23 @@ NavigationListExample.args = {
   title: 'Notes',
   selected: 'appearance',
   dark: false,
+  action: {
+    icon: <Icon i="add" />,
+    title: 'Create',
+    onClick: () => alert('click'),
+    contextMenu: [
+      {
+        icon: <Icon i="description" />,
+        title: 'Add document',
+        onClick: () => null
+      },
+      {
+        icon: <Icon i="folder_open" />,
+        title: 'Add folder',
+        onClick: () => null
+      }
+    ]
+  },
   list: [
     {
       label: 'My notes',
