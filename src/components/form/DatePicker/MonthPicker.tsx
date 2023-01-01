@@ -1,16 +1,20 @@
 import { memo, useMemo } from 'react';
-import { Option } from '../../../types';
+import { Align, Option } from '../../../types';
 import { ScrollableSelector } from '../ScrollableSelector';
-import { YearPickerProps } from './YearPicker';
 import { useThemeContext } from '../../../contexts';
-import { Align } from '../../../types/Align';
+import { CalendarProps } from './Calendar';
+
+export interface MonthPickerProps extends CalendarProps {
+  minDate: Date;
+  maxDate: Date;
+}
 
 const MonthPicker = ({
   selectedDate = new Date(),
   onChange,
-  minYear,
-  maxYear
-}: YearPickerProps) => {
+  minDate,
+  maxDate
+}: MonthPickerProps) => {
   const { locale } = useThemeContext();
 
   const monthFormat = useMemo(() => {
@@ -29,11 +33,11 @@ const MonthPicker = ({
     }
 
     return result;
-  }, [monthFormat]);
+  }, [monthFormat, minDate, maxDate]);
 
   const years = useMemo(() => {
     const result: Option<number>[] = [];
-    for (let year = minYear; year <= maxYear; year++) {
+    for (let year = minDate.getFullYear(); year <= maxDate.getFullYear(); year++) {
       result.push({
         label: year.toString(),
         value: year
@@ -41,7 +45,7 @@ const MonthPicker = ({
     }
 
     return result;
-  }, [minYear, maxYear]);
+  }, [minDate, maxDate]);
 
   const onSelectYear = (year) => {
     onChange(new Date(year, selectedDate.getMonth(), 1));
