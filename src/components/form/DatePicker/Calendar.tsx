@@ -1,6 +1,5 @@
 import { useThemeContext } from '../../../contexts';
 import { memo, useMemo } from 'react';
-import button from '../../button/Button/Button';
 import clsx from 'clsx';
 import { useWindowSize } from '../../../hooks';
 
@@ -8,13 +7,21 @@ export interface CalendarProps {
   currentMonth: Date;
   selectedDate: Date;
   onChange: (value: Date) => void;
+  minDate: Date;
+  maxDate: Date;
 }
 
 const makeDateString = (date = new Date()) => {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() + 1}`;
 };
 
-const Calendar = ({ currentMonth, selectedDate = new Date(), onChange }: CalendarProps) => {
+const Calendar = ({
+  currentMonth,
+  selectedDate = new Date(),
+  onChange,
+  minDate,
+  maxDate
+}: CalendarProps) => {
   const { locale } = useThemeContext();
   const { ltePhoneL } = useWindowSize();
 
@@ -48,7 +55,8 @@ const Calendar = ({ currentMonth, selectedDate = new Date(), onChange }: Calenda
       date: Date,
       dayNumber: number,
       dayString: string,
-      isAnotherMonth: boolean = false
+      isAnotherMonth = false,
+      disabled = false
     ) => {
       return (
         <button
@@ -56,12 +64,12 @@ const Calendar = ({ currentMonth, selectedDate = new Date(), onChange }: Calenda
           className={clsx('alt-calendar__day', {
             'alt-calendar__day--another-month': isAnotherMonth,
             'alt-calendar__day--selected': valueString === dayString,
-            'alt-calendar__day--today': todayString === dayString
+            'alt-calendar__day--today': todayString === dayString,
+            'alt-calendar__day--disabled': disabled
           })}
-          onClick={() => onChange(date)}
+          onClick={!disabled ? () => onChange(date) : undefined}
           data-testid="alt-test-calendar-day"
-          type="button"
-        >
+          type="button">
           {dayNumber}
         </button>
       );
@@ -72,6 +80,8 @@ const Calendar = ({ currentMonth, selectedDate = new Date(), onChange }: Calenda
       const dayOfWeek = firstDay.getDay() === 0 ? 7 : firstDay.getDay();
       const dayString = makeDateString(currentDate);
 
+      const currentDateDisabled = currentDate < minDate || currentDate > maxDate;
+
       if (day === 1) {
         for (let prevMonth = dayOfWeek - 1; prevMonth > 0; prevMonth--) {
           const prevMonthDate = new Date(
@@ -81,13 +91,19 @@ const Calendar = ({ currentMonth, selectedDate = new Date(), onChange }: Calenda
           );
 
           weeks.push(
-            renderDay(prevMonthDate, prevMonthDate.getDate(), makeDateString(prevMonthDate), true)
+            renderDay(
+              prevMonthDate,
+              prevMonthDate.getDate(),
+              makeDateString(prevMonthDate),
+              true,
+              prevMonthDate < minDate || prevMonthDate > maxDate
+            )
           );
         }
 
-        weeks.push(renderDay(currentDate, day, dayString));
+        weeks.push(renderDay(currentDate, day, dayString, false, currentDateDisabled));
       } else if (day === lastDay.getDate()) {
-        weeks.push(renderDay(currentDate, day, dayString));
+        weeks.push(renderDay(currentDate, day, dayString, false, currentDateDisabled));
 
         for (let nextMonth = 1; nextMonth <= 7 - lastDay.getDay(); nextMonth++) {
           const nextMonthCurrentDate = new Date(
@@ -101,11 +117,17 @@ const Calendar = ({ currentMonth, selectedDate = new Date(), onChange }: Calenda
           }
 
           weeks.push(
-            renderDay(nextMonthCurrentDate, nextMonth, makeDateString(nextMonthCurrentDate), true)
+            renderDay(
+              nextMonthCurrentDate,
+              nextMonth,
+              makeDateString(nextMonthCurrentDate),
+              true,
+              nextMonthCurrentDate < minDate || nextMonthCurrentDate > maxDate
+            )
           );
         }
       } else {
-        weeks.push(renderDay(currentDate, day, dayString));
+        weeks.push(renderDay(currentDate, day, dayString, false, currentDateDisabled));
       }
     }
 
@@ -120,8 +142,7 @@ const Calendar = ({ currentMonth, selectedDate = new Date(), onChange }: Calenda
           className={clsx('alt-calendar__weekday', {
             'alt-calendar__weekday--weekend': dayIndex > 4
           })}
-          data-testid="alt-test-calendar-weekday"
-        >
+          data-testid="alt-test-calendar-weekday">
           {weekdayDateFormat.format(day)}
         </span>
       ))}

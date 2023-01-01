@@ -111,6 +111,11 @@
   @include useInteraction {
     color: var(--accent);
   }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
 
 .alt-date-picker__currentMonth--mode-month {
@@ -209,6 +214,12 @@
   &:hover {
     background-color: var(--surfaceTrasparentHover);
   }
+}
+
+.alt-calendar__day--disabled {
+  --text: var(--secondaryTextColor);
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .alt-calendar__day--today {

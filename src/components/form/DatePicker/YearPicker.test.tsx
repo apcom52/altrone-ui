@@ -14,8 +14,8 @@ describe('Form.DatePicker', () => {
         currentMonth={date}
         selectedDate={date}
         onChange={() => null}
-        minYear={2015}
-        maxYear={2030}
+        minDate={new Date(2015, 0, 1)}
+        maxDate={new Date(2030, 11, 31)}
       />
     );
 
@@ -37,8 +37,8 @@ describe('Form.DatePicker', () => {
         currentMonth={value}
         selectedDate={value}
         onChange={onChange}
-        minYear={2000}
-        maxYear={2030}
+        minDate={new Date(2015, 0, 1)}
+        maxDate={new Date(2030, 11, 31)}
       />
     );
 
