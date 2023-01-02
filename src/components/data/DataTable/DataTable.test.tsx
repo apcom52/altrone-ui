@@ -1,6 +1,8 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { DataTable, DataTableColumn } from './index';
+import { defaultSortFunc } from './functions';
+import { Sort } from '../../../types';
 
 const DATA = [
   {
@@ -61,18 +63,15 @@ const COLUMNS: DataTableColumn[] = [
 ];
 
 class ResizeObserver {
-  observe() {
-  }
-  unobserve() {
-  }
-  disconnect() {
-  }
+  observe() {}
+  unobserve() {}
+  disconnect() {}
 }
 
 describe('Data.DataTable', () => {
   beforeEach(() => {
-    window.ResizeObserver = ResizeObserver
-  })
+    window.ResizeObserver = ResizeObserver;
+  });
 
   test('should renders correctly', () => {
     render(<DataTable data={DATA} columns={COLUMNS} />);
@@ -115,16 +114,33 @@ describe('Data.DataTable', () => {
   test('should render custom cell correctly', () => {
     render(<DataTable data={DATA} columns={COLUMNS} />);
 
-    let customCells = screen.queryAllByTestId('alt-test-datatable-customCell');
+    const customCells = screen.queryAllByTestId('alt-test-datatable-customCell');
     expect(customCells).toHaveLength(6);
   });
 
-  test('should sort correctly', () => {});
+  test('should sort correctly', () => {
+    const originalValues = [{ value: 2 }, { value: 5 }, { value: 1 }, { value: 3 }, { value: 4 }];
+
+    const ascSorted = originalValues
+      .sort((itemA, itemB) => {
+        return defaultSortFunc({ itemA, itemB, field: 'value', direction: Sort.asc });
+      })
+      .map((i) => i.value);
+
+    const descSorted = originalValues
+      .sort((itemA, itemB) => {
+        return defaultSortFunc({ itemA, itemB, field: 'value', direction: Sort.desc });
+      })
+      .map((i) => i.value);
+
+    expect(ascSorted).toStrictEqual([1, 2, 3, 4, 5]);
+    expect(descSorted).toStrictEqual([5, 4, 3, 2, 1]);
+  });
 
   test('should status works correctly', () => {
     render(<DataTable data={DATA} columns={COLUMNS} />);
 
-    let status = screen.getByTestId('alt-test-datatable-status');
+    const status = screen.getByTestId('alt-test-datatable-status');
     expect(status).toHaveTextContent('Showing 6 lines');
   });
 
@@ -135,7 +151,7 @@ describe('Data.DataTable', () => {
 
     expect(rows).toHaveLength(6);
 
-    let search = screen.getByTestId('alt-test-datatable-search').querySelector('input');
+    const search = screen.getByTestId('alt-test-datatable-search').querySelector('input');
     await waitFor(() => fireEvent.change(search, { target: { value: 'The' } }));
 
     rerender(<DataTable data={DATA} columns={COLUMNS} searchBy="country" />);
