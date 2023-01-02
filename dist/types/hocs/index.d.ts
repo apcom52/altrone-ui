@@ -1,1 +1,0 @@
-export { Altrone } from './Altrone';
