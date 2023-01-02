@@ -1,7 +1,12 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { DataTable, DataTableColumn } from './index';
-import { defaultSortFunc } from './functions';
+import {
+  defaultCheckboxesFilter,
+  defaultSelectFilter,
+  defaultSortFunc,
+  filterVisibleColumns
+} from './functions';
 import { Sort } from '../../../types';
 
 const DATA = [
@@ -160,5 +165,38 @@ describe('Data.DataTable', () => {
     expect(rows).toHaveLength(2);
   });
 
-  test('should filters works correctly', () => {});
+  test('should filters works correctly', () => {
+    const originalValues = [{ value: 2 }, { value: 5 }, { value: 1 }, { value: 3 }, { value: 4 }];
+
+    const filteredBySelect = originalValues.filter((item) =>
+      defaultSelectFilter({ item, field: 'value', value: 3 })
+    );
+
+    const filteredByCheckboxes = originalValues.filter((item) =>
+      defaultCheckboxesFilter({ item, field: 'value', value: [2, 1] })
+    );
+
+    expect(filteredBySelect).toStrictEqual([{ value: 3 }]);
+    expect(filteredByCheckboxes).toStrictEqual([{ value: 2 }, { value: 1 }]);
+  });
+
+  test('should show mobile columns correctly', () => {
+    const columns = [
+      {
+        accessor: 'name'
+      },
+      {
+        accessor: 'surname'
+      },
+      {
+        accessor: 'gender'
+      }
+    ];
+
+    expect(filterVisibleColumns(columns, [])).toStrictEqual(columns);
+    expect(filterVisibleColumns(columns, ['name', 'surname'], true)).toStrictEqual([
+      { accessor: 'name' },
+      { accessor: 'surname' }
+    ]);
+  });
 });
