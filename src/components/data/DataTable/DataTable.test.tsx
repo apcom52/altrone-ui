@@ -8,6 +8,10 @@ import {
   filterVisibleColumns
 } from './functions';
 import { Sort } from '../../../types';
+import React from 'react';
+import { Altrone } from '../../../hocs';
+import ReactDOM from 'react-dom';
+import { Icon } from '../../icons';
 
 const DATA = [
   {
@@ -63,7 +67,8 @@ const COLUMNS: DataTableColumn[] = [
     accessor: 'population',
     Component: ({ value }) => (
       <span data-testid="alt-test-datatable-customCell">{value} millions</span>
-    )
+    ),
+    label: 'Population (in millions)'
   }
 ];
 
@@ -76,6 +81,14 @@ class ResizeObserver {
 describe('Data.DataTable', () => {
   beforeEach(() => {
     window.ResizeObserver = ResizeObserver;
+
+    ReactDOM.createPortal = jest.fn((element, node) => {
+      return element;
+    });
+  });
+
+  afterEach(() => {
+    ReactDOM.createPortal.mockClear();
   });
 
   test('should renders correctly', () => {
@@ -198,5 +211,87 @@ describe('Data.DataTable', () => {
       { accessor: 'name' },
       { accessor: 'surname' }
     ]);
+  });
+
+  test('should sorting feature renders correctly', async () => {
+    jest.useFakeTimers();
+    jest.runAllTimers();
+
+    const { rerender } = render(
+      <Altrone>
+        <DataTable data={DATA} columns={COLUMNS} sortKeys={['country', 'population']} />
+      </Altrone>
+    );
+
+    const sortingAction = screen.getByTitle('Sort');
+    await waitFor(() => fireEvent.click(sortingAction));
+
+    rerender(
+      <Altrone>
+        <DataTable data={DATA} columns={COLUMNS} sortKeys={['country', 'population']} />
+      </Altrone>
+    );
+
+    const sortingPopup = screen.getByTestId('alt-test-datatable-sorting');
+    expect(sortingPopup).toBeInTheDocument();
+
+    const sortingKeysSelect = screen.getByText('Select an option');
+    await waitFor(() => fireEvent.click(sortingKeysSelect));
+
+    expect(sortingKeysSelect).toBeInTheDocument();
+
+    rerender(
+      <Altrone>
+        <DataTable data={DATA} columns={COLUMNS} sortKeys={['country', 'population']} />
+      </Altrone>
+    );
+
+    const selectMenu = await screen.findByTestId('alt-test-select-menu');
+    const selectMenuOptions =
+      selectMenu?.querySelectorAll('.alt-select-option .alt-select-option__label') || [];
+
+    const selectMenuParsedOptions = Array.from(selectMenuOptions).map((button) => button.innerHTML);
+
+    expect(selectMenuParsedOptions).toStrictEqual(['country', 'Population (in millions)']);
+  });
+
+  test('should renders headers of columns correctly', () => {
+    const { container } = render(
+      <Altrone>
+        <DataTable data={DATA} columns={COLUMNS} sortKeys={['country', 'population']} />
+      </Altrone>
+    );
+
+    const headerCells = container.querySelectorAll('.alt-data-table__cell--header');
+    expect(headerCells).toHaveLength(4);
+
+    const textOfCells = Array.from(headerCells).map((cell) => cell.innerHTML);
+    expect(textOfCells).toStrictEqual(['#', 'country', 'capital', 'Population (in millions)']);
+  });
+
+  test('should custom actions works correctly', async () => {
+    const actionFn = jest.fn();
+
+    render(
+      <Altrone>
+        <DataTable
+          data={DATA}
+          columns={COLUMNS}
+          sortKeys={['country', 'population']}
+          actions={[
+            {
+              label: 'Schedule',
+              icon: <Icon i="schedule" />,
+              onClick: actionFn
+            }
+          ]}
+        />
+      </Altrone>
+    );
+
+    const scheduleAction = screen.getByText('schedule');
+    await waitFor(() => fireEvent.click(scheduleAction));
+
+    expect(actionFn).toBeCalledTimes(1);
   });
 });
