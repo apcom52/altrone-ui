@@ -37,4 +37,19 @@ describe('Indicators.Progress', () => {
     expect(segments).toHaveLength(25);
     expect(activeSegments).toBe(12);
   });
+
+  test('should custom progress segment component works correctly', () => {
+    render(
+      <Progress
+        value={3}
+        max={6}
+        variant={ProgressVariant.segmented}
+        ProgressSegmentComponent={({ index, isActive }) => <>{isActive ? index : '-'}</>}
+      />
+    );
+
+    const progress = screen.getByTestId('alt-test-progress');
+
+    expect(progress).toHaveTextContent('012---');
+  });
 });
