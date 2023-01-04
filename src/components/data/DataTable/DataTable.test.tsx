@@ -8,7 +8,6 @@ import {
   filterVisibleColumns
 } from './functions';
 import { Sort } from '../../../types';
-import React from 'react';
 import { Altrone } from '../../../hocs';
 import ReactDOM from 'react-dom';
 import { Icon } from '../../icons';
@@ -18,37 +17,49 @@ const DATA = [
     id: 1,
     country: 'The United States of America',
     capital: 'Washington',
-    population: 332
+    language: 'EN',
+    population: 332,
+    continent: 'NA'
   },
   {
     id: 2,
     country: 'The United Kingdom',
-    capital: 'Washington',
-    population: 67
+    capital: 'London',
+    language: 'EN',
+    population: 67,
+    continent: 'EU'
   },
   {
     id: 3,
     country: 'France',
     capital: 'Paris',
-    population: 67
+    language: 'FR',
+    population: 67,
+    continent: 'EU'
   },
   {
     id: 4,
     country: 'Turkey',
     capital: 'Ankara',
-    population: 85
+    language: 'TR',
+    population: 85,
+    continent: 'AS'
   },
   {
     id: 5,
     country: 'China',
     capital: 'Beijing',
-    population: 1412
+    language: 'CH',
+    population: 1412,
+    continent: 'AS'
   },
   {
     id: 6,
     country: 'Russia',
     capital: 'Moscow',
-    population: 143
+    language: 'RU',
+    population: 143,
+    continent: 'EU'
   }
 ];
 
@@ -293,5 +304,116 @@ describe('Data.DataTable', () => {
     await waitFor(() => fireEvent.click(scheduleAction));
 
     expect(actionFn).toBeCalledTimes(1);
+  });
+
+  test('should filtering feature renders correctly', async () => {
+    const { rerender } = render(
+      <Altrone>
+        <DataTable
+          data={DATA}
+          columns={COLUMNS}
+          filters={[
+            {
+              type: 'select',
+              accessor: 'language'
+            },
+            {
+              type: 'checkboxList',
+              accessor: 'continent'
+            }
+          ]}
+        />
+      </Altrone>
+    );
+
+    const filtersAction = screen.getByTitle('Filters');
+    await waitFor(() => fireEvent.click(filtersAction));
+
+    rerender(
+      <Altrone>
+        <DataTable
+          data={DATA}
+          columns={COLUMNS}
+          filters={[
+            {
+              type: 'select',
+              accessor: 'language'
+            },
+            {
+              type: 'checkboxList',
+              accessor: 'continent'
+            }
+          ]}
+        />
+      </Altrone>
+    );
+
+    const filtersPopup = await screen.findByTestId('alt-test-datatable-filtering-popup');
+    expect(filtersPopup).toBeInTheDocument();
+
+    const checkboxList = Array.from(filtersPopup?.querySelectorAll('.alt-checkbox__label'))?.map(
+      (item) => item.innerHTML
+    );
+    expect(checkboxList).toStrictEqual(['NA', 'EU', 'AS']);
+
+    const select = screen.getByText('Select an option');
+    expect(select).toBeInTheDocument();
+
+    await waitFor(() => fireEvent.click(select));
+
+    const selectMenu = await screen.findByTestId('alt-test-select-menu');
+    const selectMenuOptions =
+      selectMenu?.querySelectorAll('.alt-select-option .alt-select-option__label') || [];
+
+    const selectMenuParsedOptions = Array.from(selectMenuOptions).map((button) => button.innerHTML);
+
+    expect(selectMenuParsedOptions).toStrictEqual(['EN', 'FR', 'TR', 'CH', 'RU']);
+  });
+
+  test('should indicator works correctly', async () => {
+    const { rerender } = render(
+      <Altrone>
+        <DataTable
+          data={DATA}
+          columns={COLUMNS}
+          filters={[
+            {
+              type: 'checkboxList',
+              accessor: 'continent'
+            }
+          ]}
+        />
+      </Altrone>
+    );
+
+    let filtersAction = screen.getByTitle('Filters');
+    await waitFor(() => fireEvent.click(filtersAction));
+
+    const northAmerica = screen.getByText('NA');
+    const europe = screen.getByText('EU');
+
+    await waitFor(() => fireEvent.click(northAmerica));
+    await waitFor(() => fireEvent.click(europe));
+
+    rerender(
+      <Altrone>
+        <DataTable
+          data={DATA}
+          columns={COLUMNS}
+          filters={[
+            {
+              type: 'checkboxList',
+              accessor: 'continent'
+            }
+          ]}
+        />
+      </Altrone>
+    );
+
+    filtersAction = screen.getByTitle('Filters');
+    const indicator = filtersAction.querySelector('.alt-button__indicator');
+
+    expect(indicator).toBeInTheDocument();
+    expect(indicator).toHaveTextContent('1');
   });
 });
