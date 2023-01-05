@@ -65,4 +65,112 @@ describe('Form.DatePicker', () => {
 
     expect([value.getFullYear(), value.getMonth(), value.getDate()]).toStrictEqual([2022, 9, 15]);
   });
+
+  test('should renders July 2022 correctly', () => {
+    const value = new Date(2022, 6, 3);
+    render(
+      <Calendar
+        currentMonth={value}
+        selectedDate={value}
+        onChange={jest.fn()}
+        minDate={new Date(2021, 0, 1)}
+        maxDate={new Date(2023, 0, 1)}
+      />
+    );
+
+    const days = screen.queryAllByTestId('alt-test-calendar-day');
+    const renderedDays = days.map((day) => day.innerHTML);
+
+    expect(renderedDays).toStrictEqual([
+      '27',
+      '28',
+      '29',
+      '30',
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '10',
+      '11',
+      '12',
+      '13',
+      '14',
+      '15',
+      '16',
+      '17',
+      '18',
+      '19',
+      '20',
+      '21',
+      '22',
+      '23',
+      '24',
+      '25',
+      '26',
+      '27',
+      '28',
+      '29',
+      '30',
+      '31'
+    ]);
+  });
+
+  test('should renders August 2022 correctly', () => {
+    const value = new Date(2022, 7, 3);
+    render(
+      <Calendar
+        currentMonth={value}
+        selectedDate={value}
+        onChange={jest.fn()}
+        minDate={new Date(2021, 0, 1)}
+        maxDate={new Date(2023, 0, 1)}
+      />
+    );
+
+    const days = screen.queryAllByTestId('alt-test-calendar-day');
+    const renderedDays = days.map((day) => day.innerHTML);
+
+    expect(renderedDays).toStrictEqual([
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '10',
+      '11',
+      '12',
+      '13',
+      '14',
+      '15',
+      '16',
+      '17',
+      '18',
+      '19',
+      '20',
+      '21',
+      '22',
+      '23',
+      '24',
+      '25',
+      '26',
+      '27',
+      '28',
+      '29',
+      '30',
+      '31',
+      '1',
+      '2',
+      '3',
+      '4'
+    ]);
+  });
 });

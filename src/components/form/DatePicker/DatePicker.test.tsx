@@ -11,7 +11,7 @@ describe('Form.DatePicker', () => {
   test('should renders correctly', async () => {
     const { rerender } = render(<DatePicker value={new Date()} onChange={() => null} />);
 
-    let datePicker = screen.getByTestId('alt-test-datepicker');
+    const datePicker = screen.getByTestId('alt-test-datepicker');
     await waitFor(() => fireEvent.click(datePicker));
 
     rerender(<DatePicker value={new Date()} onChange={() => null} />);
@@ -77,7 +77,7 @@ describe('Form.DatePicker', () => {
 
   test('should chooses today day after click on Today', async () => {
     let value = new Date(2021, 4, 25);
-    const onChange = (date) => {
+    const onChange = (date: Date) => {
       value = date;
     };
     const { rerender } = render(
@@ -111,7 +111,7 @@ describe('Form.DatePicker', () => {
     let calendar = screen.getByTestId('alt-test-calendar');
     expect(calendar).toBeInTheDocument();
 
-    let applyButton = screen.getByTestId('alt-test-datepicker-apply');
+    const applyButton = screen.getByTestId('alt-test-datepicker-apply');
     await waitFor(() => fireEvent.click(applyButton));
     rerender(<DatePicker value={new Date()} onChange={() => null} picker={Picker.day} />);
 
@@ -121,7 +121,7 @@ describe('Form.DatePicker', () => {
 
   test('should Next and Prev buttons work correctly', async () => {
     let value = new Date(2021, 4, 25);
-    const onChange = (date) => {
+    const onChange = (date: Date) => {
       value = date;
     };
     const { rerender } = render(
@@ -132,7 +132,7 @@ describe('Form.DatePicker', () => {
     await waitFor(() => fireEvent.click(datePicker));
     rerender(<DatePicker value={value} onChange={onChange} picker={Picker.day} />);
 
-    let nextButton = screen.getByTestId('alt-test-datepicker-next');
+    const nextButton = screen.getByTestId('alt-test-datepicker-next');
     await waitFor(() => fireEvent.click(nextButton));
     rerender(<DatePicker value={value} onChange={onChange} picker={Picker.day} />);
 
@@ -141,7 +141,7 @@ describe('Form.DatePicker', () => {
     rerender(<DatePicker value={value} onChange={onChange} picker={Picker.day} />);
 
     expect([value.getFullYear(), value.getMonth(), value.getDate()]).toStrictEqual([2021, 5, 10]);
-    let prevButton = screen.getByTestId('alt-test-datepicker-prev');
+    const prevButton = screen.getByTestId('alt-test-datepicker-prev');
 
     await waitFor(() => fireEvent.click(prevButton));
     await waitFor(() => fireEvent.click(prevButton));
@@ -153,5 +153,80 @@ describe('Form.DatePicker', () => {
     rerender(<DatePicker value={value} onChange={onChange} picker={Picker.day} />);
 
     expect([value.getFullYear(), value.getMonth(), value.getDate()]).toStrictEqual([2021, 3, 15]);
+  });
+
+  test('should minDate works correctly', async () => {
+    let value = new Date(2021, 4, 25);
+    const onChange = (date: Date) => {
+      value = date;
+    };
+    render(
+      <DatePicker
+        value={value}
+        onChange={onChange}
+        picker={Picker.day}
+        minDate={new Date(2021, 6, 1)}
+      />
+    );
+
+    await expect(value).toStrictEqual(new Date(2021, 6, 1));
+  });
+
+  test('should maxDate works correctly', async () => {
+    let value = new Date(2021, 4, 25);
+    const onChange = (date: Date) => {
+      value = date;
+    };
+    render(
+      <DatePicker
+        value={value}
+        onChange={onChange}
+        picker={Picker.day}
+        maxDate={new Date(2020, 3, 2)}
+      />
+    );
+
+    await expect(value).toStrictEqual(new Date(2020, 3, 2));
+  });
+
+  test('should updates value correctly after change minDate or maxDate', async () => {
+    let value = new Date(2021, 3, 3);
+    const onChange = (date: Date) => {
+      value = date;
+    };
+
+    const { rerender } = render(
+      <DatePicker
+        value={value}
+        onChange={onChange}
+        picker={Picker.day}
+        maxDate={new Date(2022, 5, 5)}
+      />
+    );
+
+    await expect(value).toStrictEqual(new Date(2021, 3, 3));
+
+    rerender(
+      <DatePicker
+        value={value}
+        onChange={onChange}
+        picker={Picker.day}
+        maxDate={new Date(2021, 2, 2)}
+      />
+    );
+
+    await expect(value).toStrictEqual(new Date(2021, 2, 2));
+
+    rerender(
+      <DatePicker
+        value={value}
+        onChange={onChange}
+        picker={Picker.day}
+        minDate={new Date(2022, 2, 2)}
+        maxDate={new Date(2023, 2, 2)}
+      />
+    );
+
+    await expect(value).toStrictEqual(new Date(2022, 2, 2));
   });
 });
