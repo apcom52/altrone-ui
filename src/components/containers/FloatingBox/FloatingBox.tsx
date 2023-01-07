@@ -150,8 +150,7 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(
           maxHeight
         }}
         data-testid="alt-test-floating-box"
-        {...attributes.popper}
-      >
+        {...attributes.popper}>
         {children}
       </div>,
       useRootContainer || !targetElement

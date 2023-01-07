@@ -28,7 +28,7 @@ const ContextMenu = ({ menu, onClose }: ContextMenuComponentProps) => {
   };
 
   return (
-    <div className="alt-context-menu-list">
+    <div className="alt-context-menu-list" data-testid="alt-test-contextMenu">
       {selectedParentItem && [
         <ContextMenuItem
           icon={<Icon i="arrow_back_ios" />}

@@ -1,8 +1,7 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Icon } from '../../icons';
 import { NavigationList } from './index';
-import React from 'react';
 
 const list = [
   {
@@ -89,7 +88,7 @@ const list = [
 
 describe('List.NavigationList', () => {
   test('should renders correctly', () => {
-    const { container, rerender } = render(
+    const { container } = render(
       <NavigationList list={list} selected="sync" onChange={() => null} />
     );
 
@@ -110,5 +109,89 @@ describe('List.NavigationList', () => {
     fireEvent.click(notes);
 
     expect(page).toBe('favorites');
+  });
+
+  test('should simple action works correctly', async () => {
+    const handler = jest.fn();
+
+    const { container } = render(
+      <NavigationList
+        list={list}
+        selected="my"
+        onChange={() => null}
+        action={{ title: 'Test', icon: <Icon i="add" />, onClick: handler }}
+      />
+    );
+
+    const actionButton = container.querySelector('.alt-navigation-list__action');
+    expect(actionButton).toBeInTheDocument();
+
+    await waitFor(() => fireEvent.click(actionButton));
+    expect(handler).toBeCalled();
+  });
+
+  test('should context menu action works correctly', async () => {
+    const handler = jest.fn();
+
+    const { container, rerender } = render(
+      <NavigationList
+        list={list}
+        selected="my"
+        onChange={() => null}
+        action={{
+          title: 'Test',
+          icon: <Icon i="add" />,
+          contextMenu: [
+            {
+              title: 'Demo action',
+              icon: <Icon i="add" />,
+              onClick: handler
+            }
+          ]
+        }}
+      />
+    );
+
+    const actionButton = container.querySelector('.alt-navigation-list__action');
+    expect(actionButton).toBeInTheDocument();
+
+    await waitFor(() => fireEvent.click(actionButton));
+
+    rerender(
+      <NavigationList
+        list={list}
+        selected="my"
+        onChange={() => null}
+        action={{
+          title: 'Test',
+          icon: <Icon i="add" />,
+          contextMenu: [
+            {
+              title: 'Demo action',
+              icon: <Icon i="add" />,
+              onClick: handler
+            }
+          ]
+        }}
+      />
+    );
+
+    const contextMenu = await screen.findByTestId('alt-test-contextMenu');
+    expect(contextMenu).toBeInTheDocument();
+
+    const demoAction = screen.getByText('Demo action');
+    await waitFor(() => fireEvent.click(demoAction));
+    expect(handler).toBeCalled();
+  });
+
+  test('should select first child item automatically', async () => {
+    let value = 'my';
+    const onChange = (val: unknown) => {
+      value = String(val);
+    };
+
+    render(<NavigationList list={list} selected={value} onChange={onChange} />);
+
+    await waitFor(() => expect(value).toBe('recent'));
   });
 });

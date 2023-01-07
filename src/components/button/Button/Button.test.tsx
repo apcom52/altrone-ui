@@ -107,4 +107,37 @@ describe('Button.Button', () => {
     expect(refValue.current?.tagName).toBe('BUTTON');
     expect(refValue.current?.innerHTML).toBe('Function');
   });
+
+  test('should indicators works correctly', () => {
+    const { rerender } = render(
+      <Button
+        indicator={{
+          position: 'baseline',
+          value: 5
+        }}>
+        Button
+      </Button>
+    );
+
+    let button = screen.getByText('Button');
+    let indicator = button.getElementsByClassName('alt-button__indicator')[0];
+
+    expect(indicator).toBeInTheDocument();
+    expect(indicator).toHaveTextContent('5');
+
+    rerender(
+      <Button
+        indicator={{
+          position: 'baseline'
+        }}>
+        Button
+      </Button>
+    );
+
+    button = screen.getByText('Button');
+    indicator = button.getElementsByClassName('alt-button__indicator')[0];
+
+    expect(indicator).toBeInTheDocument();
+    expect(indicator).toBeEmptyDOMElement();
+  });
 });
