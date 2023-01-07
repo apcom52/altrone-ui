@@ -89,7 +89,7 @@ describe('Containers.FloatingBox', () => {
     const firstClick = jest.fn();
     const secondClick = jest.fn();
 
-    const { baseElement } = render(
+    render(
       <Altrone>
         <button>outside</button>
         <FloatingBox

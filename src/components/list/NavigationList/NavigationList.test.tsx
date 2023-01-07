@@ -183,4 +183,15 @@ describe('List.NavigationList', () => {
     await waitFor(() => fireEvent.click(demoAction));
     expect(handler).toBeCalled();
   });
+
+  test('should select first child item automatically', async () => {
+    let value = 'my';
+    const onChange = (val: unknown) => {
+      value = String(val);
+    };
+
+    render(<NavigationList list={list} selected={value} onChange={onChange} />);
+
+    await waitFor(() => expect(value).toBe('recent'));
+  });
 });
