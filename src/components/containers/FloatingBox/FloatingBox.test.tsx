@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { FloatingBox } from './index';
 import { Button } from '../../button';
+import { Altrone } from '../../../hocs';
 
 describe('Containers.FloatingBox', () => {
   test('should returns null in target is undefined', () => {
@@ -82,5 +83,47 @@ describe('Containers.FloatingBox', () => {
     );
 
     expect(ref.modifiers.find((m) => m.name === 'sameWidth')).not.toBe(undefined);
+  });
+
+  test('should closeOnAnotherFloatingBoxClick works correctly', async () => {
+    const firstClick = jest.fn();
+    const secondClick = jest.fn();
+
+    const { baseElement } = render(
+      <Altrone>
+        <button>outside</button>
+        <FloatingBox
+          targetElement={null}
+          onClose={firstClick}
+          closeOnAnotherFloatingBoxClick={true}>
+          <button>first popup</button>
+        </FloatingBox>
+        <FloatingBox
+          targetElement={null}
+          onClose={secondClick}
+          closeOnAnotherFloatingBoxClick={false}>
+          <button>second popup</button>
+        </FloatingBox>
+      </Altrone>
+    );
+
+    const firstButton = screen.getByText('first popup');
+    const secondButton = screen.getByText('second popup');
+    const outsideButton = screen.getByText('outside');
+
+    await waitFor(() => fireEvent.click(firstButton));
+
+    await waitFor(() => expect(firstClick).toBeCalledTimes(0));
+    await waitFor(() => expect(secondClick).toBeCalledTimes(0));
+
+    await waitFor(() => fireEvent.click(secondButton));
+
+    await waitFor(() => expect(firstClick).toBeCalledTimes(1));
+    await waitFor(() => expect(secondClick).toBeCalledTimes(0));
+
+    await waitFor(() => fireEvent.click(outsideButton));
+
+    await waitFor(() => expect(firstClick).toBeCalledTimes(2));
+    await waitFor(() => expect(secondClick).toBeCalledTimes(1));
   });
 });
