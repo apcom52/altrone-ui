@@ -1,7 +1,7 @@
-import {memo} from "react";
+import { memo } from 'react';
 
 const ToolbarSeparator = () => {
-  return <div className='alt-toolbar-separator' />
-}
+  return <div className="alt-toolbar-separator" />;
+};
 
-export default memo(ToolbarSeparator)
+export default memo(ToolbarSeparator);

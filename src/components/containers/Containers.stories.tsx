@@ -52,8 +52,7 @@ const FloatingBoxTemplate = (args) => {
         onClick={() => {
           setIsVisible((old) => !old);
         }}
-        ref={setButtonRef}
-      >
+        ref={setButtonRef}>
         Open floating box
       </Button>
       {isVisible && (
@@ -134,9 +133,7 @@ const FormTemplate = (args) => {
           Agree with Privacy Policy
         </Switcher>
         <FormGroup variant={FormGroupVariant.row} required>
-          <FormField label="Describe your favorite music and albums">
-            just a text
-          </FormField>
+          <FormField label="Describe your favorite music and albums">just a text</FormField>
         </FormGroup>
       </Form>
     </Altrone>
@@ -214,9 +211,9 @@ const ModalTemplate = (args) => {
 export const BoxExample = Template.bind({});
 BoxExample.args = {
   Component: Box,
-  tagName: "div",
-  children: "Hello world",
-  margin: 5,
+  tagName: 'div',
+  children: 'Hello world',
+  margin: 5
 };
 
 export const FloatingBoxExample = FloatingBoxTemplate.bind({});

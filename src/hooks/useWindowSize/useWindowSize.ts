@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from "react";
+import { useEffect, useMemo, useState } from 'react';
 
 const SIZES_VALUES: Record<string, number> = {
   DesktopXL: 1920,
@@ -12,9 +12,9 @@ const SIZES_VALUES: Record<string, number> = {
   PhoneL: 430,
   PhoneM: 393,
   PhoneS: 320
-}
+};
 
-interface SizeResult extends Record<string, number | boolean | any>{
+interface SizeResult extends Record<string, number | boolean | any> {
   width: number;
   height: number;
   DesktopXL: boolean;
@@ -72,17 +72,17 @@ interface SizeResult extends Record<string, number | boolean | any>{
   ltePhoneL: boolean;
   ltePhoneM: boolean;
   ltePhoneS: boolean;
-  between: (from: string, to: string) => boolean
+  between: (from: string, to: string) => boolean;
 }
 
 const useDeviceSize = () => {
-  const [width, setWidth] = useState(0)
-  const [height, setHeight] = useState(0)
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
 
   const handleWindowResize = () => {
     setWidth(window.innerWidth);
     setHeight(window.innerHeight);
-  }
+  };
 
   useEffect(() => {
     // component is mounted and window is available
@@ -92,44 +92,43 @@ const useDeviceSize = () => {
     return () => window.removeEventListener('resize', handleWindowResize);
   }, []);
 
-  return [width, height]
-
-}
+  return [width, height];
+};
 
 export const useWindowSize = () => {
-  const [width, height] = useDeviceSize()
+  const [width, height] = useDeviceSize();
 
   return useMemo(() => {
     if (width === 0 && height === 0) {
-      return {}
+      return {};
     }
 
     const result: Partial<SizeResult> = {
       width,
       height,
       between: (from, to) => {
-        return width >= SIZES_VALUES[from] && width <= SIZES_VALUES[to]
+        return width >= SIZES_VALUES[from] && width <= SIZES_VALUES[to];
       }
-    }
+    };
 
-    const SIZES_NAMES = Object.keys(SIZES_VALUES)
+    const SIZES_NAMES = Object.keys(SIZES_VALUES);
     for (let i = 0; i < SIZES_NAMES.length; i++) {
-      const name = SIZES_NAMES[i]
-      const value = SIZES_VALUES[name]
-      result['gt' + name] = width > value
-      result['gte' + name] = width >= value
-      result['lt' + name] = width < value
-      result['lte' + name] = width <= value
+      const name = SIZES_NAMES[i];
+      const value = SIZES_VALUES[name];
+      result['gt' + name] = width > value;
+      result['gte' + name] = width >= value;
+      result['lt' + name] = width < value;
+      result['lte' + name] = width <= value;
 
       if (i === 0) {
-        result[name] = width >= value
+        result[name] = width >= value;
       } else if (i === SIZES_NAMES.length - 1) {
-        result[name] = width <= value
+        result[name] = width <= value;
       } else {
-        result[name] = width >= value && width <= SIZES_VALUES[SIZES_NAMES[i - 1]]
+        result[name] = width >= value && width <= SIZES_VALUES[SIZES_NAMES[i - 1]];
       }
     }
 
-    return result
-  }, [width, height])
-}
+    return result;
+  }, [width, height]);
+};

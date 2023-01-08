@@ -7,14 +7,14 @@ export enum OffsetAxis {
   right = 'right'
 }
 
-export type Offset = { [K in OffsetAxis]?: number; }
+export type Offset = { [K in OffsetAxis]?: number };
 
 export interface OffsetObject {
-  offset?: number
-  top?: number
-  bottom?: number
-  left?: number
-  right?: number
+  offset?: number;
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
 }
 
 export const useOffset = (params: number | Offset): OffsetObject => {
@@ -25,31 +25,35 @@ export const useOffset = (params: number | Offset): OffsetObject => {
       bottom: params,
       left: params,
       right: params
-    }
+    };
   }
 
-  const keysLength = Object.keys(params).length
-  const hasAxis = params.vertical !== undefined && params.horizontal !== undefined
-  const hasAllSides = params.top !== undefined && params.left !== undefined && params.right !== undefined && params.bottom !== undefined
-  const isOnlyAxis = keysLength === 2 && hasAxis
-  const isOnlyAllSides = keysLength === 4 && hasAllSides
-  const isOnlyAxisAndSides = keysLength === 6 && hasAxis && hasAllSides
+  const keysLength = Object.keys(params).length;
+  const hasAxis = params.vertical !== undefined && params.horizontal !== undefined;
+  const hasAllSides =
+    params.top !== undefined &&
+    params.left !== undefined &&
+    params.right !== undefined &&
+    params.bottom !== undefined;
+  const isOnlyAxis = keysLength === 2 && hasAxis;
+  const isOnlyAllSides = keysLength === 4 && hasAllSides;
+  const isOnlyAxisAndSides = keysLength === 6 && hasAxis && hasAllSides;
 
   if (isOnlyAxis || isOnlyAllSides || isOnlyAxisAndSides) {
-    let isEqual = true
-    let value
+    let isEqual = true;
+    let value;
     for (const key in params) {
       if (!isEqual) {
-        continue
+        continue;
       }
 
       if (value === undefined) {
-        value = params[key]
-        continue
+        value = params[key];
+        continue;
       }
 
       if (params[key] !== value) {
-        isEqual = false
+        isEqual = false;
       }
     }
 
@@ -60,29 +64,29 @@ export const useOffset = (params: number | Offset): OffsetObject => {
         bottom: value,
         left: value,
         right: value
-      }
+      };
     }
   }
 
-  const result: OffsetObject = {}
+  const result: OffsetObject = {};
   for (const key in params) {
     switch (key) {
       case OffsetAxis.vertical:
-        result.top = params[key]
-        result.bottom = params[key]
-        break
+        result.top = params[key];
+        result.bottom = params[key];
+        break;
       case OffsetAxis.horizontal:
-        result.left = params[key]
-        result.right = params[key]
-        break
+        result.left = params[key];
+        result.right = params[key];
+        break;
       case OffsetAxis.top:
       case OffsetAxis.left:
       case OffsetAxis.right:
       case OffsetAxis.bottom:
-        result[key] = params[key]
-        break
+        result[key] = params[key];
+        break;
     }
   }
 
-  return result
-}
+  return result;
+};

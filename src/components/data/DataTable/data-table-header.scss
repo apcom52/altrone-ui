@@ -10,8 +10,12 @@
   justify-content: space-between;
 }
 
-.alt-data-table-header__filters {
+.alt-data-table-header__actions {
+  display: flex;
+  align-items: center;
   width: fit-content;
+  overflow: hidden;
+  flex-wrap: wrap;
 }
 
 .alt-data-table-header__search {

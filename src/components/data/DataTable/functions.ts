@@ -1,5 +1,5 @@
-import { Sort } from "../../../types";
-import { DataTableColumn } from "./DataTable";
+import { Sort } from '../../../types';
+import { DataTableColumn } from './DataTable';
 
 export interface DataTableSearchFunc {
   item: unknown;
@@ -7,11 +7,7 @@ export interface DataTableSearchFunc {
   query: string;
 }
 
-export const defaultSearchFunc = ({
-  item,
-  field,
-  query,
-}: DataTableSearchFunc) => {
+export const defaultSearchFunc = ({ item, field, query }: DataTableSearchFunc) => {
   return item[field]?.toString().toLowerCase().startsWith(query.toLowerCase());
 };
 
@@ -22,12 +18,7 @@ export interface DataTableSortFunc {
   direction: Sort;
 }
 
-export const defaultSortFunc = ({
-  itemA,
-  itemB,
-  field,
-  direction,
-}: DataTableSortFunc) => {
+export const defaultSortFunc = ({ itemA, itemB, field, direction }: DataTableSortFunc) => {
   if (direction === Sort.asc) {
     return itemA[field] > itemB[field] ? 1 : -1;
   } else {
@@ -41,32 +32,22 @@ export interface DataTableFilterFunc {
   value: any;
 }
 
-export const defaultSelectFilter = ({
-  item,
-  field,
-  value,
-}: DataTableFilterFunc) => {
+export const defaultSelectFilter = ({ item, field, value }: DataTableFilterFunc) => {
   return item[field] === value;
 };
 
-export const defaultCheckboxesFilter = ({
-  item,
-  field,
-  value = [],
-}: DataTableFilterFunc) => {
+export const defaultCheckboxesFilter = ({ item, field, value = [] }: DataTableFilterFunc) => {
   return value.indexOf(item[field]) > -1;
 };
 
 export const filterVisibleColumns = (
   columns: DataTableColumn[],
   mobileColumns: string[],
-  isMobile: boolean = false
+  isMobile = false
 ) => {
   if (!isMobile) {
     return columns;
   }
 
-  return columns.filter(
-    (column) => mobileColumns.indexOf(column.accessor) > -1
-  );
+  return columns.filter((column) => mobileColumns.indexOf(column.accessor) > -1);
 };

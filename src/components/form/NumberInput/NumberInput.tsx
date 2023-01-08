@@ -1,13 +1,10 @@
-import { InputIslandType, TextInput, TextInputProps } from "../index";
-import { memo, useCallback, useEffect, useState } from "react";
-import NumberInputCounter from "./NumberInputCounter";
-import { NumericFormat } from "react-number-format";
+import { InputIslandType, TextInput, TextInputProps } from '../index';
+import { memo, useCallback, useEffect, useState } from 'react';
+import NumberInputCounter from './NumberInputCounter';
+import { NumericFormat } from 'react-number-format';
 
 interface NumberInputProps
-  extends Omit<
-    TextInputProps,
-    "value" | "onChange" | "step" | "min" | "max" | "ref"
-  > {
+  extends Omit<TextInputProps, 'value' | 'onChange' | 'step' | 'min' | 'max' | 'ref'> {
   value: number;
   onChange: (value: number) => void;
   showControls?: boolean;
@@ -27,7 +24,7 @@ const NumberInput = ({
   onChange,
   allowNegative = false,
   allowLeadingZeros = false,
-  decimalSeparator = ",",
+  decimalSeparator = ',',
   digitsAfterDecimal = 0,
   step = 1,
   min,
@@ -91,7 +88,7 @@ const NumberInput = ({
                   min={min}
                   max={max}
                 />
-              ),
+              )
             }
           : rightIsland
       }

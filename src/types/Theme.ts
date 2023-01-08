@@ -1,4 +1,4 @@
-import {CSSProperties} from "react";
+import { CSSProperties } from 'react';
 
 export enum Theme {
   light = 'light',
@@ -6,8 +6,8 @@ export enum Theme {
 }
 
 export interface ThemeConfig {
-  theme: Theme
-  locale: string
-  style?: CSSProperties
-  lang?: string
+  theme: Theme;
+  locale: string;
+  style?: CSSProperties;
+  lang?: string;
 }

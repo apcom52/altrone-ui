@@ -2,6 +2,7 @@
 
 .alt-toolbar-action {
   display: flex;
+  position: relative;
   min-width: 60px;
   max-width: 120px;
   margin: 0;
@@ -77,4 +78,36 @@
 .alt-toolbar-action--expand-invisible {
   position: absolute;
   visibility: hidden;
+}
+
+.alt-toolbar-action__indicator {
+  position: absolute;
+  top: 9px;
+  right: 4px;
+  padding: 2px 4px;
+  background-color: var(--textColor);
+  border-radius: 6px;
+  color: var(--background);
+
+  @include useFontSize(label, Small);
+
+  &:empty {
+    width: 8px;
+    height: 8px;
+    top: 15px;
+    right: 12px;
+    border-radius: 50%;
+  }
+}
+
+.alt-toolbar-action__indicator--position-corner {
+  top: 0;
+  right: 4px;
+  background-color: var(--danger);
+  color: var(--textColorOnDanger);
+
+  &:empty {
+    top: 2px;
+    right: 8px;
+  }
 }

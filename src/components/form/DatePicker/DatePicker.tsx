@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from "react";
+import {memo, useEffect, useMemo, useRef, useState} from "react";
 import { Icon } from "../../icons";
 import { useThemeContext } from "../../../contexts";
 import "./date-picker.scss";
@@ -50,7 +50,7 @@ const DatePicker = ({
     value ? new Date(value.getFullYear(), value.getMonth(), 1) : new Date()
   );
   const [currentView, setCurrentView] = useState<Picker>(picker);
-  let { locale } = useThemeContext();
+  const { locale } = useThemeContext();
 
   const { ltePhoneL } = useWindowSize();
   const t = useLocalization();
@@ -120,15 +120,25 @@ const DatePicker = ({
     setCurrentView(picker);
   }, [picker]);
 
+  useEffect(() => {
+    if (value < minDate) {
+      onChange(minDate);
+    } else if (value > maxDate) {
+      onChange(maxDate);
+    }
+  }, [value, minDate, maxDate, onChange]);
+
+  const [minMonth, maxMonth] = useMemo(() => {
+    return [
+      new Date(minDate?.getFullYear(), minDate?.getMonth(), 1),
+      new Date(maxDate?.getFullYear(), maxDate?.getMonth(), 1)
+    ];
+  }, [minDate, maxDate]);
+
   return (
-    <BasicInput
-      disabled={disabled}
-      hintText={hintText}
-      errorText={errorText}
-      size={size}
-    >
+    <BasicInput disabled={disabled} hintText={hintText} errorText={errorText} size={size}>
       <button
-        className={clsx("alt-date-picker", className)}
+        className={clsx('alt-date-picker', className)}
         id={id}
         ref={inputRef}
         onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}
@@ -193,7 +203,7 @@ const DatePicker = ({
                   onClick={onPrevMonthClick}
                   data-testid="alt-test-datepicker-prev"
                   type="button"
-                >
+                  disabled={currentMonth <= minMonth}>
                   <Icon i="arrow_back_ios" />
                 </button>
                 <button
@@ -201,7 +211,7 @@ const DatePicker = ({
                   onClick={onNextMonthClick}
                   data-testid="alt-test-datepicker-next"
                   type="button"
-                >
+                  disabled={currentMonth >= maxMonth}>
                   <Icon i="arrow_forward_ios" />
                 </button>
               </div>
@@ -212,6 +222,8 @@ const DatePicker = ({
               currentMonth={currentMonth}
               selectedDate={(value || today) as Date}
               onChange={onChange}
+              minDate={minDate}
+              maxDate={maxDate}
             />
           )}
           {currentView === Picker.month && (
@@ -219,8 +231,8 @@ const DatePicker = ({
               currentMonth={currentMonth}
               selectedDate={(value || today) as Date}
               onChange={onChange}
-              minYear={minDate.getFullYear()}
-              maxYear={maxDate.getFullYear()}
+              minDate={minDate}
+              maxDate={maxDate}
             />
           )}
           {currentView === Picker.year && (
@@ -228,8 +240,8 @@ const DatePicker = ({
               currentMonth={currentMonth}
               selectedDate={(value || today) as Date}
               onChange={onChange}
-              minYear={minDate.getFullYear()}
-              maxYear={maxDate.getFullYear()}
+              minDate={minDate}
+              maxDate={maxDate}
             />
           )}
           {!ltePhoneL && (
@@ -254,24 +266,21 @@ const DatePicker = ({
                 role={Role.primary}
                 className="alt-date-picker__apply"
                 onClick={onApplyClick}
-                data-testid="alt-test-datepicker-apply"
-              >
-                {t("common.apply")}
+                data-testid="alt-test-datepicker-apply">
+                {t('common.apply')}
               </Button>
             </div>
           )}
           {ltePhoneL && (
             <div
-              className={clsx("alt-date-picker__footer", {
-                "alt-date-picker__footer--compact": currentView !== Picker.day,
-              })}
-            >
+              className={clsx('alt-date-picker__footer', {
+                'alt-date-picker__footer--compact': currentView !== Picker.day
+              })}>
               {currentView === Picker.day && (
                 <Button
                   onClick={onPrevMonthClick}
                   className="alt-date-picker__mobilePrevMonth"
-                  isIcon
-                >
+                  isIcon>
                   <Icon i="arrow_back" />
                 </Button>
               )}
@@ -287,8 +296,7 @@ const DatePicker = ({
                 <Button
                   onClick={onNextMonthClick}
                   className="alt-date-picker__mobileNextMonth"
-                  isIcon
-                >
+                  isIcon>
                   <Icon i="arrow_forward" />
                 </Button>
               )}
@@ -296,20 +304,18 @@ const DatePicker = ({
                 <Button
                   onClick={onTodayClick}
                   className="alt-date-picker__mobileToday"
-                  leftIcon={<Icon i="today" />}
-                >
+                  leftIcon={<Icon i="today" />}>
                   {currentView === Picker.day
-                    ? t("form.datePicker.today")
-                    : t("form.datePicker.currentMonth")}
+                    ? t('form.datePicker.today')
+                    : t('form.datePicker.currentMonth')}
                 </Button>
               )}
               {(currentView === Picker.day || picker !== Picker.day) && (
                 <Button
                   onClick={onApplyClick}
                   className="alt-date-picker__mobileApply"
-                  role={Role.primary}
-                >
-                  {t("common.apply")}
+                  role={Role.primary}>
+                  {t('common.apply')}
                 </Button>
               )}
               {currentView !== Picker.day && picker === Picker.day && (
@@ -317,9 +323,8 @@ const DatePicker = ({
                   onClick={onApplyClick}
                   className="alt-date-picker__mobileApply"
                   role={Role.primary}
-                  leftIcon={<Icon i="arrow_back_ios" />}
-                >
-                  {t("common.back")}
+                  leftIcon={<Icon i="arrow_back_ios" />}>
+                  {t('common.back')}
                 </Button>
               )}
             </div>

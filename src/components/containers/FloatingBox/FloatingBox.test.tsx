@@ -1,37 +1,56 @@
-import {fireEvent, render, screen, waitFor} from "@testing-library/react";
-import '@testing-library/jest-dom'
-import {FloatingBox} from "./index";
-import {Button} from "../../button";
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import { FloatingBox } from './index';
+import { Button } from '../../button';
+import { Altrone } from '../../../hocs';
 
 describe('Containers.FloatingBox', () => {
   test('should returns null in target is undefined', () => {
-    const { container } = render(<FloatingBox targetElement={null} onClose={() => null}>demo</FloatingBox>)
+    const { container } = render(
+      <FloatingBox targetElement={null} onClose={() => null}>
+        demo
+      </FloatingBox>
+    );
 
-    expect(container).toContainHTML('')
-  })
+    expect(container).toContainHTML('');
+  });
 
   test('should preventClose works correctly', async () => {
-    const { rerender } = render(<div className='altrone'>
-      <Button className='close'>close</Button>
-      <Button className='not-close'>not close</Button>
-      <FloatingBox targetElement={null as any} onClose={() => null} preventClose={(e) => {
-        return e.target?.classList.contains('not-close')
-      }}>demo</FloatingBox>
-    </div>)
+    const { rerender } = render(
+      <div className="altrone">
+        <Button className="close">close</Button>
+        <Button className="not-close">not close</Button>
+        <FloatingBox
+          targetElement={null as any}
+          onClose={() => null}
+          preventClose={(e) => {
+            return e.target?.classList.contains('not-close');
+          }}>
+          demo
+        </FloatingBox>
+      </div>
+    );
 
-    const notCloseButton = screen.getByText('not close')
-    await waitFor(() => fireEvent.click(notCloseButton))
+    const notCloseButton = screen.getByText('not close');
+    await waitFor(() => fireEvent.click(notCloseButton));
 
-    rerender(<div className='altrone'>
-      <Button className='close'>close</Button>
-      <Button className='not-close'>not close</Button>
-      <FloatingBox targetElement={null as any} onClose={() => null} preventClose={(e) => {
-        return e.target?.classList.contains('not-close')
-      }}>demo</FloatingBox>
-    </div>)
+    rerender(
+      <div className="altrone">
+        <Button className="close">close</Button>
+        <Button className="not-close">not close</Button>
+        <FloatingBox
+          targetElement={null as any}
+          onClose={() => null}
+          preventClose={(e) => {
+            return e.target?.classList.contains('not-close');
+          }}>
+          demo
+        </FloatingBox>
+      </div>
+    );
 
-    expect(screen.getByTestId('alt-test-floating-box')).toBeInTheDocument()
-  })
+    expect(screen.getByTestId('alt-test-floating-box')).toBeInTheDocument();
+  });
 
   // test('should prevents close if user clicks inside floating box', async () => {
   //   const closeHandler = jest.fn()
@@ -48,17 +67,63 @@ describe('Containers.FloatingBox', () => {
   // })
 
   test('should calculate correct width', async () => {
-    const anchor = document.createElement('div')
+    const anchor = document.createElement('div');
     anchor.style.width = '400px';
     anchor.style.height = '50px';
-    document.body.appendChild(anchor)
+    document.body.appendChild(anchor);
 
-    const ref = {}
+    const ref = {};
 
-    render(<>
-      <FloatingBox targetElement={anchor} onClose={() => null} useParentWidth ref={ref}>demo</FloatingBox>
-    </>)
+    render(
+      <>
+        <FloatingBox targetElement={anchor} onClose={() => null} useParentWidth ref={ref}>
+          demo
+        </FloatingBox>
+      </>
+    );
 
-    expect(ref.modifiers.find(m => m.name === 'sameWidth')).not.toBe(undefined)
-  })
-})
+    expect(ref.modifiers.find((m) => m.name === 'sameWidth')).not.toBe(undefined);
+  });
+
+  test('should closeOnAnotherFloatingBoxClick works correctly', async () => {
+    const firstClick = jest.fn();
+    const secondClick = jest.fn();
+
+    render(
+      <Altrone>
+        <button>outside</button>
+        <FloatingBox
+          targetElement={null}
+          onClose={firstClick}
+          closeOnAnotherFloatingBoxClick={true}>
+          <button>first popup</button>
+        </FloatingBox>
+        <FloatingBox
+          targetElement={null}
+          onClose={secondClick}
+          closeOnAnotherFloatingBoxClick={false}>
+          <button>second popup</button>
+        </FloatingBox>
+      </Altrone>
+    );
+
+    const firstButton = screen.getByText('first popup');
+    const secondButton = screen.getByText('second popup');
+    const outsideButton = screen.getByText('outside');
+
+    await waitFor(() => fireEvent.click(firstButton));
+
+    await waitFor(() => expect(firstClick).toBeCalledTimes(0));
+    await waitFor(() => expect(secondClick).toBeCalledTimes(0));
+
+    await waitFor(() => fireEvent.click(secondButton));
+
+    await waitFor(() => expect(firstClick).toBeCalledTimes(1));
+    await waitFor(() => expect(secondClick).toBeCalledTimes(0));
+
+    await waitFor(() => fireEvent.click(outsideButton));
+
+    await waitFor(() => expect(firstClick).toBeCalledTimes(2));
+    await waitFor(() => expect(secondClick).toBeCalledTimes(1));
+  });
+});

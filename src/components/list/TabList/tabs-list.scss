@@ -36,16 +36,19 @@
 }
 
 .alt-tab {
+  display: flex;
+  position: relative;
   height: 28px;
   margin: 0;
+  padding: 0 24px;
   border-radius: 8px;
+  align-items: center;
   appearance: none;
   border: none;
   cursor: pointer;
   color: var(--secondaryTextColor);
   background: transparent;
   line-height: 28px;
-  padding: 0 24px;
   white-space: nowrap;
   z-index: 1;
 
@@ -171,4 +174,39 @@
 
 .alt-tab-list--align-end {
   justify-content: flex-end;
+}
+
+.alt-tab__indicator {
+  padding: 2px 4px;
+  background: var(--surfaceTrasparent);
+  margin-left: 6px;
+  border-radius: 6px;
+  min-width: 20px;
+
+  @include useFontSize(label, Small);
+
+  &:empty {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--secondaryTextColor);
+    min-width: unset;
+  }
+}
+
+.alt-tab__indicator--position-corner {
+  position: absolute;
+  top: 1px;
+  right: 0;
+}
+
+.alt-tab--selected {
+  .alt-tab__indicator {
+    background-color: var(--danger);
+    color: var(--textColorOnDanger);
+
+    &:empty {
+      background-color: var(--danger);
+    }
+  }
 }

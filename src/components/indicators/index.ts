@@ -1,1 +1,1 @@
-export { Progress, ProgressVariant } from './Progress';
+export { Progress, ProgressVariant, ProgressSegmentProps } from './Progress';

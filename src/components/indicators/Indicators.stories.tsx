@@ -1,15 +1,15 @@
-import {Role, Size} from "../../types";
-import {Progress} from "./Progress";
-import {ProgressVariant} from "./Progress/Progress";
-import {BasicTemplate} from "../BasicTemplate.stories";
+import { Role, Size } from '../../types';
+import { Progress } from './Progress';
+import { ProgressVariant } from './Progress/Progress';
+import { BasicTemplate } from '../BasicTemplate.stories';
 
-export const ProgressExample = BasicTemplate.bind({})
+export const ProgressExample = BasicTemplate.bind({});
 ProgressExample.args = {
   Component: Progress,
   value: 30,
   max: 100,
-  dark: false,
-}
+  dark: false
+};
 ProgressExample.argTypes = {
   variant: {
     control: 'select',
@@ -23,9 +23,9 @@ ProgressExample.argTypes = {
     control: 'select',
     options: [Role.default, Role.primary, Role.success, Role.danger]
   }
-}
+};
 
 export default {
   component: ProgressExample,
-  title: 'Indicators',
-}
+  title: 'Indicators'
+};

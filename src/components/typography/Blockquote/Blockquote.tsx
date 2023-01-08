@@ -1,7 +1,7 @@
-import { WithAltroneOffsets, WithoutDefaultOffsets } from "../../../types";
-import { memo } from "react";
-import "./blockquote.scss";
-import clsx from "clsx";
+import { WithAltroneOffsets, WithoutDefaultOffsets } from '../../../types';
+import { memo } from 'react';
+import './blockquote.scss';
+import clsx from 'clsx';
 
 interface BlockquoteProps extends WithoutDefaultOffsets, WithAltroneOffsets {
   cite?: string;
@@ -26,19 +26,15 @@ const Blockquote = ({
   ...props
 }: BlockquoteProps) => {
   return (
-    <figure className={clsx("alt-blockquote", className)} {...props}>
-      <blockquote
-        cite={cite}
-        className={clsx("alt-blockquote__content", classNames.content)}
-      >
+    <figure className={clsx('alt-blockquote', className)} {...props}>
+      <blockquote cite={cite} className={clsx('alt-blockquote__content', classNames.content)}>
         {children}
       </blockquote>
       {author && (
         <figcaption>
           <cite
-            className={clsx("alt-blockquote__author", classNames.author)}
-            {...innerProps?.author}
-          >
+            className={clsx('alt-blockquote__author', classNames.author)}
+            {...innerProps?.author}>
             {author}
           </cite>
         </figcaption>

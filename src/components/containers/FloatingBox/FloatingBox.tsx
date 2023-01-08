@@ -1,25 +1,25 @@
-import { WithoutDefaultOffsets } from "../../../types";
-import { forwardRef, useMemo, useState } from "react";
-import { usePopper } from "react-popper";
-import "./floating-box.scss";
-import { useOutsideClick } from "rooks";
-import { Options } from "@popperjs/core";
-import { createPortal } from "react-dom";
-import { useWindowSize } from "../../../hooks";
-import { Modal } from "../Modal";
-import clsx from "clsx";
+import { WithoutDefaultOffsets } from '../../../types';
+import { forwardRef, useMemo, useState } from 'react';
+import { usePopper } from 'react-popper';
+import './floating-box.scss';
+import { useOutsideClick } from 'rooks';
+import { Options } from '@popperjs/core';
+import { createPortal } from 'react-dom';
+import { useWindowSize } from '../../../hooks';
+import { Modal } from '../Modal';
+import clsx from 'clsx';
 
 export enum FloatingBoxMobileBehaviour {
-  default = "default",
-  modal = "modal",
+  default = 'default',
+  modal = 'modal'
 }
 
 interface FloatingBoxProps extends WithoutDefaultOffsets {
   targetElement: HTMLElement | null;
   onClose: () => void;
   offset?: number;
-  placement?: Options["placement"];
-  popperProps?: Omit<Partial<Options>, "modifiers">;
+  placement?: Options['placement'];
+  popperProps?: Omit<Partial<Options>, 'modifiers'>;
   useParentWidth?: boolean;
   minWidth?: number | string;
   maxHeight?: number | string;
@@ -34,11 +34,7 @@ const setPopperWidth = (state, minWidth) => {
   const targetRefWidth = state.elements.reference.clientWidth;
 
   state.elements.popper.style.width = `${
-    minWidth
-      ? targetRefWidth < minWidth
-        ? minWidth
-        : targetRefWidth
-      : targetRefWidth
+    minWidth ? (targetRefWidth < minWidth ? minWidth : targetRefWidth) : targetRefWidth
   }px`;
 };
 
@@ -48,26 +44,26 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(
       targetElement,
       onClose,
       offset = 4,
-      placement = "auto",
+      placement = 'auto',
       popperProps,
       useParentWidth = false,
       minWidth,
-      maxHeight = "auto",
+      maxHeight = 'auto',
       children,
       preventClose,
       useRootContainer = false,
       mobileBehaviour = FloatingBoxMobileBehaviour.default,
       closeOnAnotherFloatingBoxClick = false,
-      className,
+      className
     },
     ref
   ) => {
     const { ltePhoneL } = useWindowSize();
-    const [floatingBoxElement, setFloatingBoxElement] =
-      useState<HTMLDivElement | null>(null);
+
+    const [floatingBoxElement, setFloatingBoxElement] = useState<HTMLDivElement | null>(null);
 
     if (floatingBoxElement) {
-      if (typeof ref === "function") {
+      if (typeof ref === 'function') {
         ref(floatingBoxElement);
       } else if (ref) {
         ref.current = floatingBoxElement;
@@ -81,25 +77,25 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(
     const modifiers = useMemo(() => {
       const result = [
         {
-          name: "offset",
+          name: 'offset',
           options: {
-            offset: offsets,
-          },
-        },
+            offset: offsets
+          }
+        }
       ];
 
       if (useParentWidth) {
         result.push({
-          name: "sameWidth",
+          name: 'sameWidth',
           enabled: true,
           fn: ({ state }) => {
             setPopperWidth(state, minWidth);
           },
-          phase: "beforeWrite",
-          requires: ["computeStyles"],
+          phase: 'beforeWrite',
+          requires: ['computeStyles'],
           effect: ({ state }) => {
             setPopperWidth(state, minWidth);
-          },
+          }
         });
       }
 
@@ -110,21 +106,14 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(
       return result;
     }, [offsets, useParentWidth, minWidth]);
 
-    const { styles, attributes } = usePopper(
-      targetElement,
-      floatingBoxElement,
-      {
-        modifiers,
-        placement,
-        ...popperProps,
-      }
-    );
+    const { styles, attributes } = usePopper(targetElement, floatingBoxElement, {
+      modifiers,
+      placement,
+      ...popperProps
+    });
 
     useOutsideClick({ current: floatingBoxElement }, (e: MouseEvent) => {
-      if (
-        !closeOnAnotherFloatingBoxClick &&
-        (e.target as Element)?.closest(".alt-floating-box")
-      ) {
+      if (!closeOnAnotherFloatingBoxClick && (e.target as Element)?.closest('.alt-floating-box')) {
         return;
       }
 
@@ -142,16 +131,16 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(
         <Modal onClose={onClose} showClose={false} showCancel={false}>
           {children}
         </Modal>,
-        targetElement?.closest(".altrone") || document.body
+        targetElement?.closest('.altrone') || document.body
       );
     }
 
     return createPortal(
       <div
-        className={clsx("alt-floating-box", className)}
+        className={clsx('alt-floating-box', className)}
         ref={(node: HTMLDivElement) => {
           setFloatingBoxElement(node);
-          if (typeof ref === "function") {
+          if (typeof ref === 'function') {
             ref(node);
           } else if (ref) {
             ref.current = node;
@@ -159,15 +148,14 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(
         }}
         style={{
           ...styles.popper,
-          maxHeight,
+          maxHeight
         }}
         data-testid="alt-test-floating-box"
-        {...attributes.popper}
-      >
+        {...attributes.popper}>
         {children}
       </div>,
       useRootContainer || !targetElement
-        ? targetElement?.closest(".altrone") || document.body
+        ? targetElement?.closest('.altrone') || document.body
         : targetElement.parentElement || document.body
     );
   }

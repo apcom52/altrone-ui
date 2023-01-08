@@ -1,1 +1,1 @@
-export { default as FloatingBox, FloatingBoxMobileBehaviour } from './FloatingBox'
+export { default as FloatingBox, FloatingBoxMobileBehaviour } from './FloatingBox';
