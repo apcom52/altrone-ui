@@ -4,6 +4,8 @@ Altrone UI is a component library for fast developing beautiful and functional w
 
 ## Links
 
+[What's new in January Feature Update (1.1)?](https://github.com/apcom52/altrone-ui/releases/tag/v1.1.0)
+
 [Releases](https://github.com/apcom52/altrone-ui/releases)
 
 [Documentation (in development)](https://apcom52.github.io/altrone-docs/)
