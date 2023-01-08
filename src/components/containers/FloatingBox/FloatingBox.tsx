@@ -58,6 +58,8 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(
     },
     ref
   ) => {
+    const { ltePhoneL } = useWindowSize();
+
     const [floatingBoxElement, setFloatingBoxElement] = useState<HTMLDivElement | null>(null);
 
     if (floatingBoxElement) {
