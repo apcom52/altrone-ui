@@ -11,35 +11,37 @@ const DataTableFooter = () => {
 
   return (
     <tfoot>
-      <td
-        className="alt-data-table-footer-wrapper"
-        colSpan={ltePhoneL ? mobileColumns.length + 1 : columns.length}>
-        <div className="alt-data-table-footer">
-          <div className="alt-data-table-footer__status" data-testid="alt-test-datatable-status">
-            {ltePhoneL ? (
-              t('data.dataTable.lines', {
-                plural: true,
-                value: data.length,
-                vars: { count: data.length }
-              })
-            ) : (
-              <>
-                {t('data.dataTable.showing')}{' '}
-                {t('data.dataTable.lines', {
+      <tr>
+        <td
+          className="alt-data-table-footer-wrapper"
+          colSpan={ltePhoneL ? mobileColumns.length + 1 : columns.length}>
+          <div className="alt-data-table-footer">
+            <div className="alt-data-table-footer__status" data-testid="alt-test-datatable-status">
+              {ltePhoneL ? (
+                t('data.dataTable.lines', {
                   plural: true,
                   value: data.length,
                   vars: { count: data.length }
-                })}
-              </>
+                })
+              ) : (
+                <>
+                  {t('data.dataTable.showing')}{' '}
+                  {t('data.dataTable.lines', {
+                    plural: true,
+                    value: data.length,
+                    vars: { count: data.length }
+                  })}
+                </>
+              )}
+            </div>
+            {initialData.length > limit && (
+              <div className="alt-data-table-footer__pagination">
+                <DataTablePagination />
+              </div>
             )}
           </div>
-          {initialData.length > limit && (
-            <div className="alt-data-table-footer__pagination">
-              <DataTablePagination />
-            </div>
-          )}
-        </div>
-      </td>
+        </td>
+      </tr>
     </tfoot>
   );
 };

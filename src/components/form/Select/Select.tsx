@@ -1,20 +1,30 @@
-import { createElement, memo, useEffect, useMemo, useRef, useState } from 'react';
-import { Option, OptionParent, Role, Size } from '../../../types';
-import { FloatingBox } from '../../containers';
-import './select.scss';
-import { Icon } from '../../icons';
-import clsx from 'clsx';
-import { TextInput } from '../TextInput';
-import SelectOption from './SelectOption';
-import { useLocalization, useWindowSize } from '../../../hooks';
-import { FloatingBoxMobileBehaviour } from '../../containers/FloatingBox/FloatingBox';
-import { ScrollableSelector } from '../ScrollableSelector';
-import { Button } from '../../button';
-import SelectPlaceholder from './SelectPlaceholder';
-import { BasicInput, BasicInputProps } from '../BasicInput';
+import {
+  createElement,
+  memo,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { Option, OptionParent, Role, Size } from "../../../types";
+import { FloatingBox } from "../../containers";
+import "./select.scss";
+import { Icon } from "../../icons";
+import clsx from "clsx";
+import { TextInput } from "../TextInput";
+import SelectOption from "./SelectOption";
+import { useLocalization, useWindowSize } from "../../../hooks";
+import { FloatingBoxMobileBehaviour } from "../../containers/FloatingBox/FloatingBox";
+import { ScrollableSelector } from "../ScrollableSelector";
+import { Button } from "../../button";
+import SelectPlaceholder from "./SelectPlaceholder";
+import { BasicInput, BasicInputProps } from "../BasicInput";
 
 interface SelectProps<T extends number | string | boolean = string>
-  extends Omit<React.HTMLProps<HTMLSelectElement>, 'value' | 'onChange' | 'size'>,
+  extends Omit<
+      React.HTMLProps<HTMLSelectElement>,
+      "value" | "onChange" | "size"
+    >,
     BasicInputProps {
   value: T;
   options: Option<T>[];
@@ -32,7 +42,7 @@ interface SelectProps<T extends number | string | boolean = string>
   };
 }
 
-const DEFAULT_KEY = '_default';
+const DEFAULT_KEY = "_default";
 
 const Select = ({
   value,
@@ -48,61 +58,67 @@ const Select = ({
   classNames = {},
   placeholder,
   hintText,
-  errorText
+  errorText,
 }: SelectProps) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize();
   const t = useLocalization();
 
   const [isSelectVisible, setIsSelectVisible] = useState(false);
   const [isSearchMode, setIsSearchMode] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   const selectRef = useRef<HTMLButtonElement | HTMLInputElement>(null);
 
-  const [groupedItems, parentKeys]: [Record<string, (OptionParent | Option)[]>, string[]] =
-    useMemo(() => {
-      const result = {
-        [DEFAULT_KEY]: [
-          {
-            label: 'Others',
-            value: null
-          }
-        ]
-      };
+  const [groupedItems, parentKeys]: [
+    Record<string, (OptionParent | Option)[]>,
+    string[]
+  ] = useMemo(() => {
+    const result = {
+      [DEFAULT_KEY]: [
+        {
+          label: "Others",
+          value: null,
+        },
+      ],
+    };
 
-      let filteredOptions = [...options];
+    let filteredOptions = [...options];
 
-      if (searchable && searchTerm) {
-        if (searchFunc) {
-          filteredOptions = filteredOptions.filter((option) => searchFunc(searchTerm, option));
-        } else {
-          filteredOptions = filteredOptions.filter(
-            (option) =>
-              option.label.trim().toLowerCase().indexOf(searchTerm.trim().toLowerCase()) > -1
-          );
-        }
+    if (searchable && searchTerm) {
+      if (searchFunc) {
+        filteredOptions = filteredOptions.filter((option) =>
+          searchFunc(searchTerm, option)
+        );
+      } else {
+        filteredOptions = filteredOptions.filter(
+          (option) =>
+            option.label
+              .trim()
+              .toLowerCase()
+              .indexOf(searchTerm.trim().toLowerCase()) > -1
+        );
       }
 
-      for (const option of filteredOptions) {
-        if (option.parent) {
-          if (result[option.parent]) {
-            result[option.parent].push(option);
-          } else {
-            const parentData = parents.find((p) => p.value === option.parent) || {
-              label: option.parent,
-              value: option.parent
-            };
-            result[option.parent] = [parentData, option];
-          }
+    for (const option of filteredOptions) {
+      if (option.parent) {
+        if (result[option.parent]) {
+          result[option.parent].push(option);
         } else {
-          result[DEFAULT_KEY].push(option);
+          const parentData = parents.find((p) => p.value === option.parent) || {
+            label: option.parent,
+            value: option.parent,
+          };
+          result[option.parent] = [parentData, option];
         }
+      } else {
+        result[DEFAULT_KEY].push(option);
       }
 
-      const parentKeys = Object.keys(result).filter((pK) => pK !== DEFAULT_KEY);
+    const parentKeys = Object.keys(result).filter((pK) => pK !== DEFAULT_KEY);
 
-      return [result, [...parentKeys, DEFAULT_KEY]];
-    }, [options, parents, searchable, searchTerm, searchFunc]);
+    return [result, [...parentKeys, DEFAULT_KEY]];
+  }, [options, parents, searchable, searchTerm, searchFunc]);
 
   const selectedOption = useMemo(() => {
     return options.find((option) => option.value === value) || null;
@@ -140,12 +156,17 @@ const Select = ({
 
   useEffect(() => {
     if (!isSearchMode) {
-      setSearchTerm('');
+      setSearchTerm("");
     }
   }, [isSearchMode]);
 
   return (
-    <BasicInput hintText={hintText} errorText={errorText} disabled={disabled} size={size}>
+    <BasicInput
+      hintText={hintText}
+      errorText={errorText}
+      disabled={disabled}
+      size={size}
+    >
       {!searchable || (searchable && !isSearchMode) ? (
         <button
           ref={selectRef}
@@ -153,14 +174,14 @@ const Select = ({
           disabled={disabled}
           onClick={onSelectClick}
           data-testid="alt-test-select"
-          className={clsx('alt-select', classNames.select, {
-            'alt-select--active': isSelectVisible,
-            'alt-select--disabled': disabled
+          className={clsx("alt-select", classNames.select, {
+            "alt-select--active": isSelectVisible,
+            "alt-select--disabled": disabled,
           })}
           type="button"
         >
           <div
-            className={clsx('alt-select__value', classNames.currentValue)}
+            className={clsx("alt-select__value", classNames.currentValue)}
             data-testid="alt-test-select-current-value"
           >
             {selectedOption ? (
@@ -170,10 +191,12 @@ const Select = ({
                 selected: false,
                 disabled: false,
                 onSelect: () => null,
-                inSelectHeader: true
+                inSelectHeader: true,
               })
             ) : (
-              <SelectPlaceholder>{placeholder || t('form.select.placeholder')}</SelectPlaceholder>
+              <SelectPlaceholder>
+                {placeholder || t("form.select.placeholder")}
+              </SelectPlaceholder>
             )}
           </div>
           <div className="alt-select__arrow">
@@ -197,7 +220,9 @@ const Select = ({
           targetElement={selectRef.current}
           onClose={onSelectMenuClose}
           minWidth={200}
-          preventClose={searchable && isSearchMode ? preventSelectMenuClose : undefined}
+          preventClose={
+            searchable && isSearchMode ? preventSelectMenuClose : undefined
+          }
           data-testid="alt-test-select-search"
           useParentWidth
           mobileBehaviour={FloatingBoxMobileBehaviour.modal}
@@ -206,7 +231,7 @@ const Select = ({
         >
           {gtPhoneL && (
             <div
-              className={clsx('alt-select-menu', classNames.menu)}
+              className={clsx("alt-select-menu", classNames.menu)}
               data-testid="alt-test-select-menu"
             >
               {parentKeys.map((groupValue, groupIndex, groupedValueKeys) => {
@@ -217,7 +242,9 @@ const Select = ({
                 return (
                   <div className="alt-select-group" key={groupValue}>
                     {!isSingle && options.length ? (
-                      <div className="alt-select-group__title">{groupInfo.label}</div>
+                      <div className="alt-select-group__title">
+                        {groupInfo.label}
+                      </div>
                     ) : null}
                     {options.map((option, optionIndex) =>
                       createElement(ItemComponent, {
@@ -227,7 +254,7 @@ const Select = ({
                         selected: option.value === value,
                         disabled: option.disabled || groupInfo.disabled,
                         onSelect: onSelectOption,
-                        inSelectHeader: true
+                        inSelectHeader: false,
                       })
                     )}
                   </div>
@@ -237,15 +264,21 @@ const Select = ({
           )}
           {ltePhoneL && (
             <>
-              <div className="alt-select-menu__title">{t('form.select.placeholder')}</div>
+              <div className="alt-select-menu__title">
+                {t("form.select.placeholder")}
+              </div>
               <ScrollableSelector
                 className="alt-select-menu__selector"
                 options={options}
                 value={value}
                 onChange={onChange}
               />
-              <Button role={Role.primary} onClick={() => setIsSelectVisible(false)} fluid>
-                {t('common.apply')}
+              <Button
+                role={Role.primary}
+                onClick={() => setIsSelectVisible(false)}
+                fluid
+              >
+                {t("common.apply")}
               </Button>
             </>
           )}

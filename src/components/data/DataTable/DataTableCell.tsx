@@ -9,7 +9,7 @@ export interface DataTableCellProps {
 }
 
 const DataTableCell = ({ value }: DataTableCellProps) => {
-  return <>{value.toString()}</>;
+  return <>{String(value)}</>;
 };
 
 export default memo(DataTableCell);

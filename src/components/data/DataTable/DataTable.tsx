@@ -6,21 +6,23 @@ import DataTableHeaderRow from './DataTableHeaderRow';
 import DataTableFooter from './DataTableFooter';
 import { DataTableAppliedFilter, DataTableContext, DataTableFilter } from '../../../contexts';
 import { ContextMenuType, Indicator, Sort } from '../../../types';
+
 import {
   DataTableSearchFunc,
   DataTableSortFunc,
   defaultCheckboxesFilter,
   defaultSearchFunc,
   defaultSelectFilter,
-  defaultSortFunc
-} from './functions';
-import clsx from 'clsx';
+  defaultSortFunc,
+} from "./functions";
+import clsx from "clsx";
+import { DataTableCellProps } from "./DataTableCell";
 
 export interface DataTableColumn {
   accessor: string;
   label?: string;
   width?: number | string;
-  Component?: ReactNode;
+  Component?: React.FC<DataTableCellProps>;
 }
 
 interface DataTableProps<T = any> {
@@ -56,7 +58,7 @@ const DataTable = ({
   data = [],
   columns = [],
   limit = 20,
-  searchBy = '',
+  searchBy = "",
   searchFunc = defaultSearchFunc,
   sortKeys = [],
   filters = [],
@@ -73,7 +75,9 @@ const DataTable = ({
   const filteredData = useMemo(() => {
     let result = [...data];
     if (searchBy && searchFunc && search.trim()) {
-      result = result.filter((item) => searchFunc({ item, field: searchBy, query: search.trim() }));
+      result = result.filter((item) =>
+        searchFunc({ item, field: searchBy, query: search.trim() })
+      );
     }
 
     if (sortBy) {
@@ -84,21 +88,31 @@ const DataTable = ({
 
     if (appliedFilters) {
       for (const filter of appliedFilters) {
-        const filterConfig = filters.find((_filter) => _filter.accessor === filter.accessor);
+        const filterConfig = filters.find(
+          (_filter) => _filter.accessor === filter.accessor
+        );
 
         if (!filterConfig) {
           continue;
         }
 
         switch (filterConfig.type) {
-          case 'select':
+          case "select":
             result = result.filter((item) =>
-              defaultSelectFilter({ item, field: filterConfig.accessor, value: filter.value })
+              defaultSelectFilter({
+                item,
+                field: filterConfig.accessor,
+                value: filter.value,
+              })
             );
             break;
-          case 'checkboxList':
+          case "checkboxList":
             result = result.filter((item) =>
-              defaultCheckboxesFilter({ item, field: filterConfig.accessor, value: filter.value })
+              defaultCheckboxesFilter({
+                item,
+                field: filterConfig.accessor,
+                value: filter.value,
+              })
             );
             break;
         }
@@ -106,7 +120,16 @@ const DataTable = ({
     }
 
     return result;
-  }, [data, search, searchFunc, searchBy, sortBy, sortType, appliedFilters, filters]);
+  }, [
+    data,
+    search,
+    searchFunc,
+    searchBy,
+    sortBy,
+    sortType,
+    appliedFilters,
+    filters,
+  ]);
 
   const isHeaderVisible = sortKeys.length || filters.length || searchBy;
 
@@ -130,12 +153,15 @@ const DataTable = ({
         filters,
         appliedFilters,
         setAppliedFilters,
-        mobileColumns
+        mobileColumns,
       }}
     >
-      <table className={clsx('alt-data-table', className)} data-testid="alt-test-datatable">
+      <table
+        className={clsx("alt-data-table", className)}
+        data-testid="alt-test-datatable"
+      >
         <thead>
-          {isHeaderVisible && <DataTableHeader actions={actions} />}
+          {isHeaderVisible && <DataTableHeader />}
           <DataTableHeaderRow />
         </thead>
         <DataTableBody />

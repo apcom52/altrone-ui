@@ -1,7 +1,6 @@
 import { Altrone } from '../../hocs';
 import { Role, Size, Theme } from '../../types';
-import { Button } from './Button';
-import { ButtonVariant } from './Button/Button';
+import { Button, ButtonVariant } from './Button';
 import { Icon } from '../icons';
 import { ButtonVariantsStory } from './Button/ButtonVariants.stories';
 
@@ -17,8 +16,6 @@ const Template = ({
 }) => {
   const _leftIcon = leftIcon ? <Icon i={leftIcon} /> : null;
   const _rightIcon = rightIcon ? <Icon i={rightIcon} /> : null;
-
-  console.log({ leftIcon, rightIcon });
 
   return (
     <Altrone theme={dark ? Theme.dark : Theme.light}>
