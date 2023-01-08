@@ -1,4 +1,4 @@
-import { memo, useMemo, useRef, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import './data-table-header.scss';
 import { Button, ButtonVariant } from '../../button';
 import { TextInput } from '../../form';
@@ -38,9 +38,6 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
     return columns.find((column) => column.accessor === sortBy) || null;
   }, [columns, sortBy]);
 
-  const sortRef = useRef();
-  const filterRef = useRef();
-
   const dataTableActions = useMemo(() => {
     const result: DataTableActionType[] = [...actions];
 
@@ -70,6 +67,8 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
     return result;
   }, [actions, sortKeys, sortBy, currentSortingColumn, filters, appliedFilters]);
 
+  console.log(dataTableActions);
+
   return (
     <>
       <tr className="alt-data-table-header-wrapper">
@@ -87,15 +86,13 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
                 <Button
                   variant={ButtonVariant.transparent}
                   isIcon
-                  onClick={() => setIsSearchVisible(true)}
-                >
+                  onClick={() => setIsSearchVisible(true)}>
                   <Icon i="search" />
                 </Button>
               ) : (
                 <div
                   className="alt-data-table-header__search"
-                  data-testid="alt-test-datatable-search"
-                >
+                  data-testid="alt-test-datatable-search">
                   <TextInput placeholder={t('common.search')} value={search} onChange={setSearch} />
                 </div>
               )
@@ -105,22 +102,19 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
                 <Button
                   variant={ButtonVariant.text}
                   onClick={() => setIsSearchVisible(false)}
-                  isIcon={ltePhoneL}
-                >
+                  isIcon={ltePhoneL}>
                   <Icon i="arrow_forward_ios" />
                 </Button>
 
                 <div
                   className="alt-data-table-header__search"
-                  data-testid="alt-test-datatable-search"
-                >
+                  data-testid="alt-test-datatable-search">
                   <TextInput placeholder={t('common.search')} value={search} onChange={setSearch} />
                 </div>
                 <Button
                   variant={ButtonVariant.text}
                   onClick={() => setSearch('')}
-                  isIcon={ltePhoneL}
-                >
+                  isIcon={ltePhoneL}>
                   <Icon i="backspace" />
                 </Button>
               </>
