@@ -21,7 +21,7 @@ interface FloatingBoxProps extends WithoutDefaultOffsets {
   placement?: Options['placement'];
   popperProps?: Omit<Partial<Options>, 'modifiers'>;
   useParentWidth?: boolean;
-  minWidth?: number;
+  minWidth?: number | string;
   maxHeight?: number | string;
   useRootContainer?: boolean;
   preventClose?: (e: MouseEvent) => boolean;
@@ -58,7 +58,6 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(
     },
     ref
   ) => {
-    const { ltePhoneL } = useWindowSize();
     const [floatingBoxElement, setFloatingBoxElement] = useState<HTMLDivElement | null>(null);
 
     if (floatingBoxElement) {
@@ -155,7 +154,7 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(
       </div>,
       useRootContainer || !targetElement
         ? targetElement?.closest('.altrone') || document.body
-        : targetElement.parentElement
+        : targetElement.parentElement || document.body
     );
   }
 );

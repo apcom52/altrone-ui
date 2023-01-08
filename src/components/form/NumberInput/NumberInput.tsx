@@ -4,7 +4,7 @@ import NumberInputCounter from './NumberInputCounter';
 import { NumericFormat } from 'react-number-format';
 
 interface NumberInputProps
-  extends Omit<TextInputProps, 'value' | 'onChange' | 'step' | 'min' | 'max'> {
+  extends Omit<TextInputProps, 'value' | 'onChange' | 'step' | 'min' | 'max' | 'ref'> {
   value: number;
   onChange: (value: number) => void;
   showControls?: boolean;

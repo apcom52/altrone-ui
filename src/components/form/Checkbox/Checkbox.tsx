@@ -5,8 +5,8 @@ import clsx from 'clsx';
 import { BasicInput, BasicInputProps } from '../BasicInput';
 
 interface CheckboxProps
-  extends Omit<React.HTMLProps<HTMLInputElement>, 'onChange' | 'size'>,
-    BasicInputProps {
+  extends Omit<React.HTMLProps<HTMLInputElement>, 'onChange' | 'size' | 'ref'>,
+    Omit<BasicInputProps, 'size'> {
   danger?: boolean;
   CheckIconComponent?: JSX.Element;
   onChange: (checked: boolean) => void;
@@ -35,8 +35,7 @@ const Checkbox = ({
         htmlFor={checkboxId}
         className={clsx('alt-checkbox', className, {
           'alt-checkbox--danger': danger
-        })}
-      >
+        })}>
         <input
           id={checkboxId}
           type="checkbox"
