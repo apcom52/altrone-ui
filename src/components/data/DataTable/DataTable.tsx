@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import DataTableHeader from './DataTableHeader';
 import './data-table.scss';
 import DataTableBody from './DataTableBody';
@@ -18,21 +18,21 @@ import {
 import clsx from 'clsx';
 import { DataTableCellProps } from './DataTableCell';
 
-export interface DataTableColumn {
-  accessor: string;
+export interface DataTableColumn<T> {
+  accessor: keyof T;
   label?: string;
   width?: number | string;
   Component?: React.FC<DataTableCellProps>;
 }
 
-interface DataTableProps<T = any> {
+interface DataTableProps<T extends object> {
   data: T[];
-  columns: DataTableColumn[];
+  columns: DataTableColumn<T>[];
   limit?: number;
   searchBy?: string;
   sortKeys?: string[];
-  sortFunc?: (params: DataTableSortFunc) => number;
-  searchFunc?: (params: DataTableSearchFunc) => unknown[];
+  sortFunc?: (params: DataTableSortFunc<T>) => number;
+  searchFunc?: (params: DataTableSearchFunc<T>) => T[];
   filters?: DataTableFilter[];
   mobileColumns?: string[];
   className?: string;
@@ -54,7 +54,7 @@ export interface DataTableAction {
   indicator?: Indicator;
 }
 
-const DataTable = ({
+export const DataTable = <T extends object>({
   data = [],
   columns = [],
   limit = 20,
@@ -65,7 +65,7 @@ const DataTable = ({
   mobileColumns = [columns[0].accessor],
   className,
   actions = []
-}: DataTableProps) => {
+}: DataTableProps<T>) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<string | null>(null);
@@ -154,4 +154,4 @@ const DataTable = ({
   );
 };
 
-export default memo(DataTable);
+export default DataTable;

@@ -1,24 +1,24 @@
 import { Sort } from '../../../types';
 import { DataTableColumn } from './DataTable';
 
-export interface DataTableSearchFunc {
-  item: unknown;
-  field: string;
+export interface DataTableSearchFunc<T> {
+  item: T;
+  field: keyof T;
   query: string;
 }
 
-export const defaultSearchFunc = ({ item, field, query }: DataTableSearchFunc) => {
+export const defaultSearchFunc = <T>({ item, field, query }: DataTableSearchFunc<T>) => {
   return item[field]?.toString().toLowerCase().startsWith(query.toLowerCase());
 };
 
-export interface DataTableSortFunc {
-  itemA: object;
-  itemB: object;
-  field: string;
+export interface DataTableSortFunc<T> {
+  itemA: T;
+  itemB: T;
+  field: keyof T;
   direction: Sort;
 }
 
-export const defaultSortFunc = ({ itemA, itemB, field, direction }: DataTableSortFunc) => {
+export const defaultSortFunc = <T>({ itemA, itemB, field, direction }: DataTableSortFunc<T>) => {
   if (direction === Sort.asc) {
     return itemA[field] > itemB[field] ? 1 : -1;
   } else {
@@ -26,23 +26,23 @@ export const defaultSortFunc = ({ itemA, itemB, field, direction }: DataTableSor
   }
 };
 
-export interface DataTableFilterFunc {
-  item: unknown;
-  field: string;
-  value: any;
+export interface DataTableFilterFunc<T> {
+  item: T;
+  field: keyof T;
+  value: unknown;
 }
 
-export const defaultSelectFilter = ({ item, field, value }: DataTableFilterFunc) => {
+export const defaultSelectFilter = <T>({ item, field, value }: DataTableFilterFunc<T>) => {
   return item[field] === value;
 };
 
-export const defaultCheckboxesFilter = ({ item, field, value = [] }: DataTableFilterFunc) => {
-  return value.indexOf(item[field]) > -1;
+export const defaultCheckboxesFilter = <T>({ item, field, value = [] }: DataTableFilterFunc<T>) => {
+  return Array.isArray(value) ? value.indexOf(item[field]) > -1 : false;
 };
 
-export const filterVisibleColumns = (
-  columns: DataTableColumn[],
-  mobileColumns: string[],
+export const filterVisibleColumns = <T>(
+  columns: DataTableColumn<T>[],
+  mobileColumns: (keyof T)[],
   isMobile = false
 ) => {
   if (!isMobile) {
