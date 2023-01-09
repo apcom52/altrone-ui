@@ -37,6 +37,7 @@ interface DataTableProps<T extends object> {
   mobileColumns?: string[];
   className?: string;
   actions?: DataTableAction[];
+  striped?: 'odd' | 'even';
 }
 
 export interface DataTablePopupActionProps {
@@ -64,7 +65,8 @@ export const DataTable = <T extends object>({
   filters = [],
   mobileColumns = [columns[0].accessor],
   className,
-  actions = []
+  actions = [],
+  striped
 }: DataTableProps<T>) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
@@ -142,7 +144,12 @@ export const DataTable = <T extends object>({
         setAppliedFilters,
         mobileColumns
       }}>
-      <table className={clsx('alt-data-table', className)} data-testid="alt-test-datatable">
+      <table
+        className={clsx('alt-data-table', className, {
+          'alt-data-table--striped-odd': striped === 'odd',
+          'alt-data-table--striped-even': striped === 'even'
+        })}
+        data-testid="alt-test-datatable">
         <thead>
           {isHeaderVisible && <DataTableHeader actions={actions} />}
           <DataTableHeaderRow />
