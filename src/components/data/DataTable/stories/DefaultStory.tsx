@@ -53,3 +53,12 @@ export const DefaultDataTableStory: ComponentStory<typeof DataTable> = () => {
     </Altrone>
   );
 };
+
+DefaultDataTableStory.argTypes = [
+  {
+    striped: {
+      control: 'select',
+      options: [undefined, 'odd', 'even']
+    }
+  }
+];
