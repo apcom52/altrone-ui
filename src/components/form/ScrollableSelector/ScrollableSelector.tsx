@@ -1,6 +1,5 @@
 import { memo, useEffect, useRef } from 'react';
-import { Option } from '../../../types';
-import { Align } from '../../../types/Align';
+import { Align, Option } from '../../../types';
 import clsx from 'clsx';
 import './scrollable-selector.scss';
 
@@ -14,7 +13,7 @@ interface ScrollableSelectorProps<T> {
   className?: string;
 }
 
-const ScrollableSelector = <T extends any = string>({
+const ScrollableSelector = <T extends unknown>({
   value,
   options = [],
   width = '100%',
@@ -42,8 +41,7 @@ const ScrollableSelector = <T extends any = string>({
         'alt-scrollable-selector--align-end': align === Align.end
       })}
       style={{ width }}
-      data-testid="alt-test-scrollable-selector"
-    >
+      data-testid="alt-test-scrollable-selector">
       {options.map((option, optionIndex) => (
         <button
           key={optionIndex}
@@ -52,8 +50,7 @@ const ScrollableSelector = <T extends any = string>({
           })}
           onClick={() => onChange(option.value)}
           disabled={disabled || option.disabled}
-          type="button"
-        >
+          type="button">
           {option.label}
         </button>
       ))}
@@ -61,4 +58,4 @@ const ScrollableSelector = <T extends any = string>({
   );
 };
 
-export default memo(ScrollableSelector);
+export default memo(ScrollableSelector) as typeof ScrollableSelector;

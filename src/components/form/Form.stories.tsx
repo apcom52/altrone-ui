@@ -183,6 +183,7 @@ SelectExample.args = {
   fluid: false,
   searchable: false,
   disabled: false,
+  clearable: false,
   lang: 'en',
   errorText: '',
   hintText: '',

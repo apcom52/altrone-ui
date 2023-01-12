@@ -1,19 +1,18 @@
 import { createElement, memo, useEffect, useMemo, useRef, useState } from 'react';
 import { Option, OptionParent, Role, Size } from '../../../types';
-import { FloatingBox } from '../../containers';
+import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import './select.scss';
 import { Icon } from '../../icons';
 import clsx from 'clsx';
 import { TextInput } from '../TextInput';
-import SelectOption from './SelectOption';
+import SelectOption, { SelectOptionProps } from './SelectOption';
 import { useLocalization, useWindowSize } from '../../../hooks';
-import { FloatingBoxMobileBehaviour } from '../../containers/FloatingBox/FloatingBox';
 import { ScrollableSelector } from '../ScrollableSelector';
 import { Button } from '../../button';
 import SelectPlaceholder from './SelectPlaceholder';
 import { BasicInput, BasicInputProps } from '../BasicInput';
 
-interface SelectProps<T extends number | string | boolean = string>
+interface SelectProps<T = unknown>
   extends Omit<React.HTMLProps<HTMLSelectElement>, 'value' | 'onChange' | 'size'>,
     BasicInputProps {
   value: T;
@@ -21,8 +20,9 @@ interface SelectProps<T extends number | string | boolean = string>
   onChange: (value: T) => void;
   parents?: OptionParent[];
   searchable?: boolean;
+  clearable?: boolean;
   searchFunc?: (searchTerm: string, item: Option<T>) => boolean;
-  ItemComponent?: (item: Option<T>, checked: boolean) => Element;
+  ItemComponent?: React.FC<SelectOptionProps<T>>;
   size?: Size;
   classNames?: {
     select?: string;
@@ -34,13 +34,14 @@ interface SelectProps<T extends number | string | boolean = string>
 
 const DEFAULT_KEY = '_default';
 
-const Select = ({
+const Select = <T extends unknown>({
   value,
   options = [],
   onChange,
   id,
   parents,
   searchable = false,
+  clearable = false,
   searchFunc,
   ItemComponent = SelectOption,
   disabled = false,
@@ -49,7 +50,7 @@ const Select = ({
   placeholder,
   hintText,
   errorText
-}: SelectProps) => {
+}: SelectProps<T>) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize();
   const t = useLocalization();
 
@@ -58,15 +59,16 @@ const Select = ({
 
   const [searchTerm, setSearchTerm] = useState('');
 
-  const selectRef = useRef<HTMLButtonElement | HTMLInputElement>(null);
+  const selectRef = useRef<HTMLButtonElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const [groupedItems, parentKeys]: [Record<string, (OptionParent | Option)[]>, string[]] =
+  const [groupedItems, parentKeys]: [Record<string, [OptionParent, ...Option<T>[]]>, string[]] =
     useMemo(() => {
-      const result = {
+      const result: Record<string, [OptionParent, ...Option<T>[]]> = {
         [DEFAULT_KEY]: [
           {
             label: 'Others',
-            value: null
+            value: 'Others'
           }
         ]
       };
@@ -89,7 +91,7 @@ const Select = ({
           if (result[option.parent]) {
             result[option.parent].push(option);
           } else {
-            const parentData = parents.find((p) => p.value === option.parent) || {
+            const parentData: OptionParent = parents?.find((p) => p.value === option.parent) || {
               label: option.parent,
               value: option.parent
             };
@@ -99,6 +101,8 @@ const Select = ({
           result[DEFAULT_KEY].push(option);
         }
       }
+
+      console.log(result);
 
       const parentKeys = Object.keys(result).filter((pK) => pK !== DEFAULT_KEY);
 
@@ -114,7 +118,7 @@ const Select = ({
     setIsSearchMode(false);
   };
 
-  const onSelectOption = (value) => {
+  const onSelectOption = (value: T) => {
     onChange(value);
     onSelectMenuClose();
   };
@@ -135,8 +139,8 @@ const Select = ({
     }
   };
 
-  const preventSelectMenuClose = (e) => {
-    return e.target === selectRef.current;
+  const preventSelectMenuClose = (e: MouseEvent) => {
+    return isSearchMode ? e.target === inputRef.current : e.target === selectRef.current;
   };
 
   useEffect(() => {
@@ -181,7 +185,7 @@ const Select = ({
         </button>
       ) : (
         <TextInput
-          ref={selectRef}
+          ref={inputRef}
           placeholder="Search..."
           value={searchTerm}
           onChange={setSearchTerm}
@@ -193,7 +197,7 @@ const Select = ({
       {isSelectVisible && (
         <FloatingBox
           placement="bottom"
-          targetElement={selectRef.current}
+          targetElement={isSearchMode ? inputRef.current : selectRef.current}
           onClose={onSelectMenuClose}
           minWidth={200}
           preventClose={searchable && isSearchMode ? preventSelectMenuClose : undefined}
@@ -206,6 +210,15 @@ const Select = ({
             <div
               className={clsx('alt-select-menu', classNames.menu)}
               data-testid="alt-test-select-menu">
+              {clearable && value ? (
+                <SelectOption<undefined>
+                  label="—"
+                  value={undefined}
+                  onSelect={() => onSelectOption(undefined as T)}
+                  disabled={false}
+                  selected={false}
+                />
+              ) : null}
               {parentKeys.map((groupValue, groupIndex, groupedValueKeys) => {
                 const group = groupedItems[groupValue];
                 const [groupInfo, ...options] = group;
@@ -222,7 +235,7 @@ const Select = ({
                         label: option.label,
                         value: option.value,
                         selected: option.value === value,
-                        disabled: option.disabled || groupInfo.disabled,
+                        disabled: option.disabled || groupInfo.disabled || false,
                         onSelect: onSelectOption,
                         inSelectHeader: false
                       })
@@ -235,7 +248,7 @@ const Select = ({
           {ltePhoneL && (
             <>
               <div className="alt-select-menu__title">{t('form.select.placeholder')}</div>
-              <ScrollableSelector
+              <ScrollableSelector<T>
                 className="alt-select-menu__selector"
                 options={options}
                 value={value}
