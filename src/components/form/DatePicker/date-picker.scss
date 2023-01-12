@@ -136,11 +136,27 @@
   }
 }
 
+.alt-date-picker__footer-separator {
+  flex: 1;
+}
+
 .alt-date-picker__footer--compact {
   @include less($l-phone) {
     margin-top: 16px;
     grid-template-areas: 'today' 'apply';
     grid-template-columns: 1fr;
+  }
+}
+
+.alt-date-picker__footer--clearable {
+  @include less($l-phone) {
+    grid-template-areas: 'prev month next' 'today today today' 'clear clear clear' 'apply apply apply';
+  }
+}
+
+.alt-date-picker__footer--compact .alt-date-picker__footer--clearable {
+  @include less($l-phone) {
+    grid-template-areas: 'today' 'clear' 'apply';
   }
 }
 
@@ -275,6 +291,10 @@
 
 .alt-date-picker__mobileToday {
   grid-area: today;
+}
+
+.alt-date-picker__mobileClear {
+  grid-area: clear;
 }
 
 .alt-date-picker__mobileApply {

@@ -1,4 +1,4 @@
-import { forwardRef, memo, Ref, useCallback, useRef, useState } from 'react';
+import { forwardRef, memo, useCallback, useRef, useState } from 'react';
 import {
   ContextMenuType as ContextMenuType,
   Indicator,
@@ -8,10 +8,9 @@ import {
   WithoutDefaultOffsets
 } from '../../../types';
 import clsx from 'clsx';
-import { Box, FloatingBox } from '../../containers';
+import { Box, FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import './button.scss';
 import { ContextMenu } from '../../list';
-import { FloatingBoxMobileBehaviour } from '../../containers/FloatingBox/FloatingBox';
 
 export enum ButtonVariant {
   default,
@@ -41,7 +40,7 @@ export interface ButtonProps
 
 const ButtonComponents = ['button', 'a'];
 
-const Button = forwardRef(
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       children,
@@ -59,8 +58,8 @@ const Button = forwardRef(
       isIcon = false,
       indicator = undefined,
       ...props
-    }: ButtonProps,
-    ref: Ref<HTMLButtonElement>
+    },
+    ref
   ) => {
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const isDropdownButton = !!dropdown.length;
@@ -115,7 +114,9 @@ const Button = forwardRef(
             targetElement={buttonRef.current}
             onClose={hideDropdown}
             placement="bottom"
-            mobileBehaviour={FloatingBoxMobileBehaviour.modal}>
+            mobileBehaviour={FloatingBoxMobileBehaviour.modal}
+            useRootContainer={true}
+            closeOnAnotherFloatingBoxClick>
             <ContextMenu onClose={hideDropdown} menu={dropdown} />
           </FloatingBox>
         ) : null}
@@ -123,5 +124,7 @@ const Button = forwardRef(
     );
   }
 );
+
+Button.displayName = 'Button';
 
 export default memo(Button);
