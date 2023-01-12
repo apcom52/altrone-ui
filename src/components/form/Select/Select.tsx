@@ -1,6 +1,6 @@
 import { createElement, memo, useEffect, useMemo, useRef, useState } from 'react';
-import { Option, OptionParent, Role, Size } from '../../../types';
-import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
+import { Direction, Option, OptionParent, Role, Size } from '../../../types';
+import { ButtonContainer, FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import './select.scss';
 import { Icon } from '../../icons';
 import clsx from 'clsx';
@@ -254,9 +254,16 @@ const Select = <T extends unknown>({
                 value={value}
                 onChange={onChange}
               />
-              <Button role={Role.primary} onClick={() => setIsSelectVisible(false)} fluid>
-                {t('common.apply')}
-              </Button>
+              <ButtonContainer direction={Direction.vertical}>
+                {clearable && value ? (
+                  <Button role={Role.default} onClick={() => onSelectOption(undefined as T)} fluid>
+                    {t('common.clear')}
+                  </Button>
+                ) : null}
+                <Button role={Role.primary} onClick={() => setIsSelectVisible(false)} fluid>
+                  {t('common.apply')}
+                </Button>
+              </ButtonContainer>
             </>
           )}
         </FloatingBox>
