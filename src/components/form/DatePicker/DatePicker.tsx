@@ -115,7 +115,6 @@ const DatePicker = ({
         icon: <Icon i="backspace" />,
         onClick: () => {
           onChange(undefined);
-          // setIsDatePickerVisible(false);
         }
       }
     ],
@@ -278,7 +277,8 @@ const DatePicker = ({
           {ltePhoneL && (
             <div
               className={clsx('alt-date-picker__footer', {
-                'alt-date-picker__footer--compact': currentView !== Picker.day
+                'alt-date-picker__footer--compact': currentView !== Picker.day,
+                'alt-date-picker__footer--clearable': clearable && value
               })}>
               {currentView === Picker.day && (
                 <Button
@@ -309,6 +309,14 @@ const DatePicker = ({
                   {currentView === Picker.day
                     ? t('form.datePicker.today')
                     : t('form.datePicker.currentMonth')}
+                </Button>
+              )}
+              {clearable && value && (
+                <Button
+                  leftIcon={<Icon i="backspace" />}
+                  className="alt-date-picker__mobileClear"
+                  onClick={() => onChange(undefined)}>
+                  {t('common.clear')}
                 </Button>
               )}
               {(currentView === Picker.day || picker !== Picker.day) && (
