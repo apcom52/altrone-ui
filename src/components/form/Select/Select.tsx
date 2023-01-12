@@ -65,7 +65,7 @@ const Select = ({
       const result = {
         [DEFAULT_KEY]: [
           {
-            label: 'Others',
+            label: t('form.select.others'),
             value: null
           }
         ]
@@ -182,7 +182,7 @@ const Select = ({
       ) : (
         <TextInput
           ref={selectRef}
-          placeholder="Search..."
+          placeholder={t('form.select.search')}
           value={searchTerm}
           onChange={setSearchTerm}
           rightIcon={<Icon i="search" />}
