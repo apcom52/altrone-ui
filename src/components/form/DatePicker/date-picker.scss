@@ -136,6 +136,10 @@
   }
 }
 
+.alt-date-picker__footer-separator {
+  flex: 1;
+}
+
 .alt-date-picker__footer--compact {
   @include less($l-phone) {
     margin-top: 16px;

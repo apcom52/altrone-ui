@@ -7,7 +7,7 @@ import { Calendar, MonthPicker, YearPicker } from './index';
 import { Button } from '../../button';
 import clsx from 'clsx';
 import { TextInputProps } from '../TextInput';
-import { Role, Size } from '../../../types';
+import { ContextMenuType, Role, Size } from '../../../types';
 import { useLocalization, useWindowSize } from '../../../hooks';
 import { BasicInput, BasicInputProps } from '../BasicInput';
 
@@ -21,12 +21,13 @@ interface DatePickerProps
   extends Pick<TextInputProps, 'errorText' | 'hintText' | 'size' | 'disabled'>,
     BasicInputProps {
   value: Date;
-  onChange: (value: Date) => void;
+  onChange: (value: Date | undefined) => void;
   id?: string;
   picker?: Picker;
   minDate?: Date;
   maxDate?: Date;
   placeholder?: string;
+  clearable?: boolean;
 }
 
 const today = new Date();
@@ -39,6 +40,7 @@ const DatePicker = ({
   minDate = new Date(1900, 0, 0),
   maxDate = new Date(2050, 13, 0),
   disabled = false,
+  clearable = false,
   placeholder,
   size = Size.medium,
   hintText,
@@ -105,6 +107,20 @@ const DatePicker = ({
   const onCurrentDateClick = () => {
     setCurrentView((view) => (view === Picker.day ? Picker.month : Picker.day));
   };
+
+  const datePickerMenu: ContextMenuType = useMemo(
+    () => [
+      {
+        title: t('common.clear'),
+        icon: <Icon i="backspace" />,
+        onClick: () => {
+          onChange(undefined);
+          // setIsDatePickerVisible(false);
+        }
+      }
+    ],
+    [onChange]
+  );
 
   useEffect(() => {
     if (value) {
@@ -232,6 +248,14 @@ const DatePicker = ({
           )}
           {!ltePhoneL && (
             <div className="alt-date-picker__footer">
+              {clearable && (
+                <>
+                  <Button isIcon dropdown={datePickerMenu}>
+                    <Icon i="more_horiz" />
+                  </Button>
+                  <div className="alt-date-picker__footer-separator" />
+                </>
+              )}
               {currentView === Picker.day && (
                 <Button onClick={onTodayClick} data-testid="alt-test-datepicker-today">
                   {t('form.datePicker.today')}

@@ -359,6 +359,7 @@ DatePickerExample.args = {
   locale: 'en-US',
   lang: 'en',
   disabled: false,
+  clearable: false,
   dark: false,
   errorText: '',
   hintText: '',
