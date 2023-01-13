@@ -46,7 +46,9 @@ export default {
       placeholder: 'Выберите дату'
     },
     select: {
-      placeholder: 'Выберите значение'
+      placeholder: 'Выберите значение',
+      others: 'Прочее',
+      search: 'Поиск...'
     }
   }
 };

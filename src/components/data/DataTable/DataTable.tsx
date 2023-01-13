@@ -60,6 +60,7 @@ const DataTable = ({
   limit = 20,
   searchBy = '',
   searchFunc = defaultSearchFunc,
+  sortFunc = defaultSortFunc,
   sortKeys = [],
   filters = [],
   mobileColumns = [columns[0].accessor],
@@ -79,9 +80,7 @@ const DataTable = ({
     }
 
     if (sortBy) {
-      result.sort((itemA, itemB) =>
-        defaultSortFunc({ itemA, itemB, field: sortBy, direction: sortType })
-      );
+      result.sort((itemA, itemB) => sortFunc({ itemA, itemB, field: sortBy, direction: sortType }));
     }
 
     if (appliedFilters) {
@@ -128,7 +127,7 @@ const DataTable = ({
         columns,
         page,
         setPage,
-        limit,
+        limit: limit > 0 ? limit : 1,
         searchBy,
         search,
         setSearch,
