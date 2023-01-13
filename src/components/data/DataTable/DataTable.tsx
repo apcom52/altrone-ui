@@ -127,7 +127,7 @@ const DataTable = ({
         columns,
         page,
         setPage,
-        limit,
+        limit: limit > 0 ? limit : 1,
         searchBy,
         search,
         setSearch,
