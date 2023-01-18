@@ -36,6 +36,20 @@
   border-color: var(--activeBorderColor);
 }
 
+.alt-progress__circle {
+  fill: transparent;
+  stroke: var(--activeColor);
+  opacity: 0.2;
+}
+
+.alt-progress__circle--active {
+  stroke: var(--activeColor);
+  opacity: 1;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  transition: stroke-dasharray 0.2s ease
+}
+
 .alt-progress--size-small {
   height: 10px;
 }
@@ -54,6 +68,21 @@
 
   --activeColor: var(--textColor);
   --activeBorderColor: var(--textColor);
+}
+
+.alt-progress--variant-circular {
+  background-color: transparent;
+  height: fit-content;
+  width: auto;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+
+  svg {
+    circle {
+
+    }
+  }
 }
 
 .alt-progress--primary {
