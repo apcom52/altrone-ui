@@ -8,9 +8,17 @@ interface NumberInputCounterProps {
   min?: number;
   max?: number;
   step?: number;
+  disabled?: boolean;
 }
 
-const NumberInputCounter = ({ value, onChange, min, max, step = 1 }: NumberInputCounterProps) => {
+const NumberInputCounter = ({
+  value,
+  onChange,
+  min,
+  max,
+  step = 1,
+  disabled = false
+}: NumberInputCounterProps) => {
   const onIncreaseClick = useCallback(() => {
     if (max !== undefined && value + step > max) {
       onChange(max);
@@ -27,8 +35,8 @@ const NumberInputCounter = ({ value, onChange, min, max, step = 1 }: NumberInput
     }
   }, [value, max, step, onChange]);
 
-  const isIncreaseDisabled = max !== undefined && value === max;
-  const isDecreaseDisabled = min !== undefined && value === min;
+  const isIncreaseDisabled = disabled || (max !== undefined && value === max);
+  const isDecreaseDisabled = disabled || (min !== undefined && value === min);
 
   return (
     <div className="alt-number-input-counter">
@@ -36,16 +44,14 @@ const NumberInputCounter = ({ value, onChange, min, max, step = 1 }: NumberInput
         className="alt-number-input-counter__increase"
         onClick={onIncreaseClick}
         disabled={isIncreaseDisabled}
-        type="button"
-      >
+        type="button">
         <Icon i="expand_less" />
       </button>
       <button
         className="alt-number-input-counter__decrease"
         onClick={onDecreaseClick}
         disabled={isDecreaseDisabled}
-        type="button"
-      >
+        type="button">
         <Icon i="expand_more" />
       </button>
     </div>
