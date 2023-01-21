@@ -14,7 +14,7 @@ import { ContextMenu } from '../../list';
 import { FloatingBoxMobileBehaviour } from '../../containers/FloatingBox/FloatingBox';
 
 export enum ButtonVariant {
-  default,
+  default = '',
   borders = 'borders',
   transparent = 'transparent',
   text = 'text'
