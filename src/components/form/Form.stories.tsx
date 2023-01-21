@@ -441,7 +441,9 @@ TextareaExample.args = {
   dark: false,
   size: Size.medium,
   errorText: '',
-  hintText: ''
+  hintText: '',
+  disabled: false,
+  required: false
 };
 
 export default {
