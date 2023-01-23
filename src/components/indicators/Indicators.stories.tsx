@@ -1,6 +1,5 @@
 import { Role, Size } from '../../types';
-import { Progress } from './Progress';
-import { ProgressVariant } from './Progress/Progress';
+import { Progress, ProgressVariant } from './Progress';
 import { BasicTemplate } from '../BasicTemplate.stories';
 
 export const ProgressExample = BasicTemplate.bind({});
@@ -13,7 +12,7 @@ ProgressExample.args = {
 ProgressExample.argTypes = {
   variant: {
     control: 'select',
-    options: [ProgressVariant.default, ProgressVariant.segmented]
+    options: [ProgressVariant.default, ProgressVariant.segmented, ProgressVariant.circular]
   },
   size: {
     control: 'select',
