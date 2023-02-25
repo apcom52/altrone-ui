@@ -2,6 +2,7 @@ import { memo, useEffect, useRef } from 'react';
 import { Align, Option } from '../../../types';
 import clsx from 'clsx';
 import './scrollable-selector.scss';
+import { ScrollableSelectorOption } from './ScrollableSelectorOption';
 
 interface ScrollableSelectorProps<T> {
   value: T;
@@ -11,6 +12,15 @@ interface ScrollableSelectorProps<T> {
   width?: number | string;
   align?: Align;
   className?: string;
+  ScrollableSelectorOptionComponent?: React.FC<ScrollableSelectorOptionProps<T>>;
+}
+
+export interface ScrollableSelectorOptionProps<T> {
+  option: Option<T>;
+  value: T;
+  checked: boolean;
+  onChange: (value: T) => void;
+  disabled?: boolean;
 }
 
 const ScrollableSelector = <T extends unknown>({
@@ -20,7 +30,8 @@ const ScrollableSelector = <T extends unknown>({
   disabled = false,
   align = Align.center,
   onChange,
-  className
+  className,
+  ScrollableSelectorOptionComponent = ScrollableSelectorOption
 }: ScrollableSelectorProps<T>) => {
   const selectorRef = useRef<HTMLDivElement>(null);
 
@@ -43,16 +54,14 @@ const ScrollableSelector = <T extends unknown>({
       style={{ width }}
       data-testid="alt-test-scrollable-selector">
       {options.map((option, optionIndex) => (
-        <button
+        <ScrollableSelectorOptionComponent
           key={optionIndex}
-          className={clsx('alt-scrollable-selector__option', {
-            'alt-scrollable-selector__option--selected': value === option.value
-          })}
-          onClick={() => onChange(option.value)}
+          option={option}
+          value={option.value}
           disabled={disabled || option.disabled}
-          type="button">
-          {option.label}
-        </button>
+          checked={value === option.value}
+          onChange={onChange}
+        />
       ))}
     </div>
   );
