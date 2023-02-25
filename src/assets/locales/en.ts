@@ -46,7 +46,9 @@ export default {
       placeholder: 'Select date'
     },
     select: {
-      placeholder: 'Select an option'
+      placeholder: 'Select an option',
+      others: 'Others',
+      search: 'Search...'
     }
   }
 };

@@ -144,7 +144,8 @@ NumberInputExample.args = {
   max: 10,
   size: Size.medium,
   dark: false,
-  showControls: true
+  showControls: true,
+  disabled: false
 };
 
 export const CheckboxExample = CheckboxStory.bind({});

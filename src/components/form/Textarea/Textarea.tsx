@@ -6,14 +6,13 @@ import './textarea.scss';
 import { BasicInput, BasicInputProps } from '../BasicInput';
 
 interface TextareaProps
-  extends Pick<TextInputProps, 'value' | 'onChange' | 'className' | 'classNames' | 'required'>,
+  extends Pick<TextInputProps, 'value' | 'onChange' | 'className' | 'required'>,
     BasicInputProps {}
 
 const Textarea = ({
   value,
   onChange,
   className,
-  classNames,
   required,
   disabled,
   errorText,
@@ -28,8 +27,7 @@ const Textarea = ({
           'alt-text-input--required': required,
           'alt-text-input--disabled': disabled
         })}
-        data-testid="alt-test-textarea"
-      >
+        data-testid="alt-test-textarea">
         <textarea
           value={value}
           onChange={(e) => onChange(e.target.value)}

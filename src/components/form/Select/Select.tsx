@@ -67,8 +67,8 @@ const Select = <T extends unknown>({
       const result: Record<string, [OptionParent, ...Option<T>[]]> = {
         [DEFAULT_KEY]: [
           {
-            label: 'Others',
-            value: 'Others'
+            label: t('form.select.others'),
+            value: null
           }
         ]
       };
@@ -101,8 +101,6 @@ const Select = <T extends unknown>({
           result[DEFAULT_KEY].push(option);
         }
       }
-
-      console.log(result);
 
       const parentKeys = Object.keys(result).filter((pK) => pK !== DEFAULT_KEY);
 
@@ -186,7 +184,7 @@ const Select = <T extends unknown>({
       ) : (
         <TextInput
           ref={inputRef}
-          placeholder="Search..."
+          placeholder={t('form.select.search')}
           value={searchTerm}
           onChange={setSearchTerm}
           rightIcon={<Icon i="search" />}

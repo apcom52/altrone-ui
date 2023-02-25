@@ -123,7 +123,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     return (
       <BasicInput hintText={hintText} errorText={errorText} disabled={disabled} size={size}>
         <div
-          className={clsx('alt-text-input', {
+          className={clsx('alt-text-input', className, {
             'alt-text-input--required': required,
             'alt-text-input--disabled': disabled
           })}

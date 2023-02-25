@@ -29,6 +29,7 @@ const NumberInput = ({
   step = 1,
   min,
   max,
+  disabled,
   ...props
 }: NumberInputProps) => {
   const [formattedValue, setFormattedValue] = useState<string>(() => {
@@ -75,6 +76,7 @@ const NumberInput = ({
     <TextInput
       value={formattedValue}
       onChange={() => null}
+      disabled={disabled}
       {...props}
       rightIsland={
         showControls
@@ -87,6 +89,7 @@ const NumberInput = ({
                   step={step}
                   min={min}
                   max={max}
+                  disabled={disabled}
                 />
               )
             }
@@ -103,6 +106,7 @@ const NumberInput = ({
           decimalSeparator={decimalSeparator}
           decimalScale={digitsAfterDecimal}
           isAllowed={onAllowedCheck}
+          disabled={disabled}
         />
       }
       step={(1 / 10 ** digitsAfterDecimal).toString()}

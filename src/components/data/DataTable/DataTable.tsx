@@ -61,6 +61,7 @@ export const DataTable = <T extends object>({
   limit = 20,
   searchBy = '',
   searchFunc = defaultSearchFunc,
+  sortFunc = defaultSortFunc,
   sortKeys = [],
   filters = [],
   mobileColumns = [columns[0].accessor],
@@ -81,9 +82,7 @@ export const DataTable = <T extends object>({
     }
 
     if (sortBy) {
-      result.sort((itemA, itemB) =>
-        defaultSortFunc({ itemA, itemB, field: sortBy, direction: sortType })
-      );
+      result.sort((itemA, itemB) => sortFunc({ itemA, itemB, field: sortBy, direction: sortType }));
     }
 
     if (appliedFilters) {
@@ -130,7 +129,7 @@ export const DataTable = <T extends object>({
         columns,
         page,
         setPage,
-        limit,
+        limit: limit > 0 ? limit : 1,
         searchBy,
         search,
         setSearch,
