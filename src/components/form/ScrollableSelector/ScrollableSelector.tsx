@@ -19,7 +19,7 @@ export interface ScrollableSelectorOptionProps<T> {
   option: Option<T>;
   value: T;
   checked: boolean;
-  onChange: (value: T) => void;
+  onChange: () => void;
   disabled?: boolean;
 }
 
@@ -60,7 +60,7 @@ const ScrollableSelector = <T extends unknown>({
           value={option.value}
           disabled={disabled || option.disabled}
           checked={value === option.value}
-          onChange={onChange}
+          onChange={() => onChange(option.value)}
         />
       ))}
     </div>
