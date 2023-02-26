@@ -229,4 +229,32 @@ describe('Form.DatePicker', () => {
 
     await expect(value).toStrictEqual(new Date(2022, 2, 2));
   });
+
+  test('should clearable prop works correctly', async () => {
+    let value: Date | undefined = new Date(2021, 3, 3);
+    const onChange = (date?: Date) => {
+      value = date;
+    };
+
+    const { rerender } = render(
+      <DatePicker value={value} onChange={onChange} picker={Picker.day} clearable />
+    );
+
+    const datePicker = screen.getByTestId('alt-test-datepicker');
+    await waitFor(() => fireEvent.click(datePicker));
+    rerender(<DatePicker value={value} onChange={onChange} picker={Picker.day} clearable />);
+
+    const menuElement = screen.getByText('more_horiz');
+    expect(menuElement).toBeInTheDocument();
+    await waitFor(() => fireEvent.click(menuElement));
+
+    rerender(<DatePicker value={value} onChange={onChange} picker={Picker.day} clearable />);
+
+    const clearButton = screen.getByText('Clear');
+    expect(clearButton).toBeInTheDocument();
+    expect(value).not.toBeUndefined();
+    await waitFor(() => fireEvent.click(clearButton));
+
+    await waitFor(() => expect(value).toBeUndefined());
+  });
 });
