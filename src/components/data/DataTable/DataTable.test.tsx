@@ -416,4 +416,155 @@ describe('Data.DataTable', () => {
     expect(indicator).toBeInTheDocument();
     expect(indicator).toHaveTextContent('1');
   });
+
+  test('should limit < 0 works correctly', () => {
+    render(
+      <Altrone>
+        <DataTable data={DATA} columns={COLUMNS} limit={-5} />
+      </Altrone>
+    );
+
+    expect(screen.queryAllByTestId('alt-test-datatable-row')).toHaveLength(1);
+  });
+
+  test('should custom sort func works correctly', async () => {
+    const { rerender } = render(
+      <Altrone>
+        <DataTable
+          data={DATA}
+          columns={COLUMNS}
+          sortKeys={['country']}
+          sortFunc={({ itemA, itemB, field, direction }) => {
+            return direction === Sort.asc
+              ? itemA[field].slice(1) > itemB[field].slice(1)
+                ? 1
+                : -1
+              : itemA[field].slice(1) < itemB[field].slice(1)
+              ? 1
+              : -1;
+          }}
+        />
+      </Altrone>
+    );
+
+    const sortingButton = screen.getByText('Sort');
+    expect(sortingButton).toBeInTheDocument();
+
+    await waitFor(() => {
+      fireEvent.click(sortingButton);
+    });
+
+    rerender(
+      <Altrone>
+        <DataTable
+          data={DATA}
+          columns={COLUMNS}
+          sortKeys={['country']}
+          sortFunc={({ itemA, itemB, field, direction }) => {
+            return direction === Sort.asc
+              ? itemA[field].slice(1) > itemB[field].slice(1)
+                ? 1
+                : -1
+              : itemA[field].slice(1) < itemB[field].slice(1)
+              ? 1
+              : -1;
+          }}
+        />
+      </Altrone>
+    );
+
+    const sorting = screen.getByTestId('alt-test-datatable-sorting');
+    expect(sorting).toBeInTheDocument();
+
+    const sortingSelect = screen.getByTestId('alt-test-select');
+    expect(sortingSelect).toBeInTheDocument();
+
+    await waitFor(() => fireEvent.click(sortingSelect));
+
+    rerender(
+      <Altrone>
+        <DataTable
+          data={DATA}
+          columns={COLUMNS}
+          sortKeys={['country']}
+          sortFunc={({ itemA, itemB, field, direction }) => {
+            return direction === Sort.asc
+              ? itemA[field].slice(1) > itemB[field].slice(1)
+                ? 1
+                : -1
+              : itemA[field].slice(1) < itemB[field].slice(1)
+              ? 1
+              : -1;
+          }}
+        />
+      </Altrone>
+    );
+
+    const countryOption = await screen.findByTestId('alt-test-select-option');
+
+    await waitFor(() => fireEvent.click(countryOption));
+    rerender(
+      <Altrone>
+        <DataTable
+          data={DATA}
+          columns={COLUMNS}
+          sortKeys={['country']}
+          sortFunc={({ itemA, itemB, field, direction }) => {
+            return direction === Sort.asc
+              ? itemA[field].slice(1) > itemB[field].slice(1)
+                ? 1
+                : -1
+              : itemA[field].slice(1) < itemB[field].slice(1)
+              ? 1
+              : -1;
+          }}
+        />
+      </Altrone>
+    );
+
+    const countries = screen.queryAllByTestId('alt-test-datatable-row').map((row) => {
+      return row.querySelectorAll('td')[1].innerHTML;
+    });
+
+    expect(countries).toStrictEqual([
+      'The United Kingdom',
+      'The United States of America',
+      'China',
+      'France',
+      'Turkey',
+      'Russia'
+    ]);
+  });
+
+  test('', async () => {
+    const { rerender } = render(
+      <Altrone>
+        <DataTable data={DATA} columns={COLUMNS} searchBy="country" />
+      </Altrone>
+    );
+
+    let searchField = screen.getByRole('textbox');
+    await waitFor(() => fireEvent.change(searchField, { target: { value: 'the' } }));
+
+    rerender(
+      <Altrone>
+        <DataTable data={DATA} columns={COLUMNS} searchBy="country" />
+      </Altrone>
+    );
+
+    searchField = screen.getByRole('textbox');
+    expect(searchField).toHaveValue('the');
+
+    const clearButton = screen.getByText('backspace');
+    await waitFor(() => fireEvent.click(clearButton));
+
+    rerender(
+      <Altrone>
+        <DataTable data={DATA} columns={COLUMNS} searchBy="country" />
+      </Altrone>
+    );
+
+    searchField = screen.getByRole('textbox');
+    expect(searchField).toHaveValue('');
+  });
 });
