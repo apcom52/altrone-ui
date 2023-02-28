@@ -7,7 +7,8 @@ export default {
     asc: 'Ascending',
     desc: 'Descending',
     more: 'Show more',
-    less: 'Show less'
+    less: 'Show less',
+    clear: 'Clear'
   },
   containers: {
     modal: {

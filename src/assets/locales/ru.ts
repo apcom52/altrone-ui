@@ -7,7 +7,8 @@ export default {
     asc: 'По возрастанию',
     desc: 'По убыванию',
     more: 'Развернуть',
-    less: 'Свернуть'
+    less: 'Свернуть',
+    clear: 'Очистить'
   },
   containers: {
     modal: {

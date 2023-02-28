@@ -31,6 +31,7 @@ const SelectOption = <T extends unknown = string | undefined>({
       })}
       title={label}
       disabled={disabled}
+      data-testid="alt-test-select-option"
       onClick={() => onSelect(value)}>
       <div className="alt-select-option__icon">{selected ? <Icon i="check" /> : null}</div>
       <div className="alt-select-option__label">{label}</div>
