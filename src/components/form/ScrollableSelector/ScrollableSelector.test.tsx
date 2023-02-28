@@ -1,8 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { Option } from '../../../types';
+import { Option, Align } from '../../../types';
 import { ScrollableSelector } from './index';
-import { Align } from '../../../types/Align';
 
 const DATA: Option<number>[] = [
   {
@@ -107,5 +106,24 @@ describe('Form.ScrollableSelector', () => {
     await waitFor(() => fireEvent.click(senior));
     expect(value).toBe(0);
     expect(senior).toHaveAttribute('disabled', '');
+  });
+
+  test('should custom option component renders correctly', () => {
+    render(
+      <ScrollableSelector
+        value={1}
+        options={DATA}
+        onChange={() => null}
+        ScrollableSelectorOptionComponent={({ checked, option }) => (
+          <div data-testid="option">{`${checked ? '> ' : ''}${option.label}`}</div>
+        )}
+      />
+    );
+
+    const items = screen.getAllByTestId('option');
+
+    const itemsText = items.map((item) => item.innerHTML);
+
+    expect(itemsText).toStrictEqual(['Intern', '&gt; Junior', 'Middle', 'Senior', 'Team Lead']);
   });
 });

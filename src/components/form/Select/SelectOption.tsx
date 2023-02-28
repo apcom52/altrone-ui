@@ -1,20 +1,18 @@
 import clsx from 'clsx';
 import { Icon } from '../../icons';
-import button from '../../button/Button/Button';
-import { memo } from 'react';
 
-export interface SelectOptionProps {
+export interface SelectOptionProps<T> {
   label: string;
-  value: string | number;
+  value: T;
   disabled: boolean;
   selected: boolean;
-  onSelect: (value: number | string) => void;
+  onSelect: (value: T) => void;
   parent?: string | number;
   className?: string;
   inSelectHeader?: boolean;
 }
 
-const SelectOption = ({
+const SelectOption = <T extends unknown = string | undefined>({
   label,
   value,
   disabled = false,
@@ -22,7 +20,7 @@ const SelectOption = ({
   onSelect,
   className,
   inSelectHeader = false
-}: SelectOptionProps) => {
+}: SelectOptionProps<T>) => {
   const ComponentName = inSelectHeader ? 'div' : 'button';
 
   return (
@@ -33,12 +31,12 @@ const SelectOption = ({
       })}
       title={label}
       disabled={disabled}
-      onClick={() => onSelect(value)}
-    >
+      data-testid="alt-test-select-option"
+      onClick={() => onSelect(value)}>
       <div className="alt-select-option__icon">{selected ? <Icon i="check" /> : null}</div>
       <div className="alt-select-option__label">{label}</div>
     </ComponentName>
   );
 };
 
-export default memo(SelectOption);
+export default SelectOption;

@@ -1,7 +1,7 @@
 import { memo, useMemo, useState } from 'react';
 import './data-table-header.scss';
 import { Button, ButtonVariant } from '../../button';
-import { TextInput } from '../../form';
+import { InputIslandType, TextInput } from '../../form';
 import DataTableSorting from './DataTableSorting';
 import { Icon } from '../../icons';
 import DataTableFiltering from './DataTableFiltering';
@@ -67,8 +67,6 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
     return result;
   }, [actions, sortKeys, sortBy, currentSortingColumn, filters, appliedFilters]);
 
-  console.log(dataTableActions);
-
   return (
     <>
       <tr className="alt-data-table-header-wrapper">
@@ -93,7 +91,25 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
                 <div
                   className="alt-data-table-header__search"
                   data-testid="alt-test-datatable-search">
-                  <TextInput placeholder={t('common.search')} value={search} onChange={setSearch} />
+                  <TextInput
+                    placeholder={t('common.search')}
+                    value={search}
+                    onChange={setSearch}
+                    rightIsland={
+                      search
+                        ? {
+                            type: InputIslandType.actions,
+                            content: [
+                              {
+                                title: t('common.clear'),
+                                icon: <Icon i="backspace" />,
+                                onClick: () => setSearch('')
+                              }
+                            ]
+                          }
+                        : undefined
+                    }
+                  />
                 </div>
               )
             ) : null}

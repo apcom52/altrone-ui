@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import DataTableHeader from './DataTableHeader';
 import './data-table.scss';
 import DataTableBody from './DataTableBody';
@@ -18,25 +18,26 @@ import {
 import clsx from 'clsx';
 import { DataTableCellProps } from './DataTableCell';
 
-export interface DataTableColumn {
-  accessor: string;
+export interface DataTableColumn<T> {
+  accessor: keyof T;
   label?: string;
   width?: number | string;
   Component?: React.FC<DataTableCellProps>;
 }
 
-interface DataTableProps<T = any> {
+interface DataTableProps<T extends object> {
   data: T[];
-  columns: DataTableColumn[];
+  columns: DataTableColumn<T>[];
   limit?: number;
   searchBy?: string;
   sortKeys?: string[];
-  sortFunc?: (params: DataTableSortFunc) => number;
-  searchFunc?: (params: DataTableSearchFunc) => unknown[];
+  sortFunc?: (params: DataTableSortFunc<T>) => number;
+  searchFunc?: (params: DataTableSearchFunc<T>) => T[];
   filters?: DataTableFilter[];
   mobileColumns?: string[];
   className?: string;
   actions?: DataTableAction[];
+  striped?: 'odd' | 'even';
 }
 
 export interface DataTablePopupActionProps {
@@ -54,7 +55,7 @@ export interface DataTableAction {
   indicator?: Indicator;
 }
 
-const DataTable = ({
+export const DataTable = <T extends object>({
   data = [],
   columns = [],
   limit = 20,
@@ -65,8 +66,9 @@ const DataTable = ({
   filters = [],
   mobileColumns = [columns[0].accessor],
   className,
-  actions = []
-}: DataTableProps) => {
+  actions = [],
+  striped
+}: DataTableProps<T>) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<string | null>(null);
@@ -141,7 +143,12 @@ const DataTable = ({
         setAppliedFilters,
         mobileColumns
       }}>
-      <table className={clsx('alt-data-table', className)} data-testid="alt-test-datatable">
+      <table
+        className={clsx('alt-data-table', className, {
+          'alt-data-table--striped-odd': striped === 'odd',
+          'alt-data-table--striped-even': striped === 'even'
+        })}
+        data-testid="alt-test-datatable">
         <thead>
           {isHeaderVisible && <DataTableHeader actions={actions} />}
           <DataTableHeaderRow />
@@ -153,4 +160,4 @@ const DataTable = ({
   );
 };
 
-export default memo(DataTable);
+export default DataTable;

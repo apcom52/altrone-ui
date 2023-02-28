@@ -1,13 +1,13 @@
-export interface Option<T extends any = any> {
+export interface Option<T extends unknown> {
   label: string;
   value: T;
   disabled?: boolean;
-  parent?: string | number;
+  parent?: string;
 }
 
 export interface OptionParent {
   label: string;
-  value: string | number;
+  value: string;
   disabled?: boolean;
   color?: string;
 }

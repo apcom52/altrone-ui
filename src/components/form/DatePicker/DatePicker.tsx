@@ -1,32 +1,33 @@
-import {memo, useEffect, useMemo, useRef, useState} from "react";
-import { Icon } from "../../icons";
-import { useThemeContext } from "../../../contexts";
-import "./date-picker.scss";
-import { FloatingBox, FloatingBoxMobileBehaviour } from "../../containers";
-import { Calendar, MonthPicker, YearPicker } from "./index";
-import { Button } from "../../button";
-import clsx from "clsx";
-import { TextInputProps } from "../TextInput";
-import { Role, Size } from "../../../types";
-import { useLocalization, useWindowSize } from "../../../hooks";
-import { BasicInput, BasicInputProps } from "../BasicInput";
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { Icon } from '../../icons';
+import { useThemeContext } from '../../../contexts';
+import './date-picker.scss';
+import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
+import { Calendar, MonthPicker, YearPicker } from './index';
+import { Button } from '../../button';
+import clsx from 'clsx';
+import { TextInputProps } from '../TextInput';
+import { ContextMenuType, Role, Size } from '../../../types';
+import { useLocalization, useWindowSize } from '../../../hooks';
+import { BasicInput, BasicInputProps } from '../BasicInput';
 
 export enum Picker {
-  day = "day",
-  month = "month",
-  year = "year",
+  day = 'day',
+  month = 'month',
+  year = 'year'
 }
 
 interface DatePickerProps
-  extends Pick<TextInputProps, "errorText" | "hintText" | "size" | "disabled">,
+  extends Pick<TextInputProps, 'errorText' | 'hintText' | 'size' | 'disabled'>,
     BasicInputProps {
   value: Date;
-  onChange: (value: Date) => void;
+  onChange: (value: Date | undefined) => void;
   id?: string;
   picker?: Picker;
   minDate?: Date;
   maxDate?: Date;
   placeholder?: string;
+  clearable?: boolean;
 }
 
 const today = new Date();
@@ -39,11 +40,12 @@ const DatePicker = ({
   minDate = new Date(1900, 0, 0),
   maxDate = new Date(2050, 13, 0),
   disabled = false,
+  clearable = false,
   placeholder,
   size = Size.medium,
   hintText,
   errorText,
-  className,
+  className
 }: DatePickerProps) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(
@@ -61,35 +63,31 @@ const DatePicker = ({
     locale,
     picker === Picker.year
       ? {
-          year: "numeric",
+          year: 'numeric'
         }
       : picker === Picker.month
       ? {
-          year: "numeric",
-          month: "long",
+          year: 'numeric',
+          month: 'long'
         }
       : {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
         }
   );
 
   const currentMonthFormat = new Intl.DateTimeFormat(locale, {
-    month: "long",
-    year: "numeric",
+    month: 'long',
+    year: 'numeric'
   });
 
   const onNextMonthClick = () => {
-    setCurrentMonth(
-      (old) => new Date(old.getFullYear(), old.getMonth() + 1, old.getDate())
-    );
+    setCurrentMonth((old) => new Date(old.getFullYear(), old.getMonth() + 1, old.getDate()));
   };
 
   const onPrevMonthClick = () => {
-    setCurrentMonth(
-      (old) => new Date(old.getFullYear(), old.getMonth() - 1, old.getDate())
-    );
+    setCurrentMonth((old) => new Date(old.getFullYear(), old.getMonth() - 1, old.getDate()));
   };
 
   const onTodayClick = () => {
@@ -109,6 +107,19 @@ const DatePicker = ({
   const onCurrentDateClick = () => {
     setCurrentView((view) => (view === Picker.day ? Picker.month : Picker.day));
   };
+
+  const datePickerMenu: ContextMenuType = useMemo(
+    () => [
+      {
+        title: t('common.clear'),
+        icon: <Icon i="backspace" />,
+        onClick: () => {
+          onChange(undefined);
+        }
+      }
+    ],
+    [onChange]
+  );
 
   useEffect(() => {
     if (value) {
@@ -144,15 +155,12 @@ const DatePicker = ({
         onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}
         data-testid="alt-test-datepicker"
         type="button"
-        disabled={disabled}
-      >
+        disabled={disabled}>
         {value ? (
-          <div className="alt-date-picker__value">
-            {valueDateFormat.format(value)}
-          </div>
+          <div className="alt-date-picker__value">{valueDateFormat.format(value)}</div>
         ) : (
           <div className="alt-date-picker__placeholder">
-            {placeholder || t("form.datePicker.placeholder")}
+            {placeholder || t('form.datePicker.placeholder')}
           </div>
         )}
         <div className="alt-date-picker__icon">
@@ -165,19 +173,16 @@ const DatePicker = ({
           placement="bottom"
           onClose={() => setIsDatePickerVisible(false)}
           mobileBehaviour={FloatingBoxMobileBehaviour.modal}
-          closeOnAnotherFloatingBoxClick
-        >
+          closeOnAnotherFloatingBoxClick>
           <div className="alt-date-picker__header">
             {!ltePhoneL && picker === Picker.day && (
               <button
-                className={clsx("alt-date-picker__currentMonth", {
-                  "alt-date-picker__currentMonth--selected":
-                    currentView !== Picker.day,
+                className={clsx('alt-date-picker__currentMonth', {
+                  'alt-date-picker__currentMonth--selected': currentView !== Picker.day
                 })}
                 onClick={onCurrentDateClick}
                 data-testid="alt-test-datepicker-header"
-                type="button"
-              >
+                type="button">
                 {currentMonthFormat.format(currentMonth)}
               </button>
             )}
@@ -187,14 +192,10 @@ const DatePicker = ({
               </div>
             )}
             {picker === Picker.month && (
-              <div className="alt-date-picker__title">
-                {t("form.datePicker.chooseMonth")}
-              </div>
+              <div className="alt-date-picker__title">{t('form.datePicker.chooseMonth')}</div>
             )}
             {picker === Picker.year && (
-              <div className="alt-date-picker__title">
-                {t("form.datePicker.chooseYear")}
-              </div>
+              <div className="alt-date-picker__title">{t('form.datePicker.chooseYear')}</div>
             )}
             {!ltePhoneL && currentView === Picker.day && (
               <div className="alt-date-picker__navigation">
@@ -246,20 +247,22 @@ const DatePicker = ({
           )}
           {!ltePhoneL && (
             <div className="alt-date-picker__footer">
+              {clearable && (
+                <>
+                  <Button isIcon dropdown={datePickerMenu}>
+                    <Icon i="more_horiz" />
+                  </Button>
+                  <div className="alt-date-picker__footer-separator" />
+                </>
+              )}
               {currentView === Picker.day && (
-                <Button
-                  onClick={onTodayClick}
-                  data-testid="alt-test-datepicker-today"
-                >
-                  {t("form.datePicker.today")}
+                <Button onClick={onTodayClick} data-testid="alt-test-datepicker-today">
+                  {t('form.datePicker.today')}
                 </Button>
               )}
               {currentView === Picker.month && (
-                <Button
-                  onClick={onTodayClick}
-                  data-testid="alt-test-datepicker-currentMonth"
-                >
-                  {t("form.datePicker.currentMonth")}
+                <Button onClick={onTodayClick} data-testid="alt-test-datepicker-currentMonth">
+                  {t('form.datePicker.currentMonth')}
                 </Button>
               )}
               <Button
@@ -274,7 +277,8 @@ const DatePicker = ({
           {ltePhoneL && (
             <div
               className={clsx('alt-date-picker__footer', {
-                'alt-date-picker__footer--compact': currentView !== Picker.day
+                'alt-date-picker__footer--compact': currentView !== Picker.day,
+                'alt-date-picker__footer--clearable': clearable && value
               })}>
               {currentView === Picker.day && (
                 <Button
@@ -285,11 +289,8 @@ const DatePicker = ({
                 </Button>
               )}
               {currentView === Picker.day && (
-                <Button
-                  onClick={onCurrentDateClick}
-                  className="alt-date-picker__mobileMonthName"
-                >
-                  {t("form.datePicker.chooseMonth")}
+                <Button onClick={onCurrentDateClick} className="alt-date-picker__mobileMonthName">
+                  {t('form.datePicker.chooseMonth')}
                 </Button>
               )}
               {currentView === Picker.day && (
@@ -308,6 +309,14 @@ const DatePicker = ({
                   {currentView === Picker.day
                     ? t('form.datePicker.today')
                     : t('form.datePicker.currentMonth')}
+                </Button>
+              )}
+              {clearable && value && (
+                <Button
+                  leftIcon={<Icon i="backspace" />}
+                  className="alt-date-picker__mobileClear"
+                  onClick={() => onChange(undefined)}>
+                  {t('common.clear')}
                 </Button>
               )}
               {(currentView === Picker.day || picker !== Picker.day) && (

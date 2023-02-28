@@ -62,18 +62,15 @@ const DATA_WITH_PARENTS: Option[] = [
 ];
 
 class ResizeObserver {
-  observe() {
-  }
-  unobserve() {
-  }
-  disconnect() {
-  }
+  observe() {}
+  unobserve() {}
+  disconnect() {}
 }
 
 describe('Form.Select', () => {
   beforeEach(() => {
-    window.ResizeObserver = ResizeObserver
-  })
+    window.ResizeObserver = ResizeObserver;
+  });
 
   test('should renders correctly', () => {
     render(<Select options={DATA} value="uk" onChange={() => null} />);
@@ -208,5 +205,28 @@ describe('Form.Select', () => {
     await waitFor(() => fireEvent.click(select));
 
     expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('should clearable prop works correctly', async () => {
+    let value = 'uk';
+
+    const onChange = (newValue) => {
+      value = newValue;
+    };
+
+    const { rerender } = render(
+      <Select options={DATA} value={value} onChange={onChange} searchable clearable />
+    );
+    const select = screen.getByTestId('alt-test-select');
+
+    await waitFor(() => fireEvent.click(select));
+    rerender(<Select options={DATA} value={value} onChange={onChange} searchable clearable />);
+
+    const clearableItem = await screen.findByText('—');
+
+    expect(clearableItem).toBeInTheDocument();
+    await waitFor(() => fireEvent.click(clearableItem));
+
+    expect(value).toBeUndefined();
   });
 });

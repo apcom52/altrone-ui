@@ -4,7 +4,16 @@ import { Altrone } from '../../../../hocs';
 import { default as data } from './data';
 import { Icon } from '../../../icons';
 
-const columns: DataTableColumn[] = [
+export interface DataTableStoryDataInterface {
+  name: string;
+  iso: string;
+  continent: 'AS' | 'EU' | 'NA';
+  capital: string;
+  phone: string;
+  currency: string;
+}
+
+const columns: DataTableColumn<DataTableStoryDataInterface>[] = [
   {
     accessor: 'iso',
     label: 'ISO Code',
@@ -37,10 +46,19 @@ const columns: DataTableColumn[] = [
   }
 ];
 
-export const DefaultDataTableStory: ComponentStory<typeof DataTable> = ({}) => {
+export const DefaultDataTableStory: ComponentStory<typeof DataTable> = () => {
   return (
     <Altrone style={{ padding: 8 }}>
-      <DataTable data={data} columns={columns} />
+      <DataTable<DataTableStoryDataInterface> data={data} columns={columns} />
     </Altrone>
   );
 };
+
+DefaultDataTableStory.argTypes = [
+  {
+    striped: {
+      control: 'select',
+      options: [undefined, 'odd', 'even']
+    }
+  }
+];

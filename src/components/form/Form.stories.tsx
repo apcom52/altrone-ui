@@ -21,6 +21,7 @@ import { useState } from 'react';
 import { Picker } from './DatePicker/DatePicker';
 import { userEvent, within } from '@storybook/testing-library';
 import { CheckboxListStory, CheckboxStory } from './Checkbox/Checkbox.stories';
+import { ScrollableSelectorOptionProps } from './ScrollableSelector/ScrollableSelector';
 
 const Template = ({ Component, dark, value = '', locale, lang = 'en', ...args }) => {
   const [_value, setValue] = useState(value);
@@ -184,6 +185,7 @@ SelectExample.args = {
   fluid: false,
   searchable: false,
   disabled: false,
+  clearable: false,
   lang: 'en',
   errorText: '',
   hintText: '',
@@ -359,6 +361,7 @@ DatePickerExample.args = {
   locale: 'en-US',
   lang: 'en',
   disabled: false,
+  clearable: false,
   dark: false,
   errorText: '',
   hintText: '',
@@ -400,6 +403,45 @@ ScrollableSelectorExample.args = {
   dark: false
 };
 ScrollableSelectorExample.argTypes = {
+  align: {
+    control: 'select',
+    options: [Align.start, Align.center, Align.end]
+  }
+};
+
+export const CustomScrollableSelectorExample = Template.bind({});
+CustomScrollableSelectorExample.args = {
+  Component: ScrollableSelector,
+  options: [
+    { label: 'January', value: 1 },
+    { label: 'February', value: 2 },
+    { label: 'March', value: 3 },
+    { label: 'April', value: 4 },
+    { label: 'May', value: 5 },
+    { label: 'June', value: 6 },
+    { label: 'July', value: 7 },
+    { label: 'August', value: 8 },
+    { label: 'September', value: 9 },
+    { label: 'October', value: 10 },
+    { label: 'November', value: 11 },
+    { label: 'December', value: 12 }
+  ],
+  value: 1,
+  width: '100%',
+  disabled: false,
+  dark: false,
+  ScrollableSelectorOptionComponent: ({
+    option,
+    checked,
+    onChange
+  }: ScrollableSelectorOptionProps<number>) => (
+    <button onClick={onChange} style={{ height: '34px' }}>
+      {checked && '-> '}
+      {option.value}. {option.label}
+    </button>
+  )
+};
+CustomScrollableSelectorExample.argTypes = {
   align: {
     control: 'select',
     options: [Align.start, Align.center, Align.end]

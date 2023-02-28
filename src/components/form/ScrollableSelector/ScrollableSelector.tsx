@@ -1,8 +1,8 @@
 import { memo, useEffect, useRef } from 'react';
-import { Option } from '../../../types';
-import { Align } from '../../../types/Align';
+import { Align, Option } from '../../../types';
 import clsx from 'clsx';
 import './scrollable-selector.scss';
+import { ScrollableSelectorOption } from './ScrollableSelectorOption';
 
 interface ScrollableSelectorProps<T> {
   value: T;
@@ -12,16 +12,26 @@ interface ScrollableSelectorProps<T> {
   width?: number | string;
   align?: Align;
   className?: string;
+  ScrollableSelectorOptionComponent?: React.FC<ScrollableSelectorOptionProps<T>>;
 }
 
-const ScrollableSelector = <T extends any = string>({
+export interface ScrollableSelectorOptionProps<T> {
+  option: Option<T>;
+  value: T;
+  checked: boolean;
+  onChange: () => void;
+  disabled?: boolean;
+}
+
+const ScrollableSelector = <T extends unknown>({
   value,
   options = [],
   width = '100%',
   disabled = false,
   align = Align.center,
   onChange,
-  className
+  className,
+  ScrollableSelectorOptionComponent = ScrollableSelectorOption
 }: ScrollableSelectorProps<T>) => {
   const selectorRef = useRef<HTMLDivElement>(null);
 
@@ -42,23 +52,19 @@ const ScrollableSelector = <T extends any = string>({
         'alt-scrollable-selector--align-end': align === Align.end
       })}
       style={{ width }}
-      data-testid="alt-test-scrollable-selector"
-    >
+      data-testid="alt-test-scrollable-selector">
       {options.map((option, optionIndex) => (
-        <button
+        <ScrollableSelectorOptionComponent
           key={optionIndex}
-          className={clsx('alt-scrollable-selector__option', {
-            'alt-scrollable-selector__option--selected': value === option.value
-          })}
-          onClick={() => onChange(option.value)}
+          option={option}
+          value={option.value}
           disabled={disabled || option.disabled}
-          type="button"
-        >
-          {option.label}
-        </button>
+          checked={value === option.value}
+          onChange={() => onChange(option.value)}
+        />
       ))}
     </div>
   );
 };
 
-export default memo(ScrollableSelector);
+export default memo(ScrollableSelector) as typeof ScrollableSelector;

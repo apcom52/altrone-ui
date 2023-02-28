@@ -87,3 +87,15 @@
 .alt-data-table-action {
   padding: 8px;
 }
+
+.alt-data-table--striped-odd {
+  tbody tr:nth-child(odd) .alt-data-table__cell {
+    background-color: var(--surfaceTrasparent);
+  }
+}
+
+.alt-data-table--striped-even {
+  tbody tr:nth-child(even) .alt-data-table__cell {
+    background-color: var(--surfaceTrasparent);
+  }
+}
