@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import DataTableHeader from './DataTableHeader';
 import './data-table.scss';
 import DataTableBody from './DataTableBody';
@@ -38,6 +38,7 @@ interface DataTableProps<T extends object> {
   className?: string;
   actions?: DataTableAction[];
   striped?: 'odd' | 'even';
+  selectable?: boolean;
 }
 
 export interface DataTablePopupActionProps {
@@ -67,13 +68,15 @@ export const DataTable = <T extends object>({
   mobileColumns = [columns[0].accessor],
   className,
   actions = [],
-  striped
+  striped,
+  selectable = false
 }: DataTableProps<T>) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<string | null>(null);
   const [sortType, setSortType] = useState<Sort>(Sort.asc);
   const [appliedFilters, setAppliedFilters] = useState<DataTableAppliedFilter[]>([]);
+  const [selectableMode, setSelectableMode] = useState(false);
 
   const filteredData = useMemo(() => {
     let result = [...data];
@@ -119,6 +122,12 @@ export const DataTable = <T extends object>({
     return result;
   }, [data, search, searchFunc, searchBy, sortBy, sortType, appliedFilters, filters]);
 
+  useEffect(() => {
+    if (!selectable) {
+      setSelectableMode(false);
+    }
+  }, [selectable]);
+
   const isHeaderVisible = sortKeys.length || filters.length || searchBy;
 
   return (
@@ -141,7 +150,9 @@ export const DataTable = <T extends object>({
         filters,
         appliedFilters,
         setAppliedFilters,
-        mobileColumns
+        mobileColumns,
+        selectableMode,
+        setSelectableMode
       }}>
       <table
         className={clsx('alt-data-table', className, {
@@ -150,7 +161,7 @@ export const DataTable = <T extends object>({
         })}
         data-testid="alt-test-datatable">
         <thead>
-          {isHeaderVisible && <DataTableHeader actions={actions} />}
+          {isHeaderVisible && <DataTableHeader actions={actions} selectable={selectable} />}
           <DataTableHeaderRow />
         </thead>
         <DataTableBody />

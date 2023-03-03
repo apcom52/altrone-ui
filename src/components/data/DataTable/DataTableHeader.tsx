@@ -12,9 +12,10 @@ import DataTableAction from './DataTableAction';
 
 interface DataTableHeaderProps {
   actions: DataTableActionType[];
+  selectable: boolean;
 }
 
-const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
+const DataTableHeader = ({ actions = [], selectable = false }: DataTableHeaderProps) => {
   const {
     search,
     setSearch,
@@ -24,7 +25,9 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
     appliedFilters,
     filters,
     searchBy,
-    mobileColumns
+    mobileColumns,
+    selectableMode,
+    setSelectableMode
   } = useDataTableContext();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
 
@@ -40,6 +43,15 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
 
   const dataTableActions = useMemo(() => {
     const result: DataTableActionType[] = [...actions];
+
+    if (selectable) {
+      result.push({
+        label: t('data.dataTable.select'),
+        icon: <Icon i={selectableMode ? 'check_box_outline_blank' : 'check_box'} />,
+        onClick: () => setSelectableMode(!selectableMode),
+        isIcon: true
+      });
+    }
 
     if (sortKeys.length) {
       result.push({
@@ -65,7 +77,16 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
     }
 
     return result;
-  }, [actions, sortKeys, sortBy, currentSortingColumn, filters, appliedFilters]);
+  }, [
+    actions,
+    sortKeys,
+    sortBy,
+    currentSortingColumn,
+    filters,
+    appliedFilters,
+    selectable,
+    selectableMode
+  ]);
 
   return (
     <>

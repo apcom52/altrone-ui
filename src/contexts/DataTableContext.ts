@@ -33,6 +33,8 @@ export interface DataTableContextType {
   appliedFilters: DataTableAppliedFilter[];
   setAppliedFilters: (filters: DataTableAppliedFilter[]) => void;
   mobileColumns: string[];
+  selectableMode: boolean;
+  setSelectableMode: (selectableMode: boolean) => void;
 }
 
 const DEFAULT_DATA_TABLE_CONTEXT: DataTableContextType = {
@@ -53,7 +55,9 @@ const DEFAULT_DATA_TABLE_CONTEXT: DataTableContextType = {
   filters: [],
   appliedFilters: [],
   setAppliedFilters: () => null,
-  mobileColumns: []
+  mobileColumns: [],
+  selectableMode: false,
+  setSelectableMode: () => null
 };
 
 export const DataTableContext = createContext<DataTableContextType>(DEFAULT_DATA_TABLE_CONTEXT);
