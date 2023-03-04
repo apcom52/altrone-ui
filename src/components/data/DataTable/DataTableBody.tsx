@@ -8,7 +8,8 @@ import { Modal } from '../../containers';
 import { Checkbox } from '../../form';
 
 const DataTableBody = () => {
-  const { data, columns, page, limit, mobileColumns, selectableMode } = useDataTableContext();
+  const { data, columns, page, limit, mobileColumns, selectableMode, selectedRows, selectRow } =
+    useDataTableContext();
   const { ltePhoneL = false } = useWindowSize();
 
   const [selectedRowIndex, setSelectedRowIndex] = useState(-1);
@@ -30,7 +31,10 @@ const DataTableBody = () => {
         <tr key={rowIndex} data-testid="alt-test-datatable-row">
           {selectableMode && (
             <td className="alt-data-table__cell">
-              <Checkbox onChange={() => null} />
+              <Checkbox
+                checked={selectedRows.indexOf(rowIndex) > -1}
+                onChange={() => selectRow(rowIndex)}
+              />
             </td>
           )}
           {visibleColumns.map((column, columnIndex) => {

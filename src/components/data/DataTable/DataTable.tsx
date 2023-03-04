@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import DataTableHeader from './DataTableHeader';
 import './data-table.scss';
 import DataTableBody from './DataTableBody';
@@ -77,6 +77,7 @@ export const DataTable = <T extends object>({
   const [sortType, setSortType] = useState<Sort>(Sort.asc);
   const [appliedFilters, setAppliedFilters] = useState<DataTableAppliedFilter[]>([]);
   const [selectableMode, setSelectableMode] = useState(false);
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
   const filteredData = useMemo(() => {
     let result = [...data];
@@ -122,6 +123,16 @@ export const DataTable = <T extends object>({
     return result;
   }, [data, search, searchFunc, searchBy, sortBy, sortType, appliedFilters, filters]);
 
+  const selectRow = useCallback((rowIndex: number) => {
+    setSelectedRows((selected) => {
+      if (selected.indexOf(rowIndex) > -1) {
+        return selected.filter((s) => s !== rowIndex);
+      } else {
+        return [...selected, rowIndex];
+      }
+    });
+  }, []);
+
   useEffect(() => {
     if (!selectable) {
       setSelectableMode(false);
@@ -152,7 +163,9 @@ export const DataTable = <T extends object>({
         setAppliedFilters,
         mobileColumns,
         selectableMode,
-        setSelectableMode
+        setSelectableMode,
+        selectedRows,
+        selectRow
       }}>
       <table
         className={clsx('alt-data-table', className, {
