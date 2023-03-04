@@ -3,6 +3,7 @@
 Altrone UI is a component library for fast developing beautiful and functional web application interfaces.
 
 ## Links
+[**What's new in February Feature Update (1.2)?**](https://github.com/apcom52/altrone-ui/releases/tag/v1.2.0)
 
 [What's new in January Feature Update (1.1)?](https://github.com/apcom52/altrone-ui/releases/tag/v1.1.0)
 
@@ -24,9 +25,16 @@ To install the library, enter the command:
 
 `npm i altrone-ui`
 
+`yarn add altrone-ui`
+
 ## Documentation
 
-`In progress`
+Altrone has storybook documentation and examples. 
+
+To run storybook enter the command:
+`npm run storybook`
+
+`< Online documentation in progress />`
 
 ## Components
 
