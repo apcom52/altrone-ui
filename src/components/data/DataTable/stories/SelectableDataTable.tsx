@@ -3,6 +3,7 @@ import { DataTable, DataTableColumn } from '../index';
 import { Altrone } from '../../../../hocs';
 import { default as data } from './data';
 import { Icon } from '../../../icons';
+import { Theme } from '../../../../types';
 
 const columns: DataTableColumn[] = [
   {
@@ -37,10 +38,17 @@ const columns: DataTableColumn[] = [
   }
 ];
 
-export const SelectableDataTable: ComponentStory<typeof DataTable> = ({ striped }) => {
+export const SelectableDataTable: ComponentStory<typeof DataTable & { dark: boolean }> = ({
+  striped,
+  dark
+}) => {
   return (
-    <Altrone style={{ padding: 8 }}>
+    <Altrone style={{ padding: 8 }} theme={dark ? Theme.dark : Theme.light}>
       <DataTable data={data} columns={columns} sortKeys={['name']} striped={striped} selectable />
     </Altrone>
   );
+};
+
+SelectableDataTable.args = {
+  dark: false
 };
