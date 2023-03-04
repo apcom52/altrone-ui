@@ -6,6 +6,7 @@ import { useWindowSize } from '../../../hooks';
 import { Icon } from '../../icons';
 import { Modal } from '../../containers';
 import { Checkbox } from '../../form';
+import clsx from 'clsx';
 
 const DataTableBody = () => {
   const { data, columns, page, limit, mobileColumns, selectableMode, selectedRows, selectRow } =
@@ -27,52 +28,58 @@ const DataTableBody = () => {
 
   return (
     <tbody>
-      {data.slice(start, end).map((row, rowIndex) => (
-        <tr key={rowIndex} data-testid="alt-test-datatable-row">
-          {selectableMode && (
-            <td className="alt-data-table__cell">
-              <Checkbox
-                checked={selectedRows.indexOf(rowIndex) > -1}
-                onChange={() => selectRow(rowIndex)}
-              />
-            </td>
-          )}
-          {visibleColumns.map((column, columnIndex) => {
-            const props = {
-              accessor: column.accessor,
-              item: row,
-              value: row[column.accessor],
-              rowIndex,
-              columnIndex
-            };
+      {data.slice(start, end).map((row, rowIndex) => {
+        const isSelected = selectedRows.indexOf(rowIndex) > -1;
 
-            let content;
-
-            if (column.Component) {
-              const CellComponent = column.Component as keyof JSX.IntrinsicElements;
-              content = <CellComponent {...props} />;
-            } else {
-              content = <DataTableCell {...props} />;
-            }
-
-            return (
-              <td key={columnIndex} className="alt-data-table__cell">
-                {content}
+        return (
+          <tr
+            key={rowIndex}
+            data-testid="alt-test-datatable-row"
+            className={clsx('alt-data-table__row', {
+              'alt-data-table__row--selected': isSelected
+            })}>
+            {selectableMode && (
+              <td className="alt-data-table__cell alt-data-table__checkbox-column">
+                <Checkbox checked={isSelected} onChange={() => selectRow(rowIndex)} />
               </td>
-            );
-          })}
-          {ltePhoneL && (
-            <td className="alt-data-table__cell alt-data-table__cell--show-more">
-              <button
-                type="button"
-                className="alt-data-table__showMore"
-                onClick={() => setSelectedRowIndex(rowIndex)}>
-                <Icon i="arrow_forward_ios" />
-              </button>
-            </td>
-          )}
-        </tr>
-      ))}
+            )}
+            {visibleColumns.map((column, columnIndex) => {
+              const props = {
+                accessor: column.accessor,
+                item: row,
+                value: row[column.accessor],
+                rowIndex,
+                columnIndex
+              };
+
+              let content;
+
+              if (column.Component) {
+                const CellComponent = column.Component as keyof JSX.IntrinsicElements;
+                content = <CellComponent {...props} />;
+              } else {
+                content = <DataTableCell {...props} />;
+              }
+
+              return (
+                <td key={columnIndex} className="alt-data-table__cell">
+                  {content}
+                </td>
+              );
+            })}
+            {ltePhoneL && (
+              <td className="alt-data-table__cell alt-data-table__cell--show-more">
+                <button
+                  type="button"
+                  className="alt-data-table__showMore"
+                  onClick={() => setSelectedRowIndex(rowIndex)}>
+                  <Icon i="arrow_forward_ios" />
+                </button>
+              </td>
+            )}
+          </tr>
+        );
+      })}
       {selectedRowIndex > -1 && ltePhoneL && (
         <Modal onClose={() => setSelectedRowIndex(-1)} title="Detailed information">
           <div className="alt-data-table-mobile-grid">

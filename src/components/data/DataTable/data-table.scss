@@ -99,3 +99,11 @@
     background-color: var(--surfaceTrasparent);
   }
 }
+
+.alt-data-table__checkbox-column {
+  width: 48px;
+}
+
+.alt-data-table__row--selected td {
+  background-color: var(--highlight);
+}

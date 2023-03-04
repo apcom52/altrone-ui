@@ -9,9 +9,9 @@ const columns: DataTableColumn[] = [
     accessor: 'iso',
     label: 'ISO Code',
     Component: ({ value }) => (
-      <td>
+      <div>
         <code>{value}</code>
-      </td>
+      </div>
     )
   },
   {
@@ -27,9 +27,9 @@ const columns: DataTableColumn[] = [
     accessor: 'phone',
     label: 'Phone code',
     Component: ({ value }) => (
-      <td style={{ display: 'flex' }}>
+      <div style={{ display: 'flex' }}>
         <Icon i="phone" /> {value}
-      </td>
+      </div>
     )
   },
   {

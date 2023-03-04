@@ -5,7 +5,7 @@ import { useDataTableContext } from '../../../contexts';
 import { useLocalization, useWindowSize } from '../../../hooks';
 
 const DataTableFooter = () => {
-  const { data, initialData, limit, columns, mobileColumns, selectableMode } =
+  const { data, initialData, limit, columns, mobileColumns, selectableMode, selectedRows } =
     useDataTableContext();
   const { ltePhoneL } = useWindowSize();
   const t = useLocalization();
@@ -38,6 +38,7 @@ const DataTableFooter = () => {
                     value: data.length,
                     vars: { count: data.length }
                   })}
+                  {selectedRows.length ? ` (${selectedRows.length} selected)` : ''}
                 </>
               )}
             </div>

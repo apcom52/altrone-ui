@@ -139,6 +139,12 @@ export const DataTable = <T extends object>({
     }
   }, [selectable]);
 
+  useEffect(() => {
+    if (!selectableMode) {
+      setSelectedRows([]);
+    }
+  }, [selectableMode]);
+
   const isHeaderVisible = sortKeys.length || filters.length || searchBy;
 
   return (
