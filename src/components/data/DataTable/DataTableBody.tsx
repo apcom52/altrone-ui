@@ -5,9 +5,10 @@ import { filterVisibleColumns } from './functions';
 import { useWindowSize } from '../../../hooks';
 import { Icon } from '../../icons';
 import { Modal } from '../../containers';
+import { Checkbox } from '../../form';
 
 const DataTableBody = () => {
-  const { data, columns, page, limit, mobileColumns } = useDataTableContext();
+  const { data, columns, page, limit, mobileColumns, selectableMode } = useDataTableContext();
   const { ltePhoneL = false } = useWindowSize();
 
   const [selectedRowIndex, setSelectedRowIndex] = useState(-1);
@@ -27,6 +28,11 @@ const DataTableBody = () => {
     <tbody>
       {data.slice(start, end).map((row, rowIndex) => (
         <tr key={rowIndex} data-testid="alt-test-datatable-row">
+          {selectableMode && (
+            <td className="alt-data-table__cell">
+              <Checkbox onChange={() => null} />
+            </td>
+          )}
           {visibleColumns.map((column, columnIndex) => {
             const props = {
               accessor: column.accessor,

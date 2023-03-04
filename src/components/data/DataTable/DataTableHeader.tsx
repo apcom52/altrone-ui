@@ -91,7 +91,14 @@ const DataTableHeader = ({ actions = [], selectable = false }: DataTableHeaderPr
   return (
     <>
       <tr className="alt-data-table-header-wrapper">
-        <th colSpan={ltePhoneL ? mobileColumns.length + 1 : columns.length}>
+        <th
+          colSpan={
+            ltePhoneL
+              ? mobileColumns.length + 1
+              : selectableMode
+              ? columns.length + 1
+              : columns.length
+          }>
           <div className="alt-data-table-header">
             {(gtPhoneL || (ltePhoneL && !isSearchVisible)) && (
               <div className="alt-data-table-header__actions">
