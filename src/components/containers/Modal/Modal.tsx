@@ -1,15 +1,14 @@
 import {
   memo,
+  MouseEventHandler,
   PropsWithChildren,
-  ReactNode,
   useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
   useRef
 } from 'react';
-import { Align } from '../../../types/Align';
-import { Role, Size } from '../../../types';
+import { Role, Size, Align } from '../../../types';
 import './modal.scss';
 import { Icon } from '../../icons';
 import { Button } from '../../button';
@@ -17,19 +16,21 @@ import clsx from 'clsx';
 import { useWindowSize } from '../../../hooks';
 import ReactDOM from 'react-dom';
 
+export interface ModalAction {
+  label: string;
+  onClick: () => null;
+  leftIcon?: JSX.Element;
+  rightIcon?: JSX.Element;
+  align?: Align;
+  role?: Role;
+}
+
 interface ModalProps extends PropsWithChildren {
   onClose: () => void;
   title?: string;
   size?: Size;
   fluid?: boolean;
-  actions?: {
-    label: string;
-    onClick: () => null;
-    leftIcon?: ReactNode;
-    rightIcon?: ReactNode;
-    align?: Align;
-    role?: Role;
-  }[];
+  actions?: ModalAction[];
   showClose?: boolean;
   showCancel?: boolean;
   closeOnOverlay?: boolean;
@@ -76,8 +77,8 @@ const Modal = ({
   }, []);
 
   const [leftActions, rightActions] = useMemo(() => {
-    const leftActions = [];
-    const rightActions = [];
+    const leftActions: ModalAction[] = [];
+    const rightActions: ModalAction[] = [];
 
     actions.forEach((action) => {
       if (action.align === Align.start) {
@@ -90,15 +91,14 @@ const Modal = ({
     return [leftActions, rightActions];
   }, [actions]);
 
-  const renderActions = (actions) => {
+  const renderActions = (actions: ModalAction[]) => {
     return actions.map((action, actionIndex) => (
       <Button
         key={actionIndex}
         leftIcon={action.leftIcon}
         rightIcon={action.rightIcon}
         role={action.role}
-        onClick={action.onClick}
-      >
+        onClick={action.onClick}>
         {action.label}
       </Button>
     ));
@@ -116,7 +116,7 @@ const Modal = ({
   }, []);
 
   const onESCPress = useCallback(
-    (e) => {
+    (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         handleClose();
       }
@@ -124,14 +124,17 @@ const Modal = ({
     [onClose]
   );
 
-  const onBackdropClick = (e) => {
+  const onBackdropClick: MouseEventHandler<HTMLDivElement> = (e) => {
     if (closeOnOverlay && e.target === wrapperRef.current) {
       handleClose();
     }
   };
 
   return ReactDOM.createPortal(
-    <div className="alt-modal-wrapper" ref={wrapperRef} onClick={closeOnOverlay && onBackdropClick}>
+    <div
+      className="alt-modal-wrapper"
+      ref={wrapperRef}
+      onClick={closeOnOverlay ? onBackdropClick : undefined}>
       <div
         className={clsx('alt-modal', className, {
           'alt-modal--size-small': size === Size.small,
@@ -140,8 +143,7 @@ const Modal = ({
           [CLS_OPENED]: reduceMotion
         })}
         ref={modalRef}
-        data-testid="alt-test-modal"
-      >
+        data-testid="alt-test-modal">
         {title && (
           <div className="alt-modal__title" data-testid="alt-test-modal-title">
             {title}
@@ -152,8 +154,7 @@ const Modal = ({
             className="alt-modal__close"
             type="button"
             onClick={handleClose}
-            data-testid="alt-test-modal-close"
-          >
+            data-testid="alt-test-modal-close">
             <Icon i="close" />
           </button>
         )}
@@ -169,8 +170,7 @@ const Modal = ({
               <Button
                 onClick={handleClose}
                 className="alt-modal__cancel"
-                data-testid="alt-test-modal-cancel"
-              >
+                data-testid="alt-test-modal-cancel">
                 Cancel
               </Button>
             )}
