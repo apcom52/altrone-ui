@@ -1,4 +1,4 @@
-import { forwardRef, memo, useCallback, useRef, useState } from 'react';
+import { forwardRef, memo, MouseEventHandler, useCallback, useRef, useState } from 'react';
 import {
   ContextMenuType as ContextMenuType,
   Indicator,
@@ -66,7 +66,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const buttonRef = useRef<HTMLButtonElement | null>(null);
 
-    const showDropdown = useCallback(() => {
+    const showDropdown = useCallback<MouseEventHandler>(() => {
       setIsDropdownVisible(true);
     }, []);
 
