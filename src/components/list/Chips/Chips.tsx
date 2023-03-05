@@ -4,25 +4,25 @@ import clsx from 'clsx';
 import { Icon } from '../../icons';
 import './chips.scss';
 
-interface ChipsProps {
-  options: Option[];
-  values: unknown[];
-  onChange: (values: any[]) => void;
+interface ChipsProps<T = unknown> {
+  options: Option<T>[];
+  values: T[];
+  onChange: (values: T[]) => void;
   SelectedIcon?: JSX.Element;
   direction?: Direction;
   size?: Size;
 }
 
-const Chips = ({
+const Chips = <T extends unknown>({
   options = [],
   values = [],
   onChange,
   SelectedIcon,
   direction = Direction.horizontal,
   size = Size.medium
-}: ChipsProps) => {
+}: ChipsProps<T>) => {
   const onChipClick = useCallback(
-    (value: unknown) => {
+    (value: T) => {
       const chipIsSelected = values.findIndex((chipValue) => value === chipValue);
 
       if (chipIsSelected > -1) {
