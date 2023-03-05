@@ -65,4 +65,4 @@ const Chips = <T extends unknown>({
   );
 };
 
-export default memo(Chips);
+export default memo(Chips) as typeof Chips;

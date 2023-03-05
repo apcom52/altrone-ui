@@ -19,7 +19,7 @@ export interface ScrollableSelectorOptionProps<T> {
   option: Option<T>;
   value: T;
   checked: boolean;
-  onChange: () => void;
+  onChange: (value: T) => void;
   disabled?: boolean;
 }
 
