@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import DataTableHeader from './DataTableHeader';
 import './data-table.scss';
 import DataTableBody from './DataTableBody';
@@ -37,7 +37,9 @@ interface DataTableProps<T extends object> {
   mobileColumns?: string[];
   className?: string;
   actions?: DataTableAction[];
+  selectableActions?: DataTableSelectableAction<T>[];
   striped?: 'odd' | 'even';
+  selectable?: boolean;
 }
 
 export interface DataTablePopupActionProps {
@@ -53,6 +55,13 @@ export interface DataTableAction {
   content?: (args: DataTablePopupActionProps) => JSX.Element;
   contextMenu?: ContextMenuType;
   indicator?: Indicator;
+  disabled?: boolean;
+}
+
+export interface DataTableSelectableAction<T extends unknown>
+  extends Omit<DataTableAction, 'onClick' | 'content'> {
+  onClick?: (selectedRows: T[]) => void;
+  content?: (args: DataTablePopupActionProps & { selectedRows?: T[] }) => JSX.Element;
 }
 
 export const DataTable = <T extends object>({
@@ -67,13 +76,17 @@ export const DataTable = <T extends object>({
   mobileColumns = [columns[0].accessor],
   className,
   actions = [],
-  striped
+  selectableActions = [],
+  striped,
+  selectable = false
 }: DataTableProps<T>) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<string | null>(null);
   const [sortType, setSortType] = useState<Sort>(Sort.asc);
   const [appliedFilters, setAppliedFilters] = useState<DataTableAppliedFilter[]>([]);
+  const [selectableMode, setSelectableMode] = useState(false);
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
   const filteredData = useMemo(() => {
     let result = [...data];
@@ -119,6 +132,28 @@ export const DataTable = <T extends object>({
     return result;
   }, [data, search, searchFunc, searchBy, sortBy, sortType, appliedFilters, filters]);
 
+  const selectRow = useCallback((rowIndex: number) => {
+    setSelectedRows((selected) => {
+      if (selected.indexOf(rowIndex) > -1) {
+        return selected.filter((s) => s !== rowIndex);
+      } else {
+        return [...selected, rowIndex];
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!selectable) {
+      setSelectableMode(false);
+    }
+  }, [selectable]);
+
+  useEffect(() => {
+    if (!selectableMode) {
+      setSelectedRows([]);
+    }
+  }, [selectableMode]);
+
   const isHeaderVisible = sortKeys.length || filters.length || searchBy;
 
   return (
@@ -141,7 +176,11 @@ export const DataTable = <T extends object>({
         filters,
         appliedFilters,
         setAppliedFilters,
-        mobileColumns
+        mobileColumns,
+        selectableMode,
+        setSelectableMode,
+        selectedRows,
+        selectRow
       }}>
       <table
         className={clsx('alt-data-table', className, {
@@ -150,7 +189,12 @@ export const DataTable = <T extends object>({
         })}
         data-testid="alt-test-datatable">
         <thead>
-          {isHeaderVisible && <DataTableHeader actions={actions} />}
+          {isHeaderVisible && (
+            <DataTableHeader<T>
+              actions={selectableMode ? selectableActions : actions}
+              selectable={selectable}
+            />
+          )}
           <DataTableHeaderRow />
         </thead>
         <DataTableBody />

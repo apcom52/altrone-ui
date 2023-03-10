@@ -92,10 +92,26 @@
   tbody tr:nth-child(odd) .alt-data-table__cell {
     background-color: var(--surfaceTrasparent);
   }
+
+  tbody tr:nth-child(odd).alt-data-table__row--selected .alt-data-table__cell {
+    background-color: var(--highlightHover);
+  }
 }
 
 .alt-data-table--striped-even {
   tbody tr:nth-child(even) .alt-data-table__cell {
     background-color: var(--surfaceTrasparent);
   }
+
+  tbody tr:nth-child(even).alt-data-table__row--selected .alt-data-table__cell {
+    background-color: var(--highlightHover);
+  }
+}
+
+.alt-data-table__checkbox-column {
+  width: 48px;
+}
+
+.alt-data-table__row--selected td {
+  background-color: var(--highlight);
 }

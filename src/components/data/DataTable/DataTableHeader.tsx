@@ -7,14 +7,18 @@ import { Icon } from '../../icons';
 import DataTableFiltering from './DataTableFiltering';
 import { useDataTableContext } from '../../../contexts';
 import { useLocalization, useWindowSize } from '../../../hooks';
-import { DataTableAction as DataTableActionType } from './DataTable';
+import { DataTableAction as DataTableActionType, DataTableSelectableAction } from './DataTable';
 import DataTableAction from './DataTableAction';
 
-interface DataTableHeaderProps {
-  actions: DataTableActionType[];
+interface DataTableHeaderProps<T> {
+  actions: (DataTableSelectableAction<T> | DataTableActionType)[];
+  selectable: boolean;
 }
 
-const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
+const DataTableHeader = <T extends object>({
+  actions = [],
+  selectable = false
+}: DataTableHeaderProps<T>) => {
   const {
     search,
     setSearch,
@@ -24,7 +28,9 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
     appliedFilters,
     filters,
     searchBy,
-    mobileColumns
+    mobileColumns,
+    selectableMode,
+    setSelectableMode
   } = useDataTableContext();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
 
@@ -41,7 +47,17 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
   const dataTableActions = useMemo(() => {
     const result: DataTableActionType[] = [...actions];
 
-    if (sortKeys.length) {
+    if (selectable) {
+      result.unshift({
+        label: t('data.dataTable.select'),
+        icon: <Icon i={selectableMode ? 'check_box_outline_blank' : 'check_box'} />,
+        onClick: () => setSelectableMode(!selectableMode),
+        isIcon: true,
+        disabled: false
+      });
+    }
+
+    if (!selectableMode && sortKeys.length) {
       result.push({
         label: t('data.dataTable.sort'),
         icon: <Icon i="swap_vert" />,
@@ -49,7 +65,7 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
       });
     }
 
-    if (filters.length) {
+    if (!selectableMode && filters.length) {
       result.push({
         label: t('data.dataTable.filters'),
         icon: <Icon i="tune" style="outlined" />,
@@ -65,12 +81,28 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
     }
 
     return result;
-  }, [actions, sortKeys, sortBy, currentSortingColumn, filters, appliedFilters]);
+  }, [
+    actions,
+    sortKeys,
+    sortBy,
+    currentSortingColumn,
+    filters,
+    appliedFilters,
+    selectable,
+    selectableMode
+  ]);
 
   return (
     <>
       <tr className="alt-data-table-header-wrapper">
-        <th colSpan={ltePhoneL ? mobileColumns.length + 1 : columns.length}>
+        <th
+          colSpan={
+            ltePhoneL
+              ? mobileColumns.length + (selectableMode ? 2 : 1)
+              : selectableMode
+              ? columns.length + 1
+              : columns.length
+          }>
           <div className="alt-data-table-header">
             {(gtPhoneL || (ltePhoneL && !isSearchVisible)) && (
               <div className="alt-data-table-header__actions">
@@ -142,4 +174,4 @@ const DataTableHeader = ({ actions = [] }: DataTableHeaderProps) => {
   );
 };
 
-export default memo(DataTableHeader);
+export default memo(DataTableHeader) as typeof DataTableHeader;
