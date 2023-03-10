@@ -17,7 +17,7 @@ const DataTableFooter = () => {
           className="alt-data-table-footer-wrapper"
           colSpan={
             ltePhoneL
-              ? mobileColumns.length + 1
+              ? mobileColumns.length + (selectableMode ? 2 : 1)
               : selectableMode
               ? columns.length + 1
               : columns.length

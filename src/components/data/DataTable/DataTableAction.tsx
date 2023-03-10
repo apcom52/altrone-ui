@@ -17,7 +17,8 @@ const DataTableAction = <T extends unknown>({
   isIcon = false,
   indicator,
   contextMenu,
-  danger = false
+  danger = false,
+  disabled
 }: DataTableActionType | DataTableSelectableActionType<T>) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const actionType = contextMenu ? 'contextMenu' : content ? 'popup' : 'button';
@@ -89,7 +90,7 @@ const DataTableAction = <T extends unknown>({
         onClick={actionType !== 'contextMenu' ? onButtonClick : undefined}
         dropdown={actionType === 'contextMenu' ? adaptedContextMenu : undefined}
         indicator={indicator}
-        disabled={selectableMode && selectedRows.length === 0}
+        disabled={disabled === undefined ? selectableMode && selectedRows.length === 0 : disabled}
         role={danger ? Role.danger : Role.default}>
         {ltePhoneL || isIcon ? icon : label}
       </Button>

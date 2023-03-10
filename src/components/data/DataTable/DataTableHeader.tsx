@@ -52,7 +52,8 @@ const DataTableHeader = <T extends object>({
         label: t('data.dataTable.select'),
         icon: <Icon i={selectableMode ? 'check_box_outline_blank' : 'check_box'} />,
         onClick: () => setSelectableMode(!selectableMode),
-        isIcon: true
+        isIcon: true,
+        disabled: false
       });
     }
 
@@ -97,7 +98,7 @@ const DataTableHeader = <T extends object>({
         <th
           colSpan={
             ltePhoneL
-              ? mobileColumns.length + 1
+              ? mobileColumns.length + (selectableMode ? 2 : 1)
               : selectableMode
               ? columns.length + 1
               : columns.length

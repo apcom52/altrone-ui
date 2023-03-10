@@ -55,6 +55,7 @@ export interface DataTableAction {
   content?: (args: DataTablePopupActionProps) => JSX.Element;
   contextMenu?: ContextMenuType;
   indicator?: Indicator;
+  disabled?: boolean;
 }
 
 export interface DataTableSelectableAction<T extends unknown>
@@ -154,8 +155,6 @@ export const DataTable = <T extends object>({
   }, [selectableMode]);
 
   const isHeaderVisible = sortKeys.length || filters.length || searchBy;
-
-  console.log('selectedRows', selectedRows);
 
   return (
     <DataTableContext.Provider
