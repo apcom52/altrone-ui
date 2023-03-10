@@ -29,7 +29,8 @@ const DataTableBody = () => {
   return (
     <tbody>
       {data.slice(start, end).map((row, rowIndex) => {
-        const isSelected = selectedRows.indexOf(rowIndex) > -1;
+        const currentRowIndex = (page - 1) * limit + rowIndex;
+        const isSelected = selectedRows.indexOf(currentRowIndex) > -1;
 
         return (
           <tr
@@ -40,7 +41,7 @@ const DataTableBody = () => {
             })}>
             {selectableMode && (
               <td className="alt-data-table__cell alt-data-table__checkbox-column">
-                <Checkbox checked={isSelected} onChange={() => selectRow(rowIndex)} />
+                <Checkbox checked={isSelected} onChange={() => selectRow(currentRowIndex)} />
               </td>
             )}
             {visibleColumns.map((column, columnIndex) => {

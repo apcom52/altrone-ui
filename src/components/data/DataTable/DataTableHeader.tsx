@@ -7,15 +7,18 @@ import { Icon } from '../../icons';
 import DataTableFiltering from './DataTableFiltering';
 import { useDataTableContext } from '../../../contexts';
 import { useLocalization, useWindowSize } from '../../../hooks';
-import { DataTableAction as DataTableActionType } from './DataTable';
+import { DataTableAction as DataTableActionType, DataTableSelectableAction } from './DataTable';
 import DataTableAction from './DataTableAction';
 
-interface DataTableHeaderProps {
-  actions: DataTableActionType[];
+interface DataTableHeaderProps<T> {
+  actions: (DataTableSelectableAction<T> | DataTableActionType)[];
   selectable: boolean;
 }
 
-const DataTableHeader = ({ actions = [], selectable = false }: DataTableHeaderProps) => {
+const DataTableHeader = <T extends object>({
+  actions = [],
+  selectable = false
+}: DataTableHeaderProps<T>) => {
   const {
     search,
     setSearch,
@@ -45,7 +48,7 @@ const DataTableHeader = ({ actions = [], selectable = false }: DataTableHeaderPr
     const result: DataTableActionType[] = [...actions];
 
     if (selectable) {
-      result.push({
+      result.unshift({
         label: t('data.dataTable.select'),
         icon: <Icon i={selectableMode ? 'check_box_outline_blank' : 'check_box'} />,
         onClick: () => setSelectableMode(!selectableMode),
@@ -53,7 +56,7 @@ const DataTableHeader = ({ actions = [], selectable = false }: DataTableHeaderPr
       });
     }
 
-    if (sortKeys.length) {
+    if (!selectableMode && sortKeys.length) {
       result.push({
         label: t('data.dataTable.sort'),
         icon: <Icon i="swap_vert" />,
@@ -61,7 +64,7 @@ const DataTableHeader = ({ actions = [], selectable = false }: DataTableHeaderPr
       });
     }
 
-    if (filters.length) {
+    if (!selectableMode && filters.length) {
       result.push({
         label: t('data.dataTable.filters'),
         icon: <Icon i="tune" style="outlined" />,
@@ -170,4 +173,4 @@ const DataTableHeader = ({ actions = [], selectable = false }: DataTableHeaderPr
   );
 };
 
-export default memo(DataTableHeader);
+export default memo(DataTableHeader) as typeof DataTableHeader;

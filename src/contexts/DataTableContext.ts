@@ -9,15 +9,15 @@ export interface DataTableFilter {
   defaultValue?: unknown;
 }
 
-export interface DataTableAppliedFilter {
+export interface DataTableAppliedFilter<T extends unknown> {
   accessor: string;
-  value: any | any[];
+  value: T | T[];
 }
 
-export interface DataTableContextType {
-  data: any[];
-  initialData: any[];
-  columns: DataTableColumn[];
+export interface DataTableContextType<T> {
+  data: T[];
+  initialData: T[];
+  columns: DataTableColumn<T>[];
   page: number;
   setPage: (page: number) => void;
   limit: number;
@@ -30,8 +30,8 @@ export interface DataTableContextType {
   sortType: Sort;
   setSortType: (sortType: Sort) => void;
   filters: DataTableFilter[];
-  appliedFilters: DataTableAppliedFilter[];
-  setAppliedFilters: (filters: DataTableAppliedFilter[]) => void;
+  appliedFilters: DataTableAppliedFilter<T>[];
+  setAppliedFilters: (filters: DataTableAppliedFilter<T>[]) => void;
   mobileColumns: string[];
   selectableMode: boolean;
   setSelectableMode: (selectableMode: boolean) => void;
@@ -64,5 +64,5 @@ const DEFAULT_DATA_TABLE_CONTEXT: DataTableContextType = {
   selectRow: () => null
 };
 
-export const DataTableContext = createContext<DataTableContextType>(DEFAULT_DATA_TABLE_CONTEXT);
+export const DataTableContext = createContext(DEFAULT_DATA_TABLE_CONTEXT);
 export const useDataTableContext = () => useContext(DataTableContext);

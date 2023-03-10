@@ -44,7 +44,20 @@ export const SelectableDataTable: ComponentStory<typeof DataTable & { dark: bool
 }) => {
   return (
     <Altrone style={{ padding: 8 }} theme={dark ? Theme.dark : Theme.light}>
-      <DataTable data={data} columns={columns} sortKeys={['name']} striped={striped} selectable />
+      <DataTable
+        data={data}
+        columns={columns}
+        sortKeys={['name']}
+        striped={striped}
+        selectable
+        selectableActions={[
+          {
+            label: 'Edit',
+            icon: <Icon i="edit" />,
+            onClick: (selectableRows) => console.log('edit click', selectableRows)
+          }
+        ]}
+      />
     </Altrone>
   );
 };

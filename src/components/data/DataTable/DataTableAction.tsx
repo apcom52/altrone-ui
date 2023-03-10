@@ -1,11 +1,15 @@
-import { memo, useCallback, useRef, useState } from 'react';
-import type { DataTableAction as DataTableActionType } from './DataTable';
+import { memo, useCallback, useMemo, useRef, useState } from 'react';
+import type {
+  DataTableAction as DataTableActionType,
+  DataTableSelectableAction as DataTableSelectableActionType
+} from './DataTable';
 import { Button, ButtonVariant } from '../../button';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import { Role } from '../../../types';
 import { useWindowSize } from '../../../hooks';
+import { useDataTableContext } from '../../../contexts';
 
-const DataTableAction = ({
+const DataTableAction = <T extends unknown>({
   label,
   content,
   onClick,
@@ -14,17 +18,29 @@ const DataTableAction = ({
   indicator,
   contextMenu,
   danger = false
-}: DataTableActionType) => {
+}: DataTableActionType | DataTableSelectableActionType<T>) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const actionType = contextMenu ? 'contextMenu' : content ? 'popup' : 'button';
+
+  const { selectableMode, selectedRows, data, page, limit } = useDataTableContext();
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const { ltePhoneL } = useWindowSize();
 
+  const selectedData: T[] | undefined = useMemo(() => {
+    if (!selectableMode) {
+      return undefined;
+    }
+
+    return selectedRows.map((selectedRowIndex: number) => {
+      return data[selectedRowIndex];
+    });
+  }, [selectableMode, data, selectedRows, page, limit]);
+
   const onButtonClick = () => {
     if (actionType === 'button') {
-      onClick?.();
+      onClick?.(selectedData);
     } else if (actionType === 'popup') {
       setIsPopupVisible(!isPopupVisible);
     }

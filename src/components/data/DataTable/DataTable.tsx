@@ -37,6 +37,7 @@ interface DataTableProps<T extends object> {
   mobileColumns?: string[];
   className?: string;
   actions?: DataTableAction[];
+  selectableActions?: DataTableSelectableAction<T>[];
   striped?: 'odd' | 'even';
   selectable?: boolean;
 }
@@ -56,6 +57,12 @@ export interface DataTableAction {
   indicator?: Indicator;
 }
 
+export interface DataTableSelectableAction<T extends unknown>
+  extends Omit<DataTableAction, 'onClick' | 'content'> {
+  onClick?: (selectableRows: T[]) => void;
+  content?: (args: DataTablePopupActionProps & { selectableRows: T[] }) => JSX.Element;
+}
+
 export const DataTable = <T extends object>({
   data = [],
   columns = [],
@@ -68,6 +75,7 @@ export const DataTable = <T extends object>({
   mobileColumns = [columns[0].accessor],
   className,
   actions = [],
+  selectableActions = [],
   striped,
   selectable = false
 }: DataTableProps<T>) => {
@@ -147,6 +155,8 @@ export const DataTable = <T extends object>({
 
   const isHeaderVisible = sortKeys.length || filters.length || searchBy;
 
+  console.log('selectedRows', selectedRows);
+
   return (
     <DataTableContext.Provider
       value={{
@@ -180,7 +190,12 @@ export const DataTable = <T extends object>({
         })}
         data-testid="alt-test-datatable">
         <thead>
-          {isHeaderVisible && <DataTableHeader actions={actions} selectable={selectable} />}
+          {isHeaderVisible && (
+            <DataTableHeader<T>
+              actions={selectableMode ? selectableActions : actions}
+              selectable={selectable}
+            />
+          )}
           <DataTableHeaderRow />
         </thead>
         <DataTableBody />
