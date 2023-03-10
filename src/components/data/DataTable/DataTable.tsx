@@ -59,8 +59,8 @@ export interface DataTableAction {
 
 export interface DataTableSelectableAction<T extends unknown>
   extends Omit<DataTableAction, 'onClick' | 'content'> {
-  onClick?: (selectableRows: T[]) => void;
-  content?: (args: DataTablePopupActionProps & { selectableRows: T[] }) => JSX.Element;
+  onClick?: (selectedRows: T[]) => void;
+  content?: (args: DataTablePopupActionProps & { selectedRows?: T[] }) => JSX.Element;
 }
 
 export const DataTable = <T extends object>({

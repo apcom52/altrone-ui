@@ -61,6 +61,17 @@ export const SelectableDataTable: ComponentStory<typeof DataTable & { dark: bool
             icon: <Icon i="delete" />,
             onClick: (selectableRows) => console.log('edit click', selectableRows),
             danger: true
+          },
+          {
+            label: 'Details',
+            icon: <Icon i="info" />,
+            content: ({ selectedRows }) => (
+              <ul>
+                {selectedRows?.map((row, rowIndex) => (
+                  <li key={rowIndex}>{row.name}</li>
+                ))}
+              </ul>
+            )
           }
         ]}
       />

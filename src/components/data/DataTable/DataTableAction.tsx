@@ -72,7 +72,9 @@ const DataTableAction = <T extends unknown>({
           mobileBehaviour={FloatingBoxMobileBehaviour.modal}
           minWidth={250}
           useParentWidth>
-          <div className="alt-data-table-action">{content?.({ closePopup })}</div>
+          <div className="alt-data-table-action">
+            {content?.({ closePopup, ...(selectableMode ? { selectedRows: selectedData } : {}) })}
+          </div>
         </FloatingBox>
       )}
     </>
