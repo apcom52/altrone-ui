@@ -52,9 +52,14 @@ export const SelectableDataTable: ComponentStory<typeof DataTable & { dark: bool
         selectable
         selectableActions={[
           {
-            label: 'Edit',
-            icon: <Icon i="edit" />,
-            onClick: (selectableRows) => console.log('edit click', selectableRows)
+            label: 'Menu',
+            icon: <Icon i="menu" />,
+            contextMenu: [
+              {
+                title: 'Action',
+                onClick: (selectedData) => console.log(selectedData)
+              }
+            ]
           },
           {
             label: 'Delete',

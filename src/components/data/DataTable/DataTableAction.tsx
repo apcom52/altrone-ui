@@ -5,7 +5,7 @@ import type {
 } from './DataTable';
 import { Button, ButtonVariant } from '../../button';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
-import { Role } from '../../../types';
+import { ContextAction, ContextMenuType, ParentContextAction, Role } from '../../../types';
 import { useWindowSize } from '../../../hooks';
 import { useDataTableContext } from '../../../contexts';
 
@@ -46,6 +46,34 @@ const DataTableAction = <T extends unknown>({
     }
   };
 
+  const adaptedContextMenu = useMemo(() => {
+    if (!selectableMode) {
+      return contextMenu;
+    }
+
+    function adoptMenu(menu: ContextMenuType) {
+      if (!menu) {
+        return [];
+      }
+
+      return menu.map((menu) => {
+        if ('children' in menu) {
+          return {
+            ...menu,
+            children: adoptMenu(menu.children)
+          } as ParentContextAction;
+        } else {
+          return {
+            ...menu,
+            onClick: menu.onClick.bind(null, selectedData)
+          } as ContextAction;
+        }
+      });
+    }
+
+    return adoptMenu(contextMenu || []);
+  }, [contextMenu, selectedData, selectableMode]);
+
   const closePopup = useCallback(() => {
     setIsPopupVisible(false);
   }, []);
@@ -59,7 +87,7 @@ const DataTableAction = <T extends unknown>({
         variant={ButtonVariant.text}
         isIcon={isIcon || ltePhoneL}
         onClick={actionType !== 'contextMenu' ? onButtonClick : undefined}
-        dropdown={actionType === 'contextMenu' ? contextMenu : undefined}
+        dropdown={actionType === 'contextMenu' ? adaptedContextMenu : undefined}
         indicator={indicator}
         disabled={selectableMode && selectedRows.length === 0}
         role={danger ? Role.danger : Role.default}>

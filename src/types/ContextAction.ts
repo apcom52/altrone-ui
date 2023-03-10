@@ -1,6 +1,6 @@
 export interface ContextAction {
   title: string;
-  onClick: () => void;
+  onClick: (...args: unknown[]) => void;
   icon?: JSX.Element;
   hint?: string;
   disabled?: boolean;
