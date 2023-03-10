@@ -27,7 +27,7 @@ export interface InputIsland {
 }
 
 export interface TextInputProps
-  extends Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'onChange' | 'size'> {
+  extends Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'onChange' | 'size' | 'ref'> {
   value: string;
   onChange: (value: string) => void;
   classNames?: {
@@ -160,5 +160,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     );
   }
 );
+
+TextInput.displayName = 'TextInput';
 
 export default memo(TextInput);
