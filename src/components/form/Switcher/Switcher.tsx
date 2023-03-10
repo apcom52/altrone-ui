@@ -1,5 +1,5 @@
 import { memo, useId } from 'react';
-import { Align } from '../../../types/Align';
+import { Align } from '../../../types';
 import clsx from 'clsx';
 import './switcher.scss';
 import { BasicInput, BasicInputProps } from '../BasicInput';
@@ -36,8 +36,7 @@ const Switcher = ({
           'alt-switcher--danger': danger,
           'alt-switcher--pin-end': align === Align.end,
           'alt-switcher--disabled': disabled
-        })}
-      >
+        })}>
         <input
           id={switcherId}
           type="checkbox"
