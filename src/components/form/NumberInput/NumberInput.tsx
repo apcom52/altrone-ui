@@ -1,7 +1,7 @@
 import { InputIslandType, TextInput, TextInputProps } from '../index';
 import { memo, useCallback, useEffect, useState } from 'react';
 import NumberInputCounter from './NumberInputCounter';
-import { NumericFormat } from 'react-number-format';
+import { NumberFormatValues, NumericFormat, OnValueChange } from 'react-number-format';
 
 interface NumberInputProps
   extends Omit<TextInputProps, 'value' | 'onChange' | 'step' | 'min' | 'max' | 'ref'> {
@@ -51,7 +51,7 @@ const NumberInput = ({
   }, [min, max, onChange, value]);
 
   const onAllowedCheck = useCallback(
-    ({ floatValue }) => {
+    ({ floatValue = 0 }: NumberFormatValues) => {
       if (min !== undefined && floatValue < min) {
         return false;
       }
@@ -65,9 +65,9 @@ const NumberInput = ({
     [min, max, onChange]
   );
 
-  const onValueChange = useCallback(
+  const onValueChange: OnValueChange = useCallback(
     ({ floatValue }) => {
-      onChange(floatValue);
+      onChange(floatValue || 0);
     },
     [onChange]
   );
