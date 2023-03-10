@@ -41,4 +41,4 @@ const RadioList = <T extends unknown>({
   );
 };
 
-export default memo(RadioList);
+export default memo(RadioList) as typeof RadioList;

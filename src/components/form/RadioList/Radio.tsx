@@ -7,7 +7,14 @@ export interface RadioProps<T = unknown> extends Option<T> {
   onChange: (value: T) => void;
 }
 
-const Radio = <T extends unknown>({ name, checked, label, disabled, value, onChange }: RadioProps<T>) => {
+const Radio = <T extends unknown>({
+  name,
+  checked,
+  label,
+  disabled,
+  value,
+  onChange
+}: RadioProps<T>) => {
   const id = useId();
 
   return (
