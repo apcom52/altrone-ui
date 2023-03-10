@@ -39,7 +39,7 @@ export interface DataTableContextType<T> {
   selectRow: (rowIndex: number) => void;
 }
 
-const DEFAULT_DATA_TABLE_CONTEXT: DataTableContextType = {
+const DEFAULT_DATA_TABLE_CONTEXT: DataTableContextType<object> = {
   data: [],
   initialData: [],
   columns: [],
@@ -64,5 +64,7 @@ const DEFAULT_DATA_TABLE_CONTEXT: DataTableContextType = {
   selectRow: () => null
 };
 
-export const DataTableContext = createContext(DEFAULT_DATA_TABLE_CONTEXT);
+export const DataTableContext = createContext<DataTableContextType<object>>(
+  DEFAULT_DATA_TABLE_CONTEXT
+);
 export const useDataTableContext = () => useContext(DataTableContext);

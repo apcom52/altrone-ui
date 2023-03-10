@@ -61,6 +61,7 @@ const DataTableAction = <T extends unknown>({
         onClick={actionType !== 'contextMenu' ? onButtonClick : undefined}
         dropdown={actionType === 'contextMenu' ? contextMenu : undefined}
         indicator={indicator}
+        disabled={selectableMode && selectedRows.length === 0}
         role={danger ? Role.danger : Role.default}>
         {ltePhoneL || isIcon ? icon : label}
       </Button>

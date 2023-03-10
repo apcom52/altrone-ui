@@ -55,6 +55,12 @@ export const SelectableDataTable: ComponentStory<typeof DataTable & { dark: bool
             label: 'Edit',
             icon: <Icon i="edit" />,
             onClick: (selectableRows) => console.log('edit click', selectableRows)
+          },
+          {
+            label: 'Delete',
+            icon: <Icon i="delete" />,
+            onClick: (selectableRows) => console.log('edit click', selectableRows),
+            danger: true
           }
         ]}
       />
