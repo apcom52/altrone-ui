@@ -1,29 +1,20 @@
 import {
   Box,
+  ButtonContainer,
   Form,
   FormField,
   FormGroup,
   FormGroupVariant,
-  Modal,
-} from "../index";
-import { Altrone } from "../../hocs";
-import { Role, Size, Theme } from "../../types";
-import { useState } from "react";
-import clsx from "clsx";
-import { Button } from "../button";
-import FloatingBox, {
-  FloatingBoxMobileBehaviour,
-} from "./FloatingBox/FloatingBox";
-import { Heading, Paragraph } from "../typography";
-import {
-  DatePicker,
-  NumberInput,
-  RadioList,
-  Select,
-  Switcher,
-  TextInput,
-} from "../form";
-import { Align } from "../../types/Align";
+  Modal
+} from '../index';
+import { Altrone } from '../../hocs';
+import { Align, Direction, Role, Size, Theme } from '../../types';
+import { useState } from 'react';
+import clsx from 'clsx';
+import { Button } from '../button';
+import FloatingBox, { FloatingBoxMobileBehaviour } from './FloatingBox/FloatingBox';
+import { Heading, Paragraph } from '../typography';
+import { DatePicker, NumberInput, RadioList, Select, Switcher, TextInput } from '../form';
 
 const Template = ({ Component, dark, ...args }) => {
   return (
@@ -42,12 +33,11 @@ const FloatingBoxTemplate = (args) => {
       style={{
         padding: 100,
         backgroundImage:
-          "url(https://i.pinimg.com/474x/93/3c/61/933c6195d6c50705fd2d4e6d110916d3.jpg)",
+          'url(https://i.pinimg.com/474x/93/3c/61/933c6195d6c50705fd2d4e6d110916d3.jpg)'
       }}
-      className={clsx("altrone", {
-        "altrone--dark": args.dark,
-      })}
-    >
+      className={clsx('altrone', {
+        'altrone--dark': args.dark
+      })}>
       <Button
         onClick={() => {
           setIsVisible((old) => !old);
@@ -60,14 +50,12 @@ const FloatingBoxTemplate = (args) => {
           targetElement={buttonRef}
           maxHeight={100}
           onClose={() => setIsVisible(false)}
-          mobileBehaviour={FloatingBoxMobileBehaviour.modal}
-        >
+          mobileBehaviour={FloatingBoxMobileBehaviour.modal}>
           <Heading level={6}>Wants more?</Heading>
           <Paragraph>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Accusantium adipisci aliquid amet consequuntur distinctio ducimus
-            enim error et ex illum minus molestiae mollitia nemo nulla
-            obcaecati, provident quia reprehenderit voluptatem!
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium adipisci aliquid
+            amet consequuntur distinctio ducimus enim error et ex illum minus molestiae mollitia
+            nemo nulla obcaecati, provident quia reprehenderit voluptatem!
           </Paragraph>
         </FloatingBox>
       )}
@@ -77,24 +65,24 @@ const FloatingBoxTemplate = (args) => {
 
 const GENDERS = [
   {
-    label: "Male",
-    value: "male",
+    label: 'Male',
+    value: 'male'
   },
   {
-    label: "Female",
-    value: "female",
-  },
+    label: 'Female',
+    value: 'female'
+  }
 ];
 
 const FormTemplate = (args) => {
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [fatherName, setFatherName] = useState("");
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [fatherName, setFatherName] = useState('');
   const [birthDate, setBirthDate] = useState(null);
-  const [gender, setGender] = useState("");
-  const [music, setMusic] = useState("");
-  const [movies, setMovies] = useState("");
-  const [books, setBooks] = useState("");
+  const [gender, setGender] = useState('');
+  const [music, setMusic] = useState('');
+  const [movies, setMovies] = useState('');
+  const [books, setBooks] = useState('');
 
   return (
     <Altrone theme={args.dark ? Theme.dark : Theme.light}>
@@ -146,63 +134,61 @@ const ModalTemplate = (args) => {
   return (
     <Altrone theme={args.dark ? Theme.dark : Theme.light}>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut
-        cum dolore, esse, fuga ipsa iste maxime neque pariatur perspiciatis
-        placeat porro repellendus sint sunt vel. A deserunt temporibus velit.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse,
+        fuga ipsa iste maxime neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A
+        deserunt temporibus velit.
       </p>
       <Button onClick={() => setIsModalVisible(true)}>Open modal</Button>
-      {isModalVisible && (
-        <Modal onClose={() => setIsModalVisible(false)} {...args} />
-      )}
+      {isModalVisible && <Modal onClose={() => setIsModalVisible(false)} {...args} />}
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut
-        cum dolore, esse, fuga ipsa iste maxime neque pariatur perspiciatis
-        placeat porro repellendus sint sunt vel. A deserunt temporibus velit.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse,
+        fuga ipsa iste maxime neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A
+        deserunt temporibus velit.
       </p>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut
-        cum dolore, esse, fuga ipsa iste maxime neque pariatur perspiciatis
-        placeat porro repellendus sint sunt vel. A deserunt temporibus velit.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse,
+        fuga ipsa iste maxime neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A
+        deserunt temporibus velit.
       </p>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut
-        cum dolore, esse, fuga ipsa iste maxime neque pariatur perspiciatis
-        placeat porro repellendus sint sunt vel. A deserunt temporibus velit.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse,
+        fuga ipsa iste maxime neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A
+        deserunt temporibus velit.
       </p>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut
-        cum dolore, esse, fuga ipsa iste maxime neque pariatur perspiciatis
-        placeat porro repellendus sint sunt vel. A deserunt temporibus velit.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse,
+        fuga ipsa iste maxime neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A
+        deserunt temporibus velit.
       </p>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut
-        cum dolore, esse, fuga ipsa iste maxime neque pariatur perspiciatis
-        placeat porro repellendus sint sunt vel. A deserunt temporibus velit.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse,
+        fuga ipsa iste maxime neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A
+        deserunt temporibus velit.
       </p>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut
-        cum dolore, esse, fuga ipsa iste maxime neque pariatur perspiciatis
-        placeat porro repellendus sint sunt vel. A deserunt temporibus velit.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse,
+        fuga ipsa iste maxime neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A
+        deserunt temporibus velit.
       </p>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut
-        cum dolore, esse, fuga ipsa iste maxime neque pariatur perspiciatis
-        placeat porro repellendus sint sunt vel. A deserunt temporibus velit.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse,
+        fuga ipsa iste maxime neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A
+        deserunt temporibus velit.
       </p>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut
-        cum dolore, esse, fuga ipsa iste maxime neque pariatur perspiciatis
-        placeat porro repellendus sint sunt vel. A deserunt temporibus velit.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse,
+        fuga ipsa iste maxime neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A
+        deserunt temporibus velit.
       </p>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut
-        cum dolore, esse, fuga ipsa iste maxime neque pariatur perspiciatis
-        placeat porro repellendus sint sunt vel. A deserunt temporibus velit.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse,
+        fuga ipsa iste maxime neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A
+        deserunt temporibus velit.
       </p>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut
-        cum dolore, esse, fuga ipsa iste maxime neque pariatur perspiciatis
-        placeat porro repellendus sint sunt vel. A deserunt temporibus velit.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aut cum dolore, esse,
+        fuga ipsa iste maxime neque pariatur perspiciatis placeat porro repellendus sint sunt vel. A
+        deserunt temporibus velit.
       </p>
     </Altrone>
   );
@@ -216,32 +202,54 @@ BoxExample.args = {
   margin: 5
 };
 
+export const ButtonContainerExample = Template.bind({});
+ButtonContainerExample.args = {
+  Component: ButtonContainer,
+  children: [
+    <Button key={0}>Reply</Button>,
+    <Button key={1}>Save</Button>,
+    <Button key={2} role={Role.danger}>
+      Delete
+    </Button>,
+    <Button key={3} role={Role.primary}>
+      Send
+    </Button>
+  ],
+  margin: 5
+};
+ButtonContainerExample.argTypes = {
+  direction: {
+    control: 'select',
+    options: [Direction.horizontal, Direction.vertical]
+  },
+  align: {
+    control: 'select',
+    options: [Align.start, Align.center, Align.end]
+  }
+};
+
 export const FloatingBoxExample = FloatingBoxTemplate.bind({});
 FloatingBoxExample.args = {
-  children: "Hello world",
-  placement: "auto",
-  dark: false,
+  children: 'Hello world',
+  placement: 'auto',
+  dark: false
 };
 
 export const FormExample = FormTemplate.bind({});
 FormExample.args = {
-  dark: false,
+  dark: false
 };
 
 export const ModalExample = ModalTemplate.bind({});
 ModalExample.args = {
-  title: "Modal title",
+  title: 'Modal title',
   children: (
     <>
       <p>Fill information about you</p>
       <Form>
         <FormGroup variant={FormGroupVariant.row}>
           <FormField label="Your name">
-            <TextInput
-              value=""
-              onChange={() => null}
-              placeholder="First name and surname"
-            />
+            <TextInput value="" onChange={() => null} placeholder="First name and surname" />
           </FormField>
           <FormField label="Age">
             <NumberInput value={18} onChange={() => null} />
@@ -251,13 +259,13 @@ ModalExample.args = {
               name="gender"
               options={[
                 {
-                  label: "Male",
-                  value: 0,
+                  label: 'Male',
+                  value: 0
                 },
                 {
-                  label: "Female",
-                  value: 1,
-                },
+                  label: 'Female',
+                  value: 1
+                }
               ]}
               value={0}
               onChange={() => null}
@@ -269,28 +277,28 @@ ModalExample.args = {
   ),
   actions: [
     {
-      label: "Reset",
+      label: 'Reset',
       align: Align.start,
-      onClick: () => null,
+      onClick: () => null
     },
     {
-      label: "Approve",
+      label: 'Approve',
       align: Align.end,
       role: Role.success,
-      onClick: () => null,
-    },
+      onClick: () => null
+    }
   ],
   fluid: false,
-  dark: false,
+  dark: false
 };
 ModalExample.argTypes = {
   size: {
-    control: "select",
-    options: [Size.small, Size.medium, Size.large],
-  },
+    control: 'select',
+    options: [Size.small, Size.medium, Size.large]
+  }
 };
 
 export default {
   component: BoxExample,
-  title: "Containers",
+  title: 'Containers'
 };
