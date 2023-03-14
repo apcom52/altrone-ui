@@ -29,12 +29,12 @@ interface DataTableProps<T extends object> {
   data: T[];
   columns: DataTableColumn<T>[];
   limit?: number;
-  searchBy?: string;
-  sortKeys?: string[];
+  searchBy?: keyof T;
+  sortKeys?: (keyof T)[];
   sortFunc?: (params: DataTableSortFunc<T>) => number;
   searchFunc?: (params: DataTableSearchFunc<T>) => T[];
   filters?: DataTableFilter[];
-  mobileColumns?: string[];
+  mobileColumns?: (keyof T)[];
   className?: string;
   actions?: DataTableAction[];
   striped?: 'odd' | 'even';

@@ -3,8 +3,7 @@ import './tabs-list.scss';
 import clsx from 'clsx';
 import { useResizeObserver } from '../../../hooks';
 import { Icon } from '../../icons';
-import { Align } from '../../../types/Align';
-import { Indicator } from '../../../types';
+import { Indicator, Align } from '../../../types';
 
 export enum TabListVariant {
   default = 'default',
