@@ -25,12 +25,15 @@
 }
 
 .alt-message__description {
-  margin-top: 14px;
   @include useFontSize(body);
 
   *:last-child {
     margin-bottom: 0;
   }
+}
+
+.alt-message__title + .alt-message__description {
+  margin-top: 14px;
 }
 
 .alt-message--role-primary {
