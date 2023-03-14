@@ -64,7 +64,7 @@ export const DataTable = <T extends object>({
   sortFunc = defaultSortFunc,
   sortKeys = [],
   filters = [],
-  mobileColumns = [columns[0].accessor],
+  mobileColumns = columns.length ? [columns[0].accessor] : [],
   className,
   actions = [],
   striped
