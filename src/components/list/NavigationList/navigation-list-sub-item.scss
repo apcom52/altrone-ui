@@ -17,6 +17,10 @@
   @include useFocus();
   font-weight: 500;
 
+  .alt-navigation-list-sub-item__indicator:not(.alt-navigation-list-sub-item__indicator--position-corner):last-child {
+    margin-right: -18px;
+  }
+
   &:hover {
     background-color: var(--surfaceTrasparent);
   }

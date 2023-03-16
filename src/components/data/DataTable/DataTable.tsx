@@ -29,12 +29,12 @@ interface DataTableProps<T extends object> {
   data: T[];
   columns: DataTableColumn<T>[];
   limit?: number;
-  searchBy?: string;
-  sortKeys?: string[];
+  searchBy?: keyof T;
+  sortKeys?: (keyof T)[];
   sortFunc?: (params: DataTableSortFunc<T>) => number;
   searchFunc?: (params: DataTableSearchFunc<T>) => T[];
   filters?: DataTableFilter[];
-  mobileColumns?: string[];
+  mobileColumns?: (keyof T)[];
   className?: string;
   actions?: DataTableAction[];
   selectableActions?: DataTableSelectableAction<T>[];
@@ -73,7 +73,7 @@ export const DataTable = <T extends object>({
   sortFunc = defaultSortFunc,
   sortKeys = [],
   filters = [],
-  mobileColumns = [columns[0].accessor],
+  mobileColumns = columns.length ? [columns[0].accessor] : [],
   className,
   actions = [],
   selectableActions = [],

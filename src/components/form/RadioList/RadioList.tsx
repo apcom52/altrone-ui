@@ -4,34 +4,31 @@ import { Direction, Option } from '../../../types';
 import clsx from 'clsx';
 import './radio-list.scss';
 
-export type Value = number | string | boolean;
-
-interface RadioListProps {
+interface RadioListProps<T = unknown> {
   name: string;
-  value: Value;
-  options: Option[];
-  onChange: (value: Option['value']) => void;
+  value: T;
+  options: Option<T>[];
+  onChange: (value: T) => void;
   direction?: Direction;
   disabled?: boolean;
 }
 
-const RadioList = ({
+const RadioList = <T extends unknown>({
   value,
   options = [],
   disabled = false,
   direction = Direction.horizontal,
   onChange,
   name
-}: RadioListProps) => {
+}: RadioListProps<T>) => {
   return (
     <div
       className={clsx('alt-radio-list', {
         'alt-radio-list--vertical': direction === Direction.vertical
       })}
-      data-testid="alt-test-radiolist"
-    >
+      data-testid="alt-test-radiolist">
       {options.map((option, optionIndex) => (
-        <Radio
+        <Radio<T>
           key={optionIndex}
           checked={option.value === value}
           onChange={onChange}
@@ -44,4 +41,4 @@ const RadioList = ({
   );
 };
 
-export default memo(RadioList);
+export default memo(RadioList) as typeof RadioList;

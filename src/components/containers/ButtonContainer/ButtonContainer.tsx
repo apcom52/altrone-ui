@@ -1,8 +1,7 @@
 import { memo } from 'react';
-import { Direction } from '../../../types';
+import { Direction, Align } from '../../../types';
 import clsx from 'clsx';
 import './button-container.scss';
-import { Align } from '../../../types/Align';
 
 interface ButtonContainerProps extends React.HTMLProps<HTMLDivElement> {
   direction?: Direction;
@@ -25,8 +24,7 @@ const ButtonContainer = ({
         'alt-button-container--align-end': align === Align.end,
         'alt-button-container--mobile-fluid': mobileFluid
       })}
-      data-testid="alt-test-buttoncontainer"
-    >
+      data-testid="alt-test-buttoncontainer">
       {children}
     </div>
   );

@@ -1,13 +1,20 @@
 import { memo, useId } from 'react';
 import { Option } from '../../../types';
 
-export interface RadioProps extends Option {
+export interface RadioProps<T = unknown> extends Option<T> {
   name: string;
   checked: boolean;
-  onChange: (value: Option['value']) => void;
+  onChange: (value: T) => void;
 }
 
-const Radio = ({ name, checked, label, disabled, value, onChange }: RadioProps) => {
+const Radio = <T extends unknown>({
+  name,
+  checked,
+  label,
+  disabled,
+  value,
+  onChange
+}: RadioProps<T>) => {
   const id = useId();
 
   return (
@@ -15,7 +22,7 @@ const Radio = ({ name, checked, label, disabled, value, onChange }: RadioProps) 
       <input
         type="radio"
         name={name}
-        value={value}
+        value={String(value)}
         checked={checked}
         className="alt-radio__input"
         disabled={disabled}
@@ -30,4 +37,4 @@ const Radio = ({ name, checked, label, disabled, value, onChange }: RadioProps) 
   );
 };
 
-export default memo(Radio);
+export default memo(Radio) as typeof Radio;
