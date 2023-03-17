@@ -1,4 +1,3 @@
-import { WithoutDefaultOffsets } from '../../../types';
 import { forwardRef, useMemo, useState } from 'react';
 import { usePopper } from 'react-popper';
 import './floating-box.scss';
@@ -14,7 +13,7 @@ export enum FloatingBoxMobileBehaviour {
   modal = 'modal'
 }
 
-interface FloatingBoxProps extends WithoutDefaultOffsets {
+interface FloatingBoxProps extends React.PropsWithChildren {
   targetElement: HTMLElement | null;
   onClose: () => void;
   offset?: number;
