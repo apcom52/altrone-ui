@@ -8,11 +8,10 @@ import { useToolbarContext } from './Toolbar';
 import { ContextMenu } from '../ContextMenu';
 import { FloatingBox } from '../../containers';
 
-interface ToolbarGroupProps {
+interface ToolbarGroupProps extends React.PropsWithChildren {
   align?: Align;
   fluid?: boolean;
   collapsible?: boolean;
-  children?: ReactNode | ReactNode[];
 }
 
 const ToolbarGroup = ({
@@ -30,7 +29,18 @@ const ToolbarGroup = ({
   const preventRerender = useRef(false);
   const invisibleExpandButton = useRef(null);
   const expandButton = useRef(null);
-  const { width } = useResizeObserver(collapsible ? { current: toolbarRef } : { current: null });
+
+  const isCollapsible =
+    Array.isArray(children) &&
+    children.find((childrenItem) => {
+      if (typeof childrenItem === 'object') {
+        return childrenItem?.props.contextMenu || childrenItem?.props?.content;
+      }
+    })
+      ? false
+      : collapsible;
+
+  const { width } = useResizeObserver(isCollapsible ? { current: toolbarRef } : { current: null });
 
   const onCloseMenu = () => {
     setIsContextVisible(false);
@@ -73,7 +83,7 @@ const ToolbarGroup = ({
 
     preventRerender.current = true;
     setContext(_context);
-  }, [width, collapsible]);
+  }, [width, isCollapsible]);
 
   return (
     <div
@@ -81,11 +91,11 @@ const ToolbarGroup = ({
         'alt-toolbar-group--fluid': fluid,
         'alt-toolbar-group--align-start': align === Align.start,
         'alt-toolbar-group--align-end': align === Align.end,
-        'alt-toolbar-group--collapsible': collapsible
+        'alt-toolbar-group--collapsible': isCollapsible
       })}
       data-testid="alt-test-toolbarGroup"
       ref={groupRef}>
-      {!collapsible
+      {!isCollapsible
         ? children
         : Array.isArray(children)
         ? children.slice(0, children.length - context.length)
@@ -99,7 +109,7 @@ const ToolbarGroup = ({
           onClick={() => setIsContextVisible(true)}
         />
       )}
-      {collapsible && (
+      {isCollapsible && (
         <ToolbarAction
           icon={<Icon i="expand_more" />}
           label="More..."
@@ -108,14 +118,14 @@ const ToolbarGroup = ({
           onClick={() => null}
         />
       )}
-      {collapsible && <div className="alt-toolbar-group--invisible">{children}</div>}
+      {isCollapsible && <div className="alt-toolbar-group--invisible">{children}</div>}
       {isContextVisible && context.length > 0 && (
         <FloatingBox
           placement="bottom"
           targetElement={expandButton.current}
           useRootContainer
           onClose={onCloseMenu}>
-          <ContextMenu onClose={onCloseMenu} menu={context} />
+          <ContextMenu onClose={() => null} menu={context} />
         </FloatingBox>
       )}
     </div>

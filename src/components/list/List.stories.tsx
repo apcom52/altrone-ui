@@ -224,6 +224,16 @@ ToolbarExample.args = {
         <ToolbarAction
           icon={<Icon i="queue_music" />}
           label="Collection"
+          contextMenu={[
+            {
+              title: 'My collection',
+              onClick: () => null
+            },
+            {
+              title: 'Shared collection',
+              onClick: () => null
+            }
+          ]}
           indicator={{ position: 'baseline' }}
         />
         <ToolbarAction
@@ -249,7 +259,20 @@ ToolbarExample.args = {
         <ToolbarAction icon={<Icon i="stop" />} label="Stop" danger />
         <ToolbarAction icon={<Icon i="play_arrow" />} label="Play" />
         <ToolbarAction icon={<Icon i="pause" />} label="Pause" />
-        <ToolbarAction icon={<Icon i="skip_next" />} label="Next song" />
+        <ToolbarAction
+          icon={<Icon i="skip_next" />}
+          label="Next song"
+          contextMenu={[
+            {
+              title: 'My collection',
+              onClick: () => null
+            },
+            {
+              title: 'Shared collection',
+              onClick: () => null
+            }
+          ]}
+        />
       </ToolbarGroup>
 
       <ToolbarGroup>
