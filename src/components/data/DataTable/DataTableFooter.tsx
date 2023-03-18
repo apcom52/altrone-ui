@@ -2,13 +2,15 @@ import { memo } from 'react';
 import './data-table-footer.scss';
 import DataTablePagination from './DataTablePagination';
 import { useDataTableContext } from '../../../contexts';
-import { useLocalization, useWindowSize } from '../../../hooks';
+import { useWindowSize } from '../../../hooks';
 
-const DataTableFooter = () => {
-  const { data, initialData, limit, columns, mobileColumns, selectableMode, selectedRows } =
-    useDataTableContext();
+interface DataTableFooterProps {
+  DataTableFooterStatusComponent: () => JSX.Element;
+}
+
+const DataTableFooter = ({ DataTableFooterStatusComponent }: DataTableFooterProps) => {
+  const { initialData, limit, columns, mobileColumns, selectableMode } = useDataTableContext();
   const { ltePhoneL } = useWindowSize();
-  const t = useLocalization();
 
   return (
     <tfoot>
@@ -24,23 +26,7 @@ const DataTableFooter = () => {
           }>
           <div className="alt-data-table-footer">
             <div className="alt-data-table-footer__status" data-testid="alt-test-datatable-status">
-              {ltePhoneL ? (
-                t('data.dataTable.lines', {
-                  plural: true,
-                  value: data.length,
-                  vars: { count: data.length }
-                })
-              ) : (
-                <>
-                  {t('data.dataTable.showing')}{' '}
-                  {t('data.dataTable.lines', {
-                    plural: true,
-                    value: data.length,
-                    vars: { count: data.length }
-                  })}
-                  {selectedRows.length ? ` (${selectedRows.length} selected)` : ''}
-                </>
-              )}
+              <DataTableFooterStatusComponent />
             </div>
             {initialData.length > limit && (
               <div className="alt-data-table-footer__pagination">
