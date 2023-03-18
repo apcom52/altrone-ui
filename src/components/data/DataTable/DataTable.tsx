@@ -17,6 +17,7 @@ import {
 } from './functions';
 import clsx from 'clsx';
 import { DataTableCellProps } from './DataTableCell';
+import DataTableFooterStatus from './DataTableFooterStatus';
 
 export interface DataTableColumn<T> {
   accessor: keyof T;
@@ -40,6 +41,7 @@ interface DataTableProps<T extends object> {
   selectableActions?: DataTableSelectableAction<T>[];
   striped?: 'odd' | 'even';
   selectable?: boolean;
+  DataTableStatusComponent?: () => JSX.Element;
 }
 
 export interface DataTablePopupActionProps {
@@ -78,7 +80,8 @@ export const DataTable = <T extends object>({
   actions = [],
   selectableActions = [],
   striped,
-  selectable = false
+  selectable = false,
+  DataTableStatusComponent = DataTableFooterStatus
 }: DataTableProps<T>) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
@@ -198,7 +201,7 @@ export const DataTable = <T extends object>({
           <DataTableHeaderRow />
         </thead>
         <DataTableBody />
-        <DataTableFooter />
+        <DataTableFooter DataTableFooterStatusComponent={DataTableStatusComponent} />
       </table>
     </DataTableContext.Provider>
   );
