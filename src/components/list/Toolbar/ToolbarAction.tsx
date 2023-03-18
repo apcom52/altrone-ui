@@ -100,7 +100,17 @@ const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionProps>(
             <ContextMenu menu={contextMenu} onClose={closePopup} />
           </FloatingBox>
         ) : isPopupVisible && content ? (
-          <p>content</p>
+          <FloatingBox
+            targetElement={buttonRef.current}
+            onClose={closePopup}
+            useRootContainer
+            placement="bottom"
+            closeOnAnotherFloatingBoxClick
+            mobileBehaviour={FloatingBoxMobileBehaviour.modal}
+            minWidth={250}
+            useParentWidth>
+            <div className="alt-toolbar-action-popup">{content?.({ closePopup })}</div>
+          </FloatingBox>
         ) : null}
       </>
     );
