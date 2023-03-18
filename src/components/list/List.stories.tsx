@@ -1,6 +1,6 @@
 import { Altrone } from '../../hocs';
 import { Direction, Size, Theme } from '../../types';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Chips,
   NavigationList,
@@ -13,6 +13,8 @@ import {
 import { Align } from '../../types/Align';
 import { Icon } from '../icons';
 import ToolbarAction from './Toolbar/ToolbarAction';
+import { Heading } from '../typography';
+import { Button } from '../button';
 
 const Template = ({ Component, dark, values, value, ...args }) => {
   const [_value, setValue] = useState(values);
@@ -224,6 +226,16 @@ ToolbarExample.args = {
         <ToolbarAction
           icon={<Icon i="queue_music" />}
           label="Collection"
+          contextMenu={[
+            {
+              title: 'My collection',
+              onClick: () => null
+            },
+            {
+              title: 'Shared collection',
+              onClick: () => null
+            }
+          ]}
           indicator={{ position: 'baseline' }}
         />
         <ToolbarAction
@@ -249,7 +261,20 @@ ToolbarExample.args = {
         <ToolbarAction icon={<Icon i="stop" />} label="Stop" danger />
         <ToolbarAction icon={<Icon i="play_arrow" />} label="Play" />
         <ToolbarAction icon={<Icon i="pause" />} label="Pause" />
-        <ToolbarAction icon={<Icon i="skip_next" />} label="Next song" />
+        <ToolbarAction
+          icon={<Icon i="skip_next" />}
+          label="Next song"
+          contextMenu={[
+            {
+              title: 'My collection',
+              onClick: () => null
+            },
+            {
+              title: 'Shared collection',
+              onClick: () => null
+            }
+          ]}
+        />
       </ToolbarGroup>
 
       <ToolbarGroup>
@@ -259,7 +284,21 @@ ToolbarExample.args = {
 
       <ToolbarGroup fluid align={Align.end}>
         <ToolbarAction icon={<Icon i="play_circle" />} label="Play" />
-        <ToolbarAction icon={<Icon i="ios_share" />} label="Share" />
+        <ToolbarAction
+          icon={<Icon i="ios_share" />}
+          label="Share"
+          content={({ closePopup }) => (
+            <>
+              <Heading>Share to...</Heading>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus at autem
+                consequatur debitis ea est, et eum fugit iusto minus natus numquam odio, porro
+                provident quisquam quod soluta velit voluptatum?
+              </p>
+              <Button onClick={closePopup}>OK</Button>
+            </>
+          )}
+        />
         <ToolbarAction icon={<Icon i="search" />} label="Search" />
       </ToolbarGroup>
     </>
