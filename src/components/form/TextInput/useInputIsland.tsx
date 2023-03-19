@@ -1,18 +1,23 @@
 import { useMemo } from 'react';
-import { InputIslandType } from './TextInput';
+import { InputIsland, InputIslandAction, InputIslandType } from './TextInput';
 
-export function useInputIsland(island, icon, text, disabled = false) {
+export function useInputIsland(
+  island?: InputIsland,
+  icon?: JSX.Element,
+  text?: string,
+  disabled = false
+) {
   return useMemo(() => {
     const { type, content } = island || {};
 
     if (text || type === InputIslandType.text) {
-      return <div className="alt-text-input__text-island">{text || content}</div>;
+      return <div className="alt-text-input__text-island">{text || String(content)}</div>;
     } else if (icon || type === InputIslandType.icon) {
-      return <div className="alt-text-input__icon-island">{icon || content}</div>;
+      return <div className="alt-text-input__icon-island">{icon || (content as JSX.Element)}</div>;
     } else if (type === InputIslandType.actions) {
       return (
         <div className="alt-text-input__actions-island">
-          {content?.map((action, actionIndex) => (
+          {(content as InputIslandAction[])?.map((action, actionIndex) => (
             <button
               key={actionIndex}
               title={action.title}
@@ -26,7 +31,7 @@ export function useInputIsland(island, icon, text, disabled = false) {
         </div>
       );
     } else if (type === InputIslandType.components) {
-      return <div className="alt-text-input__components-island">{content}</div>;
+      return <div className="alt-text-input__components-island">{content as JSX.Element}</div>;
     }
 
     return null;
