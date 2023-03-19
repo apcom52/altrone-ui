@@ -3,7 +3,7 @@ import { forwardRef, useMemo, useState } from 'react';
 import { usePopper } from 'react-popper';
 import './floating-box.scss';
 import { useOutsideClick } from 'rooks';
-import { Options } from '@popperjs/core';
+import { Options, State } from '@popperjs/core';
 import { createPortal } from 'react-dom';
 import { useWindowSize } from '../../../hooks';
 import { Modal } from '../Modal';
@@ -30,15 +30,18 @@ interface FloatingBoxProps extends WithoutDefaultOffsets {
   className?: string;
 }
 
-const setPopperWidth = (state, minWidth) => {
-  const targetRefWidth = state.elements.reference.clientWidth;
+const setPopperWidth = (state: State, minWidth: FloatingBoxProps['minWidth']) => {
+  const targetRefWidth = state.elements.reference.getBoundingClientRect().width;
 
   state.elements.popper.style.width = `${
     minWidth ? (targetRefWidth < minWidth ? minWidth : targetRefWidth) : targetRefWidth
   }px`;
 };
 
-const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(
+const FloatingBox = forwardRef<
+  Partial<HTMLDivElement> & { modifiers?: Options['modifiers'] },
+  FloatingBoxProps
+>(
   (
     {
       targetElement,
@@ -74,8 +77,8 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(
       return [0, offset];
     }, [offset]);
 
-    const modifiers = useMemo(() => {
-      const result = [
+    const modifiers = useMemo<Options['modifiers']>(() => {
+      const result: Options['modifiers'] = [
         {
           name: 'offset',
           options: {
@@ -97,10 +100,6 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(
             setPopperWidth(state, minWidth);
           }
         });
-      }
-
-      if (ref) {
-        ref.modifiers = result;
       }
 
       return result;
@@ -160,5 +159,7 @@ const FloatingBox = forwardRef<HTMLDivElement, FloatingBoxProps>(
     );
   }
 );
+
+FloatingBox.displayName = 'FloatingBox';
 
 export default FloatingBox;

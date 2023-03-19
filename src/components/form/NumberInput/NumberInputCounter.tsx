@@ -1,5 +1,5 @@
 import { Icon } from '../../icons';
-import { memo, useCallback } from 'react';
+import { useCallback } from 'react';
 import './number-input-counter.scss';
 
 interface NumberInputCounterProps {
@@ -11,7 +11,7 @@ interface NumberInputCounterProps {
   disabled?: boolean;
 }
 
-const NumberInputCounter = ({
+export const NumberInputCounter = ({
   value,
   onChange,
   min,
@@ -57,5 +57,3 @@ const NumberInputCounter = ({
     </div>
   );
 };
-
-export default memo(NumberInputCounter);

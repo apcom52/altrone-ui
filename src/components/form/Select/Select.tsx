@@ -18,7 +18,7 @@ interface SelectProps<T = unknown>
   value: T;
   options: Option<T>[];
   onChange: (value: T) => void;
-  parents?: OptionParent[];
+  parents?: OptionParent<T>[];
   searchable?: boolean;
   clearable?: boolean;
   searchFunc?: (searchTerm: string, item: Option<T>) => boolean;
@@ -62,13 +62,13 @@ const Select = <T extends unknown>({
   const selectRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [groupedItems, parentKeys]: [Record<string, [OptionParent, ...Option<T>[]]>, string[]] =
+  const [groupedItems, parentKeys]: [Record<string, [OptionParent<T>, ...Option<T>[]]>, string[]] =
     useMemo(() => {
-      const result: Record<string, [OptionParent, ...Option<T>[]]> = {
+      const result: Record<string, [OptionParent<T>, ...Option<T>[]]> = {
         [DEFAULT_KEY]: [
           {
             label: t('form.select.others'),
-            value: null
+            value: null as T
           }
         ]
       };
@@ -91,9 +91,9 @@ const Select = <T extends unknown>({
           if (result[option.parent]) {
             result[option.parent].push(option);
           } else {
-            const parentData: OptionParent = parents?.find((p) => p.value === option.parent) || {
+            const parentData: OptionParent<T> = parents?.find((p) => p.value === option.parent) || {
               label: option.parent,
-              value: option.parent
+              value: option.parent as T
             };
             result[option.parent] = [parentData, option];
           }

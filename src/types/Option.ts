@@ -5,9 +5,9 @@ export interface Option<T extends unknown> {
   parent?: string;
 }
 
-export interface OptionParent {
+export interface OptionParent<T extends unknown> {
   label: string;
-  value: string;
+  value: T;
   disabled?: boolean;
   color?: string;
 }
