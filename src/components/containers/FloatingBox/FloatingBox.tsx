@@ -39,7 +39,7 @@ const setPopperWidth = (state: State, minWidth: FloatingBoxProps['minWidth']) =>
 };
 
 const FloatingBox = forwardRef<
-  HTMLDivElement & { modifiers?: Options['modifiers'] },
+  Partial<HTMLDivElement> & { modifiers?: Options['modifiers'] },
   FloatingBoxProps
 >(
   (
@@ -100,13 +100,6 @@ const FloatingBox = forwardRef<
             setPopperWidth(state, minWidth);
           }
         });
-      }
-
-      if (ref && typeof ref !== 'function' && ref.current) {
-        ref.current = {
-          ...ref.current,
-          modifiers: result
-        };
       }
 
       return result;
