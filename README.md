@@ -1,3 +1,5 @@
+<img alt="Notebook with user intefrace elements" height="256" src="logo.png" title="Altrone UI logo" width="256"/>
+
 # Altrone UI
 
 Altrone UI is a component library for fast developing beautiful and functional web application interfaces.
