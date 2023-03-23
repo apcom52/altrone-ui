@@ -1755,6 +1755,15 @@
     "@rollup/pluginutils" "^5.0.1"
     sucrase "^3.27.0"
 
+"@rollup/plugin-terser@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@rollup/plugin-terser/-/plugin-terser-0.4.0.tgz#4c76249ad337f3eb04ab409332f23717af2c1fbf"
+  integrity sha512-Ipcf3LPNerey1q9ZMjiaWHlNPEHNU/B5/uh9zXLltfEQ1lVSLLeZSgAtTPWGyw8Ip1guOeq+mDtdOlEj/wNxQw==
+  dependencies:
+    serialize-javascript "^6.0.0"
+    smob "^0.0.6"
+    terser "^5.15.1"
+
 "@rollup/plugin-typescript@8.3.3":
   version "8.3.3"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-typescript/-/plugin-typescript-8.3.3.tgz#eee7edab9cfc064f1cfd16570492693cf1432215"
@@ -11401,6 +11410,11 @@ slash@^3.0.0:
   resolved "https://registry.yarnpkg.com/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
 
+smob@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/smob/-/smob-0.0.6.tgz#09b268fea916158a2781c152044c6155adbb8aa1"
+  integrity sha512-V21+XeNni+tTyiST1MHsa84AQhT1aFZipzPpOFAVB8DkHzwJyjjAmt9bgwnuZiZWnIbMo2duE29wybxv/7HWUw==
+
 snapdragon-node@^2.0.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/snapdragon-node/-/snapdragon-node-2.1.1.tgz#6c175f86ff14bdb0724563e8f3c1b021a286853b"
@@ -11980,6 +11994,16 @@ terser@^5.0.0, terser@^5.14.1, terser@^5.3.4:
   version "5.16.0"
   resolved "https://registry.yarnpkg.com/terser/-/terser-5.16.0.tgz#29362c6f5506e71545c73b069ccd199bb28f7f54"
   integrity sha512-KjTV81QKStSfwbNiwlBXfcgMcOloyuRdb62/iLFPGBcVNF4EXjhdYBhYHmbJpiBrVxZhDvltE11j+LBQUxEEJg==
+  dependencies:
+    "@jridgewell/source-map" "^0.3.2"
+    acorn "^8.5.0"
+    commander "^2.20.0"
+    source-map-support "~0.5.20"
+
+terser@^5.15.1:
+  version "5.16.6"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-5.16.6.tgz#f6c7a14a378ee0630fbe3ac8d1f41b4681109533"
+  integrity sha512-IBZ+ZQIA9sMaXmRZCUMDjNH0D5AQQfdn4WUjHL0+1lF4TP1IHRJbrhb6fNaXWikrYQTSkb7SLxkeXAiy1p7mbg==
   dependencies:
     "@jridgewell/source-map" "^0.3.2"
     acorn "^8.5.0"
