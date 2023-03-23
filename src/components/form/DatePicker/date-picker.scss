@@ -36,6 +36,9 @@
   color: var(--placeholderText);
   text-align: left;
   white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow: hidden;
 }
 
 .alt-date-picker__icon {
