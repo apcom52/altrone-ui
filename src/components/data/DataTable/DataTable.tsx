@@ -32,8 +32,8 @@ interface DataTableProps<T extends object> {
   searchBy?: keyof T;
   sortKeys?: (keyof T)[];
   sortFunc?: (params: DataTableSortFunc<T>) => number;
-  searchFunc?: (params: DataTableSearchFunc<T>) => T[];
-  filters?: DataTableFilter[];
+  searchFunc?: (params: DataTableSearchFunc<T>) => boolean;
+  filters?: DataTableFilter<T>[];
   mobileColumns?: (keyof T)[];
   className?: string;
   actions?: DataTableAction[];
@@ -59,7 +59,7 @@ export const DataTable = <T extends object>({
   data = [],
   columns = [],
   limit = 20,
-  searchBy = '',
+  searchBy,
   searchFunc = defaultSearchFunc,
   sortFunc = defaultSortFunc,
   sortKeys = [],
@@ -71,9 +71,9 @@ export const DataTable = <T extends object>({
 }: DataTableProps<T>) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const [sortBy, setSortBy] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<keyof T | null>(null);
   const [sortType, setSortType] = useState<Sort>(Sort.asc);
-  const [appliedFilters, setAppliedFilters] = useState<DataTableAppliedFilter[]>([]);
+  const [appliedFilters, setAppliedFilters] = useState<DataTableAppliedFilter<T>[]>([]);
 
   const filteredData = useMemo(() => {
     let result = [...data];
