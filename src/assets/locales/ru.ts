@@ -44,7 +44,7 @@ export default {
       chooseYear: 'Выберите год',
       today: 'Сегодня',
       currentMonth: 'Текущий месяц',
-      placeholder: 'Выберите дату'
+      placeholder: 'Выберите дату please'
     },
     select: {
       placeholder: 'Выберите значение',
