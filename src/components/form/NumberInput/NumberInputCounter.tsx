@@ -11,7 +11,7 @@ interface NumberInputCounterProps {
   disabled?: boolean;
 }
 
-const NumberInputCounter = ({
+export const NumberInputCounter = ({
   value,
   onChange,
   min,
@@ -77,5 +77,3 @@ const NumberInputCounter = ({
     </div>
   );
 };
-
-export default memo(NumberInputCounter);

@@ -1,6 +1,6 @@
 import { InputIslandType, TextInput, TextInputProps } from '../index';
 import { memo, useCallback, useEffect, useState } from 'react';
-import NumberInputCounter from './NumberInputCounter';
+import { NumberInputCounter } from './NumberInputCounter';
 import { NumberFormatValues, NumericFormat, OnValueChange } from 'react-number-format';
 
 interface NumberInputProps

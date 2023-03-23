@@ -8,7 +8,7 @@ export interface DataTableSearchFunc<T> {
 }
 
 export const defaultSearchFunc = <T>({ item, field, query }: DataTableSearchFunc<T>) => {
-  return item[field]?.toString().toLowerCase().startsWith(query.toLowerCase());
+  return Boolean(item[field]?.toString().toLowerCase().startsWith(query.toLowerCase()));
 };
 
 export interface DataTableSortFunc<T> {

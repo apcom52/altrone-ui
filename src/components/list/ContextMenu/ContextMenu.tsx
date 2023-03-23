@@ -31,6 +31,7 @@ const ContextMenu = ({ menu, onClose }: ContextMenuComponentProps) => {
     <div className="alt-context-menu-list" data-testid="alt-test-contextMenu">
       {selectedParentItem && [
         <ContextMenuItem
+          key={-1}
           icon={<Icon i="arrow_back_ios" />}
           title={t('common.back')}
           onClick={() => setSelectedParentItem(null)}

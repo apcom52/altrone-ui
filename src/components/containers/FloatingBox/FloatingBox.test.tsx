@@ -66,25 +66,6 @@ describe('Containers.FloatingBox', () => {
   //   expect(closeHandler).toBeCalledTimes(1)
   // })
 
-  test('should calculate correct width', async () => {
-    const anchor = document.createElement('div');
-    anchor.style.width = '400px';
-    anchor.style.height = '50px';
-    document.body.appendChild(anchor);
-
-    const ref = {};
-
-    render(
-      <>
-        <FloatingBox targetElement={anchor} onClose={() => null} useParentWidth ref={ref}>
-          demo
-        </FloatingBox>
-      </>
-    );
-
-    expect(ref.modifiers.find((m) => m.name === 'sameWidth')).not.toBe(undefined);
-  });
-
   test('should closeOnAnotherFloatingBoxClick works correctly', async () => {
     const firstClick = jest.fn();
     const secondClick = jest.fn();

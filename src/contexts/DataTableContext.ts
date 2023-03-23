@@ -2,16 +2,16 @@ import { createContext, useContext } from 'react';
 import { Sort } from '../types';
 import { DataTableColumn } from '../components/data/DataTable';
 
-export interface DataTableFilter {
-  accessor: string;
+export interface DataTableFilter<T> {
+  accessor: keyof T;
   type: 'select' | 'checkboxList';
   label?: string;
   defaultValue?: unknown;
 }
 
-export interface DataTableAppliedFilter<T extends unknown> {
-  accessor: string;
-  value: T | T[];
+export interface DataTableAppliedFilter<T> {
+  accessor: keyof T;
+  value: any | any[];
 }
 
 export interface DataTableContextType<T> {
