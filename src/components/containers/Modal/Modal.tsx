@@ -13,7 +13,7 @@ import './modal.scss';
 import { Icon } from '../../icons';
 import { Button } from '../../button';
 import clsx from 'clsx';
-import { useWindowSize } from '../../../hooks';
+import { useLocalization, useWindowSize } from '../../../hooks';
 import ReactDOM from 'react-dom';
 
 export interface ModalAction {
@@ -56,6 +56,7 @@ const Modal = ({
   className
 }: ModalProps) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize();
+  const t = useLocalization();
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -171,7 +172,7 @@ const Modal = ({
                 onClick={handleClose}
                 className="alt-modal__cancel"
                 data-testid="alt-test-modal-cancel">
-                Cancel
+                {t('common.cancel')}
               </Button>
             )}
             {renderActions(rightActions)}
