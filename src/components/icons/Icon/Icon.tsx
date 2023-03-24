@@ -1,6 +1,5 @@
 import { memo } from 'react';
 import './icon.scss';
-import { Offset } from '../../../hooks/useOffset/useOffset';
 import clsx from 'clsx';
 
 type MaterialIconStyle = 'outlined' | 'rounded' | 'sharp';
@@ -9,8 +8,6 @@ interface IconProps {
   i: string;
   size?: number;
   className?: string;
-  margin?: Offset;
-  padding?: Offset;
   style?: MaterialIconStyle;
 }
 
