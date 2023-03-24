@@ -13,7 +13,7 @@ import './button.scss';
 import { ContextMenu } from '../../list';
 
 export enum ButtonVariant {
-  default,
+  default = '',
   borders = 'borders',
   transparent = 'transparent',
   text = 'text'

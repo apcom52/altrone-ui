@@ -32,6 +32,8 @@ const Textarea = ({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className="alt-textarea"
+          disabled={disabled}
+          required={required}
           {...props}
         />
         {required && <div className="alt-text-input__required-mark">*</div>}
