@@ -4,6 +4,8 @@ import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import scss from 'rollup-plugin-scss';
 import dts from 'rollup-plugin-dts';
+import terser from '@rollup/plugin-terser';
+import copy from 'rollup-plugin-copy';
 
 const packageJson = require('./package.json');
 
@@ -31,18 +33,20 @@ export default [
         tsconfig: './tsconfig.json',
         exclude: ['**/*.test.tsx', '**/*.stories.tsx']
       }),
-      scss({ input: 'src/index.scss' })
-      // sucrase({
-      //   exclude: ['node_modules/**'],
-      //   transforms: ['typescript', 'jsx'],
-      // }),
-      // terser(), //minification,
-      // copy({
-      //   targets: [{
-      //     src: 'src/assets',
-      //     dest: 'dist'
-      //   }]
-      // })
+      scss({
+        input: 'src/index.scss',
+        output: 'dist/index.css',
+        outputStyle: 'compressed'
+      }),
+      terser(),
+      copy({
+        targets: [
+          {
+            src: 'src/assets',
+            dest: 'dist'
+          }
+        ]
+      })
     ],
     external: ['react', 'react-dom']
   },
@@ -52,15 +56,4 @@ export default [
     external: [/\.scss$/],
     plugins: [dts()]
   }
-  // {
-  //   input: 'dist/cjs/index.js',
-  //   plugins: [
-  //     minify()
-  //   ]
-  // }
-  // {
-  //   input: "dist/esm/types/index.d.ts",
-  //   output: [{ file: "dist/index.d.ts", format: "esm" }],
-  //   plugins: [dts()],
-  // },
 ];
