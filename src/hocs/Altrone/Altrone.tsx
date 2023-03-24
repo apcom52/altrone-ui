@@ -18,12 +18,6 @@ export const Altrone: FC<PropsWithChildren<Partial<ThemeConfig>>> = ({
     locale = 'en-US';
   }
 
-  // let themeConfig = useThemeContext() || {}
-  //
-  // console.log(themeConfig);
-  //
-  // let isFirstWrap = Boolean(themeConfig.locale)
-
   let isFirstWrap = true;
 
   return isFirstWrap ? (

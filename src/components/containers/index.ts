@@ -1,4 +1,3 @@
-export { Box } from './Box';
 export { FloatingBox, FloatingBoxMobileBehaviour } from './FloatingBox';
 export { Form, FormGroup, FormGroupVariant, FormField } from './Form';
 export { Modal, ModalAction } from './Modal';

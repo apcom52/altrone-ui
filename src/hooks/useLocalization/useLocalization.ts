@@ -1,6 +1,6 @@
 import { useThemeContext } from '../../contexts';
 import { useCallback, useMemo } from 'react';
-import { get } from 'lodash';
+import get from 'lodash-es/get';
 import { en, ru } from '../../assets/locales';
 
 type translationOptions = {

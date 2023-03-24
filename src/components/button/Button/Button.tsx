@@ -1,4 +1,4 @@
-import { forwardRef, memo, MouseEventHandler, useCallback, useRef, useState } from 'react';
+import React, { forwardRef, memo, MouseEventHandler, useCallback, useRef, useState } from 'react';
 import {
   ContextMenuType as ContextMenuType,
   Indicator,
@@ -8,7 +8,7 @@ import {
   WithoutDefaultOffsets
 } from '../../../types';
 import clsx from 'clsx';
-import { Box, FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
+import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import './button.scss';
 import { ContextMenu } from '../../list';
 
@@ -74,41 +74,41 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       setIsDropdownVisible(false);
     }, []);
 
-    return (
+    return React.createElement(
+      ButtonComponents[href ? 1 : 0],
+      {
+        className: clsx('alt-button', className, {
+          [`alt-button--role-${role}`]: role !== Role.default,
+          [`alt-button--variant-${variant}`]: variant !== ButtonVariant.default,
+          [`alt-button--size-${size}`]: size !== Size.medium,
+          'alt-button--fluid': fluid,
+          'alt-button--icon': isIcon
+        }),
+        ref: (node: HTMLButtonElement) => {
+          buttonRef.current = node;
+          if (typeof ref === 'function') {
+            ref(node);
+          } else if (ref) {
+            ref.current = node;
+          }
+        },
+        href,
+        type: href ? undefined : type,
+        onClick: isDropdownButton ? showDropdown : onClick,
+        ...props
+      },
       <>
-        <Box
-          tagName={ButtonComponents[href ? 1 : 0] as keyof JSX.IntrinsicElements}
-          className={clsx('alt-button', className, {
-            [`alt-button--role-${role}`]: role !== Role.default,
-            [`alt-button--variant-${variant}`]: variant !== ButtonVariant.default,
-            [`alt-button--size-${size}`]: size !== Size.medium,
-            'alt-button--fluid': fluid,
-            'alt-button--icon': isIcon
-          })}
-          ref={(node: HTMLButtonElement) => {
-            buttonRef.current = node;
-            if (typeof ref === 'function') {
-              ref(node);
-            } else if (ref) {
-              ref.current = node;
-            }
-          }}
-          href={href}
-          onClick={isDropdownButton ? showDropdown : onClick}
-          type={href ? undefined : type}
-          {...props}>
-          {leftIcon ? <span className="alt-button__leftIcon">{leftIcon}</span> : null}
-          {children}
-          {indicator && (
-            <div
-              className={clsx('alt-button__indicator', {
-                'alt-button__indicator--position-corner': indicator.position === 'corner'
-              })}>
-              {indicator.value}
-            </div>
-          )}
-          {rightIcon ? <span className="alt-button__rightIcon">{rightIcon}</span> : null}
-        </Box>
+        {leftIcon ? <span className="alt-button__leftIcon">{leftIcon}</span> : null}
+        {children}
+        {indicator && (
+          <div
+            className={clsx('alt-button__indicator', {
+              'alt-button__indicator--position-corner': indicator.position === 'corner'
+            })}>
+            {indicator.value}
+          </div>
+        )}
+        {rightIcon ? <span className="alt-button__rightIcon">{rightIcon}</span> : null}
         {isDropdownVisible ? (
           <FloatingBox
             targetElement={buttonRef.current}

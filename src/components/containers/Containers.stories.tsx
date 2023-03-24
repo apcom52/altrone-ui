@@ -1,12 +1,4 @@
-import {
-  Box,
-  ButtonContainer,
-  Form,
-  FormField,
-  FormGroup,
-  FormGroupVariant,
-  Modal
-} from '../index';
+import { ButtonContainer, Form, FormField, FormGroup, FormGroupVariant, Modal } from '../index';
 import { Altrone } from '../../hocs';
 import { Align, Direction, Role, Size, Theme } from '../../types';
 import { useState } from 'react';
@@ -194,14 +186,6 @@ const ModalTemplate = (args) => {
   );
 };
 
-export const BoxExample = Template.bind({});
-BoxExample.args = {
-  Component: Box,
-  tagName: 'div',
-  children: 'Hello world',
-  margin: 5
-};
-
 export const ButtonContainerExample = Template.bind({});
 ButtonContainerExample.args = {
   Component: ButtonContainer,
@@ -299,6 +283,6 @@ ModalExample.argTypes = {
 };
 
 export default {
-  component: BoxExample,
+  component: FormExample,
   title: 'Containers'
 };
