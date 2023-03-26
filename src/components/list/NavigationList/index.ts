@@ -1,1 +1,1 @@
-export { default as NavigationList } from './NavigationList';
+export { default as NavigationList, NAVIGATION_LIST_SEPARATOR } from './NavigationList';
