@@ -11,6 +11,7 @@ import { Sort } from '../../../types';
 import { Altrone } from '../../../hocs';
 import ReactDOM from 'react-dom';
 import { Icon } from '../../icons';
+import { TEST_MATCH_MEDIA_FN } from '../../../constants/_testUtils';
 
 const DATA = [
   {
@@ -92,6 +93,7 @@ class ResizeObserver {
 describe('Data.DataTable', () => {
   beforeEach(() => {
     window.ResizeObserver = ResizeObserver;
+    window.matchMedia = TEST_MATCH_MEDIA_FN;
 
     ReactDOM.createPortal = jest.fn((element, node) => {
       return element;
