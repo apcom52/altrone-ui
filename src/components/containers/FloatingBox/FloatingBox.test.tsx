@@ -3,6 +3,7 @@ import '@testing-library/jest-dom';
 import { FloatingBox } from './index';
 import { Button } from '../../button';
 import { Altrone } from '../../../hocs';
+import { TEST_MATCH_MEDIA_FN } from '../../../constants/_testUtils';
 
 describe('Containers.FloatingBox', () => {
   test('should returns null in target is undefined', () => {
@@ -69,6 +70,8 @@ describe('Containers.FloatingBox', () => {
   test('should closeOnAnotherFloatingBoxClick works correctly', async () => {
     const firstClick = jest.fn();
     const secondClick = jest.fn();
+
+    window.matchMedia = TEST_MATCH_MEDIA_FN;
 
     render(
       <Altrone>
