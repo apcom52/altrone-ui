@@ -481,6 +481,7 @@ NavigationListExample.args = {
         position: 'corner'
       }
     },
+    '-',
     {
       label: 'Settings',
       value: 'settings',

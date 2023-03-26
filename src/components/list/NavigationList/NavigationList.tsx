@@ -7,6 +7,8 @@ import clsx from 'clsx';
 import { ContextMenuType, Indicator, Role, Size } from '../../../types';
 import { Button, ButtonVariant } from '../../button';
 
+export const NAVIGATION_LIST_SEPARATOR = '-';
+
 interface SubSubNavigationItem {
   label: string;
   value: unknown;
@@ -51,7 +53,7 @@ export interface NavigationSubSubItemProps
     SubSubNavigationItem {}
 
 interface NavigationListProps {
-  list: NavigationItem[];
+  list: (NavigationItem | '-')[];
   selected: unknown;
   onChange: (selectedValue: unknown) => void;
   title?: string;
@@ -75,6 +77,10 @@ const NavigationList = ({
 }: NavigationListProps) => {
   const [selectedItem, selectedSubItem, selectedSubSubItem] = useMemo(() => {
     for (const item of list) {
+      if (item === NAVIGATION_LIST_SEPARATOR) {
+        continue;
+      }
+
       if (item.value === selected) {
         return [item.value, null, null];
       }
@@ -105,7 +111,9 @@ const NavigationList = ({
     }
 
     if (selectedItem && !selectedSubItem) {
-      const firstLevelItem = list.find((item) => item.value === selectedItem);
+      const firstLevelItem = list.find(
+        (item) => item !== NAVIGATION_LIST_SEPARATOR && item.value === selectedItem
+      ) as NavigationItem | undefined;
 
       if (firstLevelItem && firstLevelItem.submenu?.length) {
         onChange(firstLevelItem.submenu?.[0].value);
@@ -114,7 +122,9 @@ const NavigationList = ({
     }
 
     if (selectedItem && selectedSubItem && !selectedSubSubItem) {
-      const firstLevelItem = list.find((item) => item.value === selectedItem);
+      const firstLevelItem = list.find(
+        (item) => item !== NAVIGATION_LIST_SEPARATOR && item.value === selectedItem
+      ) as NavigationItem | undefined;
 
       if (!firstLevelItem) {
         return;
@@ -147,6 +157,10 @@ const NavigationList = ({
       )}
       <nav className="alt-navigation-list__navigation">
         {list.map((item, itemIndex) => {
+          if (item === NAVIGATION_LIST_SEPARATOR) {
+            return <div key={itemIndex} className="alt-navigation-list__separator" />;
+          }
+
           const itemProps: NavigationItemProps = {
             selected: item.value === selectedItem,
             onClick: () => onChange(item.value),
