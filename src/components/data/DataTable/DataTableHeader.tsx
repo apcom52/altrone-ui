@@ -94,7 +94,7 @@ const DataTableHeader = <T extends object>({
 
   return (
     <>
-      <tr className="alt-data-table-header-wrapper">
+      <tr className="alt-data-table-header-wrapper" data-testid="alt-test-datatable-header">
         <th
           colSpan={
             ltePhoneL

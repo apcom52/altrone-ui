@@ -64,7 +64,7 @@ const DATA = [
   }
 ];
 
-const COLUMNS: DataTableColumn[] = [
+const COLUMNS: DataTableColumn<typeof DATA[0]>[] = [
   {
     accessor: 'id',
     label: '#'
@@ -568,5 +568,130 @@ describe('Data.DataTable', () => {
 
     searchField = screen.getByRole('textbox');
     expect(searchField).toHaveValue('');
+  });
+
+  test('should show header if either selectable or actions prop passed', () => {
+    const { rerender } = render(
+      <Altrone>
+        <DataTable
+          data={DATA}
+          columns={COLUMNS}
+          actions={[
+            {
+              label: 'Test',
+              icon: <></>,
+              onClick: () => null
+            }
+          ]}
+        />
+      </Altrone>
+    );
+
+    expect(screen.getByTestId('alt-test-datatable-header')).toBeInTheDocument();
+
+    rerender(
+      <Altrone>
+        <DataTable data={DATA} columns={COLUMNS} selectable />
+      </Altrone>
+    );
+
+    expect(screen.getByTestId('alt-test-datatable-header')).toBeInTheDocument();
+
+    rerender(
+      <Altrone>
+        <DataTable data={DATA} columns={COLUMNS} />
+      </Altrone>
+    );
+
+    expect(screen.queryByTestId('alt-test-datatable-header')).not.toBeInTheDocument();
+  });
+
+  test('should selectable mode works correctly', async () => {
+    const { rerender } = render(
+      <Altrone>
+        <DataTable data={DATA} columns={COLUMNS} selectable />
+      </Altrone>
+    );
+
+    const selectableAction = screen.getByText('check_box');
+
+    expect(selectableAction).toBeInTheDocument();
+    await waitFor(() => fireEvent.click(selectableAction));
+
+    rerender(
+      <Altrone>
+        <DataTable data={DATA} columns={COLUMNS} selectable />
+      </Altrone>
+    );
+
+    const checkboxes = screen.getAllByRole('checkbox');
+
+    expect(checkboxes).toHaveLength(6);
+
+    await waitFor(() => fireEvent.click(checkboxes[1]));
+
+    rerender(
+      <Altrone>
+        <DataTable data={DATA} columns={COLUMNS} selectable />
+      </Altrone>
+    );
+
+    expect(screen.getAllByTestId('alt-test-datatable-row')[1]).toHaveClass(
+      'alt-data-table__row--selected'
+    );
+  });
+
+  test('should selectable actions works correctly', async () => {
+    let value: typeof DATA = [];
+
+    const { rerender } = render(
+      <Altrone>
+        <DataTable
+          data={DATA}
+          columns={COLUMNS}
+          selectable
+          selectableActions={[
+            {
+              icon: <></>,
+              label: 'Test',
+              onClick: (selectedRows) => (value = selectedRows)
+            }
+          ]}
+        />
+      </Altrone>
+    );
+
+    const selectableAction = screen.getByText('check_box');
+
+    expect(selectableAction).toBeInTheDocument();
+    await waitFor(() => fireEvent.click(selectableAction));
+
+    rerender(
+      <Altrone>
+        <DataTable
+          data={DATA}
+          columns={COLUMNS}
+          selectable
+          selectableActions={[
+            {
+              icon: <></>,
+              label: 'Test',
+              onClick: (selectedRows) => (value = selectedRows)
+            }
+          ]}
+        />
+      </Altrone>
+    );
+
+    const checkboxes = screen.getAllByRole('checkbox');
+
+    await waitFor(() => fireEvent.click(checkboxes[1]));
+    await waitFor(() => fireEvent.click(checkboxes[3]));
+
+    const applyButton = screen.getByText('Test');
+
+    await waitFor(() => fireEvent.click(applyButton));
+
+    expect(value.map((v) => v.id)).toStrictEqual([2, 4]);
   });
 });
