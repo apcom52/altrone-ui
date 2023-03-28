@@ -151,7 +151,7 @@ export const DataTable = <T extends object>({
     }
   }, [selectableMode]);
 
-  const isHeaderVisible = sortKeys.length || filters.length || searchBy;
+  const isHeaderVisible = sortKeys.length || filters.length || searchBy || selectable || actions?.length;
 
   return (
     <DataTableContext.Provider
