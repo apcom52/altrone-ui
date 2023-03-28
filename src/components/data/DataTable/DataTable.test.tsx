@@ -694,4 +694,35 @@ describe('Data.DataTable', () => {
 
     expect(value.map((v) => v.id)).toStrictEqual([2, 4]);
   });
+
+  test('should DataTableStatusComponent renders correctly', () => {
+    render(
+      <DataTable
+        data={DATA}
+        columns={COLUMNS}
+        DataTableStatusComponent={() => <div>footer status</div>}
+      />
+    );
+
+    expect(screen.getByText('footer status')).toBeInTheDocument();
+  });
+
+  test('should DataTableAction be disabled', () => {
+    render(
+      <DataTable
+        data={DATA}
+        columns={COLUMNS}
+        actions={[
+          {
+            label: 'Disabled action',
+            disabled: true,
+            icon: <></>,
+            onClick: () => null
+          }
+        ]}
+      />
+    );
+
+    expect(screen.getByText('Disabled action')).toHaveAttribute('disabled', '');
+  });
 });
