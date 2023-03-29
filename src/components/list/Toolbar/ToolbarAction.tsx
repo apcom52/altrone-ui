@@ -55,7 +55,7 @@ const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionProps>(
 
     const closePopup = useCallback(() => {
       setIsPopupVisible(false);
-    });
+    }, []);
 
     return (
       <>

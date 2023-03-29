@@ -643,6 +643,7 @@ describe('Data.DataTable', () => {
 
   test('should selectable actions works correctly', async () => {
     let value: typeof DATA = [];
+    let contextMenuValue: typeof DATA = [];
 
     const { rerender } = render(
       <Altrone>
@@ -653,8 +654,18 @@ describe('Data.DataTable', () => {
           selectableActions={[
             {
               icon: <></>,
-              label: 'Test',
+              label: 'Click test',
               onClick: (selectedRows) => (value = selectedRows)
+            },
+            {
+              icon: <></>,
+              label: 'ContextMenu test',
+              contextMenu: [
+                {
+                  title: 'execute context',
+                  onClick: (selectedRows) => (contextMenuValue = selectedRows as typeof DATA)
+                }
+              ]
             }
           ]}
         />
@@ -675,8 +686,18 @@ describe('Data.DataTable', () => {
           selectableActions={[
             {
               icon: <></>,
-              label: 'Test',
+              label: 'Click test',
               onClick: (selectedRows) => (value = selectedRows)
+            },
+            {
+              icon: <></>,
+              label: 'ContextMenu test',
+              contextMenu: [
+                {
+                  title: 'execute context',
+                  onClick: (selectedRows) => (contextMenuValue = selectedRows as typeof DATA)
+                }
+              ]
             }
           ]}
         />
@@ -688,11 +709,122 @@ describe('Data.DataTable', () => {
     await waitFor(() => fireEvent.click(checkboxes[1]));
     await waitFor(() => fireEvent.click(checkboxes[3]));
 
-    const applyButton = screen.getByText('Test');
+    const applyButton = screen.getByText('Click test');
 
     await waitFor(() => fireEvent.click(applyButton));
 
     expect(value.map((v) => v.id)).toStrictEqual([2, 4]);
+
+    rerender(
+      <Altrone>
+        <DataTable
+          data={DATA}
+          columns={COLUMNS}
+          selectable
+          selectableActions={[
+            {
+              icon: <></>,
+              label: 'Click test',
+              onClick: (selectedRows) => (value = selectedRows)
+            },
+            {
+              icon: <></>,
+              label: 'ContextMenu test',
+              contextMenu: [
+                {
+                  title: 'execute context',
+                  onClick: (selectedRows) => (contextMenuValue = selectedRows as typeof DATA)
+                }
+              ]
+            }
+          ]}
+        />
+      </Altrone>
+    );
+
+    const contextMenu = screen.getByText('ContextMenu test');
+
+    await waitFor(() => fireEvent.click(contextMenu));
+
+    rerender(
+      <Altrone>
+        <DataTable
+          data={DATA}
+          columns={COLUMNS}
+          selectable
+          selectableActions={[
+            {
+              icon: <></>,
+              label: 'Click test',
+              onClick: (selectedRows) => (value = selectedRows)
+            },
+            {
+              icon: <></>,
+              label: 'ContextMenu test',
+              contextMenu: [
+                {
+                  title: 'execute context',
+                  onClick: (selectedRows) => (contextMenuValue = selectedRows as typeof DATA)
+                }
+              ]
+            },
+            {
+              icon: <></>,
+              label: 'Popup test',
+              content: ({ selectedRows }) => (
+                <div>{JSON.stringify(selectedRows?.map((v) => v.id))}</div>
+              )
+            }
+          ]}
+        />
+      </Altrone>
+    );
+
+    const contextMenuAction = await screen.findByText('execute context');
+    await waitFor(() => fireEvent.click(contextMenuAction));
+
+    expect(contextMenuValue.map((v) => v.id)).toStrictEqual([2, 4]);
+
+    rerender(
+      <Altrone>
+        <DataTable
+          data={DATA}
+          columns={COLUMNS}
+          selectable
+          selectableActions={[
+            {
+              icon: <></>,
+              label: 'Click test',
+              onClick: (selectedRows) => (value = selectedRows)
+            },
+            {
+              icon: <></>,
+              label: 'ContextMenu test',
+              contextMenu: [
+                {
+                  title: 'execute context',
+                  onClick: (selectedRows) => (contextMenuValue = selectedRows as typeof DATA)
+                }
+              ]
+            },
+            {
+              icon: <></>,
+              label: 'Popup test',
+              content: ({ selectedRows }) => (
+                <div>{JSON.stringify(selectedRows?.map((v) => v.id))}</div>
+              )
+            }
+          ]}
+        />
+      </Altrone>
+    );
+
+    const popup = await screen.findByText('Popup test');
+    await waitFor(() => fireEvent.click(popup));
+
+    const popupContent = await screen.findByText('[2,4]');
+
+    expect(popupContent).toBeInTheDocument();
   });
 
   test('should DataTableStatusComponent renders correctly', () => {
@@ -705,6 +837,25 @@ describe('Data.DataTable', () => {
     );
 
     expect(screen.getByText('footer status')).toBeInTheDocument();
+  });
+
+  test('should DataTableAction be disabled', () => {
+    render(
+      <DataTable
+        data={DATA}
+        columns={COLUMNS}
+        actions={[
+          {
+            label: 'Disabled action',
+            disabled: true,
+            icon: <></>,
+            onClick: () => null
+          }
+        ]}
+      />
+    );
+
+    expect(screen.getByText('Disabled action')).toHaveAttribute('disabled', '');
   });
 
   test('should DataTableAction be disabled', () => {
