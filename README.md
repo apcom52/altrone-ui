@@ -1,4 +1,4 @@
-<img alt="Notebook with user intefrace elements" height="256" src="https://sun9-31.userapi.com/impg/s19Q5_yudkmmNORtYWsqk7UZe4XMdxGnkpnJ4A/_ddvX48LOh4.jpg?size=512x512&quality=95&sign=3ec78d915b5602f650a203faf7d04de1&type=album" title="Altrone UI logo" width="256"/>
+<img alt="Notebook with user interface elements" height="256" src="https://raw.githubusercontent.com/apcom52/altrone-ui/v1.3/logo.png" title="Altrone UI logo" width="256"/>
 
 # Altrone UI
 
