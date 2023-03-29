@@ -21,6 +21,16 @@ Altrone UI is a component library for fast developing beautiful and functional w
 | July - September 2023               | Updates for 2.0  | DatePicker ranges, new features for FormField, accessibility features                                                                                        |
 | October - December 2023             | 3.0 Release  | Charts, ColorPicker, Range Slider, Notification, new features for another components, new accessibility features                                             |
 
+## Versions
+
+| Tag                          | Example        | Description               |
+|------------------------------|----------------|---------------------------|
+| **Stable release**           | `@1.3.0`         | Stable release of Altrone |
+| **Release Candidate**        | `@1.3.0-rc`      | A pre-release build that contains all the necessary changes for the release. The main difference from the stable version is that not all new features have been covered in tests yet. **Not recommended for production**                        |
+| **Beta version**             | `@1.3.0-beta.2`  | A set of updates and new features from dev builds that can be used in test projects and to get to know new components. **Not recommended for production**                          |
+| **Development weekly build** | `@1.3.0-dev.2313` | Weekly collection of changes. For enthusiasts. Some features may be incomplete or not work at all. **Forbidden to use in production**                          |
+
+
 ## Installation
 
 To install the library, enter the command:
@@ -90,6 +100,7 @@ To run storybook enter the command:
 - `<Heading />`
 - `<Blockquote />`
 - `<Paragraph />`
+- `<Message />`
 
 ## License
 
