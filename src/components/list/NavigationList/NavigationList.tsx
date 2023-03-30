@@ -158,7 +158,13 @@ const NavigationList = ({
       <nav className="alt-navigation-list__navigation">
         {list.map((item, itemIndex) => {
           if (item === NAVIGATION_LIST_SEPARATOR) {
-            return <div key={itemIndex} className="alt-navigation-list__separator" />;
+            return (
+              <div
+                key={itemIndex}
+                className="alt-navigation-list__separator"
+                data-testid="alt-test-navigationList-separator"
+              />
+            );
           }
 
           const itemProps: NavigationItemProps = {

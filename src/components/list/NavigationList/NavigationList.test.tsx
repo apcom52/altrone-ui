@@ -194,4 +194,12 @@ describe('List.NavigationList', () => {
 
     await waitFor(() => expect(value).toBe('recent'));
   });
+
+  test('should renders separator', () => {
+    render(
+      <NavigationList list={[list[0], '-', ...list.slice(1)]} selected={''} onChange={() => null} />
+    );
+
+    expect(screen.getByTestId('alt-test-navigationList-separator')).toBeInTheDocument();
+  });
 });
