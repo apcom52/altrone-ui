@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Toolbar, ToolbarGroup } from './index';
 import ToolbarAction from './ToolbarAction';
@@ -147,5 +147,74 @@ describe('List.Toolbar', () => {
 
     expect(screen.getByTestId('alt-test-toolbarMenu')).toBeInTheDocument();
     expect(screen.queryAllByTestId('alt-test-toolbarMenu-item')).toHaveLength(menu.length);
+  });
+
+  test('should context-menu toolbarActions works correctly', async () => {
+    const contextMenuAction = jest.fn();
+
+    const { rerender } = render(
+      <Toolbar menu={menu}>
+        <ToolbarAction
+          icon={<Icon i="back" />}
+          label="Context Menu Action"
+          contextMenu={[
+            {
+              title: 'Test context action',
+              onClick: contextMenuAction
+            }
+          ]}
+        />
+      </Toolbar>
+    );
+
+    await waitFor(() => fireEvent.click(screen.getByText('Context Menu Action')));
+
+    rerender(
+      <Toolbar menu={menu}>
+        <ToolbarAction
+          icon={<Icon i="back" />}
+          label="Context Menu Action"
+          contextMenu={[
+            {
+              title: 'Test context action',
+              onClick: contextMenuAction
+            }
+          ]}
+        />
+      </Toolbar>
+    );
+
+    const contextMenuItem = await screen.findByText('Test context action');
+    await waitFor(() => fireEvent.click(contextMenuItem));
+
+    expect(contextMenuAction).toBeCalled();
+  });
+
+  test('should popup toolbarActions works correctly', async () => {
+    const { rerender } = render(
+      <Toolbar menu={menu}>
+        <ToolbarAction
+          icon={<Icon i="back" />}
+          label="Popup Action"
+          content={() => <>test popup</>}
+        />
+      </Toolbar>
+    );
+
+    const popupAction = screen.getByText('Popup Action');
+    await waitFor(() => fireEvent.click(popupAction));
+
+    rerender(
+      <Toolbar menu={menu}>
+        <ToolbarAction
+          icon={<Icon i="back" />}
+          label="Popup Action"
+          content={() => <>test popup</>}
+        />
+      </Toolbar>
+    );
+
+    const popupContent = await screen.findByText('test popup');
+    expect(popupContent).toBeInTheDocument();
   });
 });
