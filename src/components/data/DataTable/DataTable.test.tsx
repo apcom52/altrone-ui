@@ -876,4 +876,42 @@ describe('Data.DataTable', () => {
 
     expect(screen.getByText('Disabled action')).toHaveAttribute('disabled', '');
   });
+
+  test('should hide normal actions in selection mode', async () => {
+    const { rerender } = render(
+      <DataTable
+        data={DATA}
+        columns={COLUMNS}
+        selectable
+        actions={[
+          {
+            label: 'Normal action',
+            icon: <></>,
+            onClick: () => null
+          }
+        ]}
+      />
+    );
+
+    expect(screen.getByText('Normal action')).toBeInTheDocument();
+
+    await waitFor(() => fireEvent.click(screen.getByText('check_box')));
+
+    rerender(
+      <DataTable
+        data={DATA}
+        columns={COLUMNS}
+        selectable
+        actions={[
+          {
+            label: 'Normal action',
+            icon: <></>,
+            onClick: () => null
+          }
+        ]}
+      />
+    );
+
+    expect(screen.queryByText('Normal action')).not.toBeInTheDocument();
+  });
 });
