@@ -1,4 +1,4 @@
-<img alt="Notebook with user interface elements" height="256" src="https://raw.githubusercontent.com/apcom52/altrone-ui/v1.3/logo.png" title="Altrone UI logo" width="256"/>
+<img alt="Notebook with user interface elements" height="256" src="https://github.com/apcom52/altrone-ui/blob/stable/logo.png?raw=true" title="Altrone UI logo" width="256"/>
 
 # Altrone UI
 
