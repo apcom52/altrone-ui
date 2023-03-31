@@ -5,7 +5,7 @@ import { useWindowSize } from '../../../hooks';
 import { filterVisibleColumns } from './functions';
 
 const DataTableHeaderRow = () => {
-  const { columns, sortBy, sortType, mobileColumns } = useDataTableContext();
+  const { columns, sortBy, sortType, mobileColumns, selectableMode } = useDataTableContext();
   const { ltePhoneL } = useWindowSize();
 
   const visibleColumns = useMemo(() => {
@@ -14,6 +14,7 @@ const DataTableHeaderRow = () => {
 
   return (
     <tr className="alt-data-table__row" data-testid="alt-test-datatable-thead">
+      {selectableMode && <th className="alt-data-table__cell alt-data-table__cell--header" />}
       {visibleColumns.map((column, columnIndex) => (
         <th
           key={columnIndex}

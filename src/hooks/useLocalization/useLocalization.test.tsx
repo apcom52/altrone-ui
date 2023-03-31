@@ -3,6 +3,7 @@ import '@testing-library/jest-dom';
 import React from 'react';
 import { Altrone } from '../../hocs';
 import { useLocalization } from './useLocalization';
+import { TEST_MATCH_MEDIA_FN } from '../../constants/_testUtils';
 
 const TestComponent = () => {
   const t = useLocalization();
@@ -11,6 +12,10 @@ const TestComponent = () => {
 };
 
 describe('useWindowSize', () => {
+  beforeEach(() => {
+    window.matchMedia = TEST_MATCH_MEDIA_FN;
+  });
+
   test('should return width correctly', () => {
     render(
       <Altrone>

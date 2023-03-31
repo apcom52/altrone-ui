@@ -7,7 +7,10 @@ interface BoxProps extends WithoutDefaultOffsets, WithAltroneOffsets {
   tagName?: keyof JSX.IntrinsicElements;
 }
 
-const Box = forwardRef(
+/**
+ * @deprecated will be removed in 3.0
+ */
+export const Box = forwardRef(
   (
     {
       margin = ZERO_MARGIN,
@@ -33,12 +36,9 @@ const Box = forwardRef(
           ...style
         }}
         ref={ref}
-        {...props}
-      >
+        {...props}>
         {children}
       </TagName>
     );
   }
 );
-
-export default memo(Box);

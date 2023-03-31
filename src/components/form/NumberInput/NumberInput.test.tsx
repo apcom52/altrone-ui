@@ -109,4 +109,52 @@ describe('Form.PasswordInput', () => {
     expect(value).toBe(3);
     expect(decrease.parentElement).toHaveAttribute('disabled', '');
   });
+
+  test('should work correctly with key modificators', async () => {
+    let value = 10;
+
+    const onChange = (newValue) => {
+      value = newValue;
+    };
+
+    const { rerender } = render(<NumberInput onChange={onChange} value={value} />);
+
+    const increase = await screen.findByText('expand_less');
+    const decrease = await screen.findByText('expand_more');
+
+    await waitFor(() =>
+      fireEvent.click(increase, {
+        altKey: true
+      })
+    );
+
+    expect(value).toBe(20);
+    rerender(<NumberInput onChange={onChange} value={value} />);
+
+    await waitFor(() =>
+      fireEvent.click(increase, {
+        shiftKey: true
+      })
+    );
+
+    expect(value).toBe(120);
+    rerender(<NumberInput onChange={onChange} value={value} />);
+
+    await waitFor(() =>
+      fireEvent.click(decrease, {
+        altKey: true
+      })
+    );
+
+    expect(value).toBe(110);
+    rerender(<NumberInput onChange={onChange} value={value} />);
+
+    await waitFor(() =>
+      fireEvent.click(decrease, {
+        shiftKey: true
+      })
+    );
+
+    expect(value).toBe(10);
+  });
 });

@@ -14,10 +14,10 @@ export interface DataTableAppliedFilter<T> {
   value: any | any[];
 }
 
-export interface DataTableContextType {
-  data: any[];
-  initialData: any[];
-  columns: DataTableColumn[];
+export interface DataTableContextType<T> {
+  data: T[];
+  initialData: T[];
+  columns: DataTableColumn<T>[];
   page: number;
   setPage: (page: number) => void;
   limit: number;
@@ -30,12 +30,16 @@ export interface DataTableContextType {
   sortType: Sort;
   setSortType: (sortType: Sort) => void;
   filters: DataTableFilter[];
-  appliedFilters: DataTableAppliedFilter[];
-  setAppliedFilters: (filters: DataTableAppliedFilter[]) => void;
+  appliedFilters: DataTableAppliedFilter<T>[];
+  setAppliedFilters: (filters: DataTableAppliedFilter<T>[]) => void;
   mobileColumns: string[];
+  selectableMode: boolean;
+  setSelectableMode: (selectableMode: boolean) => void;
+  selectedRows: number[];
+  selectRow: (rowIndex: number) => void;
 }
 
-const DEFAULT_DATA_TABLE_CONTEXT: DataTableContextType = {
+const DEFAULT_DATA_TABLE_CONTEXT: DataTableContextType<object> = {
   data: [],
   initialData: [],
   columns: [],
@@ -53,8 +57,14 @@ const DEFAULT_DATA_TABLE_CONTEXT: DataTableContextType = {
   filters: [],
   appliedFilters: [],
   setAppliedFilters: () => null,
-  mobileColumns: []
+  mobileColumns: [],
+  selectableMode: false,
+  setSelectableMode: () => null,
+  selectedRows: [],
+  selectRow: () => null
 };
 
-export const DataTableContext = createContext<DataTableContextType>(DEFAULT_DATA_TABLE_CONTEXT);
+export const DataTableContext = createContext<DataTableContextType<object>>(
+  DEFAULT_DATA_TABLE_CONTEXT
+);
 export const useDataTableContext = () => useContext(DataTableContext);

@@ -1,3 +1,4 @@
+export { DEFAULT_THEME } from './Theme';
 export {
   DEFAULT_OFFSET,
   HORIZONTAL_MARGIN,
@@ -5,5 +6,4 @@ export {
   ZERO_MARGIN,
   ZERO_PADDING,
   PADDING
-} from './Offset';
-export { DEFAULT_THEME } from './Theme';
+} from './offset';

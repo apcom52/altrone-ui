@@ -1,5 +1,5 @@
 import { Icon } from '../../icons';
-import { useCallback } from 'react';
+import { memo, MouseEventHandler, useCallback } from 'react';
 import './number-input-counter.scss';
 
 interface NumberInputCounterProps {
@@ -19,21 +19,41 @@ export const NumberInputCounter = ({
   step = 1,
   disabled = false
 }: NumberInputCounterProps) => {
-  const onIncreaseClick = useCallback(() => {
-    if (max !== undefined && value + step > max) {
-      onChange(max);
-    } else {
-      onChange(value + step);
-    }
-  }, [value, max, step, onChange]);
+  const onIncreaseClick = useCallback<MouseEventHandler<HTMLButtonElement>>(
+    (e) => {
+      let stepValue = step;
+      if (e.altKey) {
+        stepValue = 10 * step;
+      } else if (e.shiftKey) {
+        stepValue = 100 * step;
+      }
 
-  const onDecreaseClick = useCallback(() => {
-    if (min !== undefined && value - step < min) {
-      onChange(min);
-    } else {
-      onChange(value - step);
-    }
-  }, [value, max, step, onChange]);
+      if (max !== undefined && value + stepValue > max) {
+        onChange(max);
+      } else {
+        onChange(value + stepValue);
+      }
+    },
+    [value, max, step, onChange]
+  );
+
+  const onDecreaseClick = useCallback<MouseEventHandler<HTMLButtonElement>>(
+    (e) => {
+      let stepValue = step;
+      if (e.altKey) {
+        stepValue = 10 * step;
+      } else if (e.shiftKey) {
+        stepValue = 100 * step;
+      }
+
+      if (min !== undefined && value - stepValue < min) {
+        onChange(min);
+      } else {
+        onChange(value - stepValue);
+      }
+    },
+    [value, max, step, onChange]
+  );
 
   const isIncreaseDisabled = disabled || (max !== undefined && value === max);
   const isDecreaseDisabled = disabled || (min !== undefined && value === min);

@@ -1,3 +1,6 @@
+/**
+ * @deprecated will be removed in 3.0
+ */
 export enum OffsetAxis {
   vertical = 'vertical',
   horizontal = 'horizontal',
@@ -7,8 +10,14 @@ export enum OffsetAxis {
   right = 'right'
 }
 
+/**
+ * @deprecated will be removed in 3.0
+ */
 export type Offset = { [K in OffsetAxis]?: number };
 
+/**
+ * @deprecated will be removed in 3.0
+ */
 export interface OffsetObject {
   offset?: number;
   top?: number;
@@ -17,6 +26,9 @@ export interface OffsetObject {
   right?: number;
 }
 
+/**
+ * @deprecated will be removed in 3.0
+ */
 export const useOffset = (params: number | Offset): OffsetObject => {
   if (typeof params === 'number') {
     return {

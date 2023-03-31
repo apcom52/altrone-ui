@@ -2,6 +2,9 @@ import { Offset, useOffset } from './useOffset';
 
 const OFFSET_WIDTH = 4;
 
+/**
+ * @deprecated will be removed in 3.0
+ */
 export interface Padding {
   padding?: number | string;
   paddingTop?: number;
@@ -10,6 +13,9 @@ export interface Padding {
   paddingBottom?: number;
 }
 
+/**
+ * @deprecated will be removed in 3.0
+ */
 export const usePadding = (params: number | Offset) => {
   const offsets = useOffset(params);
 

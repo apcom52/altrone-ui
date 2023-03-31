@@ -2,6 +2,9 @@ import { Offset, useOffset } from './useOffset';
 
 const OFFSET_WIDTH = 4;
 
+/**
+ * @deprecated will be removed in 3.0
+ */
 export interface Margin {
   margin?: number | string;
   marginTop?: number;
@@ -10,6 +13,9 @@ export interface Margin {
   marginBottom?: number;
 }
 
+/**
+ * @deprecated will be removed in 3.0
+ */
 export const useMargin = (params: number | Offset) => {
   const offsets = useOffset(params);
 

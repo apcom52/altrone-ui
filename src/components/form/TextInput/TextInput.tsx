@@ -8,10 +8,10 @@ import { BasicInput } from '../BasicInput';
 import { useResizeObserver } from '../../../hooks';
 
 export enum InputIslandType {
-  text,
-  icon,
-  actions,
-  components
+  text = 'text',
+  icon = 'icon',
+  actions = 'actions',
+  components = 'components'
 }
 
 export interface InputIslandAction {
