@@ -1,10 +1,10 @@
-import { WithAltroneOffsets, WithoutDefaultOffsets } from '../../../types';
-import { memo } from 'react';
+import { memo, PropsWithChildren } from 'react';
 import './blockquote.scss';
 import clsx from 'clsx';
 
-interface BlockquoteProps extends WithoutDefaultOffsets, WithAltroneOffsets {
+interface BlockquoteProps extends PropsWithChildren {
   cite?: string;
+  className: string;
   author?: string;
   classNames?: {
     content?: string;
