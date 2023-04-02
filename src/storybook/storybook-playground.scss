@@ -1,0 +1,31 @@
+.sb-playground {
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  margin: 8px;
+  background-color: var(--surface);
+  border: 1px solid var(--borderColor);
+  padding: 8px;
+}
+
+.sb-playground__header {
+  display: grid;
+  grid-template-columns: 120px 1fr 150px 80px;
+  grid-gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+  height: 40px;
+}
+
+.sb-playground__content {
+  background-color: var(--background);
+  padding: 12px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--borderColor);
+  margin-top: 8px;
+}
+
+.sb-playground--dark {
+
+}
