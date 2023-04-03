@@ -1,4 +1,4 @@
-import { forwardRef, memo, useEffect, useMemo, useRef, useState } from 'react';
+import { forwardRef, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Size } from '../../../types';
 import './text-input.scss';
 import clsx from 'clsx';
@@ -50,6 +50,7 @@ export interface TextInputProps
 
 const DEFAULT_HORIZONTAL_PADDING = 12;
 const DEFAULT_ISLAND_OFFSET = 8;
+const NO_SUGGESTIONS: string[] = [];
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   (
@@ -75,6 +76,8 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     },
     ref
   ) => {
+    const [suggestionsList, setSuggestionsList] = useState<string[]>([]);
+
     const _leftIsland = useInputIsland(leftIsland, leftIcon, prefix, disabled);
     const _rightIsland = useInputIsland(rightIsland, rightIcon, suffix, disabled);
 
@@ -95,6 +98,10 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
     const [leftPadding, setLeftPadding] = useState(DEFAULT_HORIZONTAL_PADDING);
     const [rightPadding, setRightPadding] = useState(DEFAULT_HORIZONTAL_PADDING);
+
+    const closeSuggestionsPopup = useCallback(() => {
+      setSuggestionsList(NO_SUGGESTIONS);
+    }, []);
 
     useEffect(() => {
       if (_leftIsland) {
@@ -126,19 +133,22 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       textFieldResizeObserver
     ]);
 
-    const suggestionsList = useMemo(() => {
+    useEffect(() => {
       if (
         !props.value.trim() ||
         suggestions.length === 0 ||
         !inputRef.current ||
         document.activeElement !== inputRef.current
       ) {
-        return [];
+        setSuggestionsList(NO_SUGGESTIONS);
+        return;
       }
 
-      return suggestions.filter((suggestion) => {
-        return suggestion.toLowerCase().indexOf(props.value.trim().toLowerCase()) > -1;
-      });
+      setSuggestionsList(
+        suggestions.filter((suggestion) => {
+          return suggestion.toLowerCase().indexOf(props.value.trim().toLowerCase()) > -1;
+        })
+      );
     }, [suggestions, props.value]);
 
     return (
@@ -188,13 +198,13 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           <FloatingBox
             className="alt-text-input__suggestions"
             targetElement={inputRef.current}
-            onClose={() => null}
+            onClose={closeSuggestionsPopup}
             placement="bottom"
             useParentWidth
             useRootContainer
             maxHeight={300}>
             <ContextMenu
-              onClose={() => null}
+              onClose={closeSuggestionsPopup}
               menu={suggestionsList.map((item) => ({
                 title: item,
                 value: item,
