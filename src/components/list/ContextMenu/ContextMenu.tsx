@@ -8,13 +8,15 @@ import { ContextMenuItem, ContextParentMenuItem } from './index';
 import './context-menu.scss';
 import { Icon } from '../../icons';
 import { useLocalization } from '../../../hooks';
+import clsx from 'clsx';
 
 interface ContextMenuComponentProps {
   onClose: () => void;
   menu: ContextMenuType;
+  fluid?: boolean;
 }
 
-const ContextMenu = ({ menu, onClose }: ContextMenuComponentProps) => {
+const ContextMenu = ({ menu, fluid = false, onClose }: ContextMenuComponentProps) => {
   const [selectedParentItem, setSelectedParentItem] = useState<ParentContextAction | null>(null);
   const t = useLocalization();
 
@@ -28,7 +30,11 @@ const ContextMenu = ({ menu, onClose }: ContextMenuComponentProps) => {
   };
 
   return (
-    <div className="alt-context-menu-list" data-testid="alt-test-contextMenu">
+    <div
+      className={clsx('alt-context-menu-list', {
+        'alt-context-menu-list--fluid': fluid
+      })}
+      data-testid="alt-test-contextMenu">
       {selectedParentItem && [
         <ContextMenuItem
           key={-1}

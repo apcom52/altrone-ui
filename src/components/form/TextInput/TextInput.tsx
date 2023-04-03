@@ -186,11 +186,13 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         </div>
         {suggestionsList.length > 0 && (
           <FloatingBox
+            className="alt-text-input__suggestions"
             targetElement={inputRef.current}
             onClose={() => null}
             placement="bottom"
             useParentWidth
-            useRootContainer>
+            useRootContainer
+            maxHeight={300}>
             <ContextMenu
               onClose={() => null}
               menu={suggestionsList.map((item) => ({
@@ -198,6 +200,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
                 value: item,
                 onClick: () => onChange(item)
               }))}
+              fluid
             />
           </FloatingBox>
         )}
