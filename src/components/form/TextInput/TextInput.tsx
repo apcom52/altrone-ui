@@ -1,4 +1,4 @@
-import { forwardRef, memo, useEffect, useRef, useState } from 'react';
+import { forwardRef, memo, useEffect, useMemo, useRef, useState } from 'react';
 import { Size } from '../../../types';
 import './text-input.scss';
 import clsx from 'clsx';
@@ -6,6 +6,8 @@ import { useInputIsland } from './useInputIsland';
 import { useBoundingclientrect } from 'rooks';
 import { BasicInput } from '../BasicInput';
 import { useResizeObserver } from '../../../hooks';
+import { FloatingBox } from '../../containers';
+import { ContextMenu } from '../../list';
 
 export enum InputIslandType {
   text = 'text',
@@ -43,6 +45,7 @@ export interface TextInputProps
   hintText?: string;
   size?: Size;
   Component?: JSX.Element;
+  suggestions?: string[];
 }
 
 const DEFAULT_HORIZONTAL_PADDING = 12;
@@ -67,12 +70,15 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       disabled,
       Component,
       size = Size.medium,
+      suggestions = [],
       ...props
     },
     ref
   ) => {
     const _leftIsland = useInputIsland(leftIsland, leftIcon, prefix, disabled);
     const _rightIsland = useInputIsland(rightIsland, rightIcon, suffix, disabled);
+
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     const wrapperRef = useRef<HTMLDivElement>(null);
     const leftIslandRef = useRef<HTMLDivElement>(null);
@@ -120,6 +126,21 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       textFieldResizeObserver
     ]);
 
+    const suggestionsList = useMemo(() => {
+      if (
+        !props.value.trim() ||
+        suggestions.length === 0 ||
+        !inputRef.current ||
+        document.activeElement !== inputRef.current
+      ) {
+        return [];
+      }
+
+      return suggestions.filter((suggestion) => {
+        return suggestion.toLowerCase().indexOf(props.value.trim().toLowerCase()) > -1;
+      });
+    }, [suggestions, props.value]);
+
     return (
       <BasicInput hintText={hintText} errorText={errorText} disabled={disabled} size={size}>
         <div
@@ -139,7 +160,14 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
               onChange={(e) => onChange(e.target.value)}
               disabled={disabled}
               required={required}
-              ref={ref}
+              ref={(node: HTMLInputElement) => {
+                inputRef.current = node;
+                if (typeof ref === 'function') {
+                  ref(node);
+                } else if (ref) {
+                  ref.current = node;
+                }
+              }}
               {...props}
             />
           )}
@@ -156,6 +184,23 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
           {required && <div className="alt-text-input__required-mark">*</div>}
         </div>
+        {suggestionsList.length > 0 && (
+          <FloatingBox
+            targetElement={inputRef.current}
+            onClose={() => null}
+            placement="bottom"
+            useParentWidth
+            useRootContainer>
+            <ContextMenu
+              onClose={() => null}
+              menu={suggestionsList.map((item) => ({
+                title: item,
+                value: item,
+                onClick: () => onChange(item)
+              }))}
+            />
+          </FloatingBox>
+        )}
       </BasicInput>
     );
   }
