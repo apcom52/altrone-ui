@@ -3,7 +3,7 @@ import { TextInput } from '../index';
 import { useState } from 'react';
 import { StorybookPlayground } from '../../../../storybook/StorybookPlayground';
 
-const DefaultTextInputStory: ComponentStory<typeof TextInput> = ({ placeholder = '' }) => {
+const TextInputSuggestions: ComponentStory<typeof TextInput> = ({ placeholder = '' }) => {
   const [value, setValue] = useState('');
 
   return (
@@ -13,8 +13,8 @@ const DefaultTextInputStory: ComponentStory<typeof TextInput> = ({ placeholder =
   );
 };
 
-DefaultTextInputStory.args = {
+TextInputSuggestions.args = {
   placeholder: ''
 };
 
-export default DefaultTextInputStory;
+export default TextInputSuggestions;

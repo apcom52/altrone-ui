@@ -58,73 +58,6 @@ const CustomSelectItem = ({
   );
 };
 
-export const TextInputExample = Template.bind({});
-TextInputExample.args = {
-  Component: TextInput,
-  placeholder: 'Type something',
-  hintText: '',
-  errorText: '',
-  required: false,
-  disabled: false,
-  size: Size.medium,
-  dark: false
-};
-
-TextInputExample.play = async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
-
-  await userEvent.type(canvas.getByRole('textbox'), 'inputed text');
-};
-
-export const TextInputWithLeftIslandExample = Template.bind({});
-TextInputWithLeftIslandExample.args = {
-  Component: TextInput,
-  placeholder: 'Type something',
-  prefix: 'search:',
-  size: Size.medium,
-  dark: false
-};
-
-export const TextInputWithRightIslandExample = Template.bind({});
-TextInputWithRightIslandExample.args = {
-  Component: TextInput,
-  placeholder: 'Type something',
-  rightIcon: <Icon i="search" />,
-  size: Size.medium,
-  dark: false
-};
-
-export const TextInputWithBothIslandsExample = Template.bind({});
-TextInputWithBothIslandsExample.args = {
-  Component: TextInput,
-  placeholder:
-    'Type something Type something Type something Type something Type something ' +
-    'Type something Type something Type something Type something Type something Type something Type something',
-  leftIsland: {
-    type: InputIslandType.components,
-    content: <b>{'q>:'}</b>
-  },
-  rightIsland: {
-    type: InputIslandType.actions,
-    content: [
-      {
-        title: 'Decrease',
-        icon: <Icon i="keyboard_arrow_down" />,
-        onClick: () => alert('Decrease clicked')
-      },
-      {
-        title: 'Increase',
-        icon: <Icon i="keyboard_arrow_up" />,
-        onClick: () => alert('Increase clicked')
-      }
-    ]
-  },
-  required: false,
-  disabled: false,
-  size: Size.medium,
-  dark: false
-};
-
 export const PasswordInputExample = Template.bind({});
 PasswordInputExample.args = {
   Component: PasswordInput,
@@ -489,6 +422,6 @@ TextareaExample.args = {
 };
 
 export default {
-  component: TextInputExample,
+  component: PasswordInput,
   title: 'Forms'
 };

@@ -3,18 +3,14 @@ import { TextInput } from '../index';
 import { useState } from 'react';
 import { StorybookPlayground } from '../../../../storybook/StorybookPlayground';
 
-const DefaultTextInputStory: ComponentStory<typeof TextInput> = ({ placeholder = '' }) => {
+const LeftIslandWithText: ComponentStory<typeof TextInput> = () => {
   const [value, setValue] = useState('');
 
   return (
     <StorybookPlayground>
-      <TextInput value={value} onChange={setValue} placeholder={placeholder} />
+      <TextInput value={value} onChange={setValue} prefix="$" />
     </StorybookPlayground>
   );
 };
 
-DefaultTextInputStory.args = {
-  placeholder: ''
-};
-
-export default DefaultTextInputStory;
+export default LeftIslandWithText;

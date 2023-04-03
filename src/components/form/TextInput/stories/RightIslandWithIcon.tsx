@@ -2,19 +2,16 @@ import { ComponentStory } from '@storybook/react';
 import { TextInput } from '../index';
 import { useState } from 'react';
 import { StorybookPlayground } from '../../../../storybook/StorybookPlayground';
+import { Icon } from '../../../icons';
 
-const DefaultTextInputStory: ComponentStory<typeof TextInput> = ({ placeholder = '' }) => {
+const RightIslandWithIcon: ComponentStory<typeof TextInput> = () => {
   const [value, setValue] = useState('');
 
   return (
     <StorybookPlayground>
-      <TextInput value={value} onChange={setValue} placeholder={placeholder} />
+      <TextInput value={value} onChange={setValue} rightIcon={<Icon i="search" />} />
     </StorybookPlayground>
   );
 };
 
-DefaultTextInputStory.args = {
-  placeholder: ''
-};
-
-export default DefaultTextInputStory;
+export default RightIslandWithIcon;
