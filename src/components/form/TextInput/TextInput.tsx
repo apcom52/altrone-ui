@@ -135,7 +135,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
     useEffect(() => {
       if (
-        !props.value.trim() ||
+        !props.value?.trim() ||
         suggestions.length === 0 ||
         !inputRef.current ||
         document.activeElement !== inputRef.current
