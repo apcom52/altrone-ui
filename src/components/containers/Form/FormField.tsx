@@ -7,7 +7,7 @@ interface FormFieldProps
   extends Omit<React.HTMLProps<HTMLDivElement>, 'children'>,
     FormContextProps {
   children: ReactElement;
-  label?: string;
+  label?: JSX.Element | string;
   required?: boolean;
 }
 

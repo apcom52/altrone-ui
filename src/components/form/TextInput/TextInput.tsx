@@ -1,4 +1,4 @@
-import { forwardRef, memo, useEffect, useRef, useState } from 'react';
+import { forwardRef, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Size } from '../../../types';
 import './text-input.scss';
 import clsx from 'clsx';
@@ -6,6 +6,8 @@ import { useInputIsland } from './useInputIsland';
 import { useBoundingclientrect } from 'rooks';
 import { BasicInput } from '../BasicInput';
 import { useResizeObserver } from '../../../hooks';
+import { FloatingBox } from '../../containers';
+import { ContextMenu } from '../../list';
 
 export enum InputIslandType {
   text = 'text',
@@ -43,10 +45,12 @@ export interface TextInputProps
   hintText?: string;
   size?: Size;
   Component?: JSX.Element;
+  suggestions?: string[];
 }
 
 const DEFAULT_HORIZONTAL_PADDING = 12;
 const DEFAULT_ISLAND_OFFSET = 8;
+const NO_SUGGESTIONS: string[] = [];
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   (
@@ -67,12 +71,17 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       disabled,
       Component,
       size = Size.medium,
+      suggestions = [],
       ...props
     },
     ref
   ) => {
+    const [suggestionsList, setSuggestionsList] = useState<string[]>([]);
+
     const _leftIsland = useInputIsland(leftIsland, leftIcon, prefix, disabled);
     const _rightIsland = useInputIsland(rightIsland, rightIcon, suffix, disabled);
+
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     const wrapperRef = useRef<HTMLDivElement>(null);
     const leftIslandRef = useRef<HTMLDivElement>(null);
@@ -89,6 +98,10 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
     const [leftPadding, setLeftPadding] = useState(DEFAULT_HORIZONTAL_PADDING);
     const [rightPadding, setRightPadding] = useState(DEFAULT_HORIZONTAL_PADDING);
+
+    const closeSuggestionsPopup = useCallback(() => {
+      setSuggestionsList(NO_SUGGESTIONS);
+    }, []);
 
     useEffect(() => {
       if (_leftIsland) {
@@ -120,6 +133,24 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       textFieldResizeObserver
     ]);
 
+    useEffect(() => {
+      if (
+        !props.value?.trim() ||
+        suggestions.length === 0 ||
+        !inputRef.current ||
+        document.activeElement !== inputRef.current
+      ) {
+        setSuggestionsList(NO_SUGGESTIONS);
+        return;
+      }
+
+      setSuggestionsList(
+        suggestions.filter((suggestion) => {
+          return suggestion.toLowerCase().indexOf(props.value.trim().toLowerCase()) > -1;
+        })
+      );
+    }, [suggestions, props.value]);
+
     return (
       <BasicInput hintText={hintText} errorText={errorText} disabled={disabled} size={size}>
         <div
@@ -139,7 +170,14 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
               onChange={(e) => onChange(e.target.value)}
               disabled={disabled}
               required={required}
-              ref={ref}
+              ref={(node: HTMLInputElement) => {
+                inputRef.current = node;
+                if (typeof ref === 'function') {
+                  ref(node);
+                } else if (ref) {
+                  ref.current = node;
+                }
+              }}
               {...props}
             />
           )}
@@ -156,6 +194,26 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
           {required && <div className="alt-text-input__required-mark">*</div>}
         </div>
+        {suggestionsList.length > 0 && (
+          <FloatingBox
+            className="alt-text-input__suggestions"
+            targetElement={inputRef.current}
+            onClose={closeSuggestionsPopup}
+            placement="bottom"
+            useParentWidth
+            useRootContainer
+            maxHeight={300}>
+            <ContextMenu
+              onClose={closeSuggestionsPopup}
+              menu={suggestionsList.map((item) => ({
+                title: item,
+                value: item,
+                onClick: () => onChange(item)
+              }))}
+              fluid
+            />
+          </FloatingBox>
+        )}
       </BasicInput>
     );
   }
@@ -163,4 +221,4 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
 TextInput.displayName = 'TextInput';
 
-export default memo(TextInput);
+export default memo(TextInput) as typeof TextInput;
