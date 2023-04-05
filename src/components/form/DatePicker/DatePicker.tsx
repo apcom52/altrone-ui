@@ -344,4 +344,4 @@ const DatePicker = ({
   );
 };
 
-export default memo(DatePicker);
+export default memo(DatePicker) as typeof DatePicker;

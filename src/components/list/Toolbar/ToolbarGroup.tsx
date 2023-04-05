@@ -132,4 +132,4 @@ const ToolbarGroup = ({
   );
 };
 
-export default memo(ToolbarGroup);
+export default memo(ToolbarGroup) as typeof ToolbarGroup;

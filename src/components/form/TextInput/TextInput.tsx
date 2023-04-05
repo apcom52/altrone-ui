@@ -163,4 +163,4 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
 TextInput.displayName = 'TextInput';
 
-export default memo(TextInput);
+export default memo(TextInput) as typeof TextInput;

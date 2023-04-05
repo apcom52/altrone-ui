@@ -96,4 +96,4 @@ const Progress = ({
   );
 };
 
-export default memo(Progress);
+export default memo(Progress) as typeof Progress;

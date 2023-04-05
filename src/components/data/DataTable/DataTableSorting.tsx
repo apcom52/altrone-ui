@@ -63,4 +63,4 @@ const DataTableSorting = ({ closePopup }: DataTablePopupActionProps) => {
   );
 };
 
-export default memo(DataTableSorting);
+export default memo(DataTableSorting) as typeof DataTableSorting;

@@ -23,8 +23,7 @@ const BasicInput: FC<PropsWithChildren<BasicInputProps>> = ({
       className={clsx('alt-basic-input', className, {
         'alt-basic-input--invalid': errorText,
         [`alt-basic-input--size-${size}`]: size !== Size.medium
-      })}
-    >
+      })}>
       {children}
       {errorText && <div className="alt-basic-input__error-text">{errorText}</div>}
       {hintText && <div className="alt-basic-input__hint-text">{hintText}</div>}
@@ -32,4 +31,4 @@ const BasicInput: FC<PropsWithChildren<BasicInputProps>> = ({
   );
 };
 
-export default memo(BasicInput);
+export default memo(BasicInput) as typeof BasicInput;

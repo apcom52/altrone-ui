@@ -22,4 +22,4 @@ const Icon = ({ i, size, className, style = 'outlined', ...props }: IconProps) =
   );
 };
 
-export default memo(Icon);
+export default memo(Icon) as typeof Icon;
