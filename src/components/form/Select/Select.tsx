@@ -270,4 +270,4 @@ const Select = <T extends unknown>({
   );
 };
 
-export default memo(Select);
+export default memo(Select) as typeof Select;

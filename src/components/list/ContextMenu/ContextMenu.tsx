@@ -58,4 +58,4 @@ const ContextMenu = ({ menu, onClose }: ContextMenuComponentProps) => {
   );
 };
 
-export default memo(ContextMenu);
+export default memo(ContextMenu) as typeof ContextMenu;

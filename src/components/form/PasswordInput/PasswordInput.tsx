@@ -35,4 +35,4 @@ const PasswordInput = ({ showControls = true, rightIsland, ...props }: PasswordI
   );
 };
 
-export default memo(PasswordInput);
+export default memo(PasswordInput) as typeof PasswordInput;

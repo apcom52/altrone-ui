@@ -42,4 +42,4 @@ const Textarea = ({
   );
 };
 
-export default memo(Textarea);
+export default memo(Textarea) as typeof Textarea;

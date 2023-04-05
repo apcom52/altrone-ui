@@ -25,8 +25,7 @@ const Message = ({
         'alt-message--role-danger': role === Role.danger,
         'alt-message--only-title': !children
       })}
-      data-testid="alt-test-message"
-    >
+      data-testid="alt-test-message">
       <div className="alt-message__icon">{IconComponent}</div>
       <div className="alt-message__content">
         {title && (
@@ -44,4 +43,4 @@ const Message = ({
   );
 };
 
-export default memo(Message);
+export default memo(Message) as typeof Message;

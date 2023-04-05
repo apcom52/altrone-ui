@@ -43,4 +43,4 @@ const Blockquote = ({
   );
 };
 
-export default memo(Blockquote);
+export default memo(Blockquote) as typeof Blockquote;

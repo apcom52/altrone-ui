@@ -17,4 +17,4 @@ const Form = ({ className, children, required, ...props }: FormProps) => {
   );
 };
 
-export default memo(Form);
+export default memo(Form) as typeof Form;

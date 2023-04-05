@@ -40,4 +40,4 @@ const DataTableFooter = ({ DataTableFooterStatusComponent }: DataTableFooterProp
   );
 };
 
-export default memo(DataTableFooter);
+export default memo(DataTableFooter) as typeof DataTableFooter;

@@ -12,4 +12,4 @@ const DataTableCell = ({ value }: DataTableCellProps) => {
   return <>{String(value)}</>;
 };
 
-export default memo(DataTableCell);
+export default memo(DataTableCell) as typeof DataTableCell;

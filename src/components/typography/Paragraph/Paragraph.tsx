@@ -13,4 +13,4 @@ const Paragraph = ({ children, className, ...props }: ParagraphProps) => {
   );
 };
 
-export default memo(Paragraph);
+export default memo(Paragraph) as typeof Paragraph;

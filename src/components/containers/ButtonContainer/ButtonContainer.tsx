@@ -30,4 +30,4 @@ const ButtonContainer = ({
   );
 };
 
-export default memo(ButtonContainer);
+export default memo(ButtonContainer) as typeof ButtonContainer;

@@ -117,4 +117,4 @@ const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionProps>(
   }
 );
 
-export default memo(ToolbarAction);
+export default memo(ToolbarAction) as typeof ToolbarAction;
