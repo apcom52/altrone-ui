@@ -186,7 +186,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
       setSuggestionsList(
         suggestions.filter((suggestion) => {
-          return suggestion.toLowerCase().indexOf(props.value.trim().toLowerCase()) > -1;
+          return suggestion.toLowerCase().startsWith(props.value.trim().toLowerCase());
         })
       );
       setSelectedSuggestionIndex(-1);
