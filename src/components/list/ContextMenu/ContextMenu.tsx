@@ -14,9 +14,15 @@ interface ContextMenuComponentProps {
   onClose: () => void;
   menu: ContextMenuType;
   fluid?: boolean;
+  maxHeight?: number | string;
 }
 
-const ContextMenu = ({ menu, fluid = false, onClose }: ContextMenuComponentProps) => {
+const ContextMenu = ({
+  menu,
+  fluid = false,
+  onClose,
+  maxHeight = 'unset'
+}: ContextMenuComponentProps) => {
   const [selectedParentItem, setSelectedParentItem] = useState<ParentContextAction | null>(null);
   const t = useLocalization();
 
@@ -46,6 +52,7 @@ const ContextMenu = ({ menu, fluid = false, onClose }: ContextMenuComponentProps
       className={clsx('alt-context-menu-list', {
         'alt-context-menu-list--fluid': fluid
       })}
+      style={{ maxHeight }}
       ref={contextMenuRef}
       data-testid="alt-test-contextMenu">
       {selectedParentItem && [

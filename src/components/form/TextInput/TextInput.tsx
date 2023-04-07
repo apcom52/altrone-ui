@@ -253,6 +253,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
                 onClick: () => onChange(item),
                 selected: itemIndex === selectedSuggestionIndex
               }))}
+              maxHeight={288}
               fluid
             />
           </FloatingBox>
