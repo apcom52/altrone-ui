@@ -41,6 +41,7 @@ const ContextMenu = ({ menu, fluid = false, onClose }: ContextMenuComponentProps
           icon={<Icon i="arrow_back_ios" />}
           title={t('common.back')}
           onClick={() => setSelectedParentItem(null)}
+          selected
         />,
         ...selectedParentItem.children.map((item, itemIndex) => (
           <ContextMenuItem key={itemIndex} {...item} onClick={() => onActionClick(item)} />

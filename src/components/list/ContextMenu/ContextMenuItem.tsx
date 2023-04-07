@@ -2,11 +2,16 @@ import { ContextAction } from '../../../types';
 import { memo } from 'react';
 import clsx from 'clsx';
 
-const ContextMenuItem = (action: ContextAction) => {
+interface ContextMenuItemProps extends ContextAction {
+  selected?: boolean;
+}
+
+const ContextMenuItem = ({ selected = false, ...action }: ContextMenuItemProps) => {
   return (
     <button
       className={clsx('alt-context-menu-item', {
-        'alt-context-menu-item--danger': action.danger
+        'alt-context-menu-item--danger': action.danger,
+        'alt-context-menu-item--selected': selected
       })}
       onClick={action.onClick}
       disabled={action.disabled}

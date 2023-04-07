@@ -35,6 +35,15 @@
     }
   }
 
+  &.alt-context-menu-item--selected {
+    background-color: var(--accent);
+    color: var(--textColorOnAccent);
+
+    .alt-context-menu-item__hint {
+      color: var(--textColorOnAccent);
+    }
+  }
+
   @include useFocus();
 
   & + & {
