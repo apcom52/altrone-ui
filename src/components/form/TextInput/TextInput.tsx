@@ -1,4 +1,12 @@
-import { forwardRef, memo, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  forwardRef,
+  KeyboardEventHandler,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 import { Size } from '../../../types';
 import './text-input.scss';
 import clsx from 'clsx';
@@ -77,11 +85,13 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     ref
   ) => {
     const [suggestionsList, setSuggestionsList] = useState<string[]>([]);
+    const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState<number>(-1);
 
     const _leftIsland = useInputIsland(leftIsland, leftIcon, prefix, disabled);
     const _rightIsland = useInputIsland(rightIsland, rightIcon, suffix, disabled);
 
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const cancelNextSuggestionCheck = useRef(false);
 
     const wrapperRef = useRef<HTMLDivElement>(null);
     const leftIslandRef = useRef<HTMLDivElement>(null);
@@ -101,7 +111,31 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
     const closeSuggestionsPopup = useCallback(() => {
       setSuggestionsList(NO_SUGGESTIONS);
+      setSelectedSuggestionIndex(-1);
     }, []);
+
+    const onTextInputKeyPress = useCallback<KeyboardEventHandler<HTMLInputElement>>(
+      (e) => {
+        if (e.key === 'ArrowUp') {
+          setSelectedSuggestionIndex((old) => {
+            return old > 0 ? old - 1 : old;
+          });
+        } else if (e.key === 'ArrowDown') {
+          setSelectedSuggestionIndex((old) => {
+            return old < suggestionsList.length - 1 ? old + 1 : old;
+          });
+        } else if (e.key === 'Enter') {
+          setSelectedSuggestionIndex((old) => {
+            cancelNextSuggestionCheck.current = true;
+            onChange(suggestionsList[old]);
+            setSuggestionsList(NO_SUGGESTIONS);
+
+            return -1;
+          });
+        }
+      },
+      [suggestionsList, onChange]
+    );
 
     useEffect(() => {
       if (_leftIsland) {
@@ -134,6 +168,11 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     ]);
 
     useEffect(() => {
+      if (cancelNextSuggestionCheck.current) {
+        cancelNextSuggestionCheck.current = false;
+        return;
+      }
+
       if (
         !props.value?.trim() ||
         suggestions.length === 0 ||
@@ -141,14 +180,16 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         document.activeElement !== inputRef.current
       ) {
         setSuggestionsList(NO_SUGGESTIONS);
+        setSelectedSuggestionIndex(-1);
         return;
       }
 
       setSuggestionsList(
         suggestions.filter((suggestion) => {
-          return suggestion.toLowerCase().indexOf(props.value.trim().toLowerCase()) > -1;
+          return suggestion.toLowerCase().startsWith(props.value.trim().toLowerCase());
         })
       );
+      setSelectedSuggestionIndex(-1);
     }, [suggestions, props.value]);
 
     return (
@@ -179,6 +220,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
                 }
               }}
               {...props}
+              onKeyDownCapture={onTextInputKeyPress}
             />
           )}
           {_leftIsland && (
@@ -205,11 +247,13 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             maxHeight={300}>
             <ContextMenu
               onClose={closeSuggestionsPopup}
-              menu={suggestionsList.map((item) => ({
+              menu={suggestionsList.map((item, itemIndex) => ({
                 title: item,
                 value: item,
-                onClick: () => onChange(item)
+                onClick: () => onChange(item),
+                selected: itemIndex === selectedSuggestionIndex
               }))}
+              maxHeight={288}
               fluid
             />
           </FloatingBox>

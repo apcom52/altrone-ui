@@ -3,7 +3,7 @@ import {
   ContextMenuType as ContextMenuType,
   ParentContextAction
 } from '../../../types';
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { ContextMenuItem, ContextParentMenuItem } from './index';
 import './context-menu.scss';
 import { Icon } from '../../icons';
@@ -14,11 +14,19 @@ interface ContextMenuComponentProps {
   onClose: () => void;
   menu: ContextMenuType;
   fluid?: boolean;
+  maxHeight?: number | string;
 }
 
-const ContextMenu = ({ menu, fluid = false, onClose }: ContextMenuComponentProps) => {
+const ContextMenu = ({
+  menu,
+  fluid = false,
+  onClose,
+  maxHeight = 'unset'
+}: ContextMenuComponentProps) => {
   const [selectedParentItem, setSelectedParentItem] = useState<ParentContextAction | null>(null);
   const t = useLocalization();
+
+  const contextMenuRef = useRef<HTMLDivElement>(null);
 
   const onParentItemClick = useCallback((action: ParentContextAction | null) => {
     setSelectedParentItem(action);
@@ -29,11 +37,23 @@ const ContextMenu = ({ menu, fluid = false, onClose }: ContextMenuComponentProps
     onClose?.();
   };
 
+  useEffect(() => {
+    if (!contextMenuRef.current) {
+      return;
+    }
+
+    const selectedIndex = menu.findIndex((menuItem) => menuItem.selected);
+    const currentScroll = (selectedIndex - 4) * 32;
+    contextMenuRef.current.scrollTop = currentScroll < 0 ? 0 : currentScroll;
+  }, [menu]);
+
   return (
     <div
       className={clsx('alt-context-menu-list', {
         'alt-context-menu-list--fluid': fluid
       })}
+      style={{ maxHeight }}
+      ref={contextMenuRef}
       data-testid="alt-test-contextMenu">
       {selectedParentItem && [
         <ContextMenuItem
@@ -41,6 +61,7 @@ const ContextMenu = ({ menu, fluid = false, onClose }: ContextMenuComponentProps
           icon={<Icon i="arrow_back_ios" />}
           title={t('common.back')}
           onClick={() => setSelectedParentItem(null)}
+          selected
         />,
         ...selectedParentItem.children.map((item, itemIndex) => (
           <ContextMenuItem key={itemIndex} {...item} onClick={() => onActionClick(item)} />
