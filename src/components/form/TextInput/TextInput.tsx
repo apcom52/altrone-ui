@@ -124,7 +124,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           setSelectedSuggestionIndex((old) => {
             return old < suggestionsList.length - 1 ? old + 1 : old;
           });
-        } else if (e.key === 'Enter' || e.key === 'Space') {
+        } else if (e.key === 'Enter') {
           setSelectedSuggestionIndex((old) => {
             cancelNextSuggestionCheck.current = true;
             onChange(suggestionsList[old]);
