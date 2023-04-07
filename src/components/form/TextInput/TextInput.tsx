@@ -91,6 +91,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     const _rightIsland = useInputIsland(rightIsland, rightIcon, suffix, disabled);
 
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const cancelNextSuggestionCheck = useRef(false);
 
     const wrapperRef = useRef<HTMLDivElement>(null);
     const leftIslandRef = useRef<HTMLDivElement>(null);
@@ -123,9 +124,17 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           setSelectedSuggestionIndex((old) => {
             return old < suggestionsList.length - 1 ? old + 1 : old;
           });
+        } else if (e.key === 'Enter' || e.key === 'Space') {
+          setSelectedSuggestionIndex((old) => {
+            cancelNextSuggestionCheck.current = true;
+            onChange(suggestionsList[old]);
+            setSuggestionsList(NO_SUGGESTIONS);
+
+            return -1;
+          });
         }
       },
-      [suggestionsList]
+      [suggestionsList, onChange]
     );
 
     useEffect(() => {
@@ -159,6 +168,11 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     ]);
 
     useEffect(() => {
+      if (cancelNextSuggestionCheck.current) {
+        cancelNextSuggestionCheck.current = false;
+        return;
+      }
+
       if (
         !props.value?.trim() ||
         suggestions.length === 0 ||

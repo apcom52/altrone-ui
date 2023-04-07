@@ -3,7 +3,7 @@ import {
   ContextMenuType as ContextMenuType,
   ParentContextAction
 } from '../../../types';
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { ContextMenuItem, ContextParentMenuItem } from './index';
 import './context-menu.scss';
 import { Icon } from '../../icons';
@@ -20,6 +20,8 @@ const ContextMenu = ({ menu, fluid = false, onClose }: ContextMenuComponentProps
   const [selectedParentItem, setSelectedParentItem] = useState<ParentContextAction | null>(null);
   const t = useLocalization();
 
+  const contextMenuRef = useRef<HTMLDivElement>(null);
+
   const onParentItemClick = useCallback((action: ParentContextAction | null) => {
     setSelectedParentItem(action);
   }, []);
@@ -29,11 +31,22 @@ const ContextMenu = ({ menu, fluid = false, onClose }: ContextMenuComponentProps
     onClose?.();
   };
 
+  useEffect(() => {
+    if (!contextMenuRef.current) {
+      return;
+    }
+
+    const selectedIndex = menu.findIndex((menuItem) => menuItem.selected);
+    const currentScroll = (selectedIndex - 4) * 32;
+    contextMenuRef.current.scrollTop = currentScroll < 0 ? 0 : currentScroll;
+  }, [menu]);
+
   return (
     <div
       className={clsx('alt-context-menu-list', {
         'alt-context-menu-list--fluid': fluid
       })}
+      ref={contextMenuRef}
       data-testid="alt-test-contextMenu">
       {selectedParentItem && [
         <ContextMenuItem
