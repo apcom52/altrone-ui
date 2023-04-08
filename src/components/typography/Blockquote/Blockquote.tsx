@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 interface BlockquoteProps extends PropsWithChildren {
   cite?: string;
-  className: string;
+  className?: string;
   author?: string;
   classNames?: {
     content?: string;
