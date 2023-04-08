@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { Theme, ThemeConfig } from '../../types';
 import { ThemeContext } from '../../contexts';
 import { FC, PropsWithChildren } from 'react';
-import { useMediaMatch } from 'rooks';
+import { useMediaMatch } from '../../hooks';
 
 export const Altrone: FC<PropsWithChildren<Partial<ThemeConfig>>> = ({
   children,
@@ -19,16 +19,14 @@ export const Altrone: FC<PropsWithChildren<Partial<ThemeConfig>>> = ({
     locale = 'en-US';
   }
 
-  const mediaScheme = useMediaMatch('(prefers-color-scheme: dark)');
-
-  let isFirstWrap = true;
   let _theme = theme;
+  const mediaScheme = useMediaMatch('(prefers-color-scheme: dark)');
 
   if (theme === Theme.system) {
     _theme = mediaScheme ? Theme.dark : Theme.light;
   }
 
-  return isFirstWrap ? (
+  return (
     <ThemeContext.Provider
       value={{
         theme: _theme,
@@ -42,15 +40,6 @@ export const Altrone: FC<PropsWithChildren<Partial<ThemeConfig>>> = ({
         style={style}>
         {children}
       </div>
-    </ThemeContext.Provider>
-  ) : (
-    <ThemeContext.Provider
-      value={{
-        theme,
-        locale,
-        lang
-      }}>
-      {children}
     </ThemeContext.Provider>
   );
 };
