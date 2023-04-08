@@ -37,8 +37,7 @@ const ToolbarMenu = ({ menu = [] }: ToolbarMenuProps) => {
               'alt-toolbar-menu__item--active': itemIndex === currentMenuIndex
             })}
             onClick={() => onMenuItemClick(itemIndex)}
-            data-testid="alt-test-toolbarMenu-item"
-          >
+            data-testid="alt-test-toolbarMenu-item">
             {item.label}
           </button>
         );
@@ -51,8 +50,7 @@ const ToolbarMenu = ({ menu = [] }: ToolbarMenuProps) => {
           useRootContainer
           preventClose={(e) => {
             return e.target?.closest('.alt-toolbar-menu') === menuRef.current;
-          }}
-        >
+          }}>
           <ContextMenu onClose={onCloseSubmenu} menu={menu[currentMenuIndex].submenu || []} />
         </FloatingBox>
       )}
@@ -60,4 +58,4 @@ const ToolbarMenu = ({ menu = [] }: ToolbarMenuProps) => {
   );
 };
 
-export default memo(ToolbarMenu);
+export default memo(ToolbarMenu) as typeof ToolbarMenu;

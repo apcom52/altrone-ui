@@ -1,6 +1,6 @@
 {
   "name": "altrone-ui",
-  "version": "1.3.0",
+  "version": "1.3.2",
   "description": "React UI Kit",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -61,7 +61,7 @@
     "typescript": "^4.9.0"
   },
   "scripts": {
-    "publish": "npm run test && npm run build && npm publish",
+    "publish-release": "npm run test && npm run build && npm publish",
     "publish-beta": "npm run test && npm run build && npm publish --tag beta",
     "publish-rc": "npm run test && npm run build && npm publish --tag rc",
     "publish-dev": "npm run test && npm run build && npm publish --tag dev",

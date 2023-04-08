@@ -127,4 +127,4 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
 Button.displayName = 'Button';
 
-export default memo(Button);
+export default memo(Button) as typeof Button;

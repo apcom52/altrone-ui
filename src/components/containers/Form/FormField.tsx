@@ -32,4 +32,4 @@ const FormField = ({ className, label, children, required = false }: FormFieldPr
   );
 };
 
-export default memo(FormField);
+export default memo(FormField) as typeof FormField;

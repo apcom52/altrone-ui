@@ -142,4 +142,4 @@ const TabList = ({
   );
 };
 
-export default memo(TabList);
+export default memo(TabList) as typeof TabList;

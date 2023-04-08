@@ -47,8 +47,7 @@ const Toolbar = ({
               }
             : {}
         }
-        data-testid="alt-test-toolbar"
-      >
+        data-testid="alt-test-toolbar">
         {menu.length > 0 && <ToolbarMenu menu={menu} />}
         <div className="alt-toolbar__main">{children}</div>
       </div>
@@ -56,4 +55,4 @@ const Toolbar = ({
   );
 };
 
-export default memo(Toolbar);
+export default memo(Toolbar) as typeof Toolbar;

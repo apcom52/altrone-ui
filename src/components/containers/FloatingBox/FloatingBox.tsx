@@ -161,4 +161,4 @@ const FloatingBox = forwardRef<
 
 FloatingBox.displayName = 'FloatingBox';
 
-export default FloatingBox;
+export default FloatingBox as typeof FloatingBox;

@@ -52,4 +52,4 @@ const Switcher = ({
   );
 };
 
-export default memo(Switcher);
+export default memo(Switcher) as typeof Switcher;

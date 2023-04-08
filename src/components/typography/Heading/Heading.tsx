@@ -20,4 +20,4 @@ const Heading = ({ children, level = 1, ...props }: HeadingProps) => {
   );
 };
 
-export default memo(Heading);
+export default memo(Heading) as typeof Heading;

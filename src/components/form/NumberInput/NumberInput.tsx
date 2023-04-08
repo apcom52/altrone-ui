@@ -114,4 +114,4 @@ const NumberInput = ({
   );
 };
 
-export default memo(NumberInput);
+export default memo(NumberInput) as typeof NumberInput;

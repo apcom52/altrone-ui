@@ -56,4 +56,4 @@ const Checkbox = ({
   );
 };
 
-export default memo(Checkbox);
+export default memo(Checkbox) as typeof Checkbox;
