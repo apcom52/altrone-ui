@@ -288,7 +288,11 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
                   left: liveSuggestionsBoundaries[0] + 'px',
                   width: liveSuggestionsBoundaries[1] + 'px'
                 }}>
-                <span className="alt-live-suggestion__text">{liveSuggestionLabel}</span>
+                <span
+                  className="alt-live-suggestion__text"
+                  data-testid="alt-test-textInput-liveSuggestion">
+                  {liveSuggestionLabel}
+                </span>
                 <span className="alt-live-suggestion__tabIcon">
                   <Icon i="keyboard_tab" />
                 </span>
