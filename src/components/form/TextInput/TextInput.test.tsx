@@ -11,10 +11,18 @@ const textIsland = {
   content: 'the end'
 };
 
+const SUGGESTIONS = ['Mike', 'Daniel', 'Dmitry', 'Joseph'];
+
 class ResizeObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  observe() {
+    return null;
+  }
+  unobserve() {
+    return null;
+  }
+  disconnect() {
+    return null;
+  }
 }
 
 describe('Form.TextInput', () => {
@@ -94,8 +102,8 @@ describe('Form.TextInput', () => {
     expect(rightIsland).toBeInTheDocument();
     expect(leftIsland.parentElement).toHaveClass('alt-text-input__icon-island');
     expect(rightIsland.parentElement).toHaveClass('alt-text-input__icon-island');
-    expect(leftIsland.parentElement.parentElement).toHaveClass('alt-text-input__left-island');
-    expect(rightIsland.parentElement.parentElement).toHaveClass('alt-text-input__right-island');
+    expect(leftIsland.parentElement?.parentElement).toHaveClass('alt-text-input__left-island');
+    expect(rightIsland.parentElement?.parentElement).toHaveClass('alt-text-input__right-island');
   });
 
   test('should actions-islands works correctly', async () => {
@@ -146,9 +154,9 @@ describe('Form.TextInput', () => {
     expect(upAction).toHaveClass('alt-text-input__action-button');
     expect(downAction).toHaveClass('alt-text-input__action-button');
 
-    expect(deleteAction.parentElement.parentElement).toHaveClass('alt-text-input__left-island');
-    expect(upAction.parentElement.parentElement).toHaveClass('alt-text-input__right-island');
-    expect(downAction.parentElement.parentElement).toHaveClass('alt-text-input__right-island');
+    expect(deleteAction.parentElement?.parentElement).toHaveClass('alt-text-input__left-island');
+    expect(upAction.parentElement?.parentElement).toHaveClass('alt-text-input__right-island');
+    expect(downAction.parentElement?.parentElement).toHaveClass('alt-text-input__right-island');
 
     expect(downAction).toHaveAttribute('disabled', '');
 
@@ -184,8 +192,10 @@ describe('Form.TextInput', () => {
 
     expect(onClick).toBeCalledTimes(1);
 
-    expect(firstComponent.parentElement.parentElement).toHaveClass('alt-text-input__left-island');
-    expect(secondComponent.parentElement.parentElement).toHaveClass('alt-text-input__right-island');
+    expect(firstComponent.parentElement?.parentElement).toHaveClass('alt-text-input__left-island');
+    expect(secondComponent.parentElement?.parentElement).toHaveClass(
+      'alt-text-input__right-island'
+    );
   });
 
   test('should use correct classNames for different sizes', async () => {
@@ -196,5 +206,37 @@ describe('Form.TextInput', () => {
 
     await waitFor(() => rerender(<TextInput value="" onChange={() => null} size={Size.large} />));
     expect(container.firstChild).toHaveClass('alt-basic-input--size-large');
+  });
+
+  test('should suggestions works correctly', async () => {
+    let value = '';
+    const onChange = (val: string) => {
+      value = val;
+    };
+
+    const { rerender } = render(
+      <TextInput value={value} onChange={onChange} suggestions={SUGGESTIONS} />
+    );
+
+    const textInput = screen.getByRole('textbox');
+    textInput.focus();
+    await waitFor(() => fireEvent.input(textInput, { target: { value: 'D' } }));
+    rerender(<TextInput value={value} onChange={onChange} suggestions={SUGGESTIONS} />);
+
+    const dmitrySuggestion = await screen.findByText('Dmitry');
+    const danielSuggestion = await screen.findByText('Daniel');
+
+    expect(dmitrySuggestion).toBeInTheDocument();
+    expect(danielSuggestion).toBeInTheDocument();
+
+    await waitFor(() => fireEvent.click(danielSuggestion));
+
+    expect(value).toBe('Daniel');
+
+    rerender(<TextInput value={value} onChange={onChange} suggestions={SUGGESTIONS} />);
+
+    const dmitry2Suggestion = screen.queryByText('Dmitry');
+
+    expect(dmitry2Suggestion).not.toBeInTheDocument();
   });
 });
