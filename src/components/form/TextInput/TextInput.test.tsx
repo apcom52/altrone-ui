@@ -239,4 +239,27 @@ describe('Form.TextInput', () => {
 
     expect(dmitry2Suggestion).not.toBeInTheDocument();
   });
+
+  test('should live suggestions works correctly', async () => {
+    let value = '';
+    const onChange = (val: string) => {
+      value = val;
+    };
+
+    const { rerender } = render(
+      <TextInput value={value} onChange={onChange} suggestions={SUGGESTIONS} useLiveSuggestions />
+    );
+
+    const textInput = screen.getByRole('textbox');
+    textInput.focus();
+    await waitFor(() => fireEvent.input(textInput, { target: { value: 'D' } }));
+    rerender(
+      <TextInput value={value} onChange={onChange} suggestions={SUGGESTIONS} useLiveSuggestions />
+    );
+
+    const liveSuggestion = screen.getByTestId('alt-test-textInput-liveSuggestion');
+
+    expect(liveSuggestion).toBeInTheDocument();
+    expect(liveSuggestion).toHaveTextContent('aniel');
+  });
 });
