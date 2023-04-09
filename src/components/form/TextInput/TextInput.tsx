@@ -1,9 +1,10 @@
-import {
+import React, {
   forwardRef,
   KeyboardEventHandler,
   memo,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState
 } from 'react';
@@ -16,6 +17,7 @@ import { BasicInput } from '../BasicInput';
 import { useResizeObserver } from '../../../hooks';
 import { FloatingBox } from '../../containers';
 import { ContextMenu } from '../../list';
+import { Icon } from '../../icons';
 
 export enum InputIslandType {
   text = 'text',
@@ -54,6 +56,7 @@ export interface TextInputProps
   size?: Size;
   Component?: JSX.Element;
   suggestions?: string[];
+  useLiveSuggestions?: boolean;
 }
 
 const DEFAULT_HORIZONTAL_PADDING = 12;
@@ -80,6 +83,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       Component,
       size = Size.medium,
       suggestions = [],
+      useLiveSuggestions = false,
       ...props
     },
     ref
@@ -92,6 +96,10 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
     const inputRef = useRef<HTMLInputElement | null>(null);
     const cancelNextSuggestionCheck = useRef(false);
+    const shadowRef = useRef<HTMLDivElement>(null);
+    const [liveSuggestionsBoundaries, setLiveSuggestionsBoundaries] = useState<[number, number]>([
+      0, 0
+    ]);
 
     const wrapperRef = useRef<HTMLDivElement>(null);
     const leftIslandRef = useRef<HTMLDivElement>(null);
@@ -108,6 +116,15 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
     const [leftPadding, setLeftPadding] = useState(DEFAULT_HORIZONTAL_PADDING);
     const [rightPadding, setRightPadding] = useState(DEFAULT_HORIZONTAL_PADDING);
+
+    const liveSuggestionLabel = useMemo(() => {
+      if (!suggestionsList.length || !useLiveSuggestions || !props.value.trim()) {
+        return '';
+      }
+
+      const fullLabel = suggestionsList[selectedSuggestionIndex > -1 ? selectedSuggestionIndex : 0];
+      return fullLabel.replace(props.value, '');
+    }, [suggestionsList, selectedSuggestionIndex, props.value, useLiveSuggestions]);
 
     const closeSuggestionsPopup = useCallback(() => {
       setSuggestionsList(NO_SUGGESTIONS);
@@ -132,9 +149,20 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
             return -1;
           });
+        } else if (e.key === 'Tab') {
+          if (liveSuggestionLabel) {
+            e.preventDefault();
+            setSelectedSuggestionIndex((old) => {
+              cancelNextSuggestionCheck.current = true;
+              onChange(suggestionsList[old < 0 ? 0 : old]);
+              setSuggestionsList(NO_SUGGESTIONS);
+
+              return -1;
+            });
+          }
         }
       },
-      [suggestionsList, onChange]
+      [suggestionsList, onChange, liveSuggestionLabel]
     );
 
     useEffect(() => {
@@ -192,6 +220,20 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       setSelectedSuggestionIndex(-1);
     }, [suggestions, props.value]);
 
+    useEffect(() => {
+      if (!liveSuggestionLabel || !shadowRef.current || !inputRef.current || !props.value) {
+        return;
+      }
+
+      const shadowRefRect = shadowRef.current.getBoundingClientRect();
+      const inputRefRect = inputRef.current?.getBoundingClientRect();
+
+      setLiveSuggestionsBoundaries([
+        shadowRefRect.width + leftIslandWidth,
+        inputRefRect.width - shadowRefRect.width - rightIslandWidth - leftIslandWidth - 12
+      ]);
+    }, [props.value, liveSuggestionLabel, leftIslandWidth, rightIslandWidth]);
+
     return (
       <BasicInput hintText={hintText} errorText={errorText} disabled={disabled} size={size}>
         <div
@@ -235,6 +277,24 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           )}
 
           {required && <div className="alt-text-input__required-mark">*</div>}
+          {useLiveSuggestions && !!liveSuggestionLabel && (
+            <>
+              <div className="alt-live-suggestion__shadowText" ref={shadowRef}>
+                {props.value.replace(/\s$/g, '-')}
+              </div>
+              <div
+                className="alt-live-suggestion"
+                style={{
+                  left: liveSuggestionsBoundaries[0] + 'px',
+                  width: liveSuggestionsBoundaries[1] + 'px'
+                }}>
+                <span className="alt-live-suggestion__text">{liveSuggestionLabel}</span>
+                <span className="alt-live-suggestion__tabIcon">
+                  <Icon i="keyboard_tab" />
+                </span>
+              </div>
+            </>
+          )}
         </div>
         {suggestionsList.length > 0 && (
           <FloatingBox
