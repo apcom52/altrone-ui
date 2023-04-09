@@ -10,8 +10,8 @@ const SUGGESTIONS = COUNTRIES.map((country) => country.name);
 
 const TextInputLiveSuggestions: ComponentStory<typeof TextInput> = ({ placeholder = '' }) => {
   const [value, setValue] = useState('');
-  const [isLeftActive, setIsLeftActive] = useState(true);
-  const [isRightActive, setIsRightActive] = useState(true);
+  const [isLeftActive, setIsLeftActive] = useState(false);
+  const [isRightActive, setIsRightActive] = useState(false);
 
   return (
     <StorybookPlayground>

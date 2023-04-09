@@ -149,9 +149,20 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
             return -1;
           });
+        } else if (e.key === 'Tab') {
+          if (liveSuggestionLabel) {
+            e.preventDefault();
+            setSelectedSuggestionIndex((old) => {
+              cancelNextSuggestionCheck.current = true;
+              onChange(suggestionsList[old < 0 ? 0 : old]);
+              setSuggestionsList(NO_SUGGESTIONS);
+
+              return -1;
+            });
+          }
         }
       },
-      [suggestionsList, onChange]
+      [suggestionsList, onChange, liveSuggestionLabel]
     );
 
     useEffect(() => {
