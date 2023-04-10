@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react';
 import './form-group.scss';
-import { Align } from '../../../types/Align';
+import { Align } from '../../../types';
 import clsx from 'clsx';
 import { FormContext, FormContextProps, useFormContext } from '../../../contexts';
 
@@ -66,4 +66,4 @@ const FormGroup = ({
   );
 };
 
-export default memo(FormGroup);
+export default memo(FormGroup) as typeof FormGroup;

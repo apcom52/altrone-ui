@@ -110,4 +110,4 @@ const DataTableAction = <T extends unknown>({
   );
 };
 
-export default memo(DataTableAction);
+export default memo(DataTableAction) as typeof DataTableAction;

@@ -123,4 +123,4 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
   );
 };
 
-export default memo(DataTableFiltering);
+export default memo(DataTableFiltering) as typeof DataTableFiltering;

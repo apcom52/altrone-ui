@@ -231,4 +231,4 @@ const NavigationList = ({
   );
 };
 
-export default memo(NavigationList);
+export default memo(NavigationList) as typeof NavigationList;

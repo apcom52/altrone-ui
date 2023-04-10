@@ -38,8 +38,7 @@ const CheckboxList = ({
       className={clsx('alt-checkbox-list', className, {
         'alt-checkbox-list--vertical': direction === Direction.vertical
       })}
-      {...props}
-    >
+      {...props}>
       {visibleChildren}
       {length > limit && (
         <div className="alt-checkbox-list__actions">
@@ -52,4 +51,4 @@ const CheckboxList = ({
   );
 };
 
-export default memo(CheckboxList);
+export default memo(CheckboxList) as typeof CheckboxList;

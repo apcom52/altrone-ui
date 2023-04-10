@@ -185,4 +185,4 @@ const Modal = ({
   );
 };
 
-export default memo(Modal);
+export default memo(Modal) as typeof Modal;

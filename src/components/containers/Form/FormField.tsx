@@ -7,7 +7,7 @@ interface FormFieldProps
   extends Omit<React.HTMLProps<HTMLDivElement>, 'children'>,
     FormContextProps {
   children: ReactElement;
-  label?: string;
+  label?: JSX.Element | string;
   required?: boolean;
 }
 
@@ -32,4 +32,4 @@ const FormField = ({ className, label, children, required = false }: FormFieldPr
   );
 };
 
-export default memo(FormField);
+export default memo(FormField) as typeof FormField;
