@@ -7,6 +7,7 @@ import { createPortal } from 'react-dom';
 import { useWindowSize } from '../../../hooks';
 import { Modal } from '../Modal';
 import clsx from 'clsx';
+import { Surface } from '../../../types';
 
 export enum FloatingBoxMobileBehaviour {
   default = 'default',
@@ -27,6 +28,7 @@ interface FloatingBoxProps extends React.PropsWithChildren {
   mobileBehaviour?: FloatingBoxMobileBehaviour;
   closeOnAnotherFloatingBoxClick?: boolean;
   className?: string;
+  surface?: Surface;
 }
 
 const setPopperWidth = (state: State, minWidth: FloatingBoxProps['minWidth']) => {
@@ -56,7 +58,8 @@ const FloatingBox = forwardRef<
       useRootContainer = false,
       mobileBehaviour = FloatingBoxMobileBehaviour.default,
       closeOnAnotherFloatingBoxClick = false,
-      className
+      className,
+      surface = Surface.glass
     },
     ref
   ) => {
@@ -135,7 +138,9 @@ const FloatingBox = forwardRef<
 
     return createPortal(
       <div
-        className={clsx('alt-floating-box', className)}
+        className={clsx('alt-floating-box', className, {
+          [`alt-floating-box--surface-${surface}`]: surface !== Surface.glass
+        })}
         ref={(node: HTMLDivElement) => {
           setFloatingBoxElement(node);
           if (typeof ref === 'function') {

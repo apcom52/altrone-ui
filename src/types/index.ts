@@ -15,3 +15,4 @@ export { Sort } from './Sort';
 export type { Point } from './Point';
 export type { Indicator } from './Indicator';
 export { Align } from './Align';
+export { Surface } from './Surface';
