@@ -2,7 +2,7 @@ import { createContext, memo, ReactNode, useContext, useState } from 'react';
 import './toolbar.scss';
 import ToolbarMenu, { ToolbarMenuProps } from './ToolbarMenu';
 import clsx from 'clsx';
-import { Point } from '../../../types';
+import { Point, Surface } from '../../../types';
 
 const ToolbarContext = createContext<HTMLDivElement>(null);
 export const useToolbarContext = () => useContext(ToolbarContext);
@@ -19,6 +19,7 @@ interface ToolbarProps {
   offset?: Point;
   width?: number | string;
   className?: string;
+  surface?: Surface;
 }
 
 const Toolbar = ({
@@ -27,7 +28,8 @@ const Toolbar = ({
   menu = [],
   offset = defaultOffset,
   width,
-  className
+  className,
+  surface = Surface.glass
 }: ToolbarProps) => {
   const [toolbarRef, setToolbarRef] = useState(null);
 
@@ -35,7 +37,8 @@ const Toolbar = ({
     <ToolbarContext.Provider value={toolbarRef}>
       <div
         className={clsx('alt-toolbar', className, {
-          'alt-toolbar--floated': floated
+          'alt-toolbar--floated': floated,
+          [`alt-toolbar--surface-${surface}`]: surface
         })}
         ref={(node) => setToolbarRef(node)}
         style={

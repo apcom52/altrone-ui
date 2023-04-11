@@ -1,5 +1,5 @@
 import { Altrone } from '../../hocs';
-import { Direction, Size, Theme } from '../../types';
+import { Direction, Size, Surface, Theme } from '../../types';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   Chips,
@@ -15,6 +15,7 @@ import { Icon } from '../icons';
 import ToolbarAction from './Toolbar/ToolbarAction';
 import { Heading } from '../typography';
 import { Button } from '../button';
+import { ModalExample } from '../containers/Containers.stories';
 
 const Template = ({ Component, dark, values, value, ...args }) => {
   const [_value, setValue] = useState(values);
@@ -413,6 +414,23 @@ ToolbarExample.args = {
     y: 8
   },
   width: 'calc(100% - 100px - 16px)'
+};
+ToolbarExample.argTypes = {
+  size: {
+    control: 'select',
+    options: [Size.small, Size.medium, Size.large]
+  },
+  surface: {
+    control: 'select',
+    options: [
+      Surface.none,
+      Surface.transparent,
+      Surface.glass,
+      Surface.solid,
+      Surface.paper,
+      Surface.metal
+    ]
+  }
 };
 
 export const NavigationListExample = NavigationListTemplate.bind({});
