@@ -295,6 +295,17 @@ ModalExample.argTypes = {
   size: {
     control: 'select',
     options: [Size.small, Size.medium, Size.large]
+  },
+  surface: {
+    control: 'select',
+    options: [
+      Surface.none,
+      Surface.transparent,
+      Surface.glass,
+      Surface.solid,
+      Surface.paper,
+      Surface.metal
+    ]
   }
 };
 

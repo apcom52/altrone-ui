@@ -8,7 +8,7 @@ import {
   useMemo,
   useRef
 } from 'react';
-import { Role, Size, Align } from '../../../types';
+import { Align, Role, Size, Surface } from '../../../types';
 import './modal.scss';
 import { Icon } from '../../icons';
 import { Button } from '../../button';
@@ -36,6 +36,7 @@ interface ModalProps extends PropsWithChildren {
   closeOnOverlay?: boolean;
   reduceMotion?: boolean;
   className?: string;
+  surface?: Surface;
 }
 
 const CLS_OPENED = 'alt-modal--opened';
@@ -53,7 +54,8 @@ const Modal = ({
   showCancel = true,
   closeOnOverlay = true,
   reduceMotion = false,
-  className
+  className,
+  surface = Surface.glass
 }: ModalProps) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize();
   const t = useLocalization();
@@ -141,7 +143,8 @@ const Modal = ({
           'alt-modal--size-small': size === Size.small,
           'alt-modal--size-large': size === Size.large,
           'alt-modal--fluid': fluid,
-          [CLS_OPENED]: reduceMotion
+          [CLS_OPENED]: reduceMotion,
+          [`alt-modal--surface-${surface}`]: surface !== Surface.glass
         })}
         ref={modalRef}
         data-testid="alt-test-modal">
