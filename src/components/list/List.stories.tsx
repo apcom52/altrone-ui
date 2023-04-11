@@ -416,10 +416,6 @@ ToolbarExample.args = {
   width: 'calc(100% - 100px - 16px)'
 };
 ToolbarExample.argTypes = {
-  size: {
-    control: 'select',
-    options: [Size.small, Size.medium, Size.large]
-  },
   surface: {
     control: 'select',
     options: [
@@ -570,6 +566,19 @@ NavigationListExample.args = {
       ]
     }
   ]
+};
+NavigationListExample.argTypes = {
+  surface: {
+    control: 'select',
+    options: [
+      Surface.none,
+      Surface.transparent,
+      Surface.glass,
+      Surface.solid,
+      Surface.paper,
+      Surface.metal
+    ]
+  }
 };
 
 export default {

@@ -48,3 +48,35 @@
   margin: 16px 0;
   background-color: var(--dividerColor);
 }
+
+.alt-navigation-list--surface-none {
+  background-color: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-right: none;
+}
+
+.alt-navigation-list--surface-transparent {
+  background-color: var(--surfaceTrasparent);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-right: none;
+}
+
+.alt-navigation-list--surface-solid {
+  background-color: var(--surface);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-navigation-list--surface-paper {
+  background-color: var(--background);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-navigation-list--surface-metal {
+  background: linear-gradient(to left, var(--metalTop) 0%, var(--metalBottom) 100%);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
