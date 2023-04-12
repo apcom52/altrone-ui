@@ -273,7 +273,8 @@ ModalExample.args = {
     }
   ],
   fluid: false,
-  dark: false
+  dark: false,
+  reduceMotion: false
 };
 ModalExample.argTypes = {
   size: {
