@@ -1,0 +1,21 @@
+.alt-search {
+
+}
+
+.alt-search-placeholder {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  justify-content: center;
+  width: 100%;
+  height: var(--controlHeight);
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  color: var(--placeholderText);
+}
+
+.alt-search-placeholder__icon {
+  margin-right: 6px;
+  font-size: 1.25em;
+}

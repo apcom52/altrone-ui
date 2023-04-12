@@ -8,7 +8,7 @@ const DefaultSearchStory: ComponentStory<typeof Search> = ({ placeholder = '' })
 
   return (
     <StorybookPlayground>
-      <Search />
+      <Search value={value} onChange={setValue} placeholder="Type a search" />
     </StorybookPlayground>
   );
 };
