@@ -163,3 +163,33 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+.alt-modal--surface-none {
+  background-color: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-modal--surface-transparent {
+  background-color: var(--surfaceTrasparent);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-modal--surface-solid {
+  background-color: var(--surface);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-modal--surface-paper {
+  background-color: var(--background);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-modal--surface-metal {
+  background: linear-gradient(to bottom, var(--metalTop) 0%, var(--metalBottom) 100%);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}

@@ -12,3 +12,34 @@
 
   @include useGlassSurface();
 }
+
+.alt-floating-box--surface-none {
+  background-color: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-floating-box--surface-transparent {
+  background-color: var(--surfaceTrasparent);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-floating-box--surface-solid {
+  background-color: var(--surface);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-floating-box--surface-paper {
+  background-color: var(--background);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-floating-box--surface-metal {
+  background: linear-gradient(to bottom, var(--metalTop) 0%, var(--metalBottom) 100%);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}

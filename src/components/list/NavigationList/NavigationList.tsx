@@ -4,7 +4,7 @@ import NavigationListItem from './NavigationListItem';
 import NavigationListSubItem from './NavigationListSubItem';
 import NavigationListSubSubItem from './NavigationListSubSubItem';
 import clsx from 'clsx';
-import { ContextMenuType, Indicator, Role, Size } from '../../../types';
+import { ContextMenuType, Indicator, Role, Size, Surface } from '../../../types';
 import { Button, ButtonVariant } from '../../button';
 
 export const NAVIGATION_LIST_SEPARATOR = '-';
@@ -58,6 +58,7 @@ interface NavigationListProps {
   onChange: (selectedValue: unknown) => void;
   title?: string;
   className?: string;
+  surface?: Surface;
   action?: NavigationListAction;
   NavigationItemComponent?: JSX.Element;
   NavigationSubItemComponent?: JSX.Element;
@@ -71,6 +72,7 @@ const NavigationList = ({
   title,
   className,
   action,
+  surface = Surface.glass,
   NavigationItemComponent,
   NavigationSubItemComponent,
   NavigationSubSubItemComponent
@@ -140,7 +142,10 @@ const NavigationList = ({
   }, [list, selectedItem, selectedSubItem, selectedSubSubItem, onChange]);
 
   return (
-    <div className={clsx('alt-navigation-list', className)}>
+    <div
+      className={clsx('alt-navigation-list', className, {
+        [`alt-navigation-list--surface-${surface}`]: surface !== Surface.glass
+      })}>
       {title && <div className="alt-navigation-list__title">{title}</div>}
       {action && (
         <Button
