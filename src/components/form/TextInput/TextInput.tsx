@@ -2,6 +2,7 @@ import React, {
   forwardRef,
   KeyboardEventHandler,
   memo,
+  PropsWithChildren,
   useCallback,
   useEffect,
   useMemo,
@@ -39,7 +40,9 @@ export interface InputIsland {
 }
 
 export interface TextInputProps
-  extends Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'onChange' | 'size' | 'ref'> {
+  extends PropsWithChildren<
+    Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'onChange' | 'size' | 'ref'>
+  > {
   value: string;
   onChange: (value: string) => void;
   classNames?: {
@@ -84,6 +87,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       size = Size.medium,
       suggestions = [],
       useLiveSuggestions = false,
+      children,
       ...props
     },
     ref
@@ -299,6 +303,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
               </div>
             </>
           )}
+          {children}
         </div>
         {suggestionsList.length > 0 && (
           <FloatingBox
