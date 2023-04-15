@@ -18,7 +18,7 @@ import ReactDOM from 'react-dom';
 
 export interface ModalAction {
   label: string;
-  onClick: () => null;
+  onClick: () => void;
   leftIcon?: JSX.Element;
   rightIcon?: JSX.Element;
   align?: Align;
