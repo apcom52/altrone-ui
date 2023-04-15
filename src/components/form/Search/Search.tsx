@@ -16,6 +16,7 @@ export const Search = ({
 
   return (
     <TextInput
+      type="search"
       value={value}
       onChange={onChange}
       className={clsx('alt-search', className)}
