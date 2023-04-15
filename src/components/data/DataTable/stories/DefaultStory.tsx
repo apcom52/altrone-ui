@@ -17,11 +17,7 @@ const columns: DataTableColumn<DataTableStoryDataInterface>[] = [
   {
     accessor: 'iso',
     label: 'ISO Code',
-    Component: ({ value }) => (
-      <td>
-        <code>{value}</code>
-      </td>
-    )
+    Component: ({ value }) => <code>{value}</code>
   },
   {
     accessor: 'name'
@@ -36,9 +32,9 @@ const columns: DataTableColumn<DataTableStoryDataInterface>[] = [
     accessor: 'phone',
     label: 'Phone code',
     Component: ({ value }) => (
-      <td style={{ display: 'flex' }}>
+      <div style={{ display: 'flex' }}>
         <Icon i="phone" /> {value}
-      </td>
+      </div>
     )
   },
   {
