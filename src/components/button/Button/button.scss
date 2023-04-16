@@ -330,3 +330,17 @@
   left: 50%;
   transform: translateX(-50%);
 }
+
+.alt-button__progress {
+  --textColor: var(--buttonTextColor);
+
+  position: absolute;
+  width: 90%;
+  bottom: 4px;
+  left: 5%;
+  box-shadow: none;
+  border: none;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--surfaceTrasparent);
+}

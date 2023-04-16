@@ -64,7 +64,8 @@ ButtonIconExample.args = {
   dark: false,
   fluid: false,
   isIcon: true,
-  loading: false
+  loading: false,
+  progress: undefined
 };
 
 export const ButtonDropdownExample = Template.bind({});
@@ -73,6 +74,7 @@ ButtonDropdownExample.args = {
   children: 'Button with dropdown actions',
   dark: false,
   loading: false,
+  progress: undefined,
   dropdown: [
     {
       title: 'Settings',

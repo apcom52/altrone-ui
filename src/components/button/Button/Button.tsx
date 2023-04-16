@@ -9,9 +9,9 @@ import {
 } from '../../../types';
 import clsx from 'clsx';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
-import './button.scss';
 import { ContextMenu } from '../../list';
-import { Loading } from '../../indicators';
+import { Loading, Progress } from '../../indicators';
+import './button.scss';
 
 export enum ButtonVariant {
   default = '',
@@ -38,6 +38,7 @@ export interface ButtonProps
   isIcon?: boolean;
   indicator?: Indicator;
   loading?: boolean;
+  progress?: number;
 }
 
 const ButtonComponents = ['button', 'a'];
@@ -60,6 +61,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       isIcon = false,
       indicator = undefined,
       loading = false,
+      progress = undefined,
       ...props
     },
     ref
@@ -117,6 +119,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           <div className="alt-button__loading">
             <Loading size={size} />
           </div>
+        )}
+        {!loading && progress !== undefined && (
+          <Progress className="alt-button__progress" value={progress} size={Size.small} />
         )}
         {!loading && isDropdownVisible ? (
           <FloatingBox
