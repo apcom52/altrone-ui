@@ -10,7 +10,8 @@ export const Altrone: FC<PropsWithChildren<Partial<ThemeConfig>>> = ({
   theme = Theme.system,
   locale = 'en-US',
   lang = 'en',
-  style = {}
+  style = {},
+  className
 }) => {
   try {
     // @ts-ignore
@@ -34,7 +35,7 @@ export const Altrone: FC<PropsWithChildren<Partial<ThemeConfig>>> = ({
         lang
       }}>
       <div
-        className={clsx('altrone', {
+        className={clsx('altrone', className, {
           'altrone--dark': _theme === Theme.dark
         })}
         style={style}>

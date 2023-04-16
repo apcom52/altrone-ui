@@ -9,11 +9,7 @@ const columns: DataTableColumn[] = [
   {
     accessor: 'iso',
     label: 'ISO Code',
-    Component: ({ value }) => (
-      <div>
-        <code>{value}</code>
-      </div>
-    )
+    Component: ({ value }) => <code>{value}</code>
   },
   {
     accessor: 'name'

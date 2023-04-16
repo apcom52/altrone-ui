@@ -4,9 +4,9 @@ import {
   PropsWithChildren,
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
-  useRef
+  useRef,
+  useState
 } from 'react';
 import { Align, Role, Size, Surface } from '../../../types';
 import './modal.scss';
@@ -18,7 +18,7 @@ import ReactDOM from 'react-dom';
 
 export interface ModalAction {
   label: string;
-  onClick: () => null;
+  onClick: () => void;
   leftIcon?: JSX.Element;
   rightIcon?: JSX.Element;
   align?: Align;
@@ -63,6 +63,8 @@ const Modal = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
+  const [opened, setOpened] = useState(reduceMotion);
+
   useEffect(() => {
     document.body.classList.add(CLS_UTIL_NOSCROLL);
     document.body.addEventListener('keypress', onESCPress);
@@ -73,11 +75,14 @@ const Modal = ({
     };
   }, []);
 
-  useLayoutEffect(() => {
-    setTimeout(() => {
+  useEffect(() => {
+    if (!opened) {
       modalRef.current?.classList.add(CLS_OPENED);
-    }, 0);
-  }, []);
+      setTimeout(() => {
+        setOpened(true);
+      }, 200);
+    }
+  });
 
   const [leftActions, rightActions] = useMemo(() => {
     const leftActions: ModalAction[] = [];
@@ -143,8 +148,8 @@ const Modal = ({
           'alt-modal--size-small': size === Size.small,
           'alt-modal--size-large': size === Size.large,
           'alt-modal--fluid': fluid,
-          [CLS_OPENED]: reduceMotion,
-          [`alt-modal--surface-${surface}`]: surface !== Surface.glass
+          [`alt-modal--surface-${surface}`]: surface !== Surface.glass,
+          'alt-modal--opened': opened
         })}
         ref={modalRef}
         data-testid="alt-test-modal">
@@ -188,4 +193,4 @@ const Modal = ({
   );
 };
 
-export default memo(Modal) as typeof Modal;
+export default Modal;
