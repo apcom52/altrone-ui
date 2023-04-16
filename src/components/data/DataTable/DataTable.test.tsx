@@ -182,7 +182,7 @@ describe('Data.DataTable', () => {
 
     expect(rows).toHaveLength(6);
 
-    const search = screen.getByTestId('alt-test-datatable-search').querySelector('input');
+    const search = screen.getByRole('searchbox');
     await waitFor(() => fireEvent.change(search, { target: { value: 'The' } }));
 
     rerender(<DataTable data={DATA} columns={COLUMNS} searchBy="country" />);
