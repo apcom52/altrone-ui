@@ -1,4 +1,5 @@
 import { Search } from './Search';
+import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 
 class ResizeObserver {
@@ -21,8 +22,12 @@ describe('Form.Search', () => {
   test('should search renders correctly', () => {
     render(<Search value="" onChange={() => null} />);
 
-    expect(screen.getByRole('searchbox')).toBeInTheDocument();
+    const searchbox = screen.getByRole('searchbox');
+    expect(searchbox).toBeInTheDocument();
   });
 
-  test('should placeholder works correctly', () => {});
+  test('should placeholder works correctly', () => {
+    render(<Search value="" onChange={() => null} placeholder="Type to search" />);
+    expect(screen.getByText('Type to search')).toBeInTheDocument();
+  });
 });
