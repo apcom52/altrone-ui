@@ -538,14 +538,14 @@ describe('Data.DataTable', () => {
     ]);
   });
 
-  test('', async () => {
+  test('should search clear button works correctly', async () => {
     const { rerender } = render(
       <Altrone>
         <DataTable data={DATA} columns={COLUMNS} searchBy="country" />
       </Altrone>
     );
 
-    let searchField = screen.getByRole('textbox');
+    let searchField = screen.getByRole('searchbox');
     await waitFor(() => fireEvent.change(searchField, { target: { value: 'the' } }));
 
     rerender(
@@ -554,7 +554,7 @@ describe('Data.DataTable', () => {
       </Altrone>
     );
 
-    searchField = screen.getByRole('textbox');
+    searchField = screen.getByRole('searchbox');
     expect(searchField).toHaveValue('the');
 
     const clearButton = screen.getByText('backspace');
@@ -566,7 +566,7 @@ describe('Data.DataTable', () => {
       </Altrone>
     );
 
-    searchField = screen.getByRole('textbox');
+    searchField = screen.getByRole('searchbox');
     expect(searchField).toHaveValue('');
   });
 
