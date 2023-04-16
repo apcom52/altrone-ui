@@ -61,6 +61,7 @@ const Loading = ({ size = Size.medium, color, className }: LoadingProps) => {
 
   return (
     <div
+      data-testid="alt-test-loading"
       className={clsx(
         'alt-loading',
         {
@@ -74,4 +75,4 @@ const Loading = ({ size = Size.medium, color, className }: LoadingProps) => {
   );
 };
 
-export default memo(Loading);
+export default memo(Loading) as typeof Loading;
