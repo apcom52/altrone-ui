@@ -262,4 +262,18 @@ describe('Form.TextInput', () => {
     expect(liveSuggestion).toBeInTheDocument();
     expect(liveSuggestion).toHaveTextContent('aniel');
   });
+
+  test('should shows loading spinner', async () => {
+    render(<TextInput value="" onChange={() => null} loading />);
+    expect(screen.getByTestId('alt-test-loading')).toBeInTheDocument();
+  });
+
+  test('should shows loading spinner instead of right island', async () => {
+    const { rerender } = render(<TextInput value="" onChange={() => null} suffix="hello" />);
+    expect(screen.getByText('hello')).toBeInTheDocument();
+
+    rerender(<TextInput value="" onChange={() => null} suffix="hello" loading />);
+    expect(screen.queryByText('hello')).not.toBeInTheDocument();
+    expect(screen.getByTestId('alt-test-loading')).toBeInTheDocument();
+  });
 });

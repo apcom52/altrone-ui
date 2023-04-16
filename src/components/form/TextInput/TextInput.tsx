@@ -19,6 +19,7 @@ import { useResizeObserver } from '../../../hooks';
 import { FloatingBox } from '../../containers';
 import { ContextMenu } from '../../list';
 import { Icon } from '../../icons';
+import { Loading } from '../../indicators';
 
 export enum InputIslandType {
   text = 'text',
@@ -60,6 +61,7 @@ export interface TextInputProps
   Component?: JSX.Element;
   suggestions?: string[];
   useLiveSuggestions?: boolean;
+  loading?: boolean;
 }
 
 const DEFAULT_HORIZONTAL_PADDING = 12;
@@ -87,6 +89,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       size = Size.medium,
       suggestions = [],
       useLiveSuggestions = false,
+      loading = false,
       children,
       ...props
     },
@@ -96,7 +99,15 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState<number>(-1);
 
     const _leftIsland = useInputIsland(leftIsland, leftIcon, prefix, disabled);
-    const _rightIsland = useInputIsland(rightIsland, rightIcon, suffix, disabled);
+    let _rightIsland = useInputIsland(rightIsland, rightIcon, suffix, disabled);
+
+    if (loading) {
+      _rightIsland = (
+        <>
+          <Loading size={size} />
+        </>
+      );
+    }
 
     const inputRef = useRef<HTMLInputElement | null>(null);
     const cancelNextSuggestionCheck = useRef(false);
