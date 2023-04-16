@@ -96,10 +96,13 @@ const DataTableBody = () => {
                     {column.Component ? (
                       <CustomComponent
                         {...column}
+                        item={data[selectedRowIndex]}
+                        rowIndex={selectedRowIndex}
+                        columnIndex={columnIndex}
                         value={data[selectedRowIndex][column.accessor]}
                       />
                     ) : (
-                      data[selectedRowIndex][column.accessor].toString()
+                      String(data[selectedRowIndex][column.accessor])
                     )}
                   </div>
                 </div>

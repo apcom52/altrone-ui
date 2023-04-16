@@ -11,4 +11,5 @@ export interface ThemeConfig {
   locale: string;
   style?: CSSProperties;
   lang?: string;
+  className?: string;
 }

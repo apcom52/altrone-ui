@@ -4,11 +4,11 @@ import {
   PropsWithChildren,
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
-  useRef
+  useRef,
+  useState
 } from 'react';
-import { Role, Size, Align } from '../../../types';
+import { Align, Role, Size, Surface } from '../../../types';
 import './modal.scss';
 import { Icon } from '../../icons';
 import { Button } from '../../button';
@@ -18,7 +18,7 @@ import ReactDOM from 'react-dom';
 
 export interface ModalAction {
   label: string;
-  onClick: () => null;
+  onClick: () => void;
   leftIcon?: JSX.Element;
   rightIcon?: JSX.Element;
   align?: Align;
@@ -36,6 +36,7 @@ interface ModalProps extends PropsWithChildren {
   closeOnOverlay?: boolean;
   reduceMotion?: boolean;
   className?: string;
+  surface?: Surface;
 }
 
 const CLS_OPENED = 'alt-modal--opened';
@@ -53,13 +54,16 @@ const Modal = ({
   showCancel = true,
   closeOnOverlay = true,
   reduceMotion = false,
-  className
+  className,
+  surface = Surface.glass
 }: ModalProps) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize();
   const t = useLocalization();
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+
+  const [opened, setOpened] = useState(reduceMotion);
 
   useEffect(() => {
     document.body.classList.add(CLS_UTIL_NOSCROLL);
@@ -71,11 +75,14 @@ const Modal = ({
     };
   }, []);
 
-  useLayoutEffect(() => {
-    setTimeout(() => {
+  useEffect(() => {
+    if (!opened) {
       modalRef.current?.classList.add(CLS_OPENED);
-    }, 0);
-  }, []);
+      setTimeout(() => {
+        setOpened(true);
+      }, 200);
+    }
+  });
 
   const [leftActions, rightActions] = useMemo(() => {
     const leftActions: ModalAction[] = [];
@@ -141,7 +148,8 @@ const Modal = ({
           'alt-modal--size-small': size === Size.small,
           'alt-modal--size-large': size === Size.large,
           'alt-modal--fluid': fluid,
-          [CLS_OPENED]: reduceMotion
+          [`alt-modal--surface-${surface}`]: surface !== Surface.glass,
+          'alt-modal--opened': opened
         })}
         ref={modalRef}
         data-testid="alt-test-modal">
@@ -185,4 +193,4 @@ const Modal = ({
   );
 };
 
-export default memo(Modal) as typeof Modal;
+export default Modal;

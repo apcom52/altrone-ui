@@ -140,4 +140,18 @@ describe('Button.Button', () => {
     expect(indicator).toBeInTheDocument();
     expect(indicator).toBeEmptyDOMElement();
   });
+
+  test('should shows Loading component when loading=true', () => {
+    render(<Button loading>Loading button</Button>);
+
+    expect(screen.getByText('Loading button')).toHaveClass('alt-button--loading');
+    expect(screen.getByTestId('alt-test-loading')).toBeInTheDocument();
+  });
+
+  test('should shows Progress component when progress is set', () => {
+    render(<Button progress={25}>Progress button</Button>);
+
+    expect(screen.getByTestId('alt-test-progress')).toBeInTheDocument();
+    expect(screen.getByTestId('alt-test-progress-active')).toHaveStyle('width: 25%');
+  });
 });

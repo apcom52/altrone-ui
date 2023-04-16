@@ -11,28 +11,26 @@ export enum TabListVariant {
   solid = 'solid'
 }
 
-type TabValue = number | string;
-
-interface TabListProps {
-  selected: TabValue;
+interface TabListProps<T extends unknown> {
+  selected: T;
   tabs: {
     label: string;
-    value: TabValue;
+    value: T;
     disabled?: boolean;
     href?: string;
     indicator?: Indicator;
   }[];
-  onChange: (value: TabValue) => void;
+  onChange: (value: T) => void;
   variant?: TabListVariant;
   fluid?: boolean;
   showCloseButtons?: boolean;
   showAddTabButton?: boolean;
-  onCloseTab?: (value: TabValue) => void;
+  onCloseTab?: (value: T) => void;
   onAddTab?: () => void;
   align?: Align;
 }
 
-const TabList = ({
+const TabList = <T extends unknown>({
   selected,
   tabs = [],
   variant = TabListVariant.default,
@@ -43,7 +41,7 @@ const TabList = ({
   onCloseTab,
   onAddTab,
   align = Align.center
-}: TabListProps) => {
+}: TabListProps<T>) => {
   const tabListRef = useRef<HTMLDivElement>(null);
   const selectedTabRef = useRef<HTMLButtonElement>(null);
   const [activeBackgroundStyles, setActiveBackgroundStyles] = useState({});
@@ -67,7 +65,7 @@ const TabList = ({
     setBackgroundPosition();
   }, [selected, setBackgroundPosition, tabsListObserver, align]);
 
-  const onCloseClick = (e: React.MouseEvent, value: TabValue) => {
+  const onCloseClick = (e: React.MouseEvent, value: T) => {
     if (variant === TabListVariant.solid && onCloseTab) {
       e.stopPropagation();
       onCloseTab(value);

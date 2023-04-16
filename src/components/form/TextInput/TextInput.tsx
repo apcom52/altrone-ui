@@ -2,6 +2,7 @@ import React, {
   forwardRef,
   KeyboardEventHandler,
   memo,
+  PropsWithChildren,
   useCallback,
   useEffect,
   useMemo,
@@ -18,6 +19,7 @@ import { useResizeObserver } from '../../../hooks';
 import { FloatingBox } from '../../containers';
 import { ContextMenu } from '../../list';
 import { Icon } from '../../icons';
+import { Loading } from '../../indicators';
 
 export enum InputIslandType {
   text = 'text',
@@ -39,7 +41,9 @@ export interface InputIsland {
 }
 
 export interface TextInputProps
-  extends Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'onChange' | 'size' | 'ref'> {
+  extends PropsWithChildren<
+    Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'onChange' | 'size' | 'ref'>
+  > {
   value: string;
   onChange: (value: string) => void;
   classNames?: {
@@ -57,6 +61,7 @@ export interface TextInputProps
   Component?: JSX.Element;
   suggestions?: string[];
   useLiveSuggestions?: boolean;
+  loading?: boolean;
 }
 
 const DEFAULT_HORIZONTAL_PADDING = 12;
@@ -84,6 +89,8 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       size = Size.medium,
       suggestions = [],
       useLiveSuggestions = false,
+      loading = false,
+      children,
       ...props
     },
     ref
@@ -92,7 +99,15 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState<number>(-1);
 
     const _leftIsland = useInputIsland(leftIsland, leftIcon, prefix, disabled);
-    const _rightIsland = useInputIsland(rightIsland, rightIcon, suffix, disabled);
+    let _rightIsland = useInputIsland(rightIsland, rightIcon, suffix, disabled);
+
+    if (loading) {
+      _rightIsland = (
+        <>
+          <Loading size={size} />
+        </>
+      );
+    }
 
     const inputRef = useRef<HTMLInputElement | null>(null);
     const cancelNextSuggestionCheck = useRef(false);
@@ -299,6 +314,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
               </div>
             </>
           )}
+          {children}
         </div>
         {suggestionsList.length > 0 && (
           <FloatingBox

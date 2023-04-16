@@ -97,6 +97,7 @@
 
 .alt-button--variant-borders {
   --buttonBackgroundColor: var(--textColor);
+  --buttonTextColor: var(--buttonBackgroundColor);
 
   background-color: transparent;
   box-shadow: none;
@@ -150,6 +151,7 @@
   @include useTextVariant(accent);
 
   &.alt-button--variant-borders, &.alt-button--variant-text, &.alt-button--variant-transparent {
+    --buttonTextColor: var(--accentText);
     --indicatorBaselineBackground: var(--danger);
     --indicatorBaselineText: var(--textColorOnDanger);
     --indicatorBaselineDot: var(--danger);
@@ -174,6 +176,7 @@
   @include useTextVariant(success);
 
   &.alt-button--variant-borders, &.alt-button--variant-text, &.alt-button--variant-transparent {
+    --buttonTextColor: var(--successText);
     --indicatorBaselineBackground: var(--danger);
     --indicatorBaselineText: var(--textColorOnDanger);
     --indicatorBaselineDot: var(--danger);
@@ -198,6 +201,7 @@
   @include useTextVariant(danger);
 
   &.alt-button--variant-borders, &.alt-button--variant-text, &.alt-button--variant-transparent {
+    --buttonTextColor: var(--dangerText);
     --indicatorBaselineBackground: var(--danger);
     --indicatorBaselineText: var(--textColorOnDanger);
     --indicatorBaselineDot: var(--danger);
@@ -314,4 +318,29 @@
 
 .alt-button--icon .alt-button__indicator {
   margin-left: 4px;
+}
+
+.alt-button--loading {
+  color: transparent;
+}
+
+.alt-button__loading {
+  color: var(--buttonTextColor);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.alt-button__progress {
+  --textColor: var(--buttonTextColor);
+
+  position: absolute;
+  width: 90%;
+  bottom: 4px;
+  left: 5%;
+  box-shadow: none;
+  border: none;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--surfaceTrasparent);
 }

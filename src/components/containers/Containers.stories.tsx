@@ -1,6 +1,6 @@
 import { ButtonContainer, Form, FormField, FormGroup, FormGroupVariant, Modal } from '../index';
 import { Altrone } from '../../hocs';
-import { Align, Direction, Role, Size, Theme } from '../../types';
+import { Align, Direction, Role, Size, Surface, Theme } from '../../types';
 import { useState } from 'react';
 import clsx from 'clsx';
 import { Button } from '../button';
@@ -19,6 +19,8 @@ const Template = ({ Component, dark, ...args }) => {
 const FloatingBoxTemplate = (args) => {
   const [isVisible, setIsVisible] = useState(false);
   const [buttonRef, setButtonRef] = useState(null);
+
+  const [surface, setSurface] = useState(Surface.glass);
 
   return (
     <div
@@ -42,7 +44,8 @@ const FloatingBoxTemplate = (args) => {
           targetElement={buttonRef}
           maxHeight={100}
           onClose={() => setIsVisible(false)}
-          mobileBehaviour={FloatingBoxMobileBehaviour.modal}>
+          mobileBehaviour={FloatingBoxMobileBehaviour.modal}
+          surface={args.surface}>
           <Heading level={6}>Wants more?</Heading>
           <Paragraph>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium adipisci aliquid
@@ -218,6 +221,19 @@ FloatingBoxExample.args = {
   placement: 'auto',
   dark: false
 };
+FloatingBoxExample.argTypes = {
+  surface: {
+    control: 'select',
+    options: [
+      Surface.none,
+      Surface.transparent,
+      Surface.glass,
+      Surface.solid,
+      Surface.paper,
+      Surface.metal
+    ]
+  }
+};
 
 export const FormExample = FormTemplate.bind({});
 FormExample.args = {
@@ -273,12 +289,24 @@ ModalExample.args = {
     }
   ],
   fluid: false,
-  dark: false
+  dark: false,
+  reduceMotion: false
 };
 ModalExample.argTypes = {
   size: {
     control: 'select',
     options: [Size.small, Size.medium, Size.large]
+  },
+  surface: {
+    control: 'select',
+    options: [
+      Surface.none,
+      Surface.transparent,
+      Surface.glass,
+      Surface.solid,
+      Surface.paper,
+      Surface.metal
+    ]
   }
 };
 

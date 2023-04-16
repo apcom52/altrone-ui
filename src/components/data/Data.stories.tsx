@@ -2023,11 +2023,7 @@ DataTableExample.args = {
     {
       accessor: 'iso',
       label: 'ISO Code',
-      Component: ({ value }) => (
-        <td>
-          <code>{String(value)}</code>
-        </td>
-      )
+      Component: ({ value }) => <code>{String(value)}</code>
     },
     {
       accessor: 'name'
@@ -2042,11 +2038,11 @@ DataTableExample.args = {
       accessor: 'phone',
       label: 'Phone code',
       Component: ({ value }) => (
-        <td style={{ display: 'flex' }}>
+        <div style={{ display: 'flex' }}>
           <>
             <Icon i="phone" /> {value}
           </>
-        </td>
+        </div>
       )
     },
     {

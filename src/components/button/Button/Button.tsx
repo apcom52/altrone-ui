@@ -9,8 +9,9 @@ import {
 } from '../../../types';
 import clsx from 'clsx';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
-import './button.scss';
 import { ContextMenu } from '../../list';
+import { Loading, Progress } from '../../indicators';
+import './button.scss';
 
 export enum ButtonVariant {
   default = '',
@@ -36,6 +37,8 @@ export interface ButtonProps
   dropdown?: ContextMenuType;
   isIcon?: boolean;
   indicator?: Indicator;
+  loading?: boolean;
+  progress?: number;
 }
 
 const ButtonComponents = ['button', 'a'];
@@ -57,6 +60,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       type = 'button',
       isIcon = false,
       indicator = undefined,
+      loading = false,
+      progress = undefined,
       ...props
     },
     ref
@@ -82,7 +87,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           [`alt-button--variant-${variant}`]: variant !== ButtonVariant.default,
           [`alt-button--size-${size}`]: size !== Size.medium,
           'alt-button--fluid': fluid,
-          'alt-button--icon': isIcon
+          'alt-button--icon': isIcon,
+          'alt-button--loading': loading
         }),
         ref: (node: HTMLButtonElement) => {
           buttonRef.current = node;
@@ -109,7 +115,15 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           </div>
         )}
         {rightIcon ? <span className="alt-button__rightIcon">{rightIcon}</span> : null}
-        {isDropdownVisible ? (
+        {loading && (
+          <div className="alt-button__loading">
+            <Loading size={size} />
+          </div>
+        )}
+        {!loading && progress !== undefined && (
+          <Progress className="alt-button__progress" value={progress} size={Size.small} />
+        )}
+        {!loading && isDropdownVisible ? (
           <FloatingBox
             targetElement={buttonRef.current}
             onClose={hideDropdown}
