@@ -48,7 +48,9 @@ ButtonExample.args = {
   fluid: false,
   indicator: false,
   indicatorValue: '',
-  indicatorPosition: 'corner'
+  indicatorPosition: 'corner',
+  loading: false,
+  progress: undefined
 };
 
 export const ButtonIconExample = Template.bind({});
@@ -61,7 +63,8 @@ ButtonIconExample.args = {
   href: '',
   dark: false,
   fluid: false,
-  isIcon: true
+  isIcon: true,
+  loading: false
 };
 
 export const ButtonDropdownExample = Template.bind({});
@@ -69,6 +72,7 @@ ButtonDropdownExample.args = {
   Component: Button,
   children: 'Button with dropdown actions',
   dark: false,
+  loading: false,
   dropdown: [
     {
       title: 'Settings',
