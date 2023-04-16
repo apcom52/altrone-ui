@@ -28,7 +28,7 @@ const LoadingAnimation = ({ size = 100 }: LoadingAnimation) => {
       enableBackground="new 0 0 0 0"
       xmlSpace="preserve">
       <path
-        fill="color"
+        fill="currentColor"
         d={`M${0.73 * size},${0.5 * size}c0${-0.127 * size}${-0.103 * size}${-0.23 * size}${
           -0.23 * size
         }${-0.23 * size}S${0.27 * size},${0.373 * size},${0.27 * size},${0.5 * size} M${
