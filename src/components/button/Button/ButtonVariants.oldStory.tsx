@@ -4,7 +4,7 @@ import { Button } from './index';
 import ButtonContainer from '../../containers/ButtonContainer/ButtonContainer';
 import { Icon } from '../../icons';
 
-export const ButtonVariantsStory = ({ dark = false, ...args }) => {
+const ButtonVariantsStory = ({ dark = false, ...args }) => {
   const variants = [
     ButtonVariant.default,
     ButtonVariant.borders,
@@ -180,3 +180,5 @@ export const ButtonVariantsStory = ({ dark = false, ...args }) => {
     </>
   );
 };
+
+export default ButtonVariantsStory;

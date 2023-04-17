@@ -1,7 +1,7 @@
 import { Blockquote, Heading, Message, Paragraph } from './index';
 import { Role } from '../../types';
 import { Icon } from '../icons';
-import { BasicTemplate } from '../BasicTemplate.stories';
+import { BasicTemplate } from '../BasicTemplate';
 
 export const HeadingExample = BasicTemplate.bind({});
 HeadingExample.args = {
