@@ -1,22 +1,60 @@
-.alt-search {
-
+.alt-file-picker {
+  display: flex;
 }
 
-.alt-search-placeholder {
+.alt-file-picker-icon {
   display: flex;
   align-items: center;
-  position: absolute;
   justify-content: center;
-  width: 100%;
-  height: var(--controlHeight);
-  top: 0;
-  left: 0;
-  font-weight: 400;
-  pointer-events: none;
-  color: var(--placeholderText);
+  width: 1em;
+  height: 1em;
+  color: white;
+  border-radius: 0.25em;
+  background: gray;
+
+  .alt-icon {
+    font-size: 0.75em !important;
+  }
 }
 
-.alt-search-placeholder__icon {
-  margin-right: 6px;
-  font-size: 1.25em;
+.alt-file-picker-icon--document {
+  background: #42A5F5;
+}
+
+.alt-file-picker-icon--image {
+  background: #F06292;
+}
+
+.alt-file-picker-icon--audio {
+  background: #F44336;
+}
+
+.alt-file-picker-icon--video {
+  background: #5E35B1;
+}
+
+.alt-file-picker-icon--table {
+  background: #8BC34A;
+}
+
+.alt-file-picker-icon--presentation {
+  background: #FFC107;
+}
+
+.alt-file-picker-icon--code {
+  background: #3F51B5;
+}
+
+.alt-file-picker-icon--archive {
+  background: #D4E157;
+}
+
+.altrone--dark {
+  .alt-file-picker-icon--presentation {
+    background: #FFA000;
+  }
+
+  .alt-file-picker-icon--archive {
+    background: #AFB42B;
+  }
 }

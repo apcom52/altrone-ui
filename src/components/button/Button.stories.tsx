@@ -2,7 +2,6 @@ import { Altrone } from '../../hocs';
 import { Role, Size, Theme } from '../../types';
 import { Button, ButtonVariant } from './Button';
 import { Icon } from '../icons';
-import { ButtonVariantsStory } from './Button/ButtonVariants.stories';
 
 const Template = ({
   Component,
@@ -161,12 +160,12 @@ ButtonIconExample.argTypes = {
   }
 };
 
-export const ButtonVariantsExample = (args) => <ButtonVariantsStory {...args} />;
-ButtonVariantsExample.argTypes = {
-  dark: {
-    control: 'switcher'
-  }
-};
+// export const ButtonVariantsExample = (args) => <ButtonVariantsStory {...args} />;
+// ButtonVariantsExample.argTypes = {
+//   dark: {
+//     control: 'switcher'
+//   }
+// };
 
 export default {
   component: ButtonExample,
