@@ -15,6 +15,7 @@ import {
 } from './FilePickerIcons';
 import { getFileSize } from './FilePicker.utils';
 import './file-picker.scss';
+import clsx from 'clsx';
 
 export enum FilePickerVariant {
   default = 'default',
@@ -45,41 +46,66 @@ interface FilePickerProps {
   placeholder?: string;
 }
 
-const FILE_EXTENTIONS: Record<FileExtensions | string, { icon: () => JSX.Element; label: string }> =
-  {
-    text: {
-      icon: DocumentFileIcon,
-      label: 'Выберите документ'
-    },
-    image: {
-      icon: ImageFileIcon,
-      label: 'Выберите изображение'
-    },
-    audio: {
-      icon: AudioFileIcon,
-      label: 'Выберите музыку'
-    },
-    video: {
-      icon: VideoFileIcon,
-      label: 'Выберите видео'
-    },
-    table: {
-      icon: TableFileIcon,
-      label: 'Выберите таблицу'
-    },
-    presentation: {
-      icon: PresentationFileIcon,
-      label: 'Выберите презентацию'
-    },
-    code: {
-      icon: CodeFileIcon,
-      label: 'Выберите исходный код'
-    },
-    archive: {
-      icon: ArchiveFileIcon,
-      label: 'Выберите архив'
-    }
-  };
+const FILE_EXTENTIONS: Record<
+  FileExtensions | string,
+  { icon: () => JSX.Element; accept: string[]; label: string }
+> = {
+  text: {
+    icon: DocumentFileIcon,
+    accept: ['.doc', '.docx', '.pdf', '.txt'],
+    label: 'Выберите документ'
+  },
+  image: {
+    icon: ImageFileIcon,
+    accept: ['.jpg', '.jpeg', '.gif', '.png', '.svg', '.tiff', '.tif'],
+    label: 'Выберите изображение'
+  },
+  audio: {
+    icon: AudioFileIcon,
+    accept: ['.mp3', '.wav', '.aac', '.m4a'],
+    label: 'Выберите музыку'
+  },
+  video: {
+    icon: VideoFileIcon,
+    accept: ['.mp4', '.avi', '.mov'],
+    label: 'Выберите видео'
+  },
+  table: {
+    icon: TableFileIcon,
+    accept: ['.xls', '.xlsx', '.ods'],
+    label: 'Выберите таблицу'
+  },
+  presentation: {
+    icon: PresentationFileIcon,
+    accept: ['.ppt', '.pptx', '.odp', '.key'],
+    label: 'Выберите презентацию'
+  },
+  code: {
+    icon: CodeFileIcon,
+    accept: [
+      '.c',
+      '.class',
+      '.cpp',
+      '.cs',
+      '.h',
+      '.java',
+      '.php',
+      '.py',
+      '.sh',
+      '.swift',
+      '.vb',
+      '.js',
+      '.css',
+      '.html'
+    ],
+    label: 'Выберите исходный код'
+  },
+  archive: {
+    icon: ArchiveFileIcon,
+    accept: ['.zip', '.rar', '.7z', '.tar.gz'],
+    label: 'Выберите архив'
+  }
+};
 
 export const FilePicker = ({
   value,
@@ -123,8 +149,16 @@ export const FilePicker = ({
   const fileName = value && !Array.isArray(value) && value.name;
   const fileSize = value && !Array.isArray(value) && getFileSize(value.size);
 
+  const acceptFiles =
+    extensions &&
+    ['text', 'image', 'audio', 'video', 'table', 'presentation', 'code', 'archive'].indexOf(
+      extensions
+    ) > -1
+      ? FILE_EXTENTIONS[extensions].accept.join(',')
+      : extensions;
+
   return (
-    <div className="alt-file-picker">
+    <div className={clsx('alt-file-picker', className)}>
       <button className="alt-button alt-file-picker-button" onClick={onFileUploadClick}>
         {icon()}
         {value ? (
@@ -138,10 +172,12 @@ export const FilePicker = ({
       </button>
       <input
         type="file"
+        name={name}
         ref={fileInputRef}
         className="alt-file-picker__input"
         tabIndex={-1}
         onChange={onFileChange}
+        accept={acceptFiles}
       />
     </div>
   );
