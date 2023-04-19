@@ -17,6 +17,23 @@
   }
 }
 
+.alt-file-picker__button {
+  display: flex;
+
+  &:text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
+
+.alt-file-picker__input {
+  position: absolute;
+  left: -1000px;
+  top: -1000px;
+  opacity: 0;
+}
+
 .alt-file-picker-icon--document {
   background: #42A5F5;
 }

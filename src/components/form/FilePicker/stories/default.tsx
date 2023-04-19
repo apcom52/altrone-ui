@@ -8,7 +8,7 @@ const DefaultSingleFilePicker: ComponentStory<typeof FilePicker> = (args) => {
 
   return (
     <StorybookPlayground>
-      <FilePicker value={value} onChange={setValue} {...args} />
+      <FilePicker {...args} value={value} onChange={setValue} />
     </StorybookPlayground>
   );
 };
