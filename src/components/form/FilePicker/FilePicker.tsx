@@ -1,5 +1,5 @@
 import { useLocalization } from '../../../hooks';
-import React, { ChangeEventHandler, useCallback, useRef } from 'react';
+import React, { ChangeEventHandler, useCallback, useRef, useState } from 'react';
 import { Surface } from '../../../types';
 import { Button } from '../../button';
 import {
@@ -16,6 +16,8 @@ import {
 import { getFileSize } from './FilePicker.utils';
 import './file-picker.scss';
 import clsx from 'clsx';
+import { FloatingBox } from '../../containers';
+import { FileZone } from './FileZone';
 
 export enum FilePickerVariant {
   default = 'default',
@@ -117,6 +119,9 @@ export const FilePicker = ({
   placeholder,
   ...props
 }: FilePickerProps) => {
+  const [isFileZoneVisible, setIsFileZoneVisible] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
   const t = useLocalization();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -135,7 +140,6 @@ export const FilePicker = ({
 
   const onFileChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (e) => {
-      console.log('on change', e.target.files?.[0]);
       if (multiple) {
         onChange(Array.from(e.target.files || []));
       } else {
@@ -145,7 +149,6 @@ export const FilePicker = ({
     [multiple, onChange]
   );
 
-  const isFileSelected = Boolean(!Array.isArray(value) && value);
   const fileName = value && !Array.isArray(value) && value.name;
   const fileSize = value && !Array.isArray(value) && getFileSize(value.size);
 
@@ -157,9 +160,14 @@ export const FilePicker = ({
       ? FILE_EXTENTIONS[extensions].accept.join(',')
       : extensions;
 
+  console.log(value);
+
   return (
     <div className={clsx('alt-file-picker', className)}>
-      <button className="alt-button alt-file-picker-button" onClick={onFileUploadClick}>
+      <button
+        ref={buttonRef}
+        className="alt-button alt-file-picker-button"
+        onClick={multiple ? () => setIsFileZoneVisible(!isFileZoneVisible) : onFileUploadClick}>
         {icon()}
         {value ? (
           <div className="alt-file-picker-file">
@@ -178,7 +186,18 @@ export const FilePicker = ({
         tabIndex={-1}
         onChange={onFileChange}
         accept={acceptFiles}
+        multiple={multiple}
       />
+      {isFileZoneVisible && (
+        <FloatingBox
+          targetElement={buttonRef.current}
+          onClose={() => setIsFileZoneVisible(false)}
+          useRootContainer
+          useParentWidth
+          minWidth={300}>
+          <FileZone onClick={onFileUploadClick} />
+        </FloatingBox>
+      )}
     </div>
   );
 };
