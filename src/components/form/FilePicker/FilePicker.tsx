@@ -1,6 +1,5 @@
 import { useLocalization } from '../../../hooks';
 import React, { ChangeEventHandler, useCallback, useRef } from 'react';
-import './file-picker.scss';
 import { Surface } from '../../../types';
 import { Button } from '../../button';
 import {
@@ -15,6 +14,7 @@ import {
   VideoFileIcon
 } from './FilePickerIcons';
 import { getFileSize } from './FilePicker.utils';
+import './file-picker.scss';
 
 export enum FilePickerVariant {
   default = 'default',
@@ -42,6 +42,7 @@ interface FilePickerProps {
   extensions?: FileExtensions | string;
   className?: string;
   name?: string;
+  placeholder?: string;
 }
 
 const FILE_EXTENTIONS: Record<FileExtensions | string, { icon: () => JSX.Element; label: string }> =
@@ -87,6 +88,7 @@ export const FilePicker = ({
   extensions,
   name,
   multiple = false,
+  placeholder,
   ...props
 }: FilePickerProps) => {
   const t = useLocalization();
@@ -94,7 +96,10 @@ export const FilePicker = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const icon = FILE_EXTENTIONS[String(extensions)]?.icon || DefaultIcon;
-  const label = FILE_EXTENTIONS[String(extensions)]?.label || 'Выберите файл';
+  const label =
+    placeholder ||
+    FILE_EXTENTIONS[String(extensions)]?.label ||
+    'Выберите файл lorem Выберите файл lorem Выберите файл lorem Выберите файл lorem Выберите файл lorem';
 
   const onFileUploadClick = useCallback(() => {
     if (fileInputRef.current) {
@@ -115,13 +120,22 @@ export const FilePicker = ({
   );
 
   const isFileSelected = Boolean(!Array.isArray(value) && value);
+  const fileName = value && !Array.isArray(value) && value.name;
+  const fileSize = value && !Array.isArray(value) && getFileSize(value.size);
 
   return (
     <div className="alt-file-picker">
-      <Button leftIcon={icon()} onClick={onFileUploadClick} className="alt-file-picker__button">
-        {!Array.isArray(value) && value ? value?.name : label}
-        {!Array.isArray(value) && value && ` (${getFileSize(value.size)})`}
-      </Button>
+      <button className="alt-button alt-file-picker-button" onClick={onFileUploadClick}>
+        {icon()}
+        {value ? (
+          <div className="alt-file-picker-file">
+            <div className="alt-file-picker-file__name">{fileName}</div>
+            <div className="alt-file-picker-file__size">{fileSize}</div>
+          </div>
+        ) : (
+          <div className="alt-file-picker-button__label">{label}</div>
+        )}
+      </button>
       <input
         type="file"
         ref={fileInputRef}
