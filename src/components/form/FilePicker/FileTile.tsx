@@ -1,6 +1,9 @@
 import './file-tile.scss';
 import { getFileSize } from './FilePicker.utils';
 import { FilePickerFileIcon } from './FilePicker';
+import React from 'react';
+import { Icon } from '../../icons';
+import { Button, ButtonVariant } from '../../button';
 
 interface FileTileProps {
   file: File;
@@ -15,6 +18,9 @@ export const FileTile = ({ file, icon }: FileTileProps) => {
         <div className="alt-file-tile__fileName">{file.name}</div>
         <div className="alt-file-tile__fileSize">{getFileSize(file.size)}</div>
       </div>
+      <Button variant={ButtonVariant.transparent} isIcon className="alt-file-tile__remove">
+        <Icon i="delete" />
+      </Button>
     </div>
   );
 };

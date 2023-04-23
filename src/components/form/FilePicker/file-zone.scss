@@ -26,4 +26,9 @@
   flex-direction: column;
   gap: 8px;
   width: 100%;
+  margin-top: -8px;
+
+  & + .alt-file-zone__icon {
+    margin-top: 24px;
+  }
 }
