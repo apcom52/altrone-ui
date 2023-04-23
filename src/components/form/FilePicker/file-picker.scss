@@ -11,6 +11,11 @@
   text-align: left;
 }
 
+.alt-file-picker-button__icon {
+  font-size: 20px;
+  margin-right: 8px;
+}
+
 .alt-file-picker-icon {
   display: flex;
   align-items: center;
@@ -22,7 +27,7 @@
   border-radius: 0.25em;
   background: gray;
   font-size: 18px;
-  margin-right: 8px;
+  margin-left: -6px;
 
   .alt-icon {
     font-size: 1em;

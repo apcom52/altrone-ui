@@ -50,7 +50,7 @@ interface FilePickerProps {
 
 const FILE_EXTENTIONS: Record<
   FileExtensions | string,
-  { icon: () => JSX.Element; accept: string[]; label: string }
+  { icon: (count: number) => JSX.Element; accept: string[]; label: string }
 > = {
   text: {
     icon: DocumentFileIcon,
@@ -127,10 +127,7 @@ export const FilePicker = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const icon = FILE_EXTENTIONS[String(extensions)]?.icon || DefaultIcon;
-  const label =
-    placeholder ||
-    FILE_EXTENTIONS[String(extensions)]?.label ||
-    'Выберите файл lorem Выберите файл lorem Выберите файл lorem Выберите файл lorem Выберите файл lorem';
+  const label = placeholder || FILE_EXTENTIONS[String(extensions)]?.label || 'Выберите файл';
 
   const onFileUploadClick = useCallback(() => {
     if (fileInputRef.current) {
@@ -160,20 +157,20 @@ export const FilePicker = ({
       ? FILE_EXTENTIONS[extensions].accept.join(',')
       : extensions;
 
-  console.log(value);
-
   return (
     <div className={clsx('alt-file-picker', className)}>
       <button
         ref={buttonRef}
         className="alt-button alt-file-picker-button"
         onClick={multiple ? () => setIsFileZoneVisible(!isFileZoneVisible) : onFileUploadClick}>
-        {icon()}
-        {value ? (
+        <span className="alt-file-picker-button__icon">{icon(value?.length || 0)}</span>
+        {!Array.isArray(value) && value ? (
           <div className="alt-file-picker-file">
             <div className="alt-file-picker-file__name">{fileName}</div>
             <div className="alt-file-picker-file__size">{fileSize}</div>
           </div>
+        ) : Array.isArray(value) && value ? (
+          <div className="alt-file-picker-file">Выбрано {value.length} файлов</div>
         ) : (
           <div className="alt-file-picker-button__label">{label}</div>
         )}
