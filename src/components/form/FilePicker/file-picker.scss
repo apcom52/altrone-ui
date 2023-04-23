@@ -4,11 +4,13 @@
 }
 
 .alt-button.alt-file-picker-button {
+  position: relative;
   display: flex;
   width: 100%;
   justify-content: flex-start;
   padding-left: 12px;
   text-align: left;
+  padding-right: 34px;
 }
 
 .alt-file-picker-button__icon {
@@ -39,6 +41,13 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.alt-file-picker-button__loading {
+  position: absolute;
+  right: 0;
+  width: 34px;
+  height: 34px;
 }
 
 .alt-file-picker__button {

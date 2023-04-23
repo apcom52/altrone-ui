@@ -1,7 +1,5 @@
-import { useLocalization } from '../../../hooks';
-import React, { ChangeEventHandler, useCallback, useRef, useState } from 'react';
+import { ChangeEventHandler, useCallback, useRef, useState } from 'react';
 import { Surface } from '../../../types';
-import { Button } from '../../button';
 import {
   ArchiveFileIcon,
   AudioFileIcon,
@@ -18,6 +16,7 @@ import './file-picker.scss';
 import clsx from 'clsx';
 import { FloatingBox } from '../../containers';
 import { FileZone } from './FileZone';
+import { Loading } from '../../indicators';
 
 export enum FilePickerVariant {
   default = 'default',
@@ -121,6 +120,7 @@ export const FilePicker = ({
   placeholder
 }: FilePickerProps) => {
   const [isFileZoneVisible, setIsFileZoneVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -137,6 +137,7 @@ export const FilePicker = ({
   const onFileChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (e) => {
       if (multiple) {
+        setIsFileZoneVisible(true);
         onChange(Array.from(e.target.files || []));
       } else {
         onChange(e.target.files?.[0] || undefined);
@@ -173,6 +174,11 @@ export const FilePicker = ({
         ) : (
           <div className="alt-file-picker-button__label">{label}</div>
         )}
+        {isLoading && (
+          <div className="alt-file-picker-button__loading">
+            <Loading />
+          </div>
+        )}
       </button>
       <input
         type="file"
@@ -195,6 +201,7 @@ export const FilePicker = ({
             files={Array.isArray(value) ? value : []}
             icon={icon}
             onClick={onFileUploadClick}
+            onChange={onChange}
           />
         </FloatingBox>
       )}

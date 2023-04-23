@@ -1,4 +1,3 @@
-import React from 'react';
 import { Icon } from '../../icons';
 
 export const DocumentFileIcon = (count = 0) => {
