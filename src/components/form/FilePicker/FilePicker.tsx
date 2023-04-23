@@ -24,6 +24,8 @@ export enum FilePickerVariant {
   block = 'block'
 }
 
+export type FilePickerFileIcon = (count: number) => JSX.Element;
+
 type FilePickerType = File | File[] | undefined;
 type FileExtensions =
   | 'text'
@@ -50,7 +52,7 @@ interface FilePickerProps {
 
 const FILE_EXTENTIONS: Record<
   FileExtensions | string,
-  { icon: (count: number) => JSX.Element; accept: string[]; label: string }
+  { icon: FilePickerFileIcon; accept: string[]; label: string }
 > = {
   text: {
     icon: DocumentFileIcon,
@@ -116,13 +118,10 @@ export const FilePicker = ({
   extensions,
   name,
   multiple = false,
-  placeholder,
-  ...props
+  placeholder
 }: FilePickerProps) => {
   const [isFileZoneVisible, setIsFileZoneVisible] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
-
-  const t = useLocalization();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -192,7 +191,11 @@ export const FilePicker = ({
           useRootContainer
           useParentWidth
           minWidth={300}>
-          <FileZone onClick={onFileUploadClick} />
+          <FileZone
+            files={Array.isArray(value) ? value : []}
+            icon={icon}
+            onClick={onFileUploadClick}
+          />
         </FloatingBox>
       )}
     </div>
