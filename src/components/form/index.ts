@@ -12,3 +12,4 @@ export { ScrollableSelector } from './ScrollableSelector';
 export { RadioList } from './RadioList';
 export { Textarea } from './Textarea';
 export { Search } from './Search';
+export { FilePicker, FilePickerVariant } from './FilePicker';
