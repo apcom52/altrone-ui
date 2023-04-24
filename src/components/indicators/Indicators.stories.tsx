@@ -1,6 +1,6 @@
 import { Role, Size } from '../../types';
 import { Progress, ProgressVariant } from './Progress';
-import { BasicTemplate } from '../BasicTemplate.stories';
+import { BasicTemplate } from '../BasicTemplate';
 
 export const ProgressExample = BasicTemplate.bind({});
 ProgressExample.args = {

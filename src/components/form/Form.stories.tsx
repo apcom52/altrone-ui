@@ -1,26 +1,19 @@
 import { Altrone } from '../../hocs';
 import { Align, Direction, Size, Theme } from '../../types';
 import {
-  Checkbox,
-  CheckboxList,
   DatePicker,
-  InputIslandType,
   NumberInput,
   PasswordInput,
   RadioList,
   ScrollableSelector,
   Select,
   Switcher,
-  Textarea,
-  TextInput
+  Textarea
 } from './index';
-import { Icon } from '../icons';
 import { SelectOptionProps } from './Select';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { Picker } from './DatePicker/DatePicker';
-import { userEvent, within } from '@storybook/testing-library';
-import { CheckboxListStory, CheckboxStory } from './Checkbox/Checkbox.stories';
 import { ScrollableSelectorOptionProps } from './ScrollableSelector/ScrollableSelector';
 
 const Template = ({ Component, dark, value = '', locale, lang = 'en', ...args }) => {
@@ -81,34 +74,34 @@ NumberInputExample.args = {
   disabled: false
 };
 
-export const CheckboxExample = CheckboxStory.bind({});
-CheckboxExample.args = {
-  Component: Checkbox,
-  value: 0,
-  checked: false,
-  disabled: false,
-  danger: false,
-  children: 'Example',
-  hintText: '',
-  errorText: '',
-  dark: false
-};
-
-export const CheckboxListExample = CheckboxListStory.bind({});
-CheckboxListExample.args = {
-  Component: CheckboxList,
-  lang: 'en',
-  dark: false
-};
-CheckboxListExample.argTypes = {
-  direction: {
-    control: 'select',
-    options: [Direction.horizontal, Direction.vertical]
-  },
-  dark: {
-    control: 'boolean'
-  }
-};
+// export const CheckboxExample = CheckboxStory.bind({});
+// CheckboxExample.args = {
+//   Component: Checkbox,
+//   value: 0,
+//   checked: false,
+//   disabled: false,
+//   danger: false,
+//   children: 'Example',
+//   hintText: '',
+//   errorText: '',
+//   dark: false
+// };
+//
+// export const CheckboxListExample = CheckboxListStory.bind({});
+// CheckboxListExample.args = {
+//   Component: CheckboxList,
+//   lang: 'en',
+//   dark: false
+// };
+// CheckboxListExample.argTypes = {
+//   direction: {
+//     control: 'select',
+//     options: [Direction.horizontal, Direction.vertical]
+//   },
+//   dark: {
+//     control: 'boolean'
+//   }
+// };
 
 export const SelectExample = Template.bind({});
 SelectExample.args = {

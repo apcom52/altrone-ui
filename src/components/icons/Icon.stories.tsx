@@ -1,5 +1,5 @@
 import { Icon } from './index';
-import { BasicTemplate } from '../BasicTemplate.stories';
+import { BasicTemplate } from '../BasicTemplate';
 
 export const IconExample = BasicTemplate.bind({});
 IconExample.args = {
