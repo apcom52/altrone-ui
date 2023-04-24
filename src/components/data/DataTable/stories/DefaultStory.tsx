@@ -1,19 +1,19 @@
-import { ComponentStory } from '@storybook/react';
+import { StoryObj } from '@storybook/react';
 import { DataTable, DataTableColumn } from '../index';
 import { Altrone } from '../../../../hocs';
-import { default as data } from './data';
+import { default as tableData } from './data';
 import { Icon } from '../../../icons';
 
 export interface DataTableStoryDataInterface {
   name: string;
   iso: string;
-  continent: 'AS' | 'EU' | 'NA';
+  continent: string;
   capital: string;
   phone: string;
   currency: string;
 }
 
-const columns: DataTableColumn<DataTableStoryDataInterface>[] = [
+export const defaultColumns: DataTableColumn<DataTableStoryDataInterface>[] = [
   {
     accessor: 'iso',
     label: 'ISO Code',
@@ -33,7 +33,9 @@ const columns: DataTableColumn<DataTableStoryDataInterface>[] = [
     label: 'Phone code',
     Component: ({ value }) => (
       <div style={{ display: 'flex' }}>
-        <Icon i="phone" /> {value}
+        <>
+          <Icon i="phone" /> {value}
+        </>
       </div>
     )
   },
@@ -42,19 +44,19 @@ const columns: DataTableColumn<DataTableStoryDataInterface>[] = [
   }
 ];
 
-export const DefaultDataTableStory: ComponentStory<typeof DataTable> = () => {
-  return (
-    <Altrone style={{ padding: 8 }}>
-      <DataTable<DataTableStoryDataInterface> data={data} columns={columns} />
-    </Altrone>
-  );
-};
-
-DefaultDataTableStory.argTypes = [
-  {
-    striped: {
-      control: 'select',
-      options: [undefined, 'odd', 'even']
-    }
+export const DefaultDataTableStory: StoryObj<typeof DataTable> = {
+  render: ({
+    data,
+    columns = defaultColumns,
+    searchFunc,
+    sortFunc,
+    DataTableStatusComponent,
+    ...args
+  }) => {
+    return (
+      <Altrone style={{ padding: 8 }}>
+        <DataTable<DataTableStoryDataInterface> data={tableData} columns={columns} {...args} />
+      </Altrone>
+    );
   }
-];
+};

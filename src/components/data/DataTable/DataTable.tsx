@@ -36,11 +36,11 @@ interface DataTableProps<T extends object> {
   searchFunc?: (params: DataTableSearchFunc<T>) => boolean;
   filters?: DataTableFilter<T>[];
   mobileColumns?: (keyof T)[];
+  striped?: 'odd' | 'even';
   className?: string;
   actions?: DataTableAction[];
-  selectableActions?: DataTableSelectableAction<T>[];
-  striped?: 'odd' | 'even';
   selectable?: boolean;
+  selectableActions?: DataTableSelectableAction<T>[];
   DataTableStatusComponent?: () => JSX.Element;
 }
 
