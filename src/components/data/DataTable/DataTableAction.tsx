@@ -41,7 +41,7 @@ const DataTableAction = <T extends unknown>({
 
   const onButtonClick = () => {
     if (actionType === 'button') {
-      onClick?.(selectedData);
+      onClick?.(selectedData || []);
     } else if (actionType === 'popup') {
       setIsPopupVisible(!isPopupVisible);
     }
@@ -52,7 +52,7 @@ const DataTableAction = <T extends unknown>({
       return contextMenu;
     }
 
-    function adoptMenu(menu: ContextMenuType) {
+    function adoptMenu(menu: ContextMenuType): (ContextAction | ParentContextAction)[] {
       if (!menu) {
         return [];
       }

@@ -1,8 +1,9 @@
 import { StoryObj } from '@storybook/react';
-import { DataTable, DataTableColumn } from '../index';
-import { Altrone } from '../../../../hocs';
+import { DataTable, DataTableAction, DataTableColumn } from '../index';
 import { default as tableData } from './data';
 import { Icon } from '../../../icons';
+import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
+import { DataTableSelectableAction } from '../DataTable';
 
 export interface DataTableStoryDataInterface {
   name: string;
@@ -13,11 +14,11 @@ export interface DataTableStoryDataInterface {
   currency: string;
 }
 
-export const defaultColumns: DataTableColumn<DataTableStoryDataInterface>[] = [
+export const DEFAULT_COLUMNS: DataTableColumn<DataTableStoryDataInterface>[] = [
   {
     accessor: 'iso',
     label: 'ISO Code',
-    Component: ({ value }) => <code>{value}</code>
+    Component: (args) => <code>{String(args.value)}</code>
   },
   {
     accessor: 'name'
@@ -31,10 +32,10 @@ export const defaultColumns: DataTableColumn<DataTableStoryDataInterface>[] = [
   {
     accessor: 'phone',
     label: 'Phone code',
-    Component: ({ value }) => (
+    Component: (args) => (
       <div style={{ display: 'flex' }}>
         <>
-          <Icon i="phone" /> {value}
+          <Icon i="phone" /> {String(args.value)}
         </>
       </div>
     )
@@ -44,19 +45,48 @@ export const defaultColumns: DataTableColumn<DataTableStoryDataInterface>[] = [
   }
 ];
 
-export const DefaultDataTableStory: StoryObj<typeof DataTable> = {
-  render: ({
-    data,
-    columns = defaultColumns,
-    searchFunc,
-    sortFunc,
-    DataTableStatusComponent,
-    ...args
-  }) => {
-    return (
-      <Altrone style={{ padding: 8 }}>
-        <DataTable<DataTableStoryDataInterface> data={tableData} columns={columns} {...args} />
-      </Altrone>
-    );
+export const ACTIONS: DataTableAction[] = [
+  {
+    label: 'Add',
+    icon: <Icon i="add" />,
+    onClick: () => alert('Add action clicked')
   }
+];
+
+export const SELECTABLE_ACTIONS: DataTableSelectableAction<DataTableStoryDataInterface>[] = [
+  {
+    label: 'Menu',
+    icon: <Icon i="menu" />,
+    contextMenu: [
+      {
+        title: 'Action',
+        onClick: (selectedData) => console.log(selectedData)
+      }
+    ]
+  },
+  {
+    label: 'Delete',
+    icon: <Icon i="delete" />,
+    onClick: (selectableRows) => console.log('edit click', selectableRows),
+    danger: true
+  },
+  {
+    label: 'Details',
+    icon: <Icon i="info" />,
+    content: ({ selectedRows }) => (
+      <ul>
+        {selectedRows?.map((row, rowIndex) => (
+          <li key={rowIndex}>{row.name}</li>
+        ))}
+      </ul>
+    )
+  }
+];
+
+export const DefaultDataTableStory: StoryObj<typeof DataTable> = {
+  storyName: 'Default DataTable',
+  render: ({ data, columns, searchFunc, sortFunc, DataTableStatusComponent, ...args }) => {
+    return <DataTable<DataTableStoryDataInterface> data={tableData} columns={columns} {...args} />;
+  },
+  decorators: [StorybookDecorator]
 };

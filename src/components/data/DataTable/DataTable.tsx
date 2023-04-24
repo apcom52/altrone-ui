@@ -60,6 +60,12 @@ export interface DataTableAction {
   disabled?: boolean;
 }
 
+export interface DataTableSelectableAction<T extends unknown>
+  extends Omit<DataTableAction, 'onClick' | 'content'> {
+  onClick?: (selectedRows: T[]) => void;
+  content?: (args: DataTablePopupActionProps & { selectedRows?: T[] }) => JSX.Element;
+}
+
 export const DataTable = <T extends object>({
   data = [],
   columns = [],
@@ -202,11 +208,5 @@ export const DataTable = <T extends object>({
     </DataTableContext.Provider>
   );
 };
-
-export interface DataTableSelectableAction<T extends unknown>
-  extends Omit<DataTableAction, 'onClick' | 'content'> {
-  onClick?: (selectedRows: T[]) => void;
-  content?: (args: DataTablePopupActionProps & { selectedRows?: T[] }) => JSX.Element;
-}
 
 export default DataTable;

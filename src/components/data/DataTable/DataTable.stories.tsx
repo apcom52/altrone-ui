@@ -1,10 +1,13 @@
 import { DataTable } from './index';
 import { Meta } from '@storybook/react';
-import { DataTableStoryDataInterface, defaultColumns } from './stories/DefaultStory';
+import {
+  DataTableStoryDataInterface,
+  DEFAULT_COLUMNS,
+  SELECTABLE_ACTIONS,
+  ACTIONS
+} from './stories/DefaultStory';
 
 export { DefaultDataTableStory } from './stories/DefaultStory';
-// export { DataTableWithDefaultActions } from './stories/DataTableWithDefaultActions';
-// export { SelectableDataTable } from './stories/SelectableDataTable';
 
 const KEYS = ['name', 'iso', 'continent', 'capital', 'phone', 'currency'];
 
@@ -13,10 +16,12 @@ const meta: Meta<typeof DataTable<DataTableStoryDataInterface>> = {
   title: 'Data/DataTable',
   tags: ['autodocs'],
   args: {
-    columns: defaultColumns,
+    columns: DEFAULT_COLUMNS,
     limit: 20,
     searchBy: 'name',
-    sortKeys: ['name', 'continent']
+    sortKeys: ['name', 'continent'],
+    actions: ACTIONS,
+    selectableActions: SELECTABLE_ACTIONS
   },
   argTypes: {
     data: { control: false },

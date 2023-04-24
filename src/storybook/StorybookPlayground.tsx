@@ -3,6 +3,7 @@ import { Option, Theme } from '../types';
 import './storybook-playground.scss';
 import { Altrone } from '../hocs';
 import { Select, TextInput } from '../components';
+import { Story, StoryObj } from '@storybook/react';
 
 const THEMES: Option<Theme>[] = [
   {
@@ -51,5 +52,13 @@ export const StorybookPlayground = ({ children }: PropsWithChildren) => {
         <div className="sb-playground__content">{children}</div>
       </div>
     </Altrone>
+  );
+};
+
+export const StorybookDecorator = (Story: Story) => {
+  return (
+    <StorybookPlayground>
+      <Story />
+    </StorybookPlayground>
   );
 };
