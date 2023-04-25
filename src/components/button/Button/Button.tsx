@@ -35,7 +35,7 @@ export interface ButtonProps extends PropsWithChildren {
   indicator?: Indicator;
   loading?: boolean;
   progress?: number;
-  onClick: () => void;
+  onClick?: () => void;
   className?: string;
   type?: HTMLButtonElement['type'];
 }

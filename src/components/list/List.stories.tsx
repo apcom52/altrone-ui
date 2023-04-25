@@ -15,7 +15,7 @@ import { Icon } from '../icons';
 import ToolbarAction from './Toolbar/ToolbarAction';
 import { Heading } from '../typography';
 import { Button } from '../button';
-import { ModalExample } from '../containers/Containers.stories';
+import { ModalExample } from '../containers/Containers.oldStories';
 
 const Template = ({ Component, dark, values, value, ...args }) => {
   const [_value, setValue] = useState(values);
