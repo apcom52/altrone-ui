@@ -36,11 +36,11 @@ interface DataTableProps<T extends object> {
   searchFunc?: (params: DataTableSearchFunc<T>) => boolean;
   filters?: DataTableFilter<T>[];
   mobileColumns?: (keyof T)[];
+  striped?: 'odd' | 'even';
   className?: string;
   actions?: DataTableAction[];
-  selectableActions?: DataTableSelectableAction<T>[];
-  striped?: 'odd' | 'even';
   selectable?: boolean;
+  selectableActions?: DataTableSelectableAction<T>[];
   DataTableStatusComponent?: () => JSX.Element;
 }
 
@@ -58,6 +58,12 @@ export interface DataTableAction {
   contextMenu?: ContextMenuType;
   indicator?: Indicator;
   disabled?: boolean;
+}
+
+export interface DataTableSelectableAction<T extends unknown>
+  extends Omit<DataTableAction, 'onClick' | 'content'> {
+  onClick?: (selectedRows: T[]) => void;
+  content?: (args: DataTablePopupActionProps & { selectedRows?: T[] }) => JSX.Element;
 }
 
 export const DataTable = <T extends object>({
@@ -202,11 +208,5 @@ export const DataTable = <T extends object>({
     </DataTableContext.Provider>
   );
 };
-
-export interface DataTableSelectableAction<T extends unknown>
-  extends Omit<DataTableAction, 'onClick' | 'content'> {
-  onClick?: (selectedRows: T[]) => void;
-  content?: (args: DataTablePopupActionProps & { selectedRows?: T[] }) => JSX.Element;
-}
 
 export default DataTable;
