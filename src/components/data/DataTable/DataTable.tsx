@@ -93,7 +93,9 @@ export const DataTable = <T extends object>({
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
   const filteredColumns = useMemo(() => {
-    return columns.filter((column) => typeof column.visible === 'boolean' && column.visible);
+    return columns.filter((column) =>
+      typeof column.visible === 'boolean' ? column.visible : true
+    );
   }, [columns]);
 
   const filteredData = useMemo(() => {
