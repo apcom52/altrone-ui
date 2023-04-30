@@ -111,12 +111,14 @@ const FILE_EXTENTIONS: Record<
 };
 
 export const FilePicker = ({
+  variant = FilePickerVariant.default,
   value,
   onChange,
   className,
   extensions,
   name,
   multiple = false,
+  surface,
   placeholder
 }: FilePickerProps) => {
   const [isFileZoneVisible, setIsFileZoneVisible] = useState(false);
@@ -159,27 +161,37 @@ export const FilePicker = ({
 
   return (
     <div className={clsx('alt-file-picker', className)}>
-      <button
-        ref={buttonRef}
-        className="alt-button alt-file-picker-button"
-        onClick={multiple ? () => setIsFileZoneVisible(!isFileZoneVisible) : onFileUploadClick}>
-        <span className="alt-file-picker-button__icon">{icon(value?.length || 0)}</span>
-        {!Array.isArray(value) && value ? (
-          <div className="alt-file-picker-file">
-            <div className="alt-file-picker-file__name">{fileName}</div>
-            <div className="alt-file-picker-file__size">{fileSize}</div>
-          </div>
-        ) : Array.isArray(value) && value ? (
-          <div className="alt-file-picker-file">Выбрано {value.length} файлов</div>
-        ) : (
-          <div className="alt-file-picker-button__label">{label}</div>
-        )}
-        {isLoading && (
-          <div className="alt-file-picker-button__loading">
-            <Loading />
-          </div>
-        )}
-      </button>
+      {variant === FilePickerVariant.default && (
+        <button
+          ref={buttonRef}
+          className="alt-button alt-file-picker-button"
+          onClick={multiple ? () => setIsFileZoneVisible(!isFileZoneVisible) : onFileUploadClick}>
+          <span className="alt-file-picker-button__icon">{icon(value?.length || 0)}</span>
+          {!Array.isArray(value) && value ? (
+            <div className="alt-file-picker-file">
+              <div className="alt-file-picker-file__name">{fileName}</div>
+              <div className="alt-file-picker-file__size">{fileSize}</div>
+            </div>
+          ) : Array.isArray(value) && value ? (
+            <div className="alt-file-picker-file">Выбрано {value.length} файлов</div>
+          ) : (
+            <div className="alt-file-picker-button__label">{label}</div>
+          )}
+          {isLoading && (
+            <div className="alt-file-picker-button__loading">
+              <Loading />
+            </div>
+          )}
+        </button>
+      )}
+      {variant === FilePickerVariant.block && (
+        <FileZone
+          files={Array.isArray(value) ? value : value ? [value] : []}
+          icon={icon}
+          onClick={onFileUploadClick}
+          onChange={onChange}
+        />
+      )}
       <input
         type="file"
         name={name}
@@ -190,13 +202,14 @@ export const FilePicker = ({
         accept={acceptFiles}
         multiple={multiple}
       />
-      {isFileZoneVisible && (
+      {variant === FilePickerVariant.default && isFileZoneVisible && (
         <FloatingBox
           targetElement={buttonRef.current}
           onClose={() => setIsFileZoneVisible(false)}
           useRootContainer
           useParentWidth
-          minWidth={300}>
+          minWidth={300}
+          surface={surface}>
           <FileZone
             files={Array.isArray(value) ? value : []}
             icon={icon}
