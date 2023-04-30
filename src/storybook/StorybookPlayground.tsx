@@ -3,6 +3,8 @@ import { Option, Theme } from '../types';
 import './storybook-playground.scss';
 import { Altrone } from '../hocs';
 import { Select, TextInput } from '../components';
+import { Story, StoryObj } from '@storybook/react';
+import clsx from 'clsx';
 
 const THEMES: Option<Theme>[] = [
   {
@@ -28,14 +30,26 @@ const LANGS: Option<Lang>[] = [
   }
 ];
 
-export const StorybookPlayground = ({ children }: PropsWithChildren) => {
+interface StorybookPlaygroundProps extends PropsWithChildren {
+  showBackground?: boolean;
+}
+
+export const StorybookPlayground = ({
+  children,
+  showBackground = false
+}: StorybookPlaygroundProps) => {
   const [theme, setTheme] = useState<Theme>(Theme.light);
   const [lang, setLang] = useState<Lang>('en');
   const [locale, setLocale] = useState('en-US');
 
+  //https://wallpapers.com/images/featured/qvry7otdo7yagbhr.jpg
+
   return (
     <Altrone theme={theme} lang={lang} locale={locale}>
-      <div className="sb-playground">
+      <div
+        className={clsx('sb-playground', {
+          'sb-playground--with-background': showBackground
+        })}>
         <div className="sb-playground__header">
           <div>
             <Select options={THEMES} value={theme} onChange={setTheme} />
@@ -51,5 +65,21 @@ export const StorybookPlayground = ({ children }: PropsWithChildren) => {
         <div className="sb-playground__content">{children}</div>
       </div>
     </Altrone>
+  );
+};
+
+export const StorybookDecorator = (Story: Story) => {
+  return (
+    <StorybookPlayground>
+      <Story />
+    </StorybookPlayground>
+  );
+};
+
+export const StorybookBackgroundDecorator = (Story: Story) => {
+  return (
+    <StorybookPlayground showBackground>
+      <Story />
+    </StorybookPlayground>
   );
 };

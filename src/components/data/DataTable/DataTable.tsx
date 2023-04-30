@@ -24,6 +24,7 @@ export interface DataTableColumn<T> {
   label?: string;
   width?: number | string;
   Component?: React.FC<DataTableCellProps>;
+  visible?: boolean;
 }
 
 interface DataTableProps<T extends object> {
@@ -36,11 +37,11 @@ interface DataTableProps<T extends object> {
   searchFunc?: (params: DataTableSearchFunc<T>) => boolean;
   filters?: DataTableFilter<T>[];
   mobileColumns?: (keyof T)[];
+  striped?: 'odd' | 'even';
   className?: string;
   actions?: DataTableAction[];
-  selectableActions?: DataTableSelectableAction<T>[];
-  striped?: 'odd' | 'even';
   selectable?: boolean;
+  selectableActions?: DataTableSelectableAction<T>[];
   DataTableStatusComponent?: () => JSX.Element;
 }
 
@@ -58,6 +59,12 @@ export interface DataTableAction {
   contextMenu?: ContextMenuType;
   indicator?: Indicator;
   disabled?: boolean;
+}
+
+export interface DataTableSelectableAction<T extends unknown>
+  extends Omit<DataTableAction, 'onClick' | 'content'> {
+  onClick?: (selectedRows: T[]) => void;
+  content?: (args: DataTablePopupActionProps & { selectedRows?: T[] }) => JSX.Element;
 }
 
 export const DataTable = <T extends object>({
@@ -84,6 +91,12 @@ export const DataTable = <T extends object>({
   const [appliedFilters, setAppliedFilters] = useState<DataTableAppliedFilter<T>[]>([]);
   const [selectableMode, setSelectableMode] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
+
+  const filteredColumns = useMemo(() => {
+    return columns.filter((column) =>
+      typeof column.visible === 'boolean' ? column.visible : true
+    );
+  }, [columns]);
 
   const filteredData = useMemo(() => {
     let result = [...data];
@@ -160,7 +173,7 @@ export const DataTable = <T extends object>({
       value={{
         data: filteredData,
         initialData: data,
-        columns,
+        columns: filteredColumns,
         page,
         setPage,
         limit: limit > 0 ? limit : 1,
@@ -202,11 +215,5 @@ export const DataTable = <T extends object>({
     </DataTableContext.Provider>
   );
 };
-
-export interface DataTableSelectableAction<T extends unknown>
-  extends Omit<DataTableAction, 'onClick' | 'content'> {
-  onClick?: (selectedRows: T[]) => void;
-  content?: (args: DataTablePopupActionProps & { selectedRows?: T[] }) => JSX.Element;
-}
 
 export default DataTable;

@@ -1,12 +1,13 @@
-import React, { forwardRef, memo, MouseEventHandler, useCallback, useRef, useState } from 'react';
-import {
-  ContextMenuType as ContextMenuType,
-  Indicator,
-  Role,
-  Size,
-  WithAltroneOffsets,
-  WithoutDefaultOffsets
-} from '../../../types';
+import React, {
+  forwardRef,
+  memo,
+  MouseEventHandler,
+  PropsWithChildren,
+  useCallback,
+  useRef,
+  useState
+} from 'react';
+import { ContextMenuType as ContextMenuType, Indicator, Role, Size } from '../../../types';
 import clsx from 'clsx';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import { ContextMenu } from '../../list';
@@ -20,12 +21,7 @@ export enum ButtonVariant {
   text = 'text'
 }
 
-export interface ButtonProps
-  extends Omit<
-      WithoutDefaultOffsets<React.HTMLProps<HTMLButtonElement>>,
-      'style' | 'target' | 'size'
-    >,
-    WithAltroneOffsets {
+export interface ButtonProps extends PropsWithChildren {
   role?: Role;
   variant?: ButtonVariant;
   href?: string;
@@ -39,6 +35,9 @@ export interface ButtonProps
   indicator?: Indicator;
   loading?: boolean;
   progress?: number;
+  onClick?: () => void;
+  className?: string;
+  type?: HTMLButtonElement['type'];
 }
 
 const ButtonComponents = ['button', 'a'];

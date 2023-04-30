@@ -1,0 +1,1 @@
+export { DefaultFloatingBoxStory } from './DefaultFloatingBoxStory';
