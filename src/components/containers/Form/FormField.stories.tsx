@@ -8,10 +8,12 @@ const meta: Meta<typeof FormField> = {
   title: 'Containers/Form/FormField',
   tags: ['autodocs'],
   args: {
-    label: 'Your username'
+    label: 'Your username',
+    hintText: ''
   },
   argTypes: {
-    label: { control: 'text' }
+    label: { control: 'text' },
+    hintText: { control: 'text' }
   }
 };
 
