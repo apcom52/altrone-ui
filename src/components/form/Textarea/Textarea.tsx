@@ -7,7 +7,9 @@ import { BasicInput, BasicInputProps } from '../BasicInput';
 
 interface TextareaProps
   extends Pick<TextInputProps, 'value' | 'onChange' | 'className' | 'required'>,
-    BasicInputProps {}
+    BasicInputProps {
+  placeholder?: string;
+}
 
 const Textarea = ({
   value,
