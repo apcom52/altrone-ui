@@ -24,6 +24,7 @@ export interface DataTableColumn<T> {
   label?: string;
   width?: number | string;
   Component?: React.FC<DataTableCellProps>;
+  visible?: boolean;
 }
 
 interface DataTableProps<T extends object> {
@@ -90,6 +91,10 @@ export const DataTable = <T extends object>({
   const [appliedFilters, setAppliedFilters] = useState<DataTableAppliedFilter<T>[]>([]);
   const [selectableMode, setSelectableMode] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
+
+  const filteredColumns = useMemo(() => {
+    return columns.filter((column) => typeof column.visible === 'boolean' && column.visible);
+  }, [columns]);
 
   const filteredData = useMemo(() => {
     let result = [...data];
@@ -166,7 +171,7 @@ export const DataTable = <T extends object>({
       value={{
         data: filteredData,
         initialData: data,
-        columns,
+        columns: filteredColumns,
         page,
         setPage,
         limit: limit > 0 ? limit : 1,
