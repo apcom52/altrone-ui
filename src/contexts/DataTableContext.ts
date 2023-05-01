@@ -1,10 +1,10 @@
 import { createContext, useContext } from 'react';
 import { Sort } from '../types';
-import { DataTableColumn } from '../components/data/DataTable';
+import { DataTableColumn } from '../components/data';
 
 export interface DataTableFilter<T> {
   accessor: keyof T;
-  type: 'select' | 'checkboxList';
+  type: 'select' | 'checkboxList' | 'checkbox';
   label?: string;
   defaultValue?: unknown;
 }

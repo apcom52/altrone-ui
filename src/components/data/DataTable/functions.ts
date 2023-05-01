@@ -40,6 +40,18 @@ export const defaultCheckboxesFilter = <T>({ item, field, value = [] }: DataTabl
   return Array.isArray(value) ? value.indexOf(item[field]) > -1 : false;
 };
 
+export const defaultCheckboxFilter = <T>({
+  item,
+  field,
+  value = false
+}: DataTableFilterFunc<T>) => {
+  if (typeof value === 'boolean' && value) {
+    return Boolean(item[field]);
+  } else {
+    return true;
+  }
+};
+
 export const filterVisibleColumns = <T>(
   columns: DataTableColumn<T>[],
   mobileColumns: (keyof T)[],

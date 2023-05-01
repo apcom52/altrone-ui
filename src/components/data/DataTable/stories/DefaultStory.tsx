@@ -4,6 +4,7 @@ import { default as tableData } from './data';
 import { Icon } from '../../../icons';
 import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 import { DataTableSelectableAction } from '../DataTable';
+import { DataTableFilter } from '../../../../contexts';
 
 export interface DataTableStoryDataInterface {
   name: string;
@@ -12,6 +13,7 @@ export interface DataTableStoryDataInterface {
   capital: string;
   phone: string;
   currency: string;
+  isEU?: boolean;
 }
 
 export const DEFAULT_COLUMNS: DataTableColumn<DataTableStoryDataInterface>[] = [
@@ -42,6 +44,9 @@ export const DEFAULT_COLUMNS: DataTableColumn<DataTableStoryDataInterface>[] = [
   },
   {
     accessor: 'currency'
+  },
+  {
+    accessor: 'isEU'
   }
 ];
 
@@ -80,6 +85,14 @@ export const SELECTABLE_ACTIONS: DataTableSelectableAction<DataTableStoryDataInt
         ))}
       </ul>
     )
+  }
+];
+
+export const FILTERS: DataTableFilter<DataTableStoryDataInterface>[] = [
+  {
+    type: 'checkbox',
+    accessor: 'isEU',
+    defaultValue: false
   }
 ];
 
