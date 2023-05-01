@@ -1,7 +1,6 @@
 import { memo, useMemo, useState } from 'react';
 import './data-table-header.scss';
 import { Button, ButtonVariant } from '../../button';
-import { InputIslandType, TextInput } from '../../form';
 import DataTableSorting from './DataTableSorting';
 import { Icon } from '../../icons';
 import DataTableFiltering from './DataTableFiltering';
@@ -9,7 +8,7 @@ import { useDataTableContext } from '../../../contexts';
 import { useLocalization, useWindowSize } from '../../../hooks';
 import { DataTableAction as DataTableActionType, DataTableSelectableAction } from './DataTable';
 import DataTableAction from './DataTableAction';
-import { Search } from '../../form/Search';
+import { Search } from '../../form';
 
 interface DataTableHeaderProps<T> {
   actions: (DataTableSelectableAction<T> | DataTableActionType)[];

@@ -11,6 +11,7 @@ import {
   DataTableSearchFunc,
   DataTableSortFunc,
   defaultCheckboxesFilter,
+  defaultCheckboxFilter,
   defaultSearchFunc,
   defaultSelectFilter,
   defaultSortFunc
@@ -135,6 +136,14 @@ export const DataTable = <T extends object>({
               })
             );
             break;
+          case 'checkbox':
+            result = result.filter((item) =>
+              defaultCheckboxFilter({
+                item,
+                field: filterConfig.accessor,
+                value: filter.value
+              })
+            );
         }
       }
     }
