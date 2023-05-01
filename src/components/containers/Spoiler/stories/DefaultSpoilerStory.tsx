@@ -1,7 +1,6 @@
 import { StoryObj } from '@storybook/react';
 import { Spoiler } from '../index';
-import { StorybookBackgroundDecorator } from '../../../../storybook/StorybookPlayground';
-import { useState } from 'react';
+import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 import { Paragraph } from '../../../typography';
 
 export const DefaultSpoilerStory: StoryObj<typeof Spoiler> = {
@@ -34,7 +33,9 @@ export const DefaultSpoilerStory: StoryObj<typeof Spoiler> = {
             government.
           </Paragraph>
         </Spoiler>
-        <Spoiler label="Civilopedia entry" openedByDefault={false}>
+        <Spoiler
+          label="Civilopedia entry Civilopedia entry Civilopedia entry Civilopedia entry"
+          openedByDefault={false}>
           <Paragraph>
             The giant bell, Big Ben, is housed in the Elizabeth Tower – so named to celebrate the
             Diamond Jubilee of Queen Elizabeth II (being just the “Clock Tower” before that) – at
@@ -54,5 +55,5 @@ export const DefaultSpoilerStory: StoryObj<typeof Spoiler> = {
       </>
     );
   },
-  decorators: [StorybookBackgroundDecorator]
+  decorators: [StorybookDecorator]
 };
