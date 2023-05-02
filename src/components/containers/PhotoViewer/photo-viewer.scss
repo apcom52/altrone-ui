@@ -8,6 +8,8 @@
   top: 0;
   left: 0;
   background: var(--blackout);
+
+  @include useDisabledUserSelect();
 }
 
 .alt-photo-viewer__container {
@@ -33,14 +35,13 @@
   display: flex;
   align-items: center;
   position: absolute;
-  bottom: 20%;
-  left: 50%;
-  transform: translateX(-50%);
   border-radius: 8px;
   gap: 4px;
   padding: 4px;
   color: var(--textColor);
   box-shadow: 0 3px 15px 0 var(--shadow);
+  cursor: grab;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 
   @include useGlassSurface();
 }
@@ -109,4 +110,9 @@
     font-weight: 600;
     margin-right: 2px;
   }
+}
+
+.alt-photo-viewer-toolbar--dragging {
+  box-shadow: 0 10px 30px 0 var(--shadow);
+  transform: scale(1.025);
 }

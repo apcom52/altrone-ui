@@ -1,17 +1,13 @@
+interface PhotoViewImage {
+  src: string;
+  caption?: string;
+  description?: string;
+  altText?: string;
+}
+
 type PhotoViewerBase = {
-  url: string;
+  images: PhotoViewImage[];
   onClose: () => void;
 };
 
-type PhotoViewerPropsWithNavigation = {
-  useNavigation: true;
-  onNext: () => void;
-  onPrev: () => void;
-};
-
-type PhotoViewerPropsWithoutNavigation = {
-  useNavigation: false;
-};
-
-export type PhotoViewerProps = PhotoViewerBase &
-  (PhotoViewerPropsWithNavigation | PhotoViewerPropsWithoutNavigation);
+export type PhotoViewerProps = PhotoViewerBase;
