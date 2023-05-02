@@ -4,13 +4,9 @@ import { Size } from '../../../types';
 import './photo-viewer.scss';
 import { Icon } from '../../icons';
 import clsx from 'clsx';
+import { PhotoViewerProps } from './PhotoViewer.types';
 
-interface PhotoViewerProps {
-  url: string;
-  onClose: () => void;
-}
-
-export const PhotoViewer = ({ url, onClose }: PhotoViewerProps) => {
+export const PhotoViewer = ({ url, onClose, useNavigation = false }: PhotoViewerProps) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,6 +22,16 @@ export const PhotoViewer = ({ url, onClose }: PhotoViewerProps) => {
         {loading && <Loading size={Size.large} />}
         <img className="alt-photo-viewer__image" src={url} alt="" />
         <div className="alt-photo-viewer-toolbar">
+          {useNavigation && (
+            <>
+              <button className="alt-photo-viewer-toolbar__action">
+                <Icon i="arrow_back" />
+              </button>
+              <button className="alt-photo-viewer-toolbar__action">
+                <Icon i="arrow_forward" />
+              </button>
+            </>
+          )}
           <button className="alt-photo-viewer-toolbar__action">
             <Icon i="remove" />
           </button>
