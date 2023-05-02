@@ -7,7 +7,9 @@ const meta: Meta<typeof PhotoViewer> = {
   component: PhotoViewer,
   title: 'Containers/PhotoViewer',
   tags: ['autodocs'],
-  args: {},
+  args: {
+    url: 'https://cdn.wallpapersafari.com/19/1/OAEcXu.jpg'
+  },
   argTypes: {}
 };
 

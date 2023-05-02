@@ -13,7 +13,7 @@ export const DefaultPhotoViewer: StoryObj<typeof PhotoViewer> = {
     return (
       <ButtonContainer>
         <Button onClick={() => setVisible(true)}>Open PhotoViewer</Button>
-        {visible && <PhotoViewer {...args} />}
+        {visible && <PhotoViewer {...args} onClose={() => setVisible(false)} />}
       </ButtonContainer>
     );
   },
