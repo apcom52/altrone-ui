@@ -17,6 +17,8 @@ const TOOLBAR_DRAGGING = 'alt-photo-viewer-toolbar--dragging';
 
 export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
   const [loading, setLoading] = useState(true);
+  const [expanded, setExpanded] = useState(true);
+
   const [toolbarPosition, setToolbarPosition] = useState<Point>({
     x: 0,
     y: 0
@@ -32,7 +34,11 @@ export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
 
     if (toolbarRef.current) {
       if (isDragged.current) {
-        toolbarRef.current.classList.add(TOOLBAR_DRAGGING);
+        setTimeout(() => {
+          if (toolbarRef.current && isDragged.current) {
+            toolbarRef.current.classList.add(TOOLBAR_DRAGGING);
+          }
+        }, 100);
       } else {
         toolbarRef.current.classList.remove(TOOLBAR_DRAGGING);
       }
@@ -118,15 +124,20 @@ export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
         <img className="alt-photo-viewer__image" src={images[0]?.src} alt="" />
 
         <div className="alt-photo-viewer-info">
-          <div className="alt-photo-viewer-info__counter">
-            <strong>1</strong>/ 6
-          </div>
-          <div className="alt-photo-viewer-info__caption">Image caption</div>
-          <div className="alt-photo-viewer-info__description">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, aspernatur assumenda
-            ducimus ea eaque enim harum ipsa laudantium libero, mollitia, nihil nostrum pariatur
-            quas recusandae rerum saepe similique. Eius, officiis?
-          </div>
+          {expanded && (
+            <>
+              <div className="alt-photo-viewer-info__counter">
+                <strong>1</strong>/ 6
+              </div>
+              <div className="alt-photo-viewer-info__caption">{images[0].caption}</div>
+              <div className="alt-photo-viewer-info__description">{images[0].description}</div>
+            </>
+          )}
+          <button
+            className="alt-photo-viewer-toolbar__action"
+            onClick={() => setExpanded(!expanded)}>
+            <Icon i={expanded ? 'south_west' : 'north_east'} />
+          </button>
         </div>
 
         <div

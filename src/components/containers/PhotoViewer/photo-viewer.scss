@@ -89,22 +89,27 @@
   max-width: 40%;
   border-radius: 8px;
   box-shadow: 0 3px 15px 0 var(--shadow);
-  padding: 16px;
+  padding: 4px;
 
   @include useGlassSurface();
 }
 
 .alt-photo-viewer-info__caption {
   @include useFontSize(label, Large);
-  margin-bottom: 4px;
+  margin: 8px;
 }
 
 .alt-photo-viewer-info__description {
   @include useFontSize(body, Small);
+  margin: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 8px;
 }
 
 .alt-photo-viewer-info__counter {
   @include useFontSize(label);
+  margin: 8px;
 
   strong {
     font-weight: 600;
