@@ -21,6 +21,19 @@ export const PhotoViewer = ({ url, onClose, useNavigation = false }: PhotoViewer
       <div className="alt-photo-viewer__container">
         {loading && <Loading size={Size.large} />}
         <img className="alt-photo-viewer__image" src={url} alt="" />
+
+        <div className="alt-photo-viewer-info">
+          <div className="alt-photo-viewer-info__counter">
+            <strong>1</strong>/ 6
+          </div>
+          <div className="alt-photo-viewer-info__caption">Image caption</div>
+          <div className="alt-photo-viewer-info__description">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, aspernatur assumenda
+            ducimus ea eaque enim harum ipsa laudantium libero, mollitia, nihil nostrum pariatur
+            quas recusandae rerum saepe similique. Eius, officiis?
+          </div>
+        </div>
+
         <div className="alt-photo-viewer-toolbar">
           {useNavigation && (
             <>

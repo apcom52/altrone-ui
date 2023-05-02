@@ -80,3 +80,33 @@
     opacity: 1;
   }
 }
+
+.alt-photo-viewer-info {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  max-width: 40%;
+  border-radius: 8px;
+  box-shadow: 0 3px 15px 0 var(--shadow);
+  padding: 16px;
+
+  @include useGlassSurface();
+}
+
+.alt-photo-viewer-info__caption {
+  @include useFontSize(label, Large);
+  margin-bottom: 4px;
+}
+
+.alt-photo-viewer-info__description {
+  @include useFontSize(body, Small);
+}
+
+.alt-photo-viewer-info__counter {
+  @include useFontSize(label);
+
+  strong {
+    font-weight: 600;
+    margin-right: 2px;
+  }
+}
