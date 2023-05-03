@@ -25,11 +25,14 @@ const meta: Meta<typeof PhotoViewer> = {
       },
       {
         src: 'https://cdn.wallpapersafari.com/19/1/OAEcXu.jpg',
-        caption: 'Big Sur'
+        caption: 'Big Sur',
+        description: `It's one of the world's most stunning patches of coastline, housing California's native north Coast Redwoods, and an abundance of marine life.`
       },
       {
         src: 'https://img.sunset02.com/sites/default/files/image/2016/05/main/secret-sierra-nevada-ca-mcgee-creek-sierra-crest-0513.jpg',
-        caption: 'Sierra'
+        caption: 'Sierra',
+        description:
+          'The Sierra Nevada Mountains are located in eastern California. They stretch from the north of the state to the south, the southern ending being near Los Angeles. The southern parts of the Sierra Range include the highest mountains, such as Mount Whitney and Yosemite National Park.'
       }
     ]
   },
