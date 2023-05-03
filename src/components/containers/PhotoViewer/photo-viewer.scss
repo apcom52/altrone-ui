@@ -29,6 +29,8 @@
   box-shadow: 0 3px 15px 0 var(--shadow);
   opacity: 0;
   transition: transform 0.3s ease, opacity 0.3s ease;
+  background-color: var(--surfaceTrasparent);
+  backdrop-filter: blur(16px);
 }
 
 .alt-photo-viewer-toolbar {
@@ -59,6 +61,11 @@
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
   color: var(--textColor);
   cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 
   @include useInteraction {
     background-color: var(--surfaceTrasparent);
@@ -120,4 +127,12 @@
 .alt-photo-viewer-toolbar--dragging {
   box-shadow: 0 10px 30px 0 var(--shadow);
   transform: scale(1.025);
+}
+
+.alt-photo-viewer__loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
+  color: white;
 }

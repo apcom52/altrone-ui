@@ -18,6 +18,7 @@ const TOOLBAR_DRAGGING = 'alt-photo-viewer-toolbar--dragging';
 export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const [toolbarPosition, setToolbarPosition] = useState<Point>({
     x: 0,
@@ -91,6 +92,10 @@ export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
     }
   }, []);
 
+  const onImageLoad = useCallback(() => {
+    setLoading(false);
+  }, []);
+
   useEffect(() => {
     document.addEventListener('mousedown', onMouseDown);
     document.addEventListener('mouseup', onMouseUp);
@@ -114,23 +119,44 @@ export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
     setTimeout(() => setLoading(false), 500);
   }, []);
 
+  useEffect(() => {
+    setLoading(true);
+  }, [currentIndex]);
+
   return (
     <div
       className={clsx('alt-photo-viewer', {
         'alt-photo-viewer--loaded': !loading
       })}>
       <div className="alt-photo-viewer__container" ref={containerRef}>
-        {loading && <Loading size={Size.large} />}
-        <img className="alt-photo-viewer__image" src={images[0]?.src} alt="" />
+        {loading && (
+          <div className="alt-photo-viewer__loading">
+            <Loading size={Size.large} />
+          </div>
+        )}
+        <img
+          className="alt-photo-viewer__image"
+          src={images[currentIndex]?.src}
+          alt=""
+          onLoad={onImageLoad}
+        />
 
         <div className="alt-photo-viewer-info">
           {expanded && (
             <>
-              <div className="alt-photo-viewer-info__counter">
-                <strong>1</strong>/ 6
-              </div>
-              <div className="alt-photo-viewer-info__caption">{images[0].caption}</div>
-              <div className="alt-photo-viewer-info__description">{images[0].description}</div>
+              {images.length > 1 && (
+                <div className="alt-photo-viewer-info__counter">
+                  <strong>{currentIndex + 1}</strong>/ {images.length}
+                </div>
+              )}
+              {images[currentIndex].caption && (
+                <div className="alt-photo-viewer-info__caption">{images[currentIndex].caption}</div>
+              )}
+              {images[currentIndex].description && (
+                <div className="alt-photo-viewer-info__description">
+                  {images[currentIndex].description}
+                </div>
+              )}
             </>
           )}
           <button
@@ -149,10 +175,16 @@ export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
           }}>
           {images.length > 1 && (
             <>
-              <button className="alt-photo-viewer-toolbar__action">
+              <button
+                className="alt-photo-viewer-toolbar__action"
+                disabled={currentIndex === 0}
+                onClick={() => setCurrentIndex(currentIndex - 1)}>
                 <Icon i="arrow_back" />
               </button>
-              <button className="alt-photo-viewer-toolbar__action">
+              <button
+                className="alt-photo-viewer-toolbar__action"
+                disabled={currentIndex === images.length - 1}
+                onClick={() => setCurrentIndex(currentIndex + 1)}>
                 <Icon i="arrow_forward" />
               </button>
             </>
