@@ -20,15 +20,15 @@
 
 .alt-photo-viewer__image {
   position: absolute;
-  transform: translateX(-50%) translateY(-50%) scale(0.9);
+  transform: translateX(-50%) translateY(-50%);
   object-fit: contain;
-  width: 75%;
+  max-width: 75%;
+  max-height: 90%;
   left: 50%;
   top: 50%;
   border-radius: 12px;
   box-shadow: 0 3px 15px 0 var(--shadow);
-  opacity: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.2s linear;
   background-color: var(--surfaceTrasparent);
   backdrop-filter: blur(16px);
 }
@@ -80,13 +80,6 @@
   padding: 4px 12px;
   color: var(--secondaryTextColor);
   pointer-events: none;
-}
-
-.alt-photo-viewer--loaded {
-  .alt-photo-viewer__image {
-    transform: translateX(-50%) translateY(-50%) scale(1);
-    opacity: 1;
-  }
 }
 
 .alt-photo-viewer-info {

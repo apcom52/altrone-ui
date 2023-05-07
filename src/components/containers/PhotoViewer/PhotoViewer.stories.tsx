@@ -33,6 +33,9 @@ const meta: Meta<typeof PhotoViewer> = {
         caption: 'Sierra',
         description:
           'The Sierra Nevada Mountains are located in eastern California. They stretch from the north of the state to the south, the southern ending being near Los Angeles. The southern parts of the Sierra Range include the highest mountains, such as Mount Whitney and Yosemite National Park.'
+      },
+      {
+        src: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1b/48/3b/1e/caption.jpg?w=700&h=500&s=1'
       }
     ]
   },

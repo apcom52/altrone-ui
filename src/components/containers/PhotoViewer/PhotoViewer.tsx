@@ -19,8 +19,13 @@ export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [zoom, setZoom] = useState(1);
 
   const [toolbarPosition, setToolbarPosition] = useState<Point>({
+    x: 0,
+    y: 0
+  });
+  const [imageOffset, setImageOffset] = useState<Point>({
     x: 0,
     y: 0
   });
@@ -92,6 +97,14 @@ export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
     }
   }, []);
 
+  const onZoomIn = useCallback(() => {
+    setZoom((zoom) => (zoom < 3 ? zoom + 0.5 : 3));
+  }, []);
+
+  const onZoomOut = useCallback(() => {
+    setZoom((zoom) => (zoom > 1 ? zoom - 0.5 : 1));
+  }, []);
+
   const onImageLoad = useCallback(() => {
     setLoading(false);
   }, []);
@@ -124,10 +137,7 @@ export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
   }, [currentIndex]);
 
   return (
-    <div
-      className={clsx('alt-photo-viewer', {
-        'alt-photo-viewer--loaded': !loading
-      })}>
+    <div className={clsx('alt-photo-viewer')}>
       <div className="alt-photo-viewer__container" ref={containerRef}>
         {loading && (
           <div className="alt-photo-viewer__loading">
@@ -139,6 +149,9 @@ export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
           src={images[currentIndex]?.src}
           alt=""
           onLoad={onImageLoad}
+          style={{
+            transform: `translateX(-50%) translateY(-50%) scale(${zoom})`
+          }}
         />
 
         <div className="alt-photo-viewer-info">
@@ -189,11 +202,17 @@ export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
               </button>
             </>
           )}
-          <button className="alt-photo-viewer-toolbar__action">
+          <button
+            className="alt-photo-viewer-toolbar__action"
+            disabled={zoom <= 1}
+            onClick={onZoomOut}>
             <Icon i="remove" />
           </button>
-          <div className="alt-photo-viewer-toolbar__zoom">100%</div>
-          <button className="alt-photo-viewer-toolbar__action">
+          <div className="alt-photo-viewer-toolbar__zoom">{Math.round(zoom * 100)}%</div>
+          <button
+            className="alt-photo-viewer-toolbar__action"
+            disabled={zoom >= 3}
+            onClick={onZoomIn}>
             <Icon i="add" />
           </button>
           <button className="alt-photo-viewer-toolbar__action" onClick={onClose}>
