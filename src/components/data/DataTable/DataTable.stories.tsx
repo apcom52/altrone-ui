@@ -4,7 +4,8 @@ import {
   DataTableStoryDataInterface,
   DEFAULT_COLUMNS,
   SELECTABLE_ACTIONS,
-  ACTIONS
+  ACTIONS,
+  FILTERS
 } from './stories/DefaultStory';
 
 export { DefaultDataTableStory } from './stories/DefaultStory';
@@ -21,7 +22,8 @@ const meta: Meta<typeof DataTable<DataTableStoryDataInterface>> = {
     searchBy: 'name',
     sortKeys: ['name', 'continent'],
     actions: ACTIONS,
-    selectableActions: SELECTABLE_ACTIONS
+    selectableActions: SELECTABLE_ACTIONS,
+    filters: FILTERS
   },
   argTypes: {
     data: { control: false },
