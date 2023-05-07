@@ -31,6 +31,12 @@
   transition: transform 0.2s linear;
   background-color: var(--surfaceTrasparent);
   backdrop-filter: blur(16px);
+  cursor: grab;
+
+  &[data-grabbing] {
+    pointer-events: none;
+    cursor: grabbing;
+  }
 }
 
 .alt-photo-viewer-toolbar {
@@ -79,7 +85,7 @@
   font-weight: 600;
   padding: 4px 12px;
   color: var(--secondaryTextColor);
-  pointer-events: none;
+  cursor: grab;
 }
 
 .alt-photo-viewer-info {
@@ -117,9 +123,14 @@
   }
 }
 
-.alt-photo-viewer-toolbar--dragging {
+.alt-photo-viewer-toolbar[data-dragging] {
   box-shadow: 0 10px 30px 0 var(--shadow);
   transform: scale(1.025);
+  cursor: grabbing;
+
+  > * {
+    pointer-events: none;
+  }
 }
 
 .alt-photo-viewer__loading {

@@ -1,19 +1,13 @@
-import React, {
-  MouseEvent,
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useRef,
-  useState
-} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Loading } from '../../indicators';
-import { Point, Size } from '../../../types';
+import { Size } from '../../../types';
 import './photo-viewer.scss';
 import { Icon } from '../../icons';
 import clsx from 'clsx';
 import { PhotoViewerProps } from './PhotoViewer.types';
+import { useDrag } from '../../../hooks/useDrag/useDrag';
 
-const TOOLBAR_DRAGGING = 'alt-photo-viewer-toolbar--dragging';
+const PHOTO_VIEWER_BOUNDARIES = 16;
 
 export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
   const [loading, setLoading] = useState(true);
@@ -21,81 +15,31 @@ export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [zoom, setZoom] = useState(1);
 
-  const [toolbarPosition, setToolbarPosition] = useState<Point>({
-    x: 0,
-    y: 0
-  });
-  const [imageOffset, setImageOffset] = useState<Point>({
-    x: 0,
-    y: 0
-  });
-
-  const isDragged = useRef(false);
-
   const containerRef = useRef<HTMLDivElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
+  const pictureRef = useRef<HTMLImageElement>(null);
 
-  const onMouseDown = useCallback<MouseEventHandler>((e) => {
-    isDragged.current = e.target.closest('.alt-photo-viewer-toolbar') === toolbarRef.current;
+  const {
+    offset: toolbarOffset,
+    onMouseDown: onToolbarMouseDown,
+    wasDragged: wasToolbarDragged,
+    setOffsets: setToolbarOffsets
+  } = useDrag({
+    elementRef: toolbarRef,
+    containerRef: containerRef,
+    boundariesRect: PHOTO_VIEWER_BOUNDARIES
+  });
 
-    if (toolbarRef.current) {
-      if (isDragged.current) {
-        setTimeout(() => {
-          if (toolbarRef.current && isDragged.current) {
-            toolbarRef.current.classList.add(TOOLBAR_DRAGGING);
-          }
-        }, 100);
-      } else {
-        toolbarRef.current.classList.remove(TOOLBAR_DRAGGING);
-      }
-    }
-
-    document.addEventListener('mousemove', onMouseMove);
-  }, []);
-
-  const onMouseMove = useCallback<MouseEventHandler>((e) => {
-    if (!isDragged.current || !toolbarRef.current || !containerRef.current) {
-      return;
-    }
-
-    const toolbarRect = toolbarRef.current.getBoundingClientRect();
-    const rect = containerRef.current.getBoundingClientRect();
-
-    const maxXPosition = rect.width - 16 - toolbarRect.width;
-    const maxYPosition = rect.height - 16 - toolbarRect.height;
-
-    setToolbarPosition((toolbarPosition) => {
-      let x = toolbarPosition.x + e.movementX;
-      let y = toolbarPosition.y + e.movementY;
-
-      if (x < 16) {
-        x = 16;
-      }
-
-      if (y < 16) {
-        y = 16;
-      }
-
-      if (x > maxXPosition) {
-        x = maxXPosition;
-      }
-
-      if (y > maxYPosition) {
-        y = maxYPosition;
-      }
-
-      return { x, y };
-    });
-  }, []);
-
-  const onMouseUp = useCallback<MouseEventHandler>((e: MouseEvent) => {
-    isDragged.current = false;
-    document.removeEventListener('mousemove', onMouseMove);
-
-    if (toolbarRef.current) {
-      toolbarRef.current.classList.remove(TOOLBAR_DRAGGING);
-    }
-  }, []);
+  const {
+    offset: photoOffset,
+    onMouseDown: onPhotoMouseDown,
+    wasDragged: wasPhotoDragged,
+    setOffsets: setPhotoOffsets
+  } = useDrag({
+    elementRef: pictureRef,
+    containerRef: containerRef,
+    boundariesRect: undefined
+  });
 
   const onZoomIn = useCallback(() => {
     setZoom((zoom) => (zoom < 3 ? zoom + 0.5 : 3));
@@ -107,26 +51,23 @@ export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
 
   const onImageLoad = useCallback(() => {
     setLoading(false);
-  }, []);
 
-  useEffect(() => {
-    document.addEventListener('mousedown', onMouseDown);
-    document.addEventListener('mouseup', onMouseUp);
+    if (pictureRef.current && containerRef.current) {
+      const pictureRect = pictureRef.current.getBoundingClientRect();
+      const containerRect = containerRef.current.getBoundingClientRect();
 
-    return () => {
-      document.removeEventListener('mousedown', onMouseDown);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
+      setPhotoOffsets(
+        containerRect.width / 2 - pictureRect.width / 2,
+        containerRect.height / 2 - pictureRect.height / 2
+      );
+    }
   }, []);
 
   useEffect(() => {
     if (containerRef.current && toolbarRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
       const toolbarRect = toolbarRef.current.getBoundingClientRect();
-      setToolbarPosition({
-        x: rect.width / 2 - toolbarRect.width / 2,
-        y: rect.height * 0.7
-      });
+      setToolbarOffsets(rect.width / 2 - toolbarRect.width / 2, rect.height * 0.7);
     }
 
     setTimeout(() => setLoading(false), 500);
@@ -134,6 +75,7 @@ export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
 
   useEffect(() => {
     setLoading(true);
+    setZoom(1);
   }, [currentIndex]);
 
   return (
@@ -149,8 +91,13 @@ export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
           src={images[currentIndex]?.src}
           alt=""
           onLoad={onImageLoad}
+          ref={pictureRef}
+          onMouseDown={onPhotoMouseDown}
+          draggable={false}
           style={{
-            transform: `translateX(-50%) translateY(-50%) scale(${zoom})`
+            transform: `scale(${zoom})`,
+            left: photoOffset.x,
+            top: photoOffset.y
           }}
         />
 
@@ -182,9 +129,10 @@ export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
         <div
           className={clsx('alt-photo-viewer-toolbar')}
           ref={toolbarRef}
+          onMouseDown={onToolbarMouseDown}
           style={{
-            top: toolbarPosition.y,
-            left: toolbarPosition.x
+            top: toolbarOffset.y,
+            left: toolbarOffset.x
           }}>
           {images.length > 1 && (
             <>
