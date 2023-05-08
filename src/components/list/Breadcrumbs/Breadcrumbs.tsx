@@ -4,11 +4,15 @@ import './breadcrumbs.scss';
 import { DefaultHomeBreadcrumb } from './DefaultHomeBreadcrumb';
 import { Icon } from '../../icons';
 
-type BreadcrumbLink = {
-  title: string;
-  href?: string;
-  onClick?: () => void;
-};
+type BreadcrumbLink =
+  | {
+      title: string;
+      href: string;
+    }
+  | {
+      title: string;
+      onClick: () => void;
+    };
 
 interface BreadcrumbsProps {
   links?: BreadcrumbLink[];
