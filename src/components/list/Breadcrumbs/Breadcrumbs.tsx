@@ -23,6 +23,7 @@ interface BreadcrumbsProps {
   className?: string;
   collapsible?: boolean;
   disabled?: boolean;
+  showHomeLink?: boolean;
   HomeComponent?: () => JSX.Element;
   onHomeClick?: () => void;
 }
@@ -34,6 +35,7 @@ export const Breadcrumbs = ({
   className,
   collapsible = false,
   disabled = false,
+  showHomeLink = true,
   onHomeClick,
   HomeComponent = DefaultHomeBreadcrumb
 }: BreadcrumbsProps) => {
@@ -49,13 +51,7 @@ export const Breadcrumbs = ({
       onClick: () => null
     }));
 
-    return [
-      {
-        title: 'Home',
-        icon: HOME_ICON,
-        disabled: true,
-        onClick: () => null
-      },
+    const result = [
       ...menu,
       {
         title: links.at(-1)?.title || '',
@@ -63,18 +59,33 @@ export const Breadcrumbs = ({
         onClick: () => null
       }
     ];
-  }, [links, collapsible, disabled]);
+
+    if (showHomeLink) {
+      result.unshift({
+        title: 'Home',
+        icon: HOME_ICON,
+        disabled: true,
+        onClick: () => null
+      });
+    }
+
+    return result;
+  }, [links, collapsible, disabled, showHomeLink]);
 
   return (
     <div className={clsx('alt-breadcrumbs', className)}>
-      <button className={clsx('alt-breadcrumbs-item')} onClick={onHomeClick} disabled={disabled}>
-        {HomeComponent()}
-      </button>
+      {showHomeLink && (
+        <button className={clsx('alt-breadcrumbs-item')} onClick={onHomeClick} disabled={disabled}>
+          {HomeComponent()}
+        </button>
+      )}
       {collapsible && collapsedItems.length > 0 && links?.length > 0 && (
         <>
-          <div className="alt-breadcrumbs__separator">
-            <Icon i="chevron_right" />
-          </div>
+          {showHomeLink && (
+            <div className="alt-breadcrumbs__separator">
+              <Icon i="chevron_right" />
+            </div>
+          )}
           <Button
             size={Size.small}
             variant={ButtonVariant.text}
@@ -94,9 +105,11 @@ export const Breadcrumbs = ({
       {!collapsible &&
         links.map((link, linkIndex) => (
           <>
-            <div className="alt-breadcrumbs__separator">
-              <Icon i="chevron_right" />
-            </div>
+            {(showHomeLink || (!showHomeLink && linkIndex > 0)) && (
+              <div className="alt-breadcrumbs__separator">
+                <Icon i="chevron_right" />
+              </div>
+            )}
             <button key={linkIndex} className={clsx('alt-breadcrumbs-item')} disabled={disabled}>
               {link.icon && <span className="alt-breadcrumb-item__icon">{link.icon}</span>}
               {link.title}
