@@ -32,6 +32,10 @@
     background-color: var(--highlight);
   }
 
+  &:disabled {
+    pointer-events: none;
+  }
+
   &:first-of-type {
     color: var(--textColor);
   }

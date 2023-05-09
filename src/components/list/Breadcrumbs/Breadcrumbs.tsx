@@ -22,6 +22,7 @@ interface BreadcrumbsProps {
   links?: BreadcrumbLink[];
   className?: string;
   collapsible?: boolean;
+  disabled?: boolean;
   HomeComponent?: () => JSX.Element;
   onHomeClick?: () => void;
 }
@@ -32,6 +33,7 @@ export const Breadcrumbs = ({
   links = [],
   className,
   collapsible = false,
+  disabled = false,
   onHomeClick,
   HomeComponent = DefaultHomeBreadcrumb
 }: BreadcrumbsProps) => {
@@ -43,6 +45,7 @@ export const Breadcrumbs = ({
     const menu = links.slice(0, links.length - 1).map((link) => ({
       title: link.title,
       icon: link.icon,
+      disabled: disabled,
       onClick: () => null
     }));
 
@@ -60,11 +63,11 @@ export const Breadcrumbs = ({
         onClick: () => null
       }
     ];
-  }, [links, collapsible]);
+  }, [links, collapsible, disabled]);
 
   return (
     <div className={clsx('alt-breadcrumbs', className)}>
-      <button className={clsx('alt-breadcrumbs-item')} onClick={onHomeClick}>
+      <button className={clsx('alt-breadcrumbs-item')} onClick={onHomeClick} disabled={disabled}>
         {HomeComponent()}
       </button>
       {collapsible && collapsedItems.length > 0 && links?.length > 0 && (
@@ -83,7 +86,9 @@ export const Breadcrumbs = ({
           <div className="alt-breadcrumbs__separator">
             <Icon i="chevron_right" />
           </div>
-          <button className={clsx('alt-breadcrumbs-item')}>{links && links.at(-1)?.title}</button>
+          <button className={clsx('alt-breadcrumbs-item')} disabled={disabled}>
+            {links && links.at(-1)?.title}
+          </button>
         </>
       )}
       {!collapsible &&
@@ -92,7 +97,7 @@ export const Breadcrumbs = ({
             <div className="alt-breadcrumbs__separator">
               <Icon i="chevron_right" />
             </div>
-            <button key={linkIndex} className={clsx('alt-breadcrumbs-item')}>
+            <button key={linkIndex} className={clsx('alt-breadcrumbs-item')} disabled={disabled}>
               {link.icon && <span className="alt-breadcrumb-item__icon">{link.icon}</span>}
               {link.title}
             </button>
