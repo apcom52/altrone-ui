@@ -5,7 +5,7 @@ export const DefaultHomeBreadcrumb = () => {
   return (
     <div className="alt-home-breadcrumb">
       <span className="alt-home-breadcrumb__icon">
-        <Icon i="house" />
+        <Icon i="home" />
       </span>
       Home
     </div>

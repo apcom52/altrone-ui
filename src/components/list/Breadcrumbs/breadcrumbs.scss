@@ -4,6 +4,7 @@
   display: flex;
   align-items: center;
   color: var(--textColor);
+  cursor: default;
 
   @include useDisabledUserSelect();
 }
@@ -14,7 +15,7 @@
   border-radius: 8px;
   padding: 6px 12px;
   cursor: pointer;
-  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+  transition: box-shadow 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
   color: var(--secondaryTextColor);
 
   @include useFontSize(label);
