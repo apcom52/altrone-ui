@@ -1,4 +1,5 @@
 import { Meta } from '@storybook/react';
+import { Icon } from '../../icons';
 import { Breadcrumbs } from './index';
 
 export { DefaultBreadcrumbs } from './stories';
@@ -15,6 +16,7 @@ const meta: Meta<typeof Breadcrumbs> = {
       },
       {
         title: 'Invoices',
+        icon: <Icon i="request_quote" />,
         href: '#invoices'
       },
       {

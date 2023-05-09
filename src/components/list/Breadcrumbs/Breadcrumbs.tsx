@@ -10,10 +10,12 @@ type BreadcrumbLink =
   | {
       title: string;
       href: string;
+      icon?: JSX.Element;
     }
   | {
       title: string;
       onClick: () => void;
+      icon?: JSX.Element;
     };
 
 interface BreadcrumbsProps {
@@ -40,6 +42,7 @@ export const Breadcrumbs = ({
 
     const menu = links.slice(0, links.length - 1).map((link) => ({
       title: link.title,
+      icon: link.icon,
       onClick: () => null
     }));
 
@@ -52,7 +55,7 @@ export const Breadcrumbs = ({
       },
       ...menu,
       {
-        title: links.at(-1)?.title,
+        title: links.at(-1)?.title || '',
         disabled: true,
         onClick: () => null
       }
@@ -61,7 +64,7 @@ export const Breadcrumbs = ({
 
   return (
     <div className={clsx('alt-breadcrumbs', className)}>
-      <button className={clsx('alt-breadcrumbs__item')} onClick={onHomeClick}>
+      <button className={clsx('alt-breadcrumbs-item')} onClick={onHomeClick}>
         {HomeComponent()}
       </button>
       {collapsible && collapsedItems.length > 0 && links?.length > 0 && (
@@ -73,14 +76,14 @@ export const Breadcrumbs = ({
             size={Size.small}
             variant={ButtonVariant.text}
             isIcon
-            className={'alt-breadcrumbs__item'}
+            className={'alt-breadcrumbs-item'}
             dropdown={collapsedItems}>
             <Icon i="more_horiz" />
           </Button>
           <div className="alt-breadcrumbs__separator">
             <Icon i="chevron_right" />
           </div>
-          <button className={clsx('alt-breadcrumbs__item')}>{links && links.at(-1)?.title}</button>
+          <button className={clsx('alt-breadcrumbs-item')}>{links && links.at(-1)?.title}</button>
         </>
       )}
       {!collapsible &&
@@ -89,7 +92,8 @@ export const Breadcrumbs = ({
             <div className="alt-breadcrumbs__separator">
               <Icon i="chevron_right" />
             </div>
-            <button key={linkIndex} className={clsx('alt-breadcrumbs__item')}>
+            <button key={linkIndex} className={clsx('alt-breadcrumbs-item')}>
+              {link.icon && <span className="alt-breadcrumb-item__icon">{link.icon}</span>}
               {link.title}
             </button>
           </>

@@ -9,7 +9,14 @@
   @include useDisabledUserSelect();
 }
 
-.alt-breadcrumbs__item {
+.alt-breadcrumbs__separator {
+  color: var(--secondaryTextColor);
+  margin: 0 8px;
+}
+
+.alt-breadcrumbs-item {
+  display: flex;
+  align-items: center;
   background: none;
   border: none;
   border-radius: 8px;
@@ -36,17 +43,7 @@
   }
 }
 
-.alt-home-breadcrumb {
-  display: flex;
-  align-items: center;
-}
-
-.alt-home-breadcrumb__icon {
+.alt-breadcrumb-item__icon {
   font-size: 18px;
   margin-right: 4px;
-}
-
-.alt-breadcrumbs__separator {
-  color: var(--secondaryTextColor);
-  margin: 0 8px;
 }
