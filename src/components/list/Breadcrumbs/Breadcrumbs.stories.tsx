@@ -23,7 +23,10 @@ const meta: Meta<typeof Breadcrumbs> = {
         title: '#1309',
         href: '#1309'
       }
-    ]
+    ],
+    collapsible: false,
+    disabled: false,
+    showHomeLink: true
   },
   argTypes: {
     links: {
@@ -32,6 +35,21 @@ const meta: Meta<typeof Breadcrumbs> = {
     collapsible: {
       description:
         'When the list is collapsed, the inner items of the list are collapsed into context menu'
+    },
+    disabled: {
+      description: 'When the list is disabled all items of the list are not clickable'
+    },
+    showHomeLink: {
+      description: 'Use this property to show "Home" item'
+    },
+    className: {
+      description: 'Custom css class which applies to wrapper'
+    },
+    HomeComponent: {
+      description: 'Custom implementation of "Home" item'
+    },
+    onHomeClick: {
+      description: 'Callback fires each time when user clicks on "Home" item'
     }
   }
 };
