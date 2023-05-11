@@ -36,6 +36,8 @@ export interface ButtonProps
   dropdown?: ContextMenuType;
   isIcon?: boolean;
   indicator?: Indicator;
+  onClick?: () => void;
+  disabled?: boolean;
 }
 
 const ButtonComponents = ['button', 'a'];
