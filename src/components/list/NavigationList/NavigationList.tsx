@@ -34,6 +34,9 @@ interface NavigationItem {
 interface BaseNavigationItemInterface {
   selected: boolean;
   onClick: (value: unknown) => void;
+  /**
+   * @deprecated
+   */
   onExpand?: (value: unknown) => void;
 }
 
@@ -52,8 +55,10 @@ export interface NavigationSubSubItemProps
   extends Omit<BaseNavigationItemInterface, 'onExpand'>,
     SubSubNavigationItem {}
 
+export type NavigationListMenu = (NavigationItem | '-')[];
+
 interface NavigationListProps {
-  list: (NavigationItem | '-')[];
+  list: NavigationListMenu;
   selected: unknown;
   onChange: (selectedValue: unknown) => void;
   title?: string;
