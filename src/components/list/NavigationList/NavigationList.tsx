@@ -34,6 +34,9 @@ interface NavigationItem {
 interface BaseNavigationItemInterface {
   selected: boolean;
   onClick: (value: unknown) => void;
+  /**
+   * @deprecated
+   */
   onExpand?: (value: unknown) => void;
 }
 
