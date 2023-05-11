@@ -9,6 +9,17 @@ import { BreadcrumbLink, BreadcrumbsProps } from './Breadcrumbs.types';
 
 const HOME_ICON = <Icon i="home" />;
 
+/**
+ * Indicate the page's location within a navigation hierarchy
+ * @param {BreadcrumbLink[]} links - the list of links
+ * @param { string } [className] - custom className for the root container
+ * @param { boolean } [collapsible=false] - if true, collapse all links (except the home link and the last one) into context menu
+ * @param { boolean } [disabled=false] - if true, disables all links of the list
+ * @param { boolean } [showHomeLink=true] - if true, shows the home link in the beginning of the list
+ * @param { function } [onHomeClick] - triggers each time when user clicks on the home link
+ * @param {() => JSX.Element} [HomeComponent] - custom home link component
+ * @constructor
+ */
 export const Breadcrumbs = ({
   links = [],
   className,

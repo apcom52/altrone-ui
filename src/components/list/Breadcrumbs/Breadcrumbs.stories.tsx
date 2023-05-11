@@ -25,7 +25,15 @@ const meta: Meta<typeof Breadcrumbs> = {
       }
     ]
   },
-  argTypes: {}
+  argTypes: {
+    links: {
+      description: 'The list of the links'
+    },
+    collapsible: {
+      description:
+        'When the list is collapsed, the inner items of the list are collapsed into context menu'
+    }
+  }
 };
 
 export default meta;
