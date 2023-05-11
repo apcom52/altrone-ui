@@ -55,8 +55,10 @@ export interface NavigationSubSubItemProps
   extends Omit<BaseNavigationItemInterface, 'onExpand'>,
     SubSubNavigationItem {}
 
+export type NavigationListMenu = (NavigationItem | '-')[];
+
 interface NavigationListProps {
-  list: (NavigationItem | '-')[];
+  list: NavigationListMenu;
   selected: unknown;
   onChange: (selectedValue: unknown) => void;
   title?: string;
