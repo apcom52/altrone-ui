@@ -1,32 +1,11 @@
 import clsx from 'clsx';
-import React, { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import './breadcrumbs.scss';
 import { DefaultHomeBreadcrumb } from './DefaultHomeBreadcrumb';
 import { Icon } from '../../icons';
 import { ContextMenuType, Size } from '../../../types';
 import { Button, ButtonVariant } from '../../button';
-
-type BreadcrumbLink =
-  | {
-      title: string;
-      href: string;
-      icon?: JSX.Element;
-    }
-  | {
-      title: string;
-      onClick: () => void;
-      icon?: JSX.Element;
-    };
-
-interface BreadcrumbsProps {
-  links?: BreadcrumbLink[];
-  className?: string;
-  collapsible?: boolean;
-  disabled?: boolean;
-  showHomeLink?: boolean;
-  HomeComponent?: () => JSX.Element;
-  onHomeClick?: () => void;
-}
+import { BreadcrumbLink, BreadcrumbsProps } from './Breadcrumbs.types';
 
 const HOME_ICON = <Icon i="home" />;
 
@@ -39,6 +18,15 @@ export const Breadcrumbs = ({
   onHomeClick,
   HomeComponent = DefaultHomeBreadcrumb
 }: BreadcrumbsProps) => {
+  const onItemClick = useCallback((item: BreadcrumbLink) => {
+    if ('href' in item && item.href) {
+      console.log('href', item.href);
+      window.location.href = item.href;
+    } else if ('onClick' in item) {
+      item.onClick();
+    }
+  }, []);
+
   const collapsedItems = useMemo<ContextMenuType>(() => {
     if (!collapsible || !links) {
       return [];
@@ -110,7 +98,11 @@ export const Breadcrumbs = ({
                 <Icon i="chevron_right" />
               </div>
             )}
-            <button key={linkIndex} className={clsx('alt-breadcrumbs-item')} disabled={disabled}>
+            <button
+              key={linkIndex}
+              className={clsx('alt-breadcrumbs-item')}
+              disabled={disabled}
+              onClick={() => onItemClick(link)}>
               {link.icon && <span className="alt-breadcrumb-item__icon">{link.icon}</span>}
               {link.title}
             </button>

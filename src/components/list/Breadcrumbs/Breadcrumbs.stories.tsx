@@ -12,12 +12,12 @@ const meta: Meta<typeof Breadcrumbs> = {
     links: [
       {
         title: 'Dashboard',
-        href: '#dashboard'
+        href: 'https://google.com'
       },
       {
         title: 'Invoices',
         icon: <Icon i="request_quote" />,
-        href: '#invoices'
+        onClick: () => alert('invoices')
       },
       {
         title: '#1309',
