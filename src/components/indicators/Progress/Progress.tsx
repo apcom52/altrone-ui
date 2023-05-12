@@ -29,11 +29,12 @@ const CIRCULAR_PROGRESS_DIAMETERS: Record<Size, number> = {
 /**
  * Progress indicators let people know that your application loads content or performs lengthy operations.
 
+ * @component
  * @param variant - Variant of the progress
  * @param { number } value - Current value of the progress
  * @param { number } max - Maximum value of the progress
  * @param role - Current role of the progress
- * @param size - Size of the progress
+ * @param { Size } size - Size of the progress. See {@link Size} size
  * @param className - custom className for Progress
  * @param ProgressSegmentComponent - custom component for segment
  */

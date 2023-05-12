@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Loading.tsx</title>
+  <title> Progress/Progress.tsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -80,7 +80,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>Loading.tsx</h1>
+                    <h1>Progress/Progress.tsx</h1>
                 </header>
                 
 
@@ -89,92 +89,117 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { Size } from '../../../types';
+            <pre class="prettyprint source linenums"><code>import { memo } from 'react';
+import './progress.scss';
+import { Role, Size } from '../../../types';
 import clsx from 'clsx';
-import './loading.scss';
+import { ProgressSegment, ProgressSegmentProps } from './ProgressSegment';
 
-interface LoadingProps {
+export enum ProgressVariant {
+  default = 'default',
+  segmented = 'segmented',
+  circular = 'circular'
+}
+
+interface ProgressProps {
+  value: number;
+  max?: number;
   size?: Size;
-  color?: string;
+  role?: Role;
+  variant?: ProgressVariant;
   className?: string;
+  ProgressSegmentComponent?: React.FC&lt;ProgressSegmentProps>;
 }
 
-interface LoadingAnimation {
-  size: number;
-}
-
-const LoadingAnimation = ({ size = 100 }: LoadingAnimation) => {
-  return (
-    &lt;svg
-      version="1.1"
-      id="L9"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
-      x="0px"
-      y="0px"
-      width={size}
-      height={size}
-      viewBox={`0 0 ${size} ${size}`}
-      enableBackground="new 0 0 0 0"
-      xmlSpace="preserve">
-      &lt;path
-        fill="currentColor"
-        d={`M${0.73 * size},${0.5 * size}c0${-0.127 * size}${-0.103 * size}${-0.23 * size}${
-          -0.23 * size
-        }${-0.23 * size}S${0.27 * size},${0.373 * size},${0.27 * size},${0.5 * size} M${
-          0.309 * size
-        },${0.5 * size}c0${-0.105 * size},${0.085 * size}${-0.191 * size},${0.191 * size}${
-          -0.191 * size
-        }S${0.691 * size},${0.395 * size},${0.691 * size},${0.5 * size}`}>
-        &lt;animateTransform
-          attributeName="transform"
-          attributeType="XML"
-          type="rotate"
-          dur="1s"
-          from={`0 ${size / 2} ${size / 2}`}
-          to={`360 ${size / 2} ${size / 2}`}
-          repeatCount="indefinite"
-        />
-      &lt;/path>
-    &lt;/svg>
-  );
+const CIRCULAR_PROGRESS_DIAMETERS: Record&lt;Size, number> = {
+  [Size.small]: 26,
+  [Size.medium]: 34,
+  [Size.large]: 42
 };
 
 /**
- * This indicator shows that something is loading at the moment. **This component is available only in 2.0**
- *
- * @component
- * @category Indicators
- * @param {Size} [size = Size.medium] - Size of the loading animation
- * @param { string } [color] - This field is used for applying a custom color for loading animation. By default, we use textColor variable
- * @param { string } [className] - Custom className for loading animation
- */
-const Loading = ({ size = Size.medium, color, className }: LoadingProps) => {
-  let pxSize = 34;
+ * Progress indicators let people know that your application loads content or performs lengthy operations.
 
-  if (size === Size.small) {
-    pxSize = 24;
-  } else if (size === Size.large) {
-    pxSize = 42;
-  }
+ * @component
+ * @param variant - Variant of the progress
+ * @param { number } value - Current value of the progress
+ * @param { number } max - Maximum value of the progress
+ * @param role - Current role of the progress
+ * @param { Size } size - Size of the progress
+ * @param className - custom className for Progress
+ * @param ProgressSegmentComponent - custom component for segment
+ */
+const Progress = ({
+  variant = ProgressVariant.default,
+  value = 0,
+  max = 100,
+  role = Role.default,
+  size = Size.medium,
+  className,
+  ProgressSegmentComponent = ProgressSegment
+}: ProgressProps) => {
+  const percent = Math.round((value / max) * 100);
+
+  const boxSize = CIRCULAR_PROGRESS_DIAMETERS[size];
+  const borderSize = Math.floor(CIRCULAR_PROGRESS_DIAMETERS[size] * 0.12);
+  const circleCenter = boxSize / 2;
+  const diameter = boxSize - borderSize * 2;
+  const radius = diameter / 2;
+  const circleValue = 2 * Math.PI * radius * (value / max);
 
   return (
     &lt;div
-      data-testid="alt-test-loading"
-      className={clsx(
-        'alt-loading',
-        {
-          [`alt-loading--size-${size}`]: size !== Size.medium
-        },
-        className
+      className={clsx('alt-progress', className, {
+        'alt-progress--size-small': size === Size.small,
+        'alt-progress--size-large': size === Size.large,
+        'alt-progress--variant-segmented': variant === ProgressVariant.segmented,
+        'alt-progress--variant-circular': variant === ProgressVariant.circular,
+        'alt-progress--primary': role === Role.primary,
+        'alt-progress--success': role === Role.success,
+        'alt-progress--danger': role === Role.danger
+      })}
+      data-testid="alt-test-progress">
+      {variant === ProgressVariant.default &amp;&amp; (
+        &lt;div
+          className="alt-progress__active"
+          style={{ width: percent + '%' }}
+          data-testid="alt-test-progress-active"
+        />
       )}
-      style={color ? { color } : undefined}>
-      &lt;LoadingAnimation size={pxSize} />
+      {variant === ProgressVariant.segmented &amp;&amp;
+        new Array(max).fill(0).map((_, segmentIndex) => {
+          return (
+            &lt;ProgressSegmentComponent
+              key={segmentIndex}
+              index={segmentIndex}
+              isActive={segmentIndex &lt; value}
+            />
+          );
+        })}
+      {variant === ProgressVariant.circular &amp;&amp; (
+        &lt;svg width={boxSize} height={boxSize} viewBox={`0 0 ${boxSize} ${boxSize}`}>
+          &lt;circle
+            cx={circleCenter}
+            cy={circleCenter}
+            r={radius}
+            strokeWidth={borderSize}
+            className="alt-progress__circle"
+          />
+          &lt;circle
+            cx={circleCenter}
+            cy={circleCenter}
+            r={radius}
+            strokeWidth={borderSize}
+            className="alt-progress__circle alt-progress__circle--active"
+            strokeDasharray={`${circleValue} 360`}
+          />
+        &lt;/svg>
+      )}
     &lt;/div>
   );
 };
 
-export default Loading;
+export default Progress;
 </code></pre>
         </article>
     </section>

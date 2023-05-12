@@ -42,7 +42,7 @@
             
              
                 <a href="index.html">
-                    <h1 class="navbar-item">My React components</h1>
+                    <h1 class="navbar-item">Altrone UI Documentation</h1>
                 </a>
             
         </div>
@@ -70,7 +70,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>Components</h2><h3>Global</h3><ul><li><a href="global.html#Loading">Loading</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#Progress">Progress</a></li></ul></div>
                 
             </nav>
         </div>
@@ -164,12 +164,12 @@
 
 
     
-    <h4 class="name" id="Loading">
-        <a class="href-link" href="#Loading">#</a>
+    <h4 class="name" id="Progress">
+        <a class="href-link" href="#Progress">#</a>
         
         <span class="code-name">
             
-                Loading<span class="signature">(size<span class="signature-attributes">opt</span>, color<span class="signature-attributes">opt</span>, className<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
+                Progress<span class="signature">(variant, value, max, role, size, className, ProgressSegmentComponent)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -178,7 +178,7 @@
     
     
     <div class="description">
-        <p>This indicator shows that something is loading at the moment. <strong>This component is available only in 2.0</strong></p>
+        <p>Progress indicators let people know that your application loads content or performs lengthy operations.</p>
     </div>
     
 
@@ -203,11 +203,7 @@
             <th>Type</th>
 
             
-            <th>Attributes</th>
-            
 
-            
-            <th>Default</th>
             
 
             <th class="last">Description</th>
@@ -220,39 +216,18 @@
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>size</code></td>
+      <td class="name"><code>variant</code></td>
   
 
   <td class="type">
   
-      
-<code class="param-type">Size</code>
-
-
-  
   </td>
 
   
-      <td class="attributes">
-      
-          &lt;optional><br>
-      
-
-      
-
-      
-      </td>
-  
 
   
-      <td class="default">
-      
-          Size.medium
-      
-      </td>
-  
 
-  <td class="description last"><p>Size of the loading animation</p></td>
+  <td class="description last"><p>Variant of the progress</p></td>
 </tr>
 
 
@@ -261,37 +236,88 @@
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>color</code></td>
+      <td class="name"><code>value</code></td>
   
 
   <td class="type">
   
       
-<code class="param-type">string</code>
+<code class="param-type">number</code>
 
 
   
   </td>
 
   
-      <td class="attributes">
-      
-          &lt;optional><br>
-      
 
-      
+  
 
+  <td class="description last"><p>Current value of the progress</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>max</code></td>
+  
+
+  <td class="type">
+  
       
-      </td>
+<code class="param-type">number</code>
+
+
+  
+  </td>
+
   
 
   
-      <td class="default">
-      
-      </td>
+
+  <td class="description last"><p>Maximum value of the progress</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>role</code></td>
   
 
-  <td class="description last"><p>This field is used for applying a custom color for loading animation. By default, we use textColor variable</p></td>
+  <td class="type">
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Current role of the progress</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>size</code></td>
+  
+
+  <td class="type">
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Size of the progress</p></td>
 </tr>
 
 
@@ -305,32 +331,33 @@
 
   <td class="type">
   
-      
-<code class="param-type">string</code>
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>custom className for Progress</p></td>
+</tr>
 
 
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>ProgressSegmentComponent</code></td>
+  
+
+  <td class="type">
   
   </td>
 
   
-      <td class="attributes">
-      
-          &lt;optional><br>
-      
-
-      
-
-      
-      </td>
-  
 
   
-      <td class="default">
-      
-      </td>
-  
 
-  <td class="description last"><p>Custom className for loading animation</p></td>
+  <td class="description last"><p>custom component for segment</p></td>
 </tr>
 
 
@@ -376,9 +403,9 @@
 
     
         <p class="tag-source">
-            <a href="Loading.tsx.html" class="button">View Source</a>
+            <a href="Progress_Progress.tsx.html" class="button">View Source</a>
             <span>
-                <a href="Loading.tsx.html">Loading.tsx</a>, <a href="Loading.tsx.html#line19">line 19</a>
+                <a href="Progress_Progress.tsx.html">Progress/Progress.tsx</a>, <a href="Progress_Progress.tsx.html#line28">line 28</a>
             </span>
         </p>
     

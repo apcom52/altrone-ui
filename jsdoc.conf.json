@@ -1,19 +1,20 @@
 {
   "source": {
-    "include": ["src/components/indicators/Loading"],
-    "includePattern": "\\.(tsx|ts)$",
-    "excludePattern": "\\.(stories.tsx|stories.ts)$"
+    "include": ["src/components/indicators"],
+    "includePattern": ".tsx$"
+  },
+  "tags": {
+    "allowUnknownTags": true
   },
   "plugins": [
     "plugins/markdown",
     "better-docs/component",
     "better-docs/typescript",
-    "better-docs/category",
-    "better-docs/component"
+    "better-docs/category"
   ],
   "templates": {
     "better-docs": {
-      "name": "My React components"
+      "name": "Altrone UI Documentation"
     }
   },
   "opts": {
