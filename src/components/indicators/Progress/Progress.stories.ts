@@ -7,7 +7,6 @@ export { DefaultProgress, SegmentedProgress, CircularProgress } from './stories'
 const meta: Meta<typeof Progress> = {
   component: Progress,
   title: 'Indicators/Progress',
-  tags: ['autodocs'],
   args: {
     size: Size.medium,
     value: 35,
@@ -15,12 +14,12 @@ const meta: Meta<typeof Progress> = {
     role: Role.default
   },
   argTypes: {
-    value: { description: 'Current value of the progress' },
     max: { description: 'Maximum value of the progress' },
     variant: {
       control: false,
       description:
-        'Variant of the progress. In certain circumstances, some variants will be preferred'
+        'Variant of the progress. In certain circumstances, some variants will be preferred. ' +
+        '**Updated in `1.2`**: added `circular` variant'
     },
     role: { control: 'select', description: 'Role of the progress' },
     size: { control: 'select', description: 'Size of the progress' },

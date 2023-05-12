@@ -1,0 +1,25 @@
+{
+  "source": {
+    "include": ["src/components/indicators/Loading"],
+    "includePattern": "\\.(tsx|ts)$",
+    "excludePattern": "\\.(stories.tsx|stories.ts)$"
+  },
+  "plugins": [
+    "plugins/markdown",
+    "better-docs/component",
+    "better-docs/typescript",
+    "better-docs/category",
+    "better-docs/component"
+  ],
+  "templates": {
+    "better-docs": {
+      "name": "My React components"
+    }
+  },
+  "opts": {
+    "destination": "docs",
+    "recurse": true,
+    "template": "node_modules/better-docs",
+    "readme": "README.md"
+  }
+}
