@@ -12,7 +12,7 @@ const meta: Meta<typeof Loading> = {
     size: Size.medium
   },
   argTypes: {
-    size: { control: 'select' },
+    size: { control: 'select', description: 'Size of the loading animation' },
     className: { description: 'Custom className for loading animation' },
     color: {
       description:

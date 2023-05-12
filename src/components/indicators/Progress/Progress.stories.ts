@@ -7,6 +7,7 @@ export { DefaultProgress, SegmentedProgress, CircularProgress } from './stories'
 const meta: Meta<typeof Progress> = {
   component: Progress,
   title: 'Indicators/Progress',
+  tags: ['autodocs'],
   args: {
     size: Size.medium,
     value: 35,
@@ -14,6 +15,7 @@ const meta: Meta<typeof Progress> = {
     role: Role.default
   },
   argTypes: {
+    value: { description: 'Current value of the progress' },
     max: { description: 'Maximum value of the progress' },
     variant: {
       control: false,
