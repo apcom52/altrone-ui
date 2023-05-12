@@ -20,7 +20,8 @@ const meta: Meta<typeof Progress> = {
     variant: {
       control: false,
       description:
-        'Variant of the progress. In certain circumstances, some variants will be preferred'
+        'Variant of the progress. In certain circumstances, some variants will be preferred. ' +
+        '**Updated in `1.2`**: added `circular` variant'
     },
     role: { control: 'select', description: 'Role of the progress' },
     size: { control: 'select', description: 'Size of the progress' },

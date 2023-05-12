@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { Size } from '../../../types';
 import clsx from 'clsx';
 import './loading.scss';
@@ -51,6 +50,10 @@ const LoadingAnimation = ({ size = 100 }: LoadingAnimation) => {
 };
 
 /**
+ * This indicator shows that something is loading at the moment. **This component is available only in 2.0**
+ *
+ * @component
+ * @category Indicators
  * This indicator shows that something is loading at the moment
  * @param {Size} [size = Size.medium] - Size of the loading animation
  * @param { string } [color] - This field is used for applying a custom color for loading animation. By default, we use textColor variable
