@@ -1,0 +1,101 @@
+@import "../../../mixins";
+
+.alt-carousel {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  height: 300px;
+  background-color: lightgoldenrodyellow;
+}
+
+.alt-carousel__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: calc(100% - 200px);
+  background-color: var(--surface);
+  border-radius: 12px;
+  left: 100px;
+  height: 290px;
+  background-position: center;
+  background-size: cover;
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
+}
+
+.alt-carousel__controls {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  border-radius: 8px;
+  gap: 4px;
+  padding: 4px;
+  color: var(--textColor);
+  box-shadow: 0 3px 15px 0 var(--shadow);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transform: translateX(-50%);
+  top: 220px;
+  left: 50%;
+
+  @include useGlassSurface();
+}
+
+.alt-carousel__item--current {
+  top: 5px;
+  left: 100px;
+  background-color: lightslategrey;
+}
+
+.alt-carousel__item--prev {
+  top: calc(50% - 145px);
+  left: 0;
+  transform: scale(0.9);
+  background-color: lightcoral;
+  justify-content: flex-start;
+  opacity: 0.75;
+}
+
+.alt-carousel__item--next {
+  top: calc(50% - 145px);
+  left: auto;
+  right: 0;
+  transform: scale(0.9);
+  background-color: lightblue;
+  justify-content: flex-end;
+  opacity: 0.75;
+}
+
+.alt-carousel-control {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  background: none;
+  border: none;
+  height: 34px;
+  padding: 8px;
+  border-radius: 6px;
+  font-weight: 400;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  color: var(--textColor);
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  @include useInteraction {
+    background-color: var(--surfaceTrasparent);
+  }
+
+  @include useFocus();
+}
+
+.alt-carousel-counter {
+  margin: 0 12px;
+  color: var(--textColor);
+  min-width: 40px;
+  text-align: center;
+  @include useFontSize(label);
+}
