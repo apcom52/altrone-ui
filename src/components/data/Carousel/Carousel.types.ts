@@ -2,6 +2,9 @@ export type CarouselItem = {
   src: string;
 };
 
+/**
+ * @interface CarouselProps
+ */
 export interface CarouselProps {
   data: CarouselItem[];
   duration?: number;
