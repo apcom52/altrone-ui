@@ -6,7 +6,7 @@ import { PhotoViewer } from '../../containers';
 import clsx from 'clsx';
 
 /**
- * A slideshow component for cycling through elements
+ * A slideshow component for cycling through elements. **Available only from 2.0**
  * @param data Data of the carousel
  * @param usePhotoViewer When this props is passed the expand button will be added to the toolbar. After clicking on this button the photo viewer with the current slide will be shown.
  * @param showControls When this prop is enabled the controls of the carousel are visible
