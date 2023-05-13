@@ -3,4 +3,5 @@ export { Form, FormGroup, FormGroupVariant, FormField } from './Form';
 export { Modal, ModalAction } from './Modal';
 export { ButtonContainer } from './ButtonContainer';
 export { PhotoViewer } from './PhotoViewer';
+export { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarAction } from '../containers/Toolbar';
 export { Box } from './Box';

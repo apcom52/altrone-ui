@@ -5,8 +5,8 @@ import { useResizeObserver } from '../../../hooks';
 import ToolbarAction from './ToolbarAction';
 import { Icon } from '../../icons';
 import { useToolbarContext } from './Toolbar';
-import { ContextMenu } from '../ContextMenu';
-import { FloatingBox } from '../../containers';
+import { ContextMenu } from '../../list/ContextMenu';
+import { FloatingBox } from '../index';
 
 interface ToolbarGroupProps extends React.PropsWithChildren {
   align?: Align;

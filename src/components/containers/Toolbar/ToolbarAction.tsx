@@ -2,8 +2,8 @@ import { forwardRef, memo, useCallback, useRef, useState } from 'react';
 import './toolbar-action.scss';
 import clsx from 'clsx';
 import { ContextMenuType, Indicator } from '../../../types';
-import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
-import { ContextMenu } from '../ContextMenu';
+import { FloatingBox, FloatingBoxMobileBehaviour } from '../index';
+import { ContextMenu } from '../../list/ContextMenu';
 
 export interface ToolbarPopupActionProps {
   closePopup: () => void;

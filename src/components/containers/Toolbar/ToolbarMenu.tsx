@@ -2,8 +2,8 @@ import { memo, useRef, useState } from 'react';
 import { ContextMenuType as ContextMenuType } from '../../../types';
 import clsx from 'clsx';
 import './toolbar-menu.scss';
-import { FloatingBox } from '../../containers';
-import { ContextMenu } from '../ContextMenu';
+import { FloatingBox } from '../index';
+import { ContextMenu } from '../../list/ContextMenu';
 
 export interface ToolbarMenuProps {
   menu: {
