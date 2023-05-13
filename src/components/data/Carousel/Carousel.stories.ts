@@ -36,7 +36,9 @@ const meta: Meta<typeof Carousel> = {
     ],
     duration: undefined
   },
-  argTypes: {}
+  argTypes: {
+    duration: { control: 'number' }
+  }
 };
 
 export default meta;

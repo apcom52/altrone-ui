@@ -5,10 +5,19 @@ import { Icon } from '../../icons';
 import { PhotoViewer } from '../../containers';
 import clsx from 'clsx';
 
-export const Carousel = ({ data = [], usePhotoViewer = false, duration }: CarouselProps) => {
+export const Carousel = ({
+  data = [],
+  usePhotoViewer = false,
+  loop = false,
+  duration
+}: CarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [fakeSlideTransition, setFakeSlideTransition] = useState<'left' | 'right' | null>(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(false);
+
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   const durationIntervalRef = useRef<NodeJS.Timer | null>(null);
 
@@ -18,9 +27,23 @@ export const Carousel = ({ data = [], usePhotoViewer = false, duration }: Carous
         return old + 1;
       }
 
+      if (loop && old === data.length - 1) {
+        setFakeSlideTransition('right');
+
+        setTimeout(() => {
+          setReduceMotion(true);
+          setCurrentIndex(0);
+          setFakeSlideTransition(null);
+
+          setTimeout(() => {
+            setReduceMotion(false);
+          }, 50);
+        }, 499);
+      }
+
       return old;
     });
-  }, [data]);
+  }, [data, loop]);
 
   const prev = useCallback(() => {
     setCurrentIndex((old) => {
@@ -28,9 +51,23 @@ export const Carousel = ({ data = [], usePhotoViewer = false, duration }: Carous
         return old - 1;
       }
 
+      if (loop && old === 0) {
+        setFakeSlideTransition('left');
+
+        setTimeout(() => {
+          setReduceMotion(true);
+          setCurrentIndex(data.length - 1);
+          setFakeSlideTransition(null);
+
+          setTimeout(() => {
+            setReduceMotion(false);
+          }, 50);
+        }, 499);
+      }
+
       return old;
     });
-  }, [data]);
+  }, [data, loop]);
 
   useEffect(() => {
     setDisabled(true);
@@ -53,31 +90,101 @@ export const Carousel = ({ data = [], usePhotoViewer = false, duration }: Carous
   }, [duration]);
 
   const isFirstSlide = currentIndex === 0;
-  const isLastSlide = currentIndex === data.length - 1;
+  const lastIndex = data.length - 1;
+  const isLastSlide = currentIndex === lastIndex;
 
   return (
-    <div className="alt-carousel">
-      {data.map((slide, slideIndex) => (
-        <div
-          key={slideIndex}
-          className={clsx('alt-carousel__item', {
-            'alt-carousel__item--current': slideIndex === currentIndex,
-            'alt-carousel__item--prev': slideIndex === currentIndex - 1,
-            'alt-carousel__item--next': slideIndex === currentIndex + 1,
-            'alt-carousel__item--left': slideIndex < currentIndex - 1,
-            'alt-carousel__item--right': slideIndex > currentIndex + 1
-          })}
-          style={{ backgroundImage: `url(${slide.src})` }}
-        />
-      ))}
+    <div
+      className={clsx('alt-carousel', {
+        'alt-carousel--reduce-motion': reduceMotion
+      })}
+      ref={carouselRef}>
+      {loop && (
+        <>
+          <div
+            className={clsx('alt-carousel__item', {
+              'alt-carousel__item--left': fakeSlideTransition !== 'left',
+              'alt-carousel__item--prev': fakeSlideTransition === 'left'
+            })}
+            style={{ backgroundImage: `url(${data.at(-2)?.src})` }}
+          />
+          <div
+            className={clsx('alt-carousel__item', {
+              'alt-carousel__item--left': currentIndex > 0,
+              'alt-carousel__item--prev': fakeSlideTransition === null && currentIndex === 0,
+              'alt-carousel__item--current': fakeSlideTransition === 'left'
+            })}
+            style={{ backgroundImage: `url(${data.at(-1)?.src})` }}
+          />
+        </>
+      )}
+      {data.map((slide, slideIndex) => {
+        let isCurrent = slideIndex === currentIndex;
+        let isPrev = slideIndex === currentIndex - 1;
+        let isNext = slideIndex === currentIndex + 1;
+        let isLeft = slideIndex < currentIndex - 1;
+        let isRight = slideIndex > currentIndex + 1;
+
+        if (loop && fakeSlideTransition === 'left') {
+          isCurrent = isPrev = isLeft = false;
+          isNext = slideIndex === 0;
+          isRight = slideIndex > 0;
+        } else if (loop && fakeSlideTransition === 'right') {
+          isCurrent = isNext = isRight = false;
+          isPrev = slideIndex === lastIndex;
+          isLeft = slideIndex < lastIndex;
+        }
+
+        console.log('>', slideIndex, { isCurrent, isPrev, isNext, isLeft, isRight });
+
+        return (
+          <div
+            key={slideIndex}
+            className={clsx('alt-carousel__item', {
+              'alt-carousel__item--current': isCurrent,
+              'alt-carousel__item--prev': isPrev,
+              'alt-carousel__item--next': isNext,
+              'alt-carousel__item--left': isLeft,
+              'alt-carousel__item--right': isRight
+            })}
+            style={{ backgroundImage: `url(${slide.src})` }}
+          />
+        );
+      })}
+      {loop && (
+        <>
+          <div
+            className={clsx('alt-carousel__item', {
+              'alt-carousel__item--right': currentIndex < lastIndex,
+              'alt-carousel__item--next':
+                fakeSlideTransition === null && currentIndex === lastIndex,
+              'alt-carousel__item--current': fakeSlideTransition === 'right'
+            })}
+            style={{ backgroundImage: `url(${data.at(0)?.src})` }}
+          />
+          <div
+            className={clsx('alt-carousel__item', {
+              'alt-carousel__item--right': fakeSlideTransition !== 'right',
+              'alt-carousel__item--next': fakeSlideTransition === 'right'
+            })}
+            style={{ backgroundImage: `url(${data.at(1)?.src})` }}
+          />
+        </>
+      )}
       <div className="alt-carousel__controls">
-        <button className="alt-carousel-control" disabled={disabled || isFirstSlide} onClick={prev}>
+        <button
+          className="alt-carousel-control"
+          disabled={disabled || (!loop && isFirstSlide)}
+          onClick={prev}>
           <Icon i="arrow_back" />
         </button>
         <div className="alt-carousel-counter">
           {currentIndex + 1} / {data.length}
         </div>
-        <button className="alt-carousel-control" disabled={disabled || isLastSlide} onClick={next}>
+        <button
+          className="alt-carousel-control"
+          disabled={disabled || (!loop && isLastSlide)}
+          onClick={next}>
           <Icon i="arrow_forward" />
         </button>
         {usePhotoViewer && (

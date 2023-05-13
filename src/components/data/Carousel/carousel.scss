@@ -49,7 +49,6 @@
   padding: 4px;
   color: var(--textColor);
   box-shadow: 0 3px 15px 0 var(--shadow);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
   transform: translateX(-50%);
   top: 220px;
   left: 50%;
@@ -123,4 +122,10 @@
 
 .alt-carousel-photo-viewer {
   z-index: 100;
+}
+
+.alt-carousel--reduce-motion {
+  .alt-carousel__item {
+    transition: none !important;
+  }
 }
