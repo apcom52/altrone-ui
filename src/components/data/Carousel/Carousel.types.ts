@@ -5,4 +5,5 @@ export type CarouselItem = {
 
 export interface CarouselProps {
   data: CarouselItem[];
+  usePhotoViewer?: boolean;
 }

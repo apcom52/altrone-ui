@@ -8,6 +8,7 @@ interface PhotoViewImage {
 type PhotoViewerBase = {
   images: PhotoViewImage[];
   onClose: () => void;
+  className?: string;
 };
 
 export type PhotoViewerProps = PhotoViewerBase;

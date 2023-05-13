@@ -1,13 +1,21 @@
 import { CarouselProps } from './Carousel.types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './carousel.scss';
 import { Icon } from '../../icons';
 import { PhotoViewer } from '../../containers';
 import clsx from 'clsx';
 
-export const Carousel = ({ data = [] }: CarouselProps) => {
+export const Carousel = ({ data = [], usePhotoViewer = false }: CarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    setDisabled(true);
+    setTimeout(() => {
+      setDisabled(false);
+    }, 500);
+  }, [currentIndex]);
 
   const isFirstSlide = currentIndex === 0;
   const isLastSlide = currentIndex === data.length - 1;
@@ -30,7 +38,7 @@ export const Carousel = ({ data = [] }: CarouselProps) => {
       <div className="alt-carousel__controls">
         <button
           className="alt-carousel-control"
-          disabled={isFirstSlide}
+          disabled={disabled || isFirstSlide}
           onClick={() => setCurrentIndex((old) => old - 1)}>
           <Icon i="arrow_back" />
         </button>
@@ -39,15 +47,17 @@ export const Carousel = ({ data = [] }: CarouselProps) => {
         </div>
         <button
           className="alt-carousel-control"
-          disabled={isLastSlide}
+          disabled={disabled || isLastSlide}
           onClick={() => setCurrentIndex((old) => old + 1)}>
           <Icon i="arrow_forward" />
         </button>
-        <button className="alt-carousel-control" onClick={() => setIsFullScreen(true)}>
-          <Icon i="open_in_full" />
-        </button>
+        {usePhotoViewer && (
+          <button className="alt-carousel-control" onClick={() => setIsFullScreen(true)}>
+            <Icon i="open_in_full" />
+          </button>
+        )}
       </div>
-      {isFullScreen && data[currentIndex].src && (
+      {isFullScreen && data[currentIndex].src && usePhotoViewer && (
         <PhotoViewer
           images={[
             {
@@ -55,6 +65,7 @@ export const Carousel = ({ data = [] }: CarouselProps) => {
             }
           ]}
           onClose={() => setIsFullScreen(false)}
+          className="alt-carousel-photo-viewer"
         />
       )}
     </div>
