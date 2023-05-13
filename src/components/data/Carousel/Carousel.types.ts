@@ -1,12 +1,12 @@
 export type CarouselItem = {
-  src?: string;
-  Component?: JSX.Element;
+  src: string;
 };
 
 export interface CarouselProps {
   data: CarouselItem[];
   duration?: number;
   loop?: boolean;
-  imageFitting: 'cover' | 'contain';
+  imageFitting?: 'cover' | 'contain';
+  showControls?: boolean;
   usePhotoViewer?: boolean;
 }

@@ -8,6 +8,7 @@ import clsx from 'clsx';
 export const Carousel = ({
   data = [],
   usePhotoViewer = false,
+  showControls = true,
   imageFitting = 'cover',
   loop = false,
   duration
@@ -173,28 +174,30 @@ export const Carousel = ({
           />
         </>
       )}
-      <div className="alt-carousel__controls">
-        <button
-          className="alt-carousel-control"
-          disabled={disabled || (!loop && isFirstSlide)}
-          onClick={prev}>
-          <Icon i="arrow_back" />
-        </button>
-        <div className="alt-carousel-counter">
-          {currentIndex + 1} / {data.length}
-        </div>
-        <button
-          className="alt-carousel-control"
-          disabled={disabled || (!loop && isLastSlide)}
-          onClick={next}>
-          <Icon i="arrow_forward" />
-        </button>
-        {usePhotoViewer && (
-          <button className="alt-carousel-control" onClick={() => setIsFullScreen(true)}>
-            <Icon i="open_in_full" />
+      {showControls && (
+        <div className="alt-carousel__controls">
+          <button
+            className="alt-carousel-control"
+            disabled={disabled || (!loop && isFirstSlide)}
+            onClick={prev}>
+            <Icon i="arrow_back" />
           </button>
-        )}
-      </div>
+          <div className="alt-carousel-counter">
+            {currentIndex + 1} / {data.length}
+          </div>
+          <button
+            className="alt-carousel-control"
+            disabled={disabled || (!loop && isLastSlide)}
+            onClick={next}>
+            <Icon i="arrow_forward" />
+          </button>
+          {usePhotoViewer && (
+            <button className="alt-carousel-control" onClick={() => setIsFullScreen(true)}>
+              <Icon i="open_in_full" />
+            </button>
+          )}
+        </div>
+      )}
       {isFullScreen && data[currentIndex].src && usePhotoViewer && (
         <PhotoViewer
           images={[
