@@ -11,7 +11,7 @@ export interface ToolbarPopupActionProps {
 
 interface ToolbarActionProps {
   icon: JSX.Element;
-  label: string;
+  label?: string;
   onClick?: () => void;
   contextMenu?: ContextMenuType;
   content?: (props: ToolbarPopupActionProps) => JSX.Element;
