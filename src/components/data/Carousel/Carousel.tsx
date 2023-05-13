@@ -3,40 +3,44 @@ import React, { useState } from 'react';
 import './carousel.scss';
 import { Icon } from '../../icons';
 import { PhotoViewer } from '../../containers';
+import clsx from 'clsx';
 
 export const Carousel = ({ data = [] }: CarouselProps) => {
-  const [currentIndex, setCurrentIndex] = useState(1);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
+
+  const isFirstSlide = currentIndex === 0;
+  const isLastSlide = currentIndex === data.length - 1;
 
   return (
     <div className="alt-carousel">
-      {currentIndex > 0 && (
+      {data.map((slide, slideIndex) => (
         <div
-          className="alt-carousel__item alt-carousel__item--prev"
-          style={{ backgroundImage: `url(${data[currentIndex - 1]?.src})` }}>
-          prev
-        </div>
-      )}
-      {currentIndex < data.length - 1 && (
-        <div
-          className="alt-carousel__item alt-carousel__item--next"
-          style={{ backgroundImage: `url(${data[currentIndex + 1]?.src})` }}>
-          next
-        </div>
-      )}
-      <div
-        className="alt-carousel__item alt-carousel__item--current"
-        style={{ backgroundImage: `url(${data[currentIndex]?.src})` }}>
-        current
-      </div>
+          key={slideIndex}
+          className={clsx('alt-carousel__item', {
+            'alt-carousel__item--current': slideIndex === currentIndex,
+            'alt-carousel__item--prev': slideIndex === currentIndex - 1,
+            'alt-carousel__item--next': slideIndex === currentIndex + 1,
+            'alt-carousel__item--left': slideIndex < currentIndex - 1,
+            'alt-carousel__item--right': slideIndex > currentIndex + 1
+          })}
+          style={{ backgroundImage: `url(${slide.src})` }}
+        />
+      ))}
       <div className="alt-carousel__controls">
-        <button className="alt-carousel-control" onClick={() => setCurrentIndex((old) => old - 1)}>
+        <button
+          className="alt-carousel-control"
+          disabled={isFirstSlide}
+          onClick={() => setCurrentIndex((old) => old - 1)}>
           <Icon i="arrow_back" />
         </button>
         <div className="alt-carousel-counter">
           {currentIndex + 1} / {data.length}
         </div>
-        <button className="alt-carousel-control" onClick={() => setCurrentIndex((old) => old + 1)}>
+        <button
+          className="alt-carousel-control"
+          disabled={isLastSlide}
+          onClick={() => setCurrentIndex((old) => old + 1)}>
           <Icon i="arrow_forward" />
         </button>
         <button className="alt-carousel-control" onClick={() => setIsFullScreen(true)}>

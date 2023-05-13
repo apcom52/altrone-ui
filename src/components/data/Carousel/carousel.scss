@@ -6,7 +6,6 @@
   position: relative;
   overflow: hidden;
   height: 300px;
-  background-color: lightgoldenrodyellow;
 }
 
 .alt-carousel__item {
@@ -22,6 +21,20 @@
   background-position: center;
   background-size: cover;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.5s linear, transform 0.5s ease, left 0.5s ease;
+}
+
+.alt-carousel__item--left {
+  left: -500px;
+  transform: scale(0.5);
+  z-index: 0;
+}
+
+.alt-carousel__item--right {
+  left: 100%;
+  transform: scale(0.5);
+  z-index: 0;
 }
 
 .alt-carousel__controls {
@@ -37,6 +50,7 @@
   transform: translateX(-50%);
   top: 220px;
   left: 50%;
+  z-index: 1;
 
   @include useGlassSurface();
 }
@@ -45,6 +59,8 @@
   top: 5px;
   left: 100px;
   background-color: lightslategrey;
+  opacity: 1;
+  z-index: 1;
 }
 
 .alt-carousel__item--prev {
@@ -54,16 +70,17 @@
   background-color: lightcoral;
   justify-content: flex-start;
   opacity: 0.75;
+  z-index: 0;
 }
 
 .alt-carousel__item--next {
   top: calc(50% - 145px);
-  left: auto;
-  right: 0;
+  left: 200px;
   transform: scale(0.9);
   background-color: lightblue;
   justify-content: flex-end;
   opacity: 0.75;
+  z-index: 0;
 }
 
 .alt-carousel-control {
