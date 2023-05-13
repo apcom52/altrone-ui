@@ -33,7 +33,8 @@ const meta: Meta<typeof Carousel> = {
       {
         src: 'https://512pixels.net/downloads/macos-wallpapers-thumbs/10-14-Day-Thumb.jpg'
       }
-    ]
+    ],
+    duration: undefined
   },
   argTypes: {}
 };

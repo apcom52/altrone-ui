@@ -6,7 +6,6 @@
   position: relative;
   overflow: hidden;
   height: 300px;
-  perspective: 500px;
 
   @include useDisabledUserSelect();
 }
@@ -24,20 +23,21 @@
   background-position: center;
   background-size: cover;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
-  opacity: 0.25;
-  transition: opacity 0.5s linear, transform 0.5s ease, left 0.5s ease;
+  opacity: 0;
+  transition: opacity 0.5s linear, transform 0.5s ease, left 0.5s ease, filter 0.5s ease;
+  filter: grayscale(0.5);
 }
 
 .alt-carousel__item--left {
-  left: -500px;
-  transform: scale(0.5) translateX(-300px)  rotateY(-25deg);
-  z-index: 0;
+  left: -300px;
+  transform: scale(0.5) translateX(-300px);
+  z-index: -1;
 }
 
 .alt-carousel__item--right {
-  left: 100%;
-  transform: scale(0.5) translateX(300px)  rotateY(25deg);
-  z-index: 0;
+  left: 300px;
+  transform: scale(0.5) translateX(150px);
+  z-index: -1;
 }
 
 .alt-carousel__controls {
@@ -64,6 +64,7 @@
   background-color: lightslategrey;
   opacity: 1;
   z-index: 1;
+  filter: none;
 }
 
 .alt-carousel__item--prev {
@@ -72,7 +73,7 @@
   transform: scale(0.8) translateX(-100px) rotateY(-10deg);
   background-color: lightcoral;
   justify-content: flex-start;
-  opacity: 0.75;
+  opacity: 1;
   z-index: 0;
 }
 
@@ -82,7 +83,7 @@
   transform: scale(0.8) translateX(100px)  rotateY(10deg);
   background-color: lightblue;
   justify-content: flex-end;
-  opacity: 0.75;
+  opacity: 1;
   z-index: 0;
 }
 
