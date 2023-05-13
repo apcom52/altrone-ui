@@ -7,5 +7,6 @@ export interface CarouselProps {
   data: CarouselItem[];
   duration?: number;
   loop?: boolean;
+  imageFitting: 'cover' | 'contain';
   usePhotoViewer?: boolean;
 }

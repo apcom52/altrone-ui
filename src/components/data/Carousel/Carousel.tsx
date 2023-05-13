@@ -8,6 +8,7 @@ import clsx from 'clsx';
 export const Carousel = ({
   data = [],
   usePhotoViewer = false,
+  imageFitting = 'cover',
   loop = false,
   duration
 }: CarouselProps) => {
@@ -96,7 +97,8 @@ export const Carousel = ({
   return (
     <div
       className={clsx('alt-carousel', {
-        'alt-carousel--reduce-motion': reduceMotion
+        'alt-carousel--reduce-motion': reduceMotion,
+        'alt-carousel--image-contain': imageFitting === 'contain'
       })}
       ref={carouselRef}>
       {loop && (
