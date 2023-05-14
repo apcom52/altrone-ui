@@ -105,7 +105,7 @@
 .alt-toolbar--compact {
   border-radius: 8px;
   padding: 4px;
-  width: fit-content;
+  width: 100%;
 
   @include useGlassSurface();
 
@@ -127,5 +127,9 @@
       width: 1px;
       height: 50%;
     }
+  }
+
+  &.alt-toolbar--floated {
+    width: fit-content;
   }
 }

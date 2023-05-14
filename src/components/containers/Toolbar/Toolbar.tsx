@@ -1,8 +1,9 @@
-import { createContext, memo, ReactNode, useContext, useState } from 'react';
+import { createContext, memo, ReactNode, useContext, useRef, useState } from 'react';
 import './toolbar.scss';
 import ToolbarMenu, { ToolbarMenuProps } from './ToolbarMenu';
 import clsx from 'clsx';
 import { Point, Surface } from '../../../types';
+import { useDrag } from '../../../hooks/useDrag/useDrag';
 
 const ToolbarContext = createContext<{
   element: HTMLDivElement | null;
@@ -41,12 +42,20 @@ const Toolbar = ({
   className,
   surface = Surface.glass
 }: ToolbarProps) => {
-  const [toolbarRef, setToolbarRef] = useState(null);
+  const [toolbarElement, setToolbarElement] = useState<HTMLDivElement | null>(null);
+
+  const toolbarRef = useRef<HTMLDivElement | null>(null);
+  const bodyRef = useRef(document.body);
+
+  const { onMouseDown, offset: dragOffset } = useDrag({
+    elementRef: toolbarRef,
+    containerRef: bodyRef
+  });
 
   return (
     <ToolbarContext.Provider
       value={{
-        element: toolbarRef,
+        element: toolbarElement,
         isCompact: variant === ToolbarVariant.compact
       }}>
       <div
@@ -55,7 +64,11 @@ const Toolbar = ({
           'alt-toolbar--compact': variant === ToolbarVariant.compact,
           [`alt-toolbar--surface-${surface}`]: surface
         })}
-        ref={(node) => setToolbarRef(node)}
+        ref={(node) => {
+          toolbarRef.current = node;
+          setToolbarElement(node);
+        }}
+        onMouseDown={onMouseDown}
         style={
           floated
             ? {
@@ -63,7 +76,10 @@ const Toolbar = ({
                 left: offset.x + 'px',
                 width
               }
-            : {}
+            : {
+                top: dragOffset.x,
+                left: dragOffset.y
+              }
         }
         data-testid="alt-test-toolbar">
         {menu.length > 0 && <ToolbarMenu menu={menu} />}
