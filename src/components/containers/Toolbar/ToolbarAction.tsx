@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { ContextMenuType, Indicator } from '../../../types';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../index';
 import { ContextMenu } from '../../list/ContextMenu';
+import { useToolbarContext } from './Toolbar';
 
 export interface ToolbarPopupActionProps {
   closePopup: () => void;
@@ -40,6 +41,8 @@ const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionProps>(
   ) => {
     const [isPopupVisible, setIsPopupVisible] = useState(false);
 
+    const { isCompact } = useToolbarContext();
+
     const buttonRef = useRef<HTMLButtonElement | null>(null);
 
     const onButtonClick = () => {
@@ -63,7 +66,8 @@ const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionProps>(
           className={clsx('alt-toolbar-action', className, {
             'alt-toolbar-action--disabled': disabled,
             'alt-toolbar-action--active': active,
-            'alt-toolbar-action--danger': danger
+            'alt-toolbar-action--danger': danger,
+            'alt-toolbar-action--compact': isCompact
           })}
           type="button"
           title={label}
@@ -79,7 +83,7 @@ const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionProps>(
           onClick={onButtonClick}
           data-testid="alt-test-toolbarAction">
           <div className="alt-toolbar-action__icon">{icon}</div>
-          <div className="alt-toolbar-action__label">{label}</div>
+          {label && <div className="alt-toolbar-action__label">{label}</div>}
           {indicator && (
             <div
               className={clsx('alt-toolbar-action__indicator', {

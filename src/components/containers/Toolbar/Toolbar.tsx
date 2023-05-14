@@ -4,7 +4,10 @@ import ToolbarMenu, { ToolbarMenuProps } from './ToolbarMenu';
 import clsx from 'clsx';
 import { Point, Surface } from '../../../types';
 
-const ToolbarContext = createContext<HTMLDivElement>(null);
+const ToolbarContext = createContext<{
+  element: HTMLDivElement | null;
+  isCompact: boolean;
+}>({ element: null, isCompact: false });
 export const useToolbarContext = () => useContext(ToolbarContext);
 
 const defaultOffset: Point = {
@@ -12,8 +15,14 @@ const defaultOffset: Point = {
   y: 0
 };
 
+export enum ToolbarVariant {
+  default = 'default',
+  compact = 'compact'
+}
+
 interface ToolbarProps {
   children: ReactNode | ReactNode[];
+  variant?: ToolbarVariant;
   floated?: boolean;
   menu?: ToolbarMenuProps['menu'];
   offset?: Point;
@@ -24,6 +33,7 @@ interface ToolbarProps {
 
 const Toolbar = ({
   children,
+  variant = ToolbarVariant.default,
   floated = false,
   menu = [],
   offset = defaultOffset,
@@ -34,10 +44,15 @@ const Toolbar = ({
   const [toolbarRef, setToolbarRef] = useState(null);
 
   return (
-    <ToolbarContext.Provider value={toolbarRef}>
+    <ToolbarContext.Provider
+      value={{
+        element: toolbarRef,
+        isCompact: variant === ToolbarVariant.compact
+      }}>
       <div
         className={clsx('alt-toolbar', className, {
           'alt-toolbar--floated': floated,
+          'alt-toolbar--compact': variant === ToolbarVariant.compact,
           [`alt-toolbar--surface-${surface}`]: surface
         })}
         ref={(node) => setToolbarRef(node)}

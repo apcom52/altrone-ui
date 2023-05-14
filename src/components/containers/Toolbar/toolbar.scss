@@ -52,6 +52,11 @@
   visibility: hidden;
 }
 
+.alt-toolbar-group--compact {
+  flex: 0;
+  gap: 4px;
+}
+
 .alt-toolbar-separator {
   width: 1px;
   height: 48px;
@@ -95,4 +100,32 @@
   background: linear-gradient(to bottom, var(--metalTop) 0%, var(--metalBottom) 100%);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
+}
+
+.alt-toolbar--compact {
+  border-radius: 8px;
+  padding: 4px;
+  width: fit-content;
+
+  @include useGlassSurface();
+
+  .alt-toolbar__main {
+    padding: 0;
+    gap: 12px;
+    overflow: unset;
+  }
+
+  .alt-toolbar-group + .alt-toolbar-group {
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 25%;
+      background-color: var(--dividerColor);
+      width: 1px;
+      height: 50%;
+    }
+  }
 }
