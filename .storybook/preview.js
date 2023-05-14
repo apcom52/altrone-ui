@@ -1,3 +1,5 @@
+import storybookLogo from '../public/logo.png';
+
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {

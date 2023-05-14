@@ -1,0 +1,26 @@
+{
+  "source": {
+    "include": ["src/components/indicators"],
+    "includePattern": ".tsx$"
+  },
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "plugins": [
+    "plugins/markdown",
+    "better-docs/component",
+    "better-docs/typescript",
+    "better-docs/category"
+  ],
+  "templates": {
+    "better-docs": {
+      "name": "Altrone UI Documentation"
+    }
+  },
+  "opts": {
+    "destination": "docs",
+    "recurse": true,
+    "template": "node_modules/better-docs",
+    "readme": "README.md"
+  }
+}

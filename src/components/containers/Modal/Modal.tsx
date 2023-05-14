@@ -138,6 +138,8 @@ const Modal = ({
     }
   };
 
+  const _showCancel = showCancel || (!closeOnOverlay && !showClose);
+
   return ReactDOM.createPortal(
     <div
       className="alt-modal-wrapper"
@@ -171,11 +173,11 @@ const Modal = ({
         <div className="alt-modal__content" data-testid="alt-test-modal-content">
           {children}
         </div>
-        {(showCancel || actions.length > 0) && (
+        {(_showCancel || actions.length > 0) && (
           <div className="alt-modal__footer">
             {renderActions(leftActions)}
             <div className="alt-modal__footer-separator" />
-            {((showCancel && gtPhoneL) || showClose || ltePhoneL) && (
+            {((_showCancel && gtPhoneL) || _showCancel || ltePhoneL) && (
               <Button
                 onClick={handleClose}
                 className="alt-modal__cancel"

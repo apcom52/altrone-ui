@@ -1,6 +1,6 @@
 {
   "name": "altrone-ui",
-  "version": "2.0.0-dev.2318",
+  "version": "2.0.0-dev.2319",
   "description": "React UI Kit",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -47,8 +47,10 @@
     "jest": "^28.1.3",
     "jest-environment-jsdom": "^29.0.1",
     "normalize.css": "^8.0.1",
+    "parcel-bundler": "^1.12.5",
     "prettier": "^2.8.1",
     "react": "^18.2.0",
+    "react-docgen": "^5.4.3",
     "react-dom": "^18.2.0",
     "rollup": "^2.77.0",
     "rollup-plugin-copy": "^3.4.0",
@@ -57,9 +59,10 @@
     "rollup-plugin-scss": "3",
     "rollup-plugin-terser": "^7.0.2",
     "sass-loader": "^13.0.2",
-    "storybook": "^7.0.5",
+    "storybook": "^7.0.11",
     "storybook-addon-sass-postcss": "^0.1.3",
-    "typescript": "^4.9.0"
+    "taffydb": "^2.7.3",
+    "typescript": "^5.0.4"
   },
   "scripts": {
     "publish-release": "npm run test && npm run build && npm publish",
@@ -91,7 +94,9 @@
   "homepage": "https://github.com/apcom52/altrone-ui#readme",
   "dependencies": {
     "@popperjs/core": "^2.11.6",
+    "better-docs": "^2.7.2",
     "clsx": "^1.2.1",
+    "jsdoc": "^4.0.2",
     "lodash-es": "^4.17.21",
     "material-symbols": "^0.2.11",
     "normalize": "^0.3.1",

@@ -9,7 +9,7 @@ import { useDrag } from '../../../hooks/useDrag/useDrag';
 
 const PHOTO_VIEWER_BOUNDARIES = 16;
 
-export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
+export const PhotoViewer = ({ images = [], onClose, className }: PhotoViewerProps) => {
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -79,7 +79,7 @@ export const PhotoViewer = ({ images = [], onClose }: PhotoViewerProps) => {
   }, [currentIndex]);
 
   return (
-    <div className={clsx('alt-photo-viewer')}>
+    <div className={clsx('alt-photo-viewer', className)}>
       <div className="alt-photo-viewer__container" ref={containerRef}>
         {loading && (
           <div className="alt-photo-viewer__loading">
