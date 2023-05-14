@@ -5,8 +5,8 @@ import { useResizeObserver } from '../../../hooks';
 import ToolbarAction from './ToolbarAction';
 import { Icon } from '../../icons';
 import { useToolbarContext } from './Toolbar';
-import { ContextMenu } from '../ContextMenu';
-import { FloatingBox } from '../../containers';
+import { ContextMenu } from '../../list/ContextMenu';
+import { FloatingBox } from '../index';
 
 interface ToolbarGroupProps extends React.PropsWithChildren {
   align?: Align;
@@ -23,7 +23,7 @@ const ToolbarGroup = ({
   const [context, setContext] = useState([]);
   const [isContextVisible, setIsContextVisible] = useState(false);
 
-  const toolbarRef = useToolbarContext();
+  const { element: toolbarRef, isCompact } = useToolbarContext();
 
   const groupRef = useRef<HTMLDivElement>(null);
   const preventRerender = useRef(false);
@@ -91,7 +91,8 @@ const ToolbarGroup = ({
         'alt-toolbar-group--fluid': fluid,
         'alt-toolbar-group--align-start': align === Align.start,
         'alt-toolbar-group--align-end': align === Align.end,
-        'alt-toolbar-group--collapsible': isCollapsible
+        'alt-toolbar-group--collapsible': isCollapsible,
+        'alt-toolbar-group--compact': isCompact
       })}
       data-testid="alt-test-toolbarGroup"
       ref={groupRef}>
