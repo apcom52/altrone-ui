@@ -1,0 +1,37 @@
+@import "../../../mixins";
+
+.alt-pagination {
+  display: flex;
+  align-items: center;
+  color: var(--textColor);
+  gap: 4px;
+
+  @include useDisabledUserSelect();
+}
+
+.alt-pagination__state {
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  padding: 4px 8px;
+  @include useFontSize(label, Large);
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  opacity: 1;
+
+  &:disabled {
+    pointer-events: none;
+    color: var(--textColor);
+  }
+
+  &:hover, &:focus {
+    background-color: var(--surfaceTrasparent);
+  }
+}
+
+.alt-pagination--with-navigation {
+  .alt-pagination__state {
+    cursor: pointer;
+
+  }
+}
