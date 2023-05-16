@@ -69,6 +69,8 @@ export const Pagination = ({
         <FloatingBox
           targetElement={navigationButtonRef.current}
           onClose={closeNavigation}
+          className="alt-pagination__navigation"
+          placement="top"
           useRootContainer>
           <Form>
             <FormField label="Перейти к странице">

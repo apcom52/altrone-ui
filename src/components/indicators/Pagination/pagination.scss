@@ -13,6 +13,7 @@
   border-radius: 6px;
   background: transparent;
   border: none;
+  height: 34px;
   padding: 4px 8px;
   @include useFontSize(label, Large);
   transition: background-color 0.2s ease;
@@ -25,13 +26,16 @@
   }
 
   &:hover, &:focus {
-    background-color: var(--surfaceTrasparent);
+    background-color: var(--surface);
   }
 }
 
 .alt-pagination--with-navigation {
   .alt-pagination__state {
     cursor: pointer;
-
   }
+}
+
+.alt-pagination__navigation {
+  padding: 12px;
 }
