@@ -60,7 +60,7 @@ export const Pagination = ({
         onClick={() => setIsNavigationVisible(true)}
         className="alt-pagination__state"
         ref={navigationButtonRef}>
-        {page} / {totalPages}
+        <span data-testid="alt-test-pagination-currentPage">{page}</span> / {totalPages}
       </button>
       <Button variant={ButtonVariant.transparent} disabled={isNextDisabled} onClick={next} isIcon>
         <Icon i="arrow_forward_ios" />
