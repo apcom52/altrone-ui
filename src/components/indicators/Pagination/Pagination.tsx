@@ -13,6 +13,14 @@ interface PaginationProps {
   useNavigateToPagePopup?: boolean;
 }
 
+/**
+ * This component indicates the current page of the list
+ * @param page current page
+ * @param totalPages total amount of pages
+ * @param onChange callback fires when user changes the current page
+ * @param useNavigateToPagePopup when this prop is activated pagination component has the ability to move to the specific page
+ * @constructor
+ */
 export const Pagination = ({
   page = 1,
   totalPages = 1,
