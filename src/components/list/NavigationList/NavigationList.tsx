@@ -1,4 +1,4 @@
-import { Fragment, memo, useEffect, useMemo } from 'react';
+import React, { Fragment, memo, useEffect, useMemo } from 'react';
 import './navigation-list.scss';
 import NavigationListItem from './NavigationListItem';
 import NavigationListSubItem from './NavigationListSubItem';
@@ -6,6 +6,7 @@ import NavigationListSubSubItem from './NavigationListSubSubItem';
 import clsx from 'clsx';
 import { ContextMenuType, Indicator, Role, Size, Surface } from '../../../types';
 import { Button, ButtonVariant } from '../../button';
+import { Icon } from '../../icons';
 
 export const NAVIGATION_LIST_SEPARATOR = '-';
 
@@ -65,6 +66,7 @@ interface NavigationListProps {
   className?: string;
   surface?: Surface;
   action?: NavigationListAction;
+  compact?: 'manual' | 'static';
   NavigationItemComponent?: JSX.Element;
   NavigationSubItemComponent?: JSX.Element;
   NavigationSubSubItemComponent?: JSX.Element;
@@ -78,6 +80,7 @@ const NavigationList = ({
   className,
   action,
   surface = Surface.glass,
+  compact,
   NavigationItemComponent,
   NavigationSubItemComponent,
   NavigationSubSubItemComponent
@@ -149,9 +152,23 @@ const NavigationList = ({
   return (
     <div
       className={clsx('alt-navigation-list', className, {
-        [`alt-navigation-list--surface-${surface}`]: surface !== Surface.glass
+        [`alt-navigation-list--surface-${surface}`]: surface !== Surface.glass,
+        'alt-navigation-list--compact': compact === 'static'
       })}>
       {title && <div className="alt-navigation-list__title">{title}</div>}
+      {action && (
+        <Button
+          className="alt-navigation-list__compactModeSwitcher"
+          onClick={action.onClick}
+          dropdown={action.contextMenu}
+          variant={ButtonVariant.text}
+          role={action.danger ? Role.danger : Role.primary}
+          disabled={action.disabled}
+          size={Size.large}
+          isIcon>
+          <Icon i="menu_open" />
+        </Button>
+      )}
       {action && (
         <Button
           className="alt-navigation-list__action"
