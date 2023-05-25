@@ -1,4 +1,4 @@
-import React, { Fragment, memo, useEffect, useMemo } from 'react';
+import React, { Fragment, memo, useEffect, useMemo, useState } from 'react';
 import './navigation-list.scss';
 import NavigationListItem from './NavigationListItem';
 import NavigationListSubItem from './NavigationListSubItem';
@@ -30,6 +30,7 @@ interface NavigationItem {
   icon?: JSX.Element;
   submenu?: SubNavigationItem[];
   indicator?: Indicator;
+  compact?: boolean;
 }
 
 interface BaseNavigationItemInterface {
@@ -85,6 +86,8 @@ const NavigationList = ({
   NavigationSubItemComponent,
   NavigationSubSubItemComponent
 }: NavigationListProps) => {
+  const [compacted, setCompacted] = useState(compact === 'static');
+
   const [selectedItem, selectedSubItem, selectedSubSubItem] = useMemo(() => {
     for (const item of list) {
       if (item === NAVIGATION_LIST_SEPARATOR) {
@@ -153,20 +156,18 @@ const NavigationList = ({
     <div
       className={clsx('alt-navigation-list', className, {
         [`alt-navigation-list--surface-${surface}`]: surface !== Surface.glass,
-        'alt-navigation-list--compact': compact === 'static'
+        'alt-navigation-list--compact': compact === 'static' || compacted
       })}>
       {title && <div className="alt-navigation-list__title">{title}</div>}
       {action && (
         <Button
           className="alt-navigation-list__compactModeSwitcher"
-          onClick={action.onClick}
-          dropdown={action.contextMenu}
+          onClick={() => setCompacted(!compacted)}
           variant={ButtonVariant.text}
-          role={action.danger ? Role.danger : Role.primary}
-          disabled={action.disabled}
+          role={Role.primary}
           size={Size.large}
           isIcon>
-          <Icon i="menu_open" />
+          <Icon i={compacted ? 'menu' : 'menu_open'} />
         </Button>
       )}
       {action && (
@@ -197,6 +198,7 @@ const NavigationList = ({
           const itemProps: NavigationItemProps = {
             selected: item.value === selectedItem,
             onClick: () => onChange(item.value),
+            compact: compact === 'static' || compacted,
             ...item
           };
 

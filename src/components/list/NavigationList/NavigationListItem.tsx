@@ -11,13 +11,15 @@ const NavigationListItem = ({
   submenu = [],
   onClick,
   selected = false,
-  indicator
+  indicator,
+  compact = false
 }: NavigationItemProps) => {
   return (
     <button
       className={clsx('alt-navigation-list-item', {
         'alt-navigation-list-item--selected': selected && submenu.length === 0,
-        'alt-navigation-list-item--expanded': selected && submenu.length
+        'alt-navigation-list-item--expanded': selected && submenu.length,
+        'alt-navigation-list-item--compact': compact
       })}
       onClick={() => onClick(value)}
       title={label}>
@@ -34,6 +36,26 @@ const NavigationListItem = ({
       {submenu.length > 0 && (
         <div className="alt-navigation-list-item__arrowIcon">
           <Icon i="arrow_forward_ios" />
+        </div>
+      )}
+      {compact && (
+        <div className="alt-navigation-list-item__compact-hint">
+          {icon && <div className="alt-navigation-list-item__icon">{icon}</div>}
+          <div className="alt-navigation-list-item__label">{label}</div>
+          {indicator && (
+            <div
+              className={clsx('alt-navigation-list-item__indicator', {
+                'alt-navigation-list-item__indicator--position-corner':
+                  indicator.position === 'corner'
+              })}>
+              {indicator.value}
+            </div>
+          )}
+          {submenu.length > 0 && (
+            <div className="alt-navigation-list-item__arrowIcon">
+              <Icon i="arrow_forward_ios" />
+            </div>
+          )}
         </div>
       )}
     </button>
