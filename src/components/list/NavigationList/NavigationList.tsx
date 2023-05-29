@@ -1,4 +1,4 @@
-import { Fragment, memo, useEffect, useMemo } from 'react';
+import React, { Fragment, memo, useEffect, useMemo, useState } from 'react';
 import './navigation-list.scss';
 import NavigationListItem from './NavigationListItem';
 import NavigationListSubItem from './NavigationListSubItem';
@@ -6,6 +6,7 @@ import NavigationListSubSubItem from './NavigationListSubSubItem';
 import clsx from 'clsx';
 import { ContextMenuType, Indicator, Role, Size, Surface } from '../../../types';
 import { Button, ButtonVariant } from '../../button';
+import { Icon } from '../../icons';
 
 export const NAVIGATION_LIST_SEPARATOR = '-';
 
@@ -29,10 +30,12 @@ interface NavigationItem {
   icon?: JSX.Element;
   submenu?: SubNavigationItem[];
   indicator?: Indicator;
+  compact?: boolean;
 }
 
 interface BaseNavigationItemInterface {
   selected: boolean;
+  selectedValue: unknown;
   onClick: (value: unknown) => void;
   /**
    * @deprecated
@@ -65,6 +68,7 @@ interface NavigationListProps {
   className?: string;
   surface?: Surface;
   action?: NavigationListAction;
+  compact?: 'manual' | 'static';
   NavigationItemComponent?: JSX.Element;
   NavigationSubItemComponent?: JSX.Element;
   NavigationSubSubItemComponent?: JSX.Element;
@@ -78,10 +82,13 @@ const NavigationList = ({
   className,
   action,
   surface = Surface.glass,
+  compact,
   NavigationItemComponent,
   NavigationSubItemComponent,
   NavigationSubSubItemComponent
 }: NavigationListProps) => {
+  const [compacted, setCompacted] = useState(compact === 'static');
+
   const [selectedItem, selectedSubItem, selectedSubSubItem] = useMemo(() => {
     for (const item of list) {
       if (item === NAVIGATION_LIST_SEPARATOR) {
@@ -149,9 +156,21 @@ const NavigationList = ({
   return (
     <div
       className={clsx('alt-navigation-list', className, {
-        [`alt-navigation-list--surface-${surface}`]: surface !== Surface.glass
+        [`alt-navigation-list--surface-${surface}`]: surface !== Surface.glass,
+        'alt-navigation-list--compact': compact === 'static' || compacted
       })}>
       {title && <div className="alt-navigation-list__title">{title}</div>}
+      {action && (
+        <Button
+          className="alt-navigation-list__compactModeSwitcher"
+          onClick={() => setCompacted(!compacted)}
+          variant={ButtonVariant.text}
+          role={Role.primary}
+          size={Size.large}
+          isIcon>
+          <Icon i={compacted ? 'menu' : 'menu_open'} />
+        </Button>
+      )}
       {action && (
         <Button
           className="alt-navigation-list__action"
@@ -180,6 +199,8 @@ const NavigationList = ({
           const itemProps: NavigationItemProps = {
             selected: item.value === selectedItem,
             onClick: () => onChange(item.value),
+            compact: compact === 'static' || compacted,
+            selectedValue: selected,
             ...item
           };
 
@@ -190,12 +211,13 @@ const NavigationList = ({
               ) : (
                 <NavigationListItem {...itemProps} />
               )}
-              {selectedItem === item.value && item.submenu?.length > 0 && (
+              {!compacted && selectedItem === item.value && item.submenu?.length > 0 && (
                 <div className="alt-navigation-list__navigation">
                   {item.submenu?.map((subitem, subitemIndex) => {
                     const subItemProps: NavigationSubItemProps = {
                       selected: subitem.value === selectedSubItem,
                       onClick: () => onChange(subitem.value),
+                      selectedValue: selected,
                       ...subitem
                     };
 
@@ -213,6 +235,7 @@ const NavigationList = ({
                               const subsubItemProps: NavigationSubSubItemProps = {
                                 selected: subsubitem.value === selectedSubSubItem,
                                 onClick: () => onChange(subsubitem.value),
+                                selectedValue: selected,
                                 ...subsubitem
                               };
 

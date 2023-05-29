@@ -119,7 +119,7 @@ describe('Data.DataTable', () => {
     const { rerender } = render(<DataTable data={DATA} columns={COLUMNS} limit={5} />);
 
     let rows = screen.queryAllByTestId('alt-test-datatable-row');
-    let currentPage = screen.getByTestId('alt-test-datatable-currentPage');
+    let currentPage = screen.getByTestId('alt-test-pagination-currentPage');
     expect(rows).toHaveLength(5);
     expect(currentPage).toHaveTextContent('1');
 
@@ -128,16 +128,16 @@ describe('Data.DataTable', () => {
 
     rerender(<DataTable data={DATA} columns={COLUMNS} limit={5} />);
     rows = screen.queryAllByTestId('alt-test-datatable-row');
-    currentPage = screen.getByTestId('alt-test-datatable-currentPage');
+    currentPage = screen.getByTestId('alt-test-pagination-currentPage');
     expect(rows).toHaveLength(1);
     expect(currentPage).toHaveTextContent('2');
 
-    const prevPage = screen.getByText('arrow_back_ios');
+    const prevPage = screen.getByText('arrow_back_ios_new');
     await waitFor(() => fireEvent.click(prevPage));
 
     rerender(<DataTable data={DATA} columns={COLUMNS} limit={5} />);
     rows = screen.queryAllByTestId('alt-test-datatable-row');
-    currentPage = screen.getByTestId('alt-test-datatable-currentPage');
+    currentPage = screen.getByTestId('alt-test-pagination-currentPage');
     expect(rows).toHaveLength(5);
     expect(currentPage).toHaveTextContent('1');
   });
