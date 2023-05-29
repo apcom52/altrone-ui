@@ -3,6 +3,7 @@ export { Form, FormGroup, FormGroupVariant, FormField } from './Form';
 export { Modal, ModalAction } from './Modal';
 export { ButtonContainer } from './ButtonContainer';
 export { PhotoViewer } from './PhotoViewer';
+export { Spoiler } from './Spoiler';
 export {
   Toolbar,
   ToolbarGroup,
