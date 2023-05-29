@@ -1,7 +1,7 @@
 import { Meta } from '@storybook/react';
 import { NavigationList } from './index';
 
-export { SimpleNavigationList } from './stories';
+export { SimpleNavigationList, HierarchicalNavigationList } from './stories';
 
 const meta: Meta<typeof NavigationList> = {
   component: NavigationList,

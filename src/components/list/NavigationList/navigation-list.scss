@@ -9,7 +9,6 @@
   flex-direction: column;
   scrollbar-gutter: stable;
   box-shadow: 3px 0 15px 0 var(--shadow);
-  border-right: 1px solid var(--borderColor);
 
   @include useGlassSurface();
 

@@ -35,6 +35,7 @@ interface NavigationItem {
 
 interface BaseNavigationItemInterface {
   selected: boolean;
+  selectedValue: unknown;
   onClick: (value: unknown) => void;
   /**
    * @deprecated
@@ -199,6 +200,7 @@ const NavigationList = ({
             selected: item.value === selectedItem,
             onClick: () => onChange(item.value),
             compact: compact === 'static' || compacted,
+            selectedValue: selected,
             ...item
           };
 
@@ -209,12 +211,13 @@ const NavigationList = ({
               ) : (
                 <NavigationListItem {...itemProps} />
               )}
-              {selectedItem === item.value && item.submenu?.length > 0 && (
+              {!compacted && selectedItem === item.value && item.submenu?.length > 0 && (
                 <div className="alt-navigation-list__navigation">
                   {item.submenu?.map((subitem, subitemIndex) => {
                     const subItemProps: NavigationSubItemProps = {
                       selected: subitem.value === selectedSubItem,
                       onClick: () => onChange(subitem.value),
+                      selectedValue: selected,
                       ...subitem
                     };
 
@@ -232,6 +235,7 @@ const NavigationList = ({
                               const subsubItemProps: NavigationSubSubItemProps = {
                                 selected: subsubitem.value === selectedSubSubItem,
                                 onClick: () => onChange(subsubitem.value),
+                                selectedValue: selected,
                                 ...subsubitem
                               };
 
