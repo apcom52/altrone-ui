@@ -86,6 +86,12 @@ const FloatingBox = forwardRef<
           options: {
             offset: offsets
           }
+        },
+        {
+          name: 'preventOverflow',
+          options: {
+            padding: 4
+          }
         }
       ];
 
