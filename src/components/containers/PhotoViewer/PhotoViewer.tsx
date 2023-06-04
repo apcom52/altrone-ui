@@ -9,10 +9,15 @@ import { useDrag } from '../../../hooks/useDrag/useDrag';
 
 const PHOTO_VIEWER_BOUNDARIES = 16;
 
-export const PhotoViewer = ({ images = [], onClose, className }: PhotoViewerProps) => {
+export const PhotoViewer = ({
+  images = [],
+  onClose,
+  className,
+  startsFrom = 0
+}: PhotoViewerProps) => {
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(startsFrom);
   const [zoom, setZoom] = useState(1);
 
   const containerRef = useRef<HTMLDivElement>(null);
