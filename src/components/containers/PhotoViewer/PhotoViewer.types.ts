@@ -9,6 +9,7 @@ type PhotoViewerBase = {
   images: PhotoViewImage[];
   onClose: () => void;
   className?: string;
+  startsFrom?: number;
 };
 
 export type PhotoViewerProps = PhotoViewerBase;
