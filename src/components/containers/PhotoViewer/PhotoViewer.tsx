@@ -9,10 +9,15 @@ import { useDrag } from '../../../hooks/useDrag/useDrag';
 
 const PHOTO_VIEWER_BOUNDARIES = 16;
 
-export const PhotoViewer = ({ images = [], onClose, className }: PhotoViewerProps) => {
+export const PhotoViewer = ({
+  images = [],
+  onClose,
+  className,
+  startsFrom = 0
+}: PhotoViewerProps) => {
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(startsFrom);
   const [zoom, setZoom] = useState(1);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -101,30 +106,34 @@ export const PhotoViewer = ({ images = [], onClose, className }: PhotoViewerProp
           }}
         />
 
-        <div className="alt-photo-viewer-info">
-          {expanded && (
-            <>
-              {images.length > 1 && (
-                <div className="alt-photo-viewer-info__counter">
-                  <strong>{currentIndex + 1}</strong>/ {images.length}
-                </div>
-              )}
-              {images[currentIndex].caption && (
-                <div className="alt-photo-viewer-info__caption">{images[currentIndex].caption}</div>
-              )}
-              {images[currentIndex].description && (
-                <div className="alt-photo-viewer-info__description">
-                  {images[currentIndex].description}
-                </div>
-              )}
-            </>
-          )}
-          <button
-            className="alt-photo-viewer-toolbar__action"
-            onClick={() => setExpanded(!expanded)}>
-            <Icon i={expanded ? 'south_west' : 'north_east'} />
-          </button>
-        </div>
+        {images.length > 1 || images[currentIndex].caption || images[currentIndex].description ? (
+          <div className="alt-photo-viewer-info">
+            {expanded && (
+              <>
+                {images.length > 1 && (
+                  <div className="alt-photo-viewer-info__counter">
+                    <strong>{currentIndex + 1}</strong>/ {images.length}
+                  </div>
+                )}
+                {images[currentIndex].caption && (
+                  <div className="alt-photo-viewer-info__caption">
+                    {images[currentIndex].caption}
+                  </div>
+                )}
+                {images[currentIndex].description && (
+                  <div className="alt-photo-viewer-info__description">
+                    {images[currentIndex].description}
+                  </div>
+                )}
+              </>
+            )}
+            <button
+              className="alt-photo-viewer-toolbar__action"
+              onClick={() => setExpanded(!expanded)}>
+              <Icon i={expanded ? 'south_west' : 'north_east'} />
+            </button>
+          </div>
+        ) : null}
 
         <div
           className={clsx('alt-photo-viewer-toolbar')}
