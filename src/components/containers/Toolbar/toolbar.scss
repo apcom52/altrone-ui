@@ -67,7 +67,7 @@
 .alt-toolbar--floated {
   position: fixed;
   width: 100%;
-  border-radius: 12px;
+  border-radius: var(--сontainersRounding);
   padding: 4px 4px 0;
 }
 
@@ -103,7 +103,7 @@
 }
 
 .alt-toolbar--compact {
-  border-radius: 8px;
+  border-radius: var(--controlRounding);
   padding: 4px;
   width: 100%;
 

@@ -14,7 +14,7 @@
   cursor: pointer;
   color: var(--textColor);
   transition: transform var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
-  border-radius: 12px;
+  border-radius: var(--сontainersRounding);
 
   &:hover, &:focus {
     .alt-toolbar-action__icon {
@@ -35,7 +35,7 @@
 .alt-toolbar-action__icon {
   font-size: 24px;
   padding: 4px 8px;
-  border-radius: 8px;
+  border-radius: var(--controlRounding);
   transition: background-color var(--transitionDuration) ease;
 }
 
@@ -86,7 +86,7 @@
   right: 4px;
   padding: 2px 4px;
   background-color: var(--textColor);
-  border-radius: 6px;
+  border-radius: var(--innerRounding);
   color: var(--background);
 
   @include useFontSize(label, Small);
@@ -96,7 +96,7 @@
     height: 8px;
     top: 15px;
     right: 12px;
-    border-radius: 50%;
+    border-radius: var(--circleRounding);
   }
 }
 
@@ -119,7 +119,7 @@
 .alt-toolbar-action--compact {
   display: flex;
   flex-direction: row;
-  border-radius: 6px;
+  border-radius: var(--innerRounding);
   align-items: center;
   justify-content: center;
   min-width: 36px;

@@ -26,7 +26,7 @@
   max-height: 90%;
   left: 50%;
   top: 50%;
-  border-radius: 12px;
+  border-radius: var(--сontainersRounding);
   box-shadow: 0 3px 15px 0 var(--shadow);
   transition: transform 0.2s linear;
   background-color: var(--surfaceTrasparent);
@@ -43,7 +43,7 @@
   display: flex;
   align-items: center;
   position: absolute;
-  border-radius: 8px;
+  border-radius: var(--controlRounding);
   gap: 4px;
   padding: 4px;
   color: var(--textColor);
@@ -62,7 +62,7 @@
   border: none;
   height: 34px;
   padding: 8px;
-  border-radius: 6px;
+  border-radius: var(--innerRounding);
   font-weight: 400;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
   color: var(--textColor);
@@ -93,7 +93,7 @@
   bottom: 16px;
   left: 16px;
   max-width: 40%;
-  border-radius: 8px;
+  border-radius: var(--controlRounding);
   box-shadow: 0 3px 15px 0 var(--shadow);
   padding: 4px;
 
