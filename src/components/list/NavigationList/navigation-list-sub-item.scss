@@ -6,7 +6,7 @@
   align-items: center;
   margin: 0;
   padding: 8px 30px 8px 12px;
-  border-radius: 8px;
+  border-radius: var(--controlRounding);
   border: none;
   background-color: transparent;
   cursor: pointer;
@@ -74,7 +74,7 @@
 .alt-navigation-list-sub-item__indicator {
   margin-left: auto;
   padding: 2px 6px;
-  border-radius: 6px;
+  border-radius: var(--innerRounding);
   background-color: var(--surfaceTrasparentHover);
 
   @include useFontSize(label, Small);
@@ -84,7 +84,7 @@
     width: 8px;
     height: 8px;
     max-width: 8px;
-    border-radius: 50%;
+    border-radius: var(--circleRounding);
     padding: 0;
     background-color: var(--danger);
   }
