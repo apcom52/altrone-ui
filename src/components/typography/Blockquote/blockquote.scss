@@ -6,7 +6,7 @@
   flex-direction: column;
   padding: 8px 24px;
   margin: 0;
-  border-radius: var(--сontainersRounding);
+  border-radius: var(--innerRounding);
 
   @include useFontSize(body);
 
