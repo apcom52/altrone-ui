@@ -46,7 +46,7 @@
     height: 18px;
     top: 3px;
     left: 4px;
-    border-radius: 50%;
+    border-radius: var(--circleRounding);
     background-color: var(--switcherColor);
     transition: left var(--transitionDuration) ease, background-color var(--transitionDuration) ease;
     box-shadow: 0 3px 15px 0 var(--shadow);

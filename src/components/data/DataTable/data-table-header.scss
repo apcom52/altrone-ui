@@ -6,7 +6,7 @@
   background-color: var(--surface);
   border: 1px solid var(--borderColor);
   border-bottom: none;
-  border-radius: 12px 12px 0 0;
+  border-radius: var(--сontainersRounding) var(--сontainersRounding) 0 0;
   justify-content: space-between;
 }
 

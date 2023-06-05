@@ -10,7 +10,7 @@
 }
 
 .alt-pagination__state {
-  border-radius: 6px;
+  border-radius: var(--innerRounding);
   background: transparent;
   border: none;
   height: 34px;
