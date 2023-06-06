@@ -344,3 +344,5 @@
   border-radius: 2px;
   background: var(--surfaceTrasparent);
 }
+
+@include useElevation('alt-button', null, true);
