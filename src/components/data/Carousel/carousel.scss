@@ -17,7 +17,7 @@
   position: absolute;
   width: calc(100% - 200px);
   background-color: var(--surface);
-  border-radius: 12px;
+  border-radius: var(--сontainersRounding);
   left: 100px;
   height: 290px;
   background-position: center;
@@ -45,7 +45,7 @@
   display: flex;
   align-items: center;
   position: absolute;
-  border-radius: 8px;
+  border-radius: var(--controlRounding);
   gap: 4px;
   padding: 4px;
   color: var(--textColor);
@@ -92,7 +92,7 @@
   border: none;
   height: 34px;
   padding: 8px;
-  border-radius: 6px;
+  border-radius: var(--innerRounding);
   font-weight: 400;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
   color: var(--textColor);

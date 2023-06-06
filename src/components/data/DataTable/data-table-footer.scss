@@ -8,7 +8,7 @@
   background-color: var(--surface);
   border: 1px solid var(--borderColor);
   border-top: none;
-  border-radius: 0 0 12px 12px;
+  border-radius: 0 0 var(--сontainersRounding) var(--сontainersRounding);
 
   @include useDisabledUserSelect();
 }

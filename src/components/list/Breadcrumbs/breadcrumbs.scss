@@ -19,7 +19,7 @@
   align-items: center;
   background: none;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--controlRounding);
   padding: 6px 12px;
   cursor: pointer;
   transition: box-shadow 0.2s ease, background-color 0.2s ease, transform 0.2s ease;

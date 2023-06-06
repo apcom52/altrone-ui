@@ -21,7 +21,7 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  border-radius: 8px;
+  border-radius: var(--controlRounding);
   border: 1px solid var(--borderColor);
   transition: box-shadow var(--transitionDuration) ease, opacity var(--transitionDuration) ease;
 
@@ -110,7 +110,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.25em;
-  border-radius: 6px;
+  border-radius: var(--innerRounding);
   pointer-events: auto;
   cursor: pointer;
   transition: background-color var(--transitionDuration) ease;
@@ -226,7 +226,7 @@
 
 .alt-live-suggestion__tabIcon {
   padding: 2px 4px;
-  border-radius: 6px;
+  border-radius: var(--innerRounding);
   background-color: var(--secondaryTextColor);
   color: var(--background);
   margin-left: 4px;

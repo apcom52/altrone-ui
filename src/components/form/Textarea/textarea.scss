@@ -11,7 +11,7 @@
   -moz-appearance: none;
   appearance: none;
   border: 1px solid var(--borderColor);
-  border-radius: 8px;
+  border-radius: var(--controlRounding);
   box-shadow: 0 0 0 1px var(--surfaceTrasparent);
   transition: box-shadow var(--transitionDuration) ease, opacity var(--transitionDuration) ease;
   resize: vertical;

@@ -134,6 +134,14 @@
   --displayLargeLineHeight: 64px;
   --displayLargeFontWeight: 700;
 
+  /* ---- */
+
+  --circleRounding: 50%;
+  --outerRounding: 20px;
+  --сontainersRounding: 12px;
+  --controlRounding: 8px;
+  --innerRounding: 6px;
+
   display: block;
   font-family: "Open Sans", sans-serif;
   color: var(--textColor);

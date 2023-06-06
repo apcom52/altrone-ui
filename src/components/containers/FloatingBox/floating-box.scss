@@ -3,7 +3,7 @@
 .alt-floating-box {
   display: block;
   position: absolute;
-  border-radius: 12px;
+  border-radius: var(--сontainersRounding);
   font-size: 12px;
   padding: 8px;
   box-shadow: inset 0 0 0 1px var(--surfaceTrasparent), 0 3px 25px 0 rgba(black, 0.1);
