@@ -1,5 +1,7 @@
+$focusStyles: 0 0 0 3px var(--accentFocus);
+
 @mixin useFocusStyles {
-  box-shadow: 0 0 0 3px var(--accentFocus);
+  box-shadow: $focusStyles;
   outline: 0;
 }
 
@@ -119,5 +121,35 @@ $s-phone: 320px;
 
   &:focus, &:focus-visible {
     box-shadow: 0 0 0 2px var(--danger);
+  }
+}
+
+
+$elevations: (
+  "flat": unset,
+  "convex": 0 1px 0 1px var(--shadow),
+  "raised": 0 2px 5px 0 var(--shadow),
+  "floating": 0 3px 15px 0 var(--shadow),
+  "flying": 0 5px 25px 0 var(--shadow)
+);
+@mixin useElevation($prefix, $extraShadows: null, $withFocus: false) {
+  @each $elevationName, $elevation in $elevations {
+    .#{$prefix}--elevation-#{$elevationName} {
+      @if ($extraShadows) {
+        box-shadow: #{$elevation}, #{$extraShadows};
+      } @else {
+        box-shadow: $elevation;
+      }
+
+      @if ($withFocus) {
+        &:focus, &:focus-visible {
+          @if ($extraShadows) {
+            box-shadow: #{$elevation}, #{$extraShadows}, #{$focusStyles};
+          } @else {
+            box-shadow: #{$elevation}, #{$focusStyles},
+          }
+        }
+      }
+    }
   }
 }
