@@ -193,3 +193,5 @@
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
+
+@include useElevation('alt-modal');
