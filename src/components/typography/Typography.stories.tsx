@@ -1,5 +1,5 @@
 import { Blockquote, Heading, Message, Paragraph } from './index';
-import { Role } from '../../types';
+import { Elevation, Role } from '../../types';
 import { Icon } from '../icons';
 import { BasicTemplate } from '../BasicTemplate';
 
@@ -40,7 +40,8 @@ MessageExample.args = {
     </>
   ),
   IconComponent: <Icon i="warning" />,
-  dark: false
+  dark: false,
+  elevation: Elevation.floating
 };
 MessageExample.argTypes = {
   role: {

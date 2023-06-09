@@ -147,3 +147,5 @@
 
   @include useFocus();
 }
+
+@include useElevation('alt-navigation-list-item', false, true);

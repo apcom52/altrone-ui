@@ -3,7 +3,7 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { NavigationItemProps } from './NavigationList';
 import { Icon } from '../../icons';
 import clsx from 'clsx';
-import { ContextMenuType } from '../../../types';
+import { ContextMenuType, Elevation } from '../../../types';
 import { FloatingBox } from '../../containers';
 import { ContextMenu } from '../ContextMenu';
 
@@ -16,7 +16,8 @@ const NavigationListItem = ({
   onClick,
   selected = false,
   indicator,
-  compact = false
+  compact = false,
+  elevation = Elevation.floating
 }: NavigationItemProps) => {
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -70,7 +71,9 @@ const NavigationListItem = ({
       className={clsx('alt-navigation-list-item', {
         'alt-navigation-list-item--selected': selected && submenu.length === 0,
         'alt-navigation-list-item--expanded': selected && submenu.length,
-        'alt-navigation-list-item--compact': compact
+        'alt-navigation-list-item--compact': compact,
+        [`alt-navigation-list-item--elevation-${elevation}`]:
+          selected && elevation !== Elevation.floating
       })}
       ref={buttonRef}
       onClick={onItemClick}

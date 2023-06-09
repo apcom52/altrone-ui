@@ -1,5 +1,5 @@
 import { Altrone } from '../../hocs';
-import { Align, Direction, Size, Theme } from '../../types';
+import { Align, Direction, Elevation, Size, Theme } from '../../types';
 import {
   DatePicker,
   NumberInput,
@@ -411,7 +411,8 @@ TextareaExample.args = {
   errorText: '',
   hintText: '',
   disabled: false,
-  required: false
+  required: false,
+  elevation: Elevation.convex
 };
 
 export default {
