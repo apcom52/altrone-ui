@@ -252,3 +252,5 @@
 .alt-text-input__right-island .alt-loading {
   margin-right: -8px;
 }
+
+@include useElevation('alt-text-input__control', null, true);
