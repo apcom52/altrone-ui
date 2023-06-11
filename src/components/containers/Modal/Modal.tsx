@@ -1,5 +1,4 @@
 import {
-  memo,
   MouseEventHandler,
   PropsWithChildren,
   useCallback,
@@ -23,6 +22,7 @@ export interface ModalAction {
   rightIcon?: JSX.Element;
   align?: Align;
   role?: Role;
+  disabled?: boolean;
 }
 
 interface ModalProps extends PropsWithChildren {
@@ -108,7 +108,8 @@ const Modal = ({
         leftIcon={action.leftIcon}
         rightIcon={action.rightIcon}
         role={action.role}
-        onClick={action.onClick}>
+        onClick={action.onClick}
+        disabled={action.disabled}>
         {action.label}
       </Button>
     ));
