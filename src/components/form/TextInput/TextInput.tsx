@@ -9,7 +9,7 @@ import React, {
   useRef,
   useState
 } from 'react';
-import { Elevation, Size } from '../../../types';
+import { Elevation, Size, Surface } from '../../../types';
 import './text-input.scss';
 import clsx from 'clsx';
 import { useInputIsland } from './useInputIsland';
@@ -63,6 +63,7 @@ export interface TextInputProps
   useLiveSuggestions?: boolean;
   loading?: boolean;
   elevation?: Elevation;
+  surface?: Surface;
 }
 
 const DEFAULT_HORIZONTAL_PADDING = 12;
@@ -93,6 +94,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       loading = false,
       children,
       elevation = Elevation.convex,
+      surface = Surface.paper,
       ...props
     },
     ref
@@ -256,7 +258,8 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         <div
           className={clsx('alt-text-input', className, {
             'alt-text-input--required': required,
-            'alt-text-input--disabled': disabled
+            'alt-text-input--disabled': disabled,
+            [`alt-text-input--surface-${surface}`]: surface !== Surface.paper
           })}
           data-testid="text-input">
           {Component || (

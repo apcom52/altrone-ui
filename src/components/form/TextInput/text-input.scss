@@ -16,6 +16,8 @@
   margin: 0;
   padding: 6px 12px;
   background-color: var(--background);
+  -moz-appearance: none;
+  appearance: none;
   font-size: var(--fontSize);
   color: var(--textColor);
   -webkit-appearance: none;
@@ -251,6 +253,41 @@
 
 .alt-text-input__right-island .alt-loading {
   margin-right: -8px;
+}
+
+.alt-text-input--surface-none {
+  .alt-text-input__control {
+    background-color: transparent;
+    border-color: transparent;
+  }
+}
+
+.alt-text-input--surface-transparent {
+  .alt-text-input__control {
+    background-color: var(--surfaceTrasparent);
+    border-color: var(--borderColor);
+  }
+}
+
+.alt-text-input--surface-glass {
+  .alt-text-input__control {
+    @include useGlassSurface();
+    border-color: var(--borderColor);
+  }
+}
+
+.alt-text-input--surface-solid {
+  .alt-text-input__control {
+    background-color: var(--surface);
+    border-color: var(--borderColor);
+  }
+}
+
+.alt-text-input--surface-metal {
+  .alt-text-input__control {
+    background: linear-gradient(to bottom, var(--metalTop) 0%, var(--metalBottom) 100%);
+    border-color: var(--borderColor);
+  }
 }
 
 @include useElevation('alt-text-input__control', null, true);
