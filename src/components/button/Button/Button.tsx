@@ -13,6 +13,7 @@ import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import { ContextMenu } from '../../list';
 import { Loading, Progress } from '../../indicators';
 import './button.scss';
+import { Elevation } from '../../../types/Elevation';
 
 export enum ButtonVariant {
   default = '',
@@ -39,6 +40,7 @@ export interface ButtonProps extends PropsWithChildren {
   onClick?: () => void;
   className?: string;
   type?: HTMLButtonElement['type'];
+  elevation?: Elevation;
 }
 
 const ButtonComponents = ['button', 'a'];
@@ -62,6 +64,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       indicator = undefined,
       loading = false,
       progress = undefined,
+      elevation = Elevation.convex,
       ...props
     },
     ref
@@ -88,7 +91,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           [`alt-button--size-${size}`]: size !== Size.medium,
           'alt-button--fluid': fluid,
           'alt-button--icon': isIcon,
-          'alt-button--loading': loading
+          'alt-button--loading': loading,
+          [`alt-button--elevation-${elevation}`]: elevation !== Elevation.convex
         }),
         ref: (node: HTMLButtonElement) => {
           buttonRef.current = node;

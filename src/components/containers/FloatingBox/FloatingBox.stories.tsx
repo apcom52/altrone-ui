@@ -26,7 +26,8 @@ const meta: Meta<typeof FloatingBox> = {
     popperProps: { control: 'object' },
     minWidth: { control: 'text' },
     maxHeight: { control: 'text' },
-    mobileBehaviour: { control: 'select' }
+    mobileBehaviour: { control: 'select' },
+    elevation: { control: 'select' }
   }
 };
 

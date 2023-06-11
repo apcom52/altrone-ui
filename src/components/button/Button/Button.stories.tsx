@@ -27,7 +27,8 @@ const meta: Meta<typeof Button> = {
     size: { control: 'select', options: SB_SIZE },
     variant: { control: false },
     leftIcon: { control: false },
-    rightIcon: { control: false }
+    rightIcon: { control: false },
+    elevation: { control: 'select' }
   }
 };
 

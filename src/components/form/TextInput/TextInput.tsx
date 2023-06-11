@@ -9,7 +9,7 @@ import React, {
   useRef,
   useState
 } from 'react';
-import { Size } from '../../../types';
+import { Elevation, Size } from '../../../types';
 import './text-input.scss';
 import clsx from 'clsx';
 import { useInputIsland } from './useInputIsland';
@@ -62,6 +62,7 @@ export interface TextInputProps
   suggestions?: string[];
   useLiveSuggestions?: boolean;
   loading?: boolean;
+  elevation?: Elevation;
 }
 
 const DEFAULT_HORIZONTAL_PADDING = 12;
@@ -91,6 +92,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       useLiveSuggestions = false,
       loading = false,
       children,
+      elevation = Elevation.convex,
       ...props
     },
     ref
@@ -259,7 +261,9 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           data-testid="text-input">
           {Component || (
             <input
-              className={clsx('alt-text-input__control', classNames.control)}
+              className={clsx('alt-text-input__control', classNames.control, {
+                [`alt-text-input__control--elevation-${elevation}`]: elevation !== Elevation.convex
+              })}
               style={{
                 ...style,
                 paddingLeft: leftPadding,

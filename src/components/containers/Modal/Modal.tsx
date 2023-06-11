@@ -8,7 +8,7 @@ import {
   useRef,
   useState
 } from 'react';
-import { Align, Role, Size, Surface } from '../../../types';
+import { Align, Elevation, Role, Size, Surface } from '../../../types';
 import './modal.scss';
 import { Icon } from '../../icons';
 import { Button } from '../../button';
@@ -37,6 +37,7 @@ interface ModalProps extends PropsWithChildren {
   reduceMotion?: boolean;
   className?: string;
   surface?: Surface;
+  elevation?: Elevation;
 }
 
 const CLS_OPENED = 'alt-modal--opened';
@@ -55,7 +56,8 @@ const Modal = ({
   closeOnOverlay = true,
   reduceMotion = false,
   className,
-  surface = Surface.glass
+  surface = Surface.glass,
+  elevation = Elevation.floating
 }: ModalProps) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize();
   const t = useLocalization();
@@ -151,6 +153,7 @@ const Modal = ({
           'alt-modal--size-large': size === Size.large,
           'alt-modal--fluid': fluid,
           [`alt-modal--surface-${surface}`]: surface !== Surface.glass,
+          [`alt-modal--elevation-${elevation}`]: elevation !== Elevation.floating,
           'alt-modal--opened': opened
         })}
         ref={modalRef}
