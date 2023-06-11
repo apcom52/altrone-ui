@@ -179,6 +179,6 @@ export const PhotoViewer = ({
         </div>
       </div>
     </div>,
-    document.body.querySelector('altrone') || document.body
+    document.body.querySelector('.altrone') || document.body
   );
 };
