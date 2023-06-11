@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
 import { Loading } from '../../indicators';
 import { Size } from '../../../types';
 import './photo-viewer.scss';
@@ -83,7 +84,7 @@ export const PhotoViewer = ({
     setZoom(1);
   }, [currentIndex]);
 
-  return (
+  return ReactDOM.createPortal(
     <div className={clsx('alt-photo-viewer', className)}>
       <div className="alt-photo-viewer__container" ref={containerRef}>
         {loading && (
@@ -177,6 +178,7 @@ export const PhotoViewer = ({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body.querySelector('altrone') || document.body
   );
 };
