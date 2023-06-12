@@ -1,5 +1,5 @@
 import { createElement, memo, useEffect, useMemo, useRef, useState } from 'react';
-import { Direction, Option, OptionParent, Role, Size } from '../../../types';
+import { Direction, Elevation, Option, OptionParent, Role, Size, Surface } from '../../../types';
 import { ButtonContainer, FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import './select.scss';
 import { Icon } from '../../icons';
@@ -24,6 +24,8 @@ interface SelectProps<T = unknown>
   searchFunc?: (searchTerm: string, item: Option<T>) => boolean;
   ItemComponent?: React.FC<SelectOptionProps<T>>;
   size?: Size;
+  elevation?: Elevation;
+  surface?: Surface;
   classNames?: {
     select?: string;
     currentValue?: string;
@@ -49,7 +51,9 @@ const Select = <T extends unknown>({
   classNames = {},
   placeholder,
   hintText,
-  errorText
+  errorText,
+  elevation = Elevation.convex,
+  surface = Surface.paper
 }: SelectProps<T>) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize();
   const t = useLocalization();
@@ -158,7 +162,9 @@ const Select = <T extends unknown>({
           data-testid="alt-test-select"
           className={clsx('alt-select', classNames.select, {
             'alt-select--active': isSelectVisible,
-            'alt-select--disabled': disabled
+            'alt-select--disabled': disabled,
+            [`alt-select--elevation-${elevation}`]: elevation !== Elevation.convex,
+            [`alt-select--surface-${surface}`]: surface !== Surface.paper
           })}
           type="button">
           <div

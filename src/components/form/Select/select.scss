@@ -191,3 +191,34 @@
     @include useInvalid();
   }
 }
+
+.alt-select--surface-none {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.alt-select--surface-transparent {
+  background-color: var(--surfaceTrasparent);
+  border-color: var(--borderColor);
+}
+
+.alt-select--surface-glass {
+  @include useGlassSurface();
+  border-color: var(--borderColor);
+}
+
+.alt-select--surface-solid {
+  background-color: var(--surface);
+  border-color: var(--borderColor);
+}
+
+.alt-select--surface-metal {
+  background: linear-gradient(to bottom, var(--metalTop) 0%, var(--metalBottom) 100%);
+  border-color: var(--borderColor);
+
+  .alt-select-placeholder {
+    color: var(--textColor);
+  }
+}
+
+@include useElevation('alt-select', false, true);
