@@ -4,9 +4,13 @@ import { TextInputProps } from '../TextInput';
 import '../TextInput/text-input.scss';
 import './textarea.scss';
 import { BasicInput, BasicInputProps } from '../BasicInput';
+import { Elevation, Surface } from '../../../types';
 
 interface TextareaProps
-  extends Pick<TextInputProps, 'value' | 'onChange' | 'className' | 'required'>,
+  extends Pick<
+      TextInputProps,
+      'value' | 'onChange' | 'className' | 'required' | 'elevation' | 'surface'
+    >,
     BasicInputProps {
   placeholder?: string;
 }
@@ -20,6 +24,8 @@ const Textarea = ({
   errorText,
   hintText,
   size,
+  elevation = Elevation.convex,
+  surface = Surface.paper,
   ...props
 }: TextareaProps) => {
   return (
@@ -27,13 +33,16 @@ const Textarea = ({
       <div
         className={clsx('alt-text-input', className, {
           'alt-text-input--required': required,
-          'alt-text-input--disabled': disabled
+          'alt-text-input--disabled': disabled,
+          [`alt-text-input--surface-${surface}`]: surface !== Surface.paper
         })}
         data-testid="alt-test-textarea">
         <textarea
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="alt-textarea"
+          className={clsx('alt-textarea', {
+            [`alt-textarea--elevation-${elevation}`]: elevation !== Elevation.convex
+          })}
           disabled={disabled}
           required={required}
           {...props}

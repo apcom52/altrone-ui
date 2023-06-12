@@ -16,4 +16,5 @@ export type { Point } from './Point';
 export type { Indicator } from './Indicator';
 export { Align } from './Align';
 export { Surface } from './Surface';
+export { Elevation } from './Elevation';
 export { Rect } from './Rect';

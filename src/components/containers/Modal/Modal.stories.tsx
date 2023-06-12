@@ -24,7 +24,8 @@ const meta: Meta<typeof Modal> = {
   argTypes: {
     onClose: { control: false },
     size: { control: 'select' },
-    surface: { control: 'select' }
+    surface: { control: 'select' },
+    elevation: { control: 'select' }
   }
 };
 

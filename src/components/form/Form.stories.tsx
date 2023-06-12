@@ -1,5 +1,5 @@
 import { Altrone } from '../../hocs';
-import { Align, Direction, Size, Theme } from '../../types';
+import { Align, Direction, Elevation, Size, Surface, Theme } from '../../types';
 import {
   DatePicker,
   NumberInput,
@@ -71,7 +71,8 @@ NumberInputExample.args = {
   size: Size.medium,
   dark: false,
   showControls: true,
-  disabled: false
+  disabled: false,
+  surface: Surface.paper
 };
 
 // export const CheckboxExample = CheckboxStory.bind({});
@@ -411,7 +412,8 @@ TextareaExample.args = {
   errorText: '',
   hintText: '',
   disabled: false,
-  required: false
+  required: false,
+  elevation: Elevation.convex
 };
 
 export default {

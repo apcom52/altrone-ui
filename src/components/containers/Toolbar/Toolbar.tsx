@@ -2,7 +2,7 @@ import { createContext, memo, ReactNode, useContext, useRef, useState } from 're
 import './toolbar.scss';
 import ToolbarMenu, { ToolbarMenuProps } from './ToolbarMenu';
 import clsx from 'clsx';
-import { Point, Surface } from '../../../types';
+import { Elevation, Point, Surface } from '../../../types';
 import { useDrag } from '../../../hooks/useDrag/useDrag';
 
 const ToolbarContext = createContext<{
@@ -30,6 +30,7 @@ interface ToolbarProps {
   width?: number | string;
   className?: string;
   surface?: Surface;
+  elevation?: Elevation;
 }
 
 const Toolbar = ({
@@ -40,7 +41,8 @@ const Toolbar = ({
   offset = defaultOffset,
   width,
   className,
-  surface = Surface.glass
+  surface = Surface.glass,
+  elevation = Elevation.floating
 }: ToolbarProps) => {
   const [toolbarElement, setToolbarElement] = useState<HTMLDivElement | null>(null);
 
@@ -62,7 +64,8 @@ const Toolbar = ({
         className={clsx('alt-toolbar', className, {
           'alt-toolbar--floated': floated,
           'alt-toolbar--compact': variant === ToolbarVariant.compact,
-          [`alt-toolbar--surface-${surface}`]: surface
+          [`alt-toolbar--surface-${surface}`]: surface,
+          [`alt-toolbar--elevation-${elevation}`]: elevation !== Elevation.floating
         })}
         ref={(node) => {
           toolbarRef.current = node;

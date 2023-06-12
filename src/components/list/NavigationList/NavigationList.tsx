@@ -4,7 +4,7 @@ import NavigationListItem from './NavigationListItem';
 import NavigationListSubItem from './NavigationListSubItem';
 import NavigationListSubSubItem from './NavigationListSubSubItem';
 import clsx from 'clsx';
-import { ContextMenuType, Indicator, Role, Size, Surface } from '../../../types';
+import { ContextMenuType, Elevation, Indicator, Role, Size, Surface } from '../../../types';
 import { Button, ButtonVariant } from '../../button';
 import { Icon } from '../../icons';
 
@@ -37,6 +37,7 @@ interface BaseNavigationItemInterface {
   selected: boolean;
   selectedValue: unknown;
   onClick: (value: unknown) => void;
+  elevation?: Elevation;
   /**
    * @deprecated
    */
@@ -69,6 +70,7 @@ interface NavigationListProps {
   surface?: Surface;
   action?: NavigationListAction;
   compact?: 'manual' | 'static';
+  elevation?: Elevation;
   NavigationItemComponent?: JSX.Element;
   NavigationSubItemComponent?: JSX.Element;
   NavigationSubSubItemComponent?: JSX.Element;
@@ -82,6 +84,7 @@ const NavigationList = ({
   className,
   action,
   surface = Surface.glass,
+  elevation = Elevation.raised,
   compact,
   NavigationItemComponent,
   NavigationSubItemComponent,
@@ -201,6 +204,7 @@ const NavigationList = ({
             onClick: () => onChange(item.value),
             compact: compact === 'static' || compacted,
             selectedValue: selected,
+            elevation,
             ...item
           };
 

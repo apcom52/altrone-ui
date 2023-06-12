@@ -38,3 +38,5 @@
     @include useInvalid();
   }
 }
+
+@include useElevation('alt-textarea', false, true);

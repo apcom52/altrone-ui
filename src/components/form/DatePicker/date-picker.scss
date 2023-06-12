@@ -19,7 +19,6 @@
 
   @include useFocus();
   @include useDisabledUserSelect();
-  @include useSoftShadow();
   @include useFontSize(label, Large);
 }
 

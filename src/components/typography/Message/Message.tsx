@@ -1,13 +1,14 @@
 import { memo } from 'react';
 import './message.scss';
 import clsx from 'clsx';
-import { Role } from '../../../types';
+import { Elevation, Role } from '../../../types';
 
 interface MessageProps extends Omit<React.HTMLProps<HTMLDivElement>, 'title' | 'style'> {
   title?: string;
   role?: Role;
   IconComponent?: JSX.Element;
   className?: string;
+  elevation?: Elevation;
 }
 
 const Message = ({
@@ -15,6 +16,7 @@ const Message = ({
   children,
   role = Role.default,
   IconComponent,
+  elevation = Elevation.floating,
   className
 }: MessageProps) => {
   return (
@@ -23,7 +25,8 @@ const Message = ({
         'alt-message--role-primary': role === Role.primary,
         'alt-message--role-success': role === Role.success,
         'alt-message--role-danger': role === Role.danger,
-        'alt-message--only-title': !children
+        'alt-message--only-title': !children,
+        [`alt-message--elevation-${elevation}`]: elevation !== Elevation.floating
       })}
       data-testid="alt-test-message">
       <div className="alt-message__icon">{IconComponent}</div>
