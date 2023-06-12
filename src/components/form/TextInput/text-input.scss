@@ -38,8 +38,6 @@
   &::placeholder {
     color: var(--placeholderText);
   }
-
-  @include useSoftShadow();
 }
 
 .alt-text-input__left-island {

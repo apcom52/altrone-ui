@@ -2,6 +2,8 @@ import { InputIslandType, TextInput, TextInputProps } from '../index';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { NumberInputCounter } from './NumberInputCounter';
 import { NumberFormatValues, NumericFormat, OnValueChange } from 'react-number-format';
+import { Elevation, Surface } from '../../../types';
+import clsx from 'clsx';
 
 interface NumberInputProps
   extends Omit<TextInputProps, 'value' | 'onChange' | 'step' | 'min' | 'max' | 'ref'> {
@@ -30,6 +32,8 @@ const NumberInput = ({
   min,
   max,
   disabled,
+  elevation = Elevation.convex,
+  surface = Surface.paper,
   ...props
 }: NumberInputProps) => {
   const [formattedValue, setFormattedValue] = useState<string>(() => {
@@ -100,7 +104,10 @@ const NumberInput = ({
           value={value}
           onValueChange={onValueChange}
           thousandSeparator=" "
-          className="alt-text-input__control"
+          className={clsx('alt-text-input__control', {
+            [`alt-text-input__control--elevation-${elevation}`]: elevation !== Elevation.convex,
+            [`alt-text-input--surface-${surface}`]: surface !== Surface.paper
+          })}
           allowLeadingZeros={allowLeadingZeros}
           allowNegative={allowNegative}
           decimalSeparator={decimalSeparator}
