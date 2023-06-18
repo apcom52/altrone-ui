@@ -1,18 +1,40 @@
 import { InputIslandType, TextInput, TextInputProps } from '../TextInput';
 import { useLocalization } from '../../../hooks';
-import React from 'react';
+import React, { useState } from 'react';
 import { Icon } from '../../icons';
 import './search.scss';
 import clsx from 'clsx';
+import { useDebouncedValue, useDidUpdate } from 'rooks';
+
+interface SearchProps extends Omit<TextInputProps, 'suggestions'> {
+  suggestions?: (searchValue: string) => Promise<string[]>;
+}
 
 export const Search = ({
   value,
   onChange,
   placeholder = '',
   className,
+  suggestions,
   ...props
-}: TextInputProps) => {
+}: SearchProps) => {
   const t = useLocalization();
+
+  const [debouncedSearchValue] = useDebouncedValue(value, 500);
+  const [suggestionsList, setSuggestionsList] = useState<string[]>([]);
+
+  useDidUpdate(() => {
+    const getSuggestions = async () => {
+      if (debouncedSearchValue && debouncedSearchValue.trim().length > 0 && suggestions) {
+        const results = await suggestions(debouncedSearchValue);
+        setSuggestionsList(results);
+      }
+    };
+
+    if (suggestions) {
+      getSuggestions();
+    }
+  }, [debouncedSearchValue, suggestions]);
 
   return (
     <TextInput
@@ -21,6 +43,7 @@ export const Search = ({
       onChange={onChange}
       className={clsx('alt-search', className)}
       {...props}
+      suggestions={suggestionsList}
       rightIsland={
         value
           ? {
