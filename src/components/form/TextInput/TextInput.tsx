@@ -265,7 +265,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           {Component || (
             <input
               className={clsx('alt-text-input__control', classNames.control, {
-                [`alt-text-input__control--elevation-${elevation}`]: elevation !== Elevation.convex
+                [`alt-text-input__control--elevation-${elevation}`]: elevation
               })}
               style={{
                 ...style,

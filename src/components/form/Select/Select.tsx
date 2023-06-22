@@ -163,7 +163,7 @@ const Select = <T extends unknown>({
           className={clsx('alt-select', classNames.select, {
             'alt-select--active': isSelectVisible,
             'alt-select--disabled': disabled,
-            [`alt-select--elevation-${elevation}`]: elevation !== Elevation.convex,
+            [`alt-select--elevation-${elevation}`]: elevation,
             [`alt-select--surface-${surface}`]: surface !== Surface.paper
           })}
           type="button">

@@ -14,7 +14,7 @@ const meta: Meta<typeof FilePicker> = {
     variant: FilePickerVariant.default,
     surface: Surface.glass,
     multiple: false,
-    maxFileSize: 1024
+    uploadUrl: 'https://api.escuelajs.co/api/v1/files/upload'
   },
   argTypes: {
     value: { control: false },

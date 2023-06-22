@@ -11,7 +11,7 @@ import {
   TableFileIcon,
   VideoFileIcon
 } from './FilePickerIcons';
-import { getFileSize } from './FilePicker.utils';
+import { defaultFileDeleteFunc, defaultFileUploadFunc, getFileSize } from './FilePicker.utils';
 import './file-picker.scss';
 import clsx from 'clsx';
 import { FloatingBox } from '../../containers';
@@ -47,6 +47,10 @@ interface FilePickerProps {
   className?: string;
   name?: string;
   placeholder?: string;
+  useAutoUpload?: boolean;
+  uploadUrl?: string;
+  autoUploadFunc?: (file: File, defaultUrl?: string) => Iterator<number>;
+  deleteFileFunc?: (filename: string, defaultUrl?: string) => Promise<boolean>;
 }
 
 const FILE_EXTENTIONS: Record<
@@ -119,7 +123,11 @@ export const FilePicker = ({
   name,
   multiple = false,
   surface,
-  placeholder
+  placeholder,
+  useAutoUpload = false,
+  uploadUrl = '',
+  autoUploadFunc = defaultFileUploadFunc,
+  deleteFileFunc = defaultFileDeleteFunc
 }: FilePickerProps) => {
   const [isFileZoneVisible, setIsFileZoneVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

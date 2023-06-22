@@ -105,7 +105,7 @@ const NumberInput = ({
           onValueChange={onValueChange}
           thousandSeparator=" "
           className={clsx('alt-text-input__control', {
-            [`alt-text-input__control--elevation-${elevation}`]: elevation !== Elevation.convex,
+            [`alt-text-input__control--elevation-${elevation}`]: elevation,
             [`alt-text-input--surface-${surface}`]: surface !== Surface.paper
           })}
           allowLeadingZeros={allowLeadingZeros}
