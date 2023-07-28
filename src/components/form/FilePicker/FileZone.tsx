@@ -2,16 +2,29 @@ import { Icon } from '../../icons';
 import './file-zone.scss';
 import { FileTile } from './FileTile';
 import { FilePickerFileIcon } from './FilePicker';
+import { FileDeleteFuncArgs } from './FilePicker.utils';
 
 interface FileZoneProps {
   icon: FilePickerFileIcon;
   files: File[];
   onClick: () => void;
+  uploadUrl?: string;
   onChange: (files: File[]) => void;
+  onDelete?: (props: FileDeleteFuncArgs) => void;
 }
 
-export const FileZone = ({ files = [], icon, onClick, onChange }: FileZoneProps) => {
+export const FileZone = ({
+  files = [],
+  icon,
+  uploadUrl,
+  onClick,
+  onChange,
+  onDelete
+}: FileZoneProps) => {
   const onDeleteClick = (fileIndex: number) => {
+    if (uploadUrl) {
+      onDelete?.({ filename: files[fileIndex].name, url: uploadUrl });
+    }
     onChange(files.filter((_, index) => index !== fileIndex));
   };
 
