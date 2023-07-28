@@ -11,7 +11,13 @@ import {
   TableFileIcon,
   VideoFileIcon
 } from './FilePickerIcons';
-import { defaultFileDeleteFunc, defaultFileUploadFunc, getFileSize } from './FilePicker.utils';
+import {
+  defaultFileDeleteFunc,
+  defaultFileUploadFunc,
+  FileDeleteFuncArgs,
+  FileUploadFuncArgs,
+  getFileSize
+} from './FilePicker.utils';
 import './file-picker.scss';
 import clsx from 'clsx';
 import { FloatingBox } from '../../containers';
@@ -49,8 +55,8 @@ interface FilePickerProps {
   placeholder?: string;
   useAutoUpload?: boolean;
   uploadUrl?: string;
-  autoUploadFunc?: (file: File, defaultUrl?: string) => Iterator<number>;
-  deleteFileFunc?: (filename: string, defaultUrl?: string) => Promise<boolean>;
+  autoUploadFunc?: (props: FileUploadFuncArgs) => void;
+  deleteFileFunc?: (props: FileDeleteFuncArgs) => void;
 }
 
 const FILE_EXTENTIONS: Record<
@@ -134,6 +140,7 @@ export const FilePicker = ({
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const uploadedFilesRef = useRef<File[]>([]);
 
   const icon = FILE_EXTENTIONS[String(extensions)]?.icon || DefaultIcon;
   const label = placeholder || FILE_EXTENTIONS[String(extensions)]?.label || 'Выберите файл';
@@ -151,6 +158,20 @@ export const FilePicker = ({
         onChange(Array.from(e.target.files || []));
       } else {
         onChange(e.target.files?.[0] || undefined);
+      }
+
+      if (useAutoUpload) {
+        for (const file of e.target.files || []) {
+          if (!uploadedFilesRef.current.find((item) => item === file)) {
+            autoUploadFunc({
+              file,
+              url: uploadUrl,
+              onError: (e) => console.log('> onError', file.name, e),
+              onProgress: (loaded) => console.log('> onProgress', file.name, loaded),
+              onDone: (e) => console.log('> onDone', file.name)
+            });
+          }
+        }
       }
     },
     [multiple, onChange]
@@ -198,6 +219,7 @@ export const FilePicker = ({
           icon={icon}
           onClick={onFileUploadClick}
           onChange={onChange}
+          onDelete={deleteFileFunc}
         />
       )}
       <input

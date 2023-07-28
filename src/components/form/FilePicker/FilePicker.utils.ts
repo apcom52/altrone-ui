@@ -12,7 +12,7 @@ export const getFileSize = (size: number) => {
   }
 };
 
-interface FileUploadFuncArgs {
+export interface FileUploadFuncArgs {
   file: File;
   url?: string;
   onDone?: (e: Event) => void;
@@ -50,11 +50,11 @@ export const defaultFileUploadFunc = ({
   request.send(formData);
 };
 
-interface FileDeleteFuncArgs {
+export interface FileDeleteFuncArgs {
   filename: string;
   url?: string;
-  onDone?: (e: Event) => void;
-  onError?: (e: Event) => void;
+  onDone?: (response: any) => void;
+  onError?: (e: Error) => void;
 }
 
 export const defaultFileDeleteFunc = async ({
@@ -64,6 +64,20 @@ export const defaultFileDeleteFunc = async ({
   onDone
 }: FileDeleteFuncArgs) => {
   if (!url) return;
+
+  try {
+    const response = await fetch({
+      method: 'DELETE',
+      url,
+      body: {
+        file: filename
+      }
+    });
+
+    onDone?.(response.json());
+  } catch (err) {
+    onError?.(err as Error);
+  }
 
   try {
   } catch (err) {}
