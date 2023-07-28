@@ -1,6 +1,6 @@
 {
   "name": "altrone-ui",
-  "version": "2.0.0-dev.2323",
+  "version": "2.0.0-beta.2",
   "description": "React UI Kit",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -120,6 +120,5 @@
     "trailingComma": "none",
     "jsxBracketSameLine": true
   },
-  "readme": "ERROR: No README data found!",
-  "_id": "altrone-ui@2.0.0-dev.2323"
+  "readme": "ERROR: No README data found!"
 }
