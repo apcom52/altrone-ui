@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Loading } from '../../indicators';
-import { Size } from '../../../types';
 import './photo-viewer.scss';
 import { Icon } from '../../icons';
 import clsx from 'clsx';
 import { PhotoViewerProps } from './PhotoViewer.types';
 import { useDrag } from '../../../hooks/useDrag/useDrag';
 import { useWindowSize } from '../../../hooks';
+import { PhotoViewerImage } from './PhotoViewerImage';
 
 const PHOTO_VIEWER_BOUNDARIES = 16;
 
@@ -17,14 +16,12 @@ export const PhotoViewer = ({
   className,
   startsFrom = 0
 }: PhotoViewerProps) => {
-  const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(startsFrom);
   const [zoom, setZoom] = useState(1);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
-  const pictureRef = useRef<HTMLImageElement>(null);
 
   const {
     offset: toolbarOffset,
@@ -37,17 +34,6 @@ export const PhotoViewer = ({
     boundariesRect: PHOTO_VIEWER_BOUNDARIES
   });
 
-  const {
-    offset: photoOffset,
-    onMouseDown: onPhotoMouseDown,
-    wasDragged: wasPhotoDragged,
-    setOffsets: setPhotoOffsets
-  } = useDrag({
-    elementRef: pictureRef,
-    containerRef: containerRef,
-    boundariesRect: undefined
-  });
-
   const { ltePhoneL, gtPhoneL } = useWindowSize();
 
   const onZoomIn = useCallback(() => {
@@ -58,59 +44,39 @@ export const PhotoViewer = ({
     setZoom((zoom) => (zoom > 1 ? zoom - 0.5 : 1));
   }, []);
 
-  const onImageLoad = useCallback(() => {
-    setLoading(false);
-
-    if (pictureRef.current && containerRef.current) {
-      const pictureRect = pictureRef.current.getBoundingClientRect();
-      const containerRect = containerRef.current.getBoundingClientRect();
-
-      setPhotoOffsets(
-        containerRect.width / 2 - pictureRect.width / 2,
-        containerRect.height / 2 - pictureRect.height / 2
-      );
-    }
-  }, []);
-
   useEffect(() => {
     if (containerRef.current && toolbarRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
       const toolbarRect = toolbarRef.current.getBoundingClientRect();
       setToolbarOffsets(rect.width / 2 - toolbarRect.width / 2, rect.height * 0.7);
     }
-
-    setTimeout(() => setLoading(false), 500);
   }, []);
 
   useEffect(() => {
-    setLoading(true);
     setZoom(1);
   }, [currentIndex]);
 
   return ReactDOM.createPortal(
     <div className={clsx('alt-photo-viewer', className)}>
       <div className="alt-photo-viewer__container" ref={containerRef}>
-        {loading && (
-          <div className="alt-photo-viewer__loading">
-            <Loading size={Size.large} />
-          </div>
-        )}
-        <img
-          className="alt-photo-viewer__image"
+        <PhotoViewerImage
+          containerRef={containerRef}
+          scale={zoom}
           src={images[currentIndex]?.src}
-          alt=""
-          onLoad={onImageLoad}
-          ref={pictureRef}
-          onMouseDown={onPhotoMouseDown}
-          draggable={false}
-          style={{
-            transform: `scale(${zoom})`,
-            left: photoOffset.x,
-            top: photoOffset.y
-          }}
         />
 
-        {images.length > 1 || images[currentIndex].caption || images[currentIndex].description ? (
+        {ltePhoneL && !expanded && images.length > 1 && (
+          <div className="alt-photo-viewer-info">
+            <div className="alt-photo-viewer-info__counter">
+              <strong>{currentIndex + 1}</strong>/ {images.length}
+            </div>
+          </div>
+        )}
+
+        {ltePhoneL ||
+        images.length > 1 ||
+        images[currentIndex].caption ||
+        images[currentIndex].description ? (
           gtPhoneL || (ltePhoneL && expanded) ? (
             <div className="alt-photo-viewer-info">
               {expanded && (
