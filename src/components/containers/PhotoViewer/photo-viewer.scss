@@ -62,11 +62,12 @@
 
   @include less($l-phone) {
     justify-content: center;
-    left: 4px !important;
-    bottom: 8px !important;
-    top: calc(100vh - 8px - 42px) !important;
+    left: 4px;
+    top: auto;
+    bottom: 8px;
     width: calc(100vw - 8px);
     max-height: 42px;
+    transform: none;
   }
 }
 
