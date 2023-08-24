@@ -54,16 +54,20 @@
   box-shadow: 0 3px 15px 0 var(--shadow);
   cursor: grab;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+  left: 50%;
+  top: 80%;
+  transform: translate(-50%);
 
   @include useGlassSurface();
 
   @include less($l-phone) {
     justify-content: center;
-    left: 4px !important;
-    bottom: 8px !important;
-    top: calc(100vh - 8px - 42px) !important;
+    left: 4px;
+    top: auto;
+    bottom: 8px;
     width: calc(100vw - 8px);
     max-height: 42px;
+    transform: none;
   }
 }
 

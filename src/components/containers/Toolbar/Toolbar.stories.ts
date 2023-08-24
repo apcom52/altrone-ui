@@ -7,7 +7,12 @@ const meta: Meta<typeof Toolbar> = {
   component: Toolbar,
   title: 'Containers/Toolbar',
   tags: ['autodocs'],
-  args: {},
+  args: {
+    defaultPosition: {
+      x: 80,
+      y: 100
+    }
+  },
   argTypes: {}
 };
 

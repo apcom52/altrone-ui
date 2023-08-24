@@ -4,11 +4,8 @@ import './photo-viewer.scss';
 import { Icon } from '../../icons';
 import clsx from 'clsx';
 import { PhotoViewerProps } from './PhotoViewer.types';
-import { useDrag } from '../../../hooks/useDrag/useDrag';
 import { useWindowSize } from '../../../hooks';
 import { PhotoViewerImage } from './PhotoViewerImage';
-
-const PHOTO_VIEWER_BOUNDARIES = 16;
 
 export const PhotoViewer = ({
   images = [],
@@ -23,17 +20,6 @@ export const PhotoViewer = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
 
-  const {
-    offset: toolbarOffset,
-    onMouseDown: onToolbarMouseDown,
-    wasDragged: wasToolbarDragged,
-    setOffsets: setToolbarOffsets
-  } = useDrag({
-    elementRef: toolbarRef,
-    containerRef: containerRef,
-    boundariesRect: PHOTO_VIEWER_BOUNDARIES
-  });
-
   const { ltePhoneL, gtPhoneL } = useWindowSize();
 
   const onZoomIn = useCallback(() => {
@@ -42,14 +28,6 @@ export const PhotoViewer = ({
 
   const onZoomOut = useCallback(() => {
     setZoom((zoom) => (zoom > 1 ? zoom - 0.5 : 1));
-  }, []);
-
-  useEffect(() => {
-    if (containerRef.current && toolbarRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      const toolbarRect = toolbarRef.current.getBoundingClientRect();
-      setToolbarOffsets(rect.width / 2 - toolbarRect.width / 2, rect.height * 0.7);
-    }
   }, []);
 
   useEffect(() => {
@@ -109,14 +87,7 @@ export const PhotoViewer = ({
           ) : null
         ) : null}
 
-        <div
-          className={clsx('alt-photo-viewer-toolbar')}
-          ref={toolbarRef}
-          onMouseDown={onToolbarMouseDown}
-          style={{
-            top: toolbarOffset.y,
-            left: toolbarOffset.x
-          }}>
+        <div className={clsx('alt-photo-viewer-toolbar')} ref={toolbarRef}>
           {ltePhoneL && (
             <button
               className="alt-photo-viewer-toolbar__action alt-photo-viewer-toolbar__action--left"

@@ -130,6 +130,7 @@
   }
 
   &.alt-toolbar--floated {
+    position: fixed;
     width: fit-content;
   }
 }

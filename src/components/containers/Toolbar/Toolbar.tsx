@@ -4,6 +4,7 @@ import ToolbarMenu, { ToolbarMenuProps } from './ToolbarMenu';
 import clsx from 'clsx';
 import { Elevation, Point, Surface } from '../../../types';
 import { useDrag } from '../../../hooks/useDrag/useDrag';
+import Draggable from 'react-draggable';
 
 const ToolbarContext = createContext<{
   element: HTMLDivElement | null;
@@ -31,6 +32,7 @@ interface ToolbarProps {
   className?: string;
   surface?: Surface;
   elevation?: Elevation;
+  defaultPosition?: Point;
 }
 
 const Toolbar = ({
@@ -42,17 +44,12 @@ const Toolbar = ({
   width,
   className,
   surface = Surface.glass,
-  elevation = Elevation.floating
+  elevation = Elevation.floating,
+  defaultPosition = { x: 0, y: 0 }
 }: ToolbarProps) => {
   const [toolbarElement, setToolbarElement] = useState<HTMLDivElement | null>(null);
 
   const toolbarRef = useRef<HTMLDivElement | null>(null);
-  const bodyRef = useRef(document.body);
-
-  const { onMouseDown, offset: dragOffset } = useDrag({
-    elementRef: toolbarRef,
-    containerRef: bodyRef
-  });
 
   return (
     <ToolbarContext.Provider
@@ -71,21 +68,16 @@ const Toolbar = ({
           toolbarRef.current = node;
           setToolbarElement(node);
         }}
-        onMouseDown={onMouseDown}
         style={
-          floated
+          variant === ToolbarVariant.compact
             ? {
-                top: offset.y + 'px',
-                left: offset.x + 'px',
-                width
+                top: defaultPosition?.y,
+                left: defaultPosition?.x
               }
-            : {
-                top: dragOffset.x,
-                left: dragOffset.y
-              }
+            : undefined
         }
         data-testid="alt-test-toolbar">
-        {menu.length > 0 && <ToolbarMenu menu={menu} />}
+        {variant !== ToolbarVariant.compact && menu.length > 0 && <ToolbarMenu menu={menu} />}
         <div className="alt-toolbar__main">{children}</div>
       </div>
     </ToolbarContext.Provider>
