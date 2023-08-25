@@ -1,6 +1,6 @@
 import './file-tile.scss';
 import { getFileSize } from './FilePicker.utils';
-import { FilePickerFileIcon } from './FilePicker';
+import { FilePickerFileIcon } from './FilePicker.types';
 import { Icon } from '../../icons';
 import { Button, ButtonVariant } from '../../button';
 

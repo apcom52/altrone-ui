@@ -1,7 +1,7 @@
 import { Icon } from '../../icons';
 import './file-zone.scss';
 import { FileTile } from './FileTile';
-import { FilePickerFileIcon } from './FilePicker';
+import { FilePickerFileIcon } from './FilePicker.types';
 import { FileDeleteFuncArgs } from './FilePicker.utils';
 
 interface FileZoneProps {

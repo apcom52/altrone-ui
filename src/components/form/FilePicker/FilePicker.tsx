@@ -1,139 +1,24 @@
 import { ChangeEventHandler, useCallback, useRef, useState } from 'react';
-import { Surface } from '../../../types';
-import {
-  ArchiveFileIcon,
-  AudioFileIcon,
-  CodeFileIcon,
-  DefaultIcon,
-  DocumentFileIcon,
-  ImageFileIcon,
-  PresentationFileIcon,
-  TableFileIcon,
-  VideoFileIcon
-} from './FilePickerIcons';
-import {
-  defaultFileDeleteFunc,
-  defaultFileUploadFunc,
-  FileDeleteFuncArgs,
-  FileUploadFuncArgs,
-  getFileSize
-} from './FilePicker.utils';
+import { DefaultIcon } from './FilePickerIcons';
+import { getFileSize } from './FilePicker.utils';
 import './file-picker.scss';
 import clsx from 'clsx';
 import { FloatingBox } from '../../containers';
 import { FileZone } from './FileZone';
 import { Loading } from '../../indicators';
-
-export enum FilePickerVariant {
-  default = 'default',
-  block = 'block'
-}
-
-export type FilePickerFileIcon = (count: number) => JSX.Element;
-
-type FilePickerType = File | File[] | undefined;
-type FileExtensions =
-  | 'text'
-  | 'image'
-  | 'audio'
-  | 'video'
-  | 'table'
-  | 'presentation'
-  | 'code'
-  | 'archive';
-
-interface FilePickerProps {
-  value: FilePickerType;
-  onChange: (value: FilePickerType) => void;
-  variant?: FilePickerVariant;
-  surface?: Surface;
-  multiple?: boolean;
-  maxFileSize?: number;
-  extensions?: FileExtensions | string;
-  className?: string;
-  name?: string;
-  placeholder?: string;
-  useAutoUpload?: boolean;
-  uploadUrl?: string;
-  autoUploadFunc?: (props: FileUploadFuncArgs) => void;
-  deleteFileFunc?: (props: FileDeleteFuncArgs) => void;
-}
-
-const FILE_EXTENTIONS: Record<
-  FileExtensions | string,
-  { icon: FilePickerFileIcon; accept: string[]; label: string }
-> = {
-  text: {
-    icon: DocumentFileIcon,
-    accept: ['.doc', '.docx', '.pdf', '.txt'],
-    label: 'Выберите документ'
-  },
-  image: {
-    icon: ImageFileIcon,
-    accept: ['.jpg', '.jpeg', '.gif', '.png', '.svg', '.tiff', '.tif'],
-    label: 'Выберите изображение'
-  },
-  audio: {
-    icon: AudioFileIcon,
-    accept: ['.mp3', '.wav', '.aac', '.m4a'],
-    label: 'Выберите музыку'
-  },
-  video: {
-    icon: VideoFileIcon,
-    accept: ['.mp4', '.avi', '.mov'],
-    label: 'Выберите видео'
-  },
-  table: {
-    icon: TableFileIcon,
-    accept: ['.xls', '.xlsx', '.ods'],
-    label: 'Выберите таблицу'
-  },
-  presentation: {
-    icon: PresentationFileIcon,
-    accept: ['.ppt', '.pptx', '.odp', '.key'],
-    label: 'Выберите презентацию'
-  },
-  code: {
-    icon: CodeFileIcon,
-    accept: [
-      '.c',
-      '.class',
-      '.cpp',
-      '.cs',
-      '.h',
-      '.java',
-      '.php',
-      '.py',
-      '.sh',
-      '.swift',
-      '.vb',
-      '.js',
-      '.css',
-      '.html'
-    ],
-    label: 'Выберите исходный код'
-  },
-  archive: {
-    icon: ArchiveFileIcon,
-    accept: ['.zip', '.rar', '.7z', '.tar.gz'],
-    label: 'Выберите архив'
-  }
-};
+import { FILE_EXTENTIONS, FilePickerVariant } from './FilePicker.constants';
+import { FilePickerProps } from './FilePicker.types';
 
 export const FilePicker = ({
-  variant = FilePickerVariant.default,
   value,
-  onChange,
+  uploadFileFunc,
+  removeFileFunc,
+  variant = FilePickerVariant.default,
   className,
   extensions,
-  name,
   multiple = false,
   surface,
-  placeholder,
-  useAutoUpload = false,
-  uploadUrl = '',
-  autoUploadFunc = defaultFileUploadFunc,
-  deleteFileFunc = defaultFileDeleteFunc
+  placeholder
 }: FilePickerProps) => {
   const [isFileZoneVisible, setIsFileZoneVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
