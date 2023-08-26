@@ -1,0 +1,37 @@
+.alt-file-icon {
+  position: relative;
+  width: 80px;
+  height: 103px;
+}
+
+.alt-file-icon__content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: var(--surface);
+  clip-path: path('M0 102.662V0L80 0.0649351V65.0649C79.3126 74.0876 78.5337 78.1914 75.974 82.6623C71.2488 87.4251 67.6682 90.097 55.6494 94.8701C43.5502 99.7795 30.826 101.718 17.5974 102.662H0Z');
+  box-shadow: inset 0 0 0 1px var(--borderColor);
+}
+
+.alt-file-icon__decorations {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.alt-file-icon__extension {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
+  letter-spacing: 1px;
+  font-weight: 500;
+  color: var(--secondaryTextColor);
+  opacity: 0.5;
+}
