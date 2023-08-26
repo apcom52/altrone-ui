@@ -1,6 +1,6 @@
 import { Icon } from '../../icons';
 
-export const DocumentFileIcon = (count = 0) => {
+export const DocumentFileIcon = (extension: string, count = 0) => {
   return (
     <div className="alt-file-picker-icon alt-file-picker-icon--document">
       {count ? count : <Icon i="description" />}
@@ -8,7 +8,7 @@ export const DocumentFileIcon = (count = 0) => {
   );
 };
 
-export const ImageFileIcon = (count = 0) => {
+export const ImageFileIcon = (extension: string, count = 0) => {
   return (
     <div className="alt-file-picker-icon alt-file-picker-icon--image">
       {count ? count : <Icon i="image" />}
@@ -16,7 +16,7 @@ export const ImageFileIcon = (count = 0) => {
   );
 };
 
-export const AudioFileIcon = (count = 0) => {
+export const AudioFileIcon = (extension: string, count = 0) => {
   return (
     <div className="alt-file-picker-icon alt-file-picker-icon--audio">
       {count ? count : <Icon i="music_note" />}
@@ -24,7 +24,7 @@ export const AudioFileIcon = (count = 0) => {
   );
 };
 
-export const VideoFileIcon = (count = 0) => {
+export const VideoFileIcon = (extension: string, count = 0) => {
   return (
     <div className="alt-file-picker-icon alt-file-picker-icon--video">
       {count ? count : <Icon i="local_movies" />}
@@ -32,7 +32,7 @@ export const VideoFileIcon = (count = 0) => {
   );
 };
 
-export const TableFileIcon = (count = 0) => {
+export const TableFileIcon = (extension: string, count = 0) => {
   return (
     <div className="alt-file-picker-icon alt-file-picker-icon--table">
       {count ? count : <Icon i="table_chart" />}
@@ -40,7 +40,7 @@ export const TableFileIcon = (count = 0) => {
   );
 };
 
-export const PresentationFileIcon = (count = 0) => {
+export const PresentationFileIcon = (extension: string, count = 0) => {
   return (
     <div className="alt-file-picker-icon alt-file-picker-icon--presentation">
       {count ? count : <Icon i="slideshow" />}
@@ -48,7 +48,7 @@ export const PresentationFileIcon = (count = 0) => {
   );
 };
 
-export const CodeFileIcon = (count = 0) => {
+export const CodeFileIcon = (extension: string, count = 0) => {
   return (
     <div className="alt-file-picker-icon alt-file-picker-icon--code">
       {count ? count : <Icon i="code" />}
@@ -56,7 +56,7 @@ export const CodeFileIcon = (count = 0) => {
   );
 };
 
-export const ArchiveFileIcon = (count = 0) => {
+export const ArchiveFileIcon = (extension: string, count = 0) => {
   return (
     <div className="alt-file-picker-icon alt-file-picker-icon--archive">
       {count ? count : <Icon i="folder_zip" />}

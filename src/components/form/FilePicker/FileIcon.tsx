@@ -1,17 +1,28 @@
+import React from 'react';
+import { Icon } from '../../icons';
 import './file-icon.scss';
-import { PropsWithChildren } from 'react';
 
-interface FileIconProps {}
+interface FileIconProps {
+  icon?: string;
+  children?: string | JSX.Element;
+}
 
-export const FileIcon = ({ children }: PropsWithChildren<FileIconProps>) => {
+export const FileIcon = ({ children, icon }: FileIconProps) => {
   return (
     <div className="alt-file-icon">
       <div className="alt-file-icon__content">
-        {typeof children === 'string' ? (
-          <div className="alt-file-icon__extension">{children}</div>
-        ) : (
-          children
+        {icon && (
+          <div className="alt-file-icon__customIcon">
+            <Icon i={icon} />
+          </div>
         )}
+        {!icon ? (
+          typeof children === 'string' ? (
+            <div className="alt-file-icon__extension">{children}</div>
+          ) : (
+            children
+          )
+        ) : null}
       </div>
       <svg
         width="80"

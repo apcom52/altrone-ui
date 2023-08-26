@@ -8,49 +8,58 @@ import {
   TableFileIcon,
   VideoFileIcon
 } from './FilePickerIcons';
-import { FileExtensions, FilePickerFileIcon } from './FilePicker.types';
+import { FileExtensions, FileExtensionType } from './FilePicker.types';
+import { FileIcon } from './FileIcon';
 
 export enum FilePickerVariant {
   default = 'default',
   block = 'block'
 }
 
-export const FILE_EXTENTIONS: Record<
-  FileExtensions | string,
-  { icon: FilePickerFileIcon; accept: string[]; label: string }
-> = {
+export const FILE_EXTENTIONS: Record<FileExtensions | string, FileExtensionType> = {
   text: {
-    icon: DocumentFileIcon,
+    smallIcon: DocumentFileIcon,
+    largeIcon: () => <FileIcon icon="description" />,
     accept: ['.doc', '.docx', '.pdf', '.txt'],
     label: 'Выберите документ'
   },
   image: {
-    icon: ImageFileIcon,
+    smallIcon: ImageFileIcon,
+    largeIcon: (extension, count, file) => (
+      <FileIcon>
+        <img src={file.fileSrc} alt="" className="alt-file-icon__image" />
+      </FileIcon>
+    ),
     accept: ['.jpg', '.jpeg', '.gif', '.png', '.svg', '.tiff', '.tif'],
     label: 'Выберите изображение'
   },
   audio: {
-    icon: AudioFileIcon,
+    smallIcon: AudioFileIcon,
+    largeIcon: () => <FileIcon icon="music_note" />,
     accept: ['.mp3', '.wav', '.aac', '.m4a'],
     label: 'Выберите музыку'
   },
   video: {
-    icon: VideoFileIcon,
+    smallIcon: VideoFileIcon,
+    largeIcon: () => <FileIcon icon="local_movies" />,
     accept: ['.mp4', '.avi', '.mov'],
     label: 'Выберите видео'
   },
   table: {
-    icon: TableFileIcon,
+    smallIcon: TableFileIcon,
+    largeIcon: () => <FileIcon icon="table_chart" />,
     accept: ['.xls', '.xlsx', '.ods'],
     label: 'Выберите таблицу'
   },
   presentation: {
-    icon: PresentationFileIcon,
+    smallIcon: PresentationFileIcon,
+    largeIcon: () => <FileIcon icon="slideshow" />,
     accept: ['.ppt', '.pptx', '.odp', '.key'],
     label: 'Выберите презентацию'
   },
   code: {
-    icon: CodeFileIcon,
+    smallIcon: CodeFileIcon,
+    largeIcon: () => <FileIcon icon="code" />,
     accept: [
       '.c',
       '.class',
@@ -70,7 +79,8 @@ export const FILE_EXTENTIONS: Record<
     label: 'Выберите исходный код'
   },
   archive: {
-    icon: ArchiveFileIcon,
+    smallIcon: ArchiveFileIcon,
+    largeIcon: () => <FileIcon icon="folder_zip" />,
     accept: ['.zip', '.rar', '.7z', '.tar.gz'],
     label: 'Выберите архив'
   }

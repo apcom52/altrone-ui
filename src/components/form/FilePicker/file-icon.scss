@@ -35,3 +35,21 @@
   color: var(--secondaryTextColor);
   opacity: 0.5;
 }
+
+.alt-file-icon__image {
+  margin: 2px;
+  border-radius: 2px;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  object-fit: cover;
+}
+
+.alt-file-icon__customIcon {
+  font-size: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--secondaryTextColor);
+  opacity: 0.5;
+}

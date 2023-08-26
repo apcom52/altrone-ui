@@ -6,6 +6,8 @@ export type FileItem = {
   filename: string;
   size?: number;
   status?: 'loading' | 'loaded' | 'failed';
+  progress?: number;
+  fileSrc?: string;
 };
 
 export type FileExtensions =
@@ -18,7 +20,18 @@ export type FileExtensions =
   | 'code'
   | 'archive';
 
-export type FilePickerFileIcon = (count: number) => JSX.Element;
+export type FilePickerFileIcon = (
+  extension: string,
+  count: number,
+  file: FileItem
+) => React.ReactNode;
+
+export type FileExtensionType = {
+  smallIcon: FilePickerFileIcon;
+  largeIcon: FilePickerFileIcon;
+  accept: string[];
+  label: string;
+};
 
 export interface FilePickerProps {
   value: FileItem[];
