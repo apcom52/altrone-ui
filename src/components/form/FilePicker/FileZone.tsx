@@ -1,55 +1,35 @@
 import { Icon } from '../../icons';
 import './file-zone.scss';
 import { FileTile } from './FileTile';
-import { FilePickerFileIcon } from './FilePicker.types';
-import { FileDeleteFuncArgs } from './FilePicker.utils';
+import { FileItem } from './FilePicker.types';
 
 interface FileZoneProps {
-  icon: FilePickerFileIcon;
-  files: File[];
-  onClick: () => void;
-  uploadUrl?: string;
-  onChange: (files: File[]) => void;
-  onDelete?: (props: FileDeleteFuncArgs) => void;
+  files: FileItem[];
 }
 
-export const FileZone = ({
-  files = [],
-  icon,
-  uploadUrl,
-  onClick,
-  onChange,
-  onDelete
-}: FileZoneProps) => {
-  const onDeleteClick = (fileIndex: number) => {
-    if (uploadUrl) {
-      onDelete?.({ filename: files[fileIndex].name, url: uploadUrl });
-    }
-    onChange(files.filter((_, index) => index !== fileIndex));
-  };
-
+export const FileZone = ({ files = [] }: FileZoneProps) => {
   return (
-    <div className="alt-file-zone" onClick={onClick}>
+    <div className="alt-file-zone">
       {files.length ? (
         <div className="alt-file-zone__files">
           {files.map((file, fileIndex) => (
             <FileTile
               key={fileIndex}
               file={file}
-              icon={icon}
-              onDelete={() => {
-                onDeleteClick(fileIndex);
-              }}
+              errorMessage={fileIndex === 1 ? 'Возникла ошибка при загрузке документа' : undefined}
+              onDelete={() => null}
             />
           ))}
         </div>
       ) : null}
-      <div className="alt-file-zone__icon">
-        <Icon i="upload" />
-      </div>
-      <div className="alt-file-zone__label">
-        Нажмите, чтобы выбрать или перетащите файлы в область загрузки
-      </div>
+      {files.length === 0 && (
+        <div>
+          <div className="alt-file-zone__icon">
+            <Icon i="upload" />
+          </div>
+          <div className="alt-file-zone__label">Нажмите, чтобы выбрать файл для загрузки</div>
+        </div>
+      )}
     </div>
   );
 };

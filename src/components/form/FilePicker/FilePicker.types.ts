@@ -1,13 +1,17 @@
 import { Surface } from '../../../types';
 import { FilePickerVariant } from './FilePicker.constants';
 
-export type FileItem = {
+export type UploadedFile = {
+  file: File;
   id: string;
+};
+
+export type FileItem = {
   filename: string;
   size?: number;
   status?: 'loading' | 'loaded' | 'failed';
   progress?: number;
-  fileSrc?: string;
+  src?: string;
 };
 
 export type FileExtensions =
@@ -34,13 +38,15 @@ export type FileExtensionType = {
 };
 
 export interface FilePickerProps {
-  value: FileItem[];
-  uploadFileFunc: ((file: FileItem) => void) | ((files: FileItem[]) => void);
-  removeFileFunc: (fileId: string) => void;
+  url: string;
+  name: string;
+  method: HTMLFormElement['method'];
+  onSuccess: () => void;
+  defaultValue?: Pick<FileItem, 'filename' | 'src'>[];
   variant?: FilePickerVariant;
-  multiple?: boolean;
   extensions?: FileExtensions | string;
   surface?: Surface;
   className?: string;
   placeholder?: string;
+  maxFiles?: number;
 }

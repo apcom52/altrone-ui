@@ -8,7 +8,13 @@ const meta: Meta<typeof FilePicker> = {
   component: FilePicker,
   title: 'Forms/FilePicker',
   tags: ['autodocs'],
-  args: {},
+  args: {
+    url: '',
+    name: 'files',
+    method: 'POST',
+    maxFiles: 1,
+    defaultValue: []
+  },
   argTypes: {}
 };
 

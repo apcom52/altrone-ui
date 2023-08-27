@@ -2,46 +2,95 @@
 
 .alt-file-tile {
   display: flex;
-  background-color: var(--background);
-  border-radius: var(--innerRounding);;
+  position: relative;
+  flex-direction: column;
   align-items: center;
-  padding: 8px 16px;
-  box-shadow: 0 3px 15px 0 var(--shadow);
+  justify-content: center;
+  width: 150px;
+  height: 180px;
+  border-radius: var(--controlRounding);
+  transition: background-color var(--transitionDuration) ease;
 
-  &:hover, &:focus {
-    .alt-file-tile__remove {
-      visibility: visible;
+  &:hover {
+    background-color: var(--highlight);
+
+    .alt-file-tile__close {
+      display: flex;
     }
   }
 }
 
-.alt-file-tile__icon {
-  font-size: 36px;
-  margin-right: 12px;
-
-  .alt-file-picker-icon {
-    width: 36px;
-    height: 36px;
-    font-size: 26px;
+.alt-file-tile--error {
+  .alt-file-tile__title {
+    color: var(--importantText);
+    @include useFontSize(label, Small);
+    height: auto;
   }
 }
 
-.alt-file-tile__content {
-  flex: 1;
-}
-
-.alt-file-tile__remove {
-  margin-left: 12px;
-  margin-right: -8px;
-  visibility: hidden;
-}
-
-.alt-file-tile__fileName {
+.alt-file-tile__title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  height: 40px;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  margin-top: 12px;
+  width: 80%;
+  left: 10%;
+  text-align: center;
   @include useFontSize(label, Large);
 }
 
-.alt-file-tile__fileSize {
-  @include useFontSize(label);
-  color: var(--secondaryTextColor);
-  margin-top: 4px;
+.alt-file-tile__action {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 4px;
+  right: 4px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: none;
+  font-size: 18px;
+  background-color: var(--surface);
+  box-shadow: 0 2px 6px 0 var(--shadow);
+  cursor: pointer;
+}
+
+.alt-file-tile__close {
+  display: none;
+  top: 4px;
+  right: 4px;
+}
+
+.alt-file-tile__repeat {
+  display: flex;
+  top: 4px;
+  left: 4px;
+  color: var(--accent);
+}
+
+.alt-file-tile__progress {
+  display: flex;
+  position: absolute;
+  width: 48px;
+  padding-left: 4px;
+  padding-right: 4px;
+  height: 16px;
+  top: 90px;
+  left: calc(50% - 20px);
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: none;
+  font-size: 18px;
+  background-color: var(--surface);
+  box-shadow: 0 2px 6px 0 var(--shadow);
+
+  .alt-progress {
+    width: 100%;
+    box-shadow: none;
+  }
 }

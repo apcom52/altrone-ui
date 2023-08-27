@@ -10,7 +10,7 @@
   justify-content: flex-start;
   padding-left: 12px;
   text-align: left;
-  padding-right: 34px;
+  padding-right: 12px;
 }
 
 .alt-file-picker-button__icon {
@@ -79,7 +79,7 @@
 }
 
 .alt-file-picker-file__size {
-  margin-left: 12px;
+  margin-left: auto;
   color: var(--secondaryTextColor);
 }
 

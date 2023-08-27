@@ -1,26 +1,98 @@
-import { ChangeEventHandler, useCallback, useRef, useState } from 'react';
+import { ChangeEvent, ChangeEventHandler, useRef, useState } from 'react';
 import { DefaultIcon } from './FilePickerIcons';
-import { getFileSize } from './FilePicker.utils';
+import { v4 as uuid } from 'uuid';
 import './file-picker.scss';
 import clsx from 'clsx';
 import { FloatingBox } from '../../containers';
 import { FileZone } from './FileZone';
-import { Loading } from '../../indicators';
 import { FILE_EXTENTIONS, FilePickerVariant } from './FilePicker.constants';
-import { FilePickerProps } from './FilePicker.types';
+import { FileItem, FilePickerProps, UploadedFile } from './FilePicker.types';
+import { FileTile } from './FileTile';
 
 export const FilePicker = ({
-  value,
-  uploadFileFunc,
-  removeFileFunc,
+  defaultValue = [],
   variant = FilePickerVariant.default,
   className,
   extensions,
-  multiple = false,
+  maxFiles = 10,
   surface,
-  placeholder
+  placeholder = 'Выберите файл'
 }: FilePickerProps) => {
-  return <div>filePicker</div>;
+  const [files, setFiles] = useState<(FileItem & { id: string })[]>(() => {
+    return defaultValue.map((fileItem) => ({
+      ...fileItem,
+      id: uuid()
+    }));
+  });
+
+  const [fileZoneVisible, setFileZoneVisible] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileButtonRef = useRef<HTMLButtonElement>(null);
+
+  const icon = FILE_EXTENTIONS[String(extensions)]?.smallIcon || DefaultIcon;
+
+  const acceptFiles =
+    extensions &&
+    ['text', 'image', 'audio', 'video', 'table', 'presentation', 'code', 'archive'].indexOf(
+      extensions
+    ) > -1
+      ? FILE_EXTENTIONS[extensions].accept.join(',')
+      : extensions;
+
+  const uploadFiles = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const onChangeFileInput = async (e: ChangeEvent<HTMLInputElement>) => {};
+
+  return (
+    <div className={clsx('alt-file-picker', className)}>
+      <input
+        type="file"
+        ref={fileInputRef}
+        className="alt-file-picker__input"
+        tabIndex={-1}
+        accept={acceptFiles}
+        onChange={onChangeFileInput}
+        multiple
+      />
+      {variant === FilePickerVariant.default && (
+        <button
+          ref={fileButtonRef}
+          className="alt-button alt-file-picker-button"
+          onClick={() => setFileZoneVisible(true)}>
+          <span className="alt-file-picker-button__icon">
+            {icon(String(extensions), files?.length || 0, files?.[0])}
+          </span>
+          {files.length === 1 ? (
+            <div className="alt-file-picker-file">
+              <div className="alt-file-picker-file__name">{files?.[0]?.filename}</div>
+              {typeof files[0].progress === 'number' && (
+                <div className="alt-file-picker-file__size">{files?.[0]?.progress} %</div>
+              )}
+            </div>
+          ) : Array.isArray(files) && files.length ? (
+            <div className="alt-file-picker-file">Выбрано {files?.length} файлов</div>
+          ) : (
+            <div className="alt-file-picker-button__label">{placeholder}</div>
+          )}
+        </button>
+      )}
+      {fileZoneVisible && fileButtonRef.current && (
+        <FloatingBox
+          placement="bottom"
+          targetElement={fileButtonRef.current}
+          onClose={() => setFileZoneVisible(false)}
+          useRootContainer
+          useParentWidth>
+          <FileZone files={files} />
+        </FloatingBox>
+      )}
+    </div>
+  );
 
   // const [isFileZoneVisible, setIsFileZoneVisible] = useState(false);
   // const [isLoading, setIsLoading] = useState(false);

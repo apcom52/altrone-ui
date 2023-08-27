@@ -1,33 +1,53 @@
 import './file-tile.scss';
-import { getFileSize } from './FilePicker.utils';
-import { FilePickerFileIcon } from './FilePicker.types';
+import { FileItem } from './FilePicker.types';
 import { Icon } from '../../icons';
-import { Button, ButtonVariant } from '../../button';
+import { FileIcon } from './FileIcon';
+import { FILE_EXTENTIONS } from './FilePicker.constants';
+import { ReactNode, useMemo } from 'react';
+import { Progress } from '../../indicators';
+import { Role, Size } from '../../../types';
+import clsx from 'clsx';
 
 interface FileTileProps {
-  file: File;
-  icon: FilePickerFileIcon;
+  file: FileItem;
   onDelete: () => void;
+  errorMessage?: string;
 }
 
-export const FileTile = ({ file, icon, onDelete }: FileTileProps) => {
+export const FileTile = ({ file, errorMessage }: FileTileProps) => {
+  const fileIcon = useMemo(() => {
+    const extension = file.filename.toLowerCase().split('.').at(-1) || '';
+
+    const predefinedIcon = Object.keys(FILE_EXTENTIONS).find(
+      (extName) => FILE_EXTENTIONS[extName].accept.indexOf(extension) > -1
+    );
+
+    if (predefinedIcon) {
+      return FILE_EXTENTIONS[predefinedIcon].largeIcon;
+    }
+
+    return <FileIcon>{'.' + extension}</FileIcon>;
+  }, [file.filename]);
+
   return (
-    <div className="alt-file-tile">
-      <div className="alt-file-tile__icon">{icon(0)}</div>
-      <div className="alt-file-tile__content">
-        <div className="alt-file-tile__fileName">{file.name}</div>
-        <div className="alt-file-tile__fileSize">{getFileSize(file.size)}</div>
-      </div>
-      <Button
-        variant={ButtonVariant.transparent}
-        isIcon
-        className="alt-file-tile__remove"
-        onClick={(e) => {
-          e.stopPropagation();
-          onDelete();
-        }}>
+    <div
+      className={clsx('alt-file-tile', {
+        'alt-file-tile--error': !!errorMessage
+      })}
+      title={errorMessage ? `${errorMessage} ${file.filename}` : file.filename}>
+      <div className="alt-file-tile__icon">{fileIcon as ReactNode}</div>
+      <div className="alt-file-tile__title">{errorMessage || file.filename}</div>
+      <button className="alt-file-tile__action alt-file-tile__close">
         <Icon i="close" />
-      </Button>
+      </button>
+      {errorMessage && (
+        <button className="alt-file-tile__action alt-file-tile__repeat">
+          <Icon i="refresh" />
+        </button>
+      )}
+      <div className="alt-file-tile__progress">
+        <Progress value={40} size={Size.small} role={Role.primary} />
+      </div>
     </div>
   );
 };
