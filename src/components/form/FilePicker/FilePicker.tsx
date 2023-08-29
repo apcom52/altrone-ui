@@ -9,16 +9,21 @@ import { FILE_EXTENTIONS, FilePickerVariant } from './FilePicker.constants';
 import { FileItem, FilePickerProps, UploadedFile } from './FilePicker.types';
 import { FileTile } from './FileTile';
 
+type InnerFileItem = FileItem & { id: string };
+
 export const FilePicker = ({
   defaultValue = [],
   variant = FilePickerVariant.default,
   className,
+  url,
+  method,
+  name,
   extensions,
   maxFiles = 10,
   surface,
   placeholder = 'Выберите файл'
 }: FilePickerProps) => {
-  const [files, setFiles] = useState<(FileItem & { id: string })[]>(() => {
+  const [files, setFiles] = useState<InnerFileItem[]>(() => {
     return defaultValue.map((fileItem) => ({
       ...fileItem,
       id: uuid()
@@ -46,7 +51,40 @@ export const FilePicker = ({
     }
   };
 
-  const onChangeFileInput = async (e: ChangeEvent<HTMLInputElement>) => {};
+  const onChangeFileInput = async (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = e.target.files || [];
+
+    if (selectedFiles.length === 0) {
+      return;
+    }
+
+    const fileRequests = new XMLHttpRequest();
+    fileRequests.open(method, url);
+
+    for (const file of selectedFiles) {
+      const newFilesIds: string[] = [];
+      const fileReaderItem = new FileReader();
+      fileReaderItem.readAsDataURL(file);
+
+      fileReaderItem.onload = (e) => {
+        const newId = uuid();
+        newFilesIds.push(newId);
+
+        setFiles((old) => [
+          ...old,
+          {
+            id: newId,
+            filename: file.name,
+            size: file.size,
+            src: fileReaderItem.result,
+            status: 'loading'
+          }
+        ]);
+      };
+    }
+
+    fileRequests.send();
+  };
 
   return (
     <div className={clsx('alt-file-picker', className)}>
@@ -57,7 +95,7 @@ export const FilePicker = ({
         tabIndex={-1}
         accept={acceptFiles}
         onChange={onChangeFileInput}
-        multiple
+        multiple={maxFiles > 1}
       />
       {variant === FilePickerVariant.default && (
         <button
@@ -86,9 +124,12 @@ export const FilePicker = ({
           placement="bottom"
           targetElement={fileButtonRef.current}
           onClose={() => setFileZoneVisible(false)}
+          preventClose={(e: MouseEvent) =>
+            (e.target as HTMLElement).getAttribute('type') === 'file'
+          }
           useRootContainer
           useParentWidth>
-          <FileZone files={files} />
+          <FileZone files={files} onUploadClick={uploadFiles} />
         </FloatingBox>
       )}
     </div>

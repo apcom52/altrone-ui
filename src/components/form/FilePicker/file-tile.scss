@@ -10,6 +10,11 @@
   height: 180px;
   border-radius: var(--controlRounding);
   transition: background-color var(--transitionDuration) ease;
+  cursor: default;
+  background-color: transparent;
+  border: none;
+
+  @include useDisabledUserSelect();
 
   &:hover {
     background-color: var(--highlight);
@@ -31,7 +36,7 @@
 .alt-file-tile__title {
   display: -webkit-box;
   -webkit-line-clamp: 2;
-  height: 40px;
+  height: 31px;
   line-clamp: 2;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -40,7 +45,8 @@
   width: 80%;
   left: 10%;
   text-align: center;
-  @include useFontSize(label, Large);
+  color: var(--textColor);
+  @include useFontSize(label);
 }
 
 .alt-file-tile__action {
@@ -57,6 +63,7 @@
   background-color: var(--surface);
   box-shadow: 0 2px 6px 0 var(--shadow);
   cursor: pointer;
+  color: var(--textColor);
 }
 
 .alt-file-tile__close {
@@ -92,5 +99,16 @@
   .alt-progress {
     width: 100%;
     box-shadow: none;
+  }
+}
+
+.alt-file-tile--upload {
+  cursor: pointer;
+
+  .alt-file-icon__content {
+    background-color: var(--surfaceTrasparent);
+    border: 2px dashed var(--borderColor);
+    box-shadow: none;
+    border-radius: 4px;
   }
 }

@@ -16,14 +16,21 @@ interface FileTileProps {
 
 export const FileTile = ({ file, errorMessage }: FileTileProps) => {
   const fileIcon = useMemo(() => {
-    const extension = file.filename.toLowerCase().split('.').at(-1) || '';
+    let extension = file.filename.toLowerCase().split('.').at(-1) || '';
+
+    if (extension) {
+      extension = '.' + extension;
+    }
+    console.log('extension', extension);
 
     const predefinedIcon = Object.keys(FILE_EXTENTIONS).find(
       (extName) => FILE_EXTENTIONS[extName].accept.indexOf(extension) > -1
     );
 
+    console.log('>', predefinedIcon);
+
     if (predefinedIcon) {
-      return FILE_EXTENTIONS[predefinedIcon].largeIcon;
+      return FILE_EXTENTIONS[predefinedIcon].largeIcon(extension, 1, file);
     }
 
     return <FileIcon>{'.' + extension}</FileIcon>;

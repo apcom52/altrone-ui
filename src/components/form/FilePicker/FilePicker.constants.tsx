@@ -27,7 +27,7 @@ export const FILE_EXTENTIONS: Record<FileExtensions | string, FileExtensionType>
     smallIcon: ImageFileIcon,
     largeIcon: (extension, count, file) => (
       <FileIcon>
-        <img src={file.fileSrc} alt="" className="alt-file-icon__image" />
+        <img src={file.src} alt="" className="alt-file-icon__image" />
       </FileIcon>
     ),
     accept: ['.jpg', '.jpeg', '.gif', '.png', '.svg', '.tiff', '.tif'],

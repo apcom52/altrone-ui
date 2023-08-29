@@ -11,7 +11,7 @@ export type FileItem = {
   size?: number;
   status?: 'loading' | 'loaded' | 'failed';
   progress?: number;
-  src?: string;
+  src?: string | ArrayBuffer | null;
 };
 
 export type FileExtensions =

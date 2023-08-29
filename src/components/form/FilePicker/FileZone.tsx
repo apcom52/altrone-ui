@@ -2,12 +2,14 @@ import { Icon } from '../../icons';
 import './file-zone.scss';
 import { FileTile } from './FileTile';
 import { FileItem } from './FilePicker.types';
+import { UploadNew } from './UploadNew';
 
 interface FileZoneProps {
   files: FileItem[];
+  onUploadClick: () => void;
 }
 
-export const FileZone = ({ files = [] }: FileZoneProps) => {
+export const FileZone = ({ files = [], onUploadClick }: FileZoneProps) => {
   return (
     <div className="alt-file-zone">
       {files.length ? (
@@ -20,6 +22,7 @@ export const FileZone = ({ files = [] }: FileZoneProps) => {
               onDelete={() => null}
             />
           ))}
+          <UploadNew onClick={onUploadClick} />
         </div>
       ) : null}
       {files.length === 0 && (

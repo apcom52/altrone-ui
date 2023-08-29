@@ -15,7 +15,13 @@ const meta: Meta<typeof FilePicker> = {
     maxFiles: 1,
     defaultValue: []
   },
-  argTypes: {}
+  argTypes: {
+    method: {
+      control: 'select',
+      defaultValue: 'post',
+      options: ['get', 'post', 'put', 'delete']
+    }
+  }
 };
 
 export default meta;
