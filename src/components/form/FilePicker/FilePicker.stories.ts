@@ -9,10 +9,10 @@ const meta: Meta<typeof FilePicker> = {
   title: 'Forms/FilePicker',
   tags: ['autodocs'],
   args: {
-    url: '',
+    url: 'http://localhost:8000/api/cloud/upload',
     name: 'files',
-    method: 'POST',
-    maxFiles: 1,
+    method: 'post',
+    maxFiles: 10,
     defaultValue: []
   },
   argTypes: {

@@ -9,10 +9,10 @@ export type UploadedFile = {
 export type FileItem = {
   filename: string;
   size?: number;
-  status?: 'loading' | 'loaded' | 'failed';
-  progress?: number;
   src?: string | ArrayBuffer | null;
 };
+
+export type InnerFileItem = FileItem & { id: string };
 
 export type FileExtensions =
   | 'text'
@@ -41,7 +41,8 @@ export interface FilePickerProps {
   url: string;
   name: string;
   method: HTMLFormElement['method'];
-  onSuccess: () => void;
+  onSuccess: (response: unknown) => void;
+  onDelete: (response: unknown) => void;
   defaultValue?: Pick<FileItem, 'filename' | 'src'>[];
   variant?: FilePickerVariant;
   extensions?: FileExtensions | string;
@@ -50,3 +51,5 @@ export interface FilePickerProps {
   placeholder?: string;
   maxFiles?: number;
 }
+
+export type FileUploadStatus = undefined | 'loading' | 'loaded' | 'failed';

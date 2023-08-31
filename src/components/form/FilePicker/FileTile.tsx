@@ -1,5 +1,5 @@
 import './file-tile.scss';
-import { FileItem } from './FilePicker.types';
+import { FileItem, FileUploadStatus } from './FilePicker.types';
 import { Icon } from '../../icons';
 import { FileIcon } from './FileIcon';
 import { FILE_EXTENTIONS } from './FilePicker.constants';
@@ -12,22 +12,21 @@ interface FileTileProps {
   file: FileItem;
   onDelete: () => void;
   errorMessage?: string;
+  progress: number;
+  status: FileUploadStatus;
 }
 
-export const FileTile = ({ file, errorMessage }: FileTileProps) => {
+export const FileTile = ({ file, errorMessage, progress, status }: FileTileProps) => {
   const fileIcon = useMemo(() => {
     let extension = file.filename.toLowerCase().split('.').at(-1) || '';
 
     if (extension) {
       extension = '.' + extension;
     }
-    console.log('extension', extension);
 
     const predefinedIcon = Object.keys(FILE_EXTENTIONS).find(
       (extName) => FILE_EXTENTIONS[extName].accept.indexOf(extension) > -1
     );
-
-    console.log('>', predefinedIcon);
 
     if (predefinedIcon) {
       return FILE_EXTENTIONS[predefinedIcon].largeIcon(extension, 1, file);
@@ -36,10 +35,17 @@ export const FileTile = ({ file, errorMessage }: FileTileProps) => {
     return <FileIcon>{'.' + extension}</FileIcon>;
   }, [file.filename]);
 
+  let statusRole = Role.primary;
+  if (status === 'failed') {
+    statusRole = Role.danger;
+  } else if (status === 'loaded') {
+    statusRole = Role.success;
+  }
+
   return (
     <div
       className={clsx('alt-file-tile', {
-        'alt-file-tile--error': !!errorMessage
+        'alt-file-tile--error': status === 'failed'
       })}
       title={errorMessage ? `${errorMessage} ${file.filename}` : file.filename}>
       <div className="alt-file-tile__icon">{fileIcon as ReactNode}</div>
@@ -47,14 +53,16 @@ export const FileTile = ({ file, errorMessage }: FileTileProps) => {
       <button className="alt-file-tile__action alt-file-tile__close">
         <Icon i="close" />
       </button>
-      {errorMessage && (
+      {status === 'failed' && (
         <button className="alt-file-tile__action alt-file-tile__repeat">
           <Icon i="refresh" />
         </button>
       )}
-      <div className="alt-file-tile__progress">
-        <Progress value={40} size={Size.small} role={Role.primary} />
-      </div>
+      {status !== undefined && (
+        <div className="alt-file-tile__progress">
+          <Progress value={progress} size={Size.small} role={statusRole} />
+        </div>
+      )}
     </div>
   );
 };

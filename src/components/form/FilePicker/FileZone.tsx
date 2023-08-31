@@ -1,15 +1,24 @@
 import { Icon } from '../../icons';
 import './file-zone.scss';
 import { FileTile } from './FileTile';
-import { FileItem } from './FilePicker.types';
+import { FileItem, FileUploadStatus, InnerFileItem } from './FilePicker.types';
 import { UploadNew } from './UploadNew';
 
 interface FileZoneProps {
-  files: FileItem[];
+  files: InnerFileItem[];
+  activeFileIds: string[];
+  status: FileUploadStatus;
+  progress: number;
   onUploadClick: () => void;
 }
 
-export const FileZone = ({ files = [], onUploadClick }: FileZoneProps) => {
+export const FileZone = ({
+  files = [],
+  onUploadClick,
+  activeFileIds = [],
+  status,
+  progress
+}: FileZoneProps) => {
   return (
     <div className="alt-file-zone">
       {files.length ? (
@@ -18,8 +27,12 @@ export const FileZone = ({ files = [], onUploadClick }: FileZoneProps) => {
             <FileTile
               key={fileIndex}
               file={file}
-              errorMessage={fileIndex === 1 ? 'Возникла ошибка при загрузке документа' : undefined}
+              errorMessage={
+                status === 'failed' ? 'Возникла ошибка при загрузке документа' : undefined
+              }
               onDelete={() => null}
+              status={activeFileIds.indexOf(file.id) > -1 ? status : undefined}
+              progress={progress}
             />
           ))}
           <UploadNew onClick={onUploadClick} />
