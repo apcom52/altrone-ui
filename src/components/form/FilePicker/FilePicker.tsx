@@ -119,9 +119,17 @@ export const FilePicker = ({
       setStatus('failed');
     };
 
-    fileRequests.onload = () => {
+    fileRequests.onload = (e: ProgressEvent<any>) => {
       setProgress(100);
       setStatus('loaded');
+
+      if (e.target?.status && e.target.status >= 200 && e.target.status < 300) {
+        try {
+          onSuccess?.(JSON.parse(String(e.target?.response)));
+        } catch (err) {
+          onSuccess?.(String(e.target?.response));
+        }
+      }
     };
 
     fileRequests.send(formData);
