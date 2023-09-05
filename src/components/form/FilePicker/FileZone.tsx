@@ -7,7 +7,7 @@ import { UploadNew } from './UploadNew';
 interface FileZoneProps {
   files: InnerFileItem[];
   onUploadClick: () => void;
-  onDeleteClick: (filePath: string) => Promise<any>;
+  onDeleteClick: (filePath: string, fileIndex: number) => void;
 }
 
 export const FileZone = ({ files = [], onUploadClick, onDeleteClick }: FileZoneProps) => {
@@ -16,7 +16,12 @@ export const FileZone = ({ files = [], onUploadClick, onDeleteClick }: FileZoneP
       {files.length ? (
         <div className="alt-file-zone__files">
           {files.map((file, fileIndex) => (
-            <FileTile key={fileIndex} file={file} onDelete={onDeleteClick} />
+            <FileTile
+              key={String(file.src)}
+              fileIndex={fileIndex}
+              file={file}
+              onDelete={onDeleteClick}
+            />
           ))}
           <UploadNew onClick={onUploadClick} />
         </div>

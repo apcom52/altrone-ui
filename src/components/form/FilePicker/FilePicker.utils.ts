@@ -11,3 +11,7 @@ export const getFileSize = (size: number) => {
     return Math.ceil(size / GB) + ' GB';
   }
 };
+
+export const getFileSrcFromResponse = (response: string) => {
+  return response;
+};

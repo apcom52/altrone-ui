@@ -54,4 +54,5 @@ export interface FilePickerProps {
   className?: string;
   placeholder?: string;
   maxFiles?: number;
+  getFileNameFunc?: (response: string) => string;
 }

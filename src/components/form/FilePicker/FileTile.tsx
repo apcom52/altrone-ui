@@ -10,13 +10,15 @@ import clsx from 'clsx';
 import { useFilePickerContext } from './FilePickerContext';
 
 interface FileTileProps {
+  fileIndex: number;
   file: InnerFileItem;
-  onDelete: (filePath: string) => void;
+  onDelete: (filePath: string, fileIndex: number) => void;
 }
 
-export const FileTile = ({ file, onDelete }: FileTileProps) => {
-  const { url, method, name, onSuccessUpload } = useFilePickerContext();
+export const FileTile = ({ fileIndex, file, onDelete }: FileTileProps) => {
+  const { url, method, name, onSuccessUpload, getFileNameFunc } = useFilePickerContext();
 
+  const [_file, setFile] = useState(file.file);
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState<FileUploadStatus>(undefined);
   const [filepath, setFilepath] = useState(file.filepath);
@@ -48,14 +50,6 @@ export const FileTile = ({ file, onDelete }: FileTileProps) => {
     statusRole = Role.success;
   }
 
-  const filePath = useMemo(() => {
-    try {
-      return String(file.src).replace(window.location.origin, '');
-    } catch {
-      return '';
-    }
-  }, [file.src]);
-
   const uploadFile = useCallback(
     (file: File) => {
       const request = new XMLHttpRequest();
@@ -79,10 +73,11 @@ export const FileTile = ({ file, onDelete }: FileTileProps) => {
       request.onload = (e: ProgressEvent<any>) => {
         setProgress(100);
         setStatus('loaded');
+        setFile(undefined);
 
         if (e.target?.status && e.target.status >= 200 && e.target.status < 300) {
           onSuccessUpload(e.target.response);
-          setFilepath(e.target.response);
+          setFilepath(getFileNameFunc(e.target.response));
 
           setTimeout(() => {
             setProgress(0);
@@ -96,11 +91,24 @@ export const FileTile = ({ file, onDelete }: FileTileProps) => {
     [url, name, method, onSuccessUpload]
   );
 
+  const deleteFile = useCallback(() => {
+    onDelete(String(filepath), fileIndex);
+
+    fetch(url, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        [name]: file.filepath
+      })
+    });
+  }, [filepath, onDelete, fileIndex]);
+
   useEffect(() => {
-    if (file.file) {
-      uploadFile(file.file);
+    if (_file) {
+      uploadFile(_file);
     }
-  }, [file.file]);
+  }, []);
+
+  console.log('> file', file.filename, status);
 
   return (
     <div
@@ -113,7 +121,7 @@ export const FileTile = ({ file, onDelete }: FileTileProps) => {
       <button
         tabIndex={-1}
         className="alt-file-tile__action alt-file-tile__close"
-        onClick={() => onDelete(filePath)}>
+        onClick={deleteFile}>
         <Icon i="close" />
       </button>
       {status === 'failed' && (

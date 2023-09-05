@@ -1,8 +1,6 @@
-import { FileItem, FilePicker, FilePickerVariant } from '../index';
-import { useCallback, useState } from 'react';
+import { FilePicker, FilePickerVariant } from '../index';
 import { StorybookPlayground } from '../../../../storybook/StorybookPlayground';
 import { StoryObj } from '@storybook/react';
-import { UploadedFile } from '../FilePicker.types';
 
 export const DefaultFilePicker: StoryObj<typeof FilePicker> = {
   name: 'Default FilePicker',
@@ -22,7 +20,7 @@ export const DefaultFilePicker: StoryObj<typeof FilePicker> = {
             },
             {
               filename: 'song-with-a-very-very-very-long-name.mp3',
-              src: 'http://example.com'
+              src: 'http://example123.com'
             }
           ]}
           variant={FilePickerVariant.default}
@@ -31,6 +29,10 @@ export const DefaultFilePicker: StoryObj<typeof FilePicker> = {
           }}
           onDelete={(response) => {
             console.log('onDelete', response);
+          }}
+          getFileNameFunc={(response) => {
+            const responseArray = JSON.parse(response);
+            return responseArray[0];
           }}
         />
       </StorybookPlayground>

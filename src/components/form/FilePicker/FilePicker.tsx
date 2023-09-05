@@ -8,6 +8,8 @@ import { FileZone } from './FileZone';
 import { FILE_EXTENTIONS, FilePickerVariant } from './FilePicker.constants';
 import { FilePickerProps, InnerFileItem } from './FilePicker.types';
 import { FilePickerContext } from './FilePickerContext';
+import { getFileSrcFromResponse } from './FilePicker.utils';
+import { Surface } from '../../../types';
 
 export const FilePicker = ({
   defaultValue = [],
@@ -18,9 +20,10 @@ export const FilePicker = ({
   name,
   extensions,
   maxFiles = 10,
-  surface,
+  surface = Surface.glass,
   onSuccess,
-  placeholder = 'Выберите файл'
+  placeholder = 'Выберите файл',
+  getFileNameFunc = getFileSrcFromResponse
 }: FilePickerProps) => {
   const [files, setFiles] = useState<InnerFileItem[]>(() => {
     return defaultValue.map((fileItem) => ({
@@ -29,10 +32,6 @@ export const FilePicker = ({
       id: uuid()
     }));
   });
-
-  console.log('> files', files);
-
-  const [activeFileIds, setActiveFileIds] = useState<string[]>([]);
 
   const [fileZoneVisible, setFileZoneVisible] = useState(false);
 
@@ -60,13 +59,13 @@ export const FilePicker = ({
       url,
       method,
       name,
-      onSuccessUpload: onSuccess
+      onSuccessUpload: onSuccess,
+      getFileNameFunc: getFileNameFunc
     };
   }, [url, method, name, onSuccess]);
 
   const onChangeFileInput = async (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = e.target.files || [];
-    setActiveFileIds([]);
 
     if (selectedFiles.length === 0) {
       return;
@@ -92,25 +91,9 @@ export const FilePicker = ({
     }
   };
 
-  const onDeleteFile = useCallback(
-    async (filePath: string) => {
-      console.log('delete', filePath);
-
-      const response = await fetch(url, {
-        method: 'delete',
-        body: JSON.stringify({
-          [name]: filePath
-        })
-      });
-
-      try {
-        return await response.json();
-      } catch {
-        return await response.text();
-      }
-    },
-    [url, name]
-  );
+  const onDeleteFile = useCallback((_: string, fileIndex: number) => {
+    setFiles((old) => old.filter((_, itemIndex) => itemIndex !== fileIndex));
+  }, []);
 
   return (
     <FilePickerContext.Provider value={filePickerContext}>
