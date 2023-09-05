@@ -1,3 +1,5 @@
+@import '../../../mixins';
+
 .alt-file-picker {
   display: flex;
   align-items: center;
@@ -10,7 +12,7 @@
   justify-content: flex-start;
   padding-left: 12px;
   text-align: left;
-  padding-right: 34px;
+  padding-right: 12px;
 }
 
 .alt-file-picker-button__icon {
@@ -79,7 +81,7 @@
 }
 
 .alt-file-picker-file__size {
-  margin-left: 12px;
+  margin-left: auto;
   color: var(--secondaryTextColor);
 }
 
@@ -123,4 +125,11 @@
   .alt-file-picker-icon--archive {
     background: #AFB42B;
   }
+}
+
+.alt-file-picker--variant-block {
+  padding: 8px;
+  border-radius: var(--сontainersRounding);
+
+  @include useGlassSurface();
 }

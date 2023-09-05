@@ -1,33 +1,141 @@
 import './file-tile.scss';
-import { getFileSize } from './FilePicker.utils';
-import { FilePickerFileIcon } from './FilePicker';
+import { FileUploadStatus, InnerFileItem } from './FilePicker.types';
 import { Icon } from '../../icons';
-import { Button, ButtonVariant } from '../../button';
+import { FileIcon } from './FileIcon';
+import { FILE_EXTENTIONS } from './FilePicker.constants';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { Progress } from '../../indicators';
+import { Role, Size } from '../../../types';
+import clsx from 'clsx';
+import { useFilePickerContext } from './FilePickerContext';
 
 interface FileTileProps {
-  file: File;
-  icon: FilePickerFileIcon;
-  onDelete: () => void;
+  fileIndex: number;
+  file: InnerFileItem;
+  onDelete: (filePath: string, fileIndex: number) => void;
 }
 
-export const FileTile = ({ file, icon, onDelete }: FileTileProps) => {
+export const FileTile = ({ fileIndex, file, onDelete }: FileTileProps) => {
+  const { url, method, name, onSuccessUpload, getFileNameFunc } = useFilePickerContext();
+
+  const [_file, setFile] = useState(file.file);
+  const [progress, setProgress] = useState(0);
+  const [status, setStatus] = useState<FileUploadStatus>(undefined);
+  const [filepath, setFilepath] = useState(file.filepath);
+
+  const errorMessage = status === 'failed' ? 'Не удалось загрузить файл' : '';
+
+  const fileIcon = useMemo(() => {
+    let extension = file.filename.toLowerCase().split('.').at(-1) || '';
+
+    if (extension) {
+      extension = '.' + extension;
+    }
+
+    const predefinedIcon = Object.keys(FILE_EXTENTIONS).find(
+      (extName) => FILE_EXTENTIONS[extName].accept.indexOf(extension) > -1
+    );
+
+    if (predefinedIcon) {
+      return FILE_EXTENTIONS[predefinedIcon].largeIcon(extension, 1, file);
+    }
+
+    return <FileIcon>{'.' + extension}</FileIcon>;
+  }, [file.filename]);
+
+  let statusRole = Role.primary;
+  if (status === 'failed') {
+    statusRole = Role.danger;
+  } else if (status === 'loaded') {
+    statusRole = Role.success;
+  }
+
+  const uploadFile = useCallback(
+    (file: File) => {
+      const request = new XMLHttpRequest();
+      request.open(method, url);
+
+      const formData = new FormData();
+      formData.append(name, file);
+
+      setStatus('loading');
+
+      request.upload.addEventListener('progress', (e) => {
+        const progress = Math.round((e.loaded / e.total) * 100);
+        setProgress(progress);
+      });
+
+      request.onerror = () => {
+        setProgress(100);
+        setStatus('failed');
+      };
+
+      request.onload = (e: ProgressEvent<any>) => {
+        setProgress(100);
+        setFile(undefined);
+
+        if (e.target?.status && e.target.status >= 200 && e.target.status < 300) {
+          setStatus('loaded');
+          onSuccessUpload(e.target.response);
+          setFilepath(getFileNameFunc(e.target.response));
+
+          setTimeout(() => {
+            setProgress(0);
+            setStatus(undefined);
+          }, 1500);
+        } else {
+          setStatus('failed');
+        }
+      };
+
+      request.send(formData);
+    },
+    [url, name, method, onSuccessUpload]
+  );
+
+  const deleteFile = useCallback(() => {
+    onDelete(String(filepath), fileIndex);
+
+    fetch(url, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        [name]: file.filepath
+      })
+    });
+  }, [filepath, onDelete, fileIndex]);
+
+  useEffect(() => {
+    if (_file) {
+      uploadFile(_file);
+    }
+  }, []);
+
   return (
-    <div className="alt-file-tile">
-      <div className="alt-file-tile__icon">{icon(0)}</div>
-      <div className="alt-file-tile__content">
-        <div className="alt-file-tile__fileName">{file.name}</div>
-        <div className="alt-file-tile__fileSize">{getFileSize(file.size)}</div>
-      </div>
-      <Button
-        variant={ButtonVariant.transparent}
-        isIcon
-        className="alt-file-tile__remove"
-        onClick={(e) => {
-          e.stopPropagation();
-          onDelete();
-        }}>
+    <div
+      className={clsx('alt-file-tile', {
+        'alt-file-tile--error': status === 'failed'
+      })}
+      title={errorMessage ? `${errorMessage} ${file.filename}` : file.filename}>
+      <div className="alt-file-tile__icon">{fileIcon as ReactNode}</div>
+      <div className="alt-file-tile__title">{errorMessage || file.filename}</div>
+      <button
+        tabIndex={-1}
+        className="alt-file-tile__action alt-file-tile__close"
+        onClick={deleteFile}>
         <Icon i="close" />
-      </Button>
+      </button>
+      {status === 'failed' && (
+        <button
+          className="alt-file-tile__action alt-file-tile__repeat"
+          onClick={file.file ? () => uploadFile(file.file as File) : undefined}>
+          <Icon i="refresh" />
+        </button>
+      )}
+      {status !== undefined && (
+        <div className="alt-file-tile__progress">
+          <Progress value={progress} size={Size.small} role={statusRole} />
+        </div>
+      )}
     </div>
   );
 };

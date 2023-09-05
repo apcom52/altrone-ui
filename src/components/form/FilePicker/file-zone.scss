@@ -2,6 +2,14 @@
 
 .alt-file-zone {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 20px;
+}
+
+.alt-file-zone__picker {
+  display: flex;
   flex-direction: column;
   align-items: center;
   border: 2px dashed var(--borderColor);
@@ -24,12 +32,8 @@
 
 .alt-file-zone__files {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-direction: row;
+  flex-wrap: wrap;
   width: 100%;
-  margin-top: -8px;
-
-  & + .alt-file-zone__icon {
-    margin-top: 24px;
-  }
+  gap: 20px;
 }

@@ -6,13 +6,18 @@ import { StoryObj } from '@storybook/react';
 export const BlockFilePicker: StoryObj<typeof FilePicker> = {
   name: 'Block FilePicker',
   render: ({ ...args }) => {
-    const [value, setValue] = useState<File | File[]>();
-
-    console.log('value', value);
-
     return (
-      <StorybookPlayground>
-        <FilePicker {...args} value={value} onChange={setValue} variant={FilePickerVariant.block} />
+      <StorybookPlayground showBackground>
+        <FilePicker
+          {...args}
+          variant={FilePickerVariant.block}
+          onSuccess={(response) => {
+            console.log('onSuccess', response);
+          }}
+          onDelete={(response) => {
+            console.log('onDelete', response);
+          }}
+        />
       </StorybookPlayground>
     );
   }

@@ -34,6 +34,7 @@
     "@types/jest": "^28.1.6",
     "@types/lodash-es": "^4.17.7",
     "@types/react": "^18.0.15",
+    "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.0",
     "babel-jest": "^29.0.3",
@@ -111,7 +112,8 @@
     "react-number-format": "^5.0.0-beta.5",
     "react-popper": "^2.3.0",
     "rooks": "^7.4.0",
-    "sass": "^1.54.9"
+    "sass": "^1.54.9",
+    "uuid": "^9.0.0"
   },
   "prettier": {
     "semi": true,
