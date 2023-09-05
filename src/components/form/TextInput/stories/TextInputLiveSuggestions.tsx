@@ -15,20 +15,6 @@ const TextInputLiveSuggestions: ComponentStory<typeof TextInput> = ({ placeholde
 
   return (
     <StorybookPlayground>
-      <Form>
-        <FormGroup>
-          <FormField>
-            <Switcher checked={isLeftActive} onChange={setIsLeftActive}>
-              Show left island
-            </Switcher>
-          </FormField>
-          <FormField>
-            <Switcher checked={isRightActive} onChange={setIsRightActive}>
-              Show right island
-            </Switcher>
-          </FormField>
-        </FormGroup>
-      </Form>
       <TextInput
         value={value}
         onChange={setValue}

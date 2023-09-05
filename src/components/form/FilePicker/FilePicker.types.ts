@@ -6,13 +6,17 @@ export type UploadedFile = {
   id: string;
 };
 
-export type FileItem = {
+export interface FileItem {
   filename: string;
-  size?: number;
   src?: string | ArrayBuffer | null;
-};
+}
 
-export type InnerFileItem = FileItem & { id: string };
+export type FileUploadStatus = undefined | 'loading' | 'loaded' | 'failed';
+
+export interface InnerFileItem extends FileItem {
+  filepath?: string;
+  file?: File;
+}
 
 export type FileExtensions =
   | 'text'
@@ -51,5 +55,3 @@ export interface FilePickerProps {
   placeholder?: string;
   maxFiles?: number;
 }
-
-export type FileUploadStatus = undefined | 'loading' | 'loaded' | 'failed';
