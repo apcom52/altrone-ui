@@ -72,10 +72,10 @@ export const FileTile = ({ fileIndex, file, onDelete }: FileTileProps) => {
 
       request.onload = (e: ProgressEvent<any>) => {
         setProgress(100);
-        setStatus('loaded');
         setFile(undefined);
 
         if (e.target?.status && e.target.status >= 200 && e.target.status < 300) {
+          setStatus('loaded');
           onSuccessUpload(e.target.response);
           setFilepath(getFileNameFunc(e.target.response));
 
@@ -83,6 +83,8 @@ export const FileTile = ({ fileIndex, file, onDelete }: FileTileProps) => {
             setProgress(0);
             setStatus(undefined);
           }, 1500);
+        } else {
+          setStatus('failed');
         }
       };
 
@@ -108,8 +110,6 @@ export const FileTile = ({ fileIndex, file, onDelete }: FileTileProps) => {
     }
   }, []);
 
-  console.log('> file', file.filename, status);
-
   return (
     <div
       className={clsx('alt-file-tile', {
@@ -125,7 +125,9 @@ export const FileTile = ({ fileIndex, file, onDelete }: FileTileProps) => {
         <Icon i="close" />
       </button>
       {status === 'failed' && (
-        <button className="alt-file-tile__action alt-file-tile__repeat">
+        <button
+          className="alt-file-tile__action alt-file-tile__repeat"
+          onClick={file.file ? () => uploadFile(file.file as File) : undefined}>
           <Icon i="refresh" />
         </button>
       )}

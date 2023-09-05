@@ -28,8 +28,7 @@ export const FilePicker = ({
   const [files, setFiles] = useState<InnerFileItem[]>(() => {
     return defaultValue.map((fileItem) => ({
       ...fileItem,
-      filepath: fileItem.src,
-      id: uuid()
+      filepath: String(fileItem.src)
     }));
   });
 
@@ -131,6 +130,7 @@ export const FilePicker = ({
         {fileZoneVisible && fileButtonRef.current && (
           <FloatingBox
             placement="bottom"
+            surface={surface}
             targetElement={fileButtonRef.current}
             onClose={() => setFileZoneVisible(false)}
             preventClose={(e: MouseEvent) =>
