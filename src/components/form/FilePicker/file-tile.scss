@@ -111,4 +111,9 @@
     box-shadow: none;
     border-radius: 4px;
   }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 }

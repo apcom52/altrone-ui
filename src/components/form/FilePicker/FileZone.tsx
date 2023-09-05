@@ -8,32 +8,28 @@ interface FileZoneProps {
   files: InnerFileItem[];
   onUploadClick: () => void;
   onDeleteClick: (filePath: string, fileIndex: number) => void;
+  disableUploading: boolean;
 }
 
-export const FileZone = ({ files = [], onUploadClick, onDeleteClick }: FileZoneProps) => {
+export const FileZone = ({
+  files = [],
+  onUploadClick,
+  onDeleteClick,
+  disableUploading
+}: FileZoneProps) => {
   return (
     <div className="alt-file-zone">
-      {files.length ? (
-        <div className="alt-file-zone__files">
-          {files.map((file, fileIndex) => (
-            <FileTile
-              key={String(file.src)}
-              fileIndex={fileIndex}
-              file={file}
-              onDelete={onDeleteClick}
-            />
-          ))}
-          <UploadNew onClick={onUploadClick} />
-        </div>
-      ) : null}
-      {files.length === 0 && (
-        <div>
-          <div className="alt-file-zone__icon">
-            <Icon i="upload" />
-          </div>
-          <div className="alt-file-zone__label">Нажмите, чтобы выбрать файл для загрузки</div>
-        </div>
-      )}
+      <div className="alt-file-zone__files">
+        {files.map((file, fileIndex) => (
+          <FileTile
+            key={String(file.src)}
+            fileIndex={fileIndex}
+            file={file}
+            onDelete={onDeleteClick}
+          />
+        ))}
+        <UploadNew onClick={onUploadClick} disabled={disableUploading} />
+      </div>
     </div>
   );
 };

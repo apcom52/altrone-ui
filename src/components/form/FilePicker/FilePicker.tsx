@@ -11,6 +11,10 @@ import { FilePickerContext } from './FilePickerContext';
 import { getFileSrcFromResponse } from './FilePicker.utils';
 import { Surface } from '../../../types';
 
+/**
+ * This component is used to upload files to server
+ * @constructor
+ */
 export const FilePicker = ({
   defaultValue = [],
   variant = FilePickerVariant.default,
@@ -96,7 +100,10 @@ export const FilePicker = ({
 
   return (
     <FilePickerContext.Provider value={filePickerContext}>
-      <div className={clsx('alt-file-picker', className)}>
+      <div
+        className={clsx('alt-file-picker', className, {
+          'alt-file-picker--variant-block': variant === FilePickerVariant.block
+        })}>
         <input
           type="file"
           ref={fileInputRef}
@@ -127,7 +134,7 @@ export const FilePicker = ({
             )}
           </button>
         )}
-        {fileZoneVisible && fileButtonRef.current && (
+        {fileZoneVisible && variant === FilePickerVariant.default && fileButtonRef.current && (
           <FloatingBox
             placement="bottom"
             surface={surface}
@@ -138,8 +145,21 @@ export const FilePicker = ({
             }
             useRootContainer
             useParentWidth>
-            <FileZone files={files} onUploadClick={uploadFiles} onDeleteClick={onDeleteFile} />
+            <FileZone
+              files={files}
+              onUploadClick={uploadFiles}
+              onDeleteClick={onDeleteFile}
+              disableUploading={files.length >= maxFiles}
+            />
           </FloatingBox>
+        )}
+        {variant === FilePickerVariant.block && (
+          <FileZone
+            files={files}
+            onUploadClick={uploadFiles}
+            onDeleteClick={onDeleteFile}
+            disableUploading={files.length >= maxFiles}
+          />
         )}
       </div>
     </FilePickerContext.Provider>
