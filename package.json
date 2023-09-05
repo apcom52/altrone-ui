@@ -121,5 +121,6 @@
     "trailingComma": "none",
     "jsxBracketSameLine": true
   },
-  "readme": "ERROR: No README data found!"
+  "readme": "ERROR: No README data found!",
+  "_id": "altrone-ui@2.0.0-dev.2323"
 }
