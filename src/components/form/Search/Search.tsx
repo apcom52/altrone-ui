@@ -1,12 +1,16 @@
 import { InputIslandType, TextInput, TextInputProps } from '../TextInput';
 import { useLocalization } from '../../../hooks';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Icon } from '../../icons';
 import './search.scss';
 import clsx from 'clsx';
 import { useDebouncedValue, useDidUpdate } from 'rooks';
 
-interface SearchProps extends Omit<TextInputProps, 'suggestions'> {
+interface SearchProps
+  extends Omit<
+    TextInputProps,
+    'suggestions' | 'rightIsland' | 'suffix' | 'rightIcon' | 'leftIsland' | 'prefix' | 'leftIcon'
+  > {
   suggestions?: (searchValue: string) => Promise<string[]>;
 }
 
@@ -44,6 +48,11 @@ export const Search = ({
       className={clsx('alt-search', className)}
       {...props}
       suggestions={suggestionsList}
+      leftIsland={undefined}
+      prefix={undefined}
+      leftIcon={undefined}
+      suffix={undefined}
+      rightIcon={undefined}
       rightIsland={
         value
           ? {
