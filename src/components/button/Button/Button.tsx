@@ -7,13 +7,18 @@ import React, {
   useRef,
   useState
 } from 'react';
-import { ContextMenuType as ContextMenuType, Indicator, Role, Size } from '../../../types';
+import {
+  ContextMenuType as ContextMenuType,
+  Indicator,
+  Role,
+  Size,
+  Elevation
+} from '../../../types';
 import clsx from 'clsx';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import { ContextMenu } from '../../list';
 import { Loading, Progress } from '../../indicators';
 import './button.scss';
-import { Elevation } from '../../../types/Elevation';
 
 export enum ButtonVariant {
   default = '',

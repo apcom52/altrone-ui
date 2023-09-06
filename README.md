@@ -5,23 +5,15 @@
 Altrone UI is a component library for fast developing beautiful and functional web application interfaces.
 
 ## Links 
-💠 [**DataTable Selectable mode** and other new features in **March Feature Update (1.3)**](https://github.com/apcom52/altrone-ui/releases/tag/v1.3.0)
+🐍 [**8 new components**, **TextInput Suggestions**, **Surfaces** and other new features in **Altrone 2.0 Blind Basilisk**](https://github.com/apcom52/altrone-ui/releases/tag/v1.3.0)
 
-🔹 See what cool features were added in [**February Feature Update (1.2)**](https://github.com/apcom52/altrone-ui/releases/tag/v1.2.0) and [**January Feature Update(1.1)**](https://github.com/apcom52/altrone-ui/releases/tag/v1.1.0)
+📚 **Documentation**
 
-🔹 [All releases](https://github.com/apcom52/altrone-ui/releases)
+▶️ **Demo**
 
-🔹 [Trello board](https://trello.com/b/EGGzwaTu/altrone-ui)
+💿 [**All releases**](https://github.com/apcom52/altrone-ui/releases)
 
-🔹 [Documentation (in development)](https://apcom52.github.io/altrone-docs/)
-
-## Roadmap
-| Quarter                             | Releases | Planned features                                                                                                                                             |
-|-------------------------------------|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| January - March 2023 **(finished)** | Updates for 1.0  | DataTable actions, selectable rows of DataTable, Indicators, NavigationList action, Progress updates, build optimization                                     |
-| April - June 2023                   | 2.0 Release   | FileUploader, Breadcrumbs, Pagination, Carousel, ToolSelector, Spoiler, Surfaces, TextInput suggestions, Multiple Select, Loading State for Button and TextInput |
-| July - September 2023               | Updates for 2.0  | DatePicker ranges, new features for FormField, accessibility features                                                                                        |
-| October - December 2023             | 3.0 Release  | Charts, ColorPicker, Range Slider, Notification, new features for another components, new accessibility features                                             |
+📝 [**Trello board**](https://trello.com/b/EGGzwaTu/altrone-ui)
 
 ## Versions
 
@@ -63,10 +55,14 @@ To run storybook enter the command:
 - `<FloatingBox />`
 - `<Form />`
 - `<Modal />`
+- `<PhotoViewer />`
+- `<Spoiler />`
+- `<Toolbar />`
 
 **Data:**
 
 - `<DataTable />`
+- `<Carousel />`
 
 **Form:**
 
@@ -80,6 +76,8 @@ To run storybook enter the command:
 - `<Select />`
 - `<ScrollableSelector />`
 - `<DatePicker />`
+- `<Search />`
+- `<FilePicker />`
 
 **Icons:**
 
@@ -88,6 +86,8 @@ To run storybook enter the command:
 **Indicators:**
 
 - `<Progress />`
+- `<Loading />`
+- `<Progress />` Documentation | Demo
 
 **List:**
 

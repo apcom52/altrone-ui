@@ -6,7 +6,18 @@ import { Elevation, Surface } from '../../../types';
 import clsx from 'clsx';
 
 interface NumberInputProps
-  extends Omit<TextInputProps, 'value' | 'onChange' | 'step' | 'min' | 'max' | 'ref'> {
+  extends Omit<
+    TextInputProps,
+    | 'value'
+    | 'onChange'
+    | 'step'
+    | 'min'
+    | 'max'
+    | 'ref'
+    | 'suggestions'
+    | 'useLiveSuggestions'
+    | 'loading'
+  > {
   value: number;
   onChange: (value: number) => void;
   showControls?: boolean;

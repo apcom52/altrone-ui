@@ -1,184 +1,47 @@
-import { ChangeEventHandler, useCallback, useRef, useState } from 'react';
-import { Surface } from '../../../types';
-import {
-  ArchiveFileIcon,
-  AudioFileIcon,
-  CodeFileIcon,
-  DefaultIcon,
-  DocumentFileIcon,
-  ImageFileIcon,
-  PresentationFileIcon,
-  TableFileIcon,
-  VideoFileIcon
-} from './FilePickerIcons';
-import {
-  defaultFileDeleteFunc,
-  defaultFileUploadFunc,
-  FileDeleteFuncArgs,
-  FileUploadFuncArgs,
-  getFileSize
-} from './FilePicker.utils';
+import { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react';
+import { DefaultIcon } from './FilePickerIcons';
+import { v4 as uuid } from 'uuid';
 import './file-picker.scss';
 import clsx from 'clsx';
 import { FloatingBox } from '../../containers';
 import { FileZone } from './FileZone';
-import { Loading } from '../../indicators';
+import { FILE_EXTENTIONS, FilePickerVariant } from './FilePicker.constants';
+import { FilePickerProps, InnerFileItem } from './FilePicker.types';
+import { FilePickerContext } from './FilePickerContext';
+import { getFileSrcFromResponse } from './FilePicker.utils';
+import { Surface } from '../../../types';
 
-export enum FilePickerVariant {
-  default = 'default',
-  block = 'block'
-}
-
-export type FilePickerFileIcon = (count: number) => JSX.Element;
-
-type FilePickerType = File | File[] | undefined;
-type FileExtensions =
-  | 'text'
-  | 'image'
-  | 'audio'
-  | 'video'
-  | 'table'
-  | 'presentation'
-  | 'code'
-  | 'archive';
-
-interface FilePickerProps {
-  value: FilePickerType;
-  onChange: (value: FilePickerType) => void;
-  variant?: FilePickerVariant;
-  surface?: Surface;
-  multiple?: boolean;
-  maxFileSize?: number;
-  extensions?: FileExtensions | string;
-  className?: string;
-  name?: string;
-  placeholder?: string;
-  useAutoUpload?: boolean;
-  uploadUrl?: string;
-  autoUploadFunc?: (props: FileUploadFuncArgs) => void;
-  deleteFileFunc?: (props: FileDeleteFuncArgs) => void;
-}
-
-const FILE_EXTENTIONS: Record<
-  FileExtensions | string,
-  { icon: FilePickerFileIcon; accept: string[]; label: string }
-> = {
-  text: {
-    icon: DocumentFileIcon,
-    accept: ['.doc', '.docx', '.pdf', '.txt'],
-    label: 'Выберите документ'
-  },
-  image: {
-    icon: ImageFileIcon,
-    accept: ['.jpg', '.jpeg', '.gif', '.png', '.svg', '.tiff', '.tif'],
-    label: 'Выберите изображение'
-  },
-  audio: {
-    icon: AudioFileIcon,
-    accept: ['.mp3', '.wav', '.aac', '.m4a'],
-    label: 'Выберите музыку'
-  },
-  video: {
-    icon: VideoFileIcon,
-    accept: ['.mp4', '.avi', '.mov'],
-    label: 'Выберите видео'
-  },
-  table: {
-    icon: TableFileIcon,
-    accept: ['.xls', '.xlsx', '.ods'],
-    label: 'Выберите таблицу'
-  },
-  presentation: {
-    icon: PresentationFileIcon,
-    accept: ['.ppt', '.pptx', '.odp', '.key'],
-    label: 'Выберите презентацию'
-  },
-  code: {
-    icon: CodeFileIcon,
-    accept: [
-      '.c',
-      '.class',
-      '.cpp',
-      '.cs',
-      '.h',
-      '.java',
-      '.php',
-      '.py',
-      '.sh',
-      '.swift',
-      '.vb',
-      '.js',
-      '.css',
-      '.html'
-    ],
-    label: 'Выберите исходный код'
-  },
-  archive: {
-    icon: ArchiveFileIcon,
-    accept: ['.zip', '.rar', '.7z', '.tar.gz'],
-    label: 'Выберите архив'
-  }
-};
-
+/**
+ * This component is used to upload files to server
+ * @constructor
+ */
 export const FilePicker = ({
+  defaultValue = [],
   variant = FilePickerVariant.default,
-  value,
-  onChange,
   className,
-  extensions,
+  url,
+  method,
   name,
-  multiple = false,
-  surface,
-  placeholder,
-  useAutoUpload = false,
-  uploadUrl = '',
-  autoUploadFunc = defaultFileUploadFunc,
-  deleteFileFunc = defaultFileDeleteFunc
+  extensions,
+  maxFiles = 10,
+  surface = Surface.glass,
+  onSuccess,
+  placeholder = 'Выберите файл',
+  getFileNameFunc = getFileSrcFromResponse
 }: FilePickerProps) => {
-  const [isFileZoneVisible, setIsFileZoneVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [files, setFiles] = useState<InnerFileItem[]>(() => {
+    return defaultValue.map((fileItem) => ({
+      ...fileItem,
+      filepath: String(fileItem.src)
+    }));
+  });
+
+  const [fileZoneVisible, setFileZoneVisible] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const uploadedFilesRef = useRef<File[]>([]);
+  const fileButtonRef = useRef<HTMLButtonElement>(null);
 
-  const icon = FILE_EXTENTIONS[String(extensions)]?.icon || DefaultIcon;
-  const label = placeholder || FILE_EXTENTIONS[String(extensions)]?.label || 'Выберите файл';
-
-  const onFileUploadClick = useCallback(() => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  }, []);
-
-  const onFileChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (e) => {
-      if (multiple) {
-        setIsFileZoneVisible(true);
-        onChange(Array.from(e.target.files || []));
-      } else {
-        onChange(e.target.files?.[0] || undefined);
-      }
-
-      if (useAutoUpload) {
-        for (const file of e.target.files || []) {
-          if (!uploadedFilesRef.current.find((item) => item === file)) {
-            autoUploadFunc({
-              file,
-              url: uploadUrl,
-              onError: (e) => console.log('> onError', file.name, e),
-              onProgress: (loaded) => console.log('> onProgress', file.name, loaded),
-              onDone: (e) => console.log('> onDone', file.name)
-            });
-          }
-        }
-      }
-    },
-    [multiple, onChange]
-  );
-
-  const fileName = value && !Array.isArray(value) && value.name;
-  const fileSize = value && !Array.isArray(value) && getFileSize(value.size);
+  const icon = FILE_EXTENTIONS[String(extensions)]?.smallIcon || DefaultIcon;
 
   const acceptFiles =
     extensions &&
@@ -188,66 +51,117 @@ export const FilePicker = ({
       ? FILE_EXTENTIONS[extensions].accept.join(',')
       : extensions;
 
+  const uploadFiles = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const filePickerContext = useMemo(() => {
+    return {
+      url,
+      method,
+      name,
+      onSuccessUpload: onSuccess,
+      getFileNameFunc: getFileNameFunc
+    };
+  }, [url, method, name, onSuccess]);
+
+  const onChangeFileInput = async (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = e.target.files || [];
+
+    if (selectedFiles.length === 0) {
+      return;
+    }
+
+    for (const file of selectedFiles) {
+      const fileReaderItem = new FileReader();
+      fileReaderItem.readAsDataURL(file);
+
+      fileReaderItem.onload = () => {
+        const newId = uuid();
+
+        setFiles((old) => [
+          ...old,
+          {
+            id: newId,
+            filename: file.name,
+            src: fileReaderItem.result,
+            file
+          }
+        ]);
+      };
+    }
+  };
+
+  const onDeleteFile = useCallback((_: string, fileIndex: number) => {
+    setFiles((old) => old.filter((_, itemIndex) => itemIndex !== fileIndex));
+  }, []);
+
   return (
-    <div className={clsx('alt-file-picker', className)}>
-      {variant === FilePickerVariant.default && (
-        <button
-          ref={buttonRef}
-          className="alt-button alt-file-picker-button"
-          onClick={multiple ? () => setIsFileZoneVisible(!isFileZoneVisible) : onFileUploadClick}>
-          <span className="alt-file-picker-button__icon">{icon(value?.length || 0)}</span>
-          {!Array.isArray(value) && value ? (
-            <div className="alt-file-picker-file">
-              <div className="alt-file-picker-file__name">{fileName}</div>
-              <div className="alt-file-picker-file__size">{fileSize}</div>
-            </div>
-          ) : Array.isArray(value) && value ? (
-            <div className="alt-file-picker-file">Выбрано {value.length} файлов</div>
-          ) : (
-            <div className="alt-file-picker-button__label">{label}</div>
-          )}
-          {isLoading && (
-            <div className="alt-file-picker-button__loading">
-              <Loading />
-            </div>
-          )}
-        </button>
-      )}
-      {variant === FilePickerVariant.block && (
-        <FileZone
-          files={Array.isArray(value) ? value : value ? [value] : []}
-          icon={icon}
-          onClick={onFileUploadClick}
-          onChange={onChange}
-          onDelete={deleteFileFunc}
+    <FilePickerContext.Provider value={filePickerContext}>
+      <div
+        className={clsx('alt-file-picker', className, {
+          'alt-file-picker--variant-block': variant === FilePickerVariant.block
+        })}>
+        <input
+          type="file"
+          ref={fileInputRef}
+          className="alt-file-picker__input"
+          tabIndex={-1}
+          accept={acceptFiles}
+          onChange={onChangeFileInput}
+          multiple={maxFiles > 1}
         />
-      )}
-      <input
-        type="file"
-        name={name}
-        ref={fileInputRef}
-        className="alt-file-picker__input"
-        tabIndex={-1}
-        onChange={onFileChange}
-        accept={acceptFiles}
-        multiple={multiple}
-      />
-      {variant === FilePickerVariant.default && isFileZoneVisible && (
-        <FloatingBox
-          targetElement={buttonRef.current}
-          onClose={() => setIsFileZoneVisible(false)}
-          useRootContainer
-          useParentWidth
-          minWidth={300}
-          surface={surface}>
+        {variant === FilePickerVariant.default && (
+          <button
+            ref={fileButtonRef}
+            className="alt-button alt-file-picker-button"
+            onClick={() => setFileZoneVisible(true)}>
+            <span className="alt-file-picker-button__icon">
+              {icon(String(extensions), files?.length || 0, files?.[0])}
+            </span>
+            {files.length === 1 ? (
+              <div className="alt-file-picker-file">
+                <div className="alt-file-picker-file__name">{files?.[0]?.filename}</div>
+              </div>
+            ) : Array.isArray(files) && files.length ? (
+              <div className="alt-file-picker-file">
+                <div className="alt-file-picker-file">Выбрано {files?.length} файлов</div>
+              </div>
+            ) : (
+              <div className="alt-file-picker-button__label">{placeholder}</div>
+            )}
+          </button>
+        )}
+        {fileZoneVisible && variant === FilePickerVariant.default && fileButtonRef.current && (
+          <FloatingBox
+            placement="bottom"
+            surface={surface}
+            targetElement={fileButtonRef.current}
+            onClose={() => setFileZoneVisible(false)}
+            preventClose={(e: MouseEvent) =>
+              (e.target as HTMLElement).getAttribute('type') === 'file'
+            }
+            useRootContainer
+            useParentWidth>
+            <FileZone
+              files={files}
+              onUploadClick={uploadFiles}
+              onDeleteClick={onDeleteFile}
+              disableUploading={files.length >= maxFiles}
+            />
+          </FloatingBox>
+        )}
+        {variant === FilePickerVariant.block && (
           <FileZone
-            files={Array.isArray(value) ? value : []}
-            icon={icon}
-            onClick={onFileUploadClick}
-            onChange={onChange}
+            files={files}
+            onUploadClick={uploadFiles}
+            onDeleteClick={onDeleteFile}
+            disableUploading={files.length >= maxFiles}
           />
-        </FloatingBox>
-      )}
-    </div>
+        )}
+      </div>
+    </FilePickerContext.Provider>
   );
 };
