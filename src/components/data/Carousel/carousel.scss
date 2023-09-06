@@ -8,6 +8,10 @@
   height: 300px;
 
   @include useDisabledUserSelect();
+
+  @include less($l-phone) {
+    height: 200px;
+  }
 }
 
 .alt-carousel__item {
@@ -27,18 +31,34 @@
   opacity: 0;
   transition: opacity 0.5s linear, transform 0.5s ease, left 0.5s ease, filter 0.5s ease;
   filter: grayscale(0.5);
+
+  @include less($l-phone) {
+    width: calc(100% - 40px);
+    height: 190px;
+    left: 10px;
+  }
 }
 
 .alt-carousel__item--left {
   left: -300px;
   transform: scale(0.5) translateX(-300px);
   z-index: -1;
+
+  @include less($l-phone) {
+    left: -50px;
+    transform: scale(0.5) translateX(-50px);
+  }
 }
 
 .alt-carousel__item--right {
   left: 300px;
   transform: scale(0.5) translateX(150px);
   z-index: -1;
+
+  @include less($l-phone) {
+    left: calc(100% - 50px);
+    transform: scale(0.75) translateX(50px);
+  }
 }
 
 .alt-carousel__controls {
@@ -56,6 +76,10 @@
   z-index: 1;
 
   @include useGlassSurface();
+
+  @include less($l-phone) {
+    top: 150px;
+  }
 }
 
 .alt-carousel__item--current {
@@ -64,6 +88,11 @@
   opacity: 1;
   z-index: 1;
   filter: none;
+
+  @include less($l-phone) {
+    left: 5px;
+    width: calc(100% - 10px);
+  }
 }
 
 .alt-carousel__item--prev {
@@ -73,15 +102,25 @@
   justify-content: flex-start;
   opacity: 1;
   z-index: 0;
+
+  @include less($l-phone) {
+    top: 0;
+    transform: scale(0.8) translateX(-30px) rotateY(-10deg);
+  }
 }
 
 .alt-carousel__item--next {
   top: calc(50% - 145px);
   left: 200px;
-  transform: scale(0.8) translateX(100px)  rotateY(10deg);
+  transform: scale(0.8) translateX(100px) rotateY(10deg);
   justify-content: flex-end;
   opacity: 1;
   z-index: 0;
+
+  @include less($l-phone) {
+    top: 0;
+    transform: scale(0.8) translateX(-170px) rotateY(10deg);
+  }
 }
 
 .alt-carousel-control {
