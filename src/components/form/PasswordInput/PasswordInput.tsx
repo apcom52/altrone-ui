@@ -2,7 +2,8 @@ import { InputIslandType, TextInput, TextInputProps } from '../index';
 import { memo, useCallback, useState } from 'react';
 import { Icon } from '../../icons';
 
-interface PasswordInputProps extends TextInputProps {
+interface PasswordInputProps
+  extends Omit<TextInputProps, 'suggestions' | 'useLiveSuggestions' | 'loading'> {
   showControls?: boolean;
 }
 
