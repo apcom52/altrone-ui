@@ -12,4 +12,10 @@ type PhotoViewerBase = {
   startsFrom?: number;
 };
 
+export type PhotoViewerRef = {
+  currentIndex: number;
+  zoom: number;
+  expanded: boolean;
+};
+
 export type PhotoViewerProps = PhotoViewerBase;
