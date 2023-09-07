@@ -39,6 +39,7 @@
     "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.0",
+    "auto-changelog": "^2.4.0",
     "babel-jest": "^29.0.3",
     "babel-loader": "^8.2.5",
     "chromatic": "^6.19.8",
@@ -81,7 +82,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
-    "chromatic": "npx chromatic --project-token=chpt_59ff17683719820"
+    "chromatic": "npx chromatic --project-token=chpt_59ff17683719820",
+    "version": "auto-changelog -p && git add CHANGELOG.md"
   },
   "repository": {
     "type": "git",
