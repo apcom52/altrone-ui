@@ -1,4 +1,4 @@
-interface PhotoViewImage {
+export interface PhotoViewImage {
   src: string;
   caption?: string;
   description?: string;
