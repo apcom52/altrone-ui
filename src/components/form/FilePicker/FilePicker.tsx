@@ -20,7 +20,7 @@ export const FilePicker = ({
   variant = FilePickerVariant.default,
   className,
   url,
-  method,
+  method = 'GET',
   name,
   extensions,
   maxFiles = 1,
