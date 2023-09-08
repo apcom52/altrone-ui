@@ -41,7 +41,7 @@ export const PhotoViewer = forwardRef<PhotoViewerRef, PhotoViewerProps>(
     );
 
     return ReactDOM.createPortal(
-      <div className={clsx('alt-photo-viewer', className)}>
+      <div className={clsx('alt-photo-viewer', className)} data-testid="alt-test-photoViewer">
         <div className="alt-photo-viewer__container" ref={containerRef}>
           <PhotoViewerImage
             containerRef={containerRef}

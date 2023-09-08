@@ -13,3 +13,9 @@ export interface CarouselProps {
   showControls?: boolean;
   usePhotoViewer?: boolean;
 }
+
+export interface CarouselRef {
+  currentIndex: number;
+  prev: () => void;
+  next: () => void;
+}
