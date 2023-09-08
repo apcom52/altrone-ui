@@ -23,7 +23,7 @@ export const FilePicker = ({
   method,
   name,
   extensions,
-  maxFiles = 10,
+  maxFiles = 1,
   surface = Surface.glass,
   onSuccess,
   placeholder = 'Выберите файл',
