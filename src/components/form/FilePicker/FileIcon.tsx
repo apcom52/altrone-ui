@@ -18,7 +18,9 @@ export const FileIcon = ({ children, icon }: FileIconProps) => {
         )}
         {!icon ? (
           typeof children === 'string' ? (
-            <div className="alt-file-icon__extension">{children}</div>
+            <div className="alt-file-icon__extension" data-testid="alt-test-fileIcon-extension">
+              {children}
+            </div>
           ) : (
             children
           )

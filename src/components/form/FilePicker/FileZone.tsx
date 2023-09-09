@@ -1,4 +1,3 @@
-import { Icon } from '../../icons';
 import './file-zone.scss';
 import { FileTile } from './FileTile';
 import { InnerFileItem } from './FilePicker.types';

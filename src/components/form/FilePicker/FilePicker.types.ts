@@ -56,3 +56,8 @@ export interface FilePickerProps {
   maxFiles?: number;
   getFileNameFunc?: (response: string) => string;
 }
+
+export interface FilePickerRef {
+  files: InnerFileItem[];
+  fileInputElement: HTMLInputElement | null;
+}
