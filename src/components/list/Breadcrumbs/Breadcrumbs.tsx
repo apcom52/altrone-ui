@@ -34,7 +34,6 @@ export const Breadcrumbs = ({
 }: BreadcrumbsProps) => {
   const onItemClick = useCallback((item: BreadcrumbLink) => {
     if ('href' in item && item.href) {
-      console.log('href', item.href);
       window.location.href = item.href;
     } else if ('onClick' in item) {
       item.onClick();
