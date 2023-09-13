@@ -115,21 +115,20 @@ export const Breadcrumbs = ({
       )}
       {!collapsible &&
         links.map((link, linkIndex) => (
-          <>
+          <React.Fragment key={linkIndex}>
             {(showHomeLink || (!showHomeLink && linkIndex > 0)) && (
               <div className="alt-breadcrumbs__separator">
                 <Icon i="chevron_right" />
               </div>
             )}
             <button
-              key={linkIndex}
               className={clsx('alt-breadcrumbs-item')}
               disabled={disabled}
               onClick={() => onItemClick(link)}>
               {link.icon && <span className="alt-breadcrumb-item__icon">{link.icon}</span>}
               {link.title}
             </button>
-          </>
+          </React.Fragment>
         ))}
     </div>
   );
