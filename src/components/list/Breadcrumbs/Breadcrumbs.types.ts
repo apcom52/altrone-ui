@@ -21,4 +21,5 @@ export interface BreadcrumbsProps {
   showHomeLink?: boolean;
   HomeComponent?: () => JSX.Element;
   onHomeClick?: () => void;
+  homepageHref?: string;
 }

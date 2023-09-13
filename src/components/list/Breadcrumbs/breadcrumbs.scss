@@ -24,6 +24,7 @@
   cursor: pointer;
   transition: box-shadow 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
   color: var(--secondaryTextColor);
+  text-decoration: none;
 
   @include useFontSize(label);
   @include useFocus();
@@ -40,7 +41,7 @@
     color: var(--textColor);
   }
 
-  &:last-of-type {
+  &:last-child {
     pointer-events: none;
     color: var(--textColor);
     font-weight: 600;

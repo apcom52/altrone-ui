@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import './breadcrumbs.scss';
 import { DefaultHomeBreadcrumb } from './DefaultHomeBreadcrumb';
 import { Icon } from '../../icons';
@@ -8,6 +8,8 @@ import { Button, ButtonVariant } from '../../button';
 import { BreadcrumbLink, BreadcrumbsProps } from './Breadcrumbs.types';
 
 const HOME_ICON = <Icon i="home" />;
+
+const ButtonComponents = ['button', 'a'];
 
 /**
  * Indicate the page's location within a navigation hierarchy
@@ -27,7 +29,8 @@ export const Breadcrumbs = ({
   disabled = false,
   showHomeLink = true,
   onHomeClick,
-  HomeComponent = DefaultHomeBreadcrumb
+  HomeComponent = DefaultHomeBreadcrumb,
+  homepageHref
 }: BreadcrumbsProps) => {
   const onItemClick = useCallback((item: BreadcrumbLink) => {
     if ('href' in item && item.href) {
@@ -71,13 +74,23 @@ export const Breadcrumbs = ({
     return result;
   }, [links, collapsible, disabled, showHomeLink]);
 
+  const isLink = Boolean(homepageHref);
+
   return (
     <div className={clsx('alt-breadcrumbs', className)}>
-      {showHomeLink && (
-        <button className={clsx('alt-breadcrumbs-item')} onClick={onHomeClick} disabled={disabled}>
-          {HomeComponent()}
-        </button>
-      )}
+      {showHomeLink &&
+        React.createElement(
+          ButtonComponents[homepageHref ? 1 : 0],
+          {
+            className: clsx('alt-breadcrumbs-item'),
+            onClick: !isLink ? onHomeClick : undefined,
+            href: homepageHref,
+            type: !isLink ? 'button' : undefined,
+            rel: isLink ? 'noopener noreferrer' : undefined,
+            disabled
+          },
+          HomeComponent()
+        )}
       {collapsible && collapsedItems.length > 0 && links?.length > 0 && (
         <>
           {showHomeLink && (
