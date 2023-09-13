@@ -40,6 +40,12 @@ export const PhotoViewer = forwardRef<PhotoViewerRef, PhotoViewerProps>(
       [expanded, currentIndex, zoom]
     );
 
+    if (images.length === 0) {
+      onClose();
+
+      return null;
+    }
+
     return ReactDOM.createPortal(
       <div className={clsx('alt-photo-viewer', className)} data-testid="alt-test-photoViewer">
         <div className="alt-photo-viewer__container" ref={containerRef}>
@@ -59,8 +65,8 @@ export const PhotoViewer = forwardRef<PhotoViewerRef, PhotoViewerProps>(
 
           {ltePhoneL ||
           images.length > 1 ||
-          images[currentIndex].caption ||
-          images[currentIndex].description ? (
+          images[currentIndex]?.caption ||
+          images[currentIndex]?.description ? (
             gtPhoneL || (ltePhoneL && expanded) ? (
               <div className="alt-photo-viewer-info">
                 {expanded && (
