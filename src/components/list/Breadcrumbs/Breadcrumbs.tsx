@@ -49,7 +49,7 @@ export const Breadcrumbs = ({
       title: link.title,
       icon: link.icon,
       disabled: disabled,
-      onClick: () => null
+      onClick: link.onClick
     }));
 
     const result = [
