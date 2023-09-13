@@ -3,7 +3,7 @@ import React, { useCallback, useMemo } from 'react';
 import './breadcrumbs.scss';
 import { DefaultHomeBreadcrumb } from './DefaultHomeBreadcrumb';
 import { Icon } from '../../icons';
-import { ContextMenuType, Size } from '../../../types';
+import { ContextAction, ContextMenuType, Size } from '../../../types';
 import { Button, ButtonVariant } from '../../button';
 import { BreadcrumbLink, BreadcrumbsProps } from './Breadcrumbs.types';
 
@@ -11,6 +11,7 @@ const HOME_ICON = <Icon i="home" />;
 
 const ButtonComponents = ['button', 'a'];
 
+const UNDEFINED_ACTION = () => null;
 /**
  * Indicate the page's location within a navigation hierarchy
  * @param {BreadcrumbLink[]} links - the list of links
@@ -36,7 +37,7 @@ export const Breadcrumbs = ({
     if ('href' in item && item.href) {
       window.location.href = item.href;
     } else if ('onClick' in item) {
-      item.onClick();
+      item.onClick?.();
     }
   }, []);
 
@@ -45,19 +46,22 @@ export const Breadcrumbs = ({
       return [];
     }
 
-    const menu = links.slice(0, links.length - 1).map((link) => ({
-      title: link.title,
-      icon: link.icon,
-      disabled: disabled,
-      onClick: link.onClick
-    }));
+    const menu = links.slice(0, links.length - 1).map(
+      (link) =>
+        ({
+          title: link.title,
+          icon: link.icon,
+          disabled: disabled,
+          onClick: () => onItemClick(link)
+        } as ContextAction)
+    );
 
-    const result = [
+    const result: ContextMenuType = [
       ...menu,
       {
         title: links.at(-1)?.title || '',
         disabled: true,
-        onClick: () => null
+        onClick: UNDEFINED_ACTION
       }
     ];
 
@@ -66,7 +70,7 @@ export const Breadcrumbs = ({
         title: 'Home',
         icon: HOME_ICON,
         disabled: true,
-        onClick: () => null
+        onClick: UNDEFINED_ACTION
       });
     }
 
