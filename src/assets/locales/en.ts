@@ -1,4 +1,6 @@
-export default {
+import { Localization } from '../../types/Localization';
+
+const localization: Localization = {
   common: {
     apply: 'Apply',
     cancel: 'Cancel',
@@ -50,6 +52,34 @@ export default {
       placeholder: 'Select an option',
       others: 'Others',
       search: 'Search...'
+    },
+    filePicker: {
+      placeholder: 'Select a file',
+      selectedFiles: {
+        zero: 'Uploaded {{count}} files',
+        one: 'Uploaded {{count}} file',
+        two: 'Uploaded {{count}} files',
+        few: 'Uploaded {{count}} files',
+        many: 'Uploaded {{count}} files',
+        other: 'Uploaded {{count}} files'
+      },
+      uploadNew: 'Upload new file',
+      errorMessage: 'Cannot upload the file',
+      deleteFile: 'Delete the file',
+      reuploadFile: 'Repeat again'
+    }
+  },
+  list: {
+    breadcrumbs: {
+      home: 'Home'
+    }
+  },
+  indicators: {
+    pagination: {
+      moveToPage: 'Navigate to page',
+      apply: 'Navigate'
     }
   }
 };
+
+export default localization;
