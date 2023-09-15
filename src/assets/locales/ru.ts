@@ -58,6 +58,12 @@ const localization: Localization = {
     breadcrumbs: {
       home: 'Домой'
     }
+  },
+  indicators: {
+    pagination: {
+      moveToPage: 'Перейти к странице',
+      apply: 'Перейти'
+    }
   }
 };
 

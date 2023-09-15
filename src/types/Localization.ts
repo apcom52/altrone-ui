@@ -59,4 +59,10 @@ export interface Localization {
       home: string;
     };
   };
+  indicators: {
+    pagination: {
+      moveToPage: string;
+      apply: string;
+    };
+  };
 }
