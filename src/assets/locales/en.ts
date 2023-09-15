@@ -1,4 +1,6 @@
-export default {
+import { Localization } from '../../types/Localization';
+
+const localization: Localization = {
   common: {
     apply: 'Apply',
     cancel: 'Cancel',
@@ -53,3 +55,5 @@ export default {
     }
   }
 };
+
+export default localization;
