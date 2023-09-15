@@ -2,6 +2,8 @@ import { useThemeContext } from '../../contexts';
 import { useCallback, useMemo } from 'react';
 import get from 'lodash-es/get';
 import { en, ru } from '../../assets/locales';
+import { NestedKeys } from '../../utils/NestedKeys';
+import { Localization } from '../../types/Localization';
 
 type translationOptions = {
   defaultValue?: string;
@@ -18,7 +20,7 @@ export const useLocalization = () => {
   }, [lang]);
 
   return useCallback(
-    (t: string, config?: translationOptions) => {
+    (t: NestedKeys<Localization>, config?: translationOptions) => {
       const { defaultValue, value = 0, plural = false, vars = {} } = config || {};
       let localeString = '';
 
