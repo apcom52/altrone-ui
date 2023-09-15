@@ -77,7 +77,8 @@ const Loading = ({ size = Size.medium, color = 'var(--textColor)', className }: 
         },
         className
       )}
-      style={{ color }}>
+      style={{ color }}
+      data-testid="alt-test-loading">
       <svg width={boxSize} height={boxSize} viewBox={`0 0 ${boxSize} ${boxSize}`}>
         <circle
           cx={circleCenter}
