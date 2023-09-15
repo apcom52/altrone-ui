@@ -1,4 +1,5 @@
-<img alt="Notebook with user interface elements" height="256" src="https://github.com/apcom52/altrone-ui/blob/stable/logo.png?raw=true" title="Altrone UI logo" width="256"/>
+<br />
+<img alt="Notebook with user interface elements" width="320" height="82" src="https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FW5YLGWqfJIMCnPELJjW6%2Fuploads%2FGUo8Duhjb5SonJdYliHO%2Flogo.png?alt=media&token=906640d8-d99c-4e48-87e7-b6e92171a084" title="Altrone UI logo" />
 
 # Altrone UI
 
@@ -7,22 +8,22 @@ Altrone UI is a component library for fast developing beautiful and functional w
 ## Links 
 🐍 [**8 new components**, **TextInput Suggestions**, **Surfaces** and other new features in **Altrone 2.0 Blind Basilisk**](https://github.com/apcom52/altrone-ui/releases/tag/v1.3.0)
 
-📚 **Documentation**
+📚 [**DOCUMENTATION**](https://apcom.gitbook.io/altrone-ui/)
 
-▶️ **Demo**
+▶️ [**STORYBOOK**](https://apcom52.github.io/altrone-ui/)
 
-💿 [**All releases**](https://github.com/apcom52/altrone-ui/releases)
+💿 [**RELEASE HISTORY**](https://github.com/apcom52/altrone-ui/releases)
 
-📝 [**Trello board**](https://trello.com/b/EGGzwaTu/altrone-ui)
+📝 [**TRELLO BOARD**](https://trello.com/b/EGGzwaTu/altrone-ui)
 
 ## Versions
 
-| Tag                          | Example        | Description               |
-|------------------------------|----------------|---------------------------|
-| **Stable release**           | `@1.3.0`         | Stable release of Altrone |
-| **Release Candidate**        | `@1.3.0-rc`      | A pre-release build that contains all the necessary changes for the release. The main difference from the stable version is that not all new features have been covered in tests yet. **Not recommended for production**                        |
-| **Beta version**             | `@1.3.0-beta.2`  | A set of updates and new features from dev builds that can be used in test projects and to get to know new components. **Not recommended for production**                          |
-| **Development weekly build** | `@1.3.0-dev.2313` | Weekly collection of changes. For enthusiasts. Some features may be incomplete or not work at all. **Forbidden to use in production**                          |
+| Tag                          | Example           | Description               |
+|------------------------------|-------------------|---------------------------|
+| **Stable release**           | `@2.0.0`          | Stable release of Altrone |
+| **Release Candidate**        | `@2.0.0-rc`       | A pre-release build that contains all the necessary changes for the release. The main difference from the stable version is that not all new features have been covered in tests yet. **Not recommended for production**                        |
+| **Beta version**             | `@2.0.0-beta.5`   | A set of updates and new features from dev builds that can be used in test projects and to get to know new components. **Not recommended for production**                          |
+| **Development weekly build** | `@2.0.0-dev.2322` | Weekly collection of changes. For enthusiasts. Some features may be incomplete or not work at all. **Forbidden to use in production**                          |
 
 
 ## Installation
@@ -35,13 +36,13 @@ To install the library, enter the command:
 
 ## Documentation
 
-Altrone has storybook documentation and examples. 
+- [**Read the documentation**](https://apcom.gitbook.io/altrone-ui/)
 
 To run storybook enter the command:
 
 `npm run storybook`
 
-`< Online documentation in progress />`
+- [**Check the storybook**](https://apcom52.github.io/altrone-ui/)
 
 ## Components
 
@@ -55,14 +56,14 @@ To run storybook enter the command:
 - `<FloatingBox />`
 - `<Form />`
 - `<Modal />`
-- `<PhotoViewer />`
-- `<Spoiler />`
+- `<PhotoViewer />` 🆕
+- `<Spoiler />` 🆕
 - `<Toolbar />`
 
 **Data:**
 
 - `<DataTable />`
-- `<Carousel />`
+- `<Carousel />` 🆕
 
 **Form:**
 
@@ -76,8 +77,8 @@ To run storybook enter the command:
 - `<Select />`
 - `<ScrollableSelector />`
 - `<DatePicker />`
-- `<Search />`
-- `<FilePicker />`
+- `<Search />` 🆕
+- `<FilePicker />` 🆕
 
 **Icons:**
 
@@ -86,8 +87,8 @@ To run storybook enter the command:
 **Indicators:**
 
 - `<Progress />`
-- `<Loading />`
-- `<Progress />` Documentation | Demo
+- `<Loading />` 🆕
+- `<Pagination />` 🆕
 
 **List:**
 
@@ -95,7 +96,7 @@ To run storybook enter the command:
 - `<ContextMenu />`
 - `<NavigationList />`
 - `<TabList />`
-- `<Toolbar />`
+- `<Breadcrumbs />` 🆕
 
 **Typography:**
 
