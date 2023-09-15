@@ -76,14 +76,14 @@ const Loading = ({ size = Size.medium, color = 'var(--textColor)', className }: 
           [`alt-loading--size-${size}`]: size !== Size.medium
         },
         className
-      )}>
+      )}
+      style={{ color }}>
       <svg width={boxSize} height={boxSize} viewBox={`0 0 ${boxSize} ${boxSize}`}>
         <circle
           cx={circleCenter}
           cy={circleCenter}
           r={radius}
           strokeWidth={borderSize}
-          stroke={color}
           className="alt-loading__segment"
           strokeDasharray={`${circleValue} 360`}
         />
