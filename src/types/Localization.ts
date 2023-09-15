@@ -54,4 +54,9 @@ export interface Localization {
       search: string;
     };
   };
+  list: {
+    breadcrumbs: {
+      home: string;
+    };
+  };
 }

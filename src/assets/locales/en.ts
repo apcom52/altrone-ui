@@ -53,6 +53,11 @@ const localization: Localization = {
       others: 'Others',
       search: 'Search...'
     }
+  },
+  list: {
+    breadcrumbs: {
+      home: 'Home'
+    }
   }
 };
 

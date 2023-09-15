@@ -6,6 +6,7 @@ import { Icon } from '../../icons';
 import { ContextAction, ContextMenuType, Size } from '../../../types';
 import { Button, ButtonVariant } from '../../button';
 import { BreadcrumbLink, BreadcrumbsProps } from './Breadcrumbs.types';
+import { useLocalization } from '../../../hooks';
 
 const HOME_ICON = <Icon i="home" />;
 
@@ -33,6 +34,8 @@ export const Breadcrumbs = ({
   HomeComponent = DefaultHomeBreadcrumb,
   homepageHref
 }: BreadcrumbsProps) => {
+  const t = useLocalization();
+
   const onItemClick = useCallback((item: BreadcrumbLink) => {
     if ('href' in item && item.href) {
       window.location.href = item.href;
@@ -67,7 +70,7 @@ export const Breadcrumbs = ({
 
     if (showHomeLink) {
       result.unshift({
-        title: 'Home',
+        title: t('list.breadcrumbs.home'),
         icon: HOME_ICON,
         disabled: true,
         onClick: UNDEFINED_ACTION
