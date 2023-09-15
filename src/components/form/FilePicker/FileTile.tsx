@@ -8,6 +8,7 @@ import { Progress } from '../../indicators';
 import { Role, Size } from '../../../types';
 import clsx from 'clsx';
 import { useFilePickerContext } from './FilePickerContext';
+import { useLocalization } from '../../../hooks';
 
 interface FileTileProps {
   fileIndex: number;
@@ -16,6 +17,8 @@ interface FileTileProps {
 }
 
 export const FileTile = ({ fileIndex, file, onDelete }: FileTileProps) => {
+  const t = useLocalization();
+
   const { url, method, name, onSuccessUpload, getFileNameFunc } = useFilePickerContext();
 
   const [_file, setFile] = useState(file.file);
@@ -23,7 +26,7 @@ export const FileTile = ({ fileIndex, file, onDelete }: FileTileProps) => {
   const [status, setStatus] = useState<FileUploadStatus>(undefined);
   const [filepath, setFilepath] = useState(file.filepath);
 
-  const errorMessage = status === 'failed' ? 'Не удалось загрузить файл' : '';
+  const errorMessage = status === 'failed' ? t('form.filePicker.errorMessage') : '';
 
   const fileIcon = useMemo(() => {
     let extension = file.filename.toLowerCase().split('.').at(-1) || '';
@@ -124,13 +127,15 @@ export const FileTile = ({ fileIndex, file, onDelete }: FileTileProps) => {
         tabIndex={-1}
         className="alt-file-tile__action alt-file-tile__close"
         onClick={deleteFile}
-        data-testid="alt-test-fileTile-delete">
+        data-testid="alt-test-fileTile-delete"
+        title={t('form.filePicker.deleteFile')}>
         <Icon i="close" />
       </button>
       {status === 'failed' && (
         <button
           className="alt-file-tile__action alt-file-tile__repeat"
           data-testid="alt-test-fileTile-reload"
+          title={t('form.filePicker.reuploadFile')}
           onClick={file.file ? () => uploadFile(file.file as File) : undefined}>
           <Icon i="refresh" />
         </button>

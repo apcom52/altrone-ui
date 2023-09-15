@@ -52,6 +52,21 @@ const localization: Localization = {
       placeholder: 'Выберите значение',
       others: 'Прочее',
       search: 'Поиск...'
+    },
+    filePicker: {
+      placeholder: 'Выберите файл',
+      selectedFiles: {
+        zero: 'Загружено {{count}} файлов',
+        one: 'Загружен {{count}} файл',
+        two: 'Загружено {{count}} файла',
+        few: 'Загружено {{count}} файла',
+        many: 'Загружено {{count}} файлов',
+        other: 'Загружено {{count}} файлов'
+      },
+      uploadNew: 'Выбрать файл',
+      errorMessage: 'Файл не загружен',
+      deleteFile: 'Удалить файл',
+      reuploadFile: 'Повторить еще раз'
     }
   },
   list: {

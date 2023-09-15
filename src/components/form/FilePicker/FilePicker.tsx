@@ -18,6 +18,7 @@ import { FilePickerProps, FilePickerRef, InnerFileItem } from './FilePicker.type
 import { FilePickerContext } from './FilePickerContext';
 import { getFileSrcFromResponse } from './FilePicker.utils';
 import { Surface } from '../../../types';
+import { useLocalization } from '../../../hooks';
 
 /**
  * This component is used to upload files to server
@@ -36,11 +37,13 @@ export const FilePicker = forwardRef<FilePickerRef, FilePickerProps>(
       maxFiles = 1,
       surface = Surface.glass,
       onSuccess,
-      placeholder = 'Выберите файл',
+      placeholder,
       getFileNameFunc = getFileSrcFromResponse
     },
     ref
   ) => {
+    const t = useLocalization();
+
     const [files, setFiles] = useState<InnerFileItem[]>(() => {
       return defaultValue.map((fileItem) => ({
         ...fileItem,
@@ -148,10 +151,18 @@ export const FilePicker = forwardRef<FilePickerRef, FilePickerProps>(
                 </div>
               ) : Array.isArray(files) && files.length ? (
                 <div className="alt-file-picker-file">
-                  <div className="alt-file-picker-file">Выбрано {files?.length} файлов</div>
+                  <div className="alt-file-picker-file">
+                    {t('form.filePicker.selectedFiles', {
+                      plural: true,
+                      value: files?.length,
+                      vars: { count: files?.length }
+                    })}
+                  </div>
                 </div>
               ) : (
-                <div className="alt-file-picker-button__label">{placeholder}</div>
+                <div className="alt-file-picker-button__label">
+                  {placeholder || t('form.filePicker.placeholder')}
+                </div>
               )}
             </button>
           )}

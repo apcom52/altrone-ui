@@ -52,6 +52,21 @@ const localization: Localization = {
       placeholder: 'Select an option',
       others: 'Others',
       search: 'Search...'
+    },
+    filePicker: {
+      placeholder: 'Select a file',
+      selectedFiles: {
+        zero: 'Uploaded {{count}} files',
+        one: 'Uploaded {{count}} file',
+        two: 'Uploaded {{count}} files',
+        few: 'Uploaded {{count}} files',
+        many: 'Uploaded {{count}} files',
+        other: 'Uploaded {{count}} files'
+      },
+      uploadNew: 'Upload new file',
+      errorMessage: 'Cannot upload the file',
+      deleteFile: 'Delete the file',
+      reuploadFile: 'Repeat again'
     }
   },
   list: {
