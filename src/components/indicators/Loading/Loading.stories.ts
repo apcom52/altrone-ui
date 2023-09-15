@@ -2,7 +2,7 @@ import { Meta } from '@storybook/react';
 import { Size } from '../../../types';
 import { Loading } from './index';
 
-export { DefaultLoading } from './stories';
+export { DefaultLoading, LoadingAndProgress } from './stories';
 
 const meta: Meta<typeof Loading> = {
   component: Loading,
