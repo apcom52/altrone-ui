@@ -20,7 +20,7 @@ interface ProgressProps {
   ProgressSegmentComponent?: React.FC<ProgressSegmentProps>;
 }
 
-const CIRCULAR_PROGRESS_DIAMETERS: Record<Size, number> = {
+export const CIRCULAR_PROGRESS_DIAMETERS: Record<Size, number> = {
   [Size.small]: 26,
   [Size.medium]: 34,
   [Size.large]: 42

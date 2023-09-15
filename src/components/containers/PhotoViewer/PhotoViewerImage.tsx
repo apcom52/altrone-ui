@@ -65,7 +65,7 @@ export const PhotoViewerImage = ({ containerRef, scale = 1, src }: PhotoViewerIm
     <>
       {loading ? (
         <div className="alt-photo-viewer__loading">
-          <Loading size={Size.large} />
+          <Loading size={Size.large} color="white" />
         </div>
       ) : (
         <div ref={imageContainerRef} style={{ transform: `scale(${scale})` }}>
