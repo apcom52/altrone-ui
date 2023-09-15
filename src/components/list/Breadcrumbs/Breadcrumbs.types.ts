@@ -1,17 +1,9 @@
-interface BaseBreadcrumbLink {
+export type BreadcrumbLink = {
   title: string;
   icon?: JSX.Element;
-}
-
-interface WithHref extends BaseBreadcrumbLink {
-  href: string;
-}
-
-interface WithOnClick extends BaseBreadcrumbLink {
-  onClick: () => void;
-}
-
-export type BreadcrumbLink = BaseBreadcrumbLink & (WithHref | WithOnClick);
+  onClick?: () => void;
+  href?: string;
+};
 
 export interface BreadcrumbsProps {
   links?: BreadcrumbLink[];
@@ -21,4 +13,5 @@ export interface BreadcrumbsProps {
   showHomeLink?: boolean;
   HomeComponent?: () => JSX.Element;
   onHomeClick?: () => void;
+  homepageHref?: string;
 }

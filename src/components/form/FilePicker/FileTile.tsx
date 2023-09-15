@@ -117,22 +117,26 @@ export const FileTile = ({ fileIndex, file, onDelete }: FileTileProps) => {
       })}
       title={errorMessage ? `${errorMessage} ${file.filename}` : file.filename}>
       <div className="alt-file-tile__icon">{fileIcon as ReactNode}</div>
-      <div className="alt-file-tile__title">{errorMessage || file.filename}</div>
+      <div className="alt-file-tile__title" data-testid="alt-test-fileTile-title">
+        {errorMessage || file.filename}
+      </div>
       <button
         tabIndex={-1}
         className="alt-file-tile__action alt-file-tile__close"
-        onClick={deleteFile}>
+        onClick={deleteFile}
+        data-testid="alt-test-fileTile-delete">
         <Icon i="close" />
       </button>
       {status === 'failed' && (
         <button
           className="alt-file-tile__action alt-file-tile__repeat"
+          data-testid="alt-test-fileTile-reload"
           onClick={file.file ? () => uploadFile(file.file as File) : undefined}>
           <Icon i="refresh" />
         </button>
       )}
       {status !== undefined && (
-        <div className="alt-file-tile__progress">
+        <div className="alt-file-tile__progress" data-testid="alt-test-fileTile-progress">
           <Progress value={progress} size={Size.small} role={statusRole} />
         </div>
       )}

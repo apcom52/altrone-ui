@@ -5,8 +5,9 @@ import './switcher.scss';
 import { BasicInput, BasicInputProps } from '../BasicInput';
 
 interface SwitcherProps
-  extends Omit<React.HTMLProps<HTMLInputElement>, 'onChange' | 'size'>,
+  extends Omit<React.HTMLProps<HTMLInputElement>, 'checked' | 'onChange' | 'size'>,
     Omit<BasicInputProps, 'size'> {
+  checked: boolean;
   onChange: (checked: boolean) => void;
   danger?: boolean;
   align?: Align;
@@ -14,6 +15,7 @@ interface SwitcherProps
 
 const Switcher = ({
   children,
+  checked = false,
   danger = false,
   align = Align.start,
   onChange,
@@ -41,6 +43,7 @@ const Switcher = ({
           id={switcherId}
           type="checkbox"
           disabled={disabled}
+          checked={checked}
           {...props}
           className="alt-switcher__input"
           onChange={(e) => onChange(e.target.checked)}

@@ -1,14 +1,17 @@
 import clsx from 'clsx';
-import { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import './breadcrumbs.scss';
 import { DefaultHomeBreadcrumb } from './DefaultHomeBreadcrumb';
 import { Icon } from '../../icons';
-import { ContextMenuType, Size } from '../../../types';
+import { ContextAction, ContextMenuType, Size } from '../../../types';
 import { Button, ButtonVariant } from '../../button';
 import { BreadcrumbLink, BreadcrumbsProps } from './Breadcrumbs.types';
 
 const HOME_ICON = <Icon i="home" />;
 
+const ButtonComponents = ['button', 'a'];
+
+const UNDEFINED_ACTION = () => null;
 /**
  * Indicate the page's location within a navigation hierarchy
  * @param {BreadcrumbLink[]} links - the list of links
@@ -27,14 +30,14 @@ export const Breadcrumbs = ({
   disabled = false,
   showHomeLink = true,
   onHomeClick,
-  HomeComponent = DefaultHomeBreadcrumb
+  HomeComponent = DefaultHomeBreadcrumb,
+  homepageHref
 }: BreadcrumbsProps) => {
   const onItemClick = useCallback((item: BreadcrumbLink) => {
     if ('href' in item && item.href) {
-      console.log('href', item.href);
       window.location.href = item.href;
     } else if ('onClick' in item) {
-      item.onClick();
+      item.onClick?.();
     }
   }, []);
 
@@ -43,19 +46,22 @@ export const Breadcrumbs = ({
       return [];
     }
 
-    const menu = links.slice(0, links.length - 1).map((link) => ({
-      title: link.title,
-      icon: link.icon,
-      disabled: disabled,
-      onClick: () => null
-    }));
+    const menu = links.slice(0, links.length - 1).map(
+      (link) =>
+        ({
+          title: link.title,
+          icon: link.icon,
+          disabled: disabled,
+          onClick: () => onItemClick(link)
+        } as ContextAction)
+    );
 
-    const result = [
+    const result: ContextMenuType = [
       ...menu,
       {
         title: links.at(-1)?.title || '',
         disabled: true,
-        onClick: () => null
+        onClick: UNDEFINED_ACTION
       }
     ];
 
@@ -64,20 +70,30 @@ export const Breadcrumbs = ({
         title: 'Home',
         icon: HOME_ICON,
         disabled: true,
-        onClick: () => null
+        onClick: UNDEFINED_ACTION
       });
     }
 
     return result;
   }, [links, collapsible, disabled, showHomeLink]);
 
+  const isLink = Boolean(homepageHref);
+
   return (
     <div className={clsx('alt-breadcrumbs', className)}>
-      {showHomeLink && (
-        <button className={clsx('alt-breadcrumbs-item')} onClick={onHomeClick} disabled={disabled}>
-          {HomeComponent()}
-        </button>
-      )}
+      {showHomeLink &&
+        React.createElement(
+          ButtonComponents[homepageHref ? 1 : 0],
+          {
+            className: clsx('alt-breadcrumbs-item'),
+            onClick: !isLink ? onHomeClick : undefined,
+            href: homepageHref,
+            type: !isLink ? 'button' : undefined,
+            rel: isLink ? 'noopener noreferrer' : undefined,
+            disabled
+          },
+          HomeComponent()
+        )}
       {collapsible && collapsedItems.length > 0 && links?.length > 0 && (
         <>
           {showHomeLink && (
@@ -103,21 +119,20 @@ export const Breadcrumbs = ({
       )}
       {!collapsible &&
         links.map((link, linkIndex) => (
-          <>
+          <React.Fragment key={linkIndex}>
             {(showHomeLink || (!showHomeLink && linkIndex > 0)) && (
               <div className="alt-breadcrumbs__separator">
                 <Icon i="chevron_right" />
               </div>
             )}
             <button
-              key={linkIndex}
               className={clsx('alt-breadcrumbs-item')}
               disabled={disabled}
               onClick={() => onItemClick(link)}>
               {link.icon && <span className="alt-breadcrumb-item__icon">{link.icon}</span>}
               {link.title}
             </button>
-          </>
+          </React.Fragment>
         ))}
     </div>
   );

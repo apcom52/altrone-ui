@@ -3,8 +3,5 @@ module.exports = {
   transformIgnorePatterns: [],
   moduleNameMapper: {
     '^.+\\.(css|less|scss)$': 'babel-jest'
-  },
-  fakeTimers: {
-    enableGlobally: true
   }
 };
