@@ -7,6 +7,8 @@ type PluralString = {
   other: string;
 };
 
+export type PluralLocalizationPaths = 'form.filePicker.selectedFiles' | 'data.dataTable.lines';
+
 export interface Localization {
   common: {
     apply: string;
@@ -52,6 +54,14 @@ export interface Localization {
       placeholder: string;
       others: string;
       search: string;
+    };
+    filePicker: {
+      placeholder: string;
+      selectedFiles: PluralString;
+      errorMessage: string;
+      uploadNew: string;
+      deleteFile: string;
+      reuploadFile: string;
     };
   };
   list: {

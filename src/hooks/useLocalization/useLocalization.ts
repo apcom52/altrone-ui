@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react';
 import get from 'lodash-es/get';
 import { en, ru } from '../../assets/locales';
 import { NestedKeys } from '../../utils/NestedKeys';
-import { Localization } from '../../types/Localization';
+import { Localization, PluralLocalizationPaths } from '../../types/Localization';
 
 type translationOptions = {
   defaultValue?: string;
@@ -20,7 +20,7 @@ export const useLocalization = () => {
   }, [lang]);
 
   return useCallback(
-    (t: NestedKeys<Localization>, config?: translationOptions) => {
+    (t: NestedKeys<Localization> | PluralLocalizationPaths, config?: translationOptions) => {
       const { defaultValue, value = 0, plural = false, vars = {} } = config || {};
       let localeString = '';
 
@@ -28,7 +28,7 @@ export const useLocalization = () => {
         const rule = new Intl.PluralRules(lang).select(value);
         localeString = get(dictionary, t + `.${rule}`, defaultValue || t);
       } else {
-        localeString = get(dictionary, t, defaultValue || t);
+        localeString = get(dictionary, t, defaultValue || t) as string;
       }
 
       for (const variable in vars) {
