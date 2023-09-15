@@ -161,7 +161,7 @@ describe('Form.FilePicker.FileTile', () => {
     expect(document.body.querySelector('.alt-progress')).toHaveClass('alt-progress--danger');
 
     expect(screen.getByTestId('alt-test-fileTile-title')).toHaveTextContent(
-      'Не удалось загрузить файл'
+      'Cannot upload the file'
     );
 
     fireEvent.click(screen.getByTestId('alt-test-fileTile-reload'));

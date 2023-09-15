@@ -5,6 +5,7 @@ import { Icon } from '../../icons';
 import { FloatingBox, Form, FormField } from '../../containers';
 import { NumberInput } from '../../form';
 import { Role } from '../../../types';
+import { useLocalization } from '../../../hooks';
 
 interface PaginationProps {
   page: number;
@@ -27,6 +28,8 @@ export const Pagination = ({
   onChange,
   useNavigateToPagePopup = true
 }: PaginationProps) => {
+  const t = useLocalization();
+
   const [isNavigationVisible, setIsNavigationVisible] = useState(false);
 
   const navigationButtonRef = useRef<HTMLButtonElement>(null);
@@ -73,11 +76,11 @@ export const Pagination = ({
           placement="top"
           useRootContainer>
           <Form>
-            <FormField label="Перейти к странице">
+            <FormField label={t('indicators.pagination.moveToPage')}>
               <NumberInput value={page} min={1} max={totalPages} onChange={onChange} />
             </FormField>
             <Button role={Role.primary} fluid onClick={closeNavigation}>
-              Перейти
+              {t('indicators.pagination.apply')}
             </Button>
           </Form>
         </FloatingBox>
