@@ -1,12 +1,31 @@
 .alt-loading {
-  margin: 0 auto;
+  width: 34px;
   height: 34px;
+  transform-origin: center;
+  animation: loadingAnimation 1s linear;
+  animation-iteration-count: infinite;
+}
+
+.alt-loading__segment {
+  fill: none;
+  stroke-linecap: round;
 }
 
 .alt-loading--size-small {
+  width: 26px;
   height: 26px;
 }
 
 .alt-loading--size-large {
+  width: 42px;
   height: 42px;
+}
+
+@keyframes loadingAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

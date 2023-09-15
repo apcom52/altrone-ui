@@ -1,6 +1,7 @@
 import { Size } from '../../../types';
 import clsx from 'clsx';
 import './loading.scss';
+import { CIRCULAR_PROGRESS_DIAMETERS } from '../Progress/Progress';
 
 interface LoadingProps {
   size?: Size;
@@ -59,27 +60,34 @@ const LoadingAnimation = ({ size = 100 }: LoadingAnimation) => {
  * @param { string } [color] - This field is used for applying a custom color for loading animation. By default, we use textColor variable
  * @param { string } [className] - Custom className for loading animation
  */
-const Loading = ({ size = Size.medium, color, className }: LoadingProps) => {
-  let pxSize = 34;
-
-  if (size === Size.small) {
-    pxSize = 24;
-  } else if (size === Size.large) {
-    pxSize = 42;
-  }
+const Loading = ({ size = Size.medium, color = 'var(--textColor)', className }: LoadingProps) => {
+  const boxSize = CIRCULAR_PROGRESS_DIAMETERS[size];
+  const borderSize = Math.floor(CIRCULAR_PROGRESS_DIAMETERS[size] * 0.12);
+  const circleCenter = boxSize / 2;
+  const diameter = boxSize - borderSize * 2;
+  const radius = diameter / 2;
+  const circleValue = 2 * Math.PI * radius * 0.4;
 
   return (
     <div
-      data-testid="alt-test-loading"
       className={clsx(
         'alt-loading',
         {
           [`alt-loading--size-${size}`]: size !== Size.medium
         },
         className
-      )}
-      style={color ? { color } : undefined}>
-      <LoadingAnimation size={pxSize} />
+      )}>
+      <svg width={boxSize} height={boxSize} viewBox={`0 0 ${boxSize} ${boxSize}`}>
+        <circle
+          cx={circleCenter}
+          cy={circleCenter}
+          r={radius}
+          strokeWidth={borderSize}
+          stroke={color}
+          className="alt-loading__segment"
+          strokeDasharray={`${circleValue} 360`}
+        />
+      </svg>
     </div>
   );
 };
