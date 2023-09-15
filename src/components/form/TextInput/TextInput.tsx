@@ -107,9 +107,9 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
     if (loading) {
       _rightIsland = (
-        <>
+        <div className="alt-text-input__loading">
           <Loading size={size} />
-        </>
+        </div>
       );
     }
 
