@@ -9735,11 +9735,6 @@ marked@^4.0.10:
   resolved "https://registry.npmjs.org/marked/-/marked-4.3.0.tgz"
   integrity sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A==
 
-material-symbols@^0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/material-symbols/-/material-symbols-0.12.0.tgz#390bf95dbde1c5b650a2a2e033131a641e4333e2"
-  integrity sha512-/K6w2yNWMuV1MYgYioqREBQCVWuMvfaWjbVKiW64cz5D1nbsuIAmdQTW41p14O5TKU6NOO5SysOvDgraMeed6A==
-
 md5.js@^1.3.4:
   version "1.3.5"
   resolved "https://registry.npmjs.org/md5.js/-/md5.js-1.3.5.tgz"
@@ -12798,7 +12793,16 @@ sass-loader@^13.0.2:
     klona "^2.0.6"
     neo-async "^2.6.2"
 
-sass@^1.43.4, sass@^1.54.9:
+sass@1.54.9:
+  version "1.54.9"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.54.9.tgz#b05f14ed572869218d1a76961de60cd647221762"
+  integrity sha512-xb1hjASzEH+0L0WI9oFjqhRi51t/gagWnxLiwUNMltA0Ab6jIDkAacgKiGYKM9Jhy109osM7woEEai6SXeJo5Q==
+  dependencies:
+    chokidar ">=3.0.0 <4.0.0"
+    immutable "^4.0.0"
+    source-map-js ">=0.6.2 <2.0.0"
+
+sass@^1.43.4:
   version "1.62.1"
   resolved "https://registry.npmjs.org/sass/-/sass-1.62.1.tgz"
   integrity sha512-NHpxIzN29MXvWiuswfc1W3I0N8SXBd8UR26WntmDlRYf0bSADnwnOjsyMZ3lMezSlArD33Vs3YFhp7dWvL770A==
