@@ -1,6 +1,6 @@
 import { Blockquote, Heading, Message, Paragraph } from './index';
 import { Elevation, Role } from '../../types';
-import { Icon } from '../icons';
+import { Icon } from './Icon';
 import { BasicTemplate } from '../BasicTemplate';
 
 export const HeadingExample = BasicTemplate.bind({});
@@ -48,6 +48,15 @@ MessageExample.argTypes = {
     control: 'select',
     options: [Role.default, Role.primary, Role.success, Role.danger]
   }
+};
+
+export const IconExample = BasicTemplate.bind({});
+IconExample.args = {
+  Component: Icon,
+  i: 'face',
+  size: 32,
+  dark: false,
+  style: 'outlined'
 };
 
 export default {
