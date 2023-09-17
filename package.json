@@ -108,12 +108,12 @@
     "url": "https://github.com/apcom52/altrone-ui/issues"
   },
   "dependencies": {
+    "@material-symbols/font-400": "^0.12.0",
     "@popperjs/core": "^2.11.6",
     "better-docs": "^2.7.2",
     "clsx": "^1.2.1",
     "jsdoc": "^4.0.2",
     "lodash-es": "^4.17.21",
-    "material-symbols": "^0.2.11",
     "normalize": "^0.3.1",
     "react-draggable": "^4.4.5",
     "react-number-format": "^5.0.0-beta.5",

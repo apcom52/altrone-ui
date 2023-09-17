@@ -1,8 +1,8 @@
-$material-symbols-font-path: '~material-symbols/';
-@import 'material-symbols';
+$material-symbols-font-path: '~@material-symbols/font-400/';
+@import '@material-symbols/font-400';
 
 .alt-icon {
-  font-weight: 500;
+  font-weight: 400;
   font-style: normal;
   display: block;
   line-height: 1;
