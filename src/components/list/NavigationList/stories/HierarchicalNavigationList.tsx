@@ -1,7 +1,7 @@
 import { StoryObj } from '@storybook/react';
 import { StorybookBackgroundDecorator } from '../../../../storybook/StorybookPlayground';
 import React, { useState } from 'react';
-import { Icon } from '../../../icons';
+import { Icon } from '../../../typography';
 import { NavigationListMenu } from '../NavigationList';
 import { NavigationList } from '../index';
 

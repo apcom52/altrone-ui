@@ -1,4 +1,3 @@
-export * from './button';
 export * from './containers';
 export * from './data';
 export * from './form';

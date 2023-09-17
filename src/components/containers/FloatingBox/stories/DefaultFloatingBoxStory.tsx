@@ -1,7 +1,7 @@
 import { StoryObj } from '@storybook/react';
 import { FloatingBox } from '../index';
 import { StorybookBackgroundDecorator } from '../../../../storybook/StorybookPlayground';
-import { Button } from '../../../button';
+import { Button } from '../../../form';
 import { Align, Role } from '../../../../types';
 import { useRef, useState } from 'react';
 import { ButtonContainer } from '../../ButtonContainer';

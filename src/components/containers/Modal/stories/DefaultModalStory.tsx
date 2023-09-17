@@ -3,10 +3,9 @@ import { Modal, ModalAction } from '../index';
 import { StorybookBackgroundDecorator } from '../../../../storybook/StorybookPlayground';
 import { useState } from 'react';
 import { ButtonContainer } from '../../ButtonContainer';
-import { Button } from '../../../button';
 import { Paragraph } from '../../../typography';
 import { Form, FormField } from '../../Form';
-import { TextInput } from '../../../form';
+import { TextInput, Button } from '../../../form';
 import { Role } from '../../../../types';
 
 export const MODAL_ACTIONS: ModalAction[] = [

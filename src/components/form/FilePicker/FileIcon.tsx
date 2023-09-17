@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import './file-icon.scss';
 
 interface FileIconProps {

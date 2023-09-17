@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { useLocalization } from '../../../hooks';
 
 export const DefaultHomeBreadcrumb = () => {

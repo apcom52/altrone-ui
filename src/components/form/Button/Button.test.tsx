@@ -2,7 +2,7 @@ import { Button } from './index';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { ButtonVariant } from './Button';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { Role } from '../../../types';
 import { RefObject } from 'react';
 

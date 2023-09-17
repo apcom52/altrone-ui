@@ -1,9 +1,8 @@
 import './pagination.scss';
 import React, { useCallback, useRef, useState } from 'react';
-import { Button, ButtonVariant } from '../../button';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { FloatingBox, Form, FormField } from '../../containers';
-import { NumberInput } from '../../form';
+import { NumberInput, Button, ButtonVariant } from '../../form';
 import { Role } from '../../../types';
 import { useLocalization } from '../../../hooks';
 

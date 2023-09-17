@@ -1,7 +1,7 @@
 import { StoryObj } from '@storybook/react';
 import { DataTable, DataTableAction, DataTableColumn } from '../index';
 import { default as tableData } from './data';
-import { Icon } from '../../../icons';
+import { Icon } from '../../../typography';
 import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 import { DataTableSelectableAction } from '../DataTable';
 import { DataTableFilter } from '../../../../contexts';

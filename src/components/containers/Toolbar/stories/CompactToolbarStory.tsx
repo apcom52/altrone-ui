@@ -2,7 +2,7 @@ import { StoryObj } from '@storybook/react';
 import { Toolbar, ToolbarAction, ToolbarGroup, ToolbarVariant } from '../index';
 import { StorybookBackgroundDecorator } from '../../../../storybook/StorybookPlayground';
 import React from 'react';
-import { Icon } from '../../../icons';
+import { Icon } from '../../../typography';
 
 export const CompactToolbarStory: StoryObj<typeof Toolbar> = {
   name: 'Compact Toolbar',

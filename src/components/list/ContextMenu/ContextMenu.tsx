@@ -6,7 +6,7 @@ import {
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { ContextMenuItem, ContextParentMenuItem } from './index';
 import './context-menu.scss';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { useLocalization } from '../../../hooks';
 import clsx from 'clsx';
 

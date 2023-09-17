@@ -2,7 +2,7 @@ import { ComponentStory } from '@storybook/react';
 import { TextInput } from '../index';
 import { useState } from 'react';
 import { StorybookPlayground } from '../../../../storybook/StorybookPlayground';
-import { Icon } from '../../../icons';
+import { Icon } from '../../../typography';
 
 const RightIslandWithIcon: ComponentStory<typeof TextInput> = ({ value, onChange, ...args }) => {
   const [_value, setValue] = useState('');

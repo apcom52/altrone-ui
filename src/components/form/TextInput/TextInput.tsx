@@ -18,7 +18,7 @@ import { BasicInput } from '../BasicInput';
 import { useResizeObserver } from '../../../hooks';
 import { FloatingBox } from '../../containers';
 import { ContextMenu } from '../../list';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { Loading } from '../../indicators';
 
 export enum InputIslandType {

@@ -1,21 +1,8 @@
 import { Altrone } from '../../hocs';
-import { Direction, Size, Surface, Theme } from '../../types';
+import { Direction, Size, Theme } from '../../types';
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  Chips,
-  NavigationList,
-  TabList,
-  TabListVariant,
-  Toolbar,
-  ToolbarGroup,
-  ToolbarSeparator
-} from './index';
-import { Align } from '../../types/Align';
-import { Icon } from '../icons';
-import ToolbarAction from '../containers/Toolbar/ToolbarAction';
-import { Heading } from '../typography';
-import { Button } from '../button';
-import { ModalExample } from '../containers/Containers.oldStories';
+import { Chips, TabList, TabListVariant } from './index';
+import { Align } from '../../types';
 
 const Template = ({ Component, dark, values, value, ...args }) => {
   const [_value, setValue] = useState(values);

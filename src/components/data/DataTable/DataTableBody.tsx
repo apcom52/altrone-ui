@@ -3,7 +3,7 @@ import { useDataTableContext } from '../../../contexts';
 import DataTableCell from './DataTableCell';
 import { filterVisibleColumns } from './functions';
 import { useWindowSize } from '../../../hooks';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { Modal } from '../../containers';
 import { Checkbox } from '../../form';
 import clsx from 'clsx';

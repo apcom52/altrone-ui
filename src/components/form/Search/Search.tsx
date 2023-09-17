@@ -1,7 +1,7 @@
 import { InputIslandType, TextInput, TextInputProps } from '../TextInput';
 import { useLocalization } from '../../../hooks';
 import { useState } from 'react';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import './search.scss';
 import clsx from 'clsx';
 import { useDebouncedValue, useDidUpdate } from 'rooks';

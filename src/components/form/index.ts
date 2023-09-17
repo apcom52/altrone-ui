@@ -13,3 +13,4 @@ export { RadioList } from './RadioList';
 export { Textarea } from './Textarea';
 export { Search } from './Search';
 export { FilePicker, FilePickerVariant, FileItem } from './FilePicker';
+export { Button, ButtonVariant } from './Button';

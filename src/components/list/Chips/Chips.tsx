@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react';
 import { Direction, Option, Size } from '../../../types';
 import clsx from 'clsx';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import './chips.scss';
 
 interface ChipsProps<T = unknown> {

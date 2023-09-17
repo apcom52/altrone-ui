@@ -5,8 +5,8 @@ import NavigationListSubItem from './NavigationListSubItem';
 import NavigationListSubSubItem from './NavigationListSubSubItem';
 import clsx from 'clsx';
 import { ContextMenuType, Elevation, Indicator, Role, Size, Surface } from '../../../types';
-import { Button, ButtonVariant } from '../../button';
-import { Icon } from '../../icons';
+import { Button, ButtonVariant } from '../../form';
+import { Icon } from '../../typography';
 
 export const NAVIGATION_LIST_SEPARATOR = '-';
 

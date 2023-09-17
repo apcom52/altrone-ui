@@ -1,7 +1,7 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './photo-viewer.scss';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import clsx from 'clsx';
 import { PhotoViewerProps, PhotoViewerRef } from './PhotoViewer.types';
 import { useWindowSize } from '../../../hooks';

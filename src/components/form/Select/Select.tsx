@@ -2,13 +2,13 @@ import { createElement, memo, useEffect, useMemo, useRef, useState } from 'react
 import { Direction, Elevation, Option, OptionParent, Role, Size, Surface } from '../../../types';
 import { ButtonContainer, FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import './select.scss';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import clsx from 'clsx';
 import { TextInput } from '../TextInput';
 import SelectOption, { SelectOptionProps } from './SelectOption';
 import { useLocalization, useWindowSize } from '../../../hooks';
 import { ScrollableSelector } from '../ScrollableSelector';
-import { Button } from '../../button';
+import { Button } from '../../form';
 import SelectPlaceholder from './SelectPlaceholder';
 import { BasicInput, BasicInputProps } from '../BasicInput';
 

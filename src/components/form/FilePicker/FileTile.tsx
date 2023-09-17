@@ -1,6 +1,6 @@
 import './file-tile.scss';
 import { FileUploadStatus, InnerFileItem } from './FilePicker.types';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { FileIcon } from './FileIcon';
 import { FILE_EXTENTIONS } from './FilePicker.constants';
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';

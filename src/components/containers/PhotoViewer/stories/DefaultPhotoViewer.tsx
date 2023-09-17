@@ -3,7 +3,7 @@ import { PhotoViewer } from '../index';
 import { StorybookBackgroundDecorator } from '../../../../storybook/StorybookPlayground';
 import { useState } from 'react';
 import { ButtonContainer } from '../../ButtonContainer';
-import { Button } from '../../../button';
+import { Button } from '../../../form';
 
 export const DefaultPhotoViewer: StoryObj<typeof PhotoViewer> = {
   name: 'Default Form',

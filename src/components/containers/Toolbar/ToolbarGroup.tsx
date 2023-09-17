@@ -1,9 +1,9 @@
-import { memo, ReactNode, useLayoutEffect, useRef, useState } from 'react';
+import { memo, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { Align } from '../../../types';
 import { useResizeObserver } from '../../../hooks';
 import ToolbarAction from './ToolbarAction';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { useToolbarContext } from './Toolbar';
 import { ContextMenu } from '../../list/ContextMenu';
 import { FloatingBox } from '../index';

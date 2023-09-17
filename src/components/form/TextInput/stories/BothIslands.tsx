@@ -2,7 +2,7 @@ import { ComponentStory } from '@storybook/react';
 import { InputIslandType, TextInput } from '../index';
 import { useState } from 'react';
 import { StorybookPlayground } from '../../../../storybook/StorybookPlayground';
-import { Icon } from '../../../icons';
+import { Icon } from '../../../typography';
 
 const BothIslands: ComponentStory<typeof TextInput> = () => {
   const [value, setValue] = useState('');

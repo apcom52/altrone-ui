@@ -12,7 +12,7 @@ import './form-field.scss';
 import clsx from 'clsx';
 import { FormContextProps, useFormContext } from '../../../contexts';
 import { FloatingBox } from '../FloatingBox';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 
 interface FormFieldProps
   extends Omit<React.HTMLProps<HTMLDivElement>, 'children' | 'label'>,

@@ -2,7 +2,7 @@ import { StoryObj } from '@storybook/react';
 import { Toolbar, ToolbarAction, ToolbarGroup } from '../index';
 import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 import { Align } from '../../../../types';
-import { Icon } from '../../../icons';
+import { Icon } from '../../../typography';
 import React from 'react';
 
 export const DefaultToolbarWithLabels: StoryObj<typeof Toolbar> = {

@@ -1,9 +1,8 @@
 import { memo, useMemo } from 'react';
 import { ButtonContainer, FormField, FormGroup } from '../../containers';
-import { RadioList, Select } from '../../form';
+import { RadioList, Select, Button } from '../../form';
 import './data-table-sorting.scss';
 import { Align, Direction, Role } from '../../../types';
-import { Button } from '../../button';
 import { useDataTableContext } from '../../../contexts';
 import { useLocalization } from '../../../hooks';
 import { DataTablePopupActionProps } from './DataTable';

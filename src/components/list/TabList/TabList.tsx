@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import './tabs-list.scss';
 import clsx from 'clsx';
 import { useResizeObserver } from '../../../hooks';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { Indicator, Align } from '../../../types';
 
 export enum TabListVariant {

@@ -1,9 +1,8 @@
 import { memo } from 'react';
 import { FormField, FormGroup } from '../../containers';
-import { Checkbox, CheckboxList, Select } from '../../form';
+import { Checkbox, CheckboxList, Select, Button } from '../../form';
 import './data-table-filtering.scss';
 import { Align, Direction, Option, Role } from '../../../types';
-import { Button } from '../../button';
 import { useDataTableContext } from '../../../contexts';
 import ButtonContainer from '../../containers/ButtonContainer/ButtonContainer';
 import { useLocalization } from '../../../hooks';

@@ -9,8 +9,8 @@ import {
 } from 'react';
 import { Align, Elevation, Role, Size, Surface } from '../../../types';
 import './modal.scss';
-import { Icon } from '../../icons';
-import { Button } from '../../button';
+import { Icon } from '../../typography';
+import { Button } from '../../form';
 import clsx from 'clsx';
 import { useLocalization, useWindowSize } from '../../../hooks';
 import ReactDOM from 'react-dom';

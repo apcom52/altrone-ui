@@ -8,7 +8,7 @@ import React, {
   useState
 } from 'react';
 import './carousel.scss';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { PhotoViewer } from '../../containers';
 import clsx from 'clsx';
 

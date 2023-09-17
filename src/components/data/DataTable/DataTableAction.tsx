@@ -3,7 +3,7 @@ import type {
   DataTableAction as DataTableActionType,
   DataTableSelectableAction as DataTableSelectableActionType
 } from './DataTable';
-import { Button, ButtonVariant } from '../../button';
+import { Button, ButtonVariant } from '../../form';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import { ContextAction, ContextMenuType, ParentContextAction, Role } from '../../../types';
 import { useWindowSize } from '../../../hooks';

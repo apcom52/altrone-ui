@@ -1,24 +1,23 @@
 import { StoryObj } from '@storybook/react';
 import { Button, ButtonVariant } from '../index';
 import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
+import { Icon } from '../../../typography';
 import { ButtonContainer } from '../../../containers';
-import { Icon } from '../../../icons';
 
-export const DefaultButtonStory: StoryObj<typeof Button> = {
-  name: 'Default Button',
-  storyName: 'Default DataTable',
+export const TransparentButtonStory: StoryObj<typeof Button> = {
+  storyName: 'Transparent variant',
   render: ({ ...args }) => {
     return (
       <ButtonContainer>
-        <Button {...args} variant={ButtonVariant.default} />
-        <Button {...args} variant={ButtonVariant.default} isIcon>
+        <Button {...args} variant={ButtonVariant.transparent} />
+        <Button {...args} variant={ButtonVariant.transparent} isIcon>
           <Icon i="add" />
         </Button>
-        <Button {...args} variant={ButtonVariant.default} leftIcon={<Icon i="search" />} />
-        <Button {...args} variant={ButtonVariant.default} rightIcon={<Icon i="search" />} />
+        <Button {...args} variant={ButtonVariant.transparent} leftIcon={<Icon i="search" />} />
+        <Button {...args} variant={ButtonVariant.transparent} rightIcon={<Icon i="search" />} />
         <Button
           {...args}
-          variant={ButtonVariant.default}
+          variant={ButtonVariant.transparent}
           leftIcon={<Icon i="add" />}
           rightIcon={<Icon i="search" />}
         />

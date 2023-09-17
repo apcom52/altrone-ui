@@ -1,4 +1,4 @@
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 
 export const DocumentFileIcon = (extension: string, count = 0) => {
   return (

@@ -1,5 +1,5 @@
 import { memo, PropsWithChildren, useEffect, useState } from 'react';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import './spoiler.scss';
 import clsx from 'clsx';
 

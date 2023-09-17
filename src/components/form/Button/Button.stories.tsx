@@ -12,7 +12,7 @@ export {
 
 const meta: Meta<typeof Button> = {
   component: Button,
-  title: 'Actions/Button',
+  title: 'Form/Button',
   tags: ['autodocs'],
   args: {
     children: 'Action',

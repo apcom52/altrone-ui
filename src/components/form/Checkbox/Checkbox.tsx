@@ -1,6 +1,6 @@
 import { memo, useId } from 'react';
 import './checkbox.scss';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import clsx from 'clsx';
 import { BasicInput, BasicInputProps } from '../BasicInput';
 

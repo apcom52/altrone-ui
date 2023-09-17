@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { NavigationList } from './index';
 
 const list = [

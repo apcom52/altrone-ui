@@ -1,8 +1,8 @@
 import { StoryObj } from '@storybook/react';
 import { ButtonContainer } from '../index';
 import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
-import { Icon } from '../../../icons';
-import { Button } from '../../../button';
+import { Icon } from '../../../typography';
+import { Button } from '../../../form';
 import { Role } from '../../../../types';
 
 export const DefaultButtonContainerStory: StoryObj<typeof ButtonContainer> = {

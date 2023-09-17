@@ -1,5 +1,5 @@
 import { Meta } from '@storybook/react';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { Breadcrumbs } from './index';
 
 export { DefaultBreadcrumbs } from './stories';

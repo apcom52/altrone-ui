@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import React, { useCallback, useMemo } from 'react';
 import './breadcrumbs.scss';
 import { DefaultHomeBreadcrumb } from './DefaultHomeBreadcrumb';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { ContextAction, ContextMenuType, Size } from '../../../types';
-import { Button, ButtonVariant } from '../../button';
+import { Button, ButtonVariant } from '../../form';
 import { BreadcrumbLink, BreadcrumbsProps } from './Breadcrumbs.types';
 import { useLocalization } from '../../../hooks';
 

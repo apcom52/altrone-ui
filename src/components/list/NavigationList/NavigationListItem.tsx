@@ -1,7 +1,7 @@
 import './navigation-list-item.scss';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { NavigationItemProps } from './NavigationList';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import clsx from 'clsx';
 import { ContextMenuType, Elevation } from '../../../types';
 import { FloatingBox } from '../../containers';
