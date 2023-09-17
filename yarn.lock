@@ -1769,10 +1769,10 @@
   resolved "https://registry.npmjs.org/@juggle/resize-observer/-/resize-observer-3.4.0.tgz"
   integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
 
-"@material-symbols/font-400@^0.12.0":
+"@material-symbols/font-500@^0.12.0":
   version "0.12.0"
-  resolved "https://registry.yarnpkg.com/@material-symbols/font-400/-/font-400-0.12.0.tgz#cd823c9d5afc0cc228d824703fbcb539fd127dd5"
-  integrity sha512-5jLDYHAuzZ8qEUPlZTiJYaSUU4am3wLprllmdvFYOKvKvSCovuEhVzJ/9+kt428B3YKc4zYHtb2HDBpVW78Nbg==
+  resolved "https://registry.yarnpkg.com/@material-symbols/font-500/-/font-500-0.12.0.tgz#75fa6c3000a4bc5f130fd5c61aba3cc294dc8cd0"
+  integrity sha512-iE6Aq1x0799JpFv+dPVkWqTUGyKFgRvR/bfvfSIQjYFnQidUQVYfy/PFT6RvSeRT8XtvOTvLCCu3vdZL2zrnRQ==
 
 "@mdx-js/react@^2.1.5":
   version "2.3.0"
