@@ -14,7 +14,7 @@
   cursor: pointer;
   color: var(--textColor);
   transition: transform var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
-  border-radius: var(--сontainersRounding);
+  border-radius: var(--сontainerRounding);
 
   &:hover, &:focus {
     .alt-toolbar-action__icon {
