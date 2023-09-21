@@ -1,36 +1,29 @@
-<img alt="Notebook with user interface elements" height="256" src="https://github.com/apcom52/altrone-ui/blob/stable/logo.png?raw=true" title="Altrone UI logo" width="256"/>
+<br />
+<img alt="Notebook with user interface elements" width="320" height="82" src="https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FW5YLGWqfJIMCnPELJjW6%2Fuploads%2FGUo8Duhjb5SonJdYliHO%2Flogo.png?alt=media&token=906640d8-d99c-4e48-87e7-b6e92171a084" title="Altrone UI logo" />
 
 # Altrone UI
 
 Altrone UI is a component library for fast developing beautiful and functional web application interfaces.
 
 ## Links 
-💠 [**DataTable Selectable mode** and other new features in **March Feature Update (1.3)**](https://github.com/apcom52/altrone-ui/releases/tag/v1.3.0)
+🐍 [**8 new components**, **TextInput Suggestions**, **Surfaces** and other new features in **Altrone 2.0 Blind Basilisk**](https://github.com/apcom52/altrone-ui/releases/tag/v1.3.0)
 
-🔹 See what cool features were added in [**February Feature Update (1.2)**](https://github.com/apcom52/altrone-ui/releases/tag/v1.2.0) and [**January Feature Update(1.1)**](https://github.com/apcom52/altrone-ui/releases/tag/v1.1.0)
+📚 [**DOCUMENTATION**](https://apcom.gitbook.io/altrone-ui/)
 
-🔹 [All releases](https://github.com/apcom52/altrone-ui/releases)
+▶️ [**STORYBOOK**](https://apcom52.github.io/altrone-ui/)
 
-🔹 [Trello board](https://trello.com/b/EGGzwaTu/altrone-ui)
+💿 [**RELEASE HISTORY**](https://github.com/apcom52/altrone-ui/releases)
 
-🔹 [Documentation (in development)](https://apcom52.github.io/altrone-docs/)
-
-## Roadmap
-| Quarter                             | Releases | Planned features                                                                                                                                             |
-|-------------------------------------|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| January - March 2023 **(finished)** | Updates for 1.0  | DataTable actions, selectable rows of DataTable, Indicators, NavigationList action, Progress updates, build optimization                                     |
-| April - June 2023                   | 2.0 Release   | FileUploader, Breadcrumbs, Pagination, Carousel, ToolSelector, Spoiler, Surfaces, TextInput suggestions, Multiple Select, Loading State for Button and TextInput |
-| July - September 2023               | Updates for 2.0  | DatePicker ranges, new features for FormField, accessibility features                                                                                        |
-| October - December 2023             | 3.0 Release  | Charts, ColorPicker, Range Slider, Notification, new features for another components, new accessibility features                                             |
+📝 [**TRELLO BOARD**](https://trello.com/b/EGGzwaTu/altrone-ui)
 
 ## Versions
 
-| Tag                          | Example        | Description               |
-|------------------------------|----------------|---------------------------|
-| **Stable release**           | `@1.3.0`         | Stable release of Altrone |
-| **Release Candidate**        | `@1.3.0-rc`      | A pre-release build that contains all the necessary changes for the release. The main difference from the stable version is that not all new features have been covered in tests yet. **Not recommended for production**                        |
-| **Beta version**             | `@1.3.0-beta.2`  | A set of updates and new features from dev builds that can be used in test projects and to get to know new components. **Not recommended for production**                          |
-| **Development weekly build** | `@1.3.0-dev.2313` | Weekly collection of changes. For enthusiasts. Some features may be incomplete or not work at all. **Forbidden to use in production**                          |
+| Tag                          | Example           | Description               |
+|------------------------------|-------------------|---------------------------|
+| **Stable release**           | `@2.0.0`          | Stable release of Altrone |
+| **Release Candidate**        | `@2.0.0-rc`       | A pre-release build that contains all the necessary changes for the release. The main difference from the stable version is that not all new features have been covered in tests yet. **Not recommended for production**                        |
+| **Beta version**             | `@2.0.0-beta.5`   | A set of updates and new features from dev builds that can be used in test projects and to get to know new components. **Not recommended for production**                          |
+| **Development weekly build** | `@2.0.0-dev.2322` | Weekly collection of changes. For enthusiasts. Some features may be incomplete or not work at all. **Forbidden to use in production**                          |
 
 
 ## Installation
@@ -43,66 +36,69 @@ To install the library, enter the command:
 
 ## Documentation
 
-Altrone has storybook documentation and examples. 
+- [**Read the documentation**](https://apcom.gitbook.io/altrone-ui/)
 
 To run storybook enter the command:
 
 `npm run storybook`
 
-`< Online documentation in progress />`
+- [**Check the storybook**](https://apcom52.github.io/altrone-ui/)
 
 ## Components
 
-**Actions:**
+**Typography:**
 
-- `<Button />`
+- `<Paragraph />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/typography/paragraph))
+- `<Heading />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/typography/heading))
+- `<Message />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/typography/message))
+- `<Blockquote />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/typography/blockquote))
+- `<Icon />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/typography/icon))
 
 **Containers:**
 
-- `<ButtonContainer />`
-- `<FloatingBox />`
-- `<Form />`
-- `<Modal />`
+- `<ButtonContainer />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/buttoncontainer))
+- `<FloatingBox />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/floatingbox))
+- `<Form />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/form))
+- `<Modal />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/modal))
+- `<PhotoViewer />` 🆕 ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/photoviewer))
+- `<Spoiler />` 🆕 ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/spoiler))
+- `<Toolbar />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/toolbar))
 
 **Data:**
 
-- `<DataTable />`
+- `<Carousel />` 🆕 ([Documentation](https://apcom.gitbook.io/altrone-ui/components/data/carousel))
+- `<DataTable />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/data/datatable))
 
 **Form:**
 
-- `<TextInput />`
-- `<PasswordInput />`
-- `<NumberInput />`
-- `<Textarea />`
-- `<Checkbox />`
-- `<CheckboxList />`
-- `<RadioList />`
-- `<Select />`
-- `<ScrollableSelector />`
-- `<DatePicker />`
-
-**Icons:**
-
-- `<Icon />`
-
-**Indicators:**
-
-- `<Progress />`
+- `<Button />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/button))
+- `<TextInput />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/textinput))
+- `<PasswordInput />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/passwordinput))
+- `<NumberInput />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/numberinput))
+- `<Search />` 🆕 ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/search))
+- `<Textarea />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/textarea))
+- `<Checkbox />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/checkbox))
+- `<CheckboxList />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/checkboxlist))
+- `<Switcher />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/switcher))
+- `<RadioList />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/radiolist))
+- `<Select />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/select))
+- `<ScrollableSelector />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/scrollableselector))
+- `<DatePicker />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/datepicker))
+- `<FilePicker />` 🆕 ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/filepicker))
 
 **List:**
 
-- `<Chips />`
-- `<ContextMenu />`
-- `<NavigationList />`
-- `<TabList />`
-- `<Toolbar />`
+- `<Breadcrumbs />` 🆕 ([Documentation](https://apcom.gitbook.io/altrone-ui/components/lists/breadcrumbs))
+- `<Chips />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/lists/chips))
+- `<ContextMenu />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/lists/contextmenu))
+- `<NavigationList />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/lists/navigationlist))
+- `<TabList />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/lists/tablist))
 
-**Typography:**
+**Indicators:**
 
-- `<Heading />`
-- `<Blockquote />`
-- `<Paragraph />`
-- `<Message />`
+- `<Loading />` 🆕 ([Documentation](https://apcom.gitbook.io/altrone-ui/components/indicators/loading))
+- `<Pagination />` 🆕 ([Documentation](https://apcom.gitbook.io/altrone-ui/components/indicators/pagination))
+- `<Progress />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/indicators/progress))
 
 ## License
 

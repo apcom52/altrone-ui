@@ -1,13 +1,13 @@
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { useThemeContext } from '../../../contexts';
 import './date-picker.scss';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import { Calendar, MonthPicker, YearPicker } from './index';
-import { Button } from '../../button';
+import { Button } from '../../form';
 import clsx from 'clsx';
 import { TextInputProps } from '../TextInput';
-import { ContextMenuType, Role, Size } from '../../../types';
+import { ContextMenuType, Elevation, Role, Size, Surface } from '../../../types';
 import { useLocalization, useWindowSize } from '../../../hooks';
 import { BasicInput, BasicInputProps } from '../BasicInput';
 
@@ -18,7 +18,10 @@ export enum Picker {
 }
 
 interface DatePickerProps
-  extends Pick<TextInputProps, 'errorText' | 'hintText' | 'size' | 'disabled'>,
+  extends Pick<
+      TextInputProps,
+      'errorText' | 'hintText' | 'size' | 'disabled' | 'elevation' | 'surface'
+    >,
     BasicInputProps {
   value: Date;
   onChange: (value: Date | undefined) => void;
@@ -45,7 +48,9 @@ const DatePicker = ({
   size = Size.medium,
   hintText,
   errorText,
-  className
+  className,
+  elevation = Elevation.convex,
+  surface = Surface.paper
 }: DatePickerProps) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(
@@ -149,7 +154,10 @@ const DatePicker = ({
   return (
     <BasicInput disabled={disabled} hintText={hintText} errorText={errorText} size={size}>
       <button
-        className={clsx('alt-date-picker', className)}
+        className={clsx('alt-date-picker', className, {
+          [`alt-text-input__control--elevation-${elevation}`]: elevation,
+          [`alt-text-input__control--surface-${surface}`]: surface !== Surface.paper
+        })}
         id={id}
         ref={inputRef}
         onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}

@@ -1,5 +1,7 @@
+$focusStyles: 0 0 0 3px var(--accentFocus);
+
 @mixin useFocusStyles {
-  box-shadow: 0 0 0 3px var(--accentFocus);
+  box-shadow: $focusStyles;
   outline: 0;
 }
 
@@ -100,7 +102,7 @@ $s-phone: 320px;
   &::-webkit-scrollbar {
     width: 4px;
     border-radius: 4px;
-    height: 8px;
+    height: 4px;
     background-color: var(--surfaceTrasparent); /* or add it to the track */
   }
 
@@ -119,5 +121,55 @@ $s-phone: 320px;
 
   &:focus, &:focus-visible {
     box-shadow: 0 0 0 2px var(--danger);
+  }
+}
+
+
+$elevations: (
+  "flat": false,
+  "convex": 0 1px 0 0 var(--shadow),
+  "raised": 0 2px 5px 0 var(--shadow),
+  "floating": 0 3px 15px 0 var(--shadow),
+  "flying": 0 5px 25px 0 var(--shadow)
+);
+@mixin useElevation($prefix, $extraShadows: false, $withFocus: false) {
+  @each $elevationName, $elevation in $elevations {
+    .#{$prefix}--elevation-#{$elevationName} {
+      @if ($elevationName == flat) {
+        @if ($extraShadows and $withFocus) {
+          box-shadow: none;
+
+          &:focus, &:focus-visible {
+            box-shadow: #{$extraShadows}, #{$focusStyles};
+          }
+        } @else if($extraShadows) {
+          box-shadow: $extraShadows;
+        } @else if($withFocus) {
+          box-shadow: none;
+
+          &:focus, &:focus-visible {
+            box-shadow: #{$focusStyles};
+          }
+        } @else {
+          box-shadow: none;
+        }
+      } @else {
+        @if ($extraShadows) {
+          box-shadow: #{$elevation}, #{$extraShadows};
+        } @else {
+          box-shadow: $elevation;
+        }
+
+        @if ($withFocus) {
+          &:focus, &:focus-visible {
+            @if ($extraShadows) {
+              box-shadow: #{$elevation}, #{$extraShadows}, #{$focusStyles};
+            } @else {
+              box-shadow: #{$elevation}, #{$focusStyles};
+            }
+          }
+        }
+      }
+    }
   }
 }

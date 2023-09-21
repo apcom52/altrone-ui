@@ -6,13 +6,14 @@
   min-width: 200px;
   max-width: 300px;
   padding: 0;
+  overflow-y: auto;
 }
 
 .alt-context-menu-item {
   display: flex;
   align-items: center;
   @include useFontSize(label, Large);
-  border-radius: 8px;
+  border-radius: var(--controlRounding);
   border: none;
   background-color: transparent;
   cursor: pointer;
@@ -27,6 +28,15 @@
   }
 
   @include useInteraction {
+    background-color: var(--accent);
+    color: var(--textColorOnAccent);
+
+    .alt-context-menu-item__hint {
+      color: var(--textColorOnAccent);
+    }
+  }
+
+  &.alt-context-menu-item--selected {
     background-color: var(--accent);
     color: var(--textColorOnAccent);
 
@@ -96,4 +106,9 @@
     background-color: var(--surfaceTrasparent);
     color: var(--textColor);
   }
+}
+
+.alt-context-menu-list--fluid {
+  max-width: unset;
+  width: 100%;
 }

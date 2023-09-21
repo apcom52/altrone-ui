@@ -1,0 +1,138 @@
+@import '../../../mixins';
+
+.alt-toolbar {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 12px 0;
+  box-shadow: 0 3px 15px 0 var(--shadow);
+
+  @include useGlassSurface();
+}
+
+.alt-toolbar__menu {
+  display: flex;
+}
+
+.alt-toolbar__main {
+  display: flex;
+  align-items: flex-start;
+  max-height: 68px;
+  padding-bottom: 4px;
+  overflow: hidden;
+  gap: 24px;
+}
+
+.alt-toolbar-group {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.alt-toolbar-group--fluid {
+  flex-grow: 1;
+}
+
+.alt-toolbar-group--align-start {
+  justify-content: flex-start;
+}
+
+.alt-toolbar-group--align-end {
+  justify-content: flex-end;
+}
+
+.alt-toolbar-group--collapsible {
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.alt-toolbar-group--invisible {
+  position: absolute;
+  visibility: hidden;
+}
+
+.alt-toolbar-group--compact {
+  flex: 0;
+  gap: 4px;
+}
+
+.alt-toolbar-separator {
+  width: 1px;
+  height: 48px;
+  margin-top: 6px;
+  border-left: 1px solid var(--borderColor);
+}
+
+.alt-toolbar--floated {
+  position: fixed;
+  width: 100%;
+  border-radius: var(--сontainerRounding);
+  padding: 4px 4px 0;
+}
+
+.alt-toolbar--surface-none {
+  background-color: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-toolbar--surface-transparent {
+  background-color: var(--surfaceTrasparent);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-toolbar--surface-solid {
+  background-color: var(--surface);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-toolbar--surface-paper {
+  background-color: var(--background);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-toolbar--surface-metal {
+  background: linear-gradient(to bottom, var(--metalTop) 0%, var(--metalBottom) 100%);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-toolbar--compact {
+  border-radius: var(--controlRounding);
+  padding: 4px;
+  width: 100%;
+
+  @include useGlassSurface();
+
+  .alt-toolbar__main {
+    padding: 0;
+    gap: 12px;
+    overflow: unset;
+  }
+
+  .alt-toolbar-group + .alt-toolbar-group {
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 25%;
+      background-color: var(--dividerColor);
+      width: 1px;
+      height: 50%;
+    }
+  }
+
+  &.alt-toolbar--floated {
+    position: fixed;
+    width: fit-content;
+  }
+}
+
+@include useElevation('alt-toolbar');

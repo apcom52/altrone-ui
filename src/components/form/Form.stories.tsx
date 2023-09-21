@@ -1,26 +1,19 @@
 import { Altrone } from '../../hocs';
-import { Align, Direction, Size, Theme } from '../../types';
+import { Align, Direction, Elevation, Size, Surface, Theme } from '../../types';
 import {
-  Checkbox,
-  CheckboxList,
   DatePicker,
-  InputIslandType,
   NumberInput,
   PasswordInput,
   RadioList,
   ScrollableSelector,
   Select,
   Switcher,
-  Textarea,
-  TextInput
+  Textarea
 } from './index';
-import { Icon } from '../icons';
 import { SelectOptionProps } from './Select';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { Picker } from './DatePicker/DatePicker';
-import { userEvent, within } from '@storybook/testing-library';
-import { CheckboxListStory, CheckboxStory } from './Checkbox/Checkbox.stories';
 import { ScrollableSelectorOptionProps } from './ScrollableSelector/ScrollableSelector';
 
 const Template = ({ Component, dark, value = '', locale, lang = 'en', ...args }) => {
@@ -31,98 +24,6 @@ const Template = ({ Component, dark, value = '', locale, lang = 'en', ...args })
       <Component {...args} value={_value} onChange={setValue} />
     </Altrone>
   );
-};
-
-const CustomSelectItem = ({
-  label,
-  value,
-  onSelect,
-  inSelectHeader,
-  parent,
-  selected,
-  disabled,
-  className
-}: SelectOptionProps) => {
-  const ComponentName = inSelectHeader ? 'div' : 'button';
-
-  return (
-    <ComponentName
-      className={clsx('alt-select-option', {
-        'alt-select-option--selected': selected
-      })}
-      onClick={() => onSelect(value)}>
-      <div className="alt-select-option__label">
-        {value} {label}
-      </div>
-    </ComponentName>
-  );
-};
-
-export const TextInputExample = Template.bind({});
-TextInputExample.args = {
-  Component: TextInput,
-  placeholder: 'Type something',
-  hintText: '',
-  errorText: '',
-  required: false,
-  disabled: false,
-  size: Size.medium,
-  dark: false
-};
-
-TextInputExample.play = async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
-
-  await userEvent.type(canvas.getByRole('textbox'), 'inputed text');
-};
-
-export const TextInputWithLeftIslandExample = Template.bind({});
-TextInputWithLeftIslandExample.args = {
-  Component: TextInput,
-  placeholder: 'Type something',
-  prefix: 'search:',
-  size: Size.medium,
-  dark: false
-};
-
-export const TextInputWithRightIslandExample = Template.bind({});
-TextInputWithRightIslandExample.args = {
-  Component: TextInput,
-  placeholder: 'Type something',
-  rightIcon: <Icon i="search" />,
-  size: Size.medium,
-  dark: false
-};
-
-export const TextInputWithBothIslandsExample = Template.bind({});
-TextInputWithBothIslandsExample.args = {
-  Component: TextInput,
-  placeholder:
-    'Type something Type something Type something Type something Type something ' +
-    'Type something Type something Type something Type something Type something Type something Type something',
-  leftIsland: {
-    type: InputIslandType.components,
-    content: <b>{'q>:'}</b>
-  },
-  rightIsland: {
-    type: InputIslandType.actions,
-    content: [
-      {
-        title: 'Decrease',
-        icon: <Icon i="keyboard_arrow_down" />,
-        onClick: () => alert('Decrease clicked')
-      },
-      {
-        title: 'Increase',
-        icon: <Icon i="keyboard_arrow_up" />,
-        onClick: () => alert('Increase clicked')
-      }
-    ]
-  },
-  required: false,
-  disabled: false,
-  size: Size.medium,
-  dark: false
 };
 
 export const PasswordInputExample = Template.bind({});
@@ -145,196 +46,38 @@ NumberInputExample.args = {
   size: Size.medium,
   dark: false,
   showControls: true,
-  disabled: false
-};
-
-export const CheckboxExample = CheckboxStory.bind({});
-CheckboxExample.args = {
-  Component: Checkbox,
-  value: 0,
-  checked: false,
   disabled: false,
-  danger: false,
-  children: 'Example',
-  hintText: '',
-  errorText: '',
-  dark: false
+  surface: Surface.paper
 };
 
-export const CheckboxListExample = CheckboxListStory.bind({});
-CheckboxListExample.args = {
-  Component: CheckboxList,
-  lang: 'en',
-  dark: false
-};
-CheckboxListExample.argTypes = {
-  direction: {
-    control: 'select',
-    options: [Direction.horizontal, Direction.vertical]
-  },
-  dark: {
-    control: 'boolean'
-  }
-};
-
-export const SelectExample = Template.bind({});
-SelectExample.args = {
-  Component: Select,
-  value: 'uk',
-  dark: false,
-  fluid: false,
-  searchable: false,
-  disabled: false,
-  clearable: false,
-  lang: 'en',
-  errorText: '',
-  hintText: '',
-  options: [
-    {
-      label: 'The United Kingdom',
-      value: 'uk',
-      parent: 'nato'
-    },
-    {
-      label: 'The United States of America',
-      value: 'use',
-      parent: 'nato'
-    },
-    {
-      label: 'Spain',
-      value: 'spain',
-      parent: 'eu',
-      disabled: true
-    },
-    {
-      label: 'France',
-      parent: 'eu',
-      value: 'france'
-    },
-    {
-      label: 'Turkey',
-      parent: 'nato',
-      value: 'turkey'
-    },
-    {
-      label: 'Russia',
-      value: 'russia'
-    },
-    {
-      label: 'Japan',
-      parent: 'nato',
-      value: 'japan'
-    },
-    {
-      label: 'China',
-      value: 'china'
-    },
-    {
-      label: 'Brazil',
-      value: 'brazil'
-    },
-    {
-      label: 'Germany',
-      parent: 'eu',
-      value: 'germany'
-    }
-  ],
-  parents: [
-    {
-      label: 'European Union',
-      value: 'eu',
-      disabled: true
-    },
-    {
-      label: 'NATO',
-      value: 'nato'
-    }
-  ]
-};
-SelectExample.argTypes = {
-  size: {
-    control: 'select',
-    options: ['small', 'medium', 'large']
-  }
-};
-
-export const CustomSelectExample = Template.bind({});
-CustomSelectExample.args = {
-  Component: Select,
-  value: '🇫🇷',
-  dark: false,
-  fluid: false,
-  searchable: false,
-  disabled: false,
-  options: [
-    {
-      label: 'The United Kingdom',
-      value: '🇬🇧',
-      parent: 'nato'
-    },
-    {
-      label: 'The United States of America',
-      value: '🇺🇸',
-      parent: 'nato'
-    },
-    {
-      label: 'Spain',
-      value: '🇪🇸',
-      parent: 'eu',
-      disabled: true
-    },
-    {
-      label: 'France',
-      parent: 'eu',
-      value: '🇫🇷'
-    },
-    {
-      label: 'Turkey',
-      parent: 'nato',
-      value: '🇹🇷'
-    },
-    {
-      label: 'Russia',
-      value: '🇷🇺'
-    },
-    {
-      label: 'Japan',
-      parent: 'nato',
-      value: '🇯🇵'
-    },
-    {
-      label: 'China',
-      value: '🇨🇳'
-    },
-    {
-      label: 'Brazil',
-      value: '🇧🇷'
-    },
-    {
-      label: 'Germany',
-      parent: 'eu',
-      value: '🇩🇪'
-    }
-  ],
-  parents: [
-    {
-      label: 'European Union',
-      value: 'eu',
-      disabled: true
-    },
-    {
-      label: 'NATO',
-      value: 'nato'
-    }
-  ],
-  ItemComponent: CustomSelectItem
-};
-CustomSelectExample.argTypes = {
-  size: {
-    control: 'select',
-    options: ['small', 'medium', 'large']
-  }
-};
+// export const CheckboxExample = CheckboxStory.bind({});
+// CheckboxExample.args = {
+//   Component: Checkbox,
+//   value: 0,
+//   checked: false,
+//   disabled: false,
+//   danger: false,
+//   children: 'Example',
+//   hintText: '',
+//   errorText: '',
+//   dark: false
+// };
+//
+// export const CheckboxListExample = CheckboxListStory.bind({});
+// CheckboxListExample.args = {
+//   Component: CheckboxList,
+//   lang: 'en',
+//   dark: false
+// };
+// CheckboxListExample.argTypes = {
+//   direction: {
+//     control: 'select',
+//     options: [Direction.horizontal, Direction.vertical]
+//   },
+//   dark: {
+//     control: 'boolean'
+//   }
+// };
 
 export const SwitcherExample = Template.bind({});
 SwitcherExample.args = {
@@ -485,10 +228,11 @@ TextareaExample.args = {
   errorText: '',
   hintText: '',
   disabled: false,
-  required: false
+  required: false,
+  elevation: Elevation.convex
 };
 
 export default {
-  component: TextInputExample,
+  component: PasswordInput,
   title: 'Forms'
 };

@@ -1,9 +1,8 @@
 import { memo } from 'react';
 import { FormField, FormGroup } from '../../containers';
-import { Checkbox, CheckboxList, Select } from '../../form';
+import { Checkbox, CheckboxList, Select, Button } from '../../form';
 import './data-table-filtering.scss';
 import { Align, Direction, Option, Role } from '../../../types';
-import { Button } from '../../button';
 import { useDataTableContext } from '../../../contexts';
 import ButtonContainer from '../../containers/ButtonContainer/ButtonContainer';
 import { useLocalization } from '../../../hooks';
@@ -25,7 +24,7 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
           });
 
           const selectOptions: Option<any>[] = Array.from(options).map((variant) => ({
-            label: variant.toString(),
+            label: String(variant),
             value: variant
           }));
 
@@ -36,6 +35,7 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
 
           switch (filter.type) {
             case 'select':
+            case 'checkbox':
               currentFilterValue = appliedFilters[currentFilterIndex]?.value || null;
               break;
             case 'checkboxList':
@@ -74,12 +74,22 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
                   _filters[currentFilterIndex].value.push(value);
                 }
               }
+            } else if (filter.type === 'checkbox') {
+              if (currentFilterIndex === -1) {
+                _filters.push({
+                  accessor: filter.accessor,
+                  value
+                });
+              } else {
+                _filters[currentFilterIndex].value = value;
+              }
             }
 
             setAppliedFilters(_filters);
           };
 
           let children = <></>;
+          let isLabelNeeded = true;
 
           switch (filter.type) {
             case 'select':
@@ -102,10 +112,20 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
                 </CheckboxList>
               );
               break;
+            case 'checkbox':
+              isLabelNeeded = false;
+              children = (
+                <Checkbox checked={Boolean(currentFilterValue)} onChange={onChange}>
+                  {filter.label || filter.accessor}
+                </Checkbox>
+              );
+              break;
           }
 
           return (
-            <FormField key={filterIndex} label={filter.label || filter.accessor}>
+            <FormField
+              key={filterIndex}
+              label={isLabelNeeded ? filter.label || filter.accessor : ''}>
               {children}
             </FormField>
           );

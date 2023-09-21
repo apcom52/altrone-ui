@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { FloatingBox } from './index';
-import { Button } from '../../button';
+import { Button } from '../../form';
 import { Altrone } from '../../../hocs';
 import { TEST_MATCH_MEDIA_FN } from '../../../constants/_testUtils';
 

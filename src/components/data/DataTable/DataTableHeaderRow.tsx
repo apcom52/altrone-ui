@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { useDataTableContext } from '../../../contexts';
 import { useWindowSize } from '../../../hooks';
 import { filterVisibleColumns } from './functions';

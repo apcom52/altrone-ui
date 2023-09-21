@@ -1,5 +1,5 @@
-import { Icon } from '../../icons';
-import { memo, MouseEventHandler, useCallback } from 'react';
+import { Icon } from '../../typography';
+import { MouseEventHandler, useCallback } from 'react';
 import './number-input-counter.scss';
 
 interface NumberInputCounterProps {

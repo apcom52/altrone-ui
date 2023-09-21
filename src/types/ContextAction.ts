@@ -5,6 +5,7 @@ export interface ContextAction {
   hint?: string;
   disabled?: boolean;
   danger?: boolean;
+  selected?: boolean;
 }
 
 export interface ParentContextAction extends Omit<ContextAction, 'onClick' | 'hint' | 'danger'> {

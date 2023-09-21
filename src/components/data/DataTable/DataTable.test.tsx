@@ -10,7 +10,7 @@ import {
 import { Sort } from '../../../types';
 import { Altrone } from '../../../hocs';
 import ReactDOM from 'react-dom';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { TEST_MATCH_MEDIA_FN } from '../../../constants/_testUtils';
 
 const DATA = [
@@ -64,7 +64,7 @@ const DATA = [
   }
 ];
 
-const COLUMNS: DataTableColumn<typeof DATA[0]>[] = [
+const COLUMNS: DataTableColumn<(typeof DATA)[0]>[] = [
   {
     accessor: 'id',
     label: '#'
@@ -119,7 +119,7 @@ describe('Data.DataTable', () => {
     const { rerender } = render(<DataTable data={DATA} columns={COLUMNS} limit={5} />);
 
     let rows = screen.queryAllByTestId('alt-test-datatable-row');
-    let currentPage = screen.getByTestId('alt-test-datatable-currentPage');
+    let currentPage = screen.getByTestId('alt-test-pagination-currentPage');
     expect(rows).toHaveLength(5);
     expect(currentPage).toHaveTextContent('1');
 
@@ -128,16 +128,16 @@ describe('Data.DataTable', () => {
 
     rerender(<DataTable data={DATA} columns={COLUMNS} limit={5} />);
     rows = screen.queryAllByTestId('alt-test-datatable-row');
-    currentPage = screen.getByTestId('alt-test-datatable-currentPage');
+    currentPage = screen.getByTestId('alt-test-pagination-currentPage');
     expect(rows).toHaveLength(1);
     expect(currentPage).toHaveTextContent('2');
 
-    const prevPage = screen.getByText('arrow_back_ios');
+    const prevPage = screen.getByText('arrow_back_ios_new');
     await waitFor(() => fireEvent.click(prevPage));
 
     rerender(<DataTable data={DATA} columns={COLUMNS} limit={5} />);
     rows = screen.queryAllByTestId('alt-test-datatable-row');
-    currentPage = screen.getByTestId('alt-test-datatable-currentPage');
+    currentPage = screen.getByTestId('alt-test-pagination-currentPage');
     expect(rows).toHaveLength(5);
     expect(currentPage).toHaveTextContent('1');
   });
@@ -182,7 +182,7 @@ describe('Data.DataTable', () => {
 
     expect(rows).toHaveLength(6);
 
-    const search = screen.getByTestId('alt-test-datatable-search').querySelector('input');
+    const search = screen.getByRole('searchbox');
     await waitFor(() => fireEvent.change(search, { target: { value: 'The' } }));
 
     rerender(<DataTable data={DATA} columns={COLUMNS} searchBy="country" />);
@@ -538,14 +538,14 @@ describe('Data.DataTable', () => {
     ]);
   });
 
-  test('', async () => {
+  test('should search clear button works correctly', async () => {
     const { rerender } = render(
       <Altrone>
         <DataTable data={DATA} columns={COLUMNS} searchBy="country" />
       </Altrone>
     );
 
-    let searchField = screen.getByRole('textbox');
+    let searchField = screen.getByRole('searchbox');
     await waitFor(() => fireEvent.change(searchField, { target: { value: 'the' } }));
 
     rerender(
@@ -554,7 +554,7 @@ describe('Data.DataTable', () => {
       </Altrone>
     );
 
-    searchField = screen.getByRole('textbox');
+    searchField = screen.getByRole('searchbox');
     expect(searchField).toHaveValue('the');
 
     const clearButton = screen.getByText('backspace');
@@ -566,7 +566,7 @@ describe('Data.DataTable', () => {
       </Altrone>
     );
 
-    searchField = screen.getByRole('textbox');
+    searchField = screen.getByRole('searchbox');
     expect(searchField).toHaveValue('');
   });
 

@@ -13,7 +13,8 @@ export default [
     continent: 'EU',
     capital: 'Brussels',
     phone: '32',
-    currency: 'EUR'
+    currency: 'EUR',
+    isEU: true
   },
   {
     name: 'Burkina Faso',
@@ -29,7 +30,8 @@ export default [
     continent: 'EU',
     capital: 'Sofia',
     phone: '359',
-    currency: 'BGN'
+    currency: 'BGN',
+    isEU: true
   },
   {
     name: 'Bosnia and Herzegovina',
@@ -219,7 +221,8 @@ export default [
     continent: 'EU',
     capital: 'Bucharest',
     phone: '40',
-    currency: 'RON'
+    currency: 'RON',
+    isEU: true
   },
   { name: 'Tokelau', iso: 'TKL', continent: 'OC', capital: '', phone: '690', currency: 'NZD' },
   {
@@ -254,7 +257,15 @@ export default [
     phone: '',
     currency: 'GBP'
   },
-  { name: 'Greece', iso: 'GRC', continent: 'EU', capital: 'Athens', phone: '30', currency: 'EUR' },
+  {
+    name: 'Greece',
+    iso: 'GRC',
+    continent: 'EU',
+    capital: 'Athens',
+    phone: '30',
+    currency: 'EUR',
+    isEU: true
+  },
   {
     name: 'Equatorial Guinea',
     iso: 'GNQ',
@@ -371,7 +382,8 @@ export default [
     continent: 'EU',
     capital: 'Zagreb',
     phone: '385',
-    currency: 'HRK'
+    currency: 'HRK',
+    isEU: true
   },
   {
     name: 'Haiti',
@@ -387,7 +399,8 @@ export default [
     continent: 'EU',
     capital: 'Budapest',
     phone: '36',
-    currency: 'HUF'
+    currency: 'HUF',
+    isEU: true
   },
   {
     name: 'Hong Kong',
@@ -451,7 +464,8 @@ export default [
     continent: 'EU',
     capital: 'Lisbon',
     phone: '351',
-    currency: 'EUR'
+    currency: 'EUR',
+    isEU: true
   },
   {
     name: 'Svalbard and Jan Mayen',
@@ -519,7 +533,15 @@ export default [
     phone: '870',
     currency: 'NZD'
   },
-  { name: 'Poland', iso: 'POL', continent: 'EU', capital: 'Warsaw', phone: '48', currency: 'PLN' },
+  {
+    name: 'Poland',
+    iso: 'POL',
+    continent: 'EU',
+    capital: 'Warsaw',
+    phone: '48',
+    currency: 'PLN',
+    isEU: true
+  },
   {
     name: 'Saint Pierre and Miquelon',
     iso: 'SPM',
@@ -543,7 +565,8 @@ export default [
     continent: 'EU',
     capital: 'Tallinn',
     phone: '372',
-    currency: 'EUR'
+    currency: 'EUR',
+    isEU: true
   },
   { name: 'Egypt', iso: 'EGY', continent: 'AF', capital: 'Cairo', phone: '20', currency: 'EGP' },
   {
@@ -555,7 +578,15 @@ export default [
     currency: 'ZAR'
   },
   { name: 'Ecuador', iso: 'ECU', continent: 'SA', capital: 'Quito', phone: '593', currency: 'USD' },
-  { name: 'Italy', iso: 'ITA', continent: 'EU', capital: 'Rome', phone: '39', currency: 'EUR' },
+  {
+    name: 'Italy',
+    iso: 'ITA',
+    continent: 'EU',
+    capital: 'Rome',
+    phone: '39',
+    currency: 'EUR',
+    isEU: true
+  },
   { name: 'Vietnam', iso: 'VNM', continent: 'AS', capital: 'Hanoi', phone: '84', currency: 'VND' },
   {
     name: 'Solomon Islands',
@@ -597,7 +628,15 @@ export default [
     phone: '966',
     currency: 'SAR'
   },
-  { name: 'Spain', iso: 'ESP', continent: 'EU', capital: 'Madrid', phone: '34', currency: 'EUR' },
+  {
+    name: 'Spain',
+    iso: 'ESP',
+    continent: 'EU',
+    capital: 'Madrid',
+    phone: '34',
+    currency: 'EUR',
+    isEU: true
+  },
   {
     name: 'Eritrea',
     iso: 'ERI',
@@ -639,7 +678,15 @@ export default [
     currency: 'EUR'
   },
   { name: 'Morocco', iso: 'MAR', continent: 'AF', capital: 'Rabat', phone: '212', currency: 'MAD' },
-  { name: 'Monaco', iso: 'MCO', continent: 'EU', capital: 'Monaco', phone: '377', currency: 'EUR' },
+  {
+    name: 'Monaco',
+    iso: 'MCO',
+    continent: 'EU',
+    capital: 'Monaco',
+    phone: '377',
+    currency: 'EUR',
+    isEU: true
+  },
   {
     name: 'Uzbekistan',
     iso: 'UZB',
@@ -696,7 +743,8 @@ export default [
     continent: 'EU',
     capital: 'Valletta',
     phone: '356',
-    currency: 'EUR'
+    currency: 'EUR',
+    isEU: true
   },
   {
     name: 'Malawi',
@@ -787,7 +835,15 @@ export default [
     phone: '972',
     currency: 'ILS'
   },
-  { name: 'France', iso: 'FRA', continent: 'EU', capital: 'Paris', phone: '33', currency: 'EUR' },
+  {
+    name: 'France',
+    iso: 'FRA',
+    continent: 'EU',
+    capital: 'Paris',
+    phone: '33',
+    currency: 'EUR',
+    isEU: true
+  },
   {
     name: 'British Indian Ocean Territory',
     iso: 'IOT',
@@ -810,7 +866,8 @@ export default [
     continent: 'EU',
     capital: 'Helsinki',
     phone: '358',
-    currency: 'EUR'
+    currency: 'EUR',
+    isEU: true
   },
   { name: 'Fiji', iso: 'FJI', continent: 'OC', capital: 'Suva', phone: '679', currency: 'FJD' },
   {
@@ -851,9 +908,18 @@ export default [
     continent: 'EU',
     capital: 'Amsterdam',
     phone: '31',
-    currency: 'EUR'
+    currency: 'EUR',
+    isEU: true
   },
-  { name: 'Norway', iso: 'NOR', continent: 'EU', capital: 'Oslo', phone: '47', currency: 'NOK' },
+  {
+    name: 'Norway',
+    iso: 'NOR',
+    continent: 'EU',
+    capital: 'Oslo',
+    phone: '47',
+    currency: 'NOK',
+    isEU: true
+  },
   {
     name: 'Namibia',
     iso: 'NAM',
@@ -929,7 +995,8 @@ export default [
     continent: 'EU',
     capital: 'Berne',
     phone: '41',
-    currency: 'CHF'
+    currency: 'CHF',
+    isEU: true
   },
   {
     name: 'Colombia',
@@ -988,7 +1055,8 @@ export default [
     continent: 'EU',
     capital: 'Prague',
     phone: '420',
-    currency: 'CZK'
+    currency: 'CZK',
+    isEU: true
   },
   {
     name: 'Cyprus',
@@ -996,7 +1064,8 @@ export default [
     continent: 'EU',
     capital: 'Nicosia',
     phone: '357',
-    currency: 'EUR'
+    currency: 'EUR',
+    isEU: true
   },
   {
     name: 'Christmas Island',
@@ -1126,7 +1195,8 @@ export default [
     continent: 'EU',
     capital: 'Bratislava',
     phone: '421',
-    currency: 'EUR'
+    currency: 'EUR',
+    isEU: true
   },
   {
     name: 'South Korea',
@@ -1142,7 +1212,8 @@ export default [
     continent: 'EU',
     capital: 'Ljubljana',
     phone: '386',
-    currency: 'EUR'
+    currency: 'EUR',
+    isEU: true
   },
   {
     name: 'North Korea',
@@ -1167,7 +1238,8 @@ export default [
     continent: 'EU',
     capital: 'San Marino',
     phone: '378',
-    currency: 'EUR'
+    currency: 'EUR',
+    isEU: true
   },
   {
     name: 'Sierra Leone',
@@ -1215,7 +1287,8 @@ export default [
     continent: 'EU',
     capital: 'Stockholm',
     phone: '46',
-    currency: 'SEK'
+    currency: 'SEK',
+    isEU: true
   },
   {
     name: 'Sudan',
@@ -1255,7 +1328,8 @@ export default [
     continent: 'EU',
     capital: 'Copenhagen',
     phone: '45',
-    currency: 'DKK'
+    currency: 'DKK',
+    isEU: true
   },
   {
     name: 'British Virgin Islands',
@@ -1265,7 +1339,15 @@ export default [
     phone: '+1-284',
     currency: 'USD'
   },
-  { name: 'Germany', iso: 'DEU', continent: 'EU', capital: 'Berlin', phone: '49', currency: 'EUR' },
+  {
+    name: 'Germany',
+    iso: 'DEU',
+    continent: 'EU',
+    capital: 'Berlin',
+    phone: '49',
+    currency: 'EUR',
+    isEU: true
+  },
   { name: 'Yemen', iso: 'YEM', continent: 'AS', capital: 'Sanaa', phone: '967', currency: 'YER' },
   {
     name: 'Algeria',
@@ -1365,7 +1447,15 @@ export default [
     phone: '423',
     currency: 'CHF'
   },
-  { name: 'Latvia', iso: 'LVA', continent: 'EU', capital: 'Riga', phone: '371', currency: 'EUR' },
+  {
+    name: 'Latvia',
+    iso: 'LVA',
+    continent: 'EU',
+    capital: 'Riga',
+    phone: '371',
+    currency: 'EUR',
+    isEU: true
+  },
   {
     name: 'Tonga',
     iso: 'TON',
@@ -1380,7 +1470,8 @@ export default [
     continent: 'EU',
     capital: 'Vilnius',
     phone: '370',
-    currency: 'LTL'
+    currency: 'LTL',
+    isEU: true
   },
   {
     name: 'Luxembourg',
@@ -1388,7 +1479,8 @@ export default [
     continent: 'EU',
     capital: 'Luxembourg',
     phone: '352',
-    currency: 'EUR'
+    currency: 'EUR',
+    isEU: true
   },
   {
     name: 'Liberia',
@@ -1453,7 +1545,8 @@ export default [
     continent: 'EU',
     capital: 'Vatican City',
     phone: '379',
-    currency: 'EUR'
+    currency: 'EUR',
+    isEU: true
   },
   {
     name: 'Saint Vincent and the Grenadines',
@@ -1517,7 +1610,8 @@ export default [
     continent: 'EU',
     capital: 'Reykjavik',
     phone: '354',
-    currency: 'ISK'
+    currency: 'ISK',
+    isEU: true
   },
   { name: 'Iran', iso: 'IRN', continent: 'AS', capital: 'Tehran', phone: '98', currency: 'IRR' },
   {
@@ -1562,7 +1656,15 @@ export default [
     phone: '61',
     currency: 'AUD'
   },
-  { name: 'Austria', iso: 'AUT', continent: 'EU', capital: 'Vienna', phone: '43', currency: 'EUR' },
+  {
+    name: 'Austria',
+    iso: 'AUT',
+    continent: 'EU',
+    capital: 'Vienna',
+    phone: '43',
+    currency: 'EUR',
+    isEU: true
+  },
   {
     name: 'Aruba',
     iso: 'ABW',
@@ -1601,7 +1703,8 @@ export default [
     continent: 'EU',
     capital: 'Dublin',
     phone: '353',
-    currency: 'EUR'
+    currency: 'EUR',
+    isEU: true
   },
   {
     name: 'Indonesia',

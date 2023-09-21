@@ -1,0 +1,50 @@
+@import "../../../mixins";
+
+.alt-spoiler {
+  display: flex;
+  flex-direction: column;
+
+  & + & {
+    margin-top: 8px;
+  }
+}
+
+.alt-spoiler__header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: var(--surface);
+  border-radius: var(--controlRounding);
+  border: none;
+  height: 34px;
+  color: var(--textColor);
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+
+  @include useFontSize(text);
+  font-weight: 500;
+  @include useFocus();
+}
+
+.alt-spoiler__headerIcon {
+  margin-right: 8px;
+  font-size: 24px;
+  transition: transform 0.2s ease;
+}
+
+.alt-spoiler__headerLabel {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
+.alt-spoiler__content {
+  display: block;
+}
+
+.alt-spoiler--opened {
+  .alt-spoiler__headerIcon {
+    transform: rotate(90deg);
+  }
+}

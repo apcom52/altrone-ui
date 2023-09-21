@@ -1,7 +1,7 @@
 import { Blockquote, Heading, Message, Paragraph } from './index';
-import { Role } from '../../types';
-import { Icon } from '../icons';
-import { BasicTemplate } from '../BasicTemplate.stories';
+import { Elevation, Role } from '../../types';
+import { Icon } from './Icon';
+import { BasicTemplate } from '../BasicTemplate';
 
 export const HeadingExample = BasicTemplate.bind({});
 HeadingExample.args = {
@@ -40,13 +40,23 @@ MessageExample.args = {
     </>
   ),
   IconComponent: <Icon i="warning" />,
-  dark: false
+  dark: false,
+  elevation: Elevation.floating
 };
 MessageExample.argTypes = {
   role: {
     control: 'select',
     options: [Role.default, Role.primary, Role.success, Role.danger]
   }
+};
+
+export const IconExample = BasicTemplate.bind({});
+IconExample.args = {
+  Component: Icon,
+  i: 'face',
+  size: 32,
+  dark: false,
+  style: 'outlined'
 };
 
 export default {

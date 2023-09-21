@@ -22,7 +22,7 @@
   border: 1px solid var(--borderColor);
   color: var(--textColor);
   align-items: center;
-  border-radius: 8px;
+  border-radius: var(--controlRounding);
   cursor: pointer;
   transition: background-color var(--transitionDuration) ease, border-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
 

@@ -9,6 +9,9 @@
   --surfaceTrasparentHover: rgba(107, 138, 153, 0.3);
   --surfaceGlass: rgba(250, 250, 250, 0.8);
 
+  --metalTop: #EAE9E9;
+  --metalBottom: #AAAAAA;
+
   --textColor: #202124;
   --secondaryTextColor: #6b8a99;
 
@@ -72,7 +75,7 @@
   --bodyFontWeight: 400;
 
   --bodyLargeFontSize: 18px;
-  --bodyLageLineHeight: 26px;
+  --bodyLargeLineHeight: 26px;
   --bodyLargeFontWeight: 400;
 
   /* ---- */
@@ -131,6 +134,14 @@
   --displayLargeLineHeight: 64px;
   --displayLargeFontWeight: 700;
 
+  /* ---- */
+
+  --circleRounding: 50%;
+  --outerRounding: 20px;
+  --сontainerRounding: 12px;
+  --controlRounding: 8px;
+  --innerRounding: 6px;
+
   display: block;
   font-family: "Open Sans", sans-serif;
   color: var(--textColor);
@@ -152,6 +163,9 @@
   --surfaceTrasparent: rgba(18, 18, 18, 0.7);
   --surfaceTrasparentHover: rgba(107, 138, 153, 0.4);
   --surfaceGlass: rgba(33, 33, 33, 0.8);
+
+  --metalTop: #434445;
+  --metalBottom: #2F2F2F;
 
   --shadow: rgba(0, 0, 15, 0.5);
 

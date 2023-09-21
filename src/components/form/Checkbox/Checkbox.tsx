@@ -1,15 +1,16 @@
 import { memo, useId } from 'react';
 import './checkbox.scss';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import clsx from 'clsx';
 import { BasicInput, BasicInputProps } from '../BasicInput';
 
 interface CheckboxProps
-  extends Omit<React.HTMLProps<HTMLInputElement>, 'onChange' | 'size' | 'ref'>,
+  extends Omit<React.HTMLProps<HTMLInputElement>, 'onChange' | 'size' | 'ref' | 'checked'>,
     Omit<BasicInputProps, 'size'> {
+  checked: boolean;
+  onChange: (checked: boolean) => void;
   danger?: boolean;
   CheckIconComponent?: JSX.Element;
-  onChange: (checked: boolean) => void;
 }
 
 const Checkbox = ({

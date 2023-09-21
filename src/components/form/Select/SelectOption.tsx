@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 
 export interface SelectOptionProps<T> {
   label: string;

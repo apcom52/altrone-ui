@@ -51,7 +51,7 @@
   height: auto;
   padding: 8px;
   flex-direction: column;
-  border-radius: 12px;
+  border-radius: var(--сontainerRounding);
   box-shadow: 0 3px 15px 0 var(--shadow);
   transition: width var(--transitionDuration) ease, opacity 0.3s ease, transform 0.3s ease;
   opacity: 0;
@@ -64,7 +64,7 @@
     max-width: 100vw;
     margin: auto 0 0;
     padding: 16px;
-    border-radius: 12px 12px 0 0;
+    border-radius: var(--сontainerRounding) var(--сontainerRounding) 0 0;
     transform: translateY(150px);
   }
 }
@@ -98,7 +98,7 @@
   border: none;
   color: var(--textColor);
   font-size: 16px;
-  border-radius: 50%;
+  border-radius: var(--circleRounding);
   cursor: pointer;
   transition: background-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
   padding: 0;
@@ -163,3 +163,35 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+.alt-modal--surface-none {
+  background-color: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-modal--surface-transparent {
+  background-color: var(--surfaceTrasparent);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-modal--surface-solid {
+  background-color: var(--surface);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-modal--surface-paper {
+  background-color: var(--background);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.alt-modal--surface-metal {
+  background: linear-gradient(to bottom, var(--metalTop) 0%, var(--metalBottom) 100%);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+@include useElevation('alt-modal');

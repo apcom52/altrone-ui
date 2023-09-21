@@ -1,6 +1,6 @@
 import { ParentContextAction } from '../../../types';
 import { memo, useEffect, useRef, useState } from 'react';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import { createPortal } from 'react-dom';
 import { FloatingBox } from '../../containers';
 import { ContextMenu } from './index';

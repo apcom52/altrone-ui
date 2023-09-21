@@ -1,0 +1,54 @@
+@import "../../../mixins";
+
+.alt-breadcrumbs {
+  display: flex;
+  align-items: center;
+  color: var(--textColor);
+  cursor: default;
+
+  @include useDisabledUserSelect();
+}
+
+.alt-breadcrumbs__separator {
+  color: var(--secondaryTextColor);
+  margin: 0 8px;
+}
+
+.alt-breadcrumbs-item {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: var(--controlRounding);
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+  color: var(--secondaryTextColor);
+  text-decoration: none;
+
+  @include useFontSize(label);
+  @include useFocus();
+
+  &:hover {
+    background-color: var(--highlight);
+  }
+
+  &:disabled {
+    pointer-events: none;
+  }
+
+  &:first-of-type {
+    color: var(--textColor);
+  }
+
+  &:last-child {
+    pointer-events: none;
+    color: var(--textColor);
+    font-weight: 600;
+  }
+}
+
+.alt-breadcrumb-item__icon {
+  font-size: 18px;
+  margin-right: 4px;
+}

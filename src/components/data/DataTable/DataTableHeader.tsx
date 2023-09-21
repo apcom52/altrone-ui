@@ -1,14 +1,13 @@
 import { memo, useMemo, useState } from 'react';
 import './data-table-header.scss';
-import { Button, ButtonVariant } from '../../button';
-import { InputIslandType, TextInput } from '../../form';
 import DataTableSorting from './DataTableSorting';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import DataTableFiltering from './DataTableFiltering';
 import { useDataTableContext } from '../../../contexts';
 import { useLocalization, useWindowSize } from '../../../hooks';
 import { DataTableAction as DataTableActionType, DataTableSelectableAction } from './DataTable';
 import DataTableAction from './DataTableAction';
+import { Search, Button, ButtonVariant } from '../../form';
 
 interface DataTableHeaderProps<T> {
   actions: (DataTableSelectableAction<T> | DataTableActionType)[];
@@ -123,25 +122,7 @@ const DataTableHeader = <T extends object>({
                 <div
                   className="alt-data-table-header__search"
                   data-testid="alt-test-datatable-search">
-                  <TextInput
-                    placeholder={t('common.search')}
-                    value={search}
-                    onChange={setSearch}
-                    rightIsland={
-                      search
-                        ? {
-                            type: InputIslandType.actions,
-                            content: [
-                              {
-                                title: t('common.clear'),
-                                icon: <Icon i="backspace" />,
-                                onClick: () => setSearch('')
-                              }
-                            ]
-                          }
-                        : undefined
-                    }
-                  />
+                  <Search value={search} onChange={setSearch} />
                 </div>
               )
             ) : null}
@@ -157,14 +138,8 @@ const DataTableHeader = <T extends object>({
                 <div
                   className="alt-data-table-header__search"
                   data-testid="alt-test-datatable-search">
-                  <TextInput placeholder={t('common.search')} value={search} onChange={setSearch} />
+                  <Search value={search} onChange={setSearch} />
                 </div>
-                <Button
-                  variant={ButtonVariant.text}
-                  onClick={() => setSearch('')}
-                  isIcon={ltePhoneL}>
-                  <Icon i="backspace" />
-                </Button>
               </>
             ) : null}
           </div>

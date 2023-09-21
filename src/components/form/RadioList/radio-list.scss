@@ -31,7 +31,7 @@
     width: 10px;
     height: 10px;
     content: '';
-    border-radius: 50%;
+    border-radius: var(--circleRounding);
     background-color: var(--textColor);
     transform: scale(0);
     animation: radio-icon-animation var(--transitionDuration) ease 0ms;
@@ -67,7 +67,7 @@
   height: 16px;
   border: 1px solid var(--borderColor);
   background-color: var(--background);
-  border-radius: 50%;
+  border-radius: var(--circleRounding);
   margin-right: 6px;
 
   @include useSoftShadow();

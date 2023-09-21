@@ -1,6 +1,6 @@
 import './navigation-list-sub-item.scss';
 import { memo } from 'react';
-import { Icon } from '../../icons';
+import { Icon } from '../../typography';
 import clsx from 'clsx';
 import { NavigationSubItemProps } from './NavigationList';
 

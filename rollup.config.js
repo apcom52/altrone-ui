@@ -6,6 +6,7 @@ import scss from 'rollup-plugin-scss';
 import dts from 'rollup-plugin-dts';
 import terser from '@rollup/plugin-terser';
 import copy from 'rollup-plugin-copy';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 const packageJson = require('./package.json');
 
@@ -39,6 +40,7 @@ export default [
         outputStyle: 'compressed'
       }),
       terser(),
+      visualizer(),
       copy({
         targets: [
           {

@@ -1,9 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ButtonContainer from './ButtonContainer';
-import { Button } from '../../button';
-import { Direction } from '../../../types';
-import { Align } from '../../../types/Align';
+import { Button } from '../../form';
+import { Direction, Align } from '../../../types';
 
 describe('Containers.ButtonContainer', () => {
   test('should apply correct classes', () => {

@@ -1,5 +1,4 @@
 import {
-  memo,
   MouseEventHandler,
   PropsWithChildren,
   useCallback,
@@ -8,10 +7,10 @@ import {
   useRef,
   useState
 } from 'react';
-import { Role, Size, Align } from '../../../types';
+import { Align, Elevation, Role, Size, Surface } from '../../../types';
 import './modal.scss';
-import { Icon } from '../../icons';
-import { Button } from '../../button';
+import { Icon } from '../../typography';
+import { Button } from '../../form';
 import clsx from 'clsx';
 import { useLocalization, useWindowSize } from '../../../hooks';
 import ReactDOM from 'react-dom';
@@ -23,6 +22,7 @@ export interface ModalAction {
   rightIcon?: JSX.Element;
   align?: Align;
   role?: Role;
+  disabled?: boolean;
 }
 
 interface ModalProps extends PropsWithChildren {
@@ -36,6 +36,8 @@ interface ModalProps extends PropsWithChildren {
   closeOnOverlay?: boolean;
   reduceMotion?: boolean;
   className?: string;
+  surface?: Surface;
+  elevation?: Elevation;
 }
 
 const CLS_OPENED = 'alt-modal--opened';
@@ -53,7 +55,9 @@ const Modal = ({
   showCancel = true,
   closeOnOverlay = true,
   reduceMotion = false,
-  className
+  className,
+  surface = Surface.glass,
+  elevation = Elevation.floating
 }: ModalProps) => {
   const { ltePhoneL, gtPhoneL } = useWindowSize();
   const t = useLocalization();
@@ -104,7 +108,8 @@ const Modal = ({
         leftIcon={action.leftIcon}
         rightIcon={action.rightIcon}
         role={action.role}
-        onClick={action.onClick}>
+        onClick={action.onClick}
+        disabled={action.disabled}>
         {action.label}
       </Button>
     ));
@@ -148,6 +153,8 @@ const Modal = ({
           'alt-modal--size-small': size === Size.small,
           'alt-modal--size-large': size === Size.large,
           'alt-modal--fluid': fluid,
+          [`alt-modal--surface-${surface}`]: surface !== Surface.glass,
+          [`alt-modal--elevation-${elevation}`]: elevation !== Elevation.floating,
           'alt-modal--opened': opened
         })}
         ref={modalRef}

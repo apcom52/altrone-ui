@@ -9,7 +9,7 @@
   padding: 4px 6px 4px 12px;
   align-items: center;
   justify-content: space-between;
-  border-radius: 8px;
+  border-radius: var(--controlRounding);
   background-color: var(--background);
   border: 1px solid var(--borderColor);
   box-sizing: border-box;
@@ -19,7 +19,6 @@
 
   @include useFocus();
   @include useDisabledUserSelect();
-  @include useSoftShadow();
   @include useFontSize(label, Large);
 }
 
@@ -60,7 +59,7 @@
   background-color: transparent;
   border: none;
   color: var(--textColor);
-  border-radius: 8px;
+  border-radius: var(--controlRounding);
   padding: 6px 16px;
   margin-left: -6px;
   cursor: pointer;
@@ -204,7 +203,7 @@
 
   width: 36px;
   height: 36px;
-  border-radius: 12px;
+  border-radius: var(--сontainerRounding);
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;

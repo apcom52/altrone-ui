@@ -16,12 +16,14 @@
   margin: 0;
   padding: 6px 12px;
   background-color: var(--background);
+  -moz-appearance: none;
+  appearance: none;
   font-size: var(--fontSize);
   color: var(--textColor);
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  border-radius: 8px;
+  border-radius: var(--controlRounding);
   border: 1px solid var(--borderColor);
   transition: box-shadow var(--transitionDuration) ease, opacity var(--transitionDuration) ease;
 
@@ -36,8 +38,6 @@
   &::placeholder {
     color: var(--placeholderText);
   }
-
-  @include useSoftShadow();
 }
 
 .alt-text-input__left-island {
@@ -110,7 +110,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.25em;
-  border-radius: 6px;
+  border-radius: var(--innerRounding);
   pointer-events: auto;
   cursor: pointer;
   transition: background-color var(--transitionDuration) ease;
@@ -198,3 +198,100 @@
     padding: 0;
   }
 }
+
+.alt-text-input__suggestions {
+  .alt-context-menu-item__icon {
+    min-width: 4px;
+    width: 4px;
+    margin-right: 2px;
+  }
+}
+
+.alt-live-suggestion {
+  display: flex;
+  position: absolute;
+  color: var(--secondaryTextColor);
+  line-height: var(--height);
+  align-items: center;
+  width: 65px;
+  flex-wrap: nowrap;
+}
+
+.alt-live-suggestion__text {
+  flex: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.alt-live-suggestion__tabIcon {
+  padding: 2px 4px;
+  border-radius: var(--innerRounding);
+  background-color: var(--secondaryTextColor);
+  color: var(--background);
+  margin-left: 4px;
+}
+
+.alt-live-suggestion__shadowText {
+  position: absolute;
+  width: auto;
+  background-color: rgba(blue, 0.1);
+  top: 0;
+  left: 0;
+  padding: 6px 0 6px 13px;
+  @include useFontSize(body);
+  line-height: var(--height);
+  visibility: hidden;
+  margin-top: -40px;
+}
+
+.alt-text-input__left-island ~ .alt-live-suggestion__shadowText {
+  padding-left: 10px;
+}
+
+.alt-text-input__right-island .alt-loading {
+  margin-right: -8px;
+}
+
+.alt-text-input--surface-none {
+  .alt-text-input__control {
+    background-color: transparent;
+    border-color: transparent;
+  }
+}
+
+.alt-text-input--surface-transparent {
+  .alt-text-input__control {
+    background-color: var(--surfaceTrasparent);
+    border-color: var(--borderColor);
+  }
+}
+
+.alt-text-input--surface-glass {
+  .alt-text-input__control {
+    @include useGlassSurface();
+    border-color: var(--borderColor);
+  }
+}
+
+.alt-text-input--surface-solid {
+  .alt-text-input__control {
+    background-color: var(--surface);
+    border-color: var(--borderColor);
+  }
+}
+
+.alt-text-input--surface-metal {
+  .alt-text-input__control {
+    background: linear-gradient(to bottom, var(--metalTop) 0%, var(--metalBottom) 100%);
+    border-color: var(--borderColor);
+  }
+}
+
+.alt-text-input__right-island {
+  .alt-text-input__loading {
+    transform: scale(0.5);
+  }
+}
+
+@include useElevation('alt-text-input__control', null, true);
