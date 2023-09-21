@@ -6,7 +6,7 @@
 Altrone UI is a component library for fast developing beautiful and functional web application interfaces.
 
 ## Links 
-🐍 [**8 new components**, **TextInput Suggestions**, **Surfaces** and other new features in **Altrone 2.0 Blind Basilisk**](https://github.com/apcom52/altrone-ui/releases/tag/v1.3.0)
+🐍 [**8 new components**, **TextInput Suggestions**, **Surfaces** and other new features in **Altrone 2.0 Blind Basilisk**](https://app.gitbook.com/o/UFRzFqfGDiI1CeQpd0GT/s/W5YLGWqfJIMCnPELJjW6/blog/whats-new-in-2.0)
 
 📚 [**DOCUMENTATION**](https://apcom.gitbook.io/altrone-ui/)
 
