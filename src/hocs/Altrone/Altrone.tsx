@@ -15,13 +15,6 @@ export const Altrone = ({
   className,
   options = {}
 }: AltroneProps) => {
-  try {
-    // @ts-ignore
-    Intl.getCanonicalLocales(locale);
-  } catch (err) {
-    locale = 'en-US';
-  }
-
   let _theme = theme;
   const mediaScheme = useMediaMatch('(prefers-color-scheme: dark)');
 
@@ -32,14 +25,15 @@ export const Altrone = ({
   const altroneOptions = {
     ...DEFAULT_ALTRONE_OPTIONS,
     ...options
-  }
+  };
 
   return (
     <ThemeContext.Provider
       value={{
-        theme: _theme,
+        theme,
+        lang,
         locale,
-        lang
+        options: altroneOptions
       }}>
       <div
         className={clsx('altrone', className, {
