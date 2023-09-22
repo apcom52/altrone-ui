@@ -2,6 +2,7 @@
 node_modules/
 coverage/
 dist/
+storybook-static/
 
 yarn-error.log
 stats.html

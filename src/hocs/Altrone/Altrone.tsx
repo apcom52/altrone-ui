@@ -1,18 +1,20 @@
 import '../../index.scss';
 import clsx from 'clsx';
-import { Theme, ThemeConfig } from '../../types';
+import { Theme } from '../../types';
 import { ThemeContext } from '../../contexts';
-import { FC, PropsWithChildren } from 'react';
 import { useMediaMatch } from '../../hooks';
+import { AltroneProps } from './Altrone.types';
+import { DEFAULT_ALTRONE_OPTIONS } from './Altrone.const';
 
-export const Altrone: FC<PropsWithChildren<Partial<ThemeConfig>>> = ({
+export const Altrone = ({
   children,
   theme = Theme.system,
   locale = 'en-US',
   lang = 'en',
   style = {},
-  className
-}) => {
+  className,
+  options = {}
+}: AltroneProps) => {
   try {
     // @ts-ignore
     Intl.getCanonicalLocales(locale);
@@ -25,6 +27,11 @@ export const Altrone: FC<PropsWithChildren<Partial<ThemeConfig>>> = ({
 
   if (theme === Theme.system) {
     _theme = mediaScheme ? Theme.dark : Theme.light;
+  }
+
+  const altroneOptions = {
+    ...DEFAULT_ALTRONE_OPTIONS,
+    ...options
   }
 
   return (
