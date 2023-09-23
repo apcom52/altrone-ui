@@ -1,18 +1,27 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren, useRef, useState } from 'react';
 import { Option, Theme } from '../types';
 import './storybook-playground.scss';
 import { Altrone } from '../hocs';
-import { Select, TextInput } from '../components';
-import { Story, StoryObj } from '@storybook/react';
+import {
+  Button,
+  ButtonVariant,
+  Checkbox,
+  CheckboxList,
+  FloatingBox,
+  Icon,
+  Select,
+  TextInput
+} from '../components';
+import { Story } from '@storybook/react';
 import clsx from 'clsx';
 
 const THEMES: Option<Theme>[] = [
   {
-    label: 'Светлая',
+    label: 'Light',
     value: Theme.light
   },
   {
-    label: 'Темная',
+    label: 'Dark',
     value: Theme.dark
   }
 ];
@@ -42,7 +51,9 @@ export const StorybookPlayground = ({
   const [lang, setLang] = useState<Lang>('en');
   const [locale, setLocale] = useState('en-US');
 
-  //https://wallpapers.com/images/featured/qvry7otdo7yagbhr.jpg
+  const optionsButtonRef = useRef<HTMLButtonElement>(null);
+
+  const [visibleOptions, setVisibleOptions] = useState(false);
 
   return (
     <Altrone theme={theme} lang={lang} locale={locale}>
@@ -56,6 +67,15 @@ export const StorybookPlayground = ({
           </div>
           <div />
           <div>
+            <Button
+              ref={optionsButtonRef}
+              variant={ButtonVariant.text}
+              onClick={() => setVisibleOptions(!visibleOptions)}
+              isIcon>
+              <Icon i="settings" />
+            </Button>
+          </div>
+          <div>
             <Select options={LANGS} value={lang} onChange={setLang} />
           </div>
           <div>
@@ -64,6 +84,24 @@ export const StorybookPlayground = ({
         </div>
         <div className="sb-playground__content">{children}</div>
       </div>
+      {visibleOptions && (
+        <FloatingBox
+          className="sb-settings-popup"
+          targetElement={optionsButtonRef.current}
+          onClose={() => setVisibleOptions(false)}
+          minWidth="300px"
+          useParentWidth={false}>
+          <b className="sb-settings-popup__header">Altrone Options</b>
+          <CheckboxList>
+            <Checkbox checked={false} onChange={() => null}>
+              Number Format from Locale
+            </Checkbox>
+            <Checkbox checked={false} onChange={() => null}>
+              Reduce motion
+            </Checkbox>
+          </CheckboxList>
+        </FloatingBox>
+      )}
     </Altrone>
   );
 };
