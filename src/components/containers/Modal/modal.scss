@@ -51,7 +51,7 @@
   height: auto;
   padding: 8px;
   flex-direction: column;
-  border-radius: var(--сontainerRounding);
+  border-radius: var(--containerRounding);
   box-shadow: 0 3px 15px 0 var(--shadow);
   transition: width var(--transitionDuration) ease, opacity 0.3s ease, transform 0.3s ease;
   opacity: 0;
@@ -64,7 +64,7 @@
     max-width: 100vw;
     margin: auto 0 0;
     padding: 16px;
-    border-radius: var(--сontainerRounding) var(--сontainerRounding) 0 0;
+    border-radius: var(--containerRounding) var(--containerRounding) 0 0;
     transform: translateY(150px);
   }
 }
