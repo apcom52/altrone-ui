@@ -13,7 +13,7 @@
 
 .sb-playground__header {
   display: grid;
-  grid-template-columns: 120px 1fr 150px 80px;
+  grid-template-columns: 120px 1fr 40px 150px 80px;
   grid-gap: 12px;
   align-items: center;
   justify-content: space-between;
@@ -76,4 +76,14 @@ html, body, #root {
     padding: 0;
     border: none;
   }
+}
+
+.sb-settings-popup {
+  .sb-settings-popup__header {
+    display: block;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  padding: 12px !important;
 }
