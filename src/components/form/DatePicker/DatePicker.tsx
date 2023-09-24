@@ -25,7 +25,6 @@ interface DatePickerProps
     BasicInputProps {
   value: Date;
   onChange: (value: Date | undefined) => void;
-  id?: string;
   picker?: Picker;
   minDate?: Date;
   maxDate?: Date;
@@ -35,10 +34,28 @@ interface DatePickerProps
 
 const today = new Date();
 
+/**
+ * This component is used to pick a date in a calendar
+ * @param value
+ * @param onChange
+ * @param id
+ * @param picker
+ * @param minDate
+ * @param maxDate
+ * @param disabled test
+ * @param clearable
+ * @param placeholder
+ * @param size
+ * @param hintText
+ * @param errorText
+ * @param className
+ * @param elevation
+ * @param surface
+ * @constructor
+ */
 const DatePicker = ({
   value,
   onChange,
-  id,
   picker = Picker.day,
   minDate = new Date(1900, 0, 0),
   maxDate = new Date(2050, 13, 0),
@@ -158,7 +175,6 @@ const DatePicker = ({
           [`alt-text-input__control--elevation-${elevation}`]: elevation,
           [`alt-text-input__control--surface-${surface}`]: surface !== Surface.paper
         })}
-        id={id}
         ref={inputRef}
         onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}
         data-testid="alt-test-datepicker"
@@ -352,4 +368,4 @@ const DatePicker = ({
   );
 };
 
-export default memo(DatePicker) as typeof DatePicker;
+export default DatePicker;
