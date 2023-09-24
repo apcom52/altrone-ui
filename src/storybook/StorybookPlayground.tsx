@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useRef, useState } from 'react';
+import React, { PropsWithChildren, useCallback, useRef, useState } from 'react';
 import { Option, Theme } from '../types';
 import './storybook-playground.scss';
 import { Altrone } from '../hocs';
@@ -14,6 +14,8 @@ import {
 } from '../components';
 import { Story } from '@storybook/react';
 import clsx from 'clsx';
+import { AltroneOptions } from '../hocs/Altrone/Altrone.types';
+import { DEFAULT_ALTRONE_OPTIONS } from '../hocs/Altrone/Altrone.const';
 
 const THEMES: Option<Theme>[] = [
   {
@@ -50,13 +52,21 @@ export const StorybookPlayground = ({
   const [theme, setTheme] = useState<Theme>(Theme.light);
   const [lang, setLang] = useState<Lang>('en');
   const [locale, setLocale] = useState('en-US');
+  const [options, setOptions] = useState<AltroneOptions>(DEFAULT_ALTRONE_OPTIONS);
+
+  const changeOption = useCallback((fieldName: keyof AltroneOptions, value: any) => {
+    setOptions((old) => ({
+      ...old,
+      [fieldName]: value
+    }));
+  }, []);
 
   const optionsButtonRef = useRef<HTMLButtonElement>(null);
 
   const [visibleOptions, setVisibleOptions] = useState(false);
 
   return (
-    <Altrone theme={theme} lang={lang} locale={locale}>
+    <Altrone theme={theme} lang={lang} locale={locale} options={options}>
       <div
         className={clsx('sb-playground', {
           'sb-playground--with-background': showBackground
@@ -89,14 +99,18 @@ export const StorybookPlayground = ({
           className="sb-settings-popup"
           targetElement={optionsButtonRef.current}
           onClose={() => setVisibleOptions(false)}
-          minWidth="300px"
-          useParentWidth={false}>
+          minWidth={300}
+          useParentWidth>
           <b className="sb-settings-popup__header">Altrone Options</b>
           <CheckboxList>
-            <Checkbox checked={false} onChange={() => null}>
+            <Checkbox
+              checked={options.useNumberFormatFromLocale}
+              onChange={changeOption.bind(null, 'useNumberFormatFromLocale')}>
               Number Format from Locale
             </Checkbox>
-            <Checkbox checked={false} onChange={() => null}>
+            <Checkbox
+              checked={options.reduceMotion}
+              onChange={changeOption.bind(null, 'reduceMotion')}>
               Reduce motion
             </Checkbox>
           </CheckboxList>
