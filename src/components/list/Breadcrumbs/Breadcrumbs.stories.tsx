@@ -30,26 +30,29 @@ const meta: Meta<typeof Breadcrumbs> = {
   },
   argTypes: {
     links: {
-      description: 'The list of the links'
+      description: 'Array of links'
+    },
+    showHomeLink: {
+      description: 'Show home button'
     },
     collapsible: {
       description:
-        'When the list is collapsed, the inner items of the list are collapsed into context menu'
+        'If true it shows only the first and the last links. Rest links are hidden behind "..." '
     },
     disabled: {
-      description: 'When the list is disabled all items of the list are not clickable'
+      description: 'Marks all links as disabled'
     },
-    showHomeLink: {
-      description: 'Use this property to show "Home" item'
+    HomeComponent: {
+      description: 'Custom home link'
+    },
+    onHomeClick: {
+      description: 'Callback fires when user clicks on home button'
+    },
+    homepageHref: {
+      description: 'Makes homepage as link with this url'
     },
     className: {
       description: 'Custom css class which applies to wrapper'
-    },
-    HomeComponent: {
-      description: 'Custom implementation of "Home" item'
-    },
-    onHomeClick: {
-      description: 'Callback fires each time when user clicks on "Home" item'
     }
   }
 };

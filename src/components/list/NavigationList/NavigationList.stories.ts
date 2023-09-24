@@ -5,7 +5,7 @@ export { SimpleNavigationList, HierarchicalNavigationList } from './stories';
 
 const meta: Meta<typeof NavigationList> = {
   component: NavigationList,
-  title: 'List/NavigationList',
+  title: 'Lists/NavigationList',
   tags: ['autodocs'],
   args: {
     title: 'Settings'
