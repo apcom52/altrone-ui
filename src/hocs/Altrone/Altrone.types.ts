@@ -2,8 +2,18 @@ import { CSSProperties, PropsWithChildren } from 'react';
 import { Theme } from '../../types';
 
 export interface AltroneOptions {
-  useNumberFormatFromLocale: boolean;
-  reduceMotion: boolean;
+  global: {
+    reduceMotion?: boolean;
+  };
+  numberInput: {
+    useFormatFromLocale?: boolean;
+  };
+  carousel: {
+    reduceMotion?: boolean;
+  };
+  modal: {
+    reduceMotion?: boolean;
+  };
 }
 
 interface Altrone {

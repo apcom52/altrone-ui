@@ -5,6 +5,7 @@ import { ThemeContext } from '../../contexts';
 import { useMediaMatch } from '../../hooks';
 import { AltroneProps } from './Altrone.types';
 import { DEFAULT_ALTRONE_OPTIONS } from './Altrone.const';
+import { merge } from 'lodash-es';
 
 export const Altrone = ({
   children,
@@ -22,10 +23,7 @@ export const Altrone = ({
     _theme = mediaScheme ? Theme.dark : Theme.light;
   }
 
-  const altroneOptions = {
-    ...DEFAULT_ALTRONE_OPTIONS,
-    ...options
-  };
+  const altroneOptions = merge(DEFAULT_ALTRONE_OPTIONS, options);
 
   return (
     <ThemeContext.Provider
