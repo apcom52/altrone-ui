@@ -50,15 +50,6 @@ MessageExample.argTypes = {
   }
 };
 
-export const IconExample = BasicTemplate.bind({});
-IconExample.args = {
-  Component: Icon,
-  i: 'face',
-  size: 32,
-  dark: false,
-  style: 'outlined'
-};
-
 export default {
   component: HeadingExample,
   title: 'Typography'
