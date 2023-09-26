@@ -5,14 +5,14 @@ import { Icon } from '../../typography';
 import './chips.scss';
 import { ChipsProps } from './Chips.types';
 
-const Chips = <ValueType extends unknown, Multiple extends boolean | undefined>({
+const Chips = <ValueType extends unknown, Multiple extends boolean | undefined = true>({
   options = [],
   values,
   onChange,
   SelectedIcon,
   direction = Direction.horizontal,
   size = Size.medium,
-  multiple = false
+  multiple = true
 }: ChipsProps<ValueType, Multiple>) => {
   const onChipClick = useCallback(
     (value: ValueType) => {
@@ -33,7 +33,11 @@ const Chips = <ValueType extends unknown, Multiple extends boolean | undefined>(
 
         onChange(newValues as Value<ValueType, Multiple>);
       } else {
-        onChange(value as Value<ValueType, Multiple>);
+        if (value === values) {
+          onChange(undefined as Value<ValueType, Multiple>);
+        } else {
+          onChange(value as Value<ValueType, Multiple>);
+        }
       }
     },
     [values, onChange, multiple]
