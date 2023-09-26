@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import './message.scss';
 import clsx from 'clsx';
 import { Elevation, Role } from '../../../types';
@@ -11,6 +10,16 @@ interface MessageProps extends Omit<React.HTMLProps<HTMLDivElement>, 'title' | '
   elevation?: Elevation;
 }
 
+/**
+ * This component is used to show information messages to user
+ * @param title
+ * @param children
+ * @param role
+ * @param IconComponent
+ * @param elevation
+ * @param className
+ * @constructor
+ */
 const Message = ({
   title,
   children,
@@ -46,4 +55,4 @@ const Message = ({
   );
 };
 
-export default memo(Message) as typeof Message;
+export default Message;
