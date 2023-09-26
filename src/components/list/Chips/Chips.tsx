@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
-import { Direction, Size, Value } from '../../../types';
+import { Direction, Size, OptionValue } from '../../../types';
 import clsx from 'clsx';
 import { Icon } from '../../typography';
 import './chips.scss';
 import { ChipsProps } from './Chips.types';
 
-const Chips = <ValueType extends unknown, Multiple extends boolean | undefined = true>({
+const Chips = <ValueType, Multiple extends boolean | undefined = true>({
   options = [],
   values,
   onChange,
@@ -23,20 +23,20 @@ const Chips = <ValueType extends unknown, Multiple extends boolean | undefined =
         let newValues;
 
         if (chipIsSelected) {
-          newValues = selectedChips.filter((chipValue) => chipValue !== value) as Value<
+          newValues = selectedChips.filter((chipValue) => chipValue !== value) as OptionValue<
             ValueType,
             true
           >;
         } else {
-          newValues = [...selectedChips, value] as Value<ValueType, true>;
+          newValues = [...selectedChips, value] as OptionValue<ValueType, true>;
         }
 
-        onChange(newValues as Value<ValueType, Multiple>);
+        onChange(newValues as OptionValue<ValueType, Multiple>);
       } else {
         if (value === values) {
-          onChange(undefined as Value<ValueType, Multiple>);
+          onChange(undefined as OptionValue<ValueType, Multiple>);
         } else {
-          onChange(value as Value<ValueType, Multiple>);
+          onChange(value as OptionValue<ValueType, Multiple>);
         }
       }
     },
@@ -45,9 +45,9 @@ const Chips = <ValueType extends unknown, Multiple extends boolean | undefined =
 
   const isChipSelected = (chipValue: ValueType) => {
     if (!multiple) {
-      return (values as Value<ValueType>) === chipValue;
+      return (values as OptionValue<ValueType>) === chipValue;
     } else {
-      return (values as Value<ValueType, true>).find((chip) => chip === chipValue);
+      return (values as OptionValue<ValueType, true>).find((chip: ValueType) => chip === chipValue);
     }
   };
 
