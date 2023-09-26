@@ -1,5 +1,5 @@
 import { InputIslandType, TextInput, TextInputProps } from '../index';
-import { memo, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Icon } from '../../typography';
 
 interface PasswordInputProps
@@ -7,6 +7,13 @@ interface PasswordInputProps
   showControls?: boolean;
 }
 
+/**
+ * This component is used for enter secret information
+ * @param showControls
+ * @param rightIsland
+ * @param props
+ * @constructor
+ */
 const PasswordInput = ({ showControls = true, rightIsland, ...props }: PasswordInputProps) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -36,4 +43,4 @@ const PasswordInput = ({ showControls = true, rightIsland, ...props }: PasswordI
   );
 };
 
-export default memo(PasswordInput) as typeof PasswordInput;
+export default PasswordInput;

@@ -16,29 +16,29 @@ const meta: Meta<typeof FilePicker> = {
   },
   argTypes: {
     url: {
-      description: 'Url to upload'
+      description: 'API address to which the request will be sent'
     },
     name: {
-      description: 'Name which will be used in request body'
+      description: 'Body parameter name'
     },
     variant: {
-      description: 'Variant of the FilePicker',
+      description: 'Variant of FilePicker',
       control: 'select'
     },
     maxFiles: {
       description: 'Maximum number of the files'
     },
     defaultValue: {
-      description: 'Default array of uploaded files to the server'
+      description: 'Default list of the files'
     },
     onSuccess: {
-      description: 'Callback is called when user successfully uploaded file to the server'
+      description: 'Callback is called when file was loaded successfully'
     },
     onDelete: {
-      description: 'Callback is called when user deleted file'
+      description: 'Callback is called when file was deleted successfully'
     },
     extensions: {
-      description: 'Allowed extensions or group of extensions'
+      description: 'Possible extensions of the files. If undefined user can upload any file'
     },
     surface: {
       description: 'Surface of the FileZone'
@@ -47,10 +47,13 @@ const meta: Meta<typeof FilePicker> = {
       description: 'Custom className'
     },
     getFileNameFunc: {
-      description: 'This function transforms response from uploading request into filename'
+      description: 'Custom function of getting uploaded file src'
+    },
+    placeholder: {
+      description: 'Placeholder of the input'
     },
     method: {
-      description: 'Method of the url',
+      description: 'API Method',
       control: 'select',
       defaultValue: 'post',
       options: ['get', 'post', 'put', 'delete']
