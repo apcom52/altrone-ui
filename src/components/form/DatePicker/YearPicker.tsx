@@ -1,12 +1,19 @@
-import { CalendarProps } from './Calendar';
 import { memo, useMemo } from 'react';
 import { Option } from '../../../types';
 import { ScrollableSelector } from '../ScrollableSelector';
+import { CalendarProps } from './DatePicker.types';
 
-const YearPicker = ({ selectedDate = new Date(), onChange, minDate, maxDate }: CalendarProps) => {
+const YearPicker = <IsDateRange extends boolean | undefined = false>({
+  startSelectedDate,
+  onChange,
+  minDate,
+  maxDate,
+  isDateRange
+}: CalendarProps<IsDateRange>) => {
   const minYear = minDate.getFullYear();
   const maxYear = maxDate.getFullYear();
-  console.log('picker ');
+
+  const yearDifference = maxYear - minYear;
 
   const years = useMemo(() => {
     const result: Option<number>[] = [];
@@ -31,6 +38,13 @@ const YearPicker = ({ selectedDate = new Date(), onChange, minDate, maxDate }: C
         options={years}
         onChange={onSelectYear}
       />
+      {isDateRange && (
+        <ScrollableSelector
+          value={selectedDate.getFullYear()}
+          options={years}
+          onChange={onSelectYear}
+        />
+      )}
     </div>
   );
 };

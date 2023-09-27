@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from '../../typography';
 import { useThemeContext } from '../../../contexts';
 import './date-picker.scss';
@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import { ContextMenuType, Elevation, Role, Size, Surface } from '../../../types';
 import { useLocalization, useWindowSize } from '../../../hooks';
 import { BasicInput } from '../BasicInput';
-import { DatePickerProps } from './DatePicker.types';
+import { DatePickerProps, DateRangePosition } from './DatePicker.types';
 
 const today = new Date();
 
@@ -46,12 +46,30 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
   errorText,
   className,
   elevation = Elevation.convex,
-  surface = Surface.paper
+  surface = Surface.paper,
+  useDateRange = false
 }: DatePickerProps<IsDateRange>) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(
     value ? new Date(value.getFullYear(), value.getMonth(), 1) : new Date()
   );
+
+  const [startDate, setStartDate] = useState(() => {
+    if (useDateRange && Array.isArray(value) && value?.[0]) {
+      return value[0];
+    } else {
+      return value;
+    }
+  });
+
+  const [endDate, setEndDate] = useState<Date | undefined>(() => {
+    if (useDateRange && Array.isArray(value) && value?.[1]) {
+      return value[1];
+    } else {
+      return undefined;
+    }
+  });
+
   const [currentView, setCurrentView] = useState<Picker>(picker);
   const { locale } = useThemeContext();
 
@@ -147,6 +165,8 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
     ];
   }, [minDate, maxDate]);
 
+  const onChangeHandler = useCallback((position: DateRangePosition, value: Date) => {}, []);
+
   return (
     <BasicInput disabled={disabled} hintText={hintText} errorText={errorText} size={size}>
       <button
@@ -228,6 +248,7 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
               onChange={onChange}
               minDate={minDate}
               maxDate={maxDate}
+              isDateRange={useDateRange}
             />
           )}
           {currentView === Picker.month && (
@@ -237,15 +258,19 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
               onChange={onChange}
               minDate={minDate}
               maxDate={maxDate}
+              isDateRange={useDateRange}
             />
           )}
           {currentView === Picker.year && (
             <YearPicker
               currentMonth={currentMonth}
-              selectedDate={(value || today) as Date}
+              startSelectedDate={(value || today) as Date}
+              endSelectedDate={endDate}
               onChange={onChange}
+              onChangeEndDate={setEndDate}
               minDate={minDate}
               maxDate={maxDate}
+              isDateRange={useDateRange}
             />
           )}
           {!ltePhoneL && (
