@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { useState } from 'react';
 import { Direction } from '../../../types';
 import clsx from 'clsx';
 import './checkbox-list.scss';
@@ -9,7 +9,16 @@ interface CheckboxListProps extends React.HTMLProps<HTMLDivElement> {
   limit?: number;
 }
 
-const CheckboxList = ({
+/**
+ * This component is used to place some checkboxes
+ * @param children
+ * @param direction
+ * @param className
+ * @param limit
+ * @param props
+ * @constructor
+ */
+export const CheckboxList = ({
   children = [],
   direction = Direction.horizontal,
   className,
@@ -25,7 +34,7 @@ const CheckboxList = ({
     setIsExpanded((state) => !state);
   };
 
-  let validLimit = limit > 1 ? limit : 1;
+  const validLimit = limit > 1 ? limit : 1;
 
   const visibleChildren = Array.isArray(children)
     ? isExpanded
@@ -50,5 +59,3 @@ const CheckboxList = ({
     </div>
   );
 };
-
-export default memo(CheckboxList) as typeof CheckboxList;
