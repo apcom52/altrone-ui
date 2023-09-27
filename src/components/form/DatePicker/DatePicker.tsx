@@ -1,36 +1,15 @@
-import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from '../../typography';
 import { useThemeContext } from '../../../contexts';
 import './date-picker.scss';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
-import { Calendar, MonthPicker, YearPicker } from './index';
+import { Calendar, MonthPicker, Picker, YearPicker } from './index';
 import { Button } from '../../form';
 import clsx from 'clsx';
-import { TextInputProps } from '../TextInput';
 import { ContextMenuType, Elevation, Role, Size, Surface } from '../../../types';
 import { useLocalization, useWindowSize } from '../../../hooks';
-import { BasicInput, BasicInputProps } from '../BasicInput';
-
-export enum Picker {
-  day = 'day',
-  month = 'month',
-  year = 'year'
-}
-
-interface DatePickerProps
-  extends Pick<
-      TextInputProps,
-      'errorText' | 'hintText' | 'size' | 'disabled' | 'elevation' | 'surface'
-    >,
-    BasicInputProps {
-  value: Date;
-  onChange: (value: Date | undefined) => void;
-  picker?: Picker;
-  minDate?: Date;
-  maxDate?: Date;
-  placeholder?: string;
-  clearable?: boolean;
-}
+import { BasicInput } from '../BasicInput';
+import { DatePickerProps } from './DatePicker.types';
 
 const today = new Date();
 
@@ -53,7 +32,7 @@ const today = new Date();
  * @param surface
  * @constructor
  */
-const DatePicker = ({
+export const DatePicker = <IsDateRange extends boolean | undefined = false>({
   value,
   onChange,
   picker = Picker.day,
@@ -68,7 +47,7 @@ const DatePicker = ({
   className,
   elevation = Elevation.convex,
   surface = Surface.paper
-}: DatePickerProps) => {
+}: DatePickerProps<IsDateRange>) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(
     value ? new Date(value.getFullYear(), value.getMonth(), 1) : new Date()
@@ -367,5 +346,3 @@ const DatePicker = ({
     </BasicInput>
   );
 };
-
-export default DatePicker;

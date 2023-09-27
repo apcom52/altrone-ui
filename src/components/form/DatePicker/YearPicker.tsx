@@ -6,6 +6,7 @@ import { ScrollableSelector } from '../ScrollableSelector';
 const YearPicker = ({ selectedDate = new Date(), onChange, minDate, maxDate }: CalendarProps) => {
   const minYear = minDate.getFullYear();
   const maxYear = maxDate.getFullYear();
+  console.log('picker ');
 
   const years = useMemo(() => {
     const result: Option<number>[] = [];

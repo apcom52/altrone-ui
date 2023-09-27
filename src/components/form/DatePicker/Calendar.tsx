@@ -2,26 +2,20 @@ import { useThemeContext } from '../../../contexts';
 import { memo, useMemo } from 'react';
 import clsx from 'clsx';
 import { useWindowSize } from '../../../hooks';
-
-export interface CalendarProps {
-  currentMonth: Date;
-  selectedDate: Date;
-  onChange: (value: Date) => void;
-  minDate: Date;
-  maxDate: Date;
-}
+import { CalendarProps } from './DatePicker.types';
 
 const makeDateString = (date = new Date()) => {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() + 1}`;
 };
 
-const Calendar = ({
+const Calendar = <IsDateRange extends boolean | undefined = false>({
   currentMonth,
   selectedDate = new Date(),
   onChange,
   minDate,
-  maxDate
-}: CalendarProps) => {
+  maxDate,
+  isDateRange
+}: CalendarProps<IsDateRange>) => {
   const { locale } = useThemeContext();
   const { ltePhoneL } = useWindowSize();
 
