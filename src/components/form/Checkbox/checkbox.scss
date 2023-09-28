@@ -2,6 +2,7 @@
 
 .alt-checkbox {
   display: flex;
+  width: fit-content;
   align-items: center;
 }
 
@@ -94,4 +95,8 @@
   .alt-checkbox__input:focus + .alt-checkbox__control:before {
     box-shadow: 0 0 0 2px var(--danger);
   }
+}
+
+.alt-checkbox-wrapper {
+  width: unset;
 }
