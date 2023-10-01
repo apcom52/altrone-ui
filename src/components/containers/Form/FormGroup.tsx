@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 import './form-group.scss';
 import { Align } from '../../../types';
 import clsx from 'clsx';
@@ -16,6 +16,16 @@ interface FormGroupProps extends React.HTMLProps<HTMLDivElement>, FormContextPro
   weights?: number[];
 }
 
+/**
+ * This component is used to place group of form fields into the layout
+ * @param variant
+ * @param align
+ * @param children
+ * @param className
+ * @param required
+ * @param weights
+ * @constructor
+ */
 const FormGroup = ({
   variant = FormGroupVariant.default,
   align = Align.start,
@@ -66,4 +76,4 @@ const FormGroup = ({
   );
 };
 
-export default memo(FormGroup) as typeof FormGroup;
+export default FormGroup;

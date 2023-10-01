@@ -1,6 +1,5 @@
 import {
   cloneElement,
-  memo,
   MouseEventHandler,
   ReactElement,
   useCallback,
@@ -23,6 +22,15 @@ interface FormFieldProps
   hintText?: string | JSX.Element;
 }
 
+/**
+ * This component is used to wrap form component
+ * @param className
+ * @param label
+ * @param children
+ * @param required
+ * @param hintText
+ * @constructor
+ */
 const FormField = ({ className, label, children, required = false, hintText }: FormFieldProps) => {
   const context = useFormContext();
   const id = useId();
@@ -68,4 +76,4 @@ const FormField = ({ className, label, children, required = false, hintText }: F
   );
 };
 
-export default memo(FormField) as typeof FormField;
+export default FormField;
