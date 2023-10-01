@@ -17,7 +17,7 @@ import { Icon } from '../../typography';
 interface FormFieldProps
   extends Omit<React.HTMLProps<HTMLDivElement>, 'children' | 'label'>,
     FormContextProps {
-  children: ReactElement;
+  children: ReactElement | ReactElement[];
   label?: JSX.Element | string;
   required?: boolean;
   hintText?: string | JSX.Element;
@@ -51,7 +51,7 @@ const FormField = ({ className, label, children, required = false, hintText }: F
         </label>
       )}
       <div className="alt-form-field__control">
-        {typeof children === 'object'
+        {!Array.isArray(children) && typeof children === 'object'
           ? cloneElement(children, { id, ...children.props })
           : children}
       </div>

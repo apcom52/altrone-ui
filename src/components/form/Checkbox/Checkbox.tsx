@@ -31,7 +31,11 @@ const Checkbox = ({
   const checkboxId = id || generatedCheckboxId;
 
   return (
-    <BasicInput hintText={hintText} errorText={errorText} disabled={disabled}>
+    <BasicInput
+      hintText={hintText}
+      errorText={errorText}
+      disabled={disabled}
+      className="alt-checkbox-wrapper">
       <label
         htmlFor={checkboxId}
         className={clsx('alt-checkbox', className, {
