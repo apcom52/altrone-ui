@@ -1,5 +1,4 @@
 import { WithAltroneOffsets, WithoutDefaultOffsets } from '../../../types';
-import { memo } from 'react';
 import './paragraph.scss';
 import clsx from 'clsx';
 
