@@ -17,7 +17,15 @@ const meta: Meta<typeof Chips> = {
       { label: 'Australia', value: 'AU' }
     ]
   },
-  argTypes: {}
+  argTypes: {
+    values: { description: 'List of selected chips' },
+    options: { description: 'List of chips' },
+    multiple: { description: 'Allows to select some chips' },
+    onChange: { description: 'Callback is called when user toggles the chip' },
+    SelectedIcon: { control: 'none', description: 'Custom icon of selected chip' },
+    direction: { control: 'select', description: 'Direction of the list' },
+    size: { control: 'select', description: 'Size of the chips' }
+  }
 };
 
 export default meta;

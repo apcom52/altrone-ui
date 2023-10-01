@@ -5,6 +5,17 @@ import { Icon } from '../../typography';
 import './chips.scss';
 import { ChipsProps } from './Chips.types';
 
+/**
+ * This component is used to choose some options from the list
+ * @param options
+ * @param values
+ * @param onChange
+ * @param SelectedIcon
+ * @param direction
+ * @param size
+ * @param multiple
+ * @constructor
+ */
 const Chips = <ValueType, Multiple extends boolean | undefined = true>({
   options = [],
   values,
