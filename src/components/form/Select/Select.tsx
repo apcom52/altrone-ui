@@ -36,6 +36,27 @@ interface SelectProps<T = unknown>
 
 const DEFAULT_KEY = '_default';
 
+/**
+ * This component is used to select an option from the list
+ * @param value
+ * @param options
+ * @param onChange
+ * @param id
+ * @param parents
+ * @param searchable
+ * @param clearable
+ * @param searchFunc
+ * @param ItemComponent
+ * @param disabled
+ * @param size
+ * @param classNames
+ * @param placeholder
+ * @param hintText
+ * @param errorText
+ * @param elevation
+ * @param surface
+ * @constructor
+ */
 const Select = <T extends unknown>({
   value,
   options = [],
@@ -276,4 +297,4 @@ const Select = <T extends unknown>({
   );
 };
 
-export default memo(Select) as typeof Select;
+export default Select;
