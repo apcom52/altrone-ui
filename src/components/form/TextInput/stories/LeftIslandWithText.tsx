@@ -1,16 +1,15 @@
-import { ComponentStory } from '@storybook/react';
+import { StoryObj } from '@storybook/react';
 import { TextInput } from '../index';
 import { useState } from 'react';
-import { StorybookPlayground } from '../../../../storybook/StorybookPlayground';
+import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 
-const LeftIslandWithText: ComponentStory<typeof TextInput> = () => {
-  const [value, setValue] = useState('');
+export const LeftIslandWithTextStory: StoryObj<typeof TextInput> = {
+  name: 'TextInput with text left island',
+  storyName: 'TextInput with text left island',
+  render: ({ ...args }) => {
+    const [_value, setValue] = useState('');
 
-  return (
-    <StorybookPlayground>
-      <TextInput value={value} onChange={setValue} prefix="$" />
-    </StorybookPlayground>
-  );
+    return <TextInput {...args} prefix="$" value={_value} onChange={setValue} />;
+  },
+  decorators: [StorybookDecorator]
 };
-
-export default LeftIslandWithText;

@@ -1,30 +1,18 @@
-import { ComponentStory } from '@storybook/react';
+import { StoryObj } from '@storybook/react';
 import { TextInput } from '../index';
 import { useState } from 'react';
-import { StorybookPlayground } from '../../../../storybook/StorybookPlayground';
+import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 import { default as COUNTRIES } from '../../../data/DataTable/stories/data';
-import { Form, FormField, FormGroup } from '../../../containers';
-import { Switcher } from '../../Switcher';
 
 const SUGGESTIONS = COUNTRIES.map((country) => country.name);
 
-const TextInputSuggestions: ComponentStory<typeof TextInput> = ({ placeholder = '' }) => {
-  const [value, setValue] = useState('');
+export const TextInputSuggestionsStory: StoryObj<typeof TextInput> = {
+  name: 'TextInput with suggestions',
+  storyName: 'TextInput with suggestions',
+  render: ({ ...args }) => {
+    const [_value, setValue] = useState('');
 
-  return (
-    <StorybookPlayground>
-      <TextInput
-        value={value}
-        onChange={setValue}
-        placeholder={placeholder}
-        suggestions={SUGGESTIONS}
-      />
-    </StorybookPlayground>
-  );
+    return <TextInput {...args} value={_value} onChange={setValue} suggestions={SUGGESTIONS} />;
+  },
+  decorators: [StorybookDecorator]
 };
-
-TextInputSuggestions.args = {
-  placeholder: ''
-};
-
-export default TextInputSuggestions;
