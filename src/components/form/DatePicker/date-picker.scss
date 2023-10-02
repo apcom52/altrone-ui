@@ -262,7 +262,32 @@
   display: flex;
   justify-content: center;
   margin-top: 16px;
-  min-width: 200px;
+  max-width: 250px;
+  width: 250px;
+}
+
+.alt-year-picker__column {
+  width: 50%;
+
+  & + & {
+    position: relative;
+
+    &:before {
+      position: absolute;
+      content: '';
+      left: 0;
+      height: 80%;
+      top: 10%;
+      border-left: 1px solid var(--dividerColor);
+    }
+  }
+}
+
+.alt-year-picker__columnName {
+  text-align: center;
+  color: var(--textColor);
+
+  @include useFontSize(label);
 }
 
 .alt-month-picker {

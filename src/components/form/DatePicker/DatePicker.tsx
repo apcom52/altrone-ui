@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import { ContextMenuType, Elevation, Role, Size, Surface } from '../../../types';
 import { useLocalization, useWindowSize } from '../../../hooks';
 import { BasicInput } from '../BasicInput';
-import { DatePickerProps, DateRangePosition } from './DatePicker.types';
+import { DatePickerProps, DateRangePosition, DateValue } from './DatePicker.types';
 
 const today = new Date();
 
@@ -51,10 +51,10 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
 }: DatePickerProps<IsDateRange>) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(
-    value ? new Date(value.getFullYear(), value.getMonth(), 1) : new Date()
+    value && !Array.isArray(value) ? new Date(value.getFullYear(), value.getMonth(), 1) : new Date()
   );
 
-  const [startDate, setStartDate] = useState(() => {
+  const [startDate, setStartDate] = useState<Date | undefined>(() => {
     if (useDateRange && Array.isArray(value) && value?.[0]) {
       return value[0];
     } else {
@@ -141,7 +141,7 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
   );
 
   useEffect(() => {
-    if (value) {
+    if (value && !Array.isArray(value)) {
       setCurrentMonth(new Date(value.getFullYear(), value.getMonth(), 1));
     }
   }, [value]);
@@ -165,7 +165,31 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
     ];
   }, [minDate, maxDate]);
 
-  const onChangeHandler = useCallback((position: DateRangePosition, value: Date) => {}, []);
+  const onChangeHandler = useCallback(
+    (position: DateRangePosition, value: Date) => {
+      if (position === 'start') {
+        setStartDate(value);
+      } else if (position === 'end') {
+        setEndDate(value);
+      }
+
+      if (!useDateRange) {
+        onChange(value as DateValue<IsDateRange>);
+      } else if (endDate && startDate) {
+        if (startDate < endDate) {
+          onChange([startDate, endDate] as DateValue<IsDateRange>);
+        } else {
+          onChange([endDate, startDate] as DateValue<IsDateRange>);
+          const _endDate = endDate;
+          setEndDate(startDate);
+          setStartDate(_endDate);
+        }
+      }
+    },
+    [useDateRange, value, startDate, endDate, onChange]
+  );
+
+  console.log({ startDate, endDate });
 
   return (
     <BasicInput disabled={disabled} hintText={hintText} errorText={errorText} size={size}>
@@ -180,8 +204,9 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
         type="button"
         disabled={disabled}>
         {value ? (
-          <div className="alt-date-picker__value">{valueDateFormat.format(value)}</div>
+          'DATE PICKER VALUE'
         ) : (
+          // <div className="alt-date-picker__value">{valueDateFormat.format(value)}</div>
           <div className="alt-date-picker__placeholder">
             {placeholder || t('form.datePicker.placeholder')}
           </div>
@@ -264,10 +289,9 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
           {currentView === Picker.year && (
             <YearPicker
               currentMonth={currentMonth}
-              startSelectedDate={(value || today) as Date}
+              startSelectedDate={startDate}
               endSelectedDate={endDate}
-              onChange={onChange}
-              onChangeEndDate={setEndDate}
+              onChange={onChangeHandler}
               minDate={minDate}
               maxDate={maxDate}
               isDateRange={useDateRange}

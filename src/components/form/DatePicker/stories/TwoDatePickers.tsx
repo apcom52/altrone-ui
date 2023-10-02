@@ -17,6 +17,8 @@ export const TwoDatePickers: StoryObj<typeof DatePicker<false>> = {
       year: 'numeric'
     });
 
+    console.log('single', valueSingle, 'range', valueRange);
+
     return (
       <>
         <Heading level={4}>Single DatePicker</Heading>
