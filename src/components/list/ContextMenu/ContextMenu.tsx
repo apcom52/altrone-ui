@@ -17,6 +17,14 @@ interface ContextMenuComponentProps {
   maxHeight?: number | string;
 }
 
+/**
+ * This component is used to show context menus
+ * @param menu
+ * @param fluid
+ * @param onClose
+ * @param maxHeight
+ * @constructor
+ */
 const ContextMenu = ({
   menu,
   fluid = false,
@@ -85,4 +93,4 @@ const ContextMenu = ({
   );
 };
 
-export default memo(ContextMenu) as typeof ContextMenu;
+export default ContextMenu;

@@ -13,6 +13,21 @@ interface SwitcherProps
   align?: Align;
 }
 
+/**
+ * This component is used to allow choose between two opposite states
+ * @param children
+ * @param checked
+ * @param danger
+ * @param align
+ * @param onChange
+ * @param id
+ * @param className
+ * @param disabled
+ * @param errorText
+ * @param hintText
+ * @param props
+ * @constructor
+ */
 const Switcher = ({
   children,
   checked = false,
@@ -55,4 +70,4 @@ const Switcher = ({
   );
 };
 
-export default memo(Switcher) as typeof Switcher;
+export default Switcher;
