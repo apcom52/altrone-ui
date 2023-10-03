@@ -37,9 +37,19 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
 
   const onChangeStartDate = useCallback(
     (date: number | undefined) => {
+      console.log('> checking', date, '<', endSelectedDate);
+      if (endSelectedDate && date && endSelectedDate <= date) {
+        if (restYears.length) {
+          console.log('> set end to', restYears.find((i) => i.value > date)?.value);
+          onChange('end', restYears.find((i) => !i.disabled)?.value);
+        } else {
+          onChange('end', undefined);
+        }
+      }
+
       onChange('start', date);
     },
-    [onChange]
+    [onChange, endSelectedDate, restYears]
   );
 
   const onChangeEndDate = useCallback(

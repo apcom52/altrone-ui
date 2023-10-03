@@ -33,6 +33,7 @@ const ScrollableSelector = <T extends unknown>({
   className,
   ScrollableSelectorOptionComponent = ScrollableSelectorOption
 }: ScrollableSelectorProps<T>) => {
+  console.log('> selector value', value);
   const selectorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

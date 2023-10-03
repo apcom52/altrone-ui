@@ -170,14 +170,20 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
 
   const onChangeHandler = useCallback(
     (position: DateRangePosition, value?: number) => {
-      if (position === 'start') {
-        setStartDate(value);
-      } else if (position === 'end') {
-        setEndDate(value);
-      }
+      let _startDate = position === 'start' ? value : startDate;
+      let _endDate = position === 'end' ? value : endDate;
 
-      const _startDate = position === 'start' ? value : startDate;
-      const _endDate = position === 'end' ? value : endDate;
+      // if (_startDate && _endDate && _endDate < _startDate) {
+      //   [_startDate, _endDate] = [_endDate, _startDate];
+      // }
+
+      console.log('> changeDatePicker', position, value);
+
+      if (position === 'start') {
+        setStartDate(_startDate);
+      } else if (position === 'end') {
+        setEndDate(_endDate);
+      }
 
       if (!useDateRange) {
         onChange(number2Date(value) as DateValue<IsDateRange>);
