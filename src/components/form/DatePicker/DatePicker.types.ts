@@ -30,10 +30,10 @@ export interface DatePickerProps<IsDateRange extends boolean | undefined = false
 }
 
 export interface CalendarProps<IsDateRange extends boolean | undefined = false> {
-  currentMonth: Date;
-  startSelectedDate?: Date;
-  endSelectedDate?: Date;
-  onChange: (position: DateRangePosition, value: Date) => void;
+  currentMonth: number;
+  startSelectedDate?: number;
+  endSelectedDate?: number;
+  onChange: (position: DateRangePosition, value?: number) => void;
   minDate: Date;
   maxDate: Date;
   isDateRange: IsDateRange;

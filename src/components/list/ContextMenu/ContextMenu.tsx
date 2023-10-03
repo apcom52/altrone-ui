@@ -3,7 +3,7 @@ import {
   ContextMenuType as ContextMenuType,
   ParentContextAction
 } from '../../../types';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ContextMenuItem, ContextParentMenuItem } from './index';
 import './context-menu.scss';
 import { Icon } from '../../typography';

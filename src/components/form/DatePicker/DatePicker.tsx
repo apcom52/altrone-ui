@@ -10,6 +10,7 @@ import { ContextMenuType, Elevation, Role, Size, Surface } from '../../../types'
 import { useLocalization, useWindowSize } from '../../../hooks';
 import { BasicInput } from '../BasicInput';
 import { DatePickerProps, DateRangePosition, DateValue } from './DatePicker.types';
+import { date2Number, number2Date, numberDate2Year } from './DatePicker.utils';
 
 const today = new Date();
 
@@ -51,20 +52,22 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
 }: DatePickerProps<IsDateRange>) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(
-    value && !Array.isArray(value) ? new Date(value.getFullYear(), value.getMonth(), 1) : new Date()
+    value && !Array.isArray(value)
+      ? date2Number(new Date(value.getFullYear(), value.getMonth(), 1))
+      : date2Number(new Date())
   );
 
-  const [startDate, setStartDate] = useState<Date | undefined>(() => {
+  const [startDate, setStartDate] = useState<number | undefined>(() => {
     if (useDateRange && Array.isArray(value) && value?.[0]) {
-      return value[0];
-    } else {
-      return value;
+      return date2Number(value[0]);
+    } else if (!Array.isArray(value) && value) {
+      return date2Number(value);
     }
   });
 
-  const [endDate, setEndDate] = useState<Date | undefined>(() => {
+  const [endDate, setEndDate] = useState<number | undefined>(() => {
     if (useDateRange && Array.isArray(value) && value?.[1]) {
-      return value[1];
+      return date2Number(value[1]);
     } else {
       return undefined;
     }
@@ -102,17 +105,17 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
   });
 
   const onNextMonthClick = () => {
-    setCurrentMonth((old) => new Date(old.getFullYear(), old.getMonth() + 1, old.getDate()));
+    // setCurrentMonth((old) => new Date(old.getFullYear(), old.getMonth() + 1, old.getDate()));
   };
 
   const onPrevMonthClick = () => {
-    setCurrentMonth((old) => new Date(old.getFullYear(), old.getMonth() - 1, old.getDate()));
+    // setCurrentMonth((old) => new Date(old.getFullYear(), old.getMonth() - 1, old.getDate()));
   };
 
   const onTodayClick = () => {
     const today = new Date();
-    setCurrentMonth(new Date(today.getFullYear(), today.getMonth(), 1));
-    onChange(today);
+    // setCurrentMonth(new Date(today.getFullYear(), today.getMonth(), 1));
+    // onChange(today);
   };
 
   const onApplyClick = () => {
@@ -140,24 +143,24 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
     [onChange]
   );
 
-  useEffect(() => {
-    if (value && !Array.isArray(value)) {
-      setCurrentMonth(new Date(value.getFullYear(), value.getMonth(), 1));
-    }
-  }, [value]);
+  // useEffect(() => {
+  //   if (value && !Array.isArray(value)) {
+  //     setCurrentMonth(new Date(value.getFullYear(), value.getMonth(), 1));
+  //   }
+  // }, [value]);
 
   useEffect(() => {
     setCurrentView(picker);
   }, [picker]);
 
-  useEffect(() => {
-    if (value < minDate) {
-      onChange(minDate);
-    } else if (value > maxDate) {
-      onChange(maxDate);
-    }
-  }, [value, minDate, maxDate, onChange]);
-
+  // useEffect(() => {
+  //   if (value < minDate) {
+  //     onChange(minDate);
+  //   } else if (value > maxDate) {
+  //     onChange(maxDate);
+  //   }
+  // }, [value, minDate, maxDate, onChange]);
+  //
   const [minMonth, maxMonth] = useMemo(() => {
     return [
       new Date(minDate?.getFullYear(), minDate?.getMonth(), 1),
@@ -166,30 +169,24 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
   }, [minDate, maxDate]);
 
   const onChangeHandler = useCallback(
-    (position: DateRangePosition, value: Date) => {
+    (position: DateRangePosition, value?: number) => {
       if (position === 'start') {
         setStartDate(value);
       } else if (position === 'end') {
         setEndDate(value);
       }
 
+      const _startDate = position === 'start' ? value : startDate;
+      const _endDate = position === 'end' ? value : endDate;
+
       if (!useDateRange) {
-        onChange(value as DateValue<IsDateRange>);
-      } else if (endDate && startDate) {
-        if (startDate < endDate) {
-          onChange([startDate, endDate] as DateValue<IsDateRange>);
-        } else {
-          onChange([endDate, startDate] as DateValue<IsDateRange>);
-          const _endDate = endDate;
-          setEndDate(startDate);
-          setStartDate(_endDate);
-        }
+        onChange(number2Date(value) as DateValue<IsDateRange>);
+      } else if (_startDate && _endDate) {
+        onChange([number2Date(_startDate), number2Date(_endDate)] as DateValue<IsDateRange>);
       }
     },
-    [useDateRange, value, startDate, endDate, onChange]
+    [useDateRange, startDate, endDate, onChange]
   );
-
-  console.log({ startDate, endDate });
 
   return (
     <BasicInput disabled={disabled} hintText={hintText} errorText={errorText} size={size}>

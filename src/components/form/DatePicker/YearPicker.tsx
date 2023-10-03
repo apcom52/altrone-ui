@@ -2,6 +2,7 @@ import { memo, useCallback, useMemo } from 'react';
 import { Option } from '../../../types';
 import { ScrollableSelector } from '../ScrollableSelector';
 import { CalendarProps } from './DatePicker.types';
+import { date2Number, numberDate2Year, year2NumberDate } from './DatePicker.utils';
 
 const YearPicker = <IsDateRange extends boolean | undefined = false>({
   startSelectedDate,
@@ -11,58 +12,39 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
   maxDate,
   isDateRange
 }: CalendarProps<IsDateRange>) => {
-  const minYear = minDate.getFullYear();
-  const maxYear = maxDate.getFullYear();
-
-  const years = useMemo(() => {
+  const [years, restYears] = useMemo(() => {
     const result: Option<number>[] = [];
+    const restResult: Option<number>[] = [];
+
+    const minYear = numberDate2Year(date2Number(minDate));
+    const maxYear = numberDate2Year(date2Number(maxDate));
+
     for (let year = minYear; year <= maxYear; year++) {
       result.push({
         label: year.toString(),
-        value: year
+        value: year2NumberDate(year)
+      });
+
+      restResult.push({
+        label: year.toString(),
+        value: year2NumberDate(year),
+        disabled: !startSelectedDate || year <= numberDate2Year(startSelectedDate)
       });
     }
 
-    return result;
-  }, [minYear, maxYear]);
+    return [result, restResult];
+  }, [minDate, maxDate, startSelectedDate]);
 
-  const restYears = useMemo(() => {
-    if (!isDateRange) {
-      return [...years];
-    }
-
-    const startDateIndex = years.findIndex(
-      (year) => year.value === startSelectedDate?.getFullYear()
-    );
-
-    if (startDateIndex > -1) {
-      return years.slice(startDateIndex + 1);
-    }
-
-    return [];
-  }, [years, startSelectedDate, isDateRange]);
-
-  const onChangeStartYear = useCallback(
-    (year: number | undefined) => {
-      if (year) {
-        onChange('start', new Date(year, 1, 1));
-      }
-
-      if (endSelectedDate && year && endSelectedDate.getFullYear?.() <= year) {
-        if (restYears.length) {
-          onChange;
-        } else {
-          onChange('end', undefined);
-        }
-      }
+  const onChangeStartDate = useCallback(
+    (date: number | undefined) => {
+      onChange('start', date);
     },
-    [onChange, endSelectedDate, restYears]
+    [onChange]
   );
 
-  const oChangeEndYear = useCallback(
-    (year: number) => {
-      console.log('change end', year);
-      onChange('end', new Date(year, 1, 1));
+  const onChangeEndDate = useCallback(
+    (date: number | undefined) => {
+      onChange('end', date);
     },
     [onChange]
   );
@@ -73,9 +55,9 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
         <div className="alt-year-picker__column">
           {isDateRange && <div className="alt-year-picker__columnName">Start Year</div>}
           <ScrollableSelector<number | undefined>
-            value={startSelectedDate ? startSelectedDate.getFullYear() : undefined}
+            value={startSelectedDate}
             options={years}
-            onChange={onChangeStartYear}
+            onChange={onChangeStartDate}
           />
         </div>
         {isDateRange && (
@@ -83,9 +65,9 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
             <div className="alt-year-picker__columnName">End Year</div>
             <ScrollableSelector
               disabled={!startSelectedDate}
-              value={endSelectedDate?.getFullYear()}
+              value={endSelectedDate}
               options={restYears}
-              onChange={oChangeEndYear}
+              onChange={onChangeEndDate}
             />
           </div>
         )}
