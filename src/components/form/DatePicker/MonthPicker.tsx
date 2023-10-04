@@ -50,14 +50,18 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
   const startSelectedMonth = numberDate2YearAndMonth(startSelectedDate);
   const endSelectedMonth = numberDate2YearAndMonth(endSelectedDate);
 
-  console.log('start', startSelectedMonth, 'end', endSelectedMonth);
-
   const monthNameFormatter = new Intl.DateTimeFormat(lang, {
     month: 'short'
   });
 
   const onSelectMonth = useCallback(
     (monthValue: number) => {
+      if (!isDateRange) {
+        onChange('start', monthValue);
+        onChange('end', undefined);
+        return;
+      }
+
       console.log('clicked on', monthValue);
       if (!startSelectedMonth) {
         onChange('start', monthValue);
