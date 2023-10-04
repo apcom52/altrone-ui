@@ -3,6 +3,9 @@ import { PhotoViewer } from './index';
 
 export { DefaultPhotoViewer } from './stories';
 
+/**
+ * This component is used to show a sequence of photos
+ */
 const meta: Meta<typeof PhotoViewer> = {
   component: PhotoViewer,
   title: 'Containers/PhotoViewer',
@@ -26,7 +29,7 @@ const meta: Meta<typeof PhotoViewer> = {
       {
         src: 'https://cdn.wallpapersafari.com/19/1/OAEcXu.jpg',
         caption: 'Big Sur',
-        description: `It's one of the world's most stunning patches of coastline, housing California's native north Coast Redwoods, and an abundance of marine life.`
+        description: `It is one of the world's most stunning patches of coastline, housing California's native north Coast Redwoods, and an abundance of marine life.`
       },
       {
         src: 'https://img.sunset02.com/sites/default/files/image/2016/05/main/secret-sierra-nevada-ca-mcgee-creek-sierra-crest-0513.jpg',
@@ -39,7 +42,12 @@ const meta: Meta<typeof PhotoViewer> = {
       }
     ]
   },
-  argTypes: {}
+  argTypes: {
+    images: { description: 'List of images' },
+    onClose: { description: 'Callbacks fires when user wants to close the viewer' },
+    startsFrom: { description: 'Index of the first image' },
+    className: { description: 'Custom CSS class' }
+  }
 };
 
 export default meta;
