@@ -10,6 +10,9 @@ export {
   TextButtonStory
 } from './stories';
 
+/**
+ * This component is used to make clickable actions on the page
+ */
 const meta: Meta<typeof Button> = {
   component: Button,
   title: 'Forms/Button',
