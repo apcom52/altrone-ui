@@ -20,5 +20,13 @@ export const year2NumberDate = (year: number) => {
   return year * ONE_YEAR;
 };
 
+export const getMonthFromNumber = (number: number | undefined) => {
+  if (typeof number === 'undefined') {
+    return undefined;
+  }
+
+  return Math.floor(number % 50);
+};
+
 export const ONE_YEAR = 1000;
 export const ONE_MONTH = 50;
