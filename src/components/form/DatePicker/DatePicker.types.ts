@@ -38,3 +38,13 @@ export interface CalendarProps<IsDateRange extends boolean | undefined = false> 
   maxDate: Date;
   isDateRange: IsDateRange;
 }
+
+type MonthHighlighter = {
+  from: 0 | 1 | 2 | 3;
+  to: 0 | 1 | 2 | 3;
+};
+export type MonthHightlighters = [
+  MonthHighlighter | undefined,
+  MonthHighlighter | undefined,
+  MonthHighlighter | undefined
+];

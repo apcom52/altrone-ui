@@ -12,7 +12,11 @@ export const number2Date = (number: number | undefined) => {
   return new Date(year, Math.floor(monthAndDate / 50), (monthAndDate % 50) + 1);
 };
 
-export const numberDate2Year = (number: number) => {
+export const numberDate2Year = (number: number | undefined) => {
+  if (typeof number === 'undefined') {
+    return undefined;
+  }
+
   return Math.floor(number / ONE_YEAR);
 };
 
@@ -25,7 +29,20 @@ export const getMonthFromNumber = (number: number | undefined) => {
     return undefined;
   }
 
-  return Math.floor(number % 50);
+  return Math.floor((number % ONE_YEAR) / ONE_MONTH);
+};
+
+export const numberDate2YearAndMonth = (number: number | undefined) => {
+  if (typeof number === 'undefined') {
+    return undefined;
+  }
+
+  const year = numberDate2Year(number);
+  const month = getMonthFromNumber(number) || 0;
+
+  console.log('original', number, year, month);
+
+  return year * ONE_YEAR + month * ONE_MONTH;
 };
 
 export const ONE_YEAR = 1000;
