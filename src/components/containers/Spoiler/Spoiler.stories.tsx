@@ -11,7 +11,10 @@ const meta: Meta<typeof Spoiler> = {
     label: 'Description',
     openedByDefault: true
   },
-  argTypes: {}
+  argTypes: {
+    label: { description: 'Header of the spoiler' },
+    openedByDefault: { description: 'If true the spoiler is opened on the initial rendering' }
+  }
 };
 
 export default meta;

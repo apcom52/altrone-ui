@@ -62,7 +62,6 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
         return;
       }
 
-      console.log('clicked on', monthValue);
       if (!startSelectedMonth) {
         onChange('start', monthValue);
       } else if (!endSelectedMonth) {

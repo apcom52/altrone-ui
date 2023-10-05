@@ -1,4 +1,4 @@
-import { memo, PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import { Icon } from '../../typography';
 import './spoiler.scss';
 import clsx from 'clsx';
@@ -8,6 +8,13 @@ interface SpoilerProps extends PropsWithChildren {
   openedByDefault?: boolean;
 }
 
+/**
+ * This component is used to group content and allow to toggle them
+ * @param label
+ * @param openedByDefault
+ * @param children
+ * @constructor
+ */
 const Spoiler = ({ label, openedByDefault = true, children }: SpoilerProps) => {
   const [opened, setOpened] = useState(openedByDefault);
 
@@ -31,4 +38,4 @@ const Spoiler = ({ label, openedByDefault = true, children }: SpoilerProps) => {
   );
 };
 
-export default memo(Spoiler) as typeof Spoiler;
+export default Spoiler;
