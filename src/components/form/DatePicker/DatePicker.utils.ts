@@ -37,12 +37,20 @@ export const numberDate2YearAndMonth = (number: number | undefined) => {
     return undefined;
   }
 
-  const year = numberDate2Year(number);
+  const year = numberDate2Year(number) || 0;
   const month = getMonthFromNumber(number) || 0;
 
-  console.log('original', number, year, month);
-
   return year * ONE_YEAR + month * ONE_MONTH;
+};
+
+export const numberDate2Day = (number: number | undefined) => {
+  if (typeof number === 'undefined') {
+    return undefined;
+  }
+
+  const yearAndMonth = numberDate2YearAndMonth(number) || 0;
+
+  return number - yearAndMonth + 1;
 };
 
 export const ONE_YEAR = 1000;
