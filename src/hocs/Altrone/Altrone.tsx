@@ -5,7 +5,7 @@ import { ThemeContext } from '../../contexts';
 import { useMediaMatch } from '../../hooks';
 import { AltroneProps } from './Altrone.types';
 import { DEFAULT_ALTRONE_OPTIONS } from './Altrone.const';
-import { merge } from 'lodash-es';
+import merge from 'lodash-es/merge';
 
 export const Altrone = ({
   children,
