@@ -87,7 +87,7 @@
     "lint:fix": "eslint --fix",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "chromatic": "npx chromatic --project-token=chpt_59ff17683719820",
-    "version": "auto-changelog -p && git add CHANGELOG.md",
+    "version": "auto-changelog -p",
     "predeploy": "npm run storybook build",
     "deploy-storybook": "gh-pages -d storybook-static",
     "build-storybook": "storybook build"
