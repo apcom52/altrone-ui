@@ -44,6 +44,23 @@ const CLS_OPENED = 'alt-modal--opened';
 const CLS_UTIL_NOSCROLL = 'alt-util--no-scroll';
 const HIDE_DURATION = 300;
 
+/**
+ * This components is used to show windows with content over the application
+ * @param title
+ * @param children
+ * @param onClose
+ * @param size
+ * @param fluid
+ * @param actions
+ * @param showClose
+ * @param showCancel
+ * @param closeOnOverlay
+ * @param reduceMotion
+ * @param className
+ * @param surface
+ * @param elevation
+ * @constructor
+ */
 const Modal = ({
   title,
   children,
