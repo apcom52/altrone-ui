@@ -68,6 +68,25 @@ export interface DataTableSelectableAction<T extends unknown>
   content?: (args: DataTablePopupActionProps & { selectedRows?: T[] }) => JSX.Element;
 }
 
+/**
+ * This component is used to show huge amount of data in table view
+ * @param data
+ * @param columns
+ * @param limit
+ * @param searchBy
+ * @param searchFunc
+ * @param sortFunc
+ * @param sortKeys
+ * @param filters
+ * @param mobileColumns
+ * @param className
+ * @param actions
+ * @param selectableActions
+ * @param striped
+ * @param selectable
+ * @param DataTableStatusComponent
+ * @constructor
+ */
 export const DataTable = <T extends object>({
   data = [],
   columns = [],
