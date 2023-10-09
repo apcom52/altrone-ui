@@ -14,6 +14,16 @@ interface SearchProps
   suggestions?: (searchValue: string) => Promise<string[]>;
 }
 
+/**
+ * This component is used to find some information
+ * @param value
+ * @param onChange
+ * @param placeholder
+ * @param className
+ * @param suggestions
+ * @param props
+ * @constructor
+ */
 export const Search = ({
   value,
   onChange,
