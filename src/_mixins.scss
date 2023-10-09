@@ -6,13 +6,13 @@ $focusStyles: 0 0 0 3px var(--accentFocus);
 }
 
 @mixin useFocus {
-  &:focus, &:focus-visible {
+  &:focus-visible {
     @include useFocusStyles();
   }
 }
 
 @mixin useInteraction() {
-  &:hover, &:focus, &:focus-visible {
+  &:hover, &:focus-visible {
     @content;
   }
 }
