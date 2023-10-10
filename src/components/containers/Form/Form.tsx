@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { memo } from 'react';
 import './form.scss';
 import { FormContext, FormContextProps } from '../../../contexts';
 
@@ -7,6 +6,14 @@ interface FormProps
   extends Omit<React.HTMLProps<HTMLFormElement>, 'required' | 'disabled'>,
     FormContextProps {}
 
+/**
+ * This component is used to wrap form fields into one layout
+ * @param className
+ * @param children
+ * @param required
+ * @param props
+ * @constructor
+ */
 const Form = ({ className, children, required, ...props }: FormProps) => {
   return (
     <FormContext.Provider value={{ required }}>
@@ -17,4 +24,4 @@ const Form = ({ className, children, required, ...props }: FormProps) => {
   );
 };
 
-export default memo(Form) as typeof Form;
+export default Form;

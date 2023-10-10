@@ -1,36 +1,16 @@
-import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from '../../typography';
 import { useThemeContext } from '../../../contexts';
 import './date-picker.scss';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
-import { Calendar, MonthPicker, YearPicker } from './index';
+import { Calendar, MonthPicker, Picker, YearPicker } from './index';
 import { Button } from '../../form';
 import clsx from 'clsx';
-import { TextInputProps } from '../TextInput';
 import { ContextMenuType, Elevation, Role, Size, Surface } from '../../../types';
 import { useLocalization, useWindowSize } from '../../../hooks';
-import { BasicInput, BasicInputProps } from '../BasicInput';
-
-export enum Picker {
-  day = 'day',
-  month = 'month',
-  year = 'year'
-}
-
-interface DatePickerProps
-  extends Pick<
-      TextInputProps,
-      'errorText' | 'hintText' | 'size' | 'disabled' | 'elevation' | 'surface'
-    >,
-    BasicInputProps {
-  value: Date;
-  onChange: (value: Date | undefined) => void;
-  picker?: Picker;
-  minDate?: Date;
-  maxDate?: Date;
-  placeholder?: string;
-  clearable?: boolean;
-}
+import { BasicInput } from '../BasicInput';
+import { DatePickerProps, DateRangePosition, DateValue } from './DatePicker.types';
+import { date2Number, number2Date, numberDate2Year } from './DatePicker.utils';
 
 const today = new Date();
 
@@ -53,7 +33,7 @@ const today = new Date();
  * @param surface
  * @constructor
  */
-const DatePicker = ({
+export const DatePicker = <IsDateRange extends boolean | undefined = false>({
   value,
   onChange,
   picker = Picker.day,
@@ -67,12 +47,32 @@ const DatePicker = ({
   errorText,
   className,
   elevation = Elevation.convex,
-  surface = Surface.paper
-}: DatePickerProps) => {
+  surface = Surface.paper,
+  useDateRange = false
+}: DatePickerProps<IsDateRange>) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(
-    value ? new Date(value.getFullYear(), value.getMonth(), 1) : new Date()
+    value && !Array.isArray(value)
+      ? date2Number(new Date(value.getFullYear(), value.getMonth(), 1))
+      : date2Number(new Date())
   );
+
+  const [startDate, setStartDate] = useState<number | undefined>(() => {
+    if (useDateRange && Array.isArray(value) && value?.[0]) {
+      return date2Number(value[0]);
+    } else if (!Array.isArray(value) && value) {
+      return date2Number(value);
+    }
+  });
+
+  const [endDate, setEndDate] = useState<number | undefined>(() => {
+    if (useDateRange && Array.isArray(value) && value?.[1]) {
+      return date2Number(value[1]);
+    } else {
+      return undefined;
+    }
+  });
+
   const [currentView, setCurrentView] = useState<Picker>(picker);
   const { locale } = useThemeContext();
 
@@ -105,17 +105,17 @@ const DatePicker = ({
   });
 
   const onNextMonthClick = () => {
-    setCurrentMonth((old) => new Date(old.getFullYear(), old.getMonth() + 1, old.getDate()));
+    // setCurrentMonth((old) => new Date(old.getFullYear(), old.getMonth() + 1, old.getDate()));
   };
 
   const onPrevMonthClick = () => {
-    setCurrentMonth((old) => new Date(old.getFullYear(), old.getMonth() - 1, old.getDate()));
+    // setCurrentMonth((old) => new Date(old.getFullYear(), old.getMonth() - 1, old.getDate()));
   };
 
   const onTodayClick = () => {
     const today = new Date();
-    setCurrentMonth(new Date(today.getFullYear(), today.getMonth(), 1));
-    onChange(today);
+    // setCurrentMonth(new Date(today.getFullYear(), today.getMonth(), 1));
+    // onChange(today);
   };
 
   const onApplyClick = () => {
@@ -143,30 +143,56 @@ const DatePicker = ({
     [onChange]
   );
 
-  useEffect(() => {
-    if (value) {
-      setCurrentMonth(new Date(value.getFullYear(), value.getMonth(), 1));
-    }
-  }, [value]);
+  // useEffect(() => {
+  //   if (value && !Array.isArray(value)) {
+  //     setCurrentMonth(new Date(value.getFullYear(), value.getMonth(), 1));
+  //   }
+  // }, [value]);
 
   useEffect(() => {
     setCurrentView(picker);
   }, [picker]);
 
-  useEffect(() => {
-    if (value < minDate) {
-      onChange(minDate);
-    } else if (value > maxDate) {
-      onChange(maxDate);
-    }
-  }, [value, minDate, maxDate, onChange]);
-
+  // useEffect(() => {
+  //   if (value < minDate) {
+  //     onChange(minDate);
+  //   } else if (value > maxDate) {
+  //     onChange(maxDate);
+  //   }
+  // }, [value, minDate, maxDate, onChange]);
+  //
   const [minMonth, maxMonth] = useMemo(() => {
     return [
       new Date(minDate?.getFullYear(), minDate?.getMonth(), 1),
       new Date(maxDate?.getFullYear(), maxDate?.getMonth(), 1)
     ];
   }, [minDate, maxDate]);
+
+  const onChangeHandler = useCallback(
+    (position: DateRangePosition, value?: number) => {
+      let _startDate = position === 'start' ? value : startDate;
+      let _endDate = position === 'end' ? value : endDate;
+
+      // if (_startDate && _endDate && _endDate < _startDate) {
+      //   [_startDate, _endDate] = [_endDate, _startDate];
+      // }
+
+      console.log('> changeDatePicker', position, value);
+
+      if (position === 'start') {
+        setStartDate(_startDate);
+      } else if (position === 'end') {
+        setEndDate(_endDate);
+      }
+
+      if (!useDateRange) {
+        onChange(number2Date(value) as DateValue<IsDateRange>);
+      } else if (_startDate && _endDate) {
+        onChange([number2Date(_startDate), number2Date(_endDate)] as DateValue<IsDateRange>);
+      }
+    },
+    [useDateRange, startDate, endDate, onChange]
+  );
 
   return (
     <BasicInput disabled={disabled} hintText={hintText} errorText={errorText} size={size}>
@@ -181,8 +207,9 @@ const DatePicker = ({
         type="button"
         disabled={disabled}>
         {value ? (
-          <div className="alt-date-picker__value">{valueDateFormat.format(value)}</div>
+          'DATE PICKER VALUE'
         ) : (
+          // <div className="alt-date-picker__value">{valueDateFormat.format(value)}</div>
           <div className="alt-date-picker__placeholder">
             {placeholder || t('form.datePicker.placeholder')}
           </div>
@@ -249,24 +276,29 @@ const DatePicker = ({
               onChange={onChange}
               minDate={minDate}
               maxDate={maxDate}
+              isDateRange={useDateRange}
             />
           )}
           {currentView === Picker.month && (
             <MonthPicker
               currentMonth={currentMonth}
-              selectedDate={(value || today) as Date}
-              onChange={onChange}
+              startSelectedDate={startDate}
+              endSelectedDate={endDate}
+              onChange={onChangeHandler}
               minDate={minDate}
               maxDate={maxDate}
+              isDateRange={useDateRange}
             />
           )}
           {currentView === Picker.year && (
             <YearPicker
               currentMonth={currentMonth}
-              selectedDate={(value || today) as Date}
-              onChange={onChange}
+              startSelectedDate={startDate}
+              endSelectedDate={endDate}
+              onChange={onChangeHandler}
               minDate={minDate}
               maxDate={maxDate}
+              isDateRange={useDateRange}
             />
           )}
           {!ltePhoneL && (
@@ -367,5 +399,3 @@ const DatePicker = ({
     </BasicInput>
   );
 };
-
-export default DatePicker;

@@ -4,6 +4,9 @@ import { Surface } from '../../../types';
 
 export { DefaultFloatingBoxStory } from './stories';
 
+/**
+ * This component is used to make a dropdown or a small popup
+ */
 const meta: Meta<typeof FloatingBox> = {
   component: FloatingBox,
   title: 'Containers/FloatingBox',

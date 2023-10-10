@@ -23,6 +23,18 @@ export interface ScrollableSelectorOptionProps<T> {
   disabled?: boolean;
 }
 
+/**
+ * This component is used to select an option from the scrollable list
+ * @param value
+ * @param options
+ * @param width
+ * @param disabled
+ * @param align
+ * @param onChange
+ * @param className
+ * @param ScrollableSelectorOptionComponent
+ * @constructor
+ */
 const ScrollableSelector = <T extends unknown>({
   value,
   options = [],
@@ -33,6 +45,7 @@ const ScrollableSelector = <T extends unknown>({
   className,
   ScrollableSelectorOptionComponent = ScrollableSelectorOption
 }: ScrollableSelectorProps<T>) => {
+  console.log('> selector value', value);
   const selectorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -67,4 +80,4 @@ const ScrollableSelector = <T extends unknown>({
   );
 };
 
-export default memo(ScrollableSelector) as typeof ScrollableSelector;
+export default ScrollableSelector;

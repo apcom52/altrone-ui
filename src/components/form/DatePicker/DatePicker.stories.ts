@@ -1,7 +1,7 @@
 import { Meta } from '@storybook/react';
 import { DatePicker } from './index';
 
-export { DefaultDatePickerStory } from './stories';
+export { DefaultDatePickerStory, TwoDatePickers } from './stories';
 
 const meta: Meta<typeof DatePicker> = {
   component: DatePicker,

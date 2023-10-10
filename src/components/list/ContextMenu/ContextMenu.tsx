@@ -3,7 +3,7 @@ import {
   ContextMenuType as ContextMenuType,
   ParentContextAction
 } from '../../../types';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ContextMenuItem, ContextParentMenuItem } from './index';
 import './context-menu.scss';
 import { Icon } from '../../typography';
@@ -17,6 +17,14 @@ interface ContextMenuComponentProps {
   maxHeight?: number | string;
 }
 
+/**
+ * This component is used to show context menus
+ * @param menu
+ * @param fluid
+ * @param onClose
+ * @param maxHeight
+ * @constructor
+ */
 const ContextMenu = ({
   menu,
   fluid = false,
@@ -85,4 +93,4 @@ const ContextMenu = ({
   );
 };
 
-export default memo(ContextMenu) as typeof ContextMenu;
+export default ContextMenu;

@@ -1,0 +1,1 @@
+export { DefaultBlockquoteStory } from './DefaultBlockquoteStory';

@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { Direction, Align } from '../../../types';
 import clsx from 'clsx';
 import './button-container.scss';
@@ -9,6 +8,15 @@ interface ButtonContainerProps extends React.HTMLProps<HTMLDivElement> {
   mobileFluid?: boolean;
 }
 
+/**
+ * This component is used to place some buttons in one container
+ * @param direction
+ * @param align
+ * @param className
+ * @param children
+ * @param mobileFluid
+ * @constructor
+ */
 const ButtonContainer = ({
   direction = Direction.horizontal,
   align = Align.start,
@@ -30,4 +38,4 @@ const ButtonContainer = ({
   );
 };
 
-export default memo(ButtonContainer) as typeof ButtonContainer;
+export default ButtonContainer;

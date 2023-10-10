@@ -1,4 +1,4 @@
-import React, { Fragment, memo, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import './navigation-list.scss';
 import NavigationListItem from './NavigationListItem';
 import NavigationListSubItem from './NavigationListSubItem';
@@ -76,6 +76,22 @@ interface NavigationListProps {
   NavigationSubSubItemComponent?: JSX.Element;
 }
 
+/**
+ * This component is used to make a navigation throughout your application
+ * @param list
+ * @param selected
+ * @param onChange
+ * @param title
+ * @param className
+ * @param action
+ * @param surface
+ * @param elevation
+ * @param compact
+ * @param NavigationItemComponent
+ * @param NavigationSubItemComponent
+ * @param NavigationSubSubItemComponent
+ * @constructor
+ */
 const NavigationList = ({
   list = [],
   selected,
@@ -268,4 +284,4 @@ const NavigationList = ({
   );
 };
 
-export default memo(NavigationList) as typeof NavigationList;
+export default NavigationList;

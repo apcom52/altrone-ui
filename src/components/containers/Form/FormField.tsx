@@ -1,6 +1,5 @@
 import {
   cloneElement,
-  memo,
   MouseEventHandler,
   ReactElement,
   useCallback,
@@ -17,12 +16,21 @@ import { Icon } from '../../typography';
 interface FormFieldProps
   extends Omit<React.HTMLProps<HTMLDivElement>, 'children' | 'label'>,
     FormContextProps {
-  children: ReactElement;
+  children: ReactElement | ReactElement[];
   label?: JSX.Element | string;
   required?: boolean;
   hintText?: string | JSX.Element;
 }
 
+/**
+ * This component is used to wrap form component
+ * @param className
+ * @param label
+ * @param children
+ * @param required
+ * @param hintText
+ * @constructor
+ */
 const FormField = ({ className, label, children, required = false, hintText }: FormFieldProps) => {
   const context = useFormContext();
   const id = useId();
@@ -51,7 +59,7 @@ const FormField = ({ className, label, children, required = false, hintText }: F
         </label>
       )}
       <div className="alt-form-field__control">
-        {typeof children === 'object'
+        {!Array.isArray(children) && typeof children === 'object'
           ? cloneElement(children, { id, ...children.props })
           : children}
       </div>
@@ -68,4 +76,4 @@ const FormField = ({ className, label, children, required = false, hintText }: F
   );
 };
 
-export default memo(FormField) as typeof FormField;
+export default FormField;
