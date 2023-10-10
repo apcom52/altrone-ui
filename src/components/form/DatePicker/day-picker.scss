@@ -1,0 +1,99 @@
+@import '../../../mixins';
+
+.alt-day-picker {
+  display: flex;
+  margin-top: 12px;
+  flex-direction: column;
+}
+
+.alt-day-picker__weeks {
+  display: flex;
+  width: 100%;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.alt-day-picker__weekday {
+  display: block;
+  flex: 1;
+
+  @include useFontSize(label, Large);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+
+  @include less($l-phone) {
+    @include useFontSize(label, Small);
+  }
+}
+
+.alt-day-picker__weekday--weekend {
+  color: var(--importantText);
+}
+
+.alt-day-picker__calendar {
+  row-gap: 8px;
+  column-gap: 16px;
+}
+
+.alt-day-picker__day {
+  --background: transparent;
+  --text: var(--textColor);
+
+  width: 36px;
+  height: 36px;
+  border-radius: var(--containerRounding);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: var(--background);
+  color: var(--text);
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transitionDuration) ease;
+
+  @include useFontSize(body, Large);
+  @include useFocus();
+
+  &:hover {
+    --background: var(--highlight);
+  }
+
+  @include less($l-phone) {
+    @include useFontSize(body);
+  }
+}
+
+.alt-day-picker__day--another-month {
+  --text: var(--secondaryTextColor);
+  opacity: 0.5;
+
+  &:hover {
+    background-color: var(--surfaceTrasparentHover);
+  }
+}
+
+.alt-day-picker__day--disabled {
+  --text: var(--secondaryTextColor);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.alt-day-picker__day--today {
+
+}
+
+.alt-day-picker__day--selected {
+  --background: var(--accent);
+  --text: var(--textColorOnAccent);
+  box-shadow: 0 2px 15px 0 rgba(black, 0.15);
+
+  &:hover {
+    --background: var(--accent);
+  }
+}
+
+.alt-day-picker__day--today:not(.alt-day-picker__day--selected) {
+  --text: var(--accent);
+}
