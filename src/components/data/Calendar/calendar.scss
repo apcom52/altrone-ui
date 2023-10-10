@@ -5,16 +5,18 @@
 }
 
 .alt-calendar-date {
+  border: none;
   padding: 4px 8px;
   text-align: left;
   height: 34px;
   color: var(--textColor);
   opacity: 0.5;
+  border-radius: var(--controlRounding);
+  background-color: transparent;
 }
 
 .alt-calendar-date--active-month {
   background-color: var(--surface);
-  border-radius: var(--controlRounding);
   opacity: 1;
 }
 
