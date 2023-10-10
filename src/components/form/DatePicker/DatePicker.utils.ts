@@ -9,7 +9,7 @@ export const number2Date = (number: number | undefined) => {
 
   const year = number / 1000;
   const monthAndDate = number % 1000;
-  return new Date(year, Math.floor(monthAndDate / 50), (monthAndDate % 50) + 1);
+  return new Date(year, Math.floor(monthAndDate / 50), monthAndDate % 50);
 };
 
 export const numberDate2Year = (number: number | undefined) => {

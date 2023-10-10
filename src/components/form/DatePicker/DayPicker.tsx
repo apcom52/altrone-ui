@@ -1,30 +1,43 @@
 import { useThemeContext } from '../../../contexts';
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import clsx from 'clsx';
 import { useWindowSize } from '../../../hooks';
 import { CalendarProps } from './DatePicker.types';
-import { date2Number, number2Date, numberDate2Day } from './DatePicker.utils';
+import { date2Number, number2Date } from './DatePicker.utils';
 import { Calendar, CalendarRenderDateProps } from '../../data/Calendar';
 import './day-picker.scss';
-
-const makeDateString = (date = new Date()) => {
-  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() + 1}`;
-};
 
 const DayPickerItem = ({
   currentDate,
   selected,
   fromAnotherMonth,
-  today
-}: CalendarRenderDateProps) => {
+  today,
+  onSelect,
+  weekDay,
+  selectedDates = []
+}: CalendarRenderDateProps & { selectedDates: (number | undefined)[] }) => {
+  const currentDateNumber = date2Number(currentDate);
+  const isBetweenSelectedDates =
+    selectedDates[0] &&
+    selectedDates[1] &&
+    currentDateNumber >= selectedDates[0] &&
+    currentDateNumber <= selectedDates[1];
+
   return (
     <button
-      className={clsx('alt-day-picker__day', {
-        'alt-day-picker__day--selected': selected,
-        'alt-day-picker__day--today': today,
-        'alt-day-picker__day--another-month': fromAnotherMonth
-      })}>
-      {currentDate.getDate()}
+      onClick={onSelect ? () => onSelect(currentDate) : undefined}
+      className={clsx('alt-day-picker-item', {
+        'alt-day-picker-item--selected': selected,
+        'alt-day-picker-item--today': today,
+        'alt-day-picker-item--another-month': fromAnotherMonth,
+        'alt-day-picker-item--between-selected': isBetweenSelectedDates
+      })}
+      data-start-of-week={weekDay === 1 ? 'true' : 'false'}
+      data-end-of-week={weekDay === 0 ? 'true' : 'false'}
+      data-start-of-range={currentDateNumber === selectedDates[0]}
+      data-end-of-range={currentDateNumber === selectedDates[1]}>
+      {isBetweenSelectedDates && <div className="alt-day-picker-item__background" />}
+      <div className="alt-day-picker-item__dayNumber">{currentDate.getDate()}</div>
     </button>
   );
 };
@@ -43,6 +56,20 @@ const DayPicker = <IsDateRange extends boolean | undefined = false>({
 
   const currentMonthDate = number2Date(currentMonth);
 
+  const selectedDates = useMemo(() => {
+    const result = [];
+
+    if (startSelectedDate) {
+      result.push(number2Date(startSelectedDate) as Date);
+    }
+
+    if (endSelectedDate) {
+      result.push(number2Date(endSelectedDate) as Date);
+    }
+
+    return result;
+  }, [startSelectedDate, endSelectedDate]);
+
   const weekdayDateMap = [
     new Date('2020-01-06T00:00:00.000Z'),
     new Date('2020-01-07T00:00:00.000Z'),
@@ -56,6 +83,28 @@ const DayPicker = <IsDateRange extends boolean | undefined = false>({
   const weekdayDateFormat = new Intl.DateTimeFormat(locale, {
     weekday: ltePhoneL ? 'narrow' : 'short'
   });
+
+  const onSelectMonth = useCallback(
+    (date: Date) => {
+      const dateNumber = date2Number(date);
+
+      if (!isDateRange) {
+        onChange('start', dateNumber);
+        onChange('end', undefined);
+        return;
+      }
+
+      if (!startSelectedDate) {
+        onChange('start', dateNumber);
+      } else if (!endSelectedDate) {
+        onChange('end', dateNumber);
+      } else {
+        onChange('end', undefined);
+        onChange('start', dateNumber);
+      }
+    },
+    [isDateRange, startSelectedDate, endSelectedDate, onChange]
+  );
 
   if (!currentMonthDate) {
     return null;
@@ -77,8 +126,12 @@ const DayPicker = <IsDateRange extends boolean | undefined = false>({
       </div>
       <Calendar
         month={currentMonthDate}
-        DateComponent={DayPickerItem}
+        DateComponent={(props) =>
+          DayPickerItem({ ...props, selectedDates: [startSelectedDate, endSelectedDate] })
+        }
+        selectedDates={selectedDates}
         className="alt-day-picker__calendar"
+        onDateChange={onSelectMonth}
       />
     </div>
   );
