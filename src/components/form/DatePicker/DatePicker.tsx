@@ -3,14 +3,14 @@ import { Icon } from '../../typography';
 import { useThemeContext } from '../../../contexts';
 import './date-picker.scss';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
-import { Calendar, MonthPicker, Picker, YearPicker } from './index';
+import { DayPicker, MonthPicker, Picker, YearPicker } from './index';
 import { Button } from '../../form';
 import clsx from 'clsx';
 import { ContextMenuType, Elevation, Role, Size, Surface } from '../../../types';
 import { useLocalization, useWindowSize } from '../../../hooks';
 import { BasicInput } from '../BasicInput';
 import { DatePickerProps, DateRangePosition, DateValue } from './DatePicker.types';
-import { date2Number, number2Date, numberDate2Year } from './DatePicker.utils';
+import { date2Number, number2Date } from './DatePicker.utils';
 
 const today = new Date();
 
@@ -270,7 +270,7 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
             )}
           </div>
           {currentView === Picker.day && (
-            <Calendar
+            <DayPicker
               currentMonth={currentMonth}
               selectedDate={(value || today) as Date}
               onChange={onChange}
