@@ -23,22 +23,22 @@ export const Calendar = ({
     const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
     const lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
 
-    const getDateObject = (date: Date) => {
+    const getDateObject = (date: Date): CalendarRenderDateProps => {
       const dateString = makeDateString(date);
 
       return {
         weekDay: date.getDay(),
         currentDate: date,
-        isToday: dateString === todayDateString,
-        isAnotherMonth: currentMonth.getMonth() !== date.getMonth(),
-        isSelected: selectedStringDates.indexOf(dateString) > -1
+        today: dateString === todayDateString,
+        fromAnotherMonth: currentMonth.getMonth() !== date.getMonth(),
+        selected: selectedStringDates.indexOf(dateString) > -1,
+        disabled: false
       };
     };
 
     for (let day = firstDay.getDate(); day <= lastDay.getDate(); day++) {
       const currentDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
       const dayOfWeek = firstDay.getDay() === 0 ? 7 : firstDay.getDay();
-      const dayString = makeDateString(currentDate);
 
       if (day === 1) {
         for (let prevMonthDay = dayOfWeek - 1; prevMonthDay > 0; prevMonthDay--) {
@@ -79,8 +79,12 @@ export const Calendar = ({
   return (
     <div className={clsx('alt-calendar', className)}>
       {calendarData.map((dateInfo) => (
-        <DateComponent key={dateInfo.currentDate.toDateString()} {...dateInfo} />
+        <DateComponent
+          key={dateInfo.currentDate.toDateString()}
+          {...dateInfo}
           onSelect={!disabled ? onDateChange : undefined}
+          disabled={Boolean(disabled)}
+        />
       ))}
     </div>
   );

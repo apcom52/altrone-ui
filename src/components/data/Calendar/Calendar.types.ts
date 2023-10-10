@@ -1,9 +1,11 @@
 export type CalendarRenderDateProps = {
   currentDate: Date;
   weekDay: number;
-  isAnotherMonth: boolean;
-  isToday: boolean;
-  isSelected: boolean;
+  fromAnotherMonth: boolean;
+  today: boolean;
+  selected: boolean;
+  disabled: boolean;
+  onSelect?: (date: Date) => void;
 };
 
 export interface CalendarProps {

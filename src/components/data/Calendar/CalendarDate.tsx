@@ -3,21 +3,25 @@ import clsx from 'clsx';
 
 export const CalendarDate = ({
   currentDate,
-  isAnotherMonth,
-  isToday,
-  isSelected
+  fromAnotherMonth,
+  today,
+  selected,
+  disabled,
+  onSelect
 }: CalendarRenderDateProps) => {
   return (
-    <div
+    <button
       className={clsx('alt-calendar-date', {
-        'alt-calendar-date--active-month': !isAnotherMonth,
-        'alt-calendar-date--today': isToday,
-        'alt-calendar-date--selected': isSelected
-      })}>
+        'alt-calendar-date--active-month': !fromAnotherMonth,
+        'alt-calendar-date--today': today,
+        'alt-calendar-date--selected': selected,
+        'alt-calendar-date--disabled': disabled
+      })}
+      disabled={fromAnotherMonth || disabled}
       onClick={
         !disabled && !fromAnotherMonth && onSelect ? () => onSelect(currentDate) : undefined
       }>
       {currentDate.getDate()}
-    </div>
+    </button>
   );
 };

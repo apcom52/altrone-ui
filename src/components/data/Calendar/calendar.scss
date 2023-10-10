@@ -22,6 +22,10 @@
   color: var(--accentText);
 }
 
+.alt-calendar-date--disabled {
+  pointer-events: none;
+}
+
 .alt-calendar-date--selected {
   background-color: var(--highlight);
   color: var(--accentText);
