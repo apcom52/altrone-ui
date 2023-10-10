@@ -16,7 +16,15 @@ const meta: Meta<typeof Calendar> = {
     onDateChange: onClickHandler
   },
   argTypes: {
-    month: { control: 'date' }
+    month: { control: 'date', description: 'Selected month' },
+    selectedDates: { description: 'List of the selected dates' },
+    onDateChange: { description: 'Callback is called when user clicks on the date' },
+    DateComponent: {
+      control: 'none',
+      description: 'Custom Date component'
+    },
+    disabled: { control: 'none', description: 'If true user can not change the current date' },
+    className: { description: 'Custom CSS class' }
   }
 };
 

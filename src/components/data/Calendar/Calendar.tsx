@@ -5,6 +5,16 @@ import { useMemo } from 'react';
 import { makeDateString } from './Calendar.utils';
 import { CalendarDate } from './CalendarDate';
 
+/**
+ * This component is used to show the selected month
+ * @param month
+ * @param selectedDates
+ * @param onDateChange
+ * @param DateComponent
+ * @param disabled
+ * @param className
+ * @constructor
+ */
 export const Calendar = ({
   month = new Date(),
   selectedDates = [new Date()],
