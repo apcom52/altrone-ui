@@ -80,6 +80,7 @@ export const Calendar = ({
     <div className={clsx('alt-calendar', className)}>
       {calendarData.map((dateInfo) => (
         <DateComponent key={dateInfo.currentDate.toDateString()} {...dateInfo} />
+          onSelect={!disabled ? onDateChange : undefined}
       ))}
     </div>
   );

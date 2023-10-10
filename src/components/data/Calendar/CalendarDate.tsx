@@ -14,6 +14,9 @@ export const CalendarDate = ({
         'alt-calendar-date--today': isToday,
         'alt-calendar-date--selected': isSelected
       })}>
+      onClick={
+        !disabled && !fromAnotherMonth && onSelect ? () => onSelect(currentDate) : undefined
+      }>
       {currentDate.getDate()}
     </div>
   );
