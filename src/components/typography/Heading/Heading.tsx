@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 interface HeadingProps extends WithoutDefaultOffsets, WithAltroneOffsets {
   level?: 1 | 2 | 3 | 4 | 5 | 6;
+  id?: string;
 }
 
 const Heading = ({ children, level = 1, ...props }: HeadingProps) => {
@@ -20,4 +21,4 @@ const Heading = ({ children, level = 1, ...props }: HeadingProps) => {
   );
 };
 
-export default memo(Heading) as typeof Heading;
+export default Heading;
