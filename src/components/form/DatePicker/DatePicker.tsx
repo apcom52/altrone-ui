@@ -105,17 +105,27 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
   });
 
   const onNextMonthClick = () => {
-    // setCurrentMonth((old) => new Date(old.getFullYear(), old.getMonth() + 1, old.getDate()));
+    setCurrentMonth((old) => {
+      const oldDate = number2Date(old) as Date;
+      return date2Number(
+        new Date(oldDate.getFullYear(), oldDate.getMonth() + 1, oldDate.getDate())
+      );
+    });
   };
 
   const onPrevMonthClick = () => {
-    // setCurrentMonth((old) => new Date(old.getFullYear(), old.getMonth() - 1, old.getDate()));
+    setCurrentMonth((old) => {
+      const oldDate = number2Date(old) as Date;
+      return date2Number(
+        new Date(oldDate.getFullYear(), oldDate.getMonth() - 1, oldDate.getDate())
+      );
+    });
   };
 
   const onTodayClick = () => {
     const today = new Date();
-    // setCurrentMonth(new Date(today.getFullYear(), today.getMonth(), 1));
-    // onChange(today);
+    setCurrentMonth(date2Number(new Date(today.getFullYear(), today.getMonth(), 1)));
+    onChange(today);
   };
 
   const onApplyClick = () => {
@@ -177,6 +187,14 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
       //   [_startDate, _endDate] = [_endDate, _startDate];
       // }
 
+      console.log('picker', picker, currentView, value);
+
+      if (picker === Picker.day && currentView === Picker.month && value) {
+        setCurrentMonth(value);
+        setCurrentView(Picker.day);
+        return;
+      }
+
       if (position === 'start') {
         setStartDate(_startDate);
       } else if (position === 'end') {
@@ -189,8 +207,10 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
         onChange([number2Date(_startDate), number2Date(_endDate)] as DateValue<IsDateRange>);
       }
     },
-    [useDateRange, startDate, endDate, onChange]
+    [useDateRange, startDate, endDate, onChange, picker, currentView]
   );
+
+  const isMonthViewInDayPicker = picker === Picker.day && currentView === Picker.month;
 
   return (
     <BasicInput disabled={disabled} hintText={hintText} errorText={errorText} size={size}>
@@ -232,7 +252,7 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
                 onClick={onCurrentDateClick}
                 data-testid="alt-test-datepicker-header"
                 type="button">
-                {currentMonthFormat.format(currentMonth)}
+                {currentMonthFormat.format(number2Date(currentMonth))}
               </button>
             )}
             {ltePhoneL && picker === Picker.day && (
@@ -281,12 +301,12 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
           {currentView === Picker.month && (
             <MonthPicker
               currentMonth={currentMonth}
-              startSelectedDate={startDate}
+              startSelectedDate={isMonthViewInDayPicker ? currentMonth : startDate}
               endSelectedDate={endDate}
               onChange={onChangeHandler}
               minDate={minDate}
               maxDate={maxDate}
-              isDateRange={useDateRange}
+              isDateRange={isMonthViewInDayPicker ? false : useDateRange}
             />
           )}
           {currentView === Picker.year && (
