@@ -15,6 +15,21 @@ interface TextareaProps
   placeholder?: string;
 }
 
+/**
+ * This component is used to enter multiline text
+ * @param value
+ * @param onChange
+ * @param className
+ * @param required
+ * @param disabled
+ * @param errorText
+ * @param hintText
+ * @param size
+ * @param elevation
+ * @param surface
+ * @param props
+ * @constructor
+ */
 const Textarea = ({
   value,
   onChange,
