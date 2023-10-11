@@ -11,6 +11,10 @@ import { useLocalization, useWindowSize } from '../../../hooks';
 import { BasicInput } from '../BasicInput';
 import { DatePickerProps, DateRangePosition, DateValue } from './DatePicker.types';
 import { date2Number, number2Date } from './DatePicker.utils';
+import dayjs, { Dayjs } from 'dayjs';
+import minMax from 'dayjs/plugin/minMax';
+
+dayjs.extend(minMax);
 
 const today = new Date();
 
@@ -52,25 +56,15 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
 }: DatePickerProps<IsDateRange>) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(
-    value && !Array.isArray(value)
-      ? date2Number(new Date(value.getFullYear(), value.getMonth(), 1))
-      : date2Number(new Date())
+    value && !Array.isArray(value) ? dayjs(value) : dayjs()
   );
 
-  const [startDate, setStartDate] = useState<number | undefined>(() => {
-    if (useDateRange && Array.isArray(value) && value?.[0]) {
-      return date2Number(value[0]);
-    } else if (!Array.isArray(value) && value) {
-      return date2Number(value);
-    }
+  const [startDate, setStartDate] = useState<Dayjs | undefined>(() => {
+    return dayjs(Array.isArray(value) ? value[0] : value);
   });
 
-  const [endDate, setEndDate] = useState<number | undefined>(() => {
-    if (useDateRange && Array.isArray(value) && value?.[1]) {
-      return date2Number(value[1]);
-    } else {
-      return undefined;
-    }
+  const [endDate, setEndDate] = useState<Dayjs | undefined>(() => {
+    return useDateRange && Array.isArray(value) && value[1] ? dayjs(value[1]) : undefined;
   });
 
   const [currentView, setCurrentView] = useState<Picker>(picker);
@@ -106,26 +100,22 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
 
   const onNextMonthClick = () => {
     setCurrentMonth((old) => {
-      const oldDate = number2Date(old) as Date;
-      return date2Number(
-        new Date(oldDate.getFullYear(), oldDate.getMonth() + 1, oldDate.getDate())
-      );
+      return old.add(1, 'month');
     });
   };
 
   const onPrevMonthClick = () => {
     setCurrentMonth((old) => {
-      const oldDate = number2Date(old) as Date;
-      return date2Number(
-        new Date(oldDate.getFullYear(), oldDate.getMonth() - 1, oldDate.getDate())
-      );
+      return old.subtract(1, 'month');
     });
   };
 
   const onTodayClick = () => {
-    const today = new Date();
-    setCurrentMonth(date2Number(new Date(today.getFullYear(), today.getMonth(), 1)));
-    onChange(today);
+    if (!useDateRange) {
+      const todayDate = dayjs().toDate();
+      setCurrentMonth(dayjs());
+      onChange(todayDate as DateValue<IsDateRange>);
+    }
   };
 
   const onApplyClick = () => {
@@ -172,22 +162,18 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
   // }, [value, minDate, maxDate, onChange]);
   //
   const [minMonth, maxMonth] = useMemo(() => {
-    return [
-      new Date(minDate?.getFullYear(), minDate?.getMonth(), 1),
-      new Date(maxDate?.getFullYear(), maxDate?.getMonth(), 1)
-    ];
+    return [dayjs(minDate), dayjs(maxDate)];
   }, [minDate, maxDate]);
 
   const onChangeHandler = useCallback(
-    (position: DateRangePosition, value?: number) => {
+    (position: DateRangePosition, value?: Dayjs, extraValue?: Dayjs) => {
       let _startDate = position === 'start' ? value : startDate;
       let _endDate = position === 'end' ? value : endDate;
 
-      // if (_startDate && _endDate && _endDate < _startDate) {
-      //   [_startDate, _endDate] = [_endDate, _startDate];
-      // }
-
-      console.log('picker', picker, currentView, value);
+      if (position === 'both') {
+        _startDate = value;
+        _endDate = extraValue;
+      }
 
       if (picker === Picker.day && currentView === Picker.month && value) {
         setCurrentMonth(value);
@@ -199,12 +185,15 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
         setStartDate(_startDate);
       } else if (position === 'end') {
         setEndDate(_endDate);
+      } else if (position === 'both') {
+        setStartDate(_startDate);
+        setEndDate(_endDate);
       }
 
       if (!useDateRange) {
-        onChange(number2Date(value) as DateValue<IsDateRange>);
-      } else if (_startDate && _endDate) {
-        onChange([number2Date(_startDate), number2Date(_endDate)] as DateValue<IsDateRange>);
+        onChange(value?.toDate() as DateValue<IsDateRange>);
+      } else {
+        onChange([_startDate?.toDate(), _endDate?.toDate()] as DateValue<IsDateRange>);
       }
     },
     [useDateRange, startDate, endDate, onChange, picker, currentView]

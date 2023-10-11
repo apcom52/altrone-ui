@@ -2,7 +2,18 @@ import { memo, useCallback, useMemo } from 'react';
 import { Option } from '../../../types';
 import { ScrollableSelector } from '../ScrollableSelector';
 import { CalendarProps } from './DatePicker.types';
-import { date2Number, numberDate2Year, year2NumberDate } from './DatePicker.utils';
+import dayjs from 'dayjs';
+import IsBetween from 'dayjs/plugin/isBetween';
+import IsToday from 'dayjs/plugin/isToday';
+import IsSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import IsSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import ruLocale from 'dayjs/locale/ru.js';
+
+dayjs.extend(IsBetween);
+dayjs.extend(IsToday);
+dayjs.extend(IsSameOrBefore);
+dayjs.extend(IsSameOrAfter);
+dayjs.locale(ruLocale);
 
 const YearPicker = <IsDateRange extends boolean | undefined = false>({
   startSelectedDate,
@@ -16,45 +27,54 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
     const result: Option<number>[] = [];
     const restResult: Option<number>[] = [];
 
-    const minYear = numberDate2Year(date2Number(minDate));
-    const maxYear = numberDate2Year(date2Number(maxDate));
+    const _minDate = dayjs.min(dayjs(minDate), dayjs(maxDate));
+    const _maxDate = dayjs.max(dayjs(minDate), dayjs(maxDate));
 
-    for (let year = minYear; year <= maxYear; year++) {
+    let currentYear = _minDate;
+    while (currentYear?.isBefore(_maxDate, 'year')) {
       result.push({
-        label: year.toString(),
-        value: year2NumberDate(year)
+        label: String(currentYear?.year()),
+        value: currentYear?.year()
       });
 
       restResult.push({
-        label: year.toString(),
-        value: year2NumberDate(year),
-        disabled: !startSelectedDate || year <= numberDate2Year(startSelectedDate)
+        label: String(currentYear?.year()),
+        value: currentYear?.year(),
+        disabled: currentYear?.isSameOrBefore(startSelectedDate, 'year')
       });
+
+      currentYear = currentYear?.add(1, 'year');
     }
 
     return [result, restResult];
   }, [minDate, maxDate, startSelectedDate]);
 
   const onChangeStartDate = useCallback(
-    (date: number | undefined) => {
-      console.log('> checking', date, '<', endSelectedDate);
-      if (endSelectedDate && date && endSelectedDate <= date) {
-        if (restYears.length) {
-          console.log('> set end to', restYears.find((i) => i.value > date)?.value);
-          onChange('end', restYears.find((i) => !i.disabled)?.value);
-        } else {
-          onChange('end', undefined);
-        }
-      }
+    (year: number | undefined) => {
+      const selectedDate = dayjs().year(Number(year));
 
-      onChange('start', date);
+      if (selectedDate.isSameOrAfter(endSelectedDate, 'year')) {
+        const nextSelectedDate = selectedDate.add(1, 'year');
+
+        if (nextSelectedDate.isBefore(maxDate, 'year')) {
+          console.log('> trigger', selectedDate.toString(), nextSelectedDate.toString());
+          onChange('both', selectedDate, nextSelectedDate);
+        } else {
+          console.log('> trigger', selectedDate.toString(), undefined);
+          onChange('both', selectedDate, undefined);
+        }
+      } else {
+        console.log('> trigger', selectedDate);
+        onChange('start', selectedDate);
+      }
     },
-    [onChange, endSelectedDate, restYears]
+    [onChange, endSelectedDate, restYears, maxDate]
   );
 
   const onChangeEndDate = useCallback(
-    (date: number | undefined) => {
-      onChange('end', date);
+    (year: number | undefined) => {
+      const selectedDate = dayjs().year(Number(year));
+      onChange('end', selectedDate);
     },
     [onChange]
   );
@@ -65,7 +85,7 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
         <div className="alt-year-picker__column">
           {isDateRange && <div className="alt-year-picker__columnName">Start Year</div>}
           <ScrollableSelector<number | undefined>
-            value={startSelectedDate}
+            value={startSelectedDate?.year()}
             options={years}
             onChange={onChangeStartDate}
           />
@@ -75,7 +95,7 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
             <div className="alt-year-picker__columnName">End Year</div>
             <ScrollableSelector
               disabled={!startSelectedDate}
-              value={endSelectedDate}
+              value={endSelectedDate?.year()}
               options={restYears}
               onChange={onChangeEndDate}
             />
