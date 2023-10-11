@@ -2,8 +2,15 @@ import { CalendarProps, CalendarRenderDateProps } from './Calendar.types';
 import './calendar.scss';
 import clsx from 'clsx';
 import { useMemo } from 'react';
-import { makeDateString } from './Calendar.utils';
 import { CalendarDate } from './CalendarDate';
+import dayjs, { Dayjs } from 'dayjs';
+import IsBetween from 'dayjs/plugin/isBetween';
+import IsToday from 'dayjs/plugin/isToday';
+import ruLocale from 'dayjs/locale/ru.js';
+
+dayjs.extend(IsBetween);
+dayjs.extend(IsToday);
+dayjs.locale(ruLocale);
 
 /**
  * This component is used to show the selected month
@@ -23,68 +30,70 @@ export const Calendar = ({
   disabled,
   className
 }: CalendarProps) => {
+  const month_dj = useMemo(() => {
+    return dayjs(month);
+  }, [month]);
+
+  const selectedDates_dj = useMemo(() => {
+    return selectedDates.map((date) => dayjs(date));
+  }, [selectedDates]);
+
   const calendarData = useMemo(() => {
     const result: CalendarRenderDateProps[] = [];
-    const todayDateString = makeDateString(new Date());
-    const selectedStringDates = selectedDates.map((date) => makeDateString(date));
 
-    const currentMonth = month;
-    const prevMonthLastDay = new Date(month.getFullYear(), month.getMonth(), 0);
-    const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
-    const lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
+    const firstDay = month_dj.startOf('month');
 
-    const getDateObject = (date: Date): CalendarRenderDateProps => {
-      const dateString = makeDateString(date);
+    const getDateObject = (date: Dayjs): CalendarRenderDateProps => {
+      const fromAnotherMonth = !date.isSame(month_dj, 'month');
+      const isDateSelected = Boolean(selectedDates_dj.find((d) => d.isSame(date, 'day')));
 
       return {
-        weekDay: date.getDay(),
-        currentDate: date,
-        today: dateString === todayDateString,
-        fromAnotherMonth: currentMonth.getMonth() !== date.getMonth(),
-        selected: selectedStringDates.indexOf(dateString) > -1,
-        disabled: false
+        weekDay: date.day(),
+        currentDate: date.toDate(),
+        today: date.isToday(),
+        fromAnotherMonth: fromAnotherMonth,
+        selected: isDateSelected,
+        disabled: !!disabled
       };
     };
 
-    for (let day = firstDay.getDate(); day <= lastDay.getDate(); day++) {
-      const currentDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-      const dayOfWeek = firstDay.getDay() === 0 ? 7 : firstDay.getDay();
+    const daysInMonth = month_dj.daysInMonth();
 
+    let currentDate = firstDay;
+
+    for (let day = 1; day <= daysInMonth; day++) {
       if (day === 1) {
-        for (let prevMonthDay = dayOfWeek - 1; prevMonthDay > 0; prevMonthDay--) {
-          const prevMonthDate = new Date(
-            currentMonth.getFullYear(),
-            currentMonth.getMonth() - 1,
-            prevMonthLastDay.getDate() - prevMonthDay + 1
-          );
+        let startOfWeek = currentDate.startOf('week');
 
-          result.push(getDateObject(prevMonthDate));
+        if (startOfWeek.isBefore(currentDate)) {
+          while (startOfWeek.isBefore(currentDate)) {
+            result.push(getDateObject(startOfWeek));
+            startOfWeek = startOfWeek.add(1, 'day');
+          }
         }
 
         result.push(getDateObject(currentDate));
-      } else if (day === lastDay.getDate()) {
+      } else if (day === daysInMonth) {
         result.push(getDateObject(currentDate));
 
-        for (let nextMonth = 1; nextMonth <= 7 - lastDay.getDay(); nextMonth++) {
-          const nextMonthDate = new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth() + 1,
-            nextMonth
-          );
+        const endOfWeek = currentDate.endOf('week');
 
-          if (nextMonth === 1 && nextMonthDate.getDay() === 1) {
-            break;
+        if (endOfWeek.isAfter(currentDate)) {
+          currentDate = currentDate.add(1, 'day');
+          while (currentDate.isBefore(endOfWeek)) {
+            result.push(getDateObject(currentDate));
+            currentDate = currentDate.add(1, 'day');
           }
-
-          result.push(getDateObject(nextMonthDate));
         }
       } else {
         result.push(getDateObject(currentDate));
       }
+
+      currentDate = currentDate.add(1, 'day');
     }
 
     return result;
-  }, [month, selectedDates]);
+  }, [month_dj, selectedDates_dj, disabled]);
 
   return (
     <div className={clsx('alt-calendar', className)}>
