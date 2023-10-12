@@ -60,7 +60,7 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
   );
 
   const [startDate, setStartDate] = useState<Dayjs | undefined>(() => {
-    return dayjs(Array.isArray(value) ? value[0] : value);
+    return useDateRange && Array.isArray(value) && value[1] ? dayjs(value[0]) : undefined;
   });
 
   const [endDate, setEndDate] = useState<Dayjs | undefined>(() => {

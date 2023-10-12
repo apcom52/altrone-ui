@@ -51,17 +51,11 @@
 }
 
 .alt-month-picker-calendar {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, auto);
   flex-direction: column;
   gap: 4px;
-}
-
-.alt-month-picker-calendar__row {
-  display: grid;
-  position: relative;
-  grid-template-columns: repeat(4, 64px);
-  gap: 4px;
-  height: 54px;
 }
 
 .alt-month-picker-calendar__highlighter {
@@ -89,6 +83,11 @@
     .alt-month-picker-item__monthName {
       background-color: var(--surfaceTrasparent);
     }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
 }
 
