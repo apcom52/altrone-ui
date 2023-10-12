@@ -143,12 +143,6 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
     [onChange]
   );
 
-  // useEffect(() => {
-  //   if (value && !Array.isArray(value)) {
-  //     setCurrentMonth(new Date(value.getFullYear(), value.getMonth(), 1));
-  //   }
-  // }, [value]);
-
   useEffect(() => {
     setCurrentView(picker);
   }, [picker]);
@@ -183,6 +177,10 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
 
       if (position === 'start') {
         setStartDate(_startDate);
+        if (_endDate) {
+          _endDate = undefined;
+          setEndDate(undefined);
+        }
       } else if (position === 'end') {
         setEndDate(_endDate);
       } else if (position === 'both') {
@@ -192,7 +190,7 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
 
       if (!useDateRange) {
         onChange(value?.toDate() as DateValue<IsDateRange>);
-      } else {
+      } else if (_startDate && _endDate) {
         onChange([_startDate?.toDate(), _endDate?.toDate()] as DateValue<IsDateRange>);
       }
     },
@@ -200,6 +198,16 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
   );
 
   const isMonthViewInDayPicker = picker === Picker.day && currentView === Picker.month;
+
+  const currentLabel = useMemo(() => {
+    if (!useDateRange) {
+      return valueDateFormat.format(startDate?.toDate());
+    } else {
+      return `${startDate ? valueDateFormat.format(startDate.toDate()) : '...'} — ${
+        endDate ? valueDateFormat.format(endDate.toDate()) : '...'
+      }`;
+    }
+  }, [startDate, endDate, useDateRange, locale]);
 
   return (
     <BasicInput disabled={disabled} hintText={hintText} errorText={errorText} size={size}>
@@ -214,9 +222,8 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
         type="button"
         disabled={disabled}>
         {value ? (
-          'DATE PICKER VALUE'
+          <div className="alt-date-picker__value">{currentLabel}</div>
         ) : (
-          // <div className="alt-date-picker__value">{valueDateFormat.format(value)}</div>
           <div className="alt-date-picker__placeholder">
             {placeholder || t('form.datePicker.placeholder')}
           </div>
