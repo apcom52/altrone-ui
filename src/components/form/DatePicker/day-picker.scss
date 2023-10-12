@@ -4,6 +4,8 @@
   display: flex;
   margin-top: 12px;
   flex-direction: column;
+
+  @include useDisabledUserSelect();
 }
 
 .alt-day-picker__weeks {

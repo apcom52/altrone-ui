@@ -9,15 +9,13 @@ export const TwoDatePickers: StoryObj<typeof DatePicker<false>> = {
   storyName: 'Two DatePickers',
   render: ({ ...args }) => {
     const [valueSingle, setValueSingle] = useState<Date | undefined>(undefined);
-    const [valueRange, setValueRange] = useState<[Date, Date]>();
+    const [valueRange, setValueRange] = useState<[Date | undefined, Date | undefined]>();
 
     const dateFormatter = new Intl.DateTimeFormat('ru-RU', {
       day: 'numeric',
       month: 'long',
       year: 'numeric'
     });
-
-    console.log('single', valueSingle, 'range', valueRange);
 
     return (
       <>

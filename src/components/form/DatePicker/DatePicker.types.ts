@@ -1,5 +1,6 @@
 import { TextInputProps } from '../TextInput';
 import { BasicInputProps } from '../BasicInput';
+import { Dayjs } from 'dayjs';
 
 export enum Picker {
   day = 'day',
@@ -7,10 +8,10 @@ export enum Picker {
   year = 'year'
 }
 
-export type DateRangePosition = 'start' | 'end';
+export type DateRangePosition = 'start' | 'end' | 'both';
 
 export type DateValue<IsDateRange extends boolean | undefined = false> = IsDateRange extends true
-  ? [Date, Date] | undefined
+  ? [Date | undefined, Date | undefined] | undefined
   : Date | undefined;
 
 export interface DatePickerProps<IsDateRange extends boolean | undefined = false>
@@ -30,21 +31,11 @@ export interface DatePickerProps<IsDateRange extends boolean | undefined = false
 }
 
 export interface CalendarProps<IsDateRange extends boolean | undefined = false> {
-  currentMonth: number;
-  startSelectedDate?: number;
-  endSelectedDate?: number;
-  onChange: (position: DateRangePosition, value?: number) => void;
+  currentMonth: Dayjs;
+  startSelectedDate?: Dayjs;
+  endSelectedDate?: Dayjs;
+  onChange: (position: DateRangePosition, value?: Dayjs, extraValue?: Dayjs) => void;
   minDate: Date;
   maxDate: Date;
   isDateRange: IsDateRange;
 }
-
-type MonthHighlighter = {
-  from: 0 | 1 | 2 | 3;
-  to: 0 | 1 | 2 | 3;
-};
-export type MonthHightlighters = [
-  MonthHighlighter | undefined,
-  MonthHighlighter | undefined,
-  MonthHighlighter | undefined
-];
