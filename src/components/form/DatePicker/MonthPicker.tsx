@@ -42,8 +42,6 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
 
   const onSelectMonth = useCallback(
     (month: Dayjs) => {
-      console.log('select', month);
-
       if (!isDateRange) {
         onChange('both', month, undefined);
         return;

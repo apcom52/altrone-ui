@@ -57,14 +57,11 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
         const nextSelectedDate = selectedDate.add(1, 'year');
 
         if (nextSelectedDate.isBefore(maxDate, 'year')) {
-          console.log('> trigger', selectedDate.toString(), nextSelectedDate.toString());
           onChange('both', selectedDate, nextSelectedDate);
         } else {
-          console.log('> trigger', selectedDate.toString(), undefined);
           onChange('both', selectedDate, undefined);
         }
       } else {
-        console.log('> trigger', selectedDate);
         onChange('start', selectedDate);
       }
     },

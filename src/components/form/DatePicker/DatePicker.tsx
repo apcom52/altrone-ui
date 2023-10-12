@@ -147,14 +147,39 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
     setCurrentView(picker);
   }, [picker]);
 
-  // useEffect(() => {
-  //   if (value < minDate) {
-  //     onChange(minDate);
-  //   } else if (value > maxDate) {
-  //     onChange(maxDate);
-  //   }
-  // }, [value, minDate, maxDate, onChange]);
-  //
+  useEffect(() => {
+    const getValidDate = (date: Date | undefined) => {
+      if (!date) {
+        return undefined;
+      }
+
+      const date_dj = dayjs(date);
+
+      if (date_dj.isBefore(minDate)) {
+        return minDate;
+      } else if (date_dj.isAfter(maxDate)) {
+        return maxDate;
+      }
+
+      return undefined;
+    };
+
+    if (useDateRange && Array.isArray(value)) {
+      const startValue = getValidDate(value[0]);
+      const endValue = getValidDate(value[1]);
+
+      if (startValue || endValue) {
+        onChange([startValue || value[0], endValue || value[1]] as DateValue<IsDateRange>);
+      }
+    } else if (!Array.isArray(value)) {
+      const result = getValidDate(value);
+
+      if (result) {
+        onChange(result as DateValue<IsDateRange>);
+      }
+    }
+  }, [value, minDate, maxDate, onChange, useDateRange]);
+
   const [minMonth, maxMonth] = useMemo(() => {
     return [dayjs(minDate), dayjs(maxDate)];
   }, [minDate, maxDate]);
@@ -207,7 +232,7 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
         endDate ? valueDateFormat.format(endDate.toDate()) : '...'
       }`;
     }
-  }, [startDate, endDate, useDateRange, locale]);
+  }, [startDate, endDate, useDateRange, locale, picker]);
 
   return (
     <BasicInput disabled={disabled} hintText={hintText} errorText={errorText} size={size}>
@@ -326,12 +351,12 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
                   <div className="alt-date-picker__footer-separator" />
                 </>
               )}
-              {currentView === Picker.day && (
+              {currentView === Picker.day && !useDateRange && (
                 <Button onClick={onTodayClick} data-testid="alt-test-datepicker-today">
                   {t('form.datePicker.today')}
                 </Button>
               )}
-              {currentView === Picker.month && (
+              {currentView === Picker.month && !useDateRange && (
                 <Button onClick={onTodayClick} data-testid="alt-test-datepicker-currentMonth">
                   {t('form.datePicker.currentMonth')}
                 </Button>

@@ -3,10 +3,9 @@ import { memo, useCallback, useMemo } from 'react';
 import clsx from 'clsx';
 import { useWindowSize } from '../../../hooks';
 import { CalendarProps } from './DatePicker.types';
-import { date2Number, number2Date } from './DatePicker.utils';
 import { Calendar, CalendarRenderDateProps } from '../../data';
 import './day-picker.scss';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 const DayPickerItem = ({
   currentDate,
@@ -17,8 +16,14 @@ const DayPickerItem = ({
   weekDay,
   selectedDates = [],
   minDate,
-  maxDate
-}: CalendarRenderDateProps & { selectedDates: Date[]; minDate: Date; maxDate: Date }) => {
+  maxDate,
+  isDateRange
+}: CalendarRenderDateProps & {
+  selectedDates: Date[];
+  minDate: Date;
+  maxDate: Date;
+  isDateRange: boolean;
+}) => {
   const date_dj = dayjs(currentDate);
   const isBetweenSelectedDates =
     selectedDates[0] &&
@@ -27,7 +32,7 @@ const DayPickerItem = ({
     date_dj.isSameOrBefore(dayjs(selectedDates[1]));
   const isDisabled =
     !date_dj.isBetween(minDate, maxDate) ||
-    (selectedDates[0] && !selectedDates[1] && date_dj.isBefore(selectedDates[0]));
+    (isDateRange && selectedDates[0] && !selectedDates[1] && date_dj.isBefore(selectedDates[0]));
 
   return (
     <button
@@ -132,7 +137,9 @@ const DayPicker = <IsDateRange extends boolean | undefined = false>({
       </div>
       <Calendar
         month={currentMonth.toDate()}
-        DateComponent={(props) => DayPickerItem({ ...props, selectedDates, minDate, maxDate })}
+        DateComponent={(props) =>
+          DayPickerItem({ ...props, selectedDates, minDate, maxDate, isDateRange: !!isDateRange })
+        }
         selectedDates={selectedDates}
         className="alt-day-picker__calendar"
         onDateChange={onSelectMonth}
