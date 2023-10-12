@@ -25,7 +25,9 @@ const DayPickerItem = ({
     selectedDates[1] &&
     date_dj.isSameOrAfter(dayjs(selectedDates[0])) &&
     date_dj.isSameOrBefore(dayjs(selectedDates[1]));
-  const isDisabled = !date_dj.isBetween(minDate, maxDate);
+  const isDisabled =
+    !date_dj.isBetween(minDate, maxDate) ||
+    (selectedDates[0] && !selectedDates[1] && date_dj.isBefore(selectedDates[0]));
 
   return (
     <button

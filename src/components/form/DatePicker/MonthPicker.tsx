@@ -28,9 +28,6 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
 }: CalendarProps<IsDateRange>) => {
   const { lang } = useThemeContext();
 
-  console.log('start', startSelectedDate);
-  console.log('end', endSelectedDate);
-
   const [currentYear, setCurrentYear] = useState(() => {
     if (dayjs().isBetween(dayjs(minDate), dayjs(maxDate))) {
       return dayjs();
@@ -84,11 +81,15 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
       const isEnd = endSelectedDate?.startOf('month').isSame(currentMonth);
       const isSelected = isStart || isEnd;
       const isHighlighted =
+        isDateRange &&
         endSelectedDate &&
         currentMonth.isSameOrAfter(startSelectedDate) &&
         currentMonth.isSameOrBefore(endSelectedDate);
       const isDisabled =
-        startSelectedDate && !endSelectedDate && currentMonth.isBefore(startSelectedDate);
+        isDateRange &&
+        startSelectedDate &&
+        !endSelectedDate &&
+        currentMonth.isBefore(startSelectedDate);
 
       const thisMonth = dayjs(currentMonth);
 
@@ -114,7 +115,7 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
     }
 
     return result;
-  }, [currentYear, startSelectedDate, endSelectedDate, onSelectMonth]);
+  }, [currentYear, startSelectedDate, endSelectedDate, onSelectMonth, isDateRange]);
 
   return (
     <div className="alt-month-picker" data-testid="alt-test-month-picker">

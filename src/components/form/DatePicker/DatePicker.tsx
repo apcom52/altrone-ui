@@ -84,11 +84,11 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
       : picker === Picker.month
       ? {
           year: 'numeric',
-          month: 'long'
+          month: useDateRange ? 'short' : 'long'
         }
       : {
           year: 'numeric',
-          month: 'long',
+          month: useDateRange ? 'short' : 'long',
           day: 'numeric'
         }
   );

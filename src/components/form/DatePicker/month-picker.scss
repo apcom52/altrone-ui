@@ -56,6 +56,8 @@
   grid-template-rows: repeat(3, auto);
   flex-direction: column;
   gap: 4px;
+
+  @include useDisabledUserSelect();
 }
 
 .alt-month-picker-calendar__highlighter {
@@ -75,15 +77,10 @@
   height: 54px;
   padding: 0;
   cursor: pointer;
+  transition: opacity var(--transitionDuration) ease;
 
   @include useFontSize(label, Large);
   @include useDisabledUserSelect();
-
-  &:hover {
-    .alt-month-picker-item__monthName {
-      background-color: var(--surfaceTrasparent);
-    }
-  }
 
   &:disabled {
     opacity: 0.5;
