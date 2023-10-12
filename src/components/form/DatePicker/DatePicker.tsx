@@ -241,12 +241,12 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
                 onClick={onCurrentDateClick}
                 data-testid="alt-test-datepicker-header"
                 type="button">
-                {currentMonthFormat.format(number2Date(currentMonth))}
+                {currentMonthFormat.format(currentMonth.toDate())}
               </button>
             )}
             {ltePhoneL && picker === Picker.day && (
               <div className="alt-date-picker__title">
-                {currentMonthFormat.format(currentMonth)}
+                {currentMonthFormat.format(currentMonth.toDate())}
               </div>
             )}
             {picker === Picker.month && (
