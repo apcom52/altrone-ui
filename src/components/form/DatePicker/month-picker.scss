@@ -146,3 +146,10 @@
     border-bottom-right-radius: var(--containerRounding);
   }
 }
+
+.alt-month-picker-item--highlighted-end.alt-month-picker-item--highlighted-start {
+  .alt-month-picker-item__background {
+    left: 0;
+    width: 100%;
+  }
+}

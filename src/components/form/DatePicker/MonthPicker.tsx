@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useThemeContext } from '../../../contexts';
 import { CalendarProps } from './DatePicker.types';
 import { Icon } from '../../typography';
@@ -27,6 +27,7 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
   isDateRange
 }: CalendarProps<IsDateRange>) => {
   const { lang } = useThemeContext();
+  const [hoveredDate, setHoveredDate] = useState<Dayjs | undefined>(undefined);
 
   const [currentYear, setCurrentYear] = useState(() => {
     if (dayjs().isBetween(dayjs(minDate), dayjs(maxDate))) {
@@ -78,11 +79,22 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
       const isStart = startSelectedDate?.startOf('month').isSame(currentMonth);
       const isEnd = endSelectedDate?.startOf('month').isSame(currentMonth);
       const isSelected = isStart || isEnd;
-      const isHighlighted =
-        isDateRange &&
+
+      const isHoveredModeEnabled = startSelectedDate && !endSelectedDate;
+
+      const isHoveredDate =
+        isHoveredModeEnabled &&
+        hoveredDate &&
+        currentMonth.isSameOrAfter(startSelectedDate) &&
+        currentMonth.isSameOrBefore(hoveredDate);
+
+      const isEndDateSelected =
         endSelectedDate &&
         currentMonth.isSameOrAfter(startSelectedDate) &&
         currentMonth.isSameOrBefore(endSelectedDate);
+
+      const isHighlighted = isDateRange && (isEndDateSelected || isHoveredDate);
+
       const isDisabled =
         isDateRange &&
         startSelectedDate &&
@@ -98,10 +110,12 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
             'alt-month-picker-item--active': isSelected,
             'alt-month-picker-item--highlighted': isHighlighted,
             'alt-month-picker-item--highlighted-start': isStart,
-            'alt-month-picker-item--highlighted-end': isEnd
+            'alt-month-picker-item--highlighted-end':
+              isEnd || hoveredDate?.isSame(thisMonth, 'month')
           })}
           disabled={isDisabled}
-          onClick={() => onSelectMonth(thisMonth)}>
+          onClick={() => onSelectMonth(thisMonth)}
+          onMouseEnter={isHoveredModeEnabled ? () => setHoveredDate(thisMonth) : undefined}>
           <div className="alt-month-picker-item__monthName">
             {monthNameFormatter.format(currentMonth.toDate()).replace('.', '')}
           </div>
@@ -113,7 +127,13 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
     }
 
     return result;
-  }, [currentYear, startSelectedDate, endSelectedDate, onSelectMonth, isDateRange]);
+  }, [currentYear, startSelectedDate, endSelectedDate, onSelectMonth, isDateRange, hoveredDate]);
+
+  useEffect(() => {
+    if (!(startSelectedDate && !endSelectedDate)) {
+      setHoveredDate(undefined);
+    }
+  }, [startSelectedDate, endSelectedDate]);
 
   return (
     <div className="alt-month-picker" data-testid="alt-test-month-picker">
@@ -133,7 +153,9 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
             <Icon i="arrow_forward" />
           </Button>
         </div>
-        <div className="alt-month-picker-calendar">{monthCalendar}</div>
+        <div className="alt-month-picker-calendar" onMouseLeave={() => setHoveredDate(undefined)}>
+          {monthCalendar}
+        </div>
       </div>
     </div>
   );
