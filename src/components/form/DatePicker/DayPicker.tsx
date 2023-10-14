@@ -1,11 +1,12 @@
 import { useThemeContext } from '../../../contexts';
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useWindowSize } from '../../../hooks';
 import { CalendarProps } from './DatePicker.types';
 import { Calendar, CalendarRenderDateProps } from '../../data';
 import './day-picker.scss';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import { Mouse } from '@testing-library/user-event/system/pointer/mouse';
 
 const DayPickerItem = ({
   currentDate,
@@ -17,14 +18,18 @@ const DayPickerItem = ({
   selectedDates = [],
   minDate,
   maxDate,
-  isDateRange
+  isDateRange,
+  hoveredDate,
+  cursorHighlighted
 }: CalendarRenderDateProps & {
   selectedDates: Date[];
   minDate: Date;
   maxDate: Date;
   isDateRange: boolean;
+  hoveredDate: Dayjs | undefined;
 }) => {
   const date_dj = dayjs(currentDate);
+
   const isBetweenSelectedDates =
     selectedDates[0] &&
     selectedDates[1] &&
@@ -34,22 +39,32 @@ const DayPickerItem = ({
     !date_dj.isBetween(minDate, maxDate) ||
     (isDateRange && selectedDates[0] && !selectedDates[1] && date_dj.isBefore(selectedDates[0]));
 
+  const isHoveringMode = selectedDates[0] && !selectedDates[1];
+
+  const isEndOfRange = isHoveringMode
+    ? date_dj.isSame(hoveredDate)
+    : date_dj.isSame(selectedDates[1], 'day');
+
   return (
     <button
-      onClick={onSelect ? () => onSelect(currentDate) : undefined}
+      onClick={() => {
+        onSelect?.(currentDate);
+      }}
       className={clsx('alt-day-picker-item', {
         'alt-day-picker-item--selected': selected,
         'alt-day-picker-item--today': today,
         'alt-day-picker-item--another-month': fromAnotherMonth,
-        'alt-day-picker-item--between-selected': isBetweenSelectedDates,
         'alt-day-picker-item--disabled': isDisabled
       })}
+      data-date={date_dj.format('YYYY-MM-DD')}
       data-start-of-week={weekDay === 1 ? 'true' : 'false'}
       data-end-of-week={weekDay === 0 ? 'true' : 'false'}
       data-start-of-range={date_dj.isSame(selectedDates[0])}
-      data-end-of-range={date_dj.isSame(selectedDates[1])}
+      data-end-of-range={isEndOfRange}
       disabled={isDisabled}>
-      {isBetweenSelectedDates && <div className="alt-day-picker-item__background" />}
+      {(isBetweenSelectedDates || cursorHighlighted) && (
+        <div className="alt-day-picker-item__background" />
+      )}
       <div className="alt-day-picker-item__dayNumber">{currentDate.getDate()}</div>
     </button>
   );
@@ -64,8 +79,11 @@ const DayPicker = <IsDateRange extends boolean | undefined = false>({
   maxDate,
   isDateRange
 }: CalendarProps<IsDateRange>) => {
+  const currentDate = useRef<Dayjs | undefined>(undefined);
+
   const { locale } = useThemeContext();
   const { ltePhoneL } = useWindowSize();
+  const [hoveredDate, setHoveredDate] = useState<Dayjs | undefined>(undefined);
 
   const currentMonthDate = dayjs(currentMonth);
 
@@ -97,7 +115,7 @@ const DayPicker = <IsDateRange extends boolean | undefined = false>({
     weekday: ltePhoneL ? 'narrow' : 'short'
   });
 
-  const onSelectMonth = useCallback(
+  const onSelectDate = useCallback(
     (date: Date) => {
       const selectedDate = dayjs(date);
 
@@ -110,12 +128,37 @@ const DayPicker = <IsDateRange extends boolean | undefined = false>({
         onChange('start', selectedDate);
       } else if (!endSelectedDate) {
         onChange('end', selectedDate);
+        setHoveredDate(undefined);
       } else {
         onChange('both', selectedDate, undefined);
       }
     },
     [isDateRange, startSelectedDate, endSelectedDate, onChange]
   );
+
+  const onMouseMove = (e: React.MouseEvent) => {
+    const dateElement = (e.target as HTMLDivElement).closest('[data-date]');
+
+    if (!startSelectedDate || endSelectedDate) {
+      setHoveredDate(undefined);
+      return;
+    }
+
+    if (!dateElement) {
+      return;
+    }
+
+    const hoverDate = dayjs(dateElement.getAttribute('data-date'));
+    if (!currentDate.current || !currentDate.current?.isSame(hoverDate, 'day')) {
+      currentDate.current = hoverDate;
+      setHoveredDate(hoverDate);
+    }
+  };
+
+  const onMouseLeave = () => {
+    setHoveredDate(undefined);
+    currentDate.current = undefined;
+  };
 
   if (!currentMonthDate) {
     return null;
@@ -135,15 +178,25 @@ const DayPicker = <IsDateRange extends boolean | undefined = false>({
           </span>
         ))}
       </div>
-      <Calendar
-        month={currentMonth.toDate()}
-        DateComponent={(props) =>
-          DayPickerItem({ ...props, selectedDates, minDate, maxDate, isDateRange: !!isDateRange })
-        }
-        selectedDates={selectedDates}
-        className="alt-day-picker__calendar"
-        onDateChange={onSelectMonth}
-      />
+      <div onMouseLeave={onMouseLeave} onMouseMove={isDateRange ? onMouseMove : undefined}>
+        <Calendar
+          month={currentMonth.toDate()}
+          cursorDate={hoveredDate?.toDate()}
+          DateComponent={(props) =>
+            DayPickerItem({
+              ...props,
+              selectedDates,
+              minDate,
+              maxDate,
+              isDateRange: !!isDateRange,
+              hoveredDate
+            })
+          }
+          selectedDates={selectedDates}
+          className="alt-day-picker__calendar"
+          onDateChange={onSelectDate}
+        />
+      </div>
     </div>
   );
 };

@@ -50,6 +50,7 @@
   -moz-appearance: none;
   padding: 0;
   margin: 0;
+  z-index: 1;
 
   @include useFontSize(body, Large);
   @include useFocus();
@@ -66,6 +67,7 @@
   left: -8px;
   z-index: -1;
   background: var(--surfaceTrasparent);
+  pointer-events: none;
 }
 
 .alt-day-picker-item__dayNumber {
@@ -91,6 +93,7 @@
 .alt-day-picker-item--another-month {
   --text: var(--secondaryTextColor);
   opacity: 0.5;
+  pointer-events: none;
 
   &:hover {
     background-color: var(--surfaceTrasparentHover);
@@ -152,7 +155,17 @@
 
 [data-end-of-range="true"] {
   .alt-day-picker-item__background {
-    width: 100%;
+    width: calc(100% + 8px);
     left: -8px;
+    border-top-right-radius: var(--containerRounding);
+    border-bottom-right-radius: var(--containerRounding);
+  }
+
+  &[data-start-of-range="true"] {
+    .alt-day-picker-item__background {
+      width: 100%;
+      left: 0;
+      border-radius: var(--containerRounding);
+    }
   }
 }
