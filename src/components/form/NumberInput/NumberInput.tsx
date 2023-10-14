@@ -4,31 +4,7 @@ import { NumberInputCounter } from './NumberInputCounter';
 import { NumberFormatValues, NumericFormat, OnValueChange } from 'react-number-format';
 import { Elevation, Surface } from '../../../types';
 import clsx from 'clsx';
-
-interface NumberInputProps
-  extends Omit<
-    TextInputProps,
-    | 'value'
-    | 'onChange'
-    | 'step'
-    | 'min'
-    | 'max'
-    | 'ref'
-    | 'suggestions'
-    | 'useLiveSuggestions'
-    | 'loading'
-  > {
-  value: number;
-  onChange: (value: number) => void;
-  showControls?: boolean;
-  allowNegative?: boolean;
-  allowLeadingZeros?: boolean;
-  decimalSeparator?: string;
-  digitsAfterDecimal?: number;
-  step?: number;
-  min?: number;
-  max?: number;
-}
+import { NumberInputProps } from './NumberInput.types';
 
 const NumberInput = ({
   value = 0,
@@ -38,6 +14,7 @@ const NumberInput = ({
   allowNegative = false,
   allowLeadingZeros = false,
   decimalSeparator = ',',
+  thousandSeparator = ' ',
   digitsAfterDecimal = 0,
   step = 1,
   min,
@@ -114,7 +91,7 @@ const NumberInput = ({
         <NumericFormat
           value={value}
           onValueChange={onValueChange}
-          thousandSeparator=" "
+          thousandSeparator={thousandSeparator}
           className={clsx('alt-text-input__control', {
             [`alt-text-input__control--elevation-${elevation}`]: elevation,
             [`alt-text-input--surface-${surface}`]: surface !== Surface.paper
