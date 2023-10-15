@@ -5,6 +5,8 @@ import clsx from 'clsx';
 
 interface HeadingProps extends WithoutDefaultOffsets, WithAltroneOffsets {
   level?: 1 | 2 | 3 | 4 | 5 | 6;
+  className?: string;
+  id?: string;
 }
 
 const Heading = ({ children, level = 1, ...props }: HeadingProps) => {
