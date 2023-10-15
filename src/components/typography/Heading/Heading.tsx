@@ -13,8 +13,8 @@ const Heading = ({ children, level = 1, ...props }: HeadingProps) => {
   return React.createElement(
     HeadingTag,
     {
-      className: clsx('alt-heading', `alt-heading--level-${level}`, props.className),
-      ...props
+      ...props,
+      className: clsx('alt-heading', `alt-heading--level-${level}`, props.className)
     },
     children
   );
