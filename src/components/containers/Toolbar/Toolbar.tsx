@@ -68,14 +68,25 @@ const Toolbar = ({
           toolbarRef.current = node;
           setToolbarElement(node);
         }}
-        style={
-          variant === ToolbarVariant.compact
+        style={{
+          ...(variant === ToolbarVariant.compact
             ? {
                 top: defaultPosition?.y,
                 left: defaultPosition?.x
               }
-            : undefined
-        }
+            : undefined),
+          ...(typeof width !== 'undefined'
+            ? {
+                width
+              }
+            : undefined),
+          ...(offset
+            ? {
+                left: offset.x,
+                top: offset.y
+              }
+            : undefined)
+        }}
         data-testid="alt-test-toolbar">
         {variant !== ToolbarVariant.compact && menu.length > 0 && <ToolbarMenu menu={menu} />}
         <div className="alt-toolbar__main">{children}</div>

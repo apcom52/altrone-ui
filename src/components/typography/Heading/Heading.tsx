@@ -5,6 +5,8 @@ import clsx from 'clsx';
 
 interface HeadingProps extends WithoutDefaultOffsets, WithAltroneOffsets {
   level?: 1 | 2 | 3 | 4 | 5 | 6;
+  className?: string;
+  id?: string;
 }
 
 const Heading = ({ children, level = 1, ...props }: HeadingProps) => {
@@ -13,8 +15,8 @@ const Heading = ({ children, level = 1, ...props }: HeadingProps) => {
   return React.createElement(
     HeadingTag,
     {
-      className: clsx('alt-heading', `alt-heading--level-${level}`, props.className),
-      ...props
+      ...props,
+      className: clsx('alt-heading', `alt-heading--level-${level}`, props.className)
     },
     children
   );
