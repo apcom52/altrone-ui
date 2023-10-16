@@ -5,7 +5,7 @@ export const DEFAULT_ALTRONE_OPTIONS: AltroneOptions = {
     reduceMotion: false
   },
   numberInput: {
-    useFormatFromLocale: false
+    useFormatFromLocale: true
   },
   carousel: {
     reduceMotion: false

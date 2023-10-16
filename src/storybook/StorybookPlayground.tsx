@@ -6,8 +6,9 @@ import {
   Button,
   ButtonVariant,
   Checkbox,
-  CheckboxList,
   FloatingBox,
+  Form,
+  FormField,
   Icon,
   Select,
   TextInput
@@ -16,6 +17,8 @@ import { Story } from '@storybook/react';
 import clsx from 'clsx';
 import { AltroneOptions } from '../hocs/Altrone/Altrone.types';
 import { DEFAULT_ALTRONE_OPTIONS } from '../hocs/Altrone/Altrone.const';
+import { NestedKeys } from '../utils/NestedKeys';
+import set from 'lodash/set';
 
 const THEMES: Option<Theme>[] = [
   {
@@ -45,6 +48,8 @@ interface StorybookPlaygroundProps extends PropsWithChildren {
   showBackground?: boolean;
 }
 
+type KeysOfAltroneOptions = NestedKeys<AltroneOptions>;
+
 export const StorybookPlayground = ({
   children,
   showBackground = false
@@ -54,11 +59,13 @@ export const StorybookPlayground = ({
   const [locale, setLocale] = useState('en-US');
   const [options, setOptions] = useState<AltroneOptions>(DEFAULT_ALTRONE_OPTIONS);
 
-  const changeOption = useCallback((fieldName: keyof AltroneOptions, value: any) => {
-    setOptions((old) => ({
-      ...old,
-      [fieldName]: value
-    }));
+  const changeOption = useCallback((fieldName: KeysOfAltroneOptions, value: any) => {
+    setOptions((old) => {
+      const copy = JSON.parse(JSON.stringify(old));
+
+      set(copy, fieldName, value);
+      return copy;
+    });
   }, []);
 
   const optionsButtonRef = useRef<HTMLButtonElement>(null);
@@ -99,21 +106,39 @@ export const StorybookPlayground = ({
           className="sb-settings-popup"
           targetElement={optionsButtonRef.current}
           onClose={() => setVisibleOptions(false)}
-          minWidth={300}
+          minWidth={240}
           useParentWidth>
           <b className="sb-settings-popup__header">Altrone Options</b>
-          <CheckboxList>
-            <Checkbox
-              checked={options.useNumberFormatFromLocale}
-              onChange={changeOption.bind(null, 'useNumberFormatFromLocale')}>
-              Number Format from Locale
-            </Checkbox>
-            <Checkbox
-              checked={options.reduceMotion}
-              onChange={changeOption.bind(null, 'reduceMotion')}>
-              Reduce motion
-            </Checkbox>
-          </CheckboxList>
+          <Form>
+            <FormField label="Global">
+              <Checkbox
+                checked={Boolean(options.global.reduceMotion)}
+                onChange={(value) => changeOption('global.reduceMotion', value)}>
+                Reduce Motion
+              </Checkbox>
+            </FormField>
+            <FormField label="Modal">
+              <Checkbox
+                checked={Boolean(options.modal.reduceMotion)}
+                onChange={(value) => changeOption('modal.reduceMotion', value)}>
+                Reduce Motion
+              </Checkbox>
+            </FormField>
+            <FormField label="Carousel">
+              <Checkbox
+                checked={Boolean(options.carousel.reduceMotion)}
+                onChange={(value) => changeOption('carousel.reduceMotion', value)}>
+                Reduce Motion
+              </Checkbox>
+            </FormField>
+            <FormField label="NumberInput">
+              <Checkbox
+                checked={Boolean(options.numberInput.useFormatFromLocale)}
+                onChange={(value) => changeOption('numberInput.useFormatFromLocale', value)}>
+                Use Format from Locale
+              </Checkbox>
+            </FormField>
+          </Form>
         </FloatingBox>
       )}
     </Altrone>
