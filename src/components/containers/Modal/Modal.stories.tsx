@@ -18,8 +18,7 @@ const meta: Meta<typeof Modal> = {
     fluid: false,
     showClose: true,
     showCancel: true,
-    closeOnOverlay: true,
-    reduceMotion: false
+    closeOnOverlay: true
   },
   argTypes: {
     children: { description: 'Inner elements' },
