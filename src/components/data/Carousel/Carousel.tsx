@@ -11,6 +11,7 @@ import './carousel.scss';
 import { Icon } from '../../typography';
 import { PhotoViewer } from '../../containers';
 import clsx from 'clsx';
+import { useThemeContext } from '../../../contexts';
 
 /**
  * A slideshow component for cycling through elements. **Available only from 2.0**
@@ -34,6 +35,10 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(
     },
     ref
   ) => {
+    const { options } = useThemeContext();
+
+    const configReduceMotion = options.carousel.reduceMotion || options.global.reduceMotion;
+
     const [currentIndex, setCurrentIndex] = useState(0);
     const [fakeSlideTransition, setFakeSlideTransition] = useState<'left' | 'right' | null>(null);
     const [isFullScreen, setIsFullScreen] = useState(false);
@@ -129,7 +134,7 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(
     return (
       <div
         className={clsx('alt-carousel', {
-          'alt-carousel--reduce-motion': reduceMotion,
+          'alt-carousel--reduce-motion': reduceMotion || configReduceMotion,
           'alt-carousel--image-contain': imageFitting === 'contain'
         })}
         ref={carouselRef}>

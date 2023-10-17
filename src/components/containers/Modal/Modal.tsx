@@ -14,6 +14,7 @@ import { Button } from '../../form';
 import clsx from 'clsx';
 import { useLocalization, useWindowSize } from '../../../hooks';
 import ReactDOM from 'react-dom';
+import { useThemeContext } from '../../../contexts';
 
 export interface ModalAction {
   label: string;
@@ -71,7 +72,7 @@ const Modal = ({
   showClose = true,
   showCancel = true,
   closeOnOverlay = true,
-  reduceMotion = false,
+  reduceMotion,
   className,
   surface = Surface.glass,
   elevation = Elevation.floating
@@ -79,10 +80,17 @@ const Modal = ({
   const { ltePhoneL, gtPhoneL } = useWindowSize();
   const t = useLocalization();
 
+  const { options } = useThemeContext();
+
+  const _reduceMotion =
+    typeof reduceMotion === 'undefined'
+      ? options.modal?.reduceMotion || options.global?.reduceMotion
+      : reduceMotion;
+
   const wrapperRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const [opened, setOpened] = useState(reduceMotion);
+  const [opened, setOpened] = useState(_reduceMotion);
 
   useEffect(() => {
     document.body.classList.add(CLS_UTIL_NOSCROLL);
@@ -134,7 +142,7 @@ const Modal = ({
 
   const handleClose = useCallback(() => {
     modalRef.current?.classList.remove(CLS_OPENED);
-    if (reduceMotion) {
+    if (_reduceMotion) {
       onClose();
     } else {
       setTimeout(() => {
