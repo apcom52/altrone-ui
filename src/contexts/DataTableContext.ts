@@ -1,13 +1,7 @@
 import { createContext, useContext } from 'react';
 import { Sort } from '../types';
-import { DataTableColumn } from '../components/data';
-
-export interface DataTableFilter<T> {
-  accessor: keyof T;
-  type: 'select' | 'checkboxList' | 'checkbox';
-  label?: string;
-  defaultValue?: unknown;
-}
+import { DataTableColumn } from '../components';
+import { DataTableFilter } from '../components/data/DataTable/DataTable.types';
 
 export interface DataTableAppliedFilter<T> {
   accessor: keyof T;
@@ -29,7 +23,7 @@ export interface DataTableContextType<T> {
   setSortBy: (sortBy: string | null) => void;
   sortType: Sort;
   setSortType: (sortType: Sort) => void;
-  filters: DataTableFilter[];
+  filters: DataTableFilter<T>[];
   appliedFilters: DataTableAppliedFilter<T>[];
   setAppliedFilters: (filters: DataTableAppliedFilter<T>[]) => void;
   mobileColumns: string[];
