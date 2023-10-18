@@ -4,7 +4,7 @@ import './data-table.scss';
 import DataTableBody from './DataTableBody';
 import DataTableHeaderRow from './DataTableHeaderRow';
 import DataTableFooter from './DataTableFooter';
-import { DataTableAppliedFilter, DataTableContext, DataTableFilter } from '../../../contexts';
+import { DataTableAppliedFilter, DataTableContext } from '../../../contexts';
 import { ContextMenuType, Indicator, Sort } from '../../../types';
 
 import {
@@ -12,6 +12,7 @@ import {
   DataTableSortFunc,
   defaultCheckboxesFilter,
   defaultCheckboxFilter,
+  defaultDateFilter,
   defaultSearchFunc,
   defaultSelectFilter,
   defaultSortFunc
@@ -19,6 +20,7 @@ import {
 import clsx from 'clsx';
 import { DataTableCellProps } from './DataTableCell';
 import DataTableFooterStatus from './DataTableFooterStatus';
+import { DataTableFilter } from './DataTable.types';
 
 export interface DataTableColumn<T> {
   accessor: keyof T;
@@ -163,6 +165,16 @@ export const DataTable = <T extends object>({
                 value: filter.value
               })
             );
+            break;
+          case 'date':
+            result = result.filter((item) =>
+              defaultDateFilter({
+                item,
+                field: filterConfig.accessor,
+                value: filter.value
+              })
+            );
+            break;
         }
       }
     }

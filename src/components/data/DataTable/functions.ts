@@ -1,5 +1,6 @@
 import { Sort } from '../../../types';
 import { DataTableColumn } from './DataTable';
+import dayjs from 'dayjs';
 
 export interface DataTableSearchFunc<T> {
   item: T;
@@ -50,6 +51,17 @@ export const defaultCheckboxFilter = <T>({
   } else {
     return true;
   }
+};
+
+export const defaultDateFilter = <T>({ item, field, value }: DataTableFilterFunc<T>) => {
+  if (item[field] && value) {
+    const itemDate = dayjs(String(item[field]));
+    const filterDate = dayjs(value as Date);
+
+    return itemDate.isSame(filterDate, 'day');
+  }
+
+  return false;
 };
 
 export const filterVisibleColumns = <T>(

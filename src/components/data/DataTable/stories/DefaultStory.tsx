@@ -93,6 +93,11 @@ export const FILTERS: DataTableFilter<DataTableStoryDataInterface>[] = [
     type: 'checkbox',
     accessor: 'isEU',
     defaultValue: false
+  },
+  {
+    type: 'select',
+    accessor: 'continent',
+    defaultValue: false
   }
 ];
 
