@@ -52,7 +52,7 @@
   padding: 8px;
   flex-direction: column;
   border-radius: var(--containerRounding);
-  box-shadow: 0 3px 15px 0 var(--shadow);
+  box-shadow: var(--floatingElevation);
   transition: width var(--transitionDuration) ease, opacity 0.3s ease, transform 0.3s ease;
   opacity: 0;
   transform: translateY(-50px);

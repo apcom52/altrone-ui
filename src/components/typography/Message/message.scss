@@ -9,7 +9,7 @@
   padding: 16px 16px;
   color: var(--textColor);
   border: 1px solid var(--borderColor);
-  box-shadow: 0 3px 15px 0 var(--shadow);
+  box-shadow: var(--floatingElevation);
 }
 
 .alt-message__icon {
