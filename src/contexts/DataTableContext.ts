@@ -3,9 +3,9 @@ import { Sort } from '../types';
 import { DataTableColumn } from '../components';
 import { DataTableFilter } from '../components/data/DataTable/DataTable.types';
 
-export interface DataTableAppliedFilter<T> {
+export interface DataTableAppliedFilter<T> extends Record<string, unknown> {
   accessor: keyof T;
-  value: any | any[];
+  value: any;
 }
 
 export interface DataTableContextType<T> {
