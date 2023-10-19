@@ -30,7 +30,7 @@
   left: 4px;
   background-color: var(--surface);
   border-radius: var(--controlRounding);
-  box-shadow: 0 4px 5px 0 var(--shadow);
+  box-shadow: var(--raisedElevation);
   z-index: 0;
   transition: left 0.2s ease, width 0.2s ease;
 }

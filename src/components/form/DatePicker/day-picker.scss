@@ -116,7 +116,7 @@
 
   .alt-day-picker-item__dayNumber {
     color: var(--textColorOnAccent);
-    box-shadow: 0 2px 15px 0 rgba(black, 0.15);
+    box-shadow: var(--floatingElevation);
   }
 
   &:hover {

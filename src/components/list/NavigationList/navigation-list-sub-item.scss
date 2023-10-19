@@ -47,7 +47,7 @@
 .alt-navigation-list-sub-item--selected {
   background-color: var(--background);
   color: var(--textColor);
-  box-shadow: 0 3px 15px 0 var(--shadow);
+  box-shadow: var(--floatingElevation);
 
   .alt-navigation-list-sub-item__arrowIcon {
     margin-left: auto;
