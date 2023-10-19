@@ -28,10 +28,10 @@ export const defaultSortFunc = <T>({ itemA, itemB, field, direction }: DataTable
   }
 };
 
-export interface DataTableFilterFunc<T> {
+export interface DataTableFilterFunc<T, ValueType = unknown> extends Record<string, unknown> {
   item: T;
   field: keyof T;
-  value: unknown;
+  value: ValueType;
 }
 
 export const defaultSelectFilter = <T>({ item, field, value }: DataTableFilterFunc<T>) => {
