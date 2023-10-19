@@ -13,6 +13,7 @@ import {
   defaultCheckboxesFilter,
   defaultCheckboxFilter,
   defaultDateFilter,
+  defaultDateRangeFilter,
   defaultSearchFunc,
   defaultSelectFilter,
   defaultSortFunc
@@ -168,11 +169,19 @@ export const DataTable = <T extends object>({
             break;
           case 'date':
             result = result.filter((item) =>
-              defaultDateFilter({
-                item,
-                field: filterConfig.accessor,
-                value: filter.value
-              })
+              filterConfig.useRange
+                ? defaultDateRangeFilter({
+                    item,
+                    field: filterConfig.accessor,
+                    value: filter.value,
+                    picker: filterConfig.picker
+                  })
+                : defaultDateFilter({
+                    item,
+                    field: filterConfig.accessor,
+                    value: filter.value,
+                    picker: filterConfig.picker
+                  })
             );
             break;
         }

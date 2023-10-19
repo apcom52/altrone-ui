@@ -88,7 +88,8 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
               if (currentFilterIndex === -1) {
                 _filters.push({
                   accessor: filter.accessor,
-                  value
+                  value,
+                  range: filter.useRange
                 });
               } else {
                 _filters[currentFilterIndex].value = value;
@@ -131,7 +132,14 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
               );
               break;
             case 'date':
-              children = <DatePicker value={currentFilterValue} onChange={onChange} />;
+              children = (
+                <DatePicker
+                  value={currentFilterValue}
+                  onChange={onChange}
+                  useDateRange={filter.useRange}
+                  picker={filter.picker}
+                />
+              );
               break;
           }
 

@@ -3,6 +3,7 @@ import { DataTable, DataTableColumn } from '../index';
 import { default as tableData } from './data2';
 import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 import { DataTableFilter } from '../DataTable.types';
+import { Picker } from '../../../form';
 
 export interface DataTableStoryDataInterface {
   name: string;
@@ -30,7 +31,8 @@ export const FILTERS: DataTableFilter<DataTableStoryDataInterface>[] = [
   {
     accessor: 'registrationDate',
     type: 'date',
-    useRange: true,
+    useRange: false,
+    picker: Picker.year,
     label: 'Registration Date'
   }
 ];
