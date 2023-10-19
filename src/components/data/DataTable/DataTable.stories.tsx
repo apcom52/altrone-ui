@@ -8,7 +8,7 @@ import {
   FILTERS
 } from './stories/DefaultStory';
 
-export { DefaultDataTableStory } from './stories/DefaultStory';
+export { DefaultDataTableStory, DataTableWithFiltersStory } from './stories';
 
 const KEYS = ['name', 'iso', 'continent', 'capital', 'phone', 'currency'];
 

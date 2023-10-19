@@ -6,7 +6,6 @@ import { CalendarProps } from './DatePicker.types';
 import { Calendar, CalendarRenderDateProps } from '../../data';
 import './day-picker.scss';
 import dayjs, { Dayjs } from 'dayjs';
-import { Mouse } from '@testing-library/user-event/system/pointer/mouse';
 
 const DayPickerItem = ({
   currentDate,
