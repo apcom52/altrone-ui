@@ -8,10 +8,13 @@ import { useWindowSize } from '../../../hooks';
 import { PhotoViewerImage } from './PhotoViewerImage';
 
 export const PhotoViewer = forwardRef<PhotoViewerRef, PhotoViewerProps>(
-  ({ images = [], onClose, className, startsFrom = 0 }: PhotoViewerProps, ref) => {
+  (
+    { images = [], onClose, className, startsFrom = 0, min = 1, max = 3 }: PhotoViewerProps,
+    ref
+  ) => {
     const [expanded, setExpanded] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(startsFrom);
-    const [zoom, setZoom] = useState(1);
+    const [zoom, setZoom] = useState(min > 1 ? min : 1);
 
     const containerRef = useRef<HTMLDivElement>(null);
     const toolbarRef = useRef<HTMLDivElement>(null);
@@ -19,16 +22,16 @@ export const PhotoViewer = forwardRef<PhotoViewerRef, PhotoViewerProps>(
     const { ltePhoneL, gtPhoneL } = useWindowSize();
 
     const onZoomIn = useCallback(() => {
-      setZoom((zoom) => (zoom < 3 ? zoom + 0.5 : 3));
-    }, []);
+      setZoom((zoom) => (zoom < max ? zoom + 0.5 : max));
+    }, [max]);
 
     const onZoomOut = useCallback(() => {
-      setZoom((zoom) => (zoom > 1 ? zoom - 0.5 : 1));
-    }, []);
+      setZoom((zoom) => (zoom > min ? zoom - 0.5 : min));
+    }, [min]);
 
     useEffect(() => {
-      setZoom(1);
-    }, [currentIndex]);
+      setZoom(min > 1 ? min : 1);
+    }, [currentIndex, min, max]);
 
     useImperativeHandle(
       ref,
@@ -134,14 +137,14 @@ export const PhotoViewer = forwardRef<PhotoViewerRef, PhotoViewerProps>(
             )}
             <button
               className="alt-photo-viewer-toolbar__action"
-              disabled={zoom <= 1}
+              disabled={zoom <= min}
               onClick={onZoomOut}>
               <Icon i="remove" />
             </button>
             <div className="alt-photo-viewer-toolbar__zoom">{Math.round(zoom * 100)}%</div>
             <button
               className="alt-photo-viewer-toolbar__action"
-              disabled={zoom >= 3}
+              disabled={zoom >= max}
               onClick={onZoomIn}>
               <Icon i="add" />
             </button>
