@@ -181,7 +181,8 @@ const DatePicker = ({
           placement="bottom"
           onClose={() => setIsDatePickerVisible(false)}
           mobileBehaviour={FloatingBoxMobileBehaviour.modal}
-          closeOnAnotherFloatingBoxClick>
+          closeOnAnotherFloatingBoxClick
+          useRootContainer>
           <div className="alt-date-picker__header">
             {!ltePhoneL && picker === Picker.day && (
               <button
