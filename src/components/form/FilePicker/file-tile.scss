@@ -104,6 +104,9 @@
 
 .alt-file-tile--upload {
   cursor: pointer;
+  transition: box-shadow var(--transitionDuration) ease;
+
+  @include useFocus();
 
   .alt-file-icon__content {
     background-color: var(--surfaceTrasparent);
