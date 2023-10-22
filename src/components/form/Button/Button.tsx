@@ -126,7 +126,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {rightIcon ? <span className="alt-button__rightIcon">{rightIcon}</span> : null}
         {loading && (
           <div className="alt-button__loading">
-            <Loading size={size} />
+            <Loading size={size} color="currentColor" />
           </div>
         )}
         {!loading && progress !== undefined && (
