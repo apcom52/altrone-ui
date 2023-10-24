@@ -17,5 +17,4 @@ export interface CalendarProps {
   DateComponent?: React.FC<CalendarRenderDateProps>;
   disabled?: boolean;
   className?: string;
-  extraDependencies?: unknown[];
 }
