@@ -136,11 +136,18 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
         title: t('common.clear'),
         icon: <Icon i="backspace" />,
         onClick: () => {
-          onChange(undefined);
+          setStartDate(undefined);
+          setEndDate(undefined);
+
+          if (useDateRange) {
+            onChange(undefined);
+          } else {
+            onChange(undefined);
+          }
         }
       }
     ],
-    [onChange]
+    [onChange, useDateRange]
   );
 
   useEffect(() => {
