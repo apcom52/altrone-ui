@@ -31,7 +31,7 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
     const _maxDate = dayjs.max(dayjs(minDate), dayjs(maxDate));
 
     let currentYear = _minDate;
-    while (currentYear?.isBefore(_maxDate, 'year')) {
+    while (currentYear?.isSameOrBefore(_maxDate, 'year')) {
       result.push({
         label: String(currentYear?.year()),
         value: currentYear?.year()
