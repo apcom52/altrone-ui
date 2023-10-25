@@ -22,7 +22,7 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
   minDate,
   maxDate,
   isDateRange
-}: CalendarProps<IsDateRange>) => {
+}: Omit<CalendarProps<IsDateRange>, 'currentMonth'>) => {
   const [years, restYears] = useMemo(() => {
     const result: Option<number>[] = [];
     const restResult: Option<number>[] = [];
@@ -79,7 +79,7 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
   return (
     <>
       <div className="alt-year-picker" data-testid="alt-test-year-picker">
-        <div className="alt-year-picker__column">
+        <div className="alt-year-picker__column" data-testid="alt-test-yearPicker-year1">
           {isDateRange && <div className="alt-year-picker__columnName">Start Year</div>}
           <ScrollableSelector<number | undefined>
             value={startSelectedDate?.year()}
@@ -88,7 +88,7 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
           />
         </div>
         {isDateRange && (
-          <div className="alt-year-picker__column">
+          <div className="alt-year-picker__column" data-testid="alt-test-yearPicker-year2">
             <div className="alt-year-picker__columnName">End Year</div>
             <ScrollableSelector
               disabled={!startSelectedDate}

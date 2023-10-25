@@ -340,7 +340,6 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
           )}
           {currentView === Picker.year && (
             <YearPicker
-              currentMonth={currentMonth}
               startSelectedDate={startDate}
               endSelectedDate={endDate}
               onChange={onChangeHandler}
