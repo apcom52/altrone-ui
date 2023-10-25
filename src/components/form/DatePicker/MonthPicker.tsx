@@ -96,11 +96,12 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
       const isHighlighted = isDateRange && (isEndDateSelected || isHoveredDate);
 
       const isDisabled =
-        isDateRange &&
-        startSelectedDate &&
-        !endSelectedDate &&
-        currentMonth.isBefore(startSelectedDate);
-
+        currentMonth.isBefore(minDate, 'month') ||
+        currentMonth.isAfter(maxDate, 'month') ||
+        (isDateRange &&
+          startSelectedDate &&
+          !endSelectedDate &&
+          currentMonth.isBefore(startSelectedDate));
       const thisMonth = dayjs(currentMonth);
 
       result.push(
