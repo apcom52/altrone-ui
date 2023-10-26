@@ -4,7 +4,7 @@ import { default as tableData } from './data';
 import { Icon } from '../../../typography';
 import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 import { DataTableSelectableAction } from '../DataTable';
-import { DataTableFilter } from '../../../../contexts';
+import { DataTableFilter } from '../DataTable.types';
 
 export interface DataTableStoryDataInterface {
   name: string;

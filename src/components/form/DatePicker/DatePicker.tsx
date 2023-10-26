@@ -10,13 +10,10 @@ import { ContextMenuType, Elevation, Role, Size, Surface } from '../../../types'
 import { useLocalization, useWindowSize } from '../../../hooks';
 import { BasicInput } from '../BasicInput';
 import { DatePickerProps, DateRangePosition, DateValue } from './DatePicker.types';
-import { date2Number, number2Date } from './DatePicker.utils';
 import dayjs, { Dayjs } from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
 
 dayjs.extend(minMax);
-
-const today = new Date();
 
 /**
  * This component is used to pick a date in a calendar
