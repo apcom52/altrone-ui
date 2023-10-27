@@ -3,6 +3,9 @@ import '@testing-library/jest-dom';
 import { DataTable, DataTableColumn } from './index';
 import {
   defaultCheckboxesFilter,
+  defaultCheckboxFilter,
+  defaultDateFilter,
+  defaultDateRangeFilter,
   defaultSelectFilter,
   defaultSortFunc,
   filterVisibleColumns
@@ -12,6 +15,7 @@ import { Altrone } from '../../../hocs';
 import ReactDOM from 'react-dom';
 import { Icon } from '../../typography';
 import { TEST_MATCH_MEDIA_FN } from '../../../constants/_testUtils';
+import { Picker } from '../../form';
 
 const DATA = [
   {
@@ -858,25 +862,6 @@ describe('Data.DataTable', () => {
     expect(screen.getByText('Disabled action')).toHaveAttribute('disabled', '');
   });
 
-  test('should DataTableAction be disabled', () => {
-    render(
-      <DataTable
-        data={DATA}
-        columns={COLUMNS}
-        actions={[
-          {
-            label: 'Disabled action',
-            disabled: true,
-            icon: <></>,
-            onClick: () => null
-          }
-        ]}
-      />
-    );
-
-    expect(screen.getByText('Disabled action')).toHaveAttribute('disabled', '');
-  });
-
   test('should hide normal actions in selection mode', async () => {
     const { rerender } = render(
       <DataTable
@@ -913,5 +898,109 @@ describe('Data.DataTable', () => {
     );
 
     expect(screen.queryByText('Normal action')).not.toBeInTheDocument();
+  });
+
+  test('checkbox filter', () => {
+    const originalValues = [
+      { value: 2, valid: true },
+      { value: 5, valid: false },
+      { value: 1, valid: false },
+      { value: 3, valid: true },
+      { value: 4, valid: false }
+    ];
+
+    const filteredByCheckbox = originalValues
+      .filter((item) => defaultCheckboxFilter({ item, field: 'valid', value: true }))
+      .map((item) => item.value);
+
+    expect(filteredByCheckbox).toStrictEqual([2, 3]);
+  });
+
+  test('date filter', () => {
+    const originalValues = [
+      { value: 2, createdAt: new Date(2022, 4, 25) },
+      { value: 5, createdAt: new Date(2023, 5, 10) },
+      { value: 1, createdAt: new Date(2024, 2, 12) },
+      { value: 3, createdAt: new Date(2023, 6, 14) },
+      { value: 4, createdAt: new Date(2022, 8, 1) }
+    ];
+
+    const filteredByDate = originalValues
+      .filter((item) =>
+        defaultDateFilter({ item, field: 'createdAt', value: new Date(2023, 5, 10) })
+      )
+      .map((item) => item.value);
+
+    const filteredByMonth = originalValues
+      .filter((item) =>
+        defaultDateFilter({
+          item,
+          field: 'createdAt',
+          value: new Date(2023, 5, 10),
+          picker: Picker.month
+        })
+      )
+      .map((item) => item.value);
+
+    const filteredByYear = originalValues
+      .filter((item) =>
+        defaultDateFilter({
+          item,
+          field: 'createdAt',
+          value: new Date(2023, 5, 10),
+          picker: Picker.year
+        })
+      )
+      .map((item) => item.value);
+
+    expect(filteredByDate).toStrictEqual([5]);
+    expect(filteredByMonth).toStrictEqual([5]);
+    expect(filteredByYear).toStrictEqual([5, 3]);
+  });
+
+  test('date range filter', () => {
+    const originalValues = [
+      { value: 2, createdAt: new Date(2022, 4, 25) },
+      { value: 5, createdAt: new Date(2023, 5, 10) },
+      { value: 1, createdAt: new Date(2024, 2, 12) },
+      { value: 3, createdAt: new Date(2023, 0, 14) },
+      { value: 4, createdAt: new Date(2022, 8, 1) }
+    ];
+
+    const filteredByDate = originalValues
+      .filter((item) =>
+        defaultDateRangeFilter({
+          item,
+          field: 'createdAt',
+          value: [new Date(2022, 0, 1), new Date(2023, 0, 1)]
+        })
+      )
+      .map((item) => item.value);
+
+    const filteredByMonth = originalValues
+      .filter((item) =>
+        defaultDateRangeFilter({
+          item,
+          field: 'createdAt',
+          value: [new Date(2022, 0, 1), new Date(2023, 0, 1)],
+          picker: Picker.month
+        })
+      )
+      .map((item) => item.value);
+
+    const filteredByYear = originalValues
+      .filter((item) =>
+        defaultDateRangeFilter({
+          item,
+          field: 'createdAt',
+          value: [new Date(2022, 0, 1), new Date(2023, 0, 1)],
+          picker: Picker.year
+        })
+      )
+      .map((item) => item.value);
+
+    expect(filteredByDate).toStrictEqual([2, 4]);
+    expect(filteredByMonth).toStrictEqual([2, 3, 4]);
+    expect(filteredByYear).toStrictEqual([2, 5, 3, 4]);
   });
 });

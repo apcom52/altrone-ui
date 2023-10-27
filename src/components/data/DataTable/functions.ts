@@ -74,7 +74,7 @@ export const defaultDateRangeFilter = <T>({
   item,
   field,
   value,
-  picker
+  picker = Picker.day
 }: DataTableFilterFunc<T, [Date, Date]>) => {
   if (item[field] && value.length === 2) {
     const itemDate = dayjs(String(item[field]));
