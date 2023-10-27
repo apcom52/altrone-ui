@@ -8,6 +8,7 @@ import IsToday from 'dayjs/plugin/isToday';
 import IsSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import IsSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import ruLocale from 'dayjs/locale/ru.js';
+import { useLocalization } from '../../../hooks';
 
 dayjs.extend(IsBetween);
 dayjs.extend(IsToday);
@@ -23,6 +24,8 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
   maxDate,
   isDateRange
 }: Omit<CalendarProps<IsDateRange>, 'currentMonth'>) => {
+  const t = useLocalization();
+
   const [years, restYears] = useMemo(() => {
     const result: Option<number>[] = [];
     const restResult: Option<number>[] = [];
@@ -80,7 +83,9 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
     <>
       <div className="alt-year-picker" data-testid="alt-test-year-picker">
         <div className="alt-year-picker__column" data-testid="alt-test-yearPicker-year1">
-          {isDateRange && <div className="alt-year-picker__columnName">Start Year</div>}
+          {isDateRange && (
+            <div className="alt-year-picker__columnName">{t('form.datePicker.startYear')}</div>
+          )}
           <ScrollableSelector<number | undefined>
             value={startSelectedDate?.year()}
             options={years}
@@ -89,7 +94,7 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
         </div>
         {isDateRange && (
           <div className="alt-year-picker__column" data-testid="alt-test-yearPicker-year2">
-            <div className="alt-year-picker__columnName">End Year</div>
+            <div className="alt-year-picker__columnName">{t('form.datePicker.endYear')}</div>
             <ScrollableSelector
               disabled={!startSelectedDate}
               value={endSelectedDate?.year()}
