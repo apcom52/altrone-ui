@@ -1,10 +1,73 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { DatePicker } from './index';
-import { Picker } from './DatePicker';
+import { Picker } from './DatePicker.types';
 
 describe('Form.DatePicker', () => {
-  test('ok', () => {});
+  beforeEach(() => {
+    Element.prototype.scrollTo = jest.fn();
+  });
+
+  test('has to render day picker correctly', () => {
+    let value: Date | undefined = new Date(2022, 4, 4);
+    const onChange = (date: Date | undefined) => {
+      value = date;
+    };
+
+    const { rerender } = render(<DatePicker value={value} onChange={onChange} />);
+
+    act(() => fireEvent.click(screen.getByTestId('alt-test-datepicker')));
+
+    rerender(<DatePicker value={value} onChange={onChange} />);
+
+    expect(screen.getByText('20')).toBeInTheDocument();
+
+    act(() => fireEvent.click(screen.getByText('20')));
+
+    expect(value.toString()).toBe(new Date(2022, 4, 20).toString());
+  });
+
+  test('has to render month picker correctly', () => {
+    let value: Date | undefined = new Date(2022, 4, 4);
+    const onChange = (date: Date | undefined) => {
+      value = date;
+    };
+
+    const { rerender } = render(
+      <DatePicker picker={Picker.month} value={value} onChange={onChange} />
+    );
+
+    act(() => fireEvent.click(screen.getByTestId('alt-test-datepicker')));
+
+    rerender(<DatePicker picker={Picker.month} value={value} onChange={onChange} />);
+
+    expect(screen.getByText('Nov')).toBeInTheDocument();
+
+    act(() => fireEvent.click(screen.getByText('Nov')));
+
+    expect(value.toString()).toBe(new Date(2022, 10, 1).toString());
+  });
+
+  test('has to render year picker correctly', () => {
+    let value: Date | undefined = new Date(2022, 4, 4);
+    const onChange = (date: Date | undefined) => {
+      value = date;
+    };
+
+    const { rerender } = render(
+      <DatePicker picker={Picker.year} value={value} onChange={onChange} />
+    );
+
+    act(() => fireEvent.click(screen.getByTestId('alt-test-datepicker')));
+
+    rerender(<DatePicker picker={Picker.year} value={value} onChange={onChange} />);
+
+    expect(screen.getByText('2030')).toBeInTheDocument();
+
+    act(() => fireEvent.click(screen.getByText('2030')));
+
+    expect(value.toString()).toBe(new Date(2030, 0, 1).toString());
+  });
 
   /*beforeEach(() => {
     Element.prototype.scrollTo = jest.fn();
