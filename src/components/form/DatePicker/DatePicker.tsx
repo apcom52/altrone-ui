@@ -127,21 +127,19 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
     setCurrentView((view) => (view === Picker.day ? Picker.month : Picker.day));
   };
 
+  const clearDate = useCallback(() => {
+    setStartDate(undefined);
+    setEndDate(undefined);
+
+    onChange(undefined);
+  }, [onChange]);
+
   const datePickerMenu: ContextMenuType = useMemo(
     () => [
       {
         title: t('common.clear'),
         icon: <Icon i="backspace" />,
-        onClick: () => {
-          setStartDate(undefined);
-          setEndDate(undefined);
-
-          if (useDateRange) {
-            onChange(undefined);
-          } else {
-            onChange(undefined);
-          }
-        }
+        onClick: clearDate
       }
     ],
     [onChange, useDateRange]
@@ -415,7 +413,7 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
                 <Button
                   leftIcon={<Icon i="backspace" />}
                   className="alt-date-picker__mobileClear"
-                  onClick={() => onChange(undefined)}>
+                  onClick={clearDate}>
                   {t('common.clear')}
                 </Button>
               )}
