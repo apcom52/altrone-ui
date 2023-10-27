@@ -30,7 +30,7 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
     const _minDate = dayjs.min(dayjs(minDate), dayjs(maxDate));
     const _maxDate = dayjs.max(dayjs(minDate), dayjs(maxDate));
 
-    let currentYear = _minDate;
+    let currentYear = _minDate?.startOf('year');
     while (currentYear?.isSameOrBefore(_maxDate, 'year')) {
       result.push({
         label: String(currentYear?.year()),
@@ -51,7 +51,7 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
 
   const onChangeStartDate = useCallback(
     (year: number | undefined) => {
-      const selectedDate = dayjs().year(Number(year));
+      const selectedDate = dayjs().year(Number(year)).startOf('year');
 
       if (selectedDate.isSameOrAfter(endSelectedDate, 'year')) {
         const nextSelectedDate = selectedDate.add(1, 'year');
@@ -70,7 +70,7 @@ const YearPicker = <IsDateRange extends boolean | undefined = false>({
 
   const onChangeEndDate = useCallback(
     (year: number | undefined) => {
-      const selectedDate = dayjs().year(Number(year));
+      const selectedDate = dayjs().year(Number(year)).startOf('year');
       onChange('end', selectedDate);
     },
     [onChange]

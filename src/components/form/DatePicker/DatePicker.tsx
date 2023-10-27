@@ -10,13 +10,10 @@ import { ContextMenuType, Elevation, Role, Size, Surface } from '../../../types'
 import { useLocalization, useWindowSize } from '../../../hooks';
 import { BasicInput } from '../BasicInput';
 import { DatePickerProps, DateRangePosition, DateValue } from './DatePicker.types';
-import { date2Number, number2Date } from './DatePicker.utils';
 import dayjs, { Dayjs } from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
 
 dayjs.extend(minMax);
-
-const today = new Date();
 
 /**
  * This component is used to pick a date in a calendar
@@ -130,21 +127,19 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
     setCurrentView((view) => (view === Picker.day ? Picker.month : Picker.day));
   };
 
+  const clearDate = useCallback(() => {
+    setStartDate(undefined);
+    setEndDate(undefined);
+
+    onChange(undefined);
+  }, [onChange]);
+
   const datePickerMenu: ContextMenuType = useMemo(
     () => [
       {
         title: t('common.clear'),
         icon: <Icon i="backspace" />,
-        onClick: () => {
-          setStartDate(undefined);
-          setEndDate(undefined);
-
-          if (useDateRange) {
-            onChange(undefined);
-          } else {
-            onChange(undefined);
-          }
-        }
+        onClick: clearDate
       }
     ],
     [onChange, useDateRange]
@@ -418,7 +413,7 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
                 <Button
                   leftIcon={<Icon i="backspace" />}
                   className="alt-date-picker__mobileClear"
-                  onClick={() => onChange(undefined)}>
+                  onClick={clearDate}>
                   {t('common.clear')}
                 </Button>
               )}

@@ -59,6 +59,7 @@ const DayPickerItem = ({
       data-start-of-week={weekDay === 1 ? 'true' : 'false'}
       data-end-of-week={weekDay === 0 ? 'true' : 'false'}
       data-start-of-range={date_dj.isSame(selectedDates[0])}
+      data-in-range={isBetweenSelectedDates || cursorHighlighted}
       data-end-of-range={isEndOfRange}
       disabled={isDisabled}>
       {(isBetweenSelectedDates || cursorHighlighted) && (
@@ -83,8 +84,6 @@ const DayPicker = <IsDateRange extends boolean | undefined = false>({
   const { locale } = useThemeContext();
   const { ltePhoneL } = useWindowSize();
   const [hoveredDate, setHoveredDate] = useState<Dayjs | undefined>(undefined);
-
-  const currentMonthDate = dayjs(currentMonth);
 
   const selectedDates = useMemo(() => {
     const result = [];
@@ -159,10 +158,6 @@ const DayPicker = <IsDateRange extends boolean | undefined = false>({
     currentDate.current = undefined;
   };
 
-  if (!currentMonthDate) {
-    return null;
-  }
-
   return (
     <div className="alt-day-picker" data-testid="alt-test-calendar">
       <div className="alt-day-picker__weeks">
@@ -177,7 +172,10 @@ const DayPicker = <IsDateRange extends boolean | undefined = false>({
           </span>
         ))}
       </div>
-      <div onMouseLeave={onMouseLeave} onMouseMove={isDateRange ? onMouseMove : undefined}>
+      <div
+        data-testid="alt-test-dayPicker-calendar"
+        onMouseLeave={onMouseLeave}
+        onMouseMove={isDateRange ? onMouseMove : undefined}>
         <Calendar
           month={currentMonth.toDate()}
           cursorDate={hoveredDate?.toDate()}
