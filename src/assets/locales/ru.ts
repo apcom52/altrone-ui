@@ -46,7 +46,9 @@ const localization: Localization = {
       chooseYear: 'Выберите год',
       today: 'Сегодня',
       currentMonth: 'Текущий месяц',
-      placeholder: 'Выберите дату'
+      placeholder: 'Выберите дату',
+      startYear: 'Начало',
+      endYear: 'Конец'
     },
     select: {
       placeholder: 'Выберите значение',

@@ -49,6 +49,8 @@ export interface Localization {
       today: string;
       currentMonth: string;
       placeholder: string;
+      startYear: string;
+      endYear: string;
     };
     select: {
       placeholder: string;
