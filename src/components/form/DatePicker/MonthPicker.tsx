@@ -19,6 +19,7 @@ dayjs.extend(IsSameOrAfter);
 dayjs.locale(ruLocale);
 
 const MonthPicker = <IsDateRange extends boolean | undefined = false>({
+  currentMonth: initialMonth,
   startSelectedDate,
   endSelectedDate,
   onChange,
@@ -30,7 +31,9 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
   const [hoveredDate, setHoveredDate] = useState<Dayjs | undefined>(undefined);
 
   const [currentYear, setCurrentYear] = useState(() => {
-    if (dayjs().isBetween(dayjs(minDate), dayjs(maxDate))) {
+    if (initialMonth.isBetween(dayjs(minDate), dayjs(maxDate), 'year')) {
+      return initialMonth.startOf('year');
+    } else if (dayjs().isBetween(dayjs(minDate), dayjs(maxDate), 'year')) {
       return dayjs();
     } else {
       return dayjs(minDate);
@@ -90,8 +93,8 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
 
       const isEndDateSelected =
         endSelectedDate &&
-        currentMonth.isSameOrAfter(startSelectedDate) &&
-        currentMonth.isSameOrBefore(endSelectedDate);
+        currentMonth.isSameOrAfter(startSelectedDate, 'month') &&
+        currentMonth.isSameOrBefore(endSelectedDate, 'month');
 
       const isHighlighted = isDateRange && (isEndDateSelected || isHoveredDate);
 
@@ -107,6 +110,9 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
       result.push(
         <button
           key={currentMonth.month()}
+          data-testid="alt-test-monthPicker-item"
+          data-month-index={currentMonth.month()}
+          data-year={currentMonth.year()}
           className={clsx('alt-month-picker-item', {
             'alt-month-picker-item--active': isSelected,
             'alt-month-picker-item--highlighted': isHighlighted,
@@ -146,7 +152,11 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
             isIcon>
             <Icon i="arrow_back" />
           </Button>
-          <div className="alt-month-picker-calendar__headerYearLabel">{currentYear.year()}</div>
+          <div
+            className="alt-month-picker-calendar__headerYearLabel"
+            data-testid="alt-test-monthPicker-currentYear">
+            {currentYear.year()}
+          </div>
           <Button
             className="alt-month-picker-calendar__headerAction"
             onClick={onNextYearClick}
