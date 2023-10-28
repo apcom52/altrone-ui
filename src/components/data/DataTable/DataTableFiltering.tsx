@@ -7,6 +7,7 @@ import { useDataTableContext } from '../../../contexts';
 import ButtonContainer from '../../containers/ButtonContainer/ButtonContainer';
 import { useLocalization } from '../../../hooks';
 import { DataTablePopupActionProps } from './DataTable';
+import dayjs from 'dayjs';
 
 const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
   const { filters, initialData, appliedFilters, setAppliedFilters } = useDataTableContext();
@@ -102,6 +103,13 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
           let children = <></>;
           let isLabelNeeded = true;
 
+          let minDate, maxDate;
+          if (filter.type === 'date') {
+            const allDates = initialData.map((item) => dayjs(item[filter.accessor]));
+            minDate = dayjs.min(allDates)?.toDate();
+            maxDate = dayjs.max(allDates)?.toDate();
+          }
+
           switch (filter.type) {
             case 'select':
               children = (
@@ -138,6 +146,8 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
                   onChange={onChange}
                   useDateRange={filter.useRange}
                   picker={filter.picker}
+                  minDate={minDate}
+                  maxDate={maxDate}
                 />
               );
               break;
