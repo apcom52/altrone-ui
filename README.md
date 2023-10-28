@@ -1,5 +1,5 @@
 <p align='center'>
-    <img alt="Notebook with user interface elements" width="320" height="82" src="https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FW5YLGWqfJIMCnPELJjW6%2Fuploads%2FGUo8Duhjb5SonJdYliHO%2Flogo.png?alt=media&token=906640d8-d99c-4e48-87e7-b6e92171a084" title="Altrone UI logo" />
+    <img alt="Notebook with user interface elements" width="320" height="82" src="https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FW5YLGWqfJIMCnPELJjW6%2Fuploads%2FGUo8Duhjb5SonJdYliHO%2Flogo.png?alt=media&token=906640d8-d99c-4e48-87e7-b6e92171a084" title="Altrone UI logo">
     <h1 align='center'>Altrone UI</h1>
     <p align='center'>
         A comprehensive React component library offering a versatile collection of reusable UI elements for streamlined and visually appealing web development.
@@ -17,6 +17,8 @@ The most recent feature update introduces global customization for the library t
 Additionally, a completely new component, **Calendar**, has been added, along with the capability to 
 choose a **date range in DatePicker** and a **single-item selection mode in Chips**. Details about these 
 exciting new features can be explored in the update description.
+
+[**What's new in 2.1?**](https://apcom.gitbook.io/altrone-ui/blog/2.1)
 
 ## Installation
 
