@@ -14,8 +14,14 @@ const meta: Meta<typeof ButtonContainer> = {
     align: Align.start
   },
   argTypes: {
-    direction: { control: 'select' },
-    align: { control: 'select' }
+    children: { description: 'Child buttons' },
+    direction: { description: 'Direction of the container', control: 'select' },
+    align: { description: 'Alignment of the buttons', control: 'select' },
+    mobileFluid: {
+      description:
+        'This property makes the direction as vertical and changes width of the buttons to 100%'
+    },
+    className: { control: 'text', description: 'Custom CSS class' }
   }
 };
 

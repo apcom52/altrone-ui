@@ -4,7 +4,7 @@ import './data-table.scss';
 import DataTableBody from './DataTableBody';
 import DataTableHeaderRow from './DataTableHeaderRow';
 import DataTableFooter from './DataTableFooter';
-import { DataTableAppliedFilter, DataTableContext, DataTableFilter } from '../../../contexts';
+import { DataTableAppliedFilter, DataTableContext } from '../../../contexts';
 import { ContextMenuType, Indicator, Sort } from '../../../types';
 
 import {
@@ -12,6 +12,8 @@ import {
   DataTableSortFunc,
   defaultCheckboxesFilter,
   defaultCheckboxFilter,
+  defaultDateFilter,
+  defaultDateRangeFilter,
   defaultSearchFunc,
   defaultSelectFilter,
   defaultSortFunc
@@ -19,6 +21,7 @@ import {
 import clsx from 'clsx';
 import { DataTableCellProps } from './DataTableCell';
 import DataTableFooterStatus from './DataTableFooterStatus';
+import { DataTableFilter } from './DataTable.types';
 
 export interface DataTableColumn<T> {
   accessor: keyof T;
@@ -68,6 +71,25 @@ export interface DataTableSelectableAction<T extends unknown>
   content?: (args: DataTablePopupActionProps & { selectedRows?: T[] }) => JSX.Element;
 }
 
+/**
+ * This component is used to show huge amount of data in table view
+ * @param data
+ * @param columns
+ * @param limit
+ * @param searchBy
+ * @param searchFunc
+ * @param sortFunc
+ * @param sortKeys
+ * @param filters
+ * @param mobileColumns
+ * @param className
+ * @param actions
+ * @param selectableActions
+ * @param striped
+ * @param selectable
+ * @param DataTableStatusComponent
+ * @constructor
+ */
 export const DataTable = <T extends object>({
   data = [],
   columns = [],
@@ -144,6 +166,24 @@ export const DataTable = <T extends object>({
                 value: filter.value
               })
             );
+            break;
+          case 'date':
+            result = result.filter((item) =>
+              filterConfig.useRange
+                ? defaultDateRangeFilter({
+                    item,
+                    field: filterConfig.accessor,
+                    value: filter.value,
+                    picker: filterConfig.picker
+                  })
+                : defaultDateFilter({
+                    item,
+                    field: filterConfig.accessor,
+                    value: filter.value,
+                    picker: filterConfig.picker
+                  })
+            );
+            break;
         }
       }
     }

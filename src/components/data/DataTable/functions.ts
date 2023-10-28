@@ -1,5 +1,7 @@
 import { Sort } from '../../../types';
 import { DataTableColumn } from './DataTable';
+import dayjs from 'dayjs';
+import { Picker } from '../../form';
 
 export interface DataTableSearchFunc<T> {
   item: T;
@@ -26,10 +28,10 @@ export const defaultSortFunc = <T>({ itemA, itemB, field, direction }: DataTable
   }
 };
 
-export interface DataTableFilterFunc<T> {
+export interface DataTableFilterFunc<T, ValueType = unknown> extends Record<string, unknown> {
   item: T;
   field: keyof T;
-  value: unknown;
+  value: ValueType;
 }
 
 export const defaultSelectFilter = <T>({ item, field, value }: DataTableFilterFunc<T>) => {
@@ -50,6 +52,42 @@ export const defaultCheckboxFilter = <T>({
   } else {
     return true;
   }
+};
+
+export const defaultDateFilter = <T>({
+  item,
+  field,
+  value,
+  picker = Picker.day
+}: DataTableFilterFunc<T>) => {
+  if (item[field] && value) {
+    const itemDate = dayjs(String(item[field]));
+    const filterDate = dayjs(value as Date);
+
+    return itemDate.isSame(filterDate, picker as dayjs.OpUnitType);
+  }
+
+  return false;
+};
+
+export const defaultDateRangeFilter = <T>({
+  item,
+  field,
+  value,
+  picker = Picker.day
+}: DataTableFilterFunc<T, [Date, Date]>) => {
+  if (item[field] && value.length === 2) {
+    const itemDate = dayjs(String(item[field]));
+    const filterDateStart = dayjs(value[0] as Date);
+    const filterDateEnd = dayjs(value[1] as Date);
+
+    return (
+      itemDate.isSameOrAfter(filterDateStart, picker as dayjs.OpUnitType) &&
+      itemDate.isSameOrBefore(filterDateEnd, picker as dayjs.OpUnitType)
+    );
+  }
+
+  return false;
 };
 
 export const filterVisibleColumns = <T>(

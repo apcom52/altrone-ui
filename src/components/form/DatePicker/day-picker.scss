@@ -1,0 +1,171 @@
+@import '../../../mixins';
+
+.alt-day-picker {
+  display: flex;
+  margin-top: 12px;
+  flex-direction: column;
+
+  @include useDisabledUserSelect();
+}
+
+.alt-day-picker__weeks {
+  display: flex;
+  width: 100%;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.alt-day-picker__weekday {
+  display: block;
+  flex: 1;
+
+  @include useFontSize(label, Large);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+
+  @include less($l-phone) {
+    @include useFontSize(label, Small);
+  }
+}
+
+.alt-day-picker__weekday--weekend {
+  color: var(--importantText);
+}
+
+.alt-day-picker__calendar {
+  row-gap: 8px;
+  column-gap: 16px;
+}
+
+.alt-day-picker-item {
+  --background: transparent;
+  --text: var(--textColor);
+
+  position: relative;
+  background: transparent;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1;
+
+  @include useFontSize(body, Large);
+  @include useFocus();
+
+  &:hover {
+    --background: var(--highlight);
+  }
+}
+
+.alt-day-picker-item__background {
+  position: absolute;
+  width: calc(100% + 16px);
+  height: 100%;
+  left: -8px;
+  z-index: -1;
+  background: var(--surfaceTrasparent);
+  pointer-events: none;
+}
+
+.alt-day-picker-item__dayNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  z-index: 1;
+  border-radius: var(--containerRounding);
+  appearance: none;
+  background-color: var(--background);
+  color: var(--text);
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transitionDuration) ease;
+
+  @include less($l-phone) {
+    @include useFontSize(body);
+  }
+}
+
+.alt-day-picker-item--another-month {
+  --text: var(--secondaryTextColor);
+  opacity: 0.5;
+  pointer-events: none;
+
+  &:hover {
+    background-color: var(--surfaceTrasparentHover);
+  }
+}
+
+.alt-day-picker-item--disabled {
+  --text: var(--secondaryTextColor);
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.alt-day-picker-item--today {
+
+}
+
+.alt-day-picker-item--selected {
+  --background: var(--accent);
+  --text: var(--textColorOnAccent);
+
+  .alt-day-picker-item__dayNumber {
+    color: var(--textColorOnAccent);
+    box-shadow: var(--floatingElevation);
+  }
+
+  &:hover {
+    --background: var(--accent);
+  }
+}
+
+.alt-day-picker-item--today:not(.alt-day-picker__day--selected) {
+  --text: var(--accent);
+}
+
+[data-start-of-week="true"] {
+  .alt-day-picker-item__background {
+    border-top-left-radius: var(--containerRounding);
+    border-bottom-left-radius: var(--containerRounding);
+    width: calc(100% + 8px);
+    left: 0;
+  }
+}
+
+[data-end-of-week="true"] {
+  .alt-day-picker-item__background {
+    border-top-right-radius: var(--containerRounding);
+    border-bottom-right-radius: var(--containerRounding);
+    width: calc(100% + 8px);
+    left: -8px;
+  }
+}
+
+[data-start-of-range="true"] {
+  .alt-day-picker-item__background {
+    width: calc(50% + 8px);
+    left: 50%;
+  }
+}
+
+[data-end-of-range="true"] {
+  .alt-day-picker-item__background {
+    width: calc(100% + 8px);
+    left: -8px;
+    border-top-right-radius: var(--containerRounding);
+    border-bottom-right-radius: var(--containerRounding);
+  }
+
+  &[data-start-of-range="true"] {
+    .alt-day-picker-item__background {
+      width: 100%;
+      left: 0;
+      border-radius: var(--containerRounding);
+    }
+  }
+}

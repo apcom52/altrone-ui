@@ -1,12 +1,13 @@
 import { memo } from 'react';
 import { FormField, FormGroup } from '../../containers';
-import { Checkbox, CheckboxList, Select, Button } from '../../form';
+import { Checkbox, CheckboxList, Select, Button, DatePicker } from '../../form';
 import './data-table-filtering.scss';
 import { Align, Direction, Option, Role } from '../../../types';
 import { useDataTableContext } from '../../../contexts';
 import ButtonContainer from '../../containers/ButtonContainer/ButtonContainer';
 import { useLocalization } from '../../../hooks';
 import { DataTablePopupActionProps } from './DataTable';
+import dayjs from 'dayjs';
 
 const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
   const { filters, initialData, appliedFilters, setAppliedFilters } = useDataTableContext();
@@ -17,7 +18,7 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
       <div className="alt-data-table-filtering__title">{t('data.dataTable.filtering')}</div>
       <FormGroup>
         {filters.map((filter, filterIndex) => {
-          const options = new Set<Option>();
+          const options = new Set<Option<any>>();
 
           initialData.forEach((row) => {
             options.add(row[filter.accessor]);
@@ -31,11 +32,12 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
           const currentFilterIndex = appliedFilters.findIndex(
             (appliedFilter) => appliedFilter.accessor === filter.accessor
           );
-          let currentFilterValue = null;
+          let currentFilterValue: unknown = null;
 
           switch (filter.type) {
             case 'select':
             case 'checkbox':
+            case 'date':
               currentFilterValue = appliedFilters[currentFilterIndex]?.value || null;
               break;
             case 'checkboxList':
@@ -83,6 +85,16 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
               } else {
                 _filters[currentFilterIndex].value = value;
               }
+            } else if (filter.type === 'date') {
+              if (currentFilterIndex === -1) {
+                _filters.push({
+                  accessor: filter.accessor,
+                  value,
+                  range: filter.useRange
+                });
+              } else {
+                _filters[currentFilterIndex].value = value;
+              }
             }
 
             setAppliedFilters(_filters);
@@ -90,6 +102,13 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
 
           let children = <></>;
           let isLabelNeeded = true;
+
+          let minDate, maxDate;
+          if (filter.type === 'date') {
+            const allDates = initialData.map((item) => dayjs(item[filter.accessor]));
+            minDate = dayjs.min(allDates)?.toDate();
+            maxDate = dayjs.max(allDates)?.toDate();
+          }
 
           switch (filter.type) {
             case 'select':
@@ -118,6 +137,18 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
                 <Checkbox checked={Boolean(currentFilterValue)} onChange={onChange}>
                   {filter.label || filter.accessor}
                 </Checkbox>
+              );
+              break;
+            case 'date':
+              children = (
+                <DatePicker
+                  value={currentFilterValue}
+                  onChange={onChange}
+                  useDateRange={filter.useRange}
+                  picker={filter.picker}
+                  minDate={minDate}
+                  maxDate={maxDate}
+                />
               );
               break;
           }

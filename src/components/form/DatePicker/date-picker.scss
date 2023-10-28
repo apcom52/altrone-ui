@@ -167,17 +167,17 @@
 }
 
 .alt-calendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-row-gap: 8px;
-  grid-column-gap: 16px;
-  padding: 16px;
-  text-align: center;
-
-  @include less($l-phone) {
-    margin: 0 -16px;
-    grid-column-gap: 4px;
-  }
+  /*display: grid;
+  //grid-template-columns: repeat(7, 1fr);
+  //grid-row-gap: 8px;
+  //grid-column-gap: 16px;
+  //padding: 16px;
+  //text-align: center;
+  //
+  //@include less($l-phone) {
+  //  margin: 0 -16px;
+  //  grid-column-gap: 4px;
+  //}*/
 }
 
 .alt-calendar__weekday {
@@ -197,86 +197,36 @@
   color: var(--importantText);
 }
 
-.alt-calendar__day {
-  --background: transparent;
-  --text: var(--textColor);
-
-  width: 36px;
-  height: 36px;
-  border-radius: var(--containerRounding);
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-color: var(--background);
-  color: var(--text);
-  border: none;
-  cursor: pointer;
-  transition: background-color var(--transitionDuration) ease;
-
-  @include useFontSize(body, Large);
-  @include useFocus();
-
-  &:hover {
-    --background: var(--highlight);
-  }
-
-  @include less($l-phone) {
-    @include useFontSize(body);
-  }
-}
-
-.alt-calendar__day--another-month {
-  --text: var(--secondaryTextColor);
-  opacity: 0.5;
-
-  &:hover {
-    background-color: var(--surfaceTrasparentHover);
-  }
-}
-
-.alt-calendar__day--disabled {
-  --text: var(--secondaryTextColor);
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-.alt-calendar__day--today {
-
-}
-
-.alt-calendar__day--selected {
-  --background: var(--accent);
-  --text: var(--textColorOnAccent);
-  box-shadow: 0 2px 15px 0 rgba(black, 0.15);
-
-  &:hover {
-    --background: var(--accent);
-  }
-}
-
-.alt-calendar__day--today:not(.alt-calendar__day--selected) {
-  --text: var(--accent);
-}
-
 .alt-year-picker {
   display: flex;
   justify-content: center;
   margin-top: 16px;
-  min-width: 200px;
+  max-width: 250px;
+  width: 250px;
 }
 
-.alt-month-picker {
-  position: relative;
-  display: grid;
-  grid-template-columns: 160px 1px 100px;
-  margin-top: 16px;
+.alt-year-picker__column {
+  width: 50%;
+
+  & + & {
+    position: relative;
+
+    &:before {
+      position: absolute;
+      content: '';
+      left: 0;
+      height: 80%;
+      top: 10%;
+      border-left: 1px solid var(--dividerColor);
+    }
+  }
 }
 
-.alt-month-picker__separator {
-  width: 1px;
-  margin-top: 25px;
-  height: 200px;
-  background-color: var(--dividerColor);
+.alt-year-picker__columnName {
+  text-align: center;
+  color: var(--textColor);
+
+  @include useFontSize(label);
 }
 
 .alt-date-picker__mobilePrevMonth {

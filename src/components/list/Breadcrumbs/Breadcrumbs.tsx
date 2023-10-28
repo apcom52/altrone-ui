@@ -14,7 +14,7 @@ const ButtonComponents = ['button', 'a'];
 
 const UNDEFINED_ACTION = () => null;
 /**
- * Indicate the page's location within a navigation hierarchy
+ * This component is used to show page hierarchy
  * @param {BreadcrumbLink[]} links - the list of links
  * @param { string } [className] - custom className for the root container
  * @param { boolean } [collapsible=false] - if true, collapse all links (except the home link and the last one) into context menu

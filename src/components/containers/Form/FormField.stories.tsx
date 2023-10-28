@@ -12,8 +12,9 @@ const meta: Meta<typeof FormField> = {
     hintText: ''
   },
   argTypes: {
-    label: { control: 'text' },
-    hintText: { control: 'text' }
+    label: { control: 'text', description: 'Label text' },
+    required: { description: 'Adds red asterisk to the label' },
+    hintText: { control: 'text', description: 'Adds question mark with tooltip to the label' }
   }
 };
 

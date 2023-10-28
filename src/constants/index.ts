@@ -1,4 +1,3 @@
-export { DEFAULT_THEME } from './Theme';
 export {
   DEFAULT_OFFSET,
   HORIZONTAL_MARGIN,

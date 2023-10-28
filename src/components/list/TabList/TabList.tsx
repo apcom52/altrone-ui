@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import './tabs-list.scss';
 import clsx from 'clsx';
 import { useResizeObserver } from '../../../hooks';
@@ -30,6 +30,20 @@ interface TabListProps<T extends unknown> {
   align?: Align;
 }
 
+/**
+ * This component is used to navigate between different panes of content
+ * @param selected
+ * @param tabs
+ * @param variant
+ * @param fluid
+ * @param showCloseButtons
+ * @param showAddTabButton
+ * @param onChange
+ * @param onCloseTab
+ * @param onAddTab
+ * @param align
+ * @constructor
+ */
 const TabList = <T extends unknown>({
   selected,
   tabs = [],
@@ -140,4 +154,4 @@ const TabList = <T extends unknown>({
   );
 };
 
-export default memo(TabList) as typeof TabList;
+export default TabList;

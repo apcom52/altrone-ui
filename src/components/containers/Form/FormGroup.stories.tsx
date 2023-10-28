@@ -13,9 +13,13 @@ const meta: Meta<typeof FormGroup> = {
     align: Align.start
   },
   argTypes: {
-    variant: { control: 'select' },
-    align: { control: 'select' },
-    weights: { control: 'array' }
+    variant: { control: 'select', description: 'Variant of the group' },
+    align: { control: 'select', description: 'Alignment of the group' },
+    weights: {
+      control: 'array',
+      description:
+        'The width of the child elements. Numbers set flex-grow property for every child element. '
+    }
   }
 };
 

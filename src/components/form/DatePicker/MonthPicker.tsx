@@ -1,79 +1,173 @@
-import { memo, useMemo } from 'react';
-import { Align, Option } from '../../../types';
-import { ScrollableSelector } from '../ScrollableSelector';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useThemeContext } from '../../../contexts';
-import { CalendarProps } from './Calendar';
+import { CalendarProps } from './DatePicker.types';
+import { Icon } from '../../typography';
+import { Button } from '../Button';
+import clsx from 'clsx';
+import './month-picker.scss';
+import dayjs, { Dayjs } from 'dayjs';
+import IsBetween from 'dayjs/plugin/isBetween';
+import IsToday from 'dayjs/plugin/isToday';
+import IsSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import IsSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import ruLocale from 'dayjs/locale/ru.js';
 
-const MonthPicker = ({ selectedDate = new Date(), onChange, minDate, maxDate }: CalendarProps) => {
-  const { locale } = useThemeContext();
+dayjs.extend(IsBetween);
+dayjs.extend(IsToday);
+dayjs.extend(IsSameOrBefore);
+dayjs.extend(IsSameOrAfter);
+dayjs.locale(ruLocale);
 
-  const monthFormat = useMemo(() => {
-    return new Intl.DateTimeFormat(locale, {
-      month: 'long'
-    });
-  }, [locale]);
+const MonthPicker = <IsDateRange extends boolean | undefined = false>({
+  currentMonth: initialMonth,
+  startSelectedDate,
+  endSelectedDate,
+  onChange,
+  minDate,
+  maxDate,
+  isDateRange
+}: CalendarProps<IsDateRange>) => {
+  const { lang } = useThemeContext();
+  const [hoveredDate, setHoveredDate] = useState<Dayjs | undefined>(undefined);
 
-  const currentYear = selectedDate.getFullYear();
-
-  const months = useMemo(() => {
-    const result: Option<number>[] = [];
-
-    let startMonth = 0;
-    let endMonth = 11;
-
-    if (currentYear <= minDate.getFullYear()) {
-      startMonth = minDate.getMonth();
+  const [currentYear, setCurrentYear] = useState(() => {
+    if (initialMonth.isBetween(dayjs(minDate), dayjs(maxDate), 'year')) {
+      return initialMonth.startOf('year');
+    } else if (dayjs().isBetween(dayjs(minDate), dayjs(maxDate), 'year')) {
+      return dayjs();
+    } else {
+      return dayjs(minDate);
     }
+  });
 
-    if (currentYear >= maxDate.getFullYear()) {
-      endMonth = maxDate.getMonth();
-    }
+  const monthNameFormatter = new Intl.DateTimeFormat(lang, {
+    month: 'short'
+  });
 
-    for (let month = startMonth; month <= endMonth; month++) {
-      result.push({
-        label: monthFormat.format(new Date(2000, month, 1)),
-        value: month
-      });
+  const onSelectMonth = useCallback(
+    (month: Dayjs) => {
+      if (!isDateRange) {
+        onChange('both', month, undefined);
+        return;
+      }
+
+      if (!startSelectedDate) {
+        onChange('start', month);
+      } else if (!endSelectedDate) {
+        onChange('end', month);
+      } else {
+        onChange('both', month, undefined);
+      }
+    },
+    [isDateRange, startSelectedDate, endSelectedDate, onChange]
+  );
+
+  const onPrevYearClick = useCallback(() => {
+    setCurrentYear((old) => old.subtract(1, 'year'));
+  }, []);
+
+  const onNextYearClick = useCallback(() => {
+    setCurrentYear((old) => old.add(1, 'year'));
+  }, []);
+
+  const monthCalendar = useMemo(() => {
+    const startOfYear = currentYear.startOf('year');
+    const endOfYear = currentYear.endOf('year');
+
+    let currentMonth = startOfYear;
+
+    const result = [];
+
+    while (currentMonth.isSameOrBefore(endOfYear)) {
+      const isStart = startSelectedDate?.startOf('month').isSame(currentMonth);
+      const isEnd = endSelectedDate?.startOf('month').isSame(currentMonth);
+      const isSelected = isStart || isEnd;
+
+      const isHoveredModeEnabled = startSelectedDate && !endSelectedDate;
+
+      const isHoveredDate =
+        isHoveredModeEnabled &&
+        hoveredDate &&
+        currentMonth.isSameOrAfter(startSelectedDate) &&
+        currentMonth.isSameOrBefore(hoveredDate);
+
+      const isEndDateSelected =
+        endSelectedDate &&
+        currentMonth.isSameOrAfter(startSelectedDate, 'month') &&
+        currentMonth.isSameOrBefore(endSelectedDate, 'month');
+
+      const isHighlighted = isDateRange && (isEndDateSelected || isHoveredDate);
+
+      const isDisabled =
+        currentMonth.isBefore(minDate, 'month') ||
+        currentMonth.isAfter(maxDate, 'month') ||
+        (isDateRange &&
+          startSelectedDate &&
+          !endSelectedDate &&
+          currentMonth.isBefore(startSelectedDate));
+      const thisMonth = dayjs(currentMonth);
+
+      result.push(
+        <button
+          key={currentMonth.month()}
+          data-testid="alt-test-monthPicker-item"
+          data-month-index={currentMonth.month()}
+          data-year={currentMonth.year()}
+          className={clsx('alt-month-picker-item', {
+            'alt-month-picker-item--active': isSelected,
+            'alt-month-picker-item--highlighted': isHighlighted,
+            'alt-month-picker-item--highlighted-start': isStart,
+            'alt-month-picker-item--highlighted-end':
+              isEnd || hoveredDate?.isSame(thisMonth, 'month')
+          })}
+          disabled={isDisabled}
+          onClick={() => onSelectMonth(thisMonth)}
+          onMouseEnter={isHoveredModeEnabled ? () => setHoveredDate(thisMonth) : undefined}>
+          <div className="alt-month-picker-item__monthName">
+            {monthNameFormatter.format(currentMonth.toDate()).replace('.', '')}
+          </div>
+          {isHighlighted && <div className="alt-month-picker-item__background" />}
+        </button>
+      );
+
+      currentMonth = currentMonth.add(1, 'month');
     }
 
     return result;
-  }, [monthFormat, minDate, maxDate, currentYear]);
+  }, [currentYear, startSelectedDate, endSelectedDate, onSelectMonth, isDateRange, hoveredDate]);
 
-  const years = useMemo(() => {
-    const result: Option<number>[] = [];
-    for (let year = minDate.getFullYear(); year <= maxDate.getFullYear(); year++) {
-      result.push({
-        label: year.toString(),
-        value: year
-      });
+  useEffect(() => {
+    if (!(startSelectedDate && !endSelectedDate)) {
+      setHoveredDate(undefined);
     }
-
-    return result;
-  }, [minDate, maxDate]);
-
-  const onSelectYear = (year: unknown) => {
-    onChange(new Date(Number(year), selectedDate.getMonth(), 1));
-  };
-
-  const onSelectMonth = (month: unknown) => {
-    onChange(new Date(selectedDate.getFullYear(), Number(month), 1));
-  };
+  }, [startSelectedDate, endSelectedDate]);
 
   return (
     <div className="alt-month-picker" data-testid="alt-test-month-picker">
-      <ScrollableSelector
-        value={selectedDate.getMonth()}
-        align={Align.end}
-        options={months}
-        onChange={onSelectMonth}
-      />
-      <div className="alt-month-picker__separator" />
-      <ScrollableSelector
-        value={currentYear}
-        align={Align.start}
-        options={years}
-        onChange={onSelectYear}
-      />
+      <div className="alt-month-picker__column">
+        <div className="alt-month-picker-calendar__header">
+          <Button
+            className="alt-month-picker-calendar__headerAction"
+            onClick={onPrevYearClick}
+            isIcon>
+            <Icon i="arrow_back" />
+          </Button>
+          <div
+            className="alt-month-picker-calendar__headerYearLabel"
+            data-testid="alt-test-monthPicker-currentYear">
+            {currentYear.year()}
+          </div>
+          <Button
+            className="alt-month-picker-calendar__headerAction"
+            onClick={onNextYearClick}
+            isIcon>
+            <Icon i="arrow_forward" />
+          </Button>
+        </div>
+        <div className="alt-month-picker-calendar" onMouseLeave={() => setHoveredDate(undefined)}>
+          {monthCalendar}
+        </div>
+      </div>
     </div>
   );
 };

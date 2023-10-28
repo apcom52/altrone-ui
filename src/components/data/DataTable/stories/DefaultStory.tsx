@@ -4,7 +4,7 @@ import { default as tableData } from './data';
 import { Icon } from '../../../typography';
 import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 import { DataTableSelectableAction } from '../DataTable';
-import { DataTableFilter } from '../../../../contexts';
+import { DataTableFilter } from '../DataTable.types';
 
 export interface DataTableStoryDataInterface {
   name: string;
@@ -92,6 +92,11 @@ export const FILTERS: DataTableFilter<DataTableStoryDataInterface>[] = [
   {
     type: 'checkbox',
     accessor: 'isEU',
+    defaultValue: false
+  },
+  {
+    type: 'select',
+    accessor: 'continent',
     defaultValue: false
   }
 ];

@@ -49,7 +49,7 @@
     border-radius: var(--circleRounding);
     background-color: var(--switcherColor);
     transition: left var(--transitionDuration) ease, background-color var(--transitionDuration) ease;
-    box-shadow: 0 3px 15px 0 var(--shadow);
+    box-shadow: var(--floatingElevation);
   }
 }
 

@@ -1,38 +1,66 @@
-import { memo, useCallback } from 'react';
-import { Direction, Option, Size } from '../../../types';
+import { useCallback } from 'react';
+import { Direction, Size, OptionValue } from '../../../types';
 import clsx from 'clsx';
 import { Icon } from '../../typography';
 import './chips.scss';
+import { ChipsProps } from './Chips.types';
 
-interface ChipsProps<T = unknown> {
-  options: Option<T>[];
-  values: T[];
-  onChange: (values: T[]) => void;
-  SelectedIcon?: JSX.Element;
-  direction?: Direction;
-  size?: Size;
-}
-
-const Chips = <T extends unknown>({
+/**
+ * This component is used to choose some options from the list
+ * @param options
+ * @param values
+ * @param onChange
+ * @param SelectedIcon
+ * @param direction
+ * @param size
+ * @param multiple
+ * @constructor
+ */
+const Chips = <ValueType, Multiple extends boolean | undefined = true>({
   options = [],
-  values = [],
+  values,
   onChange,
   SelectedIcon,
   direction = Direction.horizontal,
-  size = Size.medium
-}: ChipsProps<T>) => {
+  size = Size.medium,
+  multiple = true
+}: ChipsProps<ValueType, Multiple>) => {
   const onChipClick = useCallback(
-    (value: T) => {
-      const chipIsSelected = values.findIndex((chipValue) => value === chipValue);
+    (value: ValueType) => {
+      if (multiple === true) {
+        const selectedChips = values as ValueType[];
+        const chipIsSelected = selectedChips.findIndex((chipValue) => value === chipValue) > -1;
 
-      if (chipIsSelected > -1) {
-        onChange(values.filter((chipValue) => chipValue !== value));
+        let newValues;
+
+        if (chipIsSelected) {
+          newValues = selectedChips.filter((chipValue) => chipValue !== value) as OptionValue<
+            ValueType,
+            true
+          >;
+        } else {
+          newValues = [...selectedChips, value] as OptionValue<ValueType, true>;
+        }
+
+        onChange(newValues as OptionValue<ValueType, Multiple>);
       } else {
-        onChange([...values, value]);
+        if (value === values) {
+          onChange(undefined as OptionValue<ValueType, Multiple>);
+        } else {
+          onChange(value as OptionValue<ValueType, Multiple>);
+        }
       }
     },
-    [values, onChange]
+    [values, onChange, multiple]
   );
+
+  const isChipSelected = (chipValue: ValueType) => {
+    if (!multiple) {
+      return (values as OptionValue<ValueType>) === chipValue;
+    } else {
+      return (values as OptionValue<ValueType, true>).find((chip: ValueType) => chip === chipValue);
+    }
+  };
 
   return (
     <div
@@ -42,7 +70,7 @@ const Chips = <T extends unknown>({
       })}
       data-testid="alt-test-chips">
       {options.map((option, optionIndex) => {
-        const isSelected = values.indexOf(option.value) > -1;
+        const isSelected = isChipSelected(option.value);
 
         return (
           <button
@@ -65,4 +93,4 @@ const Chips = <T extends unknown>({
   );
 };
 
-export default memo(Chips) as typeof Chips;
+export default Chips;

@@ -35,6 +35,20 @@ interface ToolbarProps {
   defaultPosition?: Point;
 }
 
+/**
+ * The component is used to place actions on the panel
+ * @param children
+ * @param variant
+ * @param floated
+ * @param menu
+ * @param offset
+ * @param width
+ * @param className
+ * @param surface
+ * @param elevation
+ * @param defaultPosition
+ * @constructor
+ */
 const Toolbar = ({
   children,
   variant = ToolbarVariant.default,
@@ -95,4 +109,4 @@ const Toolbar = ({
   );
 };
 
-export default memo(Toolbar) as typeof Toolbar;
+export default Toolbar;

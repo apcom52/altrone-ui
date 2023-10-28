@@ -1,5 +1,4 @@
 export type { WithoutDefaultOffsets, WithAltroneOffsets } from './Offset';
-export type { ThemeConfig } from './Theme';
 export { Theme } from './Theme';
 export { Size } from './Size';
 export type {
@@ -18,3 +17,4 @@ export { Align } from './Align';
 export { Surface } from './Surface';
 export { Elevation } from './Elevation';
 export { Rect } from './Rect';
+export { OptionValue } from './OptionValue';

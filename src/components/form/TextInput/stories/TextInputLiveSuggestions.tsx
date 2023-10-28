@@ -1,35 +1,26 @@
-import { ComponentStory } from '@storybook/react';
+import { ComponentStory, StoryObj } from '@storybook/react';
 import { TextInput } from '../index';
 import { useState } from 'react';
-import { StorybookPlayground } from '../../../../storybook/StorybookPlayground';
+import { StorybookDecorator, StorybookPlayground } from '../../../../storybook/StorybookPlayground';
 import { default as COUNTRIES } from '../../../data/DataTable/stories/data';
-import { Form, FormField, FormGroup } from '../../../containers';
-import { Switcher } from '../../Switcher';
 
 const SUGGESTIONS = COUNTRIES.map((country) => country.name);
 
-const TextInputLiveSuggestions: ComponentStory<typeof TextInput> = ({ placeholder = '' }) => {
-  const [value, setValue] = useState('');
-  const [isLeftActive, setIsLeftActive] = useState(false);
-  const [isRightActive, setIsRightActive] = useState(false);
+export const TextInputLiveSuggestionsStory: StoryObj<typeof TextInput> = {
+  name: 'TextInput with live suggestions',
+  storyName: 'TextInput with live suggestions',
+  render: ({ ...args }) => {
+    const [_value, setValue] = useState('');
 
-  return (
-    <StorybookPlayground>
+    return (
       <TextInput
-        value={value}
+        {...args}
+        value={_value}
         onChange={setValue}
-        placeholder={placeholder}
         suggestions={SUGGESTIONS}
-        prefix={isLeftActive ? 'left' : undefined}
-        suffix={isRightActive ? 'right' : undefined}
         useLiveSuggestions
       />
-    </StorybookPlayground>
-  );
+    );
+  },
+  decorators: [StorybookDecorator]
 };
-
-TextInputLiveSuggestions.args = {
-  placeholder: ''
-};
-
-export default TextInputLiveSuggestions;

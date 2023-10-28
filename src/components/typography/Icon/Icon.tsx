@@ -11,6 +11,15 @@ interface IconProps {
   style?: MaterialIconStyle;
 }
 
+/**
+ * This component is used to show action icon
+ * @param i
+ * @param size
+ * @param className
+ * @param style
+ * @param props
+ * @constructor
+ */
 const Icon = ({ i, size, className, style = 'outlined', ...props }: IconProps) => {
   return (
     <span
@@ -22,4 +31,4 @@ const Icon = ({ i, size, className, style = 'outlined', ...props }: IconProps) =
   );
 };
 
-export default memo(Icon) as typeof Icon;
+export default Icon;

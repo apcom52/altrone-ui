@@ -1,34 +1,11 @@
-import { InputIslandType, TextInput, TextInputProps } from '../index';
-import { memo, useCallback, useEffect, useState } from 'react';
+import { InputIslandType, TextInput } from '../index';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { NumberInputCounter } from './NumberInputCounter';
 import { NumberFormatValues, NumericFormat, OnValueChange } from 'react-number-format';
 import { Elevation, Surface } from '../../../types';
 import clsx from 'clsx';
-
-interface NumberInputProps
-  extends Omit<
-    TextInputProps,
-    | 'value'
-    | 'onChange'
-    | 'step'
-    | 'min'
-    | 'max'
-    | 'ref'
-    | 'suggestions'
-    | 'useLiveSuggestions'
-    | 'loading'
-  > {
-  value: number;
-  onChange: (value: number) => void;
-  showControls?: boolean;
-  allowNegative?: boolean;
-  allowLeadingZeros?: boolean;
-  decimalSeparator?: string;
-  digitsAfterDecimal?: number;
-  step?: number;
-  min?: number;
-  max?: number;
-}
+import { NumberInputProps } from './NumberInput.types';
+import { useThemeContext } from '../../../contexts';
 
 const NumberInput = ({
   value = 0,
@@ -38,6 +15,7 @@ const NumberInput = ({
   allowNegative = false,
   allowLeadingZeros = false,
   decimalSeparator = ',',
+  thousandSeparator = ' ',
   digitsAfterDecimal = 0,
   step = 1,
   min,
@@ -47,6 +25,37 @@ const NumberInput = ({
   surface = Surface.paper,
   ...props
 }: NumberInputProps) => {
+  const { options, locale } = useThemeContext();
+
+  const useFormatFromLocale = options.numberInput.useFormatFromLocale;
+
+  const [thousandDelimiter, decimalDelimiter] = useMemo(() => {
+    if (!useFormatFromLocale) {
+      return [thousandSeparator, decimalSeparator];
+    }
+
+    try {
+      const number = 1000.125;
+      const numberFormatter = new Intl.NumberFormat(locale);
+      const numberParts = numberFormatter.formatToParts(number);
+
+      let _thousandSeparator = '';
+      let _decimalSeparator = '';
+
+      for (const part of numberParts) {
+        if (part.type === 'group') {
+          _thousandSeparator = part.value;
+        } else if (part.type === 'decimal') {
+          _decimalSeparator = part.value;
+        }
+      }
+
+      return [_thousandSeparator, _decimalSeparator];
+    } catch {
+      return [thousandSeparator, decimalSeparator];
+    }
+  }, [useFormatFromLocale, locale, decimalSeparator, thousandSeparator]);
+
   const [formattedValue, setFormattedValue] = useState<string>(() => {
     return value.toFixed(digitsAfterDecimal);
   });
@@ -114,14 +123,14 @@ const NumberInput = ({
         <NumericFormat
           value={value}
           onValueChange={onValueChange}
-          thousandSeparator=" "
+          thousandSeparator={thousandDelimiter}
           className={clsx('alt-text-input__control', {
             [`alt-text-input__control--elevation-${elevation}`]: elevation,
             [`alt-text-input--surface-${surface}`]: surface !== Surface.paper
           })}
           allowLeadingZeros={allowLeadingZeros}
           allowNegative={allowNegative}
-          decimalSeparator={decimalSeparator}
+          decimalSeparator={decimalDelimiter}
           decimalScale={digitsAfterDecimal}
           isAllowed={onAllowedCheck}
           disabled={disabled}

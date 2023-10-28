@@ -126,11 +126,11 @@ $s-phone: 320px;
 
 
 $elevations: (
-  "flat": false,
-  "convex": 0 1px 0 0 var(--shadow),
-  "raised": 0 2px 5px 0 var(--shadow),
-  "floating": 0 3px 15px 0 var(--shadow),
-  "flying": 0 5px 25px 0 var(--shadow)
+  "flat": var(--noElevation),
+  "convex": var(--convexElevation),
+  "raised": var(--raisedElevation),
+  "floating": var(--floatingElevation),
+  "flying": var(--flyingElevation)
 );
 @mixin useElevation($prefix, $extraShadows: false, $withFocus: false) {
   @each $elevationName, $elevation in $elevations {

@@ -40,6 +40,9 @@ const setPopperWidth = (state: State, minWidth: FloatingBoxProps['minWidth']) =>
   }px`;
 };
 
+/**
+ * This component is used to make a dropdown or a small popup
+ */
 const FloatingBox = forwardRef<
   Partial<HTMLDivElement> & { modifiers?: Options['modifiers'] },
   FloatingBoxProps
