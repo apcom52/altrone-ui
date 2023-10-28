@@ -1,6 +1,6 @@
 {
   "name": "altrone-ui",
-  "version": "2.1.0-rc",
+  "version": "2.0.5",
   "description": "React UI Kit",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -87,7 +87,7 @@
     "lint:fix": "eslint --fix",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "chromatic": "npx chromatic --project-token=chpt_59ff17683719820",
-    "version": "auto-changelog -p",
+    "version": "auto-changelog -p && git add CHANGELOG.md",
     "predeploy": "npm run storybook build",
     "deploy-storybook": "gh-pages -d storybook-static",
     "build-storybook": "storybook build"
@@ -114,7 +114,6 @@
     "@material-symbols/font-500": "^0.12.0",
     "@popperjs/core": "^2.11.6",
     "clsx": "^1.2.1",
-    "dayjs": "^1.11.10",
     "lodash-es": "^4.17.21",
     "react-draggable": "^4.4.5",
     "react-number-format": "^5.0.0-beta.5",
