@@ -1,7 +1,7 @@
 @import '../../../_mixins';
 
 .alt-switcher {
-  --switcherColor: var(--secondaryTextColor);
+  --switcherColor: var(--background);
   --switcherActiveColor: var(--accent);
   --switcherDotActiveColor: var(--textColorOnAccent);
   --text: var(--textColor);
@@ -25,6 +25,7 @@
     &:before {
       background-color: var(--switcherDotActiveColor);
       left: calc(100% - 22px);
+      box-shadow: var(--raisedElevation);
     }
   }
 }
@@ -35,8 +36,8 @@
   height: 26px;
   margin-right: 12px;
   border-radius: 13px;
-  border: 1px solid var(--switcherColor);
   box-sizing: border-box;
+  background-color: var(--metalTop);
   transition: background-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
 
   &:before {
@@ -44,12 +45,11 @@
     content: '';
     width: 18px;
     height: 18px;
-    top: 3px;
+    top: 4px;
     left: 4px;
     border-radius: var(--circleRounding);
     background-color: var(--switcherColor);
-    transition: left var(--transitionDuration) ease, background-color var(--transitionDuration) ease;
-    box-shadow: var(--floatingElevation);
+    transition: left var(--transitionDuration) ease, background-color var(--transitionDuration) linear, box-shadow var(--transitionDuration) linear;
   }
 }
 
