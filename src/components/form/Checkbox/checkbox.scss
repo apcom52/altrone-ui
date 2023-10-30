@@ -59,17 +59,15 @@
 }
 
 .alt-checkbox__icon {
+  display: flex;
   position: absolute;
-  left: 1px;
-  height: 16px;
   width: 16px;
-  top: 3px;
-  font-size: 14px;
+  height: 16px;
+  left: 0;
+  top: 2px;
+  align-items: center;
+  justify-content: center;
   color: var(--iconColor);
-
-  .alt-icon {
-    transform: scale(1.25);
-  }
 }
 
 .alt-checkbox__label {
