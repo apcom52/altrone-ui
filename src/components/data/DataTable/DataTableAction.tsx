@@ -1,29 +1,32 @@
 import { memo, useCallback, useMemo, useRef, useState } from 'react';
-import type {
-  DataTableAction as DataTableActionType,
-  DataTableSelectableAction as DataTableSelectableActionType
-} from './DataTable';
+import type { DataTableAction, DataTableSelectableAction } from './DataTableAction.types';
 import { Button, ButtonVariant } from '../../form';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import { ContextAction, ContextMenuType, ParentContextAction, Role } from '../../../types';
 import { useWindowSize } from '../../../hooks';
 import { useDataTableContext } from './DataTable.context';
 
-const DataTableAction = <T extends unknown>({
+const DataTableAction = <T extends object>({
   label,
-  content,
-  onClick,
   icon,
   isIcon = false,
   indicator,
-  contextMenu,
   danger = false,
-  disabled
-}: DataTableActionType | DataTableSelectableActionType<T>) => {
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const actionType = contextMenu ? 'contextMenu' : content ? 'popup' : 'button';
+  disabled,
+  onClick,
+  content,
+  contextMenu
+}: DataTableAction | DataTableSelectableAction<T>) => {
+  let actionType = 'button';
+  if (Array.isArray(contextMenu)) {
+    actionType = 'contextMenu';
+  } else if (typeof content === 'function') {
+    actionType = 'popup';
+  }
 
-  const { selectableMode, selectedRows, data, page, limit } = useDataTableContext();
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const { selectableMode, selectedRows, data, page, limit } = useDataTableContext<T>();
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
@@ -83,7 +86,6 @@ const DataTableAction = <T extends unknown>({
     <>
       <Button
         ref={buttonRef}
-        title={label}
         leftIcon={!ltePhoneL && !isIcon ? icon : undefined}
         variant={ButtonVariant.text}
         isIcon={isIcon || ltePhoneL}

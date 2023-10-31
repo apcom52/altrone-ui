@@ -7,6 +7,7 @@ import DataTableFooter from './DataTableFooter';
 import clsx from 'clsx';
 import { DataTableProps } from './DataTable.types';
 import { DataTableContextProvider } from './DataTable.context';
+import DataTableFooterStatus from './DataTableFooterStatus';
 
 /**
  * This component is used to show huge amount of data in table view
@@ -37,7 +38,7 @@ export const DataTable = <T extends object>(props: DataTableProps<T>) => {
     selectableActions = [],
     className,
     striped,
-    DataTableStatusComponent
+    DataTableStatusComponent = DataTableFooterStatus
   } = props;
 
   const isHeaderVisible = Boolean(

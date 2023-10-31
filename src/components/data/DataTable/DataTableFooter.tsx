@@ -5,7 +5,7 @@ import { useWindowSize } from '../../../hooks';
 import { useDataTableContext } from './DataTable.context';
 
 interface DataTableFooterProps {
-  DataTableFooterStatusComponent?: () => JSX.Element;
+  DataTableFooterStatusComponent: React.FC;
 }
 
 const DataTableFooter = ({ DataTableFooterStatusComponent }: DataTableFooterProps) => {
