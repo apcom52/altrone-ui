@@ -10,8 +10,34 @@ import {
 } from './functions';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Sort } from '../../../types';
-import { DataTableAppliedFilter, DataTableContextType } from '../../../contexts';
 import once from 'lodash/once';
+import { DataTableColumn } from './index';
+import { DataTableAppliedFilter, DataTableFilter } from './DataTableFilter.types';
+
+interface DataTableContextType<T extends object> {
+  data: T[];
+  initialData: T[];
+  columns: DataTableColumn<T>[];
+  page: number;
+  setPage: (page: number) => void;
+  limit: number;
+  searchBy?: keyof T;
+  search: string;
+  setSearch: (search: string) => void;
+  sortKeys: (keyof T)[];
+  sortBy?: keyof T;
+  setSortBy: (sortBy: keyof T | undefined) => void;
+  sortType: Sort;
+  setSortType: (sortType: Sort) => void;
+  filters: DataTableFilter<T>[];
+  appliedFilters: DataTableAppliedFilter<T>[];
+  setAppliedFilters: (filters: DataTableAppliedFilter<T>[]) => void;
+  mobileColumns: (keyof T)[];
+  selectableMode: boolean;
+  setSelectableMode: (selectableMode: boolean) => void;
+  selectedRows: number[];
+  selectRow: (rowIndex: number) => void;
+}
 
 const createDataTableContext = once(<T extends object>() =>
   createContext<DataTableContextType<T>>({

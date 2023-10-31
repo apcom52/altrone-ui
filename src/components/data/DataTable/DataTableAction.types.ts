@@ -22,34 +22,34 @@ export interface DataTableSelectablePopupActionProps<T extends object>
 type BaseActionContent =
   | {
       onClick: () => void;
-      content: never;
-      contextMenu: never;
+      content?: never;
+      contextMenu?: never;
     }
   | {
-      onClick: never;
+      onClick?: never;
       content: React.FC<DataTablePopupActionProps>;
-      contextMenu: never;
+      contextMenu?: never;
     }
   | {
-      onClick: never;
-      content: never;
+      onClick?: never;
+      content?: never;
       contextMenu: ContextMenuType;
     };
 
 type SelectableActionContent<T extends object> =
   | {
       onClick: (selectedRows: T[]) => void;
-      content: never;
-      contextMenu: never;
+      content?: never;
+      contextMenu?: never;
     }
   | {
       onClick: (selectedRows: T[]) => void;
       content: React.FC<DataTableSelectablePopupActionProps<T>>;
-      contextMenu: never;
+      contextMenu?: never;
     }
   | {
-      onClick: never;
-      content: never;
+      onClick?: never;
+      content?: never;
       contextMenu: ContextMenuType;
     };
 

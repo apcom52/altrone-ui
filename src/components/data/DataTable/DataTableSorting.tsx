@@ -2,16 +2,16 @@ import { memo, useMemo } from 'react';
 import { ButtonContainer, FormField, FormGroup } from '../../containers';
 import { RadioList, Select, Button } from '../../form';
 import './data-table-sorting.scss';
-import { Align, Direction, Role, Sort } from '../../../types';
+import { Align, Direction, Option, Role, Sort } from '../../../types';
 import { useLocalization } from '../../../hooks';
 import { DataTablePopupActionProps } from './DataTableAction.types';
 import { useDataTableContext } from './DataTable.context';
 
-const DataTableSorting = ({ closePopup }: DataTablePopupActionProps) => {
-  const { columns, sortKeys, sortBy, sortType, setSortType, setSortBy } = useDataTableContext();
+const DataTableSorting = <T extends object>({ closePopup }: DataTablePopupActionProps) => {
+  const { columns, sortKeys, sortBy, sortType, setSortType, setSortBy } = useDataTableContext<T>();
   const t = useLocalization();
 
-  const sortKeysOptions = useMemo(() => {
+  const sortKeysOptions = useMemo<Option<keyof T>[]>(() => {
     return sortKeys.map((keyName) => {
       const option = columns.find((column) => column.accessor === keyName);
 
@@ -19,7 +19,7 @@ const DataTableSorting = ({ closePopup }: DataTablePopupActionProps) => {
         label: option?.label || keyName,
         value: keyName
       };
-    }, []);
+    }, []) as Option<keyof T>[];
   }, [columns, sortKeys]);
 
   return (
@@ -27,12 +27,7 @@ const DataTableSorting = ({ closePopup }: DataTablePopupActionProps) => {
       <div className="alt-data-table-sorting__title">{t('data.dataTable.sorting')}</div>
       <FormGroup>
         <FormField label={t('data.dataTable.field')}>
-          <Select<Sort | undefined>
-            options={sortKeysOptions}
-            value={sortBy}
-            onChange={setSortBy}
-            clearable
-          />
+          <Select options={sortKeysOptions} value={sortBy} onChange={setSortBy} clearable />
         </FormField>
         <FormField label={t('data.dataTable.direction')}>
           <RadioList
@@ -56,7 +51,7 @@ const DataTableSorting = ({ closePopup }: DataTablePopupActionProps) => {
       <div className="alt-data-table-sorting__footer">
         <ButtonContainer align={Align.end} direction={Direction.vertical}>
           {sortBy && (
-            <Button onClick={() => setSortBy(null)}>{t('data.dataTable.resetSorting')}</Button>
+            <Button onClick={() => setSortBy(undefined)}>{t('data.dataTable.resetSorting')}</Button>
           )}
           <Button role={Role.primary} onClick={closePopup}>
             {t('common.apply')}
