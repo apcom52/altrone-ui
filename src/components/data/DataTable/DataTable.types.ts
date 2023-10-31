@@ -7,7 +7,7 @@ export interface DataTableColumn<T extends object> {
   accessor: keyof T;
   label?: string;
   width?: number | string;
-  Component?: React.FC<DataTableCellProps>;
+  Component?: React.FC<DataTableCellProps<T>>;
   visible?: boolean;
 }
 

@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import DataTableCell from './DataTableCell';
 import { filterVisibleColumns } from './functions';
 import { useWindowSize } from '../../../hooks';
@@ -8,9 +8,9 @@ import { Checkbox } from '../../form';
 import clsx from 'clsx';
 import { useDataTableContext } from './DataTable.context';
 
-const DataTableBody = () => {
+const DataTableBody = <T extends object>() => {
   const { data, columns, page, limit, mobileColumns, selectableMode, selectedRows, selectRow } =
-    useDataTableContext();
+    useDataTableContext<T>();
   const { ltePhoneL = false } = useWindowSize();
 
   const [selectedRowIndex, setSelectedRowIndex] = useState(-1);
@@ -45,10 +45,12 @@ const DataTableBody = () => {
               </td>
             )}
             {visibleColumns.map((column, columnIndex) => {
+              const accessor = column.accessor as keyof T;
+
               const props = {
-                accessor: column.accessor,
+                accessor: accessor,
                 item: row,
-                value: row[column.accessor],
+                value: row[accessor],
                 rowIndex,
                 columnIndex
               };
@@ -56,7 +58,7 @@ const DataTableBody = () => {
               let content;
 
               if (column.Component) {
-                const CellComponent = column.Component as keyof JSX.IntrinsicElements;
+                const CellComponent = column.Component;
                 content = <CellComponent {...props} />;
               } else {
                 content = <DataTableCell {...props} />;
@@ -85,7 +87,11 @@ const DataTableBody = () => {
         <Modal onClose={() => setSelectedRowIndex(-1)} title="Detailed information">
           <div className="alt-data-table-mobile-grid">
             {columns.map((column, columnIndex) => {
-              const CustomComponent = column.Component as keyof JSX.IntrinsicElements;
+              const CustomComponent = column.Component;
+
+              const currentRow = data[selectedRowIndex];
+              const accessor = column.accessor as keyof T;
+              const currentValue = currentRow[accessor];
 
               return (
                 <div key={columnIndex} className="alt-data-table-mobile-cell">
@@ -96,13 +102,13 @@ const DataTableBody = () => {
                     {column.Component ? (
                       <CustomComponent
                         {...column}
-                        item={data[selectedRowIndex]}
+                        item={currentRow}
                         rowIndex={selectedRowIndex}
                         columnIndex={columnIndex}
-                        value={data[selectedRowIndex][column.accessor]}
+                        value={currentValue}
                       />
                     ) : (
-                      String(data[selectedRowIndex][column.accessor])
+                      String(currentValue)
                     )}
                   </div>
                 </div>
@@ -115,4 +121,4 @@ const DataTableBody = () => {
   );
 };
 
-export default memo(DataTableBody) as typeof DataTableBody;
+export default DataTableBody;

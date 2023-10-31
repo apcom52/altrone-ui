@@ -62,7 +62,7 @@ export const DataTable = <T extends object>(props: DataTableProps<T>) => {
           )}
           <DataTableHeaderRow />
         </thead>
-        <DataTableBody />
+        <DataTableBody<T> />
         <DataTableFooter DataTableFooterStatusComponent={DataTableStatusComponent} />
       </table>
     </DataTableContextProvider>
