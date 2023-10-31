@@ -1,11 +1,11 @@
 import { memo } from 'react';
 import './data-table-footer.scss';
 import DataTablePagination from './DataTablePagination';
-import { useDataTableContext } from '../../../contexts';
 import { useWindowSize } from '../../../hooks';
+import { useDataTableContext } from './DataTable.context';
 
 interface DataTableFooterProps {
-  DataTableFooterStatusComponent: () => JSX.Element;
+  DataTableFooterStatusComponent?: () => JSX.Element;
 }
 
 const DataTableFooter = ({ DataTableFooterStatusComponent }: DataTableFooterProps) => {

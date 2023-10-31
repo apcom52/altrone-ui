@@ -37,7 +37,8 @@ const localization: Localization = {
       filters: 'Фильтры',
       filtering: 'Фильтры',
       resetFilters: 'Сбросить фильтры',
-      resetSorting: 'Сбросить сортировку'
+      resetSorting: 'Сбросить сортировку',
+      select: 'Выберите строки'
     }
   },
   form: {

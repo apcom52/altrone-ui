@@ -12,7 +12,7 @@ import {
 } from './functions';
 import { Sort } from '../../../types';
 import { Altrone } from '../../../hocs';
-import ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom';
 import { Icon } from '../../typography';
 import { TEST_MATCH_MEDIA_FN } from '../../../constants/_testUtils';
 import { Picker } from '../../form';

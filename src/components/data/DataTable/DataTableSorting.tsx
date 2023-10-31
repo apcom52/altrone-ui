@@ -2,10 +2,10 @@ import { memo, useMemo } from 'react';
 import { ButtonContainer, FormField, FormGroup } from '../../containers';
 import { RadioList, Select, Button } from '../../form';
 import './data-table-sorting.scss';
-import { Align, Direction, Role } from '../../../types';
-import { useDataTableContext } from '../../../contexts';
+import { Align, Direction, Role, Sort } from '../../../types';
 import { useLocalization } from '../../../hooks';
-import { DataTablePopupActionProps } from './DataTable';
+import { DataTablePopupActionProps } from './DataTableAction.types';
+import { useDataTableContext } from './DataTable.context';
 
 const DataTableSorting = ({ closePopup }: DataTablePopupActionProps) => {
   const { columns, sortKeys, sortBy, sortType, setSortType, setSortBy } = useDataTableContext();
@@ -27,7 +27,12 @@ const DataTableSorting = ({ closePopup }: DataTablePopupActionProps) => {
       <div className="alt-data-table-sorting__title">{t('data.dataTable.sorting')}</div>
       <FormGroup>
         <FormField label={t('data.dataTable.field')}>
-          <Select options={sortKeysOptions} value={sortBy || ''} onChange={setSortBy} />
+          <Select<Sort | undefined>
+            options={sortKeysOptions}
+            value={sortBy}
+            onChange={setSortBy}
+            clearable
+          />
         </FormField>
         <FormField label={t('data.dataTable.direction')}>
           <RadioList
@@ -38,11 +43,11 @@ const DataTableSorting = ({ closePopup }: DataTablePopupActionProps) => {
             options={[
               {
                 label: t('common.asc'),
-                value: 'asc'
+                value: Sort.asc
               },
               {
                 label: t('common.desc'),
-                value: 'desc'
+                value: Sort.desc
               }
             ]}
           />

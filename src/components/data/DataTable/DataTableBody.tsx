@@ -1,5 +1,4 @@
 import { memo, useEffect, useMemo, useState } from 'react';
-import { useDataTableContext } from '../../../contexts';
 import DataTableCell from './DataTableCell';
 import { filterVisibleColumns } from './functions';
 import { useWindowSize } from '../../../hooks';
@@ -7,6 +6,7 @@ import { Icon } from '../../typography';
 import { Modal } from '../../containers';
 import { Checkbox } from '../../form';
 import clsx from 'clsx';
+import { useDataTableContext } from './DataTable.context';
 
 const DataTableBody = () => {
   const { data, columns, page, limit, mobileColumns, selectableMode, selectedRows, selectRow } =

@@ -3,11 +3,11 @@ import { FormField, FormGroup } from '../../containers';
 import { Checkbox, CheckboxList, Select, Button, DatePicker } from '../../form';
 import './data-table-filtering.scss';
 import { Align, Direction, Option, Role } from '../../../types';
-import { useDataTableContext } from '../../../contexts';
 import ButtonContainer from '../../containers/ButtonContainer/ButtonContainer';
 import { useLocalization } from '../../../hooks';
-import { DataTablePopupActionProps } from './DataTable';
+import { DataTablePopupActionProps } from './DataTableAction.types';
 import dayjs from 'dayjs';
+import { useDataTableContext } from './DataTable.context';
 
 const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
   const { filters, initialData, appliedFilters, setAppliedFilters } = useDataTableContext();

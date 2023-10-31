@@ -7,7 +7,7 @@ import { Button, ButtonVariant } from '../../form';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import { ContextAction, ContextMenuType, ParentContextAction, Role } from '../../../types';
 import { useWindowSize } from '../../../hooks';
-import { useDataTableContext } from '../../../contexts';
+import { useDataTableContext } from './DataTable.context';
 
 const DataTableAction = <T extends unknown>({
   label,

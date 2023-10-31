@@ -1,8 +1,8 @@
 import { memo, useMemo } from 'react';
 import { Icon } from '../../typography';
-import { useDataTableContext } from '../../../contexts';
 import { useWindowSize } from '../../../hooks';
 import { filterVisibleColumns } from './functions';
+import { useDataTableContext } from './DataTable.context';
 
 const DataTableHeaderRow = () => {
   const { columns, sortBy, sortType, mobileColumns, selectableMode } = useDataTableContext();
