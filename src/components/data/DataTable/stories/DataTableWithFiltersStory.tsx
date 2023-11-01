@@ -2,7 +2,7 @@ import { StoryObj } from '@storybook/react';
 import { DataTable, DataTableColumn } from '../index';
 import { default as tableData } from './data2';
 import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
-import { DataTableFilter } from '../DataTable.types';
+import { DataTableFilter } from '../DataTableFilter.types';
 import { Picker } from '../../../form';
 
 export interface DataTableStoryDataInterface {
@@ -37,7 +37,7 @@ export const FILTERS: DataTableFilter<DataTableStoryDataInterface>[] = [
   }
 ];
 
-export const DataTableWithFiltersStory: StoryObj<typeof DataTable> = {
+export const DataTableWithFiltersStory: StoryObj<typeof DataTable<DataTableStoryDataInterface>> = {
   storyName: 'DataTable with Filters',
   render: ({ data, columns, searchFunc, sortFunc, DataTableStatusComponent, ...args }) => {
     return (

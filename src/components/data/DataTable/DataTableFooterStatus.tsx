@@ -1,5 +1,5 @@
-import { useDataTableContext } from '../../../contexts';
 import { useLocalization, useWindowSize } from '../../../hooks';
+import { useDataTableContext } from './DataTable.context';
 
 const DataTableFooterStatus = () => {
   const { data, selectedRows } = useDataTableContext();

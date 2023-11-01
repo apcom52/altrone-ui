@@ -1,6 +1,9 @@
-export {
-  default as DataTable,
-  DataTableColumn,
+export { default as DataTable } from './DataTable';
+export type { DataTableColumn } from './DataTable.types';
+export type {
   DataTableAction,
-  DataTablePopupActionProps
-} from './DataTable';
+  DataTableSelectableAction,
+  DataTablePopupActionProps,
+  DataTableSelectablePopupActionProps
+} from './DataTableAction.types';
+export type { DataTableFilter } from './DataTableFilter.types';

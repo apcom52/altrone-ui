@@ -1,26 +1,35 @@
 import { Sort } from '../../../types';
-import { DataTableColumn } from './DataTable';
+import { DataTableColumn } from './DataTable.types';
 import dayjs from 'dayjs';
 import { Picker } from '../../form';
 
-export interface DataTableSearchFunc<T> {
+export interface DataTableSearchFunc<T extends object> {
   item: T;
   field: keyof T;
   query: string;
 }
 
-export const defaultSearchFunc = <T>({ item, field, query }: DataTableSearchFunc<T>) => {
+export const defaultSearchFunc = <T extends object>({
+  item,
+  field,
+  query
+}: DataTableSearchFunc<T>) => {
   return Boolean(item[field]?.toString().toLowerCase().startsWith(query.toLowerCase()));
 };
 
-export interface DataTableSortFunc<T> {
+export interface DataTableSortFunc<T extends object> {
   itemA: T;
   itemB: T;
   field: keyof T;
   direction: Sort;
 }
 
-export const defaultSortFunc = <T>({ itemA, itemB, field, direction }: DataTableSortFunc<T>) => {
+export const defaultSortFunc = <T extends object>({
+  itemA,
+  itemB,
+  field,
+  direction
+}: DataTableSortFunc<T>) => {
   if (direction === Sort.asc) {
     return itemA[field] > itemB[field] ? 1 : -1;
   } else {
@@ -28,21 +37,30 @@ export const defaultSortFunc = <T>({ itemA, itemB, field, direction }: DataTable
   }
 };
 
-export interface DataTableFilterFunc<T, ValueType = unknown> extends Record<string, unknown> {
+export interface DataTableFilterFunc<T extends object, ValueType = unknown>
+  extends Record<string, unknown> {
   item: T;
   field: keyof T;
   value: ValueType;
 }
 
-export const defaultSelectFilter = <T>({ item, field, value }: DataTableFilterFunc<T>) => {
+export const defaultSelectFilter = <T extends object>({
+  item,
+  field,
+  value
+}: DataTableFilterFunc<T>) => {
   return item[field] === value;
 };
 
-export const defaultCheckboxesFilter = <T>({ item, field, value = [] }: DataTableFilterFunc<T>) => {
+export const defaultCheckboxesFilter = <T extends object>({
+  item,
+  field,
+  value = []
+}: DataTableFilterFunc<T>) => {
   return Array.isArray(value) ? value.indexOf(item[field]) > -1 : false;
 };
 
-export const defaultCheckboxFilter = <T>({
+export const defaultCheckboxFilter = <T extends object>({
   item,
   field,
   value = false
@@ -54,7 +72,7 @@ export const defaultCheckboxFilter = <T>({
   }
 };
 
-export const defaultDateFilter = <T>({
+export const defaultDateFilter = <T extends object>({
   item,
   field,
   value,
@@ -70,7 +88,7 @@ export const defaultDateFilter = <T>({
   return false;
 };
 
-export const defaultDateRangeFilter = <T>({
+export const defaultDateRangeFilter = <T extends object>({
   item,
   field,
   value,
@@ -90,7 +108,7 @@ export const defaultDateRangeFilter = <T>({
   return false;
 };
 
-export const filterVisibleColumns = <T>(
+export const filterVisibleColumns = <T extends object>(
   columns: DataTableColumn<T>[],
   mobileColumns: (keyof T)[],
   isMobile = false

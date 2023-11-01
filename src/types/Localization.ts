@@ -40,6 +40,7 @@ export interface Localization {
       filtering: string;
       resetFilters: string;
       resetSorting: string;
+      select: string;
     };
   };
   form: {

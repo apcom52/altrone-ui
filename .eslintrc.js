@@ -4,7 +4,14 @@ module.exports = {
     es2021: true,
     jest: true
   },
-  extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:@typescript-eslint/recommended', 'plugin:react/jsx-runtime', 'plugin:prettier/recommended', 'plugin:storybook/recommended'],
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:prettier/recommended',
+    'plugin:storybook/recommended'
+  ],
   overrides: [],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -17,7 +24,8 @@ module.exports = {
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
-    '@typescript-eslint/no-unnecessary-type-constraint': 'off'
+    '@typescript-eslint/no-unnecessary-type-constraint': 'off',
+    'react/prop-types': 'off'
   },
   ignorePatterns: ['coverage', 'dist', 'public', 'node_modules']
 };

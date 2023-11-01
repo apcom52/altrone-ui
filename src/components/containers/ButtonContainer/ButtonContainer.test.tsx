@@ -6,7 +6,7 @@ import { Direction, Align } from '../../../types';
 
 describe('Containers.ButtonContainer', () => {
   test('should apply correct classes', () => {
-    const { rerender } = render(
+    render(
       <ButtonContainer direction={Direction.vertical} align={Align.end}>
         <Button>Left</Button>
         <Button>Right</Button>

@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { useDataTableContext } from '../../../contexts';
-import { Pagination } from '../../indicators/Pagination';
+import { Pagination } from '../../indicators';
+import { useDataTableContext } from './DataTable.context';
 
 const DataTablePagination = () => {
   const { data, page, setPage, limit } = useDataTableContext();

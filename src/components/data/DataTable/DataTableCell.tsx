@@ -1,15 +1,13 @@
-import { memo } from 'react';
-
-export interface DataTableCellProps {
-  item: unknown;
-  accessor: string;
+export interface DataTableCellProps<T extends object> {
+  item: T;
+  accessor: keyof T;
   value: unknown;
   rowIndex: number;
   columnIndex: number;
 }
 
-const DataTableCell = ({ value }: DataTableCellProps) => {
+const DataTableCell = <T extends object>({ value }: DataTableCellProps<T>) => {
   return <>{String(value)}</>;
 };
 
-export default memo(DataTableCell) as typeof DataTableCell;
+export default DataTableCell;

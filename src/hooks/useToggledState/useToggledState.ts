@@ -17,7 +17,7 @@ export const useToggledState = (defaultValue: boolean) => {
 
   return {
     value: state,
-    setValue,
+    setValue: setState,
     enable,
     disable,
     toggle

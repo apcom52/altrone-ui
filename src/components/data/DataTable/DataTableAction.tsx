@@ -1,29 +1,37 @@
 import { memo, useCallback, useMemo, useRef, useState } from 'react';
 import type {
-  DataTableAction as DataTableActionType,
-  DataTableSelectableAction as DataTableSelectableActionType
-} from './DataTable';
+  DataTableAction,
+  DataTableSelectableAction,
+  DataTableSelectablePopupActionProps
+} from './DataTableAction.types';
 import { Button, ButtonVariant } from '../../form';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import { ContextAction, ContextMenuType, ParentContextAction, Role } from '../../../types';
 import { useWindowSize } from '../../../hooks';
-import { useDataTableContext } from '../../../contexts';
+import { useDataTableContext } from './DataTable.context';
+import { DataTablePopupActionProps } from './DataTableAction.types';
 
-const DataTableAction = <T extends unknown>({
+const DataTableAction = <T extends object>({
   label,
-  content,
-  onClick,
   icon,
   isIcon = false,
   indicator,
-  contextMenu,
   danger = false,
-  disabled
-}: DataTableActionType | DataTableSelectableActionType<T>) => {
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const actionType = contextMenu ? 'contextMenu' : content ? 'popup' : 'button';
+  disabled,
+  onClick,
+  content,
+  contextMenu
+}: DataTableAction | DataTableSelectableAction<T>) => {
+  let actionType = 'button';
+  if (Array.isArray(contextMenu)) {
+    actionType = 'contextMenu';
+  } else if (typeof content === 'object' || typeof content === 'function') {
+    actionType = 'popup';
+  }
 
-  const { selectableMode, selectedRows, data, page, limit } = useDataTableContext();
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const { selectableMode, selectedRows, data, page, limit } = useDataTableContext<T>();
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
@@ -79,11 +87,14 @@ const DataTableAction = <T extends unknown>({
     setIsPopupVisible(false);
   }, []);
 
+  const ContentElement = content as React.FC<
+    DataTablePopupActionProps | DataTableSelectablePopupActionProps<T>
+  >;
+
   return (
     <>
       <Button
         ref={buttonRef}
-        title={label}
         leftIcon={!ltePhoneL && !isIcon ? icon : undefined}
         variant={ButtonVariant.text}
         isIcon={isIcon || ltePhoneL}
@@ -101,9 +112,10 @@ const DataTableAction = <T extends unknown>({
           mobileBehaviour={FloatingBoxMobileBehaviour.modal}
           minWidth={250}
           useParentWidth>
-          <div className="alt-data-table-action">
-            {content?.({ closePopup, ...(selectableMode ? { selectedRows: selectedData } : {}) })}
-          </div>
+          <ContentElement
+            closePopup={closePopup}
+            selectedRows={selectableMode ? selectedData : undefined}
+          />
         </FloatingBox>
       )}
     </>
