@@ -260,7 +260,7 @@ describe('Data.DataTable', () => {
       </Altrone>
     );
 
-    const sortingAction = screen.getByTitle('Sort');
+    const sortingAction = screen.getByText('Sort');
     await waitFor(() => fireEvent.click(sortingAction));
 
     rerender(
@@ -352,7 +352,7 @@ describe('Data.DataTable', () => {
       </Altrone>
     );
 
-    const filtersAction = screen.getByTitle('Filters');
+    const filtersAction = screen.getByText('Filters');
     await waitFor(() => fireEvent.click(filtersAction));
 
     rerender(
@@ -412,7 +412,7 @@ describe('Data.DataTable', () => {
       </Altrone>
     );
 
-    let filtersAction = screen.getByTitle('Filters');
+    let filtersAction = screen.getByText('Filters');
     await waitFor(() => fireEvent.click(filtersAction));
 
     const northAmerica = screen.getByText('NA');
@@ -436,7 +436,7 @@ describe('Data.DataTable', () => {
       </Altrone>
     );
 
-    filtersAction = screen.getByTitle('Filters');
+    filtersAction = screen.getByText('Filters');
     const indicator = filtersAction.querySelector('.alt-button__indicator');
 
     expect(indicator).toBeInTheDocument();
