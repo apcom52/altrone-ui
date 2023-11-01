@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import DataTableCell from './DataTableCell';
+import DataTableCell, { DataTableCellProps } from './DataTableCell';
 import { filterVisibleColumns } from './functions';
 import { useWindowSize } from '../../../hooks';
 import { Icon } from '../../typography';
@@ -87,7 +87,7 @@ const DataTableBody = <T extends object>() => {
         <Modal onClose={() => setSelectedRowIndex(-1)} title="Detailed information">
           <div className="alt-data-table-mobile-grid">
             {columns.map((column, columnIndex) => {
-              const CustomComponent = column.Component;
+              const CustomComponent = column.Component as React.FC<DataTableCellProps<T>>;
 
               const currentRow = data[selectedRowIndex];
               const accessor = column.accessor as keyof T;
@@ -96,7 +96,7 @@ const DataTableBody = <T extends object>() => {
               return (
                 <div key={columnIndex} className="alt-data-table-mobile-cell">
                   <div className="alt-data-table-mobile-cell__label">
-                    {column.label || column.accessor}
+                    {String(column.label || column.accessor)}
                   </div>
                   <div className="alt-data-table-mobile-cell__value">
                     {column.Component ? (

@@ -43,7 +43,7 @@ type SelectableActionContent<T extends object> =
       contextMenu?: never;
     }
   | {
-      onClick: (selectedRows: T[]) => void;
+      onClick?: never;
       content: React.FC<DataTableSelectablePopupActionProps<T>>;
       contextMenu?: never;
     }

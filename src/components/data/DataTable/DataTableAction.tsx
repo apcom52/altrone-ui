@@ -1,10 +1,15 @@
 import { memo, useCallback, useMemo, useRef, useState } from 'react';
-import type { DataTableAction, DataTableSelectableAction } from './DataTableAction.types';
+import type {
+  DataTableAction,
+  DataTableSelectableAction,
+  DataTableSelectablePopupActionProps
+} from './DataTableAction.types';
 import { Button, ButtonVariant } from '../../form';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import { ContextAction, ContextMenuType, ParentContextAction, Role } from '../../../types';
 import { useWindowSize } from '../../../hooks';
 import { useDataTableContext } from './DataTable.context';
+import { DataTablePopupActionProps } from './DataTableAction.types';
 
 const DataTableAction = <T extends object>({
   label,
@@ -20,7 +25,7 @@ const DataTableAction = <T extends object>({
   let actionType = 'button';
   if (Array.isArray(contextMenu)) {
     actionType = 'contextMenu';
-  } else if (typeof content === 'function') {
+  } else if (typeof content === 'object') {
     actionType = 'popup';
   }
 
@@ -82,6 +87,10 @@ const DataTableAction = <T extends object>({
     setIsPopupVisible(false);
   }, []);
 
+  const ContentElement = content as React.FC<
+    DataTablePopupActionProps | DataTableSelectablePopupActionProps<T>
+  >;
+
   return (
     <>
       <Button
@@ -104,7 +113,10 @@ const DataTableAction = <T extends object>({
           minWidth={250}
           useParentWidth>
           <div className="alt-data-table-action">
-            {content?.({ closePopup, ...(selectableMode ? { selectedRows: selectedData } : {}) })}
+            <ContentElement
+              closePopup={closePopup}
+              selectedRows={selectableMode ? selectedData : undefined}
+            />
           </div>
         </FloatingBox>
       )}
