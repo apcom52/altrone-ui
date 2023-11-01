@@ -25,7 +25,7 @@ const DataTableAction = <T extends object>({
   let actionType = 'button';
   if (Array.isArray(contextMenu)) {
     actionType = 'contextMenu';
-  } else if (typeof content === 'object') {
+  } else if (typeof content === 'object' || typeof content === 'function') {
     actionType = 'popup';
   }
 
@@ -112,12 +112,10 @@ const DataTableAction = <T extends object>({
           mobileBehaviour={FloatingBoxMobileBehaviour.modal}
           minWidth={250}
           useParentWidth>
-          <div className="alt-data-table-action">
-            <ContentElement
-              closePopup={closePopup}
-              selectedRows={selectableMode ? selectedData : undefined}
-            />
-          </div>
+          <ContentElement
+            closePopup={closePopup}
+            selectedRows={selectableMode ? selectedData : undefined}
+          />
         </FloatingBox>
       )}
     </>

@@ -635,7 +635,7 @@ describe('Data.DataTable', () => {
     const ActionPopupComponent: React.FC<DataTableSelectablePopupActionProps<DataInstance>> = ({
       selectedRows
     }) => {
-      return <div>{JSON.stringify(selectedRows?.map((v) => v.id))}</div>;
+      return <div data-testid="popupContent">{JSON.stringify(selectedRows?.map((v) => v.id))}</div>;
     };
 
     const { rerender } = render(
@@ -801,9 +801,7 @@ describe('Data.DataTable', () => {
             {
               icon: <></>,
               label: 'Popup test',
-              content: ({ selectedRows }) => (
-                <div>{JSON.stringify(selectedRows?.map((v) => v.id))}</div>
-              )
+              content: ActionPopupComponent
             }
           ]}
         />
