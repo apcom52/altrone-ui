@@ -36,7 +36,7 @@ const setPopperWidth = (state: State, minWidth: FloatingBoxProps['minWidth']) =>
   const targetRefWidth = state.elements.reference.getBoundingClientRect().width;
 
   state.elements.popper.style.width = `${
-    minWidth ? (targetRefWidth < minWidth ? minWidth : targetRefWidth) : targetRefWidth
+    minWidth ? (targetRefWidth < Number(minWidth) ? minWidth : targetRefWidth) : targetRefWidth
   }px`;
 };
 
