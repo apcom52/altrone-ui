@@ -1,21 +1,12 @@
-import {
-  ContextAction,
-  ContextMenuType as ContextMenuType,
-  ParentContextAction
-} from '../../../types';
+import { ParentContextAction } from '../../../types';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ContextMenuItem, ContextParentMenuItem } from './index';
+import { ContextMenuAction, ContextParentMenuItem } from './index';
 import './context-menu.scss';
 import { Icon } from '../../typography';
 import { useLocalization } from '../../../hooks';
 import clsx from 'clsx';
-
-interface ContextMenuComponentProps {
-  onClose: () => void;
-  menu: ContextMenuType;
-  fluid?: boolean;
-  maxHeight?: number | string;
-}
+import { ContextMenuComponentProps } from './ContextMenu.types';
+import { ContextClickAction } from '../../../types/ContextAction';
 
 /**
  * This component is used to show context menus
@@ -40,10 +31,13 @@ const ContextMenu = ({
     setSelectedParentItem(action);
   }, []);
 
-  const onActionClick = (action: ContextAction) => {
-    action.onClick?.();
-    onClose?.();
-  };
+  const onActionClick = useCallback(
+    (action: ContextClickAction) => {
+      action.onClick();
+      onClose();
+    },
+    [onClose]
+  );
 
   useEffect(() => {
     if (!contextMenuRef.current) {
@@ -64,7 +58,7 @@ const ContextMenu = ({
       ref={contextMenuRef}
       data-testid="alt-test-contextMenu">
       {selectedParentItem && [
-        <ContextMenuItem
+        <ContextMenuAction
           key={-1}
           icon={<Icon i="arrow_back_ios" />}
           title={t('common.back')}
@@ -72,23 +66,34 @@ const ContextMenu = ({
           selected
         />,
         ...selectedParentItem.children.map((item, itemIndex) => (
-          <ContextMenuItem key={itemIndex} {...item} onClick={() => onActionClick(item)} />
+          <ContextMenuAction key={itemIndex} {...item} onClick={() => onActionClick(item)} />
         ))
       ]}
-
       {!selectedParentItem &&
-        menu.map((item, itemIndex) =>
-          'onClick' in item ? (
-            <ContextMenuItem key={itemIndex} {...item} onClick={() => onActionClick(item)} />
-          ) : (
-            <ContextParentMenuItem
-              key={itemIndex}
-              onClick={onParentItemClick}
-              onClose={onClose}
-              {...item}
-            />
-          )
-        )}
+        menu.map((item, itemIndex) => {
+          if ('children' in item) {
+            return (
+              <ContextParentMenuItem
+                key={itemIndex}
+                onClick={onParentItemClick}
+                onClose={onClose}
+                {...item}
+              />
+            );
+          } else if (item.type === 'checkbox') {
+            return null;
+          } else if (item.type === 'radioList') {
+            return null;
+          } else {
+            return (
+              <ContextMenuAction
+                key={itemIndex}
+                {...item}
+                onClick={onActionClick.bind(null, item)}
+              />
+            );
+          }
+        })}
     </div>
   );
 };
