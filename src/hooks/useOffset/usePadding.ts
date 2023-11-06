@@ -40,7 +40,7 @@ export const usePadding = (params: number | Offset) => {
       paddingValue.push(top, left, bottom, right);
     }
 
-    result.padding = paddingValue.map((value) => value * OFFSET_WIDTH).join('px ') + 'px';
+    result.padding = paddingValue.map((value) => Number(value) * OFFSET_WIDTH).join('px ') + 'px';
   } else {
     if (top !== undefined) {
       result.paddingTop = top * OFFSET_WIDTH;
