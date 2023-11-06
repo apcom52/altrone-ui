@@ -1,12 +1,12 @@
 type BaseContextAction = {
   title: string;
-  icon?: JSX.Element;
   hint?: string;
   disabled?: boolean;
 };
 
 type ClickAction = {
   type?: 'action';
+  icon?: JSX.Element;
   onClick: (...args: unknown[]) => void;
   selected?: boolean;
   danger?: boolean;

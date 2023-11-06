@@ -7,6 +7,7 @@ import { useLocalization } from '../../../hooks';
 import clsx from 'clsx';
 import { ContextMenuComponentProps } from './ContextMenu.types';
 import { ContextClickAction } from '../../../types/ContextAction';
+import { ContextMenuCheckboxAction } from './ContextMenuCheckboxAction';
 
 /**
  * This component is used to show context menus
@@ -81,7 +82,7 @@ const ContextMenu = ({
               />
             );
           } else if (item.type === 'checkbox') {
-            return null;
+            return <ContextMenuCheckboxAction key={itemIndex} {...item} />;
           } else if (item.type === 'radioList') {
             return null;
           } else {
