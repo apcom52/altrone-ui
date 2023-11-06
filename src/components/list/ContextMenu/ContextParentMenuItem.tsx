@@ -55,7 +55,7 @@ const ContextParentMenuItem = ({ onClick, onClose, ...action }: ContextParentMen
             placement="right"
             useRootContainer={true}
             onClose={() => setIsChildrenContextMenuVisible(false)}
-            offset={8}>
+            offset={2}>
             <ContextMenu onClose={onClose} menu={action.children} />
           </FloatingBox>,
           altroneRef.current

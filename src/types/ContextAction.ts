@@ -1,11 +1,13 @@
+import { Option } from './Option';
+
 type BaseContextAction = {
-  title: string;
   hint?: string;
   disabled?: boolean;
 };
 
 type ClickAction = {
   type?: 'action';
+  title: string;
   icon?: JSX.Element;
   onClick: (...args: unknown[]) => void;
   selected?: boolean;
@@ -14,16 +16,17 @@ type ClickAction = {
 
 type CheckboxAction = {
   type: 'checkbox';
+  title: string;
   onChange: (state: boolean) => void;
   checked: boolean;
 };
 
 type RadioListAction = {
   type: 'radioList';
-  groupName: string;
+  title?: string;
+  options: Option<unknown>[];
   value: unknown;
   onChange: (selectedOption: unknown) => void;
-  selectedValue: unknown;
 };
 
 export type ContextClickAction = BaseContextAction & ClickAction;
