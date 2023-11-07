@@ -28,7 +28,7 @@ import DataTableFooterStatus from './DataTableFooterStatus';
  * @param DataTableStatusComponent
  * @constructor
  */
-export const DataTable = <T extends object>(props: DataTableProps<T>) => {
+export const DataTable = <DataType extends object>(props: DataTableProps<DataType>) => {
   const {
     sortKeys = [],
     filters = [],
@@ -46,7 +46,7 @@ export const DataTable = <T extends object>(props: DataTableProps<T>) => {
   );
 
   return (
-    <DataTableContextProvider<T> {...props}>
+    <DataTableContextProvider<DataType> {...props}>
       <table
         className={clsx('alt-data-table', className, {
           'alt-data-table--striped-odd': striped === 'odd',
@@ -55,7 +55,7 @@ export const DataTable = <T extends object>(props: DataTableProps<T>) => {
         data-testid="alt-test-datatable">
         <thead>
           {isHeaderVisible && (
-            <DataTableHeader<T>
+            <DataTableHeader<DataType>
               actions={actions}
               selectableActions={selectableActions}
               selectable={Boolean(selectable)}
@@ -63,7 +63,7 @@ export const DataTable = <T extends object>(props: DataTableProps<T>) => {
           )}
           <DataTableHeaderRow />
         </thead>
-        <DataTableBody<T> />
+        <DataTableBody<DataType> />
         <DataTableFooter DataTableFooterStatusComponent={DataTableStatusComponent} />
       </table>
     </DataTableContextProvider>
