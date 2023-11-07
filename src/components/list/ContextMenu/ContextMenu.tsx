@@ -46,7 +46,12 @@ const ContextMenu = ({
       return;
     }
 
-    const selectedIndex = menu.findIndex((menuItem) => menuItem.selected);
+    const selectedIndex = menu.findIndex(
+      (menuItem) =>
+        'type' in menuItem &&
+        (menuItem.type === 'action' || menuItem.type === undefined) &&
+        menuItem.selected
+    );
     const currentScroll = (selectedIndex - 4) * 32;
     contextMenuRef.current.scrollTop = currentScroll < 0 ? 0 : currentScroll;
   }, [menu]);
@@ -67,9 +72,21 @@ const ContextMenu = ({
           onClick={() => setSelectedParentItem(null)}
           selected
         />,
-        ...selectedParentItem.children.map((item, itemIndex) => (
-          <ContextMenuAction key={itemIndex} {...item} onClick={() => onActionClick(item)} />
-        ))
+        ...selectedParentItem.children.map((item, itemIndex) => {
+          if (item.type === 'checkbox') {
+            return <ContextMenuCheckboxAction key={itemIndex} {...item} />;
+          } else if (item.type === 'radioList') {
+            return <ContextMenuRadioListAction key={itemIndex} {...item} />;
+          } else {
+            return (
+              <ContextMenuAction
+                key={itemIndex}
+                {...item}
+                onClick={onActionClick.bind(null, item)}
+              />
+            );
+          }
+        })
       ]}
       {!selectedParentItem &&
         menu.map((item, itemIndex) => {

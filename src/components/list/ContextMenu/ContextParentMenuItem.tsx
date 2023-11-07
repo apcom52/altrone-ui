@@ -7,7 +7,7 @@ import { ContextMenu } from './index';
 import clsx from 'clsx';
 import { useWindowSize } from '../../../hooks';
 
-interface ContextParentMenuItem extends Omit<ParentContextAction, 'children'> {
+interface ContextParentMenuItem extends ParentContextAction {
   onClick: (action: ParentContextAction | null) => void;
   onClose: () => void;
 }
