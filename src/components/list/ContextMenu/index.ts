@@ -1,3 +1,5 @@
 export { default as ContextMenu } from './ContextMenu';
-export { default as ContextMenuItem } from './ContextMenuItem';
-export { default as ContextParentMenuItem } from './ContextParentMenuItem';
+export { ContextMenuAction } from './ContextMenuAction';
+export { ContextMenuCheckboxAction } from './ContextMenuCheckboxAction';
+export { ContextMenuRadioListAction } from './ContextMenuRadioListAction';
+export { ContextParentMenuItem } from './ContextParentMenuItem';
