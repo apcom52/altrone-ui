@@ -1,14 +1,18 @@
 import { ParentContextAction } from '../../../types';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ContextMenuAction, ContextParentMenuItem } from './index';
+import {
+  ContextMenuAction,
+  ContextParentMenuItem,
+  ContextMenuCheckboxAction,
+  ContextMenuRadioListAction
+} from './index';
 import './context-menu.scss';
 import { Icon } from '../../typography';
 import { useLocalization } from '../../../hooks';
 import clsx from 'clsx';
 import { ContextMenuComponentProps } from './ContextMenu.types';
 import { ContextClickAction } from '../../../types/ContextAction';
-import { ContextMenuCheckboxAction } from './ContextMenuCheckboxAction';
-import { ContextMenuRadioListAction } from './ContextMenuRadioListAction';
+import { ContextMenuTotalPages } from './ContextMenu.context';
 
 /**
  * This component is used to show context menus
@@ -57,63 +61,69 @@ const ContextMenu = ({
   }, [menu]);
 
   return (
-    <div
-      className={clsx('alt-context-menu-list', {
-        'alt-context-menu-list--fluid': fluid
-      })}
-      style={{ maxHeight }}
-      ref={contextMenuRef}
-      data-testid="alt-test-contextMenu">
-      {selectedParentItem && [
-        <ContextMenuAction
-          key={-1}
-          icon={<Icon i="arrow_back_ios" />}
-          title={t('common.back')}
-          onClick={() => setSelectedParentItem(null)}
-          selected
-        />,
-        ...selectedParentItem.children.map((item, itemIndex) => {
-          if (item.type === 'checkbox') {
-            return <ContextMenuCheckboxAction key={itemIndex} {...item} />;
-          } else if (item.type === 'radioList') {
-            return <ContextMenuRadioListAction key={itemIndex} {...item} />;
-          } else {
-            return (
-              <ContextMenuAction
-                key={itemIndex}
-                {...item}
-                onClick={onActionClick.bind(null, item)}
-              />
-            );
-          }
-        })
-      ]}
-      {!selectedParentItem &&
-        menu.map((item, itemIndex) => {
-          if ('children' in item) {
-            return (
-              <ContextParentMenuItem
-                key={itemIndex}
-                onClick={onParentItemClick}
-                onClose={onClose}
-                {...item}
-              />
-            );
-          } else if (item.type === 'checkbox') {
-            return <ContextMenuCheckboxAction key={itemIndex} {...item} />;
-          } else if (item.type === 'radioList') {
-            return <ContextMenuRadioListAction key={itemIndex} {...item} />;
-          } else {
-            return (
-              <ContextMenuAction
-                key={itemIndex}
-                {...item}
-                onClick={onActionClick.bind(null, item)}
-              />
-            );
-          }
+    <ContextMenuTotalPages.Provider value={menu.length}>
+      <div
+        className={clsx('alt-context-menu-list', {
+          'alt-context-menu-list--fluid': fluid
         })}
-    </div>
+        style={{ maxHeight }}
+        ref={contextMenuRef}
+        data-testid="alt-test-contextMenu">
+        {selectedParentItem && [
+          <ContextMenuAction
+            key={-1}
+            icon={<Icon i="arrow_back_ios" />}
+            title={t('common.back')}
+            onClick={() => setSelectedParentItem(null)}
+            selected
+          />,
+          ...selectedParentItem.children.map((item, itemIndex) => {
+            if (item.type === 'checkbox') {
+              return <ContextMenuCheckboxAction key={itemIndex} {...item} />;
+            } else if (item.type === 'radioList') {
+              return <ContextMenuRadioListAction key={itemIndex} index={itemIndex} {...item} />;
+            } else if (item.type === 'separator') {
+              return <hr key={itemIndex} className="alt-context-menu__separator" />;
+            } else {
+              return (
+                <ContextMenuAction
+                  key={itemIndex}
+                  {...item}
+                  onClick={onActionClick.bind(null, item)}
+                />
+              );
+            }
+          })
+        ]}
+        {!selectedParentItem &&
+          menu.map((item, itemIndex) => {
+            if ('children' in item) {
+              return (
+                <ContextParentMenuItem
+                  key={itemIndex}
+                  onClick={onParentItemClick}
+                  onClose={onClose}
+                  {...item}
+                />
+              );
+            } else if (item.type === 'checkbox') {
+              return <ContextMenuCheckboxAction key={itemIndex} {...item} />;
+            } else if (item.type === 'radioList') {
+              return <ContextMenuRadioListAction key={itemIndex} index={itemIndex} {...item} />;
+            } else if (item.type === 'separator') {
+              return <hr key={itemIndex} className="alt-context-menu__separator" />;
+            } else {
+              return (
+                <ContextMenuAction
+                  key={itemIndex}
+                  {...item}
+                  onClick={onActionClick.bind(null, item)}
+                />
+              );
+            }
+          })}
+      </div>
+    </ContextMenuTotalPages.Provider>
   );
 };
 

@@ -11,9 +11,13 @@ export const NewActionTypeForContextMenuStory: StoryObj<typeof ContextMenu> = {
   render: ({ menu }) => {
     const [checkboxChecked, setCheckboxChecked] = useState(false);
     const [radioListValue, setRadioListValue] = useState<unknown>(false);
+    const [viewMode, setViewMode] = useState<unknown>('list');
 
     const dropdownMenu: ContextMenuType = [
       ...menu,
+      {
+        type: 'separator'
+      },
       {
         type: 'checkbox',
         title: 'Private mode',
@@ -32,10 +36,18 @@ export const NewActionTypeForContextMenuStory: StoryObj<typeof ContextMenu> = {
         onChange: setRadioListValue
       },
       {
-        type: 'checkbox',
-        title: 'Only my',
-        onChange: setCheckboxChecked,
-        checked: checkboxChecked
+        title: 'View mode',
+        children: [
+          {
+            type: 'radioList',
+            value: viewMode,
+            onChange: setViewMode,
+            options: [
+              { label: 'List', value: 'list' },
+              { label: 'Grid', value: 'grid' }
+            ]
+          }
+        ]
       }
     ];
 

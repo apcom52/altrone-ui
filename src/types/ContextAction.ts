@@ -29,10 +29,18 @@ type RadioListAction = {
   onChange: (selectedOption: unknown) => void;
 };
 
+type SeparatorAction = {
+  type: 'separator';
+};
+
 export type ContextClickAction = BaseContextAction & ClickAction;
 export type ContextCheckboxAction = BaseContextAction & CheckboxAction;
 export type ContextRadioListAction = BaseContextAction & RadioListAction;
-export type ContextAction = ContextClickAction | ContextCheckboxAction | ContextRadioListAction;
+export type ContextAction =
+  | ContextClickAction
+  | ContextCheckboxAction
+  | ContextRadioListAction
+  | SeparatorAction;
 
 export type ParentContextAction = {
   title: string;
