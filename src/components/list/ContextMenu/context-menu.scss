@@ -7,6 +7,7 @@
   max-width: 300px;
   padding: 0;
   overflow-y: auto;
+  gap: 2px;
 }
 
 .alt-context-menu-item {
@@ -46,10 +47,6 @@
   }
 
   @include useFocus();
-
-  & + & {
-    margin-top: 2px;
-  }
 
   @include less($l-phone) {
     padding: 12px;
