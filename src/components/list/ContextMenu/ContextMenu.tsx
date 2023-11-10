@@ -78,14 +78,18 @@ const ContextMenu = ({
             selected
           />,
           ...selectedParentItem.children.map((item, itemIndex) => {
+            let actionElement: JSX.Element | null = null;
+
             if (item.type === 'checkbox') {
-              return <ContextMenuCheckboxAction key={itemIndex} {...item} />;
+              actionElement = <ContextMenuCheckboxAction key={itemIndex} {...item} />;
             } else if (item.type === 'radioList') {
-              return <ContextMenuRadioListAction key={itemIndex} index={itemIndex} {...item} />;
+              actionElement = (
+                <ContextMenuRadioListAction key={itemIndex} index={itemIndex} {...item} />
+              );
             } else if (item.type === 'separator') {
-              return <hr key={itemIndex} className="alt-context-menu__separator" />;
+              actionElement = <hr key={itemIndex} className="alt-context-menu__separator" />;
             } else {
-              return (
+              actionElement = (
                 <ContextMenuAction
                   key={itemIndex}
                   {...item}
@@ -93,12 +97,22 @@ const ContextMenu = ({
                 />
               );
             }
+
+            return (
+              <>
+                {item.elementAbove ? item.elementAbove() : null}
+                {actionElement}
+                {item.elementBelow ? item.elementBelow() : null}
+              </>
+            );
           })
         ]}
         {!selectedParentItem &&
           menu.map((item, itemIndex) => {
+            let actionElement: JSX.Element | null = null;
+
             if ('children' in item) {
-              return (
+              actionElement = (
                 <ContextParentMenuItem
                   key={itemIndex}
                   onClick={onParentItemClick}
@@ -107,18 +121,32 @@ const ContextMenu = ({
                 />
               );
             } else if (item.type === 'checkbox') {
-              return <ContextMenuCheckboxAction key={itemIndex} {...item} />;
+              actionElement = <ContextMenuCheckboxAction key={itemIndex} {...item} />;
             } else if (item.type === 'radioList') {
-              return <ContextMenuRadioListAction key={itemIndex} index={itemIndex} {...item} />;
+              actionElement = (
+                <ContextMenuRadioListAction key={itemIndex} index={itemIndex} {...item} />
+              );
             } else if (item.type === 'separator') {
-              return <hr key={itemIndex} className="alt-context-menu__separator" />;
+              actionElement = <hr key={itemIndex} className="alt-context-menu__separator" />;
             } else {
-              return (
+              actionElement = (
                 <ContextMenuAction
                   key={itemIndex}
                   {...item}
                   onClick={onActionClick.bind(null, item)}
                 />
+              );
+            }
+
+            if ('children' in item) {
+              return actionElement;
+            } else {
+              return (
+                <>
+                  {item.elementAbove ? item.elementAbove() : null}
+                  {actionElement}
+                  {item.elementBelow ? item.elementBelow() : null}
+                </>
               );
             }
           })}

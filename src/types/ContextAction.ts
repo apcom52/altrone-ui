@@ -3,6 +3,8 @@ import { Option } from './Option';
 type BaseContextAction = {
   hint?: string;
   disabled?: boolean;
+  elementAbove?: () => JSX.Element;
+  elementBelow?: () => JSX.Element;
 };
 
 type ClickAction = {
@@ -31,6 +33,8 @@ type RadioListAction = {
 
 type SeparatorAction = {
   type: 'separator';
+  elementAbove?: () => JSX.Element;
+  elementBelow?: () => JSX.Element;
 };
 
 export type ContextClickAction = BaseContextAction & ClickAction;
