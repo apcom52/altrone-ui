@@ -2,6 +2,7 @@ import { PropsWithChildren, useEffect, useState } from 'react';
 import { Icon } from '../../typography';
 import './spoiler.scss';
 import clsx from 'clsx';
+import { motion } from 'framer-motion';
 
 interface SpoilerProps extends PropsWithChildren {
   label: string;
@@ -33,7 +34,12 @@ const Spoiler = ({ label, openedByDefault = true, children }: SpoilerProps) => {
         </span>
         <span className="alt-spoiler__headerLabel">{label}</span>
       </button>
-      {!!opened && <div className="alt-spoiler__content">{children}</div>}
+      <motion.div
+        className="alt-spoiler__content"
+        initial={{ height: openedByDefault ? 'auto' : 0 }}
+        animate={{ height: opened ? 'auto' : 0 }}>
+        {children}
+      </motion.div>
     </div>
   );
 };
