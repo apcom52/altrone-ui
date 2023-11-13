@@ -19,7 +19,7 @@
   height: 34px;
   color: var(--textColor);
   cursor: pointer;
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow var(--transitionDuration) ease;
 
   @include useFontSize(label, Large);
   font-weight: 500;
