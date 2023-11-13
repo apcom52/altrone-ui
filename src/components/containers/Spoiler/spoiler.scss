@@ -19,7 +19,7 @@
   height: 34px;
   color: var(--textColor);
   cursor: pointer;
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow var(--transitionDuration) ease;
 
   @include useFontSize(text);
   font-weight: 500;
@@ -29,7 +29,7 @@
 .alt-spoiler__headerIcon {
   margin-right: 8px;
   font-size: 24px;
-  transition: transform 0.2s ease;
+  transition: transform var(--transitionDuration) ease;
 }
 
 .alt-spoiler__headerLabel {
