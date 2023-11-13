@@ -53,9 +53,7 @@
   flex-direction: column;
   border-radius: var(--containerRounding);
   box-shadow: var(--floatingElevation);
-  transition: width var(--transitionDuration) ease, opacity 0.3s ease, transform 0.3s ease;
-  opacity: 0;
-  transform: translateY(-50px);
+  transition: width var(--transitionDuration) ease;
 
   @include useGlassSurface();
   @include useDisabledUserSelect();
@@ -157,11 +155,6 @@
 
 .alt-modal--fluid {
   width: 100%;
-}
-
-.alt-modal--opened {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .alt-modal--surface-none {

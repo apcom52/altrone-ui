@@ -12,9 +12,10 @@ import './modal.scss';
 import { Icon } from '../../typography';
 import { Button } from '../../form';
 import clsx from 'clsx';
-import { useLocalization, useWindowSize } from '../../../hooks';
+import { useLocalization, useToggledState, useWindowSize } from '../../../hooks';
 import ReactDOM from 'react-dom';
 import { useThemeContext } from '../../../contexts';
+import { motion } from 'framer-motion';
 
 export interface ModalAction {
   label: string;
@@ -90,7 +91,7 @@ const Modal = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const [opened, setOpened] = useState(_reduceMotion);
+  const { value: opened, disable: hideModal } = useToggledState(true);
 
   useEffect(() => {
     document.body.classList.add(CLS_UTIL_NOSCROLL);
@@ -101,15 +102,6 @@ const Modal = ({
       document.body.removeEventListener('keypress', onESCPress);
     };
   }, []);
-
-  useEffect(() => {
-    if (!opened) {
-      modalRef.current?.classList.add(CLS_OPENED);
-      setTimeout(() => {
-        setOpened(true);
-      }, 200);
-    }
-  });
 
   const [leftActions, rightActions] = useMemo(() => {
     const leftActions: ModalAction[] = [];
@@ -140,21 +132,16 @@ const Modal = ({
     ));
   };
 
-  const handleClose = useCallback(() => {
-    modalRef.current?.classList.remove(CLS_OPENED);
-    if (_reduceMotion) {
+  const onAnimationComplete = useCallback(() => {
+    if (opened === false) {
       onClose();
-    } else {
-      setTimeout(() => {
-        onClose();
-      }, HIDE_DURATION);
     }
-  }, []);
+  }, [opened, onClose]);
 
   const onESCPress = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        handleClose();
+        hideModal();
       }
     },
     [onClose]
@@ -162,26 +149,50 @@ const Modal = ({
 
   const onBackdropClick: MouseEventHandler<HTMLDivElement> = (e) => {
     if (closeOnOverlay && e.target === wrapperRef.current) {
-      handleClose();
+      hideModal();
     }
   };
 
   const _showCancel = showCancel || (!closeOnOverlay && !showClose);
 
+  const modalAnimation = opened
+    ? {
+        opacity: 1,
+        top: 0,
+        scaleX: 1
+      }
+    : {
+        opacity: 0,
+        top: -50,
+        scaleX: 1.15
+      };
+
   return ReactDOM.createPortal(
-    <div
+    <motion.div
       className="alt-modal-wrapper"
       ref={wrapperRef}
-      onClick={closeOnOverlay ? onBackdropClick : undefined}>
-      <div
+      onClick={closeOnOverlay ? onBackdropClick : undefined}
+      initial={{
+        opacity: 0
+      }}
+      animate={{
+        opacity: opened ? 1 : 0
+      }}>
+      <motion.div
         className={clsx('alt-modal', className, {
           'alt-modal--size-small': size === Size.small,
           'alt-modal--size-large': size === Size.large,
           'alt-modal--fluid': fluid,
           [`alt-modal--surface-${surface}`]: surface !== Surface.glass,
-          [`alt-modal--elevation-${elevation}`]: elevation !== Elevation.floating,
-          'alt-modal--opened': opened
+          [`alt-modal--elevation-${elevation}`]: elevation !== Elevation.floating
         })}
+        initial={{
+          opacity: 0,
+          top: -50,
+          scaleX: 1.15
+        }}
+        animate={modalAnimation}
+        onAnimationComplete={onAnimationComplete}
         ref={modalRef}
         data-testid="alt-test-modal">
         {title && (
@@ -193,7 +204,7 @@ const Modal = ({
           <button
             className="alt-modal__close"
             type="button"
-            onClick={handleClose}
+            onClick={hideModal}
             data-testid="alt-test-modal-close">
             <Icon i="close" />
           </button>
@@ -208,7 +219,7 @@ const Modal = ({
             <div className="alt-modal__footer-separator" />
             {((_showCancel && gtPhoneL) || _showCancel || ltePhoneL) && (
               <Button
-                onClick={handleClose}
+                onClick={hideModal}
                 className="alt-modal__cancel"
                 data-testid="alt-test-modal-cancel">
                 {t('common.cancel')}
@@ -218,8 +229,8 @@ const Modal = ({
           </div>
         )}
         {ltePhoneL && <div className="alt-modal-wrapper__handle" />}
-      </div>
-    </div>,
+      </motion.div>
+    </motion.div>,
     document.body.querySelector('.altrone') || document.body
   );
 };
