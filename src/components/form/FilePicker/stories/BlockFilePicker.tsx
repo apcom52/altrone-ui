@@ -1,5 +1,4 @@
 import { FilePicker, FilePickerVariant } from '../index';
-import { useState } from 'react';
 import { StorybookPlayground } from '../../../../storybook/StorybookPlayground';
 import { StoryObj } from '@storybook/react';
 

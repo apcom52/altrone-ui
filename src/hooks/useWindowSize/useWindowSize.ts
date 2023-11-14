@@ -76,8 +76,8 @@ interface SizeResult extends Record<string, number | boolean | any> {
 }
 
 const useDeviceSize = () => {
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState(window.innerWidth);
+  const [height, setHeight] = useState(window.innerHeight);
 
   const handleWindowResize = () => {
     setWidth(window.innerWidth);

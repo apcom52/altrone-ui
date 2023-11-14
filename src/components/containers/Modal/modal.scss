@@ -6,25 +6,37 @@
 }
 
 .alt-modal-wrapper {
-  display: flex;
   position: fixed;
   width: 100vw;
   min-height: 100vh;
   height: 100%;
   top: 0;
   left: 0;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 100px 0 50px;
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: var(--blackout);
   z-index: 1000;
 
   @include less($l-phone) {
     display: flex;
     height: fit-content;
     max-height: 100vh;
+  }
+}
+
+.alt-modal-wrapper__backdrop {
+  position: relative;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+  height: fit-content;
+  pointer-events: none;
+  background-color: var(--blackout);
+  justify-content: center;
+  align-items: flex-start;
+  padding: 100px 0 50px;
+
+  @include less($l-phone) {
     flex-direction: column;
     padding: 100px 0 0;
     justify-content: initial;
@@ -63,7 +75,6 @@
     margin: auto 0 0;
     padding: 16px;
     border-radius: var(--containerRounding) var(--containerRounding) 0 0;
-    transform: translateY(150px);
   }
 }
 
