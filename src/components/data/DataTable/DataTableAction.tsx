@@ -74,7 +74,7 @@ const DataTableAction = <T extends object>({
         } else {
           return {
             ...menu,
-            onClick: menu.onClick.bind(null, selectedData)
+            onClick: 'onClick' in menu ? menu.onClick.bind(null, selectedData) : undefined
           } as ContextAction;
         }
       });
