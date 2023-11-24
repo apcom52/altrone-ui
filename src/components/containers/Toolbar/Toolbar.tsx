@@ -1,10 +1,9 @@
-import { createContext, memo, ReactNode, useContext, useRef, useState } from 'react';
+import { createContext, useContext, useRef, useState } from 'react';
 import './toolbar.scss';
-import ToolbarMenu, { ToolbarMenuProps } from './ToolbarMenu';
+import ToolbarMenu from './ToolbarMenu';
 import clsx from 'clsx';
 import { Elevation, Point, Surface } from '../../../types';
-import { useDrag } from '../../../hooks/useDrag/useDrag';
-import Draggable from 'react-draggable';
+import { ToolbarProps, ToolbarVariant } from './Toolbar.types';
 
 const ToolbarContext = createContext<{
   element: HTMLDivElement | null;
@@ -16,24 +15,6 @@ const defaultOffset: Point = {
   x: 0,
   y: 0
 };
-
-export enum ToolbarVariant {
-  default = 'default',
-  compact = 'compact'
-}
-
-interface ToolbarProps {
-  children: ReactNode | ReactNode[];
-  variant?: ToolbarVariant;
-  floated?: boolean;
-  menu?: ToolbarMenuProps['menu'];
-  offset?: Point;
-  width?: number | string;
-  className?: string;
-  surface?: Surface;
-  elevation?: Elevation;
-  defaultPosition?: Point;
-}
 
 /**
  * The component is used to place actions on the panel

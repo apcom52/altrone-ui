@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Toolbar, ToolbarGroup } from './index';
-import ToolbarAction from './ToolbarAction';
+import { ToolbarAction } from './ToolbarAction';
 import { Icon } from '../../typography';
 
 const menu = [

@@ -1,29 +1,16 @@
-import { forwardRef, memo, useCallback, useRef, useState } from 'react';
+import { forwardRef, useCallback, useRef, useState } from 'react';
 import './toolbar-action.scss';
 import clsx from 'clsx';
-import { ContextMenuType, Indicator } from '../../../types';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../index';
 import { ContextMenu } from '../../list/ContextMenu';
 import { useToolbarContext } from './Toolbar';
+import { ToolbarActionType } from './Toolbar.types';
 
 export interface ToolbarPopupActionProps {
   closePopup: () => void;
 }
 
-interface ToolbarActionProps {
-  icon: JSX.Element;
-  label?: string;
-  onClick?: () => void;
-  contextMenu?: ContextMenuType;
-  content?: (props: ToolbarPopupActionProps) => JSX.Element;
-  active?: boolean;
-  disabled?: boolean;
-  danger?: boolean;
-  className?: string;
-  indicator?: Indicator;
-}
-
-const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionProps>(
+export const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionType>(
   (
     {
       icon,
@@ -121,4 +108,4 @@ const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionProps>(
   }
 );
 
-export default memo(ToolbarAction) as typeof ToolbarAction;
+ToolbarAction.displayName = 'ToolbarAction';
