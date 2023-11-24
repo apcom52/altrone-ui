@@ -166,6 +166,7 @@ const Modal = ({
       className="alt-modal-wrapper"
       ref={wrapperRef}
       onClick={closeOnOverlay ? onBackdropClick : undefined}
+      data-testid="alt-test-modal"
       initial={
         gtPhoneL && {
           opacity: 0

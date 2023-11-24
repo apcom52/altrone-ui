@@ -14,6 +14,16 @@ export interface AltroneOptions {
   modal: {
     reduceMotion?: boolean;
   };
+  floatingBox: {
+    windowOffset: number;
+    offset: number;
+  };
+  photoViewer: {
+    openDescriptionByDefault: boolean;
+  };
+  spoiler: {
+    reduceMotion: boolean;
+  };
 }
 
 interface Altrone {
