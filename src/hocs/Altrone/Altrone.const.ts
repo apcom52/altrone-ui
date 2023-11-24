@@ -12,5 +12,15 @@ export const DEFAULT_ALTRONE_OPTIONS: AltroneOptions = {
   },
   modal: {
     reduceMotion: false
+  },
+  floatingBox: {
+    windowOffset: 4,
+    offset: 4
+  },
+  photoViewer: {
+    openDescriptionByDefault: true
+  },
+  spoiler: {
+    reduceMotion: false
   }
 };
