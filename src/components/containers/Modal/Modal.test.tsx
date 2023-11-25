@@ -65,7 +65,7 @@ describe('Containers.Modal', () => {
       </Modal>
     );
 
-    const wrapper = screen.getByTestId('alt-test-modal').parentElement as HTMLDivElement;
+    const wrapper = screen.getByTestId('alt-test-modalWrapper') as HTMLDivElement;
 
     fireEvent.click(wrapper);
 

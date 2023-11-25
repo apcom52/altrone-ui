@@ -131,7 +131,7 @@ const Modal = ({
   };
 
   const onAnimationComplete = useCallback(() => {
-    if (opened === false) {
+    if (!opened) {
       onClose();
     }
   }, [opened, onClose]);
@@ -166,7 +166,6 @@ const Modal = ({
       className="alt-modal-wrapper"
       ref={wrapperRef}
       onClick={closeOnOverlay ? onBackdropClick : undefined}
-      data-testid="alt-test-modal"
       initial={
         gtPhoneL && {
           opacity: 0
@@ -176,7 +175,8 @@ const Modal = ({
         gtPhoneL && {
           opacity: opened ? 1 : 0
         }
-      }>
+      }
+      data-testid="alt-test-modalWrapper">
       <div className="alt-modal-wrapper__backdrop">
         <motion.div
           className={clsx('alt-modal', className, {
