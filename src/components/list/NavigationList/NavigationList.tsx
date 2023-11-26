@@ -261,7 +261,7 @@ const NavigationList = ({
 
                               return (
                                 <Fragment key={subsubitemIndex}>
-                                  {NavigationSubItemComponent ? (
+                                  {NavigationSubSubItemComponent ? (
                                     <NavigationSubSubItemComponent {...subsubItemProps} />
                                   ) : (
                                     <NavigationListSubSubItem {...subsubItemProps} />

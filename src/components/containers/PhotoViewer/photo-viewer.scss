@@ -187,3 +187,14 @@
   left: -10000px;
   top: -10000px;
 }
+
+.alt-photo-viewer-toolbar--description-visible {
+  @include more($l-phone) {
+    transition: opacity var(--transitionDuration) ease;
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
