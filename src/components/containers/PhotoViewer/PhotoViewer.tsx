@@ -109,7 +109,11 @@ export const PhotoViewer = forwardRef<PhotoViewerRef, PhotoViewerProps>(
             ) : null
           ) : null}
 
-          <div className={clsx('alt-photo-viewer-toolbar')} ref={toolbarRef}>
+          <div
+            className={clsx('alt-photo-viewer-toolbar', {
+              'alt-photo-viewer-toolbar--description-visible': expanded
+            })}
+            ref={toolbarRef}>
             {ltePhoneL && (
               <button
                 className="alt-photo-viewer-toolbar__action alt-photo-viewer-toolbar__action--left"
