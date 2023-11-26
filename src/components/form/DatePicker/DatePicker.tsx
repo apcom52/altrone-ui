@@ -326,7 +326,7 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
             <MonthPicker
               currentMonth={currentMonth}
               startSelectedDate={isMonthViewInDayPicker ? currentMonth : startDate}
-              endSelectedDate={endDate}
+              endSelectedDate={isMonthViewInDayPicker ? undefined : endDate}
               onChange={onChangeHandler}
               minDate={minDate}
               maxDate={maxDate}
