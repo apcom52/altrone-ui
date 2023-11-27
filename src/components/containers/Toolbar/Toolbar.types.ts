@@ -32,4 +32,8 @@ export interface ToolbarActionType {
   danger?: boolean;
   className?: string;
   indicator?: Indicator;
+  hideLabel?: boolean;
+  children?: ReactNode;
+  fluid?: boolean;
+  usePressEffect?: boolean;
 }

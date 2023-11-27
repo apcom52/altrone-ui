@@ -10,11 +10,13 @@
   background-color: transparent;
   border: none;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
   cursor: pointer;
   color: var(--textColor);
   transition: transform var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
   border-radius: var(--containerRounding);
+  @include useDisabledUserSelect();
 
   @include useInteraction {
     .alt-toolbar-action__icon {
@@ -26,7 +28,15 @@
     transform: translateY(2px);
   }
 
-  @include useFocus();
+  &:focus-visible {
+    box-shadow: inset $focusStyles;
+    outline: 0;
+  }
+}
+
+.alt-toolbar-action--fluid {
+  max-width: unset;
+  flex: 1;
 }
 
 .alt-toolbar-action__icon {
@@ -160,5 +170,11 @@
     margin-left: 6px;
 
     @include useFontSize(label);
+  }
+}
+
+.alt-toolbar-action--no-press-effect {
+  &:active {
+    transform: unset;
   }
 }
