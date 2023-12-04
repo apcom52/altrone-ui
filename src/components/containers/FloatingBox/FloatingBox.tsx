@@ -19,6 +19,10 @@ interface FloatingBoxProps extends React.PropsWithChildren {
   onClose: () => void;
   offset?: number;
   placement?: Options['placement'];
+
+  /**
+   * @deprecated will be removed in 3.0
+   */
   popperProps?: Omit<Partial<Options>, 'modifiers'>;
   useParentWidth?: boolean;
   minWidth?: number | string;
