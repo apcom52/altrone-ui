@@ -73,7 +73,7 @@
     "taffydb": "^2.7.3",
     "typedoc": "^0.25.3",
     "typedoc-plugin-markdown": "^3.17.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.2.2"
   },
   "scripts": {
     "publish-release": "npm run test && npm run build && npm publish",
@@ -118,7 +118,7 @@
     "framer-motion": "^10.16.4",
     "lodash-es": "^4.17.21",
     "react-draggable": "^4.4.5",
-    "react-number-format": "^5.0.0-beta.5",
+    "react-number-format": "^5.3.1",
     "react-popper": "^2.3.0",
     "rooks": "^7.4.0",
     "uuid": "^9.0.0"
