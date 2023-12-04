@@ -11,4 +11,10 @@ export const ThemeContext = createContext<
   locale: 'en-US',
   options: DEFAULT_ALTRONE_OPTIONS
 });
+
+/**
+ * @deprecated will be removed in 3.0. You should use useAltrone
+ */
 export const useThemeContext = () => useContext(ThemeContext);
+
+export const useAltrone = () => useContext(ThemeContext);
