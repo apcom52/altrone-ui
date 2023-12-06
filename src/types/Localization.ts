@@ -62,6 +62,7 @@ export interface Localization {
       placeholder: string;
       selectedFiles: PluralString;
       errorMessage: string;
+      largeFileSizeErrorMessage: string;
       uploadNew: string;
       deleteFile: string;
       reuploadFile: string;

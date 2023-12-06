@@ -7,6 +7,7 @@ interface FilePickerContext {
   name: string;
   onSuccessUpload: (response: unknown) => void;
   getFileNameFunc: (response: string) => string;
+  maxFileSize?: number;
 }
 
 export const FilePickerContext = createContext<FilePickerContext>({
@@ -14,7 +15,8 @@ export const FilePickerContext = createContext<FilePickerContext>({
   method: '',
   name: '',
   onSuccessUpload: () => null,
-  getFileNameFunc: getFileSrcFromResponse
+  getFileNameFunc: getFileSrcFromResponse,
+  maxFileSize: undefined
 });
 
 export const useFilePickerContext = () => useContext(FilePickerContext);

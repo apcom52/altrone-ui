@@ -19,14 +19,23 @@ interface FileTileProps {
 export const FileTile = ({ fileIndex, file, onDelete }: FileTileProps) => {
   const t = useLocalization();
 
-  const { url, method, name, onSuccessUpload, getFileNameFunc } = useFilePickerContext();
+  const { url, method, name, onSuccessUpload, getFileNameFunc, maxFileSize } =
+    useFilePickerContext();
+
+  const isFileSizeCorrect =
+    typeof maxFileSize === 'number' && file.file ? maxFileSize >= file.file?.size : true;
 
   const [_file, setFile] = useState(file.file);
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState<FileUploadStatus>(undefined);
   const [filepath, setFilepath] = useState(file.filepath);
 
-  const errorMessage = status === 'failed' ? t('form.filePicker.errorMessage') : '';
+  const errorMessage =
+    status === 'failed'
+      ? t('form.filePicker.errorMessage')
+      : !isFileSizeCorrect
+      ? t('form.filePicker.largeFileSizeErrorMessage')
+      : '';
 
   const fileIcon = useMemo(() => {
     let extension = file.filename.toLowerCase().split('.').at(-1) || '';
@@ -55,6 +64,10 @@ export const FileTile = ({ fileIndex, file, onDelete }: FileTileProps) => {
 
   const uploadFile = useCallback(
     (file: File) => {
+      if (!isFileSizeCorrect) {
+        return;
+      }
+
       const request = new XMLHttpRequest();
       request.open(method, url);
 
@@ -116,9 +129,10 @@ export const FileTile = ({ fileIndex, file, onDelete }: FileTileProps) => {
   return (
     <div
       className={clsx('alt-file-tile', {
-        'alt-file-tile--error': status === 'failed'
+        'alt-file-tile--error': status === 'failed' || !isFileSizeCorrect,
+        'alt-file-tile--invalidSize': !isFileSizeCorrect
       })}
-      title={errorMessage ? `${errorMessage} ${file.filename}` : file.filename}>
+      title={errorMessage ? `${errorMessage} - ${file.filename}` : file.filename}>
       <div className="alt-file-tile__icon">{fileIcon as ReactNode}</div>
       <div className="alt-file-tile__title" data-testid="alt-test-fileTile-title">
         {errorMessage || file.filename}

@@ -68,6 +68,7 @@ const localization: Localization = {
       },
       uploadNew: 'Upload new file',
       errorMessage: 'Cannot upload the file',
+      largeFileSizeErrorMessage: 'File is too big',
       deleteFile: 'Delete the file',
       reuploadFile: 'Repeat again'
     }

@@ -38,7 +38,8 @@ export const FilePicker = forwardRef<FilePickerRef, FilePickerProps>(
       surface = Surface.glass,
       onSuccess,
       placeholder,
-      getFileNameFunc = getFileSrcFromResponse
+      getFileNameFunc = getFileSrcFromResponse,
+      maxFileSize = undefined
     },
     ref
   ) => {
@@ -78,9 +79,10 @@ export const FilePicker = forwardRef<FilePickerRef, FilePickerProps>(
         method,
         name,
         onSuccessUpload: onSuccess,
-        getFileNameFunc: getFileNameFunc
+        getFileNameFunc: getFileNameFunc,
+        maxFileSize
       };
-    }, [url, method, name, onSuccess]);
+    }, [url, method, name, onSuccess, maxFileSize]);
 
     const onChangeFileInput = async (e: ChangeEvent<HTMLInputElement>) => {
       const selectedFiles = e.target.files || [];
