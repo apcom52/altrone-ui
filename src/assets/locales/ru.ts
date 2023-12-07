@@ -68,6 +68,7 @@ const localization: Localization = {
       },
       uploadNew: 'Выбрать файл',
       errorMessage: 'Файл не загружен',
+      largeFileSizeErrorMessage: 'Файл слишком большой',
       deleteFile: 'Удалить файл',
       reuploadFile: 'Повторить еще раз'
     }

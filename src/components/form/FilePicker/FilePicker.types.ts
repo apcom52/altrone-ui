@@ -1,11 +1,6 @@
 import { Surface } from '../../../types';
 import { FilePickerVariant } from './FilePicker.constants';
 
-export type UploadedFile = {
-  file: File;
-  id: string;
-};
-
 export interface FileItem {
   filename: string;
   src?: string | ArrayBuffer | null;
@@ -55,6 +50,7 @@ export interface FilePickerProps {
   placeholder?: string;
   maxFiles?: number;
   getFileNameFunc?: (response: string) => string;
+  maxFileSize?: number;
 }
 
 export interface FilePickerRef {
