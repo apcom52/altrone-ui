@@ -8,7 +8,8 @@ export const Draggable = ({
   children,
   width = '100%',
   height = '100%',
-  position = DraggablePosition.local
+  position = DraggablePosition.local,
+  className
 }: DraggableProps) => {
   const dragControls = useDragControls();
 
@@ -22,7 +23,7 @@ export const Draggable = ({
 
   return (
     <motion.div
-      className={clsx('alt-draggable-container', {
+      className={clsx('alt-draggable-container', className, {
         'alt-draggable-container--global': position === DraggablePosition.screen
       })}
       ref={parentContainer}
