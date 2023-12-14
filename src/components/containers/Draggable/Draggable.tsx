@@ -25,12 +25,13 @@ export const Draggable = ({
       {renderElement({
         drag: true,
         dragControls,
-        whileDrag: { scale: 1.025 },
         whileTap: { boxShadow: 'var(--flyingElevation)', cursor: 'grabbing' },
         whileHover: { cursor: 'grab' },
-        dragConstraints: parentContainer,
         dragElastic: 0.15,
-        dragMomentum: false
+        dragMomentum: false,
+        initial: {
+          scale: 1
+        }
       })}
     </motion.div>
   );

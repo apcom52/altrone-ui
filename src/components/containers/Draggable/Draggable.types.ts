@@ -12,4 +12,5 @@ export interface DraggableProps {
   height?: number | string;
   position?: DraggablePosition;
   className?: string;
+  centered?: boolean;
 }

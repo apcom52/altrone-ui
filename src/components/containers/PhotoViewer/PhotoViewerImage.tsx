@@ -1,7 +1,10 @@
-import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
+// import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 import { ReactEventHandler, RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { Loading } from '../../indicators';
 import { Size } from '../../../types';
+import { Draggable } from '../Draggable';
+import { DraggablePosition } from '../Draggable/Draggable.types';
+import { motion } from 'framer-motion';
 
 interface PhotoViewerImageProps {
   containerRef: RefObject<HTMLDivElement>;
@@ -17,7 +20,8 @@ export const PhotoViewerImage = ({ containerRef, scale = 1, src }: PhotoViewerIm
   const imageContainerRef = useRef<HTMLDivElement | null>(null);
 
   const onImageLoad = useCallback<ReactEventHandler<HTMLImageElement>>((e) => {
-    if (!e.target || !containerRef.current) {
+    console.log('onImageLoad');
+    if (!e.target || !containerRef) {
       return null;
     }
 
@@ -37,10 +41,6 @@ export const PhotoViewerImage = ({ containerRef, scale = 1, src }: PhotoViewerIm
     setLoading(false);
   }, []);
 
-  const onImageDrag = useCallback((e: DraggableEvent, data: DraggableData) => {
-    setPosition([data.x, data.y]);
-  }, []);
-
   useEffect(() => {
     setLoading(true);
   }, [src]);
@@ -57,29 +57,34 @@ export const PhotoViewerImage = ({ containerRef, scale = 1, src }: PhotoViewerIm
     }, 50);
   }, [loading, src]);
 
-  if (!containerRef?.current) {
-    return null;
-  }
-
-  return containerRef.current ? (
+  return (
     <>
       {loading ? (
         <div className="alt-photo-viewer__loading">
           <Loading size={Size.large} color="white" />
         </div>
       ) : (
-        <div ref={imageContainerRef} style={{ transform: `scale(${scale})` }}>
+        <div ref={imageContainerRef}>
           <Draggable
-            disabled={loading}
-            scale={scale}
-            position={{ x: position[0], y: position[1] }}
-            onStop={onImageDrag}>
-            {!loading ? (
-              <img className="alt-photo-viewer__image" src={src} alt="" draggable={false} />
-            ) : (
-              <span />
-            )}
-          </Draggable>
+            width="100vw"
+            height="100vh"
+            position={DraggablePosition.screen}
+            renderElement={(props) => {
+              return (
+                <motion.img
+                  {...props}
+                  className="alt-photo-viewer__image"
+                  src={src}
+                  animate={{
+                    scale: scale
+                  }}
+                  alt=""
+                />
+              );
+            }}
+            className="alt-photo-viewer__image-wrapper"
+            centered
+          />
         </div>
       )}
       <img
@@ -90,5 +95,5 @@ export const PhotoViewerImage = ({ containerRef, scale = 1, src }: PhotoViewerIm
         onLoad={onImageLoad}
       />
     </>
-  ) : null;
+  );
 };
