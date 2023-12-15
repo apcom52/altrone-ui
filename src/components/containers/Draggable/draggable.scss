@@ -1,0 +1,20 @@
+.alt-draggable {
+  width: fit-content;
+  height: fit-content;
+  user-select: none;
+
+  img {
+    pointer-events: none;
+  }
+}
+
+.alt-draggable-container {
+}
+
+.alt-draggable-container--global {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  width: calc(100vw - 16px) !important;
+  height: calc(100vh - 16px) !important;
+}
