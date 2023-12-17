@@ -124,6 +124,7 @@ export const FileTile = ({ fileIndex, file, onDelete }: FileTileProps) => {
         {errorMessage || file.filename}
       </div>
       <button
+        type="button"
         tabIndex={-1}
         className="alt-file-tile__action alt-file-tile__close"
         onClick={deleteFile}
@@ -133,6 +134,7 @@ export const FileTile = ({ fileIndex, file, onDelete }: FileTileProps) => {
       </button>
       {status === 'failed' && (
         <button
+          type="button"
           className="alt-file-tile__action alt-file-tile__repeat"
           data-testid="alt-test-fileTile-reload"
           title={t('form.filePicker.reuploadFile')}

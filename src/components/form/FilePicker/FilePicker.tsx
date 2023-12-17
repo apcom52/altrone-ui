@@ -139,6 +139,7 @@ export const FilePicker = forwardRef<FilePickerRef, FilePickerProps>(
           />
           {variant === FilePickerVariant.default && (
             <button
+              type="button"
               ref={fileButtonRef}
               className="alt-button alt-file-picker-button"
               onClick={() => setFileZoneVisible(true)}>
