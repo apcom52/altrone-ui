@@ -7,6 +7,12 @@
   max-width: 300px;
   padding: 0;
   overflow-y: auto;
+
+  @include less($l-phone) {
+    width: 100%;
+    min-width: unset;
+    max-width: unset;
+  }
 }
 
 .alt-context-menu-item {

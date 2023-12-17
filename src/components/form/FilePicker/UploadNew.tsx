@@ -10,7 +10,11 @@ export const UploadNew = ({ onClick, disabled }: UploadNewProps) => {
   const t = useLocalization();
 
   return (
-    <button className="alt-file-tile alt-file-tile--upload" onClick={onClick} disabled={disabled}>
+    <button
+      type="button"
+      className="alt-file-tile alt-file-tile--upload"
+      onClick={onClick}
+      disabled={disabled}>
       <div className="alt-file-tile__icon">
         <FileIcon icon="upload" />
       </div>
