@@ -138,6 +138,13 @@ export const StorybookPlayground = ({
                 Use Format from Locale
               </Checkbox>
             </FormField>
+            <FormField label="Spoiler">
+              <Checkbox
+                checked={Boolean(options.spoiler.reduceMotion)}
+                onChange={(value) => changeOption('spoiler.reduceMotion', value)}>
+                Reduce Motion
+              </Checkbox>
+            </FormField>
           </Form>
         </FloatingBox>
       )}

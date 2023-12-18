@@ -13,7 +13,7 @@ import { Button } from '../../form';
 import clsx from 'clsx';
 import { useLocalization, useToggledState, useWindowSize } from '../../../hooks';
 import ReactDOM from 'react-dom';
-import { useThemeContext } from '../../../contexts';
+import { useAltrone } from '../../../contexts';
 import { motion } from 'framer-motion';
 import { END_DESKTOP, END_MOBILE, INITIAL_DESKTOP, INITIAL_MOBILE } from './Modal.constants';
 
@@ -79,7 +79,7 @@ const Modal = ({
   const { ltePhoneL, gtPhoneL } = useWindowSize();
   const t = useLocalization();
 
-  const { options } = useThemeContext();
+  const { options } = useAltrone();
 
   const _reduceMotion =
     typeof reduceMotion === 'undefined'

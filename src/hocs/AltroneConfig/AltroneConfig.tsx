@@ -1,5 +1,5 @@
 import merge from 'lodash-es/merge';
-import { ThemeContext, useThemeContext } from '../../contexts';
+import { ThemeContext, useAltrone } from '../../contexts';
 import { AltroneOptions as AltroneOptionsType } from '../Altrone/Altrone.types';
 import { PropsWithChildren } from 'react';
 
@@ -11,7 +11,7 @@ export const AltroneOptions = ({
   options = {},
   children
 }: PropsWithChildren<AltroneOptionsProps>) => {
-  const { options: parentOptions, ...rest } = useThemeContext();
+  const { options: parentOptions, ...rest } = useAltrone();
 
   const altroneOptions = merge(parentOptions, options);
 
