@@ -16,6 +16,7 @@ import ReactDOM from 'react-dom';
 import { useAltrone } from '../../../contexts';
 import { motion } from 'framer-motion';
 import { END_DESKTOP, END_MOBILE, INITIAL_DESKTOP, INITIAL_MOBILE } from './Modal.constants';
+import { getValueFromSequence } from '../../../utils/getValueFromSequence';
 
 export interface ModalAction {
   label: string;
@@ -81,10 +82,11 @@ const Modal = ({
 
   const { options } = useAltrone();
 
-  const _reduceMotion =
-    typeof reduceMotion === 'undefined'
-      ? options.modal?.reduceMotion || options.global?.reduceMotion
-      : reduceMotion;
+  const _reduceMotion = getValueFromSequence(
+    false,
+    options.modal.reduceMotion,
+    options.global.reduceMotion
+  );
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -161,6 +163,10 @@ const Modal = ({
     modalAnimation = opened ? END_DESKTOP : INITIAL_DESKTOP;
   }
 
+  const transitionDuration = options.global.transitionDuration
+    ? options.global.transitionDuration / 1000
+    : 0;
+
   return ReactDOM.createPortal(
     <motion.div
       className="alt-modal-wrapper"
@@ -176,6 +182,11 @@ const Modal = ({
           opacity: opened ? 1 : 0
         }
       }
+      transition={
+        _reduceMotion
+          ? { duration: 0, ease: 'linear' }
+          : { duration: transitionDuration, ease: 'easeOut' }
+      }
       data-testid="alt-test-modalWrapper">
       <div className="alt-modal-wrapper__backdrop">
         <motion.div
@@ -190,6 +201,11 @@ const Modal = ({
           animate={modalAnimation}
           onAnimationComplete={onAnimationComplete}
           ref={modalRef}
+          transition={
+            _reduceMotion
+              ? { duration: 0, ease: 'linear' }
+              : { duration: transitionDuration, ease: 'easeOut' }
+          }
           data-testid="alt-test-modal">
           {title && (
             <div className="alt-modal__title" data-testid="alt-test-modal-title">

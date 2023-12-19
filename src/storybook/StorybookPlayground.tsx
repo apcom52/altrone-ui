@@ -145,6 +145,13 @@ export const StorybookPlayground = ({
                 Reduce Motion
               </Checkbox>
             </FormField>
+            <FormField label="PhotoViewer">
+              <Checkbox
+                checked={Boolean(options.photoViewer.openDescriptionByDefault)}
+                onChange={(value) => changeOption('photoViewer.openDescriptionByDefault', value)}>
+                Open Description by Default
+              </Checkbox>
+            </FormField>
           </Form>
         </FloatingBox>
       )}
