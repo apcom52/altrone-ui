@@ -2,7 +2,8 @@ import { AltroneOptions } from './Altrone.types';
 
 export const DEFAULT_ALTRONE_OPTIONS: AltroneOptions = {
   global: {
-    reduceMotion: false
+    reduceMotion: false,
+    transitionDuration: 200
   },
   numberInput: {
     useFormatFromLocale: true
