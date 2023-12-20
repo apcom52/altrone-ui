@@ -19,7 +19,6 @@ export const PhotoViewerImage = ({ containerRef, scale = 1, src }: PhotoViewerIm
   const imageContainerRef = useRef<HTMLDivElement | null>(null);
 
   const onImageLoad = useCallback<ReactEventHandler<HTMLImageElement>>((e) => {
-    console.log('onImageLoad');
     if (!e.target || !containerRef) {
       return null;
     }
