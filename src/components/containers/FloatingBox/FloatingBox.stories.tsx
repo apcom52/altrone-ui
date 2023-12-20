@@ -17,7 +17,7 @@ const meta: Meta<typeof FloatingBox> = {
     surface: Surface.glass,
     mobileBehaviour: FloatingBoxMobileBehaviour.default,
     placement: 'bottom',
-    offset: 4,
+    offset: undefined,
     minWidth: undefined,
     maxHeight: undefined,
     useParentWidth: false,

@@ -9,7 +9,10 @@ import {
   FloatingBox,
   Form,
   FormField,
+  FormGroup,
+  FormGroupVariant,
   Icon,
+  NumberInput,
   Select,
   TextInput
 } from '../components';
@@ -137,6 +140,36 @@ export const StorybookPlayground = ({
                 onChange={(value) => changeOption('numberInput.useFormatFromLocale', value)}>
                 Use Format from Locale
               </Checkbox>
+            </FormField>
+            <FormField label="Spoiler">
+              <Checkbox
+                checked={Boolean(options.spoiler.reduceMotion)}
+                onChange={(value) => changeOption('spoiler.reduceMotion', value)}>
+                Reduce Motion
+              </Checkbox>
+            </FormField>
+            <FormField label="PhotoViewer">
+              <Checkbox
+                checked={Boolean(options.photoViewer.openDescriptionByDefault)}
+                onChange={(value) => changeOption('photoViewer.openDescriptionByDefault', value)}>
+                Open Description by Default
+              </Checkbox>
+            </FormField>
+            <FormField label="FloatingBox">
+              <FormGroup variant={FormGroupVariant.row}>
+                <FormField label="Offset">
+                  <NumberInput
+                    value={options.floatingBox.offset}
+                    onChange={(value) => changeOption('floatingBox.offset', value)}
+                  />
+                </FormField>
+                <FormField label="Window Offset">
+                  <NumberInput
+                    value={options.floatingBox.windowOffset}
+                    onChange={(value) => changeOption('floatingBox.windowOffset', value)}
+                  />
+                </FormField>
+              </FormGroup>
             </FormField>
           </Form>
         </FloatingBox>

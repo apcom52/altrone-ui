@@ -8,6 +8,7 @@ import { useWindowSize } from '../../../hooks';
 import { Modal } from '../Modal';
 import clsx from 'clsx';
 import { Surface, Elevation } from '../../../types';
+import { useAltrone } from '../../../contexts';
 
 export enum FloatingBoxMobileBehaviour {
   default = 'default',
@@ -55,7 +56,7 @@ const FloatingBox = forwardRef<
     {
       targetElement,
       onClose,
-      offset = 4,
+      offset,
       placement = 'auto',
       popperProps,
       useParentWidth = false,
@@ -73,6 +74,10 @@ const FloatingBox = forwardRef<
     ref
   ) => {
     const { ltePhoneL } = useWindowSize();
+    const { options } = useAltrone();
+
+    const windowOffset = options.floatingBox.windowOffset;
+    const parentOffset = typeof offset !== 'undefined' ? offset : options.floatingBox.offset;
 
     const [floatingBoxElement, setFloatingBoxElement] = useState<HTMLDivElement | null>(null);
 
@@ -85,8 +90,8 @@ const FloatingBox = forwardRef<
     }
 
     const offsets: [number, number] = useMemo(() => {
-      return [0, offset];
-    }, [offset]);
+      return [0, parentOffset];
+    }, [parentOffset]);
 
     const modifiers = useMemo<Options['modifiers']>(() => {
       const result: Options['modifiers'] = [
@@ -99,7 +104,7 @@ const FloatingBox = forwardRef<
         {
           name: 'preventOverflow',
           options: {
-            padding: 4
+            padding: windowOffset
           }
         }
       ];
@@ -120,7 +125,7 @@ const FloatingBox = forwardRef<
       }
 
       return result;
-    }, [offsets, useParentWidth, minWidth]);
+    }, [offsets, windowOffset, useParentWidth, minWidth]);
 
     const { styles, attributes } = usePopper(targetElement, floatingBoxElement, {
       modifiers,

@@ -4,6 +4,7 @@ import { Theme } from '../../types';
 export interface AltroneOptions {
   global: {
     reduceMotion?: boolean;
+    transitionDuration?: number;
   };
   numberInput: {
     useFormatFromLocale?: boolean;

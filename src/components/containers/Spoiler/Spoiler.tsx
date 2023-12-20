@@ -4,10 +4,13 @@ import './spoiler.scss';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useToggledState } from '../../../hooks';
+import { useAltrone } from '../../../contexts';
+import { getValueFromSequence } from '../../../utils/getValueFromSequence';
 
 interface SpoilerProps extends PropsWithChildren {
   label: string;
   openedByDefault?: boolean;
+  reduceMotion?: boolean;
 }
 
 /**
@@ -17,13 +20,21 @@ interface SpoilerProps extends PropsWithChildren {
  * @param children
  * @constructor
  */
-const Spoiler = ({ label, openedByDefault = true, children }: SpoilerProps) => {
+const Spoiler = ({ label, openedByDefault = true, children, reduceMotion }: SpoilerProps) => {
   const {
     value: opened,
     enable: showSpoiler,
     disable: hideSpoiler,
     setValue: setOpened
   } = useToggledState(openedByDefault);
+
+  const { options } = useAltrone();
+  const _reduceMotion = getValueFromSequence(
+    false,
+    reduceMotion,
+    options.spoiler.reduceMotion,
+    options.global.reduceMotion
+  );
 
   const [height, setHeight] = useState(openedByDefault ? 'auto' : 0);
 
@@ -64,7 +75,10 @@ const Spoiler = ({ label, openedByDefault = true, children }: SpoilerProps) => {
           className="alt-spoiler__content"
           initial={{ height: 0 }}
           animate={{ height }}
-          onAnimationComplete={onAnimationComplete}>
+          onAnimationComplete={onAnimationComplete}
+          transition={
+            _reduceMotion ? { duration: 0, ease: 'linear' } : { ease: 'easeOut', duration: 0.2 }
+          }>
           {children}
         </motion.div>
       )}
