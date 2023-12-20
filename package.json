@@ -61,7 +61,7 @@
     "react-dom": "^18.2.0",
     "rollup": "^2.77.0",
     "rollup-plugin-copy": "^3.4.0",
-    "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-dts": "4.2.3",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-scss": "3",
     "rollup-plugin-terser": "^7.0.2",
@@ -73,7 +73,7 @@
     "taffydb": "^2.7.3",
     "typedoc": "^0.25.3",
     "typedoc-plugin-markdown": "^3.17.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.3"
   },
   "scripts": {
     "publish-release": "npm run test && npm run build && npm publish",
@@ -117,7 +117,6 @@
     "dayjs": "^1.11.10",
     "framer-motion": "^10.16.4",
     "lodash-es": "^4.17.21",
-    "react-draggable": "^4.4.5",
     "react-number-format": "^5.3.1",
     "react-popper": "^2.3.0",
     "rooks": "^7.4.0",

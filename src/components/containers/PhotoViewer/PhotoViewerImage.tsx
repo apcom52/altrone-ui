@@ -1,4 +1,3 @@
-// import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 import { ReactEventHandler, RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { Loading } from '../../indicators';
 import { Size } from '../../../types';
