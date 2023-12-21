@@ -6,5 +6,6 @@ storybook-static/
 
 yarn-error.log
 stats.html
+stats.json
 
 CHANGELOG.md

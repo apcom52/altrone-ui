@@ -56,9 +56,6 @@
     "normalize.css": "^8.0.1",
     "parcel-bundler": "^1.12.5",
     "prettier": "^2.8.1",
-    "react": "^18.2.0",
-    "react-docgen": "^5.4.3",
-    "react-dom": "^18.2.0",
     "rollup": "^2.77.0",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-dts": "4.2.3",
@@ -73,7 +70,9 @@
     "taffydb": "^2.7.3",
     "typedoc": "^0.25.3",
     "typedoc-plugin-markdown": "^3.17.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "scripts": {
     "publish-release": "npm run test && npm run build && npm publish",
@@ -121,6 +120,10 @@
     "react-popper": "^2.3.0",
     "rooks": "^7.4.0",
     "uuid": "^9.0.0"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "prettier": {
     "semi": true,
