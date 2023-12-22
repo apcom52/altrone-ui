@@ -54,7 +54,8 @@ export const useOffset = (params: number | Offset): OffsetObject => {
   if (isOnlyAxis || isOnlyAllSides || isOnlyAxisAndSides) {
     let isEqual = true;
     let value;
-    for (const key in params) {
+    let key: keyof Offset;
+    for (key in params) {
       if (!isEqual) {
         continue;
       }

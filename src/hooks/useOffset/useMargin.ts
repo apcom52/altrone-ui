@@ -40,7 +40,7 @@ export const useMargin = (params: number | Offset) => {
       marginValue.push(top, left, bottom, right);
     }
 
-    result.margin = marginValue.map((value) => value * OFFSET_WIDTH).join('px ') + 'px';
+    result.margin = marginValue.map((value) => (value || 0) * OFFSET_WIDTH).join('px ') + 'px';
   } else {
     if (top !== undefined) {
       result.marginTop = top * OFFSET_WIDTH;
