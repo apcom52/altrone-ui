@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Toolbar, ToolbarGroup } from './index';
 import { ToolbarAction } from './ToolbarAction';
-import { Icon, Paragraph } from '../../typography';
+import { Icon } from '../../typography';
 
 const menu = [
   {
@@ -236,7 +236,7 @@ describe('List.Toolbar', () => {
   });
 
   test('has to show custom content', () => {
-    const { container } = render(
+    render(
       <Toolbar>
         <ToolbarAction icon={<Icon i="back" />} label="Test" onClick={jest.fn()}>
           Content
