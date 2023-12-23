@@ -89,6 +89,7 @@ const Modal = ({
   );
 
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
   const { value: opened, disable: hideModal } = useToggledState(true);
@@ -148,7 +149,7 @@ const Modal = ({
   );
 
   const onBackdropClick: MouseEventHandler<HTMLDivElement> = (e) => {
-    if (closeOnOverlay && e.target === wrapperRef.current) {
+    if (closeOnOverlay && (e.target === wrapperRef.current || e.target === backdropRef.current)) {
       hideModal();
     }
   };
@@ -170,8 +171,6 @@ const Modal = ({
   return ReactDOM.createPortal(
     <motion.div
       className="alt-modal-wrapper"
-      ref={wrapperRef}
-      onClick={closeOnOverlay ? onBackdropClick : undefined}
       initial={
         gtPhoneL && {
           opacity: 0
@@ -187,8 +186,10 @@ const Modal = ({
           ? { duration: 0, ease: 'linear' }
           : { duration: transitionDuration, ease: 'easeOut' }
       }
-      data-testid="alt-test-modalWrapper">
-      <div className="alt-modal-wrapper__backdrop">
+      data-testid="alt-test-modalWrapper"
+      ref={wrapperRef}
+      onClick={closeOnOverlay ? onBackdropClick : undefined}>
+      <div className="alt-modal-wrapper__backdrop" ref={backdropRef}>
         <motion.div
           className={clsx('alt-modal', className, {
             'alt-modal--size-small': size === Size.small,
