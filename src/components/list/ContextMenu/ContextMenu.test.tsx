@@ -160,4 +160,23 @@ describe('List.ContextMenu', () => {
 
     expect(screen.getByTestId('alt-contextMenu-separator')).toBeInTheDocument();
   });
+
+  test('elementAbove and elementBelow', () => {
+    render(
+      <ContextMenu
+        menu={[
+          {
+            title: 'Normal action',
+            onClick: () => null,
+            elementAbove: () => <div>above</div>,
+            elementBelow: () => <div>below</div>
+          }
+        ]}
+        onClose={() => null}
+      />
+    );
+
+    expect(screen.getByText('above')).toBeInTheDocument();
+    expect(screen.getByText('below')).toBeInTheDocument();
+  });
 });
