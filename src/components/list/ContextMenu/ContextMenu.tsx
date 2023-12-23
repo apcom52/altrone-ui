@@ -13,6 +13,7 @@ import clsx from 'clsx';
 import { ContextMenuComponentProps } from './ContextMenu.types';
 import { ContextClickAction } from '../../../types/ContextAction';
 import { ContextMenuTotalPages } from './ContextMenu.context';
+import React from 'react';
 
 /**
  * This component is used to show context menus
@@ -87,7 +88,13 @@ const ContextMenu = ({
                 <ContextMenuRadioListAction key={itemIndex} index={itemIndex} {...item} />
               );
             } else if (item.type === 'separator') {
-              actionElement = <hr key={itemIndex} className="alt-context-menu__separator" />;
+              actionElement = (
+                <hr
+                  key={itemIndex}
+                  data-testid="alt-contextMenu-separator"
+                  className="alt-context-menu__separator"
+                />
+              );
             } else {
               actionElement = (
                 <ContextMenuAction
@@ -99,11 +106,11 @@ const ContextMenu = ({
             }
 
             return (
-              <>
+              <React.Fragment key={itemIndex}>
                 {item.elementAbove ? item.elementAbove() : null}
                 {actionElement}
                 {item.elementBelow ? item.elementBelow() : null}
-              </>
+              </React.Fragment>
             );
           })
         ]}
@@ -127,7 +134,13 @@ const ContextMenu = ({
                 <ContextMenuRadioListAction key={itemIndex} index={itemIndex} {...item} />
               );
             } else if (item.type === 'separator') {
-              actionElement = <hr key={itemIndex} className="alt-context-menu__separator" />;
+              actionElement = (
+                <hr
+                  key={itemIndex}
+                  data-testid="alt-contextMenu-separator"
+                  className="alt-context-menu__separator"
+                />
+              );
             } else {
               actionElement = (
                 <ContextMenuAction
@@ -142,11 +155,11 @@ const ContextMenu = ({
               return actionElement;
             } else {
               return (
-                <>
+                <React.Fragment key={itemIndex}>
                   {item.elementAbove ? item.elementAbove() : null}
                   {actionElement}
                   {item.elementBelow ? item.elementBelow() : null}
-                </>
+                </React.Fragment>
               );
             }
           })}
