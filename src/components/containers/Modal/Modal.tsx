@@ -46,7 +46,7 @@ interface ModalProps extends PropsWithChildren {
 const CLS_UTIL_NOSCROLL = 'alt-util--no-scroll';
 
 /**
- * This components is used to show windows with content over the application
+ * This component is used to show windows with content over the application
  * @param title
  * @param children
  * @param onClose
@@ -84,6 +84,7 @@ const Modal = ({
 
   const _reduceMotion = getValueFromSequence(
     false,
+    reduceMotion,
     options.modal.reduceMotion,
     options.global.reduceMotion
   );
@@ -156,7 +157,7 @@ const Modal = ({
 
   const _showCancel = showCancel || (!closeOnOverlay && !showClose);
 
-  let modalAnimation = {};
+  let modalAnimation;
 
   if (ltePhoneL) {
     modalAnimation = opened ? END_MOBILE : INITIAL_MOBILE;
