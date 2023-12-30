@@ -11,14 +11,13 @@
 
 -----
 
-## Altrone 2.1
+## Altrone 2.2
 
-The most recent feature update introduces global customization for the library through **Altrone Options**. 
-Additionally, a completely new component, **Calendar**, has been added, along with the capability to 
-choose a **date range in DatePicker** and a **single-item selection mode in Chips**. Details about these 
+The most recent feature update introduces new cool features for ContextMenu, like checkbox and radio-list ContextMenu actions,
+more customization for ToolbarActions and updated animations! Details about these 
 exciting new features can be explored in the update description.
 
-[**What's new in 2.1?**](https://apcom.gitbook.io/altrone-ui/blog/2.1)
+[**What's new in 2.2?**](https://apcom.gitbook.io/altrone-ui/blog/2.2)
 
 ## Installation
 
@@ -97,7 +96,7 @@ The MIT License (MIT)
 
 MIT License
 
-Copyright (c) 2023 Alexander Perevezentsev
+Copyright (c) 2024 Alexander Perevezentsev
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
