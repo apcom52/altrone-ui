@@ -9,8 +9,7 @@ import clsx from 'clsx';
 import { ContextMenuType, Elevation, Role, Size, Surface } from '../../../types';
 import { useLocalization, useWindowSize } from '../../../hooks';
 import { BasicInput } from '../BasicInput';
-import { DatePickerProps, DateRangePosition, DateValue } from './DatePicker.types';
-import dayjs, { Dayjs } from 'dayjs';
+import { DatePickerProps, DateRangePosition, DateValue } from './DatePicker.typeimport dayjs, { Dayjs } from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
 
 dayjs.extend(minMax);
