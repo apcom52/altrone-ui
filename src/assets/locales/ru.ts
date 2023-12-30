@@ -37,7 +37,8 @@ const localization: Localization = {
       filters: 'Фильтры',
       filtering: 'Фильтры',
       resetFilters: 'Сбросить фильтры',
-      resetSorting: 'Сбросить сортировку'
+      resetSorting: 'Сбросить сортировку',
+      select: 'Выберите строки'
     }
   },
   form: {
@@ -67,6 +68,7 @@ const localization: Localization = {
       },
       uploadNew: 'Выбрать файл',
       errorMessage: 'Файл не загружен',
+      largeFileSizeErrorMessage: 'Файл слишком большой',
       deleteFile: 'Удалить файл',
       reuploadFile: 'Повторить еще раз'
     }

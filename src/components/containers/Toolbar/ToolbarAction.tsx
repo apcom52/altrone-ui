@@ -1,29 +1,16 @@
-import { forwardRef, memo, useCallback, useRef, useState } from 'react';
+import React, { forwardRef, useCallback, useRef, useState } from 'react';
 import './toolbar-action.scss';
 import clsx from 'clsx';
-import { ContextMenuType, Indicator } from '../../../types';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../index';
 import { ContextMenu } from '../../list/ContextMenu';
 import { useToolbarContext } from './Toolbar';
+import { ToolbarActionType } from './Toolbar.types';
 
 export interface ToolbarPopupActionProps {
   closePopup: () => void;
 }
 
-interface ToolbarActionProps {
-  icon: JSX.Element;
-  label?: string;
-  onClick?: () => void;
-  contextMenu?: ContextMenuType;
-  content?: (props: ToolbarPopupActionProps) => JSX.Element;
-  active?: boolean;
-  disabled?: boolean;
-  danger?: boolean;
-  className?: string;
-  indicator?: Indicator;
-}
-
-const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionProps>(
+export const ToolbarAction = forwardRef<HTMLButtonElement | HTMLDivElement, ToolbarActionType>(
   (
     {
       icon,
@@ -35,15 +22,21 @@ const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionProps>(
       disabled = false,
       danger = false,
       className,
-      indicator
+      indicator,
+      hideLabel,
+      children,
+      fluid = false,
+      usePressEffect = true
     },
     ref
   ) => {
+    const TagName = hideLabel && children ? 'div' : 'button';
+
     const [isPopupVisible, setIsPopupVisible] = useState(false);
 
     const { isCompact } = useToolbarContext();
 
-    const buttonRef = useRef<HTMLButtonElement | null>(null);
+    const buttonRef = useRef<HTMLButtonElement | HTMLDivElement | null>(null);
 
     const onButtonClick = () => {
       if (onClick) {
@@ -60,39 +53,48 @@ const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionProps>(
       setIsPopupVisible(false);
     }, []);
 
+    const isButton = TagName === 'button';
+
     return (
       <>
-        <button
-          className={clsx('alt-toolbar-action', className, {
-            'alt-toolbar-action--disabled': disabled,
-            'alt-toolbar-action--active': active,
-            'alt-toolbar-action--danger': danger,
-            'alt-toolbar-action--compact': isCompact
-          })}
-          type="button"
-          title={label}
-          disabled={disabled}
-          ref={(node: HTMLButtonElement) => {
-            buttonRef.current = node;
-            if (typeof ref === 'function') {
-              ref(node);
-            } else if (ref) {
-              ref.current = node;
-            }
-          }}
-          onClick={onButtonClick}
-          data-testid="alt-test-toolbarAction">
-          <div className="alt-toolbar-action__icon">{icon}</div>
-          {label && <div className="alt-toolbar-action__label">{label}</div>}
-          {indicator && (
-            <div
-              className={clsx('alt-toolbar-action__indicator', {
-                'alt-toolbar-action__indicator--position-corner': indicator.position === 'corner'
-              })}>
-              {indicator.value}
-            </div>
-          )}
-        </button>
+        {React.createElement(
+          TagName,
+          {
+            className: clsx('alt-toolbar-action', className, {
+              'alt-toolbar-action--disabled': disabled,
+              'alt-toolbar-action--active': active,
+              'alt-toolbar-action--danger': danger,
+              'alt-toolbar-action--compact': isCompact,
+              'alt-toolbar-action--fluid': fluid,
+              'alt-toolbar-action--no-press-effect': !usePressEffect
+            }),
+            type: isButton ? 'button' : undefined,
+            title: label,
+            disabled: isButton ? disabled : undefined,
+            onClick: isButton ? onButtonClick : undefined,
+            ref: (node: HTMLDivElement | HTMLButtonElement | null) => {
+              buttonRef.current = node;
+              if (typeof ref === 'function') {
+                ref(node);
+              } else if (ref) {
+                ref.current = node;
+              }
+            },
+            'data-testid': 'alt-test-toolbarAction'
+          },
+          <>
+            {children ? children : <div className="alt-toolbar-action__icon">{icon}</div>}
+            {!hideLabel && label && <div className="alt-toolbar-action__label">{label}</div>}
+            {indicator && (
+              <div
+                className={clsx('alt-toolbar-action__indicator', {
+                  'alt-toolbar-action__indicator--position-corner': indicator.position === 'corner'
+                })}>
+                {indicator.value}
+              </div>
+            )}
+          </>
+        )}
         {isPopupVisible && contextMenu ? (
           <FloatingBox
             targetElement={buttonRef.current}
@@ -121,4 +123,4 @@ const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionProps>(
   }
 );
 
-export default memo(ToolbarAction) as typeof ToolbarAction;
+ToolbarAction.displayName = 'ToolbarAction';

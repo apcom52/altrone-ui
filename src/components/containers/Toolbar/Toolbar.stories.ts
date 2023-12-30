@@ -1,7 +1,12 @@
 import { Meta } from '@storybook/react';
 import { Toolbar } from './index';
 
-export { DefaultToolbarStory, DefaultToolbarWithLabels, CompactToolbarStory } from './stories';
+export {
+  DefaultToolbarStory,
+  DefaultToolbarWithLabels,
+  CompactToolbarStory,
+  ToolbarWithCustomComponents
+} from './stories';
 
 const meta: Meta<typeof Toolbar> = {
   component: Toolbar,

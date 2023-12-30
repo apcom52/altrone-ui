@@ -7,6 +7,7 @@
   max-width: 300px;
   padding: 0;
   overflow-y: auto;
+  gap: 2px;
 
   @include less($l-phone) {
     width: 100%;
@@ -53,10 +54,6 @@
 
   @include useFocus();
 
-  & + & {
-    margin-top: 2px;
-  }
-
   @include less($l-phone) {
     padding: 12px;
   }
@@ -64,6 +61,7 @@
 
 .alt-context-menu-item__icon {
   display: inline-flex;
+  align-items: center;
   width: 20px;
   height: 20px;
   min-width: 20px;
@@ -117,4 +115,22 @@
 .alt-context-menu-list--fluid {
   max-width: unset;
   width: 100%;
+}
+
+.alt-context-menu-item__check-icon {
+  width: 18px !important;
+  height: 10px !important;
+}
+
+.alt-context-menu__separator {
+  width: calc(100% - 16px);
+  margin: 8px;
+  border: none;
+  border-top: 1px solid var(--dividerColor);
+}
+
+.alt-context-menu__groupName {
+  @include useFontSize(label);
+  margin: 4px 8px 8px;
+  color: var(--secondaryTextColor);
 }

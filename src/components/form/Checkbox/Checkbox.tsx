@@ -1,8 +1,8 @@
 import { memo, useId } from 'react';
 import './checkbox.scss';
-import { Icon } from '../../typography';
 import clsx from 'clsx';
 import { BasicInput, BasicInputProps } from '../BasicInput';
+import { CheckboxIcon, CheckboxIconProps } from './CheckboxIcon';
 
 interface CheckboxProps
   extends Omit<React.HTMLProps<HTMLInputElement>, 'onChange' | 'size' | 'ref' | 'checked'>,
@@ -10,7 +10,7 @@ interface CheckboxProps
   checked: boolean;
   onChange: (checked: boolean) => void;
   danger?: boolean;
-  CheckIconComponent?: JSX.Element;
+  CheckIconComponent?: React.FC<CheckboxIconProps>;
 }
 
 const Checkbox = ({
@@ -19,7 +19,7 @@ const Checkbox = ({
   checked = false,
   danger = false,
   children,
-  CheckIconComponent,
+  CheckIconComponent = CheckboxIcon,
   className,
   onChange,
   hintText,
@@ -51,9 +51,9 @@ const Checkbox = ({
           onChange={(e) => onChange(e.target.checked)}
         />
         <div className="alt-checkbox__control">
-          {checked ? (
-            <div className="alt-checkbox__icon">{CheckIconComponent || <Icon i="check" />}</div>
-          ) : null}
+          <div className="alt-checkbox__icon">
+            <CheckIconComponent checked={checked} />
+          </div>
           {children && <div className="alt-checkbox__label">{children}</div>}
         </div>
       </label>

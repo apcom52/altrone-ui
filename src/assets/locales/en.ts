@@ -37,7 +37,8 @@ const localization: Localization = {
       filters: 'Filters',
       filtering: 'Filtering',
       resetFilters: 'Reset filters',
-      resetSorting: 'Reset sorting'
+      resetSorting: 'Reset sorting',
+      select: 'Select rows'
     }
   },
   form: {
@@ -67,6 +68,7 @@ const localization: Localization = {
       },
       uploadNew: 'Upload new file',
       errorMessage: 'Cannot upload the file',
+      largeFileSizeErrorMessage: 'File is too big',
       deleteFile: 'Delete the file',
       reuploadFile: 'Repeat again'
     }

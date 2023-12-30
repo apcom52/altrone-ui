@@ -3,7 +3,11 @@ import { ContextMenu } from './index';
 import { Icon } from '../../typography';
 import React from 'react';
 
-export { DefaultContextMenu } from './stories';
+export {
+  DefaultContextMenu,
+  NewActionTypeForContextMenuStory,
+  ContextMenuWithExtraElements
+} from './stories';
 
 const meta: Meta<typeof ContextMenu> = {
   component: ContextMenu,

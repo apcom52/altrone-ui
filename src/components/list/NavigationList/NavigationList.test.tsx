@@ -99,8 +99,8 @@ describe('List.NavigationList', () => {
 
   test('should selected prop works correctly', async () => {
     let page = 'shared';
-    const handleChange = (_page) => {
-      page = _page;
+    const handleChange = (_page: unknown) => {
+      page = String(_page);
     };
 
     render(<NavigationList list={list} selected={page} onChange={handleChange} />);
@@ -123,7 +123,9 @@ describe('List.NavigationList', () => {
       />
     );
 
-    const actionButton = container.querySelector('.alt-navigation-list__action');
+    const actionButton = container.querySelector(
+      '.alt-navigation-list__action'
+    ) as HTMLButtonElement;
     expect(actionButton).toBeInTheDocument();
 
     await waitFor(() => fireEvent.click(actionButton));
@@ -152,7 +154,9 @@ describe('List.NavigationList', () => {
       />
     );
 
-    const actionButton = container.querySelector('.alt-navigation-list__action');
+    const actionButton = container.querySelector(
+      '.alt-navigation-list__action'
+    ) as HTMLButtonElement;
     expect(actionButton).toBeInTheDocument();
 
     await waitFor(() => fireEvent.click(actionButton));

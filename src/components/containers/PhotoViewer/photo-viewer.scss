@@ -17,6 +17,12 @@
   height: 100%;
 }
 
+.alt-photo-viewer__image-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .alt-photo-viewer__image {
   object-fit: contain;
   max-width: 75%;

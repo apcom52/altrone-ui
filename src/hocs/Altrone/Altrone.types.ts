@@ -4,6 +4,7 @@ import { Theme } from '../../types';
 export interface AltroneOptions {
   global: {
     reduceMotion?: boolean;
+    transitionDuration?: number;
   };
   numberInput: {
     useFormatFromLocale?: boolean;
@@ -13,6 +14,16 @@ export interface AltroneOptions {
   };
   modal: {
     reduceMotion?: boolean;
+  };
+  floatingBox: {
+    windowOffset: number;
+    offset: number;
+  };
+  photoViewer: {
+    openDescriptionByDefault: boolean;
+  };
+  spoiler: {
+    reduceMotion: boolean;
   };
 }
 

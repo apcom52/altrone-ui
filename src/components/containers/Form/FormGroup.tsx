@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 import './form-group.scss';
 import { Align } from '../../../types';
 import clsx from 'clsx';
@@ -41,7 +41,7 @@ const FormGroup = ({
       return undefined;
     }
 
-    if (!children?.length) {
+    if (!Array.isArray(children) || !children?.length) {
       return '1fr';
     }
 

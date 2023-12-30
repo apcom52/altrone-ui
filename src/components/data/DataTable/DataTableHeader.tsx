@@ -1,22 +1,27 @@
-import { memo, useMemo, useState } from 'react';
+import { memo, useMemo } from 'react';
 import './data-table-header.scss';
 import DataTableSorting from './DataTableSorting';
 import { Icon } from '../../typography';
 import DataTableFiltering from './DataTableFiltering';
-import { useDataTableContext } from '../../../contexts';
-import { useLocalization, useWindowSize } from '../../../hooks';
-import { DataTableAction as DataTableActionType, DataTableSelectableAction } from './DataTable';
-import DataTableAction from './DataTableAction';
+import { useLocalization, useToggledState, useWindowSize } from '../../../hooks';
 import { Search, Button, ButtonVariant } from '../../form';
+import {
+  DataTableSelectableAction,
+  DataTableAction as DataTableActionType
+} from './DataTableAction.types';
+import { useDataTableContext } from './DataTable.context';
+import DataTableAction from './DataTableAction';
 
-interface DataTableHeaderProps<T> {
-  actions: (DataTableSelectableAction<T> | DataTableActionType)[];
+interface DataTableHeaderProps<T extends object> {
+  actions: DataTableActionType[];
+  selectableActions: DataTableSelectableAction<T>[];
   selectable: boolean;
 }
 
 const DataTableHeader = <T extends object>({
   actions = [],
-  selectable = false
+  selectableActions = [],
+  selectable
 }: DataTableHeaderProps<T>) => {
   const {
     search,
@@ -31,7 +36,8 @@ const DataTableHeader = <T extends object>({
     selectableMode,
     setSelectableMode
   } = useDataTableContext();
-  const [isSearchVisible, setIsSearchVisible] = useState(false);
+
+  const searchVisible = useToggledState(false);
 
   const t = useLocalization();
 
@@ -44,7 +50,7 @@ const DataTableHeader = <T extends object>({
   }, [columns, sortBy]);
 
   const dataTableActions = useMemo(() => {
-    const result: DataTableActionType[] = [...actions];
+    const result = [...(selectableMode ? selectableActions : actions)];
 
     if (selectable) {
       result.unshift({
@@ -60,7 +66,7 @@ const DataTableHeader = <T extends object>({
       result.push({
         label: t('data.dataTable.sort'),
         icon: <Icon i="swap_vert" />,
-        content: (args) => <DataTableSorting {...args} />
+        content: DataTableSorting
       });
     }
 
@@ -68,7 +74,7 @@ const DataTableHeader = <T extends object>({
       result.push({
         label: t('data.dataTable.filters'),
         icon: <Icon i="tune" style="outlined" />,
-        content: (args) => <DataTableFiltering {...args} />,
+        content: DataTableFiltering,
         indicator:
           appliedFilters.length > 0
             ? {
@@ -103,19 +109,16 @@ const DataTableHeader = <T extends object>({
               : columns.length
           }>
           <div className="alt-data-table-header">
-            {(gtPhoneL || (ltePhoneL && !isSearchVisible)) && (
+            {(gtPhoneL || (ltePhoneL && !searchVisible.value)) && (
               <div className="alt-data-table-header__actions">
                 {dataTableActions.map((action, actionIndex) => (
                   <DataTableAction key={actionIndex} {...action} />
                 ))}
               </div>
             )}
-            {searchBy && !isSearchVisible ? (
+            {searchBy && !searchVisible.value ? (
               ltePhoneL ? (
-                <Button
-                  variant={ButtonVariant.transparent}
-                  isIcon
-                  onClick={() => setIsSearchVisible(true)}>
+                <Button variant={ButtonVariant.transparent} isIcon onClick={searchVisible.enable}>
                   <Icon i="search" />
                 </Button>
               ) : (
@@ -126,11 +129,11 @@ const DataTableHeader = <T extends object>({
                 </div>
               )
             ) : null}
-            {searchBy && isSearchVisible ? (
+            {searchBy && searchVisible.value ? (
               <>
                 <Button
                   variant={ButtonVariant.text}
-                  onClick={() => setIsSearchVisible(false)}
+                  onClick={searchVisible.disable}
                   isIcon={ltePhoneL}>
                   <Icon i="arrow_forward_ios" />
                 </Button>

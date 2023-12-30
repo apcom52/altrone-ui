@@ -6,25 +6,36 @@
 }
 
 .alt-modal-wrapper {
-  display: flex;
   position: fixed;
   width: 100vw;
   min-height: 100dvh;
   height: 100%;
   top: 0;
   left: 0;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 100px 0 50px;
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: var(--blackout);
   z-index: 1000;
 
   @include less($l-phone) {
     display: flex;
     height: fit-content;
     max-height: 100vh;
+  }
+}
+
+.alt-modal-wrapper__backdrop {
+  position: relative;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+  min-height: fit-content;
+  background-color: var(--blackout);
+  justify-content: center;
+  align-items: flex-start;
+  padding: 100px 0 50px;
+
+  @include less($l-phone) {
     flex-direction: column;
     padding: 100px 0 0;
     justify-content: initial;
@@ -53,9 +64,7 @@
   flex-direction: column;
   border-radius: var(--containerRounding);
   box-shadow: var(--floatingElevation);
-  transition: width var(--transitionDuration) ease, opacity 0.3s ease, transform 0.3s ease;
-  opacity: 0;
-  transform: translateY(-50px);
+  transition: width var(--transitionDuration) ease;
 
   @include useGlassSurface();
   @include useDisabledUserSelect();
@@ -65,7 +74,6 @@
     margin: auto 0 0;
     padding: 16px;
     border-radius: var(--containerRounding) var(--containerRounding) 0 0;
-    transform: translateY(150px);
   }
 }
 
@@ -157,11 +165,6 @@
 
 .alt-modal--fluid {
   width: 100%;
-}
-
-.alt-modal--opened {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .alt-modal--surface-none {

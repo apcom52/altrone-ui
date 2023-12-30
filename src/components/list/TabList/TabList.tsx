@@ -57,7 +57,7 @@ const TabList = <T extends unknown>({
   align = Align.center
 }: TabListProps<T>) => {
   const tabListRef = useRef<HTMLDivElement>(null);
-  const selectedTabRef = useRef<HTMLButtonElement>(null);
+  const selectedTabRef = useRef<HTMLElement | null>(null);
   const [activeBackgroundStyles, setActiveBackgroundStyles] = useState({});
 
   const setBackgroundPosition = useCallback(() => {
@@ -115,7 +115,11 @@ const TabList = <T extends unknown>({
             className={clsx('alt-tab', {
               'alt-tab--selected': isSelected
             })}
-            ref={isSelected ? selectedTabRef : null}
+            ref={(ref: HTMLElement | null) => {
+              if (isSelected) {
+                selectedTabRef.current = ref;
+              }
+            }}
             onClick={() => onChange(tab.value)}
             data-testid="alt-test-tab"
             disabled={tab.disabled}

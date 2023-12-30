@@ -14,11 +14,11 @@ export interface ToolbarMenuProps {
 
 const ToolbarMenu = ({ menu = [] }: ToolbarMenuProps) => {
   const [currentMenuIndex, setCurrentMenuIndex] = useState(-1);
-  const [currentMenuItemNode, setCurrentMenuItemNode] = useState(null);
+  const [currentMenuItemNode, setCurrentMenuItemNode] = useState<Element | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const onMenuItemClick = (index = 0) => {
-    setCurrentMenuItemNode(menuRef.current.children[index]);
+    setCurrentMenuItemNode(menuRef.current?.children[index] || null);
     setCurrentMenuIndex(index);
   };
 
@@ -44,12 +44,12 @@ const ToolbarMenu = ({ menu = [] }: ToolbarMenuProps) => {
       })}
       {currentMenuIndex > -1 && (
         <FloatingBox
-          targetElement={currentMenuItemNode}
+          targetElement={currentMenuItemNode as HTMLElement}
           placement="bottom"
           onClose={onCloseSubmenu}
           useRootContainer
           preventClose={(e) => {
-            return e.target?.closest('.alt-toolbar-menu') === menuRef.current;
+            return (e.target as HTMLElement).closest('.alt-toolbar-menu') === menuRef.current;
           }}>
           <ContextMenu onClose={onCloseSubmenu} menu={menu[currentMenuIndex].submenu || []} />
         </FloatingBox>

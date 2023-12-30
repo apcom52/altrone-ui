@@ -33,6 +33,72 @@ export const DefaultModalStory: StoryObj<typeof Modal> = {
                 <TextInput value={email} onChange={setEmail} placeholder="example@gmail.com" />
               </FormField>
             </Form>
+            <Paragraph>Enter your email address to subscribe</Paragraph>
+            <Form>
+              <FormField label="Email address">
+                <TextInput value={email} onChange={setEmail} placeholder="example@gmail.com" />
+              </FormField>
+            </Form>
+            <Paragraph>Enter your email address to subscribe</Paragraph>
+            <Form>
+              <FormField label="Email address">
+                <TextInput value={email} onChange={setEmail} placeholder="example@gmail.com" />
+              </FormField>
+            </Form>
+            <Paragraph>Enter your email address to subscribe</Paragraph>
+            <Form>
+              <FormField label="Email address">
+                <TextInput value={email} onChange={setEmail} placeholder="example@gmail.com" />
+              </FormField>
+            </Form>
+            <Paragraph>Enter your email address to subscribe</Paragraph>
+            <Form>
+              <FormField label="Email address">
+                <TextInput value={email} onChange={setEmail} placeholder="example@gmail.com" />
+              </FormField>
+            </Form>
+            <Paragraph>Enter your email address to subscribe</Paragraph>
+            <Form>
+              <FormField label="Email address">
+                <TextInput value={email} onChange={setEmail} placeholder="example@gmail.com" />
+              </FormField>
+            </Form>
+            <Paragraph>Enter your email address to subscribe</Paragraph>
+            <Form>
+              <FormField label="Email address">
+                <TextInput value={email} onChange={setEmail} placeholder="example@gmail.com" />
+              </FormField>
+            </Form>
+            <Paragraph>Enter your email address to subscribe</Paragraph>
+            <Form>
+              <FormField label="Email address">
+                <TextInput value={email} onChange={setEmail} placeholder="example@gmail.com" />
+              </FormField>
+            </Form>
+            <Paragraph>Enter your email address to subscribe</Paragraph>
+            <Form>
+              <FormField label="Email address">
+                <TextInput value={email} onChange={setEmail} placeholder="example@gmail.com" />
+              </FormField>
+            </Form>
+            <Paragraph>Enter your email address to subscribe</Paragraph>
+            <Form>
+              <FormField label="Email address">
+                <TextInput value={email} onChange={setEmail} placeholder="example@gmail.com" />
+              </FormField>
+            </Form>
+            <Paragraph>Enter your email address to subscribe</Paragraph>
+            <Form>
+              <FormField label="Email address">
+                <TextInput value={email} onChange={setEmail} placeholder="example@gmail.com" />
+              </FormField>
+            </Form>
+            <Paragraph>Enter your email address to subscribe</Paragraph>
+            <Form>
+              <FormField label="Email address">
+                <TextInput value={email} onChange={setEmail} placeholder="example@gmail.com" />
+              </FormField>
+            </Form>
           </Modal>
         )}
       </ButtonContainer>

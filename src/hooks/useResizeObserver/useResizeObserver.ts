@@ -8,8 +8,8 @@ export type DOMRectValues = Pick<
 const defaultReturn = {};
 
 export const useResizeObserver = (elementRef: RefObject<HTMLElement>) => {
-  const resizeTimeout = useRef(null);
-  const observerRef = useRef<ResizeObserver>(null);
+  const resizeTimeout = useRef<NodeJS.Timeout | null>(null);
+  const observerRef = useRef<ResizeObserver | null>(null);
   const [DOMRect, setDOMRect] = useState<DOMRectValues>();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export const useResizeObserver = (elementRef: RefObject<HTMLElement>) => {
     });
 
     return () => {
-      if (observerRef.current.disconnect) {
+      if (observerRef.current?.disconnect) {
         observerRef.current.disconnect();
       }
     };
@@ -38,7 +38,7 @@ export const useResizeObserver = (elementRef: RefObject<HTMLElement>) => {
 
   useEffect(() => {
     if (elementRef.current) {
-      observerRef.current.observe(elementRef.current);
+      observerRef.current?.observe(elementRef.current);
     }
   }, [elementRef.current]);
 

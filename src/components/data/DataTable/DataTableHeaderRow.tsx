@@ -1,8 +1,8 @@
 import { memo, useMemo } from 'react';
 import { Icon } from '../../typography';
-import { useDataTableContext } from '../../../contexts';
 import { useWindowSize } from '../../../hooks';
 import { filterVisibleColumns } from './functions';
+import { useDataTableContext } from './DataTable.context';
 
 const DataTableHeaderRow = () => {
   const { columns, sortBy, sortType, mobileColumns, selectableMode } = useDataTableContext();
@@ -21,7 +21,7 @@ const DataTableHeaderRow = () => {
           className="alt-data-table__cell alt-data-table__cell--header"
           style={{ width: column.width || 'unset' }}
           colSpan={columnIndex === visibleColumns.length - 1 ? 2 : undefined}>
-          {column.label || column.accessor.toString()}
+          {String(column.label || column.accessor)}
           {sortBy === column.accessor && (
             <div className="alt-data-table__sort-indicator">
               <Icon i={sortType === 'desc' ? 'arrow_drop_down' : 'arrow_drop_up'} />

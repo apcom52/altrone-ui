@@ -6,13 +6,19 @@ import clsx from 'clsx';
 import { PhotoViewerProps, PhotoViewerRef } from './PhotoViewer.types';
 import { useWindowSize } from '../../../hooks';
 import { PhotoViewerImage } from './PhotoViewerImage';
+import { useAltrone } from '../../../contexts';
+import { getValueFromSequence } from '../../../utils/getValueFromSequence';
 
 export const PhotoViewer = forwardRef<PhotoViewerRef, PhotoViewerProps>(
   (
     { images = [], onClose, className, startsFrom = 0, min = 1, max = 3 }: PhotoViewerProps,
     ref
   ) => {
-    const [expanded, setExpanded] = useState(true);
+    const { options } = useAltrone();
+
+    const [expanded, setExpanded] = useState(() =>
+      getValueFromSequence(true, options.photoViewer.openDescriptionByDefault)
+    );
     const [currentIndex, setCurrentIndex] = useState(startsFrom);
     const [zoom, setZoom] = useState(min > 1 ? min : 1);
 

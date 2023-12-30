@@ -3,8 +3,9 @@ import { DataTable, DataTableAction, DataTableColumn } from '../index';
 import { default as tableData } from './data';
 import { Icon } from '../../../typography';
 import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
-import { DataTableSelectableAction } from '../DataTable';
-import { DataTableFilter } from '../DataTable.types';
+import { DataTableSelectableAction } from '../DataTableAction.types';
+import { DataTableFilter } from '../DataTableFilter.types';
+import { DataTableCellProps } from '../DataTableCell';
 
 export interface DataTableStoryDataInterface {
   name: string;
@@ -16,11 +17,23 @@ export interface DataTableStoryDataInterface {
   isEU?: boolean;
 }
 
+const IsoCodeComponent: React.FC<DataTableCellProps<DataTableStoryDataInterface>> = ({ value }) => {
+  return <code>{String(value)}</code>;
+};
+
+const PhoneComponent: React.FC<DataTableCellProps<DataTableStoryDataInterface>> = ({ value }) => {
+  return (
+    <div style={{ display: 'flex' }}>
+      <Icon i="phone" /> {String(value)}
+    </div>
+  );
+};
+
 export const DEFAULT_COLUMNS: DataTableColumn<DataTableStoryDataInterface>[] = [
   {
     accessor: 'iso',
     label: 'ISO Code',
-    Component: (args) => <code>{String(args.value)}</code>
+    Component: IsoCodeComponent
   },
   {
     accessor: 'name'
@@ -34,13 +47,7 @@ export const DEFAULT_COLUMNS: DataTableColumn<DataTableStoryDataInterface>[] = [
   {
     accessor: 'phone',
     label: 'Phone code',
-    Component: (args) => (
-      <div style={{ display: 'flex' }}>
-        <>
-          <Icon i="phone" /> {String(args.value)}
-        </>
-      </div>
-    )
+    Component: PhoneComponent
   },
   {
     accessor: 'currency'
@@ -101,10 +108,16 @@ export const FILTERS: DataTableFilter<DataTableStoryDataInterface>[] = [
   }
 ];
 
-export const DefaultDataTableStory: StoryObj<typeof DataTable> = {
+export const DefaultDataTableStory: StoryObj<typeof DataTable<DataTableStoryDataInterface>> = {
   storyName: 'Default DataTable',
   render: ({ data, columns, searchFunc, sortFunc, DataTableStatusComponent, ...args }) => {
-    return <DataTable<DataTableStoryDataInterface> data={tableData} columns={columns} {...args} />;
+    return (
+      <DataTable<DataTableStoryDataInterface>
+        data={tableData}
+        columns={DEFAULT_COLUMNS}
+        {...args}
+      />
+    );
   },
   decorators: [StorybookDecorator]
 };

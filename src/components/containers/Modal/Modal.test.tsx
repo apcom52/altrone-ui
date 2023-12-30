@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Modal from './Modal';
+import { timeout } from '../../../utils';
 
 describe('Containers.Modal', () => {
   test('should renders correctly', () => {
@@ -21,7 +22,7 @@ describe('Containers.Modal', () => {
     expect(cancelButton).toBeInTheDocument();
   });
 
-  test('should close works correctly', async () => {
+  test('should close works correctly (close button)', async () => {
     const closeHandler = jest.fn();
 
     render(
@@ -31,14 +32,45 @@ describe('Containers.Modal', () => {
     );
 
     const closeButton = screen.getByTestId('alt-test-modal-close');
-    const cancelButton = screen.getByTestId('alt-test-modal-cancel');
-    const wrapper = screen.getByTestId('alt-test-modal').parentElement as HTMLDivElement;
 
     fireEvent.click(closeButton);
+
+    await timeout(500);
+    expect(closeHandler).toBeCalled();
+  });
+
+  test('should close works correctly (cancel button)', async () => {
+    const closeHandler = jest.fn();
+
+    render(
+      <Modal onClose={closeHandler} title="Modal title" reduceMotion>
+        modal content
+      </Modal>
+    );
+
+    const cancelButton = screen.getByTestId('alt-test-modal-cancel');
+
     fireEvent.click(cancelButton);
+
+    await timeout(500);
+    expect(closeHandler).toBeCalled();
+  });
+
+  test('should close works correctly (wrapper)', async () => {
+    const closeHandler = jest.fn();
+
+    render(
+      <Modal onClose={closeHandler} title="Modal title" reduceMotion>
+        modal content
+      </Modal>
+    );
+
+    const wrapper = screen.getByTestId('alt-test-modalWrapper') as HTMLDivElement;
+
     fireEvent.click(wrapper);
 
-    expect(closeHandler).toBeCalledTimes(3);
+    await timeout(500);
+    expect(closeHandler).toBeCalled();
   });
 
   test('should custom actions works correctly', async () => {

@@ -107,10 +107,8 @@ describe('Forms.FilePicker', () => {
     });
 
     await act(() => {
-      fireEvent.click(document.querySelector('.alt-file-picker-button'));
+      fireEvent.click(document.querySelector('.alt-file-picker-button') as HTMLButtonElement);
     });
-
-    console.log(document.body.outerHTML);
 
     await act(() => {
       fireEvent.click(screen.queryAllByTestId('alt-test-fileTile-delete')[0]);

@@ -71,9 +71,9 @@ interface NavigationListProps {
   action?: NavigationListAction;
   compact?: 'manual' | 'static';
   elevation?: Elevation;
-  NavigationItemComponent?: JSX.Element;
-  NavigationSubItemComponent?: JSX.Element;
-  NavigationSubSubItemComponent?: JSX.Element;
+  NavigationItemComponent?: React.FC<NavigationItemProps>;
+  NavigationSubItemComponent?: React.FC<NavigationSubItemProps>;
+  NavigationSubSubItemComponent?: React.FC<NavigationSubSubItemProps>;
 }
 
 /**
@@ -231,51 +231,56 @@ const NavigationList = ({
               ) : (
                 <NavigationListItem {...itemProps} />
               )}
-              {!compacted && selectedItem === item.value && item.submenu?.length > 0 && (
-                <div className="alt-navigation-list__navigation">
-                  {item.submenu?.map((subitem, subitemIndex) => {
-                    const subItemProps: NavigationSubItemProps = {
-                      selected: subitem.value === selectedSubItem,
-                      onClick: () => onChange(subitem.value),
-                      selectedValue: selected,
-                      ...subitem
-                    };
+              {!compacted &&
+                selectedItem === item.value &&
+                item.submenu &&
+                item.submenu.length > 0 && (
+                  <div className="alt-navigation-list__navigation">
+                    {item.submenu?.map((subitem, subitemIndex) => {
+                      const subItemProps: NavigationSubItemProps = {
+                        selected: subitem.value === selectedSubItem,
+                        onClick: () => onChange(subitem.value),
+                        selectedValue: selected,
+                        ...subitem
+                      };
 
-                    return (
-                      <Fragment key={subitemIndex}>
-                        {NavigationSubItemComponent ? (
-                          <NavigationSubItemComponent {...subItemProps} />
-                        ) : (
-                          <NavigationListSubItem {...subItemProps} />
-                        )}
+                      return (
+                        <Fragment key={subitemIndex}>
+                          {NavigationSubItemComponent ? (
+                            <NavigationSubItemComponent {...subItemProps} />
+                          ) : (
+                            <NavigationListSubItem {...subItemProps} />
+                          )}
 
-                        {selectedSubItem === subitem.value && subitem.submenu?.length > 0 && (
-                          <div className="alt-navigation-list__navigation">
-                            {subitem.submenu?.map((subsubitem, subsubitemIndex) => {
-                              const subsubItemProps: NavigationSubSubItemProps = {
-                                selected: subsubitem.value === selectedSubSubItem,
-                                onClick: () => onChange(subsubitem.value),
-                                selectedValue: selected,
-                                ...subsubitem
-                              };
+                          {selectedSubItem === subitem.value &&
+                            subitem.submenu &&
+                            subitem.submenu.length > 0 && (
+                              <div className="alt-navigation-list__navigation">
+                                {subitem.submenu?.map((subsubitem, subsubitemIndex) => {
+                                  const subsubItemProps: NavigationSubSubItemProps = {
+                                    selected: subsubitem.value === selectedSubSubItem,
+                                    onClick: () => onChange(subsubitem.value),
+                                    selectedValue: selected,
+                                    ...subsubitem
+                                  };
 
-                              return (
-                                <Fragment key={subsubitemIndex}>
-                                  {NavigationSubSubItemComponent ? (
-                                    <NavigationSubSubItemComponent {...subsubItemProps} />
-                                  ) : (
-                                    <NavigationListSubSubItem {...subsubItemProps} />
-                                  )}
-                                </Fragment>
-                              );
-                            })}
-                          </div>
-                        )}
-                      </Fragment>
-                    );
-                  })}
-                </div>
-              )}
+                                  return (
+                                    <Fragment key={subsubitemIndex}>
+                                      {NavigationSubSubItemComponent ? (
+                                        <NavigationSubSubItemComponent {...subsubItemProps} />
+                                      ) : (
+                                        <NavigationListSubSubItem {...subsubItemProps} />
+                                      )}
+                                    </Fragment>
+                                  );
+                                })}
+                              </div>
+                            )}
+                        </Fragment>
+                      );
+                    })}
+                  </div>
+                )}
             </Fragment>
           );
         })}

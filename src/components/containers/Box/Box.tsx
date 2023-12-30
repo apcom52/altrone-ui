@@ -1,4 +1,4 @@
-import { forwardRef, memo } from 'react';
+import React, { forwardRef } from 'react';
 import { WithAltroneOffsets, WithoutDefaultOffsets } from '../../../types';
 import { ZERO_MARGIN, ZERO_PADDING } from '../../../constants';
 import { useMargin, usePadding } from '../../../hooks';
@@ -25,20 +25,22 @@ export const Box = forwardRef(
     const marginStyles = useMargin(margin);
     const paddingStyles = usePadding(padding);
 
-    const TagName = tagName;
+    const styles: React.CSSProperties = {
+      ...style,
+      ...marginStyles,
+      ...paddingStyles
+    };
 
-    // @ts-ignore
-    return (
-      <TagName
-        style={{
-          ...marginStyles,
-          ...paddingStyles,
-          ...style
-        }}
-        ref={ref}
-        {...props}>
-        {children}
-      </TagName>
+    return React.createElement(
+      tagName,
+      {
+        ...props,
+        style: styles,
+        ref: ref
+      },
+      children
     );
   }
 );
+
+Box.displayName = 'Box';

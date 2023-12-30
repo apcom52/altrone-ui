@@ -40,6 +40,7 @@ export interface Localization {
       filtering: string;
       resetFilters: string;
       resetSorting: string;
+      select: string;
     };
   };
   form: {
@@ -61,6 +62,7 @@ export interface Localization {
       placeholder: string;
       selectedFiles: PluralString;
       errorMessage: string;
+      largeFileSizeErrorMessage: string;
       uploadNew: string;
       deleteFile: string;
       reuploadFile: string;

@@ -1,21 +1,19 @@
-import {
-  ContextAction,
-  ContextMenuType as ContextMenuType,
-  ParentContextAction
-} from '../../../types';
+import { ParentContextAction } from '../../../types';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ContextMenuItem, ContextParentMenuItem } from './index';
+import {
+  ContextMenuAction,
+  ContextParentMenuItem,
+  ContextMenuCheckboxAction,
+  ContextMenuRadioListAction
+} from './index';
 import './context-menu.scss';
 import { Icon } from '../../typography';
 import { useLocalization } from '../../../hooks';
 import clsx from 'clsx';
-
-interface ContextMenuComponentProps {
-  onClose: () => void;
-  menu: ContextMenuType;
-  fluid?: boolean;
-  maxHeight?: number | string;
-}
+import { ContextMenuComponentProps } from './ContextMenu.types';
+import { ContextClickAction } from '../../../types/ContextAction';
+import { ContextMenuTotalPages } from './ContextMenu.context';
+import React from 'react';
 
 /**
  * This component is used to show context menus
@@ -40,56 +38,133 @@ const ContextMenu = ({
     setSelectedParentItem(action);
   }, []);
 
-  const onActionClick = (action: ContextAction) => {
-    action.onClick?.();
-    onClose?.();
-  };
+  const onActionClick = useCallback(
+    (action: ContextClickAction) => {
+      action.onClick();
+      onClose();
+    },
+    [onClose]
+  );
 
   useEffect(() => {
     if (!contextMenuRef.current) {
       return;
     }
 
-    const selectedIndex = menu.findIndex((menuItem) => menuItem.selected);
+    const selectedIndex = menu.findIndex(
+      (menuItem) =>
+        'type' in menuItem &&
+        (menuItem.type === 'action' || menuItem.type === undefined) &&
+        menuItem.selected
+    );
     const currentScroll = (selectedIndex - 4) * 32;
     contextMenuRef.current.scrollTop = currentScroll < 0 ? 0 : currentScroll;
   }, [menu]);
 
   return (
-    <div
-      className={clsx('alt-context-menu-list', {
-        'alt-context-menu-list--fluid': fluid
-      })}
-      style={{ maxHeight }}
-      ref={contextMenuRef}
-      data-testid="alt-test-contextMenu">
-      {selectedParentItem && [
-        <ContextMenuItem
-          key={-1}
-          icon={<Icon i="arrow_back_ios" />}
-          title={t('common.back')}
-          onClick={() => setSelectedParentItem(null)}
-          selected
-        />,
-        ...selectedParentItem.children.map((item, itemIndex) => (
-          <ContextMenuItem key={itemIndex} {...item} onClick={() => onActionClick(item)} />
-        ))
-      ]}
+    <ContextMenuTotalPages.Provider value={menu.length}>
+      <div
+        className={clsx('alt-context-menu-list', {
+          'alt-context-menu-list--fluid': fluid
+        })}
+        style={{ maxHeight }}
+        ref={contextMenuRef}
+        data-testid="alt-test-contextMenu">
+        {selectedParentItem && [
+          <ContextMenuAction
+            key={-1}
+            icon={<Icon i="arrow_back_ios" />}
+            title={t('common.back')}
+            onClick={() => setSelectedParentItem(null)}
+            selected
+          />,
+          ...selectedParentItem.children.map((item, itemIndex) => {
+            let actionElement: JSX.Element | null = null;
 
-      {!selectedParentItem &&
-        menu.map((item, itemIndex) =>
-          'onClick' in item ? (
-            <ContextMenuItem key={itemIndex} {...item} onClick={() => onActionClick(item)} />
-          ) : (
-            <ContextParentMenuItem
-              key={itemIndex}
-              onClick={onParentItemClick}
-              onClose={onClose}
-              {...item}
-            />
-          )
-        )}
-    </div>
+            if (item.type === 'checkbox') {
+              actionElement = <ContextMenuCheckboxAction key={itemIndex} {...item} />;
+            } else if (item.type === 'radioList') {
+              actionElement = (
+                <ContextMenuRadioListAction key={itemIndex} index={itemIndex} {...item} />
+              );
+            } else if (item.type === 'separator') {
+              actionElement = (
+                <hr
+                  key={itemIndex}
+                  data-testid="alt-contextMenu-separator"
+                  className="alt-context-menu__separator"
+                />
+              );
+            } else {
+              actionElement = (
+                <ContextMenuAction
+                  key={itemIndex}
+                  {...item}
+                  onClick={onActionClick.bind(null, item)}
+                />
+              );
+            }
+
+            return (
+              <React.Fragment key={itemIndex}>
+                {item.elementAbove ? item.elementAbove() : null}
+                {actionElement}
+                {item.elementBelow ? item.elementBelow() : null}
+              </React.Fragment>
+            );
+          })
+        ]}
+        {!selectedParentItem &&
+          menu.map((item, itemIndex) => {
+            let actionElement: JSX.Element | null = null;
+
+            if ('children' in item) {
+              actionElement = (
+                <ContextParentMenuItem
+                  key={itemIndex}
+                  onClick={onParentItemClick}
+                  onClose={onClose}
+                  {...item}
+                />
+              );
+            } else if (item.type === 'checkbox') {
+              actionElement = <ContextMenuCheckboxAction key={itemIndex} {...item} />;
+            } else if (item.type === 'radioList') {
+              actionElement = (
+                <ContextMenuRadioListAction key={itemIndex} index={itemIndex} {...item} />
+              );
+            } else if (item.type === 'separator') {
+              actionElement = (
+                <hr
+                  key={itemIndex}
+                  data-testid="alt-contextMenu-separator"
+                  className="alt-context-menu__separator"
+                />
+              );
+            } else {
+              actionElement = (
+                <ContextMenuAction
+                  key={itemIndex}
+                  {...item}
+                  onClick={onActionClick.bind(null, item)}
+                />
+              );
+            }
+
+            if ('children' in item) {
+              return actionElement;
+            } else {
+              return (
+                <React.Fragment key={itemIndex}>
+                  {item.elementAbove ? item.elementAbove() : null}
+                  {actionElement}
+                  {item.elementBelow ? item.elementBelow() : null}
+                </React.Fragment>
+              );
+            }
+          })}
+      </div>
+    </ContextMenuTotalPages.Provider>
   );
 };
 

@@ -3,13 +3,13 @@ import { FormField, FormGroup } from '../../containers';
 import { Checkbox, CheckboxList, Select, Button, DatePicker } from '../../form';
 import './data-table-filtering.scss';
 import { Align, Direction, Option, Role } from '../../../types';
-import { useDataTableContext } from '../../../contexts';
 import ButtonContainer from '../../containers/ButtonContainer/ButtonContainer';
 import { useLocalization } from '../../../hooks';
-import { DataTablePopupActionProps } from './DataTable';
+import { DataTablePopupActionProps } from './DataTableAction.types';
 import dayjs from 'dayjs';
+import { useDataTableContext } from './DataTable.context';
 
-const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
+const DataTableFiltering = <T extends object>({ closePopup }: DataTablePopupActionProps) => {
   const { filters, initialData, appliedFilters, setAppliedFilters } = useDataTableContext();
   const t = useLocalization();
 
@@ -24,7 +24,7 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
             options.add(row[filter.accessor]);
           });
 
-          const selectOptions: Option<any>[] = Array.from(options).map((variant) => ({
+          const selectOptions: Option<unknown>[] = Array.from(options).map((variant) => ({
             label: String(variant),
             value: variant
           }));
@@ -45,7 +45,7 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
               break;
           }
 
-          const onChange = (value) => {
+          const onChange = (value: unknown) => {
             let _filters = [...appliedFilters];
             if (filter.type === 'select') {
               if (currentFilterIndex === -1) {
@@ -65,7 +65,7 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
               } else {
                 if (_filters[currentFilterIndex].value?.indexOf(value) > -1) {
                   _filters[currentFilterIndex].value = _filters[currentFilterIndex].value.filter(
-                    (filterValue) => filterValue !== value
+                    (filterValue: unknown) => filterValue !== value
                   );
                   if (_filters[currentFilterIndex].value.length === 0) {
                     _filters = _filters.filter(
@@ -122,8 +122,7 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
                   {selectOptions.map((checkbox, checkboxIndex) => (
                     <Checkbox
                       key={checkboxIndex}
-                      value={checkbox.value}
-                      checked={currentFilterValue?.indexOf(checkbox.value) > -1}
+                      checked={(currentFilterValue as unknown[])?.indexOf(checkbox.value) > -1}
                       onChange={() => onChange(checkbox.value)}>
                       {checkbox.label}
                     </Checkbox>
@@ -142,7 +141,7 @@ const DataTableFiltering = ({ closePopup }: DataTablePopupActionProps) => {
             case 'date':
               children = (
                 <DatePicker
-                  value={currentFilterValue}
+                  value={currentFilterValue as Date}
                   onChange={onChange}
                   useDateRange={filter.useRange}
                   picker={filter.picker}

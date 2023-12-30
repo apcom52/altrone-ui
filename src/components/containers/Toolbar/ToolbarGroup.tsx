@@ -1,8 +1,8 @@
 import { memo, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { Align } from '../../../types';
+import { Align, ContextMenuType } from '../../../types';
 import { useResizeObserver } from '../../../hooks';
-import ToolbarAction from './ToolbarAction';
+import { ToolbarAction } from './ToolbarAction';
 import { Icon } from '../../typography';
 import { useToolbarContext } from './Toolbar';
 import { ContextMenu } from '../../list/ContextMenu';
@@ -20,14 +20,14 @@ const ToolbarGroup = ({
   align = Align.center,
   collapsible = false
 }: ToolbarGroupProps) => {
-  const [context, setContext] = useState([]);
+  const [context, setContext] = useState<ContextMenuType>([]);
   const [isContextVisible, setIsContextVisible] = useState(false);
 
   const { element: toolbarRef, isCompact } = useToolbarContext();
 
   const groupRef = useRef<HTMLDivElement>(null);
   const preventRerender = useRef(false);
-  const invisibleExpandButton = useRef(null);
+  const invisibleExpandButton = useRef<HTMLButtonElement>(null);
   const expandButton = useRef(null);
 
   const isCollapsible =
@@ -72,11 +72,17 @@ const ToolbarGroup = ({
     const _context = [];
 
     while (buttonIndex <= buttons.length - 1) {
+      if (!children) {
+        return;
+      }
+
+      const childElement = (children as JSX.Element[])[buttonIndex];
+
       _context.push({
-        icon: children[buttonIndex].props.icon,
-        title: children[buttonIndex].props.label,
-        onClick: children[buttonIndex].props.onClick,
-        danger: children[buttonIndex].props.danger
+        icon: childElement.props.icon,
+        title: childElement.props.label,
+        onClick: childElement.props.onClick,
+        danger: childElement.props.danger
       });
       buttonIndex++;
     }

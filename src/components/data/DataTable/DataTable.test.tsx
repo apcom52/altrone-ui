@@ -1,7 +1,13 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { DataTable, DataTableColumn } from './index';
 import {
+  DataTable,
+  DataTableColumn,
+  DataTablePopupActionProps,
+  DataTableSelectablePopupActionProps
+} from './index';
+import {
+  DataTableSortFunc,
   defaultCheckboxesFilter,
   defaultCheckboxFilter,
   defaultDateFilter,
@@ -12,12 +18,21 @@ import {
 } from './functions';
 import { Sort } from '../../../types';
 import { Altrone } from '../../../hocs';
-import ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom';
 import { Icon } from '../../typography';
 import { TEST_MATCH_MEDIA_FN } from '../../../constants/_testUtils';
 import { Picker } from '../../form';
 
-const DATA = [
+type DataInstance = {
+  id: number;
+  country: string;
+  capital: string;
+  language: string;
+  population: number;
+  continent: string;
+};
+
+const DATA: DataInstance[] = [
   {
     id: 1,
     country: 'The United States of America',
@@ -68,7 +83,7 @@ const DATA = [
   }
 ];
 
-const COLUMNS: DataTableColumn<(typeof DATA)[0]>[] = [
+const COLUMNS: DataTableColumn<DataInstance>[] = [
   {
     accessor: 'id',
     label: '#'
@@ -81,17 +96,24 @@ const COLUMNS: DataTableColumn<(typeof DATA)[0]>[] = [
   },
   {
     accessor: 'population',
-    Component: ({ value }) => (
-      <span data-testid="alt-test-datatable-customCell">{value} millions</span>
+    Component: (props) => (
+      // eslint-disable-next-line react/prop-types
+      <span data-testid="alt-test-datatable-customCell">{String(props.value)} millions</span>
     ),
     label: 'Population (in millions)'
   }
 ];
 
 class ResizeObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  observe() {
+    return null;
+  }
+  unobserve() {
+    return null;
+  }
+  disconnect() {
+    return null;
+  }
 }
 
 describe('Data.DataTable', () => {
@@ -99,13 +121,11 @@ describe('Data.DataTable', () => {
     window.ResizeObserver = ResizeObserver;
     window.matchMedia = TEST_MATCH_MEDIA_FN;
 
-    ReactDOM.createPortal = jest.fn((element, node) => {
-      return element;
+    Object.defineProperty(ReactDOM, 'createPortal', {
+      value: jest.fn((element) => {
+        return element;
+      })
     });
-  });
-
-  afterEach(() => {
-    ReactDOM.createPortal.mockClear();
   });
 
   test('should renders correctly', () => {
@@ -240,7 +260,7 @@ describe('Data.DataTable', () => {
       </Altrone>
     );
 
-    const sortingAction = screen.getByTitle('Sort');
+    const sortingAction = screen.getByText('Sort');
     await waitFor(() => fireEvent.click(sortingAction));
 
     rerender(
@@ -332,7 +352,7 @@ describe('Data.DataTable', () => {
       </Altrone>
     );
 
-    const filtersAction = screen.getByTitle('Filters');
+    const filtersAction = screen.getByText('Filters');
     await waitFor(() => fireEvent.click(filtersAction));
 
     rerender(
@@ -392,7 +412,7 @@ describe('Data.DataTable', () => {
       </Altrone>
     );
 
-    let filtersAction = screen.getByTitle('Filters');
+    let filtersAction = screen.getByText('Filters');
     await waitFor(() => fireEvent.click(filtersAction));
 
     const northAmerica = screen.getByText('NA');
@@ -416,7 +436,7 @@ describe('Data.DataTable', () => {
       </Altrone>
     );
 
-    filtersAction = screen.getByTitle('Filters');
+    filtersAction = screen.getByText('Filters');
     const indicator = filtersAction.querySelector('.alt-button__indicator');
 
     expect(indicator).toBeInTheDocument();
@@ -434,21 +454,23 @@ describe('Data.DataTable', () => {
   });
 
   test('should custom sort func works correctly', async () => {
+    const sortFunction = ({ direction, itemA, itemB, field }: DataTableSortFunc<DataInstance>) => {
+      return direction === Sort.asc
+        ? itemA[field] > itemB[field]
+          ? 1
+          : -1
+        : itemA[field] < itemB[field]
+        ? 1
+        : -1;
+    };
+
     const { rerender } = render(
       <Altrone>
-        <DataTable
+        <DataTable<DataInstance>
           data={DATA}
           columns={COLUMNS}
           sortKeys={['country']}
-          sortFunc={({ itemA, itemB, field, direction }) => {
-            return direction === Sort.asc
-              ? itemA[field].slice(1) > itemB[field].slice(1)
-                ? 1
-                : -1
-              : itemA[field].slice(1) < itemB[field].slice(1)
-              ? 1
-              : -1;
-          }}
+          sortFunc={sortFunction}
         />
       </Altrone>
     );
@@ -462,20 +484,7 @@ describe('Data.DataTable', () => {
 
     rerender(
       <Altrone>
-        <DataTable
-          data={DATA}
-          columns={COLUMNS}
-          sortKeys={['country']}
-          sortFunc={({ itemA, itemB, field, direction }) => {
-            return direction === Sort.asc
-              ? itemA[field].slice(1) > itemB[field].slice(1)
-                ? 1
-                : -1
-              : itemA[field].slice(1) < itemB[field].slice(1)
-              ? 1
-              : -1;
-          }}
-        />
+        <DataTable data={DATA} columns={COLUMNS} sortKeys={['country']} sortFunc={sortFunction} />
       </Altrone>
     );
 
@@ -489,20 +498,7 @@ describe('Data.DataTable', () => {
 
     rerender(
       <Altrone>
-        <DataTable
-          data={DATA}
-          columns={COLUMNS}
-          sortKeys={['country']}
-          sortFunc={({ itemA, itemB, field, direction }) => {
-            return direction === Sort.asc
-              ? itemA[field].slice(1) > itemB[field].slice(1)
-                ? 1
-                : -1
-              : itemA[field].slice(1) < itemB[field].slice(1)
-              ? 1
-              : -1;
-          }}
-        />
+        <DataTable data={DATA} columns={COLUMNS} sortKeys={['country']} sortFunc={sortFunction} />
       </Altrone>
     );
 
@@ -511,20 +507,7 @@ describe('Data.DataTable', () => {
     await waitFor(() => fireEvent.click(countryOption));
     rerender(
       <Altrone>
-        <DataTable
-          data={DATA}
-          columns={COLUMNS}
-          sortKeys={['country']}
-          sortFunc={({ itemA, itemB, field, direction }) => {
-            return direction === Sort.asc
-              ? itemA[field].slice(1) > itemB[field].slice(1)
-                ? 1
-                : -1
-              : itemA[field].slice(1) < itemB[field].slice(1)
-              ? 1
-              : -1;
-          }}
-        />
+        <DataTable data={DATA} columns={COLUMNS} sortKeys={['country']} sortFunc={sortFunction} />
       </Altrone>
     );
 
@@ -533,12 +516,12 @@ describe('Data.DataTable', () => {
     });
 
     expect(countries).toStrictEqual([
-      'The United Kingdom',
-      'The United States of America',
       'China',
       'France',
-      'Turkey',
-      'Russia'
+      'Russia',
+      'The United Kingdom',
+      'The United States of America',
+      'Turkey'
     ]);
   });
 
@@ -648,6 +631,12 @@ describe('Data.DataTable', () => {
   test('should selectable actions works correctly', async () => {
     let value: typeof DATA = [];
     let contextMenuValue: typeof DATA = [];
+
+    const ActionPopupComponent: React.FC<DataTableSelectablePopupActionProps<DataInstance>> = ({
+      selectedRows
+    }) => {
+      return <div data-testid="popupContent">{JSON.stringify(selectedRows?.map((v) => v.id))}</div>;
+    };
 
     const { rerender } = render(
       <Altrone>
@@ -775,9 +764,7 @@ describe('Data.DataTable', () => {
             {
               icon: <></>,
               label: 'Popup test',
-              content: ({ selectedRows }) => (
-                <div>{JSON.stringify(selectedRows?.map((v) => v.id))}</div>
-              )
+              content: ActionPopupComponent
             }
           ]}
         />
@@ -814,9 +801,7 @@ describe('Data.DataTable', () => {
             {
               icon: <></>,
               label: 'Popup test',
-              content: ({ selectedRows }) => (
-                <div>{JSON.stringify(selectedRows?.map((v) => v.id))}</div>
-              )
+              content: ActionPopupComponent
             }
           ]}
         />

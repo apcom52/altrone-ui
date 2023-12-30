@@ -21,7 +21,7 @@
   cursor: pointer;
   transition: box-shadow var(--transitionDuration) ease;
 
-  @include useFontSize(text);
+  @include useFontSize(label, Large);
   font-weight: 500;
   @include useFocus();
 }
@@ -41,6 +41,7 @@
 
 .alt-spoiler__content {
   display: block;
+  overflow: hidden;
 }
 
 .alt-spoiler--opened {

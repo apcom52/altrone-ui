@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Toolbar, ToolbarGroup } from './index';
-import ToolbarAction from './ToolbarAction';
+import { ToolbarAction } from './ToolbarAction';
 import { Icon } from '../../typography';
 
 const menu = [
@@ -109,9 +109,15 @@ const menu = [
 ];
 
 class ResizeObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  observe() {
+    return null;
+  }
+  unobserve() {
+    return null;
+  }
+  disconnect() {
+    return null;
+  }
 }
 
 describe('List.Toolbar', () => {
@@ -216,5 +222,28 @@ describe('List.Toolbar', () => {
 
     const popupContent = await screen.findByText('test popup');
     expect(popupContent).toBeInTheDocument();
+  });
+
+  test('has to hide labels', () => {
+    render(
+      <Toolbar>
+        <ToolbarAction icon={<Icon i="back" />} label="Test" hideLabel onClick={jest.fn()} />
+      </Toolbar>
+    );
+
+    expect(screen.queryByText('Test')).not.toBeInTheDocument();
+    expect(screen.queryByTitle('Test')).toBeInTheDocument();
+  });
+
+  test('has to show custom content', () => {
+    render(
+      <Toolbar>
+        <ToolbarAction icon={<Icon i="back" />} label="Test" onClick={jest.fn()}>
+          Content
+        </ToolbarAction>
+      </Toolbar>
+    );
+
+    expect(screen.queryByText('Content')).toBeInTheDocument();
   });
 });

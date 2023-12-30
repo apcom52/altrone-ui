@@ -1,5 +1,5 @@
 import { ParentContextAction } from '../../../types';
-import { memo, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Icon } from '../../typography';
 import { createPortal } from 'react-dom';
 import { FloatingBox } from '../../containers';
@@ -12,7 +12,7 @@ interface ContextParentMenuItem extends ParentContextAction {
   onClose: () => void;
 }
 
-const ContextParentMenuItem = ({ onClick, onClose, ...action }: ContextParentMenuItem) => {
+export const ContextParentMenuItem = ({ onClick, onClose, ...action }: ContextParentMenuItem) => {
   const { gtPhoneL } = useWindowSize();
 
   const [isChildrenContextMenuVisible, setIsChildrenContextMenuVisible] = useState(false);
@@ -55,7 +55,7 @@ const ContextParentMenuItem = ({ onClick, onClose, ...action }: ContextParentMen
             placement="right"
             useRootContainer={true}
             onClose={() => setIsChildrenContextMenuVisible(false)}
-            offset={8}>
+            offset={2}>
             <ContextMenu onClose={onClose} menu={action.children} />
           </FloatingBox>,
           altroneRef.current
@@ -63,5 +63,3 @@ const ContextParentMenuItem = ({ onClick, onClose, ...action }: ContextParentMen
     </>
   );
 };
-
-export default memo(ContextParentMenuItem);
