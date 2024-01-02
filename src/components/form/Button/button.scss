@@ -189,6 +189,35 @@
   }
 }
 
+.alt-button--role-warning {
+  --buttonBackgroundColor: var(--warning);
+  --buttonTextColor: var(--textColorOnWarning);
+  --buttonShadowColor: var(--warningBorderColor);
+
+  --indicatorBaselineDot: var(--textColorOnWarning);
+  --indicatorCorderBorder: var(--background);
+
+  &.alt-button--variant-borders {
+    --buttonBackgroundColor: var(--warningText);
+  }
+
+  @include useTransparentVariant(warning, textColorOnWarning);
+  @include useTextVariant(warningText);
+
+  &.alt-button--variant-borders, &.alt-button--variant-text, &.alt-button--variant-transparent {
+    --buttonTextColor: var(--warningText);
+    --indicatorBaselineBackground: var(--warning);
+    --indicatorBaselineText: var(--textColorOnWarning);
+    --indicatorBaselineDot: var(--warningText);
+  }
+
+  &.alt-button--variant-transparent {
+    &:hover, &:focus {
+      --indicatorBaselineBackground: var(--surfaceTrasparentHover);
+    }
+  }
+}
+
 .alt-button--role-danger {
   --buttonBackgroundColor: var(--danger);
   --buttonTextColor: var(--textColorOnDanger);
