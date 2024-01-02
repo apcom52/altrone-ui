@@ -11,9 +11,7 @@ const meta: Meta<typeof Paragraph> = {
     className: undefined
   },
   argTypes: {
-    className: { description: 'Custom CSS class' },
-    margin: { description: '*DEPRECATED*' },
-    padding: { description: '*DEPRECATED*' }
+    className: { description: 'Custom CSS class' }
   }
 };
 

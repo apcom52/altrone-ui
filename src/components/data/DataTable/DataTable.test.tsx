@@ -20,7 +20,7 @@ import { Sort } from '../../../types';
 import { Altrone } from '../../../hocs';
 import * as ReactDOM from 'react-dom';
 import { Icon } from '../../typography';
-import { TEST_MATCH_MEDIA_FN } from '../../../constants/_testUtils';
+import { TEST_MATCH_MEDIA_FN } from '../../../utils/_testUtils';
 import { Picker } from '../../form';
 
 type DataInstance = {

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from '../../typography';
-import { useThemeContext } from '../../../contexts';
+import { useAltrone } from '../../../contexts';
 import './date-picker.scss';
 import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
 import { DayPicker, MonthPicker, Picker, YearPicker } from './index';
@@ -65,7 +65,7 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
   });
 
   const [currentView, setCurrentView] = useState<Picker>(picker);
-  const { locale } = useThemeContext();
+  const { locale } = useAltrone();
 
   const { ltePhoneL } = useWindowSize();
   const t = useLocalization();

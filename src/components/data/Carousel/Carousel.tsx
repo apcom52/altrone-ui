@@ -11,7 +11,7 @@ import './carousel.scss';
 import { Icon } from '../../typography';
 import { PhotoViewer } from '../../containers';
 import clsx from 'clsx';
-import { useThemeContext } from '../../../contexts';
+import { useAltrone } from '../../../contexts';
 
 /**
  * A slideshow component for cycling through elements. **Available only from 2.0**
@@ -35,7 +35,7 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(
     },
     ref
   ) => {
-    const { options } = useThemeContext();
+    const { options } = useAltrone();
 
     const configReduceMotion = options.carousel.reduceMotion || options.global.reduceMotion;
 

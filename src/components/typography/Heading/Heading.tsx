@@ -1,9 +1,8 @@
-import { WithAltroneOffsets, WithoutDefaultOffsets } from '../../../types';
-import React, { memo } from 'react';
+import React from 'react';
 import './heading.scss';
 import clsx from 'clsx';
 
-interface HeadingProps extends WithoutDefaultOffsets, WithAltroneOffsets {
+interface HeadingProps extends React.HTMLProps<HTMLHeadingElement> {
   level?: 1 | 2 | 3 | 4 | 5 | 6;
   className?: string;
   id?: string;

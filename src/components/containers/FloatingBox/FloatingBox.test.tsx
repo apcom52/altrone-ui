@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import { FloatingBox } from './index';
 import { Button } from '../../form';
 import { Altrone } from '../../../hocs';
-import { TEST_MATCH_MEDIA_FN } from '../../../constants/_testUtils';
+import { TEST_MATCH_MEDIA_FN } from '../../../utils/_testUtils';
 
 describe('Containers.FloatingBox', () => {
   test('should returns null in target is undefined', () => {

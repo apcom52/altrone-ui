@@ -1,4 +1,4 @@
-import { useThemeContext } from '../../contexts';
+import { useAltrone } from '../../contexts';
 import { useCallback, useMemo } from 'react';
 import get from 'lodash-es/get';
 import { en, ru } from '../../assets/locales';
@@ -13,7 +13,7 @@ type translationOptions = {
 };
 
 export const useLocalization = () => {
-  const { lang } = useThemeContext();
+  const { lang } = useAltrone();
 
   const dictionary = useMemo(() => {
     return lang === 'ru' ? ru : en;
