@@ -1,4 +1,4 @@
-import { useThemeContext } from '../../contexts';
+import { useAltrone } from '../../contexts';
 import { Altrone } from './Altrone';
 import { render, screen } from '@testing-library/react';
 import { AltroneOptions } from '../AltroneConfig';
@@ -9,7 +9,7 @@ describe('Altrone', () => {
 
   test('Altrone Options should override correctly', () => {
     const InnerComponent = () => {
-      const { options } = useThemeContext();
+      const { options } = useAltrone();
 
       return <div data-testid="comp">{String(options.global.reduceMotion)}</div>;
     };
