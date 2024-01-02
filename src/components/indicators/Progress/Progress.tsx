@@ -65,7 +65,8 @@ const Progress = ({
         'alt-progress--variant-circular': variant === ProgressVariant.circular,
         'alt-progress--primary': role === Role.primary,
         'alt-progress--success': role === Role.success,
-        'alt-progress--danger': role === Role.danger
+        'alt-progress--danger': role === Role.danger,
+        'alt-progress--warning': role === Role.warning
       })}
       data-testid="alt-test-progress">
       {variant === ProgressVariant.default && (
