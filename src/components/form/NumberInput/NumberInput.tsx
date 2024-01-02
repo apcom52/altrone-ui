@@ -5,7 +5,7 @@ import { NumberFormatValues, NumericFormat, OnValueChange } from 'react-number-f
 import { Elevation, Surface } from '../../../types';
 import clsx from 'clsx';
 import { NumberInputProps } from './NumberInput.types';
-import { useThemeContext } from '../../../contexts';
+import { useAltrone } from '../../../contexts';
 
 const NumberInput = ({
   value = 0,
@@ -25,7 +25,7 @@ const NumberInput = ({
   surface = Surface.paper,
   ...props
 }: NumberInputProps) => {
-  const { options, locale } = useThemeContext();
+  const { options, locale } = useAltrone();
 
   const useFormatFromLocale = options.numberInput.useFormatFromLocale;
 

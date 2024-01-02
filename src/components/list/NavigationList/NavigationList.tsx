@@ -38,10 +38,6 @@ interface BaseNavigationItemInterface {
   selectedValue: unknown;
   onClick: (value: unknown) => void;
   elevation?: Elevation;
-  /**
-   * @deprecated
-   */
-  onExpand?: (value: unknown) => void;
 }
 
 interface NavigationListAction {

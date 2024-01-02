@@ -11,4 +11,3 @@ export {
   ToolbarAction,
   ToolbarVariant
 } from '../containers/Toolbar';
-export { Box } from './Box';

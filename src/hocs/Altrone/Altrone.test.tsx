@@ -2,7 +2,7 @@ import { useThemeContext } from '../../contexts';
 import { Altrone } from './Altrone';
 import { render, screen } from '@testing-library/react';
 import { AltroneOptions } from '../AltroneConfig';
-import { TEST_MATCH_MEDIA_FN } from '../../constants/_testUtils';
+import { TEST_MATCH_MEDIA_FN } from '../../utils/_testUtils';
 
 describe('Altrone', () => {
   window.matchMedia = TEST_MATCH_MEDIA_FN;

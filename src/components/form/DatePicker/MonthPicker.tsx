@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { useThemeContext } from '../../../contexts';
+import { useAltrone } from '../../../contexts';
 import { CalendarProps } from './DatePicker.types';
 import { Icon } from '../../typography';
 import { Button } from '../Button';
@@ -27,7 +27,7 @@ const MonthPicker = <IsDateRange extends boolean | undefined = false>({
   maxDate,
   isDateRange
 }: CalendarProps<IsDateRange>) => {
-  const { lang } = useThemeContext();
+  const { lang } = useAltrone();
   const [hoveredDate, setHoveredDate] = useState<Dayjs | undefined>(undefined);
 
   const [currentYear, setCurrentYear] = useState(() => {

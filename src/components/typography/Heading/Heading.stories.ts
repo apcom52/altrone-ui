@@ -15,9 +15,7 @@ const meta: Meta<typeof Heading> = {
     children: { description: 'Content of the heading' },
     level: { description: 'Level of the heading' },
     id: { description: 'Unique ID on the page' },
-    className: { description: 'Custom CSS class' },
-    margin: { description: '**DEPRECATED**', control: 'none' },
-    padding: { description: '**DEPRECATED**', control: 'none' }
+    className: { description: 'Custom CSS class' }
   }
 };
 

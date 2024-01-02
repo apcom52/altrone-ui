@@ -1,8 +1,5 @@
-import { WithAltroneOffsets, WithoutDefaultOffsets } from '../../../types';
 import './paragraph.scss';
 import clsx from 'clsx';
-
-interface ParagraphProps extends WithoutDefaultOffsets, WithAltroneOffsets {}
 
 /**
  * This component is used to display a raw text
@@ -11,7 +8,7 @@ interface ParagraphProps extends WithoutDefaultOffsets, WithAltroneOffsets {}
  * @param props
  * @constructor
  */
-const Paragraph = ({ children, className, ...props }: ParagraphProps) => {
+const Paragraph = ({ children, className, ...props }: React.HTMLProps<HTMLParagraphElement>) => {
   return (
     <p className={clsx('alt-paragraph', className)} {...props}>
       {children}

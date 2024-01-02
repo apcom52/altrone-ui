@@ -1,4 +1,4 @@
-import { useThemeContext } from '../../../contexts';
+import { useAltrone } from '../../../contexts';
 import { memo, useCallback, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useWindowSize } from '../../../hooks';
@@ -81,7 +81,7 @@ const DayPicker = <IsDateRange extends boolean | undefined = false>({
 }: CalendarProps<IsDateRange>) => {
   const currentDate = useRef<Dayjs | undefined>(undefined);
 
-  const { locale } = useThemeContext();
+  const { locale } = useAltrone();
   const { ltePhoneL } = useWindowSize();
   const [hoveredDate, setHoveredDate] = useState<Dayjs | undefined>(undefined);
 

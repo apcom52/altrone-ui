@@ -1,4 +1,3 @@
-export type { WithoutDefaultOffsets, WithAltroneOffsets } from './Offset';
 export { Theme } from './Theme';
 export { Size } from './Size';
 export type {
