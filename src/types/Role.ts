@@ -16,5 +16,6 @@ export enum Role {
   default = 'default',
   primary = 'primary',
   success = 'success',
+  warning = 'warning',
   danger = 'danger'
 }
