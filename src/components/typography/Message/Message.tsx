@@ -49,6 +49,7 @@ const Message = ({
       className={clsx('alt-message', className, {
         'alt-message--role-primary': role === Role.primary,
         'alt-message--role-success': role === Role.success,
+        'alt-message--role-warning': role === Role.warning,
         'alt-message--role-danger': role === Role.danger,
         'alt-message--only-title': !children,
         [`alt-message--elevation-${elevation}`]: elevation !== Elevation.floating

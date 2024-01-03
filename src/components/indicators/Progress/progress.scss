@@ -89,6 +89,11 @@
   --activeBorderColor: var(--successBorderColor);
 }
 
+.alt-progress--warning {
+  --activeColor: var(--warning);
+  --activeBorderColor: var(--warningBorderColor);
+}
+
 .alt-progress--danger {
   --activeColor: var(--danger);
   --activeBorderColor: var(--dangerBorderColor);

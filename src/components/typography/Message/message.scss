@@ -48,6 +48,12 @@
   border-color: var(--successBorderColor);
 }
 
+.alt-message--role-warning {
+  background-color: var(--warningHighlight);
+  color: var(--warningText);
+  border-color: var(--warningBorderColor);
+}
+
 .alt-message--role-danger {
   background-color: var(--dangerHighlight);
   color: var(--dangerText);
