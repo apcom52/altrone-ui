@@ -1,9 +1,13 @@
 .alt-list {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--gap);
 }
 
-.alt-list__item {
+.alt-list--direction-horizontal {
+  flex-direction: row;
+}
 
+.alt-list--line-break {
+  flex-wrap: wrap;
 }

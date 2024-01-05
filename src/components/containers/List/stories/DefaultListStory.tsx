@@ -4,6 +4,7 @@ import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 import React, { useState } from 'react';
 import { Form, FormGroup } from '../../Form';
 import { Switcher } from '../../../form';
+import { Direction } from '../../../../types';
 
 export interface DishCategory {
   name: string;
@@ -78,7 +79,35 @@ export const DefaultListStory: StoryObj<typeof List> = {
           </Switcher>
         </FormGroup>
         <FormGroup>
-          <List {...args} skipRule={(_, index) => (onlyOdd ? index % 2 !== 0 : false)} />
+          <List
+            {...args}
+            skipRule={(_, index) => (onlyOdd ? index % 2 !== 0 : false)}
+            SeparatorComponent={() => {
+              return (
+                <div
+                  style={
+                    args.direction === Direction.vertical
+                      ? {
+                          background: '#CFD8DC',
+                          width: '95%',
+                          height: 1,
+                          marginTop: 5,
+                          marginBottom: 5,
+                          marginLeft: '5%',
+                          borderBottom: 'none'
+                        }
+                      : {
+                          background: '#CFD8DC',
+                          height: 30,
+                          width: 1,
+                          marginLeft: 15,
+                          marginRight: 15
+                        }
+                  }
+                />
+              );
+            }}
+          />
         </FormGroup>
       </Form>
     );

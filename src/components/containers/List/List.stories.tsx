@@ -25,19 +25,11 @@ const meta: Meta<typeof List<DishCategory>> = {
           <Icon i="arrow_forward_ios" />
         </span>
       </div>
-    ),
-    SeparatorComponent: () => (
-      <hr
-        style={{
-          borderTop: '1px solid #CFD8DC',
-          width: '95%',
-          marginLeft: '5%',
-          borderBottom: 'none'
-        }}
-      />
     )
   },
-  argTypes: {}
+  argTypes: {
+    lineBreak: { control: 'boolean' }
+  }
 };
 
 export default meta;
