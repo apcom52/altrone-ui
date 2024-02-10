@@ -6,13 +6,8 @@ export interface ListProps<T extends object, ListDirection extends Direction = D
   keyExtractor?: (item: T, index: number) => string | number;
   skipRule?: (item: T, index: number) => boolean;
   gap?: number;
-  className?: string;
-  startsFrom?: number;
-  limit?: number;
   SeparatorComponent?: () => React.JSX.Element;
   direction?: ListDirection;
-  onRefresh?: ListDirection extends Direction.vertical
-    ? undefined | (() => Promise<T[]>)
-    : undefined;
-  lineBreak: ListDirection extends Direction.horizontal ? boolean | undefined : false | undefined;
+  lineBreak?: ListDirection extends Direction.horizontal ? boolean : false;
+  className?: string;
 }

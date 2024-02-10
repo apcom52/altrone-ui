@@ -103,7 +103,7 @@ export const DefaultListStory: StoryObj<typeof List<DishCategory>> = {
                     args.direction === Direction.horizontal
                       ? {
                           background: '#CFD8DC',
-                          height: 30,
+                          height: '100%',
                           width: 1,
                           marginLeft: 15,
                           marginRight: 15

@@ -1,22 +1,16 @@
-.alt-list-wrapper {
-  display: flex;
-  flex-direction: column;
-}
-
 .alt-list {
   display: flex;
   flex-direction: column;
   gap: var(--gap);
 }
 
-.alt-list-pagination {
-  display: flex;
-  margin-top: 8px;
-  justify-content: center;
+.alt-list__separator {
+  flex: 0;
 }
 
 .alt-list--direction-horizontal {
   flex-direction: row;
+  align-items: stretch;
 }
 
 .alt-list--line-break {
