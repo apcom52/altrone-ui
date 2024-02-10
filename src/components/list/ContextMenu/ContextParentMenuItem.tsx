@@ -54,6 +54,7 @@ export const ContextParentMenuItem = ({ onClick, onClose, ...action }: ContextPa
             targetElement={itemRef.current}
             placement="right"
             useRootContainer={true}
+            closeOnAnotherFloatingBoxClick
             onClose={() => setIsChildrenContextMenuVisible(false)}
             offset={2}>
             <ContextMenu onClose={onClose} menu={action.children} />
