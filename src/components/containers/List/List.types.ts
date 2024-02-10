@@ -2,7 +2,7 @@ import { Direction } from '../../../types';
 
 export interface ListProps<T extends object, ListDirection extends Direction = Direction.vertical> {
   data: T[];
-  children: (item: T, index: number) => React.ReactElement | null;
+  renderFunc: (item: T, index: number) => React.ReactElement | null;
   keyExtractor?: (item: T, index: number) => string | number;
   skipRule?: (item: T, index: number) => boolean;
   gap?: number;

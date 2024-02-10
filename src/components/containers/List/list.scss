@@ -1,7 +1,18 @@
+.alt-list-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 .alt-list {
   display: flex;
   flex-direction: column;
   gap: var(--gap);
+}
+
+.alt-list-pagination {
+  display: flex;
+  margin-top: 8px;
+  justify-content: center;
 }
 
 .alt-list--direction-horizontal {

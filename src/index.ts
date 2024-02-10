@@ -1,4 +1,5 @@
 import './index.scss';
+import '@material-symbols/font-500/index.scss';
 
 export * from './types';
 export * from './contexts';
