@@ -113,8 +113,7 @@ export const ToolbarAction = forwardRef<HTMLButtonElement | HTMLDivElement, Tool
             placement="bottom"
             closeOnAnotherFloatingBoxClick
             mobileBehaviour={FloatingBoxMobileBehaviour.modal}
-            minWidth={250}
-            useParentWidth>
+            minWidth={250}>
             <div className="alt-toolbar-action-popup">{content?.({ closePopup })}</div>
           </FloatingBox>
         ) : null}
