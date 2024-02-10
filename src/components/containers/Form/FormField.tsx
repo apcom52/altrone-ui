@@ -69,7 +69,7 @@ const FormField = ({ className, label, children, required = false, hintText }: F
           onClose={() => setIsHintTextVisible(false)}
           minWidth={200}
           useRootContainer>
-          {hintText}
+          <div className="alt-form-field__hint-text">{hintText}</div>
         </FloatingBox>
       )}
     </div>

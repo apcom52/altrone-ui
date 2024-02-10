@@ -61,6 +61,7 @@ export const Pagination = ({
         disabled={!useNavigateToPagePopup}
         onClick={() => setIsNavigationVisible(true)}
         className="alt-pagination__state"
+        type="button"
         ref={navigationButtonRef}>
         <span data-testid="alt-test-pagination-currentPage">{page}</span> / {totalPages}
       </button>
