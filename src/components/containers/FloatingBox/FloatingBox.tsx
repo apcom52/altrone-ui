@@ -9,6 +9,7 @@ import { Modal } from '../Modal';
 import clsx from 'clsx';
 import { Surface, Elevation } from '../../../types';
 import { useAltrone } from '../../../contexts';
+import { useFloating, offset as offsetFloating, autoUpdate } from '@floating-ui/react';
 
 export enum FloatingBoxMobileBehaviour {
   default = 'default',
@@ -75,6 +76,12 @@ const FloatingBox = forwardRef<
   ) => {
     const { ltePhoneL } = useWindowSize();
     const { options } = useAltrone();
+
+    const { refs, floatingStyles, context } = useFloating({
+      open: true,
+      middleware: [offsetFloating(offset)],
+      whileElementsMounted: autoUpdate
+    });
 
     const windowOffset = options.floatingBox.windowOffset;
     const parentOffset = typeof offset !== 'undefined' ? offset : options.floatingBox.offset;

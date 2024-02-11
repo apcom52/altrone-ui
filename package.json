@@ -56,6 +56,8 @@
     "normalize.css": "^8.0.1",
     "parcel-bundler": "^1.12.5",
     "prettier": "^2.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "rollup": "^2.77.0",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-dts": "4.2.3",
@@ -70,9 +72,7 @@
     "taffydb": "^2.7.3",
     "typedoc": "^0.25.3",
     "typedoc-plugin-markdown": "^3.17.1",
-    "typescript": "^5.3.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "typescript": "^5.3.3"
   },
   "scripts": {
     "publish-release": "npm run test && npm run build && npm publish",
@@ -110,6 +110,7 @@
     "url": "https://github.com/apcom52/altrone-ui/issues"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.26.9",
     "@material-symbols/font-500": "^0.12.0",
     "@popperjs/core": "^2.11.6",
     "clsx": "^1.2.1",
