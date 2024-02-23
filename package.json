@@ -1,6 +1,6 @@
 {
   "name": "altrone-ui",
-  "version": "3.0.0-dev.136",
+  "version": "3.0.0-dev.137",
   "description": "React UI Kit",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
