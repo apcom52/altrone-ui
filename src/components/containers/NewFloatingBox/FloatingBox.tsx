@@ -10,7 +10,10 @@ import {
   useDismiss,
   autoPlacement,
   FloatingFocusManager,
-  safePolygon
+  safePolygon,
+  autoUpdate,
+  flip,
+  shift
 } from '@floating-ui/react';
 import React, { useMemo } from 'react';
 import clsx from 'clsx';
@@ -27,7 +30,7 @@ const FloatingBox = ({
   title,
   placement = 'auto',
   trigger = 'click',
-  useRootContainer = false,
+  useRootContainer = true,
   className
 }: FloatingBoxProps) => {
   const { value: opened, disable: hide, setValue: setOpened } = useToggledState(false);
@@ -35,8 +38,15 @@ const FloatingBox = ({
   const { refs, floatingStyles, context } = useFloating({
     open: opened,
     onOpenChange: setOpened,
-    placement: 'right',
-    middleware: [offset(4), placement === 'auto' ? autoPlacement() : undefined]
+    placement: placement !== 'auto' ? placement : 'top',
+    middleware: [
+      offset(4),
+      placement === 'auto' ? autoPlacement() : flip(),
+      shift({
+        padding: 4
+      })
+    ],
+    whileElementsMounted: autoUpdate
   });
 
   const triggersList = Array.isArray(trigger) ? trigger : [trigger];

@@ -1,4 +1,5 @@
-export { FloatingBox, FloatingBoxMobileBehaviour } from './FloatingBox';
+// export { FloatingBox, FloatingBoxMobileBehaviour } from './FloatingBox';
+export { FloatingBox } from './NewFloatingBox';
 export { Form, FormGroup, FormGroupVariant, FormField } from './Form';
 export { Modal, ModalAction } from './Modal';
 export { ButtonContainer } from './ButtonContainer';

@@ -64,4 +64,6 @@
 .alt-form-field__hint-text {
   max-width: 280px;
   word-wrap: break-word;
+
+  @include useFontSize(body, Small);
 }

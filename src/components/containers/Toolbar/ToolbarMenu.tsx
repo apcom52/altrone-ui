@@ -14,16 +14,13 @@ export interface ToolbarMenuProps {
 
 const ToolbarMenu = ({ menu = [] }: ToolbarMenuProps) => {
   const [currentMenuIndex, setCurrentMenuIndex] = useState(-1);
-  const [currentMenuItemNode, setCurrentMenuItemNode] = useState<Element | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const onMenuItemClick = (index = 0) => {
-    setCurrentMenuItemNode(menuRef.current?.children[index] || null);
     setCurrentMenuIndex(index);
   };
 
   const onCloseSubmenu = () => {
-    setCurrentMenuItemNode(null);
     setCurrentMenuIndex(-1);
   };
 
@@ -31,31 +28,24 @@ const ToolbarMenu = ({ menu = [] }: ToolbarMenuProps) => {
     <div className="alt-toolbar-menu" ref={menuRef} data-testid="alt-test-toolbarMenu">
       {menu.map((item, itemIndex) => {
         return (
-          <button
-            key={itemIndex}
-            className={clsx('alt-toolbar-menu__item', {
-              'alt-toolbar-menu__item--active': itemIndex === currentMenuIndex
-            })}
-            onClick={() => onMenuItemClick(itemIndex)}
-            data-testid="alt-test-toolbarMenu-item">
-            {item.label}
-          </button>
+          <FloatingBox
+            key={`${item.label}-${itemIndex}`}
+            placement="bottom"
+            content={<ContextMenu onClose={onCloseSubmenu} menu={item.submenu || []} />}>
+            <button
+              key={itemIndex}
+              className={clsx('alt-toolbar-menu__item', {
+                'alt-toolbar-menu__item--active': itemIndex === currentMenuIndex
+              })}
+              type="button"
+              data-testid="alt-test-toolbarMenu-item">
+              {item.label}
+            </button>
+          </FloatingBox>
         );
       })}
-      {currentMenuIndex > -1 && (
-        <FloatingBox
-          targetElement={currentMenuItemNode as HTMLElement}
-          placement="bottom"
-          onClose={onCloseSubmenu}
-          useRootContainer
-          preventClose={(e) => {
-            return (e.target as HTMLElement).closest('.alt-toolbar-menu') === menuRef.current;
-          }}>
-          <ContextMenu onClose={onCloseSubmenu} menu={menu[currentMenuIndex].submenu || []} />
-        </FloatingBox>
-      )}
     </div>
   );
 };
 
-export default memo(ToolbarMenu) as typeof ToolbarMenu;
+export default ToolbarMenu;

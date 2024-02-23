@@ -11,4 +11,6 @@ export type FloatingBoxProps = {
   trigger?: FloatingBoxTrigger | FloatingBoxTrigger[];
   useRootContainer?: boolean;
   className?: string;
+  width?: string | number;
+  maxHeight?: string | number;
 };

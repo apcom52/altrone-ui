@@ -9,7 +9,27 @@ export const DefaultToolbarStory: StoryObj<typeof Toolbar> = {
   name: 'Default Toolbar',
   render: ({ ...args }) => {
     return (
-      <Toolbar {...args}>
+      <Toolbar
+        {...args}
+        menu={[
+          {
+            label: 'First menu',
+            submenu: [
+              { title: 'Action 1.1', onClick: () => null },
+              { title: 'Action 1.2', onClick: () => null },
+              { title: 'Action 1.3', onClick: () => null },
+              { type: 'separator' },
+              { title: 'Action 1.4', onClick: () => null }
+            ]
+          },
+          {
+            label: 'Second menu',
+            submenu: [
+              { title: 'Action 2.1', onClick: () => null },
+              { title: 'Action 2.2', onClick: () => null }
+            ]
+          }
+        ]}>
         <ToolbarGroup align={Align.start}>
           <ToolbarAction icon={<Icon i="view_sidebar" />} />
           <ToolbarAction icon={<Icon i="zoom_in" />} />
