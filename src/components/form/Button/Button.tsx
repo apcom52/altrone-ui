@@ -90,6 +90,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Popover
         trigger={dropdown ? 'click' : undefined}
+        enabled={dropdown.length > 0}
         content={<ContextMenu onClose={hideDropdown} menu={dropdown} />}>
         {React.createElement(
           ButtonComponents[href ? 1 : 0],
