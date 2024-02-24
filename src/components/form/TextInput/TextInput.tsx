@@ -100,8 +100,6 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     const [suggestionsList, setSuggestionsList] = useState<string[]>([]);
     const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState<number>(-1);
 
-    console.log('>> sugg', props.value, suggestionsList, suggestions);
-
     const _leftIsland = useInputIsland(leftIsland, leftIcon, prefix, disabled);
     let _rightIsland = useInputIsland(rightIsland, rightIcon, suffix, disabled);
 
@@ -226,14 +224,6 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         !inputRef.current ||
         document.activeElement !== inputRef.current
       ) {
-        console.log(
-          'set null suggestions',
-          Boolean(!props.value?.trim()),
-          Boolean(suggestions.length === 0),
-          Boolean(!inputRef.current),
-          Boolean(document.activeElement !== inputRef.current)
-        );
-
         setSuggestionsList(NO_SUGGESTIONS);
         setSelectedSuggestionIndex(-1);
         return;
@@ -271,17 +261,22 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           })}
           data-testid="text-input">
           <Popover
+            enabled={suggestionsList.length > 0}
             trigger="focus"
             useFocusTrap={false}
+            childrenRef={inputRef}
+            useParentWidth
             content={
               <ContextMenu
                 onClose={closeSuggestionsPopup}
-                menu={suggestionsList.map((item, itemIndex) => ({
-                  title: item,
-                  value: item,
-                  onClick: () => onChange(item),
-                  selected: itemIndex === selectedSuggestionIndex
-                }))}
+                menu={(props.value.length === 0 ? suggestions : suggestionsList).map(
+                  (item, itemIndex) => ({
+                    title: item,
+                    value: item,
+                    onClick: () => onChange(item),
+                    selected: itemIndex === selectedSuggestionIndex
+                  })
+                )}
                 maxHeight={288}
                 fluid
               />
@@ -299,16 +294,6 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
                 onChange={(e) => onChange(e.target.value)}
                 disabled={disabled}
                 required={required}
-                ref={(node: HTMLInputElement) => {
-                  inputRef.current = node;
-                  if (typeof ref === 'function') {
-                    ref(node);
-                  } else if (ref) {
-                    ref.current = node;
-                  }
-
-                  return node;
-                }}
                 {...props}
                 onKeyDownCapture={onTextInputKeyPress}
               />
