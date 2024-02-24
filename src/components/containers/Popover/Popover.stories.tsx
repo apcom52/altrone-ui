@@ -1,7 +1,7 @@
 import { Meta } from '@storybook/react';
 import { FloatingBox } from './index';
 
-export { DefaultFloatingBoxStory } from './stories';
+export { DefaultPopoverStory } from './stories';
 
 /**
  * This component is used to make a dropdown or a small popup

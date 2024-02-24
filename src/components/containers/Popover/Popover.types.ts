@@ -13,4 +13,5 @@ export type FloatingBoxProps = {
   className?: string;
   width?: string | number;
   maxHeight?: string | number;
+  useFocusTrap?: boolean;
 };

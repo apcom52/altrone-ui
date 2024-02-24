@@ -1,8 +1,8 @@
-import { memo, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { ContextMenuType as ContextMenuType } from '../../../types';
 import clsx from 'clsx';
 import './toolbar-menu.scss';
-import { FloatingBox } from '../index';
+import { Popover } from '../index';
 import { ContextMenu } from '../../list/ContextMenu';
 
 export interface ToolbarMenuProps {
@@ -28,7 +28,7 @@ const ToolbarMenu = ({ menu = [] }: ToolbarMenuProps) => {
     <div className="alt-toolbar-menu" ref={menuRef} data-testid="alt-test-toolbarMenu">
       {menu.map((item, itemIndex) => {
         return (
-          <FloatingBox
+          <Popover
             key={`${item.label}-${itemIndex}`}
             placement="bottom"
             content={<ContextMenu onClose={onCloseSubmenu} menu={item.submenu || []} />}>
@@ -41,7 +41,7 @@ const ToolbarMenu = ({ menu = [] }: ToolbarMenuProps) => {
               data-testid="alt-test-toolbarMenu-item">
               {item.label}
             </button>
-          </FloatingBox>
+          </Popover>
         );
       })}
     </div>

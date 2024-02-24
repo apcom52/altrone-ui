@@ -31,6 +31,7 @@ export default [
       resolve(),
       commonjs(),
       typescript({
+        include: ['**/*.ts', '**/*.tsx', '**/*.mts'],
         tsconfig: './tsconfig.json',
         exclude: ['**/*.test.tsx', '**/*.stories.tsx']
       }),

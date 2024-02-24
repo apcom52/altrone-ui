@@ -31,8 +31,14 @@ export const DefaultToolbarStory: StoryObj<typeof Toolbar> = {
           }
         ]}>
         <ToolbarGroup align={Align.start}>
-          <ToolbarAction icon={<Icon i="view_sidebar" />} />
-          <ToolbarAction icon={<Icon i="zoom_in" />} />
+          <ToolbarAction
+            contextMenu={[
+              { title: 'Action 3.1', onClick: () => null },
+              { title: 'Action 3.2', onClick: () => null }
+            ]}
+            icon={<Icon i="face" />}
+          />
+          <ToolbarAction icon={<Icon i="zoom_in" />} content={() => <p>Hello, world!</p>} />
           <ToolbarAction icon={<Icon i="add" />} />
         </ToolbarGroup>
         <ToolbarGroup>

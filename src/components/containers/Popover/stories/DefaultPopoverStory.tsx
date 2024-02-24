@@ -1,15 +1,15 @@
 import { StoryObj } from '@storybook/react';
-import { FloatingBox } from '../index';
+import { Popover } from '../index';
 import { StorybookBackgroundDecorator } from '../../../../storybook/StorybookPlayground';
 import { Button, TextInput } from '../../../form';
 import { ButtonContainer } from '../../ButtonContainer';
 
-export const DefaultFloatingBoxStory: StoryObj<typeof FloatingBox> = {
+export const DefaultPopoverStory: StoryObj<typeof Popover> = {
   name: 'Default Floating Box',
   render: ({ ...args }) => {
     return (
       <ButtonContainer>
-        <FloatingBox
+        <Popover
           content={
             <>
               <p>Hello, world!</p>
@@ -20,21 +20,21 @@ export const DefaultFloatingBoxStory: StoryObj<typeof FloatingBox> = {
           title=""
           useRootContainer>
           <Button>Click here</Button>
-        </FloatingBox>
-        <FloatingBox
+        </Popover>
+        <Popover
           content={<p>Hello, world!</p>}
           trigger="hover"
-          title="FloatingBox with hover trigger"
+          title="Popover with hover trigger"
           useRootContainer>
           <Button>Hover on me</Button>
-        </FloatingBox>
-        <FloatingBox
+        </Popover>
+        <Popover
           content={<p>Hello, world!</p>}
           trigger="focus"
-          title="FloatingBox with focus trigger"
+          title="Popover with focus trigger"
           useRootContainer>
           <Button>Focus me</Button>
-        </FloatingBox>
+        </Popover>
       </ButtonContainer>
     );
   },

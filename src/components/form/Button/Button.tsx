@@ -15,7 +15,7 @@ import {
   Elevation
 } from '../../../types';
 import clsx from 'clsx';
-import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
+import { Popover } from '../../containers';
 import { ContextMenu } from '../../list';
 import { Loading, Progress } from '../../indicators';
 import './button.scss';
@@ -87,63 +87,60 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       setIsDropdownVisible(false);
     }, []);
 
-    return React.createElement(
-      ButtonComponents[href ? 1 : 0],
-      {
-        className: clsx('alt-button', className, {
-          [`alt-button--role-${role}`]: role !== Role.default,
-          [`alt-button--variant-${variant}`]: variant !== ButtonVariant.default,
-          [`alt-button--size-${size}`]: size !== Size.medium,
-          'alt-button--fluid': fluid,
-          'alt-button--icon': isIcon,
-          'alt-button--loading': loading,
-          [`alt-button--elevation-${elevation}`]: elevation !== Elevation.convex
-        }),
-        ref: (node: HTMLButtonElement) => {
-          buttonRef.current = node;
-          if (typeof ref === 'function') {
-            ref(node);
-          } else if (ref) {
-            ref.current = node;
-          }
-        },
-        href,
-        type: href ? undefined : type,
-        onClick: isDropdownButton ? showDropdown : onClick,
-        ...props
-      },
-      <>
-        {leftIcon ? <span className="alt-button__leftIcon">{leftIcon}</span> : null}
-        {children}
-        {indicator && (
-          <div
-            className={clsx('alt-button__indicator', {
-              'alt-button__indicator--position-corner': indicator.position === 'corner'
-            })}>
-            {indicator.value}
-          </div>
+    return (
+      <Popover
+        trigger={dropdown ? 'click' : undefined}
+        content={<ContextMenu onClose={hideDropdown} menu={dropdown} />}>
+        {React.createElement(
+          ButtonComponents[href ? 1 : 0],
+          {
+            className: clsx('alt-button', className, {
+              [`alt-button--role-${role}`]: role !== Role.default,
+              [`alt-button--variant-${variant}`]: variant !== ButtonVariant.default,
+              [`alt-button--size-${size}`]: size !== Size.medium,
+              'alt-button--fluid': fluid,
+              'alt-button--icon': isIcon,
+              'alt-button--loading': loading,
+              [`alt-button--elevation-${elevation}`]: elevation !== Elevation.convex
+            }),
+            ref: (node: HTMLButtonElement) => {
+              buttonRef.current = node;
+              if (typeof ref === 'function') {
+                ref(node);
+              } else if (ref) {
+                ref.current = node;
+              }
+
+              return node;
+            },
+            href,
+            type: href ? undefined : type,
+            onClick: isDropdownButton ? showDropdown : onClick,
+            ...props
+          },
+          <>
+            {leftIcon ? <span className="alt-button__leftIcon">{leftIcon}</span> : null}
+            {children}
+            {indicator && (
+              <div
+                className={clsx('alt-button__indicator', {
+                  'alt-button__indicator--position-corner': indicator.position === 'corner'
+                })}>
+                {indicator.value}
+              </div>
+            )}
+            {rightIcon ? <span className="alt-button__rightIcon">{rightIcon}</span> : null}
+            {loading && (
+              <div className="alt-button__loading">
+                <Loading size={size} color="currentColor" />
+              </div>
+            )}
+            {!loading && progress !== undefined && (
+              <Progress className="alt-button__progress" value={progress} size={Size.small} />
+            )}
+          </>
         )}
-        {rightIcon ? <span className="alt-button__rightIcon">{rightIcon}</span> : null}
-        {loading && (
-          <div className="alt-button__loading">
-            <Loading size={size} color="currentColor" />
-          </div>
-        )}
-        {!loading && progress !== undefined && (
-          <Progress className="alt-button__progress" value={progress} size={Size.small} />
-        )}
-        {!loading && isDropdownVisible ? (
-          <FloatingBox
-            targetElement={buttonRef.current}
-            onClose={hideDropdown}
-            placement="bottom"
-            mobileBehaviour={FloatingBoxMobileBehaviour.modal}
-            useRootContainer={true}
-            closeOnAnotherFloatingBoxClick>
-            <ContextMenu onClose={hideDropdown} menu={dropdown} />
-          </FloatingBox>
-        ) : null}
-      </>
+      </Popover>
     );
   }
 );

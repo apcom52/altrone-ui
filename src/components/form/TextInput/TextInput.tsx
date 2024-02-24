@@ -1,7 +1,6 @@
 import React, {
   forwardRef,
   KeyboardEventHandler,
-  memo,
   PropsWithChildren,
   useCallback,
   useEffect,
@@ -16,9 +15,8 @@ import { useInputIsland } from './useInputIsland';
 import { useBoundingclientrect } from 'rooks';
 import { BasicInput } from '../BasicInput';
 import { useResizeObserver } from '../../../hooks';
-import { FloatingBox } from '../../containers';
+import { Popover } from '../../containers';
 import { ContextMenu } from '../../list';
-import { Icon } from '../../typography';
 import { Loading } from '../../indicators';
 
 export enum InputIslandType {
@@ -101,6 +99,8 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   ) => {
     const [suggestionsList, setSuggestionsList] = useState<string[]>([]);
     const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState<number>(-1);
+
+    console.log('>> sugg', props.value, suggestionsList, suggestions);
 
     const _leftIsland = useInputIsland(leftIsland, leftIcon, prefix, disabled);
     let _rightIsland = useInputIsland(rightIsland, rightIcon, suffix, disabled);
@@ -226,6 +226,14 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         !inputRef.current ||
         document.activeElement !== inputRef.current
       ) {
+        console.log(
+          'set null suggestions',
+          Boolean(!props.value?.trim()),
+          Boolean(suggestions.length === 0),
+          Boolean(!inputRef.current),
+          Boolean(document.activeElement !== inputRef.current)
+        );
+
         setSuggestionsList(NO_SUGGESTIONS);
         setSelectedSuggestionIndex(-1);
         return;
@@ -262,31 +270,50 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             [`alt-text-input--surface-${surface}`]: surface !== Surface.paper
           })}
           data-testid="text-input">
-          {Component || (
-            <input
-              className={clsx('alt-text-input__control', classNames.control, {
-                [`alt-text-input__control--elevation-${elevation}`]: elevation
-              })}
-              style={{
-                ...style,
-                paddingLeft: leftPadding,
-                paddingRight: rightPadding
-              }}
-              onChange={(e) => onChange(e.target.value)}
-              disabled={disabled}
-              required={required}
-              ref={(node: HTMLInputElement) => {
-                inputRef.current = node;
-                if (typeof ref === 'function') {
-                  ref(node);
-                } else if (ref) {
-                  ref.current = node;
-                }
-              }}
-              {...props}
-              onKeyDownCapture={onTextInputKeyPress}
-            />
-          )}
+          <Popover
+            trigger="focus"
+            useFocusTrap={false}
+            content={
+              <ContextMenu
+                onClose={closeSuggestionsPopup}
+                menu={suggestionsList.map((item, itemIndex) => ({
+                  title: item,
+                  value: item,
+                  onClick: () => onChange(item),
+                  selected: itemIndex === selectedSuggestionIndex
+                }))}
+                maxHeight={288}
+                fluid
+              />
+            }>
+            {Component || (
+              <input
+                className={clsx('alt-text-input__control', classNames.control, {
+                  [`alt-text-input__control--elevation-${elevation}`]: elevation
+                })}
+                style={{
+                  ...style,
+                  paddingLeft: leftPadding,
+                  paddingRight: rightPadding
+                }}
+                onChange={(e) => onChange(e.target.value)}
+                disabled={disabled}
+                required={required}
+                ref={(node: HTMLInputElement) => {
+                  inputRef.current = node;
+                  if (typeof ref === 'function') {
+                    ref(node);
+                  } else if (ref) {
+                    ref.current = node;
+                  }
+
+                  return node;
+                }}
+                {...props}
+                onKeyDownCapture={onTextInputKeyPress}
+              />
+            )}
+          </Popover>
           {_leftIsland && (
             <div className="alt-text-input__left-island" ref={leftIslandRef}>
               {_leftIsland}
@@ -297,54 +324,9 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
               {_rightIsland}
             </div>
           )}
-
           {required && <div className="alt-text-input__required-mark">*</div>}
-          {useLiveSuggestions && !!liveSuggestionLabel && (
-            <>
-              <div className="alt-live-suggestion__shadowText" ref={shadowRef}>
-                {props.value.replace(/\s$/g, '-')}
-              </div>
-              <div
-                className="alt-live-suggestion"
-                style={{
-                  left: liveSuggestionsBoundaries[0] + 'px',
-                  width: liveSuggestionsBoundaries[1] + 'px'
-                }}>
-                <span
-                  className="alt-live-suggestion__text"
-                  data-testid="alt-test-textInput-liveSuggestion">
-                  {liveSuggestionLabel}
-                </span>
-                <span className="alt-live-suggestion__tabIcon">
-                  <Icon i="keyboard_tab" />
-                </span>
-              </div>
-            </>
-          )}
           {children}
         </div>
-        {suggestionsList.length > 0 && (
-          <FloatingBox
-            className="alt-text-input__suggestions"
-            targetElement={inputRef.current}
-            onClose={closeSuggestionsPopup}
-            placement="bottom"
-            useParentWidth
-            useRootContainer
-            maxHeight={300}>
-            <ContextMenu
-              onClose={closeSuggestionsPopup}
-              menu={suggestionsList.map((item, itemIndex) => ({
-                title: item,
-                value: item,
-                onClick: () => onChange(item),
-                selected: itemIndex === selectedSuggestionIndex
-              }))}
-              maxHeight={288}
-              fluid
-            />
-          </FloatingBox>
-        )}
       </BasicInput>
     );
   }
@@ -352,4 +334,4 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
 TextInput.displayName = 'TextInput';
 
-export default memo(TextInput) as typeof TextInput;
+export default TextInput as typeof TextInput;

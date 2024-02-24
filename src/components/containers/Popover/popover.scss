@@ -1,6 +1,6 @@
 @import '../../../_mixins';
 
-.alt-floating-box {
+.alt-popover {
   display: block;
   position: absolute;
   border-radius: var(--containerRounding);
@@ -13,13 +13,13 @@
   @include useGlassSurface();
 }
 
-.alt-floating-box__header {
+.alt-popover__header {
   display: flex;
   position: relative;
   padding: 0 36px 4px;
 }
 
-.alt-floating-box__title {
+.alt-popover__title {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -27,7 +27,7 @@
   @include useFontSize(label, Large);
 }
 
-.alt-floating-box__close {
+.alt-popover__close {
   display: flex;
   position: absolute;
   width: 20px;
@@ -55,39 +55,39 @@
   @include useFocus();
 }
 
-.alt-floating-box__content {
+.alt-popover__content {
   @include useFontSize(body);
 }
 
-.alt-floating-box--surface-none {
+.alt-popover--surface-none {
   background-color: transparent;
   box-shadow: none;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
 
-.alt-floating-box--surface-transparent {
+.alt-popover--surface-transparent {
   background-color: var(--surfaceTrasparent);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
 
-.alt-floating-box--surface-solid {
+.alt-popover--surface-solid {
   background-color: var(--surface);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
 
-.alt-floating-box--surface-paper {
+.alt-popover--surface-paper {
   background-color: var(--background);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
 
-.alt-floating-box--surface-metal {
+.alt-popover--surface-metal {
   background: linear-gradient(to bottom, var(--metalTop) 0%, var(--metalBottom) 100%);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
 
-@include useElevation('alt-floating-box', 'inset 0 0 0 1px var(--surfaceTrasparent)');
+@include useElevation('alt-popover', 'inset 0 0 0 1px var(--surfaceTrasparent)');

@@ -1,5 +1,5 @@
-import './floating-box.scss';
-import { FloatingBoxProps } from './FloatingBox.types';
+import './popover.scss';
+import { FloatingBoxProps } from './Popover.types';
 import {
   useFloating,
   offset,
@@ -24,13 +24,14 @@ import { useToggledState } from '../../../hooks';
 /**
  * This component is used to make a dropdown or a small popup
  */
-const FloatingBox = ({
+const Popover = ({
   children,
   content,
   title,
   placement = 'auto',
   trigger = 'click',
   useRootContainer = true,
+  useFocusTrap = true,
   className
 }: FloatingBoxProps) => {
   const { value: opened, disable: hide, setValue: setOpened } = useToggledState(false);
@@ -80,7 +81,7 @@ const FloatingBox = ({
   const { getReferenceProps, getFloatingProps } = useInteractions([...triggers, dismiss]);
 
   const floatingBox = (
-    <FloatingFocusManager context={context}>
+    <FloatingFocusManager context={context} disabled={useFocusTrap === false}>
       <div
         ref={refs.setFloating}
         style={floatingStyles}
@@ -101,7 +102,18 @@ const FloatingBox = ({
 
   return (
     <>
-      {React.cloneElement(children, { ref: refs.setReference, ...getReferenceProps() })}
+      {React.cloneElement(children, {
+        ...getReferenceProps(),
+        ref: (_ref: any) => {
+          console.log('>> copy ref', children.props.ref);
+          refs.setReference(_ref);
+          if (typeof children.props.ref === 'function') {
+            children.props.ref?.(_ref);
+          } else if (children.props.ref) {
+            children.props.ref = _ref;
+          }
+        }
+      })}
       {opened &&
         (useRootContainer
           ? createPortal(floatingBox, document.querySelector('.altrone') || document.body)
@@ -110,4 +122,4 @@ const FloatingBox = ({
   );
 };
 
-export default FloatingBox as typeof FloatingBox;
+export default Popover as typeof Popover;

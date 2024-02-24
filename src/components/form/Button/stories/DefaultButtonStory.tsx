@@ -22,6 +22,17 @@ export const DefaultButtonStory: StoryObj<typeof Button> = {
           leftIcon={<Icon i="add" />}
           rightIcon={<Icon i="search" />}
         />
+        <Button
+          {...args}
+          variant={ButtonVariant.default}
+          rightIcon={<Icon i="more_horiz" />}
+          dropdown={[
+            { title: 'Action 1', onClick: () => null },
+            { title: 'Action 2', onClick: () => null },
+            { title: 'Action 3', onClick: () => null }
+          ]}>
+          More actions
+        </Button>
       </ButtonContainer>
     );
   },

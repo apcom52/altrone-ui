@@ -11,7 +11,7 @@ import './form-field.scss';
 import clsx from 'clsx';
 import { FormContextProps, useFormContext } from '../../../contexts';
 import { Icon } from '../../typography';
-import { FloatingBox } from '../NewFloatingBox';
+import { Popover } from '../index';
 
 interface FormFieldProps
   extends Omit<React.HTMLProps<HTMLDivElement>, 'children' | 'label'>,
@@ -52,14 +52,14 @@ const FormField = ({ className, label, children, required = false, hintText }: F
         <label htmlFor={id} className="alt-form-field__label">
           {label} {isRequired && <span className="alt-form-field__required-mark">*</span>}
           {hintText && (
-            <FloatingBox
+            <Popover
               trigger={['hover', 'click']}
               placement="top"
               content={<div className="alt-form-field__hint-text">{hintText}</div>}>
               <button ref={hintRef} className="alt-form-field__hint">
                 <Icon i="question_mark" />
               </button>
-            </FloatingBox>
+            </Popover>
           )}
         </label>
       )}

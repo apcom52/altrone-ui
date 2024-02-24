@@ -5,7 +5,7 @@ import { DEFAULT_KEY_EXTRACTOR } from './List.utils';
 import clsx from 'clsx';
 import { Direction } from '../../../types';
 
-export const List = <T extends object, ListDirection extends Direction = Direction.vertical>({
+export const List = <T extends object>({
   data,
   renderFunc,
   keyExtractor = DEFAULT_KEY_EXTRACTOR,
@@ -15,7 +15,7 @@ export const List = <T extends object, ListDirection extends Direction = Directi
   direction,
   lineBreak,
   className
-}: ListProps<T, ListDirection>) => {
+}: ListProps<T>) => {
   const filteredItems = useMemo(() => {
     return !skipRule ? [...data] : [...data].filter((item, index) => !skipRule(item, index));
   }, [data, skipRule]);

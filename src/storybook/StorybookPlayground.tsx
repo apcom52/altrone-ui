@@ -155,7 +155,7 @@ export const StorybookPlayground = ({
                 Open Description by Default
               </Checkbox>
             </FormField>
-            <FormField label="FloatingBox">
+            <FormField label="Popover">
               <FormGroup variant={FormGroupVariant.row}>
                 <FormField label="Offset">
                   <NumberInput

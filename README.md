@@ -46,7 +46,7 @@ To install the library, enter the command:
 **Containers:**
 
 - `<ButtonContainer />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/buttoncontainer))
-- `<FloatingBox />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/floatingbox))
+- `<Popover />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/floatingbox))
 - `<Form />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/form))
 - `<Modal />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/modal))
 - `<PhotoViewer />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/photoviewer))
