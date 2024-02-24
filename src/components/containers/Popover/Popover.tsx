@@ -13,7 +13,8 @@ import {
   safePolygon,
   autoUpdate,
   flip,
-  shift
+  shift,
+  size
 } from '@floating-ui/react';
 import React, { useMemo } from 'react';
 import clsx from 'clsx';
@@ -27,11 +28,15 @@ import { useToggledState } from '../../../hooks';
 const Popover = ({
   children,
   content,
+  enabled = true,
   title,
   placement = 'auto',
   trigger = 'click',
   useRootContainer = true,
   useFocusTrap = true,
+  useParentWidth = false,
+  childrenRef,
+  contentRef,
   className
 }: FloatingBoxProps) => {
   const { value: opened, disable: hide, setValue: setOpened } = useToggledState(false);
@@ -45,6 +50,15 @@ const Popover = ({
       placement === 'auto' ? autoPlacement() : flip(),
       shift({
         padding: 4
+      }),
+      size({
+        apply({ rects, elements }) {
+          if (useParentWidth) {
+            Object.assign(elements.floating.style, {
+              width: `${rects.reference.width}px`
+            });
+          }
+        }
       })
     ],
     whileElementsMounted: autoUpdate
@@ -95,25 +109,31 @@ const Popover = ({
             </button>
           </div>
         )}
-        <div className="alt-floating-box__content">{content}</div>
+        <div className="alt-floating-box__content" ref={contentRef ? contentRef : undefined}>
+          {content}
+        </div>
       </div>
     </FloatingFocusManager>
   );
 
+  const childrenElement = React.cloneElement(children, {
+    ...getReferenceProps(),
+    ref: (_ref: any) => {
+      console.log('>> copied ref', _ref);
+      refs.setReference(_ref);
+      if (childrenRef) {
+        childrenRef.current = _ref;
+      }
+    }
+  });
+
+  if (!enabled) {
+    return childrenElement;
+  }
+
   return (
     <>
-      {React.cloneElement(children, {
-        ...getReferenceProps(),
-        ref: (_ref: any) => {
-          console.log('>> copy ref', children.props.ref);
-          refs.setReference(_ref);
-          if (typeof children.props.ref === 'function') {
-            children.props.ref?.(_ref);
-          } else if (children.props.ref) {
-            children.props.ref = _ref;
-          }
-        }
-      })}
+      {childrenElement}
       {opened &&
         (useRootContainer
           ? createPortal(floatingBox, document.querySelector('.altrone') || document.body)
