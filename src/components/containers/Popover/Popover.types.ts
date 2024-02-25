@@ -5,7 +5,7 @@ export type FloatingBoxTrigger = 'click' | 'focus' | 'hover';
 
 export type FloatingBoxProps = {
   children: ReactElement;
-  content: ReactElement;
+  content: (() => ReactElement) | ReactElement;
   enabled?: boolean;
   title?: string;
   placement?: 'auto' | Placement;
@@ -18,4 +18,8 @@ export type FloatingBoxProps = {
   useFocusTrap?: boolean;
   useParentWidth?: boolean;
   className?: string;
+};
+
+export type PopoverContext = {
+  closePopup: () => void;
 };

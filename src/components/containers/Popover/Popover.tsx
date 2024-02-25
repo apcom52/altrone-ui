@@ -21,6 +21,7 @@ import clsx from 'clsx';
 import { Icon } from '../../typography';
 import { createPortal } from 'react-dom';
 import { useToggledState } from '../../../hooks';
+import { popoverContext } from './Popover.utils';
 
 /**
  * This component is used to make a dropdown or a small popup
@@ -95,31 +96,37 @@ const Popover = ({
   const { getReferenceProps, getFloatingProps } = useInteractions([...triggers, dismiss]);
 
   const floatingBox = (
-    <FloatingFocusManager context={context} disabled={useFocusTrap === false}>
-      <div
-        ref={refs.setFloating}
-        style={floatingStyles}
-        className={clsx('alt-floating-box', className)}
-        {...getFloatingProps()}>
-        {typeof title === 'string' && (
-          <div className="alt-floating-box__header">
-            <div className="alt-floating-box__title">{title}</div>
-            <button className="alt-floating-box__close" type="button" onClick={hide}>
-              <Icon i="close" />
-            </button>
+    <popoverContext.Provider
+      value={{
+        closePopup: () => {
+          console.log('hide clicked');
+        }
+      }}>
+      <FloatingFocusManager context={context} disabled={useFocusTrap === false}>
+        <div
+          ref={refs.setFloating}
+          style={floatingStyles}
+          className={clsx('alt-floating-box', className)}
+          {...getFloatingProps()}>
+          {typeof title === 'string' && (
+            <div className="alt-floating-box__header">
+              <div className="alt-floating-box__title">{title}</div>
+              <button className="alt-floating-box__close" type="button" onClick={hide}>
+                <Icon i="close" />
+              </button>
+            </div>
+          )}
+          <div className="alt-floating-box__content" ref={contentRef ? contentRef : undefined}>
+            {typeof content === 'function' ? content() : content}
           </div>
-        )}
-        <div className="alt-floating-box__content" ref={contentRef ? contentRef : undefined}>
-          {content}
         </div>
-      </div>
-    </FloatingFocusManager>
+      </FloatingFocusManager>
+    </popoverContext.Provider>
   );
 
   const childrenElement = React.cloneElement(children, {
     ...getReferenceProps(),
     ref: (_ref: any) => {
-      console.log('>> copied ref', _ref);
       refs.setReference(_ref);
       if (childrenRef) {
         childrenRef.current = _ref;
