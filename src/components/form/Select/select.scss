@@ -56,6 +56,10 @@
   gap: 8px;
 }
 
+.alt-select-search {
+  margin-bottom: 4px;
+}
+
 .alt-select-group {
   display: flex;
   flex-direction: column;
@@ -89,9 +93,10 @@
   @include useFontSize(label, Large);
   @include useDisabledUserSelect();
 
-  &:hover, &.alt-select-option--selected {
+  &:hover, &.alt-select-option--selected, &:focus-visible {
     --background: var(--accent);
-    --text: var(--textColorOnAccent)
+    --text: var(--textColorOnAccent);
+    outline: 0;
   }
 }
 
