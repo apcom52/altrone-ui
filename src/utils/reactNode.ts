@@ -1,6 +1,10 @@
 import React, { ReactNode } from 'react';
 import { AnyObject } from '../types';
 
+export function isFragment(element: ReactNode) {
+  return Boolean(element && React.isValidElement(element) && element.type === React.Fragment);
+}
+
 export function replaceNode(source: ReactNode, replacement: ReactNode, props: AnyObject) {
   if (!React.isValidElement(source)) {
     return replacement;
