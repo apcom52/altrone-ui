@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from '../../typography';
 import { useAltrone } from '../../../contexts';
 import './date-picker.scss';
-import { FloatingBox, FloatingBoxMobileBehaviour } from '../../containers';
+import { Popover } from '../../containers';
 import { DayPicker, MonthPicker, Picker, YearPicker } from './index';
 import { Button } from '../../form';
 import clsx from 'clsx';
@@ -51,7 +51,6 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
   surface = Surface.paper,
   useDateRange = false
 }: DatePickerProps<IsDateRange>) => {
-  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(
     value && !Array.isArray(value) ? dayjs(value) : dayjs()
   );
@@ -115,11 +114,11 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
     }
   };
 
-  const onApplyClick = () => {
+  const onApplyClick = (closePopup: () => void) => {
     if (picker === Picker.day && currentView !== Picker.day) {
       setCurrentView(Picker.day);
     } else {
-      setIsDatePickerVisible(false);
+      closePopup();
     }
   };
 
@@ -238,206 +237,203 @@ export const DatePicker = <IsDateRange extends boolean | undefined = false>({
 
   return (
     <BasicInput disabled={disabled} hintText={hintText} errorText={errorText} size={size}>
-      <button
-        className={clsx('alt-date-picker', className, {
-          [`alt-text-input__control--elevation-${elevation}`]: elevation,
-          [`alt-text-input__control--surface-${surface}`]: surface !== Surface.paper
-        })}
-        ref={inputRef}
-        onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}
-        data-testid="alt-test-datepicker"
-        type="button"
-        disabled={disabled}>
-        {value ? (
-          <div className="alt-date-picker__value">{currentLabel}</div>
-        ) : (
-          <div className="alt-date-picker__placeholder">
-            {placeholder || t('form.datePicker.placeholder')}
-          </div>
-        )}
-        <div className="alt-date-picker__icon">
-          <Icon i="calendar_month" />
-        </div>
-      </button>
-      {isDatePickerVisible && (
-        <FloatingBox
-          targetElement={inputRef.current}
-          placement="bottom"
-          onClose={() => setIsDatePickerVisible(false)}
-          mobileBehaviour={FloatingBoxMobileBehaviour.modal}
-          closeOnAnotherFloatingBoxClick
-          useRootContainer>
-          <div className="alt-date-picker__header">
-            {!ltePhoneL && picker === Picker.day && (
-              <button
-                className={clsx('alt-date-picker__currentMonth', {
-                  'alt-date-picker__currentMonth--selected': currentView !== Picker.day
-                })}
-                onClick={onCurrentDateClick}
-                data-testid="alt-test-datepicker-header"
-                type="button">
-                {currentMonthFormat.format(currentMonth.toDate())}
-              </button>
-            )}
-            {ltePhoneL && picker === Picker.day && (
-              <div className="alt-date-picker__title">
-                {currentMonthFormat.format(currentMonth.toDate())}
-              </div>
-            )}
-            {picker === Picker.month && (
-              <div className="alt-date-picker__title">{t('form.datePicker.chooseMonth')}</div>
-            )}
-            {picker === Picker.year && (
-              <div className="alt-date-picker__title">{t('form.datePicker.chooseYear')}</div>
-            )}
-            {!ltePhoneL && currentView === Picker.day && (
-              <div className="alt-date-picker__navigation">
+      <Popover
+        placement="bottom"
+        content={(context) => (
+          <>
+            <div className="alt-date-picker__header">
+              {!ltePhoneL && picker === Picker.day && (
                 <button
-                  className="alt-date-picker__navigation-button"
-                  onClick={onPrevMonthClick}
-                  data-testid="alt-test-datepicker-prev"
-                  type="button"
-                  disabled={currentMonth <= minMonth}>
-                  <Icon i="arrow_back_ios" />
+                  className={clsx('alt-date-picker__currentMonth', {
+                    'alt-date-picker__currentMonth--selected': currentView !== Picker.day
+                  })}
+                  onClick={onCurrentDateClick}
+                  data-testid="alt-test-datepicker-header"
+                  type="button">
+                  {currentMonthFormat.format(currentMonth.toDate())}
                 </button>
-                <button
-                  className="alt-date-picker__navigation-button"
-                  onClick={onNextMonthClick}
-                  data-testid="alt-test-datepicker-next"
-                  type="button"
-                  disabled={currentMonth >= maxMonth}>
-                  <Icon i="arrow_forward_ios" />
-                </button>
-              </div>
-            )}
-          </div>
-          {currentView === Picker.day && (
-            <DayPicker
-              currentMonth={currentMonth}
-              startSelectedDate={startDate}
-              endSelectedDate={endDate}
-              onChange={onChangeHandler}
-              minDate={minDate}
-              maxDate={maxDate}
-              isDateRange={useDateRange}
-            />
-          )}
-          {currentView === Picker.month && (
-            <MonthPicker
-              currentMonth={currentMonth}
-              startSelectedDate={isMonthViewInDayPicker ? currentMonth : startDate}
-              endSelectedDate={isMonthViewInDayPicker ? undefined : endDate}
-              onChange={onChangeHandler}
-              minDate={minDate}
-              maxDate={maxDate}
-              isDateRange={isMonthViewInDayPicker ? false : useDateRange}
-            />
-          )}
-          {currentView === Picker.year && (
-            <YearPicker
-              startSelectedDate={startDate}
-              endSelectedDate={endDate}
-              onChange={onChangeHandler}
-              minDate={minDate}
-              maxDate={maxDate}
-              isDateRange={useDateRange}
-            />
-          )}
-          {!ltePhoneL && (
-            <div className="alt-date-picker__footer">
-              {clearable && (
-                <>
-                  <Button isIcon dropdown={datePickerMenu}>
-                    <Icon i="more_horiz" />
-                  </Button>
-                  <div className="alt-date-picker__footer-separator" />
-                </>
               )}
-              {currentView === Picker.day && !useDateRange && (
-                <Button onClick={onTodayClick} data-testid="alt-test-datepicker-today">
-                  {t('form.datePicker.today')}
-                </Button>
+              {ltePhoneL && picker === Picker.day && (
+                <div className="alt-date-picker__title">
+                  {currentMonthFormat.format(currentMonth.toDate())}
+                </div>
               )}
-              {currentView === Picker.month && !useDateRange && (
-                <Button onClick={onTodayClick} data-testid="alt-test-datepicker-currentMonth">
-                  {t('form.datePicker.currentMonth')}
-                </Button>
+              {picker === Picker.month && (
+                <div className="alt-date-picker__title">{t('form.datePicker.chooseMonth')}</div>
               )}
-              <Button
-                role={Role.primary}
-                className="alt-date-picker__apply"
-                onClick={onApplyClick}
-                data-testid="alt-test-datepicker-apply">
-                {t('common.apply')}
-              </Button>
+              {picker === Picker.year && (
+                <div className="alt-date-picker__title">{t('form.datePicker.chooseYear')}</div>
+              )}
+              {!ltePhoneL && currentView === Picker.day && (
+                <div className="alt-date-picker__navigation">
+                  <button
+                    className="alt-date-picker__navigation-button"
+                    onClick={onPrevMonthClick}
+                    data-testid="alt-test-datepicker-prev"
+                    type="button"
+                    disabled={currentMonth <= minMonth}>
+                    <Icon i="arrow_back_ios" />
+                  </button>
+                  <button
+                    className="alt-date-picker__navigation-button"
+                    onClick={onNextMonthClick}
+                    data-testid="alt-test-datepicker-next"
+                    type="button"
+                    disabled={currentMonth >= maxMonth}>
+                    <Icon i="arrow_forward_ios" />
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-          {ltePhoneL && (
-            <div
-              className={clsx('alt-date-picker__footer', {
-                'alt-date-picker__footer--compact': currentView !== Picker.day,
-                'alt-date-picker__footer--clearable': clearable && value
-              })}>
-              {currentView === Picker.day && (
+            {currentView === Picker.day && (
+              <DayPicker
+                currentMonth={currentMonth}
+                startSelectedDate={startDate}
+                endSelectedDate={endDate}
+                onChange={onChangeHandler}
+                minDate={minDate}
+                maxDate={maxDate}
+                isDateRange={useDateRange}
+              />
+            )}
+            {currentView === Picker.month && (
+              <MonthPicker
+                currentMonth={currentMonth}
+                startSelectedDate={isMonthViewInDayPicker ? currentMonth : startDate}
+                endSelectedDate={isMonthViewInDayPicker ? undefined : endDate}
+                onChange={onChangeHandler}
+                minDate={minDate}
+                maxDate={maxDate}
+                isDateRange={isMonthViewInDayPicker ? false : useDateRange}
+              />
+            )}
+            {currentView === Picker.year && (
+              <YearPicker
+                startSelectedDate={startDate}
+                endSelectedDate={endDate}
+                onChange={onChangeHandler}
+                minDate={minDate}
+                maxDate={maxDate}
+                isDateRange={useDateRange}
+              />
+            )}
+            {!ltePhoneL && (
+              <div className="alt-date-picker__footer">
+                {clearable && (
+                  <>
+                    {/* TODO: implement with new Dropdown component */}
+                    <Button isIcon dropdown={datePickerMenu}>
+                      <Icon i="more_horiz" />
+                    </Button>
+                    <div className="alt-date-picker__footer-separator" />
+                  </>
+                )}
+                {currentView === Picker.day && !useDateRange && (
+                  <Button onClick={onTodayClick} data-testid="alt-test-datepicker-today">
+                    {t('form.datePicker.today')}
+                  </Button>
+                )}
+                {currentView === Picker.month && !useDateRange && (
+                  <Button onClick={onTodayClick} data-testid="alt-test-datepicker-currentMonth">
+                    {t('form.datePicker.currentMonth')}
+                  </Button>
+                )}
                 <Button
-                  onClick={onPrevMonthClick}
-                  className="alt-date-picker__mobilePrevMonth"
-                  isIcon>
-                  <Icon i="arrow_back" />
-                </Button>
-              )}
-              {currentView === Picker.day && (
-                <Button onClick={onCurrentDateClick} className="alt-date-picker__mobileMonthName">
-                  {t('form.datePicker.chooseMonth')}
-                </Button>
-              )}
-              {currentView === Picker.day && (
-                <Button
-                  onClick={onNextMonthClick}
-                  className="alt-date-picker__mobileNextMonth"
-                  isIcon>
-                  <Icon i="arrow_forward" />
-                </Button>
-              )}
-              {currentView !== Picker.year && (
-                <Button
-                  onClick={onTodayClick}
-                  className="alt-date-picker__mobileToday"
-                  leftIcon={<Icon i="today" />}>
-                  {currentView === Picker.day
-                    ? t('form.datePicker.today')
-                    : t('form.datePicker.currentMonth')}
-                </Button>
-              )}
-              {clearable && value && (
-                <Button
-                  leftIcon={<Icon i="backspace" />}
-                  className="alt-date-picker__mobileClear"
-                  onClick={clearDate}>
-                  {t('common.clear')}
-                </Button>
-              )}
-              {(currentView === Picker.day || picker !== Picker.day) && (
-                <Button
-                  onClick={onApplyClick}
-                  className="alt-date-picker__mobileApply"
-                  role={Role.primary}>
+                  role={Role.primary}
+                  className="alt-date-picker__apply"
+                  onClick={() => onApplyClick(context.closePopup)}
+                  data-testid="alt-test-datepicker-apply">
                   {t('common.apply')}
                 </Button>
-              )}
-              {currentView !== Picker.day && picker === Picker.day && (
-                <Button
-                  onClick={onApplyClick}
-                  className="alt-date-picker__mobileApply"
-                  role={Role.primary}
-                  leftIcon={<Icon i="arrow_back_ios" />}>
-                  {t('common.back')}
-                </Button>
-              )}
+              </div>
+            )}
+            {ltePhoneL && (
+              <div
+                className={clsx('alt-date-picker__footer', {
+                  'alt-date-picker__footer--compact': currentView !== Picker.day,
+                  'alt-date-picker__footer--clearable': clearable && value
+                })}>
+                {currentView === Picker.day && (
+                  <Button
+                    onClick={onPrevMonthClick}
+                    className="alt-date-picker__mobilePrevMonth"
+                    isIcon>
+                    <Icon i="arrow_back" />
+                  </Button>
+                )}
+                {currentView === Picker.day && (
+                  <Button onClick={onCurrentDateClick} className="alt-date-picker__mobileMonthName">
+                    {t('form.datePicker.chooseMonth')}
+                  </Button>
+                )}
+                {currentView === Picker.day && (
+                  <Button
+                    onClick={onNextMonthClick}
+                    className="alt-date-picker__mobileNextMonth"
+                    isIcon>
+                    <Icon i="arrow_forward" />
+                  </Button>
+                )}
+                {currentView !== Picker.year && (
+                  <Button
+                    onClick={onTodayClick}
+                    className="alt-date-picker__mobileToday"
+                    leftIcon={<Icon i="today" />}>
+                    {currentView === Picker.day
+                      ? t('form.datePicker.today')
+                      : t('form.datePicker.currentMonth')}
+                  </Button>
+                )}
+                {clearable && value && (
+                  <Button
+                    leftIcon={<Icon i="backspace" />}
+                    className="alt-date-picker__mobileClear"
+                    onClick={clearDate}>
+                    {t('common.clear')}
+                  </Button>
+                )}
+                {(currentView === Picker.day || picker !== Picker.day) && (
+                  <Button
+                    onClick={() => onApplyClick(context.closePopup)}
+                    className="alt-date-picker__mobileApply"
+                    role={Role.primary}>
+                    {t('common.apply')}
+                  </Button>
+                )}
+                {currentView !== Picker.day && picker === Picker.day && (
+                  <Button
+                    onClick={() => onApplyClick(context.closePopup)}
+                    className="alt-date-picker__mobileApply"
+                    role={Role.primary}
+                    leftIcon={<Icon i="arrow_back_ios" />}>
+                    {t('common.back')}
+                  </Button>
+                )}
+              </div>
+            )}
+          </>
+        )}>
+        <button
+          className={clsx('alt-date-picker', className, {
+            [`alt-text-input__control--elevation-${elevation}`]: elevation,
+            [`alt-text-input__control--surface-${surface}`]: surface !== Surface.paper
+          })}
+          ref={inputRef}
+          data-testid="alt-test-datepicker"
+          type="button"
+          disabled={disabled}>
+          {value ? (
+            <div className="alt-date-picker__value">{currentLabel}</div>
+          ) : (
+            <div className="alt-date-picker__placeholder">
+              {placeholder || t('form.datePicker.placeholder')}
             </div>
           )}
-        </FloatingBox>
-      )}
+          <div className="alt-date-picker__icon">
+            <Icon i="calendar_month" />
+          </div>
+        </button>
+      </Popover>
     </BasicInput>
   );
 };
