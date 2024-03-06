@@ -1,5 +1,5 @@
 import './popover.scss';
-import { FloatingBoxProps } from './Popover.types';
+import { PopoverProps, PopoverContext, PopoverRef, PopoverChildrenContext } from './Popover.types';
 import {
   useFloating,
   offset,
@@ -16,35 +16,43 @@ import {
   shift,
   size
 } from '@floating-ui/react';
-import React, { useMemo } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
 import clsx from 'clsx';
-import { Icon } from '../../typography';
 import { createPortal } from 'react-dom';
 import { useToggledState } from '../../../hooks';
-import { popoverContext } from './Popover.utils';
+import { cloneNode } from '../../../utils';
+import { CloseButton } from '../../atoms';
 
 /**
  * This component is used to make a dropdown or a small popup
  */
-const Popover = ({
-  children,
-  content,
-  enabled = true,
-  title,
-  placement = 'auto',
-  trigger = 'click',
-  useRootContainer = true,
-  useFocusTrap = true,
-  useParentWidth = false,
-  childrenRef,
-  contentRef,
-  className
-}: FloatingBoxProps) => {
-  const { value: opened, disable: hide, setValue: setOpened } = useToggledState(false);
+export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) => {
+  const oldNode = useRef<HTMLElement | null>(null);
 
+  const {
+    children,
+    content,
+    enabled = true,
+    title,
+    placement = 'auto',
+    trigger = 'click',
+    useRootContainer = true,
+    useFocusTrap = true,
+    useParentWidth = false,
+    showCloseButton = false,
+    className
+  } = props;
+
+  const childrenRef = useRef<HTMLElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+
+  const { value: opened, disable: hide, setValue: setOpened } = useToggledState(false);
   const { refs, floatingStyles, context } = useFloating({
     open: opened,
-    onOpenChange: setOpened,
+    onOpenChange: (state) => {
+      console.log('>> changed to', state);
+      setOpened(state);
+    },
     placement: placement !== 'auto' ? placement : 'top',
     middleware: [
       offset(4),
@@ -68,8 +76,11 @@ const Popover = ({
   const triggersList = Array.isArray(trigger) ? trigger : [trigger];
 
   const clickTrigger = useClick(context, {
-    enabled: triggersList.includes('click')
+    enabled: triggersList.includes('click'),
+    event: 'click',
+    toggle: true
   });
+
   const hoverTrigger = useHover(context, {
     enabled: triggersList.includes('hover'),
     delay: {
@@ -78,64 +89,94 @@ const Popover = ({
     },
     handleClose: safePolygon()
   });
+
   const focusTrigger = useFocus(context, {
     enabled: triggersList.includes('focus')
   });
-  const dismiss = useDismiss(context);
+  const dismiss = useDismiss(context, {
+    enabled: opened,
+    referencePress: true,
+    referencePressEvent: 'click'
+  });
 
-  const triggers = useMemo(() => {
-    const triggers = Array.isArray(trigger) ? trigger : [trigger];
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    clickTrigger,
+    hoverTrigger,
+    focusTrigger,
+    dismiss
+  ]);
 
-    return [
-      triggers.includes('click') ? clickTrigger : undefined,
-      triggers.includes('hover') ? hoverTrigger : undefined,
-      triggers.includes('focus') ? focusTrigger : undefined
-    ].filter((i) => !!i);
-  }, [trigger]);
-
-  const { getReferenceProps, getFloatingProps } = useInteractions([...triggers, dismiss]);
-
-  const floatingBox = (
-    <popoverContext.Provider
-      value={{
-        closePopup: () => {
-          console.log('hide clicked');
-        }
-      }}>
-      <FloatingFocusManager context={context} disabled={useFocusTrap === false}>
-        <div
-          ref={refs.setFloating}
-          style={floatingStyles}
-          className={clsx('alt-floating-box', className)}
-          {...getFloatingProps()}>
-          {typeof title === 'string' && (
-            <div className="alt-floating-box__header">
-              <div className="alt-floating-box__title">{title}</div>
-              <button className="alt-floating-box__close" type="button" onClick={hide}>
-                <Icon i="close" />
-              </button>
-            </div>
-          )}
-          <div className="alt-floating-box__content" ref={contentRef ? contentRef : undefined}>
-            {typeof content === 'function' ? content() : content}
-          </div>
-        </div>
-      </FloatingFocusManager>
-    </popoverContext.Provider>
+  useImperativeHandle(
+    popoverRef,
+    () => ({
+      opened,
+      childrenNode: childrenRef.current,
+      contentNode: contentRef.current
+    }),
+    [opened]
   );
 
-  const childrenElement = React.cloneElement(children, {
-    ...getReferenceProps(),
-    ref: (_ref: any) => {
-      refs.setReference(_ref);
-      if (childrenRef) {
-        childrenRef.current = _ref;
-      }
+  const popoverContext: PopoverContext = {
+    closePopup: hide
+  };
+
+  useEffect(() => {
+    if (!oldNode.current) {
+      oldNode.current = childrenRef.current;
+    }
+  }, [opened]);
+
+  const showHeader = showCloseButton || title;
+
+  const floatingBox = (
+    <FloatingFocusManager context={context} disabled={!useFocusTrap}>
+      <div
+        ref={(elementRef: HTMLDivElement) => {
+          refs.setFloating(elementRef);
+          contentRef.current = elementRef;
+        }}
+        style={floatingStyles}
+        className={clsx('alt-popover', className)}
+        {...getFloatingProps()}>
+        {showHeader && (
+          <div
+            className={clsx('alt-popover__header', {
+              'alt-popover__header--with-close-button': showCloseButton
+            })}>
+            {title ? <div className="alt-popover__title">{title}</div> : null}
+            {showCloseButton && <CloseButton onClick={hide} className="alt-popover__close" />}
+          </div>
+        )}
+        <div className="alt-popover__content" ref={contentRef ? contentRef : undefined}>
+          {typeof content === 'function' ? content(popoverContext) : content}
+        </div>
+      </div>
+    </FloatingFocusManager>
+  );
+
+  const childrenContext: PopoverChildrenContext = {
+    opened,
+    closePopup: hide
+  };
+  const originChildElement = typeof children === 'function' ? children(childrenContext) : children;
+  const safeChildElement = React.isValidElement(originChildElement) ? (
+    originChildElement
+  ) : (
+    <span>{originChildElement}</span>
+  );
+
+  const childrenElement = cloneNode(safeChildElement, {
+    ...getReferenceProps({
+      onClick: safeChildElement.props?.onClick ? () => safeChildElement.props.onClick() : undefined
+    }),
+    ref: (elementRef: HTMLElement) => {
+      refs.setReference(elementRef);
+      childrenRef.current = elementRef;
     }
   });
 
   if (!enabled) {
-    return childrenElement;
+    return <>{originChildElement}</>;
   }
 
   return (
@@ -147,6 +188,4 @@ const Popover = ({
           : floatingBox)}
     </>
   );
-};
-
-export default Popover as typeof Popover;
+});

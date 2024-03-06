@@ -16,10 +16,18 @@
 .alt-popover__header {
   display: flex;
   position: relative;
-  padding: 0 36px 4px;
+  min-height: 20px;
+  margin-bottom: 4px;
+  padding: 0 8px 4px;
+}
+
+.alt-popover__header--with-close-button {
+  padding-right: 36px;
 }
 
 .alt-popover__title {
+  width: 100%;
+  text-align: center;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -28,31 +36,9 @@
 }
 
 .alt-popover__close {
-  display: flex;
   position: absolute;
-  width: 20px;
-  max-width: 20px;
-  height: 20px;
-  max-height: 20px;
   top: 0;
   right: 0;
-  margin: 0;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--surfaceTrasparent);
-  border: none;
-  color: var(--textColor);
-  font-size: 16px;
-  border-radius: var(--circleRounding);
-  cursor: pointer;
-  transition: background-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
-  padding: 0;
-
-  &:hover {
-    background-color: var(--surfaceTrasparentHover);
-  }
-
-  @include useFocus();
 }
 
 .alt-popover__content {

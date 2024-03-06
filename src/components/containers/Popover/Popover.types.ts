@@ -1,19 +1,29 @@
-import { MutableRefObject, ReactElement } from 'react';
+import { MutableRefObject, ReactNode, RefObject } from 'react';
 import { Placement } from '@floating-ui/react';
 
-export type FloatingBoxTrigger = 'click' | 'focus' | 'hover';
+export type PopoverTrigger = 'click' | 'focus' | 'hover';
 
-export type FloatingBoxProps = {
-  children: ReactElement;
-  content: (() => ReactElement) | ReactElement;
+export type PopoverRef = {
+  opened: boolean;
+  childrenNode: HTMLElement | null;
+  contentNode: HTMLDivElement | null;
+};
+
+export type PopoverChildrenContext = {
+  opened: boolean;
+  closePopup: () => void;
+};
+
+export type PopoverProps = {
+  children: ReactNode | ((context: PopoverChildrenContext) => ReactNode);
+  content: ((context: PopoverContext) => ReactNode) | ReactNode;
   enabled?: boolean;
   title?: string;
   placement?: 'auto' | Placement;
-  trigger?: FloatingBoxTrigger | FloatingBoxTrigger[];
+  trigger?: PopoverTrigger | PopoverTrigger[];
   width?: string | number;
   maxHeight?: string | number;
-  childrenRef?: MutableRefObject<any>;
-  contentRef?: MutableRefObject<HTMLDivElement>;
+  showCloseButton?: boolean;
   useRootContainer?: boolean;
   useFocusTrap?: boolean;
   useParentWidth?: boolean;

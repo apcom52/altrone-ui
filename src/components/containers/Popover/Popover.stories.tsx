@@ -1,14 +1,14 @@
 import { Meta } from '@storybook/react';
-import { FloatingBox } from './index';
+import { Popover } from './index';
 
 export { DefaultPopoverStory } from './stories';
 
 /**
  * This component is used to make a dropdown or a small popup
  */
-const meta: Meta<typeof FloatingBox> = {
-  component: FloatingBox,
-  title: 'Containers/NewFloatingBox',
+const meta: Meta<typeof Popover> = {
+  component: Popover,
+  title: 'Containers/Popover',
   tags: ['autodocs'],
   args: {
     trigger: 'click'
