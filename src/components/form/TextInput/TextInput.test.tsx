@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { TextInput } from './index';
-import { InputIslandType } from './TextInput';
+import { InputIslandType } from './TextInput.old';
 import { Icon } from '../../typography';
 import { Size } from '../../../types';
 

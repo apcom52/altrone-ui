@@ -10,6 +10,30 @@
   font-size: var(--fontSize);
 }
 
+.alt-text-input__container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.alt-text-input__islands {
+  display: flex;
+  position: absolute;
+  top: 0;
+  gap: 8px;
+  height: var(--height);
+  padding: 0 8px;
+  background: lightcyan;
+}
+
+.alt-text-input__left-islands {
+  left: 0;
+}
+
+.alt-text-input__right-islands {
+  right: 0;
+}
+
 .alt-text-input__control {
   width: 100%;
   height: var(--height);

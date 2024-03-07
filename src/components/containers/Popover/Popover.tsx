@@ -18,7 +18,7 @@ import {
   FloatingPortal,
   OpenChangeReason
 } from '@floating-ui/react';
-import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 import { useToggledState } from '../../../hooks';
 import { cloneNode } from '../../../utils';
@@ -124,9 +124,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
     () => ({
       opened,
       childrenNode: childrenRef.current,
-      contentNode: contentRef.current,
-      open,
-      close: hide
+      contentNode: contentRef.current
     }),
     [opened]
   );
