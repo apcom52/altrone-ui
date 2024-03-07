@@ -36,7 +36,6 @@ export interface ButtonProps extends PropsWithChildren {
   leftIcon?: JSX.Element;
   rightIcon?: JSX.Element;
   size?: Size;
-  dropdown?: ContextMenuType;
   isIcon?: boolean;
   indicator?: Indicator;
   loading?: boolean;
@@ -62,7 +61,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       leftIcon,
       rightIcon,
       size = Size.medium,
-      dropdown = [],
       onClick,
       type = 'button',
       isIcon = false,
@@ -74,74 +72,45 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-    const isDropdownButton = !!dropdown.length;
-
-    const buttonRef = useRef<HTMLButtonElement | null>(null);
-
-    const showDropdown = useCallback<MouseEventHandler>(() => {
-      setIsDropdownVisible(true);
-    }, []);
-
-    const hideDropdown = useCallback(() => {
-      setIsDropdownVisible(false);
-    }, []);
-
-    return (
-      <Popover
-        trigger={dropdown ? 'click' : undefined}
-        enabled={dropdown.length > 0}
-        content={<ContextMenu onClose={hideDropdown} menu={dropdown} />}>
-        {React.createElement(
-          ButtonComponents[href ? 1 : 0],
-          {
-            className: clsx('alt-button', className, {
-              [`alt-button--role-${role}`]: role !== Role.default,
-              [`alt-button--variant-${variant}`]: variant !== ButtonVariant.default,
-              [`alt-button--size-${size}`]: size !== Size.medium,
-              'alt-button--fluid': fluid,
-              'alt-button--icon': isIcon,
-              'alt-button--loading': loading,
-              [`alt-button--elevation-${elevation}`]: elevation !== Elevation.convex
-            }),
-            ref: (node: HTMLButtonElement) => {
-              buttonRef.current = node;
-              if (typeof ref === 'function') {
-                ref(node);
-              } else if (ref) {
-                ref.current = node;
-              }
-
-              return node;
-            },
-            href,
-            type: href ? undefined : type,
-            onClick: isDropdownButton ? showDropdown : onClick,
-            ...props
-          },
-          <>
-            {leftIcon ? <span className="alt-button__leftIcon">{leftIcon}</span> : null}
-            {children}
-            {indicator && (
-              <div
-                className={clsx('alt-button__indicator', {
-                  'alt-button__indicator--position-corner': indicator.position === 'corner'
-                })}>
-                {indicator.value}
-              </div>
-            )}
-            {rightIcon ? <span className="alt-button__rightIcon">{rightIcon}</span> : null}
-            {loading && (
-              <div className="alt-button__loading">
-                <Loading size={size} color="currentColor" />
-              </div>
-            )}
-            {!loading && progress !== undefined && (
-              <Progress className="alt-button__progress" value={progress} size={Size.small} />
-            )}
-          </>
+    return React.createElement(
+      ButtonComponents[href ? 1 : 0],
+      {
+        className: clsx('alt-button', className, {
+          [`alt-button--role-${role}`]: role !== Role.default,
+          [`alt-button--variant-${variant}`]: variant !== ButtonVariant.default,
+          [`alt-button--size-${size}`]: size !== Size.medium,
+          'alt-button--fluid': fluid,
+          'alt-button--icon': isIcon,
+          'alt-button--loading': loading,
+          [`alt-button--elevation-${elevation}`]: elevation !== Elevation.convex
+        }),
+        ref,
+        href,
+        type: href ? undefined : type,
+        onClick: onClick,
+        ...props
+      },
+      <>
+        {leftIcon ? <span className="alt-button__leftIcon">{leftIcon}</span> : null}
+        {children}
+        {indicator && (
+          <div
+            className={clsx('alt-button__indicator', {
+              'alt-button__indicator--position-corner': indicator.position === 'corner'
+            })}>
+            {indicator.value}
+          </div>
         )}
-      </Popover>
+        {rightIcon ? <span className="alt-button__rightIcon">{rightIcon}</span> : null}
+        {loading && (
+          <div className="alt-button__loading">
+            <Loading size={size} color="currentColor" />
+          </div>
+        )}
+        {!loading && progress !== undefined && (
+          <Progress className="alt-button__progress" value={progress} size={Size.small} />
+        )}
+      </>
     );
   }
 );

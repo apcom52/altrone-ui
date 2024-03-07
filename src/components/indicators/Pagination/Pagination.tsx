@@ -1,11 +1,10 @@
 import './pagination.scss';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Icon } from '../../typography';
 import { Form, FormField, Popover } from '../../containers';
 import { NumberInput, Button, ButtonVariant } from '../../form';
 import { Role } from '../../../types';
 import { useLocalization } from '../../../hooks';
-import { usePopoverContext } from '../../containers/Popover/Popover.utils';
 
 interface PaginationProps {
   page: number;
@@ -55,23 +54,13 @@ export const Pagination = ({
       <Popover
         placement="top"
         className="alt-pagination__navigation"
-        content={() => {
-          const { closePopup } = usePopoverContext();
-
-          const onClick = () => {
-            console.log('>> click');
-            closePopup();
-          };
-
+        content={({ closePopup }) => {
           return (
             <Form>
               <FormField label={t('indicators.pagination.moveToPage')}>
                 <NumberInput value={page} min={1} max={totalPages} onChange={onChange} />
               </FormField>
-              <button type="button" onClick={onClick}>
-                ok
-              </button>
-              <Button role={Role.primary} fluid onClick={onClick}>
+              <Button role={Role.primary} fluid onClick={closePopup}>
                 {t('indicators.pagination.apply')}
               </Button>
             </Form>

@@ -17,3 +17,4 @@ export { Surface } from './Surface';
 export { Elevation } from './Elevation';
 export { Rect } from './Rect';
 export { OptionValue } from './OptionValue';
+export { AnyObject } from './AnyObject';

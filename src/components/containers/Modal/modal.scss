@@ -91,31 +91,9 @@
 }
 
 .alt-modal__close {
-  display: flex;
   position: absolute;
-  width: 20px;
-  max-width: 20px;
-  height: 20px;
-  max-height: 20px;
   top: 12px;
   right: 8px;
-  margin: 0;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--surfaceTrasparent);
-  border: none;
-  color: var(--textColor);
-  font-size: 16px;
-  border-radius: var(--circleRounding);
-  cursor: pointer;
-  transition: background-color var(--transitionDuration) ease, box-shadow var(--transitionDuration) ease;
-  padding: 0;
-
-  &:hover {
-    background-color: var(--surfaceTrasparentHover);
-  }
-
-  @include useFocus();
 }
 
 .alt-modal__content {

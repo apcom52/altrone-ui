@@ -1,17 +1,10 @@
-import {
-  cloneElement,
-  MouseEventHandler,
-  ReactElement,
-  useCallback,
-  useId,
-  useRef,
-  useState
-} from 'react';
+import { ReactElement, useId } from 'react';
 import './form-field.scss';
 import clsx from 'clsx';
 import { FormContextProps, useFormContext } from '../../../contexts';
 import { Icon } from '../../typography';
 import { Popover } from '../index';
+import { cloneNode } from '../../../utils';
 
 interface FormFieldProps
   extends Omit<React.HTMLProps<HTMLDivElement>, 'children' | 'label'>,
@@ -36,15 +29,7 @@ const FormField = ({ className, label, children, required = false, hintText }: F
   const id = useId();
   const isRequired = required || context.required;
 
-  const [isHintTextVisible, setIsHintTextVisible] = useState(false);
-
-  const hintRef = useRef<HTMLButtonElement>(null);
-
-  const onHintClick = useCallback<MouseEventHandler>((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsHintTextVisible(true);
-  }, []);
+  const hintContent = <div className="alt-form-field__hint-text">{hintText}</div>;
 
   return (
     <div className={clsx('alt-form-field', className)}>
@@ -54,9 +39,10 @@ const FormField = ({ className, label, children, required = false, hintText }: F
           {hintText && (
             <Popover
               trigger={['hover', 'click']}
-              placement="top"
-              content={<div className="alt-form-field__hint-text">{hintText}</div>}>
-              <button ref={hintRef} className="alt-form-field__hint">
+              placement="auto"
+              content={hintContent}
+              useFocusTrap={false}>
+              <button className="alt-form-field__hint">
                 <Icon i="question_mark" />
               </button>
             </Popover>
@@ -65,7 +51,7 @@ const FormField = ({ className, label, children, required = false, hintText }: F
       )}
       <div className="alt-form-field__control">
         {!Array.isArray(children) && typeof children === 'object'
-          ? cloneElement(children, { id, ...children.props })
+          ? cloneNode(children, { id, ...children.props })
           : children}
       </div>
     </div>

@@ -3,37 +3,71 @@ import { Popover } from '../index';
 import { StorybookBackgroundDecorator } from '../../../../storybook/StorybookPlayground';
 import { Button, TextInput } from '../../../form';
 import { ButtonContainer } from '../../ButtonContainer';
+import React, { useRef } from 'react';
+import { Icon } from '../../../typography';
+import button from '../../../form/Button/Button';
 
 export const DefaultPopoverStory: StoryObj<typeof Popover> = {
-  name: 'Default Floating Box',
+  name: 'Default Popover',
   render: ({ ...args }) => {
     return (
       <ButtonContainer>
         <Popover
           content={
             <>
-              <p>Hello, world!</p>
+              <div>Hello, world!</div>
+              <TextInput value="" onChange={() => null} />
+            </>
+          }
+          trigger="click"
+          title="With only title"
+          enabled
+          useRootContainer>
+          <Button>Click here</Button>
+        </Popover>
+        <Popover
+          content={<div>Hello, world!</div>}
+          trigger="hover"
+          title="Popover with hover trigger"
+          showCloseButton
+          useRootContainer>
+          <Button>Hover on me</Button>
+        </Popover>
+        <Popover
+          content={<div>Hello, world!</div>}
+          trigger="focus"
+          showCloseButton
+          useRootContainer>
+          <Button>Focus me</Button>
+        </Popover>
+        <Popover
+          content={
+            <>
+              <div>Hello, world!</div>
               <TextInput value="" onChange={() => null} />
             </>
           }
           trigger="click"
           title=""
+          enabled
           useRootContainer>
-          <Button>Click here</Button>
+          {({ opened }) => (
+            <Button rightIcon={opened ? <Icon i="expand_less" /> : <Icon i="expand_more" />}>
+              Button with functional-child element
+            </Button>
+          )}
         </Popover>
         <Popover
-          content={<p>Hello, world!</p>}
-          trigger="hover"
-          title="Popover with hover trigger"
+          content={
+            <>
+              <div>Hello, world!</div>
+              <TextInput value="" onChange={() => null} />
+            </>
+          }
+          trigger="click"
+          enabled
           useRootContainer>
-          <Button>Hover on me</Button>
-        </Popover>
-        <Popover
-          content={<p>Hello, world!</p>}
-          trigger="focus"
-          title="Popover with focus trigger"
-          useRootContainer>
-          <Button>Focus me</Button>
+          <button type="button">Simple Button</button>
         </Popover>
       </ButtonContainer>
     );
