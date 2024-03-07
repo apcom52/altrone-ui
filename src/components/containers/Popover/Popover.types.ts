@@ -7,6 +7,8 @@ export type PopoverRef = {
   opened: boolean;
   childrenNode: HTMLElement | null;
   contentNode: HTMLDivElement | null;
+  open: () => void;
+  close: () => void;
 };
 
 export type PopoverChildrenContext = {

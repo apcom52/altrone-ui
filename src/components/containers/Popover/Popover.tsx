@@ -14,11 +14,12 @@ import {
   autoUpdate,
   flip,
   shift,
-  size
+  size,
+  FloatingPortal,
+  OpenChangeReason
 } from '@floating-ui/react';
-import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
-import { createPortal } from 'react-dom';
 import { useToggledState } from '../../../hooks';
 import { cloneNode } from '../../../utils';
 import { CloseButton } from '../../atoms';
@@ -27,8 +28,6 @@ import { CloseButton } from '../../atoms';
  * This component is used to make a dropdown or a small popup
  */
 export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) => {
-  const oldNode = useRef<HTMLElement | null>(null);
-
   const {
     children,
     content,
@@ -43,15 +42,30 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
     className
   } = props;
 
+  const lastStateChangeReason = useRef<OpenChangeReason | undefined>(undefined);
+
   const childrenRef = useRef<HTMLElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
-  const { value: opened, disable: hide, setValue: setOpened } = useToggledState(false);
+  const triggersList = Array.isArray(trigger) ? trigger : [trigger];
+
+  const {
+    value: opened,
+    enable: open,
+    disable: hide,
+    setValue: setOpened
+  } = useToggledState(false);
   const { refs, floatingStyles, context } = useFloating({
     open: opened,
-    onOpenChange: (state) => {
-      console.log('>> changed to', state);
-      setOpened(state);
+    onOpenChange: (state, event, reason) => {
+      const hasFocusTrigger = triggersList.includes('focus');
+
+      const skipRule = lastStateChangeReason.current === 'click' && reason === 'reference-press';
+      if (!(hasFocusTrigger && skipRule)) {
+        setOpened(state);
+      }
+
+      lastStateChangeReason.current = reason;
     },
     placement: placement !== 'auto' ? placement : 'top',
     middleware: [
@@ -73,12 +87,9 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
     whileElementsMounted: autoUpdate
   });
 
-  const triggersList = Array.isArray(trigger) ? trigger : [trigger];
-
   const clickTrigger = useClick(context, {
     enabled: triggersList.includes('click'),
-    event: 'click',
-    toggle: true
+    event: 'click'
   });
 
   const hoverTrigger = useHover(context, {
@@ -91,8 +102,10 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
   });
 
   const focusTrigger = useFocus(context, {
-    enabled: triggersList.includes('focus')
+    enabled: triggersList.includes('focus'),
+    visibleOnly: true
   });
+
   const dismiss = useDismiss(context, {
     enabled: opened,
     referencePress: true,
@@ -111,7 +124,9 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
     () => ({
       opened,
       childrenNode: childrenRef.current,
-      contentNode: contentRef.current
+      contentNode: contentRef.current,
+      open,
+      close: hide
     }),
     [opened]
   );
@@ -119,12 +134,6 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
   const popoverContext: PopoverContext = {
     closePopup: hide
   };
-
-  useEffect(() => {
-    if (!oldNode.current) {
-      oldNode.current = childrenRef.current;
-    }
-  }, [opened]);
 
   const showHeader = showCloseButton || title;
 
@@ -167,7 +176,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
 
   const childrenElement = cloneNode(safeChildElement, {
     ...getReferenceProps({
-      onClick: safeChildElement.props?.onClick ? () => safeChildElement.props.onClick() : undefined
+      ...safeChildElement.props
     }),
     ref: (elementRef: HTMLElement) => {
       refs.setReference(elementRef);
@@ -176,16 +185,17 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
   });
 
   if (!enabled) {
-    return <>{originChildElement}</>;
+    return <>{childrenElement}</>;
   }
 
   return (
     <>
       {childrenElement}
-      {opened &&
-        (useRootContainer
-          ? createPortal(floatingBox, document.querySelector('.altrone') || document.body)
-          : floatingBox)}
+      {opened && (
+        <FloatingPortal root={(document.querySelector('.altrone') as HTMLElement) || document.body}>
+          {floatingBox}
+        </FloatingPortal>
+      )}
     </>
   );
 });
