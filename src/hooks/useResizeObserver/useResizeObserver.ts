@@ -7,7 +7,7 @@ export type DOMRectValues = Pick<
 
 const defaultReturn = {};
 
-export const useResizeObserver = (elementRef: RefObject<HTMLElement>) => {
+export const useResizeObserver = <T extends HTMLElement>(elementRef: RefObject<T>) => {
   const resizeTimeout = useRef<NodeJS.Timeout | null>(null);
   const observerRef = useRef<ResizeObserver | null>(null);
   const [DOMRect, setDOMRect] = useState<DOMRectValues>();
