@@ -20,6 +20,7 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
     onFocus,
     onBlur,
     children,
+    Component,
     ...restProps
   } = props;
 
@@ -72,20 +73,26 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
     ...restProps
   };
 
+  const inputElement = Component ? (
+    Component
+  ) : (
+    <Popover
+      enabled={false}
+      ref={popoverRef}
+      placement="bottom"
+      trigger={['click', 'focus']}
+      showCloseButton={false}
+      useParentWidth
+      useFocusTrap={false}
+      content={<>hello!</>}>
+      <Input key="textInput" ref={inputRef} {...inputProps} />
+    </Popover>
+  );
+
   return (
     <BasicInput className="alt-text-input">
       <div className="alt-text-input__container">
-        <Popover
-          enabled={false}
-          ref={popoverRef}
-          placement="bottom"
-          trigger={['click', 'focus']}
-          showCloseButton={false}
-          useParentWidth
-          useFocusTrap={false}
-          content={<>hello!</>}>
-          <Input key="textInput" ref={inputRef} {...inputProps} />
-        </Popover>
+        {inputElement}
         {leftIslands.length ? (
           <div
             className="alt-text-input__islands alt-text-input__left-islands"

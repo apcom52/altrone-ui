@@ -49,6 +49,7 @@ export interface InputComponentProps {
   onFocus?: () => void;
   onBlur?: () => void;
   style?: Partial<CSSProperties>;
+  Component?: JSX.Element;
 }
 
 export interface TextInputProps extends InputComponentProps, BasicInputProps {
