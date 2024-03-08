@@ -64,8 +64,10 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
     onFocus,
     onBlur,
     style: {
-      paddingLeft: leftIslands.length ? leftIslandsContainerRef.current?.offsetWidth + 'px' : '0',
-      paddingRight: rightIslands.length ? rightIslandsContainerRef.current?.offsetWidth + 'px' : '0'
+      paddingLeft: leftIslands.length ? leftIslandsContainerRef.current?.offsetWidth + 'px' : '8px',
+      paddingRight: rightIslands.length
+        ? rightIslandsContainerRef.current?.offsetWidth + 'px'
+        : '8px'
     },
     ...restProps
   };
