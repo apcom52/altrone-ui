@@ -1,6 +1,6 @@
-import { ChangeEvent, ReactNode } from 'react';
+import { ChangeEvent, PropsWithChildren, ReactNode } from 'react';
 import { BasicInputProps } from '../BasicInput';
-import { TextIsland } from './components/TextIsland';
+import { TextIsland } from './components';
 
 export type Placement = 'left' | 'right';
 
@@ -32,6 +32,8 @@ export interface ActionIslandProps extends IslandProps {
   danger?: boolean;
 }
 
+export interface CustomIslandProps extends IslandProps, PropsWithChildren {}
+
 export type IslandRef = {
   container: HTMLElement | null;
   placement: Placement;
@@ -52,7 +54,3 @@ export interface TextInputProps extends InputComponentProps, BasicInputProps {
   children?: JSX.Element | JSX.Element[];
   suggestions?: string[];
 }
-
-export type TextInputSubComponents = {
-  TextIsland: typeof TextIsland;
-};

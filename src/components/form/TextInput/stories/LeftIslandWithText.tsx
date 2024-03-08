@@ -10,10 +10,8 @@ export const LeftIslandWithTextStory: StoryObj<typeof TextInput> = {
     const [_value, setValue] = useState('');
 
     return (
-      <TextInput value={_value} onChange={setValue}>
+      <TextInput {...args} value={_value} onChange={setValue}>
         <TextInputIsland.Text label={'$'} placement="left" />
-        <TextInputIsland.Text label={'Label'} placement="left" />
-        <TextInputIsland.Text label={'Suffix'} placement="right" />
       </TextInput>
     );
   },

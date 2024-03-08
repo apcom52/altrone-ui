@@ -11,16 +11,8 @@ export const RightIslandWithIconStory: StoryObj<typeof TextInput> = {
     const [_value, setValue] = useState('');
 
     return (
-      <TextInput value={_value} onChange={setValue}>
-        <TextInputIsland.Action
-          label="Fill"
-          icon={<Icon i="reply" />}
-          placement="left"
-          showLabel={false}
-        />
-        <TextInputIsland.Action label="Cut" icon={<Icon i="cut" />} placement="right" />
-        <TextInputIsland.Action label="Copy" icon={<Icon i="content_copy" />} placement="right" />
-        <TextInputIsland.Icon icon={<Icon i="face" />} placement="right" />
+      <TextInput {...args} value={_value} onChange={setValue}>
+        <TextInputIsland.Icon icon={<Icon i="check" />} placement="right" />
       </TextInput>
     );
   },
