@@ -1,18 +1,10 @@
-import {
-  ForwardedRef,
-  forwardRef,
-  ForwardRefExoticComponent,
-  useCallback,
-  useMemo,
-  useRef
-} from 'react';
-import { TextInputProps, TextInputRef, TextInputSubComponents } from './TextInput.types';
+import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
+import { InputComponentProps, TextInputProps, TextInputRef } from './TextInput.types';
 import { BasicInput } from '../BasicInput';
 import { Input } from './components';
 import { Popover } from '../../containers';
 import { PopoverRef } from '../../containers/Popover/Popover.types';
-import { useToggledState } from '../../../hooks';
-import { TextIsland } from './components/TextIsland';
+import { useResizeObserver } from '../../../hooks';
 
 const EMPTY_ARRAY: string[] = [];
 
@@ -32,21 +24,13 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
   } = props;
 
   const popoverRef = useRef<PopoverRef>(null);
-
-  const inputProps = {
-    value,
-    onChange,
-    type,
-    maxLength,
-    id,
-    className,
-    onFocus,
-    onBlur,
-    ...restProps
-  };
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const leftIslandsContainerRef = useRef<HTMLDivElement | null>(null);
   const rightIslandsContainerRef = useRef<HTMLDivElement | null>(null);
+
+  useResizeObserver(leftIslandsContainerRef);
+  useResizeObserver(rightIslandsContainerRef);
 
   const [leftIslands, rightIslands] = useMemo(() => {
     const safeChildren = (Array.isArray(children) ? children : [children]).filter((childElement) =>
@@ -61,6 +45,31 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
     return [left, right];
   }, [children]);
 
+  useImperativeHandle(
+    ref,
+    () => ({
+      value,
+      inputElement: inputRef.current
+    }),
+    [value, inputRef.current]
+  );
+
+  const inputProps: InputComponentProps = {
+    value,
+    onChange,
+    type,
+    maxLength,
+    id,
+    className,
+    onFocus,
+    onBlur,
+    style: {
+      paddingLeft: leftIslands.length ? leftIslandsContainerRef.current?.offsetWidth + 'px' : '0',
+      paddingRight: rightIslands.length ? rightIslandsContainerRef.current?.offsetWidth + 'px' : '0'
+    },
+    ...restProps
+  };
+
   return (
     <BasicInput className="alt-text-input">
       <div className="alt-text-input__container">
@@ -73,7 +82,7 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
           useParentWidth
           useFocusTrap={false}
           content={<>hello!</>}>
-          <Input key="textInput" {...inputProps} />
+          <Input key="textInput" ref={inputRef} {...inputProps} />
         </Popover>
         {leftIslands.length ? (
           <div

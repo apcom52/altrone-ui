@@ -15,6 +15,8 @@ export const Input = forwardRef<HTMLInputElement, InputComponentProps>((props, r
     maxLength,
     onFocus,
     onBlur,
+    leftOffset,
+    rightOffset,
     ...restProps
   } = props;
 

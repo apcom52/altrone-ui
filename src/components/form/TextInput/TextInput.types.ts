@@ -1,13 +1,11 @@
-import { ChangeEvent, PropsWithChildren, ReactNode } from 'react';
+import { ChangeEvent, CSSProperties, PropsWithChildren, ReactElement, ReactNode } from 'react';
 import { BasicInputProps } from '../BasicInput';
-import { TextIsland } from './components';
 
 export type Placement = 'left' | 'right';
 
 export type TextInputRef = {
   value: string;
-  focused: boolean;
-  inputElement: HTMLInputElement;
+  inputElement: HTMLInputElement | null;
 };
 
 type IslandProps = {
@@ -46,11 +44,14 @@ export interface InputComponentProps {
   type?: string;
   maxLength?: number;
   className?: string;
+  leftOffset?: number;
+  rightOffset?: number;
   onFocus?: () => void;
   onBlur?: () => void;
+  style?: Partial<CSSProperties>;
 }
 
 export interface TextInputProps extends InputComponentProps, BasicInputProps {
-  children?: JSX.Element | JSX.Element[];
+  children?: ReactElement | null | Array<ReactElement | null>;
   suggestions?: string[];
 }
