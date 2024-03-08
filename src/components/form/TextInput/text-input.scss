@@ -19,6 +19,7 @@
 .alt-text-input__islands {
   display: flex;
   position: absolute;
+  align-items: center;
   top: 0;
   gap: 8px;
   height: var(--height);

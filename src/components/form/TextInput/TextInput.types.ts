@@ -23,6 +23,15 @@ export interface IconIslandProps extends IslandProps {
   icon: ReactNode;
 }
 
+export interface ActionIslandProps extends IslandProps {
+  label: string;
+  icon?: ReactNode;
+  showLabel?: boolean;
+  onClick?: () => void;
+  disabled?: boolean;
+  danger?: boolean;
+}
+
 export type IslandRef = {
   container: HTMLElement | null;
   placement: Placement;
