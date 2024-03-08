@@ -19,6 +19,10 @@ export interface TextIslandProps extends IslandProps {
   label: string;
 }
 
+export interface IconIslandProps extends IslandProps {
+  icon: ReactNode;
+}
+
 export type IslandRef = {
   container: HTMLElement | null;
   placement: Placement;
