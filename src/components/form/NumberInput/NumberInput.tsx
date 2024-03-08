@@ -6,6 +6,7 @@ import { Elevation, Surface } from '../../../types';
 import clsx from 'clsx';
 import { NumberInputProps } from './NumberInput.types';
 import { useAltrone } from '../../../contexts';
+import { TextInputIsland } from '../TextInput';
 
 const NumberInput = ({
   value = 0,
@@ -101,24 +102,6 @@ const NumberInput = ({
       value={formattedValue}
       onChange={() => null}
       disabled={disabled}
-      {...props}
-      rightIsland={
-        showControls
-          ? {
-              type: InputIslandType.components,
-              content: (
-                <NumberInputCounter
-                  value={value}
-                  onChange={onChange}
-                  step={step}
-                  min={min}
-                  max={max}
-                  disabled={disabled}
-                />
-              )
-            }
-          : rightIsland
-      }
       Component={
         <NumericFormat
           value={value}
@@ -134,10 +117,21 @@ const NumberInput = ({
           decimalScale={digitsAfterDecimal}
           isAllowed={onAllowedCheck}
           disabled={disabled}
+          step={(1 / 10 ** digitsAfterDecimal).toString()}
         />
       }
-      step={(1 / 10 ** digitsAfterDecimal).toString()}
-    />
+      {...props}>
+      <TextInputIsland.Custom placement="right">
+        <NumberInputCounter
+          value={value}
+          onChange={onChange}
+          step={step}
+          min={min}
+          max={max}
+          disabled={disabled}
+        />
+      </TextInputIsland.Custom>
+    </TextInput>
   );
 };
 
