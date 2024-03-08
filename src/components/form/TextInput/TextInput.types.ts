@@ -22,7 +22,6 @@ export interface TextIslandProps extends IslandProps {
 export type IslandRef = {
   container: HTMLElement | null;
   placement: Placement;
-  width: number;
 };
 
 export interface InputComponentProps {
