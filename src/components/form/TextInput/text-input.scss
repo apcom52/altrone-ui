@@ -135,53 +135,8 @@
   margin-top: -40px;
 }
 
-.alt-text-input__left-island ~ .alt-live-suggestion__shadowText {
-  padding-left: 10px;
-}
-
-.alt-text-input__right-island .alt-loading {
-  margin-right: -8px;
-}
-
-.alt-text-input--surface-none {
-  .alt-text-input__control {
-    background-color: transparent;
-    border-color: transparent;
-  }
-}
-
-.alt-text-input--surface-transparent {
-  .alt-text-input__control {
-    background-color: var(--surfaceTrasparent);
-    border-color: var(--borderColor);
-  }
-}
-
-.alt-text-input--surface-glass {
-  .alt-text-input__control {
-    @include useGlassSurface();
-    border-color: var(--borderColor);
-  }
-}
-
-.alt-text-input--surface-solid {
-  .alt-text-input__control {
-    background-color: var(--surface);
-    border-color: var(--borderColor);
-  }
-}
-
-.alt-text-input--surface-metal {
-  .alt-text-input__control {
-    background: linear-gradient(to bottom, var(--metalTop) 0%, var(--metalBottom) 100%);
-    border-color: var(--borderColor);
-  }
-}
-
 .alt-text-input__loading {
   transform: scale(0.5);
   margin-right: -4px;
   margin-left: -4px;
 }
-
-@include useElevation('alt-text-input__control', null, true);

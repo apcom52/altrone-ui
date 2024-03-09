@@ -1,7 +1,8 @@
-import { forwardRef, memo, useCallback, useId } from 'react';
+import { forwardRef, useCallback, useId } from 'react';
 import { InputComponentProps } from '../TextInput.types';
 import './input.scss';
 import clsx from 'clsx';
+import { Elevation } from '../../../../types';
 
 export const Input = forwardRef<HTMLInputElement, InputComponentProps>((props, ref) => {
   const inputId = useId();
@@ -17,6 +18,7 @@ export const Input = forwardRef<HTMLInputElement, InputComponentProps>((props, r
     onBlur,
     leftOffset,
     rightOffset,
+    elevation = Elevation.convex,
     ...restProps
   } = props;
 

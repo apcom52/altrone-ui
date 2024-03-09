@@ -15,6 +15,7 @@
   appearance: none;
   border-radius: var(--controlRounding);
   border: 1px solid var(--borderColor);
+  box-shadow: 0 1px 0 0 var(--buttonShadowColor);
   transition: box-shadow var(--transitionDuration) ease, opacity var(--transitionDuration) ease;
 
   @include useFocus();
@@ -29,3 +30,30 @@
     color: var(--placeholderText);
   }
 }
+
+.alt-input--surface-none {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.alt-input--surface-transparent {
+  background-color: var(--surfaceTrasparent);
+  border-color: var(--borderColor);
+}
+
+.alt-input--surface-glass {
+  @include useGlassSurface();
+  border-color: var(--borderColor);
+}
+
+.alt-input--surface-solid {
+  background-color: var(--surface);
+  border-color: var(--borderColor);
+}
+
+.alt-input--surface-metal {
+  background: linear-gradient(to bottom, var(--metalTop) 0%, var(--metalBottom) 100%);
+  border-color: var(--borderColor);
+}
+
+@include useElevation('alt-input', null, true);

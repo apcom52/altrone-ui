@@ -1,6 +1,6 @@
 import { ChangeEvent, CSSProperties, PropsWithChildren, ReactElement, ReactNode } from 'react';
 import { BasicInputProps } from '../BasicInput';
-import { Size } from '../../../types';
+import { Elevation, Size, Surface } from '../../../types';
 
 export type Placement = 'left' | 'right';
 
@@ -48,9 +48,11 @@ export interface InputComponentProps {
   leftOffset?: number;
   rightOffset?: number;
   disabled?: boolean;
+  placeholder?: string;
   onFocus?: () => void;
   onBlur?: () => void;
   style?: Partial<CSSProperties>;
+  elevation?: Elevation;
 }
 
 export interface TextInputProps extends InputComponentProps, BasicInputProps {
@@ -60,4 +62,5 @@ export interface TextInputProps extends InputComponentProps, BasicInputProps {
   suggestions?: string[];
   Component?: JSX.Element;
   required?: boolean;
+  surface?: Surface;
 }

@@ -6,7 +6,7 @@ import { PopoverRef } from '../../containers/Popover/Popover.types';
 import { useResizeObserver } from '../../../hooks';
 import { TextInputIsland } from './TextInputIsland';
 import { Loading } from '../../indicators';
-import { Size } from '../../../types';
+import { Elevation, Size, Surface } from '../../../types';
 import clsx from 'clsx';
 import { BasicInput } from '../BasicInput';
 
@@ -29,6 +29,8 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
     size = Size.medium,
     disabled = false,
     required = false,
+    elevation = Elevation.convex,
+    surface = Surface.solid,
     ...restProps
   } = props;
 
@@ -85,7 +87,11 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
     type,
     maxLength,
     id,
-    className,
+    className: clsx(
+      className,
+      `alt-input--elevation-${elevation}`,
+      `alt-input--surface-${surface}`
+    ),
     onFocus,
     onBlur,
     disabled: disabled,
