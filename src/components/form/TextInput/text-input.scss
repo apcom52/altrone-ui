@@ -312,10 +312,10 @@
   }
 }
 
-.alt-text-input__right-island {
-  .alt-text-input__loading {
-    transform: scale(0.5);
-  }
+.alt-text-input__loading {
+  transform: scale(0.5);
+  margin-right: -4px;
+  margin-left: -4px;
 }
 
 @include useElevation('alt-text-input__control', null, true);

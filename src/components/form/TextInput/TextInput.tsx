@@ -5,6 +5,8 @@ import { Input } from './components';
 import { Popover } from '../../containers';
 import { PopoverRef } from '../../containers/Popover/Popover.types';
 import { useResizeObserver } from '../../../hooks';
+import { TextInputIsland } from './TextInputIsland';
+import { Loading } from '../../indicators';
 
 const EMPTY_ARRAY: string[] = [];
 
@@ -20,6 +22,7 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
     onFocus,
     onBlur,
     children,
+    loading = false,
     Component,
     ...restProps
   } = props;
@@ -43,8 +46,16 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
     );
     const right = safeChildren.filter((island) => island?.props.placement === 'right');
 
+    if (loading) {
+      right.push(
+        <TextInputIsland.Custom placement="right" className="alt-text-input__loading">
+          <Loading color="var(--secondaryTextColor)" />
+        </TextInputIsland.Custom>
+      );
+    }
+
     return [left, right];
-  }, [children]);
+  }, [children, loading]);
 
   useImperativeHandle(
     ref,
