@@ -39,7 +39,8 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
     useFocusTrap = true,
     useParentWidth = false,
     showCloseButton = false,
-    className
+    className,
+    focusTrapTargets = ['reference', 'content']
   } = props;
 
   const lastStateChangeReason = useRef<OpenChangeReason | undefined>(undefined);
@@ -55,6 +56,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
     disable: hide,
     setValue: setOpened
   } = useToggledState(false);
+
   const { refs, floatingStyles, context } = useFloating({
     open: opened,
     onOpenChange: (state, event, reason) => {
@@ -123,10 +125,11 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
     popoverRef,
     () => ({
       opened,
+      context,
       childrenNode: childrenRef.current,
       contentNode: contentRef.current
     }),
-    [opened]
+    [opened, context]
   );
 
   const popoverContext: PopoverContext = {
@@ -136,10 +139,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
   const showHeader = showCloseButton || title;
 
   const floatingBox = (
-    <FloatingFocusManager
-      context={context}
-      disabled={!useFocusTrap}
-      order={['reference', 'content']}>
+    <FloatingFocusManager context={context} disabled={!useFocusTrap} order={focusTrapTargets}>
       <div
         ref={(elementRef: HTMLDivElement) => {
           refs.setFloating(elementRef);
