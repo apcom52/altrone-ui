@@ -1,6 +1,5 @@
-import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
 import { InputComponentProps, TextInputProps, TextInputRef } from './TextInput.types';
-import { BasicInput } from '../BasicInput';
 import { Input } from './components';
 import { Popover } from '../../containers';
 import { PopoverRef } from '../../containers/Popover/Popover.types';
@@ -9,6 +8,7 @@ import { TextInputIsland } from './TextInputIsland';
 import { Loading } from '../../indicators';
 import { Size } from '../../../types';
 import clsx from 'clsx';
+import { BasicInput } from '../BasicInput';
 
 const EMPTY_ARRAY: string[] = [];
 
@@ -28,6 +28,7 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
     Component,
     size = Size.medium,
     disabled = false,
+    required = false,
     ...restProps
   } = props;
 
@@ -58,8 +59,16 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
       );
     }
 
+    if (required) {
+      right.push(
+        <TextInputIsland.Custom placement="right" className="alt-text-input__required-mark">
+          *
+        </TextInputIsland.Custom>
+      );
+    }
+
     return [left, right];
-  }, [children, loading]);
+  }, [children, loading, required]);
 
   useImperativeHandle(
     ref,

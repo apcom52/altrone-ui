@@ -59,4 +59,5 @@ export interface TextInputProps extends InputComponentProps, BasicInputProps {
   size?: Size;
   suggestions?: string[];
   Component?: JSX.Element;
+  required?: boolean;
 }
