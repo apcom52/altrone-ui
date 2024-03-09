@@ -136,7 +136,10 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
   const showHeader = showCloseButton || title;
 
   const floatingBox = (
-    <FloatingFocusManager context={context} disabled={!useFocusTrap}>
+    <FloatingFocusManager
+      context={context}
+      disabled={!useFocusTrap}
+      order={['reference', 'content']}>
       <div
         ref={(elementRef: HTMLDivElement) => {
           refs.setFloating(elementRef);
