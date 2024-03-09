@@ -7,6 +7,8 @@ import { PopoverRef } from '../../containers/Popover/Popover.types';
 import { useResizeObserver } from '../../../hooks';
 import { TextInputIsland } from './TextInputIsland';
 import { Loading } from '../../indicators';
+import { Size } from '../../../types';
+import clsx from 'clsx';
 
 const EMPTY_ARRAY: string[] = [];
 
@@ -24,6 +26,8 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
     children,
     loading = false,
     Component,
+    size = Size.medium,
+    disabled = false,
     ...restProps
   } = props;
 
@@ -75,6 +79,7 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
     className,
     onFocus,
     onBlur,
+    disabled: disabled,
     style: {
       paddingLeft: leftIslands.length ? leftIslandsContainerRef.current?.offsetWidth + 'px' : '8px',
       paddingRight: rightIslands.length
@@ -101,8 +106,12 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
   );
 
   return (
-    <BasicInput className="alt-text-input">
-      <div className="alt-text-input__container">
+    <BasicInput className="alt-text-input" size={size}>
+      <div
+        className={clsx('alt-text-input__container', {
+          [`alt-text-input--size-${size}`]: size !== Size.medium,
+          'alt-text-input--disabled': disabled
+        })}>
         {inputElement}
         {leftIslands.length ? (
           <div
