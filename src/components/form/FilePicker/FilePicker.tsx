@@ -11,7 +11,7 @@ import { DefaultIcon } from './FilePickerIcons';
 import { v4 as uuid } from 'uuid';
 import './file-picker.scss';
 import clsx from 'clsx';
-import { FloatingBox } from '../../containers';
+import { Popover } from '../../containers';
 import { FileZone } from './FileZone';
 import { FILE_EXTENTIONS, FilePickerVariant } from './FilePicker.constants';
 import { FilePickerProps, FilePickerRef, InnerFileItem } from './FilePicker.types';
@@ -52,10 +52,7 @@ export const FilePicker = forwardRef<FilePickerRef, FilePickerProps>(
       }));
     });
 
-    const [fileZoneVisible, setFileZoneVisible] = useState(false);
-
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const fileButtonRef = useRef<HTMLButtonElement>(null);
 
     const icon = FILE_EXTENTIONS[String(extensions)]?.smallIcon || DefaultIcon;
 
@@ -140,53 +137,42 @@ export const FilePicker = forwardRef<FilePickerRef, FilePickerProps>(
             multiple={maxFiles > 1}
           />
           {variant === FilePickerVariant.default && (
-            <button
-              type="button"
-              ref={fileButtonRef}
-              className="alt-button alt-file-picker-button"
-              onClick={() => setFileZoneVisible(true)}>
-              <span className="alt-file-picker-button__icon">
-                {icon(String(extensions), files?.length || 0, files?.[0])}
-              </span>
-              {files.length === 1 ? (
-                <div className="alt-file-picker-file">
-                  <div className="alt-file-picker-file__name">{files?.[0]?.filename}</div>
-                </div>
-              ) : Array.isArray(files) && files.length ? (
-                <div className="alt-file-picker-file">
-                  <div className="alt-file-picker-file">
-                    {t('form.filePicker.selectedFiles', {
-                      plural: true,
-                      value: files?.length,
-                      vars: { count: files?.length }
-                    })}
-                  </div>
-                </div>
-              ) : (
-                <div className="alt-file-picker-button__label">
-                  {placeholder || t('form.filePicker.placeholder')}
-                </div>
-              )}
-            </button>
-          )}
-          {fileZoneVisible && variant === FilePickerVariant.default && fileButtonRef.current && (
-            <FloatingBox
+            <Popover
               placement="bottom"
-              surface={surface}
-              targetElement={fileButtonRef.current}
-              onClose={() => setFileZoneVisible(false)}
-              preventClose={(e: MouseEvent) =>
-                (e.target as HTMLElement).getAttribute('type') === 'file'
+              content={
+                <FileZone
+                  files={files}
+                  onUploadClick={uploadFiles}
+                  onDeleteClick={onDeleteFile}
+                  disableUploading={files.length >= maxFiles}
+                />
               }
-              useRootContainer
-              useParentWidth>
-              <FileZone
-                files={files}
-                onUploadClick={uploadFiles}
-                onDeleteClick={onDeleteFile}
-                disableUploading={files.length >= maxFiles}
-              />
-            </FloatingBox>
+              surface={surface}>
+              <button type="button" className="alt-button alt-file-picker-button">
+                <span className="alt-file-picker-button__icon">
+                  {icon(String(extensions), files?.length || 0, files?.[0])}
+                </span>
+                {files.length === 1 ? (
+                  <div className="alt-file-picker-file">
+                    <div className="alt-file-picker-file__name">{files?.[0]?.filename}</div>
+                  </div>
+                ) : Array.isArray(files) && files.length ? (
+                  <div className="alt-file-picker-file">
+                    <div className="alt-file-picker-file">
+                      {t('form.filePicker.selectedFiles', {
+                        plural: true,
+                        value: files?.length,
+                        vars: { count: files?.length }
+                      })}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="alt-file-picker-button__label">
+                    {placeholder || t('form.filePicker.placeholder')}
+                  </div>
+                )}
+              </button>
+            </Popover>
           )}
           {variant === FilePickerVariant.block && (
             <FileZone
