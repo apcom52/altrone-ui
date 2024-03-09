@@ -43,7 +43,7 @@ export const BothIslandTextInputStory: StoryObj<typeof TextInput> = {
           placement="right"
           icon={<Icon i="keyboard_arrow_up" />}
           label="Increase"
-          showLabel={false}
+          danger
           onClick={() => alert('Increase clicked')}
         />
       </TextInput>

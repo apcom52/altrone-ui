@@ -38,3 +38,15 @@
 .alt-action-island__label {
   @include useFontSize(label);
 }
+
+.alt-action-island--danger {
+  color: var(--dangerText);
+  background: var(--dangerHighlight);
+  opacity: 0.85;
+  transition: opacity var(--transitionDuration) ease;
+
+  @include useInteraction() {
+    opacity: 1;
+    background: var(--dangerHighlight);
+  }
+}

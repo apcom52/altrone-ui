@@ -21,7 +21,13 @@ export const ActionIsland = forwardRef<IslandRef, ActionIslandProps>((props, ref
     <button
       disabled={disabled}
       title={label}
-      className={clsx('alt-action-island', className)}
+      className={clsx(
+        'alt-action-island',
+        {
+          'alt-action-island--danger': danger
+        },
+        className
+      )}
       ref={islandRef}
       onClick={onClick}>
       {icon && <div className="alt-action-island__icon">{icon}</div>}
