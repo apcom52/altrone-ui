@@ -1,5 +1,5 @@
 import { StoryObj } from '@storybook/react';
-import { TextInput } from '../index';
+import { TextInput, TextInputIsland } from '../index';
 import { useState } from 'react';
 import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 import { Icon } from '../../../typography';
@@ -11,7 +11,9 @@ export const RightIslandWithIconStory: StoryObj<typeof TextInput> = {
     const [_value, setValue] = useState('');
 
     return (
-      <TextInput {...args} rightIcon={<Icon i="search" />} value={_value} onChange={setValue} />
+      <TextInput {...args} value={_value} onChange={setValue}>
+        <TextInputIsland.Icon icon={<Icon i="check" />} placement="right" />
+      </TextInput>
     );
   },
   decorators: [StorybookDecorator]

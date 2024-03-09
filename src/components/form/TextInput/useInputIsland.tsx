@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { InputIsland, InputIslandAction, InputIslandType } from './TextInput';
+import { InputIsland, InputIslandAction, InputIslandType } from './TextInput.old';
 
 export function useInputIsland(
   island?: InputIsland,

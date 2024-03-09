@@ -1,9 +1,13 @@
-import { InputIslandType, TextInput, TextInputProps } from '../index';
+import { TextInput, TextInputProps } from '../index';
 import { useCallback, useState } from 'react';
 import { Icon } from '../../typography';
+import { TextInputIsland } from '../TextInput';
 
 interface PasswordInputProps
-  extends Omit<TextInputProps, 'suggestions' | 'useLiveSuggestions' | 'loading'> {
+  extends Omit<
+    TextInputProps,
+    'suggestions' | 'useLiveSuggestions' | 'loading' | 'onFocus' | 'onBlur'
+  > {
   showControls?: boolean;
 }
 
@@ -22,24 +26,17 @@ const PasswordInput = ({ showControls = true, rightIsland, ...props }: PasswordI
   }, []);
 
   return (
-    <TextInput
-      {...props}
-      type={isPasswordVisible ? 'text' : 'password'}
-      rightIsland={
-        showControls
-          ? {
-              type: InputIslandType.actions,
-              content: [
-                {
-                  title: isPasswordVisible ? 'Hide password' : 'Show password',
-                  icon: isPasswordVisible ? <Icon i="visibility_off" /> : <Icon i="visibility" />,
-                  onClick: togglePasswordVisible
-                }
-              ]
-            }
-          : rightIsland
-      }
-    />
+    <TextInput {...props} type={isPasswordVisible ? 'text' : 'password'}>
+      {showControls ? (
+        <TextInputIsland.Action
+          icon={isPasswordVisible ? <Icon i="visibility_off" /> : <Icon i="visibility" />}
+          label={isPasswordVisible ? 'Hide password' : 'Show password'}
+          placement="right"
+          onClick={togglePasswordVisible}
+          showLabel={false}
+        />
+      ) : null}
+    </TextInput>
   );
 };
 

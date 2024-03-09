@@ -1,0 +1,52 @@
+@import "../../../../mixins";
+
+.alt-action-island {
+  display: flex;
+  padding: 4px calc(var(--fontSize) / 3);
+  height: calc(var(--height) - 8px);
+  max-height: calc(var(--height) / 1.5);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  background-color: var(--surfaceTrasparent);
+  color: var(--textColor);
+  align-items: center;
+  justify-content: center;
+
+  border-radius: var(--innerRounding);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: background-color var(--transitionDuration) ease;
+
+  @include useFocus();
+
+  @include useInteraction() {
+    background-color: var(--surfaceTrasparentHover);
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.75;
+  }
+}
+
+.alt-action-island__icon + .alt-action-island__label {
+  margin-left: 2px;
+}
+
+.alt-action-island__label {
+  @include useFontSize(label);
+}
+
+.alt-action-island--danger {
+  color: var(--dangerText);
+  background: var(--dangerHighlight);
+  opacity: 0.85;
+  transition: opacity var(--transitionDuration) ease;
+
+  @include useInteraction() {
+    opacity: 1;
+    background: var(--dangerHighlight);
+  }
+}

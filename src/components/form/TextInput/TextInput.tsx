@@ -1,322 +1,148 @@
-import React, {
-  forwardRef,
-  KeyboardEventHandler,
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react';
-import { Elevation, Size, Surface } from '../../../types';
-import './text-input.scss';
-import clsx from 'clsx';
-import { useInputIsland } from './useInputIsland';
-import { useBoundingclientrect } from 'rooks';
-import { BasicInput } from '../BasicInput';
-import { useResizeObserver } from '../../../hooks';
+import React, { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
+import { InputComponentProps, TextInputProps, TextInputRef } from './TextInput.types';
+import { Input } from './components';
 import { Popover } from '../../containers';
-import { ContextMenu } from '../../list';
+import { PopoverRef } from '../../containers/Popover/Popover.types';
+import { useResizeObserver } from '../../../hooks';
+import { TextInputIsland } from './TextInputIsland';
 import { Loading } from '../../indicators';
+import { Elevation, Size, Surface } from '../../../types';
+import clsx from 'clsx';
+import { BasicInput } from '../BasicInput';
 
-export enum InputIslandType {
-  text = 'text',
-  icon = 'icon',
-  actions = 'actions',
-  components = 'components'
-}
+const EMPTY_ARRAY: string[] = [];
 
-export interface InputIslandAction {
-  title: string;
-  icon: JSX.Element;
-  onClick: () => void;
-  disabled?: boolean;
-}
+export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) => {
+  const {
+    value,
+    onChange,
+    id,
+    className,
+    type,
+    maxLength,
+    suggestions = EMPTY_ARRAY,
+    onFocus,
+    onBlur,
+    children,
+    loading = false,
+    Component,
+    size = Size.medium,
+    disabled = false,
+    required = false,
+    elevation = Elevation.convex,
+    surface = Surface.solid,
+    ...restProps
+  } = props;
 
-export interface InputIsland {
-  type: InputIslandType;
-  content: string | JSX.Element | JSX.Element[] | InputIslandAction[];
-}
+  const popoverRef = useRef<PopoverRef>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-export interface TextInputProps
-  extends PropsWithChildren<
-    Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'onChange' | 'size' | 'ref'>
-  > {
-  value: string;
-  onChange: (value: string) => void;
-  classNames?: {
-    control?: string;
-  };
-  leftIsland?: InputIsland;
-  rightIsland?: InputIsland;
-  prefix?: string;
-  suffix?: string;
-  leftIcon?: JSX.Element;
-  rightIcon?: JSX.Element;
-  errorText?: string;
-  hintText?: string;
-  size?: Size;
-  Component?: JSX.Element;
-  suggestions?: string[];
-  useLiveSuggestions?: boolean;
-  loading?: boolean;
-  elevation?: Elevation;
-  surface?: Surface;
-}
+  const leftIslandsContainerRef = useRef<HTMLDivElement | null>(null);
+  const rightIslandsContainerRef = useRef<HTMLDivElement | null>(null);
 
-const DEFAULT_HORIZONTAL_PADDING = 12;
-const DEFAULT_ISLAND_OFFSET = 8;
-const NO_SUGGESTIONS: string[] = [];
+  useResizeObserver(leftIslandsContainerRef);
+  useResizeObserver(rightIslandsContainerRef);
 
-const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-  (
-    {
-      onChange,
-      className,
-      classNames = {},
-      prefix,
-      leftIcon,
-      leftIsland,
-      suffix,
-      rightIcon,
-      rightIsland,
-      style,
-      errorText,
-      hintText,
-      required,
-      disabled,
-      Component,
-      size = Size.medium,
-      suggestions = [],
-      useLiveSuggestions = false,
-      loading = false,
-      children,
-      elevation = Elevation.convex,
-      surface = Surface.paper,
-      ...props
-    },
-    ref
-  ) => {
-    const [suggestionsList, setSuggestionsList] = useState<string[]>([]);
-    const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState<number>(-1);
+  const [leftIslands, rightIslands] = useMemo(() => {
+    const safeChildren = (Array.isArray(children) ? children : [children]).filter((childElement) =>
+      Boolean(childElement)
+    );
 
-    const _leftIsland = useInputIsland(leftIsland, leftIcon, prefix, disabled);
-    let _rightIsland = useInputIsland(rightIsland, rightIcon, suffix, disabled);
+    const left = safeChildren.filter(
+      (island) => !island?.props.placement || island?.props.placement === 'left'
+    );
+    const right = safeChildren.filter((island) => island?.props.placement === 'right');
 
     if (loading) {
-      _rightIsland = (
-        <div className="alt-text-input__loading">
-          <Loading size={size} />
-        </div>
+      right.push(
+        <TextInputIsland.Custom placement="right" className="alt-text-input__loading">
+          <Loading color="var(--secondaryTextColor)" />
+        </TextInputIsland.Custom>
       );
     }
 
-    const inputRef = useRef<HTMLInputElement | null>(null);
-    const cancelNextSuggestionCheck = useRef(false);
-    const shadowRef = useRef<HTMLDivElement>(null);
-    const [liveSuggestionsBoundaries, setLiveSuggestionsBoundaries] = useState<[number, number]>([
-      0, 0
-    ]);
-
-    const wrapperRef = useRef<HTMLDivElement>(null);
-    const leftIslandRef = useRef<HTMLDivElement>(null);
-    const rightIslandRef = useRef<HTMLDivElement>(null);
-
-    const { left: wrapperLeft = 0, right: wrapperRight = 0 } =
-      useBoundingclientrect(wrapperRef) || {};
-    const { width: leftIslandWidth = 0 } = useBoundingclientrect(leftIslandRef) || {};
-    const { width: rightIslandWidth = 0 } = useBoundingclientrect(rightIslandRef) || {};
-
-    const leftIslandResizeObserver = useResizeObserver(leftIslandRef);
-    const rightIslandResizeObserver = useResizeObserver(rightIslandRef);
-    const textFieldResizeObserver = useResizeObserver(wrapperRef);
-
-    const [leftPadding, setLeftPadding] = useState(DEFAULT_HORIZONTAL_PADDING);
-    const [rightPadding, setRightPadding] = useState(DEFAULT_HORIZONTAL_PADDING);
-
-    const liveSuggestionLabel = useMemo(() => {
-      if (!suggestionsList.length || !useLiveSuggestions || !props.value.trim()) {
-        return '';
-      }
-
-      const fullLabel = suggestionsList[selectedSuggestionIndex > -1 ? selectedSuggestionIndex : 0];
-      return fullLabel.replace(props.value, '');
-    }, [suggestionsList, selectedSuggestionIndex, props.value, useLiveSuggestions]);
-
-    const closeSuggestionsPopup = useCallback(() => {
-      setSuggestionsList(NO_SUGGESTIONS);
-      setSelectedSuggestionIndex(-1);
-    }, []);
-
-    const onTextInputKeyPress = useCallback<KeyboardEventHandler<HTMLInputElement>>(
-      (e) => {
-        if (e.key === 'ArrowUp') {
-          setSelectedSuggestionIndex((old) => {
-            return old > 0 ? old - 1 : old;
-          });
-        } else if (e.key === 'ArrowDown') {
-          setSelectedSuggestionIndex((old) => {
-            return old < suggestionsList.length - 1 ? old + 1 : old;
-          });
-        } else if (e.key === 'Enter') {
-          setSelectedSuggestionIndex((old) => {
-            cancelNextSuggestionCheck.current = true;
-            onChange(suggestionsList[old]);
-            setSuggestionsList(NO_SUGGESTIONS);
-
-            return -1;
-          });
-        } else if (e.key === 'Tab') {
-          if (liveSuggestionLabel) {
-            e.preventDefault();
-            setSelectedSuggestionIndex((old) => {
-              cancelNextSuggestionCheck.current = true;
-              onChange(suggestionsList[old < 0 ? 0 : old]);
-              setSuggestionsList(NO_SUGGESTIONS);
-
-              return -1;
-            });
-          }
-        }
-      },
-      [suggestionsList, onChange, liveSuggestionLabel]
-    );
-
-    useEffect(() => {
-      if (_leftIsland) {
-        setLeftPadding(leftIslandWidth + DEFAULT_ISLAND_OFFSET);
-      } else {
-        setLeftPadding(DEFAULT_HORIZONTAL_PADDING);
-      }
-    }, [
-      _leftIsland,
-      leftIslandWidth,
-      wrapperLeft,
-      size,
-      leftIslandResizeObserver,
-      textFieldResizeObserver
-    ]);
-
-    useEffect(() => {
-      if (_rightIsland) {
-        setRightPadding(DEFAULT_ISLAND_OFFSET + rightIslandWidth);
-      } else {
-        setRightPadding(DEFAULT_HORIZONTAL_PADDING);
-      }
-    }, [
-      _rightIsland,
-      rightIslandWidth,
-      wrapperRight,
-      size,
-      rightIslandResizeObserver,
-      textFieldResizeObserver
-    ]);
-
-    useEffect(() => {
-      if (cancelNextSuggestionCheck.current) {
-        cancelNextSuggestionCheck.current = false;
-        return;
-      }
-
-      if (
-        !props.value?.trim() ||
-        suggestions.length === 0 ||
-        !inputRef.current ||
-        document.activeElement !== inputRef.current
-      ) {
-        setSuggestionsList(NO_SUGGESTIONS);
-        setSelectedSuggestionIndex(-1);
-        return;
-      }
-
-      setSuggestionsList(
-        suggestions.filter((suggestion) => {
-          return suggestion.toLowerCase().startsWith(props.value.trim().toLowerCase());
-        })
+    if (required) {
+      right.push(
+        <TextInputIsland.Custom placement="right" className="alt-text-input__required-mark">
+          *
+        </TextInputIsland.Custom>
       );
-      setSelectedSuggestionIndex(-1);
-    }, [suggestions, props.value]);
+    }
 
-    useEffect(() => {
-      if (!liveSuggestionLabel || !shadowRef.current || !inputRef.current || !props.value) {
-        return;
-      }
+    return [left, right];
+  }, [children, loading, required]);
 
-      const shadowRefRect = shadowRef.current.getBoundingClientRect();
-      const inputRefRect = inputRef.current?.getBoundingClientRect();
+  useImperativeHandle(
+    ref,
+    () => ({
+      value,
+      inputElement: inputRef.current
+    }),
+    [value, inputRef.current]
+  );
 
-      setLiveSuggestionsBoundaries([
-        shadowRefRect.width + leftIslandWidth,
-        inputRefRect.width - shadowRefRect.width - rightIslandWidth - leftIslandWidth - 12
-      ]);
-    }, [props.value, liveSuggestionLabel, leftIslandWidth, rightIslandWidth]);
+  const inputProps: InputComponentProps = {
+    value,
+    onChange,
+    type,
+    maxLength,
+    id,
+    className: clsx(
+      className,
+      `alt-input--elevation-${elevation}`,
+      `alt-input--surface-${surface}`
+    ),
+    onFocus,
+    onBlur,
+    disabled: disabled,
+    style: {
+      paddingLeft: leftIslands.length ? leftIslandsContainerRef.current?.offsetWidth + 'px' : '8px',
+      paddingRight: rightIslands.length
+        ? rightIslandsContainerRef.current?.offsetWidth + 'px'
+        : '8px'
+    },
+    ...restProps
+  };
 
-    return (
-      <BasicInput hintText={hintText} errorText={errorText} disabled={disabled} size={size}>
-        <div
-          className={clsx('alt-text-input', className, {
-            'alt-text-input--required': required,
-            'alt-text-input--disabled': disabled,
-            [`alt-text-input--surface-${surface}`]: surface !== Surface.paper
-          })}
-          data-testid="text-input">
-          <Popover
-            enabled={suggestionsList.length > 0}
-            trigger="focus"
-            useFocusTrap={false}
-            childrenRef={inputRef}
-            useParentWidth
-            content={
-              <ContextMenu
-                onClose={closeSuggestionsPopup}
-                menu={(props.value.length === 0 ? suggestions : suggestionsList).map(
-                  (item, itemIndex) => ({
-                    title: item,
-                    value: item,
-                    onClick: () => onChange(item),
-                    selected: itemIndex === selectedSuggestionIndex
-                  })
-                )}
-                maxHeight={288}
-                fluid
-              />
-            }>
-            {Component || (
-              <input
-                className={clsx('alt-text-input__control', classNames.control, {
-                  [`alt-text-input__control--elevation-${elevation}`]: elevation
-                })}
-                style={{
-                  ...style,
-                  paddingLeft: leftPadding,
-                  paddingRight: rightPadding
-                }}
-                onChange={(e) => onChange(e.target.value)}
-                disabled={disabled}
-                required={required}
-                {...props}
-                onKeyDownCapture={onTextInputKeyPress}
-              />
-            )}
-          </Popover>
-          {_leftIsland && (
-            <div className="alt-text-input__left-island" ref={leftIslandRef}>
-              {_leftIsland}
-            </div>
-          )}
-          {_rightIsland && (
-            <div className="alt-text-input__right-island" ref={rightIslandRef}>
-              {_rightIsland}
-            </div>
-          )}
-          {required && <div className="alt-text-input__required-mark">*</div>}
-          {children}
-        </div>
-      </BasicInput>
-    );
-  }
-);
+  const inputElement = Component ? (
+    Component
+  ) : (
+    <Popover
+      enabled={false}
+      ref={popoverRef}
+      placement="bottom"
+      trigger={['click', 'focus']}
+      showCloseButton={false}
+      useParentWidth
+      useFocusTrap={false}
+      content={<>hello!</>}>
+      <Input key="textInput" ref={inputRef} {...inputProps} />
+    </Popover>
+  );
 
-TextInput.displayName = 'TextInput';
-
-export default TextInput as typeof TextInput;
+  return (
+    <BasicInput className="alt-text-input" size={size}>
+      <div
+        className={clsx('alt-text-input__container', {
+          [`alt-text-input--size-${size}`]: size !== Size.medium,
+          'alt-text-input--disabled': disabled
+        })}>
+        {inputElement}
+        {leftIslands.length ? (
+          <div
+            className="alt-text-input__islands alt-text-input__left-islands"
+            ref={leftIslandsContainerRef}>
+            {leftIslands}
+          </div>
+        ) : null}
+        {rightIslands.length ? (
+          <div
+            className="alt-text-input__islands alt-text-input__right-islands"
+            ref={rightIslandsContainerRef}>
+            {rightIslands}
+          </div>
+        ) : null}
+      </div>
+    </BasicInput>
+  );
+});

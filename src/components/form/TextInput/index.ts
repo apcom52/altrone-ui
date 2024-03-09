@@ -1,2 +1,3 @@
-export { default as TextInput } from './TextInput';
-export { TextInputProps, InputIslandType, InputIslandAction, InputIsland } from './TextInput';
+export { TextInput } from './TextInput';
+export { TextInputIsland } from './TextInputIsland';
+export { TextInputProps, InputIslandType, InputIslandAction, InputIsland } from './TextInput.old';

@@ -12,6 +12,8 @@ export interface NumberInputProps
     | 'suggestions'
     | 'useLiveSuggestions'
     | 'loading'
+    | 'onFocus'
+    | 'onBlur'
   > {
   value: number;
   onChange: (value: number) => void;

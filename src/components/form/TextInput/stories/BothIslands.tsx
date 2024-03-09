@@ -1,5 +1,5 @@
 import { StoryObj } from '@storybook/react';
-import { InputIslandType, TextInput } from '../index';
+import { InputIslandType, TextInput, TextInputIsland } from '../index';
 import { useState } from 'react';
 import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 import { Icon } from '../../../typography';
@@ -28,13 +28,25 @@ export const BothIslandTextInputStory: StoryObj<typeof TextInput> = {
     const [_value, setValue] = useState('');
 
     return (
-      <TextInput
-        {...args}
-        value={_value}
-        onChange={setValue}
-        leftIsland={LEFTISLAND}
-        rightIsland={RIGHTISLAND}
-      />
+      <TextInput {...args} value={_value} onChange={setValue}>
+        <TextInputIsland.Custom placement="left">
+          <b>q:</b>
+        </TextInputIsland.Custom>
+        <TextInputIsland.Action
+          placement="right"
+          icon={<Icon i="keyboard_arrow_down" />}
+          label="Decrease"
+          showLabel={false}
+          onClick={() => alert('Decrease clicked')}
+        />
+        <TextInputIsland.Action
+          placement="right"
+          icon={<Icon i="keyboard_arrow_up" />}
+          label="Increase"
+          danger
+          onClick={() => alert('Increase clicked')}
+        />
+      </TextInput>
     );
   },
   decorators: [StorybookDecorator]
