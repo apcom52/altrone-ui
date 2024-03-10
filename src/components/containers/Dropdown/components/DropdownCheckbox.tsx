@@ -4,13 +4,13 @@ import clsx from 'clsx';
 import { CheckboxIcon } from '../../../form/Checkbox/CheckboxIcon';
 import './action.scss';
 
-export const DropdownCheckbox = ({
+export function DropdownCheckbox({
   checked,
   onChange,
   disabled,
   label,
   className
-}: DropdownCheckboxProps) => {
+}: DropdownCheckboxProps) {
   const onSelect = () => {
     onChange(!checked);
   };
@@ -35,4 +35,5 @@ export const DropdownCheckbox = ({
       <div className="alt-dropdown-item__title">{label}</div>
     </CompositeItem>
   );
-};
+}
+DropdownCheckbox.displayName = 'DropdownCheckbox';

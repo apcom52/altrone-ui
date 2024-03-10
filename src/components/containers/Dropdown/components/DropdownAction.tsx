@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import './action.scss';
 import { useCloseDropdownContext } from '../Dropdown.contexts';
 
-export const DropdownAction = ({
+export function DropdownAction({
   icon,
   disabled,
   danger,
@@ -12,7 +12,7 @@ export const DropdownAction = ({
   label,
   onClick,
   className
-}: DropdownActionProps) => {
+}: DropdownActionProps) {
   const closePopup = useCloseDropdownContext();
 
   const onSelect = () => {
@@ -40,4 +40,5 @@ export const DropdownAction = ({
       {hintText && <div className="alt-dropdown-item__hint">{hintText}</div>}
     </CompositeItem>
   );
-};
+}
+DropdownAction.displayName = 'DropdownAction';

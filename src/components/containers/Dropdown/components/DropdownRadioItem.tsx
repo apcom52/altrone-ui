@@ -1,15 +1,11 @@
-import {
-  DropdownRadioListItem,
-} from '../Dropdown.types';
+import { DropdownRadioListItem } from '../Dropdown.types';
 import { CompositeItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { CheckboxIcon } from '../../../form/Checkbox/CheckboxIcon';
 import './action.scss';
-import {
-  useRadioListDropdownContext
-} from '../Dropdown.contexts';
+import { useRadioListDropdownContext } from '../Dropdown.contexts';
 
-export const DropdownRadioItem = ({ value, label, disabled, className }: DropdownRadioListItem) => {
+export function DropdownRadioItem({ value, label, disabled, className }: DropdownRadioListItem) {
   const { value: selectedValue, onChange } = useRadioListDropdownContext();
 
   const onSelect = () => {
@@ -36,4 +32,5 @@ export const DropdownRadioItem = ({ value, label, disabled, className }: Dropdow
       <div className="alt-dropdown-item__title">{label}</div>
     </CompositeItem>
   );
-};
+}
+DropdownRadioItem.displayName = 'DropdownRadioItem';

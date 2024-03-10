@@ -39,7 +39,7 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
               />
               <Dropdown.RadioList value={view} onChange={setView}>
                 <DropdownRadioItem value="list" label="List" />
-                <DropdownRadioItem value="table" label="Table" />
+                <DropdownRadioItem value="table" label="Table" disabled />
                 <DropdownRadioItem value="grid" label="Grid" />
               </Dropdown.RadioList>
             </Dropdown.Menu>

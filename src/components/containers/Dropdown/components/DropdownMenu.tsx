@@ -3,14 +3,30 @@ import { useState } from 'react';
 import './menu.scss';
 import { DropdownMenuProps } from '../Dropdown.types';
 import clsx from 'clsx';
+import { DropdownRadioList } from './DropdownRadioList';
+import { getSafeArray } from '../../../../utils/safeArray';
 
-export const DropdownMenu = ({ children, className }: DropdownMenuProps) => {
+export function DropdownMenu({ children, className }: DropdownMenuProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const childrenArray = Array.isArray(children) ? children : [children];
+  const childrenArray = getSafeArray(children);
 
-  const disabledIndexes = childrenArray
-    .map((item, itemIndex) => (item?.props.disabled ? itemIndex : -1))
+  const flatChildren = childrenArray
+    .map((item) => {
+      if (item.type === DropdownRadioList) {
+        console.log('>> children', item.props.children);
+        return [item.props.children.filter((i: any) => Boolean(i))];
+      }
+
+      return item;
+    })
+    .flat(2);
+
+  const disabledIndexes = flatChildren
+    .map((item, itemIndex) => {
+      console.log('>> item', item);
+      return item?.props?.disabled ? itemIndex : -1;
+    })
     .filter((i) => i >= 0);
 
   return (
@@ -23,4 +39,4 @@ export const DropdownMenu = ({ children, className }: DropdownMenuProps) => {
       {children}
     </Composite>
   );
-};
+}

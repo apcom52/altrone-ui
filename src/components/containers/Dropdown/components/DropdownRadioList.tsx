@@ -1,9 +1,9 @@
-import {  DropdownRadioListProps } from '../Dropdown.types';
+import { DropdownRadioListProps } from '../Dropdown.types';
 import './action.scss';
 import { DropdownRadioContext, RadioListDropdownContext } from '../Dropdown.contexts';
 import { useMemo } from 'react';
 
-export const DropdownRadioList = ({ onChange, value, children }: DropdownRadioListProps) => {
+export function DropdownRadioList({ onChange, value, children }: DropdownRadioListProps) {
   const contextValue: DropdownRadioContext = useMemo(
     () => ({
       value,
@@ -17,4 +17,5 @@ export const DropdownRadioList = ({ onChange, value, children }: DropdownRadioLi
       {children}
     </RadioListDropdownContext.Provider>
   );
-};
+}
+DropdownRadioList.displayName = 'DropdownRadioList';
