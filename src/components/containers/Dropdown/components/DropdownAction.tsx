@@ -1,14 +1,14 @@
-import { DropdownActionProps, useCloseDropdownContext } from '../Dropdown.types';
+import { DropdownActionProps } from '../Dropdown.types';
 import { CompositeItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import './action.scss';
+import { useCloseDropdownContext } from '../Dropdown.contexts';
 
 export const DropdownAction = ({
   icon,
   disabled,
   danger,
   hintText,
-  focused,
   label,
   onClick,
   className
@@ -32,7 +32,6 @@ export const DropdownAction = ({
       onClick={onSelect}
       disabled={disabled}
       className={clsx('alt-dropdown-item', className, {
-        'alt-dropdown-item--focused': focused,
         'alt-dropdown-item--danger': danger,
         'alt-dropdown-item--disabled': disabled
       })}>

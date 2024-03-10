@@ -4,12 +4,14 @@ import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 import { Button } from '../../../form';
 import React, { useState } from 'react';
 import { Icon } from '../../../typography';
+import { DropdownRadioItem } from '../components';
 
 export const DropdownStory: StoryObj<typeof Dropdown> = {
   name: 'Default Dropdown',
   storyName: 'Default Dropdown',
-  render: ({ ...args }) => {
+  render: () => {
     const [checkboxValue, setCheckboxValue] = useState(false);
+    const [view, setView] = useState('list');
 
     return (
       <>
@@ -35,6 +37,11 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
                 onChange={setCheckboxValue}
                 label="Allow Edit"
               />
+              <Dropdown.RadioList value={view} onChange={setView}>
+                <DropdownRadioItem value="list" label="List" />
+                <DropdownRadioItem value="table" label="Table" />
+                <DropdownRadioItem value="grid" label="Grid" />
+              </Dropdown.RadioList>
             </Dropdown.Menu>
           }>
           <Button>Click on me</Button>

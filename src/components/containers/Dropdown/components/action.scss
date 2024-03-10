@@ -23,7 +23,7 @@
     }
   }
 
-  &.alt-dropdown-item--focused {
+  &[data-active] {
     background-color: var(--accent);
     color: var(--textColorOnAccent);
 

@@ -1,6 +1,5 @@
 import { Composite } from '@floating-ui/react';
 import { useState } from 'react';
-import { cloneNode } from '../../../../utils';
 import './menu.scss';
 import { DropdownMenuProps } from '../Dropdown.types';
 import clsx from 'clsx';
@@ -21,12 +20,7 @@ export const DropdownMenu = ({ children, className }: DropdownMenuProps) => {
       orientation="vertical"
       disabledIndices={disabledIndexes}
       className={clsx('alt-dropdown-menu', className)}>
-      {childrenArray.map((item, itemIndex) =>
-        cloneNode(item, {
-          key: itemIndex,
-          focused: activeIndex === itemIndex
-        })
-      )}
+      {children}
     </Composite>
   );
 };
