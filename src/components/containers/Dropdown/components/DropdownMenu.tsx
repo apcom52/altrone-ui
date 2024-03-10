@@ -14,7 +14,6 @@ export function DropdownMenu({ children, className }: DropdownMenuProps) {
   const flatChildren = childrenArray
     .map((item) => {
       if (item.type === DropdownRadioList) {
-        console.log('>> children', item.props.children);
         return [item.props.children.filter((i: any) => Boolean(i))];
       }
 
@@ -24,7 +23,6 @@ export function DropdownMenu({ children, className }: DropdownMenuProps) {
 
   const disabledIndexes = flatChildren
     .map((item, itemIndex) => {
-      console.log('>> item', item);
       return item?.props?.disabled ? itemIndex : -1;
     })
     .filter((i) => i >= 0);

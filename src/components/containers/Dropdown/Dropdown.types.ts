@@ -29,6 +29,10 @@ export interface DropdownRadioListItem<T = string> extends BaseDropdownItem {
   value: T;
 }
 
+export interface DropdownDividerProps {
+  className?: string;
+}
+
 export interface DropdownMenuProps {
   children: ReactElement | null | (ReactElement | null)[];
   className?: string;

@@ -8,7 +8,8 @@ import {
   DropdownRadioList,
   DropdownCheckbox,
   DropdownAction,
-  DropdownRadioItem
+  DropdownRadioItem,
+  DropdownDivider
 } from './components';
 import { CloseDropdownContext } from './Dropdown.contexts';
 
@@ -47,7 +48,8 @@ const DropdownNamespace = Object.assign(DropdownWrapper, {
   Action: DropdownAction,
   Checkbox: DropdownCheckbox,
   RadioList: DropdownRadioList,
-  RadioItem: DropdownRadioItem
+  RadioItem: DropdownRadioItem,
+  Divider: DropdownDivider
 });
 
 export { DropdownNamespace as Dropdown };

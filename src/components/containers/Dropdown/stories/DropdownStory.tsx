@@ -37,6 +37,7 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
                 onChange={setCheckboxValue}
                 label="Allow Edit"
               />
+              <Dropdown.Divider />
               <Dropdown.RadioList value={view} onChange={setView}>
                 <DropdownRadioItem value="list" label="List" />
                 <DropdownRadioItem value="table" label="Table" disabled />
