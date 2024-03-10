@@ -1,10 +1,11 @@
 import { Composite } from '@floating-ui/react';
-import { PropsWithChildren, useState } from 'react';
+import { useState } from 'react';
 import { cloneNode } from '../../../../utils';
 import './menu.scss';
 import { DropdownMenuProps } from '../Dropdown.types';
+import clsx from 'clsx';
 
-export const DropdownMenu = ({ children }: DropdownMenuProps) => {
+export const DropdownMenu = ({ children, className }: DropdownMenuProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const childrenArray = Array.isArray(children) ? children : [children];
@@ -19,7 +20,7 @@ export const DropdownMenu = ({ children }: DropdownMenuProps) => {
       onNavigate={setActiveIndex}
       orientation="vertical"
       disabledIndices={disabledIndexes}
-      className="alt-dropdown-menu">
+      className={clsx('alt-dropdown-menu', className)}>
       {childrenArray.map((item, itemIndex) =>
         cloneNode(item, {
           key: itemIndex,

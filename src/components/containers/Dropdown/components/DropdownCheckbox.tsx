@@ -1,23 +1,19 @@
-import { DropdownActionProps, useCloseDropdownContext } from '../Dropdown.types';
+import { DropdownCheckboxProps } from '../Dropdown.types';
 import { CompositeItem } from '@floating-ui/react';
 import clsx from 'clsx';
+import { CheckboxIcon } from '../../../form/Checkbox/CheckboxIcon';
 import './action.scss';
 
-export const DropdownAction = ({
-  icon,
+export const DropdownCheckbox = ({
+  checked,
+  onChange,
   disabled,
-  danger,
-  hintText,
   focused,
   label,
-  onClick,
   className
-}: DropdownActionProps) => {
-  const closePopup = useCloseDropdownContext();
-
+}: DropdownCheckboxProps) => {
   const onSelect = () => {
-    closePopup();
-    onClick?.();
+    onChange(!checked);
   };
 
   const onKeyDownPress: React.KeyboardEventHandler = (e) => {
@@ -33,12 +29,12 @@ export const DropdownAction = ({
       disabled={disabled}
       className={clsx('alt-dropdown-item', className, {
         'alt-dropdown-item--focused': focused,
-        'alt-dropdown-item--danger': danger,
         'alt-dropdown-item--disabled': disabled
       })}>
-      {icon && <div className="alt-dropdown-item__icon">{icon}</div>}
+      <div className="alt-dropdown-item__icon alt-dropdown-item__checkbox">
+        <CheckboxIcon checked={checked} width={24} height={12} />
+      </div>
       <div className="alt-dropdown-item__title">{label}</div>
-      {hintText && <div className="alt-dropdown-item__hint">{hintText}</div>}
     </CompositeItem>
   );
 };

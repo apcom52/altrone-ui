@@ -2,12 +2,15 @@ import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { PopoverRef } from '../Popover/Popover.types';
 import { CloseDropdownContext, DropdownProps } from './Dropdown.types';
 import { Popover } from '../Popover';
-import { FloatingContext, FloatingList, useListNavigation } from '@floating-ui/react';
+import { FloatingContext } from '@floating-ui/react';
+import { DropdownMenu } from './components/DropdownMenu';
+import { DropdownAction } from './components/DropdownAction';
+import { DropdownCheckbox } from './components/DropdownCheckbox';
 
-export const Dropdown = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
+const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
   const { children, content, trigger, placement = 'bottom' } = props;
 
-  const [popoverContext, setPopoverContext] = useState<FloatingContext | null>(null);
+  const [, setPopoverContext] = useState<FloatingContext | null>(null);
 
   const popoverRef = useRef<PopoverRef | null>(null);
 
@@ -33,3 +36,11 @@ export const Dropdown = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
     </Popover>
   );
 });
+
+const DropdownNamespace = Object.assign(DropdownWrapper, {
+  Menu: DropdownMenu,
+  Action: DropdownAction,
+  Checkbox: DropdownCheckbox
+});
+
+export { DropdownNamespace as Dropdown };
