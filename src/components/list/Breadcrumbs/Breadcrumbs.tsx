@@ -1,12 +1,13 @@
 import clsx from 'clsx';
-import React, { useCallback, useMemo } from 'react';
+import React, { ReactElement, useCallback, useMemo } from 'react';
 import './breadcrumbs.scss';
 import { DefaultHomeBreadcrumb } from './DefaultHomeBreadcrumb';
 import { Icon } from '../../typography';
-import { ContextAction, ContextMenuType, Size } from '../../../types';
+import { Size } from '../../../types';
 import { Button, ButtonVariant } from '../../form';
 import { BreadcrumbLink, BreadcrumbsProps } from './Breadcrumbs.types';
 import { useLocalization } from '../../../hooks';
+import { Dropdown } from '../../containers/Dropdown';
 
 const HOME_ICON = <Icon i="home" />;
 
@@ -44,37 +45,41 @@ export const Breadcrumbs = ({
     }
   }, []);
 
-  const collapsedItems = useMemo<ContextMenuType>(() => {
+  const collapsedItems = useMemo<ReactElement[]>(() => {
     if (!collapsible || !links) {
       return [];
     }
 
-    const menu = links.slice(0, links.length - 1).map(
-      (link) =>
-        ({
-          title: link.title,
-          icon: link.icon,
-          disabled: disabled,
-          onClick: () => onItemClick(link)
-        } as ContextAction)
-    );
+    const menu = links
+      .slice(0, links.length - 1)
+      .map((link) => (
+        <Dropdown.Action
+          label={link.title}
+          icon={link.icon}
+          disabled={disabled}
+          onClick={() => onItemClick(link)}
+        />
+      ));
 
-    const result: ContextMenuType = [
+    const result = [
       ...menu,
-      {
-        title: links.at(-1)?.title || '',
-        disabled: true,
-        onClick: UNDEFINED_ACTION
-      }
+      <Dropdown.Action
+        label={links.at(-1)?.title || ''}
+        icon={links.at(-1)?.icon}
+        disabled
+        onClick={UNDEFINED_ACTION}
+      />
     ];
 
     if (showHomeLink) {
-      result.unshift({
-        title: t('list.breadcrumbs.home'),
-        icon: HOME_ICON,
-        disabled: true,
-        onClick: UNDEFINED_ACTION
-      });
+      result.unshift(
+        <Dropdown.Action
+          label={t('list.breadcrumbs.home')}
+          icon={HOME_ICON}
+          disabled={true}
+          onClick={UNDEFINED_ACTION}
+        />
+      );
     }
 
     return result;
@@ -104,14 +109,15 @@ export const Breadcrumbs = ({
               <Icon i="chevron_right" />
             </div>
           )}
-          <Button
-            size={Size.small}
-            variant={ButtonVariant.text}
-            isIcon
-            className={'alt-breadcrumbs-item'}
-            dropdown={collapsedItems}>
-            <Icon i="more_horiz" />
-          </Button>
+          <Dropdown content={<Dropdown.Menu>{collapsedItems}</Dropdown.Menu>}>
+            <Button
+              size={Size.small}
+              variant={ButtonVariant.text}
+              isIcon
+              className={'alt-breadcrumbs-item'}>
+              <Icon i="more_horiz" />
+            </Button>
+          </Dropdown>
           <div className="alt-breadcrumbs__separator">
             <Icon i="chevron_right" />
           </div>
