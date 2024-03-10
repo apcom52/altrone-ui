@@ -89,3 +89,15 @@
   border: none;
   border-top: 1px solid var(--dividerColor);
 }
+
+.alt-dropdown-item__arrow {
+  display: inline-flex;
+  font-size: 1.5em;
+  margin-right: -8px;
+  justify-content: flex-end;
+}
+
+.alt-dropdown-item--opened {
+  background-color: var(--surfaceTrasparent) !important;
+  color: var(--textColor) !important;
+}

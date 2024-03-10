@@ -33,6 +33,11 @@ export interface DropdownDividerProps {
   className?: string;
 }
 
+export interface DropdownChildMenuProps extends BaseDropdownItem {
+  icon?: ReactElement;
+  children: ReactElement | null | (ReactElement | null)[];
+}
+
 export interface DropdownMenuProps {
   children: ReactElement | null | (ReactElement | null)[];
   className?: string;

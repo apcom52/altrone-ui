@@ -18,6 +18,16 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
         <Dropdown
           content={
             <Dropdown.Menu>
+              <Dropdown.ChildMenu label="Create New Document">
+                <Dropdown.Action label="Create Word document" />
+                <Dropdown.Action label="Create Excel document" />
+                <Dropdown.Action label="Create PowerPoint document" />
+                <Dropdown.Divider />
+                <Dropdown.ChildMenu label="Create from template">
+                  <Dropdown.Action label="Template A" />
+                  <Dropdown.Action label="Template B" />
+                </Dropdown.ChildMenu>
+              </Dropdown.ChildMenu>
               <Dropdown.Action icon={<Icon i="cut" />} label="Cut" onClick={() => alert('first')} />
               <Dropdown.Action
                 icon={<Icon i="content_copy" />}
