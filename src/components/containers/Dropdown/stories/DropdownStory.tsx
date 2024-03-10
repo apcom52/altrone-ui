@@ -23,7 +23,7 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
                 <Dropdown.Action label="Create Excel document" />
                 <Dropdown.Action label="Create PowerPoint document" />
                 <Dropdown.Divider />
-                <Dropdown.ChildMenu label="Create from template">
+                <Dropdown.ChildMenu icon={<Icon i="post_add" />} label="Create from template">
                   <Dropdown.Action label="Template A" />
                   <Dropdown.Action label="Template B" />
                 </Dropdown.ChildMenu>

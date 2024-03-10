@@ -8,8 +8,6 @@ import { getSafeArray } from '../../../../utils/safeArray';
 import { DropdownDivider } from './DropdownDivider';
 
 export function DropdownMenu({ children, className }: DropdownMenuProps) {
-  const [activeIndex, setActiveIndex] = useState(0);
-
   const childrenArray = getSafeArray(children);
 
   const flatChildren = childrenArray
@@ -28,6 +26,10 @@ export function DropdownMenu({ children, className }: DropdownMenuProps) {
       return item.type !== DropdownDivider && item?.props?.disabled ? itemIndex : -1;
     })
     .filter((i) => i >= 0);
+
+  const [activeIndex, setActiveIndex] = useState(() => {
+    return flatChildren.findIndex((item) => !item.props.disabled);
+  });
 
   return (
     <Composite
