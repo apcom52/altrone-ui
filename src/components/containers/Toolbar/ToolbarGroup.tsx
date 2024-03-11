@@ -2,7 +2,7 @@ import { memo, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { Align, ContextMenuType } from '../../../types';
 import { useResizeObserver } from '../../../hooks';
-import { ToolbarAction } from './ToolbarAction';
+import { ToolbarAction } from './components/ToolbarAction';
 import { Icon } from '../../typography';
 import { useToolbarContext } from './Toolbar';
 import { ContextMenu } from '../../list/ContextMenu';

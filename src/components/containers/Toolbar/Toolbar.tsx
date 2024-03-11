@@ -4,6 +4,7 @@ import ToolbarMenu from './ToolbarMenu';
 import clsx from 'clsx';
 import { Elevation, Point, Surface } from '../../../types';
 import { ToolbarProps, ToolbarVariant } from './Toolbar.types';
+import { ToolbarAction } from './components';
 
 const ToolbarContext = createContext<{
   element: HTMLDivElement | null;
@@ -30,7 +31,7 @@ const defaultOffset: Point = {
  * @param defaultPosition
  * @constructor
  */
-const Toolbar = ({
+const ToolbarComponent = ({
   children,
   variant = ToolbarVariant.default,
   floated = false,
@@ -90,4 +91,8 @@ const Toolbar = ({
   );
 };
 
-export default Toolbar;
+const ToolbarNamespace = Object.assign(ToolbarComponent, {
+  Action: ToolbarAction
+});
+
+export { ToolbarNamespace as Toolbar };

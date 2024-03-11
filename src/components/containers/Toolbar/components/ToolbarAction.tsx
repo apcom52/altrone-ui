@@ -1,16 +1,14 @@
-import React, { forwardRef, useMemo } from 'react';
+import React, { forwardRef, useRef } from 'react';
 import './toolbar-action.scss';
 import clsx from 'clsx';
-import { Popover } from '../index';
-import { ContextMenu } from '../../list/ContextMenu';
-import { useToolbarContext } from './Toolbar';
-import { ToolbarActionType } from './Toolbar.types';
+import { useToolbarContext } from '../Toolbar';
+import { ToolbarActionType } from '../Toolbar.types';
 
 export interface ToolbarPopupActionProps {
   closePopup: () => void;
 }
 
-export const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionType>(
+export const ToolbarAction = forwardRef<HTMLDivElement, ToolbarActionType>(
   (
     {
       icon,
@@ -28,19 +26,30 @@ export const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionType>(
     },
     ref
   ) => {
-    const TagName = hideLabel && children ? 'div' : 'button';
+    const actionRef = useRef<HTMLDivElement | null>(null);
 
     const { isCompact } = useToolbarContext();
 
-    const onButtonClick = () => {
-      onClick?.();
+    const onKeyDownPress: React.KeyboardEventHandler = (e) => {
+      if (e.key === 'Enter') {
+        actionRef.current?.click();
+      }
     };
 
-    const isButton = TagName === 'button';
-
     return (
-      <button
-        ref={ref}
+      <div
+        ref={(_ref) => {
+          actionRef.current = _ref;
+          if (typeof ref === 'function') {
+            ref(_ref);
+          } else if (ref) {
+            ref.current = _ref;
+          }
+        }}
+        onClick={onClick}
+        tabIndex={0}
+        onKeyDown={onKeyDownPress}
+        role="button"
         className={clsx('alt-toolbar-action', className, {
           'alt-toolbar-action--disabled': disabled,
           'alt-toolbar-action--active': active,
@@ -59,27 +68,7 @@ export const ToolbarAction = forwardRef<HTMLButtonElement, ToolbarActionType>(
             {indicator.value}
           </div>
         )}
-      </button>
-    );
-
-    return React.createElement(
-      TagName,
-      {
-        className: clsx('alt-toolbar-action', className, {
-          'alt-toolbar-action--disabled': disabled,
-          'alt-toolbar-action--active': active,
-          'alt-toolbar-action--danger': danger,
-          'alt-toolbar-action--compact': isCompact,
-          'alt-toolbar-action--fluid': fluid,
-          'alt-toolbar-action--no-press-effect': !usePressEffect
-        }),
-        type: isButton ? 'button' : undefined,
-        title: label,
-        disabled: isButton ? disabled : undefined,
-        'data-testid': 'alt-test-toolbarAction',
-        ref
-      },
-      <></>
+      </div>
     );
   }
 );
