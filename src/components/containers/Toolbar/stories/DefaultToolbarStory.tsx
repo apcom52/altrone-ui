@@ -4,6 +4,8 @@ import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 import React from 'react';
 import { Icon } from '../../../typography';
 import { Align } from '../../../../types';
+import { Dropdown } from '../../Dropdown';
+import { Popover } from '../../Popover';
 
 export const DefaultToolbarStory: StoryObj<typeof Toolbar> = {
   name: 'Default Toolbar',
@@ -31,14 +33,18 @@ export const DefaultToolbarStory: StoryObj<typeof Toolbar> = {
           }
         ]}>
         <ToolbarGroup align={Align.start}>
-          <ToolbarAction
-            contextMenu={[
-              { title: 'Action 3.1', onClick: () => null },
-              { title: 'Action 3.2', onClick: () => null }
-            ]}
-            icon={<Icon i="face" />}
-          />
-          <ToolbarAction icon={<Icon i="zoom_in" />} content={() => <p>Hello, world!</p>} />
+          <Dropdown
+            content={
+              <Dropdown.Menu>
+                <Dropdown.Action label="Action 3.1" />
+                <Dropdown.Action label="Action 3.2" />
+              </Dropdown.Menu>
+            }>
+            <ToolbarAction icon={<Icon i="face" />} />
+          </Dropdown>
+          <Popover enabled={true} content={<>Hello, world!</>}>
+            <ToolbarAction icon={<Icon i="zoom_in" />} />
+          </Popover>
           <ToolbarAction icon={<Icon i="add" />} />
         </ToolbarGroup>
         <ToolbarGroup>
