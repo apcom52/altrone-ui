@@ -54,6 +54,7 @@ export const DefaultPopoverStory: StoryObj<typeof Popover> = {
           title=""
           enabled
           elevation={Elevation.floating}
+          maxHeight={50}
           useRootContainer>
           {({ opened }) => (
             <Button rightIcon={opened ? <Icon i="expand_less" /> : <Icon i="expand_more" />}>

@@ -43,6 +43,10 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
     className,
     elevation = Elevation.floating,
     surface = Surface.glass,
+    minWidth,
+    maxWidth,
+    minHeight,
+    maxHeight,
     focusTrapTargets = ['reference', 'content']
   } = props;
 
@@ -148,12 +152,19 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
           refs.setFloating(elementRef);
           contentRef.current = elementRef;
         }}
-        style={floatingStyles}
         className={clsx('alt-popover', className, {
           [`alt-popover--elevation-${elevation}`]: elevation !== Elevation.floating,
           [`alt-popover--surface-${surface}`]: surface !== Surface.glass
         })}
-        {...getFloatingProps()}>
+        {...getFloatingProps({
+          style: {
+            ...floatingStyles,
+            minWidth,
+            maxWidth,
+            minHeight,
+            maxHeight
+          }
+        })}>
         {showHeader && (
           <div
             className={clsx('alt-popover__header', {

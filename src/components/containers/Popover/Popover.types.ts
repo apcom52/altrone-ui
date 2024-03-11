@@ -24,7 +24,10 @@ export type PopoverProps = {
   placement?: 'auto' | Placement;
   trigger?: PopoverTrigger | PopoverTrigger[];
   width?: string | number;
+  minHeight?: string | number;
   maxHeight?: string | number;
+  minWidth?: string | number;
+  maxWidth?: string | number;
   showCloseButton?: boolean;
   useRootContainer?: boolean;
   useFocusTrap?: boolean;
