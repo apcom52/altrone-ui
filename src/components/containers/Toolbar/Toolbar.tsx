@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { Elevation, Point, Surface } from '../../../types';
 import { ToolbarProps, ToolbarVariant } from './Toolbar.types';
 import { ToolbarAction } from './components';
+import { ToolbarGroup } from './index';
 
 const ToolbarContext = createContext<{
   element: HTMLDivElement | null;
@@ -92,7 +93,8 @@ const ToolbarComponent = ({
 };
 
 const ToolbarNamespace = Object.assign(ToolbarComponent, {
-  Action: ToolbarAction
+  Action: ToolbarAction,
+  Group: ToolbarGroup
 });
 
 export { ToolbarNamespace as Toolbar };

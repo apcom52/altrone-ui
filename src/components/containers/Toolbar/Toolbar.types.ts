@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { ToolbarMenuProps } from './ToolbarMenu';
-import { ContextMenuType, Elevation, Indicator, Point, Surface } from '../../../types';
-import { ToolbarPopupActionProps } from './components/ToolbarAction';
+import { Elevation, Indicator, Point, Surface } from '../../../types';
 
 export enum ToolbarVariant {
   default = 'default',
