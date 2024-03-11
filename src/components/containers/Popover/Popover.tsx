@@ -185,6 +185,10 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
     }
   });
 
+  console.log('>> childrenEleemnt', childrenElement);
+
+  console.log('>> enabled', enabled);
+
   if (!enabled) {
     return <>{childrenElement}</>;
   }
