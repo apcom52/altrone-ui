@@ -1,28 +1,30 @@
 import './popover.scss';
-import { PopoverProps, PopoverContext, PopoverRef, PopoverChildrenContext } from './Popover.types';
+import { PopoverChildrenContext, PopoverContext, PopoverProps, PopoverRef } from './Popover.types';
 import {
-  useFloating,
-  offset,
-  useClick,
-  useHover,
-  useInteractions,
-  useFocus,
-  useDismiss,
   autoPlacement,
-  FloatingFocusManager,
-  safePolygon,
   autoUpdate,
   flip,
+  FloatingFocusManager,
+  FloatingPortal,
+  offset,
+  OpenChangeReason,
+  safePolygon,
   shift,
   size,
-  FloatingPortal,
-  OpenChangeReason
+  useClick,
+  useDismiss,
+  useFloating,
+  useFocus,
+  useHover,
+  useInteractions
 } from '@floating-ui/react';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
-import { useToggledState } from '../../../hooks';
+import { useToggledState, useWindowSize } from '../../../hooks';
 import { cloneNode } from '../../../utils';
 import { CloseButton } from '../../atoms';
+import { Elevation, Surface } from '../../../types';
+import { Modal } from '../Modal';
 
 /**
  * This component is used to make a dropdown or a small popup
@@ -40,8 +42,16 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
     useParentWidth = false,
     showCloseButton = false,
     className,
+    elevation = Elevation.floating,
+    surface = Surface.glass,
+    minWidth,
+    maxWidth,
+    minHeight,
+    maxHeight,
     focusTrapTargets = ['reference', 'content']
   } = props;
+
+  const { ltePhoneL } = useWindowSize();
 
   const lastStateChangeReason = useRef<OpenChangeReason | undefined>(undefined);
 
@@ -109,7 +119,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
   });
 
   const dismiss = useDismiss(context, {
-    enabled: opened,
+    enabled: opened && !ltePhoneL,
     referencePress: true,
     referencePressEvent: 'click'
   });
@@ -145,9 +155,19 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
           refs.setFloating(elementRef);
           contentRef.current = elementRef;
         }}
-        style={floatingStyles}
-        className={clsx('alt-popover', className)}
-        {...getFloatingProps()}>
+        className={clsx('alt-popover', className, {
+          [`alt-popover--elevation-${elevation}`]: elevation !== Elevation.floating,
+          [`alt-popover--surface-${surface}`]: surface !== Surface.glass
+        })}
+        {...getFloatingProps({
+          style: {
+            ...floatingStyles,
+            minWidth,
+            maxWidth,
+            minHeight,
+            maxHeight
+          }
+        })}>
         {showHeader && (
           <div
             className={clsx('alt-popover__header', {
@@ -185,12 +205,21 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
     }
   });
 
-  console.log('>> childrenEleemnt', childrenElement);
-
-  console.log('>> enabled', enabled);
-
   if (!enabled) {
     return <>{childrenElement}</>;
+  }
+
+  if (ltePhoneL) {
+    return (
+      <>
+        {childrenElement}
+        {opened && (
+          <Modal title={title} onClose={hide}>
+            {typeof content === 'function' ? content({ closePopup: hide }) : content}
+          </Modal>
+        )}
+      </>
+    );
   }
 
   return (

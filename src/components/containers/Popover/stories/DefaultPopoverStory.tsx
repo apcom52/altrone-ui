@@ -1,11 +1,11 @@
 import { StoryObj } from '@storybook/react';
 import { Popover } from '../index';
-import { StorybookBackgroundDecorator } from '../../../../storybook/StorybookPlayground';
+import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 import { Button, TextInput } from '../../../form';
 import { ButtonContainer } from '../../ButtonContainer';
-import React, { useRef } from 'react';
+import React from 'react';
 import { Icon } from '../../../typography';
-import button from '../../../form/Button/Button';
+import { Elevation } from '../../../../types';
 
 export const DefaultPopoverStory: StoryObj<typeof Popover> = {
   name: 'Default Popover',
@@ -13,6 +13,7 @@ export const DefaultPopoverStory: StoryObj<typeof Popover> = {
     return (
       <ButtonContainer>
         <Popover
+          elevation={Elevation.flat}
           content={
             <>
               <div>Hello, world!</div>
@@ -27,6 +28,7 @@ export const DefaultPopoverStory: StoryObj<typeof Popover> = {
         </Popover>
         <Popover
           content={<div>Hello, world!</div>}
+          elevation={Elevation.convex}
           trigger="hover"
           title="Popover with hover trigger"
           showCloseButton
@@ -35,6 +37,7 @@ export const DefaultPopoverStory: StoryObj<typeof Popover> = {
         </Popover>
         <Popover
           content={<div>Hello, world!</div>}
+          elevation={Elevation.raised}
           trigger="focus"
           showCloseButton
           useRootContainer>
@@ -50,6 +53,8 @@ export const DefaultPopoverStory: StoryObj<typeof Popover> = {
           trigger="click"
           title=""
           enabled
+          elevation={Elevation.floating}
+          maxHeight={50}
           useRootContainer>
           {({ opened }) => (
             <Button rightIcon={opened ? <Icon i="expand_less" /> : <Icon i="expand_more" />}>
@@ -66,11 +71,12 @@ export const DefaultPopoverStory: StoryObj<typeof Popover> = {
           }
           trigger="click"
           enabled
+          elevation={Elevation.flying}
           useRootContainer>
           <button type="button">Simple Button</button>
         </Popover>
       </ButtonContainer>
     );
   },
-  decorators: [StorybookBackgroundDecorator]
+  decorators: [StorybookDecorator]
 };
