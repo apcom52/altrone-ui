@@ -1,5 +1,6 @@
-import { MutableRefObject, ReactNode, RefObject } from 'react';
+import { ReactNode } from 'react';
 import { FloatingContext, Placement } from '@floating-ui/react';
+import { Elevation } from '../../../types';
 
 export type PopoverTrigger = 'click' | 'focus' | 'hover';
 
@@ -28,8 +29,9 @@ export type PopoverProps = {
   useRootContainer?: boolean;
   useFocusTrap?: boolean;
   useParentWidth?: boolean;
-  className?: string;
   focusTrapTargets?: ('reference' | 'floating' | 'content')[];
+  elevation?: Elevation;
+  className?: string;
 };
 
 export type PopoverContext = {

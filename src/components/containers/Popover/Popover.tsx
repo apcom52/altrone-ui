@@ -1,28 +1,29 @@
 import './popover.scss';
-import { PopoverProps, PopoverContext, PopoverRef, PopoverChildrenContext } from './Popover.types';
+import { PopoverChildrenContext, PopoverContext, PopoverProps, PopoverRef } from './Popover.types';
 import {
-  useFloating,
-  offset,
-  useClick,
-  useHover,
-  useInteractions,
-  useFocus,
-  useDismiss,
   autoPlacement,
-  FloatingFocusManager,
-  safePolygon,
   autoUpdate,
   flip,
+  FloatingFocusManager,
+  FloatingPortal,
+  offset,
+  OpenChangeReason,
+  safePolygon,
   shift,
   size,
-  FloatingPortal,
-  OpenChangeReason
+  useClick,
+  useDismiss,
+  useFloating,
+  useFocus,
+  useHover,
+  useInteractions
 } from '@floating-ui/react';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 import { useToggledState } from '../../../hooks';
 import { cloneNode } from '../../../utils';
 import { CloseButton } from '../../atoms';
+import { Elevation } from '../../../types';
 
 /**
  * This component is used to make a dropdown or a small popup
@@ -40,6 +41,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
     useParentWidth = false,
     showCloseButton = false,
     className,
+    elevation = Elevation.floating,
     focusTrapTargets = ['reference', 'content']
   } = props;
 
@@ -146,7 +148,9 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
           contentRef.current = elementRef;
         }}
         style={floatingStyles}
-        className={clsx('alt-popover', className)}
+        className={clsx('alt-popover', className, {
+          [`alt-popover--elevation-${elevation}`]: elevation !== Elevation.floating
+        })}
         {...getFloatingProps()}>
         {showHeader && (
           <div
@@ -184,10 +188,6 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
       childrenRef.current = elementRef;
     }
   });
-
-  console.log('>> childrenEleemnt', childrenElement);
-
-  console.log('>> enabled', enabled);
 
   if (!enabled) {
     return <>{childrenElement}</>;
