@@ -20,10 +20,11 @@ import {
 } from '@floating-ui/react';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
-import { useToggledState } from '../../../hooks';
+import { useToggledState, useWindowSize } from '../../../hooks';
 import { cloneNode } from '../../../utils';
 import { CloseButton } from '../../atoms';
 import { Elevation, Surface } from '../../../types';
+import { Modal } from '../Modal';
 
 /**
  * This component is used to make a dropdown or a small popup
@@ -49,6 +50,8 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
     maxHeight,
     focusTrapTargets = ['reference', 'content']
   } = props;
+
+  const { ltePhoneL } = useWindowSize();
 
   const lastStateChangeReason = useRef<OpenChangeReason | undefined>(undefined);
 
@@ -116,7 +119,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
   });
 
   const dismiss = useDismiss(context, {
-    enabled: opened,
+    enabled: opened && !ltePhoneL,
     referencePress: true,
     referencePressEvent: 'click'
   });
@@ -204,6 +207,19 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
 
   if (!enabled) {
     return <>{childrenElement}</>;
+  }
+
+  if (ltePhoneL) {
+    return (
+      <>
+        {childrenElement}
+        {opened && (
+          <Modal title={title} onClose={hide}>
+            {typeof content === 'function' ? content({ closePopup: hide }) : content}
+          </Modal>
+        )}
+      </>
+    );
   }
 
   return (
