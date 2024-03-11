@@ -23,7 +23,7 @@ import clsx from 'clsx';
 import { useToggledState } from '../../../hooks';
 import { cloneNode } from '../../../utils';
 import { CloseButton } from '../../atoms';
-import { Elevation } from '../../../types';
+import { Elevation, Surface } from '../../../types';
 
 /**
  * This component is used to make a dropdown or a small popup
@@ -42,6 +42,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
     showCloseButton = false,
     className,
     elevation = Elevation.floating,
+    surface = Surface.glass,
     focusTrapTargets = ['reference', 'content']
   } = props;
 
@@ -149,7 +150,8 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
         }}
         style={floatingStyles}
         className={clsx('alt-popover', className, {
-          [`alt-popover--elevation-${elevation}`]: elevation !== Elevation.floating
+          [`alt-popover--elevation-${elevation}`]: elevation !== Elevation.floating,
+          [`alt-popover--surface-${surface}`]: surface !== Surface.glass
         })}
         {...getFloatingProps()}>
         {showHeader && (

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { FloatingContext, Placement } from '@floating-ui/react';
-import { Elevation } from '../../../types';
+import { Elevation, Surface } from '../../../types';
 
 export type PopoverTrigger = 'click' | 'focus' | 'hover';
 
@@ -31,6 +31,7 @@ export type PopoverProps = {
   useParentWidth?: boolean;
   focusTrapTargets?: ('reference' | 'floating' | 'content')[];
   elevation?: Elevation;
+  surface?: Surface;
   className?: string;
 };
 
