@@ -8,6 +8,7 @@ import { DataTableProps } from './DataTable.types';
 import { getSafeArray } from '../../../utils/safeArray';
 import { DataTable } from './DataTable';
 import { DataTableSorting } from './DataTableSorting';
+import { DataTableFiltering } from './DataTableFiltering';
 
 interface DataTableHeaderProps<T extends object> {
   children: DataTableProps<T>['children'];
@@ -124,7 +125,8 @@ const DataTableHeader = <T extends object>({ children, selectable }: DataTableHe
         />
       )}
       {childrenActions}
-      {!selectableMode && sortKeys.length && <DataTableSorting />}
+      {!selectableMode && sortKeys.length ? <DataTableSorting /> : null}
+      {!selectableMode && filters.length ? <DataTableFiltering /> : null}
     </div>
   );
 
