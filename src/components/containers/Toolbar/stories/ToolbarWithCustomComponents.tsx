@@ -1,5 +1,5 @@
 import { StoryObj } from '@storybook/react';
-import { Toolbar, ToolbarAction, ToolbarGroup } from '../index';
+import { Toolbar } from '../index';
 import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 import { Align, Option, Size } from '../../../../types';
 import { Icon } from '../../../typography';
@@ -20,23 +20,23 @@ export const ToolbarWithCustomComponents: StoryObj<typeof Toolbar> = {
     return (
       <>
         <Toolbar {...args}>
-          <ToolbarGroup align={Align.start}>
-            <ToolbarAction icon={<Icon i="view_sidebar" />} label="Mode">
+          <Toolbar.Group align={Align.start}>
+            <Toolbar.Action icon={<Icon i="view_sidebar" />} label="Mode">
               <Select options={MODES} value={mode} onChange={setMode} size={Size.small} />
-            </ToolbarAction>
-            <ToolbarAction icon={<Icon i="zoom_in" />} label="Zoom" />
-            <ToolbarAction icon={<Icon i="add" />} label="Add slide" disabled />
-          </ToolbarGroup>
-          <ToolbarGroup>
-            <ToolbarAction
+            </Toolbar.Action>
+            <Toolbar.Action icon={<Icon i="zoom_in" />} label="Zoom" />
+            <Toolbar.Action icon={<Icon i="add" />} label="Add slide" disabled />
+          </Toolbar.Group>
+          <Toolbar.Group>
+            <Toolbar.Action
               icon={<Icon i="play_arrow" />}
               label="Play"
               hideLabel
               fluid
               usePressEffect={false}>
               <Search value={search} onChange={setSearch} />
-            </ToolbarAction>
-          </ToolbarGroup>
+            </Toolbar.Action>
+          </Toolbar.Group>
         </Toolbar>
       </>
     );

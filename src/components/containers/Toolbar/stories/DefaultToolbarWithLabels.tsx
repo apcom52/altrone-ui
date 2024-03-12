@@ -1,5 +1,5 @@
 import { StoryObj } from '@storybook/react';
-import { Toolbar, ToolbarAction, ToolbarGroup } from '../index';
+import { Toolbar } from '../index';
 import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
 import { Align } from '../../../../types';
 import { Icon } from '../../../typography';
@@ -11,29 +11,29 @@ export const DefaultToolbarWithLabels: StoryObj<typeof Toolbar> = {
     return (
       <>
         <Toolbar {...args}>
-          <ToolbarGroup align={Align.start}>
-            <ToolbarAction icon={<Icon i="view_sidebar" />} label="View" />
-            <ToolbarAction icon={<Icon i="zoom_in" />} label="Zoom" />
-            <ToolbarAction icon={<Icon i="add" />} label="Add slide" />
-          </ToolbarGroup>
-          <ToolbarGroup>
-            <ToolbarAction icon={<Icon i="play_arrow" />} label="Play" />
-          </ToolbarGroup>
-          <ToolbarGroup>
-            <ToolbarAction icon={<Icon i="table_chart" />} label="Table" />
-            <ToolbarAction icon={<Icon i="pie_chart" />} label="Chart" />
-            <ToolbarAction icon={<Icon i="title" />} label="Text" />
-            <ToolbarAction icon={<Icon i="shape_line" />} label="Shapes" />
-            <ToolbarAction icon={<Icon i="image" />} label="Image" />
-            <ToolbarAction icon={<Icon i="chat" />} label="Comment" />
-          </ToolbarGroup>
-          <ToolbarGroup>
-            <ToolbarAction icon={<Icon i="groups" />} label="Collaborate" />
-          </ToolbarGroup>
-          <ToolbarGroup align={Align.end}>
-            <ToolbarAction icon={<Icon i="format_paint" />} label="Format" />
-            <ToolbarAction icon={<Icon i="bolt" />} label="Animation" />
-          </ToolbarGroup>
+          <Toolbar.Group align={Align.start}>
+            <Toolbar.Action icon={<Icon i="view_sidebar" />} label="View" />
+            <Toolbar.Action icon={<Icon i="zoom_in" />} label="Zoom" />
+            <Toolbar.Action icon={<Icon i="add" />} label="Add slide" />
+          </Toolbar.Group>
+          <Toolbar.Group>
+            <Toolbar.Action icon={<Icon i="play_arrow" />} label="Play" />
+          </Toolbar.Group>
+          <Toolbar.Group>
+            <Toolbar.Action icon={<Icon i="table_chart" />} label="Table" />
+            <Toolbar.Action icon={<Icon i="pie_chart" />} label="Chart" />
+            <Toolbar.Action icon={<Icon i="title" />} label="Text" />
+            <Toolbar.Action icon={<Icon i="shape_line" />} label="Shapes" />
+            <Toolbar.Action icon={<Icon i="image" />} label="Image" />
+            <Toolbar.Action icon={<Icon i="chat" />} label="Comment" />
+          </Toolbar.Group>
+          <Toolbar.Group>
+            <Toolbar.Action icon={<Icon i="groups" />} label="Collaborate" />
+          </Toolbar.Group>
+          <Toolbar.Group align={Align.end}>
+            <Toolbar.Action icon={<Icon i="format_paint" />} label="Format" />
+            <Toolbar.Action icon={<Icon i="bolt" />} label="Animation" />
+          </Toolbar.Group>
         </Toolbar>
       </>
     );

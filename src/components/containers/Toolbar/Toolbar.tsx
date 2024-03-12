@@ -1,9 +1,10 @@
-import { createContext, useContext, useRef, useState } from 'react';
+import { createContext, ReactElement, useContext, useRef, useState } from 'react';
 import './toolbar.scss';
-import ToolbarMenu from './ToolbarMenu';
 import clsx from 'clsx';
 import { Elevation, Point, Surface } from '../../../types';
 import { ToolbarProps, ToolbarVariant } from './Toolbar.types';
+import { ToolbarAction, ToolbarGroup, ToolbarMenu, ToolbarMenuItem } from './components';
+import { getSafeArray } from '../../../utils/safeArray';
 
 const ToolbarContext = createContext<{
   element: HTMLDivElement | null;
@@ -30,11 +31,10 @@ const defaultOffset: Point = {
  * @param defaultPosition
  * @constructor
  */
-const Toolbar = ({
+const ToolbarComponent = ({
   children,
   variant = ToolbarVariant.default,
   floated = false,
-  menu = [],
   offset = defaultOffset,
   width,
   className,
@@ -45,6 +45,10 @@ const Toolbar = ({
   const [toolbarElement, setToolbarElement] = useState<HTMLDivElement | null>(null);
 
   const toolbarRef = useRef<HTMLDivElement | null>(null);
+
+  const safeChildElements = getSafeArray<ReactElement | null>(children);
+  const menuElements = safeChildElements.filter((element) => element?.type === ToolbarMenu);
+  const nonMenuElements = safeChildElements.filter((element) => element?.type !== ToolbarMenu);
 
   return (
     <ToolbarContext.Provider
@@ -83,11 +87,18 @@ const Toolbar = ({
             : undefined)
         }}
         data-testid="alt-test-toolbar">
-        {variant !== ToolbarVariant.compact && menu.length > 0 && <ToolbarMenu menu={menu} />}
-        <div className="alt-toolbar__main">{children}</div>
+        {menuElements.length > 0 ? <div className="alt-toolbar__menu">{menuElements}</div> : null}
+        <div className="alt-toolbar__main">{nonMenuElements}</div>
       </div>
     </ToolbarContext.Provider>
   );
 };
 
-export default Toolbar;
+const ToolbarNamespace = Object.assign(ToolbarComponent, {
+  Action: ToolbarAction,
+  Group: ToolbarGroup,
+  Menu: ToolbarMenu,
+  MenuItem: ToolbarMenuItem
+});
+
+export { ToolbarNamespace as Toolbar };
