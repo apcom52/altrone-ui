@@ -2,12 +2,7 @@ import { forwardRef } from 'react';
 import clsx from 'clsx';
 import { Align } from '../../../../types';
 import { useToolbarContext } from '../Toolbar';
-
-interface ToolbarGroupProps extends React.PropsWithChildren {
-  align?: Align;
-  fluid?: boolean;
-  className?: string;
-}
+import { ToolbarGroupProps } from '../Toolbar.types';
 
 export const ToolbarGroup = forwardRef<HTMLDivElement, ToolbarGroupProps>(
   ({ children, className, fluid = false, align = Align.center }, ref) => {
@@ -28,3 +23,4 @@ export const ToolbarGroup = forwardRef<HTMLDivElement, ToolbarGroupProps>(
     );
   }
 );
+ToolbarGroup.displayName = 'ToolbarGroup';

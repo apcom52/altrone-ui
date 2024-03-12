@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import clsx from 'clsx';
-import '../toolbar-menu.scss';
+import './toolbar-menu.scss';
 import { ToolbarMenuProps } from '../Toolbar.types';
 
 export const ToolbarMenu = forwardRef<HTMLDivElement, ToolbarMenuProps>(

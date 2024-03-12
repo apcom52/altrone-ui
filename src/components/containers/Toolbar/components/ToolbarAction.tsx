@@ -72,5 +72,4 @@ export const ToolbarAction = forwardRef<HTMLDivElement, ToolbarActionType>(
     );
   }
 );
-
 ToolbarAction.displayName = 'ToolbarAction';

@@ -1,4 +1,4 @@
-@import '../../../mixins';
+@import '../../../../mixins';
 
 .alt-toolbar-menu {
   display: flex;
@@ -20,6 +20,11 @@
 
   &:hover, &:focus, &.alt-toolbar-menu__item--active {
     background-color: var(--surfaceTrasparent);
+  }
+
+  &:disabled {
+    color: var(--disabledText);
+    pointer-events: none;
   }
 
   @include useFocus();

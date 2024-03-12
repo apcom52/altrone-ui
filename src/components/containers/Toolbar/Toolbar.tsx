@@ -1,10 +1,10 @@
-import { createContext, useContext, useRef, useState } from 'react';
+import { createContext, ReactElement, useContext, useRef, useState } from 'react';
 import './toolbar.scss';
 import clsx from 'clsx';
 import { Elevation, Point, Surface } from '../../../types';
 import { ToolbarProps, ToolbarVariant } from './Toolbar.types';
-import { ToolbarAction, ToolbarMenu } from './components';
-import { ToolbarGroup } from './index';
+import { ToolbarAction, ToolbarGroup, ToolbarMenu, ToolbarMenuItem } from './components';
+import { getSafeArray } from '../../../utils/safeArray';
 
 const ToolbarContext = createContext<{
   element: HTMLDivElement | null;
@@ -46,6 +46,10 @@ const ToolbarComponent = ({
 
   const toolbarRef = useRef<HTMLDivElement | null>(null);
 
+  const safeChildElements = getSafeArray<ReactElement | null>(children);
+  const menuElements = safeChildElements.filter((element) => element?.type === ToolbarMenu);
+  const nonMenuElements = safeChildElements.filter((element) => element?.type !== ToolbarMenu);
+
   return (
     <ToolbarContext.Provider
       value={{
@@ -83,7 +87,8 @@ const ToolbarComponent = ({
             : undefined)
         }}
         data-testid="alt-test-toolbar">
-        <div className="alt-toolbar__main">{children}</div>
+        {menuElements.length > 0 ? <div className="alt-toolbar__menu">{menuElements}</div> : null}
+        <div className="alt-toolbar__main">{nonMenuElements}</div>
       </div>
     </ToolbarContext.Provider>
   );
@@ -92,7 +97,8 @@ const ToolbarComponent = ({
 const ToolbarNamespace = Object.assign(ToolbarComponent, {
   Action: ToolbarAction,
   Group: ToolbarGroup,
-  Menu: ToolbarMenu
+  Menu: ToolbarMenu,
+  MenuItem: ToolbarMenuItem
 });
 
 export { ToolbarNamespace as Toolbar };

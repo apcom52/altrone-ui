@@ -1,4 +1,4 @@
-export function getSafeArray(item: unknown | unknown[]) {
+export function getSafeArray<T = unknown>(item: T | T[]) {
   if (Array.isArray(item)) {
     return item;
   }

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Elevation, Indicator, Point, SafeReactElement, Surface } from '../../../types';
+import { Align, Elevation, Indicator, Point, SafeReactElement, Surface } from '../../../types';
 
 export enum ToolbarVariant {
   default = 'default',
@@ -33,7 +33,22 @@ export interface ToolbarActionType {
   usePressEffect?: boolean;
 }
 
+export interface ToolbarGroupProps {
+  children: SafeReactElement;
+  align?: Align;
+  fluid?: boolean;
+  className?: string;
+}
+
 export interface ToolbarMenuProps {
   children: SafeReactElement;
+  className?: string;
+}
+
+export interface ToolbarMenuItemProps {
+  label: string;
+  onClick?: () => void;
+  disabled?: boolean;
+  active?: boolean;
   className?: string;
 }
