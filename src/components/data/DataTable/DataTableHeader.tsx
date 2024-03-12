@@ -7,6 +7,7 @@ import { useDataTableContext } from './DataTable.context';
 import { DataTableProps } from './DataTable.types';
 import { getSafeArray } from '../../../utils/safeArray';
 import { DataTable } from './DataTable';
+import { DataTableSorting } from './DataTableSorting';
 
 interface DataTableHeaderProps<T extends object> {
   children: DataTableProps<T>['children'];
@@ -123,6 +124,7 @@ const DataTableHeader = <T extends object>({ children, selectable }: DataTableHe
         />
       )}
       {childrenActions}
+      {!selectableMode && sortKeys.length && <DataTableSorting />}
     </div>
   );
 

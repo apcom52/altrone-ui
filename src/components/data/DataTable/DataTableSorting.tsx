@@ -1,13 +1,14 @@
-import { memo, useMemo } from 'react';
-import { ButtonContainer, FormField, FormGroup } from '../../containers';
+import React, { useMemo } from 'react';
+import { ButtonContainer, FormField, FormGroup, Popover } from '../../containers';
 import { RadioList, Select, Button } from '../../form';
 import './data-table-sorting.scss';
 import { Align, Direction, Option, Role, Sort } from '../../../types';
 import { useLocalization } from '../../../hooks';
-import { DataTablePopupActionProps } from './DataTableAction.types';
 import { useDataTableContext } from './DataTable.context';
+import { DataTable } from './DataTable';
+import { Icon } from '../../typography';
 
-const DataTableSorting = <T extends object>({ closePopup }: DataTablePopupActionProps) => {
+export const DataTableSorting = <T extends object>() => {
   const { columns, sortKeys, sortBy, sortType, setSortType, setSortBy } = useDataTableContext<T>();
   const t = useLocalization();
 
@@ -23,43 +24,51 @@ const DataTableSorting = <T extends object>({ closePopup }: DataTablePopupAction
   }, [columns, sortKeys]);
 
   return (
-    <div className="alt-data-table-sorting" data-testid="alt-test-datatable-sorting">
-      <div className="alt-data-table-sorting__title">{t('data.dataTable.sorting')}</div>
-      <FormGroup>
-        <FormField label={t('data.dataTable.field')}>
-          <Select options={sortKeysOptions} value={sortBy} onChange={setSortBy} clearable />
-        </FormField>
-        <FormField label={t('data.dataTable.direction')}>
-          <RadioList
-            value={sortType}
-            direction={Direction.vertical}
-            onChange={setSortType}
-            name="sort-direction"
-            options={[
-              {
-                label: t('common.asc'),
-                value: Sort.asc
-              },
-              {
-                label: t('common.desc'),
-                value: Sort.desc
-              }
-            ]}
-          />
-        </FormField>
-      </FormGroup>
-      <div className="alt-data-table-sorting__footer">
-        <ButtonContainer align={Align.end} direction={Direction.vertical}>
-          {sortBy && (
-            <Button onClick={() => setSortBy(undefined)}>{t('data.dataTable.resetSorting')}</Button>
-          )}
-          <Button role={Role.primary} onClick={closePopup}>
-            {t('common.apply')}
-          </Button>
-        </ButtonContainer>
-      </div>
-    </div>
+    <Popover
+      placement="bottom"
+      useParentWidth
+      minWidth={250}
+      content={({ closePopup }) => (
+        <div className="alt-data-table-sorting" data-testid="alt-test-datatable-sorting">
+          <div className="alt-data-table-sorting__title">{t('data.dataTable.sorting')}</div>
+          <FormGroup>
+            <FormField label={t('data.dataTable.field')}>
+              <Select options={sortKeysOptions} value={sortBy} onChange={setSortBy} clearable />
+            </FormField>
+            <FormField label={t('data.dataTable.direction')}>
+              <RadioList
+                value={sortType}
+                direction={Direction.vertical}
+                onChange={setSortType}
+                name="sort-direction"
+                options={[
+                  {
+                    label: t('common.asc'),
+                    value: Sort.asc
+                  },
+                  {
+                    label: t('common.desc'),
+                    value: Sort.desc
+                  }
+                ]}
+              />
+            </FormField>
+          </FormGroup>
+          <div className="alt-data-table-sorting__footer">
+            <ButtonContainer align={Align.end} direction={Direction.vertical}>
+              {sortBy && (
+                <Button onClick={() => setSortBy(undefined)}>
+                  {t('data.dataTable.resetSorting')}
+                </Button>
+              )}
+              <Button role={Role.primary} onClick={closePopup}>
+                {t('common.apply')}
+              </Button>
+            </ButtonContainer>
+          </div>
+        </div>
+      )}>
+      <DataTable.Action label={t('data.dataTable.sorting')} icon={<Icon i="swap_vert" />} />
+    </Popover>
   );
 };
-
-export default memo(DataTableSorting) as typeof DataTableSorting;
