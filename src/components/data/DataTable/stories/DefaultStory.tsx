@@ -61,44 +61,6 @@ export const DEFAULT_COLUMNS: DataTableColumn<DataTableStoryDataInterface>[] = [
   }
 ];
 
-export const ACTIONS: DataTableAction[] = [
-  {
-    label: 'Add',
-    icon: <Icon i="add" />,
-    onClick: () => alert('Add action clicked')
-  }
-];
-
-export const SELECTABLE_ACTIONS: DataTableSelectableAction<DataTableStoryDataInterface>[] = [
-  {
-    label: 'Menu',
-    icon: <Icon i="menu" />,
-    contextMenu: [
-      {
-        title: 'Action',
-        onClick: (selectedData) => console.log(selectedData)
-      }
-    ]
-  },
-  {
-    label: 'Delete',
-    icon: <Icon i="delete" />,
-    onClick: (selectableRows) => console.log('edit click', selectableRows),
-    danger: true
-  },
-  {
-    label: 'Details',
-    icon: <Icon i="info" />,
-    content: ({ selectedRows }) => (
-      <ul>
-        {selectedRows?.map((row, rowIndex) => (
-          <li key={rowIndex}>{row.name}</li>
-        ))}
-      </ul>
-    )
-  }
-];
-
 export const FILTERS: DataTableFilter<DataTableStoryDataInterface>[] = [
   {
     type: 'checkbox',
@@ -122,12 +84,6 @@ export const DefaultDataTableStory: StoryObj<typeof DataTable<DataTableStoryData
         {...args}
         selectable={true}>
         {({ selectableMode, selectedItems }) => [
-          <DataTable.Action
-            icon={<Icon i="add" />}
-            label="Add"
-            disabled={selectableMode}
-            onClick={() => alert('on add clicked')}
-          />,
           selectableMode ? (
             <DataTable.Action
               icon={<Icon i="delete" />}
@@ -137,7 +93,14 @@ export const DefaultDataTableStory: StoryObj<typeof DataTable<DataTableStoryData
                 console.log('>> selected', selectedItems);
               }}
             />
-          ) : null
+          ) : (
+            <DataTable.Action
+              icon={<Icon i="add" />}
+              label="Add"
+              disabled={selectableMode}
+              onClick={() => alert('on add clicked')}
+            />
+          )
         ]}
       </DataTable>
     );

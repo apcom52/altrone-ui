@@ -1,12 +1,6 @@
 import { DataTable } from './index';
 import { Meta } from '@storybook/react';
-import {
-  DataTableStoryDataInterface,
-  DEFAULT_COLUMNS,
-  SELECTABLE_ACTIONS,
-  ACTIONS,
-  FILTERS
-} from './stories/DefaultStory';
+import { DataTableStoryDataInterface, DEFAULT_COLUMNS, FILTERS } from './stories/DefaultStory';
 
 export { DefaultDataTableStory, DataTableWithFiltersStory } from './stories';
 
@@ -21,8 +15,6 @@ const meta: Meta<typeof DataTable<DataTableStoryDataInterface>> = {
     limit: 20,
     searchBy: 'name',
     sortKeys: ['name', 'continent'],
-    actions: ACTIONS,
-    selectableActions: SELECTABLE_ACTIONS,
     filters: FILTERS
   },
   argTypes: {
@@ -59,16 +51,10 @@ const meta: Meta<typeof DataTable<DataTableStoryDataInterface>> = {
       options: ['-', 'odd', 'even'],
       description: 'This property set background for odd or even rows of the table'
     },
-    actions: { control: 'object', description: 'Custom DataTable actions' },
     selectable: {
       control: 'boolean',
       defaultValue: false,
       description: 'Add special button in the header which activates selection mode'
-    },
-    selectableActions: {
-      control: 'object',
-      if: { arg: 'selectable' },
-      description: 'List of custom actions for selection mode.'
     },
     DataTableStatusComponent: { description: 'Custom status bar' },
     className: { control: 'text', description: 'Custom CSS class' }
