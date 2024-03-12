@@ -1,10 +1,9 @@
 import { createContext, useContext, useRef, useState } from 'react';
 import './toolbar.scss';
-import ToolbarMenu from './ToolbarMenu';
 import clsx from 'clsx';
 import { Elevation, Point, Surface } from '../../../types';
 import { ToolbarProps, ToolbarVariant } from './Toolbar.types';
-import { ToolbarAction } from './components';
+import { ToolbarAction, ToolbarMenu } from './components';
 import { ToolbarGroup } from './index';
 
 const ToolbarContext = createContext<{
@@ -36,7 +35,6 @@ const ToolbarComponent = ({
   children,
   variant = ToolbarVariant.default,
   floated = false,
-  menu = [],
   offset = defaultOffset,
   width,
   className,
@@ -85,7 +83,6 @@ const ToolbarComponent = ({
             : undefined)
         }}
         data-testid="alt-test-toolbar">
-        {variant !== ToolbarVariant.compact && menu.length > 0 && <ToolbarMenu menu={menu} />}
         <div className="alt-toolbar__main">{children}</div>
       </div>
     </ToolbarContext.Provider>
@@ -94,7 +91,8 @@ const ToolbarComponent = ({
 
 const ToolbarNamespace = Object.assign(ToolbarComponent, {
   Action: ToolbarAction,
-  Group: ToolbarGroup
+  Group: ToolbarGroup,
+  Menu: ToolbarMenu
 });
 
 export { ToolbarNamespace as Toolbar };

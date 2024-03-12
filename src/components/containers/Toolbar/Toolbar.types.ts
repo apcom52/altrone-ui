@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
-import { ToolbarMenuProps } from './ToolbarMenu';
-import { Elevation, Indicator, Point, Surface } from '../../../types';
+import { Elevation, Indicator, Point, SafeReactElement, Surface } from '../../../types';
 
 export enum ToolbarVariant {
   default = 'default',
@@ -8,10 +7,9 @@ export enum ToolbarVariant {
 }
 
 export interface ToolbarProps {
-  children: ReactNode | ReactNode[];
+  children: SafeReactElement;
   variant?: ToolbarVariant;
   floated?: boolean;
-  menu?: ToolbarMenuProps['menu'];
   offset?: Point;
   width?: number | string;
   className?: string;
@@ -33,4 +31,9 @@ export interface ToolbarActionType {
   children?: ReactNode;
   fluid?: boolean;
   usePressEffect?: boolean;
+}
+
+export interface ToolbarMenuProps {
+  children: SafeReactElement;
+  className?: string;
 }
