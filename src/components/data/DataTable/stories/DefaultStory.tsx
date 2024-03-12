@@ -1,11 +1,11 @@
 import { StoryObj } from '@storybook/react';
-import { DataTable, DataTableAction, DataTableColumn } from '../index';
+import { DataTable, DataTableColumn } from '../index';
 import { default as tableData } from './data';
 import { Icon } from '../../../typography';
 import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
-import { DataTableSelectableAction } from '../DataTableAction.types';
 import { DataTableFilter } from '../DataTableFilter.types';
 import { DataTableCellProps } from '../DataTableCell';
+import React from 'react';
 
 export interface DataTableStoryDataInterface {
   name: string;
@@ -53,7 +53,11 @@ export const DEFAULT_COLUMNS: DataTableColumn<DataTableStoryDataInterface>[] = [
     accessor: 'currency'
   },
   {
-    accessor: 'isEU'
+    accessor: 'isEU',
+    label: 'in EU',
+    Component: ({ value }) => {
+      return value ? <Icon i="check" /> : null;
+    }
   }
 ];
 
@@ -116,7 +120,26 @@ export const DefaultDataTableStory: StoryObj<typeof DataTable<DataTableStoryData
         data={tableData}
         columns={DEFAULT_COLUMNS}
         {...args}
-      />
+        selectable={true}>
+        {({ selectableMode, selectedItems }) => [
+          <DataTable.Action
+            icon={<Icon i="add" />}
+            label="Add"
+            disabled={selectableMode}
+            onClick={() => alert('on add clicked')}
+          />,
+          selectableMode ? (
+            <DataTable.Action
+              icon={<Icon i="delete" />}
+              label="Delete"
+              onClick={() => {
+                alert('Delete');
+                console.log('>> selected', selectedItems);
+              }}
+            />
+          ) : null
+        ]}
+      </DataTable>
     );
   },
   decorators: [StorybookDecorator]
