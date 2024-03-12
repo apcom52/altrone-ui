@@ -1,7 +1,7 @@
 import { DataTableCellProps } from './DataTableCell';
 import { DataTableSearchFunc, DataTableSortFunc } from './functions';
-import { DataTableAction, DataTableSelectableAction } from './DataTableAction.types';
 import { DataTableFilter } from './DataTableFilter.types';
+import { Indicator, SafeReactElement } from '../../../types';
 
 export interface DataTableColumn<T extends object> {
   accessor: keyof T;
@@ -11,9 +11,15 @@ export interface DataTableColumn<T extends object> {
   visible?: boolean;
 }
 
+export type DataTableRenderContext<T extends object> = {
+  selectableMode: boolean;
+  selectedItems: T[];
+};
+
 export interface DataTableProps<T extends object> {
   data: T[];
   columns: DataTableColumn<T>[];
+  children?: SafeReactElement | ((context: DataTableRenderContext<T>) => SafeReactElement);
   limit?: number;
   searchBy?: keyof T;
   sortKeys?: (keyof T)[];
@@ -23,8 +29,16 @@ export interface DataTableProps<T extends object> {
   mobileColumns?: (keyof T)[];
   striped?: 'odd' | 'even';
   className?: string;
-  actions?: DataTableAction[];
   selectable?: boolean;
-  selectableActions?: DataTableSelectableAction<T>[];
   DataTableStatusComponent?: () => JSX.Element;
+}
+
+export interface DataTableActionProps {
+  icon: JSX.Element;
+  label: string;
+  indicator?: Indicator;
+  danger?: boolean;
+  disabled?: boolean;
+  showLabel?: boolean;
+  onClick?: () => void;
 }

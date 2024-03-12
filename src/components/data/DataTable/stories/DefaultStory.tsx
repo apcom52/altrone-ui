@@ -1,11 +1,11 @@
 import { StoryObj } from '@storybook/react';
-import { DataTable, DataTableAction, DataTableColumn } from '../index';
+import { DataTable, DataTableColumn } from '../index';
 import { default as tableData } from './data';
 import { Icon } from '../../../typography';
 import { StorybookDecorator } from '../../../../storybook/StorybookPlayground';
-import { DataTableSelectableAction } from '../DataTableAction.types';
 import { DataTableFilter } from '../DataTableFilter.types';
 import { DataTableCellProps } from '../DataTableCell';
+import React from 'react';
 
 export interface DataTableStoryDataInterface {
   name: string;
@@ -53,45 +53,11 @@ export const DEFAULT_COLUMNS: DataTableColumn<DataTableStoryDataInterface>[] = [
     accessor: 'currency'
   },
   {
-    accessor: 'isEU'
-  }
-];
-
-export const ACTIONS: DataTableAction[] = [
-  {
-    label: 'Add',
-    icon: <Icon i="add" />,
-    onClick: () => alert('Add action clicked')
-  }
-];
-
-export const SELECTABLE_ACTIONS: DataTableSelectableAction<DataTableStoryDataInterface>[] = [
-  {
-    label: 'Menu',
-    icon: <Icon i="menu" />,
-    contextMenu: [
-      {
-        title: 'Action',
-        onClick: (selectedData) => console.log(selectedData)
-      }
-    ]
-  },
-  {
-    label: 'Delete',
-    icon: <Icon i="delete" />,
-    onClick: (selectableRows) => console.log('edit click', selectableRows),
-    danger: true
-  },
-  {
-    label: 'Details',
-    icon: <Icon i="info" />,
-    content: ({ selectedRows }) => (
-      <ul>
-        {selectedRows?.map((row, rowIndex) => (
-          <li key={rowIndex}>{row.name}</li>
-        ))}
-      </ul>
-    )
+    accessor: 'isEU',
+    label: 'in EU',
+    Component: ({ value }) => {
+      return value ? <Icon i="check" /> : null;
+    }
   }
 ];
 
@@ -116,7 +82,27 @@ export const DefaultDataTableStory: StoryObj<typeof DataTable<DataTableStoryData
         data={tableData}
         columns={DEFAULT_COLUMNS}
         {...args}
-      />
+        selectable={true}>
+        {({ selectableMode, selectedItems }) => [
+          selectableMode ? (
+            <DataTable.Action
+              icon={<Icon i="delete" />}
+              label="Delete"
+              onClick={() => {
+                alert('Delete');
+                console.log('>> selected', selectedItems);
+              }}
+            />
+          ) : (
+            <DataTable.Action
+              icon={<Icon i="add" />}
+              label="Add"
+              disabled={selectableMode}
+              onClick={() => alert('on add clicked')}
+            />
+          )
+        ]}
+      </DataTable>
     );
   },
   decorators: [StorybookDecorator]

@@ -1,29 +1,23 @@
 import { memo, useMemo } from 'react';
 import './data-table-header.scss';
-import DataTableSorting from './DataTableSorting';
 import { Icon } from '../../typography';
-import DataTableFiltering from './DataTableFiltering';
 import { useLocalization, useToggledState, useWindowSize } from '../../../hooks';
 import { Search, Button, ButtonVariant } from '../../form';
-import {
-  DataTableSelectableAction,
-  DataTableAction as DataTableActionType
-} from './DataTableAction.types';
 import { useDataTableContext } from './DataTable.context';
-import DataTableAction from './DataTableAction';
+import { DataTableProps } from './DataTable.types';
+import { getSafeArray } from '../../../utils/safeArray';
+import { DataTable } from './DataTable';
+import { DataTableSorting } from './DataTableSorting';
+import { DataTableFiltering } from './DataTableFiltering';
 
 interface DataTableHeaderProps<T extends object> {
-  actions: DataTableActionType[];
-  selectableActions: DataTableSelectableAction<T>[];
+  children: DataTableProps<T>['children'];
   selectable: boolean;
 }
 
-const DataTableHeader = <T extends object>({
-  actions = [],
-  selectableActions = [],
-  selectable
-}: DataTableHeaderProps<T>) => {
+const DataTableHeader = <T extends object>({ children, selectable }: DataTableHeaderProps<T>) => {
   const {
+    initialData,
     search,
     setSearch,
     sortKeys,
@@ -34,7 +28,8 @@ const DataTableHeader = <T extends object>({
     searchBy,
     mobileColumns,
     selectableMode,
-    setSelectableMode
+    setSelectableMode,
+    selectedRows
   } = useDataTableContext();
 
   const searchVisible = useToggledState(false);
@@ -49,53 +44,91 @@ const DataTableHeader = <T extends object>({
     return columns.find((column) => column.accessor === sortBy) || null;
   }, [columns, sortBy]);
 
-  const dataTableActions = useMemo(() => {
-    const result = [...(selectableMode ? selectableActions : actions)];
+  const selectedItems = useMemo(() => {
+    return selectedRows.map((index) => initialData[index] as T);
+  }, [selectedRows, initialData]);
 
-    if (selectable) {
-      result.unshift({
-        label: t('data.dataTable.select'),
-        icon: <Icon i={selectableMode ? 'check_box_outline_blank' : 'check_box'} />,
-        onClick: () => setSelectableMode(!selectableMode),
-        isIcon: true,
-        disabled: false
-      });
-    }
+  // const dataTableActions = useMemo(() => {
+  //   const result = [...(selectableMode ? selectableActions : actions)];
+  //
+  //   if (selectable) {
+  //     result.unshift({
+  //       label: t('data.dataTable.select'),
+  //       icon: <Icon i={selectableMode ? 'check_box_outline_blank' : 'check_box'} />,
+  //       onClick: () => setSelectableMode(!selectableMode),
+  //       isIcon: true,
+  //       disabled: false
+  //     });
+  //   }
+  //
+  //   if (!selectableMode && sortKeys.length) {
+  //     result.push({
+  //       label: t('data.dataTable.sort'),
+  //       icon: <Icon i="swap_vert" />,
+  //       content: DataTableSorting
+  //     });
+  //   }
+  //
+  //   if (!selectableMode && filters.length) {
+  //     result.push({
+  //       label: t('data.dataTable.filters'),
+  //       icon: <Icon i="tune" style="outlined" />,
+  //       content: DataTableFiltering,
+  //       indicator:
+  //         appliedFilters.length > 0
+  //           ? {
+  //               position: 'baseline',
+  //               value: appliedFilters.length
+  //             }
+  //           : undefined
+  //     });
+  //   }
+  //
+  //   return result;
+  // }, [
+  //   actions,
+  //   sortKeys,
+  //   sortBy,
+  //   currentSortingColumn,
+  //   filters,
+  //   appliedFilters,
+  //   selectable,
+  //   selectableMode
+  // ]);
 
-    if (!selectableMode && sortKeys.length) {
-      result.push({
-        label: t('data.dataTable.sort'),
-        icon: <Icon i="swap_vert" />,
-        content: DataTableSorting
-      });
-    }
+  const childrenActions =
+    typeof children === 'function'
+      ? children({
+          selectableMode,
+          selectedItems: selectedItems
+        })
+      : children;
 
-    if (!selectableMode && filters.length) {
-      result.push({
-        label: t('data.dataTable.filters'),
-        icon: <Icon i="tune" style="outlined" />,
-        content: DataTableFiltering,
-        indicator:
-          appliedFilters.length > 0
-            ? {
-                position: 'baseline',
-                value: appliedFilters.length
-              }
-            : undefined
-      });
-    }
+  const safeChildrenArray = getSafeArray(childrenActions);
 
-    return result;
-  }, [
-    actions,
-    sortKeys,
-    sortBy,
-    currentSortingColumn,
-    filters,
-    appliedFilters,
-    selectable,
-    selectableMode
-  ]);
+  const isHeaderVisible = Boolean(
+    sortKeys.length || filters.length || searchBy || selectable || safeChildrenArray.length
+  );
+
+  if (!isHeaderVisible) {
+    return null;
+  }
+
+  const actionsContainer = (
+    <div className="alt-data-table-header__actions">
+      {selectable && (
+        <DataTable.Action
+          label={t('data.dataTable.select')}
+          icon={<Icon i={selectableMode ? 'check_box_outline_blank' : 'check_box'} />}
+          onClick={() => setSelectableMode(!selectableMode)}
+          showLabel={false}
+        />
+      )}
+      {childrenActions}
+      {!selectableMode && sortKeys.length ? <DataTableSorting /> : null}
+      {!selectableMode && filters.length ? <DataTableFiltering /> : null}
+    </div>
+  );
 
   return (
     <>
@@ -109,13 +142,7 @@ const DataTableHeader = <T extends object>({
               : columns.length
           }>
           <div className="alt-data-table-header">
-            {(gtPhoneL || (ltePhoneL && !searchVisible.value)) && (
-              <div className="alt-data-table-header__actions">
-                {dataTableActions.map((action, actionIndex) => (
-                  <DataTableAction key={actionIndex} {...action} />
-                ))}
-              </div>
-            )}
+            {gtPhoneL || (ltePhoneL && !searchVisible.value) ? actionsContainer : null}
             {searchBy && !searchVisible.value ? (
               ltePhoneL ? (
                 <Button variant={ButtonVariant.transparent} isIcon onClick={searchVisible.enable}>

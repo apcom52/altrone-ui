@@ -5,9 +5,10 @@ import DataTableHeaderRow from './DataTableHeaderRow';
 import DataTableFooter from './DataTableFooter';
 
 import clsx from 'clsx';
-import { DataTableProps } from './DataTable.types';
+import { DataTableProps, DataTableRenderContext } from './DataTable.types';
 import { DataTableContextProvider } from './DataTable.context';
 import DataTableFooterStatus from './DataTableFooterStatus';
+import { DataTableAction } from './DataTableAction';
 
 /**
  * This component is used to show huge amount of data in table view
@@ -28,22 +29,14 @@ import DataTableFooterStatus from './DataTableFooterStatus';
  * @param DataTableStatusComponent
  * @constructor
  */
-export const DataTable = <DataType extends object>(props: DataTableProps<DataType>) => {
+const DataTableComponent = <DataType extends object>(props: DataTableProps<DataType>) => {
   const {
-    sortKeys = [],
-    filters = [],
-    searchBy,
+    children,
     selectable,
-    actions = [],
-    selectableActions = [],
     className,
     striped,
     DataTableStatusComponent = DataTableFooterStatus
   } = props;
-
-  const isHeaderVisible = Boolean(
-    sortKeys.length || filters.length || searchBy || selectable || actions?.length
-  );
 
   return (
     <DataTableContextProvider<DataType> {...props}>
@@ -54,13 +47,7 @@ export const DataTable = <DataType extends object>(props: DataTableProps<DataTyp
         })}
         data-testid="alt-test-datatable">
         <thead>
-          {isHeaderVisible && (
-            <DataTableHeader<DataType>
-              actions={actions}
-              selectableActions={selectableActions}
-              selectable={Boolean(selectable)}
-            />
-          )}
+          <DataTableHeader<DataType> selectable={Boolean(selectable)}>{children}</DataTableHeader>
           <DataTableHeaderRow />
         </thead>
         <DataTableBody<DataType> />
@@ -70,4 +57,8 @@ export const DataTable = <DataType extends object>(props: DataTableProps<DataTyp
   );
 };
 
-export default DataTable;
+const DataTableNamespace = Object.assign(DataTableComponent, {
+  Action: DataTableAction
+});
+
+export { DataTableNamespace as DataTable };
