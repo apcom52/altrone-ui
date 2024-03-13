@@ -3,7 +3,7 @@ import './navigation-list.scss';
 import clsx from 'clsx';
 import { ContextMenuType, Elevation, Indicator, Surface } from '../../../types';
 import { NavigationListProps } from './NavigationList.types';
-import { NavigationHeader, NavigationLink, NavigationMenu } from './component';
+import { NavigationDivider, NavigationHeader, NavigationLink, NavigationMenu } from './component';
 
 interface SubSubNavigationItem {
   label: string;
@@ -152,7 +152,8 @@ const NavigationListComponent = <SelectedPage = unknown,>({
 const NavigationListNamespace = Object.assign(NavigationListComponent, {
   Header: NavigationHeader,
   Menu: NavigationMenu,
-  Link: NavigationLink
+  Link: NavigationLink,
+  Divider: NavigationDivider
 });
 
 export { NavigationListNamespace as NavigationList };
