@@ -21,3 +21,15 @@ export interface NavigationMenuProps {
   children: SafeReactElement;
   className?: string;
 }
+
+export interface NavigationLinkProps {
+  label: string;
+  icon?: ReactElement;
+  level?: number;
+  href?: string;
+  className?: string;
+  active?: boolean;
+  disabled?: boolean;
+  onClick?: () => void;
+  children?: SafeReactElement;
+}

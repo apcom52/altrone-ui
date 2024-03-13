@@ -96,10 +96,8 @@ export const SimpleNavigationList: StoryObj<typeof NavigationList> = {
       <div style={{ width: 300 }}>
         <NavigationList
           {...args}
-          list={MENU}
           selected={current}
-          onChange={(value) => setCurrent(String(value))}
-          action={ACTION}>
+          onChange={(value) => setCurrent(String(value))}>
           <NavigationList.Header
             title="Settings"
             action={
@@ -117,6 +115,26 @@ export const SimpleNavigationList: StoryObj<typeof NavigationList> = {
               </Dropdown>
             }
           />
+          <NavigationList.Menu>
+            <NavigationList.Link label="Wi-Fi" active icon={<Icon i="wifi" />} />
+            <NavigationList.Link
+              label="Bluetooth"
+              href="https://noob-club.ru"
+              icon={<Icon i="bluetooth" />}
+            />
+            <NavigationList.Link label="Network" disabled icon={<Icon i="public" />} />
+            <NavigationList.Link label="VPN" icon={<Icon i="vpn_lock" />} />
+            <NavigationList.Link label="Notifications" icon={<Icon i="notifications" />} />
+            <NavigationList.Link label="Sound" icon={<Icon i="volume_up" />} />
+            <NavigationList.Link label="Focus" icon={<Icon i="nightlight_round" />} />
+            <NavigationList.Link label="Screen Time" icon={<Icon i="hourglass_bottom" />} />
+            <NavigationList.Link label="General" icon={<Icon i="settings" />} />
+            <NavigationList.Link label="Appearance" icon={<Icon i="brightness_6" />} />
+            <NavigationList.Link label="Accessibility" icon={<Icon i="accessibility" />} />
+            <NavigationList.Link label="Control Centre" icon={<Icon i="tune" />} />
+            <NavigationList.Link label="Siri & Spotlight" icon={<Icon i="graphic_eq" />} />
+            <NavigationList.Link label="Privacy & Security" icon={<Icon i="fingerprint" />} />
+          </NavigationList.Menu>
         </NavigationList>
       </div>
     );
