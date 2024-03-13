@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import './navigation-list.scss';
 import clsx from 'clsx';
-import { ContextMenuType, Elevation, Indicator, Role, Size, Surface } from '../../../types';
+import { ContextMenuType, Elevation, Indicator, Surface } from '../../../types';
 import { NavigationListProps } from './NavigationList.types';
-import { NavigationHeader } from './component';
+import { NavigationHeader, NavigationMenu } from './component';
 
 export const NAVIGATION_LIST_SEPARATOR = '-';
 
@@ -152,7 +152,8 @@ const NavigationListComponent = <SelectedPage = unknown,>({
 };
 
 const NavigationListNamespace = Object.assign(NavigationListComponent, {
-  Header: NavigationHeader
+  Header: NavigationHeader,
+  Menu: NavigationMenu
 });
 
 export { NavigationListNamespace as NavigationList };

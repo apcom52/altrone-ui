@@ -16,3 +16,8 @@ export interface NavigationHeaderProps {
   action?: ReactElement | null;
   className?: string;
 }
+
+export interface NavigationMenuProps {
+  children: SafeReactElement;
+  className?: string;
+}
