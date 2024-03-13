@@ -1,4 +1,5 @@
 import { Elevation, SafeReactElement, Surface } from '../../../types';
+import { ReactElement } from 'react';
 
 export interface NavigationListProps<SelectedPage = unknown> {
   children: SafeReactElement;
@@ -8,4 +9,10 @@ export interface NavigationListProps<SelectedPage = unknown> {
   surface?: Surface;
   compact?: 'manual' | 'static';
   elevation?: Elevation;
+}
+
+export interface NavigationHeaderProps {
+  title: ReactElement | string;
+  action?: ReactElement | null;
+  className?: string;
 }

@@ -3,6 +3,7 @@ import './navigation-list.scss';
 import clsx from 'clsx';
 import { ContextMenuType, Elevation, Indicator, Role, Size, Surface } from '../../../types';
 import { NavigationListProps } from './NavigationList.types';
+import { NavigationHeader } from './component';
 
 export const NAVIGATION_LIST_SEPARATOR = '-';
 
@@ -150,6 +151,8 @@ const NavigationListComponent = <SelectedPage = unknown,>({
   );
 };
 
-const NavigationListNamespace = Object.assign(NavigationListComponent, {});
+const NavigationListNamespace = Object.assign(NavigationListComponent, {
+  Header: NavigationHeader
+});
 
 export { NavigationListNamespace as NavigationList };

@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { Icon } from '../../../typography';
 import { NavigationListMenu } from '../NavigationList';
 import { NavigationList } from '../index';
+import { Dropdown } from '../../../containers/Dropdown';
+import { Button } from '../../../form';
 
 export const MENU: NavigationListMenu = [
   {
@@ -97,8 +99,25 @@ export const SimpleNavigationList: StoryObj<typeof NavigationList> = {
           list={MENU}
           selected={current}
           onChange={(value) => setCurrent(String(value))}
-          action={ACTION}
-        />
+          action={ACTION}>
+          <NavigationList.Header
+            title="Settings"
+            action={
+              <Dropdown
+                content={
+                  <Dropdown.Menu>
+                    <Dropdown.Action label="Network settings" />
+                    <Dropdown.Action label="Notification settings" />
+                    <Dropdown.Action label="Security settings" />
+                  </Dropdown.Menu>
+                }>
+                <Button isIcon>
+                  <Icon i="add" />
+                </Button>
+              </Dropdown>
+            }
+          />
+        </NavigationList>
       </div>
     );
   },
