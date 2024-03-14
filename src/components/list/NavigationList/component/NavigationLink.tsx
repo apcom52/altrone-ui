@@ -1,9 +1,10 @@
-import { forwardRef, useState } from 'react';
+import { forwardRef, useEffect, useMemo, useState } from 'react';
 import { NavigationLinkProps } from '../NavigationList.types';
 import './link.scss';
 import clsx from 'clsx';
 import { getSafeArray } from '../../../../utils/safeArray';
 import { Icon } from '../../../typography';
+import { SafeReactElement } from '../../../../types';
 
 export const NavigationLink = forwardRef<HTMLButtonElement, NavigationLinkProps>(
   (
@@ -13,6 +14,7 @@ export const NavigationLink = forwardRef<HTMLButtonElement, NavigationLinkProps>
       indicator,
       icon,
       href,
+      active,
       onClick,
       children,
       className,
@@ -45,6 +47,40 @@ export const NavigationLink = forwardRef<HTMLButtonElement, NavigationLinkProps>
       }
     };
 
+    const hasSelectedChildElements = useMemo(() => {
+      if (!children) {
+        return;
+      }
+
+      let result = false;
+
+      const pasteElementsIntoArray = (nodes: SafeReactElement) => {
+        if (result) return;
+        const safeNodeArray = getSafeArray(nodes);
+
+        for (const node of safeNodeArray) {
+          if (node?.props?.active) {
+            result = true;
+            break;
+          }
+
+          if (node?.props.children) {
+            pasteElementsIntoArray(node.props.children);
+          }
+        }
+      };
+
+      pasteElementsIntoArray(children);
+
+      return result;
+    }, [children]);
+
+    useEffect(() => {
+      if (hasSelectedChildElements) {
+        setExpanded(true);
+      }
+    }, [hasSelectedChildElements]);
+
     return (
       <div className="alt-navigation-link-wrapper">
         <button
@@ -52,7 +88,8 @@ export const NavigationLink = forwardRef<HTMLButtonElement, NavigationLinkProps>
           role="button"
           className={clsx('alt-navigation-link', className, {
             'alt-navigation-link--disabled': disabled,
-            'alt-navigation-link--expanded': expanded
+            'alt-navigation-link--selected': !hasInnerLinks && active,
+            'alt-navigation-link--expanded': expanded || hasSelectedChildElements
           })}
           disabled={disabled}
           ref={ref}

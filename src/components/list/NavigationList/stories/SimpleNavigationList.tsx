@@ -116,7 +116,7 @@ export const SimpleNavigationList: StoryObj<typeof NavigationList> = {
             }
           />
           <NavigationList.Menu>
-            <NavigationList.Link label="Wi-Fi" active icon={<Icon i="wifi" />} />
+            <NavigationList.Link label="Wi-Fi" icon={<Icon i="wifi" />} />
             <NavigationList.Link
               label="Bluetooth"
               href="https://noob-club.ru"
@@ -125,7 +125,7 @@ export const SimpleNavigationList: StoryObj<typeof NavigationList> = {
             <NavigationList.Link label="Network" icon={<Icon i="public" />}>
               <NavigationList.Link label="Network settings" icon={<Icon i="public" />}>
                 <NavigationList.Link label="Wireless" icon={<Icon i="cell_tower" />} />
-                <NavigationList.Link label="Ethernet" icon={<Icon i="hub" />} />
+                <NavigationList.Link active label="Ethernet" icon={<Icon i="hub" />} />
               </NavigationList.Link>
               <NavigationList.Link label="Firewall" icon={<Icon i="shield" />} />
             </NavigationList.Link>
