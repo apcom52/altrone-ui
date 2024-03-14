@@ -1,10 +1,15 @@
 @import '../../../../mixins';
 
+.alt-navigation-link-wrapper {
+  width: calc(100% + 16px);
+  margin: 0 -8px;
+}
+
 .alt-navigation-link {
   display: flex;
+  width: 100%;
   position: relative;
   align-items: center;
-  margin: 0 -8px;
   padding: 8px;
   border-radius: var(--controlRounding);
   border: none;
@@ -155,6 +160,77 @@
 
   .alt-navigation-link__icon {
     color: var(--disabledText);
+  }
+}
+
+.alt-navigation-link__indicator {
+  margin-left: auto;
+  padding: 2px 6px;
+  border-radius: var(--innerRounding);
+  background-color: var(--surfaceTrasparentHover);
+
+  @include useFontSize(label, Small);
+  font-weight: 600;
+
+  &:empty {
+    width: 8px;
+    height: 8px;
+    max-width: 8px;
+    border-radius: var(--circleRounding);
+    padding: 0;
+    background-color: var(--danger);
+  }
+}
+
+.alt-navigation-link__indicator + .alt-navigation-link__arrowIcon {
+  margin-left: 8px;
+}
+
+.alt-navigation-link__indicator--position-corner {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+}
+
+.alt-navigation-link__indicator--position-corner + .alt-navigation-link__arrowIcon {
+  margin-left: auto;
+}
+
+.alt-navigation-link__indicator--position-corner:not(:empty) + .alt-navigation-link__arrowIcon {
+  display: none;
+}
+
+.alt-navigation-link__arrowIcon {
+  transition: transform var(--transitionDuration) ease;
+  transform-origin: center;
+  margin-left: auto;
+  color: var(--secondaryTextColor);
+}
+
+.alt-navigation-link--expanded {
+  background-color: var(--surfaceTrasparentHover);
+
+  .alt-navigation-link__arrowIcon {
+    transform: rotate(90deg);
+  }
+
+  &:hover {
+    background-color: var(--surfaceTrasparentHover);
+  }
+}
+
+.alt-navigation-link__children {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  margin-left: 16px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+
+  .alt-navigation-link-wrapper {
+    width: calc(100% - 16px);
+    margin: 0;
   }
 }
 

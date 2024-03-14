@@ -1,4 +1,4 @@
-import { Elevation, SafeReactElement, Surface } from '../../../types';
+import { Elevation, Indicator, SafeReactElement, Surface } from '../../../types';
 import { ReactElement } from 'react';
 
 export interface NavigationListProps<SelectedPage = unknown> {
@@ -25,11 +25,12 @@ export interface NavigationMenuProps {
 export interface NavigationLinkProps {
   label: string;
   icon?: ReactElement;
-  level?: number;
+  indicator?: Indicator;
   href?: string;
   className?: string;
   active?: boolean;
   disabled?: boolean;
+  expanded?: boolean;
   onClick?: () => void;
   children?: SafeReactElement;
 }

@@ -122,15 +122,29 @@ export const SimpleNavigationList: StoryObj<typeof NavigationList> = {
               href="https://noob-club.ru"
               icon={<Icon i="bluetooth" />}
             />
-            <NavigationList.Link label="Network" disabled icon={<Icon i="public" />} />
-            <NavigationList.Link label="VPN" icon={<Icon i="vpn_lock" />} />
+            <NavigationList.Link label="Network" icon={<Icon i="public" />}>
+              <NavigationList.Link label="Network settings" icon={<Icon i="public" />}>
+                <NavigationList.Link label="Wireless" icon={<Icon i="cell_tower" />} />
+                <NavigationList.Link label="Ethernet" icon={<Icon i="hub" />} />
+              </NavigationList.Link>
+              <NavigationList.Link label="Firewall" icon={<Icon i="shield" />} />
+            </NavigationList.Link>
+            <NavigationList.Link label="VPN" disabled icon={<Icon i="vpn_lock" />} />
             <NavigationList.Divider />
-            <NavigationList.Link label="Notifications" icon={<Icon i="notifications" />} />
+            <NavigationList.Link
+              label="Notifications"
+              indicator={{ position: 'baseline', value: 3 }}
+              icon={<Icon i="notifications" />}
+            />
             <NavigationList.Link label="Sound" icon={<Icon i="volume_up" />} />
             <NavigationList.Link label="Focus" icon={<Icon i="nightlight_round" />} />
             <NavigationList.Link label="Screen Time" icon={<Icon i="hourglass_bottom" />} />
             <NavigationList.Divider />
-            <NavigationList.Link label="General" icon={<Icon i="settings" />} />
+            <NavigationList.Link
+              label="General"
+              indicator={{ position: 'corner', value: 12 }}
+              icon={<Icon i="settings" />}
+            />
             <NavigationList.Link label="Appearance" icon={<Icon i="brightness_6" />} />
             <NavigationList.Link label="Accessibility" icon={<Icon i="accessibility" />} />
             <NavigationList.Link label="Control Centre" icon={<Icon i="tune" />} />
