@@ -51,6 +51,7 @@ export interface InputComponentProps {
   placeholder?: string;
   onFocus?: () => void;
   onBlur?: () => void;
+  onKeyDown?: React.KeyboardEventHandler;
   style?: Partial<CSSProperties>;
   elevation?: Elevation;
 }

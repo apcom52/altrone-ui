@@ -1,7 +1,15 @@
-import React, { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
+import React, {
+  forwardRef,
+  ReactElement,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import { InputComponentProps, TextInputProps, TextInputRef } from './TextInput.types';
 import { Input } from './components';
-import { Popover } from '../../containers';
 import { PopoverRef } from '../../containers/Popover/Popover.types';
 import { useResizeObserver } from '../../../hooks';
 import { TextInputIsland } from './TextInputIsland';
@@ -9,8 +17,9 @@ import { Loading } from '../../indicators';
 import { Elevation, Size, Surface } from '../../../types';
 import clsx from 'clsx';
 import { BasicInput } from '../BasicInput';
+import { Dropdown } from '../../containers/Dropdown';
 
-const EMPTY_ARRAY: string[] = [];
+const EMPTY_ARRAY: any[] = [];
 
 export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) => {
   const {
@@ -33,6 +42,9 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
     surface = Surface.solid,
     ...restProps
   } = props;
+
+  const [suitableSuggestions, setSuitableSuggestions] = useState<ReactElement[]>(EMPTY_ARRAY);
+  const isOptionsWasSelectedFromSuggestions = useRef(false);
 
   const popoverRef = useRef<PopoverRef>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -81,6 +93,51 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
     [value, inputRef.current]
   );
 
+  const onKeyDown: React.KeyboardEventHandler = (e) => {
+    if (e.key === 'ArrowDown') {
+      if (popoverRef?.current?.contentNode) {
+        e.preventDefault();
+        const menuElement: HTMLDivElement | null =
+          popoverRef.current.contentNode?.querySelector('.alt-dropdown-item');
+        if (menuElement) {
+          menuElement.focus?.();
+        }
+      }
+    }
+  };
+
+  const handleClickSuggestion = useCallback(
+    (newValue: string) => {
+      isOptionsWasSelectedFromSuggestions.current = true;
+      onChange(newValue, {});
+      setSuitableSuggestions(EMPTY_ARRAY);
+    },
+    [onChange]
+  );
+
+  useEffect(() => {
+    if (isOptionsWasSelectedFromSuggestions.current) {
+      isOptionsWasSelectedFromSuggestions.current = false;
+      return;
+    }
+
+    const _suitableSuggestions = suggestions
+      .filter((suggestion) => {
+        return suggestion.toLowerCase().startsWith(props.value.trim().toLowerCase());
+      })
+      .map((item, itemIndex) => {
+        return (
+          <Dropdown.Action
+            key={item + itemIndex}
+            label={item}
+            onClick={() => handleClickSuggestion(item)}
+          />
+        );
+      });
+
+    setSuitableSuggestions(_suitableSuggestions);
+  }, [suggestions, value]);
+
   const inputProps: InputComponentProps = {
     value,
     onChange,
@@ -107,17 +164,17 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
   const inputElement = Component ? (
     Component
   ) : (
-    <Popover
-      enabled={false}
+    <Dropdown
+      enabled={suitableSuggestions.length > 0 && value.length > 0}
       ref={popoverRef}
       placement="bottom"
       trigger={['click', 'focus']}
-      showCloseButton={false}
+      useFocusTrap={true}
+      focusTrapTargets={['reference', 'content']}
       useParentWidth
-      useFocusTrap={false}
-      content={<>hello!</>}>
-      <Input key="textInput" ref={inputRef} {...inputProps} />
-    </Popover>
+      content={<Dropdown.Menu autoFocusFirstElement={false}>{suitableSuggestions}</Dropdown.Menu>}>
+      <Input key="textInput" ref={inputRef} {...inputProps} onKeyDown={onKeyDown} />
+    </Dropdown>
   );
 
   return (

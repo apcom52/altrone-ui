@@ -19,6 +19,7 @@ export const Input = forwardRef<HTMLInputElement, InputComponentProps>((props, r
     leftOffset,
     rightOffset,
     elevation = Elevation.convex,
+    onKeyDown,
     ...restProps
   } = props;
 
@@ -42,6 +43,7 @@ export const Input = forwardRef<HTMLInputElement, InputComponentProps>((props, r
       maxLength={maxLength}
       onFocus={onFocus}
       onBlur={onBlur}
+      onKeyDown={onKeyDown}
       {...restProps}
     />
   );

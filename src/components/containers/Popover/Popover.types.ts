@@ -9,6 +9,7 @@ export type PopoverRef = {
   context: FloatingContext;
   childrenNode: HTMLElement | null;
   contentNode: HTMLDivElement | null;
+  close: () => void;
 };
 
 export type PopoverChildrenContext = {

@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { PopoverRef } from '../Popover/Popover.types';
 import { DropdownProps } from './Dropdown.types';
 import { Popover } from '../Popover';
@@ -15,9 +15,17 @@ import {
 import { CloseDropdownContext } from './Dropdown.contexts';
 
 const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
-  const { children, content, trigger, placement = 'bottom' } = props;
+  const {
+    children,
+    content,
+    trigger,
+    placement = 'bottom',
+    focusTrapTargets = ['content', 'reference'],
+    focusFirstElement = true,
+    ...restProps
+  } = props;
 
-  const [, setPopoverContext] = useState<FloatingContext | null>(null);
+  const [popoverContext, setPopoverContext] = useState<FloatingContext | null>(null);
 
   const popoverRef = useRef<PopoverRef | null>(null);
 
@@ -26,6 +34,20 @@ const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
       setPopoverContext(popoverRef.current?.context);
     }
   }, [popoverRef.current?.context]);
+
+  useImperativeHandle(
+    ref,
+    () =>
+      popoverRef.current
+        ? popoverRef.current
+        : {
+            opened: false,
+            contentNode: null,
+            context: popoverContext as FloatingContext,
+            childrenNode: null
+          },
+    [popoverContext, popoverRef.current]
+  );
 
   return (
     <Popover
@@ -38,7 +60,8 @@ const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
       )}
       placement={placement}
       trigger={trigger}
-      focusTrapTargets={['content', 'reference']}>
+      focusTrapTargets={focusTrapTargets}
+      {...restProps}>
       {children}
     </Popover>
   );
