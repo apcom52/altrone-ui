@@ -1,0 +1,20 @@
+@import '../../../../mixins';
+
+.alt-navigation-header {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+}
+
+.alt-navigation-header__title {
+  margin-bottom: 16px;
+
+  @include useFontSize(headline, Large);
+  font-weight: 800;
+}
+
+.alt-navigation-header__action {
+  position: absolute;
+  top: -40px;
+  right: 0;
+}

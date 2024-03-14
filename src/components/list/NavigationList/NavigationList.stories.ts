@@ -1,15 +1,13 @@
 import { Meta } from '@storybook/react';
 import { NavigationList } from './index';
 
-export { SimpleNavigationList, HierarchicalNavigationList } from './stories';
+export { SimpleNavigationList } from './stories';
 
 const meta: Meta<typeof NavigationList> = {
   component: NavigationList,
   title: 'Lists/NavigationList',
   tags: ['autodocs'],
-  args: {
-    title: 'Settings'
-  },
+  args: {},
   argTypes: {
     list: { description: 'Structure of the navigation' },
     selected: { description: 'Selected item' },
