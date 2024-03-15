@@ -1,0 +1,39 @@
+.alt-text-block {
+  font-size: var(--baseFontSize);
+  line-height: var(--baseLineHeight);
+  font-weight: var(--baseFontWeight);
+  color: var(--textColor);
+}
+
+.alt-text-block--size-small {
+  font-size: var(--smallFontSize);
+  line-height: var(--smallLineHeight);
+}
+
+.alt-text-block--size-large {
+  font-size: var(--largeFontSize);
+  line-height: var(--largeLineHeight);
+}
+
+.alt-text-block--role-heading {
+  font-size: var(--headingMediumFontSize);
+  line-height: var(--headingMediumLineHeight);
+  font-weight: var(--headingFontWeight);
+
+  &.alt-text-block--size-small {
+    font-size: var(--headingSmallFontSize);
+    line-height: var(--headingSmallLineHeight);
+  }
+
+  &.alt-text-block--size-large {
+    font-size: var(--headingLargeFontSize);
+    line-height: var(--headingLargeLineHeight);
+  }
+}
+
+.alt-text-block--ellipsis {
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
