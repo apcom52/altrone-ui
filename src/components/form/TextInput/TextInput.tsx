@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState
@@ -18,6 +19,8 @@ import { Elevation, Size, Surface } from '../../../types';
 import clsx from 'clsx';
 import { BasicInput } from '../BasicInput';
 import { Dropdown } from '../../containers/Dropdown';
+import { DropdownMenuRef } from '../../containers/Dropdown/Dropdown.types';
+import { Icon } from '../../typography';
 
 const EMPTY_ARRAY: any[] = [];
 
@@ -40,14 +43,19 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
     required = false,
     elevation = Elevation.convex,
     surface = Surface.solid,
+    useLiveSuggestions = false,
     ...restProps
   } = props;
 
   const [suitableSuggestions, setSuitableSuggestions] = useState<ReactElement[]>(EMPTY_ARRAY);
+  const [currentSelectedIndex, setCurrentSelectedIndex] = useState(-1);
+  const [shadowInputWidth, setShadowInputWidth] = useState(0);
   const isOptionsWasSelectedFromSuggestions = useRef(false);
 
   const popoverRef = useRef<PopoverRef>(null);
+  const dropdownMenuRef = useRef<DropdownMenuRef>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const shadowRef = useRef<HTMLDivElement>(null);
 
   const leftIslandsContainerRef = useRef<HTMLDivElement | null>(null);
   const rightIslandsContainerRef = useRef<HTMLDivElement | null>(null);
@@ -103,17 +111,31 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
           menuElement.focus?.();
         }
       }
+    } else if (e.key === 'Tab' && useLiveSuggestions && liveSuggestionLabel) {
+      e.preventDefault();
+      onChange(value + liveSuggestionLabel);
     }
   };
 
   const handleClickSuggestion = useCallback(
     (newValue: string) => {
       isOptionsWasSelectedFromSuggestions.current = true;
-      onChange(newValue, {});
+      onChange(newValue);
       setSuitableSuggestions(EMPTY_ARRAY);
     },
     [onChange]
   );
+
+  const liveSuggestionLabel = useMemo(() => {
+    if (!suitableSuggestions.length || !useLiveSuggestions || !props.value.trim()) {
+      return '';
+    }
+
+    const fullLabelElement =
+      suitableSuggestions[currentSelectedIndex > -1 ? currentSelectedIndex : 0];
+    const fullLabel = fullLabelElement?.props?.label;
+    return fullLabel.replace(props.value, '');
+  }, [suitableSuggestions, props.value, useLiveSuggestions, currentSelectedIndex]);
 
   useEffect(() => {
     if (isOptionsWasSelectedFromSuggestions.current) {
@@ -137,6 +159,14 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
 
     setSuitableSuggestions(_suitableSuggestions);
   }, [suggestions, value]);
+
+  useLayoutEffect(() => {
+    setShadowInputWidth(shadowRef.current?.offsetWidth || 0);
+  }, [value]);
+
+  useEffect(() => {
+    setShadowInputWidth(shadowRef.current?.offsetWidth || 0);
+  }, [value]);
 
   const inputProps: InputComponentProps = {
     value,
@@ -172,7 +202,14 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
       useFocusTrap={true}
       focusTrapTargets={['reference', 'content']}
       useParentWidth
-      content={<Dropdown.Menu autoFocusFirstElement={false}>{suitableSuggestions}</Dropdown.Menu>}>
+      content={
+        <Dropdown.Menu
+          defaultFocusItemIndex={-1}
+          onChangeFocusItemIndex={setCurrentSelectedIndex}
+          ref={dropdownMenuRef}>
+          {suitableSuggestions}
+        </Dropdown.Menu>
+      }>
       <Input key="textInput" ref={inputRef} {...inputProps} onKeyDown={onKeyDown} />
     </Dropdown>
   );
@@ -197,6 +234,28 @@ export const TextInput = forwardRef<TextInputRef, TextInputProps>((props, ref) =
             className="alt-text-input__islands alt-text-input__right-islands"
             ref={rightIslandsContainerRef}>
             {rightIslands}
+          </div>
+        ) : null}
+        {useLiveSuggestions && (
+          <div className="alt-live-suggestion__shadowText" ref={shadowRef}>
+            {props.value.replace(/\s$/g, String.fromCharCode(160))}
+          </div>
+        )}
+        {useLiveSuggestions && Boolean(liveSuggestionLabel) ? (
+          <div
+            className="alt-live-suggestion"
+            style={{
+              left: `${shadowInputWidth}px`,
+              width: 'auto'
+            }}>
+            <span
+              className="alt-live-suggestion__text"
+              data-testid="alt-test-textInput-liveSuggestion">
+              {liveSuggestionLabel}
+            </span>
+            <span className="alt-live-suggestion__tabIcon">
+              <Icon i="keyboard_tab" />
+            </span>
           </div>
         ) : null}
       </div>

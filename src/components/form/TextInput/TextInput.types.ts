@@ -40,7 +40,7 @@ export type IslandRef = {
 
 export interface InputComponentProps {
   value: string;
-  onChange: (value: string, event: ChangeEvent) => void;
+  onChange: (value: string, event?: ChangeEvent) => void;
   id?: string;
   type?: string;
   maxLength?: number;
@@ -64,4 +64,5 @@ export interface TextInputProps extends InputComponentProps, BasicInputProps {
   Component?: JSX.Element;
   required?: boolean;
   surface?: Surface;
+  useLiveSuggestions?: boolean;
 }
