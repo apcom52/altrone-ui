@@ -40,7 +40,14 @@ export interface DropdownChildMenuProps extends BaseDropdownItem {
 
 export interface DropdownMenuProps {
   children: ReactElement | null | (ReactElement | null)[];
+  defaultFocusItemIndex?: number;
+  onChangeFocusItemIndex?: (index: number) => void;
   className?: string;
+}
+
+export interface DropdownMenuRef {
+  selectedIndex: number;
+  menuNode: HTMLElement | null;
 }
 
 export interface DropdownProps
@@ -52,7 +59,14 @@ export interface DropdownProps
     | 'placement'
     | 'trigger'
     | 'width'
-    | 'maxHeight'
     | 'useFocusTrap'
+    | 'useParentWidth'
+    | 'minWidth'
+    | 'maxWidth'
+    | 'minHeight'
+    | 'maxHeight'
     | 'className'
-  > {}
+    | 'focusTrapTargets'
+  > {
+  focusFirstElement?: boolean;
+}

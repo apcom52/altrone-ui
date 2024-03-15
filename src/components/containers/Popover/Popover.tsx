@@ -137,7 +137,8 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, popoverRef) 
       opened,
       context,
       childrenNode: childrenRef.current,
-      contentNode: contentRef.current
+      contentNode: contentRef.current,
+      close: hide
     }),
     [opened, context]
   );
