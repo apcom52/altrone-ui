@@ -1,0 +1,113 @@
+@import '../../../mixins';
+
+.alt-text {
+  display: inline;
+}
+
+.alt-text--bold {
+  font-weight: 600;
+}
+
+.alt-text--italic {
+  font-style: italic;
+}
+
+.alt-text--underline {
+  text-decoration: underline;
+}
+
+.alt-text--deleted {
+  text-decoration: line-through;
+}
+
+.alt-text--code {
+  display: inline;
+  box-shadow: 0 0 0 1px var(--borderColor);
+  padding: 0 4px;
+  background: var(--surface);
+  border-radius: 0.25em;
+}
+
+.alt-text--highlighted {
+  display: inline;
+  padding: 0 4px;
+  background: var(--highlight);
+  border-radius: 0.25em;
+  color: var(--accentText);
+}
+
+.alt-text--ellipsis {
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.alt-text--label {
+  display: inline-block;
+  font-weight: var(--labelFontWeight);
+}
+
+.alt-text--keyboard {
+  display: inline-block;
+  box-shadow: 0 0 0 1px var(--borderColor);
+  padding: 0 4px;
+  background: var(--surface);
+  border-radius: 0.25em;
+  color: var(--secondaryTextColor);
+  font-size: 0.75em;
+  line-height: 1.5em;
+}
+
+.alt-text--link {
+  color: var(--accentText);
+  text-decoration: none;
+  border-radius: var(--innerRounding);
+
+  @include useInteraction {
+    text-decoration: underline;
+  }
+
+  @include useFocus();
+}
+
+.alt-text--color-secondary {
+  color: var(--secondaryTextColor);
+
+  &.alt-text--highlighted {
+    background: var(--surfaceTransparent);
+  }
+}
+
+.alt-text--color-success {
+  color: var(--successText);
+
+  &.alt-text--highlighted {
+    background: var(--successHighlight);
+  }
+}
+
+.alt-text--color-warning {
+  color: var(--warningText);
+
+  &.alt-text--highlighted {
+    background: var(--warningHighlight);
+  }
+}
+
+.alt-text--color-danger {
+  color: var(--dangerText);
+
+  &.alt-text--highlighted {
+    background: var(--dangerHighlight);
+  }
+}
+
+.alt-text--color-disabled {
+  color: var(--disabledText);
+
+  &.alt-text--highlighted {
+    background: var(--surface);
+  }
+}

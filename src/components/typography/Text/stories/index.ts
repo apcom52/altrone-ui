@@ -1,0 +1,1 @@
+export { DefaultTextStory } from './DefaultTextStory';
