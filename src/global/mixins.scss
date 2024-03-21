@@ -1,0 +1,17 @@
+@mixin big-paragraph {
+  font-size: var(--bigParagraphFontSize);
+  line-height: var(--bigParagraphLineHeight);
+  font-weight: var(--bigParagraphFontWeight);
+}
+
+@mixin paragraph {
+  font-size: var(--paragraphFontSize);
+  line-height: var(--paragraphLineHeight);
+  font-weight: var(--paragraphFontWeight);
+}
+
+@mixin sm-paragraph {
+  font-size: var(--smallParagraphFontSize);
+  line-height: var(--smallParagraphLineHeight);
+  font-weight: var(--smallParagraphFontWeight);
+}

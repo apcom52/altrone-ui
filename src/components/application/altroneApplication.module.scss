@@ -1,0 +1,131 @@
+@import "@/global/mixins";
+
+/* static fonts */
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 100; font-display: swap; src: url("../../assets/Inter-Thin.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: italic; font-weight: 100; font-display: swap; src: url("../../assets/Inter-ThinItalic.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 200; font-display: swap; src: url("../../assets/Inter-ExtraLight.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: italic; font-weight: 200; font-display: swap; src: url("../../assets/Inter-ExtraLightItalic.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 300; font-display: swap; src: url("../../assets/Inter-Light.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: italic; font-weight: 300; font-display: swap; src: url("../../assets/Inter-LightItalic.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400; font-display: swap; src: url("../../assets/Inter-Regular.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: italic; font-weight: 400; font-display: swap; src: url("../../assets/Inter-Italic.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 500; font-display: swap; src: url("../../assets/Inter-Medium.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: italic; font-weight: 500; font-display: swap; src: url("../../assets/Inter-MediumItalic.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 600; font-display: swap; src: url("../../assets/Inter-SemiBold.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: italic; font-weight: 600; font-display: swap; src: url("../../assets/Inter-SemiBoldItalic.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 700; font-display: swap; src: url("../../assets/Inter-Bold.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: italic; font-weight: 700; font-display: swap; src: url("../../assets/Inter-BoldItalic.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 800; font-display: swap; src: url("../../assets/Inter-ExtraBold.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: italic; font-weight: 800; font-display: swap; src: url("../../assets/Inter-ExtraBoldItalic.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 900; font-display: swap; src: url("../../assets/Inter-Black.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: italic; font-weight: 900; font-display: swap; src: url("../../assets/Inter-BlackItalic.woff2") format("woff2"); }
+
+:global(:root) {
+  --default-900: #111928;
+  --default-800: #1F2A37;
+  --default-700: #374151;
+  --default-600: #4B5563;
+  --default-500: #6B7280;
+  --default-400: #9CA3AF;
+  --default-300: #D1D5DB;
+  --default-200: #E5E7EB;
+  --default-100: #F3F4F6;
+  --default-50: #F9FAFB;
+
+  --primary-900: #0D47A1;
+  --primary-800: #1565C0;
+  --primary-700: #1976D2;
+  --primary-600: #1E88E5;
+  --primary-500: #2196F3;
+  --primary-400: #42A5F5;
+  --primary-300: #64B5F6;
+  --primary-200: #90CAF9;
+  --primary-100: #BBDEFB;
+  --primary-50: #E3F2FD;
+
+  --success-900: #1B5E20;
+  --success-800: #2E7D32;
+  --success-700: #388E3C;
+  --success-600: #43A047;
+  --success-500: #4CAF50;
+  --success-400: #66BB6A;
+  --success-300: #81C784;
+  --success-200: #A5D6A7;
+  --success-100: #C8E6C9;
+  --success-50: #E8F5E9;
+
+  --danger-900: #B71C1C;
+  --danger-800: #C62828;
+  --danger-700: #D32F2F;
+  --danger-600: #E53935;
+  --danger-500: #F44336;
+  --danger-400: #EF5350;
+  --danger-300: #E57373;
+  --danger-200: #EF9A9A;
+  --danger-100: #FFCDD2;
+  --danger-50: #FFEBEE;
+
+  --warning-900: #FF6F00;
+  --warning-800: #FF8F00;
+  --warning-700: #FFA000;
+  --warning-600: #FFB300;
+  --warning-500: #FFC107;
+  --warning-400: #FFCA28;
+  --warning-300: #FFD54F;
+  --warning-200: #FFE082;
+  --warning-100: #FFECB3;
+  --warning-50: #FFF8E1;
+
+  --screenFontSize: 32px;
+  --screenLineHeight: 40px;
+  --screenFontWeight: 900;
+
+  --articleFontSize: 24px;
+  --articleLineHeight: 32px;
+  --articleFontWeight: 800;
+
+  --firstHeadingFontSize: 20px;
+  --firstHeadingLineHeight: 24px;
+  --firstHeadingFontWeight: 700;
+
+  --subheaderFontSize: 16px;
+  --subheaderLineHeight: 24px;
+  --subheaderFontWeight: 600;
+
+  --innerHeaderFontSize: 14px;
+  --innerHeaderLineHeight: 24px;
+  --innerHeaderFontWeight: 600;
+
+  --groupHeadingFontSize: 12px;
+  --groupHeadingLineHeight: 16px;
+  --groupHeadingFontWeight: 500;
+
+  --labelFontSize: 10px;
+  --labelLineHeight: 16px;
+  --labelFontWeight: 600;
+
+  --smallLabelFontSize: 8px;
+  --smallLabelLineHeight: 12px;
+  --smallLabelFontWeight: 600;
+
+  --bigParagraphFontSize: 16px;
+  --bigParagraphLineHeight: 24px;
+  --bigParagraphFontWeight: 400;
+
+  --paragraphFontSize: 14px;
+  --paragraphLineHeight: 20px;
+  --paragraphFontWeight: 400;
+
+  --smallParagraphFontSize: 12px;
+  --smallParagraphLineHeight: 16px;
+  --smallParagraphFontWeight: 400;
+
+  --codeFontSize: 13px;
+  --codeLineHeight: 20px;
+  --codeFontWeight: 400;
+}
+
+.AltroneApp {
+  color: var(--primary-500);
+  font-family: "Inter", sans-serif;
+}
