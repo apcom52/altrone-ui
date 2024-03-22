@@ -1,0 +1,33 @@
+@import "src/global/mixins";
+
+.Title {
+  margin-block-start: var(--xxl-gap);
+  margin-block-end: var(--xl-gap);
+  color: var(--headingColor);
+
+  @include title;
+}
+
+.Heading {
+  margin-block-start: var(--xl-gap);
+  margin-block-end: var(--xl-gap);
+  color: var(--headingColor);
+
+  @include heading;
+}
+
+.Subheader {
+  margin-block-start: var(--xl-gap);
+  margin-block-end: var(--xl-gap);
+  color: var(--headingColor);
+
+  @include subheader;
+}
+
+.InnerHeader {
+  margin-block-start: var(--xl-gap);
+  margin-block-end: var(--xl-gap);
+  color: var(--headingColor);
+
+  @include inner-header;
+}
