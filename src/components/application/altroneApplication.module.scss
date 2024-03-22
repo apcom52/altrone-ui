@@ -18,6 +18,8 @@
 @font-face { font-family: "Inter"; font-style: italic; font-weight: 800; font-display: swap; src: url("../../assets/Inter-ExtraBoldItalic.woff2") format("woff2"); }
 @font-face { font-family: "Inter"; font-style: normal; font-weight: 900; font-display: swap; src: url("../../assets/Inter-Black.woff2") format("woff2"); }
 @font-face { font-family: "Inter"; font-style: italic; font-weight: 900; font-display: swap; src: url("../../assets/Inter-BlackItalic.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("../../assets/JetBrainsMono-Regular.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 700; font-display: swap; src: url("../../assets/JetBrainsMono-Bold.woff2") format("woff2"); }
 
 :global(:root) {
   --default-900: #111928;
@@ -133,8 +135,18 @@
 
   /* semantic variables */
   --appBackground: var(--default-50);
-  --headingColor: var(--default-900);
-  --bodyColor: var(--default-700);
+
+  /* text style variables */
+  --headingTextColor: var(--default-900);
+  --bodyTextColor: var(--default-700);
+  --disabledTextColor: var(--default-400);
+  --highlightedText: var(--default-900);
+  --highlightedTextBackground: var(--primary-100);
+  --codeTextColor: var(--primary-800);
+
+  /* color variables */
+  --codeBackgroundColor: var(--primary-50);
+  --codeBorderColor: var(--primary-100);
 }
 
 .AltroneApp {
@@ -145,8 +157,9 @@
 
 .AltroneDark {
   --appBackground: var(--default-900);
-  --headingColor: var(--default-50);
-  --bodyColor: var(--default-200);
-
-  color: var(--primary-700);
+  --headingTextColor: var(--default-50);
+  --bodyTextColor: var(--default-200);
+  --disabledTextColor: var(--default-600);
+  --highlightedText: var(--default-50);
+  --highlightedTextBackground: var(--primary-900);
 }

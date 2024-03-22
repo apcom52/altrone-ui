@@ -1,0 +1,12 @@
+@import 'src/global/mixins';
+
+.Code {
+  border: 1px solid var(--codeBorderColor);
+  color: var(--codeTextColor);
+  background: var(--codeBackgroundColor);
+  padding: 0 var(--xs-gap);
+  border-radius: 4px;
+  font-family: "JetBrains Mono", monospace;
+
+  @include code;
+}

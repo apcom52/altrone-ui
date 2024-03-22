@@ -3,7 +3,7 @@
 .ScreenName {
   margin-block-start: var(--xxl-gap);
   margin-block-end: var(--xl-gap);
-  color: var(--headingColor);
+  color: var(--headingTextColor);
 
   @include screen-name;
 }

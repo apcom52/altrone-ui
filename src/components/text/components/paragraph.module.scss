@@ -1,7 +1,7 @@
 @import 'src/global/mixins';
 
 .Paragraph {
-  color: var(--bodyColor);
+  color: var(--bodyTextColor);
   margin: var(--xl-gap) 0;
 
   @include paragraph;

@@ -1,0 +1,26 @@
+@import 'src/global/mixins';
+
+.Bold {
+  color: var(--headingTextColor);
+  font-weight: 700;
+}
+
+.Italic {
+  font-style: italic;
+}
+
+.Underline {
+  text-decoration: underline;
+}
+
+.Deleted {
+  text-decoration: line-through;
+  color: var(--disabledTextColor);
+}
+
+.Highlighted {
+  border-radius: 4px;
+  color: var(--highlightedText);
+  padding: 0 var(--xs-gap);
+  background: var(--highlightedTextBackground);
+}
