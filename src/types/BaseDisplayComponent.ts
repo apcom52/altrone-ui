@@ -1,11 +1,13 @@
-import React, { JSX } from 'react';
+import React from 'react';
 
-export interface BaseDisplayComponent<
-  Component extends keyof JSX.IntrinsicElements,
-> extends React.HTMLAttributes<HTMLElement> {
+export interface BasicComponentStyleConfig {
   className?: string;
-  id?: string;
   style?: React.CSSProperties;
+}
+
+export interface BasicComponentProps
+  extends React.HTMLAttributes<HTMLElement>,
+    BasicComponentStyleConfig {
+  id?: string;
   children?: React.ReactNode;
-  component?: Component;
 }

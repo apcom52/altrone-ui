@@ -1,23 +1,24 @@
 import { AltroneApplication } from './AltroneApplication.tsx';
-import { Meta, Story } from '@storybook/react';
-import { AltroneConfiguration } from '../configuration/AltroneConfiguration.tsx';
+import { Meta, StoryObj } from '@storybook/react';
+import { Theme } from './AltroneApplication.types.ts';
 
 const story: Meta<typeof AltroneApplication> = {
+  title: 'Altrone Application',
   component: AltroneApplication,
 };
 
 export default story;
 
-export const Primary: Story = {
+export const ApplicationStory: StoryObj<typeof AltroneApplication> = {
+  name: 'Simple Application',
   render: () => (
-    <AltroneApplication>
-      <AltroneConfiguration
-        baseComponent={{ className: 'parent className', element: 'element' }}
-      >
-        <AltroneConfiguration baseComponent={{ className: 'child 1' }}>
-          <AltroneConfiguration baseComponent={{ element: 'child element' }} />
-        </AltroneConfiguration>
-      </AltroneConfiguration>
-    </AltroneApplication>
+    <AltroneApplication
+      theme={Theme.dark}
+      tagName="main"
+      config={{
+        language: 'ru',
+      }}
+      style={{ background: 'pink' }}
+    />
   ),
 };

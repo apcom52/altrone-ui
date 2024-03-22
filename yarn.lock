@@ -1008,7 +1008,7 @@
     "@babel/types" "^7.4.4"
     esutils "^2.0.2"
 
-"@babel/preset-react@^7.24.1":
+"@babel/preset-react@7.24.1":
   version "7.24.1"
   resolved "https://registry.npmjs.org/@babel/preset-react/-/preset-react-7.24.1.tgz"
   integrity sha512-eFa8up2/8cZXLIpkafhaADTXSnl7IsUFCYenRWrARBz0/qZwcT0RBXpys0LJU4+WfPoF2ZG6ew6s2V6izMCwRA==
@@ -1093,7 +1093,7 @@
   resolved "https://registry.npmjs.org/@base2/pretty-print-object/-/pretty-print-object-1.0.1.tgz"
   integrity sha512-4iri8i1AqYHJE2DstZYkyEprg6Pq6sKx3xn5FpySk9sNhH7qN2LLlHJCfDTZRILNwQNPD7mATWM0TBui7uC1pA==
 
-"@chromatic-com/storybook@^1.2.24":
+"@chromatic-com/storybook@1.2.24":
   version "1.2.24"
   resolved "https://registry.npmjs.org/@chromatic-com/storybook/-/storybook-1.2.24.tgz"
   integrity sha512-d6rNAtVitPZW8Lm2YFlQWv7znohd0sMDaSZpGd4J03kFe2tsMDQpe4YjLbP2u4p5xHKopoy4gjcibNcIaS+9ww==
@@ -1381,7 +1381,7 @@
     rehype-slug "^6.0.0"
     ts-dedent "^2.0.0"
 
-"@storybook/addon-essentials@^8.0.2":
+"@storybook/addon-essentials@8.0.2":
   version "8.0.2"
   resolved "https://registry.npmjs.org/@storybook/addon-essentials/-/addon-essentials-8.0.2.tgz"
   integrity sha512-9UB2464vRVLukCTpty4CVZP88UrhQgKiJPrOvG28iIDlbloSqFX83fr2sX6PN9Y27Gsg7q6GlWN+9+tmC8A6gA==
@@ -1408,7 +1408,7 @@
   dependencies:
     "@storybook/global" "^5.0.0"
 
-"@storybook/addon-interactions@^8.0.2":
+"@storybook/addon-interactions@8.0.2":
   version "8.0.2"
   resolved "https://registry.npmjs.org/@storybook/addon-interactions/-/addon-interactions-8.0.2.tgz"
   integrity sha512-eeQ2GouFK7sUtRpMO2uOFo5QWebcAwl5g3wh5yELkpKYeaCmT7/aoPedpuXOAfqG/Eud1OqIUAAipXgGxF8x/A==
@@ -1420,7 +1420,7 @@
     polished "^4.2.2"
     ts-dedent "^2.2.0"
 
-"@storybook/addon-links@^8.0.2":
+"@storybook/addon-links@8.0.2":
   version "8.0.2"
   resolved "https://registry.npmjs.org/@storybook/addon-links/-/addon-links-8.0.2.tgz"
   integrity sha512-Y22kCHRQIEE8yhTbWLTR2VMa9KJdMDRpWyYCIMzmTlCWAk1vyMZXC2ERruKIpM7AKKtTMEmNc2qHAmOieHfr3A==
@@ -1437,7 +1437,7 @@
     "@storybook/global" "^5.0.0"
     tiny-invariant "^1.3.1"
 
-"@storybook/addon-onboarding@^8.0.2":
+"@storybook/addon-onboarding@8.0.2":
   version "8.0.2"
   resolved "https://registry.npmjs.org/@storybook/addon-onboarding/-/addon-onboarding-8.0.2.tgz"
   integrity sha512-wwNYl1FYodZAhVlWiisAFmMMiUaCO8E8DBhHPNGMZP2tsVzeLPly2/k6X31Jc6hdG8YhZVJdXFX2tDcBxHtzoA==
@@ -1462,7 +1462,7 @@
   dependencies:
     memoizerific "^1.11.3"
 
-"@storybook/blocks@^8.0.2", "@storybook/blocks@8.0.2":
+"@storybook/blocks@8.0.2":
   version "8.0.2"
   resolved "https://registry.npmjs.org/@storybook/blocks/-/blocks-8.0.2.tgz"
   integrity sha512-nVOyQV/d+MpfAXLadbTuxkyUa9rco6EjMW3eb49JrfmenViNlZ+YYcO1J0zHXvM3GYYNP5yBXXhiGVg0uM8trA==
@@ -1512,7 +1512,7 @@
     process "^0.11.10"
     util "^0.12.4"
 
-"@storybook/builder-vite@^8.0.2", "@storybook/builder-vite@8.0.2":
+"@storybook/builder-vite@8.0.2":
   version "8.0.2"
   resolved "https://registry.npmjs.org/@storybook/builder-vite/-/builder-vite-8.0.2.tgz"
   integrity sha512-E2OBd7gZSmI2WToAkQk3l5ph9R6OMnva1U4rk8uk+g5y5UcczhFFENWFzlbLV+covrqzyzMOA/FvMpZuF8D+Aw==
@@ -1546,7 +1546,7 @@
     telejson "^7.2.0"
     tiny-invariant "^1.3.1"
 
-"@storybook/cli@^8.0.2", "@storybook/cli@8.0.2":
+"@storybook/cli@8.0.2":
   version "8.0.2"
   resolved "https://registry.npmjs.org/@storybook/cli/-/cli-8.0.2.tgz"
   integrity sha512-Yo1p3LpPmTLbqCwvXy0h13sRFDqY7sNPi2RjBWrJ38URRTw4cpcmw1aE9APb2fSgEhVOxpZWEwG9rFVfika4gg==
@@ -1875,7 +1875,7 @@
     resolve "^1.22.8"
     tsconfig-paths "^4.2.0"
 
-"@storybook/react@^8.0.2", "@storybook/react@8.0.2":
+"@storybook/react@8.0.2":
   version "8.0.2"
   resolved "https://registry.npmjs.org/@storybook/react/-/react-8.0.2.tgz"
   integrity sha512-GhO2lUZg7YmyoPXHgPCZB2gq4+kEVKD0s6OfFw4bebb3QuY0qaD3rFEm07IZ5UmhkcKTsu+AR+/DREE2f6jd4A==
@@ -1925,7 +1925,7 @@
     fs-extra "^11.1.0"
     read-pkg-up "^7.0.1"
 
-"@storybook/test@^8.0.2", "@storybook/test@8.0.2":
+"@storybook/test@8.0.2":
   version "8.0.2"
   resolved "https://registry.npmjs.org/@storybook/test/-/test-8.0.2.tgz"
   integrity sha512-DEhM8KkgR+JrkZdw7yq1XMFN9ZyukHMQy6UPKyaHwhrsHW5ega1qLbFuYsRI100wqPDWVeX5F94EMblmtXNkAQ==
@@ -2945,6 +2945,11 @@ clone@^1.0.2:
   resolved "https://registry.npmjs.org/clone/-/clone-1.0.4.tgz"
   integrity sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==
 
+clsx@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.npmjs.org/clsx/-/clsx-2.1.0.tgz"
+  integrity sha512-m3iNNWpd9rl3jvvcBnu70ylMdrXt8Vlq4HYadnU5fwcOtvkSQWPmj7amUcDT2qYI7risszBjI5AUIUox9D16pg==
+
 color-convert@^1.9.0:
   version "1.9.3"
   resolved "https://registry.npmjs.org/color-convert/-/color-convert-1.9.3.tgz"
@@ -3438,7 +3443,7 @@ eslint-plugin-react-refresh@0.4.6:
   resolved "https://registry.npmjs.org/eslint-plugin-react-refresh/-/eslint-plugin-react-refresh-0.4.6.tgz"
   integrity sha512-NjGXdm7zgcKRkKMua34qVO9doI7VOxZ6ancSvBELJSSoX97jyndXcSoa8XBh69JoB31dNz3EEzlMcizZl7LaMA==
 
-eslint-plugin-storybook@^0.8.0:
+eslint-plugin-storybook@0.8.0:
   version "0.8.0"
   resolved "https://registry.npmjs.org/eslint-plugin-storybook/-/eslint-plugin-storybook-0.8.0.tgz"
   integrity sha512-CZeVO5EzmPY7qghO2t64oaFM+8FTaD4uzOEjHKp516exyTKo+skKAL9GI3QALS2BXhyALJjNtwbmr1XinGE8bA==
@@ -4001,6 +4006,11 @@ globby@^11.0.1, globby@^11.0.2, globby@^11.1.0:
     ignore "^5.2.0"
     merge2 "^1.4.1"
     slash "^3.0.0"
+
+globrex@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npmjs.org/globrex/-/globrex-0.1.2.tgz"
+  integrity sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==
 
 gopd@^1.0.1:
   version "1.0.1"
@@ -5415,7 +5425,7 @@ raw-body@2.5.2:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-rc-util@^5.39.1:
+rc-util@5.39.1:
   version "5.39.1"
   resolved "https://registry.npmjs.org/rc-util/-/rc-util-5.39.1.tgz"
   integrity sha512-OW/ERynNDgNr4y0oiFmtes3rbEamXw7GHGbkbNd9iRr7kgT03T6fT0b9WpJ3mbxKhyOcAHnGcIoh5u/cjrC2OQ==
@@ -5995,7 +6005,7 @@ store2@^2.14.2:
   resolved "https://registry.npmjs.org/store2/-/store2-2.14.3.tgz"
   integrity sha512-4QcZ+yx7nzEFiV4BMLnr/pRa5HYzNITX2ri0Zh6sT9EyQHbBHacC6YigllUPU9X3D0f/22QCgfokpKs52YRrUg==
 
-storybook@^8.0.2:
+storybook@8.0.2:
   version "8.0.2"
   resolved "https://registry.npmjs.org/storybook/-/storybook-8.0.2.tgz"
   integrity sha512-X4R8Z7zadSkSVlC4QIJXV8agMHZUjxbue3fBxdp6I90uvZi1fRMB67DtAVHHH8INNl/nnUKXfNe8Sw21KnfhTg==
@@ -6282,6 +6292,11 @@ ts-dedent@^2.0.0, ts-dedent@^2.2.0:
   resolved "https://registry.npmjs.org/ts-dedent/-/ts-dedent-2.2.0.tgz"
   integrity sha512-q5W7tVM71e2xjHZTlgfTDoPF/SmqKG5hddq9SzR49CH2hayqRKJtQ4mtRlSxKaJlR/+9rEM+mnBHf7I2/BQcpQ==
 
+tsconfck@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.npmjs.org/tsconfck/-/tsconfck-3.0.3.tgz"
+  integrity sha512-4t0noZX9t6GcPTfBAbIbbIU4pfpCwh0ueq3S4O/5qXI1VwK1outmxhe9dOiEWqMz3MW2LKgDTpqWV+37IWuVbA==
+
 tsconfig-paths@^4.2.0:
   version "4.2.0"
   resolved "https://registry.npmjs.org/tsconfig-paths/-/tsconfig-paths-4.2.0.tgz"
@@ -6375,7 +6390,7 @@ type-is@~1.6.18:
     media-typer "0.3.0"
     mime-types "~2.1.24"
 
-"typescript@>= 4.2.x", "typescript@>= 4.3.x", "typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta", typescript@>=4.2.0, typescript@5.2.2:
+typescript@^5.0.0, "typescript@>= 4.2.x", "typescript@>= 4.3.x", "typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta", typescript@>=4.2.0, typescript@5.2.2:
   version "5.2.2"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz"
   integrity sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==
@@ -6528,7 +6543,16 @@ vary@~1.1.2:
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
-"vite@^3.0.0 || ^4.0.0 || ^5.0.0", "vite@^4.0.0 || ^5.0.0", "vite@^4.2.0 || ^5.0.0", vite@5.2.0:
+vite-tsconfig-paths@^4.3.2:
+  version "4.3.2"
+  resolved "https://registry.npmjs.org/vite-tsconfig-paths/-/vite-tsconfig-paths-4.3.2.tgz"
+  integrity sha512-0Vd/a6po6Q+86rPlntHye7F31zA2URZMbH8M3saAZ/xR9QoGN/L21bxEGfXdWmFdNkqPpRdxFT7nmNe12e9/uA==
+  dependencies:
+    debug "^4.1.1"
+    globrex "^0.1.2"
+    tsconfck "^3.0.3"
+
+vite@*, "vite@^3.0.0 || ^4.0.0 || ^5.0.0", "vite@^4.0.0 || ^5.0.0", "vite@^4.2.0 || ^5.0.0", vite@5.2.0:
   version "5.2.0"
   resolved "https://registry.npmjs.org/vite/-/vite-5.2.0.tgz"
   integrity sha512-xMSLJNEjNk/3DJRgWlPADDwaU9AgYRodDH2t6oENhJnIlmU9Hx1Q6VpjyXua/JdMw1WJRbnAgHJ9xgET9gnIAg==
