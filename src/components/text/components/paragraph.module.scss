@@ -1,0 +1,16 @@
+@import 'src/global/mixins';
+
+.Paragraph {
+  color: var(--bodyColor);
+  margin: var(--xl-gap) 0;
+
+  @include paragraph;
+}
+
+.Paragraph_small {
+  @include sm-paragraph;
+}
+
+.Paragraph_large {
+  @include big-paragraph;
+}
