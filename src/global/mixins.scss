@@ -1,3 +1,9 @@
+@mixin screen-name {
+  font-size: var(--screenFontSize);
+  line-height: var(--screenLineHeight);
+  font-weight: var(--screenFontWeight);
+}
+
 @mixin big-paragraph {
   font-size: var(--bigParagraphFontSize);
   line-height: var(--bigParagraphLineHeight);

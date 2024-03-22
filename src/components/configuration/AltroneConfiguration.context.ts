@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { DEFAULT_CONFIGURATION } from './AltroneConfiguration.const.ts';
 import { BasicComponentStyleConfig } from '../../types/BaseDisplayComponent.ts';
 
-type ComponentConfiguration<ExtraProps extends object> = Partial<
+type ComponentConfiguration<ExtraProps extends object = {}> = Partial<
   BasicComponentStyleConfig & ExtraProps
 >;
 
@@ -19,9 +19,7 @@ export type Locale = {
 export interface ConsumerConfigurationContext {
   language?: Language;
   locale?: Partial<Locale>;
-  baseComponent?: ComponentConfiguration<{
-    element: any;
-  }>;
+  text?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =

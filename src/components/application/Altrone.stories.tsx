@@ -1,6 +1,6 @@
 import { AltroneApplication } from './AltroneApplication.tsx';
 import { Meta, StoryObj } from '@storybook/react';
-import { Theme } from './AltroneApplication.types.ts';
+import { ScreenName } from '../text/components/ScreenName.tsx';
 
 const story: Meta<typeof AltroneApplication> = {
   title: 'Altrone Application',
@@ -13,12 +13,12 @@ export const ApplicationStory: StoryObj<typeof AltroneApplication> = {
   name: 'Simple Application',
   render: () => (
     <AltroneApplication
-      theme={Theme.dark}
       tagName="main"
       config={{
         language: 'ru',
       }}
-      style={{ background: 'pink' }}
-    />
+    >
+      <ScreenName id="1">Altrone UI</ScreenName>
+    </AltroneApplication>
   ),
 };

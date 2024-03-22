@@ -127,8 +127,18 @@
   --codeLineHeight: 20px;
   --codeFontWeight: 400;
 
+  --narrow-gap: 2px;
+  --xs-gap: 4px;
+  --s-gap: 6px;
+  --gap: 8px;
+  --l-gap: 12px;
+  --xl-gap: 24px;
+  --xxl-gap: 36px;
+
   /* semantic variables */
   --appBackground: var(--default-50);
+  --headingColor: var(--default-900);
+  --bodyColor: var(--default-700);
 }
 
 .AltroneApp {
@@ -139,6 +149,8 @@
 
 .AltroneDark {
   --appBackground: var(--default-900);
+  --headingColor: var(--default-50);
+  --bodyColor: var(--default-200);
 
   color: var(--primary-700);
 }
