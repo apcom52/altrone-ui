@@ -1093,7 +1093,7 @@
   resolved "https://registry.npmjs.org/@base2/pretty-print-object/-/pretty-print-object-1.0.1.tgz"
   integrity sha512-4iri8i1AqYHJE2DstZYkyEprg6Pq6sKx3xn5FpySk9sNhH7qN2LLlHJCfDTZRILNwQNPD7mATWM0TBui7uC1pA==
 
-"@chromatic-com/storybook@1.2.24":
+"@chromatic-com/storybook@^1.2.24":
   version "1.2.24"
   resolved "https://registry.npmjs.org/@chromatic-com/storybook/-/storybook-1.2.24.tgz"
   integrity sha512-d6rNAtVitPZW8Lm2YFlQWv7znohd0sMDaSZpGd4J03kFe2tsMDQpe4YjLbP2u4p5xHKopoy4gjcibNcIaS+9ww==
@@ -1448,6 +1448,13 @@
   integrity sha512-2UGti6+mL4aOhF1R421S8TwSTvaRB/YKYfTXZLwn1xLK9oUKVWuKJk2bv6TURMm3V8zMBNaAySY4KlJdlf8UgA==
   dependencies:
     "@storybook/global" "^5.0.0"
+    ts-dedent "^2.0.0"
+
+"@storybook/addon-themes@^8.0.4":
+  version "8.0.4"
+  resolved "https://registry.npmjs.org/@storybook/addon-themes/-/addon-themes-8.0.4.tgz"
+  integrity sha512-qExFSQ1d2bDi/bOtvXpQZlSO+QTYbyd1IIpdTtygTvwsm1ezlVczNqy/zbzxpPI4hhDTbPvR8vSBMRU3xh4Ykg==
+  dependencies:
     ts-dedent "^2.0.0"
 
 "@storybook/addon-toolbars@8.0.2":

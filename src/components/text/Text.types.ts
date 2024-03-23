@@ -8,6 +8,11 @@ export enum TextHeadingRoles {
   inner = 'inner',
 }
 
+export enum TextListType {
+  ordered = 'numeric',
+  unordered = 'marked',
+}
+
 interface BaseInlineProps {
   bold?: boolean;
   italic?: boolean;
@@ -46,3 +51,10 @@ export interface TextCodeProps
 export interface TextKeyboardProps
   extends BasicComponentProps,
     Pick<BaseInlineProps, 'bold'> {}
+
+export interface TextListProps extends BasicComponentProps {
+  type?: TextListType;
+  size?: Size;
+}
+
+export interface TextListItemProps extends BasicComponentProps {}

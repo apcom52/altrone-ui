@@ -19,11 +19,12 @@
   },
   "devDependencies": {
     "@babel/preset-react": "7.24.1",
-    "@chromatic-com/storybook": "1.2.24",
+    "@chromatic-com/storybook": "^1.2.24",
     "@storybook/addon-essentials": "8.0.2",
     "@storybook/addon-interactions": "8.0.2",
     "@storybook/addon-links": "8.0.2",
     "@storybook/addon-onboarding": "8.0.2",
+    "@storybook/addon-themes": "^8.0.4",
     "@storybook/blocks": "8.0.2",
     "@storybook/builder-vite": "8.0.2",
     "@storybook/cli": "8.0.2",
