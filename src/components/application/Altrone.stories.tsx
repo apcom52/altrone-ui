@@ -8,6 +8,8 @@ import { Size } from '../../types';
 import { Inline } from '../text/components/Inline.tsx';
 import { Code } from '../text/components/Code.tsx';
 import { Keyboard } from '../text/components/Keyboard.tsx';
+import { Link } from '../text/components/Link.tsx';
+import { Theme } from './AltroneApplication.types.ts';
 
 const story: Meta<typeof AltroneApplication> = {
   title: 'Altrone Application',
@@ -20,6 +22,7 @@ export const ApplicationStory: StoryObj<typeof AltroneApplication> = {
   name: 'Simple Application',
   render: () => (
     <AltroneApplication
+      theme={Theme.auto}
       tagName="main"
       config={{
         language: 'ru',
@@ -65,9 +68,9 @@ export const ApplicationStory: StoryObj<typeof AltroneApplication> = {
       </Paragraph>
       <Paragraph size={Size.small}>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores
-        commodi, culpa cum deserunt, dolores earum eveniet excepturi fugiat
-        iusto labore minima nesciunt nobis odit optio repellendus sequi sint
-        temporibus vel.
+        commodi, <Link href="https://google.com">culpa cum deserunt</Link>,
+        dolores earum eveniet excepturi fugiat iusto labore minima nesciunt
+        nobis odit optio repellendus sequi sint temporibus vel.
       </Paragraph>
     </AltroneApplication>
   ),

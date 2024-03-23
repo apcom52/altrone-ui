@@ -34,7 +34,7 @@ export interface TextInlineProps extends BasicComponentProps, BaseInlineProps {}
 
 export interface TextLinkProps
   extends BasicComponentProps<HTMLAnchorElement>,
-    Omit<BaseInlineProps, 'deleted' | 'highlighted'> {
+    Pick<BaseInlineProps, 'bold' | 'italic'> {
   href?: string;
   target?: string;
 }
