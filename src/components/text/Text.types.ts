@@ -1,5 +1,5 @@
 import { BasicComponentProps } from '../../types/BaseDisplayComponent.ts';
-import { Role, Size } from '../../types';
+import { Size } from '../../types';
 
 export enum TextHeadingRoles {
   title = 'title',
@@ -9,7 +9,6 @@ export enum TextHeadingRoles {
 }
 
 interface BaseInlineProps {
-  size?: Size;
   bold?: boolean;
   italic?: boolean;
   underline?: boolean;
@@ -33,12 +32,6 @@ export interface TextParagraphProps
 
 export interface TextInlineProps extends BasicComponentProps, BaseInlineProps {}
 
-export interface TextLabelProps
-  extends BasicComponentProps,
-    Pick<BaseInlineProps, 'size' | 'highlighted'> {
-  role?: Role;
-}
-
 export interface TextLinkProps
   extends BasicComponentProps<HTMLAnchorElement>,
     Omit<BaseInlineProps, 'deleted' | 'highlighted'> {
@@ -48,8 +41,8 @@ export interface TextLinkProps
 
 export interface TextCodeProps
   extends BasicComponentProps,
-    Pick<BaseInlineProps, 'size' | 'bold' | 'italic'> {}
+    Pick<BaseInlineProps, 'bold' | 'italic'> {}
 
 export interface TextKeyboardProps
   extends BasicComponentProps,
-    Pick<BaseInlineProps, 'size' | 'bold'> {}
+    Pick<BaseInlineProps, 'bold'> {}

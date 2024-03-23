@@ -1,11 +1,5 @@
 @import "src/global/mixins";
 
-@font-face { font-family: "Inter"; font-style: normal; font-weight: 100; font-display: swap; src: url("../../assets/Inter-Thin.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-style: italic; font-weight: 100; font-display: swap; src: url("../../assets/Inter-ThinItalic.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-style: normal; font-weight: 200; font-display: swap; src: url("../../assets/Inter-ExtraLight.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-style: italic; font-weight: 200; font-display: swap; src: url("../../assets/Inter-ExtraLightItalic.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-style: normal; font-weight: 300; font-display: swap; src: url("../../assets/Inter-Light.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-style: italic; font-weight: 300; font-display: swap; src: url("../../assets/Inter-LightItalic.woff2") format("woff2"); }
 @font-face { font-family: "Inter"; font-style: normal; font-weight: 400; font-display: swap; src: url("../../assets/Inter-Regular.woff2") format("woff2"); }
 @font-face { font-family: "Inter"; font-style: italic; font-weight: 400; font-display: swap; src: url("../../assets/Inter-Italic.woff2") format("woff2"); }
 @font-face { font-family: "Inter"; font-style: normal; font-weight: 500; font-display: swap; src: url("../../assets/Inter-Medium.woff2") format("woff2"); }
@@ -19,7 +13,9 @@
 @font-face { font-family: "Inter"; font-style: normal; font-weight: 900; font-display: swap; src: url("../../assets/Inter-Black.woff2") format("woff2"); }
 @font-face { font-family: "Inter"; font-style: italic; font-weight: 900; font-display: swap; src: url("../../assets/Inter-BlackItalic.woff2") format("woff2"); }
 @font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("../../assets/JetBrainsMono-Regular.woff2") format("woff2"); }
-@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 700; font-display: swap; src: url("../../assets/JetBrainsMono-Bold.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-style: italic; font-weight: 400; font-display: swap; src: url("../../assets/JetBrainsMono-Italic.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 600; font-display: swap; src: url("../../assets/JetBrainsMono-SemiBold.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-style: italic; font-weight: 600; font-display: swap; src: url("../../assets/JetBrainsMono-SemiBoldItalic.woff2") format("woff2"); }
 
 :global(:root) {
   --default-900: #111928;
@@ -133,20 +129,21 @@
   --xl-gap: 24px;
   --xxl-gap: 36px;
 
-  /* semantic variables */
-  --appBackground: var(--default-50);
-
   /* text style variables */
   --headingTextColor: var(--default-900);
   --bodyTextColor: var(--default-700);
   --disabledTextColor: var(--default-400);
-  --highlightedText: var(--default-900);
-  --highlightedTextBackground: var(--primary-100);
+  --highlightedTextColor: var(--default-900);
   --codeTextColor: var(--primary-800);
+  --keyboardTextColor: var(--default-500);
 
-  /* color variables */
+  /* surfaces */
+  --appBackground: var(--default-50);
+  --highlightedTextBackground: var(--primary-100);
   --codeBackgroundColor: var(--primary-50);
   --codeBorderColor: var(--primary-100);
+  --keyboardBackgroundColor: var(--default-100);
+  --keyboardBorderColor: var(--default-200);
 }
 
 .AltroneApp {
@@ -156,10 +153,18 @@
 }
 
 .AltroneDark {
-  --appBackground: var(--default-900);
   --headingTextColor: var(--default-50);
   --bodyTextColor: var(--default-200);
   --disabledTextColor: var(--default-600);
-  --highlightedText: var(--default-50);
+  --highlightedTextColor: var(--default-50);
+  --codeTextColor: var(--primary-200);
+  --keyboardTextColor: var(--default-300);
+
+  /* surfaces */
+  --appBackground: var(--default-900);
   --highlightedTextBackground: var(--primary-900);
+  --codeBackgroundColor: var(--primary-900);
+  --codeBorderColor: var(--primary-800);
+  --keyboardBackgroundColor: var(--default-600);
+  --keyboardBorderColor: var(--default-500);
 }

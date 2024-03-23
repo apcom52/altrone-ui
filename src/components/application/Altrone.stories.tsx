@@ -7,6 +7,7 @@ import { Paragraph } from '../text/components/Paragraph.tsx';
 import { Size } from '../../types';
 import { Inline } from '../text/components/Inline.tsx';
 import { Code } from '../text/components/Code.tsx';
+import { Keyboard } from '../text/components/Keyboard.tsx';
 
 const story: Meta<typeof AltroneApplication> = {
   title: 'Altrone Application',
@@ -55,8 +56,12 @@ export const ApplicationStory: StoryObj<typeof AltroneApplication> = {
       <Paragraph>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores
         commodi, culpa cum deserunt, dolores earum eveniet excepturi fugiat
-        iusto <Code>npm i react</Code> labore minima nesciunt nobis odit optio
-        repellendus sequi sint temporibus vel.
+        iusto <Code bold>npm i react</Code> labore minima{' '}
+        <Code bold italic>
+          npm i react
+        </Code>{' '}
+        nesciunt nobis <Code>npm i react</Code> odit optio repellendus sequi{' '}
+        <Keyboard>Ctrl+S</Keyboard> sint temporibus vel.
       </Paragraph>
       <Paragraph size={Size.small}>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores

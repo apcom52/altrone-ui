@@ -1,0 +1,17 @@
+@import 'src/global/mixins';
+
+.Keyboard {
+  border: 1px solid var(--keyboardBorderColor);
+  color: var(--keyboardTextColor);
+  background: var(--keyboardBackgroundColor);
+  padding: 0 var(--xs-gap);
+  border-radius: 4px;
+  font-family: "JetBrains Mono", monospace;
+
+  @include code;
+  font-size: 1em;
+}
+
+.Bold {
+  font-weight: 700;
+}
