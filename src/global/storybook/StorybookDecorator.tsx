@@ -6,7 +6,7 @@ export const StorybookDecorator = (Story: any, options: any) => {
   return (
     <AltroneApplication
       className={s.Wrapper}
-      theme={options.globals.theme === 'light' ? Theme.light : Theme.dark}
+      theme={options.globals.theme === 'dark' ? Theme.dark : Theme.light}
     >
       <Story />
     </AltroneApplication>
