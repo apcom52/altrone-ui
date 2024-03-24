@@ -32,9 +32,6 @@ export const AltroneApplication = ({
       style,
       ...props,
     },
-    <AltroneConfiguration {...config}>
-      <div>{_theme}</div>
-      {children}
-    </AltroneConfiguration>,
+    <AltroneConfiguration {...config}>{children}</AltroneConfiguration>,
   );
 };

@@ -58,13 +58,13 @@
   --screenLineHeight: 40px;
   --screenFontWeight: 900;
 
-  --articleFontSize: 24px;
-  --articleLineHeight: 32px;
-  --articleFontWeight: 800;
+  --titleFontSize: 24px;
+  --titleLineHeight: 32px;
+  --titleFontWeight: 800;
 
-  --firstHeadingFontSize: 20px;
-  --firstHeadingLineHeight: 24px;
-  --firstHeadingFontWeight: 700;
+  --headingFontSize: 20px;
+  --headingLineHeight: 24px;
+  --headingFontWeight: 700;
 
   --subheaderFontSize: 16px;
   --subheaderLineHeight: 24px;
