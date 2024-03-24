@@ -1,0 +1,9 @@
+@import "src/global/mixins";
+
+.ScreenName {
+  margin-block-start: var(--xxl-gap);
+  margin-block-end: var(--xl-gap);
+  color: var(--headingTextColor);
+
+  @include screen-name;
+}

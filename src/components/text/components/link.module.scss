@@ -1,0 +1,22 @@
+@import 'src/global/mixins';
+
+.Link {
+  color: var(--linkTextColor);
+  text-decoration: underline;
+
+  &:hover {
+    color: var(--linkHoverTextColor);
+  }
+
+  &:active {
+    color: var(--linkClickTextColor);
+  }
+}
+
+.Bold {
+  font-weight: 700;
+}
+
+.Italic {
+  font-style: italic;
+}
