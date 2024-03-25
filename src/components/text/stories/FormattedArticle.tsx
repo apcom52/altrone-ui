@@ -1,5 +1,4 @@
-import { Text } from '../Text.tsx';
-import { AltroneApplication } from '../../application/AltroneApplication.tsx';
+import { AltroneApplication, Text } from 'components';
 import { TextHeadingRoles, TextListType } from '../Text.types.ts';
 
 export const FormattedArticle = () => {

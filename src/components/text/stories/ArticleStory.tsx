@@ -1,5 +1,4 @@
-import { Text } from '../Text.tsx';
-import { AltroneApplication } from '../../application/AltroneApplication.tsx';
+import { AltroneApplication, Text } from 'components';
 
 export const ArticleStory = () => {
   return (

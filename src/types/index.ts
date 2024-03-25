@@ -1,1 +1,1 @@
-export { Size, Role } from './entity.ts';
+export { Size, Role, Align, Direction, Gap } from './entity.ts';
