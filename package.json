@@ -16,6 +16,7 @@
     "test-ct": "playwright test -c playwright-ct.config.ts"
   },
   "dependencies": {
+    "@material-symbols/font-500": "^0.17.1",
     "clsx": "^2.1.0",
     "rc-util": "5.39.1",
     "react": "18.2.0",

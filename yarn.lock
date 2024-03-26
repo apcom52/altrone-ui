@@ -1496,6 +1496,11 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@material-symbols/font-500@^0.17.1":
+  version "0.17.1"
+  resolved "https://registry.npmjs.org/@material-symbols/font-500/-/font-500-0.17.1.tgz"
+  integrity sha512-S1J4jDwtUEnY7H5R4Bemojc3IQPaX/yhnCX7qPemGDmXjmN5iZzio1S60JeoAM47DBDRGfNKaASiFB3uSFgtXQ==
+
 "@mdx-js/react@^3.0.0":
   version "3.0.1"
   resolved "https://registry.npmjs.org/@mdx-js/react/-/react-3.0.1.tgz"
