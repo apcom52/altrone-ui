@@ -2,13 +2,11 @@ import { createElement, memo } from 'react';
 import { TextInlineProps } from '../Text.types.ts';
 import clsx from 'clsx';
 import s from './inline.module.scss';
-import { Size } from '../../../types';
 
 export const Inline = memo(
   ({
     children,
     className,
-    size = Size.medium,
     bold,
     italic,
     underline,

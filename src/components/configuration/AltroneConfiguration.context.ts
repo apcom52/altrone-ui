@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { DEFAULT_CONFIGURATION } from './AltroneConfiguration.const.ts';
-import { BasicComponentStyleConfig } from '../../types/BaseDisplayComponent.ts';
+import { BasicComponentStyleConfig } from 'types';
 
 type ComponentConfiguration<ExtraProps extends object = {}> = Partial<
   BasicComponentStyleConfig & ExtraProps

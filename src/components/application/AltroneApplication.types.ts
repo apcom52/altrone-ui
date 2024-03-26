@@ -1,5 +1,5 @@
 import { PropsWithChildren, JSX } from 'react';
-import { BasicComponentProps } from '../../types/BaseDisplayComponent.ts';
+import { BasicComponentProps } from 'types';
 import { ConsumerConfigurationContext } from '../configuration/AltroneConfiguration.context.ts';
 
 export enum Theme {

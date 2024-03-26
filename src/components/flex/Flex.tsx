@@ -13,6 +13,7 @@ export const Flex = memo<FlexProps>(
     gap = Gap.none,
     direction = Direction.vertical,
     style,
+    disableInnerMargins = true,
     ...props
   }) => {
     const cls = clsx(
@@ -25,6 +26,7 @@ export const Flex = memo<FlexProps>(
         [s.Flex_justifyCenter]: justify === Align.center,
         [s.Flex_justifyEnd]: justify === Align.end,
         [s.Flex_horizontal]: direction === Direction.horizontal,
+        [s.Flex_disableInnerMargins]: disableInnerMargins,
       },
       className,
     );

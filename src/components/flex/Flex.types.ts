@@ -1,5 +1,4 @@
-import { BasicComponentProps } from '../../types/BaseDisplayComponent.ts';
-import { Align, Direction, Gap } from 'types';
+import { Align, Direction, Gap, BasicComponentProps } from 'types';
 import { PropsWithChildren } from 'react';
 
 export interface FlexProps
