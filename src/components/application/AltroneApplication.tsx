@@ -2,7 +2,7 @@ import s from './altroneApplication.module.scss';
 import { AltroneApplicationProps, Theme } from './AltroneApplication.types.ts';
 import { useMediaMatch } from 'utils';
 import clsx from 'clsx';
-import { AltroneConfiguration } from '../configuration/AltroneConfiguration.tsx';
+import { AltroneConfiguration } from 'components';
 import { createElement } from 'react';
 
 export const AltroneApplication = ({

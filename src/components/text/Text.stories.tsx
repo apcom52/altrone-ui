@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from 'global/storybook/StorybookDecorator.tsx';
-
 import { ArticleStory, FormattedArticle } from './stories';
 import { allModes } from '../../../.storybook/modes.ts';
 
