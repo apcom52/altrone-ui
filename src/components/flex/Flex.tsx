@@ -8,8 +8,8 @@ export const Flex = memo<FlexProps>(
   ({
     children,
     className,
-    align = Align.start,
-    justify = Align.start,
+    align,
+    justify,
     gap = Gap.none,
     direction = Direction.vertical,
     style,

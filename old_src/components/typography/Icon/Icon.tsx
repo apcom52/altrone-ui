@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import './icon.scss';
 import clsx from 'clsx';
 
@@ -20,12 +19,19 @@ interface IconProps {
  * @param props
  * @constructor
  */
-const Icon = ({ i, size, className, style = 'outlined', ...props }: IconProps) => {
+const Icon = ({
+  i,
+  size,
+  className,
+  style = 'outlined',
+  ...props
+}: IconProps) => {
   return (
     <span
       className={clsx('alt-icon', `material-symbols-${style}`, className)}
       style={{ fontSize: size || '1em' }}
-      {...props}>
+      {...props}
+    >
       {i}
     </span>
   );

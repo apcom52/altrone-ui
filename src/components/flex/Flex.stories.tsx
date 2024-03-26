@@ -10,7 +10,7 @@ import {
 import { allModes } from '../../../.storybook/modes.ts';
 
 const story: Meta<typeof Flex> = {
-  title: 'Layout/Flex',
+  title: 'Flex',
   component: Flex,
   decorators: [StorybookDecorator],
   args: {

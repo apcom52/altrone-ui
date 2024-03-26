@@ -131,7 +131,15 @@
 
   /* text style variables */
   --headingTextColor: var(--default-900);
+  --primaryHeadingTextColor: var(--primary-900);
+  --successHeadingTextColor: var(--success-900);
+  --warningHeadingTextColor: var(--warning-900);
+  --dangerHeadingTextColor: var(--danger-900);
   --bodyTextColor: var(--default-700);
+  --primaryBodyTextColor: var(--primary-700);
+  --successBodyTextColor: var(--success-700);
+  --warningBodyTextColor: var(--warning-800);
+  --dangerBodyTextColor: var(--danger-800);
   --disabledTextColor: var(--default-400);
   --highlightedTextColor: var(--default-900);
   --codeTextColor: var(--primary-800);
@@ -147,17 +155,34 @@
   --codeBorderColor: var(--primary-100);
   --keyboardBackgroundColor: var(--default-100);
   --keyboardBorderColor: var(--default-200);
+  --messageBackgroundColor: var(--default-100);
+  --messagePrimaryBackgroundColor: var(--primary-100);
+  --messageSuccessBackgroundColor: var(--success-100);
+  --messageWarningBackgroundColor: var(--warning-100);
+  --messageDangerBackgroundColor: var(--danger-100);
 }
 
 .AltroneApp {
   background: var(--appBackground);
-  color: var(--primary-500);
+  color: var(--bodyTextColor);
   font-family: "Inter", sans-serif;
+
+  * {
+    box-sizing: border-box;
+  }
 }
 
 .AltroneDark {
   --headingTextColor: var(--default-50);
+  --primaryHeadingTextColor: var(--primary-50);
+  --successHeadingTextColor: var(--success-50);
+  --warningHeadingTextColor: var(--warning-50);
+  --dangerHeadingTextColor: var(--danger-50);
   --bodyTextColor: var(--default-200);
+  --primaryBodyTextColor: var(--primary-100);
+  --successBodyTextColor: var(--success-100);
+  --warningBodyTextColor: var(--warning-100);
+  --dangerBodyTextColor: var(--danger-100);
   --disabledTextColor: var(--default-600);
   --highlightedTextColor: var(--default-50);
   --codeTextColor: var(--primary-200);
@@ -173,4 +198,9 @@
   --codeBorderColor: var(--primary-800);
   --keyboardBackgroundColor: var(--default-600);
   --keyboardBorderColor: var(--default-500);
+  --messageBackgroundColor: var(--default-700);
+  --messagePrimaryBackgroundColor: var(--primary-900);
+  --messageSuccessBackgroundColor: var(--success-900);
+  --messageWarningBackgroundColor: var(--warning-900);
+  --messageDangerBackgroundColor: var(--danger-900);
 }
