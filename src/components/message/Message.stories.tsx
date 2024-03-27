@@ -1,9 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Icon } from 'components';
+import { Flex, Icon, Message } from 'components';
 import { Gap, Role } from 'types';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { Message } from './Message.tsx';
 
 const story: Meta<typeof Message> = {
   title: 'Message',

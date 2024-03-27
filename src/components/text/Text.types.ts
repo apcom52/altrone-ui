@@ -1,5 +1,4 @@
-import { BasicComponentProps } from '../../types/BaseDisplayComponent.ts';
-import { Size } from '../../types';
+import { BasicComponentProps, Size } from 'types';
 
 export enum TextHeadingRoles {
   title = 'title',
