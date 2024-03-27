@@ -6,7 +6,7 @@ import s from './message.module.scss';
 import clsx from 'clsx';
 
 export const Message = memo<MessageProps>(
-  ({ children, className, header, icon, role = Role.default }) => {
+  ({ children, className, header, icon, role = Role.default, ...props }) => {
     const cls = clsx(
       s.Message,
       {
@@ -19,7 +19,12 @@ export const Message = memo<MessageProps>(
     );
 
     return (
-      <Flex className={cls} gap={Gap.large} direction={Direction.horizontal}>
+      <Flex
+        className={cls}
+        gap={Gap.large}
+        direction={Direction.horizontal}
+        {...props}
+      >
         {icon ? <div className={s.Icon}>{icon}</div> : null}
         <Flex className={s.Content} gap={Gap.medium}>
           {header ? <div className={s.Header}>{header}</div> : null}
