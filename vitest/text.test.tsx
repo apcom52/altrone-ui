@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { Text } from './Text.tsx';
-import { TextListType } from './Text.types.ts';
+import { expect } from 'vitest';
+import { Text, TextListType } from '../src/components';
 
 describe('Text', () => {
   test('ScreenName has to have h1 tag and apply custom css class and id', () => {
