@@ -4,9 +4,20 @@ import { Flex } from 'components';
 import { Direction, Gap, Role } from '../../types';
 import s from './message.module.scss';
 import clsx from 'clsx';
+import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 
 export const Message = memo<MessageProps>(
-  ({ children, className, header, icon, role = Role.default, ...props }) => {
+  ({
+    children,
+    className,
+    header,
+    icon,
+    role = Role.default,
+    style,
+    ...props
+  }) => {
+    const { message: messageConfig = {} } = useConfiguration();
+
     const cls = clsx(
       s.Message,
       {
@@ -16,13 +27,20 @@ export const Message = memo<MessageProps>(
         [s.RoleDanger]: role === Role.danger,
       },
       className,
+      messageConfig.className,
     );
+
+    const styles = {
+      ...messageConfig.style,
+      ...style,
+    };
 
     return (
       <Flex
         className={cls}
         gap={Gap.large}
         direction={Direction.horizontal}
+        style={styles}
         {...props}
       >
         {icon ? <div className={s.Icon}>{icon}</div> : null}
