@@ -3,6 +3,7 @@ import { FlexProps } from './Flex.types.ts';
 import clsx from 'clsx';
 import { Align, Direction, Gap } from '../../types';
 import s from './flex.module.scss';
+import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 
 export const Flex = memo<FlexProps>(
   ({
@@ -16,6 +17,8 @@ export const Flex = memo<FlexProps>(
     disableInnerMargins = true,
     ...props
   }) => {
+    const { flex = {} } = useConfiguration();
+
     const cls = clsx(
       s.Flex,
       {
@@ -29,9 +32,11 @@ export const Flex = memo<FlexProps>(
         [s.Flex_disableInnerMargins]: disableInnerMargins,
       },
       className,
+      flex.className,
     );
 
     const styles = {
+      ...flex.style,
       ...style,
       gap: `${gap}px`,
     };

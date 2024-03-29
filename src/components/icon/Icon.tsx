@@ -31,9 +31,10 @@ export const Icon = memo(
       className,
       icon.className,
     );
+
     const styles = {
-      ...style,
       ...icon.style,
+      ...style,
       fontSize: size || '1em',
     };
 
