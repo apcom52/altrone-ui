@@ -16,8 +16,6 @@ export const AltroneConfiguration = ({
 
   const mergedContext = merge({}, DEFAULT_CONFIGURATION, parentContext, props);
 
-  console.log('merged', mergedContext);
-
   const memoedContextValue = useMemo(
     () => {
       return mergedContext;
