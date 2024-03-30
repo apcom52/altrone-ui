@@ -27,7 +27,7 @@ export const Inline = memo(
         [s.Highlighted]: highlighted,
       },
       className,
-      textInline.className
+      textInline.className,
     );
 
     let tagName = 'span';
