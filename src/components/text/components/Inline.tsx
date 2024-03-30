@@ -2,6 +2,7 @@ import { createElement, memo } from 'react';
 import { TextInlineProps } from '../Text.types.ts';
 import clsx from 'clsx';
 import s from './inline.module.scss';
+import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
 
 export const Inline = memo(
   ({
@@ -12,8 +13,11 @@ export const Inline = memo(
     underline,
     deleted,
     highlighted,
+    style,
     ...props
   }: TextInlineProps) => {
+    const { textInline = {} } = useConfiguration();
+
     const cls = clsx(
       {
         [s.Bold]: bold,
@@ -23,6 +27,7 @@ export const Inline = memo(
         [s.Highlighted]: highlighted,
       },
       className,
+      textInline.className,
     );
 
     let tagName = 'span';
@@ -38,10 +43,16 @@ export const Inline = memo(
       tagName = 'u';
     }
 
+    const styles = {
+      ...textInline.style,
+      ...style,
+    };
+
     return createElement(
       tagName,
       {
         className: cls,
+        style: styles,
         ...props,
       },
       children,

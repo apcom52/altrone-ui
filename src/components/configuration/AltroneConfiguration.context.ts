@@ -19,7 +19,18 @@ export type Locale = {
 export interface ConsumerConfigurationContext {
   language?: Language;
   locale?: Partial<Locale>;
-  text?: ComponentConfiguration;
+  icon?: ComponentConfiguration;
+  flex?: ComponentConfiguration;
+  message?: ComponentConfiguration;
+  textScreenName?: ComponentConfiguration;
+  textHeading?: ComponentConfiguration;
+  textParagraph?: ComponentConfiguration;
+  textInline?: ComponentConfiguration;
+  textList?: ComponentConfiguration;
+  textListItem?: ComponentConfiguration;
+  textCode?: ComponentConfiguration;
+  textKeyboard?: ComponentConfiguration;
+  textLink?: ComponentConfiguration<{ rel?: string }>;
 }
 
 export const ConfigurationContext =
