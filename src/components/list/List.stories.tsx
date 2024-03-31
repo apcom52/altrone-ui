@@ -2,7 +2,6 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Flex, List, Text } from 'components';
 import { Align, Direction, Gap, Size } from 'types';
 import {
-  alignStoryField,
   directionStoryField,
   gapStoryField,
   StorybookDecorator,
@@ -127,18 +126,12 @@ const story: Meta<typeof List> = {
   component: List,
   decorators: [StorybookDecorator],
   args: {
-    align: Align.start,
-    justify: Align.start,
     direction: Direction.vertical,
-    gap: Gap.large,
-    disableInnerMargins: true,
+    gap: Gap.medium,
   },
   argTypes: {
-    align: alignStoryField,
-    justify: alignStoryField,
     gap: gapStoryField,
     direction: directionStoryField,
-    disableInnerMargins: { control: 'boolean' },
   },
   parameters: {
     chromatic: {

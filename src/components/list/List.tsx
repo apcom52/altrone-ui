@@ -27,15 +27,38 @@ const List = <DataType extends object>({
     gap: `${gap}px`,
   };
 
-  const filteredItems = data;
+  const filteredItems = data.filter((item, currentIndex) => {
+    const context: ListItemContext<DataType> = { item, currentIndex, data };
+
+    if (skipRule) {
+      return skipRule(context);
+    }
+
+    return true;
+  });
 
   return (
     <div className={cls} style={styles} {...props}>
       {filteredItems.map((item, currentIndex) => {
+        const isLastItem = currentIndex === filteredItems.length - 1;
         const context: ListItemContext<DataType> = { item, currentIndex, data };
         const key = keyExtractor ? keyExtractor(context) : currentIndex;
 
-        return <Fragment key={key}>{renderItem(context)}</Fragment>;
+        let Separator = null;
+        if (!isLastItem && SeparatorComponent) {
+          if (typeof SeparatorComponent === 'function') {
+            Separator = SeparatorComponent(context);
+          } else {
+            Separator = SeparatorComponent;
+          }
+        }
+
+        return (
+          <Fragment key={key}>
+            {renderItem(context)}
+            {Separator}
+          </Fragment>
+        );
       })}
     </div>
   );
