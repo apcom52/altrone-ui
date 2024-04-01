@@ -1,0 +1,46 @@
+.CityRank {
+  align-items: center;
+}
+
+.Position {
+  width: 80px;
+  min-width: 80px;
+  text-align: right;
+  font-weight: 500;
+  color: var(--default-400);
+}
+
+.Image {
+  img {
+    width: 140px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.15);
+  }
+}
+
+.Title {
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--headingTextColor);
+}
+
+.Country {
+  color: var(--disabledTextColor);
+  font-weight: 500;
+}
+
+.Stat {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  text-transform: uppercase;
+  gap: var(--gap);
+  color: var(--bodyTextColor);
+}
+
+.StatValue {
+  font-weight: 500;
+  color: var(--headingTextColor);
+}

@@ -31,6 +31,7 @@ export interface ConsumerConfigurationContext {
   textCode?: ComponentConfiguration;
   textKeyboard?: ComponentConfiguration;
   textLink?: ComponentConfiguration<{ rel?: string }>;
+  list?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =

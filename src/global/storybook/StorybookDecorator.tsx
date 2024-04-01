@@ -1,4 +1,4 @@
-import { AltroneApplication } from '../../components/application/AltroneApplication.tsx';
+import { AltroneApplication } from 'components';
 import { Theme } from '../../components/application/AltroneApplication.types.ts';
 import s from './decorator.module.scss';
 

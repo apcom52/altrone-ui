@@ -1,5 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import { AltroneApplication, Message, Icon, Text, Flex } from 'components';
+import {
+  AltroneApplication,
+  Message,
+  Icon,
+  Text,
+  Flex,
+  List,
+} from 'components';
 
 describe('Configation', () => {
   test('check that Flex configuration works correctly', () => {
@@ -106,5 +113,19 @@ describe('Configation', () => {
     const keyboard = screen.getByTestId('keyboard');
     expect(keyboard).toHaveClass('cls');
     expect(keyboard).toHaveStyle('color: blue');
+  });
+
+  test('check that List configuration works correctly', () => {
+    render(
+      <AltroneApplication
+        config={{ list: { className: 'cls', style: { color: 'blue' } } }}
+      >
+        <List data={[]} renderItem={() => <div />} data-testid="element" />
+      </AltroneApplication>,
+    );
+
+    const element = screen.getByTestId('element');
+    expect(element).toHaveClass('cls');
+    expect(element).toHaveStyle('color: blue');
   });
 });
