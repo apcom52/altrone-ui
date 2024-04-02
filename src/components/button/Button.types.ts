@@ -9,4 +9,5 @@ export interface ButtonProps extends BasicComponentProps<HTMLButtonElement> {
   size?: Size;
   transparent?: boolean;
   onClick?: () => void;
+  disabled?: boolean;
 }

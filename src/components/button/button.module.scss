@@ -1,0 +1,58 @@
+@import 'src/global/mixins';
+
+.Button {
+  --btnBorderColor: var(--buttonBorderColor);
+
+  display: inline-flex;
+  align-items: center;
+  background: var(--buttonBackgroundColor);
+  border-radius: var(--controlRounding);
+  border: none;
+  color: var(--buttonTextColor);
+  box-shadow: 0 0 0 1px var(--btnBorderColor), var(--buttonShadow);
+  padding: var(--xs-gap) var(--gap);
+  transition: background-color var(--stateTransitionDuration) linear, color var(--stateTransitionDuration) linear, border-color var(--stateTransitionDuration) linear;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--buttonHoverBackgroundColor);
+    color: var(--buttonHoverTextColor);
+    --btnBorderColor: var(--buttonHoverBorderColor);
+  }
+
+  &:active {
+    background: var(--buttonPressBackgroundColor);
+    color: var(--buttonHoverTextColor);
+    --btnBorderColor: var(--buttonPressBorderColor);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.Label {
+  @include label;
+}
+
+.Icon {
+  font-size: 16px;
+  height: 16px;
+}
+
+.Button_transparent {
+  background-color: var(--buttonTransparentBackgroundColor);
+  color: var(--buttonTransparentTextColor);
+  box-shadow: none;
+
+  &:hover {
+    background: var(--buttonTransparentHoverBackgroundColor);
+    color: var(--buttonTransparentHoverTextColor);
+  }
+
+  &:active {
+    background: var(--buttonTransparentPressBackgroundColor);
+    color: var(--buttonTransparentPressTextColor);
+  }
+}

@@ -47,7 +47,19 @@
 }
 
 @mixin code {
-  font-size: var(--codeTextColor);
+  font-size: var(--codeFontSize);
   line-height: var(--codeLineHeight);
   font-weight: var(--codeFontWeight);
+}
+
+@mixin group-heading {
+  font-size: var(--groupHeadingFontSize);
+  line-height: var(--groupHeadingLineHeight);
+  font-weight: var(--groupHeadingFontWeight);
+}
+
+@mixin label {
+  font-size: var(--labelFontSize);
+  line-height: var(--labelLineHeight);
+  font-weight: var(--labelFontWeight);
 }

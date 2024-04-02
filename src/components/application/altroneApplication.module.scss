@@ -121,6 +121,7 @@
   --codeLineHeight: 20px;
   --codeFontWeight: 400;
 
+  /** gaps */
   --narrow-gap: 2px;
   --xs-gap: 4px;
   --s-gap: 6px;
@@ -128,6 +129,12 @@
   --l-gap: 12px;
   --xl-gap: 24px;
   --xxl-gap: 36px;
+
+  /** roundings */
+  --controlRounding: 6px;
+
+  /** animations */
+  --stateTransitionDuration: 0.2s;
 
   /* text style variables */
   --headingTextColor: var(--default-900);
@@ -147,6 +154,12 @@
   --linkTextColor: var(--primary-600);
   --linkHoverTextColor: var(--primary-700);
   --linkClickTextColor: var(--primary-800);
+  --buttonTextColor: var(--default-700);
+  --buttonHoverTextColor: var(--default-800);
+  --buttonPressTextColor: var(--default-900);
+  --buttonTransparentTextColor: var(--default-700);
+  --buttonTransparentHoverTextColor: var(--default-800);
+  --buttonTransparentPressTextColor: var(--default-900);
 
   /* surfaces */
   --appBackground: var(--default-50);
@@ -160,6 +173,18 @@
   --messageSuccessBackgroundColor: var(--success-100);
   --messageWarningBackgroundColor: var(--warning-100);
   --messageDangerBackgroundColor: var(--danger-100);
+  --buttonBackgroundColor: var(--default-50);
+  --buttonBorderColor: var(--default-200);
+  --buttonHoverBackgroundColor: var(--default-50);
+  --buttonHoverBorderColor: var(--default-200);
+  --buttonPressBackgroundColor: var(--default-100);
+  --buttonPressBorderColor: var(--default-200);
+  --buttonTransparentBackgroundColor: transparent;
+  --buttonTransparentHoverBackgroundColor: var(--default-100);
+  --buttonTransparentPressBackgroundColor: var(--default-200);
+
+  /** shadows */
+  --buttonShadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .AltroneApp {
