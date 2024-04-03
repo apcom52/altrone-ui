@@ -15,6 +15,7 @@ export const Flex = memo<FlexProps>(
     direction = Direction.vertical,
     style,
     disableInnerMargins = true,
+    wrap = true,
     ...props
   }) => {
     const { flex = {} } = useConfiguration();
@@ -30,6 +31,7 @@ export const Flex = memo<FlexProps>(
         [s.Flex_justifyEnd]: justify === Align.end,
         [s.Flex_horizontal]: direction === Direction.horizontal,
         [s.Flex_disableInnerMargins]: disableInnerMargins,
+        [s.Flex_wrap]: wrap,
       },
       className,
       flex.className,

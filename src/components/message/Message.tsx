@@ -41,6 +41,7 @@ export const Message = memo<MessageProps>(
         gap={Gap.large}
         direction={Direction.horizontal}
         style={styles}
+        role="alert"
         {...props}
       >
         {icon ? <div className={s.Icon}>{icon}</div> : null}

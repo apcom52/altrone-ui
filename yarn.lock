@@ -1637,6 +1637,14 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
+"@storybook/addon-a11y@^8.0.5":
+  "integrity" "sha512-QWMbFyZ3Cs859OZ4hoidfZBVHpQ+BAsyu88g/o+AKh5hP3/SRu8g+D/ZVtt2vkwN4jvIQzNDpzjIYKp1zRDczQ=="
+  "resolved" "https://registry.npmjs.org/@storybook/addon-a11y/-/addon-a11y-8.0.5.tgz"
+  "version" "8.0.5"
+  dependencies:
+    "@storybook/addon-highlight" "8.0.5"
+    "axe-core" "^4.2.0"
+
 "@storybook/addon-actions@8.0.2":
   "integrity" "sha512-yW4crc+EWvu/9XQmfYQAsLrMyZp8hLohjZMgXHKJL3ohWShWEGcw5PXL3aYn0UcJFHoFtCtAwLbXbrP8bNLNXA=="
   "resolved" "https://registry.npmjs.org/@storybook/addon-actions/-/addon-actions-8.0.2.tgz"
@@ -1717,6 +1725,13 @@
   "integrity" "sha512-V9BJiE8a3ZbWoW5vsWCdpbCW1kNbc2fz9fj1okVqNtVUT2Hlfk0IYkMpL+7UInhNAY+NXFSFxtgxWYYsCtFs0Q=="
   "resolved" "https://registry.npmjs.org/@storybook/addon-highlight/-/addon-highlight-8.0.2.tgz"
   "version" "8.0.2"
+  dependencies:
+    "@storybook/global" "^5.0.0"
+
+"@storybook/addon-highlight@8.0.5":
+  "integrity" "sha512-z4Aad6Dcf9gQIEPkR8WVIdRj/5RARI6SeIX3JRJoZ4l6fu7AvTZKDWPRpwLXSpEQqdeOb7l7FrZHISmXdrPoiQ=="
+  "resolved" "https://registry.npmjs.org/@storybook/addon-highlight/-/addon-highlight-8.0.5.tgz"
+  "version" "8.0.5"
   dependencies:
     "@storybook/global" "^5.0.0"
 
@@ -3238,6 +3253,11 @@
   "version" "1.0.7"
   dependencies:
     "possible-typed-array-names" "^1.0.0"
+
+"axe-core@^4.2.0":
+  "integrity" "sha512-H5orY+M2Fr56DWmMFpMrq5Ge93qjNdPVqzBv5gWK3aD1OvjBEJlEzxf09z93dGVQeI0LiW+aCMIx1QtShC/zUw=="
+  "resolved" "https://registry.npmjs.org/axe-core/-/axe-core-4.9.0.tgz"
+  "version" "4.9.0"
 
 "axios@^1.6.1":
   "integrity" "sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ=="

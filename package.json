@@ -29,6 +29,7 @@
     "@chromatic-com/storybook": "^1.2.24",
     "@playwright/experimental-ct-react": "^1.42.1",
     "@playwright/test": "^1.42.1",
+    "@storybook/addon-a11y": "^8.0.5",
     "@storybook/addon-essentials": "8.0.2",
     "@storybook/addon-interactions": "8.0.2",
     "@storybook/addon-links": "8.0.2",

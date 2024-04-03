@@ -85,8 +85,6 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
     setHeight(0);
   }, []);
 
-  console.log('>>', cursor.x, cursor.y);
-
   return (
     <RainbowEffectContext.Provider
       value={{
@@ -106,6 +104,7 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
             height: `${height}px`,
             borderRadius,
           }}
+          data-testid="rainbow"
         >
           <div className={s.Container}>
             <div
