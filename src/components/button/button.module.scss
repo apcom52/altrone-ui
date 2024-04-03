@@ -1,29 +1,34 @@
 @import 'src/global/mixins';
 
 .Button {
-  --btnBorderColor: var(--buttonBorderColor);
+  --btnBg: var(--buttonBackgroundColor);
+  --btnFg: var(--buttonTextColor);
+  --btnBorder: var(--buttonBorderColor);
 
   display: inline-flex;
+  white-space: nowrap;
+  position: relative;
   align-items: center;
-  background: var(--buttonBackgroundColor);
+  background: var(--btnBg);
   border-radius: var(--controlRounding);
   border: none;
-  color: var(--buttonTextColor);
-  box-shadow: 0 0 0 1px var(--btnBorderColor), var(--buttonShadow);
+  color: var(--btnFg);
+  box-shadow: inset 0 0 0 1px var(--btnBorder), var(--buttonShadow);
   padding: var(--xs-gap) var(--gap);
-  transition: background-color var(--stateTransitionDuration) linear, color var(--stateTransitionDuration) linear, border-color var(--stateTransitionDuration) linear;
+  transition: background-color var(--stateTransitionDuration) linear, color var(--stateTransitionDuration) linear, box-shadow var(--stateTransitionDuration) linear;
   cursor: pointer;
+  min-height: var(--normal-size);
 
   &:hover {
-    background: var(--buttonHoverBackgroundColor);
-    color: var(--buttonHoverTextColor);
-    --btnBorderColor: var(--buttonHoverBorderColor);
+    --btnBg: var(--buttonHoverBackgroundColor);
+    --btnFg: var(--buttonHoverTextColor);
+    --btnBorder: var(--buttonHoverBorderColor);
   }
 
   &:active {
-    background: var(--buttonPressBackgroundColor);
-    color: var(--buttonHoverTextColor);
-    --btnBorderColor: var(--buttonPressBorderColor);
+    --btnBg: var(--buttonPressBackgroundColor);
+    --btnFg: var(--buttonHoverTextColor);
+    --btnBorder: var(--buttonPressBorderColor);
   }
 
   &:disabled {
@@ -42,17 +47,150 @@
 }
 
 .Button_transparent {
-  background-color: var(--buttonTransparentBackgroundColor);
-  color: var(--buttonTransparentTextColor);
+  --btnBg: var(--buttonTransparentBackgroundColor);
+  --btnFg: var(--buttonTransparentTextColor);
+
   box-shadow: none;
 
   &:hover {
-    background: var(--buttonTransparentHoverBackgroundColor);
-    color: var(--buttonTransparentHoverTextColor);
+    --btnBg: var(--buttonTransparentHoverBackgroundColor);
+    --btnFg: var(--buttonTransparentHoverTextColor);
   }
 
   &:active {
-    background: var(--buttonTransparentPressBackgroundColor);
-    color: var(--buttonTransparentPressTextColor);
+    --btnBg: var(--buttonTransparentPressBackgroundColor);
+    --btnFg: var(--buttonTransparentPressTextColor);
+  }
+}
+
+.Primary {
+  --btnBg: var(--buttonPrimaryBackgroundColor);
+  --btnFg: var(--buttonPrimaryTextColor);
+  --btnBorder: var(--buttonPrimaryBorderColor);
+
+  &:hover {
+    --btnBg: var(--buttonPrimaryHoverBackgroundColor);
+    --btnFg: var(--buttonPrimaryHoverTextColor);
+    --btnBorder: var(--buttonPrimaryHoverBorderColor);
+  }
+
+  &:active {
+    --btnBg: var(--buttonPrimaryPressBackgroundColor);
+    --btnFg: var(--buttonPrimaryHoverTextColor);
+    --btnBorder: var(--buttonPrimaryPressBorderColor);
+  }
+
+  &.Button_transparent {
+    --btnBg: var(--buttonPrimaryTransparentBackgroundColor);
+    --btnFg: var(--buttonPrimaryTransparentTextColor);
+
+    &:hover {
+      --btnBg: var(--buttonPrimaryTransparentHoverBackgroundColor);
+      --btnFg: var(--buttonPrimaryTransparentHoverTextColor);
+    }
+
+    &:active {
+      --btnBg: var(--buttonPrimaryTransparentPressBackgroundColor);
+      --btnFg: var(--buttonPrimaryTransparentPressTextColor);
+    }
+  }
+}
+
+.Success {
+  --btnBg: var(--buttonSuccessBackgroundColor);
+  --btnFg: var(--buttonSuccessTextColor);
+  --btnBorder: var(--buttonSuccessBorderColor);
+
+  &:hover {
+    --btnBg: var(--buttonSuccessHoverBackgroundColor);
+    --btnFg: var(--buttonSuccessHoverTextColor);
+    --btnBorder: var(--buttonSuccessHoverBorderColor);
+  }
+
+  &:active {
+    --btnBg: var(--buttonSuccessPressBackgroundColor);
+    --btnFg: var(--buttonSuccessHoverTextColor);
+    --btnBorder: var(--buttonSuccessPressBorderColor);
+  }
+
+  &.Button_transparent {
+    --btnBg: var(--buttonSuccessTransparentBackgroundColor);
+    --btnFg: var(--buttonSuccessTransparentTextColor);
+
+    &:hover {
+      --btnBg: var(--buttonSuccessTransparentHoverBackgroundColor);
+      --btnFg: var(--buttonSuccessTransparentHoverTextColor);
+    }
+
+    &:active {
+      --btnBg: var(--buttonSuccessTransparentPressBackgroundColor);
+      --btnFg: var(--buttonSuccessTransparentPressTextColor);
+    }
+  }
+}
+
+.Warning {
+  --btnBg: var(--buttonWarningBackgroundColor);
+  --btnFg: var(--buttonWarningTextColor);
+  --btnBorder: var(--buttonWarningBorderColor);
+
+  &:hover {
+    --btnBg: var(--buttonWarningHoverBackgroundColor);
+    --btnFg: var(--buttonWarningHoverTextColor);
+    --btnBorder: var(--buttonWarningHoverBorderColor);
+  }
+
+  &:active {
+    --btnBg: var(--buttonWarningPressBackgroundColor);
+    --btnFg: var(--buttonWarningHoverTextColor);
+    --btnBorder: var(--buttonWarningPressBorderColor);
+  }
+
+  &.Button_transparent {
+    --btnBg: var(--buttonWarningTransparentBackgroundColor);
+    --btnFg: var(--buttonWarningTransparentTextColor);
+
+    &:hover {
+      --btnBg: var(--buttonWarningTransparentHoverBackgroundColor);
+      --btnFg: var(--buttonWarningTransparentHoverTextColor);
+    }
+
+    &:active {
+      --btnBg: var(--buttonWarningTransparentPressBackgroundColor);
+      --btnFg: var(--buttonWarningTransparentPressTextColor);
+    }
+  }
+}
+
+.Danger {
+  --btnBg: var(--buttonDangerBackgroundColor);
+  --btnFg: var(--buttonDangerTextColor);
+  --btnBorder: var(--buttonDangerBorderColor);
+
+  &:hover {
+    --btnBg: var(--buttonDangerHoverBackgroundColor);
+    --btnFg: var(--buttonDangerHoverTextColor);
+    --btnBorder: var(--buttonDangerHoverBorderColor);
+  }
+
+  &:active {
+    --btnBg: var(--buttonDangerPressBackgroundColor);
+    --btnFg: var(--buttonDangerHoverTextColor);
+    --btnBorder: var(--buttonDangerPressBorderColor);
+  }
+
+  &.Button_transparent {
+    --btnBg: var(--buttonDangerTransparentBackgroundColor);
+    --btnFg: var(--buttonDangerTransparentTextColor);
+
+    &:hover {
+      --btnBg: var(--buttonDangerTransparentHoverBackgroundColor);
+      --btnFg: var(--buttonDangerTransparentHoverTextColor);
+    }
+
+    &:active {
+      --btnBg: var(--buttonDangerTransparentPressBackgroundColor);
+      --btnFg: var(--buttonDangerTransparentPressTextColor);
+    }
   }
 }
