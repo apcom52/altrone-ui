@@ -10,4 +10,5 @@ export interface ButtonProps extends BasicComponentProps<HTMLButtonElement> {
   transparent?: boolean;
   onClick?: () => void;
   disabled?: boolean;
+  rainbowEffect?: boolean;
 }

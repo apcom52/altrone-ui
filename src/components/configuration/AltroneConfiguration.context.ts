@@ -32,6 +32,9 @@ export interface ConsumerConfigurationContext {
   textKeyboard?: ComponentConfiguration;
   textLink?: ComponentConfiguration<{ rel?: string }>;
   list?: ComponentConfiguration;
+  button?: ComponentConfiguration<{
+    rainbowEffect?: boolean;
+  }>;
 }
 
 export const ConfigurationContext =
