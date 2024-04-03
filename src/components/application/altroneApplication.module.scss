@@ -97,6 +97,10 @@
   --groupHeadingLineHeight: 16px;
   --groupHeadingFontWeight: 500;
 
+  --labelHeadingFontSize: 12px;
+  --labelHeadingLineHeight: 16px;
+  --labelHeadingFontWeight: 600;
+
   --labelFontSize: 10px;
   --labelLineHeight: 16px;
   --labelFontWeight: 600;
@@ -134,7 +138,9 @@
   --controlRounding: 6px;
 
   /** sizes */
+  --small-size: 20px;
   --normal-size: 24px;
+  --large-size: 32px;
 
   /** animations */
   --stateTransitionDuration: 0.2s;

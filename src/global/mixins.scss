@@ -58,8 +58,20 @@
   font-weight: var(--groupHeadingFontWeight);
 }
 
+@mixin label-heading {
+  font-size: var(--labelHeadingFontSize);
+  line-height: var(--labelHeadingLineHeight);
+  font-weight: var(--labelHeadingFontWeight);
+}
+
 @mixin label {
   font-size: var(--labelFontSize);
   line-height: var(--labelLineHeight);
   font-weight: var(--labelFontWeight);
+}
+
+@mixin small-label {
+  font-size: var(--smallLabelFontSize);
+  line-height: var(--smallLabelLineHeight);
+  font-weight: var(--smallLabelFontWeight);
 }

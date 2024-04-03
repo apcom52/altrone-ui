@@ -194,3 +194,48 @@
     }
   }
 }
+
+.OnlyIcon {
+  width: var(--normal-size);
+  padding: var(--xs-gap);
+}
+
+.Small {
+  min-height: var(--small-size);
+  height: var(--small-size);
+  align-items: center;
+
+  .Label {
+    @include small-label;
+  }
+
+  .Icon {
+    font-size: 12px;
+    height: 12px;
+  }
+
+  &.OnlyIcon {
+    width: var(--small-size);
+    padding: var(--xs-gap);
+  }
+}
+
+.Large {
+  min-height: var(--large-size);
+  height: var(--large-size);
+  padding: var(--s-gap) var(--l-gap);
+
+  .Label {
+    @include label-heading;
+  }
+
+  .Icon {
+    font-size: 20px;
+    height: 20px;
+  }
+
+  &.OnlyIcon {
+    padding: var(--s-gap);
+    width: var(--large-size);
+  }
+}
