@@ -1,4 +1,4 @@
-import { Align, Direction, Gap } from 'types';
+import { Align, Direction, Gap, Role } from 'types';
 
 export const gapStoryField = {
   control: 'select',
@@ -21,4 +21,15 @@ export const alignStoryField = {
 export const directionStoryField = {
   control: 'select',
   options: [Direction.vertical, Direction.horizontal],
+};
+
+export const roleStoryField = {
+  control: 'select',
+  options: [
+    Role.default,
+    Role.primary,
+    Role.success,
+    Role.warning,
+    Role.danger,
+  ],
 };

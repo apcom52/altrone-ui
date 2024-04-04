@@ -1,0 +1,24 @@
+.Rainbow {
+  position: absolute;
+  z-index: 100;
+  mix-blend-mode: overlay;
+  height: 36px;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.Container {
+  position: relative;
+}
+
+.Gradient {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: var(--rainbow);
+  rotate: 45deg;
+  translate: -50% -50%;
+  transform-origin: center;
+  border-radius: 50%;
+  filter: blur(11px);
+}

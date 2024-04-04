@@ -8,4 +8,5 @@ export interface FlexProps
   align?: Align;
   justify?: Align;
   disableInnerMargins?: boolean;
+  wrap?: boolean;
 }

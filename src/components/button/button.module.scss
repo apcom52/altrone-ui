@@ -1,0 +1,250 @@
+@import 'src/global/mixins';
+
+.Button {
+  --btnBg: var(--buttonBackgroundColor);
+  --btnFg: var(--buttonTextColor);
+  --btnBorder: var(--buttonBorderColor);
+  --btnFocus: var(--focus);
+
+  display: inline-flex;
+  white-space: nowrap;
+  position: relative;
+  align-items: center;
+  background: var(--btnBg);
+  border-radius: var(--controlRounding);
+  border: none;
+  color: var(--btnFg);
+  box-shadow: inset 0 0 0 1px var(--btnBorder), var(--buttonShadow);
+  padding: var(--xs-gap) var(--gap);
+  transition: background-color var(--stateTransitionDuration) linear, color var(--stateTransitionDuration) linear, box-shadow var(--stateTransitionDuration) linear, outline-width var(--stateTransitionDuration) linear;
+  cursor: pointer;
+  min-height: var(--normal-size);
+  outline-width: 0;
+
+  &:hover {
+    --btnBg: var(--buttonHoverBackgroundColor);
+    --btnFg: var(--buttonHoverTextColor);
+    --btnBorder: var(--buttonHoverBorderColor);
+  }
+
+  &:active {
+    --btnBg: var(--buttonPressBackgroundColor);
+    --btnFg: var(--buttonHoverTextColor);
+    --btnBorder: var(--buttonPressBorderColor);
+  }
+
+  &:focus-visible {
+    outline: 4px solid var(--btnFocus);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.Label {
+  @include label;
+}
+
+.Icon {
+  font-size: 16px;
+  height: 16px;
+}
+
+.Button_transparent {
+  --btnBg: var(--buttonTransparentBackgroundColor);
+  --btnFg: var(--buttonTransparentTextColor);
+
+  box-shadow: none;
+
+  &:hover {
+    --btnBg: var(--buttonTransparentHoverBackgroundColor);
+    --btnFg: var(--buttonTransparentHoverTextColor);
+  }
+
+  &:active {
+    --btnBg: var(--buttonTransparentPressBackgroundColor);
+    --btnFg: var(--buttonTransparentPressTextColor);
+  }
+}
+
+.Primary {
+  --btnBg: var(--buttonPrimaryBackgroundColor);
+  --btnFg: var(--buttonPrimaryTextColor);
+  --btnBorder: var(--buttonPrimaryBorderColor);
+
+  &:hover {
+    --btnBg: var(--buttonPrimaryHoverBackgroundColor);
+    --btnFg: var(--buttonPrimaryHoverTextColor);
+    --btnBorder: var(--buttonPrimaryHoverBorderColor);
+  }
+
+  &:active {
+    --btnBg: var(--buttonPrimaryPressBackgroundColor);
+    --btnFg: var(--buttonPrimaryHoverTextColor);
+    --btnBorder: var(--buttonPrimaryPressBorderColor);
+  }
+
+  &.Button_transparent {
+    --btnBg: var(--buttonPrimaryTransparentBackgroundColor);
+    --btnFg: var(--buttonPrimaryTransparentTextColor);
+
+    &:hover {
+      --btnBg: var(--buttonPrimaryTransparentHoverBackgroundColor);
+      --btnFg: var(--buttonPrimaryTransparentHoverTextColor);
+    }
+
+    &:active {
+      --btnBg: var(--buttonPrimaryTransparentPressBackgroundColor);
+      --btnFg: var(--buttonPrimaryTransparentPressTextColor);
+    }
+  }
+}
+
+.Success {
+  --btnBg: var(--buttonSuccessBackgroundColor);
+  --btnFg: var(--buttonSuccessTextColor);
+  --btnBorder: var(--buttonSuccessBorderColor);
+  --btnFocus: var(--focusSuccess);
+
+  &:hover {
+    --btnBg: var(--buttonSuccessHoverBackgroundColor);
+    --btnFg: var(--buttonSuccessHoverTextColor);
+    --btnBorder: var(--buttonSuccessHoverBorderColor);
+  }
+
+  &:active {
+    --btnBg: var(--buttonSuccessPressBackgroundColor);
+    --btnFg: var(--buttonSuccessHoverTextColor);
+    --btnBorder: var(--buttonSuccessPressBorderColor);
+  }
+
+  &.Button_transparent {
+    --btnBg: var(--buttonSuccessTransparentBackgroundColor);
+    --btnFg: var(--buttonSuccessTransparentTextColor);
+
+    &:hover {
+      --btnBg: var(--buttonSuccessTransparentHoverBackgroundColor);
+      --btnFg: var(--buttonSuccessTransparentHoverTextColor);
+    }
+
+    &:active {
+      --btnBg: var(--buttonSuccessTransparentPressBackgroundColor);
+      --btnFg: var(--buttonSuccessTransparentPressTextColor);
+    }
+  }
+}
+
+.Warning {
+  --btnBg: var(--buttonWarningBackgroundColor);
+  --btnFg: var(--buttonWarningTextColor);
+  --btnBorder: var(--buttonWarningBorderColor);
+  --btnFocus: var(--focusWarning);
+
+  &:hover {
+    --btnBg: var(--buttonWarningHoverBackgroundColor);
+    --btnFg: var(--buttonWarningHoverTextColor);
+    --btnBorder: var(--buttonWarningHoverBorderColor);
+  }
+
+  &:active {
+    --btnBg: var(--buttonWarningPressBackgroundColor);
+    --btnFg: var(--buttonWarningHoverTextColor);
+    --btnBorder: var(--buttonWarningPressBorderColor);
+  }
+
+  &.Button_transparent {
+    --btnBg: var(--buttonWarningTransparentBackgroundColor);
+    --btnFg: var(--buttonWarningTransparentTextColor);
+
+    &:hover {
+      --btnBg: var(--buttonWarningTransparentHoverBackgroundColor);
+      --btnFg: var(--buttonWarningTransparentHoverTextColor);
+    }
+
+    &:active {
+      --btnBg: var(--buttonWarningTransparentPressBackgroundColor);
+      --btnFg: var(--buttonWarningTransparentPressTextColor);
+    }
+  }
+}
+
+.Danger {
+  --btnBg: var(--buttonDangerBackgroundColor);
+  --btnFg: var(--buttonDangerTextColor);
+  --btnBorder: var(--buttonDangerBorderColor);
+  --btnFocus: var(--focusDanger);
+
+  &:hover {
+    --btnBg: var(--buttonDangerHoverBackgroundColor);
+    --btnFg: var(--buttonDangerHoverTextColor);
+    --btnBorder: var(--buttonDangerHoverBorderColor);
+  }
+
+  &:active {
+    --btnBg: var(--buttonDangerPressBackgroundColor);
+    --btnFg: var(--buttonDangerHoverTextColor);
+    --btnBorder: var(--buttonDangerPressBorderColor);
+  }
+
+  &.Button_transparent {
+    --btnBg: var(--buttonDangerTransparentBackgroundColor);
+    --btnFg: var(--buttonDangerTransparentTextColor);
+
+    &:hover {
+      --btnBg: var(--buttonDangerTransparentHoverBackgroundColor);
+      --btnFg: var(--buttonDangerTransparentHoverTextColor);
+    }
+
+    &:active {
+      --btnBg: var(--buttonDangerTransparentPressBackgroundColor);
+      --btnFg: var(--buttonDangerTransparentPressTextColor);
+    }
+  }
+}
+
+.OnlyIcon {
+  width: var(--normal-size);
+  padding: var(--xs-gap);
+}
+
+.Small {
+  min-height: var(--small-size);
+  height: var(--small-size);
+  align-items: center;
+
+  .Label {
+    @include small-label;
+  }
+
+  .Icon {
+    font-size: 12px;
+    height: 12px;
+  }
+
+  &.OnlyIcon {
+    width: var(--small-size);
+    padding: var(--xs-gap);
+  }
+}
+
+.Large {
+  min-height: var(--large-size);
+  height: var(--large-size);
+  padding: var(--s-gap) var(--l-gap);
+
+  .Label {
+    @include label-heading;
+  }
+
+  .Icon {
+    font-size: 20px;
+    height: 20px;
+  }
+
+  &.OnlyIcon {
+    padding: var(--s-gap);
+    width: var(--large-size);
+  }
+}

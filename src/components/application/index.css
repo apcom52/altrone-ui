@@ -78,6 +78,10 @@
   --groupHeadingLineHeight: 16px;
   --groupHeadingFontWeight: 500;
 
+  --labelHeadingFontSize: 12px;
+  --labelHeadingLineHeight: 16px;
+  --labelHeadingFontWeight: 600;
+
   --labelFontSize: 10px;
   --labelLineHeight: 16px;
   --labelFontWeight: 600;

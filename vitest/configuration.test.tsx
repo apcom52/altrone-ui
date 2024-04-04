@@ -6,6 +6,7 @@ import {
   Text,
   Flex,
   List,
+  Button,
 } from 'components';
 
 describe('Configation', () => {
@@ -121,6 +122,20 @@ describe('Configation', () => {
         config={{ list: { className: 'cls', style: { color: 'blue' } } }}
       >
         <List data={[]} renderItem={() => <div />} data-testid="element" />
+      </AltroneApplication>,
+    );
+
+    const element = screen.getByTestId('element');
+    expect(element).toHaveClass('cls');
+    expect(element).toHaveStyle('color: blue');
+  });
+
+  test('check that Button configuration works correctly', () => {
+    render(
+      <AltroneApplication
+        config={{ button: { className: 'cls', style: { color: 'blue' } } }}
+      >
+        <Button data-testid="element" />
       </AltroneApplication>,
     );
 

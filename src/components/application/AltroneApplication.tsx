@@ -4,6 +4,7 @@ import { useMediaMatch } from 'utils';
 import clsx from 'clsx';
 import { AltroneConfiguration } from 'components';
 import { createElement } from 'react';
+import { RainbowEffect } from './RainbowEffect.tsx';
 
 export const AltroneApplication = ({
   children,
@@ -32,6 +33,8 @@ export const AltroneApplication = ({
       style,
       ...props,
     },
-    <AltroneConfiguration {...config}>{children}</AltroneConfiguration>,
+    <AltroneConfiguration {...config}>
+      <RainbowEffect>{children}</RainbowEffect>
+    </AltroneConfiguration>,
   );
 };
