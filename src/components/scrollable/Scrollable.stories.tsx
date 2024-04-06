@@ -4,13 +4,21 @@ import { Direction, Gap, Size } from 'types';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { COUNTRIES } from './Scrollable.constants.ts';
+import { fn } from '@storybook/test';
 
 const story: Meta<typeof Scrollable> = {
-  title: 'Scrollable',
+  title: 'Components/Layout/Scrollable',
   component: Scrollable,
   decorators: [StorybookDecorator],
-  args: {},
-  argTypes: {},
+  args: {
+    showShadows: true,
+    onScroll: fn(),
+  },
+  argTypes: {
+    showShadows: { control: 'boolean' },
+    direction: { control: 'none' },
+    offset: { control: 'number' },
+  },
   parameters: {
     chromatic: {
       modes: {
@@ -22,11 +30,16 @@ const story: Meta<typeof Scrollable> = {
 
 export const ScrollableStory: StoryObj<typeof Scrollable> = {
   name: 'Using Scrollable',
-  render: () => (
+  render: (args) => (
     <Flex gap={Gap.xlarge}>
+      <Text.Heading role={TextHeadingRoles.inner}>
+        Vertical Scrollable with long content
+      </Text.Heading>
       <Scrollable
         maxHeight="200px"
         offset={{ top: 12, bottom: 12, left: 8, right: 8 }}
+        data-testid="scrollable-1"
+        {...args}
       >
         <List
           gap={Gap.medium}
@@ -47,10 +60,15 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
           }}
         />
       </Scrollable>
+      <Text.Heading role={TextHeadingRoles.inner}>
+        Horizontal Scrollable with long content
+      </Text.Heading>
       <Scrollable
         maxWidth="100%"
         direction={Direction.horizontal}
         offset={{ top: 12, bottom: 12, left: 8, right: 8 }}
+        data-testid="scrollable-2"
+        {...args}
       >
         <List
           gap={Gap.large}
@@ -77,9 +95,14 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
           }}
         />
       </Scrollable>
+      <Text.Heading role={TextHeadingRoles.inner}>
+        Vertical Scrollable with short content
+      </Text.Heading>
       <Scrollable
         maxHeight="200px"
         offset={{ top: 12, bottom: 12, left: 8, right: 8 }}
+        data-testid="scrollable-3"
+        {...args}
       >
         <List
           gap={Gap.medium}
@@ -100,10 +123,15 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
           }}
         />
       </Scrollable>
+      <Text.Heading role={TextHeadingRoles.inner}>
+        Horizontal Scrollable with short content
+      </Text.Heading>
       <Scrollable
         maxWidth="100%"
         direction={Direction.horizontal}
         offset={{ top: 12, bottom: 12, left: 8, right: 8 }}
+        data-testid="scrollable-4"
+        {...args}
       >
         <List
           gap={Gap.large}

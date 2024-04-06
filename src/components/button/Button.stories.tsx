@@ -8,7 +8,7 @@ import { within, expect, userEvent, fn } from '@storybook/test';
 import { ButtonProps } from './Button.types.ts';
 
 const story: Meta<typeof Button> = {
-  title: 'Button',
+  title: 'Components/General/Button',
   component: Button,
   decorators: [StorybookDecorator],
   args: {

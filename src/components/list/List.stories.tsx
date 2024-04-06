@@ -122,7 +122,7 @@ const CITY_RANKS: CityRank[] = [
 ];
 
 const story: Meta<typeof List> = {
-  title: 'List',
+  title: 'Components/Containers/List',
   component: List,
   decorators: [StorybookDecorator],
   args: {
@@ -158,6 +158,7 @@ export const FlexLayout: StoryObj<typeof List<CityRank>> = {
               direction={Direction.horizontal}
               align={Align.center}
               gap={Gap.large}
+              wrap={false}
             >
               <div className={s.Position}>#{item.position}</div>
               <div className={s.Image}>
