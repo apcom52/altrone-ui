@@ -6,6 +6,7 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { roleStoryField } from '../../global/storybook/argTypes.ts';
 import { within, expect, userEvent, fn } from '@storybook/test';
 import { ButtonProps } from './Button.types.ts';
+import { StorybookCSSVariables } from '../../global/storybook/StorybookCSSVariables.tsx';
 
 const story: Meta<typeof Button> = {
   title: 'Components/General/Button',
@@ -132,6 +133,104 @@ export const ButtonSizeStory: StoryObj<typeof Button> = {
       <Text.Heading role={TextHeadingRoles.inner}>Large buttons</Text.Heading>
       {renderButtonsWithSize(Size.large)}
     </Flex>
+  ),
+};
+
+export const VariablesStory: StoryObj<typeof Button> = {
+  name: 'Buttons CSS Variables',
+  parameters: {
+    chromatic: {
+      modes: {
+        light: allModes['light desktop'],
+        dark: allModes['dark desktop'],
+      },
+    },
+  },
+  render: () => (
+    <StorybookCSSVariables
+      title="Button CSS Variables"
+      data={[
+        'buttonBackgroundColor',
+        { name: 'buttonBorderColor', type: 'border' },
+        { name: 'buttonTextColor', type: 'text' },
+        'buttonHoverBackgroundColor',
+        { name: 'buttonHoverBorderColor', type: 'border' },
+        { name: 'buttonHoverTextColor', type: 'text' },
+        'buttonPressBackgroundColor',
+        { name: 'buttonPressBorderColor', type: 'border' },
+        { name: 'buttonPressTextColor', type: 'text' },
+        'buttonTransparentBackgroundColor',
+        'buttonTransparentHoverBackgroundColor',
+        'buttonTransparentPressBackgroundColor',
+        { name: 'buttonTransparentTextColor', type: 'text' },
+        { name: 'buttonTransparentHoverTextColor', type: 'text' },
+        { name: 'buttonTransparentPressTextColor', type: 'text' },
+
+        'buttonPrimaryBackgroundColor',
+        { name: 'buttonPrimaryBorderColor', type: 'border' },
+        { name: 'buttonPrimaryTextColor', type: 'text' },
+        'buttonPrimaryHoverBackgroundColor',
+        { name: 'buttonPrimaryHoverBorderColor', type: 'border' },
+        { name: 'buttonPrimaryHoverTextColor', type: 'text' },
+        'buttonPrimaryPressBackgroundColor',
+        { name: 'buttonPrimaryPressBorderColor', type: 'border' },
+        { name: 'buttonPrimaryPressTextColor', type: 'text' },
+        'buttonPrimaryTransparentBackgroundColor',
+        'buttonPrimaryTransparentHoverBackgroundColor',
+        'buttonPrimaryTransparentPressBackgroundColor',
+        { name: 'buttonPrimaryTransparentTextColor', type: 'text' },
+        { name: 'buttonPrimaryTransparentHoverTextColor', type: 'text' },
+        { name: 'buttonPrimaryTransparentPressTextColor', type: 'text' },
+
+        'buttonSuccessBackgroundColor',
+        { name: 'buttonSuccessBorderColor', type: 'border' },
+        { name: 'buttonSuccessTextColor', type: 'text' },
+        'buttonSuccessHoverBackgroundColor',
+        { name: 'buttonSuccessHoverBorderColor', type: 'border' },
+        { name: 'buttonSuccessHoverTextColor', type: 'text' },
+        'buttonSuccessPressBackgroundColor',
+        { name: 'buttonSuccessPressBorderColor', type: 'border' },
+        { name: 'buttonSuccessPressTextColor', type: 'text' },
+        'buttonSuccessTransparentBackgroundColor',
+        'buttonSuccessTransparentHoverBackgroundColor',
+        'buttonSuccessTransparentPressBackgroundColor',
+        { name: 'buttonSuccessTransparentTextColor', type: 'text' },
+        { name: 'buttonSuccessTransparentHoverTextColor', type: 'text' },
+        { name: 'buttonSuccessTransparentPressTextColor', type: 'text' },
+
+        'buttonWarningBackgroundColor',
+        { name: 'buttonWarningBorderColor', type: 'border' },
+        { name: 'buttonWarningTextColor', type: 'text' },
+        'buttonWarningHoverBackgroundColor',
+        { name: 'buttonWarningHoverBorderColor', type: 'border' },
+        { name: 'buttonWarningHoverTextColor', type: 'text' },
+        'buttonWarningPressBackgroundColor',
+        { name: 'buttonWarningPressBorderColor', type: 'border' },
+        { name: 'buttonWarningPressTextColor', type: 'text' },
+        'buttonWarningTransparentBackgroundColor',
+        'buttonWarningTransparentHoverBackgroundColor',
+        'buttonWarningTransparentPressBackgroundColor',
+        { name: 'buttonWarningTransparentTextColor', type: 'text' },
+        { name: 'buttonWarningTransparentHoverTextColor', type: 'text' },
+        { name: 'buttonWarningTransparentPressTextColor', type: 'text' },
+
+        'buttonDangerBackgroundColor',
+        { name: 'buttonDangerBorderColor', type: 'border' },
+        { name: 'buttonDangerTextColor', type: 'text' },
+        'buttonDangerHoverBackgroundColor',
+        { name: 'buttonDangerHoverBorderColor', type: 'border' },
+        { name: 'buttonDangerHoverTextColor', type: 'text' },
+        'buttonDangerPressBackgroundColor',
+        { name: 'buttonDangerPressBorderColor', type: 'border' },
+        { name: 'buttonDangerPressTextColor', type: 'text' },
+        'buttonDangerTransparentBackgroundColor',
+        'buttonDangerTransparentHoverBackgroundColor',
+        'buttonDangerTransparentPressBackgroundColor',
+        { name: 'buttonDangerTransparentTextColor', type: 'text' },
+        { name: 'buttonDangerTransparentHoverTextColor', type: 'text' },
+        { name: 'buttonDangerTransparentPressTextColor', type: 'text' },
+      ]}
+    />
   ),
 };
 
