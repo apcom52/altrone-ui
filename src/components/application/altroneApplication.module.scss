@@ -163,39 +163,12 @@
   --linkTextColor: var(--primary-600);
   --linkHoverTextColor: var(--primary-700);
   --linkClickTextColor: var(--primary-800);
-  --buttonTextColor: var(--default-700);
-  --buttonHoverTextColor: var(--default-800);
-  --buttonPressTextColor: var(--default-900);
-  --buttonTransparentTextColor: var(--default-700);
-  --buttonTransparentHoverTextColor: var(--default-800);
-  --buttonTransparentPressTextColor: var(--default-900);
-  --buttonPrimaryTextColor: var(--default-50);
-  --buttonPrimaryHoverTextColor: var(--default-50);
-  --buttonPrimaryPressTextColor: var(--default-50);
-  --buttonPrimaryTransparentTextColor: var(--primary-500);
-  --buttonPrimaryTransparentHoverTextColor: var(--primary-600);
-  --buttonPrimaryTransparentPressTextColor: var(--primary-700);
-  --buttonSuccessTextColor: var(--default-50);
-  --buttonSuccessHoverTextColor: var(--default-50);
-  --buttonSuccessPressTextColor: var(--default-50);
-  --buttonSuccessTransparentTextColor: var(--success-500);
-  --buttonSuccessTransparentHoverTextColor: var(--success-600);
-  --buttonSuccessTransparentPressTextColor: var(--success-700);
-  --buttonWarningTextColor: var(--default-50);
-  --buttonWarningHoverTextColor: var(--default-50);
-  --buttonWarningPressTextColor: var(--default-50);
-  --buttonWarningTransparentTextColor: var(--warning-500);
-  --buttonWarningTransparentHoverTextColor: var(--warning-600);
-  --buttonWarningTransparentPressTextColor: var(--warning-700);
-  --buttonDangerTextColor: var(--default-50);
-  --buttonDangerHoverTextColor: var(--default-50);
-  --buttonDangerPressTextColor: var(--default-50);
-  --buttonDangerTransparentTextColor: var(--danger-500);
-  --buttonDangerTransparentHoverTextColor: var(--danger-600);
-  --buttonDangerTransparentPressTextColor: var(--danger-700);
+
 
   /* surfaces */
   --appBackground: var(--default-50);
+  --scrollbarBackground: var(--default-200);
+  --scrollbarThumb: var(--default-900);
   --highlightedTextBackground: var(--primary-100);
   --codeBackgroundColor: var(--primary-50);
   --codeBorderColor: var(--primary-100);
@@ -206,51 +179,6 @@
   --messageSuccessBackgroundColor: var(--success-100);
   --messageWarningBackgroundColor: var(--warning-100);
   --messageDangerBackgroundColor: var(--danger-100);
-  --buttonBackgroundColor: var(--default-50);
-  --buttonBorderColor: var(--default-200);
-  --buttonHoverBackgroundColor: var(--default-50);
-  --buttonHoverBorderColor: var(--default-200);
-  --buttonPressBackgroundColor: var(--default-100);
-  --buttonPressBorderColor: var(--default-200);
-  --buttonTransparentBackgroundColor: transparent;
-  --buttonTransparentHoverBackgroundColor: var(--default-100);
-  --buttonTransparentPressBackgroundColor: var(--default-200);
-  --buttonPrimaryBackgroundColor: var(--primary-400);
-  --buttonPrimaryBorderColor: var(--primary-500);
-  --buttonPrimaryHoverBackgroundColor: var(--primary-500);
-  --buttonPrimaryHoverBorderColor: var(--primary-600);
-  --buttonPrimaryPressBackgroundColor: var(--primary-600);
-  --buttonPrimaryPressBorderColor: var(--primary-700);
-  --buttonPrimaryTransparentBackgroundColor: transparent;
-  --buttonPrimaryTransparentHoverBackgroundColor: var(--primary-50);
-  --buttonPrimaryTransparentPressBackgroundColor: var(--primary-100);
-  --buttonSuccessBackgroundColor: var(--success-400);
-  --buttonSuccessBorderColor: var(--success-500);
-  --buttonSuccessHoverBackgroundColor: var(--success-500);
-  --buttonSuccessHoverBorderColor: var(--success-600);
-  --buttonSuccessPressBackgroundColor: var(--success-600);
-  --buttonSuccessPressBorderColor: var(--success-700);
-  --buttonSuccessTransparentBackgroundColor: transparent;
-  --buttonSuccessTransparentHoverBackgroundColor: var(--success-50);
-  --buttonSuccessTransparentPressBackgroundColor: var(--success-100);
-  --buttonWarningBackgroundColor: var(--warning-400);
-  --buttonWarningBorderColor: var(--warning-500);
-  --buttonWarningHoverBackgroundColor: var(--warning-500);
-  --buttonWarningHoverBorderColor: var(--warning-600);
-  --buttonWarningPressBackgroundColor: var(--warning-600);
-  --buttonWarningPressBorderColor: var(--warning-700);
-  --buttonWarningTransparentBackgroundColor: transparent;
-  --buttonWarningTransparentHoverBackgroundColor: var(--warning-50);
-  --buttonWarningTransparentPressBackgroundColor: var(--warning-100);
-  --buttonDangerBackgroundColor: var(--danger-400);
-  --buttonDangerBorderColor: var(--danger-500);
-  --buttonDangerHoverBackgroundColor: var(--danger-500);
-  --buttonDangerHoverBorderColor: var(--danger-600);
-  --buttonDangerPressBackgroundColor: var(--danger-600);
-  --buttonDangerPressBorderColor: var(--danger-700);
-  --buttonDangerTransparentBackgroundColor: transparent;
-  --buttonDangerTransparentHoverBackgroundColor: var(--danger-50);
-  --buttonDangerTransparentPressBackgroundColor: var(--danger-100);
 
   /** focus */
   --focus: rgba(66, 165, 245, 0.4);
@@ -273,7 +201,7 @@
   }
 }
 
-.AltroneDark {
+:global(.AltroneDark) {
   --headingTextColor: var(--default-50);
   --primaryHeadingTextColor: var(--primary-50);
   --successHeadingTextColor: var(--success-50);
@@ -291,39 +219,11 @@
   --linkTextColor: var(--primary-500);
   --linkHoverTextColor: var(--primary-400);
   --linkClickTextColor: var(--primary-300);
-  --buttonTextColor: var(--default-200);
-  --buttonHoverTextColor: var(--default-100);
-  --buttonPressTextColor: var(--default-50);
-  --buttonTransparentTextColor: var(--default-200);
-  --buttonTransparentHoverTextColor: var(--default-100);
-  --buttonTransparentPressTextColor: var(--default-50);
-  --buttonPrimaryTextColor: var(--default-100);
-  --buttonPrimaryHoverTextColor: var(--default-100);
-  --buttonPrimaryPressTextColor: var(--default-50);
-  --buttonPrimaryTransparentTextColor: var(--primary-700);
-  --buttonPrimaryTransparentHoverTextColor: var(--primary-200);
-  --buttonPrimaryTransparentPressTextColor: var(--primary-50);
-  --buttonSuccessTextColor: var(--default-100);
-  --buttonSuccessHoverTextColor: var(--default-100);
-  --buttonSuccessPressTextColor: var(--default-50);
-  --buttonSuccessTransparentTextColor: var(--success-700);
-  --buttonSuccessTransparentHoverTextColor: var(--success-200);
-  --buttonSuccessTransparentPressTextColor: var(--success-50);
-  --buttonWarningTextColor: var(--default-100);
-  --buttonWarningHoverTextColor: var(--default-100);
-  --buttonWarningPressTextColor: var(--default-50);
-  --buttonWarningTransparentTextColor: var(--warning-700);
-  --buttonWarningTransparentHoverTextColor: var(--warning-200);
-  --buttonWarningTransparentPressTextColor: var(--warning-50);
-  --buttonDangerTextColor: var(--default-100);
-  --buttonDangerHoverTextColor: var(--default-100);
-  --buttonDangerPressTextColor: var(--default-50);
-  --buttonDangerTransparentTextColor: var(--danger-700);
-  --buttonDangerTransparentHoverTextColor: var(--danger-100);
-  --buttonDangerTransparentPressTextColor: var(--danger-50);
 
   /* surfaces */
   --appBackground: var(--default-900);
+  --scrollbarBackground: var(--default-700);
+  --scrollbarThumb: var(--default-200);
   --highlightedTextBackground: var(--primary-900);
   --codeBackgroundColor: var(--primary-900);
   --codeBorderColor: var(--primary-800);
@@ -334,51 +234,6 @@
   --messageSuccessBackgroundColor: var(--success-900);
   --messageWarningBackgroundColor: var(--warning-900);
   --messageDangerBackgroundColor: var(--danger-900);
-  --buttonBackgroundColor: var(--default-800);
-  --buttonBorderColor: var(--default-700);
-  --buttonHoverBackgroundColor: var(--default-700);
-  --buttonHoverBorderColor: var(--default-600);
-  --buttonPressBackgroundColor: var(--default-600);
-  --buttonPressBorderColor: var(--default-500);
-  --buttonTransparentBackgroundColor: transparent;
-  --buttonTransparentHoverBackgroundColor: var(--default-800);
-  --buttonTransparentPressBackgroundColor: var(--default-700);
-  --buttonPrimaryBackgroundColor: var(--primary-600);
-  --buttonPrimaryBorderColor: var(--primary-700);
-  --buttonPrimaryHoverBackgroundColor: var(--primary-700);
-  --buttonPrimaryHoverBorderColor: var(--primary-800);
-  --buttonPrimaryPressBackgroundColor: var(--primary-800);
-  --buttonPrimaryPressBorderColor: var(--primary-900);
-  --buttonPrimaryTransparentBackgroundColor: transparent;
-  --buttonPrimaryTransparentHoverBackgroundColor: var(--primary-900);
-  --buttonPrimaryTransparentPressBackgroundColor: var(--primary-800);
-  --buttonSuccessBackgroundColor: var(--success-600);
-  --buttonSuccessBorderColor: var(--success-700);
-  --buttonSuccessHoverBackgroundColor: var(--success-700);
-  --buttonSuccessHoverBorderColor: var(--success-800);
-  --buttonSuccessPressBackgroundColor: var(--success-800);
-  --buttonSuccessPressBorderColor: var(--success-900);
-  --buttonSuccessTransparentBackgroundColor: transparent;
-  --buttonSuccessTransparentHoverBackgroundColor: var(--success-900);
-  --buttonSuccessTransparentPressBackgroundColor: var(--success-800);
-  --buttonWarningBackgroundColor: var(--warning-600);
-  --buttonWarningBorderColor: var(--warning-700);
-  --buttonWarningHoverBackgroundColor: var(--warning-700);
-  --buttonWarningHoverBorderColor: var(--warning-800);
-  --buttonWarningPressBackgroundColor: var(--warning-800);
-  --buttonWarningPressBorderColor: var(--warning-900);
-  --buttonWarningTransparentBackgroundColor: transparent;
-  --buttonWarningTransparentHoverBackgroundColor: var(--warning-900);
-  --buttonWarningTransparentPressBackgroundColor: var(--warning-800);
-  --buttonDangerBackgroundColor: var(--danger-600);
-  --buttonDangerBorderColor: var(--danger-700);
-  --buttonDangerHoverBackgroundColor: var(--danger-700);
-  --buttonDangerHoverBorderColor: var(--danger-800);
-  --buttonDangerPressBackgroundColor: var(--danger-800);
-  --buttonDangerPressBorderColor: var(--danger-900);
-  --buttonDangerTransparentBackgroundColor: transparent;
-  --buttonDangerTransparentHoverBackgroundColor: var(--danger-900);
-  --buttonDangerTransparentPressBackgroundColor: var(--danger-800);
 
   /** focus */
   --focus: rgba(25, 118, 210, 0.7);

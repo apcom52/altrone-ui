@@ -1,0 +1,52 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --scrollbarShadowColor: rgba(0, 0, 0, 0.1);
+
+  :global(.AltroneDark) {
+    --scrollbarShadowColor: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.Scrollable {
+  display: block;
+  position: relative;
+}
+
+.Content {
+  display: block;
+  overflow-y: auto;
+  overflow-y: overlay;
+
+  @include scrollbars;
+}
+
+.Shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: radial-gradient(farthest-corner at center 0px, var(--scrollbarShadowColor) 0%, transparent 75%);
+}
+
+.EndShadow {
+  top: unset;
+  bottom: 0;
+  background: radial-gradient(farthest-corner at center 100%, var(--scrollbarShadowColor) 0%, transparent 75%);
+}
+
+.Horizontal {
+  .Shadow {
+    width: 5px;
+    height: 100%;
+    background: radial-gradient(farthest-corner at 0px center, var(--scrollbarShadowColor) 0%, transparent 75%);
+  }
+
+  .EndShadow {
+    top: 0;
+    left: unset;
+    right: 0;
+    background: radial-gradient(farthest-corner at 100% center, var(--scrollbarShadowColor) 0%, transparent 75%);
+  }
+}

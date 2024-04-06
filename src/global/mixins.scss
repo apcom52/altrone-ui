@@ -75,3 +75,17 @@
   line-height: var(--smallLabelLineHeight);
   font-weight: var(--smallLabelFontWeight);
 }
+
+@mixin scrollbars {
+  &::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 5px;
+    height: 5px;
+    background-color: var(--scrollbarBackground); /* or add it to the track */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbarThumb);
+    border-radius: 5px;
+  }
+}

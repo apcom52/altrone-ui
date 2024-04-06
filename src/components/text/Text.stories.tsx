@@ -4,7 +4,7 @@ import { ArticleStory, FormattedArticle } from './stories';
 import { allModes } from '../../../.storybook/modes.ts';
 
 const story: Meta = {
-  title: 'Text',
+  title: 'Components/Display/Text',
   decorators: [StorybookDecorator],
   parameters: {
     chromatic: {

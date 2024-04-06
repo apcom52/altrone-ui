@@ -33,8 +33,3 @@ export enum Align {
   center = 'center',
   end = 'end',
 }
-
-export type Point = {
-  x: number;
-  y: number;
-};

@@ -1,0 +1,68 @@
+@import 'src/global/mixins';
+
+.Grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.Item {
+  display: flex;
+  align-items: center;
+  width: 280px;
+  gap: 8px;
+}
+
+.Name {
+  display: block;
+  width: 212px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Label {
+  width: 100%;
+  @include label-heading;
+  color: var(--headingTextColor);
+}
+
+.Value {
+  @include small-label;
+  color: var(--disabledTextColor);
+}
+
+.ColorPreview {
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  height: 40px;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
+}
+
+.BorderPreview {
+  background: transparent;
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  height: 40px;
+  border-radius: 6px;
+  border: 3px solid black;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
+}
+
+.TextPreview {
+  @include heading;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  height: 40px;
+  border-radius: 6px;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
