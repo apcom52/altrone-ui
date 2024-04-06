@@ -35,6 +35,7 @@ export interface ConsumerConfigurationContext {
   button?: ComponentConfiguration<{
     rainbowEffect?: boolean;
   }>;
+  scrollable?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =

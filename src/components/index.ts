@@ -6,3 +6,4 @@ export * from './icon';
 export * from './message';
 export * from './list';
 export * from './button';
+export * from './scrollable';

@@ -27,7 +27,7 @@ export const AltroneApplication = ({
     tagName,
     {
       className: clsx(s.AltroneApp, className, {
-        [s.AltroneDark]: _theme === Theme.dark,
+        AltroneDark: _theme === Theme.dark,
       }),
       id,
       style,

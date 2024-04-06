@@ -196,6 +196,8 @@
 
   /* surfaces */
   --appBackground: var(--default-50);
+  --scrollbarBackground: var(--default-200);
+  --scrollbarThumb: var(--default-900);
   --highlightedTextBackground: var(--primary-100);
   --codeBackgroundColor: var(--primary-50);
   --codeBorderColor: var(--primary-100);
@@ -273,7 +275,7 @@
   }
 }
 
-.AltroneDark {
+:global(.AltroneDark) {
   --headingTextColor: var(--default-50);
   --primaryHeadingTextColor: var(--primary-50);
   --successHeadingTextColor: var(--success-50);
@@ -324,6 +326,8 @@
 
   /* surfaces */
   --appBackground: var(--default-900);
+  --scrollbarBackground: var(--default-700);
+  --scrollbarThumb: var(--default-200);
   --highlightedTextBackground: var(--primary-900);
   --codeBackgroundColor: var(--primary-900);
   --codeBorderColor: var(--primary-800);

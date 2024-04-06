@@ -1,9 +1,9 @@
 import { Fragment, memo } from 'react';
 import { ListItemContext, ListProps } from './List.types.ts';
-import { Direction } from '../../types';
 import s from './list.module.scss';
 import clsx from 'clsx';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { Flex } from 'components';
 
 const List = <DataType extends object>({
   data,
@@ -12,7 +12,6 @@ const List = <DataType extends object>({
   skipRule,
   gap,
   SeparatorComponent,
-  direction = Direction.vertical,
   className,
   style,
   ...props
@@ -38,7 +37,7 @@ const List = <DataType extends object>({
   });
 
   return (
-    <div className={cls} style={styles} {...props}>
+    <Flex className={cls} style={styles} gap={gap} {...props}>
       {filteredItems.map((item, currentIndex) => {
         const isLastItem = currentIndex === filteredItems.length - 1;
         const context: ListItemContext<DataType> = { item, currentIndex, data };
@@ -60,7 +59,7 @@ const List = <DataType extends object>({
           </Fragment>
         );
       })}
-    </div>
+    </Flex>
   );
 };
 
