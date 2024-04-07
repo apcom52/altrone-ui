@@ -29,6 +29,7 @@ import clsx from 'clsx';
 import s from './popover.module.scss';
 import { CloseButton } from 'components';
 import { PopoverArrow } from './inner/PopoverArrow.tsx';
+import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 
 export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
   const {
@@ -48,6 +49,8 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     style,
     ...restProps
   } = props;
+
+  const { popover: popoverConfig = {} } = useConfiguration();
 
   const lastStateChangeReason = useRef<OpenChangeReason | undefined>(undefined);
 
@@ -157,6 +160,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
       [s.GlassEffect]: !showArrow,
     },
     className,
+    popoverConfig.className,
   );
 
   const floatingBox = (
@@ -174,6 +178,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
         {...getFloatingProps({
           ...restProps,
           style: {
+            ...popoverConfig.style,
             ...style,
             ...floatingStyles,
           },
