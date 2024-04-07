@@ -62,6 +62,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
 
   const {
     value: opened,
+    enable: open,
     disable: hide,
     setValue: setOpened,
   } = useToggledState(openedByDefault);
@@ -144,6 +145,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
       childrenNode: childrenRef.current,
       contentNode: contentRef.current,
       closePopup: hide,
+      openPopup: open,
     }),
     [opened, context],
   );
