@@ -34,6 +34,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
   const {
     children,
     content,
+    openedByDefault = false,
     enabled = true,
     title,
     placement = 'auto',
@@ -60,7 +61,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     value: opened,
     disable: hide,
     setValue: setOpened,
-  } = useToggledState(false);
+  } = useToggledState(openedByDefault);
 
   const { refs, floatingStyles, context } = useFloating({
     open: opened,

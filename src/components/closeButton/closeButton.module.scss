@@ -5,15 +5,15 @@
   --closeButtonTextColor: var(--default-700);
   --closeButtonHoverTextColor: var(--default-800);
   --closeButtonPressTextColor: var(--default-900);
+}
 
-  :global(.AltroneDark) {
-    --closeButtonBackgroundColor: var(--default-700);
-    --closeButtonHoverBackgroundColor: var(--default-600);
-    --closeButtonPressBackgroundColor: var(--default-500);
-    --closeButtonTextColor: var(--default-200);
-    --closeButtonHoverTextColor: var(--default-100);
-    --closeButtonPressTextColor: var(--default-50);
-  }
+:global(.AltroneDark) {
+  --closeButtonBackgroundColor: var(--default-700);
+  --closeButtonHoverBackgroundColor: var(--default-600);
+  --closeButtonPressBackgroundColor: var(--default-500);
+  --closeButtonTextColor: var(--default-200);
+  --closeButtonHoverTextColor: var(--default-100);
+  --closeButtonPressTextColor: var(--default-50);
 }
 
 .CloseButton {
@@ -29,6 +29,7 @@
   cursor: pointer;
   transition: background 0.2s linear, color 0.2s linear, outline 0.2s linear;
   outline: 0;
+  user-select: none;
 
   &:hover {
     background-color: var(--closeButtonHoverBackgroundColor);

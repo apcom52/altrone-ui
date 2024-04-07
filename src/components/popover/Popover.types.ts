@@ -26,6 +26,7 @@ export interface PopoverProps
   extends Omit<BasicComponentProps<HTMLDivElement>, 'children' | 'content'> {
   children: RenderFunction<ReactNode, PopoverChildrenContext>;
   content: RenderFunction<ReactNode, PopoverContentContext>;
+  openedByDefault?: boolean;
   enabled?: boolean;
   title?: string;
   placement?: 'auto' | Placement;
