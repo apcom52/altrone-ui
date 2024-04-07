@@ -1,0 +1,51 @@
+:global(:root) {
+  --closeButtonBackgroundColor: var(--default-100);
+  --closeButtonHoverBackgroundColor: var(--default-200);
+  --closeButtonPressBackgroundColor: var(--default-300);
+  --closeButtonTextColor: var(--default-700);
+  --closeButtonHoverTextColor: var(--default-800);
+  --closeButtonPressTextColor: var(--default-900);
+
+  :global(.AltroneDark) {
+    --closeButtonBackgroundColor: var(--default-700);
+    --closeButtonHoverBackgroundColor: var(--default-600);
+    --closeButtonPressBackgroundColor: var(--default-500);
+    --closeButtonTextColor: var(--default-200);
+    --closeButtonHoverTextColor: var(--default-100);
+    --closeButtonPressTextColor: var(--default-50);
+  }
+}
+
+.CloseButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--closeButtonBackgroundColor);
+  color: var(--closeButtonTextColor);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s linear, color 0.2s linear, outline 0.2s linear;
+  outline: 0;
+
+  &:hover {
+    background-color: var(--closeButtonHoverBackgroundColor);
+    color: var(--closeButtonHoverTextColor);
+  }
+
+  &:active {
+    background-color: var(--closeButtonPressBackgroundColor);
+    color: var(--closeButtonPressTextColor);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &:focus-visible {
+    outline: 4px solid var(--focus);
+  }
+}

@@ -2,7 +2,7 @@
 
 .Paragraph {
   color: var(--bodyTextColor);
-  margin: var(--xl-gap) 0;
+  margin: 0;
 
   @include paragraph;
 }

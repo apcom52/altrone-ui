@@ -36,6 +36,8 @@ export interface ConsumerConfigurationContext {
     rainbowEffect?: boolean;
   }>;
   scrollable?: ComponentConfiguration;
+  closeButton?: ComponentConfiguration;
+  popover?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =

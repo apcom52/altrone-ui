@@ -15,7 +15,7 @@ export const Flex = memo<FlexProps>(
     direction = Direction.vertical,
     style,
     disableInnerMargins = true,
-    wrap = true,
+    wrap = false,
     ...props
   }) => {
     const { flex = {} } = useConfiguration();

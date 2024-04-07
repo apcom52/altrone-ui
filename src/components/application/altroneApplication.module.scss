@@ -167,6 +167,7 @@
 
   /* surfaces */
   --appBackground: var(--default-50);
+  --glassBackground: rgba(249, 250, 251, 0.9);
   --scrollbarBackground: var(--default-200);
   --scrollbarThumb: var(--default-900);
   --highlightedTextBackground: var(--primary-100);
@@ -190,9 +191,12 @@
   --buttonShadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
-.AltroneApp {
+:global(html) {
   background: var(--appBackground);
   color: var(--bodyTextColor);
+}
+
+.AltroneApp {
   font-family: "Inter", sans-serif;
 
   * {
@@ -222,6 +226,7 @@
 
   /* surfaces */
   --appBackground: var(--default-900);
+  --glassBackground: rgba(31, 42, 55, 0.9);
   --scrollbarBackground: var(--default-700);
   --scrollbarThumb: var(--default-200);
   --highlightedTextBackground: var(--primary-900);

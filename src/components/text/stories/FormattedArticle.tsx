@@ -1,9 +1,10 @@
-import { AltroneApplication, Text } from 'components';
+import { Flex, Text } from 'components';
 import { TextHeadingRoles, TextListType } from '../Text.types.ts';
+import { Gap } from '../../../types';
 
 export const FormattedArticle = () => {
   return (
-    <AltroneApplication tagName="article">
+    <Flex gap={Gap.xlarge}>
       <Text.Heading>
         Exploring the Power of Markup Language: Enhancing Textual Content
       </Text.Heading>
@@ -104,6 +105,6 @@ export const FormattedArticle = () => {
         capabilities to craft impactful narratives and deliver immersive user
         experiences in the digital landscape.
       </Text.Paragraph>
-    </AltroneApplication>
+    </Flex>
   );
 };

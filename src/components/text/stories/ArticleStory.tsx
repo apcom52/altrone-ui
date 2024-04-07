@@ -1,8 +1,9 @@
-import { AltroneApplication, Text } from 'components';
+import { Flex, Text } from 'components';
+import { Gap } from '../../../types';
 
 export const ArticleStory = () => {
   return (
-    <AltroneApplication tagName="article">
+    <Flex gap={Gap.xlarge}>
       <Text.Heading>
         The Art of Text Formatting: Enhancing Clarity and Aesthetics
       </Text.Heading>
@@ -80,6 +81,6 @@ export const ArticleStory = () => {
         smartphones and tablets. Test your formatting on different devices and
         screen sizes to identify any issues and make necessary adjustments.
       </Text.Paragraph>
-    </AltroneApplication>
+    </Flex>
   );
 };
