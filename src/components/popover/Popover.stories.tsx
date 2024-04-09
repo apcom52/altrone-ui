@@ -4,6 +4,8 @@ import { Align, Direction, Gap, Size } from 'types';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Popover } from './Popover.tsx';
+import { expect, userEvent, within } from '@storybook/test';
+import { timeout } from '../../../old_src/utils';
 
 const story: Meta<typeof Popover> = {
   title: 'Components/Display/Popover',
@@ -31,6 +33,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           placement="bottom"
           title="System update"
           showCloseButton
+          data-testid="popover-click"
           content={
             <Flex gap={Gap.medium}>
               <Text.Paragraph size={Size.small}>
@@ -47,7 +50,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
             </Flex>
           }
         >
-          <Button label="Open popover" />
+          <Button label="Open popover" data-testid="button-click" />
         </Popover>
         <Popover
           placement="bottom"
@@ -89,6 +92,26 @@ export const PopoverStory: StoryObj<typeof Flex> = {
         >
           <Button label="Resilience" />
         </Popover>
+        <Popover
+          style={{ maxWidth: '200px' }}
+          data-testid="popover-parent"
+          content={
+            <Text.Paragraph size={Size.small}>
+              Click here to open child popover{' '}
+              <Popover
+                showArrow
+                data-testid="popover-child"
+                content={
+                  <Text.Paragraph>This is child popover!</Text.Paragraph>
+                }
+              >
+                <Button label="Open" data-testid="button-child" />
+              </Popover>
+            </Text.Paragraph>
+          }
+        >
+          <Button label="Parent popover" data-testid="button-parent" />
+        </Popover>
       </Flex>
       <Text.Heading role={TextHeadingRoles.inner}>
         How to trigger the popover?
@@ -111,6 +134,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           trigger="hover"
           placement="top"
           showArrow={true}
+          data-testid="popover-hover"
           content={
             <Text.Paragraph size={Size.small}>
               Join Our Newsletter for Exciting Updates &{' '}
@@ -118,12 +142,13 @@ export const PopoverStory: StoryObj<typeof Flex> = {
             </Text.Paragraph>
           }
         >
-          <Button label="Hover me" />
+          <Button label="Hover me" data-testid="button-hover" />
         </Popover>
         <Popover
           trigger="focus"
           placement="top"
           showArrow={true}
+          data-testid="popover-focus"
           content={
             <Text.Paragraph size={Size.small}>
               Join Our Newsletter for Exciting Updates &{' '}
@@ -131,7 +156,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
             </Text.Paragraph>
           }
         >
-          <Button label="Focus me" />
+          <Button label="Focus me" data-testid="button-focus" />
         </Popover>
       </Flex>
       <Flex direction={Direction.horizontal} gap={Gap.large}></Flex>
@@ -213,8 +238,90 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           <Button label="Left" />
         </Popover>
       </Flex>
+      <Text.Heading role={TextHeadingRoles.inner}>
+        Disabled popovers
+      </Text.Heading>
+      <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Popover
+          placement="top"
+          title="Unraveling Dark Matter's Mystery"
+          enabled={false}
+          showCloseButton
+          data-testid="popover-disabled"
+          showArrow
+          style={{ maxWidth: '250px' }}
+          content={
+            <Text.Paragraph size={Size.small}>
+              Dark matter, comprising 27% of the universe, defies detection
+              despite its gravitational influence on celestial bodies. Theories
+              abound regarding its composition, yet conclusive evidence remains
+              elusive. Astronomers employ advanced technologies in a relentless
+              pursuit to shed light on this cosmic enigma.
+            </Text.Paragraph>
+          }
+        >
+          <Button label="No popover here" data-testid="button-disabled" />
+        </Popover>
+      </Flex>
     </Flex>
   ),
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Popover with click trigger', async () => {
+      await userEvent.click(canvas.getByTestId('button-click'));
+      await expect(
+        await canvas.findByTestId('popover-click'),
+      ).toBeInTheDocument();
+      await userEvent.click(canvas.getByText('close'));
+      await expect(
+        await canvas.queryByTestId('popover-click'),
+      ).not.toBeInTheDocument();
+    });
+
+    await step('Popover with hover trigger', async () => {
+      await userEvent.hover(canvas.getByTestId('button-hover'));
+      await expect(
+        await canvas.findByTestId('popover-hover'),
+      ).toBeInTheDocument();
+      await userEvent.unhover(canvas.getByTestId('button-hover'));
+      await timeout(600);
+      await expect(
+        await canvas.queryByTestId('popover-hover'),
+      ).not.toBeInTheDocument();
+    });
+
+    await step('Popover with child popover', async () => {
+      await userEvent.click(canvas.getByTestId('button-parent'));
+      await expect(
+        await canvas.findByTestId('popover-parent'),
+      ).toBeInTheDocument();
+      await userEvent.click(canvas.getByTestId('button-child'));
+      await expect(
+        await canvas.findByTestId('popover-parent'),
+      ).toBeInTheDocument();
+      await expect(
+        await canvas.findByTestId('popover-child'),
+      ).toBeInTheDocument();
+      await userEvent.click(document.body);
+      await expect(
+        await canvas.queryByTestId('popover-parent'),
+      ).not.toBeInTheDocument();
+      await expect(
+        await canvas.queryByTestId('popover-child'),
+      ).not.toBeInTheDocument();
+    });
+
+    await step(
+      'If popover is not enabled we has to prevent opening the popover',
+      async () => {
+        await userEvent.click(canvas.getByTestId('button-disabled'));
+        await expect(
+          await canvas.queryByTestId('popover-disabled'),
+        ).not.toBeInTheDocument();
+      },
+    );
+  },
 };
 
 export default story;
