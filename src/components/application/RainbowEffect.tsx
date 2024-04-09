@@ -36,6 +36,7 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
   const [width, setWidth] = useState<number>(0);
   const [height, setHeight] = useState<number>(0);
   const [borderRadius, setBorderRadius] = useState('0');
+  const [rotation, setRotation] = useState(0);
 
   const currentElementRef = useRef<HTMLElement | null>(null);
 
@@ -44,7 +45,7 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
 
     currentElementRef.current = e.currentTarget;
 
-    setBorderRadius(currentElementRef.current?.style.borderRadius);
+    setBorderRadius(getComputedStyle(currentElementRef.current).borderRadius);
 
     const targetRect = currentElementRef.current?.getBoundingClientRect();
     setContainerPosition({ x: targetRect.x, y: targetRect.y });
@@ -53,6 +54,8 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
       x: e.clientX - targetRect.left,
       y: e.clientY - targetRect.top,
     });
+
+    setRotation(Math.round(Math.random() * 360));
 
     setWidth(targetRect.width);
     setHeight(targetRect.height);
@@ -111,6 +114,7 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
               className={s.Gradient}
               style={{
                 background: `conic-gradient(from 164.05deg at 50% 50%, #FF0200 0deg, #FFC100 10.8deg, #FFA800 42.56deg, #EBFF00 70.11deg, #24FF00 106.2deg, #00F0FF 149.4deg, #00FFF0 190.8deg, #0066FF 237.6deg, #AD00FF 275.4deg, #FF00A8 316.8deg, #FF0200 360deg)`,
+                rotate: `${rotation}deg`,
                 top: `${cursor.y}px`,
                 left: `${cursor.x}px`,
                 width: `${width}px`,

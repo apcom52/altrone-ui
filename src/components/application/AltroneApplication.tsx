@@ -3,7 +3,7 @@ import { AltroneApplicationProps, Theme } from './AltroneApplication.types.ts';
 import { useMediaMatch } from 'utils';
 import clsx from 'clsx';
 import { AltroneConfiguration } from 'components';
-import { createElement } from 'react';
+import { createElement, useEffect } from 'react';
 import { RainbowEffect } from './RainbowEffect.tsx';
 
 export const AltroneApplication = ({
@@ -23,12 +23,19 @@ export const AltroneApplication = ({
     _theme = mediaScheme ? Theme.dark : Theme.light;
   }
 
+  useEffect(() => {
+    document
+      .querySelector('html')
+      ?.classList.toggle('AltroneDark', _theme === Theme.dark);
+  }, [_theme]);
+
   return createElement(
     tagName,
     {
       className: clsx(s.AltroneApp, className, {
         AltroneDark: _theme === Theme.dark,
       }),
+      'data-altrone-root': 'true',
       id,
       style,
       ...props,

@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { MessageProps } from './Message.types.ts';
 import { Flex } from 'components';
-import { Direction, Gap, Role } from '../../types';
+import { Align, Direction, Gap, Role } from '../../types';
 import s from './message.module.scss';
 import clsx from 'clsx';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
@@ -45,7 +45,7 @@ export const Message = memo<MessageProps>(
         {...props}
       >
         {icon ? <div className={s.Icon}>{icon}</div> : null}
-        <Flex className={s.Content} gap={Gap.medium}>
+        <Flex className={s.Content} gap={Gap.medium} justify={Align.center}>
           {header ? <div className={s.Header}>{header}</div> : null}
           <div className={s.Description}>{children}</div>
         </Flex>

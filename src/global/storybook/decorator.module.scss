@@ -2,12 +2,15 @@
   .sb-main-padded {
     padding: 0 !important;
   }
+
+  html, body {
+    height: 100%;
+  }
 }
 
 .Wrapper {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  background-color: var(--appBackground);
   padding: var(--gap) var(--xl-gap);
+  min-height: 100%;
 }

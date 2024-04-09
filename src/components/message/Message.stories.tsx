@@ -35,11 +35,7 @@ export const MessageStory: StoryObj<typeof Flex> = {
         release notes for more details on how to make the most of this update.
         Happy exploring!
       </Message>
-      <Message
-        role={Role.danger}
-        header="Error Occurred!"
-        icon={<Icon i="error" />}
-      >
+      <Message role={Role.danger} icon={<Icon i="error" />}>
         Oops! Something went wrong. Please try again later.
       </Message>
       <Message role={Role.warning}>
