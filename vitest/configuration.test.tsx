@@ -7,6 +7,7 @@ import {
   Flex,
   List,
   Button,
+  Popover,
 } from 'components';
 
 describe('Configation', () => {
@@ -136,6 +137,26 @@ describe('Configation', () => {
         config={{ button: { className: 'cls', style: { color: 'blue' } } }}
       >
         <Button data-testid="element" />
+      </AltroneApplication>,
+    );
+
+    const element = screen.getByTestId('element');
+    expect(element).toHaveClass('cls');
+    expect(element).toHaveStyle('color: blue');
+  });
+
+  test('check that Popover configuration works correctly', () => {
+    render(
+      <AltroneApplication
+        config={{ popover: { className: 'cls', style: { color: 'blue' } } }}
+      >
+        <Popover
+          content={<div>content</div>}
+          openedByDefault
+          data-testid="element"
+        >
+          <Button />
+        </Popover>
       </AltroneApplication>,
     );
 
