@@ -28,15 +28,16 @@ export function DropdownRadioItem({
       onKeyDown={onKeyDownPress}
       onClick={onSelect}
       disabled={disabled}
+      role="radio"
+      aria-checked={value === selectedValue}
       className={clsx(s.Action, className, {
-        'alt-dropdown-item--disabled': disabled,
+        [s.DisabledAction]: disabled,
       })}
     >
-      <div className="alt-dropdown-item__icon alt-dropdown-item__checkbox">
-        <Icon i="check" />
-        {/*<CheckboxIcon checked={value === selectedValue} width={24} height={12} />*/}
+      <div className={s.Icon}>
+        {value === selectedValue ? <Icon i="check" /> : null}
       </div>
-      <div className="alt-dropdown-item__title">{label}</div>
+      <div className={s.Label}>{label}</div>
     </CompositeItem>
   );
 }

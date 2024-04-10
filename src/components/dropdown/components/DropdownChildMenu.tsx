@@ -1,9 +1,9 @@
 import { DropdownChildMenuProps } from '../Dropdown.types';
 import { CompositeItem } from '@floating-ui/react';
 import clsx from 'clsx';
-import './action.scss';
 import { Dropdown } from '../Dropdown';
 import { Icon } from 'components';
+import s from './action.module.scss';
 
 export function DropdownChildMenu({
   children,
@@ -14,20 +14,22 @@ export function DropdownChildMenu({
 }: DropdownChildMenuProps) {
   return (
     <Dropdown
-      content={<Dropdown.Menu>{children}</Dropdown.Menu>}
+      content={
+        <Dropdown.Menu defaultFocusItemIndex={0}>{children}</Dropdown.Menu>
+      }
       placement="right"
     >
       {({ opened }) => (
         <CompositeItem
           disabled={disabled}
-          className={clsx('alt-dropdown-item', className, {
-            'alt-dropdown-item--disabled': disabled,
-            'alt-dropdown-item--opened': opened,
+          className={clsx(s.Action, className, {
+            [s.DisabledAction]: disabled,
+            [s.OpenedAction]: opened,
           })}
         >
-          {icon && <div className="alt-dropdown-item__icon">{icon}</div>}
-          <div className="alt-dropdown-item__title">{label}</div>
-          <div className="alt-dropdown-item__arrow">
+          <div className={s.Icon}>{icon}</div>
+          <div className={s.Label}>{label}</div>
+          <div className={s.Arrow}>
             <Icon i={opened ? 'chevron_left' : 'chevron_right'} />
           </div>
         </CompositeItem>

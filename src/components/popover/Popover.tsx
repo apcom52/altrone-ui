@@ -17,7 +17,13 @@ import {
   useHover,
   useInteractions,
 } from '@floating-ui/react';
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, {
+  createContext,
+  forwardRef,
+  useContext,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import {
   PopoverProps,
   PopoverRef,
@@ -30,6 +36,9 @@ import s from './popover.module.scss';
 import { CloseButton } from 'components';
 import { PopoverArrow } from './inner/PopoverArrow.tsx';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+
+const PopoverCloseContext = createContext<undefined | (() => void)>(undefined);
+const usePopoverCloseContext = () => useContext(PopoverCloseContext);
 
 export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
   const {
@@ -150,8 +159,12 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     [opened, context],
   );
 
+  const popoverParentClose = usePopoverCloseContext();
+  const parentClosePopover = popoverParentClose ? popoverParentClose : hide;
+
   const popoverContext: PopoverContentContext = {
     closePopup: hide,
+    closeAllSequence: parentClosePopover,
   };
 
   const showHeader = showCloseButton || title;
@@ -229,7 +242,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
   }
 
   return (
-    <>
+    <PopoverCloseContext.Provider value={parentClosePopover}>
       {childrenElement}
       {opened && (
         <FloatingPortal
@@ -241,6 +254,6 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
           {floatingBox}
         </FloatingPortal>
       )}
-    </>
+    </PopoverCloseContext.Provider>
   );
 });

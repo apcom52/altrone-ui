@@ -8,6 +8,27 @@
   --dropdownActionHoverTextColor: var(--default-50);
   --dropdownActionPressTextColor: var(--default-50);
   --dropdownHintTextColor: var(--disabledTextColor);
+  --dropdownOpenedBackgroundColor: var(--default-200);
+  --dropdownOpenedTextColor: var(--default-900);
+}
+
+:global(.AltroneDark) {
+  --dropdownActionBackgroundColor: transparent;
+  --dropdownActionHoverColor: var(--primary-700);
+  --dropdownActionPressColor: var(--primary-600);
+  --dropdownActionTextColor: var(--default-50);
+  --dropdownActionHoverTextColor: var(--default-50);
+  --dropdownActionPressTextColor: var(--default-50);
+  --dropdownHintTextColor: var(--disabledTextColor);
+  --dropdownOpenedBackgroundColor: var(--default-700);
+  --dropdownOpenedTextColor: var(--default-50);
+
+  .DangerAction {
+    --dropdownActionBackgroundColor: transparent;
+    --dropdownActionHoverColor: var(--danger-700);
+    --dropdownActionPressColor: var(--danger-600);
+    --dropdownActionTextColor: var(--danger-600);
+  }
 }
 
 .Action {
@@ -24,7 +45,7 @@
   height: 24px;
   outline: 0;
 
-  &:hover, &:focus-visible {
+  &:hover, &:focus-visible, &[data-active]:not(.OpenedAction) {
     background: var(--dropdownActionHoverColor);
     color: var(--dropdownActionHoverTextColor);
     --dropdownHintTextColor: var(--default-100);
@@ -55,12 +76,21 @@
 }
 
 .Arrow {
-
+  min-width: 16px;
+  font-size: 16px;
+  height: 16px;
+  margin-right: -8px;
 }
 
 .DisabledAction {
   pointer-events: none;
   opacity: 0.5;
+}
+
+.OpenedAction {
+  pointer-events: none;
+  --dropdownActionBackgroundColor: var(--dropdownOpenedBackgroundColor);
+  --dropdownActionTextColor: var(--dropdownOpenedTextColor);
 }
 
 .DangerAction {

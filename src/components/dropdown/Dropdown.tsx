@@ -14,12 +14,12 @@ import {
   DropdownCheckbox,
   DropdownAction,
   DropdownRadioItem,
-  DropdownDivider,
   DropdownChildMenu,
 } from './components';
 import { CloseDropdownContext } from './Dropdown.contexts.ts';
 import s from './dropdown.module.scss';
 import clsx from 'clsx';
+import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 
 const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
   const {
@@ -33,7 +33,9 @@ const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
     ...restProps
   } = props;
 
-  const cls = clsx(s.DropdownPopover, className);
+  const { dropdown: dropdownConfig = {} } = useConfiguration();
+
+  const cls = clsx(s.DropdownPopover, className, dropdownConfig.className);
 
   const [popoverContext, setPopoverContext] = useState<FloatingContext | null>(
     null,
@@ -69,7 +71,7 @@ const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
       ref={popoverRef}
       className={cls}
       content={(props) => (
-        <CloseDropdownContext.Provider value={props.closePopup}>
+        <CloseDropdownContext.Provider value={props.closeAllSequence}>
           {typeof content === 'function' ? content(props) : content}
         </CloseDropdownContext.Provider>
       )}
@@ -89,7 +91,6 @@ const DropdownNamespace = Object.assign(DropdownWrapper, {
   Checkbox: DropdownCheckbox,
   RadioList: DropdownRadioList,
   RadioItem: DropdownRadioItem,
-  Divider: DropdownDivider,
   ChildMenu: DropdownChildMenu,
 });
 

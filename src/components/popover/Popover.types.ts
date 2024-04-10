@@ -21,6 +21,7 @@ export type PopoverChildrenContext = {
 
 export type PopoverContentContext = {
   closePopup: () => void;
+  closeAllSequence: () => void;
 };
 
 export interface PopoverProps

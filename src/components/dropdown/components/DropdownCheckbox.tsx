@@ -1,9 +1,8 @@
 import { DropdownCheckboxProps } from '../Dropdown.types';
 import { CompositeItem } from '@floating-ui/react';
 import clsx from 'clsx';
-// import { CheckboxIcon } from '../../../form/Checkbox/CheckboxIcon';
-import './action.scss';
 import { Icon } from 'components';
+import s from './action.module.scss';
 
 export function DropdownCheckbox({
   checked,
@@ -22,21 +21,27 @@ export function DropdownCheckbox({
     }
   };
 
+  const cls = clsx(
+    s.Action,
+    {
+      [s.DisabledAction]: disabled,
+    },
+    className,
+  );
+
   return (
     <CompositeItem
       onKeyDown={onKeyDownPress}
       onClick={onSelect}
       disabled={disabled}
-      className={clsx('alt-dropdown-item', className, {
-        'alt-dropdown-item--disabled': disabled,
-      })}
+      className={cls}
+      role="checkbox"
+      aria-checked={checked}
     >
-      <div className="alt-dropdown-item__icon alt-dropdown-item__checkbox">
-        <Icon i="check" />
-        {/*<CheckboxIcon checked={checked} width={24} height={12} />*/}
-      </div>
-      <div className="alt-dropdown-item__title">{label}</div>
+      <div className={s.Icon}>{checked ? <Icon i="check" /> : null}</div>
+      <div className={s.Label}>{label}</div>
     </CompositeItem>
   );
 }
+
 DropdownCheckbox.displayName = 'DropdownCheckbox';

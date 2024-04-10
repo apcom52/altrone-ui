@@ -23,20 +23,23 @@ export interface DropdownCheckboxProps extends BaseDropdownItem {
   onChange: (state: boolean) => void;
 }
 
-export interface DropdownRadioListProps<T = string> {
+export interface DropdownRadioListProps<T = string>
+  extends Omit<BasicComponentProps, 'onChange'> {
   value: T;
   onChange: (value: T) => void;
   children:
     | ReactElement<DropdownRadioListItem<T>>
     | ReactElement<DropdownRadioListItem<T>>[];
+  label?: string;
 }
 
 export interface DropdownRadioListItem<T = string> extends BaseDropdownItem {
   value: T;
 }
 
-export interface DropdownDividerProps {
-  className?: string;
+export interface DropdownGroupProps
+  extends BasicComponentProps<HTMLDivElement> {
+  label: string;
 }
 
 export interface DropdownChildMenuProps extends BaseDropdownItem {

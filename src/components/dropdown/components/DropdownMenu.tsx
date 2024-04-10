@@ -8,17 +8,30 @@ import {
 } from 'react';
 import { DropdownMenuProps, DropdownMenuRef } from '../Dropdown.types';
 import clsx from 'clsx';
-import { DropdownRadioList } from './DropdownRadioList';
+import {
+  DropdownRadioList,
+  DropdownCheckbox,
+  DropdownRadioItem,
+  DropdownAction,
+  DropdownChildMenu,
+} from './index.ts';
 import { getSafeArray } from 'utils';
-import { DropdownDivider } from './DropdownDivider';
 import s from './menu.module.scss';
+
+const ALLOWED_CHILDCOMPONENTS = [
+  DropdownRadioList,
+  DropdownCheckbox,
+  DropdownRadioItem,
+  DropdownAction,
+  DropdownChildMenu,
+];
 
 export const DropdownMenu = forwardRef<DropdownMenuRef, DropdownMenuProps>(
   (
     {
       children,
       className,
-      defaultFocusItemIndex = undefined,
+      defaultFocusItemIndex = 0,
       onChangeFocusItemIndex,
       ...props
     },
@@ -27,7 +40,12 @@ export const DropdownMenu = forwardRef<DropdownMenuRef, DropdownMenuProps>(
     const childrenArray = getSafeArray(children);
 
     const flatChildren = childrenArray
-      .filter((item) => item?.type !== DropdownDivider)
+      .filter(
+        (item) =>
+          item?.type &&
+          typeof item?.type === 'object' &&
+          ALLOWED_CHILDCOMPONENTS.includes(item.type),
+      )
       .map((item) => {
         if (item?.type === DropdownRadioList) {
           return [item.props.children.filter((i: any) => Boolean(i))];
@@ -39,7 +57,8 @@ export const DropdownMenu = forwardRef<DropdownMenuRef, DropdownMenuProps>(
 
     const disabledIndexes = flatChildren
       .map((item, itemIndex) => {
-        return item.type !== DropdownDivider && item?.props?.disabled
+        return ALLOWED_CHILDCOMPONENTS.includes(item.type) &&
+          item?.props?.disabled
           ? itemIndex
           : -1;
       })
@@ -70,6 +89,7 @@ export const DropdownMenu = forwardRef<DropdownMenuRef, DropdownMenuProps>(
 
     return (
       <Composite
+        role="listbox"
         activeIndex={activeIndex}
         onNavigate={setActiveIndex}
         orientation="vertical"
