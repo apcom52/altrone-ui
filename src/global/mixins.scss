@@ -89,3 +89,8 @@
     border-radius: 5px;
   }
 }
+
+@mixin no-selection {
+  -webkit-user-select: none;
+  user-select: none;
+}

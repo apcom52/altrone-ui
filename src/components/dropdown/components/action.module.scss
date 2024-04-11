@@ -1,0 +1,104 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --dropdownActionBackgroundColor: transparent;
+  --dropdownActionHoverColor: var(--primary-500);
+  --dropdownActionPressColor: var(--primary-600);
+  --dropdownActionTextColor: var(--default-900);
+  --dropdownActionHoverTextColor: var(--default-50);
+  --dropdownActionPressTextColor: var(--default-50);
+  --dropdownHintTextColor: var(--disabledTextColor);
+  --dropdownOpenedBackgroundColor: var(--default-200);
+  --dropdownOpenedTextColor: var(--default-900);
+}
+
+:global(.AltroneDark) {
+  --dropdownActionBackgroundColor: transparent;
+  --dropdownActionHoverColor: var(--primary-700);
+  --dropdownActionPressColor: var(--primary-600);
+  --dropdownActionTextColor: var(--default-50);
+  --dropdownActionHoverTextColor: var(--default-50);
+  --dropdownActionPressTextColor: var(--default-50);
+  --dropdownHintTextColor: var(--disabledTextColor);
+  --dropdownOpenedBackgroundColor: var(--default-700);
+  --dropdownOpenedTextColor: var(--default-50);
+
+  .DangerAction {
+    --dropdownActionBackgroundColor: transparent;
+    --dropdownActionHoverColor: var(--danger-700);
+    --dropdownActionPressColor: var(--danger-600);
+    --dropdownActionTextColor: var(--danger-600);
+  }
+}
+
+.Action {
+  display: flex;
+  align-items: center;
+  padding: var(--xs-gap) var(--l-gap) var(--xs-gap) var(--xs-gap);
+  border-radius: 6px;
+  background: var(--dropdownActionBackgroundColor);
+  color: var(--dropdownActionTextColor);
+  cursor: pointer;
+  @include sm-paragraph;
+  @include no-selection;
+  gap: var(--gap);
+  height: 24px;
+  outline: 0;
+
+  &:hover, &:focus-visible, &[data-active]:not(.OpenedAction) {
+    background: var(--dropdownActionHoverColor);
+    color: var(--dropdownActionHoverTextColor);
+    --dropdownHintTextColor: var(--default-100);
+  }
+
+  &:active {
+    background: var(--dropdownActionPressColor);
+    color: var(--dropdownActionPressTextColor);
+    --dropdownHintTextColor: var(--default-100);
+  }
+}
+
+.Icon {
+  min-width: 16px;
+  font-size: 16px;
+  height: 16px;
+}
+
+.Label {
+  flex: 1;
+}
+
+.Hint {
+  @include code;
+  font-size: 10px;
+  color: var(--dropdownHintTextColor);
+  text-align: right;
+}
+
+.Arrow {
+  min-width: 16px;
+  font-size: 16px;
+  height: 16px;
+  margin-right: -8px;
+}
+
+.DisabledAction {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.OpenedAction {
+  pointer-events: none;
+  --dropdownActionBackgroundColor: var(--dropdownOpenedBackgroundColor);
+  --dropdownActionTextColor: var(--dropdownOpenedTextColor);
+}
+
+.DangerAction {
+  --dropdownActionBackgroundColor: transparent;
+  --dropdownActionHoverColor: var(--danger-500);
+  --dropdownActionPressColor: var(--danger-600);
+  --dropdownActionTextColor: var(--danger-500);
+  --dropdownActionHoverTextColor: var(--danger-50);
+  --dropdownActionPressTextColor: var(--danger-50);
+  --dropdownHintTextColor: var(--danger-300);
+}

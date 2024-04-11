@@ -1,0 +1,12 @@
+@import 'src/global/mixins';
+
+.RadioList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--narrow-gap);
+}
+
+.Title {
+  @include group-heading;
+  margin: var(--xs-gap);
+}

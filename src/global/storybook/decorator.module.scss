@@ -14,3 +14,11 @@
   padding: var(--gap) var(--xl-gap);
   min-height: 100%;
 }
+
+.WithImage {
+  height: 100%;
+  background: url(https://external-preview.redd.it/ji7lWIkgeEVP8ek7gEhpcsFQfxnrKho2dSUxH_HeSmo.jpg?auto=webp&s=90a7723ddd764e91055dd6b2d6b0214cfd17c25c);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}

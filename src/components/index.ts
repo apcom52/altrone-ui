@@ -9,3 +9,5 @@ export * from './button';
 export * from './scrollable';
 export * from './popover';
 export * from './closeButton';
+export * from './dropdown';
+export * from './divider';

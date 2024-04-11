@@ -38,6 +38,15 @@ export interface ConsumerConfigurationContext {
   scrollable?: ComponentConfiguration;
   closeButton?: ComponentConfiguration;
   popover?: ComponentConfiguration;
+  dropdown?: ComponentConfiguration<{
+    focusFirstElement?: boolean;
+  }>;
+  dropdownMenu?: ComponentConfiguration;
+  dropdownAction?: ComponentConfiguration;
+  dropdownCheckbox?: ComponentConfiguration;
+  dropdownRadioList?: ComponentConfiguration;
+  dropdownRadioItem?: ComponentConfiguration;
+  dropdownChildMenu?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =
