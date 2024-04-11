@@ -45,7 +45,7 @@ export interface ConsumerConfigurationContext {
   dropdownAction?: ComponentConfiguration;
   dropdownCheckbox?: ComponentConfiguration;
   dropdownRadioList?: ComponentConfiguration;
-  dropdownRadio?: ComponentConfiguration;
+  dropdownRadioItem?: ComponentConfiguration;
   dropdownChildMenu?: ComponentConfiguration;
 }
 

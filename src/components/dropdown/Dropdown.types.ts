@@ -18,9 +18,12 @@ export interface DropdownActionProps
   disabled?: boolean;
 }
 
-export interface DropdownCheckboxProps extends BaseDropdownItem {
+export interface DropdownCheckboxProps
+  extends Omit<BasicComponentProps<HTMLDivElement>, 'onChange'> {
   checked: boolean;
   onChange: (state: boolean) => void;
+  label: string;
+  disabled?: boolean;
 }
 
 export interface DropdownRadioListProps<T = string>
@@ -33,8 +36,11 @@ export interface DropdownRadioListProps<T = string>
   label?: string;
 }
 
-export interface DropdownRadioListItem<T = string> extends BaseDropdownItem {
+export interface DropdownRadioListItem<T = string>
+  extends Omit<BasicComponentProps<HTMLDivElement>, 'value'> {
   value: T;
+  label?: string;
+  disabled?: boolean;
 }
 
 export interface DropdownGroupProps
@@ -42,9 +48,12 @@ export interface DropdownGroupProps
   label: string;
 }
 
-export interface DropdownChildMenuProps extends BaseDropdownItem {
+export interface DropdownChildMenuProps
+  extends BasicComponentProps<HTMLDivElement> {
   icon?: ReactElement;
   children: ReactElement | null | (ReactElement | null)[];
+  label: string;
+  disabled?: boolean;
 }
 
 export interface DropdownMenuProps

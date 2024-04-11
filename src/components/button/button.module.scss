@@ -183,6 +183,8 @@
   min-height: var(--normal-size);
   outline-width: 0;
 
+  @include no-selection;
+
   &:hover {
     --btnBg: var(--buttonHoverBackgroundColor);
     --btnFg: var(--buttonHoverTextColor);

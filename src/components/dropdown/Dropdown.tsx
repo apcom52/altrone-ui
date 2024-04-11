@@ -30,12 +30,18 @@ const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
     focusTrapTargets = ['content', 'reference'],
     focusFirstElement = true,
     className,
+    style,
     ...restProps
   } = props;
 
   const { dropdown: dropdownConfig = {} } = useConfiguration();
 
   const cls = clsx(s.DropdownPopover, className, dropdownConfig.className);
+
+  const styles = {
+    ...dropdownConfig.style,
+    ...style,
+  };
 
   const [popoverContext, setPopoverContext] = useState<FloatingContext | null>(
     null,
@@ -78,6 +84,7 @@ const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
       placement={placement}
       trigger={trigger}
       focusTrapTargets={focusTrapTargets}
+      style={styles}
       {...restProps}
     >
       {children}

@@ -190,6 +190,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
           contentRef.current = elementRef;
         }}
         className={popoverCls}
+        role="region"
         {...getFloatingProps({
           ...restProps,
           style: {

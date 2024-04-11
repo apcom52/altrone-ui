@@ -3,6 +3,7 @@ import { CompositeItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { useCloseDropdownContext } from '../Dropdown.contexts.ts';
 import s from './action.module.scss';
+import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
 
 export function DropdownAction({
   icon,
@@ -12,8 +13,12 @@ export function DropdownAction({
   label,
   onClick,
   className,
+  style,
   ...props
 }: DropdownActionProps) {
+  const { dropdownAction: dropdownActionConfiguration = {} } =
+    useConfiguration();
+
   const cls = clsx(
     s.Action,
     {
@@ -21,7 +26,13 @@ export function DropdownAction({
       [s.DangerAction]: danger,
     },
     className,
+    dropdownActionConfiguration.className,
   );
+
+  const styles = {
+    ...dropdownActionConfiguration.style,
+    ...style,
+  };
 
   const closePopup = useCloseDropdownContext();
 
@@ -42,6 +53,8 @@ export function DropdownAction({
       onClick={onSelect}
       disabled={disabled}
       className={cls}
+      style={styles}
+      role="button"
       {...props}
     >
       <div className={s.Icon}>{icon}</div>

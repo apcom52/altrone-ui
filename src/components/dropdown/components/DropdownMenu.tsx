@@ -17,6 +17,7 @@ import {
 } from './index.ts';
 import { getSafeArray } from 'utils';
 import s from './menu.module.scss';
+import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
 
 const ALLOWED_CHILDCOMPONENTS = [
   DropdownRadioList,
@@ -33,10 +34,13 @@ export const DropdownMenu = forwardRef<DropdownMenuRef, DropdownMenuProps>(
       className,
       defaultFocusItemIndex = 0,
       onChangeFocusItemIndex,
+      style,
       ...props
     },
     ref,
   ) => {
+    const { dropdownMenu: dropdownMenuConfig = {} } = useConfiguration();
+
     const childrenArray = getSafeArray(children);
 
     const flatChildren = childrenArray
@@ -85,7 +89,12 @@ export const DropdownMenu = forwardRef<DropdownMenuRef, DropdownMenuProps>(
       onChangeFocusItemIndex?.(activeIndex);
     }, [activeIndex]);
 
-    const cls = clsx(s.Menu, className);
+    const cls = clsx(s.Menu, className, dropdownMenuConfig.className);
+
+    const styles = {
+      ...dropdownMenuConfig.style,
+      ...style,
+    };
 
     return (
       <Composite
@@ -96,6 +105,7 @@ export const DropdownMenu = forwardRef<DropdownMenuRef, DropdownMenuProps>(
         disabledIndices={disabledIndexes}
         ref={menuNode}
         className={cls}
+        style={styles}
         {...props}
       >
         {children}

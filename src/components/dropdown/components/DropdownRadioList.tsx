@@ -31,13 +31,18 @@ export function DropdownRadioList({
   );
 
   const cls = clsx(s.RadioList, className, dropdownRadioListConfig.className);
+  const styles = {
+    ...dropdownRadioListConfig.style,
+    ...style,
+  };
 
   return (
     <RadioListDropdownContext.Provider value={contextValue}>
       <div
-        className={cls}
         role="radiogroup"
         aria-labelledby={labelId}
+        className={cls}
+        style={styles}
         {...props}
       >
         {label ? (
