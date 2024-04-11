@@ -51,6 +51,7 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
                 <Dropdown.Action
                   icon={<Icon i="account_tree" />}
                   label="View branches"
+                  data-testid="action-1"
                 />
                 <Dropdown.Action
                   icon={<Icon i="add" />}
@@ -72,11 +73,11 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
               </Dropdown.Menu>
             }
           >
-            <Button label="All branches" data-testid="button-click" />
+            <Button label="All branches" data-testid="button-1" />
           </Dropdown>
           <Dropdown
             placement="bottom"
-            data-testid="dropdown-1"
+            data-testid="dropdown-2"
             content={
               <Dropdown.Menu>
                 <Dropdown.RadioList
@@ -84,15 +85,28 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
                   value={displayAs}
                   onChange={setDisplayAs}
                 >
-                  <Dropdown.RadioItem value="table" label="Table" />
-                  <Dropdown.RadioItem value="list" label="List" />
-                  <Dropdown.RadioItem value="grid" label="Grid" />
+                  <Dropdown.RadioItem
+                    value="table"
+                    data-testid="radio-1"
+                    label="Table"
+                  />
+                  <Dropdown.RadioItem
+                    value="list"
+                    data-testid="radio-2"
+                    label="List"
+                  />
+                  <Dropdown.RadioItem
+                    value="grid"
+                    data-testid="radio-3"
+                    label="Grid"
+                  />
                 </Dropdown.RadioList>
                 <Divider />
                 <Dropdown.Checkbox
                   checked={showHiddenItems}
                   onChange={setShowHiddenItems}
                   label="Show closed tickets"
+                  data-testid="checkbox-1"
                 />
               </Dropdown.Menu>
             }
@@ -100,14 +114,14 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
             {({ opened }) => (
               <Button
                 label="Visibility Settings"
-                data-testid="button-click"
+                data-testid="button-2"
                 rightIcon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
               />
             )}
           </Dropdown>
           <Dropdown
             placement="bottom"
-            data-testid="dropdown-1"
+            data-testid="dropdown-3"
             content={
               <Dropdown.Menu>
                 <Dropdown.Action
@@ -119,10 +133,11 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
                   label="Open document..."
                   hintText="⌘+A"
                 />
-                <Dropdown.ChildMenu label="Recent opened">
+                <Dropdown.ChildMenu data-testid="child-1" label="Recent opened">
                   <Dropdown.Action
                     icon={<Icon i="add" />}
-                    label="Save document"
+                    label="Inner child action"
+                    data-testid="child-action-1"
                     hintText="⌘+A"
                   />
                   <Dropdown.Action
@@ -150,11 +165,11 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
               </Dropdown.Menu>
             }
           >
-            <Button label="File" data-testid="button-click" />
+            <Button label="File" data-testid="button-3" />
           </Dropdown>
           <Dropdown
             placement="bottom"
-            data-testid="dropdown-1"
+            data-testid="dropdown-4"
             content={
               <Dropdown.Menu>
                 <Dropdown.Action
@@ -188,6 +203,83 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
+
+    await step(
+      'Opening simple dropdown and has to close after clicking on action',
+      async () => {
+        await userEvent.click(canvas.getByTestId('button-1'));
+        expect(canvas.getByTestId('dropdown-1')).toBeInTheDocument();
+        await userEvent.click(canvas.getByTestId('action-1'));
+        expect(canvas.queryByTestId('dropdown-1')).not.toBeInTheDocument();
+      },
+    );
+
+    await step('Checkbox action', async () => {
+      await userEvent.click(canvas.getByTestId('button-2'));
+      expect(canvas.getByTestId('dropdown-2')).toBeInTheDocument();
+      expect(canvas.getByTestId('checkbox-1')).toHaveAttribute(
+        'aria-checked',
+        'false',
+      );
+      await userEvent.click(canvas.getByTestId('checkbox-1'));
+      expect(canvas.getByTestId('checkbox-1')).toHaveAttribute(
+        'aria-checked',
+        'true',
+      );
+    });
+
+    await step('Radio action', async () => {
+      expect(canvas.getByTestId('radio-1')).toBeInTheDocument();
+      expect(canvas.getByTestId('radio-1')).toHaveAttribute(
+        'aria-checked',
+        'true',
+      );
+      expect(canvas.getByTestId('radio-2')).toHaveAttribute(
+        'aria-checked',
+        'false',
+      );
+      expect(canvas.getByTestId('radio-3')).toHaveAttribute(
+        'aria-checked',
+        'false',
+      );
+      await userEvent.click(canvas.getByTestId('radio-2'));
+      expect(canvas.getByTestId('radio-1')).toHaveAttribute(
+        'aria-checked',
+        'false',
+      );
+      expect(canvas.getByTestId('radio-2')).toHaveAttribute(
+        'aria-checked',
+        'true',
+      );
+      expect(canvas.getByTestId('radio-3')).toHaveAttribute(
+        'aria-checked',
+        'false',
+      );
+      await userEvent.click(canvas.getByTestId('radio-3'));
+      expect(canvas.getByTestId('radio-1')).toHaveAttribute(
+        'aria-checked',
+        'false',
+      );
+      expect(canvas.getByTestId('radio-2')).toHaveAttribute(
+        'aria-checked',
+        'false',
+      );
+      expect(canvas.getByTestId('radio-3')).toHaveAttribute(
+        'aria-checked',
+        'true',
+      );
+    });
+
+    await step('Child dropdowns', async () => {
+      await userEvent.click(canvas.getByTestId('button-3'));
+      expect(canvas.getByTestId('dropdown-3')).toBeInTheDocument();
+      expect(canvas.queryByText('Inner child action')).not.toBeInTheDocument();
+      await userEvent.click(canvas.getByText('Recent opened'));
+      expect(canvas.queryByText('Inner child action')).toBeInTheDocument();
+      await userEvent.click(canvas.getByText('Inner child action'));
+      expect(canvas.queryByTestId('dropdown-3')).not.toBeInTheDocument();
+      expect(canvas.queryByText('Inner child action')).not.toBeInTheDocument();
+    });
   },
 };
 
