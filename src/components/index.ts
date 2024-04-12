@@ -11,3 +11,4 @@ export * from './popover';
 export * from './closeButton';
 export * from './dropdown';
 export * from './divider';
+export * from './textInput';
