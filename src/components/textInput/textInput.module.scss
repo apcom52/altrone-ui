@@ -3,9 +3,10 @@
 :global(:root) {
   --inputBackgroundColor: var(--default-200);
   --inputHoverBackgroundColor: var(--default-300);
-  --inputTextColor: var(--default-800);
-  --inputHoverTextColor: var(--default-900);
-  --placeholderTextColor: var(--default-500);
+  --inputTextColor: var(--default-700);
+  --inputHoverTextColor: var(--default-800);
+  --inputPlaceholderTextColor: var(--default-400);
+  --inputPlaceholderHoverTextColor: var(--default-500);
   --inputInvalidTextColor: var(--danger-800);
 }
 
@@ -14,7 +15,8 @@
   --inputHoverBackgroundColor: var(--default-700);
   --inputTextColor: var(--default-100);
   --inputHoverTextColor: var(--default-50);
-  --placeholderTextColor: var(--default-400);
+  --inputPlaceholderTextColor: var(--default-500);
+  --inputPlaceholderHoverTextColor: var(--default-400);
   --inputInvalidTextColor: var(--danger-600);
 }
 
@@ -25,6 +27,7 @@
 .Input {
   --bgColor: var(--inputBackgroundColor);
   --fgColor: var(--inputTextColor);
+  --placeholderColor: var(--inputPlaceholderTextColor);
 
   width: 100%;
   background: var(--bgColor);
@@ -44,10 +47,11 @@
   &:hover, &:focus-visible {
     --bgColor: var(--inputHoverBackgroundColor);
     --fgColor: var(--inputHoverTextColor);
+    --placeholderColor: var(--inputPlaceholderHoverTextColor);
   }
 
   &::placeholder {
-    color: var(--placeholderTextColor);
+    color: var(--placeholderColor);
   }
 
   &:disabled {
@@ -62,4 +66,22 @@
 
 .Invalid {
   --fgColor: var(--inputInvalidTextColor) !important;
+}
+
+.Readonly {
+  --bgColor: transparent !important;
+}
+
+.Transparent {
+  --bgColor: transparent;
+}
+
+.Small {
+  @include sm-paragraph;
+  height: 20px;
+}
+
+.Large {
+  @include big-paragraph;
+  height: 32px;
 }
