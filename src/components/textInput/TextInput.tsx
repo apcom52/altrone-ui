@@ -1,4 +1,4 @@
-import { forwardRef, useMemo, useRef } from 'react';
+import { cloneElement, forwardRef, useCallback, useMemo, useRef } from 'react';
 import { TextInputProps } from './TextInput.types.ts';
 import s from './textInput.module.scss';
 import clsx from 'clsx';
@@ -28,6 +28,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       rainbowEffect = true,
       onFocus,
       onBlur,
+      Component,
       ...restProps
     } = props;
 
@@ -83,6 +84,15 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       return [left, right];
     }, [children]);
 
+    const onChangeHandler = useCallback<
+      React.ChangeEventHandler<HTMLInputElement>
+    >(
+      (e) => {
+        onChange?.(e.target.value, e);
+      },
+      [onChange],
+    );
+
     useResizeObserver(leftIslandsContainerRef);
     useResizeObserver(rightIslandsContainerRef);
 
@@ -96,13 +106,29 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         : undefined,
     };
 
-    return (
-      <div className={wrapperCls} style={wrapperStyles}>
+    let inputElement = null;
+    if (Component) {
+      inputElement = cloneElement(Component, {
+        ref,
+        value,
+        onChange: onChangeHandler,
+        ariaInvalid: invalid,
+        dataRainbowOpacity: 0.33,
+        dataRainbowBlur: 36,
+        onFocus: focus,
+        onBlur: blur,
+        className,
+        style: styles,
+        ...rainbowEvents,
+        ...restProps,
+      });
+    } else {
+      inputElement = (
         <input
           type="text"
           ref={ref}
           value={value}
-          onChange={(e) => onChange(e.target.value, e)}
+          onChange={onChangeHandler}
           className={cls}
           style={styles}
           aria-invalid={invalid}
@@ -113,6 +139,12 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
           {...rainbowEvents}
           {...restProps}
         />
+      );
+    }
+
+    return (
+      <div className={wrapperCls} style={wrapperStyles}>
+        {inputElement}
         {leftIslands.length ? (
           <div ref={leftIslandsContainerRef} className={s.LeftIslands}>
             {leftIslands}

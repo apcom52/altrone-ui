@@ -3,7 +3,7 @@ import { BasicComponentProps, Size } from 'types';
 
 export interface TextInputProps
   extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
+    BasicComponentProps & React.InputHTMLAttributes<HTMLInputElement>,
     'onChange' | 'size' | 'children'
   > {
   children?: ReactElement | ReactElement[] | null;
@@ -15,6 +15,7 @@ export interface TextInputProps
   size?: Size;
   rainbowEffect?: boolean;
   transparent?: boolean;
+  Component?: ReactElement;
 }
 
 export interface TextIslandProps extends BasicComponentProps {

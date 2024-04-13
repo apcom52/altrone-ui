@@ -422,4 +422,22 @@ export const IslandsStory: StoryObj<typeof Flex> = {
   },
 };
 
+export const CustomInputStory: StoryObj<typeof Flex> = {
+  name: 'Using custom input',
+  render: () => {
+    const [value, setValue] = useState('0');
+
+    return (
+      <Flex gap={Gap.large}>
+        <Text.Heading role={TextHeadingRoles.inner}>
+          Using custom component instead of standard input
+        </Text.Heading>
+        <TextInput value={value} onChange={setValue} Component={<textarea />}>
+          <TextInput.TextIsland label="Left island" />
+        </TextInput>
+      </Flex>
+    );
+  },
+};
+
 export default story;
