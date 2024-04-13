@@ -1,14 +1,14 @@
 import clsx from 'clsx';
 import s from './icon.module.scss';
-import { memo } from 'react';
+import { forwardRef } from 'react';
 import { IconIslandProps } from '../TextInput.types.ts';
 
-export const IconIsland = memo(
-  ({ icon, className, ...props }: IconIslandProps) => {
+export const IconIsland = forwardRef<HTMLDivElement, IconIslandProps>(
+  ({ icon, className, ...props }, ref) => {
     const cls = clsx(s.IconIsland, className);
 
     return (
-      <div className={cls} {...props}>
+      <div className={cls} ref={ref} {...props}>
         {icon}
       </div>
     );

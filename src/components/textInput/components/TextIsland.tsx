@@ -1,14 +1,14 @@
 import clsx from 'clsx';
 import s from './text.module.scss';
 import { TextIslandProps } from '../TextInput.types.ts';
-import { memo } from 'react';
+import { forwardRef } from 'react';
 
-export const TextIsland = memo(
-  ({ label, className, ...props }: TextIslandProps) => {
+export const TextIsland = forwardRef<HTMLDivElement, TextIslandProps>(
+  ({ label, className, ...props }, ref) => {
     const cls = clsx(s.TextIsland, className);
 
     return (
-      <div className={cls} {...props}>
+      <div className={cls} ref={ref} {...props}>
         {label}
       </div>
     );

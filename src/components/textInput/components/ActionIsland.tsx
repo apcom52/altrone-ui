@@ -5,7 +5,15 @@ import s from './action.module.scss';
 
 export const ActionIsland = forwardRef<HTMLButtonElement, ActionIslandProps>(
   (
-    { showLabel = true, label, icon, className, placement, ...restProps },
+    {
+      showLabel = true,
+      label,
+      icon,
+      className,
+      placement,
+      danger = false,
+      ...restProps
+    },
     ref,
   ) => {
     const cls = clsx(
@@ -13,6 +21,7 @@ export const ActionIsland = forwardRef<HTMLButtonElement, ActionIslandProps>(
       {
         [s.LeftSide]: !placement || placement === 'left',
         [s.RightSide]: placement === 'right',
+        [s.Danger]: danger,
       },
       className,
     );

@@ -6,6 +6,10 @@
   --actionIslandHoverBackgroundColor: var(--default-300);
   --actionIslandHoverTextColor: var(--default-900);
   --actionIslandTextSize: var(--labelFontSize);
+  --actionIslandDangerBackgroundColor: transparent;
+  --actionIslandDangerTextColor: var(--danger-700);
+  --actionIslandDangerHoverBackgroundColor: var(--danger-100);
+  --actionIslandDangerHoverTextColor: var(--danger-800);
 }
 
 :global(.AltroneDark) {
@@ -13,6 +17,10 @@
   --actionIslandTextColor: var(--default-100);
   --actionIslandHoverBackgroundColor: var(--default-700);
   --actionIslandHoverTextColor: var(--default-50);
+  --actionIslandDangerBackgroundColor: transparent;
+  --actionIslandDangerTextColor: var(--danger-500);
+  --actionIslandDangerHoverBackgroundColor: var(--danger-900);
+  --actionIslandDangerHoverTextColor: var(--danger-100);
 }
 
 .ActionIsland {
@@ -39,6 +47,10 @@
   outline: none;
   transition: background-color 0.2s linear, color 0.2s linear;
 
+  &:disabled {
+    @include disabled;
+  }
+
   &:hover, &:focus-visible {
     --bgColor: var(--actionIslandHoverBackgroundColor);
     --fgColor: var(--actionIslandHoverTextColor);
@@ -64,5 +76,15 @@
 .RightSide {
   &:last-child {
     margin-right: calc(var(--inputVerticalOffset) - var(--inputHorizontalOffset));
+  }
+}
+
+.Danger {
+  --bgColor: var(--actionIslandDangerBackgroundColor);
+  --fgColor: var(--actionIslandDangerTextColor);
+
+  &:hover, &:focus-visible {
+    --bgColor: var(--actionIslandDangerHoverBackgroundColor);
+    --fgColor: var(--actionIslandDangerHoverTextColor);
   }
 }

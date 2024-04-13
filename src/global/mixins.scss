@@ -107,3 +107,8 @@
   -webkit-user-select: none;
   user-select: none;
 }
+
+@mixin disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

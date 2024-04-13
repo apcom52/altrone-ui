@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import {
   Button,
+  CloseButton,
   Dropdown,
   Flex,
   Icon,
@@ -354,6 +355,20 @@ export const IslandsStory: StoryObj<typeof Flex> = {
               onClick={() => setValue7('')}
             />
           </TextInput>
+
+          <TextInput value={value7} onChange={setValue7} placeholder="Username">
+            <TextInput.ActionIsland
+              icon={<Icon i="block" />}
+              label="Disabled action"
+              disabled
+            />
+            <TextInput.ActionIsland
+              icon={<Icon i="replay" />}
+              label="Revert changes"
+              placement="right"
+              danger
+            />
+          </TextInput>
         </Flex>
         <Flex direction={Direction.horizontal} gap={Gap.large}>
           <TextInput
@@ -386,6 +401,20 @@ export const IslandsStory: StoryObj<typeof Flex> = {
               showLabel={false}
               placement="right"
             />
+          </TextInput>
+        </Flex>
+        <Text.Heading role={TextHeadingRoles.inner}>
+          Custom Islands
+        </Text.Heading>
+        <Flex direction={Direction.horizontal} gap={Gap.large}>
+          <TextInput
+            value={value9}
+            onChange={setValue9}
+            placeholder="<-- Close button as custom island"
+          >
+            <TextInput.CustomIsland>
+              <CloseButton />
+            </TextInput.CustomIsland>
           </TextInput>
         </Flex>
       </Flex>

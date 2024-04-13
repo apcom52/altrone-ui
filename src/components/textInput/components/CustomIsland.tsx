@@ -1,24 +1,19 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { forwardRef } from 'react';
 import clsx from 'clsx';
+import { CustomIslandProps } from '../TextInput.types.ts';
+import s from './custom.module.scss';
 
-export const CustomIsland = forwardRef((props, ref) => {
-  const { children, className } = props;
+export const CustomIsland = forwardRef<HTMLDivElement, CustomIslandProps>(
+  (props, ref) => {
+    const { children, className, ...restProps } = props;
 
-  const islandRef = useRef<HTMLDivElement | null>(null);
+    const cls = clsx(s.CustomAction, className);
 
-  useImperativeHandle(
-    ref,
-    () => ({
-      container: islandRef.current,
-      placement: props.placement,
-    }),
-    [props.placement],
-  );
-
-  return (
-    <div className={clsx('alt-custom-island', className)} ref={islandRef}>
-      {children}
-    </div>
-  );
-});
+    return (
+      <div className={cls} ref={ref} {...restProps}>
+        {children}
+      </div>
+    );
+  },
+);
 CustomIsland.displayName = 'TextInputCustomIsland';
