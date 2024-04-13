@@ -8,6 +8,8 @@
   --inputPlaceholderTextColor: var(--default-400);
   --inputPlaceholderHoverTextColor: var(--default-500);
   --inputInvalidTextColor: var(--danger-800);
+  --inputIslandTextSize: 14px;
+  --inputIslandHeight: 20px;
 }
 
 :global(.AltroneDark) {
@@ -21,7 +23,12 @@
 }
 
 .Wrapper {
+  --height: 24px;
+
+  display: flex;
+  position: relative;
   width: 100%;
+  height: var(--height);
 }
 
 .Input {
@@ -37,7 +44,7 @@
   border-radius: 6px;
   border: none;
   padding: var(--narrow-gap) var(--s-gap);
-  height: 24px;
+  height: var(--height);
   transition: background-color 0.2s linear, color 0.2s linear;
   outline: none;
   color: var(--fgColor);
@@ -77,11 +84,40 @@
 }
 
 .Small {
-  @include sm-paragraph;
-  height: 20px;
+  --height: 20px;
+  --inputIslandTextSize: 12px;
+  --inputIslandHeight: 16px;
+
+  .Input {
+    @include sm-paragraph;
+  }
 }
 
 .Large {
-  @include big-paragraph;
-  height: 32px;
+  --height: 32px;
+  --inputIslandTextSize: 16px;
+  --inputIslandHeight: 24px;
+
+  .Input {
+    @include big-paragraph;
+  }
+}
+
+.LeftIslands, .RightIslands {
+  display: flex;
+  position: absolute;
+  top: 0;
+  align-items: center;
+  gap: var(--xs-gap);
+  height: var(--height);
+  padding: 2px var(--xs-gap);
+  pointer-events: none;
+}
+
+.LeftIslands {
+  left: 0;
+}
+
+.RightIslands {
+  right: 0;
 }

@@ -1,14 +1,21 @@
-import { forwardRef } from 'react';
+import { forwardRef, useMemo, useRef } from 'react';
 import { TextInputProps } from './TextInput.types.ts';
 import s from './textInput.module.scss';
 import clsx from 'clsx';
 import { useRainbowEffect } from '../application/RainbowEffect.tsx';
 import { Size } from '../../types';
-import { useToggledState } from '../../utils';
+import { useResizeObserver, useToggledState } from '../../utils';
+import {
+  ActionIsland,
+  CustomIsland,
+  IconIsland,
+  TextIsland,
+} from './components';
 
-export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
+const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
   (props, ref) => {
     const {
+      children,
       value,
       onChange,
       className,
@@ -34,15 +41,21 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       !restProps.readOnly && !restProps.disabled && rainbowEffect && !focused,
     );
 
-    const wrapperCls = clsx(s.Wrapper, wrapperClassName);
+    const wrapperCls = clsx(
+      s.Wrapper,
+      {
+        [s.Small]: size === Size.small,
+        [s.Large]: size === Size.large,
+      },
+      wrapperClassName,
+    );
+
     const cls = clsx(
       s.Input,
       {
         [s.Invalid]: invalid,
         [s.Readonly]: restProps.readOnly,
         [s.Transparent]: transparent,
-        [s.Small]: size === Size.small,
-        [s.Large]: size === Size.large,
       },
       className,
     );
@@ -51,8 +64,36 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       ...wrapperStyle,
     };
 
+    const leftIslandsContainerRef = useRef<HTMLDivElement | null>(null);
+    const rightIslandsContainerRef = useRef<HTMLDivElement | null>(null);
+
+    const [leftIslands, rightIslands] = useMemo(() => {
+      const safeChildren = (
+        Array.isArray(children) ? children : [children]
+      ).filter((childElement) => Boolean(childElement));
+
+      const left = safeChildren.filter(
+        (island) =>
+          !island?.props.placement || island?.props.placement === 'left',
+      );
+      const right = safeChildren.filter(
+        (island) => island?.props.placement === 'right',
+      );
+
+      return [left, right];
+    }, [children]);
+
+    useResizeObserver(leftIslandsContainerRef);
+    useResizeObserver(rightIslandsContainerRef);
+
     const styles = {
       ...style,
+      paddingLeft: leftIslands.length
+        ? leftIslandsContainerRef.current?.offsetWidth + 'px'
+        : undefined,
+      paddingRight: rightIslands.length
+        ? rightIslandsContainerRef.current?.offsetWidth + 'px'
+        : undefined,
     };
 
     return (
@@ -65,14 +106,33 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           className={cls}
           style={styles}
           aria-invalid={invalid}
-          data-rainbow-opacity={0.5}
+          data-rainbow-opacity={0.33}
           data-rainbow-blur={36}
           onFocus={focus}
           onBlur={blur}
           {...rainbowEvents}
           {...restProps}
         />
+        {leftIslands.length ? (
+          <div ref={leftIslandsContainerRef} className={s.LeftIslands}>
+            {leftIslands}
+          </div>
+        ) : null}
+        {rightIslands.length ? (
+          <div ref={rightIslandsContainerRef} className={s.RightIslands}>
+            {rightIslands}
+          </div>
+        ) : null}
       </div>
     );
   },
 );
+
+const TextInputNamespace = Object.assign(TextInputComponent, {
+  TextIsland: TextIsland,
+  IconIsland: IconIsland,
+  ActionIsland: ActionIsland,
+  CustomIsland: CustomIsland,
+});
+
+export { TextInputNamespace as TextInput };
