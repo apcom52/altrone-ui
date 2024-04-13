@@ -10,6 +10,8 @@
   --inputInvalidTextColor: var(--danger-800);
   --inputIslandTextSize: 14px;
   --inputIslandHeight: 20px;
+  --inputHorizontalOffset: var(--s-gap);
+  --inputVerticalOffset: var(--narrow-gap);
 }
 
 :global(.AltroneDark) {
@@ -43,7 +45,7 @@
   appearance: none;
   border-radius: 6px;
   border: none;
-  padding: var(--narrow-gap) var(--s-gap);
+  padding: var(--inputVerticalOffset) var(--inputHorizontalOffset);
   height: var(--height);
   transition: background-color 0.2s linear, color 0.2s linear;
   outline: none;
@@ -87,6 +89,7 @@
   --height: 20px;
   --inputIslandTextSize: 12px;
   --inputIslandHeight: 16px;
+  --actionIslandTextSize: var(--smallLabelFontSize);
 
   .Input {
     @include sm-paragraph;
@@ -97,6 +100,9 @@
   --height: 32px;
   --inputIslandTextSize: 16px;
   --inputIslandHeight: 24px;
+  --inputVerticalOffset: 4px;
+  --inputHorizontalOffset: 6px;
+  --actionIslandTextSize: var(--groupHeadingFontSize);
 
   .Input {
     @include big-paragraph;
@@ -110,14 +116,16 @@
   align-items: center;
   gap: var(--xs-gap);
   height: var(--height);
-  padding: 2px var(--xs-gap);
+  padding: var(--inputVerticalOffset) var(--inputHorizontalOffset);
   pointer-events: none;
 }
 
 .LeftIslands {
   left: 0;
+  padding-right: var(--inputHorizontalOffset);
 }
 
 .RightIslands {
   right: 0;
+  padding-left: var(--inputHorizontalOffset);
 }

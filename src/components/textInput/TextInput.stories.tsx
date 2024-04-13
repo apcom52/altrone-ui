@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import {
   Button,
+  Dropdown,
   Flex,
   Icon,
   Text,
@@ -149,11 +150,15 @@ export const IslandsStory: StoryObj<typeof Flex> = {
   render: () => {
     const [value1, setValue1] = useState('');
     const [value2, setValue2] = useState('npm install altrone-ui');
-    const [value3, setValue3] = useState('40');
+    const [value3, setValue3] = useState('10111');
 
     const [value4, setValue4] = useState('');
     const [value5, setValue5] = useState('');
     const [value6, setValue6] = useState('');
+
+    const [value7, setValue7] = useState('');
+    const [value8, setValue8] = useState('');
+    const [value9, setValue9] = useState('');
 
     return (
       <Flex gap={Gap.large}>
@@ -177,9 +182,13 @@ export const IslandsStory: StoryObj<typeof Flex> = {
           <TextInput
             value={value3}
             onChange={setValue3}
-            placeholder="Enter temperature"
+            placeholder="Enter your zip"
+            maxLength={10}
           >
-            <TextInput.TextIsland placement="right" label="°C" />
+            <TextInput.TextIsland
+              placement="right"
+              label={`${value3.length}/10`}
+            />
           </TextInput>
         </Flex>
         <Flex direction={Direction.horizontal} gap={Gap.large}>
@@ -203,10 +212,14 @@ export const IslandsStory: StoryObj<typeof Flex> = {
           <TextInput
             value={value3}
             onChange={setValue3}
-            placeholder="Enter temperature"
+            placeholder="Enter your zip"
             size={Size.small}
+            maxLength={10}
           >
-            <TextInput.TextIsland placement="right" label="°C" />
+            <TextInput.TextIsland
+              placement="right"
+              label={`${value3.length}/10`}
+            />
           </TextInput>
         </Flex>
         <Flex direction={Direction.horizontal} gap={Gap.large}>
@@ -230,10 +243,14 @@ export const IslandsStory: StoryObj<typeof Flex> = {
           <TextInput
             value={value3}
             onChange={setValue3}
-            placeholder="Enter temperature"
+            placeholder="Enter your zip"
             size={Size.large}
+            maxLength={10}
           >
-            <TextInput.TextIsland placement="right" label="°C" />
+            <TextInput.TextIsland
+              placement="right"
+              label={`${value3.length}/10`}
+            />
           </TextInput>
         </Flex>
         <Text.Heading role={TextHeadingRoles.inner}>Icon Islands</Text.Heading>
@@ -293,6 +310,81 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             <TextInput.IconIsland
               placement="right"
               icon={<Icon i="expand_more" />}
+            />
+          </TextInput>
+        </Flex>
+        <Text.Heading role={TextHeadingRoles.inner}>
+          Action Islands
+        </Text.Heading>
+        <Flex direction={Direction.horizontal} gap={Gap.large}>
+          <TextInput value={value7} onChange={setValue7} placeholder="Username">
+            <Dropdown
+              focusFirstElement={false}
+              content={
+                <Dropdown.Menu>
+                  <Dropdown.Action
+                    label="@Wolf"
+                    onClick={() => setValue7('Wolf')}
+                  />
+                  <Dropdown.Action
+                    label="@Fox"
+                    onClick={() => setValue7('Fox')}
+                  />
+                  <Dropdown.Action
+                    label="@Bear"
+                    onClick={() => setValue7('Bear')}
+                  />
+                  <Dropdown.Action
+                    label="@Chicken"
+                    onClick={() => setValue7('Chicken')}
+                  />
+                </Dropdown.Menu>
+              }
+            >
+              <TextInput.ActionIsland
+                icon={<Icon i="account_circle" />}
+                label="Pick a user"
+              />
+            </Dropdown>
+            <TextInput.ActionIsland
+              icon={<Icon i="backspace" />}
+              label="Clear field"
+              showLabel={false}
+              placement="right"
+              onClick={() => setValue7('')}
+            />
+          </TextInput>
+        </Flex>
+        <Flex direction={Direction.horizontal} gap={Gap.large}>
+          <TextInput
+            value={value8}
+            onChange={setValue8}
+            placeholder="User Password"
+            size={Size.small}
+          >
+            <TextInput.ActionIsland
+              label="Generate"
+              placement="right"
+              onClick={() => setValue8('')}
+            />
+          </TextInput>
+          <TextInput
+            value={value8}
+            onChange={setValue8}
+            placeholder="Write your thoughts"
+            size={Size.large}
+          >
+            <TextInput.ActionIsland
+              icon={<Icon i="share" />}
+              label="Share"
+              placement="right"
+              onClick={() => setValue8('')}
+            />
+            <TextInput.ActionIsland
+              icon={<Icon i="expand_more" />}
+              label="Show more options"
+              showLabel={false}
+              placement="right"
             />
           </TextInput>
         </Flex>

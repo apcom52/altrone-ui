@@ -26,3 +26,13 @@ export interface IconIslandProps extends BasicComponentProps {
   icon: ReactElement;
   placement?: 'left' | 'right';
 }
+
+export interface ActionIslandProps
+  extends Omit<BasicComponentProps<HTMLButtonElement>, 'role' | 'onClick'> {
+  label: string;
+  icon?: ReactElement;
+  showLabel?: boolean;
+  placement?: 'left' | 'right';
+  danger?: boolean;
+  onClick?: () => void;
+}
