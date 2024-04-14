@@ -21,7 +21,13 @@ const RainbowEffectContext = createContext<RainbowEffectContextType>({
   onMouseMove: () => null,
   onMouseLeave: () => null,
 });
-export const useRainbowEffect = () => useContext(RainbowEffectContext);
+export const useRainbowEffect = (enabled: boolean = true) => {
+  if (!enabled) {
+    return {};
+  }
+
+  return useContext(RainbowEffectContext);
+};
 
 export const RainbowEffect = ({ children }: PropsWithChildren) => {
   const [visible, setVisible] = useState(false);
@@ -37,6 +43,8 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
   const [height, setHeight] = useState<number>(0);
   const [borderRadius, setBorderRadius] = useState('0');
   const [rotation, setRotation] = useState(0);
+  const [opacity, setOpacity] = useState(1);
+  const [blur, setBlur] = useState(11);
 
   const currentElementRef = useRef<HTMLElement | null>(null);
 
@@ -46,6 +54,16 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
     currentElementRef.current = e.currentTarget;
 
     setBorderRadius(getComputedStyle(currentElementRef.current).borderRadius);
+    setOpacity(
+      currentElementRef.current?.dataset.rainbowOpacity
+        ? Number(currentElementRef.current.dataset.rainbowOpacity)
+        : 1,
+    );
+    setBlur(
+      currentElementRef.current?.dataset.rainbowBlur
+        ? Number(currentElementRef.current.dataset.rainbowBlur)
+        : 11,
+    );
 
     const targetRect = currentElementRef.current?.getBoundingClientRect();
     setContainerPosition({ x: targetRect.x, y: targetRect.y });
@@ -105,6 +123,7 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
             left: `${containerPosition.x}px`,
             width: `${width}px`,
             height: `${height}px`,
+            opacity,
             borderRadius,
           }}
           data-testid="rainbow"
@@ -119,6 +138,7 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
                 left: `${cursor.x}px`,
                 width: `${width}px`,
                 height: `${width}px`,
+                filter: `blur(${blur}px)`,
               }}
             ></div>
           </div>

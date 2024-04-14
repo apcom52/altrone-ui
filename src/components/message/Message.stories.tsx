@@ -5,7 +5,7 @@ import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 
 const story: Meta<typeof Message> = {
-  title: 'Components/Feedback/Message',
+  title: 'Components/Typography/Message',
   component: Message,
   decorators: [StorybookDecorator],
   args: {},

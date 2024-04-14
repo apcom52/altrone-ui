@@ -1,76 +1,89 @@
 @mixin screen-name {
+  font-family: "Inter", sans-serif;
   font-size: var(--screenFontSize);
   line-height: var(--screenLineHeight);
   font-weight: var(--screenFontWeight);
 }
 
 @mixin title {
+  font-family: "Inter", sans-serif;
   font-size: var(--titleFontSize);
   line-height: var(--titleLineHeight);
   font-weight: var(--titleFontWeight);
 }
 
 @mixin heading {
+  font-family: "Inter", sans-serif;
   font-size: var(--headingFontSize);
   line-height: var(--headingLineHeight);
   font-weight: var(--headingFontWeight);
 }
 
 @mixin subheader {
+  font-family: "Inter", sans-serif;
   font-size: var(--subheaderFontSize);
   line-height: var(--subheaderLineHeight);
   font-weight: var(--subheaderFontWeight);
 }
 
 @mixin inner-header {
+  font-family: "Inter", sans-serif;
   font-size: var(--innerHeaderFontSize);
   line-height: var(--innerHeaderLineHeight);
   font-weight: var(--innerHeaderFontWeight);
 }
 
 @mixin big-paragraph {
+  font-family: "Inter", sans-serif;
   font-size: var(--bigParagraphFontSize);
   line-height: var(--bigParagraphLineHeight);
   font-weight: var(--bigParagraphFontWeight);
 }
 
 @mixin paragraph {
+  font-family: "Inter", sans-serif;
   font-size: var(--paragraphFontSize);
   line-height: var(--paragraphLineHeight);
   font-weight: var(--paragraphFontWeight);
 }
 
 @mixin sm-paragraph {
+  font-family: "Inter", sans-serif;
   font-size: var(--smallParagraphFontSize);
   line-height: var(--smallParagraphLineHeight);
   font-weight: var(--smallParagraphFontWeight);
 }
 
 @mixin code {
+  font-family: "JetBrains Mono", monospace;
   font-size: var(--codeFontSize);
   line-height: var(--codeLineHeight);
   font-weight: var(--codeFontWeight);
 }
 
 @mixin group-heading {
+  font-family: "Inter", sans-serif;
   font-size: var(--groupHeadingFontSize);
   line-height: var(--groupHeadingLineHeight);
   font-weight: var(--groupHeadingFontWeight);
 }
 
 @mixin label-heading {
+  font-family: "Inter", sans-serif;
   font-size: var(--labelHeadingFontSize);
   line-height: var(--labelHeadingLineHeight);
   font-weight: var(--labelHeadingFontWeight);
 }
 
 @mixin label {
+  font-family: "Inter", sans-serif;
   font-size: var(--labelFontSize);
   line-height: var(--labelLineHeight);
   font-weight: var(--labelFontWeight);
 }
 
 @mixin small-label {
+  font-family: "Inter", sans-serif;
   font-size: var(--smallLabelFontSize);
   line-height: var(--smallLabelLineHeight);
   font-weight: var(--smallLabelFontWeight);
@@ -93,4 +106,9 @@
 @mixin no-selection {
   -webkit-user-select: none;
   user-select: none;
+}
+
+@mixin disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }

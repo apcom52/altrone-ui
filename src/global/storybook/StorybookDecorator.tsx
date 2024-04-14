@@ -7,9 +7,11 @@ export const StorybookDecorator = (Story: any, options: any) => {
   useEffect(() => {
     document.body.classList.toggle(
       s.WithImage,
-      options.globals.backgrounds.value === 'image',
+      options.globals.backgrounds
+        ? options.globals.backgrounds.value === 'image'
+        : false,
     );
-  }, [options.globals.backgrounds.value]);
+  }, [options.globals.backgrounds?.value]);
 
   return (
     <AltroneApplication

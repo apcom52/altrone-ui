@@ -1,0 +1,90 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --actionIslandBackgroundColor: transparent;
+  --actionIslandTextColor: var(--default-800);
+  --actionIslandHoverBackgroundColor: var(--default-300);
+  --actionIslandHoverTextColor: var(--default-900);
+  --actionIslandTextSize: var(--labelFontSize);
+  --actionIslandDangerBackgroundColor: transparent;
+  --actionIslandDangerTextColor: var(--danger-700);
+  --actionIslandDangerHoverBackgroundColor: var(--danger-100);
+  --actionIslandDangerHoverTextColor: var(--danger-800);
+}
+
+:global(.AltroneDark) {
+  --actionIslandBackgroundColor: transparent;
+  --actionIslandTextColor: var(--default-100);
+  --actionIslandHoverBackgroundColor: var(--default-700);
+  --actionIslandHoverTextColor: var(--default-50);
+  --actionIslandDangerBackgroundColor: transparent;
+  --actionIslandDangerTextColor: var(--danger-500);
+  --actionIslandDangerHoverBackgroundColor: var(--danger-900);
+  --actionIslandDangerHoverTextColor: var(--danger-100);
+}
+
+.ActionIsland {
+  --bgColor: var(--actionIslandBackgroundColor);
+  --fgColor: var(--actionIslandTextColor);
+
+  display: inline-flex;
+  align-items: center;
+  height: var(--inputIslandHeight);
+  min-width: var(--inputIslandHeight);
+  font-size: var(--inputIslandTextSize);
+  color: var(--fgColor);
+  font-weight: 500;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  pointer-events: all;
+  border-radius: 4px;
+  border: none;
+  gap: var(--xs-gap);
+  padding: var(--narrow-gap) var(--s-gap);
+  background-color: var(--bgColor);
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.2s linear, color 0.2s linear;
+
+  &:disabled {
+    @include disabled;
+  }
+
+  &:hover, &:focus-visible {
+    --bgColor: var(--actionIslandHoverBackgroundColor);
+    --fgColor: var(--actionIslandHoverTextColor);
+  }
+}
+
+.Icon {
+  display: flex;
+  align-items: center;
+}
+
+.Label {
+  @include label;
+  font-size: var(--actionIslandTextSize);
+}
+
+.LeftSide {
+  &:first-child {
+    margin-left: calc(var(--inputVerticalOffset) - var(--inputHorizontalOffset));
+  }
+}
+
+.RightSide {
+  &:last-child {
+    margin-right: calc(var(--inputVerticalOffset) - var(--inputHorizontalOffset));
+  }
+}
+
+.Danger {
+  --bgColor: var(--actionIslandDangerBackgroundColor);
+  --fgColor: var(--actionIslandDangerTextColor);
+
+  &:hover, &:focus-visible {
+    --bgColor: var(--actionIslandDangerHoverBackgroundColor);
+    --fgColor: var(--actionIslandDangerHoverTextColor);
+  }
+}

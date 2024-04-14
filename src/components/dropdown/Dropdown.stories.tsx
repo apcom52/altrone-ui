@@ -15,7 +15,7 @@ import { expect, userEvent, within } from '@storybook/test';
 import { useState } from 'react';
 
 const story: Meta<typeof Dropdown> = {
-  title: 'Components/Display/Dropdown',
+  title: 'Components/Container/Dropdown',
   component: Dropdown,
   decorators: [StorybookDecorator],
   args: {},

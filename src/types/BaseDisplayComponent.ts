@@ -5,10 +5,7 @@ export interface BasicComponentStyleConfig {
   style?: React.CSSProperties;
 }
 
-export interface BasicComponentProps<
-  ElementType extends HTMLElement = HTMLElement,
-> extends PropsWithChildren,
-    React.HTMLAttributes<ElementType>,
-    BasicComponentStyleConfig {
-  id?: string;
-}
+export interface BasicComponentProps
+  extends PropsWithChildren,
+    BasicComponentStyleConfig,
+    React.HTMLAttributes<HTMLElement> {}
