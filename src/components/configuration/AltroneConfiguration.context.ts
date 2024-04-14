@@ -47,6 +47,13 @@ export interface ConsumerConfigurationContext {
   dropdownRadioList?: ComponentConfiguration;
   dropdownRadioItem?: ComponentConfiguration;
   dropdownChildMenu?: ComponentConfiguration;
+  textInput?: ComponentConfiguration<{
+    rainbowEffect?: boolean;
+  }>;
+  inputTextIsland?: ComponentConfiguration;
+  inputIconIsland?: ComponentConfiguration;
+  inputActionIsland?: ComponentConfiguration;
+  inputCustomIsland?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =

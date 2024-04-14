@@ -8,7 +8,7 @@ import { expect, userEvent, within } from '@storybook/test';
 import { timeout } from '../../../old_src/utils';
 
 const story: Meta<typeof Popover> = {
-  title: 'Components/Display/Popover',
+  title: 'Components/Container/Popover',
   component: Popover,
   decorators: [StorybookDecorator],
   args: {},

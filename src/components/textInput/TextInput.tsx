@@ -1,4 +1,10 @@
-import { cloneElement, forwardRef, useCallback, useMemo, useRef } from 'react';
+import React, {
+  cloneElement,
+  forwardRef,
+  useCallback,
+  useMemo,
+  useRef,
+} from 'react';
 import { TextInputProps } from './TextInput.types.ts';
 import s from './textInput.module.scss';
 import clsx from 'clsx';
@@ -11,6 +17,7 @@ import {
   IconIsland,
   TextIsland,
 } from './components';
+import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 
 const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
   (props, ref) => {
@@ -25,12 +32,22 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       wrapperStyle,
       invalid,
       size = Size.medium,
-      rainbowEffect = true,
+      rainbowEffect,
       onFocus,
       onBlur,
       Component,
+      suggestions = [],
       ...restProps
     } = props;
+
+    const { textInput: inputConfig = {} } = useConfiguration();
+
+    const isRainbowPropsActivated =
+      typeof rainbowEffect === 'boolean'
+        ? rainbowEffect
+        : inputConfig.rainbowEffect || true;
+
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     const {
       value: focused,
@@ -39,7 +56,11 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
     } = useToggledState(false);
 
     const rainbowEvents = useRainbowEffect(
-      !restProps.readOnly && !restProps.disabled && rainbowEffect && !focused,
+      !restProps.readOnly &&
+        !restProps.disabled &&
+        rainbowEffect &&
+        !focused &&
+        isRainbowPropsActivated,
     );
 
     const wrapperCls = clsx(
@@ -59,6 +80,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         [s.Transparent]: transparent,
       },
       className,
+      inputConfig.className,
     );
 
     const wrapperStyles = {
@@ -88,6 +110,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       React.ChangeEventHandler<HTMLInputElement>
     >(
       (e) => {
+        console.log('>> change handler', e);
         onChange?.(e.target.value, e);
       },
       [onChange],
@@ -98,6 +121,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
 
     const styles = {
       ...style,
+      ...inputConfig.style,
       paddingLeft: leftIslands.length
         ? leftIslandsContainerRef.current?.offsetWidth + 'px'
         : undefined,
@@ -126,7 +150,14 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       inputElement = (
         <input
           type="text"
-          ref={ref}
+          ref={(element) => {
+            inputRef.current = element;
+            if (typeof ref === 'function') {
+              ref(element);
+            } else if (ref) {
+              ref.current = element;
+            }
+          }}
           value={value}
           onChange={onChangeHandler}
           className={cls}

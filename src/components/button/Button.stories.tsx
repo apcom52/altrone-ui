@@ -9,7 +9,7 @@ import { ButtonProps } from './Button.types.ts';
 import { StorybookCSSVariables } from '../../global/storybook/StorybookCSSVariables.tsx';
 
 const story: Meta<typeof Button> = {
-  title: 'Components/General/Button',
+  title: 'Components/Form/Button',
   component: Button,
   decorators: [StorybookDecorator],
   args: {

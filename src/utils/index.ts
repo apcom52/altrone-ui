@@ -3,6 +3,7 @@ export {
   useConstructor,
   useResizeObserver,
   useToggledState,
+  useDebouncedMemo,
 } from './hooks';
 export * from './fn.ts';
 export * from './object.ts';

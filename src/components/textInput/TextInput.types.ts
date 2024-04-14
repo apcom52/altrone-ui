@@ -16,6 +16,8 @@ export interface TextInputProps
   rainbowEffect?: boolean;
   transparent?: boolean;
   Component?: ReactElement;
+  suggestions?: (value: string) => string[] | Promise<string[]>;
+  liveSuggestion?: boolean;
 }
 
 export interface TextIslandProps extends BasicComponentProps {
