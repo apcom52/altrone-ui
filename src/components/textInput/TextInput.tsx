@@ -1,6 +1,7 @@
 import React, {
   cloneElement,
   forwardRef,
+  isValidElement,
   useCallback,
   useMemo,
   useRef,
@@ -95,12 +96,14 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         Array.isArray(children) ? children : [children]
       ).filter((childElement) => Boolean(childElement));
 
+      console.log('>> safe children', safeChildren);
+
       const left = safeChildren.filter(
         (island) =>
-          !island?.props.placement || island?.props.placement === 'left',
+          !island?.props?.placement || island?.props?.placement === 'left',
       );
       const right = safeChildren.filter(
-        (island) => island?.props.placement === 'right',
+        (island) => island?.props?.placement === 'right',
       );
 
       return [left, right];
