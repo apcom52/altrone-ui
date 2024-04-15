@@ -8,6 +8,7 @@ import { Direction, Gap } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
 import { TextInput } from '../textInput';
 import { Icon } from '../icon';
+import { userEvent, within, expect } from '@storybook/test';
 
 const story: Meta<typeof PasswordInput> = {
   title: 'Components/Form/PasswordInput',
@@ -31,17 +32,17 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [value1, setValue1] = useState('');
     const [value2, setValue2] = useState('');
     const [value3, setValue3] = useState('');
+    const [value4, setValue4] = useState('');
 
     return (
       <Flex gap={Gap.large}>
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Basic TextInputs
-        </Text.Heading>
+        <Text.Heading role={TextHeadingRoles.inner}>PasswordInput</Text.Heading>
         <Flex direction={Direction.horizontal} gap={Gap.large}>
           <PasswordInput
             value={value1}
             onChange={setValue1}
             placeholder="Standard PasswordInput"
+            data-testid="password"
           />
           <PasswordInput
             value={value2}
@@ -58,8 +59,8 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         </Flex>
         <Flex direction={Direction.horizontal} gap={Gap.large}>
           <PasswordInput
-            value={value1}
-            onChange={setValue1}
+            value={value4}
+            onChange={setValue4}
             placeholder="PasswordInput with custom islands"
           >
             <TextInput.TextIsland label="Password:" />
@@ -72,6 +73,19 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         </Flex>
       </Flex>
     );
+  },
+  play: ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    step('check controls', async () => {
+      expect(canvas.getByTestId('password')).toHaveAttribute(
+        'type',
+        'password',
+      );
+      await userEvent.type(canvas.getByTestId('password'), 'test');
+      await userEvent.click(canvas.queryAllByText('visibility')[0]);
+      expect(canvas.getByTestId('password')).toHaveAttribute('type', 'text');
+    });
   },
 };
 

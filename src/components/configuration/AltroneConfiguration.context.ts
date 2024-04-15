@@ -54,6 +54,9 @@ export interface ConsumerConfigurationContext {
   inputIconIsland?: ComponentConfiguration;
   inputActionIsland?: ComponentConfiguration;
   inputCustomIsland?: ComponentConfiguration;
+  passwordInput?: ComponentConfiguration<{
+    showControl?: boolean;
+  }>;
 }
 
 export const ConfigurationContext =
