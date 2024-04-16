@@ -9,9 +9,7 @@ import { Text, TextHeadingRoles } from '../text';
 import { TextInput } from '../textInput';
 import { Icon } from '../icon';
 import { userEvent, within, expect } from '@storybook/test';
-import {
-  AutocompleteSuggestionsFunc,
-} from './AutocompleteInput.types.ts';
+import { AutocompleteSuggestionsFunc } from './AutocompleteInput.types.ts';
 
 const story: Meta<typeof AutocompleteInput> = {
   title: 'Components/Form/AutocompleteInput',
