@@ -1,13 +1,6 @@
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import { forwardRef } from 'react';
 import { Popover, PopoverRef } from 'components';
 import { DropdownProps } from './Dropdown.types';
-import { FloatingContext } from '@floating-ui/react';
 import {
   DropdownMenu,
   DropdownRadioList,
@@ -28,7 +21,6 @@ const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
     trigger,
     placement = 'bottom',
     focusTrapTargets = ['content', 'reference'],
-    focusFirstElement = true,
     className,
     style,
     ...restProps
@@ -43,38 +35,10 @@ const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
     ...style,
   };
 
-  const [popoverContext, setPopoverContext] = useState<FloatingContext | null>(
-    null,
-  );
-
-  const popoverRef = useRef<PopoverRef | null>(null);
-
-  useEffect(() => {
-    if (popoverRef.current?.context) {
-      setPopoverContext(popoverRef.current?.context);
-    }
-  }, [popoverRef.current?.context]);
-
-  useImperativeHandle(
-    ref,
-    () =>
-      popoverRef.current
-        ? popoverRef.current
-        : {
-            opened: false,
-            contentNode: null,
-            context: popoverContext as FloatingContext,
-            childrenNode: null,
-            closePopup: () => null,
-            openPopup: () => null,
-          },
-    [popoverContext, popoverRef.current],
-  );
-
   return (
     <Popover
       focusTrap
-      ref={popoverRef}
+      ref={ref}
       className={cls}
       content={(props) => (
         <CloseDropdownContext.Provider value={props.closeAllSequence}>
@@ -86,6 +50,7 @@ const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
       focusTrapTargets={focusTrapTargets}
       style={styles}
       {...restProps}
+      listNavigation
     >
       {children}
     </Popover>

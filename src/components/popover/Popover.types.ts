@@ -7,6 +7,7 @@ export type PopoverTrigger = 'click' | 'focus' | 'hover';
 
 export type PopoverRef = {
   opened: boolean;
+  activeIndex: number | null;
   context: FloatingContext;
   childrenNode: HTMLElement | null;
   contentNode: HTMLDivElement | null;
@@ -25,7 +26,7 @@ export type PopoverContentContext = {
 };
 
 export interface PopoverProps
-  extends Omit<BasicComponentProps<HTMLDivElement>, 'children' | 'content'> {
+  extends Omit<React.HTMLAttributes<HTMLElement>, 'children' | 'content'> {
   children: RenderFunction<ReactNode, PopoverChildrenContext>;
   content: RenderFunction<ReactNode, PopoverContentContext>;
   openedByDefault?: boolean;
@@ -38,4 +39,8 @@ export interface PopoverProps
   focusTrap?: boolean;
   focusTrapTargets?: ('reference' | 'floating' | 'content')[];
   parentWidth?: boolean;
+  listNavigation?: boolean;
+  defaultListNavigationIndex?: number;
+  virtualNavigationFocus?: boolean;
+  typeahead?: boolean;
 }

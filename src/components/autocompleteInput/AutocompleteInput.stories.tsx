@@ -44,7 +44,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     return (
       <Flex gap={Gap.large}>
         <Text.Heading role={TextHeadingRoles.inner}>
-          Type to get a country
+          Standard AutocompleteInput
         </Text.Heading>
         <Flex direction={Direction.horizontal} gap={Gap.large}>
           <AutocompleteInput
@@ -54,6 +54,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             placeholder="e.g. France"
           />
         </Flex>
+        <Text.Heading role={TextHeadingRoles.inner}>
+          Autocomplete with custom component
+        </Text.Heading>
       </Flex>
     );
   },

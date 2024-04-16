@@ -56,6 +56,7 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
                 <Dropdown.Action
                   icon={<Icon i="add" />}
                   label="Create a new branch"
+                  onClick={() => console.log('created')}
                   hintText="⌘+A"
                 />
                 <Dropdown.Action

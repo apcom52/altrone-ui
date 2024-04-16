@@ -1,9 +1,10 @@
 import { DropdownCheckboxProps } from '../Dropdown.types';
-import { CompositeItem } from '@floating-ui/react';
+import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { Icon } from 'components';
 import s from './action.module.scss';
 import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useId } from 'react';
 
 export function DropdownCheckbox({
   checked,
@@ -14,6 +15,10 @@ export function DropdownCheckbox({
   style,
   ...props
 }: DropdownCheckboxProps) {
+  const id = useId();
+
+  const { ref } = useListItem();
+
   const { dropdownCheckbox: dropdownCheckboxConfiguration = {} } =
     useConfiguration();
 
@@ -37,12 +42,12 @@ export function DropdownCheckbox({
 
   const onKeyDownPress: React.KeyboardEventHandler = (e) => {
     if (e.key === 'Enter') {
-      onSelect?.();
+      onChange(!checked);
     }
   };
 
   return (
-    <CompositeItem
+    <button
       onKeyDown={onKeyDownPress}
       onClick={onSelect}
       disabled={disabled}
@@ -50,11 +55,13 @@ export function DropdownCheckbox({
       role="checkbox"
       aria-checked={checked}
       style={styles}
+      ref={ref}
+      id={id}
       {...props}
     >
       <div className={s.Icon}>{checked ? <Icon i="check" /> : null}</div>
       <div className={s.Label}>{label}</div>
-    </CompositeItem>
+    </button>
   );
 }
 
