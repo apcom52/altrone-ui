@@ -3,13 +3,15 @@ import { AutocompleteInput } from './AutocompleteInput.tsx';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { useCallback, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { Direction, Gap } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
-import { TextInput } from '../textInput';
-import { Icon } from '../icon';
-import { userEvent, within, expect } from '@storybook/test';
-import { AutocompleteSuggestionsFunc } from './AutocompleteInput.types.ts';
+import {
+  AutocompleteCustomComponent,
+  AutocompleteSuggestionsFunc,
+} from './AutocompleteInput.types.ts';
+import { useListItem } from '@floating-ui/react';
+import { usePopoverCurrentIndex } from '../popover/Popover.tsx';
 
 const story: Meta<typeof AutocompleteInput> = {
   title: 'Components/Form/AutocompleteInput',
@@ -27,10 +29,28 @@ const story: Meta<typeof AutocompleteInput> = {
   },
 };
 
+const CountrySuggestionItem = ({
+  inputValue = '',
+  label = '',
+  onClick,
+}: AutocompleteCustomComponent) => {
+  const currentIndex = usePopoverCurrentIndex();
+  const { ref, index } = useListItem();
+
+  return (
+    <button onClick={onClick} ref={ref}>
+      {index === currentIndex && <strong>{'->> '}</strong>}
+      <strong>{inputValue}</strong>
+      {label.slice(inputValue.length)}
+    </button>
+  );
+};
+
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using AutocompleteInput',
   render: () => {
     const [value1, setValue1] = useState('');
+    const [value2, setValue2] = useState('');
 
     const getCountry = useCallback<AutocompleteSuggestionsFunc>(
       async ({ value }) => {
@@ -55,8 +75,15 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           />
         </Flex>
         <Text.Heading role={TextHeadingRoles.inner}>
-          Autocomplete with custom component
+          AutocompleteInput with custom component
         </Text.Heading>
+        <AutocompleteInput
+          value={value2}
+          getSuggestions={getCountry}
+          onChange={setValue2}
+          placeholder="e.g. France"
+          SuggestionComponent={CountrySuggestionItem}
+        />
       </Flex>
     );
   },

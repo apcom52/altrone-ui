@@ -39,7 +39,6 @@ import s from './popover.module.scss';
 import { CloseButton } from 'components';
 import { PopoverArrow } from './inner/PopoverArrow.tsx';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
-import { act } from '@testing-library/react';
 
 const PopoverCloseContext = createContext<undefined | (() => void)>(undefined);
 const usePopoverCloseContext = () => useContext(PopoverCloseContext);

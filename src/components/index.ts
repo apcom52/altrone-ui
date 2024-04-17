@@ -13,3 +13,4 @@ export * from './dropdown';
 export * from './divider';
 export * from './textInput';
 export * from './passwordInput';
+export * from './autocompleteInput';

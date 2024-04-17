@@ -8,7 +8,13 @@ export type AutocompleteSuggestionsFunc = (
   context: AutocompleteSuggestionsContext,
 ) => Promise<string[]> | string[];
 
+export type AutocompleteCustomComponent = ReactElement & {
+  inputValue: string;
+  label: string;
+  onClick: () => void;
+};
+
 export interface AutocompleteInputProps extends TextInputProps {
   getSuggestions: AutocompleteSuggestionsFunc;
-  SuggestionComponent?: ReactElement<AutocompleteSuggestionsContext>;
+  SuggestionComponent?: AutocompleteCustomComponent;
 }
