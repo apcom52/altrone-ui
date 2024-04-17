@@ -82,7 +82,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           getSuggestions={getCountry}
           onChange={setValue2}
           placeholder="e.g. France"
-          SuggestionComponent={CountrySuggestionItem}
+          renderSuggestion={(props) => <CountrySuggestionItem {...props} />}
         />
       </Flex>
     );

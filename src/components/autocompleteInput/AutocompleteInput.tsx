@@ -19,7 +19,7 @@ export const AutocompleteInput = forwardRef<
       className,
       style,
       getSuggestions,
-      SuggestionComponent,
+      renderSuggestion,
       ...restProps
     },
     ref,
@@ -79,10 +79,12 @@ export const AutocompleteInput = forwardRef<
           onClick: () => selectSuggestion(suggestion),
         };
 
-        if (SuggestionComponent) {
-          return (
-            <SuggestionComponent inputValue={restProps.value} {...itemProps} />
-          );
+        if (renderSuggestion) {
+          return renderSuggestion({
+            inputValue: restProps.value,
+            label: suggestion,
+            onClick: () => selectSuggestion(suggestion),
+          });
         }
 
         return <Dropdown.Action {...itemProps} />;

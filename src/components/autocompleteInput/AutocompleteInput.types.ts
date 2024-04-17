@@ -1,5 +1,4 @@
 import { TextInputProps } from '../textInput/TextInput.types.ts';
-import { ReactElement } from 'react';
 
 type AutocompleteSuggestionsContext = {
   value: string;
@@ -8,7 +7,7 @@ export type AutocompleteSuggestionsFunc = (
   context: AutocompleteSuggestionsContext,
 ) => Promise<string[]> | string[];
 
-export type AutocompleteCustomComponent = ReactElement & {
+export type AutocompleteRenderSuggestionContext = {
   inputValue: string;
   label: string;
   onClick: () => void;
@@ -16,5 +15,7 @@ export type AutocompleteCustomComponent = ReactElement & {
 
 export interface AutocompleteInputProps extends TextInputProps {
   getSuggestions: AutocompleteSuggestionsFunc;
-  SuggestionComponent?: AutocompleteCustomComponent;
+  renderSuggestion?: (
+    context: AutocompleteRenderSuggestionContext,
+  ) => React.JSX.Element;
 }
