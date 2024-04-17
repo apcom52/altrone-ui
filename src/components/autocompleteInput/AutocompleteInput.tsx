@@ -24,7 +24,8 @@ export const AutocompleteInput = forwardRef<
     },
     ref,
   ) => {
-    const { passwordInput: passwordInputConfig = {} } = useConfiguration();
+    const { autocompleteInput: autocompleteInputConfig = {} } =
+      useConfiguration();
 
     const dropdownRef = useRef<PopoverRef | null>(null);
     const suggestionWasSelected = useRef(false);
@@ -33,9 +34,9 @@ export const AutocompleteInput = forwardRef<
 
     const safeChildren = getSafeArray(children);
 
-    const cls = clsx(passwordInputConfig.className, className);
+    const cls = clsx(autocompleteInputConfig.className, className);
     const styles = {
-      ...passwordInputConfig.style,
+      ...autocompleteInputConfig.style,
       ...style,
     };
 
