@@ -3,15 +3,16 @@ import { AutocompleteInput } from './AutocompleteInput.tsx';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { FC, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Direction, Gap } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
 import {
-  AutocompleteCustomComponent,
+  AutocompleteRenderSuggestionContext,
   AutocompleteSuggestionsFunc,
 } from './AutocompleteInput.types.ts';
 import { useListItem } from '@floating-ui/react';
 import { usePopoverCurrentIndex } from '../popover/Popover.tsx';
+import { userEvent, within, expect } from '@storybook/test';
 
 const story: Meta<typeof AutocompleteInput> = {
   title: 'Components/Form/AutocompleteInput',
@@ -33,7 +34,7 @@ const CountrySuggestionItem = ({
   inputValue = '',
   label = '',
   onClick,
-}: AutocompleteCustomComponent) => {
+}: AutocompleteRenderSuggestionContext) => {
   const currentIndex = usePopoverCurrentIndex();
   const { ref, index } = useListItem();
 
@@ -72,6 +73,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             getSuggestions={getCountry}
             onChange={setValue1}
             placeholder="e.g. France"
+            data-testid="field"
           />
         </Flex>
         <Text.Heading role={TextHeadingRoles.inner}>
@@ -86,6 +88,34 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         />
       </Flex>
     );
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step(
+      'need to show popover with suitable suggestions when user types something',
+      async () => {
+        await userEvent.type(canvas.getByTestId('field'), 'R');
+        await expect(await canvas.findByText('Romania')).toBeInTheDocument();
+        await expect(await canvas.findByText('Russia')).toBeInTheDocument();
+        await expect(await canvas.findByText('Rwanda')).toBeInTheDocument();
+
+        await userEvent.click(canvas.getByText('Russia'));
+        expect(canvas.getByTestId('field')).toHaveValue('Russia');
+      },
+    );
+
+    await step('need to show focused items', async () => {
+      await userEvent.clear(canvas.getByTestId('field'));
+      await userEvent.type(canvas.getByTestId('field'), 'R');
+      await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowUp}');
+
+      const russia = await canvas.findByText('Russia');
+
+      await expect(russia.parentElement).toHaveAttribute('data-active', 'true');
+      await userEvent.keyboard('{Enter}');
+      expect(canvas.getByTestId('field')).toHaveValue('Russia');
+    });
   },
 };
 
