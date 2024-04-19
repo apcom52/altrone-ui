@@ -37,6 +37,8 @@
   padding: var(--xs-gap) var(--l-gap) var(--xs-gap) var(--xs-gap);
   border-radius: 6px;
   background: var(--dropdownActionBackgroundColor);
+  border: none;
+  text-align: left;
   color: var(--dropdownActionTextColor);
   cursor: pointer;
   @include sm-paragraph;
@@ -45,7 +47,7 @@
   height: 24px;
   outline: 0;
 
-  &:hover, &:focus-visible, &[data-active]:not(.OpenedAction) {
+  &:hover, &:focus-visible, &[data-active="true"]:not(.OpenedAction) {
     background: var(--dropdownActionHoverColor);
     color: var(--dropdownActionHoverTextColor);
     --dropdownHintTextColor: var(--default-100);

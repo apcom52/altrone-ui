@@ -1,9 +1,12 @@
 import { DropdownActionProps } from '../Dropdown.types';
-import { CompositeItem } from '@floating-ui/react';
+import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { useCloseDropdownContext } from '../Dropdown.contexts.ts';
 import s from './action.module.scss';
 import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useId } from 'react';
+import { findRenderedDOMComponentWithClass } from 'react-dom/test-utils';
+import { usePopoverCurrentIndex } from '../../popover/Popover.tsx';
 
 export function DropdownAction({
   icon,
@@ -16,6 +19,15 @@ export function DropdownAction({
   style,
   ...props
 }: DropdownActionProps) {
+  const id = useId();
+
+  const currentIndex = usePopoverCurrentIndex();
+  const { ref, index } = useListItem();
+
+  const isFocused = currentIndex === index;
+
+  console.log('>> label', label, isFocused);
+
   const { dropdownAction: dropdownActionConfiguration = {} } =
     useConfiguration();
 
@@ -37,30 +49,35 @@ export function DropdownAction({
   const closePopup = useCloseDropdownContext();
 
   const onSelect = () => {
-    closePopup();
+    console.log('>> onselect');
     onClick?.();
+    closePopup();
   };
 
   const onKeyDownPress: React.KeyboardEventHandler = (e) => {
+    console.log('>> on keydown press', e.key);
     if (e.key === 'Enter') {
       onSelect?.();
     }
   };
 
   return (
-    <CompositeItem
-      onKeyDown={onKeyDownPress}
-      onClick={onSelect}
+    <button
       disabled={disabled}
       className={cls}
       style={styles}
       role="button"
+      ref={ref}
+      data-active={isFocused}
       {...props}
+      id={props.id || id}
+      onClick={onSelect}
+      onKeyDown={onKeyDownPress}
     >
       <div className={s.Icon}>{icon}</div>
       <div className={s.Label}>{label}</div>
       {hintText ? <div className={s.Hint}>{hintText}</div> : null}
-    </CompositeItem>
+    </button>
   );
 }
 DropdownAction.displayName = 'DropdownAction';

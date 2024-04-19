@@ -1,15 +1,8 @@
 import { PopoverProps } from 'components';
 import { ReactElement } from 'react';
-import { BasicComponentProps } from '../../types';
-
-export interface BaseDropdownItem {
-  label: string;
-  disabled?: boolean;
-  className?: string;
-}
 
 export interface DropdownActionProps
-  extends BasicComponentProps<HTMLDivElement> {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   icon?: JSX.Element;
   hintText?: string;
@@ -19,7 +12,7 @@ export interface DropdownActionProps
 }
 
 export interface DropdownCheckboxProps
-  extends Omit<BasicComponentProps<HTMLDivElement>, 'onChange'> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
   checked: boolean;
   onChange: (state: boolean) => void;
   label: string;
@@ -27,7 +20,7 @@ export interface DropdownCheckboxProps
 }
 
 export interface DropdownRadioListProps<T = string>
-  extends Omit<BasicComponentProps, 'onChange'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value: T;
   onChange: (value: T) => void;
   children:
@@ -37,19 +30,14 @@ export interface DropdownRadioListProps<T = string>
 }
 
 export interface DropdownRadioListItem<T = string>
-  extends Omit<BasicComponentProps<HTMLDivElement>, 'value'> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'value'> {
   value: T;
   label?: string;
   disabled?: boolean;
 }
 
-export interface DropdownGroupProps
-  extends BasicComponentProps<HTMLDivElement> {
-  label: string;
-}
-
 export interface DropdownChildMenuProps
-  extends BasicComponentProps<HTMLDivElement> {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: ReactElement;
   children: ReactElement | null | (ReactElement | null)[];
   label: string;
@@ -57,7 +45,7 @@ export interface DropdownChildMenuProps
 }
 
 export interface DropdownMenuProps
-  extends Omit<BasicComponentProps<HTMLDivElement>, 'children'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   children: ReactElement | null | (ReactElement | null)[];
   defaultFocusItemIndex?: number;
   onChangeFocusItemIndex?: (index: number) => void;
@@ -68,6 +56,4 @@ export interface DropdownMenuRef {
   menuNode: HTMLElement | null;
 }
 
-export interface DropdownProps extends PopoverProps {
-  focusFirstElement?: boolean;
-}
+export interface DropdownProps extends PopoverProps {}

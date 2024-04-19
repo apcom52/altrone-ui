@@ -96,8 +96,6 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         Array.isArray(children) ? children : [children]
       ).filter((childElement) => Boolean(childElement));
 
-      console.log('>> safe children', safeChildren);
-
       const left = safeChildren.filter(
         (island) =>
           !island?.props?.placement || island?.props?.placement === 'left',
@@ -113,7 +111,6 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       React.ChangeEventHandler<HTMLInputElement>
     >(
       (e) => {
-        console.log('>> change handler', e);
         onChange?.(e.target.value, e);
       },
       [onChange],

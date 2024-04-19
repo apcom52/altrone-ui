@@ -57,6 +57,7 @@ export interface ConsumerConfigurationContext {
   passwordInput?: ComponentConfiguration<{
     showControl?: boolean;
   }>;
+  autocompleteInput?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =

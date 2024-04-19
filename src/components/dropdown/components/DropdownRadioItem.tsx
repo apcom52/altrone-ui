@@ -1,10 +1,11 @@
 import { DropdownRadioListItem } from '../Dropdown.types';
-import { CompositeItem } from '@floating-ui/react';
+import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { useRadioListDropdownContext } from '../Dropdown.contexts.ts';
 import { Icon } from '../../icon';
 import s from './action.module.scss';
 import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useId } from 'react';
 
 export function DropdownRadioItem({
   value,
@@ -16,6 +17,9 @@ export function DropdownRadioItem({
 }: DropdownRadioListItem) {
   const { dropdownRadioItem: dropdownRadioItemConfig = {} } =
     useConfiguration();
+
+  const id = useId();
+  const { ref } = useListItem();
 
   const cls = clsx(
     s.Action,
@@ -44,7 +48,8 @@ export function DropdownRadioItem({
   };
 
   return (
-    <CompositeItem
+    <button
+      ref={ref}
       onKeyDown={onKeyDownPress}
       onClick={onSelect}
       disabled={disabled}
@@ -52,13 +57,14 @@ export function DropdownRadioItem({
       aria-checked={value === selectedValue}
       className={cls}
       style={styles}
+      id={id}
       {...props}
     >
       <div className={s.Icon}>
         {value === selectedValue ? <Icon i="check" /> : null}
       </div>
       <div className={s.Label}>{label}</div>
-    </CompositeItem>
+    </button>
   );
 }
 DropdownRadioItem.displayName = 'DropdownRadioItem';

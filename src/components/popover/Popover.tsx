@@ -4,6 +4,7 @@ import {
   autoUpdate,
   flip,
   FloatingFocusManager,
+  FloatingList,
   FloatingPortal,
   offset,
   OpenChangeReason,
@@ -16,6 +17,7 @@ import {
   useFocus,
   useHover,
   useInteractions,
+  useListNavigation,
 } from '@floating-ui/react';
 import React, {
   createContext,
@@ -23,6 +25,7 @@ import React, {
   useContext,
   useImperativeHandle,
   useRef,
+  useState,
 } from 'react';
 import {
   PopoverProps,
@@ -40,6 +43,9 @@ import { useConfiguration } from '../configuration/AltroneConfiguration.context.
 const PopoverCloseContext = createContext<undefined | (() => void)>(undefined);
 const usePopoverCloseContext = () => useContext(PopoverCloseContext);
 
+const PopoverCurrentIndex = createContext<number | null>(null);
+export const usePopoverCurrentIndex = () => useContext(PopoverCurrentIndex);
+
 export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
   const {
     children,
@@ -53,11 +59,18 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     parentWidth = false,
     showCloseButton = false,
     showArrow = false,
+    listNavigation: enableListNavigation = false,
+    defaultListNavigationIndex = null,
+    virtualNavigationFocus = false,
     focusTrapTargets = ['reference', 'content'],
     className,
     style,
     ...restProps
   } = props;
+
+  const [activeIndex, setActiveIndex] = useState<number | null>(
+    defaultListNavigationIndex,
+  );
 
   const { popover: popoverConfig = {} } = useConfiguration();
 
@@ -139,11 +152,25 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     referencePressEvent: 'click',
   });
 
+  const listNavigationRef = useRef([]);
+
+  const listNavigation = useListNavigation(context, {
+    listRef: listNavigationRef,
+    enabled: enableListNavigation,
+    activeIndex,
+    onNavigate: setActiveIndex,
+    loop: true,
+    virtual: virtualNavigationFocus,
+    allowEscape: true,
+    nested: true,
+  });
+
   const { getReferenceProps, getFloatingProps } = useInteractions([
     clickTrigger,
     hoverTrigger,
     focusTrigger,
     dismiss,
+    listNavigation,
   ]);
 
   useImperativeHandle(
@@ -151,12 +178,13 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     () => ({
       opened,
       context,
+      activeIndex,
       childrenNode: childrenRef.current,
       contentNode: contentRef.current,
       closePopup: hide,
       openPopup: open,
     }),
-    [opened, context],
+    [opened, context, activeIndex],
   );
 
   const popoverParentClose = usePopoverCloseContext();
@@ -184,35 +212,44 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
       disabled={!focusTrap}
       order={focusTrapTargets}
     >
-      <div
-        ref={(elementRef: HTMLDivElement) => {
-          refs.setFloating(elementRef);
-          contentRef.current = elementRef;
-        }}
-        className={popoverCls}
-        role="region"
-        {...getFloatingProps({
-          ...restProps,
-          style: {
-            ...popoverConfig.style,
-            ...style,
-            ...floatingStyles,
-          },
-        })}
-      >
-        {showHeader && (
-          <div className={s.Header}>
-            {title ? <div className={s.Heading}>{title}</div> : null}
-            {showCloseButton ? (
-              <CloseButton onClick={hide} className={s.Close} />
-            ) : null}
+      <FloatingList elementsRef={listNavigationRef}>
+        <PopoverCurrentIndex.Provider value={activeIndex}>
+          <div
+            ref={(elementRef: HTMLDivElement) => {
+              refs.setFloating(elementRef);
+              contentRef.current = elementRef;
+            }}
+            className={popoverCls}
+            role="region"
+            {...getFloatingProps({
+              ...restProps,
+              style: {
+                ...popoverConfig.style,
+                ...style,
+                ...floatingStyles,
+              },
+            })}
+          >
+            {showHeader && (
+              <div className={s.Header}>
+                {title ? <div className={s.Heading}>{title}</div> : null}
+                {showCloseButton ? (
+                  <CloseButton onClick={hide} className={s.Close} />
+                ) : null}
+              </div>
+            )}
+            <div
+              className={s.Content}
+              ref={contentRef ? contentRef : undefined}
+            >
+              {typeof content === 'function'
+                ? content(popoverContext)
+                : content}
+            </div>
+            {showArrow && <PopoverArrow ref={arrowRef} context={context} />}
           </div>
-        )}
-        <div className={s.Content} ref={contentRef ? contentRef : undefined}>
-          {typeof content === 'function' ? content(popoverContext) : content}
-        </div>
-        {showArrow && <PopoverArrow ref={arrowRef} context={context} />}
-      </div>
+        </PopoverCurrentIndex.Provider>
+      </FloatingList>
     </FloatingFocusManager>
   );
 
