@@ -3,8 +3,8 @@ import { SyntheticEvent } from 'react';
 
 export interface NumberInputProps
   extends Omit<TextInputProps, 'type' | 'value' | 'onChange'> {
-  value: number;
-  onChange: (value: number, e?: SyntheticEvent<HTMLInputElement>) => void;
+  value?: number;
+  onChange: (value?: number, e?: SyntheticEvent<HTMLInputElement>) => void;
 
   showControl?: boolean;
 

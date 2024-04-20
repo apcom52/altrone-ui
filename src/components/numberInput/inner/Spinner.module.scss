@@ -4,12 +4,15 @@
   display: flex;
   flex-direction: column;
   margin-right: -6px;
+  @include no-selection;
 }
 
-.Up, .Down {
+.SpinButton {
   display: flex;
   align-items: center;
+  justify-content: center;
   font-size: 14px;
+  width: 24px;
   height: 12px;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -30,11 +33,24 @@
     background-color: var(--default-400);
     color: var(--default-900);
   }
+
+  &:disabled {
+    @include disabled;
+  }
 }
 
-.Up {
-
+.Small {
+  .SpinButton {
+    width: 20px;
+    height: 10px;
+    font-size: 12px;
+  }
 }
 
-.Down {
+.Large {
+  .SpinButton {
+    width: 32px;
+    height: 16px;
+    font-size: 18px;
+  }
 }

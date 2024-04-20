@@ -107,7 +107,12 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         {...safeChildren}
         {needToShowControl ? (
           <TextInput.CustomIsland placement="right">
-            <Spinner />
+            <Spinner
+              disabled={restProps.disabled}
+              onDownClick={() => null}
+              onUpClick={() => null}
+              size={size}
+            />
           </TextInput.CustomIsland>
         ) : null}
       </TextInput>
