@@ -1,5 +1,23 @@
 @import 'src/global/mixins';
 
+:global(:root) {
+  --spinnerBackgroundColor: transparent;
+  --spinnerTextColor: var(--default-700);
+  --spinnerHoverBackgroundColor: var(--default-300);
+  --spinnerHoverTextColor: var(--default-800);
+  --spinnerPressBackgroundColor: var(--default-400);
+  --spinnerPressTextColor: var(--default-900);
+}
+
+:global(.AltroneDark) {
+  --spinnerBackgroundColor: transparent;
+  --spinnerTextColor: var(--default-200);
+  --spinnerHoverBackgroundColor: var(--default-700);
+  --spinnerHoverTextColor: var(--default-100);
+  --spinnerPressBackgroundColor: var(--default-600);
+  --spinnerPressTextColor: var(--default-50);
+}
+
 .Spinner {
   display: flex;
   flex-direction: column;
@@ -18,20 +36,20 @@
   -moz-appearance: none;
   appearance: none;
   border: none;
-  color: var(--default-700);
-  background: none;
+  color: var(--spinnerTextColor);
+  background: var(--spinnerBackgroundColor);
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.2s linear;
 
   &:hover, &:focus-visible {
-    background-color: var(--default-300);
-    color: var(--default-800);
+    background-color: var(--spinnerHoverBackgroundColor);
+    color: var(--spinnerHoverTextColor);
   }
 
   &:active {
-    background-color: var(--default-400);
-    color: var(--default-900);
+    background-color: var(--spinnerPressBackgroundColor);
+    color: var(--spinnerPressTextColor);
   }
 
   &:disabled {

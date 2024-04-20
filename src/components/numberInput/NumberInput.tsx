@@ -23,7 +23,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       style,
       allowNegative = false,
       decimalDelimiter,
-      digitsAfterPoint = 0,
+      digitsAfterPoint,
       fixedDecimalScale = 0,
       allowLeadingZeros,
       groupingDelimiter,
@@ -31,7 +31,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       size,
       onChange,
       defaultValue,
-      min,
+      min = 0,
       max,
       ...restProps
     },
@@ -153,6 +153,8 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           <TextInput.CustomIsland placement="right">
             <Spinner
               disabled={restProps.disabled}
+              disabledUp={typeof max === 'number' && value >= max}
+              disabledDown={typeof min === 'number' && (value <= min || !value)}
               onDownClick={() => spinnerChangeValue(-1)}
               onUpClick={() => spinnerChangeValue(1)}
               size={size}
