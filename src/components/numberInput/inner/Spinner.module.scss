@@ -1,0 +1,40 @@
+@import 'src/global/mixins';
+
+.Spinner {
+  display: flex;
+  flex-direction: column;
+  margin-right: -6px;
+}
+
+.Up, .Down {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  height: 12px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  color: var(--default-700);
+  background: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s linear;
+
+  &:hover, &:focus-visible {
+    background-color: var(--default-300);
+    color: var(--default-800);
+  }
+
+  &:active {
+    background-color: var(--default-400);
+    color: var(--default-900);
+  }
+}
+
+.Up {
+
+}
+
+.Down {
+}
