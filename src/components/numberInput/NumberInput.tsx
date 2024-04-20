@@ -1,4 +1,4 @@
-import { forwardRef, useCallback } from 'react';
+import { forwardRef, useCallback, useRef } from 'react';
 import { NumberInputProps } from './NumberInput.types.ts';
 import { TextInput } from '../textInput';
 import { getSafeArray } from '../../utils';
@@ -12,6 +12,7 @@ import {
 } from 'react-number-format';
 import s from './numberInput.module.scss';
 import inputStyles from '../textInput/textInput.module.scss';
+import { triggerNativeEvent } from '../../utils/events.ts';
 
 export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
   (
@@ -21,11 +22,11 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       className,
       style,
       allowNegative = false,
-      decimalDelimiter = '.',
+      decimalDelimiter,
       digitsAfterPoint = 0,
       fixedDecimalScale = 0,
-      allowLeadingZeros = false,
-      groupingDelimiter = ' ',
+      allowLeadingZeros,
+      groupingDelimiter,
       value,
       size,
       onChange,
@@ -36,23 +37,46 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     },
     ref,
   ) => {
-    const { passwordInput: passwordInputConfig = {} } = useConfiguration();
+    const numberInputRef = useRef<HTMLInputElement | null>(null);
+
+    const { numberInput: numberInputConfig = {}, locale: localeConfig = {} } =
+      useConfiguration();
 
     const needToShowControl =
       typeof showControl === 'boolean'
         ? showControl
-        : passwordInputConfig.showControl || true;
+        : numberInputConfig.showControl || true;
+
+    const allowLeadingZerosValue =
+      typeof allowLeadingZeros === 'boolean'
+        ? allowLeadingZeros
+        : numberInputConfig.allowLeadingZeros || false;
+
+    const digitsAfterPointValue =
+      typeof digitsAfterPoint === 'number'
+        ? digitsAfterPoint
+        : numberInputConfig.digitsAfterPoint || 2;
+
+    const groupingDelimiterValue =
+      typeof groupingDelimiter === 'string'
+        ? groupingDelimiter
+        : localeConfig.numberGrouping || ' ';
+
+    const decimalDelimiterValue =
+      typeof decimalDelimiter === 'string'
+        ? decimalDelimiter
+        : localeConfig.numberDecimal || '.';
 
     const safeChildren = getSafeArray(children);
 
     const cls = clsx(
       inputStyles.Input,
       s.NumberInput,
-      passwordInputConfig.className,
+      numberInputConfig.className,
       className,
     );
     const styles = {
-      ...passwordInputConfig.style,
+      ...numberInputConfig.style,
       ...style,
     };
 
@@ -78,6 +102,18 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       [min, max, onChange],
     );
 
+    const spinnerChangeValue = (diff: number) => {
+      if (numberInputRef.current) {
+        triggerNativeEvent({
+          element: numberInputRef.current,
+          value: (value || 0) + diff,
+          eventType: 'change',
+          senderObject: window.HTMLInputElement.prototype,
+          propertyName: 'value',
+        });
+      }
+    };
+
     return (
       <TextInput
         value=""
@@ -93,13 +129,21 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             value={value}
             onValueChange={onValueChange}
             thousandsGroupStyle="thousand"
-            thousandSeparator={groupingDelimiter}
+            thousandSeparator={groupingDelimiterValue}
             className={cls}
-            allowLeadingZeros={allowLeadingZeros}
+            allowLeadingZeros={allowLeadingZerosValue}
             allowNegative={allowNegative}
-            decimalSeparator={decimalDelimiter}
-            decimalScale={digitsAfterPoint}
-            getInputRef={ref}
+            decimalSeparator={decimalDelimiterValue}
+            decimalScale={digitsAfterPointValue}
+            getInputRef={(_ref: HTMLInputElement) => {
+              numberInputRef.current = _ref;
+
+              if (typeof ref === 'function') {
+                ref(_ref);
+              } else if (ref) {
+                ref.current = _ref;
+              }
+            }}
             isAllowed={onAllowedCheck}
           />
         }
@@ -109,8 +153,8 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           <TextInput.CustomIsland placement="right">
             <Spinner
               disabled={restProps.disabled}
-              onDownClick={() => null}
-              onUpClick={() => null}
+              onDownClick={() => spinnerChangeValue(-1)}
+              onUpClick={() => spinnerChangeValue(1)}
               size={size}
             />
           </TextInput.CustomIsland>

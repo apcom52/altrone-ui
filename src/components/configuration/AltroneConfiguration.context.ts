@@ -58,6 +58,11 @@ export interface ConsumerConfigurationContext {
     showControl?: boolean;
   }>;
   autocompleteInput?: ComponentConfiguration;
+  numberInput?: ComponentConfiguration<{
+    showControl?: boolean;
+    allowLeadingZeros?: boolean;
+    digitsAfterPoint?: number;
+  }>;
 }
 
 export const ConfigurationContext =
