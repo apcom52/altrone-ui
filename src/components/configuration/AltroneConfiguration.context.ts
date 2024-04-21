@@ -63,6 +63,7 @@ export interface ConsumerConfigurationContext {
     allowLeadingZeros?: boolean;
     digitsAfterPoint?: number;
   }>;
+  textarea?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =

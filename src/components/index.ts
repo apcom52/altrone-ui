@@ -14,3 +14,4 @@ export * from './divider';
 export * from './textInput';
 export * from './passwordInput';
 export * from './autocompleteInput';
+export * from './textarea';
