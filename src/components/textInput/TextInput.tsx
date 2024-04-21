@@ -136,15 +136,16 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         ref,
         value,
         onChange: onChangeHandler,
-        ariaInvalid: invalid,
-        dataRainbowOpacity: 0.33,
-        dataRainbowBlur: 36,
+        'aria-invalid': invalid,
+        'data-rainbow-opacity': 0.33,
+        'data-rainbow-blur': 36,
         onFocus: focus,
         onBlur: blur,
         className,
         style: styles,
         ...rainbowEvents,
         ...restProps,
+        ...Component.props,
       });
     } else {
       inputElement = (
