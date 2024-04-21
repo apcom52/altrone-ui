@@ -1,4 +1,4 @@
-import { BasicComponentProps, Size } from 'types';
+import { Size } from 'types';
 
 export enum TextHeadingRoles {
   title = 'title',
@@ -21,39 +21,43 @@ interface BaseInlineProps {
 }
 
 export interface TextScreenNameProps
-  extends BasicComponentProps<HTMLHeadingElement> {}
+  extends React.HTMLAttributes<HTMLHeadingElement> {}
 
 export interface TextHeadingProps
-  extends BasicComponentProps<HTMLHeadingElement> {
+  extends React.HTMLAttributes<HTMLHeadingElement> {
   level?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
   role?: TextHeadingRoles;
 }
 
 export interface TextParagraphProps
-  extends BasicComponentProps<HTMLParagraphElement> {
+  extends React.HTMLAttributes<HTMLParagraphElement> {
   size?: Size;
 }
 
-export interface TextInlineProps extends BasicComponentProps, BaseInlineProps {}
+export interface TextInlineProps
+  extends React.HTMLAttributes<HTMLSpanElement>,
+    BaseInlineProps {}
 
 export interface TextLinkProps
-  extends BasicComponentProps<HTMLAnchorElement>,
+  extends React.HTMLAttributes<HTMLAnchorElement>,
     Pick<BaseInlineProps, 'bold' | 'italic'> {
   href?: string;
   target?: string;
 }
 
 export interface TextCodeProps
-  extends BasicComponentProps,
+  extends React.HTMLAttributes<HTMLSpanElement>,
     Pick<BaseInlineProps, 'bold' | 'italic'> {}
 
 export interface TextKeyboardProps
-  extends BasicComponentProps,
+  extends React.HTMLAttributes<HTMLSpanElement>,
     Pick<BaseInlineProps, 'bold'> {}
 
-export interface TextListProps extends BasicComponentProps {
+export interface TextListProps
+  extends React.HTMLAttributes<HTMLUListElement | HTMLOListElement> {
   type?: TextListType;
   size?: Size;
 }
 
-export interface TextListItemProps extends BasicComponentProps {}
+export interface TextListItemProps
+  extends React.HTMLAttributes<HTMLLIElement> {}
