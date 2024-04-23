@@ -64,6 +64,9 @@ export interface ConsumerConfigurationContext {
     digitsAfterPoint?: number;
   }>;
   textarea?: ComponentConfiguration;
+  search?: ComponentConfiguration<{
+    showControl?: boolean;
+  }>;
 }
 
 export const ConfigurationContext =

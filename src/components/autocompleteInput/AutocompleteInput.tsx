@@ -9,10 +9,7 @@ import { Dropdown } from '../dropdown';
 import { Scrollable } from '../scrollable';
 import { PopoverRef } from '../popover';
 
-export const AutocompleteInput = forwardRef<
-  HTMLInputElement,
-  AutocompleteInputProps
->(
+export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
   (
     {
       children,
@@ -104,12 +101,24 @@ export const AutocompleteInput = forwardRef<
       }
     };
 
+    const needToShowDropdown =
+      suggestionElements.length > 0 && restProps.value.trim().length > 0;
+
     return (
       <Dropdown
-        ref={dropdownRef}
+        ref={(_ref) => {
+          console.log('>> ref', _ref);
+          dropdownRef.current = _ref;
+          if (typeof ref === 'function') {
+            ref(_ref);
+          } else if (ref) {
+            ref.current = _ref;
+          }
+        }}
         focusTrapTargets={['reference', 'content']}
         virtualNavigationFocus
         listNavigation
+        style={{ display: needToShowDropdown ? 'flex' : 'none' }}
         defaultListNavigationIndex={-1}
         content={
           <Scrollable maxHeight="200px">
@@ -122,7 +131,6 @@ export const AutocompleteInput = forwardRef<
         <TextInput
           className={cls}
           style={styles}
-          ref={ref}
           onKeyDown={onKeyDown}
           {...restProps}
         >

@@ -1,0 +1,57 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --searchPlaceholderColor: var(--default-500);
+}
+
+:global(.AltroneDark) {
+  --searchPlaceholderColor: var(--default-600);
+}
+
+.Search {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  &::-ms-clear, &::-ms-reveal {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  &::-webkit-search-decoration, &::-webkit-search-cancel-button, &::-webkit-search-results-button, &::-webkit-search-results-decoration {
+    display: none;
+  }
+}
+
+.Empty {
+  text-align: center;
+}
+
+.Placeholder {
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: var(--height);
+  color: var(--searchPlaceholderColor);
+  top: 0;
+  left: 0;
+  justify-content: center;
+  overflow: hidden;
+  align-items: center;
+  pointer-events: none;
+  gap: var(--narrow-gap);
+  z-index: 1001;
+
+  @include paragraph;
+}
+
+.DisabledPlaceholder {
+  opacity: 0.5;
+}
+
+.PlaceholderIcon {
+  display: inline-block;
+  font-size: 18px;
+  height: 18px;
+}

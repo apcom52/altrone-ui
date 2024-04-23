@@ -26,7 +26,13 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
     };
 
     return (
-      <TextInput type={type} className={cls} style={styles} {...restProps}>
+      <TextInput
+        type={type}
+        className={cls}
+        style={styles}
+        ref={ref}
+        {...restProps}
+      >
         {...safeChildren}
         {needToShowControl ? (
           <TextInput.ActionIsland
