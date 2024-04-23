@@ -1,7 +1,6 @@
 import React, {
   cloneElement,
   forwardRef,
-  isValidElement,
   useCallback,
   useMemo,
   useRef,
@@ -91,20 +90,39 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
     const leftIslandsContainerRef = useRef<HTMLDivElement | null>(null);
     const rightIslandsContainerRef = useRef<HTMLDivElement | null>(null);
 
-    const [leftIslands, rightIslands] = useMemo(() => {
+    const [leftIslands, rightIslands, nonIslandElements] = useMemo(() => {
       const safeChildren = (
         Array.isArray(children) ? children : [children]
       ).filter((childElement) => Boolean(childElement));
 
-      const left = safeChildren.filter(
+      const islandElements = [];
+      const nonIslandElements = [];
+
+      for (const element of safeChildren) {
+        if (element && typeof element !== 'string') {
+          if (
+            [TextIsland, IconIsland, ActionIsland, CustomIsland].includes(
+              (element as JSX.Element).type,
+            )
+          ) {
+            islandElements.push(element);
+          } else {
+            nonIslandElements.push(element);
+          }
+        } else {
+          nonIslandElements.push(element);
+        }
+      }
+
+      const left = islandElements.filter(
         (island) =>
           !island?.props?.placement || island?.props?.placement === 'left',
       );
-      const right = safeChildren.filter(
+      const right = islandElements.filter(
         (island) => island?.props?.placement === 'right',
       );
 
-      return [left, right];
+      return [left, right, nonIslandElements];
     }, [children]);
 
     const onChangeHandler = useCallback<
@@ -187,6 +205,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
             {rightIslands}
           </div>
         ) : null}
+        {nonIslandElements}
       </div>
     );
   },
