@@ -89,7 +89,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <Checkbox checked={value3} onChange={setValue3}>
             Write
           </Checkbox>
-          <Checkbox checked={value4} onChange={setValue4}>
+          <Checkbox danger checked={value4} onChange={setValue4}>
             Delete
           </Checkbox>
           <Checkbox disabled>Disabled</Checkbox>

@@ -7,6 +7,11 @@
   --checkboxCheckedBackgroundColor: var(--primary-500);
   --checkboxCheckedHoverBackgroundColor: var(--primary-600);
   --checkboxCheckedIconColor: var(--default-50);
+  --checkboxDangerBackgroundColor: var(--danger-100);
+  --checkboxDangerTextColor: var(--danger-600);
+  --checkboxDangerHoverBackgroundColor: var(--danger-200);
+  --checkboxDangerCheckedBackgroundColor: var(--danger-500);
+  --checkboxDangerCheckedHoverBackgroundColor: var(--danger-600);
 }
 
 :global(.AltroneDark) {
@@ -20,6 +25,7 @@
 .Checkbox {
   --bgColor: var(--checkboxBackgroundColor);
   --fgColor: var(--checkboxLabelTextColor);
+  --focusColor: var(--focus);
 
   display: flex;
   align-items: center;
@@ -30,7 +36,8 @@
   background: transparent;
   gap: var(--gap);
   cursor: pointer;
-  height: 18px;
+  padding: 3px 4px;
+  height: 24px;
   border-radius: 4px;
   outline: none;
 
@@ -42,7 +49,7 @@
 
   &:focus-visible {
     .Button {
-      outline: 2px solid var(--focus);
+      outline: 2px solid var(--focusColor);
       outline-offset: 2px;
     }
   }
@@ -86,4 +93,26 @@
 
 .Disabled {
   @include disabled;
+}
+
+.Danger {
+  --bgColor: var(--checkboxDangerBackgroundColor);
+  --fgColor: var(--checkboxDangerTextColor);
+  --focusColor: var(--focusDanger);
+
+  &:hover, &:focus-visible {
+    --bgColor: var(--checkboxDangerHoverBackgroundColor);
+  }
+
+  &.Checked {
+    --bgColor: var(--checkboxDangerCheckedBackgroundColor);
+
+    &:hover, &:focus-visible {
+      --bgColor: var(--checkboxDangerCheckedHoverBackgroundColor);
+    }
+  }
+
+  &.Indetermination {
+    background-color: var(--checkboxDangerCheckedBackgroundColor);
+  }
 }

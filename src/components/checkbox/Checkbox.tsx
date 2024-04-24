@@ -1,7 +1,6 @@
 import { ChangeEventHandler, KeyboardEventHandler, memo, useRef } from 'react';
 import { CheckboxProps } from './Checkbox.types.ts';
 import clsx from 'clsx';
-import { Icon } from '../icon';
 import s from './checkbox.module.scss';
 import { CheckIcon } from './inner/checkIcon.tsx';
 
@@ -23,6 +22,7 @@ export const Checkbox = memo<CheckboxProps>(
     const cls = clsx(s.Checkbox, {
       [s.Checked]: checked,
       [s.Disabled]: disabled,
+      [s.Danger]: danger,
     });
 
     const styles = {
