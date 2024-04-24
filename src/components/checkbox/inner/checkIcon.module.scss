@@ -1,0 +1,13 @@
+.CheckIcon {
+  width: 12px;
+  height: 12px;
+  opacity: 0;
+}
+
+.Checked {
+  opacity: 1;
+}
+
+.Path {
+  transition: stroke-dasharray 0.3s linear;
+}

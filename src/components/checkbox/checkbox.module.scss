@@ -1,0 +1,89 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --checkboxBackgroundColor: var(--default-200);
+  --checkboxLabelTextColor: var(--default-900);
+  --checkboxHoverBackgroundColor: var(--default-300);
+  --checkboxCheckedBackgroundColor: var(--primary-500);
+  --checkboxCheckedHoverBackgroundColor: var(--primary-600);
+  --checkboxCheckedIconColor: var(--default-50);
+}
+
+:global(.AltroneDark) {
+  --checkboxBackgroundColor: var(--default-700);
+  --checkboxLabelTextColor: var(--default-50);
+  --checkboxHoverBackgroundColor: var(--default-600);
+  --checkboxCheckedBackgroundColor: var(--primary-700);
+  --checkboxCheckedHoverBackgroundColor: var(--primary-600);
+}
+
+.Checkbox {
+  --bgColor: var(--checkboxBackgroundColor);
+  --fgColor: var(--checkboxLabelTextColor);
+
+  display: flex;
+  align-items: center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  background: transparent;
+  gap: var(--gap);
+  cursor: pointer;
+  height: 18px;
+  border-radius: 4px;
+  outline: none;
+
+  @include no-selection;
+
+  &:hover, &:focus-visible {
+    --bgColor: var(--checkboxHoverBackgroundColor);
+  }
+
+  &:focus-visible {
+    .Button {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+  }
+}
+
+.Input {
+  display: none;
+}
+
+.Button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background-color: var(--bgColor);
+  border-radius: 4px;
+  transition: background-color 0.1s linear;
+  color: var(--checkboxCheckedIconColor);
+}
+
+.Label {
+  color: var(--fgColor);
+  @include sm-paragraph;
+}
+
+.Checked {
+  --bgColor: var(--checkboxCheckedBackgroundColor);
+
+  &:hover, &:focus-visible {
+    --bgColor: var(--checkboxCheckedHoverBackgroundColor);
+  }
+}
+
+.Indetermination {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background-color: var(--checkboxCheckedBackgroundColor);
+}
+
+.Disabled {
+  @include disabled;
+}
