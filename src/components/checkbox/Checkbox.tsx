@@ -3,6 +3,7 @@ import { CheckboxProps } from './Checkbox.types.ts';
 import clsx from 'clsx';
 import s from './checkbox.module.scss';
 import { CheckIcon } from './inner/checkIcon.tsx';
+import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 
 export const Checkbox = memo<CheckboxProps>(
   ({
@@ -17,15 +18,23 @@ export const Checkbox = memo<CheckboxProps>(
     name,
     ...restProps
   }) => {
+    const { checkbox: checkboxConfig = {} } = useConfiguration();
+
     const inputRef = useRef<HTMLInputElement | null>(null);
 
-    const cls = clsx(s.Checkbox, {
-      [s.Checked]: checked,
-      [s.Disabled]: disabled,
-      [s.Danger]: danger,
-    });
+    const cls = clsx(
+      s.Checkbox,
+      {
+        [s.Checked]: checked,
+        [s.Disabled]: disabled,
+        [s.Danger]: danger,
+      },
+      className,
+      checkboxConfig.className,
+    );
 
     const styles = {
+      ...checkboxConfig.style,
       ...style,
     };
 
