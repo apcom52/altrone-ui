@@ -6,7 +6,7 @@ import { Align, Direction, Gap } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
 // import { userEvent, within, expect } from '@storybook/test';
 import { Switcher } from './Switcher.tsx';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 const story: Meta<typeof Switcher> = {
   title: 'Components/Form/Switcher',
@@ -27,9 +27,6 @@ const story: Meta<typeof Switcher> = {
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using Checkboxes',
   render: () => {
-    const isFirstRender = useRef(true);
-
-    const [value1, setValue1] = useState(false);
     const [value2, setValue2] = useState(true);
     const [value3, setValue3] = useState(false);
     const [value4, setValue4] = useState(false);
@@ -59,7 +56,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       </Flex>
     );
   },
-  play: ({ canvasElement, step }) => {
+  play: () => {
     // const canvas = within(canvasElement);
   },
 };

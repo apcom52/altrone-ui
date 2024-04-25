@@ -16,7 +16,7 @@ export const Switcher = memo<SwitcherProps>(
     name,
     ...restProps
   }) => {
-    const { checkbox: checkboxConfig = {} } = useConfiguration();
+    const { switcher: switcherConfig = {} } = useConfiguration();
 
     const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -28,11 +28,11 @@ export const Switcher = memo<SwitcherProps>(
         [s.Danger]: danger,
       },
       className,
-      checkboxConfig.className,
+      switcherConfig.className,
     );
 
     const styles = {
-      ...checkboxConfig.style,
+      ...switcherConfig.style,
       ...style,
     };
 
