@@ -1,7 +1,11 @@
 import { MutableRefObject, useCallback, useEffect, useRef } from 'react';
 
 export const useMutationObserver = (
-  targetElement: MutableRefObject<HTMLElement>,
+  targetElement:
+    | HTMLElement
+    | MutableRefObject<HTMLElement | null | undefined>
+    | null
+    | undefined,
   callback: MutationCallback,
   options: MutationObserverInit = {},
 ) => {
@@ -12,14 +16,31 @@ export const useMutationObserver = (
       return;
     }
 
+    console.log('>> stop');
+
     observer.current?.disconnect();
     observer.current = null;
   }, []);
 
   useEffect(() => {
+    const element =
+      targetElement && 'current' in targetElement
+        ? targetElement.current
+        : targetElement;
+
+    console.log('>> element', element);
+
+    if (!element) {
+      return;
+    }
+
     observer.current = new MutationObserver(callback);
-    observer.current?.observe(targetElement.current, options);
+    observer.current?.observe(element, options);
 
     return stop;
   }, [callback, stop, options, targetElement]);
+
+  return {
+    stop,
+  };
 };
