@@ -4,11 +4,13 @@ import {
   PropsWithChildren,
   useCallback,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from 'react';
 import s from './rainbow.module.scss';
 import { Point } from '../../types';
+import { useMutationObserver } from '../../utils/hooks/useMutationObserver.ts';
 
 interface RainbowEffectContextType {
   onMouseEnter: MouseEventHandler;
@@ -105,6 +107,10 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
     setWidth(0);
     setHeight(0);
   }, []);
+
+  // useMutationObserver(currentElementRef.current, () => {
+  //   console.log('>> mut', mutation);
+  // });
 
   return (
     <RainbowEffectContext.Provider
