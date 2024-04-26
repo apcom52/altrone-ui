@@ -68,6 +68,7 @@ export interface ConsumerConfigurationContext {
     showControl?: boolean;
   }>;
   checkbox?: ComponentConfiguration;
+  switcher?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =

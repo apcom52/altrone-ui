@@ -20,6 +20,11 @@
   --checkboxHoverBackgroundColor: var(--default-600);
   --checkboxCheckedBackgroundColor: var(--primary-700);
   --checkboxCheckedHoverBackgroundColor: var(--primary-600);
+  --checkboxDangerBackgroundColor: var(--danger-800);
+  --checkboxDangerTextColor: var(--danger-400);
+  --checkboxDangerHoverBackgroundColor: var(--danger-700);
+  --checkboxDangerCheckedBackgroundColor: var(--danger-500);
+  --checkboxDangerCheckedHoverBackgroundColor: var(--danger-400);
 }
 
 .Checkbox {
