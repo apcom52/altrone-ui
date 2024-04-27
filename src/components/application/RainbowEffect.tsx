@@ -9,6 +9,7 @@ import {
 } from 'react';
 import s from './rainbow.module.scss';
 import { Point } from '../../types';
+import { useMutationObserver } from '../../utils/hooks/useMutationObserver.ts';
 
 interface RainbowEffectContextType {
   onMouseEnter: MouseEventHandler;
@@ -27,6 +28,11 @@ export const useRainbowEffect = (enabled: boolean = true) => {
   }
 
   return useContext(RainbowEffectContext);
+};
+
+const mutationOptions = {
+  subtree: true,
+  childList: true,
 };
 
 export const RainbowEffect = ({ children }: PropsWithChildren) => {
@@ -94,7 +100,7 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
     setHeight(targetRect?.height || 0);
   }, []);
 
-  const onMouseLeave = useCallback<MouseEventHandler>(() => {
+  const onMouseLeave = useCallback(() => {
     setVisible(false);
     setContainerPosition({ x: 0, y: 0 });
     setCursor({ x: 0, y: 0 });
@@ -105,6 +111,17 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
     setWidth(0);
     setHeight(0);
   }, []);
+
+  const mutationObserverCallback = useCallback(() => {
+    const nodeExists =
+      currentElementRef.current && currentElementRef.current?.parentElement;
+
+    if (!nodeExists) {
+      onMouseLeave();
+    }
+  }, []);
+
+  useMutationObserver(document.body, mutationObserverCallback, mutationOptions);
 
   return (
     <RainbowEffectContext.Provider

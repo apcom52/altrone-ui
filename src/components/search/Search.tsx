@@ -90,6 +90,9 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
             icon={<Icon i="backspace" />}
           />
         ) : null}
+        {haveValue && (
+          <TextInput.IconIsland icon={<Icon i="search" />} placement="left" />
+        )}
         {!haveValue ? (
           <div className={placeholderCls}>
             <div className={s.PlaceholderIcon}>

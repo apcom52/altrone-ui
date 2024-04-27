@@ -1,12 +1,12 @@
-import React, { ChangeEvent, ReactElement } from 'react';
+import React, { ChangeEvent, PropsWithChildren, ReactElement } from 'react';
 import { BasicComponentProps, Size } from 'types';
 
 export interface TextInputProps
-  extends Omit<
-    BasicComponentProps & React.InputHTMLAttributes<HTMLInputElement>,
-    'onChange' | 'size' | 'children'
-  > {
-  children?: ReactElement | ReactElement[] | null;
+  extends PropsWithChildren,
+    Omit<
+      BasicComponentProps & React.InputHTMLAttributes<HTMLInputElement>,
+      'onChange' | 'size' | 'children'
+    > {
   value: string;
   onChange: (value: string, event: ChangeEvent) => void;
   wrapperClassName?: string;

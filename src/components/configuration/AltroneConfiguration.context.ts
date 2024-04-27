@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { DEFAULT_CONFIGURATION } from './AltroneConfiguration.const.ts';
 import { BasicComponentStyleConfig } from 'types';
+import { CollapsedListProps } from '../collapsedList/CollapsedList.types.ts';
 
 type ComponentConfiguration<ExtraProps extends object = {}> = Partial<
   BasicComponentStyleConfig & ExtraProps
@@ -69,6 +70,10 @@ export interface ConsumerConfigurationContext {
   }>;
   checkbox?: ComponentConfiguration;
   switcher?: ComponentConfiguration;
+  collapsedList?: ComponentConfiguration<{
+    limit?: number;
+    expandButtonLabel?: CollapsedListProps['expandButtonLabel'];
+  }>;
 }
 
 export const ConfigurationContext =
