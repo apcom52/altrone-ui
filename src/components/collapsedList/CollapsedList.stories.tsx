@@ -2,11 +2,11 @@ import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { Align, Direction, Gap } from '../../types';
+import { Direction, Gap } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
 // import { userEvent, within, expect } from '@storybook/test';
 import { CollapsedList } from './CollapsedList.tsx';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Checkbox } from '../checkbox';
 
 const story: Meta<typeof CollapsedList> = {
@@ -28,8 +28,6 @@ const story: Meta<typeof CollapsedList> = {
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using CollapsedList',
   render: () => {
-    const isFirstRender = useRef(true);
-
     const [value1, setValue1] = useState(false);
     const [value2, setValue2] = useState(false);
     const [value3, setValue3] = useState(false);
