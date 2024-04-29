@@ -5,9 +5,17 @@ import s from './select.module.scss';
 import clsx from 'clsx';
 import { PopoverContentContext } from '../popover';
 import { useSelect } from './useSelect.ts';
+import { Size } from '../../types';
 
 const SelectComponent = (props: SelectProps) => {
-  const { name, multiple, value, placeholder, searchable } = props;
+  const {
+    name,
+    multiple,
+    value,
+    placeholder,
+    searchable,
+    size = Size.medium,
+  } = props;
 
   const id = useId();
   const selectName = name || id;
@@ -59,7 +67,7 @@ const SelectComponent = (props: SelectProps) => {
 
   return (
     <div className={s.SelectWrapper}>
-      <div>
+      <div className={s.FormInputs}>
         {multiple ? (
           <>
             {Array.isArray(value) &&
@@ -82,7 +90,6 @@ const SelectComponent = (props: SelectProps) => {
         content={menu}
         focusTrapTargets={searchMode ? ['reference'] : ['content']}
         defaultListNavigationIndex={-1}
-        virtualNavigationFocus
         listNavigation
       >
         {({ opened }) => {
@@ -94,8 +101,12 @@ const SelectComponent = (props: SelectProps) => {
               onChange={setUserQuery}
               onFocus={searchable ? focusSelect : undefined}
               onBlur={searchable ? blurSelect : undefined}
-              readOnly={!(searchable && searchMode)}
-              readonlyStyles={false}
+              readOnly={
+                props.readonly ? props.readonly : !(searchable && searchMode)
+              }
+              readonlyStyles={!props.readonly ? false : true}
+              size={size}
+              transparent={props.transparent}
             >
               <TextInput.IconIsland
                 className={s.ArrowIcon}

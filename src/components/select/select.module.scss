@@ -35,15 +35,6 @@
 }
 
 .Select {
-  --bgColor: var(--inputBackgroundColor);
-  --fgColor: var(--inputTextColor);
-  --placeholderColor: var(--inputPlaceholderTextColor);
-
-  @include inputControl;
-
-  display: flex;
-  align-items: center;
-  flex-direction: row;
   text-align: left;
   cursor: pointer;
 }
@@ -63,4 +54,8 @@
 .Placeholder {
   flex: 1;
   color: var(--placeholderColor);
+}
+
+.FormInputs {
+  display: none;
 }

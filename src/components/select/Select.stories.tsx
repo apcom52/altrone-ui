@@ -4,7 +4,7 @@ import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from 'components';
 import { useState } from 'react';
-import { Direction, Gap } from '../../types';
+import { Direction, Gap, Size } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
 import { COUNTRIES } from '../scrollable/Scrollable.constants.ts';
 import { Option } from './Select.types.ts';
@@ -93,10 +93,55 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <Select
             value={value6}
             onChange={setValue6}
-            placeholder="What is your homeland?"
+            placeholder="Choose countries where have you been"
             options={SELECT_COUNTRIES}
             multiple
             searchable
+          />
+        </Flex>
+        <Text.Heading role={TextHeadingRoles.inner}>
+          Select with different sizes
+        </Text.Heading>
+        <Flex direction={Direction.horizontal} gap={Gap.large}>
+          <Select
+            name="country"
+            multiple={false}
+            value={value1}
+            onChange={setValue1}
+            placeholder="Choose your country"
+            options={SELECT_COUNTRIES}
+            size={Size.small}
+          />
+          <Select
+            multiple={false}
+            value={value2}
+            onChange={setValue2}
+            placeholder="Choose your country"
+            options={SELECT_COUNTRIES}
+            size={Size.large}
+          />
+        </Flex>
+        <Text.Heading role={TextHeadingRoles.inner}>
+          Transparent Select
+        </Text.Heading>
+        <Flex direction={Direction.horizontal} gap={Gap.large}>
+          <Select
+            name="country"
+            multiple={false}
+            value={value2}
+            onChange={setValue2}
+            placeholder="Choose your country"
+            options={SELECT_COUNTRIES}
+            transparent
+          />
+          <Select
+            value={value6}
+            onChange={setValue6}
+            placeholder="Choose countries where have you been"
+            options={SELECT_COUNTRIES}
+            multiple
+            searchable
+            transparent
           />
         </Flex>
       </Flex>

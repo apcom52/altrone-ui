@@ -29,7 +29,9 @@ export const useSelect = (props: SelectProps) => {
   }, [value, options, multiple]);
 
   const valueString = Array.isArray(selectedOptions)
-    ? '+' + String(selectedOptions.length)
+    ? selectedOptions.length
+      ? selectedOptions.map((item) => item.label).join(', ')
+      : ''
     : selectedOptions?.label;
 
   const selectValue = useCallback(
