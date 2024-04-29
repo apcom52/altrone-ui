@@ -22,7 +22,7 @@ export interface SelectProps
     'onChange' | 'size' | 'value'
   > {
   value: string | string[];
-  onChange: (value: string | string[], e: ChangeEvent) => void;
+  onChange: (value: string | string[]) => void;
   options: Option[];
   multiple?: boolean;
   maxCount?: number;

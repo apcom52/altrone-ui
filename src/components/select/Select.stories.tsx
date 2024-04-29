@@ -2,12 +2,10 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Select } from './Select.tsx';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { Flex } from '../flex';
+import { Flex } from 'components';
 import { useState } from 'react';
 import { Direction, Gap } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
-import { TextInput } from '../textInput';
-import { Icon } from '../icon';
 import { COUNTRIES } from '../scrollable/Scrollable.constants.ts';
 import { Option } from './Select.types.ts';
 
@@ -44,21 +42,22 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       <Flex gap={Gap.large}>
         <Text.Heading role={TextHeadingRoles.inner}>Basic Select</Text.Heading>
         <Flex direction={Direction.horizontal} gap={Gap.large}>
-          <Select<string>
+          <Select
+            name="country"
             multiple={false}
             value={value1}
             onChange={setValue1}
             placeholder="Choose your country"
             options={SELECT_COUNTRIES}
           />
-          <Select<string>
+          <Select
             multiple={false}
             value={value2}
             onChange={setValue2}
             placeholder="Choose your country"
             options={SELECT_COUNTRIES}
           />
-          <Select<string>
+          <Select
             multiple={false}
             value={value3}
             onChange={setValue3}
@@ -66,7 +65,6 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             disabled
           />
         </Flex>
-        <br />
         <Text.Heading role={TextHeadingRoles.inner}>
           Multiple Select
         </Text.Heading>
