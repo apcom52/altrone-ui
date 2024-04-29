@@ -1,69 +1,35 @@
 import { SelectProps } from './Select.types.ts';
-import { memo, useCallback, useId, useMemo } from 'react';
-import { Dropdown, Icon, Scrollable } from 'components';
+import { memo, useId, useMemo } from 'react';
+import { Dropdown, Icon, Scrollable, TextInput } from 'components';
 import s from './select.module.scss';
 import clsx from 'clsx';
-import { useRainbowEffect } from '../application/RainbowEffect.tsx';
 import { PopoverContentContext } from '../popover';
+import { useSelect } from './useSelect.ts';
 
-const EMPTY_ARRAY: any = [];
+const SelectComponent = (props: SelectProps) => {
+  const { name, multiple, value, placeholder, searchable } = props;
 
-const SelectComponent = ({
-  value,
-  placeholder,
-  options = EMPTY_ARRAY,
-  multiple = false,
-  onChange,
-  Component,
-  name,
-}: SelectProps) => {
   const id = useId();
-
   const selectName = name || id;
 
-  const rainbowProps = useRainbowEffect();
-
-  const selectedOptions = useMemo(() => {
-    if (multiple) {
-      return options.filter((item) => value.includes(item.value));
-    } else {
-      return options.find((item) => item.value === value);
-    }
-  }, [value, options, multiple]);
-
-  const valueString = Array.isArray(selectedOptions)
-    ? '+' + String(selectedOptions.length)
-    : selectedOptions?.label;
-
-  const selectText = valueString ? (
-    <div className={s.SelectValue}>{valueString}</div>
-  ) : (
-    <div className={s.Placeholder}>{placeholder}</div>
-  );
-
-  const selectValue = useCallback(
-    (newValue: string) => {
-      if (multiple && Array.isArray(value)) {
-        const isSelected = value.includes(newValue);
-
-        if (isSelected) {
-          onChange(value.filter((item) => item !== newValue));
-        } else {
-          onChange([...value, newValue]);
-        }
-      } else {
-        onChange(newValue);
-      }
-    },
-    [onChange, value, multiple],
-  );
+  const {
+    selectedOptions,
+    selectValue,
+    searchMode,
+    userQuery,
+    setUserQuery,
+    focusSelect,
+    blurSelect,
+    valueString = '',
+    filteredOptions,
+  } = useSelect(props);
 
   const menu = useMemo(
     () =>
       ({ closePopup }: PopoverContentContext) => (
         <Scrollable maxHeight="250px">
           <Dropdown.Menu>
-            {options.map((option, optionIndex) => {
+            {filteredOptions.map((option, optionIndex) => {
               const checked = Array.isArray(selectedOptions)
                 ? selectedOptions.includes(option)
                 : selectedOptions === option;
@@ -86,13 +52,13 @@ const SelectComponent = ({
           </Dropdown.Menu>
         </Scrollable>
       ),
-    [options, selectedOptions, multiple, selectValue],
+    [filteredOptions, selectedOptions, multiple, selectValue],
   );
 
   const cls = clsx(s.Select);
 
   return (
-    <div className={s.Wrapper}>
+    <div className={s.SelectWrapper}>
       <div>
         {multiple ? (
           <>
@@ -110,21 +76,43 @@ const SelectComponent = ({
           <input type="hidden" name={selectName} value={value} />
         )}
       </div>
-      <Dropdown placement="bottom-start" parentWidth content={menu}>
+      <Dropdown
+        placement="bottom-start"
+        parentWidth
+        content={menu}
+        focusTrapTargets={searchMode ? ['reference'] : ['content']}
+        defaultListNavigationIndex={-1}
+        virtualNavigationFocus
+        listNavigation
+      >
         {({ opened }) => {
           return (
-            <button
-              type="button"
+            <TextInput
               className={cls}
-              data-rainbow-opacity={0.33}
-              data-rainbow-blur={36}
-              {...rainbowProps}
+              value={searchMode ? userQuery : valueString}
+              placeholder={valueString ? valueString : placeholder}
+              onChange={setUserQuery}
+              onFocus={searchable ? focusSelect : undefined}
+              onBlur={searchable ? blurSelect : undefined}
+              readOnly={!(searchable && searchMode)}
+              readonlyStyles={false}
             >
-              {selectText}
-              <div className={s.ArrowIcon}>
-                <Icon i={opened ? 'expand_less' : 'expand_more'} />
-              </div>
-            </button>
+              <TextInput.IconIsland
+                className={s.ArrowIcon}
+                placement="right"
+                icon={
+                  <Icon
+                    i={
+                      searchMode
+                        ? 'search'
+                        : opened
+                          ? 'expand_less'
+                          : 'expand_more'
+                    }
+                  />
+                }
+              />
+            </TextInput>
           );
         }}
       </Dropdown>

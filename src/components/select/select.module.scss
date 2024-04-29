@@ -24,7 +24,11 @@
   --selectInvalidTextColor: var(--danger-600);
 }
 
-.Wrapper {
+.SelectWrapper {
+  width: 100%;
+}
+
+.SelectContainer {
   --height: 24px;
 
   @include inputWrapper;

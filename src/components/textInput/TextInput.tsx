@@ -1,5 +1,6 @@
 import React, {
   cloneElement,
+  FocusEventHandler,
   forwardRef,
   useCallback,
   useMemo,
@@ -37,6 +38,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       onBlur,
       Component,
       suggestions = [],
+      readonlyStyles = true,
       ...restProps
     } = props;
 
@@ -56,7 +58,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
     } = useToggledState(false);
 
     const rainbowEvents = useRainbowEffect(
-      !restProps.readOnly &&
+      !(restProps.readOnly && readonlyStyles) &&
         !restProps.disabled &&
         rainbowEffect &&
         !focused &&
@@ -76,7 +78,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       s.Input,
       {
         [s.Invalid]: invalid,
-        [s.Readonly]: restProps.readOnly,
+        [s.Readonly]: readonlyStyles && restProps.readOnly,
         [s.Transparent]: transparent,
       },
       className,
@@ -134,6 +136,22 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       [onChange],
     );
 
+    const onFocusHandler: FocusEventHandler<HTMLInputElement> = useCallback(
+      (e) => {
+        onFocus?.(e);
+        focus();
+      },
+      [onFocus],
+    );
+
+    const onBlurHandler: FocusEventHandler<HTMLInputElement> = useCallback(
+      (e) => {
+        onBlur?.(e);
+        blur();
+      },
+      [onFocus],
+    );
+
     useResizeObserver(leftIslandsContainerRef);
     useResizeObserver(rightIslandsContainerRef);
 
@@ -157,8 +175,8 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         'aria-invalid': invalid,
         'data-rainbow-opacity': 0.33,
         'data-rainbow-blur': 36,
-        onFocus: focus,
-        onBlur: blur,
+        onFocus: onFocusHandler,
+        onBlur: onBlurHandler,
         className,
         style: styles,
         ...rainbowEvents,
@@ -184,8 +202,8 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
           aria-invalid={invalid}
           data-rainbow-opacity={0.33}
           data-rainbow-blur={36}
-          onFocus={focus}
-          onBlur={blur}
+          onFocus={onFocusHandler}
+          onBlur={onBlurHandler}
           {...rainbowEvents}
           {...restProps}
         />

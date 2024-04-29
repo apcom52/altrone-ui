@@ -33,10 +33,12 @@ const SELECT_COUNTRIES: Option<string> = COUNTRIES.map((item) => ({
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using Select',
   render: () => {
-    const [value1, setValue1] = useState<string>('');
-    const [value2, setValue2] = useState<string>('portugal');
-    const [value3, setValue3] = useState<string>('china');
+    const [value1, setValue1] = useState('');
+    const [value2, setValue2] = useState('portugal');
+    const [value3, setValue3] = useState('china');
     const [value4, setValue4] = useState<string[]>(['russia']);
+    const [value5, setValue5] = useState('');
+    const [value6, setValue6] = useState(['russia']);
 
     return (
       <Flex gap={Gap.large}>
@@ -69,12 +71,32 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           Multiple Select
         </Text.Heading>
         <Flex direction={Direction.horizontal} gap={Gap.large}>
-          <Select<string[]>
+          <Select
             multiple={true}
             value={value4}
             onChange={setValue4}
             placeholder="Choose your country"
             options={SELECT_COUNTRIES}
+          />
+        </Flex>
+        <Text.Heading role={TextHeadingRoles.inner}>
+          Select with search
+        </Text.Heading>
+        <Flex direction={Direction.horizontal} gap={Gap.large}>
+          <Select
+            value={value5}
+            onChange={setValue5}
+            placeholder="What is your homeland?"
+            options={SELECT_COUNTRIES}
+            searchable
+          />
+          <Select
+            value={value6}
+            onChange={setValue6}
+            placeholder="What is your homeland?"
+            options={SELECT_COUNTRIES}
+            multiple
+            searchable
           />
         </Flex>
       </Flex>

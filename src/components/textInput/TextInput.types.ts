@@ -18,6 +18,7 @@ export interface TextInputProps
   Component?: ReactElement;
   suggestions?: (value: string) => string[] | Promise<string[]>;
   liveSuggestion?: boolean;
+  readonlyStyles?: boolean;
 }
 
 export interface TextIslandProps extends BasicComponentProps {
