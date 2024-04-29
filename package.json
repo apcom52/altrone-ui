@@ -17,7 +17,7 @@
     "test-ct": "playwright test -c playwright-ct.config.ts"
   },
   "dependencies": {
-    "@floating-ui/react": "0.26.11",
+    "@floating-ui/react": "0.26.13",
     "@material-symbols/font-500": "0.17.1",
     "clsx": "2.1.0",
     "debounce": "^2.0.0",
