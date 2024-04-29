@@ -74,6 +74,7 @@ export interface ConsumerConfigurationContext {
     limit?: number;
     expandButtonLabel?: CollapsedListProps['expandButtonLabel'];
   }>;
+  radio?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =

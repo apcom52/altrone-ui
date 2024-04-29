@@ -1,0 +1,28 @@
+:global(:root) {
+  --radioBackgroundColor: var(--default-200);
+  --radioTextColor: var(--default-900);
+  --radioHoverBackgroundColor: var(--default-300);
+  --radioCheckedBackgroundColor: var(--primary-500);
+  --radioCheckedHoverBackgroundColor: var(--primary-600);
+  --radioHandleBackgroundColor: var(--default-50);
+}
+
+:global(.AltroneDark) {
+  --radioBackgroundColor: var(--default-700);
+  --radioTextColor: var(--default-50);
+  --radioHoverBackgroundColor: var(--default-600);
+  --radioCheckedBackgroundColor: var(--primary-800);
+  --radioCheckedHoverBackgroundColor: var(--primary-700);
+  --radioHandleBackgroundColor: var(--default-50);
+}
+
+.RadioList {
+  display: flex;
+  gap: var(--gap);
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.Vertical {
+  flex-direction: column;
+}
