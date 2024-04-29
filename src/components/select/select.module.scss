@@ -1,0 +1,62 @@
+@import 'src/global/inputMixins';
+
+:global(:root) {
+  --selectBackgroundColor: var(--default-200);
+  --selectHoverBackgroundColor: var(--default-300);
+  --selectTextColor: var(--default-700);
+  --selectHoverTextColor: var(--default-800);
+  --selectPlaceholderTextColor: var(--default-400);
+  --selectPlaceholderHoverTextColor: var(--default-500);
+  --selectInvalidTextColor: var(--danger-800);
+  --selectIslandTextSize: 14px;
+  --selectIslandHeight: 20px;
+  --selectHorizontalOffset: var(--s-gap);
+  --selectVerticalOffset: var(--narrow-gap);
+}
+
+:global(.AltroneDark) {
+  --selectBackgroundColor: var(--default-800);
+  --selectHoverBackgroundColor: var(--default-700);
+  --selectTextColor: var(--default-100);
+  --selectHoverTextColor: var(--default-50);
+  --selectPlaceholderTextColor: var(--default-500);
+  --selectPlaceholderHoverTextColor: var(--default-400);
+  --selectInvalidTextColor: var(--danger-600);
+}
+
+.Wrapper {
+  --height: 24px;
+
+  @include inputWrapper;
+}
+
+.Select {
+  --bgColor: var(--inputBackgroundColor);
+  --fgColor: var(--inputTextColor);
+  --placeholderColor: var(--inputPlaceholderTextColor);
+
+  @include inputControl;
+
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ArrowIcon {
+  --inputIslandTextSize: 18px;
+  --iconIslandTextColor: var(--fgColor);
+
+  @include inputIsland;
+}
+
+.SelectValue {
+  flex: 1;
+  color: var(--fgColor);
+}
+
+.Placeholder {
+  flex: 1;
+  color: var(--placeholderColor);
+}

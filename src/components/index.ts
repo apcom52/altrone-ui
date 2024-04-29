@@ -18,3 +18,5 @@ export * from './textarea';
 export * from './search';
 export * from './checkbox';
 export * from './switcher';
+export * from './radio';
+export * from './select';
