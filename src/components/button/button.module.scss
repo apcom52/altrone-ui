@@ -213,6 +213,7 @@
 
 .Label {
   @include label;
+  flex: 1;
 }
 
 .Icon {

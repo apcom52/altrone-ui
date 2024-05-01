@@ -1,5 +1,5 @@
-import { SelectProps } from './Select.types.ts';
-import { memo, useId, useMemo } from 'react';
+import { SelectContext, SelectProps } from './Select.types.ts';
+import { cloneElement, memo, useId, useMemo } from 'react';
 import { Dropdown, Icon, Scrollable, TextInput } from 'components';
 import s from './select.module.scss';
 import clsx from 'clsx';
@@ -16,6 +16,7 @@ const SelectComponent = (props: SelectProps) => {
     searchable,
     clearable,
     size = Size.medium,
+    Component,
   } = props;
 
   const id = useId();
@@ -72,6 +73,15 @@ const SelectComponent = (props: SelectProps) => {
   const needToShowClearButton =
     clearable && (isMultiple ? value?.length > 0 : value);
 
+  const selectContext: SelectContext = {
+    expanded: false,
+    value,
+    selectedOptions,
+    disabled: Boolean(props.disabled),
+    multiple: Boolean(props.multiple),
+    clearValue,
+  };
+
   return (
     <div className={s.SelectWrapper}>
       <div className={s.FormInputs}>
@@ -100,6 +110,17 @@ const SelectComponent = (props: SelectProps) => {
         listNavigation
       >
         {({ opened }) => {
+          if (Component) {
+            if (typeof Component === 'function') {
+              return Component({ ...selectContext, expanded: opened });
+            } else {
+              return cloneElement(Component, {
+                ...selectContext,
+                expanded: opened,
+              });
+            }
+          }
+
           return (
             <TextInput
               className={cls}

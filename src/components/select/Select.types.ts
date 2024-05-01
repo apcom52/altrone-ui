@@ -10,10 +10,11 @@ export type Option = {
 
 export type SelectContext = {
   expanded: boolean;
-  value: string;
-  onClick: () => void;
+  value?: string | string[];
+  selectedOptions?: Option | Option[];
   disabled: boolean;
   multiple: boolean;
+  clearValue: () => void;
 };
 
 export interface SelectProps

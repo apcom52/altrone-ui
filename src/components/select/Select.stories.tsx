@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Select } from './Select.tsx';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { Flex } from 'components';
+import { Button, Flex, Icon } from 'components';
 import { useState } from 'react';
 import { Direction, Gap, Size } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
@@ -144,6 +144,44 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             searchable
             transparent
             clearable
+          />
+        </Flex>
+        <Text.Heading role={TextHeadingRoles.inner}>Custom Select</Text.Heading>
+        <Flex direction={Direction.horizontal} gap={Gap.large}>
+          <Select
+            name="country"
+            value={value2}
+            onChange={setValue2}
+            placeholder="Choose your country"
+            options={SELECT_COUNTRIES}
+            Component={({ selectedOptions, expanded }) => (
+              <Button
+                style={{ minWidth: '300px' }}
+                label={(selectedOptions as Option).label}
+                rightIcon={
+                  <Icon i={expanded ? 'expand_less' : 'expand_more'} />
+                }
+              />
+            )}
+          />
+          <Select
+            name="country"
+            value={value6}
+            multiple={true}
+            onChange={setValue6}
+            placeholder="Choose countries where have you been"
+            options={SELECT_COUNTRIES}
+            Component={({ selectedOptions, expanded }) => (
+              <Button
+                style={{ minWidth: '320px' }}
+                label={(selectedOptions as Option[])
+                  .map((item) => `[${item.label}]`)
+                  .join(', ')}
+                rightIcon={
+                  <Icon i={expanded ? 'expand_less' : 'expand_more'} />
+                }
+              />
+            )}
           />
         </Flex>
       </Flex>
