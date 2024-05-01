@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { PopoverContentContext } from '../popover';
 import { useSelect } from './useSelect.ts';
 import { Size } from '../../types';
+import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 
 const SelectComponent = (props: SelectProps) => {
   const {
@@ -16,11 +17,15 @@ const SelectComponent = (props: SelectProps) => {
     searchable,
     clearable,
     size = Size.medium,
+    className,
+    style,
     Component,
   } = props;
 
   const id = useId();
   const selectName = name || id;
+
+  const { select: selectConfig = {} } = useConfiguration();
 
   const {
     selectedOptions,
@@ -66,7 +71,11 @@ const SelectComponent = (props: SelectProps) => {
     [filteredOptions, selectedOptions, multiple, selectValue],
   );
 
-  const cls = clsx(s.Select);
+  const cls = clsx(s.Select, className, selectConfig.className);
+  const styles = {
+    ...selectConfig.style,
+    ...style,
+  };
 
   const isMultiple = Array.isArray(value);
 
@@ -124,6 +133,7 @@ const SelectComponent = (props: SelectProps) => {
           return (
             <TextInput
               className={cls}
+              style={styles}
               value={searchMode ? userQuery : valueString}
               placeholder={valueString ? valueString : placeholder}
               onChange={setUserQuery}
