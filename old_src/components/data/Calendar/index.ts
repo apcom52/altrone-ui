@@ -1,2 +1,2 @@
 export { Calendar } from './Calendar';
-export { CalendarRenderDateProps } from './Calendar.types';
+export type { CalendarRenderDateProps } from './Calendar.types';

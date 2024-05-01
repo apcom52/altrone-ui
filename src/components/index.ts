@@ -20,3 +20,4 @@ export * from './checkbox';
 export * from './switcher';
 export * from './radio';
 export * from './select';
+export * from './calendar';
