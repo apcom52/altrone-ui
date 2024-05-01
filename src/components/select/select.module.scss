@@ -40,9 +40,6 @@
 }
 
 .ArrowIcon {
-  --inputIslandTextSize: 18px;
-  --iconIslandTextColor: var(--fgColor);
-
   @include inputIsland;
 }
 

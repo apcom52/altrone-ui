@@ -1,10 +1,10 @@
-import { ChangeEvent, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { Size } from '../../types';
 import { RenderFunction } from '../../utils';
 
 export type Option = {
   value: string;
-  label: str;
+  label: string;
   disabled?: boolean;
 };
 
@@ -21,8 +21,8 @@ export interface SelectProps
     React.SelectHTMLAttributes<HTMLSelectElement>,
     'onChange' | 'size' | 'value'
   > {
-  value: string | string[];
-  onChange: (value: string | string[]) => void;
+  value: string | string[] | undefined;
+  onChange: (value?: string | string[]) => void;
   options: Option[];
   multiple?: boolean;
   maxCount?: number;

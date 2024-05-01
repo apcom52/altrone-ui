@@ -22,7 +22,7 @@ export const useSelect = (props: SelectProps) => {
 
   const selectedOptions = useMemo(() => {
     if (multiple) {
-      return options.filter((item) => value.includes(item.value));
+      return options.filter((item) => value?.includes(item.value));
     } else {
       return options.find((item) => item.value === value);
     }
@@ -64,6 +64,14 @@ export const useSelect = (props: SelectProps) => {
     );
   }, [options, userQuery, searchable]);
 
+  const clearValue = useCallback(() => {
+    if (Array.isArray(value)) {
+      onChange([]);
+    } else {
+      onChange(undefined);
+    }
+  }, [onChange, value]);
+
   return {
     searchMode,
     focusSelect,
@@ -73,6 +81,7 @@ export const useSelect = (props: SelectProps) => {
     selectedOptions,
     valueString,
     selectValue,
+    clearValue,
     filteredOptions,
   };
 };

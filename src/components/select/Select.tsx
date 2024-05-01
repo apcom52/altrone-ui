@@ -14,6 +14,7 @@ const SelectComponent = (props: SelectProps) => {
     value,
     placeholder,
     searchable,
+    clearable,
     size = Size.medium,
   } = props;
 
@@ -30,6 +31,7 @@ const SelectComponent = (props: SelectProps) => {
     blurSelect,
     valueString = '',
     filteredOptions,
+    clearValue,
   } = useSelect(props);
 
   const menu = useMemo(
@@ -64,6 +66,11 @@ const SelectComponent = (props: SelectProps) => {
   );
 
   const cls = clsx(s.Select);
+
+  const isMultiple = Array.isArray(value);
+
+  const needToShowClearButton =
+    clearable && (isMultiple ? value?.length > 0 : value);
 
   return (
     <div className={s.SelectWrapper}>
@@ -108,6 +115,16 @@ const SelectComponent = (props: SelectProps) => {
               size={size}
               transparent={props.transparent}
             >
+              {needToShowClearButton && (
+                <TextInput.ActionIsland
+                  placement="right"
+                  label="Clear"
+                  icon={<Icon i="backspace" />}
+                  showLabel={false}
+                  disabled={false}
+                  onClick={clearValue}
+                />
+              )}
               <TextInput.IconIsland
                 className={s.ArrowIcon}
                 placement="right"

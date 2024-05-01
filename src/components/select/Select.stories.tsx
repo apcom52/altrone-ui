@@ -58,6 +58,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             onChange={setValue2}
             placeholder="Choose your country"
             options={SELECT_COUNTRIES}
+            clearable
           />
           <Select
             multiple={false}
@@ -142,6 +143,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             multiple
             searchable
             transparent
+            clearable
           />
         </Flex>
       </Flex>
