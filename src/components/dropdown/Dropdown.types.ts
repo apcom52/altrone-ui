@@ -9,6 +9,7 @@ export interface DropdownActionProps
   onClick?: () => void;
   danger?: boolean;
   disabled?: boolean;
+  focused?: boolean;
 }
 
 export interface DropdownCheckboxProps
@@ -16,6 +17,7 @@ export interface DropdownCheckboxProps
   checked: boolean;
   onChange: (state: boolean) => void;
   label: string;
+  focused?: boolean;
   disabled?: boolean;
 }
 
@@ -34,6 +36,7 @@ export interface DropdownRadioListItem<T = string>
   value: T;
   label?: string;
   disabled?: boolean;
+  focused?: boolean;
 }
 
 export interface DropdownChildMenuProps

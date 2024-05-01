@@ -1,7 +1,8 @@
-import { BasicComponentProps, Role, Size } from 'types';
+import { Role, Size } from 'types';
 import { ReactElement } from 'react';
 
-export interface ButtonProps extends BasicComponentProps<HTMLButtonElement> {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string;
   leftIcon?: ReactElement;
   rightIcon?: ReactElement;

@@ -5,7 +5,6 @@ import { useCloseDropdownContext } from '../Dropdown.contexts.ts';
 import s from './action.module.scss';
 import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
 import { useId } from 'react';
-import { findRenderedDOMComponentWithClass } from 'react-dom/test-utils';
 import { usePopoverCurrentIndex } from '../../popover/Popover.tsx';
 
 export function DropdownAction({
@@ -16,6 +15,7 @@ export function DropdownAction({
   label,
   onClick,
   className,
+  focused,
   style,
   ...props
 }: DropdownActionProps) {
@@ -36,6 +36,7 @@ export function DropdownAction({
     {
       [s.DisabledAction]: disabled,
       [s.DangerAction]: danger,
+      [s.Focused]: focused,
     },
     className,
     dropdownActionConfiguration.className,

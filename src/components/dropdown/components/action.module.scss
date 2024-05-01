@@ -47,7 +47,7 @@
   height: 24px;
   outline: 0;
 
-  &:hover, &:focus-visible, &[data-active="true"]:not(.OpenedAction) {
+  &:hover, &:focus-visible, &[data-active="true"]:not(.OpenedAction), &.Focused {
     background: var(--dropdownActionHoverColor);
     color: var(--dropdownActionHoverTextColor);
     --dropdownHintTextColor: var(--default-100);

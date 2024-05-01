@@ -12,6 +12,7 @@ export function DropdownCheckbox({
   disabled,
   label,
   className,
+  focused,
   style,
   ...props
 }: DropdownCheckboxProps) {
@@ -26,6 +27,7 @@ export function DropdownCheckbox({
     s.Action,
     {
       [s.DisabledAction]: disabled,
+      [s.Focused]: focused,
     },
     className,
     dropdownCheckboxConfiguration.className,

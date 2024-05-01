@@ -13,6 +13,7 @@ export function DropdownRadioItem({
   disabled,
   className,
   style,
+  focused,
   ...props
 }: DropdownRadioListItem) {
   const { dropdownRadioItem: dropdownRadioItemConfig = {} } =
@@ -26,6 +27,7 @@ export function DropdownRadioItem({
     className,
     {
       [s.DisabledAction]: disabled,
+      [s.Focused]: focused,
     },
     dropdownRadioItemConfig.className,
   );
