@@ -20,6 +20,7 @@
     "@floating-ui/react": "0.26.13",
     "@material-symbols/font-500": "0.17.1",
     "clsx": "2.1.0",
+    "dayjs": "^1.11.11",
     "debounce": "^2.0.0",
     "lodash-es": "^4.17.21",
     "lodash.debounce": "^4.0.8",

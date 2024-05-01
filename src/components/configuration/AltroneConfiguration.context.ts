@@ -76,6 +76,7 @@ export interface ConsumerConfigurationContext {
   }>;
   radio?: ComponentConfiguration;
   select?: ComponentConfiguration;
+  calendar?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =

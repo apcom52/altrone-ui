@@ -6,22 +6,16 @@ import { CalendarDate } from './CalendarDate';
 import dayjs from 'dayjs';
 import IsBetween from 'dayjs/plugin/isBetween';
 import IsToday from 'dayjs/plugin/isToday';
+import IsSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import IsSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import ruLocale from 'dayjs/locale/ru.js';
 
 dayjs.extend(IsBetween);
 dayjs.extend(IsToday);
+dayjs.extend(IsSameOrAfter);
+dayjs.extend(IsSameOrBefore);
 dayjs.locale(ruLocale);
 
-/**
- * This component is used to show the selected month
- * @param month
- * @param selectedDates
- * @param onDateChange
- * @param DateComponent
- * @param disabled
- * @param className
- * @constructor
- */
 export const Calendar = ({
   month = new Date(),
   selectedDates = [new Date()],
@@ -29,7 +23,7 @@ export const Calendar = ({
   onDateChange,
   DateComponent = CalendarDate,
   disabled,
-  className
+  className,
 }: CalendarProps) => {
   const month_dj = useMemo(() => {
     return dayjs(month);
@@ -87,10 +81,13 @@ export const Calendar = ({
     <div className={clsx('alt-calendar', className)}>
       {calendarDates.map((date) => {
         const fromAnotherMonth = !date.isSame(month_dj, 'month');
-        const isDateSelected = Boolean(selectedDates_dj.find((d) => d.isSame(date, 'day')));
+        const isDateSelected = Boolean(
+          selectedDates_dj.find((d) => d.isSame(date, 'day')),
+        );
 
         const isCursorHighlighted = cursorDate_dj
-          ? date.isSameOrAfter(selectedDates_dj[0]) && date.isSameOrBefore(cursorDate_dj)
+          ? date.isSameOrAfter(selectedDates_dj[0]) &&
+            date.isSameOrBefore(cursorDate_dj)
           : false;
 
         return (
