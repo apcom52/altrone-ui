@@ -1,0 +1,34 @@
+@import 'src/global/mixins';
+
+.Day {
+  --datePickerDayTextColor: var(--default-900);
+  --datePickerDayWeekendTextColor: var(--default-700);
+  --datePickerDayTodayTextColor: var(--primary-500);
+  --datePickerDayHoverTextColor: var(--primary-600);
+  --datePickerDayBackgroundColor: transparent;
+  --datePickerDaySelectedBackgroundColor: var(--primary-500);
+  --datePickerDaySelectedTextColor: var(--default-50);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  background-color: transparent;
+  width: 16px;
+  height: 16px;
+  color: var(--datePickerDayTextColor);
+  @include label;
+  cursor: pointer;
+
+  &:hover, &:focus-visible {
+    color: var(--datePickerDayHoverTextColor);
+  }
+}
+
+.Weekend {
+  color: var(--datePickerDayWeekendTextColor);
+}

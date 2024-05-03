@@ -1,0 +1,63 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --datePickerHeaderTextColor: var(--default-900);
+  --datePickerHeaderHoverTextColor: var(--primary-500);
+}
+
+.Header {
+  display: flex;
+  align-items: center;
+  gap: var(--xl-gap);
+  justify-content: space-between;
+
+  @include group-heading;
+}
+
+.CurrentDate {
+  display: flex;
+  align-items: center;
+}
+
+.CurrentDateItem {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  cursor: pointer;
+  color: var(--datePickerHeaderTextColor);
+  transition: color 0.1s linear;
+
+  @include group-heading;
+  margin-right: var(--xs-gap);
+
+  &:hover, &:focus-visible {
+    color: var(--datePickerHeaderHoverTextColor);
+  }
+}
+
+.Navigation {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--s-gap);
+}
+
+.Button {
+  display: flex;
+  align-items: center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  background-color: transparent;
+  font-size: 18px;
+  padding: 0;
+  cursor: pointer;
+
+  &:hover, &:focus-visible {
+    color: var(--primary-600);
+  }
+}
