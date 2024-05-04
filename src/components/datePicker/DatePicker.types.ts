@@ -46,3 +46,15 @@ export interface CalendarProps<
   maxDate: Date;
   isDateRange: IsDateRange;
 }
+
+export interface DatePickerViewContextType {
+  viewMode: Picker;
+  setViewMode: (picker: Picker) => void;
+  currentMonth: Dayjs;
+  setCurrentMonth: (month: Dayjs) => void;
+}
+
+export interface DatePickerContextType {
+  selectedDates: (Date | undefined)[];
+  onChange: (selectedDates: Date) => void;
+}

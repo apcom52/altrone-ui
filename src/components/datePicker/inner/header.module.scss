@@ -29,6 +29,7 @@
   cursor: pointer;
   color: var(--datePickerHeaderTextColor);
   transition: color 0.1s linear;
+  text-transform: capitalize;
 
   @include group-heading;
   margin-right: var(--xs-gap);

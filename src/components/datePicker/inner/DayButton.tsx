@@ -49,6 +49,9 @@ export const DayButton = memo(
 
     const cls = clsx(s.Day, {
       [s.Weekend]: isWeekend,
+      [s.AnotherMonth]: fromAnotherMonth,
+      [s.Selected]: selected,
+      [s.Today]: today,
     });
 
     return (

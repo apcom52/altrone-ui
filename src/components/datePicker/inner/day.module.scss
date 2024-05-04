@@ -1,13 +1,20 @@
 @import 'src/global/mixins';
 
-.Day {
+:global(:root) {
+  --datePickerDayBackgroundColor: transparent;
   --datePickerDayTextColor: var(--default-900);
   --datePickerDayWeekendTextColor: var(--default-700);
   --datePickerDayTodayTextColor: var(--primary-500);
-  --datePickerDayHoverTextColor: var(--primary-600);
-  --datePickerDayBackgroundColor: transparent;
+  --datePickerDayHoveredBackgroundColor: var(--default-100);
+  --datePickerDayHoveredTextColor: var(--primary-600);
   --datePickerDaySelectedBackgroundColor: var(--primary-500);
+  --datePickerDaySelectedHoveredBackgroundColor: var(--primary-600);
   --datePickerDaySelectedTextColor: var(--default-50);
+}
+
+.Day {
+  --bgColor: var(--datePickerDayBackgroundColor);
+  --fgColor: var(--datePickerDayTextColor);
 
   display: flex;
   align-items: center;
@@ -17,18 +24,39 @@
   -moz-appearance: none;
   appearance: none;
   border: none;
-  background-color: transparent;
-  width: 16px;
-  height: 16px;
-  color: var(--datePickerDayTextColor);
+  background-color: var(--bgColor);
+  width: 20px;
+  height: 20px;
+  color: var(--fgColor);
   @include label;
   cursor: pointer;
+  border-radius: 4px;
 
   &:hover, &:focus-visible {
-    color: var(--datePickerDayHoverTextColor);
+    --bgColor: var(--datePickerDayHoveredBackgroundColor);
+    --fgColor: var(--datePickerDayHoveredTextColor);
   }
 }
 
 .Weekend {
-  color: var(--datePickerDayWeekendTextColor);
+  --fgColor: var(--datePickerDayWeekendTextColor);
+}
+
+.AnotherMonth {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.Today {
+  --fgColor: var(--datePickerDayTodayTextColor);
+}
+
+.Selected {
+  --bgColor: var(--datePickerDaySelectedBackgroundColor);
+  --fgColor: var(--datePickerDaySelectedTextColor);
+
+  &:hover, &:focus-visible {
+    --bgColor: var(--datePickerDaySelectedHoveredBackgroundColor);
+    --fgColor: var(--datePickerDaySelectedTextColor);
+  }
 }

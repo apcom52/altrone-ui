@@ -15,7 +15,7 @@ dayjs.extend(IsBetween);
 dayjs.extend(IsToday);
 dayjs.extend(IsSameOrBefore);
 dayjs.extend(IsSameOrAfter);
-dayjs.locale(ruLocale);
+// dayjs.locale(ruLocale);
 
 /**
  * This component is used to show the selected month
