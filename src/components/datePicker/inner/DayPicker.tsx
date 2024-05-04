@@ -9,7 +9,7 @@ import {
 
 export const DayPicker = memo(() => {
   const { currentMonth } = useDatePickerViewContext();
-  const { selectedDates } = useDateContext();
+  const { selectedDates, onChange } = useDateContext();
 
   return (
     <>
@@ -26,6 +26,7 @@ export const DayPicker = memo(() => {
         className={s.DayPicker}
         month={currentMonth.toDate()}
         selectedDates={selectedDates}
+        onDateChange={onChange}
         DateComponent={(props) => <DayButton {...props} />}
       />
     </>

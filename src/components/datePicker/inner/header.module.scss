@@ -17,9 +17,7 @@
 .CurrentDate {
   display: flex;
   align-items: center;
-}
-
-.CurrentDateItem {
+  min-width: 100px;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;

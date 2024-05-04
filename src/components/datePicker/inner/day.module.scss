@@ -1,4 +1,5 @@
 @import 'src/global/mixins';
+@import 'mixins';
 
 :global(:root) {
   --datePickerDayBackgroundColor: transparent;
@@ -13,28 +14,18 @@
 }
 
 .Day {
-  --bgColor: var(--datePickerDayBackgroundColor);
-  --fgColor: var(--datePickerDayTextColor);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  border: none;
-  background-color: var(--bgColor);
+  @include picker-item;
   width: 20px;
   height: 20px;
-  color: var(--fgColor);
-  @include label;
-  cursor: pointer;
-  border-radius: 4px;
 
-  &:hover, &:focus-visible {
-    --bgColor: var(--datePickerDayHoveredBackgroundColor);
-    --fgColor: var(--datePickerDayHoveredTextColor);
+  &:after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -4px;
+    width: 28px;
+    height: 24px;
+    background-color: transparent;
   }
 }
 
@@ -52,11 +43,5 @@
 }
 
 .Selected {
-  --bgColor: var(--datePickerDaySelectedBackgroundColor);
-  --fgColor: var(--datePickerDaySelectedTextColor);
-
-  &:hover, &:focus-visible {
-    --bgColor: var(--datePickerDaySelectedHoveredBackgroundColor);
-    --fgColor: var(--datePickerDaySelectedTextColor);
-  }
+  @include selected-picker-item;
 }

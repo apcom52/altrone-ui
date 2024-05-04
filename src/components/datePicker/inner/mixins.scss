@@ -1,0 +1,34 @@
+@mixin picker-item {
+  --bgColor: var(--datePickerDayBackgroundColor);
+  --fgColor: var(--datePickerDayTextColor);
+
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  background-color: var(--bgColor);
+  color: var(--fgColor);
+  @include label;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover, &:focus-visible {
+    --bgColor: var(--datePickerDayHoveredBackgroundColor);
+    --fgColor: var(--datePickerDayHoveredTextColor);
+  }
+}
+
+@mixin selected-picker-item {
+  --bgColor: var(--datePickerDaySelectedBackgroundColor);
+  --fgColor: var(--datePickerDaySelectedTextColor);
+
+  &:hover, &:focus-visible {
+    --bgColor: var(--datePickerDaySelectedHoveredBackgroundColor);
+    --fgColor: var(--datePickerDaySelectedTextColor);
+  }
+}

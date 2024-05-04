@@ -45,6 +45,7 @@ export interface CalendarProps<
   minDate: Date;
   maxDate: Date;
   isDateRange: IsDateRange;
+  closePopup?: () => void;
 }
 
 export interface DatePickerViewContextType {
