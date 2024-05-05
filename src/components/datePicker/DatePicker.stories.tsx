@@ -33,6 +33,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [month1, setMonth1] = useState<Dayjs | undefined>(dayjs('2024-03'));
     const [month2, setMonth2] = useState<Dayjs | undefined>(dayjs('2024-08'));
 
+    const [year1, setYear1] = useState<Dayjs | undefined>(dayjs('2024'));
+    const [year2, setYear2] = useState<Dayjs | undefined>(dayjs('2025'));
+
     return (
       <Flex gap={Gap.large}>
         <Text.Heading role={TextHeadingRoles.inner}>
@@ -64,6 +67,22 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             disabled
             onChange={setMonth2}
           />
+        </Flex>
+        <Text.Heading role={TextHeadingRoles.inner}>YearPicker</Text.Heading>
+        <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
+          <DatePicker.YearPicker value={year1} onChange={setYear1} />
+          <DatePicker.YearPicker value={year2} onChange={setYear2} />
+          <DatePicker.YearPicker
+            value={year2}
+            transparent
+            onChange={setYear2}
+          />
+          <DatePicker.YearPicker
+            value={year2}
+            readonlyStyles={true}
+            onChange={setYear2}
+          />
+          <DatePicker.YearPicker value={year2} disabled onChange={setYear2} />
         </Flex>
       </Flex>
     );

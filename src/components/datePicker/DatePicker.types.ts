@@ -2,11 +2,7 @@ import { Dayjs } from 'dayjs';
 import { AnyObject } from '../../utils';
 import { TextInputProps } from '../textInput/TextInput.types.ts';
 
-export enum Picker {
-  day = 'day',
-  month = 'month',
-  year = 'year',
-}
+export type Picker = 'day' | 'month' | 'year' | 'range';
 
 export type DateRangePosition = 'start' | 'end' | 'both';
 
@@ -15,7 +11,7 @@ export type DateValue<IsDateRange extends boolean | undefined> =
     ? [Date | undefined, Date | undefined]
     : undefined | Date;
 
-interface BasicDatePickerProps<ValueType extends AnyObject = any>
+export interface BasicDatePickerProps<ValueType extends AnyObject = any>
   extends Omit<TextInputProps, 'value' | 'onChange'> {
   value?: ValueType;
   onChange?: (value?: ValueType) => void;
@@ -53,7 +49,7 @@ export interface CalendarProps<
 
 export interface DatePickerViewContextType {
   viewMode: Picker;
-  picker: 'day' | 'month' | 'year' | 'range';
+  picker: Picker;
   setViewMode: (picker: Picker) => void;
   currentMonth: Dayjs;
   setCurrentMonth: (month: Dayjs) => void;

@@ -1,104 +1,17 @@
-import { useCallback, useMemo, useState } from 'react';
-import clsx from 'clsx';
-import { Popover } from '../popover';
-import { TextInput } from '../textInput';
-import s from './datePicker.module.scss';
-import { Icon } from '../icon';
-import { PopoverDatePickerContent } from './inner/PopoverDatePickerContent.tsx';
-import {
-  DatePickerContextType,
-  DatePickerProps,
-  DatePickerViewContextType,
-  Picker,
-} from './DatePicker.types.ts';
-import dayjs, { Dayjs } from 'dayjs';
+import { memo } from 'react';
+import dayjs from 'dayjs';
 import ruLocale from 'dayjs/locale/ru.js';
-import {
-  DatePickerCloseFnContext,
-  DatePickerContext,
-  DatePickerViewContext,
-} from './DatePicker.contexts.ts';
-import { MonthPicker } from './components';
+import { MonthPicker, YearPicker } from './components';
+import { generatePicker } from './inner/generatePicker.tsx';
+import { DatePickerProps } from './DatePicker.types.ts';
 
 dayjs.locale(ruLocale);
 
-const EMPTY_ARRAY: Dayjs[] = [];
-
-const DatePickerComponent = ({
-  value,
-  onChange,
-  ...restProps
-}: DatePickerProps) => {
-  const [currentMonth, setCurrentMonth] = useState(value || dayjs());
-  const [view, setView] = useState(Picker.day);
-
-  const cls = clsx(s.DatePicker);
-  const styles = {};
-
-  const onChangeHandler = useCallback(
-    (selectedDate: Dayjs) => {
-      onChange?.(selectedDate);
-    },
-    [onChange],
-  );
-
-  const datePickerValueContext = useMemo<DatePickerContextType>(() => {
-    return {
-      selectedDates: value ? [value] : EMPTY_ARRAY,
-      onDayClicked: onChangeHandler,
-    };
-  }, [value, onChangeHandler]);
-
-  const datePickerViewContext = useMemo<DatePickerViewContextType>(() => {
-    return {
-      picker: 'day',
-      viewMode: view,
-      setViewMode: setView,
-      currentMonth: currentMonth,
-      setCurrentMonth: setCurrentMonth,
-      hoveredDate: undefined,
-      setHoveredDate: () => null,
-    };
-  }, [view, currentMonth]);
-
-  return (
-    <div className={s.DatePickerWrapper}>
-      <DatePickerContext.Provider value={datePickerValueContext}>
-        <DatePickerViewContext.Provider value={datePickerViewContext}>
-          <Popover
-            placement="bottom-start"
-            content={({ closeAllSequence }) => (
-              <DatePickerCloseFnContext.Provider value={closeAllSequence}>
-                <PopoverDatePickerContent />
-              </DatePickerCloseFnContext.Provider>
-            )}
-          >
-            <TextInput
-              className={cls}
-              style={styles}
-              value={dayjs(value).format('DD.MM.YYYY')}
-              onChange={() => null}
-              readonlyStyles={false}
-              placeholder="Choose a date"
-              {...restProps}
-              readOnly={true}
-            >
-              <TextInput.IconIsland
-                className={s.ArrowIcon}
-                placement="right"
-                icon={<Icon i="calendar_month" />}
-              />
-            </TextInput>
-          </Popover>
-        </DatePickerViewContext.Provider>
-      </DatePickerContext.Provider>
-    </div>
-  );
-};
+const DatePickerComponent = memo(generatePicker<DatePickerProps>('day'));
 
 const DatePickerNamespace = Object.assign(DatePickerComponent, {
   MonthPicker: MonthPicker,
-  YearPicker: undefined,
+  YearPicker: YearPicker,
   RangePicker: undefined,
 });
 

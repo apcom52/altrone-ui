@@ -5,8 +5,8 @@ import {
   useDatePickerCloseFn,
   useDatePickerViewContext,
 } from '../DatePicker.contexts.ts';
-import { Picker } from '../DatePicker.types.ts';
 import clsx from 'clsx';
+import radio from '../../../../old_src/components/form/RadioList/Radio.tsx';
 
 export const MonthPicker = memo(() => {
   const { picker, currentMonth, setCurrentMonth, setViewMode } =
@@ -31,7 +31,7 @@ export const MonthPicker = memo(() => {
       }
 
       if (picker === 'day' || picker === 'range') {
-        setViewMode(Picker.day);
+        setViewMode('day');
       }
     };
 

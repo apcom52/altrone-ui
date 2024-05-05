@@ -1,13 +1,21 @@
 import { memo, useMemo } from 'react';
 import s from './yearPicker.module.scss';
-import { useDatePickerViewContext } from '../DatePicker.contexts.ts';
+import {
+  useDateContext,
+  useDatePickerCloseFn,
+  useDatePickerViewContext,
+} from '../DatePicker.contexts.ts';
 import { useYearRanges } from '../utils.ts';
 import clsx from 'clsx';
-import { Picker } from '../DatePicker.types.ts';
 
 export const YearPicker = memo(() => {
-  const { currentMonth, setViewMode, setCurrentMonth } =
+  const { picker, currentMonth, setViewMode, setCurrentMonth } =
     useDatePickerViewContext();
+  const { selectedDates, onDayClicked } = useDateContext();
+  const closePopup = useDatePickerCloseFn();
+
+  const selectedMonth = selectedDates[0];
+
   const [startYear, endYear] = useYearRanges(currentMonth);
 
   const years = useMemo(() => {
@@ -16,12 +24,23 @@ export const YearPicker = memo(() => {
     const onYearClick = (year: number) => {
       const newDate = currentMonth.set('year', year);
       setCurrentMonth(newDate);
-      setViewMode(Picker.month);
+
+      if (picker === 'year') {
+        onDayClicked(newDate);
+        closePopup();
+        return;
+      }
+
+      setViewMode('month');
     };
 
     for (let year = startYear; year <= endYear; year++) {
+      const isSelected =
+        picker === 'year' &&
+        selectedMonth.isSame(currentMonth.year(year), 'year');
+
       const cls = clsx(s.Year, {
-        // [s.Selected]: year === currentMonth.year(),
+        [s.Selected]: isSelected,
       });
 
       elements.push(
@@ -37,7 +56,7 @@ export const YearPicker = memo(() => {
     }
 
     return elements;
-  }, [startYear, endYear, currentMonth]);
+  }, [picker, startYear, endYear, currentMonth]);
 
   return <div className={s.YearPicker}>{years}</div>;
 });
