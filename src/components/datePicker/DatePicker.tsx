@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { Popover } from '../popover';
 import { TextInput } from '../textInput';
@@ -14,9 +14,11 @@ import {
 import dayjs, { Dayjs } from 'dayjs';
 import ruLocale from 'dayjs/locale/ru.js';
 import {
+  DatePickerCloseFnContext,
   DatePickerContext,
   DatePickerViewContext,
 } from './DatePicker.contexts.ts';
+import { MonthPicker } from './components';
 
 dayjs.locale(ruLocale);
 
@@ -49,6 +51,7 @@ const DatePickerComponent = ({
 
   const datePickerViewContext = useMemo<DatePickerViewContextType>(() => {
     return {
+      picker: 'day',
       viewMode: view,
       setViewMode: setView,
       currentMonth: currentMonth,
@@ -64,7 +67,11 @@ const DatePickerComponent = ({
         <DatePickerViewContext.Provider value={datePickerViewContext}>
           <Popover
             placement="bottom-start"
-            content={<PopoverDatePickerContent />}
+            content={({ closeAllSequence }) => (
+              <DatePickerCloseFnContext.Provider value={closeAllSequence}>
+                <PopoverDatePickerContent />
+              </DatePickerCloseFnContext.Provider>
+            )}
           >
             <TextInput
               className={cls}
@@ -89,6 +96,10 @@ const DatePickerComponent = ({
   );
 };
 
-export const DatePicker = memo(
-  DatePickerComponent,
-) as typeof DatePickerComponent;
+const DatePickerNamespace = Object.assign(DatePickerComponent, {
+  MonthPicker: MonthPicker,
+  YearPicker: undefined,
+  RangePicker: undefined,
+});
+
+export { DatePickerNamespace as DatePicker };

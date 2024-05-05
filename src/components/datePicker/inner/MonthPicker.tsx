@@ -2,15 +2,20 @@ import { memo, useMemo } from 'react';
 import s from './monthPicker.module.scss';
 import {
   useDateContext,
+  useDatePickerCloseFn,
   useDatePickerViewContext,
 } from '../DatePicker.contexts.ts';
 import { Picker } from '../DatePicker.types.ts';
 import clsx from 'clsx';
-import dayjs from 'dayjs';
 
 export const MonthPicker = memo(() => {
-  const { currentMonth, setCurrentMonth, setViewMode } =
+  const { picker, currentMonth, setCurrentMonth, setViewMode } =
     useDatePickerViewContext();
+
+  const { selectedDates, onDayClicked } = useDateContext();
+  const closePopup = useDatePickerCloseFn();
+
+  const selectedMonth = selectedDates[0];
 
   const months = useMemo(() => {
     const elements = [];
@@ -18,15 +23,25 @@ export const MonthPicker = memo(() => {
     const onMonthClick = (month: number) => {
       const newDate = currentMonth.set('month', month);
       setCurrentMonth(newDate);
-      setViewMode(Picker.day);
+
+      if (picker === 'month') {
+        onDayClicked(newDate);
+        closePopup();
+        return;
+      }
+
+      if (picker === 'day' || picker === 'range') {
+        setViewMode(Picker.day);
+      }
     };
 
     for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
+      const isSelected =
+        picker === 'month' &&
+        selectedMonth.isSame(currentMonth.month(monthIndex), 'month');
+
       const cls = clsx(s.Month, {
-        // [s.Selected]: currentMonth.isSame(
-        //   currentMonth.month(monthIndex),
-        //   'month',
-        // ),
+        [s.Selected]: isSelected,
       });
 
       elements.push(

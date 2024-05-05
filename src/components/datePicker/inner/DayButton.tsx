@@ -5,6 +5,7 @@ import { memo, useCallback } from 'react';
 import s from './day.module.scss';
 import {
   useDateContext,
+  useDatePickerCloseFn,
   useDatePickerViewContext,
 } from '../DatePicker.contexts.ts';
 
@@ -32,6 +33,7 @@ export const DayButton = memo(
     const { onDayClicked } = useDateContext();
     const { hoveredDate: currentHoveredDate, setHoveredDate } =
       useDatePickerViewContext();
+    const closePopup = useDatePickerCloseFn();
 
     const date_dj = dayjs(currentDate);
 
@@ -73,6 +75,7 @@ export const DayButton = memo(
       <button
         onClick={() => {
           onDayClicked(date_dj);
+          closePopup();
         }}
         className={cls}
         // className={clsx('alt-day-picker-item', {

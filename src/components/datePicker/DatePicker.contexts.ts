@@ -17,3 +17,6 @@ export const DatePickerViewContext = createContext<DatePickerViewContextType>({
   setCurrentMonth: () => null,
 });
 export const useDatePickerViewContext = () => useContext(DatePickerViewContext);
+
+export const DatePickerCloseFnContext = createContext<() => void>(() => null);
+export const useDatePickerCloseFn = () => useContext(DatePickerCloseFnContext);

@@ -53,6 +53,7 @@ export interface CalendarProps<
 
 export interface DatePickerViewContextType {
   viewMode: Picker;
+  picker: 'day' | 'month' | 'year' | 'range';
   setViewMode: (picker: Picker) => void;
   currentMonth: Dayjs;
   setCurrentMonth: (month: Dayjs) => void;
