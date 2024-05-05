@@ -8,34 +8,12 @@ import {
 } from '../DatePicker.contexts.ts';
 
 export const DayPicker = memo(() => {
-  const { currentMonth, hoveredDate, setHoveredDate } =
-    useDatePickerViewContext();
+  const { currentMonth, setHoveredDate } = useDatePickerViewContext();
   const { selectedDates } = useDateContext();
 
   const onMouseLeave = useCallback(() => {
     setHoveredDate(undefined);
   }, []);
-
-  // const onSelectDate = useCallback(
-  //   (date: Date) => {
-  //     const selectedDate = dayjs(date);
-  //
-  //     if (!isDateRange) {
-  //       onChange('both', selectedDate, undefined);
-  //       return;
-  //     }
-  //
-  //     if (!startSelectedDate) {
-  //       onChange('start', selectedDate);
-  //     } else if (!endSelectedDate) {
-  //       onChange('end', selectedDate);
-  //       setHoveredDate(undefined);
-  //     } else {
-  //       onChange('both', selectedDate, undefined);
-  //     }
-  //   },
-  //   [isDateRange, startSelectedDate, endSelectedDate, onChange],
-  // );
 
   return (
     <>
@@ -50,7 +28,7 @@ export const DayPicker = memo(() => {
       </div>
       <Calendar
         className={s.DayPicker}
-        month={currentMonth.toDate()}
+        month={currentMonth}
         selectedDates={selectedDates}
         onMouseLeave={onMouseLeave}
         DateComponent={(props) => <DayButton {...props} />}

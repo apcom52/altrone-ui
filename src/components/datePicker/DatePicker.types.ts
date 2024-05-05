@@ -27,8 +27,10 @@ export interface MonthPickerProps extends BasicDatePickerProps<Dayjs> {}
 
 export interface YearPickerProps extends BasicDatePickerProps<Dayjs> {}
 
+export type RangePickerValue = (Dayjs | undefined)[];
+
 export interface RangePickerProps
-  extends BasicDatePickerProps<[Dayjs | undefined, Dayjs | undefined]> {}
+  extends BasicDatePickerProps<RangePickerValue> {}
 
 export interface CalendarProps<
   IsDateRange extends boolean | undefined = false,

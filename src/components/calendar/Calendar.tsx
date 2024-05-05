@@ -5,7 +5,6 @@ import { CalendarDate } from './CalendarDate';
 import dayjs from 'dayjs';
 import IsBetween from 'dayjs/plugin/isBetween';
 import IsToday from 'dayjs/plugin/isToday';
-import ruLocale from 'dayjs/locale/ru.js';
 import s from './calendar.module.scss';
 import IsSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import IsSameOrAfter from 'dayjs/plugin/isSameOrAfter';
@@ -29,8 +28,8 @@ dayjs.extend(IsSameOrAfter);
  */
 export const Calendar = memo(
   ({
-    month = new Date(),
-    selectedDates = [new Date()],
+    month = dayjs(),
+    selectedDates = [dayjs()],
     cursorDate,
     onDateChange,
     DateComponent = CalendarDate,
@@ -41,6 +40,8 @@ export const Calendar = memo(
   }: CalendarProps) => {
     const { calendar: calendarConfig = {} } = useConfiguration();
 
+    console.log('>> selected', selectedDates);
+
     const cls = clsx(s.Calendar, className, calendarConfig.className);
 
     const styles = {
@@ -48,19 +49,11 @@ export const Calendar = memo(
       ...style,
     };
 
-    const month_dj = useMemo(() => {
-      return dayjs(month);
-    }, [month]);
-
-    const selectedDates_dj = useMemo(() => {
-      return selectedDates.map((date) => dayjs(date));
-    }, [selectedDates]);
-
     const calendarDates = useMemo(() => {
       const result = [];
 
-      const daysInMonth = month_dj.daysInMonth();
-      const firstDay = month_dj.startOf('month');
+      const daysInMonth = month.daysInMonth();
+      const firstDay = month.startOf('month');
 
       let currentDate = dayjs(firstDay);
 
@@ -96,20 +89,22 @@ export const Calendar = memo(
       }
 
       return result;
-    }, [month_dj]);
+    }, [month]);
+
+    console.log('>> calendarDates', selectedDates);
 
     const cursorDate_dj = cursorDate ? dayjs(cursorDate) : undefined;
 
     return (
       <div className={cls} style={styles} {...restProps}>
         {calendarDates.map((date) => {
-          const fromAnotherMonth = !date.isSame(month_dj, 'month');
+          const fromAnotherMonth = !date.isSame(month, 'month');
           const isDateSelected = Boolean(
-            selectedDates_dj.find((d) => d.isSame(date, 'day')),
+            selectedDates.find((d) => d?.isSame?.(date, 'day')),
           );
 
           const isCursorHighlighted = cursorDate_dj
-            ? date.isSameOrAfter(selectedDates_dj[0]) &&
+            ? date.isSameOrAfter(selectedDates[0]) &&
               date.isSameOrBefore(cursorDate_dj)
             : false;
 
@@ -117,7 +112,7 @@ export const Calendar = memo(
             <DateComponent
               key={date.toISOString()}
               weekDay={date.day()}
-              currentDate={date.toDate()}
+              currentDate={date}
               fromAnotherMonth={fromAnotherMonth}
               today={date.isToday()}
               selected={isDateSelected}

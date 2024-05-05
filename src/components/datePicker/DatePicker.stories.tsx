@@ -7,6 +7,7 @@ import { Text, TextHeadingRoles } from '../text';
 import { DatePicker } from './DatePicker.tsx';
 import { useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
+import { RangePickerValue } from './DatePicker.types.ts';
 
 const story: Meta<typeof DatePicker> = {
   title: 'Components/Form/DatePicker',
@@ -83,6 +84,36 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             onChange={setYear2}
           />
           <DatePicker.YearPicker value={year2} disabled onChange={setYear2} />
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
+export const RangeStory: StoryObj<typeof Flex> = {
+  name: 'Using DatePicker ranges',
+  render: () => {
+    const [day1, setDay1] = useState<RangePickerValue | undefined>([]);
+    const [day2, setDay2] = useState<RangePickerValue | undefined>([
+      dayjs('2024-04-04'),
+      dayjs('2024-11-18'),
+    ]);
+
+    return (
+      <Flex gap={Gap.large}>
+        <Text.Heading role={TextHeadingRoles.inner}>RangePicker</Text.Heading>
+        <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
+          <DatePicker.RangePicker value={day1} onChange={setDay1} />
+          <DatePicker.RangePicker value={day2} onChange={setDay2} />
+        </Flex>
+        <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
+          <DatePicker.RangePicker value={day2} transparent onChange={setDay2} />
+          <DatePicker.RangePicker
+            value={day2}
+            readonlyStyles={true}
+            onChange={setDay2}
+          />
+          <DatePicker.RangePicker value={day2} disabled onChange={setDay2} />
         </Flex>
       </Flex>
     );

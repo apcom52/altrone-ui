@@ -1,5 +1,4 @@
 import { CalendarRenderDateProps } from '../../../../old_src';
-import dayjs, { Dayjs } from 'dayjs';
 import clsx from 'clsx';
 import { memo, useCallback } from 'react';
 import s from './day.module.scss';
@@ -17,25 +16,46 @@ export const DayButton = memo(
     today,
     onSelect,
     weekDay,
-    selectedDates = [],
     minDate,
     maxDate,
     isDateRange,
-    hoveredDate,
     cursorHighlighted,
   }: CalendarRenderDateProps & {
     selectedDates: Date[];
     minDate: Date;
     maxDate: Date;
     isDateRange: boolean;
-    hoveredDate: Dayjs | undefined;
   }) => {
-    const { onDayClicked } = useDateContext();
-    const { hoveredDate: currentHoveredDate, setHoveredDate } =
-      useDatePickerViewContext();
+    const { onDayClicked, selectedDates } = useDateContext();
+    const { picker, hoveredDate, setHoveredDate } = useDatePickerViewContext();
     const closePopup = useDatePickerCloseFn();
 
-    const date_dj = dayjs(currentDate);
+    const startDate = selectedDates[0];
+    const endDate = selectedDates[1];
+
+    const isBetweenSelectedDates =
+      picker === 'range' &&
+      startDate &&
+      endDate &&
+      currentDate.isSameOrAfter(startDate) &&
+      currentDate.isSameOrBefore(endDate);
+
+    const isHoverMode = picker === 'range' && startDate && !endDate;
+
+    const isHovered =
+      isHoverMode &&
+      currentDate.isSameOrAfter(startDate) &&
+      currentDate.isSameOrBefore(hoveredDate);
+
+    const onDateClick = () => {
+      if (
+        picker === 'day' ||
+        (picker === 'range' && selectedDates[0] && !selectedDates[1])
+      ) {
+        closePopup();
+      }
+      onDayClicked(currentDate);
+    };
 
     // const isBetweenSelectedDates =
     //   selectedDates[0] &&
@@ -59,10 +79,10 @@ export const DayButton = memo(
     const isWeekend = weekDay === 0 || weekDay === 6;
 
     const onMouseEnter = useCallback(() => {
-      if (!currentHoveredDate?.isSame(currentDate, 'day')) {
-        setHoveredDate(dayjs(currentDate));
+      if (isHoverMode) {
+        setHoveredDate(currentDate);
       }
-    }, [currentHoveredDate, currentDate]);
+    }, [picker, selectedDates, currentDate]);
 
     const cls = clsx(s.Day, {
       [s.Weekend]: isWeekend,
@@ -73,32 +93,26 @@ export const DayButton = memo(
 
     return (
       <button
-        onClick={() => {
-          onDayClicked(date_dj);
-          closePopup();
-        }}
+        onClick={onDateClick}
         className={cls}
-        // className={clsx('alt-day-picker-item', {
-        //   'alt-day-picker-item--selected': selected,
-        //   'alt-day-picker-item--today': today,
-        //   'alt-day-picker-item--another-month': fromAnotherMonth,
-        //   'alt-day-picker-item--disabled': isDisabled,
-        // })}
-        data-date={date_dj.format('YYYY-MM-DD')}
+        data-date={currentDate.format('YYYY-MM-DD')}
         data-start-of-week={weekDay === 1 ? 'true' : 'false'}
         data-end-of-week={weekDay === 0 ? 'true' : 'false'}
-        data-start-of-range={date_dj.isSame(selectedDates[0])}
+        data-start-of-range={currentDate.isSame(selectedDates[0], 'day')}
+        data-end-of-range={
+          !currentDate.isSame(selectedDates[0]) &&
+          (currentDate.isSame(selectedDates[1], 'day') ||
+            currentDate.isSame(hoveredDate, 'day'))
+        }
         onMouseEnter={onMouseEnter}
         // data-in-range={isBetweenSelectedDates || cursorHighlighted}
         // data-end-of-range={isEndOfRange}
         // disabled={isDisabled}
       >
-        {/*{(isBetweenSelectedDates || cursorHighlighted) && (*/}
-        {/*  <div className="alt-day-picker-item__background" />*/}
-        {/*)}*/}
-        <div className="alt-day-picker-item__dayNumber">
-          {currentDate.getDate()}
-        </div>
+        {(isBetweenSelectedDates || isHovered) && (
+          <div className={s.DayBackground} />
+        )}
+        <div className={s.Number}>{currentDate.date()}</div>
       </button>
     );
   },
