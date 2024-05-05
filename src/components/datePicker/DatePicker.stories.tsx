@@ -6,6 +6,7 @@ import { Direction, Gap } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
 import { DatePicker } from './DatePicker.tsx';
 import { useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
 
 const story: Meta<typeof DatePicker> = {
   title: 'Components/Form/DatePicker',
@@ -26,8 +27,12 @@ const story: Meta<typeof DatePicker> = {
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using DatePicker',
   render: () => {
-    const [value1, setValue1] = useState(new Date(2024, 3, 12));
-    const [value2, setValue2] = useState(new Date(2024, 4, 6));
+    const [value1, setValue1] = useState<Dayjs | undefined>(
+      dayjs('2024-04-04'),
+    );
+    const [value2, setValue2] = useState<Dayjs | undefined>(
+      dayjs('2024-05-15'),
+    );
 
     return (
       <Flex gap={Gap.large}>
@@ -37,6 +42,13 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
           <DatePicker value={value1} onChange={setValue1} />
           <DatePicker value={value2} onChange={setValue2} />
+          <DatePicker value={value2} transparent onChange={setValue2} />
+          <DatePicker
+            value={value2}
+            readonlyStyles={true}
+            onChange={setValue2}
+          />
+          <DatePicker value={value2} disabled onChange={setValue2} />
         </Flex>
       </Flex>
     );

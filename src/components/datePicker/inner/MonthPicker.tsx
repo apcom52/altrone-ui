@@ -23,10 +23,10 @@ export const MonthPicker = memo(() => {
 
     for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
       const cls = clsx(s.Month, {
-        [s.Selected]: currentMonth.isSame(
-          currentMonth.month(monthIndex),
-          'month',
-        ),
+        // [s.Selected]: currentMonth.isSame(
+        //   currentMonth.month(monthIndex),
+        //   'month',
+        // ),
       });
 
       elements.push(

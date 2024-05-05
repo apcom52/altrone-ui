@@ -1,5 +1,6 @@
-import { BasicInputProps, TextInputProps } from '../../../old_src';
 import { Dayjs } from 'dayjs';
+import { AnyObject } from '../../utils';
+import { TextInputProps } from '../textInput/TextInput.types.ts';
 
 export enum Picker {
   day = 'day',
@@ -9,27 +10,29 @@ export enum Picker {
 
 export type DateRangePosition = 'start' | 'end' | 'both';
 
-export type DateValue<IsDateRange extends boolean | undefined = false> =
+export type DateValue<IsDateRange extends boolean | undefined> =
   IsDateRange extends true
-    ? [Date | undefined, Date | undefined] | undefined
-    : Date | undefined;
+    ? [Date | undefined, Date | undefined]
+    : undefined | Date;
 
-export interface DatePickerProps<
-  IsDateRange extends boolean | undefined = false,
-> extends Pick<
-      TextInputProps,
-      'errorText' | 'hintText' | 'size' | 'disabled' | 'elevation' | 'surface'
-    >,
-    BasicInputProps {
-  value: DateValue<IsDateRange>;
-  onChange: (value: DateValue<IsDateRange>) => void;
-  useDateRange?: IsDateRange;
-  picker?: Picker;
-  minDate?: Date;
-  maxDate?: Date;
-  placeholder?: string;
+interface BasicDatePickerProps<ValueType extends AnyObject = any>
+  extends Omit<TextInputProps, 'value' | 'onChange'> {
+  value?: ValueType;
+  onChange?: (value?: ValueType) => void;
   clearable?: boolean;
+  format?: string;
+  minDate?: Dayjs;
+  maxDate?: Dayjs;
 }
+
+export interface DatePickerProps extends BasicDatePickerProps<Dayjs> {}
+
+export interface MonthPickerProps extends BasicDatePickerProps<Dayjs> {}
+
+export interface YearPickerProps extends BasicDatePickerProps<Dayjs> {}
+
+export interface RangePickerProps
+  extends BasicDatePickerProps<[Dayjs | undefined, Dayjs | undefined]> {}
 
 export interface CalendarProps<
   IsDateRange extends boolean | undefined = false,
@@ -53,9 +56,11 @@ export interface DatePickerViewContextType {
   setViewMode: (picker: Picker) => void;
   currentMonth: Dayjs;
   setCurrentMonth: (month: Dayjs) => void;
+  hoveredDate: Dayjs | undefined;
+  setHoveredDate: (date: Dayjs | undefined) => void;
 }
 
 export interface DatePickerContextType {
-  selectedDates: (Date | undefined)[];
-  onChange: (selectedDates: Date) => void;
+  selectedDates: Array<Dayjs>;
+  onDayClicked: (selectedDate: Dayjs) => void;
 }

@@ -1,8 +1,12 @@
 import { CalendarRenderDateProps } from '../../../../old_src';
 import dayjs, { Dayjs } from 'dayjs';
 import clsx from 'clsx';
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 import s from './day.module.scss';
+import {
+  useDateContext,
+  useDatePickerViewContext,
+} from '../DatePicker.contexts.ts';
 
 export const DayButton = memo(
   ({
@@ -25,6 +29,10 @@ export const DayButton = memo(
     isDateRange: boolean;
     hoveredDate: Dayjs | undefined;
   }) => {
+    const { onDayClicked } = useDateContext();
+    const { hoveredDate: currentHoveredDate, setHoveredDate } =
+      useDatePickerViewContext();
+
     const date_dj = dayjs(currentDate);
 
     // const isBetweenSelectedDates =
@@ -32,6 +40,7 @@ export const DayButton = memo(
     //   selectedDates[1] &&
     //   date_dj.isSameOrAfter(dayjs(selectedDates[0])) &&
     //   date_dj.isSameOrBefore(dayjs(selectedDates[1]));
+    //
     // const isDisabled =
     //   !date_dj.isBetween(minDate, maxDate) ||
     //   (isDateRange &&
@@ -47,6 +56,12 @@ export const DayButton = memo(
 
     const isWeekend = weekDay === 0 || weekDay === 6;
 
+    const onMouseEnter = useCallback(() => {
+      if (!currentHoveredDate?.isSame(currentDate, 'day')) {
+        setHoveredDate(dayjs(currentDate));
+      }
+    }, [currentHoveredDate, currentDate]);
+
     const cls = clsx(s.Day, {
       [s.Weekend]: isWeekend,
       [s.AnotherMonth]: fromAnotherMonth,
@@ -57,7 +72,7 @@ export const DayButton = memo(
     return (
       <button
         onClick={() => {
-          onSelect?.(currentDate);
+          onDayClicked(date_dj);
         }}
         className={cls}
         // className={clsx('alt-day-picker-item', {
@@ -70,6 +85,7 @@ export const DayButton = memo(
         data-start-of-week={weekDay === 1 ? 'true' : 'false'}
         data-end-of-week={weekDay === 0 ? 'true' : 'false'}
         data-start-of-range={date_dj.isSame(selectedDates[0])}
+        onMouseEnter={onMouseEnter}
         // data-in-range={isBetweenSelectedDates || cursorHighlighted}
         // data-end-of-range={isEndOfRange}
         // disabled={isDisabled}

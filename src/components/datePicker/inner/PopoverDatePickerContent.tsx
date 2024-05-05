@@ -1,4 +1,4 @@
-import { CalendarProps, Picker } from '../DatePicker.types.ts';
+import { Picker } from '../DatePicker.types.ts';
 import { memo } from 'react';
 import { Flex } from 'components';
 import { Gap } from 'types';
@@ -10,7 +10,7 @@ import { useDatePickerViewContext } from '../DatePicker.contexts.ts';
 import { MonthPicker } from './MonthPicker.tsx';
 import { YearPicker } from './YearPicker.tsx';
 
-export const PopoverCalendar = memo<CalendarProps>(({ closePopup }) => {
+export const PopoverDatePickerContent = memo(() => {
   const { viewMode } = useDatePickerViewContext();
 
   return (

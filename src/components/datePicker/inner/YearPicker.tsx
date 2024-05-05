@@ -10,8 +10,6 @@ export const YearPicker = memo(() => {
     useDatePickerViewContext();
   const [startYear, endYear] = useYearRanges(currentMonth);
 
-  console.log('>> year', startYear, endYear);
-
   const years = useMemo(() => {
     const elements = [];
 
@@ -23,7 +21,7 @@ export const YearPicker = memo(() => {
 
     for (let year = startYear; year <= endYear; year++) {
       const cls = clsx(s.Year, {
-        [s.Selected]: year === currentMonth.year(),
+        // [s.Selected]: year === currentMonth.year(),
       });
 
       elements.push(
