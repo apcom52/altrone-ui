@@ -52,10 +52,10 @@ export const DatePickerHeader = () => {
       </button>
       <div className={s.Navigation}>
         <button className={s.Button} onClick={onPrevClick}>
-          <Icon i="expand_more" />
+          <Icon i="navigate_before" />
         </button>
         <button className={s.Button} onClick={onNextClick}>
-          <Icon i="expand_less" />
+          <Icon i="navigate_next" />
         </button>
       </div>
     </div>

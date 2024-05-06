@@ -73,7 +73,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
               <TextInput
                 className={cls}
                 style={styles}
-                value={dayjs(value).format(defaultFormat)}
+                value={value ? dayjs(value).format(defaultFormat) : ''}
                 onChange={() => null}
                 readonlyStyles={false}
                 placeholder="Choose a date"
