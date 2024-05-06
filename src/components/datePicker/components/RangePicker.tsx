@@ -29,13 +29,17 @@ export const RangePicker = memo<RangePickerProps>((props) => {
   } = props;
 
   const [currentMonth, setCurrentMonth] = useState(value?.[0] || dayjs());
-  const [hoveredDate, setHoveredDate] = useState(undefined);
+  const [hoveredDate, setHoveredDate] = useState<Dayjs | undefined>(undefined);
   const [view, setView] = useState<Picker>('day');
   const cls = clsx(s.DatePicker);
   const styles = {};
 
   const onChangeHandler = useCallback(
-    (selectedDate: Dayjs) => {
+    (selectedDate: Dayjs | undefined) => {
+      if (!selectedDate) {
+        onChange?.([]);
+      }
+
       const startDate = value[0];
       const endDate = value[1];
 

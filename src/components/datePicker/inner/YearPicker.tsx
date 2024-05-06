@@ -14,7 +14,7 @@ export const YearPicker = memo(() => {
   const { selectedDates, onDayClicked } = useDateContext();
   const closePopup = useDatePickerCloseFn();
 
-  const selectedMonth = selectedDates[0];
+  const selectedYear = selectedDates[0];
 
   const [startYear, endYear] = useYearRanges(currentMonth);
 
@@ -37,7 +37,8 @@ export const YearPicker = memo(() => {
     for (let year = startYear; year <= endYear; year++) {
       const isSelected =
         picker === 'year' &&
-        selectedMonth.isSame(currentMonth.year(year), 'year');
+        selectedYear &&
+        selectedYear.isSame(currentMonth.year(year), 'year');
 
       const cls = clsx(s.Year, {
         [s.Selected]: isSelected,

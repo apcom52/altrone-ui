@@ -8,17 +8,20 @@ import { DayPicker } from './DayPicker.tsx';
 import { useDatePickerViewContext } from '../DatePicker.contexts.ts';
 import { MonthPicker } from './MonthPicker.tsx';
 import { YearPicker } from './YearPicker.tsx';
+import { DatePickerContentProps } from '../DatePicker.types.ts';
 
-export const PopoverDatePickerContent = memo(() => {
-  const { viewMode } = useDatePickerViewContext();
+export const PopoverDatePickerContent = memo<DatePickerContentProps>(
+  ({ clearable = false }) => {
+    const { viewMode } = useDatePickerViewContext();
 
-  return (
-    <Flex gap={Gap.large} className={s.Calendar}>
-      <DatePickerHeader />
-      {viewMode === 'day' ? <DayPicker /> : null}
-      {viewMode === 'month' ? <MonthPicker /> : null}
-      {viewMode === 'year' ? <YearPicker /> : null}
-      <DatePickerFooter />
-    </Flex>
-  );
-});
+    return (
+      <Flex gap={Gap.large} className={s.Calendar}>
+        <DatePickerHeader />
+        {viewMode === 'day' ? <DayPicker /> : null}
+        {viewMode === 'month' ? <MonthPicker /> : null}
+        {viewMode === 'year' ? <YearPicker /> : null}
+        <DatePickerFooter clearable={clearable} />
+      </Flex>
+    );
+  },
+);

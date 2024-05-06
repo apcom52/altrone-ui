@@ -24,7 +24,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
   defaultFormat: string = 'DD.MM.YYYY',
 ) {
   return (props: DatePickerProps) => {
-    const { value, onChange, ...restProps } = props;
+    const { value, onChange, clearable = false, ...restProps } = props;
 
     const [currentMonth, setCurrentMonth] = useState(value || dayjs());
     const [view, setView] = useState(picker);
@@ -33,7 +33,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
     const styles = {};
 
     const onChangeHandler = useCallback(
-      (selectedDate: Dayjs) => {
+      (selectedDate: Dayjs | undefined) => {
         onChange?.(selectedDate);
       },
       [onChange],
@@ -66,7 +66,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
               placement="bottom-start"
               content={({ closeAllSequence }) => (
                 <DatePickerCloseFnContext.Provider value={closeAllSequence}>
-                  <PopoverDatePickerContent />
+                  <PopoverDatePickerContent clearable={clearable} />
                 </DatePickerCloseFnContext.Provider>
               )}
             >

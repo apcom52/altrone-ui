@@ -7,46 +7,65 @@ import {
   useDatePickerViewContext,
 } from '../DatePicker.contexts.ts';
 import dayjs from 'dayjs';
+import { DatePickerFooterProps } from '../DatePicker.types.ts';
 
-export const DatePickerFooter = memo(() => {
-  const { picker, setCurrentMonth } = useDatePickerViewContext();
-  const { onDayClicked } = useDateContext();
-  const closePopup = useDatePickerCloseFn();
+export const DatePickerFooter = memo<DatePickerFooterProps>(
+  ({ clearable = false }) => {
+    const { picker, setCurrentMonth } = useDatePickerViewContext();
+    const { selectedDates, onDayClicked } = useDateContext();
+    const closePopup = useDatePickerCloseFn();
 
-  const currentDateButtonVisible = picker !== 'range';
+    const currentDateButtonVisible = picker !== 'range';
+    const clearButtonVisible = Boolean(
+      clearable && selectedDates.length && selectedDates[0],
+    );
 
-  const currentDateLabel =
-    picker === 'day'
-      ? 'Today'
-      : picker === 'month'
-        ? 'This month'
-        : 'This year';
+    const currentDateLabel =
+      picker === 'day'
+        ? 'Today'
+        : picker === 'month'
+          ? 'This month'
+          : 'This year';
 
-  const onCurrentDateButtonClick = () => {
-    let thisDay = dayjs();
+    const onCurrentDateButtonClick = () => {
+      let thisDay = dayjs();
 
-    if (picker === 'month') {
-      thisDay = thisDay.date(1);
-    } else if (picker === 'year') {
-      thisDay = thisDay.month(0).date(1);
-    }
+      if (picker === 'month') {
+        thisDay = thisDay.date(1);
+      } else if (picker === 'year') {
+        thisDay = thisDay.month(0).date(1);
+      }
 
-    setCurrentMonth(thisDay);
-    onDayClicked(thisDay);
-    closePopup();
-  };
+      setCurrentMonth(thisDay);
+      onDayClicked(thisDay);
+      closePopup();
+    };
 
-  return (
-    <div className={s.Footer}>
-      <Button transparent leftIcon={<Icon i="backspace" />} label="Clear" />
-      {currentDateButtonVisible && (
-        <Button
-          transparent
-          leftIcon={<Icon i="event" />}
-          label={currentDateLabel}
-          onClick={onCurrentDateButtonClick}
-        />
-      )}
-    </div>
-  );
-});
+    const onClearButtonClick = () => {
+      onDayClicked(undefined);
+      closePopup();
+    };
+
+    return (
+      <div className={s.Footer}>
+        {clearButtonVisible && (
+          <Button
+            transparent
+            leftIcon={<Icon i="backspace" />}
+            label="Clear"
+            onClick={onClearButtonClick}
+          />
+        )}
+        <div className={s.Separator} />
+        {currentDateButtonVisible && (
+          <Button
+            transparent
+            leftIcon={<Icon i="event" />}
+            label={currentDateLabel}
+            onClick={onCurrentDateButtonClick}
+          />
+        )}
+      </div>
+    );
+  },
+);

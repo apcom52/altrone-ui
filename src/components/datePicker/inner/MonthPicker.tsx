@@ -6,7 +6,6 @@ import {
   useDatePickerViewContext,
 } from '../DatePicker.contexts.ts';
 import clsx from 'clsx';
-import radio from '../../../../old_src/components/form/RadioList/Radio.tsx';
 
 export const MonthPicker = memo(() => {
   const { picker, currentMonth, setCurrentMonth, setViewMode } =
@@ -38,6 +37,7 @@ export const MonthPicker = memo(() => {
     for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
       const isSelected =
         picker === 'month' &&
+        selectedMonth &&
         selectedMonth.isSame(currentMonth.month(monthIndex), 'month');
 
       const cls = clsx(s.Month, {

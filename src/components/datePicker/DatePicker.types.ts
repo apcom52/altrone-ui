@@ -61,5 +61,13 @@ export interface DatePickerViewContextType {
 
 export interface DatePickerContextType {
   selectedDates: Array<Dayjs>;
-  onDayClicked: (selectedDate: Dayjs) => void;
+  onDayClicked: (selectedDate: Dayjs | undefined) => void;
+}
+
+export interface DatePickerContentProps {
+  clearable?: boolean;
+}
+
+export interface DatePickerFooterProps {
+  clearable?: boolean;
 }
