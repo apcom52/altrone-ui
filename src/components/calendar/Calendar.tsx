@@ -40,8 +40,6 @@ export const Calendar = memo(
   }: CalendarProps) => {
     const { calendar: calendarConfig = {} } = useConfiguration();
 
-    console.log('>> selected', selectedDates);
-
     const cls = clsx(s.Calendar, className, calendarConfig.className);
 
     const styles = {
@@ -90,8 +88,6 @@ export const Calendar = memo(
 
       return result;
     }, [month]);
-
-    console.log('>> calendarDates', selectedDates);
 
     const cursorDate_dj = cursorDate ? dayjs(cursorDate) : undefined;
 

@@ -16,8 +16,6 @@ export const DayButton = memo(
     today,
     onSelect,
     weekDay,
-    minDate,
-    maxDate,
     isDateRange,
     cursorHighlighted,
   }: CalendarRenderDateProps & {
@@ -26,7 +24,7 @@ export const DayButton = memo(
     maxDate: Date;
     isDateRange: boolean;
   }) => {
-    const { onDayClicked, selectedDates } = useDateContext();
+    const { onDayClicked, selectedDates, minDate, maxDate } = useDateContext();
     const { picker, hoveredDate, setHoveredDate } = useDatePickerViewContext();
     const closePopup = useDatePickerCloseFn();
 
@@ -56,6 +54,11 @@ export const DayButton = memo(
       }
       onDayClicked(currentDate);
     };
+
+    const isDisabled =
+      picker === 'range'
+        ? startDate && !endDate && currentDate.isBefore(startDate)
+        : !currentDate.isBetween(minDate, maxDate, 'day', '[]');
 
     // const isBetweenSelectedDates =
     //   selectedDates[0] &&
@@ -89,7 +92,14 @@ export const DayButton = memo(
       [s.AnotherMonth]: fromAnotherMonth,
       [s.Selected]: selected,
       [s.Today]: today,
+      [s.Disabled]: isDisabled,
     });
+
+    const isEndOfRange =
+      (selectedDates[1] &&
+        selectedDates[1].diff(selectedDates[0], 'day') > 1 &&
+        currentDate.isSame(selectedDates[1], 'day')) ||
+      Boolean(hoveredDate && currentDate.isSame(hoveredDate, 'day'));
 
     return (
       <button
@@ -99,12 +109,9 @@ export const DayButton = memo(
         data-start-of-week={weekDay === 1 ? 'true' : 'false'}
         data-end-of-week={weekDay === 0 ? 'true' : 'false'}
         data-start-of-range={currentDate.isSame(selectedDates[0], 'day')}
-        data-end-of-range={
-          !currentDate.isSame(selectedDates[0]) &&
-          (currentDate.isSame(selectedDates[1], 'day') ||
-            currentDate.isSame(hoveredDate, 'day'))
-        }
+        data-end-of-range={isEndOfRange}
         onMouseEnter={onMouseEnter}
+        disabled={isDisabled}
         // data-in-range={isBetweenSelectedDates || cursorHighlighted}
         // data-end-of-range={isEndOfRange}
         // disabled={isDisabled}

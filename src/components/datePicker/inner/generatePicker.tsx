@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import {
   BasicDatePickerProps,
@@ -18,6 +18,7 @@ import { Popover } from '../../popover';
 import { PopoverDatePickerContent } from './PopoverDatePickerContent.tsx';
 import { TextInput } from '../../textInput';
 import { Icon } from '../../icon';
+import warningOnce from 'rc-util/es/warning';
 
 export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
   picker: Picker = 'day',
@@ -29,8 +30,32 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
       onChange,
       clearable = false,
       readOnly = false,
+      minDate,
+      maxDate,
       ...restProps
     } = props;
+
+    useEffect(() => {
+      warningOnce(
+        !(minDate && maxDate && minDate.isSameOrAfter(maxDate)),
+        '[DatePicker]: minDate prop has to be before than maxDate',
+      );
+      warningOnce(
+        !(minDate && maxDate && maxDate.isBefore(minDate)),
+        '[DatePicker]: maxDate prop has to be after than minDate',
+      );
+    }, [minDate, maxDate]);
+
+    useEffect(() => {
+      if (
+        minDate &&
+        maxDate &&
+        value &&
+        !value.isBetween(minDate, maxDate, '[]')
+      ) {
+        onChange?.(minDate);
+      }
+    }, [value, minDate, maxDate, onChange]);
 
     const [currentMonth, setCurrentMonth] = useState(value || dayjs());
     const [view, setView] = useState(picker);
@@ -51,8 +76,12 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
       return {
         selectedDates: value ? [value] : EMPTY_ARRAY,
         onDayClicked: onChangeHandler,
+        minDate:
+          minDate && maxDate && minDate.isAfter(maxDate) ? maxDate : minDate,
+        maxDate:
+          minDate && maxDate && maxDate.isBefore(minDate) ? minDate : maxDate,
       };
-    }, [value, onChangeHandler]);
+    }, [value, onChangeHandler, minDate, maxDate]);
 
     const datePickerViewContext = useMemo<DatePickerViewContextType>(() => {
       return {

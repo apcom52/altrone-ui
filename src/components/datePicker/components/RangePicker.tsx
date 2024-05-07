@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import clsx from 'clsx';
 import s from '../datePicker.module.scss';
@@ -18,6 +18,7 @@ import { Popover } from '../../popover';
 import { PopoverDatePickerContent } from '../inner/PopoverDatePickerContent.tsx';
 import { TextInput } from '../../textInput';
 import { Icon } from '../../icon';
+import warningOnce from 'rc-util/es/warning';
 
 export const RangePicker = memo<RangePickerProps>((props) => {
   const {
@@ -26,8 +27,21 @@ export const RangePicker = memo<RangePickerProps>((props) => {
     placeholder = 'Select period',
     format = 'DD.MM.YYYY',
     readOnly = false,
+    minDate,
+    maxDate,
     ...restProps
   } = props;
+
+  useEffect(() => {
+    warningOnce(
+      !(minDate && maxDate && minDate.isSameOrAfter(maxDate)),
+      '[DatePicker]: minDate prop has to be before than maxDate',
+    );
+    warningOnce(
+      !(minDate && maxDate && maxDate.isBefore(minDate)),
+      '[DatePicker]: maxDate prop has to be after than minDate',
+    );
+  }, [minDate, maxDate]);
 
   const [currentMonth, setCurrentMonth] = useState(value?.[0] || dayjs());
   const [hoveredDate, setHoveredDate] = useState<Dayjs | undefined>(undefined);

@@ -43,7 +43,12 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           Basic DatePicker
         </Text.Heading>
         <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
-          <DatePicker value={day1} onChange={setDay1} />
+          <DatePicker
+            value={day1}
+            onChange={setDay1}
+            minDate={dayjs('2024-04-02')}
+            maxDate={dayjs('2024-05-13')}
+          />
           <DatePicker value={day2} clearable onChange={setDay2} />
           <DatePicker value={day2} transparent onChange={setDay2} />
           <DatePicker value={day2} readOnly onChange={setDay2} />
@@ -103,13 +108,41 @@ export const RangeStory: StoryObj<typeof Flex> = {
       <Flex gap={Gap.large}>
         <Text.Heading role={TextHeadingRoles.inner}>RangePicker</Text.Heading>
         <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
-          <DatePicker.RangePicker value={day1} onChange={setDay1} />
-          <DatePicker.RangePicker value={day2} onChange={setDay2} />
+          <DatePicker.RangePicker
+            value={day1}
+            onChange={setDay1}
+            minDate={dayjs('2024-04-04')}
+            maxDate={dayjs('2024-05-13')}
+          />
+          <DatePicker.RangePicker
+            value={day2}
+            minDate={dayjs('2024-04-04')}
+            maxDate={dayjs('2024-05-13')}
+            onChange={setDay2}
+          />
         </Flex>
         <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
-          <DatePicker.RangePicker value={day2} transparent onChange={setDay2} />
-          <DatePicker.RangePicker value={day2} readOnly onChange={setDay2} />
-          <DatePicker.RangePicker value={day2} disabled onChange={setDay2} />
+          <DatePicker.RangePicker
+            value={day2}
+            minDate={dayjs('2024-04-04')}
+            maxDate={dayjs('2024-05-13')}
+            transparent
+            onChange={setDay2}
+          />
+          <DatePicker.RangePicker
+            value={day2}
+            minDate={dayjs('2024-04-04')}
+            maxDate={dayjs('2024-05-13')}
+            readOnly
+            onChange={setDay2}
+          />
+          <DatePicker.RangePicker
+            value={day2}
+            minDate={dayjs('2024-04-04')}
+            maxDate={dayjs('2024-05-13')}
+            disabled
+            onChange={setDay2}
+          />
         </Flex>
       </Flex>
     );

@@ -62,6 +62,8 @@ export interface DatePickerViewContextType {
 export interface DatePickerContextType {
   selectedDates: Array<Dayjs>;
   onDayClicked: (selectedDate: Dayjs | undefined) => void;
+  minDate?: Dayjs;
+  maxDate?: Dayjs;
 }
 
 export interface DatePickerContentProps {
