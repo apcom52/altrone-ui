@@ -25,13 +25,16 @@ export const RangePicker = memo<RangePickerProps>((props) => {
     onChange,
     placeholder = 'Select period',
     format = 'DD.MM.YYYY',
+    readOnly = false,
     ...restProps
   } = props;
 
   const [currentMonth, setCurrentMonth] = useState(value?.[0] || dayjs());
   const [hoveredDate, setHoveredDate] = useState<Dayjs | undefined>(undefined);
   const [view, setView] = useState<Picker>('day');
-  const cls = clsx(s.DatePicker);
+  const cls = clsx(s.DatePicker, {
+    [s.Readonly]: readOnly,
+  });
   const styles = {};
 
   const onChangeHandler = useCallback(
@@ -75,8 +78,6 @@ export const RangePicker = memo<RangePickerProps>((props) => {
     };
   }, [view, currentMonth, hoveredDate]);
 
-  console.log('>> hov', hoveredDate?.format('DD.MM'));
-
   let valueString = '';
   if (value[0] || value[1]) {
     valueString = `${value[0] ? value[0].format(format) : '...'} - ${value[1] ? value[1].format(format) : '...'}`;
@@ -87,6 +88,7 @@ export const RangePicker = memo<RangePickerProps>((props) => {
       <DatePickerContext.Provider value={datePickerValueContext}>
         <DatePickerViewContext.Provider value={datePickerViewContext}>
           <Popover
+            enabled={!readOnly}
             placement="bottom-start"
             content={({ closeAllSequence }) => (
               <DatePickerCloseFnContext.Provider value={closeAllSequence}>
@@ -100,15 +102,17 @@ export const RangePicker = memo<RangePickerProps>((props) => {
               value={valueString}
               onChange={() => null}
               placeholder={placeholder}
-              readonlyStyles={false}
+              readonlyStyles={readOnly}
               {...restProps}
               readOnly={true}
             >
-              <TextInput.IconIsland
-                className={s.ArrowIcon}
-                placement="right"
-                icon={<Icon i="calendar_month" />}
-              />
+              {!readOnly ? (
+                <TextInput.IconIsland
+                  className={s.ArrowIcon}
+                  placement="right"
+                  icon={<Icon i="calendar_month" />}
+                />
+              ) : null}
             </TextInput>
           </Popover>
         </DatePickerViewContext.Provider>

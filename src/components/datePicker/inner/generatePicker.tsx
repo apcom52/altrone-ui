@@ -24,12 +24,20 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
   defaultFormat: string = 'DD.MM.YYYY',
 ) {
   return (props: DatePickerProps) => {
-    const { value, onChange, clearable = false, ...restProps } = props;
+    const {
+      value,
+      onChange,
+      clearable = false,
+      readOnly = false,
+      ...restProps
+    } = props;
 
     const [currentMonth, setCurrentMonth] = useState(value || dayjs());
     const [view, setView] = useState(picker);
 
-    const cls = clsx(s.DatePicker);
+    const cls = clsx(s.DatePicker, {
+      [s.Readonly]: readOnly,
+    });
     const styles = {};
 
     const onChangeHandler = useCallback(
@@ -63,6 +71,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
         <DatePickerContext.Provider value={datePickerValueContext}>
           <DatePickerViewContext.Provider value={datePickerViewContext}>
             <Popover
+              enabled={!readOnly}
               placement="bottom-start"
               content={({ closeAllSequence }) => (
                 <DatePickerCloseFnContext.Provider value={closeAllSequence}>
@@ -75,16 +84,18 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
                 style={styles}
                 value={value ? dayjs(value).format(defaultFormat) : ''}
                 onChange={() => null}
-                readonlyStyles={false}
+                readonlyStyles={readOnly}
                 placeholder="Choose a date"
                 {...restProps}
                 readOnly={true}
               >
-                <TextInput.IconIsland
-                  className={s.ArrowIcon}
-                  placement="right"
-                  icon={<Icon i="calendar_month" />}
-                />
+                {!readOnly ? (
+                  <TextInput.IconIsland
+                    className={s.ArrowIcon}
+                    placement="right"
+                    icon={<Icon i="calendar_month" />}
+                  />
+                ) : null}
               </TextInput>
             </Popover>
           </DatePickerViewContext.Provider>

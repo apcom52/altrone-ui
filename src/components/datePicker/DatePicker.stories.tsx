@@ -46,7 +46,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <DatePicker value={day1} onChange={setDay1} />
           <DatePicker value={day2} clearable onChange={setDay2} />
           <DatePicker value={day2} transparent onChange={setDay2} />
-          <DatePicker value={day2} readonlyStyles={true} onChange={setDay2} />
+          <DatePicker value={day2} readOnly onChange={setDay2} />
           <DatePicker value={day2} disabled onChange={setDay2} />
         </Flex>
         <Text.Heading role={TextHeadingRoles.inner}>MonthPicker</Text.Heading>
@@ -64,7 +64,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           />
           <DatePicker.MonthPicker
             value={month2}
-            readonlyStyles={true}
+            readOnly
             onChange={setMonth2}
           />
           <DatePicker.MonthPicker
@@ -82,11 +82,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             transparent
             onChange={setYear2}
           />
-          <DatePicker.YearPicker
-            value={year2}
-            readonlyStyles={true}
-            onChange={setYear2}
-          />
+          <DatePicker.YearPicker value={year2} readOnly onChange={setYear2} />
           <DatePicker.YearPicker value={year2} disabled onChange={setYear2} />
         </Flex>
       </Flex>
@@ -112,11 +108,7 @@ export const RangeStory: StoryObj<typeof Flex> = {
         </Flex>
         <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
           <DatePicker.RangePicker value={day2} transparent onChange={setDay2} />
-          <DatePicker.RangePicker
-            value={day2}
-            readonlyStyles={true}
-            onChange={setDay2}
-          />
+          <DatePicker.RangePicker value={day2} readOnly onChange={setDay2} />
           <DatePicker.RangePicker value={day2} disabled onChange={setDay2} />
         </Flex>
       </Flex>
