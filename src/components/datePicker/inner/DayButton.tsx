@@ -14,16 +14,8 @@ export const DayButton = memo(
     selected,
     fromAnotherMonth,
     today,
-    onSelect,
     weekDay,
-    isDateRange,
-    cursorHighlighted,
-  }: CalendarRenderDateProps & {
-    selectedDates: Date[];
-    minDate: Date;
-    maxDate: Date;
-    isDateRange: boolean;
-  }) => {
+  }: CalendarRenderDateProps) => {
     const { onDayClicked, selectedDates, minDate, maxDate } = useDateContext();
     const { picker, hoveredDate, setHoveredDate } = useDatePickerViewContext();
     const closePopup = useDatePickerCloseFn();
@@ -60,25 +52,6 @@ export const DayButton = memo(
         ? startDate && !endDate && currentDate.isBefore(startDate)
         : !currentDate.isBetween(minDate, maxDate, 'day', '[]');
 
-    // const isBetweenSelectedDates =
-    //   selectedDates[0] &&
-    //   selectedDates[1] &&
-    //   date_dj.isSameOrAfter(dayjs(selectedDates[0])) &&
-    //   date_dj.isSameOrBefore(dayjs(selectedDates[1]));
-    //
-    // const isDisabled =
-    //   !date_dj.isBetween(minDate, maxDate) ||
-    //   (isDateRange &&
-    //     selectedDates[0] &&
-    //     !selectedDates[1] &&
-    //     date_dj.isBefore(selectedDates[0]));
-    //
-    // const isHoveringMode = selectedDates[0] && !selectedDates[1];
-    //
-    // const isEndOfRange = isHoveringMode
-    //   ? date_dj.isSame(hoveredDate)
-    //   : date_dj.isSame(selectedDates[1], 'day');
-
     const isWeekend = weekDay === 0 || weekDay === 6;
 
     const onMouseEnter = useCallback(() => {
@@ -112,9 +85,6 @@ export const DayButton = memo(
         data-end-of-range={isEndOfRange}
         onMouseEnter={onMouseEnter}
         disabled={isDisabled}
-        // data-in-range={isBetweenSelectedDates || cursorHighlighted}
-        // data-end-of-range={isEndOfRange}
-        // disabled={isDisabled}
       >
         {(isBetweenSelectedDates || isHovered) && (
           <div className={s.DayBackground} />

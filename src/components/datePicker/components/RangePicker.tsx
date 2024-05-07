@@ -19,18 +19,29 @@ import { PopoverDatePickerContent } from '../inner/PopoverDatePickerContent.tsx'
 import { TextInput } from '../../textInput';
 import { Icon } from '../../icon';
 import warningOnce from 'rc-util/es/warning';
+import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
 
 export const RangePicker = memo<RangePickerProps>((props) => {
   const {
     value = EMPTY_ARRAY,
     onChange,
     placeholder = 'Select period',
-    format = 'DD.MM.YYYY',
+    format,
     readOnly = false,
     minDate,
     maxDate,
     ...restProps
   } = props;
+
+  const { locale: localeConfig = {}, datePicker: datePickerConfig = {} } =
+    useConfiguration();
+
+  const rangeFormatEmpty = datePickerConfig.rangeFormatEmpty || '...';
+  const dateFormat =
+    format ||
+    datePickerConfig.rangeFormat ||
+    localeConfig.dateFormat ||
+    'DD.MM.YYYY';
 
   useEffect(() => {
     warningOnce(
@@ -94,7 +105,7 @@ export const RangePicker = memo<RangePickerProps>((props) => {
 
   let valueString = '';
   if (value[0] || value[1]) {
-    valueString = `${value[0] ? value[0].format(format) : '...'} - ${value[1] ? value[1].format(format) : '...'}`;
+    valueString = `${value[0] ? value[0].format(dateFormat) : rangeFormatEmpty} - ${value[1] ? value[1].format(dateFormat) : rangeFormatEmpty}`;
   }
 
   return (

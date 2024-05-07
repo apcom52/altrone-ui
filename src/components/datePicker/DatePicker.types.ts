@@ -6,11 +6,6 @@ export type Picker = 'day' | 'month' | 'year' | 'range';
 
 export type DateRangePosition = 'start' | 'end' | 'both';
 
-export type DateValue<IsDateRange extends boolean | undefined> =
-  IsDateRange extends true
-    ? [Date | undefined, Date | undefined]
-    : undefined | Date;
-
 export interface BasicDatePickerProps<ValueType extends AnyObject = any>
   extends Omit<TextInputProps, 'value' | 'onChange'> {
   value?: ValueType;

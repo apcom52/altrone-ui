@@ -19,6 +19,7 @@ import { PopoverDatePickerContent } from './PopoverDatePickerContent.tsx';
 import { TextInput } from '../../textInput';
 import { Icon } from '../../icon';
 import warningOnce from 'rc-util/es/warning';
+import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
 
 export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
   picker: Picker = 'day',
@@ -32,6 +33,9 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
       readOnly = false,
       minDate,
       maxDate,
+      format,
+      className,
+      style,
       ...restProps
     } = props;
 
@@ -60,10 +64,29 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
     const [currentMonth, setCurrentMonth] = useState(value || dayjs());
     const [view, setView] = useState(picker);
 
-    const cls = clsx(s.DatePicker, {
-      [s.Readonly]: readOnly,
-    });
-    const styles = {};
+    const { datePicker: datePickerConfig = {} } = useConfiguration();
+
+    const configPickerFormat =
+      view === 'day'
+        ? datePickerConfig.dateFormat
+        : view === 'month'
+          ? datePickerConfig.monthFormat
+          : datePickerConfig.yearFormat;
+
+    const dateFormat = format || configPickerFormat || defaultFormat;
+
+    const cls = clsx(
+      s.DatePicker,
+      {
+        [s.Readonly]: readOnly,
+      },
+      className,
+      datePickerConfig.className,
+    );
+    const styles = {
+      ...datePickerConfig.style,
+      ...style,
+    };
 
     const onChangeHandler = useCallback(
       (selectedDate: Dayjs | undefined) => {
@@ -111,7 +134,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
               <TextInput
                 className={cls}
                 style={styles}
-                value={value ? dayjs(value).format(defaultFormat) : ''}
+                value={value ? dayjs(value).format(dateFormat) : ''}
                 onChange={() => null}
                 readonlyStyles={readOnly}
                 placeholder="Choose a date"
