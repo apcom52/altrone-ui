@@ -1,0 +1,104 @@
+@import 'src/global/mixins';
+@import 'mixins';
+
+:global(:root) {
+  --datePickerDayBackgroundColor: transparent;
+  --datePickerDayTextColor: var(--default-900);
+  --datePickerDayWeekendTextColor: var(--default-700);
+  --datePickerDayTodayTextColor: var(--primary-500);
+  --datePickerDayHoveredBackgroundColor: var(--default-100);
+  --datePickerDayHoveredTextColor: var(--primary-600);
+  --datePickerDaySelectedBackgroundColor: var(--primary-500);
+  --datePickerDaySelectedHoveredBackgroundColor: var(--primary-600);
+  --datePickerDaySelectedTextColor: var(--default-50);
+}
+
+.Day {
+  @include picker-item;
+  width: 20px;
+  height: 20px;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -4px;
+    width: 28px;
+    height: 24px;
+    background-color: transparent;
+  }
+}
+
+.Number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bgColor);
+  border-radius: 4px;
+
+  z-index: 1;
+}
+
+.Weekend {
+  --fgColor: var(--datePickerDayWeekendTextColor);
+}
+
+.AnotherMonth {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.Today {
+  --fgColor: var(--datePickerDayTodayTextColor);
+}
+
+.Selected {
+  @include selected-picker-item;
+  z-index: 2;
+}
+
+.DayBackground {
+  position: absolute;
+  background-color: var(--datePickerDayHoveredBackgroundColor);
+  width: calc(100% + 12px);
+  height: 100%;
+  z-index: -1;
+  left: -6px;
+}
+
+[data-start-of-range="true"] .DayBackground {
+  left: 0;
+  width: calc(100% + 4px);
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+[data-end-of-range="true"] .DayBackground {
+  left: -4px;
+  width: 100% !important;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+[data-start-of-week="true"] .DayBackground {
+  left: 0;
+  width: calc(100% + 4px);
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+[data-end-of-week="true"] .DayBackground {
+  left: -4px;
+  width: calc(100% + 4px);
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.Disabled {
+  @include disabled;
+}

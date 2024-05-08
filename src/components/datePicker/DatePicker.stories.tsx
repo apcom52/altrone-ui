@@ -1,0 +1,152 @@
+import { Meta, StoryObj } from '@storybook/react';
+import { StorybookDecorator } from '../../global/storybook';
+import { allModes } from '../../../.storybook/modes.ts';
+import { Flex } from '../flex';
+import { Direction, Gap } from '../../types';
+import { Text, TextHeadingRoles } from '../text';
+import { DatePicker } from './DatePicker.tsx';
+import { useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import { RangePickerValue } from './DatePicker.types.ts';
+
+const story: Meta<typeof DatePicker> = {
+  title: 'Components/Form/DatePicker',
+  component: DatePicker,
+  decorators: [StorybookDecorator],
+  args: {},
+  argTypes: {},
+  parameters: {
+    chromatic: {
+      modes: {
+        light: allModes['light desktop'],
+        dark: allModes['dark desktop'],
+      },
+    },
+  },
+};
+
+export const TextInputStory: StoryObj<typeof Flex> = {
+  name: 'Using DatePicker',
+  render: () => {
+    const [day1, setDay1] = useState<Dayjs | undefined>(undefined);
+    const [day2, setDay2] = useState<Dayjs | undefined>(dayjs('2024-05-15'));
+
+    const [month1, setMonth1] = useState<Dayjs | undefined>(dayjs('2024-03'));
+    const [month2, setMonth2] = useState<Dayjs | undefined>(dayjs('2024-08'));
+
+    const [year1, setYear1] = useState<Dayjs | undefined>(dayjs('2024'));
+    const [year2, setYear2] = useState<Dayjs | undefined>(dayjs('2025'));
+
+    return (
+      <Flex gap={Gap.large}>
+        <Text.Heading role={TextHeadingRoles.inner}>
+          Basic DatePicker
+        </Text.Heading>
+        <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
+          <DatePicker
+            value={day1}
+            onChange={setDay1}
+            minDate={dayjs('2024-04-02')}
+            maxDate={dayjs('2024-05-13')}
+          />
+          <DatePicker value={day2} clearable onChange={setDay2} />
+          <DatePicker value={day2} transparent onChange={setDay2} />
+          <DatePicker value={day2} readOnly onChange={setDay2} />
+          <DatePicker value={day2} disabled onChange={setDay2} />
+        </Flex>
+        <Text.Heading role={TextHeadingRoles.inner}>MonthPicker</Text.Heading>
+        <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
+          <DatePicker.MonthPicker value={month1} onChange={setMonth1} />
+          <DatePicker.MonthPicker
+            clearable
+            value={month2}
+            onChange={setMonth2}
+          />
+          <DatePicker.MonthPicker
+            value={month2}
+            transparent
+            onChange={setMonth2}
+          />
+          <DatePicker.MonthPicker
+            value={month2}
+            readOnly
+            onChange={setMonth2}
+          />
+          <DatePicker.MonthPicker
+            value={month2}
+            disabled
+            onChange={setMonth2}
+          />
+        </Flex>
+        <Text.Heading role={TextHeadingRoles.inner}>YearPicker</Text.Heading>
+        <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
+          <DatePicker.YearPicker value={year1} onChange={setYear1} />
+          <DatePicker.YearPicker clearable value={year2} onChange={setYear2} />
+          <DatePicker.YearPicker
+            value={year2}
+            transparent
+            onChange={setYear2}
+          />
+          <DatePicker.YearPicker value={year2} readOnly onChange={setYear2} />
+          <DatePicker.YearPicker value={year2} disabled onChange={setYear2} />
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
+export const RangeStory: StoryObj<typeof Flex> = {
+  name: 'Using DatePicker ranges',
+  render: () => {
+    const [day1, setDay1] = useState<RangePickerValue | undefined>([]);
+    const [day2, setDay2] = useState<RangePickerValue | undefined>([
+      dayjs('2024-04-04'),
+      dayjs('2024-11-18'),
+    ]);
+
+    return (
+      <Flex gap={Gap.large}>
+        <Text.Heading role={TextHeadingRoles.inner}>RangePicker</Text.Heading>
+        <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
+          <DatePicker.RangePicker
+            value={day1}
+            onChange={setDay1}
+            minDate={dayjs('2024-04-04')}
+            maxDate={dayjs('2024-05-13')}
+          />
+          <DatePicker.RangePicker
+            value={day2}
+            minDate={dayjs('2024-04-04')}
+            maxDate={dayjs('2024-05-13')}
+            onChange={setDay2}
+          />
+        </Flex>
+        <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
+          <DatePicker.RangePicker
+            value={day2}
+            minDate={dayjs('2024-04-04')}
+            maxDate={dayjs('2024-05-13')}
+            transparent
+            onChange={setDay2}
+          />
+          <DatePicker.RangePicker
+            value={day2}
+            minDate={dayjs('2024-04-04')}
+            maxDate={dayjs('2024-05-13')}
+            readOnly
+            onChange={setDay2}
+          />
+          <DatePicker.RangePicker
+            value={day2}
+            minDate={dayjs('2024-04-04')}
+            maxDate={dayjs('2024-05-13')}
+            disabled
+            onChange={setDay2}
+          />
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
+export default story;

@@ -1,19 +1,21 @@
+import { Dayjs } from 'dayjs';
+
 export type CalendarRenderDateProps = {
-  currentDate: Date;
+  currentDate: Dayjs;
   weekDay: number;
   fromAnotherMonth: boolean;
   today: boolean;
   selected: boolean;
   disabled: boolean;
   cursorHighlighted: boolean;
-  onSelect?: (date: Date) => void;
+  onSelect?: (date: Dayjs) => void;
 };
 
 export interface CalendarProps extends React.HTMLAttributes<HTMLDivElement> {
-  month: Date;
-  selectedDates?: Date[];
-  cursorDate?: Date;
-  onDateChange?: (date: Date) => void;
+  month: Dayjs;
+  selectedDates?: Dayjs[];
+  cursorDate?: Dayjs;
+  onDateChange?: (date: Dayjs) => void;
   DateComponent?: React.FC<CalendarRenderDateProps>;
   disabled?: boolean;
 }

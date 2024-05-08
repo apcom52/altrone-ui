@@ -11,8 +11,6 @@ export type Language = 'en' | 'ru' | string;
 
 export type Locale = {
   dateFormat: string;
-  timeFormat: string;
-  firstDayOfWeek: 'monday' | 'sunday';
   numberGrouping: '' | ' ' | ',' | '.';
   numberDecimal: '.' | ',';
 };
@@ -77,6 +75,15 @@ export interface ConsumerConfigurationContext {
   radio?: ComponentConfiguration;
   select?: ComponentConfiguration;
   calendar?: ComponentConfiguration;
+  datePicker?: ComponentConfiguration<{
+    popoverContentClassName: string;
+    popoverContentStyles: React.CSSProperties;
+    dateFormat: string;
+    monthFormat: string;
+    yearFormat: string;
+    rangeFormat: string;
+    rangeFormatEmpty: string;
+  }>;
 }
 
 export const ConfigurationContext =
