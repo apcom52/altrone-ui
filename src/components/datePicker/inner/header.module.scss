@@ -5,6 +5,11 @@
   --datePickerHeaderHoverTextColor: var(--primary-500);
 }
 
+:global(.AltroneDark) {
+  --datePickerHeaderTextColor: var(--default-50);
+  --datePickerHeaderHoverTextColor: var(--primary-700);
+}
+
 .Header {
   display: flex;
   align-items: center;
@@ -55,6 +60,7 @@
   font-size: 18px;
   padding: 0;
   cursor: pointer;
+  color: var(--datePickerHeaderTextColor);
 
   &:hover, &:focus-visible {
     color: var(--primary-600);

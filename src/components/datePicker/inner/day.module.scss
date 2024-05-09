@@ -13,6 +13,18 @@
   --datePickerDaySelectedTextColor: var(--default-50);
 }
 
+:global(.AltroneDark) {
+  --datePickerDayBackgroundColor: transparent;
+  --datePickerDayTextColor: var(--default-50);
+  --datePickerDayWeekendTextColor: var(--default-200);
+  --datePickerDayTodayTextColor: var(--primary-700);
+  --datePickerDayHoveredBackgroundColor: var(--default-700);
+  --datePickerDayHoveredTextColor: var(--primary-600);
+  --datePickerDaySelectedBackgroundColor: var(--primary-700);
+  --datePickerDaySelectedHoveredBackgroundColor: var(--primary-800);
+  --datePickerDaySelectedTextColor: var(--default-50);
+}
+
 .Day {
   @include picker-item;
   width: 20px;
