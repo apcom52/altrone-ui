@@ -4,6 +4,10 @@
   --datePickerWeekdayName: var(--default-500);
 }
 
+:global(.AltroneDark) {
+  --datePickerWeekdayName: var(--default-600);
+}
+
 .DayPicker {
   column-gap: var(--gap);
   row-gap: var(--s-gap);

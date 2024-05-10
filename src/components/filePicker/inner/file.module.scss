@@ -1,0 +1,128 @@
+@import "src/global/mixins";
+
+:global(:root) {
+  --filePickerItemBackgroundColor: var(--default-100);
+  --filePickerProgressColor: var(--default-200);
+  --filePickerItemCloseBackgroundColor: var(--default-200);
+  --filePickerItemCloseHoveredBackgroundColor: var(--default-300);
+  --filePickerItemSizeTextColor: var(--default-500);
+  --filePickerItemTextColor: var(--default-700);
+
+  --filePickerInvalidItemBackgroundColor: var(--danger-50);
+  --filePickerInvalidItemCloseBackgroundColor: var(--danger-100);
+  --filePickerInvalidItemHoveredCloseBackgroundColor: var(--danger-200);
+  --filePickerInvalidItemSizeTextColor: var(--danger-400);
+  --filePickerInvalidItemTextColor: var(--danger-900);
+}
+
+:global(.AltroneDark) {
+  --filePickerItemBackgroundColor: var(--default-800);
+  --filePickerProgressColor: var(--default-700);
+  --filePickerItemCloseBackgroundColor: var(--default-700);
+  --filePickerItemCloseHoveredBackgroundColor: var(--default-600);
+  --filePickerItemSizeTextColor: var(--default-600);
+  --filePickerItemTextColor: var(--default-200);
+
+  --filePickerInvalidItemBackgroundColor: var(--danger-900);
+  --filePickerInvalidItemCloseBackgroundColor: var(--danger-700);
+  --filePickerInvalidItemHoveredCloseBackgroundColor: var(--danger-600);
+  --filePickerInvalidItemSizeTextColor: var(--danger-500);
+  --filePickerInvalidItemTextColor: var(--danger-50);
+}
+
+.File {
+  display: flex;
+  position: relative;
+  align-items: center;
+  gap: var(--s-gap);
+  background: var(--filePickerItemBackgroundColor);
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: background-color 0.2s linear, color 0.2s linear;
+  cursor: default;
+  overflow: hidden;
+  max-width: 280px;
+
+  @include no-selection;
+}
+
+.FileName {
+  @include label;
+  color: var(--filePickerItemTextColor);
+  z-index: 2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  flex: 1;
+}
+
+.Progress {
+  position: absolute;
+  height: 100%;
+  left: 0;
+  background: var(--filePickerProgressColor);
+  width: 100px;
+  z-index: 1;
+  flex: 0;
+  transition: width 0.2s ease;
+}
+
+.Close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  transition: background-color 0.2s linear, color 0.2s linear;
+  background: var(--filePickerItemCloseBackgroundColor);
+  color: var(--filePickerItemTextColor);
+  z-index: 2;
+
+  &:hover, &:focus-visible {
+    background: var(--filePickerItemCloseHoveredBackgroundColor);
+  }
+}
+
+.Size {
+  @include label;
+  font-weight: 500;
+  color: var(--filePickerItemSizeTextColor);
+  z-index: 2;
+  white-space: nowrap;
+  flex: 0;
+}
+
+.Alert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--filePickerInvalidItemTextColor);
+  cursor: pointer;
+}
+
+.Invalid {
+  background: var(--filePickerInvalidItemBackgroundColor);
+
+  .FileName {
+    color: var(--filePickerInvalidItemTextColor);
+  }
+
+  .Progress {
+    display: none;
+  }
+
+  .Close {
+    background: var(--filePickerInvalidItemCloseBackgroundColor);
+    color: var(--filePickerInvalidItemTextColor);
+
+    &:hover, &:focus-visible {
+      background: var(--filePickerInvalidItemHoveredCloseBackgroundColor);
+    }
+  }
+}
