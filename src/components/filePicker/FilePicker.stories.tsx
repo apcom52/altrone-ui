@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { Button, Flex, Icon } from 'components';
+import { Flex } from 'components';
 import { useState } from 'react';
-import { Direction, Gap, Size } from '../../types';
+import { Direction, Gap } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
 import { FilePicker } from './FilePicker.tsx';
 import { FileItem } from './FilePicker.types.ts';
