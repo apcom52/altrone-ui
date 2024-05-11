@@ -84,6 +84,7 @@ export interface ConsumerConfigurationContext {
     rangeFormat: string;
     rangeFormatEmpty: string;
   }>;
+  filePicker?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =

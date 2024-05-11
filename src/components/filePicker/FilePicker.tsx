@@ -18,6 +18,8 @@ import { Align, Direction, Gap } from '../../types';
 import { Icon } from '../icon';
 import { v4 as uuid } from 'uuid';
 import { deleteFileRequest } from './FilePicker.utils.ts';
+import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import clsx from 'clsx';
 
 const FilePickerContext = createContext<FilePickerContextType>({
   autoUpload: true,
@@ -32,6 +34,7 @@ export const useFilePickerContext = () => useContext(FilePickerContext);
 
 export const FilePicker = memo<FilePickerProps>(
   ({
+    accept,
     defaultValue = [],
     multiple = false,
     url,
@@ -41,7 +44,11 @@ export const FilePicker = memo<FilePickerProps>(
     autoUploadFn,
     removeFileFn,
     placeholder,
+    className,
+    style,
   }) => {
+    const { filePicker: filePickerConfig = {} } = useConfiguration();
+
     const [fileList, setFileList] = useState<FileItem[]>(() => {
       if (defaultValue) {
         return defaultValue.map((item) => ({
@@ -117,6 +124,12 @@ export const FilePicker = memo<FilePickerProps>(
       setFileList((old) => old.filter((file) => file.id !== item.id));
     }, []);
 
+    const cls = clsx(s.FilePicker, className, filePickerConfig.className);
+    const styles = {
+      ...filePickerConfig.style,
+      ...style,
+    };
+
     return (
       <FilePickerContext.Provider value={filePickerContext}>
         <Flex
@@ -124,11 +137,13 @@ export const FilePicker = memo<FilePickerProps>(
           gap={Gap.medium}
           align={Align.center}
           wrap
-          className={s.FilePicker}
+          className={cls}
+          style={styles}
         >
           <input
             type="file"
             name={name}
+            accept={accept}
             ref={fileInputRef}
             className={s.Input}
             multiple={multiple}
