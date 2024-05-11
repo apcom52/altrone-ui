@@ -27,55 +27,39 @@ const story: Meta<typeof FilePicker> = {
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using FilePicker',
   render: () => {
-    const [value1, setValue1] = useState<FileItem | undefined>(undefined);
-    const [value2, setValue2] = useState<FileItem>({
-      filename: 'Mojave.jpg',
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Mesquite_Sand_Dunes_in_Death_Valley.jpg/1200px-Mesquite_Sand_Dunes_in_Death_Valley.jpg',
-    });
-    const [value3, setValue3] = useState<FileItem[]>([]);
-    const [value4, setValue4] = useState<FileItem[]>([
+    const [value4] = useState<FileItem[]>([
       {
         filename: 'Mojave.jpg',
-        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Mesquite_Sand_Dunes_in_Death_Valley.jpg/1200px-Mesquite_Sand_Dunes_in_Death_Valley.jpg',
       },
       {
         filename: 'Catalina.jpg',
-        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Mesquite_Sand_Dunes_in_Death_Valley.jpg/1200px-Mesquite_Sand_Dunes_in_Death_Valley.jpg',
-        invalid: true,
       },
       {
         filename: 'Big Sur.jpg',
-        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Mesquite_Sand_Dunes_in_Death_Valley.jpg/1200px-Mesquite_Sand_Dunes_in_Death_Valley.jpg',
-        file: new File([], 'bigsur'),
       },
       {
         filename: 'File with a very very very long name.docx',
-        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Mesquite_Sand_Dunes_in_Death_Valley.jpg/1200px-Mesquite_Sand_Dunes_in_Death_Valley.jpg',
-        file: new File([], 'bigsur'),
       },
     ]);
 
     return (
       <Flex gap={Gap.large}>
         <Text.Heading role={TextHeadingRoles.inner}>
-          Basic FilePicker
+          Basic FilePicker (with autoUpload and without)
         </Text.Heading>
         <Flex direction={Direction.horizontal} gap={Gap.large}>
           <FilePicker
             url="http://localhost:4055/upload"
             method="POST"
             name="file"
-            multiple={false}
-            defaultValue={value1}
-            onChange={setValue1}
-            placeholder="Choose file"
+            placeholder="Choose file (with autoUpload)"
           />
           <FilePicker
-            name="your picture"
+            url="http://localhost:4055/upload"
+            method="GET"
+            name="file"
             multiple={false}
-            defaultValue={value2}
-            onChange={setValue2}
-            placeholder="Choose file"
+            placeholder="Choose file (manual upload)"
           />
         </Flex>
         <Text.Heading role={TextHeadingRoles.inner}>
@@ -83,18 +67,19 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         </Text.Heading>
         <Flex direction={Direction.horizontal} gap={Gap.large}>
           <FilePicker
-            name="your picture"
-            multiple={true}
-            defaultValue={value3}
-            onChange={setValue3}
+            url="http://localhost:4055/upload"
+            method="POST"
+            name="file"
             placeholder="Choose file"
+            multiple
           />
           <FilePicker
-            name="your picture"
-            multiple={true}
             defaultValue={value4}
-            onChange={setValue4}
+            url="http://localhost:4055/upload"
+            method="POST"
+            name="file"
             placeholder="Choose file"
+            multiple
           />
         </Flex>
       </Flex>
