@@ -1,65 +1,121 @@
 import {
+  ChangeEvent,
   createContext,
   memo,
+  useCallback,
   useContext,
-  useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { Button } from '../button';
-import { FilePickerProps } from './FilePicker.types.ts';
+import { FileItem, FilePickerProps } from './FilePicker.types.ts';
 import s from './filePicker.module.scss';
 import { File } from './inner/File.tsx';
 import { FilePickerContextType } from './FilePicker.types.ts';
 import { Flex } from '../flex';
 import { Align, Direction, Gap } from '../../types';
 import { Icon } from '../icon';
-import { useImperativeFilePicker } from 'use-file-picker';
+import { v4 as uuid } from 'uuid';
+import { deleteFileRequest } from './FilePicker.utils.ts';
 
 const FilePickerContext = createContext<FilePickerContextType>({
-  deleteFile: () => null,
+  autoUpload: true,
+  url: '',
+  method: '',
+  name: '',
+  autoUploadFn: async () => new Promise<void>((_) => {}),
+  removeFileFn: async () => new Promise<void>((_) => {}),
 });
 
 export const useFilePickerContext = () => useContext(FilePickerContext);
 
 export const FilePicker = memo<FilePickerProps>(
-  ({ multiple = false, onChange }) => {
-    const [invalidFiles, setInvalidFiles] = useState<File[]>([]);
+  ({
+    defaultValue = [],
+    multiple = false,
+    url,
+    autoUpload = true,
+    method,
+    name,
+    autoUploadFn,
+    removeFileFn,
+    placeholder,
+  }) => {
+    const [fileList, setFileList] = useState<FileItem[]>(() => {
+      if (defaultValue) {
+        return defaultValue.map((item) => ({
+          ...item,
+          id: uuid(),
+        }));
+      }
 
-    const {
-      openFilePicker,
-      plainFiles,
-      loading,
-      removeFileByReference,
-      errors,
-    } = useImperativeFilePicker({
-      // accept: restProps.accept || '*',
-      multiple,
-      onFilesSelected: (...args) => {
-        console.log('>> [Selected]:', args);
-      },
-      onFilesRejected: (args) => {
-        setInvalidFiles(
-          args.errors.map((error) => (error as any).causedByFile),
-        );
-        console.log('>> [Rejected]:', args);
-      },
-      onFilesSuccessfullySelected: () => {
-        console.log('>> [Successfully Selected]:');
-      },
+      return [];
     });
+
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+    const chooseFiles = () => {
+      fileInputRef.current?.click();
+    };
 
     const filePickerContext = useMemo<FilePickerContextType>(() => {
       return {
-        deleteFile: removeFileByReference,
+        autoUpload,
+        url,
+        name,
+        method,
+        autoUploadFn,
+        removeFileFn,
       };
-    }, [removeFileByReference]);
+    }, [autoUpload, autoUploadFn, removeFileFn, method, url, name]);
 
-    const fileList = [...plainFiles, ...invalidFiles];
+    const onChangeFileInput = async (e: ChangeEvent<HTMLInputElement>) => {
+      const selectedFiles = e.target.files || [];
 
-    useEffect(() => {
-      onChange?.(plainFiles);
-    }, [onChange, plainFiles]);
+      if (selectedFiles.length === 0) {
+        return;
+      }
+
+      for (const file of selectedFiles) {
+        if (multiple) {
+          setFileList((old) => [
+            ...old,
+            {
+              id: uuid(),
+              file,
+            },
+          ]);
+        } else {
+          setFileList((old) => {
+            if (old.length && autoUpload) {
+              const deleteContext = {
+                url: String(url),
+                name: String(url),
+                pickerItem: old[0],
+              };
+
+              if (removeFileFn) {
+                void removeFileFn(deleteContext);
+              } else {
+                void deleteFileRequest(deleteContext);
+              }
+            }
+
+            return [
+              {
+                id: uuid(),
+                file,
+              },
+            ];
+          });
+        }
+      }
+    };
+
+    const deleteFile = useCallback((item: FileItem) => {
+      setFileList((old) => old.filter((file) => file.id !== item.id));
+    }, []);
 
     return (
       <FilePickerContext.Provider value={filePickerContext}>
@@ -70,22 +126,31 @@ export const FilePicker = memo<FilePickerProps>(
           wrap
           className={s.FilePicker}
         >
+          <input
+            type="file"
+            name={name}
+            ref={fileInputRef}
+            className={s.Input}
+            multiple={multiple}
+            onChange={onChangeFileInput}
+          />
           {fileList.length === 0 ? (
             <div className={s.EmptyLabel}>No files chosen</div>
           ) : null}
-          {fileList.map((item, itemIndex) => {
-            const errorMessage = errors.find(
-              (error) => (error as any).causedByFile === item,
-            )?.readerError?.message;
-
+          {fileList.map?.((item) => {
             return (
-              <File key={itemIndex} file={item} errorMessage={errorMessage} />
+              <File
+                key={`${item.id}`}
+                file={item.file}
+                pickerItem={item}
+                onDeleteClick={deleteFile}
+              />
             );
           })}
           <Button
             leftIcon={<Icon i="file_upload" />}
-            label={loading ? 'Choosing...' : 'Choose file'}
-            onClick={openFilePicker}
+            label={placeholder || 'Choose file'}
+            onClick={chooseFiles}
           />
         </Flex>
       </FilePickerContext.Provider>
