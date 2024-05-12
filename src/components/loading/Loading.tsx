@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import clsx from 'clsx';
-import { LoadingProps } from './Pagination.types.ts';
+import { LoadingProps } from './Loading.types.ts';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 import s from './loading.module.scss';
 
