@@ -89,6 +89,7 @@ export interface ConsumerConfigurationContext {
   loading?: ComponentConfiguration<{
     color: string;
   }>;
+  tooltip?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =
