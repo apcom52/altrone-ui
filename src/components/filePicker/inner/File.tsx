@@ -6,7 +6,7 @@ import {
   FileStatus,
 } from '../FilePicker.types.ts';
 import s from './file.module.scss';
-import { Icon, Popover, Text } from 'components';
+import { Icon, Loading, Popover, Text } from 'components';
 import clsx from 'clsx';
 import { getFileSize } from '../../../utils/file.ts';
 import { useFilePickerContext } from '../FilePicker.tsx';
@@ -167,13 +167,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
           </div>
         </Popover>
       ) : null}
-      {status === 'loading' ? (
-        <l-ring
-          size="12"
-          stroke={1}
-          color={'var(--filePickerItemTextColor)'}
-        ></l-ring>
-      ) : null}
+      {status === 'loading' ? <Loading size="12px" strokeWidth="1px" /> : null}
       {status === 'failed' ? (
         <button className={s.Close} type="button" onClick={() => null}>
           <Icon i="refresh" />

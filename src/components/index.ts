@@ -24,3 +24,4 @@ export * from './calendar';
 export * from './datePicker';
 export * from './filePicker';
 export * from './pagination';
+export * from './loading';
