@@ -112,3 +112,9 @@
   opacity: 0.5;
   pointer-events: none;
 }
+
+@mixin no-appearance {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
