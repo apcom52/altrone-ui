@@ -86,6 +86,9 @@ export interface ConsumerConfigurationContext {
   }>;
   filePicker?: ComponentConfiguration;
   pagination?: ComponentConfiguration;
+  loading?: ComponentConfiguration<{
+    color: string;
+  }>;
 }
 
 export const ConfigurationContext =
