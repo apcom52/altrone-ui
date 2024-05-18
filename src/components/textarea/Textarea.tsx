@@ -25,6 +25,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       <TextInput
         className={cls}
         style={styles}
+        wrapperClassName={s.Wrapper}
         Component={<textarea className={cls} ref={ref} />}
         {...restProps}
       />

@@ -7,7 +7,14 @@ import clsx from 'clsx';
 import s from './tooltip.module.scss';
 
 export const Tooltip = memo<TooltipTypes>(
-  ({ content, children, className, style, ...restProps }) => {
+  ({
+    content,
+    children,
+    className,
+    style,
+    childrenClassName,
+    ...restProps
+  }) => {
     const { tooltip: tooltipConfig = {} } = useConfiguration();
 
     const cls = clsx(className, tooltipConfig.className);
@@ -31,7 +38,7 @@ export const Tooltip = memo<TooltipTypes>(
       );
 
     const childrenElement = children || (
-      <button type="button" className={s.QuestionMark}>
+      <button type="button" className={clsx(s.QuestionMark, childrenClassName)}>
         <Icon i="help_outline" />
       </button>
     );

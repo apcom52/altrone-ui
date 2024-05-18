@@ -19,6 +19,7 @@ import {
   TextIsland,
 } from './components';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useFormField } from '../form/components/Field.tsx';
 
 const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
   (props, ref) => {
@@ -39,8 +40,21 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       Component,
       suggestions = [],
       readonlyStyles = true,
+      name,
       ...restProps
     } = props;
+
+    const {
+      value: formFieldValue,
+      name: formFieldName,
+      invalid: formFieldInvalid,
+    } = useFormField();
+
+    const inputValue =
+      typeof formFieldValue === 'string' ? formFieldValue : value;
+    const inputName = typeof name === 'string' ? name : formFieldName;
+    const inputInvalid =
+      typeof invalid === 'boolean' ? invalid : formFieldInvalid;
 
     const { textInput: inputConfig = {} } = useConfiguration();
 
@@ -77,7 +91,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
     const cls = clsx(
       s.Input,
       {
-        [s.Invalid]: invalid,
+        [s.Invalid]: inputInvalid,
         [s.Readonly]: readonlyStyles && restProps.readOnly,
         [s.Transparent]: transparent,
       },
@@ -170,15 +184,16 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
     if (Component) {
       inputElement = cloneElement(Component, {
         ref,
-        value,
+        value: inputValue,
         onChange: onChangeHandler,
-        'aria-invalid': invalid,
+        'aria-invalid': inputInvalid,
         'data-rainbow-opacity': 0.33,
         'data-rainbow-blur': 36,
         onFocus: onFocusHandler,
         onBlur: onBlurHandler,
         className,
         style: styles,
+        name: inputName,
         ...rainbowEvents,
         ...restProps,
         ...Component.props,
@@ -195,15 +210,16 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
               ref.current = element;
             }
           }}
-          value={value}
+          value={inputValue}
           onChange={onChangeHandler}
           className={cls}
           style={styles}
-          aria-invalid={invalid}
+          aria-invalid={inputInvalid}
           data-rainbow-opacity={0.33}
           data-rainbow-blur={36}
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
+          name={inputName}
           {...rainbowEvents}
           {...restProps}
         />
