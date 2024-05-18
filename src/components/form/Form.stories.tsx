@@ -3,8 +3,7 @@ import { Form } from './Form.tsx';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { useState } from 'react';
-import { Direction, Gap, Role, Size } from '../../types';
+import { Direction, Gap, Role } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
 import { TextInput } from '../textInput';
 import { PasswordInput } from '../passwordInput';
@@ -12,8 +11,9 @@ import { Button } from '../button';
 import { NumberInput } from '../numberInput';
 import { Textarea } from '../textarea';
 import { Select } from '../select';
-import { COUNTRIES } from '../scrollable/Scrollable.constants.ts';
 import { DatePicker } from '../datePicker';
+import { SELECT_COUNTRIES } from '../select/Select.stories.tsx';
+import dayjs from 'dayjs';
 
 const story: Meta<typeof Form> = {
   title: 'Components/Form/Form',
@@ -101,7 +101,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             <Flex direction={Direction.horizontal} gap={Gap.large}>
               <Form.Field label="Disabled" disabled>
                 <Select
-                  options={COUNTRIES}
+                  options={SELECT_COUNTRIES}
                   value={'russia'}
                   onChange={() => null}
                 />
@@ -111,7 +111,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 errorMessage="There is an error here"
               >
                 <Select
-                  options={COUNTRIES}
+                  options={SELECT_COUNTRIES}
                   value={'russia'}
                   onChange={() => null}
                 />
@@ -128,53 +128,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 label="With error message"
                 errorMessage="There is an error here"
               >
-                <DatePicker />
+                <DatePicker value={dayjs('2024-04-04')} />
               </Form.Field>
             </Flex>
-            <Button role={Role.primary} label="Submit" />
-          </Form>
-        </Flex>
-      </Flex>
-    );
-  },
-};
-
-export const ComplexFormStory: StoryObj<typeof Flex> = {
-  name: 'Complex Form',
-  render: () => {
-    const [formState1, setFormState1] = useState({
-      username: 'apcom',
-      password: '',
-    });
-
-    return (
-      <Flex gap={Gap.large}>
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Authorization Form
-        </Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
-          <Form
-            initialState={formState1}
-            validation={{
-              username: (value) =>
-                String(value).length > 6
-                  ? 'Username cannot be more than 6 chars'
-                  : true,
-              password: (value) =>
-                !String(value) ? 'Password cannot be empty' : true,
-            }}
-          >
-            <Form.Field
-              name="username"
-              label="Username"
-              required
-              hintText="This username has to be unique"
-            >
-              <TextInput placeholder="Username" />
-            </Form.Field>
-            <Form.Field name="password" label="Password" required>
-              <PasswordInput placeholder="Password" />
-            </Form.Field>
             <Button role={Role.primary} label="Submit" />
           </Form>
         </Flex>

@@ -50,11 +50,14 @@ export const Field = memo<FormFieldProps>(
     const fieldContext = useMemo<FormFieldContextType>(() => {
       return {
         name,
-        disabled: false,
+        disabled:
+          typeof disabled === 'boolean'
+            ? disabled
+            : formState.disabled || false,
         invalid: invalidField,
         size: formState.size,
       };
-    }, [name, invalidField, formState.size]);
+    }, [name, invalidField, formState.size, formState.disabled, disabled]);
 
     return (
       <FormFieldContext.Provider value={fieldContext}>

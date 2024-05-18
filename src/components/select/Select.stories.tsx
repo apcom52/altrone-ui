@@ -25,7 +25,7 @@ const story: Meta<typeof Select> = {
   },
 };
 
-const SELECT_COUNTRIES: Option<string> = COUNTRIES.map((item) => ({
+export const SELECT_COUNTRIES: Option<string> = COUNTRIES.map((item) => ({
   label: item.country,
   value: item.country.toLowerCase(),
 }));

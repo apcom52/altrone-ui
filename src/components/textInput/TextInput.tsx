@@ -33,7 +33,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       wrapperClassName,
       wrapperStyle,
       invalid,
-      size = Size.medium,
+      size,
       rainbowEffect,
       onFocus,
       onBlur,
@@ -41,20 +41,24 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       suggestions = [],
       readonlyStyles = true,
       name,
+      disabled,
       ...restProps
     } = props;
 
     const {
-      value: formFieldValue,
       name: formFieldName,
       invalid: formFieldInvalid,
+      disabled: formFieldDisabled,
+      size: formFieldSize,
     } = useFormField();
 
-    const inputValue =
-      typeof formFieldValue === 'string' ? formFieldValue : value;
+    const inputValue = value;
     const inputName = typeof name === 'string' ? name : formFieldName;
     const inputInvalid =
       typeof invalid === 'boolean' ? invalid : formFieldInvalid;
+    const inputDisabled =
+      typeof disabled === 'boolean' ? disabled : formFieldDisabled;
+    const inputSize = size || formFieldSize;
 
     const { textInput: inputConfig = {} } = useConfiguration();
 
@@ -73,7 +77,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
 
     const rainbowEvents = useRainbowEffect(
       !(restProps.readOnly && readonlyStyles) &&
-        !restProps.disabled &&
+        !inputDisabled &&
         rainbowEffect &&
         !focused &&
         isRainbowPropsActivated,
@@ -82,8 +86,8 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
     const wrapperCls = clsx(
       s.Wrapper,
       {
-        [s.Small]: size === Size.small,
-        [s.Large]: size === Size.large,
+        [s.Small]: inputSize === Size.small,
+        [s.Large]: inputSize === Size.large,
       },
       wrapperClassName,
     );
@@ -194,6 +198,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         className,
         style: styles,
         name: inputName,
+        disabled: inputDisabled,
         ...rainbowEvents,
         ...restProps,
         ...Component.props,
@@ -220,6 +225,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
           name={inputName}
+          disabled={inputDisabled}
           {...rainbowEvents}
           {...restProps}
         />
