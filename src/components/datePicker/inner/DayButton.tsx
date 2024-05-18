@@ -50,7 +50,9 @@ export const DayButton = memo(
     const isDisabled =
       picker === 'range'
         ? startDate && !endDate && currentDate.isBefore(startDate)
-        : !currentDate.isBetween(minDate, maxDate, 'day', '[]');
+        : minDate && maxDate
+          ? !currentDate.isBetween(minDate, maxDate, 'day', '[]')
+          : false;
 
     const isWeekend = weekDay === 0 || weekDay === 6;
 

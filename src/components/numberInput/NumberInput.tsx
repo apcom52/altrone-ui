@@ -13,6 +13,7 @@ import {
 import s from './numberInput.module.scss';
 import inputStyles from '../textInput/textInput.module.scss';
 import { triggerNativeEvent } from '../../utils/events.ts';
+import { useFormField } from '../form/components/Field.tsx';
 
 export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
   (
@@ -33,6 +34,9 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       defaultValue,
       min = 0,
       max,
+      invalid,
+      name,
+      disabled,
       ...restProps
     },
     ref,
@@ -41,6 +45,20 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
 
     const { numberInput: numberInputConfig = {}, locale: localeConfig = {} } =
       useConfiguration();
+
+    const {
+      name: formFieldName,
+      invalid: formFieldInvalid,
+      disabled: formFieldDisabled,
+      size: formFieldSize,
+    } = useFormField();
+
+    const inputName = typeof name === 'string' ? name : formFieldName;
+    const inputInvalid =
+      typeof invalid === 'boolean' ? invalid : formFieldInvalid;
+    const inputDisabled =
+      typeof disabled === 'boolean' ? disabled : formFieldDisabled;
+    const inputSize = size || formFieldSize;
 
     const needToShowControl =
       typeof showControl === 'boolean'
@@ -72,6 +90,9 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     const cls = clsx(
       inputStyles.Input,
       s.NumberInput,
+      {
+        [inputStyles.Invalid]: inputInvalid,
+      },
       numberInputConfig.className,
       className,
     );
@@ -121,7 +142,10 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         type="text"
         className={cls}
         style={styles}
-        size={size}
+        size={inputSize}
+        name={inputName}
+        disabled={inputDisabled}
+        invalid={inputInvalid}
         Component={
           <NumericFormat
             {...restProps}
@@ -152,9 +176,13 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         {needToShowControl ? (
           <TextInput.CustomIsland placement="right">
             <Spinner
-              disabled={restProps.disabled}
-              disabledUp={typeof max === 'number' && value >= max}
-              disabledDown={typeof min === 'number' && (value <= min || !value)}
+              disabled={inputDisabled}
+              disabledUp={Boolean(
+                typeof max === 'number' && value && value >= max,
+              )}
+              disabledDown={Boolean(
+                typeof min === 'number' && value && (value <= min || !value),
+              )}
               onDownClick={() => spinnerChangeValue(-1)}
               onUpClick={() => spinnerChangeValue(1)}
               size={size}

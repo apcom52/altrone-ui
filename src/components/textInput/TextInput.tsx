@@ -19,6 +19,7 @@ import {
   TextIsland,
 } from './components';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useFormField } from '../form/components/Field.tsx';
 
 const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
   (props, ref) => {
@@ -32,15 +33,32 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       wrapperClassName,
       wrapperStyle,
       invalid,
-      size = Size.medium,
+      size,
       rainbowEffect,
       onFocus,
       onBlur,
       Component,
       suggestions = [],
       readonlyStyles = true,
+      name,
+      disabled,
       ...restProps
     } = props;
+
+    const {
+      name: formFieldName,
+      invalid: formFieldInvalid,
+      disabled: formFieldDisabled,
+      size: formFieldSize,
+    } = useFormField();
+
+    const inputValue = value;
+    const inputName = typeof name === 'string' ? name : formFieldName;
+    const inputInvalid =
+      typeof invalid === 'boolean' ? invalid : formFieldInvalid;
+    const inputDisabled =
+      typeof disabled === 'boolean' ? disabled : formFieldDisabled;
+    const inputSize = size || formFieldSize;
 
     const { textInput: inputConfig = {} } = useConfiguration();
 
@@ -59,7 +77,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
 
     const rainbowEvents = useRainbowEffect(
       !(restProps.readOnly && readonlyStyles) &&
-        !restProps.disabled &&
+        !inputDisabled &&
         rainbowEffect &&
         !focused &&
         isRainbowPropsActivated,
@@ -68,8 +86,8 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
     const wrapperCls = clsx(
       s.Wrapper,
       {
-        [s.Small]: size === Size.small,
-        [s.Large]: size === Size.large,
+        [s.Small]: inputSize === Size.small,
+        [s.Large]: inputSize === Size.large,
       },
       wrapperClassName,
     );
@@ -77,7 +95,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
     const cls = clsx(
       s.Input,
       {
-        [s.Invalid]: invalid,
+        [s.Invalid]: inputInvalid,
         [s.Readonly]: readonlyStyles && restProps.readOnly,
         [s.Transparent]: transparent,
       },
@@ -170,15 +188,17 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
     if (Component) {
       inputElement = cloneElement(Component, {
         ref,
-        value,
+        value: inputValue,
         onChange: onChangeHandler,
-        'aria-invalid': invalid,
+        'aria-invalid': inputInvalid,
         'data-rainbow-opacity': 0.33,
         'data-rainbow-blur': 36,
         onFocus: onFocusHandler,
         onBlur: onBlurHandler,
         className,
         style: styles,
+        name: inputName,
+        disabled: inputDisabled,
         ...rainbowEvents,
         ...restProps,
         ...Component.props,
@@ -195,15 +215,17 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
               ref.current = element;
             }
           }}
-          value={value}
+          value={inputValue}
           onChange={onChangeHandler}
           className={cls}
           style={styles}
-          aria-invalid={invalid}
+          aria-invalid={inputInvalid}
           data-rainbow-opacity={0.33}
           data-rainbow-blur={36}
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
+          name={inputName}
+          disabled={inputDisabled}
           {...rainbowEvents}
           {...restProps}
         />

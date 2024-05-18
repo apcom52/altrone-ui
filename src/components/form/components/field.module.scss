@@ -1,0 +1,68 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --formFieldLabelTextColor: var(--default-700);
+  --formFieldDescriptionTextColor: var(--default-500);
+  --formFieldRequiredMarkColor: var(--danger-600);
+  --formFieldErrorMessageTextColor: var(--danger-700);
+}
+
+:global(.AltroneDark) {
+  --formFieldLabelTextColor: var(--default-200);
+  --formFieldDescriptionTextColor: var(--default-500);
+  --formFieldRequiredMarkColor: var(--danger-400);
+  --formFieldErrorMessageTextColor: var(--danger-400);
+}
+
+.Field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--xs-gap);
+  width: 100%;
+}
+
+.Label {
+  display: flex;
+  align-items: center;
+
+  @include label-heading;
+  color: var(--formFieldLabelTextColor);
+}
+
+.HintIcon {
+  margin-left: var(--s-gap);
+  font-size: 12px;
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.Asterisk {
+  color: var(--formFieldRequiredMarkColor);
+  margin-left: 2px;
+}
+
+.ErrorMessage {
+  @include sm-paragraph;
+  color: var(--formFieldErrorMessageTextColor);
+}
+
+.Description {
+  @include sm-paragraph;
+  color: var(--formFieldDescriptionTextColor);
+}
+
+.Control {
+  height: fit-content;
+}
+
+.Invalid {
+  .Label {
+    color: var(--formFieldErrorMessageTextColor);
+  }
+}
+
+.Disabled {
+  .Label {
+    @include disabled;
+  }
+}

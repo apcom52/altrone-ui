@@ -7,8 +7,8 @@ export interface TextInputProps
       BasicComponentProps & React.InputHTMLAttributes<HTMLInputElement>,
       'onChange' | 'size' | 'children'
     > {
-  value: string;
-  onChange: (value: string, event: ChangeEvent) => void;
+  value?: string;
+  onChange?: (value: string, event: ChangeEvent) => void;
   wrapperClassName?: string;
   wrapperStyle?: React.CSSProperties;
   invalid?: boolean;
