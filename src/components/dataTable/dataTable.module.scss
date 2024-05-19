@@ -1,0 +1,12 @@
+:global(:root) {
+  --dataTableBackgroundColor: var(--default-50);
+}
+
+.Wrapper {
+  --columns: 3;
+
+  display: grid;
+  border-radius: 6px;
+  background-color: var(--dataTableBackgroundColor);
+  overflow: hidden;
+}
