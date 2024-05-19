@@ -1,0 +1,70 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --dataTableHeadingCellBackgroundColor: var(--default-100);
+  --dataTableHeadingCellBorderColor: var(--default-400);
+  --dataTableHeadingCellTextColor: var(--default-700);
+  --dataTableHeadingCellSortedTextColor: var(--default-900);
+  --dataTableHeadingSortIconColor: var(--default-400);
+  --dataTableHoveredHeadingCellBackgroundColor: var(--default-200);
+  --dataTableHoveredHeadingCellTextColor: var(--default-800);
+}
+
+:global(.AltroneDark) {
+  --dataTableHeadingCellBackgroundColor: var(--default-800);
+  --dataTableHeadingCellBorderColor: var(--default-600);
+  --dataTableHeadingCellTextColor: var(--default-200);
+  --dataTableHeadingCellSortedTextColor: var(--default-50);
+  --dataTableHeadingSortIconColor: var(--default-400);
+  --dataTableHoveredHeadingCellBackgroundColor: var(--default-700);
+  --dataTableHoveredHeadingCellTextColor: var(--default-100);
+}
+
+.ColumnHeaders {
+  width: 100%;
+  display: grid;
+  grid-template-columns: var(--columnTemplate);
+  align-items: center;
+  background-color: var(--dataTableHeadingCellBackgroundColor);
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid var(--dataTableHeadingCellBorderColor);
+}
+
+.Cell {
+  padding: 10px 12px;
+  flex: 1;
+  @include label-heading;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s linear;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  color: var(--dataTableHeadingCellTextColor);
+
+  &:hover {
+    background-color: var(--dataTableHoveredHeadingCellBackgroundColor);
+    color: var(--dataTableHoveredHeadingCellTextColor);
+
+    .SortIcon {
+      opacity: 1;
+    }
+  }
+}
+
+.Title {
+  position: relative;
+}
+
+.SortIcon {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: calc(100% + 4px);
+  font-size: 16px;
+  top: 0;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.2s linear;
+  color: var(--dataTableHeadingSortIconColor);
+}

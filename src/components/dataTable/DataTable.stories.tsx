@@ -34,7 +34,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         <DataTable
           data={COUNTRIES}
           columns={[
-            { accessor: 'flag', label: 'Flag' },
+            { accessor: 'flag', label: 'Flag', width: '80px' },
             { accessor: 'country', label: 'Country Name' },
             { accessor: 'capital', label: 'Capital' },
           ]}

@@ -1,12 +1,17 @@
 :global(:root) {
-  --dataTableBackgroundColor: var(--default-50);
 }
 
 .Wrapper {
   --columns: 3;
+  --columnTemplate: 1fr 1fr 1fr;
+  --rows: 10;
 
-  display: grid;
+  display: flex;
+  flex-direction: column;
   border-radius: 6px;
-  background-color: var(--dataTableBackgroundColor);
-  overflow: hidden;
+}
+
+.Table {
+  display: flex;
+  flex-direction: column;
 }

@@ -1,0 +1,44 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --dataTableRowBackgroundColor: var(--default-50);
+  --dataTableHoveredRowBackgroundColor: var(--default-100);
+  --dataTableCellTextColor: var(--default-700);
+  --dataTableCellBorderColor: var(--default-300);
+}
+
+:global(.AltroneDark) {
+  --dataTableRowBackgroundColor: var(--default-900);
+  --dataTableHoveredRowBackgroundColor: var(--default-800);
+  --dataTableCellTextColor: var(--default-200);
+  --dataTableCellBorderColor: var(--default-600);
+}
+
+.Row {
+  display: grid;
+  grid-template-columns: var(--columnTemplate);
+  align-items: center;
+  border-bottom: 1px solid var(--dataTableCellBorderColor);
+  background-color: var(--dataTableRowBackgroundColor);
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: var(--dataTableHoveredRowBackgroundColor);
+  }
+}
+
+.Cell {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  padding: 10px 12px;
+  border: none;
+  border-right: 1px solid var(--dataTableCellBorderColor);
+
+  &:last-child {
+    border-right: none;
+  }
+
+  @include paragraph;
+  color: var(--dataTableCellTextColor);
+}
