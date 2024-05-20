@@ -1,9 +1,8 @@
 import { useDataTableContext } from '../DataTable.context.tsx';
 import { memo } from 'react';
-import { Pagination } from '../../pagination';
+import { Flex, Text, Tooltip, Pagination } from 'components';
+import { Gap, Size } from 'types';
 import s from './footer.module.scss';
-import { Flex, Text, Tooltip } from 'components';
-import { Gap, Size } from '../../../types';
 
 export const Footer = memo(() => {
   const { limit, page, setPage, data } = useDataTableContext();
