@@ -1,7 +1,8 @@
 import { DataTableCellProps } from './DataTableCell';
 import { DataTableSearchFunc, DataTableSortFunc } from './functions';
 import { DataTableFilter } from './DataTableFilter.types';
-import { Indicator, SafeReactElement } from '../../../types';
+import { SafeReactElement } from '../../../types';
+import { ButtonProps } from '../button/Button.types.ts';
 
 export type Sort = 'asc' | 'desc';
 export type Striped = 'odd' | 'even';
@@ -38,12 +39,6 @@ export interface DataTableProps<T extends object> {
   DataTableStatusComponent?: () => JSX.Element;
 }
 
-export interface DataTableActionProps {
-  icon: JSX.Element;
-  label: string;
-  indicator?: Indicator;
-  danger?: boolean;
-  disabled?: boolean;
+export interface DataTableActionProps extends ButtonProps {
   showLabel?: boolean;
-  onClick?: () => void;
 }
