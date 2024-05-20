@@ -5,7 +5,8 @@ import { Gap, Size } from 'types';
 import s from './footer.module.scss';
 
 export const Footer = memo(() => {
-  const { limit, page, setPage, data } = useDataTableContext();
+  const { limit, page, setPage, data, selectedRows, selectableMode } =
+    useDataTableContext();
 
   const start = (page - 1) * limit;
   const end = page * limit;
@@ -13,7 +14,13 @@ export const Footer = memo(() => {
   const visibleData = data.slice(start, end);
 
   const numberOfRows = limit > visibleData.length ? visibleData.length : limit;
+  const selectedRowsNumber = selectableMode ? selectedRows.length : 0;
   const numberOfPages = Math.ceil(data.length / limit);
+
+  let statusText = `${numberOfRows} rows are shown`;
+  if (selectedRowsNumber) {
+    statusText = `${selectedRowsNumber} rows are selected`;
+  }
 
   return (
     <div className={s.Footer}>
@@ -30,7 +37,7 @@ export const Footer = memo(() => {
             </Flex>
           }
         >
-          {numberOfRows} rows are shown
+          {statusText}
         </Tooltip>
       </div>
       <div>

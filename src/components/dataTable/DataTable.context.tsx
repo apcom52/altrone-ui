@@ -21,6 +21,7 @@ import {
   DataTableAppliedFilter,
   DataTableFilter,
 } from './DataTableFilter.types';
+import { cloneNode } from '../../utils';
 
 interface DataTableContextType<T extends object> {
   data: T[];
@@ -44,6 +45,7 @@ interface DataTableContextType<T extends object> {
   selectableMode: boolean;
   setSelectableMode: (selectableMode: boolean) => void;
   selectedRows: number[];
+  setSelectedRows: (rowIndexes: number[]) => void;
   selectRow: (rowIndex: number) => void;
 }
 
@@ -70,6 +72,7 @@ const createDataTableContext = once(<T extends object>() =>
     selectableMode: false,
     setSelectableMode: () => null,
     selectedRows: [],
+    setSelectedRows: () => null,
     selectRow: () => null,
   }),
 );
@@ -240,6 +243,7 @@ export const DataTableContextProvider = <T extends object>(
       selectableMode,
       setSelectableMode,
       selectedRows,
+      setSelectedRows,
       selectRow,
     }),
     [
@@ -257,15 +261,30 @@ export const DataTableContextProvider = <T extends object>(
       appliedFilters,
       mobileColumns,
       selectableMode,
+      setSelectedRows,
       selectedRows,
     ],
   );
 
   const DataTableContext = createDataTableContext<T>();
 
+  const columnTemplate = useMemo(() => {
+    const columns = props.columns.map((column) => column.width || '1fr');
+
+    if (selectableMode) {
+      columns.unshift('40px');
+    }
+
+    return columns.join(' ');
+  }, [props.columns, selectableMode]);
+
   return (
     <DataTableContext.Provider value={contextData}>
-      {children}
+      {cloneNode(children, {
+        style: {
+          '--columnTemplate': columnTemplate,
+        },
+      })}
     </DataTableContext.Provider>
   );
 };

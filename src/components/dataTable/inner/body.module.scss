@@ -5,6 +5,10 @@
   --dataTableHoveredRowBackgroundColor: var(--default-100);
   --dataTableCellTextColor: var(--default-700);
   --dataTableCellBorderColor: var(--default-300);
+  --dataTableSelectedRowBackgroundColor: var(--primary-50);
+  --dataTableSelectedHoveredRowBackgroundColor: var(--primary-100);
+  --dataTableSelectedRowBorderColor: var(--primary-200);
+  --dataTableSelectedRowTextColor: var(--primary-700);
 }
 
 :global(.AltroneDark) {
@@ -12,6 +16,10 @@
   --dataTableHoveredRowBackgroundColor: var(--default-800);
   --dataTableCellTextColor: var(--default-200);
   --dataTableCellBorderColor: var(--default-600);
+  --dataTableSelectedRowBackgroundColor: var(--primary-900);
+  --dataTableSelectedHoveredRowBackgroundColor: var(--primary-800);
+  --dataTableSelectedRowBorderColor: var(--primary-600);
+  --dataTableSelectedRowTextColor: var(--primary-100);
 }
 
 .Row {
@@ -32,6 +40,7 @@
   align-items: center;
   flex: 1;
   padding: 10px 12px;
+  height: 100%;
   border: none;
   border-right: 1px solid var(--dataTableCellBorderColor);
 
@@ -41,4 +50,26 @@
 
   @include paragraph;
   color: var(--dataTableCellTextColor);
+}
+
+.CheckboxCell {
+  padding: 10px 7px;
+}
+
+.Row:not(.Selected):has(+ .Selected) {
+  border-color: var(--dataTableSelectedRowBorderColor);
+}
+
+.Selected {
+  background-color: var(--dataTableSelectedRowBackgroundColor);
+  border-color: var(--dataTableSelectedRowBorderColor);
+
+  &:hover {
+    background-color: var(--dataTableSelectedHoveredRowBackgroundColor);
+  }
+
+  .Cell {
+    color: var(--dataTableSelectedRowTextColor);
+    border-color: var(--dataTableSelectedRowBorderColor);
+  }
 }

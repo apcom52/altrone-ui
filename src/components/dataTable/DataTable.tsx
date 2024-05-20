@@ -19,19 +19,9 @@ const DataTableComponent = <DataType extends object>(
   const { children, selectable, className, striped, DataTableStatusComponent } =
     props;
 
-  const columnTemplate = useMemo(() => {
-    return props.columns.map((column) => column.width || '1fr').join(' ');
-  }, [props.columns]);
-
   return (
     <DataTableContextProvider<DataType> {...props}>
-      <div
-        className={s.Wrapper}
-        style={{
-          '--columns': props.columns.length,
-          '--columnTemplate': columnTemplate,
-        }}
-      >
+      <div className={s.Wrapper}>
         <DataTableHeader<DataType> selectable={Boolean(selectable)}>
           {children}
         </DataTableHeader>

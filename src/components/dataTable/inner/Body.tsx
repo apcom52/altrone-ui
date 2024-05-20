@@ -1,8 +1,8 @@
-import { memo, useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useDataTableContext } from '../DataTable.context.tsx';
 import { filterVisibleColumns } from '../functions.ts';
 import clsx from 'clsx';
-import DataTableCell, { DataTableCellProps } from '../DataTableCell.tsx';
+import DataTableCell from '../DataTableCell.tsx';
 import { Checkbox } from '../../checkbox';
 import s from './body.module.scss';
 
@@ -18,18 +18,12 @@ export const Body = <T extends object>() => {
     selectRow,
   } = useDataTableContext<T>();
 
-  const [selectedRowIndex, setSelectedRowIndex] = useState(-1);
-
   const start = (page - 1) * limit;
   const end = page * limit;
 
   const visibleColumns = useMemo(() => {
     return filterVisibleColumns(columns, mobileColumns, false);
   }, [columns, mobileColumns]);
-
-  useEffect(() => {
-    setSelectedRowIndex(-1);
-  }, [data]);
 
   return (
     <div>
@@ -41,11 +35,11 @@ export const Body = <T extends object>() => {
           <div
             key={rowIndex}
             className={clsx(s.Row, {
-              'alt-data-table__row--selected': isSelected,
+              [s.Selected]: isSelected,
             })}
           >
             {selectableMode && (
-              <td className={s.Cell}>
+              <td className={clsx(s.Cell, s.CheckboxCell)}>
                 <Checkbox
                   checked={isSelected}
                   onChange={() => selectRow(currentRowIndex)}

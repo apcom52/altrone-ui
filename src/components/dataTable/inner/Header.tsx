@@ -2,7 +2,7 @@ import { memo, useMemo } from 'react';
 import { Icon, Search, Button } from 'components';
 import { useDataTableContext } from '../DataTable.context';
 import { DataTableProps } from '../DataTable.types';
-import { getSafeArray, useToggledState } from 'utils';
+import { getSafeArray } from 'utils';
 import s from './header.module.scss';
 
 interface DataTableHeaderProps<T extends object> {
@@ -16,15 +16,11 @@ const DataTableHeader = <T extends object>({
 }: DataTableHeaderProps<T>) => {
   const {
     initialData,
-    search,
-    setSearch,
-    columns,
-    appliedFilters,
     filters,
     searchBy,
     selectableMode,
-    setSelectableMode,
     selectedRows,
+    setSelectableMode,
   } = useDataTableContext();
 
   const selectedItems = useMemo(() => {
@@ -50,7 +46,8 @@ const DataTableHeader = <T extends object>({
       leftIcon={
         <Icon i={selectableMode ? 'check_box_outline_blank' : 'check_box'} />
       }
-      transparent
+      onClick={() => setSelectableMode(!selectableMode)}
+      title={selectableMode ? 'Disable selectable mode' : 'Select rows'}
     />
   ) : null;
 

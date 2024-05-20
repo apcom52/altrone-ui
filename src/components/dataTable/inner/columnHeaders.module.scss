@@ -68,3 +68,11 @@
   transition: opacity 0.2s linear;
   color: var(--dataTableHeadingSortIconColor);
 }
+
+.CheckableColumn {
+  padding: 10px 7px;
+
+  &:hover {
+    background-color: transparent;
+  }
+}
