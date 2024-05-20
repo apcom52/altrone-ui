@@ -33,6 +33,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         </Text.Heading>
         <DataTable
           data={COUNTRIES}
+          limit={20}
           columns={[
             { accessor: 'flag', label: 'Flag', width: '80px' },
             { accessor: 'country', label: 'Country Name' },
