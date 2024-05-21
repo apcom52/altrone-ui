@@ -1,7 +1,7 @@
 import { DataTable } from './index';
 import { Meta, StoryObj } from '@storybook/react';
 import { Flex } from '../flex';
-import { Gap } from 'types';
+import { Direction, Gap } from 'types';
 import { Text, TextHeadingRoles } from '../text';
 import { COUNTRIES } from '../scrollable/Scrollable.constants.ts';
 import { StorybookDecorator } from '../../global/storybook';
@@ -9,6 +9,7 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Dropdown } from '../dropdown';
 import { Icon } from '../icon';
 import { Popover } from '../popover';
+import { EMPLOYEES, EmployeeType } from './EMPLOYEES.ts';
 
 const meta: Meta<typeof DataTable<any>> = {
   component: DataTable,
@@ -71,6 +72,80 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             />
           </Popover>
         </DataTable>
+      </Flex>
+    );
+  },
+};
+
+export const ComplexDataTable: StoryObj<typeof Flex> = {
+  name: 'Using filtering and sorting',
+  render: () => {
+    return (
+      <Flex gap={Gap.large}>
+        <Text.Heading role={TextHeadingRoles.inner}>
+          DataTable with filtering and sorting
+        </Text.Heading>
+        <DataTable<EmployeeType>
+          data={EMPLOYEES}
+          limit={20}
+          selectable
+          filters={[
+            {
+              type: 'checkboxList',
+              accessor: 'role',
+              label: 'Job position',
+            },
+            {
+              type: 'select',
+              accessor: 'salary',
+              label: 'Annual salary',
+            },
+            {
+              type: 'checkboxList',
+              accessor: 'skills',
+              hasArrayValue: true,
+              label: 'Skills',
+            },
+          ]}
+          columns={[
+            {
+              accessor: 'firstName',
+              label: 'Employee',
+              Component: ({ item }) => (
+                <Text.Paragraph>{`${item.firstName} ${item.lastName}`}</Text.Paragraph>
+              ),
+            },
+            { accessor: 'role', label: 'Position', filterable: true },
+            { accessor: 'age', label: 'Age', width: '100px', filterable: true },
+            {
+              accessor: 'salary',
+              label: 'Salary',
+              width: '150px',
+              filterable: true,
+              Component: ({ value }) => (
+                <Text.Paragraph style={{ width: '100%', textAlign: 'right' }}>
+                  {new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                  }).format(Number(value))}
+                </Text.Paragraph>
+              ),
+            },
+            { accessor: 'phoneNumber', label: 'Phone' },
+            {
+              accessor: 'skills',
+              label: 'Skills',
+              filterable: true,
+              Component: ({ value }) => (
+                <Flex gap={Gap.small} wrap direction={Direction.horizontal}>
+                  {value.map((skill, skillIndex) => (
+                    <Text.Code key={skillIndex}>{skill}</Text.Code>
+                  ))}
+                </Flex>
+              ),
+            },
+          ]}
+        />
       </Flex>
     );
   },

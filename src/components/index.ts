@@ -25,6 +25,7 @@ export * from './calendar';
 export * from './datePicker';
 export * from './filePicker';
 export * from './pagination';
+export * from './collapsedList';
 export * from './loading';
 export * from './tooltip';
 export * from './dataTable';

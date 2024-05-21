@@ -1,13 +1,10 @@
-import { DataTableProps, Sort, DataTableColumn } from './DataTable.types';
 import {
-  defaultCheckboxesFilter,
-  defaultCheckboxFilter,
-  defaultDateFilter,
-  defaultDateRangeFilter,
-  defaultSearchFunc,
-  defaultSelectFilter,
-  defaultSortFunc,
-} from './functions';
+  DataTableProps,
+  Sort,
+  DataTableColumn,
+  Filter,
+} from './DataTable.types';
+import { defaultSearchFunc, defaultSortFunc } from './functions';
 import {
   createContext,
   useCallback,
@@ -17,11 +14,8 @@ import {
   useState,
 } from 'react';
 import once from 'lodash/once';
-import {
-  DataTableAppliedFilter,
-  DataTableFilter,
-} from './DataTableFilter.types';
 import { cloneNode } from '../../utils';
+import { useDataTableFilters } from './useDataTableFilters.ts';
 
 interface DataTableContextType<T extends object> {
   data: T[];
@@ -38,9 +32,8 @@ interface DataTableContextType<T extends object> {
   setSortBy: (sortBy: keyof T | undefined) => void;
   sortType: Sort;
   setSortType: (sortType: Sort) => void;
-  filters: DataTableFilter<T>[];
-  appliedFilters: DataTableAppliedFilter<T>[];
-  setAppliedFilters: (filters: DataTableAppliedFilter<T>[]) => void;
+  filters: Filter[];
+  setFilters: (filters: Filter[]) => void;
   mobileColumns: (keyof T)[];
   selectableMode: boolean;
   setSelectableMode: (selectableMode: boolean) => void;
@@ -66,8 +59,7 @@ const createDataTableContext = once(<T extends object>() =>
     setSortBy: () => null,
     setSortType: () => null,
     filters: [],
-    appliedFilters: [],
-    setAppliedFilters: () => null,
+    setFilters: () => null,
     mobileColumns: [],
     selectableMode: false,
     setSelectableMode: () => null,
@@ -91,7 +83,6 @@ export const DataTableContextProvider = <T extends object>(
     searchFunc = defaultSearchFunc,
     sortFunc = defaultSortFunc,
     sortKeys = [],
-    filters = [],
     mobileColumns = columns.length ? [columns[0].accessor] : [],
     selectable = false,
     children,
@@ -101,9 +92,7 @@ export const DataTableContextProvider = <T extends object>(
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<keyof T | undefined>(undefined);
   const [sortType, setSortType] = useState<Sort>('asc');
-  const [appliedFilters, setAppliedFilters] = useState<
-    DataTableAppliedFilter<T>[]
-  >([]);
+  const [filters, setFilters] = useState<Filter[]>([]);
   const [selectableMode, setSelectableMode] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
@@ -113,90 +102,83 @@ export const DataTableContextProvider = <T extends object>(
     );
   }, [columns]);
 
-  const filteredData = useMemo(() => {
-    let result = [...data];
-    if (searchBy && searchFunc && search.trim()) {
-      result = result.filter((item) =>
-        searchFunc({ item, field: searchBy, query: search.trim() }),
-      );
-    }
+  const filteredData = useDataTableFilters(data, filters);
 
-    if (sortBy) {
-      result.sort((itemA, itemB) =>
-        sortFunc({ itemA, itemB, field: sortBy, direction: sortType }),
-      );
-    }
-
-    if (appliedFilters) {
-      for (const filter of appliedFilters) {
-        const filterConfig = filters.find(
-          (_filter) => _filter.accessor === filter.accessor,
-        );
-
-        if (!filterConfig) {
-          continue;
-        }
-
-        switch (filterConfig.type) {
-          case 'select':
-            result = result.filter((item) =>
-              defaultSelectFilter({
-                item,
-                field: filterConfig.accessor,
-                value: filter.value,
-              }),
-            );
-            break;
-          case 'checkboxList':
-            result = result.filter((item) =>
-              defaultCheckboxesFilter({
-                item,
-                field: filterConfig.accessor,
-                value: filter.value,
-              }),
-            );
-            break;
-          case 'checkbox':
-            result = result.filter((item) =>
-              defaultCheckboxFilter({
-                item,
-                field: filterConfig.accessor,
-                value: filter.value,
-              }),
-            );
-            break;
-          case 'date':
-            result = result.filter((item) =>
-              filterConfig.useRange
-                ? defaultDateRangeFilter({
-                    item,
-                    field: filterConfig.accessor,
-                    value: filter.value,
-                    picker: filterConfig.picker,
-                  })
-                : defaultDateFilter({
-                    item,
-                    field: filterConfig.accessor,
-                    value: filter.value,
-                    picker: filterConfig.picker,
-                  }),
-            );
-            break;
-        }
-      }
-    }
-
-    return result;
-  }, [
-    data,
-    search,
-    searchFunc,
-    searchBy,
-    sortBy,
-    sortType,
-    appliedFilters,
-    filters,
-  ]);
+  // const filteredData = useMemo(() => {
+  //   let result = [...data];
+  //   if (searchBy && searchFunc && search.trim()) {
+  //     result = result.filter((item) =>
+  //       searchFunc({ item, field: searchBy, query: search.trim() }),
+  //     );
+  //   }
+  //
+  //   if (sortBy) {
+  //     result.sort((itemA, itemB) =>
+  //       sortFunc({ itemA, itemB, field: sortBy, direction: sortType }),
+  //     );
+  //   }
+  //
+  //   // if (appliedFilters) {
+  //   //   for (const filter of appliedFilters) {
+  //   //     const filterConfig = filters.find(
+  //   //       (_filter) => _filter.accessor === filter.accessor,
+  //   //     );
+  //   //
+  //   //     if (!filterConfig) {
+  //   //       continue;
+  //   //     }
+  //
+  //   //     switch (filterConfig.type) {
+  //   //       case 'select':
+  //   //         result = result.filter((item) =>
+  //   //           defaultSelectFilter({
+  //   //             item,
+  //   //             field: filterConfig.accessor,
+  //   //             value: filter.value,
+  //   //           }),
+  //   //         );
+  //   //         break;
+  //   //       case 'checkboxList':
+  //   //         result = result.filter((item) =>
+  //   //           defaultCheckboxesFilter({
+  //   //             item,
+  //   //             field: filterConfig.accessor,
+  //   //             value: filter.value,
+  //   //           }),
+  //   //         );
+  //   //         break;
+  //   //       case 'checkbox':
+  //   //         result = result.filter((item) =>
+  //   //           defaultCheckboxFilter({
+  //   //             item,
+  //   //             field: filterConfig.accessor,
+  //   //             value: filter.value,
+  //   //           }),
+  //   //         );
+  //   //         break;
+  //   //       case 'date':
+  //   //         result = result.filter((item) =>
+  //   //           filterConfig.useRange
+  //   //             ? defaultDateRangeFilter({
+  //   //                 item,
+  //   //                 field: filterConfig.accessor,
+  //   //                 value: filter.value,
+  //   //                 picker: filterConfig.picker,
+  //   //               })
+  //   //             : defaultDateFilter({
+  //   //                 item,
+  //   //                 field: filterConfig.accessor,
+  //   //                 value: filter.value,
+  //   //                 picker: filterConfig.picker,
+  //   //               }),
+  //   //         );
+  //   //         break;
+  //   //     }
+  //   //   }
+  //   // }
+  //
+  //   return result;
+  // }, [data, search, searchFunc, searchBy, sortBy, sortType, filters]);
 
   const selectRow = useCallback((rowIndex: number) => {
     setSelectedRows((selected) => {
@@ -237,8 +219,7 @@ export const DataTableContextProvider = <T extends object>(
       sortType,
       setSortType,
       filters,
-      appliedFilters,
-      setAppliedFilters,
+      setFilters,
       mobileColumns,
       selectableMode,
       setSelectableMode,
@@ -258,7 +239,6 @@ export const DataTableContextProvider = <T extends object>(
       sortBy,
       sortType,
       filters,
-      appliedFilters,
       mobileColumns,
       selectableMode,
       setSelectedRows,

@@ -4,6 +4,7 @@ import { useDataTableContext } from '../DataTable.context';
 import { DataTableProps } from '../DataTable.types';
 import { getSafeArray } from 'utils';
 import s from './header.module.scss';
+import { Filtering } from './Filtering.tsx';
 
 interface DataTableHeaderProps<T extends object> {
   children: DataTableProps<T>['children'];
@@ -59,7 +60,7 @@ const DataTableHeader = <T extends object>({
     <div className={s.Actions}>
       {selectableButton}
       {childrenActions}
-      <Button leftIcon={<Icon i="filter_alt" />} label="Filters" />
+      <Filtering />
     </div>
   );
 

@@ -2,10 +2,12 @@ import { Picker } from '../../form';
 
 type FilterSelect = {
   type: 'select';
+  placeholder?: string;
 };
 
 type FilterCheckboxList = {
   type: 'checkboxList';
+  hasArrayValue?: boolean;
 };
 
 type FilterCheckbox = {
@@ -16,6 +18,7 @@ type FilterDate = {
   type: 'date';
   useRange?: boolean;
   picker?: Picker;
+  placeholder?: string;
 };
 
 type BaseTableFilter<T> = {
