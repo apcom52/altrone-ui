@@ -36,20 +36,10 @@
   flex: 1;
   @include label-heading;
   text-align: center;
-  cursor: pointer;
   transition: background-color 0.2s linear;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   color: var(--dataTableHeadingCellTextColor);
-
-  &:hover {
-    background-color: var(--dataTableHoveredHeadingCellBackgroundColor);
-    color: var(--dataTableHoveredHeadingCellTextColor);
-
-    .SortIcon {
-      opacity: 1;
-    }
-  }
 }
 
 .Title {
@@ -67,6 +57,29 @@
   opacity: 0;
   transition: opacity 0.2s linear;
   color: var(--dataTableHeadingSortIconColor);
+}
+
+.SortableColumn {
+  cursor: pointer;
+  @include no-selection;
+
+  &:hover {
+    background-color: var(--dataTableHoveredHeadingCellBackgroundColor);
+    color: var(--dataTableHoveredHeadingCellTextColor);
+
+    .SortIcon {
+      opacity: 1;
+    }
+  }
+}
+
+.SortedColumn {
+  color: var(--dataTableHeadingCellSortedTextColor);
+
+  .SortIcon {
+    opacity: 1;
+    color: var(--dataTableHeadingCellSortedTextColor);
+  }
 }
 
 .CheckableColumn {

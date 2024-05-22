@@ -1,17 +1,22 @@
 import { useMemo } from 'react';
 import { AnyObject } from '../../utils';
-import { Filter, FilterType } from './DataTable.types.ts';
+import { Filter, FilterType, Sort } from './DataTable.types.ts';
 import { numberFilter, stringFilter } from './filters';
 import { arrayFilter } from './filters/arrayFilter.ts';
 
 export function useDataTableFilters<T extends AnyObject>(
   initialData: T[],
   filters: Filter[],
+  sortBy: string | undefined,
+  sortType: Sort,
 ) {
+  console.log('>> s', sortBy, sortType);
   return useMemo(() => {
-    if (!filters || filters.length === 0) return initialData;
+    if (filters.length === 0 && !sortBy) {
+      return initialData;
+    }
 
-    return initialData.filter((row) => {
+    const filteredData = initialData.filter((row) => {
       let validRow = true;
 
       for (const filter of filters) {
@@ -30,5 +35,19 @@ export function useDataTableFilters<T extends AnyObject>(
 
       return validRow;
     });
-  }, [initialData, filters]);
+
+    console.log('>> sortby', sortBy);
+
+    if (sortBy) {
+      return filteredData.sort((itemA, itemB) => {
+        if (sortType === 'asc') {
+          return itemA[sortBy] > itemB[sortBy] ? 1 : -1;
+        } else {
+          return itemA[sortBy] < itemB[sortBy] ? 1 : -1;
+        }
+      });
+    }
+
+    return filteredData;
+  }, [initialData, filters, sortBy, sortType]);
 }

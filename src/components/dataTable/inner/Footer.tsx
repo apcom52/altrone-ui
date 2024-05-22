@@ -5,8 +5,15 @@ import { Gap, Size } from 'types';
 import s from './footer.module.scss';
 
 export const Footer = memo(() => {
-  const { limit, page, setPage, data, selectedRows, selectableMode } =
-    useDataTableContext();
+  const {
+    initialData,
+    limit,
+    page,
+    setPage,
+    data,
+    selectedRows,
+    selectableMode,
+  } = useDataTableContext();
 
   const start = (page - 1) * limit;
   const end = page * limit;
@@ -29,7 +36,7 @@ export const Footer = memo(() => {
           content={
             <Flex gap={Gap.small}>
               <Text.Paragraph size={Size.small}>
-                Total rows: <Text.Inline bold>{data.length}</Text.Inline>
+                Total rows: <Text.Inline bold>{initialData.length}</Text.Inline>
               </Text.Paragraph>
               <Text.Paragraph size={Size.small}>
                 Rows per page: <Text.Inline bold>{limit}</Text.Inline>

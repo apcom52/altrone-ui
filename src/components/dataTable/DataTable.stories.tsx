@@ -89,24 +89,6 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
           data={EMPLOYEES}
           limit={20}
           selectable
-          filters={[
-            {
-              type: 'checkboxList',
-              accessor: 'role',
-              label: 'Job position',
-            },
-            {
-              type: 'select',
-              accessor: 'salary',
-              label: 'Annual salary',
-            },
-            {
-              type: 'checkboxList',
-              accessor: 'skills',
-              hasArrayValue: true,
-              label: 'Skills',
-            },
-          ]}
           columns={[
             {
               accessor: 'firstName',
@@ -116,12 +98,19 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
               ),
             },
             { accessor: 'role', label: 'Position', filterable: true },
-            { accessor: 'age', label: 'Age', width: '100px', filterable: true },
+            {
+              accessor: 'age',
+              label: 'Age',
+              width: '100px',
+              filterable: true,
+              sortable: true,
+            },
             {
               accessor: 'salary',
               label: 'Salary',
               width: '150px',
               filterable: true,
+              sortable: true,
               Component: ({ value }) => (
                 <Text.Paragraph style={{ width: '100%', textAlign: 'right' }}>
                   {new Intl.NumberFormat('en-US', {

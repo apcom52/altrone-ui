@@ -19,6 +19,8 @@ export const ColumnHeaders = memo(() => {
     selectableMode,
     selectedRows,
     setSelectedRows,
+    setSortBy,
+    setSortType,
   } = useDataTableContext();
 
   const visibleColumns = useMemo(() => {
@@ -61,6 +63,22 @@ export const ColumnHeaders = memo(() => {
     setSelectedRows(Array.from(currentRows));
   };
 
+  const onColumnHeaderClick = (accessor: string) => {
+    if (sortBy === accessor) {
+      if (sortType === 'asc') {
+        setSortType('desc');
+      } else if (sortType === 'desc') {
+        setSortType('asc');
+        setSortBy(undefined);
+      }
+    } else {
+      setSortType('asc');
+      setSortBy(accessor);
+    }
+  };
+
+  console.log('>> sort', sortBy, sortType);
+
   return (
     <div className={s.ColumnHeaders}>
       {selectableMode && (
@@ -72,23 +90,43 @@ export const ColumnHeaders = memo(() => {
           />
         </div>
       )}
-      {visibleColumns.map((column, columnIndex) => (
-        <div key={columnIndex} className={s.Cell}>
-          <span className={s.Title}>
-            {String(column.label || column.accessor)}
-            <div className={s.SortIcon}>
-              <Icon i="swap_vert" />
-            </div>
-          </span>
-          {sortBy === column.accessor && (
-            <div className="alt-data-table__sort-indicator">
-              <Icon
-                i={sortType === 'desc' ? 'arrow_drop_down' : 'arrow_drop_up'}
-              />
-            </div>
-          )}
-        </div>
-      ))}
+      {visibleColumns.map((column, columnIndex) => {
+        const isCurrentColumnSorted = sortBy === column.accessor;
+
+        const cls = clsx(s.Cell, {
+          [s.SortableColumn]: column.sortable,
+          [s.SortedColumn]: isCurrentColumnSorted,
+        });
+
+        return (
+          <div
+            key={columnIndex}
+            className={cls}
+            onClick={
+              column.sortable
+                ? () => onColumnHeaderClick(column.accessor)
+                : undefined
+            }
+          >
+            <span className={s.Title}>
+              {String(column.label || column.accessor)}
+              {column.sortable ? (
+                <div className={s.SortIcon}>
+                  <Icon
+                    i={
+                      isCurrentColumnSorted
+                        ? sortType === 'asc'
+                          ? 'arrow_upward'
+                          : 'arrow_downward'
+                        : 'swap_vert'
+                    }
+                  />
+                </div>
+              ) : null}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 });
