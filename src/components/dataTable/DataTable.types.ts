@@ -3,7 +3,8 @@ import { DataTableSearchFunc, DataTableSortFunc } from './functions';
 import { DataTableFilter } from './DataTableFilter.types';
 import { SafeReactElement } from '../../../types';
 import { ButtonProps } from '../button/Button.types.ts';
-import { T } from 'vitest/dist/reporters-P7C2ytIv';
+import { AnyObject } from '../../utils';
+import { Option } from '../select/Select.types.ts';
 
 export type Sort = 'asc' | 'desc';
 export type Striped = 'odd' | 'even';
@@ -24,23 +25,23 @@ export type DataTableRenderContext<T extends object> = {
   selectedItems: T[];
 };
 
-export interface DataTableProps<T extends object> {
+export interface DataTableProps<T extends object>
+  extends React.HTMLAttributes<HTMLDivElement> {
   data: T[];
   columns: DataTableColumn<T>[];
   children?:
     | SafeReactElement
     | ((context: DataTableRenderContext<T>) => SafeReactElement);
-  limit?: number;
-  searchBy?: keyof T;
-  sortKeys?: (keyof T)[];
-  sortFunc?: (params: DataTableSortFunc<T>) => number;
-  searchFunc?: (params: DataTableSearchFunc<T>) => boolean;
-  filters?: DataTableFilter<T>[];
-  mobileColumns?: (keyof T)[];
-  striped?: Striped;
-  className?: string;
+  limit?: number; // need to rename to rowsPerPage
+  searchBy?: keyof T; //need to remove
+  sortKeys?: (keyof T)[]; // need to remove
+  sortFunc?: (params: DataTableSortFunc<T>) => number; // need to remove
+  searchFunc?: (params: DataTableSearchFunc<T>) => boolean; // need to remove
+  filters?: DataTableFilter<T>[]; // need to remove
+  mobileColumns?: (keyof T)[]; // need to remove
+  striped?: Striped; // need to remove
   selectable?: boolean;
-  DataTableStatusComponent?: () => JSX.Element;
+  DataTableStatusComponent?: () => JSX.Element; // need to remove
 }
 
 export interface DataTableActionProps extends ButtonProps {
@@ -69,12 +70,19 @@ export enum NumberFilterRules {
   notBetween = 'notBetween',
 }
 
+export enum ArrayFilterRules {
+  has = 'has',
+  notHas = 'notHas',
+}
+
 export enum FilterType {
   string = 'string',
   number = 'number',
+  array = 'array',
 }
 
-type StringFilter = {
+export type StringFilter = {
+  field: string;
   type: FilterType.string;
   conditions: {
     rule: StringFilterRules;
@@ -83,7 +91,8 @@ type StringFilter = {
   }[];
 };
 
-type NumberFilter = {
+export type NumberFilter = {
+  field: string;
   type: FilterType.number;
   conditions: {
     rule: NumberFilterRules;
@@ -94,12 +103,28 @@ type NumberFilter = {
   }[];
 };
 
-export type Filter = { field: string } & (StringFilter | NumberFilter);
+export type ArrayFilter = {
+  field: string;
+  type: FilterType.array;
+  conditions: {
+    rule: ArrayFilterRules;
+    join: 'AND' | 'OR';
+    value: unknown[];
+    options: Option[];
+  }[];
+};
 
-export interface FilterRowProps {
+export type Filter = StringFilter | NumberFilter | ArrayFilter;
+
+export interface FilterRowProps<T extends AnyObject> {
   filter: Filter;
   filterIndex: number;
   columns: DataTableColumn<T>[];
   changeField: (filterIndex: number, field: string, value: unknown) => void;
   deleteFilter: (filterIndex: number) => void;
+}
+
+export interface FilterFuncArgs<T extends AnyObject, FilterType> {
+  row: T;
+  filter: FilterType;
 }

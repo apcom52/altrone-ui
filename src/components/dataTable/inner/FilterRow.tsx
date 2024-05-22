@@ -4,10 +4,11 @@ import { Select } from '../../select';
 import { TextInput } from '../../textInput';
 import { Button } from '../../button';
 import { Icon } from '../../icon';
-import { FilterRowProps } from '../DataTable.types.ts';
+import { FilterRowProps, FilterType } from '../DataTable.types.ts';
 import { NumberInput } from '../../numberInput';
 import clsx from 'clsx';
 import {
+  DataTableArrayRules,
   DataTableNumberRules,
   DataTableStringRules,
 } from '../DataTable.constants.ts';
@@ -19,20 +20,27 @@ export const FilterRow = ({
   changeField,
   deleteFilter,
 }: FilterRowProps) => {
-  const isString = filter?.type === 'string';
-  const isNumber = filter?.type === 'number';
+  const isString = filter?.type === FilterType.string;
+  const isNumber = filter?.type === FilterType.number;
+  const isArray = filter?.type === FilterType.array;
 
   const rule = filter.conditions[0].rule;
   const value = filter.conditions[0].value;
   const minValue = isNumber ? filter.conditions[0]?.minValue || 0 : 0;
   const maxValue = isNumber ? filter.conditions[0]?.maxValue || 0 : 0;
+  const options = isArray ? filter.conditions[0]?.options || [] : [];
+
+  const ruleSet = isString
+    ? DataTableStringRules
+    : isNumber
+      ? DataTableNumberRules
+      : isArray
+        ? DataTableArrayRules
+        : [];
 
   const selectedRule = useMemo(() => {
-    const ruleArray =
-      filter?.type === 'string' ? DataTableStringRules : DataTableNumberRules;
-
-    return ruleArray.find((item) => item.value === rule);
-  }, [rule, filter?.type]);
+    return ruleSet.find((item) => item.value === rule);
+  }, [ruleSet, rule, filter?.type]);
 
   const columnsWithFilters = useMemo(() => {
     return columns?.map((item) => ({
@@ -60,7 +68,7 @@ export const FilterRow = ({
         value={rule}
         placeholder="Choose rule"
         onChange={changeField.bind(null, filterIndex, 'rule')}
-        options={isString ? DataTableStringRules : DataTableNumberRules}
+        options={ruleSet}
         parentWidth={false}
       />
       {selectedRule?.columns === 0 ? null : null}
@@ -76,6 +84,15 @@ export const FilterRow = ({
             <NumberInput
               value={Number(value)}
               onChange={changeField.bind(null, filterIndex, 'value')}
+            />
+          ) : null}
+          {isArray ? (
+            <Select
+              value={value}
+              onChange={changeField.bind(null, filterIndex, 'value')}
+              options={options}
+              multiple
+              searchable
             />
           ) : null}
         </>

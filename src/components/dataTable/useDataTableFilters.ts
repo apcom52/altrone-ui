@@ -1,16 +1,14 @@
 import { useMemo } from 'react';
 import { AnyObject } from '../../utils';
-import {
-  Filter,
-  NumberFilterRules,
-  StringFilterRules,
-} from './DataTable.types.ts';
+import { Filter, FilterType } from './DataTable.types.ts';
+import { numberFilter, stringFilter } from './filters';
+import { arrayFilter } from './filters/arrayFilter.ts';
 
 export function useDataTableFilters<T extends AnyObject>(
   initialData: T[],
   filters: Filter[],
 ) {
-  const filteredData = useMemo(() => {
+  return useMemo(() => {
     if (!filters || filters.length === 0) return initialData;
 
     return initialData.filter((row) => {
@@ -21,78 +19,16 @@ export function useDataTableFilters<T extends AnyObject>(
           break;
         }
 
-        if (filter.type === 'string') {
-          const value = String(row[filter.field]).toLowerCase();
-          const condition = filter.conditions[0];
-          const rule = condition.rule;
-          const filterValue = condition.value.trim().toLowerCase();
-
-          switch (rule) {
-            case StringFilterRules.contain:
-              validRow = value.includes(filterValue);
-              break;
-            case StringFilterRules.notContain:
-              validRow = !value.includes(filterValue);
-              break;
-            case StringFilterRules.empty:
-              validRow = value == '';
-              break;
-            case StringFilterRules.notEmpty:
-              validRow = value != '';
-              break;
-            case StringFilterRules.equal:
-              validRow = value == filterValue;
-              break;
-            case StringFilterRules.notEqual:
-              validRow = value != filterValue;
-              break;
-          }
-        } else if (filter.type === 'number') {
-          const value = Number(row[filter.field]);
-
-          if (Number.isNaN(value)) {
-            validRow = false;
-            break;
-          }
-
-          const condition = filter.conditions[0];
-          const rule = condition.rule;
-          const filterValue = condition.value;
-          const minFilterValue = condition.minValue || 0;
-          const maxFilterValue = condition.maxValue || 0;
-
-          switch (rule) {
-            case NumberFilterRules.equal:
-              validRow = value === filterValue;
-              break;
-            case NumberFilterRules.notEqual:
-              validRow = value !== filterValue;
-              break;
-            case NumberFilterRules.gt:
-              validRow = value > filterValue;
-              break;
-            case NumberFilterRules.gte:
-              validRow = value >= filterValue;
-              break;
-            case NumberFilterRules.lt:
-              validRow = value < filterValue;
-              break;
-            case NumberFilterRules.lte:
-              validRow = value <= filterValue;
-              break;
-            case NumberFilterRules.between:
-              validRow = value >= minFilterValue && value <= maxFilterValue;
-              break;
-            case NumberFilterRules.notBetween:
-              validRow = value < minFilterValue || value > maxFilterValue;
-              break;
-          }
+        if (filter.type === FilterType.string) {
+          validRow = stringFilter({ row, filter });
+        } else if (filter.type === FilterType.number) {
+          validRow = numberFilter({ row, filter });
+        } else if (filter.type === FilterType.array) {
+          validRow = arrayFilter({ row, filter });
         }
       }
 
       return validRow;
     });
   }, [initialData, filters]);
-
-  return filteredData;
 }

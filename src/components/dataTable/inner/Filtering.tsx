@@ -3,6 +3,7 @@ import { Button, Dropdown, Flex, Form, Icon, Popover } from 'components';
 import { Align, Direction, Gap, Role } from 'types';
 import { useDataTableContext } from '../DataTable.context.tsx';
 import {
+  ArrayFilterRules,
   Filter,
   FilterType,
   NumberFilterRules,
@@ -10,6 +11,7 @@ import {
 } from '../DataTable.types.ts';
 import { FilterRow } from './FilterRow.tsx';
 import s from './filtering.module.scss';
+import { Option } from '../../select/Select.types.ts';
 
 export const Filtering = memo(() => {
   const { initialData, filters, setFilters, columns } = useDataTableContext();
@@ -20,7 +22,7 @@ export const Filtering = memo(() => {
 
   const [internalFilters, setInternalFilters] = useState<Filter[]>([]);
 
-  const addNewFilter = (accessor: string, type: 'string' | 'number') => {
+  const addNewFilter = (accessor: string, type: FilterType) => {
     setInternalFilters((old) => {
       let newFilter: Filter = {
         field: accessor,
@@ -28,7 +30,7 @@ export const Filtering = memo(() => {
         conditions: [],
       };
 
-      if (type === 'string') {
+      if (type === FilterType.string) {
         newFilter = {
           field: accessor,
           type: FilterType.string,
@@ -40,7 +42,7 @@ export const Filtering = memo(() => {
             },
           ],
         };
-      } else if (type === 'number') {
+      } else if (type === FilterType.number) {
         newFilter = {
           field: accessor,
           type: FilterType.number,
@@ -51,6 +53,33 @@ export const Filtering = memo(() => {
               value: 0,
               minValue: 0,
               maxValue: 0,
+            },
+          ],
+        };
+      } else if (type === FilterType.array) {
+        const optionsSet = new Set();
+        initialData.forEach((row) => {
+          if (Array.isArray(row[accessor])) {
+            for (const item of row[accessor]) {
+              optionsSet.add(item);
+            }
+          }
+        });
+
+        const options: Option[] = Array.from(optionsSet).map((item) => ({
+          label: String(item),
+          value: String(item),
+        }));
+
+        newFilter = {
+          field: accessor,
+          type: FilterType.array,
+          conditions: [
+            {
+              rule: ArrayFilterRules.has,
+              join: 'AND',
+              value: options.length ? [options[0].value] : [],
+              options: options,
             },
           ],
         };
@@ -141,7 +170,7 @@ export const Filtering = memo(() => {
                       filterType = FilterType.number;
                     } else if (typeof cellValue === 'object') {
                       if (Array.isArray(cellValue)) {
-                        filterType = FilterType.string;
+                        filterType = FilterType.array;
                       }
                     }
 
@@ -172,7 +201,15 @@ export const Filtering = memo(() => {
               justify={Align.end}
               direction={Direction.horizontal}
             >
-              <Button leftIcon={<Icon i="backspace" />} label="Clear" />
+              <Button
+                leftIcon={<Icon i="backspace" />}
+                label="Clear"
+                onClick={() => {
+                  setInternalFilters([]);
+                  setFilters([]);
+                  closePopup();
+                }}
+              />
               <Button
                 leftIcon={<Icon i="filter_alt" />}
                 role={Role.primary}

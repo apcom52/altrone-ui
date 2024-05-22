@@ -1,5 +1,9 @@
 import { Option } from '../select/Select.types.ts';
-import { NumberFilterRules, StringFilterRules } from './DataTable.types.ts';
+import {
+  ArrayFilterRules,
+  NumberFilterRules,
+  StringFilterRules,
+} from './DataTable.types.ts';
 
 interface FilteringRuleOption extends Option {
   columns?: 0 | 1 | 2;
@@ -42,5 +46,14 @@ export const DataTableNumberRules: FilteringRuleOption[] = [
     value: NumberFilterRules.notBetween,
     label: 'is not between',
     columns: 2,
+  },
+];
+
+export const DataTableArrayRules: FilteringRuleOption[] = [
+  { value: ArrayFilterRules.has, label: 'is contained in', columns: 1 },
+  {
+    value: ArrayFilterRules.notHas,
+    label: 'is not contained in',
+    columns: 1,
   },
 ];
