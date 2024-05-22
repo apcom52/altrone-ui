@@ -53,7 +53,6 @@ export function DropdownAction({
   };
 
   const onKeyDownPress: React.KeyboardEventHandler = (e) => {
-    console.log('>> on keydown press', e.key);
     if (e.key === 'Enter') {
       onSelect?.();
     }

@@ -77,8 +77,6 @@ export const ColumnHeaders = memo(() => {
     }
   };
 
-  console.log('>> sort', sortBy, sortType);
-
   return (
     <div className={s.ColumnHeaders}>
       {selectableMode && (

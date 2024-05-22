@@ -97,7 +97,12 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
                 <Text.Paragraph>{`${item.firstName} ${item.lastName}`}</Text.Paragraph>
               ),
             },
-            { accessor: 'role', label: 'Position', filterable: true },
+            {
+              accessor: 'role',
+              label: 'Position',
+              filterable: true,
+              searchable: true,
+            },
             {
               accessor: 'age',
               label: 'Age',
@@ -125,6 +130,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
               accessor: 'skills',
               label: 'Skills',
               filterable: true,
+              searchable: true,
               Component: ({ value }) => (
                 <Flex gap={Gap.small} wrap direction={Direction.horizontal}>
                   {value.map((skill, skillIndex) => (

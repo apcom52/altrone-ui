@@ -4,7 +4,6 @@ import {
   DataTableColumn,
   Filter,
 } from './DataTable.types';
-import { defaultSearchFunc, defaultSortFunc } from './functions';
 import {
   createContext,
   useCallback,
@@ -80,8 +79,6 @@ export const DataTableContextProvider = <T extends object>(
     columns = [],
     limit = 20,
     searchBy,
-    searchFunc = defaultSearchFunc,
-    sortFunc = defaultSortFunc,
     sortKeys = [],
     mobileColumns = columns.length ? [columns[0].accessor] : [],
     selectable = false,
@@ -102,7 +99,13 @@ export const DataTableContextProvider = <T extends object>(
     );
   }, [columns]);
 
-  const filteredData = useDataTableFilters(data, filters, sortBy, sortType);
+  const filteredData = useDataTableFilters(
+    data,
+    filters,
+    sortBy,
+    sortType,
+    search,
+  );
 
   const selectRow = useCallback((rowIndex: number) => {
     setSelectedRows((selected) => {

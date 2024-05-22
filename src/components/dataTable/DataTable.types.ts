@@ -124,6 +124,12 @@ export interface FilterRowProps<T extends AnyObject> {
   deleteFilter: (filterIndex: number) => void;
 }
 
+export interface SearchFuncArgs<T extends AnyObject> {
+  row: T;
+  columns: DataTableColumn<T>[];
+  search: string;
+}
+
 export interface FilterFuncArgs<T extends AnyObject, FilterType> {
   row: T;
   filter: FilterType;

@@ -22,6 +22,8 @@ const DataTableHeader = <T extends object>({
     selectableMode,
     selectedRows,
     setSelectableMode,
+    search,
+    setSearch,
   } = useDataTableContext();
 
   const selectedItems = useMemo(() => {
@@ -64,15 +66,7 @@ const DataTableHeader = <T extends object>({
     </div>
   );
 
-  return (
-    <div className={s.Header}>
-      {actionsContainer}
-      <div className={s.Separator} />
-      <div className={s.Search}>
-        <Search getSuggestions={() => []} />
-      </div>
-    </div>
-  );
+  return <div className={s.Header}>{actionsContainer}</div>;
 };
 
 export default memo(DataTableHeader) as typeof DataTableHeader;
