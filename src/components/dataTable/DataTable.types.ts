@@ -1,6 +1,4 @@
 import { DataTableCellProps } from './DataTableCell';
-import { DataTableSearchFunc, DataTableSortFunc } from './functions';
-import { DataTableFilter } from './DataTableFilter.types';
 import { SafeReactElement } from '../../../types';
 import { ButtonProps } from '../button/Button.types.ts';
 import { AnyObject } from '../../utils';
@@ -33,15 +31,7 @@ export interface DataTableProps<T extends object>
     | SafeReactElement
     | ((context: DataTableRenderContext<T>) => SafeReactElement);
   limit?: number; // need to rename to rowsPerPage
-  searchBy?: keyof T; //need to remove
-  sortKeys?: (keyof T)[]; // need to remove
-  sortFunc?: (params: DataTableSortFunc<T>) => number; // need to remove
-  searchFunc?: (params: DataTableSearchFunc<T>) => boolean; // need to remove
-  filters?: DataTableFilter<T>[]; // need to remove
-  mobileColumns?: (keyof T)[]; // need to remove
-  striped?: Striped; // need to remove
   selectable?: boolean;
-  DataTableStatusComponent?: () => JSX.Element; // need to remove
 }
 
 export interface DataTableActionProps extends ButtonProps {

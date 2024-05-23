@@ -1,10 +1,9 @@
-import { useMemo } from 'react';
 import { useDataTableContext } from '../DataTable.context.tsx';
-import { filterVisibleColumns } from '../functions.ts';
 import clsx from 'clsx';
 import DataTableCell from '../DataTableCell.tsx';
 import { Checkbox } from '../../checkbox';
 import s from './body.module.scss';
+import { useVisibleColumns } from '../useVisibleColumns.ts';
 
 export const Body = <T extends object>() => {
   const {
@@ -21,18 +20,16 @@ export const Body = <T extends object>() => {
   const start = (page - 1) * limit;
   const end = page * limit;
 
-  const visibleColumns = useMemo(() => {
-    return filterVisibleColumns(columns, mobileColumns, false);
-  }, [columns, mobileColumns]);
+  const visibleColumns = useVisibleColumns(columns);
 
   return (
-    <div>
+    <tbody>
       {data.slice(start, end).map((row, rowIndex) => {
         const currentRowIndex = (page - 1) * limit + rowIndex;
         const isSelected = selectedRows.indexOf(currentRowIndex) > -1;
 
         return (
-          <div
+          <tr
             key={rowIndex}
             className={clsx(s.Row, {
               [s.Selected]: isSelected,
@@ -67,14 +64,14 @@ export const Body = <T extends object>() => {
               }
 
               return (
-                <div key={columnIndex} className={s.Cell}>
+                <td key={columnIndex} className={s.Cell}>
                   {content}
-                </div>
+                </td>
               );
             })}
-          </div>
+          </tr>
         );
       })}
-    </div>
+    </tbody>
   );
 };

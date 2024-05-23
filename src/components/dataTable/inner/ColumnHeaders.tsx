@@ -1,11 +1,11 @@
 import { memo, useMemo } from 'react';
 import { useDataTableContext } from '../DataTable.context.tsx';
-import { filterVisibleColumns } from '../functions.ts';
 import s from './columnHeaders.module.scss';
 import { Icon } from '../../icon';
 import clsx from 'clsx';
 import { Checkbox } from '../../checkbox';
 import range from 'lodash/range';
+import { useVisibleColumns } from '../useVisibleColumns.ts';
 
 export const ColumnHeaders = memo(() => {
   const {
@@ -15,7 +15,6 @@ export const ColumnHeaders = memo(() => {
     limit,
     sortBy,
     sortType,
-    mobileColumns,
     selectableMode,
     selectedRows,
     setSelectedRows,
@@ -23,9 +22,7 @@ export const ColumnHeaders = memo(() => {
     setSortType,
   } = useDataTableContext();
 
-  const visibleColumns = useMemo(() => {
-    return filterVisibleColumns(columns, mobileColumns, false);
-  }, [columns, mobileColumns]);
+  const visibleColumns = useVisibleColumns(columns);
 
   const start = (page - 1) * limit;
   const visibleData = data.slice(start, page * limit);
@@ -78,53 +75,60 @@ export const ColumnHeaders = memo(() => {
   };
 
   return (
-    <div className={s.ColumnHeaders}>
-      {selectableMode && (
-        <div className={clsx(s.Cell, s.CheckableColumn)}>
-          <Checkbox
-            checked={checkboxState === 'all'}
-            indeterminate={checkboxState === 'partial'}
-            onChange={onCheckboxChange}
-          />
-        </div>
-      )}
-      {visibleColumns.map((column, columnIndex) => {
-        const isCurrentColumnSorted = sortBy === column.accessor;
+    <thead className={s.Wrapper}>
+      <tr className={s.HeaderRow}>
+        {selectableMode && (
+          <th className={clsx(s.Cell, s.CheckableColumn)}>
+            <Checkbox
+              checked={checkboxState === 'all'}
+              indeterminate={checkboxState === 'partial'}
+              onChange={onCheckboxChange}
+            />
+          </th>
+        )}
+        {visibleColumns.map((column, columnIndex) => {
+          const isCurrentColumnSorted = sortBy === column.accessor;
 
-        const cls = clsx(s.Cell, {
-          [s.SortableColumn]: column.sortable,
-          [s.SortedColumn]: isCurrentColumnSorted,
-        });
+          const cls = clsx(s.Cell, {
+            [s.SortableColumn]: column.sortable,
+            [s.SortedColumn]: isCurrentColumnSorted,
+          });
 
-        return (
-          <div
-            key={columnIndex}
-            className={cls}
-            onClick={
-              column.sortable
-                ? () => onColumnHeaderClick(column.accessor)
-                : undefined
-            }
-          >
-            <span className={s.Title}>
-              {String(column.label || column.accessor)}
-              {column.sortable ? (
-                <div className={s.SortIcon}>
-                  <Icon
-                    i={
-                      isCurrentColumnSorted
-                        ? sortType === 'asc'
-                          ? 'arrow_upward'
-                          : 'arrow_downward'
-                        : 'swap_vert'
-                    }
-                  />
-                </div>
-              ) : null}
-            </span>
-          </div>
-        );
-      })}
-    </div>
+          return (
+            <th
+              key={columnIndex}
+              className={cls}
+              onClick={
+                column.sortable
+                  ? () => onColumnHeaderClick(column.accessor)
+                  : undefined
+              }
+              style={{
+                width: column.width ? column.width : undefined,
+              }}
+            >
+              <div className={s.CellContent}>
+                <span className={s.Title}>
+                  {String(column.label || column.accessor)}
+                  {column.sortable ? (
+                    <div className={s.SortIcon}>
+                      <Icon
+                        i={
+                          isCurrentColumnSorted
+                            ? sortType === 'asc'
+                              ? 'arrow_upward'
+                              : 'arrow_downward'
+                            : 'swap_vert'
+                        }
+                      />
+                    </div>
+                  ) : null}
+                </span>
+              </div>
+            </th>
+          );
+        })}
+      </tr>
+    </thead>
   );
 });

@@ -19,7 +19,7 @@ export const FilterRow = ({
   filterIndex,
   changeField,
   deleteFilter,
-}: FilterRowProps) => {
+}: FilterRowProps<any>) => {
   const isString = filter?.type === FilterType.string;
   const isNumber = filter?.type === FilterType.number;
   const isArray = filter?.type === FilterType.array;

@@ -13,8 +13,10 @@ const DataTableComponent = <DataType extends object>(
     <DataTableContextProvider<DataType> {...props}>
       <div className={s.Wrapper}>
         <Header<DataType> selectable={Boolean(selectable)}>{children}</Header>
-        <ColumnHeaders />
-        <Body />
+        <table className={s.Table}>
+          <ColumnHeaders />
+          <Body />
+        </table>
         <Footer />
       </div>
     </DataTableContextProvider>

@@ -23,8 +23,6 @@
 }
 
 .Row {
-  display: grid;
-  grid-template-columns: var(--columnTemplate);
   align-items: center;
   border-bottom: 1px solid var(--dataTableCellBorderColor);
   background-color: var(--dataTableRowBackgroundColor);
@@ -36,8 +34,8 @@
 }
 
 .Cell {
-  display: flex;
-  align-items: center;
+  //display: flex;
+  //align-items: center;
   flex: 1;
   padding: 10px 12px;
   height: 100%;

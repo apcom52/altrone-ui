@@ -20,6 +20,16 @@
   --dataTableHoveredHeadingCellTextColor: var(--default-100);
 }
 
+.Wrapper {
+  background-color: var(--dataTableHeadingCellBackgroundColor);
+}
+
+.HeaderRow {
+  position: sticky;
+  background-color: var(--dataTableHeadingCellBackgroundColor);
+  top: 0;
+}
+
 .ColumnHeaders {
   width: 100%;
   display: grid;
@@ -32,16 +42,24 @@
 }
 
 .Cell {
+
+  //border-top-left-radius: 6px;
+  //border-top-right-radius: 6px;
+  color: var(--dataTableHeadingCellTextColor);
+}
+
+.CellContent {
+  position: relative;
   padding: 10px 12px;
   flex: 1;
   @include label-heading;
   text-align: center;
   transition: background-color 0.2s linear;
+  width: 100%;
+  height: 100%;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
-  color: var(--dataTableHeadingCellTextColor);
 }
-
 .Title {
   position: relative;
 }
@@ -63,7 +81,7 @@
   cursor: pointer;
   @include no-selection;
 
-  &:hover {
+  &:hover .CellContent {
     background-color: var(--dataTableHoveredHeadingCellBackgroundColor);
     color: var(--dataTableHoveredHeadingCellTextColor);
 

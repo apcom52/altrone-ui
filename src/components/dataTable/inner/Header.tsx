@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react';
-import { Icon, Search, Button } from 'components';
+import { Icon, Button } from 'components';
 import { useDataTableContext } from '../DataTable.context';
 import { DataTableProps } from '../DataTable.types';
 import { getSafeArray } from 'utils';
@@ -22,8 +22,6 @@ const DataTableHeader = <T extends object>({
     selectableMode,
     selectedRows,
     setSelectableMode,
-    search,
-    setSearch,
   } = useDataTableContext();
 
   const selectedItems = useMemo(() => {
