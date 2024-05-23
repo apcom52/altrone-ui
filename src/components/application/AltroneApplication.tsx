@@ -40,7 +40,7 @@ export const AltroneApplication = ({
       style,
       ...props,
     },
-    <AltroneConfiguration {...config}>
+    <AltroneConfiguration theme={_theme} {...config}>
       <RainbowEffect>{children}</RainbowEffect>
     </AltroneConfiguration>,
   );

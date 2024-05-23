@@ -73,7 +73,7 @@ export const Checkbox = memo<CheckboxProps>(
             <CheckIcon checked={checked} />
           )}
         </div>
-        <div className={s.Label}>{children}</div>
+        {children ? <div className={s.Label}>{children}</div> : null}
       </label>
     );
   },

@@ -1,0 +1,29 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --dataTableFooterBackgroundColor: var(--default-100);
+  --dataTableFooterTextColor: var(--default-600);
+}
+
+:global(.AltroneDark) {
+  --dataTableFooterBackgroundColor: var(--default-800);
+  --dataTableFooterTextColor: var(--default-400);
+}
+
+.Footer {
+  display: flex;
+  position: sticky;
+  bottom: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--xl-gap);
+  background-color: var(--dataTableFooterBackgroundColor);
+  padding: 4px 6px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.StatusBar {
+  @include sm-paragraph;
+  color: var(--dataTableFooterTextColor);
+}

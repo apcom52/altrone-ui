@@ -29,6 +29,7 @@ export const Flex = memo<FlexProps>(
         [s.Flex_justifyStart]: justify === Align.start,
         [s.Flex_justifyCenter]: justify === Align.center,
         [s.Flex_justifyEnd]: justify === Align.end,
+        [s.Flex_justifyBetween]: justify === Align.between,
         [s.Flex_horizontal]: direction === Direction.horizontal,
         [s.Flex_disableInnerMargins]: disableInnerMargins,
         [s.Flex_wrap]: wrap,

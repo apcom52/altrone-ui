@@ -34,5 +34,6 @@ export interface SelectProps
   readonly?: boolean;
   name?: string;
   placeholder?: string;
+  parentWidth?: boolean;
   Component?: RenderFunction<ReactElement, SelectContext>;
 }

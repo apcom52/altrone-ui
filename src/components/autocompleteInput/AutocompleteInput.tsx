@@ -107,7 +107,6 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
     return (
       <Dropdown
         ref={(_ref) => {
-          console.log('>> ref', _ref);
           dropdownRef.current = _ref;
           if (typeof ref === 'function') {
             ref(_ref);

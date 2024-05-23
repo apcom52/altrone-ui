@@ -26,8 +26,6 @@ export function DropdownAction({
 
   const isFocused = currentIndex === index;
 
-  console.log('>> label', label, isFocused);
-
   const { dropdownAction: dropdownActionConfiguration = {} } =
     useConfiguration();
 
@@ -50,13 +48,11 @@ export function DropdownAction({
   const closePopup = useCloseDropdownContext();
 
   const onSelect = () => {
-    console.log('>> onselect');
     onClick?.();
     closePopup();
   };
 
   const onKeyDownPress: React.KeyboardEventHandler = (e) => {
-    console.log('>> on keydown press', e.key);
     if (e.key === 'Enter') {
       onSelect?.();
     }

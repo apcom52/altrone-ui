@@ -23,6 +23,7 @@ const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
     focusTrapTargets = ['content', 'reference'],
     className,
     style,
+    closeParentPopover = true,
     ...restProps
   } = props;
 
@@ -41,7 +42,9 @@ const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
       ref={ref}
       className={cls}
       content={(props) => (
-        <CloseDropdownContext.Provider value={props.closeAllSequence}>
+        <CloseDropdownContext.Provider
+          value={closeParentPopover ? props.closeAllSequence : props.closePopup}
+        >
           {typeof content === 'function' ? content(props) : content}
         </CloseDropdownContext.Provider>
       )}

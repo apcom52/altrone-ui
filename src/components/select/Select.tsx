@@ -19,6 +19,7 @@ const SelectComponent = (props: SelectProps) => {
     size = Size.medium,
     className,
     style,
+    parentWidth = true,
     Component,
   } = props;
 
@@ -112,7 +113,7 @@ const SelectComponent = (props: SelectProps) => {
       </div>
       <Dropdown
         placement="bottom-start"
-        parentWidth
+        parentWidth={parentWidth}
         content={menu}
         focusTrapTargets={searchMode ? ['reference'] : ['content']}
         defaultListNavigationIndex={-1}

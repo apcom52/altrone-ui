@@ -1,0 +1,16 @@
+:global(:root) {
+}
+
+.Wrapper {
+  --columns: 3;
+  --columnTemplate: 1fr 1fr 1fr;
+  --rows: 10;
+
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+}
+
+.Table {
+  border-collapse: collapse;
+}

@@ -59,4 +59,6 @@ export interface DropdownMenuRef {
   menuNode: HTMLElement | null;
 }
 
-export interface DropdownProps extends PopoverProps {}
+export interface DropdownProps extends PopoverProps {
+  closeParentPopover?: boolean;
+}
