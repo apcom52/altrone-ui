@@ -90,6 +90,11 @@ export interface ConsumerConfigurationContext {
     color: string;
   }>;
   tooltip?: ComponentConfiguration;
+  dataTable: ComponentConfiguration;
+  toolbar?: ComponentConfiguration<{
+    actionClassName: string;
+    groupClassName: string;
+  }>;
 }
 
 export const ConfigurationContext =
