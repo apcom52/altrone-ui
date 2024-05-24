@@ -1,0 +1,30 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+}
+
+.Toolbar {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 6px;
+  gap: var(--s-gap);
+  @include glass-surface;
+}
+
+.AlignCenter {
+  justify-content: center;
+}
+
+.AlignEnd {
+  justify-content: end;
+}
+
+.AlignBetween {
+  justify-content: space-between;
+}
+
+.Compact {
+  padding-left: 4px;
+  padding-right: 4px;
+}

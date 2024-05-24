@@ -1,0 +1,90 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --toolbarActionTextColor: var(--default-700);
+  --toolbarActionHoveredBackgroundColor: var(--default-300);
+  --toolbarActionHoveredTextColor: var(--default-800);
+  --toolbarActionPressedBackgroundColor: var(--default-400);
+  --toolbarActionPressedTextColor: var(--default-900);
+}
+
+:global(.AltroneDark) {
+  --toolbarActionTextColor: var(--default-200);
+  --toolbarActionHoveredBackgroundColor: var(--default-700);
+  --toolbarActionHoveredTextColor: var(--default-100);
+  --toolbarActionPressedBackgroundColor: var(--default-600);
+  --toolbarActionPressedTextColor: var(--default-50);
+}
+
+.Action {
+  --textColor: var(--toolbarActionTextColor);
+  --iconBg: transparent;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--xs-gap);
+  padding: 2px 6px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  @include no-appearance;
+  @include no-selection;
+
+  &:hover {
+    --textColor: var(--toolbarActionHoveredTextColor);
+    --iconBg: var(--toolbarActionHoveredBackgroundColor);
+  }
+
+  &:active {
+    --textColor: var(--toolbarActionPressedTextColor);
+    --iconBg: var(--toolbarActionPressedBackgroundColor);
+  }
+}
+
+.Icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 24px;
+  font-size: 18px;
+  border-radius: 4px;
+  color: var(--textColor);
+  background-color: var(--iconBg);
+  transition: background-color 0.2s linear, color 0.2s linear;
+}
+
+.CustomComponent {
+  height: 24px;
+}
+
+.Label {
+  @include label;
+  color: var(--textColor);
+  transition: color 0.2s linear;
+  min-height: 16px;
+}
+
+.Compact {
+  background-color: var(--iconBg);
+  flex-direction: row;
+  border-radius: 4px;
+  transition: background-color 0.2s linear, color 0.2s linear;
+  padding: 3px 6px;
+
+  .Icon {
+    width: 18px;
+    height: 18px;
+    background-color: transparent;
+  }
+}
+
+.Action:has(.CustomComponent) {
+  cursor: default;
+}
+
+.Compact:has(.CustomComponent) {
+  background-color: transparent;
+}
