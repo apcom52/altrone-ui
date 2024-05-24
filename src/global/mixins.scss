@@ -118,3 +118,9 @@
   -moz-appearance: none;
   appearance: none;
 }
+
+@mixin glass-surface {
+  background: var(--glassBackground);
+  -webkit-backdrop-filter: blur(32px);
+  backdrop-filter: blur(32px);
+}
