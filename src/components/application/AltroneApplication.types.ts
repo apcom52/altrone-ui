@@ -1,5 +1,4 @@
-import { PropsWithChildren, JSX } from 'react';
-import { BasicComponentProps } from 'types';
+import { JSX } from 'react';
 import { ConsumerConfigurationContext } from '../configuration/AltroneConfiguration.context.ts';
 
 export enum Theme {
@@ -9,8 +8,7 @@ export enum Theme {
 }
 
 export interface AltroneApplicationProps
-  extends PropsWithChildren,
-    BasicComponentProps {
+  extends React.HTMLAttributes<HTMLDivElement> {
   theme?: Theme;
   tagName?: keyof JSX.IntrinsicElements;
   config?: Partial<ConsumerConfigurationContext>;
