@@ -3,3 +3,4 @@ export { useConstructor } from './useConstructor';
 export { useResizeObserver } from './useResizeObserver';
 export { useToggledState } from './useToggledState';
 export { useDebouncedMemo } from './useDebouncedMemo.ts';
+export { useNumber } from './useNumber.ts';

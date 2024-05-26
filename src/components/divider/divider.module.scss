@@ -14,3 +14,9 @@
   border: none;
   color: blue;
 }
+
+.Vertical {
+  width: 1px;
+  height: calc(100% - var(--gap));
+  margin: var(--xs-gap) var(--l-gap);
+}

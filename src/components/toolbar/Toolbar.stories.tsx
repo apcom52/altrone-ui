@@ -2,11 +2,12 @@ import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { Align, Gap } from '../../types';
+import { Align, Direction, Gap } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
 import { Toolbar } from './Toolbar.tsx';
 import { Icon } from '../icon';
 import { Search } from '../search';
+import { Divider } from '../divider';
 
 const story: Meta<typeof Toolbar> = {
   title: 'Components/Containers/Toolbar',
@@ -75,11 +76,15 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
             <Toolbar.Action icon={<Icon i="search" />} label="Search" />
           </Toolbar.Group>
 
+          <Divider direction={Direction.vertical} />
+
           <Toolbar.Group>
             <Toolbar.Action icon={<Icon i="lock" />} label="Security" />
             <Toolbar.Action icon={<Icon i="back_hand" />} label="Privacy" />
             <Toolbar.Action icon={<Icon i="public" />} label="Websites" />
           </Toolbar.Group>
+
+          <Divider direction={Direction.vertical} />
 
           <Toolbar.Group>
             <Toolbar.Action icon={<Icon i="extension" />} label="Extensions" />
@@ -88,6 +93,8 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
               label="Advanced"
             />
           </Toolbar.Group>
+
+          <Divider direction={Direction.vertical} />
 
           <Toolbar.Action label="Search" showLabel={false}>
             <Search getSuggestions={() => []} />
@@ -106,6 +113,8 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
             <Toolbar.Action icon={<Icon i="search" />} label="Search" />
           </Toolbar.Group>
 
+          <Divider direction={Direction.vertical} />
+
           <Toolbar.Group>
             <Toolbar.Action icon={<Icon i="lock" />} label="Security" />
             <Toolbar.Action
@@ -116,6 +125,8 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
             <Toolbar.Action icon={<Icon i="public" />} label="Websites" />
           </Toolbar.Group>
 
+          <Divider direction={Direction.vertical} />
+
           <Toolbar.Group>
             <Toolbar.Action icon={<Icon i="extension" />} label="Extensions" />
             <Toolbar.Action
@@ -123,6 +134,8 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
               label="Advanced"
             />
           </Toolbar.Group>
+
+          <Divider direction={Direction.vertical} />
 
           <Toolbar.Action label="Search" showLabel={false}>
             <Search getSuggestions={() => []} />
