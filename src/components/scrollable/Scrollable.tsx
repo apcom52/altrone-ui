@@ -115,7 +115,7 @@ export const Scrollable = memo<ScrollableProps>(
       padding:
         typeof offset === 'number'
           ? `${offset}px`
-          : `${offset.top}px ${offset.right}px ${offset.bottom}px ${offset.left}px`,
+          : `${offset.top || 0}px ${offset.right || 0}px ${offset.bottom || 0}px ${offset.left || 0}px`,
     };
 
     const topShadow = scrollPosition > 8 ? '5px' : `${scrollPosition / 2}px`;

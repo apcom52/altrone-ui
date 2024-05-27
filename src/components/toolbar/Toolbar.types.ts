@@ -10,7 +10,7 @@ export interface ToolbarContextType {
 }
 
 export interface ToolbarActionProps
-  extends React.HTMLAttributes<HTMLButtonElement> {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: JSX.Element;
   label: string;
   showLabel?: boolean;

@@ -29,6 +29,7 @@
   border: none;
   background-color: transparent;
   cursor: pointer;
+  color: var(--textColor);
   @include no-appearance;
   @include no-selection;
 
@@ -40,6 +41,10 @@
   &:active {
     --textColor: var(--toolbarActionPressedTextColor);
     --iconBg: var(--toolbarActionPressedBackgroundColor);
+  }
+
+  &:disabled {
+    @include disabled;
   }
 }
 
@@ -65,6 +70,7 @@
   color: var(--textColor);
   transition: color 0.2s linear;
   min-height: 16px;
+  white-space: nowrap;
 }
 
 .Compact {

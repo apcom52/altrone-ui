@@ -10,6 +10,12 @@
   border-radius: 6px;
   gap: var(--s-gap);
   @include glass-surface;
+  height: 56px;
+
+  [role="separator"] {
+    margin-left: unset;
+    margin-right: unset;
+  }
 }
 
 .AlignCenter {
