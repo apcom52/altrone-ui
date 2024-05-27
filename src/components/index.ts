@@ -30,3 +30,4 @@ export * from './loading';
 export * from './tooltip';
 export * from './dataTable';
 export * from './toolbar';
+export * from './topNavigation';
