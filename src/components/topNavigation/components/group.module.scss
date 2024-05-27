@@ -1,0 +1,15 @@
+.Group {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: var(--gap);
+  flex: 1;
+}
+
+.Centered {
+  justify-content: center;
+}
+
+.End {
+  justify-content: flex-end;
+}

@@ -98,6 +98,7 @@ export interface ConsumerConfigurationContext {
   photoViewer?: ComponentConfiguration<{
     photoClassName: string;
   }>;
+  topNavigation?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =
