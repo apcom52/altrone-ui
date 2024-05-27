@@ -1,0 +1,17 @@
+.Logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  margin-right: var(--l-gap);
+
+  > * {
+    height: 24px;
+    width: auto;
+  }
+
+  &:hover {
+    opacity: 0.75;
+  }
+}
