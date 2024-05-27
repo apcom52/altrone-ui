@@ -9,8 +9,15 @@ import { PhotoViewerToolbar } from './inner/PhotoViewerToolbar.tsx';
 import { useNumber } from '../../utils/hooks';
 
 const PhotoViewerComponent = memo(
-  ({ children, onClose, className, startsFrom = 0 }: PhotoViewerProps) => {
-    const {} = useConfiguration();
+  ({
+    children,
+    onClose,
+    className,
+    startsFrom = 0,
+    style,
+    ...restProps
+  }: PhotoViewerProps) => {
+    const { photoViewer: photoViewerConfig = {} } = useConfiguration();
 
     const safeChildren = getSafeArray(children);
     const validChildren = safeChildren.filter(
@@ -26,14 +33,18 @@ const PhotoViewerComponent = memo(
 
     const currentChildElement = validChildren[currentIndex];
 
-    const cls = clsx(s.Wrapper, className);
+    const cls = clsx(s.Wrapper, className, photoViewerConfig.className);
+    const styles = {
+      ...photoViewerConfig.style,
+      ...style,
+    };
 
     useEffect(() => {
       setCurrentIndex(0);
     }, [children]);
 
     return (
-      <div className={cls}>
+      <div className={cls} style={styles} {...restProps}>
         {currentChildElement}
         <PhotoViewerToolbar
           currentIndex={currentIndex}

@@ -5,10 +5,13 @@ import s from './image.module.scss';
 import { useToggledState } from '../../../utils';
 import { Loading } from '../../loading';
 import { Icon } from '../../icon';
+import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
 
 export const Image = memo<PhotoViewerImageProps>(
   ({ caption, description, className, ...restProps }) => {
-    const cls = clsx(s.Image, className);
+    const { photoViewer: photoViewerConfig = {} } = useConfiguration();
+
+    const cls = clsx(s.Image, className, photoViewerConfig.photoClassName);
 
     const {
       value: loading,

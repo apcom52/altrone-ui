@@ -95,6 +95,9 @@ export interface ConsumerConfigurationContext {
     actionClassName: string;
     groupClassName: string;
   }>;
+  photoViewer?: ComponentConfiguration<{
+    photoClassName: string;
+  }>;
 }
 
 export const ConfigurationContext =

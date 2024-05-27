@@ -42,12 +42,9 @@ The term "maverick" has its origins in the 19th century, named after Samuel Mave
         />
         <PhotoViewer.Image
           src="https://512pixels.net/downloads/macos-wallpapers-thumbs/10-12--thumb.jpg"
-          caption="10.12 Sierra"
+          description="10.12 Sierra"
         />
-        <PhotoViewer.Image
-          src="https://512pixels.net/downloads/macos-wallpapers-thumbs/10-13--thumb.jpg"
-          caption="10.13 High Sierra"
-        />
+        <PhotoViewer.Image src="https://512pixels.net/downloads/macos-wallpapers-thumbs/10-13--thumb.jpg" />
         <PhotoViewer.Image
           src="https://512pixels.net/downloads/macos-wallpapers-thumbs/10-14--thumb.jpg"
           caption="10.14 Mojave"

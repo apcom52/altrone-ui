@@ -45,8 +45,12 @@ export const PhotoViewerToolbar = memo<PhotoViewerToolbarProps>(
           style={{
             maxWidth: '280px',
           }}
+          showCloseButton
           content={
-            <Scrollable maxHeight="300px">
+            <Scrollable
+              maxHeight="300px"
+              offset={{ top: 0, left: 0, right: 4, bottom: 0 }}
+            >
               <Text.Paragraph size={Size.small}>
                 {description || 'No description'}
               </Text.Paragraph>
@@ -58,6 +62,7 @@ export const PhotoViewerToolbar = memo<PhotoViewerToolbarProps>(
               icon={<Icon i={opened ? 'expand_more' : 'info'} />}
               label="Description"
               showLabel={true}
+              disabled={!caption && !description}
             />
           )}
         </Popover>
