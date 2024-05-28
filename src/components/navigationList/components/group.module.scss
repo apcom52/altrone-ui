@@ -1,0 +1,27 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --navigationListGroupTitleTextColor: var(--default-900);
+}
+
+:global(.AltroneDark) {
+  --navigationListGroupTitleTextColor: var(--default-50);
+}
+
+.Group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-gap);
+  flex: 1;
+
+  & + .Group {
+    margin-top: var(--xl-gap);
+  }
+}
+
+.Title {
+  @include group-heading;
+  padding-left: 30px;
+  color: var(--navigationListGroupTitleTextColor);
+  margin-bottom: var(--xs-gap);
+}

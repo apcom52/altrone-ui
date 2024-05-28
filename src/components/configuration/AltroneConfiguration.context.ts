@@ -99,6 +99,9 @@ export interface ConsumerConfigurationContext {
     photoClassName: string;
   }>;
   topNavigation?: ComponentConfiguration;
+  navigationList?: ComponentConfiguration<{
+    groupTitleClassName: string;
+  }>;
 }
 
 export const ConfigurationContext =
