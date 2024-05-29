@@ -27,6 +27,7 @@
     "lodash.debounce": "^4.0.8",
     "rc-util": "5.39.1",
     "react-number-format": "^5.3.4",
+    "react-scrollspy-navigation": "^2.0.6",
     "use-file-picker": "^2.1.2",
     "uuid": "^9.0.1"
   },

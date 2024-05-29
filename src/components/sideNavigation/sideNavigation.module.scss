@@ -1,0 +1,29 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --sideNavigationTitleTextColor: var(--default-900);
+}
+
+:global(.AltroneDark) {
+  --sideNavigationTitleTextColor: var(--default-50);
+}
+
+.SideNavigation {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding: var(--xl-gap) var(--gap);
+}
+
+.Title {
+  @include group-heading;
+  color: var(--sideNavigationTitleTextColor);
+}
+
+.Menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding-left: 0;
+  margin-top: var(--l-gap);
+}

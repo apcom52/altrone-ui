@@ -5,11 +5,11 @@
   text-decoration: underline;
 
   &:hover {
-    color: var(--linkHoverTextColor);
+    color: var(--linkHoveredTextColor);
   }
 
   &:active {
-    color: var(--linkClickTextColor);
+    color: var(--linkPressedTextColor);
   }
 }
 

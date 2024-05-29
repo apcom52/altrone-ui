@@ -102,6 +102,10 @@ export interface ConsumerConfigurationContext {
   navigationList?: ComponentConfiguration<{
     groupTitleClassName: string;
   }>;
+  sideNavigation?: ComponentConfiguration<{
+    titleClassName: string;
+    selectedItemClassName: string;
+  }>;
 }
 
 export const ConfigurationContext =
