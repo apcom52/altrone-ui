@@ -161,8 +161,8 @@
   --codeTextColor: var(--primary-800);
   --keyboardTextColor: var(--default-500);
   --linkTextColor: var(--primary-600);
-  --linkHoverTextColor: var(--primary-700);
-  --linkClickTextColor: var(--primary-800);
+  --linkHoveredTextColor: var(--primary-700);
+  --linkPressedTextColor: var(--primary-800);
 
 
   /* surfaces */
@@ -222,8 +222,8 @@
   --codeTextColor: var(--primary-200);
   --keyboardTextColor: var(--default-300);
   --linkTextColor: var(--primary-500);
-  --linkHoverTextColor: var(--primary-400);
-  --linkClickTextColor: var(--primary-300);
+  --linkHoveredTextColor: var(--primary-400);
+  --linkPressedTextColor: var(--primary-300);
 
   /* surfaces */
   --appBackground: var(--default-900);
