@@ -106,6 +106,9 @@ export interface ConsumerConfigurationContext {
     titleClassName: string;
     selectedItemClassName: string;
   }>;
+  bottomNavigation?: ComponentConfiguration<{
+    selectedItemClassName: string;
+  }>;
 }
 
 export const ConfigurationContext =

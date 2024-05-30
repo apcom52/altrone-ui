@@ -1,0 +1,15 @@
+:global(:root) {
+  --bottomNavigationBackgroundColor: var(--default-200);
+}
+
+:global(.AltroneDark) {
+  --bottomNavigationBackgroundColor: var(--default-700);
+}
+
+.BottomNavigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--l-gap) var(--l-gap);
+  background: var(--bottomNavigationBackgroundColor);
+}
