@@ -1,12 +1,15 @@
 import { memo } from 'react';
 import { Icon } from 'components';
 import s from './closeButton.module.scss';
-import { BasicComponentProps } from '../../types';
 import clsx from 'clsx';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 
 export const CloseButton = memo(
-  ({ className, style, ...props }: BasicComponentProps<HTMLButtonElement>) => {
+  ({
+    className,
+    style,
+    ...props
+  }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
     const { closeButton: closeButtonConfig = {} } = useConfiguration();
 
     const cls = clsx(s.CloseButton, className, closeButtonConfig.className);

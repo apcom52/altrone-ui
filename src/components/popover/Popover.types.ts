@@ -1,7 +1,6 @@
 import { FloatingContext, Placement } from '@floating-ui/react';
 import { ReactNode } from 'react';
 import { RenderFunction } from 'utils';
-import { BasicComponentProps } from 'types';
 
 export type PopoverTrigger = 'click' | 'focus' | 'hover';
 

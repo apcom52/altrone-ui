@@ -1,17 +1,9 @@
-:global(:root) {
-  --photoViewerBackdropColor: rgba(0, 0, 0, 0.4);
-}
-
-:global(.AltroneDark) {
-  --photoViewerBackdropColor: rgba(0, 0, 0, 0.6);
-}
-
 .Wrapper {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: var(--photoViewerBackdropColor);
+  background-color: var(--backdropColor);
   box-shadow: 0 3px 15px 0 var(--shadow);
 }

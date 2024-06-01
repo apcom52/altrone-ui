@@ -180,6 +180,7 @@
   --messageSuccessBackgroundColor: var(--success-100);
   --messageWarningBackgroundColor: var(--warning-100);
   --messageDangerBackgroundColor: var(--danger-100);
+  --backdropColor: rgba(0, 0, 0, 0.4);
 
   /** focus */
   --focus: rgba(66, 165, 245, 0.4);
@@ -240,6 +241,7 @@
   --messageSuccessBackgroundColor: var(--success-900);
   --messageWarningBackgroundColor: var(--warning-900);
   --messageDangerBackgroundColor: var(--danger-900);
+  --backdropColor: rgba(0, 0, 0, 0.6);
 
   /** focus */
   --focus: rgba(25, 118, 210, 0.7);

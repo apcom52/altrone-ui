@@ -109,6 +109,7 @@ export interface ConsumerConfigurationContext {
   bottomNavigation?: ComponentConfiguration<{
     selectedItemClassName: string;
   }>;
+  modal?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =
