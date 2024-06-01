@@ -32,3 +32,5 @@ export * from './dataTable';
 export * from './toolbar';
 export * from './topNavigation';
 export * from './navigationList';
+export * from './sideNavigation';
+export * from './modal';
