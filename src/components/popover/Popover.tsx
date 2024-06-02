@@ -33,7 +33,7 @@ import {
   PopoverChildrenContext,
   PopoverContentContext,
 } from './Popover.types.ts';
-import { useToggledState, cloneNode } from 'utils';
+import { useBoolean, cloneNode } from 'utils';
 import clsx from 'clsx';
 import s from './popover.module.scss';
 import { CloseButton } from 'components';
@@ -87,7 +87,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     enable: open,
     disable: hide,
     setValue: setOpened,
-  } = useToggledState(openedByDefault);
+  } = useBoolean(openedByDefault);
 
   const { refs, floatingStyles, context } = useFloating({
     open: opened,

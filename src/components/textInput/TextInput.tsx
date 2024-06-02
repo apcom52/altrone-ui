@@ -11,7 +11,7 @@ import s from './textInput.module.scss';
 import clsx from 'clsx';
 import { useRainbowEffect } from '../application/RainbowEffect.tsx';
 import { Size } from '../../types';
-import { useResizeObserver, useToggledState } from '../../utils';
+import { useResizeObserver, useBoolean } from 'utils';
 import {
   ActionIsland,
   CustomIsland,
@@ -69,11 +69,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
 
     const inputRef = useRef<HTMLInputElement | null>(null);
 
-    const {
-      value: focused,
-      enable: focus,
-      disable: blur,
-    } = useToggledState(false);
+    const { value: focused, enable: focus, disable: blur } = useBoolean(false);
 
     const rainbowEvents = useRainbowEffect(
       !(restProps.readOnly && readonlyStyles) &&

@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-export const useToggledState = (defaultValue: boolean) => {
+export const useBoolean = (defaultValue: boolean) => {
   const [state, setState] = useState<boolean>(defaultValue);
 
   const enable = useCallback(() => {
@@ -20,6 +20,6 @@ export const useToggledState = (defaultValue: boolean) => {
     setValue: setState,
     enable,
     disable,
-    toggle
+    toggle,
   };
 };

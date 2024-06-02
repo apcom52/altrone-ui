@@ -2,7 +2,7 @@ export {
   useMediaMatch,
   useConstructor,
   useResizeObserver,
-  useToggledState,
+  useBoolean,
   useDebouncedMemo,
 } from './hooks';
 export * from './fn.ts';

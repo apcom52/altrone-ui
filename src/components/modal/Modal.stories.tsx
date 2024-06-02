@@ -5,7 +5,7 @@ import { Flex } from '../flex';
 import { Modal } from './Modal.tsx';
 import { Align, Direction, Gap, Role, Size } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
-import { useToggledState } from '../../utils';
+import { useBoolean } from 'utils';
 import { Button } from '../button';
 import { Tooltip } from '../tooltip';
 import { useState } from 'react';
@@ -30,11 +30,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using Modal',
   render: () => {
     const [size, setSize] = useState(Size.medium);
-    const {
-      value: opened,
-      enable: open,
-      disable: hide,
-    } = useToggledState(false);
+    const { value: opened, enable: open, disable: hide } = useBoolean(false);
 
     return (
       <Flex gap={Gap.medium} align={Align.start}>

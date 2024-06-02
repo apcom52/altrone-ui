@@ -2,7 +2,7 @@ import { memo, useEffect } from 'react';
 import { PhotoViewerImageProps } from '../PhotoViewer.types.ts';
 import clsx from 'clsx';
 import s from './image.module.scss';
-import { useToggledState } from '../../../utils';
+import { useBoolean } from 'utils';
 import { Loading } from '../../loading';
 import { Icon } from '../../icon';
 import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
@@ -17,13 +17,13 @@ export const Image = memo<PhotoViewerImageProps>(
       value: loading,
       enable: startLoading,
       disable: finishLoading,
-    } = useToggledState(true);
+    } = useBoolean(true);
 
     const {
       value: failed,
       enable: setFailed,
       disable: clearFailed,
-    } = useToggledState(false);
+    } = useBoolean(false);
 
     useEffect(() => {
       startLoading();

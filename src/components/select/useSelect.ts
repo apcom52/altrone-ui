@@ -1,4 +1,4 @@
-import { useToggledState } from '../../utils';
+import { useBoolean } from 'utils';
 import { useCallback, useMemo, useState } from 'react';
 import { Option, SelectProps } from './Select.types.ts';
 
@@ -17,7 +17,7 @@ export const useSelect = (props: SelectProps) => {
     value: searchMode,
     enable: focusSelect,
     disable: blurSelect,
-  } = useToggledState(false);
+  } = useBoolean(false);
   const [userQuery, setUserQuery] = useState('');
 
   const selectedOptions = useMemo(() => {

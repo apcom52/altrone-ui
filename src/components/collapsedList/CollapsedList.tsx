@@ -3,7 +3,7 @@ import {
   CollapsedListContext,
   CollapsedListProps,
 } from './CollapsedList.types.ts';
-import { getSafeArray, useToggledState } from '../../utils';
+import { getSafeArray, useBoolean } from 'utils';
 import { Button, Icon, Flex } from 'components';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 import clsx from 'clsx';
@@ -23,7 +23,7 @@ export const CollapsedList = memo<CollapsedListProps>(
   }) => {
     const { collapsedList: collapsedListConfig = {} } = useConfiguration();
 
-    const { value: expanded, toggle } = useToggledState(false);
+    const { value: expanded, toggle } = useBoolean(false);
 
     const limitValue =
       typeof limit === 'number' ? limit : collapsedListConfig.limit || 5;
