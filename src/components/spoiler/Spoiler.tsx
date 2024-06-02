@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { Icon } from '../icon';
 import s from './spoiler.module.scss';
 import { useBoolean } from '../../utils';
+import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 
 export const Spoiler = memo<SpoilerProps>(
   ({
@@ -12,8 +13,11 @@ export const Spoiler = memo<SpoilerProps>(
     style,
     openedByDefault = false,
     title,
+    onToggle,
     ...restProps
   }) => {
+    const { spoiler: spoilerConfig = {} } = useConfiguration();
+
     const { value: opened, setValue: setOpened } = useBoolean(openedByDefault);
 
     const cls = clsx(
@@ -22,14 +26,27 @@ export const Spoiler = memo<SpoilerProps>(
         [s.Opened]: opened,
       },
       className,
+      spoilerConfig.className,
     );
 
-    const onToggle: ReactEventHandler<HTMLDetailsElement> = (event) => {
+    const styles = {
+      ...spoilerConfig.style,
+      ...style,
+    };
+
+    const onToggleHandler: ReactEventHandler<HTMLDetailsElement> = (event) => {
       setOpened((event.target as HTMLDetailsElement).open);
+      onToggle?.(event);
     };
 
     return (
-      <details className={cls} open={opened} {...restProps} onToggle={onToggle}>
+      <details
+        className={cls}
+        open={opened}
+        style={styles}
+        {...restProps}
+        onToggle={onToggleHandler}
+      >
         <summary className={s.Heading}>
           {title}
           <div className={s.ArrowIcon} aria-hidden={true}>

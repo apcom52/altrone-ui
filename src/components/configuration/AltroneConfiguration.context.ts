@@ -110,6 +110,7 @@ export interface ConsumerConfigurationContext {
     selectedItemClassName: string;
   }>;
   modal?: ComponentConfiguration;
+  spoiler?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =
