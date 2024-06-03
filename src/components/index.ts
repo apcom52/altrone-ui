@@ -34,3 +34,5 @@ export * from './topNavigation';
 export * from './navigationList';
 export * from './sideNavigation';
 export * from './modal';
+export * from './spoiler';
+export * from './breadcrumbs';

@@ -1,0 +1,14 @@
+:global(:root) {
+  --breadcrumbsSeparatorColor: var(--default-300);
+}
+
+.Breadcrumbs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--l-gap);
+}
+
+.Separator {
+  color: var(--breadcrumbsSeparatorColor);
+}

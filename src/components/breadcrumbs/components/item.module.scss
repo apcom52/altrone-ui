@@ -1,0 +1,53 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --breadcrumbsItemTextColor: var(--default-700);
+  --breadcrumbsCurrentItemTextColor: var(--default-900);
+  --breadcrumbsHoveredItemTextColor: var(--default-800);
+  --breadcrumbsPressedItemTextColor: var(--primary-600);
+}
+
+:global(.AltroneDark) {
+}
+
+.Item {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  gap: var(--s-gap);
+  cursor: pointer;
+  @include no-selection;
+  color: var(--breadcrumbsItemTextColor);
+  transition: color 0.2s linear;
+
+  &:hover {
+    color: var(--breadcrumbsHoveredItemTextColor);
+  }
+
+  &:active {
+    color: var(--breadcrumbsPressedItemTextColor);
+  }
+}
+
+.Icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  height: 18px;
+}
+
+.Label {
+  @include sm-paragraph;
+  font-weight: 500;
+}
+
+.Current {
+  cursor: default;
+
+  .Label {
+    font-weight: 600;
+    color: var(--breadcrumbsCurrentItemTextColor);
+  }
+}
