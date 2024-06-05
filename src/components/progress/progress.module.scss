@@ -1,0 +1,40 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --progressBackgroundColor: var(--default-100);
+  --progressActiveBackgroundColor: var(--default-300);
+  --progressTextColor: var(--default-700);
+}
+
+:global(.AltroneDark) {
+  --progressBackgroundColor: var(--default-800);
+  --progressActiveBackgroundColor: var(--default-600);
+  --progressTextColor: var(--default-200);
+}
+
+.Progress {
+  display: flex;
+  position: relative;
+  width: 100%;
+  border-radius: 6px;
+  height: 24px;
+  background-color: var(--progressBackgroundColor);
+  overflow: hidden;
+  padding: 4px 8px;
+
+  @include no-selection;
+}
+
+.Active {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background-color: var(--progressActiveBackgroundColor);
+}
+
+.Label {
+  @include label;
+  z-index: 1;
+  color: var(--progressTextColor);
+}

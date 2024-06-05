@@ -1,1 +1,1 @@
-export { BottomNavigation } from './Breadcrumbs.tsx';
+export { Breadcrumbs } from './Breadcrumbs.tsx';
