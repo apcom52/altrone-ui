@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Flex, Text, TextHeadingRoles } from 'components';
-import { Direction, Gap } from 'types';
+import { Direction, Gap, Size } from 'types';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Progress } from './Progress.tsx';
@@ -39,6 +39,14 @@ export const FlexLayout: StoryObj<typeof Flex> = {
               {value} of {max}
             </span>
           )}
+        </Progress>
+      </Flex>
+      <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Progress size={Size.small} value={45} max={100}>
+          Small progress
+        </Progress>
+        <Progress size={Size.large} value={32} max={100}>
+          Large progress
         </Progress>
       </Flex>
     </Flex>

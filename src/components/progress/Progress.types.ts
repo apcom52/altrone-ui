@@ -12,6 +12,7 @@ export interface ProgressProps
   value: number;
   max: number;
   size?: Size;
+  activeSegmentClassName?: string;
   children?:
     | string
     | ReactElement

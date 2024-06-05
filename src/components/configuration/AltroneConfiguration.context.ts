@@ -111,6 +111,9 @@ export interface ConsumerConfigurationContext {
   }>;
   modal?: ComponentConfiguration;
   spoiler?: ComponentConfiguration;
+  progress?: ComponentConfiguration<{
+    activeSegmentClassName?: string;
+  }>;
 }
 
 export const ConfigurationContext =
