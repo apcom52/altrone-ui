@@ -36,3 +36,5 @@ export * from './sideNavigation';
 export * from './modal';
 export * from './spoiler';
 export * from './breadcrumbs';
+export * from './progress';
+export * from './tags';

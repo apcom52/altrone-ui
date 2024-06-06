@@ -1,0 +1,24 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --tagsItemTextColor: var(--primary-600);
+  --tagsHoveredItemColor: var(--primary-700);
+}
+
+:global(.AltroneDark) {
+  --tagsItemTextColor: var(--primary-400);
+  --tagsHoveredItemColor: var(--primary-300);
+}
+
+.Item {
+  @include sm-paragraph;
+  font-weight: 500;
+  color: var(--tagsItemTextColor);
+  transition: color 0.2s linear;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover, &:focus-visible {
+    color: var(--tagsHoveredItemColor);
+  }
+}
