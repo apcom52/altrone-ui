@@ -1,0 +1,50 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --tabItemBackgroundColor: transparent;
+  --tabItemTextColor: var(--default-600);
+  --tabHoveredItemBackgroundColor: var(--default-100);
+  --tabHoveredItemTextColor: var(--default-900);
+  --tabSelectedItemBackgroundColor: var(--default-200);
+  --tabSelectedItemTextColor: var(--default-900);
+}
+
+:global(.AltroneDark) {
+  --tabItemBackgroundColor: transparent;
+  --tabItemTextColor: var(--default-200);
+  --tabHoveredItemBackgroundColor: var(--default-800);
+  --tabHoveredItemTextColor: var(--default-50);
+  --tabSelectedItemBackgroundColor: var(--default-700);
+  --tabSelectedItemTextColor: var(--default-50);
+}
+
+.Item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background-color: var(--tabItemBackgroundColor);
+  color: var(--tabItemTextColor);
+  transition: background-color 0.2s linear;
+
+  @include label-heading;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover, &:focus-visible {
+    background-color: var(--tabHoveredItemBackgroundColor);
+    color: var(--tabHoveredItemTextColor);
+  }
+
+  &.Selected, &:active {
+    background-color: var(--tabSelectedItemBackgroundColor);
+    color: var(--tabSelectedItemTextColor);
+
+    &:hover, &:focus-visible {
+      background-color: var(--tabSelectedItemBackgroundColor);
+      color: var(--tabSelectedItemTextColor);
+    }
+  }
+}
