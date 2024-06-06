@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Flex, Text, TextHeadingRoles } from 'components';
-import { Direction, Gap, Size } from 'types';
+import { Direction, Gap } from 'types';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Tags } from './Tags.tsx';

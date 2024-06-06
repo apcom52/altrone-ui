@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { AltroneConfiguration } from 'components';
 import { createElement, useEffect } from 'react';
 import { RainbowEffect } from './RainbowEffect.tsx';
+import { Toast } from 'components/toasts';
 
 export const AltroneApplication = ({
   children,
@@ -41,7 +42,9 @@ export const AltroneApplication = ({
       ...props,
     },
     <AltroneConfiguration theme={_theme} {...config}>
-      <RainbowEffect>{children}</RainbowEffect>
+      <RainbowEffect>
+        <Toast>{children}</Toast>
+      </RainbowEffect>
     </AltroneConfiguration>,
   );
 };
