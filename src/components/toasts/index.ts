@@ -1,1 +1,1 @@
-export { Toast } from './Toast.tsx';
+export { useToast } from './Toast.tsx';
