@@ -2,7 +2,6 @@ import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { Align, Direction, Gap } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
 // import { userEvent, within, expect } from '@storybook/test';
 import { Checkbox } from './Checkbox.tsx';
@@ -66,15 +65,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     }, [value2, value3, value4]);
 
     return (
-      <Flex gap={Gap.large}>
+      <Flex gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>
           Basic Checkboxes
         </Text.Heading>
-        <Flex
-          direction={Direction.horizontal}
-          gap={Gap.large}
-          align={Align.center}
-        >
+        <Flex direction="horizontal" gap="large" align="center">
           <Text.Paragraph>Permissions:</Text.Paragraph>
           <Checkbox
             checked={value1}

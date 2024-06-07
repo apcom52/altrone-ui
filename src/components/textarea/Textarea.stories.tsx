@@ -4,7 +4,6 @@ import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
 import { useState } from 'react';
-import { Direction, Gap } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
 
 const story: Meta<typeof Textarea> = {
@@ -29,11 +28,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [value1, setValue1] = useState('');
 
     return (
-      <Flex gap={Gap.large}>
+      <Flex gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>
           TextArea component
         </Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <Textarea
             value={value1}
             onChange={setValue1}

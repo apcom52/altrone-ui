@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Button, Flex, Text, TextHeadingRoles } from 'components';
-import { Direction, Gap } from 'types';
 import { StorybookDecorator } from 'global/storybook';
 import { Toast, useToast } from './Toast.tsx';
 
@@ -19,11 +18,11 @@ export const FlexLayout: StoryObj<typeof Flex> = {
     const { toast, success, warning, danger } = useToast();
 
     return (
-      <Flex {...args} gap={Gap.large}>
+      <Flex {...args} gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>
           Click to show a toast message
         </Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <Button
             label="Show toast message"
             onClick={() => toast('New updates are available.')}

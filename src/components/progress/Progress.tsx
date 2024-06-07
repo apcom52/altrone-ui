@@ -2,7 +2,6 @@ import { memo } from 'react';
 import { ProgressContext, ProgressProps } from './Progress.types.ts';
 import clsx from 'clsx';
 import s from './progress.module.scss';
-import { Size } from '../../types';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 
 export const Progress = memo<ProgressProps>(
@@ -12,7 +11,7 @@ export const Progress = memo<ProgressProps>(
     style,
     value = 0,
     max = 100,
-    size = Size.medium,
+    size = 'medium',
     activeSegmentClassName,
     ...props
   }) => {
@@ -21,8 +20,8 @@ export const Progress = memo<ProgressProps>(
     const cls = clsx(
       s.Progress,
       {
-        [s.Small]: size === Size.small,
-        [s.Large]: size === Size.large,
+        [s.Small]: size === 'small',
+        [s.Large]: size === 'large',
       },
       className,
       progressConfig.className,

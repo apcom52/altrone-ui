@@ -1,36 +1,17 @@
-export enum Size {
-  small = 'small',
-  medium = 'medium',
-  large = 'large',
-}
+export type Size = 'small' | 'medium' | 'large';
 
-export enum Role {
-  default = 'default',
-  primary = 'primary',
-  success = 'success',
-  warning = 'warning',
-  danger = 'danger',
-}
+export type Role = 'default' | 'primary' | 'success' | 'warning' | 'danger';
 
-export enum Gap {
-  none = 0,
-  narrow = 2,
-  xsmall = 4,
-  small = 6,
-  medium = 8,
-  large = 12,
-  xlarge = 24,
-  heading = 36,
-}
+export type Gap =
+  | 'none'
+  | 'narrow'
+  | 'xsmall'
+  | 'small'
+  | 'medium'
+  | 'large'
+  | 'xlarge'
+  | 'heading';
 
-export enum Direction {
-  vertical = 'vertical',
-  horizontal = 'horizontal',
-}
+export type Direction = 'vertical' | 'horizontal';
 
-export enum Align {
-  start = 'start',
-  center = 'center',
-  end = 'end',
-  between = 'between',
-}
+export type Align = 'start' | 'center' | 'end' | 'between';

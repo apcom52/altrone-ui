@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import { Toolbar } from '../../toolbar';
 import { Divider } from '../../divider';
-import { Direction, Size } from '../../../types';
 import s from './toolbar.module.scss';
 import { Icon, Text } from 'components';
 import { PhotoViewerToolbarProps } from '../PhotoViewer.types.ts';
@@ -39,7 +38,7 @@ export const PhotoViewerToolbar = memo<PhotoViewerToolbarProps>(
           disabled={currentIndex === totalPhotos - 1}
           onClick={onNext}
         />
-        <Divider direction={Direction.vertical} />
+        <Divider direction="vertical" />
         <Popover
           title={caption || 'Description'}
           style={{
@@ -51,7 +50,7 @@ export const PhotoViewerToolbar = memo<PhotoViewerToolbarProps>(
               maxHeight="300px"
               offset={{ top: 0, left: 0, right: 4, bottom: 0 }}
             >
-              <Text.Paragraph size={Size.small}>
+              <Text.Paragraph size="small">
                 {description || 'No description'}
               </Text.Paragraph>
             </Scrollable>

@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Flex, Text, TextHeadingRoles } from 'components';
-import { Direction, Gap } from 'types';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Pagination } from './Pagination.tsx';
@@ -30,9 +29,9 @@ export const PaginationStory: StoryObj<typeof Pagination> = {
     const [page3, setPage3] = useState(1);
 
     return (
-      <Flex gap={Gap.large}>
+      <Flex gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>Pagination</Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.medium}>
+        <Flex direction="horizontal" gap="medium">
           <Pagination currentPage={page1} totalPages={5} setPage={setPage1} />
           <Pagination currentPage={page2} totalPages={120} setPage={setPage2} />
           <Pagination currentPage={page3} totalPages={1} setPage={setPage3} />

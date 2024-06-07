@@ -3,7 +3,6 @@ import { ScrollableProps } from './Scrollable.types.ts';
 import clsx from 'clsx';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 import s from './scrollable.module.scss';
-import { Direction } from 'types';
 import { useResizeObserver } from 'utils';
 
 export const Scrollable = memo<ScrollableProps>(
@@ -11,7 +10,7 @@ export const Scrollable = memo<ScrollableProps>(
     children,
     className,
     style,
-    direction = Direction.vertical,
+    direction = 'vertical',
     offset = 0,
     maxWidth,
     maxHeight,
@@ -35,14 +34,14 @@ export const Scrollable = memo<ScrollableProps>(
       if (
         targetElement &&
         targetElementRect &&
-        direction === Direction.vertical &&
+        direction === 'vertical' &&
         targetElement.scrollHeight <= Math.round(targetElementRect.height)
       ) {
         setScrollPosition(-1);
       } else if (
         targetElement &&
         targetElementRect &&
-        direction === Direction.horizontal &&
+        direction === 'horizontal' &&
         targetElement.scrollWidth <= Math.round(targetElementRect.width)
       ) {
         setScrollPosition(-1);
@@ -62,7 +61,7 @@ export const Scrollable = memo<ScrollableProps>(
     const cls = clsx(
       s.Scrollable,
       {
-        [s.Horizontal]: direction === Direction.horizontal,
+        [s.Horizontal]: direction === 'horizontal',
       },
       className,
       scrollableConfig.className,
@@ -74,7 +73,7 @@ export const Scrollable = memo<ScrollableProps>(
       const targetElement = e.currentTarget;
       const targetElementRect = targetElement.getBoundingClientRect();
 
-      if (direction === Direction.vertical) {
+      if (direction === 'vertical') {
         if (targetElement.scrollHeight <= targetElementRect.height) {
           setScrollPosition(-1);
           return;
@@ -138,8 +137,8 @@ export const Scrollable = memo<ScrollableProps>(
           <div
             className={s.Shadow}
             style={{
-              height: direction === Direction.vertical ? topShadow : undefined,
-              width: direction === Direction.horizontal ? topShadow : undefined,
+              height: direction === 'vertical' ? topShadow : undefined,
+              width: direction === 'horizontal' ? topShadow : undefined,
             }}
           />
         ) : null}
@@ -147,10 +146,8 @@ export const Scrollable = memo<ScrollableProps>(
           <div
             className={clsx(s.Shadow, s.EndShadow)}
             style={{
-              height:
-                direction === Direction.vertical ? bottomShadow : undefined,
-              width:
-                direction === Direction.horizontal ? bottomShadow : undefined,
+              height: direction === 'vertical' ? bottomShadow : undefined,
+              width: direction === 'horizontal' ? bottomShadow : undefined,
             }}
           />
         ) : null}

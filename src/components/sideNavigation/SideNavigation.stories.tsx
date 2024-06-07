@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Flex, Text, TextHeadingRoles, TextListType } from 'components';
-import { Direction, Gap } from 'types';
 import { StorybookDecorator } from 'global/storybook';
 import { SideNavigation } from './SideNavigation.tsx';
 
@@ -16,11 +15,11 @@ export const TooltipStory: StoryObj<typeof SideNavigation> = {
   name: 'Using TopNavigation',
   render: () => {
     return (
-      <Flex gap={Gap.large}>
+      <Flex gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>
           Standard TopNavigation
         </Text.Heading>
-        <Flex direction={Direction.horizontal}>
+        <Flex direction="horizontal">
           <div style={{ width: '600px' }}>
             <Text.Heading role={TextHeadingRoles.title}>
               The Evolution of Artificial Intelligence: Past, Present, and

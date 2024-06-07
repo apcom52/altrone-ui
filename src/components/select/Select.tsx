@@ -5,7 +5,6 @@ import s from './select.module.scss';
 import clsx from 'clsx';
 import { PopoverContentContext } from '../popover';
 import { useSelect } from './useSelect.ts';
-import { Size } from '../../types';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 
 const SelectComponent = (props: SelectProps) => {
@@ -16,7 +15,7 @@ const SelectComponent = (props: SelectProps) => {
     placeholder,
     searchable,
     clearable,
-    size = Size.medium,
+    size = 'medium',
     className,
     style,
     parentWidth = true,

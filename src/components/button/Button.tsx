@@ -2,7 +2,6 @@ import { ButtonProps } from './Button.types.ts';
 import { Flex } from 'components';
 import s from './button.module.scss';
 import clsx from 'clsx';
-import { Align, Direction, Gap, Role, Size } from 'types';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 import { useRainbowEffect } from '../application/RainbowEffect.tsx';
 import { forwardRef, memo, MouseEventHandler, useCallback } from 'react';
@@ -15,8 +14,8 @@ export const Button = memo(
         leftIcon,
         rightIcon,
         transparent,
-        role = Role.default,
-        size = Size.medium,
+        role = 'default',
+        size = 'medium',
         className,
         style,
         rainbowEffect,
@@ -40,18 +39,18 @@ export const Button = memo(
           : buttonConfig.rainbowEffect || true;
 
       const isRainbowEffectActivated =
-        role === Role.default && isRainbowPropsActivated;
+        role === 'default' && isRainbowPropsActivated;
 
       const cls = clsx(
         s.Button,
         {
           [s.Button_transparent]: transparent,
-          [s.Primary]: role === Role.primary,
-          [s.Success]: role === Role.success,
-          [s.Warning]: role === Role.warning,
-          [s.Danger]: role === Role.danger,
-          [s.Small]: size === Size.small,
-          [s.Large]: size === Size.large,
+          [s.Primary]: role === 'primary',
+          [s.Success]: role === 'success',
+          [s.Warning]: role === 'warning',
+          [s.Danger]: role === 'danger',
+          [s.Small]: size === 'small',
+          [s.Large]: size === 'large',
           [s.OnlyIcon]: isOnlyIcon,
         },
         className,
@@ -89,9 +88,9 @@ export const Button = memo(
 
       const buttonContent = !isOnlyIcon ? (
         <Flex
-          direction={Direction.horizontal}
-          gap={size === Size.large ? Gap.small : Gap.xsmall}
-          align={Align.center}
+          direction="horizontal"
+          gap={size === 'large' ? 'small' : 'xsmall'}
+          align="center"
         >
           {leftIcon ? <div className={s.Icon}>{leftIcon}</div> : null}
           <div className={s.Label}>{label}</div>

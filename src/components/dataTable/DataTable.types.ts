@@ -1,8 +1,8 @@
 import { DataTableCellProps } from './DataTableCell';
-import { SafeReactElement } from '../../../types';
 import { ButtonProps } from '../button/Button.types.ts';
 import { AnyObject } from '../../utils';
 import { Option } from '../select/Select.types.ts';
+import { ReactElement } from 'react';
 
 export type Sort = 'asc' | 'desc';
 export type Striped = 'odd' | 'even';
@@ -28,8 +28,8 @@ export interface DataTableProps<T extends object>
   data: T[];
   columns: DataTableColumn<T>[];
   children?:
-    | SafeReactElement
-    | ((context: DataTableRenderContext<T>) => SafeReactElement);
+    | ReactElement
+    | ((context: DataTableRenderContext<T>) => ReactElement);
   limit?: number; // need to rename to rowsPerPage
   selectable?: boolean;
 }

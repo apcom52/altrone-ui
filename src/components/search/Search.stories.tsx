@@ -4,7 +4,6 @@ import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
 import { useState } from 'react';
-import { Direction, Gap } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
 import { TextInput } from '../textInput';
 import { Icon } from '../icon';
@@ -34,9 +33,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [value4, setValue4] = useState('');
 
     return (
-      <Flex gap={Gap.large}>
+      <Flex gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>PasswordInput</Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <Search
             value={value1}
             onChange={setValue1}
@@ -56,7 +55,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             showControl={false}
           />
         </Flex>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <Search
             value={value4}
             onChange={setValue4}

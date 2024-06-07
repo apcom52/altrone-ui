@@ -10,7 +10,6 @@ import { Icon, Loading, Popover, Text } from 'components';
 import clsx from 'clsx';
 import { getFileSize } from '../../../utils/file.ts';
 import { useFilePickerContext } from '../FilePicker.tsx';
-import { Size } from '../../../types';
 import type {} from 'ldrs';
 import 'ldrs/ring';
 import { deleteFileRequest } from '../FilePicker.utils.ts';
@@ -158,9 +157,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
           placement="top"
           showArrow
           trigger={['click', 'hover']}
-          content={
-            <Text.Paragraph size={Size.small}>{errorMessage}</Text.Paragraph>
-          }
+          content={<Text.Paragraph size="small">{errorMessage}</Text.Paragraph>}
         >
           <div className={s.Alert}>
             <Icon i="warning" />

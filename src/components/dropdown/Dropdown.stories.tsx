@@ -8,14 +8,13 @@ import {
   Dropdown,
   Divider,
 } from 'components';
-import { Direction, Gap } from 'types';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { expect, userEvent, within } from '@storybook/test';
 import { useState } from 'react';
 
 const story: Meta<typeof Dropdown> = {
-  title: 'Components/Container/Dropdown',
+  title: 'Components/Containers/Dropdown',
   component: Dropdown,
   decorators: [StorybookDecorator],
   args: {},
@@ -38,11 +37,11 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
     const [showHiddenItems, setShowHiddenItems] = useState(false);
 
     return (
-      <Flex direction={Direction.vertical} gap={Gap.large}>
+      <Flex direction="vertical" gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>
           Basic Dropdowns
         </Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <Dropdown
             placement="bottom"
             data-testid="dropdown-1"

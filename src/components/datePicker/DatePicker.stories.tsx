@@ -2,7 +2,6 @@ import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { Direction, Gap } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
 import { DatePicker } from './DatePicker.tsx';
 import { useState } from 'react';
@@ -38,11 +37,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [year2, setYear2] = useState<Dayjs | undefined>(dayjs('2025'));
 
     return (
-      <Flex gap={Gap.large}>
+      <Flex gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>
           Basic DatePicker
         </Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
+        <Flex direction="horizontal" gap="large">
           <DatePicker
             value={day1}
             onChange={setDay1}
@@ -55,7 +54,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <DatePicker value={day2} disabled onChange={setDay2} />
         </Flex>
         <Text.Heading role={TextHeadingRoles.inner}>MonthPicker</Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
+        <Flex direction="horizontal" gap="large">
           <DatePicker.MonthPicker value={month1} onChange={setMonth1} />
           <DatePicker.MonthPicker
             clearable
@@ -79,7 +78,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           />
         </Flex>
         <Text.Heading role={TextHeadingRoles.inner}>YearPicker</Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
+        <Flex direction="horizontal" gap="large">
           <DatePicker.YearPicker value={year1} onChange={setYear1} />
           <DatePicker.YearPicker clearable value={year2} onChange={setYear2} />
           <DatePicker.YearPicker
@@ -105,9 +104,9 @@ export const RangeStory: StoryObj<typeof Flex> = {
     ]);
 
     return (
-      <Flex gap={Gap.large}>
+      <Flex gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>RangePicker</Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
+        <Flex direction="horizontal" gap="large">
           <DatePicker.RangePicker
             value={day1}
             onChange={setDay1}
@@ -121,7 +120,7 @@ export const RangeStory: StoryObj<typeof Flex> = {
             onChange={setDay2}
           />
         </Flex>
-        <Flex direction={Direction.horizontal} gap={Gap.xlarge}>
+        <Flex direction="horizontal" gap="large">
           <DatePicker.RangePicker
             value={day2}
             minDate={dayjs('2024-04-04')}

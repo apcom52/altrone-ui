@@ -3,14 +3,13 @@ import { FormFieldContextType, FormFieldProps } from '../Form.types.ts';
 import s from './field.module.scss';
 import { Tooltip } from '../../tooltip';
 import clsx from 'clsx';
-import { Size } from '../../../types';
 import { useFormContext } from '../Form.tsx';
 
 const FormFieldContext = createContext<FormFieldContextType>({
   name: '',
   disabled: false,
   invalid: false,
-  size: Size.medium,
+  size: 'medium',
 });
 export const useFormField = () => useContext(FormFieldContext);
 

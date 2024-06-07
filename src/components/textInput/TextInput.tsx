@@ -10,7 +10,6 @@ import { TextInputProps } from './TextInput.types.ts';
 import s from './textInput.module.scss';
 import clsx from 'clsx';
 import { useRainbowEffect } from '../application/RainbowEffect.tsx';
-import { Size } from '../../types';
 import { useResizeObserver, useBoolean } from 'utils';
 import {
   ActionIsland,
@@ -82,8 +81,8 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
     const wrapperCls = clsx(
       s.Wrapper,
       {
-        [s.Small]: inputSize === Size.small,
-        [s.Large]: inputSize === Size.large,
+        [s.Small]: inputSize === 'small',
+        [s.Large]: inputSize === 'large',
       },
       wrapperClassName,
     );

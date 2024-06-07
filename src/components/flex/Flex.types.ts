@@ -1,5 +1,4 @@
-import { Align, Direction, Gap, BasicComponentProps } from 'types';
-import { PropsWithChildren } from 'react';
+import { Align, Direction, Gap } from 'types';
 
 export interface FlexProps extends React.HTMLAttributes<HTMLDivElement> {
   gap?: Gap;

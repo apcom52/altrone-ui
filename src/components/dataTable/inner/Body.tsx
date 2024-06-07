@@ -11,7 +11,6 @@ export const Body = <T extends object>() => {
     columns,
     page,
     limit,
-    mobileColumns,
     selectableMode,
     selectedRows,
     selectRow,

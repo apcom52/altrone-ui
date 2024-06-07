@@ -1,12 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Flex, Text, TextHeadingRoles } from 'components';
-import { Direction, Gap, Size } from 'types';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Progress } from './Progress.tsx';
 
 const story: Meta<typeof Progress> = {
-  title: 'Components/Indicators/Progress',
+  title: 'Components/Display/Progress',
   component: Progress,
   decorators: [StorybookDecorator],
   args: {},
@@ -24,11 +23,11 @@ const story: Meta<typeof Progress> = {
 export const FlexLayout: StoryObj<typeof Flex> = {
   name: 'Using Flex',
   render: (args) => (
-    <Flex {...args} gap={Gap.large}>
+    <Flex {...args} gap="large">
       <Text.Heading role={TextHeadingRoles.inner}>
         Standard Progress bars
       </Text.Heading>
-      <Flex direction={Direction.horizontal} gap={Gap.large}>
+      <Flex direction="horizontal" gap="large">
         <Progress value={8} max={100} />
         <Progress value={63} max={100}>
           Charisma
@@ -41,11 +40,11 @@ export const FlexLayout: StoryObj<typeof Flex> = {
           )}
         </Progress>
       </Flex>
-      <Flex direction={Direction.horizontal} gap={Gap.large}>
-        <Progress size={Size.small} value={45} max={100}>
+      <Flex direction="horizontal" gap="large">
+        <Progress size="small" value={45} max={100}>
           Small progress
         </Progress>
-        <Progress size={Size.large} value={32} max={100}>
+        <Progress size="large" value={32} max={100}>
           Large progress
         </Progress>
       </Flex>

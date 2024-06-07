@@ -2,7 +2,6 @@ import { createContext, memo, useContext, useMemo } from 'react';
 import s from './toolbar.module.scss';
 import { ToolbarContextType, ToolbarProps } from './Toolbar.types.ts';
 import clsx from 'clsx';
-import { Align } from 'types';
 import { Action, Group } from './components';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 
@@ -16,9 +15,9 @@ const ToolbarComponent = memo<ToolbarProps>(
     const cls = clsx(
       s.Toolbar,
       {
-        [s.AlignCenter]: align === Align.center,
-        [s.AlignEnd]: align === Align.end,
-        [s.AlignBetween]: align === Align.between,
+        [s.AlignCenter]: align === 'center',
+        [s.AlignEnd]: align === 'end',
+        [s.AlignBetween]: align === 'between',
         [s.Compact]: compact,
       },
       className,

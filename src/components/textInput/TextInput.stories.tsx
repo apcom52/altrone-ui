@@ -9,7 +9,6 @@ import {
   TextHeadingRoles,
   TextInput,
 } from 'components';
-import { Direction, Gap, Size } from 'types';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { useState } from 'react';
@@ -44,11 +43,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [value6, setValue6] = useState('');
 
     return (
-      <Flex gap={Gap.large}>
+      <Flex gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>
           Basic TextInputs
         </Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large" align="center">
           <TextInput
             value={value1}
             onChange={setValue1}
@@ -75,7 +74,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         <Text.Heading role={TextHeadingRoles.inner}>
           Transparent TextInputs
         </Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <TextInput
             value={value1}
             onChange={setValue1}
@@ -106,7 +105,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         <Text.Heading role={TextHeadingRoles.inner}>
           Read-only mode
         </Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.small}>
+        <Flex direction="horizontal" gap="small">
           <TextInput value={value4} onChange={setValue4} readOnly={readonly} />
           <Button
             label={readonly ? 'Edit' : 'Save'}
@@ -117,7 +116,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           Small TextInputs
         </Text.Heading>
         <TextInput
-          size={Size.small}
+          size="small"
           value={value5}
           onChange={setValue5}
           placeholder="Type something in the small TextInput"
@@ -126,7 +125,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           Large TextInputs
         </Text.Heading>
         <TextInput
-          size={Size.large}
+          size="large"
           value={value6}
           onChange={setValue6}
           placeholder="Type something in the large TextInput"
@@ -135,7 +134,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           TextInput without rainbow effect
         </Text.Heading>
         <TextInput
-          size={Size.small}
+          size="small"
           value={value5}
           onChange={setValue5}
           placeholder="This just a TextInput without rainbow effect"
@@ -162,9 +161,9 @@ export const IslandsStory: StoryObj<typeof Flex> = {
     const [value9, setValue9] = useState('');
 
     return (
-      <Flex gap={Gap.large}>
+      <Flex gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>Text Islands</Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <TextInput
             value={value1}
             onChange={setValue1}
@@ -192,12 +191,12 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             />
           </TextInput>
         </Flex>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <TextInput
             value={value1}
             onChange={setValue1}
             placeholder="Type something"
-            size={Size.small}
+            size="small"
           >
             <TextInput.TextIsland label="$" />
             <TextInput.TextIsland placement="right" label=".00" />
@@ -206,7 +205,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             value={value2}
             onChange={setValue2}
             placeholder="Type something"
-            size={Size.small}
+            size="small"
           >
             <TextInput.TextIsland label="cmd:" />
           </TextInput>
@@ -214,7 +213,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             value={value3}
             onChange={setValue3}
             placeholder="Enter your zip"
-            size={Size.small}
+            size="small"
             maxLength={10}
           >
             <TextInput.TextIsland
@@ -223,12 +222,12 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             />
           </TextInput>
         </Flex>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <TextInput
             value={value1}
             onChange={setValue1}
             placeholder="Type something"
-            size={Size.large}
+            size="large"
           >
             <TextInput.TextIsland label="$" />
             <TextInput.TextIsland placement="right" label=".00" />
@@ -237,7 +236,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             value={value2}
             onChange={setValue2}
             placeholder="Type something"
-            size={Size.large}
+            size="large"
           >
             <TextInput.TextIsland label="cmd:" />
           </TextInput>
@@ -245,7 +244,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             value={value3}
             onChange={setValue3}
             placeholder="Enter your zip"
-            size={Size.large}
+            size="large"
             maxLength={10}
           >
             <TextInput.TextIsland
@@ -255,7 +254,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
           </TextInput>
         </Flex>
         <Text.Heading role={TextHeadingRoles.inner}>Icon Islands</Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <TextInput
             value={value4}
             onChange={setValue4}
@@ -286,12 +285,12 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             />
           </TextInput>
         </Flex>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <TextInput
             value={value6}
             onChange={setValue6}
             placeholder="Find a file"
-            size={Size.small}
+            size="small"
           >
             <TextInput.IconIsland icon={<Icon i="search" />} />
             <TextInput.IconIsland icon={<Icon i="folder" />} />
@@ -304,7 +303,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             value={value6}
             onChange={setValue6}
             placeholder="Find a file"
-            size={Size.large}
+            size="large"
           >
             <TextInput.IconIsland icon={<Icon i="search" />} />
             <TextInput.IconIsland icon={<Icon i="folder" />} />
@@ -317,7 +316,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
         <Text.Heading role={TextHeadingRoles.inner}>
           Action Islands
         </Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <TextInput value={value7} onChange={setValue7} placeholder="Username">
             <Dropdown
               focusFirstElement={false}
@@ -370,12 +369,12 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             />
           </TextInput>
         </Flex>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <TextInput
             value={value8}
             onChange={setValue8}
             placeholder="User Password"
-            size={Size.small}
+            size="small"
           >
             <TextInput.ActionIsland
               label="Generate"
@@ -387,7 +386,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             value={value8}
             onChange={setValue8}
             placeholder="Write your thoughts"
-            size={Size.large}
+            size="large"
           >
             <TextInput.ActionIsland
               icon={<Icon i="share" />}
@@ -406,7 +405,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
         <Text.Heading role={TextHeadingRoles.inner}>
           Custom Islands
         </Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <TextInput
             value={value9}
             onChange={setValue9}
@@ -428,7 +427,7 @@ export const CustomInputStory: StoryObj<typeof Flex> = {
     const [value, setValue] = useState('0');
 
     return (
-      <Flex gap={Gap.large}>
+      <Flex gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>
           Using custom component instead of standard input
         </Text.Heading>
@@ -448,7 +447,7 @@ export const SuggestionsInput: StoryObj<typeof Flex> = {
     console.log('>> value', value);
 
     return (
-      <Flex gap={Gap.large}>
+      <Flex gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>
           Start type and see the list of suggestions
         </Text.Heading>

@@ -24,7 +24,7 @@ export const Modal = memo<ModalProps>(
     title,
     leftActions,
     actions,
-    size = Size.medium,
+    size = 'medium',
     className,
     style,
     ...restProps
@@ -50,8 +50,8 @@ export const Modal = memo<ModalProps>(
     const cls = clsx(
       s.Modal,
       {
-        [s.Small]: size === Size.small,
-        [s.Large]: size === Size.large,
+        [s.Small]: size === 'small',
+        [s.Large]: size === 'large',
       },
       className,
       modalConfig.className,

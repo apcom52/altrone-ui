@@ -3,7 +3,6 @@ import { Form } from './Form.tsx';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { Direction, Gap, Role } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
 import { TextInput } from '../textInput';
 import { PasswordInput } from '../passwordInput';
@@ -16,7 +15,7 @@ import { SELECT_COUNTRIES } from '../select/Select.stories.tsx';
 import dayjs from 'dayjs';
 
 const story: Meta<typeof Form> = {
-  title: 'Components/Form/Form',
+  title: 'Components/Containers/Form',
   component: Form,
   decorators: [StorybookDecorator],
   args: {},
@@ -34,11 +33,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using Forms',
   render: () => {
     return (
-      <Flex gap={Gap.large}>
+      <Flex gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>
           Authorization Form
         </Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <Form>
             <Form.Field
               name="username"
@@ -60,7 +59,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               <TextInput placeholder="Type something" />
             </Form.Field>
             <Text.Heading role={TextHeadingRoles.inner}>TextInput</Text.Heading>
-            <Flex direction={Direction.horizontal} gap={Gap.large}>
+            <Flex direction="horizontal" gap="large">
               <Form.Field label="Disabled" disabled>
                 <TextInput placeholder="Type something" />
               </Form.Field>
@@ -74,7 +73,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             <Text.Heading role={TextHeadingRoles.inner}>
               NumberInput
             </Text.Heading>
-            <Flex direction={Direction.horizontal} gap={Gap.large}>
+            <Flex direction="horizontal" gap="large">
               <Form.Field label="Disabled" disabled>
                 <NumberInput placeholder="Type something" />
               </Form.Field>
@@ -86,7 +85,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               </Form.Field>
             </Flex>
             <Text.Heading role={TextHeadingRoles.inner}>Textarea</Text.Heading>
-            <Flex direction={Direction.horizontal} gap={Gap.large}>
+            <Flex direction="horizontal" gap="large">
               <Form.Field label="Disabled" disabled>
                 <Textarea placeholder="Type something" />
               </Form.Field>
@@ -98,7 +97,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               </Form.Field>
             </Flex>
             <Text.Heading role={TextHeadingRoles.inner}>Select</Text.Heading>
-            <Flex direction={Direction.horizontal} gap={Gap.large}>
+            <Flex direction="horizontal" gap="large">
               <Form.Field label="Disabled" disabled>
                 <Select
                   options={SELECT_COUNTRIES}
@@ -120,7 +119,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             <Text.Heading role={TextHeadingRoles.inner}>
               DatePicker
             </Text.Heading>
-            <Flex direction={Direction.horizontal} gap={Gap.large}>
+            <Flex direction="horizontal" gap="large">
               <Form.Field label="Disabled" disabled>
                 <DatePicker />
               </Form.Field>
@@ -131,7 +130,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 <DatePicker value={dayjs('2024-04-04')} />
               </Form.Field>
             </Flex>
-            <Button role={Role.primary} label="Submit" />
+            <Button role="primary" label="Submit" />
           </Form>
         </Flex>
       </Flex>

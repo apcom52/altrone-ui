@@ -4,7 +4,6 @@ import s from './pagination.module.scss';
 import clsx from 'clsx';
 import { Popover } from '../popover';
 import { Flex } from '../flex';
-import { Align, Gap, Role } from '../../types';
 import { NumberInput } from '../numberInput';
 import { Button } from '../button';
 import { PaginationProps } from './Pagination.types.ts';
@@ -69,11 +68,7 @@ export const Pagination = memo<PaginationProps>(
           placement="top"
           showCloseButton
           content={({ closePopup }) => (
-            <Flex
-              gap={Gap.medium}
-              align={Align.end}
-              style={{ maxWidth: '150px' }}
-            >
+            <Flex gap="medium" align="end" style={{ maxWidth: '150px' }}>
               <NumberInput
                 value={virtualPage}
                 onChange={setVirtualPage}
@@ -81,7 +76,7 @@ export const Pagination = memo<PaginationProps>(
                 max={totalPages}
               />
               <Button
-                role={Role.primary}
+                role="primary"
                 label="Navigate"
                 onClick={() => {
                   navigateToPage();

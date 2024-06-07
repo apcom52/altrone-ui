@@ -2,7 +2,6 @@ import { memo } from 'react';
 import { TabsProps } from './Tabs.types.ts';
 import clsx from 'clsx';
 import s from './tabs.module.scss';
-import { Direction, Gap } from '../../types';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 import { Flex } from '../flex';
 import { Item } from './components/Item.tsx';
@@ -21,8 +20,8 @@ const Tabs = memo<TabsProps>(({ children, className, style, ...props }) => {
     <Flex
       className={cls}
       style={styles}
-      direction={Direction.horizontal}
-      gap={Gap.medium}
+      direction="horizontal"
+      gap="medium"
       {...props}
     >
       {children}

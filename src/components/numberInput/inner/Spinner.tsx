@@ -20,14 +20,14 @@ export const Spinner = memo<SpinnerProps>(
     disabledDown,
     onDownClick,
     onUpClick,
-    size = Size.medium,
+    size = 'medium',
   }) => {
     const topDisabled = disabledUp || disabled;
     const bottomDisabled = disabledDown || disabled;
 
     const cls = clsx(s.Spinner, {
-      [s.Small]: size === Size.small,
-      [s.Large]: size === Size.large,
+      [s.Small]: size === 'small',
+      [s.Large]: size === 'large',
     });
 
     return (

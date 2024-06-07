@@ -2,12 +2,11 @@ import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { Gap } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
 import { Spoiler } from './Spoiler.tsx';
 
 const story: Meta<typeof Spoiler> = {
-  title: 'Components/Display/Spoiler',
+  title: 'Components/Container/Spoiler',
   component: Spoiler,
   decorators: [StorybookDecorator],
   args: {},
@@ -26,9 +25,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using Spoilers',
   render: () => {
     return (
-      <Flex gap={Gap.large}>
+      <Flex gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>Spoilers</Text.Heading>
-        <Flex gap={Gap.large}>
+        <Flex gap="large">
           <Spoiler title="The Beauty of Nature">
             <Text.Paragraph>
               Nature's beauty is a profound source of inspiration and solace.

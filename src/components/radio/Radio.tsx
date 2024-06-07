@@ -13,7 +13,6 @@ import { useConfiguration } from '../configuration/AltroneConfiguration.context.
 import { RadioContext, RadioProps } from './Radio.types.ts';
 import { RadioItem } from './components';
 import { getSafeArray } from '../../utils';
-import { Direction } from '../../types';
 
 const RadioContextWrapper = createContext<RadioContext>({
   value: '',
@@ -30,7 +29,7 @@ const RadioWrapper = memo<RadioProps>(
     onChange,
     className,
     style,
-    direction = Direction.horizontal,
+    direction = 'horizontal',
     name,
     disabled,
     ...restProps
@@ -44,7 +43,7 @@ const RadioWrapper = memo<RadioProps>(
     const cls = clsx(
       s.RadioList,
       {
-        [s.Vertical]: direction === Direction.vertical,
+        [s.Vertical]: direction === 'vertical',
       },
       className,
       radioConfig.className,

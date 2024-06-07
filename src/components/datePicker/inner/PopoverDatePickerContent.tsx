@@ -1,6 +1,5 @@
 import { memo } from 'react';
 import { Flex } from 'components';
-import { Gap } from 'types';
 import { DatePickerHeader } from './DatePickerHeader.tsx';
 import { DatePickerFooter } from './DatePickerFooter.tsx';
 import s from './calendar.module.scss';
@@ -23,7 +22,7 @@ export const PopoverDatePickerContent = memo<DatePickerContentProps>(
     };
 
     return (
-      <Flex gap={Gap.large} className={cls} style={styles}>
+      <Flex gap="large" className={cls} style={styles}>
         <DatePickerHeader />
         {viewMode === 'day' ? <DayPicker /> : null}
         {viewMode === 'month' ? <MonthPicker /> : null}

@@ -7,7 +7,6 @@ import {
   Text,
   TextHeadingRoles,
 } from 'components';
-import { Align, Gap, Size } from 'types';
 import { StorybookDecorator } from 'global/storybook';
 import { TopNavigation } from './TopNavigation.tsx';
 
@@ -23,7 +22,7 @@ export const TooltipStory: StoryObj<typeof TopNavigation> = {
   name: 'Using TopNavigation',
   render: () => {
     return (
-      <Flex gap={Gap.large}>
+      <Flex gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>
           Standard TopNavigation
         </Text.Heading>
@@ -56,11 +55,11 @@ export const TooltipStory: StoryObj<typeof TopNavigation> = {
             <TopNavigation.Link label="Enterprise" />
             <TopNavigation.Link label="Pricing" />
           </TopNavigation.Group>
-          <TopNavigation.Group align={Align.end}>
+          <TopNavigation.Group align="end">
             <Button leftIcon={<Icon i="globe" />} />
             <TopNavigation.Link label="Log In" />
             <TopNavigation.Link label="Contact Sales" />
-            <Button size={Size.large} label="Get started" />
+            <Button size="large" label="Get started" />
           </TopNavigation.Group>
         </TopNavigation>
       </Flex>

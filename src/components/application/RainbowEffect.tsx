@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 import s from './rainbow.module.scss';
-import { Point } from '../../types';
+import { Point } from 'types';
 import { useMutationObserver } from '../../utils/hooks/useMutationObserver.ts';
 
 interface RainbowEffectContextType {

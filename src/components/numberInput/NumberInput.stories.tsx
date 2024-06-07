@@ -4,7 +4,6 @@ import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
 import { useState } from 'react';
-import { Direction, Gap, Size } from '../../types';
 import { Text, TextHeadingRoles } from '../text';
 import { TextInput } from '../textInput';
 import { Icon } from '../icon';
@@ -37,9 +36,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [value6, setValue6] = useState<number | undefined>(undefined);
 
     return (
-      <Flex gap={Gap.large}>
+      <Flex gap="large">
         <Text.Heading role={TextHeadingRoles.inner}>NumberInput</Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <NumberInput
             value={value1}
             onChange={setValue1}
@@ -63,7 +62,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             max={100}
           />
         </Flex>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <NumberInput
             value={value4}
             onChange={setValue4}
@@ -81,14 +80,14 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         <Text.Heading role={TextHeadingRoles.inner}>
           Different sizes of NumberInput
         </Text.Heading>
-        <Flex direction={Direction.horizontal} gap={Gap.large}>
+        <Flex direction="horizontal" gap="large">
           <NumberInput
             value={value5}
             onChange={setValue5}
             placeholder="0,00"
             decimalDelimiter=","
             groupingDelimiter="."
-            size={Size.small}
+            size="small"
           />
           <NumberInput
             value={value6}
@@ -98,7 +97,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             groupingDelimiter=","
             digitsAfterPoint={2}
             allowNegative
-            size={Size.large}
+            size="large"
           />
         </Flex>
       </Flex>

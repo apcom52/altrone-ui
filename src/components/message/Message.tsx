@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import { MessageProps } from './Message.types.ts';
 import { Flex } from 'components';
-import { Align, Direction, Gap, Role } from '../../types';
 import s from './message.module.scss';
 import clsx from 'clsx';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
@@ -21,10 +20,10 @@ export const Message = memo<MessageProps>(
     const cls = clsx(
       s.Message,
       {
-        [s.RolePrimary]: role === Role.primary,
-        [s.RoleSuccess]: role === Role.success,
-        [s.RoleWarning]: role === Role.warning,
-        [s.RoleDanger]: role === Role.danger,
+        [s.RolePrimary]: role === 'primary',
+        [s.RoleSuccess]: role === 'success',
+        [s.RoleWarning]: role === 'warning',
+        [s.RoleDanger]: role === 'danger',
       },
       className,
       messageConfig.className,
@@ -38,14 +37,14 @@ export const Message = memo<MessageProps>(
     return (
       <Flex
         className={cls}
-        gap={Gap.large}
-        direction={Direction.horizontal}
+        gap="large"
+        direction="horizontal"
         style={styles}
         role="alert"
         {...props}
       >
         {icon ? <div className={s.Icon}>{icon}</div> : null}
-        <Flex className={s.Content} gap={Gap.medium} justify={Align.center}>
+        <Flex className={s.Content} gap="medium" justify="center">
           {header ? <div className={s.Header}>{header}</div> : null}
           <div className={s.Description}>{children}</div>
         </Flex>

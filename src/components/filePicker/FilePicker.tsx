@@ -14,7 +14,6 @@ import s from './filePicker.module.scss';
 import { File } from './inner/File.tsx';
 import { FilePickerContextType } from './FilePicker.types.ts';
 import { Flex } from '../flex';
-import { Align, Direction, Gap } from '../../types';
 import { Icon } from '../icon';
 import { v4 as uuid } from 'uuid';
 import { deleteFileRequest } from './FilePicker.utils.ts';
@@ -133,9 +132,9 @@ export const FilePicker = memo<FilePickerProps>(
     return (
       <FilePickerContext.Provider value={filePickerContext}>
         <Flex
-          direction={Direction.horizontal}
-          gap={Gap.medium}
-          align={Align.center}
+          direction="horizontal"
+          gap="medium"
+          align="center"
           wrap
           className={cls}
           style={styles}

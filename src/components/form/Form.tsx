@@ -8,7 +8,6 @@ import {
 } from 'react';
 import { FormContextType, FormProps } from './Form.types.ts';
 import { Flex } from '../flex';
-import { Align, Gap, Size } from '../../types';
 import { Field } from './components/Field.tsx';
 import s from './form.module.scss';
 
@@ -22,7 +21,7 @@ const FormWrapper = forwardRef<HTMLFormElement, FormProps<any>>(
       errorMessages = {},
       disabled,
       onSubmit,
-      size = Size.medium,
+      size = 'medium',
       ...restProps
     } = props;
 
@@ -49,7 +48,7 @@ const FormWrapper = forwardRef<HTMLFormElement, FormProps<any>>(
         {...restProps}
       >
         <FormContext.Provider value={formContext}>
-          <Flex align={Align.start} gap={Gap.large}>
+          <Flex align="start" gap="large">
             {children}
           </Flex>
         </FormContext.Provider>

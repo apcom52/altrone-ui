@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Flex, Text, TextHeadingRoles } from 'components';
-import { Direction, Gap } from 'types';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Tags } from './Tags.tsx';
@@ -24,9 +23,9 @@ const story: Meta<typeof Tags> = {
 export const FlexLayout: StoryObj<typeof Flex> = {
   name: 'Using Tags',
   render: (args) => (
-    <Flex {...args} gap={Gap.large}>
+    <Flex {...args} gap="large">
       <Text.Heading role={TextHeadingRoles.inner}>Standard Tags</Text.Heading>
-      <Flex direction={Direction.horizontal} gap={Gap.large}>
+      <Flex direction="horizontal" gap="large">
         <Tags>
           <Tags.Item href="#ai" label="#AI" />
           <Tags.Item href="#technology" label="#Technology" />

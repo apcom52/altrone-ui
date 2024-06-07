@@ -7,7 +7,6 @@ import { getSafeArray, useBoolean } from 'utils';
 import { Button, Icon, Flex } from 'components';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 import clsx from 'clsx';
-import { Align, Gap } from 'types';
 import s from './collapsed-list.module.scss';
 
 export const CollapsedList = memo<CollapsedListProps>(
@@ -69,9 +68,9 @@ export const CollapsedList = memo<CollapsedListProps>(
     return (
       <Flex
         className={cls}
-        align={Align.start}
+        align="start"
         style={styles}
-        gap={Gap.medium}
+        gap="medium"
         {...restProps}
       >
         <Flex gap={gap}>{visibleChildren}</Flex>
