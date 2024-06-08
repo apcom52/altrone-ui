@@ -25,11 +25,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using Calendar',
   render: () => {
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>
           Basic Calendar
         </Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <Calendar
             month={new Date(2024, 3)}
             selectedDates={[new Date(2024, 3, 14), new Date(2024, 3, 18)]}

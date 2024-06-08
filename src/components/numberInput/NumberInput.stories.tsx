@@ -36,9 +36,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [value6, setValue6] = useState<number | undefined>(undefined);
 
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>NumberInput</Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <NumberInput
             value={value1}
             onChange={setValue1}
@@ -62,7 +62,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             max={100}
           />
         </Flex>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <NumberInput
             value={value4}
             onChange={setValue4}
@@ -80,7 +80,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         <Text.Heading role={TextHeadingRoles.inner}>
           Different sizes of NumberInput
         </Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <NumberInput
             value={value5}
             onChange={setValue5}
@@ -97,7 +97,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             groupingDelimiter=","
             digitsAfterPoint={2}
             allowNegative
-            size="large"
+            size="l"
           />
         </Flex>
       </Flex>

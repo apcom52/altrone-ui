@@ -1,4 +1,4 @@
-import { Icon } from 'components';
+import { Icon } from 'components/icon';
 import s from './header.module.scss';
 import { useDatePickerViewContext } from '../DatePicker.contexts.ts';
 import { useYearRanges } from '../utils.ts';

@@ -1,11 +1,12 @@
 import { memo } from 'react';
-import { Toolbar } from '../../toolbar';
-import { Divider } from '../../divider';
+import { Toolbar } from 'components/toolbar';
+import { Divider } from 'components/divider';
 import s from './toolbar.module.scss';
-import { Icon, Text } from 'components';
+import { Icon } from 'components/icon';
+import { Text } from 'components/text';
 import { PhotoViewerToolbarProps } from '../PhotoViewer.types.ts';
-import { Popover } from '../../popover';
-import { Scrollable } from '../../scrollable';
+import { Popover } from 'components/popover';
+import { Scrollable } from 'components/scrollable';
 
 export const PhotoViewerToolbar = memo<PhotoViewerToolbarProps>(
   ({
@@ -50,7 +51,7 @@ export const PhotoViewerToolbar = memo<PhotoViewerToolbarProps>(
               maxHeight="300px"
               offset={{ top: 0, left: 0, right: 4, bottom: 0 }}
             >
-              <Text.Paragraph size="small">
+              <Text.Paragraph size="s">
                 {description || 'No description'}
               </Text.Paragraph>
             </Scrollable>

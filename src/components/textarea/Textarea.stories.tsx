@@ -28,11 +28,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [value1, setValue1] = useState('');
 
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>
           TextArea component
         </Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <Textarea
             value={value1}
             onChange={setValue1}

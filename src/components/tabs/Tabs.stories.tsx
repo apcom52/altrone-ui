@@ -23,9 +23,9 @@ const story: Meta<typeof Tabs> = {
 export const FlexLayout: StoryObj<typeof Flex> = {
   name: 'Using Tags',
   render: (args) => (
-    <Flex {...args} gap="large">
+    <Flex {...args} gap="l">
       <Text.Heading role={TextHeadingRoles.inner}>Standard Tabs</Text.Heading>
-      <Flex direction="horizontal" gap="large">
+      <Flex direction="horizontal" gap="l">
         <Tabs>
           <Tabs.Item selected href="#chat" label="Chat" />
           <Tabs.Item href="#description" label="Description" />

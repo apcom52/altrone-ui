@@ -1,1 +1,0 @@
-export { DefaultFloatingBoxStory } from './DefaultFloatingBoxStory';

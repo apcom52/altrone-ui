@@ -2,7 +2,19 @@ import { memo } from 'react';
 import { FlexProps } from './Flex.types.ts';
 import clsx from 'clsx';
 import s from './flex.module.scss';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
+import { Gap } from 'types';
+
+const gapValues: Record<Gap, number> = {
+  none: 0,
+  xxs: 2,
+  xs: 4,
+  s: 6,
+  m: 8,
+  l: 12,
+  xl: 24,
+  xxl: 32,
+};
 
 export const Flex = memo<FlexProps>(
   ({
@@ -40,7 +52,7 @@ export const Flex = memo<FlexProps>(
     const styles = {
       ...flex.style,
       ...style,
-      gap: `${gap}px`,
+      gap: `${gapValues[gap]}px`,
     };
 
     return (

@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import s from './footer.module.scss';
-import { Button, Icon } from 'components';
+import { Button } from 'components/button';
+import { Icon } from 'components/icon';
 import {
   useDateContext,
   useDatePickerCloseFn,

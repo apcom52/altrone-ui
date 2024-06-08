@@ -31,11 +31,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [value4, setValue4] = useState(false);
 
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>
           Basic Checkboxes
         </Text.Heading>
-        <Flex direction="horizontal" gap="large" align="center">
+        <Flex direction="horizontal" gap="l" align="center">
           <Text.Paragraph>Permissions:</Text.Paragraph>
           <Switcher checked={value2} onChange={setValue2}>
             Read

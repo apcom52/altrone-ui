@@ -4,7 +4,7 @@ import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Popover } from './Popover.tsx';
 import { expect, userEvent, within } from '@storybook/test';
-import { timeout } from '../../../old_src/utils';
+import { timeout } from 'utils';
 
 const story: Meta<typeof Popover> = {
   title: 'Components/Containers/Popover',
@@ -25,20 +25,20 @@ const story: Meta<typeof Popover> = {
 export const PopoverStory: StoryObj<typeof Flex> = {
   name: 'Using Popover',
   render: () => (
-    <Flex direction="vertical" gap="large">
+    <Flex direction="vertical" gap="l">
       <Text.Heading role={TextHeadingRoles.inner}>Basic Popovers</Text.Heading>
-      <Flex direction="horizontal" gap="large">
+      <Flex direction="horizontal" gap="l">
         <Popover
           placement="bottom"
           title="System update"
           showCloseButton
           data-testid="popover-click"
           content={
-            <Flex gap="medium">
-              <Text.Paragraph size="small">
+            <Flex gap="m">
+              <Text.Paragraph size="s">
                 We're gearing up for a system update packed with improvements
               </Text.Paragraph>
-              <Flex justify="end" direction="horizontal" gap="small">
+              <Flex justify="end" direction="horizontal" gap="s">
                 <Button label="Reschedule update" />
                 <Button label="Update now" />
               </Flex>
@@ -53,11 +53,11 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showCloseButton
           showArrow
           content={
-            <Flex gap="medium">
-              <Text.Paragraph size="small">
+            <Flex gap="m">
+              <Text.Paragraph size="s">
                 We're gearing up for a system update packed with improvements
               </Text.Paragraph>
-              <Flex justify="end" direction="horizontal" gap="small">
+              <Flex justify="end" direction="horizontal" gap="s">
                 <Button label="Reschedule update" />
                 <Button label="Update now" />
               </Flex>
@@ -87,7 +87,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           style={{ maxWidth: '200px' }}
           data-testid="popover-parent"
           content={
-            <Text.Paragraph size="small">
+            <Text.Paragraph size="s">
               Click here to open child popover{' '}
               <Popover
                 showArrow
@@ -107,13 +107,13 @@ export const PopoverStory: StoryObj<typeof Flex> = {
       <Text.Heading role={TextHeadingRoles.inner}>
         How to trigger the popover?
       </Text.Heading>
-      <Flex direction="horizontal" gap="large">
+      <Flex direction="horizontal" gap="l">
         <Popover
           trigger="click"
           placement="top"
           showArrow={true}
           content={
-            <Text.Paragraph size="small">
+            <Text.Paragraph size="s">
               Join Our Newsletter for Exciting Updates &{' '}
               <Text.Link href="#">Special Deals</Text.Link>!
             </Text.Paragraph>
@@ -127,7 +127,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showArrow={true}
           data-testid="popover-hover"
           content={
-            <Text.Paragraph size="small">
+            <Text.Paragraph size="s">
               Join Our Newsletter for Exciting Updates &{' '}
               <Text.Link href="#">Special Deals</Text.Link>!
             </Text.Paragraph>
@@ -141,7 +141,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showArrow={true}
           data-testid="popover-focus"
           content={
-            <Text.Paragraph size="small">
+            <Text.Paragraph size="s">
               Join Our Newsletter for Exciting Updates &{' '}
               <Text.Link href="#">Special Deals</Text.Link>!
             </Text.Paragraph>
@@ -150,11 +150,11 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           <Button label="Focus me" data-testid="button-focus" />
         </Popover>
       </Flex>
-      <Flex direction="horizontal" gap="large"></Flex>
+      <Flex direction="horizontal" gap="l"></Flex>
       <Text.Heading role={TextHeadingRoles.inner}>
         Different placement of popover
       </Text.Heading>
-      <Flex direction="horizontal" gap="large">
+      <Flex direction="horizontal" gap="l">
         <Popover
           placement="top"
           title="Unraveling Dark Matter's Mystery"
@@ -162,7 +162,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showArrow
           style={{ maxWidth: '250px' }}
           content={
-            <Text.Paragraph size="small">
+            <Text.Paragraph size="s">
               Dark matter, comprising 27% of the universe, defies detection
               despite its gravitational influence on celestial bodies. Theories
               abound regarding its composition, yet conclusive evidence remains
@@ -180,7 +180,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showArrow
           style={{ maxWidth: '250px' }}
           content={
-            <Text.Paragraph size="small">
+            <Text.Paragraph size="s">
               Dark matter, comprising 27% of the universe, defies detection
               despite its gravitational influence on celestial bodies. Theories
               abound regarding its composition, yet conclusive evidence remains
@@ -199,7 +199,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showArrow
           style={{ maxWidth: '260px' }}
           content={
-            <Text.Paragraph size="small">
+            <Text.Paragraph size="s">
               Dark matter, comprising 27% of the universe, defies detection
               despite its gravitational influence on celestial bodies. Theories
               abound regarding its composition, yet conclusive evidence remains
@@ -217,7 +217,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showArrow
           style={{ maxWidth: '160px' }}
           content={
-            <Text.Paragraph size="small">
+            <Text.Paragraph size="s">
               Dark matter, comprising 27% of the universe, defies detection
               despite its gravitational influence on celestial bodies. Theories
               abound regarding its composition, yet conclusive evidence remains
@@ -232,7 +232,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
       <Text.Heading role={TextHeadingRoles.inner}>
         Disabled popovers
       </Text.Heading>
-      <Flex direction="horizontal" gap="large">
+      <Flex direction="horizontal" gap="l">
         <Popover
           placement="top"
           title="Unraveling Dark Matter's Mystery"
@@ -242,7 +242,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showArrow
           style={{ maxWidth: '250px' }}
           content={
-            <Text.Paragraph size="small">
+            <Text.Paragraph size="s">
               Dark matter, comprising 27% of the universe, defies detection
               despite its gravitational influence on celestial bodies. Theories
               abound regarding its composition, yet conclusive evidence remains

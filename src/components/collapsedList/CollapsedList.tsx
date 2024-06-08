@@ -4,8 +4,10 @@ import {
   CollapsedListProps,
 } from './CollapsedList.types.ts';
 import { getSafeArray, useBoolean } from 'utils';
-import { Button, Icon, Flex } from 'components';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { Button } from 'components/button';
+import { Icon } from 'components/icon';
+import { Flex } from 'components/flex';
+import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import s from './collapsed-list.module.scss';
 
@@ -66,13 +68,7 @@ export const CollapsedList = memo<CollapsedListProps>(
     };
 
     return (
-      <Flex
-        className={cls}
-        align="start"
-        style={styles}
-        gap="medium"
-        {...restProps}
-      >
+      <Flex className={cls} align="start" style={styles} gap="m" {...restProps}>
         <Flex gap={gap}>{visibleChildren}</Flex>
         {showExpandButton ? (
           <Button

@@ -1,7 +1,9 @@
 import { memo } from 'react';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
+import { Icon } from 'components/icon';
+import { Popover } from 'components/popover';
+import { Text } from 'components/text';
 import { TooltipTypes } from './Tooltip.types.ts';
-import { Icon, Popover, Text } from 'components';
 import clsx from 'clsx';
 import s from './tooltip.module.scss';
 
@@ -24,12 +26,7 @@ export const Tooltip = memo<TooltipTypes>(
 
     const tooltipContent =
       typeof content === 'string' ? (
-        <Text.Paragraph
-          size="small"
-          className={cls}
-          style={styles}
-          {...restProps}
-        >
+        <Text.Paragraph size="s" className={cls} style={styles} {...restProps}>
           {content}
         </Text.Paragraph>
       ) : (

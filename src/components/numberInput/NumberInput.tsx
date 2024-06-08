@@ -1,8 +1,8 @@
 import { forwardRef, useCallback, useRef } from 'react';
 import { NumberInputProps } from './NumberInput.types.ts';
-import { TextInput } from '../textInput';
-import { getSafeArray } from '../../utils';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { TextInput } from 'components/textInput';
+import { getSafeArray } from 'utils';
+import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import { Spinner } from './inner/Spinner.tsx';
 import {
@@ -12,7 +12,7 @@ import {
 } from 'react-number-format';
 import s from './numberInput.module.scss';
 import inputStyles from '../textInput/textInput.module.scss';
-import { triggerNativeEvent } from '../../utils/events.ts';
+import { triggerNativeEvent } from 'utils/events.ts';
 import { useFormField } from '../form/components/Field.tsx';
 
 export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(

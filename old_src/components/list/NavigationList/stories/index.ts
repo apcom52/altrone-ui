@@ -1,1 +1,0 @@
-export { SimpleNavigationList } from './SimpleNavigationList';

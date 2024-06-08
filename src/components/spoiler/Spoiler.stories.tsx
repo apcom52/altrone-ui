@@ -25,9 +25,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using Spoilers',
   render: () => {
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>Spoilers</Text.Heading>
-        <Flex gap="large">
+        <Flex gap="l">
           <Spoiler title="The Beauty of Nature">
             <Text.Paragraph>
               Nature's beauty is a profound source of inspiration and solace.

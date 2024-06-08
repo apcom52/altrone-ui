@@ -28,7 +28,7 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
   name: 'Using Toolbar',
   render: () => {
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>Basic Toolbar</Text.Heading>
         <Toolbar>
           <Toolbar.Action icon={<Icon i="settings" />} label="General" />

@@ -2,7 +2,8 @@ import s from './altroneApplication.module.scss';
 import { AltroneApplicationProps, Theme } from './AltroneApplication.types.ts';
 import { useMediaMatch } from 'utils';
 import clsx from 'clsx';
-import { AltroneConfiguration, useToast } from 'components';
+import { AltroneConfiguration } from 'components/configuration';
+import { useToast } from 'components/toasts';
 import { createElement, useEffect } from 'react';
 import { RainbowEffect } from './RainbowEffect.tsx';
 import { Toast } from 'components/toasts/Toast.tsx';
@@ -19,10 +20,6 @@ export const AltroneApplication = ({
 }: AltroneApplicationProps) => {
   let _theme = theme;
   const mediaScheme = useMediaMatch('(prefers-color-scheme: dark)');
-
-  const toast = useToast();
-
-  const hasToastWrapper = Boolean(toast);
 
   if (theme === Theme.auto) {
     _theme = mediaScheme ? Theme.dark : Theme.light;
@@ -47,7 +44,7 @@ export const AltroneApplication = ({
     },
     <AltroneConfiguration theme={_theme} {...config}>
       <RainbowEffect>
-        {!hasToastWrapper ? <Toast>{children}</Toast> : children}
+        <Toast>{children}</Toast>
       </RainbowEffect>
     </AltroneConfiguration>,
   );

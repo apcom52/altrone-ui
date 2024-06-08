@@ -30,7 +30,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using DataTable',
   render: () => {
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>
           Basic DataTable
         </Text.Heading>
@@ -80,7 +80,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
   name: 'Using filtering and sorting',
   render: () => {
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>
           DataTable with filtering and sorting
         </Text.Heading>
@@ -131,7 +131,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
               filterable: true,
               searchable: true,
               Component: ({ value }) => (
-                <Flex gap="small" wrap direction="horizontal">
+                <Flex gap="s" wrap direction="horizontal">
                   {value.map((skill, skillIndex) => (
                     <Text.Code key={skillIndex}>{skill}</Text.Code>
                   ))}

@@ -15,16 +15,16 @@ export const TooltipStory: StoryObj<typeof Tooltip> = {
   name: 'Using Tooltips',
   render: () => {
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>Tooltips</Text.Heading>
-        <Flex direction="horizontal" gap="medium">
+        <Flex direction="horizontal" gap="m">
           <Tooltip content="Simple tooltip without custom child element" />
           <Tooltip content="Here is the tooltip of the button">
             <Button leftIcon={<Icon i="help_outline" />} />
           </Tooltip>
           <Tooltip
             content={
-              <Text.Paragraph size="small">
+              <Text.Paragraph size="s">
                 Open the help page <Text.Keyboard>Ctrl+H</Text.Keyboard>
               </Text.Paragraph>
             }

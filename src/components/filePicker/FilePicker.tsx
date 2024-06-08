@@ -1,9 +1,7 @@
 import {
   ChangeEvent,
-  createContext,
   memo,
   useCallback,
-  useContext,
   useMemo,
   useRef,
   useState,
@@ -11,25 +9,15 @@ import {
 import { Button } from '../button';
 import { FileItem, FilePickerProps } from './FilePicker.types.ts';
 import s from './filePicker.module.scss';
-import { File } from './inner/File.tsx';
+import { File } from './inner';
 import { FilePickerContextType } from './FilePicker.types.ts';
-import { Flex } from '../flex';
-import { Icon } from '../icon';
+import { Flex } from 'components/flex';
+import { Icon } from 'components/icon';
 import { v4 as uuid } from 'uuid';
 import { deleteFileRequest } from './FilePicker.utils.ts';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
-
-const FilePickerContext = createContext<FilePickerContextType>({
-  autoUpload: true,
-  url: '',
-  method: '',
-  name: '',
-  autoUploadFn: async () => new Promise<void>((_) => {}),
-  removeFileFn: async () => new Promise<void>((_) => {}),
-});
-
-export const useFilePickerContext = () => useContext(FilePickerContext);
+import { FilePickerContext } from './FilePicker.context.ts';
 
 export const FilePicker = memo<FilePickerProps>(
   ({
@@ -133,7 +121,7 @@ export const FilePicker = memo<FilePickerProps>(
       <FilePickerContext.Provider value={filePickerContext}>
         <Flex
           direction="horizontal"
-          gap="medium"
+          gap="m"
           align="center"
           wrap
           className={cls}

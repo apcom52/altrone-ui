@@ -1,9 +1,9 @@
 import { DropdownCheckboxProps } from '../Dropdown.types';
 import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
-import { Icon } from 'components';
+import { Icon } from 'components/icon';
 import s from './action.module.scss';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 import { useId } from 'react';
 
 export function DropdownCheckbox({

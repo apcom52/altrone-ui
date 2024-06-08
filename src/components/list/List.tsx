@@ -2,8 +2,8 @@ import { Fragment, memo } from 'react';
 import { ListItemContext, ListProps } from './List.types.ts';
 import s from './list.module.scss';
 import clsx from 'clsx';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
-import { Flex } from 'components';
+import { useConfiguration } from 'components/configuration';
+import { Flex } from 'components/flex';
 
 const List = <DataType extends object>({
   data,

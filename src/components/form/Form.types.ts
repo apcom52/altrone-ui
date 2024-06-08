@@ -1,5 +1,5 @@
-import { AnyObject } from '../../utils';
-import { Size } from '../../types';
+import { AnyObject } from 'utils';
+import { Size } from 'types';
 
 export interface FormProps<FormState extends AnyObject>
   extends Omit<React.HTMLProps<HTMLFormElement>, 'size'> {

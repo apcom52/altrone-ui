@@ -1,1 +1,0 @@
-export { DefaultParagraphStory } from './DefaultParagraphStory';

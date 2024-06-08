@@ -37,11 +37,11 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
     const [showHiddenItems, setShowHiddenItems] = useState(false);
 
     return (
-      <Flex direction="vertical" gap="large">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>
           Basic Dropdowns
         </Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <Dropdown
             placement="bottom"
             data-testid="dropdown-1"

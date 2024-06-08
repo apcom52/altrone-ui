@@ -1,12 +1,11 @@
 import { isValidElement, memo, useEffect } from 'react';
 import { PhotoViewerProps } from './PhotoViewer.types';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
-import { getSafeArray } from '../../utils';
+import { useConfiguration } from 'components/configuration';
+import { getSafeArray, useNumber } from 'utils';
 import { Image } from './components';
 import s from './photoViewer.module.scss';
 import clsx from 'clsx';
-import { PhotoViewerToolbar } from './inner/PhotoViewerToolbar.tsx';
-import { useNumber } from '../../utils/hooks';
+import { PhotoViewerToolbar } from './inner';
 
 const PhotoViewerComponent = memo(
   ({

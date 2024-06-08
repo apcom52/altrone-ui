@@ -2,8 +2,8 @@ import { forwardRef } from 'react';
 import { ToolbarActionProps } from '../Toolbar.types.ts';
 import s from './action.module.scss';
 import clsx from 'clsx';
-import { useToolbarContext } from '../Toolbar.tsx';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useToolbarContext } from '../Toolbar.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export const Action = forwardRef<HTMLButtonElement, ToolbarActionProps>(
   (

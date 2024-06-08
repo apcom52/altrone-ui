@@ -1,9 +1,8 @@
 import { Flex, Text } from 'components';
-import { Gap } from '../../../types';
 
 export const ArticleStory = () => {
   return (
-    <Flex gap={Gap.xlarge}>
+    <Flex gap="xl">
       <Text.Heading>
         The Art of Text Formatting: Enhancing Clarity and Aesthetics
       </Text.Heading>

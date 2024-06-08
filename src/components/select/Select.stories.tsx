@@ -40,9 +40,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [value6, setValue6] = useState(['russia']);
 
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>Basic Select</Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <Select
             name="country"
             multiple={false}
@@ -70,7 +70,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         <Text.Heading role={TextHeadingRoles.inner}>
           Multiple Select
         </Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <Select
             multiple={true}
             value={value4}
@@ -82,7 +82,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         <Text.Heading role={TextHeadingRoles.inner}>
           Select with search
         </Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <Select
             value={value5}
             onChange={setValue5}
@@ -102,7 +102,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         <Text.Heading role={TextHeadingRoles.inner}>
           Select with different sizes
         </Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <Select
             name="country"
             multiple={false}
@@ -110,7 +110,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             onChange={setValue1}
             placeholder="Choose your country"
             options={SELECT_COUNTRIES}
-            size="small"
+            size="s"
           />
           <Select
             multiple={false}
@@ -118,13 +118,13 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             onChange={setValue2}
             placeholder="Choose your country"
             options={SELECT_COUNTRIES}
-            size="large"
+            size="l"
           />
         </Flex>
         <Text.Heading role={TextHeadingRoles.inner}>
           Transparent Select
         </Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <Select
             name="country"
             multiple={false}
@@ -146,7 +146,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           />
         </Flex>
         <Text.Heading role={TextHeadingRoles.inner}>Custom Select</Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <Select
             name="country"
             value={value2}

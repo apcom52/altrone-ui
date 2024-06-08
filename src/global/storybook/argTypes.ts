@@ -1,35 +1,19 @@
-import { Align, Direction, Gap, Role } from 'types';
-
 export const gapStoryField = {
   control: 'select',
-  options: [
-    Gap.none,
-    Gap.xsmall,
-    Gap.small,
-    Gap.medium,
-    Gap.large,
-    Gap.xlarge,
-    Gap.heading,
-  ],
+  options: ['none', 'xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl'],
 };
 
 export const alignStoryField = {
   control: 'select',
-  options: [Align.start, Align.center, Align.end],
+  options: ['start', 'center', 'end'],
 };
 
 export const directionStoryField = {
   control: 'select',
-  options: [Direction.vertical, Direction.horizontal],
+  options: ['vertical', 'horizontal'],
 };
 
 export const roleStoryField = {
   control: 'select',
-  options: [
-    Role.default,
-    Role.primary,
-    Role.success,
-    Role.warning,
-    Role.danger,
-  ],
+  options: ['default', 'primary', 'success', 'warning', 'danger'],
 };

@@ -1,15 +1,15 @@
 import { createContext, memo, useContext, useMemo } from 'react';
-import { FormFieldContextType, FormFieldProps } from '../Form.types.ts';
+import type { FormFieldContextType, FormFieldProps } from '../Form.types.ts';
 import s from './field.module.scss';
-import { Tooltip } from '../../tooltip';
+import { Tooltip } from 'components/tooltip';
 import clsx from 'clsx';
-import { useFormContext } from '../Form.tsx';
+import { useFormContext } from '../Form.context.ts';
 
 const FormFieldContext = createContext<FormFieldContextType>({
   name: '',
   disabled: false,
   invalid: false,
-  size: 'medium',
+  size: 'm',
 });
 export const useFormField = () => useContext(FormFieldContext);
 

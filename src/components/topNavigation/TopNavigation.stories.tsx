@@ -22,7 +22,7 @@ export const TooltipStory: StoryObj<typeof TopNavigation> = {
   name: 'Using TopNavigation',
   render: () => {
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>
           Standard TopNavigation
         </Text.Heading>
@@ -59,7 +59,7 @@ export const TooltipStory: StoryObj<typeof TopNavigation> = {
             <Button leftIcon={<Icon i="globe" />} />
             <TopNavigation.Link label="Log In" />
             <TopNavigation.Link label="Contact Sales" />
-            <Button size="large" label="Get started" />
+            <Button size="l" label="Get started" />
           </TopNavigation.Group>
         </TopNavigation>
       </Flex>

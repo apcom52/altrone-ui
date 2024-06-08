@@ -5,7 +5,7 @@ import { Flex } from '../flex';
 import { Text, TextHeadingRoles } from '../text';
 import { Radio } from './Radio.tsx';
 import { useState } from 'react';
-import { CollapsedList } from '../collapsedList/CollapsedList.tsx';
+import { CollapsedList } from 'components/collapsedList';
 
 const story: Meta<typeof Radio> = {
   title: 'Components/Form/Radio',
@@ -32,18 +32,18 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [contactMethod, setContactMethod] = useState('sms');
 
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>
           Basic Radio lists
         </Text.Heading>
-        <Flex direction="horizontal" gap="large" align="center">
+        <Flex direction="horizontal" gap="l" align="center">
           <Text.Paragraph>Choose your gender:</Text.Paragraph>
           <Radio value={gender} onChange={setGender} name="gender">
             <Radio.Item value="male">Male</Radio.Item>
             <Radio.Item value="female">Female</Radio.Item>
           </Radio>
         </Flex>
-        <Flex direction="horizontal" gap="large" align="center">
+        <Flex direction="horizontal" gap="l" align="center">
           <Text.Paragraph>Choose your marital status:</Text.Paragraph>
           <Radio value={marriage} onChange={setMarriage} name="marriage">
             <Radio.Item value="single">Single</Radio.Item>
@@ -57,8 +57,8 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         <Text.Heading role={TextHeadingRoles.inner}>
           Vertical Radio lists
         </Text.Heading>
-        <Flex direction="horizontal" gap="large">
-          <Flex direction="vertical" gap="large">
+        <Flex direction="horizontal" gap="l">
+          <Flex direction="vertical" gap="l">
             <Text.Paragraph>Choose payment method:</Text.Paragraph>
             <Radio
               direction="vertical"
@@ -72,7 +72,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               <Radio.Item value="bt">Bank Transfer</Radio.Item>
             </Radio>
           </Flex>
-          <Flex direction="vertical" gap="large">
+          <Flex direction="vertical" gap="l">
             <Text.Paragraph>Preferred Contact Method:</Text.Paragraph>
             <Radio
               direction="vertical"
@@ -80,7 +80,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               onChange={setContactMethod}
               name="contact"
             >
-              <CollapsedList gap="medium" limit={3}>
+              <CollapsedList gap="m" limit={3}>
                 <Radio.Item value="email">Email</Radio.Item>
                 <Radio.Item value="phone">Phone</Radio.Item>
                 <Radio.Item value="sms">SMS</Radio.Item>

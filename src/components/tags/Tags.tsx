@@ -16,7 +16,7 @@ const Tags = memo<TagsProps>(({ children, className, style, ...props }) => {
       className={cls}
       style={styles}
       direction="horizontal"
-      gap="medium"
+      gap="m"
       {...props}
       wrap
     >

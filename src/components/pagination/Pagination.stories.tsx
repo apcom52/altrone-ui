@@ -29,9 +29,9 @@ export const PaginationStory: StoryObj<typeof Pagination> = {
     const [page3, setPage3] = useState(1);
 
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>Pagination</Text.Heading>
-        <Flex direction="horizontal" gap="medium">
+        <Flex direction="horizontal" gap="m">
           <Pagination currentPage={page1} totalPages={5} setPage={setPage1} />
           <Pagination currentPage={page2} totalPages={120} setPage={setPage2} />
           <Pagination currentPage={page3} totalPages={1} setPage={setPage3} />

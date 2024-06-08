@@ -1,13 +1,12 @@
 import { forwardRef, KeyboardEventHandler, useRef, useState } from 'react';
 import { AutocompleteInputProps } from './AutocompleteInput.types.ts';
-import { TextInput } from '../textInput';
-import { getSafeArray } from '../../utils';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { getSafeArray, useDebouncedEffect } from 'utils';
+import { useConfiguration } from 'components/configuration';
+import { TextInput } from 'components/textInput';
 import clsx from 'clsx';
-import { useDebouncedEffect } from '../../utils/hooks/useDebouncedEffect.ts';
-import { Dropdown } from '../dropdown';
-import { Scrollable } from '../scrollable';
-import { PopoverRef } from '../popover';
+import { Dropdown } from 'components/dropdown';
+import { Scrollable } from 'components/scrollable';
+import { PopoverRef } from 'components/popover';
 
 export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
   (

@@ -1,12 +1,10 @@
-import { createContext, memo, useContext, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import s from './toolbar.module.scss';
-import { ToolbarContextType, ToolbarProps } from './Toolbar.types.ts';
+import { ToolbarProps } from './Toolbar.types.ts';
 import clsx from 'clsx';
 import { Action, Group } from './components';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
-
-const ToolbarContext = createContext<ToolbarContextType>({ compact: false });
-export const useToolbarContext = () => useContext(ToolbarContext);
+import { useConfiguration } from 'components/configuration';
+import { ToolbarContext } from './Toolbar.context.ts';
 
 const ToolbarComponent = memo<ToolbarProps>(
   ({ children, align, compact = false, className, style, ...restProps }) => {

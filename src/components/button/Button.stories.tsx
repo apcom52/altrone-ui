@@ -26,7 +26,7 @@ const story: Meta<typeof Button> = {
 
 const renderButtonsWithRole = (role: Role, args: ButtonProps) => {
   return (
-    <Flex gap="medium" align="start" direction="horizontal">
+    <Flex gap="m" align="start" direction="horizontal">
       <Button
         {...args}
         role={role}
@@ -72,7 +72,7 @@ const renderButtonsWithRole = (role: Role, args: ButtonProps) => {
 
 const renderButtonsWithSize = (size: Size) => {
   return (
-    <Flex gap="medium" align="start" direction="horizontal">
+    <Flex gap="m" align="start" direction="horizontal">
       <Button size={size} label="Like" leftIcon={<Icon i="favorite" />} />
       <Button size={size} label="Like" rightIcon={<Icon i="favorite" />} />
       <Button size={size} label="Like" />
@@ -92,7 +92,7 @@ export const ButtonStory: StoryObj<typeof Button> = {
     },
   },
   render: ({ ...args }) => (
-    <Flex gap="large">
+    <Flex gap="l">
       <Text.Heading role={TextHeadingRoles.inner}>Default buttons</Text.Heading>
       {renderButtonsWithRole('default', args)}
       <Text.Heading role={TextHeadingRoles.inner}>Primary buttons</Text.Heading>
@@ -125,7 +125,7 @@ export const ButtonSizeStory: StoryObj<typeof Button> = {
     },
   },
   render: () => (
-    <Flex gap="large">
+    <Flex gap="l">
       <Text.Heading role={TextHeadingRoles.inner}>Small buttons</Text.Heading>
       {renderButtonsWithSize('small')}
       <Text.Heading role={TextHeadingRoles.inner}>Normal buttons</Text.Heading>

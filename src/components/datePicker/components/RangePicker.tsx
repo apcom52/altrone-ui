@@ -14,12 +14,12 @@ import {
   DatePickerContext,
   DatePickerViewContext,
 } from '../DatePicker.contexts.ts';
-import { Popover } from '../../popover';
+import { Popover } from 'components/popover';
 import { PopoverDatePickerContent } from '../inner/PopoverDatePickerContent.tsx';
-import { TextInput } from '../../textInput';
-import { Icon } from '../../icon';
+import { TextInput } from 'components/textInput';
+import { Icon } from 'components/icon';
 import warningOnce from 'rc-util/es/warning';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export const RangePicker = memo<RangePickerProps>((props) => {
   const {

@@ -23,11 +23,11 @@ const story: Meta<typeof Progress> = {
 export const FlexLayout: StoryObj<typeof Flex> = {
   name: 'Using Flex',
   render: (args) => (
-    <Flex {...args} gap="large">
+    <Flex {...args} gap="l">
       <Text.Heading role={TextHeadingRoles.inner}>
         Standard Progress bars
       </Text.Heading>
-      <Flex direction="horizontal" gap="large">
+      <Flex direction="horizontal" gap="l">
         <Progress value={8} max={100} />
         <Progress value={63} max={100}>
           Charisma
@@ -40,11 +40,11 @@ export const FlexLayout: StoryObj<typeof Flex> = {
           )}
         </Progress>
       </Flex>
-      <Flex direction="horizontal" gap="large">
-        <Progress size="small" value={45} max={100}>
+      <Flex direction="horizontal" gap="l">
+        <Progress size="s" value={45} max={100}>
           Small progress
         </Progress>
-        <Progress size="large" value={32} max={100}>
+        <Progress size="l" value={32} max={100}>
           Large progress
         </Progress>
       </Flex>

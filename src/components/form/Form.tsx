@@ -1,27 +1,18 @@
-import {
-  createContext,
-  FormEventHandler,
-  forwardRef,
-  memo,
-  useContext,
-  useMemo,
-} from 'react';
+import { FormEventHandler, forwardRef, useMemo } from 'react';
 import { FormContextType, FormProps } from './Form.types.ts';
-import { Flex } from '../flex';
+import { Flex } from 'components/flex';
 import { Field } from './components/Field.tsx';
 import s from './form.module.scss';
+import { FormContext } from './Form.context.ts';
 
-const FormContext = createContext<FormContextType>({});
-export const useFormContext = () => useContext(FormContext);
-
-const FormWrapper = forwardRef<HTMLFormElement, FormProps<any>>(
+const FormComponent = forwardRef<HTMLFormElement, FormProps<any>>(
   (props, ref) => {
     const {
       children,
       errorMessages = {},
       disabled,
       onSubmit,
-      size = 'medium',
+      size = 'm',
       ...restProps
     } = props;
 
@@ -48,7 +39,7 @@ const FormWrapper = forwardRef<HTMLFormElement, FormProps<any>>(
         {...restProps}
       >
         <FormContext.Provider value={formContext}>
-          <Flex align="start" gap="large">
+          <Flex align="start" gap="l">
             {children}
           </Flex>
         </FormContext.Provider>
@@ -57,9 +48,7 @@ const FormWrapper = forwardRef<HTMLFormElement, FormProps<any>>(
   },
 );
 
-const MemoizedFormWrapper = memo(FormWrapper) as typeof FormWrapper;
-
-const FormNamespace = Object.assign(MemoizedFormWrapper, {
+const FormNamespace = Object.assign(FormComponent, {
   Field: Field,
 });
 

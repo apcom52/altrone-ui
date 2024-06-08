@@ -1,1 +1,0 @@
-export { DefaultBlockquoteStory } from './DefaultBlockquoteStory';

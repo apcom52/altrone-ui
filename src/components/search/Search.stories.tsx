@@ -33,9 +33,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [value4, setValue4] = useState('');
 
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>PasswordInput</Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <Search
             value={value1}
             onChange={setValue1}
@@ -55,7 +55,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             showControl={false}
           />
         </Flex>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <Search
             value={value4}
             onChange={setValue4}

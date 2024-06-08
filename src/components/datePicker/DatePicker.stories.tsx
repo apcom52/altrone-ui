@@ -37,11 +37,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [year2, setYear2] = useState<Dayjs | undefined>(dayjs('2025'));
 
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>
           Basic DatePicker
         </Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <DatePicker
             value={day1}
             onChange={setDay1}
@@ -54,7 +54,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <DatePicker value={day2} disabled onChange={setDay2} />
         </Flex>
         <Text.Heading role={TextHeadingRoles.inner}>MonthPicker</Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <DatePicker.MonthPicker value={month1} onChange={setMonth1} />
           <DatePicker.MonthPicker
             clearable
@@ -78,7 +78,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           />
         </Flex>
         <Text.Heading role={TextHeadingRoles.inner}>YearPicker</Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <DatePicker.YearPicker value={year1} onChange={setYear1} />
           <DatePicker.YearPicker clearable value={year2} onChange={setYear2} />
           <DatePicker.YearPicker
@@ -104,9 +104,9 @@ export const RangeStory: StoryObj<typeof Flex> = {
     ]);
 
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>RangePicker</Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <DatePicker.RangePicker
             value={day1}
             onChange={setDay1}
@@ -120,7 +120,7 @@ export const RangeStory: StoryObj<typeof Flex> = {
             onChange={setDay2}
           />
         </Flex>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <DatePicker.RangePicker
             value={day2}
             minDate={dayjs('2024-04-04')}

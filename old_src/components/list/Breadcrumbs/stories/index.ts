@@ -1,1 +1,0 @@
-export { DefaultBreadcrumbs } from './DefaultBreadcrumbs';

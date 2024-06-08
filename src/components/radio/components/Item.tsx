@@ -2,7 +2,7 @@ import { KeyboardEventHandler, memo, useRef } from 'react';
 import { RadioItemProps } from '../Radio.types.ts';
 import s from './item.module.scss';
 import clsx from 'clsx';
-import { useRadioContext } from '../Radio.tsx';
+import { useRadioContext } from '../Radio.context.ts';
 
 export const RadioItem = memo<RadioItemProps>(
   ({ children, value, className, disabled, ...restProps }) => {

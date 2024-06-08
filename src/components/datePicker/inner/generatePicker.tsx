@@ -16,10 +16,10 @@ import {
 } from '../DatePicker.contexts.ts';
 import { Popover } from '../../popover';
 import { PopoverDatePickerContent } from './PopoverDatePickerContent.tsx';
-import { TextInput } from '../../textInput';
-import { Icon } from '../../icon';
+import { TextInput } from 'components/textInput';
+import { Icon } from 'components/icon';
 import warningOnce from 'rc-util/es/warning';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
   picker: Picker = 'day',

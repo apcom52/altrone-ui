@@ -18,11 +18,11 @@ export const FlexLayout: StoryObj<typeof Flex> = {
     const { toast, success, warning, danger } = useToast();
 
     return (
-      <Flex {...args} gap="large">
+      <Flex {...args} gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>
           Click to show a toast message
         </Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <Button
             label="Show toast message"
             onClick={() => toast('New updates are available.')}

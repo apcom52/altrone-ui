@@ -1,7 +1,15 @@
 import React, { useContext } from 'react';
-import { DEFAULT_CONFIGURATION } from './AltroneConfiguration.const.ts';
 import { BasicComponentStyleConfig } from 'types';
 import { CollapsedListProps } from '../collapsedList/CollapsedList.types.ts';
+
+export const DEFAULT_CONFIGURATION: ConsumerConfigurationContext = {
+  language: 'en',
+  locale: {
+    dateFormat: 'DD.MM.YYYY',
+    numberGrouping: ' ',
+    numberDecimal: '.',
+  },
+};
 
 type ComponentConfiguration<ExtraProps extends object = {}> = Partial<
   BasicComponentStyleConfig & ExtraProps
@@ -90,7 +98,7 @@ export interface ConsumerConfigurationContext {
     color: string;
   }>;
   tooltip?: ComponentConfiguration;
-  dataTable: ComponentConfiguration;
+  dataTable?: ComponentConfiguration;
   toolbar?: ComponentConfiguration<{
     actionClassName: string;
     groupClassName: string;

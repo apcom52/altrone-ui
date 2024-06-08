@@ -9,9 +9,8 @@ import { BreadcrumbsProps } from './Breadcrumbs.types.ts';
 import s from './breadcrumbs.module.scss';
 import clsx from 'clsx';
 import { Item } from './components';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
-import { List } from '../list';
-import { Gap } from '../../types';
+import { useConfiguration } from 'components/configuration';
+import { List } from 'components/list';
 
 const BreadcrumbsComponent = memo<BreadcrumbsProps>(
   ({ children, className, style, ...restProps }) => {
@@ -37,7 +36,7 @@ const BreadcrumbsComponent = memo<BreadcrumbsProps>(
         <List
           className={s.Breadcrumbs}
           data={validChildren}
-          gap={Gap.medium}
+          gap="m"
           renderItem={({ item, currentIndex }) =>
             cloneElement(item, {
               key: currentIndex,

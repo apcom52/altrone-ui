@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { Button } from 'components';
+import { Button } from 'components/button';
 import { DataTableActionProps } from '../DataTable.types';
 
 export const Action = forwardRef<HTMLButtonElement, DataTableActionProps>(

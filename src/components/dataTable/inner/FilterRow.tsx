@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import s from './filtering.module.scss';
-import { Select } from '../../select';
-import { TextInput } from '../../textInput';
-import { Button } from '../../button';
-import { Icon } from '../../icon';
+import { Select } from 'components/select';
+import { TextInput } from 'components/textInput';
+import { Button } from 'components/button';
+import { Icon } from 'components/icon';
 import { FilterRowProps, FilterType } from '../DataTable.types.ts';
-import { NumberInput } from '../../numberInput';
+import { NumberInput } from 'components/numberInput';
 import clsx from 'clsx';
 import {
   DataTableArrayRules,

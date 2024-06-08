@@ -1,8 +1,8 @@
 import { memo } from 'react';
-import { Icon } from 'components';
+import { Icon } from 'components/icon';
 import s from './closeButton.module.scss';
 import clsx from 'clsx';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export const CloseButton = memo(
   ({

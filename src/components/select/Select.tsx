@@ -1,11 +1,14 @@
 import { SelectContext, SelectProps } from './Select.types.ts';
 import { cloneElement, memo, useId, useMemo } from 'react';
-import { Dropdown, Icon, Scrollable, TextInput } from 'components';
+import { Dropdown } from 'components/dropdown';
+import { Icon } from 'components/icon';
+import { Scrollable } from 'components/scrollable';
+import { TextInput } from 'components/textInput';
 import s from './select.module.scss';
 import clsx from 'clsx';
-import { PopoverContentContext } from '../popover';
+import { PopoverContentContext } from 'components/popover';
 import { useSelect } from './useSelect.ts';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 const SelectComponent = (props: SelectProps) => {
   const {

@@ -1,8 +1,8 @@
 import { ButtonProps } from './Button.types.ts';
-import { Flex } from 'components';
+import { Flex } from 'components/flex';
 import s from './button.module.scss';
 import clsx from 'clsx';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 import { useRainbowEffect } from '../application/RainbowEffect.tsx';
 import { forwardRef, memo, MouseEventHandler, useCallback } from 'react';
 

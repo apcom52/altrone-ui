@@ -23,9 +23,9 @@ const story: Meta<typeof Tags> = {
 export const FlexLayout: StoryObj<typeof Flex> = {
   name: 'Using Tags',
   render: (args) => (
-    <Flex {...args} gap="large">
+    <Flex {...args} gap="l">
       <Text.Heading role={TextHeadingRoles.inner}>Standard Tags</Text.Heading>
-      <Flex direction="horizontal" gap="large">
+      <Flex direction="horizontal" gap="l">
         <Tags>
           <Tags.Item href="#ai" label="#AI" />
           <Tags.Item href="#technology" label="#Technology" />

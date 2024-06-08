@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { Popover, PopoverRef } from 'components';
+import { Popover, PopoverRef } from 'components/popover';
 import { DropdownProps } from './Dropdown.types';
 import {
   DropdownMenu,
@@ -12,7 +12,7 @@ import {
 import { CloseDropdownContext } from './Dropdown.contexts.ts';
 import s from './dropdown.module.scss';
 import clsx from 'clsx';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>((props, ref) => {
   const {

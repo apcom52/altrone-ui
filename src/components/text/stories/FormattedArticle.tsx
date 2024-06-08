@@ -1,10 +1,9 @@
 import { Flex, Text } from 'components';
 import { TextHeadingRoles, TextListType } from '../Text.types.ts';
-import { Gap } from '../../../types';
 
 export const FormattedArticle = () => {
   return (
-    <Flex gap={Gap.xlarge}>
+    <Flex gap="xl">
       <Text.Heading>
         Exploring the Power of Markup Language: Enhancing Textual Content
       </Text.Heading>

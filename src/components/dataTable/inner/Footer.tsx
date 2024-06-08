@@ -1,7 +1,9 @@
 import { useDataTableContext } from '../DataTable.context.tsx';
 import { memo } from 'react';
-import { Flex, Text, Tooltip, Pagination } from 'components';
-import { Gap, Size } from 'types';
+import { Flex } from 'components/flex';
+import { Text } from 'components/text';
+import { Tooltip } from 'components/tooltip';
+import { Pagination } from 'components/pagination';
 import s from './footer.module.scss';
 
 export const Footer = memo(() => {
@@ -34,11 +36,11 @@ export const Footer = memo(() => {
       <div className={s.StatusBar}>
         <Tooltip
           content={
-            <Flex gap="small">
-              <Text.Paragraph size="small">
+            <Flex gap="s">
+              <Text.Paragraph size="s">
                 Total rows: <Text.Inline bold>{initialData.length}</Text.Inline>
               </Text.Paragraph>
-              <Text.Paragraph size="small">
+              <Text.Paragraph size="s">
                 Rows per page: <Text.Inline bold>{limit}</Text.Inline>
               </Text.Paragraph>
             </Flex>

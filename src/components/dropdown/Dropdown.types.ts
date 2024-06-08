@@ -1,4 +1,4 @@
-import { PopoverProps } from 'components';
+import { PopoverProps } from 'components/popover';
 import { ReactElement } from 'react';
 
 export interface DropdownActionProps

@@ -1,26 +1,11 @@
-import {
-  ChangeEventHandler,
-  createContext,
-  memo,
-  useCallback,
-  useContext,
-  useId,
-  useMemo,
-} from 'react';
+import { ChangeEventHandler, memo, useCallback, useId, useMemo } from 'react';
 import clsx from 'clsx';
 import s from './radio.module.scss';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 import { RadioContext, RadioProps } from './Radio.types.ts';
 import { RadioItem } from './components';
-import { getSafeArray } from '../../utils';
-
-const RadioContextWrapper = createContext<RadioContext>({
-  value: '',
-  onChange: () => null,
-  name: '',
-  disabled: false,
-});
-export const useRadioContext = () => useContext(RadioContextWrapper);
+import { getSafeArray } from 'utils';
+import { RadioContextWrapper } from './Radio.context.ts';
 
 const RadioWrapper = memo<RadioProps>(
   ({

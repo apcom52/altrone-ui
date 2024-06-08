@@ -8,6 +8,10 @@
 }
 
 :global(.AltroneDark) {
+  --breadcrumbsItemTextColor: var(--default-200);
+  --breadcrumbsCurrentItemTextColor: var(--default-50);
+  --breadcrumbsHoveredItemTextColor: var(--default-100);
+  --breadcrumbsPressedItemTextColor: var(--primary-400);
 }
 
 .Item {

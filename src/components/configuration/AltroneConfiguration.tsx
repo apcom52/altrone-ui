@@ -2,11 +2,11 @@ import {
   ConfigurationContext,
   ConsumerConfigurationContext,
   useConfiguration,
+  DEFAULT_CONFIGURATION,
 } from './AltroneConfiguration.context.ts';
 import { merge, isEqual } from 'lodash';
 import useMemo from 'rc-util/lib/hooks/useMemo';
 import { PropsWithChildren } from 'react';
-import { DEFAULT_CONFIGURATION } from './AltroneConfiguration.const.ts';
 
 export const AltroneConfiguration = ({
   children,

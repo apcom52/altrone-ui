@@ -1,5 +1,6 @@
 import { memo, useMemo } from 'react';
-import { Icon, Button } from 'components';
+import { Icon } from 'components/icon';
+import { Button } from 'components/button';
 import { useDataTableContext } from '../DataTable.context';
 import { DataTableProps } from '../DataTable.types';
 import { getSafeArray } from 'utils';

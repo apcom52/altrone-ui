@@ -14,7 +14,8 @@
     "coverage": "vitest run --coverage",
     "visual-test": "npx playwright test",
     "test-storybook": "test-storybook",
-    "test-ct": "playwright test -c playwright-ct.config.ts"
+    "test-ct": "playwright test -c playwright-ct.config.ts",
+    "check-circular-dependencies": "dpdm --no-warning --no-tree ./src/index.ts"
   },
   "dependencies": {
     "@floating-ui/react": "0.26.16",

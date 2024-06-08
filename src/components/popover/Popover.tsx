@@ -36,9 +36,9 @@ import {
 import { useBoolean, cloneNode } from 'utils';
 import clsx from 'clsx';
 import s from './popover.module.scss';
-import { CloseButton } from 'components';
+import { CloseButton } from 'components/closeButton';
 import { PopoverArrow } from './inner/PopoverArrow.tsx';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 const PopoverCloseContext = createContext<undefined | (() => void)>(undefined);
 const usePopoverCloseContext = () => useContext(PopoverCloseContext);

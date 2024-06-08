@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Icon } from 'components';
+import { Icon } from 'components/icon';
 import s from './Spinner.module.scss';
 import { Size } from 'types';
 import clsx from 'clsx';

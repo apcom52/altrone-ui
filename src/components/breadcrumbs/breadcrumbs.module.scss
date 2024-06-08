@@ -2,6 +2,10 @@
   --breadcrumbsSeparatorColor: var(--default-300);
 }
 
+:global(.AltroneDark) {
+  --breadcrumbsSeparatorColor: var(--default-600);
+}
+
 .Breadcrumbs {
   display: flex;
   flex-direction: row;

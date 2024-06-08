@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Flex } from 'components';
+import { Flex } from 'components/flex';
 import { DatePickerHeader } from './DatePickerHeader.tsx';
 import { DatePickerFooter } from './DatePickerFooter.tsx';
 import s from './calendar.module.scss';
@@ -8,7 +8,7 @@ import { useDatePickerViewContext } from '../DatePicker.contexts.ts';
 import { MonthPicker } from './MonthPicker.tsx';
 import { YearPicker } from './YearPicker.tsx';
 import { DatePickerContentProps } from '../DatePicker.types.ts';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 
 export const PopoverDatePickerContent = memo<DatePickerContentProps>(
@@ -22,7 +22,7 @@ export const PopoverDatePickerContent = memo<DatePickerContentProps>(
     };
 
     return (
-      <Flex gap="large" className={cls} style={styles}>
+      <Flex gap="l" className={cls} style={styles}>
         <DatePickerHeader />
         {viewMode === 'day' ? <DayPicker /> : null}
         {viewMode === 'month' ? <MonthPicker /> : null}

@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Flex, Icon, Text, TextHeadingRoles } from 'components';
-import { Gap } from 'types';
 import { StorybookDecorator } from 'global/storybook';
 import { Breadcrumbs } from './Breadcrumbs.tsx';
 
@@ -16,7 +15,7 @@ export const BottomNavigationStory: StoryObj<typeof Breadcrumbs> = {
   name: 'Using Breadcrumbs',
   render: () => {
     return (
-      <Flex gap={Gap.large}>
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>
           Standard Breadcrumbs
         </Text.Heading>

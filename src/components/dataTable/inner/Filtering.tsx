@@ -1,5 +1,10 @@
 import { memo, useCallback, useMemo, useState } from 'react';
-import { Button, Dropdown, Flex, Form, Icon, Popover } from 'components';
+import { Button } from 'components/button';
+import { Dropdown } from 'components/dropdown';
+import { Flex } from 'components/flex';
+import { Form } from 'components/form';
+import { Icon } from 'components/icon';
+import { Popover } from 'components/popover';
 import { useDataTableContext } from '../DataTable.context.tsx';
 import {
   ArrayFilterRules,
@@ -149,7 +154,7 @@ export const Filtering = memo(() => {
               </Form.Field>
             );
           })}
-          <Flex gap="medium" direction="horizontal" justify="between">
+          <Flex gap="m" direction="horizontal" justify="between">
             <Dropdown
               closeParentPopover={false}
               content={
@@ -191,7 +196,7 @@ export const Filtering = memo(() => {
             >
               <Button leftIcon={<Icon i="add" />} label="Add filter" />
             </Dropdown>
-            <Flex gap="medium" justify="end" direction="horizontal">
+            <Flex gap="m" justify="end" direction="horizontal">
               <Button
                 leftIcon={<Icon i="backspace" />}
                 label="Clear"

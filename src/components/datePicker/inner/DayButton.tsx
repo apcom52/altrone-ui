@@ -1,4 +1,4 @@
-import { CalendarRenderDateProps } from '../../../../old_src';
+import { CalendarRenderDateProps } from 'components/calendar/Calendar.types.ts';
 import clsx from 'clsx';
 import { memo, useCallback } from 'react';
 import s from './day.module.scss';

@@ -1,5 +1,5 @@
 import { memo, useCallback } from 'react';
-import { Calendar } from '../../calendar';
+import { Calendar } from 'components/calendar';
 import { DayButton } from './DayButton.tsx';
 import s from './dayPicker.module.scss';
 import {

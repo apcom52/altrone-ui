@@ -30,7 +30,7 @@ const story: Meta<typeof Scrollable> = {
 export const ScrollableStory: StoryObj<typeof Scrollable> = {
   name: 'Using Scrollable',
   render: (args) => (
-    <Flex gap="xlarge">
+    <Flex gap="xl">
       <Text.Heading role={TextHeadingRoles.inner}>
         Vertical Scrollable with long content
       </Text.Heading>
@@ -41,11 +41,11 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
         {...args}
       >
         <List
-          gap="medium"
+          gap="m"
           data={COUNTRIES}
           renderItem={({ item, currentIndex }) => {
             return (
-              <Flex key={currentIndex} direction="horizontal" gap="medium">
+              <Flex key={currentIndex} direction="horizontal" gap="m">
                 <div>{item.flag}</div>
                 <div>
                   <Text.Inline bold>{item.country}</Text.Inline>, {item.capital}
@@ -66,7 +66,7 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
         {...args}
       >
         <List
-          gap="large"
+          gap="l"
           direction="horizontal"
           data={COUNTRIES}
           wrap={false}
@@ -75,14 +75,14 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
               <Flex
                 key={currentIndex}
                 direction="vertical"
-                gap="xsmall"
+                gap="xs"
                 style={{ width: '200px', minWidth: '200px' }}
               >
                 <div style={{ fontSize: 48 }}>{item.flag}</div>
                 <Text.Heading role={TextHeadingRoles.subheading}>
                   {item.country}
                 </Text.Heading>
-                <Text.Paragraph size="small">{item.capital}</Text.Paragraph>
+                <Text.Paragraph size="s">{item.capital}</Text.Paragraph>
               </Flex>
             );
           }}
@@ -98,11 +98,11 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
         {...args}
       >
         <List
-          gap="medium"
+          gap="m"
           data={COUNTRIES.slice(0, 3)}
           renderItem={({ item, currentIndex }) => {
             return (
-              <Flex key={currentIndex} direction="horizontal" gap="medium">
+              <Flex key={currentIndex} direction="horizontal" gap="m">
                 <div>{item.flag}</div>
                 <div>
                   <Text.Inline bold>{item.country}</Text.Inline>, {item.capital}
@@ -123,7 +123,7 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
         {...args}
       >
         <List
-          gap="large"
+          gap="l"
           direction="horizontal"
           data={COUNTRIES.slice(0, 3)}
           wrap={false}
@@ -132,14 +132,14 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
               <Flex
                 key={currentIndex}
                 direction="vertical"
-                gap="xsmall"
+                gap="xs"
                 style={{ width: '200px', minWidth: '200px' }}
               >
                 <div style={{ fontSize: 48 }}>{item.flag}</div>
                 <Text.Heading role={TextHeadingRoles.subheading}>
                   {item.country}
                 </Text.Heading>
-                <Text.Paragraph size="small">{item.capital}</Text.Paragraph>
+                <Text.Paragraph size="s">{item.capital}</Text.Paragraph>
               </Flex>
             );
           }}

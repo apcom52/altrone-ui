@@ -1,10 +1,10 @@
 import { DropdownChildMenuProps } from '../Dropdown.types';
 import { CompositeItem } from '@floating-ui/react';
 import clsx from 'clsx';
-import { Dropdown } from '../Dropdown';
-import { Icon } from 'components';
+import { Dropdown } from '../Dropdown.tsx';
+import { Icon } from 'components/icon';
 import s from './action.module.scss';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export function DropdownChildMenu({
   children,

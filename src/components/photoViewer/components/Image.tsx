@@ -3,9 +3,9 @@ import { PhotoViewerImageProps } from '../PhotoViewer.types.ts';
 import clsx from 'clsx';
 import s from './image.module.scss';
 import { useBoolean } from 'utils';
-import { Loading } from '../../loading';
-import { Icon } from '../../icon';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { Loading } from 'components/loading';
+import { Icon } from 'components/icon';
+import { useConfiguration } from 'components/configuration';
 
 export const Image = memo<PhotoViewerImageProps>(
   ({ caption, description, className, ...restProps }) => {

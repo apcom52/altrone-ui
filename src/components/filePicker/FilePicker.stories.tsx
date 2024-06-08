@@ -42,11 +42,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     ]);
 
     return (
-      <Flex gap="large">
+      <Flex gap="l">
         <Text.Heading role={TextHeadingRoles.inner}>
           Basic FilePicker (with autoUpload and without)
         </Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <FilePicker
             url="http://localhost:4055/upload"
             method="POST"
@@ -64,7 +64,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         <Text.Heading role={TextHeadingRoles.inner}>
           Multiple FilePicker
         </Text.Heading>
-        <Flex direction="horizontal" gap="large">
+        <Flex direction="horizontal" gap="l">
           <FilePicker
             url="http://localhost:4055/upload"
             method="POST"
