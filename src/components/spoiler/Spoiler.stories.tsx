@@ -6,7 +6,7 @@ import { Text, TextHeadingRoles } from '../text';
 import { Spoiler } from './Spoiler.tsx';
 
 const story: Meta<typeof Spoiler> = {
-  title: 'Components/Container/Spoiler',
+  title: 'Components/Containers/Spoiler',
   component: Spoiler,
   decorators: [StorybookDecorator],
   args: {},

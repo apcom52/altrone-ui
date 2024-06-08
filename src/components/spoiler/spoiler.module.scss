@@ -7,6 +7,13 @@
   --spoilerOpenedHeadingTextColor: var(--default-900);
 }
 
+:global(.AltroneDark) {
+  --spoilerHeadingBackgroundColor: var(--default-700);
+  --spoilerHeadingTextColor: var(--default-200);
+  --spoilerHoveredHeadingTextColor: var(--default-50);
+  --spoilerOpenedHeadingTextColor: var(--default-50);
+}
+
 .Spoiler {
   display: flex;
   flex-direction: column;
