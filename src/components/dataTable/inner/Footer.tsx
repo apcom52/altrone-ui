@@ -9,7 +9,7 @@ import s from './footer.module.scss';
 export const Footer = memo(() => {
   const {
     initialData,
-    limit,
+    rowsPerPage,
     page,
     setPage,
     data,
@@ -17,14 +17,15 @@ export const Footer = memo(() => {
     selectableMode,
   } = useDataTableContext();
 
-  const start = (page - 1) * limit;
-  const end = page * limit;
+  const start = (page - 1) * rowsPerPage;
+  const end = page * rowsPerPage;
 
   const visibleData = data.slice(start, end);
 
-  const numberOfRows = limit > visibleData.length ? visibleData.length : limit;
+  const numberOfRows =
+    rowsPerPage > visibleData.length ? visibleData.length : rowsPerPage;
   const selectedRowsNumber = selectableMode ? selectedRows.length : 0;
-  const numberOfPages = Math.ceil(data.length / limit);
+  const numberOfPages = Math.ceil(data.length / rowsPerPage);
 
   let statusText = `${numberOfRows} rows are shown`;
   if (selectedRowsNumber) {
@@ -41,7 +42,7 @@ export const Footer = memo(() => {
                 Total rows: <Text.Inline bold>{initialData.length}</Text.Inline>
               </Text.Paragraph>
               <Text.Paragraph size="s">
-                Rows per page: <Text.Inline bold>{limit}</Text.Inline>
+                Rows per page: <Text.Inline bold>{rowsPerPage}</Text.Inline>
               </Text.Paragraph>
             </Flex>
           }

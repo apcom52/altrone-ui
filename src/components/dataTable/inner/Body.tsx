@@ -10,21 +10,21 @@ export const Body = <T extends object>() => {
     data,
     columns,
     page,
-    limit,
+    rowsPerPage,
     selectableMode,
     selectedRows,
     selectRow,
   } = useDataTableContext<T>();
 
-  const start = (page - 1) * limit;
-  const end = page * limit;
+  const start = (page - 1) * rowsPerPage;
+  const end = page * rowsPerPage;
 
   const visibleColumns = useVisibleColumns(columns);
 
   return (
     <tbody>
       {data.slice(start, end).map((row, rowIndex) => {
-        const currentRowIndex = (page - 1) * limit + rowIndex;
+        const currentRowIndex = (page - 1) * rowsPerPage + rowIndex;
         const isSelected = selectedRows.indexOf(currentRowIndex) > -1;
 
         return (

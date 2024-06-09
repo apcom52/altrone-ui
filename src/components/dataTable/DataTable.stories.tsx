@@ -36,7 +36,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         </Text.Heading>
         <DataTable
           data={COUNTRIES}
-          limit={20}
+          rowsPerPage={20}
           selectable
           columns={[
             { accessor: 'flag', label: 'Flag', width: '80px' },
@@ -86,7 +86,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
         </Text.Heading>
         <DataTable<EmployeeType>
           data={EMPLOYEES}
-          limit={20}
+          rowsPerPage={20}
           selectable
           columns={[
             {

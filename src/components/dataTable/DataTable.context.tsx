@@ -22,18 +22,16 @@ interface DataTableContextType<T extends object> {
   columns: DataTableColumn<T>[];
   page: number;
   setPage: (page: number) => void;
-  limit: number;
+  rowsPerPage: number;
   searchBy?: keyof T;
   search: string;
   setSearch: (search: string) => void;
-  sortKeys: (keyof T)[];
   sortBy?: keyof T;
-  setSortBy: (sortBy: keyof T | undefined) => void;
   sortType: Sort;
+  setSortBy: (accessor: string) => void;
   setSortType: (sortType: Sort) => void;
   filters: Filter[];
   setFilters: (filters: Filter[]) => void;
-  mobileColumns: (keyof T)[];
   selectableMode: boolean;
   setSelectableMode: (selectableMode: boolean) => void;
   selectedRows: number[];
@@ -48,18 +46,16 @@ const createDataTableContext = once(<T extends object>() =>
     columns: [],
     page: 1,
     setPage: () => null,
-    limit: 20,
+    rowsPerPage: 20,
     searchBy: undefined,
     search: '',
     setSearch: () => null,
-    sortKeys: [],
     sortBy: undefined,
     sortType: 'asc',
     setSortBy: () => null,
     setSortType: () => null,
     filters: [],
     setFilters: () => null,
-    mobileColumns: [],
     selectableMode: false,
     setSelectableMode: () => null,
     selectedRows: [],
@@ -77,10 +73,7 @@ export const DataTableContextProvider = <T extends object>(
   const {
     data = [],
     columns = [],
-    limit = 20,
-    searchBy,
-    sortKeys = [],
-    mobileColumns = columns.length ? [columns[0].accessor] : [],
+    rowsPerPage = 20,
     selectable = false,
     children,
   } = props;
@@ -136,18 +129,15 @@ export const DataTableContextProvider = <T extends object>(
       columns: filteredColumns,
       page,
       setPage,
-      limit: limit > 0 ? limit : 1,
-      searchBy,
+      rowsPerPage: rowsPerPage > 0 ? rowsPerPage : 1,
       search,
       setSearch,
-      sortKeys,
       sortBy,
       setSortBy,
       sortType,
       setSortType,
       filters,
       setFilters,
-      mobileColumns,
       selectableMode,
       setSelectableMode,
       selectedRows,
@@ -159,14 +149,11 @@ export const DataTableContextProvider = <T extends object>(
       filteredData,
       filteredColumns,
       page,
-      limit,
-      searchBy,
+      rowsPerPage,
       search,
-      sortKeys,
       sortBy,
       sortType,
       filters,
-      mobileColumns,
       selectableMode,
       setSelectedRows,
       selectedRows,

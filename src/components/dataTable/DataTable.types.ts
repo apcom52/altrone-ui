@@ -5,7 +5,6 @@ import { Option } from '../select/Select.types.ts';
 import { ReactElement } from 'react';
 
 export type Sort = 'asc' | 'desc';
-export type Striped = 'odd' | 'even';
 
 export interface DataTableColumn<T extends object> {
   accessor: keyof T;
@@ -24,13 +23,14 @@ export type DataTableRenderContext<T extends object> = {
 };
 
 export interface DataTableProps<T extends object>
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   data: T[];
   columns: DataTableColumn<T>[];
   children?:
     | ReactElement
-    | ((context: DataTableRenderContext<T>) => ReactElement);
-  limit?: number; // need to rename to rowsPerPage
+    | ReactElement[]
+    | ((context: DataTableRenderContext<T>) => ReactElement | ReactElement[]);
+  rowsPerPage?: number; // need to rename to rowsPerPage
   selectable?: boolean;
 }
 
@@ -112,12 +112,6 @@ export interface FilterRowProps<T extends AnyObject> {
   columns: DataTableColumn<T>[];
   changeField: (filterIndex: number, field: string, value: unknown) => void;
   deleteFilter: (filterIndex: number) => void;
-}
-
-export interface SearchFuncArgs<T extends AnyObject> {
-  row: T;
-  columns: DataTableColumn<T>[];
-  search: string;
 }
 
 export interface FilterFuncArgs<T extends AnyObject, FilterType> {

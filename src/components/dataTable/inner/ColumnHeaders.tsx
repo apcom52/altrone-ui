@@ -12,20 +12,20 @@ export const ColumnHeaders = memo(() => {
     columns,
     page,
     data,
-    limit,
+    rowsPerPage,
     sortBy,
     sortType,
     selectableMode,
     selectedRows,
     setSelectedRows,
-    setSortBy,
     setSortType,
+    setSortBy,
   } = useDataTableContext();
 
   const visibleColumns = useVisibleColumns(columns);
 
-  const start = (page - 1) * limit;
-  const visibleData = data.slice(start, page * limit);
+  const start = (page - 1) * rowsPerPage;
+  const visibleData = data.slice(start, page * rowsPerPage);
   const end = start + visibleData.length;
 
   const checkboxState = useMemo(() => {
