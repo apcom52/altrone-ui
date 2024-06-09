@@ -1,7 +1,6 @@
 {
   "name": "altrone-ui",
-  "private": true,
-  "version": "0.0.0",
+  "version": "3.0.0-beta.1",
   "type": "module",
   "files": ["dist"],
   "main": "dist/index.js",
