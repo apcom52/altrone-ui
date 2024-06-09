@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Button, Flex, Icon, Text, TextHeadingRoles } from 'components';
+import { Button, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Popover } from './Popover.tsx';
@@ -26,7 +26,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
   name: 'Using Popover',
   render: () => (
     <Flex direction="vertical" gap="l">
-      <Text.Heading role={TextHeadingRoles.inner}>Basic Popovers</Text.Heading>
+      <Text.Heading role="inner">Basic Popovers</Text.Heading>
       <Flex direction="horizontal" gap="l">
         <Popover
           placement="bottom"
@@ -104,9 +104,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           <Button label="Parent popover" data-testid="button-parent" />
         </Popover>
       </Flex>
-      <Text.Heading role={TextHeadingRoles.inner}>
-        How to trigger the popover?
-      </Text.Heading>
+      <Text.Heading role="inner">How to trigger the popover?</Text.Heading>
       <Flex direction="horizontal" gap="l">
         <Popover
           trigger="click"
@@ -151,9 +149,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
         </Popover>
       </Flex>
       <Flex direction="horizontal" gap="l"></Flex>
-      <Text.Heading role={TextHeadingRoles.inner}>
-        Different placement of popover
-      </Text.Heading>
+      <Text.Heading role="inner">Different placement of popover</Text.Heading>
       <Flex direction="horizontal" gap="l">
         <Popover
           placement="top"
@@ -229,9 +225,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           <Button label="Left" />
         </Popover>
       </Flex>
-      <Text.Heading role={TextHeadingRoles.inner}>
-        Disabled popovers
-      </Text.Heading>
+      <Text.Heading role="inner">Disabled popovers</Text.Heading>
       <Flex direction="horizontal" gap="l">
         <Popover
           placement="top"

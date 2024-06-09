@@ -3,7 +3,7 @@ import { Form } from './index.ts';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { Text, TextHeadingRoles } from '../text';
+import { Text } from '../text';
 import { TextInput } from '../textInput';
 import { PasswordInput } from '../passwordInput';
 import { Button } from '../button';
@@ -34,9 +34,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   render: () => {
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Authorization Form
-        </Text.Heading>
+        <Text.Heading role="inner">Authorization Form</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Form>
             <Form.Field
@@ -58,7 +56,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             <Form.Field description="Field without label">
               <TextInput placeholder="Type something" />
             </Form.Field>
-            <Text.Heading role={TextHeadingRoles.inner}>TextInput</Text.Heading>
+            <Text.Heading role="inner">TextInput</Text.Heading>
             <Flex direction="horizontal" gap="l">
               <Form.Field label="Disabled" disabled>
                 <TextInput placeholder="Type something" />
@@ -70,9 +68,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 <TextInput placeholder="Type something" />
               </Form.Field>
             </Flex>
-            <Text.Heading role={TextHeadingRoles.inner}>
-              NumberInput
-            </Text.Heading>
+            <Text.Heading role="inner">NumberInput</Text.Heading>
             <Flex direction="horizontal" gap="l">
               <Form.Field label="Disabled" disabled>
                 <NumberInput placeholder="Type something" />
@@ -84,7 +80,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 <NumberInput placeholder="Type something" />
               </Form.Field>
             </Flex>
-            <Text.Heading role={TextHeadingRoles.inner}>Textarea</Text.Heading>
+            <Text.Heading role="inner">Textarea</Text.Heading>
             <Flex direction="horizontal" gap="l">
               <Form.Field label="Disabled" disabled>
                 <Textarea placeholder="Type something" />
@@ -96,7 +92,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 <Textarea placeholder="Type something" />
               </Form.Field>
             </Flex>
-            <Text.Heading role={TextHeadingRoles.inner}>Select</Text.Heading>
+            <Text.Heading role="inner">Select</Text.Heading>
             <Flex direction="horizontal" gap="l">
               <Form.Field label="Disabled" disabled>
                 <Select
@@ -116,9 +112,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 />
               </Form.Field>
             </Flex>
-            <Text.Heading role={TextHeadingRoles.inner}>
-              DatePicker
-            </Text.Heading>
+            <Text.Heading role="inner">DatePicker</Text.Heading>
             <Flex direction="horizontal" gap="l">
               <Form.Field label="Disabled" disabled>
                 <DatePicker />

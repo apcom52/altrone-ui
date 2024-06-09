@@ -1,12 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import {
-  Button,
-  Dropdown,
-  Flex,
-  Icon,
-  Text,
-  TextHeadingRoles,
-} from 'components';
+import { Button, Dropdown, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { TopNavigation } from './TopNavigation.tsx';
 
@@ -23,9 +16,7 @@ export const TooltipStory: StoryObj<typeof TopNavigation> = {
   render: () => {
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Standard TopNavigation
-        </Text.Heading>
+        <Text.Heading role="inner">Standard TopNavigation</Text.Heading>
         <TopNavigation>
           <TopNavigation.Logo>
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Asana_logo.svg/2560px-Asana_logo.svg.png" />

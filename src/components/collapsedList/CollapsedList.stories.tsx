@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { Text, TextHeadingRoles } from '../text';
+import { Text } from '../text';
 import { CollapsedList } from './CollapsedList.tsx';
 import { useState } from 'react';
 import { Checkbox } from '../checkbox';
@@ -35,9 +35,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Basic CollapsedList
-        </Text.Heading>
+        <Text.Heading role="inner">Basic CollapsedList</Text.Heading>
         <Flex direction="horizontal" gap="xl">
           <CollapsedList limit={4}>
             <Checkbox checked={value1} onChange={setValue1}>

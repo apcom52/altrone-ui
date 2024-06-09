@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Text, TextHeadingRoles } from 'components';
+import { Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Loading } from './Loading.tsx';
@@ -24,9 +24,7 @@ export const PaginationStory: StoryObj<typeof Loading> = {
   render: () => {
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Loading indicators
-        </Text.Heading>
+        <Text.Heading role="inner">Loading indicators</Text.Heading>
         <Flex direction="horizontal" gap="m">
           <Loading />
           <Loading color="var(--primary-600)" size="32px" strokeWidth="3px" />

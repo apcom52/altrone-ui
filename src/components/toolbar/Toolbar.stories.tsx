@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { Text, TextHeadingRoles } from '../text';
+import { Text } from '../text';
 import { Toolbar } from './Toolbar.tsx';
 import { Icon } from '../icon';
 import { Search } from '../search';
@@ -29,7 +29,7 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
   render: () => {
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>Basic Toolbar</Text.Heading>
+        <Text.Heading role="inner">Basic Toolbar</Text.Heading>
         <Toolbar>
           <Toolbar.Action icon={<Icon i="settings" />} label="General" />
           <Toolbar.Action icon={<Icon i="content_copy" />} label="Tabs" />
@@ -45,9 +45,7 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
             label="Advanced"
           />
         </Toolbar>
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Compact Toolbar
-        </Text.Heading>
+        <Text.Heading role="inner">Compact Toolbar</Text.Heading>
         <Toolbar compact>
           <Toolbar.Action icon={<Icon i="settings" />} label="General" />
           <Toolbar.Action icon={<Icon i="content_copy" />} label="Tabs" />
@@ -63,9 +61,7 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
             label="Advanced"
           />
         </Toolbar>
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Toolbar with custom components
-        </Text.Heading>
+        <Text.Heading role="inner">Toolbar with custom components</Text.Heading>
         <Toolbar align="between">
           <Toolbar.Group>
             <Toolbar.Action icon={<Icon i="settings" />} label="General" />
@@ -100,7 +96,7 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
           </Toolbar.Action>
         </Toolbar>
 
-        <Text.Heading role={TextHeadingRoles.inner}>
+        <Text.Heading role="inner">
           Compact Toolbar with custom components
         </Text.Heading>
         <Toolbar align="between" compact>

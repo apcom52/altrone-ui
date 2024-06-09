@@ -3,11 +3,12 @@ import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
 import { Modal } from './Modal.tsx';
-import { Text, TextHeadingRoles } from '../text';
+import { Text } from '../text';
 import { useBoolean } from 'utils';
 import { Button } from '../button';
 import { Tooltip } from '../tooltip';
 import { useState } from 'react';
+import { Size } from '../../types';
 
 const story: Meta<typeof Modal> = {
   title: 'Components/Containers/Modal',
@@ -28,31 +29,31 @@ const story: Meta<typeof Modal> = {
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using Modal',
   render: () => {
-    const [size, setSize] = useState(Size.medium);
+    const [size, setSize] = useState<Size>('m');
     const { value: opened, enable: open, disable: hide } = useBoolean(false);
 
     return (
       <Flex gap="m" align="start">
-        <Text.Heading role={TextHeadingRoles.inner}>PasswordInput</Text.Heading>
+        <Text.Heading role="inner">PasswordInput</Text.Heading>
         <Flex direction="horizontal" gap="m">
           <Button
             label="Open modal"
             onClick={() => {
-              setSize('medium');
+              setSize('m');
               open();
             }}
           />
           <Button
             label="Open small modal"
             onClick={() => {
-              setSize('small');
+              setSize('s');
               open();
             }}
           />
           <Button
             label="Open large modal"
             onClick={() => {
-              setSize('large');
+              setSize('l');
               open();
             }}
           />

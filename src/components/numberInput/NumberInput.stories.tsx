@@ -4,7 +4,7 @@ import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
 import { useState } from 'react';
-import { Text, TextHeadingRoles } from '../text';
+import { Text } from '../text';
 import { TextInput } from '../textInput';
 import { Icon } from '../icon';
 import { userEvent, within, expect } from '@storybook/test';
@@ -37,7 +37,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>NumberInput</Text.Heading>
+        <Text.Heading role="inner">NumberInput</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <NumberInput
             value={value1}
@@ -77,9 +77,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             />
           </NumberInput>
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Different sizes of NumberInput
-        </Text.Heading>
+        <Text.Heading role="inner">Different sizes of NumberInput</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <NumberInput
             value={value5}
@@ -87,7 +85,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             placeholder="0,00"
             decimalDelimiter=","
             groupingDelimiter="."
-            size="small"
+            size="s"
           />
           <NumberInput
             value={value6}

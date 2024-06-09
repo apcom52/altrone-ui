@@ -126,7 +126,7 @@ const story: Meta<typeof List> = {
   decorators: [StorybookDecorator],
   args: {
     direction: 'vertical',
-    gap: 'medium',
+    gap: 'm',
   },
   argTypes: {
     gap: gapStoryField,

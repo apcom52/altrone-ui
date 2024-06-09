@@ -4,7 +4,7 @@ import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
 import { useState } from 'react';
-import { Text, TextHeadingRoles } from '../text';
+import { Text } from '../text';
 import { TextInput } from '../textInput';
 import { Icon } from '../icon';
 import { userEvent, within, expect } from '@storybook/test';
@@ -35,7 +35,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>PasswordInput</Text.Heading>
+        <Text.Heading role="inner">PasswordInput</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <PasswordInput
             value={value1}

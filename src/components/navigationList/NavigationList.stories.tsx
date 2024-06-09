@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Icon, Text, TextHeadingRoles } from 'components';
+import { Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { NavigationList } from './NavigationList.tsx';
 
@@ -16,9 +16,7 @@ export const TooltipStory: StoryObj<typeof NavigationList> = {
   render: () => {
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Standard NavigationList
-        </Text.Heading>
+        <Text.Heading role="inner">Standard NavigationList</Text.Heading>
         <div style={{ width: 350 }}>
           <NavigationList>
             <NavigationList.Group>

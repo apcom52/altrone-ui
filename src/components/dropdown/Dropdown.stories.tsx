@@ -1,13 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import {
-  Button,
-  Flex,
-  Icon,
-  Text,
-  TextHeadingRoles,
-  Dropdown,
-  Divider,
-} from 'components';
+import { Button, Flex, Icon, Text, Dropdown, Divider } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { expect, userEvent, within } from '@storybook/test';
@@ -38,9 +30,7 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Basic Dropdowns
-        </Text.Heading>
+        <Text.Heading role="inner">Basic Dropdowns</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Dropdown
             placement="bottom"

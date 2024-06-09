@@ -2,7 +2,6 @@ import { memo, useId } from 'react';
 import s from './modal.module.scss';
 import { ModalProps } from './Modal.types.ts';
 import { CloseButton } from '../closeButton';
-import { Size } from '../../types';
 import { Button } from '../button';
 import clsx from 'clsx';
 import {
@@ -24,7 +23,7 @@ export const Modal = memo<ModalProps>(
     title,
     leftActions,
     actions,
-    size = 'medium',
+    size = 'm',
     className,
     style,
     ...restProps
@@ -50,8 +49,8 @@ export const Modal = memo<ModalProps>(
     const cls = clsx(
       s.Modal,
       {
-        [s.Small]: size === 'small',
-        [s.Large]: size === 'large',
+        [s.Small]: size === 's',
+        [s.Large]: size === 'l',
       },
       className,
       modalConfig.className,

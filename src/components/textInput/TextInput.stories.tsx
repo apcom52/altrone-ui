@@ -6,7 +6,6 @@ import {
   Flex,
   Icon,
   Text,
-  TextHeadingRoles,
   TextInput,
 } from 'components';
 import { StorybookDecorator } from 'global/storybook';
@@ -44,9 +43,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Basic TextInputs
-        </Text.Heading>
+        <Text.Heading role="inner">Basic TextInputs</Text.Heading>
         <Flex direction="horizontal" gap="l" align="center">
           <TextInput
             value={value1}
@@ -71,9 +68,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             invalid={value3.length !== 3}
           />
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Transparent TextInputs
-        </Text.Heading>
+        <Text.Heading role="inner">Transparent TextInputs</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <TextInput
             value={value1}
@@ -102,9 +97,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             transparent
           />
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Read-only mode
-        </Text.Heading>
+        <Text.Heading role="inner">Read-only mode</Text.Heading>
         <Flex direction="horizontal" gap="s">
           <TextInput value={value4} onChange={setValue4} readOnly={readonly} />
           <Button
@@ -112,25 +105,21 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             onClick={() => setReadonly(!readonly)}
           />
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Small TextInputs
-        </Text.Heading>
+        <Text.Heading role="inner">Small TextInputs</Text.Heading>
         <TextInput
           size="s"
           value={value5}
           onChange={setValue5}
           placeholder="Type something in the small TextInput"
         />
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Large TextInputs
-        </Text.Heading>
+        <Text.Heading role="inner">Large TextInputs</Text.Heading>
         <TextInput
           size="l"
           value={value6}
           onChange={setValue6}
           placeholder="Type something in the large TextInput"
         />
-        <Text.Heading role={TextHeadingRoles.inner}>
+        <Text.Heading role="inner">
           TextInput without rainbow effect
         </Text.Heading>
         <TextInput
@@ -162,7 +151,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>Text Islands</Text.Heading>
+        <Text.Heading role="inner">Text Islands</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <TextInput
             value={value1}
@@ -253,7 +242,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             />
           </TextInput>
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>Icon Islands</Text.Heading>
+        <Text.Heading role="inner">Icon Islands</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <TextInput
             value={value4}
@@ -313,9 +302,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             />
           </TextInput>
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Action Islands
-        </Text.Heading>
+        <Text.Heading role="inner">Action Islands</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <TextInput value={value7} onChange={setValue7} placeholder="Username">
             <Dropdown
@@ -402,9 +389,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             />
           </TextInput>
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Custom Islands
-        </Text.Heading>
+        <Text.Heading role="inner">Custom Islands</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <TextInput
             value={value9}
@@ -428,7 +413,7 @@ export const CustomInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
+        <Text.Heading role="inner">
           Using custom component instead of standard input
         </Text.Heading>
         <TextInput value={value} onChange={setValue} Component={<textarea />}>
@@ -448,7 +433,7 @@ export const SuggestionsInput: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
+        <Text.Heading role="inner">
           Start type and see the list of suggestions
         </Text.Heading>
         <TextInput

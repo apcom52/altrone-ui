@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Button, Flex, Text, TextHeadingRoles } from 'components';
+import { Button, Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { Toast, useToast } from './Toast.tsx';
 
@@ -19,9 +19,7 @@ export const FlexLayout: StoryObj<typeof Flex> = {
 
     return (
       <Flex {...args} gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Click to show a toast message
-        </Text.Heading>
+        <Text.Heading role="inner">Click to show a toast message</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Button
             label="Show toast message"

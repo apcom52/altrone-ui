@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Button, Flex, Icon, Text, TextHeadingRoles } from 'components';
+import { Button, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { Tooltip } from './Tooltip.tsx';
 
@@ -16,7 +16,7 @@ export const TooltipStory: StoryObj<typeof Tooltip> = {
   render: () => {
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>Tooltips</Text.Heading>
+        <Text.Heading role="inner">Tooltips</Text.Heading>
         <Flex direction="horizontal" gap="m">
           <Tooltip content="Simple tooltip without custom child element" />
           <Tooltip content="Here is the tooltip of the button">

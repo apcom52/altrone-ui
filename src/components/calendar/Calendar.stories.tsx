@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { Text, TextHeadingRoles } from '../text';
+import { Text } from '../text';
 import { Calendar } from './Calendar.tsx';
 
 const story: Meta<typeof Calendar> = {
@@ -26,9 +26,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   render: () => {
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Basic Calendar
-        </Text.Heading>
+        <Text.Heading role="inner">Basic Calendar</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Calendar
             month={new Date(2024, 3)}

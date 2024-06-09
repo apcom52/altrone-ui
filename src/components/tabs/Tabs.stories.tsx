@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Text, TextHeadingRoles } from 'components';
+import { Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Tabs } from './Tabs.tsx';
@@ -24,7 +24,7 @@ export const FlexLayout: StoryObj<typeof Flex> = {
   name: 'Using Tags',
   render: (args) => (
     <Flex {...args} gap="l">
-      <Text.Heading role={TextHeadingRoles.inner}>Standard Tabs</Text.Heading>
+      <Text.Heading role="inner">Standard Tabs</Text.Heading>
       <Flex direction="horizontal" gap="l">
         <Tabs>
           <Tabs.Item selected href="#chat" label="Chat" />

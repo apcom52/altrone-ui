@@ -4,7 +4,7 @@ import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Button, Flex, Icon } from 'components';
 import { useState } from 'react';
-import { Text, TextHeadingRoles } from '../text';
+import { Text } from '../text';
 import { COUNTRIES } from '../scrollable/Scrollable.constants.ts';
 import { Option } from './Select.types.ts';
 
@@ -41,7 +41,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>Basic Select</Text.Heading>
+        <Text.Heading role="inner">Basic Select</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Select
             name="country"
@@ -67,9 +67,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             disabled
           />
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Multiple Select
-        </Text.Heading>
+        <Text.Heading role="inner">Multiple Select</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Select
             multiple={true}
@@ -79,9 +77,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             options={SELECT_COUNTRIES}
           />
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Select with search
-        </Text.Heading>
+        <Text.Heading role="inner">Select with search</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Select
             value={value5}
@@ -99,9 +95,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             searchable
           />
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Select with different sizes
-        </Text.Heading>
+        <Text.Heading role="inner">Select with different sizes</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Select
             name="country"
@@ -121,9 +115,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             size="l"
           />
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Transparent Select
-        </Text.Heading>
+        <Text.Heading role="inner">Transparent Select</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Select
             name="country"
@@ -145,7 +137,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             clearable
           />
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>Custom Select</Text.Heading>
+        <Text.Heading role="inner">Custom Select</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Select
             name="country"

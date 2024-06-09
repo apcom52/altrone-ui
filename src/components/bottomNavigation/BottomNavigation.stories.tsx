@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Icon, Text, TextHeadingRoles } from 'components';
+import { Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { BottomNavigation } from './BottomNavigation.tsx';
 
@@ -16,9 +16,7 @@ export const BottomNavigationStory: StoryObj<typeof BottomNavigation> = {
   render: () => {
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Standard BottomNavigation
-        </Text.Heading>
+        <Text.Heading role="inner">Standard BottomNavigation</Text.Heading>
         <BottomNavigation>
           <BottomNavigation.Item
             selected

@@ -18,7 +18,7 @@ const SelectComponent = (props: SelectProps) => {
     placeholder,
     searchable,
     clearable,
-    size = 'medium',
+    size = 'm',
     className,
     style,
     parentWidth = true,

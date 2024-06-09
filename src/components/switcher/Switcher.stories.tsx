@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { Text, TextHeadingRoles } from '../text';
+import { Text } from '../text';
 // import { userEvent, within, expect } from '@storybook/test';
 import { Switcher } from './Switcher.tsx';
 import { useState } from 'react';
@@ -32,9 +32,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Basic Checkboxes
-        </Text.Heading>
+        <Text.Heading role="inner">Basic Checkboxes</Text.Heading>
         <Flex direction="horizontal" gap="l" align="center">
           <Text.Paragraph>Permissions:</Text.Paragraph>
           <Switcher checked={value2} onChange={setValue2}>

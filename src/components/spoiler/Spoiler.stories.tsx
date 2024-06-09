@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { Text, TextHeadingRoles } from '../text';
+import { Text } from '../text';
 import { Spoiler } from './Spoiler.tsx';
 
 const story: Meta<typeof Spoiler> = {
@@ -26,7 +26,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   render: () => {
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>Spoilers</Text.Heading>
+        <Text.Heading role="inner">Spoilers</Text.Heading>
         <Flex gap="l">
           <Spoiler title="The Beauty of Nature">
             <Text.Paragraph>

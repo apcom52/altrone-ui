@@ -4,7 +4,7 @@ import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
 import { useCallback, useState } from 'react';
-import { Text, TextHeadingRoles } from '../text';
+import { Text } from '../text';
 import {
   AutocompleteRenderSuggestionContext,
   AutocompleteSuggestionsFunc,
@@ -63,9 +63,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Standard AutocompleteInput
-        </Text.Heading>
+        <Text.Heading role="inner">Standard AutocompleteInput</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <AutocompleteInput
             value={value1}
@@ -75,7 +73,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             data-testid="field"
           />
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>
+        <Text.Heading role="inner">
           AutocompleteInput with custom component
         </Text.Heading>
         <AutocompleteInput

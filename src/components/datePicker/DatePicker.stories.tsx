@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { Text, TextHeadingRoles } from '../text';
+import { Text } from '../text';
 import { DatePicker } from './DatePicker.tsx';
 import { useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
@@ -38,9 +38,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Basic DatePicker
-        </Text.Heading>
+        <Text.Heading role="inner">Basic DatePicker</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <DatePicker
             value={day1}
@@ -53,7 +51,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <DatePicker value={day2} readOnly onChange={setDay2} />
           <DatePicker value={day2} disabled onChange={setDay2} />
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>MonthPicker</Text.Heading>
+        <Text.Heading role="inner">MonthPicker</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <DatePicker.MonthPicker value={month1} onChange={setMonth1} />
           <DatePicker.MonthPicker
@@ -77,7 +75,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             onChange={setMonth2}
           />
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>YearPicker</Text.Heading>
+        <Text.Heading role="inner">YearPicker</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <DatePicker.YearPicker value={year1} onChange={setYear1} />
           <DatePicker.YearPicker clearable value={year2} onChange={setYear2} />
@@ -105,7 +103,7 @@ export const RangeStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>RangePicker</Text.Heading>
+        <Text.Heading role="inner">RangePicker</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <DatePicker.RangePicker
             value={day1}

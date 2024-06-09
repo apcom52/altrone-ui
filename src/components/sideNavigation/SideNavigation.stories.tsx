@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Text, TextHeadingRoles, TextListType } from 'components';
+import { Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { SideNavigation } from './SideNavigation.tsx';
 
@@ -16,20 +16,14 @@ export const TooltipStory: StoryObj<typeof SideNavigation> = {
   render: () => {
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Standard TopNavigation
-        </Text.Heading>
+        <Text.Heading role="inner">Standard TopNavigation</Text.Heading>
         <Flex direction="horizontal">
           <div style={{ width: '600px' }}>
-            <Text.Heading role={TextHeadingRoles.title}>
+            <Text.Heading role="title">
               The Evolution of Artificial Intelligence: Past, Present, and
               Future
             </Text.Heading>
-            <Text.Heading
-              id="introduction"
-              level={2}
-              role={TextHeadingRoles.heading}
-            >
+            <Text.Heading id="introduction" level={2} role="heading">
               Introduction
             </Text.Heading>
             <Text.Paragraph>
@@ -40,18 +34,10 @@ export const TooltipStory: StoryObj<typeof SideNavigation> = {
               of AI, its current state, and future prospects, highlighting key
               milestones and technological advancements.
             </Text.Paragraph>
-            <Text.Heading
-              id="genesis"
-              level={2}
-              role={TextHeadingRoles.heading}
-            >
+            <Text.Heading id="genesis" level={2} role="heading">
               The Genesis of Artificial Intelligence
             </Text.Heading>
-            <Text.Heading
-              id="concepts"
-              level={3}
-              role={TextHeadingRoles.subheading}
-            >
+            <Text.Heading id="concepts" level={3} role="subheading">
               Early Concepts and Theories
             </Text.Heading>
             <Text.Paragraph>
@@ -59,7 +45,7 @@ export const TooltipStory: StoryObj<typeof SideNavigation> = {
               stories about artificial beings endowed with intelligence were
               common. However, the formal study of AI began in the 20th century.
             </Text.Paragraph>
-            <Text.Heading level={3} role={TextHeadingRoles.inner}>
+            <Text.Heading level={3} role="inner">
               Alan Turing and the Turing Test
             </Text.Heading>
             <Text.Paragraph>
@@ -69,7 +55,7 @@ export const TooltipStory: StoryObj<typeof SideNavigation> = {
               fundamental criterion for determining a machine's ability to
               exhibit intelligent behavior equivalent to that of a human.
             </Text.Paragraph>
-            <Text.Heading level={3} role={TextHeadingRoles.inner}>
+            <Text.Heading level={3} role="inner">
               The Dartmouth Conference of 1956
             </Text.Heading>
             <Text.Paragraph>
@@ -78,14 +64,10 @@ export const TooltipStory: StoryObj<typeof SideNavigation> = {
               Rochester, and Claude Shannon outlined a research agenda that
               shaped AI's initial decades.
             </Text.Paragraph>
-            <Text.Heading
-              id="ai_programs"
-              level={3}
-              role={TextHeadingRoles.subheading}
-            >
+            <Text.Heading id="ai_programs" level={3} role="subheading">
               Early AI Programs and Achievements
             </Text.Heading>
-            <Text.Heading level={3} role={TextHeadingRoles.inner}>
+            <Text.Heading level={3} role="inner">
               Logic Theorist and General Problem Solver
             </Text.Heading>
             <Text.Paragraph>
@@ -95,7 +77,7 @@ export const TooltipStory: StoryObj<typeof SideNavigation> = {
               by the same team, aimed to solve a wide range of problems using a
               general approach, laying the groundwork for future AI systems.
             </Text.Paragraph>
-            <Text.Heading level={3} role={TextHeadingRoles.inner}>
+            <Text.Heading level={3} role="inner">
               ELIZA and Early Natural Language Processing
             </Text.Heading>
             <Text.Paragraph>
@@ -105,21 +87,13 @@ export const TooltipStory: StoryObj<typeof SideNavigation> = {
               machines to engage in human-like interactions, sparking interest
               in natural language processing (NLP).
             </Text.Paragraph>
-            <Text.Heading
-              id="evolution"
-              level={2}
-              role={TextHeadingRoles.heading}
-            >
+            <Text.Heading id="evolution" level={2} role="heading">
               The Evolution and Expansion of AI
             </Text.Heading>
-            <Text.Heading
-              id="rise"
-              level={3}
-              role={TextHeadingRoles.subheading}
-            >
+            <Text.Heading id="rise" level={3} role="subheading">
               The Rise of Machine Learning
             </Text.Heading>
-            <Text.Heading level={4} role={TextHeadingRoles.inner}>
+            <Text.Heading level={4} role="inner">
               From Rule-Based Systems to Learning Algorithms
             </Text.Heading>
             <Text.Paragraph>
@@ -129,7 +103,7 @@ export const TooltipStory: StoryObj<typeof SideNavigation> = {
               capable of learning from data, significantly enhancing AI's
               capabilities.
             </Text.Paragraph>
-            <Text.Heading level={4} role={TextHeadingRoles.inner}>
+            <Text.Heading level={4} role="inner">
               Neural Networks and Deep Learning
             </Text.Heading>
             <Text.Paragraph>
@@ -139,14 +113,10 @@ export const TooltipStory: StoryObj<typeof SideNavigation> = {
               driven by increased computational power and large datasets,
               enabled breakthroughs in image and speech recognition.
             </Text.Paragraph>
-            <Text.Heading
-              id="ai_in_21"
-              level={3}
-              role={TextHeadingRoles.subheading}
-            >
+            <Text.Heading id="ai_in_21" level={3} role="subheading">
               AI in the 21st Century
             </Text.Heading>
-            <Text.Heading level={4} role={TextHeadingRoles.inner}>
+            <Text.Heading level={4} role="inner">
               AI in Everyday Applications
             </Text.Heading>
             <Text.Paragraph>
@@ -157,7 +127,7 @@ export const TooltipStory: StoryObj<typeof SideNavigation> = {
               diseases, in finance for detecting fraud, and in marketing for
               personalized advertising.
             </Text.Paragraph>
-            <Text.Heading level={4} role={TextHeadingRoles.inner}>
+            <Text.Heading level={4} role="inner">
               Ethical and Societal Implications
             </Text.Heading>
             <Text.Paragraph>
@@ -167,11 +137,7 @@ export const TooltipStory: StoryObj<typeof SideNavigation> = {
               frameworks and regulations aim to address these challenges and
               ensure the responsible use of AI technologies.
             </Text.Paragraph>
-            <Text.Heading
-              id="conclusion"
-              level={2}
-              role={TextHeadingRoles.heading}
-            >
+            <Text.Heading id="conclusion" level={2} role="heading">
               Conclusion
             </Text.Heading>
             <Text.Paragraph>
@@ -183,14 +149,10 @@ export const TooltipStory: StoryObj<typeof SideNavigation> = {
               fostering responsible development and addressing these challenges,
               we can harness the full potential of AI to benefit humanity.
             </Text.Paragraph>
-            <Text.Heading
-              id="references"
-              level={2}
-              role={TextHeadingRoles.heading}
-            >
+            <Text.Heading id="references" level={2} role="heading">
               References
             </Text.Heading>
-            <Text.List type={TextListType.ordered}>
+            <Text.List type="numeric">
               <Text.ListItem>
                 Russell, S., & Norvig, P. (2020). Artificial Intelligence: A
                 Modern Approach (4th ed.). Pearson.

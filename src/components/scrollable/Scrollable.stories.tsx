@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, List, Scrollable, Text, TextHeadingRoles } from 'components';
+import { Flex, List, Scrollable, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { COUNTRIES } from './Scrollable.constants.ts';
@@ -31,7 +31,7 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
   name: 'Using Scrollable',
   render: (args) => (
     <Flex gap="xl">
-      <Text.Heading role={TextHeadingRoles.inner}>
+      <Text.Heading role="inner">
         Vertical Scrollable with long content
       </Text.Heading>
       <Scrollable
@@ -55,7 +55,7 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
           }}
         />
       </Scrollable>
-      <Text.Heading role={TextHeadingRoles.inner}>
+      <Text.Heading role="inner">
         Horizontal Scrollable with long content
       </Text.Heading>
       <Scrollable
@@ -79,16 +79,14 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
                 style={{ width: '200px', minWidth: '200px' }}
               >
                 <div style={{ fontSize: 48 }}>{item.flag}</div>
-                <Text.Heading role={TextHeadingRoles.subheading}>
-                  {item.country}
-                </Text.Heading>
+                <Text.Heading role="subheading">{item.country}</Text.Heading>
                 <Text.Paragraph size="s">{item.capital}</Text.Paragraph>
               </Flex>
             );
           }}
         />
       </Scrollable>
-      <Text.Heading role={TextHeadingRoles.inner}>
+      <Text.Heading role="inner">
         Vertical Scrollable with short content
       </Text.Heading>
       <Scrollable
@@ -112,7 +110,7 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
           }}
         />
       </Scrollable>
-      <Text.Heading role={TextHeadingRoles.inner}>
+      <Text.Heading role="inner">
         Horizontal Scrollable with short content
       </Text.Heading>
       <Scrollable
@@ -136,9 +134,7 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
                 style={{ width: '200px', minWidth: '200px' }}
               >
                 <div style={{ fontSize: 48 }}>{item.flag}</div>
-                <Text.Heading role={TextHeadingRoles.subheading}>
-                  {item.country}
-                </Text.Heading>
+                <Text.Heading role="subheading">{item.country}</Text.Heading>
                 <Text.Paragraph size="s">{item.capital}</Text.Paragraph>
               </Flex>
             );

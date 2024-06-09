@@ -1,16 +1,8 @@
 import { Size } from 'types';
 
-export enum TextHeadingRoles {
-  title = 'title',
-  heading = 'heading',
-  subheading = 'subheading',
-  inner = 'inner',
-}
+export type TextHeadingRoles = 'title' | 'heading' | 'subheading' | 'inner';
 
-export enum TextListType {
-  ordered = 'numeric',
-  unordered = 'marked',
-}
+export type TextListType = 'numeric' | 'marked';
 
 interface BaseInlineProps {
   bold?: boolean;

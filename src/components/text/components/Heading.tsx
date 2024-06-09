@@ -1,5 +1,5 @@
 import { createElement, memo } from 'react';
-import { TextHeadingProps, TextHeadingRoles } from '../Text.types.ts';
+import { TextHeadingProps } from '../Text.types.ts';
 import clsx from 'clsx';
 import s from './heading.module.scss';
 import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
@@ -9,7 +9,7 @@ export const Heading = memo(
     children,
     className,
     level = 1,
-    role = TextHeadingRoles.title,
+    role = 'title',
     style,
     ...props
   }: TextHeadingProps) => {
@@ -17,10 +17,10 @@ export const Heading = memo(
 
     const cls = clsx(
       {
-        [s.Title]: role === TextHeadingRoles.title,
-        [s.Heading]: role === TextHeadingRoles.heading,
-        [s.Subheader]: role === TextHeadingRoles.subheading,
-        [s.InnerHeader]: role === TextHeadingRoles.inner,
+        [s.Title]: role === 'title',
+        [s.Heading]: role === 'heading',
+        [s.Subheader]: role === 'subheading',
+        [s.InnerHeader]: role === 'inner',
       },
       textHeading.className,
       className,

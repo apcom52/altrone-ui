@@ -4,7 +4,7 @@ import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
 import { useState } from 'react';
-import { Text, TextHeadingRoles } from '../text';
+import { Text } from '../text';
 
 const story: Meta<typeof Textarea> = {
   title: 'Components/Form/Textarea',
@@ -29,9 +29,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          TextArea component
-        </Text.Heading>
+        <Text.Heading role="inner">TextArea component</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Textarea
             value={value1}

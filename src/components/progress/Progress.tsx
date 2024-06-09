@@ -11,7 +11,7 @@ export const Progress = memo<ProgressProps>(
     style,
     value = 0,
     max = 100,
-    size = 'medium',
+    size = 'm',
     activeSegmentClassName,
     ...props
   }) => {
@@ -20,8 +20,8 @@ export const Progress = memo<ProgressProps>(
     const cls = clsx(
       s.Progress,
       {
-        [s.Small]: size === 'small',
-        [s.Large]: size === 'large',
+        [s.Small]: size === 's',
+        [s.Large]: size === 'l',
       },
       className,
       progressConfig.className,

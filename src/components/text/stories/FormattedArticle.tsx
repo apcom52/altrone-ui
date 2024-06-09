@@ -1,5 +1,4 @@
 import { Flex, Text } from 'components';
-import { TextHeadingRoles, TextListType } from '../Text.types.ts';
 
 export const FormattedArticle = () => {
   return (
@@ -16,7 +15,7 @@ export const FormattedArticle = () => {
         this article, we delve into the diverse functionalities of markup
         language, exploring its various elements and their applications.
       </Text.Paragraph>
-      <Text.Heading role={TextHeadingRoles.subheading}>
+      <Text.Heading role="subheading">
         Understanding Basic Formatting
       </Text.Heading>
       <Text.Paragraph>
@@ -24,7 +23,7 @@ export const FormattedArticle = () => {
         simple syntax. Let's begin by examining some fundamental formatting
         options:
       </Text.Paragraph>
-      <Text.List type={TextListType.ordered}>
+      <Text.List type="numeric">
         <Text.ListItem>
           <Text.Inline italic>Italic</Text.Inline>: Used to emphasize or{' '}
           <Text.Inline highlighted>
@@ -51,14 +50,12 @@ export const FormattedArticle = () => {
           in collaborative writing environments.
         </Text.ListItem>
       </Text.List>
-      <Text.Heading role={TextHeadingRoles.subheading}>
-        Advanced Styling Techniques
-      </Text.Heading>
+      <Text.Heading role="subheading">Advanced Styling Techniques</Text.Heading>
       <Text.Paragraph>
         Markup language also offers advanced styling options to cater to diverse
         content needs:
       </Text.Paragraph>
-      <Text.List type={TextListType.ordered}>
+      <Text.List type="numeric">
         <Text.ListItem>
           <Text.Inline bold>Links</Text.Inline>: Hyperlinks are integral
           components of digital content, facilitating navigation and
@@ -87,7 +84,7 @@ export const FormattedArticle = () => {
           <Text.Keyboard>Ctrl + V</Text.Keyboard> pastes it.
         </Text.ListItem>
       </Text.List>
-      <Text.Heading role={TextHeadingRoles.subheading}>Conclusion</Text.Heading>
+      <Text.Heading role="subheading">Conclusion</Text.Heading>
       <Text.Paragraph>
         In essence, markup language serves as a versatile tool for enhancing
         textual content across various digital platforms. By mastering its

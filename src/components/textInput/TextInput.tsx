@@ -81,8 +81,8 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
     const wrapperCls = clsx(
       s.Wrapper,
       {
-        [s.Small]: inputSize === 'small',
-        [s.Large]: inputSize === 'large',
+        [s.Small]: inputSize === 's',
+        [s.Large]: inputSize === 'l',
       },
       wrapperClassName,
     );

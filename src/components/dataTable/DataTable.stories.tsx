@@ -1,7 +1,7 @@
 import { DataTable } from './index';
 import { Meta, StoryObj } from '@storybook/react';
 import { Flex } from '../flex';
-import { Text, TextHeadingRoles } from '../text';
+import { Text } from '../text';
 import { COUNTRIES } from '../scrollable/Scrollable.constants.ts';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
@@ -31,9 +31,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   render: () => {
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Basic DataTable
-        </Text.Heading>
+        <Text.Heading role="inner">Basic DataTable</Text.Heading>
         <DataTable
           data={COUNTRIES}
           rowsPerPage={20}
@@ -81,7 +79,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
   render: () => {
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
+        <Text.Heading role="inner">
           DataTable with filtering and sorting
         </Text.Heading>
         <DataTable<EmployeeType>

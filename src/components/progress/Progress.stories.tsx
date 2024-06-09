@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Text, TextHeadingRoles } from 'components';
+import { Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Progress } from './Progress.tsx';
@@ -24,9 +24,7 @@ export const FlexLayout: StoryObj<typeof Flex> = {
   name: 'Using Flex',
   render: (args) => (
     <Flex {...args} gap="l">
-      <Text.Heading role={TextHeadingRoles.inner}>
-        Standard Progress bars
-      </Text.Heading>
+      <Text.Heading role="inner">Standard Progress bars</Text.Heading>
       <Flex direction="horizontal" gap="l">
         <Progress value={8} max={100} />
         <Progress value={63} max={100}>

@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
-import { Text, TextHeadingRoles } from '../text';
+import { Text } from '../text';
 import { Radio } from './Radio.tsx';
 import { useState } from 'react';
 import { CollapsedList } from 'components/collapsedList';
@@ -33,9 +33,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Basic Radio lists
-        </Text.Heading>
+        <Text.Heading role="inner">Basic Radio lists</Text.Heading>
         <Flex direction="horizontal" gap="l" align="center">
           <Text.Paragraph>Choose your gender:</Text.Paragraph>
           <Radio value={gender} onChange={setGender} name="gender">
@@ -54,9 +52,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             </Radio.Item>
           </Radio>
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Vertical Radio lists
-        </Text.Heading>
+        <Text.Heading role="inner">Vertical Radio lists</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Flex direction="vertical" gap="l">
             <Text.Paragraph>Choose payment method:</Text.Paragraph>

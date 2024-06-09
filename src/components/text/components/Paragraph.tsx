@@ -8,7 +8,7 @@ export const Paragraph = memo(
   ({
     children,
     className,
-    size = 'medium',
+    size = 'm',
     style,
     ...props
   }: TextParagraphProps) => {
@@ -17,8 +17,8 @@ export const Paragraph = memo(
     const cls = clsx(
       s.Paragraph,
       {
-        [s.Paragraph_small]: size === 'small',
-        [s.Paragraph_large]: size === 'large',
+        [s.Paragraph_small]: size === 's',
+        [s.Paragraph_large]: size === 'l',
       },
       className,
       textParagraph.className,

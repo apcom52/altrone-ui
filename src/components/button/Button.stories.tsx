@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Button, Flex, Icon, Text, TextHeadingRoles } from 'components';
+import { Button, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { roleStoryField } from '../../global/storybook/argTypes.ts';
@@ -93,15 +93,15 @@ export const ButtonStory: StoryObj<typeof Button> = {
   },
   render: ({ ...args }) => (
     <Flex gap="l">
-      <Text.Heading role={TextHeadingRoles.inner}>Default buttons</Text.Heading>
+      <Text.Heading role="inner">Default buttons</Text.Heading>
       {renderButtonsWithRole('default', args)}
-      <Text.Heading role={TextHeadingRoles.inner}>Primary buttons</Text.Heading>
+      <Text.Heading role="inner">Primary buttons</Text.Heading>
       {renderButtonsWithRole('primary', args)}
-      <Text.Heading role={TextHeadingRoles.inner}>Success buttons</Text.Heading>
+      <Text.Heading role="inner">Success buttons</Text.Heading>
       {renderButtonsWithRole('success', args)}
-      <Text.Heading role={TextHeadingRoles.inner}>Warning buttons</Text.Heading>
+      <Text.Heading role="inner">Warning buttons</Text.Heading>
       {renderButtonsWithRole('warning', args)}
-      <Text.Heading role={TextHeadingRoles.inner}>Warning buttons</Text.Heading>
+      <Text.Heading role="inner">Warning buttons</Text.Heading>
       {renderButtonsWithRole('danger', args)}
     </Flex>
   ),
@@ -126,12 +126,12 @@ export const ButtonSizeStory: StoryObj<typeof Button> = {
   },
   render: () => (
     <Flex gap="l">
-      <Text.Heading role={TextHeadingRoles.inner}>Small buttons</Text.Heading>
-      {renderButtonsWithSize('small')}
-      <Text.Heading role={TextHeadingRoles.inner}>Normal buttons</Text.Heading>
-      {renderButtonsWithSize('medium')}
-      <Text.Heading role={TextHeadingRoles.inner}>Large buttons</Text.Heading>
-      {renderButtonsWithSize('large')}
+      <Text.Heading role="inner">Small buttons</Text.Heading>
+      {renderButtonsWithSize('s')}
+      <Text.Heading role="inner">Normal buttons</Text.Heading>
+      {renderButtonsWithSize('m')}
+      <Text.Heading role="inner">Large buttons</Text.Heading>
+      {renderButtonsWithSize('l')}
     </Flex>
   ),
 };

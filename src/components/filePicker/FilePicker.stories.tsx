@@ -3,7 +3,7 @@ import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from 'components';
 import { useState } from 'react';
-import { Text, TextHeadingRoles } from '../text';
+import { Text } from '../text';
 import { FilePicker } from './FilePicker.tsx';
 import { FileItem } from './FilePicker.types.ts';
 
@@ -43,7 +43,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l">
-        <Text.Heading role={TextHeadingRoles.inner}>
+        <Text.Heading role="inner">
           Basic FilePicker (with autoUpload and without)
         </Text.Heading>
         <Flex direction="horizontal" gap="l">
@@ -61,9 +61,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             placeholder="Choose file (manual upload)"
           />
         </Flex>
-        <Text.Heading role={TextHeadingRoles.inner}>
-          Multiple FilePicker
-        </Text.Heading>
+        <Text.Heading role="inner">Multiple FilePicker</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <FilePicker
             url="http://localhost:4055/upload"
