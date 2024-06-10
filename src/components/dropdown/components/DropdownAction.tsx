@@ -60,6 +60,7 @@ export function DropdownAction({
 
   return (
     <button
+      type="button"
       disabled={disabled}
       className={cls}
       style={styles}

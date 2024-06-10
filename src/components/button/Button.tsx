@@ -104,6 +104,7 @@ export const Button = memo(
         <button
           className={cls}
           style={styles}
+          type="button"
           {...props}
           onMouseEnter={isRainbowEffectActivated ? onMouseEnter : undefined}
           onMouseMove={isRainbowEffectActivated ? onMouseMove : undefined}

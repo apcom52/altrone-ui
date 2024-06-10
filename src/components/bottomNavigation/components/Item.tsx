@@ -21,7 +21,7 @@ export const Item = forwardRef<HTMLButtonElement, BottomNavigationItemProps>(
     );
 
     return (
-      <button ref={ref} className={cls} {...restProps}>
+      <button type="button" ref={ref} className={cls} {...restProps}>
         <div className={s.Icon}>{icon}</div>
         <div className={s.Label}>{label}</div>
       </button>

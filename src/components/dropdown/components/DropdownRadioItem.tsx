@@ -52,6 +52,7 @@ export function DropdownRadioItem({
   return (
     <button
       ref={ref}
+      type="button"
       onKeyDown={onKeyDownPress}
       onClick={onSelect}
       disabled={disabled}

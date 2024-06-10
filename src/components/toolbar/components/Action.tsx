@@ -23,7 +23,13 @@ export const Action = forwardRef<HTMLButtonElement, ToolbarActionProps>(
     );
 
     return (
-      <button className={cls} ref={ref} title={label} {...restProps}>
+      <button
+        type="button"
+        className={cls}
+        ref={ref}
+        title={label}
+        {...restProps}
+      >
         {!children ? <div className={s.Icon}>{icon}</div> : null}
         {children ? <div className={s.CustomComponent}>{children}</div> : null}
         {(compact && showLabel) || !compact ? (
