@@ -1,3 +1,5 @@
+import { RenderFuncProp } from 'types';
+
 export interface NavigationListProps
   extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -11,4 +13,5 @@ export interface NavigationListLinkProps
   label: string;
   icon?: JSX.Element;
   selected?: boolean;
+  renderFunc?: RenderFuncProp<HTMLAnchorElement, NavigationListLinkProps>;
 }

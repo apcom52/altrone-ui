@@ -1,12 +1,13 @@
-import { forwardRef, Ref } from 'react';
+import { forwardRef } from 'react';
 import { TopNavigationLinkProps } from '../TopNavigation.types.ts';
 import clsx from 'clsx';
 import s from './link.module.scss';
+import { RenderFuncProp } from 'types';
 
-const renderTopNavigationLink = (
-  ref: Ref<HTMLAnchorElement>,
-  { leftIcon, rightIcon, label, ...restProps }: TopNavigationLinkProps,
-) => {
+const renderTopNavigationLink: RenderFuncProp<
+  HTMLAnchorElement,
+  TopNavigationLinkProps
+> = (ref, { leftIcon, rightIcon, label, ...restProps }) => {
   return (
     <a ref={ref} {...restProps}>
       <div className={s.Icon}>{leftIcon}</div>
