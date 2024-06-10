@@ -89,7 +89,7 @@ export const Button = memo(
       const buttonContent = !isOnlyIcon ? (
         <Flex
           direction="horizontal"
-          gap={size === 'large' ? 'small' : 'xsmall'}
+          gap={size === 'l' ? 's' : 'xs'}
           align="center"
         >
           {leftIcon ? <div className={s.Icon}>{leftIcon}</div> : null}

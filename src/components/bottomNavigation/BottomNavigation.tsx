@@ -3,7 +3,7 @@ import { BottomNavigationProps } from './BottomNavigation.types.ts';
 import s from './bottomNavigation.module.scss';
 import clsx from 'clsx';
 import { Item } from './components';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 const BottomNavigation = memo<BottomNavigationProps>(
   ({ children, className, style, ...restProps }) => {

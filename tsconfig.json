@@ -19,8 +19,9 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
   },
   "include": ["src"],
+  "exclude": ["src/global/storybook"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
