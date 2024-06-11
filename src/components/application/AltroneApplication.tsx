@@ -1,11 +1,12 @@
 import s from './altroneApplication.module.scss';
-import { AltroneApplicationProps } from './AltroneApplication.types.ts';
+import { AltroneApplicationProps, Theme } from './AltroneApplication.types.ts';
 import { useMediaMatch } from 'utils';
 import clsx from 'clsx';
 import { AltroneConfiguration } from 'components/configuration';
-import { createElement, useEffect } from 'react';
+import { createElement, useEffect, useMemo, useState } from 'react';
 import { RainbowEffect } from './RainbowEffect.tsx';
 import { Toast } from 'components/toasts/Toast.tsx';
+import { ThemeContext, ThemeContextType } from './useTheme.ts';
 
 export const AltroneApplication = ({
   children,
@@ -13,38 +14,53 @@ export const AltroneApplication = ({
   id,
   style,
   tagName = 'div',
-  theme = 'auto',
+  theme: initialTheme = 'auto',
   config,
   ...props
 }: AltroneApplicationProps) => {
-  let _theme = theme;
+  const [theme, setTheme] = useState<Theme>(initialTheme);
+
   const mediaScheme = useMediaMatch('(prefers-color-scheme: dark)');
 
-  if (theme === 'auto') {
-    _theme = mediaScheme ? 'dark' : 'light';
-  }
+  useEffect(() => {
+    if (initialTheme === 'auto') {
+      setTheme(mediaScheme ? 'dark' : 'light');
+    } else {
+      setTheme(initialTheme);
+    }
+  }, [mediaScheme, initialTheme]);
 
   useEffect(() => {
     document
       .querySelector('html')
-      ?.classList.toggle('AltroneDark', _theme === 'dark');
-  }, [_theme]);
+      ?.classList.toggle('AltroneDark', theme === 'dark');
+  }, [theme]);
+
+  const themeContext = useMemo<ThemeContextType>(
+    () => ({
+      theme: theme,
+      setTheme,
+    }),
+    [theme, setTheme],
+  );
 
   return createElement(
     tagName,
     {
       className: clsx(s.AltroneApp, className, {
-        AltroneDark: _theme === 'dark',
+        AltroneDark: theme === 'dark',
       }),
       'data-altrone-root': 'true',
       id,
       style,
       ...props,
     },
-    <AltroneConfiguration {...config}>
-      <RainbowEffect>
-        <Toast>{children}</Toast>
-      </RainbowEffect>
-    </AltroneConfiguration>,
+    <ThemeContext.Provider value={themeContext}>
+      <AltroneConfiguration {...config}>
+        <RainbowEffect>
+          <Toast>{children}</Toast>
+        </RainbowEffect>
+      </AltroneConfiguration>
+    </ThemeContext.Provider>,
   );
 };
