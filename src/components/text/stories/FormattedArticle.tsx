@@ -1,4 +1,4 @@
-import { Text } from 'components';
+import { Button, Text } from 'components';
 
 export const FormattedArticle = () => {
   return (
@@ -112,6 +112,7 @@ export const FormattedArticle = () => {
           experiences in the digital landscape.
         </Text.Paragraph>
       </Text.Section>
+      <Button size="l" label="Test button" />
     </Text>
   );
 };

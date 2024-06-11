@@ -18,7 +18,7 @@ export const AltroneApplication = ({
   config,
   ...props
 }: AltroneApplicationProps) => {
-  const [theme, setTheme] = useState<Theme>(initialTheme);
+  const [theme, setTheme] = useState<Theme>('auto');
 
   const mediaScheme = useMediaMatch('(prefers-color-scheme: dark)');
 

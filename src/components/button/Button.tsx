@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { useConfiguration } from 'components/configuration';
 import { useRainbowEffect } from '../application/RainbowEffect.tsx';
 import { forwardRef, memo, MouseEventHandler, useCallback } from 'react';
+import { useAltroneTheme } from '../application';
 
 export const Button = memo(
   forwardRef<HTMLButtonElement, ButtonProps>(
@@ -24,6 +25,8 @@ export const Button = memo(
       ref,
     ) => {
       const { button: buttonConfig = {} } = useConfiguration();
+
+      const { theme } = useAltroneTheme();
 
       const {
         onMouseEnter: onRainbowMouseEnter,
@@ -106,6 +109,7 @@ export const Button = memo(
           style={styles}
           type="button"
           {...props}
+          data-rainbow-opacity={theme === 'dark' ? '0.33' : '1'}
           onMouseEnter={isRainbowEffectActivated ? onMouseEnter : undefined}
           onMouseMove={isRainbowEffectActivated ? onMouseMove : undefined}
           onMouseLeave={isRainbowEffectActivated ? onMouseLeave : undefined}

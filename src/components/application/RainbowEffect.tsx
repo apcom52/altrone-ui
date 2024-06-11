@@ -72,7 +72,10 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
     );
 
     const targetRect = currentElementRef.current?.getBoundingClientRect();
-    setContainerPosition({ x: targetRect.x, y: targetRect.y });
+    setContainerPosition({
+      x: currentElementRef.current?.offsetLeft || 0,
+      y: currentElementRef.current?.offsetTop || 0,
+    });
 
     setCursor({
       x: e.clientX - targetRect.left,
@@ -81,13 +84,18 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
 
     setRotation(Math.round(Math.random() * 360));
 
-    setWidth(targetRect.width);
-    setHeight(targetRect.height);
+    setWidth(targetRect.width * 2);
+    setHeight(targetRect.height * 2);
   }, []);
 
   const onMouseMove = useCallback<MouseEventHandler>((e) => {
     const targetRect = currentElementRef.current?.getBoundingClientRect();
-    setContainerPosition({ x: targetRect?.x || 0, y: targetRect?.y || 0 });
+    setContainerPosition({
+      x: currentElementRef.current?.offsetLeft || 0,
+      y: currentElementRef.current?.offsetTop || 0,
+    });
+
+    // setContainerPosition({ x: targetRect?.x || 0, y: targetRect?.y || 0 });
 
     if (targetRect) {
       setCursor({
@@ -96,8 +104,8 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
       });
     }
 
-    setWidth(targetRect?.width || 0);
-    setHeight(targetRect?.height || 0);
+    setWidth((targetRect?.width || 0) * 2);
+    setHeight((targetRect?.height || 0) * 2);
   }, []);
 
   const onMouseLeave = useCallback(() => {
