@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths(), dts()],
   build: {
     lib: {
-      entry: resolve(__dirname, './src/components/index.ts'),
+      entry: resolve(__dirname, './src/index.ts'),
       name: 'Altrone',
       formats: ['es'],
       fileName: 'index',
