@@ -1,4 +1,4 @@
-import { Button, Text } from 'components';
+import { Button, Text, TextInput } from 'components';
 
 export const FormattedArticle = () => {
   return (
@@ -75,6 +75,7 @@ export const FormattedArticle = () => {
             </Text.Link>{' '}
             is a leading organization in artificial intelligence research.
           </Text.ListItem>
+          <TextInput />
           <Text.ListItem>
             <Text.Inline bold>Code Elements</Text.Inline>: When incorporating
             code snippets or programming instructions, markup language provides
