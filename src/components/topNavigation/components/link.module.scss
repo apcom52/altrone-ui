@@ -26,6 +26,7 @@
   transition: background-color 0.2s ease;
   border-radius: 6px;
   z-index: 1;
+  gap: var(--xs-gap);
   @include no-selection;
 
   &:before {
