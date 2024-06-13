@@ -40,10 +40,7 @@ export interface TextInlineProps
 
 export interface TextLinkProps
   extends React.HTMLAttributes<HTMLAnchorElement>,
-    Pick<BaseInlineProps, 'bold' | 'italic'> {
-  href?: string;
-  target?: string;
-}
+    Pick<BaseInlineProps, 'bold' | 'italic'> {}
 
 export interface TextCodeProps
   extends React.HTMLAttributes<HTMLSpanElement>,
