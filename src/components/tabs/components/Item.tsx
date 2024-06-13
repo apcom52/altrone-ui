@@ -1,12 +1,15 @@
 import { forwardRef } from 'react';
 import { TabsItemProps } from '../Tabs.types.ts';
 import s from './item.module.scss';
-import { useRainbowEffect } from '../../application/RainbowEffect.tsx';
+import { useRainbowEffect } from 'components/application';
 import clsx from 'clsx';
 
 export const Item = forwardRef<HTMLAnchorElement, TabsItemProps>(
   ({ label, className, selected, ...restProps }, ref) => {
-    const rainbowProps = useRainbowEffect();
+    const rainbowProps = useRainbowEffect(true, {
+      opacity: 1,
+      blur: 36,
+    });
 
     const cls = clsx(
       s.Item,

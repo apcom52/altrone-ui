@@ -4,7 +4,7 @@ import s from './button.module.scss';
 import clsx from 'clsx';
 import { useConfiguration } from 'components/configuration';
 import { useRainbowEffect, useAltroneTheme } from 'components/application';
-import { forwardRef, memo, MouseEventHandler, useCallback } from 'react';
+import { forwardRef, memo } from 'react';
 import { RenderFuncProp } from 'types';
 
 const buttonRenderFunc: RenderFuncProp<HTMLButtonElement, ButtonProps> = (
@@ -27,7 +27,6 @@ export const Button = memo(
       style,
       rainbowEffect,
       renderFunc = buttonRenderFunc,
-      ...restProps
     } = props;
 
     const { button: buttonConfig = {} } = useConfiguration();
@@ -43,6 +42,13 @@ export const Button = memo(
 
     const rainbowEffects = useRainbowEffect(
       isRainbowPropsActivated && isRainbowNeeded,
+      {
+        onMouseEnter: props.onMouseEnter,
+        onMouseMove: props.onMouseMove,
+        onMouseLeave: props.onMouseLeave,
+        opacity: theme === 'dark' ? 0.33 : 1,
+        blur: 11,
+      },
     );
 
     const isOnlyIcon = Boolean(!label && (leftIcon || rightIcon));
@@ -68,30 +74,6 @@ export const Button = memo(
       ...style,
     };
 
-    const onMouseEnter = useCallback<MouseEventHandler<HTMLButtonElement>>(
-      (e) => {
-        props.onMouseEnter?.(e);
-        // onRainbowMouseEnter(e);
-      },
-      [props.onMouseEnter],
-    );
-
-    const onMouseMove = useCallback<MouseEventHandler<HTMLButtonElement>>(
-      (e) => {
-        props.onMouseMove?.(e);
-        // onRainbowMouseMove(e);
-      },
-      [props.onMouseEnter],
-    );
-
-    const onMouseLeave = useCallback<MouseEventHandler<HTMLButtonElement>>(
-      (e) => {
-        props.onMouseLeave?.(e);
-        // onRainbowMouseLeave(e);
-      },
-      [props.onMouseEnter],
-    );
-
     const buttonContent = !isOnlyIcon ? (
       <Flex
         direction="horizontal"
@@ -112,7 +94,6 @@ export const Button = memo(
       ...rainbowEffects,
       className: cls,
       style: styles,
-      'data-rainbow-opacity': theme === 'dark' ? '0.33' : '1',
       children: buttonContent,
     });
   }),
