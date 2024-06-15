@@ -42,9 +42,6 @@
 }
 
 .Cell {
-
-  //border-top-left-radius: 6px;
-  //border-top-right-radius: 6px;
   color: var(--dataTableHeadingCellTextColor);
 }
 
@@ -106,5 +103,17 @@
 
   &:hover {
     background-color: transparent;
+  }
+}
+
+.WithoutHeading {
+  .Cell {
+    &:first-of-type {
+      border-top-left-radius: 6px;
+    }
+
+    &:last-of-type {
+      border-top-right-radius: 6px;
+    }
   }
 }

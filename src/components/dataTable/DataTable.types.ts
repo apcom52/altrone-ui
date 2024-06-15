@@ -30,7 +30,7 @@ export interface DataTableProps<T extends object>
     | ReactElement
     | ReactElement[]
     | ((context: DataTableRenderContext<T>) => ReactElement | ReactElement[]);
-  rowsPerPage?: number; // need to rename to rowsPerPage
+  rowsPerPage?: number;
   selectable?: boolean;
 }
 

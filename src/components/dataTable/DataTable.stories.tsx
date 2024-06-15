@@ -42,32 +42,32 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             { accessor: 'capital', label: 'Capital' },
           ]}
         >
-          <DataTable.Action label="Test" onClick={() => alert('Test !')} />
-          <Dropdown
-            content={
-              <Dropdown.Menu>
-                <Dropdown.Action
-                  icon={<Icon i="play_arrow" />}
-                  label="Test A"
-                />
-                <Dropdown.Action
-                  icon={<Icon i="play_arrow" />}
-                  label="Test B"
-                />
-              </Dropdown.Menu>
-            }
-          >
-            <DataTable.Action label="Test Dropdown" />
-          </Dropdown>
-          <Popover
-            title="Custom popover"
-            content={<Text.Paragraph>Content is here</Text.Paragraph>}
-          >
-            <DataTable.Action
-              leftIcon={<Icon i="sports_esports" />}
-              label="Test Popover"
-            />
-          </Popover>
+          {/*<DataTable.Action label="Test" onClick={() => alert('Test !')} />*/}
+          {/*<Dropdown*/}
+          {/*  content={*/}
+          {/*    <Dropdown.Menu>*/}
+          {/*      <Dropdown.Action*/}
+          {/*        icon={<Icon i="play_arrow" />}*/}
+          {/*        label="Test A"*/}
+          {/*      />*/}
+          {/*      <Dropdown.Action*/}
+          {/*        icon={<Icon i="play_arrow" />}*/}
+          {/*        label="Test B"*/}
+          {/*      />*/}
+          {/*    </Dropdown.Menu>*/}
+          {/*  }*/}
+          {/*>*/}
+          {/*  <DataTable.Action label="Test Dropdown" />*/}
+          {/*</Dropdown>*/}
+          {/*<Popover*/}
+          {/*  title="Custom popover"*/}
+          {/*  content={<Text.Paragraph>Content is here</Text.Paragraph>}*/}
+          {/*>*/}
+          {/*  <DataTable.Action*/}
+          {/*    leftIcon={<Icon i="sports_esports" />}*/}
+          {/*    label="Test Popover"*/}
+          {/*  />*/}
+          {/*</Popover>*/}
         </DataTable>
       </Flex>
     );

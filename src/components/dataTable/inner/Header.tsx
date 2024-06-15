@@ -20,6 +20,7 @@ const DataTableHeader = <T extends object>({
     initialData,
     filters,
     searchBy,
+    columns,
     selectableMode,
     selectedRows,
     setSelectableMode,
@@ -43,6 +44,10 @@ const DataTableHeader = <T extends object>({
     filters.length || searchBy || selectable || safeChildrenArray.length,
   );
 
+  const columnsWithFilters = useMemo(() => {
+    return columns.filter((item) => item.filterable);
+  }, [columns]);
+
   const selectableButton = selectable ? (
     <Button
       leftIcon={
@@ -61,7 +66,7 @@ const DataTableHeader = <T extends object>({
     <div className={s.Actions}>
       {selectableButton}
       {childrenActions}
-      <Filtering />
+      {columnsWithFilters.length > 0 ? <Filtering /> : null}
     </div>
   );
 
