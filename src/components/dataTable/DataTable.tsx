@@ -8,7 +8,7 @@ import { Children, useMemo } from 'react';
 const DataTableComponent = <DataType extends object>(
   props: DataTableProps<DataType>,
 ) => {
-  const { children, selectable } = props;
+  const { children, selectable, showFooter = true } = props;
 
   const dataTableHeaderVisible = useMemo(() => {
     return (
@@ -27,7 +27,7 @@ const DataTableComponent = <DataType extends object>(
           <ColumnHeaders headingVisible={dataTableHeaderVisible} />
           <Body />
         </table>
-        <Footer />
+        {showFooter ? <Footer /> : null}
       </div>
     </DataTableContextProvider>
   );

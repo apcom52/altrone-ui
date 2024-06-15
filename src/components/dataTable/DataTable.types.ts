@@ -32,6 +32,7 @@ export interface DataTableProps<T extends object>
     | ((context: DataTableRenderContext<T>) => ReactElement | ReactElement[]);
   rowsPerPage?: number;
   selectable?: boolean;
+  showFooter?: boolean;
 }
 
 export interface DataTableActionProps extends ButtonProps {
