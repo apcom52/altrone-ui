@@ -178,12 +178,12 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
   }, []);
 
   const mutationObserverCallback = useCallback(() => {
-    const nodeExists =
-      currentElementRef.current && currentElementRef.current?.parentElement;
-
-    if (!nodeExists) {
-      removeRainbow();
-    }
+    // const nodeExists =
+    //   currentElementRef.current && currentElementRef.current?.parentElement;
+    //
+    // if (!nodeExists) {
+    //   removeRainbow();
+    // }
   }, []);
 
   useMutationObserver(document.body, mutationObserverCallback, mutationOptions);
