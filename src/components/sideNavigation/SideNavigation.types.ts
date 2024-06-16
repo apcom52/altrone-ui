@@ -7,7 +7,6 @@ export interface SideNavigationItemProps
   extends React.HTMLAttributes<HTMLAnchorElement> {
   href: string;
   label: string;
-  selector?: string;
 }
 
 export interface SideNavigationContextType {
