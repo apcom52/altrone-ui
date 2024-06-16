@@ -1,5 +1,6 @@
 import { PopoverProps } from 'components/popover';
 import { ReactElement } from 'react';
+import { RenderFuncProp } from '../../types';
 
 export interface DropdownActionProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -10,6 +11,8 @@ export interface DropdownActionProps
   danger?: boolean;
   disabled?: boolean;
   focused?: boolean;
+  renderFunc?: RenderFuncProp<HTMLButtonElement, DropdownActionProps>;
+  'data-active'?: boolean;
 }
 
 export interface DropdownCheckboxProps
