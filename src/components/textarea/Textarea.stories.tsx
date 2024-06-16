@@ -28,7 +28,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [value1, setValue1] = useState('');
 
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">TextArea component</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Textarea

@@ -65,7 +65,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     }, [value2, value3, value4]);
 
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Basic Checkboxes</Text.Heading>
         <Flex direction="horizontal" gap="l" align="center">
           <Text.Paragraph>Permissions:</Text.Paragraph>

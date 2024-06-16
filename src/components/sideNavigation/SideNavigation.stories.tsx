@@ -15,7 +15,7 @@ export const TooltipStory: StoryObj<typeof SideNavigation> = {
   name: 'Using TopNavigation',
   render: () => {
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Standard TopNavigation</Text.Heading>
         <Flex direction="horizontal">
           <div style={{ width: '600px' }}>

@@ -15,7 +15,7 @@ export const TooltipStory: StoryObj<typeof NavigationList> = {
   name: 'Using NavigationList',
   render: () => {
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Standard NavigationList</Text.Heading>
         <div style={{ width: 350 }}>
           <NavigationList>

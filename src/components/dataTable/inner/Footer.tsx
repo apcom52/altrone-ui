@@ -37,7 +37,7 @@ export const Footer = memo(() => {
       <div className={s.StatusBar}>
         <Tooltip
           content={
-            <Flex gap="s">
+            <Flex direction="vertical" gap="s">
               <Text.Paragraph size="s">
                 Total rows: <Text.Inline bold>{initialData.length}</Text.Inline>
               </Text.Paragraph>

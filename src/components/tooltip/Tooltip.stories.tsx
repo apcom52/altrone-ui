@@ -15,7 +15,7 @@ export const TooltipStory: StoryObj<typeof Tooltip> = {
   name: 'Using Tooltips',
   render: () => {
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Tooltips</Text.Heading>
         <Flex direction="horizontal" gap="m">
           <Tooltip content="Simple tooltip without custom child element" />

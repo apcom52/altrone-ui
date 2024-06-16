@@ -68,7 +68,12 @@ export const Pagination = memo<PaginationProps>(
           placement="top"
           showCloseButton
           content={({ closePopup }) => (
-            <Flex gap="m" align="end" style={{ maxWidth: '150px' }}>
+            <Flex
+              direction="vertical"
+              gap="m"
+              align="end"
+              style={{ maxWidth: '150px' }}
+            >
               <NumberInput
                 value={virtualPage}
                 onChange={setVirtualPage}

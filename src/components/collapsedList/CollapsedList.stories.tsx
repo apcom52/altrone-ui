@@ -34,9 +34,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [value6, setValue6] = useState(false);
 
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Basic CollapsedList</Text.Heading>
-        <Flex direction="horizontal" gap="xl">
+        <Flex gap="xl">
           <CollapsedList limit={4}>
             <Checkbox checked={value1} onChange={setValue1}>
               Homepage

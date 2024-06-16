@@ -23,7 +23,7 @@ export const PaginationStory: StoryObj<typeof Loading> = {
   name: 'Using Loading',
   render: () => {
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Loading indicators</Text.Heading>
         <Flex direction="horizontal" gap="m">
           <Loading />

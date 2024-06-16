@@ -39,7 +39,7 @@ const FormComponent = forwardRef<HTMLFormElement, FormProps<any>>(
         {...restProps}
       >
         <FormContext.Provider value={formContext}>
-          <Flex align="start" gap="l">
+          <Flex direction="vertical" align="start" gap="l">
             {children}
           </Flex>
         </FormContext.Provider>

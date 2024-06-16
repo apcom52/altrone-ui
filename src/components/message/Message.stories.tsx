@@ -22,7 +22,7 @@ const story: Meta<typeof Message> = {
 export const MessageStory: StoryObj<typeof Flex> = {
   name: 'Using Flex',
   render: () => (
-    <Flex gap="l">
+    <Flex direction="vertical" gap="l">
       <Message header="Welcome!" icon={<Icon i="waving_hand" />}>
         Welcome to our platform! We're excited to have you join our community.
         Explore, learn, and engage with others. If you have any questions, don't

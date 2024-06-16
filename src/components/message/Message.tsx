@@ -44,7 +44,12 @@ export const Message = memo<MessageProps>(
         {...props}
       >
         {icon ? <div className={s.Icon}>{icon}</div> : null}
-        <Flex className={s.Content} gap="m" justify="center">
+        <Flex
+          direction="vertical"
+          className={s.Content}
+          gap="m"
+          justify="center"
+        >
           {header ? <div className={s.Header}>{header}</div> : null}
           <div className={s.Description}>{children}</div>
         </Flex>

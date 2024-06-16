@@ -25,7 +25,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using Calendar',
   render: () => {
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Basic Calendar</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Calendar

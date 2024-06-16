@@ -15,7 +15,7 @@ export const BottomNavigationStory: StoryObj<typeof BottomNavigation> = {
   name: 'Using BottomNavigation',
   render: () => {
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Standard BottomNavigation</Text.Heading>
         <BottomNavigation>
           <BottomNavigation.Item

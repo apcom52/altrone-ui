@@ -37,7 +37,13 @@ const List = <DataType extends object>({
   });
 
   return (
-    <Flex className={cls} style={styles} gap={gap} {...props}>
+    <Flex
+      direction="vertical"
+      className={cls}
+      style={styles}
+      gap={gap}
+      {...props}
+    >
       {filteredItems.map((item, currentIndex) => {
         const isLastItem = currentIndex === filteredItems.length - 1;
         const context: ListItemContext<DataType> = { item, currentIndex, data };

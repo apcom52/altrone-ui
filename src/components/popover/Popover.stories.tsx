@@ -34,7 +34,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showCloseButton
           data-testid="popover-click"
           content={
-            <Flex gap="m">
+            <Flex direction="vertical" gap="m">
               <Text.Paragraph size="s">
                 We're gearing up for a system update packed with improvements
               </Text.Paragraph>
@@ -53,7 +53,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showCloseButton
           showArrow
           content={
-            <Flex gap="m">
+            <Flex direction="vertical" gap="m">
               <Text.Paragraph size="s">
                 We're gearing up for a system update packed with improvements
               </Text.Paragraph>

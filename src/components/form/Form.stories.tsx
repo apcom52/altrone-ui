@@ -33,7 +33,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using Forms',
   render: () => {
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Authorization Form</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Form>

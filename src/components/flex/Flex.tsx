@@ -24,7 +24,7 @@ export const Flex = memo<FlexProps>(
     align,
     justify,
     gap = 'none',
-    direction = 'vertical',
+    direction = 'horizontal',
     style,
     disableInnerMargins = true,
     wrap = false,

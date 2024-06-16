@@ -18,7 +18,7 @@ export const FlexLayout: StoryObj<typeof Flex> = {
     const { toast, success, warning, danger } = useToast();
 
     return (
-      <Flex {...args} gap="l">
+      <Flex gap="l" direction="vertical">
         <Text.Heading role="inner">Click to show a toast message</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Button
