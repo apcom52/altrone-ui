@@ -11,7 +11,7 @@ export const Message = memo<MessageProps>(
     className,
     header,
     icon,
-    role = Role.default,
+    role = 'default',
     style,
     ...props
   }) => {

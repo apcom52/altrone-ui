@@ -41,5 +41,4 @@ export interface PopoverProps
   listNavigation?: boolean;
   defaultListNavigationIndex?: number;
   virtualNavigationFocus?: boolean;
-  typeahead?: boolean;
 }
