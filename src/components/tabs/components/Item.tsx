@@ -3,9 +3,25 @@ import { TabsItemProps } from '../Tabs.types.ts';
 import s from './item.module.scss';
 import { useRainbowEffect } from 'components/application';
 import clsx from 'clsx';
+import { RenderFuncProp } from '../../../types';
+
+const tabItemRenderFunc: RenderFuncProp<HTMLAnchorElement, TabsItemProps> = (
+  ref,
+  props,
+) => {
+  const { label, ...restProps } = props;
+
+  return (
+    <a ref={ref} {...restProps}>
+      {label}
+    </a>
+  );
+};
 
 export const Item = forwardRef<HTMLAnchorElement, TabsItemProps>(
-  ({ label, className, selected, ...restProps }, ref) => {
+  (props, ref) => {
+    const { className, renderFunc = tabItemRenderFunc, ...restProps } = props;
+
     const rainbowProps = useRainbowEffect(true, {
       opacity: 1,
       blur: 36,
@@ -14,15 +30,15 @@ export const Item = forwardRef<HTMLAnchorElement, TabsItemProps>(
     const cls = clsx(
       s.Item,
       {
-        [s.Selected]: selected,
+        [s.Selected]: props.selected,
       },
       className,
     );
 
-    return (
-      <a className={cls} ref={ref} {...restProps} {...rainbowProps}>
-        {label}
-      </a>
-    );
+    return renderFunc(ref, {
+      ...restProps,
+      ...rainbowProps,
+      className: cls,
+    });
   },
 );
