@@ -1,6 +1,6 @@
-import { BasicComponentProps, Direction } from 'types';
+import { Direction } from 'types';
 
 export interface DividerProps
-  extends Omit<BasicComponentProps<HTMLHRElement>, 'children'> {
+  extends Omit<React.HTMLAttributes<HTMLHRElement>, 'children'> {
   direction?: Direction;
 }

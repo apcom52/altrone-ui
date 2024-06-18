@@ -1,6 +1,6 @@
-import { Align, BasicComponentProps, Direction, Offset } from '../../types';
+import { Align, Direction, Offset } from '../../types';
 
-export interface ScrollableProps extends BasicComponentProps {
+export interface ScrollableProps extends React.HTMLAttributes<HTMLDivElement> {
   direction?: Direction;
   maxWidth?: string;
   maxHeight?: string;

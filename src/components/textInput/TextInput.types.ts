@@ -1,10 +1,10 @@
 import React, { ChangeEvent, PropsWithChildren, ReactElement } from 'react';
-import { BasicComponentProps, Size } from 'types';
+import { Size } from 'types';
 
 export interface TextInputProps
   extends PropsWithChildren,
     Omit<
-      BasicComponentProps & React.InputHTMLAttributes<HTMLInputElement>,
+      React.InputHTMLAttributes<HTMLInputElement>,
       'onChange' | 'size' | 'children'
     > {
   value?: string;
@@ -21,18 +21,17 @@ export interface TextInputProps
   readonlyStyles?: boolean;
 }
 
-export interface TextIslandProps extends BasicComponentProps {
+export interface TextIslandProps extends React.HTMLAttributes<HTMLDivElement> {
   label: string;
   placement?: 'left' | 'right';
 }
 
-export interface IconIslandProps extends BasicComponentProps {
+export interface IconIslandProps extends React.HTMLAttributes<HTMLDivElement> {
   icon: ReactElement;
   placement?: 'left' | 'right';
 }
 
-type MergedActionIslandProps = BasicComponentProps &
-  React.ButtonHTMLAttributes<HTMLElement>;
+type MergedActionIslandProps = React.ButtonHTMLAttributes<HTMLElement>;
 
 export interface ActionIslandProps
   extends Omit<MergedActionIslandProps, 'role' | 'onClick'> {
@@ -44,6 +43,7 @@ export interface ActionIslandProps
   onClick?: () => void;
 }
 
-export interface CustomIslandProps extends BasicComponentProps {
+export interface CustomIslandProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   placement?: 'left' | 'right';
 }

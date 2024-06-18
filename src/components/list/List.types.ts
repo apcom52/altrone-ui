@@ -1,6 +1,6 @@
-import { BasicComponentProps, Gap } from '../../types';
+import { Gap } from '../../types';
 import { ReactElement } from 'react';
-import { RenderFunction } from '../../utils/fn.ts';
+import { RenderFunction } from 'utils';
 import { FlexProps } from '../flex/Flex.types.ts';
 
 export type ListItemContext<DataType extends object> = {
@@ -10,7 +10,7 @@ export type ListItemContext<DataType extends object> = {
 };
 
 export interface ListProps<DataType extends object>
-  extends Omit<BasicComponentProps<HTMLDivElement>, 'children'>,
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'>,
     FlexProps {
   data: Array<DataType>;
   renderItem: (context: ListItemContext<DataType>) => ReactElement;
