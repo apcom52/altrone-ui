@@ -1,7 +1,6 @@
 import { Align, RenderFuncProp } from 'types';
 
 export interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
-  align?: Align;
   compact?: boolean;
 }
 
@@ -21,4 +20,6 @@ export interface ToolbarActionProps
 }
 
 export interface ToolbarGroupProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+  extends React.HTMLAttributes<HTMLDivElement> {
+  align?: Align;
+}

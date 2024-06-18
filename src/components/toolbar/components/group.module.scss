@@ -1,5 +1,17 @@
 .Group {
   display: flex;
   align-items: center;
-  flex: 0;
+  flex: 1;
+}
+
+.Center {
+  justify-content: center;
+}
+
+.End {
+  justify-content: flex-end;
+}
+
+.Between {
+  justify-content: space-between;
 }

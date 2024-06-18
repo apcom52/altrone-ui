@@ -6,7 +6,16 @@ import { useToolbarContext } from '../Toolbar.context.ts';
 import { useConfiguration } from 'components/configuration';
 
 const actionRenderFunc: ToolbarActionProps['renderFunc'] = (ref, props) => {
-  const { label, children, showLabel, compact, icon, ...restProps } = props;
+  const {
+    label,
+    children,
+    showLabel = true,
+    compact,
+    icon,
+    ...restProps
+  } = props;
+
+  console.log('>> label', showLabel, label);
 
   return (
     <button type="button" ref={ref} title={props.label} {...restProps}>
