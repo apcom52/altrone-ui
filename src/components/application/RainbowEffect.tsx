@@ -177,14 +177,21 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
     setVisible(false);
   }, []);
 
-  const mutationObserverCallback = useCallback(() => {
-    // const nodeExists =
-    //   currentElementRef.current && currentElementRef.current?.parentElement;
-    //
-    // if (!nodeExists) {
-    //   removeRainbow();
-    // }
-  }, []);
+  const mutationObserverCallback = useCallback<MutationCallback>(
+    (entities) => {
+      entities.forEach((entity) => {
+        if (
+          visible &&
+          Array.from(entity.removedNodes).findIndex(
+            (node) => node === currentElementRef.current,
+          )
+        ) {
+          removeRainbow();
+        }
+      });
+    },
+    [visible],
+  );
 
   useMutationObserver(document.body, mutationObserverCallback, mutationOptions);
 
