@@ -37,7 +37,7 @@ export interface DropdownRadioListProps<T = string>
 export interface DropdownRadioListItem<T = string>
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'value'> {
   value: T;
-  label?: string;
+  label: string;
   disabled?: boolean;
   focused?: boolean;
 }

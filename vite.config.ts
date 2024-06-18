@@ -15,6 +15,9 @@ export default defineConfig({
     },
     rollupOptions: {
       external: ['react', 'react-dom', 'react/jsx-runtime', 'vitest/*.tsx'],
+      output: {
+        banner: `'use client';`,
+      },
     },
   },
   test: {

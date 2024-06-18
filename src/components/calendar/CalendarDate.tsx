@@ -28,7 +28,7 @@ export const CalendarDate = memo(
             : undefined
         }
       >
-        {currentDate.getDate()}
+        {currentDate.date()}
       </button>
     );
   },

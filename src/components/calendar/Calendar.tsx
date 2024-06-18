@@ -8,7 +8,7 @@ import IsToday from 'dayjs/plugin/isToday';
 import s from './calendar.module.scss';
 import IsSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import IsSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 dayjs.extend(IsBetween);
 dayjs.extend(IsToday);
