@@ -64,14 +64,14 @@ export const Modal = memo<ModalProps>(
     return (
       <FloatingPortal>
         <FloatingOverlay className={s.Backdrop} lockScroll>
-          <FloatingFocusManager context={context} initialFocus={1}>
-            <div
-              ref={refs.setFloating}
-              className={cls}
-              aria-labelledby={headingId}
-              style={styles}
-              {...getFloatingProps(restProps)}
-            >
+          <div
+            ref={refs.setFloating}
+            className={cls}
+            aria-labelledby={headingId}
+            style={styles}
+            {...getFloatingProps(restProps)}
+          >
+            <FloatingFocusManager context={context} initialFocus={1}>
               <div className={s.Title}>
                 <div id={headingId}></div>
                 {title}
@@ -85,8 +85,8 @@ export const Modal = memo<ModalProps>(
                   {actions}
                 </div>
               </div>
-            </div>
-          </FloatingFocusManager>
+            </FloatingFocusManager>
+          </div>
         </FloatingOverlay>
       </FloatingPortal>
     );

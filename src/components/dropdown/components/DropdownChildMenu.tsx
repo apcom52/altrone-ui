@@ -1,7 +1,8 @@
 import { DropdownChildMenuProps } from '../Dropdown.types';
 import { CompositeItem } from '@floating-ui/react';
 import clsx from 'clsx';
-import { Dropdown } from '../Dropdown.tsx';
+import { DropdownWrapper } from '../Dropdown.tsx';
+import { DropdownMenu } from './DropdownMenu.tsx';
 import { Icon } from 'components/icon';
 import s from './action.module.scss';
 import { useConfiguration } from 'components/configuration';
@@ -33,9 +34,9 @@ export function DropdownChildMenu({
   };
 
   return (
-    <Dropdown
+    <DropdownWrapper
       content={
-        <Dropdown.Menu defaultFocusItemIndex={0}>{children}</Dropdown.Menu>
+        <DropdownMenu defaultFocusItemIndex={0}>{children}</DropdownMenu>
       }
       placement="right"
     >
@@ -57,7 +58,7 @@ export function DropdownChildMenu({
           </div>
         </CompositeItem>
       )}
-    </Dropdown>
+    </DropdownWrapper>
   );
 }
 DropdownChildMenu.displayName = 'DropdownChildMenu';

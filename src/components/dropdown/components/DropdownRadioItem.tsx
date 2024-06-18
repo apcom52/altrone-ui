@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { useRadioListDropdownContext } from '../Dropdown.contexts.ts';
 import { Icon } from '../../icon';
 import s from './action.module.scss';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 import { useId } from 'react';
 
 export function DropdownRadioItem({
