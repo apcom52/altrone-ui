@@ -25,7 +25,7 @@ export const List = ({
   };
 
   return createElement(
-    type === 'marked' ? 'ol' : 'ul',
+    type === 'marked' ? 'ul' : 'ol',
     {
       className: cls,
       style: styles,

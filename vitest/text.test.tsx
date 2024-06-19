@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { expect } from 'vitest';
-import { Text, TextListType } from '../src/components';
+import { Text } from '../src';
 
 describe('Text', () => {
   test('ScreenName has to have h1 tag and apply custom css class and id', () => {
@@ -117,7 +117,7 @@ describe('Text', () => {
     render(
       <>
         <Text.List
-          type={TextListType.ordered}
+          type="numeric"
           className="customClassName"
           id="list"
           data-testid="list-1"
@@ -131,7 +131,7 @@ describe('Text', () => {
           </Text.ListItem>
           <Text.ListItem>Item 2</Text.ListItem>
         </Text.List>
-        <Text.List type={TextListType.unordered} data-testid="list-2">
+        <Text.List type="marked" data-testid="list-2">
           <Text.ListItem>Item 3</Text.ListItem>
           <Text.ListItem>Item 4</Text.ListItem>
         </Text.List>

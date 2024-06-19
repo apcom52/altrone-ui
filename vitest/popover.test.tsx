@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Button, Popover } from 'components';
+import { Button, Popover } from '../src';
 
 describe('Popover', () => {
   test('need to be rendered when openByDefault prop is passed', () => {

@@ -8,7 +8,7 @@ import {
   List,
   Button,
   Popover,
-} from 'components';
+} from '../src';
 
 describe('Configation', () => {
   test('check that Flex configuration works correctly', () => {
