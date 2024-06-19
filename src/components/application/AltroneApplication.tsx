@@ -2,7 +2,7 @@ import s from './altroneApplication.module.scss';
 import { AltroneApplicationProps, Theme } from './AltroneApplication.types.ts';
 import { useMediaMatch } from 'utils';
 import clsx from 'clsx';
-import { AltroneConfiguration } from 'components/configuration';
+import { Configuration } from 'components/configuration';
 import { createElement, useEffect, useMemo, useState } from 'react';
 import { RainbowEffect } from './RainbowEffect.tsx';
 import { Toast } from 'components/toasts/Toast.tsx';
@@ -56,11 +56,11 @@ export const AltroneApplication = ({
       ...props,
     },
     <ThemeContext.Provider value={themeContext}>
-      <AltroneConfiguration {...config}>
+      <Configuration {...config}>
         <RainbowEffect>
           <Toast>{children}</Toast>
         </RainbowEffect>
-      </AltroneConfiguration>
+      </Configuration>
     </ThemeContext.Provider>,
   );
 };

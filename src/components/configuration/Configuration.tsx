@@ -8,7 +8,7 @@ import { merge, isEqual } from 'lodash';
 import useMemo from 'rc-util/lib/hooks/useMemo';
 import { PropsWithChildren } from 'react';
 
-export const AltroneConfiguration = ({
+export const Configuration = ({
   children,
   ...props
 }: PropsWithChildren<Partial<ConsumerConfigurationContext>>) => {

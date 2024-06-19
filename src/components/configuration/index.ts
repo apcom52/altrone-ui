@@ -1,2 +1,2 @@
-export { AltroneConfiguration } from './AltroneConfiguration.tsx';
+export { Configuration } from './Configuration.tsx';
 export { useConfiguration } from './AltroneConfiguration.context.ts';

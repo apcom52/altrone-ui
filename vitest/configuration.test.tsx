@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import {
   AltroneApplication,
+  Configuration,
   Message,
   Icon,
   Text,
@@ -11,6 +12,49 @@ import {
 } from '../src';
 
 describe('Configation', () => {
+  test('check that component receive correct configuration properties', () => {
+    render(
+      <AltroneApplication
+        tagName="body"
+        config={{
+          flex: {
+            className: 'rootConfig',
+          },
+        }}
+      >
+        <Flex data-testid="flex" />
+      </AltroneApplication>,
+    );
+
+    expect(screen.getByTestId('flex')).toHaveClass('rootConfig');
+  });
+
+  test('check nested configuration', () => {
+    render(
+      <AltroneApplication
+        config={{
+          flex: {
+            className: 'rootConfig',
+          },
+        }}
+      >
+        <Configuration flex={{ className: 'innerConfig' }}>
+          <Flex data-testid="flex1" />
+          <Flex data-testid="flex2" />
+        </Configuration>
+        <Flex data-testid="flex3" />
+      </AltroneApplication>,
+    );
+
+    expect(screen.getByTestId('flex1')).not.toHaveClass('rootConfig');
+    expect(screen.getByTestId('flex2')).not.toHaveClass('rootConfig');
+    expect(screen.getByTestId('flex3')).not.toHaveClass('innerConfig');
+
+    expect(screen.getByTestId('flex1')).toHaveClass('innerConfig');
+    expect(screen.getByTestId('flex2')).toHaveClass('innerConfig');
+    expect(screen.getByTestId('flex3')).toHaveClass('rootConfig');
+  });
+
   test('check that Flex configuration works correctly', () => {
     render(
       <AltroneApplication
