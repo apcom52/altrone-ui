@@ -74,4 +74,8 @@ describe('Popover', () => {
     expect(screen.queryByText('Popover title')).not.toBeInTheDocument();
     expect(screen.getByText('close')).toBeInTheDocument();
   });
+
+  test('should configuration works correctly', () => {
+    expect(true).toBeFalsy();
+  });
 });
