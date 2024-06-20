@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Button, Popover } from '../src';
+import { Button, Configuration, Popover } from '../src';
 
 describe('Popover', () => {
   test('need to be rendered when openByDefault prop is passed', () => {
@@ -76,6 +76,20 @@ describe('Popover', () => {
   });
 
   test('should configuration works correctly', () => {
-    expect(true).toBeFalsy();
+    render(
+      <Configuration popover={{ className: 'cls', style: { color: 'blue' } }}>
+        <Popover
+          content={<div>content</div>}
+          openedByDefault
+          data-testid="element"
+        >
+          <Button />
+        </Popover>
+      </Configuration>,
+    );
+
+    const element = screen.getByTestId('element');
+    expect(element).toHaveClass('cls');
+    expect(element).toHaveStyle('color: blue');
   });
 });
