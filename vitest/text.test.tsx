@@ -1,8 +1,45 @@
 import { render, screen } from '@testing-library/react';
 import { expect } from 'vitest';
-import { Text } from '../src';
+import { AltroneApplication, Text } from '../src';
 
 describe('Text', () => {
+  test('Text has to have article tag and apply custom css class and id', () => {
+    render(
+      <Text className="customClassName" data-testid="text">
+        content
+      </Text>,
+    );
+
+    expect(screen.getByText('content')).toBeInTheDocument();
+    expect(screen.getByTestId('text')).toHaveClass('customClassName');
+    expect(screen.getByTestId('text').tagName).toBe('ARTICLE');
+  });
+
+  test('Text.Section has to have article tag and apply custom css class and id', () => {
+    render(
+      <Text.Section className="customClassName" data-testid="section">
+        content
+      </Text.Section>,
+    );
+
+    expect(screen.getByText('content')).toBeInTheDocument();
+    expect(screen.getByTestId('section')).toHaveClass('customClassName');
+    expect(screen.getByTestId('section').tagName).toBe('SECTION');
+  });
+
+  test('ScreenName has to have h1 tag and apply custom css class and id', () => {
+    render(
+      <Text.ScreenName className="customClassName" id="text-id">
+        ScreenName heading
+      </Text.ScreenName>,
+    );
+
+    const element = screen.getByText('ScreenName heading');
+    expect(element.tagName).toBe('H1');
+    expect(element.className).toContain('customClassName');
+    expect(element.id).toBe('text-id');
+  });
+
   test('ScreenName has to have h1 tag and apply custom css class and id', () => {
     render(
       <Text.ScreenName className="customClassName" id="text-id">
@@ -150,5 +187,72 @@ describe('Text', () => {
 
     const element3 = screen.getByTestId('list-2');
     expect(element3.tagName).toBe('UL');
+  });
+
+  test('check that Text configuration works correctly', () => {
+    render(
+      <AltroneApplication
+        config={{
+          textScreenName: { className: 'cls', style: { color: 'blue' } },
+          textHeading: { className: 'cls', style: { color: 'blue' } },
+          textParagraph: { className: 'cls', style: { color: 'blue' } },
+          textInline: { className: 'cls', style: { color: 'blue' } },
+          textList: { className: 'cls', style: { color: 'blue' } },
+          textListItem: { className: 'cls', style: { color: 'blue' } },
+          textLink: { className: 'cls', style: { color: 'blue' } },
+          textCode: { className: 'cls', style: { color: 'blue' } },
+          textKeyboard: { className: 'cls', style: { color: 'blue' } },
+        }}
+      >
+        <Text data-testid="wrapper">
+          <Text.ScreenName data-testid="screenName">content</Text.ScreenName>
+          <Text.Section data-testid="section">content</Text.Section>
+          <Text.Heading data-testid="heading">content</Text.Heading>
+          <Text.Paragraph data-testid="paragraph">content</Text.Paragraph>
+          <Text.Inline data-testid="inline">content</Text.Inline>
+          <Text.List data-testid="list">content</Text.List>
+          <Text.ListItem data-testid="listItem">content</Text.ListItem>
+          <Text.Link data-testid="link">content</Text.Link>
+          <Text.Code data-testid="code">content</Text.Code>
+          <Text.Keyboard data-testid="keyboard">content</Text.Keyboard>
+        </Text>
+      </AltroneApplication>,
+    );
+
+    const screenName = screen.getByTestId('screenName');
+    expect(screenName).toHaveClass('cls');
+    expect(screenName).toHaveStyle('color: blue');
+
+    const heading = screen.getByTestId('heading');
+    expect(heading).toHaveClass('cls');
+    expect(heading).toHaveStyle('color: blue');
+
+    const paragraph = screen.getByTestId('paragraph');
+    expect(paragraph).toHaveClass('cls');
+    expect(paragraph).toHaveStyle('color: blue');
+
+    const inline = screen.getByTestId('inline');
+    expect(inline).toHaveClass('cls');
+    expect(inline).toHaveStyle('color: blue');
+
+    const list = screen.getByTestId('list');
+    expect(list).toHaveClass('cls');
+    expect(list).toHaveStyle('color: blue');
+
+    const listItem = screen.getByTestId('listItem');
+    expect(listItem).toHaveClass('cls');
+    expect(listItem).toHaveStyle('color: blue');
+
+    const link = screen.getByTestId('link');
+    expect(link).toHaveClass('cls');
+    expect(link).toHaveStyle('color: blue');
+
+    const code = screen.getByTestId('code');
+    expect(code).toHaveClass('cls');
+    expect(code).toHaveStyle('color: blue');
+
+    const keyboard = screen.getByTestId('keyboard');
+    expect(keyboard).toHaveClass('cls');
+    expect(keyboard).toHaveStyle('color: blue');
   });
 });
