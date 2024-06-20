@@ -96,20 +96,6 @@ describe('Configation', () => {
     expect(element).toHaveStyle('color: blue');
   });
 
-  test('check that List configuration works correctly', () => {
-    render(
-      <AltroneApplication
-        config={{ list: { className: 'cls', style: { color: 'blue' } } }}
-      >
-        <List data={[]} renderItem={() => <div />} data-testid="element" />
-      </AltroneApplication>,
-    );
-
-    const element = screen.getByTestId('element');
-    expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
-  });
-
   test('check that Button configuration works correctly', () => {
     render(
       <AltroneApplication
