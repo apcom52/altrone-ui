@@ -2,6 +2,8 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Button, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { Tooltip } from './Tooltip.tsx';
+import { within, expect, userEvent } from '@storybook/test';
+import { timeout } from '../../utils';
 
 const story: Meta<typeof Tooltip> = {
   title: 'Components/Display/Tooltip',
@@ -33,6 +35,24 @@ export const TooltipStory: StoryObj<typeof Tooltip> = {
           </Tooltip>
         </Flex>
       </Flex>
+    );
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step(
+      'need to show tooltip when user hovers the tooltip button',
+      async () => {
+        await expect(
+          canvas.queryByText('Simple tooltip without custom child element'),
+        ).not.toBeInTheDocument();
+
+        await userEvent.hover(canvas.getAllByText('help_outline')[0]);
+        await timeout(500);
+        await expect(
+          canvas.queryByText('Simple tooltip without custom child element'),
+        ).toBeInTheDocument();
+      },
     );
   },
 };
