@@ -6,7 +6,7 @@ import { within, expect, userEvent } from '@storybook/test';
 import { timeout } from '../../utils';
 
 const story: Meta<typeof Tooltip> = {
-  title: 'Components/Display/Tooltip',
+  title: 'Components/Containers/Tooltip',
   component: Tooltip,
   decorators: [StorybookDecorator],
   args: {},
