@@ -47,14 +47,14 @@ export const DatePickerHeader = () => {
 
   return (
     <div className={s.Header}>
-      <button className={s.CurrentDate} type="button" onClick={onHeaderClick}>
+      <button type="button" className={s.CurrentDate} onClick={onHeaderClick}>
         {headerLabel}
       </button>
       <div className={s.Navigation}>
-        <button className={s.Button} onClick={onPrevClick}>
+        <button type="button" className={s.Button} onClick={onPrevClick}>
           <Icon i="navigate_before" />
         </button>
-        <button className={s.Button} onClick={onNextClick}>
+        <button type="button" className={s.Button} onClick={onNextClick}>
           <Icon i="navigate_next" />
         </button>
       </div>

@@ -4,18 +4,20 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import dts from 'vite-plugin-dts';
 import { resolve } from 'path';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfigPaths(), dts()],
   build: {
     lib: {
-      entry: resolve(__dirname, './src/components/index.ts'),
+      entry: resolve(__dirname, './src/index.ts'),
       name: 'Altrone',
       formats: ['es'],
       fileName: 'index',
     },
     rollupOptions: {
       external: ['react', 'react-dom', 'react/jsx-runtime', 'vitest/*.tsx'],
+      output: {
+        banner: `'use client';`,
+      },
     },
   },
   test: {

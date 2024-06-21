@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { createElement, memo } from 'react';
 import { FlexProps } from './Flex.types.ts';
 import clsx from 'clsx';
 import s from './flex.module.scss';
@@ -18,12 +18,13 @@ const gapValues: Record<Gap, number> = {
 
 export const Flex = memo<FlexProps>(
   ({
+    tagName = 'div',
     children,
     className,
     align,
     justify,
     gap = 'none',
-    direction = 'vertical',
+    direction = 'horizontal',
     style,
     disableInnerMargins = true,
     wrap = false,
@@ -55,10 +56,14 @@ export const Flex = memo<FlexProps>(
       gap: `${gapValues[gap]}px`,
     };
 
-    return (
-      <div className={cls} style={styles} {...props}>
-        {children}
-      </div>
+    return createElement(
+      tagName,
+      {
+        ...props,
+        className: cls,
+        style: styles,
+      },
+      children,
     );
   },
 );

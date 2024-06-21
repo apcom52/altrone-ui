@@ -7,15 +7,12 @@ import { useConfiguration } from 'components/configuration';
 import { ToolbarContext } from './Toolbar.context.ts';
 
 const ToolbarComponent = memo<ToolbarProps>(
-  ({ children, align, compact = false, className, style, ...restProps }) => {
+  ({ children, compact = false, className, style, ...restProps }) => {
     const { toolbar: toolbarConfig = {} } = useConfiguration();
 
     const cls = clsx(
       s.Toolbar,
       {
-        [s.AlignCenter]: align === 'center',
-        [s.AlignEnd]: align === 'end',
-        [s.AlignBetween]: align === 'between',
         [s.Compact]: compact,
       },
       className,

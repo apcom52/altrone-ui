@@ -22,7 +22,7 @@ export const PopoverDatePickerContent = memo<DatePickerContentProps>(
     };
 
     return (
-      <Flex gap="l" className={cls} style={styles}>
+      <Flex direction="vertical" gap="l" className={cls} style={styles}>
         <DatePickerHeader />
         {viewMode === 'day' ? <DayPicker /> : null}
         {viewMode === 'month' ? <MonthPicker /> : null}

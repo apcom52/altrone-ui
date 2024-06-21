@@ -33,7 +33,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const { value: opened, enable: open, disable: hide } = useBoolean(false);
 
     return (
-      <Flex gap="m" align="start">
+      <Flex direction="vertical" gap="m" align="start">
         <Text.Heading role="inner">PasswordInput</Text.Heading>
         <Flex direction="horizontal" gap="m">
           <Button
@@ -66,7 +66,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             actions={[<Button role="primary" label="OK" />]}
             size={size}
           >
-            <Flex gap="xl">
+            <Flex direction="vertical" gap="xl">
               <Text.Paragraph>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                 Adipisci at corporis cum eius eveniet exercitationem, ipsa ipsum

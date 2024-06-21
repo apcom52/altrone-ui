@@ -28,7 +28,7 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
   name: 'Using Toolbar',
   render: () => {
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Basic Toolbar</Text.Heading>
         <Toolbar>
           <Toolbar.Action icon={<Icon i="settings" />} label="General" />
@@ -62,7 +62,7 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
           />
         </Toolbar>
         <Text.Heading role="inner">Toolbar with custom components</Text.Heading>
-        <Toolbar align="between">
+        <Toolbar>
           <Toolbar.Group>
             <Toolbar.Action icon={<Icon i="settings" />} label="General" />
             <Toolbar.Action icon={<Icon i="content_copy" />} label="Tabs" />
@@ -73,7 +73,7 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
 
           <Divider direction="vertical" />
 
-          <Toolbar.Group>
+          <Toolbar.Group align="center">
             <Toolbar.Action icon={<Icon i="lock" />} label="Security" />
             <Toolbar.Action icon={<Icon i="back_hand" />} label="Privacy" />
             <Toolbar.Action icon={<Icon i="public" />} label="Websites" />
@@ -81,7 +81,7 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
 
           <Divider direction="vertical" />
 
-          <Toolbar.Group>
+          <Toolbar.Group align="center">
             <Toolbar.Action icon={<Icon i="extension" />} label="Extensions" />
             <Toolbar.Action
               icon={<Icon i="settings_suggest" />}
@@ -99,7 +99,7 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
         <Text.Heading role="inner">
           Compact Toolbar with custom components
         </Text.Heading>
-        <Toolbar align="between" compact>
+        <Toolbar compact>
           <Toolbar.Group>
             <Toolbar.Action icon={<Icon i="settings" />} label="General" />
             <Toolbar.Action icon={<Icon i="content_copy" />} label="Tabs" />
@@ -110,7 +110,7 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
 
           <Divider direction="vertical" />
 
-          <Toolbar.Group>
+          <Toolbar.Group align="center">
             <Toolbar.Action icon={<Icon i="lock" />} label="Security" />
             <Toolbar.Action
               icon={<Icon i="back_hand" />}
@@ -122,7 +122,7 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
 
           <Divider direction="vertical" />
 
-          <Toolbar.Group>
+          <Toolbar.Group align="center">
             <Toolbar.Action icon={<Icon i="extension" />} label="Extensions" />
             <Toolbar.Action
               icon={<Icon i="settings_suggest" />}

@@ -15,7 +15,7 @@ export const BottomNavigationStory: StoryObj<typeof Breadcrumbs> = {
   name: 'Using Breadcrumbs',
   render: () => {
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Standard Breadcrumbs</Text.Heading>
         <Breadcrumbs>
           <Breadcrumbs.Item icon={<Icon i="home" />} label="Home" />

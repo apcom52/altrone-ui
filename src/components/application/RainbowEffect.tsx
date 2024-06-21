@@ -4,31 +4,105 @@ import {
   PropsWithChildren,
   useCallback,
   useContext,
+  useMemo,
   useRef,
   useState,
 } from 'react';
 import s from './rainbow.module.scss';
 import { Point } from 'types';
-import { useMutationObserver } from '../../utils/hooks/useMutationObserver.ts';
+import { useMutationObserver } from 'utils';
 
 interface RainbowEffectContextType {
-  onMouseEnter: MouseEventHandler;
-  onMouseMove: MouseEventHandler;
-  onMouseLeave: MouseEventHandler;
+  setElement: (
+    element: HTMLElement,
+    params: {
+      opacity: number;
+      blur: number;
+    },
+  ) => void;
+  setCursor: (cursor: Point) => void;
+  removeRainbow: () => void;
 }
 
-const RainbowEffectContext = createContext<RainbowEffectContextType>({
-  onMouseEnter: () => null,
-  onMouseMove: () => null,
-  onMouseLeave: () => null,
-});
-export const useRainbowEffect = (enabled: boolean = true) => {
+interface RainbowEffectHookProps {
+  onMouseEnter?: MouseEventHandler;
+  onMouseMove?: MouseEventHandler;
+  onMouseLeave?: MouseEventHandler;
+  opacity?: number;
+  blur?: number;
+}
+
+export const useRainbowEffect = (
+  enabled: boolean,
+  options?: RainbowEffectHookProps,
+) => {
+  // return {};
+
+  const { setElement, setCursor, removeRainbow } = useRainbowContext();
+
+  const {
+    onMouseEnter: userOnMouseEnter,
+    onMouseMove: userOnMouseMove,
+    onMouseLeave: userOnMouseLeave,
+    opacity = 1,
+    blur = 11,
+  } = options || {};
+
+  const onMouseEnter = useCallback<MouseEventHandler<HTMLElement>>((e) => {
+    const currentElement = e.currentTarget;
+
+    setElement(currentElement, {
+      opacity: Number(currentElement.dataset.rainbowOpacity) || opacity,
+      blur: Number(currentElement.dataset.rainbowBlur) || blur,
+    });
+
+    const targetRect = currentElement.getBoundingClientRect();
+
+    setCursor({
+      x: e.clientX - targetRect.left,
+      y: e.clientY - targetRect.top,
+    });
+
+    userOnMouseEnter?.(e);
+  }, []);
+
+  const onMouseMove = useCallback<MouseEventHandler<HTMLElement>>((e) => {
+    const targetRect = e.currentTarget.getBoundingClientRect();
+
+    if (targetRect) {
+      setCursor({
+        x: e.clientX - targetRect.left,
+        y: e.clientY - targetRect.top,
+      });
+    }
+
+    userOnMouseMove?.(e);
+  }, []);
+
+  const onMouseLeave = useCallback<MouseEventHandler<HTMLElement>>((e) => {
+    removeRainbow();
+    userOnMouseLeave?.(e);
+  }, []);
+
   if (!enabled) {
     return {};
   }
 
-  return useContext(RainbowEffectContext);
+  return {
+    onMouseEnter,
+    onMouseMove,
+    onMouseLeave,
+    'data-rainbow-opacity': opacity,
+    'data-rainbow-blur': `${blur}px`,
+  };
 };
+
+const RainbowEffectContext = createContext<RainbowEffectContextType>({
+  setElement: () => null,
+  setCursor: () => null,
+  removeRainbow: () => null,
+});
+export const useRainbowContext = () => useContext(RainbowEffectContext);
 
 const mutationOptions = {
   subtree: true,
@@ -54,54 +128,44 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
 
   const currentElementRef = useRef<HTMLElement | null>(null);
 
-  const onMouseEnter = useCallback<MouseEventHandler<HTMLElement>>((e) => {
-    setVisible(true);
+  const setElement = useCallback<RainbowEffectContextType['setElement']>(
+    (element, options) => {
+      currentElementRef.current = element;
 
-    currentElementRef.current = e.currentTarget;
+      setBorderRadius(getComputedStyle(currentElementRef.current).borderRadius);
+      setOpacity(options.opacity);
+      setBlur(options.blur);
 
-    setBorderRadius(getComputedStyle(currentElementRef.current).borderRadius);
-    setOpacity(
-      currentElementRef.current?.dataset.rainbowOpacity
-        ? Number(currentElementRef.current.dataset.rainbowOpacity)
-        : 1,
-    );
-    setBlur(
-      currentElementRef.current?.dataset.rainbowBlur
-        ? Number(currentElementRef.current.dataset.rainbowBlur)
-        : 11,
-    );
+      const targetRect = currentElementRef.current?.getBoundingClientRect();
+      setContainerPosition({ x: targetRect?.x || 0, y: targetRect?.y || 0 });
 
-    const targetRect = currentElementRef.current?.getBoundingClientRect();
-    setContainerPosition({ x: targetRect.x, y: targetRect.y });
+      setRotation(Math.round(Math.random() * 360));
 
-    setCursor({
-      x: e.clientX - targetRect.left,
-      y: e.clientY - targetRect.top,
-    });
+      setWidth(targetRect.width || 0);
+      setHeight(targetRect.height || 0);
+      setVisible(true);
+    },
+    [],
+  );
 
-    setRotation(Math.round(Math.random() * 360));
+  const setMouseCursor = useCallback<RainbowEffectContextType['setCursor']>(
+    (cursor) => {
+      const targetRect = currentElementRef.current?.getBoundingClientRect();
 
-    setWidth(targetRect.width);
-    setHeight(targetRect.height);
-  }, []);
+      setContainerPosition({ x: targetRect?.x || 0, y: targetRect?.y || 0 });
 
-  const onMouseMove = useCallback<MouseEventHandler>((e) => {
-    const targetRect = currentElementRef.current?.getBoundingClientRect();
-    setContainerPosition({ x: targetRect?.x || 0, y: targetRect?.y || 0 });
+      if (targetRect) {
+        setCursor(cursor);
+      }
 
-    if (targetRect) {
-      setCursor({
-        x: e.clientX - targetRect.left,
-        y: e.clientY - targetRect.top,
-      });
-    }
+      setWidth(targetRect?.width || 0);
+      setHeight(targetRect?.height || 0);
+      setVisible(true);
+    },
+    [],
+  );
 
-    setWidth(targetRect?.width || 0);
-    setHeight(targetRect?.height || 0);
-  }, []);
-
-  const onMouseLeave = useCallback(() => {
-    setVisible(false);
+  const removeRainbow = useCallback(() => {
     setContainerPosition({ x: 0, y: 0 });
     setCursor({ x: 0, y: 0 });
 
@@ -110,27 +174,37 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
     currentElementRef.current = null;
     setWidth(0);
     setHeight(0);
+    setVisible(false);
   }, []);
 
-  const mutationObserverCallback = useCallback(() => {
-    const nodeExists =
-      currentElementRef.current && currentElementRef.current?.parentElement;
-
-    if (!nodeExists) {
-      onMouseLeave();
-    }
-  }, []);
+  const mutationObserverCallback = useCallback<MutationCallback>(
+    (entities) => {
+      entities.forEach((entity) => {
+        if (
+          visible &&
+          Array.from(entity.removedNodes).findIndex(
+            (node) => node === currentElementRef.current,
+          )
+        ) {
+          removeRainbow();
+        }
+      });
+    },
+    [visible],
+  );
 
   useMutationObserver(document.body, mutationObserverCallback, mutationOptions);
 
+  const context = useMemo<RainbowEffectContextType>(() => {
+    return {
+      setElement,
+      setCursor: setMouseCursor,
+      removeRainbow,
+    };
+  }, [setElement, setMouseCursor, removeRainbow]);
+
   return (
-    <RainbowEffectContext.Provider
-      value={{
-        onMouseEnter,
-        onMouseMove,
-        onMouseLeave,
-      }}
-    >
+    <RainbowEffectContext.Provider value={context}>
       {children}
       {visible && (
         <div
@@ -153,8 +227,8 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
                 rotate: `${rotation}deg`,
                 top: `${cursor.y}px`,
                 left: `${cursor.x}px`,
-                width: `${width}px`,
-                height: `${width}px`,
+                width: `${width * 2}px`,
+                height: `${width * 2}px`,
                 filter: `blur(${blur}px)`,
               }}
             ></div>

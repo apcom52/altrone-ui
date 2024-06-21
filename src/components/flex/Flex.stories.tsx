@@ -1,11 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Flex, Text } from 'components';
-import {
-  alignStoryField,
-  directionStoryField,
-  gapStoryField,
-  StorybookDecorator,
-} from 'global/storybook';
+import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 
 const story: Meta<typeof Flex> = {
@@ -16,14 +11,10 @@ const story: Meta<typeof Flex> = {
     align: 'start',
     justify: 'start',
     direction: 'vertical',
-    gap: 'large',
+    gap: 'l',
     disableInnerMargins: true,
   },
   argTypes: {
-    align: alignStoryField,
-    justify: alignStoryField,
-    gap: gapStoryField,
-    direction: directionStoryField,
     disableInnerMargins: { control: 'boolean' },
   },
   parameters: {

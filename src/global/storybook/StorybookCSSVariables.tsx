@@ -1,5 +1,5 @@
 import s from './variablesDisplay.module.scss';
-import { Text, TextHeadingRoles } from '../../components';
+import { Text } from '../../components';
 import { useMediaMatch } from '../../utils';
 
 interface StorybookCSSVariablesProps {

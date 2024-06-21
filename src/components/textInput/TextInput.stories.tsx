@@ -42,7 +42,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [value6, setValue6] = useState('');
 
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Basic TextInputs</Text.Heading>
         <Flex direction="horizontal" gap="l" align="center">
           <TextInput
@@ -150,7 +150,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
     const [value9, setValue9] = useState('');
 
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Text Islands</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <TextInput
@@ -412,7 +412,7 @@ export const CustomInputStory: StoryObj<typeof Flex> = {
     const [value, setValue] = useState('0');
 
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">
           Using custom component instead of standard input
         </Text.Heading>
@@ -432,7 +432,7 @@ export const SuggestionsInput: StoryObj<typeof Flex> = {
     console.log('>> value', value);
 
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">
           Start type and see the list of suggestions
         </Text.Heading>

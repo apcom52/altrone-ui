@@ -5,10 +5,19 @@ import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 
 export const Group = memo<ToolbarGroupProps>(
-  ({ children, className, ...restProps }) => {
+  ({ children, align = 'start', className, ...restProps }) => {
     const { toolbar: toolbarConfig = {} } = useConfiguration();
 
-    const cls = clsx(s.Group, toolbarConfig.className);
+    const cls = clsx(
+      s.Group,
+      {
+        [s.Center]: align === 'center',
+        [s.End]: align === 'end',
+        [s.Between]: align === 'between',
+      },
+      className,
+      toolbarConfig.className,
+    );
 
     return (
       <div className={cls} {...restProps}>

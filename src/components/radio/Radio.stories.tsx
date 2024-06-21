@@ -32,7 +32,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [contactMethod, setContactMethod] = useState('sms');
 
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Basic Radio lists</Text.Heading>
         <Flex direction="horizontal" gap="l" align="center">
           <Text.Paragraph>Choose your gender:</Text.Paragraph>

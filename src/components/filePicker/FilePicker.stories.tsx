@@ -42,7 +42,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     ]);
 
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">
           Basic FilePicker (with autoUpload and without)
         </Text.Heading>

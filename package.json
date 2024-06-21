@@ -4,6 +4,7 @@
   "type": "module",
   "files": ["dist"],
   "main": "dist/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

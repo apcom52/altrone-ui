@@ -68,8 +68,17 @@ export const CollapsedList = memo<CollapsedListProps>(
     };
 
     return (
-      <Flex className={cls} align="start" style={styles} gap="m" {...restProps}>
-        <Flex gap={gap}>{visibleChildren}</Flex>
+      <Flex
+        direction="vertical"
+        className={cls}
+        align="start"
+        style={styles}
+        gap="m"
+        {...restProps}
+      >
+        <Flex direction="vertical" gap={gap}>
+          {visibleChildren}
+        </Flex>
         {showExpandButton ? (
           <Button
             transparent

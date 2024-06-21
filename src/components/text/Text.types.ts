@@ -1,4 +1,4 @@
-import { Size } from 'types';
+import { Gap, Size } from 'types';
 
 export type TextHeadingRoles = 'title' | 'heading' | 'subheading' | 'inner';
 
@@ -10,6 +10,14 @@ interface BaseInlineProps {
   underline?: boolean;
   deleted?: boolean;
   highlighted?: boolean;
+}
+
+export interface TextProps extends React.HTMLAttributes<HTMLDivElement> {
+  gap?: Gap;
+}
+
+export interface SectionProps extends React.HTMLAttributes<HTMLDivElement> {
+  gap?: Gap;
 }
 
 export interface TextScreenNameProps
@@ -32,10 +40,7 @@ export interface TextInlineProps
 
 export interface TextLinkProps
   extends React.HTMLAttributes<HTMLAnchorElement>,
-    Pick<BaseInlineProps, 'bold' | 'italic'> {
-  href?: string;
-  target?: string;
-}
+    Pick<BaseInlineProps, 'bold' | 'italic'> {}
 
 export interface TextCodeProps
   extends React.HTMLAttributes<HTMLSpanElement>,

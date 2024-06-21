@@ -9,7 +9,7 @@ import React, {
 import { TextInputProps } from './TextInput.types.ts';
 import s from './textInput.module.scss';
 import clsx from 'clsx';
-import { useRainbowEffect } from '../application/RainbowEffect.tsx';
+import { useRainbowEffect } from 'components/application';
 import { useResizeObserver, useBoolean } from 'utils';
 import {
   ActionIsland,
@@ -17,7 +17,7 @@ import {
   IconIsland,
   TextIsland,
 } from './components';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 import { useFormField } from '../form/components/Field.tsx';
 
 const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
@@ -70,13 +70,20 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
 
     const { value: focused, enable: focus, disable: blur } = useBoolean(false);
 
-    const rainbowEvents = useRainbowEffect(
+    const isRainbowNeeded = Boolean(
       !(restProps.readOnly && readonlyStyles) &&
         !inputDisabled &&
-        rainbowEffect &&
         !focused &&
         isRainbowPropsActivated,
     );
+
+    const rainbowProps = useRainbowEffect(isRainbowNeeded, {
+      onMouseEnter: restProps.onMouseEnter,
+      onMouseMove: restProps.onMouseMove,
+      onMouseLeave: restProps.onMouseLeave,
+      opacity: 0.33,
+      blur: 36,
+    });
 
     const wrapperCls = clsx(
       s.Wrapper,
@@ -186,17 +193,15 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         value: inputValue,
         onChange: onChangeHandler,
         'aria-invalid': inputInvalid,
-        'data-rainbow-opacity': 0.33,
-        'data-rainbow-blur': 36,
         onFocus: onFocusHandler,
         onBlur: onBlurHandler,
         className,
         style: styles,
         name: inputName,
         disabled: inputDisabled,
-        ...rainbowEvents,
         ...restProps,
         ...Component.props,
+        ...rainbowProps,
       });
     } else {
       inputElement = (
@@ -215,14 +220,12 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
           className={cls}
           style={styles}
           aria-invalid={inputInvalid}
-          data-rainbow-opacity={0.33}
-          data-rainbow-blur={36}
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
           name={inputName}
           disabled={inputDisabled}
-          {...rainbowEvents}
           {...restProps}
+          {...rainbowProps}
         />
       );
     }

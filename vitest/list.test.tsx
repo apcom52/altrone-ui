@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { List } from '../src/components';
+import { Configuration, List } from '../src/components';
 
 const ITEMS = [
   { name: 'Item 1' },
@@ -55,5 +55,17 @@ describe('List', () => {
 
     const element = screen.getByTestId('list');
     expect(element.querySelectorAll('hr')).toHaveLength(4);
+  });
+
+  test('check that List configuration works correctly', () => {
+    render(
+      <Configuration list={{ className: 'cls', style: { color: 'blue' } }}>
+        <List data={[]} renderItem={() => <div />} data-testid="element" />
+      </Configuration>,
+    );
+
+    const element = screen.getByTestId('element');
+    expect(element).toHaveClass('cls');
+    expect(element).toHaveStyle('color: blue');
   });
 });

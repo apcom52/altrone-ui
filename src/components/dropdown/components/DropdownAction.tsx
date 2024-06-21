@@ -3,22 +3,36 @@ import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { useCloseDropdownContext } from '../Dropdown.contexts.ts';
 import s from './action.module.scss';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 import { useId } from 'react';
 import { usePopoverCurrentIndex } from '../../popover/Popover.tsx';
+import { RenderFuncProp } from '../../../types';
 
-export function DropdownAction({
-  icon,
-  disabled,
-  danger,
-  hintText,
-  label,
-  onClick,
-  className,
-  focused,
-  style,
-  ...props
-}: DropdownActionProps) {
+const dropdownActionRenderFunc: RenderFuncProp<
+  HTMLButtonElement,
+  DropdownActionProps
+> = (ref, props) => {
+  const { icon, label, hintText, ...restProps } = props;
+
+  return (
+    <button type="button" role="button" ref={ref} {...restProps}>
+      <div className={s.Icon}>{icon}</div>
+      <div className={s.Label}>{label}</div>
+      {hintText ? <div className={s.Hint}>{hintText}</div> : null}
+    </button>
+  );
+};
+
+export function DropdownAction(props: DropdownActionProps) {
+  const {
+    className,
+    style,
+    danger,
+    focused,
+    renderFunc = dropdownActionRenderFunc,
+    ...restProps
+  } = props;
+
   const id = useId();
 
   const currentIndex = usePopoverCurrentIndex();
@@ -32,7 +46,7 @@ export function DropdownAction({
   const cls = clsx(
     s.Action,
     {
-      [s.DisabledAction]: disabled,
+      [s.DisabledAction]: props.disabled,
       [s.DangerAction]: danger,
       [s.Focused]: focused,
     },
@@ -48,7 +62,7 @@ export function DropdownAction({
   const closePopup = useCloseDropdownContext();
 
   const onSelect = () => {
-    onClick?.();
+    props?.onClick?.();
     closePopup();
   };
 
@@ -58,23 +72,16 @@ export function DropdownAction({
     }
   };
 
-  return (
-    <button
-      disabled={disabled}
-      className={cls}
-      style={styles}
-      role="button"
-      ref={ref}
-      data-active={isFocused}
-      {...props}
-      id={props.id || id}
-      onClick={onSelect}
-      onKeyDown={onKeyDownPress}
-    >
-      <div className={s.Icon}>{icon}</div>
-      <div className={s.Label}>{label}</div>
-      {hintText ? <div className={s.Hint}>{hintText}</div> : null}
-    </button>
-  );
+  return renderFunc(ref, {
+    ...restProps,
+    type: 'button',
+    style: styles,
+    className: cls,
+    role: 'button',
+    'data-active': isFocused,
+    id: props.id || id,
+    onClick: onSelect,
+    onKeyDown: onKeyDownPress,
+  });
 }
 DropdownAction.displayName = 'DropdownAction';

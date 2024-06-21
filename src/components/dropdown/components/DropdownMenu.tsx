@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import { DropdownMenuProps } from '../Dropdown.types';
 import clsx from 'clsx';
 import s from './menu.module.scss';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
   (

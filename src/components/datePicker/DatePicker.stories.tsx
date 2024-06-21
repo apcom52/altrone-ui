@@ -37,7 +37,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [year2, setYear2] = useState<Dayjs | undefined>(dayjs('2025'));
 
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Basic DatePicker</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <DatePicker
@@ -102,7 +102,7 @@ export const RangeStory: StoryObj<typeof Flex> = {
     ]);
 
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">RangePicker</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <DatePicker.RangePicker

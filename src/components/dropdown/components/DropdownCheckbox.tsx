@@ -50,6 +50,7 @@ export function DropdownCheckbox({
 
   return (
     <button
+      type="button"
       onKeyDown={onKeyDownPress}
       onClick={onSelect}
       disabled={disabled}

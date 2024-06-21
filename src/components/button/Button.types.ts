@@ -1,4 +1,4 @@
-import { Role, Size } from 'types';
+import { RenderFuncProp, Role, Size } from 'types';
 import { ReactElement } from 'react';
 
 export interface ButtonProps
@@ -12,4 +12,5 @@ export interface ButtonProps
   onClick?: () => void;
   disabled?: boolean;
   rainbowEffect?: boolean;
+  renderFunc?: RenderFuncProp<HTMLButtonElement, ButtonProps>;
 }

@@ -147,7 +147,7 @@ export const FlexLayout: StoryObj<typeof List<CityRank>> = {
     data: CITY_RANKS,
   },
   render: (args) => (
-    <Flex gap="l">
+    <Flex direction="vertical" gap="l">
       <List<CityRank>
         {...args}
         renderItem={({ item }) => {
@@ -163,7 +163,7 @@ export const FlexLayout: StoryObj<typeof List<CityRank>> = {
               <div className={s.Image}>
                 <img src={item.imageUrl} alt="" />
               </div>
-              <Flex gap="m">
+              <Flex direction="vertical" gap="m">
                 <div className={s.Title}>
                   {item.city}
                   <span className={s.Country}>, {item.country}</span>

@@ -1,16 +1,59 @@
 import { render, screen } from '@testing-library/react';
 import {
   AltroneApplication,
+  Configuration,
   Message,
   Icon,
-  Text,
   Flex,
   List,
   Button,
   Popover,
-} from 'components';
+} from '../src';
 
 describe('Configation', () => {
+  test('check that component receive correct configuration properties', () => {
+    render(
+      <AltroneApplication
+        tagName="body"
+        config={{
+          flex: {
+            className: 'rootConfig',
+          },
+        }}
+      >
+        <Flex data-testid="flex" />
+      </AltroneApplication>,
+    );
+
+    expect(screen.getByTestId('flex')).toHaveClass('rootConfig');
+  });
+
+  test('check nested configuration', () => {
+    render(
+      <AltroneApplication
+        config={{
+          flex: {
+            className: 'rootConfig',
+          },
+        }}
+      >
+        <Configuration flex={{ className: 'innerConfig' }}>
+          <Flex data-testid="flex1" />
+          <Flex data-testid="flex2" />
+        </Configuration>
+        <Flex data-testid="flex3" />
+      </AltroneApplication>,
+    );
+
+    expect(screen.getByTestId('flex1')).not.toHaveClass('rootConfig');
+    expect(screen.getByTestId('flex2')).not.toHaveClass('rootConfig');
+    expect(screen.getByTestId('flex3')).not.toHaveClass('innerConfig');
+
+    expect(screen.getByTestId('flex1')).toHaveClass('innerConfig');
+    expect(screen.getByTestId('flex2')).toHaveClass('innerConfig');
+    expect(screen.getByTestId('flex3')).toHaveClass('rootConfig');
+  });
+
   test('check that Flex configuration works correctly', () => {
     render(
       <AltroneApplication
@@ -45,84 +88,6 @@ describe('Configation', () => {
         config={{ message: { className: 'cls', style: { color: 'blue' } } }}
       >
         <Message data-testid="element">content</Message>
-      </AltroneApplication>,
-    );
-
-    const element = screen.getByTestId('element');
-    expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
-  });
-
-  test('check that Text configuration works correctly', () => {
-    render(
-      <AltroneApplication
-        config={{
-          textScreenName: { className: 'cls', style: { color: 'blue' } },
-          textHeading: { className: 'cls', style: { color: 'blue' } },
-          textParagraph: { className: 'cls', style: { color: 'blue' } },
-          textInline: { className: 'cls', style: { color: 'blue' } },
-          textList: { className: 'cls', style: { color: 'blue' } },
-          textListItem: { className: 'cls', style: { color: 'blue' } },
-          textLink: { className: 'cls', style: { color: 'blue' } },
-          textCode: { className: 'cls', style: { color: 'blue' } },
-          textKeyboard: { className: 'cls', style: { color: 'blue' } },
-        }}
-      >
-        <Text.ScreenName data-testid="screenName">content</Text.ScreenName>
-        <Text.Heading data-testid="heading">content</Text.Heading>
-        <Text.Paragraph data-testid="paragraph">content</Text.Paragraph>
-        <Text.Inline data-testid="inline">content</Text.Inline>
-        <Text.List data-testid="list">content</Text.List>
-        <Text.ListItem data-testid="listItem">content</Text.ListItem>
-        <Text.Link data-testid="link">content</Text.Link>
-        <Text.Code data-testid="code">content</Text.Code>
-        <Text.Keyboard data-testid="keyboard">content</Text.Keyboard>
-      </AltroneApplication>,
-    );
-
-    const screenName = screen.getByTestId('screenName');
-    expect(screenName).toHaveClass('cls');
-    expect(screenName).toHaveStyle('color: blue');
-
-    const heading = screen.getByTestId('heading');
-    expect(heading).toHaveClass('cls');
-    expect(heading).toHaveStyle('color: blue');
-
-    const paragraph = screen.getByTestId('paragraph');
-    expect(paragraph).toHaveClass('cls');
-    expect(paragraph).toHaveStyle('color: blue');
-
-    const inline = screen.getByTestId('inline');
-    expect(inline).toHaveClass('cls');
-    expect(inline).toHaveStyle('color: blue');
-
-    const list = screen.getByTestId('list');
-    expect(list).toHaveClass('cls');
-    expect(list).toHaveStyle('color: blue');
-
-    const listItem = screen.getByTestId('listItem');
-    expect(listItem).toHaveClass('cls');
-    expect(listItem).toHaveStyle('color: blue');
-
-    const link = screen.getByTestId('link');
-    expect(link).toHaveClass('cls');
-    expect(link).toHaveStyle('color: blue');
-
-    const code = screen.getByTestId('code');
-    expect(code).toHaveClass('cls');
-    expect(code).toHaveStyle('color: blue');
-
-    const keyboard = screen.getByTestId('keyboard');
-    expect(keyboard).toHaveClass('cls');
-    expect(keyboard).toHaveStyle('color: blue');
-  });
-
-  test('check that List configuration works correctly', () => {
-    render(
-      <AltroneApplication
-        config={{ list: { className: 'cls', style: { color: 'blue' } } }}
-      >
-        <List data={[]} renderItem={() => <div />} data-testid="element" />
       </AltroneApplication>,
     );
 

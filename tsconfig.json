@@ -6,6 +6,8 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "baseUrl": "./src",
+    "dec": false,
+    "types": ["node", "jest", "@testing-library/jest-dom"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -19,8 +21,9 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
   },
   "include": ["src"],
+  "exclude": ["src/global/storybook"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

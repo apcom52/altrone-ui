@@ -50,11 +50,13 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
 
     useDebouncedEffect(
       async () => {
-        if (restProps.value.trim().length === 0) {
+        if (restProps.value?.trim().length === 0) {
           return;
         }
 
-        const _suggestions = await getSuggestions({ value: restProps.value });
+        const _suggestions = await getSuggestions({
+          value: restProps.value || '',
+        });
         if (_suggestions.length && !suggestionWasSelected.current) {
           dropdownRef.current?.openPopup();
         }
@@ -78,7 +80,7 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
 
         if (renderSuggestion) {
           return renderSuggestion({
-            inputValue: restProps.value,
+            inputValue: restProps.value || '',
             label: suggestion,
             onClick: () => selectSuggestion(suggestion),
           });
@@ -101,7 +103,9 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
     };
 
     const needToShowDropdown =
-      suggestionElements.length > 0 && restProps.value.trim().length > 0;
+      suggestionElements.length > 0 &&
+      restProps.value &&
+      restProps.value.trim().length > 0;
 
     return (
       <Dropdown

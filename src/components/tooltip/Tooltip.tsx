@@ -26,7 +26,7 @@ export const Tooltip = memo<TooltipTypes>(
 
     const tooltipContent =
       typeof content === 'string' ? (
-        <Text.Paragraph size="s" className={cls} style={styles} {...restProps}>
+        <Text.Paragraph size="s" className={cls} style={styles}>
           {content}
         </Text.Paragraph>
       ) : (

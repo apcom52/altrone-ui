@@ -5,3 +5,5 @@ export { useBoolean } from './useBoolean';
 export { useDebouncedMemo } from './useDebouncedMemo.ts';
 export { useNumber } from './useNumber.ts';
 export { useDebouncedEffect } from './useDebouncedEffect.ts';
+export { useMutationObserver } from './useMutationObserver.ts';
+export { useScrollObserver } from './useScrollObserver.ts';

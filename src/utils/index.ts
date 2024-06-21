@@ -6,6 +6,8 @@ export {
   useDebouncedMemo,
   useNumber,
   useDebouncedEffect,
+  useMutationObserver,
+  useScrollObserver,
 } from './hooks';
 export * from './fn.ts';
 export * from './object.ts';

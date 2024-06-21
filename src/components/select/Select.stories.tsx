@@ -40,7 +40,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [value6, setValue6] = useState(['russia']);
 
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Basic Select</Text.Heading>
         <Flex direction="horizontal" gap="l">
           <Select

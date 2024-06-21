@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import s from './logo.module.scss';
 
 export const Logo = memo<TopNavigationLogoProps>(
-  ({ href, children, className, ...restProps }) => {
+  ({ children, className, ...restProps }) => {
     const cls = clsx(s.Logo, className);
 
     return (

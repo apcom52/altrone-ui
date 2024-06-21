@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
-import { Button, Icon } from 'components';
+import { Button, Icon } from '../src';
 
 describe('Button', () => {
   test('need to render only icon when no label was passed', () => {

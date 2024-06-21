@@ -23,7 +23,7 @@ const story: Meta<typeof Tags> = {
 export const FlexLayout: StoryObj<typeof Flex> = {
   name: 'Using Tags',
   render: (args) => (
-    <Flex {...args} gap="l">
+    <Flex gap="l" direction="vertical">
       <Text.Heading role="inner">Standard Tags</Text.Heading>
       <Flex direction="horizontal" gap="l">
         <Tags>

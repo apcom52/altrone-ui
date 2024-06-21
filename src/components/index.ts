@@ -1,4 +1,3 @@
-export * from './form';
 export * from './application';
 export * from './autocompleteInput';
 export * from './bottomNavigation';
@@ -16,6 +15,7 @@ export * from './divider';
 export * from './dropdown';
 export * from './filePicker';
 export * from './flex';
+export * from './form';
 export * from './icon';
 export * from './list';
 export * from './loading';

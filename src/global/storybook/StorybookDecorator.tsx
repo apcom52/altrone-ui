@@ -1,4 +1,4 @@
-import { AltroneApplication } from 'components';
+import { AltroneApplication } from '../../components';
 import s from './decorator.module.scss';
 import { useEffect } from 'react';
 

@@ -62,9 +62,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     );
 
     return (
-      <Flex gap="l">
+      <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Standard AutocompleteInput</Text.Heading>
-        <Flex direction="horizontal" gap="l">
+        <Flex gap="l">
           <AutocompleteInput
             value={value1}
             getSuggestions={getCountry}

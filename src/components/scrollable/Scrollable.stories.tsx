@@ -30,7 +30,7 @@ const story: Meta<typeof Scrollable> = {
 export const ScrollableStory: StoryObj<typeof Scrollable> = {
   name: 'Using Scrollable',
   render: (args) => (
-    <Flex gap="xl">
+    <Flex direction="vertical" gap="xl">
       <Text.Heading role="inner">
         Vertical Scrollable with long content
       </Text.Heading>

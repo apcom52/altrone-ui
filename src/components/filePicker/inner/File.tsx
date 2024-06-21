@@ -169,12 +169,12 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
       ) : null}
       {status === 'loading' ? <Loading size="12px" strokeWidth="1px" /> : null}
       {status === 'failed' ? (
-        <button className={s.Close} type="button" onClick={() => null}>
+        <button type="button" className={s.Close} onClick={() => null}>
           <Icon i="refresh" />
         </button>
       ) : null}
       {status !== 'loading' ? (
-        <button className={s.Close} type="button" onClick={onRemoveClick}>
+        <button type="button" className={s.Close} onClick={onRemoveClick}>
           <Icon i="close" />
         </button>
       ) : null}

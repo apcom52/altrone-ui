@@ -78,6 +78,7 @@ export const DayButton = memo(
 
     return (
       <button
+        type="button"
         onClick={onDateClick}
         className={cls}
         data-date={currentDate.format('YYYY-MM-DD')}

@@ -23,7 +23,7 @@ const story: Meta<typeof Tabs> = {
 export const FlexLayout: StoryObj<typeof Flex> = {
   name: 'Using Tags',
   render: (args) => (
-    <Flex {...args} gap="l">
+    <Flex direction="vertical" gap="l">
       <Text.Heading role="inner">Standard Tabs</Text.Heading>
       <Flex direction="horizontal" gap="l">
         <Tabs>
