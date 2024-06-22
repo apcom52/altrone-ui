@@ -205,7 +205,59 @@
 
 .AltroneApp {
   font-family: "Inter", sans-serif;
+
+  :global(.screen-text) {
+    @include screen-name;
   }
+
+  :global(.title-text) {
+    @include title;
+  }
+
+  :global(.heading-text) {
+    @include heading;
+  }
+
+  :global(.subheader-text) {
+    @include subheader;
+  }
+
+  :global(.inner-header-text) {
+    @include inner-header;
+  }
+
+  :global(.group-heading-text) {
+    @include group-heading;
+  }
+
+  :global(.label-heading-text) {
+    @include label-heading;
+  }
+
+  :global(.label-text) {
+    @include label;
+  }
+
+  :global(.small-label-text) {
+    @include small-label;
+  }
+
+  :global(.big-paragraph-text) {
+    @include big-paragraph;
+  }
+
+  :global(.paragraph-text) {
+    @include paragraph;
+  }
+
+  :global(.small-paragraph-text) {
+    @include sm-paragraph;
+  }
+
+  :global(.code-text) {
+    @include code;
+  }
+}
 
 :global(.AltroneDark) {
   --headingTextColor: var(--default-50);
