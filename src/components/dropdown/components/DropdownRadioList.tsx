@@ -4,7 +4,7 @@ import {
   RadioListDropdownContext,
 } from '../Dropdown.contexts';
 import { useId, useMemo } from 'react';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import s from './radioList.module.scss';
 
@@ -17,7 +17,7 @@ export function DropdownRadioList({
   style,
   ...props
 }: DropdownRadioListProps) {
-  const { dropdownRadioList: dropdownRadioListConfig = {} } =
+  const { dropdown: { radioList: dropdownRadioListConfig = {} } = {} } =
     useConfiguration();
 
   const labelId = useId();

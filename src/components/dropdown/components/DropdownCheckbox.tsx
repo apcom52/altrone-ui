@@ -20,7 +20,7 @@ export function DropdownCheckbox({
 
   const { ref } = useListItem();
 
-  const { dropdownCheckbox: dropdownCheckboxConfiguration = {} } =
+  const { dropdown: { checkbox: dropdownCheckboxConfiguration = {} } = {} } =
     useConfiguration();
 
   const cls = clsx(

@@ -40,8 +40,7 @@ export function DropdownAction(props: DropdownActionProps) {
 
   const isFocused = currentIndex === index;
 
-  const { dropdownAction: dropdownActionConfiguration = {} } =
-    useConfiguration();
+  const { dropdown: { action: actionConfig = {} } = {} } = useConfiguration();
 
   const cls = clsx(
     s.Action,
@@ -51,11 +50,11 @@ export function DropdownAction(props: DropdownActionProps) {
       [s.Focused]: focused,
     },
     className,
-    dropdownActionConfiguration.className,
+    actionConfig.className,
   );
 
   const styles = {
-    ...dropdownActionConfiguration.style,
+    ...actionConfig.style,
     ...style,
   };
 
