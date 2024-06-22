@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { TopNavigationProps } from './TopNavigation.types.ts';
 import { Logo, Group, Link } from './components';
 import s from './topNavigation.module.scss';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 
 const TopNavigationComponent = memo<TopNavigationProps>(

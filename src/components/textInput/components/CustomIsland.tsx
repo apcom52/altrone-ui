@@ -2,12 +2,13 @@ import { forwardRef } from 'react';
 import clsx from 'clsx';
 import { CustomIslandProps } from '../TextInput.types.ts';
 import s from './custom.module.scss';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export const CustomIsland = forwardRef<HTMLDivElement, CustomIslandProps>(
   (props, ref) => {
     const { children, className, style, ...restProps } = props;
-    const { inputCustomIsland: customIslandConfig = {} } = useConfiguration();
+    const { textInput: { customIsland: customIslandConfig = {} } = {} } =
+      useConfiguration();
 
     const cls = clsx(s.CustomAction, className, customIslandConfig.className);
 
