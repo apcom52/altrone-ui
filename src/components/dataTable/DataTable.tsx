@@ -4,11 +4,21 @@ import { Body, ColumnHeaders, Header, Footer } from './inner';
 import { Action } from './components';
 import s from './dataTable.module.scss';
 import { Children, useMemo } from 'react';
+import { useConfiguration } from '../configuration';
+import clsx from 'clsx';
 
 const DataTableComponent = <DataType extends object>(
   props: DataTableProps<DataType>,
 ) => {
+  const { dataTable: dataTableConfig = {} } = useConfiguration();
+
   const { children, selectable, showFooter = true } = props;
+
+  const cls = clsx(s.Table, props.className, dataTableConfig.className);
+  const styles = {
+    ...dataTableConfig.style,
+    ...props.style,
+  };
 
   const dataTableHeaderVisible = useMemo(() => {
     return (
@@ -23,7 +33,7 @@ const DataTableComponent = <DataType extends object>(
         {dataTableHeaderVisible ? (
           <Header<DataType> selectable={Boolean(selectable)}>{children}</Header>
         ) : null}
-        <table className={s.Table}>
+        <table className={cls} style={styles}>
           <ColumnHeaders headingVisible={dataTableHeaderVisible} />
           <Body />
         </table>
