@@ -4,6 +4,7 @@ import s from './item.module.scss';
 import { useRainbowEffect } from 'components/application';
 import clsx from 'clsx';
 import { RenderFuncProp } from '../../../types';
+import { useConfiguration } from '../../configuration';
 
 const tabItemRenderFunc: RenderFuncProp<HTMLAnchorElement, TabsItemProps> = (
   ref,
@@ -20,9 +21,14 @@ const tabItemRenderFunc: RenderFuncProp<HTMLAnchorElement, TabsItemProps> = (
 
 export const Item = forwardRef<HTMLAnchorElement, TabsItemProps>(
   (props, ref) => {
+    const { tabs = {} } = useConfiguration();
+
     const { className, renderFunc = tabItemRenderFunc, ...restProps } = props;
 
-    const rainbowProps = useRainbowEffect(true, {
+    const rainbowEffectActive =
+      typeof tabs.rainbowEffect === 'boolean' ? tabs.rainbowEffect : true;
+
+    const rainbowProps = useRainbowEffect(rainbowEffectActive, {
       opacity: 1,
       blur: 36,
     });

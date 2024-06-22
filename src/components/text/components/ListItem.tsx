@@ -1,7 +1,7 @@
 import { TextListItemProps } from '../Text.types.ts';
 import s from './list.module.scss';
 import clsx from 'clsx';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export const ListItem = ({
   children,
@@ -9,12 +9,12 @@ export const ListItem = ({
   style,
   ...props
 }: TextListItemProps) => {
-  const { textListItem = {} } = useConfiguration();
+  const { text: { listItem: listItemConfig = {} } = {} } = useConfiguration();
 
-  const cls = clsx(s.ListItem, className, textListItem.className);
+  const cls = clsx(s.ListItem, className, listItemConfig.className);
 
   const styles = {
-    ...textListItem.style,
+    ...listItemConfig.style,
     ...style,
   };
 

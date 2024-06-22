@@ -2,11 +2,11 @@ import { memo } from 'react';
 import { TextKeyboardProps } from '../Text.types.ts';
 import clsx from 'clsx';
 import s from './keyboard.module.scss';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export const Keyboard = memo(
   ({ children, className, bold, style, ...props }: TextKeyboardProps) => {
-    const { textKeyboard = {} } = useConfiguration();
+    const { text: { keyboard: keyboardConfig = {} } = {} } = useConfiguration();
 
     const cls = clsx(
       s.Keyboard,
@@ -14,11 +14,11 @@ export const Keyboard = memo(
         [s.Bold]: bold,
       },
       className,
-      textKeyboard.className,
+      keyboardConfig.className,
     );
 
     const styles = {
-      ...textKeyboard.style,
+      ...keyboardConfig.style,
       ...style,
     };
 

@@ -1,7 +1,7 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import { ScrollableProps } from './Scrollable.types.ts';
 import clsx from 'clsx';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 import s from './scrollable.module.scss';
 import { useResizeObserver } from 'utils';
 

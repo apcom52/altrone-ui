@@ -3,11 +3,15 @@ import { TagsProps } from './Tags.types.ts';
 import clsx from 'clsx';
 import { Flex } from '../flex';
 import { Item } from './components/Item.tsx';
+import { useConfiguration } from '../configuration';
 
 const Tags = memo<TagsProps>(({ children, className, style, ...props }) => {
-  const cls = clsx(className);
+  const { tags: tagsConfig = {} } = useConfiguration();
+
+  const cls = clsx(className, tagsConfig.className);
 
   const styles = {
+    ...tagsConfig.style,
     ...style,
   };
 

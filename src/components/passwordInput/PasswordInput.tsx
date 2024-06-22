@@ -3,7 +3,7 @@ import { PasswordInputProps } from './PasswordInput.types.ts';
 import { TextInput } from '../textInput';
 import { Icon } from '../icon';
 import { getSafeArray } from '../../utils';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 
 export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(

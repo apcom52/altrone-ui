@@ -74,7 +74,7 @@ export interface ConsumerConfigurationContext {
   message?: ComponentConfiguration;
   modal?: ComponentConfiguration;
   navigationList?: ComponentConfiguration<{
-    group: {
+    group?: {
       titleClassName: string;
     };
   }>;

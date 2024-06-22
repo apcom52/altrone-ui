@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { ProgressContext, ProgressProps } from './Progress.types.ts';
 import clsx from 'clsx';
 import s from './progress.module.scss';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export const Progress = memo<ProgressProps>(
   ({

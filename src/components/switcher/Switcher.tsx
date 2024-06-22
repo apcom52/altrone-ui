@@ -2,7 +2,7 @@ import { ChangeEventHandler, KeyboardEventHandler, memo, useRef } from 'react';
 import { SwitcherProps } from './Switcher.types.ts';
 import clsx from 'clsx';
 import s from './switcher.module.scss';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export const Switcher = memo<SwitcherProps>(
   ({

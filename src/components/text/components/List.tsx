@@ -2,7 +2,7 @@ import { TextListProps } from '../Text.types.ts';
 import clsx from 'clsx';
 import { createElement } from 'react';
 import s from './list.module.scss';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export const List = ({
   children,
@@ -12,15 +12,15 @@ export const List = ({
   style,
   ...props
 }: TextListProps) => {
-  const { textList = {} } = useConfiguration();
+  const { text: { list: listConfig = {} } = {} } = useConfiguration();
 
-  const cls = clsx(s.List, className, textList.className, {
+  const cls = clsx(s.List, className, listConfig.className, {
     [s.List_small]: size === 's',
     [s.List_large]: size === 'l',
   });
 
   const styles = {
-    ...textList.style,
+    ...listConfig.style,
     ...style,
   };
 

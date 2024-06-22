@@ -2,7 +2,7 @@ import { createElement, memo } from 'react';
 import { TextHeadingProps } from '../Text.types.ts';
 import clsx from 'clsx';
 import s from './heading.module.scss';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export const Heading = memo(
   ({
@@ -13,7 +13,7 @@ export const Heading = memo(
     style,
     ...props
   }: TextHeadingProps) => {
-    const { textHeading = {} } = useConfiguration();
+    const { text: { heading: headingConfig = {} } = {} } = useConfiguration();
 
     const cls = clsx(
       {
@@ -22,14 +22,14 @@ export const Heading = memo(
         [s.Subheader]: role === 'subheading',
         [s.InnerHeader]: role === 'inner',
       },
-      textHeading.className,
+      headingConfig.className,
       className,
     );
 
     let tagName = level === 0 ? 'div' : `h${level}`;
 
     const styles = {
-      ...textHeading.style,
+      ...headingConfig.style,
       ...style,
     };
 

@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { Icon } from '../icon';
 import s from './spoiler.module.scss';
 import { useBoolean } from '../../utils';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export const Spoiler = memo<SpoilerProps>(
   ({

@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { TextParagraphProps } from '../Text.types.ts';
 import clsx from 'clsx';
 import s from './paragraph.module.scss';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export const Paragraph = memo(
   ({
@@ -12,7 +12,8 @@ export const Paragraph = memo(
     style,
     ...props
   }: TextParagraphProps) => {
-    const { textParagraph = {} } = useConfiguration();
+    const { text: { paragraph: textParagraphConfig = {} } = {} } =
+      useConfiguration();
 
     const cls = clsx(
       s.Paragraph,
@@ -21,11 +22,11 @@ export const Paragraph = memo(
         [s.Paragraph_large]: size === 'l',
       },
       className,
-      textParagraph.className,
+      textParagraphConfig.className,
     );
 
     const styles = {
-      ...textParagraph.style,
+      ...textParagraphConfig.style,
       ...style,
     };
 
