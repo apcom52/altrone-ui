@@ -14,16 +14,15 @@ import { List } from 'components/list';
 
 const BreadcrumbsComponent = memo<BreadcrumbsProps>(
   ({ children, className, style, ...restProps }) => {
-    const { bottomNavigation: bottomNavigationConfig = {} } =
-      useConfiguration();
+    const { breadcrumbs: breadcrumbsConfig = {} } = useConfiguration();
 
     const cls = clsx(
       s.BottomNavigation,
       className,
-      bottomNavigationConfig.className,
+      breadcrumbsConfig.className,
     );
     const styles = {
-      ...bottomNavigationConfig.style,
+      ...breadcrumbsConfig.style,
       ...style,
     };
 
