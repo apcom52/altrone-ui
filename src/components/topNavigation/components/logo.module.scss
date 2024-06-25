@@ -1,3 +1,5 @@
+@import 'src/global/mixins';
+
 .Logo {
   display: flex;
   align-items: center;
@@ -5,6 +7,8 @@
   cursor: pointer;
   transition: opacity 0.2s ease;
   margin-right: var(--l-gap);
+  @include focus;
+  border-radius: 6px;
 
   > * {
     height: 24px;

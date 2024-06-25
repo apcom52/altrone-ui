@@ -33,6 +33,7 @@
 
   @include group-heading;
   @include no-selection;
+  @include focus;
 
   &:hover, &:focus-visible {
     color: var(--spoilerHoveredHeadingTextColor);

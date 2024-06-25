@@ -43,6 +43,8 @@
   cursor: pointer;
   border-radius: 4px;
 
+  @include focus;
+
   &:hover, &:focus-visible {
     background: var(--paginationHoverBackgroundColor);
   }
@@ -68,6 +70,8 @@
   background: transparent;
   border: none;
   cursor: pointer;
+
+  @include focus;
 
   &:hover, &:focus-visible, &.Opened {
     background: var(--paginationHoverBackgroundColor);

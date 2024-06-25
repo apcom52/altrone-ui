@@ -21,6 +21,9 @@
   color: var(--sideNavigationItemTextColor);
   cursor: pointer;
   text-decoration: none;
+  border-radius: 4px;
+
+  @include focus;
 
   &:hover, &:focus-visible {
     color: var(--sideNavigationSelectedItemTextColor);

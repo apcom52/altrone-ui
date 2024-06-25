@@ -24,6 +24,10 @@
   @include no-selection;
   color: var(--breadcrumbsItemTextColor);
   transition: color 0.2s linear;
+  text-decoration: none;
+  border-radius: 6px;
+
+  @include focus;
 
   &:hover {
     color: var(--breadcrumbsHoveredItemTextColor);

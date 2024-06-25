@@ -28,6 +28,7 @@
 .Day {
   @include picker-item;
   width: 20px;
+  @include focus;
   height: 20px;
 
   &:after {

@@ -18,7 +18,7 @@ export const TooltipStory: StoryObj<typeof TopNavigation> = {
       <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Standard TopNavigation</Text.Heading>
         <TopNavigation>
-          <TopNavigation.Logo>
+          <TopNavigation.Logo href="#">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Asana_logo.svg/2560px-Asana_logo.svg.png" />
           </TopNavigation.Logo>
           <TopNavigation.Group>
@@ -41,10 +41,10 @@ export const TooltipStory: StoryObj<typeof TopNavigation> = {
                 />
               )}
             </Dropdown>
-            <TopNavigation.Link label="Solutions" />
-            <TopNavigation.Link label="Resources" />
-            <TopNavigation.Link label="Enterprise" />
-            <TopNavigation.Link label="Pricing" />
+            <TopNavigation.Link href="#" label="Solutions" />
+            <TopNavigation.Link href="#" label="Resources" />
+            <TopNavigation.Link href="#" label="Enterprise" />
+            <TopNavigation.Link href="#" label="Pricing" />
           </TopNavigation.Group>
           <TopNavigation.Group align="end">
             <Button leftIcon={<Icon i="globe" />} />

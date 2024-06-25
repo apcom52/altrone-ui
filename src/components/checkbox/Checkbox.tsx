@@ -3,7 +3,7 @@ import { CheckboxProps } from './Checkbox.types.ts';
 import clsx from 'clsx';
 import s from './checkbox.module.scss';
 import { CheckIcon } from './inner/checkIcon.tsx';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export const Checkbox = memo<CheckboxProps>(
   ({

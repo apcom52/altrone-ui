@@ -27,8 +27,11 @@
   background-color: var(--navigationListLinkBackgroundColor);
   transition: background-color 0.2s ease;
   border-radius: 6px;
+  text-decoration: none;
   z-index: 1;
   @include no-selection;
+
+  @include focus;
 
   &:before {
     position: absolute;

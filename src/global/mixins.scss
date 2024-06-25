@@ -124,3 +124,10 @@
   -webkit-backdrop-filter: blur(32px);
   backdrop-filter: blur(32px);
 }
+
+@mixin focus {
+  &:focus-visible {
+    outline: 4px solid var(--focus);
+    outline-offset: 1px;
+  }
+}

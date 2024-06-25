@@ -47,7 +47,7 @@ export const Spoiler = memo<SpoilerProps>(
         {...restProps}
         onToggle={onToggleHandler}
       >
-        <summary className={s.Heading}>
+        <summary tabIndex={0} className={s.Heading}>
           {title}
           <div className={s.ArrowIcon} aria-hidden={true}>
             <Icon i={opened ? 'expand_less' : 'expand_more'} />

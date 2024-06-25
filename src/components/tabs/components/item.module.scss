@@ -33,6 +33,8 @@
   text-decoration: none;
   cursor: pointer;
 
+  @include focus;
+
   &:hover, &:focus-visible {
     background-color: var(--tabHoveredItemBackgroundColor);
     color: var(--tabHoveredItemTextColor);

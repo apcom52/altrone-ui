@@ -23,9 +23,12 @@
   cursor: pointer;
   color: var(--bottomNavigationItemTextColor);
   transition: color 0.2s linear;
+  text-decoration: none;
+  border-radius: 6px;
 
   @include no-appearance;
   @include no-selection;
+  @include focus;
 
   &:hover, &.Selected {
     color: var(--bottomNavigationHoveredItemTextColor);

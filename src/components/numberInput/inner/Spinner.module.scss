@@ -55,6 +55,8 @@
   &:disabled {
     @include disabled;
   }
+
+  @include focus;
 }
 
 .Small {
