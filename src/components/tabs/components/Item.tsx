@@ -10,10 +10,11 @@ const tabItemRenderFunc: RenderFuncProp<HTMLAnchorElement, TabsItemProps> = (
   ref,
   props,
 ) => {
-  const { label, ...restProps } = props;
+  const { label, icon, ...restProps } = props;
 
   return (
     <a ref={ref} {...restProps}>
+      {icon ? <div className={s.Icon}>{icon}</div> : null}
       {label}
     </a>
   );
