@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "@floating-ui/react": "0.26.16",
+    "@fontsource/inter": "^5.0.18",
+    "@fontsource/jetbrains-mono": "^5.0.20",
     "@material-symbols/font-500": "0.17.1",
     "clsx": "2.1.0",
     "dayjs": "^1.11.11",

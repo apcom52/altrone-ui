@@ -1,22 +1,5 @@
 @import "src/global/mixins";
 
-@font-face { font-family: "Inter"; font-style: normal; font-weight: 400; font-display: swap; src: url("../../assets/Inter-Regular.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-style: italic; font-weight: 400; font-display: swap; src: url("../../assets/Inter-Italic.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-style: normal; font-weight: 500; font-display: swap; src: url("../../assets/Inter-Medium.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-style: italic; font-weight: 500; font-display: swap; src: url("../../assets/Inter-MediumItalic.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-style: normal; font-weight: 600; font-display: swap; src: url("../../assets/Inter-SemiBold.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-style: italic; font-weight: 600; font-display: swap; src: url("../../assets/Inter-SemiBoldItalic.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-style: normal; font-weight: 700; font-display: swap; src: url("../../assets/Inter-Bold.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-style: italic; font-weight: 700; font-display: swap; src: url("../../assets/Inter-BoldItalic.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-style: normal; font-weight: 800; font-display: swap; src: url("../../assets/Inter-ExtraBold.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-style: italic; font-weight: 800; font-display: swap; src: url("../../assets/Inter-ExtraBoldItalic.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-style: normal; font-weight: 900; font-display: swap; src: url("../../assets/Inter-Black.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-style: italic; font-weight: 900; font-display: swap; src: url("../../assets/Inter-BlackItalic.woff2") format("woff2"); }
-@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("../../assets/JetBrainsMono-Regular.woff2") format("woff2"); }
-@font-face { font-family: "JetBrains Mono"; font-style: italic; font-weight: 400; font-display: swap; src: url("../../assets/JetBrainsMono-Italic.woff2") format("woff2"); }
-@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 600; font-display: swap; src: url("../../assets/JetBrainsMono-SemiBold.woff2") format("woff2"); }
-@font-face { font-family: "JetBrains Mono"; font-style: italic; font-weight: 600; font-display: swap; src: url("../../assets/JetBrainsMono-SemiBoldItalic.woff2") format("woff2"); }
-
 :global(:root) {
   --default-900: #111928;
   --default-800: #1F2A37;
@@ -75,11 +58,11 @@
 
   --screenFontSize: 32px;
   --screenLineHeight: 40px;
-  --screenFontWeight: 900;
+  --screenFontWeight: 700;
 
   --titleFontSize: 24px;
   --titleLineHeight: 32px;
-  --titleFontWeight: 800;
+  --titleFontWeight: 700;
 
   --headingFontSize: 20px;
   --headingLineHeight: 24px;

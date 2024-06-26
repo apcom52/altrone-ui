@@ -6,6 +6,7 @@ import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths(), dts()],
+  publicDir: resolve(__dirname, './src/assets'),
   build: {
     lib: {
       entry: resolve(__dirname, './src/index.ts'),
@@ -14,7 +15,13 @@ export default defineConfig({
       fileName: 'index',
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime', 'vitest/*.tsx'],
+      external: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        'vitest/*.tsx',
+        '@fontsource',
+      ],
       output: {
         banner: `'use client';`,
       },
