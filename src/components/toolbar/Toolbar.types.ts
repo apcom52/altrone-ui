@@ -22,4 +22,5 @@ export interface ToolbarActionProps
 export interface ToolbarGroupProps
   extends React.HTMLAttributes<HTMLDivElement> {
   align?: Align;
+  weight?: number;
 }
