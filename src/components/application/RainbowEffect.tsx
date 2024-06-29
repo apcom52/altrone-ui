@@ -36,8 +36,6 @@ export const useRainbowEffect = (
   enabled: boolean,
   options?: RainbowEffectHookProps,
 ) => {
-  // return {};
-
   const { setElement, setCursor, removeRainbow } = useRainbowContext();
 
   const {

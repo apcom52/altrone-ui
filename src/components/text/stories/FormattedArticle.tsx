@@ -76,6 +76,7 @@ export const FormattedArticle = () => {
             is a leading organization in artificial intelligence research.
           </Text.ListItem>
           <TextInput />
+          <Button size="l" label="Button for testing" />
           <Text.ListItem>
             <Text.Inline bold>Code Elements</Text.Inline>: When incorporating
             code snippets or programming instructions, markup language provides

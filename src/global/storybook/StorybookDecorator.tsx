@@ -12,10 +12,13 @@ export const StorybookDecorator = (Story: any, options: any) => {
     );
   }, [options.globals.backgrounds?.value]);
 
+  console.log('>> lang', options.globals.lang);
+
   return (
     <AltroneApplication
       className={s.Wrapper}
       theme={options.globals.theme === 'dark' ? 'dark' : 'light'}
+      language={options.globals.lang || 'en'}
     >
       <Story />
     </AltroneApplication>

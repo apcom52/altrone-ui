@@ -3,7 +3,6 @@ import { BasicComponentStyleConfig } from 'types';
 import { CollapsedListProps } from '../collapsedList/CollapsedList.types.ts';
 
 export const DEFAULT_CONFIGURATION: ConsumerConfigurationContext = {
-  language: 'en',
   locale: {
     dateFormat: 'DD.MM.YYYY',
     numberGrouping: ' ',
@@ -15,8 +14,6 @@ type ComponentConfiguration<ExtraProps extends object = {}> = Partial<
   BasicComponentStyleConfig & ExtraProps
 >;
 
-export type Language = 'en' | 'ru' | string;
-
 export type Locale = {
   dateFormat: string;
   numberGrouping: '' | ' ' | ',' | '.';
@@ -24,7 +21,6 @@ export type Locale = {
 };
 
 export interface ConsumerConfigurationContext {
-  language?: Language;
   locale?: Partial<Locale>;
   autocompleteInput?: ComponentConfiguration;
   bottomNavigation?: ComponentConfiguration<{
