@@ -56,7 +56,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             value={value3}
             onChange={setValue3}
             placeholder="NumberInput without controls"
-            showControl={false}
+            showControls={false}
             allowNegative
             min={-100}
             max={100}

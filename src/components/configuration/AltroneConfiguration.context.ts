@@ -75,13 +75,13 @@ export interface ConsumerConfigurationContext {
     };
   }>;
   numberInput?: ComponentConfiguration<{
-    showControl?: boolean;
+    showControls?: boolean;
     allowLeadingZeros?: boolean;
     digitsAfterPoint?: number;
   }>;
   pagination?: ComponentConfiguration;
   passwordInput?: ComponentConfiguration<{
-    showControl?: boolean;
+    showControls?: boolean;
   }>;
   photoViewer?: ComponentConfiguration<{
     image: {
@@ -95,7 +95,7 @@ export interface ConsumerConfigurationContext {
   radio?: ComponentConfiguration;
   scrollable?: ComponentConfiguration;
   search?: ComponentConfiguration<{
-    showControl?: boolean;
+    showControls?: boolean;
   }>;
   select?: ComponentConfiguration;
   sideNavigation?: ComponentConfiguration<{

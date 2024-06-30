@@ -14,7 +14,7 @@ import { useLocalization } from '../application/useLocalization.tsx';
 export const Search = forwardRef<PopoverRef, SearchProps>(
   (
     {
-      showControl,
+      showControls,
       children,
       className,
       style,
@@ -32,9 +32,9 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
     const haveValue = restProps.value;
 
     const needToShowControl =
-      (typeof showControl === 'boolean'
-        ? showControl
-        : searchConfig.showControl || true) && haveValue;
+      (typeof showControls === 'boolean'
+        ? showControls
+        : searchConfig.showControls || true) && haveValue;
 
     const safeChildren = getSafeArray(children);
 
