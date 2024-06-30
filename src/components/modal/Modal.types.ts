@@ -1,12 +1,15 @@
 import { ReactElement } from 'react';
-import { Size } from '../../types';
+import { Size } from 'types';
 
-export interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
-  open?: boolean;
-  onClose?: () => void;
-  onOpenChange?: (opened: boolean, event?: Event) => void;
+export interface ModalProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'content'> {
+  children: ReactElement;
+  content: ReactElement;
+  openedByDefault?: boolean;
+  enabled?: boolean;
   title?: string;
-  leftActions?: ReactElement[];
-  actions?: ReactElement[];
   size?: Size;
+  showCancelButton?: boolean;
+  leftActions?: ReactElement | ReactElement[];
+  actions?: ReactElement | ReactElement[];
 }
