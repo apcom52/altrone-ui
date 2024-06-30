@@ -5,8 +5,11 @@ import { Text } from 'components/text';
 import { Tooltip } from 'components/tooltip';
 import { Pagination } from 'components/pagination';
 import s from './footer.module.scss';
+import { useLocalization } from '../../application/useLocalization.tsx';
 
 export const Footer = memo(() => {
+  const t = useLocalization();
+
   const {
     initialData,
     rowsPerPage,
@@ -27,9 +30,21 @@ export const Footer = memo(() => {
   const selectedRowsNumber = selectableMode ? selectedRows.length : 0;
   const numberOfPages = Math.ceil(data.length / rowsPerPage);
 
-  let statusText = `${numberOfRows} rows are shown`;
+  let statusText = t('dataTable.shownRows', {
+    plural: true,
+    value: numberOfRows,
+    vars: {
+      count: numberOfRows,
+    },
+  });
   if (selectedRowsNumber) {
-    statusText = `${selectedRowsNumber} rows are selected`;
+    statusText = t('dataTable.selectedRows', {
+      plural: true,
+      value: selectedRowsNumber,
+      vars: {
+        count: selectedRowsNumber,
+      },
+    });
   }
 
   return (
@@ -39,10 +54,12 @@ export const Footer = memo(() => {
           content={
             <Flex direction="vertical" gap="s">
               <Text.Paragraph size="s">
-                Total rows: <Text.Inline bold>{initialData.length}</Text.Inline>
+                {t('dataTable.totalRows')}:{' '}
+                <Text.Inline bold>{initialData.length}</Text.Inline>
               </Text.Paragraph>
               <Text.Paragraph size="s">
-                Rows per page: <Text.Inline bold>{rowsPerPage}</Text.Inline>
+                {t('dataTable.rowsPerPage')}:{' '}
+                <Text.Inline bold>{rowsPerPage}</Text.Inline>
               </Text.Paragraph>
             </Flex>
           }

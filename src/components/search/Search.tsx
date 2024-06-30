@@ -9,6 +9,7 @@ import s from './search.module.scss';
 import { triggerNativeEvent } from '../../utils/events.ts';
 import { AutocompleteInput } from '../autocompleteInput';
 import { PopoverRef } from '../popover';
+import { useLocalization } from '../application/useLocalization.tsx';
 
 export const Search = forwardRef<PopoverRef, SearchProps>(
   (
@@ -22,6 +23,8 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
     },
     ref,
   ) => {
+    const t = useLocalization();
+
     const textInputRef = useRef<PopoverRef | null>(null);
 
     const { search: searchConfig = {} } = useConfiguration();
@@ -98,7 +101,7 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
             <div className={s.PlaceholderIcon}>
               <Icon i="search" />
             </div>
-            Search
+            {t('search.placeholder')}
           </div>
         ) : null}
       </AutocompleteInput>

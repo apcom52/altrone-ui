@@ -12,6 +12,7 @@ import {
   DataTableNumberRules,
   DataTableStringRules,
 } from '../DataTable.constants.ts';
+import { useLocalization } from '../../application/useLocalization.tsx';
 
 export const FilterRow = ({
   filter,
@@ -20,6 +21,8 @@ export const FilterRow = ({
   changeField,
   deleteFilter,
 }: FilterRowProps<any>) => {
+  const t = useLocalization();
+
   const isString = filter?.type === FilterType.string;
   const isNumber = filter?.type === FilterType.number;
   const isArray = filter?.type === FilterType.array;
@@ -30,13 +33,20 @@ export const FilterRow = ({
   const maxValue = isNumber ? filter.conditions[0]?.maxValue || 0 : 0;
   const options = isArray ? filter.conditions[0]?.options || [] : [];
 
-  const ruleSet = isString
-    ? DataTableStringRules
-    : isNumber
-      ? DataTableNumberRules
-      : isArray
-        ? DataTableArrayRules
-        : [];
+  const ruleSet = useMemo(() => {
+    const ruleSet = isString
+      ? DataTableStringRules
+      : isNumber
+        ? DataTableNumberRules
+        : isArray
+          ? DataTableArrayRules
+          : [];
+
+    return ruleSet.map((item) => ({
+      ...item,
+      label: t(item.label),
+    }));
+  }, [isNumber, isString, isArray]);
 
   const selectedRule = useMemo(() => {
     return ruleSet.find((item) => item.value === rule);
@@ -71,7 +81,6 @@ export const FilterRow = ({
         options={ruleSet}
         parentWidth={false}
       />
-      {selectedRule?.columns === 0 ? null : null}
       {selectedRule?.columns === 1 ? (
         <>
           {isString ? (
@@ -88,7 +97,7 @@ export const FilterRow = ({
           ) : null}
           {isArray ? (
             <Select
-              value={value}
+              value={value as string[]}
               onChange={changeField.bind(null, filterIndex, 'value')}
               options={options}
               multiple
@@ -116,7 +125,7 @@ export const FilterRow = ({
 
       <Button
         leftIcon={<Icon i="close" />}
-        title="Delete filter"
+        title={t('common.delete')}
         onClick={() => deleteFilter(filterIndex)}
       />
     </div>

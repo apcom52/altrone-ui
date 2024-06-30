@@ -20,12 +20,15 @@ import { TextInput } from 'components/textInput';
 import { Icon } from 'components/icon';
 import warningOnce from 'rc-util/es/warning';
 import { useConfiguration } from 'components/configuration';
+import { useLocalization } from '../../application/useLocalization.tsx';
 
 export const RangePicker = memo<RangePickerProps>((props) => {
+  const t = useLocalization();
+
   const {
     value = EMPTY_ARRAY,
     onChange,
-    placeholder = 'Select period',
+    placeholder = t('datePicker.placeholderRange'),
     format,
     readOnly = false,
     minDate,

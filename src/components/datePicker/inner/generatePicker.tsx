@@ -20,6 +20,7 @@ import { TextInput } from 'components/textInput';
 import { Icon } from 'components/icon';
 import warningOnce from 'rc-util/es/warning';
 import { useConfiguration } from 'components/configuration';
+import { useLocalization } from '../../application/useLocalization.tsx';
 
 export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
   picker: Picker = 'day',
@@ -38,6 +39,8 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
       style,
       ...restProps
     } = props;
+
+    const t = useLocalization();
 
     useEffect(() => {
       warningOnce(
@@ -137,7 +140,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
                 value={value ? dayjs(value).format(dateFormat) : ''}
                 onChange={() => null}
                 readonlyStyles={readOnly}
-                placeholder="Choose a date"
+                placeholder={t('datePicker.placeholder')}
                 {...restProps}
                 readOnly={true}
               >

@@ -6,6 +6,7 @@ import { DataTableProps } from '../DataTable.types';
 import { getSafeArray } from 'utils';
 import s from './header.module.scss';
 import { Filtering } from './Filtering.tsx';
+import { useLocalization } from '../../application/useLocalization.tsx';
 
 interface DataTableHeaderProps<T extends object> {
   children: DataTableProps<T>['children'];
@@ -16,6 +17,8 @@ const DataTableHeader = <T extends object>({
   children,
   selectable,
 }: DataTableHeaderProps<T>) => {
+  const t = useLocalization();
+
   const {
     initialData,
     filters,
@@ -54,7 +57,11 @@ const DataTableHeader = <T extends object>({
         <Icon i={selectableMode ? 'check_box_outline_blank' : 'check_box'} />
       }
       onClick={() => setSelectableMode(!selectableMode)}
-      title={selectableMode ? 'Disable selectable mode' : 'Select rows'}
+      title={
+        selectableMode
+          ? t('dataTable.disableSelectableMode')
+          : t('dataTable.selectableMode')
+      }
     />
   ) : null;
 

@@ -16,8 +16,11 @@ import { useFilePickerContext } from '../FilePicker.context.ts';
 import type {} from 'ldrs';
 import 'ldrs/ring';
 import { deleteFileRequest } from '../FilePicker.utils.ts';
+import { useLocalization } from '../../application/useLocalization.tsx';
 
 export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
+  const t = useLocalization();
+
   const {
     url,
     method = 'GET',
@@ -111,7 +114,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
         ) {
           context.complete();
         } else {
-          context.fail('Cannot upload the file. Please try again');
+          context.fail(t('filePicker.errorMessage'));
         }
       };
 
@@ -169,12 +172,22 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
       ) : null}
       {status === 'loading' ? <Loading size="12px" strokeWidth="1px" /> : null}
       {status === 'failed' ? (
-        <button type="button" className={s.Close} onClick={() => null}>
+        <button
+          type="button"
+          className={s.Close}
+          title={t('common.refresh')}
+          onClick={() => null}
+        >
           <Icon i="refresh" />
         </button>
       ) : null}
       {status !== 'loading' ? (
-        <button type="button" className={s.Close} onClick={onRemoveClick}>
+        <button
+          type="button"
+          className={s.Close}
+          title={t('common.delete')}
+          onClick={onRemoveClick}
+        >
           <Icon i="close" />
         </button>
       ) : null}
