@@ -6,6 +6,7 @@ import { Text } from '../text';
 import { CollapsedList } from './CollapsedList.tsx';
 import { useState } from 'react';
 import { Checkbox } from '../checkbox';
+import { useLocalization } from '../application/useLocalization.tsx';
 
 const story: Meta<typeof CollapsedList> = {
   title: 'Components/Containers/CollapsedList',

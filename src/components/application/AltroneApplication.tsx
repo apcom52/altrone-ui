@@ -54,15 +54,6 @@ export const AltroneApplication = ({
     [theme, setTheme],
   );
 
-  const _customLabels = useMemo(() => {
-    const langLabels = language in customLabels ? customLabels[language] : {};
-
-    return {
-      ...langLabels,
-      ...customLabels.customLabels,
-    };
-  }, [language, customLabels]);
-
   return createElement(
     tagName,
     {
@@ -75,7 +66,7 @@ export const AltroneApplication = ({
       ...props,
     },
     <ThemeContext.Provider value={themeContext}>
-      <AltroneLocalization language={language} customLabels={_customLabels}>
+      <AltroneLocalization language={language} customLabels={customLabels}>
         <Configuration {...config}>
           <RainbowEffect>
             <Toast>{children}</Toast>
