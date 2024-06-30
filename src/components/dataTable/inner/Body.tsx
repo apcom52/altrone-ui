@@ -62,8 +62,12 @@ export const Body = <T extends object>() => {
                 content = <DataTableCell {...props} />;
               }
 
+              const cls = clsx(s.Cell, {
+                [s.CellWithWidth]: Boolean(column.width),
+              });
+
               return (
-                <td key={columnIndex} className={s.Cell}>
+                <td key={columnIndex} className={cls}>
                   {content}
                 </td>
               );

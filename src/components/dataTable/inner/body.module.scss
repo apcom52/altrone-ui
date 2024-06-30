@@ -71,3 +71,7 @@
     border-color: var(--dataTableSelectedRowBorderColor);
   }
 }
+
+.CellWithWidth {
+  word-break: break-all;
+}
