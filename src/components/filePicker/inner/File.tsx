@@ -176,7 +176,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
           type="button"
           className={s.Close}
           title={t('common.refresh')}
-          onClick={() => null}
+          onClick={() => setStatus('selected')}
         >
           <Icon i="refresh" />
         </button>
