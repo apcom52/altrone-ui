@@ -60,8 +60,6 @@ export const useLocalization = () => {
 
   const lang = language.toLowerCase();
 
-  console.log('>> l', language, dictionary);
-
   return useCallback(
     (t: NestedKeys<Localization> | string, config?: translationOptions) => {
       const {

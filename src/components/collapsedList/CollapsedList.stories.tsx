@@ -118,7 +118,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         await userEvent.click(canvas.getByText('Show less'));
         const list = canvas.getByTestId('list');
         await expect(list.children[0].children).toHaveLength(4);
-        expect(canvas.queryAllByText('Show 2 hidden')[0]).toBeInTheDocument();
+        await expect(
+          canvas.queryAllByText('Show 2 hidden')[0],
+        ).toBeInTheDocument();
       },
     );
   },

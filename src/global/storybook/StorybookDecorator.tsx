@@ -12,8 +12,6 @@ export const StorybookDecorator = (Story: any, options: any) => {
     );
   }, [options.globals.backgrounds?.value]);
 
-  console.log('>> lang', options.globals.lang);
-
   return (
     <AltroneApplication
       className={s.Wrapper}
