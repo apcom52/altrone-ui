@@ -33,8 +33,6 @@ export const useScrollObserver = ({
         }
       });
 
-      console.log('>> max', elementWithMaxRatio);
-
       setActiveItem(elementWithMaxRatio.selector);
     },
     [],
@@ -80,8 +78,6 @@ export const useScrollObserver = ({
     rootMargin,
     threshold,
   ]);
-
-  console.log('>> active', activeItem);
 
   return { activeItem, observeNewSelector };
 };

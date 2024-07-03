@@ -48,8 +48,6 @@ export const Pagination = memo<PaginationProps>(
       setPage(vp >= 1 && vp <= totalPages ? vp : 1);
     };
 
-    console.log('>> t', t('common.apply'));
-
     return (
       <div
         role="navigation"
