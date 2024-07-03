@@ -6,6 +6,7 @@ import { Modal } from './Modal.tsx';
 import { Text } from '../text';
 import { Button } from '../button';
 import { Tooltip } from '../tooltip';
+import { within, expect, userEvent, screen } from '@storybook/test';
 
 const story: Meta<typeof Modal> = {
   title: 'Components/Containers/Modal',
@@ -32,6 +33,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         <Flex direction="horizontal" gap="m">
           <Modal
             title="Modal title"
+            data-testid="modal"
             content={
               <Flex direction="vertical" gap="xl">
                 <Text.Paragraph>
@@ -211,6 +213,29 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           </Modal>
         </Flex>
       </Flex>
+    );
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step(
+      'need to open modal when user clicks on the button',
+      async () => {
+        await userEvent.click(canvas.getByText('Open modal'));
+        await expect(
+          document.querySelector('[data-testid="modal"]'),
+        ).toBeInTheDocument();
+      },
+    );
+
+    await step(
+      'need to hide modal after clicking on Cancel button',
+      async () => {
+        await userEvent.click(screen.getByText('Cancel'));
+        await expect(
+          document.querySelector('[data-testid="modal"]'),
+        ).not.toBeInTheDocument();
+      },
     );
   },
 };
