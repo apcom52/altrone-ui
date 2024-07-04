@@ -34,6 +34,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <Modal
             title="Modal title"
             data-testid="modal"
+            actions={({ closeModal }) => (
+              <Button label="OK" onClick={closeModal} />
+            )}
             content={
               <Flex direction="vertical" gap="xl">
                 <Text.Paragraph>
@@ -87,7 +90,6 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               </Flex>
             }
             leftActions={[<Tooltip content="This is tooltip" />]}
-            actions={[<Button role="primary" label="OK" />]}
           >
             <Button label="Open modal" />
           </Modal>

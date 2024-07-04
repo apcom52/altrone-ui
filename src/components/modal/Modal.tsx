@@ -1,6 +1,6 @@
 import React, { memo, useRef } from 'react';
 import s from './modal.module.scss';
-import { ModalProps } from './Modal.types.ts';
+import { ModalContext, ModalProps } from './Modal.types.ts';
 import { CloseButton } from '../closeButton';
 import { Button } from '../button';
 import clsx from 'clsx';
@@ -91,6 +91,17 @@ export const Modal = memo<ModalProps>(
       },
     });
 
+    const modalContext: ModalContext = { closeModal: hide };
+
+    const contentElement =
+      typeof content === 'function' ? content(modalContext) : content;
+    const leftActionsElement =
+      typeof leftActions === 'function'
+        ? leftActions(modalContext)
+        : leftActions;
+    const actionsElement =
+      typeof actions === 'function' ? actions(modalContext) : actions;
+
     const modalContent = (
       <FloatingPortal>
         <FloatingOverlay className={s.Backdrop} lockScroll>
@@ -111,12 +122,12 @@ export const Modal = memo<ModalProps>(
                   {title}
                   <CloseButton className={s.Close} onClick={hide} />
                 </div>
-                <div className={s.Content}>{content}</div>
+                <div className={s.Content}>{contentElement}</div>
                 <div className={s.Footer}>
-                  <div className={s.LeftFooter}>{leftActions}</div>
+                  <div className={s.LeftFooter}>{leftActionsElement}</div>
                   <div className={s.RightFooter}>
                     <Button label="Cancel" onClick={hide} />
-                    {actions}
+                    {actionsElement}
                   </div>
                 </div>
               </>
