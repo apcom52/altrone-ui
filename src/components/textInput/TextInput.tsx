@@ -19,6 +19,9 @@ import {
 } from './components';
 import { useConfiguration } from 'components/configuration';
 import { useFormField } from '../form/components/Field.tsx';
+import { Dropdown } from '../dropdown';
+import { Popover } from '../popover';
+import { Tooltip } from '../tooltip';
 
 const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
   (props, ref) => {
@@ -123,9 +126,15 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       for (const element of safeChildren) {
         if (element && typeof element !== 'string') {
           if (
-            [TextIsland, IconIsland, ActionIsland, CustomIsland].includes(
-              (element as JSX.Element).type,
-            )
+            [
+              TextIsland,
+              IconIsland,
+              ActionIsland,
+              CustomIsland,
+              Dropdown,
+              Popover,
+              Tooltip,
+            ].includes((element as JSX.Element).type)
           ) {
             islandElements.push(element);
           } else {
