@@ -16,7 +16,9 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
     const needToShowControl =
       typeof showControls === 'boolean'
         ? showControls
-        : passwordInputConfig.showControls || true;
+        : typeof passwordInputConfig.showControls === 'boolean'
+          ? passwordInputConfig.showControls
+          : true;
 
     const [type, setType] = useState('password');
 
