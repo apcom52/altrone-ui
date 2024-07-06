@@ -63,7 +63,9 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     const needToShowControl =
       typeof showControls === 'boolean'
         ? showControls
-        : numberInputConfig.showControls || true;
+        : typeof numberInputConfig.showControls === 'boolean'
+          ? numberInputConfig.showControls
+          : true;
 
     const allowLeadingZerosValue =
       typeof allowLeadingZeros === 'boolean'
