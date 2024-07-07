@@ -55,6 +55,8 @@
     --bgColor: var(--actionIslandHoverBackgroundColor);
     --fgColor: var(--actionIslandHoverTextColor);
   }
+
+  @include focus;
 }
 
 .Icon {

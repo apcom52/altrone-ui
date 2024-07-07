@@ -28,6 +28,9 @@
   z-index: 1;
   gap: var(--xs-gap);
   @include no-selection;
+  text-decoration: none;
+
+  @include focus;
 
   &:before {
     position: absolute;

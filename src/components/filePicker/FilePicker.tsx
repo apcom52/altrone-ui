@@ -18,6 +18,7 @@ import { deleteFileRequest } from './FilePicker.utils.ts';
 import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import { FilePickerContext } from './FilePicker.context.ts';
+import { useLocalization } from '../application/useLocalization.tsx';
 
 export const FilePicker = memo<FilePickerProps>(
   ({
@@ -34,6 +35,8 @@ export const FilePicker = memo<FilePickerProps>(
     className,
     style,
   }) => {
+    const t = useLocalization();
+
     const { filePicker: filePickerConfig = {} } = useConfiguration();
 
     const [fileList, setFileList] = useState<FileItem[]>(() => {
@@ -137,7 +140,7 @@ export const FilePicker = memo<FilePickerProps>(
             onChange={onChangeFileInput}
           />
           {fileList.length === 0 ? (
-            <div className={s.EmptyLabel}>No files chosen</div>
+            <div className={s.EmptyLabel}>{t('filePicker.noFiles')}</div>
           ) : null}
           {fileList.map?.((item) => {
             return (
@@ -151,7 +154,7 @@ export const FilePicker = memo<FilePickerProps>(
           })}
           <Button
             leftIcon={<Icon i="file_upload" />}
-            label={placeholder || 'Choose file'}
+            label={placeholder || t('filePicker.placeholder')}
             onClick={chooseFiles}
           />
         </Flex>

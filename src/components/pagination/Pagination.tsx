@@ -7,11 +7,13 @@ import { Flex } from '../flex';
 import { NumberInput } from '../numberInput';
 import { Button } from '../button';
 import { PaginationProps } from './Pagination.types.ts';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
+import { useLocalization } from '../application/useLocalization.tsx';
 
 export const Pagination = memo<PaginationProps>(
   ({ currentPage, totalPages, setPage, className, style, ...restProps }) => {
     const { pagination: paginationConfig = {} } = useConfiguration();
+    const t = useLocalization();
 
     const [virtualPage, setVirtualPage] = useState<number | undefined>(
       currentPage,
@@ -64,16 +66,11 @@ export const Pagination = memo<PaginationProps>(
         </button>
         <Popover
           enabled={totalPages > 1}
-          title="Navigate to page"
+          title={t('pagination.title')}
           placement="top"
           showCloseButton
           content={({ closePopup }) => (
-            <Flex
-              direction="vertical"
-              gap="m"
-              align="end"
-              style={{ maxWidth: '150px' }}
-            >
+            <Flex direction="vertical" gap="m" align="end">
               <NumberInput
                 value={virtualPage}
                 onChange={setVirtualPage}
@@ -82,7 +79,7 @@ export const Pagination = memo<PaginationProps>(
               />
               <Button
                 role="primary"
-                label="Navigate"
+                label={t('pagination.action')}
                 onClick={() => {
                   navigateToPage();
                   closePopup();
@@ -100,7 +97,12 @@ export const Pagination = memo<PaginationProps>(
                 [s.Opened]: opened,
               })}
             >
-              {currentPage} of {totalPages}
+              {t('pagination.progress', {
+                vars: {
+                  current: currentPage,
+                  total: totalPages,
+                },
+              })}
             </button>
           )}
         </Popover>

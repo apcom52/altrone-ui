@@ -15,8 +15,6 @@ const actionRenderFunc: ToolbarActionProps['renderFunc'] = (ref, props) => {
     ...restProps
   } = props;
 
-  console.log('>> label', showLabel, label);
-
   return (
     <button type="button" ref={ref} title={props.label} {...restProps}>
       {!children ? <div className={s.Icon}>{icon}</div> : null}

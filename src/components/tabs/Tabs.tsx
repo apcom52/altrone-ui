@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { TabsProps } from './Tabs.types.ts';
 import clsx from 'clsx';
 import s from './tabs.module.scss';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 import { Flex } from '../flex';
 import { Item } from './components/Item.tsx';
 

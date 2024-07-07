@@ -23,17 +23,17 @@ export const Icon = memo(
     style,
     ...props
   }: IconProps) => {
-    const { icon = {} } = useConfiguration();
+    const { icon: iconConfig = {} } = useConfiguration();
 
     const cls = clsx(
       s.Icon,
       `material-symbols-${iconStyle}`,
       className,
-      icon.className,
+      iconConfig.className,
     );
 
     const styles = {
-      ...icon.style,
+      ...iconConfig.style,
       ...style,
       fontSize: size || '1em',
     };

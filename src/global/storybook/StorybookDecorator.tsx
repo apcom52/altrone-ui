@@ -16,6 +16,14 @@ export const StorybookDecorator = (Story: any, options: any) => {
     <AltroneApplication
       className={s.Wrapper}
       theme={options.globals.theme === 'dark' ? 'dark' : 'light'}
+      language={options.globals.lang || 'en'}
+      customLabels={{
+        path: {
+          to: {
+            test: 'Test',
+          },
+        },
+      }}
     >
       <Story />
     </AltroneApplication>

@@ -16,7 +16,8 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
     },
     ref,
   ) => {
-    const { dropdownMenu: dropdownMenuConfig = {} } = useConfiguration();
+    const { dropdown: { menu: dropdownMenuConfig = {} } = {} } =
+      useConfiguration();
 
     const cls = clsx(s.Menu, className, dropdownMenuConfig.className);
 

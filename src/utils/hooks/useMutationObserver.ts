@@ -16,8 +16,6 @@ export const useMutationObserver = (
       return;
     }
 
-    console.log('>> stop');
-
     observer.current?.disconnect();
     observer.current = null;
   }, []);
@@ -27,8 +25,6 @@ export const useMutationObserver = (
       targetElement && 'current' in targetElement
         ? targetElement.current
         : targetElement;
-
-    console.log('>> element', element);
 
     if (!element) {
       return;

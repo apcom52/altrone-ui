@@ -184,6 +184,7 @@
   outline-width: 0;
 
   @include no-selection;
+  @include focus;
 
   &:hover {
     --btnBg: var(--buttonHoverBackgroundColor);
@@ -195,14 +196,6 @@
     --btnBg: var(--buttonPressBackgroundColor);
     --btnFg: var(--buttonHoverTextColor);
     --btnBorder: var(--buttonPressBorderColor);
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  &:focus-visible {
-    outline: 4px solid var(--btnFocus);
   }
 
   &:disabled {
@@ -289,6 +282,10 @@
     --btnBorder: var(--buttonSuccessPressBorderColor);
   }
 
+  &:focus-visible {
+    outline-color: var(--focusSuccess);
+  }
+
   &.Button_transparent {
     --btnBg: var(--buttonSuccessTransparentBackgroundColor);
     --btnFg: var(--buttonSuccessTransparentTextColor);
@@ -323,6 +320,10 @@
     --btnBorder: var(--buttonWarningPressBorderColor);
   }
 
+  &:focus-visible {
+    outline-color: var(--focusWarning);
+  }
+
   &.Button_transparent {
     --btnBg: var(--buttonWarningTransparentBackgroundColor);
     --btnFg: var(--buttonWarningTransparentTextColor);
@@ -355,6 +356,10 @@
     --btnBg: var(--buttonDangerPressBackgroundColor);
     --btnFg: var(--buttonDangerHoverTextColor);
     --btnBorder: var(--buttonDangerPressBorderColor);
+  }
+
+  &:focus-visible {
+    outline-color: var(--focusDanger);
   }
 
   &.Button_transparent {

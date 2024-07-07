@@ -81,7 +81,7 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
 
           <Divider direction="vertical" />
 
-          <Toolbar.Group align="center">
+          <Toolbar.Group align="center" weight={0}>
             <Toolbar.Action icon={<Icon i="extension" />} label="Extensions" />
             <Toolbar.Action
               icon={<Icon i="settings_suggest" />}
@@ -91,9 +91,11 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
 
           <Divider direction="vertical" />
 
-          <Toolbar.Action label="Search" showLabel={false}>
-            <Search getSuggestions={() => []} />
-          </Toolbar.Action>
+          <Toolbar.Group weight={1}>
+            <Toolbar.Action label="Search" showLabel={false}>
+              <Search getSuggestions={() => []} />
+            </Toolbar.Action>
+          </Toolbar.Group>
         </Toolbar>
 
         <Text.Heading role="inner">

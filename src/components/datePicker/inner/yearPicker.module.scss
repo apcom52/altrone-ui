@@ -11,6 +11,7 @@
 
 .Year {
   @include picker-item;
+  @include focus;
 }
 
 .Selected {

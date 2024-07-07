@@ -9,9 +9,12 @@ import {
 } from '../DatePicker.contexts.ts';
 import dayjs from 'dayjs';
 import { DatePickerFooterProps } from '../DatePicker.types.ts';
+import { useLocalization } from '../../application/useLocalization.tsx';
 
 export const DatePickerFooter = memo<DatePickerFooterProps>(
   ({ clearable = false }) => {
+    const t = useLocalization();
+
     const { picker, setCurrentMonth } = useDatePickerViewContext();
     const { selectedDates, onDayClicked } = useDateContext();
     const closePopup = useDatePickerCloseFn();
@@ -23,10 +26,10 @@ export const DatePickerFooter = memo<DatePickerFooterProps>(
 
     const currentDateLabel =
       picker === 'day'
-        ? 'Today'
+        ? t('datePicker.today')
         : picker === 'month'
-          ? 'This month'
-          : 'This year';
+          ? t('datePicker.thisMonth')
+          : t('datePicker.thisYear');
 
     const onCurrentDateButtonClick = () => {
       let thisDay = dayjs();
@@ -53,7 +56,7 @@ export const DatePickerFooter = memo<DatePickerFooterProps>(
           <Button
             transparent
             leftIcon={<Icon i="backspace" />}
-            label="Clear"
+            label={t('common.clear')}
             onClick={onClearButtonClick}
           />
         )}

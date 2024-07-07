@@ -14,3 +14,4 @@ export * from './object.ts';
 export * from './reactNode.ts';
 export * from './safeArray.ts';
 export * from './timeout.ts';
+export * from './types.ts';

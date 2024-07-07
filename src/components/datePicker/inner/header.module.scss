@@ -40,6 +40,10 @@
   &:hover, &:focus-visible {
     color: var(--datePickerHeaderHoverTextColor);
   }
+
+  &:focus-visible {
+    outline: none;
+  }
 }
 
 .Navigation {
@@ -64,5 +68,9 @@
 
   &:hover, &:focus-visible {
     color: var(--primary-600);
+  }
+
+  &:focus-visible {
+    outline: none;
   }
 }

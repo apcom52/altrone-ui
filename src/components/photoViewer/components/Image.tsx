@@ -9,9 +9,9 @@ import { useConfiguration } from 'components/configuration';
 
 export const Image = memo<PhotoViewerImageProps>(
   ({ caption, description, className, ...restProps }) => {
-    const { photoViewer: photoViewerConfig = {} } = useConfiguration();
+    const { photoViewer: { image: imageConfig } = {} } = useConfiguration();
 
-    const cls = clsx(s.Image, className, photoViewerConfig.photoClassName);
+    const cls = clsx(s.Image, className, imageConfig?.photoClassName);
 
     const {
       value: loading,

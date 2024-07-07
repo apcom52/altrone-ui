@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import clsx from 'clsx';
 import { ActionIslandProps } from '../TextInput.types.ts';
 import s from './action.module.scss';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export const ActionIsland = forwardRef<HTMLButtonElement, ActionIslandProps>(
   (
@@ -18,7 +18,8 @@ export const ActionIsland = forwardRef<HTMLButtonElement, ActionIslandProps>(
     },
     ref,
   ) => {
-    const { inputActionIsland: actionIslandConfig = {} } = useConfiguration();
+    const { textInput: { actionIsland: actionIslandConfig = {} } = {} } =
+      useConfiguration();
 
     const cls = clsx(
       s.ActionIsland,

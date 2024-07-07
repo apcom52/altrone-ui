@@ -4,6 +4,7 @@ import s from './field.module.scss';
 import { Tooltip } from 'components/tooltip';
 import clsx from 'clsx';
 import { useFormContext } from '../Form.context.ts';
+import { useConfiguration } from '../../configuration';
 
 const FormFieldContext = createContext<FormFieldContextType>({
   name: '',
@@ -27,6 +28,8 @@ export const Field = memo<FormFieldProps>(
     style,
     ...restProps
   }) => {
+    const { form: { field: fieldConfig = {} } = {} } = useConfiguration();
+
     const formState = useFormContext();
 
     const errorMessageContent =
@@ -44,7 +47,13 @@ export const Field = memo<FormFieldProps>(
         [s.Invalid]: invalidField,
       },
       className,
+      fieldConfig.className,
     );
+
+    const styles = {
+      ...fieldConfig.style,
+      ...style,
+    };
 
     const fieldContext = useMemo<FormFieldContextType>(() => {
       return {
@@ -60,7 +69,7 @@ export const Field = memo<FormFieldProps>(
 
     return (
       <FormFieldContext.Provider value={fieldContext}>
-        <div className={cls} {...restProps}>
+        <div className={cls} style={styles} {...restProps}>
           <div className={s.Label}>
             {label}
             {required ? <div className={s.Asterisk}>*</div> : null}

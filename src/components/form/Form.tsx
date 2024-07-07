@@ -1,18 +1,24 @@
 import { FormEventHandler, forwardRef, useMemo } from 'react';
 import { FormContextType, FormProps } from './Form.types.ts';
 import { Flex } from 'components/flex';
-import { Field } from './components/Field.tsx';
+import { Field } from './components';
 import s from './form.module.scss';
 import { FormContext } from './Form.context.ts';
+import { useConfiguration } from '../configuration';
+import clsx from 'clsx';
 
 const FormComponent = forwardRef<HTMLFormElement, FormProps<any>>(
   (props, ref) => {
+    const { form: formConfig = {} } = useConfiguration();
+
     const {
       children,
       errorMessages = {},
       disabled,
       onSubmit,
       size = 'm',
+      className,
+      style,
       ...restProps
     } = props;
 
@@ -30,9 +36,16 @@ const FormComponent = forwardRef<HTMLFormElement, FormProps<any>>(
       [errorMessages, disabled, size],
     );
 
+    const cls = clsx(s.Form, className, formConfig.className);
+    const styles = {
+      ...formConfig.style,
+      ...style,
+    };
+
     return (
       <form
-        className={s.Form}
+        className={cls}
+        style={styles}
         ref={ref}
         action=""
         onSubmit={handleSubmit}

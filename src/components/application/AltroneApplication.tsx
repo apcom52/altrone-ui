@@ -8,6 +8,14 @@ import { RainbowEffect } from './RainbowEffect.tsx';
 import { Toast } from 'components/toasts/Toast.tsx';
 import { ThemeContext, ThemeContextType } from './useTheme.ts';
 
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/600.css';
+import { AltroneLocalization } from './useLocalization.tsx';
+
 export const AltroneApplication = ({
   children,
   className,
@@ -16,6 +24,8 @@ export const AltroneApplication = ({
   tagName = 'div',
   theme: initialTheme = 'auto',
   config,
+  language = 'en',
+  customLabels = {},
   ...props
 }: AltroneApplicationProps) => {
   const [theme, setTheme] = useState<Theme>('auto');
@@ -56,11 +66,13 @@ export const AltroneApplication = ({
       ...props,
     },
     <ThemeContext.Provider value={themeContext}>
-      <Configuration {...config}>
-        <RainbowEffect>
-          <Toast>{children}</Toast>
-        </RainbowEffect>
-      </Configuration>
+      <AltroneLocalization language={language} customLabels={customLabels}>
+        <Configuration {...config}>
+          <RainbowEffect>
+            <Toast>{children}</Toast>
+          </RainbowEffect>
+        </Configuration>
+      </AltroneLocalization>
     </ThemeContext.Provider>,
   );
 };

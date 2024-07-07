@@ -26,16 +26,12 @@ export const useScrollObserver = ({
         }
       });
 
-      console.log('>> observed', observedElementsRef);
-
       let elementWithMaxRatio = observedElementsRef.current[0];
       observedElementsRef.current.slice(1).forEach((currentRef) => {
         if (currentRef.ratio > elementWithMaxRatio.ratio) {
           elementWithMaxRatio = currentRef;
         }
       });
-
-      console.log('>> max', elementWithMaxRatio);
 
       setActiveItem(elementWithMaxRatio.selector);
     },
@@ -83,63 +79,5 @@ export const useScrollObserver = ({
     threshold,
   ]);
 
-  console.log('>> active', activeItem);
-
   return { activeItem, observeNewSelector };
 };
-//
-// export const useScrollObserver = ({
-//   root,
-//   rootMargin,
-//   threshold,
-//   onChangeActiveId,
-// }) => {
-//   const [activeLink, setActiveLink] = useState(null);
-//   const idsRef = useRef([]);
-//
-//   useEffect(() => {
-//     const handleIntersection = (entries) => {
-//       entries.forEach((entry) => {
-//         const id = entry.target.getAttribute('id');
-//         const ref = idsRef.current.find((el) => el.id === id);
-//         if (ref) ref.ratio = entry.isIntersecting ? entry.intersectionRatio : 0;
-//       });
-//
-//       const maxRatio = Math.max(...idsRef.current.map((el) => el.ratio), 0.1);
-//
-//       console.log('>> ratios', [...idsRef.current.map((el) => el.ratio), 0.1]);
-//       const entry = idsRef.current.find((el) => el.ratio === maxRatio);
-//
-//       setActiveLink(entry && entry.id);
-//
-//       if (
-//         entry &&
-//         entry.id &&
-//         activeLink !== entry.id &&
-//         typeof onChangeActiveId === 'function'
-//       ) {
-//         onChangeActiveId(entry.id, activeLink);
-//       }
-//     };
-//
-//     const optionsObserver = { root, rootMargin, threshold };
-//     const observer = new IntersectionObserver(
-//       handleIntersection,
-//       optionsObserver,
-//     );
-//
-//     console.log('>> idsRef', idsRef);
-//
-//     idsRef.current.forEach(({ id }) => {
-//       const content = document.getElementById(id);
-//       console.log('>> content', content);
-//       content && observer.observe(content);
-//     });
-//
-//     return () => {
-//       observer.disconnect();
-//     };
-//   }, [idsRef, root, rootMargin, threshold]);
-//
-//   return { idsRef, activeLink };
-// };

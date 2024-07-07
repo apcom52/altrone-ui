@@ -52,7 +52,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             value={value3}
             onChange={setValue3}
             placeholder="PasswordInput without controls"
-            showControl={false}
+            showControls={false}
           />
         </Flex>
         <Flex direction="horizontal" gap="l">

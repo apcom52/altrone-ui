@@ -3,6 +3,7 @@ import { Icon } from 'components/icon';
 import s from './Spinner.module.scss';
 import { Size } from 'types';
 import clsx from 'clsx';
+import { useLocalization } from '../../application/useLocalization.tsx';
 
 interface SpinnerProps {
   disabled?: boolean;
@@ -22,6 +23,8 @@ export const Spinner = memo<SpinnerProps>(
     onUpClick,
     size = 'm',
   }) => {
+    const t = useLocalization();
+
     const topDisabled = disabledUp || disabled;
     const bottomDisabled = disabledDown || disabled;
 
@@ -37,6 +40,7 @@ export const Spinner = memo<SpinnerProps>(
           disabled={topDisabled}
           className={s.SpinButton}
           onClick={onUpClick}
+          title={t('numberInput.increase')}
         >
           <Icon i="keyboard_arrow_up" />
         </button>
@@ -45,6 +49,7 @@ export const Spinner = memo<SpinnerProps>(
           disabled={bottomDisabled}
           className={s.SpinButton}
           onClick={onDownClick}
+          title={t('numberInput.decrease')}
         >
           <Icon i="keyboard_arrow_down" />
         </button>

@@ -26,12 +26,18 @@ export const TooltipStory: StoryObj<typeof NavigationList> = {
               />
             </NavigationList.Group>
             <NavigationList.Group title="Personal settings">
-              <NavigationList.Link icon={<Icon i="tune" />} label="Profile" />
               <NavigationList.Link
+                href="#"
+                icon={<Icon i="tune" />}
+                label="Profile"
+              />
+              <NavigationList.Link
+                href="#"
                 icon={<Icon i="account_circle" />}
                 label="Preferences"
               />
               <NavigationList.Link
+                href="#"
                 icon={<Icon i="notifications" />}
                 label="Notifications"
               />

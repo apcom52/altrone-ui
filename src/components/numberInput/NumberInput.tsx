@@ -18,7 +18,7 @@ import { useFormField } from '../form/components/Field.tsx';
 export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
   (
     {
-      showControl,
+      showControls,
       children,
       className,
       style,
@@ -61,9 +61,11 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     const inputSize = size || formFieldSize;
 
     const needToShowControl =
-      typeof showControl === 'boolean'
-        ? showControl
-        : numberInputConfig.showControl || true;
+      typeof showControls === 'boolean'
+        ? showControls
+        : typeof numberInputConfig.showControls === 'boolean'
+          ? numberInputConfig.showControls
+          : true;
 
     const allowLeadingZerosValue =
       typeof allowLeadingZeros === 'boolean'

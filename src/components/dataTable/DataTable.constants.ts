@@ -10,50 +10,90 @@ interface FilteringRuleOption extends Option {
 }
 
 export const DataTableStringRules: FilteringRuleOption[] = [
-  { value: StringFilterRules.contain, label: 'contains', columns: 1 },
+  {
+    value: StringFilterRules.contain,
+    label: 'dataTable.stringFilter.contain',
+    columns: 1,
+  },
   {
     value: StringFilterRules.notContain,
-    label: 'not contains',
+    label: 'dataTable.stringFilter.notContain',
     columns: 1,
   },
-  { value: StringFilterRules.equal, label: 'equals to', columns: 1 },
+  {
+    value: StringFilterRules.equal,
+    label: 'dataTable.stringFilter.equal',
+    columns: 1,
+  },
   {
     value: StringFilterRules.notEqual,
-    label: 'not equals to',
+    label: 'dataTable.stringFilter.notEqual',
     columns: 1,
   },
-  { value: StringFilterRules.empty, label: 'is empty', columns: 0 },
+  {
+    value: StringFilterRules.empty,
+    label: 'dataTable.stringFilter.empty',
+    columns: 0,
+  },
   {
     value: StringFilterRules.notEmpty,
-    label: 'is not empty',
+    label: 'dataTable.stringFilter.notEmpty',
     columns: 0,
   },
 ];
 
 export const DataTableNumberRules: FilteringRuleOption[] = [
-  { value: NumberFilterRules.equal, label: 'equals to', columns: 1 },
   {
-    value: NumberFilterRules.notEqual,
-    label: 'not equals to',
+    value: NumberFilterRules.equal,
+    label: 'dataTable.numberFilter.equal',
     columns: 1,
   },
-  { value: NumberFilterRules.gt, label: '>', columns: 1 },
-  { value: NumberFilterRules.gte, label: '≥', columns: 1 },
-  { value: NumberFilterRules.lt, label: '<', columns: 1 },
-  { value: NumberFilterRules.lte, label: '≤', columns: 1 },
-  { value: NumberFilterRules.between, label: 'is between', columns: 2 },
+  {
+    value: NumberFilterRules.notEqual,
+    label: 'dataTable.numberFilter.notEqual',
+    columns: 1,
+  },
+  {
+    value: NumberFilterRules.gt,
+    label: 'dataTable.numberFilter.gt',
+    columns: 1,
+  },
+  {
+    value: NumberFilterRules.gte,
+    label: 'dataTable.numberFilter.gte',
+    columns: 1,
+  },
+  {
+    value: NumberFilterRules.lt,
+    label: 'dataTable.numberFilter.lt',
+    columns: 1,
+  },
+  {
+    value: NumberFilterRules.lte,
+    label: 'dataTable.numberFilter.lte',
+    columns: 1,
+  },
+  {
+    value: NumberFilterRules.between,
+    label: 'dataTable.numberFilter.between',
+    columns: 2,
+  },
   {
     value: NumberFilterRules.notBetween,
-    label: 'is not between',
+    label: 'dataTable.numberFilter.notBetween',
     columns: 2,
   },
 ];
 
 export const DataTableArrayRules: FilteringRuleOption[] = [
-  { value: ArrayFilterRules.has, label: 'is contained in', columns: 1 },
+  {
+    value: ArrayFilterRules.has,
+    label: 'dataTable.arrayFilter.has',
+    columns: 1,
+  },
   {
     value: ArrayFilterRules.notHas,
-    label: 'is not contained in',
+    label: 'dataTable.arrayFilter.notHas',
     columns: 1,
   },
 ];

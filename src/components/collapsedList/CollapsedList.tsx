@@ -10,6 +10,7 @@ import { Flex } from 'components/flex';
 import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import s from './collapsed-list.module.scss';
+import { useLocalization } from '../application/useLocalization.tsx';
 
 export const CollapsedList = memo<CollapsedListProps>(
   ({
@@ -22,6 +23,8 @@ export const CollapsedList = memo<CollapsedListProps>(
     hideExpandButtonAfterUsage = false,
     ...restProps
   }) => {
+    const t = useLocalization();
+
     const { collapsedList: collapsedListConfig = {} } = useConfiguration();
 
     const { value: expanded, toggle } = useBoolean(false);
@@ -40,8 +43,12 @@ export const CollapsedList = memo<CollapsedListProps>(
       (!hideExpandButtonAfterUsage && expanded);
 
     const defaultExpandButtonLabel = expanded
-      ? 'Show less'
-      : `Show ${restElementsLength} hidden`;
+      ? t('collapsedList.collapse')
+      : t('collapsedList.expand', {
+          vars: {
+            count: restElementsLength,
+          },
+        });
 
     const collapsedListContext: CollapsedListContext = {
       hiddenItems: restElementsLength,

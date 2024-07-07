@@ -2,7 +2,7 @@ import { AnyObject } from 'utils';
 import { Size } from 'types';
 
 export interface FormProps<FormState extends AnyObject>
-  extends Omit<React.HTMLProps<HTMLFormElement>, 'size'> {
+  extends Omit<React.FormHTMLAttributes<HTMLFormElement>, 'size'> {
   errorMessages?: Record<keyof FormState | string, string | undefined | null>;
   size?: Size;
   disabled?: boolean;

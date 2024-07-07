@@ -13,11 +13,28 @@ import {
 import { memo } from 'react';
 import { Flex } from 'components/flex';
 import { TextProps } from './Text.types.ts';
+import { useConfiguration } from '../configuration';
+import clsx from 'clsx';
 
 const TextComponent = memo<TextProps>(
-  ({ children, gap = 'l', ...restProps }) => {
+  ({ children, gap = 'l', className, style, ...restProps }) => {
+    const { text: textConfig = {} } = useConfiguration();
+
+    const cls = clsx(className, textConfig.className);
+    const styles = {
+      ...textConfig.style,
+      ...style,
+    };
+
     return (
-      <Flex tagName="article" direction="vertical" gap={gap} {...restProps}>
+      <Flex
+        tagName="article"
+        direction="vertical"
+        gap={gap}
+        className={cls}
+        style={styles}
+        {...restProps}
+      >
         {children}
       </Flex>
     );

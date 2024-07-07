@@ -16,8 +16,6 @@ export interface TextInputProps
   rainbowEffect?: boolean;
   transparent?: boolean;
   Component?: ReactElement;
-  suggestions?: (value: string) => string[] | Promise<string[]>;
-  liveSuggestion?: boolean;
   readonlyStyles?: boolean;
 }
 

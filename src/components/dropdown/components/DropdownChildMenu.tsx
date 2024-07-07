@@ -16,7 +16,7 @@ export function DropdownChildMenu({
   icon,
   ...props
 }: DropdownChildMenuProps) {
-  const { dropdownChildMenu: dropdownChildMenuConfiguration = {} } =
+  const { dropdown: { childMenu: dropdownChildMenuConfiguration = {} } = {} } =
     useConfiguration();
 
   const cls = clsx(

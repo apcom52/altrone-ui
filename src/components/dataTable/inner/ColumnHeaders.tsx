@@ -101,6 +101,7 @@ export const ColumnHeaders = memo<ColumnHeadersProps>(
             const cls = clsx(s.Cell, {
               [s.SortableColumn]: column.sortable,
               [s.SortedColumn]: isCurrentColumnSorted,
+              [s.CellWithWidth]: Boolean(column.width),
             });
 
             return (

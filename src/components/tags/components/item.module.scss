@@ -17,6 +17,9 @@
   transition: color 0.2s linear;
   text-decoration: none;
   cursor: pointer;
+  border-radius: 4px;
+
+  @include focus;
 
   &:hover, &:focus-visible {
     color: var(--tagsHoveredItemColor);

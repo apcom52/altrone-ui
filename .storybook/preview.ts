@@ -36,6 +36,26 @@ const preview: Preview = {
       ],
     },
   },
+  globalTypes: {
+    lang: {
+      description: 'Current language of the app',
+      defaultValue: 'EN',
+      toolbar: {
+        title: 'Language',
+        icon: 'globe',
+        items: ['EN', 'RU'],
+        dynamicTitle: true,
+      },
+    },
+    loading: {
+      control: 'check',
+      description: 'If true then application is loading',
+      toolbar: {
+        title: 'Loading',
+        items: [true, false],
+      },
+    },
+  },
 };
 
 export default preview;

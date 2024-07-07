@@ -33,6 +33,8 @@
   text-decoration: none;
   cursor: pointer;
 
+  @include focus;
+
   &:hover, &:focus-visible {
     background-color: var(--tabHoveredItemBackgroundColor);
     color: var(--tabHoveredItemTextColor);
@@ -47,4 +49,10 @@
       color: var(--tabSelectedItemTextColor);
     }
   }
+}
+
+.Icon {
+  font-size: 16px;
+  height: 16px;
+  margin-right: var(--s-gap);
 }

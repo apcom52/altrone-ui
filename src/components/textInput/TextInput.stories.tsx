@@ -429,8 +429,6 @@ export const SuggestionsInput: StoryObj<typeof Flex> = {
   render: () => {
     const [value, setValue] = useState('');
 
-    console.log('>> value', value);
-
     return (
       <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">

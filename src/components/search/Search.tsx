@@ -2,18 +2,19 @@ import { forwardRef, useRef } from 'react';
 import { SearchProps } from './Search.types.ts';
 import { TextInput } from '../textInput';
 import { Icon } from '../icon';
-import { getSafeArray } from '../../utils';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { getSafeArray } from 'utils';
+import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import s from './search.module.scss';
 import { triggerNativeEvent } from '../../utils/events.ts';
 import { AutocompleteInput } from '../autocompleteInput';
 import { PopoverRef } from '../popover';
+import { useLocalization } from '../application/useLocalization.tsx';
 
 export const Search = forwardRef<PopoverRef, SearchProps>(
   (
     {
-      showControl,
+      showControls,
       children,
       className,
       style,
@@ -22,6 +23,8 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
     },
     ref,
   ) => {
+    const t = useLocalization();
+
     const textInputRef = useRef<PopoverRef | null>(null);
 
     const { search: searchConfig = {} } = useConfiguration();
@@ -29,9 +32,9 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
     const haveValue = restProps.value;
 
     const needToShowControl =
-      (typeof showControl === 'boolean'
-        ? showControl
-        : searchConfig.showControl || true) && haveValue;
+      (typeof showControls === 'boolean'
+        ? showControls
+        : searchConfig.showControls || true) && haveValue;
 
     const safeChildren = getSafeArray(children);
 
@@ -98,7 +101,7 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
             <div className={s.PlaceholderIcon}>
               <Icon i="search" />
             </div>
-            Search
+            {t('search.placeholder')}
           </div>
         ) : null}
       </AutocompleteInput>

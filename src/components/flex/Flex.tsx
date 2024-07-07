@@ -30,7 +30,7 @@ export const Flex = memo<FlexProps>(
     wrap = false,
     ...props
   }) => {
-    const { flex = {} } = useConfiguration();
+    const { flex: flexConfig = {} } = useConfiguration();
 
     const cls = clsx(
       s.Flex,
@@ -47,11 +47,11 @@ export const Flex = memo<FlexProps>(
         [s.Flex_wrap]: wrap,
       },
       className,
-      flex.className,
+      flexConfig.className,
     );
 
     const styles = {
-      ...flex.style,
+      ...flexConfig.style,
       ...style,
       gap: `${gapValues[gap]}px`,
     };

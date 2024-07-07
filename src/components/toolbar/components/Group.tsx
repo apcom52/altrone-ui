@@ -5,7 +5,14 @@ import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 
 export const Group = memo<ToolbarGroupProps>(
-  ({ children, align = 'start', className, ...restProps }) => {
+  ({
+    children,
+    align = 'start',
+    weight = 1,
+    className,
+    style,
+    ...restProps
+  }) => {
     const { toolbar: toolbarConfig = {} } = useConfiguration();
 
     const cls = clsx(
@@ -19,8 +26,13 @@ export const Group = memo<ToolbarGroupProps>(
       toolbarConfig.className,
     );
 
+    const styles = {
+      ...style,
+      flexGrow: weight,
+    };
+
     return (
-      <div className={cls} {...restProps}>
+      <div className={cls} style={styles} {...restProps}>
         {children}
       </div>
     );

@@ -6,7 +6,7 @@ export interface NumberInputProps
   value?: number;
   onChange: (value?: number, e?: SyntheticEvent<HTMLInputElement>) => void;
 
-  showControl?: boolean;
+  showControls?: boolean;
 
   allowNegative?: boolean;
 

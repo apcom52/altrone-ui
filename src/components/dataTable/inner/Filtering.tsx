@@ -16,8 +16,11 @@ import {
 import { FilterRow } from './FilterRow.tsx';
 import s from './filtering.module.scss';
 import { Option } from '../../select/Select.types.ts';
+import { useLocalization } from '../../application/useLocalization.tsx';
 
 export const Filtering = memo(() => {
+  const t = useLocalization();
+
   const { initialData, filters, setFilters, columns } = useDataTableContext();
 
   const columnsWithFilters = useMemo(() => {
@@ -119,7 +122,7 @@ export const Filtering = memo(() => {
 
   return (
     <Popover
-      title="Filtering"
+      title={t('dataTable.filtering')}
       showCloseButton
       placement="bottom"
       style={{
@@ -133,8 +136,7 @@ export const Filtering = memo(() => {
                 <Icon i="filter_alt_off" />
               </div>
               <div className={s.NoFiltersDescription}>
-                No filters are currently applied. Click "Add Filter" to create a
-                new filter.
+                {t('dataTable.noFilters')}
               </div>
             </div>
           ) : null}
@@ -142,7 +144,9 @@ export const Filtering = memo(() => {
             return (
               <Form.Field
                 key={filterIndex}
-                label={filterIndex === 0 ? 'Where' : 'And'}
+                label={
+                  filterIndex === 0 ? t('dataTable.where') : t('dataTable.and')
+                }
               >
                 <FilterRow
                   filterIndex={filterIndex}
@@ -194,12 +198,15 @@ export const Filtering = memo(() => {
                 </Dropdown.Menu>
               }
             >
-              <Button leftIcon={<Icon i="add" />} label="Add filter" />
+              <Button
+                leftIcon={<Icon i="add" />}
+                label={t('dataTable.addFilter')}
+              />
             </Dropdown>
             <Flex gap="m" justify="end" direction="horizontal">
               <Button
                 leftIcon={<Icon i="backspace" />}
-                label="Clear"
+                label={t('common.clear')}
                 onClick={() => {
                   setInternalFilters([]);
                   setFilters([]);
@@ -209,7 +216,7 @@ export const Filtering = memo(() => {
               <Button
                 leftIcon={<Icon i="filter_alt" />}
                 role="primary"
-                label="Apply"
+                label={t('common.apply')}
                 onClick={() => {
                   setFilters(internalFilters);
                   closePopup();
@@ -223,7 +230,7 @@ export const Filtering = memo(() => {
       {({ opened }) => (
         <Button
           leftIcon={<Icon i="filter_alt" />}
-          label={`Filters${filters?.length ? ` (${filters.length})` : ''}`}
+          label={`${t('dataTable.filters')}${filters?.length ? ` (${filters.length})` : ''}`}
           rightIcon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
         />
       )}

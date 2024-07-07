@@ -3,17 +3,22 @@ import { PasswordInputProps } from './PasswordInput.types.ts';
 import { TextInput } from '../textInput';
 import { Icon } from '../icon';
 import { getSafeArray } from '../../utils';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
+import { useLocalization } from '../application/useLocalization.tsx';
 
 export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
-  ({ showControl, children, className, style, ...restProps }, ref) => {
+  ({ showControls, children, className, style, ...restProps }, ref) => {
+    const t = useLocalization();
+
     const { passwordInput: passwordInputConfig = {} } = useConfiguration();
 
     const needToShowControl =
-      typeof showControl === 'boolean'
-        ? showControl
-        : passwordInputConfig.showControl || true;
+      typeof showControls === 'boolean'
+        ? showControls
+        : typeof passwordInputConfig.showControls === 'boolean'
+          ? passwordInputConfig.showControls
+          : true;
 
     const [type, setType] = useState('password');
 
@@ -37,7 +42,11 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
         {needToShowControl ? (
           <TextInput.ActionIsland
             placement="right"
-            label="Show password"
+            label={
+              type === 'password'
+                ? t('passwordInput.showPassword')
+                : t('passwordInput.hidePassword')
+            }
             showLabel={false}
             onClick={() => setType(type === 'password' ? 'text' : 'password')}
             icon={

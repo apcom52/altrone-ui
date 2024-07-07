@@ -40,7 +40,7 @@
   border-radius: 6px;
   transition: background-color 0.2s linear, color 0.2s linear;
   cursor: default;
-  overflow: hidden;
+  //overflow: hidden;
   max-width: 280px;
 
   @include no-selection;
@@ -65,6 +65,7 @@
   width: 100px;
   z-index: 1;
   flex: 0;
+  border-radius: 6px;
   transition: width 0.2s ease;
 }
 
@@ -86,6 +87,8 @@
   &:hover, &:focus-visible {
     background: var(--filePickerItemCloseHoveredBackgroundColor);
   }
+
+  @include focus;
 }
 
 .Size {

@@ -3,7 +3,6 @@ import { BasicComponentStyleConfig } from 'types';
 import { CollapsedListProps } from '../collapsedList/CollapsedList.types.ts';
 
 export const DEFAULT_CONFIGURATION: ConsumerConfigurationContext = {
-  language: 'en',
   locale: {
     dateFormat: 'DD.MM.YYYY',
     numberGrouping: ' ',
@@ -15,8 +14,6 @@ type ComponentConfiguration<ExtraProps extends object = {}> = Partial<
   BasicComponentStyleConfig & ExtraProps
 >;
 
-export type Language = 'en' | 'ru' | string;
-
 export type Locale = {
   dateFormat: string;
   numberGrouping: '' | ' ' | ',' | '.';
@@ -24,65 +21,23 @@ export type Locale = {
 };
 
 export interface ConsumerConfigurationContext {
-  language?: Language;
   locale?: Partial<Locale>;
-  icon?: ComponentConfiguration;
-  flex?: ComponentConfiguration;
-  message?: ComponentConfiguration;
-  textScreenName?: ComponentConfiguration;
-  textHeading?: ComponentConfiguration;
-  textParagraph?: ComponentConfiguration;
-  textInline?: ComponentConfiguration;
-  textList?: ComponentConfiguration;
-  textListItem?: ComponentConfiguration;
-  textCode?: ComponentConfiguration;
-  textKeyboard?: ComponentConfiguration;
-  textLink?: ComponentConfiguration<{ rel?: string }>;
-  list?: ComponentConfiguration;
+  autocompleteInput?: ComponentConfiguration;
+  bottomNavigation?: ComponentConfiguration<{
+    selectedItemClassName: string;
+  }>;
+  breadcrumbs?: ComponentConfiguration;
   button?: ComponentConfiguration<{
     rainbowEffect?: boolean;
   }>;
-  scrollable?: ComponentConfiguration;
-  closeButton?: ComponentConfiguration;
-  popover?: ComponentConfiguration;
-  dropdown?: ComponentConfiguration<{
-    focusFirstElement?: boolean;
-  }>;
-  dropdownMenu?: ComponentConfiguration;
-  dropdownAction?: ComponentConfiguration;
-  dropdownCheckbox?: ComponentConfiguration;
-  dropdownRadioList?: ComponentConfiguration;
-  dropdownRadioItem?: ComponentConfiguration;
-  dropdownChildMenu?: ComponentConfiguration;
-  textInput?: ComponentConfiguration<{
-    rainbowEffect?: boolean;
-  }>;
-  inputTextIsland?: ComponentConfiguration;
-  inputIconIsland?: ComponentConfiguration;
-  inputActionIsland?: ComponentConfiguration;
-  inputCustomIsland?: ComponentConfiguration;
-  passwordInput?: ComponentConfiguration<{
-    showControl?: boolean;
-  }>;
-  autocompleteInput?: ComponentConfiguration;
-  numberInput?: ComponentConfiguration<{
-    showControl?: boolean;
-    allowLeadingZeros?: boolean;
-    digitsAfterPoint?: number;
-  }>;
-  textarea?: ComponentConfiguration;
-  search?: ComponentConfiguration<{
-    showControl?: boolean;
-  }>;
+  calendar?: ComponentConfiguration;
   checkbox?: ComponentConfiguration;
-  switcher?: ComponentConfiguration;
+  closeButton?: ComponentConfiguration;
   collapsedList?: ComponentConfiguration<{
     limit?: number;
     expandButtonLabel?: CollapsedListProps['expandButtonLabel'];
   }>;
-  radio?: ComponentConfiguration;
-  select?: ComponentConfiguration;
-  calendar?: ComponentConfiguration;
+  dataTable?: ComponentConfiguration;
   datePicker?: ComponentConfiguration<{
     popoverContentClassName: string;
     popoverContentStyles: React.CSSProperties;
@@ -92,36 +47,93 @@ export interface ConsumerConfigurationContext {
     rangeFormat: string;
     rangeFormatEmpty: string;
   }>;
+  divider?: ComponentConfiguration;
+  dropdown?: ComponentConfiguration<{
+    focusFirstElement?: boolean;
+    menu?: ComponentConfiguration;
+    action?: ComponentConfiguration;
+    checkbox?: ComponentConfiguration;
+    radioList?: ComponentConfiguration;
+    radioItem?: ComponentConfiguration;
+    childMenu?: ComponentConfiguration;
+  }>;
   filePicker?: ComponentConfiguration;
-  pagination?: ComponentConfiguration;
+  flex?: ComponentConfiguration;
+  form?: ComponentConfiguration<{
+    field?: ComponentConfiguration;
+  }>;
+  icon?: ComponentConfiguration;
+  list?: ComponentConfiguration;
   loading?: ComponentConfiguration<{
     color: string;
   }>;
-  tooltip?: ComponentConfiguration;
-  dataTable?: ComponentConfiguration;
-  toolbar?: ComponentConfiguration<{
-    actionClassName: string;
-    groupClassName: string;
+  message?: ComponentConfiguration;
+  modal?: ComponentConfiguration;
+  navigationList?: ComponentConfiguration<{
+    group?: {
+      titleClassName: string;
+    };
+  }>;
+  numberInput?: ComponentConfiguration<{
+    showControls?: boolean;
+    allowLeadingZeros?: boolean;
+    digitsAfterPoint?: number;
+  }>;
+  pagination?: ComponentConfiguration;
+  passwordInput?: ComponentConfiguration<{
+    showControls?: boolean;
   }>;
   photoViewer?: ComponentConfiguration<{
-    photoClassName: string;
+    image: {
+      photoClassName: string;
+    };
   }>;
-  topNavigation?: ComponentConfiguration;
-  navigationList?: ComponentConfiguration<{
-    groupTitleClassName: string;
+  popover?: ComponentConfiguration;
+  progress?: ComponentConfiguration<{
+    activeSegmentClassName?: string;
   }>;
+  radio?: ComponentConfiguration;
+  scrollable?: ComponentConfiguration;
+  search?: ComponentConfiguration<{
+    showControls?: boolean;
+  }>;
+  select?: ComponentConfiguration;
   sideNavigation?: ComponentConfiguration<{
     titleClassName: string;
     selectedItemClassName: string;
   }>;
-  bottomNavigation?: ComponentConfiguration<{
-    selectedItemClassName: string;
-  }>;
-  modal?: ComponentConfiguration;
   spoiler?: ComponentConfiguration;
-  progress?: ComponentConfiguration<{
-    activeSegmentClassName?: string;
+  switcher?: ComponentConfiguration;
+  tabs?: ComponentConfiguration<{
+    rainbowEffect: boolean;
   }>;
+  tags?: ComponentConfiguration;
+  text?: ComponentConfiguration<{
+    section: ComponentConfiguration;
+    screenName: ComponentConfiguration;
+    heading: ComponentConfiguration;
+    paragraph: ComponentConfiguration;
+    inline: ComponentConfiguration;
+    code: ComponentConfiguration;
+    keyboard: ComponentConfiguration;
+    link: ComponentConfiguration;
+    list: ComponentConfiguration;
+    listItem: ComponentConfiguration;
+  }>;
+  textarea?: ComponentConfiguration;
+  textInput?: ComponentConfiguration<{
+    rainbowEffect?: boolean;
+    textIsland?: ComponentConfiguration;
+    iconIsland?: ComponentConfiguration;
+    actionIsland?: ComponentConfiguration;
+    customIsland?: ComponentConfiguration;
+  }>;
+  toolbar?: ComponentConfiguration<{
+    actionClassName: string;
+    groupClassName: string;
+  }>;
+  tooltip?: ComponentConfiguration;
+  topNavigation?: ComponentConfiguration;
 }
 
 export const ConfigurationContext =

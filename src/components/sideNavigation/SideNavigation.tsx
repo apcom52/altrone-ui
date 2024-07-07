@@ -4,7 +4,7 @@ import { SideNavigationProps } from './SideNavigation.types.ts';
 import { Item } from './components';
 import { ScrollSpy } from '../../utils/components/ScrollSpy.tsx';
 import clsx from 'clsx';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 const SideNavigationComponent = memo<SideNavigationProps>(
   ({ title, children, className, style, ...restProps }) => {

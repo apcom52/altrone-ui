@@ -67,7 +67,6 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             url="http://localhost:4055/upload"
             method="POST"
             name="file"
-            placeholder="Choose file"
             multiple
           />
           <FilePicker
@@ -75,7 +74,6 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             url="http://localhost:4055/upload"
             method="POST"
             name="file"
-            placeholder="Choose file"
             multiple
           />
         </Flex>

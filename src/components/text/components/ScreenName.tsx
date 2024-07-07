@@ -2,15 +2,16 @@ import { memo } from 'react';
 import { TextScreenNameProps } from '../Text.types.ts';
 import clsx from 'clsx';
 import s from './screenName.module.scss';
-import { useConfiguration } from '../../configuration/AltroneConfiguration.context.ts';
+import { useConfiguration } from 'components/configuration';
 
 export const ScreenName = memo(
   ({ children, className, style, ...props }: TextScreenNameProps) => {
-    const { textScreenName = {} } = useConfiguration();
+    const { text: { screenName: screenNameConfig = {} } = {} } =
+      useConfiguration();
 
-    const cls = clsx(s.ScreenName, className, textScreenName.className);
+    const cls = clsx(s.ScreenName, className, screenNameConfig.className);
     const styles = {
-      ...textScreenName.style,
+      ...screenNameConfig.style,
       ...style,
     };
 

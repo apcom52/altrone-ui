@@ -30,8 +30,10 @@
   background-color: transparent;
   cursor: pointer;
   color: var(--textColor);
+  border-radius: 6px;
   @include no-appearance;
   @include no-selection;
+  @include focus;
 
   &:hover {
     --textColor: var(--toolbarActionHoveredTextColor);
@@ -62,6 +64,7 @@
 }
 
 .CustomComponent {
+  width: 100%;
   height: 24px;
 }
 
@@ -89,6 +92,11 @@
 
 .Action:has(.CustomComponent) {
   cursor: default;
+  width: 100%;
+
+  &:focus-visible {
+    outline: none;
+  }
 }
 
 .Compact:has(.CustomComponent) {

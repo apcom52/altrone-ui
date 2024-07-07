@@ -16,7 +16,7 @@ export function DropdownRadioItem({
   focused,
   ...props
 }: DropdownRadioListItem) {
-  const { dropdownRadioItem: dropdownRadioItemConfig = {} } =
+  const { dropdown: { radioItem: dropdownRadioItemConfig = {} } = {} } =
     useConfiguration();
 
   const id = useId();
