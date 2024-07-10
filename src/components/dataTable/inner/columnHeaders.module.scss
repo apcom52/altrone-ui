@@ -28,6 +28,7 @@
   position: sticky;
   background-color: var(--dataTableHeadingCellBackgroundColor);
   top: 0;
+  z-index: 1;
 }
 
 .ColumnHeaders {
