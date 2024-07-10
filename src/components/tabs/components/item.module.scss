@@ -3,18 +3,18 @@
 :global(:root) {
   --tabItemBackgroundColor: transparent;
   --tabItemTextColor: var(--default-600);
-  --tabHoveredItemBackgroundColor: var(--default-100);
+  --tabHoveredItemBackgroundColor: var(--default-200);
   --tabHoveredItemTextColor: var(--default-900);
-  --tabSelectedItemBackgroundColor: var(--default-200);
+  --tabSelectedItemBackgroundColor: var(--default-300);
   --tabSelectedItemTextColor: var(--default-900);
 }
 
 :global(.AltroneDark) {
   --tabItemBackgroundColor: transparent;
   --tabItemTextColor: var(--default-200);
-  --tabHoveredItemBackgroundColor: var(--default-800);
+  --tabHoveredItemBackgroundColor: var(--default-700);
   --tabHoveredItemTextColor: var(--default-50);
-  --tabSelectedItemBackgroundColor: var(--default-700);
+  --tabSelectedItemBackgroundColor: var(--default-600);
   --tabSelectedItemTextColor: var(--default-50);
 }
 
@@ -30,6 +30,7 @@
   transition: background-color 0.2s linear;
 
   @include label-heading;
+  @include no-selection;
   text-decoration: none;
   cursor: pointer;
 
