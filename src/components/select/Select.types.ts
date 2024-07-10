@@ -26,7 +26,6 @@ export interface SelectProps
   onChange: (value?: string | string[]) => void;
   options: Option[];
   multiple?: boolean;
-  maxCount?: number;
   clearable?: boolean;
   searchable?: boolean;
   size?: Size;

@@ -40,7 +40,6 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       onFocus,
       onBlur,
       Component,
-      suggestions = [],
       readonlyStyles = true,
       name,
       disabled,

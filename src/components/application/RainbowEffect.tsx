@@ -22,6 +22,7 @@ interface RainbowEffectContextType {
   ) => void;
   setCursor: (cursor: Point) => void;
   removeRainbow: () => void;
+  hasCurrentElement: () => boolean;
 }
 
 interface RainbowEffectHookProps {
@@ -90,6 +91,7 @@ export const useRainbowEffect = (
     onMouseEnter,
     onMouseMove,
     onMouseLeave,
+    onWheel: onMouseMove,
     'data-rainbow-opacity': opacity,
     'data-rainbow-blur': `${blur}px`,
   };
@@ -99,6 +101,7 @@ const RainbowEffectContext = createContext<RainbowEffectContextType>({
   setElement: () => null,
   setCursor: () => null,
   removeRainbow: () => null,
+  hasCurrentElement: () => false,
 });
 export const useRainbowContext = () => useContext(RainbowEffectContext);
 
@@ -191,6 +194,10 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
     [visible],
   );
 
+  const hasCurrentElement = useCallback(() => {
+    return Boolean(currentElementRef.current);
+  }, []);
+
   useMutationObserver(document.body, mutationObserverCallback, mutationOptions);
 
   const context = useMemo<RainbowEffectContextType>(() => {
@@ -198,8 +205,9 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
       setElement,
       setCursor: setMouseCursor,
       removeRainbow,
+      hasCurrentElement,
     };
-  }, [setElement, setMouseCursor, removeRainbow]);
+  }, [setElement, setMouseCursor, removeRainbow, hasCurrentElement]);
 
   return (
     <RainbowEffectContext.Provider value={context}>
