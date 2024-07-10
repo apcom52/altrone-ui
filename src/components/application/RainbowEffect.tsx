@@ -1,5 +1,6 @@
 import {
   createContext,
+  FocusEventHandler,
   MouseEventHandler,
   PropsWithChildren,
   useCallback,
@@ -7,6 +8,7 @@ import {
   useMemo,
   useRef,
   useState,
+  WheelEventHandler,
 } from 'react';
 import s from './rainbow.module.scss';
 import { Point } from 'types';
@@ -29,6 +31,8 @@ interface RainbowEffectHookProps {
   onMouseEnter?: MouseEventHandler;
   onMouseMove?: MouseEventHandler;
   onMouseLeave?: MouseEventHandler;
+  onWheel?: WheelEventHandler;
+  onFocus?: FocusEventHandler;
   opacity?: number;
   blur?: number;
 }
@@ -43,12 +47,21 @@ export const useRainbowEffect = (
     onMouseEnter: userOnMouseEnter,
     onMouseMove: userOnMouseMove,
     onMouseLeave: userOnMouseLeave,
+    onWheel: userOnWheel,
+    onFocus: userOnFocus,
     opacity = 1,
     blur = 11,
   } = options || {};
 
   const onMouseEnter = useCallback<MouseEventHandler<HTMLElement>>((e) => {
     const currentElement = e.currentTarget;
+
+    if (
+      currentElement.tagName.toLowerCase() === 'input' &&
+      document.activeElement === currentElement
+    ) {
+      return;
+    }
 
     setElement(currentElement, {
       opacity: Number(currentElement.dataset.rainbowOpacity) || opacity,
@@ -83,6 +96,16 @@ export const useRainbowEffect = (
     userOnMouseLeave?.(e);
   }, []);
 
+  const onWheel = useCallback<WheelEventHandler>((e) => {
+    onMouseMove(e as unknown as React.MouseEvent<HTMLElement>);
+    userOnWheel?.(e);
+  }, []);
+
+  const onFocus = useCallback<FocusEventHandler>((e) => {
+    onMouseLeave(e as unknown as React.MouseEvent<HTMLElement>);
+    userOnFocus?.(e);
+  }, []);
+
   if (!enabled) {
     return {};
   }
@@ -91,7 +114,8 @@ export const useRainbowEffect = (
     onMouseEnter,
     onMouseMove,
     onMouseLeave,
-    onWheel: onMouseMove,
+    onWheel,
+    onFocus,
     'data-rainbow-opacity': opacity,
     'data-rainbow-blur': `${blur}px`,
   };

@@ -30,6 +30,11 @@ export const Item = forwardRef<HTMLAnchorElement, TabsItemProps>(
       typeof tabs.rainbowEffect === 'boolean' ? tabs.rainbowEffect : true;
 
     const rainbowProps = useRainbowEffect(rainbowEffectActive, {
+      onMouseEnter: props.onMouseEnter,
+      onMouseMove: props.onMouseMove,
+      onMouseLeave: props.onMouseLeave,
+      onWheel: props.onWheel,
+      onFocus: props.onFocus,
       opacity: 1,
       blur: 36,
     });

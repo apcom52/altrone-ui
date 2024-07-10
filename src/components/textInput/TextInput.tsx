@@ -83,6 +83,8 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       onMouseEnter: restProps.onMouseEnter,
       onMouseMove: restProps.onMouseMove,
       onMouseLeave: restProps.onMouseLeave,
+      onWheel: restProps.onWheel,
+      onFocus,
       opacity: 0.33,
       blur: 36,
     });
