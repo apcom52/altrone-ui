@@ -16,12 +16,13 @@ import {
 import { FilterRow } from './FilterRow.tsx';
 import s from './filtering.module.scss';
 import { Option } from '../../select/Select.types.ts';
-import { useLocalization } from '../../application/useLocalization.tsx';
+import { useLocalization } from 'components/application';
 
 export const Filtering = memo(() => {
   const t = useLocalization();
 
-  const { initialData, filters, setFilters, columns } = useDataTableContext();
+  const { initialData, filters, setFilters, columns, setPage } =
+    useDataTableContext();
 
   const columnsWithFilters = useMemo(() => {
     return columns.filter((item) => item.filterable);
@@ -218,6 +219,7 @@ export const Filtering = memo(() => {
                 role="primary"
                 label={t('common.apply')}
                 onClick={() => {
+                  setPage(1);
                   setFilters(internalFilters);
                   closePopup();
                 }}
