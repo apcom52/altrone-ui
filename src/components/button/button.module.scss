@@ -178,7 +178,6 @@
   color: var(--btnFg);
   box-shadow: inset 0 0 0 1px var(--btnBorder), var(--buttonShadow);
   padding: var(--xs-gap) var(--gap);
-  transition: background-color var(--stateTransitionDuration) linear, color var(--stateTransitionDuration) linear, box-shadow var(--stateTransitionDuration) linear, outline-width var(--stateTransitionDuration) linear;
   cursor: pointer;
   min-height: var(--normal-size);
   outline-width: 0;
