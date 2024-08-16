@@ -78,7 +78,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   play: async ({ step, canvasElement }) => {
     const canvas = within(canvasElement);
 
-    await step('data table has three columns', async () => {
+    await step('data table has to have three columns', async () => {
       await expect(canvas.getByText('Flag')).toBeInTheDocument();
       await expect(canvas.getByText('Country Name')).toBeInTheDocument();
       await expect(canvas.getByText('Capital')).toBeInTheDocument();
@@ -98,6 +98,12 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         ).toHaveLength(4);
       },
     );
+
+    await step('need to show custom actions', async () => {
+      await expect(canvas.getByText('Test')).toBeInTheDocument();
+      await expect(canvas.getByText('Test Dropdown')).toBeInTheDocument();
+      await expect(canvas.getByText('Test Popover')).toBeInTheDocument();
+    });
   },
 };
 
