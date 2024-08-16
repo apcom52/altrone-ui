@@ -60,6 +60,7 @@ export function DropdownCheckbox({
       style={styles}
       ref={ref}
       id={id}
+      title={label}
       {...props}
     >
       <div className={s.Icon}>{checked ? <Icon i="check" /> : null}</div>
