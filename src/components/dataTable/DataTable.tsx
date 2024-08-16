@@ -12,7 +12,7 @@ const DataTableComponent = <DataType extends object>(
 ) => {
   const { dataTable: dataTableConfig = {} } = useConfiguration();
 
-  const { children, selectable, showFooter = true } = props;
+  const { children, selectable, showFooter = true, ...restProps } = props;
 
   const cls = clsx(s.Table, props.className, dataTableConfig.className);
   const styles = {
@@ -33,7 +33,7 @@ const DataTableComponent = <DataType extends object>(
         {dataTableHeaderVisible ? (
           <Header<DataType> selectable={Boolean(selectable)}>{children}</Header>
         ) : null}
-        <table className={cls} style={styles}>
+        <table className={cls} style={styles} {...restProps}>
           <ColumnHeaders headingVisible={dataTableHeaderVisible} />
           <Body />
         </table>
