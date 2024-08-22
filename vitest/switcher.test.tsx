@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { Configuration, AltroneApplication, Textarea } from '../src/components';
+import { Configuration, AltroneApplication, Switcher } from '../src/components';
 
 class ResizeObserver {
   observe() {}
@@ -11,34 +11,34 @@ beforeAll(() => {
   window.ResizeObserver = ResizeObserver;
 });
 
-describe('Textarea', () => {
+describe('Switcher', () => {
   test('check that className and style props works', () => {
     render(
       <AltroneApplication>
-        <Textarea
-          data-testid="textarea"
+        <Switcher
+          data-testid="switcher"
           className="cls"
           style={{ color: 'blue' }}
         />
       </AltroneApplication>,
     );
 
-    expect(screen.getByTestId('textarea')).toHaveClass('cls');
-    expect(screen.getByTestId('textarea')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('switcher')).toHaveClass('cls');
+    expect(screen.getByTestId('switcher')).toHaveStyle('color: blue');
   });
 
-  test('check that Textarea configuration works correctly', () => {
+  test('check that Checkbox configuration works correctly', () => {
     render(
       <AltroneApplication>
         <Configuration
-          textarea={{ className: 'cls', style: { color: 'blue' } }}
+          switcher={{ className: 'cls', style: { color: 'blue' } }}
         >
-          <Textarea data-testid="textarea" />
+          <Switcher data-testid="switcher" />
         </Configuration>
       </AltroneApplication>,
     );
 
-    const element = screen.getByTestId('textarea');
+    const element = screen.getByTestId('switcher');
     expect(element).toHaveClass('cls');
     expect(element).toHaveStyle('color: blue');
   });
