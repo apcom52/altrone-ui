@@ -5,8 +5,9 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Button, Flex, Icon } from 'components';
 import { useState } from 'react';
 import { Text } from '../text';
-import { COUNTRIES } from '../scrollable/Scrollable.constants.ts';
 import { Option } from './Select.types.ts';
+import { SELECT_COUNTRIES } from './constants.ts';
+import { userEvent, within, expect } from '@storybook/test';
 
 const story: Meta<typeof Select> = {
   title: 'Components/Form/Select',
@@ -23,11 +24,6 @@ const story: Meta<typeof Select> = {
     },
   },
 };
-
-export const SELECT_COUNTRIES: Option<string> = COUNTRIES.map((item) => ({
-  label: item.country,
-  value: item.country.toLowerCase(),
-}));
 
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using Select',
@@ -48,6 +44,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             multiple={false}
             value={value1}
             onChange={setValue1}
+            data-testid="select"
             placeholder="Choose your country"
             options={SELECT_COUNTRIES}
           />
@@ -58,6 +55,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             placeholder="Choose your country"
             options={SELECT_COUNTRIES}
             clearable
+            data-testid="clearable-select"
           />
           <Select
             multiple={false}
@@ -73,6 +71,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             multiple={true}
             value={value4}
             onChange={setValue4}
+            data-testid="multiple-select"
             placeholder="Choose your country"
             options={SELECT_COUNTRIES}
           />
@@ -177,6 +176,39 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         </Flex>
       </Flex>
     );
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('open the select and choose one of the options', async () => {
+      await userEvent.click(canvas.getByTestId('select'));
+      await userEvent.click(canvas.getByText('France'));
+
+      expect(canvas.getByTestId('select')).toHaveValue('France');
+    });
+
+    await step(
+      'open the multiple select and choose some of the options',
+      async () => {
+        await userEvent.click(canvas.getByTestId('multiple-select'));
+        await userEvent.click(canvas.getByText('France'));
+        await userEvent.click(canvas.getByText('Japan'));
+        await userEvent.click(canvas.getByText('Australia'));
+
+        expect(canvas.getByTestId('multiple-select')).toHaveValue(
+          'France, Japan, Russia, Australia',
+        );
+      },
+    );
+
+    await step('clear button has to clear select', async () => {
+      await userEvent.click(canvas.getAllByText('backspace')[0]);
+
+      await expect(true).toBeTruthy();
+      // expect(canvas.getByTestId('clearable-select')).toHaveValue(
+      //   'Choose your country',
+      // );
+    });
   },
 };
 

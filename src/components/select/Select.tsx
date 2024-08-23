@@ -23,6 +23,11 @@ const SelectComponent = (props: SelectProps) => {
     style,
     parentWidth = true,
     Component,
+    onFocus,
+    onBlur,
+    onChange,
+    children,
+    ...restProps
   } = props;
 
   const id = useId();
@@ -139,15 +144,16 @@ const SelectComponent = (props: SelectProps) => {
               style={styles}
               value={searchMode ? userQuery : valueString}
               placeholder={valueString ? valueString : placeholder}
-              onChange={setUserQuery}
-              onFocus={searchable ? focusSelect : undefined}
-              onBlur={searchable ? blurSelect : undefined}
               readOnly={
                 props.readonly ? props.readonly : !(searchable && searchMode)
               }
               readonlyStyles={!props.readonly ? false : true}
               size={size}
               transparent={props.transparent}
+              onChange={setUserQuery}
+              onFocus={searchable ? focusSelect : undefined}
+              onBlur={searchable ? blurSelect : undefined}
+              {...restProps}
             >
               {needToShowClearButton && (
                 <TextInput.ActionIsland

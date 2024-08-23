@@ -11,8 +11,8 @@ import { NumberInput } from '../numberInput';
 import { Textarea } from '../textarea';
 import { Select } from '../select';
 import { DatePicker } from '../datePicker';
-import { SELECT_COUNTRIES } from '../select/Select.stories.tsx';
 import dayjs from 'dayjs';
+import { SELECT_COUNTRIES } from '../select/constants.ts';
 
 const story: Meta<typeof Form> = {
   title: 'Components/Containers/Form',
