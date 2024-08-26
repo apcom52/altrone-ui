@@ -15,6 +15,13 @@ export const CalendarDate = memo(
     return (
       <button
         type="button"
+        data-full-date={currentDate.format('YYYY-MM-DD')}
+        data-year={currentDate.year()}
+        data-month={currentDate.month()}
+        data-date={currentDate.date()}
+        data-another-month={!fromAnotherMonth}
+        data-today={today}
+        data-selected={selected}
         className={clsx(s.Date, {
           [s.ActiveMonth]: !fromAnotherMonth,
           [s.Today]: today,
