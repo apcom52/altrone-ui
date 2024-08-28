@@ -92,7 +92,9 @@ export interface ConsumerConfigurationContext {
   progress?: ComponentConfiguration<{
     activeSegmentClassName?: string;
   }>;
-  radio?: ComponentConfiguration;
+  radio?: ComponentConfiguration<{
+    item?: ComponentConfiguration;
+  }>;
   scrollable?: ComponentConfiguration;
   search?: ComponentConfiguration<{
     showControls?: boolean;

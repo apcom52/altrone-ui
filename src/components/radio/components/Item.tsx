@@ -3,15 +3,18 @@ import { RadioItemProps } from '../Radio.types.ts';
 import s from './item.module.scss';
 import clsx from 'clsx';
 import { useRadioContext } from '../Radio.context.ts';
+import { useConfiguration } from '../../configuration';
 
 export const RadioItem = memo<RadioItemProps>(
-  ({ children, value, className, disabled, ...restProps }) => {
+  ({ children, value, className, disabled, style, ...restProps }) => {
     const {
       value: radioValue,
       disabled: radioDisabled,
       name,
       onChange,
     } = useRadioContext();
+
+    const { radio: { item: radioItemConfig = {} } = {} } = useConfiguration();
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -31,7 +34,13 @@ export const RadioItem = memo<RadioItemProps>(
         [s.Disabled]: itemDisabled,
       },
       className,
+      radioItemConfig.className,
     );
+
+    const styles = {
+      ...radioItemConfig.style,
+      ...style,
+    };
 
     return (
       <label
@@ -41,6 +50,7 @@ export const RadioItem = memo<RadioItemProps>(
         tabIndex={disabled ? -1 : 0}
         className={cls}
         onKeyDown={onKeyDown}
+        style={styles}
         {...restProps}
       >
         <input
