@@ -23,7 +23,7 @@ const story: Meta<typeof FilePicker> = {
   },
 };
 
-export const TextInputStory: StoryObj<typeof Flex> = {
+export const FilePickerStory: StoryObj<typeof Flex> = {
   name: 'Using FilePicker',
   render: () => {
     const [value4] = useState<FileItem[]>([
