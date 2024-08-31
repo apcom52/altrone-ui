@@ -107,7 +107,13 @@ export const useRainbowEffect = (
   }, []);
 
   if (!enabled) {
-    return {};
+    return {
+      onMouseEnter: userOnMouseEnter,
+      onMouseMove: userOnMouseMove,
+      onMouseLeave: userOnMouseLeave,
+      onWheel: userOnWheel,
+      onFocus: userOnFocus,
+    };
   }
 
   return {
