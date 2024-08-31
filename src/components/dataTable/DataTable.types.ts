@@ -14,7 +14,6 @@ export interface DataTableColumn<T extends object> {
   visible?: boolean;
   filterable?: boolean;
   sortable?: boolean;
-  searchable?: boolean;
 }
 
 export type DataTableRenderContext<T extends object> = {

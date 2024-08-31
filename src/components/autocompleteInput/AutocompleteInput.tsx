@@ -91,6 +91,8 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
     );
 
     const onKeyDown: KeyboardEventHandler = (e) => {
+      console.log('>>> e', e.key);
+
       if (
         dropdownRef.current?.opened &&
         typeof dropdownRef.current?.activeIndex === 'number' &&
@@ -117,7 +119,7 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
             ref.current = _ref;
           }
         }}
-        focusTrapTargets={['reference', 'content']}
+        focusTrapTargets={needToShowDropdown ? ['reference', 'content'] : []}
         virtualNavigationFocus
         listNavigation
         style={{ display: needToShowDropdown ? 'flex' : 'none' }}

@@ -34,6 +34,7 @@ export const FilePicker = memo<FilePickerProps>(
     placeholder,
     className,
     style,
+    ...restProps
   }) => {
     const t = useLocalization();
 
@@ -127,6 +128,7 @@ export const FilePicker = memo<FilePickerProps>(
           gap="m"
           align="center"
           wrap
+          {...restProps}
           className={cls}
           style={styles}
         >

@@ -1,5 +1,6 @@
 import {
   createContext,
+  FocusEventHandler,
   MouseEventHandler,
   PropsWithChildren,
   useCallback,
@@ -7,6 +8,7 @@ import {
   useMemo,
   useRef,
   useState,
+  WheelEventHandler,
 } from 'react';
 import s from './rainbow.module.scss';
 import { Point } from 'types';
@@ -22,12 +24,15 @@ interface RainbowEffectContextType {
   ) => void;
   setCursor: (cursor: Point) => void;
   removeRainbow: () => void;
+  hasCurrentElement: () => boolean;
 }
 
 interface RainbowEffectHookProps {
   onMouseEnter?: MouseEventHandler;
   onMouseMove?: MouseEventHandler;
   onMouseLeave?: MouseEventHandler;
+  onWheel?: WheelEventHandler;
+  onFocus?: FocusEventHandler;
   opacity?: number;
   blur?: number;
 }
@@ -42,12 +47,21 @@ export const useRainbowEffect = (
     onMouseEnter: userOnMouseEnter,
     onMouseMove: userOnMouseMove,
     onMouseLeave: userOnMouseLeave,
+    onWheel: userOnWheel,
+    onFocus: userOnFocus,
     opacity = 1,
     blur = 11,
   } = options || {};
 
   const onMouseEnter = useCallback<MouseEventHandler<HTMLElement>>((e) => {
     const currentElement = e.currentTarget;
+
+    if (
+      currentElement.tagName.toLowerCase() === 'input' &&
+      document.activeElement === currentElement
+    ) {
+      return;
+    }
 
     setElement(currentElement, {
       opacity: Number(currentElement.dataset.rainbowOpacity) || opacity,
@@ -82,14 +96,32 @@ export const useRainbowEffect = (
     userOnMouseLeave?.(e);
   }, []);
 
+  const onWheel = useCallback<WheelEventHandler>((e) => {
+    onMouseMove(e as unknown as React.MouseEvent<HTMLElement>);
+    userOnWheel?.(e);
+  }, []);
+
+  const onFocus = useCallback<FocusEventHandler>((e) => {
+    onMouseLeave(e as unknown as React.MouseEvent<HTMLElement>);
+    userOnFocus?.(e);
+  }, []);
+
   if (!enabled) {
-    return {};
+    return {
+      onMouseEnter: userOnMouseEnter,
+      onMouseMove: userOnMouseMove,
+      onMouseLeave: userOnMouseLeave,
+      onWheel: userOnWheel,
+      onFocus: userOnFocus,
+    };
   }
 
   return {
     onMouseEnter,
     onMouseMove,
     onMouseLeave,
+    onWheel,
+    onFocus,
     'data-rainbow-opacity': opacity,
     'data-rainbow-blur': `${blur}px`,
   };
@@ -99,6 +131,7 @@ const RainbowEffectContext = createContext<RainbowEffectContextType>({
   setElement: () => null,
   setCursor: () => null,
   removeRainbow: () => null,
+  hasCurrentElement: () => false,
 });
 export const useRainbowContext = () => useContext(RainbowEffectContext);
 
@@ -191,6 +224,10 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
     [visible],
   );
 
+  const hasCurrentElement = useCallback(() => {
+    return Boolean(currentElementRef.current);
+  }, []);
+
   useMutationObserver(document.body, mutationObserverCallback, mutationOptions);
 
   const context = useMemo<RainbowEffectContextType>(() => {
@@ -198,8 +235,9 @@ export const RainbowEffect = ({ children }: PropsWithChildren) => {
       setElement,
       setCursor: setMouseCursor,
       removeRainbow,
+      hasCurrentElement,
     };
-  }, [setElement, setMouseCursor, removeRainbow]);
+  }, [setElement, setMouseCursor, removeRainbow, hasCurrentElement]);
 
   return (
     <RainbowEffectContext.Provider value={context}>

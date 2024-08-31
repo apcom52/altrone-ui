@@ -16,12 +16,13 @@ import {
 import { FilterRow } from './FilterRow.tsx';
 import s from './filtering.module.scss';
 import { Option } from '../../select/Select.types.ts';
-import { useLocalization } from '../../application/useLocalization.tsx';
+import { useLocalization } from 'components/application';
 
 export const Filtering = memo(() => {
   const t = useLocalization();
 
-  const { initialData, filters, setFilters, columns } = useDataTableContext();
+  const { initialData, filters, setFilters, columns, setPage } =
+    useDataTableContext();
 
   const columnsWithFilters = useMemo(() => {
     return columns.filter((item) => item.filterable);
@@ -184,14 +185,17 @@ export const Filtering = memo(() => {
                       array: 'data_array',
                     };
 
+                    const label = filter.label || filter.accessor;
+
                     return (
                       <Dropdown.Action
                         key={filterIndex}
                         icon={<Icon i={FILTER_TYPE_ICON[filterType]} />}
-                        label={filter.label || filter.accessor}
+                        label={label}
                         onClick={() =>
                           addNewFilter(filter.accessor, filterType)
                         }
+                        title={label}
                       />
                     );
                   })}
@@ -217,7 +221,9 @@ export const Filtering = memo(() => {
                 leftIcon={<Icon i="filter_alt" />}
                 role="primary"
                 label={t('common.apply')}
+                title="Apply"
                 onClick={() => {
+                  setPage(1);
                   setFilters(internalFilters);
                   closePopup();
                 }}
@@ -230,6 +236,7 @@ export const Filtering = memo(() => {
       {({ opened }) => (
         <Button
           leftIcon={<Icon i="filter_alt" />}
+          title={t('dataTable.filters')}
           label={`${t('dataTable.filters')}${filters?.length ? ` (${filters.length})` : ''}`}
           rightIcon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
         />

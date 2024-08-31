@@ -16,6 +16,8 @@ dayjs.extend(IsSameOrBefore);
 dayjs.extend(IsSameOrAfter);
 // dayjs.locale(ruLocale);
 
+export const dayjsInstance = dayjs;
+
 /**
  * This component is used to show the selected month
  * @param month

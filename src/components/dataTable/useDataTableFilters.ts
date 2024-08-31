@@ -51,6 +51,6 @@ export function useDataTableFilters<T extends AnyObject>(
       return filteredData;
     },
     [initialData, filters, sortBy, sortType],
-    300,
+    1,
   );
 }

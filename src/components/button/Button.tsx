@@ -46,6 +46,8 @@ export const Button = memo(
         onMouseEnter: props.onMouseEnter,
         onMouseMove: props.onMouseMove,
         onMouseLeave: props.onMouseLeave,
+        onWheel: props.onWheel,
+        onFocus: props.onFocus,
         opacity: theme === 'dark' ? 0.33 : 1,
         blur: 11,
       },

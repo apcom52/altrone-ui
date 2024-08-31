@@ -13,9 +13,7 @@ const config: StorybookConfig = {
     '@storybook/addon-a11y',
   ],
   framework: '@storybook/react-vite',
-  docs: {
-    autodocs: 'tag',
-  },
+  docs: {},
   core: {
     builder: {
       name: '@storybook/builder-vite',

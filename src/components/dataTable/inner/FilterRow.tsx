@@ -82,17 +82,21 @@ export const FilterRow = ({
         parentWidth={false}
       />
       {selectedRule?.columns === 1 ? (
-        <>
+        <div data-type="control">
           {isString ? (
             <TextInput
               value={String(value)}
               onChange={changeField.bind(null, filterIndex, 'value')}
+              data-filter-name={filter.field}
+              data-filter-control="true"
             />
           ) : null}
           {isNumber ? (
             <NumberInput
               value={Number(value)}
               onChange={changeField.bind(null, filterIndex, 'value')}
+              data-filter-name={filter.field}
+              data-filter-control="true"
             />
           ) : null}
           {isArray ? (
@@ -102,9 +106,11 @@ export const FilterRow = ({
               options={options}
               multiple
               searchable
+              data-filter-name={filter.field}
+              data-filter-control="true"
             />
           ) : null}
-        </>
+        </div>
       ) : null}
       {selectedRule?.columns === 2 ? (
         <>
@@ -113,10 +119,16 @@ export const FilterRow = ({
               <NumberInput
                 value={minValue}
                 onChange={changeField.bind(null, filterIndex, 'minValue')}
+                data-filter-name={filter.field}
+                data-filter-control="true"
+                data-filter-control-side="start"
               />
               <NumberInput
                 value={maxValue}
                 onChange={changeField.bind(null, filterIndex, 'maxValue')}
+                data-filter-name={filter.field}
+                data-filter-control="true"
+                data-filter-control-side="end"
               />
             </>
           ) : null}
