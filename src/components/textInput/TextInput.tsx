@@ -206,7 +206,6 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         value: inputValue,
         onChange: onChangeHandler,
         'aria-invalid': inputInvalid,
-        onFocus: onFocusHandler,
         onBlur: onBlurHandler,
         className,
         style: styles,

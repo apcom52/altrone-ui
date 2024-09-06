@@ -6,7 +6,6 @@ import { Flex } from '../flex';
 import { useCallback, useState } from 'react';
 import { Text } from '../text';
 import { TextInput } from '../textInput';
-import { Icon } from '../icon';
 import { COUNTRIES } from '../scrollable/Scrollable.constants.ts';
 import { AutocompleteSuggestionsFunc } from '../autocompleteInput/AutocompleteInput.types.ts';
 import { userEvent, within, expect } from '@storybook/test';

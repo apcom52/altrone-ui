@@ -128,6 +128,18 @@
   /** animations */
   --stateTransitionDuration: 0.2s;
 
+  /** z-index */
+  --level-dropdown: 1000;
+  --level-sticky: 1020;
+  --level-fixed: 1030;
+  --level-offcanvas-backdrop: 1040;
+  --level-offcanvas: 1045;
+  --level-modal-backdrop: 1050;
+  --level-modal: 1055;
+  --level-popover: 1070;
+  --level-tooltip: 1080;
+  --level-toast: 1090;
+
   /* text style variables */
   --headingTextColor: var(--default-900);
   --primaryHeadingTextColor: var(--primary-900);
