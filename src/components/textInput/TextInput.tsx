@@ -22,6 +22,7 @@ import { useFormField } from '../form/components/Field.tsx';
 import { Dropdown } from '../dropdown';
 import { Popover } from '../popover';
 import { Tooltip } from '../tooltip';
+import { getChildrenArray } from '../../utils/element.ts';
 
 const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
   (props, ref) => {
@@ -79,12 +80,20 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         isRainbowPropsActivated,
     );
 
+    const onFocusHandler: FocusEventHandler<HTMLInputElement> = useCallback(
+      (e) => {
+        onFocus?.(e);
+        focus();
+      },
+      [onFocus],
+    );
+
     const rainbowProps = useRainbowEffect(isRainbowNeeded, {
       onMouseEnter: restProps.onMouseEnter,
       onMouseMove: restProps.onMouseMove,
       onMouseLeave: restProps.onMouseLeave,
       onWheel: restProps.onWheel,
-      onFocus,
+      onFocus: onFocusHandler,
       opacity: 0.33,
       blur: 36,
     });
@@ -121,10 +130,12 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         Array.isArray(children) ? children : [children]
       ).filter((childElement) => Boolean(childElement));
 
+      const elementList = getChildrenArray(safeChildren);
+
       const islandElements = [];
       const nonIslandElements = [];
 
-      for (const element of safeChildren) {
+      for (const element of elementList) {
         if (element && typeof element !== 'string') {
           if (
             [
@@ -164,14 +175,6 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         onChange?.(e.target.value, e);
       },
       [onChange],
-    );
-
-    const onFocusHandler: FocusEventHandler<HTMLInputElement> = useCallback(
-      (e) => {
-        onFocus?.(e);
-        focus();
-      },
-      [onFocus],
     );
 
     const onBlurHandler: FocusEventHandler<HTMLInputElement> = useCallback(
@@ -230,7 +233,6 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
           className={cls}
           style={styles}
           aria-invalid={inputInvalid}
-          onFocus={onFocusHandler}
           onBlur={onBlurHandler}
           name={inputName}
           disabled={inputDisabled}

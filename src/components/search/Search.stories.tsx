@@ -71,12 +71,12 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <Search
             value={value4}
             onChange={setValue4}
-            placeholder="PasswordInput with custom islands"
+            placeholder="Search with custom islands"
+            maxLength={10}
           >
-            <TextInput.ActionIsland
+            <TextInput.TextIsland
               placement="right"
-              icon={<Icon i="backspace" />}
-              label="Clear"
+              label={`${value4.length}/10`}
             />
           </Search>
         </Flex>
