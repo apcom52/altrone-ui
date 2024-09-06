@@ -31,11 +31,11 @@
 .Placeholder {
   display: flex;
   position: absolute;
-  width: 100%;
+  width: 80%;
   height: var(--height);
   color: var(--searchPlaceholderColor);
   top: 0;
-  left: 0;
+  left: 10%;
   justify-content: center;
   overflow: hidden;
   align-items: center;
@@ -46,6 +46,14 @@
   @include paragraph;
 }
 
+.PlaceholderText {
+  width: auto;
+  max-width: calc(100% - 18px);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 .DisabledPlaceholder {
   opacity: 0.5;
 }
@@ -54,4 +62,5 @@
   display: inline-block;
   font-size: 18px;
   height: 18px;
+  width: 18px;
 }
