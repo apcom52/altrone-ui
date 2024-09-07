@@ -19,6 +19,7 @@ export const FilterRow = ({
   columns,
   filterIndex,
   changeField,
+  changeFilter,
   deleteFilter,
 }: FilterRowProps<any>) => {
   const t = useLocalization();
@@ -59,6 +60,10 @@ export const FilterRow = ({
     }));
   }, [columns]);
 
+  const changeFilterField = (newField: string) => {
+    changeFilter(filterIndex, newField);
+  };
+
   const isTwoFields = selectedRule?.columns === 2;
 
   const cls = clsx(s.FilterRow, {
@@ -71,7 +76,7 @@ export const FilterRow = ({
       <Select
         value={filter?.field}
         placeholder="Choose column"
-        onChange={() => null}
+        onChange={changeFilterField}
         options={columnsWithFilters}
       />
       <Select

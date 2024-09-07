@@ -17,6 +17,7 @@ import { FilterRow } from './FilterRow.tsx';
 import s from './filtering.module.scss';
 import { Option } from '../../select/Select.types.ts';
 import { useLocalization } from 'components/application';
+import { getCellType } from '../DataTable.utils.ts';
 
 export const Filtering = memo(() => {
   const t = useLocalization();
@@ -30,7 +31,11 @@ export const Filtering = memo(() => {
 
   const [internalFilters, setInternalFilters] = useState<Filter[]>([]);
 
-  const addNewFilter = (accessor: string, type: FilterType) => {
+  const addNewFilter = (
+    accessor: string,
+    type: FilterType,
+    createAtIndex: number = -1,
+  ) => {
     setInternalFilters((old) => {
       let newFilter: Filter = {
         field: accessor,
@@ -93,13 +98,35 @@ export const Filtering = memo(() => {
         };
       }
 
+      if (createAtIndex !== -1) {
+        return [
+          ...old.slice(0, createAtIndex),
+          newFilter,
+          ...old.slice(createAtIndex),
+        ];
+      }
+
       return [...old, newFilter];
     });
   };
 
+  const changeFilter = useCallback(
+    (oldFilterIndex: number, accessor: string) => {
+      deleteFilter(oldFilterIndex);
+
+      const filterType = getCellType(initialData?.[0], accessor);
+
+      if (!filterType) return;
+
+      addNewFilter(accessor, filterType, oldFilterIndex);
+    },
+    [columns, initialData],
+  );
+
   const changeField = useCallback(
     (filterIndex: number, field: any, value: unknown) => {
       setInternalFilters((old) => {
+        console.log('>> int filters', old);
         const currentFilter = old[filterIndex];
 
         if (!currentFilter) {
@@ -155,6 +182,7 @@ export const Filtering = memo(() => {
                   columns={columnsWithFilters}
                   changeField={changeField}
                   deleteFilter={deleteFilter}
+                  changeFilter={changeFilter}
                 />
               </Form.Field>
             );
@@ -165,19 +193,12 @@ export const Filtering = memo(() => {
               content={
                 <Dropdown.Menu>
                   {columnsWithFilters.map((filter, filterIndex) => {
-                    const cellValue =
-                      initialData?.[0]?.[filter.accessor] || undefined;
+                    const filterType = getCellType(
+                      initialData?.[0],
+                      filter.accessor,
+                    );
 
-                    let filterType: FilterType = FilterType.string;
-                    if (typeof cellValue === 'string') {
-                      filterType = FilterType.string;
-                    } else if (typeof cellValue === 'number') {
-                      filterType = FilterType.number;
-                    } else if (typeof cellValue === 'object') {
-                      if (Array.isArray(cellValue)) {
-                        filterType = FilterType.array;
-                      }
-                    }
+                    if (!filterType) return null;
 
                     const FILTER_TYPE_ICON: Record<string, string> = {
                       string: 'title',
