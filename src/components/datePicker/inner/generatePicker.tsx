@@ -98,6 +98,15 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
       [onChange],
     );
 
+    const onPopoverOpenChange = useCallback(
+      (state: boolean) => {
+        if (!state) {
+          setView(picker);
+        }
+      },
+      [picker],
+    );
+
     const datePickerValueContext = useMemo<DatePickerContextType>(() => {
       return {
         selectedDates: value ? [value] : EMPTY_ARRAY,
@@ -133,6 +142,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
                   <PopoverDatePickerContent clearable={clearable} />
                 </DatePickerCloseFnContext.Provider>
               )}
+              onOpenChange={onPopoverOpenChange}
             >
               <TextInput
                 className={cls}
