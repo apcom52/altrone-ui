@@ -33,7 +33,9 @@ export const useScrollObserver = ({
         }
       });
 
-      setActiveItem(elementWithMaxRatio.selector);
+      if (elementWithMaxRatio.ratio > 0) {
+        setActiveItem(elementWithMaxRatio.selector);
+      }
     },
     [],
   );
