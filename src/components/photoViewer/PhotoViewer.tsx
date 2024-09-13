@@ -1,7 +1,7 @@
-import { isValidElement, memo, useEffect } from 'react';
+import { isValidElement, memo } from 'react';
 import { PhotoViewerProps } from './PhotoViewer.types';
 import { useConfiguration } from 'components/configuration';
-import { getSafeArray, useNumber } from 'utils';
+import { getSafeArray, useDidUpdate, useNumber } from 'utils';
 import { Image } from './components';
 import s from './photoViewer.module.scss';
 import clsx from 'clsx';
@@ -38,7 +38,7 @@ const PhotoViewerComponent = memo(
       ...style,
     };
 
-    useEffect(() => {
+    useDidUpdate(() => {
       setCurrentIndex(0);
     }, [children]);
 

@@ -24,7 +24,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using PasswordInput',
   render: () => {
     return (
-      <PhotoViewer onClose={() => null}>
+      <PhotoViewer onClose={() => null} startsFrom={3}>
         <PhotoViewer.Image
           src="https://512pixels.net/downloads/macos-wallpapers-thumbs/10-9--thumb.jpg"
           caption="10.9 Maverics"
