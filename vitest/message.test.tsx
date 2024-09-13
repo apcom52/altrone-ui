@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { Message, Icon } from '../src/components';
+import { Message, Icon, AltroneApplication } from '../src/components';
 
 describe('Message', () => {
   test('Message has to display the content', () => {
@@ -44,5 +44,19 @@ describe('Message', () => {
     const element = screen.getByTestId('message');
     expect(element).toHaveClass('test-classname');
     expect(element.id).toBe('test-id');
+  });
+
+  test('check that Message configuration works correctly', () => {
+    render(
+      <AltroneApplication
+        config={{ message: { className: 'cls', style: { color: 'blue' } } }}
+      >
+        <Message data-testid="element">content</Message>
+      </AltroneApplication>,
+    );
+
+    const element = screen.getByTestId('element');
+    expect(element).toHaveClass('cls');
+    expect(element).toHaveStyle('color: blue');
   });
 });
