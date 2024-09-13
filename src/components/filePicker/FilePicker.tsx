@@ -13,12 +13,12 @@ import { File } from './inner';
 import { FilePickerContextType } from './FilePicker.types.ts';
 import { Flex } from 'components/flex';
 import { Icon } from 'components/icon';
-import { v4 as uuid } from 'uuid';
 import { deleteFileRequest } from './FilePicker.utils.ts';
 import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import { FilePickerContext } from './FilePicker.context.ts';
 import { useLocalization } from '../application/useLocalization.tsx';
+import { GlobalUtils } from 'utils';
 
 export const FilePicker = memo<FilePickerProps>(
   ({
@@ -44,7 +44,7 @@ export const FilePicker = memo<FilePickerProps>(
       if (defaultValue) {
         return defaultValue.map((item) => ({
           ...item,
-          id: uuid(),
+          id: GlobalUtils.uuid(),
         }));
       }
 
@@ -80,7 +80,7 @@ export const FilePicker = memo<FilePickerProps>(
           setFileList((old) => [
             ...old,
             {
-              id: uuid(),
+              id: GlobalUtils.uuid(),
               file,
             },
           ]);
@@ -102,7 +102,7 @@ export const FilePicker = memo<FilePickerProps>(
 
             return [
               {
-                id: uuid(),
+                id: GlobalUtils.uuid(),
                 file,
               },
             ];
