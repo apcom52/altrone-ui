@@ -54,14 +54,24 @@ export const Progress = memo<ProgressProps>(
           : `${percentage}%`;
 
     return (
-      <div className={cls} style={styles} {...props}>
+      <div
+        role="progressbar"
+        aria-valuenow={value}
+        aria-valuemax={max}
+        aria-valuemin={0}
+        className={cls}
+        style={styles}
+        {...props}
+      >
         <div
           className={activeCls}
           style={{
             width: `${percentage}%`,
           }}
         />
-        <div className={s.Label}>{childrenElement}</div>
+        <div className={s.Label} role="presentation">
+          {childrenElement}
+        </div>
       </div>
     );
   },
