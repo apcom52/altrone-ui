@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { AltroneApplication, NavigationList } from '../src/components';
+import { AltroneApplication, TopNavigation } from '../src/components';
 
 class ResizeObserver {
   observe() {}
@@ -12,62 +12,62 @@ beforeAll(() => {
   window.ResizeObserver = ResizeObserver;
 });
 
-describe('NavigationList', () => {
-  test('NavigationList has to apply custom className and id', () => {
+describe('TopNavigation', () => {
+  test('TopNavigation has to apply custom className and id', () => {
     render(
-      <NavigationList
+      <TopNavigation
         data-testid="list"
         className="cls"
         style={{ color: 'red' }}
       >
-        <NavigationList.Group
+        <TopNavigation.Logo
+          data-testid="logo"
+          className="cls"
+          style={{ color: 'green' }}
+        >
+          <div>Logo</div>
+        </TopNavigation.Logo>
+        <TopNavigation.Group
           data-testid="group"
           title="Group title"
           className="group"
           style={{ color: 'blue' }}
         />
-        <NavigationList.Link
+        <TopNavigation.Link
           href="#"
           label="Link label"
           data-testid="link"
           className="link"
           style={{ color: 'yellow' }}
         />
-      </NavigationList>,
+      </TopNavigation>,
     );
 
     expect(screen.getByTestId('list')).toHaveClass('cls');
     expect(screen.getByTestId('list')).toHaveStyle('color: red');
+    expect(screen.getByTestId('logo')).toHaveClass('cls');
+    expect(screen.getByTestId('logo')).toHaveStyle('color: green');
     expect(screen.getByTestId('group')).toHaveClass('group');
     expect(screen.getByTestId('group')).toHaveStyle('color: blue');
     expect(screen.getByTestId('link')).toHaveClass('link');
     expect(screen.getByTestId('link')).toHaveStyle('color: yellow');
   });
 
-  test('check that NavigationList configuration works correctly', () => {
+  test('check that TopNavigation configuration works correctly', () => {
     render(
       <AltroneApplication
         config={{
-          navigationList: {
+          topNavigation: {
             className: 'cls',
             style: { color: 'blue' },
-            group: {
-              titleClassName: 'title',
-            },
           },
         }}
       >
-        <NavigationList data-testid="list">
-          <NavigationList.Group title="Title" data-testid="group" />
-          <NavigationList.Link href="#" label="Link label" data-testid="link" />
-        </NavigationList>
+        <TopNavigation data-testid="list"></TopNavigation>
       </AltroneApplication>,
     );
 
     expect(screen.getByTestId('list')).toHaveClass('cls');
     expect(screen.getByTestId('list')).toHaveStyle('color: blue');
-    expect(
-      screen.getByTestId('list').querySelector('.title'),
-    ).toBeInTheDocument();
   });
 });
