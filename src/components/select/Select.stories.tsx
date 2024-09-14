@@ -147,7 +147,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             Component={({ selectedOptions, expanded }) => (
               <Button
                 style={{ minWidth: '300px' }}
-                label={(selectedOptions as Option).label}
+                label={(selectedOptions as Option)?.label}
                 rightIcon={
                   <Icon i={expanded ? 'expand_less' : 'expand_more'} />
                 }
@@ -165,7 +165,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               <Button
                 style={{ minWidth: '320px' }}
                 label={(selectedOptions as Option[])
-                  .map((item) => `[${item.label}]`)
+                  .map((item) => `[${item?.label}]`)
                   .join(', ')}
                 rightIcon={
                   <Icon i={expanded ? 'expand_less' : 'expand_more'} />

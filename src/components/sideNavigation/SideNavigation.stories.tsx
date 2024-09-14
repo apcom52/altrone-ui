@@ -2,6 +2,8 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { SideNavigation } from './SideNavigation.tsx';
+import { within, expect, fireEvent, userEvent } from '@storybook/test';
+import { timeout } from '../../utils';
 
 const story: Meta<typeof SideNavigation> = {
   title: 'Components/Navigation/SideNavigation',
@@ -181,10 +183,15 @@ export const TooltipStory: StoryObj<typeof SideNavigation> = {
             }}
           >
             <SideNavigation title="Contents">
-              <SideNavigation.Item href="#introduction" label="Introduction" />
+              <SideNavigation.Item
+                href="#introduction"
+                label="Introduction"
+                data-testid="link1"
+              />
               <SideNavigation.Item
                 href="#genesis"
                 label="The Genesis of Artificial Intelligence"
+                data-testid="link2"
               >
                 <SideNavigation.Item
                   href="#concepts"
