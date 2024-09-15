@@ -91,8 +91,6 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
     );
 
     const onKeyDown: KeyboardEventHandler = (e) => {
-      console.log('>>> e', e.key);
-
       if (
         dropdownRef.current?.opened &&
         typeof dropdownRef.current?.activeIndex === 'number' &&

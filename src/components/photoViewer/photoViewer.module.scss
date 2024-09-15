@@ -6,4 +6,5 @@
   height: 100vh;
   background-color: var(--backdropColor);
   box-shadow: 0 3px 15px 0 var(--shadow);
+  z-index: var(--level-modal-backdrop);
 }

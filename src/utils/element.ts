@@ -1,4 +1,4 @@
-import { Children, isValidElement, ReactNode } from 'react';
+import { Children, isValidElement, ReactElement, ReactNode } from 'react';
 
 export function getChildElements(
   rootElement: ReactNode | ReactNode[],
@@ -19,4 +19,18 @@ export function getChildElements(
   });
 
   return elements;
+}
+
+export function getChildrenArray(children: ReactElement[]) {
+  let result: ReactElement[] = [];
+
+  for (const elem of children) {
+    if (Array.isArray(elem)) {
+      result.push(...elem);
+    } else {
+      result.push(elem);
+    }
+  }
+
+  return result;
 }

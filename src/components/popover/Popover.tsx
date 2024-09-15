@@ -65,6 +65,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     focusTrapTargets = ['reference', 'content'],
     className,
     style,
+    onOpenChange,
     ...restProps
   } = props;
 
@@ -101,6 +102,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
         setOpened(state);
       }
 
+      onOpenChange?.(state);
       lastStateChangeReason.current = reason;
     },
     placement: placement !== 'auto' ? placement : 'top',
@@ -284,6 +286,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
       {childrenElement}
       {opened && (
         <FloatingPortal
+          data-test="test"
           root={
             (document.querySelector('[data-altrone-root]') as HTMLElement) ||
             document.body

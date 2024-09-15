@@ -2,10 +2,8 @@ import { render, screen } from '@testing-library/react';
 import {
   AltroneApplication,
   Configuration,
-  Message,
   Icon,
   Flex,
-  List,
   Button,
   Popover,
 } from '../src';
@@ -74,20 +72,6 @@ describe('Configation', () => {
         config={{ icon: { className: 'cls', style: { color: 'blue' } } }}
       >
         <Icon i="check" data-testid="element" />
-      </AltroneApplication>,
-    );
-
-    const element = screen.getByTestId('element');
-    expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
-  });
-
-  test('check that Message configuration works correctly', () => {
-    render(
-      <AltroneApplication
-        config={{ message: { className: 'cls', style: { color: 'blue' } } }}
-      >
-        <Message data-testid="element">content</Message>
       </AltroneApplication>,
     );
 

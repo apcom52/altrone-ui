@@ -10,17 +10,19 @@
   align-items: center;
   justify-content: center;
   max-width: 90vw;
-  max-height: 90vh;
+  max-height: calc(90vh - 32px);
   width: 100%;
   height: 100%;
   left: 5vw;
   top: 5vh;
+  z-index: var(--level-modal);
 }
 
 .Image {
-  width: 100%;
+  max-width: 100%;
+  width: auto;
   height: auto;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 6px;
 }
 

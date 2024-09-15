@@ -12,13 +12,14 @@ import {
   DataTableNumberRules,
   DataTableStringRules,
 } from '../DataTable.constants.ts';
-import { useLocalization } from '../../application/useLocalization.tsx';
+import { useLocalization } from '../../application';
 
 export const FilterRow = ({
   filter,
   columns,
   filterIndex,
   changeField,
+  changeFilter,
   deleteFilter,
 }: FilterRowProps<any>) => {
   const t = useLocalization();
@@ -59,6 +60,11 @@ export const FilterRow = ({
     }));
   }, [columns]);
 
+  const changeFilterField = (newField?: string) => {
+    if (!newField) return;
+    changeFilter(filterIndex, newField);
+  };
+
   const isTwoFields = selectedRule?.columns === 2;
 
   const cls = clsx(s.FilterRow, {
@@ -68,10 +74,10 @@ export const FilterRow = ({
 
   return (
     <div className={cls}>
-      <Select
+      <Select<string>
         value={filter?.field}
         placeholder="Choose column"
-        onChange={() => null}
+        onChange={changeFilterField}
         options={columnsWithFilters}
       />
       <Select

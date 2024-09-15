@@ -1,15 +1,16 @@
 import { forwardRef, useRef } from 'react';
 import { SearchProps } from './Search.types.ts';
-import { TextInput } from '../textInput';
-import { Icon } from '../icon';
-import { getSafeArray } from 'utils';
+import { TextInput } from 'components/textInput';
+import { Icon } from 'components/icon';
 import { useConfiguration } from 'components/configuration';
+import { useLocalization } from 'components/application';
+import { AutocompleteInput } from 'components/autocompleteInput';
+import { PopoverRef } from 'components/popover';
+import { getSafeArray, triggerNativeEvent } from 'utils';
 import clsx from 'clsx';
 import s from './search.module.scss';
-import { triggerNativeEvent } from '../../utils/events.ts';
-import { AutocompleteInput } from '../autocompleteInput';
-import { PopoverRef } from '../popover';
-import { useLocalization } from '../application/useLocalization.tsx';
+
+const GET_SUGGESTIONS_MOCK = () => [];
 
 export const Search = forwardRef<PopoverRef, SearchProps>(
   (
@@ -18,7 +19,8 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
       children,
       className,
       style,
-      placeholder = 'Search',
+      placeholder,
+      getSuggestions,
       ...restProps
     },
     ref,
@@ -55,6 +57,9 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
       [s.DisabledPlaceholder]: restProps.disabled,
     });
 
+    const placeholderText =
+      typeof placeholder === 'string' ? placeholder : t('search.placeholder');
+
     const onClearClick = () => {
       if (textInputRef.current) {
         triggerNativeEvent({
@@ -73,6 +78,7 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
         style={styles}
         {...restProps}
         type="search"
+        getSuggestions={getSuggestions || GET_SUGGESTIONS_MOCK}
         ref={(_ref) => {
           textInputRef.current = _ref;
           if (typeof ref === 'function') {
@@ -82,6 +88,9 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
           }
         }}
       >
+        {haveValue && (
+          <TextInput.IconIsland icon={<Icon i="search" />} placement="left" />
+        )}
         {haveValue ? safeChildren : null}
         {needToShowControl ? (
           <TextInput.ActionIsland
@@ -93,15 +102,12 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
             icon={<Icon i="backspace" />}
           />
         ) : null}
-        {haveValue && (
-          <TextInput.IconIsland icon={<Icon i="search" />} placement="left" />
-        )}
         {!haveValue ? (
           <div className={placeholderCls}>
             <div className={s.PlaceholderIcon}>
               <Icon i="search" />
             </div>
-            {t('search.placeholder')}
+            <div className={s.PlaceholderText}>{placeholderText}</div>
           </div>
         ) : null}
       </AutocompleteInput>

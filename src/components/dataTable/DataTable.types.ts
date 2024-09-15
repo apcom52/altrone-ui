@@ -110,6 +110,7 @@ export interface FilterRowProps<T extends AnyObject> {
   filter: Filter;
   filterIndex: number;
   columns: DataTableColumn<T>[];
+  changeFilter: (filterIndex: number, accessor: string) => void;
   changeField: (filterIndex: number, field: string, value: unknown) => void;
   deleteFilter: (filterIndex: number) => void;
 }

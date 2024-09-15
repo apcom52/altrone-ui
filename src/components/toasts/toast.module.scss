@@ -16,6 +16,7 @@
 
 .Wrapper {
   width: 100%;
+  z-index: var(--level-toast);
 }
 
 .Toast {

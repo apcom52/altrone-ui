@@ -71,13 +71,19 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             <Text.Heading role="inner">NumberInput</Text.Heading>
             <Flex direction="horizontal" gap="l">
               <Form.Field label="Disabled" disabled>
-                <NumberInput placeholder="Type something" />
+                <NumberInput
+                  onChange={() => null}
+                  placeholder="Type something"
+                />
               </Form.Field>
               <Form.Field
                 label="With error message"
                 errorMessage="There is an error here"
               >
-                <NumberInput placeholder="Type something" />
+                <NumberInput
+                  onChange={() => null}
+                  placeholder="Type something"
+                />
               </Form.Field>
             </Flex>
             <Text.Heading role="inner">Textarea</Text.Heading>

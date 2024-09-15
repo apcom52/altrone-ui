@@ -28,12 +28,12 @@ const story: Meta<typeof Select> = {
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using Select',
   render: () => {
-    const [value1, setValue1] = useState('');
-    const [value2, setValue2] = useState('portugal');
-    const [value3, setValue3] = useState('china');
-    const [value4, setValue4] = useState<string[]>(['russia']);
-    const [value5, setValue5] = useState('');
-    const [value6, setValue6] = useState(['russia']);
+    const [value1, setValue1] = useState<string | undefined>('');
+    const [value2, setValue2] = useState<string | undefined>('portugal');
+    const [value3, setValue3] = useState<string | undefined>('china');
+    const [value4, setValue4] = useState<string[] | undefined>(['russia']);
+    const [value5, setValue5] = useState<string | undefined>('');
+    const [value6, setValue6] = useState<string[] | undefined>(['russia']);
 
     return (
       <Flex direction="vertical" gap="l">
@@ -147,7 +147,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             Component={({ selectedOptions, expanded }) => (
               <Button
                 style={{ minWidth: '300px' }}
-                label={(selectedOptions as Option).label}
+                label={(selectedOptions as Option)?.label}
                 rightIcon={
                   <Icon i={expanded ? 'expand_less' : 'expand_more'} />
                 }
@@ -165,7 +165,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               <Button
                 style={{ minWidth: '320px' }}
                 label={(selectedOptions as Option[])
-                  .map((item) => `[${item.label}]`)
+                  .map((item) => `[${item?.label}]`)
                   .join(', ')}
                 rightIcon={
                   <Icon i={expanded ? 'expand_less' : 'expand_more'} />
