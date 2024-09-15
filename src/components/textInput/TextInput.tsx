@@ -2,6 +2,7 @@ import React, {
   cloneElement,
   FocusEventHandler,
   forwardRef,
+  ReactElement,
   useCallback,
   useMemo,
   useRef,
@@ -22,7 +23,7 @@ import { useFormField } from '../form/components/Field.tsx';
 import { Dropdown } from '../dropdown';
 import { Popover } from '../popover';
 import { Tooltip } from '../tooltip';
-import { getChildrenArray } from '../../utils/element.ts';
+import { AltChildren } from 'utils';
 
 const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
   (props, ref) => {
@@ -126,11 +127,9 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
     const rightIslandsContainerRef = useRef<HTMLDivElement | null>(null);
 
     const [leftIslands, rightIslands, nonIslandElements] = useMemo(() => {
-      const safeChildren = (
-        Array.isArray(children) ? children : [children]
-      ).filter((childElement) => Boolean(childElement));
+      const islands = new AltChildren(children).filterNodes();
 
-      const elementList = getChildrenArray(safeChildren);
+      const elementList = islands.toArray() as ReactElement[];
 
       const islandElements = [];
       const nonIslandElements = [];

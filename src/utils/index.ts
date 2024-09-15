@@ -7,3 +7,4 @@ export * from './timeout.ts';
 export * from './types.ts';
 export * from './events.ts';
 export * from './GlobalUtils.ts';
+export * from './Children.ts';
