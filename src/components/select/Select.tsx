@@ -10,7 +10,7 @@ import { PopoverContentContext } from 'components/popover';
 import { useSelect } from './useSelect.ts';
 import { useConfiguration } from 'components/configuration';
 
-const SelectComponent = (props: SelectProps) => {
+const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
   const {
     name,
     multiple,
@@ -115,7 +115,7 @@ const SelectComponent = (props: SelectProps) => {
               ))}
           </>
         ) : (
-          <input type="hidden" name={selectName} value={value} />
+          <input type="hidden" name={selectName} value={String(value)} />
         )}
       </div>
       <Dropdown

@@ -12,7 +12,7 @@ import {
   DataTableNumberRules,
   DataTableStringRules,
 } from '../DataTable.constants.ts';
-import { useLocalization } from '../../application/useLocalization.tsx';
+import { useLocalization } from '../../application';
 
 export const FilterRow = ({
   filter,

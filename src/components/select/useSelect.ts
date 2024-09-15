@@ -4,7 +4,7 @@ import { Option, SelectProps } from './Select.types.ts';
 
 const EMPTY_ARRAY: Option[] = [];
 
-export const useSelect = (props: SelectProps) => {
+export const useSelect = <Value = unknown>(props: SelectProps<Value>) => {
   const {
     multiple,
     options = EMPTY_ARRAY,
@@ -21,7 +21,7 @@ export const useSelect = (props: SelectProps) => {
   const [userQuery, setUserQuery] = useState('');
 
   const selectedOptions = useMemo(() => {
-    if (multiple) {
+    if (multiple && Array.isArray(value)) {
       return options.filter((item) => value?.includes(item.value));
     } else {
       return options.find((item) => item.value === value);
@@ -43,12 +43,12 @@ export const useSelect = (props: SelectProps) => {
         const isSelected = value.includes(newValue);
 
         if (isSelected) {
-          onChange(value.filter((item) => item !== newValue));
+          onChange(value.filter((item) => item !== newValue) as Value);
         } else {
-          onChange([...value, newValue]);
+          onChange([...value, newValue] as Value);
         }
       } else {
-        onChange(newValue);
+        onChange(newValue as Value);
       }
     },
     [onChange, value, multiple],
@@ -65,8 +65,8 @@ export const useSelect = (props: SelectProps) => {
   }, [options, userQuery, searchable]);
 
   const clearValue = useCallback(() => {
-    if (Array.isArray(value)) {
-      onChange([]);
+    if (multiple && Array.isArray(value)) {
+      onChange([] as Value);
     } else {
       onChange(undefined);
     }

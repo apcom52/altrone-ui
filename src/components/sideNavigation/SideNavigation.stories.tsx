@@ -2,8 +2,6 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { SideNavigation } from './SideNavigation.tsx';
-import { within, expect, fireEvent, userEvent } from '@storybook/test';
-import { timeout } from '../../utils';
 
 const story: Meta<typeof SideNavigation> = {
   title: 'Components/Navigation/SideNavigation',

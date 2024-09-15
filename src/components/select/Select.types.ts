@@ -10,20 +10,20 @@ export type Option = {
 
 export type SelectContext = {
   expanded: boolean;
-  value?: string | string[];
+  value?: any;
   selectedOptions?: Option | Option[];
   disabled: boolean;
   multiple: boolean;
   clearValue: () => void;
 };
 
-export interface SelectProps
+export interface SelectProps<Value = unknown>
   extends Omit<
-    React.SelectHTMLAttributes<HTMLSelectElement>,
+    React.InputHTMLAttributes<HTMLInputElement>,
     'onChange' | 'size' | 'value'
   > {
-  value: string | string[] | undefined;
-  onChange: (value?: string | string[]) => void;
+  value?: Value;
+  onChange: (value?: Value) => void;
   options: Option[];
   multiple?: boolean;
   clearable?: boolean;

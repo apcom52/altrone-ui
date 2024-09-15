@@ -72,8 +72,10 @@ export const Filtering = memo(() => {
       } else if (type === FilterType.array) {
         const optionsSet = new Set();
         initialData.forEach((row) => {
-          if (Array.isArray(row[accessor])) {
-            for (const item of row[accessor]) {
+          const rowItem = row as Record<string, any[]>;
+
+          if (Array.isArray(rowItem[accessor])) {
+            for (const item of rowItem[accessor]) {
               optionsSet.add(item);
             }
           }
@@ -124,16 +126,18 @@ export const Filtering = memo(() => {
   );
 
   const changeField = useCallback(
-    (filterIndex: number, field: any, value: unknown) => {
+    (filterIndex: number, field: string, value: unknown) => {
       setInternalFilters((old) => {
-        console.log('>> int filters', old);
         const currentFilter = old[filterIndex];
 
         if (!currentFilter) {
           return old;
         }
 
-        let currentCondition = currentFilter.conditions[0];
+        let currentCondition = currentFilter.conditions[0] as Record<
+          string,
+          unknown
+        >;
         currentCondition[field] = value;
 
         return [...old];
