@@ -133,7 +133,6 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
               accessor: 'role',
               label: 'Position',
               filterable: true,
-              searchable: true,
             },
             {
               accessor: 'age',
@@ -162,10 +161,9 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
               accessor: 'skills',
               label: 'Skills',
               filterable: true,
-              searchable: true,
               Component: ({ value }) => (
                 <Flex gap="s" wrap>
-                  {value.map((skill, skillIndex) => (
+                  {(value as string[]).map((skill, skillIndex) => (
                     <Text.Code key={skillIndex}>{skill}</Text.Code>
                   ))}
                 </Flex>
@@ -177,7 +175,6 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
     );
   },
   play: async ({ step, canvasElement }) => {
-    return;
     const canvas = within(canvasElement);
 
     const getRows = () => {

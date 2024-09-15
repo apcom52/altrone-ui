@@ -60,7 +60,8 @@ export const FilterRow = ({
     }));
   }, [columns]);
 
-  const changeFilterField = (newField: string) => {
+  const changeFilterField = (newField?: string) => {
+    if (!newField) return;
     changeFilter(filterIndex, newField);
   };
 
@@ -73,7 +74,7 @@ export const FilterRow = ({
 
   return (
     <div className={cls}>
-      <Select
+      <Select<string>
         value={filter?.field}
         placeholder="Choose column"
         onChange={changeFilterField}
