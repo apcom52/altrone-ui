@@ -5,7 +5,8 @@ import { useConfiguration } from '../configuration/AltroneConfiguration.context.
 import s from './loading.module.scss';
 
 import type {} from 'ldrs';
-import 'ldrs/ring';
+import { ring } from 'ldrs';
+ring.register();
 
 export const Loading = memo<LoadingProps>(
   ({
