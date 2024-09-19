@@ -2,10 +2,12 @@ import { Icon } from 'components/icon';
 import s from './header.module.scss';
 import { useDatePickerViewContext } from '../DatePicker.contexts.ts';
 import { useYearRanges } from '../utils.ts';
+import { useLocalizationContext } from '../../application/useLocalization.tsx';
 
 export const DatePickerHeader = () => {
   const { viewMode, setViewMode, currentMonth, setCurrentMonth } =
     useDatePickerViewContext();
+  const { language = 'en' } = useLocalizationContext();
 
   const [startYear, endYear] = useYearRanges(currentMonth);
 
@@ -17,7 +19,9 @@ export const DatePickerHeader = () => {
     }
   };
 
-  let headerLabel = currentMonth.locale('en').format('MMMM YYYY');
+  let headerLabel = currentMonth
+    .locale(language.toLowerCase())
+    .format('MMMM YYYY');
   if (viewMode === 'month') {
     headerLabel = currentMonth.format('YYYY');
   } else if (viewMode === 'year') {

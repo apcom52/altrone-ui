@@ -246,7 +246,7 @@ export const Filtering = memo(() => {
                 leftIcon={<Icon i="filter_alt" />}
                 role="primary"
                 label={t('common.apply')}
-                title="Apply"
+                title={t('common.apply')}
                 onClick={() => {
                   setPage(1);
                   setFilters(internalFilters);
