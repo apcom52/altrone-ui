@@ -1,10 +1,13 @@
-import React, {
-  Children,
-  isValidElement,
-  ReactElement,
-  ReactNode,
-} from 'react';
-import { AnyObject } from './reactNode.ts';
+import React, { ReactNode } from 'react';
+import { AnyObject } from './index.ts';
+
+interface TriggerNativeEventProps {
+  element: HTMLElement;
+  value: unknown;
+  eventType: string;
+  senderObject: unknown;
+  propertyName: string;
+}
 
 export class DOMUtils {
   /**
@@ -43,53 +46,20 @@ export class DOMUtils {
     return DOMUtils.replaceNode(element, element, props);
   }
 
-  /**
-   * This method is used to return flatten children array
-   */
-  static getFlattenChildrenArray(children: ReactElement[]) {
-    let result: ReactElement[] = [];
+  static triggerEvent = ({
+    element,
+    value,
+    eventType,
+    senderObject,
+    propertyName,
+  }: TriggerNativeEventProps) => {
+    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+      senderObject,
+      propertyName,
+    )?.set;
+    nativeInputValueSetter?.call(element, value);
 
-    for (const elem of children) {
-      if (Array.isArray(elem)) {
-        result.push(...elem);
-      } else {
-        result.push(elem);
-      }
-    }
-
-    return result;
-  }
-
-  /**
-   * This method is used to return filtered children array
-   */
-  static getFilteredChildrenArray(
-    rootElement: ReactNode | ReactNode[],
-    filter: (element: ReactNode, index: number, depth: number) => boolean,
-    depth?: number,
-  ) {
-    const elements: ReactNode[] = [];
-
-    let treeDepth = typeof depth === 'number' ? depth : 1;
-
-    Children.forEach(rootElement, (item, index) => {
-      if (filter(item, index, treeDepth)) {
-        elements.push(item);
-      }
-
-      if (isValidElement(item) && item.props && item.props.children) {
-        if (Children.count(item.props.children)) {
-          elements.push(
-            ...DOMUtils.getFilteredChildrenArray(
-              item.props.children,
-              filter,
-              treeDepth + 1,
-            ),
-          );
-        }
-      }
-    });
-
-    return elements;
-  }
+    const event = new Event(eventType, { bubbles: true });
+    element.dispatchEvent(event);
+  };
 }

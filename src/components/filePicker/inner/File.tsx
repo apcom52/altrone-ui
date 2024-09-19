@@ -11,7 +11,7 @@ import { Loading } from 'components/loading';
 import { Popover } from 'components/popover';
 import { Text } from 'components/text';
 import clsx from 'clsx';
-import { getFileSize } from '../../../utils/file.ts';
+import { FileUtils } from 'utils';
 import { useFilePickerContext } from '../FilePicker.context.ts';
 import type {} from 'ldrs';
 import 'ldrs/ring';
@@ -156,7 +156,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
       <div className={s.Progress} style={{ width: `${progress}%` }} />
       <div className={s.FileName}>{fileName}</div>
       {showFileSize ? (
-        <div className={s.Size}>{getFileSize(file?.size || 0)}</div>
+        <div className={s.Size}>{FileUtils.getFileSize(file?.size || 0)}</div>
       ) : null}
       {errorMessage ? (
         <Popover

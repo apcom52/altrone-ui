@@ -7,3 +7,9 @@ export type NestedKeys<ObjectType extends object> = {
 }[keyof ObjectType & (string | number)];
 
 export type ChildrenType = ReactNode | undefined;
+
+export type AnyObject = Record<PropertyKey, any>;
+
+export type RenderFunction<ReturnType, Arguments = undefined> =
+  | ReturnType
+  | ((data: Arguments) => ReturnType);

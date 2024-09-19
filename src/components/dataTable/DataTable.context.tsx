@@ -13,7 +13,7 @@ import {
   useState,
 } from 'react';
 import once from 'lodash/once';
-import { cloneNode } from '../../utils';
+import { DOMUtils } from '../../utils';
 import { useDataTableFilters } from './useDataTableFilters.ts';
 
 interface DataTableContextType<T extends object> {
@@ -174,7 +174,7 @@ export const DataTableContextProvider = <T extends object>(
 
   return (
     <DataTableContext.Provider value={contextData}>
-      {cloneNode(children, {
+      {DOMUtils.cloneNode(children, {
         style: {
           '--columnTemplate': columnTemplate,
         },

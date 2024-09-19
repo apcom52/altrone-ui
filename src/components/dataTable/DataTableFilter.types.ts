@@ -1,4 +1,4 @@
-import { Picker } from '../../form';
+import { Picker } from '../datePicker/DatePicker.types';
 
 type FilterSelect = {
   type: 'select';

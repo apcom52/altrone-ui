@@ -3,7 +3,7 @@ import { Button, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { Tooltip } from './Tooltip.tsx';
 import { within, expect, userEvent } from '@storybook/test';
-import { timeout } from '../../utils';
+import { AsyncUtils } from '../../utils';
 
 const story: Meta<typeof Tooltip> = {
   title: 'Components/Containers/Tooltip',
@@ -48,7 +48,7 @@ export const TooltipStory: StoryObj<typeof Tooltip> = {
         ).not.toBeInTheDocument();
 
         await userEvent.hover(canvas.getAllByText('help_outline')[0]);
-        await timeout(500);
+        await AsyncUtils.timeout(500);
         await expect(
           canvas.queryByText('Simple tooltip without custom child element'),
         ).toBeInTheDocument();

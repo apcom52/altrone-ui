@@ -2,7 +2,7 @@ import { forwardRef, useState } from 'react';
 import { PasswordInputProps } from './PasswordInput.types.ts';
 import { TextInput } from '../textInput';
 import { Icon } from '../icon';
-import { getSafeArray } from '../../utils';
+import { ArrayUtils } from '../../utils';
 import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import { useLocalization } from '../application/useLocalization.tsx';
@@ -22,7 +22,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
 
     const [type, setType] = useState('password');
 
-    const safeChildren = getSafeArray(children);
+    const safeChildren = ArrayUtils.getSafeArray(children);
 
     const cls = clsx(passwordInputConfig.className, className);
     const styles = {

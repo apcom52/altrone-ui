@@ -3,7 +3,7 @@ import { Icon } from 'components/icon';
 import { Button } from 'components/button';
 import { useDataTableContext } from '../DataTable.context';
 import { DataTableProps } from '../DataTable.types';
-import { getSafeArray } from 'utils';
+import { ArrayUtils } from 'utils';
 import s from './header.module.scss';
 import { Filtering } from './Filtering.tsx';
 import { useLocalization } from '../../application/useLocalization.tsx';
@@ -41,7 +41,7 @@ const DataTableHeader = <T extends object>({
         })
       : children;
 
-  const safeChildrenArray = getSafeArray(childrenActions);
+  const safeChildrenArray = ArrayUtils.getSafeArray(childrenActions);
 
   const isHeaderVisible = Boolean(
     filters.length || searchBy || selectable || safeChildrenArray.length,

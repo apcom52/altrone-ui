@@ -1,6 +1,6 @@
 import { forwardRef, KeyboardEventHandler, useRef, useState } from 'react';
 import { AutocompleteInputProps } from './AutocompleteInput.types.ts';
-import { getSafeArray, useDebouncedEffect } from 'utils';
+import { ArrayUtils, useDebouncedEffect } from 'utils';
 import { useConfiguration } from 'components/configuration';
 import { TextInput } from 'components/textInput';
 import clsx from 'clsx';
@@ -28,7 +28,7 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
 
     const [suggestions, setSuggestions] = useState<string[]>([]);
 
-    const safeChildren = getSafeArray(children);
+    const safeChildren = ArrayUtils.getSafeArray(children);
 
     const cls = clsx(autocompleteInputConfig.className, className);
     const styles = {

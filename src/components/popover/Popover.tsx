@@ -33,7 +33,7 @@ import {
   PopoverChildrenContext,
   PopoverContentContext,
 } from './Popover.types.ts';
-import { useBoolean, cloneNode } from 'utils';
+import { useBoolean, DOMUtils } from 'utils';
 import clsx from 'clsx';
 import s from './popover.module.scss';
 import { CloseButton } from 'components/closeButton';
@@ -267,7 +267,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     <span>{originChildElement}</span>
   );
 
-  const childrenElement = cloneNode(safeChildElement, {
+  const childrenElement = DOMUtils.cloneNode(safeChildElement, {
     ...getReferenceProps({
       ...safeChildElement.props,
     }),
