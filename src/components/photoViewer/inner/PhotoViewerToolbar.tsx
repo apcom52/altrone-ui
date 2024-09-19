@@ -57,7 +57,7 @@ export const PhotoViewerToolbar = memo<PhotoViewerToolbarProps>(
         />
         <Divider direction="vertical" />
         <Popover
-          title={caption || 'Description'}
+          title={caption || t('photoViewer.description')}
           style={{
             maxWidth: '280px',
           }}

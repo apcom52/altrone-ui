@@ -95,7 +95,7 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
         {needToShowControl ? (
           <TextInput.ActionIsland
             placement="right"
-            label="Clear"
+            label={t('common.clear')}
             showLabel={false}
             disabled={restProps.disabled}
             onClick={onClearClick}
