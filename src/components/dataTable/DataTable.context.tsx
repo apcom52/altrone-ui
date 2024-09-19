@@ -28,7 +28,7 @@ interface DataTableContextType<T extends object> {
   setSearch: (search: string) => void;
   sortBy?: keyof T;
   sortType: Sort;
-  setSortBy: (accessor: string) => void;
+  setSortBy: (accessor?: keyof T) => void;
   setSortType: (sortType: Sort) => void;
   filters: Filter[];
   setFilters: (filters: Filter[]) => void;
@@ -95,7 +95,7 @@ export const DataTableContextProvider = <T extends object>(
   const filteredData = useDataTableFilters(
     data,
     filters,
-    sortBy,
+    String(sortBy),
     sortType,
     search,
   );
