@@ -1,5 +1,5 @@
-import { ChildrenType } from '../src';
-import { AltChildren } from '../src/utils/Children';
+import { ChildrenType } from '../../src';
+import { AltChildren } from '../../src/utils/Children';
 import { ReactElement } from 'react';
 
 describe('Children Util class', () => {
