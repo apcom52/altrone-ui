@@ -95,9 +95,8 @@ export const DataTableContextProvider = <T extends object>(
   const filteredData = useDataTableFilters(
     data,
     filters,
-    String(sortBy),
+    sortBy ? String(sortBy) : undefined,
     sortType,
-    search,
   );
 
   const selectRow = useCallback((rowIndex: number) => {

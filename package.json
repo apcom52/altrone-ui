@@ -8,6 +8,10 @@
   "main": "dist/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
+    "publish-release": "npm run test && npm run test-storybook && npm run build && npm publish",
+    "publish-beta": "npm run test && npm run test-storybook && npm run build && npm publish --tag beta",
+    "publish-rc": "npm run test && npm run test-storybook && npm run build && npm publish --tag rc",
+    "publish-dev": "npm run test && npm run test-storybook && npm run build && npm publish --tag dev",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

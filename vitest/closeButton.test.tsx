@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { AltroneApplication, CloseButton } from '../src/components';
-import React from 'react';
 import { vi } from 'vitest';
 
 class ResizeObserver {
