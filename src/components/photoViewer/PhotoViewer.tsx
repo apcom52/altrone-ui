@@ -1,7 +1,7 @@
 import { isValidElement, memo } from 'react';
 import { PhotoViewerProps } from './PhotoViewer.types';
 import { useConfiguration } from 'components/configuration';
-import { getSafeArray, useDidUpdate, useNumber } from 'utils';
+import { ArrayUtils, useDidUpdate, useNumber } from 'utils';
 import { Image } from './components';
 import s from './photoViewer.module.scss';
 import clsx from 'clsx';
@@ -18,7 +18,7 @@ const PhotoViewerComponent = memo(
   }: PhotoViewerProps) => {
     const { photoViewer: photoViewerConfig = {} } = useConfiguration();
 
-    const safeChildren = getSafeArray(children);
+    const safeChildren = ArrayUtils.getSafeArray(children);
     const validChildren = safeChildren.filter(
       (item) => isValidElement(item) && item.type === Image,
     );

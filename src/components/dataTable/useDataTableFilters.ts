@@ -8,11 +8,10 @@ export function useDataTableFilters<T extends AnyObject>(
   filters: Filter[],
   sortBy: string | undefined,
   sortType: Sort,
-  search: string,
 ) {
   return useDebouncedMemo(
     () => {
-      if (filters.length === 0 && !sortBy && !search) {
+      if (filters.length === 0 && !sortBy) {
         return initialData;
       }
 

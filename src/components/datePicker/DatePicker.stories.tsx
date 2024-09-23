@@ -8,7 +8,7 @@ import { useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { RangePickerValue } from './DatePicker.types.ts';
 import { within, expect, userEvent } from '@storybook/test';
-import { timeout } from '../../utils';
+import { AsyncUtils } from 'utils';
 
 const story: Meta<typeof DatePicker> = {
   title: 'Components/Form/DatePicker',
@@ -239,7 +239,7 @@ export const RangeStory: StoryObj<typeof Flex> = {
       await userEvent.click(canvas.getByText('navigate_next'));
       await userEvent.hover(canvas.getByText('24'));
       await userEvent.click(canvas.getByText('24'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
       await expect(canvas.getByTestId('range-picker')).toHaveValue(
         `17.04.2024 - 24.06.2024`,
       );

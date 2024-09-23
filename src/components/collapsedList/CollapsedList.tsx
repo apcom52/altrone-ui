@@ -3,7 +3,7 @@ import {
   CollapsedListContext,
   CollapsedListProps,
 } from './CollapsedList.types.ts';
-import { getSafeArray, useBoolean } from 'utils';
+import { ArrayUtils, useBoolean } from 'utils';
 import { Button } from 'components/button';
 import { Icon } from 'components/icon';
 import { Flex } from 'components/flex';
@@ -32,7 +32,7 @@ export const CollapsedList = memo<CollapsedListProps>(
     const limitValue =
       typeof limit === 'number' ? limit : collapsedListConfig.limit || 5;
 
-    const safeArray = getSafeArray(children);
+    const safeArray = ArrayUtils.getSafeArray(children);
 
     const visibleChildren = expanded
       ? safeArray

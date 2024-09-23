@@ -6,12 +6,14 @@ import {
   useDatePickerViewContext,
 } from '../DatePicker.contexts.ts';
 import clsx from 'clsx';
+import { useLocalizationContext } from '../../application/useLocalization.tsx';
 
 export const MonthPicker = memo(() => {
   const { picker, currentMonth, setCurrentMonth, setViewMode } =
     useDatePickerViewContext();
 
   const { selectedDates, onDayClicked } = useDateContext();
+  const { language = 'en' } = useLocalizationContext();
   const closePopup = useDatePickerCloseFn();
 
   const selectedMonth = selectedDates[0];
@@ -51,7 +53,10 @@ export const MonthPicker = memo(() => {
           className={cls}
           onClick={() => onMonthClick(monthIndex)}
         >
-          {currentMonth.month(monthIndex).locale('en').format('MMM')}
+          {currentMonth
+            .month(monthIndex)
+            .locale(language.toLowerCase())
+            .format('MMM')}
         </button>,
       );
     }

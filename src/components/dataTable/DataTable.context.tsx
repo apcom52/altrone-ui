@@ -13,7 +13,7 @@ import {
   useState,
 } from 'react';
 import once from 'lodash/once';
-import { cloneNode } from '../../utils';
+import { DOMUtils } from '../../utils';
 import { useDataTableFilters } from './useDataTableFilters.ts';
 
 interface DataTableContextType<T extends object> {
@@ -28,7 +28,7 @@ interface DataTableContextType<T extends object> {
   setSearch: (search: string) => void;
   sortBy?: keyof T;
   sortType: Sort;
-  setSortBy: (accessor: string) => void;
+  setSortBy: (accessor?: keyof T) => void;
   setSortType: (sortType: Sort) => void;
   filters: Filter[];
   setFilters: (filters: Filter[]) => void;
@@ -95,9 +95,8 @@ export const DataTableContextProvider = <T extends object>(
   const filteredData = useDataTableFilters(
     data,
     filters,
-    sortBy,
+    sortBy ? String(sortBy) : undefined,
     sortType,
-    search,
   );
 
   const selectRow = useCallback((rowIndex: number) => {
@@ -174,7 +173,7 @@ export const DataTableContextProvider = <T extends object>(
 
   return (
     <DataTableContext.Provider value={contextData}>
-      {cloneNode(children, {
+      {DOMUtils.cloneNode(children, {
         style: {
           '--columnTemplate': columnTemplate,
         },

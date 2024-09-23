@@ -65,7 +65,7 @@ export const ColumnHeaders = memo<ColumnHeadersProps>(
       setSelectedRows(Array.from(currentRows));
     };
 
-    const onColumnHeaderClick = (accessor: string) => {
+    const onColumnHeaderClick = (accessor: keyof (typeof data)[0]) => {
       if (sortBy === accessor) {
         if (sortType === 'asc') {
           setSortType('desc');
@@ -110,7 +110,10 @@ export const ColumnHeaders = memo<ColumnHeadersProps>(
                 className={cls}
                 onClick={
                   column.sortable
-                    ? () => onColumnHeaderClick(column.accessor)
+                    ? () =>
+                        onColumnHeaderClick(
+                          column.accessor as keyof (typeof data)[0],
+                        )
                     : undefined
                 }
                 style={{

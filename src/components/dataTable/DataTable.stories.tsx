@@ -10,7 +10,7 @@ import { Icon } from '../icon';
 import { Popover } from '../popover';
 import { EMPLOYEES, EmployeeType } from './EMPLOYEES.ts';
 import { expect, within, fireEvent, userEvent } from '@storybook/test';
-import { timeout } from '../../utils';
+import { AsyncUtils } from 'utils';
 
 const meta: Meta<typeof DataTable<any>> = {
   component: DataTable,
@@ -196,7 +196,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.type(inputField, '25');
 
       await userEvent.click(canvas.getByTitle('Apply'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual(['Jane Smith']);
     });
@@ -213,7 +213,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.type(inputField, '30');
 
       await userEvent.click(canvas.getByTitle('Apply'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([
         'Jane Smith',
@@ -240,7 +240,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.type(inputField, '30');
 
       await userEvent.click(canvas.getByTitle('Apply'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([
         'Emily Johnson',
@@ -264,7 +264,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.type(inputField, '30');
 
       await userEvent.click(canvas.getByTitle('Apply'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([
         'John Doe',
@@ -289,7 +289,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.type(inputField, '30');
 
       await userEvent.click(canvas.getByTitle('Apply'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([
         'Jane Smith',
@@ -310,7 +310,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.type(inputField, '30');
 
       await userEvent.click(canvas.getByTitle('Apply'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([
         'John Doe',
@@ -338,7 +338,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.type(endField, '35');
 
       await userEvent.click(canvas.getByTitle('Apply'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([
         'John Doe',
@@ -368,7 +368,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.type(endField, '35');
 
       await userEvent.click(canvas.getByTitle('Apply'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([
         'Jane Smith',
@@ -391,7 +391,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.type(inputField, 'frontend');
 
       await userEvent.click(canvas.getByTitle('Apply'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([
         'John Doe',
@@ -412,7 +412,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.type(inputField, 'frontend');
 
       await userEvent.click(canvas.getByTitle('Apply'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([
         'Emily Johnson',
@@ -437,7 +437,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.type(inputField, 'backend developer');
 
       await userEvent.click(canvas.getByTitle('Apply'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([
         'Emily Johnson',
@@ -460,7 +460,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.type(inputField, 'backend developer');
 
       await userEvent.click(canvas.getByTitle('Apply'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([
         'John Doe',
@@ -477,7 +477,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.click(canvas.getByText('is empty'));
 
       await userEvent.click(canvas.getByTitle('Apply'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([]);
     });
@@ -488,7 +488,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.click(canvas.getByText('is not empty'));
 
       await userEvent.click(canvas.getByTitle('Apply'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([
         'John Doe',
@@ -517,7 +517,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.click(canvas.getByTitle('Node.js'));
 
       await userEvent.click(canvas.getByTitle('Apply'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([
         'John Doe',
@@ -540,7 +540,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.click(canvas.getByTitle('Spring'));
 
       await userEvent.click(canvas.getByTitle('Apply'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([
         'Emily Johnson',
@@ -555,7 +555,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       await userEvent.click(canvas.getByText('Clear'));
 
       await userEvent.click(canvas.getByText('Age'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([
         'Jane Smith',
@@ -571,7 +571,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       ]);
 
       await userEvent.click(canvas.getByText('Age'));
-      await timeout(1);
+      await AsyncUtils.timeout(1);
 
       await expect(getRows()).toStrictEqual([
         'James Anderson',

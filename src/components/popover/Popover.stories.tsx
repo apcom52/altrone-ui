@@ -4,7 +4,7 @@ import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Popover } from './Popover.tsx';
 import { expect, userEvent, within } from '@storybook/test';
-import { timeout } from 'utils';
+import { AsyncUtils } from 'utils';
 
 const story: Meta<typeof Popover> = {
   title: 'Components/Containers/Popover',
@@ -270,7 +270,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
         await canvas.findByTestId('popover-hover'),
       ).toBeInTheDocument();
       await userEvent.unhover(canvas.getByTestId('button-hover'));
-      await timeout(600);
+      await AsyncUtils.timeout(600);
       await expect(
         await canvas.queryByTestId('popover-hover'),
       ).not.toBeInTheDocument();

@@ -4,7 +4,7 @@ import s from './radio.module.scss';
 import { useConfiguration } from 'components/configuration';
 import { RadioContext, RadioProps } from './Radio.types.ts';
 import { RadioItem } from './components';
-import { getSafeArray } from 'utils';
+import { ArrayUtils } from 'utils';
 import { RadioContextWrapper } from './Radio.context.ts';
 
 const RadioWrapper = memo<RadioProps>(
@@ -45,7 +45,7 @@ const RadioWrapper = memo<RadioProps>(
       },
       [onChange],
     );
-    const safeChildren = getSafeArray(children);
+    const safeChildren = ArrayUtils.getSafeArray(children);
 
     const radioContext = useMemo<RadioContext>(() => {
       return {

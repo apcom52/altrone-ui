@@ -31,7 +31,7 @@ const LocalizationContext = createContext<LocalizationContextType>({
   language: 'en',
   dictionary: en,
 });
-const useLocalizationContext = () => useContext(LocalizationContext);
+export const useLocalizationContext = () => useContext(LocalizationContext);
 
 export const AltroneLocalization = ({
   language = 'en',

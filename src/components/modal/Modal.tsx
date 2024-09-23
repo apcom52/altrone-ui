@@ -15,7 +15,7 @@ import {
   useInteractions,
 } from '@floating-ui/react';
 import { useConfiguration } from 'components/configuration';
-import { cloneNode, useBoolean } from '../../utils';
+import { DOMUtils, useBoolean } from '../../utils';
 
 export const Modal = memo<ModalProps>(
   ({
@@ -81,7 +81,7 @@ export const Modal = memo<ModalProps>(
       <span>{originChildElement}</span>
     );
 
-    const childrenElement = cloneNode(safeChildElement, {
+    const childrenElement = DOMUtils.cloneNode(safeChildElement, {
       ...getReferenceProps({
         ...safeChildElement.props,
       }),

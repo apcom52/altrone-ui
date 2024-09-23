@@ -1,7 +1,7 @@
 import { forwardRef, useCallback, useRef } from 'react';
 import { NumberInputProps } from './NumberInput.types.ts';
 import { TextInput } from 'components/textInput';
-import { getSafeArray } from 'utils';
+import { ArrayUtils } from 'utils';
 import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import { Spinner } from './inner/Spinner.tsx';
@@ -12,7 +12,7 @@ import {
 } from 'react-number-format';
 import s from './numberInput.module.scss';
 import inputStyles from '../textInput/textInput.module.scss';
-import { triggerNativeEvent } from 'utils/events.ts';
+import { DOMUtils } from 'utils';
 import { useFormField } from '../form/components/Field.tsx';
 
 export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
@@ -87,7 +87,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         ? decimalDelimiter
         : localeConfig.numberDecimal || '.';
 
-    const safeChildren = getSafeArray(children);
+    const safeChildren = ArrayUtils.getSafeArray(children);
 
     const cls = clsx(
       inputStyles.Input,
@@ -127,7 +127,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
 
     const spinnerChangeValue = (diff: number) => {
       if (numberInputRef.current) {
-        triggerNativeEvent({
+        DOMUtils.triggerEvent({
           element: numberInputRef.current,
           value: (value || 0) + diff,
           eventType: 'change',

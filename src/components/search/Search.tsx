@@ -6,7 +6,7 @@ import { useConfiguration } from 'components/configuration';
 import { useLocalization } from 'components/application';
 import { AutocompleteInput } from 'components/autocompleteInput';
 import { PopoverRef } from 'components/popover';
-import { getSafeArray, triggerNativeEvent } from 'utils';
+import { ArrayUtils, DOMUtils } from 'utils';
 import clsx from 'clsx';
 import s from './search.module.scss';
 
@@ -38,7 +38,7 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
         ? showControls
         : searchConfig.showControls || true) && haveValue;
 
-    const safeChildren = getSafeArray(children);
+    const safeChildren = ArrayUtils.getSafeArray(children);
 
     const cls = clsx(
       s.Search,
@@ -62,7 +62,7 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
 
     const onClearClick = () => {
       if (textInputRef.current) {
-        triggerNativeEvent({
+        DOMUtils.triggerEvent({
           element: textInputRef.current?.childrenNode as HTMLElement,
           value: '',
           eventType: 'change',
@@ -95,7 +95,7 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
         {needToShowControl ? (
           <TextInput.ActionIsland
             placement="right"
-            label="Clear"
+            label={t('common.clear')}
             showLabel={false}
             disabled={restProps.disabled}
             onClick={onClearClick}
