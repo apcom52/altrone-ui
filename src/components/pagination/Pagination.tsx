@@ -76,6 +76,7 @@ export const Pagination = memo<PaginationProps>(
                 onChange={setVirtualPage}
                 min={1}
                 max={totalPages}
+                aria-label={t('pagination.title')}
               />
               <Button
                 role="primary"

@@ -193,15 +193,18 @@ describe('Text', () => {
     render(
       <AltroneApplication
         config={{
-          textScreenName: { className: 'cls', style: { color: 'blue' } },
-          textHeading: { className: 'cls', style: { color: 'blue' } },
-          textParagraph: { className: 'cls', style: { color: 'blue' } },
-          textInline: { className: 'cls', style: { color: 'blue' } },
-          textList: { className: 'cls', style: { color: 'blue' } },
-          textListItem: { className: 'cls', style: { color: 'blue' } },
-          textLink: { className: 'cls', style: { color: 'blue' } },
-          textCode: { className: 'cls', style: { color: 'blue' } },
-          textKeyboard: { className: 'cls', style: { color: 'blue' } },
+          text: {
+            section: { className: 'cls', style: { color: 'blue' } },
+            screenName: { className: 'cls', style: { color: 'blue' } },
+            heading: { className: 'cls', style: { color: 'blue' } },
+            paragraph: { className: 'cls', style: { color: 'blue' } },
+            inline: { className: 'cls', style: { color: 'blue' } },
+            list: { className: 'cls', style: { color: 'blue' } },
+            listItem: { className: 'cls', style: { color: 'blue' } },
+            link: { className: 'cls', style: { color: 'blue' } },
+            code: { className: 'cls', style: { color: 'blue' } },
+            keyboard: { className: 'cls', style: { color: 'blue' } },
+          },
         }}
       >
         <Text data-testid="wrapper">
