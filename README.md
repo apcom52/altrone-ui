@@ -1,5 +1,8 @@
 <p align='center'>
-    <img alt="Notebook with user interface elements" width="181" height="36" src="https://altrone.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Faltrone-light.41e5b33d.png&w=750&q=75" title="Altrone UI logo">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="http://localhost:3000/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Faltrone-dark.38721ddd.png&w=750&q=75">
+      <img src="https://altrone.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Faltrone-light.41e5b33d.png&w=750&q=75">
+    </picture>
     <p align='center'>
         A comprehensive React component library offering a versatile collection of reusable UI elements for streamlined and visually appealing web development.
     </p>
@@ -28,9 +31,9 @@ New design, rainbow hover effect, 12 new components, improved configuration and 
 
 <table>
     <tr>
-        <th>General and Typography</th>
-        <th>Containers</th>
-        <th>Form controls</th>
+        <th width='33%'>General and Typography</th>
+        <th width='33%'>Containers</th>
+        <th width='33%'>Form controls</th>
     </tr>
     <tr valign='top'>
         <td>
