@@ -1,6 +1,6 @@
 {
   "name": "altrone-ui",
-  "version": "3.0.0-rc",
+  "version": "3.0.0",
   "type": "module",
   "files": [
     "dist"
