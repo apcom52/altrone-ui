@@ -1,0 +1,80 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --topNavigationLinkBackgroundColor: transparent;
+  --topNavigationLinkTextColor: var(--default-900);
+  --topNavigationHoveredLinkBackgroundColor: var(--default-200);
+  --topNavigationPressedLinkBackgroundColor: var(--default-300);
+}
+
+:global(.AltroneDark) {
+  --topNavigationLinkBackgroundColor: transparent;
+  --topNavigationLinkTextColor: var(--default-50);
+  --topNavigationHoveredLinkBackgroundColor: var(--default-700);
+  --topNavigationPressedLinkBackgroundColor: var(--default-600);
+}
+
+.Link {
+  display: flex;
+  align-items: center;
+  position: relative;
+  @include label-heading;
+  padding: 4px 12px;
+  cursor: pointer;
+  color: var(--topNavigationLinkTextColor);
+  background-color: var(--topNavigationLinkBackgroundColor);
+  transition: background-color 0.2s ease;
+  border-radius: 6px;
+  z-index: 1;
+  gap: var(--xs-gap);
+  @include no-selection;
+  text-decoration: none;
+
+  @include focus;
+
+  &:before {
+    position: absolute;
+    display: block;
+    width: 50%;
+    left: 25%;
+    top: 25%;
+    height: 50%;
+    border-radius: 6px;
+    content: '';
+    opacity: 0;
+    z-index: -1;
+    background-color: var(--topNavigationHoveredLinkBackgroundColor);
+    transition: top 0.2s ease, left 0.2s ease, width 0.2s ease, height 0.2s ease;
+  }
+
+  &:hover, &:focus-visible, &.Selected {
+    &:before {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    &:before {
+      background-color: var(--topNavigationPressedLinkBackgroundColor);
+    }
+  }
+}
+
+.Icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--topNavigationLinkTextColor);
+  font-size: 18px;
+}
+
+.Label {
+  display: flex;
+  align-items: center;
+  z-index: 1;
+  gap: var(--s-gap);
+}

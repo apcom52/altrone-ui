@@ -1,0 +1,22 @@
+:global(:root) {
+  --dividerColor: var(--default-300);
+}
+
+:global(.AltroneDark) {
+  --dividerColor: var(--default-700);
+}
+
+.Divider {
+  width: calc(100% - var(--l-gap));
+  height: 1px;
+  margin: var(--xs-gap) auto;
+  background-color: var(--dividerColor);
+  border: none;
+  color: blue;
+}
+
+.Vertical {
+  width: 1px;
+  height: calc(100% - var(--gap));
+  margin: var(--xs-gap) var(--l-gap);
+}

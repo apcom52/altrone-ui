@@ -1,0 +1,125 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --dataTableHeadingCellBackgroundColor: var(--default-100);
+  --dataTableHeadingCellBorderColor: var(--default-400);
+  --dataTableHeadingCellTextColor: var(--default-700);
+  --dataTableHeadingCellSortedTextColor: var(--default-900);
+  --dataTableHeadingSortIconColor: var(--default-400);
+  --dataTableHoveredHeadingCellBackgroundColor: var(--default-200);
+  --dataTableHoveredHeadingCellTextColor: var(--default-800);
+}
+
+:global(.AltroneDark) {
+  --dataTableHeadingCellBackgroundColor: var(--default-800);
+  --dataTableHeadingCellBorderColor: var(--default-600);
+  --dataTableHeadingCellTextColor: var(--default-200);
+  --dataTableHeadingCellSortedTextColor: var(--default-50);
+  --dataTableHeadingSortIconColor: var(--default-400);
+  --dataTableHoveredHeadingCellBackgroundColor: var(--default-700);
+  --dataTableHoveredHeadingCellTextColor: var(--default-100);
+}
+
+.Wrapper {
+  background-color: var(--dataTableHeadingCellBackgroundColor);
+}
+
+.HeaderRow {
+  position: sticky;
+  background-color: var(--dataTableHeadingCellBackgroundColor);
+  top: 0;
+  z-index: var(--level-sticky);
+}
+
+.ColumnHeaders {
+  width: 100%;
+  display: grid;
+  grid-template-columns: var(--columnTemplate);
+  align-items: center;
+  background-color: var(--dataTableHeadingCellBackgroundColor);
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid var(--dataTableHeadingCellBorderColor);
+}
+
+.Cell {
+  color: var(--dataTableHeadingCellTextColor);
+}
+
+.CellContent {
+  position: relative;
+  padding: 10px 12px;
+  flex: 1;
+  @include label-heading;
+  text-align: center;
+  transition: background-color 0.2s linear;
+  width: 100%;
+  height: 100%;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+.Title {
+  position: relative;
+}
+
+.SortIcon {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: calc(100% + 4px);
+  font-size: 16px;
+  top: 0;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.2s linear;
+  color: var(--dataTableHeadingSortIconColor);
+}
+
+.SortableColumn {
+  cursor: pointer;
+  @include no-selection;
+
+  &:hover .CellContent {
+    background-color: var(--dataTableHoveredHeadingCellBackgroundColor);
+    color: var(--dataTableHoveredHeadingCellTextColor);
+
+    .SortIcon {
+      opacity: 1;
+    }
+  }
+}
+
+.SortedColumn {
+  color: var(--dataTableHeadingCellSortedTextColor);
+
+  .SortIcon {
+    opacity: 1;
+    color: var(--dataTableHeadingCellSortedTextColor);
+  }
+}
+
+.CheckableColumn {
+  padding: 7px 7px;
+  height: 36px;
+  width: 40px;
+
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+.WithoutHeading {
+  .Cell {
+    &:first-of-type {
+      border-top-left-radius: 6px;
+    }
+
+    &:last-of-type {
+      border-top-right-radius: 6px;
+    }
+  }
+}
+
+.CellWithWidth {
+  word-break: break-all;
+}

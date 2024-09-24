@@ -1,0 +1,76 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --spinnerBackgroundColor: transparent;
+  --spinnerTextColor: var(--default-700);
+  --spinnerHoverBackgroundColor: var(--default-300);
+  --spinnerHoverTextColor: var(--default-800);
+  --spinnerPressBackgroundColor: var(--default-400);
+  --spinnerPressTextColor: var(--default-900);
+}
+
+:global(.AltroneDark) {
+  --spinnerBackgroundColor: transparent;
+  --spinnerTextColor: var(--default-200);
+  --spinnerHoverBackgroundColor: var(--default-700);
+  --spinnerHoverTextColor: var(--default-100);
+  --spinnerPressBackgroundColor: var(--default-600);
+  --spinnerPressTextColor: var(--default-50);
+}
+
+.Spinner {
+  display: flex;
+  flex-direction: column;
+  margin-right: -6px;
+  @include no-selection;
+}
+
+.SpinButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  width: 24px;
+  height: 12px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  color: var(--spinnerTextColor);
+  background: var(--spinnerBackgroundColor);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s linear;
+
+  &:hover, &:focus-visible {
+    background-color: var(--spinnerHoverBackgroundColor);
+    color: var(--spinnerHoverTextColor);
+  }
+
+  &:active {
+    background-color: var(--spinnerPressBackgroundColor);
+    color: var(--spinnerPressTextColor);
+  }
+
+  &:disabled {
+    @include disabled;
+  }
+
+  @include focus;
+}
+
+.Small {
+  .SpinButton {
+    width: 20px;
+    height: 10px;
+    font-size: 12px;
+  }
+}
+
+.Large {
+  .SpinButton {
+    width: 32px;
+    height: 16px;
+    font-size: 18px;
+  }
+}

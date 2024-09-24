@@ -1,0 +1,38 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --tooltipBackgroundColor: var(--default-100);
+  --tooltipBorderColor: var(--default-200);
+  --tooltipHoveredBackgroundColor: var(--default-200);
+  --tooltipTextColor: var(--default-700);
+  --tooltipHoveredTextColor: var(--default-900);
+}
+
+:global(.AltroneDark) {
+  --tooltipBackgroundColor: var(--default-800);
+  --tooltipBorderColor: var(--default-700);
+  --tooltipHoveredBackgroundColor: var(--default-700);
+  --tooltipTextColor: var(--default-200);
+  --tooltipHoveredTextColor: var(--default-50);
+}
+
+.QuestionMark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 16px;
+  background-color: var(--tooltipBackgroundColor);
+  border: 1px solid var(--tooltipBorderColor);
+  color: var(--tooltipTextColor);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  @include focus;
+
+  &:hover, &:focus-visible {
+    background-color: var(--tooltipHoveredBackgroundColor);
+    color: var(--tooltipHoveredTextColor);
+  }
+}

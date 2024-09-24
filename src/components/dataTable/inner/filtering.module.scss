@@ -1,0 +1,43 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --dataTableFilteringEmptyTextColor: var(--default-500);
+}
+
+:global(.AltroneDark) {
+  --dataTableFilteringEmptyTextColor: var(--default-400);
+}
+
+.FilterRow {
+  display: grid;
+  grid-template-columns: 165px 135px 240px 24px;
+  gap: var(--s-gap);
+}
+
+.FilterRow_zeroColumns {
+  grid-template-columns: 165px 135px 24px;
+}
+
+.FilterRow_twoColumns {
+  grid-template-columns: 165px 135px 120px 120px 24px;
+}
+
+.NoFilters {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--l-gap);
+}
+
+.NoFiltersIcon {
+  font-size: 32px;
+  color: var(--dataTableFilteringEmptyTextColor);
+}
+
+.NoFiltersDescription {
+  @include sm-paragraph;
+  width: 200px;
+  text-align: center;
+  color: var(--dataTableFilteringEmptyTextColor);
+}

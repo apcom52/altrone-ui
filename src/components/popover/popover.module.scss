@@ -1,0 +1,56 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --popoverSolidBackgroundColor: var(--default-100);
+
+  &:global(.AltroneDark) {
+    --popoverSolidBackgroundColor: var(--default-800);
+  }
+}
+
+.Popover {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  padding: var(--gap);
+  z-index: var(--level-popover);
+  transition: box-shadow var(--transitionDuration) ease;
+  background: var(--popoverSolidBackgroundColor);
+  border-radius: 8px;
+  box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.1);
+  font-family: "Inter", sans-serif;
+}
+
+.GlassEffect {
+  background: var(--glassBackground);
+  -webkit-backdrop-filter: blur(32px);
+  backdrop-filter: blur(32px);
+}
+
+.Content {
+  @include paragraph;
+}
+
+.Header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  margin-bottom: var(--l-gap);
+}
+
+.Heading {
+  @include group-heading;
+  color: var(--headingTextColor);
+}
+
+.Close {
+  margin-left: var(--xl-gap);
+}
+
+.Arrow {
+  position: absolute;
+  background: var(--popoverSolidBackgroundColor);
+  width: 14px;
+  height: 14px;
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
+}

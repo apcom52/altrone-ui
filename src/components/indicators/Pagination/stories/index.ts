@@ -1,1 +1,0 @@
-export { DefaultPagination } from './DefaultPagination';

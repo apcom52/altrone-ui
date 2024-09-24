@@ -1,0 +1,9 @@
+.Textarea {
+  resize: vertical;
+  min-height: 72px;
+}
+
+.Wrapper {
+  min-height: var(--height);
+  height: unset;
+}

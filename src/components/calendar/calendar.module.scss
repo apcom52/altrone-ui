@@ -1,0 +1,50 @@
+:global(:root) {
+  --calendarDateBackgroundColor: transparent;
+  --calendarDateTextColor: var(--default-900);
+  --calendarDateTodayTextColor: var(--primary-500);
+  --calendarDateSelectedDateBackgroundColor: var(--primary-100);
+  --calendarDateSelectedDateTextColor: var(--primary-800);
+}
+
+:global(.AltroneDark) {
+  --calendarDateBackgroundColor: transparent;
+  --calendarDateTextColor: var(--default-50);
+  --calendarDateTodayTextColor: var(--primary-600);
+  --calendarDateSelectedDateBackgroundColor: var(--primary-900);
+  --calendarDateSelectedDateTextColor: var(--primary-50);
+}
+
+.Calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.Date {
+  border: none;
+  padding: 4px 8px;
+  text-align: left;
+  height: 34px;
+  color: var(--calendarDateTextColor);
+  opacity: 0.5;
+  border-radius: var(--controlRounding);
+  background-color: var(--calendarDateBackgroundColor);
+}
+
+.ActiveMonth {
+  background-color: var(--surface);
+  opacity: 1;
+}
+
+.Today {
+  color: var(--calendarDateTodayTextColor);
+}
+
+.Disabled {
+  pointer-events: none;
+}
+
+.Selected {
+  background-color: var(--calendarDateSelectedDateBackgroundColor);
+  color: var(--calendarDateSelectedDateTextColor);
+}

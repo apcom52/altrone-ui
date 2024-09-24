@@ -1,0 +1,69 @@
+@import 'src/global/mixins';
+
+.RadioItem {
+  --bgColor: var(--radioBackgroundColor);
+  --fgColor: var(--radioTextColor);
+
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  outline: 0;
+  cursor: pointer;
+
+  &:hover, &:focus-visible {
+    --bgColor: var(--radioHoverBackgroundColor);
+  }
+
+  &:focus-visible {
+    .Button {
+      outline: 2px solid var(--focusColor);
+      outline-offset: 2px;
+    }
+  }
+}
+
+.Input {
+  display: none;
+}
+
+.Label {
+  @include sm-paragraph;
+  color: var(--radioTextColor);
+}
+
+.Button {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--bgColor);
+  transition: background-color 0.1s linear;
+
+  &:after {
+    display: none;
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    top: 4px;
+    left: 4px;
+    background-color: var(--radioHandleBackgroundColor);
+    border-radius: 50%;
+  }
+}
+
+.Checked {
+  --bgColor: var(--radioCheckedBackgroundColor);
+
+  &:hover, &:focus-visible {
+    --bgColor: var(--radioCheckedHoverBackgroundColor);
+  }
+
+  .Button:after {
+    display: block;
+  }
+}
+
+.Disabled {
+  @include disabled;
+}

@@ -1,0 +1,18 @@
+@import 'src/global/mixins';
+
+.TopNavigation {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 16px;
+  gap: var(--gap);
+
+  @include glass-surface;
+}
+
+.Fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--level-fixed);
+}

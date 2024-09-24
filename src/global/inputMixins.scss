@@ -1,0 +1,54 @@
+@import 'src/global/mixins';
+
+@mixin inputWrapper {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  width: 100%;
+  height: var(--height);
+}
+
+@mixin inputControl {
+  width: 100%;
+  background: var(--bgColor);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 6px;
+  border: none;
+  padding: var(--inputVerticalOffset) var(--inputHorizontalOffset);
+  height: var(--height);
+  transition: background-color 0.2s linear, color 0.2s linear;
+  outline: none;
+  color: var(--fgColor);
+
+  @include paragraph;
+
+  &:hover, &:focus-visible {
+    --bgColor: var(--inputHoverBackgroundColor);
+    --fgColor: var(--inputHoverTextColor);
+    --placeholderColor: var(--inputPlaceholderHoverTextColor);
+  }
+
+  &::placeholder {
+    color: var(--placeholderColor);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &:invalid {
+    --fgColor: var(--inputInvalidTextColor);
+  }
+}
+
+@mixin inputIsland {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--inputIslandTextSize);
+  color: var(--iconIslandTextColor);
+  font-weight: 500;
+  pointer-events: none;
+}

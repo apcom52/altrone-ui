@@ -1,1 +1,0 @@
-export { DefaultHeadingStory } from './DefaultHeadingStory';

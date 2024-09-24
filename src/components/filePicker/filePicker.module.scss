@@ -1,0 +1,17 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --filePickerEmptyTextColor: var(--default-500);
+}
+
+.FilePicker {
+}
+
+.Input {
+  display: none;
+}
+
+.EmptyLabel {
+  @include sm-paragraph;
+  color: var(--filePickerEmptyTextColor);
+}

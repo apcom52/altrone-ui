@@ -1,0 +1,46 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --sideNavigationItemTextColor: var(--default-700);
+  --sideNavigationSelectedItemTextColor: var(--primary-600);
+}
+
+:global(.AltroneDark) {
+  --sideNavigationItemTextColor: var(--default-200);
+  --sideNavigationSelectedItemTextColor: var(--primary-400);
+}
+
+.Item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.Label {
+  @include sm-paragraph;
+  color: var(--sideNavigationItemTextColor);
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 4px;
+
+  @include focus;
+
+  &:hover, &:focus-visible {
+    color: var(--sideNavigationSelectedItemTextColor);
+  }
+}
+
+.Selected {
+  .Label {
+    font-weight: 600;
+    color: var(--sideNavigationSelectedItemTextColor);
+  }
+
+}
+
+.Children {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding-left: var(--l-gap);
+}

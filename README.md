@@ -1,94 +1,115 @@
 <p align='center'>
-    <img alt="Notebook with user interface elements" width="320" height="82" src="https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FW5YLGWqfJIMCnPELJjW6%2Fuploads%2FGUo8Duhjb5SonJdYliHO%2Flogo.png?alt=media&token=906640d8-d99c-4e48-87e7-b6e92171a084" title="Altrone UI logo">
-    <h1 align='center'>Altrone UI</h1>
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://altrone.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Faltrone-dark.38721ddd.png&w=750&q=75">
+      <img width='240' height='48' src="https://altrone.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Faltrone-light.41e5b33d.png&w=750&q=75">
+    </picture>
     <p align='center'>
         A comprehensive React component library offering a versatile collection of reusable UI elements for streamlined and visually appealing web development.
     </p>
     <p align='center'>
-        <b><a href='https://apcom.gitbook.io/altrone-ui/'>Explore the docs</a></b> | <b><a href='https://apcom52.github.io/altrone-ui/'>Check the demo</a></b>
+        <b><a href='https://altrone.vercel.app/'>Explore the docs</a></b> | <b><a href='https://altrone.vercel.app/blog'>Blog</a></b>
     </p>
 </p>
 
 -----
 
-## Altrone 2.2
+## 🎊 Altrone 3.0
 
-The most recent feature update introduces new cool features for ContextMenu, like checkbox and radio-list ContextMenu actions,
-more customization for ToolbarActions and updated animations! Details about these 
-exciting new features can be explored in the update description.
+New design, rainbow hover effect, 12 new components, improved configuration and more. The most significant update in the history of the library.
 
-[**What's new in 2.2?**](https://apcom.gitbook.io/altrone-ui/blog/2.2)
+[**What's new in 3.0?**](https://altrone.vercel.app/blog/release-3.0)
 
-## Installation
-
-To install the library, enter the command:
-
-`npm i altrone-ui`
-
-`yarn add altrone-ui`
+[**Migrating to 3.0**](https://altrone.vercel.app/blog/migrating-to-3.0)
 
 ## Documentation
 
-- [**Read the documentation**](https://apcom.gitbook.io/altrone-ui/)
+- [**Read the documentation**](https://altrone.vercel.app/)
 
-- [**Check the storybook**](https://apcom52.github.io/altrone-ui/)
+- [**Installation and usage**](https://altrone.vercel.app/blog/installation)
 
 ## Components Gallery
 
-**Typography:**
-
-- `<Paragraph />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/typography/paragraph))
-- `<Heading />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/typography/heading))
-- `<Message />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/typography/message))
-- `<Blockquote />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/typography/blockquote))
-- `<Icon />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/typography/icon))
-
-**Containers:**
-
-- `<ButtonContainer />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/buttoncontainer))
-- `<FloatingBox />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/floatingbox))
-- `<Form />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/form))
-- `<Modal />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/modal))
-- `<PhotoViewer />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/photoviewer))
-- `<Spoiler />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/spoiler))
-- `<Toolbar />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/containers/toolbar))
-
-**Data:**
-
-- `<Calendar />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/data/calendar))
-- `<Carousel />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/data/carousel))
-- `<DataTable />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/data/datatable))
-
-**Form:**
-
-- `<Button />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/button))
-- `<TextInput />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/textinput))
-- `<PasswordInput />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/passwordinput))
-- `<NumberInput />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/numberinput))
-- `<Search />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/search))
-- `<Textarea />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/textarea))
-- `<Checkbox />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/checkbox))
-- `<CheckboxList />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/checkboxlist))
-- `<Switcher />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/switcher))
-- `<RadioList />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/radiolist))
-- `<Select />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/select))
-- `<ScrollableSelector />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/scrollableselector))
-- `<DatePicker />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/datepicker))
-- `<FilePicker />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/forms/filepicker))
-
-**List:**
-
-- `<Breadcrumbs />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/lists/breadcrumbs))
-- `<Chips />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/lists/chips))
-- `<ContextMenu />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/lists/contextmenu))
-- `<NavigationList />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/lists/navigationlist))
-- `<TabList />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/lists/tablist))
-
-**Indicators:**
-
-- `<Loading />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/indicators/loading))
-- `<Pagination />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/indicators/pagination))
-- `<Progress />` ([Documentation](https://apcom.gitbook.io/altrone-ui/components/indicators/progress))
+<table>
+    <tr>
+        <th width='33%'>General and Typography</th>
+        <th width='33%'>Containers</th>
+        <th width='33%'>Form controls</th>
+    </tr>
+    <tr valign='top'>
+        <td>
+<ul>
+    <li><a href="https://altrone.vercel.app/components/application">AltroneApplication</a></li>
+    <li><a href="https://altrone.vercel.app/components/configuration">Configuration</a></li>
+    <li><a href="https://altrone.vercel.app/components/text">Text</a></li>
+    <li><a href="https://altrone.vercel.app/components/icon">Icon</a></li>
+</ul>                
+</td>
+        <td>
+<ul>
+    <li><a href="https://altrone.vercel.app/components/flex">Flex</a></li>
+    <li><a href="https://altrone.vercel.app/components/list">List</a></li>
+    <li><a href="https://altrone.vercel.app/components/scrollable">Scrollable</a></li>
+    <li><a href="https://altrone.vercel.app/components/popover">Popover</a></li>
+    <li><a href="https://altrone.vercel.app/components/dropdown">Dropdown</a></li>
+    <li><a href="https://altrone.vercel.app/components/tooltip">Tooltip</a></li>
+    <li><a href="https://altrone.vercel.app/components/collapsedList">CollapsedList</a></li>
+    <li><a href="https://altrone.vercel.app/components/form">Form</a></li>
+    <li><a href="https://altrone.vercel.app/components/modal">Modal</a></li>
+    <li><a href="https://altrone.vercel.app/components/toolbar">Toolbar</a></li>
+    <li><a href="https://altrone.vercel.app/components/spoiler">Spoiler</a></li>
+</ul></td>
+        <td>
+<ul>
+    <li><a href="https://altrone.vercel.app/components/button">Button</a></li>
+    <li><a href="https://altrone.vercel.app/components/textInput">TextInput</a></li>
+    <li><a href="https://altrone.vercel.app/components/passwordInput">PasswordInput</a></li>
+    <li><a href="https://altrone.vercel.app/components/numberInput">NumberInput</a></li>
+    <li><a href="https://altrone.vercel.app/components/autocompleteInput">AutocompleteInput</a></li>
+    <li><a href="https://altrone.vercel.app/components/search">Search</a></li>
+    <li><a href="https://altrone.vercel.app/components/textarea">Textarea</a></li>
+    <li><a href="https://altrone.vercel.app/components/checkbox">Checkbox</a></li>
+    <li><a href="https://altrone.vercel.app/components/switcher">Switcher</a></li>
+    <li><a href="https://altrone.vercel.app/components/radio">Radio</a></li>
+    <li><a href="https://altrone.vercel.app/components/select">Select</a></li>
+    <li><a href="https://altrone.vercel.app/components/datePicker">DatePicker</a></li>
+    <li><a href="https://altrone.vercel.app/components/filePicker">FilePicker</a></li>
+</ul></td>
+    </tr>
+    <tr>
+        <th>Display</th>
+        <th>Navigation</th>
+        <th>Atoms</th>
+    </tr>
+<tr valign='top'>
+        <td>
+<ul>
+    <li><a href="https://altrone.vercel.app/components/calendar">Calendar</a></li>
+    <li><a href="https://altrone.vercel.app/components/dataTable">DataTable</a></li>
+    <li><a href="https://altrone.vercel.app/components/message">Message</a></li>
+    <li><a href="https://altrone.vercel.app/components/photoViewer">PhotoViewer</a></li>
+    <li><a href="https://altrone.vercel.app/components/progress">Progress</a></li>
+    <li><a href="https://altrone.vercel.app/components/tags">Tags</a></li>
+    <li><a href="https://altrone.vercel.app/components/toasts">Toast Notifications</a></li>
+</ul>                
+</td>
+        <td>
+<ul>
+    <li><a href="https://altrone.vercel.app/components/navigationList">NavigationList</a></li>
+    <li><a href="https://altrone.vercel.app/components/topNavigation">TopNavigation</a></li>
+    <li><a href="https://altrone.vercel.app/components/bottomNavigation">BottomNavigation</a></li>
+    <li><a href="https://altrone.vercel.app/components/sideNavigation">SideNavigation</a></li>
+    <li><a href="https://altrone.vercel.app/components/tabs">Tabs</a></li>
+    <li><a href="https://altrone.vercel.app/components/breadcrumbs">Breadcrumbs</a></li>
+    <li><a href="https://altrone.vercel.app/components/pagination">Pagination</a></li>
+</ul></td>
+        <td>
+<ul>
+    <li><a href="https://altrone.vercel.app/components/closeButton">CloseButton</a></li>
+    <li><a href="https://altrone.vercel.app/components/divider">Divider</a></li>
+    <li><a href="https://altrone.vercel.app/components/loading">Loading</a></li>
+</ul></td>
+    </tr>   
+</table>
 
 ## License
 

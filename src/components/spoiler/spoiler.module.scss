@@ -1,0 +1,58 @@
+@import "src/global/mixins";
+
+:global(:root) {
+  --spoilerHeadingBackgroundColor: var(--default-200);
+  --spoilerHeadingTextColor: var(--default-700);
+  --spoilerHoveredHeadingTextColor: var(--default-900);
+  --spoilerOpenedHeadingTextColor: var(--default-900);
+}
+
+:global(.AltroneDark) {
+  --spoilerHeadingBackgroundColor: var(--default-700);
+  --spoilerHeadingTextColor: var(--default-200);
+  --spoilerHoveredHeadingTextColor: var(--default-50);
+  --spoilerOpenedHeadingTextColor: var(--default-50);
+}
+
+.Spoiler {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.Heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--gap);
+  background-color: var(--spoilerHeadingBackgroundColor);
+  color: var(--spoilerHeadingTextColor);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  @include group-heading;
+  @include no-selection;
+  @include focus;
+
+  &:hover, &:focus-visible {
+    color: var(--spoilerHoveredHeadingTextColor);
+  }
+}
+
+.ArrowIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.Content {
+  padding: var(--gap);
+}
+
+.Opened {
+  .Heading {
+    color: var(--spoilerOpenedHeadingTextColor);
+  }
+}

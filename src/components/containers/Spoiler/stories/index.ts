@@ -1,1 +1,0 @@
-export { DefaultSpoilerStory } from './DefaultSpoilerStory';

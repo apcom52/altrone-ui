@@ -1,0 +1,60 @@
+:global(:root) {
+  --photoViewerLoadingBackgroundColor: rgba(0, 0, 0, 0.2);
+  --photoViewerLoadingColor: var(--default-50);
+  --photoViewerErrorColor: var(--danger-700);
+}
+
+.ImageBlock {
+  display: flex;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  max-width: 90vw;
+  max-height: calc(90vh - 32px);
+  width: 100%;
+  height: 100%;
+  left: 5vw;
+  top: 5vh;
+  z-index: var(--level-modal);
+}
+
+.Image {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.LoadingBlock {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: calc(50vh - 40px);
+  left: calc(50vw - 40px);
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  background-color: var(--photoViewerLoadingBackgroundColor);
+  backdrop-filter: blur(32px);
+  color: var(--photoViewerLoadingColor);
+  box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.2);
+}
+
+.ErrorBlock {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: calc(50vh - 40px);
+  left: calc(50vw - 40px);
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  background-color: var(--photoViewerLoadingBackgroundColor);
+  backdrop-filter: blur(32px);
+  color: var(--photoViewerErrorColor);
+  box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.2);
+  font-size: 42px;
+}

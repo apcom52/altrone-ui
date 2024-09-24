@@ -1,0 +1,54 @@
+@import "src/global/mixins";
+
+.Message {
+  --messageBg: var(--messageBackgroundColor);
+  --messageHeading: var(--headingTextColor);
+  --messageContent: var(--bodyTextColor);
+
+  padding: var(--l-gap);
+  background: var(--messageBg);
+  border-radius: 8px;
+}
+
+.Icon {
+  height: 24px;
+  font-size: 24px;
+  color: var(--messageHeading);
+}
+
+.Content {
+}
+
+.Header {
+  color: var(--messageHeading);
+  @include inner-header;
+}
+
+.Description {
+  color: var(--messageContent);
+  @include sm-paragraph;
+}
+
+.RolePrimary {
+  --messageBg: var(--messagePrimaryBackgroundColor);
+  --messageHeading: var(--primaryHeadingTextColor);
+  --messageContent: var(--primaryBodyTextColor);
+}
+
+.RoleSuccess {
+  --messageBg: var(--messageSuccessBackgroundColor);
+  --messageHeading: var(--successHeadingTextColor);
+  --messageContent: var(--successBodyTextColor);
+}
+
+.RoleWarning {
+  --messageBg: var(--messageWarningBackgroundColor);
+  --messageHeading: var(--warningHeadingTextColor);
+  --messageContent: var(--warningBodyTextColor);
+}
+
+.RoleDanger {
+  --messageBg: var(--messageDangerBackgroundColor);
+  --messageHeading: var(--dangerHeadingTextColor);
+  --messageContent: var(--dangerBodyTextColor);
+}

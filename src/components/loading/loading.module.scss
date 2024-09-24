@@ -1,0 +1,15 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --loadingColor: var(--default-900);
+}
+
+:global(.AltroneDark) {
+  --loadingColor: var(--default-50);
+}
+
+.Loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

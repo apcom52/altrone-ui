@@ -1,0 +1,76 @@
+@import 'src/global/mixins';
+
+.Backdrop {
+  display: flex;
+  align-items: start;
+  padding-top: 100px;
+  padding-bottom: 40px;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: var(--level-modal-backdrop);
+  background-color: var(--backdropColor);
+}
+
+.Modal {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  min-width: 400px;
+  width: 400px;
+  @include glass-surface;
+  border-radius: 8px;
+  box-shadow: 0 3px 15px 0 rgba(0, 0, 0, .1);
+  padding: 6px;
+  gap: var(--l-gap);
+  offset: 0;
+  z-index: var(--level-modal);
+}
+
+.Close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
+.Title {
+  width: 100%;
+  @include group-heading;
+  padding: 0 28px;
+  text-align: center;
+}
+
+.Content {
+  @include paragraph;
+}
+
+.Footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--l-gap);
+}
+
+.LeftFooter, .RightFooter {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+}
+
+.RightFooter {
+  justify-content: flex-end;
+}
+
+.Small {
+  min-width: 280px;
+  width: 280px;
+}
+
+.Large {
+  min-width: 640px;
+  width: 640px;
+}

@@ -1,0 +1,18 @@
+@import 'src/global/mixins';
+
+.PhotoViewerToolbar {
+  position: fixed;
+  width: fit-content;
+  bottom: 5vh;
+  left: 50vw;
+  transform: translateX(-50%);
+}
+
+.Progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include label;
+  color: currentColor;
+  height: 100%;
+}

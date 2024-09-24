@@ -1,0 +1,298 @@
+@import "src/global/mixins";
+
+:global(:root) {
+  --default-900: #111928;
+  --default-800: #1F2A37;
+  --default-700: #374151;
+  --default-600: #4B5563;
+  --default-500: #6B7280;
+  --default-400: #9CA3AF;
+  --default-300: #D1D5DB;
+  --default-200: #E5E7EB;
+  --default-100: #F3F4F6;
+  --default-50: #F9FAFB;
+
+  --primary-900: #0D47A1;
+  --primary-800: #1565C0;
+  --primary-700: #1976D2;
+  --primary-600: #1E88E5;
+  --primary-500: #2196F3;
+  --primary-400: #42A5F5;
+  --primary-300: #64B5F6;
+  --primary-200: #90CAF9;
+  --primary-100: #BBDEFB;
+  --primary-50: #E3F2FD;
+
+  --success-900: #1B5E20;
+  --success-800: #2E7D32;
+  --success-700: #388E3C;
+  --success-600: #43A047;
+  --success-500: #4CAF50;
+  --success-400: #66BB6A;
+  --success-300: #81C784;
+  --success-200: #A5D6A7;
+  --success-100: #C8E6C9;
+  --success-50: #E8F5E9;
+
+  --danger-900: #B71C1C;
+  --danger-800: #C62828;
+  --danger-700: #D32F2F;
+  --danger-600: #E53935;
+  --danger-500: #F44336;
+  --danger-400: #EF5350;
+  --danger-300: #E57373;
+  --danger-200: #EF9A9A;
+  --danger-100: #FFCDD2;
+  --danger-50: #FFEBEE;
+
+  --warning-900: #FF6F00;
+  --warning-800: #FF8F00;
+  --warning-700: #FFA000;
+  --warning-600: #FFB300;
+  --warning-500: #FFC107;
+  --warning-400: #FFCA28;
+  --warning-300: #FFD54F;
+  --warning-200: #FFE082;
+  --warning-100: #FFECB3;
+  --warning-50: #FFF8E1;
+
+  --screenFontSize: 32px;
+  --screenLineHeight: 40px;
+  --screenFontWeight: 700;
+
+  --titleFontSize: 24px;
+  --titleLineHeight: 32px;
+  --titleFontWeight: 700;
+
+  --headingFontSize: 20px;
+  --headingLineHeight: 24px;
+  --headingFontWeight: 700;
+
+  --subheaderFontSize: 16px;
+  --subheaderLineHeight: 24px;
+  --subheaderFontWeight: 600;
+
+  --innerHeaderFontSize: 14px;
+  --innerHeaderLineHeight: 24px;
+  --innerHeaderFontWeight: 600;
+
+  --groupHeadingFontSize: 12px;
+  --groupHeadingLineHeight: 16px;
+  --groupHeadingFontWeight: 500;
+
+  --labelHeadingFontSize: 12px;
+  --labelHeadingLineHeight: 16px;
+  --labelHeadingFontWeight: 600;
+
+  --labelFontSize: 10px;
+  --labelLineHeight: 16px;
+  --labelFontWeight: 600;
+
+  --smallLabelFontSize: 8px;
+  --smallLabelLineHeight: 12px;
+  --smallLabelFontWeight: 600;
+
+  --bigParagraphFontSize: 16px;
+  --bigParagraphLineHeight: 24px;
+  --bigParagraphFontWeight: 400;
+
+  --paragraphFontSize: 14px;
+  --paragraphLineHeight: 20px;
+  --paragraphFontWeight: 400;
+
+  --smallParagraphFontSize: 12px;
+  --smallParagraphLineHeight: 16px;
+  --smallParagraphFontWeight: 400;
+
+  --codeFontSize: 13px;
+  --codeLineHeight: 20px;
+  --codeFontWeight: 400;
+
+  /** gaps */
+  --narrow-gap: 2px;
+  --xs-gap: 4px;
+  --s-gap: 6px;
+  --gap: 8px;
+  --l-gap: 12px;
+  --xl-gap: 24px;
+  --xxl-gap: 36px;
+
+  /** roundings */
+  --controlRounding: 6px;
+
+  /** sizes */
+  --small-size: 20px;
+  --normal-size: 24px;
+  --large-size: 32px;
+
+  /** animations */
+  --stateTransitionDuration: 0.2s;
+
+  /** z-index */
+  --level-dropdown: 1000;
+  --level-sticky: 1020;
+  --level-fixed: 1030;
+  --level-offcanvas-backdrop: 1040;
+  --level-offcanvas: 1045;
+  --level-modal-backdrop: 1050;
+  --level-modal: 1055;
+  --level-popover: 1070;
+  --level-tooltip: 1080;
+  --level-toast: 1090;
+
+  /* text style variables */
+  --headingTextColor: var(--default-900);
+  --primaryHeadingTextColor: var(--primary-900);
+  --successHeadingTextColor: var(--success-900);
+  --warningHeadingTextColor: var(--warning-900);
+  --dangerHeadingTextColor: var(--danger-900);
+  --bodyTextColor: var(--default-700);
+  --primaryBodyTextColor: var(--primary-700);
+  --successBodyTextColor: var(--success-700);
+  --warningBodyTextColor: var(--warning-800);
+  --dangerBodyTextColor: var(--danger-800);
+  --disabledTextColor: var(--default-400);
+  --highlightedTextColor: var(--default-900);
+  --codeTextColor: var(--primary-800);
+  --keyboardTextColor: var(--default-500);
+  --linkTextColor: var(--primary-600);
+  --linkHoveredTextColor: var(--primary-700);
+  --linkPressedTextColor: var(--primary-800);
+
+
+  /* surfaces */
+  --appBackground: var(--default-50);
+  --glassBackground: rgba(249, 250, 251, 0.9);
+  --scrollbarBackground: var(--default-200);
+  --scrollbarThumb: var(--default-900);
+  --highlightedTextBackground: var(--primary-100);
+  --codeBackgroundColor: var(--primary-50);
+  --codeBorderColor: var(--primary-100);
+  --keyboardBackgroundColor: var(--default-100);
+  --keyboardBorderColor: var(--default-200);
+  --messageBackgroundColor: var(--default-100);
+  --messagePrimaryBackgroundColor: var(--primary-100);
+  --messageSuccessBackgroundColor: var(--success-100);
+  --messageWarningBackgroundColor: var(--warning-100);
+  --messageDangerBackgroundColor: var(--danger-100);
+  --backdropColor: rgba(0, 0, 0, 0.4);
+
+  /** focus */
+  --focus: rgba(66, 165, 245, 0.4);
+  --focusSuccess: rgba(102, 187, 106, 0.4);
+  --focusWarning: rgba(255, 167, 38, 0.4);
+  --focusDanger: rgba(239, 83, 80, 0.4);
+
+  /** shadows */
+  --buttonShadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+:global(html) {
+  background: var(--appBackground);
+  color: var(--bodyTextColor);
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+.AltroneApp {
+  font-family: "Inter", sans-serif;
+
+  :global(.screen-text) {
+    @include screen-name;
+  }
+
+  :global(.title-text) {
+    @include title;
+  }
+
+  :global(.heading-text) {
+    @include heading;
+  }
+
+  :global(.subheader-text) {
+    @include subheader;
+  }
+
+  :global(.inner-header-text) {
+    @include inner-header;
+  }
+
+  :global(.group-heading-text) {
+    @include group-heading;
+  }
+
+  :global(.label-heading-text) {
+    @include label-heading;
+  }
+
+  :global(.label-text) {
+    @include label;
+  }
+
+  :global(.small-label-text) {
+    @include small-label;
+  }
+
+  :global(.big-paragraph-text) {
+    @include big-paragraph;
+  }
+
+  :global(.paragraph-text) {
+    @include paragraph;
+  }
+
+  :global(.small-paragraph-text) {
+    @include sm-paragraph;
+  }
+
+  :global(.code-text) {
+    @include code;
+  }
+}
+
+:global(.AltroneDark) {
+  --headingTextColor: var(--default-50);
+  --primaryHeadingTextColor: var(--primary-50);
+  --successHeadingTextColor: var(--success-50);
+  --warningHeadingTextColor: var(--warning-50);
+  --dangerHeadingTextColor: var(--danger-50);
+  --bodyTextColor: var(--default-200);
+  --primaryBodyTextColor: var(--primary-100);
+  --successBodyTextColor: var(--success-100);
+  --warningBodyTextColor: var(--warning-100);
+  --dangerBodyTextColor: var(--danger-100);
+  --disabledTextColor: var(--default-600);
+  --highlightedTextColor: var(--default-50);
+  --codeTextColor: var(--primary-200);
+  --keyboardTextColor: var(--default-300);
+  --linkTextColor: var(--primary-500);
+  --linkHoveredTextColor: var(--primary-400);
+  --linkPressedTextColor: var(--primary-300);
+
+  /* surfaces */
+  --appBackground: var(--default-900);
+  --glassBackground: rgba(31, 42, 55, 0.9);
+  --scrollbarBackground: var(--default-700);
+  --scrollbarThumb: var(--default-200);
+  --highlightedTextBackground: var(--primary-900);
+  --codeBackgroundColor: var(--primary-900);
+  --codeBorderColor: var(--primary-800);
+  --keyboardBackgroundColor: var(--default-600);
+  --keyboardBorderColor: var(--default-500);
+  --messageBackgroundColor: var(--default-700);
+  --messagePrimaryBackgroundColor: var(--primary-900);
+  --messageSuccessBackgroundColor: var(--success-900);
+  --messageWarningBackgroundColor: var(--warning-900);
+  --messageDangerBackgroundColor: var(--danger-900);
+  --backdropColor: rgba(0, 0, 0, 0.6);
+
+  /** focus */
+  --focus: rgba(25, 118, 210, 0.7);
+  --focusSuccess: rgba(56, 142, 60, 0.7);
+  --focusWarning: rgba(255, 160, 0, 0.7);
+  --focusDanger: rgb(211, 47, 47, 0.7);
+}
