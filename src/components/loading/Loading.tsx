@@ -1,12 +1,10 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import clsx from 'clsx';
 import { LoadingProps } from './Loading.types.ts';
 import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 import s from './loading.module.scss';
 
 import type {} from 'ldrs';
-import { ring } from 'ldrs';
-ring.register();
 
 export const Loading = memo<LoadingProps>(
   ({
@@ -26,6 +24,15 @@ export const Loading = memo<LoadingProps>(
       ...loadingConfig.style,
       ...style,
     };
+
+    useEffect(() => {
+      async function getExternalLibrary() {
+        const { ring } = await import('ldrs');
+        ring.register();
+      }
+
+      void getExternalLibrary();
+    }, []);
 
     return (
       <div className={cls} style={styles} {...restProps}>
