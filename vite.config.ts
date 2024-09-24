@@ -8,6 +8,7 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths(), dts()],
   publicDir: resolve(__dirname, './src/assets'),
   build: {
+    target: ['es2022'],
     lib: {
       entry: resolve(__dirname, './src/index.ts'),
       name: 'Altrone',
