@@ -29,6 +29,12 @@ export interface IconIslandProps extends React.HTMLAttributes<HTMLDivElement> {
   placement?: 'left' | 'right';
 }
 
+export interface LoadingIslandProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  color?: string;
+  placement?: 'left' | 'right';
+}
+
 type MergedActionIslandProps = React.ButtonHTMLAttributes<HTMLElement>;
 
 export interface ActionIslandProps

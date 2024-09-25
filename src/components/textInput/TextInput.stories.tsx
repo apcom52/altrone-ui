@@ -400,6 +400,32 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             </TextInput.CustomIsland>
           </TextInput>
         </Flex>
+        <Text.Heading role="inner">Loading Islands</Text.Heading>
+        <Flex direction="horizontal" gap="l">
+          <TextInput
+            value={value9}
+            onChange={setValue9}
+            placeholder="That input loads something"
+          >
+            <TextInput.LoadingIsland />
+          </TextInput>
+          <TextInput
+            value={value9}
+            onChange={setValue9}
+            placeholder="That input loads something"
+            size="s"
+          >
+            <TextInput.LoadingIsland placement="right" />
+          </TextInput>
+          <TextInput
+            value={value9}
+            onChange={setValue9}
+            placeholder="That input loads something"
+            size="l"
+          >
+            <TextInput.LoadingIsland placement="right" />
+          </TextInput>
+        </Flex>
       </Flex>
     );
   },
