@@ -54,16 +54,26 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
           return;
         }
 
-        const _suggestions = await getSuggestions({
-          value: restProps.value || '',
-        });
-        if (_suggestions.length && !suggestionWasSelected.current) {
-          dropdownRef.current?.openPopup();
+        if (suggestionWasSelected.current) {
+          suggestionWasSelected.current = false;
+          return;
         }
 
-        suggestionWasSelected.current = false;
+        try {
+          const _suggestions = await getSuggestions({
+            value: restProps.value || '',
+          });
 
-        setSuggestions(_suggestions);
+          if (_suggestions.length && !suggestionWasSelected.current) {
+            dropdownRef.current?.openPopup();
+          }
+
+          suggestionWasSelected.current = false;
+
+          setSuggestions(_suggestions);
+        } catch (err) {
+          console.error(err);
+        }
       },
       [restProps.value, getSuggestions],
       300,
@@ -103,6 +113,7 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
     };
 
     const needToShowDropdown =
+      !suggestionWasSelected.current &&
       suggestionElements.length > 0 &&
       restProps.value &&
       restProps.value.trim().length > 0;
