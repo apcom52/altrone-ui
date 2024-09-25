@@ -16,6 +16,7 @@ import {
   ActionIsland,
   CustomIsland,
   IconIsland,
+  LoadingIsland,
   TextIsland,
 } from './components';
 import { useConfiguration } from 'components/configuration';
@@ -24,6 +25,7 @@ import { Dropdown } from '../dropdown';
 import { Popover } from '../popover';
 import { Tooltip } from '../tooltip';
 import { AltChildren } from 'utils';
+import { TextInputSizeContext } from './TextInput.context.ts';
 
 const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
   (props, ref) => {
@@ -142,6 +144,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
               IconIsland,
               ActionIsland,
               CustomIsland,
+              LoadingIsland,
               Dropdown,
               Popover,
               Tooltip,
@@ -242,18 +245,20 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
 
     return (
       <div className={wrapperCls} style={wrapperStyles}>
-        {inputElement}
-        {leftIslands.length ? (
-          <div ref={leftIslandsContainerRef} className={s.LeftIslands}>
-            {leftIslands}
-          </div>
-        ) : null}
-        {rightIslands.length ? (
-          <div ref={rightIslandsContainerRef} className={s.RightIslands}>
-            {rightIslands}
-          </div>
-        ) : null}
-        {nonIslandElements}
+        <TextInputSizeContext.Provider value={inputSize || 'm'}>
+          {inputElement}
+          {leftIslands.length ? (
+            <div ref={leftIslandsContainerRef} className={s.LeftIslands}>
+              {leftIslands}
+            </div>
+          ) : null}
+          {rightIslands.length ? (
+            <div ref={rightIslandsContainerRef} className={s.RightIslands}>
+              {rightIslands}
+            </div>
+          ) : null}
+          {nonIslandElements}
+        </TextInputSizeContext.Provider>
       </div>
     );
   },
@@ -264,6 +269,7 @@ const TextInputNamespace = Object.assign(TextInputComponent, {
   IconIsland: IconIsland,
   ActionIsland: ActionIsland,
   CustomIsland: CustomIsland,
+  LoadingIsland: LoadingIsland,
 });
 
 export { TextInputNamespace as TextInput };
