@@ -39,7 +39,7 @@ export const Icon = memo(
     };
 
     return (
-      <span className={cls} style={styles} {...props}>
+      <span aria-hidden="true" className={cls} style={styles} {...props}>
         {i}
       </span>
     );

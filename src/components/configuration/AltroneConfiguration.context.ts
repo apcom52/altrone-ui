@@ -22,7 +22,9 @@ export type Locale = {
 
 export interface ConsumerConfigurationContext {
   locale?: Partial<Locale>;
-  autocompleteInput?: ComponentConfiguration;
+  autocompleteInput?: ComponentConfiguration<{
+    showControls?: boolean;
+  }>;
   bottomNavigation?: ComponentConfiguration<{
     selectedItemClassName: string;
   }>;
@@ -127,6 +129,9 @@ export interface ConsumerConfigurationContext {
     rainbowEffect?: boolean;
     textIsland?: ComponentConfiguration;
     iconIsland?: ComponentConfiguration;
+    loadingIsland?: ComponentConfiguration<{
+      color: string;
+    }>;
     actionIsland?: ComponentConfiguration;
     customIsland?: ComponentConfiguration;
   }>;

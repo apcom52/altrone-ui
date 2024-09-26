@@ -1,0 +1,7 @@
+@import 'src/global/mixins';
+
+.LoadingIsland {
+  display: inline-flex;
+  align-items: center;
+  pointer-events: none;
+}

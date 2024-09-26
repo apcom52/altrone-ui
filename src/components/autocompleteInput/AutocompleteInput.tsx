@@ -16,6 +16,7 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
       style,
       getSuggestions,
       renderSuggestion,
+      showControls = true,
       ...restProps
     },
     ref,
@@ -23,10 +24,14 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
     const { autocompleteInput: autocompleteInputConfig = {} } =
       useConfiguration();
 
+    const isControlsVisible =
+      autocompleteInputConfig.showControls ?? showControls;
+
     const dropdownRef = useRef<PopoverRef | null>(null);
     const suggestionWasSelected = useRef(false);
 
     const [suggestions, setSuggestions] = useState<string[]>([]);
+    const [isDataLoading, setIsDataLoading] = useState(false);
 
     const safeChildren = ArrayUtils.getSafeArray(children);
 
@@ -36,7 +41,10 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
       ...style,
     };
 
+    const isLoadingIslandVisible = isControlsVisible && isDataLoading;
+
     const selectSuggestion = (value: string) => {
+      setIsDataLoading(false);
       const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
         window.HTMLInputElement.prototype,
         'value',
@@ -54,16 +62,28 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
           return;
         }
 
-        const _suggestions = await getSuggestions({
-          value: restProps.value || '',
-        });
-        if (_suggestions.length && !suggestionWasSelected.current) {
-          dropdownRef.current?.openPopup();
+        if (suggestionWasSelected.current) {
+          suggestionWasSelected.current = false;
+          return;
         }
 
-        suggestionWasSelected.current = false;
+        try {
+          setIsDataLoading(true);
+          const _suggestions = await getSuggestions({
+            value: restProps.value || '',
+          });
+          setIsDataLoading(false);
 
-        setSuggestions(_suggestions);
+          if (_suggestions.length && !suggestionWasSelected.current) {
+            dropdownRef.current?.openPopup();
+          }
+
+          suggestionWasSelected.current = false;
+
+          setSuggestions(_suggestions);
+        } catch (err) {
+          console.error(err);
+        }
       },
       [restProps.value, getSuggestions],
       300,
@@ -103,6 +123,7 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
     };
 
     const needToShowDropdown =
+      !suggestionWasSelected.current &&
       suggestionElements.length > 0 &&
       restProps.value &&
       restProps.value.trim().length > 0;
@@ -136,6 +157,9 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
           onKeyDown={onKeyDown}
           {...restProps}
         >
+          {isLoadingIslandVisible ? (
+            <TextInput.LoadingIsland placement="right" />
+          ) : null}
           {...safeChildren}
         </TextInput>
       </Dropdown>
