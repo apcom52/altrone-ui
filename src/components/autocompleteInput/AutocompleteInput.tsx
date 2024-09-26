@@ -157,10 +157,10 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
           onKeyDown={onKeyDown}
           {...restProps}
         >
-          {...safeChildren}
           {isLoadingIslandVisible ? (
             <TextInput.LoadingIsland placement="right" />
           ) : null}
+          {...safeChildren}
         </TextInput>
       </Dropdown>
     );
