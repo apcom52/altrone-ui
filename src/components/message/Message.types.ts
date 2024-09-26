@@ -6,4 +6,6 @@ export interface MessageProps
   icon?: ReactElement;
   header?: string | JSX.Element;
   role?: Role;
+  ariaRole?: string;
+  severity?: Role;
 }
