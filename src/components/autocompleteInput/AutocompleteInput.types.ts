@@ -18,4 +18,5 @@ export interface AutocompleteInputProps extends TextInputProps {
   renderSuggestion?: (
     context: AutocompleteRenderSuggestionContext,
   ) => React.JSX.Element;
+  showControls?: boolean;
 }

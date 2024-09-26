@@ -25,6 +25,7 @@ describe('TextInput', () => {
           <TextInput.CustomIsland data-testid="custom-island">
             children
           </TextInput.CustomIsland>
+          <TextInput.LoadingIsland data-testid="loading-island" />
         </TextInput>
       </AltroneApplication>,
     );
@@ -34,6 +35,7 @@ describe('TextInput', () => {
     expect(screen.getByTestId('icon-island')).toBeInTheDocument();
     expect(screen.getByTestId('action-island')).toBeInTheDocument();
     expect(screen.getByTestId('custom-island')).toBeInTheDocument();
+    expect(screen.getByTestId('loading-island')).toBeInTheDocument();
   });
 
   test('need to check wrapperClassName and wrapperStyle properties', () => {

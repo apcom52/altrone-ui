@@ -1,9 +1,10 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { MessageProps } from './Message.types.ts';
 import { Flex } from 'components/flex';
 import s from './message.module.scss';
 import clsx from 'clsx';
 import { useConfiguration } from 'components/configuration';
+import { GlobalUtils } from '../../utils';
 
 export const Message = memo<MessageProps>(
   ({
@@ -11,19 +12,24 @@ export const Message = memo<MessageProps>(
     className,
     header,
     icon,
-    role = 'default',
+    role,
+    severity,
     style,
+    ariaRole = 'alert',
     ...props
   }) => {
     const { message: messageConfig = {} } = useConfiguration();
 
+    // TODO: in 4.0 version we need to remove role prop
+    const messageRole = severity ?? role ?? 'default';
+
     const cls = clsx(
       s.Message,
       {
-        [s.RolePrimary]: role === 'primary',
-        [s.RoleSuccess]: role === 'success',
-        [s.RoleWarning]: role === 'warning',
-        [s.RoleDanger]: role === 'danger',
+        [s.RolePrimary]: messageRole === 'primary',
+        [s.RoleSuccess]: messageRole === 'success',
+        [s.RoleWarning]: messageRole === 'warning',
+        [s.RoleDanger]: messageRole === 'danger',
       },
       className,
       messageConfig.className,
@@ -34,13 +40,19 @@ export const Message = memo<MessageProps>(
       ...style,
     };
 
+    useEffect(() => {
+      if (role) {
+        GlobalUtils.deprecatedMessage('Message', 'role', 'severity', '4.0');
+      }
+    }, [role]);
+
     return (
       <Flex
         className={cls}
         gap="l"
         direction="horizontal"
         style={styles}
-        role="alert"
+        role={ariaRole}
         {...props}
       >
         {icon ? <div className={s.Icon}>{icon}</div> : null}

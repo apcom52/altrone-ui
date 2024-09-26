@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Icon, Message } from 'components';
+import { Button, Flex, Icon, Message } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
+import { useBoolean } from '../../utils';
 
 const story: Meta<typeof Message> = {
   title: 'Components/Display/Message',
@@ -54,6 +55,24 @@ export const MessageStory: StoryObj<typeof Flex> = {
       </Message>
     </Flex>
   ),
+};
+
+export const AccessibilityStory: StoryObj<typeof Flex> = {
+  name: 'Accessibility',
+  render: () => {
+    const { value: visible, enable } = useBoolean(false);
+
+    return (
+      <Flex direction="vertical" gap="l" align="start">
+        <Button onClick={enable} label="Show alert" />
+        {visible && (
+          <Message role="danger" icon={<Icon i="error" />}>
+            Oops! Something went wrong. Please try again later.
+          </Message>
+        )}
+      </Flex>
+    );
+  },
 };
 
 export default story;

@@ -33,10 +33,9 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
 
     const haveValue = restProps.value;
 
-    const needToShowControl =
-      (typeof showControls === 'boolean'
-        ? showControls
-        : searchConfig.showControls || true) && haveValue;
+    const needToShowControl = Boolean(
+      (showControls ?? searchConfig.showControls ?? true) && haveValue,
+    );
 
     const safeChildren = ArrayUtils.getSafeArray(children);
 
@@ -87,6 +86,7 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
             ref.current = _ref;
           }
         }}
+        showControls={needToShowControl}
       >
         {haveValue && (
           <TextInput.IconIsland icon={<Icon i="search" />} placement="left" />

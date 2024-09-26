@@ -31,7 +31,6 @@ export interface IconIslandProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export interface LoadingIslandProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  color?: string;
   placement?: 'left' | 'right';
 }
 

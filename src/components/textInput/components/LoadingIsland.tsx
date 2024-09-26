@@ -7,7 +7,7 @@ import { Loading } from '../../loading';
 import { useTextInputSize } from '../TextInput.context.ts';
 
 export const LoadingIsland = forwardRef<HTMLDivElement, LoadingIslandProps>(
-  ({ color = '--loadingIslandColor', className, style, ...props }, ref) => {
+  ({ className, style, ...props }, ref) => {
     const { textInput: { loadingIsland: loadingIslandConfig = {} } = {} } =
       useConfiguration();
 
@@ -24,7 +24,7 @@ export const LoadingIsland = forwardRef<HTMLDivElement, LoadingIslandProps>(
       inputSize === 'l' ? '20px' : inputSize === 's' ? '12px' : '16px';
 
     return (
-      <div className={cls} style={styles} ref={ref} {...props}>
+      <div className={cls} style={styles} role="status" ref={ref} {...props}>
         <Loading size={loadingSize} strokeWidth="1.5" />
       </div>
     );
