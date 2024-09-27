@@ -87,6 +87,10 @@ export const en: Localization = {
       has: 'is contained in',
       notHas: 'is not contained in',
     },
+    booleanFilter: {
+      positive: 'is positive',
+      negative: 'is negative',
+    },
   },
   photoViewer: {
     previous: 'Previous photo',

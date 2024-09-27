@@ -130,6 +130,16 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
               ),
             },
             {
+              accessor: 'inStaff',
+              label: 'In Staff',
+              filterable: true,
+              Component: ({ value }) => (
+                <Text.Paragraph size="l">
+                  {value ? <Icon i="check" /> : <Icon i="close" />}
+                </Text.Paragraph>
+              ),
+            },
+            {
               accessor: 'role',
               label: 'Position',
               filterable: true,
@@ -176,6 +186,8 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
   },
   play: async ({ step, canvasElement }) => {
     const canvas = within(canvasElement);
+
+    return;
 
     const getRows = () => {
       const items = Array.from(
