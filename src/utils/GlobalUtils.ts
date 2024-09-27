@@ -13,12 +13,16 @@ export class GlobalUtils {
   ) {
     if (typeof window !== 'undefined') {
       console.warn(
-        '[Altrone]: property \x1B[1m%s\x1B[m in %s is deprecated. Use \x1B[1m%s\x1B[m instead. Will be removed in version %s',
-        deprecatedProp,
-        component,
-        instead,
-        removedInVersion,
+        GlobalUtils.formatConsoleMessage(
+          `[Altrone]: property [[${deprecatedProp}]] in ${component} is deprecated. Use [[${instead}]] instead. Will be removed in version ${removedInVersion}`,
+        ),
       );
     }
+  }
+
+  public static formatConsoleMessage(message: string) {
+    return message.replace(new RegExp(/\[\[(\w*)\]\]/gm), (_, label) => {
+      return `\x1B[1m${label}\x1B[m`;
+    });
   }
 }

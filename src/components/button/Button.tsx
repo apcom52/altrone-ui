@@ -106,7 +106,7 @@ export const Button = memo(
     useEffect(() => {
       if (!label) {
         console.warn(
-          GlobalUtils.formatMessage(
+          GlobalUtils.formatConsoleMessage(
             '[Altrone]: you passed empty [[label]] prop in Button, but it will be required in 4.0. Please fill [[label]] prop now and set [[showLabel]] to [[false]] if necessary',
           ),
         );
