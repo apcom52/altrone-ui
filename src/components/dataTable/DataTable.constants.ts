@@ -1,6 +1,7 @@
 import { Option } from '../select/Select.types.ts';
 import {
   ArrayFilterRules,
+  BooleanFilterRules,
   NumberFilterRules,
   StringFilterRules,
 } from './DataTable.types.ts';
@@ -95,5 +96,18 @@ export const DataTableArrayRules: FilteringRuleOption[] = [
     value: ArrayFilterRules.notHas,
     label: 'dataTable.arrayFilter.notHas',
     columns: 1,
+  },
+];
+
+export const DataTableBooleanRules: FilteringRuleOption[] = [
+  {
+    value: BooleanFilterRules.positive,
+    label: 'dataTable.booleanFilter.positive',
+    columns: 0,
+  },
+  {
+    value: BooleanFilterRules.negative,
+    label: 'dataTable.booleanFilter.negative',
+    columns: 0,
   },
 ];

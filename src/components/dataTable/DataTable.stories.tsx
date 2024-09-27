@@ -130,6 +130,16 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
               ),
             },
             {
+              accessor: 'inStaff',
+              label: 'In Staff',
+              filterable: true,
+              Component: ({ value }) => (
+                <Text.Paragraph size="l">
+                  {value ? <Icon i="check" /> : <Icon i="close" />}
+                </Text.Paragraph>
+              ),
+            },
+            {
               accessor: 'role',
               label: 'Position',
               filterable: true,
@@ -546,6 +556,43 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
         'Emily Johnson',
         'David Wilson',
         'Sarah Miller',
+        'James Anderson',
+      ]);
+    });
+
+    await step('Boolean filtering: is positive', async () => {
+      await userEvent.click(canvas.getByTitle('Filters'));
+      await userEvent.click(canvas.getByText('Clear'));
+
+      await userEvent.click(canvas.getByTitle('Filters'));
+      await userEvent.click(canvas.getByText('Add filter'));
+      await userEvent.click(canvas.getByTitle('In Staff'));
+
+      await userEvent.click(canvas.getByTitle('Apply'));
+      await AsyncUtils.timeout(1);
+
+      await expect(getRows()).toStrictEqual([
+        'John Doe',
+        'Emily Johnson',
+        'Jessica Davis',
+        'David Wilson',
+        'Robert Garcia',
+        'Sarah Miller',
+      ]);
+    });
+
+    await step('Boolean filtering: is negative', async () => {
+      await userEvent.click(canvas.getByTitle('Filters'));
+      await userEvent.click(canvas.getByPlaceholderText('is positive'));
+      await userEvent.click(canvas.getByText('is negative'));
+
+      await userEvent.click(canvas.getByTitle('Apply'));
+      await AsyncUtils.timeout(1);
+
+      await expect(getRows()).toStrictEqual([
+        'Jane Smith',
+        'Michael Brown',
+        'Laura Martinez',
         'James Anderson',
       ]);
     });

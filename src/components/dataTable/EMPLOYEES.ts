@@ -6,6 +6,7 @@ export interface EmployeeType {
   phoneNumber: string;
   skills: string[];
   role: string;
+  inStaff: boolean;
 }
 
 export const EMPLOYEES = [
@@ -17,6 +18,7 @@ export const EMPLOYEES = [
     phoneNumber: '123-456-7890',
     skills: ['JavaScript', 'React', 'Node.js'],
     role: 'Frontend Developer',
+    inStaff: true,
   },
   {
     firstName: 'Jane',
@@ -26,6 +28,7 @@ export const EMPLOYEES = [
     phoneNumber: '234-567-8901',
     skills: ['HTML', 'CSS', 'JavaScript', 'Angular'],
     role: 'Frontend Developer',
+    inStaff: false,
   },
   {
     firstName: 'Emily',
@@ -35,6 +38,7 @@ export const EMPLOYEES = [
     phoneNumber: '345-678-9012',
     skills: ['Python', 'Django', 'PostgreSQL'],
     role: 'Backend Developer',
+    inStaff: true,
   },
   {
     firstName: 'Michael',
@@ -44,6 +48,7 @@ export const EMPLOYEES = [
     phoneNumber: '456-789-0123',
     skills: ['Java', 'Spring', 'Hibernate'],
     role: 'Backend Developer',
+    inStaff: false,
   },
   {
     firstName: 'Jessica',
@@ -53,6 +58,7 @@ export const EMPLOYEES = [
     phoneNumber: '567-890-1234',
     skills: ['JavaScript', 'Vue.js', 'Node.js'],
     role: 'Full Stack Developer',
+    inStaff: true,
   },
   {
     firstName: 'David',
@@ -62,6 +68,7 @@ export const EMPLOYEES = [
     phoneNumber: '678-901-2345',
     skills: ['C#', '.NET', 'Azure'],
     role: 'Backend Developer',
+    inStaff: true,
   },
   {
     firstName: 'Laura',
@@ -71,6 +78,7 @@ export const EMPLOYEES = [
     phoneNumber: '789-012-3456',
     skills: ['JavaScript', 'React', 'Node.js', 'GraphQL'],
     role: 'Frontend Developer',
+    inStaff: false,
   },
   {
     firstName: 'Robert',
@@ -80,6 +88,7 @@ export const EMPLOYEES = [
     phoneNumber: '890-123-4567',
     skills: ['Ruby', 'Rails', 'JavaScript'],
     role: 'Full Stack Developer',
+    inStaff: true,
   },
   {
     firstName: 'Sarah',
@@ -89,6 +98,7 @@ export const EMPLOYEES = [
     phoneNumber: '901-234-5678',
     skills: ['PHP', 'Laravel', 'MySQL'],
     role: 'Backend Developer',
+    inStaff: true,
   },
   {
     firstName: 'James',
@@ -98,5 +108,6 @@ export const EMPLOYEES = [
     phoneNumber: '012-345-6789',
     skills: ['Python', 'Flask', 'AWS'],
     role: 'Backend Developer',
+    inStaff: false,
   },
 ];

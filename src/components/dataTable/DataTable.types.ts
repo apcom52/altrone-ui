@@ -65,10 +65,16 @@ export enum ArrayFilterRules {
   notHas = 'notHas',
 }
 
+export enum BooleanFilterRules {
+  positive = 'positive',
+  negative = 'negative',
+}
+
 export enum FilterType {
   string = 'string',
   number = 'number',
   array = 'array',
+  boolean = 'boolean',
 }
 
 export type StringFilter = {
@@ -104,7 +110,17 @@ export type ArrayFilter = {
   }[];
 };
 
-export type Filter = StringFilter | NumberFilter | ArrayFilter;
+export type BooleanFilter = {
+  field: string;
+  type: FilterType.boolean;
+  conditions: {
+    rule: BooleanFilterRules;
+    join: 'AND' | 'OR';
+    value: unknown;
+  }[];
+};
+
+export type Filter = StringFilter | NumberFilter | ArrayFilter | BooleanFilter;
 
 export interface FilterRowProps<T extends AnyObject> {
   filter: Filter;

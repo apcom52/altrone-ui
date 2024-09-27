@@ -1,7 +1,11 @@
 import { AnyObject, useDebouncedMemo } from '../../utils';
 import { Filter, FilterType, Sort } from './DataTable.types.ts';
-import { numberFilter, stringFilter } from './filters';
-import { arrayFilter } from './filters/arrayFilter.ts';
+import {
+  booleanFilter,
+  numberFilter,
+  stringFilter,
+  arrayFilter,
+} from './filters';
 
 export function useDataTableFilters<T extends AnyObject>(
   initialData: T[],
@@ -31,6 +35,8 @@ export function useDataTableFilters<T extends AnyObject>(
             validRow = numberFilter({ row, filter });
           } else if (filter.type === FilterType.array) {
             validRow = arrayFilter({ row, filter });
+          } else if (filter.type === FilterType.boolean) {
+            validRow = booleanFilter({ row, filter });
           }
         }
 

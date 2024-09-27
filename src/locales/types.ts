@@ -79,6 +79,10 @@ export interface Localization {
       has: string;
       notHas: string;
     };
+    booleanFilter: {
+      positive: string;
+      negative: string;
+    };
   };
   photoViewer: {
     previous: string;
