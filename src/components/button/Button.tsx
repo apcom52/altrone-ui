@@ -4,24 +4,30 @@ import s from './button.module.scss';
 import clsx from 'clsx';
 import { useConfiguration } from 'components/configuration';
 import { useRainbowEffect, useAltroneTheme } from 'components/application';
-import { forwardRef, memo } from 'react';
+import { forwardRef, memo, useEffect } from 'react';
 import { RenderFuncProp } from 'types';
+import { GlobalUtils } from '../../utils';
 
 const buttonRenderFunc: RenderFuncProp<HTMLButtonElement, ButtonProps> = (
   ref,
   props,
 ) => {
-  return <button ref={ref} {...props} />;
+  const { ariaRole, ...restProps } = props;
+
+  return <button ref={ref} role={props.ariaRole} {...restProps} />;
 };
 
 export const Button = memo(
   forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     const {
       label,
+      showLabel,
       leftIcon,
       rightIcon,
       transparent,
-      role = 'default',
+      role,
+      severity,
+      ariaRole = 'button',
       size = 'm',
       className,
       style,
@@ -31,6 +37,8 @@ export const Button = memo(
 
     const { button: buttonConfig = {} } = useConfiguration();
 
+    const buttonSeverity = severity ?? role ?? 'default';
+
     const { theme } = useAltroneTheme();
 
     const isRainbowPropsActivated =
@@ -38,7 +46,7 @@ export const Button = memo(
         ? rainbowEffect
         : buttonConfig.rainbowEffect || true;
 
-    const isRainbowNeeded = role === 'default';
+    const isRainbowNeeded = buttonSeverity === 'default';
 
     const rainbowEffects = useRainbowEffect(
       isRainbowPropsActivated && isRainbowNeeded,
@@ -53,16 +61,19 @@ export const Button = memo(
       },
     );
 
-    const isOnlyIcon = Boolean(!label && (leftIcon || rightIcon));
+    const isOnlyIcon =
+      typeof showLabel === 'boolean'
+        ? !showLabel
+        : Boolean(!label && (leftIcon || rightIcon));
 
     const cls = clsx(
       s.Button,
       {
         [s.Button_transparent]: transparent,
-        [s.Primary]: role === 'primary',
-        [s.Success]: role === 'success',
-        [s.Warning]: role === 'warning',
-        [s.Danger]: role === 'danger',
+        [s.Primary]: buttonSeverity === 'primary',
+        [s.Success]: buttonSeverity === 'success',
+        [s.Warning]: buttonSeverity === 'warning',
+        [s.Danger]: buttonSeverity === 'danger',
         [s.Small]: size === 's',
         [s.Large]: size === 'l',
         [s.OnlyIcon]: isOnlyIcon,
@@ -86,10 +97,27 @@ export const Button = memo(
       <div className={s.Icon}>{leftIcon || rightIcon}</div>
     );
 
+    useEffect(() => {
+      if (role) {
+        GlobalUtils.deprecatedMessage('Button', 'role', 'severity', '4.0');
+      }
+    }, [role]);
+
+    useEffect(() => {
+      if (!label) {
+        console.warn(
+          GlobalUtils.formatMessage(
+            '[Altrone]: you passed empty [[label]] prop in Button, but it will be required in 4.0. Please fill [[label]] prop now and set [[showLabel]] to [[false]] if necessary',
+          ),
+        );
+      }
+    }, [label]);
+
     return renderFunc(ref, {
       type: 'button',
       ...props,
       ...rainbowEffects,
+      ariaRole,
       className: cls,
       style: styles,
       children: buttonContent,

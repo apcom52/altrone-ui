@@ -2,7 +2,6 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Button, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { roleStoryField } from '../../global/storybook/argTypes.ts';
 import { within, expect, userEvent, fn } from '@storybook/test';
 import { ButtonProps } from './Button.types.ts';
 import { Role, Size } from '../../types';
@@ -18,9 +17,7 @@ const story: Meta<typeof Button> = {
     onFocus: fn(),
     onBlur: fn(),
   },
-  argTypes: {
-    role: roleStoryField,
-  },
+  argTypes: {},
 };
 
 const renderButtonsWithRole = (role: Role, args: ButtonProps) => {
@@ -75,7 +72,12 @@ const renderButtonsWithSize = (size: Size) => {
       <Button size={size} label="Like" leftIcon={<Icon i="favorite" />} />
       <Button size={size} label="Like" rightIcon={<Icon i="favorite" />} />
       <Button size={size} label="Like" />
-      <Button size={size} leftIcon={<Icon i="favorite" />} />
+      <Button
+        size={size}
+        label="Like"
+        showLabel={false}
+        leftIcon={<Icon i="favorite" />}
+      />
     </Flex>
   );
 };
