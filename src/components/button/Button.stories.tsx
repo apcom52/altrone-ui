@@ -34,17 +34,34 @@ const renderButtonsWithRole = (role: Role, args: ButtonProps) => {
         {...args}
         role={role}
         label="Action"
+        leftIcon={<Icon i="bolt" />}
+        data-testid={`button-${role}`}
+        loading
+      />
+      <Button
+        {...args}
+        role={role}
+        label="Action"
         rightIcon={<Icon i="bolt" />}
       />
       <Button {...args} role={role} label="Action" />
       <Button {...args} role={role} disabled label="Disabled Action" />
       <Button {...args} role={role} leftIcon={<Icon i="bolt" />} />
+      <Button {...args} role={role} leftIcon={<Icon i="bolt" />} loading />
       <Button
         {...args}
         role={role}
         label="Action"
         transparent
         leftIcon={<Icon i="bolt" />}
+      />
+      <Button
+        {...args}
+        role={role}
+        label="Action"
+        transparent
+        leftIcon={<Icon i="bolt" />}
+        loading
       />
       <Button
         {...args}
@@ -62,6 +79,13 @@ const renderButtonsWithRole = (role: Role, args: ButtonProps) => {
         transparent
       />
       <Button {...args} role={role} transparent leftIcon={<Icon i="bolt" />} />
+      <Button
+        {...args}
+        role={role}
+        transparent
+        leftIcon={<Icon i="bolt" />}
+        loading
+      />
     </Flex>
   );
 };
@@ -71,6 +95,13 @@ const renderButtonsWithSize = (size: Size) => {
     <Flex gap="m" align="start">
       <Button size={size} label="Like" leftIcon={<Icon i="favorite" />} />
       <Button size={size} label="Like" rightIcon={<Icon i="favorite" />} />
+      <Button
+        size={size}
+        label="Like"
+        rightIcon={<Icon i="favorite" />}
+        loading
+      />
+      <Button size={size} label="Like" loading />
       <Button size={size} label="Like" />
       <Button
         size={size}
