@@ -4,7 +4,7 @@ import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Pagination } from './Pagination.tsx';
 import { useState } from 'react';
-import { userEvent, within } from '@storybook/test';
+import { userEvent, within, expect } from '@storybook/test';
 
 const story: Meta<typeof Pagination> = {
   title: 'Components/Navigation/Pagination',
@@ -51,13 +51,39 @@ export const PaginationStory: StoryObj<typeof Pagination> = {
     await step('Need to show popover and navigate to page', async () => {
       await userEvent.click(canvas.getByText('1 of 5'));
 
-      // const inputElement = canvas.getByLabelText('Navigate to page');
+      const inputElement = canvas.getByLabelText('Navigate to page');
 
-      // console.log(inputElement);
-      // inputElement.focus();
-      // await userEvent.keyboard('{ArrowRight}');
-      // await userEvent.keyboard('{backspace}');
-      // await userEvent.type(inputElement, '1');
+      inputElement.focus();
+      await userEvent.keyboard('{ArrowRight}');
+      await userEvent.keyboard('{backspace}');
+      await userEvent.type(inputElement, '4');
+      await userEvent.click(canvas.getByText('Navigate'));
+
+      await expect(canvas.getByText('4 of 5')).toBeInTheDocument();
+    });
+
+    await step('Need to work correctly with wrong inputed page', async () => {
+      await userEvent.click(canvas.getByText('4 of 5'));
+
+      const inputElement = canvas.getByLabelText('Navigate to page');
+
+      inputElement.focus();
+      await userEvent.keyboard('{ArrowRight}');
+      await userEvent.keyboard('{backspace}');
+      await userEvent.type(inputElement, '0');
+      await userEvent.click(canvas.getByText('Navigate'));
+
+      await expect(canvas.getByText('1 of 5')).toBeInTheDocument();
+
+      await userEvent.click(canvas.getByText('1 of 5'));
+
+      canvas.getByLabelText('Navigate to page').focus();
+      await userEvent.keyboard('{ArrowRight}');
+      await userEvent.keyboard('{backspace}');
+      await userEvent.type(inputElement, '55');
+      await userEvent.click(canvas.getByText('Navigate'));
+
+      await expect(canvas.getByText('5 of 5')).toBeInTheDocument();
     });
   },
 };
