@@ -16,4 +16,5 @@ export interface ButtonProps
   rainbowEffect?: boolean;
   renderFunc?: RenderFuncProp<HTMLButtonElement, ButtonProps>;
   ariaRole?: string;
+  loading?: boolean;
 }

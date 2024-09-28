@@ -7,6 +7,7 @@ import { useRainbowEffect, useAltroneTheme } from 'components/application';
 import { forwardRef, memo, useEffect } from 'react';
 import { RenderFuncProp } from 'types';
 import { GlobalUtils } from '../../utils';
+import { Loading } from '../loading';
 
 const buttonRenderFunc: RenderFuncProp<HTMLButtonElement, ButtonProps> = (
   ref,
@@ -32,6 +33,7 @@ export const Button = memo(
       className,
       style,
       rainbowEffect,
+      loading,
       renderFunc = buttonRenderFunc,
     } = props;
 
@@ -77,6 +79,7 @@ export const Button = memo(
         [s.Small]: size === 's',
         [s.Large]: size === 'l',
         [s.OnlyIcon]: isOnlyIcon,
+        [s.WithLoading]: loading,
       },
       className,
       buttonConfig.className,
@@ -87,14 +90,30 @@ export const Button = memo(
       ...style,
     };
 
+    const loadingSize = size === 'l' ? '20px' : size === 's' ? '12px' : '16px';
+
+    const loadingNode = loading ? (
+      <div className={s.ButtonLoading}>
+        <Loading
+          strokeWidth="1.5"
+          size={loadingSize}
+          color="var(--button-loading-color)"
+        />
+      </div>
+    ) : null;
+
     const buttonContent = !isOnlyIcon ? (
       <Flex gap={size === 'l' ? 's' : 'xs'} align="center">
         {leftIcon ? <div className={s.Icon}>{leftIcon}</div> : null}
         <div className={s.Label}>{label}</div>
         {rightIcon ? <div className={s.Icon}>{rightIcon}</div> : null}
+        {loadingNode}
       </Flex>
     ) : (
-      <div className={s.Icon}>{leftIcon || rightIcon}</div>
+      <div className={s.Icon}>
+        {leftIcon || rightIcon}
+        {loadingNode}
+      </div>
     );
 
     useEffect(() => {
