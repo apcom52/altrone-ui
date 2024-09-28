@@ -38,6 +38,10 @@
   &:hover, &:focus-visible {
     color: var(--spoilerHoveredHeadingTextColor);
   }
+
+  &::-webkit-details-marker {
+    display: none;
+  }
 }
 
 .ArrowIcon {

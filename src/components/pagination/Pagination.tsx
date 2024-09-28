@@ -43,9 +43,16 @@ export const Pagination = memo<PaginationProps>(
     };
 
     const navigateToPage = () => {
-      const vp = Number(virtualPage || 1);
+      let vp = Number(virtualPage || 1);
 
-      setPage(vp >= 1 && vp <= totalPages ? vp : 1);
+      if (vp < 1) {
+        vp = 1;
+      } else if (vp > totalPages) {
+        vp = totalPages;
+      }
+
+      setVirtualPage(vp);
+      setPage(vp);
     };
 
     return (
@@ -73,9 +80,8 @@ export const Pagination = memo<PaginationProps>(
             <Flex direction="vertical" gap="m" align="end">
               <NumberInput
                 value={virtualPage}
+                min={undefined}
                 onChange={setVirtualPage}
-                min={1}
-                max={totalPages}
                 aria-label={t('pagination.title')}
               />
               <Button
