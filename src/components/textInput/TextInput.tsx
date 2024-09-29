@@ -11,7 +11,7 @@ import { TextInputProps } from './TextInput.types.ts';
 import s from './textInput.module.scss';
 import clsx from 'clsx';
 import { useRainbowEffect } from 'components/application';
-import { useResizeObserver, useBoolean } from 'utils';
+import { useResizeObserver, useBoolean, DOMUtils } from 'utils';
 import {
   ActionIsland,
   CustomIsland,
@@ -21,9 +21,6 @@ import {
 } from './components';
 import { useConfiguration } from 'components/configuration';
 import { useFormField } from '../form/components/Field.tsx';
-import { Dropdown } from '../dropdown';
-import { Popover } from '../popover';
-import { Tooltip } from '../tooltip';
 import { AltChildren } from 'utils';
 import { TextInputSizeContext } from './TextInput.context.ts';
 
@@ -139,16 +136,13 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       for (const element of elementList) {
         if (element && typeof element !== 'string') {
           if (
-            [
+            DOMUtils.containsElementType(element, [
               TextIsland,
               IconIsland,
               ActionIsland,
               CustomIsland,
               LoadingIsland,
-              Dropdown,
-              Popover,
-              Tooltip,
-            ].includes((element as JSX.Element).type)
+            ])
           ) {
             islandElements.push(element);
           } else {

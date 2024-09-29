@@ -25,7 +25,7 @@ export const Group = memo<NavigationListGroupProps>(
         .forEach((elem) => {
           const element = elem as ReactElement;
 
-          if (DOMUtils.containsElementType(element, GroupAction)) {
+          if (DOMUtils.containsElementType(element, [GroupAction])) {
             actions.push(element);
           } else {
             links.push(element);

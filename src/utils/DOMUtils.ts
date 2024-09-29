@@ -88,13 +88,13 @@ export class DOMUtils {
     return DOMUtils.getValidChildren(element).length > 0;
   }
 
-  static containsElementType(element: ReactNode, type: React.ElementType) {
+  static containsElementType(element: ReactNode, types: React.ElementType[]) {
     let result = false;
 
     const checkNode = (node: ReactNode) => {
       if (result || !isValidElement(node)) return;
 
-      if (node.type === type) {
+      if (types.includes(node.type as React.ElementType)) {
         result = true;
         return;
       }
