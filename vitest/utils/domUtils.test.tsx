@@ -7,6 +7,7 @@ import {
   NavigationList,
   Popover,
   TextInput,
+  TopNavigation,
 } from '../../src';
 import { Fragment } from 'react';
 
@@ -41,11 +42,11 @@ describe('DomUtils', () => {
   });
 
   test('containsElementType', async () => {
-    expect(DOMUtils.containsElementType(<Button label="abc" />, Button)).toBe(
+    expect(DOMUtils.containsElementType(<Button label="abc" />, [Button])).toBe(
       true,
     );
     expect(
-      DOMUtils.containsElementType(<Button label="abc" />, TextInput),
+      DOMUtils.containsElementType(<Button label="abc" />, [TextInput]),
     ).toBe(false);
 
     expect(
@@ -53,7 +54,7 @@ describe('DomUtils', () => {
         <Popover content={null}>
           <Button label="abc" />
         </Popover>,
-        Popover,
+        [Popover],
       ),
     ).toBe(true);
 
@@ -66,7 +67,7 @@ describe('DomUtils', () => {
             <Icon i="abc" />
           </Flex>
         </Popover>,
-        Button,
+        [Button],
       ),
     ).toBe(true);
 
@@ -79,16 +80,42 @@ describe('DomUtils', () => {
             <Icon i="abc" />
           </Flex>
         </Popover>,
-        Icon,
+        [Icon],
       ),
     ).toBe(true);
+
+    expect(
+      DOMUtils.containsElementType(
+        <Popover content={null}>
+          <Button label="abc" />
+          <TextInput />
+          <Flex>
+            <Icon i="abc" />
+          </Flex>
+        </Popover>,
+        [Button, NavigationList],
+      ),
+    ).toBe(true);
+
+    expect(
+      DOMUtils.containsElementType(
+        <Popover content={null}>
+          <Button label="abc" />
+          <TextInput />
+          <Flex>
+            <Icon i="abc" />
+          </Flex>
+        </Popover>,
+        [TopNavigation, NavigationList],
+      ),
+    ).toBe(false);
 
     expect(
       DOMUtils.containsElementType(
         <Popover content={null}>
           <NavigationList.GroupAction label="abc" icon={<Icon i="test" />} />
         </Popover>,
-        NavigationList.GroupAction,
+        [NavigationList.GroupAction],
       ),
     ).toBe(true);
 
@@ -97,7 +124,7 @@ describe('DomUtils', () => {
         <Dropdown content={null}>
           <NavigationList.GroupAction label="abc" icon={<Icon i="test" />} />
         </Dropdown>,
-        NavigationList.GroupAction,
+        [NavigationList.GroupAction],
       ),
     ).toBe(true);
   });
