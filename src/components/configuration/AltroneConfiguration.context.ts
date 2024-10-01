@@ -72,9 +72,11 @@ export interface ConsumerConfigurationContext {
   message?: ComponentConfiguration;
   modal?: ComponentConfiguration;
   navigationList?: ComponentConfiguration<{
-    group?: {
+    group?: ComponentConfiguration<{
       titleClassName: string;
-    };
+    }>;
+    groupAction?: ComponentConfiguration;
+    link?: ComponentConfiguration;
   }>;
   numberInput?: ComponentConfiguration<{
     showControls?: boolean;

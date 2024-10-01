@@ -7,11 +7,16 @@ import { AltChildren, DOMUtils } from '../../../utils';
 import { GroupAction } from './GroupAction.tsx';
 
 export const Group = memo<NavigationListGroupProps>(
-  ({ title, children, className, ...restProps }) => {
+  ({ title, children, className, style, ...restProps }) => {
     const { navigationList: { group: groupConfig } = {} } = useConfiguration();
 
-    const cls = clsx(s.Group, className);
+    const cls = clsx(s.Group, className, groupConfig?.className);
     const titleCls = clsx(s.Title, groupConfig?.titleClassName);
+
+    const styles = {
+      ...groupConfig?.style,
+      ...style,
+    };
 
     const [actions, links] = useMemo(() => {
       const actions: ReactElement[] = [];
@@ -36,7 +41,7 @@ export const Group = memo<NavigationListGroupProps>(
     }, [children]);
 
     return (
-      <div className={cls} {...restProps}>
+      <div className={cls} style={styles} {...restProps}>
         <div className={s.Header}>
           {title ? <div className={titleCls}>{title}</div> : null}
           <div className={s.Actions}>{actions}</div>
