@@ -4,7 +4,7 @@ import React, {
   ReactElement,
   ReactNode,
 } from 'react';
-import { AnyObject } from './index.ts';
+import { AnyObject } from './types.ts';
 
 interface TriggerNativeEventProps {
   element: HTMLElement;
