@@ -144,7 +144,7 @@ export const FilterRow = ({
       <Button
         leftIcon={<Icon i="close" />}
         title={t('common.delete')}
-        onClick={() => deleteFilter(filterIndex)}
+        onClick={() => deleteFilter(filterIndex, 'delete')}
       />
     </div>
   );
