@@ -3,7 +3,7 @@ import { NavigationListProps } from './NavigationList.types.ts';
 import s from './navigationList.module.scss';
 import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
-import { Group, Link } from './components';
+import { Group, GroupAction, Link } from './components';
 
 const NavigationListComponent = memo<NavigationListProps>(
   ({ children, className, style, ...restProps }) => {
@@ -30,6 +30,7 @@ const NavigationListComponent = memo<NavigationListProps>(
 
 const NavigationListNamespace = Object.assign(NavigationListComponent, {
   Group: Group,
+  GroupAction: GroupAction,
   Link: Link,
 });
 

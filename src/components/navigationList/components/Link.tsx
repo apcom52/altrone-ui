@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import s from './link.module.scss';
 import { NavigationListLinkProps } from '../NavigationList.types.ts';
 import { RenderFuncProp } from '../../../types';
+import { useConfiguration } from '../../configuration';
 
 const navigationListRenderFunc: RenderFuncProp<
   HTMLAnchorElement,
@@ -25,8 +26,11 @@ export const Link = forwardRef<HTMLAnchorElement, NavigationListLinkProps>(
     const {
       renderFunc = navigationListRenderFunc,
       className,
+      style,
       ...restProps
     } = props;
+
+    const { navigationList: { link: linkConfig } = {} } = useConfiguration();
 
     const cls = clsx(
       s.Link,
@@ -34,11 +38,18 @@ export const Link = forwardRef<HTMLAnchorElement, NavigationListLinkProps>(
         [s.Selected]: props.selected,
       },
       className,
+      linkConfig?.className,
     );
+
+    const styles = {
+      ...linkConfig?.style,
+      ...style,
+    };
 
     return renderFunc(ref, {
       ...restProps,
       className: cls,
+      style: styles,
     });
   },
 );
