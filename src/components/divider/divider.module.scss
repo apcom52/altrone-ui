@@ -17,6 +17,7 @@
 
 .Vertical {
   width: 1px;
-  height: calc(100% - var(--gap));
+  height: auto;
   margin: var(--xs-gap) var(--l-gap);
+  align-self: stretch;
 }
