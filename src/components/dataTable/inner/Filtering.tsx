@@ -127,7 +127,7 @@ export const Filtering = memo(() => {
 
   const changeFilter = useCallback(
     (oldFilterIndex: number, accessor: string) => {
-      deleteFilter(oldFilterIndex);
+      deleteFilter(oldFilterIndex, 'field');
 
       const filterType = getCellType(initialData?.[0], accessor);
 
@@ -159,11 +159,21 @@ export const Filtering = memo(() => {
     [],
   );
 
-  const deleteFilter = useCallback((filterIndex: number) => {
-    setInternalFilters((old) =>
-      old.filter((_, index) => index !== filterIndex),
-    );
-  }, []);
+  const deleteFilter = useCallback(
+    (filterIndex: number, source: 'delete' | 'field') => {
+      setInternalFilters((old) => {
+        const newFilters = old.filter((_, index) => index !== filterIndex);
+
+        if (source === 'delete' && newFilters.length === 0) {
+          setPage(1);
+          setFilters([]);
+        }
+
+        return newFilters;
+      });
+    },
+    [],
+  );
 
   return (
     <Popover

@@ -128,7 +128,7 @@ export interface FilterRowProps<T extends AnyObject> {
   columns: DataTableColumn<T>[];
   changeFilter: (filterIndex: number, accessor: string) => void;
   changeField: (filterIndex: number, field: string, value: unknown) => void;
-  deleteFilter: (filterIndex: number) => void;
+  deleteFilter: (filterIndex: number, source: 'delete' | 'field') => void;
 }
 
 export interface FilterFuncArgs<T extends AnyObject, FilterType> {
