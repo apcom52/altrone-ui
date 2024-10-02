@@ -1,3 +1,5 @@
+@import 'src/global/mixins';
+
 :root {
   --navigationListGroupActionBackgroundColor: transparent;
   --navigationListGroupActionTextColor: var(--default-900);
@@ -24,6 +26,13 @@
   border: none;
   cursor: pointer;
   background-color: transparent;
+  border-radius: 50%;
+
+  @include focus;
+
+  &:focus-visible {
+    outline-offset: 5px;
+  }
 
   &:hover, &:focus-visible {
     --bgColor: var(--navigationListGroupActionHoveredBackgroundColor);
