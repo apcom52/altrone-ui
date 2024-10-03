@@ -13,3 +13,48 @@
   align-items: center;
   justify-content: center;
 }
+
+.Spinner {
+  transform-origin: center;
+  animation: rotate 2s linear infinite;
+  will-change: transform;
+  overflow: visible;
+}
+
+.Active {
+  fill: none;
+  stroke: currentColor;
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  animation: stretch 1.5s ease-in-out infinite;
+  will-change: stroke-dasharray, stroke-dashoffset;
+  transition: stroke 0.5s ease;
+}
+
+.Background {
+  fill: none;
+  stroke: currentColor;
+  opacity: 0;
+  transition: stroke 0.5s ease;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes stretch {
+  0% {
+    stroke-dasharray: 0, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 75, 150;
+    stroke-dashoffset: -25;
+  }
+  100% {
+    stroke-dashoffset: -99;
+  }
+}

@@ -190,7 +190,7 @@
 :global(html) {
   background: var(--appBackground);
   color: var(--bodyTextColor);
-  font-family: "Inter", sans-serif;
+  font-family: "Inter Variable", sans-serif;
   box-sizing: border-box;
 
   * {
@@ -199,7 +199,7 @@
 }
 
 .AltroneApp {
-  font-family: "Inter", sans-serif;
+  font-family: "Inter Variable", sans-serif;
 
   :global(.screen-text) {
     @include screen-name;
