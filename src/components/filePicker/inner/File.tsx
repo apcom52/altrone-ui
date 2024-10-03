@@ -13,8 +13,6 @@ import { Text } from 'components/text';
 import clsx from 'clsx';
 import { FileUtils } from 'utils';
 import { useFilePickerContext } from '../FilePicker.context.ts';
-import type {} from 'ldrs';
-import 'ldrs/ring';
 import { deleteFileRequest } from '../FilePicker.utils.ts';
 import { useLocalization } from '../../application/useLocalization.tsx';
 

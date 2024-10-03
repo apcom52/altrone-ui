@@ -27,8 +27,6 @@
   },
   "dependencies": {
     "@floating-ui/react": "0.26.23",
-    "@fontsource/inter": "5.0.18",
-    "@fontsource/jetbrains-mono": "5.0.20",
     "@material-symbols/font-500": "0.17.1",
     "clsx": "2.1.0",
     "dayjs": "1.11.11",
@@ -42,6 +40,8 @@
     "@babel/preset-react": "7.24.1",
     "@babel/preset-typescript": "7.24.1",
     "@chromatic-com/storybook": "^1.7.0",
+    "@fontsource-variable/inter": "^5.1.0",
+    "@fontsource-variable/jetbrains-mono": "^5.1.0",
     "@playwright/experimental-ct-react": "1.42.1",
     "@playwright/test": "1.42.1",
     "@storybook/addon-a11y": "^8.2.9",

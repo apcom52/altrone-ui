@@ -4,8 +4,6 @@ import { LoadingProps } from './Loading.types.ts';
 import { useConfiguration } from '../configuration';
 import s from './loading.module.scss';
 
-import type {} from 'ldrs';
-
 export const Loading = memo<LoadingProps>(
   ({
     color,
