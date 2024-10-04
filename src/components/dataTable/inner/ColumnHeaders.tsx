@@ -4,7 +4,7 @@ import s from './columnHeaders.module.scss';
 import { Icon } from '../../icon';
 import clsx from 'clsx';
 import { Checkbox } from '../../checkbox';
-import range from 'lodash/range';
+import { range } from 'lodash-es';
 import { useVisibleColumns } from '../useVisibleColumns.ts';
 
 interface ColumnHeadersProps {

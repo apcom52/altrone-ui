@@ -12,18 +12,15 @@
     "publish-beta": "npm run test && npm run test-storybook && npm run build && npm publish --tag beta",
     "publish-rc": "npm run test && npm run test-storybook && npm run build && npm publish --tag rc",
     "publish-dev": "npm run test && npm run test-storybook && npm run build && npm publish --tag dev",
-    "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "visual-test": "npx playwright test",
     "test-storybook": "test-storybook",
-    "test-ct": "playwright test -c playwright-ct.config.ts",
-    "check-circular-dependencies": "dpdm --no-warning --no-tree ./src/index.ts"
+    "check-circular-dependencies": "dpdm --no-warning --no-tree ./src/index.ts",
+    "visualize-bundle": "vite-bundle-visualizer"
   },
   "dependencies": {
     "@floating-ui/react": "0.26.23",
@@ -85,6 +82,7 @@
     "ts-node": "10.9.2",
     "typescript": "5.4.4",
     "vite": "5.2.8",
+    "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^3.9.1",
     "vite-plugin-lib-inject-css": "^2.1.1",
     "vite-tsconfig-paths": "4.3.2",

@@ -4,7 +4,7 @@ import {
   useConfiguration,
   DEFAULT_CONFIGURATION,
 } from './AltroneConfiguration.context.ts';
-import { merge, isEqual } from 'lodash';
+import { merge, isEqual } from 'lodash-es';
 import useMemo from 'rc-util/lib/hooks/useMemo';
 import { PropsWithChildren } from 'react';
 
