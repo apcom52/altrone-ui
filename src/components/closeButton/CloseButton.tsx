@@ -3,6 +3,7 @@ import { Icon } from 'components/icon';
 import s from './closeButton.module.scss';
 import clsx from 'clsx';
 import { useConfiguration } from 'components/configuration';
+import { useLocalization } from '../application';
 
 export const CloseButton = memo(
   ({
@@ -12,6 +13,8 @@ export const CloseButton = memo(
   }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
     const { closeButton: closeButtonConfig = {} } = useConfiguration();
 
+    const t = useLocalization();
+
     const cls = clsx(s.CloseButton, className, closeButtonConfig.className);
 
     const styles = {
@@ -20,7 +23,13 @@ export const CloseButton = memo(
     };
 
     return (
-      <button type="button" className={cls} style={styles} {...props}>
+      <button
+        type="button"
+        className={cls}
+        style={styles}
+        aria-label={t('closeButton.ariaLabel')}
+        {...props}
+      >
         <Icon i="close" />
       </button>
     );

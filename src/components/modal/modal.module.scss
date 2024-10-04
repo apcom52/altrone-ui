@@ -1,33 +1,41 @@
 @import 'src/global/mixins';
 
 .Backdrop {
-  display: flex;
-  align-items: start;
-  padding-top: 100px;
-  padding-bottom: 40px;
-  justify-content: center;
+  --modal-size: 400px;
+
   position: fixed;
+  width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
   z-index: var(--level-modal-backdrop);
-  background-color: var(--backdropColor);
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-.Modal {
+.Dialog {
   display: flex;
+  justify-content: center;
   position: relative;
+  width: 100%;
+  margin: 40px auto;
+  pointer-events: none;
+}
+
+.ModalContent {
+  display: flex;
   flex-direction: column;
-  min-width: 400px;
-  width: 400px;
+  min-width: var(--modal-size);
+  width: var(--modal-size);
   @include glass-surface;
   border-radius: 8px;
   box-shadow: 0 3px 15px 0 rgba(0, 0, 0, .1);
-  padding: 6px;
+  padding: 8px;
   gap: var(--l-gap);
   offset: 0;
   z-index: var(--level-modal);
+  border: none;
+  pointer-events: all;
 }
 
 .Close {
@@ -65,12 +73,20 @@
   justify-content: flex-end;
 }
 
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--backdropColor);
+  pointer-events: none;
+}
+
 .Small {
-  min-width: 280px;
-  width: 280px;
+  --modal-size: 280px;
 }
 
 .Large {
-  min-width: 640px;
-  width: 640px;
+  --modal-size: 640px;
 }

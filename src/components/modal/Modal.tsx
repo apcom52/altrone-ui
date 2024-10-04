@@ -1,21 +1,13 @@
-import React, { memo, useRef } from 'react';
-import s from './modal.module.scss';
+import React, { memo, useEffect, useId, MouseEvent } from 'react';
 import { ModalContext, ModalProps } from './Modal.types.ts';
 import { CloseButton } from '../closeButton';
 import { Button } from '../button';
 import clsx from 'clsx';
-import {
-  FloatingFocusManager,
-  FloatingOverlay,
-  FloatingPortal,
-  offset,
-  useClick,
-  useDismiss,
-  useFloating,
-  useInteractions,
-} from '@floating-ui/react';
 import { useConfiguration } from 'components/configuration';
 import { DOMUtils, useBoolean } from '../../utils';
+import { createPortal } from 'react-dom';
+import s from './modal.module.scss';
+import FocusTrap from 'focus-trap-react';
 
 export const Modal = memo<ModalProps>(
   ({
@@ -29,38 +21,39 @@ export const Modal = memo<ModalProps>(
     size = 'm',
     className,
     style,
+    onClick,
     ...restProps
   }) => {
-    const childrenRef = useRef<HTMLElement | null>(null);
+    const titleId = useId();
 
     const { modal: modalConfig = {} } = useConfiguration();
     const {
       value: opened,
       disable: hide,
-      setValue: setOpened,
+      enable: show,
     } = useBoolean(openedByDefault);
 
-    const { refs, context } = useFloating({
-      open: opened,
-      onOpenChange: setOpened,
-      middleware: [offset({ mainAxis: 80 })],
-    });
+    // const { refs, context } = useFloating({
+    //   open: opened,
+    //   onOpenChange: setOpened,
+    //   middleware: [offset({ mainAxis: 80 })],
+    // });
+    //
+    // const clickTrigger = useClick(context, {
+    //   event: 'click',
+    // });
+    //
+    // const dismiss = useDismiss(context, {
+    //   enabled: opened,
+    // });
 
-    const clickTrigger = useClick(context, {
-      event: 'click',
-    });
-
-    const dismiss = useDismiss(context, {
-      enabled: opened,
-    });
-
-    const { getReferenceProps, getFloatingProps } = useInteractions([
-      clickTrigger,
-      dismiss,
-    ]);
+    // const { getReferenceProps, getFloatingProps } = useInteractions([
+    //   clickTrigger,
+    //   dismiss,
+    // ]);
 
     const cls = clsx(
-      s.Modal,
+      s.Backdrop,
       {
         [s.Small]: size === 's',
         [s.Large]: size === 'l',
@@ -82,13 +75,7 @@ export const Modal = memo<ModalProps>(
     );
 
     const childrenElement = DOMUtils.cloneNode(safeChildElement, {
-      ...getReferenceProps({
-        ...safeChildElement.props,
-      }),
-      ref: (elementRef: HTMLElement) => {
-        refs.setReference(elementRef);
-        childrenRef.current = elementRef;
-      },
+      onClick: show,
     });
 
     const modalContext: ModalContext = { closeModal: hide };
@@ -102,40 +89,63 @@ export const Modal = memo<ModalProps>(
     const actionsElement =
       typeof actions === 'function' ? actions(modalContext) : actions;
 
+    const onBackdropClick = (e: MouseEvent<HTMLDivElement>) => {
+      if (!(e.target as HTMLElement)?.closest('[aria-modal="true"]')) {
+        hide();
+      }
+
+      if (onClick) onClick(e);
+    };
+
+    const onKeyboardHandler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        hide();
+      }
+    };
+
+    useEffect(() => {
+      if (opened) {
+        document.body.addEventListener('keydown', onKeyboardHandler);
+      }
+
+      return () => {
+        document.body.removeEventListener('keydown', onKeyboardHandler);
+      };
+    }, [opened]);
+
     const modalContent = (
-      <FloatingPortal>
-        <FloatingOverlay className={s.Backdrop} lockScroll>
-          <div
-            ref={refs.setFloating}
-            className={cls}
-            style={styles}
-            {...getFloatingProps(restProps)}
-          >
-            <FloatingFocusManager
-              initialFocus={1}
-              context={context}
-              modal={true}
-              order={['content']}
-            >
-              <>
-                <div className={s.Title}>
-                  {title}
-                  <CloseButton className={s.Close} onClick={hide} />
+      <FocusTrap>
+        <div
+          className={cls}
+          style={styles}
+          role="dialog"
+          aria-labelledby={titleId}
+          {...restProps}
+          onClick={onBackdropClick}
+        >
+          <div className={s.Overlay} />
+          <div className={s.Dialog}>
+            <div className={s.ModalContent} aria-modal="true">
+              <div className={s.Title} id={titleId} aria-label={title}>
+                {title}
+                <CloseButton className={s.Close} onClick={hide} autoFocus />
+              </div>
+              <div className={s.Content}>{contentElement}</div>
+              <div className={s.Footer}>
+                <div className={s.LeftFooter}>{leftActionsElement}</div>
+                <div className={s.RightFooter}>
+                  <Button label="Cancel" onClick={hide} />
+                  {actionsElement}
                 </div>
-                <div className={s.Content}>{contentElement}</div>
-                <div className={s.Footer}>
-                  <div className={s.LeftFooter}>{leftActionsElement}</div>
-                  <div className={s.RightFooter}>
-                    <Button label="Cancel" onClick={hide} />
-                    {actionsElement}
-                  </div>
-                </div>
-              </>
-            </FloatingFocusManager>
+              </div>
+            </div>
           </div>
-        </FloatingOverlay>
-      </FloatingPortal>
+        </div>
+      </FocusTrap>
     );
+
+    const altroneRoot =
+      document.querySelector('[data-altrone-root="true"]') || document.body;
 
     if (!enabled) {
       return <>{childrenElement}</>;
@@ -144,7 +154,7 @@ export const Modal = memo<ModalProps>(
     return (
       <>
         {childrenElement}
-        {opened ? modalContent : null}
+        {opened ? createPortal(modalContent, altroneRoot) : null}
       </>
     );
   },

@@ -96,4 +96,7 @@ export interface Localization {
     expand: string;
     collapse: string;
   };
+  closeButton: {
+    ariaLabel: string;
+  };
 }

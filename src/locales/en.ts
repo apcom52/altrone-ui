@@ -104,4 +104,7 @@ export const en: Localization = {
     expand: 'Show {{count}} hidden',
     collapse: 'Show less',
   },
+  closeButton: {
+    ariaLabel: 'Close',
+  },
 };

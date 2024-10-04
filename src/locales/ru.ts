@@ -104,4 +104,7 @@ export const ru: Localization = {
     expand: 'Показать еще {{count}}',
     collapse: 'Свернуть',
   },
+  closeButton: {
+    ariaLabel: 'Закрыть',
+  },
 };
