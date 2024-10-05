@@ -35,7 +35,6 @@ const renderButtonsWithRole = (role: Role, args: ButtonProps) => {
         role={role}
         label="Action"
         leftIcon={<Icon i="bolt" />}
-        data-testid={`button-${role}`}
         loading
       />
       <Button
