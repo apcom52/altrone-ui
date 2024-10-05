@@ -275,6 +275,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
       refs.setReference(elementRef);
       childrenRef.current = elementRef;
     },
+    tabIndex: safeChildElement.props.tabIndex ?? 0,
   });
 
   if (!enabled) {
