@@ -92,4 +92,22 @@ describe('Popover', () => {
     expect(element).toHaveClass('cls');
     expect(element).toHaveStyle('color: blue');
   });
+
+  test('tabIndex prop need to applied automatically', () => {
+    const { rerender } = render(
+      <Popover content={<div>content</div>} openedByDefault>
+        <Button data-testid="source" tabIndex={2} />
+      </Popover>,
+    );
+
+    expect(screen.getByTestId('source')).toHaveAttribute('tabindex', '2');
+
+    rerender(
+      <Popover content={<div>content</div>} openedByDefault>
+        <Button data-testid="source" />
+      </Popover>,
+    );
+
+    expect(screen.getByTestId('source')).toHaveAttribute('tabindex', '0');
+  });
 });
