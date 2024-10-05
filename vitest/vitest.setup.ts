@@ -14,3 +14,5 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: vi.fn(),
   })),
 });
+
+vi.stubGlobal('__TEST_ENV__', 'true');

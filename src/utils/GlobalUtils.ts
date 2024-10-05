@@ -1,3 +1,9 @@
+declare global {
+  interface Window {
+    __TEST_ENV__: string;
+  }
+}
+
 export class GlobalUtils {
   private static seed = 0;
 
@@ -24,5 +30,9 @@ export class GlobalUtils {
     return message.replace(new RegExp(/\[\[(\w*)\]\]/gm), (_, label) => {
       return `\x1B[1m${label}\x1B[m`;
     });
+  }
+
+  public static isTestEnvironment() {
+    return window.__TEST_ENV__ === 'true';
   }
 }

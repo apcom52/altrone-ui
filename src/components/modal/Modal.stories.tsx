@@ -208,25 +208,25 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 
-    // await step(
-    //   'need to open modal when user clicks on the button',
-    //   async () => {
-    //     await userEvent.click(canvas.getByText('Open modal'));
-    //     await expect(
-    //       document.querySelector('[data-testid="modal"]'),
-    //     ).toBeInTheDocument();
-    //   },
-    // );
-    //
-    // await step(
-    //   'need to hide modal after clicking on Cancel button',
-    //   async () => {
-    //     await userEvent.click(screen.getByText('Cancel'));
-    //     await expect(
-    //       document.querySelector('[data-testid="modal"]'),
-    //     ).not.toBeInTheDocument();
-    //   },
-    // );
+    await step(
+      'need to open modal when user clicks on the button',
+      async () => {
+        await userEvent.click(canvas.getByText('Open modal'));
+        await expect(
+          document.querySelector('[data-testid="modal"]'),
+        ).toBeInTheDocument();
+      },
+    );
+
+    await step(
+      'need to hide modal after clicking on Cancel button',
+      async () => {
+        await userEvent.click(screen.getByText('Cancel'));
+        await expect(
+          document.querySelector('[data-testid="modal"]'),
+        ).not.toBeInTheDocument();
+      },
+    );
   },
 };
 

@@ -4,7 +4,7 @@ import { CloseButton } from '../closeButton';
 import { Button } from '../button';
 import clsx from 'clsx';
 import { useConfiguration } from 'components/configuration';
-import { DOMUtils, useBoolean } from '../../utils';
+import { DOMUtils, GlobalUtils, useBoolean } from '../../utils';
 import { createPortal } from 'react-dom';
 import s from './modal.module.scss';
 import FocusTrap from 'focus-trap-react';
@@ -32,25 +32,6 @@ export const Modal = memo<ModalProps>(
       disable: hide,
       enable: show,
     } = useBoolean(openedByDefault);
-
-    // const { refs, context } = useFloating({
-    //   open: opened,
-    //   onOpenChange: setOpened,
-    //   middleware: [offset({ mainAxis: 80 })],
-    // });
-    //
-    // const clickTrigger = useClick(context, {
-    //   event: 'click',
-    // });
-    //
-    // const dismiss = useDismiss(context, {
-    //   enabled: opened,
-    // });
-
-    // const { getReferenceProps, getFloatingProps } = useInteractions([
-    //   clickTrigger,
-    //   dismiss,
-    // ]);
 
     const cls = clsx(
       s.Backdrop,
@@ -114,7 +95,13 @@ export const Modal = memo<ModalProps>(
     }, [opened]);
 
     const modalContent = (
-      <FocusTrap>
+      <FocusTrap
+        focusTrapOptions={{
+          tabbableOptions: {
+            displayCheck: GlobalUtils.isTestEnvironment() ? 'none' : 'full',
+          },
+        }}
+      >
         <div
           className={cls}
           style={styles}
