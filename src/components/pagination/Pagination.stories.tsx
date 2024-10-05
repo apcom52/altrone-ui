@@ -5,6 +5,7 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Pagination } from './Pagination.tsx';
 import { useState } from 'react';
 import { userEvent, within, expect } from '@storybook/test';
+import { AsyncUtils } from '../../utils';
 
 const story: Meta<typeof Pagination> = {
   title: 'Components/Navigation/Pagination',
@@ -58,6 +59,7 @@ export const PaginationStory: StoryObj<typeof Pagination> = {
       await userEvent.keyboard('{backspace}');
       await userEvent.type(inputElement, '4');
       await userEvent.click(canvas.getByText('Navigate'));
+      await AsyncUtils.timeout(1);
 
       await expect(canvas.getByText('4 of 5')).toBeInTheDocument();
     });
@@ -72,6 +74,7 @@ export const PaginationStory: StoryObj<typeof Pagination> = {
       await userEvent.keyboard('{backspace}');
       await userEvent.type(inputElement, '0');
       await userEvent.click(canvas.getByText('Navigate'));
+      await AsyncUtils.timeout(1);
 
       await expect(canvas.getByText('1 of 5')).toBeInTheDocument();
 
@@ -82,6 +85,7 @@ export const PaginationStory: StoryObj<typeof Pagination> = {
       await userEvent.keyboard('{backspace}');
       await userEvent.type(inputElement, '55');
       await userEvent.click(canvas.getByText('Navigate'));
+      await AsyncUtils.timeout(1);
 
       await expect(canvas.getByText('5 of 5')).toBeInTheDocument();
     });

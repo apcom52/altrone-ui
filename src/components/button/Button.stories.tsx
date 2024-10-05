@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Button, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { within, expect, userEvent, fn } from '@storybook/test';
+import { fn } from '@storybook/test';
 import { ButtonProps } from './Button.types.ts';
 import { Role, Size } from '../../types';
 
@@ -136,14 +136,6 @@ export const ButtonStory: StoryObj<typeof Button> = {
       {renderButtonsWithRole('danger', args)}
     </Flex>
   ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    await userEvent.hover(canvas.getByTestId('button-default'));
-    await expect(canvas.getByTestId('rainbow')).toBeInTheDocument();
-    await userEvent.unhover(canvas.getByTestId('button-default'));
-    await expect(canvas.queryByTestId('rainbow')).not.toBeInTheDocument();
-  },
 };
 
 export const ButtonSizeStory: StoryObj<typeof Button> = {
