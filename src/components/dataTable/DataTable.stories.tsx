@@ -643,8 +643,8 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
           'James Anderson',
         ]);
 
-        await userEvent.click(canvas.getAllByText('close')[1]);
-        await AsyncUtils.timeout(1);
+        await userEvent.click(canvas.getByTitle('Delete'));
+        await AsyncUtils.timeout(5);
 
         await expect(getRows()).toStrictEqual([
           'John Doe',
