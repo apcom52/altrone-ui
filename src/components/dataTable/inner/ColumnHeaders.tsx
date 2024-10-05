@@ -116,6 +116,7 @@ export const ColumnHeaders = memo<ColumnHeadersProps>(
                         )
                     : undefined
                 }
+                tabIndex={column.sortable ? 0 : undefined}
                 style={{
                   width: column.width ? column.width : undefined,
                 }}
