@@ -16,7 +16,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "vitest",
+    "test": "vitest --no-watch",
     "coverage": "vitest run --coverage",
     "test-storybook": "test-storybook",
     "check-circular-dependencies": "dpdm --no-warning --no-tree ./src/index.ts",
