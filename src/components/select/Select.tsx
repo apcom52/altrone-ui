@@ -27,6 +27,7 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
     onBlur,
     onChange,
     children,
+    options,
     ...restProps
   } = props;
 
