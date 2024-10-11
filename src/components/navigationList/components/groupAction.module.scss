@@ -42,6 +42,11 @@
     --bgColor: var(--navigationListGroupActionPressedBackgroundColor);
   }
 
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
   &:before {
     position: absolute;
     top: -4px;

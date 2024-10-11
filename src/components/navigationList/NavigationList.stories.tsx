@@ -50,6 +50,7 @@ export const TooltipStory: StoryObj<typeof NavigationList> = {
               <NavigationList.GroupAction
                 label="Search"
                 icon={<Icon i="search" />}
+                disabled
               />
               <Dropdown
                 content={
