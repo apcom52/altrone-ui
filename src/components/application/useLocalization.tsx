@@ -7,8 +7,7 @@ import {
   useMemo,
 } from 'react';
 import { NestedKeys } from 'utils';
-import { get } from 'lodash-es';
-import { merge } from 'lodash';
+import { get, merge } from 'lodash-es';
 
 interface LocalizationProps extends PropsWithChildren {
   language: 'en' | 'ru';

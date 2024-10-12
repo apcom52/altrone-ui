@@ -8,6 +8,12 @@ export interface NavigationListGroupProps
   title?: string;
 }
 
+export interface NavigationListGroupActionProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+  label: string;
+  icon: JSX.Element;
+}
+
 export interface NavigationListLinkProps
   extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'children'> {
   label: string;

@@ -27,6 +27,8 @@ export interface TextHeadingProps
   extends React.HTMLAttributes<HTMLHeadingElement> {
   level?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
   role?: TextHeadingRoles;
+  variant?: TextHeadingRoles;
+  ariaRole?: string;
 }
 
 export interface TextParagraphProps

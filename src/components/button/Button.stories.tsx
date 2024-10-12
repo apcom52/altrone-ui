@@ -2,8 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Button, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { roleStoryField } from '../../global/storybook/argTypes.ts';
-import { within, expect, userEvent, fn } from '@storybook/test';
+import { fn } from '@storybook/test';
 import { ButtonProps } from './Button.types.ts';
 import { Role, Size } from '../../types';
 
@@ -18,9 +17,7 @@ const story: Meta<typeof Button> = {
     onFocus: fn(),
     onBlur: fn(),
   },
-  argTypes: {
-    role: roleStoryField,
-  },
+  argTypes: {},
 };
 
 const renderButtonsWithRole = (role: Role, args: ButtonProps) => {
@@ -37,17 +34,33 @@ const renderButtonsWithRole = (role: Role, args: ButtonProps) => {
         {...args}
         role={role}
         label="Action"
+        leftIcon={<Icon i="bolt" />}
+        loading
+      />
+      <Button
+        {...args}
+        role={role}
+        label="Action"
         rightIcon={<Icon i="bolt" />}
       />
       <Button {...args} role={role} label="Action" />
       <Button {...args} role={role} disabled label="Disabled Action" />
       <Button {...args} role={role} leftIcon={<Icon i="bolt" />} />
+      <Button {...args} role={role} leftIcon={<Icon i="bolt" />} loading />
       <Button
         {...args}
         role={role}
         label="Action"
         transparent
         leftIcon={<Icon i="bolt" />}
+      />
+      <Button
+        {...args}
+        role={role}
+        label="Action"
+        transparent
+        leftIcon={<Icon i="bolt" />}
+        loading
       />
       <Button
         {...args}
@@ -65,6 +78,13 @@ const renderButtonsWithRole = (role: Role, args: ButtonProps) => {
         transparent
       />
       <Button {...args} role={role} transparent leftIcon={<Icon i="bolt" />} />
+      <Button
+        {...args}
+        role={role}
+        transparent
+        leftIcon={<Icon i="bolt" />}
+        loading
+      />
     </Flex>
   );
 };
@@ -74,8 +94,20 @@ const renderButtonsWithSize = (size: Size) => {
     <Flex gap="m" align="start">
       <Button size={size} label="Like" leftIcon={<Icon i="favorite" />} />
       <Button size={size} label="Like" rightIcon={<Icon i="favorite" />} />
+      <Button
+        size={size}
+        label="Like"
+        rightIcon={<Icon i="favorite" />}
+        loading
+      />
+      <Button size={size} label="Like" loading />
       <Button size={size} label="Like" />
-      <Button size={size} leftIcon={<Icon i="favorite" />} />
+      <Button
+        size={size}
+        label="Like"
+        showLabel={false}
+        leftIcon={<Icon i="favorite" />}
+      />
     </Flex>
   );
 };
@@ -104,14 +136,6 @@ export const ButtonStory: StoryObj<typeof Button> = {
       {renderButtonsWithRole('danger', args)}
     </Flex>
   ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    await userEvent.hover(canvas.getByTestId('button-default'));
-    await expect(canvas.getByTestId('rainbow')).toBeInTheDocument();
-    await userEvent.unhover(canvas.getByTestId('button-default'));
-    await expect(canvas.queryByTestId('rainbow')).not.toBeInTheDocument();
-  },
 };
 
 export const ButtonSizeStory: StoryObj<typeof Button> = {

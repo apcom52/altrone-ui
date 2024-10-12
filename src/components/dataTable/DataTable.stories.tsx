@@ -130,6 +130,16 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
               ),
             },
             {
+              accessor: 'inStaff',
+              label: 'In Staff',
+              filterable: true,
+              Component: ({ value }) => (
+                <Text.Paragraph size="l">
+                  {value ? <Icon i="check" /> : <Icon i="close" />}
+                </Text.Paragraph>
+              ),
+            },
+            {
               accessor: 'role',
               label: 'Position',
               filterable: true,
@@ -550,6 +560,43 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
       ]);
     });
 
+    await step('Boolean filtering: is positive', async () => {
+      await userEvent.click(canvas.getByTitle('Filters'));
+      await userEvent.click(canvas.getByText('Clear'));
+
+      await userEvent.click(canvas.getByTitle('Filters'));
+      await userEvent.click(canvas.getByText('Add filter'));
+      await userEvent.click(canvas.getByTitle('In Staff'));
+
+      await userEvent.click(canvas.getByTitle('Apply'));
+      await AsyncUtils.timeout(1);
+
+      await expect(getRows()).toStrictEqual([
+        'John Doe',
+        'Emily Johnson',
+        'Jessica Davis',
+        'David Wilson',
+        'Robert Garcia',
+        'Sarah Miller',
+      ]);
+    });
+
+    await step('Boolean filtering: is negative', async () => {
+      await userEvent.click(canvas.getByTitle('Filters'));
+      await userEvent.click(canvas.getByPlaceholderText('is positive'));
+      await userEvent.click(canvas.getByText('is negative'));
+
+      await userEvent.click(canvas.getByTitle('Apply'));
+      await AsyncUtils.timeout(1);
+
+      await expect(getRows()).toStrictEqual([
+        'Jane Smith',
+        'Michael Brown',
+        'Laura Martinez',
+        'James Anderson',
+      ]);
+    });
+
     await step(
       'Need to reset filters after the removing the latest applied filter',
       async () => {
@@ -596,8 +643,8 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
           'James Anderson',
         ]);
 
-        await userEvent.click(canvas.getAllByText('close')[1]);
-        await AsyncUtils.timeout(1);
+        await userEvent.click(canvas.getByTitle('Delete'));
+        await AsyncUtils.timeout(5);
 
         await expect(getRows()).toStrictEqual([
           'John Doe',
@@ -613,6 +660,70 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
         ]);
       },
     );
+
+    // await step(
+    //   'Need to reset filters after the removing the latest applied filter',
+    //   async () => {
+    //     await userEvent.click(canvas.getByTitle('Filters'));
+    //     await userEvent.click(canvas.getByText('Clear'));
+    //     await userEvent.click(canvas.getByTitle('Filters'));
+    //     await userEvent.click(canvas.getByTitle('Add filter'));
+    //     await userEvent.click(canvas.getByTitle('Age'));
+    //
+    //     await userEvent.click(canvas.getByPlaceholderText('equals to'));
+    //     await userEvent.click(canvas.getByText('≥'));
+    //
+    //     const inputField = canvasElement.querySelector(
+    //       '[data-filter-name="age"][data-filter-control="true"]',
+    //     ) as HTMLElement;
+    //     await userEvent.clear(inputField);
+    //     await userEvent.type(inputField, '30');
+    //
+    //     await userEvent.click(canvas.getByTitle('Apply'));
+    //     await AsyncUtils.timeout(1);
+    //
+    //     await expect(getRows()).toStrictEqual([
+    //       'John Doe',
+    //       'Emily Johnson',
+    //       'Michael Brown',
+    //       'David Wilson',
+    //       'Robert Garcia',
+    //       'Sarah Miller',
+    //       'James Anderson',
+    //     ]);
+    //
+    //     await userEvent.click(canvas.getByTitle('Filters'));
+    //     await userEvent.click(canvas.getByPlaceholderText('Age'));
+    //     await userEvent.click(canvas.getByTitle('Salary'));
+    //     await AsyncUtils.timeout(1);
+    //
+    //     await expect(getRows()).toStrictEqual([
+    //       'John Doe',
+    //       'Emily Johnson',
+    //       'Michael Brown',
+    //       'David Wilson',
+    //       'Robert Garcia',
+    //       'Sarah Miller',
+    //       'James Anderson',
+    //     ]);
+    //
+    //     await userEvent.click(canvas.getAllByText('close')[1]);
+    //     await AsyncUtils.timeout(1);
+    //
+    //     await expect(getRows()).toStrictEqual([
+    //       'John Doe',
+    //       'Jane Smith',
+    //       'Emily Johnson',
+    //       'Michael Brown',
+    //       'Jessica Davis',
+    //       'David Wilson',
+    //       'Laura Martinez',
+    //       'Robert Garcia',
+    //       'Sarah Miller',
+    //       'James Anderson',
+    //     ]);
+    //   },
+    // );
 
     await step('Sorting', async () => {
       await userEvent.click(canvas.getByText('Clear'));

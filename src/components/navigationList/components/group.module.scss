@@ -18,9 +18,22 @@
   }
 }
 
+.Header {
+  display: flex;
+  gap: var(--s-gap);
+}
+
 .Title {
   @include group-heading;
   padding-left: 30px;
   color: var(--navigationListGroupTitleTextColor);
   margin-bottom: var(--xs-gap);
+}
+
+.Actions {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--l-gap);
 }

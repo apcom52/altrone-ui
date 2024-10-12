@@ -1,0 +1,70 @@
+@import 'src/global/mixins';
+
+:root {
+  --navigationListGroupActionBackgroundColor: transparent;
+  --navigationListGroupActionTextColor: var(--default-900);
+  --navigationListGroupActionHoveredBackgroundColor: var(--default-100);
+  --navigationListGroupActionPressedBackgroundColor: var(--default-200);
+}
+
+:global(.AltroneDark) {
+  --navigationListGroupActionBackgroundColor: transparent;
+  --navigationListGroupActionTextColor: var(--default-50);
+  --navigationListGroupActionHoveredBackgroundColor: var(--default-800);
+  --navigationListGroupActionPressedBackgroundColor: var(--default-700);
+}
+
+.Action {
+  --bgColor: var(--navigationListGroupActionBackgroundColor);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  border-radius: 50%;
+
+  @include focus;
+
+  &:focus-visible {
+    outline-offset: 5px;
+  }
+
+  &:hover, &:focus-visible {
+    --bgColor: var(--navigationListGroupActionHoveredBackgroundColor);
+  }
+
+  &:active {
+    --bgColor: var(--navigationListGroupActionPressedBackgroundColor);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &:before {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 24px;
+    height: 24px;
+    content: '';
+    background-color: var(--bgColor);
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+  }
+}
+
+.Icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--navigationListGroupActionTextColor);
+  z-index: 1;
+}

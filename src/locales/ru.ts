@@ -87,6 +87,10 @@ export const ru: Localization = {
       has: 'содержится в',
       notHas: 'не содержится в',
     },
+    booleanFilter: {
+      positive: 'положительный',
+      negative: 'негативный',
+    },
   },
   photoViewer: {
     previous: 'Предыдущее изображение',
@@ -99,5 +103,8 @@ export const ru: Localization = {
   collapsedList: {
     expand: 'Показать еще {{count}}',
     collapse: 'Свернуть',
+  },
+  closeButton: {
+    ariaLabel: 'Закрыть',
   },
 };

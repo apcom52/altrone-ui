@@ -12,6 +12,8 @@ export const getCellType = (dataInstance: object, accessor: string) => {
     if (Array.isArray(cellValue)) {
       return FilterType.array;
     }
+  } else if (typeof cellValue === 'boolean') {
+    return FilterType.boolean;
   }
 
   return null;

@@ -139,12 +139,6 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
                 </Text.Paragraph>
-                <Text.Paragraph>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Adipisci at corporis cum eius eveniet exercitationem, ipsa
-                  ipsum magnam maiores molestias, non odit praesentium suscipit?
-                  Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
               </Flex>
             }
             leftActions={[<Tooltip content="This is tooltip" />]}
@@ -157,12 +151,6 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             title="Modal title"
             content={
               <Flex direction="vertical" gap="xl">
-                <Text.Paragraph>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Adipisci at corporis cum eius eveniet exercitationem, ipsa
-                  ipsum magnam maiores molestias, non odit praesentium suscipit?
-                  Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
                 <Text.Paragraph>
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa

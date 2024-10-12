@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Icon, Text } from 'components';
+import { Dropdown, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { NavigationList } from './NavigationList.tsx';
 
@@ -47,6 +47,27 @@ export const TooltipStory: StoryObj<typeof NavigationList> = {
               />
             </NavigationList.Group>
             <NavigationList.Group title="Product settings">
+              <NavigationList.GroupAction
+                label="Search"
+                icon={<Icon i="search" />}
+                disabled
+              />
+              <Dropdown
+                content={
+                  <Dropdown.Menu>
+                    <Dropdown.Action
+                      icon={<Icon i="groups" />}
+                      label="Browse teams"
+                    />
+                    <Dropdown.Action icon={<Icon i="add" />} label="Add team" />
+                  </Dropdown.Menu>
+                }
+              >
+                <NavigationList.GroupAction
+                  label="More"
+                  icon={<Icon i="more_horiz" />}
+                />
+              </Dropdown>
               <NavigationList.Link label="Attributes" />
               <NavigationList.Link label="Automations" selected />
               <NavigationList.Link label="Copilot" />
@@ -56,6 +77,7 @@ export const TooltipStory: StoryObj<typeof NavigationList> = {
               <NavigationList.Link label="Task forms" />
             </NavigationList.Group>
             <NavigationList.Group title="Workspace settings">
+              <NavigationList.GroupAction label="Add" icon={<Icon i="add" />} />
               <NavigationList.Link label="General" />
               <NavigationList.Link
                 icon={<Icon i="webhook" />}

@@ -12,7 +12,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import once from 'lodash/once';
+import { once } from 'lodash-es';
 import { DOMUtils } from '../../utils';
 import { useDataTableFilters } from './useDataTableFilters.ts';
 

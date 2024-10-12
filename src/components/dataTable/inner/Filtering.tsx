@@ -8,6 +8,7 @@ import { Popover } from 'components/popover';
 import { useDataTableContext } from '../DataTable.context.tsx';
 import {
   ArrayFilterRules,
+  BooleanFilterRules,
   Filter,
   FilterType,
   NumberFilterRules,
@@ -95,6 +96,18 @@ export const Filtering = memo(() => {
               join: 'AND',
               value: options.length ? [options[0].value] : [],
               options: options,
+            },
+          ],
+        };
+      } else if (type === FilterType.boolean) {
+        newFilter = {
+          field: accessor,
+          type: FilterType.boolean,
+          conditions: [
+            {
+              rule: BooleanFilterRules.positive,
+              join: 'AND',
+              value: undefined,
             },
           ],
         };
@@ -218,6 +231,7 @@ export const Filtering = memo(() => {
                       string: 'title',
                       number: '123',
                       array: 'data_array',
+                      boolean: 'check_circle_outline',
                     };
 
                     const label = filter.label || filter.accessor;

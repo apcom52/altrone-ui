@@ -167,6 +167,7 @@
   --btnFg: var(--buttonTextColor);
   --btnBorder: var(--buttonBorderColor);
   --btnFocus: var(--focus);
+  --button-loading-color: var(--buttonTextColor);
 
   display: inline-flex;
   white-space: nowrap;
@@ -234,6 +235,7 @@
   --btnBg: var(--buttonPrimaryBackgroundColor);
   --btnFg: var(--buttonPrimaryTextColor);
   --btnBorder: var(--buttonPrimaryBorderColor);
+  --button-loading-color: var(--primary-50);
 
   &:hover {
     --btnBg: var(--buttonPrimaryHoverBackgroundColor);
@@ -250,6 +252,7 @@
   &.Button_transparent {
     --btnBg: var(--buttonPrimaryTransparentBackgroundColor);
     --btnFg: var(--buttonPrimaryTransparentTextColor);
+    --button-loading-color: var(--buttonPrimaryTransparentTextColor);
 
     &:hover {
       --btnBg: var(--buttonPrimaryTransparentHoverBackgroundColor);
@@ -268,6 +271,7 @@
   --btnFg: var(--buttonSuccessTextColor);
   --btnBorder: var(--buttonSuccessBorderColor);
   --btnFocus: var(--focusSuccess);
+  --button-loading-color: var(--success-50);
 
   &:hover {
     --btnBg: var(--buttonSuccessHoverBackgroundColor);
@@ -288,6 +292,7 @@
   &.Button_transparent {
     --btnBg: var(--buttonSuccessTransparentBackgroundColor);
     --btnFg: var(--buttonSuccessTransparentTextColor);
+    --button-loading-color: var(--buttonSuccessTransparentTextColor);
 
     &:hover {
       --btnBg: var(--buttonSuccessTransparentHoverBackgroundColor);
@@ -306,6 +311,7 @@
   --btnFg: var(--buttonWarningTextColor);
   --btnBorder: var(--buttonWarningBorderColor);
   --btnFocus: var(--focusWarning);
+  --button-loading-color: var(--warning-50);
 
   &:hover {
     --btnBg: var(--buttonWarningHoverBackgroundColor);
@@ -326,6 +332,7 @@
   &.Button_transparent {
     --btnBg: var(--buttonWarningTransparentBackgroundColor);
     --btnFg: var(--buttonWarningTransparentTextColor);
+    --button-loading-color: var(--buttonWarningTransparentTextColor);
 
     &:hover {
       --btnBg: var(--buttonWarningTransparentHoverBackgroundColor);
@@ -344,6 +351,7 @@
   --btnFg: var(--buttonDangerTextColor);
   --btnBorder: var(--buttonDangerBorderColor);
   --btnFocus: var(--focusDanger);
+  --button-loading-color: var(--danger-50);
 
   &:hover {
     --btnBg: var(--buttonDangerHoverBackgroundColor);
@@ -364,6 +372,7 @@
   &.Button_transparent {
     --btnBg: var(--buttonDangerTransparentBackgroundColor);
     --btnFg: var(--buttonDangerTransparentTextColor);
+    --button-loading-color: var(--buttonDangerTransparentTextColor);
 
     &:hover {
       --btnBg: var(--buttonDangerTransparentHoverBackgroundColor);
@@ -420,4 +429,20 @@
     padding: var(--s-gap);
     width: var(--large-size);
   }
+}
+
+.WithLoading {
+  --btnFg: transparent;
+  pointer-events: none;
+
+  &.Button_transparent {
+    --btnFg: transparent;
+  }
+}
+
+.ButtonLoading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
 }

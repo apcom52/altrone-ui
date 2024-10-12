@@ -27,8 +27,8 @@ export const PaginationStory: StoryObj<typeof Loading> = {
         <Text.Heading role="inner">Loading indicators</Text.Heading>
         <Flex direction="horizontal" gap="m">
           <Loading />
-          <Loading color="var(--primary-600)" size="32px" strokeWidth="3px" />
-          <Loading size="20px" strokeWidth="1.5px" />
+          <Loading color="var(--primary-600)" size="32px" strokeWidth="3" />
+          <Loading size="20px" strokeWidth="1" />
         </Flex>
       </Flex>
     );

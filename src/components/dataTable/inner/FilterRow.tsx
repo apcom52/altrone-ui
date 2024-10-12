@@ -9,6 +9,7 @@ import { NumberInput } from 'components/numberInput';
 import clsx from 'clsx';
 import {
   DataTableArrayRules,
+  DataTableBooleanRules,
   DataTableNumberRules,
   DataTableStringRules,
 } from '../DataTable.constants.ts';
@@ -27,6 +28,7 @@ export const FilterRow = ({
   const isString = filter?.type === FilterType.string;
   const isNumber = filter?.type === FilterType.number;
   const isArray = filter?.type === FilterType.array;
+  const isBoolean = filter?.type === FilterType.boolean;
 
   const rule = filter.conditions[0].rule;
   const value = filter.conditions[0].value;
@@ -41,7 +43,9 @@ export const FilterRow = ({
         ? DataTableNumberRules
         : isArray
           ? DataTableArrayRules
-          : [];
+          : isBoolean
+            ? DataTableBooleanRules
+            : [];
 
     return ruleSet.map((item) => ({
       ...item,

@@ -87,6 +87,10 @@ export const en: Localization = {
       has: 'is contained in',
       notHas: 'is not contained in',
     },
+    booleanFilter: {
+      positive: 'is positive',
+      negative: 'is negative',
+    },
   },
   photoViewer: {
     previous: 'Previous photo',
@@ -99,5 +103,8 @@ export const en: Localization = {
   collapsedList: {
     expand: 'Show {{count}} hidden',
     collapse: 'Show less',
+  },
+  closeButton: {
+    ariaLabel: 'Close',
   },
 };

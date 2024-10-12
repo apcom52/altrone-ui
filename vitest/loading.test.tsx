@@ -18,12 +18,12 @@ describe('Loading', () => {
       <Loading
         data-testid="loading"
         className="cls"
-        style={{ color: 'red' }}
+        style={{ fontSize: '18px' }}
       />,
     );
 
     expect(screen.getByTestId('loading')).toHaveClass('cls');
-    expect(screen.getByTestId('loading')).toHaveStyle('color: red');
+    expect(screen.getByTestId('loading')).toHaveStyle('fontSize: 18px');
   });
 
   test('check that Loading configuration works correctly', () => {
@@ -32,7 +32,7 @@ describe('Loading', () => {
         config={{
           loading: {
             className: 'cls',
-            style: { color: 'blue' },
+            style: { fontSize: '18px' },
           },
         }}
       >
@@ -41,6 +41,6 @@ describe('Loading', () => {
     );
 
     expect(screen.getByTestId('loading')).toHaveClass('cls');
-    expect(screen.getByTestId('loading')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('loading')).toHaveStyle('fontSize: 18px');
   });
 });

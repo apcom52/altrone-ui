@@ -313,4 +313,40 @@ const COUNTRIES = [
   'Zimbabwe',
 ];
 
+export const UsageStory: StoryObj<typeof Flex> = {
+  name: 'Using with REST API',
+  render: () => {
+    const [value1, setValue1] = useState('');
+
+    const getData = useCallback<AutocompleteSuggestionsFunc>(
+      async ({ value }) => {
+        const response = await fetch(
+          `https://demo.dataverse.org/api/search?q=${value}`,
+        );
+        const data = await response.json();
+
+        return data.data.items.map((item: any) => item.name);
+      },
+      [],
+    );
+
+    return (
+      <Flex direction="vertical" gap="l">
+        <Text.Heading role="inner">
+          AutocompleteInput with REST API
+        </Text.Heading>
+        <Flex gap="l">
+          <AutocompleteInput
+            value={value1}
+            getSuggestions={getData}
+            onChange={setValue1}
+            placeholder="Type to search, e.g. Trees"
+            data-testid="field"
+          />
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
 export default story;

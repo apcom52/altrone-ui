@@ -1,4 +1,9 @@
-import React, { ReactNode } from 'react';
+import React, {
+  Children,
+  isValidElement,
+  ReactElement,
+  ReactNode,
+} from 'react';
 import { AnyObject } from './types.ts';
 
 interface TriggerNativeEventProps {
@@ -62,4 +67,47 @@ export class DOMUtils {
     const event = new Event(eventType, { bubbles: true });
     element.dispatchEvent(event);
   };
+
+  static getValidChildren(element: ReactNode) {
+    if (!isValidElement(element)) {
+      return [];
+    }
+
+    const result: ReactElement[] = [];
+
+    Children.forEach(element.props.children, (child) => {
+      if (isValidElement(child)) {
+        result.push(child);
+      }
+    });
+
+    return result;
+  }
+
+  static hasValidChildren(element: ReactNode) {
+    return DOMUtils.getValidChildren(element).length > 0;
+  }
+
+  static containsElementType(element: ReactNode, types: React.ElementType[]) {
+    let result = false;
+
+    const checkNode = (node: ReactNode) => {
+      if (result || !isValidElement(node)) return;
+
+      if (types.includes(node.type as React.ElementType)) {
+        result = true;
+        return;
+      }
+
+      const nodeChildren = DOMUtils.getValidChildren(node);
+
+      for (const child of nodeChildren) {
+        checkNode(child);
+      }
+    };
+
+    checkNode(element);
+
+    return result;
+  }
 }
