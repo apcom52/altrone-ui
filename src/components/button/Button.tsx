@@ -140,6 +140,7 @@ export const Button = memo(
       className: cls,
       style: styles,
       children: buttonContent,
+      title: props.title ?? label,
     });
   }),
 );

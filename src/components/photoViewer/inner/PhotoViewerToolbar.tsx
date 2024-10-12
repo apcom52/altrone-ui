@@ -38,6 +38,7 @@ export const PhotoViewerToolbar = memo<PhotoViewerToolbarProps>(
               total: totalPhotos,
             },
           })}
+          tabIndex={-1}
         >
           <div className={s.Progress}>
             {t('photoViewer.progress', {
