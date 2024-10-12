@@ -13,9 +13,11 @@
 
 -----
 
-## 🎊 Altrone 3.0
+## 😼 Altrone 3.1
 
-New design, rainbow hover effect, 12 new components, improved configuration and more. The most significant update in the history of the library.
+New LoadingIsland for TextInput, GroupAction for NavigationList, accessibility improvements and more.
+
+[**What's new in 3.1?**](https://altrone.vercel.app/blog/release-3.1)
 
 [**What's new in 3.0?**](https://altrone.vercel.app/blog/release-3.0)
 
