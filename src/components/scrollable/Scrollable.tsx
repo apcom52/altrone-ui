@@ -45,6 +45,8 @@ export const Scrollable = memo<ScrollableProps>(
         targetElement.scrollWidth <= Math.round(targetElementRect.width)
       ) {
         setScrollPosition(-1);
+      } else if (scrollPosition === -1) {
+        setScrollPosition(0);
       }
     }, [
       children,
