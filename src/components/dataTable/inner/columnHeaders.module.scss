@@ -80,6 +80,7 @@
   @include no-selection;
   @include focus;
   border-radius: 4px;
+  height: 1px;
 
   &:hover .CellContent, &:focus-visible .CellContent {
     background-color: var(--dataTableHoveredHeadingCellBackgroundColor);
@@ -88,6 +89,12 @@
     .SortIcon {
       opacity: 1;
     }
+  }
+
+  .CellContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
