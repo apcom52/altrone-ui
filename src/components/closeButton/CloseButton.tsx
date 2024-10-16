@@ -28,6 +28,7 @@ export const CloseButton = memo(
         className={cls}
         style={styles}
         aria-label={t('closeButton.ariaLabel')}
+        title={t('closeButton.ariaLabel')}
         {...props}
       >
         <Icon i="close" />
