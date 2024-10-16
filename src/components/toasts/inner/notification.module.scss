@@ -1,0 +1,58 @@
+@import "../../../global/mixins";
+
+.Notification {
+  display: flex;
+  align-items: center;
+  gap: var(--l-gap);
+  width: 100%;
+  justify-self: flex-end;
+  color: var(--default-900);
+}
+
+.Content {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  gap: var(--s-gap);
+  flex: 1;
+}
+
+.Icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  border-radius: 6px;
+  background: white;
+  width: 48px;
+  height: 48px;
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
+  padding: 4px;
+
+  > * {
+    width: 40px;
+    height: 40px;
+    border-radius: 2px;
+  }
+}
+
+.Title {
+  @include label-heading;
+}
+
+.Message {
+  @include sm-paragraph;
+  color: var(--default-700);
+}
+
+.CloseButton {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+}
+
+.Actions {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--l-gap);
+}
