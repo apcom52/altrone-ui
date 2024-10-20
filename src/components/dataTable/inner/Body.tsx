@@ -1,9 +1,35 @@
 import { useDataTableContext } from '../DataTable.context.tsx';
 import clsx from 'clsx';
-import DataTableCell from '../DataTableCell.tsx';
+import { DataTableCellProps } from '../DataTableCell.tsx';
 import { Checkbox } from '../../checkbox';
 import s from './body.module.scss';
 import { useVisibleColumns } from '../useVisibleColumns.ts';
+import { DataTableColumnType } from '../DataTable.types.ts';
+import {
+  DataTableTextRenderer,
+  DataTableCurrencyRenderer,
+  DataTableNumberRenderer,
+  DataTableDateRenderer,
+  DataTableMonthRenderer,
+  DataTableYearRenderer,
+  DataTableBooleanRenderer,
+  DataTableArrayRenderer,
+} from '../renderers';
+import { createElement } from 'react';
+
+const CELL_RENDERERS: Record<
+  DataTableColumnType,
+  React.FC<DataTableCellProps<any>>
+> = {
+  text: DataTableTextRenderer,
+  number: DataTableNumberRenderer,
+  boolean: DataTableBooleanRenderer,
+  array: DataTableArrayRenderer,
+  currency: DataTableCurrencyRenderer,
+  date: DataTableDateRenderer,
+  month: DataTableMonthRenderer,
+  year: DataTableYearRenderer,
+};
 
 export const Body = <T extends object>() => {
   const {
@@ -51,15 +77,22 @@ export const Body = <T extends object>() => {
                 value: row[accessor],
                 rowIndex,
                 columnIndex,
+                columnOptions: column.options,
               };
 
               let content;
 
-              if (column.Component) {
+              if (column.renderFunc) {
+                content = column.renderFunc({ current: null }, props);
+              } else if (column.Component) {
                 const CellComponent = column.Component;
                 content = <CellComponent {...props} />;
               } else {
-                content = <DataTableCell {...props} />;
+                const CellComponent =
+                  typeof column.type === 'string'
+                    ? CELL_RENDERERS[column.type] || DataTableTextRenderer
+                    : DataTableTextRenderer;
+                content = createElement(CellComponent, props);
               }
 
               const cls = clsx(s.Cell, {
