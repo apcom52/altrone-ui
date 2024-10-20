@@ -4,7 +4,7 @@ import {
   AltroneApplication,
   DataTable,
 } from '../src/components';
-import { EMPLOYEES } from '../src/components/dataTable/EMPLOYEES';
+import { EMPLOYEES } from '../src/components/dataTable/stories/EMPLOYEES';
 
 describe('DataTable', () => {
   test('check that className and style props works', () => {

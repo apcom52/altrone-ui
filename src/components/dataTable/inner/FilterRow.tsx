@@ -61,12 +61,17 @@ export const FilterRow = ({
     return columns?.map((item) => ({
       value: String(item.accessor),
       label: String(item.label || item.accessor),
+      type: item.type,
     }));
   }, [columns]);
 
   const changeFilterField = (newField?: string) => {
     if (!newField) return;
-    changeFilter(filterIndex, newField);
+    changeFilter(
+      filterIndex,
+      newField,
+      columnsWithFilters.find((item) => item.value === newField)?.type,
+    );
   };
 
   const isTwoFields = selectedRule?.columns === 2;

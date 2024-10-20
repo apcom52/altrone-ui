@@ -9,6 +9,7 @@ import { useDataTableContext } from '../DataTable.context.tsx';
 import {
   ArrayFilterRules,
   BooleanFilterRules,
+  DataTableColumnType,
   Filter,
   FilterType,
   NumberFilterRules,
@@ -126,10 +127,10 @@ export const Filtering = memo(() => {
   };
 
   const changeFilter = useCallback(
-    (oldFilterIndex: number, accessor: string) => {
+    (oldFilterIndex: number, accessor: string, type?: DataTableColumnType) => {
       deleteFilter(oldFilterIndex, 'field');
 
-      const filterType = getCellType(initialData?.[0], accessor);
+      const filterType = getCellType(initialData?.[0], accessor, type);
 
       if (!filterType) return;
 
@@ -223,6 +224,7 @@ export const Filtering = memo(() => {
                     const filterType = getCellType(
                       initialData?.[0],
                       filter.accessor,
+                      filter.type,
                     );
 
                     if (!filterType) return null;
