@@ -270,7 +270,7 @@ export const Filtering = memo(() => {
               />
               <Button
                 leftIcon={<Icon i="filter_alt" />}
-                role="primary"
+                severity="primary"
                 label={t('common.apply')}
                 title={t('common.apply')}
                 onClick={() => {
