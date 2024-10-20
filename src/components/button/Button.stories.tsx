@@ -43,20 +43,20 @@ const renderButtonsWithRole = (role: Role, args: ButtonProps) => {
         label="Action"
         rightIcon={<Icon i="bolt" />}
       />
-      <Button {...args} role={role} label="Action" />
-      <Button {...args} role={role} disabled label="Disabled Action" />
-      <Button {...args} role={role} leftIcon={<Icon i="bolt" />} />
-      <Button {...args} role={role} leftIcon={<Icon i="bolt" />} loading />
+      <Button {...args} severity={role} label="Action" />
+      <Button {...args} severity={role} disabled label="Disabled Action" />
+      <Button {...args} severity={role} leftIcon={<Icon i="bolt" />} />
+      <Button {...args} severity={role} leftIcon={<Icon i="bolt" />} loading />
       <Button
         {...args}
-        role={role}
+        severity={role}
         label="Action"
         transparent
         leftIcon={<Icon i="bolt" />}
       />
       <Button
         {...args}
-        role={role}
+        severity={role}
         label="Action"
         transparent
         leftIcon={<Icon i="bolt" />}
@@ -64,23 +64,28 @@ const renderButtonsWithRole = (role: Role, args: ButtonProps) => {
       />
       <Button
         {...args}
-        role={role}
+        severity={role}
         label="Action"
         transparent
         rightIcon={<Icon i="bolt" />}
       />
-      <Button {...args} role={role} label="Action" transparent />
+      <Button {...args} severity={role} label="Action" transparent />
       <Button
         {...args}
-        role={role}
+        severity={role}
         disabled
         label="Disabled Action"
         transparent
       />
-      <Button {...args} role={role} transparent leftIcon={<Icon i="bolt" />} />
       <Button
         {...args}
-        role={role}
+        severity={role}
+        transparent
+        leftIcon={<Icon i="bolt" />}
+      />
+      <Button
+        {...args}
+        severity={role}
         transparent
         leftIcon={<Icon i="bolt" />}
         loading

@@ -85,7 +85,7 @@ export const Pagination = memo<PaginationProps>(
                 aria-label={t('pagination.title')}
               />
               <Button
-                role="primary"
+                severity="primary"
                 label={t('pagination.action')}
                 onClick={() => {
                   navigateToPage();

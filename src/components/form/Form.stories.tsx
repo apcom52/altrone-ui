@@ -130,7 +130,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 <DatePicker value={dayjs('2024-04-04')} />
               </Form.Field>
             </Flex>
-            <Button role="primary" label="Submit" />
+            <Button severity="primary" label="Submit" />
           </Form>
         </Flex>
       </Flex>

@@ -43,6 +43,8 @@ export const en: Localization = {
     addFilter: 'Add filter',
     selectableMode: 'Select rows',
     disableSelectableMode: 'Disable selectable mode',
+    selectRow: 'Select this row',
+    deselectRow: 'Deselect this row',
     where: 'Where',
     and: 'AND',
     noFilters:

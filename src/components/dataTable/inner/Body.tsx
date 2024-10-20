@@ -4,6 +4,7 @@ import DataTableCell from '../DataTableCell.tsx';
 import { Checkbox } from '../../checkbox';
 import s from './body.module.scss';
 import { useVisibleColumns } from '../useVisibleColumns.ts';
+import { useLocalization } from '../../application';
 
 export const Body = <T extends object>() => {
   const {
@@ -15,6 +16,8 @@ export const Body = <T extends object>() => {
     selectedRows,
     selectRow,
   } = useDataTableContext<T>();
+
+  const t = useLocalization();
 
   const start = (page - 1) * rowsPerPage;
   const end = page * rowsPerPage;
@@ -39,6 +42,11 @@ export const Body = <T extends object>() => {
                 <Checkbox
                   checked={isSelected}
                   onChange={() => selectRow(currentRowIndex)}
+                  title={t(
+                    isSelected
+                      ? 'dataTable.deselectRow'
+                      : 'dataTable.selectRow',
+                  )}
                 />
               </td>
             )}
