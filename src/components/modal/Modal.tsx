@@ -8,6 +8,7 @@ import { DOMUtils, GlobalUtils, useBoolean } from '../../utils';
 import { createPortal } from 'react-dom';
 import s from './modal.module.scss';
 import FocusTrap from 'focus-trap-react';
+import { useLocalization } from '../application';
 
 export const Modal = memo<ModalProps>(
   ({
@@ -24,6 +25,8 @@ export const Modal = memo<ModalProps>(
     onClick,
     ...restProps
   }) => {
+    const t = useLocalization();
+
     const titleId = useId();
 
     const { modal: modalConfig = {} } = useConfiguration();
@@ -121,7 +124,7 @@ export const Modal = memo<ModalProps>(
               <div className={s.Footer}>
                 <div className={s.LeftFooter}>{leftActionsElement}</div>
                 <div className={s.RightFooter}>
-                  <Button label="Cancel" onClick={hide} />
+                  <Button label={t('common.cancel')} onClick={hide} />
                   {actionsElement}
                 </div>
               </div>
