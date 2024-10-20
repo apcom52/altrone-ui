@@ -50,6 +50,8 @@ export interface Localization {
     addFilter: string;
     selectableMode: string;
     disableSelectableMode: string;
+    selectRow: string;
+    deselectRow: string;
     where: string;
     and: string;
     noFilters: string;

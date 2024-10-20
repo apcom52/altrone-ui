@@ -43,6 +43,8 @@ export const ru: Localization = {
     addFilter: 'Добавить фильтр',
     selectableMode: 'Выделить строки',
     disableSelectableMode: 'Выйти из режима выделения строк',
+    selectRow: 'Выделить эту строку',
+    deselectRow: 'Отменить выделение этой строки',
     where: 'Условие',
     and: 'ТАКЖЕ',
     noFilters:
