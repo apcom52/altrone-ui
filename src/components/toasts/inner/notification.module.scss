@@ -6,7 +6,7 @@
   gap: var(--l-gap);
   width: 100%;
   justify-self: flex-end;
-  color: var(--default-900);
+  color: var(--toastTextColor);
 }
 
 .Content {
@@ -42,7 +42,7 @@
 
 .Message {
   @include sm-paragraph;
-  color: var(--default-700);
+  color: var(--toastNotificationBodyColor);
 }
 
 .CloseButton {

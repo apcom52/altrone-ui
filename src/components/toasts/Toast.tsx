@@ -8,9 +8,8 @@ import {
   ToastProps,
 } from './Toast.types.ts';
 import s from './toast.module.scss';
-import { Icon } from '../icon';
-import clsx from 'clsx';
-import { Notification } from './inner';
+import { Notification, ToastNotification } from './inner';
+import { Role } from '../../types';
 
 const ToastContext = createContext<ToastContextType>({
   toast: () => null,
@@ -29,51 +28,41 @@ const defaultToastSettings: ToastOptions = {
 };
 
 export const Toast = memo<ToastProps>(({ children }) => {
+  const sendGenericToast = useCallback(
+    (message: string, severity: Role, options?: ToastProps) => {
+      toast(<ToastNotification message={message} severity={severity} />, {
+        position: 'bottom-center',
+        closeButton: false,
+        className: s.Toast,
+        ...options,
+      });
+    },
+    [],
+  );
+
   const sendToast = useCallback((message: string) => {
-    toast(message, {
-      ...defaultToastSettings,
-      icon: (
-        <div className={s.Icon}>
-          <Icon i="info" />
-        </div>
-      ),
-    });
+    sendGenericToast(message, 'default');
+
+    // toast(message, {
+    //   ...defaultToastSettings,
+    //   icon: (
+    //     <div className={s.Icon}>
+    //       <Icon i="info" />
+    //     </div>
+    //   ),
+    // });
   }, []);
 
   const sendSuccessToast = useCallback((message: string) => {
-    toast(message, {
-      ...defaultToastSettings,
-      className: clsx(s.Toast, s.Success),
-      icon: (
-        <div className={s.Icon}>
-          <Icon i="done" />
-        </div>
-      ),
-    });
+    sendGenericToast(message, 'success');
   }, []);
 
   const sendWarningToast = useCallback((message: string) => {
-    toast(message, {
-      ...defaultToastSettings,
-      className: clsx(s.Toast, s.Warning),
-      icon: (
-        <div className={s.Icon}>
-          <Icon i="warning" />
-        </div>
-      ),
-    });
+    sendGenericToast(message, 'warning');
   }, []);
 
   const sendDangerToast = useCallback((message: string) => {
-    toast(message, {
-      ...defaultToastSettings,
-      className: clsx(s.Toast, s.Danger),
-      icon: (
-        <div className={s.Icon}>
-          <Icon i="error" />
-        </div>
-      ),
-    });
+    sendGenericToast(message, 'danger');
   }, []);
 
   const sendNotification = useCallback((options: NotificationProps) => {
