@@ -9,5 +9,5 @@ export const DataTableYearRenderer = <T extends object>({
 
   const date = dayjs(String(value));
 
-  return <div>{date.format('YYYY')}</div>;
+  return <div>{date.format(locale?.yearFormat)}</div>;
 };

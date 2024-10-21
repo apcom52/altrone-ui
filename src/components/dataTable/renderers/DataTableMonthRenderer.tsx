@@ -9,5 +9,5 @@ export const DataTableMonthRenderer = <T extends object>({
 
   const date = dayjs(String(value));
 
-  return <div>{date.format('MM.YYYY')}</div>;
+  return <div>{date.format(locale?.monthFormat)}</div>;
 };
