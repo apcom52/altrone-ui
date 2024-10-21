@@ -67,16 +67,26 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
     const [currentMonth, setCurrentMonth] = useState(value || dayjs());
     const [view, setView] = useState(picker);
 
-    const { datePicker: datePickerConfig = {} } = useConfiguration();
+    const { locale, datePicker: datePickerConfig = {} } = useConfiguration();
 
-    const configPickerFormat =
-      view === 'day'
-        ? datePickerConfig.dateFormat
-        : view === 'month'
-          ? datePickerConfig.monthFormat
-          : datePickerConfig.yearFormat;
+    const dateFormat =
+      format ??
+      datePickerConfig.dateFormat ??
+      locale?.dateFormat ??
+      defaultFormat;
+    const monthFormat =
+      format ??
+      datePickerConfig.monthFormat ??
+      locale?.monthFormat ??
+      defaultFormat;
+    const yearFormat =
+      format ??
+      datePickerConfig.yearFormat ??
+      locale?.yearFormat ??
+      defaultFormat;
 
-    const dateFormat = format || configPickerFormat || defaultFormat;
+    const pickerDateFormat =
+      view === 'day' ? dateFormat : view === 'month' ? monthFormat : yearFormat;
 
     const cls = clsx(
       s.DatePicker,
@@ -147,7 +157,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
               <TextInput
                 className={cls}
                 style={styles}
-                value={value ? dayjs(value).format(dateFormat) : ''}
+                value={value ? dayjs(value).format(pickerDateFormat) : ''}
                 onChange={() => null}
                 readonlyStyles={readOnly}
                 placeholder={t('datePicker.placeholder')}
