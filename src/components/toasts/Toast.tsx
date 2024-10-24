@@ -1,4 +1,4 @@
-import { ToastContainer, toast, ToastOptions } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { createContext, memo, useCallback, useContext, useMemo } from 'react';
@@ -20,13 +20,6 @@ const ToastContext = createContext<ToastContextType>({
 });
 export const useToast = () => useContext(ToastContext);
 
-const defaultToastSettings: ToastOptions = {
-  position: 'bottom-center',
-  closeButton: false,
-  autoClose: 5000,
-  closeOnClick: true,
-};
-
 export const Toast = memo<ToastProps>(({ children }) => {
   const sendGenericToast = useCallback(
     (message: string, severity: Role, options?: ToastProps) => {
@@ -42,15 +35,6 @@ export const Toast = memo<ToastProps>(({ children }) => {
 
   const sendToast = useCallback((message: string) => {
     sendGenericToast(message, 'default');
-
-    // toast(message, {
-    //   ...defaultToastSettings,
-    //   icon: (
-    //     <div className={s.Icon}>
-    //       <Icon i="info" />
-    //     </div>
-    //   ),
-    // });
   }, []);
 
   const sendSuccessToast = useCallback((message: string) => {
