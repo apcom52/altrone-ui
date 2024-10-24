@@ -83,6 +83,7 @@ export interface ConsumerConfigurationContext {
     }>;
     groupAction?: ComponentConfiguration;
     link?: ComponentConfiguration;
+    linkAction?: ComponentConfiguration;
   }>;
   numberInput?: ComponentConfiguration<{
     showControls?: boolean;

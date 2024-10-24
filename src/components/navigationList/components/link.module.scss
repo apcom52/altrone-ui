@@ -19,6 +19,8 @@
 }
 
 .Link {
+  --childLinkActionsVisible: hidden;
+
   position: relative;
   @include sm-paragraph;
   padding: 4px 12px 4px 30px;
@@ -50,6 +52,7 @@
 
   &:hover, &:focus-visible, &.Selected {
     color: var(--navigationListHoveredTextColor);
+    --childLinkActionsVisible: visible;
 
     &:before {
       width: 100%;
@@ -83,4 +86,12 @@
   align-items: center;
   z-index: 1;
   gap: 6px;
+}
+
+.Actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  transform: translateX(4px);
 }

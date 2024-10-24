@@ -1,21 +1,27 @@
-import { forwardRef } from 'react';
+import { forwardRef, ReactElement, useMemo } from 'react';
 import clsx from 'clsx';
 import s from './link.module.scss';
-import { NavigationListLinkProps } from '../NavigationList.types.ts';
+import {
+  NavigationListLinkProps,
+  NavigationListLinkPropsWithActions,
+} from '../NavigationList.types.ts';
 import { RenderFuncProp } from '../../../types';
 import { useConfiguration } from '../../configuration';
+import { AltChildren, DOMUtils } from '../../../utils';
+import { LinkAction } from './LinkAction.tsx';
 
 const navigationListRenderFunc: RenderFuncProp<
   HTMLAnchorElement,
-  NavigationListLinkProps
+  NavigationListLinkPropsWithActions
 > = (ref, props) => {
-  const { icon, label, ...restProps } = props;
+  const { icon, label, actions, ...restProps } = props;
 
   return (
     <a ref={ref} {...restProps}>
       <div className={s.Label}>
         {icon ? <div className={s.Icon}>{icon}</div> : null}
         {label}
+        {actions ? <div className={s.Actions}>{actions}</div> : null}
       </div>
     </a>
   );
@@ -31,6 +37,25 @@ export const Link = forwardRef<HTMLAnchorElement, NavigationListLinkProps>(
     } = props;
 
     const { navigationList: { link: linkConfig } = {} } = useConfiguration();
+
+    const actions = useMemo(() => {
+      const elements = new AltChildren(props.children);
+
+      const actions: ReactElement[] = [];
+
+      elements
+        .filterNodes()
+        .toArray()
+        .forEach((elem) => {
+          const element = elem as ReactElement;
+
+          if (DOMUtils.containsElementType(element, [LinkAction])) {
+            actions.push(element);
+          }
+        });
+
+      return actions;
+    }, [props.children]);
 
     const cls = clsx(
       s.Link,
@@ -50,6 +75,7 @@ export const Link = forwardRef<HTMLAnchorElement, NavigationListLinkProps>(
       ...restProps,
       className: cls,
       style: styles,
+      actions,
     });
   },
 );
