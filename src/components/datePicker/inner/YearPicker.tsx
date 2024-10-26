@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useRef } from 'react';
 import s from './yearPicker.module.scss';
 import {
   useDateContext,
@@ -7,7 +7,7 @@ import {
 } from '../DatePicker.contexts.ts';
 import { useYearRanges } from '../utils.ts';
 import clsx from 'clsx';
-import { Composite, CompositeItem } from '@floating-ui/react';
+import { useKeyboardSupport } from '../useKeyboardSupport.ts';
 
 export const YearPicker = memo(() => {
   const { picker, currentMonth, setViewMode, setCurrentMonth } =
@@ -15,9 +15,19 @@ export const YearPicker = memo(() => {
   const { selectedDates, onDayClicked } = useDateContext();
   const closePopup = useDatePickerCloseFn();
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const selectedYear = selectedDates[0];
 
   const [startYear, endYear] = useYearRanges(currentMonth);
+
+  useKeyboardSupport(containerRef, {
+    rows: 5,
+    columns: 3,
+    index: selectedYear.year() - startYear,
+    minIndex: 0,
+    maxIndex: 14,
+  });
 
   const years = useMemo(() => {
     const elements = [];
@@ -35,6 +45,8 @@ export const YearPicker = memo(() => {
       setViewMode('month');
     };
 
+    let index = 0;
+
     for (let year = startYear; year <= endYear; year++) {
       const isSelected =
         picker === 'year' &&
@@ -46,18 +58,15 @@ export const YearPicker = memo(() => {
       });
 
       elements.push(
-        <CompositeItem
-          render={() => (
-            <button
-              key={year}
-              type="button"
-              className={cls}
-              onClick={() => onYearClick(year)}
-            >
-              {year}
-            </button>
-          )}
-        />,
+        <button
+          key={year}
+          type="button"
+          className={cls}
+          onClick={() => onYearClick(year)}
+          data-index={index++}
+        >
+          {year}
+        </button>,
       );
     }
 
@@ -65,14 +74,8 @@ export const YearPicker = memo(() => {
   }, [picker, startYear, endYear, currentMonth]);
 
   return (
-    <Composite
-      activeIndex={0}
-      orientation="both"
-      loop
-      cols={4}
-      className={s.YearPicker}
-    >
+    <div className={s.YearPicker} ref={containerRef}>
       {years}
-    </Composite>
+    </div>
   );
 });

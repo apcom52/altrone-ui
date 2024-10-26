@@ -75,8 +75,6 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
       yearFormat: format ?? datePickerConfig.yearFormat,
     });
 
-    console.log('>> locale', picker, locale);
-
     const pickerDateFormat =
       view === 'day'
         ? locale.dateFormat
