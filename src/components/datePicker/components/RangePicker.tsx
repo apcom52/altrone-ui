@@ -21,6 +21,7 @@ import { Icon } from 'components/icon';
 import warningOnce from 'rc-util/es/warning';
 import { useConfiguration } from 'components/configuration';
 import { useLocalization } from '../../application/useLocalization.tsx';
+import { useLocale } from '../../../utils/hooks/useLocale.ts';
 
 export const RangePicker = memo<RangePickerProps>((props) => {
   const t = useLocalization();
@@ -36,15 +37,14 @@ export const RangePicker = memo<RangePickerProps>((props) => {
     ...restProps
   } = props;
 
-  const { locale: localeConfig = {}, datePicker: datePickerConfig = {} } =
-    useConfiguration();
+  const { datePicker: datePickerConfig = {} } = useConfiguration();
+
+  const locale = useLocale({
+    dateFormat: format || datePickerConfig.rangeFormat,
+  });
 
   const rangeFormatEmpty = datePickerConfig.rangeFormatEmpty || '...';
-  const dateFormat =
-    format ||
-    datePickerConfig.rangeFormat ||
-    localeConfig.dateFormat ||
-    'DD.MM.YYYY';
+  const dateFormat = locale.dateFormat;
 
   useEffect(() => {
     warningOnce(

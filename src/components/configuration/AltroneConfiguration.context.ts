@@ -4,12 +4,7 @@ import { CollapsedListProps } from '../collapsedList/CollapsedList.types.ts';
 
 export const DEFAULT_CONFIGURATION: ConsumerConfigurationContext = {
   locale: {
-    dateFormat: 'DD.MM.YYYY',
-    monthFormat: 'MM.YYYY',
-    yearFormat: 'YYYY',
-    firstDayOfWeek: 'monday',
-    numberGrouping: ' ',
-    numberDecimal: '.',
+    locale: 'en-US',
   },
 };
 
@@ -18,12 +13,12 @@ type ComponentConfiguration<ExtraProps extends object = {}> = Partial<
 >;
 
 export type Locale = {
+  locale: string;
   dateFormat: string;
   monthFormat: string;
   yearFormat: string;
-  firstDayOfWeek: 'monday' | 'sunday';
-  numberGrouping: '' | ' ' | ',' | '.';
-  numberDecimal: '.' | ',';
+  numberGrouping: string;
+  numberDecimal: string;
 };
 
 export interface ConsumerConfigurationContext {

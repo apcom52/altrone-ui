@@ -7,6 +7,7 @@ import {
 } from '../DatePicker.contexts.ts';
 import { useYearRanges } from '../utils.ts';
 import clsx from 'clsx';
+import { Composite, CompositeItem } from '@floating-ui/react';
 
 export const YearPicker = memo(() => {
   const { picker, currentMonth, setViewMode, setCurrentMonth } =
@@ -45,19 +46,33 @@ export const YearPicker = memo(() => {
       });
 
       elements.push(
-        <button
-          key={year}
-          type="button"
-          className={cls}
-          onClick={() => onYearClick(year)}
-        >
-          {year}
-        </button>,
+        <CompositeItem
+          render={() => (
+            <button
+              key={year}
+              type="button"
+              className={cls}
+              onClick={() => onYearClick(year)}
+            >
+              {year}
+            </button>
+          )}
+        />,
       );
     }
 
     return elements;
   }, [picker, startYear, endYear, currentMonth]);
 
-  return <div className={s.YearPicker}>{years}</div>;
+  return (
+    <Composite
+      activeIndex={0}
+      orientation="both"
+      loop
+      cols={4}
+      className={s.YearPicker}
+    >
+      {years}
+    </Composite>
+  );
 });

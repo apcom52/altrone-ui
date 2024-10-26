@@ -1,11 +1,11 @@
 import { DataTableCellProps } from '../DataTableCell.tsx';
-import { useConfiguration } from '../../configuration';
-import dayjs from 'dayjs';
+import { dayjsInstance as dayjs } from '../../calendar/Calendar.tsx';
+import { useLocale } from '../../../utils/hooks/useLocale.ts';
 
 export const DataTableMonthRenderer = <T extends object>({
   value,
 }: DataTableCellProps<T>) => {
-  const { locale } = useConfiguration();
+  const locale = useLocale();
 
   const date = dayjs(String(value));
 

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import { dayjsInstance as dayjs } from '../../calendar/Calendar.tsx';
 import {
   BasicDatePickerProps,
   DatePickerContextType,
@@ -20,11 +20,12 @@ import { TextInput } from 'components/textInput';
 import { Icon } from 'components/icon';
 import warningOnce from 'rc-util/es/warning';
 import { useConfiguration } from 'components/configuration';
-import { useLocalization } from '../../application/useLocalization.tsx';
+import { useLocalization } from 'components/application';
+import { Dayjs } from 'dayjs';
+import { useLocale } from '../../../utils/hooks/useLocale.ts';
 
 export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
   picker: Picker = 'day',
-  defaultFormat: string = 'DD.MM.YYYY',
 ) {
   return (props: DatePickerProps) => {
     const {
@@ -67,26 +68,21 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
     const [currentMonth, setCurrentMonth] = useState(value || dayjs());
     const [view, setView] = useState(picker);
 
-    const { locale, datePicker: datePickerConfig = {} } = useConfiguration();
+    const { datePicker: datePickerConfig = {} } = useConfiguration();
+    const locale = useLocale({
+      dateFormat: format ?? datePickerConfig.dateFormat,
+      monthFormat: format ?? datePickerConfig.monthFormat,
+      yearFormat: format ?? datePickerConfig.yearFormat,
+    });
 
-    const dateFormat =
-      format ??
-      datePickerConfig.dateFormat ??
-      locale?.dateFormat ??
-      defaultFormat;
-    const monthFormat =
-      format ??
-      datePickerConfig.monthFormat ??
-      locale?.monthFormat ??
-      defaultFormat;
-    const yearFormat =
-      format ??
-      datePickerConfig.yearFormat ??
-      locale?.yearFormat ??
-      defaultFormat;
+    console.log('>> locale', picker, locale);
 
     const pickerDateFormat =
-      view === 'day' ? dateFormat : view === 'month' ? monthFormat : yearFormat;
+      view === 'day'
+        ? locale.dateFormat
+        : view === 'month'
+          ? locale.monthFormat
+          : locale.yearFormat;
 
     const cls = clsx(
       s.DatePicker,
@@ -157,7 +153,13 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
               <TextInput
                 className={cls}
                 style={styles}
-                value={value ? dayjs(value).format(pickerDateFormat) : ''}
+                value={
+                  value
+                    ? dayjs(value)
+                        .locale(locale.locale)
+                        .format(pickerDateFormat)
+                    : ''
+                }
                 onChange={() => null}
                 readonlyStyles={readOnly}
                 placeholder={t('datePicker.placeholder')}
