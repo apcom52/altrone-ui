@@ -11,8 +11,12 @@ export interface DropdownActionProps
   danger?: boolean;
   disabled?: boolean;
   focused?: boolean;
-  renderFunc?: RenderFuncProp<HTMLButtonElement, DropdownActionProps>;
+  renderFunc?: RenderFuncProp<
+    HTMLButtonElement,
+    DropdownActionProps & { keyProp?: string }
+  >;
   'data-active'?: boolean;
+  keyProp?: string;
 }
 
 export interface DropdownCheckboxProps

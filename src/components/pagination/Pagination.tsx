@@ -8,7 +8,7 @@ import { NumberInput } from '../numberInput';
 import { Button } from '../button';
 import { PaginationProps } from './Pagination.types.ts';
 import { useConfiguration } from 'components/configuration';
-import { useLocalization } from '../application/useLocalization.tsx';
+import { useLocalization } from '../application';
 
 export const Pagination = memo<PaginationProps>(
   ({ currentPage, totalPages, setPage, className, style, ...restProps }) => {

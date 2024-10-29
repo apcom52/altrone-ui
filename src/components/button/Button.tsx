@@ -15,6 +15,12 @@ const buttonRenderFunc: RenderFuncProp<HTMLButtonElement, ButtonProps> = (
 ) => {
   const { ariaRole, ...restProps } = props;
 
+  delete restProps.showLabel;
+  delete restProps.leftIcon;
+  delete restProps.rightIcon;
+  delete restProps.transparent;
+  delete restProps.loading;
+
   return <button ref={ref} role={props.ariaRole} {...restProps} />;
 };
 
