@@ -9,6 +9,7 @@ import s from './calendar.module.scss';
 import IsSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import IsSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+import WeekOfYear from 'dayjs/plugin/weekOfYear';
 import { useConfiguration } from 'components/configuration';
 import { useLocale } from '../../utils/hooks/useLocale.ts';
 
@@ -17,6 +18,7 @@ dayjs.extend(IsToday);
 dayjs.extend(IsSameOrBefore);
 dayjs.extend(IsSameOrAfter);
 dayjs.extend(LocalizedFormat);
+dayjs.extend(WeekOfYear);
 
 export const dayjsInstance = dayjs;
 

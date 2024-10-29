@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useRef } from 'react';
 import s from './monthPicker.module.scss';
 import {
   useDateContext,
@@ -7,6 +7,7 @@ import {
 } from '../DatePicker.contexts.ts';
 import clsx from 'clsx';
 import { useLocalizationContext } from '../../application/useLocalization.tsx';
+import { useKeyboardSupport } from '../useKeyboardSupport.ts';
 
 export const MonthPicker = memo(() => {
   const { picker, currentMonth, setCurrentMonth, setViewMode } =
@@ -17,6 +18,16 @@ export const MonthPicker = memo(() => {
   const closePopup = useDatePickerCloseFn();
 
   const selectedMonth = selectedDates[0];
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useKeyboardSupport(containerRef, {
+    rows: 4,
+    columns: 3,
+    index: selectedMonth.month(),
+    minIndex: 0,
+    maxIndex: 11,
+  });
 
   const months = useMemo(() => {
     const elements = [];
@@ -52,6 +63,7 @@ export const MonthPicker = memo(() => {
           type="button"
           className={cls}
           onClick={() => onMonthClick(monthIndex)}
+          data-index={monthIndex}
         >
           {currentMonth
             .month(monthIndex)
@@ -64,5 +76,9 @@ export const MonthPicker = memo(() => {
     return elements;
   }, [currentMonth]);
 
-  return <div className={s.MonthCalendar}>{months}</div>;
+  return (
+    <div className={s.MonthCalendar} ref={containerRef}>
+      {months}
+    </div>
+  );
 });

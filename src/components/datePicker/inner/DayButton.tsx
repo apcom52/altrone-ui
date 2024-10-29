@@ -86,6 +86,7 @@ export const DayButton = memo(
         data-end-of-week={weekDay === 0 ? 'true' : 'false'}
         data-start-of-range={currentDate.isSame(selectedDates[0], 'day')}
         data-end-of-range={isEndOfRange}
+        data-index={currentDate.date()}
         onMouseEnter={onMouseEnter}
         disabled={isDisabled}
       >

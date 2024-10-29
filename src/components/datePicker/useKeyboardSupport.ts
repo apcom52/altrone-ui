@@ -42,16 +42,14 @@ export const useKeyboardSupport = (
   const getVerticalRange = (index: number) => {
     const previousIndex = index - options.columns;
     const nextIndex = index + options.columns;
-    const startIndex = 0;
-    const endIndex = options.rows * options.columns - 1;
 
     const columnIndex = index % options.columns;
     const minAllowedIndex = columnIndex;
     const maxAllowedIndex = options.columns * (options.rows - 1) + columnIndex;
 
     return [
-      Math.max(startIndex, previousIndex, minIndex, minAllowedIndex),
-      Math.min(endIndex, nextIndex, maxIndex, maxAllowedIndex),
+      Math.max(previousIndex, minIndex, minAllowedIndex),
+      Math.min(nextIndex, maxIndex, maxAllowedIndex),
     ];
   };
 
