@@ -10,6 +10,8 @@ const renderItem: RenderFuncProp<HTMLAnchorElement, BreadcrumbsItemProps> = (
 ) => {
   const { icon, label, ...restProps } = props;
 
+  delete restProps.current;
+
   return (
     <a ref={ref} {...restProps}>
       {icon ? <div className={s.Icon}>{icon}</div> : null}
