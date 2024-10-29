@@ -12,7 +12,13 @@ const DataTableComponent = <DataType extends object>(
 ) => {
   const { dataTable: dataTableConfig = {} } = useConfiguration();
 
-  const { children, selectable, showFooter = true, ...restProps } = props;
+  const {
+    children,
+    selectable,
+    showFooter = true,
+    rowsPerPage,
+    ...restProps
+  } = props;
 
   const cls = clsx(s.Table, props.className, dataTableConfig.className);
   const styles = {

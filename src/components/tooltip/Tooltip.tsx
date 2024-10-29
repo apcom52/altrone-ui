@@ -38,7 +38,7 @@ export const Tooltip = memo<TooltipTypes>(
 
     const ariaAttributes = {
       role: 'tooltip',
-      ariaLabel: String(content),
+      'aria-label': String(content),
     };
 
     const childrenElement = DOMUtils.cloneNode(children, ariaAttributes) || (
