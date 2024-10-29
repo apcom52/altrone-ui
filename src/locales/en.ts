@@ -36,6 +36,8 @@ export const en: Localization = {
     progress: '{{current}} of {{total}}',
     title: 'Navigate to page',
     action: 'Navigate',
+    previous: 'Previous page',
+    next: 'Next page',
   },
   dataTable: {
     filters: 'Filters',
