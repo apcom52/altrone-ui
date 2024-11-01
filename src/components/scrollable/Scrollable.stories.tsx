@@ -15,7 +15,6 @@ const story: Meta<typeof Scrollable> = {
   },
   argTypes: {
     showShadows: { control: 'boolean' },
-    direction: { control: 'none' },
     offset: { control: 'number' },
   },
   parameters: {

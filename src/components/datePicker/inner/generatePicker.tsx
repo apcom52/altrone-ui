@@ -147,6 +147,8 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
                 </DatePickerCloseFnContext.Provider>
               )}
               onOpenChange={onPopoverOpenChange}
+              focusTrapTargets={['content']}
+              listNavigation
             >
               <TextInput
                 className={cls}

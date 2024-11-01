@@ -7,12 +7,12 @@ import {
 } from '../DatePicker.contexts.ts';
 import { useYearRanges } from '../utils.ts';
 import clsx from 'clsx';
-import { useKeyboardSupport } from '../useKeyboardSupport.ts';
+import { Composite, CompositeItem } from '@floating-ui/react';
 
 export const YearPicker = memo(() => {
   const { picker, currentMonth, setViewMode, setCurrentMonth } =
     useDatePickerViewContext();
-  const { selectedDates, onDayClicked } = useDateContext();
+  const { selectedDates, onDayClicked, minDate, maxDate } = useDateContext();
   const closePopup = useDatePickerCloseFn();
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -20,14 +20,6 @@ export const YearPicker = memo(() => {
   const selectedYear = selectedDates[0];
 
   const [startYear, endYear] = useYearRanges(currentMonth);
-
-  useKeyboardSupport(containerRef, {
-    rows: 5,
-    columns: 3,
-    index: selectedYear.year() - startYear,
-    minIndex: 0,
-    maxIndex: 14,
-  });
 
   const years = useMemo(() => {
     const elements = [];
@@ -45,8 +37,6 @@ export const YearPicker = memo(() => {
       setViewMode('month');
     };
 
-    let index = 0;
-
     for (let year = startYear; year <= endYear; year++) {
       const isSelected =
         picker === 'year' &&
@@ -57,16 +47,29 @@ export const YearPicker = memo(() => {
         [s.Selected]: isSelected,
       });
 
+      const isDateLessThanMin = minDate ? year < minDate.year() : false;
+      const isDateGreaterThanMax = maxDate ? year > maxDate.year() : false;
+      const isDateDisabled = isDateLessThanMin || isDateGreaterThanMax;
+
       elements.push(
-        <button
+        <CompositeItem
           key={year}
-          type="button"
-          className={cls}
-          onClick={() => onYearClick(year)}
-          data-index={index++}
-        >
-          {year}
-        </button>,
+          disabled={isDateDisabled}
+          render={(htmlProps) => {
+            return (
+              <button
+                type="button"
+                className={cls}
+                onClick={() => onYearClick(year)}
+                autoFocus={isSelected}
+                disabled={isDateDisabled}
+                {...htmlProps}
+              >
+                {year}
+              </button>
+            );
+          }}
+        />,
       );
     }
 
@@ -74,8 +77,15 @@ export const YearPicker = memo(() => {
   }, [picker, startYear, endYear, currentMonth]);
 
   return (
-    <div className={s.YearPicker} ref={containerRef}>
+    <Composite
+      orientation="both"
+      cols={3}
+      className={s.YearPicker}
+      ref={containerRef}
+      tabIndex={0}
+      loop={false}
+    >
       {years}
-    </div>
+    </Composite>
   );
 });

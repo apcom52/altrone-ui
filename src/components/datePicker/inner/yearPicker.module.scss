@@ -12,6 +12,11 @@
 .Year {
   @include picker-item;
   @include focus;
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 }
 
 .Selected {
