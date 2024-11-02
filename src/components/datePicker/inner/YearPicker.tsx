@@ -80,6 +80,7 @@ export const YearPicker = memo(() => {
     <Composite
       orientation="both"
       cols={3}
+      rows={5}
       className={s.YearPicker}
       ref={containerRef}
       tabIndex={0}

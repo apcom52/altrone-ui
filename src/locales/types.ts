@@ -22,6 +22,9 @@ export interface Localization {
     today: string;
     thisMonth: string;
     thisYear: string;
+    next: string;
+    prev: string;
+    clickToChangeView: string;
   };
   filePicker: {
     noFiles: string;

@@ -8,6 +8,10 @@
   --datePickerWeekdayName: var(--default-600);
 }
 
+.Wrapper {
+  outline: 0;
+}
+
 .DayPicker {
   column-gap: var(--gap);
   row-gap: var(--s-gap);

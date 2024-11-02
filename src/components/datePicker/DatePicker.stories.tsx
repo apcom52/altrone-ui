@@ -68,6 +68,8 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             data-testid="month-picker"
             value={month1}
             onChange={setMonth1}
+            minDate={dayjs('2024-02')}
+            maxDate={dayjs('2025-06')}
           />
           <DatePicker.MonthPicker
             clearable

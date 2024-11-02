@@ -7,27 +7,19 @@ import {
 } from '../DatePicker.contexts.ts';
 import clsx from 'clsx';
 import { useLocalizationContext } from '../../application/useLocalization.tsx';
-import { useKeyboardSupport } from '../useKeyboardSupport.ts';
+import { Composite, CompositeItem } from '@floating-ui/react';
 
 export const MonthPicker = memo(() => {
   const { picker, currentMonth, setCurrentMonth, setViewMode } =
     useDatePickerViewContext();
 
-  const { selectedDates, onDayClicked } = useDateContext();
+  const { selectedDates, onDayClicked, minDate, maxDate } = useDateContext();
   const { language = 'en' } = useLocalizationContext();
   const closePopup = useDatePickerCloseFn();
 
   const selectedMonth = selectedDates[0];
 
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useKeyboardSupport(containerRef, {
-    rows: 4,
-    columns: 3,
-    index: selectedMonth.month(),
-    minIndex: 0,
-    maxIndex: 11,
-  });
 
   const months = useMemo(() => {
     const elements = [];
@@ -57,19 +49,31 @@ export const MonthPicker = memo(() => {
         [s.Selected]: isSelected,
       });
 
+      const thisDate = currentMonth.month(monthIndex);
+
+      const isDateLessThanMin = thisDate.isSameOrBefore(minDate, 'month');
+      const isDateGreaterThanMax = thisDate.isSameOrAfter(maxDate, 'month');
+      const isDateDisabled = isDateLessThanMin || isDateGreaterThanMax;
+
       elements.push(
-        <button
+        <CompositeItem
           key={`${currentMonth.year()}-${monthIndex}`}
-          type="button"
-          className={cls}
-          onClick={() => onMonthClick(monthIndex)}
-          data-index={monthIndex}
-        >
-          {currentMonth
-            .month(monthIndex)
-            .locale(language.toLowerCase())
-            .format('MMM')}
-        </button>,
+          disabled={isDateDisabled}
+          render={(htmlProps) => {
+            return (
+              <button
+                key={`${currentMonth.year()}-${monthIndex}`}
+                type="button"
+                className={cls}
+                onClick={() => onMonthClick(monthIndex)}
+                data-index={monthIndex}
+                {...htmlProps}
+              >
+                {thisDate.locale(language.toLowerCase()).format('MMM')}
+              </button>
+            );
+          }}
+        />,
       );
     }
 
@@ -77,8 +81,16 @@ export const MonthPicker = memo(() => {
   }, [currentMonth]);
 
   return (
-    <div className={s.MonthCalendar} ref={containerRef}>
+    <Composite
+      orientation="both"
+      cols={3}
+      rows={4}
+      className={s.MonthCalendar}
+      ref={containerRef}
+      tabIndex={0}
+      loop={false}
+    >
       {months}
-    </div>
+    </Composite>
   );
 });

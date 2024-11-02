@@ -165,6 +165,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
                 placeholder={t('datePicker.placeholder')}
                 {...restProps}
                 readOnly={true}
+                role="textbox"
               >
                 {!readOnly ? (
                   <TextInput.IconIsland

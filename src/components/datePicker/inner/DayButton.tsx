@@ -7,6 +7,8 @@ import {
   useDatePickerCloseFn,
   useDatePickerViewContext,
 } from '../DatePicker.contexts.ts';
+import { CompositeItem } from '@floating-ui/react';
+import { useLocale } from '../../../utils/hooks/useLocale.ts';
 
 export const DayButton = memo(
   ({
@@ -19,6 +21,8 @@ export const DayButton = memo(
     const { onDayClicked, selectedDates, minDate, maxDate } = useDateContext();
     const { picker, hoveredDate, setHoveredDate } = useDatePickerViewContext();
     const closePopup = useDatePickerCloseFn();
+
+    const locale = useLocale();
 
     const startDate = selectedDates[0];
     const endDate = selectedDates[1];
@@ -76,25 +80,42 @@ export const DayButton = memo(
         currentDate.isSame(selectedDates[1], 'day')) ||
       Boolean(hoveredDate && currentDate.isSame(hoveredDate, 'day'));
 
+    const dateFormatter = new Intl.DateTimeFormat(locale.locale, {
+      day: 'numeric',
+      weekday: 'long',
+      month: 'long',
+      year: 'numeric',
+    });
+
     return (
-      <button
-        type="button"
-        onClick={onDateClick}
-        className={cls}
-        data-date={currentDate.format('YYYY-MM-DD')}
-        data-start-of-week={weekDay === 1 ? 'true' : 'false'}
-        data-end-of-week={weekDay === 0 ? 'true' : 'false'}
-        data-start-of-range={currentDate.isSame(selectedDates[0], 'day')}
-        data-end-of-range={isEndOfRange}
-        data-index={currentDate.date()}
-        onMouseEnter={onMouseEnter}
+      <CompositeItem
         disabled={isDisabled}
-      >
-        {(isBetweenSelectedDates || isHovered) && (
-          <div className={s.DayBackground} />
-        )}
-        <div className={s.Number}>{currentDate.date()}</div>
-      </button>
+        render={(htmlProps) => {
+          return (
+            <button
+              type="button"
+              onClick={onDateClick}
+              className={cls}
+              data-date={currentDate.format('YYYY-MM-DD')}
+              data-start-of-week={weekDay === 1 ? 'true' : 'false'}
+              data-end-of-week={weekDay === 0 ? 'true' : 'false'}
+              data-start-of-range={currentDate.isSame(selectedDates[0], 'day')}
+              data-end-of-range={isEndOfRange}
+              data-index={currentDate.date()}
+              onMouseEnter={onMouseEnter}
+              autoFocus={selected}
+              {...htmlProps}
+              aria-disabled={isDisabled}
+              aria-label={dateFormatter.format(currentDate.toDate())}
+            >
+              {(isBetweenSelectedDates || isHovered) && (
+                <div className={s.DayBackground} />
+              )}
+              <div className={s.Number}>{currentDate.date()}</div>
+            </button>
+          );
+        }}
+      />
     );
   },
 );
