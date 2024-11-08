@@ -10,9 +10,9 @@ import { RenderFuncProp } from '../../../types';
 
 const dropdownActionRenderFunc: RenderFuncProp<
   HTMLButtonElement,
-  DropdownActionProps
+  DropdownActionProps & { keyProp?: string }
 > = (ref, props) => {
-  const { icon, label, hintText, ...restProps } = props;
+  const { icon, label, hintText, keyProp, ...restProps } = props;
 
   return (
     <button type="button" role="button" ref={ref} {...restProps}>

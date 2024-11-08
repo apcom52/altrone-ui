@@ -22,6 +22,9 @@ export interface Localization {
     today: string;
     thisMonth: string;
     thisYear: string;
+    next: string;
+    prev: string;
+    clickToChangeView: string;
   };
   filePicker: {
     noFiles: string;
@@ -43,6 +46,8 @@ export interface Localization {
     progress: string;
     title: string;
     action: string;
+    previous: string;
+    next: string;
   };
   dataTable: {
     filters: string;

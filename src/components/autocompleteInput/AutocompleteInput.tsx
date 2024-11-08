@@ -93,7 +93,7 @@ export const AutocompleteInput = forwardRef<PopoverRef, AutocompleteInputProps>(
     const suggestionElements = suggestions.map(
       (suggestion, suggestionIndex) => {
         const itemProps = {
-          key: suggestion + suggestionIndex,
+          keyProp: String(suggestion) + suggestionIndex,
           label: suggestion,
           onClick: () => selectSuggestion(suggestion),
         };

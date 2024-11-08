@@ -36,6 +36,8 @@ export const ru: Localization = {
     progress: '{{current}} из {{total}}',
     title: 'Перейти на страницу',
     action: 'Перейти',
+    previous: 'Предыдущая страница',
+    next: 'Следующая страница',
   },
   dataTable: {
     filters: 'Фильтры',

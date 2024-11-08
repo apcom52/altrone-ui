@@ -9,14 +9,17 @@ import s from './calendar.module.scss';
 import IsSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import IsSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+import WeekOfYear from 'dayjs/plugin/weekOfYear';
+import LocaleData from 'dayjs/plugin/localeData';
 import { useConfiguration } from 'components/configuration';
-import { useLocale } from '../../utils/hooks/useLocale.ts';
 
 dayjs.extend(IsBetween);
 dayjs.extend(IsToday);
 dayjs.extend(IsSameOrBefore);
 dayjs.extend(IsSameOrAfter);
 dayjs.extend(LocalizedFormat);
+dayjs.extend(WeekOfYear);
+dayjs.extend(LocaleData);
 
 export const dayjsInstance = dayjs;
 
@@ -44,7 +47,6 @@ export const Calendar = memo(
   }: CalendarProps) => {
     const { calendar: calendarConfig = {}, locale: localeConfig } =
       useConfiguration();
-    const locale = useLocale();
 
     const cls = clsx(s.Calendar, className, calendarConfig.className);
 

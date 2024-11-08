@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useRef } from 'react';
 import s from './yearPicker.module.scss';
 import {
   useDateContext,
@@ -12,8 +12,10 @@ import { Composite, CompositeItem } from '@floating-ui/react';
 export const YearPicker = memo(() => {
   const { picker, currentMonth, setViewMode, setCurrentMonth } =
     useDatePickerViewContext();
-  const { selectedDates, onDayClicked } = useDateContext();
+  const { selectedDates, onDayClicked, minDate, maxDate } = useDateContext();
   const closePopup = useDatePickerCloseFn();
+
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const selectedYear = selectedDates[0];
 
@@ -45,18 +47,28 @@ export const YearPicker = memo(() => {
         [s.Selected]: isSelected,
       });
 
+      const isDateLessThanMin = minDate ? year < minDate.year() : false;
+      const isDateGreaterThanMax = maxDate ? year > maxDate.year() : false;
+      const isDateDisabled = isDateLessThanMin || isDateGreaterThanMax;
+
       elements.push(
         <CompositeItem
-          render={() => (
-            <button
-              key={year}
-              type="button"
-              className={cls}
-              onClick={() => onYearClick(year)}
-            >
-              {year}
-            </button>
-          )}
+          key={year}
+          disabled={isDateDisabled}
+          render={(htmlProps) => {
+            return (
+              <button
+                type="button"
+                className={cls}
+                onClick={() => onYearClick(year)}
+                autoFocus={isSelected}
+                disabled={isDateDisabled}
+                {...htmlProps}
+              >
+                {year}
+              </button>
+            );
+          }}
         />,
       );
     }
@@ -66,11 +78,13 @@ export const YearPicker = memo(() => {
 
   return (
     <Composite
-      activeIndex={0}
       orientation="both"
-      loop
-      cols={4}
+      cols={3}
+      rows={5}
       className={s.YearPicker}
+      ref={containerRef}
+      tabIndex={0}
+      loop={false}
     >
       {years}
     </Composite>

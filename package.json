@@ -23,15 +23,15 @@
     "visualize-bundle": "vite-bundle-visualizer"
   },
   "dependencies": {
-    "@floating-ui/react": "0.26.25",
+    "@floating-ui/react": "0.26.26",
     "@material-symbols/font-500": "0.17.1",
     "clsx": "2.1.1",
     "dayjs": "1.11.13",
     "debounce": "2.1.1",
-    "focus-trap-react": "^10.3.0",
+    "focus-trap-react": "10.3.0",
     "lodash-es": "4.17.21",
     "rc-util": "5.43.0",
-    "react-hotkeys-hook": "^4.5.1",
+    "react-hotkeys-hook": "4.5.1",
     "react-number-format": "5.4.2",
     "react-toastify": "10.0.6"
   },
@@ -82,7 +82,7 @@
     "storybook-mock-date-decorator": "^2.0.6",
     "ts-node": "10.9.2",
     "typescript": "5.4.4",
-    "vite": "5.2.8",
+    "vite": "5.4.10",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^3.9.1",
     "vite-plugin-lib-inject-css": "^2.1.1",

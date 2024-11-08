@@ -75,8 +75,6 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
       yearFormat: format ?? datePickerConfig.yearFormat,
     });
 
-    console.log('>> locale', picker, locale);
-
     const pickerDateFormat =
       view === 'day'
         ? locale.dateFormat
@@ -149,6 +147,8 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
                 </DatePickerCloseFnContext.Provider>
               )}
               onOpenChange={onPopoverOpenChange}
+              focusTrapTargets={['content']}
+              listNavigation
             >
               <TextInput
                 className={cls}
@@ -165,6 +165,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
                 placeholder={t('datePicker.placeholder')}
                 {...restProps}
                 readOnly={true}
+                role="textbox"
               >
                 {!readOnly ? (
                   <TextInput.IconIsland
