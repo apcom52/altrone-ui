@@ -1,4 +1,4 @@
-import { memo, useMemo, useRef } from 'react';
+import { memo, useEffect, useMemo, useRef } from 'react';
 import s from './yearPicker.module.scss';
 import {
   useDateContext,
@@ -20,6 +20,10 @@ export const YearPicker = memo(() => {
   const selectedYear = selectedDates[0];
 
   const [startYear, endYear] = useYearRanges(currentMonth);
+
+  useEffect(() => {
+    containerRef.current?.focus();
+  }, []);
 
   const years = useMemo(() => {
     const elements = [];

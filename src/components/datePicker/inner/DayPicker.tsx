@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef } from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 import { Calendar } from 'components/calendar';
 import { DayButton } from './DayButton.tsx';
 import s from './dayPicker.module.scss';
@@ -20,6 +20,10 @@ export const DayPicker = memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const weekdays = dayjs.weekdaysMin(true);
+
+  useEffect(() => {
+    containerRef.current?.focus();
+  }, []);
 
   return (
     <Composite

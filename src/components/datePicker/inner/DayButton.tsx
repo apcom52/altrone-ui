@@ -1,6 +1,6 @@
 import { CalendarRenderDateProps } from 'components/calendar/Calendar.types.ts';
 import clsx from 'clsx';
-import { memo, useCallback } from 'react';
+import { memo, MouseEventHandler, useCallback } from 'react';
 import s from './day.module.scss';
 import {
   useDateContext,
@@ -8,7 +8,7 @@ import {
   useDatePickerViewContext,
 } from '../DatePicker.contexts.ts';
 import { CompositeItem } from '@floating-ui/react';
-import { useLocale } from '../../../utils/hooks/useLocale.ts';
+import { useLocale } from 'utils';
 
 export const DayButton = memo(
   ({
@@ -41,7 +41,7 @@ export const DayButton = memo(
       currentDate.isSameOrAfter(startDate) &&
       currentDate.isSameOrBefore(hoveredDate);
 
-    const onDateClick = () => {
+    const onDateClick: MouseEventHandler = () => {
       if (
         picker === 'day' ||
         (picker === 'range' && selectedDates[0] && !selectedDates[1])
@@ -49,6 +49,13 @@ export const DayButton = memo(
         closePopup();
       }
       onDayClicked(currentDate);
+
+      // if (picker === 'range') {
+      //   const nextSibling = e.currentTarget.nextSibling as HTMLElement;
+      //   if (nextSibling) {
+      //     nextSibling.focus();
+      //   }
+      // }
     };
 
     const isDisabled =
@@ -89,7 +96,7 @@ export const DayButton = memo(
 
     return (
       <CompositeItem
-        disabled={isDisabled}
+        disabled={fromAnotherMonth || isDisabled}
         render={(htmlProps) => {
           return (
             <button
@@ -103,9 +110,8 @@ export const DayButton = memo(
               data-end-of-range={isEndOfRange}
               data-index={currentDate.date()}
               onMouseEnter={onMouseEnter}
-              autoFocus={selected}
               {...htmlProps}
-              aria-disabled={isDisabled}
+              aria-disabled={fromAnotherMonth || isDisabled}
               aria-label={dateFormatter.format(currentDate.toDate())}
             >
               {(isBetweenSelectedDates || isHovered) && (

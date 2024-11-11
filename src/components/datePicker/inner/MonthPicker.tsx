@@ -1,4 +1,4 @@
-import { memo, useMemo, useRef } from 'react';
+import { memo, useEffect, useMemo, useRef } from 'react';
 import s from './monthPicker.module.scss';
 import {
   useDateContext,
@@ -20,6 +20,10 @@ export const MonthPicker = memo(() => {
   const selectedMonth = selectedDates[0];
 
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    containerRef.current?.focus();
+  }, []);
 
   const months = useMemo(() => {
     const elements = [];

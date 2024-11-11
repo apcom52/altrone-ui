@@ -20,8 +20,8 @@ import { TextInput } from 'components/textInput';
 import { Icon } from 'components/icon';
 import warningOnce from 'rc-util/es/warning';
 import { useConfiguration } from 'components/configuration';
-import { useLocalization } from '../../application/useLocalization.tsx';
-import { useLocale } from '../../../utils/hooks/useLocale.ts';
+import { useLocalization } from 'components/application';
+import { useLocale } from 'utils';
 
 export const RangePicker = memo<RangePickerProps>((props) => {
   const t = useLocalization();
