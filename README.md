@@ -13,9 +13,11 @@
 
 -----
 
-## 😼 Altrone 3.1
+## 🧚🏻‍♀️ Altrone 3.2
 
-New LoadingIsland for TextInput, GroupAction for NavigationList, accessibility improvements and more.
+New `sendNotification` function, DataTableColumn `type` options and more!
+
+[**What's new in 3.2?**](https://altrone.vercel.app/blog/release-3.2)
 
 [**What's new in 3.1?**](https://altrone.vercel.app/blog/release-3.1)
 
