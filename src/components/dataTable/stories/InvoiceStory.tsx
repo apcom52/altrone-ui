@@ -20,7 +20,7 @@ export const InvoiceStory: StoryObj<typeof Flex> = {
               label: 'Amount',
               options: { currencyAccessor: 'currency' },
             },
-            { accessor: 'date', type: 'year', label: 'Invoice date' },
+            { accessor: 'date', type: 'month', label: 'Invoice date' },
             { accessor: 'location', label: 'Location' },
           ]}
         />

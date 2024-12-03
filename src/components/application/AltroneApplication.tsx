@@ -26,8 +26,6 @@ export const AltroneApplication = ({
 }: AltroneApplicationProps) => {
   const [theme, setTheme] = useState<Theme>('auto');
 
-  console.log('config', config);
-
   const mediaScheme = useMediaMatch('(prefers-color-scheme: dark)');
 
   useEffect(() => {

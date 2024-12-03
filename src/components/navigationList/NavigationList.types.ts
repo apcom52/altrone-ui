@@ -34,5 +34,4 @@ export interface NavigationListLinkActionProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   label: string;
   icon: JSX.Element;
-  showOnlyOnHover?: boolean;
 }
