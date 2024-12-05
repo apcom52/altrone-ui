@@ -13,6 +13,7 @@ import { expect, within, fireEvent, userEvent } from '@storybook/test';
 import { AsyncUtils } from 'utils';
 import { InvoiceStory } from './stories/InvoiceStory.tsx';
 import { InvoicesWithStatusesStory } from './stories/Invoice2Story.tsx';
+import { FiltersDataTableStory } from './stories/FiltersStory.tsx';
 
 const meta: Meta<typeof DataTable<any>> = {
   component: DataTable,
@@ -765,6 +766,6 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
   },
 };
 
-export { InvoiceStory, InvoicesWithStatusesStory };
+export { InvoiceStory, InvoicesWithStatusesStory, FiltersDataTableStory };
 
 export default meta;
