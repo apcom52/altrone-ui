@@ -71,6 +71,9 @@ export const MonthPicker = memo(() => {
                 className={cls}
                 onClick={() => onMonthClick(monthIndex)}
                 data-index={monthIndex}
+                aria-label={thisDate
+                  .locale(language.toLowerCase())
+                  .format('MMMM YYYY')}
                 {...htmlProps}
               >
                 {thisDate.locale(language.toLowerCase()).format('MMM')}
