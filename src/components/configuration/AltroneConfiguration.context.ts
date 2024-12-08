@@ -4,9 +4,7 @@ import { CollapsedListProps } from '../collapsedList/CollapsedList.types.ts';
 
 export const DEFAULT_CONFIGURATION: ConsumerConfigurationContext = {
   locale: {
-    dateFormat: 'DD.MM.YYYY',
-    numberGrouping: ' ',
-    numberDecimal: '.',
+    locale: 'en-US',
   },
 };
 
@@ -15,9 +13,12 @@ type ComponentConfiguration<ExtraProps extends object = {}> = Partial<
 >;
 
 export type Locale = {
+  locale: string;
   dateFormat: string;
-  numberGrouping: '' | ' ' | ',' | '.';
-  numberDecimal: '.' | ',';
+  monthFormat: string;
+  yearFormat: string;
+  numberGrouping: string;
+  numberDecimal: string;
 };
 
 export interface ConsumerConfigurationContext {
@@ -77,6 +78,7 @@ export interface ConsumerConfigurationContext {
     }>;
     groupAction?: ComponentConfiguration;
     link?: ComponentConfiguration;
+    linkAction?: ComponentConfiguration;
   }>;
   numberInput?: ComponentConfiguration<{
     showControls?: boolean;

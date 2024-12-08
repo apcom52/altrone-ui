@@ -35,4 +35,24 @@ export class GlobalUtils {
   public static isTestEnvironment() {
     return window.__TEST_ENV__ === 'true';
   }
+
+  public static getNumberDelimitersByLocale(locale: string = 'en-US') {
+    let decimal = '';
+    let grouping = '.';
+
+    const parts = Intl.NumberFormat(locale).formatToParts(10000.1);
+
+    parts.forEach((item) => {
+      if (item.type === 'group') {
+        grouping = item.value;
+      } else if (item.type === 'decimal') {
+        decimal = item.value;
+      }
+    });
+
+    return {
+      decimal,
+      grouping,
+    };
+  }
 }

@@ -40,7 +40,15 @@ describe('NavigationList', () => {
           data-testid="link"
           className="link"
           style={{ color: 'yellow' }}
-        />
+        >
+          <NavigationList.LinkAction
+            data-testid="linkAction"
+            label="Link Action"
+            icon={<Icon i="face" />}
+            className="linkAction"
+            style={{ color: 'magenta' }}
+          />
+        </NavigationList.Link>
       </NavigationList>,
     );
 
@@ -53,6 +61,9 @@ describe('NavigationList', () => {
 
     expect(screen.getByTestId('groupAction')).toHaveClass('groupAction');
     expect(screen.getByTestId('groupAction')).toHaveStyle('color: cyan');
+
+    expect(screen.getByTestId('linkAction')).toHaveClass('linkAction');
+    expect(screen.getByTestId('linkAction')).toHaveStyle('color: magenta');
   });
 
   test('check that NavigationList configuration works correctly', () => {
@@ -75,6 +86,10 @@ describe('NavigationList', () => {
               className: 'conf-ga',
               style: { color: 'brown' },
             },
+            linkAction: {
+              className: 'conf-la',
+              style: { color: 'yellow' },
+            },
           },
         }}
       >
@@ -86,7 +101,13 @@ describe('NavigationList', () => {
               data-testid="groupAction"
             />
           </NavigationList.Group>
-          <NavigationList.Link href="#" label="Link label" data-testid="link" />
+          <NavigationList.Link href="#" label="Link label" data-testid="link">
+            <NavigationList.LinkAction
+              data-testid="linkAction"
+              label="Link Action"
+              icon={<Icon i="face" />}
+            />
+          </NavigationList.Link>
         </NavigationList>
       </AltroneApplication>,
     );
@@ -105,5 +126,8 @@ describe('NavigationList', () => {
 
     expect(screen.getByTestId('link')).toHaveClass('conf-link');
     expect(screen.getByTestId('link')).toHaveStyle('color: magenta');
+
+    expect(screen.getByTestId('linkAction')).toHaveClass('conf-la');
+    expect(screen.getByTestId('linkAction')).toHaveStyle('color: yellow');
   });
 });

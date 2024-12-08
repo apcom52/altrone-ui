@@ -8,9 +8,12 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Dropdown } from '../dropdown';
 import { Icon } from '../icon';
 import { Popover } from '../popover';
-import { EMPLOYEES, EmployeeType } from './EMPLOYEES.ts';
+import { EMPLOYEES, EmployeeType } from './stories/EMPLOYEES.ts';
 import { expect, within, fireEvent, userEvent } from '@storybook/test';
 import { AsyncUtils } from 'utils';
+import { InvoiceStory } from './stories/InvoiceStory.tsx';
+import { InvoicesWithStatusesStory } from './stories/Invoice2Story.tsx';
+import { FiltersDataTableStory } from './stories/FiltersStory.tsx';
 
 const meta: Meta<typeof DataTable<any>> = {
   component: DataTable,
@@ -762,5 +765,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
     });
   },
 };
+
+export { InvoiceStory, InvoicesWithStatusesStory, FiltersDataTableStory };
 
 export default meta;

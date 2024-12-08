@@ -1,10 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Flex, List, Text } from 'components';
-import {
-  directionStoryField,
-  gapStoryField,
-  StorybookDecorator,
-} from 'global/storybook';
+import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import s from './listStory.module.scss';
 
@@ -128,10 +124,7 @@ const story: Meta<typeof List> = {
     direction: 'vertical',
     gap: 'm',
   },
-  argTypes: {
-    gap: gapStoryField,
-    direction: directionStoryField,
-  },
+  argTypes: {},
   parameters: {
     chromatic: {
       modes: {

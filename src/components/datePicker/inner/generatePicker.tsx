@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import { dayjsInstance as dayjs } from '../../calendar/Calendar.tsx';
 import {
   BasicDatePickerProps,
   DatePickerContextType,
@@ -20,11 +20,12 @@ import { TextInput } from 'components/textInput';
 import { Icon } from 'components/icon';
 import warningOnce from 'rc-util/es/warning';
 import { useConfiguration } from 'components/configuration';
-import { useLocalization } from '../../application/useLocalization.tsx';
+import { useLocalization } from 'components/application';
+import { Dayjs } from 'dayjs';
+import { useLocale } from '../../../utils/hooks/useLocale.ts';
 
 export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
   picker: Picker = 'day',
-  defaultFormat: string = 'DD.MM.YYYY',
 ) {
   return (props: DatePickerProps) => {
     const {
@@ -68,15 +69,18 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
     const [view, setView] = useState(picker);
 
     const { datePicker: datePickerConfig = {} } = useConfiguration();
+    const locale = useLocale({
+      dateFormat: format ?? datePickerConfig.dateFormat,
+      monthFormat: format ?? datePickerConfig.monthFormat,
+      yearFormat: format ?? datePickerConfig.yearFormat,
+    });
 
-    const configPickerFormat =
+    const pickerDateFormat =
       view === 'day'
-        ? datePickerConfig.dateFormat
+        ? locale.dateFormat
         : view === 'month'
-          ? datePickerConfig.monthFormat
-          : datePickerConfig.yearFormat;
-
-    const dateFormat = format || configPickerFormat || defaultFormat;
+          ? locale.monthFormat
+          : locale.yearFormat;
 
     const cls = clsx(
       s.DatePicker,
@@ -143,16 +147,25 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
                 </DatePickerCloseFnContext.Provider>
               )}
               onOpenChange={onPopoverOpenChange}
+              focusTrapTargets={['content']}
+              listNavigation
             >
               <TextInput
                 className={cls}
                 style={styles}
-                value={value ? dayjs(value).format(dateFormat) : ''}
+                value={
+                  value
+                    ? dayjs(value)
+                        .locale(locale.locale)
+                        .format(pickerDateFormat)
+                    : ''
+                }
                 onChange={() => null}
                 readonlyStyles={readOnly}
                 placeholder={t('datePicker.placeholder')}
                 {...restProps}
                 readOnly={true}
+                role="textbox"
               >
                 {!readOnly ? (
                   <TextInput.IconIsland

@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo, useEffect, useMemo, useRef } from 'react';
 import s from './monthPicker.module.scss';
 import {
   useDateContext,
@@ -7,16 +7,23 @@ import {
 } from '../DatePicker.contexts.ts';
 import clsx from 'clsx';
 import { useLocalizationContext } from '../../application/useLocalization.tsx';
+import { Composite, CompositeItem } from '@floating-ui/react';
 
 export const MonthPicker = memo(() => {
   const { picker, currentMonth, setCurrentMonth, setViewMode } =
     useDatePickerViewContext();
 
-  const { selectedDates, onDayClicked } = useDateContext();
+  const { selectedDates, onDayClicked, minDate, maxDate } = useDateContext();
   const { language = 'en' } = useLocalizationContext();
   const closePopup = useDatePickerCloseFn();
 
   const selectedMonth = selectedDates[0];
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    containerRef.current?.focus();
+  }, []);
 
   const months = useMemo(() => {
     const elements = [];
@@ -46,23 +53,51 @@ export const MonthPicker = memo(() => {
         [s.Selected]: isSelected,
       });
 
+      const thisDate = currentMonth.month(monthIndex);
+
+      const isDateLessThanMin = thisDate.isSameOrBefore(minDate, 'month');
+      const isDateGreaterThanMax = thisDate.isSameOrAfter(maxDate, 'month');
+      const isDateDisabled = isDateLessThanMin || isDateGreaterThanMax;
+
       elements.push(
-        <button
+        <CompositeItem
           key={`${currentMonth.year()}-${monthIndex}`}
-          type="button"
-          className={cls}
-          onClick={() => onMonthClick(monthIndex)}
-        >
-          {currentMonth
-            .month(monthIndex)
-            .locale(language.toLowerCase())
-            .format('MMM')}
-        </button>,
+          disabled={isDateDisabled}
+          render={(htmlProps) => {
+            return (
+              <button
+                key={`${currentMonth.year()}-${monthIndex}`}
+                type="button"
+                className={cls}
+                onClick={() => onMonthClick(monthIndex)}
+                data-index={monthIndex}
+                aria-label={thisDate
+                  .locale(language.toLowerCase())
+                  .format('MMMM YYYY')}
+                {...htmlProps}
+              >
+                {thisDate.locale(language.toLowerCase()).format('MMM')}
+              </button>
+            );
+          }}
+        />,
       );
     }
 
     return elements;
   }, [currentMonth]);
 
-  return <div className={s.MonthCalendar}>{months}</div>;
+  return (
+    <Composite
+      orientation="both"
+      cols={3}
+      rows={4}
+      className={s.MonthCalendar}
+      ref={containerRef}
+      tabIndex={0}
+      loop={false}
+    >
+      {months}
+    </Composite>
+  );
 });

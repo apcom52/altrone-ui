@@ -8,13 +8,18 @@ import IsToday from 'dayjs/plugin/isToday';
 import s from './calendar.module.scss';
 import IsSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import IsSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+import WeekOfYear from 'dayjs/plugin/weekOfYear';
+import LocaleData from 'dayjs/plugin/localeData';
 import { useConfiguration } from 'components/configuration';
 
 dayjs.extend(IsBetween);
 dayjs.extend(IsToday);
 dayjs.extend(IsSameOrBefore);
 dayjs.extend(IsSameOrAfter);
-// dayjs.locale(ruLocale);
+dayjs.extend(LocalizedFormat);
+dayjs.extend(WeekOfYear);
+dayjs.extend(LocaleData);
 
 export const dayjsInstance = dayjs;
 
@@ -40,7 +45,8 @@ export const Calendar = memo(
     style,
     ...restProps
   }: CalendarProps) => {
-    const { calendar: calendarConfig = {} } = useConfiguration();
+    const { calendar: calendarConfig = {}, locale: localeConfig } =
+      useConfiguration();
 
     const cls = clsx(s.Calendar, className, calendarConfig.className);
 
@@ -52,8 +58,10 @@ export const Calendar = memo(
     const calendarDates = useMemo(() => {
       const result = [];
 
-      const daysInMonth = month.daysInMonth();
-      const firstDay = month.startOf('month');
+      const monthLocale = month.locale(localeConfig?.locale ?? 'en-US');
+
+      const daysInMonth = monthLocale.daysInMonth();
+      const firstDay = monthLocale.startOf('month');
 
       let currentDate = dayjs(firstDay);
 

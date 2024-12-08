@@ -1,0 +1,12 @@
+@import "../../../global/mixins";
+
+.CurrencyCell {
+  text-align: right;
+}
+
+.BooleanCell {
+  display: flex;
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
+}

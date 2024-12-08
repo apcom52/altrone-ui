@@ -197,12 +197,27 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     closeAllSequence: parentClosePopover,
   };
 
+  const childrenContext: PopoverChildrenContext = {
+    opened,
+    closePopup: hide,
+  };
+  const originChildElement =
+    typeof children === 'function' ? children(childrenContext) : children;
+  const safeChildElement = React.isValidElement(originChildElement) ? (
+    originChildElement
+  ) : (
+    <span>{originChildElement}</span>
+  );
+
   const showHeader = showCloseButton || title;
 
   const popoverCls = clsx(
     s.Popover,
     {
       [s.GlassEffect]: !showArrow,
+      [s.InsideNotification]: childrenRef.current?.closest(
+        '[data-notification="true"]',
+      ),
     },
     className,
     popoverConfig.className,
@@ -253,18 +268,6 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
         </PopoverCurrentIndex.Provider>
       </FloatingList>
     </FloatingFocusManager>
-  );
-
-  const childrenContext: PopoverChildrenContext = {
-    opened,
-    closePopup: hide,
-  };
-  const originChildElement =
-    typeof children === 'function' ? children(childrenContext) : children;
-  const safeChildElement = React.isValidElement(originChildElement) ? (
-    originChildElement
-  ) : (
-    <span>{originChildElement}</span>
   );
 
   const childrenElement = DOMUtils.cloneNode(safeChildElement, {

@@ -5,6 +5,7 @@ import { Flex } from '../flex';
 import { Text } from '../text';
 import { Calendar } from './Calendar.tsx';
 import dayjs from 'dayjs';
+import { Configuration } from '../configuration';
 
 const story: Meta<typeof Calendar> = {
   title: 'Components/Display/Calendar',
@@ -27,13 +28,25 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   render: () => {
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Basic Calendar</Text.Heading>
-        <Flex direction="horizontal" gap="l">
-          <Calendar
-            month={dayjs('2024-04')}
-            selectedDates={[dayjs('2024-04-04'), dayjs('2024-04-15')]}
-          />
-        </Flex>
+        <Text.Heading role="inner">Basic Calendar (en-US)</Text.Heading>
+        <Configuration locale={{ locale: 'en-US' }}>
+          <Flex direction="horizontal" gap="l">
+            <Calendar
+              month={dayjs('2024-04')}
+              selectedDates={[dayjs('2024-04-04'), dayjs('2024-04-15')]}
+            />
+          </Flex>
+        </Configuration>
+
+        <Text.Heading role="inner">Basic Calendar (ru-RU)</Text.Heading>
+        <Configuration locale={{ locale: 'ru-RU' }}>
+          <Flex direction="horizontal" gap="l">
+            <Calendar
+              month={dayjs('2024-04')}
+              selectedDates={[dayjs('2024-04-04'), dayjs('2024-04-15')]}
+            />
+          </Flex>
+        </Configuration>
       </Flex>
     );
   },

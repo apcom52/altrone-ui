@@ -3,17 +3,35 @@ import { ButtonProps } from '../button/Button.types.ts';
 import { AnyObject } from '../../utils';
 import { Option } from '../select/Select.types.ts';
 import { ReactElement } from 'react';
+import { RenderFuncProp } from '../../types';
 
 export type Sort = 'asc' | 'desc';
+export type DataTableColumnType =
+  | 'text'
+  | 'number'
+  | 'boolean'
+  | 'array'
+  | 'currency'
+  | 'date'
+  | 'month'
+  | 'year';
 
 export interface DataTableColumn<T extends object> {
   accessor: keyof T;
+  type?: DataTableColumnType;
   label?: string;
   width?: number | string;
   Component?: React.FC<DataTableCellProps<T>>;
+  renderFunc?: RenderFuncProp<HTMLDivElement, DataTableCellProps<T>>;
   visible?: boolean;
   filterable?: boolean;
   sortable?: boolean;
+  options?: Partial<{
+    currency: string;
+    currencyAccessor: keyof T;
+    arrayDelimiter: string;
+    arrayAccessor: string;
+  }>;
 }
 
 export type DataTableRenderContext<T extends object> = {
@@ -126,7 +144,11 @@ export interface FilterRowProps<T extends AnyObject> {
   filter: Filter;
   filterIndex: number;
   columns: DataTableColumn<T>[];
-  changeFilter: (filterIndex: number, accessor: string) => void;
+  changeFilter: (
+    filterIndex: number,
+    accessor: string,
+    type?: DataTableColumnType,
+  ) => void;
   changeField: (filterIndex: number, field: string, value: unknown) => void;
   deleteFilter: (filterIndex: number, source: 'delete' | 'field') => void;
 }

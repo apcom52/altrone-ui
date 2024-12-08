@@ -1,0 +1,59 @@
+@import 'src/global/mixins';
+
+:root {
+  --navigationListLinkActionTextColor: var(--default-700);
+  --navigationListLinkActionHoveredTextColor: var(--default-800);
+  --navigationListLinkActionPressedTextColor: var(--default-900);
+}
+
+:global(.AltroneDark) {
+  --navigationListLinkActionTextColor: var(--default-200);
+  --navigationListLinkActionHoveredTextColor: var(--default-100);
+  --navigationListLinkActionPressedTextColor: var(--default-50);
+}
+
+.Action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  border-radius: 50%;
+
+  visibility: var(--childLinkActionsVisible);
+
+  @include focus;
+
+  &:focus-visible {
+    outline-offset: 5px;
+  }
+
+  &:hover, &:focus-visible {
+    .Icon {
+      color: var(--navigationListLinkActionHoveredTextColor);
+    }
+  }
+
+  &:active {
+    .Icon {
+      color: var(--navigationListLinkActionPressedTextColor);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.Icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  z-index: 1;
+  color: var(--navigationListLinkActionTextColor);
+}

@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Dropdown, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { NavigationList } from './NavigationList.tsx';
+import { LinkAction } from './components';
 
 const story: Meta<typeof NavigationList> = {
   title: 'Components/Navigation/NavigationList',
@@ -30,12 +31,38 @@ export const TooltipStory: StoryObj<typeof NavigationList> = {
                 href="#"
                 icon={<Icon i="tune" />}
                 label="Profile"
-              />
+              >
+                <LinkAction
+                  label="Create new profile"
+                  icon={<Icon i="add" />}
+                />
+                <LinkAction
+                  label="Manage profile settings"
+                  icon={<Icon i="settings" />}
+                  showOnlyOnHover
+                />
+              </NavigationList.Link>
               <NavigationList.Link
                 href="#"
                 icon={<Icon i="account_circle" />}
                 label="Preferences"
-              />
+              >
+                <Dropdown
+                  content={
+                    <Dropdown.Menu>
+                      <Dropdown.Action label="Test" />
+                      <Dropdown.Action label="Test" />
+                      <Dropdown.Action label="Test" />
+                    </Dropdown.Menu>
+                  }
+                >
+                  <LinkAction
+                    label="Manage profile settings"
+                    icon={<Icon i="settings" />}
+                    showOnlyOnHover
+                  />
+                </Dropdown>
+              </NavigationList.Link>
               <NavigationList.Link
                 href="#"
                 icon={<Icon i="notifications" />}

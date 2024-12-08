@@ -25,7 +25,7 @@ const calendarToArray = (element: HTMLElement) => {
 describe('Calendar', () => {
   test('check august 2024', () => {
     render(
-      <AltroneApplication>
+      <AltroneApplication config={{ locale: { locale: 'ru-RU' } }}>
         <Calendar data-testid="calendar" month={dayjs('2024-08')} />
       </AltroneApplication>,
     );
@@ -37,7 +37,7 @@ describe('Calendar', () => {
 
   test('check july 2024', () => {
     render(
-      <AltroneApplication>
+      <AltroneApplication config={{ locale: { locale: 'ru-RU' } }}>
         <Calendar data-testid="calendar" month={dayjs('2024-07')} />
       </AltroneApplication>,
     );
@@ -49,7 +49,7 @@ describe('Calendar', () => {
 
   test('check feb 2024', () => {
     render(
-      <AltroneApplication>
+      <AltroneApplication config={{ locale: { locale: 'ru-RU' } }}>
         <Calendar data-testid="calendar" month={dayjs('2024-02')} />
       </AltroneApplication>,
     );
@@ -61,7 +61,7 @@ describe('Calendar', () => {
 
   test('check dec 2024', () => {
     render(
-      <AltroneApplication>
+      <AltroneApplication config={{ locale: { locale: 'ru-RU' } }}>
         <Calendar data-testid="calendar" month={dayjs('2024-12')} />
       </AltroneApplication>,
     );
@@ -73,7 +73,7 @@ describe('Calendar', () => {
 
   test('check aug 2025', () => {
     render(
-      <AltroneApplication>
+      <AltroneApplication config={{ locale: { locale: 'ru-RU' } }}>
         <Calendar data-testid="calendar" month={dayjs('2025-08')} />
       </AltroneApplication>,
     );

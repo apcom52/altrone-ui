@@ -1,72 +1,68 @@
-import { ToastContainer, toast, ToastOptions } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { createContext, memo, useCallback, useContext, useMemo } from 'react';
-import { ToastContextType, ToastProps } from './Toast.types.ts';
+import {
+  NotificationProps,
+  ToastContextType,
+  ToastProps,
+} from './Toast.types.ts';
 import s from './toast.module.scss';
-import { Icon } from '../icon';
-import clsx from 'clsx';
+import { Notification, ToastNotification } from './inner';
+import { Role } from '../../types';
 
 const ToastContext = createContext<ToastContextType>({
   toast: () => null,
   success: () => null,
   danger: () => null,
   warning: () => null,
+  sendNotification: () => null,
 });
 export const useToast = () => useContext(ToastContext);
 
-const defaultToastSettings: ToastOptions = {
-  position: 'bottom-center',
-  closeButton: false,
-  autoClose: 5000,
-  closeOnClick: true,
-};
-
 export const Toast = memo<ToastProps>(({ children }) => {
+  const sendGenericToast = useCallback(
+    (message: string, severity: Role, options?: ToastProps) => {
+      toast(<ToastNotification message={message} severity={severity} />, {
+        position: 'bottom-center',
+        closeButton: false,
+        className: s.Toast,
+        ...options,
+      });
+    },
+    [],
+  );
+
   const sendToast = useCallback((message: string) => {
-    toast(message, {
-      ...defaultToastSettings,
-      icon: (
-        <div className={s.Icon}>
-          <Icon i="info" />
-        </div>
-      ),
-    });
+    sendGenericToast(message, 'default');
   }, []);
 
   const sendSuccessToast = useCallback((message: string) => {
-    toast(message, {
-      ...defaultToastSettings,
-      className: clsx(s.Toast, s.Success),
-      icon: (
-        <div className={s.Icon}>
-          <Icon i="done" />
-        </div>
-      ),
-    });
+    sendGenericToast(message, 'success');
   }, []);
 
   const sendWarningToast = useCallback((message: string) => {
-    toast(message, {
-      ...defaultToastSettings,
-      className: clsx(s.Toast, s.Warning),
-      icon: (
-        <div className={s.Icon}>
-          <Icon i="warning" />
-        </div>
-      ),
-    });
+    sendGenericToast(message, 'warning');
   }, []);
 
   const sendDangerToast = useCallback((message: string) => {
-    toast(message, {
-      ...defaultToastSettings,
-      className: clsx(s.Toast, s.Danger),
-      icon: (
-        <div className={s.Icon}>
-          <Icon i="error" />
-        </div>
-      ),
+    sendGenericToast(message, 'danger');
+  }, []);
+
+  const sendNotification = useCallback((options: NotificationProps) => {
+    toast(<Notification {...options} />, {
+      autoClose: options.duration ? options.duration : false,
+      pauseOnHover: true,
+      className: s.Notification,
+      closeButton: false,
+      position: [
+        'top-left',
+        'top-right',
+        'bottom-left',
+        'bottom-right',
+      ].includes(options.placement || '')
+        ? options.placement
+        : 'top-right',
     });
   }, []);
 
@@ -76,14 +72,16 @@ export const Toast = memo<ToastProps>(({ children }) => {
       success: sendSuccessToast,
       warning: sendWarningToast,
       danger: sendDangerToast,
+      sendNotification,
     };
-  }, [sendToast]);
+  }, [sendToast, sendNotification]);
 
   return (
     <ToastContext.Provider value={context}>
       {children}
       <ToastContainer
         className={s.Wrapper}
+        newestOnTop={true}
         hideProgressBar
         toastClassName={s.Toast}
       />

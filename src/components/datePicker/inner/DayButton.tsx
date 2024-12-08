@@ -1,12 +1,14 @@
 import { CalendarRenderDateProps } from 'components/calendar/Calendar.types.ts';
 import clsx from 'clsx';
-import { memo, useCallback } from 'react';
+import { memo, MouseEventHandler, useCallback } from 'react';
 import s from './day.module.scss';
 import {
   useDateContext,
   useDatePickerCloseFn,
   useDatePickerViewContext,
 } from '../DatePicker.contexts.ts';
+import { CompositeItem } from '@floating-ui/react';
+import { useLocale } from 'utils';
 
 export const DayButton = memo(
   ({
@@ -19,6 +21,8 @@ export const DayButton = memo(
     const { onDayClicked, selectedDates, minDate, maxDate } = useDateContext();
     const { picker, hoveredDate, setHoveredDate } = useDatePickerViewContext();
     const closePopup = useDatePickerCloseFn();
+
+    const locale = useLocale();
 
     const startDate = selectedDates[0];
     const endDate = selectedDates[1];
@@ -37,7 +41,7 @@ export const DayButton = memo(
       currentDate.isSameOrAfter(startDate) &&
       currentDate.isSameOrBefore(hoveredDate);
 
-    const onDateClick = () => {
+    const onDateClick: MouseEventHandler = () => {
       if (
         picker === 'day' ||
         (picker === 'range' && selectedDates[0] && !selectedDates[1])
@@ -45,6 +49,13 @@ export const DayButton = memo(
         closePopup();
       }
       onDayClicked(currentDate);
+
+      // if (picker === 'range') {
+      //   const nextSibling = e.currentTarget.nextSibling as HTMLElement;
+      //   if (nextSibling) {
+      //     nextSibling.focus();
+      //   }
+      // }
     };
 
     const isDisabled =
@@ -76,24 +87,41 @@ export const DayButton = memo(
         currentDate.isSame(selectedDates[1], 'day')) ||
       Boolean(hoveredDate && currentDate.isSame(hoveredDate, 'day'));
 
+    const dateFormatter = new Intl.DateTimeFormat(locale.locale, {
+      day: 'numeric',
+      weekday: 'long',
+      month: 'long',
+      year: 'numeric',
+    });
+
     return (
-      <button
-        type="button"
-        onClick={onDateClick}
-        className={cls}
-        data-date={currentDate.format('YYYY-MM-DD')}
-        data-start-of-week={weekDay === 1 ? 'true' : 'false'}
-        data-end-of-week={weekDay === 0 ? 'true' : 'false'}
-        data-start-of-range={currentDate.isSame(selectedDates[0], 'day')}
-        data-end-of-range={isEndOfRange}
-        onMouseEnter={onMouseEnter}
-        disabled={isDisabled}
-      >
-        {(isBetweenSelectedDates || isHovered) && (
-          <div className={s.DayBackground} />
-        )}
-        <div className={s.Number}>{currentDate.date()}</div>
-      </button>
+      <CompositeItem
+        disabled={fromAnotherMonth || isDisabled}
+        render={(htmlProps) => {
+          return (
+            <button
+              type="button"
+              onClick={onDateClick}
+              className={cls}
+              data-date={currentDate.format('YYYY-MM-DD')}
+              data-start-of-week={weekDay === 1 ? 'true' : 'false'}
+              data-end-of-week={weekDay === 0 ? 'true' : 'false'}
+              data-start-of-range={currentDate.isSame(selectedDates[0], 'day')}
+              data-end-of-range={isEndOfRange}
+              data-index={currentDate.date()}
+              onMouseEnter={onMouseEnter}
+              {...htmlProps}
+              aria-disabled={fromAnotherMonth || isDisabled}
+              aria-label={dateFormatter.format(currentDate.toDate())}
+            >
+              {(isBetweenSelectedDates || isHovered) && (
+                <div className={s.DayBackground} />
+              )}
+              <div className={s.Number}>{currentDate.date()}</div>
+            </button>
+          );
+        }}
+      />
     );
   },
 );

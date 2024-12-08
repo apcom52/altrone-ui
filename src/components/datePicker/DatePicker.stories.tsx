@@ -5,10 +5,12 @@ import { Flex } from '../flex';
 import { Text } from '../text';
 import { DatePicker } from './DatePicker.tsx';
 import { useState } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import { dayjsInstance as dayjs } from '../calendar/Calendar.tsx';
+import { Dayjs } from 'dayjs';
 import { RangePickerValue } from './DatePicker.types.ts';
 import { within, expect, userEvent } from '@storybook/test';
 import { AsyncUtils } from 'utils';
+import { Configuration } from '../configuration';
 
 const story: Meta<typeof DatePicker> = {
   title: 'Components/Form/DatePicker',
@@ -54,6 +56,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             clearable
             onChange={setDay2}
           />
+          <Configuration locale={{ locale: 'ru-RU' }}>
+            <DatePicker value={day2} clearable onChange={setDay2} />
+          </Configuration>
           <DatePicker value={day2} transparent onChange={setDay2} />
           <DatePicker value={day2} readOnly onChange={setDay2} />
           <DatePicker value={day2} disabled onChange={setDay2} />
@@ -64,12 +69,21 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             data-testid="month-picker"
             value={month1}
             onChange={setMonth1}
+            minDate={dayjs('2024-02')}
+            maxDate={dayjs('2025-06')}
           />
           <DatePicker.MonthPicker
             clearable
             value={month2}
             onChange={setMonth2}
           />
+          <Configuration locale={{ locale: 'ru-RU' }}>
+            <DatePicker.MonthPicker
+              clearable
+              value={month2}
+              onChange={setMonth2}
+            />
+          </Configuration>
           <DatePicker.MonthPicker
             value={month2}
             transparent
@@ -92,8 +106,17 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             data-testid="year-picker"
             value={year1}
             onChange={setYear1}
+            minDate={dayjs('2020')}
+            maxDate={dayjs('2030')}
           />
           <DatePicker.YearPicker clearable value={year2} onChange={setYear2} />
+          <Configuration locale={{ locale: 'ru-RU' }}>
+            <DatePicker.YearPicker
+              clearable
+              value={year2}
+              onChange={setYear2}
+            />
+          </Configuration>
           <DatePicker.YearPicker
             value={year2}
             transparent
@@ -111,14 +134,18 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     await step('need to choose a correct date', async () => {
       await userEvent.click(canvas.getByTestId('date-picker'));
       await userEvent.click(canvas.getByText('17'));
-      await expect(canvas.getByTestId('date-picker')).toHaveValue(`17.05.2024`);
+      await expect(canvas.getByTestId('date-picker')).toHaveValue(
+        `May 17, 2024`,
+      );
     });
 
     await step('need to navigate to the next month', async () => {
       await userEvent.click(canvas.getByTestId('date-picker'));
       await userEvent.click(canvas.getByText('navigate_next'));
       await userEvent.click(canvas.getByText('10'));
-      await expect(canvas.getByTestId('date-picker')).toHaveValue(`10.06.2024`);
+      await expect(canvas.getByTestId('date-picker')).toHaveValue(
+        `June 10, 2024`,
+      );
     });
 
     await step('need to navigate to the prev month', async () => {
@@ -126,14 +153,16 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       await userEvent.click(canvas.getByText('navigate_before'));
       await userEvent.click(canvas.getByText('navigate_before'));
       await userEvent.click(canvas.getByText('14'));
-      await expect(canvas.getByTestId('date-picker')).toHaveValue(`14.04.2024`);
+      await expect(canvas.getByTestId('date-picker')).toHaveValue(
+        `April 14, 2024`,
+      );
     });
 
     await step('check that today button works', async () => {
       await userEvent.click(canvas.getByTestId('date-picker'));
       await userEvent.click(canvas.getByText('Today'));
       await expect(canvas.getByTestId('date-picker')).toHaveValue(
-        dayjs().format('DD.MM.YYYY'),
+        dayjs().locale('en-US').format('LL'),
       );
     });
 
@@ -145,22 +174,22 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     await step('check month picker', async () => {
       await userEvent.click(canvas.getByTestId('month-picker'));
-      await userEvent.click(canvas.getByText('Jan'));
-      await expect(canvas.getByTestId('month-picker')).toHaveValue('01.2024');
+      await userEvent.click(canvas.getByText('May'));
+      await expect(canvas.getByTestId('month-picker')).toHaveValue('May 2024');
     });
 
     await step('check "this month" button in year picker', async () => {
       await userEvent.click(canvas.getByTestId('month-picker'));
       await userEvent.click(canvas.getByText('This month'));
       await expect(canvas.getByTestId('month-picker')).toHaveValue(
-        dayjs().format('MM.YYYY'),
+        dayjs().locale('en-US').format('MMMM YYYY'),
       );
     });
 
     await step('check year picker', async () => {
       await userEvent.click(canvas.getByTestId('year-picker'));
-      await userEvent.click(canvas.getByText('2017'));
-      await expect(canvas.getByTestId('year-picker')).toHaveValue('2017');
+      await userEvent.click(canvas.getByText('2022'));
+      await expect(canvas.getByTestId('year-picker')).toHaveValue('2022');
     });
 
     await step('check "this year" button in year picker', async () => {
@@ -233,7 +262,7 @@ export const RangeStory: StoryObj<typeof Flex> = {
       await userEvent.click(canvas.getByTestId('range-picker'));
       await userEvent.click(canvas.getByText('17'));
       await expect(canvas.getByTestId('range-picker')).toHaveValue(
-        `17.04.2024 - ...`,
+        `April 17, 2024 - ...`,
       );
       await userEvent.click(canvas.getByText('navigate_next'));
       await userEvent.click(canvas.getByText('navigate_next'));
@@ -241,7 +270,7 @@ export const RangeStory: StoryObj<typeof Flex> = {
       await userEvent.click(canvas.getByText('24'));
       await AsyncUtils.timeout(1);
       await expect(canvas.getByTestId('range-picker')).toHaveValue(
-        `17.04.2024 - 24.06.2024`,
+        `April 17, 2024 - June 24, 2024`,
       );
     });
   },

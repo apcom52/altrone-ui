@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo, useEffect, useMemo, useRef } from 'react';
 import s from './yearPicker.module.scss';
 import {
   useDateContext,
@@ -7,16 +7,23 @@ import {
 } from '../DatePicker.contexts.ts';
 import { useYearRanges } from '../utils.ts';
 import clsx from 'clsx';
+import { Composite, CompositeItem } from '@floating-ui/react';
 
 export const YearPicker = memo(() => {
   const { picker, currentMonth, setViewMode, setCurrentMonth } =
     useDatePickerViewContext();
-  const { selectedDates, onDayClicked } = useDateContext();
+  const { selectedDates, onDayClicked, minDate, maxDate } = useDateContext();
   const closePopup = useDatePickerCloseFn();
+
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const selectedYear = selectedDates[0];
 
   const [startYear, endYear] = useYearRanges(currentMonth);
+
+  useEffect(() => {
+    containerRef.current?.focus();
+  }, []);
 
   const years = useMemo(() => {
     const elements = [];
@@ -44,20 +51,46 @@ export const YearPicker = memo(() => {
         [s.Selected]: isSelected,
       });
 
+      const isDateLessThanMin = minDate ? year < minDate.year() : false;
+      const isDateGreaterThanMax = maxDate ? year > maxDate.year() : false;
+      const isDateDisabled = isDateLessThanMin || isDateGreaterThanMax;
+
       elements.push(
-        <button
+        <CompositeItem
           key={year}
-          type="button"
-          className={cls}
-          onClick={() => onYearClick(year)}
-        >
-          {year}
-        </button>,
+          disabled={isDateDisabled}
+          render={(htmlProps) => {
+            return (
+              <button
+                type="button"
+                className={cls}
+                onClick={() => onYearClick(year)}
+                autoFocus={isSelected}
+                disabled={isDateDisabled}
+                {...htmlProps}
+              >
+                {year}
+              </button>
+            );
+          }}
+        />,
       );
     }
 
     return elements;
   }, [picker, startYear, endYear, currentMonth]);
 
-  return <div className={s.YearPicker}>{years}</div>;
+  return (
+    <Composite
+      orientation="both"
+      cols={3}
+      rows={5}
+      className={s.YearPicker}
+      ref={containerRef}
+      tabIndex={0}
+      loop={false}
+    >
+      {years}
+    </Composite>
+  );
 });

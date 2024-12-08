@@ -13,15 +13,29 @@
 
 -----
 
-## 😼 Altrone 3.1
+## 🧚🏻‍♀️ Altrone 3.2
 
-New LoadingIsland for TextInput, GroupAction for NavigationList, accessibility improvements and more.
+New `sendNotification` function, DataTableColumn `type` options and more!
+
+[**What's new in 3.2?**](https://altrone.vercel.app/blog/release-3.2)
 
 [**What's new in 3.1?**](https://altrone.vercel.app/blog/release-3.1)
 
 [**What's new in 3.0?**](https://altrone.vercel.app/blog/release-3.0)
 
 [**Migrating to 3.0**](https://altrone.vercel.app/blog/migrating-to-3.0)
+
+## Roadmap for Altrone 3
+- [x] `LoadingIsland` for **`TextInput`** (released in 3.1)
+- [x] `GroupAction` for **`NavigationList`** (released in 3.1)
+- [x] Boolean filter for **`DataTable`** (released in 3.1)
+- [x] `LinkAction` for **`NavigationList`** (released in 3.2)
+- [x] New type property for **`DataTableColumn`** (released in 3.2)
+- [x] Better locale support (released in 3.2)
+- [x] Rich notifications (released in 3.2)
+- [ ] Date filter for **`DataTable`**
+- [ ] Nested links for **`NavigationList`**
+- [ ] Default filters, sorting settings and pagination for **`DataTable`**
 
 ## Documentation
 

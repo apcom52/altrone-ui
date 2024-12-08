@@ -18,4 +18,5 @@ export interface CalendarProps extends React.HTMLAttributes<HTMLDivElement> {
   onDateChange?: (date: Dayjs) => void;
   DateComponent?: React.FC<CalendarRenderDateProps>;
   disabled?: boolean;
+  firstDayOfWeek?: 'monday' | 'sunday';
 }
