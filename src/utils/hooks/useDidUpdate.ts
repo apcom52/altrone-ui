@@ -8,10 +8,8 @@ export const useDidUpdate = (callback: EffectCallback, deps: any[]) => {
   }, []);
 
   useEffect(() => {
-    if (isMounted.current) {
+    if (!isMounted.current) {
       return callback();
     }
-
-    isMounted.current = false;
-  }, [deps]);
+  }, [...deps]);
 };
