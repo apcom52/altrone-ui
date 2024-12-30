@@ -13,7 +13,7 @@ import {
   useState,
 } from 'react';
 import { once } from 'lodash-es';
-import { DOMUtils } from '../../utils';
+import { DOMUtils, NumberUtils, useDidUpdate } from '../../utils';
 import { useDataTableFilters } from './useDataTableFilters.ts';
 
 interface DataTableContextType<T extends object> {
@@ -67,18 +67,27 @@ const createDataTableContext = once(<T extends object>() =>
 export const useDataTableContext = <T extends object>() =>
   useContext(createDataTableContext<T>());
 
+const EMPTY_ARRAY: any[] = [];
+
 export const DataTableContextProvider = <T extends object>(
   props: DataTableProps<T> & React.PropsWithChildren,
 ) => {
   const {
-    data = [],
-    columns = [],
+    data = EMPTY_ARRAY,
+    columns = EMPTY_ARRAY,
     rowsPerPage = 20,
     selectable = false,
     children,
+    defaultPage,
+    onPageChange,
   } = props;
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(
+    NumberUtils.getInRange(defaultPage || 1, {
+      min: 1,
+      max: Math.ceil(data.length / rowsPerPage),
+    }),
+  );
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<keyof T | undefined>(undefined);
   const [sortType, setSortType] = useState<Sort>('asc');
@@ -120,6 +129,21 @@ export const DataTableContextProvider = <T extends object>(
       setSelectedRows([]);
     }
   }, [selectableMode]);
+
+  useDidUpdate(() => {
+    if (typeof defaultPage === 'number') {
+      setPage(
+        NumberUtils.getInRange(defaultPage, {
+          min: 1,
+          max: Math.ceil(data.length / rowsPerPage),
+        }),
+      );
+    }
+  }, [defaultPage, data.length, rowsPerPage]);
+
+  useEffect(() => {
+    onPageChange?.(page);
+  }, [page, onPageChange]);
 
   const contextData = useMemo<DataTableContextType<T>>(
     () => ({

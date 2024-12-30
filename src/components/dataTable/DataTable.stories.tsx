@@ -14,6 +14,8 @@ import { AsyncUtils } from 'utils';
 import { InvoiceStory } from './stories/InvoiceStory.tsx';
 import { InvoicesWithStatusesStory } from './stories/Invoice2Story.tsx';
 import { FiltersDataTableStory } from './stories/FiltersStory.tsx';
+import { useState } from 'react';
+import { action } from '@storybook/addon-actions';
 
 const meta: Meta<typeof DataTable<any>> = {
   component: DataTable,
@@ -31,24 +33,32 @@ const meta: Meta<typeof DataTable<any>> = {
   },
 };
 
+const onPageChange = action('pageChange');
+
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using DataTable',
   render: () => {
+    const [defaultPage, setDefaultPage] = useState(3);
+
     return (
       <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Basic DataTable</Text.Heading>
         <DataTable
           data={COUNTRIES}
-          rowsPerPage={20}
+          rowsPerPage={5}
           selectable
+          defaultPage={defaultPage}
           columns={[
             { accessor: 'flag', label: 'Flag', width: '80px' },
             { accessor: 'country', label: 'Country Name' },
             { accessor: 'capital', label: 'Capital' },
           ]}
-          showFooter={false}
+          onPageChange={onPageChange}
         >
-          <DataTable.Action label="Test" onClick={() => alert('Test !')} />
+          <DataTable.Action
+            label="Test"
+            onClick={() => setDefaultPage(defaultPage === 3 ? 5 : 3)}
+          />
           <Dropdown
             content={
               <Dropdown.Menu>
