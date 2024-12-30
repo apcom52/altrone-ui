@@ -13,7 +13,12 @@ import {
   useState,
 } from 'react';
 import { once } from 'lodash-es';
-import { DOMUtils, NumberUtils, useDidUpdate } from '../../utils';
+import {
+  DOMUtils,
+  NumberUtils,
+  useDebouncedEffect,
+  useDidUpdate,
+} from '../../utils';
 import { useDataTableFilters } from './useDataTableFilters.ts';
 
 interface DataTableContextType<T extends object> {
@@ -80,6 +85,8 @@ export const DataTableContextProvider = <T extends object>(
     children,
     defaultPage,
     onPageChange,
+    onSortChange,
+    defaultSort,
   } = props;
 
   const [page, setPage] = useState(
@@ -89,8 +96,12 @@ export const DataTableContextProvider = <T extends object>(
     }),
   );
   const [search, setSearch] = useState('');
-  const [sortBy, setSortBy] = useState<keyof T | undefined>(undefined);
-  const [sortType, setSortType] = useState<Sort>('asc');
+  const [sortBy, setSortBy] = useState<keyof T | undefined>(
+    (defaultSort?.field as keyof T) || undefined,
+  );
+  const [sortType, setSortType] = useState<Sort>(
+    defaultSort?.direction || 'asc',
+  );
   const [filters, setFilters] = useState<Filter[]>([]);
   const [selectableMode, setSelectableMode] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
@@ -141,9 +152,34 @@ export const DataTableContextProvider = <T extends object>(
     }
   }, [defaultPage, data.length, rowsPerPage]);
 
+  useDidUpdate(() => {
+    if (defaultSort) {
+      setSortBy(defaultSort.field as keyof T);
+      setSortType(defaultSort.direction);
+    } else {
+      setSortBy(undefined);
+      setSortType('asc');
+    }
+  }, [defaultSort]);
+
   useEffect(() => {
     onPageChange?.(page);
   }, [page, onPageChange]);
+
+  useDebouncedEffect(
+    () => {
+      onSortChange?.(
+        sortBy
+          ? {
+              field: String(sortBy),
+              direction: sortType,
+            }
+          : undefined,
+      );
+    },
+    [sortBy, sortType, onSortChange],
+    1,
+  );
 
   const contextData = useMemo<DataTableContextType<T>>(
     () => ({

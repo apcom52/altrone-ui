@@ -16,6 +16,7 @@ import { InvoicesWithStatusesStory } from './stories/Invoice2Story.tsx';
 import { FiltersDataTableStory } from './stories/FiltersStory.tsx';
 import { useState } from 'react';
 import { action } from '@storybook/addon-actions';
+import { Sorting } from './DataTable.types.ts';
 
 const meta: Meta<typeof DataTable<any>> = {
   component: DataTable,
@@ -34,11 +35,16 @@ const meta: Meta<typeof DataTable<any>> = {
 };
 
 const onPageChange = action('pageChange');
+const onSortingChange = action('sortChange');
 
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using DataTable',
   render: () => {
     const [defaultPage, setDefaultPage] = useState(3);
+    const [defaultSorting, setDefaultSorting] = useState<Sorting | undefined>({
+      field: 'country',
+      direction: 'desc',
+    });
 
     return (
       <Flex direction="vertical" gap="l">
@@ -48,16 +54,28 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           rowsPerPage={5}
           selectable
           defaultPage={defaultPage}
+          defaultSort={defaultSorting}
           columns={[
             { accessor: 'flag', label: 'Flag', width: '80px' },
             { accessor: 'country', label: 'Country Name' },
             { accessor: 'capital', label: 'Capital' },
           ]}
           onPageChange={onPageChange}
+          onSortChange={onSortingChange}
         >
           <DataTable.Action
-            label="Test"
+            label="Toggle page"
             onClick={() => setDefaultPage(defaultPage === 3 ? 5 : 3)}
+          />
+          <DataTable.Action
+            label="Toggle sorting"
+            onClick={() =>
+              setDefaultSorting(
+                defaultSorting
+                  ? undefined
+                  : { field: 'country', direction: 'desc' },
+              )
+            }
           />
           <Dropdown
             content={
@@ -73,7 +91,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               </Dropdown.Menu>
             }
           >
-            <DataTable.Action label="Test Dropdown" />
+            <DataTable.Action label="Dropdown" />
           </Dropdown>
           <Popover
             title="Custom popover"
@@ -81,7 +99,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           >
             <DataTable.Action
               leftIcon={<Icon i="sports_esports" />}
-              label="Test Popover"
+              label="Popover"
             />
           </Popover>
         </DataTable>

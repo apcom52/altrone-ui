@@ -6,7 +6,7 @@ import { DataTableProps } from '../DataTable.types';
 import { ArrayUtils } from 'utils';
 import s from './header.module.scss';
 import { Filtering } from './Filtering.tsx';
-import { useLocalization } from '../../application/useLocalization.tsx';
+import { useLocalization } from '../../application';
 
 interface DataTableHeaderProps<T extends object> {
   children: DataTableProps<T>['children'];
