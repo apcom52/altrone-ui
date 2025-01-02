@@ -11,7 +11,6 @@ export interface ButtonProps
   severity?: Role;
   size?: Size;
   transparent?: boolean;
-  onClick?: () => void;
   disabled?: boolean;
   rainbowEffect?: boolean;
   renderFunc?: RenderFuncProp<HTMLButtonElement, ButtonProps>;
