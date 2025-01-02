@@ -9,6 +9,8 @@
 .Divider {
   width: calc(100% - var(--l-gap));
   height: 1px;
+  min-height: 1px;
+  min-width: 1px;
   margin: var(--xs-gap) auto;
   background-color: var(--dividerColor);
   border: none;
