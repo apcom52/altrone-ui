@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { Checkbox } from '../../checkbox';
 import { range } from 'lodash-es';
 import { useVisibleColumns } from '../useVisibleColumns.ts';
+import { GlobalUtils } from '../../../utils';
 
 interface ColumnHeadersProps {
   headingVisible?: boolean;
@@ -98,11 +99,21 @@ export const ColumnHeaders = memo<ColumnHeadersProps>(
           {visibleColumns.map((column, columnIndex) => {
             const isCurrentColumnSorted = sortBy === column.accessor;
 
+            if (!column.type) {
+              console.warn(
+                GlobalUtils.formatConsoleMessage(
+                  '[Altrone]: please set a [[type]] prop for your DataTable columns. This will make the component work more reliably',
+                ),
+              );
+            }
+
             const cls = clsx(s.Cell, {
-              [s.SortableColumn]: column.sortable,
+              [s.SortableColumn]: column.sortable || isCurrentColumnSorted,
               [s.SortedColumn]: isCurrentColumnSorted,
               [s.CellWithWidth]: Boolean(column.width),
             });
+
+            const isArrowVisible = column.sortable || isCurrentColumnSorted;
 
             return (
               <th
@@ -124,7 +135,7 @@ export const ColumnHeaders = memo<ColumnHeadersProps>(
                 <div className={s.CellContent}>
                   <span className={s.Title}>
                     {String(column.label || column.accessor)}
-                    {column.sortable ? (
+                    {isArrowVisible ? (
                       <div className={s.SortIcon}>
                         <Icon
                           i={

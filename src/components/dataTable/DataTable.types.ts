@@ -16,6 +16,11 @@ export type DataTableColumnType =
   | 'month'
   | 'year';
 
+export type Sorting = {
+  field: string;
+  direction: Sort;
+};
+
 export interface DataTableColumn<T extends object> {
   accessor: keyof T;
   type?: DataTableColumnType;
@@ -50,6 +55,12 @@ export interface DataTableProps<T extends object>
   rowsPerPage?: number;
   selectable?: boolean;
   showFooter?: boolean;
+  defaultPage?: number;
+  defaultSort?: Sorting;
+  defaultFilters?: Filter[];
+  onPageChange?: (currentPage: number) => void;
+  onSortChange?: (sort?: Sorting) => void;
+  onFilterChange?: (appliedFilters?: Filter[]) => void;
 }
 
 export interface DataTableActionProps extends ButtonProps {

@@ -31,7 +31,7 @@ export const Filtering = memo(() => {
     return columns.filter((item) => item.filterable);
   }, [columns]);
 
-  const [internalFilters, setInternalFilters] = useState<Filter[]>([]);
+  const [internalFilters, setInternalFilters] = useState<Filter[]>(filters);
 
   const addNewFilter = (
     accessor: string,

@@ -50,6 +50,14 @@ export const AltroneApplication = ({
     [theme, setTheme],
   );
 
+  useEffect(() => {
+    if (!config?.locale?.locale) {
+      console.warn(
+        "[AltroneApplication]: you haven't set locale of your application. By default locale is en-US",
+      );
+    }
+  }, [config?.locale?.locale]);
+
   return createElement(
     tagName,
     {

@@ -1,7 +1,7 @@
 import { isValidElement, memo } from 'react';
 import { PhotoViewerProps } from './PhotoViewer.types';
 import { useConfiguration } from 'components/configuration';
-import { ArrayUtils, useDidUpdate, useNumber } from 'utils';
+import { ArrayUtils, useNumber } from 'utils';
 import { Image } from './components';
 import s from './photoViewer.module.scss';
 import clsx from 'clsx';
@@ -25,7 +25,6 @@ const PhotoViewerComponent = memo(
 
     const {
       value: currentIndex,
-      setValue: setCurrentIndex,
       increment: nextPhoto,
       decrement: prevPhoto,
     } = useNumber(startsFrom, 0, validChildren.length);
@@ -37,10 +36,6 @@ const PhotoViewerComponent = memo(
       ...photoViewerConfig.style,
       ...style,
     };
-
-    useDidUpdate(() => {
-      setCurrentIndex(0);
-    }, [children]);
 
     return (
       <div className={cls} style={styles} {...restProps}>

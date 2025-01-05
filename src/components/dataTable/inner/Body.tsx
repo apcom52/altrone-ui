@@ -17,6 +17,7 @@ import {
 } from '../renderers';
 import { createElement } from 'react';
 import { useLocalization } from '../../application';
+import { GlobalUtils } from '../../../utils';
 
 const CELL_RENDERERS: Record<
   DataTableColumnType,
@@ -93,6 +94,12 @@ export const Body = <T extends object>() => {
               if (column.renderFunc) {
                 content = column.renderFunc({ current: null }, props);
               } else if (column.Component) {
+                console.warn(
+                  GlobalUtils.formatConsoleMessage(
+                    '[Altrone]: property [[Component]] in DataTable component is deprecated. Use [[renderFunc]] instead. Will be removed in version 4.0',
+                  ),
+                );
+
                 const CellComponent = column.Component;
                 content = <CellComponent {...props} />;
               } else {
