@@ -84,9 +84,11 @@ export const DataTableContextProvider = <T extends object>(
     selectable = false,
     children,
     defaultPage,
+    defaultSort,
+    defaultFilters,
     onPageChange,
     onSortChange,
-    defaultSort,
+    onFilterChange,
   } = props;
 
   const [page, setPage] = useState(
@@ -102,7 +104,7 @@ export const DataTableContextProvider = <T extends object>(
   const [sortType, setSortType] = useState<Sort>(
     defaultSort?.direction || 'asc',
   );
-  const [filters, setFilters] = useState<Filter[]>([]);
+  const [filters, setFilters] = useState<Filter[]>(defaultFilters || []);
   const [selectableMode, setSelectableMode] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
@@ -162,6 +164,10 @@ export const DataTableContextProvider = <T extends object>(
     }
   }, [defaultSort]);
 
+  useDidUpdate(() => {
+    setFilters(defaultFilters || []);
+  }, [defaultFilters]);
+
   useEffect(() => {
     onPageChange?.(page);
   }, [page, onPageChange]);
@@ -180,6 +186,10 @@ export const DataTableContextProvider = <T extends object>(
     [sortBy, sortType, onSortChange],
     1,
   );
+
+  useEffect(() => {
+    onFilterChange?.(filters);
+  }, [filters, onFilterChange]);
 
   const contextData = useMemo<DataTableContextType<T>>(
     () => ({

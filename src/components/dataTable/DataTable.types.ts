@@ -4,7 +4,6 @@ import { AnyObject } from '../../utils';
 import { Option } from '../select/Select.types.ts';
 import { ReactElement } from 'react';
 import { RenderFuncProp } from '../../types';
-import { DataTableAppliedFilter } from './DataTableFilter.types.ts';
 
 export type Sort = 'asc' | 'desc';
 export type DataTableColumnType =
@@ -58,10 +57,10 @@ export interface DataTableProps<T extends object>
   showFooter?: boolean;
   defaultPage?: number;
   defaultSort?: Sorting;
-  defaultFilters?: DataTableAppliedFilter<T>[];
+  defaultFilters?: Filter[];
   onPageChange?: (currentPage: number) => void;
   onSortChange?: (sort?: Sorting) => void;
-  onFilterChange?: (appliedFilters?: DataTableAppliedFilter<T>[]) => void;
+  onFilterChange?: (appliedFilters?: Filter[]) => void;
 }
 
 export interface DataTableActionProps extends ButtonProps {

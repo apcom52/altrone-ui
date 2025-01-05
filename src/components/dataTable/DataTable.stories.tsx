@@ -1,4 +1,4 @@
-import { DataTable } from './index';
+import { DataTable, Filter, StringFilterRules } from './index';
 import { Meta, StoryObj } from '@storybook/react';
 import { Flex } from '../flex';
 import { Text } from '../text';
@@ -9,14 +9,14 @@ import { Dropdown } from '../dropdown';
 import { Icon } from '../icon';
 import { Popover } from '../popover';
 import { EMPLOYEES, EmployeeType } from './stories/EMPLOYEES.ts';
-import { expect, within, fireEvent, userEvent } from '@storybook/test';
+import { expect, fireEvent, userEvent, within } from '@storybook/test';
 import { AsyncUtils } from 'utils';
 import { InvoiceStory } from './stories/InvoiceStory.tsx';
 import { InvoicesWithStatusesStory } from './stories/Invoice2Story.tsx';
 import { FiltersDataTableStory } from './stories/FiltersStory.tsx';
 import { useState } from 'react';
 import { action } from '@storybook/addon-actions';
-import { Sorting } from './DataTable.types.ts';
+import { FilterType, Sorting } from './DataTable.types.ts';
 
 const meta: Meta<typeof DataTable<any>> = {
   component: DataTable,
@@ -36,6 +36,14 @@ const meta: Meta<typeof DataTable<any>> = {
 
 const onPageChange = action('pageChange');
 const onSortingChange = action('sortChange');
+const onFiltersChange = action('filtersChange');
+const DEFAULT_FILTERS: Filter[] = [
+  {
+    field: 'country',
+    type: FilterType.string,
+    conditions: [{ rule: StringFilterRules.contain, join: 'AND', value: 'Ru' }],
+  },
+];
 
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using DataTable',
@@ -45,6 +53,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       field: 'country',
       direction: 'desc',
     });
+    const [defaultFilters, setDefaultFilters] = useState<Filter[] | undefined>(
+      DEFAULT_FILTERS,
+    );
 
     return (
       <Flex direction="vertical" gap="l">
@@ -55,13 +66,20 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           selectable
           defaultPage={defaultPage}
           defaultSort={defaultSorting}
+          defaultFilters={defaultFilters}
           columns={[
             { accessor: 'flag', label: 'Flag', width: '80px' },
-            { accessor: 'country', label: 'Country Name' },
+            {
+              accessor: 'country',
+              label: 'Country Name',
+              filterable: true,
+              type: 'text',
+            },
             { accessor: 'capital', label: 'Capital' },
           ]}
           onPageChange={onPageChange}
           onSortChange={onSortingChange}
+          onFilterChange={onFiltersChange}
         >
           <DataTable.Action
             label="Toggle page"
@@ -75,6 +93,12 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                   ? undefined
                   : { field: 'country', direction: 'desc' },
               )
+            }
+          />
+          <DataTable.Action
+            label="Toggle filters"
+            onClick={() =>
+              setDefaultFilters(defaultFilters ? undefined : DEFAULT_FILTERS)
             }
           />
           <Dropdown
