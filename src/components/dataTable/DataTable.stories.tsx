@@ -54,7 +54,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       direction: 'desc',
     });
     const [defaultFilters, setDefaultFilters] = useState<Filter[] | undefined>(
-      DEFAULT_FILTERS,
+      [],
     );
 
     return (

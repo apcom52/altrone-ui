@@ -36,6 +36,7 @@ export interface DataTableColumn<T extends object> {
     currencyAccessor: keyof T;
     arrayDelimiter: string;
     arrayAccessor: string;
+    locale?: string;
   }>;
 }
 

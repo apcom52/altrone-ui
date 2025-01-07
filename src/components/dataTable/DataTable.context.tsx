@@ -117,6 +117,7 @@ export const DataTableContextProvider = <T extends object>(
   const filteredData = useDataTableFilters(
     data,
     filters,
+    columns,
     sortBy ? String(sortBy) : undefined,
     sortType,
   );
