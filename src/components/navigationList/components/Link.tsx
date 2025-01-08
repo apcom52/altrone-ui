@@ -1,4 +1,4 @@
-import { forwardRef, ReactElement, useMemo } from 'react';
+import React, { forwardRef, ReactElement, useMemo } from 'react';
 import clsx from 'clsx';
 import s from './link.module.scss';
 import {
@@ -9,21 +9,51 @@ import { RenderFuncProp } from '../../../types';
 import { useConfiguration } from '../../configuration';
 import { AltChildren, DOMUtils } from '../../../utils';
 import { LinkAction } from './LinkAction.tsx';
+import {
+  NavigationListLevelContext,
+  useNavigationListLevel,
+} from '../NavigationList.context.ts';
 
 const navigationListRenderFunc: RenderFuncProp<
   HTMLAnchorElement,
   NavigationListLinkPropsWithActions
 > = (ref, props) => {
-  const { icon, label, actions, ...restProps } = props;
+  const {
+    icon,
+    label,
+    actions,
+    level = 0,
+    children,
+    selected,
+    ...restProps
+  } = props;
+
+  const hasChildren = React.Children.count(children) > 0;
+  const showChildren = hasChildren && selected;
+  const showIcon = icon && level < 2;
+
+  const listCls = clsx({
+    [s.SecondLevelList]: level === 0,
+    [s.ThirdLevelList]: level > 0,
+  });
 
   return (
-    <a ref={ref} {...restProps}>
-      <div className={s.Label}>
-        {icon ? <div className={s.Icon}>{icon}</div> : null}
-        {label}
-        {actions ? <div className={s.Actions}>{actions}</div> : null}
-      </div>
-    </a>
+    <>
+      <a ref={ref} {...restProps}>
+        <div className={s.Label}>
+          {showIcon ? <div className={s.Icon}>{icon}</div> : null}
+          {label}
+          {actions ? <div className={s.Actions}>{actions}</div> : null}
+        </div>
+      </a>
+      {showChildren ? (
+        <div className={listCls}>
+          <NavigationListLevelContext.Provider value={level + 1}>
+            {children}
+          </NavigationListLevelContext.Provider>
+        </div>
+      ) : null}
+    </>
   );
 };
 
@@ -36,12 +66,15 @@ export const Link = forwardRef<HTMLAnchorElement, NavigationListLinkProps>(
       ...restProps
     } = props;
 
+    const listLevel = useNavigationListLevel();
+
     const { navigationList: { link: linkConfig } = {} } = useConfiguration();
 
-    const actions = useMemo(() => {
+    const [actions, childItems] = useMemo(() => {
       const elements = new AltChildren(props.children);
 
       const actions: ReactElement[] = [];
+      const childItems: ReactElement[] = [];
 
       elements
         .filterNodes()
@@ -51,10 +84,12 @@ export const Link = forwardRef<HTMLAnchorElement, NavigationListLinkProps>(
 
           if (DOMUtils.containsElementType(element, [LinkAction])) {
             actions.push(element);
+          } else if (DOMUtils.containsElementType(element, [Link])) {
+            childItems.push(element);
           }
         });
 
-      return actions;
+      return [actions, childItems];
     }, [props.children]);
 
     const cls = clsx(
@@ -76,6 +111,8 @@ export const Link = forwardRef<HTMLAnchorElement, NavigationListLinkProps>(
       className: cls,
       style: styles,
       actions,
+      level: listLevel,
+      children: childItems,
     });
   },
 );

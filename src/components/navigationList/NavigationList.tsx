@@ -4,6 +4,7 @@ import s from './navigationList.module.scss';
 import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import { Group, GroupAction, Link, LinkAction } from './components';
+import { NavigationListLevelContext } from './NavigationList.context.ts';
 
 const NavigationListComponent = memo<NavigationListProps>(
   ({ children, className, style, ...restProps }) => {
@@ -22,7 +23,9 @@ const NavigationListComponent = memo<NavigationListProps>(
 
     return (
       <nav className={cls} style={styles} {...restProps}>
-        {children}
+        <NavigationListLevelContext.Provider value={0}>
+          {children}
+        </NavigationListLevelContext.Provider>
       </nav>
     );
   },
