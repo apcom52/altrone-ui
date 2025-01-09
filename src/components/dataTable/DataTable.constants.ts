@@ -84,6 +84,16 @@ export const DataTableNumberRules: FilteringRuleOption[] = [
     label: 'dataTable.numberFilter.notBetween',
     columns: 2,
   },
+  {
+    value: NumberFilterRules.empty,
+    label: 'dataTable.numberFilter.empty',
+    columns: 0,
+  },
+  {
+    value: NumberFilterRules.notEmpty,
+    label: 'dataTable.numberFilter.notEmpty',
+    columns: 0,
+  },
 ];
 
 export const DataTableArrayRules: FilteringRuleOption[] = [

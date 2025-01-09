@@ -73,6 +73,8 @@ export interface Localization {
       notEqual: string;
     };
     numberFilter: {
+      empty: string;
+      notEmpty: string;
       equal: string;
       notEqual: string;
       gt: string;
