@@ -70,7 +70,7 @@ export const Footer = memo(() => {
       <div>
         <Pagination
           currentPage={page}
-          totalPages={numberOfPages}
+          totalPages={numberOfPages || 1}
           setPage={setPage}
         />
       </div>
