@@ -3,8 +3,6 @@ import { DataTableCellProps } from '../DataTableCell.tsx';
 export const DataTableNumberRenderer = <T extends object>({
   value,
 }: DataTableCellProps<T>) => {
-  console.log('numberRenderer', value);
-
   if (value === undefined) {
     return <div>—</div>;
   }
