@@ -78,6 +78,8 @@ export const ru: Localization = {
       notEqual: 'не равен',
     },
     numberFilter: {
+      empty: 'пустой',
+      notEmpty: 'не пустой',
       equal: 'равен',
       notEqual: 'не равен',
       gt: '>',

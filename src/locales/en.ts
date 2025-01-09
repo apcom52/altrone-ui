@@ -78,6 +78,8 @@ export const en: Localization = {
       notEqual: 'not equals to',
     },
     numberFilter: {
+      empty: 'is empty',
+      notEmpty: 'is not empty',
       equal: 'equals to',
       notEqual: 'not equals to',
       gt: '>',
