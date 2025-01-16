@@ -38,6 +38,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
       format,
       className,
       style,
+      autoClose = true,
       ...restProps
     } = props;
 
@@ -141,9 +142,12 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
             <Popover
               enabled={!readOnly}
               placement="bottom-start"
-              content={({ closeAllSequence }) => (
-                <DatePickerCloseFnContext.Provider value={closeAllSequence}>
-                  <PopoverDatePickerContent clearable={clearable} />
+              content={({ closePopup }) => (
+                <DatePickerCloseFnContext.Provider value={closePopup}>
+                  <PopoverDatePickerContent
+                    autoClose={autoClose}
+                    clearable={clearable}
+                  />
                 </DatePickerCloseFnContext.Provider>
               )}
               onOpenChange={onPopoverOpenChange}

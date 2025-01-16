@@ -10,6 +10,7 @@ import {
   ArrayFilterRules,
   BooleanFilterRules,
   DataTableColumnType,
+  DateFilterRules,
   Filter,
   FilterType,
   NumberFilterRules,
@@ -109,6 +110,20 @@ export const Filtering = memo(() => {
               rule: BooleanFilterRules.positive,
               join: 'AND',
               value: undefined,
+            },
+          ],
+        };
+      } else if (type === FilterType.date) {
+        newFilter = {
+          field: accessor,
+          type: FilterType.date,
+          conditions: [
+            {
+              rule: DateFilterRules.equal,
+              join: 'AND',
+              value: undefined,
+              minValue: undefined,
+              maxValue: undefined,
             },
           ],
         };
@@ -234,6 +249,7 @@ export const Filtering = memo(() => {
                       number: '123',
                       array: 'data_array',
                       boolean: 'check_circle_outline',
+                      date: 'calendar_month',
                     };
 
                     const label = filter.label || filter.accessor;

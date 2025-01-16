@@ -34,6 +34,7 @@ export const RangePicker = memo<RangePickerProps>((props) => {
     readOnly = false,
     minDate,
     maxDate,
+    autoClose = true,
     ...restProps
   } = props;
 
@@ -118,9 +119,9 @@ export const RangePicker = memo<RangePickerProps>((props) => {
           <Popover
             enabled={!readOnly}
             placement="bottom-start"
-            content={({ closeAllSequence }) => (
-              <DatePickerCloseFnContext.Provider value={closeAllSequence}>
-                <PopoverDatePickerContent />
+            content={({ closePopup }) => (
+              <DatePickerCloseFnContext.Provider value={closePopup}>
+                <PopoverDatePickerContent autoClose={autoClose} />
               </DatePickerCloseFnContext.Provider>
             )}
           >

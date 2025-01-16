@@ -8,6 +8,7 @@ export type CalendarRenderDateProps = {
   selected: boolean;
   disabled: boolean;
   cursorHighlighted: boolean;
+  autoClose?: boolean;
   onSelect?: (date: Dayjs) => void;
 };
 

@@ -97,6 +97,18 @@ export const en: Localization = {
       positive: 'is positive',
       negative: 'is negative',
     },
+    dateFilter: {
+      empty: 'is empty',
+      notEmpty: 'is not empty',
+      equal: 'equals to',
+      notEqual: 'not equals to',
+      gt: '>',
+      gte: '≥',
+      lt: '<',
+      lte: '≤',
+      between: 'is between',
+      beyond: 'is beyond',
+    },
   },
   photoViewer: {
     previous: 'Previous photo',

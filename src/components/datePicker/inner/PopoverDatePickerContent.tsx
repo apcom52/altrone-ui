@@ -12,7 +12,7 @@ import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 
 export const PopoverDatePickerContent = memo<DatePickerContentProps>(
-  ({ clearable = false }) => {
+  ({ clearable = false, autoClose = true }) => {
     const { viewMode } = useDatePickerViewContext();
     const { datePicker: datePickerConfig = {} } = useConfiguration();
 
@@ -24,9 +24,9 @@ export const PopoverDatePickerContent = memo<DatePickerContentProps>(
     return (
       <Flex direction="vertical" gap="l" className={cls} style={styles}>
         <DatePickerHeader />
-        {viewMode === 'day' ? <DayPicker /> : null}
-        {viewMode === 'month' ? <MonthPicker /> : null}
-        {viewMode === 'year' ? <YearPicker /> : null}
+        {viewMode === 'day' ? <DayPicker autoClose={autoClose} /> : null}
+        {viewMode === 'month' ? <MonthPicker autoClose={autoClose} /> : null}
+        {viewMode === 'year' ? <YearPicker autoClose={autoClose} /> : null}
         <DatePickerFooter clearable={clearable} />
       </Flex>
     );

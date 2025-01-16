@@ -100,11 +100,25 @@ export enum BooleanFilterRules {
   negative = 'negative',
 }
 
+export enum DateFilterRules {
+  empty = 'empty',
+  notEmpty = 'notEmpty',
+  equal = 'equal',
+  notEqual = 'notEqual',
+  gt = 'gt',
+  gte = 'gte',
+  lt = 'lt',
+  lte = 'lte',
+  between = 'between',
+  beyond = 'beyond',
+}
+
 export enum FilterType {
   string = 'string',
   number = 'number',
   array = 'array',
   boolean = 'boolean',
+  date = 'date',
 }
 
 export type StringFilter = {
@@ -150,7 +164,24 @@ export type BooleanFilter = {
   }[];
 };
 
-export type Filter = StringFilter | NumberFilter | ArrayFilter | BooleanFilter;
+export type DateFilter = {
+  field: string;
+  type: FilterType.date;
+  conditions: {
+    rule: DateFilterRules;
+    join: 'AND' | 'OR';
+    value?: string;
+    minValue?: string;
+    maxValue?: string;
+  }[];
+};
+
+export type Filter =
+  | StringFilter
+  | NumberFilter
+  | ArrayFilter
+  | BooleanFilter
+  | DateFilter;
 
 export interface FilterRowProps<T extends AnyObject> {
   filter: Filter;

@@ -92,6 +92,18 @@ export interface Localization {
       positive: string;
       negative: string;
     };
+    dateFilter: {
+      empty: string;
+      notEmpty: string;
+      equal: string;
+      notEqual: string;
+      gt: string;
+      gte: string;
+      lt: string;
+      lte: string;
+      between: string;
+      beyond: string;
+    };
   };
   photoViewer: {
     previous: string;

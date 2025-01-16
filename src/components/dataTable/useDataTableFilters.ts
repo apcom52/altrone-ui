@@ -10,6 +10,7 @@ import {
   numberFilter,
   stringFilter,
   arrayFilter,
+  dateFilter,
 } from './filters';
 
 export function useDataTableFilters<T extends AnyObject>(
@@ -54,6 +55,11 @@ export function useDataTableFilters<T extends AnyObject>(
             });
           } else if (filter.type === FilterType.boolean) {
             validRow = booleanFilter({
+              row,
+              filter,
+            });
+          } else if (filter.type === FilterType.date) {
+            validRow = dateFilter({
               row,
               filter,
             });
