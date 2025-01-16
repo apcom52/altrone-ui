@@ -17,6 +17,7 @@ export const DayButton = memo(
     fromAnotherMonth,
     today,
     weekDay,
+    autoClose = true,
   }: CalendarRenderDateProps) => {
     const { onDayClicked, selectedDates, minDate, maxDate } = useDateContext();
     const { picker, hoveredDate, setHoveredDate } = useDatePickerViewContext();
@@ -43,8 +44,9 @@ export const DayButton = memo(
 
     const onDateClick: MouseEventHandler = () => {
       if (
-        picker === 'day' ||
-        (picker === 'range' && selectedDates[0] && !selectedDates[1])
+        autoClose &&
+        (picker === 'day' ||
+          (picker === 'range' && selectedDates[0] && !selectedDates[1]))
       ) {
         closePopup();
       }

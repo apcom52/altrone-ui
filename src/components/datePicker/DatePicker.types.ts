@@ -14,6 +14,7 @@ export interface BasicDatePickerProps<ValueType extends AnyObject = any>
   format?: string;
   minDate?: Dayjs;
   maxDate?: Dayjs;
+  autoClose?: boolean;
 }
 
 export interface DatePickerProps extends BasicDatePickerProps<Dayjs> {}
@@ -63,6 +64,7 @@ export interface DatePickerContextType {
 
 export interface DatePickerContentProps {
   clearable?: boolean;
+  autoClose?: boolean;
 }
 
 export interface DatePickerFooterProps {

@@ -47,6 +47,7 @@ export const FiltersDataTableStory: StoryObj<typeof Flex> = {
             {
               accessor: 'age',
               label: 'Age',
+              type: 'number',
               width: '100px',
               filterable: true,
               sortable: true,
