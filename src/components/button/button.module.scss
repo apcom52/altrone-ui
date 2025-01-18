@@ -162,6 +162,10 @@
     --buttonDangerTransparentBackgroundColor: transparent;
     --buttonDangerTransparentHoverBackgroundColor: var(--danger-900);
     --buttonDangerTransparentPressBackgroundColor: var(--danger-800);
+
+    --button-disabled-background-color: var(--default-900);
+    --button-disabled-border-color: var(--default-800);
+    --button-disabled-text-color: var(--default-600);
   }
 }
 
