@@ -43,7 +43,7 @@ const preview: Preview = {
       toolbar: {
         title: 'Language',
         icon: 'globe',
-        items: ['EN', 'RU'],
+        items: ['EN', 'RU', 'FR', 'GE', 'SP'],
         dynamicTitle: true,
       },
     },

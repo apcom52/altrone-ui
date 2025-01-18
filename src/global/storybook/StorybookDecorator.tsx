@@ -19,7 +19,16 @@ export const StorybookDecorator = (Story: any, options: any) => {
       language={options.globals.lang || 'en'}
       config={{
         locale: {
-          locale: options.globals.lang === 'RU' ? 'ru-RU' : 'en-US',
+          locale:
+            options.globals.lang === 'RU'
+              ? 'ru-RU'
+              : options.globals.lang === 'FR'
+                ? 'fr-FR'
+                : options.globals.lang === 'GE'
+                  ? 'ge-GE'
+                  : options.globals.lang === 'SP'
+                    ? 'sp-SP'
+                    : 'en-US',
         },
       }}
       customLabels={{
