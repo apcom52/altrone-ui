@@ -6,6 +6,10 @@ export const DataTableCurrencyRenderer = <T extends object>({
   item,
   columnOptions,
 }: DataTableCellProps<T>) => {
+  if (value === undefined || value === null) {
+    return <div className={s.CurrencyCell}>—</div>;
+  }
+
   const currencyFromAccessor = columnOptions?.currencyAccessor
     ? item[columnOptions?.currencyAccessor as keyof T]
     : undefined;
