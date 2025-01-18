@@ -77,9 +77,9 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
     });
 
     const pickerDateFormat =
-      view === 'day'
+      picker === 'day'
         ? locale.dateFormat
-        : view === 'month'
+        : picker === 'month'
           ? locale.monthFormat
           : locale.yearFormat;
 

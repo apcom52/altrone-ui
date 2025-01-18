@@ -5,6 +5,10 @@ import { useLocale } from 'utils';
 export const DataTableMonthRenderer = <T extends object>({
   value,
 }: DataTableCellProps<T>) => {
+  if (value === undefined || value === null) {
+    return <div>—</div>;
+  }
+
   const locale = useLocale();
 
   const date = dayjs(String(value)).locale(locale.locale);
