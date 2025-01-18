@@ -6,6 +6,10 @@ export const DataTableArrayRenderer = <T extends object>({
   value,
   columnOptions,
 }: DataTableCellProps<T>) => {
+  if (value === undefined || value === null) {
+    return <div>—</div>;
+  }
+
   const delimiter = columnOptions?.arrayDelimiter ?? ', ';
   let array = ArrayUtils.getSafeArray(value);
 
