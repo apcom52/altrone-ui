@@ -32,6 +32,9 @@
   --buttonDangerTransparentTextColor: var(--danger-500);
   --buttonDangerTransparentHoverTextColor: var(--danger-600);
   --buttonDangerTransparentPressTextColor: var(--danger-700);
+  --button-disabled-background-color: var(--default-100);
+  --button-disabled-border-color: var(--default-200);
+  --button-disabled-text-color: var(--default-500);
 
   /** surface colors */
   --buttonBackgroundColor: var(--default-50);
@@ -177,7 +180,9 @@
   border-radius: var(--controlRounding);
   border: none;
   color: var(--btnFg);
-  box-shadow: inset 0 0 0 1px var(--btnBorder), var(--buttonShadow);
+  box-shadow:
+    inset 0 0 0 1px var(--btnBorder),
+    var(--buttonShadow);
   padding: var(--xs-gap) var(--gap);
   cursor: pointer;
   min-height: var(--normal-size);
@@ -199,8 +204,10 @@
   }
 
   &:disabled {
-    opacity: 0.5;
     pointer-events: none;
+    --btnBg: var(--button-disabled-background-color);
+    --btnFg: var(--button-disabled-text-color);
+    --btnBorder: var(--button-disabled-border-color);
   }
 }
 
@@ -228,6 +235,11 @@
   &:active {
     --btnBg: var(--buttonTransparentPressBackgroundColor);
     --btnFg: var(--buttonTransparentPressTextColor);
+  }
+
+  &:disabled {
+    --btnBg: var(--buttonTransparentBackgroundColor);
+    opacity: 0.5;
   }
 }
 
