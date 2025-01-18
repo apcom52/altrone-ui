@@ -34,7 +34,7 @@
   --buttonDangerTransparentPressTextColor: var(--danger-700);
   --button-disabled-background-color: var(--default-100);
   --button-disabled-border-color: var(--default-200);
-  --button-disabled-text-color: var(--default-500);
+  --button-disabled-text-color: var(--default-400);
 
   /** surface colors */
   --buttonBackgroundColor: var(--default-50);
@@ -243,7 +243,7 @@
 
   &:disabled {
     --btnBg: var(--buttonTransparentBackgroundColor);
-    opacity: 0.5;
+    --btnFg: var(--button-disabled-text-color);
   }
 }
 
@@ -278,6 +278,10 @@
     &:active {
       --btnBg: var(--buttonPrimaryTransparentPressBackgroundColor);
       --btnFg: var(--buttonPrimaryTransparentPressTextColor);
+    }
+
+    &:disabled {
+      --btnFg: var(--button-disabled-text-color);
     }
   }
 }
@@ -319,6 +323,10 @@
       --btnBg: var(--buttonSuccessTransparentPressBackgroundColor);
       --btnFg: var(--buttonSuccessTransparentPressTextColor);
     }
+
+    &:disabled {
+      --btnFg: var(--button-disabled-text-color);
+    }
   }
 }
 
@@ -359,6 +367,10 @@
       --btnBg: var(--buttonWarningTransparentPressBackgroundColor);
       --btnFg: var(--buttonWarningTransparentPressTextColor);
     }
+
+    &:disabled {
+      --btnFg: var(--button-disabled-text-color);
+    }
   }
 }
 
@@ -398,6 +410,10 @@
     &:active {
       --btnBg: var(--buttonDangerTransparentPressBackgroundColor);
       --btnFg: var(--buttonDangerTransparentPressTextColor);
+    }
+
+    &:disabled {
+      --btnFg: var(--button-disabled-text-color);
     }
   }
 }
