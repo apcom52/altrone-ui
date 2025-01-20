@@ -15,4 +15,6 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
+vi.mock('*.scss', () => ({}));
+
 vi.stubGlobal('__TEST_ENV__', 'true');

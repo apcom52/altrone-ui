@@ -15,34 +15,43 @@ export const numberFilter = <T extends AnyObject>({
   const value = Number(rawValue);
   const stringValue = String(rawValue);
 
+  const condition = filter.conditions[0];
+  const rule = condition.rule;
+  const filterValue = condition.value || 0;
+  const minFilterValue = condition.minValue || 0;
+  const maxFilterValue = condition.maxValue || 0;
+
+  console.log('>>', rawValue, value, stringValue, filterValue);
+
   if (
-    Number.isNaN(value) &&
-    filter.conditions[0].rule !== NumberFilterRules.empty
+    ![NumberFilterRules.empty, NumberFilterRules.notEmpty].includes(
+      filter.conditions[0].rule,
+    ) &&
+    Number.isNaN(value)
   ) {
     return false;
   }
 
-  const condition = filter.conditions[0];
-  const rule = condition.rule;
-  const filterValue = condition.value;
-  const minFilterValue = condition.minValue || 0;
-  const maxFilterValue = condition.maxValue || 0;
-
   switch (rule) {
     case NumberFilterRules.empty:
-      console.log(
-        'empty',
-        stringValue.trim() === '',
-        rawValue,
-        rawValue === undefined,
-      );
-      validationResult = stringValue.trim() === '' || rawValue === undefined;
+      validationResult =
+        stringValue.trim() === '' ||
+        rawValue === undefined ||
+        rawValue === null;
       break;
     case NumberFilterRules.notEmpty:
-      validationResult = stringValue.trim() !== '' && rawValue !== undefined;
+      validationResult =
+        stringValue.trim() !== '' &&
+        rawValue !== undefined &&
+        rawValue !== null;
       break;
     case NumberFilterRules.equal:
-      validationResult = value === filterValue;
+      if (Number.isNaN(rawValue) || Number.isNaN(filterValue)) {
+        validationResult = false;
+      } else {
+        validationResult = value === filterValue;
+      }
+
       break;
     case NumberFilterRules.notEqual:
       validationResult = value !== filterValue;

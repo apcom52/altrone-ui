@@ -11,13 +11,25 @@ export const stringFilter = <T extends AnyObject>({
 }: FilterFuncArgs<T, StringFilter>) => {
   let validationResult = true;
 
-  const value = String(row[filter.field]).toLowerCase();
+  const value = String(row[filter.field] || '').toLowerCase();
   const condition = filter.conditions[0];
   const rule = condition.rule;
-  const filterValue = condition.value.trim().toLowerCase();
+  const filterValue = String(condition.value || '')
+    .trim()
+    .toLowerCase();
+
+  console.log('->', rule, `[${value}] [${filterValue}]`);
 
   switch (rule) {
     case StringFilterRules.contain:
+      if (
+        filterValue === undefined ||
+        filterValue === null ||
+        filterValue === ''
+      ) {
+        return false;
+      }
+
       validationResult = value.includes(filterValue);
       break;
     case StringFilterRules.notContain:
