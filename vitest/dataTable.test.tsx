@@ -6,6 +6,8 @@ import {
   StringFilterRules,
   FilterType,
   NumberFilterRules,
+  BooleanFilterRules,
+  ArrayFilterRules,
 } from '../src/components';
 import { EMPLOYEES } from '../src/components/dataTable/stories/EMPLOYEES';
 import {
@@ -14,6 +16,8 @@ import {
 } from '../src/components/dataTable/stories/INVOICES';
 import React from 'react';
 import {
+  arrayFilter,
+  booleanFilter,
   numberFilter,
   stringFilter,
 } from '../src/components/dataTable/filters';
@@ -460,5 +464,110 @@ describe('DataTable', () => {
     expect(
       checkValue(null, NumberFilterRules.notBetween, null, null, null),
     ).toBe(false);
+  });
+
+  test('check boolean filters', () => {
+    const checkValue = (value: any, rule: BooleanFilterRules) => {
+      return booleanFilter({
+        row: { foo: value },
+        filter: {
+          field: 'foo',
+          type: FilterType.boolean,
+          conditions: [{ rule, join: 'AND', value: true }],
+        },
+      });
+    };
+
+    /* checking positive rule */
+    expect(checkValue(true, BooleanFilterRules.positive)).toBe(true);
+    expect(checkValue(false, BooleanFilterRules.positive)).toBe(false);
+    expect(checkValue(undefined, BooleanFilterRules.positive)).toBe(false);
+    expect(checkValue(null, BooleanFilterRules.positive)).toBe(false);
+    expect(checkValue(0, BooleanFilterRules.positive)).toBe(false);
+    expect(checkValue('abc', BooleanFilterRules.positive)).toBe(true);
+
+    /* checking negative rule */
+    expect(checkValue(true, BooleanFilterRules.negative)).toBe(false);
+    expect(checkValue(false, BooleanFilterRules.negative)).toBe(true);
+    expect(checkValue(undefined, BooleanFilterRules.negative)).toBe(true);
+    expect(checkValue(null, BooleanFilterRules.negative)).toBe(true);
+    expect(checkValue(0, BooleanFilterRules.negative)).toBe(true);
+    expect(checkValue('abc', BooleanFilterRules.negative)).toBe(false);
+  });
+
+  test('check array filters', () => {
+    const checkValue = (
+      value: any,
+      rule: ArrayFilterRules,
+      filterValue: any,
+    ) => {
+      return arrayFilter({
+        row: { foo: value },
+        filter: {
+          field: 'foo',
+          type: FilterType.array,
+          conditions: [
+            {
+              rule,
+              join: 'AND',
+              value: filterValue,
+              options: [
+                { value: 'france', label: 'France' },
+                { value: 'germany', label: 'Germany' },
+                { value: 'spain', label: 'Spain' },
+              ],
+            },
+          ],
+        },
+      });
+    };
+
+    /* checking has rule */
+    expect(
+      checkValue(['russia', 'france'], ArrayFilterRules.has, ['france']),
+    ).toBe(true);
+    expect(
+      checkValue(['russia', 'germany'], ArrayFilterRules.has, ['france']),
+    ).toBe(false);
+    expect(
+      checkValue(['usa', 'france', 'spain'], ArrayFilterRules.has, [
+        'spain',
+        'usa',
+      ]),
+    ).toBe(true);
+    expect(
+      checkValue(['usa', 'france', 'spain'], ArrayFilterRules.has, ['germany']),
+    ).toBe(false);
+    expect(
+      checkValue(['usa', 'france', 'spain'], ArrayFilterRules.has, []),
+    ).toBe(false);
+    expect(checkValue([undefined, undefined], ArrayFilterRules.has, [])).toBe(
+      false,
+    );
+
+    /* checking not has rule */
+    expect(
+      checkValue(['russia', 'france'], ArrayFilterRules.notHas, ['france']),
+    ).toBe(false);
+    expect(
+      checkValue(['russia', 'germany'], ArrayFilterRules.notHas, ['france']),
+    ).toBe(true);
+    expect(
+      checkValue(['usa', 'france', 'spain'], ArrayFilterRules.notHas, [
+        'spain',
+        'usa',
+      ]),
+    ).toBe(false);
+    expect(
+      checkValue(['usa', 'france', 'spain'], ArrayFilterRules.notHas, [
+        'germany',
+      ]),
+    ).toBe(true);
+    expect(
+      checkValue(['usa', 'france', 'spain'], ArrayFilterRules.notHas, []),
+    ).toBe(true);
+    expect(
+      checkValue([undefined, undefined], ArrayFilterRules.notHas, []),
+    ).toBe(true);
   });
 });
