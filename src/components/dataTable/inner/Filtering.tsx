@@ -37,12 +37,14 @@ export const Filtering = memo(() => {
   const addNewFilter = (
     accessor: string,
     type: FilterType,
+    columnType: DataTableColumnType,
     createAtIndex: number = -1,
   ) => {
     setInternalFilters((old) => {
       let newFilter: Filter = {
         field: accessor,
         type: FilterType.string,
+        columnType: columnType,
         conditions: [],
       };
 
@@ -50,6 +52,7 @@ export const Filtering = memo(() => {
         newFilter = {
           field: accessor,
           type: FilterType.string,
+          columnType: columnType,
           conditions: [
             {
               rule: StringFilterRules.contain,
@@ -62,6 +65,7 @@ export const Filtering = memo(() => {
         newFilter = {
           field: accessor,
           type: FilterType.number,
+          columnType: columnType,
           conditions: [
             {
               rule: NumberFilterRules.equal,
@@ -92,6 +96,7 @@ export const Filtering = memo(() => {
         newFilter = {
           field: accessor,
           type: FilterType.array,
+          columnType: columnType,
           conditions: [
             {
               rule: ArrayFilterRules.has,
@@ -105,6 +110,7 @@ export const Filtering = memo(() => {
         newFilter = {
           field: accessor,
           type: FilterType.boolean,
+          columnType: columnType,
           conditions: [
             {
               rule: BooleanFilterRules.positive,
@@ -117,6 +123,7 @@ export const Filtering = memo(() => {
         newFilter = {
           field: accessor,
           type: FilterType.date,
+          columnType: columnType,
           conditions: [
             {
               rule: DateFilterRules.equal,
@@ -146,10 +153,13 @@ export const Filtering = memo(() => {
       deleteFilter(oldFilterIndex, 'field');
 
       const filterType = getCellType(initialData?.[0], accessor, type);
+      const columnType = columns.find(
+        (item) => item.accessor === accessor,
+      )?.type;
 
       if (!filterType) return;
 
-      addNewFilter(accessor, filterType, oldFilterIndex);
+      addNewFilter(accessor, filterType, columnType || 'text', oldFilterIndex);
     },
     [columns, initialData],
   );
@@ -260,7 +270,11 @@ export const Filtering = memo(() => {
                         icon={<Icon i={FILTER_TYPE_ICON[filterType]} />}
                         label={label}
                         onClick={() =>
-                          addNewFilter(filter.accessor, filterType)
+                          addNewFilter(
+                            filter.accessor,
+                            filterType,
+                            filter.type || 'text',
+                          )
                         }
                         title={label}
                       />

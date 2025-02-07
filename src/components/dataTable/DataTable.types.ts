@@ -124,6 +124,7 @@ export enum FilterType {
 export type StringFilter = {
   field: string;
   type: FilterType.string;
+  columnType: DataTableColumnType;
   conditions: {
     rule: StringFilterRules;
     join: 'AND' | 'OR';
@@ -134,6 +135,7 @@ export type StringFilter = {
 export type NumberFilter = {
   field: string;
   type: FilterType.number;
+  columnType: DataTableColumnType;
   conditions: {
     rule: NumberFilterRules;
     join: 'AND' | 'OR';
@@ -146,6 +148,7 @@ export type NumberFilter = {
 export type ArrayFilter = {
   field: string;
   type: FilterType.array;
+  columnType: DataTableColumnType;
   conditions: {
     rule: ArrayFilterRules;
     join: 'AND' | 'OR';
@@ -157,6 +160,7 @@ export type ArrayFilter = {
 export type BooleanFilter = {
   field: string;
   type: FilterType.boolean;
+  columnType: DataTableColumnType;
   conditions: {
     rule: BooleanFilterRules;
     join: 'AND' | 'OR';
@@ -167,6 +171,7 @@ export type BooleanFilter = {
 export type DateFilter = {
   field: string;
   type: FilterType.date;
+  columnType: DataTableColumnType;
   conditions: {
     rule: DateFilterRules;
     join: 'AND' | 'OR';
