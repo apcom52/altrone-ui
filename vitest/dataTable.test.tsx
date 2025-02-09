@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import {
   Configuration,
@@ -14,13 +16,14 @@ import {
   INVOICES,
   INVOICES2,
 } from '../src/components/dataTable/stories/INVOICES';
-import React from 'react';
 import {
   arrayFilter,
   booleanFilter,
+  dateFilter,
   numberFilter,
   stringFilter,
 } from '../src/components/dataTable/filters';
+import { DateFilterRules } from '../src/components/dataTable/DataTable.types';
 
 describe('DataTable', () => {
   test('test DataTable cell renderers', () => {
@@ -569,5 +572,247 @@ describe('DataTable', () => {
     expect(
       checkValue([undefined, undefined], ArrayFilterRules.notHas, []),
     ).toBe(true);
+  });
+
+  test('check date filters', () => {
+    const checkValue = (
+      value: any,
+      rule: DateFilterRules,
+      filterValue: any,
+      minValue?: any,
+      maxValue?: any,
+    ) => {
+      return dateFilter({
+        row: { foo: value },
+        filter: {
+          field: 'foo',
+          type: FilterType.date,
+          conditions: [
+            {
+              rule,
+              join: 'AND',
+              value: filterValue,
+              minValue,
+              maxValue,
+            },
+          ],
+        },
+      });
+    };
+
+    /* checking equal rule */
+    expect(checkValue('2024-01-01', DateFilterRules.equal, '2024-01-01')).toBe(
+      true,
+    );
+    expect(checkValue('2024-01-01', DateFilterRules.equal, '2024-01-02')).toBe(
+      false,
+    );
+    expect(checkValue('2024-01-01', DateFilterRules.equal, '2023-01-01')).toBe(
+      false,
+    );
+    expect(
+      checkValue('2024-01-01 18:45', DateFilterRules.equal, '2024-01-01 12:00'),
+    ).toBe(true);
+    expect(checkValue(undefined, DateFilterRules.equal, undefined)).toBe(false);
+    expect(checkValue(null, DateFilterRules.equal, null)).toBe(false);
+
+    /* checking notEqual rule */
+    expect(
+      checkValue('2024-01-01', DateFilterRules.notEqual, '2024-01-01'),
+    ).toBe(false);
+    expect(
+      checkValue('2024-01-01', DateFilterRules.notEqual, '2024-01-02'),
+    ).toBe(true);
+    expect(
+      checkValue(
+        '2024-01-01 18:45',
+        DateFilterRules.notEqual,
+        '2024-01-01 12:00',
+      ),
+    ).toBe(false);
+    expect(checkValue(undefined, DateFilterRules.equal, undefined)).toBe(false);
+    expect(checkValue(null, DateFilterRules.equal, null)).toBe(false);
+
+    /* checking gt rule */
+    expect(checkValue('2024-01-01', DateFilterRules.gt, '2024-01-01')).toBe(
+      false,
+    );
+    expect(checkValue('2024-01-01', DateFilterRules.gt, '2024-02-01')).toBe(
+      false,
+    );
+    expect(checkValue('2024-01-01', DateFilterRules.gt, '2023-12-11')).toBe(
+      true,
+    );
+    expect(
+      checkValue('2024-01-01 12:00', DateFilterRules.gt, '2024-01-01 14:15'),
+    ).toBe(false);
+    expect(checkValue(undefined, DateFilterRules.gt, undefined)).toBe(false);
+    expect(checkValue(null, DateFilterRules.gt, null)).toBe(false);
+
+    /* checking gte rule */
+    expect(checkValue('2024-01-01', DateFilterRules.gte, '2024-01-01')).toBe(
+      true,
+    );
+    expect(checkValue('2024-01-01', DateFilterRules.gte, '2024-02-01')).toBe(
+      false,
+    );
+    expect(checkValue('2024-01-01', DateFilterRules.gte, '2023-12-11')).toBe(
+      true,
+    );
+    expect(
+      checkValue('2024-01-01 12:00', DateFilterRules.gte, '2024-01-01 14:15'),
+    ).toBe(true);
+    expect(checkValue(undefined, DateFilterRules.gte, undefined)).toBe(false);
+    expect(checkValue(null, DateFilterRules.gte, null)).toBe(false);
+
+    /* checking lt rule */
+    expect(checkValue('2024-01-01', DateFilterRules.lt, '2024-01-01')).toBe(
+      false,
+    );
+    expect(checkValue('2024-01-01', DateFilterRules.lt, '2024-02-01')).toBe(
+      true,
+    );
+    expect(checkValue('2024-01-01', DateFilterRules.lt, '2023-12-11')).toBe(
+      false,
+    );
+    expect(
+      checkValue('2024-01-01 12:00', DateFilterRules.lt, '2024-01-01 14:15'),
+    ).toBe(false);
+    expect(checkValue(undefined, DateFilterRules.lt, undefined)).toBe(false);
+    expect(checkValue(null, DateFilterRules.lt, null)).toBe(false);
+
+    /* checking lte rule */
+    expect(checkValue('2024-01-01', DateFilterRules.lte, '2024-01-01')).toBe(
+      true,
+    );
+    expect(checkValue('2024-01-01', DateFilterRules.lte, '2024-02-01')).toBe(
+      true,
+    );
+    expect(checkValue('2024-01-01', DateFilterRules.lte, '2023-12-11')).toBe(
+      false,
+    );
+    expect(
+      checkValue('2024-01-01 12:00', DateFilterRules.lte, '2024-01-01 14:15'),
+    ).toBe(true);
+    expect(checkValue(undefined, DateFilterRules.lte, undefined)).toBe(false);
+    expect(checkValue(null, DateFilterRules.lte, null)).toBe(false);
+
+    /* checking between rule */
+    expect(
+      checkValue(
+        '2024-01-01',
+        DateFilterRules.between,
+        undefined,
+        '2023-12-01',
+        '2024-05-01',
+      ),
+    ).toBe(true);
+    expect(
+      checkValue(
+        '2024-01-01',
+        DateFilterRules.between,
+        undefined,
+        '2023-05-01',
+        '2023-12-31',
+      ),
+    ).toBe(false);
+    expect(
+      checkValue(
+        '2024-01-01',
+        DateFilterRules.between,
+        undefined,
+        '2023-05-01',
+        '2023-12-31',
+      ),
+    ).toBe(false);
+    expect(
+      checkValue(
+        '2024-01-01',
+        DateFilterRules.between,
+        undefined,
+        '2024-01-02',
+        '2024-12-31',
+      ),
+    ).toBe(false);
+    expect(
+      checkValue(
+        '2024-01-01',
+        DateFilterRules.between,
+        undefined,
+        '2024-01-01',
+        '2024-01-01',
+      ),
+    ).toBe(true);
+    expect(
+      checkValue(
+        undefined,
+        DateFilterRules.between,
+        undefined,
+        undefined,
+        undefined,
+      ),
+    ).toBe(false);
+    expect(checkValue(null, DateFilterRules.between, null, null, null)).toBe(
+      false,
+    );
+
+    /* checking beyond rule */
+    expect(
+      checkValue(
+        '2024-01-01',
+        DateFilterRules.beyond,
+        undefined,
+        '2023-12-01',
+        '2024-05-01',
+      ),
+    ).toBe(false);
+    expect(
+      checkValue(
+        '2024-01-01',
+        DateFilterRules.beyond,
+        undefined,
+        '2023-05-01',
+        '2023-12-31',
+      ),
+    ).toBe(true);
+    expect(
+      checkValue(
+        '2024-01-01',
+        DateFilterRules.beyond,
+        undefined,
+        '2023-05-01',
+        '2023-12-31',
+      ),
+    ).toBe(true);
+    expect(
+      checkValue(
+        '2024-01-01',
+        DateFilterRules.beyond,
+        undefined,
+        '2024-01-02',
+        '2024-12-31',
+      ),
+    ).toBe(true);
+    expect(
+      checkValue(
+        '2024-01-01',
+        DateFilterRules.beyond,
+        undefined,
+        '2024-01-01',
+        '2024-01-01',
+      ),
+    ).toBe(false);
+    expect(
+      checkValue(
+        undefined,
+        DateFilterRules.beyond,
+        undefined,
+        undefined,
+        undefined,
+      ),
+    ).toBe(false);
+    expect(checkValue(null, DateFilterRules.beyond, null, null, null)).toBe(
+      false,
+    );
   });
 });

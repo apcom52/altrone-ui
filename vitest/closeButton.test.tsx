@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { AltroneApplication, CloseButton } from '../src/components';
 import { vi } from 'vitest';

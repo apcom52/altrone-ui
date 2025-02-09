@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Configuration, AltroneApplication, Select } from '../src/components';
 import { SELECT_COUNTRIES } from '../src/components/select/constants';

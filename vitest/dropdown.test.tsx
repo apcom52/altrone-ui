@@ -1,6 +1,7 @@
+import React from 'react';
+import { expect, test, describe, vitest } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Button, Configuration, Dropdown } from '../src/components';
-import { vitest } from 'vitest';
 
 describe('Dropdown', () => {
   test('check that render menu correctly', () => {

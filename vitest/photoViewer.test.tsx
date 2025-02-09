@@ -1,6 +1,7 @@
+import React from 'react';
+import { expect, test, describe, vitest } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { AltroneApplication, PhotoViewer } from '../src/components';
-import { vitest } from 'vitest';
 
 class ResizeObserver {
   observe() {}

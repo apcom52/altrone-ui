@@ -1,5 +1,6 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { expect } from 'vitest';
 import { AltroneApplication, Text } from '../src';
 
 describe('Text', () => {

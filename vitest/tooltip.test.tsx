@@ -1,5 +1,7 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Configuration, List, Tooltip } from '../src/components';
+import { Configuration, Tooltip } from '../src/components';
 
 describe('Tooltip', () => {
   test('check that render menu correctly', () => {
