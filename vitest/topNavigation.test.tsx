@@ -33,7 +33,7 @@ describe('TopNavigation', () => {
           data-testid="group"
           title="Group title"
           className="group"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         />
         <TopNavigation.Link
           href="#"
@@ -46,13 +46,13 @@ describe('TopNavigation', () => {
     );
 
     expect(screen.getByTestId('list')).toHaveClass('cls');
-    expect(screen.getByTestId('list')).toHaveStyle('color: red');
+    expect(screen.getByTestId('list')).toHaveStyle('color: rgb(255, 0, 0)');
     expect(screen.getByTestId('logo')).toHaveClass('cls');
-    expect(screen.getByTestId('logo')).toHaveStyle('color: green');
+    expect(screen.getByTestId('logo')).toHaveStyle('color: rgb(0, 128, 0)');
     expect(screen.getByTestId('group')).toHaveClass('group');
-    expect(screen.getByTestId('group')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('group')).toHaveStyle('color: rgb(0, 0, 255)');
     expect(screen.getByTestId('link')).toHaveClass('link');
-    expect(screen.getByTestId('link')).toHaveStyle('color: yellow');
+    expect(screen.getByTestId('link')).toHaveStyle('color: rgb(255, 255, 0)');
   });
 
   test('check that TopNavigation configuration works correctly', () => {
@@ -61,7 +61,7 @@ describe('TopNavigation', () => {
         config={{
           topNavigation: {
             className: 'cls',
-            style: { color: 'blue' },
+            style: { color: 'rgb(0, 0, 255)' },
           },
         }}
       >
@@ -70,6 +70,6 @@ describe('TopNavigation', () => {
     );
 
     expect(screen.getByTestId('list')).toHaveClass('cls');
-    expect(screen.getByTestId('list')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('list')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

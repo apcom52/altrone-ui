@@ -26,7 +26,7 @@ describe('NavigationList', () => {
           data-testid="group"
           title="Group title"
           className="group"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         >
           <NavigationList.GroupAction
             label="test"
@@ -55,17 +55,21 @@ describe('NavigationList', () => {
     );
 
     expect(screen.getByTestId('list')).toHaveClass('cls');
-    expect(screen.getByTestId('list')).toHaveStyle('color: red');
+    expect(screen.getByTestId('list')).toHaveStyle('color: rgb(255, 0, 0)');
     expect(screen.getByTestId('group')).toHaveClass('group');
-    expect(screen.getByTestId('group')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('group')).toHaveStyle('color: rgb(0, 0, 255)');
     expect(screen.getByTestId('link')).toHaveClass('link');
-    expect(screen.getByTestId('link')).toHaveStyle('color: yellow');
+    expect(screen.getByTestId('link')).toHaveStyle('color: rgb(255, 255, 0)');
 
     expect(screen.getByTestId('groupAction')).toHaveClass('groupAction');
-    expect(screen.getByTestId('groupAction')).toHaveStyle('color: cyan');
+    expect(screen.getByTestId('groupAction')).toHaveStyle(
+      'color: rgb(0, 255, 255)',
+    );
 
     expect(screen.getByTestId('linkAction')).toHaveClass('linkAction');
-    expect(screen.getByTestId('linkAction')).toHaveStyle('color: magenta');
+    expect(screen.getByTestId('linkAction')).toHaveStyle(
+      'color: rgb(255, 0, 255)',
+    );
   });
 
   test('check that NavigationList configuration works correctly', () => {
@@ -74,23 +78,23 @@ describe('NavigationList', () => {
         config={{
           navigationList: {
             className: 'cls',
-            style: { color: 'blue' },
+            style: { color: 'rgb(0, 0, 255)' },
             group: {
               className: 'conf-group',
-              style: { color: 'red' },
+              style: { color: 'rgb(255, 0, 0)' },
               titleClassName: 'title',
             },
             link: {
               className: 'conf-link',
-              style: { color: 'magenta' },
+              style: { color: 'rgb(255, 0, 255)' },
             },
             groupAction: {
               className: 'conf-ga',
-              style: { color: 'brown' },
+              style: { color: 'rgb(139, 0, 0)' },
             },
             linkAction: {
               className: 'conf-la',
-              style: { color: 'yellow' },
+              style: { color: 'rgb(255, 255, 0)' },
             },
           },
         }}
@@ -115,21 +119,25 @@ describe('NavigationList', () => {
     );
 
     expect(screen.getByTestId('list')).toHaveClass('cls');
-    expect(screen.getByTestId('list')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('list')).toHaveStyle('color: rgb(0, 0, 255)');
     expect(
       screen.getByTestId('list').querySelector('.title'),
     ).toBeInTheDocument();
 
     expect(screen.getByTestId('group')).toHaveClass('conf-group');
-    expect(screen.getByTestId('group')).toHaveStyle('color: red');
+    expect(screen.getByTestId('group')).toHaveStyle('color: rgb(255, 0, 0)');
 
     expect(screen.getByTestId('groupAction')).toHaveClass('conf-ga');
-    expect(screen.getByTestId('groupAction')).toHaveStyle('color: brown');
+    expect(screen.getByTestId('groupAction')).toHaveStyle(
+      'color: rgb(139, 0, 0)',
+    );
 
     expect(screen.getByTestId('link')).toHaveClass('conf-link');
-    expect(screen.getByTestId('link')).toHaveStyle('color: magenta');
+    expect(screen.getByTestId('link')).toHaveStyle('color: rgb(255, 0, 255)');
 
     expect(screen.getByTestId('linkAction')).toHaveClass('conf-la');
-    expect(screen.getByTestId('linkAction')).toHaveStyle('color: yellow');
+    expect(screen.getByTestId('linkAction')).toHaveStyle(
+      'color: rgb(255, 255, 0)',
+    );
   });
 });

@@ -20,20 +20,20 @@ describe('Textarea', () => {
         <Textarea
           data-testid="textarea"
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         />
       </AltroneApplication>,
     );
 
     expect(screen.getByTestId('textarea')).toHaveClass('cls');
-    expect(screen.getByTestId('textarea')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('textarea')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that Textarea configuration works correctly', () => {
     render(
       <AltroneApplication>
         <Configuration
-          textarea={{ className: 'cls', style: { color: 'blue' } }}
+          textarea={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
         >
           <Textarea data-testid="textarea" />
         </Configuration>
@@ -42,6 +42,6 @@ describe('Textarea', () => {
 
     const element = screen.getByTestId('textarea');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

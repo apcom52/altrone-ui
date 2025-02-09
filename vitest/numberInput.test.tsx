@@ -58,13 +58,13 @@ describe('NumberInput', () => {
           onChange={() => null}
           data-testid="input"
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         />
       </AltroneApplication>,
     );
 
     expect(screen.getByTestId('input')).toHaveClass('cls');
-    expect(screen.getByTestId('input')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('input')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that configuration works', () => {
@@ -83,7 +83,7 @@ describe('NumberInput', () => {
     );
 
     expect(screen.getByTestId('input')).toHaveClass('cls');
-    expect(screen.getByTestId('input')).toHaveStyle('color: red');
+    expect(screen.getByTestId('input')).toHaveStyle('color: rgb(255, 0, 0)');
     expect(screen.queryByText('keyboard_arrow_up')).not.toBeInTheDocument();
     expect(screen.queryByText('keyboard_arrow_down')).not.toBeInTheDocument();
   });

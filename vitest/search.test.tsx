@@ -20,7 +20,7 @@ describe('Search', () => {
         <Search
           getSuggestions={() => []}
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
           data-testid="search"
         >
           <TextInput.TextIsland data-testid="island" label="Text" />
@@ -29,7 +29,7 @@ describe('Search', () => {
     );
 
     expect(screen.getByTestId('search')).toHaveClass('cls');
-    expect(screen.getByTestId('search')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('search')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that configuration works', () => {
@@ -47,6 +47,6 @@ describe('Search', () => {
     );
 
     expect(screen.getByTestId('search')).toHaveClass('cls');
-    expect(screen.getByTestId('search')).toHaveStyle('color: red');
+    expect(screen.getByTestId('search')).toHaveStyle('color: rgb(255, 0, 0)');
   });
 });

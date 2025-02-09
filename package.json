@@ -17,7 +17,7 @@
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
     "storybook:test": "test-storybook",
-    "test:unit": "vitest --no-watch",
+    "test:unit": "vitest --no-watch --include './vitest/**/*.test.ts'",
     "test:unit-ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "test:e2e-chrome": "npx cypress run --component --browser chrome --env type=regression",

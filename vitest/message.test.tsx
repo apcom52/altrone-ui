@@ -51,7 +51,9 @@ describe('Message', () => {
   test('check that Message configuration works correctly', () => {
     render(
       <AltroneApplication
-        config={{ message: { className: 'cls', style: { color: 'blue' } } }}
+        config={{
+          message: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
+        }}
       >
         <Message data-testid="element">content</Message>
       </AltroneApplication>,
@@ -59,6 +61,6 @@ describe('Message', () => {
 
     const element = screen.getByTestId('element');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

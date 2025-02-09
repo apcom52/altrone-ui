@@ -58,7 +58,7 @@ describe('Progress', () => {
     );
 
     expect(screen.getByTestId('progress')).toHaveClass('cls');
-    expect(screen.getByTestId('progress')).toHaveStyle('color: red');
+    expect(screen.getByTestId('progress')).toHaveStyle('color: rgb(255, 0, 0)');
   });
 
   test('check that Progress configuration works correctly', () => {
@@ -67,7 +67,7 @@ describe('Progress', () => {
         config={{
           progress: {
             className: 'cls',
-            style: { color: 'blue' },
+            style: { color: 'rgb(0, 0, 255)' },
             activeSegmentClassName: 'activeCls',
           },
         }}
@@ -77,7 +77,7 @@ describe('Progress', () => {
     );
 
     expect(screen.getByTestId('progress')).toHaveClass('cls');
-    expect(screen.getByTestId('progress')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('progress')).toHaveStyle('color: rgb(0, 0, 255)');
     expect(
       screen.getByTestId('progress').querySelector('.activeCls'),
     ).toBeInTheDocument();

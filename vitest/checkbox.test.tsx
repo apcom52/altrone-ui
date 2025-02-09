@@ -33,20 +33,20 @@ describe('Checkbox', () => {
         <Checkbox
           data-testid="checkbox"
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         />
       </AltroneApplication>,
     );
 
     expect(screen.getByTestId('checkbox')).toHaveClass('cls');
-    expect(screen.getByTestId('checkbox')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('checkbox')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that Checkbox configuration works correctly', () => {
     render(
       <AltroneApplication>
         <Configuration
-          checkbox={{ className: 'cls', style: { color: 'blue' } }}
+          checkbox={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
         >
           <Checkbox data-testid="checkbox" />
         </Configuration>
@@ -55,6 +55,6 @@ describe('Checkbox', () => {
 
     const element = screen.getByTestId('checkbox');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

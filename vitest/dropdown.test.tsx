@@ -27,18 +27,18 @@ describe('Dropdown', () => {
     render(
       <Dropdown
         className="cls"
-        style={{ color: 'blue ' }}
+        style={{ color: 'rgb(0, 0, 255) ' }}
         content={
           <Dropdown.Menu
             data-testid="menu"
             className="cls"
-            style={{ color: 'blue ' }}
+            style={{ color: 'rgb(0, 0, 255) ' }}
           >
             <Dropdown.Action
               label="Action"
               data-testid="action"
               className="cls"
-              style={{ color: 'blue ' }}
+              style={{ color: 'rgb(0, 0, 255) ' }}
             />
             <Dropdown.Checkbox
               checked={false}
@@ -46,28 +46,28 @@ describe('Dropdown', () => {
               label="Action"
               data-testid="checkbox"
               className="cls"
-              style={{ color: 'blue ' }}
+              style={{ color: 'rgb(0, 0, 255) ' }}
             />
             <Dropdown.RadioList
               value=""
               onChange={vitest.fn()}
               data-testid="radiolist"
               className="cls"
-              style={{ color: 'blue ' }}
+              style={{ color: 'rgb(0, 0, 255) ' }}
             >
               <Dropdown.RadioItem
                 value=""
                 label="Label"
                 data-testid="radioitem"
                 className="cls"
-                style={{ color: 'blue ' }}
+                style={{ color: 'rgb(0, 0, 255) ' }}
               />
             </Dropdown.RadioList>
             <Dropdown.ChildMenu
               label="Action"
               data-testid="childmenu"
               className="cls"
-              style={{ color: 'blue ' }}
+              style={{ color: 'rgb(0, 0, 255) ' }}
             >
               <div>content</div>
             </Dropdown.ChildMenu>
@@ -81,30 +81,38 @@ describe('Dropdown', () => {
     );
 
     expect(screen.getByTestId('dropdown')).toHaveClass('cls');
-    expect(screen.getByTestId('dropdown')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('dropdown')).toHaveStyle('color: rgb(0, 0, 255)');
 
     expect(screen.getByTestId('menu')).toHaveClass('cls');
-    expect(screen.getByTestId('menu')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('menu')).toHaveStyle('color: rgb(0, 0, 255)');
 
     expect(screen.getByTestId('action')).toHaveClass('cls');
-    expect(screen.getByTestId('action')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('action')).toHaveStyle('color: rgb(0, 0, 255)');
 
     expect(screen.getByTestId('checkbox')).toHaveClass('cls');
-    expect(screen.getByTestId('checkbox')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('checkbox')).toHaveStyle('color: rgb(0, 0, 255)');
 
     expect(screen.getByTestId('radiolist')).toHaveClass('cls');
-    expect(screen.getByTestId('radiolist')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('radiolist')).toHaveStyle(
+      'color: rgb(0, 0, 255)',
+    );
 
     expect(screen.getByTestId('radioitem')).toHaveClass('cls');
-    expect(screen.getByTestId('radioitem')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('radioitem')).toHaveStyle(
+      'color: rgb(0, 0, 255)',
+    );
 
     expect(screen.getByTestId('childmenu')).toHaveClass('cls');
-    expect(screen.getByTestId('childmenu')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('childmenu')).toHaveStyle(
+      'color: rgb(0, 0, 255)',
+    );
   });
 
   test('check that Scrollable configuration works correctly', () => {
     render(
-      <Configuration dropdown={{ className: 'cls', style: { color: 'blue' } }}>
+      <Configuration
+        dropdown={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
+      >
         <Dropdown
           content={<div>content</div>}
           openedByDefault
@@ -117,6 +125,6 @@ describe('Dropdown', () => {
 
     const element = screen.getByTestId('element');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

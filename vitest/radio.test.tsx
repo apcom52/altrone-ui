@@ -23,7 +23,7 @@ describe('Radio', () => {
           onChange={() => null}
           name="radio"
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         >
           <Radio.Item
             data-testid="radio-item"
@@ -63,7 +63,7 @@ describe('Radio', () => {
           onChange={() => null}
           name="radio"
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         >
           <Radio.Item
             data-testid="radio-item"
@@ -79,9 +79,11 @@ describe('Radio', () => {
     );
 
     expect(screen.getByTestId('radio')).toHaveClass('cls');
-    expect(screen.getByTestId('radio')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('radio')).toHaveStyle('color: rgb(0, 0, 255)');
     expect(screen.getByTestId('radio-item')).toHaveClass('inner-cls');
-    expect(screen.getByTestId('radio-item')).toHaveStyle('color: yellow');
+    expect(screen.getByTestId('radio-item')).toHaveStyle(
+      'color: rgb(255, 255, 0)',
+    );
   });
 
   test('check that Textarea configuration works correctly', () => {
@@ -90,7 +92,7 @@ describe('Radio', () => {
         <Configuration
           radio={{
             className: 'cls',
-            style: { color: 'blue' },
+            style: { color: 'rgb(0, 0, 255)' },
           }}
         >
           <Radio
@@ -110,6 +112,6 @@ describe('Radio', () => {
 
     const element = screen.getByTestId('radio');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

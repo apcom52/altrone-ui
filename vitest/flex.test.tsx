@@ -36,13 +36,15 @@ describe('Flex', () => {
 
   test('check that configuration works', () => {
     render(
-      <Configuration flex={{ className: 'cls', style: { color: 'blue' } }}>
+      <Configuration
+        flex={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
+      >
         <Flex data-testid="element">content</Flex>
       </Configuration>,
     );
 
     const element = screen.getByTestId('element');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

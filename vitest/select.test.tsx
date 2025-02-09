@@ -27,19 +27,21 @@ describe('Select', () => {
           placeholder="Choose your country"
           options={SELECT_COUNTRIES}
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         />
       </AltroneApplication>,
     );
 
     expect(screen.getByTestId('select')).toHaveClass('cls');
-    expect(screen.getByTestId('select')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('select')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that Textarea configuration works correctly', () => {
     render(
       <AltroneApplication>
-        <Configuration select={{ className: 'cls', style: { color: 'blue' } }}>
+        <Configuration
+          select={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
+        >
           <Select
             name="country"
             multiple={false}
@@ -55,6 +57,6 @@ describe('Select', () => {
 
     const element = screen.getByTestId('select');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

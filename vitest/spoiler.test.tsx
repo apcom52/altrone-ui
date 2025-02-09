@@ -25,7 +25,7 @@ describe('Spoiler', () => {
           data-testid="spoiler"
           title="Title"
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         >
           Content
         </Spoiler>
@@ -33,7 +33,7 @@ describe('Spoiler', () => {
     );
 
     expect(screen.getByTestId('spoiler')).toHaveClass('cls');
-    expect(screen.getByTestId('spoiler')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('spoiler')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that Toolbar configuration works correctly', () => {
@@ -42,7 +42,7 @@ describe('Spoiler', () => {
         <Configuration
           spoiler={{
             className: 'cls',
-            style: { color: 'blue' },
+            style: { color: 'rgb(0, 0, 255)' },
           }}
         >
           <Spoiler data-testid="spoiler" title="Title">
@@ -53,6 +53,6 @@ describe('Spoiler', () => {
     );
 
     expect(screen.getByTestId('spoiler')).toHaveClass('cls');
-    expect(screen.getByTestId('spoiler')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('spoiler')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

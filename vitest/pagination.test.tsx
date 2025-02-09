@@ -41,7 +41,9 @@ describe('Pagination', () => {
     );
 
     expect(screen.getByTestId('pagination')).toHaveClass('cls');
-    expect(screen.getByTestId('pagination')).toHaveStyle('color: red');
+    expect(screen.getByTestId('pagination')).toHaveStyle(
+      'color: rgb(255, 0, 0)',
+    );
   });
 
   test('check that Pagination configuration works correctly', () => {
@@ -50,7 +52,7 @@ describe('Pagination', () => {
         config={{
           pagination: {
             className: 'cls',
-            style: { color: 'blue' },
+            style: { color: 'rgb(0, 0, 255)' },
           },
         }}
       >
@@ -64,6 +66,8 @@ describe('Pagination', () => {
     );
 
     expect(screen.getByTestId('pagination')).toHaveClass('cls');
-    expect(screen.getByTestId('pagination')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('pagination')).toHaveStyle(
+      'color: rgb(0, 0, 255)',
+    );
   });
 });

@@ -6,7 +6,9 @@ import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers'
 expect.extend(matchers as any);
 
 declare module 'vitest' {
-  interface Assertion<T = any> extends TestingLibraryMatchers<T, void> {}
+  interface Assertion<T = any>
+    extends jest.Matchers<void, T>,
+      TestingLibraryMatchers<T, void> {}
 }
 
 Object.defineProperty(window, 'matchMedia', {

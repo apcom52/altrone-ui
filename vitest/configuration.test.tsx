@@ -57,7 +57,9 @@ describe('Configation', () => {
   test('check that Flex configuration works correctly', () => {
     render(
       <AltroneApplication
-        config={{ flex: { className: 'cls', style: { color: 'blue' } } }}
+        config={{
+          flex: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
+        }}
       >
         <Flex data-testid="element">content</Flex>
       </AltroneApplication>,
@@ -65,13 +67,15 @@ describe('Configation', () => {
 
     const element = screen.getByTestId('element');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that Icon configuration works correctly', () => {
     render(
       <AltroneApplication
-        config={{ icon: { className: 'cls', style: { color: 'blue' } } }}
+        config={{
+          icon: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
+        }}
       >
         <Icon i="check" data-testid="element" />
       </AltroneApplication>,
@@ -79,13 +83,15 @@ describe('Configation', () => {
 
     const element = screen.getByTestId('element');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that Button configuration works correctly', () => {
     render(
       <AltroneApplication
-        config={{ button: { className: 'cls', style: { color: 'blue' } } }}
+        config={{
+          button: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
+        }}
       >
         <Button data-testid="element" />
       </AltroneApplication>,
@@ -93,13 +99,15 @@ describe('Configation', () => {
 
     const element = screen.getByTestId('element');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that Popover configuration works correctly', () => {
     render(
       <AltroneApplication
-        config={{ popover: { className: 'cls', style: { color: 'blue' } } }}
+        config={{
+          popover: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
+        }}
       >
         <Popover
           content={<div>content</div>}
@@ -113,6 +121,6 @@ describe('Configation', () => {
 
     const element = screen.getByTestId('element');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

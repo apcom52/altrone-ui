@@ -38,7 +38,7 @@ describe('Scrollable', () => {
   test('check that Scrollable configuration works correctly', () => {
     render(
       <Configuration
-        scrollable={{ className: 'cls', style: { color: 'blue' } }}
+        scrollable={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
       >
         <Scrollable data-testid="element">scroll content</Scrollable>
       </Configuration>,
@@ -46,6 +46,6 @@ describe('Scrollable', () => {
 
     const element = screen.getByTestId('element');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

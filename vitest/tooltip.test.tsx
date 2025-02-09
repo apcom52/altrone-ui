@@ -28,28 +28,32 @@ describe('Tooltip', () => {
         content="Tooltip content"
         openedByDefault
         className="cls"
-        style={{ color: 'blue' }}
+        style={{ color: 'rgb(0, 0, 255)' }}
       />,
     );
 
     expect(screen.getByText('Tooltip content')).toHaveClass('cls');
-    expect(screen.getByText('Tooltip content')).toHaveStyle('color: blue');
+    expect(screen.getByText('Tooltip content')).toHaveStyle(
+      'color: rgb(0, 0, 255)',
+    );
   });
 
   test('check that Tooltip configuration works correctly', () => {
     render(
-      <Configuration tooltip={{ className: 'cls', style: { color: 'blue' } }}>
+      <Configuration
+        tooltip={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
+      >
         <Tooltip
           content="Tooltip content"
           openedByDefault
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         />
       </Configuration>,
     );
 
     const element = screen.getByText('Tooltip content');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });
