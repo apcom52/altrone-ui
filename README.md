@@ -15,7 +15,7 @@
 
 ## 🤠 Altrone 3.3
 
-New `DataTable` filters, nested links for **`NavigationList`** and more!
+New **`DataTable`** filters, nested links for **`NavigationList`** and more!
 
 [**What's new in 3.3?**](https://altrone.vercel.app/blog/release-3.3)
 
@@ -36,6 +36,8 @@ New `DataTable` filters, nested links for **`NavigationList`** and more!
 - [x] Nested links for **`NavigationList`**
 - [x] Default filters, sorting settings and pagination for **`DataTable`**
 - [ ] new `Badge` component
+- [ ] new `ColorPicker` component
+- [ ] new `Range` component
 - [ ] new `Avatar` component
 
 ## Documentation

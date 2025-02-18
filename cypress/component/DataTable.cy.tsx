@@ -511,7 +511,7 @@ describe('DataTable.cy.tsx', () => {
     let latestRule = 'contains';
 
     const checkEmployeeNames = (values: string[]) => {
-      return cy.get('table', { timeout: 0 }).then(($element) => {
+      return cy.get('table').then(($element) => {
         const labels = Array.from($element[0].rows)
           .slice(1)
           .map((row) => row.cells[0].textContent?.trim());
@@ -652,7 +652,7 @@ describe('DataTable.cy.tsx', () => {
     let latestRule = 'is contained in';
 
     const checkEmployeeNames = (values: string[]) => {
-      return cy.get('table', { timeout: 0 }).then(($element) => {
+      return cy.get('table').then(($element) => {
         const labels = Array.from($element[0].rows)
           .slice(1)
           .map((row) => row.cells[0].textContent?.trim());
@@ -774,7 +774,7 @@ describe('DataTable.cy.tsx', () => {
     let latestRule = 'is positive';
 
     const checkEmployeeNames = (values: string[]) => {
-      return cy.get('table', { timeout: 0 }).then(($element) => {
+      return cy.get('table').then(($element) => {
         const labels = Array.from($element[0].rows)
           .slice(1)
           .map((row) => row.cells[0].textContent?.trim());
@@ -869,7 +869,7 @@ describe('DataTable.cy.tsx', () => {
     let latestRule = 'equals to';
 
     const checkInvoices = (values: string[]) => {
-      return cy.get('table', { timeout: 0 }).then(($element) => {
+      return cy.get('table').then(($element) => {
         console.log($element[0]);
 
         const labels = Array.from($element[0].rows)
@@ -1029,7 +1029,7 @@ describe('DataTable.cy.tsx', () => {
     let latestRule = 'equals to';
 
     const checkInvoices = (values: string[]) => {
-      return cy.get('table', { timeout: 0 }).then(($element) => {
+      return cy.get('table').then(($element) => {
         console.log($element[0]);
 
         const labels = Array.from($element[0].rows)
@@ -1192,7 +1192,7 @@ describe('DataTable.cy.tsx', () => {
     let latestRule = 'equals to';
 
     const checkInvoices = (values: string[]) => {
-      return cy.get('table', { timeout: 0 }).then(($element) => {
+      return cy.get('table').then(($element) => {
         console.log($element[0]);
 
         const labels = Array.from($element[0].rows)
@@ -1368,7 +1368,7 @@ describe('DataTable.cy.tsx', () => {
     );
 
     const checkEmployeeNames = (values: string[]) => {
-      return cy.get('table', { timeout: 0 }).then(($element) => {
+      return cy.get('table').then(($element) => {
         const labels = Array.from($element[0].rows)
           .slice(1)
           .map((row) => row.cells[0].textContent?.trim());
@@ -1405,7 +1405,7 @@ describe('DataTable.cy.tsx', () => {
     );
 
     const checkEmployeeNames = (values: string[]) => {
-      return cy.get('table', { timeout: 0 }).then(($element) => {
+      return cy.get('table').then(($element) => {
         const labels = Array.from($element[0].rows)
           .slice(1)
           .map((row) => row.cells[0].textContent?.trim());

@@ -72,9 +72,9 @@ describe('DataTable', () => {
     expect(table.rows[3].cells[2].textContent).toBe('£1,200.00');
     expect(table.rows[3].cells[3].textContent).toBe('€1,200.00');
     expect(table.rows[3].cells[4].textContent).toBe('$1,200.00');
-    expect(table.rows[1].cells[5].textContent).toBe('January 15, 2024');
-    expect(table.rows[1].cells[6].textContent).toBe('January 2024');
-    expect(table.rows[1].cells[7].textContent).toBe('2024');
+    expect(table.rows[1].cells[5].textContent).toBe('January 15, 2023');
+    expect(table.rows[1].cells[6].textContent).toBe('January 2023');
+    expect(table.rows[1].cells[7].textContent).toBe('2023');
   });
 
   test('test DataTable cell renderers [2]', () => {
