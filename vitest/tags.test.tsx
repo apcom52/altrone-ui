@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { AltroneApplication, Tags } from '../src/components';
 
@@ -15,20 +17,26 @@ beforeAll(() => {
 describe('Tags', () => {
   test('Tags has to apply custom className and id', () => {
     render(
-      <Tags data-testid="tags" className="cls" style={{ color: 'red' }}>
+      <Tags
+        data-testid="tags"
+        className="cls"
+        style={{ color: 'rgb(255, 0, 0)' }}
+      >
         <Tags.Item
           data-testid="tagsItem"
           label="Test"
           className="cls1"
-          style={{ color: 'yellow' }}
+          style={{ color: 'rgb(255, 255, 0)' }}
         />
       </Tags>,
     );
 
     expect(screen.getByTestId('tags')).toHaveClass('cls');
-    expect(screen.getByTestId('tags')).toHaveStyle('color: red');
+    expect(screen.getByTestId('tags')).toHaveStyle('color: rgb(255, 0, 0)');
     expect(screen.getByTestId('tagsItem')).toHaveClass('cls1');
-    expect(screen.getByTestId('tagsItem')).toHaveStyle('color: yellow');
+    expect(screen.getByTestId('tagsItem')).toHaveStyle(
+      'color: rgb(255, 255, 0)',
+    );
   });
 
   test('check that Tags configuration works correctly', () => {
@@ -37,7 +45,7 @@ describe('Tags', () => {
         config={{
           tags: {
             className: 'cls',
-            style: { color: 'blue' },
+            style: { color: 'rgb(0, 0, 255)' },
           },
         }}
       >
@@ -48,6 +56,6 @@ describe('Tags', () => {
     );
 
     expect(screen.getByTestId('tags')).toHaveClass('cls');
-    expect(screen.getByTestId('tags')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('tags')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

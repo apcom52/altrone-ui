@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Configuration, List } from '../src/components';
 
@@ -59,13 +61,15 @@ describe('List', () => {
 
   test('check that List configuration works correctly', () => {
     render(
-      <Configuration list={{ className: 'cls', style: { color: 'blue' } }}>
+      <Configuration
+        list={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
+      >
         <List data={[]} renderItem={() => <div />} data-testid="element" />
       </Configuration>,
     );
 
     const element = screen.getByTestId('element');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

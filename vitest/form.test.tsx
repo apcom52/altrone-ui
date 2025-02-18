@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import {
   Configuration,
@@ -149,12 +151,16 @@ describe('Form', () => {
   test('check that className and style props works', () => {
     render(
       <AltroneApplication>
-        <Form data-testid="form" className="cls" style={{ color: 'blue' }} />
+        <Form
+          data-testid="form"
+          className="cls"
+          style={{ color: 'rgb(0, 0, 255)' }}
+        />
       </AltroneApplication>,
     );
 
     expect(screen.getByTestId('form')).toHaveClass('cls');
-    expect(screen.getByTestId('form')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('form')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that Form configuration works correctly', () => {
@@ -163,7 +169,7 @@ describe('Form', () => {
         <Configuration
           form={{
             className: 'cls',
-            style: { color: 'blue' },
+            style: { color: 'rgb(0, 0, 255)' },
             field: {
               className: 'child-cls',
               style: { color: 'red' },
@@ -181,8 +187,8 @@ describe('Form', () => {
     const form = screen.getByTestId('form');
     const field = screen.getByTestId('field');
     expect(form).toHaveClass('cls');
-    expect(form).toHaveStyle('color: blue');
+    expect(form).toHaveStyle('color: rgb(0, 0, 255)');
     expect(field).toHaveClass('child-cls');
-    expect(field).toHaveStyle('color: red');
+    expect(field).toHaveStyle('color: rgb(255, 0, 0)');
   });
 });

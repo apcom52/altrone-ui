@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Configuration, AltroneApplication, Modal } from '../src/components';
 
@@ -8,7 +10,7 @@ describe('Modal', () => {
         <Modal
           data-testid="modal"
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
           content={<div>content</div>}
           openedByDefault={true}
         >
@@ -18,13 +20,15 @@ describe('Modal', () => {
     );
 
     expect(screen.getByTestId('modal')).toHaveClass('cls');
-    expect(screen.getByTestId('modal')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('modal')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that CollapsedList configuration works correctly', () => {
     render(
       <AltroneApplication>
-        <Configuration modal={{ className: 'cls', style: { color: 'blue' } }}>
+        <Configuration
+          modal={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
+        >
           <Modal
             data-testid="modal"
             content={<div>content</div>}
@@ -37,6 +41,6 @@ describe('Modal', () => {
     );
 
     expect(screen.getByTestId('modal')).toHaveClass('cls');
-    expect(screen.getByTestId('modal')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('modal')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

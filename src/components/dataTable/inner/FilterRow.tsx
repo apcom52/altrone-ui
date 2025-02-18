@@ -40,12 +40,21 @@ export const FilterRow = ({
   const minValue = isNumber ? filter.conditions[0]?.minValue || 0 : 0;
   const maxValue = isNumber ? filter.conditions[0]?.maxValue || 0 : 0;
   const options = isArray ? filter.conditions[0]?.options || [] : [];
-  const minDate = isDate
-    ? dayjs(filter.conditions[0]?.minValue) || undefined
-    : undefined;
-  const maxDate = isDate
-    ? dayjs(filter.conditions[0]?.maxValue) || undefined
-    : undefined;
+  const minDate =
+    isDate && filter.conditions[0]?.minValue
+      ? dayjs(filter.conditions[0]?.minValue) || undefined
+      : undefined;
+  const maxDate =
+    isDate && filter.conditions[0]?.maxValue
+      ? dayjs(filter.conditions[0]?.maxValue) || undefined
+      : undefined;
+
+  const FilterDatePicker =
+    filter.columnType === 'month'
+      ? DatePicker.MonthPicker
+      : filter.columnType === 'year'
+        ? DatePicker.YearPicker
+        : DatePicker;
 
   const ruleSet = useMemo(() => {
     const ruleSet = isString
@@ -139,11 +148,13 @@ export const FilterRow = ({
             />
           ) : null}
           {isDate ? (
-            <DatePicker
+            <FilterDatePicker
               value={(value as Dayjs) || undefined}
               onChange={changeField.bind(null, filterIndex, 'value')}
               data-filter-name={filter.field}
               data-filter-control="true"
+              maxDate={maxDate}
+              minDate={minDate}
             />
           ) : null}
         </div>
@@ -170,7 +181,7 @@ export const FilterRow = ({
           ) : null}
           {isDate ? (
             <>
-              <DatePicker
+              <FilterDatePicker
                 value={minDate}
                 onChange={changeField.bind(null, filterIndex, 'minValue')}
                 data-filter-name={filter.field}
@@ -180,7 +191,7 @@ export const FilterRow = ({
                 maxDate={maxDate}
                 clearable
               />
-              <DatePicker
+              <FilterDatePicker
                 value={maxDate}
                 onChange={changeField.bind(null, filterIndex, 'maxValue')}
                 data-filter-name={filter.field}

@@ -1,6 +1,7 @@
+import React from 'react';
+import { expect, test, describe, vitest } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { AltroneApplication, PhotoViewer } from '../src/components';
-import { vitest } from 'vitest';
 
 class ResizeObserver {
   observe() {}
@@ -141,7 +142,7 @@ describe('PhotoViewer', () => {
     );
 
     expect(screen.getByTestId('first')).toHaveClass('cls');
-    expect(screen.getByTestId('first')).toHaveStyle('color: red');
+    expect(screen.getByTestId('first')).toHaveStyle('color: rgb(255, 0, 0)');
   });
 
   test('PhotoViewer has to apply custom className and id', () => {
@@ -159,7 +160,7 @@ describe('PhotoViewer', () => {
     );
 
     expect(screen.getByTestId('viewer')).toHaveClass('cls');
-    expect(screen.getByTestId('viewer')).toHaveStyle('color: red');
+    expect(screen.getByTestId('viewer')).toHaveStyle('color: rgb(255, 0, 0)');
   });
 
   test('check that PhotoViewer configuration works correctly', () => {
@@ -168,7 +169,7 @@ describe('PhotoViewer', () => {
         config={{
           photoViewer: {
             className: 'cls',
-            style: { color: 'blue' },
+            style: { color: 'rgb(0, 0, 255)' },
             image: {
               photoClassName: 'photoCls',
             },
@@ -184,7 +185,7 @@ describe('PhotoViewer', () => {
     );
 
     expect(screen.getByTestId('viewer')).toHaveClass('cls');
-    expect(screen.getByTestId('viewer')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('viewer')).toHaveStyle('color: rgb(0, 0, 255)');
     expect(screen.getByTestId('first')).toHaveClass('photoCls');
   });
 });

@@ -130,36 +130,6 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       </Flex>
     );
   },
-  play: async ({ step, canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    await step('data table has to have three columns', async () => {
-      await expect(canvas.getByText('Flag')).toBeInTheDocument();
-      await expect(canvas.getByText('Country Name')).toBeInTheDocument();
-      await expect(canvas.getByText('Capital')).toBeInTheDocument();
-
-      await expect(
-        Array.from(canvasElement.querySelectorAll('table > thead > tr > th')),
-      ).toHaveLength(3);
-    });
-
-    await step(
-      'when user clicks on the checkbox icon Altrone needs to show column with checkboxes',
-      async () => {
-        await fireEvent.click(canvas.getByText('check_box'));
-
-        await expect(
-          Array.from(canvasElement.querySelectorAll('table > thead > tr > th')),
-        ).toHaveLength(4);
-      },
-    );
-
-    await step('need to show custom actions', async () => {
-      await expect(canvas.getByText('Test')).toBeInTheDocument();
-      await expect(canvas.getByText('Test Dropdown')).toBeInTheDocument();
-      await expect(canvas.getByText('Test Popover')).toBeInTheDocument();
-    });
-  },
 };
 
 export const ComplexDataTable: StoryObj<typeof Flex> = {

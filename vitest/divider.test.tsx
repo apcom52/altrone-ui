@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { AltroneApplication, Divider } from '../src/components';
 
@@ -18,12 +20,12 @@ describe('Divider', () => {
       <Divider
         data-testid="divider"
         className="cls"
-        style={{ color: 'red' }}
+        style={{ color: 'rgb(255, 0, 0)' }}
       />,
     );
 
     expect(screen.getByTestId('divider')).toHaveClass('cls');
-    expect(screen.getByTestId('divider')).toHaveStyle('color: red');
+    expect(screen.getByTestId('divider')).toHaveStyle('color: rgb(255, 0, 0)');
   });
 
   test('check that Divider configuration works correctly', () => {
@@ -32,7 +34,7 @@ describe('Divider', () => {
         config={{
           divider: {
             className: 'cls',
-            style: { color: 'blue' },
+            style: { color: 'rgb(0, 0, 255)' },
           },
         }}
       >
@@ -41,6 +43,6 @@ describe('Divider', () => {
     );
 
     expect(screen.getByTestId('divider')).toHaveClass('cls');
-    expect(screen.getByTestId('divider')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('divider')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

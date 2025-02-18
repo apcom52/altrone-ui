@@ -6,7 +6,7 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "baseUrl": "./src",
-    "types": ["node", "jest", "@testing-library/jest-dom"],
+    "types": ["node", "jest", "@testing-library/jest-dom", "vitest", "cypress"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -23,6 +23,6 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
-  "exclude": ["src/global/storybook"],
+  "exclude": ["src/global/storybook", "cypress", "./cypress.config.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

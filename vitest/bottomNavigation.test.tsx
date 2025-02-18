@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { AltroneApplication, BottomNavigation, Icon } from '../src/components';
 
@@ -25,7 +27,7 @@ describe('BottomNavigation', () => {
           label="Item1"
           icon={<Icon i="face" />}
           className="cls1"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         />
         <BottomNavigation.Item
           data-testid="action2"
@@ -36,9 +38,9 @@ describe('BottomNavigation', () => {
     );
 
     expect(screen.getByTestId('list')).toHaveClass('cls');
-    expect(screen.getByTestId('list')).toHaveStyle('color: red');
+    expect(screen.getByTestId('list')).toHaveStyle('color: rgb(255, 0, 0)');
     expect(screen.getByTestId('action1')).toHaveClass('cls1');
-    expect(screen.getByTestId('action1')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('action1')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that BottomNavigation configuration works correctly', () => {
@@ -47,7 +49,7 @@ describe('BottomNavigation', () => {
         config={{
           bottomNavigation: {
             className: 'cls',
-            style: { color: 'blue' },
+            style: { color: 'rgb(0, 0, 255)' },
             selectedItemClassName: 'selected',
           },
         }}
@@ -69,7 +71,7 @@ describe('BottomNavigation', () => {
     );
 
     expect(screen.getByTestId('list')).toHaveClass('cls');
-    expect(screen.getByTestId('list')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('list')).toHaveStyle('color: rgb(0, 0, 255)');
     expect(screen.getByTestId('action1')).not.toHaveClass('selected');
     expect(screen.getByTestId('action2')).toHaveClass('selected');
   });

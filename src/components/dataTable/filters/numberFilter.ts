@@ -21,8 +21,6 @@ export const numberFilter = <T extends AnyObject>({
   const minFilterValue = condition.minValue || 0;
   const maxFilterValue = condition.maxValue || 0;
 
-  console.log('>>', rawValue, value, stringValue, filterValue);
-
   if (
     ![NumberFilterRules.empty, NumberFilterRules.notEmpty].includes(
       filter.conditions[0].rule,

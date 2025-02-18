@@ -58,8 +58,12 @@ export const MonthPicker = memo<{ autoClose?: boolean }>(
 
         const thisDate = currentMonth.month(monthIndex);
 
-        const isDateLessThanMin = thisDate.isBefore(minDate, 'month');
-        const isDateGreaterThanMax = thisDate.isAfter(maxDate, 'month');
+        const isDateLessThanMin = minDate
+          ? thisDate.isBefore(minDate, 'month')
+          : false;
+        const isDateGreaterThanMax = maxDate
+          ? thisDate.isAfter(maxDate, 'month')
+          : false;
         const isDateDisabled = isDateLessThanMin || isDateGreaterThanMax;
 
         elements.push(

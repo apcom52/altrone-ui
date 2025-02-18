@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import {
   Configuration,
@@ -13,7 +15,7 @@ describe('CollapsedList', () => {
           data-testid="collapsed-list"
           className="cls"
           limit={6}
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         >
           <div>1</div>
           <div>2</div>
@@ -39,20 +41,25 @@ describe('CollapsedList', () => {
         <CollapsedList
           data-testid="collapsed-list"
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         />
       </AltroneApplication>,
     );
 
     expect(screen.getByTestId('collapsed-list')).toHaveClass('cls');
-    expect(screen.getByTestId('collapsed-list')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('collapsed-list')).toHaveStyle(
+      'color: rgb(0, 0, 255)',
+    );
   });
 
   test('check that CollapsedList configuration works correctly', () => {
     render(
       <AltroneApplication>
         <Configuration
-          collapsedList={{ className: 'cls', style: { color: 'blue' } }}
+          collapsedList={{
+            className: 'cls',
+            style: { color: 'rgb(0, 0, 255)' },
+          }}
         >
           <CollapsedList data-testid="collapsed-list" />,
         </Configuration>
@@ -61,6 +68,6 @@ describe('CollapsedList', () => {
 
     const element = screen.getByTestId('collapsed-list');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

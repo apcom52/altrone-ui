@@ -17,7 +17,7 @@ export const BottomNavigationStory: StoryObj<typeof Breadcrumbs> = {
     return (
       <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Standard Breadcrumbs</Text.Heading>
-        <Breadcrumbs>
+        <Breadcrumbs data-testid="breadcrumbs">
           <Breadcrumbs.Item href="#" icon={<Icon i="home" />} label="Home" />
           <Breadcrumbs.Item href="#" label="Altrone" />
           <Breadcrumbs.Item label="Altrone Next" />

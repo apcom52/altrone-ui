@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { AltroneApplication, Configuration, Icon, TextInput } from '../src';
 
@@ -51,7 +53,7 @@ describe('TextInput', () => {
 
     const wrapper = container.querySelector('[data-altrone-root] > div');
     expect(wrapper).toHaveClass('wrapperCls');
-    expect(wrapper).toHaveStyle('color: red');
+    expect(wrapper).toHaveStyle('color: rgb(255, 0, 0)');
   });
 
   test('need to check that custom component works', () => {
@@ -73,13 +75,13 @@ describe('TextInput', () => {
         <TextInput
           data-testid="input"
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         />
       </AltroneApplication>,
     );
 
     expect(screen.getByTestId('input')).toHaveClass('cls');
-    expect(screen.getByTestId('input')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('input')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that configuration works', () => {
@@ -95,7 +97,7 @@ describe('TextInput', () => {
             },
             iconIsland: {
               className: 'icon-island-cls',
-              style: { color: 'blue' },
+              style: { color: 'rgb(0, 0, 255)' },
             },
             actionIsland: {
               className: 'action-island-cls',
@@ -123,18 +125,26 @@ describe('TextInput', () => {
     );
 
     expect(screen.getByTestId('input')).toHaveClass('cls');
-    expect(screen.getByTestId('input')).toHaveStyle('color: red');
+    expect(screen.getByTestId('input')).toHaveStyle('color: rgb(255, 0, 0)');
     expect(screen.getByTestId('text-island')).toHaveClass('text-island-cls');
-    expect(screen.getByTestId('text-island')).toHaveStyle('color: green');
+    expect(screen.getByTestId('text-island')).toHaveStyle(
+      'color: rgb(0, 128, 0)',
+    );
     expect(screen.getByTestId('icon-island')).toHaveClass('icon-island-cls');
-    expect(screen.getByTestId('icon-island')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('icon-island')).toHaveStyle(
+      'color: rgb(0, 0, 255)',
+    );
     expect(screen.getByTestId('action-island')).toHaveClass(
       'action-island-cls',
     );
-    expect(screen.getByTestId('action-island')).toHaveStyle('color: yellow');
+    expect(screen.getByTestId('action-island')).toHaveStyle(
+      'color: rgb(255, 255, 0)',
+    );
     expect(screen.getByTestId('custom-island')).toHaveClass(
       'custom-island-cls',
     );
-    expect(screen.getByTestId('custom-island')).toHaveStyle('color: magenta');
+    expect(screen.getByTestId('custom-island')).toHaveStyle(
+      'color: rgb(255, 0, 255)',
+    );
   });
 });
