@@ -18,8 +18,6 @@ export const stringFilter = <T extends AnyObject>({
     .trim()
     .toLowerCase();
 
-  console.log('->', rule, `[${value}] [${filterValue}]`);
-
   switch (rule) {
     case StringFilterRules.contain:
       if (
