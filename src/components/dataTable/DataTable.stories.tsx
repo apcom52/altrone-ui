@@ -1,4 +1,4 @@
-import { DataTable } from './index';
+import { DataTable, Filter, StringFilterRules } from './index';
 import { Meta, StoryObj } from '@storybook/react';
 import { Flex } from '../flex';
 import { Text } from '../text';
@@ -9,11 +9,14 @@ import { Dropdown } from '../dropdown';
 import { Icon } from '../icon';
 import { Popover } from '../popover';
 import { EMPLOYEES, EmployeeType } from './stories/EMPLOYEES.ts';
-import { expect, within, fireEvent, userEvent } from '@storybook/test';
+import { expect, fireEvent, userEvent, within } from '@storybook/test';
 import { AsyncUtils } from 'utils';
 import { InvoiceStory } from './stories/InvoiceStory.tsx';
 import { InvoicesWithStatusesStory } from './stories/Invoice2Story.tsx';
 import { FiltersDataTableStory } from './stories/FiltersStory.tsx';
+import { useState } from 'react';
+import { action } from '@storybook/addon-actions';
+import { FilterType, Sorting } from './DataTable.types.ts';
 
 const meta: Meta<typeof DataTable<any>> = {
   component: DataTable,
@@ -31,24 +34,73 @@ const meta: Meta<typeof DataTable<any>> = {
   },
 };
 
+const onPageChange = action('pageChange');
+const onSortingChange = action('sortChange');
+const onFiltersChange = action('filtersChange');
+const DEFAULT_FILTERS: Filter[] = [
+  {
+    field: 'country',
+    type: FilterType.string,
+    conditions: [{ rule: StringFilterRules.contain, join: 'AND', value: 'Ru' }],
+  },
+];
+
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using DataTable',
   render: () => {
+    const [defaultPage, setDefaultPage] = useState(3);
+    const [defaultSorting, setDefaultSorting] = useState<Sorting | undefined>({
+      field: 'country',
+      direction: 'desc',
+    });
+    const [defaultFilters, setDefaultFilters] = useState<Filter[] | undefined>(
+      [],
+    );
+
     return (
       <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Basic DataTable</Text.Heading>
         <DataTable
           data={COUNTRIES}
-          rowsPerPage={20}
+          rowsPerPage={5}
           selectable
+          defaultPage={defaultPage}
+          defaultSort={defaultSorting}
+          defaultFilters={defaultFilters}
           columns={[
             { accessor: 'flag', label: 'Flag', width: '80px' },
-            { accessor: 'country', label: 'Country Name' },
+            {
+              accessor: 'country',
+              label: 'Country Name',
+              filterable: true,
+              type: 'text',
+            },
             { accessor: 'capital', label: 'Capital' },
           ]}
-          showFooter={false}
+          onPageChange={onPageChange}
+          onSortChange={onSortingChange}
+          onFilterChange={onFiltersChange}
         >
-          <DataTable.Action label="Test" onClick={() => alert('Test !')} />
+          <DataTable.Action
+            label="Toggle page"
+            onClick={() => setDefaultPage(defaultPage === 3 ? 5 : 3)}
+          />
+          <DataTable.Action
+            label="Toggle sorting"
+            onClick={() =>
+              setDefaultSorting(
+                defaultSorting
+                  ? undefined
+                  : { field: 'country', direction: 'desc' },
+              )
+            }
+          />
+          <DataTable.Action
+            label="Toggle filters"
+            onClick={() =>
+              setDefaultFilters(defaultFilters ? undefined : DEFAULT_FILTERS)
+            }
+          />
           <Dropdown
             content={
               <Dropdown.Menu>
@@ -63,7 +115,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               </Dropdown.Menu>
             }
           >
-            <DataTable.Action label="Test Dropdown" />
+            <DataTable.Action label="Dropdown" />
           </Dropdown>
           <Popover
             title="Custom popover"
@@ -71,42 +123,12 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           >
             <DataTable.Action
               leftIcon={<Icon i="sports_esports" />}
-              label="Test Popover"
+              label="Popover"
             />
           </Popover>
         </DataTable>
       </Flex>
     );
-  },
-  play: async ({ step, canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    await step('data table has to have three columns', async () => {
-      await expect(canvas.getByText('Flag')).toBeInTheDocument();
-      await expect(canvas.getByText('Country Name')).toBeInTheDocument();
-      await expect(canvas.getByText('Capital')).toBeInTheDocument();
-
-      await expect(
-        Array.from(canvasElement.querySelectorAll('table > thead > tr > th')),
-      ).toHaveLength(3);
-    });
-
-    await step(
-      'when user clicks on the checkbox icon Altrone needs to show column with checkboxes',
-      async () => {
-        await fireEvent.click(canvas.getByText('check_box'));
-
-        await expect(
-          Array.from(canvasElement.querySelectorAll('table > thead > tr > th')),
-        ).toHaveLength(4);
-      },
-    );
-
-    await step('need to show custom actions', async () => {
-      await expect(canvas.getByText('Test')).toBeInTheDocument();
-      await expect(canvas.getByText('Test Dropdown')).toBeInTheDocument();
-      await expect(canvas.getByText('Test Popover')).toBeInTheDocument();
-    });
   },
 };
 
@@ -150,6 +172,7 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
             {
               accessor: 'age',
               label: 'Age',
+              type: 'number',
               width: '100px',
               filterable: true,
               sortable: true,

@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import {
   AltroneApplication,
@@ -49,13 +51,13 @@ describe('Password', () => {
         <PasswordInput
           data-testid="input"
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         />
       </AltroneApplication>,
     );
 
     expect(screen.getByTestId('input')).toHaveClass('cls');
-    expect(screen.getByTestId('input')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('input')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that configuration works', () => {
@@ -74,7 +76,7 @@ describe('Password', () => {
     );
 
     expect(screen.getByTestId('input')).toHaveClass('cls');
-    expect(screen.getByTestId('input')).toHaveStyle('color: red');
+    expect(screen.getByTestId('input')).toHaveStyle('color: rgb(255, 0, 0)');
     expect(screen.queryByText('visibility')).not.toBeInTheDocument();
   });
 });

@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import {
   Configuration,
@@ -90,20 +92,20 @@ describe('Calendar', () => {
           data-testid="calendar"
           month={dayjs('2025-08')}
           className="cls"
-          style={{ color: 'blue ' }}
+          style={{ color: 'rgb(0, 0, 255) ' }}
         />
       </AltroneApplication>,
     );
 
     expect(screen.getByTestId('calendar')).toHaveClass('cls');
-    expect(screen.getByTestId('calendar')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('calendar')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that configuration works correctly', () => {
     render(
       <AltroneApplication>
         <Configuration
-          calendar={{ className: 'cls', style: { color: 'blue' } }}
+          calendar={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
         >
           <Calendar data-testid="calendar" month={dayjs('2025-08')} />
         </Configuration>
@@ -112,6 +114,6 @@ describe('Calendar', () => {
 
     const element = screen.getByTestId('calendar');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

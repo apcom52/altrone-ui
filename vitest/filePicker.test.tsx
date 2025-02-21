@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { AltroneApplication, Configuration, FilePicker } from '../src';
 
@@ -17,14 +19,16 @@ describe('FilePicker', () => {
       <AltroneApplication>
         <FilePicker
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
           data-testid="filePicker"
         />
       </AltroneApplication>,
     );
 
     expect(screen.getByTestId('filePicker')).toHaveClass('cls');
-    expect(screen.getByTestId('filePicker')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('filePicker')).toHaveStyle(
+      'color: rgb(0, 0, 255)',
+    );
   });
 
   test('check that configuration works', () => {
@@ -42,6 +46,8 @@ describe('FilePicker', () => {
     );
 
     expect(screen.getByTestId('filePicker')).toHaveClass('cls');
-    expect(screen.getByTestId('filePicker')).toHaveStyle('color: red');
+    expect(screen.getByTestId('filePicker')).toHaveStyle(
+      'color: rgb(255, 0, 0)',
+    );
   });
 });

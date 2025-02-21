@@ -15,12 +15,14 @@ export const InvoicesWithStatusesStory: StoryObj<typeof Flex> = {
             label: 'Invoice date',
             type: 'date',
             filterable: true,
+            sortable: true,
           },
           {
             accessor: 'amount',
             label: 'Amount',
             type: 'currency',
             filterable: true,
+            sortable: true,
           },
           {
             accessor: 'users',

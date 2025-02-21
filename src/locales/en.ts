@@ -78,6 +78,8 @@ export const en: Localization = {
       notEqual: 'not equals to',
     },
     numberFilter: {
+      empty: 'is empty',
+      notEmpty: 'is not empty',
       equal: 'equals to',
       notEqual: 'not equals to',
       gt: '>',
@@ -94,6 +96,18 @@ export const en: Localization = {
     booleanFilter: {
       positive: 'is positive',
       negative: 'is negative',
+    },
+    dateFilter: {
+      empty: 'is empty',
+      notEmpty: 'is not empty',
+      equal: 'equals to',
+      notEqual: 'not equals to',
+      gt: '>',
+      gte: '≥',
+      lt: '<',
+      lte: '≤',
+      between: 'is between',
+      beyond: 'is beyond',
     },
   },
   photoViewer: {

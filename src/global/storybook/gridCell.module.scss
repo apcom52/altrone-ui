@@ -1,0 +1,12 @@
+.GridCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 8px);
+  min-height: 100px;
+  border-radius: 12px;
+  padding: 12px;
+  background-color: var(--default-100);
+  color: var(--default-500);
+  margin: 0 4px;
+}

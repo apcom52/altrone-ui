@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { AltroneApplication, Icon } from '../src';
 
@@ -21,18 +23,20 @@ describe('Icon', () => {
       <Icon
         i="face"
         className="cls"
-        style={{ color: 'blue' }}
+        style={{ color: 'rgb(0, 0, 255)' }}
         data-testid="icon"
       />,
     );
     expect(screen.getByTestId('icon')).toHaveClass('cls');
-    expect(screen.getByTestId('icon')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('icon')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that configuration works', () => {
     render(
       <AltroneApplication
-        config={{ icon: { className: 'cls', style: { color: 'blue' } } }}
+        config={{
+          icon: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
+        }}
       >
         <Icon i="check" data-testid="element" />
       </AltroneApplication>,
@@ -40,6 +44,6 @@ describe('Icon', () => {
 
     const element = screen.getByTestId('element');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

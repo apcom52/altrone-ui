@@ -78,6 +78,8 @@ export const ru: Localization = {
       notEqual: 'не равен',
     },
     numberFilter: {
+      empty: 'пустой',
+      notEmpty: 'не пустой',
       equal: 'равен',
       notEqual: 'не равен',
       gt: '>',
@@ -94,6 +96,18 @@ export const ru: Localization = {
     booleanFilter: {
       positive: 'положительный',
       negative: 'негативный',
+    },
+    dateFilter: {
+      empty: 'пустой',
+      notEmpty: 'не пустой',
+      equal: 'равен',
+      notEqual: 'не равен',
+      gt: '>',
+      gte: '≥',
+      lt: '<',
+      lte: '≤',
+      between: 'между',
+      beyond: 'за пределами',
     },
   },
   photoViewer: {

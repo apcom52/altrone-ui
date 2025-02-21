@@ -1,5 +1,15 @@
 import '@testing-library/jest-dom';
-import { vi } from 'vitest';
+import { vi, expect } from 'vitest';
+import * as matchers from '@testing-library/jest-dom/matchers';
+import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers';
+
+expect.extend(matchers as any);
+
+declare module 'vitest' {
+  interface Assertion<T = any>
+    extends jest.Matchers<void, T>,
+      TestingLibraryMatchers<T, void> {}
+}
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -14,5 +24,7 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: vi.fn(),
   })),
 });
+
+vi.mock('*.scss', () => ({}));
 
 vi.stubGlobal('__TEST_ENV__', 'true');

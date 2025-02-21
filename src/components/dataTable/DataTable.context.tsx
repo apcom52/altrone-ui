@@ -13,7 +13,12 @@ import {
   useState,
 } from 'react';
 import { once } from 'lodash-es';
-import { DOMUtils } from '../../utils';
+import {
+  DOMUtils,
+  NumberUtils,
+  useDebouncedEffect,
+  useDidUpdate,
+} from '../../utils';
 import { useDataTableFilters } from './useDataTableFilters.ts';
 
 interface DataTableContextType<T extends object> {
@@ -67,22 +72,39 @@ const createDataTableContext = once(<T extends object>() =>
 export const useDataTableContext = <T extends object>() =>
   useContext(createDataTableContext<T>());
 
+const EMPTY_ARRAY: any[] = [];
+
 export const DataTableContextProvider = <T extends object>(
   props: DataTableProps<T> & React.PropsWithChildren,
 ) => {
   const {
-    data = [],
-    columns = [],
+    data = EMPTY_ARRAY,
+    columns = EMPTY_ARRAY,
     rowsPerPage = 20,
     selectable = false,
     children,
+    defaultPage,
+    defaultSort,
+    defaultFilters,
+    onPageChange,
+    onSortChange,
+    onFilterChange,
   } = props;
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(
+    NumberUtils.getInRange(defaultPage || 1, {
+      min: 1,
+      max: Math.ceil(data.length / rowsPerPage),
+    }),
+  );
   const [search, setSearch] = useState('');
-  const [sortBy, setSortBy] = useState<keyof T | undefined>(undefined);
-  const [sortType, setSortType] = useState<Sort>('asc');
-  const [filters, setFilters] = useState<Filter[]>([]);
+  const [sortBy, setSortBy] = useState<keyof T | undefined>(
+    (defaultSort?.field as keyof T) || undefined,
+  );
+  const [sortType, setSortType] = useState<Sort>(
+    defaultSort?.direction || 'asc',
+  );
+  const [filters, setFilters] = useState<Filter[]>(defaultFilters || []);
   const [selectableMode, setSelectableMode] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
@@ -95,6 +117,7 @@ export const DataTableContextProvider = <T extends object>(
   const filteredData = useDataTableFilters(
     data,
     filters,
+    columns,
     sortBy ? String(sortBy) : undefined,
     sortType,
   );
@@ -120,6 +143,54 @@ export const DataTableContextProvider = <T extends object>(
       setSelectedRows([]);
     }
   }, [selectableMode]);
+
+  useDidUpdate(() => {
+    if (typeof defaultPage === 'number') {
+      setPage(
+        NumberUtils.getInRange(defaultPage, {
+          min: 1,
+          max: Math.ceil(data.length / rowsPerPage),
+        }),
+      );
+    }
+  }, [defaultPage, data.length, rowsPerPage]);
+
+  useDidUpdate(() => {
+    if (defaultSort) {
+      setSortBy(defaultSort.field as keyof T);
+      setSortType(defaultSort.direction);
+    } else {
+      setSortBy(undefined);
+      setSortType('asc');
+    }
+  }, [defaultSort]);
+
+  useDidUpdate(() => {
+    setFilters(defaultFilters || []);
+  }, [defaultFilters]);
+
+  useEffect(() => {
+    onPageChange?.(page);
+  }, [page, onPageChange]);
+
+  useDebouncedEffect(
+    () => {
+      onSortChange?.(
+        sortBy
+          ? {
+              field: String(sortBy),
+              direction: sortType,
+            }
+          : undefined,
+      );
+    },
+    [sortBy, sortType, onSortChange],
+    1,
+  );
+
+  useEffect(() => {
+    onFilterChange?.(filters);
+  }, [filters, onFilterChange]);
 
   const contextData = useMemo<DataTableContextType<T>>(
     () => ({

@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { AltroneApplication, CloseButton } from '../src/components';
 import { vi } from 'vitest';
@@ -33,7 +35,9 @@ describe('CloseButton', () => {
     );
 
     expect(screen.getByTestId('closeButton')).toHaveClass('cls');
-    expect(screen.getByTestId('closeButton')).toHaveStyle('color: red');
+    expect(screen.getByTestId('closeButton')).toHaveStyle(
+      'color: rgb(255, 0, 0)',
+    );
   });
 
   test('check that CloseButton configuration works correctly', () => {
@@ -42,7 +46,7 @@ describe('CloseButton', () => {
         config={{
           closeButton: {
             className: 'cls',
-            style: { color: 'blue' },
+            style: { color: 'rgb(0, 0, 255)' },
           },
         }}
       >
@@ -51,6 +55,8 @@ describe('CloseButton', () => {
     );
 
     expect(screen.getByTestId('closeButton')).toHaveClass('cls');
-    expect(screen.getByTestId('closeButton')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('closeButton')).toHaveStyle(
+      'color: rgb(0, 0, 255)',
+    );
   });
 });

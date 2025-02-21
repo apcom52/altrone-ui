@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { AltroneApplication, Breadcrumbs } from '../src/components';
 
@@ -30,9 +32,11 @@ describe('Breadcrumbs', () => {
     );
 
     expect(screen.getByTestId('breadcrumbs')).toHaveClass('cls');
-    expect(screen.getByTestId('breadcrumbs')).toHaveStyle('color: red');
+    expect(screen.getByTestId('breadcrumbs')).toHaveStyle(
+      'color: rgb(255, 0, 0)',
+    );
     expect(screen.getByTestId('item')).toHaveClass('item-cls');
-    expect(screen.getByTestId('item')).toHaveStyle('color: green');
+    expect(screen.getByTestId('item')).toHaveStyle('color: rgb(0, 128, 0)');
   });
 
   test('check that TopNavigation configuration works correctly', () => {
@@ -41,7 +45,7 @@ describe('Breadcrumbs', () => {
         config={{
           breadcrumbs: {
             className: 'cls',
-            style: { color: 'blue' },
+            style: { color: 'rgb(0, 0, 255)' },
           },
         }}
       >
@@ -52,6 +56,8 @@ describe('Breadcrumbs', () => {
     );
 
     expect(screen.getByTestId('breadcrumbs')).toHaveClass('cls');
-    expect(screen.getByTestId('breadcrumbs')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('breadcrumbs')).toHaveStyle(
+      'color: rgb(0, 0, 255)',
+    );
   });
 });

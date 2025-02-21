@@ -1,18 +1,27 @@
-import { AnyObject, useDebouncedMemo } from '../../utils';
-import { Filter, FilterType, Sort } from './DataTable.types.ts';
+import { AnyObject, useDebouncedMemo, useLocale } from '../../utils';
+import {
+  DataTableColumn,
+  Filter,
+  FilterType,
+  Sort,
+} from './DataTable.types.ts';
 import {
   booleanFilter,
   numberFilter,
   stringFilter,
   arrayFilter,
+  dateFilter,
 } from './filters';
 
 export function useDataTableFilters<T extends AnyObject>(
   initialData: T[],
   filters: Filter[],
+  columns: DataTableColumn<T>[],
   sortBy: string | undefined,
   sortType: Sort,
 ) {
+  const { locale: appLocale = 'en-US' } = useLocale();
+
   return useDebouncedMemo(
     () => {
       if (filters.length === 0 && !sortBy) {
@@ -30,13 +39,30 @@ export function useDataTableFilters<T extends AnyObject>(
           }
 
           if (filter.type === FilterType.string) {
-            validRow = stringFilter({ row, filter });
+            validRow = stringFilter({
+              row,
+              filter,
+            });
           } else if (filter.type === FilterType.number) {
-            validRow = numberFilter({ row, filter });
+            validRow = numberFilter({
+              row,
+              filter,
+            });
           } else if (filter.type === FilterType.array) {
-            validRow = arrayFilter({ row, filter });
+            validRow = arrayFilter({
+              row,
+              filter,
+            });
           } else if (filter.type === FilterType.boolean) {
-            validRow = booleanFilter({ row, filter });
+            validRow = booleanFilter({
+              row,
+              filter,
+            });
+          } else if (filter.type === FilterType.date) {
+            validRow = dateFilter({
+              row,
+              filter,
+            });
           }
         }
 
@@ -44,18 +70,42 @@ export function useDataTableFilters<T extends AnyObject>(
       });
 
       if (sortBy) {
+        const columnParams = columns.find(
+          (column) => column.accessor === sortBy,
+        );
+
+        const columnLocale = columnParams?.options?.locale ?? appLocale;
+
+        const collator = new Intl.Collator(columnLocale, {
+          usage: 'sort',
+          sensitivity: 'base',
+          ignorePunctuation: true,
+          caseFirst: 'false',
+        });
+
         return filteredData.sort((itemA, itemB) => {
-          if (sortType === 'asc') {
-            return itemA[sortBy] > itemB[sortBy] ? 1 : -1;
-          } else {
-            return itemA[sortBy] < itemB[sortBy] ? 1 : -1;
+          const valueA = String(itemA[sortBy]);
+          const valueB = String(itemB[sortBy]);
+
+          const isNumericValue =
+            typeof valueA === 'number' ||
+            columnParams?.type === 'number' ||
+            columnParams?.type === 'currency';
+
+          if (isNumericValue) {
+            const numA = parseFloat(valueA);
+            const numB = parseFloat(valueB);
+            return sortType === 'asc' ? numA - numB : numB - numA;
           }
+
+          const result = collator.compare(valueA, valueB);
+          return sortType === 'asc' ? result : -result;
         });
       }
 
       return filteredData;
     },
-    [initialData, filters, sortBy, sortType],
+    [initialData, filters, columns, sortBy, sortType, appLocale],
     1,
   );
 }

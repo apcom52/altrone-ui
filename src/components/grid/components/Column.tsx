@@ -1,0 +1,41 @@
+import { memo } from 'react';
+import { GridColumnProps } from '../Grid.types.ts';
+import clsx from 'clsx';
+import s from './column.module.scss';
+import { useConfiguration } from 'components';
+
+export const Column = memo<GridColumnProps>((props) => {
+  const {
+    size = 'auto',
+    offset = 0,
+    className,
+    style,
+    children,
+    ...restProps
+  } = props;
+
+  const { grid: { column: columnConfig = {} } = {} } = useConfiguration();
+
+  const cls = clsx(
+    s.Column,
+    {
+      [s.AutoSize]: size === 'auto',
+      [s.Offset]: offset,
+    },
+    className,
+    columnConfig.className,
+  );
+
+  const styles = {
+    ...columnConfig.style,
+    ...style,
+    '--column-size': size,
+    '--column-offset': offset,
+  };
+
+  return (
+    <div className={cls} style={styles} {...restProps}>
+      {children}
+    </div>
+  );
+});

@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import {
   Configuration,
@@ -22,20 +24,22 @@ describe('DatePicker', () => {
         <DatePicker
           data-testid="date-picker"
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         />
       </AltroneApplication>,
     );
 
     expect(screen.getByTestId('date-picker')).toHaveClass('cls');
-    expect(screen.getByTestId('date-picker')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('date-picker')).toHaveStyle(
+      'color: rgb(0, 0, 255)',
+    );
   });
 
   test('check that Checkbox configuration works correctly', () => {
     render(
       <AltroneApplication>
         <Configuration
-          datePicker={{ className: 'cls', style: { color: 'blue' } }}
+          datePicker={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
         >
           <DatePicker data-testid="date-picker" />
         </Configuration>
@@ -43,6 +47,8 @@ describe('DatePicker', () => {
     );
 
     expect(screen.getByTestId('date-picker')).toHaveClass('cls');
-    expect(screen.getByTestId('date-picker')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('date-picker')).toHaveStyle(
+      'color: rgb(0, 0, 255)',
+    );
   });
 });

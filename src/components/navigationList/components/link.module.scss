@@ -7,6 +7,7 @@
   --navigationListHoveredTextColor: var(--default-800);
   --navigationListPressedLinkBackgroundColor: var(--default-300);
   --navigationListPressedTextColor: var(--default-900);
+  --navigation-list-secondary-link-border-color: var(--default-200);
 }
 
 :global(.AltroneDark) {
@@ -16,6 +17,7 @@
   --navigationListHoveredTextColor: var(--default-100);
   --navigationListPressedLinkBackgroundColor: var(--default-600);
   --navigationListPressedTextColor: var(--default-50);
+  --navigation-list-secondary-link-border-color: var(--default-700);
 }
 
 .Link {
@@ -47,10 +49,16 @@
     opacity: 0;
     z-index: -1;
     background-color: var(--navigationListHoveredLinkBackgroundColor);
-    transition: top 0.2s ease, left 0.2s ease, width 0.2s ease, height 0.2s ease;
+    transition:
+      top 0.2s ease,
+      left 0.2s ease,
+      width 0.2s ease,
+      height 0.2s ease;
   }
 
-  &:hover, &:focus-visible, &.Selected {
+  &:hover,
+  &:focus-visible,
+  &.Selected {
     color: var(--navigationListHoveredTextColor);
     --childLinkActionsVisible: visible;
 
@@ -94,4 +102,37 @@
   gap: 6px;
   margin-left: auto;
   transform: translateX(4px);
+}
+
+.NestedList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-gap);
+}
+
+.SecondLevelList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-gap);
+
+  .Link {
+    padding-left: 54px;
+  }
+}
+
+.ThirdLevelList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-gap);
+  border-left: 2px solid var(--navigation-list-secondary-link-border-color);
+  margin-left: 54px;
+  padding-left: 6px;
+
+  .Link {
+    padding-left: 12px;
+  }
+
+  .ThirdLevelList {
+    margin-left: 5px;
+  }
 }

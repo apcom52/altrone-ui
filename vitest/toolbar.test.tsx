@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Configuration, AltroneApplication, Toolbar } from '../src/components';
 
@@ -8,7 +10,7 @@ describe('Toolbar', () => {
         <Toolbar
           data-testid="toolbar"
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
         >
           <Toolbar.Group
             data-testid="group"
@@ -27,11 +29,11 @@ describe('Toolbar', () => {
     );
 
     expect(screen.getByTestId('toolbar')).toHaveClass('cls');
-    expect(screen.getByTestId('toolbar')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('toolbar')).toHaveStyle('color: rgb(0, 0, 255)');
     expect(screen.getByTestId('group')).toHaveClass('group');
-    expect(screen.getByTestId('group')).toHaveStyle('color: red');
+    expect(screen.getByTestId('group')).toHaveStyle('color: rgb(255, 0, 0)');
     expect(screen.getByTestId('action')).toHaveClass('action');
-    expect(screen.getByTestId('action')).toHaveStyle('color: yellow');
+    expect(screen.getByTestId('action')).toHaveStyle('color: rgb(255, 255, 0)');
   });
 
   test('check that Toolbar configuration works correctly', () => {
@@ -40,7 +42,7 @@ describe('Toolbar', () => {
         <Configuration
           toolbar={{
             className: 'cls',
-            style: { color: 'blue' },
+            style: { color: 'rgb(0, 0, 255)' },
             groupClassName: 'group',
             actionClassName: 'action',
           }}
@@ -48,7 +50,7 @@ describe('Toolbar', () => {
           <Toolbar
             data-testid="toolbar"
             className="cls"
-            style={{ color: 'blue' }}
+            style={{ color: 'rgb(0, 0, 255)' }}
           >
             <Toolbar.Group
               data-testid="group"
@@ -68,7 +70,7 @@ describe('Toolbar', () => {
     );
 
     expect(screen.getByTestId('toolbar')).toHaveClass('cls');
-    expect(screen.getByTestId('toolbar')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('toolbar')).toHaveStyle('color: rgb(0, 0, 255)');
     expect(screen.getByTestId('group')).toHaveClass('group');
     expect(screen.getByTestId('action')).toHaveClass('action');
   });

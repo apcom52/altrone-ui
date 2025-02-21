@@ -1,5 +1,6 @@
+import React from 'react';
+import { expect, test, describe, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { vi } from 'vitest';
 import { AltroneApplication, Button, Icon } from '../src';
 
 describe('Button', () => {
@@ -58,18 +59,20 @@ describe('Button', () => {
         data-testid="button"
         className="cls"
         style={{
-          color: 'blue',
+          color: 'rgb(0, 0, 255)',
         }}
       />,
     );
     expect(screen.getByTestId('button')).toHaveClass('cls');
-    expect(screen.getByTestId('button')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('button')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that configuration works', () => {
     render(
       <AltroneApplication
-        config={{ button: { className: 'cls', style: { color: 'blue' } } }}
+        config={{
+          button: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
+        }}
       >
         <Button data-testid="button" />
       </AltroneApplication>,
@@ -77,6 +80,6 @@ describe('Button', () => {
 
     const element = screen.getByTestId('button');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

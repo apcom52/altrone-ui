@@ -16,6 +16,7 @@ export * from './dropdown';
 export * from './filePicker';
 export * from './flex';
 export * from './form';
+export * from './grid';
 export * from './icon';
 export * from './list';
 export * from './loading';

@@ -23,7 +23,7 @@ export const EMPLOYEES = [
   {
     firstName: 'Jane',
     lastName: 'Smith',
-    age: 25,
+    age: undefined,
     salary: 60000,
     phoneNumber: '234-567-8901',
     skills: ['HTML', 'CSS', 'JavaScript', 'Angular'],

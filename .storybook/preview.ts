@@ -2,15 +2,6 @@ import type { Preview } from '@storybook/react';
 import { withThemeByClassName } from '@storybook/addon-themes';
 
 const preview: Preview = {
-  decorators: [
-    withThemeByClassName({
-      themes: {
-        light: 'light',
-        dark: 'dark',
-      },
-      defaultTheme: 'light',
-    }),
-  ],
   parameters: {
     controls: {
       matchers: {
@@ -43,7 +34,7 @@ const preview: Preview = {
       toolbar: {
         title: 'Language',
         icon: 'globe',
-        items: ['EN', 'RU'],
+        items: ['EN', 'RU', 'FR', 'GE', 'SP'],
         dynamicTitle: true,
       },
     },
@@ -56,6 +47,17 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [
+    withThemeByClassName({
+      themes: {
+        light: 'light',
+        dark: 'dark',
+      },
+      defaultTheme: 'light',
+    }),
+  ],
+
+  tags: ['autodocs'],
 };
 
 export default preview;

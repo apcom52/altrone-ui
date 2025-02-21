@@ -11,21 +11,45 @@ export const numberFilter = <T extends AnyObject>({
 }: FilterFuncArgs<T, NumberFilter>) => {
   let validationResult = true;
 
-  const value = Number(row[filter.field]);
-
-  if (Number.isNaN(value)) {
-    return false;
-  }
+  const rawValue = row[filter.field];
+  const value = Number(rawValue);
+  const stringValue = String(rawValue);
 
   const condition = filter.conditions[0];
   const rule = condition.rule;
-  const filterValue = condition.value;
+  const filterValue = condition.value || 0;
   const minFilterValue = condition.minValue || 0;
   const maxFilterValue = condition.maxValue || 0;
 
+  if (
+    ![NumberFilterRules.empty, NumberFilterRules.notEmpty].includes(
+      filter.conditions[0].rule,
+    ) &&
+    Number.isNaN(value)
+  ) {
+    return false;
+  }
+
   switch (rule) {
+    case NumberFilterRules.empty:
+      validationResult =
+        stringValue.trim() === '' ||
+        rawValue === undefined ||
+        rawValue === null;
+      break;
+    case NumberFilterRules.notEmpty:
+      validationResult =
+        stringValue.trim() !== '' &&
+        rawValue !== undefined &&
+        rawValue !== null;
+      break;
     case NumberFilterRules.equal:
-      validationResult = value === filterValue;
+      if (Number.isNaN(rawValue) || Number.isNaN(filterValue)) {
+        validationResult = false;
+      } else {
+        validationResult = value === filterValue;
+      }
+
       break;
     case NumberFilterRules.notEqual:
       validationResult = value !== filterValue;

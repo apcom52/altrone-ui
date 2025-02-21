@@ -28,6 +28,7 @@ export interface NavigationListLinkProps
 
 export type NavigationListLinkPropsWithActions = NavigationListLinkProps & {
   actions: ReactElement[];
+  level: number;
 };
 
 export interface NavigationListLinkActionProps

@@ -73,6 +73,8 @@ export interface Localization {
       notEqual: string;
     };
     numberFilter: {
+      empty: string;
+      notEmpty: string;
       equal: string;
       notEqual: string;
       gt: string;
@@ -89,6 +91,18 @@ export interface Localization {
     booleanFilter: {
       positive: string;
       negative: string;
+    };
+    dateFilter: {
+      empty: string;
+      notEmpty: string;
+      equal: string;
+      notEqual: string;
+      gt: string;
+      gte: string;
+      lt: string;
+      lte: string;
+      between: string;
+      beyond: string;
     };
   };
   photoViewer: {

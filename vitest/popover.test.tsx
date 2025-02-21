@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Button, Configuration, Popover } from '../src';
 
@@ -77,7 +79,9 @@ describe('Popover', () => {
 
   test('should configuration works correctly', () => {
     render(
-      <Configuration popover={{ className: 'cls', style: { color: 'blue' } }}>
+      <Configuration
+        popover={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
+      >
         <Popover
           content={<div>content</div>}
           openedByDefault
@@ -90,7 +94,7 @@ describe('Popover', () => {
 
     const element = screen.getByTestId('element');
     expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: blue');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('tabIndex prop need to applied automatically', () => {

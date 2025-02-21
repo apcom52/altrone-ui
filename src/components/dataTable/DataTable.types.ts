@@ -16,6 +16,11 @@ export type DataTableColumnType =
   | 'month'
   | 'year';
 
+export type Sorting = {
+  field: string;
+  direction: Sort;
+};
+
 export interface DataTableColumn<T extends object> {
   accessor: keyof T;
   type?: DataTableColumnType;
@@ -31,6 +36,7 @@ export interface DataTableColumn<T extends object> {
     currencyAccessor: keyof T;
     arrayDelimiter: string;
     arrayAccessor: string;
+    locale?: string;
   }>;
 }
 
@@ -50,6 +56,12 @@ export interface DataTableProps<T extends object>
   rowsPerPage?: number;
   selectable?: boolean;
   showFooter?: boolean;
+  defaultPage?: number;
+  defaultSort?: Sorting;
+  defaultFilters?: Filter[];
+  onPageChange?: (currentPage: number) => void;
+  onSortChange?: (sort?: Sorting) => void;
+  onFilterChange?: (appliedFilters?: Filter[]) => void;
 }
 
 export interface DataTableActionProps extends ButtonProps {
@@ -88,16 +100,31 @@ export enum BooleanFilterRules {
   negative = 'negative',
 }
 
+export enum DateFilterRules {
+  empty = 'empty',
+  notEmpty = 'notEmpty',
+  equal = 'equal',
+  notEqual = 'notEqual',
+  gt = 'gt',
+  gte = 'gte',
+  lt = 'lt',
+  lte = 'lte',
+  between = 'between',
+  beyond = 'beyond',
+}
+
 export enum FilterType {
   string = 'string',
   number = 'number',
   array = 'array',
   boolean = 'boolean',
+  date = 'date',
 }
 
 export type StringFilter = {
   field: string;
   type: FilterType.string;
+  columnType: DataTableColumnType;
   conditions: {
     rule: StringFilterRules;
     join: 'AND' | 'OR';
@@ -108,6 +135,7 @@ export type StringFilter = {
 export type NumberFilter = {
   field: string;
   type: FilterType.number;
+  columnType: DataTableColumnType;
   conditions: {
     rule: NumberFilterRules;
     join: 'AND' | 'OR';
@@ -120,6 +148,7 @@ export type NumberFilter = {
 export type ArrayFilter = {
   field: string;
   type: FilterType.array;
+  columnType: DataTableColumnType;
   conditions: {
     rule: ArrayFilterRules;
     join: 'AND' | 'OR';
@@ -131,6 +160,7 @@ export type ArrayFilter = {
 export type BooleanFilter = {
   field: string;
   type: FilterType.boolean;
+  columnType: DataTableColumnType;
   conditions: {
     rule: BooleanFilterRules;
     join: 'AND' | 'OR';
@@ -138,7 +168,25 @@ export type BooleanFilter = {
   }[];
 };
 
-export type Filter = StringFilter | NumberFilter | ArrayFilter | BooleanFilter;
+export type DateFilter = {
+  field: string;
+  type: FilterType.date;
+  columnType: DataTableColumnType;
+  conditions: {
+    rule: DateFilterRules;
+    join: 'AND' | 'OR';
+    value?: string;
+    minValue?: string;
+    maxValue?: string;
+  }[];
+};
+
+export type Filter =
+  | StringFilter
+  | NumberFilter
+  | ArrayFilter
+  | BooleanFilter
+  | DateFilter;
 
 export interface FilterRowProps<T extends AnyObject> {
   filter: Filter;

@@ -1,5 +1,6 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { expect } from 'vitest';
 import { AltroneApplication, Text } from '../src';
 
 describe('Text', () => {
@@ -194,16 +195,19 @@ describe('Text', () => {
       <AltroneApplication
         config={{
           text: {
-            section: { className: 'cls', style: { color: 'blue' } },
-            screenName: { className: 'cls', style: { color: 'blue' } },
-            heading: { className: 'cls', style: { color: 'blue' } },
-            paragraph: { className: 'cls', style: { color: 'blue' } },
-            inline: { className: 'cls', style: { color: 'blue' } },
-            list: { className: 'cls', style: { color: 'blue' } },
-            listItem: { className: 'cls', style: { color: 'blue' } },
-            link: { className: 'cls', style: { color: 'blue' } },
-            code: { className: 'cls', style: { color: 'blue' } },
-            keyboard: { className: 'cls', style: { color: 'blue' } },
+            section: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
+            screenName: {
+              className: 'cls',
+              style: { color: 'rgb(0, 0, 255)' },
+            },
+            heading: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
+            paragraph: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
+            inline: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
+            list: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
+            listItem: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
+            link: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
+            code: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
+            keyboard: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
           },
         }}
       >
@@ -224,38 +228,38 @@ describe('Text', () => {
 
     const screenName = screen.getByTestId('screenName');
     expect(screenName).toHaveClass('cls');
-    expect(screenName).toHaveStyle('color: blue');
+    expect(screenName).toHaveStyle('color: rgb(0, 0, 255)');
 
     const heading = screen.getByTestId('heading');
     expect(heading).toHaveClass('cls');
-    expect(heading).toHaveStyle('color: blue');
+    expect(heading).toHaveStyle('color: rgb(0, 0, 255)');
 
     const paragraph = screen.getByTestId('paragraph');
     expect(paragraph).toHaveClass('cls');
-    expect(paragraph).toHaveStyle('color: blue');
+    expect(paragraph).toHaveStyle('color: rgb(0, 0, 255)');
 
     const inline = screen.getByTestId('inline');
     expect(inline).toHaveClass('cls');
-    expect(inline).toHaveStyle('color: blue');
+    expect(inline).toHaveStyle('color: rgb(0, 0, 255)');
 
     const list = screen.getByTestId('list');
     expect(list).toHaveClass('cls');
-    expect(list).toHaveStyle('color: blue');
+    expect(list).toHaveStyle('color: rgb(0, 0, 255)');
 
     const listItem = screen.getByTestId('listItem');
     expect(listItem).toHaveClass('cls');
-    expect(listItem).toHaveStyle('color: blue');
+    expect(listItem).toHaveStyle('color: rgb(0, 0, 255)');
 
     const link = screen.getByTestId('link');
     expect(link).toHaveClass('cls');
-    expect(link).toHaveStyle('color: blue');
+    expect(link).toHaveStyle('color: rgb(0, 0, 255)');
 
     const code = screen.getByTestId('code');
     expect(code).toHaveClass('cls');
-    expect(code).toHaveStyle('color: blue');
+    expect(code).toHaveStyle('color: rgb(0, 0, 255)');
 
     const keyboard = screen.getByTestId('keyboard');
     expect(keyboard).toHaveClass('cls');
-    expect(keyboard).toHaveStyle('color: blue');
+    expect(keyboard).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

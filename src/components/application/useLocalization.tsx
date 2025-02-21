@@ -1,4 +1,4 @@
-import { Localization, en, ru } from 'locales';
+import { Localization, en, ru, ge, fr, sp } from 'locales';
 import {
   createContext,
   PropsWithChildren,
@@ -32,6 +32,14 @@ const LocalizationContext = createContext<LocalizationContextType>({
 });
 export const useLocalizationContext = () => useContext(LocalizationContext);
 
+const DICTIONARIES = {
+  en,
+  ru,
+  fr,
+  ge,
+  sp,
+};
+
 export const AltroneLocalization = ({
   language = 'en',
   customLabels = {},
@@ -39,7 +47,11 @@ export const AltroneLocalization = ({
 }: LocalizationProps) => {
   const context = useMemo(() => {
     const lang = language.toLowerCase() || 'en';
-    const dictionary = merge({}, lang === 'ru' ? ru : en, customLabels);
+    const dictionary = merge(
+      {},
+      DICTIONARIES[lang as keyof typeof DICTIONARIES] || en,
+      customLabels,
+    );
 
     return {
       language: lang,

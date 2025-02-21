@@ -1,3 +1,5 @@
+import React from 'react';
+import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import {
   AltroneApplication,
@@ -35,7 +37,7 @@ describe('AutocompleteInput', () => {
         <AutocompleteInput
           getSuggestions={() => []}
           className="cls"
-          style={{ color: 'blue' }}
+          style={{ color: 'rgb(0, 0, 255)' }}
           data-testid="combobox"
         >
           <TextInput.TextIsland data-testid="island" label="Text" />
@@ -44,7 +46,7 @@ describe('AutocompleteInput', () => {
     );
 
     expect(screen.getByTestId('combobox')).toHaveClass('cls');
-    expect(screen.getByTestId('combobox')).toHaveStyle('color: blue');
+    expect(screen.getByTestId('combobox')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that configuration works', () => {
@@ -53,7 +55,7 @@ describe('AutocompleteInput', () => {
         <Configuration
           autocompleteInput={{
             className: 'cls',
-            style: { color: 'red' },
+            style: { color: 'rgb(255, 0, 0)' },
           }}
         >
           <AutocompleteInput getSuggestions={() => []} data-testid="combobox" />
@@ -62,6 +64,6 @@ describe('AutocompleteInput', () => {
     );
 
     expect(screen.getByTestId('combobox')).toHaveClass('cls');
-    expect(screen.getByTestId('combobox')).toHaveStyle('color: red');
+    expect(screen.getByTestId('combobox')).toHaveStyle('color: rgb(255, 0, 0)');
   });
 });

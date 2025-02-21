@@ -11,21 +11,20 @@
     </p>
 </p>
 
------
+---
 
-## 🧚🏻‍♀️ Altrone 3.2
+## 🤠 Altrone 3.3
 
-New `sendNotification` function, DataTableColumn `type` options and more!
+New **`DataTable`** filters, nested links for **`NavigationList`** and more!
+
+[**What's new in 3.3?**](https://altrone.vercel.app/blog/release-3.3)
 
 [**What's new in 3.2?**](https://altrone.vercel.app/blog/release-3.2)
 
 [**What's new in 3.1?**](https://altrone.vercel.app/blog/release-3.1)
 
-[**What's new in 3.0?**](https://altrone.vercel.app/blog/release-3.0)
-
-[**Migrating to 3.0**](https://altrone.vercel.app/blog/migrating-to-3.0)
-
 ## Roadmap for Altrone 3
+
 - [x] `LoadingIsland` for **`TextInput`** (released in 3.1)
 - [x] `GroupAction` for **`NavigationList`** (released in 3.1)
 - [x] Boolean filter for **`DataTable`** (released in 3.1)
@@ -33,9 +32,13 @@ New `sendNotification` function, DataTableColumn `type` options and more!
 - [x] New type property for **`DataTableColumn`** (released in 3.2)
 - [x] Better locale support (released in 3.2)
 - [x] Rich notifications (released in 3.2)
-- [ ] Date filter for **`DataTable`**
-- [ ] Nested links for **`NavigationList`**
-- [ ] Default filters, sorting settings and pagination for **`DataTable`**
+- [x] Date filter for **`DataTable`**
+- [x] Nested links for **`NavigationList`**
+- [x] Default filters, sorting settings and pagination for **`DataTable`**
+- [ ] new `Badge` component
+- [ ] new `ColorPicker` component
+- [ ] new `Range` component
+- [ ] new `Avatar` component
 
 ## Documentation
 
@@ -62,6 +65,7 @@ New `sendNotification` function, DataTableColumn `type` options and more!
 </td>
         <td>
 <ul>
+    <li><a href="https://altrone.vercel.app/components/grid">Grid</a></li>
     <li><a href="https://altrone.vercel.app/components/flex">Flex</a></li>
     <li><a href="https://altrone.vercel.app/components/list">List</a></li>
     <li><a href="https://altrone.vercel.app/components/scrollable">Scrollable</a></li>
@@ -133,7 +137,7 @@ The MIT License (MIT)
 
 MIT License
 
-Copyright (c) 2024 Alexander Perevezentsev
+Copyright (c) 2025 Alexander Perevezentsev
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

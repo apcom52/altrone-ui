@@ -29,9 +29,19 @@ export default defineConfig({
     },
   },
   test: {
-    globals: true,
     environment: 'jsdom',
     exclude: ['old_src/**/*', 'node_modules', 'tests'],
+    include: ['vitest/**/*.test.{ts,tsx}'],
     setupFiles: ['./vitest/vitest.setup.ts'],
+    globals: true,
+    resolve: {
+      alias: {
+        components: resolve(__dirname, './src/components'),
+        hooks: resolve(__dirname, './src/hooks'),
+        types: resolve(__dirname, './src/types'),
+        utils: resolve(__dirname, './src/utils'),
+        locales: resolve(__dirname, './src/locales'),
+      },
+    },
   },
 });

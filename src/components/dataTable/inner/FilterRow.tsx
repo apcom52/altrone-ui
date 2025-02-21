@@ -10,10 +10,14 @@ import clsx from 'clsx';
 import {
   DataTableArrayRules,
   DataTableBooleanRules,
+  DataTableDateRules,
   DataTableNumberRules,
   DataTableStringRules,
 } from '../DataTable.constants.ts';
 import { useLocalization } from '../../application';
+import { DatePicker } from 'components/datePicker/DatePicker.tsx';
+import { Dayjs } from 'dayjs';
+import { dayjs } from '../../calendar';
 
 export const FilterRow = ({
   filter,
@@ -29,12 +33,28 @@ export const FilterRow = ({
   const isNumber = filter?.type === FilterType.number;
   const isArray = filter?.type === FilterType.array;
   const isBoolean = filter?.type === FilterType.boolean;
+  const isDate = filter?.type === FilterType.date;
 
   const rule = filter.conditions[0].rule;
   const value = filter.conditions[0].value;
   const minValue = isNumber ? filter.conditions[0]?.minValue || 0 : 0;
   const maxValue = isNumber ? filter.conditions[0]?.maxValue || 0 : 0;
   const options = isArray ? filter.conditions[0]?.options || [] : [];
+  const minDate =
+    isDate && filter.conditions[0]?.minValue
+      ? dayjs(filter.conditions[0]?.minValue) || undefined
+      : undefined;
+  const maxDate =
+    isDate && filter.conditions[0]?.maxValue
+      ? dayjs(filter.conditions[0]?.maxValue) || undefined
+      : undefined;
+
+  const FilterDatePicker =
+    filter.columnType === 'month'
+      ? DatePicker.MonthPicker
+      : filter.columnType === 'year'
+        ? DatePicker.YearPicker
+        : DatePicker;
 
   const ruleSet = useMemo(() => {
     const ruleSet = isString
@@ -45,7 +65,9 @@ export const FilterRow = ({
           ? DataTableArrayRules
           : isBoolean
             ? DataTableBooleanRules
-            : [];
+            : isDate
+              ? DataTableDateRules
+              : [];
 
     return ruleSet.map((item) => ({
       ...item,
@@ -125,6 +147,16 @@ export const FilterRow = ({
               data-filter-control="true"
             />
           ) : null}
+          {isDate ? (
+            <FilterDatePicker
+              value={(value as Dayjs) || undefined}
+              onChange={changeField.bind(null, filterIndex, 'value')}
+              data-filter-name={filter.field}
+              data-filter-control="true"
+              maxDate={maxDate}
+              minDate={minDate}
+            />
+          ) : null}
         </div>
       ) : null}
       {selectedRule?.columns === 2 ? (
@@ -144,6 +176,30 @@ export const FilterRow = ({
                 data-filter-name={filter.field}
                 data-filter-control="true"
                 data-filter-control-side="end"
+              />
+            </>
+          ) : null}
+          {isDate ? (
+            <>
+              <FilterDatePicker
+                value={minDate}
+                onChange={changeField.bind(null, filterIndex, 'minValue')}
+                data-filter-name={filter.field}
+                data-filter-control="true"
+                data-filter-control-side="start"
+                placeholder="Start date"
+                maxDate={maxDate}
+                clearable
+              />
+              <FilterDatePicker
+                value={maxDate}
+                onChange={changeField.bind(null, filterIndex, 'maxValue')}
+                data-filter-name={filter.field}
+                data-filter-control="true"
+                data-filter-control-side="end"
+                minDate={minDate}
+                placeholder="End date"
+                clearable
               />
             </>
           ) : null}

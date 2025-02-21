@@ -1,0 +1,13 @@
+.Grid {
+  --columns: 12;
+  --column-spacing: var(--gap);
+  --row-spacing: var(--gap);
+
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.Wrap {
+  flex-wrap: wrap;
+}

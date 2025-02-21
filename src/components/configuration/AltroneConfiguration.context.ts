@@ -65,6 +65,9 @@ export interface ConsumerConfigurationContext {
   form?: ComponentConfiguration<{
     field?: ComponentConfiguration;
   }>;
+  grid?: ComponentConfiguration<{
+    column?: ComponentConfiguration;
+  }>;
   icon?: ComponentConfiguration;
   list?: ComponentConfiguration;
   loading?: ComponentConfiguration<{

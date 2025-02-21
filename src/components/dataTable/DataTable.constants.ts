@@ -2,6 +2,7 @@ import { Option } from '../select/Select.types.ts';
 import {
   ArrayFilterRules,
   BooleanFilterRules,
+  DateFilterRules,
   NumberFilterRules,
   StringFilterRules,
 } from './DataTable.types.ts';
@@ -84,6 +85,16 @@ export const DataTableNumberRules: FilteringRuleOption[] = [
     label: 'dataTable.numberFilter.notBetween',
     columns: 2,
   },
+  {
+    value: NumberFilterRules.empty,
+    label: 'dataTable.numberFilter.empty',
+    columns: 0,
+  },
+  {
+    value: NumberFilterRules.notEmpty,
+    label: 'dataTable.numberFilter.notEmpty',
+    columns: 0,
+  },
 ];
 
 export const DataTableArrayRules: FilteringRuleOption[] = [
@@ -109,5 +120,58 @@ export const DataTableBooleanRules: FilteringRuleOption[] = [
     value: BooleanFilterRules.negative,
     label: 'dataTable.booleanFilter.negative',
     columns: 0,
+  },
+];
+
+export const DataTableDateRules: FilteringRuleOption[] = [
+  {
+    value: DateFilterRules.equal,
+    label: 'dataTable.dateFilter.equal',
+    columns: 1,
+  },
+  {
+    value: DateFilterRules.notEqual,
+    label: 'dataTable.dateFilter.notEqual',
+    columns: 1,
+  },
+  {
+    value: DateFilterRules.empty,
+    label: 'dataTable.dateFilter.empty',
+    columns: 0,
+  },
+  {
+    value: DateFilterRules.notEmpty,
+    label: 'dataTable.dateFilter.notEmpty',
+    columns: 0,
+  },
+  {
+    value: DateFilterRules.lt,
+    label: 'dataTable.dateFilter.lt',
+    columns: 1,
+  },
+  {
+    value: DateFilterRules.lte,
+    label: 'dataTable.dateFilter.lte',
+    columns: 1,
+  },
+  {
+    value: DateFilterRules.gt,
+    label: 'dataTable.dateFilter.gt',
+    columns: 1,
+  },
+  {
+    value: DateFilterRules.gte,
+    label: 'dataTable.dateFilter.gte',
+    columns: 1,
+  },
+  {
+    value: DateFilterRules.between,
+    label: 'dataTable.dateFilter.between',
+    columns: 2,
+  },
+  {
+    value: DateFilterRules.beyond,
+    label: 'dataTable.dateFilter.beyond',
+    columns: 2,
   },
 ];
