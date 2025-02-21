@@ -7,5 +7,6 @@ export interface TabsItemProps
   label: string;
   icon?: JSX.Element;
   selected?: boolean;
+  showLabel?: boolean;
   renderFunc?: RenderFuncProp<HTMLAnchorElement, TabsItemProps>;
 }
