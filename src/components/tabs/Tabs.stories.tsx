@@ -28,6 +28,12 @@ export const FlexLayout: StoryObj<typeof Flex> = {
       <Flex direction="horizontal" gap="l">
         <Tabs>
           <Tabs.Item
+            icon={<Icon i="home" />}
+            href="#chat"
+            label="Home"
+            showLabel={false}
+          />
+          <Tabs.Item
             icon={<Icon i="chat" />}
             selected
             href="#chat"

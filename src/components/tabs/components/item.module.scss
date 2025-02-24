@@ -1,33 +1,66 @@
 @import 'src/global/mixins';
 
+/*
+--tabs-background-color
+--tabs-hover-background-color
+--tabs-border-color
+--tabs-text-color
+--tabs-active-background-color
+--tabs-active-border-color
+--tabs-active-text-color
+--tabs-gap
+*/
+
 :global(:root) {
   --tabItemBackgroundColor: transparent;
-  --tabItemTextColor: var(--default-600);
+  --tabItemTextColor: var(--default-700);
   --tabHoveredItemBackgroundColor: var(--default-200);
-  --tabHoveredItemTextColor: var(--default-900);
-  --tabSelectedItemBackgroundColor: var(--default-300);
+  --tabHoveredItemTextColor: var(--default-700);
+  --tabSelectedItemBackgroundColor: transparent;
   --tabSelectedItemTextColor: var(--default-900);
+
+  --tabs-item-background-color: var(--tabItemBackgroundColor);
+  --tabs-item-text-color: var(--tabItemTextColor);
+  --tabs-item-border-color: transparent;
+  --tabs-item-hover-background-color: var(--tabHoveredItemBackgroundColor);
+  --tabs-item-hover-border-color: transparent;
+  --tabs-item-hover-text-color: var(--tabHoveredItemTextColor);
+  --tabs-item-active-background-color: var(--tabSelectedItemBackgroundColor);
+  --tabs-item-active-border-color: var(--default-900);
+  --tabs-item-active-text-color: var(--tabSelectedItemTextColor);
 }
 
 :global(.AltroneDark) {
   --tabItemBackgroundColor: transparent;
   --tabItemTextColor: var(--default-200);
-  --tabHoveredItemBackgroundColor: var(--default-700);
-  --tabHoveredItemTextColor: var(--default-50);
-  --tabSelectedItemBackgroundColor: var(--default-600);
+  --tabHoveredItemBackgroundColor: var(--default-800);
+  --tabHoveredItemTextColor: var(--default-200);
+  --tabSelectedItemBackgroundColor: transparent;
   --tabSelectedItemTextColor: var(--default-50);
+
+  --tabs-item-background-color: var(--tabItemBackgroundColor);
+  --tabs-item-text-color: var(--tabItemTextColor);
+  --tabs-item-border-color: transparent;
+  --tabs-item-hover-background-color: var(--tabHoveredItemBackgroundColor);
+  --tabs-item-hover-border-color: transparent;
+  --tabs-item-hover-text-color: var(--tabHoveredItemTextColor);
+  --tabs-item-active-background-color: var(--tabSelectedItemBackgroundColor);
+  --tabs-item-active-border-color: var(--default-50);
+  --tabs-item-active-text-color: var(--tabSelectedItemTextColor);
 }
 
 .Item {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 24px;
-  padding: 4px 8px;
-  border-radius: 6px;
-  background-color: var(--tabItemBackgroundColor);
-  color: var(--tabItemTextColor);
+  height: 36px;
+  padding: 4px calc(8px + var(--tabs-gap));
+  background-color: var(--tabs-item-background-color);
+  color: var(--tabs-item-text-color);
+  border-bottom: 2px solid var(--tabs-item-border-color);
   transition: background-color 0.2s linear;
+  gap: var(--s-gap);
+  z-index: 1;
 
   @include label-heading;
   @include no-selection;
@@ -36,16 +69,20 @@
 
   @include focus;
 
-  &:hover, &:focus-visible {
-    background-color: var(--tabHoveredItemBackgroundColor);
-    color: var(--tabHoveredItemTextColor);
+  &:hover,
+  &:focus-visible {
+    color: var(--tabs-item-hover-text-color);
+    border-bottom-color: var(--tabs-item-hover-border-color);
   }
 
-  &.Selected, &:active {
-    background-color: var(--tabSelectedItemBackgroundColor);
-    color: var(--tabSelectedItemTextColor);
+  &.Selected,
+  &:active {
+    background-color: var(--tabs-item-active-background-color);
+    color: var(--tabs-item-active-text-color);
+    border-bottom-color: var(--tabs-item-active-border-color);
 
-    &:hover, &:focus-visible {
+    &:hover,
+    &:focus-visible {
       background-color: var(--tabSelectedItemBackgroundColor);
       color: var(--tabSelectedItemTextColor);
     }
@@ -55,5 +92,4 @@
 .Icon {
   font-size: 16px;
   height: 16px;
-  margin-right: var(--s-gap);
 }
