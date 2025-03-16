@@ -3,8 +3,15 @@ import { ColorPickerProps, ColorPreset } from './ColorPicker.types';
 import { TextInput, Popover, Icon } from 'components';
 import s from './styles.module.scss';
 import { ColorPickerContent } from './inner/ColorPickerContent';
+import { Size } from 'types';
 
 const EMPTY_COLOR_PRESETS: ColorPreset[] = [];
+
+const SIZES: Record<Size, number> = {
+  s: 12,
+  m: 16,
+  l: 24,
+};
 
 export const ColorPicker = <Value = unknown,>(
   props: ColorPickerProps<Value>,
@@ -59,7 +66,11 @@ export const ColorPicker = <Value = unknown,>(
           <TextInput.CustomIsland>
             <div
               className={s.ColorPreview}
-              style={{ backgroundColor: value }}
+              style={{
+                backgroundColor: value,
+                width: SIZES[size],
+                height: SIZES[size],
+              }}
             />
           </TextInput.CustomIsland>
           {!readOnly && (

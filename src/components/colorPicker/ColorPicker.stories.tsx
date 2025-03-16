@@ -92,6 +92,23 @@ export const ColorPickerStory: StoryObj<typeof Divider> = {
             placeholder="Readonly state with value"
           />
         </Flex>
+        <Text.Heading role="inner">Different sizes</Text.Heading>
+        <Flex direction="horizontal" gap="m">
+          <ColorPicker
+            placeholder="With saved colors and palette"
+            colorPresets={COLORS}
+            value={color}
+            onChange={setColor}
+            size="s"
+          />
+          <ColorPicker
+            placeholder="With saved colors and palette"
+            colorPresets={COLORS}
+            value={color}
+            onChange={setColor}
+            size="l"
+          />
+        </Flex>
       </Flex>
     );
   },
