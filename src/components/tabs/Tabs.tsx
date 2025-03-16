@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import { TabsProps } from './Tabs.types.ts';
 import clsx from 'clsx';
 import s from './tabs.module.scss';
@@ -9,7 +9,12 @@ import { Item } from './components/Item.tsx';
 const Tabs = memo<TabsProps>(({ children, className, style, ...props }) => {
   const { tabs: tabsConfig = {} } = useConfiguration();
 
-  const [selectedTabRect, setSelectedTabRect] = useState<DOMRect | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const [selectedTabRect, setSelectedTabRect] = useState<Pick<
+    DOMRect,
+    'left' | 'width'
+  > | null>(null);
 
   const cls = clsx(s.Tabs, className, tabsConfig.className);
 
@@ -23,36 +28,44 @@ const Tabs = memo<TabsProps>(({ children, className, style, ...props }) => {
     const isTablist = e.target === e.currentTarget;
 
     if (tabElement) {
-      setSelectedTabRect(tabElement.getBoundingClientRect() || null);
+      const containerRect = containerRef.current?.getBoundingClientRect();
+      const elementRect = tabElement.getBoundingClientRect();
+
+      setSelectedTabRect(
+        elementRect && containerRect
+          ? {
+              width: elementRect.width,
+              left: elementRect.left - containerRect.left,
+            }
+          : null,
+      );
     } else if (!isTablist) {
       setSelectedTabRect(null);
     }
   };
 
   return (
-    <Flex
+    <div
       className={cls}
       style={styles}
-      direction="horizontal"
-      gap="m"
       onMouseMove={handleMouseMove}
       role="tablist"
+      ref={containerRef}
+      {...props}
     >
       <div
         className={s.TabsUnderlay}
         style={
           selectedTabRect
             ? {
-                top: selectedTabRect.top + 2,
                 left: selectedTabRect.left + 2,
                 width: selectedTabRect.width - 4,
-                height: selectedTabRect.height - 6,
               }
             : {}
         }
       />
       {children}
-    </Flex>
+    </div>
   );
 });
 
