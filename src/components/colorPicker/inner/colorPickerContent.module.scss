@@ -1,0 +1,54 @@
+.ColorPicker {
+  width: 216px;
+}
+
+.Palette {
+  width: 100% !important;
+
+  :global(.react-colorful__saturation) {
+    border-radius: 4px;
+    margin-bottom: 6px;
+  }
+
+  :global(.react-colorful__saturation-pointer) {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+  }
+
+  :global(.react-colorful__hue-pointer) {
+    width: 16px;
+    height: 16px;
+    border-radius: 6px;
+  }
+
+  :global(.react-colorful__alpha-pointer) {
+    width: 16px;
+    height: 16px;
+    border-radius: 6px;
+  }
+
+  :global(.react-colorful__pointer-fill) {
+    border-radius: 4px;
+  }
+
+  :global(.react-colorful__hue) {
+    height: 12px;
+    margin-bottom: 6px;
+    border-radius: 4px;
+  }
+
+  :global(.react-colorful__alpha) {
+    height: 12px;
+    margin-bottom: 6px;
+    border-radius: 4px;
+  }
+}
+
+.InputLabel {
+  font-size: var(--labelFontSize);
+  text-align: center;
+  color: var(--default-500);
+  font-weight: var(--labelFontWeight);
+  line-height: var(--labelLineHeight);
+}
