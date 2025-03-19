@@ -8,4 +8,7 @@ export interface MessageProps
   role?: Role;
   ariaRole?: string;
   severity?: Role;
+  actions?: JSX.Element[];
+  onClose?: () => void;
+  compact?: boolean;
 }
