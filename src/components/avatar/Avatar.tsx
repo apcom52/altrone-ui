@@ -43,7 +43,7 @@ export const Avatar = memo((props: AvatarProps) => {
   const fullName = `${firstName} ${lastName}`.trim();
 
   return (
-    <div title={fullName} className={cls} style={styles} {...props}>
+    <div title={fullName} className={cls} style={styles} {...restProps}>
       {imageSrc ? (
         <img src={imageSrc} className={s.Image} alt={fullName} />
       ) : (

@@ -61,6 +61,7 @@ export interface ConsumerConfigurationContext {
     radioItem?: ComponentConfiguration;
     childMenu?: ComponentConfiguration;
   }>;
+  dummyBox?: ComponentConfiguration;
   filePicker?: ComponentConfiguration;
   flex?: ComponentConfiguration;
   form?: ComponentConfiguration<{
