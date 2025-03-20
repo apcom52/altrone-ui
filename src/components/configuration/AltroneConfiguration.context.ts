@@ -23,6 +23,7 @@ export type Locale = {
 
 export interface ConsumerConfigurationContext {
   locale?: Partial<Locale>;
+  avatar?: ComponentConfiguration;
   autocompleteInput?: ComponentConfiguration<{
     showControls?: boolean;
   }>;
