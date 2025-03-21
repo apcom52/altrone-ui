@@ -21,7 +21,9 @@ export const DummyBox = memo((props: DummyBoxProps) => {
     ...dummyBoxConfig.style,
     ...style,
     width,
+    minWidth: width,
     height,
+    minHeight: height,
   };
 
   return <div className={cls} style={styles} {...restProps} />;

@@ -13,6 +13,7 @@
   );
   box-shadow: inset 0 0 0 1px var(--dummy-box-border-color);
   border-radius: 6px;
+  user-select: none;
 }
 
 :global(.AltroneDark) {

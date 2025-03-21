@@ -31,7 +31,6 @@ export const DummyBoxStory: StoryObj<typeof Flex> = {
           <DummyBox width="100px" height="100px" />
           <DummyBox width="80px" height="240px" />
           <DummyBox width="200px" height="40px" />
-          <DummyBox height="100px" />
         </Flex>
       </Flex>
     );
