@@ -82,6 +82,8 @@
   --buttonDangerTransparentBackgroundColor: transparent;
   --buttonDangerTransparentHoverBackgroundColor: var(--danger-50);
   --buttonDangerTransparentPressBackgroundColor: var(--danger-100);
+  --button-badge-background-color: var(--default-200);
+  --button-badge-text-color: var(--default-800);
 
   :global(.AltroneDark) {
     /** text colors */
@@ -166,6 +168,9 @@
     --button-disabled-background-color: var(--default-900);
     --button-disabled-border-color: var(--default-800);
     --button-disabled-text-color: var(--default-600);
+
+    --button-badge-background-color: var(--default-700);
+    --button-badge-text-color: var(--default-200);
   }
 }
 
@@ -212,6 +217,8 @@
     --btnBg: var(--button-disabled-background-color);
     --btnFg: var(--button-disabled-text-color);
     --btnBorder: var(--button-disabled-border-color);
+    --button-badge-background-color: var(--button-disabled-border-color);
+    --button-badge-text-color: var(--button-disabled-text-color);
   }
 }
 
@@ -223,6 +230,19 @@
 .Icon {
   font-size: 16px;
   height: 16px;
+}
+
+.Badge {
+  position: relative;
+  margin-top: -4px;
+  color: var(--button-badge-text-color);
+  background-color: var(--button-badge-background-color);
+  border-radius: 4px;
+  height: 16px;
+  padding: 0 var(--xs-gap);
+
+  @include small-label;
+  line-height: 16px;
 }
 
 .Button_transparent {
@@ -252,6 +272,8 @@
   --btnFg: var(--buttonPrimaryTextColor);
   --btnBorder: var(--buttonPrimaryBorderColor);
   --button-loading-color: var(--primary-50);
+  --button-badge-background-color: var(--primary-600);
+  --button-badge-text-color: var(--default-50);
 
   &:hover {
     --btnBg: var(--buttonPrimaryHoverBackgroundColor);
@@ -269,6 +291,7 @@
     --btnBg: var(--buttonPrimaryTransparentBackgroundColor);
     --btnFg: var(--buttonPrimaryTransparentTextColor);
     --button-loading-color: var(--buttonPrimaryTransparentTextColor);
+    --button-badge-background-color: var(--buttonPrimaryTransparentTextColor);
 
     &:hover {
       --btnBg: var(--buttonPrimaryTransparentHoverBackgroundColor);
@@ -282,6 +305,7 @@
 
     &:disabled {
       --btnFg: var(--button-disabled-text-color);
+      --button-badge-background-color: var(--button-disabled-border-color);
     }
   }
 }
@@ -292,6 +316,8 @@
   --btnBorder: var(--buttonSuccessBorderColor);
   --btnFocus: var(--focusSuccess);
   --button-loading-color: var(--success-50);
+  --button-badge-background-color: var(--success-600);
+  --button-badge-text-color: var(--default-50);
 
   &:hover {
     --btnBg: var(--buttonSuccessHoverBackgroundColor);
@@ -313,6 +339,7 @@
     --btnBg: var(--buttonSuccessTransparentBackgroundColor);
     --btnFg: var(--buttonSuccessTransparentTextColor);
     --button-loading-color: var(--buttonSuccessTransparentTextColor);
+    --button-badge-background-color: var(--buttonSuccessTransparentTextColor);
 
     &:hover {
       --btnBg: var(--buttonSuccessTransparentHoverBackgroundColor);
@@ -326,6 +353,7 @@
 
     &:disabled {
       --btnFg: var(--button-disabled-text-color);
+      --button-badge-background-color: var(--button-disabled-border-color);
     }
   }
 }
@@ -336,6 +364,8 @@
   --btnBorder: var(--buttonWarningBorderColor);
   --btnFocus: var(--focusWarning);
   --button-loading-color: var(--warning-50);
+  --button-badge-background-color: var(--warning-600);
+  --button-badge-text-color: var(--default-50);
 
   &:hover {
     --btnBg: var(--buttonWarningHoverBackgroundColor);
@@ -357,7 +387,7 @@
     --btnBg: var(--buttonWarningTransparentBackgroundColor);
     --btnFg: var(--buttonWarningTransparentTextColor);
     --button-loading-color: var(--buttonWarningTransparentTextColor);
-
+    --button-badge-background-color: var(--buttonWarningTransparentTextColor);
     &:hover {
       --btnBg: var(--buttonWarningTransparentHoverBackgroundColor);
       --btnFg: var(--buttonWarningTransparentHoverTextColor);
@@ -370,6 +400,7 @@
 
     &:disabled {
       --btnFg: var(--button-disabled-text-color);
+      --button-badge-background-color: var(--button-disabled-border-color);
     }
   }
 }
@@ -380,6 +411,8 @@
   --btnBorder: var(--buttonDangerBorderColor);
   --btnFocus: var(--focusDanger);
   --button-loading-color: var(--danger-50);
+  --button-badge-background-color: var(--danger-600);
+  --button-badge-text-color: var(--default-50);
 
   &:hover {
     --btnBg: var(--buttonDangerHoverBackgroundColor);
@@ -401,6 +434,7 @@
     --btnBg: var(--buttonDangerTransparentBackgroundColor);
     --btnFg: var(--buttonDangerTransparentTextColor);
     --button-loading-color: var(--buttonDangerTransparentTextColor);
+    --button-badge-background-color: var(--buttonDangerTransparentTextColor);
 
     &:hover {
       --btnBg: var(--buttonDangerTransparentHoverBackgroundColor);
@@ -414,6 +448,7 @@
 
     &:disabled {
       --btnFg: var(--button-disabled-text-color);
+      --button-badge-background-color: var(--button-disabled-border-color);
     }
   }
 }
@@ -469,6 +504,10 @@
 
   &.Button_transparent {
     --btnFg: transparent;
+  }
+
+  .Badge {
+    visibility: hidden;
   }
 }
 

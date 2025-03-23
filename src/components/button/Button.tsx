@@ -40,6 +40,7 @@ export const Button = memo(
       style,
       rainbowEffect,
       loading,
+      badge,
       renderFunc = buttonRenderFunc,
     } = props;
 
@@ -113,11 +114,13 @@ export const Button = memo(
         {leftIcon ? <div className={s.Icon}>{leftIcon}</div> : null}
         <div className={s.Label}>{label}</div>
         {rightIcon ? <div className={s.Icon}>{rightIcon}</div> : null}
+        {badge && <div className={s.Badge}>{badge}</div>}
         {loadingNode}
       </Flex>
     ) : (
       <div className={s.Icon}>
         {leftIcon || rightIcon}
+        {badge && <div className={s.Badge}>{badge}</div>}
         {loadingNode}
       </div>
     );
