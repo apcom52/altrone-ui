@@ -517,3 +517,65 @@
   top: 50%;
   transform: translateX(-50%) translateY(-50%);
 }
+
+:global(.AltroneDark) {
+  .Primary {
+    --button-badge-background-color: var(--primary-400);
+    --button-badge-text-color: var(--default-50);
+
+    &.Button_transparent {
+      --button-badge-background-color: var(--primary-700);
+      --button-badge-text-color: var(--default-50);
+    }
+
+    &:disabled {
+      --button-badge-background-color: var(--default-800);
+      --button-badge-text-color: var(--default-500);
+    }
+  }
+
+  .Success {
+    --button-badge-background-color: var(--success-400);
+    --button-badge-text-color: var(--default-50);
+
+    &.Button_transparent {
+      --button-badge-background-color: var(--success-700);
+      --button-badge-text-color: var(--default-50);
+    }
+
+    &:disabled {
+      --button-badge-background-color: var(--default-800);
+      --button-badge-text-color: var(--default-500);
+    }
+  }
+
+  .Warning {
+    --button-badge-background-color: var(--warning-400);
+    --button-badge-text-color: var(--default-50);
+
+    &.Button_transparent {
+      --button-badge-background-color: var(--warning-700);
+      --button-badge-text-color: var(--default-50);
+    }
+
+    &:disabled {
+      --button-badge-background-color: var(--default-800);
+      --button-badge-text-color: var(--default-500);
+    }
+  }
+
+  .Danger {
+    --button-badge-background-color: var(--danger-400);
+    --button-badge-text-color: var(--default-50);
+
+    &.Button_transparent {
+      --button-badge-background-color: var(--danger-700);
+      --button-badge-text-color: var(--default-50);
+    }
+
+    &:disabled {
+      --button-badge-background-color: var(--default-800);
+      --button-badge-text-color: var(--default-500);
+    }
+  }
+}
