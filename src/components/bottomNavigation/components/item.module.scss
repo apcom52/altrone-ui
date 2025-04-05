@@ -4,16 +4,29 @@
   --bottomNavigationItemTextColor: var(--default-700);
   --bottomNavigationHoveredItemTextColor: var(--primary-600);
   --bottomNavigationPressedItemTextColor: var(--primary-700);
+  --bottom-navigation-badge-background: linear-gradient(
+    to bottom right,
+    #eb7dcc 0%,
+    #a18cd1 100%
+  );
+  --bottom-navigation-badge-text-color: white;
 }
 
 :global(.AltroneDark) {
   --bottomNavigationItemTextColor: var(--default-200);
   --bottomNavigationHoveredItemTextColor: var(--primary-400);
   --bottomNavigationPressedItemTextColor: var(--primary-300);
+  --bottom-navigation-badge-background: linear-gradient(
+    to bottom right,
+    #9d3f8a 0%,
+    #5e4e95 100%
+  );
+  --bottom-navigation-badge-text-color: white;
 }
 
 .Item {
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
   gap: var(--xs-gap);
@@ -30,7 +43,8 @@
   @include no-selection;
   @include focus;
 
-  &:hover, &.Selected {
+  &:hover,
+  &.Selected {
     color: var(--bottomNavigationHoveredItemTextColor);
   }
 
@@ -46,4 +60,15 @@
 
 .Label {
   @include sm-paragraph;
+}
+
+.Badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--top-navigation-badge-background);
+  color: var(--top-navigation-badge-text-color);
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
 }

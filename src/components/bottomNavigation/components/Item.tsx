@@ -4,17 +4,19 @@ import clsx from 'clsx';
 import s from './item.module.scss';
 import { useConfiguration } from 'components/configuration';
 import { RenderFuncProp } from 'types';
+import { Badge } from 'components/badge/Badge.tsx';
 
 const bottomNavigationItemComponent: RenderFuncProp<
   HTMLAnchorElement,
   BottomNavigationItemProps
 > = (ref, props) => {
-  const { icon, label, ...restProps } = props;
+  const { icon, label, badge, ...restProps } = props;
 
   return (
     <a ref={ref} {...restProps}>
       <div className={s.Icon}>{icon}</div>
       <div className={s.Label}>{label}</div>
+      {badge ? <Badge className={s.Badge}>{badge}</Badge> : null}
     </a>
   );
 };
