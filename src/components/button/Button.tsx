@@ -8,6 +8,7 @@ import { forwardRef, memo, useEffect } from 'react';
 import { RenderFuncProp } from 'types';
 import { GlobalUtils } from '../../utils';
 import { Loading } from '../loading';
+import { Badge } from 'components/badge/Badge.tsx';
 
 const buttonRenderFunc: RenderFuncProp<HTMLButtonElement, ButtonProps> = (
   ref,
@@ -114,13 +115,13 @@ export const Button = memo(
         {leftIcon ? <div className={s.Icon}>{leftIcon}</div> : null}
         <div className={s.Label}>{label}</div>
         {rightIcon ? <div className={s.Icon}>{rightIcon}</div> : null}
-        {badge && <div className={s.Badge}>{badge}</div>}
+        {badge && <Badge className={s.Badge}>{badge}</Badge>}
         {loadingNode}
       </Flex>
     ) : (
       <div className={s.Icon}>
         {leftIcon || rightIcon}
-        {badge && <div className={s.Badge}>{badge}</div>}
+        {badge && <Badge className={s.Badge}>{badge}</Badge>}
         {loadingNode}
       </div>
     );

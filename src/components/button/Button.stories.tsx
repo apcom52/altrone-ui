@@ -158,6 +158,12 @@ const renderButtonsWithSize = (size: Size) => {
         showLabel={false}
         leftIcon={<Icon i="favorite" />}
       />
+      <Button
+        size={size}
+        label="Likes"
+        leftIcon={<Icon i="favorite" />}
+        badge="8"
+      />
     </Flex>
   );
 };

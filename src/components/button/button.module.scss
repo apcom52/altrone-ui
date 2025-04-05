@@ -233,16 +233,9 @@
 }
 
 .Badge {
-  position: relative;
   margin-top: -4px;
   color: var(--button-badge-text-color);
   background-color: var(--button-badge-background-color);
-  border-radius: 4px;
-  height: 16px;
-  padding: 0 var(--xs-gap);
-
-  @include small-label;
-  line-height: 16px;
 }
 
 .Button_transparent {
@@ -459,6 +452,9 @@
 }
 
 .Small {
+  --badge-height: 12px;
+  --badge-font-size: 7px;
+
   min-height: var(--small-size);
   height: var(--small-size);
   align-items: center;
@@ -479,6 +475,9 @@
 }
 
 .Large {
+  --badge-height: 16px;
+  --badge-font-size: 10px;
+
   min-height: var(--large-size);
   height: var(--large-size);
   padding: var(--s-gap) var(--l-gap);
