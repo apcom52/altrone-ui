@@ -5,6 +5,12 @@
   --topNavigationLinkTextColor: var(--default-900);
   --topNavigationHoveredLinkBackgroundColor: var(--default-200);
   --topNavigationPressedLinkBackgroundColor: var(--default-300);
+  --top-navigation-badge-background: linear-gradient(
+    to bottom right,
+    #eb7dcc 0%,
+    #a18cd1 100%
+  );
+  --top-navigation-badge-text-color: white;
 }
 
 :global(.AltroneDark) {
@@ -12,6 +18,12 @@
   --topNavigationLinkTextColor: var(--default-50);
   --topNavigationHoveredLinkBackgroundColor: var(--default-700);
   --topNavigationPressedLinkBackgroundColor: var(--default-600);
+  --top-navigation-badge-background: linear-gradient(
+    to bottom right,
+    #9d3f8a 0%,
+    #5e4e95 100%
+  );
+  --top-navigation-badge-text-color: white;
 }
 
 .Link {
@@ -44,16 +56,26 @@
     opacity: 0;
     z-index: -1;
     background-color: var(--topNavigationHoveredLinkBackgroundColor);
-    transition: top 0.2s ease, left 0.2s ease, width 0.2s ease, height 0.2s ease;
+    transition:
+      top 0.2s ease,
+      left 0.2s ease,
+      width 0.2s ease,
+      height 0.2s ease;
   }
 
-  &:hover, &:focus-visible, &.Selected {
+  &:hover,
+  &:focus-visible,
+  &.Selected {
     &:before {
       width: 100%;
       height: 100%;
       top: 0;
       left: 0;
       opacity: 1;
+    }
+
+    .Badge {
+      background-color: var(--top-navigation-link-badge-background-color);
     }
   }
 
@@ -77,4 +99,12 @@
   align-items: center;
   z-index: 1;
   gap: var(--s-gap);
+}
+
+.Badge {
+  background: var(--top-navigation-badge-background);
+  color: var(--top-navigation-badge-text-color);
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
 }
