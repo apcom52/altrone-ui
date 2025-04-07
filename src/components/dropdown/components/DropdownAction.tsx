@@ -7,18 +7,23 @@ import { useConfiguration } from 'components/configuration';
 import { useId } from 'react';
 import { usePopoverCurrentIndex } from '../../popover/Popover.tsx';
 import { RenderFuncProp } from '../../../types';
+import { Badge } from 'components/badge/Badge.tsx';
 
 const dropdownActionRenderFunc: RenderFuncProp<
   HTMLButtonElement,
   DropdownActionProps & { keyProp?: string }
 > = (ref, props) => {
-  const { icon, label, hintText, keyProp, ...restProps } = props;
+  const { icon, label, hintText, keyProp, badge, ...restProps } = props;
 
   return (
     <button type="button" role="button" ref={ref} {...restProps}>
       <div className={s.Icon}>{icon}</div>
       <div className={s.Label}>{label}</div>
-      {hintText ? <div className={s.Hint}>{hintText}</div> : null}
+      {badge ? (
+        <Badge className={s.Badge}>{badge}</Badge>
+      ) : hintText ? (
+        <div className={s.Hint}>{hintText}</div>
+      ) : null}
     </button>
   );
 };

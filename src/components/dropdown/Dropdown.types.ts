@@ -17,6 +17,7 @@ export interface DropdownActionProps
   >;
   'data-active'?: boolean;
   keyProp?: string;
+  badge?: string | number | JSX.Element;
 }
 
 export interface DropdownCheckboxProps

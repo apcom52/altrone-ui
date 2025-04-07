@@ -146,9 +146,20 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
                   label="Save document"
                   hintText="⌘+A"
                 />
+                <Dropdown.Action
+                  icon={<Icon i="push_pin" />}
+                  label="Pinned documents"
+                  badge="4"
+                />
+                <Dropdown.Action
+                  icon={<Icon i="push_pin" />}
+                  label="Pinned documents"
+                  badge="NEW"
+                  danger
+                />
                 <Divider />
                 <Dropdown.Action
-                  icon={<Icon i="add" />}
+                  icon={<Icon i="close" />}
                   label="Close document"
                   hintText="⌘+A"
                 />
