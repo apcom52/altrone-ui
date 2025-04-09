@@ -4,6 +4,7 @@ import s from './action.module.scss';
 import clsx from 'clsx';
 import { useToolbarContext } from '../Toolbar.context.ts';
 import { useConfiguration } from 'components/configuration';
+import { Badge } from 'components/badge/Badge.tsx';
 
 const actionRenderFunc: ToolbarActionProps['renderFunc'] = (ref, props) => {
   const {
@@ -12,6 +13,7 @@ const actionRenderFunc: ToolbarActionProps['renderFunc'] = (ref, props) => {
     showLabel = true,
     compact,
     icon,
+    badge,
     ...restProps
   } = props;
 
@@ -22,6 +24,7 @@ const actionRenderFunc: ToolbarActionProps['renderFunc'] = (ref, props) => {
       {(compact && showLabel) || !compact ? (
         <div className={s.Label}>{showLabel ? label : null}</div>
       ) : null}
+      {badge ? <Badge className={s.Badge}>{badge}</Badge> : null}
     </button>
   );
 };
