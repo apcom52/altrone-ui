@@ -13,6 +13,7 @@ import {
   NavigationListLevelContext,
   useNavigationListLevel,
 } from '../NavigationList.context.ts';
+import { Badge } from 'components/badge/Badge.tsx';
 
 const navigationListRenderFunc: RenderFuncProp<
   HTMLAnchorElement,
@@ -21,10 +22,11 @@ const navigationListRenderFunc: RenderFuncProp<
   const {
     icon,
     label,
-    actions,
+    actions = undefined,
     level = 0,
     children,
     selected,
+    badge,
     ...restProps
   } = props;
 
@@ -43,7 +45,8 @@ const navigationListRenderFunc: RenderFuncProp<
         <div className={s.Label}>
           {showIcon ? <div className={s.Icon}>{icon}</div> : null}
           {label}
-          {actions ? <div className={s.Actions}>{actions}</div> : null}
+          {badge ? <Badge className={s.Badge}>{badge}</Badge> : null}
+          {actions?.length ? <div className={s.Actions}>{actions}</div> : null}
         </div>
       </a>
       {showChildren ? (

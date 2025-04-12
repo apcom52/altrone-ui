@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Dropdown, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { NavigationList } from './NavigationList.tsx';
-import { LinkAction } from './components';
+import { Link, LinkAction } from './components';
 
 const story: Meta<typeof NavigationList> = {
   title: 'Components/Navigation/NavigationList',
@@ -45,6 +45,7 @@ export const NavigationListStory: StoryObj<typeof NavigationList> = {
               <NavigationList.Link
                 href="#"
                 icon={<Icon i="account_circle" />}
+                badge="NEW"
                 label="Preferences"
               >
                 <Dropdown
@@ -95,8 +96,8 @@ export const NavigationListStory: StoryObj<typeof NavigationList> = {
                   icon={<Icon i="more_horiz" />}
                 />
               </Dropdown>
-              <NavigationList.Link label="Attributes" />
-              <NavigationList.Link label="Automations" selected />
+              <NavigationList.Link label="Attributes" badge="4" />
+              <NavigationList.Link label="Automations" selected badge="2" />
               <NavigationList.Link label="Copilot" />
               <NavigationList.Link label="Group mentions" />
               <NavigationList.Link label="Import" />
@@ -177,7 +178,10 @@ export const NavigationListWithNestedLinks: StoryObj<typeof NavigationList> = {
                     </Dropdown.Menu>
                   }
                 >
-                  <LinkAction label="Select Region" showOnlyOnHover />
+                  <NavigationList.LinkAction
+                    label="Select Region"
+                    icon={<Icon i="arrow_drop_down" />}
+                  />
                 </Dropdown>
               </NavigationList.Link>
               <NavigationList.Link
@@ -200,6 +204,7 @@ export const NavigationListWithNestedLinks: StoryObj<typeof NavigationList> = {
               <NavigationList.Link
                 label="By genre"
                 icon={<Icon i="graphic_eq" />}
+                badge="5"
                 selected
               >
                 <NavigationList.Link label="Pop" />
@@ -211,6 +216,7 @@ export const NavigationListWithNestedLinks: StoryObj<typeof NavigationList> = {
                   label="Classical"
                   icon={<Icon i="piano" />}
                   selected
+                  badge="3"
                 >
                   <NavigationList.Link label="Piano" />
                   <NavigationList.Link label="Violin" />
@@ -221,7 +227,7 @@ export const NavigationListWithNestedLinks: StoryObj<typeof NavigationList> = {
                     icon={<Icon i="spatial_audio_off" />}
                   >
                     <NavigationList.Link label="Live" selected />
-                    <NavigationList.Link label="Concert" />
+                    <NavigationList.Link label="Concert" badge="4" />
                   </NavigationList.Link>
                 </NavigationList.Link>
               </NavigationList.Link>
