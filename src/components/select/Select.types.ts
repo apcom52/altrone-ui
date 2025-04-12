@@ -17,6 +17,12 @@ export type SelectContext = {
   clearValue: () => void;
 };
 
+export type SelectRenderItemFunc = (
+  option: Option,
+  index: number,
+  closeDropdown: () => void,
+) => ReactElement;
+
 export interface SelectProps<Value = unknown>
   extends Omit<
     React.InputHTMLAttributes<HTMLInputElement>,
@@ -35,4 +41,6 @@ export interface SelectProps<Value = unknown>
   placeholder?: string;
   parentWidth?: boolean;
   Component?: RenderFunction<ReactElement, SelectContext>;
+  renderFunc?: RenderFunction<ReactElement, SelectContext>;
+  renderItemFunc?: RenderFunction<ReactElement, SelectRenderItemFunc>;
 }
