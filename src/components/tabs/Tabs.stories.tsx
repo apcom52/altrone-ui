@@ -38,6 +38,7 @@ export const FlexLayout: StoryObj<typeof Flex> = {
             selected
             href="#chat"
             label="Chat"
+            badge="2"
           />
           <Tabs.Item
             icon={<Icon i="list" />}

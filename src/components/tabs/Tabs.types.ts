@@ -9,4 +9,5 @@ export interface TabsItemProps
   selected?: boolean;
   showLabel?: boolean;
   renderFunc?: RenderFuncProp<HTMLAnchorElement, TabsItemProps>;
+  badge?: string | number | JSX.Element;
 }

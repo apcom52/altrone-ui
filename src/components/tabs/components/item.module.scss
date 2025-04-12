@@ -28,6 +28,9 @@
   --tabs-item-active-background-color: var(--tabSelectedItemBackgroundColor);
   --tabs-item-active-border-color: var(--default-900);
   --tabs-item-active-text-color: var(--tabSelectedItemTextColor);
+
+  --tabs-badge-background-color: var(--default-300);
+  --tabs-badge-text-color: var(--default-900);
 }
 
 :global(.AltroneDark) {
@@ -47,6 +50,9 @@
   --tabs-item-active-background-color: var(--tabSelectedItemBackgroundColor);
   --tabs-item-active-border-color: var(--default-50);
   --tabs-item-active-text-color: var(--tabSelectedItemTextColor);
+
+  --tabs-badge-background-color: var(--default-700);
+  --tabs-badge-text-color: var(--default-50);
 }
 
 .Item {
@@ -92,4 +98,10 @@
 .Icon {
   font-size: 16px;
   height: 16px;
+}
+
+.Badge {
+  color: var(--tabs-badge-text-color);
+  background-color: var(--tabs-badge-background-color);
+  margin-left: 2px;
 }
