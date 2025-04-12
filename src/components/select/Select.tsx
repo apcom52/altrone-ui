@@ -1,5 +1,5 @@
 import { SelectContext, SelectProps } from './Select.types.ts';
-import { cloneElement, memo, useId, useMemo } from 'react';
+import { cloneElement, memo, useEffect, useId, useMemo } from 'react';
 import { Dropdown } from 'components/dropdown';
 import { Icon } from 'components/icon';
 import { Scrollable } from 'components/scrollable';
@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import { PopoverContentContext } from 'components/popover';
 import { useSelect } from './useSelect.ts';
 import { useConfiguration } from 'components/configuration';
+import { GlobalUtils } from 'utils/GlobalUtils.ts';
 
 const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
   const {
@@ -28,6 +29,7 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
     onChange,
     children,
     options,
+    renderFunc,
     ...restProps
   } = props;
 
@@ -100,6 +102,12 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
     clearValue,
   };
 
+  useEffect(() => {
+    if (Component) {
+      GlobalUtils.deprecatedMessage('Select', 'Component', 'renderFunc', '4.0');
+    }
+  }, [Component]);
+
   return (
     <div className={s.SelectWrapper}>
       <div className={s.FormInputs}>
@@ -133,6 +141,18 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
               return Component({ ...selectContext, expanded: opened });
             } else {
               return cloneElement(Component, {
+                ...selectContext,
+                expanded: opened,
+              });
+            }
+          } else if (renderFunc) {
+            if (typeof renderFunc === 'function') {
+              return renderFunc({
+                ...selectContext,
+                expanded: opened,
+              });
+            } else {
+              return cloneElement(renderFunc, {
                 ...selectContext,
                 expanded: opened,
               });
