@@ -25,6 +25,8 @@ export const Item = forwardRef<HTMLAnchorElement, BottomNavigationItemProps>(
   (props, ref) => {
     const { bottomNavigation: bottomNavigationConfig = {} } =
       useConfiguration();
+    const { item: bottomNavigationItemConfig = {} } = bottomNavigationConfig;
+
     const {
       className,
       renderFunc = bottomNavigationItemComponent,
@@ -37,13 +39,22 @@ export const Item = forwardRef<HTMLAnchorElement, BottomNavigationItemProps>(
         [s.Selected]: props.selected,
         [String(bottomNavigationConfig.selectedItemClassName)]:
           bottomNavigationConfig.selectedItemClassName && props.selected,
+        [String(bottomNavigationItemConfig.selectedItemClassName)]:
+          bottomNavigationItemConfig.selectedItemClassName && props.selected,
       },
+      bottomNavigationItemConfig.className,
       className,
     );
+
+    const styles = {
+      ...bottomNavigationItemConfig.style,
+      ...props.style,
+    };
 
     return renderFunc(ref, {
       ...restProps,
       className: cls,
+      style: styles,
     });
   },
 );

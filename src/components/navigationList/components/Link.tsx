@@ -30,6 +30,8 @@ const navigationListRenderFunc: RenderFuncProp<
     ...restProps
   } = props;
 
+  const { navigationList: { link: linkConfig = {} } = {} } = useConfiguration();
+
   const hasChildren = React.Children.count(children) > 0;
   const showChildren = hasChildren && selected;
   const showIcon = icon && level < 2;
@@ -39,13 +41,15 @@ const navigationListRenderFunc: RenderFuncProp<
     [s.ThirdLevelList]: level > 0,
   });
 
+  const badgeCls = clsx(s.Badge, linkConfig.badgeClassName);
+
   return (
     <>
       <a ref={ref} {...restProps}>
         <div className={s.Label}>
           {showIcon ? <div className={s.Icon}>{icon}</div> : null}
           {label}
-          {badge ? <Badge className={s.Badge}>{badge}</Badge> : null}
+          {badge ? <Badge className={badgeCls}>{badge}</Badge> : null}
           {actions?.length ? <div className={s.Actions}>{actions}</div> : null}
         </div>
       </a>

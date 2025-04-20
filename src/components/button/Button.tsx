@@ -110,18 +110,20 @@ export const Button = memo(
       </div>
     ) : null;
 
+    const badgeCls = clsx(s.Badge, buttonConfig.badgeClassName);
+
     const buttonContent = !isOnlyIcon ? (
       <Flex gap={size === 'l' ? 's' : 'xs'} align="center">
         {leftIcon ? <div className={s.Icon}>{leftIcon}</div> : null}
         <div className={s.Label}>{label}</div>
         {rightIcon ? <div className={s.Icon}>{rightIcon}</div> : null}
-        {badge && <Badge className={s.Badge}>{badge}</Badge>}
+        {badge && <Badge className={badgeCls}>{badge}</Badge>}
         {loadingNode}
       </Flex>
     ) : (
       <div className={s.Icon}>
         {leftIcon || rightIcon}
-        {badge && <Badge className={s.Badge}>{badge}</Badge>}
+        {badge && <Badge className={badgeCls}>{badge}</Badge>}
         {loadingNode}
       </div>
     );

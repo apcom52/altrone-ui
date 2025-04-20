@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { ColorPickerProps, ColorPreset } from './ColorPicker.types';
-import { TextInput, Popover, Icon } from 'components';
+import { TextInput, Popover, Icon, useConfiguration } from 'components';
 import s from './styles.module.scss';
 import { ColorPickerContent } from './inner/ColorPickerContent';
 import { Size } from 'types';
@@ -30,10 +30,16 @@ export const ColorPicker = <Value = unknown,>(
     ...restProps
   } = props;
 
-  const cls = clsx(s.ColorPicker, className, {
+  const { colorPicker: colorPickerConfig = {} } = useConfiguration();
+
+  const cls = clsx(s.ColorPicker, colorPickerConfig.className, className, {
     [s.Readonly]: readOnly,
   });
-  const styles = { ...style };
+
+  const styles = {
+    ...colorPickerConfig.style,
+    ...style,
+  };
 
   return (
     <Popover
