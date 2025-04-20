@@ -13,14 +13,17 @@ const dropdownActionRenderFunc: RenderFuncProp<
   HTMLButtonElement,
   DropdownActionProps & { keyProp?: string }
 > = (ref, props) => {
+  const { dropdown: { action: actionConfig = {} } = {} } = useConfiguration();
   const { icon, label, hintText, keyProp, badge, ...restProps } = props;
+
+  const badgeCls = clsx(s.Badge, actionConfig.badgeClassName);
 
   return (
     <button type="button" role="button" ref={ref} {...restProps}>
       <div className={s.Icon}>{icon}</div>
       <div className={s.Label}>{label}</div>
       {badge ? (
-        <Badge className={s.Badge}>{badge}</Badge>
+        <Badge className={badgeCls}>{badge}</Badge>
       ) : hintText ? (
         <div className={s.Hint}>{hintText}</div>
       ) : null}

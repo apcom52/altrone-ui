@@ -17,6 +17,10 @@ const actionRenderFunc: ToolbarActionProps['renderFunc'] = (ref, props) => {
     ...restProps
   } = props;
 
+  const { toolbar: { action: actionConfig = {} } = {} } = useConfiguration();
+
+  const badgeCls = clsx(s.Badge, actionConfig.badgeClassName);
+
   return (
     <button type="button" ref={ref} title={props.label} {...restProps}>
       {!children ? <div className={s.Icon}>{icon}</div> : null}
@@ -24,7 +28,7 @@ const actionRenderFunc: ToolbarActionProps['renderFunc'] = (ref, props) => {
       {(compact && showLabel) || !compact ? (
         <div className={s.Label}>{showLabel ? label : null}</div>
       ) : null}
-      {badge ? <Badge className={s.Badge}>{badge}</Badge> : null}
+      {badge ? <Badge className={badgeCls}>{badge}</Badge> : null}
     </button>
   );
 };
@@ -34,6 +38,7 @@ export const Action = forwardRef<HTMLButtonElement, ToolbarActionProps>(
     const { className, ...restProps } = props;
 
     const { toolbar: toolbarConfig = {} } = useConfiguration();
+    const { action: actionConfig = {} } = toolbarConfig;
 
     const { compact } = useToolbarContext();
 
@@ -44,11 +49,18 @@ export const Action = forwardRef<HTMLButtonElement, ToolbarActionProps>(
       },
       className,
       toolbarConfig.actionClassName,
+      actionConfig.className,
     );
+
+    const styles = {
+      ...actionConfig.style,
+      ...props.style,
+    };
 
     return actionRenderFunc(ref, {
       ...restProps,
       className: cls,
+      style: styles,
       compact,
     });
   },

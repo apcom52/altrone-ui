@@ -11,19 +11,21 @@ const tabItemRenderFunc: RenderFuncProp<HTMLAnchorElement, TabsItemProps> = (
   props,
 ) => {
   const { label, icon, showLabel = true, badge, ...restProps } = props;
+  const { tabs: { item: tabsItemConfig = {} } = {} } = useConfiguration();
 
+  const badgeCls = clsx(s.Badge, tabsItemConfig.badgeClassName);
   return (
     <a ref={ref} role="tab" aria-selected={props.selected} {...restProps}>
       {icon ? <div className={s.Icon}>{icon}</div> : null}
       {showLabel ? <div>{label}</div> : null}
-      {badge ? <Badge className={s.Badge}>{badge}</Badge> : null}
+      {badge ? <Badge className={badgeCls}>{badge}</Badge> : null}
     </a>
   );
 };
 
 export const Item = forwardRef<HTMLAnchorElement, TabsItemProps>(
   (props, ref) => {
-    const { tabs = {} } = useConfiguration();
+    const { tabs: { item: tabsItemConfig = {} } = {} } = useConfiguration();
 
     const { className, renderFunc = tabItemRenderFunc, ...restProps } = props;
 
@@ -31,9 +33,11 @@ export const Item = forwardRef<HTMLAnchorElement, TabsItemProps>(
       s.Item,
       {
         [s.Selected]: props.selected,
+        [String(tabsItemConfig.selectedClassName)]:
+          tabsItemConfig.selectedClassName && props.selected,
       },
       className,
-      tabs.className,
+      tabsItemConfig.className,
     );
 
     return renderFunc(ref, {
