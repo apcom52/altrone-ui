@@ -20,8 +20,16 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
-        run: npm i
+        run: npm ci
 
       - name: Run tests
         run: npm run test:unit
