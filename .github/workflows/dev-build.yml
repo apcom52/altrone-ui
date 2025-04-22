@@ -51,6 +51,11 @@ jobs:
           echo "Next version: $NEXT_VERSION"
           echo "version=$NEXT_VERSION" >> $GITHUB_OUTPUT
 
+      - name: Set Git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Set pre-release version
         run: npm version ${{ steps.versioning.outputs.version }}
 
