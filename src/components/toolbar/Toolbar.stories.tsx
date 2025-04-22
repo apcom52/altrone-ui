@@ -50,7 +50,11 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
           <Toolbar.Action icon={<Icon i="settings" />} label="General" />
           <Toolbar.Action icon={<Icon i="content_copy" />} label="Tabs" />
           <Toolbar.Action icon={<Icon i="input" />} label="Autofill" />
-          <Toolbar.Action icon={<Icon i="key" />} label="Passwords" />
+          <Toolbar.Action
+            icon={<Icon i="key" />}
+            label="Passwords"
+            badge="233"
+          />
           <Toolbar.Action icon={<Icon i="search" />} label="Search" />
           <Toolbar.Action icon={<Icon i="lock" />} label="Security" />
           <Toolbar.Action icon={<Icon i="back_hand" />} label="Privacy" />
@@ -65,7 +69,11 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
         <Toolbar>
           <Toolbar.Group>
             <Toolbar.Action icon={<Icon i="settings" />} label="General" />
-            <Toolbar.Action icon={<Icon i="content_copy" />} label="Tabs" />
+            <Toolbar.Action
+              icon={<Icon i="content_copy" />}
+              label="Tabs"
+              badge="NEW"
+            />
             <Toolbar.Action icon={<Icon i="input" />} label="Autofill" />
             <Toolbar.Action icon={<Icon i="key" />} label="Passwords" />
             <Toolbar.Action icon={<Icon i="search" />} label="Search" />

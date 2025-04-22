@@ -17,6 +17,8 @@ const DataTableComponent = <DataType extends object>(
     selectable,
     showFooter = true,
     rowsPerPage,
+    data,
+    columns,
     ...restProps
   } = props;
 

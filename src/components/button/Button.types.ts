@@ -16,4 +16,5 @@ export interface ButtonProps
   renderFunc?: RenderFuncProp<HTMLButtonElement, ButtonProps>;
   ariaRole?: string;
   loading?: boolean;
+  badge?: number | string | JSX.Element;
 }

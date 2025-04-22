@@ -20,6 +20,7 @@ export interface NavigationListLinkProps
   label: string;
   icon?: JSX.Element;
   selected?: boolean;
+  badge?: string | number | JSX.Element;
   renderFunc?: RenderFuncProp<
     HTMLAnchorElement,
     NavigationListLinkPropsWithActions

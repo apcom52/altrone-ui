@@ -17,6 +17,7 @@ export interface ToolbarActionProps
     HTMLButtonElement,
     ToolbarActionProps & { compact?: boolean }
   >;
+  badge?: string | number | JSX.Element;
 }
 
 export interface ToolbarGroupProps

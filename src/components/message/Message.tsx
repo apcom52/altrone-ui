@@ -1,6 +1,6 @@
 import { memo, useEffect } from 'react';
 import { MessageProps } from './Message.types.ts';
-import { Flex } from 'components/flex';
+import { Flex, CloseButton } from 'components';
 import s from './message.module.scss';
 import clsx from 'clsx';
 import { useConfiguration } from 'components/configuration';
@@ -16,6 +16,9 @@ export const Message = memo<MessageProps>(
     severity,
     style,
     ariaRole = 'alert',
+    actions,
+    onClose,
+    compact = false,
     ...props
   }) => {
     const { message: messageConfig = {} } = useConfiguration();
@@ -30,6 +33,7 @@ export const Message = memo<MessageProps>(
         [s.RoleSuccess]: messageRole === 'success',
         [s.RoleWarning]: messageRole === 'warning',
         [s.RoleDanger]: messageRole === 'danger',
+        [s.Compact]: compact,
       },
       className,
       messageConfig.className,
@@ -63,8 +67,11 @@ export const Message = memo<MessageProps>(
           justify="center"
         >
           {header ? <div className={s.Header}>{header}</div> : null}
-          <div className={s.Description}>{children}</div>
+          {children ? <div className={s.Body}>{children}</div> : null}
+          {compact ? <div className={s.Separator} /> : null}
+          {actions ? <div className={s.Actions}>{actions}</div> : null}
         </Flex>
+        {onClose ? <CloseButton onClick={onClose} /> : null}
       </Flex>
     );
   },

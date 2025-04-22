@@ -53,7 +53,8 @@
 
   @include paragraph;
 
-  &:hover, &:focus-visible {
+  &:hover,
+  &:focus-visible {
     --bgColor: var(--inputHoverBackgroundColor);
     --fgColor: var(--inputHoverTextColor);
     --placeholderColor: var(--inputPlaceholderHoverTextColor);
@@ -79,6 +80,8 @@
 
 .Readonly {
   --bgColor: transparent !important;
+  --inputPlaceholderTextColor: var(--default-500);
+  --inputPlaceholderHoverTextColor: var(--default-500);
 }
 
 .Transparent {
@@ -109,7 +112,8 @@
   }
 }
 
-.LeftIslands, .RightIslands {
+.LeftIslands,
+.RightIslands {
   display: flex;
   position: absolute;
   top: 0;
