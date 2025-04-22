@@ -29,8 +29,12 @@ jobs:
         id: versioning
         run: |
           PACKAGE_NAME=$(node -p "require('./package.json').name")
-          BASE_VERSION=$(node -p "require('./package.json').version")
+          FULL_VERSION=$(node -p "require('./package.json').version")
 
+          # Удаляем всё после X.Y.Z (оставляем только цифры до первого дефиса)
+          BASE_VERSION=$(echo "$FULL_VERSION" | sed -E 's/^([0-9]+\.[0-9]+\.[0-9]+).*$/\1/')
+
+          echo "Package: $PACKAGE_NAME"
           echo "Base version: $BASE_VERSION"
 
           VERSIONS=$(npm view $PACKAGE_NAME versions --json | jq -r '.[]' || echo "")
@@ -47,10 +51,10 @@ jobs:
           echo "Next version: $NEXT_VERSION"
           echo "version=$NEXT_VERSION" >> $GITHUB_OUTPUT
 
-      # - name: Set pre-release version
-      #   run: npm version ${{ steps.versioning.outputs.version }} --no-git-tag-version
+      - name: Set pre-release version
+        run: npm version ${{ steps.versioning.outputs.version }}
 
-      # - name: Publish to NPM with tag "dev"
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      #   run: npm publish --tag dev
+      - name: Publish to NPM with tag "dev"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --tag dev
