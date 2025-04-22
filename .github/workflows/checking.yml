@@ -1,4 +1,4 @@
-name: Run Unit Tests
+name: Check PR before merge
 
 on:
   pull_request:
@@ -30,3 +30,6 @@ jobs:
 
       - name: Run tests
         run: npm run test:unit
+
+      - name: Run e2e tests
+        run: npx cypress run --component
