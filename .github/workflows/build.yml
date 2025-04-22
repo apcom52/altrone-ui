@@ -1,0 +1,67 @@
+name: Publish development version
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  test-and-publish:
+    if: contains(github.event.pull_request.labels.*.name, 'dev')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Checkout `develop` branch
+        run: git fetch origin develop
+
+      - name: Merge `develop` into PR branch (virtually)
+        run: git merge origin/develop --no-commit --no-ff
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Compute next dev version
+        id: versioning
+        run: |
+          PACKAGE_NAME=$(node -p "require('./package.json').name")
+          BASE_VERSION=$(node -p "require('./package.json').version")
+
+          echo "Base version: $BASE_VERSION"
+
+          VERSIONS=$(npm view $PACKAGE_NAME versions --json | jq -r '.[]' || echo "")
+          MATCHING=$(echo "$VERSIONS" | grep "^${BASE_VERSION}-dev\." || true)
+
+          if [ -z "$MATCHING" ]; then
+            NEXT_DEV=1
+          else
+            LAST=$(echo "$MATCHING" | sed -E 's/^.*-dev\.([0-9]+)$/\1/' | sort -n | tail -n1)
+            NEXT_DEV=$((LAST + 1))
+          fi
+
+          NEXT_VERSION="${BASE_VERSION}-dev.${NEXT_DEV}"
+          echo "Next version: $NEXT_VERSION"
+          echo "version=$NEXT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Set pre-release version
+        run: npm version ${{ steps.versioning.outputs.version }} --no-git-tag-version
+
+      - name: Publish to NPM with dev tag
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --tag dev
