@@ -29,6 +29,5 @@ export interface ColorPickerProps<ColorValue = string>
   size?: Size;
   transparent?: boolean;
   readonly?: boolean;
-  parentWidth?: boolean;
   renderFunc?: RenderFunction<ColorValue, ColorPickerProps>;
 }
