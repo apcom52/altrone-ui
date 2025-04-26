@@ -22,7 +22,6 @@ export const ColorPicker = <Value = unknown,>(
     className,
     style,
     placeholder,
-    parentWidth,
     size = 'm',
     allowPalette = true,
     colorPresets = EMPTY_COLOR_PRESETS,
