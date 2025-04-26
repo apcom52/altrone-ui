@@ -26,6 +26,7 @@ export const ColorPicker = <Value = unknown,>(
     allowPalette = true,
     colorPresets = EMPTY_COLOR_PRESETS,
     readOnly = false,
+    clearable = false,
     ...restProps
   } = props;
 
@@ -43,14 +44,16 @@ export const ColorPicker = <Value = unknown,>(
   return (
     <Popover
       placement="bottom-start"
-      content={
+      content={({ closePopup }) => (
         <ColorPickerContent
           colorPresets={colorPresets}
           value={value}
           onChange={onChange}
           allowPalette={allowPalette}
+          clearable={clearable}
+          closePopup={closePopup}
         />
-      }
+      )}
       enabled={!readOnly}
       defaultListNavigationIndex={-1}
       listNavigation
@@ -59,7 +62,7 @@ export const ColorPicker = <Value = unknown,>(
         <TextInput
           className={cls}
           style={styles}
-          value={value}
+          value={value || ''}
           placeholder={placeholder}
           readOnly={true}
           readonlyStyles={readOnly}

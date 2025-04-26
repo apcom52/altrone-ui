@@ -38,6 +38,7 @@ export const ColorPickerStory: StoryObj<typeof Divider> = {
             colorPresets={COLORS}
             value={color}
             onChange={setColor}
+            clearable
           />
           <ColorPicker
             placeholder="Only palette"
