@@ -1,7 +1,5 @@
 import { Size } from 'types';
-import { RenderFunction } from 'utils';
-
-export type ColorFormat = 'hex' | 'rgb' | 'preset';
+import { CustomRenderFunction } from 'utils';
 
 export type ColorPreset = {
   name: string;
@@ -14,7 +12,13 @@ export interface ColorPickerPresetProps extends ColorPreset {
   onChange: (value: string) => void;
 }
 
-export interface ColorPickerProps<ColorValue = string>
+export interface ColorPickerContext {
+  opened: boolean;
+  value?: string;
+  setValue: (value?: string) => void;
+}
+
+export interface ColorPickerProps
   extends Omit<
     React.InputHTMLAttributes<HTMLInputElement>,
     'onChange' | 'size' | 'value'
@@ -29,5 +33,6 @@ export interface ColorPickerProps<ColorValue = string>
   size?: Size;
   transparent?: boolean;
   readonly?: boolean;
-  renderFunc?: RenderFunction<ColorValue, ColorPickerProps>;
+  clearable?: boolean;
+  renderFunc?: CustomRenderFunction<ColorPickerContext>;
 }

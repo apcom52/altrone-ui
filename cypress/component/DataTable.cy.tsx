@@ -360,6 +360,7 @@ describe('DataTable.cy.tsx', () => {
 
       if (value && !value2) {
         cy.get('[data-filter-name="age"][data-filter-control="true"]')
+          .should('not.be.disabled')
           .clear()
           .type(value)
           .type('{Del}');
@@ -367,6 +368,7 @@ describe('DataTable.cy.tsx', () => {
         cy.get(
           '[data-filter-name="age"][data-filter-control="true"][data-filter-control-side="start"]',
         )
+          .should('not.be.disabled')
           .clear()
           .type(value)
           .type('{Del}');
@@ -376,6 +378,7 @@ describe('DataTable.cy.tsx', () => {
         cy.get(
           '[data-filter-name="age"][data-filter-control="true"][data-filter-control-side="end"]',
         )
+          .should('not.be.disabled')
           .clear()
           .type(value2)
           .type('{Del}');

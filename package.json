@@ -24,6 +24,7 @@
     "test:e2e-chrome": "npx cypress run --component --browser chrome --env type=regression",
     "test:e2e-chrome-refresh": "npx cypress run --component --browser chrome --env type=base updateSnapshots=true",
     "test:e2e-firefox": "npx cypress run --component --browser firefox",
+    "test:e2e": "npx cypress run --component --browser chrome",
     "test:e2e-ui": "npx cypress open --env type=regression",
     "check-circular-dependencies": "dpdm --no-warning --no-tree ./src/index.ts",
     "visualize-bundle": "vite-bundle-visualizer"

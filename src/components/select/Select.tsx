@@ -146,17 +146,10 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
               });
             }
           } else if (renderFunc) {
-            if (typeof renderFunc === 'function') {
-              return renderFunc({
-                ...selectContext,
-                expanded: opened,
-              });
-            } else {
-              return cloneElement(renderFunc, {
-                ...selectContext,
-                expanded: opened,
-              });
-            }
+            return renderFunc({
+              ...selectContext,
+              expanded: opened,
+            });
           }
 
           return (

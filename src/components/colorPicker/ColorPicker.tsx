@@ -4,7 +4,7 @@ import { TextInput, Popover, Icon, useConfiguration } from 'components';
 import s from './styles.module.scss';
 import { ColorPickerContent } from './inner/ColorPickerContent';
 import { Size } from 'types';
-
+import { useCallback } from 'react';
 const EMPTY_COLOR_PRESETS: ColorPreset[] = [];
 
 const SIZES: Record<Size, number> = {
@@ -13,9 +13,7 @@ const SIZES: Record<Size, number> = {
   l: 24,
 };
 
-export const ColorPicker = <Value = unknown,>(
-  props: ColorPickerProps<Value>,
-) => {
+export const ColorPicker = (props: ColorPickerProps) => {
   const {
     value,
     onChange,
@@ -26,8 +24,17 @@ export const ColorPicker = <Value = unknown,>(
     allowPalette = true,
     colorPresets = EMPTY_COLOR_PRESETS,
     readOnly = false,
+    clearable = false,
+    renderFunc,
     ...restProps
   } = props;
+
+  const handleChange = useCallback(
+    (color?: string) => {
+      onChange(typeof color === 'string' ? color.toLowerCase() : value);
+    },
+    [onChange],
+  );
 
   const { colorPicker: colorPickerConfig = {} } = useConfiguration();
 
@@ -43,49 +50,61 @@ export const ColorPicker = <Value = unknown,>(
   return (
     <Popover
       placement="bottom-start"
-      content={
+      content={({ closePopup }) => (
         <ColorPickerContent
           colorPresets={colorPresets}
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
           allowPalette={allowPalette}
+          clearable={clearable}
+          closePopup={closePopup}
         />
-      }
+      )}
       enabled={!readOnly}
       defaultListNavigationIndex={-1}
       listNavigation
     >
-      {({ opened }) => (
-        <TextInput
-          className={cls}
-          style={styles}
-          value={value}
-          placeholder={placeholder}
-          readOnly={true}
-          readonlyStyles={readOnly}
-          size={size}
-          transparent={props.transparent}
-          onChange={() => null}
-          {...restProps}
-        >
-          <TextInput.CustomIsland>
-            <div
-              className={s.ColorPreview}
-              style={{
-                backgroundColor: value,
-                width: SIZES[size],
-                height: SIZES[size],
-              }}
-            />
-          </TextInput.CustomIsland>
-          {!readOnly && (
-            <TextInput.IconIsland
-              placement="right"
-              icon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
-            />
-          )}
-        </TextInput>
-      )}
+      {({ opened }) => {
+        if (typeof renderFunc === 'function') {
+          return renderFunc({
+            opened,
+            value,
+            setValue: handleChange,
+          });
+        }
+
+        return (
+          <TextInput
+            className={cls}
+            style={styles}
+            value={value || ''}
+            placeholder={placeholder}
+            readOnly={true}
+            readonlyStyles={readOnly}
+            size={size}
+            transparent={props.transparent}
+            onChange={() => null}
+            {...restProps}
+          >
+            <TextInput.CustomIsland>
+              <div
+                className={s.ColorPreview}
+                style={{
+                  backgroundColor: value,
+                  width: SIZES[size],
+                  height: SIZES[size],
+                }}
+              />
+            </TextInput.CustomIsland>
+            {!readOnly && (
+              <TextInput.IconIsland
+                placement="right"
+                icon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
+              />
+            )}
+          </TextInput>
+        );
+      }}
     </Popover>
   );
 };

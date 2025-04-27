@@ -1,9 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Divider, Flex, Text } from 'components';
+import { Button, Divider, Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { ColorPicker } from './ColorPicker.tsx';
-import { ColorPreset } from './ColorPicker.types.ts';
 import { COLORS } from './COLORS.ts';
 import { useState } from 'react';
 
@@ -38,6 +37,7 @@ export const ColorPickerStory: StoryObj<typeof Divider> = {
             colorPresets={COLORS}
             value={color}
             onChange={setColor}
+            clearable
           />
           <ColorPicker
             placeholder="Only palette"
@@ -107,6 +107,21 @@ export const ColorPickerStory: StoryObj<typeof Divider> = {
             value={color}
             onChange={setColor}
             size="l"
+          />
+        </Flex>
+        <Text.Heading role="inner">Custom render function</Text.Heading>
+        <Flex direction="horizontal" gap="m">
+          <ColorPicker
+            placeholder="Custom render function"
+            colorPresets={COLORS}
+            value={color}
+            onChange={setColor}
+            renderFunc={({ value, setValue }) => (
+              <div style={{ backgroundColor: color }}>
+                Current color is: {value}.{' '}
+                <Button label="clear" onClick={() => setValue(undefined)} />
+              </div>
+            )}
           />
         </Flex>
       </Flex>

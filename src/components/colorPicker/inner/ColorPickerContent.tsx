@@ -1,4 +1,4 @@
-import { Flex, Icon, NumberInput, Tabs, TextInput } from 'components';
+import { Button, Flex, Icon, NumberInput, Tabs, TextInput } from 'components';
 import { FocusEventHandler, useCallback, useEffect, useState } from 'react';
 import { ColorPickerProps } from '../ColorPicker.types';
 import { ColorPreset } from './ColorPreset';
@@ -8,8 +8,10 @@ import { HexAlphaColorPicker } from 'react-colorful';
 interface ColorPickerContentProps
   extends Pick<
     ColorPickerProps,
-    'colorPresets' | 'value' | 'onChange' | 'allowPalette'
-  > {}
+    'colorPresets' | 'value' | 'onChange' | 'allowPalette' | 'clearable'
+  > {
+  closePopup: () => void;
+}
 
 export const ColorPickerContent = (props: ColorPickerContentProps) => {
   const { colorPresets, value = '#000000', onChange, allowPalette } = props;
@@ -74,6 +76,11 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
         )}${(blue || 0).toString(16).padStart(2, '0')}${alphaValue}`,
     );
   }, [red, green, blue, onChange]);
+
+  const handleClearClick = () => {
+    props.onChange(undefined);
+    props.closePopup();
+  };
 
   useEffect(() => {
     setLocalColor(value ? value.slice(1, 7) : '');
@@ -140,6 +147,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
               max={255}
               showControls={false}
               placeholder="0"
+              title="R"
             />
             <NumberInput
               value={green}
@@ -149,6 +157,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
               max={255}
               showControls={false}
               placeholder="0"
+              title="G"
             />
             <NumberInput
               value={blue}
@@ -158,6 +167,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
               max={255}
               showControls={false}
               placeholder="0"
+              title="B"
             />
           </Flex>
           <Flex direction="horizontal" gap="s">
@@ -174,6 +184,15 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
               B
             </div>
           </Flex>
+        </Flex>
+      ) : null}
+      {props.clearable ? (
+        <Flex>
+          <Button
+            leftIcon={<Icon i="backspace" />}
+            label="Clear"
+            onClick={handleClearClick}
+          />
         </Flex>
       ) : null}
     </Flex>
