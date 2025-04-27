@@ -31,12 +31,15 @@ describe('ColorPicker.cy.tsx', () => {
 
     cy.get('[title="R"]')
       .type('{backspace}{backspace}{backspace}{rightArrow}{backspace}125')
+      .focus()
       .blur();
     cy.get('[title="G"]')
       .type('{backspace}{backspace}{backspace}{rightArrow}{backspace}125')
+      .focus()
       .blur();
     cy.get('[title="B"]')
       .type('{backspace}{backspace}{backspace}{rightArrow}{backspace}125')
+      .focus()
       .blur();
 
     cy.get('[data-testid="picker"]').should('have.value', '#7d7d7d');
