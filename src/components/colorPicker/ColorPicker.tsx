@@ -13,9 +13,7 @@ const SIZES: Record<Size, number> = {
   l: 24,
 };
 
-export const ColorPicker = <Value = unknown,>(
-  props: ColorPickerProps<Value>,
-) => {
+export const ColorPicker = (props: ColorPickerProps) => {
   const {
     value,
     onChange,

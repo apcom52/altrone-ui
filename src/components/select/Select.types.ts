@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { Size } from '../../types';
-import { RenderFunction } from '../../utils';
+import { CustomRenderFunction, RenderFunction } from '../../utils';
 
 export type Option = {
   value: string;
@@ -44,5 +44,5 @@ export interface SelectProps<Value = unknown>
   placeholder?: string;
   parentWidth?: boolean;
   Component?: RenderFunction<ReactElement, SelectContext>;
-  renderFunc?: RenderFunction<ReactElement, SelectContext>;
+  renderFunc?: CustomRenderFunction<SelectContext>;
 }
