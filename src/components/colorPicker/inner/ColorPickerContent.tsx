@@ -147,6 +147,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
               max={255}
               showControls={false}
               placeholder="0"
+              title="R"
             />
             <NumberInput
               value={green}
@@ -156,6 +157,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
               max={255}
               showControls={false}
               placeholder="0"
+              title="G"
             />
             <NumberInput
               value={blue}
@@ -165,6 +167,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
               max={255}
               showControls={false}
               placeholder="0"
+              title="B"
             />
           </Flex>
           <Flex direction="horizontal" gap="s">

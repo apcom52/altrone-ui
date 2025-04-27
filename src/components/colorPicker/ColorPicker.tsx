@@ -4,7 +4,7 @@ import { TextInput, Popover, Icon, useConfiguration } from 'components';
 import s from './styles.module.scss';
 import { ColorPickerContent } from './inner/ColorPickerContent';
 import { Size } from 'types';
-
+import { useCallback } from 'react';
 const EMPTY_COLOR_PRESETS: ColorPreset[] = [];
 
 const SIZES: Record<Size, number> = {
@@ -29,6 +29,13 @@ export const ColorPicker = (props: ColorPickerProps) => {
     ...restProps
   } = props;
 
+  const handleChange = useCallback(
+    (color?: string) => {
+      onChange(typeof color === 'string' ? color.toLowerCase() : value);
+    },
+    [onChange],
+  );
+
   const { colorPicker: colorPickerConfig = {} } = useConfiguration();
 
   const cls = clsx(s.ColorPicker, colorPickerConfig.className, className, {
@@ -47,7 +54,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
         <ColorPickerContent
           colorPresets={colorPresets}
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
           allowPalette={allowPalette}
           clearable={clearable}
           closePopup={closePopup}
@@ -62,7 +69,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
           return renderFunc({
             opened,
             value,
-            setValue: onChange,
+            setValue: handleChange,
           });
         }
 
