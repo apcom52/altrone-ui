@@ -27,6 +27,7 @@ export const ColorPicker = <Value = unknown,>(
     colorPresets = EMPTY_COLOR_PRESETS,
     readOnly = false,
     clearable = false,
+    renderFunc,
     ...restProps
   } = props;
 
@@ -58,37 +59,47 @@ export const ColorPicker = <Value = unknown,>(
       defaultListNavigationIndex={-1}
       listNavigation
     >
-      {({ opened }) => (
-        <TextInput
-          className={cls}
-          style={styles}
-          value={value || ''}
-          placeholder={placeholder}
-          readOnly={true}
-          readonlyStyles={readOnly}
-          size={size}
-          transparent={props.transparent}
-          onChange={() => null}
-          {...restProps}
-        >
-          <TextInput.CustomIsland>
-            <div
-              className={s.ColorPreview}
-              style={{
-                backgroundColor: value,
-                width: SIZES[size],
-                height: SIZES[size],
-              }}
-            />
-          </TextInput.CustomIsland>
-          {!readOnly && (
-            <TextInput.IconIsland
-              placement="right"
-              icon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
-            />
-          )}
-        </TextInput>
-      )}
+      {({ opened }) => {
+        if (typeof renderFunc === 'function') {
+          return renderFunc({
+            opened,
+            value,
+            setValue: onChange,
+          });
+        }
+
+        return (
+          <TextInput
+            className={cls}
+            style={styles}
+            value={value || ''}
+            placeholder={placeholder}
+            readOnly={true}
+            readonlyStyles={readOnly}
+            size={size}
+            transparent={props.transparent}
+            onChange={() => null}
+            {...restProps}
+          >
+            <TextInput.CustomIsland>
+              <div
+                className={s.ColorPreview}
+                style={{
+                  backgroundColor: value,
+                  width: SIZES[size],
+                  height: SIZES[size],
+                }}
+              />
+            </TextInput.CustomIsland>
+            {!readOnly && (
+              <TextInput.IconIsland
+                placement="right"
+                icon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
+              />
+            )}
+          </TextInput>
+        );
+      }}
     </Popover>
   );
 };
