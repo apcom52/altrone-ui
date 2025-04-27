@@ -1,13 +1,13 @@
 import React from 'react';
 import { expect, test, describe, vitest, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import {
   Button,
   ColorPicker,
   Configuration,
   Dropdown,
 } from '../src/components';
-
+import { COLORS } from '../src/components/colorPicker/COLORS';
 class ResizeObserver {
   observe() {}
   unobserve() {}
@@ -24,6 +24,43 @@ describe('ColorPicker', () => {
     render(<ColorPicker data-testid="picker" onChange={() => null} />);
 
     expect(screen.getByTestId('picker')).toBeInTheDocument();
+  });
+
+  test('check value and onChange props', async () => {
+    let value: string | undefined = undefined;
+    const handleChange = (color?: string) => {
+      value = color;
+    };
+
+    const { rerender } = render(
+      <ColorPicker
+        data-testid="picker"
+        value={value}
+        onChange={handleChange}
+        colorPresets={COLORS}
+        clearable
+      />,
+    );
+
+    await fireEvent.click(screen.getByTestId('picker'));
+
+    rerender(
+      <ColorPicker
+        data-testid="picker"
+        value={value}
+        onChange={handleChange}
+        colorPresets={COLORS}
+        clearable
+      />,
+    );
+
+    await fireEvent.click(screen.getByTitle('Crimson'));
+
+    expect(value).toBe('#dc143c');
+
+    await fireEvent.click(screen.getByText('Clear'));
+
+    expect(value).toBe(undefined);
   });
 
   test('check renderFunc property', async () => {
