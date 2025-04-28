@@ -66,9 +66,10 @@ export const Message = memo<MessageProps>(
           gap="m"
           justify="center"
         >
-          {header ? <div className={s.Header}>{header}</div> : null}
-          {children ? <div className={s.Body}>{children}</div> : null}
-          {compact ? <div className={s.Separator} /> : null}
+          <div className={s.Text}>
+            {header ? <div className={s.Header}>{header}</div> : null}
+            {children ? <div className={s.Body}>{children}</div> : null}
+          </div>
           {actions ? <div className={s.Actions}>{actions}</div> : null}
         </Flex>
         {onClose ? <CloseButton onClick={onClose} /> : null}

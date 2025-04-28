@@ -33,7 +33,10 @@
   color: var(--message-icon-color);
 }
 
-.Content {
+.Text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-gap);
 }
 
 .Header {
@@ -124,10 +127,20 @@
     flex: 1;
     flex-wrap: wrap;
   }
-}
 
-.Separator {
-  flex: 1;
+  .Text {
+    display: block;
+    flex: 1;
+  }
+
+  .Header {
+    display: inline;
+    padding-right: var(--gap);
+  }
+
+  .Body {
+    display: inline;
+  }
 }
 
 :global(.AltroneDark) {
