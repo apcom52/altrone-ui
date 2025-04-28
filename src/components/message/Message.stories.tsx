@@ -42,6 +42,10 @@ export const MessageStory: StoryObj<typeof Flex> = {
       />
       <Message
         icon={<Icon i="info" />}
+        header="The data export you requested is ready!"
+      />
+      <Message
+        icon={<Icon i="info" />}
         header="A new software update is available. See what's new in version 2.0."
         severity="primary"
         actions={[<Button label="View the changelog" />]}
@@ -82,6 +86,32 @@ export const MessageStory: StoryObj<typeof Flex> = {
         onClose={() => {}}
       >
         Your password strength is too low.
+      </Message>
+      <Message
+        icon={<Icon i="info" />}
+        header="Compact message with long text content"
+        severity="warning"
+        compact
+        onClose={() => {}}
+      >
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+      </Message>
+      <Message
+        icon={<Icon i="info" />}
+        header="Compact message with long text content and actions"
+        severity="danger"
+        compact
+        onClose={() => {}}
+        actions={[
+          <Button severity="danger" label="Refresh" transparent />,
+          <Button severity="danger" label="Send crash report" transparent />,
+        ]}
+      >
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
       </Message>
       <Message
         icon={<Icon i="info" />}
