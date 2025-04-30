@@ -15,6 +15,22 @@ describe('Avatar', () => {
     expect(screen.getByText('MZ')).toBeInTheDocument();
   });
 
+  test('check correct work of title', () => {
+    render(
+      <>
+        <Avatar firstName="John" lastName="Doe" data-testid="avatar-1" />
+        <Avatar firstName="John" data-testid="avatar-2" />
+        <Avatar firstName="Mark" lastName="Zoe" data-testid="avatar-3" />
+        <Avatar firstName="Daniel" lastName=" " data-testid="avatar-4" />
+      </>,
+    );
+
+    expect(screen.getByTestId('avatar-1')).toHaveAttribute('title', 'John Doe');
+    expect(screen.getByTestId('avatar-2')).toHaveAttribute('title', 'John');
+    expect(screen.getByTestId('avatar-3')).toHaveAttribute('title', 'Mark Zoe');
+    expect(screen.getByTestId('avatar-4')).toHaveAttribute('title', 'Daniel');
+  });
+
   test('check that properties works correctly', () => {
     render(
       <Avatar
