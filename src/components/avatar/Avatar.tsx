@@ -40,7 +40,7 @@ export const Avatar = memo((props: AvatarProps) => {
       ? 'var(--default-50)'
       : 'var(--default-900)';
 
-  const fullName = `${firstName} ${lastName}`.trim();
+  const fullName = [firstName, lastName].join(' ').trim();
 
   return (
     <div title={fullName} className={cls} style={styles} {...restProps}>
