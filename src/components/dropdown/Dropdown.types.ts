@@ -1,8 +1,8 @@
 import {
-  PopoverProps,
   PopoverChildrenContext,
   PopoverContentContext,
 } from 'components/popover';
+import { PopoverProps } from 'components/popover/Popover.types';
 import { ReactElement, ReactNode } from 'react';
 import { RenderFuncProp } from '../../types';
 import { RenderFunction } from 'utils';
