@@ -43,7 +43,7 @@ jobs:
           git tag ${{ env.VERSION }}
           git push origin ${{ env.VERSION }}
 
-      - name: Publish to NPM (beta tag)
-        run: npm publish --tag beta
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Publish to NPM (beta tag)
+      #   run: npm publish --tag beta
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
