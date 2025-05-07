@@ -1,0 +1,49 @@
+name: Publish Beta to NPM
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - beta
+
+jobs:
+  publish_beta:
+    if: github.event.pull_request.merged == true && contains(github.event.pull_request.title, '[Version ')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build package
+        run: npm run build
+
+      - name: Extract version from PR title
+        id: extract_version
+        run: |
+          echo "PR Title: ${{ github.event.pull_request.title }}"
+          VERSION=$(echo "${{ github.event.pull_request.title }}" | grep -oP '\[Version \K[^\]]+')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "::set-output name=version::$VERSION"
+
+      - name: Create git tag
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag ${{ env.VERSION }}
+          git push origin ${{ env.VERSION }}
+
+      # - name: Publish to NPM (beta tag)
+      #   run: npm publish --tag beta
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
