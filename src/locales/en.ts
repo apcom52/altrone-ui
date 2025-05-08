@@ -15,6 +15,9 @@ export const en: Localization = {
     today: 'Today',
     thisMonth: 'This month',
     thisYear: 'This year',
+    next: 'Next',
+    prev: 'Prev',
+    clickToChangeView: 'Click to change view',
   },
   filePicker: {
     noFiles: 'No files chosen',
@@ -124,5 +127,10 @@ export const en: Localization = {
   },
   closeButton: {
     ariaLabel: 'Close',
+  },
+  colorPicker: {
+    placeholder: 'Pick a color',
+    savedColors: 'Saved colors',
+    palette: 'Palette',
   },
 };

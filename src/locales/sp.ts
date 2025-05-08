@@ -15,6 +15,9 @@ export const sp: Localization = {
     today: 'Hoy',
     thisMonth: 'Este mes',
     thisYear: 'Este año',
+    next: 'Siguiente',
+    prev: 'Anterior',
+    clickToChangeView: 'Haga clic para cambiar la vista',
   },
   filePicker: {
     noFiles: 'No hay archivos seleccionados',
@@ -125,5 +128,10 @@ export const sp: Localization = {
   },
   closeButton: {
     ariaLabel: 'Cerrar',
+  },
+  colorPicker: {
+    placeholder: 'Seleccionar color',
+    savedColors: 'Colores guardados',
+    palette: 'Paleta',
   },
 };
