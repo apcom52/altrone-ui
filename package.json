@@ -24,22 +24,24 @@
     "test:e2e-chrome": "npx cypress run --component --browser chrome --env type=regression",
     "test:e2e-chrome-refresh": "npx cypress run --component --browser chrome --env type=base updateSnapshots=true",
     "test:e2e-firefox": "npx cypress run --component --browser firefox",
+    "test:e2e": "npx cypress run --component --browser chrome",
     "test:e2e-ui": "npx cypress open --env type=regression",
     "check-circular-dependencies": "dpdm --no-warning --no-tree ./src/index.ts",
     "visualize-bundle": "vite-bundle-visualizer"
   },
   "dependencies": {
-    "@floating-ui/react": "0.26.26",
-    "@material-symbols/font-500": "0.17.1",
+    "@floating-ui/react": "0.27.7",
+    "@material-symbols/font-500": "0.31.2",
     "clsx": "2.1.1",
     "dayjs": "1.11.13",
-    "debounce": "2.1.1",
-    "focus-trap-react": "10.3.0",
+    "debounce": "2.2.0",
+    "focus-trap-react": "10.3.1",
     "lodash-es": "4.17.21",
     "rc-util": "5.43.0",
-    "react-hotkeys-hook": "4.5.1",
-    "react-number-format": "5.4.2",
-    "react-toastify": "10.0.6"
+    "react-colorful": "5.6.1",
+    "react-hotkeys-hook": "4.6.2",
+    "react-number-format": "5.4.4",
+    "react-toastify": "10.0.7-5"
   },
   "devDependencies": {
     "@babel/preset-react": "7.24.1",

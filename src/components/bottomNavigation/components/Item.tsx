@@ -4,17 +4,19 @@ import clsx from 'clsx';
 import s from './item.module.scss';
 import { useConfiguration } from 'components/configuration';
 import { RenderFuncProp } from 'types';
+import { Badge } from 'components/badge/Badge.tsx';
 
 const bottomNavigationItemComponent: RenderFuncProp<
   HTMLAnchorElement,
   BottomNavigationItemProps
 > = (ref, props) => {
-  const { icon, label, ...restProps } = props;
+  const { icon, label, badge, ...restProps } = props;
 
   return (
     <a ref={ref} {...restProps}>
       <div className={s.Icon}>{icon}</div>
       <div className={s.Label}>{label}</div>
+      {badge ? <Badge className={s.Badge}>{badge}</Badge> : null}
     </a>
   );
 };
@@ -23,6 +25,8 @@ export const Item = forwardRef<HTMLAnchorElement, BottomNavigationItemProps>(
   (props, ref) => {
     const { bottomNavigation: bottomNavigationConfig = {} } =
       useConfiguration();
+    const { item: bottomNavigationItemConfig = {} } = bottomNavigationConfig;
+
     const {
       className,
       renderFunc = bottomNavigationItemComponent,
@@ -35,13 +39,22 @@ export const Item = forwardRef<HTMLAnchorElement, BottomNavigationItemProps>(
         [s.Selected]: props.selected,
         [String(bottomNavigationConfig.selectedItemClassName)]:
           bottomNavigationConfig.selectedItemClassName && props.selected,
+        [String(bottomNavigationItemConfig.selectedItemClassName)]:
+          bottomNavigationItemConfig.selectedItemClassName && props.selected,
       },
+      bottomNavigationItemConfig.className,
       className,
     );
+
+    const styles = {
+      ...bottomNavigationItemConfig.style,
+      ...props.style,
+    };
 
     return renderFunc(ref, {
       ...restProps,
       className: cls,
+      style: styles,
     });
   },
 );

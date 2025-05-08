@@ -1,6 +1,11 @@
-import { PopoverProps } from 'components/popover';
-import { ReactElement } from 'react';
+import {
+  PopoverChildrenContext,
+  PopoverContentContext,
+} from 'components/popover';
+import { PopoverProps } from 'components/popover/Popover.types';
+import { ReactElement, ReactNode } from 'react';
 import { RenderFuncProp } from '../../types';
+import { RenderFunction } from 'utils';
 
 export interface DropdownActionProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -17,6 +22,7 @@ export interface DropdownActionProps
   >;
   'data-active'?: boolean;
   keyProp?: string;
+  badge?: string | number | JSX.Element;
 }
 
 export interface DropdownCheckboxProps
@@ -68,4 +74,6 @@ export interface DropdownMenuRef {
 
 export interface DropdownProps extends PopoverProps {
   closeParentPopover?: boolean;
+  children: RenderFunction<ReactNode, PopoverChildrenContext>;
+  content: RenderFunction<ReactNode, PopoverContentContext>;
 }

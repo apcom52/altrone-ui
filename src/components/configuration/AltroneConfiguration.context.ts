@@ -23,15 +23,21 @@ export type Locale = {
 
 export interface ConsumerConfigurationContext {
   locale?: Partial<Locale>;
+  avatar?: ComponentConfiguration;
   autocompleteInput?: ComponentConfiguration<{
     showControls?: boolean;
   }>;
   bottomNavigation?: ComponentConfiguration<{
     selectedItemClassName: string;
+    item?: ComponentConfiguration<{
+      selectedItemClassName: string;
+      badgeClassName: string;
+    }>;
   }>;
   breadcrumbs?: ComponentConfiguration;
   button?: ComponentConfiguration<{
     rainbowEffect?: boolean;
+    badgeClassName?: string;
   }>;
   calendar?: ComponentConfiguration;
   checkbox?: ComponentConfiguration;
@@ -40,6 +46,7 @@ export interface ConsumerConfigurationContext {
     limit?: number;
     expandButtonLabel?: CollapsedListProps['expandButtonLabel'];
   }>;
+  colorPicker?: ComponentConfiguration;
   dataTable?: ComponentConfiguration;
   datePicker?: ComponentConfiguration<{
     popoverContentClassName: string;
@@ -54,12 +61,15 @@ export interface ConsumerConfigurationContext {
   dropdown?: ComponentConfiguration<{
     focusFirstElement?: boolean;
     menu?: ComponentConfiguration;
-    action?: ComponentConfiguration;
+    action?: ComponentConfiguration<{
+      badgeClassName?: string;
+    }>;
     checkbox?: ComponentConfiguration;
     radioList?: ComponentConfiguration;
     radioItem?: ComponentConfiguration;
     childMenu?: ComponentConfiguration;
   }>;
+  dummyBox?: ComponentConfiguration;
   filePicker?: ComponentConfiguration;
   flex?: ComponentConfiguration;
   form?: ComponentConfiguration<{
@@ -80,7 +90,9 @@ export interface ConsumerConfigurationContext {
       titleClassName: string;
     }>;
     groupAction?: ComponentConfiguration;
-    link?: ComponentConfiguration;
+    link?: ComponentConfiguration<{
+      badgeClassName?: string;
+    }>;
     linkAction?: ComponentConfiguration;
   }>;
   numberInput?: ComponentConfiguration<{
@@ -117,6 +129,10 @@ export interface ConsumerConfigurationContext {
   switcher?: ComponentConfiguration;
   tabs?: ComponentConfiguration<{
     rainbowEffect: boolean;
+    item?: ComponentConfiguration<{
+      badgeClassName: string;
+      selectedClassName: string;
+    }>;
   }>;
   tags?: ComponentConfiguration;
   text?: ComponentConfiguration<{
@@ -145,9 +161,16 @@ export interface ConsumerConfigurationContext {
   toolbar?: ComponentConfiguration<{
     actionClassName: string;
     groupClassName: string;
+    action?: ComponentConfiguration<{
+      badgeClassName?: string;
+    }>;
   }>;
   tooltip?: ComponentConfiguration;
-  topNavigation?: ComponentConfiguration;
+  topNavigation?: ComponentConfiguration<{
+    link?: ComponentConfiguration<{
+      badgeClassName?: string;
+    }>;
+  }>;
 }
 
 export const ConfigurationContext =

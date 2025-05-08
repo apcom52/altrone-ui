@@ -13,3 +13,5 @@ export type AnyObject = Record<PropertyKey, any>;
 export type RenderFunction<ReturnType, Arguments = undefined> =
   | ReturnType
   | ((data: Arguments) => ReturnType);
+
+export type CustomRenderFunction<Arguments> = (data: Arguments) => ReactNode;

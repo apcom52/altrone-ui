@@ -120,4 +120,9 @@ export interface Localization {
   closeButton: {
     ariaLabel: string;
   };
+  colorPicker: {
+    placeholder: string;
+    savedColors: string;
+    palette: string;
+  };
 }

@@ -1,0 +1,67 @@
+name: Publish Beta to NPM
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - pre-release
+
+jobs:
+  publish_beta:
+    if: github.event.pull_request.merged == true && contains(github.event.pull_request.title, '[Version ')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Checking Workflow
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/checking.yml/dispatches \
+            -d '{"ref":"main"}'
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build package
+        run: npm run build
+
+      - name: Extract version from PR title
+        id: extract_version
+        run: |
+          echo "PR Title: ${{ github.event.pull_request.title }}"
+          VERSION=$(echo "${{ github.event.pull_request.title }}" | grep -oP '\[Version \K[^\]]+')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "::set-output name=version::$VERSION"
+
+      - name: Bump version in package.json
+        run: |
+          npm version ${{ env.VERSION }} --no-git-tag-version
+
+      - name: Commit updated package.json
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add package.json package-lock.json
+          git commit -m "chore: bump version to ${{ env.VERSION }}"
+          git push origin HEAD
+
+      - name: Create git tag
+        run: |
+          git tag ${{ env.VERSION }}
+          git push origin ${{ env.VERSION }}
+
+      - name: Publish to NPM (rc tag)
+        run: npm publish --tag rc
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

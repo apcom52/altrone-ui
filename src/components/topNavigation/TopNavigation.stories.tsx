@@ -41,8 +41,8 @@ export const TooltipStory: StoryObj<typeof TopNavigation> = {
                 />
               )}
             </Dropdown>
-            <TopNavigation.Link href="#" label="Solutions" />
-            <TopNavigation.Link href="#" label="Resources" />
+            <TopNavigation.Link href="#" label="Solutions" badge="2" />
+            <TopNavigation.Link href="#" label="Resources" badge="NEW" />
             <TopNavigation.Link href="#" label="Enterprise" />
             <TopNavigation.Link href="#" label="Pricing" />
           </TopNavigation.Group>

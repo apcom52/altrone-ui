@@ -132,6 +132,7 @@ export const ColumnHeaders = memo<ColumnHeadersProps>(
                   width: column.width ? column.width : undefined,
                 }}
               >
+                {column.sortable ? <div className={s.CellBackground} /> : null}
                 <div className={s.CellContent}>
                   <span className={s.Title}>
                     {String(column.label || column.accessor)}
