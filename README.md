@@ -15,7 +15,7 @@ test2
 
 ---
 
-## 🤠 Altrone 3.3
+## 🤠 Altrone 3.4
 
 New **`DataTable`** filters, nested links for **`NavigationList`** and more!
 

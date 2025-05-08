@@ -5,7 +5,7 @@ on:
     types:
       - closed
     branches:
-      - beta
+      - pre-release
 
 jobs:
   publish_beta:
@@ -13,6 +13,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Trigger Checking Workflow
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/checking.yml/dispatches \
+            -d '{"ref":"main"}'
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -53,7 +61,7 @@ jobs:
           git tag ${{ env.VERSION }}
           git push origin ${{ env.VERSION }}
 
-      - name: Publish to NPM (beta tag)
-        run: npm publish --tag beta
+      - name: Publish to NPM (rc tag)
+        run: npm publish --tag rc
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
