@@ -1,4 +1,12 @@
-import { Button, Flex, Icon, NumberInput, Tabs, TextInput } from 'components';
+import {
+  Button,
+  Flex,
+  Icon,
+  NumberInput,
+  Tabs,
+  TextInput,
+  useLocalization,
+} from 'components';
 import { FocusEventHandler, useCallback, useEffect, useState } from 'react';
 import { ColorPickerProps } from '../ColorPicker.types';
 import { ColorPreset } from './ColorPreset';
@@ -15,6 +23,8 @@ interface ColorPickerContentProps
 
 export const ColorPickerContent = (props: ColorPickerContentProps) => {
   const { colorPresets, value = '#000000', onChange, allowPalette } = props;
+
+  const t = useLocalization();
 
   const _allowPalette = typeof allowPalette === 'boolean' ? allowPalette : true;
 
@@ -93,13 +103,13 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
           <Tabs.Item
             icon={<Icon i="apps" />}
             showLabel={false}
-            label="Saved colors"
+            label={t('colorPicker.savedColors')}
             onClick={() => setMode('presets')}
             selected={mode === 'presets'}
           />
           <Tabs.Item
             icon={<Icon i="palette" />}
-            label="Palette"
+            label={t('colorPicker.palette')}
             showLabel={false}
             onClick={() => setMode('palette')}
             selected={mode === 'palette'}
@@ -190,7 +200,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
         <Flex>
           <Button
             leftIcon={<Icon i="backspace" />}
-            label="Clear"
+            label={t('common.clear')}
             onClick={handleClearClick}
           />
         </Flex>

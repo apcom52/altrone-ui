@@ -33,7 +33,6 @@ export const ColorPickerStory: StoryObj<typeof Divider> = {
         <Text.Heading role="inner">Standard ColorPicker</Text.Heading>
         <Flex direction="horizontal" gap="m">
           <ColorPicker
-            placeholder="With saved colors and palette"
             colorPresets={COLORS}
             value={color}
             onChange={setColor}

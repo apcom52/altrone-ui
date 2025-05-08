@@ -15,7 +15,13 @@ const tabItemRenderFunc: RenderFuncProp<HTMLAnchorElement, TabsItemProps> = (
 
   const badgeCls = clsx(s.Badge, tabsItemConfig.badgeClassName);
   return (
-    <a ref={ref} role="tab" aria-selected={props.selected} {...restProps}>
+    <a
+      ref={ref}
+      role="tab"
+      aria-selected={props.selected}
+      title={label}
+      {...restProps}
+    >
       {icon ? <div className={s.Icon}>{icon}</div> : null}
       {showLabel ? <div>{label}</div> : null}
       {badge ? <Badge className={badgeCls}>{badge}</Badge> : null}

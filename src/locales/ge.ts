@@ -15,6 +15,9 @@ export const ge: Localization = {
     today: 'Heute',
     thisMonth: 'Dieser Monat',
     thisYear: 'Dieses Jahr',
+    next: 'Nächste',
+    prev: 'Vorherige',
+    clickToChangeView: 'Klicken Sie, um die Ansicht zu ändern',
   },
   filePicker: {
     noFiles: 'Keine Dateien ausgewählt',
@@ -125,5 +128,10 @@ export const ge: Localization = {
   },
   closeButton: {
     ariaLabel: 'Schließen',
+  },
+  colorPicker: {
+    placeholder: 'Farbe auswählen',
+    savedColors: 'Gespeicherte Farben',
+    palette: 'Palette',
   },
 };

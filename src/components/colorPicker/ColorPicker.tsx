@@ -1,6 +1,12 @@
 import clsx from 'clsx';
 import { ColorPickerProps, ColorPreset } from './ColorPicker.types';
-import { TextInput, Popover, Icon, useConfiguration } from 'components';
+import {
+  TextInput,
+  Popover,
+  Icon,
+  useConfiguration,
+  useLocalization,
+} from 'components';
 import s from './styles.module.scss';
 import { ColorPickerContent } from './inner/ColorPickerContent';
 import { Size } from 'types';
@@ -14,12 +20,14 @@ const SIZES: Record<Size, number> = {
 };
 
 export const ColorPicker = (props: ColorPickerProps) => {
+  const t = useLocalization();
+
   const {
     value,
     onChange,
     className,
     style,
-    placeholder,
+    placeholder = t('colorPicker.placeholder'),
     size = 'm',
     allowPalette = true,
     colorPresets = EMPTY_COLOR_PRESETS,

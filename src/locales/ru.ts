@@ -15,6 +15,9 @@ export const ru: Localization = {
     today: 'Сегодня',
     thisMonth: 'Текущий месяц',
     thisYear: 'Текущий год',
+    next: 'Следующий',
+    prev: 'Предыдущий',
+    clickToChangeView: 'Нажмите для изменения вида',
   },
   filePicker: {
     noFiles: 'Файлы не выбраны',
@@ -124,5 +127,10 @@ export const ru: Localization = {
   },
   closeButton: {
     ariaLabel: 'Закрыть',
+  },
+  colorPicker: {
+    placeholder: 'Выбрать цвет',
+    savedColors: 'Сохраненные цвета',
+    palette: 'Палитра',
   },
 };
