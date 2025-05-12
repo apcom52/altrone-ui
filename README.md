@@ -1,5 +1,3 @@
-test2
-
 <p align='center'>
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://altrone.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Faltrone-dark.38721ddd.png&w=750&q=75">
@@ -17,13 +15,13 @@ test2
 
 ## 🤠 Altrone 3.4
 
-New **`DataTable`** filters, nested links for **`NavigationList`** and more!
+New **`ColorPicker`** component, updated **`Tabs`** design and more
+
+[**What's new in 3.4?**](https://altrone.vercel.app/blog/release-3.4)
 
 [**What's new in 3.3?**](https://altrone.vercel.app/blog/release-3.3)
 
 [**What's new in 3.2?**](https://altrone.vercel.app/blog/release-3.2)
-
-[**What's new in 3.1?**](https://altrone.vercel.app/blog/release-3.1)
 
 ## Roadmap for Altrone 3
 
@@ -34,13 +32,13 @@ New **`DataTable`** filters, nested links for **`NavigationList`** and more!
 - [x] New type property for **`DataTableColumn`** (released in 3.2)
 - [x] Better locale support (released in 3.2)
 - [x] Rich notifications (released in 3.2)
-- [x] Date filter for **`DataTable`**
-- [x] Nested links for **`NavigationList`**
-- [x] Default filters, sorting settings and pagination for **`DataTable`**
-- [ ] new `Badge` component
-- [ ] new `ColorPicker` component
-- [ ] new `Range` component
-- [ ] new `Avatar` component
+- [x] Date filter for **`DataTable`** (released in 3.3)
+- [x] Nested links for **`NavigationList`** (released in 3.3)
+- [x] Default filters, sorting settings and pagination for **`DataTable`** (released in 3.3)
+- [x] new **`Badge`** component (released in 3.4)
+- [x] new **`ColorPicker`** component (released in 3.4)
+- [x] new **`Avatar`** component (released in 3.4)
+- [ ] new **`Range`** component
 
 ## Documentation
 
@@ -95,6 +93,7 @@ New **`DataTable`** filters, nested links for **`NavigationList`** and more!
     <li><a href="https://altrone.vercel.app/components/select">Select</a></li>
     <li><a href="https://altrone.vercel.app/components/datePicker">DatePicker</a></li>
     <li><a href="https://altrone.vercel.app/components/filePicker">FilePicker</a></li>
+    <li><a href="https://altrone.vercel.app/components/colorPicker">ColorPicker</a></li>
 </ul></td>
     </tr>
     <tr>
@@ -126,9 +125,11 @@ New **`DataTable`** filters, nested links for **`NavigationList`** and more!
 </ul></td>
         <td>
 <ul>
+    <li><a href="https://altrone.vercel.app/components/avatar">Avatar</a></li>
     <li><a href="https://altrone.vercel.app/components/closeButton">CloseButton</a></li>
     <li><a href="https://altrone.vercel.app/components/divider">Divider</a></li>
     <li><a href="https://altrone.vercel.app/components/loading">Loading</a></li>
+    <li><a href="https://altrone.vercel.app/components/dummyBox">DummyBox</a></li>
 </ul></td>
     </tr>   
 </table>
