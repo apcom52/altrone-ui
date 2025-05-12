@@ -35,6 +35,14 @@ const renderButtonsWithRole = (role: Role, args: ButtonProps) => {
         role={role}
         label="Action"
         leftIcon={<Icon i="bolt" />}
+        data-testid={`button-${role}`}
+        badge="NEW"
+      />
+      <Button
+        {...args}
+        role={role}
+        label="Action"
+        leftIcon={<Icon i="bolt" />}
         loading
       />
       <Button
@@ -43,16 +51,45 @@ const renderButtonsWithRole = (role: Role, args: ButtonProps) => {
         label="Action"
         rightIcon={<Icon i="bolt" />}
       />
+      <Button
+        {...args}
+        role={role}
+        label="Action"
+        rightIcon={<Icon i="bolt" />}
+        badge="2"
+      />
       <Button {...args} severity={role} label="Action" />
       <Button {...args} severity={role} disabled label="Disabled Action" />
+      <Button
+        {...args}
+        severity={role}
+        disabled
+        label="Disabled Action"
+        badge="NEW"
+      />
       <Button {...args} severity={role} leftIcon={<Icon i="bolt" />} />
       <Button {...args} severity={role} leftIcon={<Icon i="bolt" />} loading />
+      <Button
+        {...args}
+        severity={role}
+        leftIcon={<Icon i="bolt" />}
+        loading
+        badge="3"
+      />
       <Button
         {...args}
         severity={role}
         label="Action"
         transparent
         leftIcon={<Icon i="bolt" />}
+      />
+      <Button
+        {...args}
+        severity={role}
+        label="Action"
+        transparent
+        leftIcon={<Icon i="bolt" />}
+        badge="4"
       />
       <Button
         {...args}
@@ -76,6 +113,14 @@ const renderButtonsWithRole = (role: Role, args: ButtonProps) => {
         disabled
         label="Disabled Action"
         transparent
+      />
+      <Button
+        {...args}
+        severity={role}
+        disabled
+        label="Disabled Action"
+        transparent
+        badge="4"
       />
       <Button
         {...args}
@@ -112,6 +157,12 @@ const renderButtonsWithSize = (size: Size) => {
         label="Like"
         showLabel={false}
         leftIcon={<Icon i="favorite" />}
+      />
+      <Button
+        size={size}
+        label="Likes"
+        leftIcon={<Icon i="favorite" />}
+        badge="8"
       />
     </Flex>
   );

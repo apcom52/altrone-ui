@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Button, Flex, Icon, Message } from 'components';
+import { Button, Flex, Icon, Message, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { useBoolean } from '../../utils';
@@ -24,35 +24,114 @@ export const MessageStory: StoryObj<typeof Flex> = {
   name: 'Using Flex',
   render: () => (
     <Flex direction="vertical" gap="l">
-      <Message header="Welcome!" icon={<Icon i="waving_hand" />}>
-        Welcome to our platform! We're excited to have you join our community.
-        Explore, learn, and engage with others. If you have any questions, don't
-        hesitate to reach out to our support team.
-      </Message>
-      <Message role="primary" header="New Feature Update">
-        We're thrilled to announce the release of our latest feature! Explore
-        the enhanced functionality and improved user experience. Check out our
-        release notes for more details on how to make the most of this update.
-        Happy exploring!
-      </Message>
-      <Message role="danger" icon={<Icon i="error" />}>
-        Oops! Something went wrong. Please try again later.
-      </Message>
-      <Message role="warning">
-        Attention! Unusual activity detected on your account. Please review your
-        recent login history and ensure your account is secure. If you suspect
-        unauthorized access, change your password immediately and contact
-        support for further assistance.
+      <Text.Heading variant="inner">Standard messages</Text.Heading>
+      <Message
+        header="Custom code is not validated"
+        actions={[<Button label="OK, got it" />]}
+      >
+        Incorrect code may impact your website's performance.
       </Message>
       <Message
-        role="success"
-        header="Payment Processed Successfully"
-        icon={<Icon i="check" />}
+        icon={<Icon i="info" />}
+        header="The data export you requested is ready!"
+        actions={[
+          <Button label="View the data" />,
+          <Button label="Maybe later" transparent />,
+        ]}
+        onClose={() => {}}
+      />
+      <Message
+        icon={<Icon i="info" />}
+        header="The data export you requested is ready!"
+      />
+      <Message
+        icon={<Icon i="info" />}
+        header="A new software update is available. See what's new in version 2.0."
+        severity="primary"
+        actions={[<Button label="View the changelog" />]}
+        onClose={() => {}}
+      />
+      <Message
+        icon={<Icon i="highlight_off" />}
+        header="There was a problem with your submission"
+        severity="danger"
       >
-        Congratulations! Your payment has been processed successfully. Thank you
-        for your purchase. You will receive a confirmation email shortly. If you
-        have any questions or concerns, feel free to contact our support team.
+        <div>Must include at least 1 number</div>
+        <div>Must include at least 2 uppercase letters</div>
       </Message>
+
+      <Text.Heading variant="inner">Compact messages</Text.Heading>
+
+      <Message
+        icon={<Icon i="info" />}
+        header="You have no credits left!"
+        severity="warning"
+        actions={[<Button severity="warning" label="Upgrade" transparent />]}
+        compact
+      >
+        Upgrade to continue.
+      </Message>
+      <Message
+        icon={<Icon i="check" />}
+        header="Successully uploaded!"
+        severity="success"
+        compact
+        onClose={() => {}}
+      />
+      <Message
+        icon={<Icon i="info" />}
+        header="Warning"
+        severity="warning"
+        compact
+        onClose={() => {}}
+      >
+        Your password strength is too low.
+      </Message>
+      <Message
+        icon={<Icon i="info" />}
+        header="Compact message with long text content"
+        severity="warning"
+        compact
+        onClose={() => {}}
+      >
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+      </Message>
+      <Message
+        icon={<Icon i="info" />}
+        header="Compact message with long text content and actions"
+        severity="danger"
+        compact
+        onClose={() => {}}
+        actions={[
+          <Button severity="danger" label="Refresh" transparent />,
+          <Button severity="danger" label="Send crash report" transparent />,
+        ]}
+      >
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+      </Message>
+      <Message
+        icon={<Icon i="info" />}
+        header="Did you know?"
+        severity="primary"
+        compact
+        onClose={() => {}}
+      >
+        Here's some additional information that helps to clarify the message.
+      </Message>
+      <Message
+        icon={<Icon i="sentiment_very_dissatisfied" />}
+        header="Whoops! Something went wrong."
+        severity="danger"
+        compact
+        onClose={() => {}}
+        actions={[
+          <Button severity="danger" label="Send crash report" transparent />,
+        ]}
+      />
     </Flex>
   ),
 };

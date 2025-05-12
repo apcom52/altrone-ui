@@ -28,11 +28,13 @@ export const BottomNavigationStory: StoryObj<typeof BottomNavigation> = {
             href="#"
             icon={<Icon i="wallet" />}
             label="Wallet"
+            badge="NEW"
           />
           <BottomNavigation.Item
             href="#"
             icon={<Icon i="settings" />}
             label="Settings"
+            badge="2"
           />
           <BottomNavigation.Item
             href="#"

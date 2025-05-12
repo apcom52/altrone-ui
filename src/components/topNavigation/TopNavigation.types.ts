@@ -20,6 +20,7 @@ export interface TopNavigationLinkProps
   label: string;
   leftIcon?: JSX.Element;
   rightIcon?: JSX.Element;
+  badge?: string | number | JSX.Element;
   selected?: boolean;
   renderFunc?: RenderFuncProp<HTMLAnchorElement, TopNavigationLinkProps>;
 }

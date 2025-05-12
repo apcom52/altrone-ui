@@ -10,4 +10,5 @@ export interface BottomNavigationItemProps
   label: string;
   selected?: boolean;
   renderFunc?: RenderFuncProp<HTMLAnchorElement, BottomNavigationItemProps>;
+  badge?: string | number | JSX.Element;
 }

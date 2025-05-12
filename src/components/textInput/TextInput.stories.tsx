@@ -104,6 +104,12 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             label={readonly ? 'Edit' : 'Save'}
             onClick={() => setReadonly(!readonly)}
           />
+          <TextInput
+            value={''}
+            onChange={() => null}
+            placeholder="Placeholder for read-only"
+            readOnly={readonly}
+          />
         </Flex>
         <Text.Heading role="inner">Small TextInputs</Text.Heading>
         <TextInput
