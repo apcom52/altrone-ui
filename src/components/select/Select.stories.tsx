@@ -144,7 +144,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             onChange={setValue2}
             placeholder="Choose your country"
             options={SELECT_COUNTRIES}
-            Component={({ selectedOptions, expanded }) => (
+            renderFunc={({ selectedOptions, expanded }) => (
               <Button
                 style={{ minWidth: '300px' }}
                 label={(selectedOptions as Option)?.label}

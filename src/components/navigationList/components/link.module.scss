@@ -8,6 +8,8 @@
   --navigationListPressedLinkBackgroundColor: var(--default-300);
   --navigationListPressedTextColor: var(--default-900);
   --navigation-list-secondary-link-border-color: var(--default-200);
+  --navigation-list-badge-background-color: var(--default-300);
+  --navigation-list-badge-text-color: var(--default-900);
 }
 
 :global(.AltroneDark) {
@@ -18,6 +20,8 @@
   --navigationListPressedLinkBackgroundColor: var(--default-600);
   --navigationListPressedTextColor: var(--default-50);
   --navigation-list-secondary-link-border-color: var(--default-700);
+  --navigation-list-badge-background-color: var(--default-600);
+  --navigation-list-badge-text-color: var(--default-50);
 }
 
 .Link {
@@ -78,6 +82,17 @@
       background-color: var(--navigationListPressedLinkBackgroundColor);
     }
   }
+
+  &:hover,
+  &:focus-visible {
+    .Actions {
+      display: flex;
+    }
+
+    .Badge:has(+ .Actions) {
+      display: none;
+    }
+  }
 }
 
 .Icon {
@@ -97,7 +112,7 @@
 }
 
 .Actions {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 6px;
   margin-left: auto;
@@ -135,4 +150,11 @@
   .ThirdLevelList {
     margin-left: 5px;
   }
+}
+
+.Badge {
+  margin-left: auto;
+  margin-right: -8px;
+  color: var(--navigation-list-badge-text-color);
+  background-color: var(--navigation-list-badge-background-color);
 }

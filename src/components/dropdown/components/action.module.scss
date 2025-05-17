@@ -10,6 +10,10 @@
   --dropdownHintTextColor: var(--disabledTextColor);
   --dropdownOpenedBackgroundColor: var(--default-200);
   --dropdownOpenedTextColor: var(--default-900);
+  --dropdown-badge-background-color: var(--default-200);
+  --dropdown-badge-text-color: var(--default-700);
+  --dropdown-badge-hover-background-color: var(--primary-700);
+  --dropdown-badge-hover-text-color: var(--default-50);
 }
 
 :global(.AltroneDark) {
@@ -22,12 +26,21 @@
   --dropdownHintTextColor: var(--disabledTextColor);
   --dropdownOpenedBackgroundColor: var(--default-700);
   --dropdownOpenedTextColor: var(--default-50);
+  --dropdown-badge-background-color: var(--default-700);
+  --dropdown-badge-text-color: var(--default-50);
+  --dropdown-badge-hover-background-color: var(--primary-400);
+  --dropdown-badge-hover-text-color: var(--default-50);
 
   .DangerAction {
     --dropdownActionBackgroundColor: transparent;
     --dropdownActionHoverColor: var(--danger-700);
     --dropdownActionPressColor: var(--danger-600);
     --dropdownActionTextColor: var(--danger-600);
+
+    --dropdown-badge-background-color: var(--danger-700);
+    --dropdown-badge-text-color: var(--danger-50);
+    --dropdown-badge-hover-background-color: var(--danger-400);
+    --dropdown-badge-hover-text-color: var(--danger-50);
   }
 }
 
@@ -47,16 +60,27 @@
   height: 24px;
   outline: 0;
 
-  &:hover, &:focus-visible, &[data-active="true"]:not(.OpenedAction), &.Focused {
+  &:hover,
+  &:focus-visible,
+  &[data-active='true']:not(.OpenedAction),
+  &.Focused {
     background: var(--dropdownActionHoverColor);
     color: var(--dropdownActionHoverTextColor);
     --dropdownHintTextColor: var(--default-100);
+    --dropdown-badge-background-color: var(
+      --dropdown-badge-hover-background-color
+    );
+    --dropdown-badge-text-color: var(--dropdown-badge-hover-text-color);
   }
 
   &:active {
     background: var(--dropdownActionPressColor);
     color: var(--dropdownActionPressTextColor);
     --dropdownHintTextColor: var(--default-100);
+    --dropdown-badge-background-color: var(
+      --dropdown-badge-hover-background-color
+    );
+    --dropdown-badge-text-color: var(--dropdown-badge-hover-text-color);
   }
 }
 
@@ -106,4 +130,15 @@
   --dropdownActionHoverTextColor: var(--danger-50);
   --dropdownActionPressTextColor: var(--danger-50);
   --dropdownHintTextColor: var(--danger-300);
+
+  --dropdown-badge-background-color: var(--danger-500);
+  --dropdown-badge-text-color: var(--danger-50);
+  --dropdown-badge-hover-background-color: var(--danger-700);
+  --dropdown-badge-hover-text-color: var(--danger-50);
+}
+
+.Badge {
+  color: var(--dropdown-badge-text-color);
+  background-color: var(--dropdown-badge-background-color);
+  margin-right: -8px;
 }

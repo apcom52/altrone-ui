@@ -1,0 +1,60 @@
+.Avatar {
+  --avatar-image-size: 20px;
+  --avatar-letter-size: 12px;
+  --avatar-size: 24px;
+
+  position: relative;
+  display: inline-flex;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  user-select: none;
+  overflow: hidden;
+
+  &:after {
+    position: absolute;
+    top: 0%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+    z-index: 0;
+    background: radial-gradient(
+      at 0% 0%,
+      rgba(255, 255, 255, 0.4),
+      transparent 100%
+    );
+  }
+}
+
+.Letters {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  line-height: var(--avatar-size);
+  color: var(--default-900);
+  font-size: var(--avatar-letter-size);
+  font-weight: 500;
+  z-index: 2;
+}
+
+.Image {
+  width: var(--avatar-image-size);
+  height: var(--avatar-image-size);
+  border-radius: 50%;
+  margin: 2px;
+}
+
+.Small {
+  --avatar-image-size: 16px;
+  --avatar-letter-size: 10px;
+  --avatar-size: 20px;
+}
+
+.Large {
+  --avatar-image-size: 28px;
+  --avatar-letter-size: 14px;
+  --avatar-size: 32px;
+}

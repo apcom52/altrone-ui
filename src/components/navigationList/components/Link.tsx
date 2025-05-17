@@ -13,6 +13,7 @@ import {
   NavigationListLevelContext,
   useNavigationListLevel,
 } from '../NavigationList.context.ts';
+import { Badge } from 'components/badge/Badge.tsx';
 
 const navigationListRenderFunc: RenderFuncProp<
   HTMLAnchorElement,
@@ -21,12 +22,15 @@ const navigationListRenderFunc: RenderFuncProp<
   const {
     icon,
     label,
-    actions,
+    actions = undefined,
     level = 0,
     children,
     selected,
+    badge,
     ...restProps
   } = props;
+
+  const { navigationList: { link: linkConfig = {} } = {} } = useConfiguration();
 
   const hasChildren = React.Children.count(children) > 0;
   const showChildren = hasChildren && selected;
@@ -37,13 +41,16 @@ const navigationListRenderFunc: RenderFuncProp<
     [s.ThirdLevelList]: level > 0,
   });
 
+  const badgeCls = clsx(s.Badge, linkConfig.badgeClassName);
+
   return (
     <>
       <a ref={ref} {...restProps}>
         <div className={s.Label}>
           {showIcon ? <div className={s.Icon}>{icon}</div> : null}
           {label}
-          {actions ? <div className={s.Actions}>{actions}</div> : null}
+          {badge ? <Badge className={badgeCls}>{badge}</Badge> : null}
+          {actions?.length ? <div className={s.Actions}>{actions}</div> : null}
         </div>
       </a>
       {showChildren ? (

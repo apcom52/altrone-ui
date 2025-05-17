@@ -8,6 +8,7 @@ import { forwardRef, memo, useEffect } from 'react';
 import { RenderFuncProp } from 'types';
 import { GlobalUtils } from '../../utils';
 import { Loading } from '../loading';
+import { Badge } from 'components/badge/Badge.tsx';
 
 const buttonRenderFunc: RenderFuncProp<HTMLButtonElement, ButtonProps> = (
   ref,
@@ -40,6 +41,7 @@ export const Button = memo(
       style,
       rainbowEffect,
       loading,
+      badge,
       renderFunc = buttonRenderFunc,
     } = props;
 
@@ -108,16 +110,20 @@ export const Button = memo(
       </div>
     ) : null;
 
+    const badgeCls = clsx(s.Badge, buttonConfig.badgeClassName);
+
     const buttonContent = !isOnlyIcon ? (
       <Flex gap={size === 'l' ? 's' : 'xs'} align="center">
         {leftIcon ? <div className={s.Icon}>{leftIcon}</div> : null}
         <div className={s.Label}>{label}</div>
         {rightIcon ? <div className={s.Icon}>{rightIcon}</div> : null}
+        {badge && <Badge className={badgeCls}>{badge}</Badge>}
         {loadingNode}
       </Flex>
     ) : (
       <div className={s.Icon}>
         {leftIcon || rightIcon}
+        {badge && <Badge className={badgeCls}>{badge}</Badge>}
         {loadingNode}
       </div>
     );

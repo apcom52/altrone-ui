@@ -1,6 +1,6 @@
 import React from 'react';
-import { expect, test, describe } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { expect, test, describe, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Message, Icon, AltroneApplication } from '../src/components';
 
 describe('Message', () => {
@@ -34,6 +34,20 @@ describe('Message', () => {
     );
 
     expect(screen.getByText('test-icon')).toBeInTheDocument();
+  });
+
+  test('onClose prop has to be called when close button is clicked', async () => {
+    const onClose = vi.fn();
+
+    render(
+      <Message data-testid="message" onClose={onClose}>
+        Test content
+      </Message>,
+    );
+
+    await fireEvent.click(screen.getByText('close'));
+
+    expect(onClose).toHaveBeenCalled();
   });
 
   test('Message has to apply custom className and id', () => {

@@ -1,0 +1,22 @@
+@import 'src/global/mixins';
+
+:root {
+  --badge-radius: 4px;
+  --badge-vertical-padding: 0;
+  --badge-horizontal-padding: var(--xs-gap);
+  --badge-height: 16px;
+  --badge-font-size: 8px;
+}
+
+.Badge {
+  position: relative;
+  border-radius: var(--badge-radius);
+  height: var(--badge-height);
+  padding: var(--badge-vertical-padding) var(--badge-horizontal-padding);
+  min-width: var(--badge-height);
+  text-align: center;
+
+  @include small-label;
+  font-size: var(--badge-font-size);
+  line-height: var(--badge-height);
+}
