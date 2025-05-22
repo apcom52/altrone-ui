@@ -1,0 +1,182 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --range-track-background-color: var(--default-200);
+  --range-active-track-background-color: var(--default-50);
+  --range-disabled-active-track-background-color: var(--default-300);
+  --range-text-color: var(--default-900);
+  --range-border-color: var(--default-200);
+  --range-height: 24px;
+}
+
+:global(.AltroneDark) {
+  --range-track-background-color: var(--default-800);
+  --range-active-track-background-color: var(--default-600);
+  --range-disabled-active-track-background-color: var(--default-900);
+  --range-text-color: var(--default-50);
+  --range-border-color: var(--default-700);
+}
+
+.Range {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: var(--range-height);
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px var(--range-border-color);
+  background-color: var(--range-track-background-color);
+  color: var(--range-text-color);
+  cursor: pointer;
+
+  @include no-selection;
+  @include focus;
+
+  &:active {
+    cursor: ew-resize;
+  }
+
+  &:focus-visible,
+  &:hover {
+    .Value {
+      opacity: 1;
+    }
+  }
+
+  &[data-range-active='true'] {
+    .Value {
+      opacity: 1;
+    }
+  }
+}
+
+.ShowLabelAlways {
+  .Value {
+    opacity: 1;
+  }
+}
+
+.Input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  overflow: 0;
+  opacity: 0;
+}
+
+.ActiveTrack {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  pointer-events: none;
+  background-color: var(--range-active-track-background-color);
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  box-shadow: 1px 0 5px 0 rgba(0, 0, 0, 0.05);
+}
+
+.Value {
+  pointer-events: none;
+  position: absolute;
+  right: 8px;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+
+  @include label-heading;
+}
+
+.Icon {
+  pointer-events: none;
+  position: absolute;
+  left: 8px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
+
+.Small {
+  --range-height: 20px;
+
+  .Icon {
+    font-size: 12px;
+  }
+}
+
+.Large {
+  --range-height: 32px;
+
+  .Icon {
+    font-size: 22px;
+  }
+}
+
+.Disabled {
+  --range-text-color: var(--default-400);
+  --range-active-track-background-color: var(
+    --range-disabled-active-track-background-color
+  );
+
+  cursor: default;
+}
+
+.ReadOnly {
+  --range-active-track-background-color: transparent;
+  --range-track-background-color: transparent;
+  --range-border-color: transparent;
+
+  cursor: default;
+  user-select: unset;
+  -webkit-user-select: unset;
+
+  &:active {
+    cursor: default;
+  }
+}
+
+.ReadOnlyLabel {
+  @include paragraph;
+  user-select: all;
+  color: var(--range-text-color);
+}
+
+.Vertical {
+  width: var(--range-height);
+  height: 100%;
+
+  .ActiveTrack {
+    width: 100%;
+    height: 0;
+    bottom: 0;
+    border-top-right-radius: 2px;
+    border-top-left-radius: 2px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .Value {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 8px;
+  }
+
+  .Icon {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    left: 0;
+    bottom: 4px;
+    height: var(--range-height);
+    top: auto;
+  }
+
+  &:active {
+    cursor: ns-resize;
+  }
+}
