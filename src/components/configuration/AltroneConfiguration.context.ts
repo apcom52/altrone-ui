@@ -116,6 +116,9 @@ export interface ConsumerConfigurationContext {
   radio?: ComponentConfiguration<{
     item?: ComponentConfiguration;
   }>;
+  range?: ComponentConfiguration<{
+    activeTrackClassName?: string;
+  }>;
   scrollable?: ComponentConfiguration;
   search?: ComponentConfiguration<{
     showControls?: boolean;

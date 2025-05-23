@@ -18,4 +18,5 @@ export interface RangeProps
   readOnly?: boolean;
   showCurrentValue?: 'active' | 'always' | false;
   renderLabel?: (value: number) => ReactNode;
+  activeTrackClassName?: string;
 }

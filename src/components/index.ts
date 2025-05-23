@@ -32,6 +32,7 @@ export * from './photoViewer';
 export * from './popover';
 export * from './progress';
 export * from './radio';
+export * from './range';
 export * from './scrollable';
 export * from './search';
 export * from './select';

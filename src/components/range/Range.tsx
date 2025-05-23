@@ -2,6 +2,7 @@ import { memo, useMemo, useCallback, useRef, useEffect, useState } from 'react';
 import { RangeProps } from './Range.types';
 import s from './range.module.scss';
 import clsx from 'clsx';
+import { useConfiguration } from 'components/configuration';
 
 export const Range = memo<RangeProps>((props) => {
   const {
@@ -18,8 +19,12 @@ export const Range = memo<RangeProps>((props) => {
     renderLabel,
     disabled,
     readOnly,
+    name,
+    activeTrackClassName,
     ...restProps
   } = props;
+
+  const { range: rangeConfig = {} } = useConfiguration();
 
   const isDragging = useRef(false);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -126,15 +131,6 @@ export const Range = memo<RangeProps>((props) => {
     return value;
   }, [value, renderLabel]);
 
-  const cls = clsx(s.Range, {
-    [s.Small]: size === 's',
-    [s.Large]: size === 'l',
-    [s.Vertical]: direction === 'vertical',
-    [s.ShowLabelAlways]: showCurrentValue === 'always',
-    [s.Disabled]: disabled,
-    [s.ReadOnly]: readOnly,
-  });
-
   const activeTrackStyle = useMemo(() => {
     if (direction === 'vertical') {
       return {
@@ -146,10 +142,34 @@ export const Range = memo<RangeProps>((props) => {
     return { width: leftOffset };
   }, [direction, leftOffset]);
 
+  const cls = clsx(
+    s.Range,
+    {
+      [s.Small]: size === 's',
+      [s.Large]: size === 'l',
+      [s.Vertical]: direction === 'vertical',
+      [s.ShowLabelAlways]: showCurrentValue === 'always',
+      [s.Disabled]: disabled,
+      [s.ReadOnly]: readOnly,
+    },
+    rangeConfig.className,
+  );
+
+  const activeTrackCls = clsx(
+    s.ActiveTrack,
+    activeTrackClassName,
+    rangeConfig.activeTrackClassName,
+  );
+
+  const styles = {
+    ...rangeConfig.style,
+    ...style,
+  };
+
   return (
     <div
       className={cls}
-      style={style}
+      style={styles}
       onPointerDown={disabled ? undefined : handlePointerDown}
       ref={trackRef}
       data-range-active={isActive}
@@ -176,10 +196,11 @@ export const Range = memo<RangeProps>((props) => {
         disabled={disabled}
         className={s.Input}
         tabIndex={-1}
+        name={name}
       />
       {!readOnly ? (
         <>
-          <div className={s.ActiveTrack} style={activeTrackStyle} />
+          <div className={activeTrackCls} style={activeTrackStyle} />
           {showCurrentValue === 'always' || showCurrentValue === 'active' ? (
             <div className={s.Value}>{labelElement}</div>
           ) : null}

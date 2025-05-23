@@ -1,1 +1,1 @@
-export { Divider } from './Range.tsx';
+export { Range } from './Range.tsx';
