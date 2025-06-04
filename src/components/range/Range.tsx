@@ -8,6 +8,7 @@ export const Range = memo<RangeProps>((props) => {
   const {
     value,
     onChange,
+    onValueCommit,
     min = 0,
     max = 100,
     step = 1,
@@ -27,6 +28,7 @@ export const Range = memo<RangeProps>((props) => {
   const { range: rangeConfig = {} } = useConfiguration();
 
   const isDragging = useRef(false);
+  const rangeValue = useRef(value);
   const trackRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
   const isFocused = useRef(false);
@@ -40,19 +42,23 @@ export const Range = memo<RangeProps>((props) => {
         case 'ArrowDown':
           event.preventDefault();
           onChange(Math.max(min, value - step));
+          onValueCommit?.(Math.max(min, value - step));
           break;
         case 'ArrowRight':
         case 'ArrowUp':
           event.preventDefault();
           onChange(Math.min(max, value + step));
+          onValueCommit?.(Math.min(max, value + step));
           break;
         case 'Home':
           event.preventDefault();
           onChange(min);
+          onValueCommit?.(min);
           break;
         case 'End':
           event.preventDefault();
           onChange(max);
+          onValueCommit?.(max);
           break;
       }
     },
@@ -88,6 +94,9 @@ export const Range = memo<RangeProps>((props) => {
       setIsActive(true);
       const newValue = calculateValue(event.clientX, event.clientY);
       onChange(newValue);
+
+      document.addEventListener('pointermove', handlePointerMove);
+      document.addEventListener('pointerup', handlePointerUp);
     },
     [calculateValue, onChange],
   );
@@ -102,23 +111,13 @@ export const Range = memo<RangeProps>((props) => {
   );
 
   const handlePointerUp = useCallback(() => {
+    onValueCommit?.(rangeValue.current);
     isDragging.current = false;
     setIsActive(false);
-  }, []);
 
-  useEffect(() => {
-    document.addEventListener('pointermove', handlePointerMove);
-    document.addEventListener('pointerup', handlePointerUp);
-
-    return () => {
-      document.removeEventListener('pointermove', handlePointerMove);
-      document.removeEventListener('pointerup', handlePointerUp);
-    };
-  }, [handlePointerMove, handlePointerUp]);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(Number(event.target.value));
-  };
+    document.removeEventListener('pointermove', handlePointerMove);
+    document.removeEventListener('pointerup', handlePointerUp);
+  }, [onValueCommit]);
 
   const leftOffset = useMemo(() => {
     return `${((value - min) / (max - min)) * 100}%`;
@@ -155,6 +154,10 @@ export const Range = memo<RangeProps>((props) => {
     rangeConfig.className,
   );
 
+  useEffect(() => {
+    rangeValue.current = value;
+  }, [value]);
+
   const activeTrackCls = clsx(
     s.ActiveTrack,
     activeTrackClassName,
@@ -184,20 +187,12 @@ export const Range = memo<RangeProps>((props) => {
       aria-valuetext={
         typeof labelElement === 'string' ? labelElement : String(value)
       }
+      aria-disabled={disabled}
+      aria-readonly={readOnly}
       aria-orientation={direction}
       {...restProps}
     >
-      <input
-        type="range"
-        value={value}
-        onChange={handleChange}
-        min={min}
-        max={max}
-        disabled={disabled}
-        className={s.Input}
-        tabIndex={-1}
-        name={name}
-      />
+      <input type="hidden" value={value} tabIndex={-1} name={name} />
       {!readOnly ? (
         <>
           <div className={activeTrackCls} style={activeTrackStyle} />

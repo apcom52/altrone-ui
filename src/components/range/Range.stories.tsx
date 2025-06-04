@@ -39,6 +39,7 @@ export const RangeStory: StoryObj<typeof Range> = {
                   onChange={setValue1}
                   icon={<Icon i="format_size" />}
                   renderLabel={(value) => `${value}pt`}
+                  onValueCommit={(value) => console.log('onValueCommit', value)}
                 />
               </Form.Field>
             </Grid.Column>
