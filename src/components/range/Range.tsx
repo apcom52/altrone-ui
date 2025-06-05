@@ -62,7 +62,7 @@ export const Range = memo<RangeProps>((props) => {
           break;
       }
     },
-    [value, min, max, step, onChange],
+    [value, min, max, step, onChange, onValueCommit],
   );
 
   const calculateValue = useCallback(
