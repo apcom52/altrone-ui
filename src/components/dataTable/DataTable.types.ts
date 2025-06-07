@@ -56,6 +56,7 @@ export interface DataTableProps<T extends object>
   rowsPerPage?: number;
   selectable?: boolean;
   showFooter?: boolean;
+  showEmptyBanner?: boolean;
   defaultPage?: number;
   defaultSort?: Sorting;
   defaultFilters?: Filter[];
@@ -204,4 +205,8 @@ export interface FilterRowProps<T extends AnyObject> {
 export interface FilterFuncArgs<T extends AnyObject, FilterType> {
   row: T;
   filter: FilterType;
+}
+
+export interface DataTableBodyProps {
+  showEmptyBanner?: boolean;
 }

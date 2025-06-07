@@ -125,4 +125,7 @@ export interface Localization {
     savedColors: string;
     palette: string;
   };
+  empty: {
+    noData: string;
+  };
 }

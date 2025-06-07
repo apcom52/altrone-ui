@@ -70,6 +70,7 @@ export interface ConsumerConfigurationContext {
     childMenu?: ComponentConfiguration;
   }>;
   dummyBox?: ComponentConfiguration;
+  empty?: ComponentConfiguration;
   filePicker?: ComponentConfiguration;
   flex?: ComponentConfiguration;
   form?: ComponentConfiguration<{

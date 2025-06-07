@@ -19,6 +19,7 @@ const DataTableComponent = <DataType extends object>(
     rowsPerPage,
     data,
     columns,
+    showEmptyBanner = true,
     ...restProps
   } = props;
 
@@ -43,7 +44,7 @@ const DataTableComponent = <DataType extends object>(
         ) : null}
         <table className={cls} style={styles} {...restProps}>
           <ColumnHeaders headingVisible={dataTableHeaderVisible} />
-          <Body />
+          <Body showEmptyBanner={showEmptyBanner} />
         </table>
         {showFooter ? <Footer /> : null}
       </div>

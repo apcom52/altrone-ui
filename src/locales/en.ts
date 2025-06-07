@@ -133,4 +133,7 @@ export const en: Localization = {
     savedColors: 'Saved colors',
     palette: 'Palette',
   },
+  empty: {
+    noData: 'No data',
+  },
 };
