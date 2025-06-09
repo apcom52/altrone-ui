@@ -1,0 +1,47 @@
+@import 'src/global/mixins';
+
+:global(:root) {
+  --empty-background: var(--default-100);
+  --empty-border: var(--default-200);
+  --empty-color: var(--default-500);
+}
+
+:global(.AltroneDark) {
+  --empty-background: var(--default-800);
+  --empty-border: var(--default-700);
+  --empty-color: var(--default-400);
+}
+
+.Wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  color: var(--empty-color);
+}
+
+.Empty {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--empty-background);
+  width: fit-content;
+  border-radius: 12px;
+  padding: 16px 24px;
+  border: 1px solid var(--empty-border);
+}
+
+.Icon {
+  font-size: 32px;
+}
+
+.Label {
+  text-align: center;
+  max-width: 200px;
+  @include sm-paragraph;
+}
+
+.Transparent {
+  .Empty {
+    background: none;
+    border: none;
+  }
+}

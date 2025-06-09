@@ -237,6 +237,32 @@ describe('DataTable', () => {
     expect(element).toHaveStyle('fontSize: 18px');
   });
 
+  test('check showEmptyBanner works correctly', () => {
+    const { rerender } = render(
+      <AltroneApplication>
+        <DataTable
+          data={[]}
+          columns={[{ accessor: 'name', type: 'text' }]}
+          data-testid="data-table"
+        />
+      </AltroneApplication>,
+    );
+
+    expect(screen.getByText('No data')).toBeInTheDocument();
+
+    rerender(
+      <AltroneApplication>
+        <DataTable
+          data={[]}
+          columns={[{ accessor: 'name', type: 'text' }]}
+          data-testid="data-table"
+          showEmptyBanner={false}
+        />
+      </AltroneApplication>,
+    );
+    expect(screen.queryByText('No data')).not.toBeInTheDocument();
+  });
+
   test('check string filters', () => {
     const checkValue = (
       value: any,

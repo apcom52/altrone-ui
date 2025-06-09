@@ -294,6 +294,7 @@ describe('DataTable.cy.tsx', () => {
           rowsPerPage={20}
           selectable
           data-testid="table"
+          showEmptyBanner={false}
           columns={[
             {
               accessor: 'firstName',
@@ -467,6 +468,7 @@ describe('DataTable.cy.tsx', () => {
           rowsPerPage={20}
           selectable
           data-testid="table"
+          showEmptyBanner={false}
           columns={[
             {
               accessor: 'firstName',
@@ -608,6 +610,7 @@ describe('DataTable.cy.tsx', () => {
           rowsPerPage={20}
           selectable
           data-testid="table"
+          showEmptyBanner={false}
           columns={[
             {
               accessor: 'firstName',
@@ -730,6 +733,7 @@ describe('DataTable.cy.tsx', () => {
           rowsPerPage={20}
           selectable
           data-testid="table"
+          showEmptyBanner={false}
           columns={[
             {
               accessor: 'firstName',
@@ -837,6 +841,7 @@ describe('DataTable.cy.tsx', () => {
           rowsPerPage={20}
           selectable
           data-testid="table"
+          showEmptyBanner={false}
           columns={[
             {
               accessor: 'description',
@@ -997,6 +1002,7 @@ describe('DataTable.cy.tsx', () => {
           rowsPerPage={20}
           selectable
           data-testid="table"
+          showEmptyBanner={false}
           columns={[
             {
               accessor: 'description',
@@ -1160,6 +1166,7 @@ describe('DataTable.cy.tsx', () => {
           rowsPerPage={20}
           selectable
           data-testid="table"
+          showEmptyBanner={false}
           columns={[
             {
               accessor: 'description',

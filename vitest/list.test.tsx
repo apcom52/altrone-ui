@@ -1,7 +1,7 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Configuration, List } from '../src/components';
+import { AltroneApplication, Configuration, List } from '../src/components';
 
 const ITEMS = [
   { name: 'Item 1' },
@@ -71,5 +71,28 @@ describe('List', () => {
     const element = screen.getByTestId('element');
     expect(element).toHaveClass('cls');
     expect(element).toHaveStyle('color: rgb(0, 0, 255)');
+  });
+
+  test('check that showEmptyBanner works correctly', () => {
+    const { rerender } = render(
+      <AltroneApplication>
+        <List data={[]} renderItem={() => <div />} data-testid="list" />
+      </AltroneApplication>,
+    );
+
+    expect(screen.getByTestId('list')).toHaveTextContent('No data');
+
+    rerender(
+      <AltroneApplication>
+        <List
+          data={[]}
+          renderItem={() => <div />}
+          data-testid="list"
+          showEmptyBanner={false}
+        />
+      </AltroneApplication>,
+    );
+
+    expect(screen.getByTestId('list')).not.toHaveTextContent('No data');
   });
 });

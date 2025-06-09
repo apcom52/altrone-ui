@@ -4,6 +4,7 @@ import s from './list.module.scss';
 import clsx from 'clsx';
 import { useConfiguration } from 'components/configuration';
 import { Flex } from 'components/flex';
+import { Empty } from 'components/empty/Empty.tsx';
 
 const List = <DataType extends object>({
   data,
@@ -14,6 +15,7 @@ const List = <DataType extends object>({
   SeparatorComponent,
   className,
   style,
+  showEmptyBanner = true,
   ...props
 }: ListProps<DataType>) => {
   const { list: listConfig = {} } = useConfiguration();
@@ -44,6 +46,7 @@ const List = <DataType extends object>({
       gap={gap}
       {...props}
     >
+      {filteredItems.length === 0 && showEmptyBanner ? <Empty /> : null}
       {filteredItems.map((item, currentIndex) => {
         const isLastItem = currentIndex === filteredItems.length - 1;
         const context: ListItemContext<DataType> = { item, currentIndex, data };

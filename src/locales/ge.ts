@@ -134,4 +134,7 @@ export const ge: Localization = {
     savedColors: 'Gespeicherte Farben',
     palette: 'Palette',
   },
+  empty: {
+    noData: 'Keine Daten',
+  },
 };

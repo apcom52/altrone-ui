@@ -117,7 +117,7 @@ const CITY_RANKS: CityRank[] = [
 ];
 
 const story: Meta<typeof List> = {
-  title: 'Components/Containers/List',
+  title: 'Components/Display/List',
   component: List,
   decorators: [StorybookDecorator],
   args: {

@@ -133,4 +133,7 @@ export const ru: Localization = {
     savedColors: 'Сохраненные цвета',
     palette: 'Палитра',
   },
+  empty: {
+    noData: 'Нет данных',
+  },
 };
