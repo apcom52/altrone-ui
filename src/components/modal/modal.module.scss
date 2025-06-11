@@ -27,7 +27,9 @@
   flex-direction: column;
   min-width: var(--modal-size);
   width: var(--modal-size);
-  @include glass-surface;
+  background: var(--glass-background-color);
+  border: 1px solid var(--glass-border-color);
+  backdrop-filter: var(--glass-background-blur);
   border-radius: 8px;
   box-shadow: 0 3px 15px 0 rgba(0, 0, 0, .1);
   padding: 8px;

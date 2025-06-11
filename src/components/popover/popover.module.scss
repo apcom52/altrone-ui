@@ -18,13 +18,14 @@
   background: var(--popoverSolidBackgroundColor);
   border-radius: 8px;
   box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--glass-border-color);
   font-family: "Inter Variable", sans-serif;
 }
 
 .GlassEffect {
-  background: var(--glassBackground);
-  -webkit-backdrop-filter: blur(32px);
-  backdrop-filter: blur(32px);
+  background: var(--glass-background-color);
+  -webkit-backdrop-filter: var(--glass-background-blur);
+  backdrop-filter: var(--glass-background-blur);
 }
 
 .Content {
@@ -52,7 +53,6 @@
   background: var(--popoverSolidBackgroundColor);
   width: 14px;
   height: 14px;
-  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
 }
 
 .InsideNotification {
