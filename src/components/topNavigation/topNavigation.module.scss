@@ -6,8 +6,9 @@
   width: 100%;
   padding: 16px;
   gap: var(--gap);
-
-  @include glass-surface;
+  background: var(--glass-background-color);
+  border-bottom: 1px solid var(--glass-border-color);
+  backdrop-filter: var(--glass-background-blur);
 }
 
 .Fixed {
