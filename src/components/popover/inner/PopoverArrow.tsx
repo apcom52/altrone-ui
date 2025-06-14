@@ -35,8 +35,8 @@ export const PopoverArrow = forwardRef<HTMLDivElement, PopoverArrowProps>(
     const additionalStyles = {
       top: {
         transform: 'translateY(-10px)',
-        borderTopColor: 'var(--glass-border-color)',
-        borderLeftColor: 'var(--glass-border-color)',
+        borderBottomColor: 'var(--glass-border-color)',
+        borderRightColor: 'var(--glass-border-color)',
       },
       left: {
         transform: 'translateX(-10px)',

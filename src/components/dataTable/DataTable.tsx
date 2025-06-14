@@ -1,7 +1,7 @@
 import { DataTableProps } from './DataTable.types';
 import { DataTableContextProvider } from './DataTable.context';
 import { Body, ColumnHeaders, Header, Footer } from './inner';
-import { Action } from './components';
+import { Action, RowActions, RowAction } from './components';
 import s from './dataTable.module.scss';
 import { Children, useMemo } from 'react';
 import { useConfiguration } from '../configuration';
@@ -43,8 +43,14 @@ const DataTableComponent = <DataType extends object>(
           <Header<DataType> selectable={Boolean(selectable)}>{children}</Header>
         ) : null}
         <table className={cls} style={styles} {...restProps}>
-          <ColumnHeaders headingVisible={dataTableHeaderVisible} />
-          <Body showEmptyBanner={showEmptyBanner} />
+          <ColumnHeaders
+            headingVisible={dataTableHeaderVisible}
+            renderRowActions={props.renderRowActions}
+          />
+          <Body
+            showEmptyBanner={showEmptyBanner}
+            renderRowActions={props.renderRowActions}
+          />
         </table>
         {showFooter ? <Footer /> : null}
       </div>
@@ -54,6 +60,8 @@ const DataTableComponent = <DataType extends object>(
 
 const DataTableNamespace = Object.assign(DataTableComponent, {
   Action: Action,
+  RowActions: RowActions,
+  RowAction: RowAction,
 });
 
 export { DataTableNamespace as DataTable };

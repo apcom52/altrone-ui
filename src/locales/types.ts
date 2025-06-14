@@ -64,6 +64,8 @@ export interface Localization {
     selectedRows: PluralString;
     totalRows: string;
     rowsPerPage: string;
+    actions: string;
+    moreActions: string;
     stringFilter: {
       empty: string;
       notEmpty: string;

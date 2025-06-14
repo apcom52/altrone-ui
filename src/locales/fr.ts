@@ -72,6 +72,8 @@ export const fr: Localization = {
     },
     totalRows: 'Total des lignes',
     rowsPerPage: 'Lignes par page',
+    actions: 'Actions',
+    moreActions: "Plus d'actions",
     stringFilter: {
       empty: 'est vide',
       notEmpty: "n'est pas vide",

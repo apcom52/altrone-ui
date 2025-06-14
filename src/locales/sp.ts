@@ -73,6 +73,8 @@ export const sp: Localization = {
     },
     totalRows: 'Total de filas',
     rowsPerPage: 'Filas por página',
+    actions: 'Acciones',
+    moreActions: 'Más acciones',
     stringFilter: {
       empty: 'está vacío',
       notEmpty: 'no está vacío',
