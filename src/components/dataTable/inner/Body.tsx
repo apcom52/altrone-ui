@@ -55,7 +55,7 @@ export const Body = <T extends object>(props: DataTableBodyProps<T>) => {
   const visibleColumns = useVisibleColumns(columns);
 
   return (
-    <tbody>
+    <tbody className={s.TableBody}>
       {data.length === 0 && showEmptyBanner ? (
         <tr>
           <td colSpan={visibleColumns.length}>
