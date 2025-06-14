@@ -72,6 +72,8 @@ export const en: Localization = {
     },
     totalRows: 'Total rows',
     rowsPerPage: 'Rows per page',
+    actions: 'Actions',
+    moreActions: 'More actions',
     stringFilter: {
       empty: 'is empty',
       notEmpty: 'is not empty',

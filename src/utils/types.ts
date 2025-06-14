@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 
 export type NestedKeys<ObjectType extends object> = {
   [Key in keyof ObjectType & (string | number)]: ObjectType[Key] extends object
@@ -15,3 +15,9 @@ export type RenderFunction<ReturnType, Arguments = undefined> =
   | ((data: Arguments) => ReturnType);
 
 export type CustomRenderFunction<Arguments> = (data: Arguments) => ReactNode;
+
+export type StrictReactElements<T extends object> =
+  | ReactElement<T>
+  | null
+  | undefined
+  | Array<ReactElement<T> | null | undefined>;

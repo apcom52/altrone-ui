@@ -34,8 +34,8 @@ const CELL_RENDERERS: Record<
   year: DataTableYearRenderer,
 };
 
-export const Body = <T extends object>(props: DataTableBodyProps) => {
-  const { showEmptyBanner = true } = props;
+export const Body = <T extends object>(props: DataTableBodyProps<T>) => {
+  const { showEmptyBanner = true, renderRowActions } = props;
 
   const {
     data,
@@ -130,6 +130,11 @@ export const Body = <T extends object>(props: DataTableBodyProps) => {
                 </td>
               );
             })}
+            {renderRowActions ? (
+              <td className={clsx(s.Cell)}>
+                {renderRowActions({ row, rowIndex, selected: isSelected })}
+              </td>
+            ) : null}
           </tr>
         );
       })}

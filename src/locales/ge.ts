@@ -73,6 +73,8 @@ export const ge: Localization = {
     },
     totalRows: 'Gesamtzeilen',
     rowsPerPage: 'Zeilen pro Seite',
+    actions: 'Aktionen',
+    moreActions: 'Mehr Aktionen',
     stringFilter: {
       empty: 'ist leer',
       notEmpty: 'ist nicht leer',

@@ -9,10 +9,9 @@ import { Dropdown } from '../dropdown';
 import { Icon } from '../icon';
 import { Popover } from '../popover';
 import { EMPLOYEES, EmployeeType } from './stories/EMPLOYEES.ts';
-import { expect, fireEvent, userEvent, within } from '@storybook/test';
-import { AsyncUtils } from 'utils';
 import { InvoiceStory } from './stories/InvoiceStory.tsx';
 import { InvoicesWithStatusesStory } from './stories/Invoice2Story.tsx';
+import { DataTableWithRowActionsStory } from './stories/ActionsStory.tsx';
 import { FiltersDataTableStory } from './stories/FiltersStory.tsx';
 import { useState } from 'react';
 import { action } from '@storybook/addon-actions';
@@ -212,6 +211,11 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
   },
 };
 
-export { InvoiceStory, InvoicesWithStatusesStory, FiltersDataTableStory };
+export {
+  InvoiceStory,
+  InvoicesWithStatusesStory,
+  FiltersDataTableStory,
+  DataTableWithRowActionsStory,
+};
 
 export default meta;

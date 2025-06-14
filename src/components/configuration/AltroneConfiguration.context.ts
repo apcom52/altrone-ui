@@ -47,7 +47,11 @@ export interface ConsumerConfigurationContext {
     expandButtonLabel?: CollapsedListProps['expandButtonLabel'];
   }>;
   colorPicker?: ComponentConfiguration;
-  dataTable?: ComponentConfiguration;
+  dataTable?: ComponentConfiguration<{
+    action?: ComponentConfiguration;
+    rowActions?: ComponentConfiguration;
+    rowAction?: ComponentConfiguration;
+  }>;
   datePicker?: ComponentConfiguration<{
     popoverContentClassName: string;
     popoverContentStyles: React.CSSProperties;
