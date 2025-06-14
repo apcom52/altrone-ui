@@ -10,6 +10,7 @@ export const DummyBox = memo((props: DummyBoxProps) => {
     height = '100%',
     className,
     style,
+    radius = '6px',
     ...restProps
   } = props;
 
@@ -24,6 +25,7 @@ export const DummyBox = memo((props: DummyBoxProps) => {
     minWidth: width,
     height,
     minHeight: height,
+    borderRadius: radius,
   };
 
   return <div className={cls} style={styles} {...restProps} />;
