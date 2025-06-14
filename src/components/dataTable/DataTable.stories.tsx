@@ -47,6 +47,7 @@ const DEFAULT_FILTERS: Filter[] = [
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using DataTable',
   render: () => {
+    const [isEmpty, setIsEmpty] = useState(false);
     const [defaultPage, setDefaultPage] = useState(3);
     const [defaultSorting, setDefaultSorting] = useState<Sorting | undefined>({
       field: 'country',
@@ -60,7 +61,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Basic DataTable</Text.Heading>
         <DataTable
-          data={COUNTRIES}
+          data={isEmpty ? [] : COUNTRIES}
           rowsPerPage={5}
           selectable
           defaultPage={defaultPage}
@@ -83,6 +84,10 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <DataTable.Action
             label="Toggle page"
             onClick={() => setDefaultPage(defaultPage === 3 ? 5 : 3)}
+          />
+          <DataTable.Action
+            label={isEmpty ? 'Show data' : 'Hide data'}
+            onClick={() => setIsEmpty(!isEmpty)}
           />
           <DataTable.Action
             label="Toggle sorting"
