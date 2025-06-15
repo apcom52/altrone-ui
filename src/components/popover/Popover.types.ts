@@ -1,6 +1,6 @@
 import { FloatingContext, Placement } from '@floating-ui/react';
-import { ReactNode } from 'react';
-import { RenderFunction } from 'utils';
+import { ReactElement, ReactNode } from 'react';
+import { CustomRenderFunction } from 'utils';
 
 export type PopoverTrigger = 'click' | 'focus' | 'hover';
 
@@ -26,8 +26,8 @@ export type PopoverContentContext = {
 
 export interface PopoverProps
   extends Omit<React.HTMLAttributes<HTMLElement>, 'children' | 'content'> {
-  children: RenderFunction<ReactNode, PopoverChildrenContext>;
-  content: RenderFunction<ReactNode, PopoverContentContext>;
+  children: ReactElement | CustomRenderFunction<PopoverChildrenContext>;
+  content: ReactElement | CustomRenderFunction<PopoverContentContext>;
   openedByDefault?: boolean;
   enabled?: boolean;
   title?: string;

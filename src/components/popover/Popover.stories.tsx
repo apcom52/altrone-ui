@@ -124,12 +124,12 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           placement="top"
           showArrow={true}
           data-testid="popover-hover"
-          content={
+          content={() => (
             <Text.Paragraph size="s">
               Join Our Newsletter for Exciting Updates &{' '}
               <Text.Link href="#">Special Deals</Text.Link>!
             </Text.Paragraph>
-          }
+          )}
         >
           <Button label="Hover me" data-testid="button-hover" />
         </Popover>
