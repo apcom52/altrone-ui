@@ -13,16 +13,10 @@ export const PopoverArrow = forwardRef<HTMLDivElement, PopoverArrowProps>(
       elements: { floating },
       middlewareData: { arrow },
     } = context;
-    const width = 14;
-    const height = 7;
-    const tipRadius = 3;
 
     if (!floating) {
       return null;
     }
-
-    const svgX = (width / 2) * (tipRadius / -8 + 1);
-    const svgY = ((height / 2) * tipRadius) / 4;
 
     const [side, alignment] = placement.split('-') as [string, string];
 
