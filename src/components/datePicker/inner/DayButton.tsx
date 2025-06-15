@@ -106,8 +106,16 @@ export const DayButton = memo(
               onClick={onDateClick}
               className={cls}
               data-date={currentDate.format('YYYY-MM-DD')}
-              data-start-of-week={weekDay === 1 ? 'true' : 'false'}
-              data-end-of-week={weekDay === 0 ? 'true' : 'false'}
+              data-start-of-week={
+                weekDay === currentDate.localeData().firstDayOfWeek()
+                  ? 'true'
+                  : 'false'
+              }
+              data-end-of-week={
+                weekDay === (currentDate.localeData().firstDayOfWeek() + 6) % 7
+                  ? 'true'
+                  : 'false'
+              }
               data-start-of-range={currentDate.isSame(selectedDates[0], 'day')}
               data-end-of-range={isEndOfRange}
               data-index={currentDate.date()}

@@ -13,16 +13,10 @@ export const PopoverArrow = forwardRef<HTMLDivElement, PopoverArrowProps>(
       elements: { floating },
       middlewareData: { arrow },
     } = context;
-    const width = 14;
-    const height = 7;
-    const tipRadius = 3;
 
     if (!floating) {
       return null;
     }
-
-    const svgX = (width / 2) * (tipRadius / -8 + 1);
-    const svgY = ((height / 2) * tipRadius) / 4;
 
     const [side, alignment] = placement.split('-') as [string, string];
 
@@ -32,21 +26,28 @@ export const PopoverArrow = forwardRef<HTMLDivElement, PopoverArrowProps>(
     const arrowX = arrow?.x != null ? arrow.x : '';
     const arrowY = arrow?.y != null ? arrow.y : '';
 
-    const dValue =
-      'M0,0' +
-      ` H${width}` +
-      ` L${width - svgX},${height - svgY}` +
-      ` Q${width / 2},${height} ${svgX},${height - svgY}` +
-      ' Z';
-
-    const rotation = String(
-      {
-        top: '',
-        left: 'rotate(-90deg)',
-        bottom: 'rotate(180deg)',
-        right: 'rotate(90deg)',
-      }[side],
-    );
+    const additionalStyles = {
+      top: {
+        transform: 'translateY(-10px)',
+        borderBottomColor: 'var(--glass-border-color)',
+        borderRightColor: 'var(--glass-border-color)',
+      },
+      left: {
+        transform: 'translateX(-10px)',
+        borderTopColor: 'var(--glass-border-color)',
+        borderRightColor: 'var(--glass-border-color)',
+      },
+      bottom: {
+        transform: 'translateY(10px)',
+        borderTopColor: 'var(--glass-border-color)',
+        borderLeftColor: 'var(--glass-border-color)',
+      },
+      right: {
+        transform: 'translateX(10px)',
+        borderBottomColor: 'var(--glass-border-color)',
+        borderLeftColor: 'var(--glass-border-color)',
+      },
+    }[side];
 
     return (
       <div
@@ -58,8 +59,11 @@ export const PopoverArrow = forwardRef<HTMLDivElement, PopoverArrowProps>(
           [xOffsetProp]: arrowX,
           [yOffsetProp]: arrowY,
           [side]: '100%',
-          transform: rotation,
-          clipPath: `path("${dValue}")`,
+          rotate: '45deg',
+          transformOrigin: 'center',
+          border: '1px solid transparent',
+          zIndex: -1,
+          ...additionalStyles,
         }}
         {...restProps}
       />

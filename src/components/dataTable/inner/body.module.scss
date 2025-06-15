@@ -22,6 +22,10 @@
   --dataTableSelectedRowTextColor: var(--primary-100);
 }
 
+.TableBody {
+  background-color: var(--dataTableRowBackgroundColor);
+}
+
 .Row {
   align-items: center;
   border-bottom: 1px solid var(--dataTableCellBorderColor);

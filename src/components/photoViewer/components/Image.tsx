@@ -47,7 +47,7 @@ export const Image = memo<PhotoViewerImageProps>(
           <div className={s.LoadingBlock}>
             <Loading
               size="42px"
-              strokeWidth="3px"
+              strokeWidth="2"
               color="var(--photoViewerLoadingColor)"
             />
           </div>

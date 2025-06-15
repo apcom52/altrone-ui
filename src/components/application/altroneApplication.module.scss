@@ -176,6 +176,11 @@
   --messageDangerBackgroundColor: var(--danger-100);
   --backdropColor: rgba(0, 0, 0, 0.4);
 
+  /** glass effect */
+  --glass-background-color: rgba(255, 255, 255, 0.7);
+  --glass-background-blur: blur(64px);
+  --glass-border-color: rgba(0, 10, 53, 0.12);
+
   /** focus */
   --focus: rgba(66, 165, 245, 0.4);
   --focusSuccess: rgba(102, 187, 106, 0.4);
@@ -288,6 +293,11 @@
   --messageWarningBackgroundColor: var(--warning-900);
   --messageDangerBackgroundColor: var(--danger-900);
   --backdropColor: rgba(0, 0, 0, 0.6);
+
+  /** glass effect */
+  --glass-background-color: rgba(216, 254, 255, 0.1);
+  --glass-background-blur: blur(64px);
+  --glass-border-color: rgba(255, 255, 255, 0.1);
 
   /** focus */
   --focus: rgba(25, 118, 210, 0.7);
