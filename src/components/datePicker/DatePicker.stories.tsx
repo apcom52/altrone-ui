@@ -211,6 +211,7 @@ export const RangeStory: StoryObj<typeof Flex> = {
             onChange={setDay1}
             minDate={dayjs('2024-04-04')}
             maxDate={dayjs('2024-05-13')}
+            clearable
           />
           <DatePicker.RangePicker
             value={day2}
