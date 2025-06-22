@@ -81,13 +81,14 @@ export const RangeStory: StoryObj<typeof Range> = {
           </Grid>
           <Grid>
             <Grid.Column span={6} style={{ padding: '8px' }}>
-              <Form.Field label={`Default range [value: ${value1}]`}>
+              <Form.Field label={`Font size`}>
                 <Range
                   value={value1}
                   onChange={setValue1}
                   icon={<Icon i="format_size" />}
                   size="l"
                   style={{ width: '100px' }}
+                  renderLabel={(value) => `${value}pt`}
                 />
               </Form.Field>
             </Grid.Column>
