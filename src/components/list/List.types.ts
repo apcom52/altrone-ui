@@ -18,4 +18,5 @@ export interface ListProps<DataType extends object>
   skipRule?: (context: ListItemContext<DataType>) => boolean;
   gap?: Gap;
   SeparatorComponent?: RenderFunction<ReactElement, ListItemContext<DataType>>;
+  showEmptyBanner?: boolean;
 }

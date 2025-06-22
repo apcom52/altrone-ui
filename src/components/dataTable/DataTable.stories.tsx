@@ -9,10 +9,9 @@ import { Dropdown } from '../dropdown';
 import { Icon } from '../icon';
 import { Popover } from '../popover';
 import { EMPLOYEES, EmployeeType } from './stories/EMPLOYEES.ts';
-import { expect, fireEvent, userEvent, within } from '@storybook/test';
-import { AsyncUtils } from 'utils';
 import { InvoiceStory } from './stories/InvoiceStory.tsx';
 import { InvoicesWithStatusesStory } from './stories/Invoice2Story.tsx';
+import { DataTableWithRowActionsStory } from './stories/ActionsStory.tsx';
 import { FiltersDataTableStory } from './stories/FiltersStory.tsx';
 import { useState } from 'react';
 import { action } from '@storybook/addon-actions';
@@ -48,6 +47,7 @@ const DEFAULT_FILTERS: Filter[] = [
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using DataTable',
   render: () => {
+    const [isEmpty, setIsEmpty] = useState(false);
     const [defaultPage, setDefaultPage] = useState(3);
     const [defaultSorting, setDefaultSorting] = useState<Sorting | undefined>({
       field: 'country',
@@ -61,7 +61,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Basic DataTable</Text.Heading>
         <DataTable
-          data={COUNTRIES}
+          data={isEmpty ? [] : COUNTRIES}
           rowsPerPage={5}
           selectable
           defaultPage={defaultPage}
@@ -84,6 +84,10 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <DataTable.Action
             label="Toggle page"
             onClick={() => setDefaultPage(defaultPage === 3 ? 5 : 3)}
+          />
+          <DataTable.Action
+            label={isEmpty ? 'Show data' : 'Hide data'}
+            onClick={() => setIsEmpty(!isEmpty)}
           />
           <DataTable.Action
             label="Toggle sorting"
@@ -212,6 +216,11 @@ export const ComplexDataTable: StoryObj<typeof Flex> = {
   },
 };
 
-export { InvoiceStory, InvoicesWithStatusesStory, FiltersDataTableStory };
+export {
+  InvoiceStory,
+  InvoicesWithStatusesStory,
+  FiltersDataTableStory,
+  DataTableWithRowActionsStory,
+};
 
 export default meta;

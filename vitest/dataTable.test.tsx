@@ -1,6 +1,6 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import {
   Configuration,
   AltroneApplication,
@@ -225,9 +225,31 @@ describe('DataTable', () => {
     render(
       <AltroneApplication>
         <Configuration
-          dataTable={{ className: 'cls', style: { fontSize: '18px' } }}
+          dataTable={{
+            className: 'cls',
+            style: { fontSize: '18px' },
+            action: { className: 'action', style: { fontSize: '18px' } },
+            rowActions: {
+              className: 'row-actions',
+              style: { fontSize: '16px' },
+            },
+            rowAction: { className: 'row-action', style: { fontSize: '14px' } },
+          }}
         >
-          <DataTable data={EMPLOYEES} columns={[]} data-testid="data-table" />
+          <DataTable
+            data={EMPLOYEES.slice(0, 1)}
+            columns={[]}
+            data-testid="data-table"
+            renderRowActions={() => {
+              return (
+                <DataTable.RowActions data-testid="row-actions">
+                  <DataTable.RowAction label="Edit" data-testid="row-action" />
+                </DataTable.RowActions>
+              );
+            }}
+          >
+            <DataTable.Action label="Edit" data-testid="action" />
+          </DataTable>
         </Configuration>
       </AltroneApplication>,
     );
@@ -235,6 +257,137 @@ describe('DataTable', () => {
     const element = screen.getByTestId('data-table');
     expect(element).toHaveClass('cls');
     expect(element).toHaveStyle('fontSize: 18px');
+
+    const rowActions = screen.getByTestId('row-actions');
+    expect(rowActions).toHaveClass('row-actions');
+    expect(rowActions).toHaveStyle('fontSize: 16px');
+
+    const rowAction = screen.getByTestId('row-action');
+    expect(rowAction).toHaveClass('row-action');
+    expect(rowAction).toHaveStyle('fontSize: 14px');
+
+    const action = screen.getByTestId('action');
+    expect(action).toHaveClass('action');
+    expect(action).toHaveStyle('fontSize: 18px');
+  });
+
+  test('check collapsible row actions', async () => {
+    const { rerender } = render(
+      <AltroneApplication>
+        <DataTable
+          data={EMPLOYEES.slice(0, 1)}
+          columns={[]}
+          data-testid="data-table"
+          className="cls"
+          style={{ fontSize: '18px' }}
+          renderRowActions={() => (
+            <DataTable.RowActions>
+              <DataTable.RowAction label="Edit" data-testid="action1" />
+              <DataTable.RowAction label="Edit" data-testid="action2" />
+              <DataTable.RowAction
+                label="Edit"
+                data-testid="action3"
+                collapsed
+              />
+              <DataTable.RowAction
+                label="Edit"
+                data-testid="action4"
+                collapsed
+              />
+            </DataTable.RowActions>
+          )}
+        />
+      </AltroneApplication>,
+    );
+
+    expect(screen.queryByTestId('action1')).toBeInTheDocument();
+    expect(screen.queryByTestId('action2')).toBeInTheDocument();
+    expect(screen.queryByTestId('action3')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('action4')).not.toBeInTheDocument();
+
+    await fireEvent.click(screen.getByText('more_horiz'));
+
+    rerender(
+      <AltroneApplication>
+        <DataTable
+          data={EMPLOYEES.slice(0, 1)}
+          columns={[]}
+          data-testid="data-table"
+          className="cls"
+          style={{ fontSize: '18px' }}
+          renderRowActions={() => (
+            <DataTable.RowActions>
+              <DataTable.RowAction label="Edit" data-testid="action1" />
+              <DataTable.RowAction label="Edit" data-testid="action2" />
+              <DataTable.RowAction
+                label="Edit"
+                data-testid="action3"
+                collapsed
+              />
+              <DataTable.RowAction
+                label="Edit"
+                data-testid="action4"
+                collapsed
+              />
+            </DataTable.RowActions>
+          )}
+        />
+      </AltroneApplication>,
+    );
+
+    expect(screen.queryByTestId('action1')).toBeInTheDocument();
+    expect(screen.queryByTestId('action2')).toBeInTheDocument();
+    expect(screen.queryByTestId('action3')).toBeInTheDocument();
+    expect(screen.queryByTestId('action4')).toBeInTheDocument();
+
+    rerender(
+      <AltroneApplication>
+        <DataTable
+          data={EMPLOYEES.slice(0, 1)}
+          columns={[]}
+          data-testid="data-table"
+          className="cls"
+          style={{ fontSize: '18px' }}
+          renderRowActions={() => (
+            <DataTable.RowActions>
+              <DataTable.RowAction
+                label="Edit"
+                data-testid="action1"
+                collapsed
+              />
+            </DataTable.RowActions>
+          )}
+        />
+      </AltroneApplication>,
+    );
+
+    expect(screen.queryByTestId('action1')).toBeInTheDocument();
+  });
+
+  test('check showEmptyBanner works correctly', () => {
+    const { rerender } = render(
+      <AltroneApplication>
+        <DataTable
+          data={[]}
+          columns={[{ accessor: 'name', type: 'text' }]}
+          data-testid="data-table"
+        />
+      </AltroneApplication>,
+    );
+
+    expect(screen.getByText('No data')).toBeInTheDocument();
+
+    rerender(
+      <AltroneApplication>
+        <DataTable
+          data={[]}
+          columns={[{ accessor: 'name', type: 'text' }]}
+          data-testid="data-table"
+          showEmptyBanner={false}
+        />
+      </AltroneApplication>,
+    );
+    expect(screen.queryByText('No data')).not.toBeInTheDocument();
   });
 
   test('check string filters', () => {

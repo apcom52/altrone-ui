@@ -13,15 +13,15 @@
 
 ---
 
-## 🤠 Altrone 3.4
+## 🤠 Altrone 3.5
 
-New **`ColorPicker`** component, updated **`Tabs`** design and more
+New **`Range`** component, **DataTable** row actions and new glass surface.
+
+[**What's new in 3.5?**](https://altrone.vercel.app/blog/release-3.5)
 
 [**What's new in 3.4?**](https://altrone.vercel.app/blog/release-3.4)
 
 [**What's new in 3.3?**](https://altrone.vercel.app/blog/release-3.3)
-
-[**What's new in 3.2?**](https://altrone.vercel.app/blog/release-3.2)
 
 ## Roadmap for Altrone 3
 
@@ -38,7 +38,7 @@ New **`ColorPicker`** component, updated **`Tabs`** design and more
 - [x] new **`Badge`** component (released in 3.4)
 - [x] new **`ColorPicker`** component (released in 3.4)
 - [x] new **`Avatar`** component (released in 3.4)
-- [ ] new **`Range`** component
+- [x] new **`Range`** component
 
 ## Documentation
 
@@ -94,6 +94,7 @@ New **`ColorPicker`** component, updated **`Tabs`** design and more
     <li><a href="https://altrone.vercel.app/components/datePicker">DatePicker</a></li>
     <li><a href="https://altrone.vercel.app/components/filePicker">FilePicker</a></li>
     <li><a href="https://altrone.vercel.app/components/colorPicker">ColorPicker</a></li>
+    <li><a href="https://altrone.vercel.app/components/range">Range</a></li>
 </ul></td>
     </tr>
     <tr>
@@ -130,6 +131,7 @@ New **`ColorPicker`** component, updated **`Tabs`** design and more
     <li><a href="https://altrone.vercel.app/components/divider">Divider</a></li>
     <li><a href="https://altrone.vercel.app/components/loading">Loading</a></li>
     <li><a href="https://altrone.vercel.app/components/dummyBox">DummyBox</a></li>
+    <li><a href="https://altrone.vercel.app/components/dummyBox">Empty</a></li>
 </ul></td>
     </tr>   
 </table>

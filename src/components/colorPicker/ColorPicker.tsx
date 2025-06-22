@@ -6,6 +6,7 @@ import {
   Icon,
   useConfiguration,
   useLocalization,
+  DummyBox,
 } from 'components';
 import s from './styles.module.scss';
 import { ColorPickerContent } from './inner/ColorPickerContent';
@@ -94,15 +95,24 @@ export const ColorPicker = (props: ColorPickerProps) => {
             onChange={() => null}
             {...restProps}
           >
-            <TextInput.CustomIsland>
-              <div
-                className={s.ColorPreview}
-                style={{
-                  backgroundColor: value,
-                  width: SIZES[size],
-                  height: SIZES[size],
-                }}
-              />
+            <TextInput.CustomIsland className={s.ColorPreviewWrapper}>
+              {value ? (
+                <div
+                  className={s.ColorPreview}
+                  style={{
+                    backgroundColor: value,
+                    width: SIZES[size],
+                    height: SIZES[size],
+                  }}
+                />
+              ) : (
+                <DummyBox
+                  className={s.ColorPreview}
+                  width={SIZES[size] + 'px'}
+                  height={SIZES[size] + 'px'}
+                  radius="50%"
+                />
+              )}
             </TextInput.CustomIsland>
             {!readOnly && (
               <TextInput.IconIsland

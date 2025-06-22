@@ -72,6 +72,8 @@ export const fr: Localization = {
     },
     totalRows: 'Total des lignes',
     rowsPerPage: 'Lignes par page',
+    actions: 'Actions',
+    moreActions: "Plus d'actions",
     stringFilter: {
       empty: 'est vide',
       notEmpty: "n'est pas vide",
@@ -132,5 +134,8 @@ export const fr: Localization = {
     placeholder: 'Choisir une couleur',
     savedColors: 'Couleurs sauvegardées',
     palette: 'Palette',
+  },
+  empty: {
+    noData: 'Aucune donnée',
   },
 };

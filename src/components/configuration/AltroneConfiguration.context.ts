@@ -47,7 +47,11 @@ export interface ConsumerConfigurationContext {
     expandButtonLabel?: CollapsedListProps['expandButtonLabel'];
   }>;
   colorPicker?: ComponentConfiguration;
-  dataTable?: ComponentConfiguration;
+  dataTable?: ComponentConfiguration<{
+    action?: ComponentConfiguration;
+    rowActions?: ComponentConfiguration;
+    rowAction?: ComponentConfiguration;
+  }>;
   datePicker?: ComponentConfiguration<{
     popoverContentClassName: string;
     popoverContentStyles: React.CSSProperties;
@@ -70,6 +74,7 @@ export interface ConsumerConfigurationContext {
     childMenu?: ComponentConfiguration;
   }>;
   dummyBox?: ComponentConfiguration;
+  empty?: ComponentConfiguration;
   filePicker?: ComponentConfiguration;
   flex?: ComponentConfiguration;
   form?: ComponentConfiguration<{
@@ -115,6 +120,9 @@ export interface ConsumerConfigurationContext {
   }>;
   radio?: ComponentConfiguration<{
     item?: ComponentConfiguration;
+  }>;
+  range?: ComponentConfiguration<{
+    activeTrackClassName?: string;
   }>;
   scrollable?: ComponentConfiguration;
   search?: ComponentConfiguration<{

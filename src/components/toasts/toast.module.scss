@@ -4,7 +4,7 @@
   --toastTextColor: var(--default-900);
   --toastNotificationBodyColor: var(--default-700);
   --toastSuccessTextColor: var(--success-600);
-  --toastWarningTextColor: var(--warning-800);
+  --toastWarningTextColor: var(--warning-600);
   --toastDangerTextColor: var(--danger-600);
   --toastify-toast-width: 340px;
   --toastify-toast-min-height: auto;
@@ -23,7 +23,9 @@
 }
 
 .Toast {
-  @include glass-surface;
+  background: var(--glass-background-color);
+  border: 1px solid var(--glass-border-color);
+  backdrop-filter: var(--glass-background-blur);
   border-radius: 12px;
   box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.1);
   min-height: 34px;
@@ -40,7 +42,9 @@
 .Notification {
   width: 340px;
   padding: 8px;
-  @include glass-surface;
+  background: var(--glass-background-color);
+  border: 1px solid var(--glass-border-color);
+  backdrop-filter: var(--glass-background-blur);
   border-radius: 12px;
   box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.1);
 }

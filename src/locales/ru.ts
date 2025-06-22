@@ -72,6 +72,8 @@ export const ru: Localization = {
     },
     totalRows: 'Всего строк',
     rowsPerPage: 'Строк на странице',
+    actions: 'Действия',
+    moreActions: 'Еще действия',
     stringFilter: {
       empty: 'пустой',
       notEmpty: 'не пустой',
@@ -132,5 +134,8 @@ export const ru: Localization = {
     placeholder: 'Выбрать цвет',
     savedColors: 'Сохраненные цвета',
     palette: 'Палитра',
+  },
+  empty: {
+    noData: 'Нет данных',
   },
 };

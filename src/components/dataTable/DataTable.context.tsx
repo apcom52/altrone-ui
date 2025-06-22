@@ -94,7 +94,7 @@ export const DataTableContextProvider = <T extends object>(
   const [page, setPage] = useState(
     NumberUtils.getInRange(defaultPage || 1, {
       min: 1,
-      max: Math.ceil(data.length / rowsPerPage),
+      max: Math.ceil(data.length / rowsPerPage) || 1,
     }),
   );
   const [search, setSearch] = useState('');
@@ -149,7 +149,7 @@ export const DataTableContextProvider = <T extends object>(
       setPage(
         NumberUtils.getInRange(defaultPage, {
           min: 1,
-          max: Math.ceil(data.length / rowsPerPage),
+          max: Math.ceil(data.length / rowsPerPage) || 1,
         }),
       );
     }
