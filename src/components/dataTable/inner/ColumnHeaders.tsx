@@ -7,13 +7,16 @@ import { Checkbox } from '../../checkbox';
 import { range } from 'lodash-es';
 import { useVisibleColumns } from '../useVisibleColumns.ts';
 import { GlobalUtils } from '../../../utils';
+import { DataTableProps } from '../DataTable.types.ts';
+import { useLocalization } from 'components/application/useLocalization.tsx';
 
-interface ColumnHeadersProps {
+interface ColumnHeadersProps<T extends object> {
   headingVisible?: boolean;
+  renderRowActions?: DataTableProps<T>['renderRowActions'];
 }
 
-export const ColumnHeaders = memo<ColumnHeadersProps>(
-  ({ headingVisible = true }) => {
+export const ColumnHeaders = memo<ColumnHeadersProps<any>>(
+  ({ headingVisible = true, renderRowActions }) => {
     const {
       columns,
       page,
@@ -27,6 +30,8 @@ export const ColumnHeaders = memo<ColumnHeadersProps>(
       setSortType,
       setSortBy,
     } = useDataTableContext();
+
+    const t = useLocalization();
 
     const visibleColumns = useVisibleColumns(columns);
 
@@ -154,6 +159,13 @@ export const ColumnHeaders = memo<ColumnHeadersProps>(
               </th>
             );
           })}
+          {renderRowActions ? (
+            <th className={clsx(s.Cell)}>
+              <div className={s.CellContent}>
+                <span className={s.Title}>{t('dataTable.actions')}</span>
+              </div>
+            </th>
+          ) : null}
         </tr>
       </thead>
     );

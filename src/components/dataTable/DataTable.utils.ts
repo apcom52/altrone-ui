@@ -2,7 +2,7 @@ import { dayjs } from 'components/calendar/index.ts';
 import { DataTableColumnType, FilterType } from './DataTable.types.ts';
 
 export const getCellType = (
-  dataInstance: object,
+  dataInstance: object = {},
   accessor: string,
   filterType?: DataTableColumnType,
 ) => {

@@ -1,6 +1,5 @@
 :global(:root) {
-  --photoViewerLoadingBackgroundColor: rgba(0, 0, 0, 0.2);
-  --photoViewerLoadingColor: var(--default-50);
+  --photoViewerLoadingColor: var(--default-500);
   --photoViewerErrorColor: var(--danger-700);
 }
 
@@ -36,8 +35,9 @@
   width: 80px;
   height: 80px;
   border-radius: 12px;
-  background-color: var(--photoViewerLoadingBackgroundColor);
-  backdrop-filter: blur(32px);
+  background-color: var(--glass-background-color);
+  border: 1px solid var(--glass-border-color);
+  backdrop-filter: var(--glass-background-blur);
   color: var(--photoViewerLoadingColor);
   box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.2);
 }
@@ -52,8 +52,9 @@
   width: 80px;
   height: 80px;
   border-radius: 12px;
-  background-color: var(--photoViewerLoadingBackgroundColor);
-  backdrop-filter: blur(32px);
+  background-color: var(--glass-background-color);
+  border: 1px solid var(--glass-border-color);
+  backdrop-filter: var(--glass-background-blur);
   color: var(--photoViewerErrorColor);
   box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.2);
   font-size: 42px;

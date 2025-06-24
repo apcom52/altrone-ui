@@ -4,7 +4,7 @@ import { DataTableCellProps } from '../DataTableCell.tsx';
 import { Checkbox } from '../../checkbox';
 import s from './body.module.scss';
 import { useVisibleColumns } from '../useVisibleColumns.ts';
-import { DataTableColumnType } from '../DataTable.types.ts';
+import { DataTableBodyProps, DataTableColumnType } from '../DataTable.types.ts';
 import {
   DataTableTextRenderer,
   DataTableCurrencyRenderer,
@@ -18,6 +18,7 @@ import {
 import { createElement } from 'react';
 import { useLocalization } from '../../application';
 import { GlobalUtils } from '../../../utils';
+import { Empty } from 'components/empty/Empty.tsx';
 
 const CELL_RENDERERS: Record<
   DataTableColumnType,
@@ -33,7 +34,9 @@ const CELL_RENDERERS: Record<
   year: DataTableYearRenderer,
 };
 
-export const Body = <T extends object>() => {
+export const Body = <T extends object>(props: DataTableBodyProps<T>) => {
+  const { showEmptyBanner = true, renderRowActions } = props;
+
   const {
     data,
     columns,
@@ -52,7 +55,14 @@ export const Body = <T extends object>() => {
   const visibleColumns = useVisibleColumns(columns);
 
   return (
-    <tbody>
+    <tbody className={s.TableBody}>
+      {data.length === 0 && showEmptyBanner ? (
+        <tr>
+          <td colSpan={visibleColumns.length}>
+            <Empty />
+          </td>
+        </tr>
+      ) : null}
       {data.slice(start, end).map((row, rowIndex) => {
         const currentRowIndex = (page - 1) * rowsPerPage + rowIndex;
         const isSelected = selectedRows.indexOf(currentRowIndex) > -1;
@@ -120,6 +130,11 @@ export const Body = <T extends object>() => {
                 </td>
               );
             })}
+            {renderRowActions ? (
+              <td className={clsx(s.Cell)}>
+                {renderRowActions({ row, rowIndex, selected: isSelected })}
+              </td>
+            ) : null}
           </tr>
         );
       })}

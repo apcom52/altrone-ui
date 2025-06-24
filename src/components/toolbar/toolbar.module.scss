@@ -9,7 +9,9 @@
   padding: 4px 8px;
   border-radius: 6px;
   gap: var(--s-gap);
-  @include glass-surface;
+  background: var(--glass-background-color);
+  border: 1px solid var(--glass-border-color);
+  backdrop-filter: var(--glass-background-blur);
   height: 56px;
 
   [role="separator"] {

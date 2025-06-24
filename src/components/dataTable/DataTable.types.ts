@@ -1,6 +1,6 @@
 import { DataTableCellProps } from './DataTableCell';
 import { ButtonProps } from '../button/Button.types.ts';
-import { AnyObject } from '../../utils';
+import { AnyObject, StrictReactElements } from '../../utils';
 import { Option } from '../select/Select.types.ts';
 import { ReactElement } from 'react';
 import { RenderFuncProp } from '../../types';
@@ -45,6 +45,12 @@ export type DataTableRenderContext<T extends object> = {
   selectedItems: T[];
 };
 
+export type DataTableRenderRowActionsContext<T extends object> = {
+  row: T;
+  rowIndex: number;
+  selected: boolean;
+};
+
 export interface DataTableProps<T extends object>
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   data: T[];
@@ -56,6 +62,10 @@ export interface DataTableProps<T extends object>
   rowsPerPage?: number;
   selectable?: boolean;
   showFooter?: boolean;
+  showEmptyBanner?: boolean;
+  renderRowActions?: (
+    context: DataTableRenderRowActionsContext<T>,
+  ) => ReactElement<DataTableRowActionsProps>;
   defaultPage?: number;
   defaultSort?: Sorting;
   defaultFilters?: Filter[];
@@ -204,4 +214,21 @@ export interface FilterRowProps<T extends AnyObject> {
 export interface FilterFuncArgs<T extends AnyObject, FilterType> {
   row: T;
   filter: FilterType;
+}
+
+export interface DataTableBodyProps<T extends object> {
+  showEmptyBanner?: boolean;
+  renderRowActions?: DataTableProps<T>['renderRowActions'];
+}
+
+export interface DataTableRowActionProps
+  extends Omit<ButtonProps, 'label' | 'onClick' | 'renderFunc'> {
+  label: string;
+  collapsed?: boolean;
+  onClick?: () => void;
+}
+
+export interface DataTableRowActionsProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  children: StrictReactElements<DataTableRowActionProps>;
 }
