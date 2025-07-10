@@ -1,0 +1,58 @@
+:root {
+  --box-light-color: var(--white);
+  --box-glow-cursor-color: color(display-p3 0.916 0.897 1);
+  --box-glow-background-color: color(display-p3 0.204 0.004 0.871 / 0.059);
+  --box-glow-cursor-active-color: color(display-p3 0.876 0.851 1);
+  --box-blend-mode: multiply;
+}
+
+.Box {
+  display: flex;
+  width: fit-content;
+  height: fit-content;
+}
+
+.Content {
+  --glow-cursor-color: var(--box-glow-cursor-color);
+  --glow-background-color: var(--box-glow-background-color);
+
+  position: relative;
+  display: flex;
+  background: var(--gray-1); 
+  padding: var(--spacing-1);
+  box-shadow: inset 1px 1px 1px 0 var(--box-light-color), 0px 0px 0 1px var(--border-a1), 0 0 3px 0 color(display-p3 0 0 0 / 0.05);
+
+  &:active {
+    --glow-cursor-color: var(--box-glow-cursor-active-color);
+  }
+}
+
+.Solid {
+  background: radial-gradient(circle at top left, var(--background-1) 0%, var(--background-2) 100%);
+}
+
+.Translucent {
+  background: radial-gradient(circle at top left, var(--translucent-background-1) 0%, var(--translucent-background-2) 100%);
+  backdrop-filter: blur(64px) saturate(180%);
+}
+
+.Transparent {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.Shadow {
+  position: absolute;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  top: -1px;
+  left: -1px;
+  mix-blend-mode: var(--box-blend-mode);
+  pointer-events: none;
+  transition: background 0.1s linear, opacity 0.2s ease;
+}
+
+:global(.AltroneDark) {
+  --box-light-color: color(display-p3 1 1 1 / 0.5);
+  --box-blend-mode: overlay;
+}

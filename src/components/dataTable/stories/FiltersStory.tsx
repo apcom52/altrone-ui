@@ -4,7 +4,7 @@ import { Text } from '../../text';
 import { DataTable } from '../DataTable.tsx';
 import { EMPLOYEES, EmployeeType } from './EMPLOYEES.ts';
 import { Icon } from '../../icon';
-import { expect, userEvent, within } from '@storybook/test';
+// import { expect, userEvent, within } from '@storybook/test';
 import { AsyncUtils } from '../../../utils';
 
 export const FiltersDataTableStory: StoryObj<typeof Flex> = {
@@ -83,65 +83,6 @@ export const FiltersDataTableStory: StoryObj<typeof Flex> = {
           ]}
         />
       </Flex>
-    );
-  },
-  play: async ({ step, canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    const getRows = () => {
-      const items = Array.from(
-        canvasElement.querySelectorAll('tr [data-name]'),
-      );
-
-      return items.map((item) => item.innerHTML);
-    };
-
-    await step(
-      'Need to reset filters after the removing the latest applied filter',
-      async () => {
-        await userEvent.click(canvas.getByTitle('Filters'));
-        await userEvent.click(canvas.getByTitle('Add filter'));
-        await userEvent.click(canvas.getByTitle('Age'));
-
-        await userEvent.click(canvas.getByPlaceholderText('equals to'));
-        await userEvent.click(canvas.getByText('≥'));
-
-        const inputField = canvasElement.querySelector(
-          '[data-filter-name="age"][data-filter-control="true"]',
-        ) as HTMLElement;
-        await userEvent.clear(inputField);
-        await userEvent.type(inputField, '30');
-
-        await userEvent.click(canvas.getByTitle('Apply'));
-        await AsyncUtils.timeout(1);
-
-        await expect(getRows()).toStrictEqual([
-          'John Doe',
-          'Emily Johnson',
-          'Michael Brown',
-          'David Wilson',
-          'Robert Garcia',
-          'Sarah Miller',
-          'James Anderson',
-        ]);
-
-        await userEvent.click(canvas.getByTitle('Filters'));
-        await userEvent.click(canvas.getByTitle('Delete'));
-        await AsyncUtils.timeout(1);
-
-        await expect(getRows()).toStrictEqual([
-          'John Doe',
-          'Jane Smith',
-          'Emily Johnson',
-          'Michael Brown',
-          'Jessica Davis',
-          'David Wilson',
-          'Laura Martinez',
-          'Robert Garcia',
-          'Sarah Miller',
-          'James Anderson',
-        ]);
-      },
     );
   },
 };

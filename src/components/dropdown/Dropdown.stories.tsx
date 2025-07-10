@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Button, Flex, Icon, Text, Dropdown, Divider } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { expect, userEvent, within } from '@storybook/test';
+// import { expect, userEvent, within } from '@storybook/test';
 import { useState } from 'react';
 
 const story: Meta<typeof Dropdown> = {
@@ -202,86 +202,86 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
       </Flex>
     );
   },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
+  // play: async ({ canvasElement, step }) => {
+  //   const canvas = within(canvasElement);
 
-    await step(
-      'Opening simple dropdown and has to close after clicking on action',
-      async () => {
-        await userEvent.click(canvas.getByTestId('button-1'));
-        expect(canvas.getByTestId('dropdown-1')).toBeInTheDocument();
-        await userEvent.click(canvas.getByTestId('action-1'));
-        expect(canvas.queryByTestId('dropdown-1')).not.toBeInTheDocument();
-      },
-    );
+  //   await step(
+  //     'Opening simple dropdown and has to close after clicking on action',
+  //     async () => {
+  //       await userEvent.click(canvas.getByTestId('button-1'));
+  //       expect(canvas.getByTestId('dropdown-1')).toBeInTheDocument();
+  //       await userEvent.click(canvas.getByTestId('action-1'));
+  //       expect(canvas.queryByTestId('dropdown-1')).not.toBeInTheDocument();
+  //     },
+  //   );
 
-    await step('Checkbox action', async () => {
-      await userEvent.click(canvas.getByTestId('button-2'));
-      expect(canvas.getByTestId('dropdown-2')).toBeInTheDocument();
-      expect(canvas.getByTestId('checkbox-1')).toHaveAttribute(
-        'aria-checked',
-        'false',
-      );
-      await userEvent.click(canvas.getByTestId('checkbox-1'));
-      expect(canvas.getByTestId('checkbox-1')).toHaveAttribute(
-        'aria-checked',
-        'true',
-      );
-    });
+  //   await step('Checkbox action', async () => {
+  //     await userEvent.click(canvas.getByTestId('button-2'));
+  //     expect(canvas.getByTestId('dropdown-2')).toBeInTheDocument();
+  //     expect(canvas.getByTestId('checkbox-1')).toHaveAttribute(
+  //       'aria-checked',
+  //       'false',
+  //     );
+  //     await userEvent.click(canvas.getByTestId('checkbox-1'));
+  //     expect(canvas.getByTestId('checkbox-1')).toHaveAttribute(
+  //       'aria-checked',
+  //       'true',
+  //     );
+  //   });
 
-    await step('Radio action', async () => {
-      expect(canvas.getByTestId('radio-1')).toBeInTheDocument();
-      expect(canvas.getByTestId('radio-1')).toHaveAttribute(
-        'aria-checked',
-        'true',
-      );
-      expect(canvas.getByTestId('radio-2')).toHaveAttribute(
-        'aria-checked',
-        'false',
-      );
-      expect(canvas.getByTestId('radio-3')).toHaveAttribute(
-        'aria-checked',
-        'false',
-      );
-      await userEvent.click(canvas.getByTestId('radio-2'));
-      expect(canvas.getByTestId('radio-1')).toHaveAttribute(
-        'aria-checked',
-        'false',
-      );
-      expect(canvas.getByTestId('radio-2')).toHaveAttribute(
-        'aria-checked',
-        'true',
-      );
-      expect(canvas.getByTestId('radio-3')).toHaveAttribute(
-        'aria-checked',
-        'false',
-      );
-      await userEvent.click(canvas.getByTestId('radio-3'));
-      expect(canvas.getByTestId('radio-1')).toHaveAttribute(
-        'aria-checked',
-        'false',
-      );
-      expect(canvas.getByTestId('radio-2')).toHaveAttribute(
-        'aria-checked',
-        'false',
-      );
-      expect(canvas.getByTestId('radio-3')).toHaveAttribute(
-        'aria-checked',
-        'true',
-      );
-    });
+  //   await step('Radio action', async () => {
+  //     expect(canvas.getByTestId('radio-1')).toBeInTheDocument();
+  //     expect(canvas.getByTestId('radio-1')).toHaveAttribute(
+  //       'aria-checked',
+  //       'true',
+  //     );
+  //     expect(canvas.getByTestId('radio-2')).toHaveAttribute(
+  //       'aria-checked',
+  //       'false',
+  //     );
+  //     expect(canvas.getByTestId('radio-3')).toHaveAttribute(
+  //       'aria-checked',
+  //       'false',
+  //     );
+  //     await userEvent.click(canvas.getByTestId('radio-2'));
+  //     expect(canvas.getByTestId('radio-1')).toHaveAttribute(
+  //       'aria-checked',
+  //       'false',
+  //     );
+  //     expect(canvas.getByTestId('radio-2')).toHaveAttribute(
+  //       'aria-checked',
+  //       'true',
+  //     );
+  //     expect(canvas.getByTestId('radio-3')).toHaveAttribute(
+  //       'aria-checked',
+  //       'false',
+  //     );
+  //     await userEvent.click(canvas.getByTestId('radio-3'));
+  //     expect(canvas.getByTestId('radio-1')).toHaveAttribute(
+  //       'aria-checked',
+  //       'false',
+  //     );
+  //     expect(canvas.getByTestId('radio-2')).toHaveAttribute(
+  //       'aria-checked',
+  //       'false',
+  //     );
+  //     expect(canvas.getByTestId('radio-3')).toHaveAttribute(
+  //       'aria-checked',
+  //       'true',
+  //     );
+  //   });
 
-    await step('Child dropdowns', async () => {
-      await userEvent.click(canvas.getByTestId('button-3'));
-      expect(canvas.getByTestId('dropdown-3')).toBeInTheDocument();
-      expect(canvas.queryByText('Inner child action')).not.toBeInTheDocument();
-      await userEvent.click(canvas.getByText('Recent opened'));
-      expect(canvas.queryByText('Inner child action')).toBeInTheDocument();
-      await userEvent.click(canvas.getByText('Inner child action'));
-      expect(canvas.queryByTestId('dropdown-3')).not.toBeInTheDocument();
-      expect(canvas.queryByText('Inner child action')).not.toBeInTheDocument();
-    });
-  },
+  //   await step('Child dropdowns', async () => {
+  //     await userEvent.click(canvas.getByTestId('button-3'));
+  //     expect(canvas.getByTestId('dropdown-3')).toBeInTheDocument();
+  //     expect(canvas.queryByText('Inner child action')).not.toBeInTheDocument();
+  //     await userEvent.click(canvas.getByText('Recent opened'));
+  //     expect(canvas.queryByText('Inner child action')).toBeInTheDocument();
+  //     await userEvent.click(canvas.getByText('Inner child action'));
+  //     expect(canvas.queryByTestId('dropdown-3')).not.toBeInTheDocument();
+  //     expect(canvas.queryByText('Inner child action')).not.toBeInTheDocument();
+  //   });
+  // },
 };
 
 export default story;

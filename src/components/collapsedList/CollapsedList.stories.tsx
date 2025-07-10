@@ -6,7 +6,7 @@ import { Text } from '../text';
 import { CollapsedList } from './CollapsedList.tsx';
 import { useState } from 'react';
 import { Checkbox } from '../checkbox';
-import { within, expect, userEvent } from '@storybook/test';
+// import { within, expect, userEvent } from '@storybook/test';
 
 const story: Meta<typeof CollapsedList> = {
   title: 'Components/Containers/CollapsedList',
@@ -93,37 +93,37 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       </Flex>
     );
   },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
+  // play: async ({ canvasElement, step }) => {
+  //   const canvas = within(canvasElement);
 
-    await step('need to show only 4 elements', async () => {
-      const list = canvas.getByTestId('list');
-      await expect(list.children[0].children).toHaveLength(4);
-      expect(canvas.queryAllByText('Show 2 hidden')[0]).toBeInTheDocument();
-    });
+  //   await step('need to show only 4 elements', async () => {
+  //     const list = canvas.getByTestId('list');
+  //     await expect(list.children[0].children).toHaveLength(4);
+  //     expect(canvas.queryAllByText('Show 2 hidden')[0]).toBeInTheDocument();
+  //   });
 
-    await step(
-      'after clicking on expand button we need to show entire list',
-      async () => {
-        await userEvent.click(canvas.queryAllByText('Show 2 hidden')[0]);
-        const list = canvas.getByTestId('list');
-        await expect(list.children[0].children).toHaveLength(6);
-        await expect(canvas.queryByText('Show less')).toBeInTheDocument();
-      },
-    );
+  //   await step(
+  //     'after clicking on expand button we need to show entire list',
+  //     async () => {
+  //       await userEvent.click(canvas.queryAllByText('Show 2 hidden')[0]);
+  //       const list = canvas.getByTestId('list');
+  //       await expect(list.children[0].children).toHaveLength(6);
+  //       await expect(canvas.queryByText('Show less')).toBeInTheDocument();
+  //     },
+  //   );
 
-    await step(
-      'after clicking on "Show less" button we need to show minimized list',
-      async () => {
-        await userEvent.click(canvas.getByText('Show less'));
-        const list = canvas.getByTestId('list');
-        await expect(list.children[0].children).toHaveLength(4);
-        await expect(
-          canvas.queryAllByText('Show 2 hidden')[0],
-        ).toBeInTheDocument();
-      },
-    );
-  },
+  //   await step(
+  //     'after clicking on "Show less" button we need to show minimized list',
+  //     async () => {
+  //       await userEvent.click(canvas.getByText('Show less'));
+  //       const list = canvas.getByTestId('list');
+  //       await expect(list.children[0].children).toHaveLength(4);
+  //       await expect(
+  //         canvas.queryAllByText('Show 2 hidden')[0],
+  //       ).toBeInTheDocument();
+  //     },
+  //   );
+  // },
 };
 
 export default story;

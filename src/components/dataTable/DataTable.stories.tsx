@@ -14,7 +14,6 @@ import { InvoicesWithStatusesStory } from './stories/Invoice2Story.tsx';
 import { DataTableWithRowActionsStory } from './stories/ActionsStory.tsx';
 import { FiltersDataTableStory } from './stories/FiltersStory.tsx';
 import { useState } from 'react';
-import { action } from '@storybook/addon-actions';
 import { FilterType, Sorting } from './DataTable.types.ts';
 
 const meta: Meta<typeof DataTable<any>> = {

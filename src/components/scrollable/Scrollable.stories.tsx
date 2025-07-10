@@ -3,7 +3,7 @@ import { Flex, List, Scrollable, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { COUNTRIES } from './Scrollable.constants.ts';
-import { fn } from '@storybook/test';
+// import { fn } from '@storybook/test';
 
 const story: Meta<typeof Scrollable> = {
   title: 'Components/Containers/Scrollable',
@@ -11,7 +11,7 @@ const story: Meta<typeof Scrollable> = {
   decorators: [StorybookDecorator],
   args: {
     showShadows: true,
-    onScroll: fn(),
+    // onScroll: fn(),
   },
   argTypes: {
     showShadows: { control: 'boolean' },

@@ -49,9 +49,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       </Flex>
     );
   },
-  play: () => {
-    // const canvas = within(canvasElement);
-  },
+  // play: () => {
+  //   // const canvas = within(canvasElement);
+  // },
 };
 
 export default story;

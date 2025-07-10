@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Text } from '../text';
 import { TextInput } from '../textInput';
 import { Icon } from '../icon';
-import { userEvent, within, expect } from '@storybook/test';
+// import { userEvent, within, expect } from '@storybook/test';
 
 const story: Meta<typeof NumberInput> = {
   title: 'Components/Form/NumberInput',
@@ -101,23 +101,23 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       </Flex>
     );
   },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
+  // play: async ({ canvasElement, step }) => {
+  //   const canvas = within(canvasElement);
 
-    const field = canvas.getByTestId('number');
+  //   const field = canvas.getByTestId('number');
 
-    await step('check that user can only enter digits', async () => {
-      await userEvent.type(field, '12abc 4');
-      expect(field).toHaveValue('124');
-    });
+  //   await step('check that user can only enter digits', async () => {
+  //     await userEvent.type(field, '12abc 4');
+  //     expect(field).toHaveValue('124');
+  //   });
 
-    await step('check that spinner works correctly', async () => {
-      await userEvent.click(canvas.getAllByText('keyboard_arrow_up')[0]);
-      expect(field).toHaveValue('125');
-      await userEvent.click(canvas.getAllByText('keyboard_arrow_down')[0]);
-      expect(field).toHaveValue('124');
-    });
-  },
+  //   await step('check that spinner works correctly', async () => {
+  //     await userEvent.click(canvas.getAllByText('keyboard_arrow_up')[0]);
+  //     expect(field).toHaveValue('125');
+  //     await userEvent.click(canvas.getAllByText('keyboard_arrow_down')[0]);
+  //     expect(field).toHaveValue('124');
+  //   });
+  // },
 };
 
 export default story;

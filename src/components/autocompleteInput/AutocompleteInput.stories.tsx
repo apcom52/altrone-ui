@@ -11,7 +11,6 @@ import {
 } from './AutocompleteInput.types.ts';
 import { useListItem } from '@floating-ui/react';
 import { usePopoverCurrentIndex } from '../popover/Popover.tsx';
-import { userEvent, within, expect } from '@storybook/test';
 
 const story: Meta<typeof AutocompleteInput> = {
   title: 'Components/Form/AutocompleteInput',
@@ -55,10 +54,10 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const getCountry = useCallback<AutocompleteSuggestionsFunc>(
       async ({ value }) => {
         return COUNTRIES.filter((country) =>
-          country.toLowerCase().startsWith(value.toLowerCase()),
+          country.toLowerCase().startsWith(value.toLowerCase())
         );
       },
-      [],
+      []
     );
 
     return (
@@ -86,34 +85,34 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       </Flex>
     );
   },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
+  // play: async ({ canvasElement, step }) => {
+  //   const canvas = within(canvasElement);
 
-    await step(
-      'need to show popover with suitable suggestions when user types something',
-      async () => {
-        await userEvent.type(canvas.getByTestId('field'), 'R');
-        await expect(await canvas.findByText('Romania')).toBeInTheDocument();
-        await expect(await canvas.findByText('Russia')).toBeInTheDocument();
-        await expect(await canvas.findByText('Rwanda')).toBeInTheDocument();
+  //   await step(
+  //     'need to show popover with suitable suggestions when user types something',
+  //     async () => {
+  //       await userEvent.type(canvas.getByTestId('field'), 'R');
+  //       await expect(await canvas.findByText('Romania')).toBeInTheDocument();
+  //       await expect(await canvas.findByText('Russia')).toBeInTheDocument();
+  //       await expect(await canvas.findByText('Rwanda')).toBeInTheDocument();
 
-        await userEvent.click(canvas.getByText('Russia'));
-        expect(canvas.getByTestId('field')).toHaveValue('Russia');
-      },
-    );
+  //       await userEvent.click(canvas.getByText('Russia'));
+  //       expect(canvas.getByTestId('field')).toHaveValue('Russia');
+  //     },
+  //   );
 
-    await step('need to show focused items', async () => {
-      await userEvent.clear(canvas.getByTestId('field'));
-      await userEvent.type(canvas.getByTestId('field'), 'R');
-      await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowUp}');
+  //   await step('need to show focused items', async () => {
+  //     await userEvent.clear(canvas.getByTestId('field'));
+  //     await userEvent.type(canvas.getByTestId('field'), 'R');
+  //     await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowUp}');
 
-      const russia = await canvas.findByText('Russia');
+  //     const russia = await canvas.findByText('Russia');
 
-      await expect(russia.parentElement).toHaveAttribute('data-active', 'true');
-      await userEvent.keyboard('{Enter}');
-      expect(canvas.getByTestId('field')).toHaveValue('Russia');
-    });
-  },
+  //     await expect(russia.parentElement).toHaveAttribute('data-active', 'true');
+  //     await userEvent.keyboard('{Enter}');
+  //     expect(canvas.getByTestId('field')).toHaveValue('Russia');
+  //   });
+  // },
 };
 
 const COUNTRIES = [

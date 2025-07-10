@@ -4,8 +4,8 @@ import { Text } from '../../text/index.ts';
 import { DataTable } from '../DataTable.tsx';
 import { EMPLOYEES, EmployeeType } from './EMPLOYEES.ts';
 import { Icon } from '../../icon/index.ts';
-import { expect, userEvent, within } from '@storybook/test';
-import { AsyncUtils } from '../../../utils/index.ts';
+// import { expect, userEvent, within } from '@storybook/test';
+// import { AsyncUtils } from '../../../utils/index.ts';
 
 export const DataTableWithRowActionsStory: StoryObj<typeof Flex> = {
   name: 'DataTable with row actions',

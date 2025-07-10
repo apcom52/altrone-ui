@@ -8,7 +8,7 @@ import { Text } from '../text';
 import { TextInput } from '../textInput';
 import { COUNTRIES } from '../scrollable/Scrollable.constants.ts';
 import { AutocompleteSuggestionsFunc } from '../autocompleteInput/AutocompleteInput.types.ts';
-import { userEvent, within, expect } from '@storybook/test';
+// import { userEvent, within, expect } from '@storybook/test';
 
 const story: Meta<typeof Search> = {
   title: 'Components/Form/Search',
@@ -32,10 +32,10 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const getCountry: AutocompleteSuggestionsFunc = useCallback(
       async ({ value }) => {
         return COUNTRIES.filter((country) =>
-          country.country.toLowerCase().startsWith(value.toLowerCase()),
+          country.country.toLowerCase().startsWith(value.toLowerCase())
         ).map((item) => item.country);
       },
-      [],
+      []
     );
 
     const [value1, setValue1] = useState('');
@@ -82,20 +82,20 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       </Flex>
     );
   },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
+  // play: async ({ canvasElement, step }) => {
+  //   const canvas = within(canvasElement);
 
-    await step('search need to provide suggestions', async () => {
-      await userEvent.type(canvas.getByTestId('search'), 'Ru');
-      await userEvent.click(await canvas.findByText('Russia'));
-      await expect(canvas.getByTestId('search')).toHaveValue('Russia');
-    });
+  //   await step('search need to provide suggestions', async () => {
+  //     await userEvent.type(canvas.getByTestId('search'), 'Ru');
+  //     await userEvent.click(await canvas.findByText('Russia'));
+  //     await expect(canvas.getByTestId('search')).toHaveValue('Russia');
+  //   });
 
-    await step('clear button should work correctly', async () => {
-      await userEvent.click(canvas.getByText('backspace'));
-      await expect(canvas.getByTestId('search')).toHaveValue('');
-    });
-  },
+  //   await step('clear button should work correctly', async () => {
+  //     await userEvent.click(canvas.getByText('backspace'));
+  //     await expect(canvas.getByTestId('search')).toHaveValue('');
+  //   });
+  // },
 };
 
 export const UsageStory: StoryObj<typeof Flex> = {

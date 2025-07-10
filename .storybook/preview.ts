@@ -1,8 +1,9 @@
 import type { Preview } from '@storybook/react';
-import { withThemeByClassName } from '@storybook/addon-themes';
+import '../src/global/storybook/preview.css';
 
 const preview: Preview = {
   parameters: {
+    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -10,26 +11,48 @@ const preview: Preview = {
       },
     },
     backgrounds: {
-      default: 'light',
-      values: [
-        {
-          name: 'light',
-          value: '#F9FAFB',
+      options: {
+        dark: { name: 'Dark', value: 'color(display-p3 0.113 0.125 0.14)' },
+        light: { name: 'Light', value: 'color(display-p3 0.988 0.988 0.988)' },
+        amber: { name: 'Amber', value: 'color(display-p3 1 0.77 0.26)' },
+        indigo: { name: 'Indigo', value: 'color(display-p3 0.357 0.357 0.81)' },
+        mountains: {
+          name: 'El Capitan',
+          value:
+            'url(https://www.hdwallpapers.in/download/el_capitan_yosemite_valley_4k-wide.jpg)',
         },
-        {
-          name: 'dark',
-          value: '#111928',
+        darkImage: {
+          name: 'Deep space',
+          value:
+            'url(https://wallpapercat.com/w/full/5/3/f/194354-3840x2160-desktop-4k-outer-space-background.jpg)',
         },
-        {
-          name: 'With background image',
-          value: 'image',
+        neutralImage: {
+          name: 'Tahoe',
+          value:
+            'url(https://images.unsplash.com/photo-1552083375-1447ce886485?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bGFrZSUyMHRhaG9lfGVufDB8fDB8fHww)',
         },
-      ],
+        brightImage: {
+          name: 'Abstract',
+          value:
+            'url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuR0Yx-WLk4Wm8BXqYsffDPMlMsWIwfHs_Iw&s)',
+        },
+      },
     },
   },
   globalTypes: {
+    theme: {
+      toolbar: {
+        title: 'Theme',
+        icon: 'circlehollow',
+        items: [
+          { value: 'light', icon: 'sun', title: 'Light' },
+          { value: 'dark', icon: 'moon', title: 'Dark' },
+        ],
+        dynamicTitle: true,
+      },
+    },
     lang: {
-      description: 'Current language of the app',
+      description: 'Language',
       defaultValue: 'EN',
       toolbar: {
         title: 'Language',
@@ -39,25 +62,19 @@ const preview: Preview = {
       },
     },
     loading: {
-      control: 'check',
-      description: 'If true then application is loading',
+      description: 'Loading',
+      defaultValue: 'Default',
       toolbar: {
+        icon: 'hourglass',
         title: 'Loading',
-        items: [true, false],
+        items: ['Loading', 'Default'],
+        dynamicTitle: true,
       },
     },
   },
-  decorators: [
-    withThemeByClassName({
-      themes: {
-        light: 'light',
-        dark: 'dark',
-      },
-      defaultTheme: 'light',
-    }),
-  ],
-
-  tags: ['autodocs'],
+  initialGlobals: {
+    theme: 'light',
+  },
 };
 
-export default preview;
+export default preview; 

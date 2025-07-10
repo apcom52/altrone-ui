@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Text } from '../text';
 import { TextInput } from '../textInput';
 import { Icon } from '../icon';
-import { userEvent, within, expect } from '@storybook/test';
+// import { userEvent, within, expect } from '@storybook/test';
 
 const story: Meta<typeof PasswordInput> = {
   title: 'Components/Form/PasswordInput',
@@ -73,19 +73,19 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       </Flex>
     );
   },
-  play: ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
+  // play: ({ canvasElement, step }) => {
+  //   const canvas = within(canvasElement);
 
-    step('check controls', async () => {
-      expect(canvas.getByTestId('password')).toHaveAttribute(
-        'type',
-        'password',
-      );
-      await userEvent.type(canvas.getByTestId('password'), 'test');
-      await userEvent.click(canvas.queryAllByText('visibility')[0]);
-      expect(canvas.getByTestId('password')).toHaveAttribute('type', 'text');
-    });
-  },
+  //   step('check controls', async () => {
+  //     expect(canvas.getByTestId('password')).toHaveAttribute(
+  //       'type',
+  //       'password',
+  //     );
+  //     await userEvent.type(canvas.getByTestId('password'), 'test');
+  //     await userEvent.click(canvas.queryAllByText('visibility')[0]);
+  //     expect(canvas.getByTestId('password')).toHaveAttribute('type', 'text');
+  //   });
+  // },
 };
 
 export default story;

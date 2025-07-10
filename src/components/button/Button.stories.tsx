@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Button, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { fn } from '@storybook/test';
+// import { fn } from '@storybook/test';
 import { ButtonProps } from './Button.types.ts';
 import { Role, Size } from '../../types';
 
@@ -10,13 +10,13 @@ const story: Meta<typeof Button> = {
   title: 'Components/Form/Button',
   component: Button,
   decorators: [StorybookDecorator],
-  args: {
-    onClick: fn(),
-    onMouseEnter: fn(),
-    onMouseLeave: fn(),
-    onFocus: fn(),
-    onBlur: fn(),
-  },
+  // args: {
+  //   onClick: fn(),
+  //   onMouseEnter: fn(),
+  //   onMouseLeave: fn(),
+  //   onFocus: fn(),
+  //   onBlur: fn(),
+  // },
   argTypes: {},
 };
 

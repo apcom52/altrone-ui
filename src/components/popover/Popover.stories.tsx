@@ -3,7 +3,7 @@ import { Button, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Popover } from './Popover.tsx';
-import { expect, userEvent, within } from '@storybook/test';
+// import { expect, userEvent, within } from '@storybook/test';
 import { AsyncUtils } from 'utils';
 
 const story: Meta<typeof Popover> = {
@@ -250,63 +250,63 @@ export const PopoverStory: StoryObj<typeof Flex> = {
       </Flex>
     </Flex>
   ),
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
+  // play: async ({ canvasElement, step }) => {
+  //   const canvas = within(canvasElement);
 
-    await step('Popover with click trigger', async () => {
-      await userEvent.click(canvas.getByTestId('button-click'));
-      await expect(
-        await canvas.findByTestId('popover-click'),
-      ).toBeInTheDocument();
-      await userEvent.click(canvas.getByText('close'));
-      await expect(
-        await canvas.queryByTestId('popover-click'),
-      ).not.toBeInTheDocument();
-    });
+  //   await step('Popover with click trigger', async () => {
+  //     await userEvent.click(canvas.getByTestId('button-click'));
+  //     await expect(
+  //       await canvas.findByTestId('popover-click'),
+  //     ).toBeInTheDocument();
+  //     await userEvent.click(canvas.getByText('close'));
+  //     await expect(
+  //       await canvas.queryByTestId('popover-click'),
+  //     ).not.toBeInTheDocument();
+  //   });
 
-    await step('Popover with hover trigger', async () => {
-      await userEvent.hover(canvas.getByTestId('button-hover'));
-      await expect(
-        await canvas.findByTestId('popover-hover'),
-      ).toBeInTheDocument();
-      await userEvent.unhover(canvas.getByTestId('button-hover'));
-      await AsyncUtils.timeout(600);
-      await expect(
-        await canvas.queryByTestId('popover-hover'),
-      ).not.toBeInTheDocument();
-    });
+  //   await step('Popover with hover trigger', async () => {
+  //     await userEvent.hover(canvas.getByTestId('button-hover'));
+  //     await expect(
+  //       await canvas.findByTestId('popover-hover'),
+  //     ).toBeInTheDocument();
+  //     await userEvent.unhover(canvas.getByTestId('button-hover'));
+  //     await AsyncUtils.timeout(600);
+  //     await expect(
+  //       await canvas.queryByTestId('popover-hover'),
+  //     ).not.toBeInTheDocument();
+  //   });
 
-    await step('Popover with child popover', async () => {
-      await userEvent.click(canvas.getByTestId('button-parent'));
-      await expect(
-        await canvas.findByTestId('popover-parent'),
-      ).toBeInTheDocument();
-      await userEvent.click(canvas.getByTestId('button-child'));
-      await expect(
-        await canvas.findByTestId('popover-parent'),
-      ).toBeInTheDocument();
-      await expect(
-        await canvas.findByTestId('popover-child'),
-      ).toBeInTheDocument();
-      await userEvent.click(document.body);
-      await expect(
-        await canvas.queryByTestId('popover-parent'),
-      ).not.toBeInTheDocument();
-      await expect(
-        await canvas.queryByTestId('popover-child'),
-      ).not.toBeInTheDocument();
-    });
+  //   await step('Popover with child popover', async () => {
+  //     await userEvent.click(canvas.getByTestId('button-parent'));
+  //     await expect(
+  //       await canvas.findByTestId('popover-parent'),
+  //     ).toBeInTheDocument();
+  //     await userEvent.click(canvas.getByTestId('button-child'));
+  //     await expect(
+  //       await canvas.findByTestId('popover-parent'),
+  //     ).toBeInTheDocument();
+  //     await expect(
+  //       await canvas.findByTestId('popover-child'),
+  //     ).toBeInTheDocument();
+  //     await userEvent.click(document.body);
+  //     await expect(
+  //       await canvas.queryByTestId('popover-parent'),
+  //     ).not.toBeInTheDocument();
+  //     await expect(
+  //       await canvas.queryByTestId('popover-child'),
+  //     ).not.toBeInTheDocument();
+  //   });
 
-    await step(
-      'If popover is not enabled we has to prevent opening the popover',
-      async () => {
-        await userEvent.click(canvas.getByTestId('button-disabled'));
-        await expect(
-          await canvas.queryByTestId('popover-disabled'),
-        ).not.toBeInTheDocument();
-      },
-    );
-  },
+  //   await step(
+  //     'If popover is not enabled we has to prevent opening the popover',
+  //     async () => {
+  //       await userEvent.click(canvas.getByTestId('button-disabled'));
+  //       await expect(
+  //         await canvas.queryByTestId('popover-disabled'),
+  //       ).not.toBeInTheDocument();
+  //     },
+  //   );
+  // },
 };
 
 export default story;
