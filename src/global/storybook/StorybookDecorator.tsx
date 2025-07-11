@@ -17,18 +17,19 @@ export const StorybookDecorator = (Story: any, options: any) => {
       className={s.Wrapper}
       theme={options.globals.theme === 'dark' ? 'dark' : 'light'}
       language={options.globals.lang || 'en'}
+      accent={options.globals.accent || 'blue'}
       config={{
         locale: {
           locale:
             options.globals.lang === 'RU'
               ? 'ru-RU'
               : options.globals.lang === 'FR'
-                ? 'fr-FR'
-                : options.globals.lang === 'GE'
-                  ? 'ge-GE'
-                  : options.globals.lang === 'SP'
-                    ? 'sp-SP'
-                    : 'en-US',
+              ? 'fr-FR'
+              : options.globals.lang === 'GE'
+              ? 'ge-GE'
+              : options.globals.lang === 'SP'
+              ? 'sp-SP'
+              : 'en-US',
         },
       }}
       customLabels={{

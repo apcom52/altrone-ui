@@ -1,0 +1,55 @@
+:root {
+  --brown-1: color(display-p3 0.991 0.988 0.988);
+  --brown-2: color(display-p3 0.989 0.97 0.961);
+  --brown-3: color(display-p3 0.958 0.932 0.919);
+  --brown-4: color(display-p3 0.929 0.894 0.877);
+  --brown-5: color(display-p3 0.898 0.853 0.832);
+  --brown-6: color(display-p3 0.861 0.805 0.778);
+  --brown-7: color(display-p3 0.812 0.739 0.706);
+  --brown-8: color(display-p3 0.741 0.647 0.606);
+  --brown-9: color(display-p3 0.611 0.507 0.455);
+  --brown-10: color(display-p3 0.563 0.461 0.414);
+  --brown-11: color(display-p3 0.471 0.373 0.336);
+  --brown-12: color(display-p3 0.251 0.191 0.172);
+
+  --brown-a1: color(display-p3 0.349 0.024 0.024 / 0.012);
+  --brown-a2: color(display-p3 0.71 0.22 0.024 / 0.04);
+  --brown-a3: color(display-p3 0.482 0.2 0.008 / 0.083);
+  --brown-a4: color(display-p3 0.424 0.133 0.004 / 0.122);
+  --brown-a5: color(display-p3 0.4 0.145 0.004 / 0.169);
+  --brown-a6: color(display-p3 0.388 0.125 0.004 / 0.224);
+  --brown-a7: color(display-p3 0.365 0.11 0.004 / 0.295);
+  --brown-a8: color(display-p3 0.341 0.102 0.004 / 0.393);
+  --brown-a9: color(display-p3 0.29 0.094 0 / 0.546);
+  --brown-a10: color(display-p3 0.255 0.082 0 / 0.585);
+  --brown-a11: color(display-p3 0.471 0.373 0.336);
+  --brown-a12: color(display-p3 0.251 0.191 0.172);
+}
+
+[data-altrone-accent="brown"] {
+  --accent-1: var(--brown-1);
+  --accent-2: var(--brown-2);
+  --accent-3: var(--brown-3);
+  --accent-4: var(--brown-4);
+  --accent-5: var(--brown-5);
+  --accent-6: var(--brown-6);
+  --accent-7: var(--brown-7);
+  --accent-8: var(--brown-8);
+  --accent-9: var(--brown-9);
+  --accent-10: var(--brown-10);
+  --accent-11: var(--brown-11);
+  --accent-12: var(--brown-12);
+
+  --accent-a1: var(--brown-a1);
+  --accent-a2: var(--brown-a2);
+  --accent-a3: var(--brown-a3);
+  --accent-a4: var(--brown-a4);
+  --accent-a5: var(--brown-a5);
+  --accent-a6: var(--brown-a6);
+  --accent-a7: var(--brown-a7);
+  --accent-a8: var(--brown-a8);
+  --accent-a9: var(--brown-a9);
+  --accent-a10: var(--brown-a10);
+  --accent-a11: var(--brown-a11);
+  --accent-a12: var(--brown-a12);
+}

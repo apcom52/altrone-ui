@@ -1,0 +1,55 @@
+:root {
+  --purple-1: color(display-p3 0.995 0.988 0.996);
+  --purple-2: color(display-p3 0.983 0.971 0.993);
+  --purple-3: color(display-p3 0.963 0.931 0.989);
+  --purple-4: color(display-p3 0.937 0.888 0.981);
+  --purple-5: color(display-p3 0.904 0.837 0.966);
+  --purple-6: color(display-p3 0.86 0.774 0.942);
+  --purple-7: color(display-p3 0.799 0.69 0.91);
+  --purple-8: color(display-p3 0.719 0.583 0.874);
+  --purple-9: color(display-p3 0.523 0.318 0.751);
+  --purple-10: color(display-p3 0.483 0.289 0.7);
+  --purple-11: color(display-p3 0.473 0.281 0.687);
+  --purple-12: color(display-p3 0.234 0.132 0.363);
+
+  --purple-a1: color(display-p3 0.675 0.024 0.675 / 0.012);
+  --purple-a2: color(display-p3 0.443 0.024 0.722 / 0.028);
+  --purple-a3: color(display-p3 0.506 0.008 0.835 / 0.071);
+  --purple-a4: color(display-p3 0.451 0.004 0.831 / 0.114);
+  --purple-a5: color(display-p3 0.431 0.004 0.788 / 0.165);
+  --purple-a6: color(display-p3 0.384 0.004 0.745 / 0.228);
+  --purple-a7: color(display-p3 0.357 0.004 0.71 / 0.31);
+  --purple-a8: color(display-p3 0.322 0.004 0.702 / 0.416);
+  --purple-a9: color(display-p3 0.298 0 0.639 / 0.683);
+  --purple-a10: color(display-p3 0.271 0 0.58 / 0.71);
+  --purple-a11: color(display-p3 0.473 0.281 0.687);
+  --purple-a12: color(display-p3 0.234 0.132 0.363);
+}
+
+[data-altrone-accent="purple"] {
+  --accent-1: var(--purple-1);
+  --accent-2: var(--purple-2);
+  --accent-3: var(--purple-3);
+  --accent-4: var(--purple-4);
+  --accent-5: var(--purple-5);
+  --accent-6: var(--purple-6);
+  --accent-7: var(--purple-7);
+  --accent-8: var(--purple-8);
+  --accent-9: var(--purple-9);
+  --accent-10: var(--purple-10);
+  --accent-11: var(--purple-11);
+  --accent-12: var(--purple-12);
+
+  --accent-a1: var(--purple-a1);
+  --accent-a2: var(--purple-a2);
+  --accent-a3: var(--purple-a3);
+  --accent-a4: var(--purple-a4);
+  --accent-a5: var(--purple-a5);
+  --accent-a6: var(--purple-a6);
+  --accent-a7: var(--purple-a7);
+  --accent-a8: var(--purple-a8);
+  --accent-a9: var(--purple-a9);
+  --accent-a10: var(--purple-a10);
+  --accent-a11: var(--purple-a11);
+  --accent-a12: var(--purple-a12);
+}

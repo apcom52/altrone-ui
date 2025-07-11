@@ -1,0 +1,55 @@
+:root {
+  --amber-1: color(display-p3 0.995 0.992 0.985);
+  --amber-2: color(display-p3 0.994 0.986 0.921);
+  --amber-3: color(display-p3 0.994 0.969 0.782);
+  --amber-4: color(display-p3 0.989 0.937 0.65);
+  --amber-5: color(display-p3 0.97 0.902 0.527);
+  --amber-6: color(display-p3 0.936 0.844 0.506);
+  --amber-7: color(display-p3 0.89 0.762 0.443);
+  --amber-8: color(display-p3 0.85 0.65 0.3);
+  --amber-9: color(display-p3 1 0.77 0.26);
+  --amber-10: color(display-p3 0.959 0.741 0.274);
+  --amber-11: color(display-p3 0.64 0.4 0);
+  --amber-12: color(display-p3 0.294 0.208 0.145);
+
+  --amber-a1: color(display-p3 0.757 0.514 0.024 / 0.016);
+  --amber-a2: color(display-p3 0.902 0.804 0.008 / 0.079);
+  --amber-a3: color(display-p3 0.965 0.859 0.004 / 0.22);
+  --amber-a4: color(display-p3 0.969 0.82 0.004 / 0.35);
+  --amber-a5: color(display-p3 0.933 0.796 0.004 / 0.475);
+  --amber-a6: color(display-p3 0.875 0.682 0.004 / 0.495);
+  --amber-a7: color(display-p3 0.804 0.573 0 / 0.557);
+  --amber-a8: color(display-p3 0.788 0.502 0 / 0.699);
+  --amber-a9: color(display-p3 1 0.686 0 / 0.742);
+  --amber-a10: color(display-p3 0.945 0.643 0 / 0.726);
+  --amber-a11: color(display-p3 0.64 0.4 0);
+  --amber-a12: color(display-p3 0.294 0.208 0.145);
+}
+
+[data-altrone-accent="amber"] {
+  --accent-1: var(--amber-1);
+  --accent-2: var(--amber-2);
+  --accent-3: var(--amber-3);
+  --accent-4: var(--amber-4);
+  --accent-5: var(--amber-5);
+  --accent-6: var(--amber-6);
+  --accent-7: var(--amber-7);
+  --accent-8: var(--amber-8);
+  --accent-9: var(--amber-9);
+  --accent-10: var(--amber-10);
+  --accent-11: var(--amber-11);
+  --accent-12: var(--amber-12);
+
+  --accent-a1: var(--amber-a1);
+  --accent-a2: var(--amber-a2);
+  --accent-a3: var(--amber-a3);
+  --accent-a4: var(--amber-a4);
+  --accent-a5: var(--amber-a5);
+  --accent-a6: var(--amber-a6);
+  --accent-a7: var(--amber-a7);
+  --accent-a8: var(--amber-a8);
+  --accent-a9: var(--amber-a9);
+  --accent-a10: var(--amber-a10);
+  --accent-a11: var(--amber-a11);
+  --accent-a12: var(--amber-a12);
+}

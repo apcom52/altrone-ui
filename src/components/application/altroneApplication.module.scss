@@ -1,73 +1,85 @@
+@use 'styles/breakpoints';
+@use 'styles/radius';
+@use 'styles/spacing';
+@use 'styles/shadow';
+
+@use 'colors/black';
+@use 'colors/gray';
+@use 'colors/red';
+@use 'colors/pink';
+@use 'colors/purple';
+@use 'colors/indigo';
+@use 'colors/blue';
+@use 'colors/teal';
+@use 'colors/brown';
+@use 'colors/amber';
+
 @import 'src/global/mixins';
 
 :global(:root) {
-  --spacing-1: 4px;
-  --spacing-2: 8px;
-  --spacing-3: 12px;
-  --spacing-4: 16px;
-  --spacing-5: 24px;
-  --spacing-6: 32px;
-  --spacing-7: 40px;
-  --spacing-8: 48px;
-  --spacing-9: 64px;
-
-  --breakpoint-xs: 520px;
-  --breakpoint-sm: 768px;
-  --breakpoint-md: 1024px;
-  --breakpoint-lg: 1280px;
-  --breakpoint-xl: 1640px;
-
-  --radius-none: 0;
-  --radius-mini: 2px;
-  --radius-s: 4px;
-  --radius-m: 8px;
-  --radius-l: 12px;
-  --radius-xl: 16px;
-  --radius-circle: 50%;
-
   --black: color(display-p3 0 0 0);
   --white: color(display-p3 1 1 1);
 
-  --background-1: color(display-p3 0.988 0.988 0.992);
-  --background-2: color(display-p3 0.976 0.976 0.984);
-  --border-1: color(display-p3 0.85 0.852 0.876);
-  --border-a1: color(display-p3 0.008 0.008 0.165 / 0.15);
-  --border-2: color(display-p3 0.805 0.808 0.838);
-  --border-a2: color(display-p3 0.008 0.027 0.184 / 0.197);
-  --border-3: color(display-p3 0.727 0.733 0.773);
-  --border-a3: color(display-p3 0.004 0.031 0.176 / 0.275);
-  --translucent-background-1: color(display-p3 0.99 0.99 0.99 / 0.7);
-  --translucent-background-2: color(display-p3 0.99 0.99 0.99 / 0.65);
+  --background-1: var(--gray-1);
+  --background-a1: var(--gray-a1);
+  --background-2: var(--gray-2);
+  --background-a2: var(--gray-a2);
+  --interactive-1: var(--gray-3);
+  --interactive-a1: var(--gray-a3);
+  --interactive-2: var(--gray-4);
+  --interactive-a2: var(--gray-a4);
+  --interactive-3: var(--gray-5);
+  --interactive-a3: var(--gray-a5);
+  --border-1: var(--gray-6);
+  --border-a1: var(--gray-a6);
+  --border-2: var(--gray-7);
+  --border-a2: var(--gray-a7);
+  --border-3: var(--gray-8);
+  --border-a3: var(--gray-a8);
+  --solid-1: var(--gray-9);
+  --solid-a1: var(--gray-a9);
+  --solid-2: var(--gray-10);
+  --solid-a2: var(--gray-a10);
+  --text-1: var(--gray-11);
+  --text-a1: var(--gray-a11);
+  --text-2: var(--gray-12);
+  --text-a2: var(--gray-a12);
 
-  --gray-1: color(display-p3 0.988 0.988 0.992);
-  --gray-2: color(display-p3 0.976 0.976 0.984);
-  --gray-3: color(display-p3 0.94 0.941 0.953);
-  --gray-4: color(display-p3 0.908 0.909 0.925);
-  --gray-5: color(display-p3 0.88 0.881 0.901);
-  --gray-6: color(display-p3 0.85 0.852 0.876);
-  --gray-7: color(display-p3 0.805 0.808 0.838);
-  --gray-8: color(display-p3 0.727 0.733 0.773);
-  --gray-9: color(display-p3 0.547 0.553 0.592);
-  --gray-10: color(display-p3 0.503 0.512 0.549);
-  --gray-11: color(display-p3 0.379 0.392 0.421);
-  --gray-12: color(display-p3 0.113 0.125 0.14);
+  /* Default accent colors (blue) */
+  --accent-1: var(--blue-1);
+  --accent-2: var(--blue-2);
+  --accent-3: var(--blue-3);
+  --accent-4: var(--blue-4);
+  --accent-5: var(--blue-5);
+  --accent-6: var(--blue-6);
+  --accent-7: var(--blue-7);
+  --accent-8: var(--blue-8);
+  --accent-9: var(--blue-9);
+  --accent-10: var(--blue-10);
+  --accent-11: var(--blue-11);
+  --accent-12: var(--blue-12);
 
-  --gray-a1: color(display-p3 0.024 0.024 0.349 / 0.012);
-  --gray-a2: color(display-p3 0.024 0.024 0.349 / 0.024);
-  --gray-a3: color(display-p3 0.004 0.004 0.204 / 0.059);
-  --gray-a4: color(display-p3 0.012 0.012 0.184 / 0.091);
-  --gray-a5: color(display-p3 0.004 0.039 0.2 / 0.122);
-  --gray-a6: color(display-p3 0.008 0.008 0.165 / 0.15);
-  --gray-a7: color(display-p3 0.008 0.027 0.184 / 0.197);
-  --gray-a8: color(display-p3 0.004 0.031 0.176 / 0.275);
-  --gray-a9: color(display-p3 0.004 0.02 0.106 / 0.455);
-  --gray-a10: color(display-p3 0.004 0.027 0.098 / 0.499);
-  --gray-a11: color(display-p3 0 0.02 0.063 / 0.62);
-  --gray-a12: color(display-p3 0 0.012 0.031 / 0.887);
+  --accent-a1: var(--blue-a1);
+  --accent-a2: var(--blue-a2);
+  --accent-a3: var(--blue-a3);
+  --accent-a4: var(--blue-a4);
+  --accent-a5: var(--blue-a5);
+  --accent-a6: var(--blue-a6);
+  --accent-a7: var(--blue-a7);
+  --accent-a8: var(--blue-a8);
+  --accent-a9: var(--blue-a9);
+  --accent-a10: var(--blue-a10);
+  --accent-a11: var(--blue-a11);
+  --accent-a12: var(--blue-a12);
+
+  --background-1: var(--gray-1);
+  --background-2: var(--gray-2);
+
+  --translucent-background-1: color(display-p3 1 1 1 / 0.5);
+  --translucent-background-2: color(display-p3 1 1 1 / 0.6);
 
   --translucent-blur: blur(64px);
-  --translucent-background-color: color(display-p3 1 1 1 / 0.7);
-  --translucent-border-color: color(display-p3 0 0 0 / 0.12);
+  --translucent-border-color: var(--border-a1);
 
   --default-900: #111928;
   --default-800: #1f2a37;
@@ -327,8 +339,6 @@
 }
 
 :global(.AltroneDark) {
-  --background-1: color(display-p3 0.095 0.098 0.105);
-  --background-2: color(display-p3 0.067 0.067 0.074);
   --translucent-background-1: color(display-p3 0.99 0.99 0.99 / 0.15);
   --translucent-background-2: color(display-p3 0.99 0.99 0.99 / 0.1);
 

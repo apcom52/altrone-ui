@@ -1,0 +1,55 @@
+:root {
+  --red-1: color(display-p3 0.998 0.989 0.988);
+  --red-2: color(display-p3 0.994 0.974 0.969);
+  --red-3: color(display-p3 0.985 0.924 0.909);
+  --red-4: color(display-p3 0.996 0.868 0.835);
+  --red-5: color(display-p3 0.98 0.812 0.77);
+  --red-6: color(display-p3 0.953 0.75 0.698);
+  --red-7: color(display-p3 0.917 0.673 0.611);
+  --red-8: color(display-p3 0.875 0.575 0.502);
+  --red-9: color(display-p3 0.831 0.345 0.231);
+  --red-10: color(display-p3 0.802 0.313 0.2);
+  --red-11: color(display-p3 0.755 0.259 0.152);
+  --red-12: color(display-p3 0.335 0.165 0.132);
+
+  --red-a1: color(display-p3 0.675 0.024 0.024 / 0.012);
+  --red-a2: color(display-p3 0.757 0.145 0.02 / 0.032);
+  --red-a3: color(display-p3 0.831 0.184 0.012 / 0.091);
+  --red-a4: color(display-p3 0.976 0.192 0.004 / 0.165);
+  --red-a5: color(display-p3 0.918 0.192 0.004 / 0.232);
+  --red-a6: color(display-p3 0.847 0.173 0.004 / 0.302);
+  --red-a7: color(display-p3 0.788 0.165 0.004 / 0.389);
+  --red-a8: color(display-p3 0.749 0.153 0.004 / 0.499);
+  --red-a9: color(display-p3 0.78 0.149 0 / 0.769);
+  --red-a10: color(display-p3 0.757 0.141 0 / 0.8);
+  --red-a11: color(display-p3 0.755 0.259 0.152);
+  --red-a12: color(display-p3 0.335 0.165 0.132);
+}
+
+[data-altrone-accent="red"] {
+  --accent-1: var(--red-1);
+  --accent-2: var(--red-2);
+  --accent-3: var(--red-3);
+  --accent-4: var(--red-4);
+  --accent-5: var(--red-5);
+  --accent-6: var(--red-6);
+  --accent-7: var(--red-7);
+  --accent-8: var(--red-8);
+  --accent-9: var(--red-9);
+  --accent-10: var(--red-10);
+  --accent-11: var(--red-11);
+  --accent-12: var(--red-12);
+
+  --accent-a1: var(--red-a1);
+  --accent-a2: var(--red-a2);
+  --accent-a3: var(--red-a3);
+  --accent-a4: var(--red-a4);
+  --accent-a5: var(--red-a5);
+  --accent-a6: var(--red-a6);
+  --accent-a7: var(--red-a7);
+  --accent-a8: var(--red-a8);
+  --accent-a9: var(--red-a9);
+  --accent-a10: var(--red-a10);
+  --accent-a11: var(--red-a11);
+  --accent-a12: var(--red-a12);
+}

@@ -7,9 +7,9 @@ export interface BoxProps extends React.HTMLProps<HTMLDivElement> {
   dummy?: boolean;
   offset?: number;
   inset?: number;
-  shadow?: never;
   width?: number | string;
   height?: number | string;
   align?: 'start' | 'center' | 'end';
   justify?: 'start' | 'center' | 'end';
+  shadow?: 'none' | '1' | '2' | '3' | '4' | '5' | '6';
 }

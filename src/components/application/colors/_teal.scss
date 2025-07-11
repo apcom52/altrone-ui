@@ -1,0 +1,55 @@
+:root {
+  --teal-1: color(display-p3 0.983 0.996 0.992);
+  --teal-2: color(display-p3 0.958 0.983 0.976);
+  --teal-3: color(display-p3 0.895 0.971 0.952);
+  --teal-4: color(display-p3 0.831 0.949 0.92);
+  --teal-5: color(display-p3 0.761 0.914 0.878);
+  --teal-6: color(display-p3 0.682 0.864 0.825);
+  --teal-7: color(display-p3 0.581 0.798 0.756);
+  --teal-8: color(display-p3 0.433 0.716 0.671);
+  --teal-9: color(display-p3 0.297 0.637 0.581);
+  --teal-10: color(display-p3 0.275 0.599 0.542);
+  --teal-11: color(display-p3 0.08 0.5 0.43);
+  --teal-12: color(display-p3 0.11 0.235 0.219);
+
+  --teal-a1: color(display-p3 0.024 0.757 0.514 / 0.016);
+  --teal-a2: color(display-p3 0.02 0.647 0.467 / 0.044);
+  --teal-a3: color(display-p3 0.004 0.741 0.557 / 0.106);
+  --teal-a4: color(display-p3 0.004 0.702 0.537 / 0.169);
+  --teal-a5: color(display-p3 0.004 0.643 0.494 / 0.24);
+  --teal-a6: color(display-p3 0.004 0.569 0.447 / 0.318);
+  --teal-a7: color(display-p3 0.004 0.518 0.424 / 0.42);
+  --teal-a8: color(display-p3 0 0.506 0.424 / 0.569);
+  --teal-a9: color(display-p3 0 0.482 0.404 / 0.702);
+  --teal-a10: color(display-p3 0 0.451 0.369 / 0.726);
+  --teal-a11: color(display-p3 0.08 0.5 0.43);
+  --teal-a12: color(display-p3 0.11 0.235 0.219);
+}
+
+[data-altrone-accent="teal"] {
+  --accent-1: var(--teal-1);
+  --accent-2: var(--teal-2);
+  --accent-3: var(--teal-3);
+  --accent-4: var(--teal-4);
+  --accent-5: var(--teal-5);
+  --accent-6: var(--teal-6);
+  --accent-7: var(--teal-7);
+  --accent-8: var(--teal-8);
+  --accent-9: var(--teal-9);
+  --accent-10: var(--teal-10);
+  --accent-11: var(--teal-11);
+  --accent-12: var(--teal-12);
+
+  --accent-a1: var(--teal-a1);
+  --accent-a2: var(--teal-a2);
+  --accent-a3: var(--teal-a3);
+  --accent-a4: var(--teal-a4);
+  --accent-a5: var(--teal-a5);
+  --accent-a6: var(--teal-a6);
+  --accent-a7: var(--teal-a7);
+  --accent-a8: var(--teal-a8);
+  --accent-a9: var(--teal-a9);
+  --accent-a10: var(--teal-a10);
+  --accent-a11: var(--teal-a11);
+  --accent-a12: var(--teal-a12);
+}

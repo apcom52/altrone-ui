@@ -1,0 +1,55 @@
+:root {
+  --pink-1: color(display-p3 0.998 0.989 0.992);
+  --pink-2: color(display-p3 0.991 0.969 0.976);
+  --pink-3: color(display-p3 0.987 0.917 0.941);
+  --pink-4: color(display-p3 0.975 0.866 0.904);
+  --pink-5: color(display-p3 0.953 0.813 0.864);
+  --pink-6: color(display-p3 0.921 0.755 0.817);
+  --pink-7: color(display-p3 0.88 0.683 0.761);
+  --pink-8: color(display-p3 0.834 0.592 0.694);
+  --pink-9: color(display-p3 0.843 0.298 0.507);
+  --pink-10: color(display-p3 0.807 0.266 0.468);
+  --pink-11: color(display-p3 0.731 0.195 0.388);
+  --pink-12: color(display-p3 0.352 0.111 0.221);
+
+  --pink-a1: color(display-p3 0.675 0.024 0.349 / 0.012);
+  --pink-a2: color(display-p3 0.757 0.02 0.267 / 0.032);
+  --pink-a3: color(display-p3 0.859 0.008 0.294 / 0.083);
+  --pink-a4: color(display-p3 0.827 0.008 0.298 / 0.134);
+  --pink-a5: color(display-p3 0.753 0.008 0.275 / 0.189);
+  --pink-a6: color(display-p3 0.682 0.004 0.247 / 0.244);
+  --pink-a7: color(display-p3 0.62 0.004 0.251 / 0.318);
+  --pink-a8: color(display-p3 0.6 0.004 0.251 / 0.408);
+  --pink-a9: color(display-p3 0.776 0 0.298 / 0.702);
+  --pink-a10: color(display-p3 0.737 0 0.275 / 0.734);
+  --pink-a11: color(display-p3 0.731 0.195 0.388);
+  --pink-a12: color(display-p3 0.352 0.111 0.221);
+}
+
+[data-altrone-accent="pink"] {
+  --accent-1: var(--pink-1);
+  --accent-2: var(--pink-2);
+  --accent-3: var(--pink-3);
+  --accent-4: var(--pink-4);
+  --accent-5: var(--pink-5);
+  --accent-6: var(--pink-6);
+  --accent-7: var(--pink-7);
+  --accent-8: var(--pink-8);
+  --accent-9: var(--pink-9);
+  --accent-10: var(--pink-10);
+  --accent-11: var(--pink-11);
+  --accent-12: var(--pink-12);
+
+  --accent-a1: var(--pink-a1);
+  --accent-a2: var(--pink-a2);
+  --accent-a3: var(--pink-a3);
+  --accent-a4: var(--pink-a4);
+  --accent-a5: var(--pink-a5);
+  --accent-a6: var(--pink-a6);
+  --accent-a7: var(--pink-a7);
+  --accent-a8: var(--pink-a8);
+  --accent-a9: var(--pink-a9);
+  --accent-a10: var(--pink-a10);
+  --accent-a11: var(--pink-a11);
+  --accent-a12: var(--pink-a12);
+}

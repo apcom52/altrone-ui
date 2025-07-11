@@ -1,42 +1,60 @@
-:root {
+:global(:root) {
   --box-light-color: var(--white);
-  --box-glow-cursor-color: color(display-p3 0.916 0.897 1);
-  --box-glow-background-color: color(display-p3 0.204 0.004 0.871 / 0.059);
-  --box-glow-cursor-active-color: color(display-p3 0.876 0.851 1);
   --box-blend-mode: multiply;
 }
 
 .Box {
+  --box-glow-cursor-color: var(--accent-3);
+  --box-glow-background-color: var(--accent-1);
+  --box-glow-cursor-active-color: var(--accent-4);
+  --box-shadow: var(--shadow-1);
+
   display: flex;
   width: fit-content;
   height: fit-content;
 }
 
 .Content {
-  --glow-cursor-color: var(--box-glow-cursor-color);
-  --glow-background-color: var(--box-glow-background-color);
-
   position: relative;
   display: flex;
-  background: var(--gray-1); 
+  background: var(--background-1); 
   padding: var(--spacing-1);
-  box-shadow: inset 1px 1px 1px 0 var(--box-light-color), 0px 0px 0 1px var(--border-a1), 0 0 3px 0 color(display-p3 0 0 0 / 0.05);
+  box-shadow: inset 1px 1px 1px 0 var(--box-light-color), 0px 0px 0 1px var(--border-a1), var(--box-shadow);
+  transition: transform 0.1s ease;
 
   &:active {
-    --glow-cursor-color: var(--box-glow-cursor-active-color);
+    --box-glow-cursor-color: var(--box-glow-cursor-active-color);
+
+    transform: scale(0.98);
   }
 }
 
+.NoShadow {
+  box-shadow: inset 1px 1px 1px 0 var(--box-light-color), 0px 0px 0 1px var(--border-a1);
+}
+
 .Solid {
+  --box-glow-cursor-color: var(--accent-a3);
+  --box-glow-background-color: var(--accent-a1);
+  --box-glow-cursor-active-color: var(--accent-a4);
+
   background: radial-gradient(circle at top left, var(--background-1) 0%, var(--background-2) 100%);
 }
 
 .Translucent {
+  --box-glow-cursor-color: var(--accent-a3);
+  --box-glow-background-color: var(--accent-a1);
+  --box-glow-cursor-active-color: var(--accent-a4);
+
   background: radial-gradient(circle at top left, var(--translucent-background-1) 0%, var(--translucent-background-2) 100%);
   backdrop-filter: blur(64px) saturate(180%);
 }
 
 .Transparent {
+  --box-glow-cursor-color: var(--accent-a3);
+  --box-glow-background-color: var(--accent-a1);
+  --box-glow-cursor-active-color: var(--accent-a4);
+  
   background-color: transparent;
   box-shadow: none;
 }

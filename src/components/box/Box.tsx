@@ -18,7 +18,7 @@ export const Box = memo<BoxProps>(({ children, ...props }) => {
     dummy = false,
     offset = 0,
     inset = 0,
-    shadow,
+    shadow = '2',
     style,
     width,
     height,
@@ -30,6 +30,7 @@ export const Box = memo<BoxProps>(({ children, ...props }) => {
     [s.Solid]: surface === 'solid',
     [s.Translucent]: surface === 'translucent',
     [s.Transparent]: surface === 'transparent',
+    [s.NoShadow]: shadow === 'none',
   });
 
   const radiusValue =
@@ -48,19 +49,14 @@ export const Box = memo<BoxProps>(({ children, ...props }) => {
     height: height || undefined,
     alignItems: align || undefined,
     justifyContent: justify || undefined,
+    '--box-shadow': `var(--shadow-${shadow})`,
   };
 
-  const shadowOpacity = isGlowMode
-    ? surface === 'translucent'
-      ? 0.2
-      : surface === 'solid'
-      ? 1
-      : 0.5
-    : 0;
+  const shadowOpacity = isGlowMode ? 1 : 0;
 
   const shadowStyles = {
     borderRadius: radiusValue,
-    background: `radial-gradient(circle at ${cursorX}px ${cursorY}px, var(--glow-cursor-color) ${cursorPressure}%, var(--glow-background-color) 100%)`,
+    background: `radial-gradient(circle at ${cursorX}px ${cursorY}px, var(--box-glow-cursor-color) ${cursorPressure}%, var(--box-glow-background-color) 100%)`,
     opacity: shadowOpacity,
   };
 
@@ -69,7 +65,7 @@ export const Box = memo<BoxProps>(({ children, ...props }) => {
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     // Используем макротаск для низкого приоритета
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       if (!contentRef.current) return;
       setIsGlowMode(true);
       const rect = contentRef.current.getBoundingClientRect();
@@ -77,7 +73,7 @@ export const Box = memo<BoxProps>(({ children, ...props }) => {
       const y = e.clientY - rect.top;
       setCursorX(x);
       setCursorY(y);
-    }, 0);
+    });
   }, []);
 
   const handleMouseDown = useCallback(() => {

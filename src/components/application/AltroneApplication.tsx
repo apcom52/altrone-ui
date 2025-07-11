@@ -19,6 +19,7 @@ export const AltroneApplication = ({
   style,
   tagName = 'div',
   theme: initialTheme = 'auto',
+  accent = 'blue',
   config,
   language = 'en',
   customLabels = {},
@@ -47,13 +48,13 @@ export const AltroneApplication = ({
       theme: theme,
       setTheme,
     }),
-    [theme, setTheme],
+    [theme, setTheme]
   );
 
   useEffect(() => {
     if (!config?.locale?.locale) {
       console.warn(
-        "[AltroneApplication]: you haven't set locale of your application. By default locale is en-US",
+        "[AltroneApplication]: you haven't set locale of your application. By default locale is en-US"
       );
     }
   }, [config?.locale?.locale]);
@@ -65,6 +66,7 @@ export const AltroneApplication = ({
         AltroneDark: theme === 'dark',
       }),
       'data-altrone-root': 'true',
+      'data-altrone-accent': accent,
       id,
       style,
       ...props,
@@ -77,6 +79,6 @@ export const AltroneApplication = ({
           </RainbowEffect>
         </Configuration>
       </AltroneLocalization>
-    </ThemeContext.Provider>,
+    </ThemeContext.Provider>
   );
 };
