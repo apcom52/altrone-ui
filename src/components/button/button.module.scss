@@ -222,9 +222,14 @@
   }
 }
 
+.ButtonContent {
+  flex-wrap: nowrap;
+}
+
 .Label {
   @include label;
   flex: 1;
+  white-space: nowrap;
 }
 
 .Icon {
@@ -515,6 +520,10 @@
   left: 50%;
   top: 50%;
   transform: translateX(-50%) translateY(-50%);
+}
+
+.Button_primary {
+  background: var(--accent-8);
 }
 
 :global(.AltroneDark) {

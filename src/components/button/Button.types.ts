@@ -1,20 +1,19 @@
-import { RenderFuncProp, Role, Size } from 'types';
-import { ReactElement } from 'react';
+import { RenderFuncProp, Size } from 'types';
+import { JSX, ReactElement } from 'react';
+import { LoadingState } from 'types/entity';
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
   label?: string;
   showLabel?: boolean;
-  leftIcon?: ReactElement;
-  rightIcon?: ReactElement;
-  role?: Role;
-  severity?: Role;
+  icon?: ReactElement;
+  additionalIcon?: ReactElement;
+  type?: 'default' | 'primary' | 'secondary' | 'text';
+  htmlType?: 'button' | 'submit' | 'reset';
+  danger?: boolean;
   size?: Size;
-  transparent?: boolean;
-  disabled?: boolean;
-  rainbowEffect?: boolean;
   renderFunc?: RenderFuncProp<HTMLButtonElement, ButtonProps>;
-  ariaRole?: string;
   loading?: boolean;
   badge?: number | string | JSX.Element;
+  skeleton?: LoadingState;
 }

@@ -9,10 +9,11 @@ import { RenderFuncProp } from 'types';
 import { GlobalUtils } from '../../utils';
 import { Loading } from '../loading';
 import { Badge } from 'components/badge/Badge.tsx';
+import { Box } from 'components/box/Box.tsx';
 
 const buttonRenderFunc: RenderFuncProp<HTMLButtonElement, ButtonProps> = (
   ref,
-  props,
+  props
 ) => {
   const { ariaRole, ...restProps } = props;
 
@@ -22,7 +23,16 @@ const buttonRenderFunc: RenderFuncProp<HTMLButtonElement, ButtonProps> = (
   delete restProps.transparent;
   delete restProps.loading;
 
-  return <button ref={ref} role={props.ariaRole} {...restProps} />;
+  return (
+    <Box
+      tagName="button"
+      ref={ref}
+      shadow="2"
+      role={props.ariaRole}
+      className={s.ButtonContent}
+      {...restProps}
+    />
+  );
 };
 
 export const Button = memo(
@@ -68,7 +78,7 @@ export const Button = memo(
         onFocus: props.onFocus,
         opacity: theme === 'dark' ? 0.33 : 1,
         blur: 11,
-      },
+      }
     );
 
     const isOnlyIcon =
@@ -80,6 +90,7 @@ export const Button = memo(
       s.Button,
       {
         [s.Button_transparent]: transparent,
+        [s.Button_primary]: buttonSeverity === 'primary',
         [s.Primary]: buttonSeverity === 'primary',
         [s.Success]: buttonSeverity === 'success',
         [s.Warning]: buttonSeverity === 'warning',
@@ -90,8 +101,12 @@ export const Button = memo(
         [s.WithLoading]: loading,
       },
       className,
-      buttonConfig.className,
+      buttonConfig.className
     );
+
+    const boxCls = clsx({
+      [s.Button_primary]: buttonSeverity === 'primary',
+    });
 
     const styles = {
       ...buttonConfig.style,
@@ -138,8 +153,8 @@ export const Button = memo(
       if (!label) {
         console.warn(
           GlobalUtils.formatConsoleMessage(
-            '[Altrone]: you passed empty [[label]] prop in Button, but it will be required in 4.0. Please fill [[label]] prop now and set [[showLabel]] to [[false]] if necessary',
-          ),
+            '[Altrone]: you passed empty [[label]] prop in Button, but it will be required in 4.0. Please fill [[label]] prop now and set [[showLabel]] to [[false]] if necessary'
+          )
         );
       }
     }, [label]);
@@ -154,5 +169,5 @@ export const Button = memo(
       children: buttonContent,
       title: props.title ?? label,
     });
-  }),
+  })
 );

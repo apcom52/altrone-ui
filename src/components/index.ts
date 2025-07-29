@@ -2,6 +2,7 @@ export * from './application';
 export * from './autocompleteInput';
 export * from './avatar';
 export * from './bottomNavigation';
+export * from './box';
 export * from './breadcrumbs';
 export * from './button';
 export * from './calendar';

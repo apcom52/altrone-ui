@@ -1,7 +1,8 @@
-import { memo, useState, useCallback, useRef } from 'react';
+import { memo, useState, useCallback, useRef, createElement } from 'react';
 import { BoxProps } from './Box.types';
 import { clsx } from 'clsx';
 import s from './box.module.scss';
+import { motion } from 'motion/react';
 
 export const Box = memo<BoxProps>(({ children, ...props }) => {
   const [cursorX, setCursorX] = useState(0);
@@ -9,29 +10,41 @@ export const Box = memo<BoxProps>(({ children, ...props }) => {
   const [cursorPressure, setCursorPressure] = useState(0);
   const [isGlowMode, setIsGlowMode] = useState(false);
 
-  console.log('>> pressure', cursorPressure);
-
   const {
+    as = 'div',
     surface = 'solid',
-    interaction = 'hover',
+    interaction = [],
+    color = 'none',
     radius = 's',
-    dummy = false,
     offset = 0,
     inset = 0,
-    shadow = '2',
+    shadow = '1',
     style,
     width,
     height,
-    align,
-    justify,
+    alignX = 'start',
+    alignY = 'start',
+    className,
+    focusable = true,
+    ref,
+    contentClassName,
+    ...restProps
   } = props;
 
-  const contentCls = clsx(s.Content, {
-    [s.Solid]: surface === 'solid',
-    [s.Translucent]: surface === 'translucent',
-    [s.Transparent]: surface === 'transparent',
-    [s.NoShadow]: shadow === 'none',
-  });
+  const isInputElement = as === 'input' || as === 'textarea';
+
+  const contentCls = clsx(
+    s.Content,
+    {
+      [s.Solid]: surface === 'solid',
+      [s.Translucent]: surface === 'translucent',
+      [s.Transparent]: surface === 'transparent',
+      [s.NoShadow]: shadow === 'none',
+      [s.Accent]: color === 'accent',
+      [s.Input]: isInputElement,
+    },
+    className
+  );
 
   const radiusValue =
     typeof radius === 'number'
@@ -47,10 +60,25 @@ export const Box = memo<BoxProps>(({ children, ...props }) => {
     margin: offset || undefined,
     width: width || undefined,
     height: height || undefined,
-    alignItems: align || undefined,
-    justifyContent: justify || undefined,
+    alignItems: alignX || undefined,
+    justifyContent: alignY || undefined,
     '--box-shadow': `var(--shadow-${shadow})`,
   };
+
+  const focusInteraction: Record<string, boolean> = {};
+  const hoverInteraction: Record<string, boolean> = {};
+  const pressInteraction: Record<string, boolean> = {};
+
+  interaction.forEach((item) => {
+    const [type, effect] = item.split(':');
+    if (type === 'focus') {
+      focusInteraction[effect] = true;
+    } else if (type === 'hover') {
+      hoverInteraction[effect] = true;
+    } else if (type === 'press') {
+      pressInteraction[effect] = true;
+    }
+  });
 
   const shadowOpacity = isGlowMode ? 1 : 0;
 
@@ -97,24 +125,95 @@ export const Box = memo<BoxProps>(({ children, ...props }) => {
     }, 200);
   }, []);
 
+  const whileFocus = {
+    ...(focusInteraction.scale && { scale: 0.98 }),
+    ...(focusInteraction.background && {
+      background: 'var(--box-focus-background-color)',
+    }),
+  };
+  const whileHover = {
+    ...(hoverInteraction.scale && { scale: 1.02 }),
+    ...(hoverInteraction.background && {
+      background: 'var(--box-hover-background-color)',
+    }),
+  };
+  const whilePress = {
+    ...(pressInteraction.scale && { scale: 0.96 }),
+    ...(pressInteraction.background && {
+      background: 'var(--box-press-background-color)',
+    }),
+  };
+
+  const boxCls = clsx(s.Box, {
+    [s.Outline_focus]: focusInteraction.outline,
+    [s.Outline_hover]: hoverInteraction.outline,
+    [s.Outline_press]: pressInteraction.outline,
+  });
+
+  const MotionComponent = motion[as];
+
+  // Проверяем, является ли элемент input или textarea
+
+  // Фильтруем пропсы для MotionComponent, исключая несовместимые
+  const motionProps = {
+    ...restProps,
+    // Исключаем пропсы, которые могут конфликтовать с motion
+    onDrag: undefined,
+    onDragStart: undefined,
+    onDragEnd: undefined,
+    onDragEnter: undefined,
+    onDragLeave: undefined,
+    onDragOver: undefined,
+    onDrop: undefined,
+  };
+
+  const initialState = {
+    scale: 1,
+    background: 'var(--box-background-color)',
+  };
+
+  if (isInputElement) {
+    // Для input элементов создаем обертку, но сам input остается внутри
+    return (
+      <div className={boxCls}>
+        <div className={s.InputContent}>
+          <MotionComponent
+            initial={initialState}
+            className={contentCls}
+            whileFocus={whileFocus}
+            whileHover={whileHover}
+            whileTap={whilePress}
+            tabIndex={
+              focusable === true || focusable === 0 ? 0 : focusable || undefined
+            }
+            style={styles}
+            placeholder={children}
+            {...motionProps}
+          />
+          <div className={s.Shadow} />
+        </div>
+      </div>
+    );
+  }
+
+  // Для остальных элементов используем стандартный подход
   return (
-    <div
-      className={clsx(s.Box, {
-        [s.Dummy]: dummy,
-      })}
-    >
-      <div
+    <div className={boxCls}>
+      <MotionComponent
         className={contentCls}
+        initial={initialState}
+        whileFocus={whileFocus}
+        whileHover={whileHover}
+        whileTap={whilePress}
+        tabIndex={
+          focusable === true || focusable === 0 ? 0 : focusable || undefined
+        }
         style={styles}
-        ref={contentRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
+        {...motionProps}
       >
         {children}
-        <div className={s.Shadow} style={shadowStyles} />
-      </div>
+        <div className={s.Shadow} />
+      </MotionComponent>
     </div>
   );
 });

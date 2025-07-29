@@ -184,12 +184,10 @@ export const ButtonStory: StoryObj<typeof Button> = {
       {renderButtonsWithRole('default', args)}
       <Text.Heading role="inner">Primary buttons</Text.Heading>
       {renderButtonsWithRole('primary', args)}
-      <Text.Heading role="inner">Success buttons</Text.Heading>
+      <Text.Heading role="inner">Secondary buttons</Text.Heading>
       {renderButtonsWithRole('success', args)}
-      <Text.Heading role="inner">Warning buttons</Text.Heading>
+      <Text.Heading role="inner">Text buttons</Text.Heading>
       {renderButtonsWithRole('warning', args)}
-      <Text.Heading role="inner">Warning buttons</Text.Heading>
-      {renderButtonsWithRole('danger', args)}
     </Flex>
   ),
 };

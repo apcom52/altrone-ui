@@ -19,7 +19,7 @@ const preview: Preview = {
         mountains: {
           name: 'El Capitan',
           value:
-            'url(https://www.hdwallpapers.in/download/el_capitan_yosemite_valley_4k-wide.jpg)',
+            'url(https://c4.wallpaperflare.com/wallpaper/169/459/748/apple-mac-os-x-el-capitan-wallpaper-preview.jpg)',
         },
         darkImage: {
           name: 'Deep space',
@@ -68,6 +68,25 @@ const preview: Preview = {
         icon: 'hourglass',
         title: 'Loading',
         items: ['Loading', 'Default'],
+        dynamicTitle: true,
+      },
+    },
+    accent: {
+      description: 'Accent color',
+      defaultValue: 'blue',
+      toolbar: {
+        icon: 'palette',
+        title: 'Accent',
+        items: [
+          { title: 'Red', value: 'red' },
+          { title: 'Pink', value: 'pink' },
+          { title: 'Purple', value: 'purple' },
+          { title: 'Indigo', value: 'indigo' },
+          { title: 'Blue', value: 'blue' },
+          { title: 'Teal', value: 'teal' },
+          { title: 'Brown', value: 'brown' },
+          { title: 'Amber', value: 'amber' },
+        ],
         dynamicTitle: true,
       },
     },
