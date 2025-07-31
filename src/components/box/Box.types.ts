@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { CSSProperties } from 'react';
 import { Radius, Side, Shadow } from 'types/entity';
 import { HTMLElements } from 'types/types';
 
@@ -43,6 +44,7 @@ export interface BoxProps extends React.HTMLProps<HTMLDivElement> {
   alignY?: Side;
   shadow?: Shadow;
   focusable?: boolean | number;
+  cursor?: CSSProperties['cursor'];
 
   contentClassName?: string;
 }

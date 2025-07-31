@@ -77,6 +77,7 @@ export const BoxStory: StoryObj<typeof Flex> = {
               alignY="center"
               radius="m"
               interaction={interactionEffects}
+              cursor="pointer"
             >
               Medium
             </Box>

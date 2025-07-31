@@ -1,4 +1,6 @@
-:root {
+:global([data-altrone-root='true']) {
+  --shadow-none: 0 0 0 0 transparent;
+
   --shadow-inset: inset 0 0 0 1px var(--gray-a5),
     inset 0 1.5px 2px 0 var(--gray-a2), inset 0 1.5px 2px 0 var(--black-a2);
 

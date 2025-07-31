@@ -67,6 +67,7 @@ export const AltroneApplication = ({
       }),
       'data-altrone-root': 'true',
       'data-altrone-accent': accent,
+      'data-altrone-theme': theme,
       id,
       style,
       ...props,

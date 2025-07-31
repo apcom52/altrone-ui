@@ -16,10 +16,7 @@
 
 @import 'src/global/mixins';
 
-:global(:root) {
-  --black: color(display-p3 0 0 0);
-  --white: color(display-p3 1 1 1);
-
+:global([data-altrone-root='true']) {
   --background-1: var(--gray-1);
   --background-a1: var(--gray-a1);
   --background-2: var(--gray-2);
@@ -44,36 +41,6 @@
   --text-a1: var(--gray-a11);
   --text-2: var(--gray-12);
   --text-a2: var(--gray-a12);
-
-  /* Default accent colors (blue) */
-  --accent-1: var(--blue-1);
-  --accent-2: var(--blue-2);
-  --accent-3: var(--blue-3);
-  --accent-4: var(--blue-4);
-  --accent-5: var(--blue-5);
-  --accent-6: var(--blue-6);
-  --accent-7: var(--blue-7);
-  --accent-8: var(--blue-8);
-  --accent-9: var(--blue-9);
-  --accent-10: var(--blue-10);
-  --accent-11: var(--blue-11);
-  --accent-12: var(--blue-12);
-
-  --accent-a1: var(--blue-a1);
-  --accent-a2: var(--blue-a2);
-  --accent-a3: var(--blue-a3);
-  --accent-a4: var(--blue-a4);
-  --accent-a5: var(--blue-a5);
-  --accent-a6: var(--blue-a6);
-  --accent-a7: var(--blue-a7);
-  --accent-a8: var(--blue-a8);
-  --accent-a9: var(--blue-a9);
-  --accent-a10: var(--blue-a10);
-  --accent-a11: var(--blue-a11);
-  --accent-a12: var(--blue-a12);
-
-  --background-1: var(--gray-1);
-  --background-2: var(--gray-2);
 
   --translucent-background-1: color(display-p3 1 1 1 / 0.5);
   --translucent-background-2: color(display-p3 1 1 1 / 0.6);
@@ -341,13 +308,6 @@
 :global(.AltroneDark) {
   --translucent-background-1: color(display-p3 0.99 0.99 0.99 / 0.15);
   --translucent-background-2: color(display-p3 0.99 0.99 0.99 / 0.1);
-
-  --border-1: color(display-p3 0.215 0.226 0.244);
-  --border-a1: color(display-p3 0.882 0.949 0.996 / 0.183);
-  --border-2: color(display-p3 0.265 0.28 0.302);
-  --border-a2: color(display-p3 0.882 0.929 1 / 0.246);
-  --border-3: color(display-p3 0.357 0.381 0.409);
-  --border-a3: color(display-p3 0.871 0.937 1 / 0.361);
 
   --headingTextColor: var(--default-50);
   --primaryHeadingTextColor: var(--primary-50);

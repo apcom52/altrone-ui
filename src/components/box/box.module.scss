@@ -1,18 +1,24 @@
 :global(:root) {
   --box-light-color: var(--white);
   --box-blend-mode: multiply;
-  --box-shadow: var(--shadow-1);
+  --box-hover-shadow: var(--shadow-2);
+  --box-focus-shadow: var(--shadow-2);
+  --box-press-shadow: var(--shadow-1);
 }
 
 .Box {
-  --box-glow-cursor-color: var(--accent-3);
-  --box-glow-background-color: var(--accent-1);
+  --box-glow-cursor-color: var(--accent-8);
+  --box-glow-background-color: var(--accent-5);
   --box-glow-cursor-active-color: var(--accent-4);
 
   --box-background-color: var(--background-1);
   --box-hover-background-color: var(--interactive-1);
   --box-focus-background-color: var(--interactive-1);
   --box-press-background-color: var(--interactive-2);
+
+  --box-shadow: var(--shadow-1);
+  --box-light-shadow: inset 1px 1px 1px 0 var(--box-light-color);
+  --box-outline-shadow: 0px 0px 0 1px var(--border-a1);
 
   display: flex;
   width: fit-content;
@@ -28,12 +34,13 @@
   display: flex;
   background: var(--box-background-color);
   padding: var(--spacing-1);
-  box-shadow: inset 1px 1px 1px 0 var(--box-light-color),
-    0px 0px 0 1px var(--border-a1), var(--box-shadow);
+  box-shadow: var(--box-light-shadow), var(--box-outline-shadow),
+    var(--box-shadow);
   transition: transform 0.1s ease;
   appearance: none;
   border: none;
   outline: none;
+  color: var(--text-2);
 
   &:active {
     --box-glow-cursor-color: var(--box-glow-cursor-active-color);
@@ -46,21 +53,21 @@
 
 .Outline_focus {
   &:focus-visible .Content {
-    outline: 2px solid color(display-p3 0 0 0);
+    outline: 2px solid var(--high-contrast);
     outline-offset: 1px;
   }
 }
 
 .Outline_hover {
   &:hover .Content {
-    outline: 2px solid color(display-p3 0 0 0);
+    outline: 2px solid var(--high-contrast);
     outline-offset: 1px;
   }
 }
 
 .Outline_press {
   &:active .Content {
-    outline: 2px solid color(display-p3 0 0 0);
+    outline: 2px solid var(--high-contrast);
     outline-offset: 1px;
   }
 }
@@ -128,13 +135,14 @@
   box-shadow: none;
 }
 
-.Shadow {
+.Glow {
   position: absolute;
   width: calc(100% + 2px);
   height: calc(100% + 2px);
   top: -1px;
   left: -1px;
-  // mix-blend-mode: var(--box-blend-mode);
+  mix-blend-mode: var(--box-blend-mode);
+  border-radius: inherit;
   pointer-events: none;
   transition: background 0.1s linear, opacity 0.2s ease;
 }
@@ -155,7 +163,11 @@
   }
 }
 
-:global(.AltroneDark) {
+:global([data-altrone-theme='dark']) {
   --box-light-color: color(display-p3 1 1 1 / 0.5);
   --box-blend-mode: overlay;
+
+  .Glow {
+    mix-blend-mode: soft-light;
+  }
 }

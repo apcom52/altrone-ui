@@ -2,13 +2,16 @@ import { memo, useState, useCallback, useRef, createElement } from 'react';
 import { BoxProps } from './Box.types';
 import { clsx } from 'clsx';
 import s from './box.module.scss';
-import { motion } from 'motion/react';
+import { motion, useMotionValue, useSpring } from 'motion/react';
+import { BOX_LOWER_SHADOW, BOX_UPPER_SHADOW } from './Box.constants';
+import { Glow } from './inner/Glow';
 
 export const Box = memo<BoxProps>(({ children, ...props }) => {
-  const [cursorX, setCursorX] = useState(0);
-  const [cursorY, setCursorY] = useState(0);
-  const [cursorPressure, setCursorPressure] = useState(0);
+  const contentRef = useRef<HTMLDivElement | null>(null);
   const [isGlowMode, setIsGlowMode] = useState(false);
+
+  const cursorX = useMotionValue(0);
+  const cursorY = useMotionValue(0);
 
   const {
     as = 'div',
@@ -28,6 +31,7 @@ export const Box = memo<BoxProps>(({ children, ...props }) => {
     focusable = true,
     ref,
     contentClassName,
+    cursor = 'default',
     ...restProps
   } = props;
 
@@ -62,7 +66,8 @@ export const Box = memo<BoxProps>(({ children, ...props }) => {
     height: height || undefined,
     alignItems: alignX || undefined,
     justifyContent: alignY || undefined,
-    '--box-shadow': `var(--shadow-${shadow})`,
+    boxShadow: `var(--box-light-shadow), var(--box-outline-shadow), var(--shadow-${shadow})`,
+    cursor: cursor || undefined,
   };
 
   const focusInteraction: Record<string, boolean> = {};
@@ -80,55 +85,50 @@ export const Box = memo<BoxProps>(({ children, ...props }) => {
     }
   });
 
-  const shadowOpacity = isGlowMode ? 1 : 0;
-
-  const shadowStyles = {
-    borderRadius: radiusValue,
-    background: `radial-gradient(circle at ${cursorX}px ${cursorY}px, var(--box-glow-cursor-color) ${cursorPressure}%, var(--box-glow-background-color) 100%)`,
-    opacity: shadowOpacity,
-  };
-
-  // Колбеки для отслеживания позиции курсора относительно Box
-  const contentRef = useRef<HTMLDivElement>(null);
-
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    // Используем макротаск для низкого приоритета
     requestAnimationFrame(() => {
       if (!contentRef.current) return;
       setIsGlowMode(true);
       const rect = contentRef.current.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      setCursorX(x);
-      setCursorY(y);
+      cursorX.set(x);
+      cursorY.set(y);
     });
   }, []);
 
-  const handleMouseDown = useCallback(() => {
-    console.log('>> down');
-    setCursorPressure((old) => (old < 10 ? 10 : old + 1));
+  const handleFocus = useCallback(() => {
+    requestAnimationFrame(() => {
+      if (!isGlowMode) {
+        if (!contentRef.current) return;
+        setIsGlowMode(true);
+        cursorX.set(0);
+        cursorY.set(0);
+      }
+    });
+  }, [isGlowMode]);
+
+  const handleBlur = useCallback(() => {
+    setIsGlowMode(false);
   }, []);
 
   const handleMouseUp = useCallback(() => {
-    setCursorPressure(0);
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    setCursorPressure(0);
-    setIsGlowMode(false);
-
-    setTimeout(() => {
-      if (!isGlowMode) {
-        setCursorX(0);
-        setCursorY(0);
-      }
-    }, 200);
-  }, []);
+    if (
+      pressInteraction.glow &&
+      !hoverInteraction.glow &&
+      !focusInteraction.glow
+    ) {
+      setIsGlowMode(false);
+    }
+  }, [pressInteraction.glow, hoverInteraction.glow]);
 
   const whileFocus = {
-    ...(focusInteraction.scale && { scale: 0.98 }),
+    ...(focusInteraction.scale && { scale: 0.99 }),
     ...(focusInteraction.background && {
       background: 'var(--box-focus-background-color)',
+    }),
+    ...(focusInteraction.shadow && {
+      boxShadow: `var(--box-light-shadow), var(--box-outline-shadow), var(--shadow-${BOX_UPPER_SHADOW[shadow]})`,
     }),
   };
   const whileHover = {
@@ -136,11 +136,17 @@ export const Box = memo<BoxProps>(({ children, ...props }) => {
     ...(hoverInteraction.background && {
       background: 'var(--box-hover-background-color)',
     }),
+    ...(hoverInteraction.shadow && {
+      boxShadow: `var(--box-light-shadow), var(--box-outline-shadow), var(--shadow-${BOX_UPPER_SHADOW[shadow]})`,
+    }),
   };
   const whilePress = {
-    ...(pressInteraction.scale && { scale: 0.96 }),
+    ...(pressInteraction.scale && { scale: 0.98 }),
     ...(pressInteraction.background && {
       background: 'var(--box-press-background-color)',
+    }),
+    ...(pressInteraction.shadow && {
+      boxShadow: `var(--box-light-shadow), var(--box-outline-shadow), var(--shadow-${BOX_LOWER_SHADOW[shadow]})`,
     }),
   };
 
@@ -152,12 +158,8 @@ export const Box = memo<BoxProps>(({ children, ...props }) => {
 
   const MotionComponent = motion[as];
 
-  // Проверяем, является ли элемент input или textarea
-
-  // Фильтруем пропсы для MotionComponent, исключая несовместимые
   const motionProps = {
     ...restProps,
-    // Исключаем пропсы, которые могут конфликтовать с motion
     onDrag: undefined,
     onDragStart: undefined,
     onDragEnd: undefined,
@@ -170,13 +172,26 @@ export const Box = memo<BoxProps>(({ children, ...props }) => {
   const initialState = {
     scale: 1,
     background: 'var(--box-background-color)',
+    boxShadow: `var(--box-light-shadow), var(--box-outline-shadow), var(--shadow-${shadow})`,
+  };
+
+  const isGlowMouseEffectActive =
+    hoverInteraction.glow || pressInteraction.glow;
+
+  const contentEventHandlers = {
+    onMouseMove: isGlowMouseEffectActive ? handleMouseMove : undefined,
+    onMouseDown: pressInteraction.glow ? handleMouseMove : undefined,
+    onMouseUp: pressInteraction.glow ? handleMouseUp : undefined,
+    onFocus: focusInteraction.glow ? handleFocus : undefined,
+    onBlur: focusInteraction.glow ? handleBlur : undefined,
+    onMouseLeave:
+      hoverInteraction.glow || pressInteraction.glow ? handleBlur : undefined,
   };
 
   if (isInputElement) {
-    // Для input элементов создаем обертку, но сам input остается внутри
     return (
       <div className={boxCls}>
-        <div className={s.InputContent}>
+        <div className={s.InputContent} style={{ borderRadius: radiusValue }}>
           <MotionComponent
             initial={initialState}
             className={contentCls}
@@ -189,8 +204,15 @@ export const Box = memo<BoxProps>(({ children, ...props }) => {
             style={styles}
             placeholder={children}
             {...motionProps}
+            ref={contentRef}
+            {...contentEventHandlers}
           />
-          <div className={s.Shadow} />
+          <Glow
+            contentRef={contentRef}
+            cursorX={cursorX}
+            cursorY={cursorY}
+            isGlowMode={isGlowMode}
+          />
         </div>
       </div>
     );
@@ -210,9 +232,16 @@ export const Box = memo<BoxProps>(({ children, ...props }) => {
         }
         style={styles}
         {...motionProps}
+        ref={contentRef}
+        {...contentEventHandlers}
       >
         {children}
-        <div className={s.Shadow} />
+        <Glow
+          contentRef={contentRef}
+          cursorX={cursorX}
+          cursorY={cursorY}
+          isGlowMode={isGlowMode}
+        />
       </MotionComponent>
     </div>
   );
