@@ -8,7 +8,7 @@ import { Form } from 'components/form/Form.tsx';
 import { Radio } from 'components/radio/Radio.tsx';
 import { Checkbox } from 'components/checkbox/Checkbox.tsx';
 import { useState } from 'react';
-import { BoxInteraction } from './Box.types.ts';
+import { BoxInteraction, BoxSurface } from './Box.types.ts';
 
 const story: Meta<typeof Box> = {
   title: 'Components/Layout/Box',
@@ -29,7 +29,7 @@ const story: Meta<typeof Box> = {
 export const BoxStory: StoryObj<typeof Flex> = {
   name: 'Using Box',
   render: () => {
-    const [surface, setSurface] = useState('solid');
+    const [surface, setSurface] = useState<BoxSurface>('solid');
     const [interactionEffects, setInteractionEffects] = useState<
       BoxInteraction[]
     >([]);
@@ -45,6 +45,7 @@ export const BoxStory: StoryObj<typeof Flex> = {
               alignX="center"
               alignY="center"
               radius="none"
+              surface={surface}
               interaction={interactionEffects}
             >
               Basic
@@ -55,6 +56,7 @@ export const BoxStory: StoryObj<typeof Flex> = {
               alignX="center"
               alignY="center"
               radius="mini"
+              surface={surface}
               interaction={interactionEffects}
               focusable
             >
@@ -66,6 +68,7 @@ export const BoxStory: StoryObj<typeof Flex> = {
               alignX="center"
               alignY="center"
               radius="s"
+              surface={surface}
               interaction={interactionEffects}
             >
               Small
@@ -76,6 +79,7 @@ export const BoxStory: StoryObj<typeof Flex> = {
               alignX="start"
               alignY="center"
               radius="m"
+              surface={surface}
               interaction={interactionEffects}
               cursor="pointer"
             >
@@ -87,6 +91,7 @@ export const BoxStory: StoryObj<typeof Flex> = {
               alignX="center"
               alignY="start"
               radius="l"
+              surface={surface}
               interaction={interactionEffects}
             >
               Large
@@ -97,6 +102,7 @@ export const BoxStory: StoryObj<typeof Flex> = {
               alignX="center"
               alignY="end"
               radius="xl"
+              surface={surface}
               interaction={interactionEffects}
             >
               XL
@@ -107,6 +113,7 @@ export const BoxStory: StoryObj<typeof Flex> = {
               alignX="center"
               alignY="center"
               radius="circle"
+              surface={surface}
               interaction={interactionEffects}
             >
               Circle
@@ -119,6 +126,7 @@ export const BoxStory: StoryObj<typeof Flex> = {
               alignX="center"
               alignY="center"
               radius="l"
+              surface={surface}
               interaction={interactionEffects}
               shadow="none"
             >
@@ -130,6 +138,7 @@ export const BoxStory: StoryObj<typeof Flex> = {
               alignX="center"
               alignY="center"
               radius="l"
+              surface={surface}
               interaction={interactionEffects}
               shadow="inset"
             >
@@ -141,6 +150,7 @@ export const BoxStory: StoryObj<typeof Flex> = {
               alignX="center"
               alignY="center"
               radius="l"
+              surface={surface}
               interaction={interactionEffects}
               shadow="1"
             >
@@ -152,6 +162,7 @@ export const BoxStory: StoryObj<typeof Flex> = {
               alignX="center"
               alignY="center"
               radius="l"
+              surface={surface}
               interaction={interactionEffects}
               shadow="2"
             >
@@ -163,6 +174,7 @@ export const BoxStory: StoryObj<typeof Flex> = {
               alignX="center"
               alignY="center"
               radius="l"
+              surface={surface}
               interaction={interactionEffects}
               shadow="3"
             >
@@ -174,6 +186,7 @@ export const BoxStory: StoryObj<typeof Flex> = {
               alignX="center"
               alignY="center"
               radius="l"
+              surface={surface}
               interaction={interactionEffects}
               shadow="4"
             >
@@ -185,6 +198,7 @@ export const BoxStory: StoryObj<typeof Flex> = {
               alignX="center"
               alignY="center"
               radius="l"
+              surface={surface}
               interaction={interactionEffects}
               shadow="5"
             >
@@ -222,14 +236,19 @@ export const BoxStory: StoryObj<typeof Flex> = {
           <Text.Heading role="inner">Configuration</Text.Heading>
           <Form>
             <Form.Field label="Surface">
-              <Radio value={surface} onChange={setSurface}>
+              <Radio
+                value={surface}
+                onChange={(value) => setSurface(value as BoxSurface)}
+              >
                 <Radio.Item value="solid">Solid</Radio.Item>
                 <Radio.Item value="accent">Accent</Radio.Item>
-                <Radio.Item value="danger">Accent (faded)</Radio.Item>
-                <Radio.Item value="dummy">Accent (translucent)</Radio.Item>
-                <Radio.Item value="translucent">Danger</Radio.Item>
-                <Radio.Item value="translucent-accent">Dummy</Radio.Item>
-                <Radio.Item value="transparent">Translucent</Radio.Item>
+                <Radio.Item value="accent-faded">Accent (faded)</Radio.Item>
+                <Radio.Item value="accent-translucent">
+                  Accent (translucent)
+                </Radio.Item>
+                <Radio.Item value="danger">Danger</Radio.Item>
+                <Radio.Item value="dummy">Dummy</Radio.Item>
+                <Radio.Item value="translucent">Translucent</Radio.Item>
                 <Radio.Item value="transparent">Transparent</Radio.Item>
               </Radio>
             </Form.Field>

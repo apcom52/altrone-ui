@@ -1,20 +1,17 @@
-import { motion } from 'motion/react';
+import { HTMLMotionProps } from 'motion/react';
 import { CSSProperties } from 'react';
 import { Radius, Side, Shadow } from 'types/entity';
 import { HTMLElements } from 'types/types';
 
 export type BoxInteraction =
-  | 'focus:glow'
   | 'focus:outline'
   | 'focus:background'
   | 'focus:shadow'
   | 'focus:scale'
-  | 'hover:glow'
   | 'hover:outline'
   | 'hover:background'
   | 'hover:shadow'
   | 'hover:scale'
-  | 'press:glow'
   | 'press:outline'
   | 'press:background'
   | 'press:shadow'
@@ -31,8 +28,9 @@ export type BoxSurface =
   | 'transparent';
 
 export type BoxTagName = keyof HTMLElements;
-export interface BoxProps extends React.HTMLProps<HTMLDivElement> {
-  as?: BoxTagName;
+
+export type BoxProps<Tag extends keyof HTMLElements> = HTMLMotionProps<Tag> & {
+  as?: Tag;
   surface?: BoxSurface;
   interaction?: BoxInteraction[];
   radius?: Radius | number;
@@ -47,4 +45,4 @@ export interface BoxProps extends React.HTMLProps<HTMLDivElement> {
   cursor?: CSSProperties['cursor'];
 
   contentClassName?: string;
-}
+};
