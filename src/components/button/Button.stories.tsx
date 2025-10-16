@@ -20,119 +20,115 @@ const story: Meta<typeof Button> = {
   argTypes: {},
 };
 
-const renderButtonsWithRole = (role: Role, args: ButtonProps) => {
+const renderButtonsWithRole = (
+  type: ButtonProps['type'],
+  args: ButtonProps
+) => {
   return (
-    <Flex gap="m" align="start">
+    <Flex gap="m" align="start" wrap>
       <Button
         {...args}
-        role={role}
+        type={type}
         label="Action"
-        leftIcon={<Icon i="bolt" />}
-        data-testid={`button-${role}`}
+        icon={<Icon i="bolt" />}
+        data-testid={`button-${type}`}
       />
       <Button
         {...args}
-        role={role}
+        type={type}
         label="Action"
-        leftIcon={<Icon i="bolt" />}
-        data-testid={`button-${role}`}
+        icon={<Icon i="bolt" />}
+        data-testid={`button-${type}`}
         badge="NEW"
       />
       <Button
         {...args}
-        role={role}
+        type={type}
         label="Action"
-        leftIcon={<Icon i="bolt" />}
+        icon={<Icon i="bolt" />}
         loading
       />
+      <Button {...args} type={type} label="Action" icon={<Icon i="bolt" />} />
       <Button
         {...args}
-        role={role}
+        type={type}
         label="Action"
-        rightIcon={<Icon i="bolt" />}
-      />
-      <Button
-        {...args}
-        role={role}
-        label="Action"
-        rightIcon={<Icon i="bolt" />}
+        icon={<Icon i="bolt" />}
         badge="2"
       />
-      <Button {...args} severity={role} label="Action" />
-      <Button {...args} severity={role} disabled label="Disabled Action" />
+      <Button {...args} type={type} label="Action" />
+      <Button {...args} type={type} disabled label="Disabled Action" />
       <Button
         {...args}
-        severity={role}
+        type={type}
         disabled
         label="Disabled Action"
         badge="NEW"
       />
-      <Button {...args} severity={role} leftIcon={<Icon i="bolt" />} />
-      <Button {...args} severity={role} leftIcon={<Icon i="bolt" />} loading />
+      <Button {...args} type={type} icon={<Icon i="bolt" />} />
+      <Button {...args} type={type} icon={<Icon i="bolt" />} loading />
       <Button
         {...args}
-        severity={role}
-        leftIcon={<Icon i="bolt" />}
+        type={type}
+        icon={<Icon i="bolt" />}
         loading
         badge="3"
       />
       <Button
         {...args}
-        severity={role}
+        type={type}
         label="Action"
+        showLabel={false}
         transparent
-        leftIcon={<Icon i="bolt" />}
+        icon={<Icon i="bolt" />}
       />
       <Button
         {...args}
-        severity={role}
+        type={type}
         label="Action"
+        showLabel={false}
         transparent
-        leftIcon={<Icon i="bolt" />}
+        icon={<Icon i="bolt" />}
         badge="4"
       />
       <Button
         {...args}
-        severity={role}
+        type={type}
         label="Action"
+        showLabel={false}
         transparent
-        leftIcon={<Icon i="bolt" />}
+        icon={<Icon i="bolt" />}
         loading
       />
       <Button
         {...args}
-        severity={role}
+        type={type}
         label="Action"
         transparent
-        rightIcon={<Icon i="bolt" />}
+        icon={<Icon i="bolt" />}
       />
-      <Button {...args} severity={role} label="Action" transparent />
+      <Button {...args} type={type} label="Action" transparent />
       <Button
         {...args}
-        severity={role}
+        type={type}
         disabled
         label="Disabled Action"
         transparent
       />
       <Button
         {...args}
-        severity={role}
+        type={type}
         disabled
         label="Disabled Action"
         transparent
         badge="4"
       />
+      <Button {...args} type={type} transparent icon={<Icon i="bolt" />} />
       <Button
         {...args}
-        severity={role}
+        type={type}
         transparent
-        leftIcon={<Icon i="bolt" />}
-      />
-      <Button
-        {...args}
-        severity={role}
-        transparent
-        leftIcon={<Icon i="bolt" />}
+        icon={<Icon i="bolt" />}
         loading
       />
     </Flex>
@@ -184,10 +180,8 @@ export const ButtonStory: StoryObj<typeof Button> = {
       {renderButtonsWithRole('default', args)}
       <Text.Heading role="inner">Primary buttons</Text.Heading>
       {renderButtonsWithRole('primary', args)}
-      <Text.Heading role="inner">Secondary buttons</Text.Heading>
-      {renderButtonsWithRole('success', args)}
-      <Text.Heading role="inner">Text buttons</Text.Heading>
-      {renderButtonsWithRole('warning', args)}
+      <Text.Heading role="inner">Transparent buttons</Text.Heading>
+      {renderButtonsWithRole('transparent', args)}
     </Flex>
   ),
 };

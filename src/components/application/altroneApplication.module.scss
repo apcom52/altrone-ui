@@ -2,6 +2,7 @@
 @use 'styles/radius';
 @use 'styles/spacing';
 @use 'styles/shadow';
+@use 'styles/size';
 
 @use 'colors/black';
 @use 'colors/gray';
@@ -251,6 +252,11 @@
 
 .AltroneApp {
   font-family: 'Inter Variable', sans-serif;
+
+  * {
+    font-family: 'Inter Variable', sans-serif;
+    box-sizing: border-box;
+  }
 
   :global(.screen-text) {
     @include screen-name;

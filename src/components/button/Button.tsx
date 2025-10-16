@@ -3,171 +3,99 @@ import { Flex } from 'components/flex';
 import s from './button.module.scss';
 import clsx from 'clsx';
 import { useConfiguration } from 'components/configuration';
-import { useRainbowEffect, useAltroneTheme } from 'components/application';
-import { forwardRef, memo, useEffect } from 'react';
-import { RenderFuncProp } from 'types';
-import { GlobalUtils } from '../../utils';
+import { useAltroneTheme } from 'components/application';
+import { forwardRef, memo } from 'react';
 import { Loading } from '../loading';
 import { Badge } from 'components/badge/Badge.tsx';
 import { Box } from 'components/box/Box.tsx';
-
-const buttonRenderFunc: RenderFuncProp<HTMLButtonElement, ButtonProps> = (
-  ref,
-  props
-) => {
-  const { ariaRole, ...restProps } = props;
-
-  delete restProps.showLabel;
-  delete restProps.leftIcon;
-  delete restProps.rightIcon;
-  delete restProps.transparent;
-  delete restProps.loading;
-
-  return (
-    <Box
-      tagName="button"
-      ref={ref}
-      shadow="2"
-      role={props.ariaRole}
-      className={s.ButtonContent}
-      {...restProps}
-    />
-  );
-};
 
 export const Button = memo(
   forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     const {
       label,
-      showLabel,
-      leftIcon,
-      rightIcon,
-      transparent,
-      role,
-      severity,
-      ariaRole = 'button',
+      icon,
+      additionalIcon,
+      type = 'secondary',
+      htmlType = 'button',
+      showLabel = true,
+      danger,
       size = 'm',
       className,
       style,
-      rainbowEffect,
       loading,
       badge,
-      renderFunc = buttonRenderFunc,
+      ...restProps
     } = props;
 
     const { button: buttonConfig = {} } = useConfiguration();
 
-    const buttonSeverity = severity ?? role ?? 'default';
-
     const { theme } = useAltroneTheme();
-
-    const isRainbowPropsActivated =
-      typeof rainbowEffect === 'boolean'
-        ? rainbowEffect
-        : buttonConfig.rainbowEffect || true;
-
-    const isRainbowNeeded = buttonSeverity === 'default';
-
-    const rainbowEffects = useRainbowEffect(
-      isRainbowPropsActivated && isRainbowNeeded,
-      {
-        onMouseEnter: props.onMouseEnter,
-        onMouseMove: props.onMouseMove,
-        onMouseLeave: props.onMouseLeave,
-        onWheel: props.onWheel,
-        onFocus: props.onFocus,
-        opacity: theme === 'dark' ? 0.33 : 1,
-        blur: 11,
-      }
-    );
-
-    const isOnlyIcon =
-      typeof showLabel === 'boolean'
-        ? !showLabel
-        : Boolean(!label && (leftIcon || rightIcon));
 
     const cls = clsx(
       s.Button,
       {
-        [s.Button_transparent]: transparent,
-        [s.Button_primary]: buttonSeverity === 'primary',
-        [s.Primary]: buttonSeverity === 'primary',
-        [s.Success]: buttonSeverity === 'success',
-        [s.Warning]: buttonSeverity === 'warning',
-        [s.Danger]: buttonSeverity === 'danger',
+        [s.Primary]: type === 'primary',
+        [s.Default]: type === 'default',
+        [s.Transparent]: type === 'transparent',
         [s.Small]: size === 's',
         [s.Large]: size === 'l',
-        [s.OnlyIcon]: isOnlyIcon,
         [s.WithLoading]: loading,
       },
       className,
       buttonConfig.className
     );
 
-    const boxCls = clsx({
-      [s.Button_primary]: buttonSeverity === 'primary',
-    });
-
     const styles = {
       ...buttonConfig.style,
       ...style,
     };
 
-    const loadingSize = size === 'l' ? '20px' : size === 's' ? '12px' : '16px';
+    // const loadingSize = size === 'l' ? '20px' : size === 's' ? '12px' : '16px';
 
-    const loadingNode = loading ? (
-      <div className={s.ButtonLoading}>
-        <Loading
-          strokeWidth="1.5"
-          size={loadingSize}
-          color="var(--button-loading-color)"
-        />
-      </div>
-    ) : null;
+    // const loadingNode = loading ? (
+    //   <div className={s.ButtonLoading}>
+    //     <Loading
+    //       strokeWidth="1.5"
+    //       size={loadingSize}
+    //       color="var(--button-loading-color)"
+    //     />
+    //   </div>
+    // ) : null;
 
-    const badgeCls = clsx(s.Badge, buttonConfig.badgeClassName);
+    // const badgeCls = clsx(s.Badge, buttonConfig.badgeClassName);
 
-    const buttonContent = !isOnlyIcon ? (
-      <Flex gap={size === 'l' ? 's' : 'xs'} align="center">
-        {leftIcon ? <div className={s.Icon}>{leftIcon}</div> : null}
-        <div className={s.Label}>{label}</div>
-        {rightIcon ? <div className={s.Icon}>{rightIcon}</div> : null}
-        {badge && <Badge className={badgeCls}>{badge}</Badge>}
-        {loadingNode}
-      </Flex>
-    ) : (
-      <div className={s.Icon}>
-        {leftIcon || rightIcon}
-        {badge && <Badge className={badgeCls}>{badge}</Badge>}
-        {loadingNode}
-      </div>
+    // const buttonContent = !isOnlyIcon ? (
+    //   <Flex gap={size === 'l' ? 's' : 'xs'} align="center">
+    //     {leftIcon ? <div className={s.Icon}>{leftIcon}</div> : null}
+    //     <div className={s.Label}>{label}</div>
+    //     {rightIcon ? <div className={s.Icon}>{rightIcon}</div> : null}
+    //     {badge && <Badge className={badgeCls}>{badge}</Badge>}
+    //     {loadingNode}
+    //   </Flex>
+    // ) : (
+    //   <div className={s.Icon}>
+    //     {leftIcon || rightIcon}
+    //     {badge && <Badge className={badgeCls}>{badge}</Badge>}
+    //     {loadingNode}
+    //   </div>
+    // );
+
+    return (
+      <button
+        ref={ref}
+        className={cls}
+        style={styles}
+        title={label}
+        {...restProps}
+      >
+        {/* {icon ? <div className={s.ButtonIcon}>{icon}</div> : null} */}
+        {showLabel && label ? (
+          <span className={s.ButtonLabel}>{label}</span>
+        ) : null}
+        {/* {additionalIcon ? (
+          <div className={s.ButtonIcon}>{additionalIcon}</div>
+        ) : null} */}
+      </button>
     );
-
-    useEffect(() => {
-      if (role) {
-        GlobalUtils.deprecatedMessage('Button', 'role', 'severity', '4.0');
-      }
-    }, [role]);
-
-    useEffect(() => {
-      if (!label) {
-        console.warn(
-          GlobalUtils.formatConsoleMessage(
-            '[Altrone]: you passed empty [[label]] prop in Button, but it will be required in 4.0. Please fill [[label]] prop now and set [[showLabel]] to [[false]] if necessary'
-          )
-        );
-      }
-    }, [label]);
-
-    return renderFunc(ref, {
-      type: 'button',
-      ...props,
-      ...rainbowEffects,
-      ariaRole,
-      className: cls,
-      style: styles,
-      children: buttonContent,
-      title: props.title ?? label,
-    });
   })
 );

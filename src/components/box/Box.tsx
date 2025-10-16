@@ -92,7 +92,7 @@ export const Box = <Tag extends keyof HTMLElements = 'div'>({
     }),
   };
 
-  const cls = clsx(s.Box, {
+  const cls = clsx(s.Box, className, {
     [s.Outline_focus]: focusInteraction.outline,
     [s.Outline_hover]: hoverInteraction.outline,
     [s.Outline_press]: pressInteraction.outline,
