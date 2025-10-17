@@ -1,0 +1,69 @@
+.GlassSurface {
+  --box-outline-shadow: 0px 0px 0 1px var(--border-a1);
+  --box-shadow: var(--shadow-1);
+
+  background: radial-gradient(
+    circle at top left,
+    color(display-p3 1 1 1 / 0.7),
+    color(display-p3 1 1 1 / 0.6)
+  );
+  backdrop-filter: var(--translucent-blur) saturate(180%);
+  border-radius: var(--radius-xl);
+  padding: var(--gap);
+  box-shadow: var(--box-outline-shadow), var(--box-shadow);
+
+  width: 700px;
+  height: 600px;
+}
+
+.Box {
+}
+
+.BoxContent {
+  position: relative;
+  background: radial-gradient(
+    circle at top left,
+    color(display-p3 1 1 1 / 0.5),
+    color(display-p3 1 1 1 / 0.3)
+  );
+  backdrop-filter: var(--translucent-blur) saturate(180%);
+  border-radius: var(--radius-xl);
+  padding: var(--gap);
+  box-shadow: var(--shadow-1), var(--shadow-2);
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  padding: 32px;
+  pointer-events: none;
+  transition: backdrop-filter 0.2s ease, background 0.2s ease;
+}
+
+.Box:active {
+  .BoxContent {
+    backdrop-filter: var(--translucent-blur) saturate(120%);
+    background: radial-gradient(
+      circle at top left,
+      color(display-p3 0.9 0.9 0.9 / 0.5),
+      color(display-p3 0.9 0.9 0.9 / 0.3)
+    );
+  }
+}
+
+.Glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  background: radial-gradient(circle at top left, white, transparent);
+  opacity: 0.25;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.BoxChildren {
+  // z-index: 1px;
+  pointer-events: auto;
+}
