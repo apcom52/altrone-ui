@@ -1,36 +1,63 @@
 .Button {
-  --btnBg: rgba(255, 255, 255, 0.2);
-  --btnBorder: rgba(255, 255, 255, 0.2);
-  --btnFg: var(--text-2);
-  --btnBorder: var(--border-1);
+  --button-border-color: var(--gray-a3);
+  --button-background-color: var(--interactive-1);
+  --button-hover-background-color: var(--interactive-2);
+  --button-active-background-color: var(--interactive-3);
+  --button-text-color: var(--text-2);
+  --button-disabled-text-color: var(--solid-1);
 
+  background: var(--button-background-color);
+  border-radius: var(--radius-xl);
+  border: none;
+  color: var(--button-text-color);
+  box-shadow: 0 0 0 1px var(--button-border-color), 0 0 0 0.5px var(--black-a1),
+    0 1px 1px 0 var(--gray-a2), 0 2px 1px -1px var(--black-a1),
+    0 1px 3px 0 var(--black-a1);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+
+  transition: background-color 0.2s ease, box-shadow 0.2s ease,
+    transform 0.2s ease;
+  appearance: none;
+  -webkit-user-select: none;
+  user-select: none;
+
+  &:hover {
+    background: var(--button-hover-background-color);
+  }
+
+  &:active {
+    background: var(--button-active-background-color);
+    box-shadow: 0 0 0 1px var(--button-border-color);
+
+    .ButtonContent {
+      transform: translateY(1px) scale(0.98);
+    }
+  }
+
+  &:disabled {
+    color: var(--button-disabled-text-color);
+    pointer-events: none;
+  }
+}
+
+.ButtonContent {
   display: inline-flex;
-  gap: var(--spacing-1);
+  gap: var(--spacing-2);
   white-space: nowrap;
   position: relative;
   align-items: center;
-  background: var(--btnBg);
-  border-radius: var(--radius-xl);
-  backdrop-filter: blur(16px) brightness(1.2);
-  border: none;
-  color: var(--btnFg);
-  box-shadow: inset 0 0 0 1px var(--btnBorder), 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  padding: var(--spacing-2) var(--spacing-3);
+  min-height: var(--base-control-size);
+  min-width: var(--base-control-size);
+  height: var(--base-control-size);
   font-size: 14px;
   font-weight: 500;
-  padding: var(--spacing-2) var(--spacing-3);
-  cursor: pointer;
-  min-height: var(--base-control-size);
-  height: var(--base-control-size);
-  transition: scale 0.1s ease-in-out;
-
-  // &:hover {
-  //   background: var(--background-2);
-  // }
-
-  // &:active {
-  //   background: var(--interactive-1);
-  //   scale: 0.96;
-  // }
+  pointer-events: none;
+  transition: transform 0.2s ease;
 }
 
 .ButtonIcon {
@@ -46,16 +73,107 @@
   justify-content: center;
 }
 
-// .Primary {
-//   background: var(--accent-9);
-//   color: var(--white);
-//   box-shadow: inset 0 0 0 1px var(--accent-11), 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+.ButtonBadge {
+  display: inline-block;
+  text-align: center;
+  background: var(--interactive-a2);
+  border-radius: 10px;
+  padding: 0 var(--spacing-1);
+  font-size: 10px;
+  font-weight: 600;
+  margin-right: -6px;
+  line-height: 20px;
+  min-width: 20px;
+  padding: 0 6px;
+}
 
-//   &:hover {
-//     background: var(--accent-10);
-//   }
+.Primary {
+  --button-border-color: var(--accent-a9);
+  --button-background-color: var(--accent-9);
+  --button-hover-background-color: var(--accent-10);
+  --button-active-background-color: var(--accent-11);
+  --button-text-color: var(--white);
+  --button-disabled-text-color: rgba(255, 255, 255, 0.75);
 
-//   &:active {
-//     background: var(--accent-11);
-//   }
-// }
+  &:disabled {
+    --button-border-color: var(--accent-a6);
+    --button-background-color: var(--accent-6);
+  }
+
+  &.Danger {
+    --button-border-color: var(--red-a9);
+    --button-background-color: var(--red-9);
+    --button-hover-background-color: var(--red-10);
+    --button-active-background-color: var(--red-11);
+    --button-text-color: var(--white);
+  }
+}
+
+.Text {
+  --button-border-color: transparent;
+  --button-background-color: transparent;
+  --button-hover-background-color: var(--interactive-a1);
+  --button-active-background-color: var(--interactive-a2);
+  --button-text-color: var(--text-2);
+  --button-disabled-text-color: var(--solid-1);
+
+  box-shadow: none;
+}
+
+.Action {
+  --button-text-color: var(--text-2);
+  --button-disabled-text-color: var(--solid-1);
+
+  min-height: var(--base-control-size);
+  min-width: var(--base-control-size);
+  height: var(--base-control-size);
+
+  &.Disabled {
+    cursor: default;
+  }
+}
+
+.ActionContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+
+  &.Disabled {
+    pointer-events: none;
+    opacity: 0.75;
+  }
+}
+
+.ActionChildren {
+  border-radius: var(--radius-xl);
+  color: var(--button-text-color);
+  cursor: pointer;
+  appearance: none;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: transform 0.2s ease;
+
+  &.Disabled {
+    color: var(--button-disabled-text-color);
+    cursor: default;
+  }
+
+  &:active:not(.Disabled) {
+    transform: translateY(1px) scale(0.98);
+  }
+}
+
+.SingleIcon {
+  .ButtonContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.Danger {
+  --button-text-color: var(--danger-text);
+}

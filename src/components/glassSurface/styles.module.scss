@@ -9,11 +9,8 @@
   );
   backdrop-filter: var(--translucent-blur) saturate(180%);
   border-radius: var(--radius-xl);
-  padding: var(--gap);
+  padding: 4px;
   box-shadow: var(--box-outline-shadow), var(--box-shadow);
-
-  width: 700px;
-  height: 600px;
 }
 
 .Box {
@@ -28,12 +25,11 @@
   );
   backdrop-filter: var(--translucent-blur) saturate(180%);
   border-radius: var(--radius-xl);
-  padding: var(--gap);
+  padding: 4px;
   box-shadow: var(--shadow-1), var(--shadow-2);
   width: 100%;
   height: 100%;
   z-index: 1;
-  padding: 32px;
   pointer-events: none;
   transition: backdrop-filter 0.2s ease, background 0.2s ease;
 }
@@ -58,7 +54,7 @@
   left: 0;
   z-index: 2;
   background: radial-gradient(circle at top left, white, transparent);
-  opacity: 0.25;
+  opacity: 0;
   mix-blend-mode: overlay;
   pointer-events: none;
 }

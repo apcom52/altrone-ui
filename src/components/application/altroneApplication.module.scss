@@ -14,6 +14,7 @@
 @use 'colors/teal';
 @use 'colors/brown';
 @use 'colors/amber';
+@use 'colors/common';
 
 @import 'src/global/mixins';
 
@@ -248,6 +249,13 @@
   * {
     box-sizing: border-box;
   }
+}
+
+:global(.lucide) {
+  width: 1em !important;
+  height: 1em !important;
+  color: currentColor;
+  stroke-width: 2;
 }
 
 .AltroneApp {

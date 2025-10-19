@@ -120,3 +120,12 @@
   --codeLineHeight: 20px;
   --codeFontWeight: 400;
 }
+
+@layer overrides {
+  .lucide {
+    width: 1em !important;
+    height: 1em !important;
+    color: currentColor;
+    stroke-width: 1.5;
+  }
+}

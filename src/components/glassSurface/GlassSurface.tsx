@@ -33,6 +33,8 @@ export const GlassSurface = ({
   fixed = false,
   cursorSpeed = 0.2,
   className,
+  contentClassName,
+  childrenClassName,
   style,
   ...restProps
 }: GlassSurfaceProps) => {
@@ -110,7 +112,7 @@ export const GlassSurface = ({
 
   useEffect(() => {
     boxContentBackground.set(themeValues.BACKGROUND_DEFAULT);
-    glowOpacity.set(themeValues.GLOW_OPACITY);
+    glowOpacity.set(0);
   }, [themeValues]);
 
   const glowBackground = useMotionTemplate`radial-gradient(circle at ${springX}px ${springY}px, white 0%, transparent ${springSize}%)`;
@@ -130,10 +132,10 @@ export const GlassSurface = ({
       {...restProps}
     >
       <motion.div
-        className={s.BoxContent}
+        className={clsx(s.BoxContent, contentClassName)}
         style={{ background: boxContentBackgroundValue }}
       >
-        <div className={s.BoxChildren}>{children}</div>
+        <div className={clsx(s.BoxChildren, childrenClassName)}>{children}</div>
 
         <motion.div
           className={s.Glow}

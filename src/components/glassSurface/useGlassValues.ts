@@ -17,8 +17,8 @@ const DARK_DEFAULT_VALUES: GlassValues = {
 const LIGHT_DEFAULT_VALUES: GlassValues = {
   BACKGROUND_DEFAULT: 1,
   BACKGROUND_ACTIVE: 0.9,
-  GLOW_OPACITY: 0.5,
-  GLOW_ACTIVE_OPACITY: 0.75,
+  GLOW_OPACITY: 0.35,
+  GLOW_ACTIVE_OPACITY: 0.5,
 };
 
 export const useGlassValues = () => {

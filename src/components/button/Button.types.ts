@@ -3,19 +3,17 @@ import { JSX, ReactElement } from 'react';
 import { LoadingState } from 'types/entity';
 
 export interface ButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   showLabel?: boolean;
 
   icon?: ReactElement;
   additionalIcon?: ReactElement;
 
-  type?: 'default' | 'primary' | 'secondary';
-  htmlType?: 'button' | 'submit' | 'reset';
+  variant?: 'default' | 'submit' | 'text' | 'action';
+  state?: 'idle' | 'loading' | 'successed' | 'failed';
   danger?: boolean;
-
   size?: Size;
-  loading?: boolean;
   badge?: number | string | JSX.Element;
   skeleton?: LoadingState;
 }

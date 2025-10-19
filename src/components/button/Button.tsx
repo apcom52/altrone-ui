@@ -1,13 +1,11 @@
 import { ButtonProps } from './Button.types.ts';
-import { Flex } from 'components/flex';
 import s from './button.module.scss';
 import clsx from 'clsx';
 import { useConfiguration } from 'components/configuration';
 import { useAltroneTheme } from 'components/application';
 import { forwardRef, memo } from 'react';
-import { Loading } from '../loading';
-import { Badge } from 'components/badge/Badge.tsx';
-import { Box } from 'components/box/Box.tsx';
+import { GlassSurface } from 'components/glassSurface/GlassSurface.tsx';
+import { HTMLMotionProps, motion } from 'motion/react';
 
 export const Button = memo(
   forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
@@ -15,31 +13,33 @@ export const Button = memo(
       label,
       icon,
       additionalIcon,
-      type = 'secondary',
-      htmlType = 'button',
+      variant = 'default',
+      type = 'button',
       showLabel = true,
       danger,
       size = 'm',
       className,
       style,
-      loading,
+      state = 'idle',
       badge,
       ...restProps
     } = props;
 
     const { button: buttonConfig = {} } = useConfiguration();
 
+    const isSingleIcon = !showLabel && (icon || !additionalIcon);
+
     const { theme } = useAltroneTheme();
 
     const cls = clsx(
       s.Button,
       {
-        [s.Primary]: type === 'primary',
-        [s.Default]: type === 'default',
-        [s.Transparent]: type === 'transparent',
-        [s.Small]: size === 's',
-        [s.Large]: size === 'l',
-        [s.WithLoading]: loading,
+        [s.Primary]: variant === 'submit',
+        [s.Text]: variant === 'text',
+        [s.Action]: variant === 'action',
+        [s.SingleIcon]: isSingleIcon,
+        [s.Danger]: danger,
+        // [s.WithLoading]: loading,
       },
       className,
       buttonConfig.className
@@ -80,22 +80,52 @@ export const Button = memo(
     //   </div>
     // );
 
-    return (
-      <button
-        ref={ref}
-        className={cls}
-        style={styles}
-        title={label}
-        {...restProps}
-      >
-        {/* {icon ? <div className={s.ButtonIcon}>{icon}</div> : null} */}
+    const buttonContent = (
+      <div className={s.ButtonContent}>
+        {icon ? <div className={s.ButtonIcon}>{icon}</div> : null}
         {showLabel && label ? (
           <span className={s.ButtonLabel}>{label}</span>
         ) : null}
-        {/* {additionalIcon ? (
+        {additionalIcon ? (
           <div className={s.ButtonIcon}>{additionalIcon}</div>
-        ) : null} */}
-      </button>
+        ) : null}
+        {badge ? <div className={s.ButtonBadge}>{badge}</div> : null}
+      </div>
+    );
+
+    if (variant === 'action') {
+      return (
+        <GlassSurface
+          as="button"
+          glow={!restProps.disabled}
+          className={clsx(s.Action, {
+            [s.Disabled]: restProps.disabled,
+          })}
+          contentClassName={clsx(s.ActionContent, {
+            [s.Disabled]: restProps.disabled,
+          })}
+          childrenClassName={clsx(s.ActionChildren, {
+            [s.SingleIcon]: isSingleIcon,
+            [s.Danger]: danger,
+            [s.Disabled]: restProps.disabled,
+          })}
+          {...(restProps as HTMLMotionProps<'div'>)}
+        >
+          {buttonContent}
+        </GlassSurface>
+      );
+    }
+
+    return (
+      <motion.button
+        type={type}
+        className={cls}
+        style={styles}
+        title={label}
+        {...(restProps as HTMLMotionProps<'button'>)}
+      >
+        {buttonContent}
+      </motion.button>
     );
   })
 );

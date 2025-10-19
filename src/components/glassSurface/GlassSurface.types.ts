@@ -13,4 +13,6 @@ export interface GlassSurfaceProps extends HTMLMotionProps<'div'> {
   cursorSpeed?: number;
   offset?: number | string;
   radius?: number | string;
+  contentClassName?: string;
+  childrenClassName?: string;
 }

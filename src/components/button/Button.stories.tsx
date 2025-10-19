@@ -2,6 +2,20 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Button, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
+import {
+  Camera,
+  Send,
+  Images,
+  ChevronDown,
+  AArrowDown,
+  AArrowUp,
+  Phone,
+  MessageCircle,
+  Delete,
+  Check,
+  X,
+  Heart,
+} from 'lucide-react';
 // import { fn } from '@storybook/test';
 import { ButtonProps } from './Button.types.ts';
 import { Role, Size } from '../../types';
@@ -21,115 +35,107 @@ const story: Meta<typeof Button> = {
 };
 
 const renderButtonsWithRole = (
-  type: ButtonProps['type'],
+  type: ButtonProps['variant'],
   args: ButtonProps
 ) => {
   return (
     <Flex gap="m" align="start" wrap>
       <Button
         {...args}
-        type={type}
-        label="Action"
-        icon={<Icon i="bolt" />}
+        variant={type}
+        label="Reset"
         data-testid={`button-${type}`}
       />
       <Button
         {...args}
-        type={type}
-        label="Action"
-        icon={<Icon i="bolt" />}
+        variant={type}
+        label="Cancel"
         data-testid={`button-${type}`}
         badge="NEW"
       />
+      <Button {...args} variant={type} label="Submit" icon={<Send />} />
+      <Button {...args} variant={type} label="Take a photo" icon={<Camera />} />
       <Button
         {...args}
-        type={type}
-        label="Action"
-        icon={<Icon i="bolt" />}
-        loading
-      />
-      <Button {...args} type={type} label="Action" icon={<Icon i="bolt" />} />
-      <Button
-        {...args}
-        type={type}
-        label="Action"
-        icon={<Icon i="bolt" />}
+        variant={type}
+        label="Choose from gallery"
+        icon={<Images />}
         badge="2"
       />
-      <Button {...args} type={type} label="Action" />
-      <Button {...args} type={type} disabled label="Disabled Action" />
       <Button
         {...args}
-        type={type}
+        variant={type}
+        label="More options"
+        additionalIcon={<ChevronDown />}
+      />
+      <Button
+        {...args}
+        variant={type}
+        icon={<Phone />}
         disabled
-        label="Disabled Action"
-        badge="NEW"
-      />
-      <Button {...args} type={type} icon={<Icon i="bolt" />} />
-      <Button {...args} type={type} icon={<Icon i="bolt" />} loading />
-      <Button
-        {...args}
-        type={type}
-        icon={<Icon i="bolt" />}
-        loading
-        badge="3"
+        label="Call to..."
       />
       <Button
         {...args}
-        type={type}
-        label="Action"
-        showLabel={false}
-        transparent
-        icon={<Icon i="bolt" />}
-      />
-      <Button
-        {...args}
-        type={type}
-        label="Action"
-        showLabel={false}
-        transparent
-        icon={<Icon i="bolt" />}
-        badge="4"
-      />
-      <Button
-        {...args}
-        type={type}
-        label="Action"
-        showLabel={false}
-        transparent
-        icon={<Icon i="bolt" />}
-        loading
-      />
-      <Button
-        {...args}
-        type={type}
-        label="Action"
-        transparent
-        icon={<Icon i="bolt" />}
-      />
-      <Button {...args} type={type} label="Action" transparent />
-      <Button
-        {...args}
-        type={type}
+        variant={type}
         disabled
-        label="Disabled Action"
-        transparent
+        icon={<MessageCircle />}
+        label="Chat with support"
+        badge="Not working"
       />
       <Button
         {...args}
-        type={type}
-        disabled
-        label="Disabled Action"
-        transparent
-        badge="4"
+        variant={type}
+        label="Sort ascending"
+        showLabel={false}
+        icon={<AArrowUp />}
       />
-      <Button {...args} type={type} transparent icon={<Icon i="bolt" />} />
       <Button
         {...args}
-        type={type}
-        transparent
-        icon={<Icon i="bolt" />}
-        loading
+        variant={type}
+        label="Sort descending"
+        showLabel={false}
+        icon={<AArrowDown />}
+      />
+      <Button
+        {...args}
+        variant={type}
+        label="Close"
+        showLabel={false}
+        icon={<X />}
+      />
+      <Button
+        {...args}
+        variant={type}
+        label="Done"
+        showLabel={false}
+        icon={<Check />}
+      />
+      <Button
+        {...args}
+        variant={type}
+        label="Delete"
+        showLabel={false}
+        icon={<Delete />}
+        danger
+      />
+      <Button
+        {...args}
+        variant={type}
+        label="Delete"
+        icon={<Delete />}
+        danger
+      />
+      <Button {...args} variant={type} label="Reject" danger />
+      <Button {...args} variant={type} disabled label="Pay later" danger />
+      <Button {...args} variant={type} label="Pay later" badge="+20%" danger />
+      <Button
+        {...args}
+        variant={type}
+        label="Like"
+        badge="25k"
+        icon={<Heart />}
+        additionalIcon={<Heart />}
       />
     </Flex>
   );
@@ -178,10 +184,12 @@ export const ButtonStory: StoryObj<typeof Button> = {
     <Flex direction="vertical" gap="l">
       <Text.Heading role="inner">Default buttons</Text.Heading>
       {renderButtonsWithRole('default', args)}
-      <Text.Heading role="inner">Primary buttons</Text.Heading>
-      {renderButtonsWithRole('primary', args)}
-      <Text.Heading role="inner">Transparent buttons</Text.Heading>
-      {renderButtonsWithRole('transparent', args)}
+      <Text.Heading role="inner">Submit buttons</Text.Heading>
+      {renderButtonsWithRole('submit', args)}
+      <Text.Heading role="inner">Text buttons</Text.Heading>
+      {renderButtonsWithRole('text', args)}
+      <Text.Heading role="inner">Action buttons</Text.Heading>
+      {renderButtonsWithRole('action', args)}
     </Flex>
   ),
 };
