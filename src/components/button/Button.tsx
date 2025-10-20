@@ -6,6 +6,9 @@ import { useAltroneTheme } from 'components/application';
 import { forwardRef, memo } from 'react';
 import { GlassSurface } from 'components/glassSurface/GlassSurface.tsx';
 import { HTMLMotionProps, motion } from 'motion/react';
+import { Loading } from 'components/index.ts';
+import { ButtonSuccessIcon } from './inner/Success.tsx';
+import { ButtonFailedIcon } from './inner/Failed.tsx';
 
 export const Button = memo(
   forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
@@ -39,7 +42,7 @@ export const Button = memo(
         [s.Action]: variant === 'action',
         [s.SingleIcon]: isSingleIcon,
         [s.Danger]: danger,
-        // [s.WithLoading]: loading,
+        [s.WithLoading]: state !== 'idle',
       },
       className,
       buttonConfig.className
@@ -81,16 +84,29 @@ export const Button = memo(
     // );
 
     const buttonContent = (
-      <div className={s.ButtonContent}>
-        {icon ? <div className={s.ButtonIcon}>{icon}</div> : null}
-        {showLabel && label ? (
-          <span className={s.ButtonLabel}>{label}</span>
+      <>
+        <div className={s.ButtonContent}>
+          {icon ? <div className={s.ButtonIcon}>{icon}</div> : null}
+          {showLabel && label ? (
+            <span className={s.ButtonLabel}>{label}</span>
+          ) : null}
+          {additionalIcon ? (
+            <div className={s.ButtonIcon}>{additionalIcon}</div>
+          ) : null}
+          {badge ? <div className={s.ButtonBadge}>{badge}</div> : null}
+        </div>
+        {state === 'loading' ? (
+          <div className={s.ButtonLoading}>
+            <Loading
+              size="16px"
+              strokeWidth="1.5"
+              color="var(--button-text-color)"
+            />
+          </div>
         ) : null}
-        {additionalIcon ? (
-          <div className={s.ButtonIcon}>{additionalIcon}</div>
-        ) : null}
-        {badge ? <div className={s.ButtonBadge}>{badge}</div> : null}
-      </div>
+        {state === 'successed' && <ButtonSuccessIcon />}
+        {state === 'failed' && <ButtonFailedIcon />}
+      </>
     );
 
     if (variant === 'action') {
@@ -100,6 +116,7 @@ export const Button = memo(
           glow={!restProps.disabled}
           className={clsx(s.Action, {
             [s.Disabled]: restProps.disabled,
+            [s.WithLoading]: state !== 'idle',
           })}
           contentClassName={clsx(s.ActionContent, {
             [s.Disabled]: restProps.disabled,

@@ -6,6 +6,7 @@
   --button-text-color: var(--text-2);
   --button-disabled-text-color: var(--solid-1);
 
+  position: relative;
   background: var(--button-background-color);
   border-radius: var(--radius-xl);
   border: none;
@@ -46,6 +47,7 @@
 
 .ButtonContent {
   display: inline-flex;
+  position: relative;
   gap: var(--spacing-2);
   white-space: nowrap;
   position: relative;
@@ -57,7 +59,7 @@
   font-size: 14px;
   font-weight: 500;
   pointer-events: none;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .ButtonIcon {
@@ -85,6 +87,14 @@
   line-height: 20px;
   min-width: 20px;
   padding: 0 6px;
+}
+
+.ButtonLoading {
+  position: absolute;
+  color: var(--button-text-color);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .Primary {
@@ -176,4 +186,10 @@
 
 .Danger {
   --button-text-color: var(--danger-text);
+}
+
+.WithLoading {
+  .ButtonContent {
+    opacity: 0;
+  }
 }

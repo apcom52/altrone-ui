@@ -15,10 +15,12 @@ import {
   Check,
   X,
   Heart,
+  LoaderPinwheel,
 } from 'lucide-react';
 // import { fn } from '@storybook/test';
 import { ButtonProps } from './Button.types.ts';
 import { Role, Size } from '../../types';
+import { useState } from 'react';
 
 const story: Meta<typeof Button> = {
   title: 'Components/Form/Button',
@@ -38,6 +40,10 @@ const renderButtonsWithRole = (
   type: ButtonProps['variant'],
   args: ButtonProps
 ) => {
+  const [loading, setLoading] = useState(false);
+  const [successed, setSuccessed] = useState(false);
+  const [failed, setFailed] = useState(false);
+
   return (
     <Flex gap="m" align="start" wrap>
       <Button
@@ -137,6 +143,30 @@ const renderButtonsWithRole = (
         icon={<Heart />}
         additionalIcon={<Heart />}
       />
+      <Button
+        {...args}
+        variant={type}
+        label="Click to show loading"
+        badge="Loading"
+        icon={<LoaderPinwheel />}
+        state={loading ? 'loading' : 'idle'}
+        onClick={() => setLoading(!loading)}
+      />
+      <Button
+        {...args}
+        variant={type}
+        label="Click to finish"
+        icon={<Check />}
+        state={successed ? 'successed' : 'idle'}
+        onClick={() => setSuccessed(!successed)}
+      />
+      <Button
+        {...args}
+        variant={type}
+        label="Approve"
+        state={failed ? 'failed' : 'idle'}
+        onClick={() => setFailed(!failed)}
+      />
     </Flex>
   );
 };
@@ -144,27 +174,17 @@ const renderButtonsWithRole = (
 const renderButtonsWithSize = (size: Size) => {
   return (
     <Flex gap="m" align="start">
-      <Button size={size} label="Like" leftIcon={<Icon i="favorite" />} />
-      <Button size={size} label="Like" rightIcon={<Icon i="favorite" />} />
+      <Button size={size} variant="default" label="Like" icon={<Heart />} />
+      <Button size={size} variant="default" label="Like" />
+      <Button size={size} variant="submit" label="Like" icon={<Heart />} />
+      <Button size={size} variant="text" label="Like" icon={<Heart />} />
+      <Button size={size} variant="action" label="Like" icon={<Heart />} />
       <Button
         size={size}
+        variant="default"
         label="Like"
-        rightIcon={<Icon i="favorite" />}
-        loading
-      />
-      <Button size={size} label="Like" loading />
-      <Button size={size} label="Like" />
-      <Button
-        size={size}
-        label="Like"
-        showLabel={false}
-        leftIcon={<Icon i="favorite" />}
-      />
-      <Button
-        size={size}
-        label="Likes"
-        leftIcon={<Icon i="favorite" />}
-        badge="8"
+        icon={<Heart />}
+        badge="48"
       />
     </Flex>
   );
@@ -205,12 +225,16 @@ export const ButtonSizeStory: StoryObj<typeof Button> = {
   },
   render: () => (
     <Flex direction="vertical" gap="l">
+      <Text.Heading role="inner">Mini buttons</Text.Heading>
+      {renderButtonsWithSize('mini')}
       <Text.Heading role="inner">Small buttons</Text.Heading>
       {renderButtonsWithSize('s')}
-      <Text.Heading role="inner">Normal buttons</Text.Heading>
+      <Text.Heading role="inner">Medium buttons</Text.Heading>
       {renderButtonsWithSize('m')}
       <Text.Heading role="inner">Large buttons</Text.Heading>
       {renderButtonsWithSize('l')}
+      <Text.Heading role="inner">XL buttons</Text.Heading>
+      {renderButtonsWithSize('xl')}
     </Flex>
   ),
 };
