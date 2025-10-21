@@ -1,4 +1,4 @@
-:root {
+:global([data-altrone-root='true']) {
   --gray-1: color(display-p3 0.988 0.988 0.992);
   --gray-2: color(display-p3 0.976 0.976 0.984);
   --gray-3: color(display-p3 0.94 0.941 0.953);
@@ -26,7 +26,7 @@
   --gray-a12: color(display-p3 0 0.012 0.031 / 0.887);
 }
 
-:global([data-altrone-theme='dark']) {
+:global([data-altrone-root='true'][data-altrone-theme='dark']) {
   --gray-1: color(display-p3 0.067 0.067 0.074);
   --gray-2: color(display-p3 0.095 0.098 0.105);
   --gray-3: color(display-p3 0.13 0.135 0.145);

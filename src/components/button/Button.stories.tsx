@@ -176,6 +176,13 @@ const renderButtonsWithSize = (size: Size) => {
     <Flex gap="m" align="start">
       <Button size={size} variant="default" label="Like" icon={<Heart />} />
       <Button size={size} variant="default" label="Like" />
+      <Button
+        size={size}
+        variant="default"
+        label="Like"
+        icon={<Heart />}
+        showLabel={false}
+      />
       <Button size={size} variant="submit" label="Like" icon={<Heart />} />
       <Button size={size} variant="text" label="Like" icon={<Heart />} />
       <Button size={size} variant="action" label="Like" icon={<Heart />} />

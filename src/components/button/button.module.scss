@@ -4,17 +4,31 @@
   --button-hover-background-color: var(--interactive-2);
   --button-active-background-color: var(--interactive-3);
   --button-text-color: var(--text-2);
+  --button-badge-background-color: var(--interactive-a2);
   --button-disabled-text-color: var(--solid-1);
+
+  --button-size: var(--base-control-size);
+  --button-rounding: var(--radius-xl);
+  --button-font-size: 14px;
+  --button-vertical-padding: var(--spacing-2);
+  --button-horizontal-padding: var(--spacing-3);
+  --button-gap: var(--spacing-2);
+
+  --button-badge-rounding: 10px;
+  --button-badge-min-width: 20px;
+  --button-badge-size: 20px;
+  --button-badge-padding: 6px;
+  --button-badge-font-size: 10px;
 
   position: relative;
   background: var(--button-background-color);
-  border-radius: var(--radius-xl);
+  border-radius: var(--button-rounding);
   border: none;
   color: var(--button-text-color);
   box-shadow: 0 0 0 1px var(--button-border-color), 0 0 0 0.5px var(--black-a1),
     0 1px 1px 0 var(--gray-a2), 0 2px 1px -1px var(--black-a1),
     0 1px 3px 0 var(--black-a1);
-  font-size: 14px;
+  font-size: var(--button-font-size);
   font-weight: 500;
   cursor: pointer;
   padding: 0;
@@ -48,15 +62,15 @@
 .ButtonContent {
   display: inline-flex;
   position: relative;
-  gap: var(--spacing-2);
+  gap: var(--button-gap);
   white-space: nowrap;
   position: relative;
   align-items: center;
-  padding: var(--spacing-2) var(--spacing-3);
-  min-height: var(--base-control-size);
-  min-width: var(--base-control-size);
-  height: var(--base-control-size);
-  font-size: 14px;
+  padding: var(--button-vertical-padding) var(--button-horizontal-padding);
+  min-height: var(--button-size);
+  min-width: var(--button-size);
+  height: var(--button-size);
+  font-size: var(--button-font-size);
   font-weight: 500;
   pointer-events: none;
   transition: transform 0.2s ease, opacity 0.2s ease;
@@ -66,7 +80,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: var(--button-font-size);
 }
 
 .ButtonLabel {
@@ -78,15 +92,14 @@
 .ButtonBadge {
   display: inline-block;
   text-align: center;
-  background: var(--interactive-a2);
-  border-radius: 10px;
-  padding: 0 var(--spacing-1);
-  font-size: 10px;
+  background: var(--button-badge-background-color);
+  border-radius: var(--button-badge-rounding);
+  font-size: var(--button-badge-font-size);
   font-weight: 600;
-  margin-right: -6px;
-  line-height: 20px;
-  min-width: 20px;
-  padding: 0 6px;
+  margin-right: calc(-1 * var(--button-badge-padding));
+  line-height: var(--button-badge-size);
+  min-width: var(--button-badge-min-width);
+  padding: 0 var(--button-badge-padding);
 }
 
 .ButtonLoading {
@@ -101,7 +114,7 @@
   --button-border-color: var(--accent-a9);
   --button-background-color: var(--accent-9);
   --button-hover-background-color: var(--accent-10);
-  --button-active-background-color: var(--accent-11);
+  --button-active-background-color: var(--accent-10);
   --button-text-color: var(--white);
   --button-disabled-text-color: rgba(255, 255, 255, 0.75);
 
@@ -134,9 +147,22 @@
   --button-text-color: var(--text-2);
   --button-disabled-text-color: var(--solid-1);
 
-  min-height: var(--base-control-size);
-  min-width: var(--base-control-size);
-  height: var(--base-control-size);
+  --button-size: var(--base-control-size);
+  --button-rounding: var(--radius-xl);
+  --button-font-size: 14px;
+  --button-vertical-padding: var(--spacing-2);
+  --button-horizontal-padding: var(--spacing-3);
+  --button-gap: var(--spacing-2);
+
+  --button-badge-rounding: 10px;
+  --button-badge-min-width: 20px;
+  --button-badge-size: 20px;
+  --button-badge-padding: 6px;
+  --button-badge-font-size: 10px;
+
+  min-height: var(--button-size);
+  min-width: var(--button-size);
+  height: var(--button-size);
 
   &.Disabled {
     cursor: default;
@@ -147,6 +173,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: var(--button-rounding) !important;
   padding: 0 !important;
 
   &.Disabled {
@@ -156,13 +183,15 @@
 }
 
 .ActionChildren {
-  border-radius: var(--radius-xl);
+  display: flex;
+  border-radius: var(--button-rounding);
   color: var(--button-text-color);
   cursor: pointer;
   appearance: none;
   -webkit-user-select: none;
   user-select: none;
   transition: transform 0.2s ease;
+  height: var(--button-size);
 
   &.Disabled {
     color: var(--button-disabled-text-color);
@@ -185,11 +214,87 @@
 }
 
 .Danger {
-  --button-text-color: var(--danger-text);
+  --button-text-color: var(--danger-color);
 }
 
 .WithLoading {
   .ButtonContent {
     opacity: 0;
+  }
+}
+
+.Mini {
+  --button-size: 16px;
+  --button-rounding: 8px;
+  --button-font-size: 10px;
+  --button-vertical-padding: 3px;
+  --button-horizontal-padding: 6px;
+  --button-gap: 4px;
+
+  --button-badge-rounding: 6px;
+  --button-badge-min-width: 12px;
+  --button-badge-size: 12px;
+  --button-badge-padding: 4px;
+  --button-badge-font-size: 8px;
+}
+
+.Small {
+  --button-size: 24px;
+  --button-rounding: 12px;
+  --button-font-size: 12px;
+  --button-vertical-padding: var(--spacing-1);
+  --button-horizontal-padding: var(--spacing-2);
+  --button-gap: 4px;
+
+  --button-badge-rounding: 8px;
+  --button-badge-min-width: 16px;
+  --button-badge-size: 16px;
+  --button-badge-padding: 4px;
+  --button-badge-font-size: 8px;
+}
+
+.Large {
+  --button-size: 40px;
+  --button-rounding: 20px;
+  --button-font-size: 16px;
+  --button-vertical-padding: 8px;
+  --button-horizontal-padding: 16px;
+  --button-gap: 8px;
+
+  --button-badge-rounding: 14px;
+  --button-badge-min-width: 28px;
+  --button-badge-size: 28px;
+  --button-badge-padding: 8px;
+  --button-badge-font-size: 12px;
+}
+
+.XLarge {
+  --button-size: 48px;
+  --button-rounding: 24px;
+  --button-font-size: 20px;
+  --button-vertical-padding: 12px;
+  --button-horizontal-padding: 20px;
+  --button-gap: 12px;
+
+  --button-badge-rounding: 20px;
+  --button-badge-min-width: 32px;
+  --button-badge-size: 32px;
+  --button-badge-padding: 12px;
+  --button-badge-font-size: 14px;
+}
+
+:global([data-altrone-theme='dark']) {
+  .Primary {
+    --button-background-color: var(--white);
+    --button-hover-background-color: oklch(98.5% 0 0);
+    --button-active-background-color: oklch(97% 0 0);
+    --button-border-color: var(--white);
+    --button-text-color: black;
+    --button-disabled-text-color: var(--black-a6);
+    --button-badge-background-color: var(--black-a3);
+
+    &.Danger {
+      --button-text-color: var(--danger-color);
+    }
   }
 }

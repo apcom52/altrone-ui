@@ -43,6 +43,10 @@ export const Button = memo(
         [s.SingleIcon]: isSingleIcon,
         [s.Danger]: danger,
         [s.WithLoading]: state !== 'idle',
+        [s.Mini]: size === 'mini',
+        [s.Small]: size === 's',
+        [s.Large]: size === 'l',
+        [s.XLarge]: size === 'xl',
       },
       className,
       buttonConfig.className
@@ -117,6 +121,10 @@ export const Button = memo(
           className={clsx(s.Action, {
             [s.Disabled]: restProps.disabled,
             [s.WithLoading]: state !== 'idle',
+            [s.Mini]: size === 'mini',
+            [s.Small]: size === 's',
+            [s.Large]: size === 'l',
+            [s.XLarge]: size === 'xl',
           })}
           contentClassName={clsx(s.ActionContent, {
             [s.Disabled]: restProps.disabled,

@@ -1,4 +1,9 @@
-:root {
-  --danger-text: color(display-p3 0.744 0.234 0.222);
+:global([data-altrone-root='true']) {
+  --danger-color: color(display-p3 0.744 0.234 0.222);
   --success-color: color(display-p3 0.332 0.634 0.442);
+}
+
+:global([data-altrone-root='true'][data-altrone-theme='dark']) {
+  --danger-color: color(display-p3 0.831 0.345 0.231);
+  --success-color: color(display-p3 0.227 0.403 0.298);
 }
