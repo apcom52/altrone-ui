@@ -1,12 +1,8 @@
 import {
-  HTMLMotionProps,
   motion,
-  MotionProps,
-  TargetAndTransition,
   useMotionTemplate,
   useMotionValue,
   useSpring,
-  VariantLabels,
 } from 'motion/react';
 import s from './styles.module.scss';
 import { GlassSurfaceProps } from './GlassSurface.types';
@@ -18,7 +14,6 @@ import {
   useState,
 } from 'react';
 import clsx from 'clsx';
-import { useAltroneTheme } from 'components/application/useTheme';
 import { useGlassValues } from './useGlassValues';
 
 export const GlassSurface = ({
@@ -39,7 +34,6 @@ export const GlassSurface = ({
   ...restProps
 }: GlassSurfaceProps) => {
   const boxRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
 
   const glowX = useMotionValue(0);
   const glowY = useMotionValue(0);
@@ -60,8 +54,7 @@ export const GlassSurface = ({
   const handleMouseEnter: MouseEventHandler<HTMLDivElement> = useCallback(
     (e) => {
       glowOpacity.set(themeValues.GLOW_OPACITY);
-      setIsHovered(true);
-      const rect = boxRef.current?.getBoundingClientRect() || {
+      const rect = boxRef.current?.getBoundingClientRect?.() || {
         left: 0,
         top: 0,
       };
@@ -86,7 +79,6 @@ export const GlassSurface = ({
   const handleMouseLeave: MouseEventHandler<HTMLDivElement> =
     useCallback(() => {
       glowOpacity.set(0);
-      setIsHovered(false);
     }, []);
 
   const handleMouseDown: MouseEventHandler<HTMLDivElement> = useCallback(

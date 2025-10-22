@@ -1,9 +1,9 @@
 import { memo } from 'react';
-import { Icon } from 'components/icon';
-import s from './closeButton.module.scss';
+import { X } from 'lucide-react';
 import clsx from 'clsx';
 import { useConfiguration } from 'components/configuration';
 import { useLocalization } from '../application';
+import { Button } from 'components/button';
 
 export const CloseButton = memo(
   ({
@@ -15,7 +15,7 @@ export const CloseButton = memo(
 
     const t = useLocalization();
 
-    const cls = clsx(s.CloseButton, className, closeButtonConfig.className);
+    const cls = clsx(className, closeButtonConfig.className);
 
     const styles = {
       ...closeButtonConfig.style,
@@ -23,16 +23,17 @@ export const CloseButton = memo(
     };
 
     return (
-      <button
-        type="button"
+      <Button
+        variant="action"
         className={cls}
         style={styles}
         aria-label={t('closeButton.ariaLabel')}
         title={t('closeButton.ariaLabel')}
+        label={t('closeButton.ariaLabel')}
+        showLabel={false}
+        icon={<X />}
         {...props}
-      >
-        <Icon i="close" />
-      </button>
+      />
     );
-  },
+  }
 );

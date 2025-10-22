@@ -15,11 +15,13 @@
   padding: var(--gap);
   z-index: var(--level-popover);
   transition: box-shadow var(--transitionDuration) ease;
-  background: var(--popoverSolidBackgroundColor);
-  border-radius: 8px;
+  background: var(--glass-background-color);
+  backdrop-filter: blur(32px) saturate(180%);
+  border-radius: var(--radius-xl);
   box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.1);
   border: 1px solid var(--glass-border-color);
-  font-family: "Inter Variable", sans-serif;
+  font-family: 'Inter Variable', sans-serif;
+  transform-origin: top left;
 }
 
 .GlassEffect {
@@ -34,18 +36,27 @@
 
 .Header {
   display: flex;
+  position: relative;
   align-items: start;
   justify-content: space-between;
   margin-bottom: var(--l-gap);
+  height: 32px;
 }
 
 .Heading {
-  @include group-heading;
-  color: var(--headingTextColor);
+  position: absolute;
+  width: 100%;
+  color: var(--white);
+  font-weight: 600;
+  text-align: center;
+  padding-right: 32px;
+  padding-left: 32px;
+  min-height: 32px;
 }
 
 .Close {
-  margin-left: var(--xl-gap);
+  position: absolute;
+  right: 0;
 }
 
 .Arrow {

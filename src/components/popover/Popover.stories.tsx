@@ -38,9 +38,9 @@ export const PopoverStory: StoryObj<typeof Flex> = {
               <Text.Paragraph size="s">
                 We're gearing up for a system update packed with improvements
               </Text.Paragraph>
-              <Flex justify="end" direction="horizontal" gap="s">
-                <Button label="Reschedule update" />
-                <Button label="Update now" />
+              <Flex justify="center" direction="horizontal" gap="s">
+                <Button variant="action" label="Reschedule update" />
+                <Button variant="submit" label="Update now" />
               </Flex>
             </Flex>
           }

@@ -39,6 +39,8 @@ import s from './popover.module.scss';
 import { CloseButton } from 'components/closeButton';
 import { PopoverArrow } from './inner/PopoverArrow.tsx';
 import { useConfiguration } from 'components/configuration';
+import { GlassSurface } from 'components/glassSurface/GlassSurface.tsx';
+import { AnimatePresence, motion } from 'motion/react';
 
 const PopoverCloseContext = createContext<undefined | (() => void)>(undefined);
 const usePopoverCloseContext = () => useContext(PopoverCloseContext);
@@ -70,7 +72,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
   } = props;
 
   const [activeIndex, setActiveIndex] = useState<number | null>(
-    defaultListNavigationIndex,
+    defaultListNavigationIndex
   );
 
   const { popover: popoverConfig = {} } = useConfiguration();
@@ -90,7 +92,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     setValue: setOpened,
   } = useBoolean(openedByDefault);
 
-  const { refs, floatingStyles, context } = useFloating({
+  const { refs, floatingStyles, context, x, y, strategy } = useFloating({
     open: opened,
     onOpenChange: (state, _, reason) => {
       const hasFocusTrigger = triggersList.includes('focus');
@@ -186,7 +188,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
       closePopup: hide,
       openPopup: open,
     }),
-    [opened, context, activeIndex],
+    [opened, context, activeIndex]
   );
 
   const popoverParentClose = usePopoverCloseContext();
@@ -216,11 +218,11 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     {
       [s.GlassEffect]: !showArrow,
       [s.InsideNotification]: childrenRef.current?.closest(
-        '[data-notification="true"]',
+        '[data-notification="true"]'
       ),
     },
     className,
-    popoverConfig.className,
+    popoverConfig.className
   );
 
   const floatingBox = (
@@ -231,11 +233,14 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     >
       <FloatingList elementsRef={listNavigationRef}>
         <PopoverCurrentIndex.Provider value={activeIndex}>
-          <div
+          <motion.div
             ref={(elementRef: HTMLDivElement) => {
               refs.setFloating(elementRef);
               contentRef.current = elementRef;
             }}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0 }}
             className={popoverCls}
             role="region"
             {...getFloatingProps({
@@ -243,7 +248,9 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
               style: {
                 ...popoverConfig.style,
                 ...style,
-                ...floatingStyles,
+                left: x ?? 0,
+                top: y ?? 0,
+                position: strategy,
               },
             })}
           >
@@ -264,7 +271,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
                 : content}
             </div>
             {showArrow && <PopoverArrow ref={arrowRef} context={context} />}
-          </div>
+          </motion.div>
         </PopoverCurrentIndex.Provider>
       </FloatingList>
     </FloatingFocusManager>
@@ -296,7 +303,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
             document.body
           }
         >
-          {floatingBox}
+          <AnimatePresence onExitComplete={hide}>{floatingBox}</AnimatePresence>
         </FloatingPortal>
       )}
     </PopoverCloseContext.Provider>
