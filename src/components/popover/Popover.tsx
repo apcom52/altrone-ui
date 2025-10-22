@@ -1,16 +1,10 @@
 import {
-  arrow,
-  autoPlacement,
   autoUpdate,
-  flip,
   FloatingFocusManager,
   FloatingList,
   FloatingPortal,
-  offset,
   OpenChangeReason,
   safePolygon,
-  shift,
-  size,
   useClick,
   useDismiss,
   useFloating,
@@ -40,6 +34,11 @@ import { CloseButton } from 'components/closeButton';
 import { PopoverArrow } from './inner/PopoverArrow.tsx';
 import { useConfiguration } from 'components/configuration';
 import { AnimatePresence, motion } from 'motion/react';
+import { getPlacementConfig } from './utils/placementUtils';
+import {
+  createMiddleware,
+  createOverlapMiddleware,
+} from './utils/middlewareUtils';
 
 const PopoverCloseContext = createContext<undefined | (() => void)>(undefined);
 const usePopoverCloseContext = () => useContext(PopoverCloseContext);
@@ -64,6 +63,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     defaultListNavigationIndex = null,
     virtualNavigationFocus = false,
     focusTrapTargets = ['reference', 'content'],
+    overlap = false,
     className,
     style,
     onOpenChange,
@@ -91,6 +91,23 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     setValue: setOpened,
   } = useBoolean(openedByDefault);
 
+  // Получаем конфигурацию для placement
+  const placementConfig = getPlacementConfig(placement, overlap);
+
+  // Создаем middleware в зависимости от режима
+  const middleware = overlap
+    ? createOverlapMiddleware(
+        placementConfig,
+        arrowRef as React.RefObject<HTMLDivElement>,
+        parentWidth
+      )
+    : createMiddleware(
+        placementConfig,
+        arrowRef as React.RefObject<HTMLDivElement>,
+        parentWidth,
+        overlap
+      );
+
   const { refs, context, x, y, strategy } = useFloating({
     open: opened,
     onOpenChange: (state, _, reason) => {
@@ -106,27 +123,8 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
       onOpenChange?.(state);
       lastStateChangeReason.current = reason;
     },
-    placement: placement !== 'auto' ? placement : 'top',
-    middleware: [
-      offset(4),
-      placement === 'auto' ? autoPlacement() : flip(),
-      shift({
-        padding: 4,
-      }),
-      size({
-        apply({ rects, elements }) {
-          if (parentWidth) {
-            Object.assign(elements.floating.style, {
-              width: `${rects.reference.width}px`,
-            });
-          }
-        },
-      }),
-      arrow({
-        element: arrowRef,
-        padding: 8,
-      }),
-    ],
+    placement: placementConfig.placement,
+    middleware,
     whileElementsMounted: autoUpdate,
   });
 
@@ -267,9 +265,14 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
               style: {
                 ...popoverConfig.style,
                 ...style,
-                left: x ?? 0,
-                top: y ?? 0,
-                position: strategy,
+                // Для overlap режима не используем координаты от FloatingUI
+                ...(overlap
+                  ? {}
+                  : {
+                      left: x ?? 0,
+                      top: y ?? 0,
+                      position: strategy,
+                    }),
               },
             })}
           >

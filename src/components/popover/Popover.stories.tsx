@@ -3,8 +3,8 @@ import { Button, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Popover } from './Popover.tsx';
+import { getAllPlacements } from './utils/placementUtils';
 // import { expect, userEvent, within } from '@storybook/test';
-import { AsyncUtils } from 'utils';
 
 const story: Meta<typeof Popover> = {
   title: 'Components/Containers/Popover',
@@ -64,13 +64,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
             </Flex>
           }
         >
-          {({ opened }) => (
-            <Button
-              label="Show more details"
-              leftIcon={<Icon i="lightbulb" />}
-              rightIcon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
-            />
-          )}
+          <Button label="Show more details" icon={<Icon i="lightbulb" />} />
         </Popover>
         <Popover
           style={{ maxWidth: '150px' }}
@@ -307,6 +301,147 @@ export const PopoverStory: StoryObj<typeof Flex> = {
   //     },
   //   );
   // },
+};
+
+export const OverlapPopoverStory: StoryObj<typeof Flex> = {
+  name: 'Overlap Popover',
+  render: () => (
+    <Flex direction="vertical" gap="l">
+      <Text.Heading role="inner">Overlap Popovers</Text.Heading>
+      <Text.Paragraph size="s">
+        Popovers with overlap=true completely cover the children element at the
+        same coordinates
+      </Text.Paragraph>
+      <Flex direction="horizontal" gap="l">
+        <Popover
+          overlap
+          title="Overlap Popover"
+          showCloseButton
+          content={
+            <Flex direction="vertical" gap="m">
+              <Text.Paragraph size="s">
+                This popover overlaps with the button at its starting position
+              </Text.Paragraph>
+              <Button label="Action" />
+            </Flex>
+          }
+        >
+          <Button label="Overlap Popover" />
+        </Popover>
+        <Popover
+          overlap
+          placement="bottom"
+          title="Bottom Overlap"
+          showCloseButton
+          showArrow
+          content={
+            <Flex direction="vertical" gap="m">
+              <Text.Paragraph size="s">
+                This popover appears below the button with overlap
+              </Text.Paragraph>
+            </Flex>
+          }
+        >
+          <Button label="Bottom Overlap" />
+        </Popover>
+      </Flex>
+    </Flex>
+  ),
+};
+
+export const AllPlacementsStory: StoryObj<typeof Flex> = {
+  name: 'All Placements',
+  render: () => {
+    const placements = getAllPlacements();
+
+    return (
+      <Flex direction="vertical" gap="l">
+        <Text.Heading role="inner">All Placement Options</Text.Heading>
+        <Text.Paragraph size="s">
+          Demonstration of all available placement options for popovers
+        </Text.Paragraph>
+
+        <Flex direction="vertical" gap="l">
+          {placements.map((placement) => (
+            <Flex
+              key={placement.value}
+              direction="horizontal"
+              gap="m"
+              align="center"
+            >
+              <Text.Paragraph size="s" style={{ minWidth: '120px' }}>
+                {placement.label}:
+              </Text.Paragraph>
+              <Popover
+                placement={placement.value}
+                title={`${placement.label} Popover`}
+                showCloseButton
+                content={
+                  <Flex direction="vertical" gap="m">
+                    <Text.Paragraph size="s">
+                      This is a {placement.label.toLowerCase()} popover
+                    </Text.Paragraph>
+                    <Button label="Action" />
+                  </Flex>
+                }
+              >
+                <Button label={`${placement.label} Popover`} />
+              </Popover>
+            </Flex>
+          ))}
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
+export const OverlapPlacementsStory: StoryObj<typeof Flex> = {
+  name: 'Overlap Placements',
+  render: () => {
+    const placements = getAllPlacements();
+
+    return (
+      <Flex direction="vertical" gap="l">
+        <Text.Heading role="inner">Overlap Placements</Text.Heading>
+        <Text.Paragraph size="s">
+          All placement options in overlap mode - popovers completely cover
+          their trigger elements
+        </Text.Paragraph>
+
+        <Flex direction="vertical" gap="l">
+          {placements.map((placement) => (
+            <Flex
+              key={placement.value}
+              direction="horizontal"
+              gap="m"
+              align="center"
+            >
+              <Text.Paragraph size="s" style={{ minWidth: '120px' }}>
+                {placement.label}:
+              </Text.Paragraph>
+              <Popover
+                overlap
+                placement={placement.value}
+                title={`${placement.label} Overlap`}
+                showCloseButton
+                content={
+                  <Flex direction="vertical" gap="m">
+                    <Text.Paragraph size="s">
+                      This {placement.label.toLowerCase()} popover completely
+                      covers the button
+                    </Text.Paragraph>
+                    <Button label="Action" />
+                  </Flex>
+                }
+              >
+                <Button label={`${placement.label} Overlap`} />
+              </Popover>
+            </Flex>
+          ))}
+        </Flex>
+      </Flex>
+    );
+  },
 };
 
 export default story;

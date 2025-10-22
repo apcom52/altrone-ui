@@ -17,9 +17,8 @@
   transition: box-shadow var(--transitionDuration) ease;
   background: var(--glass-background-color);
   backdrop-filter: blur(32px) saturate(180%);
-  border-radius: var(--radius-xl);
-  box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--glass-border-color);
+  border-radius: 24px;
+  box-shadow: var(--shadow-1), var(--shadow-4);
   font-family: 'Inter Variable', sans-serif;
   transform-origin: top left;
 }

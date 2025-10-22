@@ -41,5 +41,6 @@ export interface PopoverProps
   listNavigation?: boolean;
   defaultListNavigationIndex?: number;
   virtualNavigationFocus?: boolean;
+  overlap?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
