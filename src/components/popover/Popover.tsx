@@ -39,7 +39,6 @@ import s from './popover.module.scss';
 import { CloseButton } from 'components/closeButton';
 import { PopoverArrow } from './inner/PopoverArrow.tsx';
 import { useConfiguration } from 'components/configuration';
-import { GlassSurface } from 'components/glassSurface/GlassSurface.tsx';
 import { AnimatePresence, motion } from 'motion/react';
 
 const PopoverCloseContext = createContext<undefined | (() => void)>(undefined);
@@ -92,7 +91,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     setValue: setOpened,
   } = useBoolean(openedByDefault);
 
-  const { refs, floatingStyles, context, x, y, strategy } = useFloating({
+  const { refs, context, x, y, strategy } = useFloating({
     open: opened,
     onOpenChange: (state, _, reason) => {
       const hasFocusTrigger = triggersList.includes('focus');
@@ -238,9 +237,29 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
               refs.setFloating(elementRef);
               contentRef.current = elementRef;
             }}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
+            initial={{
+              opacity: 0,
+              scale: 0.8,
+              filter: 'blur(4px)',
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              filter: 'blur(0px)',
+              transition: {
+                duration: 0.2,
+                ease: [0.4, 0, 0.2, 1],
+              },
+            }}
+            exit={{
+              opacity: 0,
+              scale: 0.8,
+              filter: 'blur(4px)',
+              transition: {
+                duration: 0.15,
+                ease: [0.4, 0, 1, 1],
+              },
+            }}
             className={popoverCls}
             role="region"
             {...getFloatingProps({
@@ -295,17 +314,19 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
   return (
     <PopoverCloseContext.Provider value={parentClosePopover}>
       {childrenElement}
-      {opened && (
-        <FloatingPortal
-          data-test="test"
-          root={
-            (document.querySelector('[data-altrone-root]') as HTMLElement) ||
-            document.body
-          }
-        >
-          <AnimatePresence onExitComplete={hide}>{floatingBox}</AnimatePresence>
-        </FloatingPortal>
-      )}
+      <AnimatePresence mode="wait" onExitComplete={() => {}}>
+        {opened && (
+          <FloatingPortal
+            data-test="test"
+            root={
+              (document.querySelector('[data-altrone-root]') as HTMLElement) ||
+              document.body
+            }
+          >
+            {floatingBox}
+          </FloatingPortal>
+        )}
+      </AnimatePresence>
     </PopoverCloseContext.Provider>
   );
 });
