@@ -12,6 +12,8 @@ export type PopoverRef = {
   contentNode: HTMLDivElement | null;
   openPopup: () => void;
   closePopup: () => void;
+  actualPlacement: string;
+  transformOrigin: string;
 };
 
 export type PopoverChildrenContext = {

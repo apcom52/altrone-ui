@@ -40,6 +40,40 @@ import {
   createOverlapMiddleware,
 } from './utils/middlewareUtils';
 
+/**
+ * Вычисляет transformOrigin на основе placement
+ */
+const getTransformOrigin = (placement: string, overlap: boolean): string => {
+  switch (placement) {
+    case 'top-start':
+      return overlap ? 'bottom left' : 'bottom right';
+    case 'top':
+      return overlap ? 'bottom center' : 'bottom center';
+    case 'top-end':
+      return overlap ? 'bottom right' : 'bottom left';
+    case 'bottom-start':
+      return overlap ? 'top left' : 'top right';
+    case 'bottom':
+      return overlap ? 'top center' : 'top center';
+    case 'bottom-end':
+      return overlap ? 'top right' : 'top left';
+    case 'left-start':
+      return overlap ? 'top right' : 'center right';
+    case 'left':
+      return overlap ? 'center left' : 'center right';
+    case 'left-end':
+      return overlap ? 'bottom right' : 'top right';
+    case 'right-start':
+      return overlap ? 'top left' : 'center left';
+    case 'right':
+      return overlap ? 'center right' : 'center left';
+    case 'right-end':
+      return overlap ? 'bottom left' : 'top left';
+    default:
+      return overlap ? 'top left' : 'bottom right';
+  }
+};
+
 const PopoverCloseContext = createContext<undefined | (() => void)>(undefined);
 const usePopoverCloseContext = () => useContext(PopoverCloseContext);
 
@@ -108,7 +142,14 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
         overlap
       );
 
-  const { refs, context, x, y, strategy } = useFloating({
+  const {
+    refs,
+    context,
+    x,
+    y,
+    strategy,
+    placement: actualPlacement,
+  } = useFloating({
     open: opened,
     onOpenChange: (state, _, reason) => {
       const hasFocusTrigger = triggersList.includes('focus');
@@ -184,8 +225,10 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
       contentNode: contentRef.current,
       closePopup: hide,
       openPopup: open,
+      actualPlacement,
+      transformOrigin: getTransformOrigin(actualPlacement, overlap),
     }),
-    [opened, context, activeIndex]
+    [opened, context, activeIndex, actualPlacement]
   );
 
   const popoverParentClose = usePopoverCloseContext();
@@ -264,42 +307,9 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
                 ...popoverConfig.style,
                 ...style,
                 // INSERT_YOUR_CODE
-                ...(placement
-                  ? {
-                      transformOrigin: ((...args) => {
-                        console.log('>> placement', placement, args);
-
-                        switch (placement) {
-                          case 'top-start':
-                            return overlap ? 'top left' : 'bottom right';
-                          case 'top':
-                            return overlap ? 'top center' : 'bottom center';
-                          case 'top-end':
-                            return overlap ? 'top right' : 'bottom left';
-                          case 'bottom-start':
-                            return overlap ? 'bottom left' : 'top right';
-                          case 'bottom':
-                            return overlap ? 'bottom center' : 'top center';
-                          case 'bottom-end':
-                            return overlap ? 'bottom right' : 'top left';
-                          case 'left-start':
-                            return overlap ? 'top right' : 'center right';
-                          case 'left':
-                            return overlap ? 'center left' : 'center right';
-                          case 'left-end':
-                            return overlap ? 'bottom right' : 'top right';
-                          case 'right-start':
-                            return overlap ? 'top left' : 'center left';
-                          case 'right':
-                            return overlap ? 'center right' : 'center left';
-                          case 'right-end':
-                            return overlap ? 'bottom left' : 'top left';
-                          default:
-                            return overlap ? 'top left' : 'bottom right';
-                        }
-                      })(),
-                    }
-                  : {}),
+                ...{
+                  transformOrigin: getTransformOrigin(actualPlacement, overlap),
+                },
                 // Для overlap режима не используем координаты от FloatingUI
                 ...(overlap
                   ? {}

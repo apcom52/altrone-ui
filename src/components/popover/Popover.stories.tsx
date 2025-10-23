@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 import { Button, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
@@ -450,6 +451,66 @@ export const OverlapPlacementsStory: StoryObj<typeof Flex> = {
             </Flex>
           ))}
         </Flex>
+      </Flex>
+    );
+  },
+};
+
+export const PlacementInfoStory: StoryObj<typeof Flex> = {
+  name: 'Placement Info',
+  render: () => {
+    const [placementInfo, setPlacementInfo] = React.useState<string>('');
+    const popoverRef = React.useRef<any>(null);
+
+    const handleOpenChange = (opened: boolean) => {
+      if (opened && popoverRef.current) {
+        const { actualPlacement, transformOrigin } = popoverRef.current;
+        setPlacementInfo(
+          `Placement: ${actualPlacement}, Transform Origin: ${transformOrigin}`
+        );
+      }
+    };
+
+    return (
+      <Flex direction="vertical" gap="l">
+        <Text.Heading role="inner">Placement Information</Text.Heading>
+        <Text.Paragraph size="s">
+          This example shows how to get the actual placement and transform
+          origin from the popover ref when using auto placement.
+        </Text.Paragraph>
+
+        {placementInfo && (
+          <Text.Paragraph
+            size="s"
+            style={{
+              padding: '8px',
+              backgroundColor: 'var(--default-100)',
+              borderRadius: '4px',
+              fontFamily: 'monospace',
+            }}
+          >
+            {placementInfo}
+          </Text.Paragraph>
+        )}
+
+        <Popover
+          ref={popoverRef}
+          placement="auto"
+          title="Auto Placement"
+          showCloseButton
+          onOpenChange={handleOpenChange}
+          content={
+            <Flex direction="vertical" gap="m">
+              <Text.Paragraph size="s">
+                This popover uses auto placement. Check the info above to see
+                the actual placement and transform origin.
+              </Text.Paragraph>
+              <Button label="Action" />
+            </Flex>
+          }
+        >
+          <Button label="Auto Placement Popover" />
+        </Popover>
       </Flex>
     );
   },

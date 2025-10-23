@@ -119,31 +119,31 @@ export const applyOverlapStyles = (
   });
 
   switch (placement) {
-    case 'top':
+    case 'bottom':
       left = reference.x + reference.width / 2 - halfFloatingWidth;
       top = reference.y - 4;
       break;
-    case 'top-start':
+    case 'bottom-start':
     case 'right-start':
       left = reference.x - 4;
       top = reference.y - 4;
       break;
-    case 'top-end':
+    case 'bottom-end':
     case 'left-start':
       left = reference.x + reference.width - floatingRect.width + 8;
       top = reference.y - 4;
       break;
 
-    case 'bottom':
+    case 'top':
       left = reference.x + reference.width / 2;
       top = reference.y + reference.height;
       break;
-    case 'bottom-start':
+    case 'top-start':
     case 'right-end':
       left = reference.x - 4;
       top = reference.y + reference.height + 4 - floatingRect.height;
       break;
-    case 'bottom-end':
+    case 'top-end':
     case 'left-end':
       left = reference.x + reference.width - floatingRect.width + 4;
       top = reference.y + reference.height + 4 - floatingRect.height;
