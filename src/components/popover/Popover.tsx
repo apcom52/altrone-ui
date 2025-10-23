@@ -237,22 +237,20 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
             }}
             initial={{
               opacity: 0,
-              scale: 0.8,
-              filter: 'blur(4px)',
+              scale: 0.1,
             }}
             animate={{
               opacity: 1,
               scale: 1,
-              filter: 'blur(0px)',
               transition: {
-                duration: 0.2,
-                ease: [0.4, 0, 0.2, 1],
+                duration: 0.4,
+                ease: 'backOut',
+                bounce: 0.2,
               },
             }}
             exit={{
               opacity: 0,
-              scale: 0.8,
-              filter: 'blur(4px)',
+              scale: 0.1,
               transition: {
                 duration: 0.15,
                 ease: [0.4, 0, 1, 1],
@@ -265,6 +263,43 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
               style: {
                 ...popoverConfig.style,
                 ...style,
+                // INSERT_YOUR_CODE
+                ...(placement
+                  ? {
+                      transformOrigin: ((...args) => {
+                        console.log('>> placement', placement, args);
+
+                        switch (placement) {
+                          case 'top-start':
+                            return overlap ? 'top left' : 'bottom right';
+                          case 'top':
+                            return overlap ? 'top center' : 'bottom center';
+                          case 'top-end':
+                            return overlap ? 'top right' : 'bottom left';
+                          case 'bottom-start':
+                            return overlap ? 'bottom left' : 'top right';
+                          case 'bottom':
+                            return overlap ? 'bottom center' : 'top center';
+                          case 'bottom-end':
+                            return overlap ? 'bottom right' : 'top left';
+                          case 'left-start':
+                            return overlap ? 'top right' : 'center right';
+                          case 'left':
+                            return overlap ? 'center left' : 'center right';
+                          case 'left-end':
+                            return overlap ? 'bottom right' : 'top right';
+                          case 'right-start':
+                            return overlap ? 'top left' : 'center left';
+                          case 'right':
+                            return overlap ? 'center right' : 'center left';
+                          case 'right-end':
+                            return overlap ? 'bottom left' : 'top left';
+                          default:
+                            return overlap ? 'top left' : 'bottom right';
+                        }
+                      })(),
+                    }
+                  : {}),
                 // Для overlap режима не используем координаты от FloatingUI
                 ...(overlap
                   ? {}

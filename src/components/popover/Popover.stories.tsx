@@ -404,11 +404,18 @@ export const OverlapPlacementsStory: StoryObj<typeof Flex> = {
       <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Overlap Placements</Text.Heading>
         <Text.Paragraph size="s">
-          All placement options in overlap mode - popovers completely cover
-          their trigger elements
+          All placement options in overlap mode - popovers are positioned
+          relative to their trigger elements:
+          <br />• <strong>top/bottom/left/right</strong> - centered
+          <br />• <strong>*-start</strong> - aligned to start edge
+          <br />• <strong>*-end</strong> - aligned to end edge
         </Text.Paragraph>
 
-        <Flex direction="vertical" gap="l">
+        <Flex
+          direction="vertical"
+          gap="l"
+          style={{ paddingTop: '200px', paddingBottom: '200px' }}
+        >
           {placements.map((placement) => (
             <Flex
               key={placement.value}
@@ -427,8 +434,12 @@ export const OverlapPlacementsStory: StoryObj<typeof Flex> = {
                 content={
                   <Flex direction="vertical" gap="m">
                     <Text.Paragraph size="s">
-                      This {placement.label.toLowerCase()} popover completely
-                      covers the button
+                      {placement.value.includes('start')
+                        ? 'Aligned to start edge'
+                        : placement.value.includes('end')
+                        ? 'Aligned to end edge'
+                        : 'Centered'}{' '}
+                      - {placement.label.toLowerCase()} popover
                     </Text.Paragraph>
                     <Button label="Action" />
                   </Flex>

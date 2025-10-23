@@ -1,4 +1,4 @@
-import { Placement } from '@floating-ui/react';
+import { Placement, Rect } from '@floating-ui/react';
 
 export interface PlacementConfig {
   offset: number;
@@ -100,16 +100,73 @@ export const getPlacementConfig = (
  */
 export const applyOverlapStyles = (
   elements: { floating: HTMLElement },
-  rects: { reference: { x: number; y: number; width: number; height: number } },
-  _placement: Placement
+  rects: { reference: Rect; floating: Rect },
+  placement: Placement
 ): void => {
   const { floating } = elements;
-  const { reference } = rects;
+  const { reference, floating: floatingRect } = rects;
 
-  // Для overlap режима всегда используем точные координаты reference элемента
+  // Базовые координаты
+  let left = reference.x;
+  let top = reference.y;
+  const halfFloatingWidth = floatingRect.width / 2;
+
+  console.log('>> overlap', {
+    placement,
+    left,
+    reference,
+    halfFloatingWidth,
+  });
+
+  switch (placement) {
+    case 'top':
+      left = reference.x + reference.width / 2 - halfFloatingWidth;
+      top = reference.y - 4;
+      break;
+    case 'top-start':
+    case 'right-start':
+      left = reference.x - 4;
+      top = reference.y - 4;
+      break;
+    case 'top-end':
+    case 'left-start':
+      left = reference.x + reference.width - floatingRect.width + 8;
+      top = reference.y - 4;
+      break;
+
+    case 'bottom':
+      left = reference.x + reference.width / 2;
+      top = reference.y + reference.height;
+      break;
+    case 'bottom-start':
+    case 'right-end':
+      left = reference.x - 4;
+      top = reference.y + reference.height + 4 - floatingRect.height;
+      break;
+    case 'bottom-end':
+    case 'left-end':
+      left = reference.x + reference.width - floatingRect.width + 4;
+      top = reference.y + reference.height + 4 - floatingRect.height;
+      break;
+
+    case 'left':
+      left = reference.x;
+      top = reference.y + reference.height / 2;
+      break;
+
+    case 'right':
+      left = reference.x + reference.width - floatingRect.width + 8;
+      top = reference.y + reference.height / 2;
+      break;
+
+    default:
+      left = reference.x;
+      top = reference.y;
+  }
+
   Object.assign(floating.style, {
-    left: `${reference.x - 4}px`,
-    top: `${reference.y - 4}px`,
+    left: `${left}px`,
+    top: `${top}px`,
     position: 'absolute',
   });
 };
