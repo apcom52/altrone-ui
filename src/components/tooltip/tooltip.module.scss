@@ -1,19 +1,11 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --tooltipBackgroundColor: var(--default-100);
-  --tooltipBorderColor: var(--default-200);
-  --tooltipHoveredBackgroundColor: var(--default-200);
-  --tooltipTextColor: var(--default-700);
-  --tooltipHoveredTextColor: var(--default-900);
-}
-
-:global(.AltroneDark) {
-  --tooltipBackgroundColor: var(--default-800);
-  --tooltipBorderColor: var(--default-700);
-  --tooltipHoveredBackgroundColor: var(--default-700);
-  --tooltipTextColor: var(--default-200);
-  --tooltipHoveredTextColor: var(--default-50);
+:global([data-altrone-root='true']) {
+  --tooltip-background-color: color(display-p3 0.064 0.07 0.067);
+  --tooltip-text-color: color(display-p3 0.927 0.933 0.93);
+  --tooltip-button-text-color: var(--text-1);
+  --tooltip-button-background-color: var(--glass-background-color);
+  --tooltip-button-border-color: var(--border-1);
 }
 
 .QuestionMark {
@@ -22,17 +14,28 @@
   justify-content: center;
   width: 24px;
   height: 24px;
+  padding: 0;
   font-size: 16px;
-  background-color: var(--tooltipBackgroundColor);
-  border: 1px solid var(--tooltipBorderColor);
-  color: var(--tooltipTextColor);
+  background-color: var(--tooltip-button-background-color);
+  border: 1px solid var(--tooltip-button-border-color);
+  backdrop-filter: blur(32px) saturate(180%);
+  color: var(--tooltip-question-mark-text-color);
   border-radius: 50%;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
   @include focus;
+}
 
-  &:hover, &:focus-visible {
-    background-color: var(--tooltipHoveredBackgroundColor);
-    color: var(--tooltipHoveredTextColor);
-  }
+.Tooltip {
+  background: var(--tooltip-background-color);
+  color: var(--tooltip-text-color);
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.Kbd {
+  margin-left: 4px;
+  color: var(--solid-2);
 }

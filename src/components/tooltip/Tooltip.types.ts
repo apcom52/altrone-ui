@@ -1,8 +1,8 @@
-import { PopoverProps } from '../popover';
-import { ReactNode } from 'react';
+import { JSX, ReactNode } from 'react';
 
-export interface TooltipTypes extends Omit<PopoverProps, 'children'> {
+export interface TooltipTypes {
   content: string | JSX.Element;
+  kbd?: string;
   children?: ReactNode;
   childrenClassName?: string;
 }

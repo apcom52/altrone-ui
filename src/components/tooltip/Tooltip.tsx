@@ -1,12 +1,24 @@
-import { memo, useId } from 'react';
+import { memo, useId, useRef, useState } from 'react';
 import { useConfiguration } from 'components/configuration';
-import { Icon } from 'components/icon';
-import { Popover } from 'components/popover';
+import { HelpCircle } from 'lucide-react';
 import { Text } from 'components/text';
 import { TooltipTypes } from './Tooltip.types.ts';
 import clsx from 'clsx';
 import s from './tooltip.module.scss';
 import { DOMUtils } from '../../utils';
+import {
+  arrow,
+  autoUpdate,
+  flip,
+  FloatingArrow,
+  offset,
+  shift,
+  useFloating,
+  useFocus,
+  useHover,
+  useInteractions,
+} from '@floating-ui/react';
+import { AnimatePresence, motion } from 'motion/react';
 
 export const Tooltip = memo<TooltipTypes>(
   ({
@@ -14,12 +26,32 @@ export const Tooltip = memo<TooltipTypes>(
     children,
     className,
     style,
+    kbd,
     childrenClassName,
     ...restProps
   }) => {
+    const [opened, setOpened] = useState(false);
+
     const contentId = useId();
+    const arrowRef = useRef<HTMLDivElement>(null);
 
     const { tooltip: tooltipConfig = {} } = useConfiguration();
+
+    const { refs, floatingStyles, context } = useFloating({
+      open: opened,
+      placement: 'top',
+      onOpenChange: setOpened,
+      middleware: [offset(10), flip(), shift(), arrow({ element: arrowRef })],
+      whileElementsMounted: autoUpdate,
+    });
+
+    const hover = useHover(context);
+    const focus = useFocus(context);
+
+    const { getReferenceProps, getFloatingProps } = useInteractions([
+      hover,
+      focus,
+    ]);
 
     const cls = clsx(className, tooltipConfig.className);
     const styles = {
@@ -41,30 +73,52 @@ export const Tooltip = memo<TooltipTypes>(
       'aria-label': String(content),
     };
 
-    const childrenElement = DOMUtils.cloneNode(children, ariaAttributes) || (
+    const safeChildElement = DOMUtils.cloneNode(children, ariaAttributes) || (
       <button
         type="button"
         role="tooltip"
         aria-label={String(content)}
         className={clsx(s.QuestionMark, childrenClassName)}
       >
-        <Icon i="help_outline" />
+        <HelpCircle />
       </button>
     );
 
+    const childElement = DOMUtils.cloneNode(safeChildElement, {
+      ...getReferenceProps({
+        ...safeChildElement.props,
+      }),
+      ref: (elementRef: HTMLElement) => {
+        refs.setReference(elementRef);
+      },
+      tabIndex: safeChildElement.props.tabIndex ?? 0,
+    });
+
     return (
-      <>
-        <Popover
-          placement="top"
-          trigger={['click', 'hover']}
-          content={tooltipContent}
-          focusTrap={false}
-          showArrow={true}
-          {...restProps}
-        >
-          {childrenElement}
-        </Popover>
-      </>
+      <AnimatePresence>
+        {childElement}
+        {opened && (
+          <motion.div
+            ref={refs.setFloating}
+            style={floatingStyles}
+            className={s.Tooltip}
+            initial={{
+              opacity: 0,
+            }}
+            animate={{
+              opacity: 1,
+            }}
+            exit={{
+              opacity: 0,
+            }}
+            {...getFloatingProps()}
+          >
+            {content}
+            {kbd ? <span className={s.Kbd}>{kbd}</span> : null}
+            <FloatingArrow ref={arrowRef} context={context} tipRadius={2} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     );
-  },
+  }
 );

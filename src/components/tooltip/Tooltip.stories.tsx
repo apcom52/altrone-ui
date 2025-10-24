@@ -2,8 +2,8 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Button, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { Tooltip } from './Tooltip.tsx';
+import { HelpCircle, Play } from 'lucide-react';
 // import { within, expect, userEvent } from '@storybook/test';
-import { AsyncUtils } from '../../utils';
 
 const story: Meta<typeof Tooltip> = {
   title: 'Components/Containers/Tooltip',
@@ -17,21 +17,15 @@ export const TooltipStory: StoryObj<typeof Tooltip> = {
   name: 'Using Tooltips',
   render: () => {
     return (
-      <Flex direction="vertical" gap="l">
+      <Flex direction="vertical" gap="l" style={{ padding: '100px' }}>
         <Text.Heading role="inner">Tooltips</Text.Heading>
         <Flex direction="horizontal" gap="m">
           <Tooltip content="Simple tooltip without custom child element" />
           <Tooltip content="Here is the tooltip of the button">
-            <Button leftIcon={<Icon i="help_outline" />} />
+            <Button icon={<HelpCircle />} label="Help me" />
           </Tooltip>
-          <Tooltip
-            content={
-              <Text.Paragraph size="s">
-                Open the help page <Text.Keyboard>Ctrl+H</Text.Keyboard>
-              </Text.Paragraph>
-            }
-          >
-            <Button leftIcon={<Icon i="help_outline" />} label="Help" />
+          <Tooltip content="Open the help page" kbd="Ctrl+H">
+            <Button icon={<Play />} label="Run command" showLabel={false} />
           </Tooltip>
         </Flex>
       </Flex>
