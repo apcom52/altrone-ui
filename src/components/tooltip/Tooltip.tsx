@@ -11,6 +11,7 @@ import {
   autoUpdate,
   flip,
   FloatingArrow,
+  FloatingPortal,
   offset,
   shift,
   useFloating,
@@ -28,11 +29,11 @@ export const Tooltip = memo<TooltipTypes>(
     style,
     kbd,
     childrenClassName,
+    ref,
     ...restProps
   }) => {
     const [opened, setOpened] = useState(false);
 
-    const contentId = useId();
     const arrowRef = useRef<HTMLDivElement>(null);
 
     const { tooltip: tooltipConfig = {} } = useConfiguration();
@@ -58,15 +59,6 @@ export const Tooltip = memo<TooltipTypes>(
       ...tooltipConfig.style,
       ...style,
     };
-
-    const tooltipContent =
-      typeof content === 'string' ? (
-        <Text.Paragraph id={contentId} size="s" className={cls} style={styles}>
-          {content}
-        </Text.Paragraph>
-      ) : (
-        DOMUtils.cloneNode(content, { id: contentId })
-      );
 
     const ariaAttributes = {
       role: 'tooltip',
@@ -98,25 +90,29 @@ export const Tooltip = memo<TooltipTypes>(
       <AnimatePresence>
         {childElement}
         {opened && (
-          <motion.div
-            ref={refs.setFloating}
-            style={floatingStyles}
-            className={s.Tooltip}
-            initial={{
-              opacity: 0,
-            }}
-            animate={{
-              opacity: 1,
-            }}
-            exit={{
-              opacity: 0,
-            }}
-            {...getFloatingProps()}
+          <FloatingPortal
+            root={document.querySelector('[data-altrone-root]') as HTMLElement}
           >
-            {content}
-            {kbd ? <span className={s.Kbd}>{kbd}</span> : null}
-            <FloatingArrow ref={arrowRef} context={context} tipRadius={2} />
-          </motion.div>
+            <motion.div
+              ref={refs.setFloating}
+              style={floatingStyles}
+              className={s.Tooltip}
+              initial={{
+                opacity: 0,
+              }}
+              animate={{
+                opacity: 1,
+              }}
+              exit={{
+                opacity: 0,
+              }}
+              {...getFloatingProps()}
+            >
+              {content}
+              {kbd ? <span className={s.Kbd}>{kbd}</span> : null}
+              <FloatingArrow ref={arrowRef} context={context} tipRadius={2} />
+            </motion.div>
+          </FloatingPortal>
         )}
       </AnimatePresence>
     );

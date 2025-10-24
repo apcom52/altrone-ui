@@ -4,9 +4,25 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
 import { Text } from '../text';
 import { Toolbar } from './Toolbar.tsx';
-import { Icon } from '../icon';
-import { Search } from '../search';
-import { Divider } from '../divider';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Search,
+  Grid3X3,
+  Share,
+  Tags,
+  Ellipsis,
+  Paperclip,
+  Camera,
+  MousePointer2,
+  Pointer,
+  DiamondPlus,
+  CaseSensitive,
+  PencilLine,
+  Images,
+  MessageCircle,
+} from 'lucide-react';
+import { Dropdown } from 'components/dropdown/index.ts';
 
 const story: Meta<typeof Toolbar> = {
   title: 'Components/Containers/Toolbar',
@@ -31,120 +47,155 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
       <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Basic Toolbar</Text.Heading>
         <Toolbar>
-          <Toolbar.Action icon={<Icon i="settings" />} label="General" />
-          <Toolbar.Action icon={<Icon i="content_copy" />} label="Tabs" />
-          <Toolbar.Action icon={<Icon i="input" />} label="Autofill" />
-          <Toolbar.Action icon={<Icon i="key" />} label="Passwords" />
-          <Toolbar.Action icon={<Icon i="search" />} label="Search" />
-          <Toolbar.Action icon={<Icon i="lock" />} label="Security" />
-          <Toolbar.Action icon={<Icon i="back_hand" />} label="Privacy" />
-          <Toolbar.Action icon={<Icon i="public" />} label="Websites" />
-          <Toolbar.Action icon={<Icon i="extension" />} label="Extensions" />
-          <Toolbar.Action
-            icon={<Icon i="settings_suggest" />}
-            label="Advanced"
-          />
+          <Toolbar.Leading>
+            <Toolbar.Group>
+              <Toolbar.Action
+                icon={<ChevronLeft />}
+                label="Back"
+                showLabel={false}
+              />
+              <Toolbar.Action
+                icon={<ChevronRight />}
+                label="Forward"
+                showLabel={false}
+              />
+            </Toolbar.Group>
+          </Toolbar.Leading>
+          <Toolbar.Center>
+            <Toolbar.Group>
+              <Toolbar.Action
+                icon={<Paperclip />}
+                label="Attach a file"
+                showLabel={false}
+              />
+              <Toolbar.Action
+                icon={<Camera />}
+                label="Take a photo"
+                showLabel={false}
+              />
+            </Toolbar.Group>
+            <Toolbar.Group>
+              <Toolbar.Action label="Send a message" />
+            </Toolbar.Group>
+          </Toolbar.Center>
+          <Toolbar.Trailing>
+            <Toolbar.Group>
+              <Toolbar.Action label="Edit" />
+            </Toolbar.Group>
+            <Toolbar.Group>
+              <Toolbar.Action
+                icon={<Grid3X3 />}
+                label="View"
+                showLabel={false}
+              />
+              <Toolbar.Action
+                icon={<Share />}
+                label="Share"
+                showLabel={false}
+              />
+              <Toolbar.Action
+                icon={<Tags />}
+                label="Tags"
+                showLabel={false}
+                badge="Beta"
+              />
+              <Toolbar.Action
+                icon={<Ellipsis />}
+                label="More"
+                showLabel={false}
+              />
+            </Toolbar.Group>
+            <Toolbar.Group>
+              <Toolbar.Action
+                icon={<Search />}
+                label="Search"
+                showLabel={false}
+              />
+            </Toolbar.Group>
+          </Toolbar.Trailing>
         </Toolbar>
-        <Text.Heading role="inner">Compact Toolbar</Text.Heading>
-        <Toolbar compact>
-          <Toolbar.Action icon={<Icon i="settings" />} label="General" />
-          <Toolbar.Action icon={<Icon i="content_copy" />} label="Tabs" />
-          <Toolbar.Action icon={<Icon i="input" />} label="Autofill" />
-          <Toolbar.Action
-            icon={<Icon i="key" />}
-            label="Passwords"
-            badge="233"
-          />
-          <Toolbar.Action icon={<Icon i="search" />} label="Search" />
-          <Toolbar.Action icon={<Icon i="lock" />} label="Security" />
-          <Toolbar.Action icon={<Icon i="back_hand" />} label="Privacy" />
-          <Toolbar.Action icon={<Icon i="public" />} label="Websites" />
-          <Toolbar.Action icon={<Icon i="extension" />} label="Extensions" />
-          <Toolbar.Action
-            icon={<Icon i="settings_suggest" />}
-            label="Advanced"
-          />
-        </Toolbar>
-        <Text.Heading role="inner">Toolbar with custom components</Text.Heading>
-        <Toolbar>
-          <Toolbar.Group>
-            <Toolbar.Action icon={<Icon i="settings" />} label="General" />
-            <Toolbar.Action
-              icon={<Icon i="content_copy" />}
-              label="Tabs"
-              badge="NEW"
-            />
-            <Toolbar.Action icon={<Icon i="input" />} label="Autofill" />
-            <Toolbar.Action icon={<Icon i="key" />} label="Passwords" />
-            <Toolbar.Action icon={<Icon i="search" />} label="Search" />
-          </Toolbar.Group>
+      </Flex>
+    );
+  },
+};
 
-          <Divider direction="vertical" />
-
-          <Toolbar.Group align="center">
-            <Toolbar.Action icon={<Icon i="lock" />} label="Security" />
-            <Toolbar.Action icon={<Icon i="back_hand" />} label="Privacy" />
-            <Toolbar.Action icon={<Icon i="public" />} label="Websites" />
-          </Toolbar.Group>
-
-          <Divider direction="vertical" />
-
-          <Toolbar.Group align="center" weight={0}>
-            <Toolbar.Action icon={<Icon i="extension" />} label="Extensions" />
-            <Toolbar.Action
-              icon={<Icon i="settings_suggest" />}
-              label="Advanced"
-            />
-          </Toolbar.Group>
-
-          <Divider direction="vertical" />
-
-          <Toolbar.Group weight={1}>
-            <Toolbar.Action label="Search" showLabel={false}>
-              <Search getSuggestions={() => []} />
-            </Toolbar.Action>
-          </Toolbar.Group>
-        </Toolbar>
-
-        <Text.Heading role="inner">
-          Compact Toolbar with custom components
-        </Text.Heading>
-        <Toolbar compact>
-          <Toolbar.Group>
-            <Toolbar.Action icon={<Icon i="settings" />} label="General" />
-            <Toolbar.Action icon={<Icon i="content_copy" />} label="Tabs" />
-            <Toolbar.Action icon={<Icon i="input" />} label="Autofill" />
-            <Toolbar.Action icon={<Icon i="key" />} label="Passwords" />
-            <Toolbar.Action icon={<Icon i="search" />} label="Search" />
-          </Toolbar.Group>
-
-          <Divider direction="vertical" />
-
-          <Toolbar.Group align="center">
-            <Toolbar.Action icon={<Icon i="lock" />} label="Security" />
-            <Toolbar.Action
-              icon={<Icon i="back_hand" />}
-              label="Privacy"
-              showLabel={false}
-            />
-            <Toolbar.Action icon={<Icon i="public" />} label="Websites" />
-          </Toolbar.Group>
-
-          <Divider direction="vertical" />
-
-          <Toolbar.Group align="center">
-            <Toolbar.Action icon={<Icon i="extension" />} label="Extensions" />
-            <Toolbar.Action
-              icon={<Icon i="settings_suggest" />}
-              label="Advanced"
-            />
-          </Toolbar.Group>
-
-          <Divider direction="vertical" />
-
-          <Toolbar.Action label="Search" showLabel={false}>
-            <Search getSuggestions={() => []} />
-          </Toolbar.Action>
+export const VerticalToolbarStory: StoryObj<typeof Toolbar> = {
+  name: 'Using Vertical Toolbar',
+  render: () => {
+    return (
+      <Flex gap="l">
+        <Toolbar
+          direction="vertical"
+          style={{
+            height: 'calc(100% - 40px)',
+            position: 'fixed',
+            top: 20,
+            left: 20,
+          }}
+        >
+          <Toolbar.Leading>
+            <Toolbar.Group>
+              <Toolbar.Action
+                icon={<MessageCircle />}
+                label="Comments"
+                showLabel={false}
+              />
+            </Toolbar.Group>
+          </Toolbar.Leading>
+          <Toolbar.Center>
+            <Toolbar.Group>
+              <Toolbar.Action
+                icon={<MousePointer2 />}
+                label="Cursor"
+                showLabel={false}
+              />
+              <Toolbar.Action
+                icon={<Pointer />}
+                label="Hand"
+                showLabel={false}
+              />
+            </Toolbar.Group>
+            <Toolbar.Group>
+              <Dropdown
+                overlap
+                content={
+                  <Dropdown.Menu>
+                    <Dropdown.Action label="Widget 1" />
+                    <Dropdown.Action label="Widget 2" />
+                    <Dropdown.Action label="Widget 3" />
+                  </Dropdown.Menu>
+                }
+              >
+                <Toolbar.Action
+                  icon={<DiamondPlus />}
+                  label="Open widgets"
+                  showLabel={false}
+                />
+              </Dropdown>
+              <Toolbar.Action
+                icon={<CaseSensitive />}
+                label="Text"
+                showLabel={false}
+              />
+              <Toolbar.Action
+                icon={<Images />}
+                label="Image"
+                showLabel={false}
+              />
+              <Toolbar.Action
+                icon={<PencilLine />}
+                label="Draw"
+                showLabel={false}
+              />
+            </Toolbar.Group>
+            <Toolbar.Group>
+              <Toolbar.Action
+                icon={<MessageCircle />}
+                label="Comments"
+                showLabel={false}
+              />
+            </Toolbar.Group>
+          </Toolbar.Center>
         </Toolbar>
       </Flex>
     );

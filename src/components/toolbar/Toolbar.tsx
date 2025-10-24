@@ -1,22 +1,21 @@
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import s from './toolbar.module.scss';
 import { ToolbarProps } from './Toolbar.types.ts';
 import clsx from 'clsx';
-import { Action, Group } from './components';
+import { Action, Center, Group, Leading, Trailing } from './components';
 import { useConfiguration } from 'components/configuration';
-import { ToolbarContext } from './Toolbar.context.ts';
 
 const ToolbarComponent = memo<ToolbarProps>(
-  ({ children, compact = false, className, style, ...restProps }) => {
+  ({ children, direction = 'horizontal', className, style, ...restProps }) => {
     const { toolbar: toolbarConfig = {} } = useConfiguration();
 
     const cls = clsx(
       s.Toolbar,
       {
-        [s.Compact]: compact,
+        [s.Vertical]: direction === 'vertical',
       },
       className,
-      toolbarConfig.className,
+      toolbarConfig.className
     );
 
     const styles = {
@@ -24,25 +23,26 @@ const ToolbarComponent = memo<ToolbarProps>(
       ...style,
     };
 
-    const contextValue = useMemo(() => {
-      return {
-        compact,
-      };
-    }, [compact]);
-
     return (
-      <ToolbarContext.Provider value={contextValue}>
-        <div className={cls} style={styles} {...restProps}>
-          {children}
-        </div>
-      </ToolbarContext.Provider>
+      <div
+        className={cls}
+        style={styles}
+        role="toolbar"
+        aria-orientation={direction}
+        {...restProps}
+      >
+        {children}
+      </div>
     );
-  },
+  }
 );
 
 const ToolbarNamespace = Object.assign(ToolbarComponent, {
   Action,
   Group,
+  Leading,
+  Center,
+  Trailing,
 });
 
 export { ToolbarNamespace as Toolbar };

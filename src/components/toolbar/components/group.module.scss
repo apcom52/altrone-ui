@@ -1,18 +1,42 @@
 .Group {
+  display: inline-flex;
+  align-items: center;
+  background: var(--glass-background-color);
+  box-shadow: var(--shadow-1), var(--shadow-4);
+  backdrop-filter: blur(32px) saturate(180%);
+  padding: 4px;
+  border-radius: 21px;
+  gap: 2px;
+}
+
+.Leading,
+.Trailing,
+.Center {
   display: flex;
   align-items: center;
-  flex: 1;
-  gap: var(--xs-gap);
+  justify-content: start;
+  gap: var(--gap);
+}
+
+[aria-orientation='vertical'] > .Trailing,
+[aria-orientation='vertical'] > .Leading,
+[aria-orientation='vertical'] > .Center,
+[aria-orientation='vertical'] .Group {
+  flex-direction: column;
+}
+
+.Leading {
+  justify-content: start;
+}
+
+.Trailing {
+  justify-content: end;
 }
 
 .Center {
   justify-content: center;
 }
 
-.End {
-  justify-content: flex-end;
-}
-
-.Between {
-  justify-content: space-between;
+.Separator {
+  flex: 1;
 }

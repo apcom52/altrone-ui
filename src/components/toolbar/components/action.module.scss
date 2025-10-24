@@ -1,33 +1,5 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --toolbarActionTextColor: var(--default-700);
-  --toolbarActionHoveredBackgroundColor: var(--default-200);
-  --toolbarActionHoveredTextColor: var(--default-800);
-  --toolbarActionPressedBackgroundColor: var(--default-300);
-  --toolbarActionPressedTextColor: var(--default-900);
-  --toolbar-action-badge-background: linear-gradient(
-    to bottom right,
-    #eb7dcc 0%,
-    #a18cd1 100%
-  );
-  --toolbar-action-badge-text-color: white;
-}
-
-:global(.AltroneDark) {
-  --toolbarActionTextColor: var(--default-200);
-  --toolbarActionHoveredBackgroundColor: var(--default-700);
-  --toolbarActionHoveredTextColor: var(--default-100);
-  --toolbarActionPressedBackgroundColor: var(--default-600);
-  --toolbarActionPressedTextColor: var(--default-50);
-  --toolbar-action-badge-background: linear-gradient(
-    to bottom right,
-    #9d3f8a 0%,
-    #5e4e95 100%
-  );
-  --toolbar-action-badge-text-color: white;
-}
-
 .Action {
   --textColor: var(--toolbarActionTextColor);
   --iconBg: transparent;
@@ -73,9 +45,7 @@
   border-radius: 4px;
   color: var(--textColor);
   background-color: var(--iconBg);
-  transition:
-    background-color 0.2s linear,
-    color 0.2s linear;
+  transition: background-color 0.2s linear, color 0.2s linear;
 }
 
 .CustomComponent {
@@ -95,9 +65,7 @@
   background-color: var(--iconBg);
   flex-direction: row;
   border-radius: 4px;
-  transition:
-    background-color 0.2s linear,
-    color 0.2s linear;
+  transition: background-color 0.2s linear, color 0.2s linear;
   padding: 3px 6px;
 
   .Icon {

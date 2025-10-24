@@ -1,27 +1,23 @@
-import { Align, RenderFuncProp } from 'types';
+import { ButtonProps } from 'components/button/Button.types';
+import { Align, Direction } from 'types';
 
 export interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
-  compact?: boolean;
+  direction?: Direction;
 }
 
-export interface ToolbarContextType {
-  compact: boolean;
-}
-
-export interface ToolbarActionProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  icon?: JSX.Element;
-  label: string;
-  showLabel?: boolean;
-  renderFunc?: RenderFuncProp<
-    HTMLButtonElement,
-    ToolbarActionProps & { compact?: boolean }
-  >;
-  badge?: string | number | JSX.Element;
-}
+export interface ToolbarActionProps extends Omit<ButtonProps, 'variant'> {}
 
 export interface ToolbarGroupProps
   extends React.HTMLAttributes<HTMLDivElement> {
   align?: Align;
   weight?: number;
 }
+
+export interface ToolbarLeadingProps
+  extends React.HTMLAttributes<HTMLDivElement> {}
+
+export interface ToolbarCenterProps
+  extends React.HTMLAttributes<HTMLDivElement> {}
+
+export interface ToolbarTrailingProps
+  extends React.HTMLAttributes<HTMLDivElement> {}

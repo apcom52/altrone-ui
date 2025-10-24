@@ -1,23 +1,15 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-}
-
 .Toolbar {
   display: flex;
   align-items: center;
-  padding: 4px 8px;
-  border-radius: 6px;
-  gap: var(--s-gap);
-  background: var(--glass-background-color);
-  border: 1px solid var(--glass-border-color);
-  backdrop-filter: var(--glass-background-blur);
-  height: 56px;
+  justify-content: space-between;
+}
 
-  [role="separator"] {
-    margin-left: unset;
-    margin-right: unset;
-  }
+.Vertical {
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
 }
 
 .AlignCenter {
