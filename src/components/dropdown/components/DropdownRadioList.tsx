@@ -27,7 +27,7 @@ export function DropdownRadioList({
       value,
       onChange,
     }),
-    [value, onChange],
+    [value, onChange]
   );
 
   const cls = clsx(s.RadioList, className, dropdownRadioListConfig.className);

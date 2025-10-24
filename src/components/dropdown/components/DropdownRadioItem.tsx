@@ -6,6 +6,7 @@ import { Icon } from '../../icon';
 import s from './action.module.scss';
 import { useConfiguration } from 'components/configuration';
 import { useId } from 'react';
+import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
 
 export function DropdownRadioItem({
   value,
@@ -22,6 +23,9 @@ export function DropdownRadioItem({
   const id = useId();
   const { ref } = useListItem();
 
+  const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
+    useDropdownItemHover();
+
   const cls = clsx(
     s.Action,
     className,
@@ -29,7 +33,7 @@ export function DropdownRadioItem({
       [s.DisabledAction]: disabled,
       [s.Focused]: focused,
     },
-    dropdownRadioItemConfig.className,
+    dropdownRadioItemConfig.className
   );
 
   const styles = {
@@ -61,8 +65,11 @@ export function DropdownRadioItem({
       className={cls}
       style={styles}
       id={id}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       {...props}
     >
+      {itemBackgroundElement}
       <div className={s.Icon}>
         {value === selectedValue ? <Icon i="check" /> : null}
       </div>

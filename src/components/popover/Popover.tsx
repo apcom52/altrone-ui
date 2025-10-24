@@ -17,6 +17,7 @@ import React, {
   createContext,
   forwardRef,
   useContext,
+  useId,
   useImperativeHandle,
   useRef,
   useState,
@@ -39,46 +40,16 @@ import {
   createMiddleware,
   createOverlapMiddleware,
 } from './utils/middlewareUtils';
-
-/**
- * Вычисляет transformOrigin на основе placement
- */
-const getTransformOrigin = (placement: string, overlap: boolean): string => {
-  switch (placement) {
-    case 'top-start':
-      return overlap ? 'bottom left' : 'bottom right';
-    case 'top':
-      return overlap ? 'bottom center' : 'bottom center';
-    case 'top-end':
-      return overlap ? 'bottom right' : 'bottom left';
-    case 'bottom-start':
-      return overlap ? 'top left' : 'top right';
-    case 'bottom':
-      return overlap ? 'top center' : 'top center';
-    case 'bottom-end':
-      return overlap ? 'top right' : 'top left';
-    case 'left-start':
-      return overlap ? 'top right' : 'center right';
-    case 'left':
-      return overlap ? 'center left' : 'center right';
-    case 'left-end':
-      return overlap ? 'bottom right' : 'top right';
-    case 'right-start':
-      return overlap ? 'top left' : 'center left';
-    case 'right':
-      return overlap ? 'center right' : 'center left';
-    case 'right-end':
-      return overlap ? 'bottom left' : 'top left';
-    default:
-      return overlap ? 'top left' : 'bottom right';
-  }
-};
+import { getTransformOrigin } from './utils/getTransformOrigin';
 
 const PopoverCloseContext = createContext<undefined | (() => void)>(undefined);
 const usePopoverCloseContext = () => useContext(PopoverCloseContext);
 
 const PopoverCurrentIndex = createContext<number | null>(null);
 export const usePopoverCurrentIndex = () => useContext(PopoverCurrentIndex);
+
+const PopoverCurrentId = createContext<string | null>(null);
+export const usePopoverCurrentId = () => useContext(PopoverCurrentId);
 
 export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
   const {
@@ -104,6 +75,8 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     ...restProps
   } = props;
 
+  const popoverId = useId();
+
   const [activeIndex, setActiveIndex] = useState<number | null>(
     defaultListNavigationIndex
   );
@@ -125,10 +98,8 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     setValue: setOpened,
   } = useBoolean(openedByDefault);
 
-  // Получаем конфигурацию для placement
   const placementConfig = getPlacementConfig(placement, overlap);
 
-  // Создаем middleware в зависимости от режима
   const middleware = overlap
     ? createOverlapMiddleware(
         placementConfig,
@@ -273,72 +244,75 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     >
       <FloatingList elementsRef={listNavigationRef}>
         <PopoverCurrentIndex.Provider value={activeIndex}>
-          <motion.div
-            ref={(elementRef: HTMLDivElement) => {
-              refs.setFloating(elementRef);
-              contentRef.current = elementRef;
-            }}
-            initial={{
-              opacity: 0,
-              scale: 0.1,
-            }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              transition: {
-                duration: 0.4,
-                ease: 'backOut',
-                bounce: 0.2,
-              },
-            }}
-            exit={{
-              opacity: 0,
-              scale: 0.1,
-              transition: {
-                duration: 0.15,
-                ease: [0.4, 0, 1, 1],
-              },
-            }}
-            className={popoverCls}
-            role="region"
-            {...getFloatingProps({
-              ...restProps,
-              style: {
-                ...popoverConfig.style,
-                ...style,
-                // INSERT_YOUR_CODE
-                ...{
-                  transformOrigin: getTransformOrigin(actualPlacement, overlap),
+          <PopoverCurrentId.Provider value={popoverId}>
+            <motion.div
+              ref={(elementRef: HTMLDivElement) => {
+                refs.setFloating(elementRef);
+                contentRef.current = elementRef;
+              }}
+              initial={{
+                opacity: 0,
+                scale: 0.1,
+              }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                transition: {
+                  duration: 0.4,
+                  ease: 'backOut',
+                  bounce: 0.2,
                 },
-                // Для overlap режима не используем координаты от FloatingUI
-                ...(overlap
-                  ? {}
-                  : {
-                      left: x ?? 0,
-                      top: y ?? 0,
-                      position: strategy,
-                    }),
-              },
-            })}
-          >
-            {showHeader && (
-              <div className={s.Header}>
-                {title ? <div className={s.Heading}>{title}</div> : null}
-                {showCloseButton ? (
-                  <CloseButton onClick={hide} className={s.Close} />
-                ) : null}
-              </div>
-            )}
-            <div
-              className={s.Content}
-              ref={contentRef ? contentRef : undefined}
+              }}
+              exit={{
+                opacity: 0,
+                scale: 0.1,
+                transition: {
+                  duration: 0.15,
+                  ease: [0.4, 0, 1, 1],
+                },
+              }}
+              className={popoverCls}
+              role="region"
+              {...getFloatingProps({
+                ...restProps,
+                style: {
+                  ...popoverConfig.style,
+                  ...style,
+                  ...{
+                    transformOrigin: getTransformOrigin(
+                      actualPlacement,
+                      overlap
+                    ),
+                  },
+                  ...(overlap
+                    ? {}
+                    : {
+                        left: x ?? 0,
+                        top: y ?? 0,
+                        position: strategy,
+                      }),
+                },
+              })}
             >
-              {typeof content === 'function'
-                ? content(popoverContext)
-                : content}
-            </div>
-            {showArrow && <PopoverArrow ref={arrowRef} context={context} />}
-          </motion.div>
+              {showHeader && (
+                <div className={s.Header}>
+                  {title ? <div className={s.Heading}>{title}</div> : null}
+                  {showCloseButton ? (
+                    <CloseButton onClick={hide} className={s.Close} />
+                  ) : null}
+                </div>
+              )}
+              <div
+                className={s.Content}
+                ref={contentRef ? contentRef : undefined}
+              >
+                {typeof content === 'function'
+                  ? content(popoverContext)
+                  : content}
+              </div>
+              {showArrow && <PopoverArrow ref={arrowRef} context={context} />}
+            </motion.div>
+          </PopoverCurrentId.Provider>
         </PopoverCurrentIndex.Provider>
       </FloatingList>
     </FloatingFocusManager>
@@ -362,14 +336,11 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
   return (
     <PopoverCloseContext.Provider value={parentClosePopover}>
       {childrenElement}
-      <AnimatePresence mode="wait" onExitComplete={() => {}}>
+      <AnimatePresence mode="wait">
         {opened && (
           <FloatingPortal
             data-test="test"
-            root={
-              (document.querySelector('[data-altrone-root]') as HTMLElement) ||
-              document.body
-            }
+            root={document.querySelector('[data-altrone-root]') as HTMLElement}
           >
             {floatingBox}
           </FloatingPortal>

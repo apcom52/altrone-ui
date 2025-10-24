@@ -4,22 +4,51 @@ import clsx from 'clsx';
 import { useCloseDropdownContext } from '../Dropdown.contexts.ts';
 import s from './action.module.scss';
 import { useConfiguration } from 'components/configuration';
-import { useId } from 'react';
+import { useEffect, useId } from 'react';
 import { usePopoverCurrentIndex } from '../../popover/Popover.tsx';
 import { RenderFuncProp } from '../../../types';
 import { Badge } from 'components/badge/Badge.tsx';
+import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
 
 const dropdownActionRenderFunc: RenderFuncProp<
   HTMLButtonElement,
   DropdownActionProps & { keyProp?: string }
 > = (ref, props) => {
   const { dropdown: { action: actionConfig = {} } = {} } = useConfiguration();
-  const { icon, label, hintText, keyProp, badge, ...restProps } = props;
+  const {
+    icon,
+    label,
+    hintText,
+    keyProp,
+    badge,
+    'data-active': isActive,
+    ...restProps
+  } = props;
+
+  const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
+    useDropdownItemHover();
 
   const badgeCls = clsx(s.Badge, actionConfig.badgeClassName);
 
+  useEffect(() => {
+    if (isActive) {
+      onMouseEnter();
+    } else {
+      onMouseLeave();
+    }
+  }, [isActive]);
+
   return (
-    <button type="button" role="button" ref={ref} {...restProps}>
+    <button
+      type="button"
+      role="button"
+      ref={ref}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      data-active={isActive}
+      {...restProps}
+    >
+      {itemBackgroundElement}
       <div className={s.Icon}>{icon}</div>
       <div className={s.Label}>{label}</div>
       {badge ? (
@@ -58,7 +87,7 @@ export function DropdownAction(props: DropdownActionProps) {
       [s.Focused]: focused,
     },
     className,
-    actionConfig.className,
+    actionConfig.className
   );
 
   const styles = {
@@ -86,6 +115,7 @@ export function DropdownAction(props: DropdownActionProps) {
     className: cls,
     role: 'button',
     'data-active': isFocused,
+    'data-index': index,
     id: props.id || id,
     onClick: onSelect,
     onKeyDown: onKeyDownPress,

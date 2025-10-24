@@ -10,7 +10,7 @@ import { RenderFunction } from 'utils';
 export interface DropdownActionProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
-  icon?: JSX.Element;
+  icon?: React.ReactElement;
   hintText?: string;
   onClick?: () => void;
   danger?: boolean;
@@ -21,8 +21,10 @@ export interface DropdownActionProps
     DropdownActionProps & { keyProp?: string }
   >;
   'data-active'?: boolean;
+  'data-dropdown-action'?: boolean;
+  'data-index'?: number;
   keyProp?: string;
-  badge?: string | number | JSX.Element;
+  badge?: string | number | React.ReactElement;
 }
 
 export interface DropdownCheckboxProps

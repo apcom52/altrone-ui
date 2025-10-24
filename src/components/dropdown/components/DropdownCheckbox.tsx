@@ -5,6 +5,7 @@ import { Icon } from 'components/icon';
 import s from './action.module.scss';
 import { useConfiguration } from 'components/configuration';
 import { useId } from 'react';
+import { useDropdownItemHover } from '../useDropdownItemHover';
 
 export function DropdownCheckbox({
   checked,
@@ -20,6 +21,9 @@ export function DropdownCheckbox({
 
   const { ref } = useListItem();
 
+  const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
+    useDropdownItemHover();
+
   const { dropdown: { checkbox: dropdownCheckboxConfiguration = {} } = {} } =
     useConfiguration();
 
@@ -30,7 +34,7 @@ export function DropdownCheckbox({
       [s.Focused]: focused,
     },
     className,
-    dropdownCheckboxConfiguration.className,
+    dropdownCheckboxConfiguration.className
   );
 
   const styles = {
@@ -51,6 +55,8 @@ export function DropdownCheckbox({
   return (
     <button
       type="button"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       onKeyDown={onKeyDownPress}
       onClick={onSelect}
       disabled={disabled}
@@ -63,6 +69,7 @@ export function DropdownCheckbox({
       title={label}
       {...props}
     >
+      {itemBackgroundElement}
       <div className={s.Icon}>{checked ? <Icon i="check" /> : null}</div>
       <div className={s.Label}>{label}</div>
     </button>

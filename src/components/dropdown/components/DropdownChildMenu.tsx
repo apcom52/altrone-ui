@@ -3,9 +3,10 @@ import { CompositeItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { DropdownWrapper } from '../Dropdown.tsx';
 import { DropdownMenu } from './DropdownMenu.tsx';
-import { Icon } from 'components/icon';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import s from './action.module.scss';
 import { useConfiguration } from 'components/configuration';
+import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
 
 export function DropdownChildMenu({
   children,
@@ -19,13 +20,16 @@ export function DropdownChildMenu({
   const { dropdown: { childMenu: dropdownChildMenuConfiguration = {} } = {} } =
     useConfiguration();
 
+  const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
+    useDropdownItemHover();
+
   const cls = clsx(
     s.Action,
     className,
     {
       [s.DisabledAction]: disabled,
     },
-    dropdownChildMenuConfiguration.className,
+    dropdownChildMenuConfiguration.className
   );
 
   const styles = {
@@ -48,13 +52,16 @@ export function DropdownChildMenu({
           })}
           style={styles}
           role="button"
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
           aria-expanded={opened}
           {...props}
         >
+          {itemBackgroundElement}
           <div className={s.Icon}>{icon}</div>
           <div className={s.Label}>{label}</div>
           <div className={s.Arrow}>
-            <Icon i={opened ? 'chevron_left' : 'chevron_right'} />
+            {opened ? <ChevronLeft /> : <ChevronRight />}
           </div>
         </CompositeItem>
       )}

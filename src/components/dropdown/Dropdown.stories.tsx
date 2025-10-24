@@ -112,6 +112,7 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
           <Dropdown
             placement="bottom"
             data-testid="dropdown-3"
+            overlap
             content={
               <Dropdown.Menu>
                 <Dropdown.Action

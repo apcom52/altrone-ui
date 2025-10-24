@@ -1,7 +1,15 @@
 .Menu {
   display: flex;
   flex-direction: column;
-  padding: 0;
+  padding: 4px;
   overflow-y: auto;
-  gap: var(--narrow-gap);
+  position: relative;
+}
+
+.ItemBackground {
+  position: absolute;
+  background-color: var(--interactive-a1);
+  border-radius: 16px;
+  z-index: 0;
+  pointer-events: none;
 }

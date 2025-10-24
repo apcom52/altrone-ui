@@ -1,8 +1,8 @@
 .Button {
   --button-border-color: var(--gray-a3);
-  --button-background-color: var(--interactive-1);
-  --button-hover-background-color: var(--interactive-2);
-  --button-active-background-color: var(--interactive-3);
+  --button-background-color: var(--glass-background-color);
+  --button-hover-background-color: var(--glass-background-color);
+  --button-active-background-color: var(--glass-background-color);
   --button-text-color: var(--text-2);
   --button-badge-background-color: var(--interactive-a2);
   --button-disabled-text-color: var(--solid-1);
@@ -28,29 +28,28 @@
   box-shadow: 0 0 0 1px var(--button-border-color), 0 0 0 0.5px var(--black-a1),
     0 1px 1px 0 var(--gray-a2), 0 2px 1px -1px var(--black-a1),
     0 1px 3px 0 var(--black-a1);
+  backdrop-filter: blur(32px) saturate(180%);
   font-size: var(--button-font-size);
   font-weight: 500;
   cursor: pointer;
   padding: 0;
   margin: 0;
+  min-width: fit-content;
 
-  transition: background-color 0.2s ease, box-shadow 0.2s ease,
-    transform 0.2s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease,
+    backdrop-filter 0.2s ease;
   appearance: none;
   -webkit-user-select: none;
   user-select: none;
 
   &:hover {
     background: var(--button-hover-background-color);
+    backdrop-filter: blur(32px) saturate(180%) brightness(1.1);
   }
 
   &:active {
     background: var(--button-active-background-color);
-    box-shadow: 0 0 0 1px var(--button-border-color);
-
-    .ButtonContent {
-      transform: translateY(1px) scale(0.98);
-    }
+    backdrop-filter: blur(32px) saturate(180%) brightness(1.2);
   }
 
   &:disabled {
@@ -69,6 +68,7 @@
   padding: var(--button-vertical-padding) var(--button-horizontal-padding);
   min-height: var(--button-size);
   min-width: var(--button-size);
+  width: fit-content;
   height: var(--button-size);
   font-size: var(--button-font-size);
   font-weight: 500;
@@ -141,6 +141,15 @@
   --button-disabled-text-color: var(--solid-1);
 
   box-shadow: none;
+  backdrop-filter: none;
+
+  &:hover {
+    backdrop-filter: none;
+  }
+
+  &:active {
+    backdrop-filter: none;
+  }
 }
 
 .Action {
@@ -204,6 +213,8 @@
 }
 
 .SingleIcon {
+  --button-font-size: 18px;
+
   .ButtonContent {
     display: flex;
     align-items: center;
@@ -236,6 +247,10 @@
   --button-badge-size: 12px;
   --button-badge-padding: 4px;
   --button-badge-font-size: 8px;
+
+  &.SingleIcon {
+    --button-font-size: 10px;
+  }
 }
 
 .Small {
@@ -251,6 +266,10 @@
   --button-badge-size: 16px;
   --button-badge-padding: 4px;
   --button-badge-font-size: 8px;
+
+  &.SingleIcon {
+    --button-font-size: 14px;
+  }
 }
 
 .Large {
@@ -266,6 +285,10 @@
   --button-badge-size: 28px;
   --button-badge-padding: 8px;
   --button-badge-font-size: 12px;
+
+  &.SingleIcon {
+    --button-font-size: 22px;
+  }
 }
 
 .XLarge {
@@ -281,6 +304,10 @@
   --button-badge-size: 32px;
   --button-badge-padding: 12px;
   --button-badge-font-size: 14px;
+
+  &.SingleIcon {
+    --button-font-size: 26px;
+  }
 }
 
 :global([data-altrone-theme='dark']) {

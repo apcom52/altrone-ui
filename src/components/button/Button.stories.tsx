@@ -185,7 +185,7 @@ const renderButtonsWithSize = (size: Size) => {
       />
       <Button size={size} variant="submit" label="Like" icon={<Heart />} />
       <Button size={size} variant="text" label="Like" icon={<Heart />} />
-      <Button size={size} variant="action" label="Like" icon={<Heart />} />
+      <Button size={size} label="Like" icon={<Heart />} />
       <Button
         size={size}
         variant="default"
@@ -215,8 +215,6 @@ export const ButtonStory: StoryObj<typeof Button> = {
       {renderButtonsWithRole('submit', args)}
       <Text.Heading role="inner">Text buttons</Text.Heading>
       {renderButtonsWithRole('text', args)}
-      <Text.Heading role="inner">Action buttons</Text.Heading>
-      {renderButtonsWithRole('action', args)}
     </Flex>
   ),
 };

@@ -24,7 +24,6 @@ export const CloseButton = memo(
 
     return (
       <Button
-        variant="action"
         className={cls}
         style={styles}
         aria-label={t('closeButton.ariaLabel')}

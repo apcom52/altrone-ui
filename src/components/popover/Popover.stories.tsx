@@ -206,7 +206,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           title="Unraveling Dark Matter's Mystery"
           showCloseButton
           showArrow
-          style={{ maxWidth: '160px' }}
+          style={{ maxWidth: '250px' }}
           content={
             <Text.Paragraph size="s">
               Dark matter, comprising 27% of the universe, defies detection
@@ -245,63 +245,6 @@ export const PopoverStory: StoryObj<typeof Flex> = {
       </Flex>
     </Flex>
   ),
-  // play: async ({ canvasElement, step }) => {
-  //   const canvas = within(canvasElement);
-
-  //   await step('Popover with click trigger', async () => {
-  //     await userEvent.click(canvas.getByTestId('button-click'));
-  //     await expect(
-  //       await canvas.findByTestId('popover-click'),
-  //     ).toBeInTheDocument();
-  //     await userEvent.click(canvas.getByText('close'));
-  //     await expect(
-  //       await canvas.queryByTestId('popover-click'),
-  //     ).not.toBeInTheDocument();
-  //   });
-
-  //   await step('Popover with hover trigger', async () => {
-  //     await userEvent.hover(canvas.getByTestId('button-hover'));
-  //     await expect(
-  //       await canvas.findByTestId('popover-hover'),
-  //     ).toBeInTheDocument();
-  //     await userEvent.unhover(canvas.getByTestId('button-hover'));
-  //     await AsyncUtils.timeout(600);
-  //     await expect(
-  //       await canvas.queryByTestId('popover-hover'),
-  //     ).not.toBeInTheDocument();
-  //   });
-
-  //   await step('Popover with child popover', async () => {
-  //     await userEvent.click(canvas.getByTestId('button-parent'));
-  //     await expect(
-  //       await canvas.findByTestId('popover-parent'),
-  //     ).toBeInTheDocument();
-  //     await userEvent.click(canvas.getByTestId('button-child'));
-  //     await expect(
-  //       await canvas.findByTestId('popover-parent'),
-  //     ).toBeInTheDocument();
-  //     await expect(
-  //       await canvas.findByTestId('popover-child'),
-  //     ).toBeInTheDocument();
-  //     await userEvent.click(document.body);
-  //     await expect(
-  //       await canvas.queryByTestId('popover-parent'),
-  //     ).not.toBeInTheDocument();
-  //     await expect(
-  //       await canvas.queryByTestId('popover-child'),
-  //     ).not.toBeInTheDocument();
-  //   });
-
-  //   await step(
-  //     'If popover is not enabled we has to prevent opening the popover',
-  //     async () => {
-  //       await userEvent.click(canvas.getByTestId('button-disabled'));
-  //       await expect(
-  //         await canvas.queryByTestId('popover-disabled'),
-  //       ).not.toBeInTheDocument();
-  //     },
-  //   );
-  // },
 };
 
 export const OverlapPopoverStory: StoryObj<typeof Flex> = {
@@ -334,7 +277,6 @@ export const OverlapPopoverStory: StoryObj<typeof Flex> = {
           placement="bottom"
           title="Bottom Overlap"
           showCloseButton
-          showArrow
           content={
             <Flex direction="vertical" gap="m">
               <Text.Paragraph size="s">
@@ -362,7 +304,11 @@ export const AllPlacementsStory: StoryObj<typeof Flex> = {
           Demonstration of all available placement options for popovers
         </Text.Paragraph>
 
-        <Flex direction="vertical" gap="l">
+        <Flex
+          direction="vertical"
+          gap="l"
+          style={{ paddingTop: '200px', paddingBottom: '200px' }}
+        >
           {placements.map((placement) => (
             <Flex
               key={placement.value}
@@ -370,7 +316,7 @@ export const AllPlacementsStory: StoryObj<typeof Flex> = {
               gap="m"
               align="center"
             >
-              <Text.Paragraph size="s" style={{ minWidth: '120px' }}>
+              <Text.Paragraph size="s" style={{ minWidth: '400px' }}>
                 {placement.label}:
               </Text.Paragraph>
               <Popover

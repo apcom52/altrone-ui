@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useId, useRef } from 'react';
 import { Popover, PopoverRef } from 'components/popover';
 import { DropdownProps } from './Dropdown.types';
 import { CloseDropdownContext } from './Dropdown.contexts.ts';
@@ -53,5 +53,5 @@ export const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>(
         {children}
       </Popover>
     );
-  },
+  }
 );
