@@ -20,6 +20,8 @@
   --button-badge-padding: 6px;
   --button-badge-font-size: 10px;
 
+  --button-brightness: 1;
+
   position: relative;
   background: var(--button-background-color);
   border-radius: var(--button-rounding);
@@ -28,7 +30,8 @@
   box-shadow: 0 0 0 1px var(--button-border-color), 0 0 0 0.5px var(--black-a1),
     0 1px 1px 0 var(--gray-a2), 0 2px 1px -1px var(--black-a1),
     0 1px 3px 0 var(--black-a1);
-  backdrop-filter: blur(32px) saturate(180%);
+  backdrop-filter: blur(32px) saturate(180%)
+    brightness(var(--button-brightness));
   font-size: var(--button-font-size);
   font-weight: 500;
   cursor: pointer;
@@ -37,19 +40,19 @@
   min-width: fit-content;
 
   transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease,
-    backdrop-filter 0.2s ease;
+    backdrop-filter 0.2s ease, color 0.2s ease, filter 0.2s ease;
   appearance: none;
   -webkit-user-select: none;
   user-select: none;
 
   &:hover {
+    --button-brightness: 1.1;
     background: var(--button-hover-background-color);
-    backdrop-filter: blur(32px) saturate(180%) brightness(1.1);
   }
 
   &:active {
+    --button-brightness: 1.2;
     background: var(--button-active-background-color);
-    backdrop-filter: blur(32px) saturate(180%) brightness(1.2);
   }
 
   &:disabled {
@@ -152,66 +155,6 @@
   }
 }
 
-.Action {
-  --button-text-color: var(--text-2);
-  --button-disabled-text-color: var(--solid-1);
-
-  --button-size: var(--base-control-size);
-  --button-rounding: var(--radius-xl);
-  --button-font-size: 14px;
-  --button-vertical-padding: var(--spacing-2);
-  --button-horizontal-padding: var(--spacing-3);
-  --button-gap: var(--spacing-2);
-
-  --button-badge-rounding: 10px;
-  --button-badge-min-width: 20px;
-  --button-badge-size: 20px;
-  --button-badge-padding: 6px;
-  --button-badge-font-size: 10px;
-
-  min-height: var(--button-size);
-  min-width: var(--button-size);
-  height: var(--button-size);
-
-  &.Disabled {
-    cursor: default;
-  }
-}
-
-.ActionContent {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--button-rounding) !important;
-  padding: 0 !important;
-
-  &.Disabled {
-    pointer-events: none;
-    opacity: 0.75;
-  }
-}
-
-.ActionChildren {
-  display: flex;
-  border-radius: var(--button-rounding);
-  color: var(--button-text-color);
-  cursor: pointer;
-  appearance: none;
-  -webkit-user-select: none;
-  user-select: none;
-  transition: transform 0.2s ease;
-  height: var(--button-size);
-
-  &.Disabled {
-    color: var(--button-disabled-text-color);
-    cursor: default;
-  }
-
-  &:active:not(.Disabled) {
-    transform: translateY(1px) scale(0.98);
-  }
-}
-
 .SingleIcon {
   --button-font-size: 18px;
 
@@ -226,6 +169,22 @@
 
 .Danger {
   --button-text-color: var(--danger-color);
+}
+
+.Selected {
+  --button-background-color: color(display-p3 1 1 1);
+  --button-hover-background-color: color(display-p3 1 1 1);
+  --button-active-background-color: color(display-p3 1 1 1);
+  --button-text-color: var(--accent-10);
+
+  &.Primary {
+    --button-background-color: var(--accent-9);
+    --button-hover-background-color: var(--accent-10);
+    --button-active-background-color: var(--accent-10);
+    --button-text-color: var(--white);
+    --button-brightness: 1.3;
+    filter: brightness(var(--button-brightness));
+  }
 }
 
 .WithLoading {

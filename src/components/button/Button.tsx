@@ -23,6 +23,7 @@ export const Button = memo((props: ButtonProps) => {
     state = 'idle',
     badge,
     ref,
+    selected = false,
     ...restProps
   } = props;
 
@@ -43,6 +44,7 @@ export const Button = memo((props: ButtonProps) => {
       [s.Small]: size === 's',
       [s.Large]: size === 'l',
       [s.XLarge]: size === 'xl',
+      [s.Selected]: selected,
     },
     className,
     buttonConfig.className

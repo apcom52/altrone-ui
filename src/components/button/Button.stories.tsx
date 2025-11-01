@@ -16,6 +16,8 @@ import {
   X,
   Heart,
   LoaderPinwheel,
+  Wifi,
+  Bluetooth,
 } from 'lucide-react';
 // import { fn } from '@storybook/test';
 import { ButtonProps } from './Button.types.ts';
@@ -43,6 +45,8 @@ const renderButtonsWithRole = (
   const [loading, setLoading] = useState(false);
   const [successed, setSuccessed] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [selected1, setSelected1] = useState(false);
+  const [selected2, setSelected2] = useState(false);
 
   return (
     <Flex gap="m" align="start" wrap>
@@ -166,6 +170,23 @@ const renderButtonsWithRole = (
         label="Approve"
         state={failed ? 'failed' : 'idle'}
         onClick={() => setFailed(!failed)}
+      />
+      <Button
+        {...args}
+        variant={type}
+        icon={<Wifi />}
+        label="Home"
+        selected={selected1}
+        onClick={() => setSelected1(!selected1)}
+      />
+      <Button
+        {...args}
+        variant={type}
+        icon={<Bluetooth />}
+        label="Bluetooth"
+        showLabel={false}
+        selected={selected2}
+        onClick={() => setSelected2(!selected2)}
       />
     </Flex>
   );

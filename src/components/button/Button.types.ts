@@ -1,6 +1,5 @@
 import { Size } from 'types';
 import { JSX, ReactElement } from 'react';
-import { LoadingState } from 'types/entity';
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -15,5 +14,5 @@ export interface ButtonProps
   danger?: boolean;
   size?: Size;
   badge?: number | string | JSX.Element;
-  skeleton?: LoadingState;
+  selected?: boolean;
 }
