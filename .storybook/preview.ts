@@ -13,7 +13,7 @@ const preview: Preview = {
     backgrounds: {
       options: {
         dark: { name: 'Dark', value: 'color(display-p3 0.113 0.125 0.14)' },
-        light: { name: 'Light', value: 'color(display-p3 0.988 0.988 0.988)' },
+        light: { name: 'Light', value: 'color(display-p3 0.988 0.988 0.992)' },
         amber: { name: 'Amber', value: 'color(display-p3 1 0.77 0.26)' },
         indigo: { name: 'Indigo', value: 'color(display-p3 0.357 0.357 0.81)' },
         mountains: {
@@ -96,4 +96,4 @@ const preview: Preview = {
   },
 };
 
-export default preview; 
+export default preview;

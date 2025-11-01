@@ -15,12 +15,9 @@ export const Trailing = memo<ToolbarTrailingProps>(
     };
 
     return (
-      <>
-        <div className={s.Separator} />
-        <div className={cls} style={styles} {...restProps}>
-          {children}
-        </div>
-      </>
+      <div className={cls} style={styles} {...restProps}>
+        {children}
+      </div>
     );
   }
 );

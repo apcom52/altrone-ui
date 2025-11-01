@@ -21,8 +21,11 @@ import {
   PencilLine,
   Images,
   MessageCircle,
+  Send,
 } from 'lucide-react';
 import { Dropdown } from 'components/dropdown/index.ts';
+import { useState } from 'react';
+import { Button } from 'components/button/Button.tsx';
 
 const story: Meta<typeof Toolbar> = {
   title: 'Components/Containers/Toolbar',
@@ -43,10 +46,62 @@ const story: Meta<typeof Toolbar> = {
 export const ToolbarStory: StoryObj<typeof Toolbar> = {
   name: 'Using Toolbar',
   render: () => {
+    const [placement, setPlacement] = useState<
+      'top' | 'bottom' | 'left' | 'right'
+    >('top');
+    const [fixed, setFixed] = useState(false);
+    const [showBackdrop, setShowBackdrop] = useState(false);
+    const [buttonSelected, setButtonSelected] = useState(false);
+
+    const vertical = placement === 'left' || placement === 'right';
+
     return (
-      <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Basic Toolbar</Text.Heading>
-        <Toolbar>
+      <Flex
+        direction="vertical"
+        gap="l"
+        style={{
+          position: 'relative',
+          marginTop: -8,
+          marginLeft: -24,
+          marginRight: -24,
+          width: 'calc(100% + 48px)',
+          height: '100vh',
+        }}
+      >
+        <div style={{ padding: 200 }}>
+          <Flex gap="s">
+            <Button
+              label={`Placement: ${placement.toUpperCase()}`}
+              onClick={() =>
+                setPlacement(
+                  placement === 'top'
+                    ? 'bottom'
+                    : placement === 'bottom'
+                    ? 'left'
+                    : placement === 'left'
+                    ? 'right'
+                    : 'top'
+                )
+              }
+            />
+            <Button
+              label="Fixed"
+              selected={fixed}
+              onClick={() => setFixed(!fixed)}
+            />
+            <Button
+              label="Show Backdrop"
+              selected={showBackdrop}
+              onClick={() => setShowBackdrop(!showBackdrop)}
+            />
+          </Flex>
+        </div>
+
+        <Toolbar
+          placement={placement}
+          fixed={fixed}
+          showBackdrop={showBackdrop}
+        >
           <Toolbar.Leading>
             <Toolbar.Group>
               <Toolbar.Action
@@ -66,21 +121,33 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
               <Toolbar.Action
                 icon={<Paperclip />}
                 label="Attach a file"
+                kbd="⌘+I"
                 showLabel={false}
+                selected={buttonSelected}
+                onClick={() => setButtonSelected(!buttonSelected)}
               />
               <Toolbar.Action
+                kbd="⌘+P"
                 icon={<Camera />}
                 label="Take a photo"
                 showLabel={false}
               />
             </Toolbar.Group>
             <Toolbar.Group>
-              <Toolbar.Action label="Send a message" />
+              <Toolbar.Action
+                label="Send a message"
+                showLabel={!vertical}
+                icon={vertical ? <Send /> : undefined}
+              />
             </Toolbar.Group>
           </Toolbar.Center>
           <Toolbar.Trailing>
             <Toolbar.Group>
-              <Toolbar.Action label="Edit" />
+              <Toolbar.Action
+                label="Edit"
+                showLabel={!vertical}
+                icon={vertical ? <PencilLine /> : undefined}
+              />
             </Toolbar.Group>
             <Toolbar.Group>
               <Toolbar.Action
@@ -97,7 +164,7 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
                 icon={<Tags />}
                 label="Tags"
                 showLabel={false}
-                badge="Beta"
+                badge={vertical ? undefined : 'Beta'}
               />
               <Toolbar.Action
                 icon={<Ellipsis />}

@@ -4,15 +4,29 @@ import { ToolbarProps } from './Toolbar.types.ts';
 import clsx from 'clsx';
 import { Action, Center, Group, Leading, Trailing } from './components';
 import { useConfiguration } from 'components/configuration';
+import { ToolbarPlacementContext } from './Toolbar.context.ts';
 
 const ToolbarComponent = memo<ToolbarProps>(
-  ({ children, direction = 'horizontal', className, style, ...restProps }) => {
+  ({
+    children,
+    placement = 'top',
+    fixed = false,
+    showBackdrop = false,
+    className,
+    style,
+    ...restProps
+  }) => {
     const { toolbar: toolbarConfig = {} } = useConfiguration();
 
     const cls = clsx(
-      s.Toolbar,
+      s.ToolbarWrapper,
       {
-        [s.Vertical]: direction === 'vertical',
+        [s.Fixed]: fixed,
+        [s.Top]: placement === 'top',
+        [s.Left]: placement === 'left',
+        [s.Right]: placement === 'right',
+        [s.Bottom]: placement === 'bottom',
+        [s.Backdrop]: showBackdrop,
       },
       className,
       toolbarConfig.className
@@ -24,15 +38,21 @@ const ToolbarComponent = memo<ToolbarProps>(
     };
 
     return (
-      <div
-        className={cls}
-        style={styles}
-        role="toolbar"
-        aria-orientation={direction}
-        {...restProps}
-      >
-        {children}
-      </div>
+      <ToolbarPlacementContext.Provider value={placement}>
+        <div
+          className={cls}
+          style={styles}
+          role="toolbar"
+          aria-orientation={
+            placement === 'left' || placement === 'right'
+              ? 'vertical'
+              : 'horizontal'
+          }
+          {...restProps}
+        >
+          <div className={s.Toolbar}>{children}</div>
+        </div>
+      </ToolbarPlacementContext.Provider>
     );
   }
 );

@@ -7,21 +7,30 @@
   padding: 4px;
   border-radius: 21px;
   gap: 2px;
+  width: fit-content;
+  pointer-events: all;
 }
 
 .Leading,
 .Trailing,
 .Center {
+  position: absolute;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: start;
   gap: var(--gap);
 }
 
-[aria-orientation='vertical'] > .Trailing,
-[aria-orientation='vertical'] > .Leading,
-[aria-orientation='vertical'] > .Center,
 [aria-orientation='vertical'] .Group {
+  flex-direction: column;
+}
+
+[aria-orientation='vertical'] .Trailing,
+[aria-orientation='vertical'] .Leading,
+[aria-orientation='vertical'] .Center {
+  height: 100%;
+  width: 56px;
   flex-direction: column;
 }
 

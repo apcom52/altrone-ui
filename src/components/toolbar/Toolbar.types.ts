@@ -1,11 +1,15 @@
 import { ButtonProps } from 'components/button/Button.types';
-import { Align, Direction } from 'types';
+import { Align } from 'types';
 
 export interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
-  direction?: Direction;
+  placement?: 'top' | 'bottom' | 'left' | 'right';
+  showBackdrop?: boolean;
+  fixed?: boolean;
 }
 
-export interface ToolbarActionProps extends Omit<ButtonProps, 'variant'> {}
+export interface ToolbarActionProps extends Omit<ButtonProps, 'variant'> {
+  kbd?: string;
+}
 
 export interface ToolbarGroupProps
   extends React.HTMLAttributes<HTMLDivElement> {

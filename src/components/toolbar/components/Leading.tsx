@@ -15,12 +15,9 @@ export const Leading = memo<ToolbarLeadingProps>(
     };
 
     return (
-      <>
-        <div className={cls} style={styles} {...restProps}>
-          {children}
-        </div>
-        <div className={s.Separator} />
-      </>
+      <div className={cls} style={styles} {...restProps}>
+        {children}
+      </div>
     );
   }
 );

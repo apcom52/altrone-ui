@@ -23,12 +23,11 @@ export const Group = memo<ToolbarGroupProps>(
         [s.Between]: align === 'between',
       },
       className,
-      toolbarConfig.className,
+      toolbarConfig.className
     );
 
     const styles = {
       ...style,
-      flexGrow: weight,
     };
 
     return (
@@ -36,5 +35,5 @@ export const Group = memo<ToolbarGroupProps>(
         {children}
       </div>
     );
-  },
+  }
 );

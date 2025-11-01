@@ -1,3 +1,4 @@
+import { Placement } from '@floating-ui/react';
 import { JSX, ReactNode } from 'react';
 
 export interface TooltipTypes {
@@ -5,4 +6,7 @@ export interface TooltipTypes {
   kbd?: string;
   children?: ReactNode;
   childrenClassName?: string;
+  className?: string;
+  style?: React.CSSProperties;
+  placement?: Placement;
 }
