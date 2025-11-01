@@ -115,6 +115,7 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
                 showLabel={false}
               />
             </Toolbar.Group>
+            <Toolbar.Title label="Adobe Photoshop" />
           </Toolbar.Leading>
           <Toolbar.Center>
             <Toolbar.Group>

@@ -11,6 +11,11 @@ export interface ToolbarActionProps extends Omit<ButtonProps, 'variant'> {
   kbd?: string;
 }
 
+export interface ToolbarTitleProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  label: string;
+}
+
 export interface ToolbarGroupProps
   extends React.HTMLAttributes<HTMLDivElement> {
   align?: Align;
