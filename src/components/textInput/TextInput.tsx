@@ -64,39 +64,17 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
 
     const { textInput: inputConfig = {} } = useConfiguration();
 
-    const isRainbowPropsActivated =
-      typeof rainbowEffect === 'boolean'
-        ? rainbowEffect
-        : inputConfig.rainbowEffect || true;
-
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const { value: focused, enable: focus, disable: blur } = useBoolean(false);
-
-    const isRainbowNeeded = Boolean(
-      !(restProps.readOnly && readonlyStyles) &&
-        !inputDisabled &&
-        !focused &&
-        isRainbowPropsActivated,
-    );
 
     const onFocusHandler: FocusEventHandler<HTMLInputElement> = useCallback(
       (e) => {
         onFocus?.(e);
         focus();
       },
-      [onFocus],
+      [onFocus]
     );
-
-    const rainbowProps = useRainbowEffect(isRainbowNeeded, {
-      onMouseEnter: restProps.onMouseEnter,
-      onMouseMove: restProps.onMouseMove,
-      onMouseLeave: restProps.onMouseLeave,
-      onWheel: restProps.onWheel,
-      onFocus: onFocusHandler,
-      opacity: 0.33,
-      blur: 36,
-    });
 
     const wrapperCls = clsx(
       s.Wrapper,
@@ -104,7 +82,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         [s.Small]: inputSize === 's',
         [s.Large]: inputSize === 'l',
       },
-      wrapperClassName,
+      wrapperClassName
     );
 
     const cls = clsx(
@@ -115,7 +93,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         [s.Transparent]: transparent,
       },
       className,
-      inputConfig.className,
+      inputConfig.className
     );
 
     const wrapperStyles = {
@@ -155,10 +133,10 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
 
       const left = islandElements.filter(
         (island) =>
-          !island?.props?.placement || island?.props?.placement === 'left',
+          !island?.props?.placement || island?.props?.placement === 'left'
       );
       const right = islandElements.filter(
-        (island) => island?.props?.placement === 'right',
+        (island) => island?.props?.placement === 'right'
       );
 
       return [left, right, nonIslandElements];
@@ -170,7 +148,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       (e) => {
         onChange?.(e.target.value, e);
       },
-      [onChange],
+      [onChange]
     );
 
     const onBlurHandler: FocusEventHandler<HTMLInputElement> = useCallback(
@@ -178,7 +156,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         onBlur?.(e);
         blur();
       },
-      [onFocus],
+      [onFocus]
     );
 
     useResizeObserver(leftIslandsContainerRef);
@@ -209,7 +187,6 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         disabled: inputDisabled,
         ...restProps,
         ...Component.props,
-        ...rainbowProps,
       });
     } else {
       inputElement = (
@@ -232,7 +209,6 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
           name={inputName}
           disabled={inputDisabled}
           {...restProps}
-          {...rainbowProps}
         />
       );
     }
@@ -242,12 +218,20 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         <TextInputSizeContext.Provider value={inputSize || 'm'}>
           {inputElement}
           {leftIslands.length ? (
-            <div ref={leftIslandsContainerRef} className={s.LeftIslands}>
+            <div
+              ref={leftIslandsContainerRef}
+              className={s.LeftIslands}
+              data-altrone-island="left"
+            >
               {leftIslands}
             </div>
           ) : null}
           {rightIslands.length ? (
-            <div ref={rightIslandsContainerRef} className={s.RightIslands}>
+            <div
+              ref={rightIslandsContainerRef}
+              className={s.RightIslands}
+              data-altrone-island="right"
+            >
               {rightIslands}
             </div>
           ) : null}
@@ -255,7 +239,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
         </TextInputSizeContext.Provider>
       </div>
     );
-  },
+  }
 );
 
 const TextInputNamespace = Object.assign(TextInputComponent, {

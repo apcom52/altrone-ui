@@ -1,48 +1,36 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --actionIslandBackgroundColor: transparent;
-  --actionIslandTextColor: var(--default-800);
-  --actionIslandHoverBackgroundColor: var(--default-300);
-  --actionIslandHoverTextColor: var(--default-900);
-  --actionIslandTextSize: var(--labelFontSize);
-  --actionIslandDangerBackgroundColor: transparent;
-  --actionIslandDangerTextColor: var(--danger-700);
-  --actionIslandDangerHoverBackgroundColor: var(--danger-100);
-  --actionIslandDangerHoverTextColor: var(--danger-800);
-}
-
-:global(.AltroneDark) {
-  --actionIslandBackgroundColor: transparent;
-  --actionIslandTextColor: var(--default-100);
-  --actionIslandHoverBackgroundColor: var(--default-600);
-  --actionIslandHoverTextColor: var(--default-50);
-  --actionIslandDangerBackgroundColor: transparent;
-  --actionIslandDangerTextColor: var(--danger-500);
-  --actionIslandDangerHoverBackgroundColor: var(--danger-900);
-  --actionIslandDangerHoverTextColor: var(--danger-100);
+:global([data-altrone-root='true']) {
+  --action-island-background-color: var(--interactive-a1);
+  --action-island-text-color: var(--text-2);
+  --action-island-hover-background-color: var(--interactive-a2);
+  --action-island-active-background-color: var(--interactive-a3);
+  --action-island-text-size: 12px;
+  --action-island-rounding: 12px;
+  --action-island-size: 24px;
 }
 
 .ActionIsland {
-  --bgColor: var(--actionIslandBackgroundColor);
-  --fgColor: var(--actionIslandTextColor);
+  --bgColor: var(--action-island-background-color);
+  --fgColor: var(--action-island-text-color);
 
   display: inline-flex;
   align-items: center;
-  height: var(--inputIslandHeight);
-  min-width: var(--inputIslandHeight);
-  font-size: var(--inputIslandTextSize);
-  color: var(--fgColor);
+  justify-content: center;
+  height: var(--action-island-size);
+  min-width: var(--action-island-size);
+  width: fit-content;
+  color: var(--action-island-text-color);
   font-weight: 500;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   pointer-events: all;
-  border-radius: 4px;
+  border-radius: var(--action-island-rounding);
   border: none;
   gap: var(--xs-gap);
-  padding: var(--narrow-gap) var(--s-gap);
-  background-color: var(--bgColor);
+  padding: 4px 8px;
+  background-color: var(--action-island-background-color);
   cursor: pointer;
   outline: none;
   transition: background-color 0.2s linear, color 0.2s linear;
@@ -51,42 +39,40 @@
     @include disabled;
   }
 
-  &:hover, &:focus-visible {
-    --bgColor: var(--actionIslandHoverBackgroundColor);
-    --fgColor: var(--actionIslandHoverTextColor);
+  &:hover,
+  &:focus-visible {
+    background-color: var(--action-island-hover-background-color);
   }
 
-  @include focus;
+  &:active {
+    background-color: var(--action-island-active-background-color);
+  }
 }
 
 .Icon {
   display: flex;
   align-items: center;
+  font-size: 14px;
 }
 
 .Label {
-  @include label;
-  font-size: var(--actionIslandTextSize);
+  font-weight: 500;
+  font-size: var(--action-island-text-size);
 }
 
-.LeftSide {
-  &:first-child {
-    margin-left: calc(var(--inputVerticalOffset) - var(--inputHorizontalOffset));
-  }
-}
-
-.RightSide {
-  &:last-child {
-    margin-right: calc(var(--inputVerticalOffset) - var(--inputHorizontalOffset));
-  }
+.OnlyIcon {
+  padding: 0;
 }
 
 .Danger {
-  --bgColor: var(--actionIslandDangerBackgroundColor);
-  --fgColor: var(--actionIslandDangerTextColor);
+  --action-island-text-color: var(--danger-color);
 
-  &:hover, &:focus-visible {
-    --bgColor: var(--actionIslandDangerHoverBackgroundColor);
-    --fgColor: var(--actionIslandDangerHoverTextColor);
+  &:hover,
+  &:focus-visible {
+    --action-island-text-color: var(--danger-color);
+  }
+
+  &:active {
+    --action-island-text-color: var(--danger-color);
   }
 }

@@ -1,18 +1,20 @@
 @import 'src/global/mixins';
 
 :global(:root) {
-  --iconIslandTextColor: var(--default-600);
+  --icon-island-text-color: var(--default-600);
 }
 
 :global(.AltroneDark) {
-  --iconIslandTextColor: var(--default-300);
+  --icon-island-text-color: var(--default-300);
 }
 
 .IconIsland {
   display: inline-flex;
   align-items: center;
-  font-size: var(--inputIslandTextSize);
-  color: var(--iconIslandTextColor);
+  font-size: 18px;
+  height: 24px;
+  padding: 0 4px;
+  color: var(--icon-island-text-color);
   font-weight: 500;
   pointer-events: none;
 }

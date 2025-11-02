@@ -1,81 +1,67 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --inputBackgroundColor: var(--default-200);
-  --inputHoverBackgroundColor: var(--default-300);
-  --inputTextColor: var(--default-700);
-  --inputHoverTextColor: var(--default-800);
-  --inputPlaceholderTextColor: var(--default-400);
-  --inputPlaceholderHoverTextColor: var(--default-500);
-  --inputInvalidTextColor: var(--danger-800);
-  --inputIslandTextSize: 14px;
-  --inputIslandHeight: 20px;
-  --inputHorizontalOffset: var(--s-gap);
-  --inputVerticalOffset: var(--narrow-gap);
-}
-
-:global(.AltroneDark) {
-  --inputBackgroundColor: var(--default-700);
-  --inputHoverBackgroundColor: var(--default-600);
-  --inputTextColor: var(--default-100);
-  --inputHoverTextColor: var(--default-50);
-  --inputPlaceholderTextColor: var(--default-500);
-  --inputPlaceholderHoverTextColor: var(--default-400);
-  --inputInvalidTextColor: var(--danger-600);
+:global([data-altrone-root='true']) {
+  --text-input-background-color: var(--background-1);
+  --text-input-focused-background-color: var(--background-2);
+  --text-input-border-color: var(--border-a1);
+  --text-input-text-color: var(--text-2);
+  --text-input-island-text-color: var(--text-1);
+  --text-input-placeholder-color: var(--placeholder-text-color);
+  --text-input-font-size: 14px;
+  --text-input-size: 32px;
+  --text-input-rounding: 16px;
 }
 
 .Wrapper {
-  --height: 24px;
-
   display: flex;
   position: relative;
   flex-direction: column;
   width: 100%;
-  height: var(--height);
+  height: var(--text-input-size);
 }
 
 .Input {
-  --bgColor: var(--inputBackgroundColor);
-  --fgColor: var(--inputTextColor);
-  --placeholderColor: var(--inputPlaceholderTextColor);
-
   width: 100%;
-  background: var(--bgColor);
+  background: var(--text-input-background-color);
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  border-radius: 6px;
-  border: none;
-  padding: var(--inputVerticalOffset) var(--inputHorizontalOffset);
-  height: var(--height);
+  border-radius: var(--text-input-rounding);
+  border: 1px solid var(--text-input-border-color);
+  padding: 6px 12px;
+  height: var(--text-input-size);
   outline: none;
-  color: var(--fgColor);
+  color: var(--text-input-text-color);
+  font-weight: 500;
+  font-size: var(--text-input-font-size);
+  line-height: var(--text-input-size);
+  transition: background-color 0.2s linear;
 
-  @include paragraph;
-
-  &:hover,
   &:focus-visible {
-    --bgColor: var(--inputHoverBackgroundColor);
-    --fgColor: var(--inputHoverTextColor);
-    --placeholderColor: var(--inputPlaceholderHoverTextColor);
+    background-color: var(--text-input-focused-background-color);
+    outline: 2px solid black;
+    outline-offset: 2px;
   }
+
+  // &:hover,
+  // &:focus-visible {
+  //   --bgColor: var(--inputHoverBackgroundColor);
+  //   --fgColor: var(--inputHoverTextColor);
+  //   --placeholderColor: var(--inputPlaceholderHoverTextColor);
+  // }
 
   &::placeholder {
-    color: var(--placeholderColor);
+    color: var(--text-input-placeholder-color);
   }
 
-  &:disabled {
-    opacity: 0.5;
-    pointer-events: none;
-  }
+  // &:disabled {
+  //   opacity: 0.5;
+  //   pointer-events: none;
+  // }
 
   &:invalid {
-    --fgColor: var(--inputInvalidTextColor);
+    --text-input-text-color: var(--danger-color) !important;
   }
-}
-
-.Invalid {
-  --fgColor: var(--inputInvalidTextColor) !important;
 }
 
 .Readonly {
@@ -118,18 +104,18 @@
   position: absolute;
   top: 0;
   align-items: center;
-  gap: var(--xs-gap);
-  height: var(--height);
-  padding: var(--inputVerticalOffset) var(--inputHorizontalOffset);
+  gap: 2px;
+  height: var(--text-input-size);
   pointer-events: none;
+  color: var(--text-input-island-text-color);
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 .LeftIslands {
   left: 0;
-  padding-right: var(--inputHorizontalOffset);
 }
 
 .RightIslands {
   right: 0;
-  padding-left: var(--inputHorizontalOffset);
 }

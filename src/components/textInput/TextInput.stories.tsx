@@ -34,7 +34,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     const [value1, setValue1] = useState('');
     const [value2, setValue2] = useState('Hello!');
     const [value3, setValue3] = useState(
-      'Invalid value (need to have only 3 characters to be valid)',
+      'Invalid value (need to have only 3 characters to be valid)'
     );
     const [value4, setValue4] = useState('Lord Voldemort');
     const [readonly, setReadonly] = useState(true);
@@ -332,6 +332,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
                   />
                 </Dropdown.Menu>
               }
+              overlap
             >
               <TextInput.ActionIsland
                 icon={<Icon i="account_circle" />}
@@ -402,7 +403,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             placeholder="<-- Close button as custom island"
           >
             <TextInput.CustomIsland>
-              <CloseButton />
+              <CloseButton size="s" />
             </TextInput.CustomIsland>
           </TextInput>
         </Flex>

@@ -3,8 +3,12 @@ import clsx from 'clsx';
 import { ActionIslandProps } from '../TextInput.types.ts';
 import s from './action.module.scss';
 import { useConfiguration } from 'components/configuration';
+import { HTMLMotionProps, motion } from 'motion/react';
 
-export const ActionIsland = forwardRef<HTMLButtonElement, ActionIslandProps>(
+export const ActionIsland = forwardRef<
+  HTMLMotionProps<'button'>,
+  ActionIslandProps
+>(
   (
     {
       showLabel = true,
@@ -16,7 +20,7 @@ export const ActionIsland = forwardRef<HTMLButtonElement, ActionIslandProps>(
       style,
       ...restProps
     },
-    ref,
+    ref
   ) => {
     const { textInput: { actionIsland: actionIslandConfig = {} } = {} } =
       useConfiguration();
@@ -27,9 +31,10 @@ export const ActionIsland = forwardRef<HTMLButtonElement, ActionIslandProps>(
         [s.LeftSide]: !placement || placement === 'left',
         [s.RightSide]: placement === 'right',
         [s.Danger]: danger,
+        [s.OnlyIcon]: icon && showLabel === false,
       },
       className,
-      actionIslandConfig.className,
+      actionIslandConfig.className
     );
 
     const styles = {
@@ -38,17 +43,18 @@ export const ActionIsland = forwardRef<HTMLButtonElement, ActionIslandProps>(
     };
 
     return (
-      <button
+      <motion.button
         type="button"
         title={label}
         className={cls}
         ref={ref}
         style={styles}
+        whileTap={{ scale: 0.98 }}
         {...restProps}
       >
         {icon ? <div className={s.Icon}>{icon}</div> : null}
         {showLabel ? <div className={s.Label}>{label}</div> : null}
-      </button>
+      </motion.button>
     );
-  },
+  }
 );
