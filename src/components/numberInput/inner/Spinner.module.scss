@@ -1,28 +1,18 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --spinnerBackgroundColor: transparent;
-  --spinnerTextColor: var(--default-700);
-  --spinnerHoverBackgroundColor: var(--default-300);
-  --spinnerHoverTextColor: var(--default-800);
-  --spinnerPressBackgroundColor: var(--default-400);
-  --spinnerPressTextColor: var(--default-900);
-}
-
-:global(.AltroneDark) {
-  --spinnerBackgroundColor: transparent;
-  --spinnerTextColor: var(--default-200);
-  --spinnerHoverBackgroundColor: var(--default-700);
-  --spinnerHoverTextColor: var(--default-100);
-  --spinnerPressBackgroundColor: var(--default-600);
-  --spinnerPressTextColor: var(--default-50);
+:global([data-altrone-root='true']) {
+  --spinner-background-color: var(--interactive-a1);
+  --spinner-hover-background-color: var(--interactive-a2);
+  --spinner-press-background-color: var(--interactive-a3);
+  --spinner-text-color: var(--text-2);
 }
 
 .Spinner {
   display: flex;
   flex-direction: column;
-  margin-right: -6px;
-  @include no-selection;
+  background: var(--spinner-background-color);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .SpinButton {
@@ -36,20 +26,18 @@
   -moz-appearance: none;
   appearance: none;
   border: none;
-  color: var(--spinnerTextColor);
-  background: var(--spinnerBackgroundColor);
+  color: var(--spinner-text-color);
+  background-color: transparent;
   cursor: pointer;
-  border-radius: 4px;
   transition: background-color 0.2s linear;
 
-  &:hover, &:focus-visible {
-    background-color: var(--spinnerHoverBackgroundColor);
-    color: var(--spinnerHoverTextColor);
+  &:hover,
+  &:focus-visible {
+    background-color: var(--spinner-hover-background-color);
   }
 
   &:active {
-    background-color: var(--spinnerPressBackgroundColor);
-    color: var(--spinnerPressTextColor);
+    background-color: var(--spinner-press-background-color);
   }
 
   &:disabled {

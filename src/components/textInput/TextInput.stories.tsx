@@ -4,13 +4,23 @@ import {
   CloseButton,
   Dropdown,
   Flex,
-  Icon,
   Text,
   TextInput,
 } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { useState } from 'react';
+import {
+  CircleUser,
+  Sparkles,
+  Search,
+  Folder,
+  ChevronDown,
+  Delete,
+  Ban,
+  Repeat,
+  Share,
+} from 'lucide-react';
 
 const story: Meta<typeof TextInput> = {
   title: 'Components/Form/TextInput',
@@ -255,29 +265,23 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             onChange={setValue4}
             placeholder="Type something"
           >
-            <TextInput.IconIsland icon={<Icon i="account_circle" />} />
+            <TextInput.IconIsland icon={<CircleUser />} />
           </TextInput>
           <TextInput
             value={value5}
             onChange={setValue5}
             placeholder="Ask AI Assistant"
           >
-            <TextInput.IconIsland
-              placement="right"
-              icon={<Icon i="auto_awesome" />}
-            />
+            <TextInput.IconIsland placement="right" icon={<Sparkles />} />
           </TextInput>
           <TextInput
             value={value6}
             onChange={setValue6}
             placeholder="Find a file"
           >
-            <TextInput.IconIsland icon={<Icon i="search" />} />
-            <TextInput.IconIsland icon={<Icon i="folder" />} />
-            <TextInput.IconIsland
-              placement="right"
-              icon={<Icon i="expand_more" />}
-            />
+            <TextInput.IconIsland icon={<Search />} />
+            <TextInput.IconIsland icon={<Folder />} />
+            <TextInput.IconIsland placement="right" icon={<ChevronDown />} />
           </TextInput>
         </Flex>
         <Flex direction="horizontal" gap="l">
@@ -287,12 +291,9 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             placeholder="Find a file"
             size="s"
           >
-            <TextInput.IconIsland icon={<Icon i="search" />} />
-            <TextInput.IconIsland icon={<Icon i="folder" />} />
-            <TextInput.IconIsland
-              placement="right"
-              icon={<Icon i="expand_more" />}
-            />
+            <TextInput.IconIsland icon={<Search />} />
+            <TextInput.IconIsland icon={<Folder />} />
+            <TextInput.IconIsland placement="right" icon={<ChevronDown />} />
           </TextInput>
           <TextInput
             value={value6}
@@ -300,12 +301,9 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             placeholder="Find a file"
             size="l"
           >
-            <TextInput.IconIsland icon={<Icon i="search" />} />
-            <TextInput.IconIsland icon={<Icon i="folder" />} />
-            <TextInput.IconIsland
-              placement="right"
-              icon={<Icon i="expand_more" />}
-            />
+            <TextInput.IconIsland icon={<Search />} />
+            <TextInput.IconIsland icon={<Folder />} />
+            <TextInput.IconIsland placement="right" icon={<ChevronDown />} />
           </TextInput>
         </Flex>
         <Text.Heading role="inner">Action Islands</Text.Heading>
@@ -335,12 +333,12 @@ export const IslandsStory: StoryObj<typeof Flex> = {
               overlap
             >
               <TextInput.ActionIsland
-                icon={<Icon i="account_circle" />}
+                icon={<CircleUser />}
                 label="Pick a user"
               />
             </Dropdown>
             <TextInput.ActionIsland
-              icon={<Icon i="backspace" />}
+              icon={<Delete />}
               label="Clear field"
               showLabel={false}
               placement="right"
@@ -350,12 +348,12 @@ export const IslandsStory: StoryObj<typeof Flex> = {
 
           <TextInput value={value7} onChange={setValue7} placeholder="Username">
             <TextInput.ActionIsland
-              icon={<Icon i="block" />}
+              icon={<Ban />}
               label="Disabled action"
               disabled
             />
             <TextInput.ActionIsland
-              icon={<Icon i="replay" />}
+              icon={<Repeat />}
               label="Revert changes"
               placement="right"
               danger
@@ -382,13 +380,13 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             size="l"
           >
             <TextInput.ActionIsland
-              icon={<Icon i="share" />}
+              icon={<Share />}
               label="Share"
               placement="right"
               onClick={() => setValue8('')}
             />
             <TextInput.ActionIsland
-              icon={<Icon i="expand_more" />}
+              icon={<ChevronDown />}
               label="Show more options"
               showLabel={false}
               placement="right"

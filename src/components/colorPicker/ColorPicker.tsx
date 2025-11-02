@@ -42,7 +42,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
     (color?: string) => {
       onChange(typeof color === 'string' ? color.toLowerCase() : value);
     },
-    [onChange],
+    [onChange]
   );
 
   const { colorPicker: colorPickerConfig = {} } = useConfiguration();
@@ -72,6 +72,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
       enabled={!readOnly}
       defaultListNavigationIndex={-1}
       listNavigation
+      overlap
     >
       {({ opened }) => {
         if (typeof renderFunc === 'function') {

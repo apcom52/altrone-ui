@@ -6,7 +6,7 @@ import { Flex } from '../flex';
 import { useState } from 'react';
 import { Text } from '../text';
 import { TextInput } from '../textInput';
-import { Icon } from '../icon';
+import { Delete } from 'lucide-react';
 // import { userEvent, within, expect } from '@storybook/test';
 
 const story: Meta<typeof PasswordInput> = {
@@ -65,7 +65,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             <TextInput.TextIsland label="Password:" />
             <TextInput.ActionIsland
               placement="right"
-              icon={<Icon i="backspace" />}
+              icon={<Delete />}
               label="Clear"
             />
           </PasswordInput>

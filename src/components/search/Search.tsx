@@ -1,7 +1,7 @@
 import { forwardRef, useRef } from 'react';
 import { SearchProps } from './Search.types.ts';
 import { TextInput } from 'components/textInput';
-import { Icon } from 'components/icon';
+import { Search as SearchIcon, Delete } from 'lucide-react';
 import { useConfiguration } from 'components/configuration';
 import { useLocalization } from 'components/application';
 import { AutocompleteInput } from 'components/autocompleteInput';
@@ -23,7 +23,7 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
       getSuggestions,
       ...restProps
     },
-    ref,
+    ref
   ) => {
     const t = useLocalization();
 
@@ -34,7 +34,7 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
     const haveValue = restProps.value;
 
     const needToShowControl = Boolean(
-      (showControls ?? searchConfig.showControls ?? true) && haveValue,
+      (showControls ?? searchConfig.showControls ?? true) && haveValue
     );
 
     const safeChildren = ArrayUtils.getSafeArray(children);
@@ -45,7 +45,7 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
         [s.Empty]: !haveValue,
       },
       searchConfig.className,
-      className,
+      className
     );
     const styles = {
       ...searchConfig.style,
@@ -89,7 +89,7 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
         showControls={needToShowControl}
       >
         {haveValue && (
-          <TextInput.IconIsland icon={<Icon i="search" />} placement="left" />
+          <TextInput.IconIsland icon={<SearchIcon />} placement="left" />
         )}
         {haveValue ? safeChildren : null}
         {needToShowControl ? (
@@ -99,18 +99,18 @@ export const Search = forwardRef<PopoverRef, SearchProps>(
             showLabel={false}
             disabled={restProps.disabled}
             onClick={onClearClick}
-            icon={<Icon i="backspace" />}
+            icon={<Delete />}
           />
         ) : null}
         {!haveValue ? (
           <div className={placeholderCls}>
             <div className={s.PlaceholderIcon}>
-              <Icon i="search" />
+              <SearchIcon />
             </div>
             <div className={s.PlaceholderText}>{placeholderText}</div>
           </div>
         ) : null}
       </AutocompleteInput>
     );
-  },
+  }
 );

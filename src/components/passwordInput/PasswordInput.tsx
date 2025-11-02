@@ -1,11 +1,11 @@
 import { forwardRef, useState } from 'react';
 import { PasswordInputProps } from './PasswordInput.types.ts';
 import { TextInput } from '../textInput';
-import { Icon } from '../icon';
 import { ArrayUtils } from '../../utils';
 import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import { useLocalization } from '../application/useLocalization.tsx';
+import { Eye, EyeOff } from 'lucide-react';
 
 export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
   ({ showControls, children, className, style, ...restProps }, ref) => {
@@ -17,8 +17,8 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
       typeof showControls === 'boolean'
         ? showControls
         : typeof passwordInputConfig.showControls === 'boolean'
-          ? passwordInputConfig.showControls
-          : true;
+        ? passwordInputConfig.showControls
+        : true;
 
     const [type, setType] = useState('password');
 
@@ -49,12 +49,10 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             }
             showLabel={false}
             onClick={() => setType(type === 'password' ? 'text' : 'password')}
-            icon={
-              <Icon i={type === 'password' ? 'visibility' : 'visibility_off'} />
-            }
+            icon={type === 'password' ? <Eye /> : <EyeOff />}
           />
         ) : null}
       </TextInput>
     );
-  },
+  }
 );

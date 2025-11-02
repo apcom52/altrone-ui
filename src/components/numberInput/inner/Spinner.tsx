@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Icon } from 'components/icon';
+import { ChevronUp, ChevronDown } from 'lucide-react';
 import s from './Spinner.module.scss';
 import { Size } from 'types';
 import clsx from 'clsx';
@@ -42,7 +42,7 @@ export const Spinner = memo<SpinnerProps>(
           onClick={onUpClick}
           title={t('numberInput.increase')}
         >
-          <Icon i="keyboard_arrow_up" />
+          <ChevronUp />
         </button>
         <button
           type="button"
@@ -51,9 +51,9 @@ export const Spinner = memo<SpinnerProps>(
           onClick={onDownClick}
           title={t('numberInput.decrease')}
         >
-          <Icon i="keyboard_arrow_down" />
+          <ChevronDown />
         </button>
       </div>
     );
-  },
+  }
 );
