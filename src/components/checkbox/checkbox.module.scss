@@ -1,9 +1,12 @@
 @import 'src/global/mixins';
 
 :global([data-altrone-root='true']) {
-  --checkbox-background-color: var(--accent-9);
-  --checkbox-checked-background-color: var(--accent-10);
-  --checkbox-icon-color: var(--white);
+  --checkbox-background-color: var(--interactive-a1);
+  --checkbox-checked-background-color: var(--accent-a5);
+  --checkbox-border-color: var(--border-a1);
+  --checkbox-hover-background-color: var(--interactive-a2);
+  --checkbox-checked-border-color: var(--accent-a6);
+  --checkbox-icon-color: var(--accent-12);
   --checkbox-danger-background-color: var(--red-9);
   --checkbox-danger-checked-background-color: var(--red-10);
   --checkbox-text-color: var(--text-2);
@@ -25,6 +28,10 @@
   outline: none;
 
   @include no-selection;
+
+  &:hover {
+    --checkbox-background-color: var(--checkbox-hover-background-color);
+  }
 }
 
 .Input {
@@ -40,6 +47,7 @@
   background-color: var(--checkbox-background-color);
   border-radius: 8px;
   transition: background-color 0.1s linear;
+  box-shadow: 0 0 0 1px var(--checkbox-border-color), var(--shadow-1);
   color: var(--checkbox-icon-color);
 }
 
@@ -51,6 +59,11 @@
 
 .Checked {
   --checkbox-background-color: var(--checkbox-checked-background-color);
+  --checkbox-border-color: var(--checkbox-checked-border-color);
+
+  &:hover {
+    --checkbox-background-color: var(--checkbox-checked-background-color);
+  }
 }
 
 .Indetermination {
@@ -68,7 +81,5 @@
 }
 
 .Danger {
-  --checkbox-background-color: var(--red-9);
-  --checkbox-checked-background-color: var(--red-10);
   --checkbox-text-color: var(--danger-color);
 }

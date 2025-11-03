@@ -25,12 +25,12 @@ export const Checkbox = memo<CheckboxProps>(
     const cls = clsx(
       s.Checkbox,
       {
-        [s.Checked]: checked,
+        [s.Checked]: checked || indeterminate,
         [s.Disabled]: disabled,
         [s.Danger]: danger,
       },
       className,
-      checkboxConfig.className,
+      checkboxConfig.className
     );
 
     const styles = {
@@ -76,5 +76,5 @@ export const Checkbox = memo<CheckboxProps>(
         {children ? <div className={s.Label}>{children}</div> : null}
       </label>
     );
-  },
+  }
 );

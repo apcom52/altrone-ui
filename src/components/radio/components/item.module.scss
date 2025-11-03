@@ -1,24 +1,14 @@
 @import 'src/global/mixins';
 
 .RadioItem {
-  --bgColor: var(--radioBackgroundColor);
-  --fgColor: var(--radioTextColor);
-
   display: flex;
   align-items: center;
   gap: var(--gap);
   outline: 0;
   cursor: pointer;
 
-  &:hover, &:focus-visible {
-    --bgColor: var(--radioHoverBackgroundColor);
-  }
-
-  &:focus-visible {
-    .Button {
-      outline: 2px solid var(--focusColor);
-      outline-offset: 2px;
-    }
+  &:hover {
+    --radio-background-color: var(--radio-hover-background-color);
   }
 }
 
@@ -27,40 +17,44 @@
 }
 
 .Label {
-  @include sm-paragraph;
-  color: var(--radioTextColor);
+  color: var(--radio-text-color);
+  font-weight: 500;
+  font-size: 14px;
 }
 
 .Button {
   position: relative;
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background-color: var(--bgColor);
+  background-color: var(--radio-background-color);
   transition: background-color 0.1s linear;
+  box-shadow: 0 0 0 1px var(--radio-border-color), var(--shadow-1);
 
   &:after {
     display: none;
     content: '';
     position: absolute;
-    width: 8px;
-    height: 8px;
-    top: 4px;
-    left: 4px;
-    background-color: var(--radioHandleBackgroundColor);
+    width: 12px;
+    height: 12px;
+    top: 6px;
+    left: 6px;
+    background-color: var(--radio-icon-color);
     border-radius: 50%;
   }
 }
 
 .Checked {
-  --bgColor: var(--radioCheckedBackgroundColor);
-
-  &:hover, &:focus-visible {
-    --bgColor: var(--radioCheckedHoverBackgroundColor);
-  }
+  --radio-background-color: var(--radio-checked-background-color);
+  --radio-icon-color: var(--radio-checked-icon-color);
+  --radio-border-color: var(--radio-checked-border-color);
 
   .Button:after {
     display: block;
+  }
+
+  &:hover {
+    --radio-background-color: var(--radio-checked-background-color);
   }
 }
 

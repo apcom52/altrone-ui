@@ -1,19 +1,11 @@
-:global(:root) {
-  --radioBackgroundColor: var(--default-200);
-  --radioTextColor: var(--default-900);
-  --radioHoverBackgroundColor: var(--default-300);
-  --radioCheckedBackgroundColor: var(--primary-500);
-  --radioCheckedHoverBackgroundColor: var(--primary-600);
-  --radioHandleBackgroundColor: var(--default-50);
-}
-
-:global(.AltroneDark) {
-  --radioBackgroundColor: var(--default-700);
-  --radioTextColor: var(--default-50);
-  --radioHoverBackgroundColor: var(--default-600);
-  --radioCheckedBackgroundColor: var(--primary-800);
-  --radioCheckedHoverBackgroundColor: var(--primary-700);
-  --radioHandleBackgroundColor: var(--default-50);
+:global([data-altrone-root='true']) {
+  --radio-background-color: var(--interactive-a1);
+  --radio-icon-color: var(--text-2);
+  --radio-border-color: var(--border-a1);
+  --radio-hover-background-color: var(--interactive-a2);
+  --radio-checked-background-color: var(--accent-a5);
+  --radio-checked-icon-color: var(--accent-12);
+  --radio-checked-border-color: var(--border-a1);
 }
 
 .RadioList {
