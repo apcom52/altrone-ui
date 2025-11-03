@@ -3,3 +3,4 @@ export { IconIsland } from './IconIsland';
 export { ActionIsland } from './ActionIsland';
 export { CustomIsland } from './CustomIsland';
 export { LoadingIsland } from './LoadingIsland.tsx';
+export { CharCounterIsland } from './CharCounterIsland.tsx';

@@ -20,7 +20,9 @@ import {
   Ban,
   Repeat,
   Share,
+  TriangleAlert,
 } from 'lucide-react';
+import { Size } from 'types/entity.ts';
 
 const story: Meta<typeof TextInput> = {
   title: 'Components/Form/TextInput',
@@ -84,27 +86,27 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             value={value1}
             onChange={setValue1}
             placeholder="Type something"
-            transparent
+            variant="transparent"
           />
           <TextInput
             value={value2}
             onChange={setValue2}
             placeholder="Type something"
-            transparent
+            variant="transparent"
           />
           <TextInput
             value={''}
             onChange={() => null}
             disabled
             placeholder="Disabled input"
-            transparent
+            variant="transparent"
           />
           <TextInput
             value={value3}
             onChange={setValue3}
             placeholder="Type 3 characters"
             invalid={value3.length !== 3}
-            transparent
+            variant="transparent"
           />
         </Flex>
         <Text.Heading role="inner">Read-only mode</Text.Heading>
@@ -242,6 +244,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             onChange={setValue2}
             placeholder="Type something"
             size="l"
+            variant="transparent"
           >
             <TextInput.TextIsland label="cmd:" />
           </TextInput>
@@ -378,6 +381,7 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             onChange={setValue8}
             placeholder="Write your thoughts"
             size="l"
+            variant="transparent"
           >
             <TextInput.ActionIsland
               icon={<Share />}
@@ -431,6 +435,100 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             <TextInput.LoadingIsland placement="right" />
           </TextInput>
         </Flex>
+        <Text.Heading role="inner">Char Counter Islands</Text.Heading>
+        <Flex direction="horizontal" gap="l">
+          <TextInput
+            value={value1}
+            onChange={setValue1}
+            placeholder="Type something"
+            maxLength={8}
+          >
+            <TextInput.TextIsland label="Chars:" />
+            <TextInput.CharCounterIsland />
+          </TextInput>
+          <TextInput
+            value={value1}
+            onChange={setValue1}
+            placeholder="Type something"
+          >
+            <TextInput.CharCounterIsland />
+          </TextInput>
+          <TextInput
+            value={value1}
+            onChange={setValue1}
+            placeholder="Type something"
+            maxLength={12}
+          >
+            <TextInput.CharCounterIsland placement="right" />
+          </TextInput>
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
+export const SizesStory: StoryObj<typeof Flex> = {
+  name: 'Using different sizes',
+  render: () => {
+    const [value1, setValue1] = useState('');
+
+    return (
+      <Flex direction="vertical" gap="l">
+        {(['mini', 's', 'm', 'l', 'xl'] as Size[]).map((size: Size) => (
+          <>
+            <Text.Heading role="inner">Size {size.toUpperCase()}</Text.Heading>
+            <Flex direction="horizontal" gap="l">
+              <TextInput
+                value={value1}
+                onChange={setValue1}
+                placeholder="Type something"
+                size={size}
+              />
+              <TextInput
+                value={value1}
+                onChange={setValue1}
+                placeholder="Type something"
+                size={size}
+              >
+                <TextInput.TextIsland label="$" />
+                <TextInput.IconIsland icon={<CircleUser />} />
+                <TextInput.TextIsland placement="right" label=".00" />
+              </TextInput>
+            </Flex>
+            <Flex direction="horizontal" gap="l">
+              <TextInput
+                value={value1}
+                onChange={setValue1}
+                placeholder="Type something"
+                size={size}
+              >
+                <TextInput.ActionIsland
+                  label="Alert!"
+                  onClick={() => setValue1('')}
+                />
+                <TextInput.IconIsland
+                  icon={<TriangleAlert />}
+                  placement="right"
+                />
+                <TextInput.ActionIsland
+                  label="Delete"
+                  icon={<Delete />}
+                  placement="right"
+                  onClick={() => setValue1('')}
+                />
+              </TextInput>
+              <TextInput
+                value={value1}
+                onChange={setValue1}
+                placeholder="Type something"
+                size={size}
+              >
+                <TextInput.LoadingIsland />
+                <TextInput.CharCounterIsland placement="right" />
+              </TextInput>
+            </Flex>
+          </>
+        ))}
       </Flex>
     );
   },

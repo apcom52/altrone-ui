@@ -1,8 +1,9 @@
 @import 'src/global/mixins';
 
 :global([data-altrone-root='true']) {
-  --text-input-background-color: var(--background-1);
-  --text-input-focused-background-color: var(--background-2);
+  --text-input-background-color: var(--background-2);
+  --text-input-focused-background-color: var(--background-1);
+  --text-input-disabled-background-color: var(--gray-4);
   --text-input-border-color: var(--border-a1);
   --text-input-text-color: var(--text-2);
   --text-input-island-text-color: var(--text-1);
@@ -10,6 +11,18 @@
   --text-input-font-size: 14px;
   --text-input-size: 32px;
   --text-input-rounding: 16px;
+
+  --text-input-icon-size: 16px;
+
+  --text-input-action-island-background-color: var(--interactive-a1);
+  --text-input-action-island-text-color: var(--text-2);
+  --text-input-action-island-hover-background-color: var(--interactive-a2);
+  --text-input-action-island-active-background-color: var(--interactive-a3);
+  --text-input-action-island-text-size: 12px;
+  --text-input-action-island-rounding: 12px;
+  --text-input-action-island-size: 24px;
+  --text-input-action-island-icon-size: 14px;
+  --text-input-action-island-horizontal-offset: 8px;
 }
 
 .Wrapper {
@@ -43,59 +56,97 @@
     outline-offset: 2px;
   }
 
-  // &:hover,
-  // &:focus-visible {
-  //   --bgColor: var(--inputHoverBackgroundColor);
-  //   --fgColor: var(--inputHoverTextColor);
-  //   --placeholderColor: var(--inputPlaceholderHoverTextColor);
-  // }
-
   &::placeholder {
     color: var(--text-input-placeholder-color);
   }
 
-  // &:disabled {
-  //   opacity: 0.5;
-  //   pointer-events: none;
-  // }
+  &:disabled {
+    --text-input-text-color: var(--disabled-text-color);
+    --text-input-background-color: var(--text-input-disabled-background-color);
+  }
 
-  &:invalid {
+  &:invalid,
+  &.Invalid {
     --text-input-text-color: var(--danger-color) !important;
   }
 }
 
 .Readonly {
-  --bgColor: transparent !important;
-  --inputPlaceholderTextColor: var(--default-500);
-  --inputPlaceholderHoverTextColor: var(--default-500);
+  --text-input-background-color: transparent;
+  --text-input-border-color: transparent;
+  outline: none;
+
+  &:focus-visible {
+    outline: none;
+  }
 }
 
 .Transparent {
-  --bgColor: transparent;
+  --text-input-background-color: transparent;
+  --text-input-border-color: transparent;
+  --text-input-disabled-background-color: transparent;
+  --text-input-focused-background-color: var(--interactive-a2);
+
+  &:hover,
+  &:focus-visible {
+    --text-input-background-color: var(--interactive-a1);
+  }
+}
+
+.Mini {
+  --text-input-font-size: 10px;
+  --text-input-size: 16px;
+  --text-input-rounding: 8px;
+
+  --text-input-icon-size: 12px;
+
+  --text-input-action-island-text-size: 8px;
+  --text-input-action-island-rounding: 6px;
+  --text-input-action-island-size: 12px;
+  --text-input-action-island-horizontal-offset: 4px;
+  --text-input-action-island-icon-size: 10px;
 }
 
 .Small {
-  --height: 20px;
-  --inputIslandTextSize: 12px;
-  --inputIslandHeight: 16px;
-  --actionIslandTextSize: var(--smallLabelFontSize);
+  --text-input-font-size: 12px;
+  --text-input-size: 24px;
+  --text-input-rounding: 12px;
 
-  .Input {
-    @include sm-paragraph;
-  }
+  --text-input-icon-size: 14px;
+
+  --text-input-action-island-text-size: 10px;
+  --text-input-action-island-rounding: 8px;
+  --text-input-action-island-size: 16px;
+  --text-input-action-island-horizontal-offset: 6px;
+  --text-input-action-island-icon-size: 12px;
 }
 
 .Large {
-  --height: 32px;
-  --inputIslandTextSize: 16px;
-  --inputIslandHeight: 24px;
-  --inputVerticalOffset: 4px;
-  --inputHorizontalOffset: 6px;
-  --actionIslandTextSize: var(--groupHeadingFontSize);
+  --text-input-font-size: 16px;
+  --text-input-size: 40px;
+  --text-input-rounding: 20px;
 
-  .Input {
-    @include big-paragraph;
-  }
+  --text-input-icon-size: 18px;
+
+  --text-input-action-island-text-size: 14px;
+  --text-input-action-island-rounding: 16px;
+  --text-input-action-island-size: 32px;
+  --text-input-action-island-horizontal-offset: 10px;
+  --text-input-action-island-icon-size: 16px;
+}
+
+.XLarge {
+  --text-input-font-size: 20px;
+  --text-input-size: 48px;
+  --text-input-rounding: 24px;
+
+  --text-input-icon-size: 24px;
+
+  --text-input-action-island-text-size: 16px;
+  --text-input-action-island-rounding: 20px;
+  --text-input-action-island-size: 40px;
+  --text-input-action-island-horizontal-offset: 12px;
+  --text-input-action-island-icon-size: 18px;
 }
 
 .LeftIslands,

@@ -14,6 +14,7 @@ import { useRainbowEffect } from 'components/application';
 import { useResizeObserver, useBoolean, DOMUtils } from 'utils';
 import {
   ActionIsland,
+  CharCounterIsland,
   CustomIsland,
   IconIsland,
   LoadingIsland,
@@ -22,7 +23,10 @@ import {
 import { useConfiguration } from 'components/configuration';
 import { useFormField } from '../form/components/Field.tsx';
 import { AltChildren } from 'utils';
-import { TextInputSizeContext } from './TextInput.context.ts';
+import {
+  TextInputSizeContext,
+  TextInputValueSizeContext,
+} from './TextInput.context.ts';
 
 const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
   (props, ref) => {
@@ -31,7 +35,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       value,
       onChange,
       className,
-      transparent = false,
+      variant = 'default',
       style,
       wrapperClassName,
       wrapperStyle,
@@ -79,8 +83,11 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
     const wrapperCls = clsx(
       s.Wrapper,
       {
+        [s.Mini]: inputSize === 'mini',
         [s.Small]: inputSize === 's',
         [s.Large]: inputSize === 'l',
+        [s.XLarge]: inputSize === 'xl',
+        [s.Transparent]: variant === 'transparent',
       },
       wrapperClassName
     );
@@ -90,7 +97,6 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       {
         [s.Invalid]: inputInvalid,
         [s.Readonly]: readonlyStyles && restProps.readOnly,
-        [s.Transparent]: transparent,
       },
       className,
       inputConfig.className
@@ -120,6 +126,7 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
               ActionIsland,
               CustomIsland,
               LoadingIsland,
+              CharCounterIsland,
             ])
           ) {
             islandElements.push(element);
@@ -213,29 +220,38 @@ const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
       );
     }
 
+    const valueSize = useMemo(() => {
+      return {
+        valueLength: inputValue?.length ?? 0,
+        maxLength: restProps.maxLength,
+      };
+    }, [inputValue, restProps.maxLength]);
+
     return (
       <div className={wrapperCls} style={wrapperStyles}>
         <TextInputSizeContext.Provider value={inputSize || 'm'}>
-          {inputElement}
-          {leftIslands.length ? (
-            <div
-              ref={leftIslandsContainerRef}
-              className={s.LeftIslands}
-              data-altrone-island="left"
-            >
-              {leftIslands}
-            </div>
-          ) : null}
-          {rightIslands.length ? (
-            <div
-              ref={rightIslandsContainerRef}
-              className={s.RightIslands}
-              data-altrone-island="right"
-            >
-              {rightIslands}
-            </div>
-          ) : null}
-          {nonIslandElements}
+          <TextInputValueSizeContext.Provider value={valueSize}>
+            {inputElement}
+            {leftIslands.length ? (
+              <div
+                ref={leftIslandsContainerRef}
+                className={s.LeftIslands}
+                data-altrone-island="left"
+              >
+                {leftIslands}
+              </div>
+            ) : null}
+            {rightIslands.length ? (
+              <div
+                ref={rightIslandsContainerRef}
+                className={s.RightIslands}
+                data-altrone-island="right"
+              >
+                {rightIslands}
+              </div>
+            ) : null}
+            {nonIslandElements}
+          </TextInputValueSizeContext.Provider>
         </TextInputSizeContext.Provider>
       </div>
     );
@@ -248,6 +264,7 @@ const TextInputNamespace = Object.assign(TextInputComponent, {
   ActionIsland: ActionIsland,
   CustomIsland: CustomIsland,
   LoadingIsland: LoadingIsland,
+  CharCounterIsland: CharCounterIsland,
 });
 
 export { TextInputNamespace as TextInput };

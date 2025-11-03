@@ -1,7 +1,7 @@
 import { SelectContext, SelectProps } from './Select.types.ts';
 import { cloneElement, memo, useEffect, useId, useMemo } from 'react';
 import { Dropdown } from 'components/dropdown';
-import { Icon } from 'components/icon';
+import { Delete, Search, ChevronDown, ChevronUp, Check } from 'lucide-react';
 import { Scrollable } from 'components/scrollable';
 import { TextInput } from 'components/textInput';
 import s from './select.module.scss';
@@ -53,33 +53,34 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
 
   const menu = useMemo(
     () =>
-      ({ closePopup }: PopoverContentContext) => (
-        <Scrollable maxHeight="250px">
-          <Dropdown.Menu>
-            {filteredOptions.map((option, optionIndex) => {
-              const checked = Array.isArray(selectedOptions)
-                ? selectedOptions.includes(option)
-                : selectedOptions === option;
+      ({ closePopup }: PopoverContentContext) =>
+        (
+          <Scrollable maxHeight="250px">
+            <Dropdown.Menu>
+              {filteredOptions.map((option, optionIndex) => {
+                const checked = Array.isArray(selectedOptions)
+                  ? selectedOptions.includes(option)
+                  : selectedOptions === option;
 
-              return (
-                <Dropdown.Checkbox
-                  checked={checked}
-                  focused={checked}
-                  onChange={() => {
-                    selectValue(option.value);
-                    if (!multiple) {
-                      closePopup();
-                    }
-                  }}
-                  key={optionIndex}
-                  label={String(option.label)}
-                />
-              );
-            })}
-          </Dropdown.Menu>
-        </Scrollable>
-      ),
-    [filteredOptions, selectedOptions, multiple, selectValue],
+                return (
+                  <Dropdown.Checkbox
+                    checked={checked}
+                    focused={checked}
+                    onChange={() => {
+                      selectValue(option.value);
+                      if (!multiple) {
+                        closePopup();
+                      }
+                    }}
+                    key={optionIndex}
+                    label={String(option.label)}
+                  />
+                );
+              })}
+            </Dropdown.Menu>
+          </Scrollable>
+        ),
+    [filteredOptions, selectedOptions, multiple, selectValue]
   );
 
   const cls = clsx(s.Select, className, selectConfig.className);
@@ -134,6 +135,7 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
         focusTrapTargets={searchMode ? ['reference'] : ['content']}
         defaultListNavigationIndex={-1}
         listNavigation
+        overlap
       >
         {({ opened }) => {
           if (Component) {
@@ -173,7 +175,7 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
                 <TextInput.ActionIsland
                   placement="right"
                   label="Clear"
-                  icon={<Icon i="backspace" />}
+                  icon={<Delete />}
                   showLabel={false}
                   disabled={false}
                   onClick={clearValue}
@@ -183,15 +185,13 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
                 className={s.ArrowIcon}
                 placement="right"
                 icon={
-                  <Icon
-                    i={
-                      searchMode
-                        ? 'search'
-                        : opened
-                          ? 'expand_less'
-                          : 'expand_more'
-                    }
-                  />
+                  searchMode ? (
+                    <Search />
+                  ) : opened ? (
+                    <ChevronUp />
+                  ) : (
+                    <ChevronDown />
+                  )
                 }
               />
             </TextInput>

@@ -1,36 +1,23 @@
 @import 'src/global/mixins';
 
-:global([data-altrone-root='true']) {
-  --action-island-background-color: var(--interactive-a1);
-  --action-island-text-color: var(--text-2);
-  --action-island-hover-background-color: var(--interactive-a2);
-  --action-island-active-background-color: var(--interactive-a3);
-  --action-island-text-size: 12px;
-  --action-island-rounding: 12px;
-  --action-island-size: 24px;
-}
-
 .ActionIsland {
-  --bgColor: var(--action-island-background-color);
-  --fgColor: var(--action-island-text-color);
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: var(--action-island-size);
-  min-width: var(--action-island-size);
+  height: var(--text-input-action-island-size);
+  min-width: var(--text-input-action-island-size);
   width: fit-content;
-  color: var(--action-island-text-color);
+  color: var(--text-input-action-island-text-color);
   font-weight: 500;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   pointer-events: all;
-  border-radius: var(--action-island-rounding);
+  border-radius: var(--text-input-action-island-rounding);
   border: none;
   gap: var(--xs-gap);
-  padding: 4px 8px;
-  background-color: var(--action-island-background-color);
+  padding: 4px var(--text-input-action-island-horizontal-offset);
+  background-color: var(--text-input-action-island-background-color);
   cursor: pointer;
   outline: none;
   transition: background-color 0.2s linear, color 0.2s linear;
@@ -41,23 +28,23 @@
 
   &:hover,
   &:focus-visible {
-    background-color: var(--action-island-hover-background-color);
+    background-color: var(--text-input-action-island-hover-background-color);
   }
 
   &:active {
-    background-color: var(--action-island-active-background-color);
+    background-color: var(--text-input-action-island-active-background-color);
   }
 }
 
 .Icon {
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-size: var(--text-input-action-island-icon-size);
 }
 
 .Label {
   font-weight: 500;
-  font-size: var(--action-island-text-size);
+  font-size: var(--text-input-action-island-text-size);
 }
 
 .OnlyIcon {
@@ -65,14 +52,14 @@
 }
 
 .Danger {
-  --action-island-text-color: var(--danger-color);
+  --text-input-action-island-text-color: var(--danger-color);
 
   &:hover,
   &:focus-visible {
-    --action-island-text-color: var(--danger-color);
+    --text-input-action-island-text-color: var(--danger-color);
   }
 
   &:active {
-    --action-island-text-color: var(--danger-color);
+    --text-input-action-island-text-color: var(--danger-color);
   }
 }

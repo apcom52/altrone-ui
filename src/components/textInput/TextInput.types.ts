@@ -7,6 +7,7 @@ export interface TextInputProps
       React.InputHTMLAttributes<HTMLInputElement>,
       'onChange' | 'size' | 'children'
     > {
+  variant?: 'default' | 'transparent';
   value?: string;
   onChange?: (value: string, event: ChangeEvent) => void;
   wrapperClassName?: string;
@@ -14,7 +15,6 @@ export interface TextInputProps
   invalid?: boolean;
   size?: Size;
   rainbowEffect?: boolean;
-  transparent?: boolean;
   Component?: ReactElement;
   readonlyStyles?: boolean;
 }
@@ -48,5 +48,10 @@ export interface ActionIslandProps
 
 export interface CustomIslandProps
   extends React.HTMLAttributes<HTMLDivElement> {
+  placement?: 'left' | 'right';
+}
+
+export interface CharCounterIslandProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   placement?: 'left' | 'right';
 }

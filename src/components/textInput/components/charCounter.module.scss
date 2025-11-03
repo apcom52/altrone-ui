@@ -1,0 +1,15 @@
+@import 'src/global/mixins';
+
+.CharCounterIsland {
+  color: inherit;
+  font-size: var(--text-input-font-size);
+  line-height: 20px;
+  font-weight: 550;
+  pointer-events: none;
+  padding: 0 4px;
+  min-width: var(--text-input-island-height);
+}
+
+.InvalidChars {
+  color: var(--danger-color);
+}
