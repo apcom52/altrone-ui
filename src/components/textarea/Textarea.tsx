@@ -8,7 +8,10 @@ import inputStyles from '../textInput/textInput.module.scss';
 import { useFormField } from '../form/components/Field.tsx';
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, style, name, invalid, disabled, size, ...restProps }, ref) => {
+  (
+    { className, style, name, invalid, disabled, size, children, ...restProps },
+    ref
+  ) => {
     const { textarea: textareaConfig = {} } = useConfiguration();
 
     const {
@@ -32,7 +35,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         [inputStyles.Invalid]: inputInvalid,
       },
       textareaConfig.className,
-      className,
+      className
     );
     const styles = {
       ...textareaConfig.style,
@@ -52,5 +55,5 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         {...restProps}
       />
     );
-  },
+  }
 );
