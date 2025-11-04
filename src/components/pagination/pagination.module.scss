@@ -1,83 +1,47 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --paginationBackgroundColor: var(--default-200);
-  --paginationTextColor: var(--default-700);
-  --paginationHoverBackgroundColor: var(--default-300);
-  --paginationPressedBackgroundColor: var(--default-400);
-}
-
-:global(.AltroneDark) {
-  --paginationBackgroundColor: var(--default-700);
-  --paginationTextColor: var(--default-50);
-  --paginationHoverBackgroundColor: var(--default-600);
-  --paginationPressedBackgroundColor: var(--default-500);
+:global([data-altrone-root='true']) {
+  --pagination-background-color: var(--interactive-1);
+  --pagination-text-color: var(--text-2);
+  --pagination-hover-text-color: var(--accent-12);
+  --pagination-rounding: 16px;
+  --pagination-size: 32px;
+  --pagination-gap: 4px;
 }
 
 .Pagination {
   display: flex;
   align-items: center;
   width: fit-content;
-  padding: 2px;
-  background: var(--paginationBackgroundColor);
-  height: 24px;
-  border-radius: 6px;
+  padding: 4px;
+  background: var(--pagination-background-color);
+  height: var(--pagination-size);
+  border-radius: var(--pagination-rounding);
 
   @include no-selection;
 }
 
-.NavButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  font-size: 14px;
-  padding: 0;
-  color: var(--paginationTextColor);
-  transition: background-color 0.2s ease;
-
-  @include no-appearance;
-  background: none;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-
-  @include focus;
-
-  &:hover, &:focus-visible {
-    background: var(--paginationHoverBackgroundColor);
-  }
-
-  &:active {
-    background: var(--paginationPressedBackgroundColor);
-  }
-
-  &:disabled {
-    @include disabled;
-  }
-}
-
 .CurrentPage {
-  min-width: 80px;
-  height: 20px;
-  @include no-appearance;
-  @include sm-paragraph;
-  color: var(--paginationTextColor);
-  border-radius: 4px;
+  min-width: 64px;
+  color: var(--pagination-text-color);
   transition: background-color 0.2s ease;
 
   background: transparent;
   border: none;
   cursor: pointer;
 
-  @include focus;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0 12px;
 
-  &:hover, &:focus-visible, &.Opened {
-    background: var(--paginationHoverBackgroundColor);
-  }
+  transition: color 0.2s ease;
 
-  &:disabled {
-    @include disabled;
+  &:hover,
+  &:focus-visible {
+    color: var(--pagination-hover-text-color);
   }
+}
+
+.Disabled {
+  color: var(--disabled-text-color);
 }

@@ -1,9 +1,9 @@
 import { memo, useEffect, useState } from 'react';
-import { Icon } from '../icon';
 import s from './pagination.module.scss';
 import clsx from 'clsx';
 import { Popover } from '../popover';
 import { Flex } from '../flex';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { NumberInput } from '../numberInput';
 import { Button } from '../button';
 import { PaginationProps } from './Pagination.types.ts';
@@ -16,7 +16,7 @@ export const Pagination = memo<PaginationProps>(
     const t = useLocalization();
 
     const [virtualPage, setVirtualPage] = useState<number | undefined>(
-      currentPage,
+      currentPage
     );
 
     useEffect(() => {
@@ -63,29 +63,29 @@ export const Pagination = memo<PaginationProps>(
         style={styles}
         {...restProps}
       >
-        <button
-          type="button"
-          className={s.NavButton}
+        <Button
+          size="s"
           onClick={onPrevPageClick}
           disabled={currentPage <= 1}
-        >
-          <Icon i="arrow_back_ios_new" />
-        </button>
+          icon={<ArrowLeft />}
+          label={'Previous page'}
+          showLabel={false}
+        />
         <Popover
-          enabled={totalPages > 1}
           title={t('pagination.title')}
-          placement="top"
+          placement="bottom"
           showCloseButton
+          overlap
           content={({ closePopup }) => (
-            <Flex direction="vertical" gap="m" align="end">
+            <Flex direction="vertical" gap="m" align="center">
               <NumberInput
                 value={virtualPage}
-                min={undefined}
+                min={1}
                 onChange={setVirtualPage}
                 aria-label={t('pagination.title')}
               />
               <Button
-                severity="primary"
+                variant="submit"
                 label={t('pagination.action')}
                 onClick={() => {
                   navigateToPage();
@@ -113,15 +113,15 @@ export const Pagination = memo<PaginationProps>(
             </button>
           )}
         </Popover>
-        <button
-          type="button"
-          className={s.NavButton}
+        <Button
+          size="s"
           onClick={onNextPageClick}
           disabled={currentPage >= totalPages}
-        >
-          <Icon i="arrow_forward_ios" />
-        </button>
+          icon={<ArrowRight />}
+          label={'Next page'}
+          showLabel={false}
+        />
       </div>
     );
-  },
+  }
 );
