@@ -6,7 +6,7 @@
   bottom: 5vh;
   left: 50vw;
   transform: translateX(-50%);
-  z-index: var(--level-popover);
+  z-index: 1900;
 }
 
 .Progress {

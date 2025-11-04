@@ -8,6 +8,7 @@ import { PhotoViewerToolbarProps } from '../PhotoViewer.types.ts';
 import { Popover } from 'components/popover';
 import { Scrollable } from 'components/scrollable';
 import { useLocalization } from '../../application/useLocalization.tsx';
+import { ArrowLeft, ArrowRight, X } from 'lucide-react';
 
 export const PhotoViewerToolbar = memo<PhotoViewerToolbarProps>(
   ({
@@ -22,8 +23,66 @@ export const PhotoViewerToolbar = memo<PhotoViewerToolbarProps>(
     const t = useLocalization();
 
     return (
-      <Toolbar compact className={s.PhotoViewerToolbar}>
-        <Toolbar.Action
+      <Toolbar className={s.PhotoViewerToolbar}>
+        <Toolbar.Center>
+          <Toolbar.Group>
+            <Toolbar.Action
+              icon={<ArrowLeft />}
+              label={t('photoViewer.previous')}
+              showLabel={false}
+              disabled={currentIndex === 0}
+              onClick={onPrevious}
+            />
+            <Toolbar.Action
+              icon={<ArrowRight />}
+              label={t('photoViewer.next')}
+              showLabel={false}
+              disabled={currentIndex === totalPhotos - 1}
+              onClick={onNext}
+            />
+          </Toolbar.Group>
+          {description ? (
+            <Toolbar.Group>
+              <Popover
+                title={caption || t('photoViewer.description')}
+                style={{
+                  maxWidth: '280px',
+                  width: '280px',
+                }}
+                placement="top"
+                showCloseButton
+                content={
+                  <Scrollable
+                    maxHeight="300px"
+                    offset={{ top: 0, left: 0, right: 4, bottom: 0 }}
+                  >
+                    <Text.Paragraph size="s">
+                      {description || t('photoViewer.noDescription')}
+                    </Text.Paragraph>
+                  </Scrollable>
+                }
+                overlap
+              >
+                <Toolbar.Action
+                  label={t('photoViewer.description')}
+                  showLabel={true}
+                  onClick={() => {
+                    console.log('description');
+                  }}
+                />
+              </Popover>
+            </Toolbar.Group>
+          ) : null}
+          <Toolbar.Group>
+            <Toolbar.Action
+              icon={<X />}
+              label={t('photoViewer.close')}
+              showLabel={false}
+              onClick={onClose}
+            />
+          </Toolbar.Group>
+        </Toolbar.Center>
+        {/* <Toolbar.Action
           icon={<Icon i="arrow_back" />}
           label={t('photoViewer.previous')}
           showLabel={false}
@@ -88,8 +147,8 @@ export const PhotoViewerToolbar = memo<PhotoViewerToolbarProps>(
           label={t('common.close')}
           showLabel={false}
           onClick={onClose}
-        />
+        /> */}
       </Toolbar>
     );
-  },
+  }
 );
