@@ -15,6 +15,9 @@ import { FileUtils } from 'utils';
 import { useFilePickerContext } from '../FilePicker.context.ts';
 import { deleteFileRequest } from '../FilePicker.utils.ts';
 import { useLocalization } from '../../application/useLocalization.tsx';
+import { CloseButton } from 'components/closeButton/CloseButton.tsx';
+import { RotateCw } from 'lucide-react';
+import { Button } from 'components/button/Button.tsx';
 
 export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
   const t = useLocalization();
@@ -38,11 +41,11 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
         setProgress(
           uploadedBytes > file?.size
             ? 100
-            : Math.round((uploadedBytes / file?.size) * 100),
+            : Math.round((uploadedBytes / file?.size) * 100)
         );
       }
     },
-    [file?.size],
+    [file?.size]
   );
 
   const setStartStatus = useCallback(() => {
@@ -170,24 +173,16 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
       ) : null}
       {status === 'loading' ? <Loading size="12px" strokeWidth="1px" /> : null}
       {status === 'failed' ? (
-        <button
-          type="button"
-          className={s.Close}
-          title={t('common.refresh')}
+        <Button
+          size="s"
+          icon={<RotateCw />}
+          label={t('common.refresh')}
           onClick={() => setStatus('selected')}
-        >
-          <Icon i="refresh" />
-        </button>
+          showLabel={false}
+        />
       ) : null}
       {status !== 'loading' ? (
-        <button
-          type="button"
-          className={s.Close}
-          title={t('common.delete')}
-          onClick={onRemoveClick}
-        >
-          <Icon i="close" />
-        </button>
+        <CloseButton size="s" onClick={onRemoveClick} />
       ) : null}
     </div>
   );

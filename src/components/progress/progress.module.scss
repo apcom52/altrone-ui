@@ -1,15 +1,9 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --progressBackgroundColor: var(--default-100);
-  --progressActiveBackgroundColor: var(--default-300);
-  --progressTextColor: var(--default-700);
-}
-
-:global(.AltroneDark) {
-  --progressBackgroundColor: var(--default-800);
-  --progressActiveBackgroundColor: var(--default-600);
-  --progressTextColor: var(--default-200);
+:global([data-altrone-root='true']) {
+  --progress-background-color: var(--interactive-1);
+  --progress-active-background-color: var(--accent-4);
+  --progress-text-color: var(--accent-12);
 }
 
 .Progress {
@@ -17,9 +11,9 @@
   position: relative;
   align-items: center;
   width: 100%;
-  border-radius: 6px;
-  height: 24px;
-  background-color: var(--progressBackgroundColor);
+  border-radius: 16px;
+  height: 32px;
+  background-color: var(--progress-background-color);
   overflow: hidden;
   padding: 4px 8px;
 
@@ -31,17 +25,18 @@
   left: 0;
   top: 0;
   height: 100%;
-  background-color: var(--progressActiveBackgroundColor);
+  background-color: var(--progress-active-background-color);
 }
 
 .Label {
-  @include label;
   z-index: 1;
-  color: var(--progressTextColor);
+  color: var(--progress-text-color);
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .Small {
-  height: 20px;
+  height: 24px;
 
   .Label {
     @include small-label;
@@ -49,7 +44,7 @@
 }
 
 .Large {
-  height: 32px;
+  height: 40px;
 
   .Label {
     @include label-heading;

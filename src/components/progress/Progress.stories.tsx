@@ -23,7 +23,7 @@ const story: Meta<typeof Progress> = {
 export const FlexLayout: StoryObj<typeof Flex> = {
   name: 'Using Flex',
   render: (args) => (
-    <Flex {...args} gap="l">
+    <Flex direction="vertical" {...args} gap="l">
       <Text.Heading role="inner">Standard Progress bars</Text.Heading>
       <Flex direction="horizontal" gap="l">
         <Progress value={8} max={100} />
