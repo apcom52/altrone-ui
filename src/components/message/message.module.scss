@@ -1,35 +1,27 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --message-background-color: var(--messageBackgroundColor);
-  --message-heading-color: var(--headingTextColor);
-  --message-body-color: var(--bodyTextColor);
-  --message-close-button-color: var(--default-600);
-  --message-left-border-color: var(--default-300);
-  --message-icon-color: var(--default-900);
-  --message-padding: var(--l-gap);
-  --message-rounding: 8px;
+:global([data-altrone-root='true']) {
+  --message-background-color: var(--background-2);
+  --message-border-color: var(--border-1);
+  --message-accent-text-color: var(--accent-12);
+  --message-text-color: var(--text-2);
+  --message-icon-size: 24px;
+
+  --message-padding: 8px;
+  --message-rounding: 24px;
   --message-border-width: 2px;
 }
 
 .Message {
-  --closeButtonBackgroundColor: transparent;
-  --closeButtonHoverBackgroundColor: var(--default-200);
-  --closeButtonPressBackgroundColor: var(--default-200);
-  --closeButtonTextColor: var(--message-heading-color);
-  --closeButtonHoverTextColor: var(--message-heading-color);
-  --closeButtonPressTextColor: var(--message-heading-color);
-
   padding: var(--message-padding);
   background: var(--message-background-color);
   border-radius: 0 var(--message-rounding) var(--message-rounding) 0;
-  border-left: var(--message-border-width) solid
-    var(--message-left-border-color);
+  border-left: var(--message-border-width) solid var(--message-border-color);
 }
 
 .Icon {
-  height: 24px;
-  font-size: 24px;
+  height: var(--message-icon-size);
+  font-size: var(--message-icon-size);
   color: var(--message-icon-color);
 }
 
@@ -40,13 +32,15 @@
 }
 
 .Header {
-  color: var(--message-heading-color);
-  @include group-heading;
+  color: var(--message-accent-text-color);
+  font-weight: 500;
+  font-size: 14px;
 }
 
 .Body {
-  color: var(--message-body-color);
-  @include sm-paragraph;
+  color: var(--message-text-color);
+  font-size: 12px;
+  font-weight: 400;
 }
 
 .Actions {
@@ -56,63 +50,26 @@
 }
 
 .RolePrimary {
-  --message-background-color: var(--primary-50);
-  --message-heading-color: var(--primary-900);
-  --message-body-color: var(--primary-700);
-  --message-close-button-color: var(--primary-900);
-  --message-left-border-color: var(--primary-200);
-  --message-icon-color: var(--primary-900);
-  --message-padding: var(--l-gap);
-  --message-rounding: 8px;
-  --message-border-width: 2px;
-
-  --closeButtonHoverBackgroundColor: var(--primary-100);
-  --closeButtonPressBackgroundColor: var(--primary-200);
+  --message-background-color: var(--accent-2);
+  --message-border-color: var(--accent-6);
 }
 
 .RoleSuccess {
-  --message-background-color: var(--success-50);
-  --message-heading-color: var(--success-900);
-  --message-body-color: var(--success-700);
-  --message-close-button-color: var(--success-900);
-  --message-left-border-color: var(--success-200);
-  --message-icon-color: var(--success-900);
-  --message-padding: var(--l-gap);
-  --message-rounding: 8px;
-  --message-border-width: 2px;
-
-  --closeButtonHoverBackgroundColor: var(--success-100);
-  --closeButtonPressBackgroundColor: var(--success-200);
+  --message-background-color: var(--teal-2);
+  --message-border-color: var(--teal-6);
+  --message-accent-text-color: var(--teal-12);
 }
 
 .RoleWarning {
-  --message-background-color: var(--warning-50);
-  --message-heading-color: var(--warning-900);
-  --message-body-color: var(--warning-700);
-  --message-close-button-color: var(--warning-900);
-  --message-left-border-color: var(--warning-200);
-  --message-icon-color: var(--warning-900);
-  --message-padding: var(--l-gap);
-  --message-rounding: 8px;
-  --message-border-width: 2px;
-
-  --closeButtonHoverBackgroundColor: var(--warning-100);
-  --closeButtonPressBackgroundColor: var(--warning-200);
+  --message-background-color: var(--amber-3);
+  --message-border-color: var(--amber-6);
+  --message-accent-text-color: var(--amber-12);
 }
 
 .RoleDanger {
-  --message-background-color: var(--danger-50);
-  --message-heading-color: var(--danger-900);
-  --message-body-color: var(--danger-700);
-  --message-close-button-color: var(--danger-900);
-  --message-left-border-color: var(--danger-200);
-  --message-icon-color: var(--danger-900);
-  --message-padding: var(--l-gap);
-  --message-rounding: 8px;
-  --message-border-width: 2px;
-
-  --closeButtonHoverBackgroundColor: var(--danger-100);
-  --closeButtonPressBackgroundColor: var(--danger-200);
+  --message-background-color: var(--red-3);
+  --message-border-color: var(--red-6);
+  --message-accent-text-color: var(--red-12);
 }
 
 .Compact {
@@ -140,79 +97,5 @@
 
   .Body {
     display: inline;
-  }
-}
-
-:global(.AltroneDark) {
-  --message-background-color: var(--default-800);
-  --message-heading-color: var(--default-50);
-  --message-body-color: var(--default-200);
-  --message-close-button-color: var(--default-400);
-  --message-left-border-color: var(--default-500);
-  --message-icon-color: var(--default-50);
-
-  .Message {
-    --closeButtonHoverBackgroundColor: var(--default-700);
-    --closeButtonPressBackgroundColor: var(--default-700);
-  }
-
-  .RolePrimary {
-    --message-background-color: var(--default-800);
-    --message-heading-color: var(--primary-500);
-    --message-body-color: var(--default-400);
-    --message-close-button-color: var(--primary-900);
-    --message-left-border-color: var(--primary-500);
-    --message-icon-color: var(--primary-500);
-
-    --closeButtonHoverBackgroundColor: var(--default-700);
-    --closeButtonPressBackgroundColor: var(--default-700);
-    --closeButtonTextColor: var(--default-50);
-    --closeButtonHoverTextColor: var(--default-50);
-    --closeButtonPressTextColor: var(--default-50);
-  }
-
-  .RoleSuccess {
-    --message-background-color: var(--default-800);
-    --message-heading-color: var(--success-500);
-    --message-body-color: var(--default-400);
-    --message-close-button-color: var(--success-900);
-    --message-left-border-color: var(--success-500);
-    --message-icon-color: var(--success-500);
-
-    --closeButtonHoverBackgroundColor: var(--default-700);
-    --closeButtonPressBackgroundColor: var(--default-700);
-    --closeButtonTextColor: var(--default-50);
-    --closeButtonHoverTextColor: var(--default-50);
-    --closeButtonPressTextColor: var(--default-50);
-  }
-
-  .RoleWarning {
-    --message-background-color: var(--default-800);
-    --message-heading-color: var(--warning-500);
-    --message-body-color: var(--default-400);
-    --message-close-button-color: var(--warning-900);
-    --message-left-border-color: var(--warning-500);
-    --message-icon-color: var(--warning-500);
-
-    --closeButtonHoverBackgroundColor: var(--default-700);
-    --closeButtonPressBackgroundColor: var(--default-700);
-    --closeButtonTextColor: var(--default-50);
-    --closeButtonHoverTextColor: var(--default-50);
-    --closeButtonPressTextColor: var(--default-50);
-  }
-
-  .RoleDanger {
-    --message-background-color: var(--default-800);
-    --message-heading-color: var(--danger-500);
-    --message-body-color: var(--default-400);
-    --message-close-button-color: var(--danger-900);
-    --message-left-border-color: var(--danger-500);
-    --message-icon-color: var(--danger-500);
-
-    --closeButtonHoverBackgroundColor: var(--default-700);
-    --closeButtonPressBackgroundColor: var(--default-700);
-    --closeButtonTextColor: var(--default-50);
-    --closeButtonHoverTextColor: var(--default-50);
-    --closeButtonPressTextColor: var(--default-50);
   }
 }

@@ -23,20 +23,17 @@ export const Message = memo<MessageProps>(
   }) => {
     const { message: messageConfig = {} } = useConfiguration();
 
-    // TODO: in 4.0 version we need to remove role prop
-    const messageRole = severity ?? role ?? 'default';
-
     const cls = clsx(
       s.Message,
       {
-        [s.RolePrimary]: messageRole === 'primary',
-        [s.RoleSuccess]: messageRole === 'success',
-        [s.RoleWarning]: messageRole === 'warning',
-        [s.RoleDanger]: messageRole === 'danger',
+        [s.RolePrimary]: severity === 'primary',
+        [s.RoleSuccess]: severity === 'success',
+        [s.RoleWarning]: severity === 'warning',
+        [s.RoleDanger]: severity === 'danger',
         [s.Compact]: compact,
       },
       className,
-      messageConfig.className,
+      messageConfig.className
     );
 
     const styles = {
@@ -75,5 +72,5 @@ export const Message = memo<MessageProps>(
         {onClose ? <CloseButton onClick={onClose} /> : null}
       </Flex>
     );
-  },
+  }
 );

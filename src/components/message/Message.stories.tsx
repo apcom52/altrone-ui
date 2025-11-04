@@ -3,6 +3,7 @@ import { Button, Flex, Icon, Message, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { useBoolean } from '../../utils';
+import { Info, Check, AlertCircle, X } from 'lucide-react';
 
 const story: Meta<typeof Message> = {
   title: 'Components/Display/Message',
@@ -32,7 +33,7 @@ export const MessageStory: StoryObj<typeof Flex> = {
         Incorrect code may impact your website's performance.
       </Message>
       <Message
-        icon={<Icon i="info" />}
+        icon={<Info />}
         header="The data export you requested is ready!"
         actions={[
           <Button label="View the data" />,
@@ -41,18 +42,18 @@ export const MessageStory: StoryObj<typeof Flex> = {
         onClose={() => {}}
       />
       <Message
-        icon={<Icon i="info" />}
+        icon={<Info />}
         header="The data export you requested is ready!"
       />
       <Message
-        icon={<Icon i="info" />}
+        icon={<Info />}
         header="A new software update is available. See what's new in version 2.0."
         severity="primary"
         actions={[<Button label="View the changelog" />]}
         onClose={() => {}}
       />
       <Message
-        icon={<Icon i="highlight_off" />}
+        icon={<AlertCircle />}
         header="There was a problem with your submission"
         severity="danger"
       >
@@ -63,7 +64,7 @@ export const MessageStory: StoryObj<typeof Flex> = {
       <Text.Heading variant="inner">Compact messages</Text.Heading>
 
       <Message
-        icon={<Icon i="info" />}
+        icon={<Info />}
         header="You have no credits left!"
         severity="warning"
         actions={[<Button severity="warning" label="Upgrade" transparent />]}
@@ -72,14 +73,14 @@ export const MessageStory: StoryObj<typeof Flex> = {
         Upgrade to continue.
       </Message>
       <Message
-        icon={<Icon i="check" />}
+        icon={<Check />}
         header="Successully uploaded!"
         severity="success"
         compact
         onClose={() => {}}
       />
       <Message
-        icon={<Icon i="info" />}
+        icon={<Info />}
         header="Warning"
         severity="warning"
         compact
@@ -88,7 +89,7 @@ export const MessageStory: StoryObj<typeof Flex> = {
         Your password strength is too low.
       </Message>
       <Message
-        icon={<Icon i="info" />}
+        icon={<Info />}
         header="Compact message with long text content"
         severity="warning"
         compact
@@ -99,7 +100,7 @@ export const MessageStory: StoryObj<typeof Flex> = {
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
       </Message>
       <Message
-        icon={<Icon i="info" />}
+        icon={<Info />}
         header="Compact message with long text content and actions"
         severity="danger"
         compact
@@ -114,7 +115,7 @@ export const MessageStory: StoryObj<typeof Flex> = {
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
       </Message>
       <Message
-        icon={<Icon i="info" />}
+        icon={<Info />}
         header="Did you know?"
         severity="primary"
         compact
@@ -123,7 +124,7 @@ export const MessageStory: StoryObj<typeof Flex> = {
         Here's some additional information that helps to clarify the message.
       </Message>
       <Message
-        icon={<Icon i="sentiment_very_dissatisfied" />}
+        icon={<AlertCircle />}
         header="Whoops! Something went wrong."
         severity="danger"
         compact
