@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { Breadcrumbs } from './Breadcrumbs.tsx';
+import { Home } from 'lucide-react';
 
 const story: Meta<typeof Breadcrumbs> = {
   title: 'Components/Navigation/Breadcrumbs',
@@ -18,9 +19,9 @@ export const BottomNavigationStory: StoryObj<typeof Breadcrumbs> = {
       <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Standard Breadcrumbs</Text.Heading>
         <Breadcrumbs data-testid="breadcrumbs">
-          <Breadcrumbs.Item href="#" icon={<Icon i="home" />} label="Home" />
+          <Breadcrumbs.Item href="#" icon={<Home />} label="Home" />
           <Breadcrumbs.Item href="#" label="Altrone" />
-          <Breadcrumbs.Item label="Altrone Next" />
+          <Breadcrumbs.Item label="Altrone Next" current />
         </Breadcrumbs>
       </Flex>
     );

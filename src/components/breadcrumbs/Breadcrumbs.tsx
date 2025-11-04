@@ -16,18 +16,14 @@ const BreadcrumbsComponent = memo<BreadcrumbsProps>(
   ({ children, className, style, ...restProps }) => {
     const { breadcrumbs: breadcrumbsConfig = {} } = useConfiguration();
 
-    const cls = clsx(
-      s.BottomNavigation,
-      className,
-      breadcrumbsConfig.className,
-    );
+    const cls = clsx(s.Breadcrumbs, className, breadcrumbsConfig.className);
     const styles = {
       ...breadcrumbsConfig.style,
       ...style,
     };
 
     const validChildren = Children.toArray(children).filter(
-      (child) => typeof child === 'object' && isValidElement(child),
+      (child) => typeof child === 'object' && isValidElement(child)
     ) as ReactElement[];
 
     return (
@@ -35,6 +31,7 @@ const BreadcrumbsComponent = memo<BreadcrumbsProps>(
         <List
           className={s.Breadcrumbs}
           data={validChildren}
+          direction="horizontal"
           gap="m"
           renderItem={({ item, currentIndex }) =>
             cloneElement(item, {
@@ -46,7 +43,7 @@ const BreadcrumbsComponent = memo<BreadcrumbsProps>(
         />
       </div>
     );
-  },
+  }
 );
 
 const BreadcrumbsNamespace = Object.assign(BreadcrumbsComponent, {

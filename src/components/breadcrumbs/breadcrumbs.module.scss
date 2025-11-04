@@ -1,9 +1,9 @@
-:global(:root) {
-  --breadcrumbsSeparatorColor: var(--default-300);
-}
+:global([data-altrone-root='true']) {
+  --breadcrumbs-separator-color: var(--border-1);
+  --breadcrumbs-item-text-color: var(--text-2);
+  --breadcrumbs-current-item-text-color: var(--accent-12);
 
-:global(.AltroneDark) {
-  --breadcrumbsSeparatorColor: var(--default-600);
+  --breadcrumbs-text-size: 14px;
 }
 
 .Breadcrumbs {
@@ -14,5 +14,5 @@
 }
 
 .Separator {
-  color: var(--breadcrumbsSeparatorColor);
+  color: var(--breadcrumbs-separator-color);
 }
