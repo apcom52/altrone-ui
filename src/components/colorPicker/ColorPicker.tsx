@@ -15,9 +15,11 @@ import { useCallback } from 'react';
 const EMPTY_COLOR_PRESETS: ColorPreset[] = [];
 
 const SIZES: Record<Size, number> = {
-  s: 12,
-  m: 16,
-  l: 24,
+  mini: 16,
+  s: 20,
+  m: 24,
+  l: 28,
+  xl: 32,
 };
 
 export const ColorPicker = (props: ColorPickerProps) => {

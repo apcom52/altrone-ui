@@ -1,11 +1,7 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --loadingColor: var(--default-900);
-}
-
-:global(.AltroneDark) {
-  --loadingColor: var(--default-50);
+:global([data-altrone-root='true']) {
+  --loading-color: var(--text-2);
 }
 
 .Loading {

@@ -10,7 +10,7 @@ export const Avatar = memo((props: AvatarProps) => {
     firstName,
     lastName,
     size,
-    color = 'var(--default-200)',
+    color = 'var(--interactive-1)',
     imageSrc,
     className,
     style,
@@ -26,7 +26,7 @@ export const Avatar = memo((props: AvatarProps) => {
       [s.Large]: size === 'l',
     },
     className,
-    avatarConfig.className,
+    avatarConfig.className
   );
 
   const styles = {
@@ -37,8 +37,8 @@ export const Avatar = memo((props: AvatarProps) => {
 
   const textColor =
     GlobalUtils.getColorLuminance(color) === 'dark'
-      ? 'var(--default-50)'
-      : 'var(--default-900)';
+      ? 'var(--white)'
+      : 'var(--black)';
 
   const fullName = [firstName, lastName].join(' ').trim();
 

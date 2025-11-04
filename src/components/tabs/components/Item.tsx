@@ -5,10 +5,11 @@ import clsx from 'clsx';
 import { RenderFuncProp } from '../../../types';
 import { useConfiguration } from '../../configuration';
 import { Badge } from 'components/badge/Badge.tsx';
+import { motion } from 'framer-motion';
 
 const tabItemRenderFunc: RenderFuncProp<HTMLAnchorElement, TabsItemProps> = (
   ref,
-  props,
+  props
 ) => {
   const { label, icon, showLabel = true, badge, ...restProps } = props;
   const { tabs: { item: tabsItemConfig = {} } = {} } = useConfiguration();
@@ -22,8 +23,11 @@ const tabItemRenderFunc: RenderFuncProp<HTMLAnchorElement, TabsItemProps> = (
       title={label}
       {...restProps}
     >
+      {props.selected ? (
+        <motion.div className={s.Backdrop} layoutId="tabs-backdrop" />
+      ) : null}
       {icon ? <div className={s.Icon}>{icon}</div> : null}
-      {showLabel ? <div>{label}</div> : null}
+      {showLabel ? <div className={s.Label}>{label}</div> : null}
       {badge ? <Badge className={badgeCls}>{badge}</Badge> : null}
     </a>
   );
@@ -43,12 +47,12 @@ export const Item = forwardRef<HTMLAnchorElement, TabsItemProps>(
           tabsItemConfig.selectedClassName && props.selected,
       },
       className,
-      tabsItemConfig.className,
+      tabsItemConfig.className
     );
 
     return renderFunc(ref, {
       ...restProps,
       className: cls,
     });
-  },
+  }
 );

@@ -1,107 +1,71 @@
 @import 'src/global/mixins';
 
-/*
---tabs-background-color
---tabs-hover-background-color
---tabs-border-color
---tabs-text-color
---tabs-active-background-color
---tabs-active-border-color
---tabs-active-text-color
---tabs-gap
-*/
-
-:global(:root) {
-  --tabItemBackgroundColor: transparent;
-  --tabItemTextColor: var(--default-700);
-  --tabHoveredItemBackgroundColor: var(--default-200);
-  --tabHoveredItemTextColor: var(--default-700);
-  --tabSelectedItemBackgroundColor: transparent;
-  --tabSelectedItemTextColor: var(--default-900);
-
-  --tabs-item-background-color: var(--tabItemBackgroundColor);
-  --tabs-item-text-color: var(--tabItemTextColor);
-  --tabs-item-border-color: transparent;
-  --tabs-item-hover-background-color: var(--tabHoveredItemBackgroundColor);
-  --tabs-item-hover-border-color: transparent;
-  --tabs-item-hover-text-color: var(--tabHoveredItemTextColor);
-  --tabs-item-active-background-color: var(--tabSelectedItemBackgroundColor);
-  --tabs-item-active-border-color: var(--default-900);
-  --tabs-item-active-text-color: var(--tabSelectedItemTextColor);
-
-  --tabs-badge-background-color: var(--default-300);
-  --tabs-badge-text-color: var(--default-900);
-}
-
-:global(.AltroneDark) {
-  --tabItemBackgroundColor: transparent;
-  --tabItemTextColor: var(--default-200);
-  --tabHoveredItemBackgroundColor: var(--default-800);
-  --tabHoveredItemTextColor: var(--default-200);
-  --tabSelectedItemBackgroundColor: transparent;
-  --tabSelectedItemTextColor: var(--default-50);
-
-  --tabs-item-background-color: var(--tabItemBackgroundColor);
-  --tabs-item-text-color: var(--tabItemTextColor);
-  --tabs-item-border-color: transparent;
-  --tabs-item-hover-background-color: var(--tabHoveredItemBackgroundColor);
-  --tabs-item-hover-border-color: transparent;
-  --tabs-item-hover-text-color: var(--tabHoveredItemTextColor);
-  --tabs-item-active-background-color: var(--tabSelectedItemBackgroundColor);
-  --tabs-item-active-border-color: var(--default-50);
-  --tabs-item-active-text-color: var(--tabSelectedItemTextColor);
-
-  --tabs-badge-background-color: var(--default-700);
-  --tabs-badge-text-color: var(--default-50);
-}
-
 .Item {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 36px;
-  padding: 4px calc(8px + var(--tabs-gap));
+  height: var(--tabs-item-size);
+  padding: 4px 8px;
   background-color: var(--tabs-item-background-color);
   color: var(--tabs-item-text-color);
-  border-bottom: 2px solid var(--tabs-item-border-color);
   transition: background-color 0.2s linear;
+  font-size: var(--tabs-item-font-size);
+  font-weight: 500;
   gap: var(--s-gap);
-  z-index: 1;
+  z-index: 2;
+  border-radius: var(--tabs-item-rounding);
 
-  @include label-heading;
   @include no-selection;
   text-decoration: none;
   cursor: pointer;
 
-  @include focus;
-
   &:hover,
   &:focus-visible {
-    color: var(--tabs-item-hover-text-color);
-    border-bottom-color: var(--tabs-item-hover-border-color);
+    --tabs-item-background-color: var(--tabs-item-hover-background-color);
   }
 
   &.Selected,
   &:active {
-    background-color: var(--tabs-item-active-background-color);
-    color: var(--tabs-item-active-text-color);
-    border-bottom-color: var(--tabs-item-active-border-color);
-
+    z-index: 1;
     &:hover,
     &:focus-visible {
-      background-color: var(--tabSelectedItemBackgroundColor);
-      color: var(--tabSelectedItemTextColor);
+      --tabs-item-background-color: transparent;
     }
   }
 }
 
+.Backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--tabs-item-active-background-color);
+  backdrop-filter: blur(16px) saturate(180%);
+  border-radius: var(--tabs-item-rounding);
+  box-shadow: var(--shadow-1), var(--shadow-2);
+  z-index: 0;
+}
+
 .Icon {
-  font-size: 16px;
-  height: 16px;
+  font-size: var(--tabs-item-icon-size);
+  height: var(--tabs-item-icon-size);
+  z-index: 1;
+}
+
+.Label {
+  z-index: 1;
 }
 
 .Badge {
-  color: var(--tabs-badge-text-color);
-  background-color: var(--tabs-badge-background-color);
+  color: var(--tabs-item-bagde-text-color);
+  background-color: var(--tabs-item-bagde-background-color);
   margin-left: 2px;
+  margin-right: -4px;
+  font-size: var(--tabs-item-badge-text-size);
+  min-width: var(--tabs-item-badge-size);
+  min-height: var(--tabs-item-badge-size);
+  border-radius: var(--tabs-item-badge-rounding);
+  z-index: 1;
 }

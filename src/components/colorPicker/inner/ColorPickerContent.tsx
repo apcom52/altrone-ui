@@ -12,6 +12,7 @@ import { ColorPickerProps } from '../ColorPicker.types';
 import { ColorPreset } from './ColorPreset';
 import s from './colorPickerContent.module.scss';
 import { HexAlphaColorPicker } from 'react-colorful';
+import { Delete } from 'lucide-react';
 
 interface ColorPickerContentProps
   extends Pick<
@@ -71,7 +72,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
         onChange(undefined);
       }
     },
-    [hexR, hexG, hexB, onChange],
+    [hexR, hexG, hexB, onChange]
   );
 
   const handleRGBFieldBlur = useCallback(() => {
@@ -80,10 +81,9 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
     onChange(
       `#${(red || 0).toString(16).padStart(2, '0')}${(green || 0)
         .toString(16)
-        .padStart(
-          2,
-          '0',
-        )}${(blue || 0).toString(16).padStart(2, '0')}${alphaValue}`,
+        .padStart(2, '0')}${(blue || 0)
+        .toString(16)
+        .padStart(2, '0')}${alphaValue}`
     );
   }, [red, green, blue, onChange]);
 
@@ -102,7 +102,6 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
         <Tabs>
           <Tabs.Item
             icon={<Icon i="apps" />}
-            showLabel={false}
             label={t('colorPicker.savedColors')}
             onClick={() => setMode('presets')}
             selected={mode === 'presets'}
@@ -110,7 +109,6 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
           <Tabs.Item
             icon={<Icon i="palette" />}
             label={t('colorPicker.palette')}
-            showLabel={false}
             onClick={() => setMode('palette')}
             selected={mode === 'palette'}
           />
@@ -141,7 +139,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
           <Flex direction="horizontal" gap="s">
             <TextInput
               maxLength={6}
-              style={{ width: 84 }}
+              style={{ width: 100 }}
               placeholder="000000"
               value={localColor}
               onChange={setLocalColor}
@@ -197,11 +195,16 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
         </Flex>
       ) : null}
       {props.clearable ? (
-        <Flex>
+        <Flex justify="center" gap="s">
           <Button
-            leftIcon={<Icon i="backspace" />}
+            icon={<Delete />}
             label={t('common.clear')}
             onClick={handleClearClick}
+          />
+          <Button
+            label={t('common.apply')}
+            variant="submit"
+            onClick={props.closePopup}
           />
         </Flex>
       ) : null}
