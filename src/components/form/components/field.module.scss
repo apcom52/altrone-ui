@@ -1,17 +1,10 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --formFieldLabelTextColor: var(--default-700);
-  --formFieldDescriptionTextColor: var(--default-500);
-  --formFieldRequiredMarkColor: var(--danger-600);
-  --formFieldErrorMessageTextColor: var(--danger-700);
-}
-
-:global(.AltroneDark) {
-  --formFieldLabelTextColor: var(--default-200);
-  --formFieldDescriptionTextColor: var(--default-500);
-  --formFieldRequiredMarkColor: var(--danger-400);
-  --formFieldErrorMessageTextColor: var(--danger-400);
+:global([data-altrone-root='true']) {
+  --form-field-label-text-color: var(--text-2);
+  --form-field-description-text-color: var(--text-1);
+  --form-field-required-mark-color: var(--danger-color);
+  --form-field-error-message-text-color: var(--danger-color);
 }
 
 .Field {
@@ -25,8 +18,9 @@
   display: flex;
   align-items: center;
 
-  @include label-heading;
-  color: var(--formFieldLabelTextColor);
+  color: var(--form-field-label-text-color);
+  font-weight: 500;
+  font-size: 14px;
 }
 
 .HintIcon {
@@ -37,18 +31,20 @@
 }
 
 .Asterisk {
-  color: var(--formFieldRequiredMarkColor);
+  color: var(--form-field-required-mark-color);
   margin-left: 2px;
 }
 
 .ErrorMessage {
-  @include sm-paragraph;
-  color: var(--formFieldErrorMessageTextColor);
+  color: var(--form-field-error-message-text-color);
+  font-weight: 450;
+  font-size: 12px;
 }
 
 .Description {
-  @include sm-paragraph;
-  color: var(--formFieldDescriptionTextColor);
+  color: var(--form-field-description-text-color);
+  font-weight: 450;
+  font-size: 12px;
 }
 
 .Control {
@@ -57,12 +53,12 @@
 
 .Invalid {
   .Label {
-    color: var(--formFieldErrorMessageTextColor);
+    color: var(--form-field-error-message-text-color);
   }
 }
 
 .Disabled {
   .Label {
-    @include disabled;
+    color: var(--disabled-text-color);
   }
 }

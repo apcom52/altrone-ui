@@ -1,11 +1,11 @@
 @import 'src/global/mixins';
 
 :global([data-altrone-root='true']) {
-  --checkbox-background-color: var(--interactive-a1);
-  --checkbox-checked-background-color: var(--accent-a5);
-  --checkbox-border-color: var(--border-a1);
-  --checkbox-hover-background-color: var(--interactive-a2);
-  --checkbox-checked-border-color: var(--accent-a6);
+  --checkbox-background-color: var(--interactive-1);
+  --checkbox-checked-background-color: var(--accent-5);
+  --checkbox-border-color: var(--border-1);
+  --checkbox-hover-background-color: var(--interactive-2);
+  --checkbox-checked-border-color: var(--accent-6);
   --checkbox-icon-color: var(--accent-12);
   --checkbox-danger-background-color: var(--red-9);
   --checkbox-danger-checked-background-color: var(--red-10);
@@ -49,6 +49,7 @@
   transition: background-color 0.1s linear;
   box-shadow: 0 0 0 1px var(--checkbox-border-color), var(--shadow-1);
   color: var(--checkbox-icon-color);
+  backdrop-filter: blur(32px) saturate(180%);
 }
 
 .Label {
