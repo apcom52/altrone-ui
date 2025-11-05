@@ -5,18 +5,38 @@ import s from './item.module.scss';
 import { useConfiguration } from 'components/configuration';
 import { RenderFuncProp } from 'types';
 import { Badge } from 'components/badge/Badge.tsx';
+import { motion, useAnimate, useAnimationControls } from 'framer-motion';
+import { useBottomNavigationContext } from '../BottomNavigation.context.tsx';
 
 const bottomNavigationItemComponent: RenderFuncProp<
   HTMLAnchorElement,
   BottomNavigationItemProps
 > = (ref, props) => {
-  const { icon, label, badge, ...restProps } = props;
+  const { icon, label, badge, selected, ...restProps } = props;
+  const bottomNavigationId = useBottomNavigationContext();
+
+  const backdropControls = useAnimationControls();
 
   return (
     <a ref={ref} {...restProps}>
+      {selected && (
+        <motion.div
+          animate={backdropControls}
+          layout
+          layoutId={`${bottomNavigationId}-backdrop`}
+          className={s.Backdrop}
+          onLayoutAnimationStart={() => {
+            // 🔥 Дополнительная анимация при каждом перемещении
+            backdropControls.start({
+              scale: [1, 0.85, 1],
+              transition: { duration: 0.4, ease: 'easeInOut' },
+            });
+          }}
+        />
+      )}
       <div className={s.Icon}>{icon}</div>
       <div className={s.Label}>{label}</div>
-      {badge ? <Badge className={s.Badge}>{badge}</Badge> : null}
+      {/* {badge ? <Badge className={s.Badge}>{badge}</Badge> : null} */}
     </a>
   );
 };
@@ -43,7 +63,7 @@ export const Item = forwardRef<HTMLAnchorElement, BottomNavigationItemProps>(
           bottomNavigationItemConfig.selectedItemClassName && props.selected,
       },
       bottomNavigationItemConfig.className,
-      className,
+      className
     );
 
     const styles = {
@@ -56,5 +76,5 @@ export const Item = forwardRef<HTMLAnchorElement, BottomNavigationItemProps>(
       className: cls,
       style: styles,
     });
-  },
+  }
 );

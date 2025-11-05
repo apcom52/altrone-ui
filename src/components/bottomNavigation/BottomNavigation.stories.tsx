@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { BottomNavigation } from './BottomNavigation.tsx';
+import { useState } from 'react';
 
 const story: Meta<typeof BottomNavigation> = {
   title: 'Components/Navigation/BottomNavigation',
@@ -14,30 +15,35 @@ const story: Meta<typeof BottomNavigation> = {
 export const BottomNavigationStory: StoryObj<typeof BottomNavigation> = {
   name: 'Using BottomNavigation',
   render: () => {
+    const [selectedItem, setSelectedItem] = useState<string | null>('home');
+
     return (
       <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Standard BottomNavigation</Text.Heading>
         <BottomNavigation>
           <BottomNavigation.Item
-            href="#"
-            selected
+            onClick={() => setSelectedItem('home')}
+            selected={selectedItem === 'home'}
             icon={<Icon i="home" />}
             label="Home"
           />
           <BottomNavigation.Item
-            href="#"
+            onClick={() => setSelectedItem('wallet')}
+            selected={selectedItem === 'wallet'}
             icon={<Icon i="wallet" />}
             label="Wallet"
             badge="NEW"
           />
           <BottomNavigation.Item
-            href="#"
+            onClick={() => setSelectedItem('settings')}
+            selected={selectedItem === 'settings'}
             icon={<Icon i="settings" />}
             label="Settings"
             badge="2"
           />
           <BottomNavigation.Item
-            href="#"
+            onClick={() => setSelectedItem('profile')}
+            selected={selectedItem === 'profile'}
             icon={<Icon i="account_circle" />}
             label="Profile"
           />

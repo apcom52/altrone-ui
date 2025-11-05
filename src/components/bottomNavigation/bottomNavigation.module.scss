@@ -1,15 +1,24 @@
-:global(:root) {
-  --bottomNavigationBackgroundColor: var(--default-200);
-}
-
-:global(.AltroneDark) {
-  --bottomNavigationBackgroundColor: var(--default-700);
+:global([data-altrone-root='true']) {
+  --bottom-navigation-item-text-color: var(--text-2);
+  --bottom-navigation-selected-item-text-color: var(--accent-11);
+  --bottom-navigation-item-backdrop-color: var(--interactive-a2);
+  --bottom-navigation-item-size: 48px;
+  --bottom-navigation-item-icon-size: 28px;
+  --bottom-navigation-item-text-size: 12px;
+  --bottom-navigation-rounding: 40px;
 }
 
 .BottomNavigation {
+  position: fixed;
+  bottom: 8px;
+  transform: translateX(-50%);
+  left: 50%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--l-gap) var(--l-gap);
-  background: var(--bottomNavigationBackgroundColor);
+  padding: 4px;
+  background: var(--glass-background-color);
+  border-radius: var(--bottom-navigation-rounding);
+  backdrop-filter: blur(64px) saturate(180%);
+  box-shadow: var(--shadow-1), var(--shadow-5);
 }

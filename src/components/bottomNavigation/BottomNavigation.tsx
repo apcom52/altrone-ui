@@ -1,19 +1,22 @@
-import { memo } from 'react';
+import { memo, useId } from 'react';
 import { BottomNavigationProps } from './BottomNavigation.types.ts';
 import s from './bottomNavigation.module.scss';
 import clsx from 'clsx';
 import { Item } from './components';
 import { useConfiguration } from 'components/configuration';
+import { BottomNavigationContext } from './BottomNavigation.context.tsx';
 
 const BottomNavigation = memo<BottomNavigationProps>(
   ({ children, className, style, ...restProps }) => {
     const { bottomNavigation: bottomNavigationConfig = {} } =
       useConfiguration();
 
+    const id = useId();
+
     const cls = clsx(
       s.BottomNavigation,
       className,
-      bottomNavigationConfig.className,
+      bottomNavigationConfig.className
     );
     const styles = {
       ...bottomNavigationConfig.style,
@@ -21,11 +24,13 @@ const BottomNavigation = memo<BottomNavigationProps>(
     };
 
     return (
-      <div className={cls} style={styles} {...restProps}>
-        {children}
-      </div>
+      <BottomNavigationContext.Provider value={`bottom-navigation-${id}`}>
+        <div className={cls} style={styles} {...restProps}>
+          {children}
+        </div>
+      </BottomNavigationContext.Provider>
     );
-  },
+  }
 );
 
 const BottomNavigationNamespace = Object.assign(BottomNavigation, {
