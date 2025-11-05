@@ -6,6 +6,7 @@ import { Modal } from './Modal.tsx';
 import { Text } from '../text';
 import { Button } from '../button';
 import { Tooltip } from '../tooltip';
+import { HelpCircle } from 'lucide-react';
 // import { within, expect, userEvent, screen } from '@storybook/test';
 
 const story: Meta<typeof Modal> = {
@@ -89,7 +90,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 </Text.Paragraph>
               </Flex>
             }
-            leftActions={[<Tooltip content="This is tooltip" />]}
+            leftActions={[
+              <Tooltip content="This is tooltip">
+                <Button label="Help" icon={<HelpCircle />} showLabel={false} />
+              </Tooltip>,
+            ]}
           >
             <Button label="Open modal" />
           </Modal>
@@ -141,7 +146,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 </Text.Paragraph>
               </Flex>
             }
-            leftActions={[<Tooltip content="This is tooltip" />]}
+            leftActions={[
+              <Tooltip content="This is tooltip">
+                <Button label="Help" icon={<HelpCircle />} showLabel={false} />
+              </Tooltip>,
+            ]}
             actions={[<Button role="primary" label="OK" />]}
             size="s"
           >
@@ -195,7 +204,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 </Text.Paragraph>
               </Flex>
             }
-            leftActions={[<Tooltip content="This is tooltip" />]}
+            leftActions={[
+              <Tooltip content="This is tooltip">
+                <Button label="Help" icon={<HelpCircle />} showLabel={false} />
+              </Tooltip>,
+            ]}
             actions={[<Button role="primary" label="OK" />]}
             size="l"
           >

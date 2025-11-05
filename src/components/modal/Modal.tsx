@@ -9,6 +9,7 @@ import { createPortal } from 'react-dom';
 import s from './modal.module.scss';
 import FocusTrap from 'focus-trap-react';
 import { useLocalization } from '../application';
+import { AnimatePresence, motion } from 'motion/react';
 
 export const Modal = memo<ModalProps>(
   ({
@@ -43,7 +44,7 @@ export const Modal = memo<ModalProps>(
         [s.Large]: size === 'l',
       },
       className,
-      modalConfig.className,
+      modalConfig.className
     );
 
     const styles = {
@@ -105,32 +106,44 @@ export const Modal = memo<ModalProps>(
           },
         }}
       >
-        <div
-          className={cls}
-          style={styles}
-          role="dialog"
-          aria-labelledby={titleId}
-          {...restProps}
-          onClick={onBackdropClick}
-        >
-          <div className={s.Overlay} />
-          <div className={s.Dialog}>
-            <div className={s.ModalContent} aria-modal="true">
-              <div className={s.Title} id={titleId} aria-label={title}>
-                {title}
-                <CloseButton className={s.Close} onClick={hide} autoFocus />
-              </div>
-              <div className={s.Content}>{contentElement}</div>
-              <div className={s.Footer}>
-                <div className={s.LeftFooter}>{leftActionsElement}</div>
-                <div className={s.RightFooter}>
-                  <Button label={t('common.cancel')} onClick={hide} />
-                  {actionsElement}
+        <AnimatePresence onExitComplete={hide}>
+          <div
+            className={cls}
+            style={styles}
+            role="dialog"
+            aria-labelledby={titleId}
+            {...restProps}
+            onClick={onBackdropClick}
+          >
+            <motion.div
+              className={s.Overlay}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            />
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              className={s.Dialog}
+            >
+              <div className={s.ModalContent} aria-modal="true">
+                <div className={s.Title} id={titleId} aria-label={title}>
+                  {title}
+                  <CloseButton className={s.Close} onClick={hide} autoFocus />
+                </div>
+                <div className={s.Content}>{contentElement}</div>
+                <div className={s.Footer}>
+                  <div className={s.LeftFooter}>{leftActionsElement}</div>
+                  <div className={s.RightFooter}>
+                    <Button label={t('common.cancel')} onClick={hide} />
+                    {actionsElement}
+                  </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </AnimatePresence>
       </FocusTrap>
     );
 
@@ -147,5 +160,5 @@ export const Modal = memo<ModalProps>(
         {opened ? createPortal(modalContent, altroneRoot) : null}
       </>
     );
-  },
+  }
 );

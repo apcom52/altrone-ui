@@ -24,7 +24,7 @@ const tabItemRenderFunc: RenderFuncProp<HTMLAnchorElement, TabsItemProps> = (
       {...restProps}
     >
       {props.selected ? (
-        <motion.div className={s.Backdrop} layoutId="tabs-backdrop" />
+        <motion.div className={s.Backdrop} layout layoutId="tabs-backdrop" />
       ) : null}
       {icon ? <div className={s.Icon}>{icon}</div> : null}
       {showLabel ? <div className={s.Label}>{label}</div> : null}
