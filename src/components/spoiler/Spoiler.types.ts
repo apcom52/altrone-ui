@@ -1,5 +1,4 @@
-export interface SpoilerProps
-  extends React.DetailsHTMLAttributes<HTMLDetailsElement> {
+export interface SpoilerProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   openedByDefault?: boolean;
 }

@@ -5,6 +5,7 @@ import { Flex } from '../flex/index.ts';
 import { Text } from '../text/index.ts';
 import { Empty } from './Empty.tsx';
 import { Icon } from 'components/icon/Icon.tsx';
+import { Inbox } from 'lucide-react';
 
 const story: Meta<typeof Empty> = {
   title: 'Components/Atoms/Empty',
@@ -36,7 +37,7 @@ export const EmptyStory: StoryObj<typeof Flex> = {
         <Text.Heading role="inner">
           Using Empty with custom components
         </Text.Heading>
-        <Empty icon={<Icon i="search" />}>
+        <Empty icon={<Inbox />}>
           No users found. Please click on <Text.Link href="#">Add</Text.Link>{' '}
           button to add a new user.
         </Empty>

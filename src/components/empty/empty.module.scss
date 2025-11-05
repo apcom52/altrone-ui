@@ -1,42 +1,34 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --empty-background: var(--default-100);
-  --empty-border: var(--default-200);
-  --empty-color: var(--default-500);
-}
-
-:global(.AltroneDark) {
-  --empty-background: var(--default-800);
-  --empty-border: var(--default-700);
-  --empty-color: var(--default-400);
-}
-
-.Wrapper {
-  display: flex;
-  justify-content: center;
-  padding: 24px;
-  color: var(--empty-color);
+:global([data-altrone-root='true']) {
+  --empty-text-color: var(--text-1);
+  --empty-icon-color: var(--disabled-text-color);
+  --empty-icon-size: 32px;
 }
 
 .Empty {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  background-color: var(--empty-background);
-  width: fit-content;
-  border-radius: 12px;
-  padding: 16px 24px;
-  border: 1px solid var(--empty-border);
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  color: var(--empty-text-color);
 }
 
 .Icon {
-  font-size: 32px;
+  font-size: var(--empty-icon-size);
+  color: var(--empty-icon-color);
 }
 
 .Label {
   text-align: center;
-  max-width: 200px;
-  @include sm-paragraph;
+  max-width: 40%;
+  min-width: 200px;
+  color: var(--empty-text-color);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
 }
 
 .Transparent {

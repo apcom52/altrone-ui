@@ -1,10 +1,11 @@
-import { memo, ReactEventHandler } from 'react';
+import { memo } from 'react';
 import { SpoilerProps } from './Spoiler.types.ts';
 import clsx from 'clsx';
-import { Icon } from '../icon';
 import s from './spoiler.module.scss';
 import { useBoolean } from '../../utils';
 import { useConfiguration } from 'components/configuration';
+import { Plus, Minus } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export const Spoiler = memo<SpoilerProps>(
   ({
@@ -18,7 +19,7 @@ export const Spoiler = memo<SpoilerProps>(
   }) => {
     const { spoiler: spoilerConfig = {} } = useConfiguration();
 
-    const { value: opened, setValue: setOpened } = useBoolean(openedByDefault);
+    const { value: opened, toggle } = useBoolean(openedByDefault);
 
     const cls = clsx(
       s.Spoiler,
@@ -26,7 +27,7 @@ export const Spoiler = memo<SpoilerProps>(
         [s.Opened]: opened,
       },
       className,
-      spoilerConfig.className,
+      spoilerConfig.className
     );
 
     const styles = {
@@ -34,27 +35,28 @@ export const Spoiler = memo<SpoilerProps>(
       ...style,
     };
 
-    const onToggleHandler: ReactEventHandler<HTMLDetailsElement> = (event) => {
-      setOpened((event.target as HTMLDetailsElement).open);
-      onToggle?.(event);
-    };
-
     return (
-      <details
-        className={cls}
-        open={opened}
-        style={styles}
-        {...restProps}
-        onToggle={onToggleHandler}
-      >
-        <summary tabIndex={0} className={s.Heading}>
+      <div className={cls} style={styles} {...restProps}>
+        <div tabIndex={0} className={s.Heading} onClick={toggle}>
           {title}
           <div className={s.ArrowIcon} aria-hidden={true}>
-            <Icon i={opened ? 'expand_less' : 'expand_more'} />
+            {opened ? <Minus /> : <Plus />}
           </div>
-        </summary>
-        <div className={s.Content}>{children}</div>
-      </details>
+        </div>
+        <AnimatePresence initial={false}>
+          {opened && (
+            <motion.div
+              className={s.Content}
+              initial={{ height: 0 }}
+              animate={{ height: 'auto' }}
+              exit={{ height: 0 }}
+              transition={{ duration: 0.2, ease: 'linear' }}
+            >
+              {children}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     );
-  },
+  }
 );

@@ -1,27 +1,22 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --tagsItemTextColor: var(--primary-600);
-  --tagsHoveredItemColor: var(--primary-700);
-}
-
-:global(.AltroneDark) {
-  --tagsItemTextColor: var(--primary-400);
-  --tagsHoveredItemColor: var(--primary-300);
+:global([data-altrone-root='true']) {
+  --tags-item-text-color: var(--text-2);
+  --tags-hovered-item-color: var(--accent-11);
 }
 
 .Item {
-  @include sm-paragraph;
+  font-size: 14px;
   font-weight: 500;
-  color: var(--tagsItemTextColor);
+  line-height: 24px;
+  color: var(--tags-item-text-color);
   transition: color 0.2s linear;
   text-decoration: none;
   cursor: pointer;
-  border-radius: 4px;
 
-  @include focus;
-
-  &:hover, &:focus-visible {
-    color: var(--tagsHoveredItemColor);
+  &:hover,
+  &:focus-visible {
+    color: var(--tags-hovered-item-color);
+    text-decoration: underline;
   }
 }

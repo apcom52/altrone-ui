@@ -6,10 +6,10 @@ import clsx from 'clsx';
 
 const tagsItemRenderFunc: RenderFuncProp<HTMLAnchorElement, TagsItemProps> = (
   ref,
-  { label, ...restProps },
+  { label, ...restProps }
 ) => {
   return (
-    <a ref={ref} {...restProps}>
+    <a ref={ref} tabIndex={0} {...restProps}>
       {label}
     </a>
   );
@@ -25,5 +25,5 @@ export const Item = forwardRef<HTMLAnchorElement, TagsItemProps>(
       ...restProps,
       className: cls,
     });
-  },
+  }
 );

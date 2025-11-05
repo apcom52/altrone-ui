@@ -27,7 +27,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     return (
       <Flex direction="vertical" gap="l">
         <Text.Heading role="inner">Spoilers</Text.Heading>
-        <Flex direction="vertical" gap="l">
+        <Flex direction="vertical" gap="s">
           <Spoiler title="The Beauty of Nature">
             <Text.Paragraph>
               Nature's beauty is a profound source of inspiration and solace.
