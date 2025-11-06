@@ -1,9 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Form, Grid, Icon, Text } from 'components';
+import { Flex, Form, Grid, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Range } from './Range.tsx';
 import { useState } from 'react';
+import { ALargeSmall, SunMedium } from 'lucide-react';
 
 const story: Meta<typeof Range> = {
   title: 'Components/Form/Range',
@@ -37,7 +38,7 @@ export const RangeStory: StoryObj<typeof Range> = {
                 <Range
                   value={value1}
                   onChange={setValue1}
-                  icon={<Icon i="format_size" />}
+                  icon={<ALargeSmall />}
                   renderLabel={(value) => `${value}pt`}
                   onValueCommit={(value) => console.log('onValueCommit', value)}
                 />
@@ -61,7 +62,7 @@ export const RangeStory: StoryObj<typeof Range> = {
                 <Range
                   value={value1}
                   onChange={setValue1}
-                  icon={<Icon i="format_size" />}
+                  icon={<ALargeSmall />}
                   size="s"
                 />
               </Form.Field>
@@ -85,7 +86,7 @@ export const RangeStory: StoryObj<typeof Range> = {
                 <Range
                   value={value1}
                   onChange={setValue1}
-                  icon={<Icon i="format_size" />}
+                  icon={<ALargeSmall />}
                   size="l"
                   style={{ width: '100px' }}
                   renderLabel={(value) => `${value}pt`}
@@ -112,7 +113,7 @@ export const RangeStory: StoryObj<typeof Range> = {
                 <Range
                   value={10}
                   onChange={() => null}
-                  icon={<Icon i="format_size" />}
+                  icon={<ALargeSmall />}
                   size="l"
                   disabled
                   style={{ width: '200px' }}
@@ -150,7 +151,7 @@ export const RangeStory: StoryObj<typeof Range> = {
             size="s"
             min={0}
             max={100}
-            icon={<Icon i="brightness_4" />}
+            icon={<SunMedium />}
             style={{ height: '200px' }}
           />
           <Range
@@ -160,7 +161,7 @@ export const RangeStory: StoryObj<typeof Range> = {
             size="l"
             showCurrentValue="always"
             style={{ height: '200px' }}
-            icon={<Icon i="brightness_4" />}
+            icon={<SunMedium />}
           />
           <Range
             value={value3}

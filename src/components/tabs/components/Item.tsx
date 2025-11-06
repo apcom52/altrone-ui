@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { RenderFuncProp } from '../../../types';
 import { useConfiguration } from '../../configuration';
 import { Badge } from 'components/badge/Badge.tsx';
-import { motion } from 'framer-motion';
+import { motion, useAnimationControls } from 'framer-motion';
 
 const tabItemRenderFunc: RenderFuncProp<HTMLAnchorElement, TabsItemProps> = (
   ref,
@@ -13,6 +13,8 @@ const tabItemRenderFunc: RenderFuncProp<HTMLAnchorElement, TabsItemProps> = (
 ) => {
   const { label, icon, showLabel = true, badge, ...restProps } = props;
   const { tabs: { item: tabsItemConfig = {} } = {} } = useConfiguration();
+
+  const backdropControls = useAnimationControls();
 
   const badgeCls = clsx(s.Badge, tabsItemConfig.badgeClassName);
   return (
@@ -24,7 +26,18 @@ const tabItemRenderFunc: RenderFuncProp<HTMLAnchorElement, TabsItemProps> = (
       {...restProps}
     >
       {props.selected ? (
-        <motion.div className={s.Backdrop} layout layoutId="tabs-backdrop" />
+        <motion.div
+          animate={backdropControls}
+          layout
+          layoutId="tabs-backdrop"
+          className={s.Backdrop}
+          onLayoutAnimationStart={() => {
+            backdropControls.start({
+              scale: [1, 0.85, 1],
+              transition: { duration: 0.4, ease: 'easeInOut' },
+            });
+          }}
+        />
       ) : null}
       {icon ? <div className={s.Icon}>{icon}</div> : null}
       {showLabel ? <div className={s.Label}>{label}</div> : null}

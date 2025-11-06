@@ -135,7 +135,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
         />
       ) : null}
       {mode === 'palette' ? (
-        <Flex direction="vertical" gap="s">
+        <Flex direction="vertical" gap="xs">
           <Flex direction="horizontal" gap="s">
             <TextInput
               maxLength={6}
@@ -156,7 +156,9 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
               showControls={false}
               placeholder="0"
               title="R"
-            />
+            >
+              <TextInput.TextIsland label="R" />
+            </NumberInput>
             <NumberInput
               value={green}
               onChange={setGreen}
@@ -166,7 +168,9 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
               showControls={false}
               placeholder="0"
               title="G"
-            />
+            >
+              <TextInput.TextIsland label="G" />
+            </NumberInput>
             <NumberInput
               value={blue}
               onChange={setBlue}
@@ -176,21 +180,9 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
               showControls={false}
               placeholder="0"
               title="B"
-            />
-          </Flex>
-          <Flex direction="horizontal" gap="s">
-            <div className={s.InputLabel} style={{ width: 84 }}>
-              HEX
-            </div>
-            <div className={s.InputLabel} style={{ flex: 1 }}>
-              R
-            </div>
-            <div className={s.InputLabel} style={{ flex: 1 }}>
-              G
-            </div>
-            <div className={s.InputLabel} style={{ flex: 1 }}>
-              B
-            </div>
+            >
+              <TextInput.TextIsland label="B" />
+            </NumberInput>
           </Flex>
         </Flex>
       ) : null}

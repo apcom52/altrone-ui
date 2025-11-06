@@ -3,6 +3,7 @@ import { RangeProps } from './Range.types';
 import s from './range.module.scss';
 import clsx from 'clsx';
 import { useConfiguration } from 'components/configuration';
+import { motion } from 'framer-motion';
 
 export const Range = memo<RangeProps>((props) => {
   const {
@@ -62,7 +63,7 @@ export const Range = memo<RangeProps>((props) => {
           break;
       }
     },
-    [value, min, max, step, onChange, onValueCommit],
+    [value, min, max, step, onChange, onValueCommit]
   );
 
   const calculateValue = useCallback(
@@ -84,7 +85,7 @@ export const Range = memo<RangeProps>((props) => {
       const stepsCount = Math.round((rawValue - min) / step);
       return Math.min(max, Math.max(min, min + stepsCount * step));
     },
-    [min, max, step, value, direction],
+    [min, max, step, value, direction]
   );
 
   const handlePointerDown = useCallback(
@@ -98,7 +99,7 @@ export const Range = memo<RangeProps>((props) => {
       document.addEventListener('pointermove', handlePointerMove);
       document.addEventListener('pointerup', handlePointerUp);
     },
-    [calculateValue, onChange],
+    [calculateValue, onChange]
   );
 
   const handlePointerMove = useCallback(
@@ -107,7 +108,7 @@ export const Range = memo<RangeProps>((props) => {
       const newValue = calculateValue(event.clientX, event.clientY);
       onChange(newValue);
     },
-    [calculateValue, onChange],
+    [calculateValue, onChange]
   );
 
   const handlePointerUp = useCallback(() => {
@@ -151,7 +152,7 @@ export const Range = memo<RangeProps>((props) => {
       [s.Disabled]: disabled,
       [s.ReadOnly]: readOnly,
     },
-    rangeConfig.className,
+    rangeConfig.className
   );
 
   useEffect(() => {
@@ -161,7 +162,7 @@ export const Range = memo<RangeProps>((props) => {
   const activeTrackCls = clsx(
     s.ActiveTrack,
     activeTrackClassName,
-    rangeConfig.activeTrackClassName,
+    rangeConfig.activeTrackClassName
   );
 
   const styles = {
@@ -170,7 +171,7 @@ export const Range = memo<RangeProps>((props) => {
   };
 
   return (
-    <div
+    <motion.div
       className={cls}
       style={styles}
       onPointerDown={disabled ? undefined : handlePointerDown}
@@ -190,6 +191,7 @@ export const Range = memo<RangeProps>((props) => {
       aria-disabled={disabled}
       aria-readonly={readOnly}
       aria-orientation={direction}
+      whileTap={{ scale: 1.02 }}
       {...restProps}
     >
       <input type="hidden" value={value} tabIndex={-1} name={name} />
@@ -204,6 +206,6 @@ export const Range = memo<RangeProps>((props) => {
       ) : (
         <div className={s.ReadOnlyLabel}>{labelElement}</div>
       )}
-    </div>
+    </motion.div>
   );
 });

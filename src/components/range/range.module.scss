@@ -1,20 +1,13 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --range-track-background-color: var(--default-200);
-  --range-active-track-background-color: var(--default-50);
-  --range-disabled-active-track-background-color: var(--default-300);
-  --range-text-color: var(--default-900);
-  --range-border-color: var(--default-200);
-  --range-height: 24px;
-}
-
-:global(.AltroneDark) {
-  --range-track-background-color: var(--default-800);
-  --range-active-track-background-color: var(--default-600);
-  --range-disabled-active-track-background-color: var(--default-900);
-  --range-text-color: var(--default-50);
-  --range-border-color: var(--default-700);
+:global([data-altrone-root='true']) {
+  --range-track-background-color: var(--interactive-a1);
+  --range-active-track-background-color: var(--accent-9);
+  --range-disabled-active-track-background-color: var(--disabled-text-color);
+  --range-text-color: var(--text-2);
+  --range-border-color: var(--border-a1);
+  --range-height: 32px;
+  --range-rounding: 16px;
 }
 
 .Range {
@@ -24,11 +17,12 @@
   width: 100%;
   height: var(--range-height);
   overflow: hidden;
-  border-radius: 6px;
-  box-shadow: 0 0 0 1px var(--range-border-color);
+  border-radius: var(--range-rounding);
+  box-shadow: var(--shadow-1), var(--shadow-2);
   background-color: var(--range-track-background-color);
   color: var(--range-text-color);
   cursor: pointer;
+  backdrop-filter: blur(64px) saturate(180%);
 
   @include no-selection;
   @include focus;
@@ -84,6 +78,7 @@
   right: 8px;
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
+  mix-blend-mode: luminosity;
 
   @include label-heading;
 }
@@ -96,6 +91,7 @@
   display: flex;
   align-items: center;
   font-size: 18px;
+  mix-blend-mode: luminosity;
 }
 
 .Small {

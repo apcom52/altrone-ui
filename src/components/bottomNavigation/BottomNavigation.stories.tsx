@@ -3,6 +3,7 @@ import { Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { BottomNavigation } from './BottomNavigation.tsx';
 import { useState } from 'react';
+import { Home, Wallet, Settings, User } from 'lucide-react';
 
 const story: Meta<typeof BottomNavigation> = {
   title: 'Components/Navigation/BottomNavigation',
@@ -24,27 +25,27 @@ export const BottomNavigationStory: StoryObj<typeof BottomNavigation> = {
           <BottomNavigation.Item
             onClick={() => setSelectedItem('home')}
             selected={selectedItem === 'home'}
-            icon={<Icon i="home" />}
+            icon={<Home />}
             label="Home"
           />
           <BottomNavigation.Item
             onClick={() => setSelectedItem('wallet')}
             selected={selectedItem === 'wallet'}
-            icon={<Icon i="wallet" />}
+            icon={<Wallet />}
             label="Wallet"
             badge="NEW"
           />
           <BottomNavigation.Item
             onClick={() => setSelectedItem('settings')}
             selected={selectedItem === 'settings'}
-            icon={<Icon i="settings" />}
+            icon={<Settings />}
             label="Settings"
             badge="2"
           />
           <BottomNavigation.Item
             onClick={() => setSelectedItem('profile')}
             selected={selectedItem === 'profile'}
-            icon={<Icon i="account_circle" />}
+            icon={<User />}
             label="Profile"
           />
         </BottomNavigation>
