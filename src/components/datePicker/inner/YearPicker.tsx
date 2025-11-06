@@ -1,13 +1,16 @@
-import { memo, useEffect, useMemo, useRef } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import s from './yearPicker.module.scss';
 import {
   useDateContext,
   useDatePickerCloseFn,
+  useDatePickerId,
   useDatePickerViewContext,
 } from '../DatePicker.contexts.ts';
 import { useYearRanges } from '../utils.ts';
 import clsx from 'clsx';
 import { Composite, CompositeItem } from '@floating-ui/react';
+import { motion } from 'framer-motion';
+import dayStyles from './day.module.scss';
 
 export const YearPicker = memo<{ autoClose?: boolean }>(
   ({ autoClose = true }) => {
@@ -21,6 +24,18 @@ export const YearPicker = memo<{ autoClose?: boolean }>(
     const selectedYear = selectedDates[0];
 
     const [startYear, endYear] = useYearRanges(currentMonth);
+
+    const [mouseOverYear, setMouseOverYear] = useState<number | null>(null);
+
+    const datePickerId = useDatePickerId();
+
+    const onMouseEnter = useCallback((year: number) => {
+      setMouseOverYear(year);
+    }, []);
+
+    const onMouseLeave = useCallback(() => {
+      setMouseOverYear(null);
+    }, []);
 
     useEffect(() => {
       containerRef.current?.focus();
@@ -50,8 +65,8 @@ export const YearPicker = memo<{ autoClose?: boolean }>(
           selectedYear &&
           selectedYear.isSame(currentMonth.year(year), 'year');
 
-        const cls = clsx(s.Year, {
-          [s.Selected]: isSelected,
+        const cls = clsx(dayStyles.Day, s.Year, {
+          [dayStyles.Selected]: isSelected,
         });
 
         const isDateLessThanMin = minDate ? year < minDate.year() : false;
@@ -62,6 +77,8 @@ export const YearPicker = memo<{ autoClose?: boolean }>(
           <CompositeItem
             key={year}
             disabled={isDateDisabled}
+            onMouseEnter={() => onMouseEnter(year)}
+            onMouseLeave={() => onMouseLeave()}
             render={(htmlProps) => {
               return (
                 <button
@@ -72,16 +89,26 @@ export const YearPicker = memo<{ autoClose?: boolean }>(
                   disabled={isDateDisabled}
                   {...htmlProps}
                 >
-                  {year}
+                  {mouseOverYear === year && (
+                    <motion.div
+                      layout
+                      layoutId={`${datePickerId}-hover-backdrop`}
+                      className={dayStyles.Backdrop}
+                    />
+                  )}
+                  {isSelected ? (
+                    <div className={dayStyles.SelectedBackdrop} />
+                  ) : null}
+                  <div className={dayStyles.Number}>{year}</div>
                 </button>
               );
             }}
-          />,
+          />
         );
       }
 
       return elements;
-    }, [picker, startYear, endYear, currentMonth, autoClose]);
+    }, [picker, startYear, endYear, currentMonth, autoClose, mouseOverYear]);
 
     return (
       <Composite
@@ -96,5 +123,5 @@ export const YearPicker = memo<{ autoClose?: boolean }>(
         {years}
       </Composite>
     );
-  },
+  }
 );

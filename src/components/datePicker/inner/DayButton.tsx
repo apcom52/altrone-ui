@@ -1,14 +1,16 @@
 import { CalendarRenderDateProps } from 'components/calendar/Calendar.types.ts';
 import clsx from 'clsx';
-import { memo, MouseEventHandler, useCallback } from 'react';
+import { memo, MouseEventHandler, useCallback, useState } from 'react';
 import s from './day.module.scss';
 import {
   useDateContext,
   useDatePickerCloseFn,
+  useDatePickerId,
   useDatePickerViewContext,
 } from '../DatePicker.contexts.ts';
 import { CompositeItem } from '@floating-ui/react';
 import { useLocale } from 'utils';
+import { motion } from 'framer-motion';
 
 export const DayButton = memo(
   ({
@@ -22,6 +24,10 @@ export const DayButton = memo(
     const { onDayClicked, selectedDates, minDate, maxDate } = useDateContext();
     const { picker, hoveredDate, setHoveredDate } = useDatePickerViewContext();
     const closePopup = useDatePickerCloseFn();
+
+    const [isMouseOver, setIsMouseOver] = useState(false);
+
+    const datePickerId = useDatePickerId();
 
     const locale = useLocale();
 
@@ -51,29 +57,28 @@ export const DayButton = memo(
         closePopup();
       }
       onDayClicked(currentDate);
-
-      // if (picker === 'range') {
-      //   const nextSibling = e.currentTarget.nextSibling as HTMLElement;
-      //   if (nextSibling) {
-      //     nextSibling.focus();
-      //   }
-      // }
     };
 
     const isDisabled =
       picker === 'range'
         ? startDate && !endDate && currentDate.isBefore(startDate)
         : minDate && maxDate
-          ? !currentDate.isBetween(minDate, maxDate, 'day', '[]')
-          : false;
+        ? !currentDate.isBetween(minDate, maxDate, 'day', '[]')
+        : false;
 
     const isWeekend = weekDay === 0 || weekDay === 6;
 
     const onMouseEnter = useCallback(() => {
+      setIsMouseOver(true);
+
       if (isHoverMode) {
         setHoveredDate(currentDate);
       }
     }, [picker, selectedDates, currentDate]);
+
+    const onMouseLeave = useCallback(() => {
+      setIsMouseOver(false);
+    }, []);
 
     const cls = clsx(s.Day, {
       [s.Weekend]: isWeekend,
@@ -120,12 +125,25 @@ export const DayButton = memo(
               data-end-of-range={isEndOfRange}
               data-index={currentDate.date()}
               onMouseEnter={onMouseEnter}
+              onMouseLeave={onMouseLeave}
               {...htmlProps}
               aria-disabled={fromAnotherMonth || isDisabled}
               aria-label={dateFormatter.format(currentDate.toDate())}
             >
+              {isMouseOver ? (
+                <motion.div
+                  layout
+                  layoutId={`${datePickerId}-hover-backdrop`}
+                  className={s.Backdrop}
+                />
+              ) : null}
+              {selected ? <motion.div className={s.SelectedBackdrop} /> : null}
               {(isBetweenSelectedDates || isHovered) && (
-                <div className={s.DayBackground} />
+                <motion.div
+                  layout
+                  layoutId={datePickerId}
+                  className={s.DayBackground}
+                />
               )}
               <div className={s.Number}>{currentDate.date()}</div>
             </button>
@@ -133,5 +151,5 @@ export const DayButton = memo(
         }}
       />
     );
-  },
+  }
 );

@@ -1,13 +1,16 @@
-import { memo, useEffect, useMemo, useRef } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import s from './monthPicker.module.scss';
+import dayStyles from './day.module.scss';
 import {
   useDateContext,
   useDatePickerCloseFn,
+  useDatePickerId,
   useDatePickerViewContext,
 } from '../DatePicker.contexts.ts';
 import clsx from 'clsx';
 import { useLocalizationContext } from '../../application/useLocalization.tsx';
 import { Composite, CompositeItem } from '@floating-ui/react';
+import { motion } from 'framer-motion';
 
 export const MonthPicker = memo<{ autoClose?: boolean }>(
   ({ autoClose = true }) => {
@@ -18,12 +21,24 @@ export const MonthPicker = memo<{ autoClose?: boolean }>(
     const { language = 'en' } = useLocalizationContext();
     const closePopup = useDatePickerCloseFn();
 
+    const [mouseOverMonth, setMouseOverMonth] = useState<number | null>(null);
+
+    const datePickerId = useDatePickerId();
+
     const selectedMonth = selectedDates[0];
 
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
       containerRef.current?.focus();
+    }, []);
+
+    const onMouseEnter = useCallback((month: number) => {
+      setMouseOverMonth(month);
+    }, []);
+
+    const onMouseLeave = useCallback(() => {
+      setMouseOverMonth(null);
     }, []);
 
     const months = useMemo(() => {
@@ -52,7 +67,7 @@ export const MonthPicker = memo<{ autoClose?: boolean }>(
           selectedMonth &&
           selectedMonth.isSame(currentMonth.month(monthIndex), 'month');
 
-        const cls = clsx(s.Month, {
+        const cls = clsx(dayStyles.Day, s.Month, {
           [s.Selected]: isSelected,
         });
 
@@ -70,6 +85,8 @@ export const MonthPicker = memo<{ autoClose?: boolean }>(
           <CompositeItem
             key={`${currentMonth.year()}-${monthIndex}`}
             disabled={isDateDisabled}
+            onMouseEnter={() => onMouseEnter(monthIndex)}
+            onMouseLeave={() => onMouseLeave()}
             render={(htmlProps) => {
               return (
                 <button
@@ -83,16 +100,28 @@ export const MonthPicker = memo<{ autoClose?: boolean }>(
                     .format('MMMM YYYY')}
                   {...htmlProps}
                 >
-                  {thisDate.locale(language.toLowerCase()).format('MMM')}
+                  {mouseOverMonth === monthIndex && (
+                    <motion.div
+                      layout
+                      layoutId={`${datePickerId}-hover-backdrop`}
+                      className={dayStyles.Backdrop}
+                    />
+                  )}
+                  {isSelected ? (
+                    <div className={dayStyles.SelectedBackdrop} />
+                  ) : null}
+                  <div className={dayStyles.Number}>
+                    {thisDate.locale(language.toLowerCase()).format('MMM')}
+                  </div>
                 </button>
               );
             }}
-          />,
+          />
         );
       }
 
       return elements;
-    }, [autoClose, currentMonth]);
+    }, [autoClose, currentMonth, mouseOverMonth]);
 
     return (
       <Composite
@@ -107,5 +136,5 @@ export const MonthPicker = memo<{ autoClose?: boolean }>(
         {months}
       </Composite>
     );
-  },
+  }
 );

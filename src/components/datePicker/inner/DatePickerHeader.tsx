@@ -1,8 +1,10 @@
-import { Icon } from 'components/icon';
 import s from './header.module.scss';
 import { useDatePickerViewContext } from '../DatePicker.contexts.ts';
 import { useYearRanges } from '../utils.ts';
 import { useLocalizationContext } from '../../application/useLocalization.tsx';
+import { Button } from 'components/button';
+import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
+import { Dropdown } from 'components/dropdown/index.ts';
 
 export const DatePickerHeader = () => {
   const { viewMode, setViewMode, currentMonth, setCurrentMonth } =
@@ -51,17 +53,21 @@ export const DatePickerHeader = () => {
 
   return (
     <div className={s.Header}>
+      <Button
+        icon={<ChevronLeft />}
+        onClick={onPrevClick}
+        label="Previous"
+        showLabel={false}
+      />
       <button type="button" className={s.CurrentDate} onClick={onHeaderClick}>
         {headerLabel}
       </button>
-      <div className={s.Navigation}>
-        <button type="button" className={s.Button} onClick={onPrevClick}>
-          <Icon i="navigate_before" />
-        </button>
-        <button type="button" className={s.Button} onClick={onNextClick}>
-          <Icon i="navigate_next" />
-        </button>
-      </div>
+      <Button
+        icon={<ChevronRight />}
+        onClick={onNextClick}
+        label="Next"
+        showLabel={false}
+      />
     </div>
   );
 };

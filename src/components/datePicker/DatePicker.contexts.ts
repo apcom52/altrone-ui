@@ -24,3 +24,6 @@ export const useDatePickerViewContext = () => useContext(DatePickerViewContext);
 
 export const DatePickerCloseFnContext = createContext<() => void>(() => null);
 export const useDatePickerCloseFn = () => useContext(DatePickerCloseFnContext);
+
+export const DatePickerIdContext = createContext<string>('');
+export const useDatePickerId = () => useContext(DatePickerIdContext);

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useId, useMemo, useState } from 'react';
 import { dayjsInstance as dayjs } from '../../calendar/Calendar.tsx';
 import {
   BasicDatePickerProps,
@@ -12,20 +12,21 @@ import { EMPTY_ARRAY } from '../../../constants.ts';
 import {
   DatePickerCloseFnContext,
   DatePickerContext,
+  DatePickerIdContext,
   DatePickerViewContext,
 } from '../DatePicker.contexts.ts';
 import { Popover } from '../../popover';
 import { PopoverDatePickerContent } from './PopoverDatePickerContent.tsx';
 import { TextInput } from 'components/textInput';
-import { Icon } from 'components/icon';
 import warningOnce from 'rc-util/es/warning';
 import { useConfiguration } from 'components/configuration';
 import { useLocalization } from 'components/application';
 import { Dayjs } from 'dayjs';
 import { useLocale } from '../../../utils/hooks/useLocale.ts';
+import { Calendar } from 'lucide-react';
 
 export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
-  picker: Picker = 'day',
+  picker: Picker = 'day'
 ) {
   return (props: DatePickerProps) => {
     const {
@@ -44,14 +45,16 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
 
     const t = useLocalization();
 
+    const id = useId();
+
     useEffect(() => {
       warningOnce(
         !(minDate && maxDate && minDate.isSameOrAfter(maxDate)),
-        '[DatePicker]: minDate prop has to be before than maxDate',
+        '[DatePicker]: minDate prop has to be before than maxDate'
       );
       warningOnce(
         !(minDate && maxDate && maxDate.isBefore(minDate)),
-        '[DatePicker]: maxDate prop has to be after than minDate',
+        '[DatePicker]: maxDate prop has to be after than minDate'
       );
     }, [minDate, maxDate]);
 
@@ -80,8 +83,8 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
       picker === 'day'
         ? locale.dateFormat
         : picker === 'month'
-          ? locale.monthFormat
-          : locale.yearFormat;
+        ? locale.monthFormat
+        : locale.yearFormat;
 
     const cls = clsx(
       s.DatePicker,
@@ -89,7 +92,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
         [s.Readonly]: readOnly,
       },
       className,
-      datePickerConfig.className,
+      datePickerConfig.className
     );
     const styles = {
       ...datePickerConfig.style,
@@ -100,7 +103,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
       (selectedDate: Dayjs | undefined) => {
         onChange?.(selectedDate);
       },
-      [onChange],
+      [onChange]
     );
 
     const onPopoverOpenChange = useCallback(
@@ -109,7 +112,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
           setView(picker);
         }
       },
-      [picker],
+      [picker]
     );
 
     const datePickerValueContext = useMemo<DatePickerContextType>(() => {
@@ -139,47 +142,50 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
       <div className={s.DatePickerWrapper}>
         <DatePickerContext.Provider value={datePickerValueContext}>
           <DatePickerViewContext.Provider value={datePickerViewContext}>
-            <Popover
-              enabled={!readOnly}
-              placement="bottom-start"
-              content={({ closePopup }) => (
-                <DatePickerCloseFnContext.Provider value={closePopup}>
-                  <PopoverDatePickerContent
-                    autoClose={autoClose}
-                    clearable={clearable}
-                  />
-                </DatePickerCloseFnContext.Provider>
-              )}
-              onOpenChange={onPopoverOpenChange}
-              focusTrapTargets={['content']}
-              listNavigation
-            >
-              <TextInput
-                className={cls}
-                style={styles}
-                value={
-                  value
-                    ? dayjs(value)
-                        .locale(locale.locale)
-                        .format(pickerDateFormat)
-                    : ''
-                }
-                onChange={() => null}
-                readonlyStyles={readOnly}
-                placeholder={t('datePicker.placeholder')}
-                {...restProps}
-                readOnly={true}
-                role="textbox"
+            <DatePickerIdContext.Provider value={id}>
+              <Popover
+                enabled={!readOnly}
+                placement="bottom-start"
+                content={({ closePopup }) => (
+                  <DatePickerCloseFnContext.Provider value={closePopup}>
+                    <PopoverDatePickerContent
+                      autoClose={autoClose}
+                      clearable={clearable}
+                    />
+                  </DatePickerCloseFnContext.Provider>
+                )}
+                onOpenChange={onPopoverOpenChange}
+                focusTrapTargets={['content']}
+                listNavigation
+                overlap
               >
-                {!readOnly ? (
-                  <TextInput.IconIsland
-                    className={s.ArrowIcon}
-                    placement="right"
-                    icon={<Icon i="calendar_month" />}
-                  />
-                ) : null}
-              </TextInput>
-            </Popover>
+                <TextInput
+                  className={cls}
+                  style={styles}
+                  value={
+                    value
+                      ? dayjs(value)
+                          .locale(locale.locale)
+                          .format(pickerDateFormat)
+                      : ''
+                  }
+                  onChange={() => null}
+                  readonlyStyles={readOnly}
+                  placeholder={t('datePicker.placeholder')}
+                  {...restProps}
+                  readOnly={true}
+                  role="textbox"
+                >
+                  {!readOnly ? (
+                    <TextInput.IconIsland
+                      className={s.ArrowIcon}
+                      placement="right"
+                      icon={<Calendar />}
+                    />
+                  ) : null}
+                </TextInput>
+              </Popover>
+            </DatePickerIdContext.Provider>
           </DatePickerViewContext.Provider>
         </DatePickerContext.Provider>
       </div>

@@ -1,36 +1,26 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --datePickerWeekdayName: var(--default-500);
-}
-
-:global(.AltroneDark) {
-  --datePickerWeekdayName: var(--default-500);
-}
-
 .Wrapper {
   outline: 0;
 }
 
 .DayPicker {
-  column-gap: var(--gap);
-  row-gap: var(--s-gap);
   @include no-selection;
+  gap: 0;
 }
 
 .DayNames {
   display: flex;
   align-items: center;
-  gap: var(--gap);
 }
 
 .DayName {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-  color: var(--datePickerWeekdayName);
-
-  @include label;
+  width: 32px;
+  height: 32px;
+  font-weight: 500;
+  font-size: 10px;
+  color: var(--date-picker-cell-weekday-text-color);
 }

@@ -3,21 +3,14 @@
 
 .MonthCalendar {
   display: grid;
-  width: 188px;
+  width: 100%;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(4, 24px);
-  grid-gap: var(--s-gap);
+  grid-template-rows: repeat(4, 32px);
   outline: 0;
 }
 
 .Month {
-  @include picker-item;
-  @include focus;
-
-  &:disabled {
-    pointer-events: none;
-    opacity: 0.5;
-  }
+  width: auto;
 }
 
 .Selected {

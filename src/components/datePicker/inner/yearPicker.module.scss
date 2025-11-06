@@ -3,23 +3,12 @@
 
 .YearPicker {
   display: grid;
-  width: 188px;
+  width: 100%;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(5, 24px);
-  grid-gap: var(--s-gap);
+  grid-template-rows: repeat(5, 32px);
   outline: 0;
 }
 
 .Year {
-  @include picker-item;
-  @include focus;
-
-  &:disabled {
-    pointer-events: none;
-    opacity: 0.5;
-  }
-}
-
-.Selected {
-  @include selected-picker-item;
+  width: auto;
 }
