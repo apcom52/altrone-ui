@@ -1,11 +1,9 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --sideNavigationTitleTextColor: var(--default-900);
-}
-
-:global(.AltroneDark) {
-  --sideNavigationTitleTextColor: var(--default-50);
+:global([data-altrone-root='true']) {
+  --side-navigation-item-text-color: var(--text-2);
+  --side-navigation-item-active-text-color: var(--accent-11);
+  --side-navigation-item-text-size: 14px;
 }
 
 .SideNavigation {
@@ -16,8 +14,10 @@
 }
 
 .Title {
-  @include group-heading;
-  color: var(--sideNavigationTitleTextColor);
+  color: var(--side-navigation-item-text-color);
+  font-size: var(--side-navigation-item-text-size);
+  font-weight: 500;
+  line-height: 20px;
 }
 
 .Menu {
