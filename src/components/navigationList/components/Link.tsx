@@ -7,13 +7,16 @@ import {
 } from '../NavigationList.types.ts';
 import { RenderFuncProp } from '../../../types';
 import { useConfiguration } from '../../configuration';
-import { AltChildren, DOMUtils } from '../../../utils';
+import { AltChildren, DOMUtils, useBoolean } from '../../../utils';
 import { LinkAction } from './LinkAction.tsx';
 import {
   NavigationListLevelContext,
+  useNavigationListId,
   useNavigationListLevel,
 } from '../NavigationList.context.ts';
 import { Badge } from 'components/badge/Badge.tsx';
+import { motion } from 'motion/react';
+import { ChevronDown } from 'lucide-react';
 
 const navigationListRenderFunc: RenderFuncProp<
   HTMLAnchorElement,
@@ -31,6 +34,8 @@ const navigationListRenderFunc: RenderFuncProp<
   } = props;
 
   const { navigationList: { link: linkConfig = {} } = {} } = useConfiguration();
+  const navigationListId = useNavigationListId();
+  const { value: hovered, enable: hover, disable: unhover } = useBoolean();
 
   const hasChildren = React.Children.count(children) > 0;
   const showChildren = hasChildren && selected;
@@ -45,12 +50,24 @@ const navigationListRenderFunc: RenderFuncProp<
 
   return (
     <>
-      <a ref={ref} {...restProps}>
+      <a ref={ref} onMouseEnter={hover} onMouseLeave={unhover} {...restProps}>
+        {hovered && (
+          <motion.div
+            layout
+            layoutId={`${navigationListId}-navigation-list-link-backdrop-${level}`}
+            className={s.Backdrop}
+          />
+        )}
         <div className={s.Label}>
           {showIcon ? <div className={s.Icon}>{icon}</div> : null}
-          {label}
+          <div className={s.LabelText}>{label}</div>
           {badge ? <Badge className={badgeCls}>{badge}</Badge> : null}
           {actions?.length ? <div className={s.Actions}>{actions}</div> : null}
+          {showChildren ? (
+            <div className={s.ChildrenIcon}>
+              <ChevronDown />
+            </div>
+          ) : null}
         </div>
       </a>
       {showChildren ? (
@@ -105,7 +122,7 @@ export const Link = forwardRef<HTMLAnchorElement, NavigationListLinkProps>(
         [s.Selected]: props.selected,
       },
       className,
-      linkConfig?.className,
+      linkConfig?.className
     );
 
     const styles = {
@@ -121,5 +138,5 @@ export const Link = forwardRef<HTMLAnchorElement, NavigationListLinkProps>(
       level: listLevel,
       children: childItems,
     });
-  },
+  }
 );

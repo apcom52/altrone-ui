@@ -3,6 +3,7 @@ import { NavigationListLinkActionProps } from '../NavigationList.types.ts';
 import s from './linkAction.module.scss';
 import clsx from 'clsx';
 import { useConfiguration } from '../../configuration';
+import { Button } from 'components/button/Button.tsx';
 
 export const LinkAction = forwardRef<
   HTMLButtonElement,
@@ -13,7 +14,7 @@ export const LinkAction = forwardRef<
   const { navigationList: { linkAction: linkActionConfig = {} } = {} } =
     useConfiguration();
 
-  const cls = clsx(s.Action, className, linkActionConfig.className);
+  const cls = clsx(className, linkActionConfig.className);
 
   const styles = {
     ...linkActionConfig.style,
@@ -27,16 +28,18 @@ export const LinkAction = forwardRef<
   };
 
   return (
-    <button
-      type="button"
+    <Button
+      size="s"
+      variant="text"
       className={cls}
       ref={ref}
       title={label}
       style={styles}
       {...restProps}
+      icon={icon}
+      label={label}
+      showLabel={false}
       onClick={onClickHandler}
-    >
-      <div className={s.Icon}>{icon}</div>
-    </button>
+    />
   );
 });

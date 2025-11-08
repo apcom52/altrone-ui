@@ -1,21 +1,13 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --toastTextColor: var(--default-900);
-  --toastNotificationBodyColor: var(--default-700);
-  --toastSuccessTextColor: var(--success-600);
-  --toastWarningTextColor: var(--warning-600);
-  --toastDangerTextColor: var(--danger-600);
-  --toastify-toast-width: 340px;
-  --toastify-toast-min-height: auto;
-}
-
-:global(.AltroneDark) {
-  --toastTextColor: var(--default-50);
-  --toastNotificationBodyColor: var(--default-200);
-  --toastSuccessTextColor: var(--success-400);
-  --toastWarningTextColor: var(--warning-400);
-  --toastDangerTextColor: var(--danger-400);
+:global([data-altrone-root='true']) {
+  --toast-background-color: var(--glass-background-color);
+  --toast-text-color: var(--text-2);
+  --toast-text-size: 14px;
+  --toast-warning-text-color: var(--amber-11);
+  --toast-danger-text-color: var(--red-11);
+  --toast-success-text-color: var(--teal-11);
+  --toast-min-height: 48px;
 }
 
 .Wrapper {
@@ -23,16 +15,19 @@
 }
 
 .Toast {
-  background: var(--glass-background-color);
-  border: 1px solid var(--glass-border-color);
-  backdrop-filter: var(--glass-background-blur);
-  border-radius: 12px;
-  box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.1);
-  min-height: 34px;
-  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  padding: 0;
+  width: auto;
+  background: var(--toast-background-color);
+  backdrop-filter: blur(32px) saturate(180%);
+  border-radius: 24px;
+  min-height: var(--toast-min-height);
   margin: 0 auto var(--l-gap);
-  @include sm-paragraph;
-  color: var(--default-900);
+  color: var(--toast-text-color);
+  box-shadow: var(--shadow-1), var(--shadow-5);
+  color: var(--toast-text-color);
 
   :global(.Toastify__toast-body) {
     padding: 2px;
@@ -40,7 +35,6 @@
 }
 
 .Notification {
-  width: 340px;
   padding: 8px;
   background: var(--glass-background-color);
   border: 1px solid var(--glass-border-color);

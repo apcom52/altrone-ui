@@ -2,7 +2,9 @@
   display: flex;
   align-items: center;
   gap: var(--gap);
-  color: var(--toastTextColor);
+  font-size: var(--toast-text-size);
+  font-weight: 500;
+  padding: 0 12px;
 }
 
 .Icon {
@@ -10,23 +12,16 @@
   align-items: center;
   justify-content: center;
   font-size: 18px;
-  color: var(--toastTextColor);
 }
 
 .Success {
-  .Icon {
-    color: var(--toastSuccessTextColor);
-  }
+  color: var(--toast-success-text-color);
 }
 
 .Warning {
-  .Icon {
-    color: var(--toastWarningTextColor);
-  }
+  color: var(--toast-warning-text-color);
 }
 
 .Danger {
-  .Icon {
-    color: var(--toastDangerTextColor);
-  }
+  color: var(--toast-danger-text-color);
 }

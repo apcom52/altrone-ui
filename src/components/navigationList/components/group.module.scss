@@ -1,17 +1,8 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --navigationListGroupTitleTextColor: var(--default-900);
-}
-
-:global(.AltroneDark) {
-  --navigationListGroupTitleTextColor: var(--default-50);
-}
-
 .Group {
   display: flex;
   flex-direction: column;
-  gap: var(--s-gap);
 
   & + .Group {
     margin-top: var(--xl-gap);
@@ -21,13 +12,15 @@
 .Header {
   display: flex;
   gap: var(--s-gap);
+  margin-bottom: 4px;
 }
 
 .Title {
-  @include group-heading;
-  padding-left: 30px;
-  color: var(--navigationListGroupTitleTextColor);
-  margin-bottom: var(--xs-gap);
+  padding-left: 6px;
+  color: var(--navigation-list-group-text-color);
+  font-size: var(--navigation-list-group-text-size);
+  font-weight: 500;
+  line-height: 20px;
 }
 
 .Actions {
@@ -35,5 +28,5 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--l-gap);
+  gap: 4px;
 }

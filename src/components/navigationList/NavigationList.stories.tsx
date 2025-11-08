@@ -3,6 +3,19 @@ import { Dropdown, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { NavigationList } from './NavigationList.tsx';
 import { Link, LinkAction } from './components';
+import {
+  ArrowLeft,
+  Cog,
+  Plus,
+  UserCircle,
+  Bell,
+  Keyboard,
+  Webhook,
+  Search,
+  Users,
+  MoreHorizontal,
+  Home,
+} from 'lucide-react';
 
 const story: Meta<typeof NavigationList> = {
   title: 'Components/Navigation/NavigationList',
@@ -21,30 +34,24 @@ export const NavigationListStory: StoryObj<typeof NavigationList> = {
         <div style={{ width: 350 }}>
           <NavigationList>
             <NavigationList.Group>
-              <NavigationList.Link
-                icon={<Icon i="arrow_back" />}
-                label="Back"
-              />
+              <NavigationList.Link icon={<ArrowLeft />} label="Back" />
             </NavigationList.Group>
             <NavigationList.Group title="Personal settings">
               <NavigationList.Link
                 href="#"
-                icon={<Icon i="tune" />}
+                icon={<UserCircle />}
                 label="Profile"
               >
-                <LinkAction
-                  label="Create new profile"
-                  icon={<Icon i="add" />}
-                />
+                <LinkAction label="Create new profile" icon={<Plus />} />
                 <LinkAction
                   label="Manage profile settings"
-                  icon={<Icon i="settings" />}
+                  icon={<Cog />}
                   showOnlyOnHover
                 />
               </NavigationList.Link>
               <NavigationList.Link
                 href="#"
-                icon={<Icon i="account_circle" />}
+                icon={<Cog />}
                 badge="NEW"
                 label="Preferences"
               >
@@ -59,41 +66,38 @@ export const NavigationListStory: StoryObj<typeof NavigationList> = {
                 >
                   <LinkAction
                     label="Manage profile settings"
-                    icon={<Icon i="settings" />}
+                    icon={<Cog />}
                     showOnlyOnHover
                   />
                 </Dropdown>
               </NavigationList.Link>
               <NavigationList.Link
                 href="#"
-                icon={<Icon i="notifications" />}
+                icon={<Bell />}
                 label="Notifications"
               />
               <NavigationList.Link
-                icon={<Icon i="keyboard_alt" />}
+                icon={<Keyboard />}
                 label="Keyboard shortcuts"
               />
             </NavigationList.Group>
             <NavigationList.Group title="Product settings">
               <NavigationList.GroupAction
                 label="Search"
-                icon={<Icon i="search" />}
+                icon={<Search />}
                 disabled
               />
               <Dropdown
                 content={
                   <Dropdown.Menu>
-                    <Dropdown.Action
-                      icon={<Icon i="groups" />}
-                      label="Browse teams"
-                    />
-                    <Dropdown.Action icon={<Icon i="add" />} label="Add team" />
+                    <Dropdown.Action icon={<Users />} label="Browse teams" />
+                    <Dropdown.Action icon={<Plus />} label="Add team" />
                   </Dropdown.Menu>
                 }
               >
                 <NavigationList.GroupAction
                   label="More"
-                  icon={<Icon i="more_horiz" />}
+                  icon={<MoreHorizontal />}
                 />
               </Dropdown>
               <NavigationList.Link label="Attributes" badge="4" />
@@ -105,12 +109,9 @@ export const NavigationListStory: StoryObj<typeof NavigationList> = {
               <NavigationList.Link label="Task forms" />
             </NavigationList.Group>
             <NavigationList.Group title="Workspace settings">
-              <NavigationList.GroupAction label="Add" icon={<Icon i="add" />} />
+              <NavigationList.GroupAction label="Add" icon={<Plus />} />
               <NavigationList.Link label="General" />
-              <NavigationList.Link
-                icon={<Icon i="webhook" />}
-                label="API & Webhooks"
-              />
+              <NavigationList.Link icon={<Webhook />} label="API & Webhooks" />
               <NavigationList.Link label="Authentification" />
               <NavigationList.Link label="Billing" />
               <NavigationList.Link label="Security Log" />
@@ -132,7 +133,7 @@ export const NavigationListWithNestedLinks: StoryObj<typeof NavigationList> = {
         <div style={{ width: 350 }}>
           <NavigationList>
             <NavigationList.Group>
-              <NavigationList.Link icon={<Icon i="home" />} label="Home" />
+              <NavigationList.Link icon={<Home />} label="Home" />
             </NavigationList.Group>
 
             <NavigationList.Group title="My Music">

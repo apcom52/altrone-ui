@@ -1,9 +1,5 @@
-:global(:root) {
-  --dividerColor: var(--default-300);
-}
-
-:global(.AltroneDark) {
-  --dividerColor: var(--default-700);
+:global([data-altrone-root='true']) {
+  --divider-color: var(--border-a1);
 }
 
 .Divider {
@@ -11,10 +7,10 @@
   height: 1px;
   min-height: 1px;
   min-width: 1px;
+  border-radius: 2px;
   margin: var(--xs-gap) auto;
-  background-color: var(--dividerColor);
+  background-color: var(--divider-color);
   border: none;
-  color: blue;
 }
 
 .Vertical {
