@@ -1,0 +1,31 @@
+:global([data-altrone-root='true']) {
+  --text-size-1: 8px;
+  --text-size-2: 10px;
+  --text-size-3: 12px;
+  --text-size-4: 14px;
+  --text-size-5: 16px;
+  --text-size-6: 18px;
+  --text-size-7: 20px;
+  --text-size-8: 24px;
+  --text-size-9: 28px;
+
+  --line-height-1: 12px;
+  --line-height-2: 14px;
+  --line-height-3: 16px;
+  --line-height-4: 20px;
+  --line-height-5: 24px;
+  --line-height-6: 26px;
+  --line-height-7: 28px;
+  --line-height-8: 30px;
+  --line-height-9: 36px;
+
+  --text-weight-light: 300;
+  --text-weight-regular: 400;
+  --text-weight-medium: 500;
+  --text-weight-bold: 600;
+
+  --font-family-base: 'Inter Variable', -apple-system, Roboto, 'Helvetica Neue',
+    system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  --font-family-code: 'JetBrains Mono Variable', monospace, 'Apple Color Emoji',
+    'Segoe UI Emoji';
+}

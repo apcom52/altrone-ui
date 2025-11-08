@@ -27,7 +27,7 @@
 .GlassEffect {
   background: var(--glass-background-color);
   -webkit-backdrop-filter: var(--glass-background-blur);
-  backdrop-filter: var(--glass-background-blur);
+  backdrop-filter: var(--glass-effects);
 }
 
 .Content {

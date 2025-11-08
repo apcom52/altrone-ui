@@ -1,3 +1,131 @@
-.Article {
+.Text {
+  display: inline-block;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: var(--text-weight-regular);
+  font-family: var(--font-family-base);
+}
 
+.Block {
+  display: block;
+}
+
+.WeightMedium {
+  font-weight: var(--text-weight-medium);
+}
+
+.WeightBold {
+  font-weight: var(--text-weight-bold);
+}
+
+.WeightLight {
+  font-weight: var(--text-weight-light);
+}
+
+.Size1 {
+  font-size: var(--text-size-1);
+  line-height: var(--line-height-1);
+}
+
+.Size2 {
+  font-size: var(--text-size-2);
+  line-height: var(--line-height-2);
+}
+
+.Size3 {
+  font-size: var(--text-size-3);
+  line-height: var(--line-height-3);
+}
+
+.Size4 {
+  font-size: var(--text-size-4);
+  line-height: var(--line-height-4);
+}
+
+.Size5 {
+  font-size: var(--text-size-5);
+  line-height: var(--line-height-5);
+}
+
+.Size6 {
+  font-size: var(--text-size-6);
+  line-height: var(--line-height-6);
+}
+
+.Size7 {
+  font-size: var(--text-size-7);
+  line-height: var(--line-height-7);
+}
+
+.Size8 {
+  font-size: var(--text-size-8);
+  line-height: var(--line-height-8);
+}
+
+.Size9 {
+  font-size: var(--text-size-9);
+  line-height: var(--line-height-9);
+}
+
+.List {
+  padding-left: 24px;
+}
+
+.Item {
+  display: list-item;
+
+  &::marker {
+    color: var(--disabled-text-color);
+    font-weight: var(--text-weight-medium);
+  }
+}
+
+.Italic {
+  font-style: italic;
+}
+
+.Underline {
+  text-decoration: underline;
+}
+
+.Deleted {
+  text-decoration: line-through;
+  color: var(--disabled-text-color);
+}
+
+.Highlighted {
+  border-radius: 4px;
+  color: var(--accent-12);
+  padding: 0 var(--xs-gap);
+  background: var(--accent-3);
+}
+
+.Link {
+  color: var(--accent-11);
+  font-weight: var(--text-weight-medium);
+  text-decoration: none;
+  transition: color 0.2s linear;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--accent-12);
+    text-decoration: underline;
+  }
+}
+
+.Code {
+  color: var(--accent-12);
+  font-family: var(--font-family-code);
+  background: var(--accent-1);
+  padding: 0 var(--xs-gap);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px var(--accent-6);
+  font-weight: var(--text-weight-medium);
+}
+
+.Kbd {
+  color: var(--disabled-text-color);
+  font-family: var(--font-family-code);
+  font-weight: var(--text-weight-medium);
+  letter-spacing: -0.05em;
 }

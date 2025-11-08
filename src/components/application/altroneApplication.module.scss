@@ -3,6 +3,7 @@
 @use 'styles/spacing';
 @use 'styles/shadow';
 @use 'styles/size';
+@use 'styles/text';
 
 @use 'colors/black';
 @use 'colors/gray';
@@ -43,6 +44,10 @@
   --text-a1: var(--gray-a11);
   --text-2: var(--gray-12);
   --text-a2: var(--gray-a12);
+
+  --app-background: var(--background-1);
+  --app-text-color: var(--text-2);
+  --app-font-family: var(--font-family-base);
 
   --translucent-background-1: color(display-p3 1 1 1 / 0.5);
   --translucent-background-2: color(display-p3 1 1 1 / 0.6);
@@ -230,8 +235,7 @@
 
   /** glass effect */
   --glass-background-color: color(display-p3 1 1 1 / 0.7);
-  --glass-background-blur: blur(64px);
-  --glass-border-color: rgba(0, 10, 53, 0.12);
+  --glass-effects: blur(64px) saturate(180%);
 
   /** focus */
   --focus: rgba(66, 165, 245, 0.4);
@@ -244,9 +248,9 @@
 }
 
 :global(html) {
-  background: var(--appBackground);
-  color: var(--bodyTextColor);
-  font-family: 'Inter Variable', sans-serif;
+  background: var(--app-background);
+  color: var(--app-text-color);
+  font-family: var(--app-font-family);
   box-sizing: border-box;
 
   * {
@@ -262,10 +266,13 @@
 }
 
 .AltroneApp {
-  font-family: 'Inter Variable', sans-serif;
+  font-family: var(--app-font-family);
+  font-size: var(--text-size-4);
+  line-height: var(--line-height-4);
+  color: var(--app-text-color);
 
   * {
-    font-family: 'Inter Variable', sans-serif;
+    font-family: var(--app-font-family);
     box-sizing: border-box;
   }
 
