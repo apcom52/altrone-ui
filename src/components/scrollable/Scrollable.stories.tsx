@@ -30,9 +30,9 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
   name: 'Using Scrollable',
   render: (args) => (
     <Flex direction="vertical" gap="xl">
-      <Text.Heading role="inner">
+      <Text block size={6} weight="bold">
         Vertical Scrollable with long content
-      </Text.Heading>
+      </Text>
       <Scrollable
         maxHeight="200px"
         offset={{ top: 12, bottom: 12, left: 8, right: 8 }}
@@ -47,16 +47,16 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
               <Flex key={currentIndex} direction="horizontal" gap="m">
                 <div>{item.flag}</div>
                 <div>
-                  <Text.Inline bold>{item.country}</Text.Inline>, {item.capital}
+                  <Text weight="bold">{item.country}</Text>, {item.capital}
                 </div>
               </Flex>
             );
           }}
         />
       </Scrollable>
-      <Text.Heading role="inner">
+      <Text block size={6} weight="bold">
         Horizontal Scrollable with long content
-      </Text.Heading>
+      </Text>
       <Scrollable
         maxWidth="100%"
         direction="horizontal"
@@ -78,16 +78,16 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
                 style={{ width: '200px', minWidth: '200px' }}
               >
                 <div style={{ fontSize: 48 }}>{item.flag}</div>
-                <Text.Heading role="subheading">{item.country}</Text.Heading>
-                <Text.Paragraph size="s">{item.capital}</Text.Paragraph>
+                <Text weight="bold">{item.country}</Text>
+                <Text size="s">{item.capital}</Text>
               </Flex>
             );
           }}
         />
       </Scrollable>
-      <Text.Heading role="inner">
+      <Text block size={6} weight="bold">
         Vertical Scrollable with short content
-      </Text.Heading>
+      </Text>
       <Scrollable
         maxHeight="200px"
         offset={{ top: 12, bottom: 12, left: 8, right: 8 }}
@@ -102,16 +102,16 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
               <Flex key={currentIndex} direction="horizontal" gap="m">
                 <div>{item.flag}</div>
                 <div>
-                  <Text.Inline bold>{item.country}</Text.Inline>, {item.capital}
+                  <Text weight="bold">{item.country}</Text>, {item.capital}
                 </div>
               </Flex>
             );
           }}
         />
       </Scrollable>
-      <Text.Heading role="inner">
+      <Text block size={6} weight="bold">
         Horizontal Scrollable with short content
-      </Text.Heading>
+      </Text>
       <Scrollable
         maxWidth="100%"
         direction="horizontal"
@@ -133,8 +133,8 @@ export const ScrollableStory: StoryObj<typeof Scrollable> = {
                 style={{ width: '200px', minWidth: '200px' }}
               >
                 <div style={{ fontSize: 48 }}>{item.flag}</div>
-                <Text.Heading role="subheading">{item.country}</Text.Heading>
-                <Text.Paragraph size="s">{item.capital}</Text.Paragraph>
+                <Text weight="bold">{item.country}</Text>
+                <Text size={3}>{item.capital}</Text>
               </Flex>
             );
           }}

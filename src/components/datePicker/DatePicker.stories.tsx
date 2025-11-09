@@ -42,7 +42,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Basic DatePicker</Text.Heading>
+        <Text weight="bold">Basic DatePicker</Text>
         <Flex direction="horizontal" gap="l">
           <DatePicker
             value={day1}
@@ -63,7 +63,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <DatePicker value={day2} readOnly onChange={setDay2} />
           <DatePicker value={day2} disabled onChange={setDay2} />
         </Flex>
-        <Text.Heading role="inner">MonthPicker</Text.Heading>
+        <Text weight="bold">MonthPicker</Text>
         <Flex direction="horizontal" gap="l">
           <DatePicker.MonthPicker
             data-testid="month-picker"
@@ -100,7 +100,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             onChange={setMonth2}
           />
         </Flex>
-        <Text.Heading role="inner">YearPicker</Text.Heading>
+        <Text weight="bold">YearPicker</Text>
         <Flex direction="horizontal" gap="l">
           <DatePicker.YearPicker
             data-testid="year-picker"
@@ -204,7 +204,7 @@ export const RangeStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">RangePicker</Text.Heading>
+        <Text weight="bold">RangePicker</Text>
         <Flex direction="horizontal" gap="l">
           <DatePicker.RangePicker
             value={day1}

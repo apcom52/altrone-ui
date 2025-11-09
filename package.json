@@ -39,6 +39,7 @@
     "lodash-es": "4.17.21",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.9",
+    "overlayscrollbars-react": "^0.5.6",
     "rc-util": "5.43.0",
     "react-colorful": "5.6.1",
     "react-hotkeys-hook": "4.6.2",

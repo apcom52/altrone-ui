@@ -30,7 +30,9 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Basic Dropdowns</Text.Heading>
+        <Text block size={6} weight="bold">
+          Basic Dropdowns
+        </Text>
         <Flex direction="horizontal" gap="l">
           <Dropdown
             placement="bottom"
@@ -105,7 +107,7 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
               <Button
                 label="Visibility Settings"
                 data-testid="button-2"
-                rightIcon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
+                icon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
               />
             )}
           </Dropdown>

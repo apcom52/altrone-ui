@@ -1,8 +1,6 @@
 import { memo } from 'react';
 import { Toolbar } from 'components/toolbar';
-import { Divider } from 'components/divider';
 import s from './toolbar.module.scss';
-import { Icon } from 'components/icon';
 import { Text } from 'components/text';
 import { PhotoViewerToolbarProps } from '../PhotoViewer.types.ts';
 import { Popover } from 'components/popover';
@@ -56,9 +54,9 @@ export const PhotoViewerToolbar = memo<PhotoViewerToolbarProps>(
                     maxHeight="300px"
                     offset={{ top: 0, left: 0, right: 4, bottom: 0 }}
                   >
-                    <Text.Paragraph size="s">
+                    <Text block>
                       {description || t('photoViewer.noDescription')}
-                    </Text.Paragraph>
+                    </Text>
                   </Scrollable>
                 }
                 overlap
@@ -76,7 +74,7 @@ export const PhotoViewerToolbar = memo<PhotoViewerToolbarProps>(
           <Toolbar.Group>
             <Toolbar.Action
               icon={<X />}
-              label={t('photoViewer.close')}
+              label={t('common.close')}
               showLabel={false}
               onClick={onClose}
             />

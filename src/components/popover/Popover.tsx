@@ -250,6 +250,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
                 refs.setFloating(elementRef);
                 contentRef.current = elementRef;
               }}
+              layout="size"
               initial={{
                 opacity: 0,
                 scale: 0.1,
