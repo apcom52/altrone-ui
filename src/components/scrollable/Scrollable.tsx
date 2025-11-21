@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useImperativeHandle, useRef } from 'react';
 import { ScrollableProps } from './Scrollable.types.ts';
 import clsx from 'clsx';
 import { useConfiguration } from 'components/configuration';
@@ -18,8 +18,16 @@ export const Scrollable = memo<ScrollableProps>(
     maxHeight,
     showShadows = true,
     onScroll,
+    ref,
     ...props
   }) => {
+    const scrollableRef = useRef(null);
+
+    useImperativeHandle(ref, () => {
+      const instance = scrollableRef.current?.osInstance() as HTMLDivElement;
+      return instance?.elements().viewport ?? null;
+    });
+
     const { scrollable: scrollableConfig = {} } = useConfiguration();
 
     const cls = clsx(
@@ -84,6 +92,7 @@ export const Scrollable = memo<ScrollableProps>(
               autoHideDelay: 300,
             },
           }}
+          ref={scrollableRef}
         >
           {children}
         </OverlayScrollbarsComponent>

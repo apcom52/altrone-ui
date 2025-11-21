@@ -3,6 +3,7 @@ import { ToolbarGroupProps } from '../Toolbar.types.ts';
 import s from './group.module.scss';
 import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
+import { motion } from 'motion/react';
 
 export const Group = memo<ToolbarGroupProps>(
   ({
@@ -31,9 +32,9 @@ export const Group = memo<ToolbarGroupProps>(
     };
 
     return (
-      <div className={cls} style={styles} {...restProps}>
+      <motion.div layout className={cls} style={styles} {...restProps}>
         {children}
-      </div>
+      </motion.div>
     );
   }
 );

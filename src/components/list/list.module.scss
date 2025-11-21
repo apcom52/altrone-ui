@@ -1,2 +1,12 @@
+:global([data-altrone-root='true']) {
+  --list-item-background-color: transparent;
+  --list-item-hover-background-color: var(--interactive-1);
+  --list-item-pressed-background-color: var(--interactive-2);
+  --list-item-text-color: var(--text-2);
+  --list-item-selected-background-color: var(--accent-4);
+  --list-item-selected-text-color: var(--accent-12);
+}
+
 .List {
+  gap: 4px;
 }

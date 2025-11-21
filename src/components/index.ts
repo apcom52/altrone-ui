@@ -50,3 +50,4 @@ export * from './toasts';
 export * from './toolbar';
 export * from './tooltip';
 export * from './topNavigation';
+export * from './skeleton';

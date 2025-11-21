@@ -44,7 +44,7 @@ export const Text = memo<TextProps>(
     const cls = clsx(
       s.Text,
       {
-        [s.Text_block]: block,
+        [s.Block]: block,
         [s.WeightMedium]: weight === 'medium',
         [s.WeightBold]: weight === 'bold',
         [s.WeightLight]: weight === 'light',

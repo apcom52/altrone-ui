@@ -145,7 +145,7 @@ export const ToolbarStory: StoryObj<typeof Toolbar> = {
           <Toolbar.Trailing>
             <Toolbar.Group>
               <Toolbar.Action
-                label="Edit"
+                label={buttonSelected ? 'Finish editing' : 'Edit'}
                 showLabel={!vertical}
                 icon={vertical ? <PencilLine /> : undefined}
               />

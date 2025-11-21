@@ -1,0 +1,69 @@
+.Item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--list-item-background-color);
+  width: 100%;
+  transition: background-color 0.2s ease;
+  gap: 12px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 12px;
+  user-select: none;
+  color: var(--list-item-text-color);
+
+  &:hover {
+    background-color: var(--list-item-hover-background-color);
+  }
+
+  &:active {
+    background-color: var(--list-item-pressed-background-color);
+  }
+}
+
+.Icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.Content {
+  display: flex;
+  width: calc(100% - 36px);
+  flex-direction: column;
+  gap: 4px;
+}
+
+.TitleBlock {
+  display: flex;
+  align-items: center;
+}
+
+.Title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.Meta {
+  color: var(--disabled-text-color);
+}
+
+.Description {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.Selected {
+  --list-item-background-color: var(--list-item-selected-background-color);
+  --list-item-hover-background-color: var(
+    --list-item-selected-background-color
+  );
+  --list-item-pressed-background-color: var(
+    --list-item-selected-background-color
+  );
+  --list-item-text-color: var(--list-item-selected-text-color);
+}

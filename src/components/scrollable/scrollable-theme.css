@@ -9,7 +9,7 @@
   --os-track-border: none;
   --os-track-border-hover: none;
   --os-track-border-active: none;
-  --os-handle-border-radius: 3px;
+  --os-handle-border-radius: 4px;
   --os-handle-bg: var(--solid-2);
   --os-handle-bg-hover: var(--text-1);
   --os-handle-bg-active: var(--text-2);
@@ -21,5 +21,5 @@
   --os-handle-perpendicular-size: 100%;
   --os-handle-perpendicular-size-hover: 100%;
   --os-handle-perpendicular-size-active: 100%;
-  --os-handle-interactive-area-offset: 0;
+  --os-handle-interactive-area-offset: 20px;
 }
