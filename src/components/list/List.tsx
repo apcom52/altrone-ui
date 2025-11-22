@@ -1,4 +1,4 @@
-import { memo, useId, useMemo, useRef } from 'react';
+import { CSSProperties, memo, useMemo, useRef } from 'react';
 import { ListItemKey, ListProps } from './List.types.ts';
 import s from './list.module.scss';
 import clsx from 'clsx';
@@ -7,7 +7,7 @@ import { Scrollable } from 'components/scrollable/index.ts';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Item } from './inner/Item.tsx';
 
-const List = <DataType extends object>({
+const List = ({
   data,
   selectedItemKeys = [],
   multiple = false,
@@ -26,6 +26,7 @@ const List = <DataType extends object>({
     getScrollElement: () => scrollableRef.current,
     estimateSize: () => 60,
     gap: 4,
+    paddingEnd: children ? 48 : 0,
   });
 
   const handleSelect = (key: ListItemKey) => {
@@ -45,51 +46,71 @@ const List = <DataType extends object>({
     if (!children) return null;
 
     if (typeof children === 'function') {
-      return children({ selectedItemKeys });
+      return children({
+        selectedItemKeys,
+        selectedItems: data.filter((item) =>
+          selectedItemKeys.includes(item.key)
+        ),
+        setSelection: (keys: ListItemKey[]) => onSelect?.(keys),
+        clearSelection: () => onSelect?.([]),
+      });
     }
 
     return children;
-  }, [children]);
+  }, [children, data, selectedItemKeys, onSelect]);
 
   const cls = clsx(s.List, className, listConfig.className);
 
-  const styles = {
+  const listStyles: CSSProperties = {
+    height: `${virtualizer.getTotalSize()}px`,
+    position: 'relative',
+  };
+
+  const containerStyles: CSSProperties = {
     ...listConfig.style,
     ...style,
-    height: `${virtualizer.getTotalSize()}px`,
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
   };
 
   return (
-    <Scrollable maxHeight="100%" ref={scrollableRef}>
-      <div className={cls} style={styles}>
-        {virtualizer.getVirtualItems().map((virtualItem) => {
-          const item = data[virtualItem.index];
+    <div className={s.ListWrapper} style={containerStyles} {...props}>
+      <Scrollable
+        maxHeight="100%"
+        ref={scrollableRef}
+        style={{ flex: 1, minHeight: 0 }}
+      >
+        <div className={cls} style={listStyles}>
+          {virtualizer.getVirtualItems().map((virtualItem) => {
+            const item = data[virtualItem.index];
 
-          return (
-            <Item
-              key={item.key}
-              itemKey={item.key}
-              title={item.title}
-              description={item.description}
-              icon={item.icon}
-              meta={item.meta}
-              disabled={item.disabled}
-              onSelect={handleSelect}
-              selected={selectedItemKeys.includes(item.key)}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: `${virtualItem.size}px`,
-                transform: `translateY(${virtualItem.start}px)`,
-              }}
-            />
-          );
-        })}
-      </div>
-      {children ? <div>{children}</div> : null}
-    </Scrollable>
+            return (
+              <Item
+                key={item.key}
+                itemKey={item.key}
+                title={item.title}
+                description={item.description}
+                icon={item.icon}
+                meta={item.meta}
+                disabled={item.disabled}
+                onSelect={handleSelect}
+                selected={selectedItemKeys.includes(item.key)}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: `${virtualItem.size}px`,
+                  transform: `translateY(${virtualItem.start}px)`,
+                }}
+              />
+            );
+          })}
+        </div>
+      </Scrollable>
+      {actions ? <div className={s.ListActions}>{actions}</div> : null}
+    </div>
   );
 };
 
