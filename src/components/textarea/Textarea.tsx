@@ -9,7 +9,17 @@ import { useFormField } from '../form/components/Field.tsx';
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
-    { className, style, name, invalid, disabled, size, children, ...restProps },
+    {
+      className,
+      style,
+      name,
+      invalid,
+      disabled,
+      size,
+      children,
+      readOnly,
+      ...restProps
+    },
     ref
   ) => {
     const { textarea: textareaConfig = {} } = useConfiguration();
@@ -33,10 +43,12 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       inputStyles.Input,
       {
         [inputStyles.Invalid]: inputInvalid,
+        [inputStyles.Readonly]: readOnly,
       },
       textareaConfig.className,
       className
     );
+
     const styles = {
       ...textareaConfig.style,
       ...style,
@@ -51,6 +63,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         invalid={inputInvalid}
         disabled={inputDisabled}
         size={inputSize}
+        readOnly={readOnly}
         Component={<textarea className={cls} ref={ref} />}
         {...restProps}
       />

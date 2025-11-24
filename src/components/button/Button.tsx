@@ -85,16 +85,16 @@ export const Button = memo((props: ButtonProps) => {
     <motion.button
       type={type}
       className={cls}
+      transition={{
+        duration: 0.2,
+        ease: 'linear',
+      }}
       style={styles}
       title={label}
       ref={ref}
       {...(restProps as HTMLMotionProps<'button'>)}
       whileTap={{
         scale: 0.95,
-        transition: {
-          duration: 0.2,
-          ease: 'linear',
-        },
       }}
     >
       {buttonContent}

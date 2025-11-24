@@ -1,6 +1,7 @@
 .Textarea {
   resize: vertical;
   min-height: 72px;
+  line-height: var(--text-line-height-3);
 }
 
 .Wrapper {

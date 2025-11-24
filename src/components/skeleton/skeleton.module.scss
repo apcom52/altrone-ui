@@ -1,11 +1,11 @@
 :global([data-altrone-root='true']) {
-  --skeleton-background-color: var(--interactive-1);
-  --skeleton-animate-background-color: var(--interactive-2);
+  --skeleton-background-color: var(--interactive-a1);
+  --skeleton-animate-background-color: var(--interactive-a2);
 }
 
 .Skeleton {
   background-color: var(--skeleton-background-color);
-  animation: skeleton-animate 1.5s ease-in-out infinite;
+  animation: skeleton-animate 3s ease-in-out infinite;
 }
 
 @keyframes skeleton-animate {

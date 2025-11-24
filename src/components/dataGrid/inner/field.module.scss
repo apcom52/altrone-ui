@@ -1,0 +1,38 @@
+.Field {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  min-height: var(--base-control-size);
+}
+
+.FieldLabel {
+  max-width: 20%;
+  min-width: 200px;
+  font-weight: var(--text-weight-medium);
+  font-size: var(--text-size-3);
+  color: var(--disabled-text-color);
+  text-align: right;
+  line-height: var(--base-control-size);
+}
+
+.FieldValue {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  color: var(--text-2);
+  font-weight: var(--text-weight-medium);
+  font-size: var(--text-size-4);
+}
+
+.InputText {
+  padding: 6px 12px;
+}
+
+.SwitcherText {
+  font-size: 20px;
+}
+
+.Switcher {
+  margin-top: 4px;
+}

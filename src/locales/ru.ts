@@ -8,6 +8,8 @@ export const ru: Localization = {
     cancel: 'Отмена',
     delete: 'Удалить',
     refresh: 'Обновить',
+    edit: 'Редактировать',
+    done: 'Готово',
   },
   datePicker: {
     placeholder: 'Выбрать дату',

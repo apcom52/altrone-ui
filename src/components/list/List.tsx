@@ -19,6 +19,8 @@ const List = ({
 }: ListProps) => {
   const { list: listConfig = {} } = useConfiguration();
 
+  console.log('>> data', data);
+
   const scrollableRef = useRef<HTMLDivElement>(null);
 
   const virtualizer = useVirtualizer({

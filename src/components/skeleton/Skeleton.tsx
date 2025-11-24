@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import s from './skeleton.module.scss';
 import { SkeletonProps } from './Skeleton.types';
+import { motion } from 'motion/react';
 
 export const Skeleton = memo<SkeletonProps>((props) => {
   const { width, height, radius, style, ...restProps } = props;
@@ -16,5 +17,7 @@ export const Skeleton = memo<SkeletonProps>((props) => {
     borderRadius: radius,
   };
 
-  return <div className={s.Skeleton} style={styles} {...restProps} />;
+  return (
+    <motion.div className={s.Skeleton} style={styles} layout {...restProps} />
+  );
 });

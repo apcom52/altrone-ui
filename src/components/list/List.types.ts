@@ -1,13 +1,13 @@
-import { JSX, ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 
 export type ListItemKey = string;
 
 export type ListItemData = {
   key: ListItemKey;
   title: string;
-  description?: JSX.Element;
-  icon?: ReactElement;
-  meta?: JSX.Element;
+  description?: ReactNode;
+  icon?: ReactNode;
+  meta?: ReactNode;
   disabled?: boolean;
 };
 

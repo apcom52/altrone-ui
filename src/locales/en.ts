@@ -8,6 +8,8 @@ export const en: Localization = {
     cancel: 'Cancel',
     delete: 'Delete',
     refresh: 'Refresh',
+    edit: 'Edit',
+    done: 'Done',
   },
   datePicker: {
     placeholder: 'Select date',

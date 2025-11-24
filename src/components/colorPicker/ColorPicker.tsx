@@ -17,7 +17,7 @@ const EMPTY_COLOR_PRESETS: ColorPreset[] = [];
 const SIZES: Record<Size, number> = {
   mini: 16,
   s: 20,
-  m: 24,
+  m: 20,
   l: 28,
   xl: 32,
 };

@@ -15,6 +15,8 @@ export interface Localization {
     cancel: string;
     delete: string;
     refresh: string;
+    edit: string;
+    done: string;
   };
   datePicker: {
     placeholder: string;

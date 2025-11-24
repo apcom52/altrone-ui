@@ -8,6 +8,8 @@ export const sp: Localization = {
     cancel: 'Cancelar',
     delete: 'Eliminar',
     refresh: 'Actualizar',
+    edit: 'Editar',
+    done: 'Listo',
   },
   datePicker: {
     placeholder: 'Seleccionar fecha',

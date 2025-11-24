@@ -8,6 +8,8 @@ export const ge: Localization = {
     cancel: 'Abbrechen',
     delete: 'Löschen',
     refresh: 'Aktualisieren',
+    edit: 'Bearbeiten',
+    done: 'Fertig',
   },
   datePicker: {
     placeholder: 'Datum auswählen',

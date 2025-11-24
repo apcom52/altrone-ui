@@ -8,17 +8,21 @@ import { useLocalization } from '../application/useLocalization.tsx';
 import { Eye, EyeOff } from 'lucide-react';
 
 export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
-  ({ showControls, children, className, style, ...restProps }, ref) => {
+  (
+    { showControls, children, className, style, readOnly, ...restProps },
+    ref
+  ) => {
     const t = useLocalization();
 
     const { passwordInput: passwordInputConfig = {} } = useConfiguration();
 
     const needToShowControl =
-      typeof showControls === 'boolean'
+      !readOnly &&
+      (typeof showControls === 'boolean'
         ? showControls
         : typeof passwordInputConfig.showControls === 'boolean'
         ? passwordInputConfig.showControls
-        : true;
+        : true);
 
     const [type, setType] = useState('password');
 
@@ -36,6 +40,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
         className={cls}
         style={styles}
         ref={ref}
+        readOnly={readOnly}
         {...restProps}
       >
         {...safeChildren}

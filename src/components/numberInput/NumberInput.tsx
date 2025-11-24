@@ -37,9 +37,10 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       invalid,
       name,
       disabled,
+      readOnly,
       ...restProps
     },
-    ref,
+    ref
   ) => {
     const numberInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -61,11 +62,12 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     const inputSize = size || formFieldSize;
 
     const needToShowControl =
-      typeof showControls === 'boolean'
+      !readOnly &&
+      (typeof showControls === 'boolean'
         ? showControls
         : typeof numberInputConfig.showControls === 'boolean'
-          ? numberInputConfig.showControls
-          : true;
+        ? numberInputConfig.showControls
+        : true);
 
     const allowLeadingZerosValue =
       typeof allowLeadingZeros === 'boolean'
@@ -94,9 +96,10 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       s.NumberInput,
       {
         [inputStyles.Invalid]: inputInvalid,
+        [inputStyles.Readonly]: readOnly,
       },
       numberInputConfig.className,
-      className,
+      className
     );
     const styles = {
       ...numberInputConfig.style,
@@ -107,7 +110,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       ({ floatValue }, sourceInfo) => {
         onChange(floatValue || 0, sourceInfo.event);
       },
-      [onChange],
+      [onChange]
     );
 
     const onAllowedCheck = useCallback(
@@ -122,7 +125,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
 
         return true;
       },
-      [min, max, onChange],
+      [min, max, onChange]
     );
 
     const spinnerChangeValue = (diff: number) => {
@@ -161,6 +164,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             allowNegative={allowNegative}
             decimalSeparator={decimalDelimiterValue}
             decimalScale={digitsAfterPointValue}
+            readOnly={readOnly}
             getInputRef={(_ref: HTMLInputElement) => {
               numberInputRef.current = _ref;
 
@@ -180,10 +184,10 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             <Spinner
               disabled={inputDisabled}
               disabledUp={Boolean(
-                typeof max === 'number' && value && value >= max,
+                typeof max === 'number' && value && value >= max
               )}
               disabledDown={Boolean(
-                typeof min === 'number' && value && (value <= min || !value),
+                typeof min === 'number' && value && (value <= min || !value)
               )}
               onDownClick={() => spinnerChangeValue(-1)}
               onUpClick={() => spinnerChangeValue(1)}
@@ -193,5 +197,5 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         ) : null}
       </TextInput>
     );
-  },
+  }
 );
