@@ -8,82 +8,76 @@ import { flexRender } from '@tanstack/react-table';
 import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
 import { motion } from 'motion/react';
 
-interface ColumnHeadersProps<T extends object> {
-  headingVisible?: boolean;
-  renderRowActions?: DataTableProps<T>['renderRowActions'];
-}
+export const ColumnHeaders = () => {
+  const table = useDataTableCore();
 
-export const ColumnHeaders = memo<ColumnHeadersProps<any>>(
-  ({ headingVisible = true, renderRowActions }) => {
-    const table = useDataTableCore();
-    const columnsTemplate = useDataTableColumnsTemplate();
+  const selectableMode = table.getState().selectableMode || false;
+  const columnsTemplate = useDataTableColumnsTemplate(selectableMode);
 
-    const headerRef = useRef<HTMLTableSectionElement>(null);
-    const [isSticky, setIsSticky] = useState(false);
+  const headerRef = useRef<HTMLTableSectionElement>(null);
+  const [isSticky, setIsSticky] = useState(false);
 
-    useEffect(() => {
-      const checkSticky = () => {
-        if (headerRef.current) {
-          const rect = headerRef.current.getBoundingClientRect();
-          setIsSticky(rect.top <= 0 && rect.bottom > 0);
-        }
-      };
+  useEffect(() => {
+    const checkSticky = () => {
+      if (headerRef.current) {
+        const rect = headerRef.current.getBoundingClientRect();
+        setIsSticky(rect.top <= 0 && rect.bottom > 0);
+      }
+    };
 
-      checkSticky();
+    checkSticky();
 
-      const scrollContainer =
-        headerRef.current
-          ?.closest('[class*="Scrollable"], [class*="scrollable"]')
-          ?.querySelector('[data-overlayscrollbars-viewport]') ||
-        headerRef.current?.closest('.Wrapper') ||
-        window;
+    const scrollContainer =
+      headerRef.current
+        ?.closest('[class*="Scrollable"], [class*="scrollable"]')
+        ?.querySelector('[data-overlayscrollbars-viewport]') ||
+      headerRef.current?.closest('.Wrapper') ||
+      window;
 
-      scrollContainer.addEventListener('scroll', checkSticky, {
-        passive: true,
-      });
-      window.addEventListener('scroll', checkSticky, { passive: true });
-      window.addEventListener('resize', checkSticky, { passive: true });
-
-      return () => {
-        scrollContainer.removeEventListener('scroll', checkSticky);
-        window.removeEventListener('scroll', checkSticky);
-        window.removeEventListener('resize', checkSticky);
-      };
-    }, []);
-
-    const cls = clsx(s.Wrapper, s.HeaderRow, {
-      [s.WithoutHeading]: !headingVisible,
+    scrollContainer.addEventListener('scroll', checkSticky, {
+      passive: true,
     });
+    window.addEventListener('scroll', checkSticky, { passive: true });
+    window.addEventListener('resize', checkSticky, { passive: true });
 
-    return (
-      <div
-        className={cls}
-        ref={headerRef}
-        style={{ gridTemplateColumns: columnsTemplate }}
-      >
-        <motion.div
-          className={s.Backdrop}
-          layout
-          animate={{
-            width: isSticky ? 'calc(100% - 16px)' : '100%',
-            height: isSticky ? 'calc(100% - 16px)' : '100%',
-            top: isSticky ? 8 : 0,
-            left: isSticky ? 8 : 0,
-            borderTopLeftRadius: isSticky ? 20 : 'var(--data-table-rounding)',
-            borderTopRightRadius: isSticky ? 20 : 'var(--data-table-rounding)',
-            borderBottomLeftRadius: isSticky ? 20 : 0,
-            borderBottomRightRadius: isSticky ? 20 : 0,
-          }}
-          transition={{ duration: 0.2, ease: 'linear' }}
-        />
-        {table.getFlatHeaders().map((header) => (
-          <div key={header.id} className={s.Cell} title={header.id}>
-            <Text size={4} weight="bold" className={s.Label}>
-              {flexRender(header.column.columnDef.header, header.getContext())}
-            </Text>
-          </div>
-        ))}
-      </div>
-    );
-  }
-);
+    return () => {
+      scrollContainer.removeEventListener('scroll', checkSticky);
+      window.removeEventListener('scroll', checkSticky);
+      window.removeEventListener('resize', checkSticky);
+    };
+  }, []);
+
+  const cls = clsx(s.Wrapper, s.HeaderRow);
+
+  return (
+    <div
+      className={cls}
+      ref={headerRef}
+      style={{ gridTemplateColumns: columnsTemplate }}
+    >
+      <motion.div
+        className={s.Backdrop}
+        layout
+        animate={{
+          width: isSticky ? 'calc(100% - 16px)' : '100%',
+          height: isSticky ? 'calc(100% - 16px)' : '100%',
+          top: isSticky ? 8 : 0,
+          left: isSticky ? 8 : 0,
+          borderTopLeftRadius: isSticky ? 20 : 'var(--data-table-rounding)',
+          borderTopRightRadius: isSticky ? 20 : 'var(--data-table-rounding)',
+          borderBottomLeftRadius: isSticky ? 20 : 0,
+          borderBottomRightRadius: isSticky ? 20 : 0,
+        }}
+        transition={{ duration: 0.2, ease: 'linear' }}
+      />
+      {selectableMode ? <div /> : null}
+      {table.getFlatHeaders().map((header) => (
+        <div key={header.id} className={s.Cell} title={header.id}>
+          <Text size={4} weight="bold" className={s.Label}>
+            {flexRender(header.column.columnDef.header, header.getContext())}
+          </Text>
+        </div>
+      ))}
+    </div>
+  );
+};

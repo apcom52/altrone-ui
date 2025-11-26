@@ -60,7 +60,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
         </Text>
         <DataTable
           data={isEmpty ? [] : COUNTRIES}
-          rowsPerPage={5}
+          rowsPerPage={7}
           selectable
           defaultPage={defaultPage}
           defaultSort={defaultSorting}

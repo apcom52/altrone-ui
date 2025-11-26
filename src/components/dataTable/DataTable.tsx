@@ -5,10 +5,14 @@ import s from './dataTable.module.scss';
 import { Children, useMemo } from 'react';
 import { useConfiguration } from '../configuration';
 import clsx from 'clsx';
-import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import {
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
 import { useDataTableColumns } from './useDataTableColumns';
 import { Body, ColumnHeaders } from './inner';
-import { Footer } from './inner/Footer.tsx';
+import { Header, Footer } from './inner';
 
 const DataTableComponent = <DataType extends object>(
   props: DataTableProps<DataType>
@@ -19,10 +23,12 @@ const DataTableComponent = <DataType extends object>(
     children,
     selectable,
     showFooter = true,
-    rowsPerPage,
+    rowsPerPage = 20,
     data,
     columns,
     showEmptyBanner = true,
+    defaultPage = 0,
+    onPageChange,
     ...restProps
   } = props;
 
@@ -34,6 +40,22 @@ const DataTableComponent = <DataType extends object>(
     data,
     columns: columnDefs,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageIndex: defaultPage,
+        pageSize: rowsPerPage,
+      },
+    },
+    enableRowSelection: selectable,
+    onPaginationChange: (updater) => {
+      table.setState((old) => ({
+        ...old,
+        pagination:
+          typeof updater === 'function' ? updater(old.pagination) : updater,
+      }));
+      onPageChange?.(table.getState().pagination.pageIndex);
+    },
   });
 
   const cls = clsx(s.Table, props.className, dataTableConfig.className);
@@ -52,9 +74,7 @@ const DataTableComponent = <DataType extends object>(
   return (
     <DataTableCoreContext.Provider value={table}>
       <div className={s.Wrapper}>
-        {/* {dataTableHeaderVisible ? (
-          <Header<DataType> selectable={Boolean(selectable)}>{children}</Header>
-        ) : null} */}
+        {dataTableHeaderVisible ? <Header>{children}</Header> : null}
         <table className={cls} style={styles} {...restProps}>
           <ColumnHeaders />
           <Body />

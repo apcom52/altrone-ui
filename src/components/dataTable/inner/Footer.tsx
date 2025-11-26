@@ -1,15 +1,23 @@
-import { useDataTableContext } from '../DataTable.context.tsx';
-import { memo, useEffect, useRef, useState } from 'react';
-import { Flex } from 'components/flex';
-import { Text } from 'components/text';
+import { useDataTableCore } from '../DataTable.context.tsx';
+import { useEffect, useRef, useState } from 'react';
 import { Tooltip } from 'components/tooltip';
 import { Pagination } from 'components/pagination';
 import s from './footer.module.scss';
 import { useLocalization } from '../../application/useLocalization.tsx';
 import { motion } from 'motion/react';
 
-export const Footer = memo(() => {
+export const Footer = () => {
   const t = useLocalization();
+
+  const tableCore = useDataTableCore();
+  const selectableMode = tableCore.getState().selectableMode || false;
+  const selectedRowCount = tableCore.getSelectedRowModel().rows.length;
+
+  const currentPage = tableCore.getState().pagination.pageIndex + 1;
+  const totalPages = tableCore.getPageCount() + 1;
+
+  const rowsPerPage = tableCore.getState().pagination.pageSize;
+  const totalRows = tableCore.getRowCount();
 
   const footerRef = useRef<HTMLTableSectionElement>(null);
   const [isSticky, setIsSticky] = useState(false);
@@ -47,15 +55,27 @@ export const Footer = memo(() => {
     };
   }, []);
 
-  const statusText = t('dataTable.shownRows', {
-    plural: true,
-    value: 35,
-    vars: {
-      count: 35,
-    },
-  });
-
-  console.log('>> footer sticky', isSticky);
+  const statusText = selectableMode ? (
+    <div>
+      {t('dataTable.selectedRows', {
+        plural: true,
+        value: selectedRowCount,
+        vars: {
+          count: selectedRowCount,
+        },
+      })}
+    </div>
+  ) : (
+    <div>
+      {t('dataTable.shownRows', {
+        plural: true,
+        value: rowsPerPage,
+        vars: {
+          count: rowsPerPage,
+        },
+      })}
+    </div>
+  );
 
   return (
     <div className={s.Footer} ref={footerRef}>
@@ -74,25 +94,16 @@ export const Footer = memo(() => {
         }}
         transition={{ duration: 0.2, ease: 'linear' }}
       />
-      <div className={s.StatusBar}>
-        <Tooltip
-          content={
-            <Flex direction="vertical" gap="s">
-              <Text block size={3}>
-                {t('dataTable.totalRows')}: <Text weight="bold">{35}</Text>
-              </Text>
-              <Text block size={3}>
-                {t('dataTable.rowsPerPage')}: <Text weight="bold">{100}</Text>
-              </Text>
-            </Flex>
-          }
-        >
-          {statusText}
-        </Tooltip>
-      </div>
+      <div className={s.StatusBar}>{statusText}</div>
       <div>
-        <Pagination currentPage={1} totalPages={4 || 1} setPage={() => {}} />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages - 1}
+          setPage={(page) => {
+            tableCore.setPageIndex(page - 1);
+          }}
+        />
       </div>
     </div>
   );
-});
+};

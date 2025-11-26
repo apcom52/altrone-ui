@@ -30,18 +30,24 @@
   &:nth-child(even) {
     background-color: var(--data-table-even-background-color);
   }
+
+  &[data-selected='true'] {
+    background-color: var(--data-table-selected-background-color);
+    border-color: var(--data-table-selected-border-color);
+    color: var(--data-table-selected-text-color);
+  }
 }
 
 .Cell {
   flex: 1;
-  padding: 10px 12px;
+  padding: 8px 12px;
   height: 100%;
   border: none;
   color: var(--data-table-text-color);
 }
 
 .CheckboxCell {
-  padding: 10px 7px;
+  padding: 0;
 }
 
 .Row:not(.Selected):has(+ .Selected) {

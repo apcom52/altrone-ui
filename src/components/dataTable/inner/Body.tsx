@@ -42,25 +42,40 @@ const CELL_RENDERERS: Record<
 
 export const Body = () => {
   const table = useDataTableCore();
-  const columnsTemplate = useDataTableColumnsTemplate();
+  const selectableMode = table.getState().selectableMode || false;
+
+  const columnsTemplate = useDataTableColumnsTemplate(selectableMode);
 
   return (
     <div className={s.TableBody}>
-      {table.getRowModel().rows.map((row) => (
-        <div
-          key={row.id}
-          className={s.Row}
-          style={{ gridTemplateColumns: columnsTemplate }}
-        >
-          {row.getVisibleCells().map((cell) => (
-            <div key={cell.id} className={s.Cell}>
-              <Text size={4} weight="medium">
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </Text>
-            </div>
-          ))}
-        </div>
-      ))}
+      {table.getRowModel().rows.map((row) => {
+        const isSelected = row.getIsSelected();
+
+        return (
+          <div
+            key={row.id}
+            className={s.Row}
+            data-selected={isSelected}
+            style={{ gridTemplateColumns: columnsTemplate }}
+          >
+            {selectableMode ? (
+              <div className={s.CheckboxCell}>
+                <Checkbox
+                  checked={isSelected}
+                  onChange={() => row.toggleSelected()}
+                />
+              </div>
+            ) : null}
+            {row.getVisibleCells().map((cell) => (
+              <div key={cell.id} className={s.Cell}>
+                <Text size={4} weight="medium">
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </Text>
+              </div>
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 };
