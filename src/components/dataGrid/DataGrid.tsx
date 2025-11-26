@@ -5,6 +5,9 @@ import clsx from 'clsx';
 import { Button } from 'components/button';
 import { useLocalization } from 'components/application';
 import { Field } from './inner/Field';
+import { Spoiler } from 'components/spoiler';
+
+const CommonFields = Symbol('CommonFields');
 
 export const DataGrid = memo<DataGridProps>((props) => {
   const {
@@ -23,16 +26,20 @@ export const DataGrid = memo<DataGridProps>((props) => {
   const t = useLocalization();
 
   const groupedFields = useMemo(() => {
-    const groups: Record<string, DataGridFieldType[]> = {
-      __common__: [],
+    const groups: Record<string | symbol, DataGridFieldType[]> = {
+      [CommonFields]: [],
     };
 
     for (const field of fields) {
+      if (!field.visible) {
+        continue;
+      }
+
       if (field.group) {
         groups[field.group] = groups[field.group] || [];
         groups[field.group].push(field);
       } else {
-        groups.__common__.push(field);
+        groups[CommonFields].push(field);
       }
     }
     return groups;
@@ -61,7 +68,7 @@ export const DataGrid = memo<DataGridProps>((props) => {
         <div className={s.Toolbar}>{toolbarVisible && toolbar}</div>
       )}
       <div className={s.Fields}>
-        {groupedFields.__common__.map((field) => (
+        {groupedFields[CommonFields].map((field) => (
           <Field
             key={field.accessor}
             mode={mode}
@@ -69,6 +76,25 @@ export const DataGrid = memo<DataGridProps>((props) => {
             onChange={(value) => onChange(field.accessor, value)}
             {...field}
           />
+        ))}
+        {groups?.map((group) => (
+          <Spoiler
+            key={group.name}
+            title={group.title || group.name}
+            openedByDefault
+          >
+            <div className={s.Fields}>
+              {groupedFields[group.name].map((field) => (
+                <Field
+                  key={field.accessor}
+                  mode={mode}
+                  value={data[field.accessor]}
+                  onChange={(value) => onChange(field.accessor, value)}
+                  {...field}
+                />
+              ))}
+            </div>
+          </Spoiler>
         ))}
       </div>
     </div>

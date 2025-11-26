@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Checkbox, Divider, Flex, Skeleton, Text, TextInput } from 'components';
+import { Checkbox, Flex, Skeleton, Text, TextInput } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { useState } from 'react';
@@ -39,6 +39,24 @@ const DATA_GRID_DATA = {
   avatarUrl: 'https://mockmind-api.uifaces.co/content/human/222.jpg',
 };
 
+const DATA_GRID_DATA_2 = {
+  id: '6734fe7c-22a1-4bc1-b541-abd3af90f111',
+  createdAt: '2024-11-15 12:30',
+  isVerified: true,
+
+  firstName: 'Julia',
+  lastName: 'Isakova',
+  bio: 'Fitness coach & frontend dev',
+  birthDate: '1995-08-21',
+  favoriteColor: '#FF8800',
+
+  position: 'dev',
+  salary: 4200,
+  workEmail: 'julia@company.com',
+  isActiveEmployee: true,
+  contractLink: 'a952-9034',
+};
+
 export const DataGridStory: StoryObj<typeof DataGrid> = {
   name: 'Using DataGrid',
   render: () => {
@@ -49,8 +67,6 @@ export const DataGridStory: StoryObj<typeof DataGrid> = {
     const handleChange = (field: string, value: any) => {
       setData((old) => ({ ...old, [field]: value }));
     };
-
-    console.log('>> data', data);
 
     return (
       <Flex direction="vertical" gap="l">
@@ -95,8 +111,6 @@ export const DataGridStory: StoryObj<typeof DataGrid> = {
               accessor: 'secretKey',
               label: 'Security Key',
               type: 'password',
-              copyOnClick: true,
-              showOnHover: true,
             },
             {
               accessor: 'birthDate',
@@ -175,7 +189,7 @@ export const DataGridStory: StoryObj<typeof DataGrid> = {
               type: 'custom',
               renderReadMode: (value) => (
                 <img
-                  src={value}
+                  src={String(value)}
                   alt="avatar"
                   style={{ width: 64, height: 64, borderRadius: '50%' }}
                 />
@@ -190,6 +204,184 @@ export const DataGridStory: StoryObj<typeof DataGrid> = {
                 <Skeleton width="64px" height="64px" radius="50%" />
               ),
               editable: false,
+            },
+          ]}
+        />
+      </Flex>
+    );
+  },
+};
+
+export const DataGridGroupsStory: StoryObj<typeof DataGrid> = {
+  name: 'Using DataGrid with groups',
+  render: () => {
+    const [data, setData] = useState<object>(DATA_GRID_DATA_2);
+    const [mode, setMode] = useState<'loading' | 'read' | 'edit'>('read');
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const handleChange = (field: string, value: any) => {
+      setData((old) => ({ ...old, [field]: value }));
+    };
+
+    return (
+      <Flex direction="vertical" gap="l">
+        <Text block size={5} weight="bold">
+          DataGrid with groups
+        </Text>
+        <Checkbox checked={loading} onChange={setLoading}>
+          Loading
+        </Checkbox>
+        <DataGrid
+          data={data}
+          onChange={handleChange}
+          mode={loading ? 'loading' : mode}
+          onChangeMode={setMode}
+          fields={[
+            {
+              accessor: 'id',
+              label: 'ID',
+              type: 'string',
+              visible: true,
+              editable: false,
+              placeholder: '',
+              maxLength: 36,
+            },
+            {
+              accessor: 'createdAt',
+              label: 'Created At',
+              type: 'date',
+              visible: true,
+              editable: false,
+              format: 'YYYY-MM-DD HH:mm',
+            },
+            {
+              accessor: 'isVerified',
+              label: 'Verified',
+              type: 'boolean',
+              visible: true,
+              editable: false,
+            },
+            {
+              accessor: 'firstName',
+              label: 'First Name',
+              type: 'string',
+              visible: true,
+              editable: true,
+              group: 'personal',
+              placeholder: 'Enter first name',
+              maxLength: 50,
+            },
+            {
+              accessor: 'lastName',
+              label: 'Last Name',
+              type: 'string',
+              visible: true,
+              editable: true,
+              group: 'personal',
+              placeholder: 'Enter last name',
+              maxLength: 50,
+            },
+            {
+              accessor: 'bio',
+              label: 'Bio',
+              type: 'text',
+              visible: true,
+              editable: true,
+              group: 'personal',
+              placeholder: 'Short description',
+              maxLength: 300,
+            },
+            {
+              accessor: 'birthDate',
+              label: 'Birth Date',
+              type: 'date',
+              visible: true,
+              editable: true,
+              group: 'personal',
+              minDate: '1960-01-01',
+              maxDate: '2030-01-01',
+              clearable: true,
+            },
+            {
+              accessor: 'favoriteColor',
+              label: 'Favorite Color',
+              type: 'color',
+              visible: true,
+              editable: true,
+              group: 'personal',
+              allowPalette: true,
+              colorPresets: [
+                { name: 'Red', title: 'Red', value: '#FF0000' },
+                { name: 'Green', title: 'Green', value: '#00FF00' },
+                { name: 'Blue', title: 'Blue', value: '#0000FF' },
+                { name: 'Orange', title: 'Orange', value: '#FF8800' },
+              ],
+            },
+            {
+              accessor: 'position',
+              label: 'Position',
+              type: 'select',
+              visible: true,
+              editable: true,
+              group: 'work',
+              options: [
+                { label: 'Developer', value: 'dev' },
+                { label: 'Designer', value: 'designer' },
+                { label: 'Manager', value: 'manager' },
+                { label: 'HR', value: 'hr' },
+              ],
+            },
+            {
+              accessor: 'salary',
+              label: 'Salary',
+              type: 'currency',
+              visible: true,
+              editable: false,
+              group: 'work',
+              currency: 'USD',
+              min: 0,
+              allowNegative: false,
+            },
+            {
+              accessor: 'workEmail',
+              label: 'Work Email',
+              type: 'string',
+              visible: true,
+              editable: false,
+              group: 'work',
+              placeholder: 'example@company.com',
+              maxLength: 100,
+            },
+            {
+              accessor: 'isActiveEmployee',
+              label: 'Active Status',
+              type: 'boolean',
+              visible: true,
+              editable: true,
+              group: 'work',
+              trueLabel: 'Active',
+              falseLabel: 'Inactive',
+            },
+            {
+              accessor: 'contractLink',
+              label: 'Contract Link',
+              type: 'link',
+              visible: true,
+              editable: true,
+              group: 'work',
+              linkText: 'Open Contract',
+              linkTransformer: (value) =>
+                `https://company.com/contracts/${value}`,
+            },
+          ]}
+          groups={[
+            {
+              name: 'personal',
+              title: 'Personal Information',
+            },
+            {
+              name: 'work',
+              title: 'Work Information',
             },
           ]}
         />

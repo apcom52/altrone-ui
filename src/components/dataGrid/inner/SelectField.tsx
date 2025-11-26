@@ -9,7 +9,7 @@ export const SelectField = memo<DataGridFieldProps>((props) => {
     return null;
   }
 
-  const { value, options = [], multiple, mode, onChange } = props;
+  const { value, options = [], multiple, mode, onChange, placeholder } = props;
 
   if (mode === 'loading') {
     return <Skeleton width="50%" height="32px" radius="16px" />;
@@ -32,6 +32,7 @@ export const SelectField = memo<DataGridFieldProps>((props) => {
       onChange={(value) => onChange(value)}
       options={options}
       multiple={Boolean(multiple)}
+      placeholder={placeholder}
     />
   );
 });

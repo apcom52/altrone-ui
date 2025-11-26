@@ -1,4 +1,7 @@
-import { useDataTableContext } from '../DataTable.context.tsx';
+import {
+  useDataTableContext,
+  useDataTableCore,
+} from '../DataTable.context.tsx';
 import clsx from 'clsx';
 import { DataTableCellProps } from '../DataTableCell.tsx';
 import { Checkbox } from '../../checkbox';
@@ -19,6 +22,9 @@ import { createElement } from 'react';
 import { useLocalization } from '../../application';
 import { GlobalUtils } from '../../../utils';
 import { Empty } from 'components/empty/Empty.tsx';
+import { flexRender } from '@tanstack/react-table';
+import { Text } from '../../text';
+import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
 
 const CELL_RENDERERS: Record<
   DataTableColumnType,
@@ -34,110 +40,27 @@ const CELL_RENDERERS: Record<
   year: DataTableYearRenderer,
 };
 
-export const Body = <T extends object>(props: DataTableBodyProps<T>) => {
-  const { showEmptyBanner = true, renderRowActions } = props;
-
-  const {
-    data,
-    columns,
-    page,
-    rowsPerPage,
-    selectableMode,
-    selectedRows,
-    selectRow,
-  } = useDataTableContext<T>();
-
-  const t = useLocalization();
-
-  const start = (page - 1) * rowsPerPage;
-  const end = page * rowsPerPage;
-
-  const visibleColumns = useVisibleColumns(columns);
+export const Body = () => {
+  const table = useDataTableCore();
+  const columnsTemplate = useDataTableColumnsTemplate();
 
   return (
-    <tbody className={s.TableBody}>
-      {data.length === 0 && showEmptyBanner ? (
-        <tr>
-          <td colSpan={visibleColumns.length}>
-            <Empty />
-          </td>
-        </tr>
-      ) : null}
-      {data.slice(start, end).map((row, rowIndex) => {
-        const currentRowIndex = (page - 1) * rowsPerPage + rowIndex;
-        const isSelected = selectedRows.indexOf(currentRowIndex) > -1;
-
-        return (
-          <tr
-            key={rowIndex}
-            className={clsx(s.Row, {
-              [s.Selected]: isSelected,
-            })}
-          >
-            {selectableMode && (
-              <td className={clsx(s.Cell, s.CheckboxCell)}>
-                <Checkbox
-                  checked={isSelected}
-                  onChange={() => selectRow(currentRowIndex)}
-                  title={t(
-                    isSelected
-                      ? 'dataTable.deselectRow'
-                      : 'dataTable.selectRow',
-                  )}
-                />
-              </td>
-            )}
-            {visibleColumns.map((column, columnIndex) => {
-              const accessor = column.accessor as keyof T;
-
-              const props = {
-                accessor: accessor,
-                item: row,
-                value: row[accessor],
-                rowIndex,
-                columnIndex,
-                columnOptions: column.options,
-              };
-
-              let content;
-
-              if (column.renderFunc) {
-                content = column.renderFunc({ current: null }, props);
-              } else if (column.Component) {
-                console.warn(
-                  GlobalUtils.formatConsoleMessage(
-                    '[Altrone]: property [[Component]] in DataTable component is deprecated. Use [[renderFunc]] instead. Will be removed in version 4.0',
-                  ),
-                );
-
-                const CellComponent = column.Component;
-                content = <CellComponent {...props} />;
-              } else {
-                const CellComponent =
-                  typeof column.type === 'string'
-                    ? CELL_RENDERERS[column.type] || DataTableTextRenderer
-                    : DataTableTextRenderer;
-                content = createElement(CellComponent, props);
-              }
-
-              const cls = clsx(s.Cell, {
-                [s.CellWithWidth]: Boolean(column.width),
-              });
-
-              return (
-                <td key={columnIndex} className={cls}>
-                  {content}
-                </td>
-              );
-            })}
-            {renderRowActions ? (
-              <td className={clsx(s.Cell)}>
-                {renderRowActions({ row, rowIndex, selected: isSelected })}
-              </td>
-            ) : null}
-          </tr>
-        );
-      })}
-    </tbody>
+    <div className={s.TableBody}>
+      {table.getRowModel().rows.map((row) => (
+        <div
+          key={row.id}
+          className={s.Row}
+          style={{ gridTemplateColumns: columnsTemplate }}
+        >
+          {row.getVisibleCells().map((cell) => (
+            <div key={cell.id} className={s.Cell}>
+              <Text size={4} weight="medium">
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </Text>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
   );
 };

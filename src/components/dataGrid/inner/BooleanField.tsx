@@ -22,7 +22,7 @@ export const BooleanField = memo<DataGridFieldProps>((props) => {
         <Check size={32} />
       </div>
     );
-    const falseValue = props.falseLabel || '';
+    const falseValue = props.falseLabel || '—';
 
     return <div className={s.InputText}>{value ? trueValue : falseValue}</div>;
   }

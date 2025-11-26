@@ -18,6 +18,7 @@ export const DateField = memo<DataGridFieldProps>((props) => {
     format,
     clearable,
     onChange,
+    placeholder,
   } = props;
 
   if (mode === 'loading') {
@@ -53,6 +54,7 @@ export const DateField = memo<DataGridFieldProps>((props) => {
         maxDate={maxDate ? dayjsInstance(maxDate) : undefined}
         format={format}
         clearable={clearable}
+        placeholder={placeholder}
       />
     );
   }
@@ -66,6 +68,7 @@ export const DateField = memo<DataGridFieldProps>((props) => {
       maxDate={maxDate ? dayjsInstance(maxDate) : undefined}
       format={format}
       clearable={clearable}
+      placeholder={placeholder}
     />
   );
 });

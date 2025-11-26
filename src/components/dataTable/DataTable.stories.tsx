@@ -32,9 +32,6 @@ const meta: Meta<typeof DataTable<any>> = {
   },
 };
 
-const onPageChange = action('pageChange');
-const onSortingChange = action('sortChange');
-const onFiltersChange = action('filtersChange');
 const DEFAULT_FILTERS: Filter[] = [
   {
     field: 'country',
@@ -53,12 +50,14 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       direction: 'desc',
     });
     const [defaultFilters, setDefaultFilters] = useState<Filter[] | undefined>(
-      [],
+      []
     );
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Basic DataTable</Text.Heading>
+        <Text size={5} weight="bold">
+          Basic DataTable
+        </Text>
         <DataTable
           data={isEmpty ? [] : COUNTRIES}
           rowsPerPage={5}
@@ -67,7 +66,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           defaultSort={defaultSorting}
           defaultFilters={defaultFilters}
           columns={[
-            { accessor: 'flag', label: 'Flag', width: '80px' },
+            { accessor: 'flag', label: 'Flag', width: 40 },
             {
               accessor: 'country',
               label: 'Country Name',
@@ -76,9 +75,6 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             },
             { accessor: 'capital', label: 'Capital' },
           ]}
-          onPageChange={onPageChange}
-          onSortChange={onSortingChange}
-          onFilterChange={onFiltersChange}
         >
           <DataTable.Action
             label="Toggle page"
@@ -94,7 +90,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               setDefaultSorting(
                 defaultSorting
                   ? undefined
-                  : { field: 'country', direction: 'desc' },
+                  : { field: 'country', direction: 'desc' }
               )
             }
           />
@@ -122,10 +118,10 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           </Dropdown>
           <Popover
             title="Custom popover"
-            content={<Text.Paragraph>Content is here</Text.Paragraph>}
+            content={<Text block>Content is here</Text>}
           >
             <DataTable.Action
-              leftIcon={<Icon i="sports_esports" />}
+              icon={<Icon i="sports_esports" />}
               label="Popover"
             />
           </Popover>

@@ -1,15 +1,22 @@
-:global(:root) {
+:global([data-altrone-root='true']) {
+  --data-table-background-color: var(--background-2);
+  --data-table-even-background-color: var(--background-1);
+
+  --data-table-header-background-color: var(--glass-background-color);
+  --data-table-header-text-color: var(--accent-12);
+
+  --data-table-rounding: 24px;
+  --data-table-padding: 8px;
+  --data-table-border-color: var(--border-a1);
 }
 
 .Wrapper {
-  --columns: 3;
-  --columnTemplate: 1fr 1fr 1fr;
-  --rows: 10;
-
   display: flex;
+  width: fit-content;
   flex-direction: column;
-  border-radius: 6px;
-  background-color: var(--dataTableHeadingCellBackgroundColor);
+  background-color: var(--data-table-background-color);
+  border-radius: var(--data-table-rounding);
+  box-shadow: 0 0 0 1px var(--data-table-border-color);
 }
 
 .Table {

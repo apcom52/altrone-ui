@@ -11,6 +11,7 @@ export * from './closeButton';
 export * from './collapsedList';
 export * from './colorPicker';
 export * from './configuration';
+export * from './dataGrid';
 export * from './dataTable';
 export * from './datePicker';
 export * from './divider';

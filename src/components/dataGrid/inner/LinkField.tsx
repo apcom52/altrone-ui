@@ -9,7 +9,7 @@ export const LinkField = memo<DataGridFieldProps>((props) => {
     return null;
   }
 
-  const { value, mode, linkTransformer, linkText } = props;
+  const { value, mode, linkTransformer, linkText, placeholder } = props;
 
   if (mode === 'loading') {
     return <Skeleton width="40%" height="32px" radius="16px" />;
@@ -26,7 +26,7 @@ export const LinkField = memo<DataGridFieldProps>((props) => {
 
   return (
     <div className={s.InputText}>
-      <Text href={linkHrefValue}>{linkTextValue}</Text>
+      <Text href={linkHrefValue}>{linkTextValue || placeholder}</Text>
     </div>
   );
 });

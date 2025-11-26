@@ -20,6 +20,7 @@ import {
   useDidUpdate,
 } from '../../utils';
 import { useDataTableFilters } from './useDataTableFilters.ts';
+import { Table, useReactTable } from '@tanstack/react-table';
 
 interface DataTableContextType<T extends object> {
   data: T[];
@@ -66,7 +67,7 @@ const createDataTableContext = once(<T extends object>() =>
     selectedRows: [],
     setSelectedRows: () => null,
     selectRow: () => null,
-  }),
+  })
 );
 
 export const useDataTableContext = <T extends object>() =>
@@ -75,7 +76,7 @@ export const useDataTableContext = <T extends object>() =>
 const EMPTY_ARRAY: any[] = [];
 
 export const DataTableContextProvider = <T extends object>(
-  props: DataTableProps<T> & React.PropsWithChildren,
+  props: DataTableProps<T> & React.PropsWithChildren
 ) => {
   const {
     data = EMPTY_ARRAY,
@@ -95,14 +96,14 @@ export const DataTableContextProvider = <T extends object>(
     NumberUtils.getInRange(defaultPage || 1, {
       min: 1,
       max: Math.ceil(data.length / rowsPerPage) || 1,
-    }),
+    })
   );
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<keyof T | undefined>(
-    (defaultSort?.field as keyof T) || undefined,
+    (defaultSort?.field as keyof T) || undefined
   );
   const [sortType, setSortType] = useState<Sort>(
-    defaultSort?.direction || 'asc',
+    defaultSort?.direction || 'asc'
   );
   const [filters, setFilters] = useState<Filter[]>(defaultFilters || []);
   const [selectableMode, setSelectableMode] = useState(false);
@@ -110,7 +111,7 @@ export const DataTableContextProvider = <T extends object>(
 
   const filteredColumns = useMemo(() => {
     return columns.filter((column) =>
-      typeof column.visible === 'boolean' ? column.visible : true,
+      typeof column.visible === 'boolean' ? column.visible : true
     );
   }, [columns]);
 
@@ -119,7 +120,7 @@ export const DataTableContextProvider = <T extends object>(
     filters,
     columns,
     sortBy ? String(sortBy) : undefined,
-    sortType,
+    sortType
   );
 
   const selectRow = useCallback((rowIndex: number) => {
@@ -150,7 +151,7 @@ export const DataTableContextProvider = <T extends object>(
         NumberUtils.getInRange(defaultPage, {
           min: 1,
           max: Math.ceil(data.length / rowsPerPage) || 1,
-        }),
+        })
       );
     }
   }, [defaultPage, data.length, rowsPerPage]);
@@ -181,11 +182,11 @@ export const DataTableContextProvider = <T extends object>(
               field: String(sortBy),
               direction: sortType,
             }
-          : undefined,
+          : undefined
       );
     },
     [sortBy, sortType, onSortChange],
-    1,
+    1
   );
 
   useEffect(() => {
@@ -227,7 +228,7 @@ export const DataTableContextProvider = <T extends object>(
       selectableMode,
       setSelectedRows,
       selectedRows,
-    ],
+    ]
   );
 
   const DataTableContext = createDataTableContext<T>();
@@ -252,3 +253,8 @@ export const DataTableContextProvider = <T extends object>(
     </DataTableContext.Provider>
   );
 };
+
+export const DataTableCoreContext = createContext<Table<any>>(
+  null as unknown as Table<any>
+);
+export const useDataTableCore = () => useContext(DataTableCoreContext);

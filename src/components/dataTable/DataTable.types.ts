@@ -25,7 +25,7 @@ export interface DataTableColumn<T extends object> {
   accessor: keyof T;
   type?: DataTableColumnType;
   label?: string;
-  width?: number | string;
+  width?: number;
   Component?: React.FC<DataTableCellProps<T>>;
   renderFunc?: RenderFuncProp<HTMLDivElement, DataTableCellProps<T>>;
   visible?: boolean;
@@ -64,7 +64,7 @@ export interface DataTableProps<T extends object>
   showFooter?: boolean;
   showEmptyBanner?: boolean;
   renderRowActions?: (
-    context: DataTableRenderRowActionsContext<T>,
+    context: DataTableRenderRowActionsContext<T>
   ) => ReactElement<DataTableRowActionsProps>;
   defaultPage?: number;
   defaultSort?: Sorting;
@@ -205,7 +205,7 @@ export interface FilterRowProps<T extends AnyObject> {
   changeFilter: (
     filterIndex: number,
     accessor: string,
-    type?: DataTableColumnType,
+    type?: DataTableColumnType
   ) => void;
   changeField: (filterIndex: number, field: string, value: unknown) => void;
   deleteFilter: (filterIndex: number, source: 'delete' | 'field') => void;

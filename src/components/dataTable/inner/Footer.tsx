@@ -1,66 +1,89 @@
 import { useDataTableContext } from '../DataTable.context.tsx';
-import { memo } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { Flex } from 'components/flex';
 import { Text } from 'components/text';
 import { Tooltip } from 'components/tooltip';
 import { Pagination } from 'components/pagination';
 import s from './footer.module.scss';
 import { useLocalization } from '../../application/useLocalization.tsx';
+import { motion } from 'motion/react';
 
 export const Footer = memo(() => {
   const t = useLocalization();
 
-  const {
-    initialData,
-    rowsPerPage,
-    page,
-    setPage,
-    data,
-    selectedRows,
-    selectableMode,
-  } = useDataTableContext();
+  const footerRef = useRef<HTMLTableSectionElement>(null);
+  const [isSticky, setIsSticky] = useState(false);
 
-  const start = (page - 1) * rowsPerPage;
-  const end = page * rowsPerPage;
+  useEffect(() => {
+    const checkSticky = () => {
+      if (footerRef.current) {
+        const rect = footerRef.current.getBoundingClientRect();
+        const windowHeight =
+          window.innerHeight || document.documentElement.clientHeight;
+        // Определяет, "прилип" ли элемент к нижней части экрана
+        setIsSticky(rect.bottom >= windowHeight && rect.top < windowHeight);
+      }
+    };
 
-  const visibleData = data.slice(start, end);
+    checkSticky();
 
-  const numberOfRows =
-    rowsPerPage > visibleData.length ? visibleData.length : rowsPerPage;
-  const selectedRowsNumber = selectableMode ? selectedRows.length : 0;
-  const numberOfPages = Math.ceil(data.length / rowsPerPage);
+    const scrollContainer =
+      footerRef.current
+        ?.closest('[class*="Scrollable"], [class*="scrollable"]')
+        ?.querySelector('[data-overlayscrollbars-viewport]') ||
+      footerRef.current?.closest('.Wrapper') ||
+      window;
 
-  let statusText = t('dataTable.shownRows', {
+    scrollContainer.addEventListener('scroll', checkSticky, {
+      passive: true,
+    });
+    window.addEventListener('scroll', checkSticky, { passive: true });
+    window.addEventListener('resize', checkSticky, { passive: true });
+
+    return () => {
+      scrollContainer.removeEventListener('scroll', checkSticky);
+      window.removeEventListener('scroll', checkSticky);
+      window.removeEventListener('resize', checkSticky);
+    };
+  }, []);
+
+  const statusText = t('dataTable.shownRows', {
     plural: true,
-    value: numberOfRows,
+    value: 35,
     vars: {
-      count: numberOfRows,
+      count: 35,
     },
   });
-  if (selectedRowsNumber) {
-    statusText = t('dataTable.selectedRows', {
-      plural: true,
-      value: selectedRowsNumber,
-      vars: {
-        count: selectedRowsNumber,
-      },
-    });
-  }
+
+  console.log('>> footer sticky', isSticky);
 
   return (
-    <div className={s.Footer}>
+    <div className={s.Footer} ref={footerRef}>
+      <motion.div
+        className={s.Backdrop}
+        layout
+        animate={{
+          width: isSticky ? 'calc(100% - 16px)' : '100%',
+          height: isSticky ? 'calc(100% - 16px)' : '100%',
+          bottom: isSticky ? 8 : 0,
+          left: isSticky ? 8 : 0,
+          borderTopLeftRadius: isSticky ? 20 : 0,
+          borderTopRightRadius: isSticky ? 20 : 0,
+          borderBottomLeftRadius: isSticky ? 20 : 'var(--data-table-rounding)',
+          borderBottomRightRadius: isSticky ? 20 : 'var(--data-table-rounding)',
+        }}
+        transition={{ duration: 0.2, ease: 'linear' }}
+      />
       <div className={s.StatusBar}>
         <Tooltip
           content={
             <Flex direction="vertical" gap="s">
-              <Text.Paragraph size="s">
-                {t('dataTable.totalRows')}:{' '}
-                <Text.Inline bold>{initialData.length}</Text.Inline>
-              </Text.Paragraph>
-              <Text.Paragraph size="s">
-                {t('dataTable.rowsPerPage')}:{' '}
-                <Text.Inline bold>{rowsPerPage}</Text.Inline>
-              </Text.Paragraph>
+              <Text block size={3}>
+                {t('dataTable.totalRows')}: <Text weight="bold">{35}</Text>
+              </Text>
+              <Text block size={3}>
+                {t('dataTable.rowsPerPage')}: <Text weight="bold">{100}</Text>
+              </Text>
             </Flex>
           }
         >
@@ -68,11 +91,7 @@ export const Footer = memo(() => {
         </Tooltip>
       </div>
       <div>
-        <Pagination
-          currentPage={page}
-          totalPages={numberOfPages || 1}
-          setPage={setPage}
-        />
+        <Pagination currentPage={1} totalPages={4 || 1} setPage={() => {}} />
       </div>
     </div>
   );

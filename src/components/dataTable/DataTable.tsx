@@ -1,14 +1,17 @@
 import { DataTableProps } from './DataTable.types';
-import { DataTableContextProvider } from './DataTable.context';
-import { Body, ColumnHeaders, Header, Footer } from './inner';
+import { DataTableCoreContext } from './DataTable.context';
 import { Action, RowActions, RowAction } from './components';
 import s from './dataTable.module.scss';
 import { Children, useMemo } from 'react';
 import { useConfiguration } from '../configuration';
 import clsx from 'clsx';
+import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { useDataTableColumns } from './useDataTableColumns';
+import { Body, ColumnHeaders } from './inner';
+import { Footer } from './inner/Footer.tsx';
 
 const DataTableComponent = <DataType extends object>(
-  props: DataTableProps<DataType>,
+  props: DataTableProps<DataType>
 ) => {
   const { dataTable: dataTableConfig = {} } = useConfiguration();
 
@@ -22,6 +25,16 @@ const DataTableComponent = <DataType extends object>(
     showEmptyBanner = true,
     ...restProps
   } = props;
+
+  const columnDefs = useDataTableColumns(columns);
+
+  console.log('columnDefs', columnDefs);
+
+  const table = useReactTable({
+    data,
+    columns: columnDefs,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   const cls = clsx(s.Table, props.className, dataTableConfig.className);
   const styles = {
@@ -37,24 +50,18 @@ const DataTableComponent = <DataType extends object>(
   }, [children, props.columns]);
 
   return (
-    <DataTableContextProvider<DataType> {...props}>
+    <DataTableCoreContext.Provider value={table}>
       <div className={s.Wrapper}>
-        {dataTableHeaderVisible ? (
+        {/* {dataTableHeaderVisible ? (
           <Header<DataType> selectable={Boolean(selectable)}>{children}</Header>
-        ) : null}
+        ) : null} */}
         <table className={cls} style={styles} {...restProps}>
-          <ColumnHeaders
-            headingVisible={dataTableHeaderVisible}
-            renderRowActions={props.renderRowActions}
-          />
-          <Body
-            showEmptyBanner={showEmptyBanner}
-            renderRowActions={props.renderRowActions}
-          />
+          <ColumnHeaders />
+          <Body />
         </table>
         {showFooter ? <Footer /> : null}
       </div>
-    </DataTableContextProvider>
+    </DataTableCoreContext.Provider>
   );
 };
 

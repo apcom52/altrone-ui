@@ -4,7 +4,7 @@ import { TextInput } from 'components/textInput';
 import { Skeleton } from 'components/skeleton';
 
 export const StringField = memo<DataGridFieldProps>((props) => {
-  const { value, mode, onChange } = props;
+  const { value, mode, onChange, placeholder } = props;
 
   if (mode === 'loading') {
     return <Skeleton width="50%" height="32px" radius="16px" />;
@@ -15,6 +15,7 @@ export const StringField = memo<DataGridFieldProps>((props) => {
       readOnly={mode !== 'edit'}
       value={String(value)}
       onChange={(value) => onChange(value)}
+      placeholder={placeholder}
     />
   );
 });

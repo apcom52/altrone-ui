@@ -14,26 +14,37 @@ import { CustomField } from './CustomField';
 import { ColorField } from './ColorField';
 
 export const Field = memo<DataGridFieldProps>((props) => {
-  const { accessor, label, type = 'string' } = props;
+  const {
+    accessor,
+    label,
+    type = 'string',
+    mode = 'read',
+    editable = true,
+    value,
+  } = props;
+
+  const fieldMode = editable ? mode : mode === 'edit' ? 'read' : mode;
 
   const control: Record<string, React.ReactNode> = {
-    string: <StringField {...props} />,
-    text: <TextField {...props} />,
-    number: <NumberField {...props} />,
-    currency: <CurrencyField {...props} />,
-    password: <PasswordField {...props} />,
-    date: <DateField {...props} />,
-    boolean: <BooleanField {...props} />,
-    select: <SelectField {...props} />,
-    link: <LinkField {...props} />,
-    color: <ColorField {...props} />,
-    custom: <CustomField {...props} />,
+    string: <StringField {...props} mode={fieldMode} />,
+    text: <TextField {...props} mode={fieldMode} />,
+    number: <NumberField {...props} mode={fieldMode} />,
+    currency: <CurrencyField {...props} mode={fieldMode} />,
+    password: <PasswordField {...props} mode={fieldMode} />,
+    date: <DateField {...props} mode={fieldMode} />,
+    boolean: <BooleanField {...props} mode={fieldMode} />,
+    select: <SelectField {...props} mode={fieldMode} />,
+    link: <LinkField {...props} mode={fieldMode} />,
+    color: <ColorField {...props} mode={fieldMode} />,
+    custom: <CustomField {...props} mode={fieldMode} />,
   };
 
   return (
     <div className={s.Field}>
       <div className={s.FieldLabel}>{label || String(accessor)}</div>
-      <div className={s.FieldValue}>{control[type]}</div>
+      <div className={s.FieldValue}>
+        {typeof value === 'undefined' && mode === 'read' ? '—' : control[type]}
+      </div>
     </div>
   );
 });

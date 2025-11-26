@@ -5,7 +5,7 @@ import { Skeleton } from 'components/skeleton';
 import s from './field.module.scss';
 
 export const TextField = memo<DataGridFieldProps>((props) => {
-  const { value, mode, onChange } = props;
+  const { value, mode, onChange, placeholder } = props;
 
   if (mode === 'loading') {
     return <Skeleton width="100%" height="72px" radius="16px" />;
@@ -16,6 +16,10 @@ export const TextField = memo<DataGridFieldProps>((props) => {
   }
 
   return (
-    <Textarea value={String(value)} onChange={(value) => onChange(value)} />
+    <Textarea
+      value={String(value)}
+      onChange={(value) => onChange(value)}
+      placeholder={placeholder}
+    />
   );
 });

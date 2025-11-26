@@ -20,6 +20,7 @@ export const CurrencyField = memo<DataGridFieldProps>((props) => {
     allowNegative,
     digitsAfterPoint = 2,
     currency,
+    placeholder,
   } = props;
 
   const locale = useLocale();
@@ -50,6 +51,7 @@ export const CurrencyField = memo<DataGridFieldProps>((props) => {
       max={max}
       allowNegative={allowNegative}
       digitsAfterPoint={digitsAfterPoint}
+      placeholder={placeholder}
     >
       <TextInput.TextIsland label={currency} />
     </NumberInput>

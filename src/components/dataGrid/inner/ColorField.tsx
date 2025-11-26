@@ -8,7 +8,8 @@ export const ColorField = memo<DataGridFieldProps>((props) => {
     return null;
   }
 
-  const { value, mode, onChange, colorPresets, allowPalette } = props;
+  const { value, mode, onChange, colorPresets, allowPalette, placeholder } =
+    props;
 
   if (mode === 'loading') {
     return <Skeleton width="100%" height="32px" radius="16px" />;
@@ -21,6 +22,7 @@ export const ColorField = memo<DataGridFieldProps>((props) => {
       onChange={(value) => onChange(value)}
       colorPresets={colorPresets}
       allowPalette={allowPalette}
+      placeholder={placeholder}
     />
   );
 });

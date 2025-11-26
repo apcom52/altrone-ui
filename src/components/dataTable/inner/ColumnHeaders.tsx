@@ -1,14 +1,12 @@
-import { memo, useMemo } from 'react';
-import { useDataTableContext } from '../DataTable.context.tsx';
+import { memo, useEffect, useRef, useState } from 'react';
+import { useDataTableCore } from '../DataTable.context.tsx';
 import s from './columnHeaders.module.scss';
-import { Icon } from '../../icon';
 import clsx from 'clsx';
-import { Checkbox } from '../../checkbox';
-import { range } from 'lodash-es';
-import { useVisibleColumns } from '../useVisibleColumns.ts';
-import { GlobalUtils } from '../../../utils';
 import { DataTableProps } from '../DataTable.types.ts';
-import { useLocalization } from 'components/application/useLocalization.tsx';
+import { Text } from '../../text';
+import { flexRender } from '@tanstack/react-table';
+import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
+import { motion } from 'motion/react';
 
 interface ColumnHeadersProps<T extends object> {
   headingVisible?: boolean;
@@ -17,157 +15,75 @@ interface ColumnHeadersProps<T extends object> {
 
 export const ColumnHeaders = memo<ColumnHeadersProps<any>>(
   ({ headingVisible = true, renderRowActions }) => {
-    const {
-      columns,
-      page,
-      data,
-      rowsPerPage,
-      sortBy,
-      sortType,
-      selectableMode,
-      selectedRows,
-      setSelectedRows,
-      setSortType,
-      setSortBy,
-    } = useDataTableContext();
+    const table = useDataTableCore();
+    const columnsTemplate = useDataTableColumnsTemplate();
 
-    const t = useLocalization();
+    const headerRef = useRef<HTMLTableSectionElement>(null);
+    const [isSticky, setIsSticky] = useState(false);
 
-    const visibleColumns = useVisibleColumns(columns);
-
-    const start = (page - 1) * rowsPerPage;
-    const visibleData = data.slice(start, page * rowsPerPage);
-    const end = start + visibleData.length;
-
-    const checkboxState = useMemo(() => {
-      const visibleColumnIds = range(start, end);
-
-      if (selectedRows.length === 0) {
-        return 'none';
-      }
-
-      return visibleColumnIds.reduce((acc, itemIndex) => {
-        if (acc === 'partial' || selectedRows.indexOf(itemIndex) === -1) {
-          return 'partial';
+    useEffect(() => {
+      const checkSticky = () => {
+        if (headerRef.current) {
+          const rect = headerRef.current.getBoundingClientRect();
+          setIsSticky(rect.top <= 0 && rect.bottom > 0);
         }
+      };
 
-        return 'all';
-      }, 'all');
-    }, [start, end, selectedRows]);
+      checkSticky();
 
-    const onCheckboxChange = (state: boolean) => {
-      const visibleColumnIds = range(start, end);
+      const scrollContainer =
+        headerRef.current
+          ?.closest('[class*="Scrollable"], [class*="scrollable"]')
+          ?.querySelector('[data-overlayscrollbars-viewport]') ||
+        headerRef.current?.closest('.Wrapper') ||
+        window;
 
-      const currentRows = new Set(selectedRows);
+      scrollContainer.addEventListener('scroll', checkSticky, {
+        passive: true,
+      });
+      window.addEventListener('scroll', checkSticky, { passive: true });
+      window.addEventListener('resize', checkSticky, { passive: true });
 
-      for (const index of visibleColumnIds) {
-        if (state) {
-          currentRows.add(index);
-        } else {
-          currentRows.delete(index);
-        }
-      }
+      return () => {
+        scrollContainer.removeEventListener('scroll', checkSticky);
+        window.removeEventListener('scroll', checkSticky);
+        window.removeEventListener('resize', checkSticky);
+      };
+    }, []);
 
-      setSelectedRows(Array.from(currentRows));
-    };
-
-    const onColumnHeaderClick = (accessor: keyof (typeof data)[0]) => {
-      if (sortBy === accessor) {
-        if (sortType === 'asc') {
-          setSortType('desc');
-        } else if (sortType === 'desc') {
-          setSortType('asc');
-          setSortBy(undefined);
-        }
-      } else {
-        setSortType('asc');
-        setSortBy(accessor);
-      }
-    };
-
-    const cls = clsx(s.Wrapper, {
+    const cls = clsx(s.Wrapper, s.HeaderRow, {
       [s.WithoutHeading]: !headingVisible,
     });
 
     return (
-      <thead className={cls}>
-        <tr className={s.HeaderRow}>
-          {selectableMode && (
-            <th className={clsx(s.Cell, s.CheckableColumn)}>
-              <Checkbox
-                checked={checkboxState === 'all'}
-                indeterminate={checkboxState === 'partial'}
-                onChange={onCheckboxChange}
-              />
-            </th>
-          )}
-          {visibleColumns.map((column, columnIndex) => {
-            const isCurrentColumnSorted = sortBy === column.accessor;
-
-            if (!column.type) {
-              console.warn(
-                GlobalUtils.formatConsoleMessage(
-                  '[Altrone]: please set a [[type]] prop for your DataTable columns. This will make the component work more reliably',
-                ),
-              );
-            }
-
-            const cls = clsx(s.Cell, {
-              [s.SortableColumn]: column.sortable || isCurrentColumnSorted,
-              [s.SortedColumn]: isCurrentColumnSorted,
-              [s.CellWithWidth]: Boolean(column.width),
-            });
-
-            const isArrowVisible = column.sortable || isCurrentColumnSorted;
-
-            return (
-              <th
-                key={columnIndex}
-                className={cls}
-                onClick={
-                  column.sortable
-                    ? () =>
-                        onColumnHeaderClick(
-                          column.accessor as keyof (typeof data)[0],
-                        )
-                    : undefined
-                }
-                tabIndex={column.sortable ? 0 : undefined}
-                style={{
-                  width: column.width ? column.width : undefined,
-                }}
-              >
-                {column.sortable ? <div className={s.CellBackground} /> : null}
-                <div className={s.CellContent}>
-                  <span className={s.Title}>
-                    {String(column.label || column.accessor)}
-                    {isArrowVisible ? (
-                      <div className={s.SortIcon}>
-                        <Icon
-                          i={
-                            isCurrentColumnSorted
-                              ? sortType === 'asc'
-                                ? 'arrow_upward'
-                                : 'arrow_downward'
-                              : 'swap_vert'
-                          }
-                        />
-                      </div>
-                    ) : null}
-                  </span>
-                </div>
-              </th>
-            );
-          })}
-          {renderRowActions ? (
-            <th className={clsx(s.Cell)}>
-              <div className={s.CellContent}>
-                <span className={s.Title}>{t('dataTable.actions')}</span>
-              </div>
-            </th>
-          ) : null}
-        </tr>
-      </thead>
+      <div
+        className={cls}
+        ref={headerRef}
+        style={{ gridTemplateColumns: columnsTemplate }}
+      >
+        <motion.div
+          className={s.Backdrop}
+          layout
+          animate={{
+            width: isSticky ? 'calc(100% - 16px)' : '100%',
+            height: isSticky ? 'calc(100% - 16px)' : '100%',
+            top: isSticky ? 8 : 0,
+            left: isSticky ? 8 : 0,
+            borderTopLeftRadius: isSticky ? 20 : 'var(--data-table-rounding)',
+            borderTopRightRadius: isSticky ? 20 : 'var(--data-table-rounding)',
+            borderBottomLeftRadius: isSticky ? 20 : 0,
+            borderBottomRightRadius: isSticky ? 20 : 0,
+          }}
+          transition={{ duration: 0.2, ease: 'linear' }}
+        />
+        {table.getFlatHeaders().map((header) => (
+          <div key={header.id} className={s.Cell} title={header.id}>
+            <Text size={4} weight="bold" className={s.Label}>
+              {flexRender(header.column.columnDef.header, header.getContext())}
+            </Text>
+          </div>
+        ))}
+      </div>
     );
-  },
+  }
 );

@@ -1,10 +1,6 @@
 import { memo } from 'react';
 import { DataGridFieldProps } from '../DataGrid.types';
 import { Skeleton } from 'components/skeleton';
-import { NumberInput } from 'components/numberInput';
-import { TextInput } from 'components/textInput';
-import { useLocale } from 'utils';
-import s from './field.module.scss';
 import { PasswordInput } from 'components/passwordInput';
 
 export const PasswordField = memo<DataGridFieldProps>((props) => {
@@ -12,7 +8,7 @@ export const PasswordField = memo<DataGridFieldProps>((props) => {
     return null;
   }
 
-  const { value, mode, onChange } = props;
+  const { value, mode, onChange, placeholder } = props;
 
   if (mode === 'loading') {
     return <Skeleton width="45%" height="32px" radius="16px" />;
@@ -23,6 +19,7 @@ export const PasswordField = memo<DataGridFieldProps>((props) => {
       readOnly={mode !== 'edit'}
       value={String(value)}
       onChange={(value) => onChange(value)}
+      placeholder={placeholder}
     />
   );
 });

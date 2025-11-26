@@ -1,15 +1,5 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --dataTableFooterBackgroundColor: var(--default-100);
-  --dataTableFooterTextColor: var(--default-600);
-}
-
-:global(.AltroneDark) {
-  --dataTableFooterBackgroundColor: var(--default-800);
-  --dataTableFooterTextColor: var(--default-400);
-}
-
 .Footer {
   display: flex;
   position: sticky;
@@ -17,13 +7,21 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--xl-gap);
-  background-color: var(--dataTableFooterBackgroundColor);
-  padding: 4px 6px;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
+  color: var(--data-table-header-text-color);
+  padding: 12px;
+  color: black;
 }
 
 .StatusBar {
   @include sm-paragraph;
   color: var(--dataTableFooterTextColor);
+  margin-left: 4px;
+}
+
+.Backdrop {
+  position: absolute;
+  background-color: var(--data-table-header-background-color);
+  backdrop-filter: blur(32px) saturate(180%);
+  box-shadow: var(--shadow-1);
+  z-index: -1;
 }

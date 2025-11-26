@@ -1,148 +1,37 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --dataTableHeadingCellBackgroundColor: var(--default-100);
-  --dataTableHeadingCellBorderColor: var(--default-400);
-  --dataTableHeadingCellTextColor: var(--default-700);
-  --dataTableHeadingCellSortedTextColor: var(--default-900);
-  --dataTableHeadingSortIconColor: var(--default-400);
-  --dataTableHoveredHeadingCellBackgroundColor: var(--default-200);
-  --dataTableHoveredHeadingCellTextColor: var(--default-800);
-}
-
-:global(.AltroneDark) {
-  --dataTableHeadingCellBackgroundColor: var(--default-800);
-  --dataTableHeadingCellBorderColor: var(--default-600);
-  --dataTableHeadingCellTextColor: var(--default-200);
-  --dataTableHeadingCellSortedTextColor: var(--default-50);
-  --dataTableHeadingSortIconColor: var(--default-400);
-  --dataTableHoveredHeadingCellBackgroundColor: var(--default-700);
-  --dataTableHoveredHeadingCellTextColor: var(--default-100);
-}
-
 .Wrapper {
-  background-color: var(--dataTableHeadingCellBackgroundColor);
+  --data-table-header-rounding: var(--data-table-rounding);
 }
 
 .HeaderRow {
+  display: grid;
   position: sticky;
-  background-color: var(--dataTableHeadingCellBackgroundColor);
   top: 0;
   z-index: var(--level-sticky);
-}
-
-.ColumnHeaders {
-  width: 100%;
-  display: grid;
-  grid-template-columns: var(--columnTemplate);
-  align-items: center;
-  background-color: var(--dataTableHeadingCellBackgroundColor);
-  position: sticky;
-  top: 0;
-  border-bottom: 1px solid var(--dataTableHeadingCellBorderColor);
+  transition: border-radius 0.2s linear;
+  padding: var(--data-table-padding);
 }
 
 .Cell {
-  position: relative;
-  color: var(--dataTableHeadingCellTextColor);
-}
-
-.CellContent {
-  padding: 10px 12px;
-  flex: 1;
-  @include label-heading;
-  text-align: center;
-  transition: background-color 0.2s linear;
-  width: 100%;
-  height: 100%;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-}
-.Title {
-  position: relative;
-}
-
-.SortIcon {
   display: flex;
+  position: relative;
   align-items: center;
+  justify-content: center;
+  position: relative;
+  color: var(--data-table-header-text-color);
+  padding: 8px;
+}
+
+.Label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.Backdrop {
   position: absolute;
-  left: calc(100% + 4px);
-  font-size: 16px;
-  top: 0;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 0.2s linear;
-  color: var(--dataTableHeadingSortIconColor);
-}
-
-.SortableColumn {
-  cursor: pointer;
-  @include no-selection;
-  @include focus;
-  border-radius: 4px;
-  height: 1px;
-
-  &:hover .CellBackground,
-  &:focus-visible .CellBackground {
-    opacity: 1;
-  }
-
-  &:hover .SortIcon,
-  &:focus-visible .SortIcon {
-    opacity: 1;
-  }
-
-  .CellContent {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-.SortedColumn {
-  color: var(--dataTableHeadingCellSortedTextColor);
-
-  .SortIcon {
-    opacity: 1;
-    color: var(--dataTableHeadingCellSortedTextColor);
-  }
-}
-
-.CheckableColumn {
-  padding: 7px 7px;
-  height: 36px;
-  width: 40px;
-
-  &:hover {
-    background-color: transparent;
-  }
-}
-
-.WithoutHeading {
-  .Cell {
-    &:first-of-type {
-      border-top-left-radius: 6px;
-    }
-
-    &:last-of-type {
-      border-top-right-radius: 6px;
-    }
-  }
-}
-
-.CellWithWidth {
-  word-break: break-all;
-}
-
-.CellBackground {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  background-color: var(--dataTableHoveredHeadingCellBackgroundColor);
-  color: var(--dataTableHoveredHeadingCellTextColor);
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
+  background-color: var(--data-table-header-background-color);
+  backdrop-filter: blur(32px) saturate(180%);
+  box-shadow: var(--shadow-1);
 }

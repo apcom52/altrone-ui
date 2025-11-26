@@ -1,57 +1,43 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --dataTableRowBackgroundColor: var(--default-50);
-  --dataTableHoveredRowBackgroundColor: var(--default-100);
-  --dataTableCellTextColor: var(--default-700);
-  --dataTableCellBorderColor: var(--default-300);
-  --dataTableSelectedRowBackgroundColor: var(--primary-50);
-  --dataTableSelectedHoveredRowBackgroundColor: var(--primary-100);
-  --dataTableSelectedRowBorderColor: var(--primary-200);
-  --dataTableSelectedRowTextColor: var(--primary-700);
-}
-
-:global(.AltroneDark) {
-  --dataTableRowBackgroundColor: var(--default-900);
-  --dataTableHoveredRowBackgroundColor: var(--default-800);
-  --dataTableCellTextColor: var(--default-200);
-  --dataTableCellBorderColor: var(--default-600);
-  --dataTableSelectedRowBackgroundColor: var(--primary-900);
-  --dataTableSelectedHoveredRowBackgroundColor: var(--primary-800);
-  --dataTableSelectedRowBorderColor: var(--primary-600);
-  --dataTableSelectedRowTextColor: var(--primary-100);
-}
-
 .TableBody {
-  background-color: var(--dataTableRowBackgroundColor);
 }
 
 .Row {
+  display: grid;
   align-items: center;
-  border-bottom: 1px solid var(--dataTableCellBorderColor);
+  border-bottom: 1px solid var(--data-table-border-color);
   background-color: var(--dataTableRowBackgroundColor);
   transition: background-color 0.2s ease-in-out;
+  padding: 0 var(--data-table-padding);
+
+  &:last-of-type {
+    .Cell {
+      &:first-child {
+        border-bottom-left-radius: var(--data-table-rounding);
+      }
+
+      &:last-child {
+        border-bottom-right-radius: var(--data-table-rounding);
+      }
+    }
+  }
 
   &:hover {
     background-color: var(--dataTableHoveredRowBackgroundColor);
   }
+
+  &:nth-child(even) {
+    background-color: var(--data-table-even-background-color);
+  }
 }
 
 .Cell {
-  //display: flex;
-  //align-items: center;
   flex: 1;
   padding: 10px 12px;
   height: 100%;
   border: none;
-  border-right: 1px solid var(--dataTableCellBorderColor);
-
-  &:last-child {
-    border-right: none;
-  }
-
-  @include paragraph;
-  color: var(--dataTableCellTextColor);
+  color: var(--data-table-text-color);
 }
 
 .CheckboxCell {
