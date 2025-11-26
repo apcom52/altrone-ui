@@ -7,6 +7,7 @@ import { Text } from '../../text';
 import { flexRender } from '@tanstack/react-table';
 import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
 import { motion } from 'motion/react';
+import { ArrowUp, ArrowDown } from 'lucide-react';
 
 export const ColumnHeaders = () => {
   const table = useDataTableCore();
@@ -47,6 +48,24 @@ export const ColumnHeaders = () => {
     };
   }, []);
 
+  function cycleSortForColumn(columnId: string) {
+    const current = table.getState().sorting?.[0];
+    // reset → desc
+    if (!current || current.id !== columnId) {
+      table.setSorting([{ id: columnId, desc: true }]);
+      return;
+    }
+
+    // desc → asc
+    if (current.desc === true) {
+      table.setSorting([{ id: columnId, desc: false }]);
+      return;
+    }
+
+    // asc → reset
+    table.setSorting([]);
+  }
+
   const cls = clsx(s.Wrapper, s.HeaderRow);
 
   return (
@@ -71,13 +90,38 @@ export const ColumnHeaders = () => {
         transition={{ duration: 0.2, ease: 'linear' }}
       />
       {selectableMode ? <div /> : null}
-      {table.getFlatHeaders().map((header) => (
-        <div key={header.id} className={s.Cell} title={header.id}>
-          <Text size={4} weight="bold" className={s.Label}>
-            {flexRender(header.column.columnDef.header, header.getContext())}
-          </Text>
-        </div>
-      ))}
+      {table.getFlatHeaders().map((header) => {
+        const isSortable = header.column.columnDef.enableSorting;
+
+        const sortedDirection = header.column.getIsSorted();
+
+        return (
+          <div
+            key={header.id}
+            className={clsx(s.Cell, {
+              [s.Sortable]: isSortable,
+            })}
+            title={header.id}
+            onClick={() =>
+              isSortable ? cycleSortForColumn(header.id) : undefined
+            }
+          >
+            <Text size={4} weight="bold" className={s.Label}>
+              {flexRender(header.column.columnDef.header, header.getContext())}
+            </Text>
+            {sortedDirection === 'asc' ? (
+              <div className={s.SortIcon}>
+                <ArrowUp />
+              </div>
+            ) : null}
+            {sortedDirection === 'desc' ? (
+              <div className={s.SortIcon}>
+                <ArrowDown />
+              </div>
+            ) : null}
+          </div>
+        );
+      })}
     </div>
   );
 };

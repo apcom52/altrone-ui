@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import {
   getCoreRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import { useDataTableColumns } from './useDataTableColumns';
@@ -28,7 +29,9 @@ const DataTableComponent = <DataType extends object>(
     columns,
     showEmptyBanner = true,
     defaultPage = 0,
+    defaultSort,
     onPageChange,
+    onSortChange,
     ...restProps
   } = props;
 
@@ -40,14 +43,28 @@ const DataTableComponent = <DataType extends object>(
     data,
     columns: columnDefs,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     initialState: {
       pagination: {
         pageIndex: defaultPage,
         pageSize: rowsPerPage,
       },
+      sorting: defaultSort
+        ? [{ id: defaultSort.field, desc: defaultSort.direction === 'desc' }]
+        : undefined,
     },
     enableRowSelection: selectable,
+    onSortingChange: (updater) => {
+      table.setState((old) => ({
+        ...old,
+        sorting: typeof updater === 'function' ? updater(old.sorting) : updater,
+      }));
+      onSortChange?.({
+        field: table.getState().sorting[0]?.id,
+        direction: table.getState().sorting[0]?.desc ? 'desc' : 'asc',
+      });
+    },
     onPaginationChange: (updater) => {
       table.setState((old) => ({
         ...old,
@@ -74,7 +91,7 @@ const DataTableComponent = <DataType extends object>(
   return (
     <DataTableCoreContext.Provider value={table}>
       <div className={s.Wrapper}>
-        {dataTableHeaderVisible ? <Header>{children}</Header> : null}
+        {dataTableHeaderVisible ? <Header /> : null}
         <table className={cls} style={styles} {...restProps}>
           <ColumnHeaders />
           <Body />

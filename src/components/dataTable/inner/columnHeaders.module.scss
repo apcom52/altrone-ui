@@ -35,3 +35,19 @@
   backdrop-filter: blur(32px) saturate(180%);
   box-shadow: var(--shadow-1);
 }
+
+.SortIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  height: 14px;
+}
+
+.Sortable {
+  cursor: pointer;
+}

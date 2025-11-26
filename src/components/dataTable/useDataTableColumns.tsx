@@ -19,6 +19,7 @@ export function useDataTableColumns<T extends object>(
             return String(info.getValue());
           },
           size: c.width,
+          enableSorting: c.sortable === true,
         });
       });
   }, [columns]);

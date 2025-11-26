@@ -13,12 +13,18 @@ export const InvoiceStory: StoryObj<typeof Flex> = {
           data={INVOICES}
           columns={[
             { accessor: 'description', label: 'Invoice Name' },
-            { accessor: 'quantity', type: 'number', label: 'Quantity' },
+            {
+              accessor: 'quantity',
+              type: 'number',
+              label: 'Quantity',
+              sortable: true,
+            },
             {
               accessor: 'price',
               type: 'currency',
               label: 'Amount',
               options: { currencyAccessor: 'currency' },
+              sortable: true,
             },
             { accessor: 'date', type: 'month', label: 'Invoice date' },
             { accessor: 'location', label: 'Location' },
