@@ -2,6 +2,7 @@ import { Option } from '../select/Select.types.ts';
 import {
   ArrayFilterRules,
   BooleanFilterRules,
+  DataTableColumnType,
   DateFilterRules,
   NumberFilterRules,
   StringFilterRules,
@@ -175,3 +176,13 @@ export const DataTableDateRules: FilteringRuleOption[] = [
     columns: 2,
   },
 ];
+
+export const RulesByDataType: Record<
+  DataTableColumnType,
+  FilteringRuleOption[]
+> = {
+  string: DataTableStringRules,
+  text: DataTableStringRules,
+  number: DataTableNumberRules,
+  currency: DataTableNumberRules,
+};

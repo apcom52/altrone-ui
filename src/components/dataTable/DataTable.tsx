@@ -18,6 +18,7 @@ import { Header, Footer } from './inner';
 import { motion } from 'motion/react';
 import { textFilterFn } from './filters/textFilterFn';
 import { useDidUpdate } from 'utils';
+import { numberFilterFn } from './filters/numberFilterFn';
 
 const DataTableComponent = <DataType extends object>(
   props: DataTableProps<DataType>
@@ -71,15 +72,23 @@ const DataTableComponent = <DataType extends object>(
       });
     },
     onPaginationChange: (updater) => {
-      table.setState((old) => ({
-        ...old,
-        pagination:
-          typeof updater === 'function' ? updater(old.pagination) : updater,
-      }));
+      table.setState((old) => {
+        const newPagination =
+          typeof updater === 'function'
+            ? updater(old.pagination)
+            : { ...old.pagination, ...updater };
+
+        return {
+          ...old,
+          pagination: newPagination,
+        };
+      });
+
       onPageChange?.(table.getState().pagination.pageIndex);
     },
     filterFns: {
       text: textFilterFn,
+      number: numberFilterFn,
     },
   });
 
@@ -95,6 +104,8 @@ const DataTableComponent = <DataType extends object>(
       props.columns.filter((column) => column.filterable).length > 0
     );
   }, [children, props.columns]);
+
+  console.log('>> current page', table.getState().pagination.pageIndex);
 
   return (
     <DataTableCoreContext.Provider value={table}>

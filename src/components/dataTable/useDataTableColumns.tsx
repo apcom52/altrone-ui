@@ -16,6 +16,10 @@ export function useDataTableColumns<T extends object>(
       return 'text';
     }
 
+    if (['number', 'currency'].includes(type)) {
+      return 'number';
+    }
+
     return 'customText';
   };
 

@@ -111,13 +111,6 @@ export const applyOverlapStyles = (
   let top = reference.y;
   const halfFloatingWidth = floatingRect.width / 2;
 
-  console.log('>> overlap', {
-    placement,
-    left,
-    reference,
-    halfFloatingWidth,
-  });
-
   switch (placement) {
     case 'bottom':
       left = reference.x + reference.width / 2 - halfFloatingWidth;

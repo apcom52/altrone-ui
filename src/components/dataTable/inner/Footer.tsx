@@ -17,7 +17,6 @@ export const Footer = () => {
   const totalPages = tableCore.getPageCount() + 1;
 
   const rowsPerPage = tableCore.getState().pagination.pageSize;
-  const totalRows = tableCore.getRowCount();
 
   const footerRef = useRef<HTMLTableSectionElement>(null);
   const [isSticky, setIsSticky] = useState(false);
@@ -100,6 +99,7 @@ export const Footer = () => {
           currentPage={currentPage}
           totalPages={totalPages - 1}
           setPage={(page) => {
+            console.log('>> set page from pagination', page);
             tableCore.setPageIndex(page - 1);
           }}
         />

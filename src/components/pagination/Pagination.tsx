@@ -23,6 +23,17 @@ export const Pagination = memo<PaginationProps>(
       setVirtualPage(currentPage);
     }, [currentPage]);
 
+    useEffect(() => {
+      // Если currentPage или totalPages меняются, нужно проверить валидность currentPage
+      if (
+        typeof currentPage === 'number' &&
+        typeof totalPages === 'number' &&
+        (currentPage < 1 || currentPage > totalPages)
+      ) {
+        setPage(1);
+      }
+    }, [currentPage, totalPages, setPage]);
+
     const cls = clsx(s.Pagination, className, paginationConfig.className);
 
     const styles = {

@@ -11,6 +11,7 @@ import { Plus } from 'lucide-react';
 import { StringFilterRules } from '../DataTable.types.ts';
 import { Empty } from 'components/empty/Empty.tsx';
 import { FilterRow } from './FilterRow.tsx';
+import { RulesByDataType } from '../DataTable.constants.ts';
 
 export const Filtering = () => {
   const t = useLocalization();
@@ -34,14 +35,18 @@ export const Filtering = () => {
   }, [filterableColumns, internalFilters]);
 
   const handleAddFilter = useCallback((column: Column<any>) => {
+    const filterType = column.columnDef.filterFn;
+    console.log('>> filterType', filterType);
+
     setInternalFilters((old) => [
       ...old,
       {
         id: column.id,
         value: {
-          rule: StringFilterRules.contain,
+          rule: RulesByDataType[filterType][0].value,
           join: 'AND',
           value: '',
+          additionalValue: '',
         },
       },
     ]);
@@ -66,6 +71,10 @@ export const Filtering = () => {
       return old.filter((filter) => filter.id !== accessor);
     });
   }, []);
+
+  const resetPagination = useCallback(() => {
+    table.resetPageIndex();
+  }, [table]);
 
   return (
     <Popover
@@ -121,7 +130,7 @@ export const Filtering = () => {
               onClick={() => {
                 table.resetColumnFilters();
                 setInternalFilters([]);
-                table.setPageIndex(0);
+                resetPagination();
                 closePopup();
               }}
             />
@@ -129,7 +138,7 @@ export const Filtering = () => {
               label={t('common.apply')}
               onClick={() => {
                 table.setColumnFilters(internalFilters);
-                table.setPageIndex(0);
+                resetPagination();
                 closePopup();
               }}
               variant="submit"

@@ -17,6 +17,7 @@ import {
   DataTableDateRules,
   DataTableNumberRules,
   DataTableStringRules,
+  RulesByDataType,
 } from '../DataTable.constants.ts';
 import { useLocalization } from '../../application';
 import { DatePicker } from 'components/datePicker/DatePicker.tsx';
@@ -34,43 +35,31 @@ export const FilterRow = ({
 
   const table = useDataTableCore();
   const column = table.getColumn(filter.id);
+  const filterType = column?.columnDef.filterFn;
 
   const rules = useMemo(() => {
-    return DataTableStringRules.map((item) => ({
+    return RulesByDataType[filterType].map((item) => ({
       value: item.value,
       label: t(item.label),
     }));
-  }, []);
+  }, [filterType]);
 
   const currentRule = filter.value?.rule;
   const currentValue = filter.value?.value;
+  const currentAdditionalValue = filter.value?.additionalValue;
 
-  // const selectedRule = useMemo(() => {
-  //   return ruleSet.find((item) => item.value === rule);
-  // }, [ruleSet, rule, filter?.type]);
+  const currentRuleConfig = useMemo(() => {
+    return RulesByDataType[filterType].find(
+      (item) => item.value === currentRule
+    );
+  }, [filterType, currentRule]);
 
-  // const columnsWithFilters = useMemo(() => {
-  //   return columns?.map((item) => ({
-  //     value: String(item.accessor),
-  //     label: String(item.label || item.accessor),
-  //     type: item.type,
-  //   }));
-  // }, [columns]);
-
-  // const changeFilterField = (newField?: string) => {
-  //   if (!newField) return;
-  //   changeFilter(
-  //     filterIndex,
-  //     newField,
-  //     columnsWithFilters.find((item) => item.value === newField)?.type
-  //   );
-  // };
-
-  // const isTwoFields = selectedRule?.columns === 2;
+  const hasAdditionalValue = currentRuleConfig?.columns >= 2;
 
   const cls = clsx(s.FilterRow, {
-    // [s.FilterRow_zeroColumns]: !selectedRule || selectedRule?.columns === 0,
-    // [s.FilterRow_twoColumns]: isTwoFields,
+    [s.FilterRow_zeroColumns]:
+      !currentRuleConfig || currentRuleConfig?.columns === 0,
+    [s.FilterRow_twoColumns]: hasAdditionalValue,
   });
 
   return (
@@ -88,17 +77,17 @@ export const FilterRow = ({
         variant="transparent"
         parentWidth={false}
       />
-      {/* {selectedRule?.columns === 1 ? ( */}
-      <div data-type="control">
-        <TextInput
-          value={currentValue}
-          onChange={(value) => changeFilter('value', value)}
-          data-filter-name={filter.id}
-          data-filter-control="true"
-        />
-      </div>
-      {/* ) : null} */}
-      {/* {selectedRule?.columns === 2 ? (
+      {currentRuleConfig?.columns === 1 ? (
+        <div data-type="control">
+          <TextInput
+            value={currentValue}
+            onChange={(value) => changeFilter('value', value)}
+            data-filter-name={filter.id}
+            data-filter-control="true"
+          />
+        </div>
+      ) : null}
+      {/* {currentRuleConfig?.columns === 2 ? (
         <>
           {isNumber ? (
             <>
