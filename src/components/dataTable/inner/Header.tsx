@@ -44,7 +44,7 @@ export const DataTableHeader = () => {
       </Tooltip>
 
       {/* {childrenActions} */}
-      {/* {columnsWithFilters.length > 0 ? <Filtering /> : null} */}
+      <Filtering />
     </div>
   );
 

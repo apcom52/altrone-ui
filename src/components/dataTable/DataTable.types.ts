@@ -4,17 +4,21 @@ import { AnyObject, StrictReactElements } from '../../utils';
 import { Option } from '../select/Select.types.ts';
 import { ReactElement } from 'react';
 import { RenderFuncProp } from '../../types';
+import { ColumnFilter } from '@tanstack/react-table';
 
 export type Sort = 'asc' | 'desc';
 export type DataTableColumnType =
+  | 'string'
   | 'text'
   | 'number'
-  | 'boolean'
-  | 'array'
   | 'currency'
+  | 'password'
   | 'date'
-  | 'month'
-  | 'year';
+  | 'boolean'
+  | 'select'
+  | 'link'
+  | 'color'
+  | 'custom';
 
 export type Sorting = {
   field: string;
@@ -29,7 +33,7 @@ export interface DataTableColumn<T extends object> {
   Component?: React.FC<DataTableCellProps<T>>;
   renderFunc?: RenderFuncProp<HTMLDivElement, DataTableCellProps<T>>;
   visible?: boolean;
-  filterable?: boolean;
+  filterable?: boolean | DataTableColumnType;
   sortable?: boolean;
   options?: Partial<{
     currency: string;
@@ -198,17 +202,10 @@ export type Filter =
   | BooleanFilter
   | DateFilter;
 
-export interface FilterRowProps<T extends AnyObject> {
-  filter: Filter;
-  filterIndex: number;
-  columns: DataTableColumn<T>[];
-  changeFilter: (
-    filterIndex: number,
-    accessor: string,
-    type?: DataTableColumnType
-  ) => void;
-  changeField: (filterIndex: number, field: string, value: unknown) => void;
-  deleteFilter: (filterIndex: number, source: 'delete' | 'field') => void;
+export interface FilterRowProps {
+  filter: ColumnFilter;
+  changeFilter: (field: string, value: unknown) => void;
+  deleteFilter: () => void;
 }
 
 export interface FilterFuncArgs<T extends AnyObject, FilterType> {

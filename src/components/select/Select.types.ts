@@ -45,4 +45,5 @@ export interface SelectProps<Value = unknown>
   parentWidth?: boolean;
   Component?: RenderFunction<ReactElement, SelectContext>;
   renderFunc?: CustomRenderFunction<SelectContext>;
+  variant?: 'default' | 'transparent';
 }

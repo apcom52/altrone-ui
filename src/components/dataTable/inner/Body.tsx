@@ -25,6 +25,7 @@ import { Empty } from 'components/empty/Empty.tsx';
 import { flexRender } from '@tanstack/react-table';
 import { Text } from '../../text';
 import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
+import { motion } from 'motion/react';
 
 const CELL_RENDERERS: Record<
   DataTableColumnType,

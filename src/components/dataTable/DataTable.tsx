@@ -2,11 +2,12 @@ import { DataTableProps } from './DataTable.types';
 import { DataTableCoreContext } from './DataTable.context';
 import { Action, RowActions, RowAction } from './components';
 import s from './dataTable.module.scss';
-import { Children, useMemo } from 'react';
+import { Children, useEffect, useMemo } from 'react';
 import { useConfiguration } from '../configuration';
 import clsx from 'clsx';
 import {
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -14,6 +15,9 @@ import {
 import { useDataTableColumns } from './useDataTableColumns';
 import { Body, ColumnHeaders } from './inner';
 import { Header, Footer } from './inner';
+import { motion } from 'motion/react';
+import { textFilterFn } from './filters/textFilterFn';
+import { useDidUpdate } from 'utils';
 
 const DataTableComponent = <DataType extends object>(
   props: DataTableProps<DataType>
@@ -45,6 +49,7 @@ const DataTableComponent = <DataType extends object>(
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     initialState: {
       pagination: {
         pageIndex: defaultPage,
@@ -73,6 +78,9 @@ const DataTableComponent = <DataType extends object>(
       }));
       onPageChange?.(table.getState().pagination.pageIndex);
     },
+    filterFns: {
+      text: textFilterFn,
+    },
   });
 
   const cls = clsx(s.Table, props.className, dataTableConfig.className);
@@ -90,14 +98,14 @@ const DataTableComponent = <DataType extends object>(
 
   return (
     <DataTableCoreContext.Provider value={table}>
-      <div className={s.Wrapper}>
+      <motion.div layout className={s.Wrapper}>
         {dataTableHeaderVisible ? <Header /> : null}
         <table className={cls} style={styles} {...restProps}>
           <ColumnHeaders />
           <Body />
         </table>
         {showFooter ? <Footer /> : null}
-      </div>
+      </motion.div>
     </DataTableCoreContext.Provider>
   );
 };

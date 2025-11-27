@@ -4,7 +4,11 @@ import { Select } from 'components/select';
 import { TextInput } from 'components/textInput';
 import { Button } from 'components/button';
 import { Icon } from 'components/icon';
-import { FilterRowProps, FilterType } from '../DataTable.types.ts';
+import {
+  FilterRowProps,
+  FilterType,
+  StringFilterRules,
+} from '../DataTable.types.ts';
 import { NumberInput } from 'components/numberInput';
 import clsx from 'clsx';
 import {
@@ -18,148 +22,83 @@ import { useLocalization } from '../../application';
 import { DatePicker } from 'components/datePicker/DatePicker.tsx';
 import { Dayjs } from 'dayjs';
 import { dayjs } from '../../calendar';
+import { useDataTableCore } from '../DataTable.context.tsx';
+import { Trash } from 'lucide-react';
 
 export const FilterRow = ({
   filter,
-  columns,
-  filterIndex,
-  changeField,
   changeFilter,
   deleteFilter,
-}: FilterRowProps<any>) => {
+}: FilterRowProps) => {
   const t = useLocalization();
 
-  const isString = filter?.type === FilterType.string;
-  const isNumber = filter?.type === FilterType.number;
-  const isArray = filter?.type === FilterType.array;
-  const isBoolean = filter?.type === FilterType.boolean;
-  const isDate = filter?.type === FilterType.date;
+  const table = useDataTableCore();
+  const column = table.getColumn(filter.id);
 
-  const rule = filter.conditions[0].rule;
-  const value = filter.conditions[0].value;
-  const minValue = isNumber ? filter.conditions[0]?.minValue || 0 : 0;
-  const maxValue = isNumber ? filter.conditions[0]?.maxValue || 0 : 0;
-  const options = isArray ? filter.conditions[0]?.options || [] : [];
-  const minDate =
-    isDate && filter.conditions[0]?.minValue
-      ? dayjs(filter.conditions[0]?.minValue) || undefined
-      : undefined;
-  const maxDate =
-    isDate && filter.conditions[0]?.maxValue
-      ? dayjs(filter.conditions[0]?.maxValue) || undefined
-      : undefined;
-
-  const FilterDatePicker =
-    filter.columnType === 'month'
-      ? DatePicker.MonthPicker
-      : filter.columnType === 'year'
-        ? DatePicker.YearPicker
-        : DatePicker;
-
-  const ruleSet = useMemo(() => {
-    const ruleSet = isString
-      ? DataTableStringRules
-      : isNumber
-        ? DataTableNumberRules
-        : isArray
-          ? DataTableArrayRules
-          : isBoolean
-            ? DataTableBooleanRules
-            : isDate
-              ? DataTableDateRules
-              : [];
-
-    return ruleSet.map((item) => ({
-      ...item,
+  const rules = useMemo(() => {
+    return DataTableStringRules.map((item) => ({
+      value: item.value,
       label: t(item.label),
     }));
-  }, [isNumber, isString, isArray]);
+  }, []);
 
-  const selectedRule = useMemo(() => {
-    return ruleSet.find((item) => item.value === rule);
-  }, [ruleSet, rule, filter?.type]);
+  const currentRule = filter.value?.rule;
+  const currentValue = filter.value?.value;
 
-  const columnsWithFilters = useMemo(() => {
-    return columns?.map((item) => ({
-      value: String(item.accessor),
-      label: String(item.label || item.accessor),
-      type: item.type,
-    }));
-  }, [columns]);
+  // const selectedRule = useMemo(() => {
+  //   return ruleSet.find((item) => item.value === rule);
+  // }, [ruleSet, rule, filter?.type]);
 
-  const changeFilterField = (newField?: string) => {
-    if (!newField) return;
-    changeFilter(
-      filterIndex,
-      newField,
-      columnsWithFilters.find((item) => item.value === newField)?.type,
-    );
-  };
+  // const columnsWithFilters = useMemo(() => {
+  //   return columns?.map((item) => ({
+  //     value: String(item.accessor),
+  //     label: String(item.label || item.accessor),
+  //     type: item.type,
+  //   }));
+  // }, [columns]);
 
-  const isTwoFields = selectedRule?.columns === 2;
+  // const changeFilterField = (newField?: string) => {
+  //   if (!newField) return;
+  //   changeFilter(
+  //     filterIndex,
+  //     newField,
+  //     columnsWithFilters.find((item) => item.value === newField)?.type
+  //   );
+  // };
+
+  // const isTwoFields = selectedRule?.columns === 2;
 
   const cls = clsx(s.FilterRow, {
-    [s.FilterRow_zeroColumns]: !selectedRule || selectedRule?.columns === 0,
-    [s.FilterRow_twoColumns]: isTwoFields,
+    // [s.FilterRow_zeroColumns]: !selectedRule || selectedRule?.columns === 0,
+    // [s.FilterRow_twoColumns]: isTwoFields,
   });
 
   return (
     <div className={cls}>
-      <Select<string>
-        value={filter?.field}
-        placeholder="Choose column"
-        onChange={changeFilterField}
-        options={columnsWithFilters}
+      <TextInput
+        readOnly
+        readonlyStyles={true}
+        value={column?.columnDef.header() || ''}
       />
       <Select
-        value={rule}
+        value={currentRule}
         placeholder="Choose rule"
-        onChange={changeField.bind(null, filterIndex, 'rule')}
-        options={ruleSet}
+        onChange={(rule) => changeFilter('rule', rule)}
+        options={rules}
+        variant="transparent"
         parentWidth={false}
       />
-      {selectedRule?.columns === 1 ? (
-        <div data-type="control">
-          {isString ? (
-            <TextInput
-              value={String(value)}
-              onChange={changeField.bind(null, filterIndex, 'value')}
-              data-filter-name={filter.field}
-              data-filter-control="true"
-            />
-          ) : null}
-          {isNumber ? (
-            <NumberInput
-              value={Number(value)}
-              onChange={changeField.bind(null, filterIndex, 'value')}
-              data-filter-name={filter.field}
-              data-filter-control="true"
-            />
-          ) : null}
-          {isArray ? (
-            <Select
-              value={value as string[]}
-              onChange={changeField.bind(null, filterIndex, 'value')}
-              options={options}
-              multiple
-              searchable
-              data-filter-name={filter.field}
-              data-filter-control="true"
-            />
-          ) : null}
-          {isDate ? (
-            <FilterDatePicker
-              value={(value as Dayjs) || undefined}
-              onChange={changeField.bind(null, filterIndex, 'value')}
-              data-filter-name={filter.field}
-              data-filter-control="true"
-              maxDate={maxDate}
-              minDate={minDate}
-            />
-          ) : null}
-        </div>
-      ) : null}
-      {selectedRule?.columns === 2 ? (
+      {/* {selectedRule?.columns === 1 ? ( */}
+      <div data-type="control">
+        <TextInput
+          value={currentValue}
+          onChange={(value) => changeFilter('value', value)}
+          data-filter-name={filter.id}
+          data-filter-control="true"
+        />
+      </div>
+      {/* ) : null} */}
+      {/* {selectedRule?.columns === 2 ? (
         <>
           {isNumber ? (
             <>
@@ -204,12 +143,13 @@ export const FilterRow = ({
             </>
           ) : null}
         </>
-      ) : null}
+      ) : null} */}
 
       <Button
-        leftIcon={<Icon i="close" />}
-        title={t('common.delete')}
-        onClick={() => deleteFilter(filterIndex, 'delete')}
+        icon={<Trash />}
+        label={t('common.delete')}
+        onClick={deleteFilter}
+        showLabel={false}
       />
     </div>
   );
