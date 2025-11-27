@@ -59,21 +59,21 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           Basic DataTable
         </Text>
         <DataTable
-          data={isEmpty ? [] : COUNTRIES}
+          data={COUNTRIES}
           rowsPerPage={7}
           selectable
           defaultPage={defaultPage}
           defaultSort={defaultSorting}
           defaultFilters={defaultFilters}
           columns={[
-            { accessor: 'flag', label: 'Flag', width: 40 },
+            { accessor: 'flag', label: 'Flag', type: 'string', width: 40 },
             {
               accessor: 'country',
               label: 'Country Name',
               filterable: true,
-              type: 'text',
+              type: 'string',
             },
-            { accessor: 'capital', label: 'Capital' },
+            { accessor: 'capital', label: 'Capital', type: 'string' },
           ]}
         >
           <DataTable.Action

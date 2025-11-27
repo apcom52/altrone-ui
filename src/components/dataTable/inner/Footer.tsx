@@ -27,7 +27,6 @@ export const Footer = () => {
         const rect = footerRef.current.getBoundingClientRect();
         const windowHeight =
           window.innerHeight || document.documentElement.clientHeight;
-        // Определяет, "прилип" ли элемент к нижней части экрана
         setIsSticky(rect.bottom >= windowHeight && rect.top < windowHeight);
       }
     };
@@ -95,14 +94,18 @@ export const Footer = () => {
       />
       <div className={s.StatusBar}>{statusText}</div>
       <div>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages - 1}
-          setPage={(page) => {
-            console.log('>> set page from pagination', page);
-            tableCore.setPageIndex(page - 1);
-          }}
-        />
+        {totalPages - 1 > 0
+          ? 1 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages - 1}
+                setPage={(page) => {
+                  console.log('>> set page from pagination', page);
+                  tableCore.setPageIndex(page - 1);
+                }}
+              />
+            )
+          : null}
       </div>
     </div>
   );

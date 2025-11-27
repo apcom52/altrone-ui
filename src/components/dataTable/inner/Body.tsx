@@ -1,45 +1,11 @@
-import {
-  useDataTableContext,
-  useDataTableCore,
-} from '../DataTable.context.tsx';
-import clsx from 'clsx';
-import { DataTableCellProps } from '../DataTableCell.tsx';
+import { useDataTableCore } from '../DataTable.context.tsx';
 import { Checkbox } from '../../checkbox';
 import s from './body.module.scss';
-import { useVisibleColumns } from '../useVisibleColumns.ts';
-import { DataTableBodyProps, DataTableColumnType } from '../DataTable.types.ts';
-import {
-  DataTableTextRenderer,
-  DataTableCurrencyRenderer,
-  DataTableNumberRenderer,
-  DataTableDateRenderer,
-  DataTableMonthRenderer,
-  DataTableYearRenderer,
-  DataTableBooleanRenderer,
-  DataTableArrayRenderer,
-} from '../renderers';
+import { DataTableColumnType } from '../DataTable.types.ts';
 import { createElement } from 'react';
-import { useLocalization } from '../../application';
-import { GlobalUtils } from '../../../utils';
 import { Empty } from 'components/empty/Empty.tsx';
-import { flexRender } from '@tanstack/react-table';
-import { Text } from '../../text';
 import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
-import { motion } from 'motion/react';
-
-const CELL_RENDERERS: Record<
-  DataTableColumnType,
-  React.FC<DataTableCellProps<any>>
-> = {
-  text: DataTableTextRenderer,
-  number: DataTableNumberRenderer,
-  boolean: DataTableBooleanRenderer,
-  array: DataTableArrayRenderer,
-  currency: DataTableCurrencyRenderer,
-  date: DataTableDateRenderer,
-  month: DataTableMonthRenderer,
-  year: DataTableYearRenderer,
-};
+import { CellRenderers } from '../DataTable.constants.ts';
 
 export const Body = () => {
   const table = useDataTableCore();
@@ -49,6 +15,7 @@ export const Body = () => {
 
   return (
     <div className={s.TableBody}>
+      {table.getRowModel().rows.length === 0 ? <Empty>No data</Empty> : null}
       {table.getRowModel().rows.map((row) => {
         const isSelected = row.getIsSelected();
 
@@ -67,13 +34,34 @@ export const Body = () => {
                 />
               </div>
             ) : null}
-            {row.getVisibleCells().map((cell) => (
-              <div key={cell.id} className={s.Cell}>
-                <Text size={4} weight="medium">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Text>
-              </div>
-            ))}
+            {row.getVisibleCells().map((cell) => {
+              // Получаем тип колонки и конфигурацию из метаданных
+              const meta = cell.column.columnDef.meta as
+                | {
+                    type?: DataTableColumnType;
+                    options?: any;
+                    columnConfig?: any;
+                  }
+                | undefined;
+              const columnType =
+                (meta?.type as DataTableColumnType) || 'string';
+              const columnConfig = meta?.columnConfig;
+              const Renderer =
+                CellRenderers[columnType] || CellRenderers.string;
+
+              return (
+                <div key={cell.id} className={s.Cell}>
+                  {createElement(Renderer, {
+                    value: cell.getValue(),
+                    item: row.original,
+                    columnConfig: columnConfig || {
+                      accessor: cell.column.id,
+                      type: columnType,
+                    },
+                  })}
+                </div>
+              );
+            })}
           </div>
         );
       })}

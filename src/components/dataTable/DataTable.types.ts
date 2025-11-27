@@ -25,9 +25,9 @@ export type Sorting = {
   direction: Sort;
 };
 
-export interface DataTableColumn<T extends object> {
+// Базовый интерфейс колонки
+export interface DataTableColumnBase<T extends object> {
   accessor: keyof T;
-  type?: DataTableColumnType;
   label?: string;
   width?: number;
   Component?: React.FC<DataTableCellProps<T>>;
@@ -35,14 +35,53 @@ export interface DataTableColumn<T extends object> {
   visible?: boolean;
   filterable?: boolean | DataTableColumnType;
   sortable?: boolean;
-  options?: Partial<{
-    currency: string;
-    currencyAccessor: keyof T;
-    arrayDelimiter: string;
-    arrayAccessor: string;
-    locale?: string;
-  }>;
 }
+
+// Специфичные опции для разных типов колонок
+export interface CurrencyColumnOptions<T extends object> {
+  currency?: string;
+  currencyAccessor?: keyof T;
+}
+
+export interface NumberColumnOptions {
+  digitsAfterPoint?: number;
+}
+
+export interface ArrayColumnOptions<T extends object> {
+  arrayDelimiter?: string;
+  arrayAccessor?: string;
+}
+
+// Типы колонок с их специфичными опциями
+export type DataTableColumn<T extends object> =
+  | (DataTableColumnBase<T> & {
+      type?: 'string' | 'text' | 'password' | 'link' | 'color' | 'custom';
+      options?: never;
+    })
+  | (DataTableColumnBase<T> & {
+      type: 'currency';
+      options?: CurrencyColumnOptions<T>;
+    })
+  | (DataTableColumnBase<T> & {
+      type: 'number';
+      options?: NumberColumnOptions;
+    })
+  | (DataTableColumnBase<T> & {
+      type: 'date' | 'month' | 'year';
+      options?: { locale?: string };
+    })
+  | (DataTableColumnBase<T> & {
+      type: 'boolean';
+      options?: never;
+    })
+  | (DataTableColumnBase<T> & {
+      type: 'select';
+      options?: never;
+    })
+  | (DataTableColumnBase<T> & {
+      type: 'array';
+      options?: ArrayColumnOptions<T>;
+    });
 
 export type DataTableRenderContext<T extends object> = {
   selectableMode: boolean;
@@ -228,4 +267,10 @@ export interface DataTableRowActionProps
 export interface DataTableRowActionsProps
   extends React.HTMLAttributes<HTMLDivElement> {
   children: StrictReactElements<DataTableRowActionProps>;
+}
+
+export interface CellRenderer<T extends object = any> {
+  value: unknown;
+  item: T;
+  columnConfig: DataTableColumn<T>;
 }

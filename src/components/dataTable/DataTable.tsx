@@ -2,7 +2,7 @@ import { DataTableProps } from './DataTable.types';
 import { DataTableCoreContext } from './DataTable.context';
 import { Action, RowActions, RowAction } from './components';
 import s from './dataTable.module.scss';
-import { Children, useEffect, useMemo } from 'react';
+import { Children, useMemo } from 'react';
 import { useConfiguration } from '../configuration';
 import clsx from 'clsx';
 import {
@@ -61,31 +61,31 @@ const DataTableComponent = <DataType extends object>(
         : undefined,
     },
     enableRowSelection: selectable,
-    onSortingChange: (updater) => {
-      table.setState((old) => ({
-        ...old,
-        sorting: typeof updater === 'function' ? updater(old.sorting) : updater,
-      }));
-      onSortChange?.({
-        field: table.getState().sorting[0]?.id,
-        direction: table.getState().sorting[0]?.desc ? 'desc' : 'asc',
-      });
-    },
-    onPaginationChange: (updater) => {
-      table.setState((old) => {
-        const newPagination =
-          typeof updater === 'function'
-            ? updater(old.pagination)
-            : { ...old.pagination, ...updater };
+    // onSortingChange: (updater) => {
+    //   table.setState((old) => ({
+    //     ...old,
+    //     sorting: typeof updater === 'function' ? updater(old.sorting) : updater,
+    //   }));
+    //   onSortChange?.({
+    //     field: table.getState().sorting[0]?.id,
+    //     direction: table.getState().sorting[0]?.desc ? 'desc' : 'asc',
+    //   });
+    // },
+    // onPaginationChange: (updater) => {
+    //   table.setState((old) => {
+    //     const newPagination =
+    //       typeof updater === 'function'
+    //         ? updater(old.pagination)
+    //         : { ...old.pagination, ...updater };
 
-        return {
-          ...old,
-          pagination: newPagination,
-        };
-      });
+    //     return {
+    //       ...old,
+    //       pagination: newPagination,
+    //     };
+    //   });
 
-      onPageChange?.(table.getState().pagination.pageIndex);
-    },
+    //   onPageChange?.(table.getState().pagination.pageIndex);
+    // },
     filterFns: {
       text: textFilterFn,
       number: numberFilterFn,

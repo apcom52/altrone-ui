@@ -29,8 +29,10 @@ export function useDataTableColumns<T extends object>(
     return columns
       .filter((c) => c.visible !== false)
       .map((c) => {
-        const filterType: DataTableColumnType =
-          typeof c.filterable === 'string' ? c.filterable : c.type || 'string';
+        const filterType =
+          typeof c.filterable === 'string'
+            ? (c.filterable as DataTableColumnType)
+            : (c.type as DataTableColumnType) || 'string';
 
         return helper.accessor(c.accessor as any, {
           id: String(c.accessor),
@@ -42,6 +44,11 @@ export function useDataTableColumns<T extends object>(
           enableSorting: c.sortable === true,
           enableColumnFilter: Boolean(c.filterable),
           filterFn: resolveFilterFn(filterType) as unknown as FilterFn<T>,
+          meta: {
+            type: c.type || 'string',
+            options: c.options,
+            columnConfig: c, // Сохраняем всю конфигурацию колонки
+          },
         });
       });
   }, [columns]);

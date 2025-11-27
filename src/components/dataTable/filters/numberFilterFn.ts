@@ -24,13 +24,24 @@ export const numberFilterFn: FilterFn<any> = (row, columnId, filterValue) => {
   const val = filterValue.value;
 
   // правая часть отсутствует → условие не задано → не фильтруем
-  if (val === undefined || val === null) return true;
+  if (val === undefined || val === null || val === '') return true;
+
+  // Проверяем, что значение не является пустой строкой в массиве
+  if (Array.isArray(val)) {
+    if (
+      (val[0] === '' || val[0] === null || val[0] === undefined) &&
+      (val[1] === '' || val[1] === null || val[1] === undefined)
+    ) {
+      return true;
+    }
+  }
 
   const left = Array.isArray(val)
     ? NumberUtils.toNumber(val[0])
     : NumberUtils.toNumber(val);
   const right = Array.isArray(val) ? NumberUtils.toNumber(val[1]) : null;
 
+  // Если значение не может быть преобразовано в число, не фильтруем
   if (left === null && right === null) return true;
 
   // null в данных → не удовлетворяет числовым сравнениям
@@ -39,7 +50,21 @@ export const numberFilterFn: FilterFn<any> = (row, columnId, filterValue) => {
   // ----- Equal / notEqual -----
 
   if (rule === 'equal') {
-    return number === left;
+    // Используем строгое сравнение с учетом возможных проблем с типами
+    const result = number === left;
+    // Отладка: логируем только если результат неожиданный
+    if (!result && Math.abs((number || 0) - (left || 0)) < 0.0001) {
+      console.warn('Number filter equal comparison issue:', {
+        number,
+        left,
+        raw,
+        val,
+        rule,
+        columnId,
+      });
+    }
+    console.log('>> numberFilter filtering', val, result);
+    return result;
   }
 
   if (rule === 'notEqual') {

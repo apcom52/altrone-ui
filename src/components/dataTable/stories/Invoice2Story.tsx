@@ -23,6 +23,9 @@ export const InvoicesWithStatusesStory: StoryObj<typeof Flex> = {
             type: 'currency',
             filterable: true,
             sortable: true,
+            options: {
+              currency: 'RUB',
+            },
           },
           {
             accessor: 'users',

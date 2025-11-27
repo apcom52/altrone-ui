@@ -2,11 +2,16 @@ import { Option } from '../select/Select.types.ts';
 import {
   ArrayFilterRules,
   BooleanFilterRules,
+  CellRenderer,
   DataTableColumnType,
   DateFilterRules,
   NumberFilterRules,
   StringFilterRules,
 } from './DataTable.types.ts';
+import { CurrencyRenderer } from './renderers/currencyRenderer.tsx';
+import { NumberRenderer } from './renderers/numberRenderer.tsx';
+import { StringRenderer } from './renderers/stringRenderer.tsx';
+import { TextRenderer } from './renderers/textRenderer.tsx';
 
 interface FilteringRuleOption extends Option {
   columns?: 0 | 1 | 2;
@@ -177,12 +182,27 @@ export const DataTableDateRules: FilteringRuleOption[] = [
   },
 ];
 
-export const RulesByDataType: Record<
-  DataTableColumnType,
-  FilteringRuleOption[]
+export const RulesByDataType: Partial<
+  Record<DataTableColumnType, FilteringRuleOption[]>
 > = {
   string: DataTableStringRules,
   text: DataTableStringRules,
   number: DataTableNumberRules,
   currency: DataTableNumberRules,
+};
+
+export const CellRenderers: Partial<
+  Record<DataTableColumnType, React.FC<CellRenderer<any>>>
+> & {
+  string: React.FC<CellRenderer<any>>;
+  text: React.FC<CellRenderer<any>>;
+} = {
+  string: StringRenderer,
+  text: TextRenderer,
+  number: NumberRenderer,
+  currency: CurrencyRenderer,
+  // boolean: BooleanRenderer,
+  // link: LinkRenderer,
+  // select: SelectRenderer,
+  // custom: CustomRenderer,
 };
