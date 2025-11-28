@@ -166,6 +166,11 @@ export enum ArrayFilterRules {
   notHas = 'notHas',
 }
 
+export enum SelectFilterRules {
+  has = 'has',
+  notHas = 'notHas',
+}
+
 export enum BooleanFilterRules {
   positive = 'positive',
   negative = 'negative',

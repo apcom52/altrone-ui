@@ -3,28 +3,17 @@ import s from './filtering.module.scss';
 import { Select } from 'components/select';
 import { TextInput } from 'components/textInput';
 import { Button } from 'components/button';
-import { Icon } from 'components/icon';
-import {
-  FilterRowProps,
-  FilterType,
-  StringFilterRules,
-} from '../DataTable.types.ts';
+import { FilterRowProps } from '../DataTable.types.ts';
 import { NumberInput } from 'components/numberInput';
 import clsx from 'clsx';
-import {
-  DataTableArrayRules,
-  DataTableBooleanRules,
-  DataTableDateRules,
-  DataTableNumberRules,
-  DataTableStringRules,
-  RulesByDataType,
-} from '../DataTable.constants.ts';
+import { RulesByDataType } from '../DataTable.constants.ts';
 import { useLocalization } from '../../application';
 import { DatePicker } from 'components/datePicker/DatePicker.tsx';
 import { Dayjs } from 'dayjs';
 import { dayjs } from '../../calendar';
 import { useDataTableCore } from '../DataTable.context.tsx';
 import { Trash } from 'lucide-react';
+import { Option } from 'components/select/Select.types.ts';
 
 export const FilterRow = ({
   filter,
@@ -57,11 +46,47 @@ export const FilterRow = ({
   const hasAdditionalValue = currentRuleConfig?.columns >= 2;
   const isDateFilter = filterType === 'date';
   const isNumberFilter = ['number', 'currency'].includes(filterType);
+  const isSelectFilter = filterType === 'select';
+
+  // Получаем уникальные значения из данных таблицы для select фильтра
+  const selectOptions = useMemo(() => {
+    if (!isSelectFilter || !column) return [];
+
+    const uniqueValues = new Set<any>();
+    const rows = table.getRowModel().rows;
+
+    rows.forEach((row) => {
+      const value = row.getValue(column.id);
+      if (value !== null && value !== undefined) {
+        // Если значение - массив, добавляем все элементы
+        if (Array.isArray(value)) {
+          value.forEach((item) => {
+            if (item !== null && item !== undefined) {
+              uniqueValues.add(item);
+            }
+          });
+        } else {
+          uniqueValues.add(value);
+        }
+      }
+    });
+
+    // Преобразуем в массив Option
+    return Array.from(uniqueValues)
+      .sort()
+      .map((value) => ({
+        value: String(value),
+        label: String(value),
+      })) as Option[];
+  }, [isSelectFilter, column, table]);
 
   // Получаем level из options колонки
   const level = useMemo(() => {
     if (isDateFilter && column?.columnDef.meta?.options) {
-      return (column.columnDef.meta.options as { level?: 'day' | 'month' | 'year' })?.level || 'day';
+      return (
+        (column.columnDef.meta.options as { level?: 'day' | 'month' | 'year' })
+          ?.level || 'day'
+      );
     }
     return 'day';
   }, [isDateFilter, column]);
@@ -94,7 +119,9 @@ export const FilterRow = ({
 
   const handleDateRangeChange = useCallback(
     (index: 0 | 1) => (value: Dayjs | undefined) => {
-      const currentArray = Array.isArray(currentValue) ? [...currentValue] : ['', ''];
+      const currentArray = Array.isArray(currentValue)
+        ? [...currentValue]
+        : ['', ''];
       currentArray[index] = value ? value.toISOString() : '';
       changeFilter('value', currentArray);
     },
@@ -140,6 +167,22 @@ export const FilterRow = ({
               data-filter-name={filter.id}
               data-filter-control="true"
             />
+          ) : isSelectFilter ? (
+            <Select
+              multiple
+              value={
+                Array.isArray(currentValue)
+                  ? currentValue
+                  : currentValue
+                  ? [currentValue]
+                  : []
+              }
+              onChange={(value) => changeFilter('value', value)}
+              options={selectOptions}
+              clearable
+              data-filter-name={filter.id}
+              data-filter-control="true"
+            />
           ) : isNumberFilter ? (
             <NumberInput
               value={currentValue}
@@ -164,7 +207,9 @@ export const FilterRow = ({
               <NumberInput
                 value={Array.isArray(currentValue) ? currentValue[0] : ''}
                 onChange={(value) => {
-                  const arr = Array.isArray(currentValue) ? [...currentValue] : ['', ''];
+                  const arr = Array.isArray(currentValue)
+                    ? [...currentValue]
+                    : ['', ''];
                   arr[0] = value;
                   changeFilter('value', arr);
                 }}
@@ -175,7 +220,9 @@ export const FilterRow = ({
               <NumberInput
                 value={Array.isArray(currentValue) ? currentValue[1] : ''}
                 onChange={(value) => {
-                  const arr = Array.isArray(currentValue) ? [...currentValue] : ['', ''];
+                  const arr = Array.isArray(currentValue)
+                    ? [...currentValue]
+                    : ['', ''];
                   arr[1] = value;
                   changeFilter('value', arr);
                 }}

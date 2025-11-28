@@ -7,6 +7,7 @@ import {
   DateFilterRules,
   NumberFilterRules,
   PasswordFilterRules,
+  SelectFilterRules,
   StringFilterRules,
 } from './DataTable.types.ts';
 import { BooleanRenderer } from './renderers/booleanRenderer.tsx';
@@ -203,6 +204,19 @@ export const DataTablePasswordRules: FilteringRuleOption[] = [
   },
 ];
 
+export const DataTableSelectRules: FilteringRuleOption[] = [
+  {
+    value: SelectFilterRules.has,
+    label: 'dataTable.selectFilter.has',
+    columns: 1,
+  },
+  {
+    value: SelectFilterRules.notHas,
+    label: 'dataTable.selectFilter.notHas',
+    columns: 1,
+  },
+];
+
 export const RulesByDataType: Partial<
   Record<DataTableColumnType, FilteringRuleOption[]>
 > = {
@@ -213,6 +227,7 @@ export const RulesByDataType: Partial<
   password: DataTablePasswordRules,
   boolean: DataTableBooleanRules,
   date: DataTableDateRules,
+  select: DataTableSelectRules,
 };
 
 export const CellRenderers: Partial<
