@@ -4,10 +4,16 @@ export const selectFilterFn: FilterFn<any> = (row, columnId, filterValue) => {
   if (!filterValue || !filterValue.rule) return true;
 
   const raw = row.getValue<any>(columnId);
-  const rowValue = Array.isArray(raw) ? raw : raw !== null && raw !== undefined ? [raw] : [];
+  const rowValue = Array.isArray(raw)
+    ? raw
+    : raw !== null && raw !== undefined
+    ? [raw]
+    : [];
 
   const rule = filterValue.rule;
-  const filterValues = Array.isArray(filterValue.value) ? filterValue.value : [];
+  const filterValues = Array.isArray(filterValue.value)
+    ? filterValue.value
+    : [];
 
   // Если не выбрано ни одного значения для фильтрации, не фильтруем
   if (filterValues.length === 0) return true;
@@ -29,4 +35,3 @@ export const selectFilterFn: FilterFn<any> = (row, columnId, filterValue) => {
       return true;
   }
 };
-
