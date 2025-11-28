@@ -24,6 +24,10 @@ export function useDataTableColumns<T extends object>(
       return 'password';
     }
 
+    if (['boolean'].includes(type)) {
+      return 'boolean';
+    }
+
     return 'customText';
   };
 
