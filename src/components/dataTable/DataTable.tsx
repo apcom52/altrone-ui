@@ -16,9 +16,7 @@ import { useDataTableColumns } from './useDataTableColumns';
 import { Body, ColumnHeaders } from './inner';
 import { Header, Footer } from './inner';
 import { motion } from 'motion/react';
-import { textFilterFn } from './filters/textFilterFn';
-import { useDidUpdate } from 'utils';
-import { numberFilterFn } from './filters/numberFilterFn';
+import { textFilterFn, numberFilterFn, passwordFilterFn } from './filters';
 
 const DataTableComponent = <DataType extends object>(
   props: DataTableProps<DataType>
@@ -89,6 +87,7 @@ const DataTableComponent = <DataType extends object>(
     filterFns: {
       text: textFilterFn,
       number: numberFilterFn,
+      password: passwordFilterFn,
     },
   });
 

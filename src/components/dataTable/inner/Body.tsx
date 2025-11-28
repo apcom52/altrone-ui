@@ -34,7 +34,7 @@ export const Body = () => {
                 />
               </div>
             ) : null}
-            {row.getVisibleCells().map((cell) => {
+            {row.getVisibleCells().map((cell, cellIndex) => {
               // Получаем тип колонки и конфигурацию из метаданных
               const meta = cell.column.columnDef.meta as
                 | {
@@ -50,7 +50,7 @@ export const Body = () => {
                 CellRenderers[columnType] || CellRenderers.string;
 
               return (
-                <div key={cell.id} className={s.Cell}>
+                <div key={`${cell.id}-${cellIndex}`} className={s.Cell}>
                   {createElement(Renderer, {
                     value: cell.getValue(),
                     item: row.original,

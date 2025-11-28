@@ -2,7 +2,7 @@ import { DataTableCellProps } from './DataTableCell';
 import { ButtonProps } from '../button/Button.types.ts';
 import { AnyObject, StrictReactElements } from '../../utils';
 import { Option } from '../select/Select.types.ts';
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { RenderFuncProp } from '../../types';
 import { ColumnFilter } from '@tanstack/react-table';
 
@@ -92,6 +92,13 @@ export type DataTableColumn<T extends object> =
   | (DataTableColumnBase<T> & {
       type: 'color';
       options?: never;
+    })
+  | (DataTableColumnBase<T> & {
+      type: 'custom';
+      options?: {
+        renderReadMode: ({ value, item }: CellRenderer<T>) => ReactNode;
+        renderLoadingMode?: ({ value, item }: CellRenderer<T>) => ReactNode;
+      };
     });
 
 export type DataTableRenderContext<T extends object> = {
@@ -177,12 +184,18 @@ export enum DateFilterRules {
   beyond = 'beyond',
 }
 
+export enum PasswordFilterRules {
+  empty = 'empty',
+  notEmpty = 'notEmpty',
+}
+
 export enum FilterType {
   string = 'string',
   number = 'number',
   array = 'array',
   boolean = 'boolean',
   date = 'date',
+  password = 'password',
 }
 
 export type StringFilter = {
@@ -245,12 +258,24 @@ export type DateFilter = {
   }[];
 };
 
+export type PasswordFilter = {
+  field: string;
+  type: FilterType.password;
+  columnType: DataTableColumnType;
+  conditions: {
+    rule: PasswordFilterRules;
+    join: 'AND' | 'OR';
+    value?: string;
+  }[];
+};
+
 export type Filter =
   | StringFilter
   | NumberFilter
   | ArrayFilter
   | BooleanFilter
-  | DateFilter;
+  | DateFilter
+  | PasswordFilter;
 
 export interface FilterRowProps {
   filter: ColumnFilter;

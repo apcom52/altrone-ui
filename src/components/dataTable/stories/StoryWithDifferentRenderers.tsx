@@ -3,6 +3,7 @@ import { Flex } from '../../flex/index.ts';
 import { DataTable } from '../DataTable.tsx';
 import { INVOICES } from './INVOICES.ts';
 import { Configuration } from '../../configuration/index.ts';
+import { Text } from '../../text/index.ts';
 
 const DATA = [
   {
@@ -39,7 +40,7 @@ const DATA = [
     tags: ['акустика', 'тишина'],
     sourceLink: 'https://museum.example.com/item/2',
     color: '#7A7FBA',
-    custom: { silenceRadiusM: 1 },
+    custom: { energyLevel: 1 },
   },
   {
     id: 3,
@@ -57,7 +58,7 @@ const DATA = [
     tags: ['книги', 'сны'],
     sourceLink: 'https://museum.example.com/item/3',
     color: '#5F4C6B',
-    custom: { pageCount: 243 },
+    custom: { energyLevel: 243 },
   },
   {
     id: 4,
@@ -75,7 +76,7 @@ const DATA = [
     tags: ['кристаллы', 'звук'],
     sourceLink: 'https://museum.example.com/item/4',
     color: '#88D0F5',
-    custom: { frequencyHz: 227.5 },
+    custom: { energyLevel: 227.5 },
   },
   {
     id: 5,
@@ -92,7 +93,7 @@ const DATA = [
     tags: ['маски', 'легенды'],
     sourceLink: 'https://museum.example.com/item/5',
     color: '#D4AF37',
-    custom: { truthDurationH: 3 },
+    custom: { energyLevel: 3 },
   },
   {
     id: 6,
@@ -110,7 +111,7 @@ const DATA = [
     tags: ['навигация', 'аномалии'],
     sourceLink: 'https://museum.example.com/item/6',
     color: '#2F4F4F',
-    custom: { deviationDeg: 42 },
+    custom: { energyLevel: 42 },
   },
   {
     id: 7,
@@ -128,7 +129,7 @@ const DATA = [
     tags: ['искусство', 'погода'],
     sourceLink: 'https://museum.example.com/item/7',
     color: '#ADD8E6',
-    custom: { weatherSync: 'rain' },
+    custom: { energyLevel: 'rain' },
   },
   {
     id: 8,
@@ -146,7 +147,7 @@ const DATA = [
     tags: ['время', 'предсказания'],
     sourceLink: 'https://museum.example.com/item/8',
     color: '#E8D5C4',
-    custom: { ringCount: 7 },
+    custom: { energyLevel: 7 },
   },
   {
     id: 9,
@@ -163,7 +164,7 @@ const DATA = [
     tags: ['звук', 'керамика'],
     sourceLink: 'https://museum.example.com/item/9',
     color: '#F0EAD6',
-    custom: { delayHours: 24 },
+    custom: { energyLevel: 24 },
   },
   {
     id: 10,
@@ -181,7 +182,7 @@ const DATA = [
     tags: ['свет', 'символизм'],
     sourceLink: 'https://museum.example.com/item/10',
     color: '#FFFACD',
-    custom: { brightness: 0.74 },
+    custom: { energyLevel: 0.74 },
   },
   {
     id: 11,
@@ -199,7 +200,7 @@ const DATA = [
     tags: ['письменность', 'эмоции'],
     sourceLink: 'https://museum.example.com/item/11',
     color: '#FFDAB9',
-    custom: { rewritingDepth: 0.68 },
+    custom: { energyLevel: 0.68 },
   },
   {
     id: 12,
@@ -217,7 +218,7 @@ const DATA = [
     tags: ['металл', 'загадки'],
     sourceLink: 'https://museum.example.com/item/12',
     color: '#B0C4DE',
-    custom: { engravingCount: 17 },
+    custom: { energyLevel: 17 },
   },
   {
     id: 13,
@@ -235,7 +236,7 @@ const DATA = [
     tags: ['ткань', 'память'],
     sourceLink: 'https://museum.example.com/item/13',
     color: '#FFC1CC',
-    custom: { warmthRate: 0.38 },
+    custom: { energyLevel: 0.38 },
   },
   {
     id: 14,
@@ -252,7 +253,7 @@ const DATA = [
     tags: ['зеркала', 'психология'],
     sourceLink: 'https://museum.example.com/item/14',
     color: '#E6E6FA',
-    custom: { unspokenIntensity: 0.83 },
+    custom: { energyLevel: 0.83 },
   },
   {
     id: 15,
@@ -270,7 +271,7 @@ const DATA = [
     tags: ['игры', 'философия'],
     sourceLink: 'https://museum.example.com/item/15',
     color: '#8B4513',
-    custom: { pieceCount: 30 },
+    custom: { energyLevel: 30 },
   },
   {
     id: 16,
@@ -288,7 +289,7 @@ const DATA = [
     tags: ['время', 'решения'],
     sourceLink: 'https://museum.example.com/item/16',
     color: '#D2B48C',
-    custom: { reverseFlow: true },
+    custom: { energyLevel: true },
   },
   {
     id: 17,
@@ -305,7 +306,7 @@ const DATA = [
     tags: ['звук', 'луна'],
     sourceLink: 'https://museum.example.com/item/17',
     color: '#AFEEEE',
-    custom: { moonDependence: 'full moon' },
+    custom: { energyLevel: 'full moon' },
   },
   {
     id: 18,
@@ -322,7 +323,7 @@ const DATA = [
     tags: ['письменность', 'знание'],
     sourceLink: 'https://museum.example.com/item/18',
     color: '#FAFAD2',
-    custom: { textStability: 0.41 },
+    custom: { energyLevel: 0.41 },
   },
   {
     id: 19,
@@ -340,7 +341,7 @@ const DATA = [
     tags: ['музыка', 'память'],
     sourceLink: 'https://museum.example.com/item/19',
     color: '#FFEFD5',
-    custom: { melodyFragments: 12 },
+    custom: { energyLevel: 12 },
   },
   {
     id: 20,
@@ -358,7 +359,7 @@ const DATA = [
     tags: ['зрение', 'удача'],
     sourceLink: 'https://museum.example.com/item/20',
     color: '#FFD700',
-    custom: { highlightStrength: 0.52 },
+    custom: { energyLevel: 0.52 },
   },
   {
     id: 21,
@@ -376,7 +377,7 @@ const DATA = [
     tags: ['язык', 'мистика'],
     sourceLink: 'https://museum.example.com/item/21',
     color: '#F5F5DC',
-    custom: { wordCount: 87 },
+    custom: { energyLevel: 87 },
   },
   {
     id: 22,
@@ -393,7 +394,7 @@ const DATA = [
     tags: ['сны', 'пути'],
     sourceLink: 'https://museum.example.com/item/22',
     color: '#AFEEEE',
-    custom: { dreamFrequency: 0.71 },
+    custom: { energyLevel: 0.71 },
   },
   {
     id: 23,
@@ -411,7 +412,7 @@ const DATA = [
     tags: ['карты', 'изменчивость'],
     sourceLink: 'https://museum.example.com/item/23',
     color: '#E0FFFF',
-    custom: { shiftEvents: 5 },
+    custom: { energyLevel: 5 },
   },
   {
     id: 24,
@@ -429,7 +430,7 @@ const DATA = [
     tags: ['кристаллы', 'эмоции'],
     sourceLink: 'https://museum.example.com/item/24',
     color: '#87CEEB',
-    custom: { signalStrength: 0.56 },
+    custom: { energyLevel: 0.56 },
   },
   {
     id: 25,
@@ -447,7 +448,7 @@ const DATA = [
     tags: ['время', 'потери'],
     sourceLink: 'https://museum.example.com/item/25',
     color: '#F5DEB3',
-    custom: { stopEvents: 14 },
+    custom: { energyLevel: 14 },
   },
 ];
 
@@ -505,6 +506,7 @@ export const StoryWithDifferentRenderers: StoryObj<typeof Flex> = {
               accessor: 'secretKey',
               label: 'Secret Key',
               type: 'password',
+              filterable: true,
               width: 100,
             },
             {
@@ -525,6 +527,16 @@ export const StoryWithDifferentRenderers: StoryObj<typeof Flex> = {
               accessor: 'color',
               label: 'Color',
               type: 'color',
+            },
+            {
+              accessor: 'custom',
+              label: 'Code',
+              type: 'custom',
+              options: {
+                renderReadMode: ({ value }) => (
+                  <Text code>{JSON.stringify(value)}</Text>
+                ),
+              },
             },
           ]}
         />

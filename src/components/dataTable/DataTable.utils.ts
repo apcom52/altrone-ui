@@ -37,6 +37,11 @@ export const getCellType = (
     isArrayValue
   ) {
     return FilterType.array;
+  } else if (
+    (hasNoManualFilters || ['password'].includes(filterType)) &&
+    isStringValue
+  ) {
+    return FilterType.password;
   }
 
   console.error(

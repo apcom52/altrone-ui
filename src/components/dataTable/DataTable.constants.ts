@@ -6,11 +6,13 @@ import {
   DataTableColumnType,
   DateFilterRules,
   NumberFilterRules,
+  PasswordFilterRules,
   StringFilterRules,
 } from './DataTable.types.ts';
 import { BooleanRenderer } from './renderers/booleanRenderer.tsx';
 import { ColorRenderer } from './renderers/colorRenderer.tsx';
 import { CurrencyRenderer } from './renderers/currencyRenderer.tsx';
+import { CustomRenderer } from './renderers/customRenderer.tsx';
 import { DateRenderer } from './renderers/dateRenderer.tsx';
 import { LinkRenderer } from './renderers/linkRenderer.tsx';
 import { NumberRenderer } from './renderers/numberRenderer.tsx';
@@ -188,6 +190,19 @@ export const DataTableDateRules: FilteringRuleOption[] = [
   },
 ];
 
+export const DataTablePasswordRules: FilteringRuleOption[] = [
+  {
+    value: PasswordFilterRules.empty,
+    label: 'dataTable.passwordFilter.empty',
+    columns: 0,
+  },
+  {
+    value: PasswordFilterRules.notEmpty,
+    label: 'dataTable.passwordFilter.notEmpty',
+    columns: 0,
+  },
+];
+
 export const RulesByDataType: Partial<
   Record<DataTableColumnType, FilteringRuleOption[]>
 > = {
@@ -195,6 +210,7 @@ export const RulesByDataType: Partial<
   text: DataTableStringRules,
   number: DataTableNumberRules,
   currency: DataTableNumberRules,
+  password: DataTablePasswordRules,
 };
 
 export const CellRenderers: Partial<
@@ -213,5 +229,5 @@ export const CellRenderers: Partial<
   select: SelectRenderer,
   link: LinkRenderer,
   color: ColorRenderer,
-  // custom: CustomRenderer,
+  custom: CustomRenderer,
 };

@@ -20,6 +20,10 @@ export function useDataTableColumns<T extends object>(
       return 'number';
     }
 
+    if (['password'].includes(type)) {
+      return 'password';
+    }
+
     return 'customText';
   };
 
