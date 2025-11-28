@@ -212,6 +212,7 @@ export const RulesByDataType: Partial<
   currency: DataTableNumberRules,
   password: DataTablePasswordRules,
   boolean: DataTableBooleanRules,
+  date: DataTableDateRules,
 };
 
 export const CellRenderers: Partial<

@@ -8,7 +8,6 @@ import { useDataTableCore } from '../DataTable.context.tsx';
 import { useLocalization } from 'components/application';
 import { Column, ColumnFilter } from '@tanstack/react-table';
 import { Plus } from 'lucide-react';
-import { StringFilterRules } from '../DataTable.types.ts';
 import { Empty } from 'components/empty/Empty.tsx';
 import { FilterRow } from './FilterRow.tsx';
 import { RulesByDataType } from '../DataTable.constants.ts';
@@ -35,19 +34,46 @@ export const Filtering = () => {
   }, [filterableColumns, internalFilters]);
 
   const handleAddFilter = useCallback((column: Column<any>) => {
-    const filterType = column.columnDef.filterFn;
-    console.log('>> filterType', filterType);
+    const filterFn = column.columnDef.filterFn;
+    // Получаем тип из meta или из filterFn
+    const meta = column.columnDef.meta as
+      | { type?: string; options?: { level?: 'day' | 'month' | 'year' } }
+      | undefined;
+    const columnType =
+      meta?.type || (typeof filterFn === 'string' ? filterFn : undefined);
+
+    console.log('>> filterType', columnType);
+
+    if (
+      !columnType ||
+      !RulesByDataType[columnType as keyof typeof RulesByDataType]
+    ) {
+      return;
+    }
+
+    const rules = RulesByDataType[columnType as keyof typeof RulesByDataType];
+    if (!rules || rules.length === 0) {
+      return;
+    }
+
+    const baseFilterValue: any = {
+      rule: rules[0].value,
+      join: 'AND',
+      value: '',
+      additionalValue: '',
+    };
+
+    // Для дат добавляем level из options
+    if (columnType === 'date' && meta?.options) {
+      const level = meta.options.level || 'day';
+      baseFilterValue.level = level;
+    }
 
     setInternalFilters((old) => [
       ...old,
       {
         id: column.id,
-        value: {
-          rule: RulesByDataType[filterType][0].value,
-          join: 'AND',
-          value: '',
-          additionalValue: '',
-        },
+        value: baseFilterValue,
       },
     ]);
   }, []);
@@ -57,7 +83,8 @@ export const Filtering = () => {
       setInternalFilters((old) => {
         return old.map((filter) => {
           if (filter.id === accessor) {
-            return { ...filter, value: { ...filter.value, [field]: value } };
+            const currentValue = filter.value || {};
+            return { ...filter, value: { ...currentValue, [field]: value } };
           }
           return filter;
         });
@@ -105,17 +132,21 @@ export const Filtering = () => {
               closeParentPopover={false}
               content={
                 <Dropdown.Menu>
-                  {freeToFilterColumns.map((column) => (
-                    <Dropdown.Action
-                      key={column.id}
-                      label={String(
-                        column.columnDef.header() || column.columnDef.id
-                      )}
-                      onClick={() => {
-                        handleAddFilter(column);
-                      }}
-                    />
-                  ))}
+                  {freeToFilterColumns.map((column) => {
+                    // Получаем заголовок колонки безопасным способом
+                    const headerValue =
+                      column.columnDef.header?.() || String(column.id);
+
+                    return (
+                      <Dropdown.Action
+                        key={column.id}
+                        label={headerValue}
+                        onClick={() => {
+                          handleAddFilter(column);
+                        }}
+                      />
+                    );
+                  })}
                 </Dropdown.Menu>
               }
             >

@@ -28,6 +28,10 @@ export function useDataTableColumns<T extends object>(
       return 'boolean';
     }
 
+    if (['date'].includes(type)) {
+      return 'date';
+    }
+
     return 'customText';
   };
 

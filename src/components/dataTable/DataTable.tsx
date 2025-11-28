@@ -21,6 +21,7 @@ import {
   numberFilterFn,
   passwordFilterFn,
   booleanFilterFn,
+  dateFilterFn,
 } from './filters';
 
 const DataTableComponent = <DataType extends object>(
@@ -94,6 +95,7 @@ const DataTableComponent = <DataType extends object>(
       number: numberFilterFn,
       password: passwordFilterFn,
       boolean: booleanFilterFn,
+      date: dateFilterFn,
     },
   });
 
