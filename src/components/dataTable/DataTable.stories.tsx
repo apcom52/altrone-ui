@@ -13,6 +13,7 @@ import { InvoiceStory } from './stories/InvoiceStory.tsx';
 import { InvoicesWithStatusesStory } from './stories/Invoice2Story.tsx';
 import { DataTableWithRowActionsStory } from './stories/ActionsStory.tsx';
 import { FiltersDataTableStory } from './stories/FiltersStory.tsx';
+import { StoryWithDifferentRenderers } from './stories/StoryWithDifferentRenderers.tsx';
 import { useState } from 'react';
 import { FilterType, Sorting } from './DataTable.types.ts';
 
@@ -216,6 +217,7 @@ export {
   InvoicesWithStatusesStory,
   FiltersDataTableStory,
   DataTableWithRowActionsStory,
+  StoryWithDifferentRenderers,
 };
 
 export default meta;

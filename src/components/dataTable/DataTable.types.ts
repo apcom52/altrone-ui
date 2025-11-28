@@ -55,23 +55,27 @@ export interface ArrayColumnOptions<T extends object> {
 // Типы колонок с их специфичными опциями
 export type DataTableColumn<T extends object> =
   | (DataTableColumnBase<T> & {
-      type?: 'string' | 'text' | 'password' | 'link' | 'color' | 'custom';
+      type?: 'string' | 'text';
       options?: never;
-    })
-  | (DataTableColumnBase<T> & {
-      type: 'currency';
-      options?: CurrencyColumnOptions<T>;
     })
   | (DataTableColumnBase<T> & {
       type: 'number';
       options?: NumberColumnOptions;
     })
   | (DataTableColumnBase<T> & {
-      type: 'date' | 'month' | 'year';
-      options?: { locale?: string };
+      type: 'currency';
+      options?: CurrencyColumnOptions<T>;
+    })
+  | (DataTableColumnBase<T> & {
+      type: 'date';
+      options?: { level?: 'day' | 'month' | 'year'; format?: string };
     })
   | (DataTableColumnBase<T> & {
       type: 'boolean';
+      options?: never;
+    })
+  | (DataTableColumnBase<T> & {
+      type: 'password';
       options?: never;
     })
   | (DataTableColumnBase<T> & {
@@ -79,8 +83,15 @@ export type DataTableColumn<T extends object> =
       options?: never;
     })
   | (DataTableColumnBase<T> & {
-      type: 'array';
-      options?: ArrayColumnOptions<T>;
+      type: 'link';
+      options?: {
+        hrefTransformer?: (value: unknown, item: T) => string | undefined;
+        textTransformer?: (value: unknown, item: T) => string | undefined;
+      };
+    })
+  | (DataTableColumnBase<T> & {
+      type: 'color';
+      options?: never;
     });
 
 export type DataTableRenderContext<T extends object> = {

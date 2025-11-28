@@ -8,8 +8,14 @@ import {
   NumberFilterRules,
   StringFilterRules,
 } from './DataTable.types.ts';
+import { BooleanRenderer } from './renderers/booleanRenderer.tsx';
+import { ColorRenderer } from './renderers/colorRenderer.tsx';
 import { CurrencyRenderer } from './renderers/currencyRenderer.tsx';
+import { DateRenderer } from './renderers/dateRenderer.tsx';
+import { LinkRenderer } from './renderers/linkRenderer.tsx';
 import { NumberRenderer } from './renderers/numberRenderer.tsx';
+import { PasswordRenderer } from './renderers/passwordRenderer.tsx';
+import { SelectRenderer } from './renderers/selectRenderer.tsx';
 import { StringRenderer } from './renderers/stringRenderer.tsx';
 import { TextRenderer } from './renderers/textRenderer.tsx';
 
@@ -201,8 +207,11 @@ export const CellRenderers: Partial<
   text: TextRenderer,
   number: NumberRenderer,
   currency: CurrencyRenderer,
-  // boolean: BooleanRenderer,
-  // link: LinkRenderer,
-  // select: SelectRenderer,
+  boolean: BooleanRenderer,
+  date: DateRenderer,
+  password: PasswordRenderer,
+  select: SelectRenderer,
+  link: LinkRenderer,
+  color: ColorRenderer,
   // custom: CustomRenderer,
 };

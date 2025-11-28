@@ -4,11 +4,14 @@ import { Text } from '../../text';
 
 export const StringRenderer = <T extends object>({
   value,
-  item,
-  columnConfig,
 }: CellRenderer<T>) => {
   return (
-    <Text size={4} weight="regular" className={s.String}>
+    <Text
+      size={4}
+      weight="medium"
+      className={s.String}
+      title={String(value ?? '')}
+    >
       {String(value ?? '')}
     </Text>
   );
