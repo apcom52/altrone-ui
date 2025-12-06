@@ -36,6 +36,10 @@ export function useDataTableColumns<T extends object>(
       return 'select';
     }
 
+    if (['color'].includes(type)) {
+      return 'color';
+    }
+
     return 'customText';
   };
 

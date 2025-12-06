@@ -1,6 +1,9 @@
 import { useDataTableCore } from './DataTable.context';
 
-export function useDataTableColumnsTemplate(selectableMode: boolean) {
+export function useDataTableColumnsTemplate(
+  selectableMode: boolean,
+  rowActions: boolean
+) {
   const tableCore = useDataTableCore();
 
   const columns = tableCore.getVisibleLeafColumns();
@@ -9,6 +12,10 @@ export function useDataTableColumnsTemplate(selectableMode: boolean) {
 
   if (selectableMode) {
     columnTemplate = '32px ' + columnTemplate;
+  }
+
+  if (rowActions) {
+    columnTemplate += ' 150px';
   }
 
   return columnTemplate;

@@ -24,29 +24,52 @@ export const FilterRow = ({
 
   const table = useDataTableCore();
   const column = table.getColumn(filter.id);
-  const filterType = column?.columnDef.filterFn;
+  const filterFn = column?.columnDef.filterFn;
+  // Получаем тип из meta или из filterFn
+  const meta = column?.columnDef.meta as
+    | { type?: string; options?: any }
+    | undefined;
+  const filterType =
+    meta?.type || (typeof filterFn === 'string' ? filterFn : undefined);
 
   const rules = useMemo(() => {
-    return RulesByDataType[filterType].map((item) => ({
+    if (
+      !filterType ||
+      !RulesByDataType[filterType as keyof typeof RulesByDataType]
+    ) {
+      return [];
+    }
+    const rulesData =
+      RulesByDataType[filterType as keyof typeof RulesByDataType];
+    if (!rulesData) return [];
+    return rulesData.map((item) => ({
       value: item.value,
       label: t(item.label),
     }));
-  }, [filterType]);
+  }, [filterType, t]);
 
-  const currentRule = filter.value?.rule;
-  const currentValue = filter.value?.value;
-  const currentAdditionalValue = filter.value?.additionalValue;
+  const filterValue = filter.value as any;
+  const currentRule = filterValue?.rule;
+  const currentValue = filterValue?.value;
 
   const currentRuleConfig = useMemo(() => {
-    return RulesByDataType[filterType].find(
-      (item) => item.value === currentRule
-    );
+    if (
+      !filterType ||
+      !RulesByDataType[filterType as keyof typeof RulesByDataType]
+    ) {
+      return undefined;
+    }
+    const rulesData =
+      RulesByDataType[filterType as keyof typeof RulesByDataType];
+    if (!rulesData) return undefined;
+    return rulesData.find((item) => item.value === currentRule);
   }, [filterType, currentRule]);
 
-  const hasAdditionalValue = currentRuleConfig?.columns >= 2;
+  const hasAdditionalValue = (currentRuleConfig?.columns ?? 0) >= 2;
   const isDateFilter = filterType === 'date';
-  const isNumberFilter = ['number', 'currency'].includes(filterType);
+  const isNumberFilter = ['number', 'currency'].includes(filterType || '');
   const isSelectFilter = filterType === 'select';
+  const isColorFilter = filterType === 'color';
 
   // Получаем уникальные значения из данных таблицы для select фильтра
   const selectOptions = useMemo(() => {
@@ -80,20 +103,37 @@ export const FilterRow = ({
       })) as Option[];
   }, [isSelectFilter, column, table]);
 
+  // Получаем colorPresets из options колонки для color фильтра
+  const colorPresets = useMemo(() => {
+    if (!isColorFilter || !meta?.options) return [];
+
+    const options = meta.options as {
+      colorPresets?: string[];
+    };
+    return options.colorPresets || [];
+  }, [isColorFilter, meta]);
+
+  // Преобразуем colorPresets в options для Select
+  const colorOptions = useMemo(() => {
+    return colorPresets.map((color) => ({
+      value: color,
+      label: color,
+    })) as Option[];
+  }, [colorPresets]);
+
   // Получаем level из options колонки
   const level = useMemo(() => {
-    if (isDateFilter && column?.columnDef.meta?.options) {
+    if (isDateFilter && meta?.options) {
       return (
-        (column.columnDef.meta.options as { level?: 'day' | 'month' | 'year' })
-          ?.level || 'day'
+        (meta.options as { level?: 'day' | 'month' | 'year' })?.level || 'day'
       );
     }
     return 'day';
-  }, [isDateFilter, column]);
+  }, [isDateFilter, meta]);
 
   // Устанавливаем level в filterValue при первом рендере
   useEffect(() => {
-    if (isDateFilter && filter.value && !filter.value.level) {
+    if (isDateFilter && filter.value && !(filter.value as any).level) {
       changeFilter('level', level);
     }
   }, [isDateFilter, level, filter.value, changeFilter]);
@@ -147,7 +187,7 @@ export const FilterRow = ({
       <TextInput
         readOnly
         readonlyStyles={true}
-        value={column?.columnDef.header() || ''}
+        value={column?.columnDef.id ? String(column.columnDef.id) : ''}
       />
       <Select
         value={currentRule}
@@ -179,6 +219,22 @@ export const FilterRow = ({
               }
               onChange={(value) => changeFilter('value', value)}
               options={selectOptions}
+              clearable
+              data-filter-name={filter.id}
+              data-filter-control="true"
+            />
+          ) : isColorFilter ? (
+            <Select
+              multiple
+              value={
+                Array.isArray(currentValue)
+                  ? currentValue
+                  : currentValue
+                  ? [currentValue]
+                  : []
+              }
+              onChange={(value) => changeFilter('value', value)}
+              options={colorOptions}
               clearable
               data-filter-name={filter.id}
               data-filter-control="true"

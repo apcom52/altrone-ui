@@ -3,6 +3,7 @@ import {
   ArrayFilterRules,
   BooleanFilterRules,
   CellRenderer,
+  ColorFilterRules,
   DataTableColumnType,
   DateFilterRules,
   NumberFilterRules,
@@ -217,6 +218,19 @@ export const DataTableSelectRules: FilteringRuleOption[] = [
   },
 ];
 
+export const DataTableColorRules: FilteringRuleOption[] = [
+  {
+    value: ColorFilterRules.has,
+    label: 'dataTable.colorFilter.has',
+    columns: 1,
+  },
+  {
+    value: ColorFilterRules.notHas,
+    label: 'dataTable.colorFilter.notHas',
+    columns: 1,
+  },
+];
+
 export const RulesByDataType: Partial<
   Record<DataTableColumnType, FilteringRuleOption[]>
 > = {
@@ -228,6 +242,7 @@ export const RulesByDataType: Partial<
   boolean: DataTableBooleanRules,
   date: DataTableDateRules,
   select: DataTableSelectRules,
+  color: DataTableColorRules,
 };
 
 export const CellRenderers: Partial<

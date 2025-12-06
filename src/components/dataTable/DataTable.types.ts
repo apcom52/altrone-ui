@@ -91,7 +91,9 @@ export type DataTableColumn<T extends object> =
     })
   | (DataTableColumnBase<T> & {
       type: 'color';
-      options?: never;
+      options?: {
+        colorPresets?: string[];
+      };
     })
   | (DataTableColumnBase<T> & {
       type: 'custom';
@@ -106,8 +108,8 @@ export type DataTableRenderContext<T extends object> = {
   selectedItems: T[];
 };
 
-export type DataTableRenderRowActionsContext<T extends object> = {
-  row: T;
+export type DataTableRenderRowActionsContext = {
+  row: object;
   rowIndex: number;
   selected: boolean;
 };
@@ -125,7 +127,7 @@ export interface DataTableProps<T extends object>
   showFooter?: boolean;
   showEmptyBanner?: boolean;
   renderRowActions?: (
-    context: DataTableRenderRowActionsContext<T>
+    context: DataTableRenderRowActionsContext
   ) => ReactElement<DataTableRowActionsProps>;
   defaultPage?: number;
   defaultSort?: Sorting;
@@ -167,6 +169,11 @@ export enum ArrayFilterRules {
 }
 
 export enum SelectFilterRules {
+  has = 'has',
+  notHas = 'notHas',
+}
+
+export enum ColorFilterRules {
   has = 'has',
   notHas = 'notHas',
 }

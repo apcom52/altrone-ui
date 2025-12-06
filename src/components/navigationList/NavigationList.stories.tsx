@@ -30,7 +30,9 @@ export const NavigationListStory: StoryObj<typeof NavigationList> = {
   render: () => {
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Standard NavigationList</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Standard NavigationList
+        </Text>
         <div style={{ width: 350 }}>
           <NavigationList>
             <NavigationList.Group>
@@ -43,11 +45,7 @@ export const NavigationListStory: StoryObj<typeof NavigationList> = {
                 label="Profile"
               >
                 <LinkAction label="Create new profile" icon={<Plus />} />
-                <LinkAction
-                  label="Manage profile settings"
-                  icon={<Cog />}
-                  showOnlyOnHover
-                />
+                <LinkAction label="Manage profile settings" icon={<Cog />} />
               </NavigationList.Link>
               <NavigationList.Link
                 href="#"
@@ -64,11 +62,7 @@ export const NavigationListStory: StoryObj<typeof NavigationList> = {
                     </Dropdown.Menu>
                   }
                 >
-                  <LinkAction
-                    label="Manage profile settings"
-                    icon={<Cog />}
-                    showOnlyOnHover
-                  />
+                  <LinkAction label="Manage profile settings" icon={<Cog />} />
                 </Dropdown>
               </NavigationList.Link>
               <NavigationList.Link
@@ -129,7 +123,9 @@ export const NavigationListWithNestedLinks: StoryObj<typeof NavigationList> = {
   render: () => {
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Standard NavigationList</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Standard NavigationList
+        </Text>
         <div style={{ width: 350 }}>
           <NavigationList>
             <NavigationList.Group>
@@ -251,11 +247,7 @@ export const NavigationListWithNestedLinks: StoryObj<typeof NavigationList> = {
                 icon={<Icon i="account_circle" />}
                 label="Account"
               >
-                <LinkAction
-                  label="Edit Profile"
-                  icon={<Icon i="edit" />}
-                  showOnlyOnHover
-                />
+                <LinkAction label="Edit Profile" icon={<Icon i="edit" />} />
               </NavigationList.Link>
             </NavigationList.Group>
           </NavigationList>

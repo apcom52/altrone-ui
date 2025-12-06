@@ -6,6 +6,7 @@ import { Button } from 'components/button';
 import { Icon } from 'components/icon';
 import { useLocalization } from 'components/application/useLocalization.tsx';
 import { useConfiguration } from 'components/configuration';
+import { Ellipsis } from 'lucide-react';
 import clsx from 'clsx';
 
 export const RowActions = memo<DataTableRowActionsProps>(
@@ -58,17 +59,17 @@ export const RowActions = memo<DataTableRowActionsProps>(
           <Button
             label={t('dataTable.moreActions')}
             showLabel={false}
-            leftIcon={<Icon i="more_horiz" />}
+            icon={<Ellipsis />}
           />
         </Dropdown>
       );
     }, [collapsedActions]);
 
     return (
-      <Flex gap="s" className={cls} style={styles} {...restProps}>
+      <Flex gap="s" className={cls} justify="end" style={styles} {...restProps}>
         {...visibleActions}
         {collapsedActionsDropdown}
       </Flex>
     );
-  },
+  }
 );

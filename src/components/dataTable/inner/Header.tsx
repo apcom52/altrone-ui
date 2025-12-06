@@ -1,21 +1,17 @@
-import { memo, useMemo } from 'react';
-import { Icon } from 'components/icon';
 import { Button } from 'components/button';
 import { useDataTableCore } from '../DataTable.context';
 import { DataTableProps } from '../DataTable.types';
-import { ArrayUtils } from 'utils';
 import s from './header.module.scss';
 import { Filtering } from './Filtering.tsx';
 import { useLocalization } from '../../application';
 import { SquareCheckBig, Square } from 'lucide-react';
 import { Tooltip } from 'components/tooltip/Tooltip.tsx';
 
-interface DataTableHeaderProps<T extends object> {
-  children: DataTableProps<T>['children'];
-  selectable: boolean;
+interface DataTableHeaderProps {
+  children: DataTableProps<any>['children'];
 }
 
-export const DataTableHeader = () => {
+export const DataTableHeader = ({ children }: DataTableHeaderProps) => {
   const t = useLocalization();
 
   const tableCore = useDataTableCore();
@@ -31,6 +27,15 @@ export const DataTableHeader = () => {
     tableCore.resetRowSelection();
   };
 
+  const selectedItems = tableCore
+    .getSelectedRowModel()
+    .rows.map((row) => row.original);
+
+  const childrenActions =
+    typeof children === 'function'
+      ? children({ selectableMode, selectedItems })
+      : children;
+
   const actionsContainer = (
     <div className={s.Actions}>
       <Tooltip content="Select all">
@@ -43,7 +48,7 @@ export const DataTableHeader = () => {
         />
       </Tooltip>
 
-      {/* {childrenActions} */}
+      {childrenActions}
       <Filtering />
     </div>
   );

@@ -9,11 +9,18 @@ import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
 import { motion } from 'motion/react';
 import { ArrowUp, ArrowDown } from 'lucide-react';
 
-export const ColumnHeaders = () => {
+interface ColumnHeaderProps {
+  hasRowActions?: boolean;
+}
+
+export const ColumnHeaders = ({ hasRowActions = false }: ColumnHeaderProps) => {
   const table = useDataTableCore();
 
   const selectableMode = table.getState().selectableMode || false;
-  const columnsTemplate = useDataTableColumnsTemplate(selectableMode);
+  const columnsTemplate = useDataTableColumnsTemplate(
+    selectableMode,
+    hasRowActions
+  );
 
   const headerRef = useRef<HTMLTableSectionElement>(null);
   const [isSticky, setIsSticky] = useState(false);
@@ -122,6 +129,13 @@ export const ColumnHeaders = () => {
           </div>
         );
       })}
+      {hasRowActions ? (
+        <div className={s.Cell}>
+          <Text size={4} weight="bold" className={s.Label}>
+            Actions
+          </Text>
+        </div>
+      ) : null}
     </div>
   );
 };

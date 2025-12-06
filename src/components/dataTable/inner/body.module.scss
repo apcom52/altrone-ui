@@ -39,6 +39,9 @@
 }
 
 .Cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   flex: 1;
   padding: 8px 12px;
   height: 100%;

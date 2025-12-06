@@ -1,17 +1,30 @@
 import { useDataTableCore } from '../DataTable.context.tsx';
 import { Checkbox } from '../../checkbox';
 import s from './body.module.scss';
-import { DataTableColumnType } from '../DataTable.types.ts';
-import { createElement } from 'react';
+import {
+  DataTableColumnType,
+  DataTableRenderRowActionsContext,
+  DataTableRowActionsProps,
+} from '../DataTable.types.ts';
+import { createElement, ReactElement } from 'react';
 import { Empty } from 'components/empty/Empty.tsx';
 import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
 import { CellRenderers } from '../DataTable.constants.ts';
 
-export const Body = () => {
+interface BodyProps {
+  renderRowActions: (
+    context: DataTableRenderRowActionsContext
+  ) => ReactElement<DataTableRowActionsProps>;
+}
+
+export const Body = ({ renderRowActions }: BodyProps) => {
   const table = useDataTableCore();
   const selectableMode = table.getState().selectableMode || false;
 
-  const columnsTemplate = useDataTableColumnsTemplate(selectableMode);
+  const columnsTemplate = useDataTableColumnsTemplate(
+    selectableMode,
+    Boolean(renderRowActions)
+  );
 
   return (
     <div className={s.TableBody}>
@@ -62,6 +75,15 @@ export const Body = () => {
                 </div>
               );
             })}
+            {Boolean(renderRowActions) ? (
+              <div className={s.Cell}>
+                {renderRowActions({
+                  row: row.original,
+                  rowIndex: row.index,
+                  selected: isSelected,
+                })}
+              </div>
+            ) : null}
           </div>
         );
       })}

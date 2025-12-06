@@ -23,6 +23,7 @@ import {
   booleanFilterFn,
   dateFilterFn,
   selectFilterFn,
+  colorFilterFn,
 } from './filters';
 
 const DataTableComponent = <DataType extends object>(
@@ -42,6 +43,7 @@ const DataTableComponent = <DataType extends object>(
     defaultSort,
     onPageChange,
     onSortChange,
+    renderRowActions,
     ...restProps
   } = props;
 
@@ -66,31 +68,6 @@ const DataTableComponent = <DataType extends object>(
         : undefined,
     },
     enableRowSelection: selectable,
-    // onSortingChange: (updater) => {
-    //   table.setState((old) => ({
-    //     ...old,
-    //     sorting: typeof updater === 'function' ? updater(old.sorting) : updater,
-    //   }));
-    //   onSortChange?.({
-    //     field: table.getState().sorting[0]?.id,
-    //     direction: table.getState().sorting[0]?.desc ? 'desc' : 'asc',
-    //   });
-    // },
-    // onPaginationChange: (updater) => {
-    //   table.setState((old) => {
-    //     const newPagination =
-    //       typeof updater === 'function'
-    //         ? updater(old.pagination)
-    //         : { ...old.pagination, ...updater };
-
-    //     return {
-    //       ...old,
-    //       pagination: newPagination,
-    //     };
-    //   });
-
-    //   onPageChange?.(table.getState().pagination.pageIndex);
-    // },
     filterFns: {
       text: textFilterFn,
       number: numberFilterFn,
@@ -98,6 +75,7 @@ const DataTableComponent = <DataType extends object>(
       boolean: booleanFilterFn,
       date: dateFilterFn,
       select: selectFilterFn,
+      color: colorFilterFn,
     },
   });
 
@@ -119,10 +97,10 @@ const DataTableComponent = <DataType extends object>(
   return (
     <DataTableCoreContext.Provider value={table}>
       <motion.div layout className={s.Wrapper}>
-        {dataTableHeaderVisible ? <Header /> : null}
+        {dataTableHeaderVisible ? <Header children={children} /> : null}
         <table className={cls} style={styles} {...restProps}>
-          <ColumnHeaders />
-          <Body />
+          <ColumnHeaders hasRowActions={Boolean(renderRowActions)} />
+          <Body renderRowActions={renderRowActions} />
         </table>
         {showFooter ? <Footer /> : null}
       </motion.div>
