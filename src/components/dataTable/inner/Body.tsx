@@ -12,7 +12,7 @@ import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
 import { CellRenderers } from '../DataTable.constants.ts';
 
 interface BodyProps {
-  renderRowActions: (
+  renderRowActions?: (
     context: DataTableRenderRowActionsContext
   ) => ReactElement<DataTableRowActionsProps>;
 }
@@ -71,13 +71,14 @@ export const Body = ({ renderRowActions }: BodyProps) => {
                       accessor: cell.column.id,
                       type: columnType,
                     },
+                    table,
                   })}
                 </div>
               );
             })}
             {Boolean(renderRowActions) ? (
               <div className={s.Cell}>
-                {renderRowActions({
+                {renderRowActions?.({
                   row: row.original,
                   rowIndex: row.index,
                   selected: isSelected,

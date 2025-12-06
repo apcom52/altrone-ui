@@ -3,11 +3,15 @@ import { dayjsInstance as dayjs } from '../../calendar/Calendar.tsx';
 import s from './styles.module.scss';
 import { Text } from '../../text';
 import { useLocale } from 'utils/index.ts';
+import { Skeleton } from 'components/skeleton/Skeleton.tsx';
 
 export const DateRenderer = <T extends object>({
   value,
   columnConfig,
+  table,
 }: CellRenderer<T>) => {
+  const mode = table.options.meta?.mode;
+
   const locale = useLocale();
 
   const level =
@@ -21,6 +25,14 @@ export const DateRenderer = <T extends object>({
   const formattedDate = dayjs(value as string)
     .locale(locale.locale)
     .format(customFormat || format);
+
+  if (mode === 'loading') {
+    return (
+      <div className={s.Date}>
+        <Skeleton width="100%" height="20px" radius="10px" />
+      </div>
+    );
+  }
 
   return (
     <Text size={4} weight="medium" className={s.Date}>

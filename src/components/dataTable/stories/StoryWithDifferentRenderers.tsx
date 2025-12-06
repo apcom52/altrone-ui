@@ -4,6 +4,8 @@ import { DataTable } from '../DataTable.tsx';
 import { INVOICES } from './INVOICES.ts';
 import { Configuration } from '../../configuration/index.ts';
 import { Text } from '../../text/index.ts';
+import { Checkbox } from 'components/checkbox/index.ts';
+import { useState } from 'react';
 
 const DATA = [
   {
@@ -455,10 +457,16 @@ const DATA = [
 export const StoryWithDifferentRenderers: StoryObj<typeof Flex> = {
   name: 'Story With Different Renderers',
   render: () => {
+    const [loading, setLoading] = useState(false);
+
     return (
       <Configuration locale={{ dateFormat: 'DD MMM YYYY' }}>
+        <Checkbox checked={loading} onChange={setLoading}>
+          Loading state
+        </Checkbox>
         <DataTable
           data={DATA}
+          mode={loading ? 'loading' : 'read'}
           columns={[
             { accessor: 'id', label: 'ID', type: 'number', width: 50 },
             {

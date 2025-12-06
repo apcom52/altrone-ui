@@ -1,10 +1,8 @@
-import { DataTableCellProps } from './DataTableCell';
 import { ButtonProps } from '../button/Button.types.ts';
 import { AnyObject, StrictReactElements } from '../../utils';
 import { Option } from '../select/Select.types.ts';
 import { ReactElement, ReactNode } from 'react';
-import { RenderFuncProp } from '../../types';
-import { ColumnFilter } from '@tanstack/react-table';
+import { ColumnFilter, Table } from '@tanstack/react-table';
 
 export type Sort = 'asc' | 'desc';
 export type DataTableColumnType =
@@ -30,8 +28,6 @@ export interface DataTableColumnBase<T extends object> {
   accessor: keyof T;
   label?: string;
   width?: number;
-  Component?: React.FC<DataTableCellProps<T>>;
-  renderFunc?: RenderFuncProp<HTMLDivElement, DataTableCellProps<T>>;
   visible?: boolean;
   filterable?: boolean | DataTableColumnType;
   sortable?: boolean;
@@ -47,7 +43,7 @@ export interface NumberColumnOptions {
   digitsAfterPoint?: number;
 }
 
-export interface ArrayColumnOptions<T extends object> {
+export interface ArrayColumnOptions {
   arrayDelimiter?: string;
   arrayAccessor?: string;
 }
@@ -114,6 +110,8 @@ export type DataTableRenderRowActionsContext = {
   selected: boolean;
 };
 
+export type DataTableMode = 'loading' | 'read' | 'select';
+
 export interface DataTableProps<T extends object>
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   data: T[];
@@ -122,6 +120,7 @@ export interface DataTableProps<T extends object>
     | ReactElement
     | ReactElement[]
     | ((context: DataTableRenderContext<T>) => ReactElement | ReactElement[]);
+  mode?: DataTableMode;
   rowsPerPage?: number;
   selectable?: boolean;
   showFooter?: boolean;
@@ -135,6 +134,7 @@ export interface DataTableProps<T extends object>
   onPageChange?: (currentPage: number) => void;
   onSortChange?: (sort?: Sorting) => void;
   onFilterChange?: (appliedFilters?: Filter[]) => void;
+  onModeChange?: (mode: DataTableMode) => void;
 }
 
 export interface DataTableActionProps extends ButtonProps {
@@ -321,4 +321,5 @@ export interface CellRenderer<T extends object = any> {
   value: unknown;
   item: T;
   columnConfig: DataTableColumn<T>;
+  table: Table<T>;
 }

@@ -21,6 +21,12 @@
   text-align: right;
 }
 
+.CurrencySkeleton {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
 .Boolean {
   display: flex;
   align-items: center;

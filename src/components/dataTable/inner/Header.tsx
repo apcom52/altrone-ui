@@ -9,9 +9,13 @@ import { Tooltip } from 'components/tooltip/Tooltip.tsx';
 
 interface DataTableHeaderProps {
   children: DataTableProps<any>['children'];
+  onModeChange?: DataTableProps<any>['onModeChange'];
 }
 
-export const DataTableHeader = ({ children }: DataTableHeaderProps) => {
+export const DataTableHeader = ({
+  children,
+  onModeChange,
+}: DataTableHeaderProps) => {
   const t = useLocalization();
 
   const tableCore = useDataTableCore();
@@ -25,6 +29,8 @@ export const DataTableHeader = ({ children }: DataTableHeaderProps) => {
     }));
 
     tableCore.resetRowSelection();
+
+    onModeChange?.(!selectableMode ? 'select' : 'read');
   };
 
   const selectedItems = tableCore

@@ -37,19 +37,19 @@ const DataTableComponent = <DataType extends object>(
     showFooter = true,
     rowsPerPage = 20,
     data,
+    mode = 'read',
     columns,
     showEmptyBanner = true,
     defaultPage = 0,
     defaultSort,
     onPageChange,
     onSortChange,
+    onModeChange,
     renderRowActions,
     ...restProps
   } = props;
 
   const columnDefs = useDataTableColumns(columns);
-
-  console.log('columnDefs', columnDefs);
 
   const table = useReactTable({
     data,
@@ -66,6 +66,9 @@ const DataTableComponent = <DataType extends object>(
       sorting: defaultSort
         ? [{ id: defaultSort.field, desc: defaultSort.direction === 'desc' }]
         : undefined,
+    },
+    meta: {
+      mode,
     },
     enableRowSelection: selectable,
     filterFns: {
@@ -92,12 +95,12 @@ const DataTableComponent = <DataType extends object>(
     );
   }, [children, props.columns]);
 
-  console.log('>> current page', table.getState().pagination.pageIndex);
-
   return (
     <DataTableCoreContext.Provider value={table}>
       <motion.div layout className={s.Wrapper}>
-        {dataTableHeaderVisible ? <Header children={children} /> : null}
+        {dataTableHeaderVisible ? (
+          <Header children={children} onModeChange={onModeChange} />
+        ) : null}
         <table className={cls} style={styles} {...restProps}>
           <ColumnHeaders hasRowActions={Boolean(renderRowActions)} />
           <Body renderRowActions={renderRowActions} />
