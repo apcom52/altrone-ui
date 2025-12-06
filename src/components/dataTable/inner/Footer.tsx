@@ -18,41 +18,6 @@ export const Footer = () => {
 
   const rowsPerPage = tableCore.getState().pagination.pageSize;
 
-  const footerRef = useRef<HTMLTableSectionElement>(null);
-  const [isSticky, setIsSticky] = useState(false);
-
-  useEffect(() => {
-    const checkSticky = () => {
-      if (footerRef.current) {
-        const rect = footerRef.current.getBoundingClientRect();
-        const windowHeight =
-          window.innerHeight || document.documentElement.clientHeight;
-        setIsSticky(rect.bottom >= windowHeight && rect.top < windowHeight);
-      }
-    };
-
-    checkSticky();
-
-    const scrollContainer =
-      footerRef.current
-        ?.closest('[class*="Scrollable"], [class*="scrollable"]')
-        ?.querySelector('[data-overlayscrollbars-viewport]') ||
-      footerRef.current?.closest('.Wrapper') ||
-      window;
-
-    scrollContainer.addEventListener('scroll', checkSticky, {
-      passive: true,
-    });
-    window.addEventListener('scroll', checkSticky, { passive: true });
-    window.addEventListener('resize', checkSticky, { passive: true });
-
-    return () => {
-      scrollContainer.removeEventListener('scroll', checkSticky);
-      window.removeEventListener('scroll', checkSticky);
-      window.removeEventListener('resize', checkSticky);
-    };
-  }, []);
-
   const statusText = selectableMode ? (
     <div>
       {t('dataTable.selectedRows', {
@@ -76,24 +41,10 @@ export const Footer = () => {
   );
 
   return (
-    <div className={s.Footer} ref={footerRef}>
-      <motion.div
-        className={s.Backdrop}
-        layout
-        animate={{
-          width: isSticky ? 'calc(100% - 16px)' : '100%',
-          height: isSticky ? 'calc(100% - 16px)' : '100%',
-          bottom: isSticky ? 8 : 0,
-          left: isSticky ? 8 : 0,
-          borderTopLeftRadius: isSticky ? 20 : 0,
-          borderTopRightRadius: isSticky ? 20 : 0,
-          borderBottomLeftRadius: isSticky ? 20 : 'var(--data-table-rounding)',
-          borderBottomRightRadius: isSticky ? 20 : 'var(--data-table-rounding)',
-        }}
-        transition={{ duration: 0.2, ease: 'linear' }}
-      />
+    <div className={s.Footer}>
+      <div className={s.Backdrop} />
       <div className={s.StatusBar}>{statusText}</div>
-      <div>
+      <div className={s.Pagination}>
         {totalPages - 1 > 0
           ? 1 && (
               <Pagination

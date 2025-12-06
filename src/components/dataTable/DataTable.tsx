@@ -2,7 +2,7 @@ import { DataTableProps } from './DataTable.types';
 import { DataTableCoreContext } from './DataTable.context';
 import { Action, RowActions, RowAction } from './components';
 import s from './dataTable.module.scss';
-import { Children, useMemo } from 'react';
+import { Children, useEffect, useMemo } from 'react';
 import { useConfiguration } from '../configuration';
 import clsx from 'clsx';
 import {
@@ -66,6 +66,7 @@ const DataTableComponent = <DataType extends object>(
       sorting: defaultSort
         ? [{ id: defaultSort.field, desc: defaultSort.direction === 'desc' }]
         : undefined,
+      ...(mode === 'select' ? { selectableMode: true } : {}),
     },
     meta: {
       mode,
@@ -82,6 +83,15 @@ const DataTableComponent = <DataType extends object>(
     },
   });
 
+  useEffect(() => {
+    if (mode === 'select') {
+      table.setState((old) => ({
+        ...old,
+        selectableMode: true,
+      }));
+    }
+  }, [mode]);
+
   const cls = clsx(s.Table, props.className, dataTableConfig.className);
   const styles = {
     ...dataTableConfig.style,
@@ -97,14 +107,14 @@ const DataTableComponent = <DataType extends object>(
 
   return (
     <DataTableCoreContext.Provider value={table}>
-      <motion.div layout className={s.Wrapper}>
+      <motion.div className={s.Wrapper}>
         {dataTableHeaderVisible ? (
           <Header children={children} onModeChange={onModeChange} />
         ) : null}
-        <table className={cls} style={styles} {...restProps}>
+        <div className={cls} style={styles} {...restProps}>
           <ColumnHeaders hasRowActions={Boolean(renderRowActions)} />
           <Body renderRowActions={renderRowActions} />
-        </table>
+        </div>
         {showFooter ? <Footer /> : null}
       </motion.div>
     </DataTableCoreContext.Provider>

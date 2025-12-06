@@ -6,6 +6,7 @@ import { Configuration } from '../../configuration/index.ts';
 import { Text } from '../../text/index.ts';
 import { Checkbox } from 'components/checkbox/index.ts';
 import { useState } from 'react';
+import { Button } from 'components/button/Button.tsx';
 
 const DATA = [
   {
@@ -457,16 +458,28 @@ const DATA = [
 export const StoryWithDifferentRenderers: StoryObj<typeof Flex> = {
   name: 'Story With Different Renderers',
   render: () => {
-    const [loading, setLoading] = useState(false);
+    const [mode, setMode] = useState<'read' | 'select' | 'loading'>('read');
 
     return (
       <Configuration locale={{ dateFormat: 'DD MMM YYYY' }}>
-        <Checkbox checked={loading} onChange={setLoading}>
-          Loading state
-        </Checkbox>
+        <Flex gap="m">
+          <Checkbox
+            checked={mode === 'loading'}
+            onChange={() =>
+              setMode((prev) => (prev === 'loading' ? 'read' : 'loading'))
+            }
+          >
+            Loading state
+          </Checkbox>
+          <Button
+            label="Enable select mode"
+            onClick={() => setMode('select')}
+          />
+        </Flex>
         <DataTable
           data={DATA}
-          mode={loading ? 'loading' : 'read'}
+          mode={mode}
+          onModeChange={setMode}
           columns={[
             { accessor: 'id', label: 'ID', type: 'number', width: 50 },
             {

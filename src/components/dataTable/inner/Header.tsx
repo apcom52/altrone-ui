@@ -19,6 +19,7 @@ export const DataTableHeader = ({
   const t = useLocalization();
 
   const tableCore = useDataTableCore();
+  const mode = tableCore.options.meta?.mode || 'read';
 
   const selectableMode = tableCore.getState().selectableMode || false;
 
@@ -51,6 +52,7 @@ export const DataTableHeader = ({
           showLabel={false}
           onClick={toggleSelectableMode}
           selected={selectableMode}
+          disabled={mode === 'loading'}
         />
       </Tooltip>
 

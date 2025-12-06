@@ -13,13 +13,23 @@
 }
 
 .StatusBar {
-  @include sm-paragraph;
-  color: var(--dataTableFooterTextColor);
+  position: sticky;
+  left: 8px;
   margin-left: 4px;
+}
+
+.Pagination {
+  position: sticky;
+  right: 8px;
 }
 
 .Backdrop {
   position: absolute;
+  top: 8px;
+  left: 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  border-radius: 32px;
   background-color: var(--data-table-header-background-color);
   backdrop-filter: blur(32px) saturate(180%);
   box-shadow: var(--shadow-1);

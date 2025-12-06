@@ -16,6 +16,8 @@ export const Filtering = () => {
   const t = useLocalization();
 
   const table = useDataTableCore();
+  const mode = table.options.meta?.mode || 'read';
+
   const filterableColumns = table
     .getAllLeafColumns()
     .filter((column) => column.getCanFilter());
@@ -181,6 +183,7 @@ export const Filtering = () => {
       <Button
         label={t('dataTable.filters')}
         badge={filters.length ? filters.length : undefined}
+        disabled={mode === 'loading'}
       />
     </Popover>
   );
