@@ -75,9 +75,7 @@ export const AltroneApplication = ({
     <ThemeContext.Provider value={themeContext}>
       <AltroneLocalization language={language} customLabels={customLabels}>
         <Configuration {...config}>
-          <RainbowEffect>
-            <Toast>{children}</Toast>
-          </RainbowEffect>
+          <Toast>{children}</Toast>
         </Configuration>
       </AltroneLocalization>
     </ThemeContext.Provider>

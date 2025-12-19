@@ -16,6 +16,14 @@
   --dropdown-badge-font-size: 10px;
 }
 
+.Menu {
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  overflow-y: auto;
+  position: relative;
+}
+
 .Action {
   display: flex;
   position: relative;
@@ -116,4 +124,8 @@
   will-change: background-color, transform, top, left;
   transform: translateZ(0);
   backface-visibility: hidden;
+}
+
+.Menu:not(:has(.Action > .Icon:not(:empty))) .Action .Icon {
+  display: none;
 }

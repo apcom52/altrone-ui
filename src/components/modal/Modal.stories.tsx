@@ -30,7 +30,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   render: () => {
     return (
       <Flex direction="vertical" gap="m" align="start">
-        <Text.Heading role="inner">Modals</Text.Heading>
+        <Text block size={5} weight="bold">
+          Modals
+        </Text>
         <Flex direction="horizontal" gap="m">
           <Modal
             title="Modal title"
@@ -40,54 +42,54 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             )}
             content={
               <Flex direction="vertical" gap="xl">
-                <Text.Paragraph>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
+                </Text>
               </Flex>
             }
             leftActions={[
@@ -102,48 +104,48 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             title="Modal title"
             content={
               <Flex direction="vertical" gap="xl">
-                <Text.Paragraph>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
+                </Text>
               </Flex>
             }
             leftActions={[
@@ -160,48 +162,48 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             title="Modal title"
             content={
               <Flex direction="vertical" gap="xl">
-                <Text.Paragraph>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
-                <Text.Paragraph>
+                </Text>
+                <Text block size={4} weight="regular">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Adipisci at corporis cum eius eveniet exercitationem, ipsa
                   ipsum magnam maiores molestias, non odit praesentium suscipit?
                   Aspernatur dolor fuga incidunt iure quisquam.
-                </Text.Paragraph>
+                </Text>
               </Flex>
             }
             leftActions={[

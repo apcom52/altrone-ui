@@ -1,15 +1,16 @@
-import { ToastContainer, toast } from 'react-toastify';
-
 import 'react-toastify/dist/ReactToastify.css';
 import { createContext, memo, useCallback, useContext, useMemo } from 'react';
 import {
   NotificationProps,
   ToastContextType,
+  ToastOptions,
   ToastProps,
 } from './Toast.types.ts';
 import s from './toast.module.scss';
 import { Notification, ToastNotification } from './inner';
 import { Role } from '../../types';
+import { toast, Toaster } from 'sonner';
+import { Button } from 'components/button/Button.tsx';
 
 const ToastContext = createContext<ToastContextType>({
   toast: () => null,
@@ -22,19 +23,18 @@ export const useToast = () => useContext(ToastContext);
 
 export const Toast = memo<ToastProps>(({ children }) => {
   const sendGenericToast = useCallback(
-    (message: string, severity: Role, options?: ToastProps) => {
-      toast(<ToastNotification message={message} severity={severity} />, {
-        position: 'bottom-center',
-        closeButton: false,
-        className: s.Toast,
-        ...options,
-      });
+    (message: string, options?: ToastOptions) => {
+      console.log('message', message);
+
+      toast.custom((id) => (
+        <ToastNotification message={message} action={options?.action} />
+      ));
     },
-    [],
+    []
   );
 
-  const sendToast = useCallback((message: string) => {
-    sendGenericToast(message, 'default');
+  const sendToast = useCallback((message: string, options?: ToastOptions) => {
+    sendGenericToast(message, options);
   }, []);
 
   const sendSuccessToast = useCallback((message: string) => {
@@ -79,12 +79,7 @@ export const Toast = memo<ToastProps>(({ children }) => {
   return (
     <ToastContext.Provider value={context}>
       {children}
-      <ToastContainer
-        className={s.Wrapper}
-        newestOnTop={true}
-        hideProgressBar
-        toastClassName={s.Toast}
-      />
+      <Toaster position="bottom-center" />
     </ToastContext.Provider>
   );
 });

@@ -16,7 +16,7 @@ export interface NavigationListGroupActionProps
 }
 
 export interface NavigationListLinkProps
-  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  extends React.HTMLAttributes<HTMLDivElement> {
   label: string;
   icon?: JSX.Element;
   selected?: boolean;

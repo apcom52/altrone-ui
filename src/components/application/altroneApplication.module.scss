@@ -236,6 +236,7 @@
   /** glass effect */
   --glass-background-color: color(display-p3 1 1 1 / 0.7);
   --glass-effects: blur(64px) saturate(180%);
+  --glass-press-effects: blur(64px) saturate(180%) brightness(1.1);
 
   /** focus */
   --focus: rgba(66, 165, 245, 0.4);

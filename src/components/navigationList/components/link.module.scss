@@ -129,3 +129,10 @@
   font-size: var(--navigation-list-badge-font-size);
   font-weight: 500;
 }
+
+.Selected {
+  background-color: var(--navigation-list-link-selected-background-color);
+  color: var(--navigation-list-link-selected-text-color);
+  border-radius: var(--navigation-list-link-rounding);
+  box-shadow: var(--shadow-1);
+}

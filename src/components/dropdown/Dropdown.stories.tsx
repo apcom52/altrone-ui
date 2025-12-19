@@ -201,6 +201,36 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
           >
             <Button label="Task Orchestrator" data-testid="button-click" />
           </Dropdown>
+          <Dropdown
+            placement="bottom"
+            data-testid="dropdown-4"
+            content={
+              <Dropdown.Menu>
+                <Dropdown.Action label="Craft new quest" />
+                <Dropdown.Action label="Scout Missions" />
+                <Dropdown.Action label="Edit Timeline" />
+                <Dropdown.Action label="Vanquish" />
+                <Dropdown.Action label="Rest" />
+                <Divider />
+                <Dropdown.RadioList
+                  value={priority}
+                  label="Select priority"
+                  onChange={setPriority}
+                >
+                  <Dropdown.RadioItem value="high" label="High" />
+                  <Dropdown.RadioItem value="medium" label="Medium" />
+                  <Dropdown.RadioItem value="low" label="Low" />
+                </Dropdown.RadioList>
+                <Divider />
+                <Dropdown.Action label="Exit" />
+              </Dropdown.Menu>
+            }
+          >
+            <Button
+              label="Task Orchestrator (without icons)"
+              data-testid="button-click"
+            />
+          </Dropdown>
         </Flex>
       </Flex>
     );

@@ -96,7 +96,10 @@ export const NavigationListStory: StoryObj<typeof NavigationList> = {
               </Dropdown>
               <NavigationList.Link label="Attributes" badge="4" />
               <NavigationList.Link label="Automations" selected badge="2" />
-              <NavigationList.Link label="Copilot" />
+              <NavigationList.Link
+                label="Copilot"
+                onClick={() => alert('Copilot')}
+              />
               <NavigationList.Link label="Group mentions" />
               <NavigationList.Link label="Import" />
               <NavigationList.Link label="Integrations" />

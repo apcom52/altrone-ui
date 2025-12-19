@@ -1,7 +1,14 @@
 import { PropsWithChildren } from 'react';
-import { Role } from '../../types';
 
 export interface ToastProps extends PropsWithChildren {}
+
+export type ToastOptions = {
+  action?: {
+    label: string;
+    onClick: () => void;
+    danger?: boolean;
+  };
+};
 
 export interface NotificationProps {
   message: string;
@@ -21,11 +28,11 @@ export type NotificationComponentProps = Omit<
 
 export interface ToastNotificationProps {
   message: string;
-  severity?: Role;
+  action?: ToastOptions['action'];
 }
 
 export interface ToastContextType {
-  toast: (message: string) => void;
+  toast: (message: string, options?: ToastOptions) => void;
   success: (message: string) => void;
   danger: (message: string) => void;
   warning: (message: string) => void;

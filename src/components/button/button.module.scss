@@ -10,6 +10,7 @@
   --button-size: var(--base-control-size);
   --button-rounding: var(--radius-xl);
   --button-font-size: 14px;
+  --button-icon-size: 16px;
   --button-vertical-padding: var(--spacing-2);
   --button-horizontal-padding: var(--spacing-3);
   --button-gap: var(--spacing-2);
@@ -30,8 +31,7 @@
   box-shadow: 0 0 0 1px var(--button-border-color), 0 0 0 0.5px var(--black-a1),
     0 1px 1px 0 var(--gray-a2), 0 2px 1px -1px var(--black-a1),
     0 1px 3px 0 var(--black-a1);
-  backdrop-filter: blur(32px) saturate(180%)
-    brightness(var(--button-brightness));
+  backdrop-filter: var(--glass-effects);
   font-size: var(--button-font-size);
   font-weight: 500;
   cursor: pointer;
@@ -52,8 +52,8 @@
   }
 
   &:active {
-    --button-brightness: 1.2;
     background: var(--button-active-background-color);
+    backdrop-filter: var(--glass-press-effects);
   }
 
   &:disabled {
@@ -84,7 +84,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--button-font-size);
+  font-size: var(--button-icon-size);
 }
 
 .ButtonLabel {
@@ -198,6 +198,7 @@
   --button-size: 16px;
   --button-rounding: 8px;
   --button-font-size: 10px;
+  --button-icon-size: 11px;
   --button-vertical-padding: 3px;
   --button-horizontal-padding: 6px;
   --button-gap: 4px;
@@ -217,6 +218,7 @@
   --button-size: 24px;
   --button-rounding: 12px;
   --button-font-size: 12px;
+  --button-icon-size: 14px;
   --button-vertical-padding: var(--spacing-1);
   --button-horizontal-padding: var(--spacing-2);
   --button-gap: 4px;
@@ -236,6 +238,7 @@
   --button-size: 40px;
   --button-rounding: 20px;
   --button-font-size: 16px;
+  --button-icon-size: 18px;
   --button-vertical-padding: 8px;
   --button-horizontal-padding: 16px;
   --button-gap: 8px;
@@ -255,6 +258,7 @@
   --button-size: 48px;
   --button-rounding: 24px;
   --button-font-size: 20px;
+  --button-icon-size: 24px;
   --button-vertical-padding: 12px;
   --button-horizontal-padding: 20px;
   --button-gap: 12px;

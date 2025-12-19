@@ -50,7 +50,12 @@ const navigationListRenderFunc: RenderFuncProp<
 
   return (
     <>
-      <a ref={ref} onMouseEnter={hover} onMouseLeave={unhover} {...restProps}>
+      <div
+        ref={ref}
+        onMouseEnter={!selected ? hover : undefined}
+        onMouseLeave={unhover}
+        {...restProps}
+      >
         {hovered && (
           <motion.div
             layout
@@ -69,7 +74,7 @@ const navigationListRenderFunc: RenderFuncProp<
             </div>
           ) : null}
         </div>
-      </a>
+      </div>
       {showChildren ? (
         <div className={listCls}>
           <NavigationListLevelContext.Provider value={level + 1}>

@@ -3,6 +3,7 @@ import { ToastNotificationProps } from '../Toast.types.ts';
 import { Role } from '../../../types';
 import { Icon } from '../../icon';
 import clsx from 'clsx';
+import { Button } from 'components/button/Button.tsx';
 
 const ToastIcons: Record<Role, string> = {
   default: 'info',
@@ -14,20 +15,20 @@ const ToastIcons: Record<Role, string> = {
 
 export const ToastNotification = ({
   message,
-  severity = 'default',
+  action,
 }: ToastNotificationProps) => {
-  const cls = clsx(s.Toast, {
-    [s.Success]: severity === 'success',
-    [s.Danger]: severity === 'danger',
-    [s.Warning]: severity === 'warning',
-  });
+  const cls = clsx(s.Toast);
 
   return (
     <div className={cls} data-toast="true">
-      <div className={s.Icon}>
-        <Icon i={ToastIcons[severity]} />
-      </div>
-      <div>{message}</div>
+      <div className={s.Label}>{message}</div>
+      {action ? (
+        <Button
+          label={action.label}
+          onClick={action.onClick}
+          danger={action.danger}
+        />
+      ) : null}
     </div>
   );
 };

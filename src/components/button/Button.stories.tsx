@@ -230,11 +230,17 @@ export const ButtonStory: StoryObj<typeof Button> = {
   },
   render: ({ ...args }) => (
     <Flex direction="vertical" gap="l">
-      <Text.Heading role="inner">Default buttons</Text.Heading>
+      <Text block size={5} weight="bold">
+        Default buttons
+      </Text>
       {renderButtonsWithRole('default', args)}
-      <Text.Heading role="inner">Submit buttons</Text.Heading>
+      <Text block size={5} weight="bold">
+        Submit buttons
+      </Text>
       {renderButtonsWithRole('submit', args)}
-      <Text.Heading role="inner">Text buttons</Text.Heading>
+      <Text block size={5} weight="bold">
+        Text buttons
+      </Text>
       {renderButtonsWithRole('text', args)}
     </Flex>
   ),
@@ -251,15 +257,25 @@ export const ButtonSizeStory: StoryObj<typeof Button> = {
   },
   render: () => (
     <Flex direction="vertical" gap="l">
-      <Text.Heading role="inner">Mini buttons</Text.Heading>
+      <Text block size={5} weight="bold">
+        Mini buttons
+      </Text>
       {renderButtonsWithSize('mini')}
-      <Text.Heading role="inner">Small buttons</Text.Heading>
+      <Text block size={5} weight="bold">
+        Small buttons
+      </Text>
       {renderButtonsWithSize('s')}
-      <Text.Heading role="inner">Medium buttons</Text.Heading>
+      <Text block size={5} weight="bold">
+        Medium buttons
+      </Text>
       {renderButtonsWithSize('m')}
-      <Text.Heading role="inner">Large buttons</Text.Heading>
+      <Text block size={5} weight="bold">
+        Large buttons
+      </Text>
       {renderButtonsWithSize('l')}
-      <Text.Heading role="inner">XL buttons</Text.Heading>
+      <Text block size={5} weight="bold">
+        XL buttons
+      </Text>
       {renderButtonsWithSize('xl')}
     </Flex>
   ),

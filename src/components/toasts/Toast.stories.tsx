@@ -21,11 +21,33 @@ export const SimpleToastsStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l" direction="vertical">
-        <Text.Heading role="inner">Click to show a toast message</Text.Heading>
+        <Text block size={5} weight="bold">
+          Click to show a toast message
+        </Text>
         <Flex direction="horizontal" gap="l">
           <Button
             label="Show toast message"
-            onClick={() => toast('New updates are available.')}
+            onClick={() =>
+              toast('New updates are available.', {
+                action: {
+                  label: 'Do not show again',
+                  onClick: () => console.log('Do not show again'),
+                  danger: true,
+                },
+              })
+            }
+          />
+          <Button
+            label="Delete the file"
+            danger
+            onClick={() =>
+              toast('File deleted successfully.', {
+                action: {
+                  label: 'Undo',
+                  onClick: () => console.log('Undo'),
+                },
+              })
+            }
           />
           <Button
             label="Successful toast"
