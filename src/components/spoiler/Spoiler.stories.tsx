@@ -26,10 +26,12 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   render: () => {
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Spoilers</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Spoilers
+        </Text>
         <Flex direction="vertical" gap="s">
           <Spoiler title="The Beauty of Nature">
-            <Text.Paragraph>
+            <Text size={3} block>
               Nature's beauty is a profound source of inspiration and solace.
               From the majestic mountains standing tall against the sky to the
               serene beaches where the waves kiss the shore, every element of
@@ -41,10 +43,10 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               interdependence that sustains life. Embracing nature not only
               rejuvenates the soul but also reminds us of the delicate and
               awe-inspiring beauty that surrounds us.
-            </Text.Paragraph>
+            </Text>
           </Spoiler>
           <Spoiler title="The Magic of Music" openedByDefault={true}>
-            <Text.Paragraph>
+            <Text size={3} block>
               Music has an unparalleled ability to evoke emotions and create
               connections across cultures and generations. Its melodies can
               transport us to different times and places, while its rhythms can
@@ -55,7 +57,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               comfort in times of sorrow and joy in moments of celebration.
               Through music, we find a means to express our deepest feelings,
               share our stories, and connect with others on a profound level.
-            </Text.Paragraph>
+            </Text>
           </Spoiler>
         </Flex>
       </Flex>

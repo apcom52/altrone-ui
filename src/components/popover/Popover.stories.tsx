@@ -27,7 +27,9 @@ export const PopoverStory: StoryObj<typeof Flex> = {
   name: 'Using Popover',
   render: () => (
     <Flex direction="vertical" gap="l">
-      <Text.Heading role="inner">Basic Popovers</Text.Heading>
+      <Text size={5} weight="bold" block>
+        Basic Popovers
+      </Text>
       <Flex direction="horizontal" gap="l">
         <Popover
           placement="bottom"
@@ -36,9 +38,9 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           data-testid="popover-click"
           content={
             <Flex direction="vertical" gap="m">
-              <Text.Paragraph size="s">
+              <Text size={3} block>
                 We're gearing up for a system update packed with improvements
-              </Text.Paragraph>
+              </Text>
               <Flex justify="center" direction="horizontal" gap="s">
                 <Button variant="action" label="Reschedule update" />
                 <Button variant="submit" label="Update now" />
@@ -55,9 +57,9 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showArrow
           content={
             <Flex direction="vertical" gap="m">
-              <Text.Paragraph size="s">
+              <Text size={3} block>
                 We're gearing up for a system update packed with improvements
-              </Text.Paragraph>
+              </Text>
               <Flex justify="end" direction="horizontal" gap="s">
                 <Button label="Reschedule update" />
                 <Button label="Update now" />
@@ -70,10 +72,10 @@ export const PopoverStory: StoryObj<typeof Flex> = {
         <Popover
           style={{ maxWidth: '150px' }}
           content={
-            <Text.Paragraph>
-              <Text.Inline bold>Resilience</Text.Inline> - Bouncing back from
+            <Text size={3} block>
+              <Text weight="bold">Resilience</Text> - Bouncing back from
               adversity with strength and adaptability.
-            </Text.Paragraph>
+            </Text>
           }
         >
           <Button label="Resilience" />
@@ -82,34 +84,38 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           style={{ maxWidth: '200px' }}
           data-testid="popover-parent"
           content={
-            <Text.Paragraph size="s">
+            <Text size={3} block>
               Click here to open child popover{' '}
               <Popover
                 showArrow
                 data-testid="popover-child"
                 content={
-                  <Text.Paragraph>This is child popover!</Text.Paragraph>
+                  <Text size={3} block>
+                    This is child popover!
+                  </Text>
                 }
               >
                 <Button label="Open" data-testid="button-child" />
               </Popover>
-            </Text.Paragraph>
+            </Text>
           }
         >
           <Button label="Parent popover" data-testid="button-parent" />
         </Popover>
       </Flex>
-      <Text.Heading role="inner">How to trigger the popover?</Text.Heading>
+      <Text size={5} weight="bold" block>
+        How to trigger the popover?
+      </Text>
       <Flex direction="horizontal" gap="l">
         <Popover
           trigger="click"
           placement="top"
           showArrow={true}
           content={
-            <Text.Paragraph size="s">
+            <Text size={3} block>
               Join Our Newsletter for Exciting Updates &{' '}
-              <Text.Link href="#">Special Deals</Text.Link>!
-            </Text.Paragraph>
+              <Text href="#">Special Deals</Text>!
+            </Text>
           }
         >
           <Button label="Click me" />
@@ -120,10 +126,10 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showArrow={true}
           data-testid="popover-hover"
           content={() => (
-            <Text.Paragraph size="s">
+            <Text size={3} block>
               Join Our Newsletter for Exciting Updates &{' '}
-              <Text.Link href="#">Special Deals</Text.Link>!
-            </Text.Paragraph>
+              <Text href="#">Special Deals</Text>!
+            </Text>
           )}
         >
           <Button label="Hover me" data-testid="button-hover" />
@@ -134,17 +140,19 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showArrow={true}
           data-testid="popover-focus"
           content={
-            <Text.Paragraph size="s">
+            <Text size={3} block>
               Join Our Newsletter for Exciting Updates &{' '}
-              <Text.Link href="#">Special Deals</Text.Link>!
-            </Text.Paragraph>
+              <Text href="#">Special Deals</Text>!
+            </Text>
           }
         >
           <Button label="Focus me" data-testid="button-focus" />
         </Popover>
       </Flex>
       <Flex direction="horizontal" gap="l"></Flex>
-      <Text.Heading role="inner">Different placement of popover</Text.Heading>
+      <Text size={5} weight="bold" block>
+        Different placement of popover
+      </Text>
       <Flex direction="horizontal" gap="l">
         <Popover
           placement="top"
@@ -153,13 +161,13 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showArrow
           style={{ maxWidth: '250px' }}
           content={
-            <Text.Paragraph size="s">
+            <Text size={3} block>
               Dark matter, comprising 27% of the universe, defies detection
               despite its gravitational influence on celestial bodies. Theories
               abound regarding its composition, yet conclusive evidence remains
               elusive. Astronomers employ advanced technologies in a relentless
               pursuit to shed light on this cosmic enigma.
-            </Text.Paragraph>
+            </Text>
           }
         >
           <Button label="Top" />
@@ -171,13 +179,13 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showArrow
           style={{ maxWidth: '250px' }}
           content={
-            <Text.Paragraph size="s">
+            <Text size={3} block>
               Dark matter, comprising 27% of the universe, defies detection
               despite its gravitational influence on celestial bodies. Theories
               abound regarding its composition, yet conclusive evidence remains
               elusive. Astronomers employ advanced technologies in a relentless
               pursuit to shed light on this cosmic enigma.
-            </Text.Paragraph>
+            </Text>
           }
         >
           <Button label="Right" />
@@ -190,13 +198,13 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showArrow
           style={{ maxWidth: '260px' }}
           content={
-            <Text.Paragraph size="s">
+            <Text size={3} block>
               Dark matter, comprising 27% of the universe, defies detection
               despite its gravitational influence on celestial bodies. Theories
               abound regarding its composition, yet conclusive evidence remains
               elusive. Astronomers employ advanced technologies in a relentless
               pursuit to shed light on this cosmic enigma.
-            </Text.Paragraph>
+            </Text>
           }
         >
           <Button label="Bottom" />
@@ -208,19 +216,21 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showArrow
           style={{ maxWidth: '250px' }}
           content={
-            <Text.Paragraph size="s">
+            <Text size={3} block>
               Dark matter, comprising 27% of the universe, defies detection
               despite its gravitational influence on celestial bodies. Theories
               abound regarding its composition, yet conclusive evidence remains
               elusive. Astronomers employ advanced technologies in a relentless
               pursuit to shed light on this cosmic enigma.
-            </Text.Paragraph>
+            </Text>
           }
         >
           <Button label="Left" />
         </Popover>
       </Flex>
-      <Text.Heading role="inner">Disabled popovers</Text.Heading>
+      <Text size={5} weight="bold" block>
+        Disabled popovers
+      </Text>
       <Flex direction="horizontal" gap="l">
         <Popover
           placement="top"
@@ -231,13 +241,13 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           showArrow
           style={{ maxWidth: '250px' }}
           content={
-            <Text.Paragraph size="s">
+            <Text size={3} block>
               Dark matter, comprising 27% of the universe, defies detection
               despite its gravitational influence on celestial bodies. Theories
               abound regarding its composition, yet conclusive evidence remains
               elusive. Astronomers employ advanced technologies in a relentless
               pursuit to shed light on this cosmic enigma.
-            </Text.Paragraph>
+            </Text>
           }
         >
           <Button label="No popover here" data-testid="button-disabled" />
@@ -251,11 +261,13 @@ export const OverlapPopoverStory: StoryObj<typeof Flex> = {
   name: 'Overlap Popover',
   render: () => (
     <Flex direction="vertical" gap="l">
-      <Text.Heading role="inner">Overlap Popovers</Text.Heading>
-      <Text.Paragraph size="s">
+      <Text size={5} weight="bold" block>
+        Overlap Popovers
+      </Text>
+      <Text size={3} block>
         Popovers with overlap=true completely cover the children element at the
         same coordinates
-      </Text.Paragraph>
+      </Text>
       <Flex direction="horizontal" gap="l">
         <Popover
           overlap
@@ -263,9 +275,9 @@ export const OverlapPopoverStory: StoryObj<typeof Flex> = {
           showCloseButton
           content={
             <Flex direction="vertical" gap="m">
-              <Text.Paragraph size="s">
+              <Text size={3} block>
                 This popover overlaps with the button at its starting position
-              </Text.Paragraph>
+              </Text>
               <Button label="Action" />
             </Flex>
           }
@@ -279,9 +291,9 @@ export const OverlapPopoverStory: StoryObj<typeof Flex> = {
           showCloseButton
           content={
             <Flex direction="vertical" gap="m">
-              <Text.Paragraph size="s">
+              <Text size={3} block>
                 This popover appears below the button with overlap
-              </Text.Paragraph>
+              </Text>
             </Flex>
           }
         >
@@ -299,10 +311,12 @@ export const AllPlacementsStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">All Placement Options</Text.Heading>
-        <Text.Paragraph size="s">
+        <Text size={5} weight="bold" block>
+          All Placement Options
+        </Text>
+        <Text size={3} block>
           Demonstration of all available placement options for popovers
-        </Text.Paragraph>
+        </Text>
 
         <Flex
           direction="vertical"
@@ -316,18 +330,18 @@ export const AllPlacementsStory: StoryObj<typeof Flex> = {
               gap="m"
               align="center"
             >
-              <Text.Paragraph size="s" style={{ minWidth: '400px' }}>
+              <Text size={3} block style={{ minWidth: '400px' }}>
                 {placement.label}:
-              </Text.Paragraph>
+              </Text>
               <Popover
                 placement={placement.value}
                 title={`${placement.label} Popover`}
                 showCloseButton
                 content={
                   <Flex direction="vertical" gap="m">
-                    <Text.Paragraph size="s">
+                    <Text size={3} block>
                       This is a {placement.label.toLowerCase()} popover
-                    </Text.Paragraph>
+                    </Text>
                     <Button label="Action" />
                   </Flex>
                 }
@@ -349,14 +363,16 @@ export const OverlapPlacementsStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Overlap Placements</Text.Heading>
-        <Text.Paragraph size="s">
+        <Text size={5} weight="bold" block>
+          Overlap Placements
+        </Text>
+        <Text size={3} block>
           All placement options in overlap mode - popovers are positioned
           relative to their trigger elements:
           <br />• <strong>top/bottom/left/right</strong> - centered
           <br />• <strong>*-start</strong> - aligned to start edge
           <br />• <strong>*-end</strong> - aligned to end edge
-        </Text.Paragraph>
+        </Text>
 
         <Flex
           direction="vertical"
@@ -370,9 +386,9 @@ export const OverlapPlacementsStory: StoryObj<typeof Flex> = {
               gap="m"
               align="center"
             >
-              <Text.Paragraph size="s" style={{ minWidth: '120px' }}>
+              <Text size={3} block style={{ minWidth: '120px' }}>
                 {placement.label}:
-              </Text.Paragraph>
+              </Text>
               <Popover
                 overlap
                 placement={placement.value}
@@ -380,14 +396,14 @@ export const OverlapPlacementsStory: StoryObj<typeof Flex> = {
                 showCloseButton
                 content={
                   <Flex direction="vertical" gap="m">
-                    <Text.Paragraph size="s">
+                    <Text size={3} block>
                       {placement.value.includes('start')
                         ? 'Aligned to start edge'
                         : placement.value.includes('end')
                         ? 'Aligned to end edge'
                         : 'Centered'}{' '}
                       - {placement.label.toLowerCase()} popover
-                    </Text.Paragraph>
+                    </Text>
                     <Button label="Action" />
                   </Flex>
                 }
@@ -419,15 +435,18 @@ export const PlacementInfoStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Placement Information</Text.Heading>
-        <Text.Paragraph size="s">
+        <Text size={5} weight="bold" block>
+          Placement Information
+        </Text>
+        <Text size={3} block>
           This example shows how to get the actual placement and transform
           origin from the popover ref when using auto placement.
-        </Text.Paragraph>
+        </Text>
 
         {placementInfo && (
-          <Text.Paragraph
-            size="s"
+          <Text
+            size={3}
+            block
             style={{
               padding: '8px',
               backgroundColor: 'var(--default-100)',
@@ -436,7 +455,7 @@ export const PlacementInfoStory: StoryObj<typeof Flex> = {
             }}
           >
             {placementInfo}
-          </Text.Paragraph>
+          </Text>
         )}
 
         <Popover
@@ -447,10 +466,10 @@ export const PlacementInfoStory: StoryObj<typeof Flex> = {
           onOpenChange={handleOpenChange}
           content={
             <Flex direction="vertical" gap="m">
-              <Text.Paragraph size="s">
+              <Text size={3} block>
                 This popover uses auto placement. Check the info above to see
                 the actual placement and transform origin.
-              </Text.Paragraph>
+              </Text>
               <Button label="Action" />
             </Flex>
           }

@@ -370,9 +370,14 @@
   --backdropColor: rgba(0, 0, 0, 0.6);
 
   /** glass effect */
-  --glass-background-color: rgba(223, 253, 255, 0.034);
-  --glass-background-blur: blur(64px);
-  --glass-border-color: rgba(255, 255, 255, 0.1);
+  // --glass-background-color: color(display-p3 0 0 0 / 0.45);
+  // --glass-effects: blur(32px) saturate(120%);
+  // --glass-press-effects: blur(32px) saturate(120%) brightness(1.05);
+  --glass-background-color: color(display-p3 0.05 0.05 0.07 / 0.6);
+  --glass-effects: blur(32px) saturate(110%);
+  --glass-press-effects: blur(28px) saturate(110%) brightness(1.08);
+  --glass-border-color: color(display-p3 1 1 1 / 0.08);
+  --glass-shadow: 0 8px 32px color(display-p3 0 0 0 / 0.4);
 
   /** focus */
   --focus: rgba(25, 118, 210, 0.7);

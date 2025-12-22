@@ -26,6 +26,34 @@
   --amber-a12: color(display-p3 0.294 0.208 0.145);
 }
 
+[data-altrone-theme='dark'] {
+  --amber-1: color(display-p3 0.082 0.07 0.05);
+  --amber-2: color(display-p3 0.111 0.094 0.064);
+  --amber-3: color(display-p3 0.178 0.128 0.049);
+  --amber-4: color(display-p3 0.239 0.156 0);
+  --amber-5: color(display-p3 0.29 0.193 0);
+  --amber-6: color(display-p3 0.344 0.245 0.076);
+  --amber-7: color(display-p3 0.422 0.314 0.141);
+  --amber-8: color(display-p3 0.535 0.399 0.189);
+  --amber-9: color(display-p3 1 0.77 0.26);
+  --amber-10: color(display-p3 1 0.87 0.15);
+  --amber-11: color(display-p3 1 0.8 0.29);
+  --amber-12: color(display-p3 0.984 0.909 0.726);
+
+  --amber-a1: color(display-p3 0.992 0.298 0 / 0.017);
+  --amber-a2: color(display-p3 0.988 0.651 0 / 0.047);
+  --amber-a3: color(display-p3 1 0.6 0 / 0.118);
+  --amber-a4: color(display-p3 1 0.557 0 / 0.185);
+  --amber-a5: color(display-p3 1 0.592 0 / 0.24);
+  --amber-a6: color(display-p3 1 0.659 0.094 / 0.299);
+  --amber-a7: color(display-p3 1 0.714 0.263 / 0.383);
+  --amber-a8: color(display-p3 0.996 0.729 0.306 / 0.5);
+  --amber-a9: color(display-p3 1 0.769 0.259);
+  --amber-a10: color(display-p3 1 0.871 0.149);
+  --amber-a11: color(display-p3 1 0.8 0.29);
+  --amber-a12: color(display-p3 0.984 0.909 0.726);
+}
+
 [data-altrone-accent='amber'] {
   --accent-1: var(--amber-1);
   --accent-2: var(--amber-2);

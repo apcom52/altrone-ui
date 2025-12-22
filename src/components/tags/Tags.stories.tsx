@@ -24,7 +24,9 @@ export const FlexLayout: StoryObj<typeof Flex> = {
   name: 'Using Tags',
   render: (args) => (
     <Flex gap="l" direction="vertical">
-      <Text.Heading role="inner">Standard Tags</Text.Heading>
+      <Text size={5} weight="bold" block>
+        Standard Tags
+      </Text>
       <Flex direction="horizontal" gap="l">
         <Tags>
           <Tags.Item href="#ai" label="#AI" />

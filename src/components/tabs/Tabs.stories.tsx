@@ -31,7 +31,9 @@ export const FlexLayout: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Standard Tabs</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Standard Tabs
+        </Text>
         <Flex direction="horizontal" gap="l">
           <Tabs>
             <Tabs.Item

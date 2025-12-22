@@ -30,7 +30,9 @@ export const RangeStory: StoryObj<typeof Range> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Horizontal ranges</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Horizontal ranges
+        </Text>
         <Form>
           <Grid>
             <Grid.Column span={6} style={{ padding: '8px' }}>
@@ -135,7 +137,9 @@ export const RangeStory: StoryObj<typeof Range> = {
             </Grid.Column>
           </Grid>
         </Form>
-        <Text.Heading role="inner">Vertical ranges</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Vertical ranges
+        </Text>
         <Flex gap="l">
           <Range
             value={value3}

@@ -7,13 +7,17 @@
 }
 
 .FieldLabel {
-  max-width: 20%;
-  min-width: 200px;
+  max-width: 25%;
+  min-width: 100px;
+  width: 100%;
   font-weight: var(--text-weight-medium);
   font-size: var(--text-size-3);
   color: var(--disabled-text-color);
   text-align: right;
   line-height: var(--base-control-size);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .FieldValue {

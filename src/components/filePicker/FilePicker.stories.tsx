@@ -43,9 +43,9 @@ export const FilePickerStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">
+        <Text size={5} weight="bold" block>
           Basic FilePicker (with autoUpload and without)
-        </Text.Heading>
+        </Text>
         <Flex direction="horizontal" gap="l">
           <FilePicker
             url="http://localhost:4055/upload"
@@ -61,7 +61,9 @@ export const FilePickerStory: StoryObj<typeof Flex> = {
             placeholder="Choose file (manual upload)"
           />
         </Flex>
-        <Text.Heading role="inner">Multiple FilePicker</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Multiple FilePicker
+        </Text>
         <Flex direction="horizontal" gap="l">
           <FilePicker
             url="http://localhost:4055/upload"

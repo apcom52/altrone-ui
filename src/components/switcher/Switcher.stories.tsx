@@ -32,9 +32,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Basic Checkboxes</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Basic Checkboxes
+        </Text>
         <Flex direction="horizontal" gap="l" align="center">
-          <Text.Paragraph>Permissions:</Text.Paragraph>
+          <Text block>Permissions:</Text>
           <Switcher checked={value2} onChange={setValue2}>
             Read
           </Switcher>

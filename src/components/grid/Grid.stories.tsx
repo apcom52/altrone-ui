@@ -26,7 +26,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   render: () => {
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading variant="inner">Basic Grid</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Basic Grid
+        </Text>
         <Grid style={{ margin: '1rem 0' }}>
           <Grid.Column size={4}>
             <StorybookGridCell>Column 4</StorybookGridCell>
@@ -38,7 +40,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             <StorybookGridCell>Column 2</StorybookGridCell>
           </Grid.Column>
         </Grid>
-        <Text.Heading variant="inner">Grid with auto columns</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Grid with auto columns
+        </Text>
         <Grid style={{ margin: '1rem 0' }} gap="xxl">
           <Grid.Column size={3}>
             <StorybookGridCell>Column 3</StorybookGridCell>
@@ -50,7 +54,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             <StorybookGridCell>Column 2</StorybookGridCell>
           </Grid.Column>
         </Grid>
-        <Text.Heading variant="inner">Grid with offsets</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Grid with offsets
+        </Text>
         <Grid style={{ margin: '1rem 0' }} gap="xxl">
           <Grid.Column size={3}>
             <StorybookGridCell>Column 3</StorybookGridCell>

@@ -37,7 +37,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Basic Select</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Basic Select
+        </Text>
         <Flex direction="horizontal" gap="l">
           <Select
             name="country"
@@ -65,7 +67,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             disabled
           />
         </Flex>
-        <Text.Heading role="inner">Multiple Select</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Multiple Select
+        </Text>
         <Flex direction="horizontal" gap="l">
           <Select
             multiple={true}
@@ -76,7 +80,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             options={SELECT_COUNTRIES}
           />
         </Flex>
-        <Text.Heading role="inner">Select with search</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Select with search
+        </Text>
         <Flex direction="horizontal" gap="l">
           <Select
             value={value5}
@@ -94,7 +100,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             searchable
           />
         </Flex>
-        <Text.Heading role="inner">Select with different sizes</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Select with different sizes
+        </Text>
         <Flex direction="horizontal" gap="l">
           <Select
             name="country"
@@ -114,7 +122,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             size="l"
           />
         </Flex>
-        <Text.Heading role="inner">Transparent Select</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Transparent Select
+        </Text>
         <Flex direction="horizontal" gap="l">
           <Select
             name="country"
@@ -136,7 +146,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             clearable
           />
         </Flex>
-        <Text.Heading role="inner">Custom Select</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Custom Select
+        </Text>
         <Flex direction="horizontal" gap="l">
           <Select
             name="country"
@@ -148,7 +160,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               <Button
                 style={{ minWidth: '300px' }}
                 label={(selectedOptions as Option)?.label}
-                rightIcon={
+                additionalIcon={
                   <Icon i={expanded ? 'expand_less' : 'expand_more'} />
                 }
               />

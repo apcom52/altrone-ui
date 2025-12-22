@@ -52,7 +52,7 @@
 
   &:focus-visible {
     background-color: var(--text-input-focused-background-color);
-    outline: 2px solid black;
+    outline: 2px solid var(--focus-color);
     outline-offset: 2px;
   }
 

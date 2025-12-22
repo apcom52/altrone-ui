@@ -30,7 +30,9 @@ export const ColorPickerStory: StoryObj<typeof Divider> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Standard ColorPicker</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Standard ColorPicker
+        </Text>
         <Flex direction="horizontal" gap="m">
           <ColorPicker
             colorPresets={COLORS}
@@ -51,7 +53,9 @@ export const ColorPickerStory: StoryObj<typeof Divider> = {
             allowPalette={false}
           />
         </Flex>
-        <Text.Heading role="inner">Transparent ColorPicker</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Transparent ColorPicker
+        </Text>
         <Flex direction="horizontal" gap="m">
           <ColorPicker
             placeholder="With saved colors and palette"
@@ -61,7 +65,9 @@ export const ColorPickerStory: StoryObj<typeof Divider> = {
             transparent
           />
         </Flex>
-        <Text.Heading role="inner">Disabled state</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Disabled state
+        </Text>
         <Flex direction="horizontal" gap="m">
           <ColorPicker
             placeholder="Disabled state without value"
@@ -76,7 +82,9 @@ export const ColorPickerStory: StoryObj<typeof Divider> = {
             placeholder="Disabled state with value"
           />
         </Flex>
-        <Text.Heading role="inner">Readonly state</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Readonly state
+        </Text>
         <Flex direction="horizontal" gap="m">
           <ColorPicker
             placeholder="Disabled state without value"
@@ -91,7 +99,9 @@ export const ColorPickerStory: StoryObj<typeof Divider> = {
             placeholder="Readonly state with value"
           />
         </Flex>
-        <Text.Heading role="inner">Different sizes</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Different sizes
+        </Text>
         <Flex direction="horizontal" gap="m">
           <ColorPicker
             placeholder="With saved colors and palette"
@@ -108,7 +118,9 @@ export const ColorPickerStory: StoryObj<typeof Divider> = {
             size="l"
           />
         </Flex>
-        <Text.Heading role="inner">Custom render function</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Custom render function
+        </Text>
         <Flex direction="horizontal" gap="m">
           <ColorPicker
             placeholder="Custom render function"

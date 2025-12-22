@@ -62,7 +62,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Standard AutocompleteInput</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Standard AutocompleteInput
+        </Text>
         <Flex gap="l">
           <AutocompleteInput
             value={value1}
@@ -72,9 +74,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             data-testid="field"
           />
         </Flex>
-        <Text.Heading role="inner">
+        <Text size={5} weight="bold" block>
           AutocompleteInput with custom component
-        </Text.Heading>
+        </Text>
         <AutocompleteInput
           value={value2}
           getSuggestions={getCountry}
@@ -320,13 +322,13 @@ export const UsageStory: StoryObj<typeof Flex> = {
     const getData = useCallback<AutocompleteSuggestionsFunc>(
       async ({ value }) => {
         const response = await fetch(
-          `https://demo.dataverse.org/api/search?q=${value}`,
+          `https://demo.dataverse.org/api/search?q=${value}`
         );
         const data = await response.json();
 
         return data.data.items.map((item: any) => item.name);
       },
-      [],
+      []
     );
 
     return (

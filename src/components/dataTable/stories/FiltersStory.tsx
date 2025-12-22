@@ -12,9 +12,9 @@ export const FiltersDataTableStory: StoryObj<typeof Flex> = {
   render: () => {
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">
+        <Text size={5} weight="bold" block>
           DataTable with filtering and sorting
-        </Text.Heading>
+        </Text>
         <DataTable<EmployeeType>
           data={EMPLOYEES}
           rowsPerPage={20}
@@ -24,9 +24,9 @@ export const FiltersDataTableStory: StoryObj<typeof Flex> = {
               accessor: 'firstName',
               label: 'Employee',
               Component: ({ item }) => (
-                <Text.Paragraph
+                <Text
                   data-name={`${item.firstName} ${item.lastName}`}
-                >{`${item.firstName} ${item.lastName}`}</Text.Paragraph>
+                >{`${item.firstName} ${item.lastName}`}</Text>
               ),
             },
             {
@@ -34,9 +34,9 @@ export const FiltersDataTableStory: StoryObj<typeof Flex> = {
               label: 'In Staff',
               filterable: true,
               Component: ({ value }) => (
-                <Text.Paragraph size="l">
+                <Text size={3} block>
                   {value ? <Icon i="check" /> : <Icon i="close" />}
-                </Text.Paragraph>
+                </Text>
               ),
             },
             {
@@ -59,12 +59,12 @@ export const FiltersDataTableStory: StoryObj<typeof Flex> = {
               filterable: true,
               sortable: true,
               Component: ({ value }) => (
-                <Text.Paragraph style={{ width: '100%', textAlign: 'right' }}>
+                <Text style={{ width: '100%', textAlign: 'right' }}>
                   {new Intl.NumberFormat('en-US', {
                     style: 'currency',
                     currency: 'USD',
                   }).format(Number(value))}
-                </Text.Paragraph>
+                </Text>
               ),
             },
             { accessor: 'phoneNumber', label: 'Phone' },
@@ -75,7 +75,9 @@ export const FiltersDataTableStory: StoryObj<typeof Flex> = {
               Component: ({ value }) => (
                 <Flex gap="s" wrap>
                   {(value as string[]).map((skill, skillIndex) => (
-                    <Text.Code key={skillIndex}>{skill}</Text.Code>
+                    <Text code key={skillIndex}>
+                      {skill}
+                    </Text>
                   ))}
                 </Flex>
               ),

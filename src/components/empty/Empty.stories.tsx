@@ -4,7 +4,6 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex/index.ts';
 import { Text } from '../text/index.ts';
 import { Empty } from './Empty.tsx';
-import { Icon } from 'components/icon/Icon.tsx';
 import { Inbox } from 'lucide-react';
 
 const story: Meta<typeof Empty> = {
@@ -28,20 +27,26 @@ export const EmptyStory: StoryObj<typeof Flex> = {
   render: () => {
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Using standard Empty</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Using standard Empty
+        </Text>
         <Empty />
-        <Text.Heading role="inner">Using Empty with label</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Using Empty with label
+        </Text>
         <Empty>
           No users found. Please click on 'Add' button to add a new user.
         </Empty>
-        <Text.Heading role="inner">
+        <Text size={5} weight="bold" block>
           Using Empty with custom components
-        </Text.Heading>
+        </Text>
         <Empty icon={<Inbox />}>
-          No users found. Please click on <Text.Link href="#">Add</Text.Link>{' '}
-          button to add a new user.
+          No users found. Please click on <Text href="#">Add</Text> button to
+          add a new user.
         </Empty>
-        <Text.Heading role="inner">Transparent Empty</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Transparent Empty
+        </Text>
         <Empty transparent>
           No users found. Please click on 'Add' button to add a new user.
         </Empty>

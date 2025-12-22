@@ -33,16 +33,18 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Basic Radio lists</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Basic Radio lists
+        </Text>
         <Flex direction="horizontal" gap="l" align="center">
-          <Text.Paragraph>Choose your gender:</Text.Paragraph>
+          <Text block>Choose your gender:</Text>
           <Radio value={gender} onChange={setGender} name="gender">
             <Radio.Item value="male">Male</Radio.Item>
             <Radio.Item value="female">Female</Radio.Item>
           </Radio>
         </Flex>
         <Flex direction="horizontal" gap="l" align="center">
-          <Text.Paragraph>Choose your marital status:</Text.Paragraph>
+          <Text block>Choose your marital status:</Text>
           <Radio value={marriage} onChange={setMarriage} name="marriage">
             <Radio.Item value="single">Single</Radio.Item>
             <Radio.Item value="married">Married</Radio.Item>
@@ -52,10 +54,12 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             </Radio.Item>
           </Radio>
         </Flex>
-        <Text.Heading role="inner">Vertical Radio lists</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Vertical Radio lists
+        </Text>
         <Flex direction="horizontal" gap="l">
           <Flex direction="vertical" gap="l">
-            <Text.Paragraph>Choose payment method:</Text.Paragraph>
+            <Text block>Choose payment method:</Text>
             <Radio
               direction="vertical"
               value={paymentMethod}
@@ -69,7 +73,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             </Radio>
           </Flex>
           <Flex direction="vertical" gap="l">
-            <Text.Paragraph>Preferred Contact Method:</Text.Paragraph>
+            <Text block>Preferred Contact Method:</Text>
             <Radio
               direction="vertical"
               value={contactMethod}

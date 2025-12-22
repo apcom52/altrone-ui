@@ -1,0 +1,76 @@
+:global([data-altrone-root='true']) {
+  --drawer-background-color: var(--glass-background-color);
+  --drawer-header-text-color: var(--text-2);
+  --drawer-backdrop-color: var(--black-a3);
+  --drawer-rounding: 24px;
+}
+
+.DrawerWrapper {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: var(--level-offcanvas-backdrop);
+}
+
+.Backdrop {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: var(--level-offcanvas-backdrop);
+  background-color: var(--drawer-backdrop-color);
+}
+
+.Drawer {
+  position: absolute;
+  z-index: var(--level-offcanvas);
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  top: 8px;
+  left: 0;
+  height: calc(100vh - 16px);
+  gap: 16px;
+  border-radius: var(--drawer-rounding);
+  background: var(--drawer-background-color);
+  backdrop-filter: var(--glass-effects);
+  padding: 0;
+  box-shadow: var(--shadow-1), var(--shadow-4);
+}
+
+.EndSide {
+  left: unset;
+  right: 0;
+}
+
+.Content {
+  padding: 4px;
+}
+
+.DrawerHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px;
+}
+
+.DrawerTitle {
+  flex: 1;
+  font-size: var(--text-size-4);
+  font-weight: var(--text-weight-bold);
+  line-height: var(--text-line-height-4);
+  color: var(--drawer-header-text-color);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.DrawerContent {
+  flex: 1;
+  padding: 4px;
+  max-height: calc(100% - 92px);
+}

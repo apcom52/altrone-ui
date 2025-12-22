@@ -25,7 +25,9 @@ export const MessageStory: StoryObj<typeof Flex> = {
   name: 'Using Flex',
   render: () => (
     <Flex direction="vertical" gap="l">
-      <Text.Heading variant="inner">Standard messages</Text.Heading>
+      <Text size={5} weight="bold" block>
+        Standard messages
+      </Text>
       <Message
         header="Custom code is not validated"
         actions={[<Button label="OK, got it" />]}
@@ -61,7 +63,9 @@ export const MessageStory: StoryObj<typeof Flex> = {
         <div>Must include at least 2 uppercase letters</div>
       </Message>
 
-      <Text.Heading variant="inner">Compact messages</Text.Heading>
+      <Text size={5} weight="bold" block>
+        Compact messages
+      </Text>
 
       <Message
         icon={<Info />}

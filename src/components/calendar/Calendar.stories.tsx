@@ -28,7 +28,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   render: () => {
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Basic Calendar (en-US)</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Basic Calendar (en-US)
+        </Text>
         <Configuration locale={{ locale: 'en-US' }}>
           <Flex direction="horizontal" gap="l">
             <Calendar
@@ -38,7 +40,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           </Flex>
         </Configuration>
 
-        <Text.Heading role="inner">Basic Calendar (ru-RU)</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Basic Calendar (ru-RU)
+        </Text>
         <Configuration locale={{ locale: 'ru-RU' }}>
           <Flex direction="horizontal" gap="l">
             <Calendar

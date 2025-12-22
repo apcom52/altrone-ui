@@ -24,7 +24,9 @@ export const PaginationStory: StoryObj<typeof Loading> = {
   render: () => {
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Loading indicators</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Loading indicators
+        </Text>
         <Flex direction="horizontal" gap="m">
           <Loading />
           <Loading color="var(--accent-11)" size="32px" strokeWidth="3" />

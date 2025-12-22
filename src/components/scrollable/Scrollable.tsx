@@ -30,45 +30,7 @@ export const Scrollable = memo<ScrollableProps>(
 
     const { scrollable: scrollableConfig = {} } = useConfiguration();
 
-    const cls = clsx(
-      s.Scrollable,
-      {
-        [s.Horizontal]: direction === 'horizontal',
-      },
-      className,
-      scrollableConfig.className
-    );
-
-    //   const targetElement = e.currentTarget;
-    //   const targetElementRect = targetElement.getBoundingClientRect();
-
-    //   if (direction === 'vertical') {
-    //     if (targetElement.scrollHeight <= targetElementRect.height) {
-    //       setScrollPosition(-1);
-    //       return;
-    //     }
-
-    //     const currentScrollPosition = targetElement.scrollTop;
-
-    //     setScrollPosition(
-    //       Math.round(
-    //         (currentScrollPosition /
-    //           (targetElement.scrollHeight - targetElementRect.height)) *
-    //           100
-    //       )
-    //     );
-    //   } else {
-    //     const currentScrollPosition = targetElement.scrollLeft;
-
-    //     setScrollPosition(
-    //       Math.round(
-    //         (currentScrollPosition /
-    //           (targetElement.scrollWidth - targetElementRect.width)) *
-    //           100
-    //       )
-    //     );
-    //   }
-    // };
+    const cls = clsx(className, scrollableConfig.className);
 
     const styles = {
       ...scrollableConfig.style,
@@ -85,6 +47,7 @@ export const Scrollable = memo<ScrollableProps>(
             maxHeight,
             maxWidth,
           }}
+          className={cls}
           options={{
             scrollbars: {
               theme: 'os-theme-dark',

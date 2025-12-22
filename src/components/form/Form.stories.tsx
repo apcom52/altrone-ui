@@ -34,7 +34,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   render: () => {
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Authorization Form</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Authorization Form
+        </Text>
         <Flex direction="horizontal" gap="l">
           <Form>
             <Form.Field
@@ -56,7 +58,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             <Form.Field description="Field without label">
               <TextInput placeholder="Type something" />
             </Form.Field>
-            <Text.Heading role="inner">TextInput</Text.Heading>
+            <Text size={5} weight="bold" block>
+              TextInput
+            </Text>
             <Flex direction="horizontal" gap="l">
               <Form.Field label="Disabled" disabled>
                 <TextInput placeholder="Type something" />
@@ -68,7 +72,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 <TextInput placeholder="Type something" />
               </Form.Field>
             </Flex>
-            <Text.Heading role="inner">NumberInput</Text.Heading>
+            <Text size={5} weight="bold" block>
+              NumberInput
+            </Text>
             <Flex direction="horizontal" gap="l">
               <Form.Field label="Disabled" disabled>
                 <NumberInput
@@ -86,7 +92,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 />
               </Form.Field>
             </Flex>
-            <Text.Heading role="inner">Textarea</Text.Heading>
+            <Text size={5} weight="bold" block>
+              Textarea
+            </Text>
             <Flex direction="horizontal" gap="l">
               <Form.Field label="Disabled" disabled>
                 <Textarea placeholder="Type something" />
@@ -98,7 +106,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 <Textarea placeholder="Type something" />
               </Form.Field>
             </Flex>
-            <Text.Heading role="inner">Select</Text.Heading>
+            <Text size={5} weight="bold" block>
+              Select
+            </Text>
             <Flex direction="horizontal" gap="l">
               <Form.Field label="Disabled" disabled>
                 <Select
@@ -118,7 +128,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 />
               </Form.Field>
             </Flex>
-            <Text.Heading role="inner">DatePicker</Text.Heading>
+            <Text size={5} weight="bold" block>
+              DatePicker
+            </Text>
             <Flex direction="horizontal" gap="l">
               <Form.Field label="Disabled" disabled>
                 <DatePicker />
@@ -130,7 +142,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 <DatePicker value={dayjs('2024-04-04')} />
               </Form.Field>
             </Flex>
-            <Button severity="primary" label="Submit" />
+            <Button size="m" label="Submit" />
           </Form>
         </Flex>
       </Flex>

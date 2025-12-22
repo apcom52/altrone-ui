@@ -55,7 +55,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Basic TextInputs</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Basic TextInputs
+        </Text>
         <Flex direction="horizontal" gap="l" align="center">
           <TextInput
             value={value1}
@@ -80,7 +82,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             invalid={value3.length !== 3}
           />
         </Flex>
-        <Text.Heading role="inner">Transparent TextInputs</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Transparent TextInputs
+        </Text>
         <Flex direction="horizontal" gap="l">
           <TextInput
             value={value1}
@@ -109,7 +113,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             variant="transparent"
           />
         </Flex>
-        <Text.Heading role="inner">Read-only mode</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Read-only mode
+        </Text>
         <Flex direction="horizontal" gap="s">
           <TextInput value={value4} onChange={setValue4} readOnly={readonly} />
           <Button
@@ -123,23 +129,27 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             readOnly={readonly}
           />
         </Flex>
-        <Text.Heading role="inner">Small TextInputs</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Small TextInputs
+        </Text>
         <TextInput
           size="s"
           value={value5}
           onChange={setValue5}
           placeholder="Type something in the small TextInput"
         />
-        <Text.Heading role="inner">Large TextInputs</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Large TextInputs
+        </Text>
         <TextInput
           size="l"
           value={value6}
           onChange={setValue6}
           placeholder="Type something in the large TextInput"
         />
-        <Text.Heading role="inner">
+        <Text size={5} weight="bold" block>
           TextInput without rainbow effect
-        </Text.Heading>
+        </Text>
         <TextInput
           size="s"
           value={value5}
@@ -169,7 +179,9 @@ export const IslandsStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Text Islands</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Text Islands
+        </Text>
         <Flex direction="horizontal" gap="l">
           <TextInput
             value={value1}
@@ -261,7 +273,9 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             />
           </TextInput>
         </Flex>
-        <Text.Heading role="inner">Icon Islands</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Icon Islands
+        </Text>
         <Flex direction="horizontal" gap="l">
           <TextInput
             value={value4}
@@ -309,7 +323,9 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             <TextInput.IconIsland placement="right" icon={<ChevronDown />} />
           </TextInput>
         </Flex>
-        <Text.Heading role="inner">Action Islands</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Action Islands
+        </Text>
         <Flex direction="horizontal" gap="l">
           <TextInput value={value7} onChange={setValue7} placeholder="Username">
             <Dropdown
@@ -397,7 +413,9 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             />
           </TextInput>
         </Flex>
-        <Text.Heading role="inner">Custom Islands</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Custom Islands
+        </Text>
         <Flex direction="horizontal" gap="l">
           <TextInput
             value={value9}
@@ -409,7 +427,9 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             </TextInput.CustomIsland>
           </TextInput>
         </Flex>
-        <Text.Heading role="inner">Loading Islands</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Loading Islands
+        </Text>
         <Flex direction="horizontal" gap="l">
           <TextInput
             value={value9}
@@ -435,7 +455,9 @@ export const IslandsStory: StoryObj<typeof Flex> = {
             <TextInput.LoadingIsland placement="right" />
           </TextInput>
         </Flex>
-        <Text.Heading role="inner">Char Counter Islands</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Char Counter Islands
+        </Text>
         <Flex direction="horizontal" gap="l">
           <TextInput
             value={value1}
@@ -476,7 +498,9 @@ export const SizesStory: StoryObj<typeof Flex> = {
       <Flex direction="vertical" gap="l">
         {(['mini', 's', 'm', 'l', 'xl'] as Size[]).map((size: Size) => (
           <>
-            <Text.Heading role="inner">Size {size.toUpperCase()}</Text.Heading>
+            <Text size={5} weight="bold" block>
+              Size {size.toUpperCase()}
+            </Text>
             <Flex direction="horizontal" gap="l">
               <TextInput
                 value={value1}
@@ -541,9 +565,9 @@ export const CustomInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">
+        <Text size={5} weight="bold" block>
           Using custom component instead of standard input
-        </Text.Heading>
+        </Text>
         <TextInput value={value} onChange={setValue} Component={<textarea />}>
           <TextInput.TextIsland label="Left island" />
         </TextInput>

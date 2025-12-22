@@ -92,9 +92,9 @@ export const NotificationsStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex gap="l" direction="vertical">
-        <Text.Heading variant="inner">
+        <Text size={5} weight="bold" block>
           What need to show in notification?
-        </Text.Heading>
+        </Text>
         <Flex gap="l">
           <Checkbox checked={titleVisible} onChange={setTitleVisible}>
             Title
@@ -106,9 +106,9 @@ export const NotificationsStory: StoryObj<typeof Flex> = {
             Action
           </Checkbox>
         </Flex>
-        <Text.Heading variant="inner">
+        <Text size={5} weight="bold" block>
           Where we need to show this notification?
-        </Text.Heading>
+        </Text>
         <Flex gap="l">
           <Select
             value={placement}
@@ -116,7 +116,9 @@ export const NotificationsStory: StoryObj<typeof Flex> = {
             options={NOTIFICATION_PLACEMENT}
           />
         </Flex>
-        <Text.Heading variant="inner">Click to show</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Click to show
+        </Text>
         <Flex direction="horizontal" gap="l">
           <Button
             label="Show notification"

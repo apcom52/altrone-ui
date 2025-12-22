@@ -29,7 +29,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">TextArea component</Text.Heading>
+        <Text size={5} weight="bold" block>
+          TextArea component
+        </Text>
         <Flex direction="horizontal" gap="l">
           <Textarea
             value={value1}

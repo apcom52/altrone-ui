@@ -20,7 +20,9 @@ export const BottomNavigationStory: StoryObj<typeof BottomNavigation> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Standard BottomNavigation</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Standard BottomNavigation
+        </Text>
         <BottomNavigation>
           <BottomNavigation.Item
             onClick={() => setSelectedItem('home')}

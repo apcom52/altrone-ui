@@ -24,7 +24,9 @@ export const FlexLayout: StoryObj<typeof Flex> = {
   name: 'Using Flex',
   render: (args) => (
     <Flex direction="vertical" {...args} gap="l">
-      <Text.Heading role="inner">Standard Progress bars</Text.Heading>
+      <Text size={5} weight="bold" block>
+        Standard Progress bars
+      </Text>
       <Flex direction="horizontal" gap="l">
         <Progress value={8} max={100} />
         <Progress value={63} max={100}>

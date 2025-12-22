@@ -37,7 +37,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">NumberInput</Text.Heading>
+        <Text size={5} weight="bold" block>
+          NumberInput
+        </Text>
         <Flex direction="horizontal" gap="l">
           <NumberInput
             value={value1}
@@ -77,7 +79,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             />
           </NumberInput>
         </Flex>
-        <Text.Heading role="inner">Different sizes of NumberInput</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Different sizes of NumberInput
+        </Text>
         <Flex direction="horizontal" gap="l">
           <NumberInput
             value={value5}

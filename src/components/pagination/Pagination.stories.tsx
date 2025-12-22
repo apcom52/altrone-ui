@@ -5,7 +5,6 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Pagination } from './Pagination.tsx';
 import { useState } from 'react';
 // import { userEvent, within, expect } from '@storybook/test';
-import { AsyncUtils } from '../../utils';
 
 const story: Meta<typeof Pagination> = {
   title: 'Components/Navigation/Pagination',
@@ -32,7 +31,9 @@ export const PaginationStory: StoryObj<typeof Pagination> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Pagination</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Pagination
+        </Text>
         <Flex direction="horizontal" gap="m">
           <Pagination
             data-testid="pagination"

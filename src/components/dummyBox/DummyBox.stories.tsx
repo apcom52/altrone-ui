@@ -26,7 +26,9 @@ export const DummyBoxStory: StoryObj<typeof Flex> = {
   render: () => {
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Using DummyBox</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Using DummyBox
+        </Text>
         <Flex gap="m">
           <DummyBox width="100px" height="100px" />
           <DummyBox width="80px" height="240px" />

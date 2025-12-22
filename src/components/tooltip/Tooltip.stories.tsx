@@ -18,7 +18,9 @@ export const TooltipStory: StoryObj<typeof Tooltip> = {
   render: () => {
     return (
       <Flex direction="vertical" gap="l" style={{ padding: '100px' }}>
-        <Text.Heading role="inner">Tooltips</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Tooltips
+        </Text>
         <Flex direction="horizontal" gap="m">
           <Tooltip content="Simple tooltip without custom child element" />
           <Tooltip content="Here is the tooltip of the button">

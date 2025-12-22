@@ -26,7 +26,35 @@
   --teal-a12: color(display-p3 0.11 0.235 0.219);
 }
 
-[data-altrone-accent="teal"] {
+[data-altrone-theme='dark'] {
+  --teal-1: color(display-p3 0.059 0.083 0.079);
+  --teal-2: color(display-p3 0.075 0.11 0.107);
+  --teal-3: color(display-p3 0.087 0.175 0.165);
+  --teal-4: color(display-p3 0.087 0.227 0.214);
+  --teal-5: color(display-p3 0.12 0.277 0.261);
+  --teal-6: color(display-p3 0.162 0.335 0.314);
+  --teal-7: color(display-p3 0.205 0.406 0.379);
+  --teal-8: color(display-p3 0.245 0.489 0.453);
+  --teal-9: color(display-p3 0.297 0.637 0.581);
+  --teal-10: color(display-p3 0.319 0.69 0.62);
+  --teal-11: color(display-p3 0.388 0.835 0.719);
+  --teal-12: color(display-p3 0.734 0.934 0.87);
+
+  --teal-a1: color(display-p3 0 0.992 0.761 / 0.017);
+  --teal-a2: color(display-p3 0.235 0.988 0.902 / 0.047);
+  --teal-a3: color(display-p3 0.235 1 0.898 / 0.118);
+  --teal-a4: color(display-p3 0.18 0.996 0.929 / 0.173);
+  --teal-a5: color(display-p3 0.31 1 0.933 / 0.227);
+  --teal-a6: color(display-p3 0.396 1 0.933 / 0.286);
+  --teal-a7: color(display-p3 0.443 1 0.925 / 0.366);
+  --teal-a8: color(display-p3 0.459 1 0.925 / 0.454);
+  --teal-a9: color(display-p3 0.443 0.996 0.906 / 0.61);
+  --teal-a10: color(display-p3 0.439 0.996 0.89 / 0.669);
+  --teal-a11: color(display-p3 0.388 0.835 0.719);
+  --teal-a12: color(display-p3 0.734 0.934 0.87);
+}
+
+[data-altrone-accent='teal'] {
   --accent-1: var(--teal-1);
   --accent-2: var(--teal-2);
   --accent-3: var(--teal-3);

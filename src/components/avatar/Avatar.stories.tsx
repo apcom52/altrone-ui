@@ -26,7 +26,9 @@ export const AvatarStory: StoryObj<typeof Flex> = {
   render: () => {
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Using avatars</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Using avatars
+        </Text>
         <Flex gap="m">
           <Avatar firstName="Alexander" lastName="Perevezentsev" />
           <Avatar firstName="Julia" color="#E91E63" lastName="Isakova" />
@@ -56,7 +58,9 @@ export const AvatarStory: StoryObj<typeof Flex> = {
             color="#FF5722"
           />
         </Flex>
-        <Text.Heading role="inner">Small avatars</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Small avatars
+        </Text>
         <Flex gap="m">
           <Avatar firstName="Alexander" lastName="Perevezentsev" size="s" />
           <Avatar
@@ -89,7 +93,9 @@ export const AvatarStory: StoryObj<typeof Flex> = {
             size="s"
           />
         </Flex>
-        <Text.Heading role="inner">Big avatars</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Big avatars
+        </Text>
         <Flex gap="m">
           <Avatar firstName="Alexander" lastName="Perevezentsev" size="l" />
           <Avatar

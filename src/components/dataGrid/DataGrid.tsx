@@ -25,13 +25,15 @@ export const DataGrid = memo<DataGridProps>((props) => {
 
   const t = useLocalization();
 
+  console.log(fields);
+
   const groupedFields = useMemo(() => {
     const groups: Record<string | symbol, DataGridFieldType[]> = {
       [CommonFields]: [],
     };
 
     for (const field of fields) {
-      if (!field.visible) {
+      if (typeof field.visible === 'boolean' && !field.visible) {
         continue;
       }
 
@@ -61,6 +63,8 @@ export const DataGrid = memo<DataGridProps>((props) => {
         onClick={() => onChangeMode('read')}
       />
     );
+
+  console.log(groupedFields);
 
   return (
     <div className={cls} style={styles} {...restProps}>

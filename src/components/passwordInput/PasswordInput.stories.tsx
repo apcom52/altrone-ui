@@ -35,7 +35,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">PasswordInput</Text.Heading>
+        <Text size={5} weight="bold" block>
+          PasswordInput
+        </Text>
         <Flex direction="horizontal" gap="l">
           <PasswordInput
             value={value1}

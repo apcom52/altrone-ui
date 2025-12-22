@@ -24,14 +24,18 @@ export const PaginationStory: StoryObj<typeof Divider> = {
   render: () => {
     return (
       <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Vertical Divider</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Vertical Divider
+        </Text>
         <Flex direction="horizontal" gap="m">
           <Button label="Test A" />
           <Button label="Test B" />
           <Divider direction="vertical" />
           <Button label="Test C" />
         </Flex>
-        <Text.Heading role="inner">Horizontal Divider</Text.Heading>
+        <Text size={5} weight="bold" block>
+          Horizontal Divider
+        </Text>
         <Flex direction="vertical" gap="m">
           <Button label="Test A" />
           <Button label="Test B" />
