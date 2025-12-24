@@ -2,7 +2,9 @@
 
 :global([data-altrone-root='true']) {
   --range-track-background-color: var(--interactive-a1);
-  --range-active-track-background-color: var(--accent-9);
+  --range-active-track-background-color: var(--accent-3);
+  --range-active-track-hover-background-color: var(--accent-4);
+  --range-active-track-active-background-color: var(--accent-5);
   --range-disabled-active-track-background-color: var(--disabled-text-color);
   --range-text-color: var(--text-2);
   --range-border-color: var(--border-a1);
@@ -11,6 +13,8 @@
 }
 
 .Range {
+  --range-active-track-bg: var(--range-active-track-background-color);
+
   display: flex;
   align-items: center;
   position: relative;
@@ -27,15 +31,18 @@
   @include no-selection;
   @include focus;
 
-  &:active {
-    cursor: ew-resize;
-  }
-
   &:focus-visible,
   &:hover {
+    --range-active-track-bg: var(--range-active-track-hover-background-color);
+
     .Value {
       opacity: 1;
     }
+  }
+
+  &:active {
+    --range-active-track-bg: var(--range-active-track-active-background-color);
+    cursor: ew-resize;
   }
 
   &[data-range-active='true'] {
@@ -66,10 +73,11 @@
   left: 0;
   height: 100%;
   pointer-events: none;
-  background-color: var(--range-active-track-background-color);
+  background-color: var(--range-active-track-bg);
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   box-shadow: 1px 0 5px 0 rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s ease;
 }
 
 .Value {

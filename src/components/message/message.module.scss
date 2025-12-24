@@ -22,7 +22,7 @@
 .Icon {
   height: var(--message-icon-size);
   font-size: var(--message-icon-size);
-  color: var(--message-icon-color);
+  color: var(--message-accent-text-color);
 }
 
 .Text {
@@ -33,14 +33,16 @@
 
 .Header {
   color: var(--message-accent-text-color);
-  font-weight: 500;
-  font-size: 14px;
+  font-weight: var(--text-weight-medium);
+  font-size: var(--text-size-4);
+  line-height: var(--line-height-4);
 }
 
 .Body {
   color: var(--message-text-color);
-  font-size: 12px;
-  font-weight: 400;
+  font-size: var(--text-size-4);
+  line-height: var(--line-height-4);
+  font-weight: var(--text-weight-regular);
 }
 
 .Actions {

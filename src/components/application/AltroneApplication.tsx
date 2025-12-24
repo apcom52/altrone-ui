@@ -11,6 +11,7 @@ import { ThemeContext, ThemeContextType } from './useTheme.ts';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import { AltroneLocalization } from './useLocalization.tsx';
+import { AlertProvider } from 'components/alert/AlertProvider.tsx';
 
 export const AltroneApplication = ({
   children,
@@ -75,7 +76,9 @@ export const AltroneApplication = ({
     <ThemeContext.Provider value={themeContext}>
       <AltroneLocalization language={language} customLabels={customLabels}>
         <Configuration {...config}>
-          <Toast>{children}</Toast>
+          <AlertProvider>
+            <Toast>{children}</Toast>
+          </AlertProvider>
         </Configuration>
       </AltroneLocalization>
     </ThemeContext.Provider>

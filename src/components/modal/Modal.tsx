@@ -24,6 +24,8 @@ export const Modal = memo<ModalProps>(
     className,
     style,
     onClick,
+    onClose,
+    showCancelButton = true,
     ...restProps
   }) => {
     const t = useLocalization();
@@ -63,7 +65,12 @@ export const Modal = memo<ModalProps>(
       onClick: show,
     });
 
-    const modalContext: ModalContext = { closeModal: hide };
+    const onCloseHandler = () => {
+      hide();
+      if (onClose) onClose();
+    };
+
+    const modalContext: ModalContext = { closeModal: onCloseHandler };
 
     const contentElement =
       typeof content === 'function' ? content(modalContext) : content;
@@ -76,7 +83,7 @@ export const Modal = memo<ModalProps>(
 
     const onBackdropClick = (e: MouseEvent<HTMLDivElement>) => {
       if (!(e.target as HTMLElement)?.closest('[aria-modal="true"]')) {
-        hide();
+        onCloseHandler();
       }
 
       if (onClick) onClick(e);
@@ -84,7 +91,7 @@ export const Modal = memo<ModalProps>(
 
     const onKeyboardHandler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        hide();
+        onCloseHandler();
       }
     };
 
@@ -106,7 +113,7 @@ export const Modal = memo<ModalProps>(
           },
         }}
       >
-        <AnimatePresence onExitComplete={hide}>
+        <AnimatePresence onExitComplete={onCloseHandler}>
           <div
             className={cls}
             style={styles}
@@ -130,13 +137,22 @@ export const Modal = memo<ModalProps>(
               <div className={s.ModalContent} aria-modal="true">
                 <div className={s.Title} id={titleId} aria-label={title}>
                   {title}
-                  <CloseButton className={s.Close} onClick={hide} autoFocus />
+                  <CloseButton
+                    className={s.Close}
+                    onClick={onCloseHandler}
+                    autoFocus
+                  />
                 </div>
                 <div className={s.Content}>{contentElement}</div>
                 <div className={s.Footer}>
                   <div className={s.LeftFooter}>{leftActionsElement}</div>
                   <div className={s.RightFooter}>
-                    <Button label={t('common.cancel')} onClick={hide} />
+                    {showCancelButton && (
+                      <Button
+                        label={t('common.cancel')}
+                        onClick={onCloseHandler}
+                      />
+                    )}
                     {actionsElement}
                   </div>
                 </div>

@@ -10,6 +10,7 @@ export interface ModalProps
   children: ReactElement;
   content: ReactElement | ((context: ModalContext) => ReactElement);
   openedByDefault?: boolean;
+  onClose?: () => void;
   enabled?: boolean;
   title?: string;
   size?: Size;
