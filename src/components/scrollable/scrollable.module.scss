@@ -8,9 +8,13 @@
   }
 }
 
+.ScrollableRoot {
+  min-height: 0;
+  height: 100%;
+}
+
 .Scrollable {
-  display: block;
-  position: relative;
+  height: 100%;
 }
 
 .Content {

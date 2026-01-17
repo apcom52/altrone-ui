@@ -3,7 +3,7 @@ import { DataGridFieldProps } from '../DataGrid.types';
 import { Skeleton } from 'components/skeleton';
 import s from './field.module.scss';
 
-export const CustomField = memo<DataGridFieldProps>((props) => {
+export const CustomField = (props) => {
   if (props.type !== 'custom') {
     return null;
   }
@@ -28,4 +28,4 @@ export const CustomField = memo<DataGridFieldProps>((props) => {
   }
 
   return renderEditMode ? renderEditMode(value) : null;
-});
+};

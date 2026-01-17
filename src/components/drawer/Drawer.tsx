@@ -14,12 +14,15 @@ export const Drawer = (props: DrawerProps) => {
   const {
     children,
     content,
+    footer,
     title,
     placement = 'start',
     width = 400,
     onClose,
     onDone,
+    renderActionButton,
     className,
+    ...rest
   } = props;
 
   const { value: isOpen, setValue: setIsOpen } = useBoolean(false);
@@ -97,27 +100,27 @@ export const Drawer = (props: DrawerProps) => {
                   mass: 0.75,
                 }}
               >
-                <div className={s.DrawerHeader}>
-                  <CloseButton onClick={handleClose} />
-                  <div className={s.DrawerTitle}>{title}</div>
-                  {onDone && (
-                    <Button
-                      icon={<Check />}
-                      variant="submit"
-                      label="Done"
-                      showLabel={false}
-                      onClick={handleDone}
-                      state={isLoading ? 'loading' : 'idle'}
-                    />
-                  )}
-                </div>
-                <div className={s.DrawerContent}>
-                  <Scrollable
-                    maxHeight="calc(100vh - 104px)"
-                    className={s.Content}
-                  >
-                    {content}
-                  </Scrollable>
+                <div className={s.DrawerBody}>
+                  <div className={s.DrawerHeader}>
+                    <CloseButton onClick={handleClose} />
+                    <div className={s.DrawerTitle}>{title}</div>
+                    {renderActionButton ? (
+                      renderActionButton({ closeDrawer: handleClose })
+                    ) : onDone ? (
+                      <Button
+                        icon={<Check />}
+                        variant="submit"
+                        label="Done"
+                        showLabel={false}
+                        onClick={handleDone}
+                        state={isLoading ? 'loading' : 'idle'}
+                      />
+                    ) : null}
+                  </div>
+                  <div className={s.DrawerContent}>
+                    <Scrollable className={s.Content}>{content}</Scrollable>
+                  </div>
+                  {footer && <div className={s.DrawerFooter}>{footer}</div>}
                 </div>
               </motion.div>
             </div>

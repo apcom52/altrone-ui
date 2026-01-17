@@ -1,9 +1,20 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Button, DataGrid, Flex } from 'components';
+import {
+  Button,
+  DataGrid,
+  Flex,
+  Form,
+  Radio,
+  Select,
+  Spoiler,
+  Switcher,
+  Textarea,
+  TextInput,
+} from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Drawer } from './Drawer.tsx';
-import { DATA_GRID_DATA } from 'components/dataGrid/DataGrid.stories.tsx';
+import { DATA_GRID_DATA } from 'components/dataGrid/DataGrid.constants.ts';
 
 const story: Meta<typeof Drawer> = {
   title: 'Components/Containers/Drawer',
@@ -267,6 +278,98 @@ export const PaginationStory: StoryObj<typeof Drawer> = {
           }
         >
           <Button label="Open drawer from the right side" />
+        </Drawer>
+        <Drawer
+          title="Create project"
+          onDone={() => {
+            return new Promise((resolve) => {
+              setTimeout(() => {
+                resolve(true);
+              }, 1000);
+            });
+          }}
+          renderDoneButton={({ closeDrawer }) => (
+            <Button label="Done" onClick={closeDrawer} />
+          )}
+          content={
+            <Flex direction="vertical">
+              <Spoiler title="Basic information">
+                <Form>
+                  <Form.Field label="Project name">
+                    <TextInput />
+                  </Form.Field>
+                  <Form.Field label="Slug">
+                    <TextInput />
+                  </Form.Field>
+                  <Form.Field label="Description">
+                    <Textarea />
+                  </Form.Field>
+                  <Form.Field label="Status">
+                    <Select
+                      options={[
+                        { value: 'active', label: 'Active' },
+                        { value: 'paused', label: 'Paused' },
+                        { value: 'archived', label: 'Archived' },
+                      ]}
+                      onChange={() => {}}
+                    />
+                  </Form.Field>
+                  <Form.Field label="Environment">
+                    <Radio
+                      onChange={() => {}}
+                      value="development"
+                      name="environment"
+                    >
+                      <Radio.Item value="development">Development</Radio.Item>
+                      <Radio.Item value="production">Production</Radio.Item>
+                    </Radio>
+                  </Form.Field>
+                </Form>
+              </Spoiler>
+              <Spoiler title="Ownership & access">
+                <Form>
+                  <Form.Field label="Owner">
+                    <Select
+                      options={[
+                        { value: '1', label: 'John Doe' },
+                        { value: '2', label: 'Jane Smith' },
+                        { value: '3', label: 'Jim Beam' },
+                      ]}
+                      onChange={() => {}}
+                    />
+                  </Form.Field>
+                  <Form.Field label="Default role for new users">
+                    <Select
+                      options={[
+                        { value: 'observer', label: 'Admin' },
+                        { value: 'executor', label: 'Manager' },
+                        { value: 'sentinel', label: 'Viewer' },
+                      ]}
+                      onChange={() => {}}
+                    />
+                  </Form.Field>
+                  <Form.Field>
+                    <Switcher onChange={() => {}} checked={true}>
+                      Allow public API access
+                    </Switcher>
+                  </Form.Field>
+                  <Form.Field>
+                    <Switcher onChange={() => {}} checked={true}>
+                      Allow invites by email
+                    </Switcher>
+                  </Form.Field>
+                </Form>
+              </Spoiler>
+            </Flex>
+          }
+          footer={
+            <Flex gap="s">
+              <Button label="Reset" />
+              <Button label="Help" />
+            </Flex>
+          }
+        >
+          <Button label="Edit record" />
         </Drawer>
       </Flex>
     );

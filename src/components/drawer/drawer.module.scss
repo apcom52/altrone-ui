@@ -47,14 +47,20 @@
 }
 
 .Content {
-  padding: 4px;
+}
+
+.DrawerBody {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 8px;
+  gap: 8px;
 }
 
 .DrawerHeader {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 8px;
 }
 
 .DrawerTitle {
@@ -71,6 +77,10 @@
 
 .DrawerContent {
   flex: 1;
-  padding: 4px;
-  max-height: calc(100% - 92px);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.DrawerFooter {
 }

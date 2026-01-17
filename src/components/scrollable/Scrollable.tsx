@@ -30,24 +30,19 @@ export const Scrollable = memo<ScrollableProps>(
 
     const { scrollable: scrollableConfig = {} } = useConfiguration();
 
-    const cls = clsx(className, scrollableConfig.className);
+    const cls = clsx(s.Scrollable, className, scrollableConfig.className);
 
     const styles = {
       ...scrollableConfig.style,
       ...style,
-      maxHeight,
-      maxWidth,
     };
 
     return (
-      <div style={styles} {...props}>
+      <div style={styles} className={s.ScrollableRoot} {...props}>
         <OverlayScrollbarsComponent
           defer
-          style={{
-            maxHeight,
-            maxWidth,
-          }}
           className={cls}
+          style={{ height: '100%' }}
           options={{
             scrollbars: {
               theme: 'os-theme-dark',

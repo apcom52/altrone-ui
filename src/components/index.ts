@@ -14,6 +14,8 @@ export * from './dataGrid';
 export * from './dataTable';
 export * from './datePicker';
 export * from './divider';
+export * from './dialog';
+export * from './drawer';
 export * from './dropdown';
 export * from './dummyBox';
 export * from './empty';
