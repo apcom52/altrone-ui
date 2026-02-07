@@ -1,0 +1,87 @@
+.Item {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  padding: 4px;
+  border-radius: 16px;
+  transition: background-color 0.2s ease, border-radius 0.2s ease;
+  height: 40px;
+}
+
+.Checkbox {}
+
+.Header {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  flex: 1;
+  min-width: 0;
+}
+
+.Title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-gap);
+  font-size: var(--text-size-4);
+  font-weight: var(--text-weight-medium);
+  line-height: var(--line-height-4);
+  color: var(--text-2);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.Icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.Subtitle {
+  display: inline;
+  font-size: var(--text-size-4);
+  font-weight: var(--text-weight-regular);
+  line-height: var(--line-height-4);
+  color: var(--text-1);
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Panel {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  flex-shrink: 0;
+  padding-left: 12px;
+}
+
+.Meta {
+  text-align: right;
+  font-size: var(--text-size-3);
+  font-weight: var(--text-weight-light);
+  line-height: var(--line-height-3);
+  color: var(--text-1);
+  white-space: nowrap;
+}
+
+.Checked {
+  background-color: var(--accent-3);
+
+  &:has(+ .Checked) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &+.Checked {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .Title {
+    color: var(--accent-12);
+  }
+}

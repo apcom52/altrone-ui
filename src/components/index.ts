@@ -19,6 +19,7 @@ export * from './drawer';
 export * from './dropdown';
 export * from './dummyBox';
 export * from './empty';
+export * from './entityList';
 export * from './filePicker';
 export * from './flex';
 export * from './form';
