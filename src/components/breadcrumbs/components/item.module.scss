@@ -1,11 +1,24 @@
 @import 'src/global/mixins';
 
+.ListItem {
+  display: inline-flex;
+  align-items: center;
+  list-style-type: none;
+  padding: 0;
+  gap: var(--gap);
+
+  &:last-child {
+    .Separator {
+      display: none;
+    }
+  }
+}
+
 .Item {
   display: inline-flex;
   align-items: center;
   background-color: transparent;
   border: none;
-  gap: var(--s-gap);
   cursor: pointer;
   @include no-selection;
   color: var(--breadcrumbs-item-text-color);
@@ -14,29 +27,49 @@
 
   &:hover,
   &:focus-visible {
-    color: var(--breadcrumbs-current-item-text-color);
+    color: var(--breadcrumbs-item-hover-text-color);
   }
+}
+
+.Content {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-gap);
 }
 
 .Icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  height: 16px;
+  font-size: var(--breadcrumbs-icon-size);
+  height: var(--breadcrumbs-icon-size);
 }
 
 .Label {
   font-size: var(--breadcrumbs-text-size);
-  font-weight: 400;
-  color: var(--breadcrumbs-item-text-color);
+  font-weight: var(--text-weight-medium);
 }
 
 .Current {
   --breadcrumbs-item-text-color: var(--breadcrumbs-current-item-text-color);
   cursor: default;
+  color: var(--breadcrumbs-current-item-text-color);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--breadcrumbs-current-item-text-color);
+  }
 
   .Label {
-    font-weight: 500;
+    font-weight: var(--text-weight-bold);
   }
+}
+
+.Separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  height: 16px;
+  color: var(--breadcrumbs-separator-color);
 }

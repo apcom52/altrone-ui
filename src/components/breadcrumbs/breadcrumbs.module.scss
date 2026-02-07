@@ -1,9 +1,11 @@
 :global([data-altrone-root='true']) {
-  --breadcrumbs-separator-color: var(--border-1);
+  --breadcrumbs-separator-color: var(--border-3);
   --breadcrumbs-item-text-color: var(--text-2);
   --breadcrumbs-current-item-text-color: var(--accent-12);
+  --breadcrumbs-item-hover-text-color: var(--accent-11);
 
   --breadcrumbs-text-size: 14px;
+  --breadcrumbs-icon-size: 16px;
 }
 
 .Breadcrumbs {
@@ -11,6 +13,14 @@
   flex-direction: row;
   align-items: center;
   gap: var(--l-gap);
+}
+
+.List {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--l-gap);
+  padding: 0;
 }
 
 .Separator {

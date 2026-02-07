@@ -10,7 +10,7 @@ import s from './breadcrumbs.module.scss';
 import clsx from 'clsx';
 import { Item } from './components';
 import { useConfiguration } from 'components/configuration';
-import { List } from 'components/list';
+import { Flex } from 'components/flex/Flex.tsx';
 
 const BreadcrumbsComponent = memo<BreadcrumbsProps>(
   ({ children, className, style, ...restProps }) => {
@@ -22,26 +22,12 @@ const BreadcrumbsComponent = memo<BreadcrumbsProps>(
       ...style,
     };
 
-    const validChildren = Children.toArray(children).filter(
-      (child) => typeof child === 'object' && isValidElement(child)
-    ) as ReactElement[];
-
     return (
-      <div className={cls} style={styles} {...restProps}>
-        <List
-          className={s.Breadcrumbs}
-          data={validChildren}
-          direction="horizontal"
-          gap="m"
-          renderItem={({ item, currentIndex }) =>
-            cloneElement(item, {
-              key: currentIndex,
-              current: currentIndex === validChildren.length - 1,
-            })
-          }
-          SeparatorComponent={() => <div className={s.Separator}>/</div>}
-        />
-      </div>
+      <nav className={cls} style={styles} {...restProps}>
+        <ol className={s.List}>
+          {children}
+        </ol>
+      </nav>
     );
   }
 );

@@ -2,27 +2,24 @@ import { forwardRef } from 'react';
 import { BreadcrumbsItemProps } from '../Breadcrumbs.types.ts';
 import clsx from 'clsx';
 import s from './item.module.scss';
-import { RenderFuncProp } from '../../../types';
+import React from 'react';
+import { Slot } from 'utils/components/Slot.tsx';
+import { AnyObject } from 'utils/types.ts';
+import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
+import { ChevronRight } from 'lucide-react';
 
-const renderItem: RenderFuncProp<HTMLAnchorElement, BreadcrumbsItemProps> = (
-  ref,
-  props,
-) => {
-  const { icon, label, ...restProps } = props;
-
-  delete restProps.current;
-
+const ItemContent = ({ icon, label }: Pick<BreadcrumbsItemProps, 'icon' | 'label'>) => {
   return (
-    <a ref={ref} {...restProps}>
+    <div className={s.Content}>
       {icon ? <div className={s.Icon}>{icon}</div> : null}
-      <div className={s.Label}>{label}</div>
-    </a>
-  );
-};
+      {label ? <div className={s.Label}>{label}</div> : null}
+    </div>
+  )
+}
 
-export const Item = forwardRef<HTMLAnchorElement, BreadcrumbsItemProps>(
+export const Item = forwardRef<HTMLDivElement, BreadcrumbsItemProps>(
   (props, ref) => {
-    const { className, current, renderFunc = renderItem, ...restProps } = props;
+    const { className, current, asChild, children, label, icon, onClick, ...restProps } = props;
 
     const cls = clsx(
       s.Item,
@@ -31,11 +28,34 @@ export const Item = forwardRef<HTMLAnchorElement, BreadcrumbsItemProps>(
       },
       className,
     );
+    const content = <ItemContent icon={icon} label={label} />;
 
-    return renderFunc(ref, {
-      ...restProps,
-      current,
-      className: cls,
-    });
-  },
-);
+    if (asChild && !React.isValidElement(children)) {
+      console.error("[Breadcrumbs] Item: children must be a valid element");
+      return null;
+    }
+
+    const childrenWithContent = children ? cloneWithRef(children, {
+      children: content,
+    }) : null;
+
+    return (
+      <li className={s.ListItem}>
+        {asChild && childrenWithContent ? (
+          <Slot<AnyObject> ref={ref} className={cls}>
+            {childrenWithContent}
+          </Slot>
+        ) : (
+          <div
+            ref={ref}
+            onClick={onClick}
+            className={cls}
+            {...restProps}
+          >
+            {content}
+          </div>
+        )}
+        <div className={s.Separator}><ChevronRight /></div>
+      </li>
+    );
+  });
