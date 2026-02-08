@@ -11,5 +11,5 @@ export interface EntityListItemProps extends Omit<React.HTMLAttributes<HTMLDivEl
   icon?: ReactElement;
   islands?: ReactNode[];
   disabled?: boolean;
-  onSelect?: () => void;
+  onSelect?: (checked: boolean) => void;
 }

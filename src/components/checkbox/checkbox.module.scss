@@ -79,6 +79,7 @@
   --checkbox-icon-color: var(--text-a2);
   --checkbox-text-color: var(--disabled-text-color);
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 .Danger {

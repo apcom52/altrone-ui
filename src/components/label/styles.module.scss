@@ -1,0 +1,150 @@
+:global([data-altrone-root='true']) {
+  --label-solid-background-color: var(--solid-2);
+  --label-background-color: var(--interactive-1);
+  --label-solid-text-color: var(--white);
+  --label-text-color: var(--text-2);
+}
+
+.Label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background-color: var(--label-solid-background-color);
+  color: var(--label-solid-text-color);
+  font-size: var(--text-size-3);
+  font-weight: var(--text-weight-medium);
+  line-height: var(--line-height-3);
+}
+
+.Primary {
+  --label-solid-background-color: var(--accent-9);
+  --label-background-color: var(--accent-3);
+  --label-solid-text-color: var(--white);
+  --label-text-color: var(--accent-12);
+}
+
+.Warning {
+  --label-solid-background-color: var(--amber-9);
+  --label-background-color: var(--amber-3);
+  --label-solid-text-color: var(--white);
+  --label-text-color: var(--amber-12);
+}
+
+.Success {
+  --label-solid-background-color: var(--teal-9);
+  --label-background-color: var(--teal-3);
+  --label-solid-text-color: var(--white);
+  --label-text-color: var(--teal-12);
+}
+
+.Danger {
+  --label-solid-background-color: var(--red-9);
+  --label-background-color: var(--red-3);
+  --label-solid-text-color: var(--white);
+  --label-text-color: var(--red-12);
+}
+
+.Amber {
+  --label-solid-background-color: var(--amber-9);
+  --label-background-color: var(--amber-3);
+  --label-solid-text-color: var(--white);
+  --label-text-color: var(--amber-12);
+}
+
+.Blue {
+  --label-solid-background-color: var(--blue-9);
+  --label-background-color: var(--blue-3);
+  --label-solid-text-color: var(--white);
+  --label-text-color: var(--blue-12);
+}
+
+.Brown {
+  --label-solid-background-color: var(--brown-9);
+  --label-background-color: var(--brown-3);
+  --label-solid-text-color: var(--white);
+  --label-text-color: var(--brown-12);
+}
+
+.Indigo {
+  --label-solid-background-color: var(--indigo-9);
+  --label-background-color: var(--indigo-3);
+  --label-solid-text-color: var(--white);
+  --label-text-color: var(--indigo-12);
+}
+
+.Pink {
+  --label-solid-background-color: var(--pink-9);
+  --label-background-color: var(--pink-3);
+  --label-solid-text-color: var(--white);
+  --label-text-color: var(--pink-12);
+}
+
+.Purple {
+  --label-solid-background-color: var(--purple-9);
+  --label-background-color: var(--purple-3);
+  --label-solid-text-color: var(--white);
+  --label-text-color: var(--purple-12);
+}
+
+.Red {
+  --label-solid-background-color: var(--red-9);
+  --label-background-color: var(--red-3);
+  --label-solid-text-color: var(--white);
+  --label-text-color: var(--red-12);
+}
+
+.Teal {
+  --label-solid-background-color: var(--teal-9);
+  --label-background-color: var(--teal-3);
+  --label-solid-text-color: var(--white);
+  --label-text-color: var(--teal-12);
+}
+
+.Soft {
+  background-color: var(--label-background-color);
+  color: var(--label-text-color);
+}
+
+.Outline {
+  background-color: transparent;
+  color: var(--label-solid-background-color);
+  box-shadow: inset 0 0 0 1px var(--label-solid-background-color);
+}
+
+.Pill {
+  border-radius: 9999px !important;
+}
+
+.Mini {
+  padding: 0 4px;
+  border-radius: 4px;
+  font-size: var(--text-size-1);
+  line-height: var(--line-height-1);
+  font-weight: var(--text-weight-medium);
+}
+
+.Small {
+  padding: 3px 6px;
+  border-radius: 6px;
+  font-size: var(--text-size-2);
+  line-height: var(--line-height-2);
+  font-weight: var(--text-weight-medium);
+}
+
+.Large {
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: var(--text-size-4);
+  line-height: var(--line-height-4);
+  font-weight: var(--text-weight-medium);
+}
+
+.XLarge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: var(--text-size-5);
+  line-height: var(--line-height-5);
+  font-weight: var(--text-weight-medium);
+}

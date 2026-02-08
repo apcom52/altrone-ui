@@ -28,6 +28,7 @@
   color: var(--text-2);
   white-space: nowrap;
   flex-shrink: 0;
+  transition: color 0.2s ease;
 }
 
 .Icon {
@@ -83,5 +84,35 @@
 
   .Title {
     color: var(--accent-12);
+  }
+}
+
+.Clickable {
+  .Header {
+    cursor: pointer;
+
+    &:hover {
+      .Title {
+        color: var(--accent-9);
+      }
+    }
+  }
+}
+
+.Disabled {
+  .Title {
+    color: var(--disabled-text-color);
+  }
+
+  .Subtitle {
+    opacity: 0.5;
+  }
+
+  .Panel {
+    opacity: 0.5;
+  }
+
+  .Checkbox {
+    opacity: 0.5;
   }
 }

@@ -7,6 +7,9 @@ import { EntityList } from './EntityList.tsx';
 import { Ellipsis, Eye, FileText, PawPrint, Trash } from 'lucide-react';
 import { Button } from 'components/button/Button.tsx';
 import { Dropdown } from 'components/dropdown/index.ts';
+import { Label } from 'components/label/Label.tsx';
+import { Checkbox } from 'components/checkbox/index.ts';
+import { useState } from 'react';
 
 const story: Meta<typeof EntityList> = {
   title: 'Components/Display/EntityList',
@@ -27,12 +30,15 @@ const story: Meta<typeof EntityList> = {
 export const EmptyStory: StoryObj<typeof Flex> = {
   name: 'Using EntityList',
   render: () => {
+    const [selectable, setSelectable] = useState(false);
+
     return (
       <Flex direction="vertical" gap="l">
         <Text size={5} weight="bold" block>
           Using standard EntityList
         </Text>
-        <EntityList>
+        <Checkbox checked={selectable} onChange={setSelectable}>Selectable mode</Checkbox>
+        <EntityList selectable={selectable}>
           <EntityList.Item
             title="Анна Петрова"
             icon={<FileText />}
@@ -59,6 +65,7 @@ export const EmptyStory: StoryObj<typeof Flex> = {
             title="Елена Соколова"
             subtitle="UX-дизайнер · elena.s@design.studio"
             meta="Черновик макетов: 5"
+            onClick={() => alert('clicked')}
           />
           <EntityList.Item
             title="Заказ #2847"
@@ -69,7 +76,9 @@ export const EmptyStory: StoryObj<typeof Flex> = {
             title="Проект «Альфа»"
             subtitle="Веб-платформа для клиентов"
             meta="Прогресс: 67% · 4 участника"
-          />
+          >
+            <Label color="danger" variant="soft">Checking</Label>
+          </EntityList.Item>
           <EntityList.Item
             title="Маргарита Волкова"
             subtitle="Бэкенд-разработчик · m.volkova@api.dev"
@@ -85,11 +94,14 @@ export const EmptyStory: StoryObj<typeof Flex> = {
             title="Контракт № 2025/03"
             subtitle="ИП Иванов А.С. · Поставка оборудования"
             meta="Подписание до 15.02.2025"
+            disabled
           />
           <EntityList.Item
             title="Склад «Центральный»"
             subtitle="г. Москва, ул. Складская, 15"
             meta="Остаток: 1 247 позиций · 3 приёмки сегодня"
+            onClick={() => alert('clicked')}
+            disabled
           />
           <EntityList.Item
             title="Репозиторий altrone-ui"

@@ -65,6 +65,7 @@ export const Checkbox = memo<CheckboxProps>(
           checked={checked}
           name={name}
           className={s.Input}
+          disabled={disabled}
         />
         <div className={s.Button}>
           {indeterminate ? (
