@@ -1,5 +1,5 @@
 import { Size } from 'types';
-import { JSX, ReactElement } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 
 export interface ButtonProps extends Omit<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -7,17 +7,19 @@ export interface ButtonProps extends Omit<
 > {
   label: string;
   showLabel?: boolean;
+  tooltip?: string | ReactElement;
 
   icon?: ReactElement;
   additionalIcon?: ReactElement;
 
-  variant?: 'default' | 'submit' | 'text' | 'action';
-  state?: 'idle' | 'loading' | 'successed' | 'failed';
+  variant?: 'default' | 'submit' | 'text';
+  state?: 'idle' | 'loading' | 'succeeded' | 'failed';
   danger?: boolean;
   size?: Size;
-  badge?: number | string | JSX.Element;
+  badge?: number | string | ReactElement;
   selected?: boolean;
 
   asChild?: boolean;
-  children?: ReactElement;
+  children?: ReactNode;
+  ref?: React.Ref<HTMLButtonElement>;
 }

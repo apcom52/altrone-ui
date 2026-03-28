@@ -3,7 +3,7 @@
 :global([data-altrone-root='true']) {
   --tooltip-background-color: color(display-p3 0.064 0.07 0.067);
   --tooltip-text-color: color(display-p3 0.927 0.933 0.93);
-  --tooltip-button-text-color: var(--text-1);
+  --tooltip-button-text-color: var(--text-2);
   --tooltip-button-background-color: var(--glass-background-color);
   --tooltip-button-border-color: var(--border-1);
 }
@@ -22,7 +22,9 @@
   color: var(--tooltip-question-mark-text-color);
   border-radius: 50%;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
   @include focus;
 }
 
@@ -30,9 +32,11 @@
   background: var(--tooltip-background-color);
   color: var(--tooltip-text-color);
   padding: 4px 8px;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 12px;
+  border-radius: 10px;
+  font-weight: var(--text-weight-medium);
+  max-width: 300px;
+  font-size: var(--text-size-3);
+  line-height: var(--line-height-3);
   z-index: var(--level-tooltip);
 }
 

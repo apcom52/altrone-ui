@@ -28,20 +28,28 @@
   border-radius: var(--button-rounding);
   border: none;
   color: var(--button-text-color);
-  box-shadow: 0 0 0 1px var(--button-border-color), 0 0 0 0.5px var(--black-a1),
-    0 1px 1px 0 var(--gray-a2), 0 2px 1px -1px var(--black-a1),
+  box-shadow:
+    0 0 0 1px var(--button-border-color),
+    0 0 0 0.5px var(--black-a1),
+    0 1px 1px 0 var(--gray-a2),
+    0 2px 1px -1px var(--black-a1),
     0 1px 3px 0 var(--black-a1);
   backdrop-filter: var(--glass-effects);
   font-size: var(--button-font-size);
-  font-weight: 500;
+  font-weight: var(--text-weight-medium);
   cursor: pointer;
   padding: 0;
   margin: 0;
   min-width: fit-content;
   max-height: var(--button-size);
 
-  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease,
-    backdrop-filter 0.2s ease, color 0.2s ease, filter 0.2s ease;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    backdrop-filter 0.2s ease,
+    color 0.2s ease,
+    filter 0.2s ease;
   appearance: none;
   -webkit-user-select: none;
   user-select: none;
@@ -72,7 +80,6 @@
   position: relative;
   gap: var(--button-gap);
   white-space: nowrap;
-  position: relative;
   align-items: center;
   padding: var(--button-vertical-padding) var(--button-horizontal-padding);
   min-height: var(--button-size);
@@ -80,9 +87,11 @@
   width: fit-content;
   height: var(--button-size);
   font-size: var(--button-font-size);
-  font-weight: 500;
+  font-weight: var(--text-weight-medium);
   pointer-events: none;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .ButtonIcon {
@@ -104,7 +113,7 @@
   background: var(--button-badge-background-color);
   border-radius: var(--button-badge-rounding);
   font-size: var(--button-badge-font-size);
-  font-weight: 600;
+  font-weight: var(--text-weight-bold);
   margin-right: calc(-1 * var(--button-badge-padding));
   line-height: var(--button-badge-size);
   min-width: var(--button-badge-min-width);

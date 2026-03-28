@@ -96,8 +96,7 @@ All colors and typography are CSS custom properties defined in
 Never use hardcoded color values. Example variables:
 `--primary-500`, `--danger-500`, `--paragraphFontSize`.
 
-Dark mode is toggled by adding `.AltroneDark` to `<html>`. Component styles
-should use `:global(.AltroneDark) &` for dark overrides.
+Dark mode is toggled by adding `data-altrone-theme`
 
 ### 4. SCSS mixins for typography
 

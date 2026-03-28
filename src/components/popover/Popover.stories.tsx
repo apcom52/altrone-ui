@@ -42,7 +42,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
                 We're gearing up for a system update packed with improvements
               </Text>
               <Flex justify="center" direction="horizontal" gap="s">
-                <Button variant="action" label="Reschedule update" />
+                <Button variant="default" label="Reschedule update" />
                 <Button variant="submit" label="Update now" />
               </Flex>
             </Flex>

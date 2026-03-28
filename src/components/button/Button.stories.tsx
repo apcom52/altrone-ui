@@ -40,7 +40,7 @@ const story: Meta<typeof Button> = {
 
 const renderButtonsWithRole = (
   type: ButtonProps['variant'],
-  args: ButtonProps
+  args: ButtonProps,
 ) => {
   const [loading, setLoading] = useState(false);
   const [successed, setSuccessed] = useState(false);
@@ -161,7 +161,7 @@ const renderButtonsWithRole = (
         variant={type}
         label="Click to finish"
         icon={<Check />}
-        state={successed ? 'successed' : 'idle'}
+        state={successed ? 'succeeded' : 'idle'}
         onClick={() => setSuccessed(!successed)}
       />
       <Button

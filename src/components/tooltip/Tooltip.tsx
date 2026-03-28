@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState, forwardRef } from 'react';
+import React, { memo, useId, useRef, useState, forwardRef } from 'react';
 import { useConfiguration } from 'components/configuration';
 import { HelpCircle } from 'lucide-react';
 import { TooltipTypes } from './Tooltip.types.ts';
@@ -35,6 +35,7 @@ export const Tooltip = memo(
       ref
     ) => {
       const [opened, setOpened] = useState(false);
+      const tooltipId = useId();
 
       const arrowRef = useRef<HTMLDivElement>(null);
 
@@ -57,14 +58,13 @@ export const Tooltip = memo(
       ]);
 
       const ariaAttributes = {
-        role: 'tooltip',
-        'aria-label': String(content),
+        'aria-describedby': tooltipId,
       };
 
       const safeChildElement = DOMUtils.cloneNode(children, ariaAttributes) || (
         <button
           type="button"
-          role="tooltip"
+          aria-describedby={tooltipId}
           aria-label={String(content)}
           className={clsx(s.QuestionMark, childrenClassName)}
         >
@@ -104,6 +104,8 @@ export const Tooltip = memo(
             >
               <motion.div
                 ref={refs.setFloating}
+                id={tooltipId}
+                role="tooltip"
                 style={floatingStyles}
                 className={s.Tooltip}
                 initial={{
