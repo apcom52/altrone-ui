@@ -5,6 +5,14 @@
   --text-code-text-color: var(--accent-12);
   --text-highlighted-background-color: var(--accent-3);
   --text-highlighted-text-color: var(--accent-12);
+
+  --text-list-offset: 24px;
+  --text-rounding: 8px;
+
+  --text-color-muted: var(--text-1);
+  --text-color-danger: var(--danger-color);
+  --text-color-success: var(--success-color);
+  --text-color-warning: var(--warning-color);
 }
 
 :global([data-altrone-root='true'][data-altrone-theme='dark']) {
@@ -87,7 +95,7 @@
 }
 
 .List {
-  padding-left: 24px;
+  padding-left: var(--text-list-offset);
 }
 
 .Item {
@@ -113,7 +121,7 @@
 }
 
 .Highlighted {
-  border-radius: 8px;
+  border-radius: var(--text-rounding);
   color: var(--text-highlighted-text-color);
   padding: 0 var(--xs-gap);
   background: var(--text-highlighted-background-color);
@@ -138,7 +146,7 @@
   font-family: var(--font-family-code);
   background: var(--text-code-background-color);
   padding: 0 var(--xs-gap);
-  border-radius: 8px;
+  border-radius: var(--text-rounding);
   box-shadow: inset 0 0 0 1px var(--text-code-border-color);
   font-weight: var(--text-weight-medium);
 }
@@ -148,4 +156,53 @@
   font-family: var(--font-family-code);
   font-weight: var(--text-weight-medium);
   letter-spacing: -0.05em;
+}
+
+.Truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.LineClamp {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--_text-line-clamp, 1);
+}
+
+.Nowrap {
+  white-space: nowrap;
+}
+
+.AlignStart {
+  text-align: start;
+}
+
+.AlignCenter {
+  text-align: center;
+}
+
+.AlignEnd {
+  text-align: end;
+}
+
+.AlignJustify {
+  text-align: justify;
+}
+
+.ColorMuted {
+  color: var(--text-color-muted);
+}
+
+.ColorDanger {
+  color: var(--text-color-danger);
+}
+
+.ColorSuccess {
+  color: var(--text-color-success);
+}
+
+.ColorWarning {
+  color: var(--text-color-warning);
 }

@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from 'global/storybook/StorybookDecorator.tsx';
-import { ArticleStory, FormattedArticle } from './stories';
+import { ArticleStory, FormattedArticle, TextFeaturesShowcase } from './stories';
 import { allModes } from '../../../.storybook/modes.ts';
 
 const story: Meta = {
@@ -24,6 +24,11 @@ export const ArticleStoryItem: StoryObj = {
 export const FormattedArticleStory: StoryObj = {
   name: 'Article with Formatting',
   render: () => <FormattedArticle />,
+};
+
+export const TextFeaturesShowcaseStory: StoryObj = {
+  name: 'New Features Showcase',
+  render: () => <TextFeaturesShowcase />,
 };
 
 export default story;
