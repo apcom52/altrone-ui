@@ -6,12 +6,6 @@
   list-style-type: none;
   padding: 0;
   gap: var(--gap);
-
-  &:last-child {
-    .Separator {
-      display: none;
-    }
-  }
 }
 
 .Item {
@@ -69,7 +63,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  height: 16px;
+  font-size: var(--breadcrumbs-separator-size);
+  height: var(--breadcrumbs-separator-size);
   color: var(--breadcrumbs-separator-color);
 }

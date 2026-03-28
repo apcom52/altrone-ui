@@ -255,3 +255,7 @@ This applies to every callback prop in every component. No exceptions.
 6. Add keys to all five locale files.
 7. Export from `src/components/index.ts`.
 8. Add a Storybook story with `StorybookDecorator`.
+
+## code comments
+
+always in English
