@@ -1,3 +1,4 @@
+import React from 'react';
 import { RenderFunction } from '../../utils';
 import { Gap } from '../../types';
 
@@ -7,8 +8,8 @@ export type CollapsedListContext = {
   expanded: boolean;
 };
 
-export interface CollapsedListProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface CollapsedListProps extends React.HTMLAttributes<HTMLDivElement> {
+  ref?: React.Ref<HTMLElement>;
   limit?: number;
   gap?: Gap;
   hideExpandButtonAfterUsage?: boolean;

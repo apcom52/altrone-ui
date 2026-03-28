@@ -5,15 +5,16 @@ import {
 } from './CollapsedList.types.ts';
 import { ArrayUtils, useBoolean } from 'utils';
 import { Button } from 'components/button';
-import { Icon } from 'components/icon';
 import { Flex } from 'components/flex';
 import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import s from './collapsed-list.module.scss';
 import { useLocalization } from '../application/useLocalization.tsx';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export const CollapsedList = memo<CollapsedListProps>(
   ({
+    ref,
     children,
     limit,
     expandButtonLabel,
@@ -30,14 +31,14 @@ export const CollapsedList = memo<CollapsedListProps>(
     const { value: expanded, toggle } = useBoolean(false);
 
     const limitValue =
-      typeof limit === 'number' ? limit : collapsedListConfig.limit || 5;
+      typeof limit === 'number' ? limit : (collapsedListConfig.limit ?? 5);
 
     const safeArray = ArrayUtils.getSafeArray(children);
 
     const visibleChildren = expanded
       ? safeArray
       : safeArray.slice(0, limitValue);
-    const restElementsLength = safeArray.length - limitValue;
+    const restElementsLength = Math.max(0, safeArray.length - limitValue);
     const showExpandButton =
       (restElementsLength > 0 && !expanded) ||
       (!hideExpandButtonAfterUsage && expanded);
@@ -76,6 +77,7 @@ export const CollapsedList = memo<CollapsedListProps>(
 
     return (
       <Flex
+        ref={ref}
         direction="vertical"
         className={cls}
         align="start"
@@ -88,9 +90,9 @@ export const CollapsedList = memo<CollapsedListProps>(
         </Flex>
         {showExpandButton ? (
           <Button
-            transparent
+            variant="text"
             label={expandButtonLabelText}
-            rightIcon={<Icon i={expanded ? 'expand_less' : 'expand_more'} />}
+            additionalIcon={expanded ? <ChevronUp /> : <ChevronDown />}
             onClick={toggle}
           />
         ) : null}
