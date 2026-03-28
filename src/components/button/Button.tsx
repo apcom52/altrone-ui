@@ -1,4 +1,4 @@
-import React, { memo, ReactElement } from 'react';
+import { isValidElement, memo, ReactElement } from 'react';
 import { ButtonProps } from './Button.types.ts';
 import s from './button.module.scss';
 import clsx from 'clsx';
@@ -102,7 +102,7 @@ export const Button = memo((props: ButtonProps) => {
   let buttonElement: ReactElement;
 
   if (asChild) {
-    if (!React.isValidElement(children)) {
+    if (!isValidElement(children)) {
       console.error('[Button] asChild requires a valid React element as children');
       return null;
     }
