@@ -2,11 +2,13 @@ import React, { ChangeEvent, PropsWithChildren, ReactElement } from 'react';
 import { Size } from 'types';
 
 export interface TextInputProps
-  extends PropsWithChildren,
+  extends
+    PropsWithChildren,
     Omit<
       React.InputHTMLAttributes<HTMLInputElement>,
       'onChange' | 'size' | 'children'
     > {
+  ref?: React.Ref<HTMLInputElement>;
   variant?: 'default' | 'transparent';
   value?: string;
   onChange?: (value: string, event: ChangeEvent) => void;
@@ -14,8 +16,7 @@ export interface TextInputProps
   wrapperStyle?: React.CSSProperties;
   invalid?: boolean;
   size?: Size;
-  rainbowEffect?: boolean;
-  Component?: ReactElement;
+  asChild?: boolean;
   readonlyStyles?: boolean;
 }
 
@@ -29,29 +30,31 @@ export interface IconIslandProps extends React.HTMLAttributes<HTMLDivElement> {
   placement?: 'left' | 'right';
 }
 
-export interface LoadingIslandProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface LoadingIslandProps extends React.HTMLAttributes<HTMLDivElement> {
   placement?: 'left' | 'right';
 }
 
 type MergedActionIslandProps = React.ButtonHTMLAttributes<HTMLElement>;
 
-export interface ActionIslandProps
-  extends Omit<MergedActionIslandProps, 'role' | 'onClick'> {
+export interface ActionIslandProps extends Omit<
+  MergedActionIslandProps,
+  'role' | 'onClick'
+> {
+  ref?: React.Ref<HTMLButtonElement>;
   label: string;
   icon?: ReactElement;
   showLabel?: boolean;
   placement?: 'left' | 'right';
   danger?: boolean;
-  onClick?: () => void;
 }
 
-export interface CustomIslandProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface CustomIslandProps extends React.HTMLAttributes<HTMLDivElement> {
   placement?: 'left' | 'right';
 }
 
-export interface CharCounterIslandProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
+export interface CharCounterIslandProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'children'
+> {
   placement?: 'left' | 'right';
 }

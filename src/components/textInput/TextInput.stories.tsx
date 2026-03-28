@@ -147,16 +147,6 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           onChange={setValue6}
           placeholder="Type something in the large TextInput"
         />
-        <Text size={5} weight="bold" block>
-          TextInput without rainbow effect
-        </Text>
-        <TextInput
-          size="s"
-          value={value5}
-          onChange={setValue5}
-          placeholder="This just a TextInput without rainbow effect"
-          rainbowEffect={false}
-        />
       </Flex>
     );
   },
@@ -566,9 +556,10 @@ export const CustomInputStory: StoryObj<typeof Flex> = {
     return (
       <Flex direction="vertical" gap="l">
         <Text size={5} weight="bold" block>
-          Using custom component instead of standard input
+          Using custom element instead of standard input
         </Text>
-        <TextInput value={value} onChange={setValue} Component={<textarea />}>
+        <TextInput value={value} onChange={setValue} asChild>
+          <textarea />
           <TextInput.TextIsland label="Left island" />
         </TextInput>
       </Flex>

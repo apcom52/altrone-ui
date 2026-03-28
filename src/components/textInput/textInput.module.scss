@@ -8,9 +8,11 @@
   --text-input-text-color: var(--text-2);
   --text-input-island-text-color: var(--text-1);
   --text-input-placeholder-color: var(--placeholder-text-color);
-  --text-input-font-size: 14px;
+  --text-input-font-size: var(--text-4);
   --text-input-size: 32px;
   --text-input-rounding: 16px;
+  --text-input-horizontal-padding: 8px;
+  --text-input-vertical-padding: 6px;
 
   --text-input-icon-size: 16px;
 
@@ -23,6 +25,9 @@
   --text-input-action-island-size: 24px;
   --text-input-action-island-icon-size: 14px;
   --text-input-action-island-horizontal-offset: 8px;
+
+  --text-input-islands-gap: 2px;
+  --text-input-islands-offset: 4px;
 }
 
 .Wrapper {
@@ -41,11 +46,12 @@
   appearance: none;
   border-radius: var(--text-input-rounding);
   border: 1px solid var(--text-input-border-color);
-  padding: 6px 12px;
+  padding: var(--text-input-vertical-padding)
+    var(--text-input-horizontal-padding);
   height: var(--text-input-size);
   outline: none;
   color: var(--text-input-text-color);
-  font-weight: 500;
+  font-weight: var(--text-weight-medium);
   font-size: var(--text-input-font-size);
   line-height: var(--text-input-size);
   transition: background-color 0.2s linear;
@@ -67,18 +73,13 @@
 
   &:invalid,
   &.Invalid {
-    --text-input-text-color: var(--danger-color) !important;
+    --text-input-text-color: var(--danger-color);
   }
 }
 
 .Readonly {
   --text-input-background-color: transparent;
   --text-input-border-color: transparent;
-  outline: none;
-
-  &:focus-visible {
-    outline: none;
-  }
 }
 
 .Transparent {
@@ -97,6 +98,8 @@
   --text-input-font-size: 10px;
   --text-input-size: 16px;
   --text-input-rounding: 8px;
+  --text-input-horizontal-padding: 4px;
+  --text-input-vertical-padding: 6px;
 
   --text-input-icon-size: 12px;
 
@@ -111,6 +114,8 @@
   --text-input-font-size: 12px;
   --text-input-size: 24px;
   --text-input-rounding: 12px;
+  --text-input-horizontal-padding: 6px;
+  --text-input-vertical-padding: 6px;
 
   --text-input-icon-size: 14px;
 
@@ -125,6 +130,8 @@
   --text-input-font-size: 16px;
   --text-input-size: 40px;
   --text-input-rounding: 20px;
+  --text-input-horizontal-padding: 12px;
+  --text-input-vertical-padding: 6px;
 
   --text-input-icon-size: 18px;
 
@@ -139,6 +146,8 @@
   --text-input-font-size: 20px;
   --text-input-size: 48px;
   --text-input-rounding: 24px;
+  --text-input-horizontal-padding: 14px;
+  --text-input-vertical-padding: 6px;
 
   --text-input-icon-size: 24px;
 
@@ -155,12 +164,12 @@
   position: absolute;
   top: 0;
   align-items: center;
-  gap: 2px;
+  gap: var(--text-input-islands-gap);
   height: var(--text-input-size);
   pointer-events: none;
   color: var(--text-input-island-text-color);
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: var(--text-input-islands-offset);
+  padding-right: var(--text-input-islands-offset);
 }
 
 .LeftIslands {
