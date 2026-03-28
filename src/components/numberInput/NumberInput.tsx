@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 import { NumberInputProps } from './NumberInput.types.ts';
 import { TextInput } from 'components/textInput';
-import { ArrayUtils } from 'utils';
+import { ArrayUtils, useShowControls } from 'utils';
 import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import { Spinner } from './inner/Spinner.tsx';
@@ -58,13 +58,11 @@ export const NumberInput = ({
     typeof disabled === 'boolean' ? disabled : formFieldDisabled;
   const inputSize = size || formFieldSize;
 
-  const needToShowControl =
-    !readOnly &&
-    (typeof showControls === 'boolean'
-      ? showControls
-      : typeof numberInputConfig.showControls === 'boolean'
-      ? numberInputConfig.showControls
-      : true);
+  const needToShowControl = useShowControls({
+    propValue: showControls,
+    configValue: numberInputConfig.showControls,
+    readOnly,
+  });
 
   const allowLeadingZerosValue =
     typeof allowLeadingZeros === 'boolean'

@@ -38,7 +38,7 @@ type MergedActionIslandProps = React.ButtonHTMLAttributes<HTMLElement>;
 
 export interface ActionIslandProps extends Omit<
   MergedActionIslandProps,
-  'role' | 'onClick'
+  'role'
 > {
   ref?: React.Ref<HTMLButtonElement>;
   label: string;
