@@ -103,7 +103,9 @@ export const Button = memo((props: ButtonProps) => {
 
   if (asChild) {
     if (!isValidElement(children)) {
-      console.error('[Button] asChild requires a valid React element as children');
+      console.error(
+        '[Button] asChild requires a valid React element as children',
+      );
       return null;
     }
 
@@ -148,7 +150,7 @@ export const Button = memo((props: ButtonProps) => {
     );
   }
 
-  if (!showLabel) {
+  if (!showLabel && tooltipContent) {
     return <Tooltip content={tooltipContent}>{buttonElement}</Tooltip>;
   }
 
