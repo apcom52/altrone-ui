@@ -56,6 +56,29 @@ export class GlobalUtils {
     };
   }
 
+  public static rgbToHex(rgb: string): string {
+    const toHex = (n: number) => Math.round(n).toString(16).padStart(2, '0');
+
+    const p3Match = rgb.match(
+      /color\(display-p3\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\)/,
+    );
+    if (p3Match) {
+      const r = parseFloat(p3Match[1]) * 255;
+      const g = parseFloat(p3Match[2]) * 255;
+      const b = parseFloat(p3Match[3]) * 255;
+      const a = p3Match[4] !== undefined ? Math.round(parseFloat(p3Match[4]) * 255) : 255;
+      return `#${toHex(r)}${toHex(g)}${toHex(b)}${a < 255 ? toHex(a) : ''}`;
+    }
+
+    const rgbMatch = rgb.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+    if (!rgbMatch) return '#000000';
+    const r = parseInt(rgbMatch[1], 10);
+    const g = parseInt(rgbMatch[2], 10);
+    const b = parseInt(rgbMatch[3], 10);
+    const a = rgbMatch[4] !== undefined ? Math.round(parseFloat(rgbMatch[4]) * 255) : 255;
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}${a < 255 ? toHex(a) : ''}`;
+  }
+
   public static getColorLuminance(color: string) {
     const hex = color.replace('#', '');
     const r = parseInt(hex.substring(0, 2), 16);

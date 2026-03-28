@@ -1,8 +1,11 @@
-.Avatar {
-  --avatar-image-size: 20px;
-  --avatar-letter-size: 12px;
-  --avatar-size: 24px;
+:global([data-altrone-root='true']) {
+  --avatar-image-size: 28px;
+  --avatar-text-size: 16px;
+  --avatar-text-weight: var(--text-weight-bold);
+  --avatar-size: 32px;
+}
 
+.Avatar {
   position: relative;
   display: inline-flex;
   border-radius: 50%;
@@ -12,10 +15,11 @@
   height: var(--avatar-size);
   user-select: none;
   overflow: hidden;
+  background-color: var(--interactive-1);
 
   &:after {
     position: absolute;
-    top: 0%;
+    top: 0;
     left: 0;
     width: 100%;
     height: 100%;
@@ -23,7 +27,7 @@
     z-index: 0;
     background: radial-gradient(
       at 0% 0%,
-      rgba(255, 255, 255, 0.4),
+      rgba(255, 255, 255, 0.25),
       transparent 100%
     );
   }
@@ -34,9 +38,8 @@
   width: 100%;
   text-align: center;
   line-height: var(--avatar-size);
-  color: var(--default-900);
-  font-size: var(--avatar-letter-size);
-  font-weight: 500;
+  font-size: var(--avatar-text-size);
+  font-weight: var(--avatar-text-weight);
   z-index: 2;
 }
 
@@ -44,17 +47,28 @@
   width: var(--avatar-image-size);
   height: var(--avatar-image-size);
   border-radius: 50%;
-  margin: 2px;
+}
+
+.Mini {
+  --avatar-image-size: 14px;
+  --avatar-text-size: 9px;
+  --avatar-size: 16px;
 }
 
 .Small {
-  --avatar-image-size: 16px;
-  --avatar-letter-size: 10px;
-  --avatar-size: 20px;
+  --avatar-image-size: 20px;
+  --avatar-text-size: 14px;
+  --avatar-size: 24px;
 }
 
 .Large {
-  --avatar-image-size: 28px;
-  --avatar-letter-size: 14px;
-  --avatar-size: 32px;
+  --avatar-image-size: 36px;
+  --avatar-text-size: 18px;
+  --avatar-size: 40px;
+}
+
+.XLarge {
+  --avatar-image-size: 42px;
+  --avatar-text-size: 22px;
+  --avatar-size: 48px;
 }

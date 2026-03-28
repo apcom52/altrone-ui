@@ -1,1 +1,1 @@
-export { Avatar } from './Badge.tsx';
+export { Badge } from './Badge.tsx';
