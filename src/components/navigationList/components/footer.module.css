@@ -1,0 +1,6 @@
+.Footer {
+  position: sticky;
+  bottom: 0;
+  padding: 8px;
+  z-index: var(--level-fixed);
+}
