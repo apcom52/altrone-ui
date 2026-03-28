@@ -28,10 +28,10 @@ const story: Meta<typeof NumberInput> = {
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using NumberInput',
   render: () => {
-    const [value1, setValue1] = useState<number | undefined>(undefined);
-    const [value2, setValue2] = useState<number | undefined>(undefined);
+    const [value1, setValue1] = useState<number | undefined>(1);
+    const [value2, setValue2] = useState<number | undefined>();
     const [value3, setValue3] = useState<number | undefined>(-25);
-    const [value4, setValue4] = useState<number | undefined>(undefined);
+    const [value4, setValue4] = useState<number | undefined>(40);
     const [value5, setValue5] = useState<number | undefined>(undefined);
     const [value6, setValue6] = useState<number | undefined>(undefined);
 

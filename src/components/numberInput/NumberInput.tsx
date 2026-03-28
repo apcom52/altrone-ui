@@ -1,7 +1,7 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { NumberInputProps } from './NumberInput.types.ts';
 import { TextInput } from 'components/textInput';
-import { ArrayUtils, useShowControls } from 'utils';
+import { ArrayUtils, mergeRefs, useShowControls } from 'utils';
 import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import { Spinner } from './inner/Spinner.tsx';
@@ -30,7 +30,6 @@ export const NumberInput = ({
   value,
   size,
   onChange,
-  defaultValue,
   min = 0,
   max,
   invalid,
@@ -40,6 +39,7 @@ export const NumberInput = ({
   ...restProps
 }: NumberInputProps) => {
   const numberInputRef = useRef<HTMLInputElement | null>(null);
+  const mergedInputRef = useMemo(() => mergeRefs(numberInputRef, ref), [ref]);
 
   const { numberInput: numberInputConfig = {}, locale: localeConfig = {} } =
     useConfiguration();
@@ -67,22 +67,22 @@ export const NumberInput = ({
   const allowLeadingZerosValue =
     typeof allowLeadingZeros === 'boolean'
       ? allowLeadingZeros
-      : numberInputConfig.allowLeadingZeros || false;
+      : numberInputConfig.allowLeadingZeros ?? false;
 
   const digitsAfterPointValue =
     typeof digitsAfterPoint === 'number'
       ? digitsAfterPoint
-      : numberInputConfig.digitsAfterPoint || 2;
+      : (numberInputConfig.digitsAfterPoint ?? 2);
 
   const groupingDelimiterValue =
     typeof groupingDelimiter === 'string'
       ? groupingDelimiter
-      : localeConfig.numberGrouping || ' ';
+      : (localeConfig.numberGrouping ?? ' ');
 
   const decimalDelimiterValue =
     typeof decimalDelimiter === 'string'
       ? decimalDelimiter
-      : localeConfig.numberDecimal || '.';
+      : (localeConfig.numberDecimal ?? '.');
 
   const safeChildren = ArrayUtils.getSafeArray(children);
 
@@ -94,7 +94,7 @@ export const NumberInput = ({
       [inputStyles.Readonly]: readOnly,
     },
     numberInputConfig.className,
-    className
+    className,
   );
   const styles = {
     ...numberInputConfig.style,
@@ -105,7 +105,7 @@ export const NumberInput = ({
     ({ floatValue }, sourceInfo) => {
       onChange(floatValue || 0, sourceInfo.event);
     },
-    [onChange]
+    [onChange],
   );
 
   const onAllowedCheck = useCallback(
@@ -120,27 +120,29 @@ export const NumberInput = ({
 
       return true;
     },
-    [min, max, onChange]
+    [min, max],
   );
 
-  const spinnerChangeValue = (diff: number) => {
-    if (numberInputRef.current) {
-      DOMUtils.triggerEvent({
-        element: numberInputRef.current,
-        value: (value || 0) + diff,
-        eventType: 'change',
-        senderObject: window.HTMLInputElement.prototype,
-        propertyName: 'value',
-      });
-    }
-  };
+  const spinnerChangeValue = useCallback(
+    (diff: number) => {
+      if (numberInputRef.current) {
+        DOMUtils.triggerEvent({
+          element: numberInputRef.current,
+          value: (value || 0) + diff,
+          eventType: 'change',
+          senderObject: HTMLInputElement.prototype,
+          propertyName: 'value',
+        });
+      }
+    },
+    [value],
+  );
 
   return (
     <TextInput
       asChild
-      value={String(value ?? '')}
-      onChange={() => null}
       type="text"
+      value={value !== undefined ? String(value) : undefined}
       className={cls}
       style={styles}
       size={inputSize}
@@ -158,15 +160,7 @@ export const NumberInput = ({
         decimalSeparator={decimalDelimiterValue}
         decimalScale={digitsAfterPointValue}
         readOnly={readOnly}
-        getInputRef={(_ref: HTMLInputElement) => {
-          numberInputRef.current = _ref;
-
-          if (typeof ref === 'function') {
-            ref(_ref);
-          } else if (ref) {
-            ref.current = _ref;
-          }
-        }}
+        getInputRef={mergedInputRef}
         isAllowed={onAllowedCheck}
         {...restProps}
       />
@@ -176,14 +170,14 @@ export const NumberInput = ({
           <Spinner
             disabled={inputDisabled}
             disabledUp={Boolean(
-              typeof max === 'number' && value && value >= max
+              typeof max === 'number' && value && value >= max,
             )}
-            disabledDown={Boolean(
-              typeof min === 'number' && value && (value <= min || !value)
-            )}
+            disabledDown={
+              typeof min === 'number' && value !== undefined && value <= min
+            }
             onDownClick={() => spinnerChangeValue(-1)}
             onUpClick={() => spinnerChangeValue(1)}
-            size={size}
+            size={inputSize}
           />
         </TextInput.CustomIsland>
       ) : null}

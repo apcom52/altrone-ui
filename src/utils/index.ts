@@ -1,4 +1,5 @@
 export * from './ArrayUtils.ts';
+export * from './mergeRefs.ts';
 export * from './AsyncUtils.ts';
 export * from './Children.ts';
 export * from './DOMUtils.ts';
