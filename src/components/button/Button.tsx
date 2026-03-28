@@ -24,6 +24,8 @@ export const Button = memo((props: ButtonProps) => {
     badge,
     ref,
     selected = false,
+    asChild = false,
+    children,
     ...restProps
   } = props;
 
@@ -47,7 +49,7 @@ export const Button = memo((props: ButtonProps) => {
       [s.Selected]: selected,
     },
     className,
-    buttonConfig.className
+    buttonConfig.className,
   );
 
   const styles = {

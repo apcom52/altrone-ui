@@ -1,8 +1,10 @@
 import { Size } from 'types';
 import { JSX, ReactElement } from 'react';
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  'children'
+> {
   label: string;
   showLabel?: boolean;
 
@@ -15,4 +17,7 @@ export interface ButtonProps
   size?: Size;
   badge?: number | string | JSX.Element;
   selected?: boolean;
+
+  asChild?: boolean;
+  children?: ReactElement;
 }

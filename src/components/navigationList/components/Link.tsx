@@ -17,6 +17,32 @@ import {
 import { Badge } from 'components/badge/Badge.tsx';
 import { motion } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
+import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
+
+const ItemContent = ({
+  icon,
+  badge,
+  label,
+  actions,
+  opened,
+}: Pick<NavigationListLinkProps, 'icon' | 'label' | 'badge' | 'children'> & {
+  actions: ReactElement[];
+  opened: boolean;
+}) => {
+  return (
+    <div className={s.Label}>
+      {icon ? <div className={s.Icon}>{icon}</div> : null}
+      <div className={s.LabelText}>{label}</div>
+      {badge ? <Badge className={s.Badge}>{badge}</Badge> : null}
+      {actions?.length ? <div className={s.Actions}>{actions}</div> : null}
+      {opened ? (
+        <div className={s.ChildrenIcon}>
+          <ChevronDown />
+        </div>
+      ) : null}
+    </div>
+  );
+};
 
 const navigationListRenderFunc: RenderFuncProp<
   HTMLAnchorElement,
@@ -30,6 +56,7 @@ const navigationListRenderFunc: RenderFuncProp<
     children,
     selected,
     badge,
+    asChild,
     ...restProps
   } = props;
 
@@ -38,15 +65,34 @@ const navigationListRenderFunc: RenderFuncProp<
   const { value: hovered, enable: hover, disable: unhover } = useBoolean();
 
   const hasChildren = React.Children.count(children) > 0;
-  const showChildren = hasChildren && selected;
+  const showChildren = Boolean(hasChildren && selected);
   const showIcon = icon && level < 2;
+
+  const content = (
+    <ItemContent
+      icon={icon}
+      label={label}
+      badge={badge}
+      opened={showChildren}
+      actions={children || []}
+    />
+  );
+
+  if (asChild && !React.isValidElement(children)) {
+    console.error('[NavigationList] Link: children must be a valid element');
+    return null;
+  }
+
+  const childrenWithContent = children
+    ? cloneWithRef(children, {
+        children: content,
+      })
+    : null;
 
   const listCls = clsx({
     [s.SecondLevelList]: level === 0,
     [s.ThirdLevelList]: level > 0,
   });
-
-  const badgeCls = clsx(s.Badge, linkConfig.badgeClassName);
 
   return (
     <>
@@ -63,25 +109,16 @@ const navigationListRenderFunc: RenderFuncProp<
             className={s.Backdrop}
           />
         )}
-        <div className={s.Label}>
-          {showIcon ? <div className={s.Icon}>{icon}</div> : null}
-          <div className={s.LabelText}>{label}</div>
-          {badge ? <Badge className={badgeCls}>{badge}</Badge> : null}
-          {actions?.length ? <div className={s.Actions}>{actions}</div> : null}
-          {showChildren ? (
-            <div className={s.ChildrenIcon}>
-              <ChevronDown />
-            </div>
-          ) : null}
-        </div>
+        {content}
       </div>
-      {showChildren ? (
+
+      {/*{showChildren ? (
         <div className={listCls}>
           <NavigationListLevelContext.Provider value={level + 1}>
             {children}
           </NavigationListLevelContext.Provider>
         </div>
-      ) : null}
+      ) : null}*/}
     </>
   );
 };
@@ -127,7 +164,7 @@ export const Link = forwardRef<HTMLAnchorElement, NavigationListLinkProps>(
         [s.Selected]: props.selected,
       },
       className,
-      linkConfig?.className
+      linkConfig?.className,
     );
 
     const styles = {
@@ -143,5 +180,5 @@ export const Link = forwardRef<HTMLAnchorElement, NavigationListLinkProps>(
       level: listLevel,
       children: childItems,
     });
-  }
+  },
 );

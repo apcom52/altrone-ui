@@ -89,13 +89,19 @@ export const EmptyStory: StoryObj<typeof Flex> = {
             title="Тикет SUPPORT-891"
             subtitle="Проблема с авторизацией в мобильном приложении"
             meta="В работе · Приоритет: высокий"
-          />
+            asChild
+          >
+            <button />
+          </EntityList.Item>
           <EntityList.Item
             title="Контракт № 2025/03"
             subtitle="ИП Иванов А.С. · Поставка оборудования"
             meta="Подписание до 15.02.2025"
-            disabled
-          />
+            asChild
+          >
+            <button />
+            <Label color="success" variant="soft">Valid</Label>
+          </EntityList.Item>
           <EntityList.Item
             title="Склад «Центральный»"
             subtitle="г. Москва, ул. Складская, 15"
@@ -107,7 +113,10 @@ export const EmptyStory: StoryObj<typeof Flex> = {
             title="Репозиторий altrone-ui"
             subtitle="Компонентная библиотека · main"
             meta="+24 −8 за неделю · 12 открытых PR"
-          />
+            asChild
+          >
+            <button />
+          </EntityList.Item>
           <EntityList.Item
             title="Ольга Новикова"
             subtitle="Аналитик данных · o.novikova@analytics.co"

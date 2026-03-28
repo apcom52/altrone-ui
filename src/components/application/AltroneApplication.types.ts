@@ -1,5 +1,8 @@
-import { JSX } from 'react';
+import { JSX, ReactElement } from 'react';
 import { ConsumerConfigurationContext } from '../configuration/AltroneConfiguration.context.ts';
+import { NavigationListProps } from 'components/navigationList/NavigationList.types.ts';
+import { ToolbarProps } from 'components/toolbar/Toolbar.types.ts';
+import { ScreenProps } from 'components/screen/Screen.types.ts';
 
 export type Theme = 'auto' | 'light' | 'dark';
 export type Accent =
@@ -20,4 +23,6 @@ export interface AltroneApplicationProps extends React.HTMLAttributes<HTMLDivEle
   tagName?: keyof JSX.IntrinsicElements;
   config?: Partial<ConsumerConfigurationContext>;
   customLabels?: Record<string, any>;
+  sidebar?: ScreenProps['sidebar'];
+  header?: ScreenProps['header'];
 }

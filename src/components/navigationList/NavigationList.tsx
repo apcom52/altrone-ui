@@ -3,7 +3,14 @@ import { NavigationListProps } from './NavigationList.types.ts';
 import s from './navigationList.module.scss';
 import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
-import { Group, GroupAction, Link, LinkAction } from './components';
+import {
+  Group,
+  GroupAction,
+  Link,
+  LinkAction,
+  Header,
+  Footer,
+} from './components';
 import {
   NavigationListIdContext,
   NavigationListLevelContext,
@@ -18,7 +25,7 @@ const NavigationListComponent = memo<NavigationListProps>(
     const cls = clsx(
       s.NavigationList,
       className,
-      navigationListConfig.className
+      navigationListConfig.className,
     );
 
     const styles = {
@@ -35,14 +42,16 @@ const NavigationListComponent = memo<NavigationListProps>(
         </NavigationListLevelContext.Provider>
       </nav>
     );
-  }
+  },
 );
 
 const NavigationListNamespace = Object.assign(NavigationListComponent, {
-  Group: Group,
-  GroupAction: GroupAction,
-  Link: Link,
-  LinkAction: LinkAction,
+  Group,
+  GroupAction,
+  Link,
+  LinkAction,
+  Header,
+  Footer,
 });
 
 export { NavigationListNamespace as NavigationList };

@@ -1,34 +1,35 @@
 :global([data-altrone-root='true']) {
-  --navigation-list-background-color: var(--glass-background-color);
-  --navigation-list-width: 300px;
-  --navigation-list-rounding: 24px;
+    --navigation-list-background-color: var(--glass-background-color);
+    --navigation-list-width: 300px;
+    --navigation-list-rounding: 24px;
 
-  --navigation-list-group-text-size: 12px;
-  --navigation-list-group-text-color: var(--text-1);
+    --navigation-list-group-text-size: 12px;
+    --navigation-list-group-text-color: var(--text-1);
 
-  --navigation-list-link-background-color: transparent;
-  --navigation-list-link-backdrop-color: var(--interactive-a1);
-  --navigation-list-link-rounding: 16px;
-  --navigation-list-link-text-color: var(--text-2);
-  --navigation-list-link-text-size: 14px;
-  --navigation-list-link-icon-size: 18px;
-  --navigation-list-link-selected-background-color: var(--background-1);
-  --navigation-list-link-selected-text-color: var(--accent-12);
+    --navigation-list-link-background-color: transparent;
+    --navigation-list-link-backdrop-color: var(--interactive-a1);
+    --navigation-list-link-rounding: 16px;
+    --navigation-list-link-text-color: var(--text-2);
+    --navigation-list-link-text-size: 14px;
+    --navigation-list-link-icon-size: 18px;
+    --navigation-list-link-selected-background-color: var(--background-1);
+    --navigation-list-link-selected-text-color: var(--accent-12);
 
-  --navigation-list-badge-background-color: var(--interactive-a1);
-  --navigation-list-badge-text-color: var(--text-2);
-  --navigation-list-badge-size: 24px;
-  --navigation-list-badge-rounding: 12px;
-  --navigation-list-badge-font-size: 10px;
+    --navigation-list-badge-background-color: var(--interactive-a1);
+    --navigation-list-badge-text-color: var(--text-2);
+    --navigation-list-badge-size: 24px;
+    --navigation-list-badge-rounding: 12px;
+    --navigation-list-badge-font-size: 10px;
 }
 
 .NavigationList {
-  display: flex;
-  flex-direction: column;
-  background: var(--navigation-list-background-color);
-  backdrop-filter: blur(32px) saturate(180%);
-  padding: 8px;
-  border-radius: var(--navigation-list-rounding);
-  width: var(--navigation-list-width);
-  box-shadow: var(--shadow-1), var(--shadow-5);
+    display: flex;
+    flex-direction: column;
+    background: var(--navigation-list-background-color);
+    backdrop-filter: blur(32px) saturate(180%);
+    padding: 8px;
+    border-radius: var(--navigation-list-rounding);
+    width: var(--navigation-list-width);
+    box-shadow: var(--shadow-1), var(--shadow-5);
+    height: 100%;
 }

@@ -1,131 +1,139 @@
 @layer reset, tokens, themes, accents, base, components, utilities, overrides;
 
 @layer reset {
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-  body {
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
     margin: 0;
     padding: 0;
-  }
+    overflow: hidden;
 }
 
 :root {
-  --default-900: #111928;
-  --default-800: #1f2a37;
-  --default-700: #374151;
-  --default-600: #4b5563;
-  --default-500: #6b7280;
-  --default-400: #9ca3af;
-  --default-300: #d1d5db;
-  --default-200: #e5e7eb;
-  --default-100: #f3f4f6;
-  --default-50: #f9fafb;
+    --default-900: #111928;
+    --default-800: #1f2a37;
+    --default-700: #374151;
+    --default-600: #4b5563;
+    --default-500: #6b7280;
+    --default-400: #9ca3af;
+    --default-300: #d1d5db;
+    --default-200: #e5e7eb;
+    --default-100: #f3f4f6;
+    --default-50: #f9fafb;
 
-  --primary-900: #0d47a1;
-  --primary-800: #1565c0;
-  --primary-700: #1976d2;
-  --primary-600: #1e88e5;
-  --primary-500: #2196f3;
-  --primary-400: #42a5f5;
-  --primary-300: #64b5f6;
-  --primary-200: #90caf9;
-  --primary-100: #bbdefb;
-  --primary-50: #e3f2fd;
+    --primary-900: #0d47a1;
+    --primary-800: #1565c0;
+    --primary-700: #1976d2;
+    --primary-600: #1e88e5;
+    --primary-500: #2196f3;
+    --primary-400: #42a5f5;
+    --primary-300: #64b5f6;
+    --primary-200: #90caf9;
+    --primary-100: #bbdefb;
+    --primary-50: #e3f2fd;
 
-  --success-900: #1b5e20;
-  --success-800: #2e7d32;
-  --success-700: #388e3c;
-  --success-600: #43a047;
-  --success-500: #4caf50;
-  --success-400: #66bb6a;
-  --success-300: #81c784;
-  --success-200: #a5d6a7;
-  --success-100: #c8e6c9;
-  --success-50: #e8f5e9;
+    --success-900: #1b5e20;
+    --success-800: #2e7d32;
+    --success-700: #388e3c;
+    --success-600: #43a047;
+    --success-500: #4caf50;
+    --success-400: #66bb6a;
+    --success-300: #81c784;
+    --success-200: #a5d6a7;
+    --success-100: #c8e6c9;
+    --success-50: #e8f5e9;
 
-  --danger-900: #b71c1c;
-  --danger-800: #c62828;
-  --danger-700: #d32f2f;
-  --danger-600: #e53935;
-  --danger-500: #f44336;
-  --danger-400: #ef5350;
-  --danger-300: #e57373;
-  --danger-200: #ef9a9a;
-  --danger-100: #ffcdd2;
-  --danger-50: #ffebee;
+    --danger-900: #b71c1c;
+    --danger-800: #c62828;
+    --danger-700: #d32f2f;
+    --danger-600: #e53935;
+    --danger-500: #f44336;
+    --danger-400: #ef5350;
+    --danger-300: #e57373;
+    --danger-200: #ef9a9a;
+    --danger-100: #ffcdd2;
+    --danger-50: #ffebee;
 
-  --warning-900: #ff6f00;
-  --warning-800: #ff8f00;
-  --warning-700: #ffa000;
-  --warning-600: #ffb300;
-  --warning-500: #ffc107;
-  --warning-400: #ffca28;
-  --warning-300: #ffd54f;
-  --warning-200: #ffe082;
-  --warning-100: #ffecb3;
-  --warning-50: #fff8e1;
+    --warning-900: #ff6f00;
+    --warning-800: #ff8f00;
+    --warning-700: #ffa000;
+    --warning-600: #ffb300;
+    --warning-500: #ffc107;
+    --warning-400: #ffca28;
+    --warning-300: #ffd54f;
+    --warning-200: #ffe082;
+    --warning-100: #ffecb3;
+    --warning-50: #fff8e1;
 
-  --screenFontSize: 32px;
-  --screenLineHeight: 40px;
-  --screenFontWeight: 900;
+    --screenFontSize: 32px;
+    --screenLineHeight: 40px;
+    --screenFontWeight: 900;
 
-  --titleFontSize: 24px;
-  --titleLineHeight: 32px;
-  --titleFontWeight: 800;
+    --titleFontSize: 24px;
+    --titleLineHeight: 32px;
+    --titleFontWeight: 800;
 
-  --headingFontSize: 20px;
-  --headingLineHeight: 24px;
-  --headingFontWeight: 700;
+    --headingFontSize: 20px;
+    --headingLineHeight: 24px;
+    --headingFontWeight: 700;
 
-  --subheaderFontSize: 16px;
-  --subheaderLineHeight: 24px;
-  --subheaderFontWeight: 600;
+    --subheaderFontSize: 16px;
+    --subheaderLineHeight: 24px;
+    --subheaderFontWeight: 600;
 
-  --innerHeaderFontSize: 14px;
-  --innerHeaderLineHeight: 24px;
-  --innerHeaderFontWeight: 600;
+    --innerHeaderFontSize: 14px;
+    --innerHeaderLineHeight: 24px;
+    --innerHeaderFontWeight: 600;
 
-  --groupHeadingFontSize: 12px;
-  --groupHeadingLineHeight: 16px;
-  --groupHeadingFontWeight: 500;
+    --groupHeadingFontSize: 12px;
+    --groupHeadingLineHeight: 16px;
+    --groupHeadingFontWeight: 500;
 
-  --labelHeadingFontSize: 12px;
-  --labelHeadingLineHeight: 16px;
-  --labelHeadingFontWeight: 600;
+    --labelHeadingFontSize: 12px;
+    --labelHeadingLineHeight: 16px;
+    --labelHeadingFontWeight: 600;
 
-  --labelFontSize: 10px;
-  --labelLineHeight: 16px;
-  --labelFontWeight: 600;
+    --labelFontSize: 10px;
+    --labelLineHeight: 16px;
+    --labelFontWeight: 600;
 
-  --smallLabelFontSize: 8px;
-  --smallLabelLineHeight: 12px;
-  --smallLabelFontWeight: 600;
+    --smallLabelFontSize: 8px;
+    --smallLabelLineHeight: 12px;
+    --smallLabelFontWeight: 600;
 
-  --bigParagraphFontSize: 16px;
-  --bigParagraphLineHeight: 24px;
-  --bigParagraphFontWeight: 400;
+    --bigParagraphFontSize: 16px;
+    --bigParagraphLineHeight: 24px;
+    --bigParagraphFontWeight: 400;
 
-  --paragraphFontSize: 14px;
-  --paragraphLineHeight: 20px;
-  --paragraphFontWeight: 400;
+    --paragraphFontSize: 14px;
+    --paragraphLineHeight: 20px;
+    --paragraphFontWeight: 400;
 
-  --smallParagraphFontSize: 12px;
-  --smallParagraphLineHeight: 16px;
-  --smallParagraphFontWeight: 400;
+    --smallParagraphFontSize: 12px;
+    --smallParagraphLineHeight: 16px;
+    --smallParagraphFontWeight: 400;
 
-  --codeFontSize: 13px;
-  --codeLineHeight: 20px;
-  --codeFontWeight: 400;
+    --codeFontSize: 13px;
+    --codeLineHeight: 20px;
+    --codeFontWeight: 400;
 }
 
 @layer overrides {
-  .lucide {
-    width: 1em !important;
-    height: 1em !important;
-    color: currentColor;
-    stroke-width: 1.5;
-  }
+    .lucide {
+        width: 1em !important;
+        height: 1em !important;
+        color: currentColor;
+        stroke-width: 1.5;
+    }
 }

@@ -14,8 +14,9 @@
   display: flex;
   align-items: center;
   gap: var(--gap);
-  flex: 1;
+  flex: 1 !important;
   min-width: 0;
+  text-align: left;
 }
 
 .Title {

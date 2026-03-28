@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Dropdown, Flex, Icon, Text } from 'components';
+import { AltroneApplication, Dropdown, Flex, Icon, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { NavigationList } from './NavigationList.tsx';
 import { Link, LinkAction } from './components';
