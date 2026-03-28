@@ -18,11 +18,13 @@ import {
   LoaderPinwheel,
   Wifi,
   Bluetooth,
+  Link,
 } from 'lucide-react';
 // import { fn } from '@storybook/test';
 import { ButtonProps } from './Button.types.ts';
 import { Role, Size } from '../../types';
 import { useState } from 'react';
+import { motion } from 'motion/react';
 
 const story: Meta<typeof Button> = {
   title: 'Components/Form/Button',
@@ -188,6 +190,15 @@ const renderButtonsWithRole = (
         selected={selected2}
         onClick={() => setSelected2(!selected2)}
       />
+      <Button
+        {...args}
+        variant={type}
+        icon={<Link />}
+        label="Button as link"
+        asChild
+      >
+        <motion.a />
+      </Button>
     </Flex>
   );
 };

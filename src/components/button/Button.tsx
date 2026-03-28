@@ -11,6 +11,8 @@ import { Slot } from 'utils/components/Slot.tsx';
 import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
 import { AnyObject } from 'utils/types.ts';
 
+const MotionSlot = motion.create(Slot);
+
 export const Button = memo((props: ButtonProps) => {
   const {
     label,
@@ -110,16 +112,18 @@ export const Button = memo((props: ButtonProps) => {
     });
 
     buttonElement = (
-      <Slot<AnyObject>
+      <MotionSlot
         ref={ref}
         className={cls}
         style={styles}
         disabled={buttonDisabled}
+        transition={{ duration: 0.2, ease: 'linear' }}
+        whileTap={{ scale: 0.95 }}
         {...a11yProps}
         {...(restProps as AnyObject)}
       >
         {childWithContent}
-      </Slot>
+      </MotionSlot>
     );
   } else {
     buttonElement = (
