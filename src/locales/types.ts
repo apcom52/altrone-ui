@@ -132,4 +132,7 @@ export interface Localization {
   empty: {
     noData: string;
   };
+  autocompleteInput: {
+    loadError: string;
+  };
 }

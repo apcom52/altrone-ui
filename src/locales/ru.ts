@@ -140,4 +140,7 @@ export const ru: Localization = {
   empty: {
     noData: 'Нет данных',
   },
+  autocompleteInput: {
+    loadError: 'Возникла ошибка при загрузке данных',
+  },
 };

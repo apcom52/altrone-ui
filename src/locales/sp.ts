@@ -141,4 +141,7 @@ export const sp: Localization = {
   empty: {
     noData: 'No hay datos',
   },
+  autocompleteInput: {
+    loadError: 'Se produjo un error al cargar los datos',
+  },
 };

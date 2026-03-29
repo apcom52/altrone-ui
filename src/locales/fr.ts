@@ -140,4 +140,7 @@ export const fr: Localization = {
   empty: {
     noData: 'Aucune donnée',
   },
+  autocompleteInput: {
+    loadError: 'Une erreur est survenue lors du chargement des données',
+  },
 };

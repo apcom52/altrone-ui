@@ -141,4 +141,7 @@ export const ge: Localization = {
   empty: {
     noData: 'Keine Daten',
   },
+  autocompleteInput: {
+    loadError: 'Beim Laden der Daten ist ein Fehler aufgetreten',
+  },
 };
