@@ -2,6 +2,7 @@
 
 :global([data-altrone-root='true']) {
   --search-placeholder-color: var(--placeholder-text-color);
+  --search-icon-size: 18px;
 }
 
 .Search {
@@ -41,7 +42,7 @@
   align-items: center;
   pointer-events: none;
   gap: var(--narrow-gap);
-  z-index: 1001;
+  z-index: var(--level-sticky);
 
   @include paragraph;
 }
@@ -60,7 +61,7 @@
 
 .PlaceholderIcon {
   display: inline-block;
-  font-size: 18px;
-  height: 18px;
-  width: 18px;
+  font-size: var(--search-icon-size);
+  height: var(--search-icon-size);
+  width: var(--search-icon-size);
 }
