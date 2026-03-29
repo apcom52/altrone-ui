@@ -7,6 +7,7 @@ import { useConfiguration } from 'components/configuration';
 
 export const Checkbox = memo<CheckboxProps>(
   ({
+    ref,
     children,
     checked = false,
     onChange,
@@ -50,8 +51,7 @@ export const Checkbox = memo<CheckboxProps>(
 
     return (
       <label
-        role="checkbox"
-        aria-checked={indeterminate ? 'mixed' : checked}
+        ref={ref}
         className={cls}
         style={styles}
         tabIndex={0}

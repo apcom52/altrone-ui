@@ -10,6 +10,10 @@
   --checkbox-danger-background-color: var(--red-9);
   --checkbox-danger-checked-background-color: var(--red-10);
   --checkbox-text-color: var(--text-2);
+  --checkbox-size: 24px;
+  --checkbox-rounding: 8px;
+  --checkbox-indetermination-size: 10px;
+  --checkbox-indetermination-rounding: 4px;
 }
 
 .Checkbox {
@@ -24,13 +28,20 @@
   cursor: pointer;
   padding: 3px 4px;
   height: 32px;
-  border-radius: 6px;
+  border-radius: var(--checkbox-rounding);
   outline: none;
 
   @include no-selection;
 
   &:hover {
     --checkbox-background-color: var(--checkbox-hover-background-color);
+  }
+
+  &:focus-visible {
+    .Button {
+      outline: 2px solid var(--focus-color);
+      outline-offset: 2px;
+    }
   }
 }
 
@@ -42,20 +53,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
   background-color: var(--checkbox-background-color);
-  border-radius: 8px;
+  border-radius: var(--checkbox-rounding);
   transition: background-color 0.1s linear;
-  box-shadow: 0 0 0 1px var(--checkbox-border-color), var(--shadow-1);
+  box-shadow:
+    0 0 0 1px var(--checkbox-border-color),
+    var(--shadow-1);
   color: var(--checkbox-icon-color);
-  backdrop-filter: blur(32px) saturate(180%);
 }
 
 .Label {
   color: var(--checkbox-text-color);
-  font-weight: 500;
-  font-size: 14px;
+  @include label;
 }
 
 .Checked {
@@ -68,9 +79,9 @@
 }
 
 .Indetermination {
-  width: 10px;
-  height: 10px;
-  border-radius: 4px;
+  width: var(--checkbox-indetermination-size);
+  height: var(--checkbox-indetermination-size);
+  border-radius: var(--checkbox-indetermination-rounding);
   background-color: var(--checkbox-icon-color);
 }
 
