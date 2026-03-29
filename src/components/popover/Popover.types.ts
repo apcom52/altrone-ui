@@ -28,6 +28,7 @@ export type PopoverContentContext = {
 
 export interface PopoverProps
   extends Omit<React.HTMLAttributes<HTMLElement>, 'children' | 'content'> {
+  ref?: React.Ref<PopoverRef>;
   children: ReactElement | CustomRenderFunction<PopoverChildrenContext>;
   content: ReactElement | CustomRenderFunction<PopoverContentContext>;
   openedByDefault?: boolean;
@@ -36,12 +37,11 @@ export interface PopoverProps
   placement?: 'auto' | Placement;
   trigger?: PopoverTrigger | PopoverTrigger[];
   showCloseButton?: boolean;
-  showArrow?: boolean;
   focusTrap?: boolean;
   focusTrapTargets?: ('reference' | 'floating' | 'content')[];
   parentWidth?: boolean;
   listNavigation?: boolean;
-  defaultListNavigationIndex?: number;
+  defaultListNavigationIndex?: number | null;
   virtualNavigationFocus?: boolean;
   overlap?: boolean;
   onOpenChange?: (open: boolean) => void;

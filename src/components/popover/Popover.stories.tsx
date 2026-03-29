@@ -54,7 +54,6 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           placement="bottom"
           title="System update"
           showCloseButton
-          showArrow
           content={
             <Flex direction="vertical" gap="m">
               <Text size={3} block>
@@ -87,7 +86,6 @@ export const PopoverStory: StoryObj<typeof Flex> = {
             <Text size={3} block>
               Click here to open child popover{' '}
               <Popover
-                showArrow
                 data-testid="popover-child"
                 content={
                   <Text size={3} block>
@@ -110,7 +108,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
         <Popover
           trigger="click"
           placement="top"
-          showArrow={true}
+          
           content={
             <Text size={3} block>
               Join Our Newsletter for Exciting Updates &{' '}
@@ -123,7 +121,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
         <Popover
           trigger="hover"
           placement="top"
-          showArrow={true}
+          
           data-testid="popover-hover"
           content={() => (
             <Text size={3} block>
@@ -137,7 +135,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
         <Popover
           trigger="focus"
           placement="top"
-          showArrow={true}
+          
           data-testid="popover-focus"
           content={
             <Text size={3} block>
@@ -158,7 +156,6 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           placement="top"
           title="Unraveling Dark Matter's Mystery"
           showCloseButton
-          showArrow
           style={{ maxWidth: '250px' }}
           content={
             <Text size={3} block>
@@ -176,7 +173,6 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           placement="right"
           title="Unraveling Dark Matter's Mystery"
           showCloseButton
-          showArrow
           style={{ maxWidth: '250px' }}
           content={
             <Text size={3} block>
@@ -195,7 +191,6 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           title="Unraveling Dark Matter's Mystery"
           showCloseButton
           openedByDefault
-          showArrow
           style={{ maxWidth: '260px' }}
           content={
             <Text size={3} block>
@@ -213,7 +208,6 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           placement="left"
           title="Unraveling Dark Matter's Mystery"
           showCloseButton
-          showArrow
           style={{ maxWidth: '250px' }}
           content={
             <Text size={3} block>
@@ -238,7 +232,6 @@ export const PopoverStory: StoryObj<typeof Flex> = {
           enabled={false}
           showCloseButton
           data-testid="popover-disabled"
-          showArrow
           style={{ maxWidth: '250px' }}
           content={
             <Text size={3} block>

@@ -15,7 +15,6 @@ import {
 } from '@floating-ui/react';
 import React, {
   createContext,
-  forwardRef,
   useContext,
   useId,
   useImperativeHandle,
@@ -24,7 +23,6 @@ import React, {
 } from 'react';
 import {
   PopoverProps,
-  PopoverRef,
   PopoverChildrenContext,
   PopoverContentContext,
 } from './Popover.types.ts';
@@ -32,7 +30,6 @@ import { useBoolean, DOMUtils } from 'utils';
 import clsx from 'clsx';
 import s from './popover.module.scss';
 import { CloseButton } from 'components/closeButton';
-import { PopoverArrow } from './inner/PopoverArrow.tsx';
 import { useConfiguration } from 'components/configuration';
 import { AnimatePresence, motion } from 'motion/react';
 import { getPlacementConfig } from './utils/placementUtils';
@@ -51,29 +48,28 @@ export const usePopoverCurrentIndex = () => useContext(PopoverCurrentIndex);
 const PopoverCurrentId = createContext<string | null>(null);
 export const usePopoverCurrentId = () => useContext(PopoverCurrentId);
 
-export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
-  const {
-    children,
-    content,
-    openedByDefault = false,
-    enabled = true,
-    title,
-    placement = 'auto',
-    trigger = 'click',
-    focusTrap = true,
-    parentWidth = false,
-    showCloseButton = false,
-    showArrow = false,
-    listNavigation: enableListNavigation = false,
-    defaultListNavigationIndex = null,
-    virtualNavigationFocus = false,
-    focusTrapTargets = ['reference', 'content'],
-    overlap = false,
-    className,
-    style,
-    onOpenChange,
-    ...restProps
-  } = props;
+export const Popover = ({
+  ref,
+  children,
+  content,
+  openedByDefault = false,
+  enabled = true,
+  title,
+  placement = 'auto',
+  trigger = 'click',
+  focusTrap = true,
+  parentWidth = false,
+  showCloseButton = false,
+  listNavigation: enableListNavigation = false,
+  defaultListNavigationIndex = null,
+  virtualNavigationFocus = false,
+  focusTrapTargets = ['reference', 'content'],
+  overlap = false,
+  className,
+  style,
+  onOpenChange,
+  ...restProps
+}: PopoverProps) => {
 
   const popoverId = useId();
 
@@ -87,7 +83,6 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
 
   const childrenRef = useRef<HTMLElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
-  const arrowRef = useRef<HTMLDivElement | null>(null);
 
   const triggersList = Array.isArray(trigger) ? trigger : [trigger];
 
@@ -101,17 +96,8 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
   const placementConfig = getPlacementConfig(placement, overlap);
 
   const middleware = overlap
-    ? createOverlapMiddleware(
-        placementConfig,
-        arrowRef as React.RefObject<HTMLDivElement>,
-        parentWidth
-      )
-    : createMiddleware(
-        placementConfig,
-        arrowRef as React.RefObject<HTMLDivElement>,
-        parentWidth,
-        overlap
-      );
+    ? createOverlapMiddleware(placementConfig, parentWidth)
+    : createMiddleware(placementConfig, parentWidth, overlap);
 
   const {
     refs,
@@ -199,7 +185,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
       actualPlacement,
       transformOrigin: getTransformOrigin(actualPlacement, overlap),
     }),
-    [opened, context, activeIndex, actualPlacement]
+    [opened, context, activeIndex, actualPlacement, hide, open, overlap]
   );
 
   const popoverParentClose = usePopoverCloseContext();
@@ -226,8 +212,8 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
 
   const popoverCls = clsx(
     s.Popover,
+    s.GlassEffect,
     {
-      [s.GlassEffect]: !showArrow,
       [s.InsideNotification]: childrenRef.current?.closest(
         '[data-notification="true"]'
       ),
@@ -273,7 +259,6 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
                 },
               }}
               className={popoverCls}
-              role="region"
               {...getFloatingProps({
                 ...restProps,
                 style: {
@@ -299,19 +284,15 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
                 <div className={s.Header}>
                   {title ? <div className={s.Heading}>{title}</div> : null}
                   {showCloseButton ? (
-                    <CloseButton onClick={hide} className={s.Close} />
+                    <CloseButton label="Close" onClick={hide} className={s.Close} />
                   ) : null}
                 </div>
               )}
-              <div
-                className={s.Content}
-                ref={contentRef ? contentRef : undefined}
-              >
+              <div className={s.Content}>
                 {typeof content === 'function'
                   ? content(popoverContext)
                   : content}
               </div>
-              {showArrow && <PopoverArrow ref={arrowRef} context={context} />}
             </motion.div>
           </PopoverCurrentId.Provider>
         </PopoverCurrentIndex.Provider>
@@ -340,13 +321,16 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
       <AnimatePresence mode="wait">
         {opened && (
           <FloatingPortal
-            data-test="test"
-            root={document.querySelector('[data-altrone-root]') as HTMLElement}
-          >
+              root={
+                typeof window !== 'undefined'
+                  ? (document.querySelector('[data-altrone-root]') as HTMLElement) ?? undefined
+                  : undefined
+              }
+            >
             {floatingBox}
           </FloatingPortal>
         )}
       </AnimatePresence>
     </PopoverCloseContext.Provider>
   );
-});
+};
