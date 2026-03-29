@@ -13,6 +13,7 @@ export const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>(
       content,
       trigger,
       placement = 'bottom',
+      focusTrap = true,
       focusTrapTargets = ['content', 'reference'],
       className,
       style,
@@ -31,7 +32,7 @@ export const DropdownWrapper = forwardRef<PopoverRef, DropdownProps>(
 
     return (
       <Popover
-        focusTrap
+        focusTrap={focusTrap}
         ref={ref}
         className={cls}
         content={(props) => (

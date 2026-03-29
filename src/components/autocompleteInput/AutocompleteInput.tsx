@@ -1,4 +1,11 @@
-import { Fragment, KeyboardEventHandler, MouseEvent, KeyboardEvent, useRef, useState } from 'react';
+import {
+  Fragment,
+  KeyboardEventHandler,
+  MouseEvent,
+  KeyboardEvent,
+  useRef,
+  useState,
+} from 'react';
 import { AutocompleteInputProps } from './AutocompleteInput.types.ts';
 import { ArrayUtils, useDebouncedEffect, useShowControls } from 'utils';
 import { useConfiguration } from 'components/configuration';
@@ -29,7 +36,8 @@ export const AutocompleteInput = <T = string,>({
   ...restProps
 }: AutocompleteInputProps<T>) => {
   const t = useLocalization();
-  const { autocompleteInput: autocompleteInputConfig = {} } = useConfiguration();
+  const { autocompleteInput: autocompleteInputConfig = {} } =
+    useConfiguration();
 
   const isControlsVisible = useShowControls({
     propValue: showControls,
@@ -142,7 +150,8 @@ export const AutocompleteInput = <T = string,>({
           {renderSuggestion({
             inputValue: restProps.value || '',
             suggestion,
-            onSelect: (inputValue, e) => selectSuggestion(suggestion, inputValue, e),
+            onSelect: (inputValue, e) =>
+              selectSuggestion(suggestion, inputValue, e),
           })}
         </Fragment>
       );
@@ -184,9 +193,9 @@ export const AutocompleteInput = <T = string,>({
   return (
     <Dropdown
       ref={dropdownRef}
-      focusTrapTargets={needToShowDropdown ? ['reference', 'content'] : []}
       virtualNavigationFocus
       listNavigation
+      focusTrap={false}
       style={{ display: needToShowDropdown ? 'flex' : 'none' }}
       defaultListNavigationIndex={-1}
       content={

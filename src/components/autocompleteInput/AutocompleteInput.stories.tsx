@@ -2,15 +2,15 @@ import { Meta, StoryObj } from '@storybook/react';
 import { AutocompleteInput } from './AutocompleteInput.tsx';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { Flex } from '../flex';
-import { useCallback, useState } from 'react';
-import { Text } from '../text';
+import { Button, Flex, Message, Text, TextInput } from 'components';
+import { useCallback, useRef, useState } from 'react';
 import {
   AutocompleteRenderSuggestionContext,
   AutocompleteSuggestionsFunc,
 } from './AutocompleteInput.types.ts';
 import { useListItem } from '@floating-ui/react';
 import { usePopoverCurrentIndex } from '../popover/Popover.tsx';
+import { Globe, Code, Calendar } from 'lucide-react';
 
 const story: Meta<typeof AutocompleteInput> = {
   title: 'Components/Form/AutocompleteInput',
@@ -28,54 +28,112 @@ const story: Meta<typeof AutocompleteInput> = {
   },
 };
 
+// --- Shared helpers ---
+
+const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+const filterCountries = (value: string) =>
+  COUNTRIES.filter((c) => c.toLowerCase().startsWith(value.toLowerCase()));
+
+// --- Custom string suggestion item with match highlighting ---
+
 const CountrySuggestionItem = ({
-  inputValue = '',
-  label = '',
-  onClick,
-}: AutocompleteRenderSuggestionContext) => {
+  suggestion,
+  inputValue,
+  onSelect,
+}: AutocompleteRenderSuggestionContext<string>) => {
   const currentIndex = usePopoverCurrentIndex();
   const { ref, index } = useListItem();
 
   return (
-    <button onClick={onClick} ref={ref}>
+    <button onClick={(e) => onSelect(suggestion, e)} ref={ref}>
       {index === currentIndex && <strong>{'->> '}</strong>}
-      <strong>{inputValue}</strong>
-      {label.slice(inputValue.length)}
+      <strong>{suggestion.slice(0, inputValue.length)}</strong>
+      {suggestion.slice(inputValue.length)}
     </button>
   );
 };
 
-export const TextInputStory: StoryObj<typeof Flex> = {
+// --- Custom object suggestion item ---
+
+type Language = {
+  name: string;
+  creator: string;
+  year: number;
+};
+
+const LanguageSuggestion = ({
+  suggestion,
+  inputValue,
+  onSelect,
+}: AutocompleteRenderSuggestionContext<Language>) => {
+  const currentIndex = usePopoverCurrentIndex();
+  const { ref, index } = useListItem();
+  const isActive = index === currentIndex;
+
+  return (
+    <button
+      ref={ref}
+      onClick={(e) => onSelect(suggestion.name, e)}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+        padding: '8px 12px',
+        width: '100%',
+        background: isActive ? 'var(--primary-50)' : 'transparent',
+        border: 'none',
+        cursor: 'pointer',
+        textAlign: 'left',
+      }}
+    >
+      <Code size={16} style={{ flexShrink: 0, color: 'var(--primary-500)' }} />
+      <span style={{ flex: 1 }}>
+        <strong>{suggestion.name.slice(0, inputValue.length)}</strong>
+        {suggestion.name.slice(inputValue.length)}
+      </span>
+      <span
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 4,
+          opacity: 0.6,
+          fontSize: '0.85em',
+        }}
+      >
+        <Calendar size={12} />
+        {suggestion.year}
+      </span>
+    </button>
+  );
+};
+
+// ─── Stories ──────────────────────────────────────────────────────────────────
+
+export const BasicStory: StoryObj<typeof Flex> = {
   name: 'Using AutocompleteInput',
   render: () => {
     const [value1, setValue1] = useState('');
     const [value2, setValue2] = useState('');
 
     const getCountry = useCallback<AutocompleteSuggestionsFunc>(
-      async ({ value }) => {
-        return COUNTRIES.filter((country) =>
-          country.toLowerCase().startsWith(value.toLowerCase())
-        );
-      },
-      []
+      async ({ value }) => filterCountries(value),
+      [],
     );
 
     return (
       <Flex direction="vertical" gap="l">
-        <Text size={5} weight="bold" block>
+        <Text size={6} weight="bold">
           Standard AutocompleteInput
         </Text>
-        <Flex gap="l">
-          <AutocompleteInput
-            value={value1}
-            getSuggestions={getCountry}
-            onChange={setValue1}
-            placeholder="e.g. France"
-            data-testid="field"
-          />
-        </Flex>
-        <Text size={5} weight="bold" block>
-          AutocompleteInput with custom component
+        <AutocompleteInput
+          value={value1}
+          getSuggestions={getCountry}
+          onChange={setValue1}
+          placeholder="e.g. France"
+        />
+        <Text size={6} weight="bold">
+          With custom suggestion render
         </Text>
         <AutocompleteInput
           value={value2}
@@ -87,35 +145,237 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       </Flex>
     );
   },
-  // play: async ({ canvasElement, step }) => {
-  //   const canvas = within(canvasElement);
-
-  //   await step(
-  //     'need to show popover with suitable suggestions when user types something',
-  //     async () => {
-  //       await userEvent.type(canvas.getByTestId('field'), 'R');
-  //       await expect(await canvas.findByText('Romania')).toBeInTheDocument();
-  //       await expect(await canvas.findByText('Russia')).toBeInTheDocument();
-  //       await expect(await canvas.findByText('Rwanda')).toBeInTheDocument();
-
-  //       await userEvent.click(canvas.getByText('Russia'));
-  //       expect(canvas.getByTestId('field')).toHaveValue('Russia');
-  //     },
-  //   );
-
-  //   await step('need to show focused items', async () => {
-  //     await userEvent.clear(canvas.getByTestId('field'));
-  //     await userEvent.type(canvas.getByTestId('field'), 'R');
-  //     await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowUp}');
-
-  //     const russia = await canvas.findByText('Russia');
-
-  //     await expect(russia.parentElement).toHaveAttribute('data-active', 'true');
-  //     await userEvent.keyboard('{Enter}');
-  //     expect(canvas.getByTestId('field')).toHaveValue('Russia');
-  //   });
-  // },
 };
+
+export const FeaturesStory: StoryObj<typeof Flex> = {
+  name: 'All Features',
+  render: () => {
+    // minChars
+    const [minCharsValue, setMinCharsValue] = useState('');
+    const getCountry = useCallback<AutocompleteSuggestionsFunc>(
+      async ({ value }) => {
+        await delay(200);
+        return filterCountries(value);
+      },
+      [],
+    );
+
+    // cacheResults
+    const [cacheValue, setCacheValue] = useState('');
+    const requestCountRef = useRef(0);
+    const [requestCount, setRequestCount] = useState(0);
+    const getCountryTracked = useCallback<AutocompleteSuggestionsFunc>(
+      async ({ value }) => {
+        await delay(400);
+        requestCountRef.current += 1;
+        setRequestCount(requestCountRef.current);
+        return filterCountries(value);
+      },
+      [],
+    );
+
+    // onSelect
+    const [selectValue, setSelectValue] = useState('');
+    const [lastSelected, setLastSelected] = useState<string | null>(null);
+
+    // onError
+    const [errorValue, setErrorValue] = useState('');
+    const [errorEnabled, setErrorEnabled] = useState(false);
+    const errorEnabledRef = useRef(false);
+    errorEnabledRef.current = errorEnabled;
+    const getCountryWithError = useCallback<AutocompleteSuggestionsFunc>(
+      async ({ value }) => {
+        await delay(300);
+        if (errorEnabledRef.current) throw new Error('Simulated network error');
+        return filterCountries(value);
+      },
+      [],
+    );
+
+    // Empty state
+    const [emptyValue, setEmptyValue] = useState('');
+    const getStrictCountry = useCallback<AutocompleteSuggestionsFunc>(
+      async ({ value }) => {
+        await delay(200);
+        return COUNTRIES.filter((c) => c.toLowerCase() === value.toLowerCase());
+      },
+      [],
+    );
+
+    // Object suggestions
+    const [langValue, setLangValue] = useState('');
+    const getLanguage = useCallback<AutocompleteSuggestionsFunc<Language>>(
+      async ({ value }) => {
+        await delay(200);
+        return LANGUAGES.filter((l) =>
+          l.name.toLowerCase().startsWith(value.toLowerCase()),
+        );
+      },
+      [],
+    );
+
+    return (
+      <Flex direction="vertical" gap="xl">
+        {/* minChars */}
+        <Flex direction="vertical" gap="s">
+          <Text size={6} weight="bold">
+            minChars = 3
+          </Text>
+          <Text>
+            Suggestions appear only after typing 3 or more characters.
+          </Text>
+          <AutocompleteInput
+            value={minCharsValue}
+            getSuggestions={getCountry}
+            onChange={setMinCharsValue}
+            minChars={3}
+            placeholder="Type at least 3 characters…"
+          />
+        </Flex>
+
+        {/* cacheResults */}
+        <Flex direction="vertical" gap="s">
+          <Text size={6} weight="bold">
+            cacheResults
+          </Text>
+          <Text>
+            Network requests: <strong>{requestCount}</strong>. Type a prefix,
+            clear, type the same prefix again — the counter stops growing.
+          </Text>
+          <AutocompleteInput
+            value={cacheValue}
+            getSuggestions={getCountryTracked}
+            onChange={setCacheValue}
+            cacheResults
+            placeholder="e.g. Ger, Fra, Spa…"
+          />
+        </Flex>
+
+        {/* onSelect */}
+        <Flex direction="vertical" gap="s">
+          <Text size={6} weight="bold">
+            onSelect callback
+          </Text>
+          <AutocompleteInput
+            value={selectValue}
+            getSuggestions={getCountry}
+            onChange={setSelectValue}
+            onSelect={(suggestion) => setLastSelected(suggestion)}
+            placeholder="Pick a country"
+          />
+          {lastSelected !== null && (
+            <Message
+              role="success"
+              header={`Selected: ${lastSelected}`}
+              compact
+            />
+          )}
+        </Flex>
+
+        {/* onError */}
+        <Flex direction="vertical" gap="s">
+          <Text size={6} weight="bold">
+            onError — error island
+          </Text>
+          <Text>
+            Toggle the error mode, then type to trigger a failed request. A red
+            island with a tooltip will appear on the right.
+          </Text>
+          <Flex gap="m" align="center">
+            <AutocompleteInput
+              value={errorValue}
+              getSuggestions={getCountryWithError}
+              onChange={setErrorValue}
+              placeholder="Type to search…"
+            />
+            <Button
+              label={errorEnabled ? 'Errors on' : 'Errors off'}
+              danger={errorEnabled}
+              onClick={() => setErrorEnabled((v) => !v)}
+            />
+          </Flex>
+        </Flex>
+
+        {/* Empty state */}
+        <Flex direction="vertical" gap="s">
+          <Text size={6} weight="bold">
+            Empty state
+          </Text>
+          <Text>
+            Strict exact-match search — most queries return no results and show
+            the empty state.
+          </Text>
+          <AutocompleteInput
+            value={emptyValue}
+            getSuggestions={getStrictCountry}
+            onChange={setEmptyValue}
+            placeholder="Try typing 'france' (lowercase)"
+          />
+        </Flex>
+
+        {/* Object suggestions */}
+        <Flex direction="vertical" gap="s">
+          <Text size={6} weight="bold">
+            Object suggestions
+          </Text>
+          <Text>
+            <code>getSuggestions</code> returns <code>Language[]</code>.{' '}
+            <code>getSuggestionValue</code> extracts the string for the input.
+            Custom <code>renderSuggestion</code> shows name, creator and year.
+          </Text>
+          <AutocompleteInput<Language>
+            value={langValue}
+            getSuggestions={getLanguage}
+            getSuggestionValue={(lang) => lang.name}
+            onChange={setLangValue}
+            placeholder="e.g. Type, Rust, Go…"
+            renderSuggestion={(props) => <LanguageSuggestion {...props} />}
+          >
+            <TextInput.IconIsland icon={<Globe size={16} />} placement="left" />
+          </AutocompleteInput>
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
+export const RestApiStory: StoryObj<typeof Flex> = {
+  name: 'Using with REST API',
+  render: () => {
+    const [value, setValue] = useState('');
+
+    const getData = useCallback<AutocompleteSuggestionsFunc>(
+      async ({ value }) => {
+        const response = await fetch(
+          `https://demo.dataverse.org/api/search?q=${value}`,
+        );
+        const data = await response.json();
+        return data.data.items.map((item: { name: string }) => item.name);
+      },
+      [],
+    );
+
+    return (
+      <Flex direction="vertical" gap="l">
+        <Text size={6} weight="bold">
+          AutocompleteInput with REST API
+        </Text>
+        <AutocompleteInput
+          value={value}
+          getSuggestions={getData}
+          onChange={setValue}
+          minChars={2}
+          cacheResults
+          placeholder="Type to search, e.g. Trees"
+        />
+      </Flex>
+    );
+  },
+};
+
+export default story;
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
 
 const COUNTRIES = [
   'Afghanistan',
@@ -156,13 +416,12 @@ const COUNTRIES = [
   'China',
   'Colombia',
   'Comoros',
-  'Congo (Congo-Brazzaville)',
+  'Congo',
   'Costa Rica',
   'Croatia',
   'Cuba',
   'Cyprus',
-  'Czechia (Czech Republic)',
-  'Democratic Republic of the Congo',
+  'Czechia',
   'Denmark',
   'Djibouti',
   'Dominica',
@@ -170,10 +429,8 @@ const COUNTRIES = [
   'Ecuador',
   'Egypt',
   'El Salvador',
-  'Equatorial Guinea',
   'Eritrea',
   'Estonia',
-  "Eswatini (fmr. 'Swaziland')",
   'Ethiopia',
   'Fiji',
   'Finland',
@@ -187,10 +444,8 @@ const COUNTRIES = [
   'Grenada',
   'Guatemala',
   'Guinea',
-  'Guinea-Bissau',
   'Guyana',
   'Haiti',
-  'Holy See',
   'Honduras',
   'Hungary',
   'Iceland',
@@ -206,38 +461,29 @@ const COUNTRIES = [
   'Jordan',
   'Kazakhstan',
   'Kenya',
-  'Kiribati',
   'Kuwait',
   'Kyrgyzstan',
   'Laos',
   'Latvia',
   'Lebanon',
-  'Lesotho',
   'Liberia',
   'Libya',
-  'Liechtenstein',
   'Lithuania',
   'Luxembourg',
   'Madagascar',
-  'Malawi',
   'Malaysia',
   'Maldives',
   'Mali',
   'Malta',
-  'Marshall Islands',
-  'Mauritania',
-  'Mauritius',
   'Mexico',
-  'Micronesia',
   'Moldova',
   'Monaco',
   'Mongolia',
   'Montenegro',
   'Morocco',
   'Mozambique',
-  'Myanmar (formerly Burma)',
+  'Myanmar',
   'Namibia',
-  'Nauru',
   'Nepal',
   'Netherlands',
   'New Zealand',
@@ -245,14 +491,10 @@ const COUNTRIES = [
   'Niger',
   'Nigeria',
   'North Korea',
-  'North Macedonia',
   'Norway',
   'Oman',
   'Pakistan',
-  'Palau',
-  'Palestine State',
   'Panama',
-  'Papua New Guinea',
   'Paraguay',
   'Peru',
   'Philippines',
@@ -262,43 +504,28 @@ const COUNTRIES = [
   'Romania',
   'Russia',
   'Rwanda',
-  'Saint Kitts and Nevis',
-  'Saint Lucia',
-  'Saint Vincent and the Grenadines',
-  'Samoa',
-  'San Marino',
-  'Sao Tome and Principe',
   'Saudi Arabia',
   'Senegal',
   'Serbia',
-  'Seychelles',
-  'Sierra Leone',
   'Singapore',
   'Slovakia',
   'Slovenia',
-  'Solomon Islands',
   'Somalia',
   'South Africa',
   'South Korea',
-  'South Sudan',
   'Spain',
   'Sri Lanka',
   'Sudan',
-  'Suriname',
   'Sweden',
   'Switzerland',
   'Syria',
   'Tajikistan',
   'Tanzania',
   'Thailand',
-  'Timor-Leste',
   'Togo',
-  'Tonga',
-  'Trinidad and Tobago',
   'Tunisia',
   'Turkey',
   'Turkmenistan',
-  'Tuvalu',
   'Uganda',
   'Ukraine',
   'United Arab Emirates',
@@ -306,7 +533,6 @@ const COUNTRIES = [
   'United States of America',
   'Uruguay',
   'Uzbekistan',
-  'Vanuatu',
   'Venezuela',
   'Vietnam',
   'Yemen',
@@ -314,40 +540,35 @@ const COUNTRIES = [
   'Zimbabwe',
 ];
 
-export const UsageStory: StoryObj<typeof Flex> = {
-  name: 'Using with REST API',
-  render: () => {
-    const [value1, setValue1] = useState('');
-
-    const getData = useCallback<AutocompleteSuggestionsFunc>(
-      async ({ value }) => {
-        const response = await fetch(
-          `https://demo.dataverse.org/api/search?q=${value}`
-        );
-        const data = await response.json();
-
-        return data.data.items.map((item: any) => item.name);
-      },
-      []
-    );
-
-    return (
-      <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">
-          AutocompleteInput with REST API
-        </Text.Heading>
-        <Flex gap="l">
-          <AutocompleteInput
-            value={value1}
-            getSuggestions={getData}
-            onChange={setValue1}
-            placeholder="Type to search, e.g. Trees"
-            data-testid="field"
-          />
-        </Flex>
-      </Flex>
-    );
-  },
-};
-
-export default story;
+const LANGUAGES: Language[] = [
+  { name: 'TypeScript', creator: 'Microsoft', year: 2012 },
+  { name: 'JavaScript', creator: 'Brendan Eich', year: 1995 },
+  { name: 'Python', creator: 'Guido van Rossum', year: 1991 },
+  { name: 'Rust', creator: 'Graydon Hoare', year: 2010 },
+  { name: 'Go', creator: 'Google', year: 2009 },
+  { name: 'Kotlin', creator: 'JetBrains', year: 2011 },
+  { name: 'Swift', creator: 'Apple', year: 2014 },
+  { name: 'Ruby', creator: 'Yukihiro Matsumoto', year: 1995 },
+  { name: 'Scala', creator: 'Martin Odersky', year: 2003 },
+  { name: 'Haskell', creator: 'Simon Peyton Jones', year: 1990 },
+  { name: 'Elixir', creator: 'José Valim', year: 2011 },
+  { name: 'Clojure', creator: 'Rich Hickey', year: 2007 },
+  { name: 'Dart', creator: 'Google', year: 2011 },
+  { name: 'Lua', creator: 'PUC-Rio', year: 1993 },
+  { name: 'Perl', creator: 'Larry Wall', year: 1987 },
+  { name: 'PHP', creator: 'Rasmus Lerdorf', year: 1994 },
+  { name: 'C', creator: 'Dennis Ritchie', year: 1972 },
+  { name: 'C++', creator: 'Bjarne Stroustrup', year: 1983 },
+  { name: 'C#', creator: 'Microsoft', year: 2000 },
+  { name: 'Java', creator: 'James Gosling', year: 1995 },
+  { name: 'Julia', creator: 'MIT', year: 2012 },
+  { name: 'R', creator: 'Ross Ihaka', year: 1993 },
+  { name: 'Groovy', creator: 'James Strachan', year: 2003 },
+  { name: 'F#', creator: 'Microsoft Research', year: 2005 },
+  { name: 'Fortran', creator: 'John Backus', year: 1957 },
+  { name: 'COBOL', creator: 'Grace Hopper', year: 1959 },
+  { name: 'Lisp', creator: 'John McCarthy', year: 1958 },
+  { name: 'Erlang', creator: 'Ericsson', year: 1986 },
+  { name: 'OCaml', creator: 'INRIA', year: 1996 },
+  { name: 'Zig', creator: 'Andrew Kelley', year: 2016 },
+];

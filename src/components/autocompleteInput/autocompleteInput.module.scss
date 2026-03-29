@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--danger-500);
+  color: var(--danger-color);
   cursor: default;
+  font-size: var(--text-input-icon-size);
 }
