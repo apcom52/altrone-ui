@@ -6,7 +6,7 @@ import { useRadioContext } from '../Radio.context.ts';
 import { useConfiguration } from '../../configuration';
 
 export const RadioItem = memo<RadioItemProps>(
-  ({ children, value, className, disabled, style, ...restProps }) => {
+  ({ ref, children, value, className, disabled, style, ...restProps }) => {
     const {
       value: radioValue,
       disabled: radioDisabled,
@@ -44,10 +44,9 @@ export const RadioItem = memo<RadioItemProps>(
 
     return (
       <label
-        role="radio"
+        ref={ref}
         aria-disabled={itemDisabled}
-        aria-checked={itemChecked}
-        tabIndex={disabled ? -1 : 0}
+        tabIndex={itemDisabled ? -1 : 0}
         className={cls}
         onKeyDown={onKeyDown}
         style={styles}
@@ -61,10 +60,10 @@ export const RadioItem = memo<RadioItemProps>(
           value={value}
           onChange={onChange}
           className={s.Input}
-          disabled={disabled}
+          disabled={itemDisabled}
         />
         <div className={s.Button} />
-        <div className={s.Label}>{children}</div>
+        {children ? <div className={s.Label}>{children}</div> : null}
       </label>
     );
   },

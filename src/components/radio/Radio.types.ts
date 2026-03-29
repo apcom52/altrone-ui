@@ -1,4 +1,4 @@
-import {
+import React, {
   ChangeEvent,
   ChangeEventHandler,
   PropsWithChildren,
@@ -7,7 +7,7 @@ import {
 import { Direction } from 'types';
 
 export type RadioContext = {
-  value: string;
+  value: string | number;
   onChange: ChangeEventHandler<HTMLInputElement>;
   name: string;
   disabled: boolean;
@@ -18,9 +18,14 @@ export interface RadioProps
     React.HTMLAttributes<HTMLDivElement>,
     'onChange' | 'type' | 'name' | 'value'
   > {
-  value: string;
+  ref?: React.Ref<HTMLDivElement>;
+  value: string | number;
   onChange: (value: string, e: ChangeEvent) => void;
-  children: ReactElement<RadioItemProps> | ReactElement<RadioItemProps>[];
+  children:
+    | ReactElement<RadioItemProps>
+    | (ReactElement<RadioItemProps> | null | false)[]
+    | null
+    | false;
   name?: string;
   direction?: Direction;
   disabled?: boolean;
@@ -29,6 +34,7 @@ export interface RadioProps
 export interface RadioItemProps
   extends PropsWithChildren,
     Omit<React.LabelHTMLAttributes<HTMLLabelElement>, 'onChange'> {
-  value: string;
+  ref?: React.Ref<HTMLLabelElement>;
+  value: string | number;
   disabled?: boolean;
 }

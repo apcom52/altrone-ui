@@ -9,6 +9,7 @@ import { RadioContextWrapper } from './Radio.context.ts';
 
 const RadioWrapper = memo<RadioProps>(
   ({
+    ref,
     children,
     value,
     onChange,
@@ -58,7 +59,7 @@ const RadioWrapper = memo<RadioProps>(
 
     return (
       <RadioContextWrapper.Provider value={radioContext}>
-        <div className={cls} style={styles} {...restProps}>
+        <div ref={ref} className={cls} style={styles} {...restProps}>
           {safeChildren}
         </div>
       </RadioContextWrapper.Provider>
