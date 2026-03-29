@@ -28,9 +28,17 @@
 
   @include no-selection;
 
-  &:hover,
+  &:hover {
+    --switcher-background-color: var(--switcher-hover-background-color);
+  }
+
   &:focus-visible {
     --switcher-background-color: var(--switcher-hover-background-color);
+
+    .Button {
+      outline: 2px solid var(--focus-color);
+      outline-offset: 2px;
+    }
   }
 }
 

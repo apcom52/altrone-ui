@@ -6,6 +6,7 @@ import { useConfiguration } from 'components/configuration';
 
 export const Switcher = memo<SwitcherProps>(
   ({
+    ref,
     children,
     checked = false,
     onChange,
@@ -48,7 +49,8 @@ export const Switcher = memo<SwitcherProps>(
 
     return (
       <label
-        role="checkbox"
+        ref={ref}
+        role="switch"
         aria-checked={checked}
         className={cls}
         style={styles}
@@ -62,12 +64,13 @@ export const Switcher = memo<SwitcherProps>(
           onChange={onChangeHandler}
           checked={checked}
           name={name}
+          disabled={disabled}
           className={s.Input}
         />
         <div className={s.Button}>
           <div className={s.Handle} />
         </div>
-        <div className={s.Label}>{children}</div>
+        {children ? <div className={s.Label}>{children}</div> : null}
       </label>
     );
   },
