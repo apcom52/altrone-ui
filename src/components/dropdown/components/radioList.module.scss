@@ -1,11 +1,11 @@
-@import 'src/global/mixins';
-
 .RadioList {
   display: flex;
   flex-direction: column;
 }
 
 .Title {
-  @include group-heading;
-  margin: var(--xs-gap);
+  margin: var(--s-gap);
+  font-size: var(--text-size-3);
+  font-weight: var(--text-weight-bold);
+  color: var(--accent-12);
 }

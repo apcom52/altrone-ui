@@ -3,7 +3,7 @@ import {
   PopoverContentContext,
 } from 'components/popover';
 import { PopoverProps } from 'components/popover/Popover.types';
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, Ref } from 'react';
 import { RenderFuncProp } from '../../types';
 import { RenderFunction } from 'utils';
 
@@ -12,7 +12,7 @@ export interface DropdownActionProps
   label: string;
   icon?: React.ReactElement;
   hintText?: string;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   danger?: boolean;
   disabled?: boolean;
   focused?: boolean;
@@ -64,6 +64,7 @@ export interface DropdownChildMenuProps
 
 export interface DropdownMenuProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
+  ref?: Ref<HTMLDivElement>;
   children: ReactElement | null | (ReactElement | null)[];
   defaultFocusItemIndex?: number;
   onChangeFocusItemIndex?: (index: number) => void;

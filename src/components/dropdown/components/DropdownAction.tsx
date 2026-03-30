@@ -6,59 +6,8 @@ import s from './action.module.scss';
 import { useConfiguration } from 'components/configuration';
 import { useEffect, useId } from 'react';
 import { usePopoverCurrentIndex } from '../../popover/Popover.tsx';
-import { RenderFuncProp } from '../../../types';
 import { Badge } from 'components/badge/Badge.tsx';
 import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
-
-const dropdownActionRenderFunc: RenderFuncProp<
-  HTMLButtonElement,
-  DropdownActionProps & { keyProp?: string }
-> = (ref, props) => {
-  const { dropdown: { action: actionConfig = {} } = {} } = useConfiguration();
-  const {
-    icon,
-    label,
-    hintText,
-    keyProp,
-    badge,
-    'data-active': isActive,
-    ...restProps
-  } = props;
-
-  const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
-    useDropdownItemHover();
-
-  const badgeCls = clsx(s.Badge, actionConfig.badgeClassName);
-
-  useEffect(() => {
-    if (isActive) {
-      onMouseEnter();
-    } else {
-      onMouseLeave();
-    }
-  }, [isActive]);
-
-  return (
-    <button
-      type="button"
-      role="button"
-      ref={ref}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      data-active={isActive}
-      {...restProps}
-    >
-      {itemBackgroundElement}
-      <div className={s.Icon}>{icon}</div>
-      <div className={s.Label}>{label}</div>
-      {badge ? (
-        <Badge className={badgeCls}>{badge}</Badge>
-      ) : hintText ? (
-        <div className={s.Hint}>{hintText}</div>
-      ) : null}
-    </button>
-  );
-};
 
 export function DropdownAction(props: DropdownActionProps) {
   const {
@@ -66,8 +15,13 @@ export function DropdownAction(props: DropdownActionProps) {
     style,
     danger,
     focused,
-    renderFunc = dropdownActionRenderFunc,
-    ...restProps
+    renderFunc,
+    icon,
+    label,
+    hintText,
+    keyProp,
+    badge,
+    ...htmlProps
   } = props;
 
   const id = useId();
@@ -79,16 +33,30 @@ export function DropdownAction(props: DropdownActionProps) {
 
   const { dropdown: { action: actionConfig = {} } = {} } = useConfiguration();
 
+  const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
+    useDropdownItemHover();
+
+  useEffect(() => {
+    if (isFocused) {
+      onMouseEnter();
+    } else {
+      onMouseLeave();
+    }
+  }, [isFocused]);
+
   const cls = clsx(
     s.Action,
+    'no-selection',
     {
       [s.DisabledAction]: props.disabled,
       [s.DangerAction]: danger,
       [s.Focused]: focused,
     },
     className,
-    actionConfig.className
+    actionConfig.className,
   );
+
+  const badgeCls = clsx(s.Badge, actionConfig.badgeClassName);
 
   const styles = {
     ...actionConfig.style,
@@ -97,20 +65,20 @@ export function DropdownAction(props: DropdownActionProps) {
 
   const closePopup = useCloseDropdownContext();
 
-  const onSelect = () => {
-    props?.onClick?.();
+  const onSelect = (event: React.MouseEvent<HTMLButtonElement>) => {
+    props?.onClick?.(event);
     closePopup();
   };
 
-  const onKeyDownPress: React.KeyboardEventHandler = (e) => {
+  const onKeyDownPress: React.KeyboardEventHandler<HTMLButtonElement> = (e) => {
     if (e.key === 'Enter') {
-      onSelect?.();
+      e.currentTarget.click();
     }
   };
 
-  return renderFunc(ref, {
-    ...restProps,
-    type: 'button',
+  const sharedProps = {
+    ...htmlProps,
+    type: 'button' as const,
     style: styles,
     className: cls,
     role: 'button',
@@ -119,6 +87,32 @@ export function DropdownAction(props: DropdownActionProps) {
     id: props.id || id,
     onClick: onSelect,
     onKeyDown: onKeyDownPress,
-  });
+    onMouseEnter,
+    onMouseLeave,
+  };
+
+  if (renderFunc) {
+    return renderFunc(ref, {
+      ...sharedProps,
+      icon,
+      label: label ?? '',
+      hintText,
+      keyProp,
+      badge,
+    });
+  }
+
+  return (
+    <button ref={ref} {...sharedProps}>
+      {itemBackgroundElement}
+      <div className={s.Icon}>{icon}</div>
+      <div className={s.Label}>{label}</div>
+      {badge ? (
+        <Badge className={badgeCls}>{badge}</Badge>
+      ) : hintText ? (
+        <div className={s.Hint}>{hintText}</div>
+      ) : null}
+    </button>
+  );
 }
 DropdownAction.displayName = 'DropdownAction';

@@ -18,3 +18,12 @@ const DropdownNamespace = Object.assign(DropdownWrapper, {
 });
 
 export { DropdownNamespace as Dropdown };
+export type {
+  DropdownProps,
+  DropdownActionProps,
+  DropdownCheckboxProps,
+  DropdownMenuProps,
+  DropdownChildMenuProps,
+  DropdownRadioListProps,
+  DropdownRadioListItem,
+} from './Dropdown.types';

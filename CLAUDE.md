@@ -244,3 +244,7 @@ This applies to every callback prop in every component. No exceptions.
 ## code comments
 
 always in English
+
+## communication language
+
+Always respond to the user in Russian. Code comments in English only.

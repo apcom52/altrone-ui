@@ -29,12 +29,13 @@ export function DropdownCheckbox({
 
   const cls = clsx(
     s.Action,
+    'no-selection',
     {
       [s.DisabledAction]: disabled,
       [s.Focused]: focused,
     },
     className,
-    dropdownCheckboxConfiguration.className
+    dropdownCheckboxConfiguration.className,
   );
 
   const styles = {

@@ -27,10 +27,15 @@ export function DropdownRadioList({
       value,
       onChange,
     }),
-    [value, onChange]
+    [value, onChange],
   );
 
-  const cls = clsx(s.RadioList, className, dropdownRadioListConfig.className);
+  const cls = clsx(
+    s.RadioList,
+    'no-selection',
+    className,
+    dropdownRadioListConfig.className,
+  );
   const styles = {
     ...dropdownRadioListConfig.style,
     ...style,

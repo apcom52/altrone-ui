@@ -25,11 +25,12 @@ export function DropdownChildMenu({
 
   const cls = clsx(
     s.Action,
+    'no-selection',
     className,
     {
       [s.DisabledAction]: disabled,
     },
-    dropdownChildMenuConfiguration.className
+    dropdownChildMenuConfiguration.className,
   );
 
   const styles = {

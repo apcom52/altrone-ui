@@ -28,12 +28,13 @@ export function DropdownRadioItem({
 
   const cls = clsx(
     s.Action,
+    'no-selection',
     className,
     {
       [s.DisabledAction]: disabled,
       [s.Focused]: focused,
     },
-    dropdownRadioItemConfig.className
+    dropdownRadioItemConfig.className,
   );
 
   const styles = {
