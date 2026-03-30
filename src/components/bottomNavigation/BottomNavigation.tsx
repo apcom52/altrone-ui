@@ -7,7 +7,7 @@ import { useConfiguration } from 'components/configuration';
 import { BottomNavigationContext } from './BottomNavigation.context.tsx';
 
 const BottomNavigation = memo<BottomNavigationProps>(
-  ({ children, className, style, ...restProps }) => {
+  ({ ref, children, className, style, floating = true, ...restProps }) => {
     const { bottomNavigation: bottomNavigationConfig = {} } =
       useConfiguration();
 
@@ -15,6 +15,7 @@ const BottomNavigation = memo<BottomNavigationProps>(
 
     const cls = clsx(
       s.BottomNavigation,
+      { [s.Floating]: floating },
       className,
       bottomNavigationConfig.className
     );
@@ -25,7 +26,7 @@ const BottomNavigation = memo<BottomNavigationProps>(
 
     return (
       <BottomNavigationContext.Provider value={`bottom-navigation-${id}`}>
-        <div className={cls} style={styles} {...restProps}>
+        <div ref={ref} className={cls} style={styles} {...restProps}>
           {children}
         </div>
       </BottomNavigationContext.Provider>

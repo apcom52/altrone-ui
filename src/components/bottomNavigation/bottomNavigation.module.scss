@@ -9,10 +9,6 @@
 }
 
 .BottomNavigation {
-  position: fixed;
-  bottom: 8px;
-  transform: translateX(-50%);
-  left: 50%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -21,4 +17,11 @@
   border-radius: var(--bottom-navigation-rounding);
   backdrop-filter: blur(64px) saturate(180%);
   box-shadow: var(--shadow-1), var(--shadow-5);
+}
+
+.Floating {
+  position: fixed;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
 }
