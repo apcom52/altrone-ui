@@ -11,9 +11,9 @@
   --button-rounding: var(--radius-xl);
   --button-font-size: 14px;
   --button-icon-size: 16px;
-  --button-vertical-padding: var(--spacing-2);
-  --button-horizontal-padding: var(--spacing-3);
-  --button-gap: var(--spacing-2);
+  --button-vertical-padding: var(--gap);
+  --button-horizontal-padding: var(--l-gap);
+  --button-gap: var(--gap);
 
   --button-badge-rounding: 10px;
   --button-badge-min-width: 20px;
@@ -247,8 +247,8 @@
   --button-rounding: 12px;
   --button-font-size: 12px;
   --button-icon-size: 14px;
-  --button-vertical-padding: var(--spacing-1);
-  --button-horizontal-padding: var(--spacing-2);
+  --button-vertical-padding: var(--xs-gap);
+  --button-horizontal-padding: var(--gap);
   --button-gap: 4px;
 
   --button-badge-rounding: 8px;

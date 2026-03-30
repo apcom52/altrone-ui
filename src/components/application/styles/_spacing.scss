@@ -1,11 +1,4 @@
-:root {
-  --spacing-1: 4px;
-  --spacing-2: 8px;
-  --spacing-3: 12px;
-  --spacing-4: 16px;
-  --spacing-5: 24px;
-  --spacing-6: 32px;
-  --spacing-7: 40px;
-  --spacing-8: 48px;
-  --spacing-9: 64px;
-}
+// Spacing variables have been removed.
+// Use semantic gap variables instead:
+// --xs-gap (4px), --s-gap (6px), --gap (8px), --l-gap (12px),
+// --xl-gap (24px), --xxl-gap (36px)

@@ -1,16 +1,22 @@
-import React, { useContext } from 'react';
+import { createContext, useContext } from 'react';
+import type { CSSProperties } from 'react';
 import { BasicComponentStyleConfig } from 'types';
-import { CollapsedListProps } from '../collapsedList/CollapsedList.types.ts';
+import type { CollapsedListContext } from '../collapsedList/CollapsedList.types.ts';
+import type { RenderFunction } from '../../utils';
 
 export const DEFAULT_CONFIGURATION: ConsumerConfigurationContext = {
   locale: {
     locale: 'en-US',
+    dateFormat: 'MM/dd/yyyy',
+    monthFormat: 'MM/yyyy',
+    yearFormat: 'yyyy',
+    numberGrouping: ',',
+    numberDecimal: '.',
   },
 };
 
-type ComponentConfiguration<ExtraProps extends object = {}> = Partial<
-  BasicComponentStyleConfig & ExtraProps
->;
+type ComponentConfiguration<ExtraProps extends Record<string, unknown> = Record<string, never>> =
+  Partial<BasicComponentStyleConfig & ExtraProps>;
 
 export type Locale = {
   locale: string;
@@ -28,10 +34,10 @@ export interface ConsumerConfigurationContext {
     showControls?: boolean;
   }>;
   bottomNavigation?: ComponentConfiguration<{
-    selectedItemClassName: string;
+    selectedItemClassName?: string;
     item?: ComponentConfiguration<{
-      selectedItemClassName: string;
-      badgeClassName: string;
+      selectedItemClassName?: string;
+      badgeClassName?: string;
     }>;
   }>;
   breadcrumbs?: ComponentConfiguration;
@@ -44,7 +50,7 @@ export interface ConsumerConfigurationContext {
   closeButton?: ComponentConfiguration;
   collapsedList?: ComponentConfiguration<{
     limit?: number;
-    expandButtonLabel?: CollapsedListProps['expandButtonLabel'];
+    expandButtonLabel?: RenderFunction<string, CollapsedListContext>;
   }>;
   colorPicker?: ComponentConfiguration;
   dataTable?: ComponentConfiguration<{
@@ -53,13 +59,13 @@ export interface ConsumerConfigurationContext {
     rowAction?: ComponentConfiguration;
   }>;
   datePicker?: ComponentConfiguration<{
-    popoverContentClassName: string;
-    popoverContentStyles: React.CSSProperties;
-    dateFormat: string;
-    monthFormat: string;
-    yearFormat: string;
-    rangeFormat: string;
-    rangeFormatEmpty: string;
+    popoverContentClassName?: string;
+    popoverContentStyles?: CSSProperties;
+    dateFormat?: string;
+    monthFormat?: string;
+    yearFormat?: string;
+    rangeFormat?: string;
+    rangeFormatEmpty?: string;
   }>;
   divider?: ComponentConfiguration;
   dropdown?: ComponentConfiguration<{
@@ -86,13 +92,13 @@ export interface ConsumerConfigurationContext {
   icon?: ComponentConfiguration;
   list?: ComponentConfiguration;
   loading?: ComponentConfiguration<{
-    color: string;
+    color?: string;
   }>;
   message?: ComponentConfiguration;
   modal?: ComponentConfiguration;
   navigationList?: ComponentConfiguration<{
     group?: ComponentConfiguration<{
-      titleClassName: string;
+      titleClassName?: string;
     }>;
     groupAction?: ComponentConfiguration;
     link?: ComponentConfiguration<{
@@ -110,8 +116,8 @@ export interface ConsumerConfigurationContext {
     showControls?: boolean;
   }>;
   photoViewer?: ComponentConfiguration<{
-    image: {
-      photoClassName: string;
+    image?: {
+      photoClassName?: string;
     };
   }>;
   popover?: ComponentConfiguration;
@@ -130,30 +136,30 @@ export interface ConsumerConfigurationContext {
   }>;
   select?: ComponentConfiguration;
   sideNavigation?: ComponentConfiguration<{
-    titleClassName: string;
-    selectedItemClassName: string;
+    titleClassName?: string;
+    selectedItemClassName?: string;
   }>;
   spoiler?: ComponentConfiguration;
   switcher?: ComponentConfiguration;
   tabs?: ComponentConfiguration<{
-    rainbowEffect: boolean;
+    rainbowEffect?: boolean;
     item?: ComponentConfiguration<{
-      badgeClassName: string;
-      selectedClassName: string;
+      badgeClassName?: string;
+      selectedClassName?: string;
     }>;
   }>;
   tags?: ComponentConfiguration;
   text?: ComponentConfiguration<{
-    section: ComponentConfiguration;
-    screenName: ComponentConfiguration;
-    heading: ComponentConfiguration;
-    paragraph: ComponentConfiguration;
-    inline: ComponentConfiguration;
-    code: ComponentConfiguration;
-    keyboard: ComponentConfiguration;
-    link: ComponentConfiguration;
-    list: ComponentConfiguration;
-    listItem: ComponentConfiguration;
+    section?: ComponentConfiguration;
+    screenName?: ComponentConfiguration;
+    heading?: ComponentConfiguration;
+    paragraph?: ComponentConfiguration;
+    inline?: ComponentConfiguration;
+    code?: ComponentConfiguration;
+    keyboard?: ComponentConfiguration;
+    link?: ComponentConfiguration;
+    list?: ComponentConfiguration;
+    listItem?: ComponentConfiguration;
   }>;
   textarea?: ComponentConfiguration;
   textInput?: ComponentConfiguration<{
@@ -161,14 +167,14 @@ export interface ConsumerConfigurationContext {
     textIsland?: ComponentConfiguration;
     iconIsland?: ComponentConfiguration;
     loadingIsland?: ComponentConfiguration<{
-      color: string;
+      color?: string;
     }>;
     actionIsland?: ComponentConfiguration;
     customIsland?: ComponentConfiguration;
   }>;
   toolbar?: ComponentConfiguration<{
-    actionClassName: string;
-    groupClassName: string;
+    actionClassName?: string;
+    groupClassName?: string;
     action?: ComponentConfiguration<{
       badgeClassName?: string;
     }>;
@@ -182,5 +188,5 @@ export interface ConsumerConfigurationContext {
 }
 
 export const ConfigurationContext =
-  React.createContext<ConsumerConfigurationContext>(DEFAULT_CONFIGURATION);
+  createContext<ConsumerConfigurationContext>(DEFAULT_CONFIGURATION);
 export const useConfiguration = () => useContext(ConfigurationContext);

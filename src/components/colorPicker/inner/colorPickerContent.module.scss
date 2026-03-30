@@ -1,5 +1,7 @@
 .ColorPicker {
-  width: 312px;
+  --color-picker-content-width: 312px;
+
+  width: var(--color-picker-content-width);
 }
 
 .Palette {

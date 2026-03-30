@@ -1,8 +1,9 @@
 import { NavigationListProps } from 'components/navigationList/NavigationList.types';
 import { ToolbarProps } from 'components/toolbar/Toolbar.types';
-import { ReactElement } from 'react';
+import type { HTMLAttributes, ReactElement, Ref } from 'react';
 
-export interface ScreenProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ScreenProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   sidebar?: ReactElement<NavigationListProps>;
   header?: ReactElement<ToolbarProps>;
 }

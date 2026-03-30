@@ -116,8 +116,14 @@ Add new keys to all five dictionaries: `en`, `ru`, `fr`, `ge`, `sp` in
 `<AltroneApplication>` renders providers in this order (innermost first):
 
 ```
-ThemeContext → AltroneLocalization → Configuration → RainbowEffect → Toast → children
+ThemeContext → AltroneLocalization → Configuration → DialogProvider → Toast → children
 ```
+
+- `ThemeContext` — current theme (`light`/`dark`) + `setTheme`
+- `AltroneLocalization` — i18n dictionary and language
+- `Configuration` — global component style overrides
+- `DialogProvider` — manages `<Dialog>` portal and state
+- `Toast` — manages toast notifications
 
 Do not add new global providers outside this chain without discussion.
 

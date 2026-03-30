@@ -5,8 +5,7 @@ import {
   DEFAULT_CONFIGURATION,
 } from './AltroneConfiguration.context.ts';
 import { merge, isEqual } from 'lodash-es';
-import useMemo from 'rc-util/lib/hooks/useMemo';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useRef } from 'react';
 
 export const Configuration = ({
   children,
@@ -14,20 +13,26 @@ export const Configuration = ({
 }: PropsWithChildren<Partial<ConsumerConfigurationContext>>) => {
   const parentContext = useConfiguration();
 
-  const mergedContext = merge({}, DEFAULT_CONFIGURATION, parentContext, props);
-
-  const memoedContextValue = useMemo(
-    () => {
-      return mergedContext;
-    },
+  // Ref-based deep memoization: recompute only when inputs actually change.
+  // Standard useMemo with shallow deps would re-run on every render because
+  // ...props always produces a new object reference.
+  const prevInputRef = useRef<[ConsumerConfigurationContext, Partial<ConsumerConfigurationContext>]>(
     [parentContext, props],
-    (prev, next) => {
-      return isEqual(prev, next);
-    },
+  );
+  const valueRef = useRef<ConsumerConfigurationContext>(
+    merge({}, DEFAULT_CONFIGURATION, parentContext, props),
   );
 
+  if (
+    !isEqual(prevInputRef.current[0], parentContext) ||
+    !isEqual(prevInputRef.current[1], props)
+  ) {
+    prevInputRef.current = [parentContext, props];
+    valueRef.current = merge({}, DEFAULT_CONFIGURATION, parentContext, props);
+  }
+
   return (
-    <ConfigurationContext.Provider value={memoedContextValue}>
+    <ConfigurationContext.Provider value={valueRef.current}>
       {children}
     </ConfigurationContext.Provider>
   );

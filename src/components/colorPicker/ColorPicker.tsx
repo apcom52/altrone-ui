@@ -11,7 +11,9 @@ import {
 import s from './styles.module.scss';
 import { ColorPickerContent } from './inner/ColorPickerContent';
 import { Size } from 'types';
-import { useCallback } from 'react';
+import { isValidElement, useCallback } from 'react';
+import { Slot } from 'utils/components/Slot';
+
 const EMPTY_COLOR_PRESETS: ColorPreset[] = [];
 
 const SIZES: Record<Size, number> = {
@@ -26,6 +28,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
   const t = useLocalization();
 
   const {
+    ref,
     value,
     onChange,
     className,
@@ -36,18 +39,20 @@ export const ColorPicker = (props: ColorPickerProps) => {
     colorPresets = EMPTY_COLOR_PRESETS,
     readOnly = false,
     clearable = false,
-    renderFunc,
+    transparent,
+    asChild = false,
+    children,
     ...restProps
   } = props;
+
+  const { colorPicker: colorPickerConfig = {} } = useConfiguration();
 
   const handleChange = useCallback(
     (color?: string) => {
       onChange(typeof color === 'string' ? color.toLowerCase() : value);
     },
-    [onChange]
+    [onChange, value],
   );
-
-  const { colorPicker: colorPickerConfig = {} } = useConfiguration();
 
   const cls = clsx(s.ColorPicker, colorPickerConfig.className, className, {
     [s.Readonly]: readOnly,
@@ -77,16 +82,30 @@ export const ColorPicker = (props: ColorPickerProps) => {
       overlap
     >
       {({ opened }) => {
-        if (typeof renderFunc === 'function') {
-          return renderFunc({
-            opened,
-            value,
-            setValue: handleChange,
-          });
+        if (asChild) {
+          if (!isValidElement(children)) {
+            console.error('[ColorPicker] asChild requires a single valid React element as children');
+            return null;
+          }
+
+          const childProps = (children as React.ReactElement).props as Record<string, unknown>;
+
+          return (
+            <Slot
+              ref={ref}
+              className={clsx(childProps.className as string | undefined, cls)}
+              style={{ ...(childProps.style as React.CSSProperties | undefined), ...styles }}
+              data-value={value || undefined}
+              data-opened={opened}
+            >
+              {children}
+            </Slot>
+          );
         }
 
         return (
           <TextInput
+            ref={ref}
             className={cls}
             style={styles}
             value={value || ''}
@@ -94,7 +113,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
             readOnly={true}
             readonlyStyles={readOnly}
             size={size}
-            transparent={props.transparent}
+            transparent={transparent}
             onChange={() => null}
             {...restProps}
           >

@@ -1,8 +1,7 @@
-import { JSX, ReactElement } from 'react';
+import type { HTMLAttributes, Ref } from 'react';
 import { ConsumerConfigurationContext } from '../configuration/AltroneConfiguration.context.ts';
-import { NavigationListProps } from 'components/navigationList/NavigationList.types.ts';
-import { ToolbarProps } from 'components/toolbar/Toolbar.types.ts';
 import { ScreenProps } from 'components/screen/Screen.types.ts';
+import type { Localization } from 'locales';
 
 export type Theme = 'auto' | 'light' | 'dark';
 export type Accent =
@@ -14,15 +13,15 @@ export type Accent =
   | 'teal'
   | 'amber'
   | 'brown';
-export type Language = 'en' | 'ru';
+export type Language = 'en' | 'ru' | 'fr' | 'ge' | 'sp';
 
-export interface AltroneApplicationProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface AltroneApplicationProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
   language?: Language;
   theme?: Theme;
   accent?: Accent;
-  tagName?: keyof JSX.IntrinsicElements;
   config?: Partial<ConsumerConfigurationContext>;
-  customLabels?: Record<string, any>;
+  customLabels?: Partial<Localization>;
   sidebar?: ScreenProps['sidebar'];
   header?: ScreenProps['header'];
 }

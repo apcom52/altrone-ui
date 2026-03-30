@@ -3,8 +3,7 @@ import s from './screen.module.css';
 import { ScreenProps } from './Screen.types';
 import { ScreenSidebarContext } from './Screen.context';
 
-export const Screen = memo<ScreenProps>((props) => {
-  const { children, sidebar, header, ...restProps } = props;
+export const Screen = memo<ScreenProps>(({ ref, children, sidebar, header, ...restProps }) => {
 
   const [sidebarVisible, setSidebarVisible] = useState(true);
 
@@ -21,7 +20,7 @@ export const Screen = memo<ScreenProps>((props) => {
 
   return (
     <ScreenSidebarContext value={contextValue}>
-      <div className={s.Screen} {...restProps}>
+      <div ref={ref} className={s.Screen} {...restProps}>
         {hasSidebar && <aside className={s.Sidebar}>{sidebar}</aside>}
         <div className={s.Layout}>
           {hasHeader && <header className={s.Header}>{header}</header>}

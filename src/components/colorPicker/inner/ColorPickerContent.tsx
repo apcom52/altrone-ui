@@ -27,7 +27,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
 
   const t = useLocalization();
 
-  const _allowPalette = typeof allowPalette === 'boolean' ? allowPalette : true;
+  const _allowPalette = allowPalette ?? true;
 
   const presetsEnabled = Boolean(props.colorPresets?.length);
   const paletteEnabled = presetsEnabled ? _allowPalette : true;
@@ -57,22 +57,21 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
     setBlue(parseInt(hexB, 16));
   }, [hexR, hexG, hexB]);
 
+  // hexR/hexG/hexB are not used inside — only e.target.value and onChange are needed
   const handleBlur = useCallback<FocusEventHandler>(
     (e) => {
-      const isValidHexColor = (value: string): boolean => {
-        const hexColorRegex = /^[0-9A-Fa-f]{6}$/;
-        return hexColorRegex.test(value);
-      };
+      const isValidHexColor = (v: string): boolean =>
+        /^[0-9A-Fa-f]{6}$/.test(v);
 
       const input = e.target as HTMLInputElement;
       if (isValidHexColor(input.value)) {
-        onChange(`#${input.value}`);
+        onChange(`#${input.value}`, e);
       } else {
         setLocalColor('');
-        onChange(undefined);
+        onChange(undefined, e);
       }
     },
-    [hexR, hexG, hexB, onChange]
+    [onChange],
   );
 
   const handleRGBFieldBlur = useCallback(() => {
@@ -83,9 +82,9 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
         .toString(16)
         .padStart(2, '0')}${(blue || 0)
         .toString(16)
-        .padStart(2, '0')}${alphaValue}`
+        .padStart(2, '0')}${alphaValue}`,
     );
-  }, [red, green, blue, onChange]);
+  }, [red, green, blue, onChange, value]);
 
   const handleClearClick = () => {
     props.onChange(undefined);
@@ -119,7 +118,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
           {colorPresets?.map((preset, presetIndex) => (
             <ColorPreset
               key={`${presetIndex}-${preset.name}`}
-              onChange={onChange}
+              onChange={(color, event) => onChange(color, event)}
               selected={preset.value === value}
               {...preset}
             />
@@ -129,7 +128,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
       {mode === 'palette' ? (
         <HexAlphaColorPicker
           color={value}
-          onChange={onChange}
+          onChange={(color) => onChange(color)}
           defaultValue="#000000ff"
           className={s.Palette}
         />

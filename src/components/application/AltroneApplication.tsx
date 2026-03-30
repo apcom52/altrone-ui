@@ -6,7 +6,6 @@ import { Configuration } from 'components/configuration';
 import { useEffect, useMemo, useState } from 'react';
 import { Toast } from 'components/toasts/Toast.tsx';
 import { ThemeContext, ThemeContextType } from './useTheme.ts';
-import { motion } from 'motion/react';
 import { Screen } from '../index.ts';
 
 import '@fontsource-variable/inter';
@@ -14,12 +13,20 @@ import '@fontsource-variable/jetbrains-mono';
 import { AltroneLocalization } from './useLocalization.tsx';
 import { DialogProvider } from 'components/dialog/DialogProvider.tsx';
 
+function resolveInitialTheme(initialTheme: Theme): Exclude<Theme, 'auto'> {
+  if (initialTheme !== 'auto') return initialTheme;
+  if (typeof window === 'undefined') return 'light';
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light';
+}
+
 export const AltroneApplication = ({
+  ref,
   children,
   className,
   id,
   style,
-  tagName = 'div',
   theme: initialTheme = 'auto',
   accent = 'blue',
   config,
@@ -29,10 +36,13 @@ export const AltroneApplication = ({
   header,
   ...props
 }: AltroneApplicationProps) => {
-  const [theme, setTheme] = useState<Theme>('auto');
+  const [theme, setTheme] = useState<Theme>(() =>
+    resolveInitialTheme(initialTheme),
+  );
 
   const mediaScheme = useMediaMatch('(prefers-color-scheme: dark)');
 
+  // Respond to runtime changes: system theme switch or prop change
   useEffect(() => {
     if (initialTheme === 'auto') {
       setTheme(mediaScheme ? 'dark' : 'light');
@@ -41,6 +51,7 @@ export const AltroneApplication = ({
     }
   }, [mediaScheme, initialTheme]);
 
+  // Applied to <html> so global styles (scrollbar, selection, etc.) pick up the theme
   useEffect(() => {
     document
       .querySelector('html')
@@ -63,12 +74,15 @@ export const AltroneApplication = ({
     }
   }, [config?.locale?.locale]);
 
+  // AltroneDark is also set on this element (in addition to <html>) so that
+  // portals rendered inside data-altrone-root inherit dark-mode CSS variables
   const cls = clsx(s.AltroneApp, s.Application, className, {
     AltroneDark: theme === 'dark',
   });
 
   return (
     <Screen
+      ref={ref}
       className={cls}
       data-altrone-root="true"
       data-altrone-accent={accent}

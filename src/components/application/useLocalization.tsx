@@ -10,16 +10,16 @@ import { NestedKeys } from 'utils';
 import { get, merge } from 'lodash-es';
 
 interface LocalizationProps extends PropsWithChildren {
-  language: 'en' | 'ru';
+  language: 'en' | 'ru' | 'fr' | 'ge' | 'sp';
   customLabels: Partial<Localization>;
 }
 
 interface LocalizationContextType {
   language: string;
-  dictionary: Record<string, any>;
+  dictionary: Localization;
 }
 
-type translationOptions = {
+type TranslationOptions = {
   defaultValue?: string;
   value?: number;
   plural?: boolean;
@@ -46,7 +46,7 @@ export const AltroneLocalization = ({
   children,
 }: LocalizationProps) => {
   const context = useMemo(() => {
-    const lang = language.toLowerCase() || 'en';
+    const lang = language || 'en';
     const dictionary = merge(
       {},
       DICTIONARIES[lang as keyof typeof DICTIONARIES] || en,
@@ -69,10 +69,8 @@ export const AltroneLocalization = ({
 export const useLocalization = () => {
   const { language, dictionary } = useLocalizationContext();
 
-  const lang = language.toLowerCase();
-
   return useCallback(
-    (t: NestedKeys<Localization> | string, config?: translationOptions) => {
+    (t: NestedKeys<Localization> | string, config?: TranslationOptions) => {
       const {
         defaultValue,
         value = 0,
@@ -82,7 +80,7 @@ export const useLocalization = () => {
       let localeString = '';
 
       if (plural) {
-        const rule = new Intl.PluralRules(lang).select(value);
+        const rule = new Intl.PluralRules(language).select(value);
         localeString = get(dictionary, t + `.${rule}`, defaultValue || t);
       } else {
         localeString = get(dictionary, t, defaultValue || t) as string;
@@ -94,6 +92,6 @@ export const useLocalization = () => {
 
       return localeString;
     },
-    [dictionary, lang],
+    [dictionary, language],
   );
 };

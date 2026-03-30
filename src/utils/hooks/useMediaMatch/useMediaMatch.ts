@@ -32,11 +32,5 @@ export function useMediaMatch(query: string) {
     }
   }, [matchMedia]);
 
-  if (typeof window === 'undefined') {
-    console.warn('useMediaMatch cannot function as window is undefined.');
-
-    return false;
-  }
-
   return matches;
 }

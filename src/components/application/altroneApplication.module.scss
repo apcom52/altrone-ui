@@ -1,6 +1,5 @@
 @use 'styles/breakpoints';
 @use 'styles/radius';
-@use 'styles/spacing';
 @use 'styles/shadow';
 @use 'styles/size';
 @use 'styles/text';
@@ -50,12 +49,6 @@
   --app-text-color: var(--text-2);
   --app-font-family: var(--font-family-base);
 
-  --translucent-background-1: color(display-p3 1 1 1 / 0.5);
-  --translucent-background-2: color(display-p3 1 1 1 / 0.6);
-
-  --translucent-blur: blur(64px);
-  --translucent-border-color: var(--border-a1);
-
   --disabled-text-color: var(--gray-9);
   --placeholder-text-color: var(--gray-a9);
 
@@ -93,6 +86,8 @@
 
   /** glass effect */
   --glass-background-color: color(display-p3 1 1 1 / 0.7);
+  --glass-border-color: color(display-p3 0 0 0 / 0.08);
+  --glass-background-blur: blur(64px);
   --glass-effects: blur(64px) saturate(180%);
   --glass-press-effects: blur(64px) saturate(180%) brightness(1.1);
 
@@ -182,60 +177,13 @@
   }
 }
 
-:global(.AltroneDark) {
-  --translucent-background-1: color(display-p3 0.99 0.99 0.99 / 0.15);
-  --translucent-background-2: color(display-p3 0.99 0.99 0.99 / 0.1);
-
-  --headingTextColor: var(--default-50);
-  --primaryHeadingTextColor: var(--primary-50);
-  --successHeadingTextColor: var(--success-50);
-  --warningHeadingTextColor: var(--warning-50);
-  --dangerHeadingTextColor: var(--danger-50);
-  --bodyTextColor: var(--default-200);
-  --primaryBodyTextColor: var(--primary-100);
-  --successBodyTextColor: var(--success-100);
-  --warningBodyTextColor: var(--warning-100);
-  --dangerBodyTextColor: var(--danger-100);
-  --disabledTextColor: var(--default-600);
-  --highlightedTextColor: var(--default-50);
-  --codeTextColor: var(--primary-200);
-  --keyboardTextColor: var(--default-300);
-  --linkTextColor: var(--primary-500);
-  --linkHoveredTextColor: var(--primary-400);
-  --linkPressedTextColor: var(--primary-300);
-
-  /* surfaces */
-  --appBackground: var(--default-900);
-  --glassBackground: rgba(31, 42, 55, 0.9);
-  --scrollbarBackground: var(--default-700);
-  --scrollbarThumb: var(--default-200);
-  --highlightedTextBackground: var(--primary-900);
-  --codeBackgroundColor: var(--primary-900);
-  --codeBorderColor: var(--primary-800);
-  --keyboardBackgroundColor: var(--default-600);
-  --keyboardBorderColor: var(--default-500);
-  --messageBackgroundColor: var(--default-800);
-  --messagePrimaryBackgroundColor: var(--primary-900);
-  --messageSuccessBackgroundColor: var(--success-900);
-  --messageWarningBackgroundColor: var(--warning-900);
-  --messageDangerBackgroundColor: var(--danger-900);
-  --backdropColor: rgba(0, 0, 0, 0.6);
-
-  /** glass effect */
-  // --glass-background-color: color(display-p3 0 0 0 / 0.45);
-  // --glass-effects: blur(32px) saturate(120%);
-  // --glass-press-effects: blur(32px) saturate(120%) brightness(1.05);
+:global([data-altrone-root='true'][data-altrone-theme='dark']) {
+  /** glass effect — dark mode overrides */
   --glass-background-color: color(display-p3 0.05 0.05 0.07 / 0.6);
+  --glass-border-color: color(display-p3 1 1 1 / 0.08);
+  --glass-background-blur: blur(32px);
   --glass-effects: blur(32px) saturate(110%);
   --glass-press-effects: blur(28px) saturate(110%) brightness(1.08);
-  --glass-border-color: color(display-p3 1 1 1 / 0.08);
-  --glass-shadow: 0 8px 32px color(display-p3 0 0 0 / 0.4);
-
-  /** focus */
-  --focus: rgba(25, 118, 210, 0.7);
-  --focusSuccess: rgba(56, 142, 60, 0.7);
-  --focusWarning: rgba(255, 160, 0, 0.7);
-  --focusDanger: rgb(211, 47, 47, 0.7);
 }
 
 .Application {
