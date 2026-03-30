@@ -15,7 +15,7 @@ export const TooltipStory: StoryObj<typeof Tooltip> = {
   name: 'Using Tooltips',
   render: () => {
     return (
-      <Flex direction="vertical" gap="xl" style={{ padding: '80px 60px' }}>
+      <Flex direction="vertical" gap="xl" style={{ padding: '20px' }}>
         {/* Basic */}
         <Flex direction="vertical" gap="m">
           <Text size={5} weight="bold">

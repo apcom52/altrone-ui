@@ -1,5 +1,5 @@
 import { Placement } from '@floating-ui/react';
-import type { ReactElement, ReactNode, Ref } from 'react';
+import type { CSSProperties, ReactElement, ReactNode, Ref } from 'react';
 
 export interface TooltipProps {
   ref?: Ref<HTMLElement>;
@@ -10,6 +10,6 @@ export interface TooltipProps {
   children?: ReactNode;
   childrenClassName?: string;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   placement?: Placement;
 }
