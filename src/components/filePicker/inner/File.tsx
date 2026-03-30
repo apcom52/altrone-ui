@@ -24,7 +24,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
 
   const {
     url,
-    method = 'GET',
+    method = 'POST',
     name = 'file',
     autoUploadFn,
     removeFileFn,
@@ -89,6 +89,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
     };
   }, [url, name, file, pickerItem]);
 
+  // SSR: requires client — XMLHttpRequest is browser-only
   const uploadFile = useCallback(async (context: FilePickerUploadContext) => {
     if (file) {
       const request = new XMLHttpRequest();
@@ -107,12 +108,9 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
         context.fail();
       };
 
-      request.onload = (e: ProgressEvent<any>) => {
-        if (
-          e.target?.status &&
-          e.target.status >= 200 &&
-          e.target.status < 300
-        ) {
+      request.onload = (e: ProgressEvent<XMLHttpRequestEventTarget>) => {
+        const xhr = e.target as XMLHttpRequest;
+        if (xhr?.status >= 200 && xhr.status < 300) {
           context.complete();
         } else {
           context.fail(t('filePicker.errorMessage'));
@@ -121,9 +119,9 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
 
       request.send(formData);
     }
-  }, []);
+  }, [file]);
 
-  const onRemoveClick = async () => {
+  const onRemoveClick = useCallback(async (event: React.MouseEvent) => {
     if (autoUpload) {
       if (removeFileFn) {
         await removeFileFn(deleteContext);
@@ -132,8 +130,8 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
       }
     }
 
-    onDeleteClick(pickerItem);
-  };
+    onDeleteClick(pickerItem, event);
+  }, [autoUpload, removeFileFn, deleteContext, onDeleteClick, pickerItem]);
 
   useEffect(() => {
     if (autoUpload && uploadContext && file && status === 'selected') {

@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 
 export const Range = memo<RangeProps>((props) => {
   const {
+    ref,
     value,
     onChange,
     onValueCommit,
@@ -32,43 +33,25 @@ export const Range = memo<RangeProps>((props) => {
   const rangeValue = useRef(value);
   const trackRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
-  const isFocused = useRef(false);
 
-  const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent) => {
-      if (!isFocused.current) return;
-
-      switch (event.key) {
-        case 'ArrowLeft':
-        case 'ArrowDown':
-          event.preventDefault();
-          onChange(Math.max(min, value - step));
-          onValueCommit?.(Math.max(min, value - step));
-          break;
-        case 'ArrowRight':
-        case 'ArrowUp':
-          event.preventDefault();
-          onChange(Math.min(max, value + step));
-          onValueCommit?.(Math.min(max, value + step));
-          break;
-        case 'Home':
-          event.preventDefault();
-          onChange(min);
-          onValueCommit?.(min);
-          break;
-        case 'End':
-          event.preventDefault();
-          onChange(max);
-          onValueCommit?.(max);
-          break;
+  // Merge internal measurement ref with consumer ref.
+  // Memoized to avoid unnecessary ref flushes on every render (React 19 calls
+  // cleanup + setup each time the callback ref identity changes).
+  const mergedRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      trackRef.current = node;
+      if (typeof ref === 'function') {
+        ref(node);
+      } else if (ref) {
+        (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
       }
     },
-    [value, min, max, step, onChange, onValueCommit]
+    [ref]
   );
 
   const calculateValue = useCallback(
     (clientX: number, clientY: number) => {
-      if (!trackRef.current) return value;
+      if (!trackRef.current) return min;
 
       const rect = trackRef.current.getBoundingClientRect();
       let percentage;
@@ -85,40 +68,68 @@ export const Range = memo<RangeProps>((props) => {
       const stepsCount = Math.round((rawValue - min) / step);
       return Math.min(max, Math.max(min, min + stepsCount * step));
     },
-    [min, max, step, value, direction]
+    [min, max, step, direction]
   );
 
+  // Handlers are created inside pointerdown closure so removeEventListener
+  // always removes the exact same reference that was registered — no stale ref leak.
   const handlePointerDown = useCallback(
     (event: React.PointerEvent<HTMLDivElement>) => {
       event.preventDefault();
       isDragging.current = true;
       setIsActive(true);
       const newValue = calculateValue(event.clientX, event.clientY);
-      onChange(newValue);
+      onChange(newValue, event);
 
-      document.addEventListener('pointermove', handlePointerMove);
-      document.addEventListener('pointerup', handlePointerUp);
+      const handleMove = (e: PointerEvent) => {
+        if (!isDragging.current) return;
+        const movedValue = calculateValue(e.clientX, e.clientY);
+        onChange(movedValue, e);
+      };
+
+      const handleUp = (e: PointerEvent) => {
+        onValueCommit?.(rangeValue.current, e);
+        isDragging.current = false;
+        setIsActive(false);
+        document.removeEventListener('pointermove', handleMove);
+        document.removeEventListener('pointerup', handleUp);
+      };
+
+      document.addEventListener('pointermove', handleMove);
+      document.addEventListener('pointerup', handleUp);
     },
-    [calculateValue, onChange]
+    [calculateValue, onChange, onValueCommit]
   );
 
-  const handlePointerMove = useCallback(
-    (event: PointerEvent) => {
-      if (!isDragging.current) return;
-      const newValue = calculateValue(event.clientX, event.clientY);
-      onChange(newValue);
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      switch (event.key) {
+        case 'ArrowLeft':
+        case 'ArrowDown':
+          event.preventDefault();
+          onChange(Math.max(min, value - step), event);
+          onValueCommit?.(Math.max(min, value - step), event);
+          break;
+        case 'ArrowRight':
+        case 'ArrowUp':
+          event.preventDefault();
+          onChange(Math.min(max, value + step), event);
+          onValueCommit?.(Math.min(max, value + step), event);
+          break;
+        case 'Home':
+          event.preventDefault();
+          onChange(min, event);
+          onValueCommit?.(min, event);
+          break;
+        case 'End':
+          event.preventDefault();
+          onChange(max, event);
+          onValueCommit?.(max, event);
+          break;
+      }
     },
-    [calculateValue, onChange]
+    [value, min, max, step, onChange, onValueCommit]
   );
-
-  const handlePointerUp = useCallback(() => {
-    onValueCommit?.(rangeValue.current);
-    isDragging.current = false;
-    setIsActive(false);
-
-    document.removeEventListener('pointermove', handlePointerMove);
-    document.removeEventListener('pointerup', handlePointerUp);
-  }, [onValueCommit]);
 
   const leftOffset = useMemo(() => {
     return `${((value - min) / (max - min)) * 100}%`;
@@ -175,11 +186,9 @@ export const Range = memo<RangeProps>((props) => {
       className={cls}
       style={styles}
       onPointerDown={disabled ? undefined : handlePointerDown}
-      ref={trackRef}
+      ref={mergedRef}
       data-range-active={isActive}
       tabIndex={0}
-      onFocus={() => (isFocused.current = true)}
-      onBlur={() => (isFocused.current = false)}
       onKeyDown={!disabled ? handleKeyDown : undefined}
       role="slider"
       aria-valuemin={min}

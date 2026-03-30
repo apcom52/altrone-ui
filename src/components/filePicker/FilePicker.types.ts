@@ -7,6 +7,9 @@ export type FileItem = AnyObject &
     file: File;
   }>;
 
+// Internal type used within FilePicker state — id is always present after normalization
+export type InternalFileItem = Omit<FileItem, 'id'> & { id: string };
+
 export type FileStatus = 'selected' | 'loading' | 'loaded' | 'failed';
 
 export interface FilePickerContextType {
@@ -20,21 +23,26 @@ export interface FilePickerContextType {
 
 export interface FileProps {
   file?: File;
-  pickerItem: FileItem;
-  onDeleteClick: (pickerItem: FileItem) => void;
+  pickerItem: InternalFileItem;
+  onDeleteClick: (pickerItem: InternalFileItem, event: React.MouseEvent) => void;
 }
 
 export interface FilePickerProps
-  extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    'value' | 'defaultValue' | 'onChange'
-  > {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+  ref?: React.Ref<HTMLDivElement>;
   defaultValue?: FileItem[];
+  value?: FileItem[];
+  onChange?: (
+    fileList: FileItem[],
+    event: React.ChangeEvent<HTMLInputElement> | React.MouseEvent
+  ) => void;
   autoUpload?: boolean;
   url?: string;
   method?: HTMLFormElement['method'];
   name?: string;
   multiple?: boolean;
+  accept?: string;
+  placeholder?: string;
   autoUploadFn?: (context: FilePickerUploadContext) => Promise<void>;
   removeFileFn?: (context: FilePickerRemoveContext) => Promise<void>;
 }
