@@ -94,25 +94,10 @@ const styles = { ...buttonConfig.style, ...style };
 All colors and typography are CSS custom properties defined in
 `src/components/application/altroneApplication.module.scss`.
 Never use hardcoded color values. Example variables:
-`--primary-500`, `--danger-500`, `--paragraphFontSize`.
+Some variables are legacy. Like `--primary-500`, `--danger-500`, `--paragraphFontSize`. Don't use them. Also avoid using imports in scss file. This is also legacy style.
+Use css variables from application/colors and application/styles and application/altroneApplication.module.scss. Also every component can have own css variables from <component>/<component>.module.scss. Avoid to create special variables inside of every subcomponent. We need to place them inside of main <component>/<component>.module.scss
 
 Dark mode is toggled by adding `data-altrone-theme`
-
-### 4. SCSS mixins for typography
-
-Typography styles are **never** written inline. Use mixins from
-`src/global/mixins.scss`:
-
-```scss
-@import 'src/global/mixins';
-.Title {
-  @include heading;
-}
-```
-
-Available mixins: `screen-name`, `title`, `heading`, `subheader`,
-`inner-header`, `big-paragraph`, `paragraph`, `sm-paragraph`, `code`,
-`group-heading`, `label-heading`, `label`.
 
 ### 5. Localization
 

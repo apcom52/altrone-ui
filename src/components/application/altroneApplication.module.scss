@@ -20,392 +20,243 @@
 @import 'src/global/mixins';
 
 :global([data-altrone-root='true']) {
-    --background-1: var(--gray-1);
-    --background-a1: var(--gray-a1);
-    --background-2: var(--gray-2);
-    --background-a2: var(--gray-a2);
-    --interactive-1: var(--gray-3);
-    --interactive-a1: var(--gray-a3);
-    --interactive-2: var(--gray-4);
-    --interactive-a2: var(--gray-a4);
-    --interactive-3: var(--gray-5);
-    --interactive-a3: var(--gray-a5);
-    --border-1: var(--gray-6);
-    --border-a1: var(--gray-a6);
-    --border-2: var(--gray-7);
-    --border-a2: var(--gray-a7);
-    --border-3: var(--gray-8);
-    --border-a3: var(--gray-a8);
-    --solid-1: var(--gray-9);
-    --solid-a1: var(--gray-a9);
-    --solid-2: var(--gray-10);
-    --solid-a2: var(--gray-a10);
-    --text-1: var(--gray-11);
-    --text-a1: var(--gray-a11);
-    --text-2: var(--gray-12);
-    --text-a2: var(--gray-a12);
+  --background-1: var(--gray-1);
+  --background-a1: var(--gray-a1);
+  --background-2: var(--gray-2);
+  --background-a2: var(--gray-a2);
+  --interactive-1: var(--gray-3);
+  --interactive-a1: var(--gray-a3);
+  --interactive-2: var(--gray-4);
+  --interactive-a2: var(--gray-a4);
+  --interactive-3: var(--gray-5);
+  --interactive-a3: var(--gray-a5);
+  --border-1: var(--gray-6);
+  --border-a1: var(--gray-a6);
+  --border-2: var(--gray-7);
+  --border-a2: var(--gray-a7);
+  --border-3: var(--gray-8);
+  --border-a3: var(--gray-a8);
+  --solid-1: var(--gray-9);
+  --solid-a1: var(--gray-a9);
+  --solid-2: var(--gray-10);
+  --solid-a2: var(--gray-a10);
+  --text-1: var(--gray-11);
+  --text-a1: var(--gray-a11);
+  --text-2: var(--gray-12);
+  --text-a2: var(--gray-a12);
 
-    --app-background: var(--background-1);
-    --app-text-color: var(--text-2);
-    --app-font-family: var(--font-family-base);
+  --app-background: var(--background-1);
+  --app-text-color: var(--text-2);
+  --app-font-family: var(--font-family-base);
 
-    --translucent-background-1: color(display-p3 1 1 1 / 0.5);
-    --translucent-background-2: color(display-p3 1 1 1 / 0.6);
+  --translucent-background-1: color(display-p3 1 1 1 / 0.5);
+  --translucent-background-2: color(display-p3 1 1 1 / 0.6);
 
-    --translucent-blur: blur(64px);
-    --translucent-border-color: var(--border-a1);
+  --translucent-blur: blur(64px);
+  --translucent-border-color: var(--border-a1);
 
-    --disabled-text-color: var(--gray-9);
-    --placeholder-text-color: var(--gray-a9);
+  --disabled-text-color: var(--gray-9);
+  --placeholder-text-color: var(--gray-a9);
 
-    --default-900: #111928;
-    --default-800: #1f2a37;
-    --default-700: #374151;
-    --default-600: #4b5563;
-    --default-500: #6b7280;
-    --default-400: #9ca3af;
-    --default-300: #d1d5db;
-    --default-200: #e5e7eb;
-    --default-100: #f3f4f6;
-    --default-50: #f9fafb;
+  /** gaps */
+  --narrow-gap: 2px;
+  --xs-gap: 4px;
+  --s-gap: 6px;
+  --gap: 8px;
+  --l-gap: 12px;
+  --xl-gap: 24px;
+  --xxl-gap: 36px;
 
-    --primary-900: #0d47a1;
-    --primary-800: #1565c0;
-    --primary-700: #1976d2;
-    --primary-600: #1e88e5;
-    --primary-500: #2196f3;
-    --primary-400: #42a5f5;
-    --primary-300: #64b5f6;
-    --primary-200: #90caf9;
-    --primary-100: #bbdefb;
-    --primary-50: #e3f2fd;
+  /** roundings */
+  --controlRounding: 6px;
 
-    --success-900: #1b5e20;
-    --success-800: #2e7d32;
-    --success-700: #388e3c;
-    --success-600: #43a047;
-    --success-500: #4caf50;
-    --success-400: #66bb6a;
-    --success-300: #81c784;
-    --success-200: #a5d6a7;
-    --success-100: #c8e6c9;
-    --success-50: #e8f5e9;
+  /** sizes */
+  --small-size: 20px;
+  --normal-size: 24px;
+  --large-size: 32px;
 
-    --danger-900: #b71c1c;
-    --danger-800: #c62828;
-    --danger-700: #d32f2f;
-    --danger-600: #e53935;
-    --danger-500: #f44336;
-    --danger-400: #ef5350;
-    --danger-300: #e57373;
-    --danger-200: #ef9a9a;
-    --danger-100: #ffcdd2;
-    --danger-50: #ffebee;
+  /** animations */
+  --stateTransitionDuration: 0.2s;
 
-    --warning-900: #443303;
-    --warning-800: #755705;
-    --warning-700: #a17807;
-    --warning-600: #d29d09;
-    --warning-500: #f5b914;
-    --warning-400: #f7c845;
-    --warning-300: #f9d571;
-    --warning-200: #fbe3a2;
-    --warning-100: #fdf2d3;
-    --warning-50: #fef8e8;
+  /** z-index */
+  --level-dropdown: 1000;
+  --level-sticky: 1020;
+  --level-fixed: 1030;
+  --level-offcanvas-backdrop: 1040;
+  --level-offcanvas: 1045;
+  --level-modal-backdrop: 1050;
+  --level-modal: 1055;
+  --level-popover: 1070;
+  --level-tooltip: 1080;
+  --level-toast: 1090;
 
-    --screenFontSize: 32px;
-    --screenLineHeight: 40px;
-    --screenFontWeight: 700;
+  /** glass effect */
+  --glass-background-color: color(display-p3 1 1 1 / 0.7);
+  --glass-effects: blur(64px) saturate(180%);
+  --glass-press-effects: blur(64px) saturate(180%) brightness(1.1);
 
-    --titleFontSize: 24px;
-    --titleLineHeight: 32px;
-    --titleFontWeight: 700;
-
-    --headingFontSize: 20px;
-    --headingLineHeight: 24px;
-    --headingFontWeight: 700;
-
-    --subheaderFontSize: 16px;
-    --subheaderLineHeight: 24px;
-    --subheaderFontWeight: 600;
-
-    --innerHeaderFontSize: 14px;
-    --innerHeaderLineHeight: 24px;
-    --innerHeaderFontWeight: 600;
-
-    --groupHeadingFontSize: 12px;
-    --groupHeadingLineHeight: 16px;
-    --groupHeadingFontWeight: 500;
-
-    --labelHeadingFontSize: 12px;
-    --labelHeadingLineHeight: 16px;
-    --labelHeadingFontWeight: 600;
-
-    --labelFontSize: 10px;
-    --labelLineHeight: 16px;
-    --labelFontWeight: 600;
-
-    --smallLabelFontSize: 8px;
-    --smallLabelLineHeight: 12px;
-    --smallLabelFontWeight: 600;
-
-    --bigParagraphFontSize: 16px;
-    --bigParagraphLineHeight: 24px;
-    --bigParagraphFontWeight: 400;
-
-    --paragraphFontSize: 14px;
-    --paragraphLineHeight: 20px;
-    --paragraphFontWeight: 400;
-
-    --smallParagraphFontSize: 12px;
-    --smallParagraphLineHeight: 16px;
-    --smallParagraphFontWeight: 400;
-
-    --codeFontSize: 13px;
-    --codeLineHeight: 20px;
-    --codeFontWeight: 400;
-
-    /** gaps */
-    --narrow-gap: 2px;
-    --xs-gap: 4px;
-    --s-gap: 6px;
-    --gap: 8px;
-    --l-gap: 12px;
-    --xl-gap: 24px;
-    --xxl-gap: 36px;
-
-    /** roundings */
-    --controlRounding: 6px;
-
-    /** sizes */
-    --small-size: 20px;
-    --normal-size: 24px;
-    --large-size: 32px;
-
-    /** animations */
-    --stateTransitionDuration: 0.2s;
-
-    /** z-index */
-    --level-dropdown: 1000;
-    --level-sticky: 1020;
-    --level-fixed: 1030;
-    --level-offcanvas-backdrop: 1040;
-    --level-offcanvas: 1045;
-    --level-modal-backdrop: 1050;
-    --level-modal: 1055;
-    --level-popover: 1070;
-    --level-tooltip: 1080;
-    --level-toast: 1090;
-
-    /* text style variables */
-    --headingTextColor: var(--default-900);
-    --primaryHeadingTextColor: var(--primary-900);
-    --successHeadingTextColor: var(--success-900);
-    --warningHeadingTextColor: var(--warning-900);
-    --dangerHeadingTextColor: var(--danger-900);
-    --bodyTextColor: var(--default-700);
-    --primaryBodyTextColor: var(--primary-700);
-    --successBodyTextColor: var(--success-700);
-    --warningBodyTextColor: var(--warning-800);
-    --dangerBodyTextColor: var(--danger-800);
-    --disabledTextColor: var(--default-400);
-    --highlightedTextColor: var(--default-900);
-    --codeTextColor: var(--primary-800);
-    --keyboardTextColor: var(--default-500);
-    --linkTextColor: var(--primary-600);
-    --linkHoveredTextColor: var(--primary-700);
-    --linkPressedTextColor: var(--primary-800);
-
-    /* surfaces */
-    --appBackground: var(--default-50);
-    --glassBackground: rgba(249, 250, 251, 0.9);
-    --scrollbarBackground: var(--default-200);
-    --scrollbarThumb: var(--default-900);
-    --highlightedTextBackground: var(--primary-100);
-    --codeBackgroundColor: var(--primary-50);
-    --codeBorderColor: var(--primary-100);
-    --keyboardBackgroundColor: var(--default-100);
-    --keyboardBorderColor: var(--default-200);
-    --messageBackgroundColor: var(--default-100);
-    --messagePrimaryBackgroundColor: var(--primary-100);
-    --messageSuccessBackgroundColor: var(--success-100);
-    --messageWarningBackgroundColor: var(--warning-100);
-    --messageDangerBackgroundColor: var(--danger-100);
-    --backdropColor: rgba(0, 0, 0, 0.4);
-
-    /** glass effect */
-    --glass-background-color: color(display-p3 1 1 1 / 0.7);
-    --glass-effects: blur(64px) saturate(180%);
-    --glass-press-effects: blur(64px) saturate(180%) brightness(1.1);
-
-    /** focus */
-    --focus: rgba(66, 165, 245, 0.4);
-    --focusSuccess: rgba(102, 187, 106, 0.4);
-    --focusWarning: rgba(255, 167, 38, 0.4);
-    --focusDanger: rgba(239, 83, 80, 0.4);
-
-    /** shadows */
-    --buttonShadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  /** shadows */
+  --buttonShadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 :global(html) {
-    background: var(--app-background);
-    color: var(--app-text-color);
-    font-family: var(--app-font-family);
-    box-sizing: border-box;
+  background: var(--app-background);
+  color: var(--app-text-color);
+  font-family: var(--app-font-family);
+  box-sizing: border-box;
 
-    * {
-        box-sizing: border-box;
-    }
+  * {
+    box-sizing: border-box;
+  }
 }
 
 :global(.lucide) {
-    width: 1em !important;
-    height: 1em !important;
-    color: currentColor;
-    stroke-width: 2;
+  width: 1em !important;
+  height: 1em !important;
+  color: currentColor;
+  stroke-width: 2;
 }
 
 .AltroneApp {
+  font-family: var(--app-font-family);
+  font-size: var(--text-size-4);
+  line-height: var(--line-height-4);
+  color: var(--app-text-color);
+
+  * {
     font-family: var(--app-font-family);
-    font-size: var(--text-size-4);
-    line-height: var(--line-height-4);
-    color: var(--app-text-color);
+    box-sizing: border-box;
+  }
 
-    * {
-        font-family: var(--app-font-family);
-        box-sizing: border-box;
-    }
+  :global(.screen-text) {
+    @include screen-name;
+  }
 
-    :global(.screen-text) {
-        @include screen-name;
-    }
+  :global(.title-text) {
+    @include title;
+  }
 
-    :global(.title-text) {
-        @include title;
-    }
+  :global(.heading-text) {
+    @include heading;
+  }
 
-    :global(.heading-text) {
-        @include heading;
-    }
+  :global(.subheader-text) {
+    @include subheader;
+  }
 
-    :global(.subheader-text) {
-        @include subheader;
-    }
+  :global(.inner-header-text) {
+    @include inner-header;
+  }
 
-    :global(.inner-header-text) {
-        @include inner-header;
-    }
+  :global(.group-heading-text) {
+    @include group-heading;
+  }
 
-    :global(.group-heading-text) {
-        @include group-heading;
-    }
+  :global(.label-heading-text) {
+    @include label-heading;
+  }
 
-    :global(.label-heading-text) {
-        @include label-heading;
-    }
+  :global(.label-text) {
+    @include label;
+  }
 
-    :global(.label-text) {
-        @include label;
-    }
+  :global(.small-label-text) {
+    @include small-label;
+  }
 
-    :global(.small-label-text) {
-        @include small-label;
-    }
+  :global(.big-paragraph-text) {
+    @include big-paragraph;
+  }
 
-    :global(.big-paragraph-text) {
-        @include big-paragraph;
-    }
+  :global(.paragraph-text) {
+    @include paragraph;
+  }
 
-    :global(.paragraph-text) {
-        @include paragraph;
-    }
+  :global(.small-paragraph-text) {
+    @include sm-paragraph;
+  }
 
-    :global(.small-paragraph-text) {
-        @include sm-paragraph;
-    }
-
-    :global(.code-text) {
-        @include code;
-    }
+  :global(.code-text) {
+    @include code;
+  }
 }
 
 :global(.AltroneDark) {
-    --translucent-background-1: color(display-p3 0.99 0.99 0.99 / 0.15);
-    --translucent-background-2: color(display-p3 0.99 0.99 0.99 / 0.1);
+  --translucent-background-1: color(display-p3 0.99 0.99 0.99 / 0.15);
+  --translucent-background-2: color(display-p3 0.99 0.99 0.99 / 0.1);
 
-    --headingTextColor: var(--default-50);
-    --primaryHeadingTextColor: var(--primary-50);
-    --successHeadingTextColor: var(--success-50);
-    --warningHeadingTextColor: var(--warning-50);
-    --dangerHeadingTextColor: var(--danger-50);
-    --bodyTextColor: var(--default-200);
-    --primaryBodyTextColor: var(--primary-100);
-    --successBodyTextColor: var(--success-100);
-    --warningBodyTextColor: var(--warning-100);
-    --dangerBodyTextColor: var(--danger-100);
-    --disabledTextColor: var(--default-600);
-    --highlightedTextColor: var(--default-50);
-    --codeTextColor: var(--primary-200);
-    --keyboardTextColor: var(--default-300);
-    --linkTextColor: var(--primary-500);
-    --linkHoveredTextColor: var(--primary-400);
-    --linkPressedTextColor: var(--primary-300);
+  --headingTextColor: var(--default-50);
+  --primaryHeadingTextColor: var(--primary-50);
+  --successHeadingTextColor: var(--success-50);
+  --warningHeadingTextColor: var(--warning-50);
+  --dangerHeadingTextColor: var(--danger-50);
+  --bodyTextColor: var(--default-200);
+  --primaryBodyTextColor: var(--primary-100);
+  --successBodyTextColor: var(--success-100);
+  --warningBodyTextColor: var(--warning-100);
+  --dangerBodyTextColor: var(--danger-100);
+  --disabledTextColor: var(--default-600);
+  --highlightedTextColor: var(--default-50);
+  --codeTextColor: var(--primary-200);
+  --keyboardTextColor: var(--default-300);
+  --linkTextColor: var(--primary-500);
+  --linkHoveredTextColor: var(--primary-400);
+  --linkPressedTextColor: var(--primary-300);
 
-    /* surfaces */
-    --appBackground: var(--default-900);
-    --glassBackground: rgba(31, 42, 55, 0.9);
-    --scrollbarBackground: var(--default-700);
-    --scrollbarThumb: var(--default-200);
-    --highlightedTextBackground: var(--primary-900);
-    --codeBackgroundColor: var(--primary-900);
-    --codeBorderColor: var(--primary-800);
-    --keyboardBackgroundColor: var(--default-600);
-    --keyboardBorderColor: var(--default-500);
-    --messageBackgroundColor: var(--default-800);
-    --messagePrimaryBackgroundColor: var(--primary-900);
-    --messageSuccessBackgroundColor: var(--success-900);
-    --messageWarningBackgroundColor: var(--warning-900);
-    --messageDangerBackgroundColor: var(--danger-900);
-    --backdropColor: rgba(0, 0, 0, 0.6);
+  /* surfaces */
+  --appBackground: var(--default-900);
+  --glassBackground: rgba(31, 42, 55, 0.9);
+  --scrollbarBackground: var(--default-700);
+  --scrollbarThumb: var(--default-200);
+  --highlightedTextBackground: var(--primary-900);
+  --codeBackgroundColor: var(--primary-900);
+  --codeBorderColor: var(--primary-800);
+  --keyboardBackgroundColor: var(--default-600);
+  --keyboardBorderColor: var(--default-500);
+  --messageBackgroundColor: var(--default-800);
+  --messagePrimaryBackgroundColor: var(--primary-900);
+  --messageSuccessBackgroundColor: var(--success-900);
+  --messageWarningBackgroundColor: var(--warning-900);
+  --messageDangerBackgroundColor: var(--danger-900);
+  --backdropColor: rgba(0, 0, 0, 0.6);
 
-    /** glass effect */
-    // --glass-background-color: color(display-p3 0 0 0 / 0.45);
-    // --glass-effects: blur(32px) saturate(120%);
-    // --glass-press-effects: blur(32px) saturate(120%) brightness(1.05);
-    --glass-background-color: color(display-p3 0.05 0.05 0.07 / 0.6);
-    --glass-effects: blur(32px) saturate(110%);
-    --glass-press-effects: blur(28px) saturate(110%) brightness(1.08);
-    --glass-border-color: color(display-p3 1 1 1 / 0.08);
-    --glass-shadow: 0 8px 32px color(display-p3 0 0 0 / 0.4);
+  /** glass effect */
+  // --glass-background-color: color(display-p3 0 0 0 / 0.45);
+  // --glass-effects: blur(32px) saturate(120%);
+  // --glass-press-effects: blur(32px) saturate(120%) brightness(1.05);
+  --glass-background-color: color(display-p3 0.05 0.05 0.07 / 0.6);
+  --glass-effects: blur(32px) saturate(110%);
+  --glass-press-effects: blur(28px) saturate(110%) brightness(1.08);
+  --glass-border-color: color(display-p3 1 1 1 / 0.08);
+  --glass-shadow: 0 8px 32px color(display-p3 0 0 0 / 0.4);
 
-    /** focus */
-    --focus: rgba(25, 118, 210, 0.7);
-    --focusSuccess: rgba(56, 142, 60, 0.7);
-    --focusWarning: rgba(255, 160, 0, 0.7);
-    --focusDanger: rgb(211, 47, 47, 0.7);
+  /** focus */
+  --focus: rgba(25, 118, 210, 0.7);
+  --focusSuccess: rgba(56, 142, 60, 0.7);
+  --focusWarning: rgba(255, 160, 0, 0.7);
+  --focusDanger: rgb(211, 47, 47, 0.7);
 }
 
 .Application {
-    display: grid;
-    gap: 24px;
-    min-height: 100vh;
-    grid-template-areas: 'content';
+  display: grid;
+  gap: 24px;
+  min-height: 100vh;
+  grid-template-areas: 'content';
 }
 
 .Application_withSidebar {
-    grid-template-areas: 'sidebar content';
-    grid-template-columns: 300px 1fr;
+  grid-template-areas: 'sidebar content';
+  grid-template-columns: 300px 1fr;
 }
 
 .Sidebar {
-    grid-area: sidebar;
+  grid-area: sidebar;
 }
 
 .ApplicationMain {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .ApplicationHeader {
