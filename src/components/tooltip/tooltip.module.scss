@@ -38,9 +38,28 @@
   font-size: var(--text-size-3);
   line-height: var(--line-height-3);
   z-index: var(--level-tooltip);
+
+  &.WithTitle {
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+
+.Title {
+  font-weight: var(--text-weight-bold);
+  font-size: var(--text-size-3);
+  line-height: var(--line-height-3);
+  opacity: 0.7;
+}
+
+.Content {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .Kbd {
-  margin-left: 4px;
   color: var(--solid-2);
 }

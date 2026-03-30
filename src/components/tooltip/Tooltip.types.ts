@@ -1,9 +1,12 @@
 import { Placement } from '@floating-ui/react';
-import { JSX, ReactNode } from 'react';
+import type { ReactElement, ReactNode, Ref } from 'react';
 
-export interface TooltipTypes {
-  content: string | JSX.Element;
+export interface TooltipProps {
+  ref?: Ref<HTMLElement>;
+  content: string | ReactElement;
+  title?: string;
   kbd?: string;
+  maxWidth?: number | string;
   children?: ReactNode;
   childrenClassName?: string;
   className?: string;

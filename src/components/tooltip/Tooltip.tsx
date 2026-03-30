@@ -1,7 +1,7 @@
-import React, { memo, useId, useRef, useState, forwardRef } from 'react';
+import React, { memo, useId, useRef, useState } from 'react';
 import { useConfiguration } from 'components/configuration';
 import { HelpCircle } from 'lucide-react';
-import { TooltipTypes } from './Tooltip.types.ts';
+import { TooltipProps } from './Tooltip.types.ts';
 import clsx from 'clsx';
 import s from './tooltip.module.scss';
 import { DOMUtils } from '../../utils';
@@ -21,116 +21,126 @@ import {
 import { AnimatePresence, motion } from 'motion/react';
 
 export const Tooltip = memo(
-  forwardRef<HTMLElement, TooltipTypes>(
-    (
-      {
-        content,
-        children,
-        className,
-        style,
-        kbd,
-        childrenClassName,
-        placement = 'top',
-      },
-      ref
-    ) => {
-      const [opened, setOpened] = useState(false);
-      const tooltipId = useId();
+  ({
+    ref,
+    content,
+    title,
+    children,
+    className,
+    style,
+    kbd,
+    maxWidth,
+    childrenClassName,
+    placement = 'top',
+  }: TooltipProps) => {
+    const [opened, setOpened] = useState(false);
+    const tooltipId = useId();
 
-      const arrowRef = useRef<HTMLDivElement>(null);
+    const arrowRef = useRef<SVGSVGElement>(null);
 
-      const { tooltip: tooltipConfig = {} } = useConfiguration();
+    const { tooltip: tooltipConfig = {} } = useConfiguration();
 
-      const { refs, floatingStyles, context } = useFloating({
-        open: opened,
-        placement: placement,
-        onOpenChange: setOpened,
-        middleware: [offset(10), flip(), shift(), arrow({ element: arrowRef })],
-        whileElementsMounted: autoUpdate,
-      });
+    const cls = clsx(
+      s.Tooltip,
+      { [s.WithTitle]: title },
+      className,
+      tooltipConfig.className,
+    );
+    const styles = {
+      ...tooltipConfig.style,
+      ...style,
+      ...(maxWidth !== undefined ? { maxWidth } : undefined),
+    };
 
-      const hover = useHover(context);
-      const focus = useFocus(context);
+    const { refs, floatingStyles, context } = useFloating({
+      open: opened,
+      placement: placement,
+      onOpenChange: setOpened,
+      middleware: [
+        offset(10),
+        flip(),
+        shift(),
+        arrow({ element: arrowRef, padding: -1 }),
+      ],
+      whileElementsMounted: autoUpdate,
+    });
 
-      const { getReferenceProps, getFloatingProps } = useInteractions([
-        hover,
-        focus,
-      ]);
+    const hover = useHover(context, { delay: { open: 500, close: 0 } });
+    const focus = useFocus(context);
 
-      const ariaAttributes = {
-        'aria-describedby': tooltipId,
-      };
+    const { getReferenceProps, getFloatingProps } = useInteractions([
+      hover,
+      focus,
+    ]);
 
-      const safeChildElement = DOMUtils.cloneNode(children, ariaAttributes) || (
-        <button
-          type="button"
-          aria-describedby={tooltipId}
-          aria-label={String(content)}
-          className={clsx(s.QuestionMark, childrenClassName)}
-        >
-          <HelpCircle />
-        </button>
-      );
+    const safeChildElement = DOMUtils.cloneNode(children, {
+      'aria-describedby': tooltipId,
+    }) || (
+      <button
+        type="button"
+        aria-describedby={tooltipId}
+        aria-label={typeof content === 'string' ? content : undefined}
+        className={clsx(s.QuestionMark, childrenClassName)}
+      >
+        <HelpCircle />
+      </button>
+    );
 
-      const childElement = DOMUtils.cloneNode(safeChildElement, {
-        ...getReferenceProps(
-          React.isValidElement(safeChildElement)
-            ? (safeChildElement.props as any)
-            : {}
-        ),
-        ref: (elementRef: HTMLElement) => {
-          refs.setReference(elementRef);
-          // Передаем ref наружу для правильной работы с Popover
-          if (ref && typeof ref === 'function') {
-            ref(elementRef);
-          } else if (ref && typeof ref === 'object' && ref !== null) {
-            (ref as React.MutableRefObject<HTMLElement>).current = elementRef;
-          }
-        },
-        tabIndex:
-          (React.isValidElement(safeChildElement)
-            ? (safeChildElement.props as any).tabIndex
-            : undefined) ?? 0,
-      });
+    const childElement = DOMUtils.cloneNode(safeChildElement, {
+      ...getReferenceProps(
+        React.isValidElement(safeChildElement)
+          ? (safeChildElement.props as any)
+          : {},
+      ),
+      ref: DOMUtils.composeRefs(refs.setReference, ref),
+      tabIndex:
+        (React.isValidElement(safeChildElement)
+          ? (safeChildElement.props as any).tabIndex
+          : undefined) ?? 0,
+    });
 
-      return (
-        <>
-          {childElement}
+    return (
+      <>
+        {childElement}
+        <AnimatePresence>
           {opened && (
             <FloatingPortal
               root={
-                document.querySelector('[data-altrone-root]') as HTMLElement
+                typeof window !== 'undefined'
+                  ? ((document.querySelector(
+                      '[data-altrone-root]',
+                    ) as HTMLElement) ?? undefined)
+                  : undefined
               }
             >
               <motion.div
                 ref={refs.setFloating}
                 id={tooltipId}
                 role="tooltip"
-                style={floatingStyles}
-                className={s.Tooltip}
-                initial={{
-                  opacity: 0,
-                }}
-                animate={{
-                  opacity: 1,
-                }}
-                exit={{
-                  opacity: 0,
-                }}
+                className={cls}
+                style={{ ...floatingStyles, ...styles }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 {...getFloatingProps()}
               >
-                {content}
-                {kbd ? <span className={s.Kbd}>{kbd}</span> : null}
+                {title ? <div className={s.Title}>{title}</div> : null}
+                <div className={s.Content}>
+                  {content}
+                  {kbd ? <span className={s.Kbd}>{kbd}</span> : null}
+                </div>
                 <FloatingArrow
-                  ref={arrowRef as any}
+                  ref={arrowRef}
                   context={context}
-                  tipRadius={2}
+                  tipRadius={4}
+                  width={8}
+                  height={4}
                 />
               </motion.div>
             </FloatingPortal>
           )}
-        </>
-      );
-    }
-  )
+        </AnimatePresence>
+      </>
+    );
+  },
 );
