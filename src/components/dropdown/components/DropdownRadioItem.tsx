@@ -7,8 +7,10 @@ import s from './action.module.scss';
 import { useConfiguration } from 'components/configuration';
 import { useId } from 'react';
 import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
+import { mergeRefs } from 'utils/mergeRefs';
 
 export function DropdownRadioItem({
+  ref,
   value,
   label,
   disabled,
@@ -21,7 +23,7 @@ export function DropdownRadioItem({
     useConfiguration();
 
   const id = useId();
-  const { ref } = useListItem();
+  const { ref: listItemRef } = useListItem();
 
   const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
     useDropdownItemHover();
@@ -48,7 +50,7 @@ export function DropdownRadioItem({
     onChange(value);
   };
 
-  const onKeyDownPress: React.KeyboardEventHandler = (e) => {
+  const onKeyDownPress: React.KeyboardEventHandler<HTMLButtonElement> = (e) => {
     if (e.key === 'Enter') {
       onSelect?.();
     }
@@ -56,7 +58,7 @@ export function DropdownRadioItem({
 
   return (
     <button
-      ref={ref}
+      ref={mergeRefs(listItemRef, ref)}
       type="button"
       onKeyDown={onKeyDownPress}
       onClick={onSelect}

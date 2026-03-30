@@ -6,8 +6,10 @@ import s from './action.module.scss';
 import { useConfiguration } from 'components/configuration';
 import { useId } from 'react';
 import { useDropdownItemHover } from '../useDropdownItemHover';
+import { mergeRefs } from 'utils/mergeRefs';
 
 export function DropdownCheckbox({
+  ref,
   checked,
   onChange,
   disabled,
@@ -19,7 +21,7 @@ export function DropdownCheckbox({
 }: DropdownCheckboxProps) {
   const id = useId();
 
-  const { ref } = useListItem();
+  const { ref: listItemRef } = useListItem();
 
   const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
     useDropdownItemHover();
@@ -47,7 +49,7 @@ export function DropdownCheckbox({
     onChange(!checked);
   };
 
-  const onKeyDownPress: React.KeyboardEventHandler = (e) => {
+  const onKeyDownPress: React.KeyboardEventHandler<HTMLButtonElement> = (e) => {
     if (e.key === 'Enter') {
       onChange(!checked);
     }
@@ -65,7 +67,7 @@ export function DropdownCheckbox({
       role="checkbox"
       aria-checked={checked}
       style={styles}
-      ref={ref}
+      ref={mergeRefs(listItemRef, ref)}
       id={id}
       title={label}
       {...props}

@@ -30,6 +30,7 @@ export interface DropdownActionProps
 
 export interface DropdownCheckboxProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
+  ref?: React.Ref<HTMLButtonElement>;
   checked: boolean;
   onChange: (state: boolean) => void;
   label: string;
@@ -49,6 +50,7 @@ export interface DropdownRadioListProps<T = string>
 
 export interface DropdownRadioListItem<T = string>
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'value'> {
+  ref?: React.Ref<HTMLButtonElement>;
   value: T;
   label: string;
   disabled?: boolean;
