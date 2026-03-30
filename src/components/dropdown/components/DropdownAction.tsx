@@ -1,3 +1,4 @@
+import { isValidElement } from 'react';
 import { DropdownActionProps } from '../Dropdown.types';
 import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
@@ -8,6 +9,9 @@ import { useEffect, useId } from 'react';
 import { usePopoverCurrentIndex } from '../../popover/Popover.tsx';
 import { Badge } from 'components/badge/Badge.tsx';
 import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
+import { Slot } from 'utils/components/Slot.tsx';
+import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
+import { AnyObject } from 'utils/types.ts';
 
 export function DropdownAction(props: DropdownActionProps) {
   const {
@@ -16,6 +20,8 @@ export function DropdownAction(props: DropdownActionProps) {
     danger,
     focused,
     renderFunc,
+    asChild,
+    children,
     icon,
     label,
     hintText,
@@ -76,6 +82,19 @@ export function DropdownAction(props: DropdownActionProps) {
     }
   };
 
+  const actionContent = (
+    <>
+      {itemBackgroundElement}
+      <div className={s.Icon}>{icon}</div>
+      <div className={s.Label}>{label}</div>
+      {badge ? (
+        <Badge className={badgeCls}>{badge}</Badge>
+      ) : hintText ? (
+        <div className={s.Hint}>{hintText}</div>
+      ) : null}
+    </>
+  );
+
   const sharedProps = {
     ...htmlProps,
     type: 'button' as const,
@@ -102,16 +121,24 @@ export function DropdownAction(props: DropdownActionProps) {
     });
   }
 
+  if (asChild) {
+    if (!isValidElement(children)) {
+      console.error('[DropdownAction] asChild requires a valid React element as children');
+      return null;
+    }
+
+    const childWithContent = cloneWithRef(children, { children: actionContent });
+
+    return (
+      <Slot ref={ref} {...(sharedProps as AnyObject)}>
+        {childWithContent}
+      </Slot>
+    );
+  }
+
   return (
     <button ref={ref} {...sharedProps}>
-      {itemBackgroundElement}
-      <div className={s.Icon}>{icon}</div>
-      <div className={s.Label}>{label}</div>
-      {badge ? (
-        <Badge className={badgeCls}>{badge}</Badge>
-      ) : hintText ? (
-        <div className={s.Hint}>{hintText}</div>
-      ) : null}
+      {actionContent}
     </button>
   );
 }

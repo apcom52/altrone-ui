@@ -1,8 +1,15 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Button, Flex, Icon, Text, Dropdown, Divider } from 'components';
+import {
+  Avatar,
+  Button,
+  Divider,
+  Dropdown,
+  Flex,
+  Icon,
+  Text,
+} from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-// import { expect, userEvent, within } from '@storybook/test';
 import { useState } from 'react';
 
 const story: Meta<typeof Dropdown> = {
@@ -21,300 +28,293 @@ const story: Meta<typeof Dropdown> = {
   },
 };
 
+// --- Git branch switcher ---
+
+const BRANCHES = [
+  { name: 'main', protected: true },
+  { name: 'next', protected: false },
+  { name: 'feat/dropdown-refactor', protected: false },
+  { name: 'fix/popover-z-index', protected: false },
+];
+
+function GitBranchMenu() {
+  const [currentBranch, setCurrentBranch] = useState('next');
+  const [isPushing, setIsPushing] = useState(false);
+
+  const handlePush = () => {
+    setIsPushing(true);
+    setTimeout(() => setIsPushing(false), 1800);
+  };
+
+  return (
+    <Dropdown
+      placement="bottom-start"
+      content={
+        <Dropdown.Menu>
+          <Dropdown.RadioList
+            label="Switch branch"
+            value={currentBranch}
+            onChange={setCurrentBranch}
+          >
+            {BRANCHES.map((b) => (
+              <Dropdown.RadioItem key={b.name} value={b.name} label={b.name} />
+            ))}
+          </Dropdown.RadioList>
+          <Divider />
+          <Dropdown.Action
+            icon={<Icon i="add" />}
+            label="New branch from current"
+            hintText="⌘+B"
+          />
+          <Dropdown.Action
+            icon={<Icon i="upload" />}
+            label={isPushing ? 'Pushing...' : 'Push to origin'}
+            disabled={isPushing}
+            onClick={handlePush}
+          />
+          <Dropdown.ChildMenu
+            icon={<Icon i="history" />}
+            label="Recent branches"
+          >
+            <Dropdown.Action label="feat/avatar-stories" />
+            <Dropdown.Action label="fix/tooltip-placement" />
+            <Dropdown.Action label="chore/deps-update" />
+          </Dropdown.ChildMenu>
+          <Divider />
+          <Dropdown.Action
+            danger
+            icon={<Icon i="delete" />}
+            label="Delete branch"
+            disabled={currentBranch === 'main'}
+          />
+        </Dropdown.Menu>
+      }
+    >
+      {({ opened }) => (
+        <Button
+          icon={<Icon i="account_tree" />}
+          label={currentBranch}
+          additionalIcon={
+            <Icon i={opened ? 'expand_less' : 'expand_more'} />
+          }
+        />
+      )}
+    </Dropdown>
+  );
+}
+
+// --- Account menu ---
+
+type Theme = 'system' | 'light' | 'dark';
+
+function AccountMenu() {
+  const [theme, setTheme] = useState<Theme>('system');
+  const [notifications, setNotifications] = useState(true);
+  const [compactMode, setCompactMode] = useState(false);
+
+  return (
+    <Dropdown
+      placement="bottom-end"
+      content={
+        <Dropdown.Menu>
+          <Dropdown.Action
+            asChild
+            icon={<Icon i="person" />}
+            label="Alex Petrov"
+            hintText="@apcom"
+          >
+            <div style={{ cursor: 'default' }} />
+          </Dropdown.Action>
+          <Divider />
+          <Dropdown.Action
+            icon={<Icon i="manage_accounts" />}
+            label="Profile settings"
+            hintText="⌘+,"
+          />
+          <Dropdown.Action
+            icon={<Icon i="credit_card" />}
+            label="Billing"
+            badge="PRO"
+          />
+          <Dropdown.Action
+            icon={<Icon i="group" />}
+            label="Team settings"
+          />
+          <Divider />
+          <Dropdown.RadioList label="Theme" value={theme} onChange={(v) => setTheme(v as Theme)}>
+            <Dropdown.RadioItem value="system" label="System" />
+            <Dropdown.RadioItem value="light" label="Light" />
+            <Dropdown.RadioItem value="dark" label="Dark" />
+          </Dropdown.RadioList>
+          <Divider />
+          <Dropdown.Checkbox
+            checked={notifications}
+            onChange={setNotifications}
+            label="Email notifications"
+          />
+          <Dropdown.Checkbox
+            checked={compactMode}
+            onChange={setCompactMode}
+            label="Compact mode"
+          />
+          <Divider />
+          <Dropdown.Action
+            danger
+            icon={<Icon i="logout" />}
+            label="Sign out"
+          />
+        </Dropdown.Menu>
+      }
+    >
+      <Avatar firstName="Alex" lastName="Petrov" color="#6366f1" size="s" />
+    </Dropdown>
+  );
+}
+
+// --- File context menu ---
+
+function FileContextMenu() {
+  return (
+    <Dropdown
+      placement="bottom-start"
+      content={
+        <Dropdown.Menu>
+          <Dropdown.Action icon={<Icon i="edit" />} label="Rename" hintText="F2" />
+          <Dropdown.Action icon={<Icon i="content_copy" />} label="Duplicate" hintText="⌘+D" />
+          <Dropdown.Action icon={<Icon i="drive_file_move" />} label="Move to..." />
+          <Dropdown.ChildMenu icon={<Icon i="ios_share" />} label="Share">
+            <Dropdown.Action icon={<Icon i="link" />} label="Copy link" hintText="⌘+L" />
+            <Dropdown.Action icon={<Icon i="mail" />} label="Send by email" />
+            <Dropdown.Action icon={<Icon i="group_add" />} label="Invite collaborators" />
+          </Dropdown.ChildMenu>
+          <Dropdown.ChildMenu icon={<Icon i="download" />} label="Export as">
+            <Dropdown.Action label="PDF" icon={<Icon i="picture_as_pdf" />} />
+            <Dropdown.Action label="Markdown" icon={<Icon i="code" />} />
+            <Dropdown.Action label="Plain text" icon={<Icon i="text_snippet" />} />
+          </Dropdown.ChildMenu>
+          <Divider />
+          <Dropdown.Action icon={<Icon i="star" />} label="Add to favourites" />
+          <Dropdown.Action icon={<Icon i="history" />} label="Version history" badge="12" />
+          <Divider />
+          <Dropdown.Action
+            danger
+            icon={<Icon i="delete" />}
+            label="Move to trash"
+            hintText="⌫"
+          />
+        </Dropdown.Menu>
+      }
+    >
+      <Button
+        icon={<Icon i="more_horiz" />}
+        label="Actions"
+        showLabel={false}
+        tooltip="File actions"
+      />
+    </Dropdown>
+  );
+}
+
+// --- asChild demo ---
+
+function AsChildDemo() {
+  return (
+    <Dropdown
+      placement="bottom-start"
+      content={
+        <Dropdown.Menu>
+          <Dropdown.Action
+            asChild
+            icon={<Icon i="home" />}
+            label="Dashboard"
+            hintText="⌘+1"
+          >
+            <a href="#dashboard" onClick={(e) => e.preventDefault()} />
+          </Dropdown.Action>
+          <Dropdown.Action
+            asChild
+            icon={<Icon i="settings" />}
+            label="Settings"
+            hintText="⌘+,"
+          >
+            <a href="#settings" onClick={(e) => e.preventDefault()} />
+          </Dropdown.Action>
+          <Divider />
+          <Dropdown.Action
+            asChild
+            icon={<Icon i="help" />}
+            label="Documentation"
+          >
+            <a href="https://example.com" target="_blank" rel="noreferrer" onClick={(e) => e.preventDefault()} />
+          </Dropdown.Action>
+        </Dropdown.Menu>
+      }
+    >
+      <Button icon={<Icon i="menu" />} label="Navigation" />
+    </Dropdown>
+  );
+}
+
+// --- Stories ---
+
 export const DropdownStory: StoryObj<typeof Dropdown> = {
   name: 'Using Dropdown',
   render: () => {
-    const [displayAs, setDisplayAs] = useState('table');
-    const [priority, setPriority] = useState('');
-    const [showHiddenItems, setShowHiddenItems] = useState(false);
-
     return (
-      <Flex direction="vertical" gap="l">
-        <Text block size={6} weight="bold">
-          Basic Dropdowns
-        </Text>
-        <Flex direction="horizontal" gap="l">
-          <Dropdown
-            placement="bottom"
-            data-testid="dropdown-1"
-            content={
-              <Dropdown.Menu>
-                <Dropdown.Action
-                  icon={<Icon i="account_tree" />}
-                  label="View branches"
-                  data-testid="action-1"
-                />
-                <Dropdown.Action
-                  icon={<Icon i="add" />}
-                  label="Create a new branch"
-                  onClick={() => console.log('created')}
-                  hintText="⌘+A"
-                />
-                <Dropdown.Action
-                  label="Switch to another branch"
-                  hintText="⌘+S"
-                />
-                <Dropdown.Action disabled label="Compare branches" />
-                <Dropdown.Action label="Refresh Branch list" />
-                <Dropdown.Action
-                  danger
-                  icon={<Icon i="delete" />}
-                  label="Delete all branches"
-                  hintText="⌘+Shift+D"
-                />
-              </Dropdown.Menu>
-            }
-          >
-            <Button label="All branches" data-testid="button-1" />
-          </Dropdown>
-          <Dropdown
-            placement="bottom"
-            data-testid="dropdown-2"
-            content={
-              <Dropdown.Menu>
-                <Dropdown.RadioList
-                  label="Display as"
-                  value={displayAs}
-                  onChange={setDisplayAs}
-                >
-                  <Dropdown.RadioItem
-                    value="table"
-                    data-testid="radio-1"
-                    label="Table"
-                  />
-                  <Dropdown.RadioItem
-                    value="list"
-                    data-testid="radio-2"
-                    label="List"
-                  />
-                  <Dropdown.RadioItem
-                    value="grid"
-                    data-testid="radio-3"
-                    label="Grid"
-                  />
-                </Dropdown.RadioList>
-                <Divider />
-                <Dropdown.Checkbox
-                  checked={showHiddenItems}
-                  onChange={setShowHiddenItems}
-                  label="Show closed tickets"
-                  data-testid="checkbox-1"
-                />
-              </Dropdown.Menu>
-            }
-          >
-            {({ opened }) => (
-              <Button
-                label="Visibility Settings"
-                data-testid="button-2"
-                icon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
-              />
-            )}
-          </Dropdown>
-          <Dropdown
-            placement="bottom"
-            data-testid="dropdown-3"
-            overlap
-            content={
-              <Dropdown.Menu>
-                <Dropdown.Action
-                  icon={<Icon i="account_tree" />}
-                  label="Create document"
-                />
-                <Dropdown.Action
-                  icon={<Icon i="add" />}
-                  label="Open document..."
-                  hintText="⌘+A"
-                />
-                <Dropdown.ChildMenu data-testid="child-1" label="Recent opened">
-                  <Dropdown.Action
-                    icon={<Icon i="add" />}
-                    label="Inner child action"
-                    data-testid="child-action-1"
-                    hintText="⌘+A"
-                  />
-                  <Dropdown.Action
-                    icon={<Icon i="add" />}
-                    label="Save document"
-                    hintText="⌘+A"
-                  />
-                  <Dropdown.Action
-                    icon={<Icon i="add" />}
-                    label="Save document"
-                    hintText="⌘+A"
-                  />
-                </Dropdown.ChildMenu>
-                <Dropdown.Action
-                  icon={<Icon i="add" />}
-                  label="Save document"
-                  hintText="⌘+A"
-                />
-                <Dropdown.Action
-                  icon={<Icon i="push_pin" />}
-                  label="Pinned documents"
-                  badge="4"
-                />
-                <Dropdown.Action
-                  icon={<Icon i="push_pin" />}
-                  label="Pinned documents"
-                  badge="NEW"
-                  danger
-                />
-                <Divider />
-                <Dropdown.Action
-                  icon={<Icon i="close" />}
-                  label="Close document"
-                  hintText="⌘+A"
-                />
-              </Dropdown.Menu>
-            }
-          >
-            <Button label="File" data-testid="button-3" />
-          </Dropdown>
-          <Dropdown
-            placement="bottom"
-            data-testid="dropdown-4"
-            content={
-              <Dropdown.Menu>
-                <Dropdown.Action
-                  icon={<Icon i="add" />}
-                  label="Craft new quest"
-                />
-                <Dropdown.Action label="Scout Missions" />
-                <Dropdown.Action label="Edit Timeline" />
-                <Dropdown.Action label="Vanquish" />
-                <Dropdown.Action label="Rest" />
-                <Divider />
-                <Dropdown.RadioList
-                  value={priority}
-                  label="Select priority"
-                  onChange={setPriority}
-                >
-                  <Dropdown.RadioItem value="high" label="High" />
-                  <Dropdown.RadioItem value="medium" label="Medium" />
-                  <Dropdown.RadioItem value="low" label="Low" />
-                </Dropdown.RadioList>
-                <Divider />
-                <Dropdown.Action label="Exit" />
-              </Dropdown.Menu>
-            }
-          >
-            <Button label="Task Orchestrator" data-testid="button-click" />
-          </Dropdown>
-          <Dropdown
-            placement="bottom"
-            data-testid="dropdown-4"
-            content={
-              <Dropdown.Menu>
-                <Dropdown.Action label="Craft new quest" />
-                <Dropdown.Action label="Scout Missions" />
-                <Dropdown.Action label="Edit Timeline" />
-                <Dropdown.Action label="Vanquish" />
-                <Dropdown.Action label="Rest" />
-                <Divider />
-                <Dropdown.RadioList
-                  value={priority}
-                  label="Select priority"
-                  onChange={setPriority}
-                >
-                  <Dropdown.RadioItem value="high" label="High" />
-                  <Dropdown.RadioItem value="medium" label="Medium" />
-                  <Dropdown.RadioItem value="low" label="Low" />
-                </Dropdown.RadioList>
-                <Divider />
-                <Dropdown.Action label="Exit" />
-              </Dropdown.Menu>
-            }
-          >
-            <Button
-              label="Task Orchestrator (without icons)"
-              data-testid="button-click"
-            />
-          </Dropdown>
+      <Flex direction="vertical" gap="xl">
+        <Flex direction="vertical" gap="m">
+          <Text size={5} weight="bold">
+            Git branch switcher
+          </Text>
+          <Text>
+            Переключение веток, push, создание новой ветки, история. Кнопка
+            меняет label на текущую ветку.
+          </Text>
+          <Flex direction="horizontal" gap="m">
+            <GitBranchMenu />
+          </Flex>
+        </Flex>
+
+        <Flex direction="vertical" gap="m">
+          <Text size={5} weight="bold">
+            Account menu
+          </Text>
+          <Text>
+            Меню аккаунта: настройки, биллинг, тема (RadioList), уведомления
+            (Checkbox), выход. Триггер — Avatar.
+          </Text>
+          <Flex direction="horizontal" gap="m">
+            <AccountMenu />
+          </Flex>
+        </Flex>
+
+        <Flex direction="vertical" gap="m">
+          <Text size={5} weight="bold">
+            File context menu
+          </Text>
+          <Text>
+            Контекстное меню файла с вложенными подменю Share и Export As.
+          </Text>
+          <Flex direction="horizontal" gap="m">
+            <FileContextMenu />
+          </Flex>
+        </Flex>
+
+        <Flex direction="vertical" gap="m">
+          <Text size={5} weight="bold">
+            asChild — пункты как ссылки
+          </Text>
+          <Text>
+            asChild позволяет рендерить Dropdown.Action как любой элемент — в
+            данном случае как {"<a>"}, сохраняя все стили и поведение.
+          </Text>
+          <Flex direction="horizontal" gap="m">
+            <AsChildDemo />
+          </Flex>
         </Flex>
       </Flex>
     );
   },
-  // play: async ({ canvasElement, step }) => {
-  //   const canvas = within(canvasElement);
-
-  //   await step(
-  //     'Opening simple dropdown and has to close after clicking on action',
-  //     async () => {
-  //       await userEvent.click(canvas.getByTestId('button-1'));
-  //       expect(canvas.getByTestId('dropdown-1')).toBeInTheDocument();
-  //       await userEvent.click(canvas.getByTestId('action-1'));
-  //       expect(canvas.queryByTestId('dropdown-1')).not.toBeInTheDocument();
-  //     },
-  //   );
-
-  //   await step('Checkbox action', async () => {
-  //     await userEvent.click(canvas.getByTestId('button-2'));
-  //     expect(canvas.getByTestId('dropdown-2')).toBeInTheDocument();
-  //     expect(canvas.getByTestId('checkbox-1')).toHaveAttribute(
-  //       'aria-checked',
-  //       'false',
-  //     );
-  //     await userEvent.click(canvas.getByTestId('checkbox-1'));
-  //     expect(canvas.getByTestId('checkbox-1')).toHaveAttribute(
-  //       'aria-checked',
-  //       'true',
-  //     );
-  //   });
-
-  //   await step('Radio action', async () => {
-  //     expect(canvas.getByTestId('radio-1')).toBeInTheDocument();
-  //     expect(canvas.getByTestId('radio-1')).toHaveAttribute(
-  //       'aria-checked',
-  //       'true',
-  //     );
-  //     expect(canvas.getByTestId('radio-2')).toHaveAttribute(
-  //       'aria-checked',
-  //       'false',
-  //     );
-  //     expect(canvas.getByTestId('radio-3')).toHaveAttribute(
-  //       'aria-checked',
-  //       'false',
-  //     );
-  //     await userEvent.click(canvas.getByTestId('radio-2'));
-  //     expect(canvas.getByTestId('radio-1')).toHaveAttribute(
-  //       'aria-checked',
-  //       'false',
-  //     );
-  //     expect(canvas.getByTestId('radio-2')).toHaveAttribute(
-  //       'aria-checked',
-  //       'true',
-  //     );
-  //     expect(canvas.getByTestId('radio-3')).toHaveAttribute(
-  //       'aria-checked',
-  //       'false',
-  //     );
-  //     await userEvent.click(canvas.getByTestId('radio-3'));
-  //     expect(canvas.getByTestId('radio-1')).toHaveAttribute(
-  //       'aria-checked',
-  //       'false',
-  //     );
-  //     expect(canvas.getByTestId('radio-2')).toHaveAttribute(
-  //       'aria-checked',
-  //       'false',
-  //     );
-  //     expect(canvas.getByTestId('radio-3')).toHaveAttribute(
-  //       'aria-checked',
-  //       'true',
-  //     );
-  //   });
-
-  //   await step('Child dropdowns', async () => {
-  //     await userEvent.click(canvas.getByTestId('button-3'));
-  //     expect(canvas.getByTestId('dropdown-3')).toBeInTheDocument();
-  //     expect(canvas.queryByText('Inner child action')).not.toBeInTheDocument();
-  //     await userEvent.click(canvas.getByText('Recent opened'));
-  //     expect(canvas.queryByText('Inner child action')).toBeInTheDocument();
-  //     await userEvent.click(canvas.getByText('Inner child action'));
-  //     expect(canvas.queryByTestId('dropdown-3')).not.toBeInTheDocument();
-  //     expect(canvas.queryByText('Inner child action')).not.toBeInTheDocument();
-  //   });
-  // },
 };
 
 export default story;

@@ -16,6 +16,7 @@ export interface DropdownActionProps
   danger?: boolean;
   disabled?: boolean;
   focused?: boolean;
+  asChild?: boolean;
   renderFunc?: RenderFuncProp<
     HTMLButtonElement,
     DropdownActionProps & { keyProp?: string }
