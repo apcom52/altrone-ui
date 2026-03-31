@@ -5,7 +5,7 @@ import { DividerProps } from './Divider.types.ts';
 import { useConfiguration } from '../configuration';
 
 export const Divider = memo<DividerProps>(
-  ({ direction, className, style, ...props }) => {
+  ({ ref, direction, className, style, ...props }) => {
     const { divider: dividerConfig = {} } = useConfiguration();
 
     const cls = clsx(
@@ -22,6 +22,6 @@ export const Divider = memo<DividerProps>(
       ...style,
     };
 
-    return <hr role="separator" className={cls} style={styles} {...props} />;
+    return <hr ref={ref} className={cls} style={styles} {...props} />;
   },
 );
