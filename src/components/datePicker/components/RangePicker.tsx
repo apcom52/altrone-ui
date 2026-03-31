@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import { dayjsInstance as dayjs } from 'utils';
+import { Dayjs } from 'dayjs';
 import clsx from 'clsx';
 import s from '../datePicker.module.scss';
 import {
@@ -27,6 +28,7 @@ export const RangePicker = memo<RangePickerProps>((props) => {
   const t = useLocalization();
 
   const {
+    ref,
     value = EMPTY_ARRAY,
     onChange,
     placeholder = t('datePicker.placeholderRange'),
@@ -47,29 +49,31 @@ export const RangePicker = memo<RangePickerProps>((props) => {
   const rangeFormatEmpty = datePickerConfig.rangeFormatEmpty || '...';
   const dateFormat = locale.dateFormat;
 
+  // Single check covers both directions
   useEffect(() => {
     warningOnce(
       !(minDate && maxDate && minDate.isSameOrAfter(maxDate)),
-      '[DatePicker]: minDate prop has to be before than maxDate',
-    );
-    warningOnce(
-      !(minDate && maxDate && maxDate.isBefore(minDate)),
-      '[DatePicker]: maxDate prop has to be after than minDate',
+      '[DatePicker]: minDate prop has to be before maxDate'
     );
   }, [minDate, maxDate]);
 
-  const [currentMonth, setCurrentMonth] = useState(value?.[0] || dayjs());
+  const [currentMonth, setCurrentMonth] = useState(() => value?.[0] || dayjs());
   const [hoveredDate, setHoveredDate] = useState<Dayjs | undefined>(undefined);
   const [view, setView] = useState<Picker>('day');
+
   const cls = clsx(s.DatePicker, {
     [s.Readonly]: readOnly,
   });
   const styles = {};
 
   const onChangeHandler = useCallback(
-    (selectedDate: Dayjs | undefined) => {
+    (
+      selectedDate: Dayjs | undefined,
+      event?: React.MouseEvent<HTMLButtonElement>
+    ) => {
       if (!selectedDate) {
-        onChange?.([]);
+        onChange?.([], event);
+        return;
       }
 
       const startDate = value[0];
@@ -83,7 +87,7 @@ export const RangePicker = memo<RangePickerProps>((props) => {
         newValues = [selectedDate, undefined];
       }
 
-      onChange?.(newValues);
+      onChange?.(newValues, event);
     },
     [value, onChange],
   );
@@ -113,7 +117,7 @@ export const RangePicker = memo<RangePickerProps>((props) => {
   }
 
   return (
-    <div className={s.DatePickerWrapper}>
+    <div ref={ref} className={s.DatePickerWrapper}>
       <DatePickerContext.Provider value={datePickerValueContext}>
         <DatePickerViewContext.Provider value={datePickerViewContext}>
           <Popover
@@ -132,7 +136,6 @@ export const RangePicker = memo<RangePickerProps>((props) => {
               className={cls}
               style={styles}
               value={valueString}
-              onChange={() => null}
               placeholder={placeholder}
               readonlyStyles={readOnly}
               {...restProps}

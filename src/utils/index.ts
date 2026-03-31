@@ -8,3 +8,4 @@ export * from './GlobalUtils.ts';
 export * from './NumberUtils.ts';
 export * from './hooks';
 export * from './types.ts';
+export * from './dayjsInstance.ts';

@@ -1,16 +1,18 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { Flex } from '../flex';
-import { Text } from '../text';
-import { DatePicker } from './DatePicker.tsx';
+import { Flex, Form, Grid, Text } from 'components';
 import { useState } from 'react';
-import { dayjsInstance as dayjs } from '../calendar/Calendar.tsx';
+import { dayjsInstance as dayjs } from 'utils';
 import { Dayjs } from 'dayjs';
 import { RangePickerValue } from './DatePicker.types.ts';
-// import { within, expect, userEvent } from '@storybook/test';
-// import { AsyncUtils } from 'utils';
+import { DatePicker } from './DatePicker.tsx';
 import { Configuration } from '../configuration';
+
+// Earliest date the user can book — today
+const TODAY = dayjs();
+// Latest date available for booking — 2 years ahead
+const MAX_BOOKING_DATE = TODAY.add(2, 'year');
 
 const story: Meta<typeof DatePicker> = {
   title: 'Components/Form/DatePicker',
@@ -28,242 +30,424 @@ const story: Meta<typeof DatePicker> = {
   },
 };
 
+// ─── Main story: Travel booking form ─────────────────────────────────────────
+
 export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Using DatePicker',
   render: () => {
-    const [day1, setDay1] = useState<Dayjs | undefined>(undefined);
-    const [day2, setDay2] = useState<Dayjs | undefined>(dayjs('2024-05-15'));
+    // Day picker state
+    const [departureDate, setDepartureDate] = useState<Dayjs | undefined>(
+      undefined
+    );
+    const [returnDate, setReturnDate] = useState<Dayjs | undefined>(
+      TODAY.add(14, 'day')
+    );
 
-    const [month1, setMonth1] = useState<Dayjs | undefined>(dayjs('2024-03'));
-    const [month2, setMonth2] = useState<Dayjs | undefined>(dayjs('2024-08'));
+    // Month picker state
+    const [reportMonth, setReportMonth] = useState<Dayjs | undefined>(
+      TODAY.startOf('month')
+    );
+    const [budgetMonth, setBudgetMonth] = useState<Dayjs | undefined>(
+      undefined
+    );
 
-    const [year1, setYear1] = useState<Dayjs | undefined>(dayjs('2024'));
-    const [year2, setYear2] = useState<Dayjs | undefined>(dayjs('2025'));
+    // Year picker state
+    const [fiscalYear, setFiscalYear] = useState<Dayjs | undefined>(
+      TODAY.startOf('year')
+    );
+    const [birthYear, setBirthYear] = useState<Dayjs | undefined>(undefined);
 
     return (
-      <Flex direction="vertical" gap="l">
-        <Text weight="bold">Basic DatePicker</Text>
-        <Flex direction="horizontal" gap="l">
-          <DatePicker
-            value={day1}
-            onChange={setDay1}
-            minDate={dayjs('2024-04-02')}
-            maxDate={dayjs('2024-05-13')}
-          />
-          <DatePicker
-            data-testid="date-picker"
-            value={day2}
-            clearable
-            onChange={setDay2}
-          />
-          <Configuration locale={{ locale: 'ru-RU' }}>
-            <DatePicker value={day2} clearable onChange={setDay2} />
-          </Configuration>
-          <DatePicker value={day2} transparent onChange={setDay2} />
-          <DatePicker value={day2} readOnly onChange={setDay2} />
-          <DatePicker value={day2} disabled onChange={setDay2} />
-        </Flex>
-        <Text weight="bold">MonthPicker</Text>
-        <Flex direction="horizontal" gap="l">
-          <DatePicker.MonthPicker
-            data-testid="month-picker"
-            value={month1}
-            onChange={setMonth1}
-            minDate={dayjs('2024-02')}
-            maxDate={dayjs('2025-06')}
-          />
-          <DatePicker.MonthPicker
-            clearable
-            value={month2}
-            onChange={setMonth2}
-          />
-          <Configuration locale={{ locale: 'ru-RU' }}>
-            <DatePicker.MonthPicker
-              clearable
-              value={month2}
-              onChange={setMonth2}
-            />
-          </Configuration>
-          <DatePicker.MonthPicker
-            value={month2}
-            transparent
-            onChange={setMonth2}
-          />
-          <DatePicker.MonthPicker
-            value={month2}
-            readOnly
-            onChange={setMonth2}
-          />
-          <DatePicker.MonthPicker
-            value={month2}
-            disabled
-            onChange={setMonth2}
-          />
-        </Flex>
-        <Text weight="bold">YearPicker</Text>
-        <Flex direction="horizontal" gap="l">
-          <DatePicker.YearPicker
-            data-testid="year-picker"
-            value={year1}
-            onChange={setYear1}
-            minDate={dayjs('2020')}
-            maxDate={dayjs('2030')}
-          />
-          <DatePicker.YearPicker clearable value={year2} onChange={setYear2} />
-          <Configuration locale={{ locale: 'ru-RU' }}>
-            <DatePicker.YearPicker
-              clearable
-              value={year2}
-              onChange={setYear2}
-            />
-          </Configuration>
-          <DatePicker.YearPicker
-            value={year2}
-            transparent
-            onChange={setYear2}
-          />
-          <DatePicker.YearPicker value={year2} readOnly onChange={setYear2} />
-          <DatePicker.YearPicker value={year2} disabled onChange={setYear2} />
-        </Flex>
+      <Flex direction="vertical" gap="xl">
+        {/* ── Section 1: Day picker ────────────────────────────── */}
+        <Text size={5} weight="bold" block>
+          DatePicker — day
+        </Text>
+        <Form>
+          <Grid>
+            <Grid.Column span={4} style={{ padding: '8px' }}>
+              <Form.Field label="Departure date (min = today, max = +2 years)">
+                <DatePicker
+                  value={departureDate}
+                  onChange={(v) => setDepartureDate(v)}
+                  minDate={TODAY}
+                  maxDate={MAX_BOOKING_DATE}
+                  clearable
+                  placeholder="Pick departure date"
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={4} style={{ padding: '8px' }}>
+              <Form.Field label="Return date (custom format DD/MM/YYYY)">
+                <DatePicker
+                  value={returnDate}
+                  onChange={(v) => setReturnDate(v)}
+                  format="DD/MM/YYYY"
+                  clearable
+                  placeholder="Pick return date"
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={4} style={{ padding: '8px' }}>
+              <Form.Field label="Selected values">
+                <Text block style={{ opacity: departureDate ? 1 : 0.45 }}>
+                  Departure:{' '}
+                  {departureDate
+                    ? departureDate.format('LL')
+                    : 'not selected'}
+                </Text>
+                <Text block style={{ opacity: returnDate ? 1 : 0.45 }}>
+                  Return: {returnDate ? returnDate.format('DD/MM/YYYY') : 'not selected'}
+                </Text>
+              </Form.Field>
+            </Grid.Column>
+          </Grid>
+
+          <Grid>
+            <Grid.Column span={3} style={{ padding: '8px' }}>
+              <Form.Field label="Russian locale">
+                <Configuration locale={{ locale: 'ru-RU' }}>
+                  <DatePicker
+                    value={returnDate}
+                    onChange={(v) => setReturnDate(v)}
+                    clearable
+                  />
+                </Configuration>
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={3} style={{ padding: '8px' }}>
+              <Form.Field label="Transparent">
+                <DatePicker
+                  value={returnDate}
+                  onChange={(v) => setReturnDate(v)}
+                  transparent
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={3} style={{ padding: '8px' }}>
+              <Form.Field label="Read-only (confirmed booking)">
+                <DatePicker
+                  value={TODAY.add(7, 'day')}
+                  readOnly
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={3} style={{ padding: '8px' }}>
+              <Form.Field label="Disabled">
+                <DatePicker
+                  value={returnDate}
+                  disabled
+                />
+              </Form.Field>
+            </Grid.Column>
+          </Grid>
+        </Form>
+
+        {/* ── Section 2: MonthPicker ───────────────────────────── */}
+        <Text size={5} weight="bold" block>
+          MonthPicker
+        </Text>
+        <Form>
+          <Grid>
+            <Grid.Column span={4} style={{ padding: '8px' }}>
+              <Form.Field label="Report period (min Jan 2023 – max Dec 2025)">
+                <DatePicker.MonthPicker
+                  value={reportMonth}
+                  onChange={(v) => setReportMonth(v)}
+                  minDate={dayjs('2023-01')}
+                  maxDate={dayjs('2025-12')}
+                  clearable
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={4} style={{ padding: '8px' }}>
+              <Form.Field label="Budget month (custom format MMM YY)">
+                <DatePicker.MonthPicker
+                  value={budgetMonth}
+                  onChange={(v) => setBudgetMonth(v)}
+                  format="MMM YY"
+                  clearable
+                  placeholder="Pick month"
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={4} style={{ padding: '8px' }}>
+              <Form.Field label="Selected values">
+                <Text block style={{ opacity: reportMonth ? 1 : 0.45 }}>
+                  Report: {reportMonth ? reportMonth.format('MMMM YYYY') : 'not selected'}
+                </Text>
+                <Text block style={{ opacity: budgetMonth ? 1 : 0.45 }}>
+                  Budget: {budgetMonth ? budgetMonth.format('MMM YY') : 'not selected'}
+                </Text>
+              </Form.Field>
+            </Grid.Column>
+          </Grid>
+
+          <Grid>
+            <Grid.Column span={3} style={{ padding: '8px' }}>
+              <Form.Field label="Russian locale">
+                <Configuration locale={{ locale: 'ru-RU' }}>
+                  <DatePicker.MonthPicker
+                    value={reportMonth}
+                    onChange={(v) => setReportMonth(v)}
+                    clearable
+                  />
+                </Configuration>
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={3} style={{ padding: '8px' }}>
+              <Form.Field label="Transparent">
+                <DatePicker.MonthPicker
+                  value={reportMonth}
+                  onChange={(v) => setReportMonth(v)}
+                  transparent
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={3} style={{ padding: '8px' }}>
+              <Form.Field label="Read-only">
+                <DatePicker.MonthPicker
+                  value={TODAY.startOf('month')}
+                  readOnly
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={3} style={{ padding: '8px' }}>
+              <Form.Field label="Disabled">
+                <DatePicker.MonthPicker
+                  value={reportMonth}
+                  disabled
+                />
+              </Form.Field>
+            </Grid.Column>
+          </Grid>
+        </Form>
+
+        {/* ── Section 3: YearPicker ────────────────────────────── */}
+        <Text size={5} weight="bold" block>
+          YearPicker
+        </Text>
+        <Form>
+          <Grid>
+            <Grid.Column span={4} style={{ padding: '8px' }}>
+              <Form.Field label="Fiscal year (2020–2030)">
+                <DatePicker.YearPicker
+                  value={fiscalYear}
+                  onChange={(v) => setFiscalYear(v)}
+                  minDate={dayjs('2020')}
+                  maxDate={dayjs('2030')}
+                  clearable
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={4} style={{ padding: '8px' }}>
+              <Form.Field label="Year of birth (custom format YYYY г.)">
+                <DatePicker.YearPicker
+                  value={birthYear}
+                  onChange={(v) => setBirthYear(v)}
+                  format="YYYY [г.]"
+                  clearable
+                  placeholder="Birth year"
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={4} style={{ padding: '8px' }}>
+              <Form.Field label="Selected values">
+                <Text block style={{ opacity: fiscalYear ? 1 : 0.45 }}>
+                  Fiscal: {fiscalYear ? fiscalYear.format('YYYY') : 'not selected'}
+                </Text>
+                <Text block style={{ opacity: birthYear ? 1 : 0.45 }}>
+                  Birth year: {birthYear ? birthYear.format('YYYY [г.]') : 'not selected'}
+                </Text>
+              </Form.Field>
+            </Grid.Column>
+          </Grid>
+
+          <Grid>
+            <Grid.Column span={3} style={{ padding: '8px' }}>
+              <Form.Field label="Russian locale">
+                <Configuration locale={{ locale: 'ru-RU' }}>
+                  <DatePicker.YearPicker
+                    value={fiscalYear}
+                    onChange={(v) => setFiscalYear(v)}
+                    clearable
+                  />
+                </Configuration>
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={3} style={{ padding: '8px' }}>
+              <Form.Field label="Transparent">
+                <DatePicker.YearPicker
+                  value={fiscalYear}
+                  onChange={(v) => setFiscalYear(v)}
+                  transparent
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={3} style={{ padding: '8px' }}>
+              <Form.Field label="Read-only">
+                <DatePicker.YearPicker
+                  value={TODAY.startOf('year')}
+                  readOnly
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={3} style={{ padding: '8px' }}>
+              <Form.Field label="Disabled">
+                <DatePicker.YearPicker
+                  value={fiscalYear}
+                  disabled
+                />
+              </Form.Field>
+            </Grid.Column>
+          </Grid>
+        </Form>
       </Flex>
     );
   },
-  // play: async ({ step, canvasElement }) => {
-  // const canvas = within(canvasElement);
-  // await step('need to choose a correct date', async () => {
-  //   await userEvent.click(canvas.getByTestId('date-picker'));
-  //   await userEvent.click(canvas.getByText('17'));
-  //   await expect(canvas.getByTestId('date-picker')).toHaveValue(
-  //     `May 17, 2024`,
-  //   );
-  // });
-  // await step('need to navigate to the next month', async () => {
-  //   await userEvent.click(canvas.getByTestId('date-picker'));
-  //   await userEvent.click(canvas.getByText('navigate_next'));
-  //   await userEvent.click(canvas.getByText('10'));
-  //   await expect(canvas.getByTestId('date-picker')).toHaveValue(
-  //     `June 10, 2024`,
-  //   );
-  // });
-  // await step('need to navigate to the prev month', async () => {
-  //   await userEvent.click(canvas.getByTestId('date-picker'));
-  //   await userEvent.click(canvas.getByText('navigate_before'));
-  //   await userEvent.click(canvas.getByText('navigate_before'));
-  //   await userEvent.click(canvas.getByText('14'));
-  //   await expect(canvas.getByTestId('date-picker')).toHaveValue(
-  //     `April 14, 2024`,
-  //   );
-  // });
-  // await step('check that today button works', async () => {
-  //   await userEvent.click(canvas.getByTestId('date-picker'));
-  //   await userEvent.click(canvas.getByText('Today'));
-  //   await expect(canvas.getByTestId('date-picker')).toHaveValue(
-  //     dayjs().locale('en-US').format('LL'),
-  //   );
-  // });
-  // await step('check that clear button works', async () => {
-  //   await userEvent.click(canvas.getByTestId('date-picker'));
-  //   await userEvent.click(canvas.getByText('Clear'));
-  //   await expect(canvas.getByTestId('date-picker')).toHaveValue('');
-  // });
-  // await step('check month picker', async () => {
-  //   await userEvent.click(canvas.getByTestId('month-picker'));
-  //   await userEvent.click(canvas.getByText('May'));
-  //   await expect(canvas.getByTestId('month-picker')).toHaveValue('May 2024');
-  // });
-  // await step('check "this month" button in year picker', async () => {
-  //   await userEvent.click(canvas.getByTestId('month-picker'));
-  //   await userEvent.click(canvas.getByText('This month'));
-  //   await expect(canvas.getByTestId('month-picker')).toHaveValue(
-  //     dayjs().locale('en-US').format('MMMM YYYY'),
-  //   );
-  // });
-  // await step('check year picker', async () => {
-  //   await userEvent.click(canvas.getByTestId('year-picker'));
-  //   await userEvent.click(canvas.getByText('2022'));
-  //   await expect(canvas.getByTestId('year-picker')).toHaveValue('2022');
-  // });
-  // await step('check "this year" button in year picker', async () => {
-  //   await userEvent.click(canvas.getByTestId('year-picker'));
-  //   await userEvent.click(canvas.getByText('This year'));
-  //   await expect(canvas.getByTestId('year-picker')).toHaveValue(
-  //     new Date().getFullYear().toString(),
-  //   );
-  // });
-  // },
 };
+
+// ─── Range story ─────────────────────────────────────────────────────────────
 
 export const RangeStory: StoryObj<typeof Flex> = {
   name: 'Using DatePicker ranges',
   render: () => {
-    const [day1, setDay1] = useState<RangePickerValue | undefined>([]);
-    const [day2, setDay2] = useState<RangePickerValue | undefined>([
-      dayjs('2024-04-04'),
-      dayjs('2024-11-18'),
+    const [hotelStay, setHotelStay] = useState<RangePickerValue>([
+      TODAY.add(3, 'day'),
+      TODAY.add(10, 'day'),
+    ]);
+    const [vacationRange, setVacationRange] = useState<RangePickerValue>([]);
+    const [contractRange, setContractRange] = useState<RangePickerValue>([
+      dayjs('2025-01-01'),
+      dayjs('2025-12-31'),
     ]);
 
+    const formatRange = (range: RangePickerValue) => {
+      const [start, end] = range;
+      if (!start && !end) return 'not selected';
+      const s = start ? start.format('D MMM YYYY') : '…';
+      const e = end ? end.format('D MMM YYYY') : '…';
+      if (start && end) {
+        return `${s} – ${e} (${end.diff(start, 'day')} days)`;
+      }
+      return `${s} – ${e}`;
+    };
+
     return (
-      <Flex direction="vertical" gap="l">
-        <Text weight="bold">RangePicker</Text>
-        <Flex direction="horizontal" gap="l">
-          <DatePicker.RangePicker
-            value={day1}
-            onChange={setDay1}
-            minDate={dayjs('2024-04-04')}
-            maxDate={dayjs('2024-05-13')}
-            clearable
-          />
-          <DatePicker.RangePicker
-            value={day2}
-            minDate={dayjs('2024-04-04')}
-            maxDate={dayjs('2024-05-13')}
-            onChange={setDay2}
-            data-testid="range-picker"
-          />
-        </Flex>
-        <Flex direction="horizontal" gap="l">
-          <DatePicker.RangePicker
-            value={day2}
-            minDate={dayjs('2024-04-04')}
-            maxDate={dayjs('2024-05-13')}
-            transparent
-            onChange={setDay2}
-          />
-          <DatePicker.RangePicker
-            value={day2}
-            minDate={dayjs('2024-04-04')}
-            maxDate={dayjs('2024-05-13')}
-            readOnly
-            onChange={setDay2}
-          />
-          <DatePicker.RangePicker
-            value={day2}
-            minDate={dayjs('2024-04-04')}
-            maxDate={dayjs('2024-05-13')}
-            disabled
-            onChange={setDay2}
-          />
-        </Flex>
+      <Flex direction="vertical" gap="xl">
+        {/* ── Section 1: Basic range ───────────────────────────── */}
+        <Text size={5} weight="bold" block>
+          RangePicker — basic
+        </Text>
+        <Form>
+          <Grid>
+            <Grid.Column span={5} style={{ padding: '8px' }}>
+              <Form.Field label="Hotel stay (min = today, max = +2 years, clearable)">
+                <DatePicker.RangePicker
+                  value={hotelStay}
+                  onChange={(v) => setHotelStay(v ?? [])}
+                  minDate={TODAY}
+                  maxDate={MAX_BOOKING_DATE}
+                  clearable
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={4} style={{ padding: '8px' }}>
+              <Form.Field label="Vacation (empty start)">
+                <DatePicker.RangePicker
+                  value={vacationRange}
+                  onChange={(v) => setVacationRange(v ?? [])}
+                  placeholder="Select vacation period"
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={3} style={{ padding: '8px' }}>
+              <Form.Field label="Selected ranges">
+                <Text block style={{ opacity: hotelStay[0] ? 1 : 0.45 }}>
+                  Hotel: {formatRange(hotelStay)}
+                </Text>
+                <Text block style={{ opacity: vacationRange[0] ? 1 : 0.45 }}>
+                  Vacation: {formatRange(vacationRange)}
+                </Text>
+              </Form.Field>
+            </Grid.Column>
+          </Grid>
+        </Form>
+
+        {/* ── Section 2: Custom format + locale ───────────────── */}
+        <Text size={5} weight="bold" block>
+          RangePicker — custom format &amp; locale
+        </Text>
+        <Form>
+          <Grid>
+            <Grid.Column span={4} style={{ padding: '8px' }}>
+              <Form.Field label="Contract period (format DD/MM/YYYY)">
+                <DatePicker.RangePicker
+                  value={contractRange}
+                  onChange={(v) => setContractRange(v ?? [])}
+                  format="DD/MM/YYYY"
+                  clearable
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={4} style={{ padding: '8px' }}>
+              <Form.Field label="Russian locale">
+                <Configuration locale={{ locale: 'ru-RU' }}>
+                  <DatePicker.RangePicker
+                    value={contractRange}
+                    onChange={(v) => setContractRange(v ?? [])}
+                    clearable
+                  />
+                </Configuration>
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={4} style={{ padding: '8px' }}>
+              <Form.Field label="autoClose=false (stays open after first pick)">
+                <DatePicker.RangePicker
+                  value={hotelStay}
+                  onChange={(v) => setHotelStay(v ?? [])}
+                  autoClose={false}
+                />
+              </Form.Field>
+            </Grid.Column>
+          </Grid>
+        </Form>
+
+        {/* ── Section 3: States ────────────────────────────────── */}
+        <Text size={5} weight="bold" block>
+          RangePicker — states
+        </Text>
+        <Form>
+          <Grid>
+            <Grid.Column span={4} style={{ padding: '8px' }}>
+              <Form.Field label="Transparent">
+                <DatePicker.RangePicker
+                  value={contractRange}
+                  onChange={(v) => setContractRange(v ?? [])}
+                  transparent
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={4} style={{ padding: '8px' }}>
+              <Form.Field label="Read-only (confirmed booking)">
+                <DatePicker.RangePicker
+                  value={[TODAY.add(3, 'day'), TODAY.add(10, 'day')]}
+                  readOnly
+                />
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column span={4} style={{ padding: '8px' }}>
+              <Form.Field label="Disabled">
+                <DatePicker.RangePicker
+                  value={contractRange}
+                  disabled
+                />
+              </Form.Field>
+            </Grid.Column>
+          </Grid>
+        </Form>
       </Flex>
     );
-  },
-  play: async ({ step, canvasElement }) => {
-    // const canvas = within(canvasElement);
-    // await step('need to choose a date range', async () => {
-    //   await userEvent.click(canvas.getByTestId('range-picker'));
-    //   await userEvent.click(canvas.getByText('17'));
-    //   await expect(canvas.getByTestId('range-picker')).toHaveValue(
-    //     `April 17, 2024 - ...`,
-    //   );
-    //   await userEvent.click(canvas.getByText('navigate_next'));
-    //   await userEvent.click(canvas.getByText('navigate_next'));
-    //   await userEvent.hover(canvas.getByText('24'));
-    //   await userEvent.click(canvas.getByText('24'));
-    //   await AsyncUtils.timeout(1);
-    //   await expect(canvas.getByTestId('range-picker')).toHaveValue(
-    //     `April 17, 2024 - June 24, 2024`,
-    //   );
-    // });
   },
 };
 

@@ -2,45 +2,21 @@ import { CalendarProps } from './Calendar.types';
 import clsx from 'clsx';
 import { memo, useMemo } from 'react';
 import { CalendarDate } from './CalendarDate';
-import dayjs from 'dayjs';
-import IsBetween from 'dayjs/plugin/isBetween';
-import IsToday from 'dayjs/plugin/isToday';
+import { dayjsInstance as dayjs } from 'utils';
+import type { Dayjs } from 'dayjs';
 import s from './calendar.module.scss';
-import IsSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import IsSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import LocalizedFormat from 'dayjs/plugin/localizedFormat';
-import WeekOfYear from 'dayjs/plugin/weekOfYear';
-import LocaleData from 'dayjs/plugin/localeData';
 import { useConfiguration } from 'components/configuration';
 
-dayjs.extend(IsBetween);
-dayjs.extend(IsToday);
-dayjs.extend(IsSameOrBefore);
-dayjs.extend(IsSameOrAfter);
-dayjs.extend(LocalizedFormat);
-dayjs.extend(WeekOfYear);
-dayjs.extend(LocaleData);
-
-export const dayjsInstance = dayjs;
-
-/**
- * This component is used to show the selected month
- * @param month
- * @param selectedDates
- * @param onDateChange
- * @param DateComponent
- * @param disabled
- * @param className
- * @constructor
- */
 export const Calendar = memo(
   ({
+    ref,
     month = dayjs(),
     selectedDates = [dayjs()],
     cursorDate,
     onDateChange,
     DateComponent = CalendarDate,
     disabled,
+    firstDayOfWeek = 'sunday',
     className,
     style,
     ...restProps
@@ -55,11 +31,30 @@ export const Calendar = memo(
       ...style,
     };
 
+    // Returns the start-of-week day respecting firstDayOfWeek setting
+    const getStartOfWeek = (date: Dayjs): Dayjs => {
+      if (firstDayOfWeek === 'monday') {
+        const day = date.day(); // 0=Sun, 1=Mon … 6=Sat
+        const diff = day === 0 ? -6 : 1 - day;
+        return date.add(diff, 'day').startOf('day');
+      }
+      return date.startOf('week');
+    };
+
+    // Returns the end-of-week day respecting firstDayOfWeek setting
+    const getEndOfWeek = (date: Dayjs): Dayjs => {
+      if (firstDayOfWeek === 'monday') {
+        const day = date.day();
+        const diff = day === 0 ? 0 : 7 - day;
+        return date.add(diff, 'day').startOf('day');
+      }
+      return date.endOf('week').startOf('day');
+    };
+
     const calendarDates = useMemo(() => {
-      const result = [];
+      const result: Dayjs[] = [];
 
       const monthLocale = month.locale(localeConfig?.locale ?? 'en-US');
-
       const daysInMonth = monthLocale.daysInMonth();
       const firstDay = monthLocale.startOf('month');
 
@@ -67,27 +62,22 @@ export const Calendar = memo(
 
       for (let day = 1; day <= daysInMonth; day++) {
         if (day === 1) {
-          let startOfWeek = currentDate.startOf('week');
-
-          if (startOfWeek.isBefore(currentDate)) {
-            while (startOfWeek.isBefore(currentDate)) {
-              result.push(startOfWeek);
-              startOfWeek = startOfWeek.add(1, 'day');
-            }
+          // Prepend days from the previous month to fill the first week row
+          let prefillDate = getStartOfWeek(currentDate);
+          while (prefillDate.isBefore(currentDate, 'day')) {
+            result.push(prefillDate);
+            prefillDate = prefillDate.add(1, 'day');
           }
-
           result.push(currentDate);
         } else if (day === daysInMonth) {
           result.push(currentDate);
 
-          const endOfWeek = currentDate.endOf('week');
-
-          if (endOfWeek.isAfter(currentDate)) {
-            currentDate = currentDate.add(1, 'day');
-            while (currentDate.isBefore(endOfWeek)) {
-              result.push(currentDate);
-              currentDate = currentDate.add(1, 'day');
-            }
+          // Append days from the next month to fill the last week row
+          const endOfWeek = getEndOfWeek(currentDate);
+          let fillDate = currentDate.add(1, 'day');
+          while (!fillDate.isAfter(endOfWeek, 'day')) {
+            result.push(fillDate);
+            fillDate = fillDate.add(1, 'day');
           }
         } else {
           result.push(currentDate);
@@ -97,22 +87,26 @@ export const Calendar = memo(
       }
 
       return result;
-    }, [month]);
+    }, [month, localeConfig?.locale, firstDayOfWeek]);
 
     const cursorDate_dj = cursorDate ? dayjs(cursorDate) : undefined;
 
     return (
-      <div className={cls} style={styles} {...restProps}>
+      <div ref={ref} className={cls} style={styles} {...restProps}>
         {calendarDates.map((date) => {
           const fromAnotherMonth = !date.isSame(month, 'month');
           const isDateSelected = Boolean(
             selectedDates.find((d) => d?.isSame?.(date, 'day')),
           );
 
-          const isCursorHighlighted = cursorDate_dj
-            ? date.isSameOrAfter(selectedDates[0]) &&
-              date.isSameOrBefore(cursorDate_dj)
-            : false;
+          // Highlight range in both directions: cursor can be before or after selectedDates[0]
+          const isCursorHighlighted =
+            cursorDate_dj && selectedDates[0]
+              ? (date.isSameOrAfter(selectedDates[0], 'day') &&
+                  date.isSameOrBefore(cursorDate_dj, 'day')) ||
+                (date.isSameOrBefore(selectedDates[0], 'day') &&
+                  date.isSameOrAfter(cursorDate_dj, 'day'))
+              : false;
 
           return (
             <DateComponent

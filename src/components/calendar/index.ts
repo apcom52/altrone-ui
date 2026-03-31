@@ -1,1 +1,2 @@
-export { Calendar, dayjsInstance as dayjs } from './Calendar.tsx';
+export { Calendar } from './Calendar.tsx';
+export { dayjsInstance as dayjs } from 'utils';

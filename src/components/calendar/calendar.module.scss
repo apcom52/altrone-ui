@@ -1,12 +1,15 @@
-:global(:root) {
+:global([data-altrone-root='true']) {
   --calendarDateBackgroundColor: transparent;
   --calendarDateTextColor: var(--default-900);
   --calendarDateTodayTextColor: var(--primary-500);
   --calendarDateSelectedDateBackgroundColor: var(--primary-100);
   --calendarDateSelectedDateTextColor: var(--primary-800);
+  --calendar-gap: 4px;
+  --calendar-date-height: 34px;
+  --calendar-date-padding: 4px 8px;
 }
 
-:global(.AltroneDark) {
+:global([data-altrone-root='true'][data-altrone-theme='dark']) {
   --calendarDateBackgroundColor: transparent;
   --calendarDateTextColor: var(--default-50);
   --calendarDateTodayTextColor: var(--primary-600);
@@ -17,14 +20,14 @@
 .Calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
+  gap: var(--calendar-gap);
 }
 
 .Date {
   border: none;
-  padding: 4px 8px;
+  padding: var(--calendar-date-padding);
   text-align: left;
-  height: 34px;
+  height: var(--calendar-date-height);
   color: var(--calendarDateTextColor);
   opacity: 0.5;
   border-radius: var(--controlRounding);

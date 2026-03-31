@@ -19,7 +19,7 @@ export const CalendarDate = memo(
         data-year={currentDate.year()}
         data-month={currentDate.month()}
         data-date={currentDate.date()}
-        data-another-month={!fromAnotherMonth}
+        data-another-month={fromAnotherMonth}
         data-today={today}
         data-selected={selected}
         className={clsx(s.Date, {
@@ -31,7 +31,7 @@ export const CalendarDate = memo(
         disabled={fromAnotherMonth || disabled}
         onClick={
           !disabled && !fromAnotherMonth && onSelect
-            ? () => onSelect(currentDate)
+            ? (e) => onSelect(currentDate, e)
             : undefined
         }
       >

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useId, useMemo, useState } from 'react';
-import { dayjsInstance as dayjs } from '../../calendar/Calendar.tsx';
+import { dayjsInstance as dayjs } from 'utils';
 import {
   BasicDatePickerProps,
   DatePickerContextType,
@@ -30,6 +30,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
 ) {
   return (props: DatePickerProps) => {
     const {
+      ref,
       value,
       onChange,
       clearable = false,
@@ -47,30 +48,19 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
 
     const id = useId();
 
+    // Warn once when minDate >= maxDate — single check covers both directions
     useEffect(() => {
       warningOnce(
         !(minDate && maxDate && minDate.isSameOrAfter(maxDate)),
-        '[DatePicker]: minDate prop has to be before than maxDate'
-      );
-      warningOnce(
-        !(minDate && maxDate && maxDate.isBefore(minDate)),
-        '[DatePicker]: maxDate prop has to be after than minDate'
+        '[DatePicker]: minDate prop has to be before maxDate'
       );
     }, [minDate, maxDate]);
 
-    useEffect(() => {
-      if (
-        minDate &&
-        maxDate &&
-        value &&
-        !value.isBetween(minDate, maxDate, '[]')
-      ) {
-        onChange?.(minDate);
-      }
-    }, [value, minDate, maxDate, onChange]);
-
-    const [currentMonth, setCurrentMonth] = useState(value || dayjs());
+    const [currentMonth, setCurrentMonth] = useState(() => value || dayjs());
     const [view, setView] = useState(picker);
+    const [hoveredDate, setHoveredDate] = useState<Dayjs | undefined>(
+      undefined
+    );
 
     const { datePicker: datePickerConfig = {} } = useConfiguration();
     const locale = useLocale({
@@ -100,8 +90,11 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
     };
 
     const onChangeHandler = useCallback(
-      (selectedDate: Dayjs | undefined) => {
-        onChange?.(selectedDate);
+      (
+        selectedDate: Dayjs | undefined,
+        event?: React.MouseEvent<HTMLButtonElement>
+      ) => {
+        onChange?.(selectedDate, event);
       },
       [onChange]
     );
@@ -133,13 +126,13 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
         setViewMode: setView,
         currentMonth: currentMonth,
         setCurrentMonth: setCurrentMonth,
-        hoveredDate: undefined,
-        setHoveredDate: () => null,
+        hoveredDate,
+        setHoveredDate,
       };
-    }, [picker, view, currentMonth]);
+    }, [picker, view, currentMonth, hoveredDate]);
 
     return (
-      <div className={s.DatePickerWrapper}>
+      <div ref={ref} className={s.DatePickerWrapper}>
         <DatePickerContext.Provider value={datePickerValueContext}>
           <DatePickerViewContext.Provider value={datePickerViewContext}>
             <DatePickerIdContext.Provider value={id}>
@@ -169,12 +162,10 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
                           .format(pickerDateFormat)
                       : ''
                   }
-                  onChange={() => null}
                   readonlyStyles={readOnly}
                   placeholder={t('datePicker.placeholder')}
                   {...restProps}
                   readOnly={true}
-                  role="textbox"
                 >
                   {!readOnly ? (
                     <TextInput.IconIsland

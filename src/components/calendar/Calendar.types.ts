@@ -1,3 +1,4 @@
+import React from 'react';
 import { Dayjs } from 'dayjs';
 
 export type CalendarRenderDateProps = {
@@ -9,14 +10,15 @@ export type CalendarRenderDateProps = {
   disabled: boolean;
   cursorHighlighted: boolean;
   autoClose?: boolean;
-  onSelect?: (date: Dayjs) => void;
+  onSelect?: (date: Dayjs, event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 export interface CalendarProps extends React.HTMLAttributes<HTMLDivElement> {
+  ref?: React.Ref<HTMLDivElement>;
   month: Dayjs;
   selectedDates?: Dayjs[];
   cursorDate?: Dayjs;
-  onDateChange?: (date: Dayjs) => void;
+  onDateChange?: (date: Dayjs, event: React.MouseEvent<HTMLButtonElement>) => void;
   DateComponent?: React.FC<CalendarRenderDateProps>;
   disabled?: boolean;
   firstDayOfWeek?: 'monday' | 'sunday';

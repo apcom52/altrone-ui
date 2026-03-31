@@ -1,5 +1,5 @@
 import { CellRenderer } from '../DataTable.types';
-import { dayjsInstance as dayjs } from '../../calendar/Calendar.tsx';
+import { dayjsInstance as dayjs } from 'utils';
 import s from './styles.module.scss';
 import { Text } from '../../text';
 import { useLocale } from 'utils/index.ts';

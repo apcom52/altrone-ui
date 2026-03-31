@@ -1,3 +1,4 @@
+import React from 'react';
 import { Dayjs } from 'dayjs';
 import { AnyObject } from '../../utils';
 import { TextInputProps } from '../textInput/TextInput.types.ts';
@@ -7,9 +8,13 @@ export type Picker = 'day' | 'month' | 'year' | 'range';
 export type DateRangePosition = 'start' | 'end' | 'both';
 
 export interface BasicDatePickerProps<ValueType extends AnyObject = any>
-  extends Omit<TextInputProps, 'value' | 'onChange'> {
+  extends Omit<TextInputProps, 'value' | 'onChange' | 'ref'> {
+  ref?: React.Ref<HTMLDivElement>;
   value?: ValueType;
-  onChange?: (value?: ValueType) => void;
+  onChange?: (
+    value?: ValueType,
+    event?: React.MouseEvent<HTMLButtonElement>
+  ) => void;
   clearable?: boolean;
   format?: string;
   minDate?: Dayjs;
@@ -57,7 +62,10 @@ export interface DatePickerViewContextType {
 
 export interface DatePickerContextType {
   selectedDates: Array<Dayjs>;
-  onDayClicked: (selectedDate: Dayjs | undefined) => void;
+  onDayClicked: (
+    selectedDate: Dayjs | undefined,
+    event?: React.MouseEvent<HTMLButtonElement>
+  ) => void;
   minDate?: Dayjs;
   maxDate?: Dayjs;
 }

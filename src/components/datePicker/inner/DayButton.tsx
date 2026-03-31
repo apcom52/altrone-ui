@@ -48,7 +48,7 @@ export const DayButton = memo(
       currentDate.isSameOrAfter(startDate) &&
       currentDate.isSameOrBefore(hoveredDate);
 
-    const onDateClick: MouseEventHandler = () => {
+    const onDateClick: MouseEventHandler<HTMLButtonElement> = (e) => {
       if (
         autoClose &&
         (picker === 'day' ||
@@ -56,7 +56,7 @@ export const DayButton = memo(
       ) {
         closePopup();
       }
-      onDayClicked(currentDate);
+      onDayClicked(currentDate, e);
     };
 
     const isDisabled =

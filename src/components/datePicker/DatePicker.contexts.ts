@@ -3,7 +3,7 @@ import {
   DatePickerContextType,
   DatePickerViewContextType,
 } from './DatePicker.types.ts';
-import dayjs from 'dayjs';
+import { dayjsInstance as dayjs } from 'utils';
 
 export const DatePickerContext = createContext<DatePickerContextType>({
   selectedDates: [],

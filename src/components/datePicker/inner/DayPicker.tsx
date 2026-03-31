@@ -7,7 +7,7 @@ import {
   useDatePickerViewContext,
 } from '../DatePicker.contexts.ts';
 import { Composite } from '@floating-ui/react';
-import { dayjsInstance as dayjs } from '../../calendar/Calendar.tsx';
+import { dayjsInstance as dayjs } from 'utils';
 
 export const DayPicker = memo<{ autoClose?: boolean }>(
   ({ autoClose = true }) => {

@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { DataGridFieldProps } from '../DataGrid.types';
 import { Skeleton } from 'components/skeleton';
 import { DatePicker } from 'components/datePicker';
-import { dayjsInstance } from 'components/calendar/Calendar';
+import { dayjsInstance } from 'utils';
 
 export const DateField = memo<DataGridFieldProps>((props) => {
   if (props.type !== 'date') {
