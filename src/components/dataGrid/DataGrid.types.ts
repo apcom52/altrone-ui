@@ -101,12 +101,13 @@ export type DataGridFieldType =
   | DataGridColorField
   | DataGridCustomField;
 
-export interface DataGridProps
+export interface DataGridProps<T extends Record<string, unknown> = Record<string, unknown>>
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'children'> {
-  data: object;
+  ref?: React.Ref<HTMLDivElement>;
+  data: T;
   fields: DataGridFieldType[];
   onChange: (field: string, value: unknown) => void;
-  onChangeMode: (mode: DataGridModeType) => void;
+  onChangeMode?: (mode: DataGridModeType) => void;
 
   groups?: DataGridGroupType[];
   showToolbar?: boolean;

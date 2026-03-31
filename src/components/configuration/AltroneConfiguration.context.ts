@@ -53,6 +53,7 @@ export interface ConsumerConfigurationContext {
     expandButtonLabel?: RenderFunction<string, CollapsedListContext>;
   }>;
   colorPicker?: ComponentConfiguration;
+  dataGrid?: ComponentConfiguration;
   dataTable?: ComponentConfiguration<{
     action?: ComponentConfiguration;
     rowActions?: ComponentConfiguration;

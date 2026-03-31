@@ -6,11 +6,15 @@ import { Button } from 'components/button';
 import { useLocalization } from 'components/application';
 import { Field } from './inner/Field';
 import { Spoiler } from 'components/spoiler';
+import { useConfiguration } from 'components/configuration';
 
 const CommonFields = Symbol('CommonFields');
 
-export const DataGrid = memo<DataGridProps>((props) => {
+function DataGridComponent<T extends Record<string, unknown> = Record<string, unknown>>(
+  props: DataGridProps<T>
+) {
   const {
+    ref,
     data,
     fields,
     groups,
@@ -25,10 +29,10 @@ export const DataGrid = memo<DataGridProps>((props) => {
 
   const t = useLocalization();
 
-  console.log(fields);
+  const { dataGrid: dataGridConfig = {} } = useConfiguration();
 
   const groupedFields = useMemo(() => {
-    const groups: Record<string | symbol, DataGridFieldType[]> = {
+    const result: Record<string | symbol, DataGridFieldType[]> = {
       [CommonFields]: [],
     };
 
@@ -38,36 +42,35 @@ export const DataGrid = memo<DataGridProps>((props) => {
       }
 
       if (field.group) {
-        groups[field.group] = groups[field.group] || [];
-        groups[field.group].push(field);
+        result[field.group] = result[field.group] || [];
+        result[field.group].push(field);
       } else {
-        groups[CommonFields].push(field);
+        result[CommonFields].push(field);
       }
     }
-    return groups;
-  }, []);
+    return result;
+  }, [fields]);
 
-  const cls = clsx(s.DataGrid, className);
+  const cls = clsx(s.DataGrid, className, dataGridConfig.className);
   const styles = {
+    ...dataGridConfig.style,
     ...style,
   };
 
   const toolbarVisible = showToolbar && ['read', 'edit'].includes(mode);
   const toolbar =
     mode === 'read' ? (
-      <Button label={t('common.edit')} onClick={() => onChangeMode('edit')} />
+      <Button label={t('common.edit')} onClick={() => onChangeMode?.('edit')} />
     ) : (
       <Button
         label={t('common.done')}
         variant="submit"
-        onClick={() => onChangeMode('read')}
+        onClick={() => onChangeMode?.('read')}
       />
     );
 
-  console.log(groupedFields);
-
   return (
-    <div className={cls} style={styles} {...restProps}>
+    <div ref={ref} className={cls} style={styles} {...restProps}>
       {showToolbar && (
         <div className={s.Toolbar}>{toolbarVisible && toolbar}</div>
       )}
@@ -88,7 +91,7 @@ export const DataGrid = memo<DataGridProps>((props) => {
             openedByDefault
           >
             <div className={s.Fields}>
-              {groupedFields[group.name].map((field) => (
+              {(groupedFields[group.name] ?? []).map((field) => (
                 <Field
                   key={field.accessor}
                   mode={mode}
@@ -103,4 +106,6 @@ export const DataGrid = memo<DataGridProps>((props) => {
       </div>
     </div>
   );
-});
+}
+
+export const DataGrid = memo(DataGridComponent) as typeof DataGridComponent;
