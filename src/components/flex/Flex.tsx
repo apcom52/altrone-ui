@@ -5,19 +5,20 @@ import s from './flex.module.scss';
 import { useConfiguration } from 'components/configuration';
 import { Gap } from 'types';
 
-const gapValues: Record<Gap, number> = {
-  none: 0,
-  xxs: 2,
-  xs: 4,
-  s: 6,
-  m: 8,
-  l: 12,
-  xl: 24,
-  xxl: 32,
+const gapVars: Record<Gap, string> = {
+  none: '0px',
+  xxs: 'var(--narrow-gap)',
+  xs: 'var(--xs-gap)',
+  s: 'var(--s-gap)',
+  m: 'var(--gap)',
+  l: 'var(--l-gap)',
+  xl: 'var(--xl-gap)',
+  xxl: 'var(--xxl-gap)',
 };
 
 export const Flex = memo<FlexProps>(
   ({
+    ref,
     tagName = 'div',
     children,
     className,
@@ -53,13 +54,14 @@ export const Flex = memo<FlexProps>(
     const styles = {
       ...flexConfig.style,
       ...style,
-      gap: `${gapValues[gap]}px`,
+      gap: gapVars[gap],
     };
 
     return createElement(
       tagName,
       {
         ...props,
+        ref,
         className: cls,
         style: styles,
       },

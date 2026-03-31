@@ -6,11 +6,11 @@ import { useLocalization } from 'components/application';
 import { useConfiguration } from 'components/configuration';
 import { SearchX } from 'lucide-react';
 
-export const Empty = memo((props: EmptyProps) => {
+export const Empty = memo<EmptyProps>((props) => {
   const t = useLocalization();
   const { empty: emptyConfig = {} } = useConfiguration();
 
-  const { children, icon, transparent, className, style, ...restProps } = props;
+  const { ref, children, icon, transparent, className, style, ...restProps } = props;
 
   const cls = clsx(s.Empty, emptyConfig.className, className, {
     [s.Transparent]: transparent,
@@ -23,9 +23,9 @@ export const Empty = memo((props: EmptyProps) => {
 
   return (
     <div
+      ref={ref}
       className={cls}
       role="status"
-      aria-live="polite"
       style={styles}
       {...restProps}
     >

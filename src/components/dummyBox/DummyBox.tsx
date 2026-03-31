@@ -4,8 +4,9 @@ import clsx from 'clsx';
 import { DummyBoxProps } from './DummyBox.types';
 import { useConfiguration } from 'components/configuration';
 
-export const DummyBox = memo((props: DummyBoxProps) => {
+export const DummyBox = memo<DummyBoxProps>((props) => {
   const {
+    ref,
     width = '100%',
     height = '100%',
     className,
@@ -28,5 +29,5 @@ export const DummyBox = memo((props: DummyBoxProps) => {
     borderRadius: radius,
   };
 
-  return <div className={cls} style={styles} {...restProps} />;
+  return <div ref={ref} className={cls} style={styles} {...restProps} />;
 });
