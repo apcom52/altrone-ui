@@ -13,7 +13,7 @@ import {
   Textarea,
   TextInput,
 } from 'components';
-import { Drawer } from './Drawer.tsx';
+import { Drawer } from '../Drawer.tsx';
 import { Rocket, GitBranch, Clock, CheckCircle, Loader } from 'lucide-react';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
