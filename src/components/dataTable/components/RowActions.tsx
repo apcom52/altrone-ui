@@ -27,7 +27,7 @@ export const RowActions = memo<DataTableRowActionsProps>(
       if (childrenArray.length < 2) return [[], childrenArray];
 
       const collapsed = childrenArray
-        .filter((child) => child && child?.props.collapsed)
+        .filter((child) => child && child.props && child?.props.collapsed)
         .map((child, childIndex) => {
           if (!child) return null;
 
@@ -44,9 +44,12 @@ export const RowActions = memo<DataTableRowActionsProps>(
               {...restProps}
             />
           );
-        });
+        })
+        .filter(Boolean);
 
-      const visible = childrenArray.filter((child) => !child?.props.collapsed);
+      const visible = childrenArray.filter(
+        (child) => child && !child?.props.collapsed,
+      );
 
       return [collapsed, visible];
     }, [children]);
@@ -71,5 +74,5 @@ export const RowActions = memo<DataTableRowActionsProps>(
         {collapsedActionsDropdown}
       </Flex>
     );
-  }
+  },
 );

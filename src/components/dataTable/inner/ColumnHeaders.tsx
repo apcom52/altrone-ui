@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react';
 import { useDataTableCore } from '../DataTable.context.tsx';
 import s from './columnHeaders.module.scss';
 import clsx from 'clsx';

@@ -17,8 +17,7 @@ export const DataTableWithRowActionsStory: StoryObj<typeof Flex> = {
           data={EMPLOYEES}
           rowsPerPage={20}
           selectable
-          renderRowActions={({ rowIndex, selected, ...rest }) => {
-            console.log('rest', rest, rowIndex, selected);
+          renderRowActions={({ rowIndex, selected }) => {
             return (
               <DataTable.RowActions>
                 <DataTable.RowAction

@@ -94,9 +94,7 @@ function GitBranchMenu() {
         <Button
           icon={<Icon i="account_tree" />}
           label={currentBranch}
-          additionalIcon={
-            <Icon i={opened ? 'expand_less' : 'expand_more'} />
-          }
+          additionalIcon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
         />
       )}
     </Dropdown>
@@ -136,12 +134,13 @@ function AccountMenu() {
             label="Billing"
             badge="PRO"
           />
-          <Dropdown.Action
-            icon={<Icon i="group" />}
-            label="Team settings"
-          />
+          <Dropdown.Action icon={<Icon i="group" />} label="Team settings" />
           <Divider />
-          <Dropdown.RadioList label="Theme" value={theme} onChange={(v) => setTheme(v as Theme)}>
+          <Dropdown.RadioList
+            label="Theme"
+            value={theme}
+            onChange={(v) => setTheme(v as Theme)}
+          >
             <Dropdown.RadioItem value="system" label="System" />
             <Dropdown.RadioItem value="light" label="Light" />
             <Dropdown.RadioItem value="dark" label="Dark" />
@@ -158,11 +157,7 @@ function AccountMenu() {
             label="Compact mode"
           />
           <Divider />
-          <Dropdown.Action
-            danger
-            icon={<Icon i="logout" />}
-            label="Sign out"
-          />
+          <Dropdown.Action danger icon={<Icon i="logout" />} label="Sign out" />
         </Dropdown.Menu>
       }
     >
@@ -179,22 +174,47 @@ function FileContextMenu() {
       placement="bottom-start"
       content={
         <Dropdown.Menu>
-          <Dropdown.Action icon={<Icon i="edit" />} label="Rename" hintText="F2" />
-          <Dropdown.Action icon={<Icon i="content_copy" />} label="Duplicate" hintText="⌘+D" />
-          <Dropdown.Action icon={<Icon i="drive_file_move" />} label="Move to..." />
+          <Dropdown.Action
+            icon={<Icon i="edit" />}
+            label="Rename"
+            hintText="F2"
+          />
+          <Dropdown.Action
+            icon={<Icon i="content_copy" />}
+            label="Duplicate"
+            hintText="⌘+D"
+          />
+          <Dropdown.Action
+            icon={<Icon i="drive_file_move" />}
+            label="Move to..."
+          />
           <Dropdown.ChildMenu icon={<Icon i="ios_share" />} label="Share">
-            <Dropdown.Action icon={<Icon i="link" />} label="Copy link" hintText="⌘+L" />
+            <Dropdown.Action
+              icon={<Icon i="link" />}
+              label="Copy link"
+              hintText="⌘+L"
+            />
             <Dropdown.Action icon={<Icon i="mail" />} label="Send by email" />
-            <Dropdown.Action icon={<Icon i="group_add" />} label="Invite collaborators" />
+            <Dropdown.Action
+              icon={<Icon i="group_add" />}
+              label="Invite collaborators"
+            />
           </Dropdown.ChildMenu>
           <Dropdown.ChildMenu icon={<Icon i="download" />} label="Export as">
             <Dropdown.Action label="PDF" icon={<Icon i="picture_as_pdf" />} />
             <Dropdown.Action label="Markdown" icon={<Icon i="code" />} />
-            <Dropdown.Action label="Plain text" icon={<Icon i="text_snippet" />} />
+            <Dropdown.Action
+              label="Plain text"
+              icon={<Icon i="text_snippet" />}
+            />
           </Dropdown.ChildMenu>
           <Divider />
           <Dropdown.Action icon={<Icon i="star" />} label="Add to favourites" />
-          <Dropdown.Action icon={<Icon i="history" />} label="Version history" badge="12" />
+          <Dropdown.Action
+            icon={<Icon i="history" />}
+            label="Version history"
+            badge="12"
+          />
           <Divider />
           <Dropdown.Action
             danger
@@ -245,7 +265,12 @@ function AsChildDemo() {
             icon={<Icon i="help" />}
             label="Documentation"
           >
-            <a href="https://example.com" target="_blank" rel="noreferrer" onClick={(e) => e.preventDefault()} />
+            <a
+              href="https://example.com"
+              target="_blank"
+              rel="noreferrer"
+              onClick={(e) => e.preventDefault()}
+            />
           </Dropdown.Action>
         </Dropdown.Menu>
       }
@@ -261,7 +286,7 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
   name: 'Using Dropdown',
   render: () => {
     return (
-      <Flex direction="vertical" gap="xl">
+      <Flex direction="vertical" gap="xl" style={{ padding: 200 }}>
         <Flex direction="vertical" gap="m">
           <Text size={5} weight="bold">
             Git branch switcher
@@ -306,7 +331,7 @@ export const DropdownStory: StoryObj<typeof Dropdown> = {
           </Text>
           <Text>
             asChild позволяет рендерить Dropdown.Action как любой элемент — в
-            данном случае как {"<a>"}, сохраняя все стили и поведение.
+            данном случае как {'<a>'}, сохраняя все стили и поведение.
           </Text>
           <Flex direction="horizontal" gap="m">
             <AsChildDemo />

@@ -24,8 +24,6 @@ export const Filtering = () => {
 
   const filters = table.getState().columnFilters;
 
-  console.log('>> filters', filters);
-
   const [internalFilters, setInternalFilters] =
     useState<ColumnFilter[]>(filters);
 
@@ -43,8 +41,6 @@ export const Filtering = () => {
       | undefined;
     const columnType =
       meta?.type || (typeof filterFn === 'string' ? filterFn : undefined);
-
-    console.log('>> filterType', columnType);
 
     if (
       !columnType ||

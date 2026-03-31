@@ -1,5 +1,4 @@
 import { useDataTableCore } from '../DataTable.context.tsx';
-import { useEffect, useRef, useState } from 'react';
 import { Tooltip } from 'components/tooltip';
 import { Pagination } from 'components/pagination';
 import s from './footer.module.scss';
@@ -51,7 +50,6 @@ export const Footer = () => {
                 currentPage={currentPage}
                 totalPages={totalPages - 1}
                 setPage={(page) => {
-                  console.log('>> set page from pagination', page);
                   tableCore.setPageIndex(page - 1);
                 }}
               />

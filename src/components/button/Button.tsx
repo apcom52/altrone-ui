@@ -151,7 +151,11 @@ export const Button = memo((props: ButtonProps) => {
   }
 
   if (!showLabel && tooltipContent) {
-    return <Tooltip content={tooltipContent}>{buttonElement}</Tooltip>;
+    return (
+      <Tooltip content={tooltipContent} ref={ref}>
+        {buttonElement}
+      </Tooltip>
+    );
   }
 
   return buttonElement;

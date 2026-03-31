@@ -114,6 +114,7 @@ export type DataTableMode = 'loading' | 'read' | 'select';
 
 export interface DataTableProps<T extends object>
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
+  ref?: React.Ref<HTMLDivElement>;
   data: T[];
   columns: DataTableColumn<T>[];
   children?:
