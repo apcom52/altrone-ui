@@ -1,4 +1,4 @@
-import { cloneElement, useState } from 'react';
+import { cloneElement, type MouseEvent } from 'react';
 import { DrawerProps } from './Drawer.types';
 import s from './drawer.module.scss';
 import { AnimatePresence, motion } from 'motion/react';
@@ -9,9 +9,12 @@ import { Scrollable } from 'components/scrollable';
 import clsx from 'clsx';
 import { useBoolean } from 'utils';
 import { createPortal } from 'react-dom';
+import { useConfiguration } from 'components/configuration';
+import { useLocalization } from '../application';
 
 export const Drawer = (props: DrawerProps) => {
   const {
+    ref,
     children,
     content,
     footer,
@@ -22,8 +25,11 @@ export const Drawer = (props: DrawerProps) => {
     onDone,
     renderActionButton,
     className,
-    ...rest
+    style,
   } = props;
+
+  const t = useLocalization();
+  const { drawer: drawerConfig = {} } = useConfiguration();
 
   const { value: isOpen, setValue: setIsOpen } = useBoolean(false);
   const {
@@ -47,13 +53,9 @@ export const Drawer = (props: DrawerProps) => {
     }
 
     startLoading();
-    const result = await onDone?.();
+    const result = await onDone();
     stopLoading();
-    if (result === false) {
-      return;
-    }
-
-    if (result) {
+    if (result !== false) {
       handleClose();
     }
   };
@@ -63,71 +65,85 @@ export const Drawer = (props: DrawerProps) => {
     {
       [s.EndSide]: placement === 'end',
     },
-    className
+    className,
+    drawerConfig.className,
   );
 
-  const altroneRoot =
-    document.querySelector('[data-altrone-root="true"]') || document.body;
+  const styles = {
+    ...drawerConfig.style,
+    ...style,
+    width: `${width}px`,
+  };
+
+  // SSR-safe: access document only on the client
+  const portalRoot =
+    typeof window !== 'undefined'
+      ? (document.querySelector<HTMLElement>('[data-altrone-root="true"]') ??
+        document.body)
+      : null;
+
+  const drawer = (
+    <AnimatePresence>
+      {isOpen && (
+        <div className={s.DrawerWrapper}>
+          <motion.div
+            className={s.Backdrop}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={handleClose}
+          />
+          <motion.div
+            ref={ref}
+            className={cls}
+            initial={{ x: initialPosition, scale: 0.8 }}
+            animate={{ x: animatePosition, scale: 1 }}
+            exit={{ x: initialPosition, scale: 0.8 }}
+            style={styles}
+            transition={{
+              type: 'spring',
+              stiffness: 320,
+              damping: 20,
+              mass: 0.75,
+            }}
+          >
+            <div className={s.DrawerBody}>
+              <div className={s.DrawerHeader}>
+                <CloseButton onClick={handleClose} />
+                <div className={s.DrawerTitle}>{title}</div>
+                {renderActionButton ? (
+                  renderActionButton({ closeDrawer: handleClose })
+                ) : onDone ? (
+                  <Button
+                    icon={<Check />}
+                    variant="submit"
+                    label={t('common.done')}
+                    showLabel={false}
+                    onClick={handleDone}
+                    state={isLoading ? 'loading' : 'idle'}
+                  />
+                ) : null}
+              </div>
+              <div className={s.DrawerContent}>
+                <Scrollable className={s.Content}>{content}</Scrollable>
+              </div>
+              {footer && <div className={s.DrawerFooter}>{footer}</div>}
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
 
   return (
     <>
       {cloneElement(children, {
-        onClick: () => setIsOpen(true),
+        onClick: (e: MouseEvent) => {
+          children.props.onClick?.(e);
+          setIsOpen(true);
+        },
       })}
-      {createPortal(
-        <AnimatePresence>
-          {isOpen && (
-            <div className={s.DrawerWrapper}>
-              <motion.div
-                className={s.Backdrop}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={handleClose}
-              />
-              <motion.div
-                className={cls}
-                initial={{ x: initialPosition, scale: 0.8 }}
-                animate={{ x: animatePosition, scale: 1 }}
-                exit={{ x: initialPosition, scale: 0.8 }}
-                style={{
-                  width: `${width}px`,
-                }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 320,
-                  damping: 20,
-                  mass: 0.75,
-                }}
-              >
-                <div className={s.DrawerBody}>
-                  <div className={s.DrawerHeader}>
-                    <CloseButton onClick={handleClose} />
-                    <div className={s.DrawerTitle}>{title}</div>
-                    {renderActionButton ? (
-                      renderActionButton({ closeDrawer: handleClose })
-                    ) : onDone ? (
-                      <Button
-                        icon={<Check />}
-                        variant="submit"
-                        label="Done"
-                        showLabel={false}
-                        onClick={handleDone}
-                        state={isLoading ? 'loading' : 'idle'}
-                      />
-                    ) : null}
-                  </div>
-                  <div className={s.DrawerContent}>
-                    <Scrollable className={s.Content}>{content}</Scrollable>
-                  </div>
-                  {footer && <div className={s.DrawerFooter}>{footer}</div>}
-                </div>
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>,
-        altroneRoot
-      )}
+      {portalRoot ? createPortal(drawer, portalRoot) : null}
     </>
   );
 };

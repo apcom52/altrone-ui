@@ -69,6 +69,7 @@ export interface ConsumerConfigurationContext {
     rangeFormatEmpty?: string;
   }>;
   divider?: ComponentConfiguration;
+  drawer?: ComponentConfiguration;
   dropdown?: ComponentConfiguration<{
     focusFirstElement?: boolean;
     menu?: ComponentConfiguration;

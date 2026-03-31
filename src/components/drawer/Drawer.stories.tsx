@@ -15,6 +15,7 @@ import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Drawer } from './Drawer.tsx';
 import { DATA_GRID_DATA } from 'components/dataGrid/DataGrid.constants.ts';
+import { DeployDrawerStory } from './Drawer.story.Deploy.tsx';
 
 const story: Meta<typeof Drawer> = {
   title: 'Components/Containers/Drawer',
@@ -375,5 +376,7 @@ export const PaginationStory: StoryObj<typeof Drawer> = {
     );
   },
 };
+
+export { DeployDrawerStory };
 
 export default story;
