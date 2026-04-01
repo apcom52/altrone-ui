@@ -1,138 +1,138 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useMemo } from 'react';
 import s from './pagination.module.scss';
 import clsx from 'clsx';
-import { Popover } from '../popover';
-import { Flex } from '../flex';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { NumberInput } from '../numberInput';
-import { Button } from '../button';
+import {
+  ChevronFirst,
+  ChevronLast,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react';
 import { PaginationProps } from './Pagination.types.ts';
 import { useConfiguration } from 'components/configuration';
 import { useLocalization } from '../application';
+import { Button } from 'components/button/index.ts';
+import { Flex } from 'components/flex/Flex.tsx';
+
+type PageItem = number | '...';
+
+function buildPageItems(
+  current: number,
+  total: number,
+  siblings: number,
+): PageItem[] {
+  if (total <= 1) return [1];
+
+  const rangeStart = Math.max(1, current - siblings);
+  const rangeEnd = Math.min(total, current + siblings);
+
+  const items: PageItem[] = [];
+
+  if (rangeStart > 1) {
+    items.push(1);
+    if (rangeStart > 2) items.push('...');
+  }
+
+  for (let i = rangeStart; i <= rangeEnd; i++) {
+    items.push(i);
+  }
+
+  if (rangeEnd < total) {
+    if (rangeEnd < total - 1) items.push('...');
+    items.push(total);
+  }
+
+  return items;
+}
 
 export const Pagination = memo<PaginationProps>(
-  ({ currentPage, totalPages, setPage, className, style, ...restProps }) => {
+  ({
+    ref,
+    currentPage,
+    totalPages,
+    onChange,
+    showEdgeButtons = true,
+    siblings = 1,
+    className,
+    style,
+    ...restProps
+  }) => {
     const { pagination: paginationConfig = {} } = useConfiguration();
     const t = useLocalization();
 
-    const [virtualPage, setVirtualPage] = useState<number | undefined>(
-      currentPage
+    const pageItems = useMemo(
+      () => buildPageItems(currentPage, totalPages, siblings),
+      [currentPage, totalPages, siblings],
     );
-
-    useEffect(() => {
-      setVirtualPage(currentPage);
-    }, [currentPage]);
-
-    useEffect(() => {
-      // Если currentPage или totalPages меняются, нужно проверить валидность currentPage
-      if (
-        typeof currentPage === 'number' &&
-        typeof totalPages === 'number' &&
-        (currentPage < 1 || currentPage > totalPages)
-      ) {
-        setPage(1);
-      }
-    }, [currentPage, totalPages, setPage]);
 
     const cls = clsx(s.Pagination, className, paginationConfig.className);
-
-    const styles = {
-      ...paginationConfig.style,
-      ...style,
-    };
-
-    const onNextPageClick = () => {
-      if (currentPage < totalPages) {
-        setPage(currentPage + 1);
-      }
-    };
-
-    const onPrevPageClick = () => {
-      if (currentPage > 1) {
-        setPage(currentPage - 1);
-      }
-    };
-
-    const navigateToPage = () => {
-      let vp = Number(virtualPage || 1);
-
-      if (vp < 1) {
-        vp = 1;
-      } else if (vp > totalPages) {
-        vp = totalPages;
-      }
-
-      setVirtualPage(vp);
-      setPage(vp);
-    };
+    const styles = { ...paginationConfig.style, ...style };
 
     return (
-      <div
+      <Flex
+        gap="xs"
+        align="center"
+        ref={ref}
         role="navigation"
-        aria-label="Pagination Navigation"
+        aria-label={t('pagination.navigation')}
         className={cls}
-        style={styles}
+        style={{ width: 'fit-content', ...styles }}
         {...restProps}
       >
+        {showEdgeButtons && (
+          <Button
+            icon={<ChevronFirst />}
+            disabled={currentPage <= 1}
+            label={t('pagination.firstPage')}
+            onClick={(e) => onChange(1, e)}
+            showLabel={false}
+          />
+        )}
+
         <Button
-          size="s"
-          onClick={onPrevPageClick}
+          icon={<ChevronLeft />}
           disabled={currentPage <= 1}
-          icon={<ArrowLeft />}
-          label={'Previous page'}
+          label={t('pagination.previous')}
+          onClick={(e) => onChange(currentPage - 1, e)}
           showLabel={false}
         />
-        <Popover
-          title={t('pagination.title')}
-          placement="bottom"
-          showCloseButton
-          overlap
-          content={({ closePopup }) => (
-            <Flex direction="vertical" gap="m" align="center">
-              <NumberInput
-                value={virtualPage}
-                min={1}
-                onChange={setVirtualPage}
-                aria-label={t('pagination.title')}
-              />
-              <Button
-                variant="submit"
-                label={t('pagination.action')}
-                onClick={() => {
-                  navigateToPage();
-                  closePopup();
-                }}
-              />
-            </Flex>
-          )}
-          trigger="click"
-        >
-          {({ opened }) => (
-            <button
-              type="button"
-              disabled={totalPages <= 1}
-              className={clsx(s.CurrentPage, {
-                [s.Opened]: opened,
-              })}
-            >
-              {t('pagination.progress', {
-                vars: {
-                  current: currentPage,
-                  total: totalPages,
-                },
-              })}
-            </button>
-          )}
-        </Popover>
+
+        {pageItems.map((item, index) =>
+          item === '...' ? (
+            <span key={`ellipsis-${index}`} className={s.Ellipsis} aria-hidden>
+              …
+            </span>
+          ) : (
+            <Button
+              key={item}
+              label={String(item)}
+              variant="text"
+              selected={item === currentPage}
+              disabled={item === currentPage}
+              onClick={(e) => onChange(item, e)}
+              aria-label={t('pagination.page', { vars: { page: item } })}
+              aria-current={item === currentPage ? 'page' : undefined}
+            />
+          ),
+        )}
+
         <Button
-          size="s"
-          onClick={onNextPageClick}
+          icon={<ChevronRight />}
           disabled={currentPage >= totalPages}
-          icon={<ArrowRight />}
-          label={'Next page'}
+          label={t('pagination.next')}
+          onClick={(e) => onChange(currentPage + 1, e)}
           showLabel={false}
         />
-      </div>
+
+        {showEdgeButtons && (
+          <Button
+            icon={<ChevronLast />}
+            disabled={currentPage >= totalPages}
+            label={t('pagination.lastPage')}
+            onClick={(e) => onChange(totalPages, e)}
+            showLabel={false}
+          />
+        )}
+      </Flex>
     );
-  }
+  },
 );

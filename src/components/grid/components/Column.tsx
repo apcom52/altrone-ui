@@ -6,6 +6,7 @@ import { useConfiguration } from 'components';
 
 export const Column = memo<GridColumnProps>((props) => {
   const {
+    ref,
     size = 'auto',
     offset = 0,
     className,
@@ -34,7 +35,7 @@ export const Column = memo<GridColumnProps>((props) => {
   };
 
   return (
-    <div className={cls} style={styles} {...restProps}>
+    <div ref={ref} className={cls} style={styles} {...restProps}>
       {children}
     </div>
   );

@@ -4,7 +4,7 @@ import { useConfiguration } from '../configuration/AltroneConfiguration.context.
 import clsx from 'clsx';
 import s from './textarea.module.scss';
 import inputStyles from '../textInput/textInput.module.scss';
-import { useFormField } from '../form/components/Field.tsx';
+import { useFormField } from '../form/components/Field.context.ts';
 
 export const Textarea = ({
   ref,

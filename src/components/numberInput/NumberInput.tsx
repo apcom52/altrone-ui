@@ -13,7 +13,7 @@ import {
 import s from './numberInput.module.scss';
 import inputStyles from '../textInput/textInput.module.scss';
 import { DOMUtils } from 'utils';
-import { useFormField } from '../form/components/Field.tsx';
+import { useFormField } from '../form/components/Field.context.ts';
 
 export const NumberInput = ({
   ref,

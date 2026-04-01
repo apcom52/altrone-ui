@@ -39,11 +39,12 @@ export const sp: Localization = {
     placeholder: 'Buscar',
   },
   pagination: {
-    progress: '{{current}} de {{total}}',
-    title: 'Ir a la página',
-    action: 'Navegar',
+    navigation: 'Paginación',
     previous: 'Página anterior',
     next: 'Página siguiente',
+    firstPage: 'Primera página',
+    lastPage: 'Última página',
+    page: 'Página {{page}}',
   },
   dataTable: {
     filters: 'Filtros',

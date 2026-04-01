@@ -1,13 +1,14 @@
 .Grid {
-  --columns: 12;
-  --column-spacing: var(--gap);
-  --row-spacing: var(--gap);
+  --column-spacing: 0px;
+  --row-spacing: 0px;
 
   display: flex;
   flex-wrap: wrap;
+  column-gap: var(--column-spacing);
+  row-gap: var(--row-spacing);
   width: 100%;
 }
 
-.Wrap {
-  flex-wrap: wrap;
+.NoWrap {
+  flex-wrap: nowrap;
 }

@@ -1,47 +1,21 @@
-@import 'src/global/mixins';
-
 :global([data-altrone-root='true']) {
-  --pagination-background-color: var(--interactive-1);
-  --pagination-text-color: var(--text-2);
-  --pagination-hover-text-color: var(--accent-12);
-  --pagination-rounding: 16px;
-  --pagination-size: 32px;
-  --pagination-gap: 4px;
+  --pagination-background: transparent;
+  --pagination-rounding: var(--radius-m);
 }
 
 .Pagination {
+  padding: 4px;
+  background: var(--pagination-background);
+  border-radius: calc(var(--pagination-rounding) + 4px);
+  user-select: none;
+}
+
+.Ellipsis {
   display: flex;
   align-items: center;
-  width: fit-content;
-  padding: 4px;
-  background: var(--pagination-background-color);
-  height: var(--pagination-size);
-  border-radius: var(--pagination-rounding);
-
-  @include no-selection;
-}
-
-.CurrentPage {
-  min-width: 64px;
-  color: var(--pagination-text-color);
-  transition: background-color 0.2s ease;
-
-  background: transparent;
-  border: none;
-  cursor: pointer;
-
-  font-weight: 500;
-  font-size: 14px;
-  padding: 0 12px;
-
-  transition: color 0.2s ease;
-
-  &:hover,
-  &:focus-visible {
-    color: var(--pagination-hover-text-color);
-  }
-}
-
-.Disabled {
-  color: var(--disabled-text-color);
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: var(--text-2);
+  font-size: var(--text-size-4);
 }

@@ -45,11 +45,12 @@ export interface Localization {
     placeholder: string;
   };
   pagination: {
-    progress: string;
-    title: string;
-    action: string;
+    navigation: string;
     previous: string;
     next: string;
+    firstPage: string;
+    lastPage: string;
+    page: string;
   };
   dataTable: {
     filters: string;

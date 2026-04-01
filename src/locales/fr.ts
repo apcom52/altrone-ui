@@ -38,11 +38,12 @@ export const fr: Localization = {
     placeholder: 'Rechercher',
   },
   pagination: {
-    progress: '{{current}} sur {{total}}',
-    title: 'Aller à la page',
-    action: 'Aller',
+    navigation: 'Pagination',
     previous: 'Page précédente',
     next: 'Page suivante',
+    firstPage: 'Première page',
+    lastPage: 'Dernière page',
+    page: 'Page {{page}}',
   },
   dataTable: {
     filters: 'Filtres',

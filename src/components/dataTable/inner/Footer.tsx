@@ -49,7 +49,7 @@ export const Footer = () => {
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages - 1}
-                setPage={(page) => {
+                onChange={(page) => {
                   tableCore.setPageIndex(page - 1);
                 }}
               />

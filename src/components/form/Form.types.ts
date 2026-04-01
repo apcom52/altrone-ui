@@ -3,6 +3,7 @@ import { Size } from 'types';
 
 export interface FormProps<FormState extends AnyObject>
   extends Omit<React.FormHTMLAttributes<HTMLFormElement>, 'size'> {
+  ref?: React.Ref<HTMLFormElement>;
   errorMessages?: Record<keyof FormState | string, string | undefined | null>;
   size?: Size;
   disabled?: boolean;
@@ -10,6 +11,7 @@ export interface FormProps<FormState extends AnyObject>
 
 export interface FormFieldProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'size'> {
+  ref?: React.Ref<HTMLDivElement>;
   name?: string;
   label?: string;
   required?: boolean;
@@ -22,7 +24,7 @@ export interface FormFieldProps
 export interface FormContextType {
   size?: Size;
   disabled?: boolean;
-  errorMessages?: Record<string, string | undefined | boolean | null>;
+  errorMessages?: Record<string, string | undefined | null>;
 }
 
 export interface FormFieldContextType {

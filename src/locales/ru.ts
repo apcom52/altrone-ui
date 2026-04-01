@@ -38,11 +38,12 @@ export const ru: Localization = {
     placeholder: 'Поиск',
   },
   pagination: {
-    progress: '{{current}} из {{total}}',
-    title: 'Перейти на страницу',
-    action: 'Перейти',
+    navigation: 'Пагинация',
     previous: 'Предыдущая страница',
     next: 'Следующая страница',
+    firstPage: 'Первая страница',
+    lastPage: 'Последняя страница',
+    page: 'Страница {{page}}',
   },
   dataTable: {
     filters: 'Фильтры',

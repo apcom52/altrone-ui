@@ -1,21 +1,16 @@
-import { createContext, memo, useContext, useMemo } from 'react';
-import type { FormFieldContextType, FormFieldProps } from '../Form.types.ts';
+import { memo, useMemo } from 'react';
+import type { FormFieldProps } from '../Form.types.ts';
 import s from './field.module.scss';
 import { Tooltip } from 'components/tooltip';
+import { HelpCircle } from 'lucide-react';
 import clsx from 'clsx';
 import { useFormContext } from '../Form.context.ts';
 import { useConfiguration } from '../../configuration';
-
-const FormFieldContext = createContext<FormFieldContextType>({
-  name: '',
-  disabled: false,
-  invalid: false,
-  size: 'm',
-});
-export const useFormField = () => useContext(FormFieldContext);
+import { FormFieldContext } from './Field.context.ts';
 
 export const Field = memo<FormFieldProps>(
   ({
+    ref,
     children,
     label,
     required,
@@ -37,7 +32,11 @@ export const Field = memo<FormFieldProps>(
     const invalidField = Boolean(errorMessageContent);
 
     const hintElement = hintText?.trim() ? (
-      <Tooltip childrenClassName={s.HintIcon} content={hintText} />
+      <Tooltip content={hintText}>
+        <button type="button" className={s.HintIcon} aria-label={hintText}>
+          <HelpCircle size={12} />
+        </button>
+      </Tooltip>
     ) : null;
 
     const cls = clsx(
@@ -55,7 +54,7 @@ export const Field = memo<FormFieldProps>(
       ...style,
     };
 
-    const fieldContext = useMemo<FormFieldContextType>(() => {
+    const fieldContext = useMemo(() => {
       return {
         name,
         disabled:
@@ -69,7 +68,7 @@ export const Field = memo<FormFieldProps>(
 
     return (
       <FormFieldContext.Provider value={fieldContext}>
-        <div className={cls} style={styles} {...restProps}>
+        <div ref={ref} className={cls} style={styles} {...restProps}>
           <div className={s.Label}>
             {label}
             {required ? <div className={s.Asterisk}>*</div> : null}

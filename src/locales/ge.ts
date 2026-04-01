@@ -39,11 +39,12 @@ export const ge: Localization = {
     placeholder: 'Suchen',
   },
   pagination: {
-    progress: '{{current}} von {{total}}',
-    title: 'Zur Seite navigieren',
-    action: 'Navigieren',
+    navigation: 'Seitennavigation',
     previous: 'Vorherige Seite',
     next: 'Nächste Seite',
+    firstPage: 'Erste Seite',
+    lastPage: 'Letzte Seite',
+    page: 'Seite {{page}}',
   },
   dataTable: {
     filters: 'Filter',

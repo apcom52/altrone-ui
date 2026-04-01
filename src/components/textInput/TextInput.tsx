@@ -19,7 +19,7 @@ import {
   TextIsland,
 } from './components';
 import { useConfiguration } from 'components/configuration';
-import { useFormField } from '../form/components/Field.tsx';
+import { useFormField } from '../form/components/Field.context.ts';
 import { AltChildren } from 'utils';
 import {
   TextInputSizeContext,

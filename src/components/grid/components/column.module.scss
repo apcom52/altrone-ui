@@ -4,7 +4,8 @@
 
   min-width: 0;
   flex: 0 0 auto;
-  width: calc(var(--column-size) / 12 * 100%);
+  // Account for 11 gaps in a 12-column row when calculating each column's width
+  width: calc(var(--column-size) * (100% - 11 * var(--column-spacing, 0px)) / 12);
 }
 
 .AutoSize {
@@ -13,5 +14,6 @@
 }
 
 .Offset {
-  margin-left: calc(var(--column-offset) / 12 * 100%);
+  // Each offset unit equals one column width at the current gap setting
+  margin-left: calc(var(--column-offset) * (100% - 11 * var(--column-spacing, 0px)) / 12);
 }
