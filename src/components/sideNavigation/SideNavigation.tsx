@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { useConfiguration } from 'components/configuration';
 
 const SideNavigationComponent = memo<SideNavigationProps>(
-  ({ title, children, className, style, ...restProps }) => {
+  ({ title, children, className, style, ref, ...restProps }) => {
     const { sideNavigation: sideNavigationConfig = {} } = useConfiguration();
 
     const cls = clsx(
@@ -24,7 +24,7 @@ const SideNavigationComponent = memo<SideNavigationProps>(
     };
 
     return (
-      <nav className={cls} style={styles} {...restProps}>
+      <nav className={cls} style={styles} ref={ref} {...restProps}>
         {title ? <div className={titleCls}>{title}</div> : null}
         <ul className={s.Menu}>
           <ScrollSpy>{children}</ScrollSpy>

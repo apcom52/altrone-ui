@@ -254,3 +254,8 @@ always in English
 ## communication language
 
 Always respond to the user in Russian. Code comments in English only.
+
+## Rules
+
+- For those components where it makes sense, you need to add the `asChild` property to support a custom renderer
+- For those components where it makes sense, you need to add the `size` property (mini, s, m, l, xl)

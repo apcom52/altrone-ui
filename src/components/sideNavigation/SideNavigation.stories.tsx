@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Text } from 'components';
+import { Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
+import { allModes } from '../../../.storybook/modes.ts';
 import { SideNavigation } from './SideNavigation.tsx';
 
 const story: Meta<typeof SideNavigation> = {
@@ -9,218 +10,351 @@ const story: Meta<typeof SideNavigation> = {
   decorators: [StorybookDecorator],
   args: {},
   argTypes: {},
+  parameters: {
+    chromatic: {
+      modes: {
+        light: allModes['light desktop'],
+        dark: allModes['dark desktop'],
+      },
+    },
+  },
 };
 
-export const TooltipStory: StoryObj<typeof SideNavigation> = {
-  name: 'Using TopNavigation',
-  render: () => {
-    return (
-      <Flex direction="vertical" gap="l">
-        <Text size={5} weight="bold" block>
-          Standard TopNavigation
+export const SideNavigationStory: StoryObj<typeof SideNavigation> = {
+  name: 'Using SideNavigation',
+  render: () => (
+    <>
+      {/* Fixed sidebar */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          right: 0,
+          width: '260px',
+          height: '100vh',
+          borderLeft: '1px solid var(--border-1)',
+          background: 'var(--background-2)',
+          overflowY: 'auto',
+          padding: '24px 0',
+          zIndex: 10,
+        }}
+      >
+        <SideNavigation title="On this page">
+          <SideNavigation.Item href="#overview" label="Overview" />
+          <SideNavigation.Item href="#principles" label="Core Principles">
+            <SideNavigation.Item href="#consistency" label="Consistency" />
+            <SideNavigation.Item href="#reusability" label="Reusability" />
+            <SideNavigation.Item href="#accessibility" label="Accessibility" />
+          </SideNavigation.Item>
+          <SideNavigation.Item href="#tokens" label="Design Tokens">
+            <SideNavigation.Item href="#colors" label="Colors" />
+            <SideNavigation.Item href="#typography" label="Typography" />
+            <SideNavigation.Item href="#spacing" label="Spacing" />
+          </SideNavigation.Item>
+          <SideNavigation.Item href="#components" label="Components">
+            <SideNavigation.Item href="#atoms" label="Atoms" />
+            <SideNavigation.Item href="#molecules" label="Molecules" />
+            <SideNavigation.Item href="#organisms" label="Organisms" />
+          </SideNavigation.Item>
+          <SideNavigation.Item href="#theming" label="Theming" />
+          <SideNavigation.Item href="#governance" label="Governance" />
+          <SideNavigation.Item href="#references" label="References" />
+        </SideNavigation>
+      </div>
+
+      {/* Scrollable article */}
+      <div style={{ maxWidth: '680px', paddingRight: '300px' }}>
+        <Text size={8} weight="bold" block>
+          Design Systems: A Practical Guide
         </Text>
-        <Flex direction="horizontal">
-          <div style={{ width: '600px' }}>
-            <Text size={7} weight="bold" block>
-              The Evolution of Artificial Intelligence: Past, Present, and
-              Future
-            </Text>
-            <Text size={6} weight="bold" block id="introduction">
-              Introduction
-            </Text>
-            <Text block>
-              Artificial Intelligence (AI) has been a topic of fascination and
-              speculation for decades. From its inception in theoretical
-              frameworks to its current applications in various industries, AI
-              has transformed significantly. This article explores the evolution
-              of AI, its current state, and future prospects, highlighting key
-              milestones and technological advancements.
-            </Text>
-            <Text size={6} weight="bold" block id="genesis">
-              The Genesis of Artificial Intelligence
-            </Text>
-            <Text size={5} weight="bold" block id="concepts">
-              Early Concepts and Theories
-            </Text>
-            <Text block>
-              The concept of AI dates back to ancient history, where myths and
-              stories about artificial beings endowed with intelligence were
-              common. However, the formal study of AI began in the 20th century.
-            </Text>
-            <Text size={5} weight="bold" block>
-              Alan Turing and the Turing Test
-            </Text>
-            <Text block>
-              Alan Turing, often considered the father of computer science,
-              proposed the idea of a machine that could simulate any human
-              intelligence. The Turing Test, introduced in 1950, became a
-              fundamental criterion for determining a machine's ability to
-              exhibit intelligent behavior equivalent to that of a human.
-            </Text>
-            <Text size={5} weight="bold" block>
-              The Dartmouth Conference of 1956
-            </Text>
-            <Text block>
-              This conference marked the official birth of AI as a field of
-              study. Researchers such as John McCarthy, Marvin Minsky, Nathaniel
-              Rochester, and Claude Shannon outlined a research agenda that
-              shaped AI's initial decades.
-            </Text>
-            <Text size={5} weight="bold" block id="ai_programs">
-              Early AI Programs and Achievements
-            </Text>
-            <Text size={5} weight="bold" block>
-              Logic Theorist and General Problem Solver
-            </Text>
-            <Text block>
-              The Logic Theorist, developed by Allen Newell and Herbert A. Simon
-              in 1956, was one of the first AI programs capable of proving
-              mathematical theorems. The General Problem Solver (GPS), created
-              by the same team, aimed to solve a wide range of problems using a
-              general approach, laying the groundwork for future AI systems.
-            </Text>
-            <Text size={5} weight="bold" block>
-              ELIZA and Early Natural Language Processing
-            </Text>
-            <Text block>
-              Joseph Weizenbaum's ELIZA, created in the mid-1960s, simulated
-              conversation with a human using simple pattern matching and
-              substitution methodology. ELIZA demonstrated the potential for
-              machines to engage in human-like interactions, sparking interest
-              in natural language processing (NLP).
-            </Text>
-            <Text size={6} weight="bold" block id="evolution">
-              The Evolution and Expansion of AI
-            </Text>
-            <Text size={5} weight="bold" block id="rise">
-              The Rise of Machine Learning
-            </Text>
-            <Text size={5} weight="bold" block>
-              From Rule-Based Systems to Learning Algorithms
-            </Text>
-            <Text block>
-              Early AI systems relied heavily on predefined rules and logic,
-              which limited their flexibility and scalability. The shift towards
-              machine learning in the 1980s and 1990s introduced algorithms
-              capable of learning from data, significantly enhancing AI's
-              capabilities.
-            </Text>
-            <Text size={5} weight="bold" block>
-              Neural Networks and Deep Learning
-            </Text>
-            <Text block>
-              The revival of neural networks in the late 1980s, particularly
-              with the backpropagation algorithm, marked a significant
-              advancement in AI. The advent of deep learning in the 2010s,
-              driven by increased computational power and large datasets,
-              enabled breakthroughs in image and speech recognition.
-            </Text>
-            <Text size={5} weight="bold" block id="ai_in_21">
-              AI in the 21st Century
-            </Text>
-            <Text size={5} weight="bold" block>
-              AI in Everyday Applications
-            </Text>
-            <Text block>
-              AI technologies have become integral to everyday life, powering
-              virtual assistants like Siri and Alexa, recommendation systems on
-              platforms like Netflix and Amazon, and autonomous vehicles.
-              Machine learning models are used in healthcare for diagnosing
-              diseases, in finance for detecting fraud, and in marketing for
-              personalized advertising.
-            </Text>
-            <Text size={5} weight="bold" block>
-              Ethical and Societal Implications
-            </Text>
-            <Text block>
-              The widespread adoption of AI raises important ethical and
-              societal questions, including concerns about privacy, bias, and
-              job displacement. Initiatives like the development of ethical AI
-              frameworks and regulations aim to address these challenges and
-              ensure the responsible use of AI technologies.
-            </Text>
-            <Text size={6} weight="bold" block id="conclusion">
-              Conclusion
-            </Text>
-            <Text block>
-              Artificial Intelligence has come a long way since its early days,
-              evolving from theoretical concepts to practical applications that
-              permeate various aspects of life. As AI continues to advance, it
-              promises to bring about transformative changes across industries
-              while also posing significant ethical and societal challenges. By
-              fostering responsible development and addressing these challenges,
-              we can harness the full potential of AI to benefit humanity.
-            </Text>
-            <Text size={6} weight="bold" block id="references">
-              References
-            </Text>
-            <Text list="numeric">
-              <Text item>
-                Russell, S., & Norvig, P. (2020). Artificial Intelligence: A
-                Modern Approach (4th ed.). Pearson.
-              </Text>
-              <Text item>
-                Mitchell, T. M. (1997). Machine Learning. McGraw-Hill.
-              </Text>
-              <Text item>
-                Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep
-                Learning. MIT Press.
-              </Text>
-              <Text item>OpenAI. (2020). GPT-3 Technical Report.</Text>
-            </Text>
-          </div>
-          <div
-            style={{
-              background: 'var(--dataTableHoveredRowBackgroundColor)',
-              position: 'fixed',
-              width: '300px',
-              flex: 1,
-              right: 0,
-              top: 0,
-              height: '100%',
-            }}
-          >
-            <SideNavigation title="Contents">
-              <SideNavigation.Item
-                href="#introduction"
-                label="Introduction"
-                data-testid="link1"
-              />
-              <SideNavigation.Item
-                href="#genesis"
-                label="The Genesis of Artificial Intelligence"
-                data-testid="link2"
-              >
-                <SideNavigation.Item
-                  href="#concepts"
-                  label="Early Concepts and Theories"
-                />
-                <SideNavigation.Item
-                  href="#ai_programs"
-                  label="Early AI Programs and Achievements"
-                />
-              </SideNavigation.Item>
-              <SideNavigation.Item
-                href="#evolution"
-                label="The Evolution and Expansion of AI"
-              >
-                <SideNavigation.Item
-                  href="#rise"
-                  label="The Rise of Machine Learning"
-                />
-                <SideNavigation.Item
-                  href="#ai_in_21"
-                  label="AI in the 21st Century"
-                />
-              </SideNavigation.Item>
-              <SideNavigation.Item href="#conclusion" label="Conclusion" />
-              <SideNavigation.Item href="#references" label="References" />
-            </SideNavigation>
-          </div>
-        </Flex>
-      </Flex>
-    );
-  },
+        <Text block color="muted">
+          A comprehensive reference for teams building and maintaining
+          component libraries and design systems at scale.
+        </Text>
+
+        {/* Overview */}
+        <Text size={6} weight="bold" block id="overview" style={{ marginTop: '40px' }}>
+          Overview
+        </Text>
+        <Text block>
+          A design system is a collection of reusable components, guided by
+          clear standards, that can be assembled to build any number of
+          applications. It is the single source of truth that bridges design
+          and engineering, ensuring that products feel consistent, accessible,
+          and maintainable regardless of which team built them.
+        </Text>
+        <Text block>
+          Unlike a simple UI kit or component library, a mature design system
+          includes design tokens, interaction guidelines, accessibility
+          standards, documentation, contribution workflows, and tooling. It
+          is a product in its own right — one that other teams use to build
+          their products.
+        </Text>
+        <Text block>
+          Adopting a design system typically reduces design decision fatigue,
+          speeds up development cycles, and produces more cohesive user
+          experiences. The upfront investment in infrastructure pays compounding
+          dividends as more teams onboard and contribute.
+        </Text>
+
+        {/* Core Principles */}
+        <Text size={6} weight="bold" block id="principles" style={{ marginTop: '40px' }}>
+          Core Principles
+        </Text>
+        <Text block>
+          Every successful design system is built on a small set of principles
+          that guide every decision — from token naming conventions to
+          component API design. Without explicit principles, teams default to
+          local optimizations that fragment the system over time.
+        </Text>
+
+        <Text size={5} weight="bold" block id="consistency" style={{ marginTop: '24px' }}>
+          Consistency
+        </Text>
+        <Text block>
+          Users build mental models. When similar actions look and behave the
+          same way across the product, users can transfer knowledge from one
+          context to another without relearning. Consistency is not uniformity
+          — it is predictability. A button in a modal and a button in a table
+          toolbar should feel like siblings, not strangers.
+        </Text>
+        <Text block>
+          Consistency must be enforced at multiple levels: visual (spacing,
+          color, type), behavioral (hover, focus, active states), and semantic
+          (names, roles, patterns). Linting rules and automated visual
+          regression tests help maintain consistency as the system grows.
+        </Text>
+
+        <Text size={5} weight="bold" block id="reusability" style={{ marginTop: '24px' }}>
+          Reusability
+        </Text>
+        <Text block>
+          A component that solves only one problem is a feature, not a system
+          component. Reusability requires intentional abstraction: identifying
+          what varies between use cases and turning those variations into props,
+          slots, or configuration.
+        </Text>
+        <Text block>
+          The right level of abstraction is the hardest design decision. Too
+          specific, and teams build duplicates. Too generic, and the component
+          becomes impossible to understand or use correctly. The guiding
+          question is: what is the minimum surface area that covers the maximum
+          number of real use cases?
+        </Text>
+
+        <Text size={5} weight="bold" block id="accessibility" style={{ marginTop: '24px' }}>
+          Accessibility
+        </Text>
+        <Text block>
+          Accessibility is not a checklist — it is a practice. Building
+          accessible components from the start costs far less than retrofitting
+          them later. Components in a design system must handle keyboard
+          navigation, expose correct ARIA roles and states, maintain adequate
+          color contrast, and support screen readers out of the box.
+        </Text>
+        <Text block>
+          Key requirements for accessible components:
+        </Text>
+        <Text list="marked">
+          <Text item>All interactive elements are keyboard-focusable and have visible focus indicators</Text>
+          <Text item>Color is never the sole means of conveying information</Text>
+          <Text item>Text contrast meets WCAG 2.1 AA (4.5:1 for normal text, 3:1 for large text)</Text>
+          <Text item>Dynamic content changes are announced via <Text code>aria-live</Text> regions</Text>
+          <Text item>Icons used as controls have accessible labels via <Text code>aria-label</Text></Text>
+          <Text item>Form inputs are associated with labels via <Text code>htmlFor</Text> or <Text code>aria-labelledby</Text></Text>
+        </Text>
+
+        {/* Design Tokens */}
+        <Text size={6} weight="bold" block id="tokens" style={{ marginTop: '40px' }}>
+          Design Tokens
+        </Text>
+        <Text block>
+          Design tokens are named variables that store visual design decisions.
+          They replace hard-coded values in component styles, decoupling the
+          visual language from the implementation. When a token changes, every
+          component that references it updates automatically.
+        </Text>
+        <Text block>
+          Tokens are typically organized into three tiers:
+        </Text>
+        <Text list="numeric">
+          <Text item><Text weight="bold">Primitive tokens</Text> — raw values: <Text code>--blue-9: #0090ff</Text>, <Text code>--size-4: 16px</Text></Text>
+          <Text item><Text weight="bold">Semantic tokens</Text> — purpose-named aliases: <Text code>--accent: var(--blue-9)</Text>, <Text code>--gap: var(--size-4)</Text></Text>
+          <Text item><Text weight="bold">Component tokens</Text> — scoped to a component: <Text code>--button-background: var(--accent)</Text></Text>
+        </Text>
+
+        <Text size={5} weight="bold" block id="colors" style={{ marginTop: '24px' }}>
+          Colors
+        </Text>
+        <Text block>
+          A well-structured color system defines a palette of hues, each in
+          twelve or more lightness steps. Semantic color roles — background,
+          border, text, interactive, solid — map hue steps to usage contexts.
+          This ensures that when the theme changes, components adapt correctly
+          without case-by-case overrides.
+        </Text>
+        <Text block>
+          Dark mode is not simply an inversion of light mode. Text and
+          background values flip, but surface elevations, shadow directions,
+          and color saturations often need independent tuning. Designing both
+          themes in parallel from the beginning prevents expensive rework.
+        </Text>
+
+        <Text size={5} weight="bold" block id="typography" style={{ marginTop: '24px' }}>
+          Typography
+        </Text>
+        <Text block>
+          A type scale defines a limited set of font sizes, weights, and line
+          heights. Each step is semantically named — heading, subheader,
+          paragraph, label, caption — so that components reference roles, not
+          raw pixel values. Changing the scale updates every component at once.
+        </Text>
+        <Text block>
+          Variable fonts allow a single font file to cover the full weight and
+          optical size range, reducing network payload significantly. For
+          code blocks, a monospace variable font improves the reading experience
+          for technical documentation.
+        </Text>
+
+        <Text size={5} weight="bold" block id="spacing" style={{ marginTop: '24px' }}>
+          Spacing
+        </Text>
+        <Text block>
+          A spacing scale based on multiples of a base unit (typically 4px or
+          8px) makes layout decisions mechanical. When every gap, padding, and
+          margin is a token from the scale, layouts feel intentional and
+          components compose naturally without visual collisions.
+        </Text>
+
+        {/* Components */}
+        <Text size={6} weight="bold" block id="components" style={{ marginTop: '40px' }}>
+          Components
+        </Text>
+        <Text block>
+          Component architecture follows atomic design principles, organizing
+          elements by complexity. Each level has a clear contract: what it
+          accepts as input, what it renders, and what it communicates to its
+          parent.
+        </Text>
+
+        <Text size={5} weight="bold" block id="atoms" style={{ marginTop: '24px' }}>
+          Atoms
+        </Text>
+        <Text block>
+          Atoms are the smallest indivisible building blocks: <Text code>Button</Text>,{' '}
+          <Text code>TextInput</Text>, <Text code>Icon</Text>, <Text code>Badge</Text>,{' '}
+          <Text code>Divider</Text>. They carry no business logic, expose a
+          minimal and predictable prop API, and always forward refs to their
+          root DOM element for composition with overlays, tooltips, and
+          drag-and-drop libraries.
+        </Text>
+        <Text block>
+          Every atom must:
+        </Text>
+        <Text list="marked">
+          <Text item>Accept and forward a <Text code>ref</Text> to the root DOM element</Text>
+          <Text item>Spread <Text code>...restProps</Text> onto the root element</Text>
+          <Text item>Accept <Text code>className</Text> and <Text code>style</Text> for external overrides</Text>
+          <Text item>Support a <Text code>disabled</Text> state where applicable</Text>
+          <Text item>Read global config via <Text code>useConfiguration()</Text></Text>
+        </Text>
+
+        <Text size={5} weight="bold" block id="molecules" style={{ marginTop: '24px' }}>
+          Molecules
+        </Text>
+        <Text block>
+          Molecules combine atoms into focused, single-purpose components:{' '}
+          <Text code>SearchInput</Text> (TextInput + Icon + Button),{' '}
+          <Text code>FormRow</Text> (Label + Input + ErrorText), or{' '}
+          <Text code>Notification</Text> (Icon + Text + CloseButton). They
+          coordinate the behavior of their children but still carry no domain
+          logic.
+        </Text>
+        <Text block>
+          The molecule boundary is crossed when two or more atoms must
+          communicate state: the clear button in a search input must know
+          whether the input has a value. That relationship belongs to the
+          molecule, not to the atoms themselves.
+        </Text>
+
+        <Text size={5} weight="bold" block id="organisms" style={{ marginTop: '24px' }}>
+          Organisms
+        </Text>
+        <Text block>
+          Organisms are self-contained sections of the interface assembled from
+          molecules and atoms:{' '}
+          <Text code>DataTable</Text>, <Text code>NavigationBar</Text>,{' '}
+          <Text code>DatePicker</Text>, <Text code>CommandPalette</Text>. They
+          may manage their own state, handle async data, and communicate with
+          external stores. Organisms are the natural boundary for feature-level
+          testing.
+        </Text>
+
+        {/* Theming */}
+        <Text size={6} weight="bold" block id="theming" style={{ marginTop: '40px' }}>
+          Theming
+        </Text>
+        <Text block>
+          Theming enables the visual language to change without touching component
+          logic. CSS custom properties (CSS variables) are the standard mechanism:
+          they cascade, are overridable at any scope, and work natively in the
+          browser without a build step or runtime cost.
+        </Text>
+        <Text block>
+          The recommended pattern: define all theme values on a root selector
+          (<Text code>[data-theme="light"]</Text>), then override them for
+          alternate themes. Components reference only semantic tokens, never
+          raw values, so they automatically adapt.
+        </Text>
+        <Text block>
+          Runtime theme switching is straightforward — toggle a data attribute
+          on the <Text code>{'<html>'}</Text> element. No component re-renders
+          are needed; the browser recomputes all custom property references
+          instantly.
+        </Text>
+
+        {/* Governance */}
+        <Text size={6} weight="bold" block id="governance" style={{ marginTop: '40px' }}>
+          Governance
+        </Text>
+        <Text block>
+          A design system without governance decays. Components diverge, tokens
+          proliferate, documentation drifts. Governance is the set of processes
+          that keep the system healthy: contribution guidelines, review workflows,
+          versioning policy, and a communication channel for consumers.
+        </Text>
+        <Text block>
+          Effective governance models follow inner-source principles:
+        </Text>
+        <Text list="numeric">
+          <Text item><Text weight="bold">Open contribution</Text> — any team can propose additions via a pull request with a defined template</Text>
+          <Text item><Text weight="bold">Core review</Text> — a small group owns API quality, accessibility review, and documentation standards</Text>
+          <Text item><Text weight="bold">Semantic versioning</Text> — breaking changes bump major, new APIs bump minor, fixes bump patch</Text>
+          <Text item><Text weight="bold">Changelogs</Text> — every release documents what changed, why, and how to migrate</Text>
+          <Text item><Text weight="bold">Deprecation policy</Text> — APIs are deprecated with a warning for at least one major version before removal</Text>
+        </Text>
+        <Text block>
+          Regular office hours, a dedicated Slack channel, and monthly
+          changelog summaries keep consumers engaged and reduce friction when
+          breaking changes are necessary.
+        </Text>
+
+        {/* References */}
+        <Text size={6} weight="bold" block id="references" style={{ marginTop: '40px' }}>
+          References
+        </Text>
+        <Text list="numeric">
+          <Text item>Brad Frost — <Text italic>Atomic Design</Text> (2016)</Text>
+          <Text item>Nathan Curtis — <Text italic>Modular Web Design</Text> (2009)</Text>
+          <Text item>Alla Kholmatova — <Text italic>Design Systems</Text>, Smashing Magazine (2017)</Text>
+          <Text item>W3C Web Accessibility Initiative — WCAG 2.1 Guidelines</Text>
+          <Text item>Google Material Design — Material Design System documentation</Text>
+        </Text>
+
+        <div style={{ height: '80px' }} />
+      </div>
+    </>
+  ),
 };
 
 export default story;

@@ -1,6 +1,9 @@
+import React from 'react';
+
 export interface SideNavigationProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends React.HTMLAttributes<HTMLElement> {
   title?: string;
+  ref?: React.Ref<HTMLElement>;
 }
 
 export interface SideNavigationItemProps

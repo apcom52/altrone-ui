@@ -1,5 +1,5 @@
 import { Size } from '../../types';
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 
 export type ProgressContext = {
   value: number;
@@ -16,5 +16,6 @@ export interface ProgressProps
   children?:
     | string
     | ReactElement
-    | ((context: ProgressContext) => JSX.Element);
+    | ((context: ProgressContext) => ReactElement);
+  ref?: React.Ref<HTMLDivElement>;
 }

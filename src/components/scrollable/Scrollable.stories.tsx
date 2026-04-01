@@ -1,26 +1,19 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, List, Scrollable, Text } from 'components';
+import { Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
+import { Scrollable } from './Scrollable.tsx';
 import { COUNTRIES } from './Scrollable.constants.ts';
-// import { fn } from '@storybook/test';
 
 const story: Meta<typeof Scrollable> = {
   title: 'Components/Containers/Scrollable',
   component: Scrollable,
   decorators: [StorybookDecorator],
-  args: {
-    showShadows: true,
-    // onScroll: fn(),
-  },
-  argTypes: {
-    showShadows: { control: 'boolean' },
-    offset: { control: 'number' },
-  },
   parameters: {
     chromatic: {
       modes: {
         light: allModes['light desktop'],
+        dark: allModes['dark desktop'],
       },
     },
   },
@@ -28,118 +21,79 @@ const story: Meta<typeof Scrollable> = {
 
 export const ScrollableStory: StoryObj<typeof Scrollable> = {
   name: 'Using Scrollable',
-  render: (args) => (
+  render: () => (
     <Flex direction="vertical" gap="xl">
-      <Text block size={6} weight="bold">
-        Vertical Scrollable with long content
+      <Text block size={5} weight="bold">
+        Overflow content
       </Text>
-      <Scrollable
-        maxHeight="200px"
-        offset={{ top: 12, bottom: 12, left: 8, right: 8 }}
-        data-testid="scrollable-1"
-        {...args}
-      >
-        <List
-          gap="m"
-          data={COUNTRIES}
-          renderItem={({ item, currentIndex }) => {
-            return (
-              <Flex key={currentIndex} direction="horizontal" gap="m">
-                <div>{item.flag}</div>
-                <div>
-                  <Text weight="bold">{item.country}</Text>, {item.capital}
-                </div>
+      <div style={{ height: '240px' }}>
+        <Scrollable>
+          <Flex direction="vertical" gap="m" style={{ padding: '8px 12px' }}>
+            {COUNTRIES.map((item) => (
+              <Flex key={item.country} direction="horizontal" gap="m" align="center">
+                <span style={{ fontSize: 24 }}>{item.flag}</span>
+                <Text>
+                  <Text weight="bold">{item.country}</Text>
+                  {' — '}
+                  {item.capital}
+                </Text>
               </Flex>
-            );
-          }}
-        />
-      </Scrollable>
-      <Text block size={6} weight="bold">
-        Horizontal Scrollable with long content
+            ))}
+          </Flex>
+        </Scrollable>
+      </div>
+
+      <Text block size={5} weight="bold">
+        Content that fits — no scroll
       </Text>
-      <Scrollable
-        maxWidth="100%"
-        direction="horizontal"
-        offset={{ top: 12, bottom: 12, left: 8, right: 8 }}
-        data-testid="scrollable-2"
-        {...args}
-      >
-        <List
-          gap="l"
-          direction="horizontal"
-          data={COUNTRIES}
-          wrap={false}
-          renderItem={({ item, currentIndex }) => {
-            return (
-              <Flex
-                key={currentIndex}
-                direction="vertical"
-                gap="xs"
-                style={{ width: '200px', minWidth: '200px' }}
-              >
-                <div style={{ fontSize: 48 }}>{item.flag}</div>
-                <Text weight="bold">{item.country}</Text>
-                <Text size="s">{item.capital}</Text>
+      <div style={{ height: '240px' }}>
+        <Scrollable>
+          <Flex direction="vertical" gap="m" style={{ padding: '8px 12px' }}>
+            {COUNTRIES.slice(0, 3).map((item) => (
+              <Flex key={item.country} direction="horizontal" gap="m" align="center">
+                <span style={{ fontSize: 24 }}>{item.flag}</span>
+                <Text>
+                  <Text weight="bold">{item.country}</Text>
+                  {' — '}
+                  {item.capital}
+                </Text>
               </Flex>
-            );
-          }}
-        />
-      </Scrollable>
-      <Text block size={6} weight="bold">
-        Vertical Scrollable with short content
+            ))}
+          </Flex>
+        </Scrollable>
+      </div>
+
+      <Text block size={5} weight="bold">
+        Inside a panel
       </Text>
-      <Scrollable
-        maxHeight="200px"
-        offset={{ top: 12, bottom: 12, left: 8, right: 8 }}
-        data-testid="scrollable-3"
-        {...args}
-      >
-        <List
-          gap="m"
-          data={COUNTRIES.slice(0, 3)}
-          renderItem={({ item, currentIndex }) => {
-            return (
-              <Flex key={currentIndex} direction="horizontal" gap="m">
-                <div>{item.flag}</div>
-                <div>
-                  <Text weight="bold">{item.country}</Text>, {item.capital}
-                </div>
-              </Flex>
-            );
+      <Flex direction="horizontal" gap="l" style={{ height: '300px' }}>
+        <div
+          style={{
+            width: '260px',
+            height: '100%',
+            border: '1px solid var(--border-1)',
+            borderRadius: '8px',
+            overflow: 'hidden',
           }}
-        />
-      </Scrollable>
-      <Text block size={6} weight="bold">
-        Horizontal Scrollable with short content
-      </Text>
-      <Scrollable
-        maxWidth="100%"
-        direction="horizontal"
-        offset={{ top: 12, bottom: 12, left: 8, right: 8 }}
-        data-testid="scrollable-4"
-        {...args}
-      >
-        <List
-          gap="l"
-          direction="horizontal"
-          data={COUNTRIES.slice(0, 3)}
-          wrap={false}
-          renderItem={({ item, currentIndex }) => {
-            return (
-              <Flex
-                key={currentIndex}
-                direction="vertical"
-                gap="xs"
-                style={{ width: '200px', minWidth: '200px' }}
-              >
-                <div style={{ fontSize: 48 }}>{item.flag}</div>
-                <Text weight="bold">{item.country}</Text>
-                <Text size={3}>{item.capital}</Text>
-              </Flex>
-            );
-          }}
-        />
-      </Scrollable>
+        >
+          <Scrollable>
+            <Flex direction="vertical" gap="m" style={{ padding: '12px' }}>
+              {COUNTRIES.map((item) => (
+                <Flex key={item.country} direction="horizontal" gap="m" align="center">
+                  <span style={{ fontSize: 20 }}>{item.flag}</span>
+                  <Text size={4}>{item.country}</Text>
+                </Flex>
+              ))}
+            </Flex>
+          </Scrollable>
+        </div>
+        <Flex direction="vertical" gap="s">
+          <Text block weight="bold">Select a country from the list</Text>
+          <Text block color="muted" size={3}>
+            Scroll through the list on the left to find a country.
+          </Text>
+        </Flex>
+      </Flex>
     </Flex>
   ),
 };

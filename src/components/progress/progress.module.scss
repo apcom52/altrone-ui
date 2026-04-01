@@ -31,15 +31,18 @@
 .Label {
   z-index: 1;
   color: var(--progress-text-color);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--text-size-4);
+  line-height: var(--line-height-4);
+  font-weight: var(--text-weight-medium);
 }
 
 .Small {
   height: 24px;
 
   .Label {
-    @include small-label;
+    font-size: var(--text-size-3);
+    line-height: var(--line-height-3);
+    font-weight: var(--text-weight-medium);
   }
 }
 
@@ -47,6 +50,8 @@
   height: 40px;
 
   .Label {
-    @include label-heading;
+    font-size: var(--text-size-5);
+    line-height: var(--line-height-5);
+    font-weight: var(--text-weight-bold);
   }
 }

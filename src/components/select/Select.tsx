@@ -1,7 +1,7 @@
 import { SelectContext, SelectProps } from './Select.types.ts';
-import { cloneElement, memo, useEffect, useId, useMemo } from 'react';
+import { isValidElement, memo, useId, useMemo } from 'react';
 import { Dropdown } from 'components/dropdown';
-import { Delete, Search, ChevronDown, ChevronUp, Check } from 'lucide-react';
+import { Delete, Search, ChevronDown, ChevronUp } from 'lucide-react';
 import { Scrollable } from 'components/scrollable';
 import { TextInput } from 'components/textInput';
 import s from './select.module.scss';
@@ -9,7 +9,8 @@ import clsx from 'clsx';
 import { PopoverContentContext } from 'components/popover';
 import { useSelect } from './useSelect.ts';
 import { useConfiguration } from 'components/configuration';
-import { GlobalUtils } from 'utils/GlobalUtils.ts';
+import { useLocalization } from 'components/application';
+import { Slot } from 'utils/components/Slot.tsx';
 
 const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
   const {
@@ -23,19 +24,21 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
     className,
     style,
     parentWidth = true,
-    Component,
     onFocus,
     onBlur,
     onChange,
     children,
     options,
-    renderFunc,
+    asChild,
+    readOnly,
+    ref,
     ...restProps
   } = props;
 
   const id = useId();
   const selectName = name || id;
 
+  const t = useLocalization();
   const { select: selectConfig = {} } = useConfiguration();
 
   const {
@@ -55,30 +58,32 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
     () =>
       ({ closePopup }: PopoverContentContext) =>
         (
-          <Scrollable maxHeight="250px">
-            <Dropdown.Menu>
-              {filteredOptions.map((option, optionIndex) => {
-                const checked = Array.isArray(selectedOptions)
-                  ? selectedOptions.includes(option)
-                  : selectedOptions === option;
+          <div style={{ height: '250px' }}>
+            <Scrollable>
+              <Dropdown.Menu>
+                {filteredOptions.map((option) => {
+                  const checked = Array.isArray(selectedOptions)
+                    ? selectedOptions.includes(option)
+                    : selectedOptions === option;
 
-                return (
-                  <Dropdown.Checkbox
-                    checked={checked}
-                    focused={checked}
-                    onChange={() => {
-                      selectValue(option.value);
-                      if (!multiple) {
-                        closePopup();
-                      }
-                    }}
-                    key={optionIndex}
-                    label={String(option.label)}
-                  />
-                );
-              })}
-            </Dropdown.Menu>
-          </Scrollable>
+                  return (
+                    <Dropdown.Checkbox
+                      checked={checked}
+                      focused={checked}
+                      onChange={() => {
+                        selectValue(option.value);
+                        if (!multiple) {
+                          closePopup();
+                        }
+                      }}
+                      key={option.value}
+                      label={String(option.label)}
+                    />
+                  );
+                })}
+              </Dropdown.Menu>
+            </Scrollable>
+          </div>
         ),
     [filteredOptions, selectedOptions, multiple, selectValue]
   );
@@ -94,23 +99,8 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
   const needToShowClearButton =
     clearable && (isMultiple ? value?.length > 0 : value);
 
-  const selectContext: SelectContext = {
-    expanded: false,
-    value,
-    selectedOptions,
-    disabled: Boolean(props.disabled),
-    multiple: Boolean(props.multiple),
-    clearValue,
-  };
-
-  useEffect(() => {
-    if (Component) {
-      GlobalUtils.deprecatedMessage('Select', 'Component', 'renderFunc', '4.0');
-    }
-  }, [Component]);
-
   return (
-    <div className={s.SelectWrapper}>
+    <div className={s.SelectWrapper} ref={ref}>
       <div className={s.FormInputs}>
         {multiple ? (
           <>
@@ -125,7 +115,7 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
               ))}
           </>
         ) : (
-          <input type="hidden" name={selectName} value={String(value)} />
+          <input type="hidden" name={selectName} value={value != null ? String(value) : ''} />
         )}
       </div>
       <Dropdown
@@ -138,20 +128,25 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
         overlap
       >
         {({ opened }) => {
-          if (Component) {
-            if (typeof Component === 'function') {
-              return Component({ ...selectContext, expanded: opened });
-            } else {
-              return cloneElement(Component, {
-                ...selectContext,
-                expanded: opened,
-              });
+          const selectContext: SelectContext<Value> = {
+            expanded: opened,
+            value,
+            selectedOptions,
+            disabled: Boolean(props.disabled),
+            multiple: Boolean(props.multiple),
+            clearValue,
+          };
+
+          if (asChild) {
+            if (!isValidElement(children)) {
+              console.error('[Select] asChild requires a valid React element as children');
+              return null;
             }
-          } else if (renderFunc) {
-            return renderFunc({
-              ...selectContext,
-              expanded: opened,
-            });
+            return (
+              <Slot {...selectContext}>
+                {children}
+              </Slot>
+            );
           }
 
           return (
@@ -160,21 +155,19 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
               style={styles}
               value={searchMode ? userQuery : valueString}
               placeholder={valueString ? valueString : placeholder}
-              readOnly={
-                props.readonly ? props.readonly : !(searchable && searchMode)
-              }
-              readonlyStyles={!props.readonly ? false : true}
+              readOnly={readOnly ?? !(searchable && searchMode)}
+              readonlyStyles={Boolean(readOnly)}
               size={size}
               transparent={props.transparent}
               onChange={setUserQuery}
-              onFocus={searchable ? focusSelect : undefined}
-              onBlur={searchable ? blurSelect : undefined}
+              onFocus={searchable ? (e) => { focusSelect(); onFocus?.(e); } : onFocus}
+              onBlur={searchable ? (e) => { blurSelect(); onBlur?.(e); } : onBlur}
               {...restProps}
             >
               {needToShowClearButton && (
                 <TextInput.ActionIsland
                   placement="right"
-                  label="Clear"
+                  label={t('common.clear')}
                   icon={<Delete />}
                   showLabel={false}
                   disabled={false}

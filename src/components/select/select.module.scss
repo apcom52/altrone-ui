@@ -1,6 +1,6 @@
 @import 'src/global/inputMixins';
 
-:global(:root) {
+:global([data-altrone-root='true']) {
   --selectBackgroundColor: var(--default-200);
   --selectHoverBackgroundColor: var(--default-300);
   --selectTextColor: var(--default-700);
@@ -28,12 +28,6 @@
   width: 100%;
 }
 
-.SelectContainer {
-  --height: 24px;
-
-  @include inputWrapper;
-}
-
 .Select {
   text-align: left;
   cursor: pointer;
@@ -41,16 +35,6 @@
 
 .ArrowIcon {
   @include inputIsland;
-}
-
-.SelectValue {
-  flex: 1;
-  color: var(--fgColor);
-}
-
-.Placeholder {
-  flex: 1;
-  color: var(--placeholderColor);
 }
 
 .FormInputs {

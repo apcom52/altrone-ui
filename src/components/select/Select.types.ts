@@ -1,6 +1,5 @@
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { Size } from '../../types';
-import { CustomRenderFunction, RenderFunction } from '../../utils';
 
 export type Option = {
   value: string;
@@ -8,9 +7,9 @@ export type Option = {
   disabled?: boolean;
 };
 
-export type SelectContext = {
+export type SelectContext<Value = unknown> = {
   expanded: boolean;
-  value?: any;
+  value?: Value;
   selectedOptions?: Option | Option[];
   disabled: boolean;
   multiple: boolean;
@@ -29,21 +28,21 @@ export type SelectRenderItemFunc = {
 export interface SelectProps<Value = unknown>
   extends Omit<
     React.InputHTMLAttributes<HTMLInputElement>,
-    'onChange' | 'size' | 'value'
+    'onChange' | 'size' | 'value' | 'children'
   > {
   value?: Value;
-  onChange: (value?: Value) => void;
+  onChange: (value?: Value, event?: React.MouseEvent<HTMLElement>) => void;
   options: Option[];
   multiple?: boolean;
   clearable?: boolean;
   searchable?: boolean;
   size?: Size;
   transparent?: boolean;
-  readonly?: boolean;
   name?: string;
   placeholder?: string;
   parentWidth?: boolean;
-  Component?: RenderFunction<ReactElement, SelectContext>;
-  renderFunc?: CustomRenderFunction<SelectContext>;
+  asChild?: boolean;
+  children?: ReactElement;
   variant?: 'default' | 'transparent';
+  ref?: React.Ref<HTMLDivElement>;
 }

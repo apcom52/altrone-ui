@@ -16,8 +16,8 @@
 .Title {
   color: var(--side-navigation-item-text-color);
   font-size: var(--side-navigation-item-text-size);
-  font-weight: 500;
-  line-height: 20px;
+  font-weight: var(--text-weight-medium);
+  line-height: var(--line-height-4);
 }
 
 .Menu {

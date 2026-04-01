@@ -13,6 +13,7 @@ export const Progress = memo<ProgressProps>(
     max = 100,
     size = 'm',
     activeSegmentClassName,
+    ref,
     ...props
   }) => {
     const { progress: progressConfig = {} } = useConfiguration();
@@ -38,7 +39,8 @@ export const Progress = memo<ProgressProps>(
       progressConfig.activeSegmentClassName,
     );
 
-    const percentage = Math.round((value / max) * 100);
+    const safeMax = max || 1;
+    const percentage = Math.min(100, Math.max(0, Math.round((value / safeMax) * 100)));
 
     const progressContext: ProgressContext = {
       value,
@@ -61,6 +63,7 @@ export const Progress = memo<ProgressProps>(
         aria-valuemin={0}
         className={cls}
         style={styles}
+        ref={ref}
         {...props}
       >
         <div
@@ -69,7 +72,7 @@ export const Progress = memo<ProgressProps>(
             width: `${percentage}%`,
           }}
         />
-        <div className={s.Label} role="presentation">
+        <div className={s.Label}>
           {childrenElement}
         </div>
       </div>

@@ -60,7 +60,7 @@ export const useSelect = <Value = unknown>(props: SelectProps<Value>) => {
     }
 
     return options.filter((item) =>
-      item.label.toLowerCase().startsWith(userQuery.toLowerCase()),
+      item.label.toLowerCase().includes(userQuery.toLowerCase()),
     );
   }, [options, userQuery, searchable]);
 
@@ -70,7 +70,7 @@ export const useSelect = <Value = unknown>(props: SelectProps<Value>) => {
     } else {
       onChange(undefined);
     }
-  }, [onChange, value]);
+  }, [onChange, multiple]);
 
   return {
     searchMode,

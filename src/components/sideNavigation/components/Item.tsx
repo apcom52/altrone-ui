@@ -13,7 +13,7 @@ export const Item = memo<SideNavigationItemProps>(
 
     useEffect(() => {
       observeNewSelector(href);
-    }, [href]);
+    }, [href, observeNewSelector]);
 
     const isSelected = activeItem === href;
 
@@ -21,7 +21,7 @@ export const Item = memo<SideNavigationItemProps>(
       s.Item,
       {
         [s.Selected]: isSelected,
-        [String(sideNavigationConfig.selectedItemClassName)]:
+        [sideNavigationConfig.selectedItemClassName!]:
           sideNavigationConfig.selectedItemClassName && isSelected,
       },
       className,
@@ -31,7 +31,7 @@ export const Item = memo<SideNavigationItemProps>(
       <li className={cls}>
         <a
           href={href}
-          aria-selected={isSelected}
+          aria-current={isSelected ? 'page' : undefined}
           className={s.Label}
           {...restProps}
         >
