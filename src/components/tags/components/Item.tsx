@@ -1,29 +1,32 @@
-import { forwardRef } from 'react';
+import { isValidElement, memo } from 'react';
 import { TagsItemProps } from '../Tags.types.ts';
 import s from './item.module.scss';
-import { RenderFuncProp } from '../../../types';
 import clsx from 'clsx';
+import { useConfiguration } from '../../configuration';
+import { Slot } from 'utils/components/Slot.tsx';
 
-const tagsItemRenderFunc: RenderFuncProp<HTMLAnchorElement, TagsItemProps> = (
-  ref,
-  { label, ...restProps }
-) => {
-  return (
-    <a ref={ref} tabIndex={0} {...restProps}>
-      {label}
-    </a>
-  );
-};
+export const Item = memo(
+  ({ ref, className, label, asChild, children, ...restProps }: TagsItemProps) => {
+    const { tags: { item: tagsItemConfig = {} } = {} } = useConfiguration();
 
-export const Item = forwardRef<HTMLAnchorElement, TagsItemProps>(
-  (props, ref) => {
-    const { className, renderFunc = tagsItemRenderFunc, ...restProps } = props;
+    const cls = clsx(s.Item, className, tagsItemConfig.className);
 
-    const cls = clsx(s.Item, className);
+    if (asChild) {
+      if (!isValidElement(children)) {
+        console.error('[Tags.Item] asChild requires a valid React element as children');
+        return null;
+      }
+      return (
+        <Slot ref={ref} className={cls} {...restProps}>
+          {children}
+        </Slot>
+      );
+    }
 
-    return renderFunc(ref, {
-      ...restProps,
-      className: cls,
-    });
-  }
+    return (
+      <a ref={ref} tabIndex={0} className={cls} {...restProps}>
+        {label}
+      </a>
+    );
+  },
 );

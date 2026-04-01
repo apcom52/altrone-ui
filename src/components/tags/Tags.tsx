@@ -5,7 +5,7 @@ import { Flex } from '../flex';
 import { Item } from './components/Item.tsx';
 import { useConfiguration } from '../configuration';
 
-const Tags = memo<TagsProps>(({ children, className, style, ...props }) => {
+const Tags = memo<TagsProps>(({ children, className, style, ref, ...props }) => {
   const { tags: tagsConfig = {} } = useConfiguration();
 
   const cls = clsx(className, tagsConfig.className);
@@ -17,6 +17,7 @@ const Tags = memo<TagsProps>(({ children, className, style, ...props }) => {
 
   return (
     <Flex
+      ref={ref}
       className={cls}
       style={styles}
       direction="horizontal"

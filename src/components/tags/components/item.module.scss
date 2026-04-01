@@ -1,14 +1,12 @@
-@import 'src/global/mixins';
-
 :global([data-altrone-root='true']) {
   --tags-item-text-color: var(--text-2);
   --tags-hovered-item-color: var(--accent-11);
 }
 
 .Item {
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 24px;
+  font-size: var(--text-size-3);
+  font-weight: var(--text-weight-medium);
+  line-height: var(--text-line-height-3);
   color: var(--tags-item-text-color);
   transition: color 0.2s linear;
   text-decoration: none;

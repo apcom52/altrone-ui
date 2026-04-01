@@ -150,7 +150,9 @@ export interface ConsumerConfigurationContext {
       selectedClassName?: string;
     }>;
   }>;
-  tags?: ComponentConfiguration;
+  tags?: ComponentConfiguration<{
+    item?: ComponentConfiguration;
+  }>;
   text?: ComponentConfiguration<{
     section?: ComponentConfiguration;
     screenName?: ComponentConfiguration;
