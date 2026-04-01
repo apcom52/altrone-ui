@@ -1,42 +1,38 @@
-import { memo, useRef, useState } from 'react';
+import { memo, useId } from 'react';
 import { TabsProps } from './Tabs.types.ts';
 import clsx from 'clsx';
 import s from './tabs.module.scss';
 import { useConfiguration } from 'components/configuration';
 import { Item } from './components/Item.tsx';
-import { LayoutGroup, AnimatePresence } from 'motion/react';
+import { LayoutGroup } from 'motion/react';
+import { TabsContext } from './Tabs.context.ts';
 
-const Tabs = memo<TabsProps>(({ children, className, style, ...props }) => {
-  const { tabs: tabsConfig = {} } = useConfiguration();
+const TabsComponent = memo<TabsProps>(
+  ({ children, className, style, ref, ...props }) => {
+    const { tabs: tabsConfig = {} } = useConfiguration();
+    const backdropId = useId();
 
-  const containerRef = useRef<HTMLDivElement>(null);
+    const cls = clsx(s.Tabs, className, tabsConfig.className);
 
-  const cls = clsx(s.Tabs, className, tabsConfig.className);
+    const styles = {
+      ...tabsConfig.style,
+      ...style,
+    };
 
-  const styles = {
-    ...tabsConfig.style,
-    ...style,
-  };
+    return (
+      <TabsContext.Provider value={{ backdropId }}>
+        <div className={s.TabsContainer}>
+          <div className={cls} style={styles} role="tablist" ref={ref} {...props}>
+            <LayoutGroup>{children}</LayoutGroup>
+          </div>
+        </div>
+      </TabsContext.Provider>
+    );
+  },
+);
 
-  return (
-    <div className={s.TabsContainer}>
-      <div
-        className={cls}
-        style={styles}
-        role="tablist"
-        ref={containerRef}
-        {...props}
-      >
-        <LayoutGroup>
-          <AnimatePresence mode="wait">{children}</AnimatePresence>
-        </LayoutGroup>
-      </div>
-    </div>
-  );
-});
-
-const TagsNamespace = Object.assign(Tabs, {
+const TabsNamespace = Object.assign(TabsComponent, {
   Item,
 });
 
-export { TagsNamespace as Tabs };
+export { TabsNamespace as Tabs };

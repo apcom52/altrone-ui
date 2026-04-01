@@ -11,7 +11,7 @@
   color: var(--tabs-item-text-color);
   transition: background-color 0.2s linear;
   font-size: var(--tabs-item-font-size);
-  font-weight: 500;
+  font-weight: var(--text-weight-medium);
   gap: var(--s-gap);
   z-index: 2;
   border-radius: var(--tabs-item-rounding);
@@ -59,8 +59,8 @@
 }
 
 .Badge {
-  color: var(--tabs-item-bagde-text-color);
-  background-color: var(--tabs-item-bagde-background-color);
+  color: var(--tabs-item-badge-text-color);
+  background-color: var(--tabs-item-badge-background-color);
   margin-left: 2px;
   margin-right: -4px;
   font-size: var(--tabs-item-badge-text-size);

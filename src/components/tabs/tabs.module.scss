@@ -7,8 +7,8 @@
   --tabs-item-border-color: var(--border-a2);
   --tabs-item-text-color: var(--text-2);
 
-  --tabs-item-bagde-background-color: var(--interactive-a1);
-  --tabs-item-bagde-text-color: var(--text-2);
+  --tabs-item-badge-background-color: var(--interactive-a1);
+  --tabs-item-badge-text-color: var(--text-2);
   --tabs-item-badge-rounding: 8px;
   --tabs-item-badge-text-size: 12px;
   --tabs-item-badge-size: 16px;
@@ -34,19 +34,4 @@
   box-shadow: 0 0 0 1px var(--tabs-border-color);
   padding: 4px;
   gap: var(--s-gap);
-}
-
-.TabsUnderlay {
-  position: absolute;
-  z-index: 0;
-  left: 0;
-  top: 4px;
-  width: 0;
-  height: 26px;
-  border-radius: 6px;
-  pointer-events: none;
-  background-color: var(--tabs-item-hover-background-color);
-  opacity: 0;
-  transition: width 0.1s ease, height 0.1s ease, left 0.1s ease, top 0.1s ease,
-    opacity 0.1s ease;
 }
