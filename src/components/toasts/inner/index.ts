@@ -1,2 +1,1 @@
-export * from './Notification.tsx';
-export * from './ToastNotification.tsx';
+// Legacy inner components removed. Use components/ instead.

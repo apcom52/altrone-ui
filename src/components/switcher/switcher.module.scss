@@ -56,7 +56,10 @@
   border-radius: 12px;
   transition: background-color 0.1s linear;
   color: var(--switcher-icon-color);
-  box-shadow: 0 0 0 1px var(--switcher-border-color), var(--shadow-1);
+  box-shadow:
+    0 0 0 1px var(--switcher-border-color),
+    var(--shadow-1);
+  flex-shrink: 0;
 }
 
 .Handle {
@@ -66,7 +69,9 @@
   left: 3px;
   height: 16px;
   border-radius: 8px;
-  transition: left 0.3s ease, width 0.2s ease;
+  transition:
+    left 0.3s ease,
+    width 0.2s ease;
 }
 
 .Label {

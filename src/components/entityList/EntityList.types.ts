@@ -1,16 +1,17 @@
-import { ReactElement, ReactNode } from "react";
+import React, { ReactElement, ReactNode } from "react";
 
 export interface EntityListProps extends React.HTMLAttributes<HTMLDivElement> {
+  ref?: React.Ref<HTMLDivElement>;
   selectable?: boolean;
 }
 
-export interface EntityListItemProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title' | 'subtitle' | 'meta' | 'islands' | 'onSelect'> {
+export interface EntityListItemProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title' | 'subtitle' | 'meta' | 'onSelect'> {
+  ref?: React.Ref<HTMLDivElement>;
   title: ReactNode;
   subtitle?: ReactNode;
   meta?: ReactNode;
   icon?: ReactElement;
-  islands?: ReactNode[];
   disabled?: boolean;
-  onSelect?: (checked: boolean) => void;
+  onSelect?: (checked: boolean, event: React.ChangeEvent<HTMLInputElement>) => void;
   asChild?: boolean;
 }

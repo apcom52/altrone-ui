@@ -92,6 +92,7 @@ export interface ConsumerConfigurationContext {
     column?: ComponentConfiguration;
   }>;
   icon?: ComponentConfiguration;
+  label?: ComponentConfiguration;
   list?: ComponentConfiguration;
   loading?: ComponentConfiguration<{
     color?: string;

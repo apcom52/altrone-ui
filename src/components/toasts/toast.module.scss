@@ -1,41 +1,59 @@
-@import 'src/global/mixins';
-
 :global([data-altrone-root='true']) {
-  --toast-background-color: var(--background-1);
+  --toast-background-color: var(--glass-background-color);
   --toast-border-color: var(--border-a1);
   --toast-text-color: var(--text-2);
-  --toast-text-size: 14px;
+  --toast-border-radius: 100px;
+
+  --toast-default-icon-color: var(--text-2);
+  --toast-success-icon-color: var(--teal-9);
+  --toast-warning-icon-color: var(--amber-9);
+  --toast-danger-icon-color: var(--red-9);
+
+  --notification-width: 320px;
+  --notification-border-radius: 20px;
+  --notification-image-height: 140px;
 }
 
-.Wrapper {
+// ─── Portal root ──────────────────────────────────────────────────────────────
+
+.Root {
+  position: fixed;
+  inset: 0;
   z-index: var(--level-toast);
+  pointer-events: none;
 }
 
-.Toast {
+// ─── Position containers ──────────────────────────────────────────────────────
+
+.Container {
+  position: absolute;
   display: flex;
-  align-items: center;
-  gap: var(--gap);
-  padding: 0;
-  width: auto;
-  background: var(--toast-background-color);
-  backdrop-filter: blur(32px) saturate(180%);
-  border-radius: 24px;
-  min-height: var(--toast-min-height);
-  margin: 0 auto var(--l-gap);
-  color: var(--toast-text-color);
-  box-shadow: var(--shadow-1), var(--shadow-5);
-  color: var(--toast-text-color);
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  pointer-events: none;
 
-  :global(.Toastify__toast-body) {
-    padding: 2px;
+  &.Top {
+    top: 0;
   }
-}
 
-.Notification {
-  padding: 8px;
-  background: var(--glass-background-color);
-  border: 1px solid var(--glass-border-color);
-  backdrop-filter: var(--glass-background-blur);
-  border-radius: 12px;
-  box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.1);
+  &.Bottom {
+    bottom: 0;
+  }
+
+  &.Left {
+    left: 0;
+    align-items: flex-start;
+  }
+
+  &.Right {
+    right: 0;
+    align-items: flex-end;
+  }
+
+  &.Center {
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+  }
 }

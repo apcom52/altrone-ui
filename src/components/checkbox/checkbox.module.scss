@@ -62,6 +62,7 @@
     0 0 0 1px var(--checkbox-border-color),
     var(--shadow-1);
   color: var(--checkbox-icon-color);
+  flex-shrink: 0;
 }
 
 .Label {

@@ -36,7 +36,10 @@
   border-radius: 50%;
   background-color: var(--radio-background-color);
   transition: background-color 0.1s linear;
-  box-shadow: 0 0 0 1px var(--radio-border-color), var(--shadow-1);
+  box-shadow:
+    0 0 0 1px var(--radio-border-color),
+    var(--shadow-1);
+  flex-shrink: 0;
 
   &:after {
     display: none;

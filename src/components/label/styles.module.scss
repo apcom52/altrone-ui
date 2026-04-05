@@ -6,11 +6,13 @@
 }
 
 .Label {
+  --label-rounding: 8px;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 4px 8px;
-  border-radius: 8px;
+  border-radius: var(--label-rounding);
   background-color: var(--label-solid-background-color);
   color: var(--label-solid-text-color);
   font-size: var(--text-size-3);
@@ -114,36 +116,40 @@
 }
 
 .Pill {
-  border-radius: 9999px !important;
+  --label-rounding: 9999px;
 }
 
 .Mini {
+  --label-rounding: 4px;
+
   padding: 0 4px;
-  border-radius: 4px;
   font-size: var(--text-size-1);
   line-height: var(--line-height-1);
   font-weight: var(--text-weight-medium);
 }
 
 .Small {
+  --label-rounding: 6px;
+
   padding: 3px 6px;
-  border-radius: 6px;
   font-size: var(--text-size-2);
   line-height: var(--line-height-2);
   font-weight: var(--text-weight-medium);
 }
 
 .Large {
-  padding: 4px 8px;
-  border-radius: 8px;
+  --label-rounding: 8px;
+
+  padding: 6px 10px;
   font-size: var(--text-size-4);
   line-height: var(--line-height-4);
   font-weight: var(--text-weight-medium);
 }
 
 .XLarge {
-  padding: 4px 8px;
-  border-radius: 12px;
+  --label-rounding: 12px;
+
+  padding: 8px 14px;
   font-size: var(--text-size-5);
   line-height: var(--line-height-5);
   font-weight: var(--text-weight-medium);

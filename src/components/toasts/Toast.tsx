@@ -1,85 +1,129 @@
-import 'react-toastify/dist/ReactToastify.css';
-import { createContext, memo, useCallback, useContext, useMemo } from 'react';
-import {
-  NotificationProps,
-  ToastContextType,
+import { memo, useCallback, useState } from 'react';
+import { AnimatePresence, LayoutGroup } from 'motion/react';
+import clsx from 'clsx';
+import { ToastContext } from './Toast.context';
+import type {
+  AnyToastItem,
+  NotificationItem,
+  NotificationOptions,
+  ToastItem,
+  ToastItemPosition,
   ToastOptions,
-  ToastProps,
-} from './Toast.types.ts';
+  ToastsProviderProps,
+} from './Toast.types';
+import { ToastMessage } from './components/ToastMessage';
+import { Notification } from './components/Notification';
 import s from './toast.module.scss';
-import { Notification, ToastNotification } from './inner';
-import { Role } from '../../types';
-import { toast, Toaster } from 'sonner';
-import { Button } from 'components/button/Button.tsx';
 
-const ToastContext = createContext<ToastContextType>({
-  toast: () => null,
-  success: () => null,
-  danger: () => null,
-  warning: () => null,
-  sendNotification: () => null,
-});
-export const useToast = () => useContext(ToastContext);
+let counter = 0;
+const nextId = () => `altrone-toast-${++counter}`;
 
-export const Toast = memo<ToastProps>(({ children }) => {
-  const sendGenericToast = useCallback(
-    (message: string, options?: ToastOptions) => {
-      console.log('message', message);
+const POSITIONS: ToastItemPosition[] = [
+  'top',
+  'bottom',
+  'top-left',
+  'top-right',
+  'bottom-left',
+  'bottom-right',
+];
 
-      toast.custom((id) => (
-        <ToastNotification message={message} action={options?.action} />
-      ));
+const isTopPosition = (pos: ToastItemPosition) => pos.startsWith('top');
+const isCenterPosition = (pos: ToastItemPosition) =>
+  pos === 'top' || pos === 'bottom';
+const isLeftPosition = (pos: ToastItemPosition) => pos.endsWith('left');
+
+export const Toast = memo(({ children }: ToastsProviderProps) => {
+  const [items, setItems] = useState<AnyToastItem[]>([]);
+
+  const remove = useCallback((id: string) => {
+    setItems((prev) => prev.filter((item) => item.id !== id));
+  }, []);
+
+  const toast = useCallback((message: string, options: ToastOptions = {}) => {
+    const id = nextId();
+    const item: ToastItem = {
+      kind: 'toast',
+      id,
+      message,
+      variant: options.variant ?? 'default',
+      icon: options.icon,
+      action: options.action,
+      duration: options.duration ?? 4000,
+      autoClose: options.autoClose ?? true,
+      position: options.position ?? 'bottom',
+    };
+    setItems((prev) => [...prev, item]);
+    return id;
+  }, []);
+
+  const notification = useCallback((options: NotificationOptions) => {
+    const id = nextId();
+    const item: NotificationItem = {
+      kind: 'notification',
+      id,
+      title: options.title,
+      content: options.content,
+      image: options.image,
+      icon: options.icon,
+      actions: options.actions,
+      position: options.position ?? 'bottom-right',
+      duration: options.duration ?? 6000,
+      autoClose: options.autoClose ?? true,
+    };
+    setItems((prev) => [...prev, item]);
+    return id;
+  }, []);
+
+  const dismiss = useCallback(
+    (id: string) => {
+      remove(id);
     },
-    []
+    [remove],
   );
 
-  const sendToast = useCallback((message: string, options?: ToastOptions) => {
-    sendGenericToast(message, options);
-  }, []);
-
-  const sendSuccessToast = useCallback((message: string) => {
-    sendGenericToast(message, 'success');
-  }, []);
-
-  const sendWarningToast = useCallback((message: string) => {
-    sendGenericToast(message, 'warning');
-  }, []);
-
-  const sendDangerToast = useCallback((message: string) => {
-    sendGenericToast(message, 'danger');
-  }, []);
-
-  const sendNotification = useCallback((options: NotificationProps) => {
-    toast(<Notification {...options} />, {
-      autoClose: options.duration ? options.duration : false,
-      pauseOnHover: true,
-      className: s.Notification,
-      closeButton: false,
-      position: [
-        'top-left',
-        'top-right',
-        'bottom-left',
-        'bottom-right',
-      ].includes(options.placement || '')
-        ? options.placement
-        : 'top-right',
-    });
-  }, []);
-
-  const context = useMemo<ToastContextType>(() => {
-    return {
-      toast: sendToast,
-      success: sendSuccessToast,
-      warning: sendWarningToast,
-      danger: sendDangerToast,
-      sendNotification,
-    };
-  }, [sendToast, sendNotification]);
-
   return (
-    <ToastContext.Provider value={context}>
+    <ToastContext.Provider value={{ toast, notification, dismiss }}>
       {children}
-      <Toaster position="bottom-center" />
+      <div className={s.Root} aria-live="polite" aria-atomic="false">
+        {POSITIONS.map((pos) => {
+          const posItems = items.filter((item) => item.position === pos);
+
+          return (
+            <div
+              key={pos}
+              className={clsx(
+                s.Container,
+                isTopPosition(pos) ? s.Top : s.Bottom,
+                isCenterPosition(pos)
+                  ? s.Center
+                  : isLeftPosition(pos)
+                    ? s.Left
+                    : s.Right,
+              )}
+            >
+              <LayoutGroup id={`toast-container-${pos}`}>
+                <AnimatePresence mode="popLayout" initial={false}>
+                  {posItems.map((item) =>
+                    item.kind === 'toast' ? (
+                      <ToastMessage
+                        key={item.id}
+                        item={item}
+                        onClose={() => remove(item.id)}
+                      />
+                    ) : (
+                      <Notification
+                        key={item.id}
+                        item={item}
+                        onClose={() => remove(item.id)}
+                      />
+                    ),
+                  )}
+                </AnimatePresence>
+              </LayoutGroup>
+            </div>
+          );
+        })}
+      </div>
     </ToastContext.Provider>
   );
 });
