@@ -1,18 +1,12 @@
-import { forwardRef, MouseEventHandler } from 'react';
+import { memo } from 'react';
+import React from 'react';
 import { NavigationListLinkActionProps } from '../NavigationList.types.ts';
-import s from './linkAction.module.scss';
 import clsx from 'clsx';
 import { useConfiguration } from '../../configuration';
 import { Button } from 'components/button/Button.tsx';
 
-export const LinkAction = forwardRef<
-  HTMLButtonElement,
-  NavigationListLinkActionProps
->((props, ref) => {
-  const { label, icon, className, style, ...restProps } = props;
-
-  const { navigationList: { linkAction: linkActionConfig = {} } = {} } =
-    useConfiguration();
+export const LinkAction = memo(({ ref, label, icon, className, style, onClick, ...restProps }: NavigationListLinkActionProps) => {
+  const { navigationList: { linkAction: linkActionConfig = {} } = {} } = useConfiguration();
 
   const cls = clsx(className, linkActionConfig.className);
 
@@ -21,25 +15,25 @@ export const LinkAction = forwardRef<
     ...style,
   };
 
-  const onClickHandler: MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    props.onClick?.(e);
+    onClick?.(e);
   };
 
   return (
     <Button
+      ref={ref}
       size="s"
       variant="text"
       className={cls}
-      ref={ref}
       title={label}
       style={styles}
-      {...restProps}
       icon={icon}
       label={label}
       showLabel={false}
-      onClick={onClickHandler}
+      onClick={handleClick}
+      {...restProps}
     />
   );
 });

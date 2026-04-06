@@ -5,15 +5,16 @@ import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import { motion } from 'motion/react';
 
-export const Group = memo<ToolbarGroupProps>(
+export const Group = memo(
   ({
+    ref,
     children,
     align = 'start',
-    weight = 1,
+    weight,
     className,
     style,
     ...restProps
-  }) => {
+  }: ToolbarGroupProps) => {
     const { toolbar: toolbarConfig = {} } = useConfiguration();
 
     const cls = clsx(
@@ -24,17 +25,18 @@ export const Group = memo<ToolbarGroupProps>(
         [s.Between]: align === 'between',
       },
       className,
-      toolbarConfig.className
+      toolbarConfig.groupClassName,
     );
 
     const styles = {
+      ...(weight !== undefined && { flex: weight }),
       ...style,
     };
 
     return (
-      <motion.div layout className={cls} style={styles} {...restProps}>
+      <motion.div ref={ref} layout className={cls} style={styles} {...restProps}>
         {children}
       </motion.div>
     );
-  }
+  },
 );

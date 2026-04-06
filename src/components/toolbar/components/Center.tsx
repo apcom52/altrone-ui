@@ -1,23 +1,14 @@
 import { memo } from 'react';
 import { ToolbarCenterProps } from '../Toolbar.types.ts';
 import s from './group.module.scss';
-import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 
-export const Center = memo<ToolbarCenterProps>(
-  ({ children, className, style, ...restProps }) => {
-    const { toolbar: toolbarConfig = {} } = useConfiguration();
+export const Center = memo(({ ref, children, className, style, ...restProps }: ToolbarCenterProps) => {
+  const cls = clsx(s.Center, className);
 
-    const cls = clsx(s.Center, className, toolbarConfig.className);
-
-    const styles = {
-      ...style,
-    };
-
-    return (
-      <div className={cls} style={styles} {...restProps}>
-        {children}
-      </div>
-    );
-  }
-);
+  return (
+    <div ref={ref} className={cls} style={style} {...restProps}>
+      {children}
+    </div>
+  );
+});

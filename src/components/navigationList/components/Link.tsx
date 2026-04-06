@@ -1,11 +1,7 @@
-import React, { forwardRef, ReactElement, useMemo } from 'react';
+import React, { memo, useMemo, isValidElement, ReactElement } from 'react';
 import clsx from 'clsx';
 import s from './link.module.scss';
-import {
-  NavigationListLinkProps,
-  NavigationListLinkPropsWithActions,
-} from '../NavigationList.types.ts';
-import { RenderFuncProp } from '../../../types';
+import { NavigationListLinkProps } from '../NavigationList.types.ts';
 import { useConfiguration } from '../../configuration';
 import { AltChildren, DOMUtils, useBoolean } from '../../../utils';
 import { LinkAction } from './LinkAction.tsx';
@@ -17,168 +13,184 @@ import {
 import { Badge } from 'components/badge/Badge.tsx';
 import { motion } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
-import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
+import { Slot } from 'utils/components/Slot';
 
-const ItemContent = ({
-  icon,
-  badge,
-  label,
-  actions,
-  opened,
-}: Pick<NavigationListLinkProps, 'icon' | 'label' | 'badge' | 'children'> & {
+// ─── ItemContent ──────────────────────────────────────────────────────────────
+
+type ItemContentProps = Pick<NavigationListLinkProps, 'icon' | 'label' | 'badge'> & {
   actions: ReactElement[];
   opened: boolean;
-}) => {
-  return (
-    <div className={s.Label}>
-      {icon ? <div className={s.Icon}>{icon}</div> : null}
-      <div className={s.LabelText}>{label}</div>
-      {badge ? <Badge className={s.Badge}>{badge}</Badge> : null}
-      {actions?.length ? <div className={s.Actions}>{actions}</div> : null}
-      {opened ? (
-        <div className={s.ChildrenIcon}>
-          <ChevronDown />
-        </div>
-      ) : null}
-    </div>
-  );
 };
 
-const navigationListRenderFunc: RenderFuncProp<
-  HTMLAnchorElement,
-  NavigationListLinkPropsWithActions
-> = (ref, props) => {
-  const {
-    icon,
-    label,
-    actions = undefined,
-    level = 0,
-    children,
-    selected,
-    badge,
-    asChild,
-    ...restProps
-  } = props;
+const ItemContent = ({ icon, badge, label, actions, opened }: ItemContentProps) => (
+  <div className={s.Label}>
+    {icon ? <div className={s.Icon}>{icon}</div> : null}
+    <div className={s.LabelText}>{label}</div>
+    {badge ? <Badge className={s.Badge}>{badge}</Badge> : null}
+    {actions.length ? <div className={s.Actions}>{actions}</div> : null}
+    {opened ? <div className={s.ChildrenIcon}><ChevronDown /></div> : null}
+  </div>
+);
 
-  const { navigationList: { link: linkConfig = {} } = {} } = useConfiguration();
+// ─── LinkInner ────────────────────────────────────────────────────────────────
+
+type LinkInnerProps = Omit<NavigationListLinkProps, 'children'> & {
+  actions: ReactElement[];
+  nestedLinks: ReactElement[];
+  level: number;
+  asChildElement: ReactElement | null;
+};
+
+const LinkInner = memo(({
+  ref,
+  icon,
+  label,
+  actions,
+  nestedLinks,
+  level,
+  selected,
+  badge,
+  asChild,
+  asChildElement,
+  className,
+  style,
+  ...restProps
+}: LinkInnerProps) => {
   const navigationListId = useNavigationListId();
   const { value: hovered, enable: hover, disable: unhover } = useBoolean();
 
-  const hasChildren = React.Children.count(children) > 0;
-  const showChildren = Boolean(hasChildren && selected);
-  const showIcon = icon && level < 2;
+  const showNestedLinks = nestedLinks.length > 0 && selected;
 
   const content = (
     <ItemContent
       icon={icon}
       label={label}
       badge={badge}
-      opened={showChildren}
-      actions={children || []}
+      opened={Boolean(showNestedLinks)}
+      actions={actions}
     />
   );
-
-  if (asChild && !React.isValidElement(children)) {
-    console.error('[NavigationList] Link: children must be a valid element');
-    return null;
-  }
-
-  const childrenWithContent = children
-    ? cloneWithRef(children, {
-        children: content,
-      })
-    : null;
 
   const listCls = clsx({
     [s.SecondLevelList]: level === 0,
     [s.ThirdLevelList]: level > 0,
   });
 
+  const hoverProps = {
+    onMouseEnter: !selected ? hover : undefined,
+    onMouseLeave: unhover,
+  };
+
+  const inner = (
+    <>
+      {hovered && (
+        <motion.div
+          layout
+          layoutId={`${navigationListId}-nav-link-backdrop-${level}`}
+          className={s.Backdrop}
+        />
+      )}
+      {content}
+    </>
+  );
+
+  const nested = showNestedLinks ? (
+    <div className={listCls}>
+      <NavigationListLevelContext.Provider value={level + 1}>
+        {nestedLinks}
+      </NavigationListLevelContext.Provider>
+    </div>
+  ) : null;
+
+  if (asChild) {
+    if (!isValidElement(asChildElement)) {
+      console.error('[NavigationList] Link: when asChild=true, provide a single non-Link, non-action child element');
+      return null;
+    }
+    const childWithContent = React.cloneElement(asChildElement as React.ReactElement, {
+      children: inner,
+    });
+    return (
+      <>
+        <Slot ref={ref} className={className} style={style} {...hoverProps} {...restProps}>
+          {childWithContent}
+        </Slot>
+        {nested}
+      </>
+    );
+  }
+
   return (
     <>
       <div
-        ref={ref}
-        onMouseEnter={!selected ? hover : undefined}
-        onMouseLeave={unhover}
+        ref={ref as React.Ref<HTMLDivElement>}
+        className={className}
+        style={style}
+        {...hoverProps}
         {...restProps}
       >
-        {hovered && (
-          <motion.div
-            layout
-            layoutId={`${navigationListId}-navigation-list-link-backdrop-${level}`}
-            className={s.Backdrop}
-          />
-        )}
-        {content}
+        {inner}
       </div>
-
-      {/*{showChildren ? (
-        <div className={listCls}>
-          <NavigationListLevelContext.Provider value={level + 1}>
-            {children}
-          </NavigationListLevelContext.Provider>
-        </div>
-      ) : null}*/}
+      {nested}
     </>
   );
-};
+});
 
-export const Link = forwardRef<HTMLAnchorElement, NavigationListLinkProps>(
-  (props, ref) => {
-    const {
-      renderFunc = navigationListRenderFunc,
-      className,
-      style,
-      ...restProps
-    } = props;
+// ─── Link ─────────────────────────────────────────────────────────────────────
 
-    const listLevel = useNavigationListLevel();
+export const Link = memo(({
+  ref,
+  className,
+  style,
+  asChild,
+  children,
+  ...restProps
+}: NavigationListLinkProps) => {
+  const listLevel = useNavigationListLevel();
+  const { navigationList: { link: linkConfig } = {} } = useConfiguration();
 
-    const { navigationList: { link: linkConfig } = {} } = useConfiguration();
+  const [actions, nestedLinks, asChildElement] = useMemo(() => {
+    const actions: ReactElement[] = [];
+    const nestedLinks: ReactElement[] = [];
+    let asChildElement: ReactElement | null = null;
 
-    const [actions, childItems] = useMemo(() => {
-      const elements = new AltChildren(props.children);
-
-      const actions: ReactElement[] = [];
-      const childItems: ReactElement[] = [];
-
-      elements
-        .filterNodes()
-        .toArray()
-        .forEach((elem) => {
-          const element = elem as ReactElement;
-
-          if (DOMUtils.containsElementType(element, [LinkAction])) {
-            actions.push(element);
-          } else if (DOMUtils.containsElementType(element, [Link])) {
-            childItems.push(element);
-          }
-        });
-
-      return [actions, childItems];
-    }, [props.children]);
-
-    const cls = clsx(
-      s.Link,
-      {
-        [s.Selected]: props.selected,
-      },
-      className,
-      linkConfig?.className,
-    );
-
-    const styles = {
-      ...linkConfig?.style,
-      ...style,
-    };
-
-    return renderFunc(ref, {
-      ...restProps,
-      className: cls,
-      style: styles,
-      actions,
-      level: listLevel,
-      children: childItems,
+    new AltChildren(children).filterNodes().toArray().forEach((elem) => {
+      const element = elem as ReactElement;
+      if (DOMUtils.containsElementType(element, [LinkAction])) {
+        actions.push(element);
+      } else if (DOMUtils.containsElementType(element, [Link])) {
+        nestedLinks.push(element);
+      } else if (!asChildElement) {
+        asChildElement = element;
+      }
     });
-  },
-);
+
+    return [actions, nestedLinks, asChildElement];
+  }, [children]);
+
+  const cls = clsx(
+    s.Link,
+    { [s.Selected]: restProps.selected },
+    className,
+    linkConfig?.className,
+  );
+
+  const styles = {
+    ...linkConfig?.style,
+    ...style,
+  };
+
+  return (
+    <LinkInner
+      ref={ref}
+      className={cls}
+      style={styles}
+      asChild={asChild}
+      asChildElement={asChildElement}
+      actions={actions}
+      nestedLinks={nestedLinks}
+      level={listLevel}
+      {...restProps}
+    />
+  );
+});

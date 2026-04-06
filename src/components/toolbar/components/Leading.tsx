@@ -1,23 +1,14 @@
 import { memo } from 'react';
 import { ToolbarLeadingProps } from '../Toolbar.types.ts';
 import s from './group.module.scss';
-import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 
-export const Leading = memo<ToolbarLeadingProps>(
-  ({ children, className, style, ...restProps }) => {
-    const { toolbar: toolbarConfig = {} } = useConfiguration();
+export const Leading = memo(({ ref, children, className, style, ...restProps }: ToolbarLeadingProps) => {
+  const cls = clsx(s.Leading, className);
 
-    const cls = clsx(s.Leading, className, toolbarConfig.className);
-
-    const styles = {
-      ...style,
-    };
-
-    return (
-      <div className={cls} style={styles} {...restProps}>
-        {children}
-      </div>
-    );
-  }
-);
+  return (
+    <div ref={ref} className={cls} style={style} {...restProps}>
+      {children}
+    </div>
+  );
+});

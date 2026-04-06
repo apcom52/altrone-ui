@@ -6,48 +6,40 @@ import { useConfiguration } from 'components/configuration';
 import { AltChildren, DOMUtils } from '../../../utils';
 import { GroupAction } from './GroupAction.tsx';
 
-export const Group = memo<NavigationListGroupProps>(
-  ({ title, children, className, style, ...restProps }) => {
-    const { navigationList: { group: groupConfig } = {} } = useConfiguration();
+export const Group = memo(({ ref, title, children, className, style, ...restProps }: NavigationListGroupProps) => {
+  const { navigationList: { group: groupConfig } = {} } = useConfiguration();
 
-    const cls = clsx(s.Group, className, groupConfig?.className);
-    const titleCls = clsx(s.Title, groupConfig?.titleClassName);
+  const cls = clsx(s.Group, className, groupConfig?.className);
+  const titleCls = clsx(s.Title, groupConfig?.titleClassName);
 
-    const styles = {
-      ...groupConfig?.style,
-      ...style,
-    };
+  const styles = {
+    ...groupConfig?.style,
+    ...style,
+  };
 
-    const [actions, links] = useMemo(() => {
-      const actions: ReactElement[] = [];
-      const links: ReactElement[] = [];
+  const [actions, links] = useMemo(() => {
+    const actions: ReactElement[] = [];
+    const links: ReactElement[] = [];
 
-      const elements = new AltChildren(children);
+    new AltChildren(children).filterNodes().toArray().forEach((elem) => {
+      const element = elem as ReactElement;
+      if (DOMUtils.containsElementType(element, [GroupAction])) {
+        actions.push(element);
+      } else {
+        links.push(element);
+      }
+    });
 
-      elements
-        .filterNodes()
-        .toArray()
-        .forEach((elem) => {
-          const element = elem as ReactElement;
+    return [actions, links];
+  }, [children]);
 
-          if (DOMUtils.containsElementType(element, [GroupAction])) {
-            actions.push(element);
-          } else {
-            links.push(element);
-          }
-        });
-
-      return [actions, links];
-    }, [children]);
-
-    return (
-      <div className={cls} style={styles} {...restProps}>
-        <div className={s.Header}>
-          {title ? <div className={titleCls}>{title}</div> : null}
-          <div className={s.Actions}>{actions}</div>
-        </div>
-        {links}
+  return (
+    <div ref={ref} className={cls} style={styles} {...restProps}>
+      <div className={s.Header}>
+        {title ? <div className={titleCls}>{title}</div> : null}
+        <div className={s.Actions}>{actions}</div>
       </div>
-    );
-  },
-);
+      {links}
+    </div>
+  );
+});

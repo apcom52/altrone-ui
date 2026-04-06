@@ -1,53 +1,56 @@
-@import 'src/global/mixins';
-
 :global([data-altrone-root='true']) {
-    --spoiler-text-color: var(--accent-12);
-    --spoiler-border-color: var(--border-1);
-    --spoiler-text-size: 14px;
+  --spoiler-text-color: var(--accent-12);
+  --spoiler-border-color: var(--border-1);
+  --spoiler-text-size: var(--text-size-3);
+  --spoiler-heading-line-height: 32px;
 }
 
 .Spoiler {
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap);
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  width: 100%;
 
-    & + & {
-        border-top: 1px solid var(--spoiler-border-color);
-        padding-top: 8px;
-    }
+  & + & {
+    border-top: 1px solid var(--spoiler-border-color);
+    padding-top: 8px;
+  }
 }
 
 .Heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 var(--gap);
-    color: var(--spoiler-text-color);
-    cursor: pointer;
-    transition:
-        background-color 0.2s ease,
-        color 0.2s ease;
-    font-size: var(--spoiler-text-size);
-    font-weight: 600;
-    line-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--gap);
+  color: var(--spoiler-text-color);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+  font-size: var(--spoiler-text-size);
+  font-weight: var(--text-weight-bold);
+  line-height: var(--spoiler-heading-line-height);
+  user-select: none;
 
-    @include no-selection;
-    @include focus;
+  &:focus {
+    outline: none;
+  }
 
-    &::-webkit-details-marker {
-        display: none;
-    }
+  &:focus-visible {
+    outline: 2px solid var(--accent-8);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
 }
 
 .ArrowIcon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: inherit;
 }
 
 .Content {
-    padding: var(--gap);
-    overflow: hidden;
+  padding: var(--gap);
+  overflow: hidden;
 }

@@ -1,5 +1,3 @@
-@import 'src/global/mixins';
-
 .ToolbarWrapper {
   pointer-events: none;
   padding: 0;
@@ -12,7 +10,7 @@
   height: 56px;
 }
 
-.Fixed {
+.Absolute {
   position: absolute;
 }
 
@@ -23,7 +21,7 @@
 .Top {
   width: 100%;
 
-  &.Fixed {
+  &.Absolute {
     top: 0;
     left: 0;
   }
@@ -32,7 +30,7 @@
 .Bottom {
   width: 100%;
 
-  &.Fixed {
+  &.Absolute {
     bottom: 0;
     left: 0;
   }
@@ -46,7 +44,7 @@
   height: 100%;
   width: 72px;
 
-  &.Fixed {
+  &.Absolute {
     top: 0;
     left: 0;
   }
@@ -60,7 +58,7 @@
   height: 100%;
   width: 72px;
 
-  &.Fixed {
+  &.Absolute {
     top: 0;
     right: 0;
   }
