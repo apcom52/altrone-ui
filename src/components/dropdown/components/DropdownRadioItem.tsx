@@ -2,12 +2,12 @@ import { DropdownRadioListItem } from '../Dropdown.types';
 import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { useRadioListDropdownContext } from '../Dropdown.contexts.ts';
-import { Icon } from '../../icon';
 import s from './action.module.scss';
 import { useConfiguration } from 'components/configuration';
 import { useId } from 'react';
 import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
 import { mergeRefs } from 'utils/mergeRefs';
+import { Check } from 'lucide-react';
 
 export function DropdownRadioItem({
   ref,
@@ -73,9 +73,7 @@ export function DropdownRadioItem({
       {...props}
     >
       {itemBackgroundElement}
-      <div className={s.Icon}>
-        {value === selectedValue ? <Icon i="check" /> : null}
-      </div>
+      <div className={s.Icon}>{value === selectedValue ? <Check /> : null}</div>
       <div className={s.Label}>{label}</div>
     </button>
   );

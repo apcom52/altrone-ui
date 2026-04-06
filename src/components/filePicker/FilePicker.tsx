@@ -17,13 +17,13 @@ import {
 import s from './filePicker.module.scss';
 import { File } from './inner';
 import { Flex } from 'components/flex';
-import { Icon } from 'components/icon';
 import { deleteFileRequest } from './FilePicker.utils.ts';
 import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import { FilePickerContext } from './FilePicker.context.ts';
 import { useLocalization } from '../application/useLocalization.tsx';
 import { GlobalUtils } from 'utils';
+import { Upload } from 'lucide-react';
 
 export const FilePicker = memo<FilePickerProps>(
   ({
@@ -47,8 +47,13 @@ export const FilePicker = memo<FilePickerProps>(
     const t = useLocalization();
     const { filePicker: filePickerConfig = {} } = useConfiguration();
 
-    const [internalFileList, setInternalFileList] = useState<InternalFileItem[]>(() =>
-      defaultValue.map((item) => ({ ...item, id: item.id ?? GlobalUtils.uuid() }))
+    const [internalFileList, setInternalFileList] = useState<
+      InternalFileItem[]
+    >(() =>
+      defaultValue.map((item) => ({
+        ...item,
+        id: item.id ?? GlobalUtils.uuid(),
+      })),
     );
 
     const isControlled = value !== undefined;
@@ -121,7 +126,7 @@ export const FilePicker = memo<FilePickerProps>(
           onChange?.(newList, e);
         }
       },
-      [multiple, autoUpload, url, name, removeFileFn, onChange, isControlled]
+      [multiple, autoUpload, url, name, removeFileFn, onChange, isControlled],
     );
 
     const deleteFile = useCallback(
@@ -130,7 +135,7 @@ export const FilePicker = memo<FilePickerProps>(
         if (!isControlled) setInternalFileList(newList);
         onChange?.(newList, event);
       },
-      [isControlled, onChange]
+      [isControlled, onChange],
     );
 
     const cls = clsx(s.FilePicker, className, filePickerConfig.className);
@@ -172,7 +177,7 @@ export const FilePicker = memo<FilePickerProps>(
             />
           ))}
           <Button
-            leftIcon={<Icon i="file_upload" />}
+            icon={<Upload />}
             label={placeholder || t('filePicker.placeholder')}
             onClick={chooseFiles}
           />

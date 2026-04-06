@@ -5,12 +5,40 @@ import {
   Divider,
   Dropdown,
   Flex,
-  Icon,
   Text,
 } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { useState } from 'react';
+import {
+  AlignLeft,
+  ChevronDown,
+  ChevronUp,
+  Code,
+  Copy,
+  CreditCard,
+  Download,
+  FileText,
+  FolderInput,
+  GitBranch,
+  HelpCircle,
+  History,
+  Home,
+  Link,
+  LogOut,
+  Mail,
+  Menu,
+  Pencil,
+  Plus,
+  Settings,
+  Share2,
+  Star,
+  Trash,
+  Upload,
+  User,
+  UserPlus,
+  Users,
+} from 'lucide-react';
 
 const story: Meta<typeof Dropdown> = {
   title: 'Components/Containers/Dropdown',
@@ -62,20 +90,17 @@ function GitBranchMenu() {
           </Dropdown.RadioList>
           <Divider />
           <Dropdown.Action
-            icon={<Icon i="add" />}
+            icon={<Plus />}
             label="New branch from current"
             hintText="⌘+B"
           />
           <Dropdown.Action
-            icon={<Icon i="upload" />}
+            icon={<Upload />}
             label={isPushing ? 'Pushing...' : 'Push to origin'}
             disabled={isPushing}
             onClick={handlePush}
           />
-          <Dropdown.ChildMenu
-            icon={<Icon i="history" />}
-            label="Recent branches"
-          >
+          <Dropdown.ChildMenu icon={<History />} label="Recent branches">
             <Dropdown.Action label="feat/avatar-stories" />
             <Dropdown.Action label="fix/tooltip-placement" />
             <Dropdown.Action label="chore/deps-update" />
@@ -83,7 +108,7 @@ function GitBranchMenu() {
           <Divider />
           <Dropdown.Action
             danger
-            icon={<Icon i="delete" />}
+            icon={<Trash />}
             label="Delete branch"
             disabled={currentBranch === 'main'}
           />
@@ -92,9 +117,9 @@ function GitBranchMenu() {
     >
       {({ opened }) => (
         <Button
-          icon={<Icon i="account_tree" />}
+          icon={<GitBranch />}
           label={currentBranch}
-          additionalIcon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
+          additionalIcon={opened ? <ChevronUp /> : <ChevronDown />}
         />
       )}
     </Dropdown>
@@ -117,7 +142,7 @@ function AccountMenu() {
         <Dropdown.Menu>
           <Dropdown.Action
             asChild
-            icon={<Icon i="person" />}
+            icon={<User />}
             label="Alex Petrov"
             hintText="@apcom"
           >
@@ -125,16 +150,12 @@ function AccountMenu() {
           </Dropdown.Action>
           <Divider />
           <Dropdown.Action
-            icon={<Icon i="manage_accounts" />}
+            icon={<Users />}
             label="Profile settings"
             hintText="⌘+,"
           />
-          <Dropdown.Action
-            icon={<Icon i="credit_card" />}
-            label="Billing"
-            badge="PRO"
-          />
-          <Dropdown.Action icon={<Icon i="group" />} label="Team settings" />
+          <Dropdown.Action icon={<CreditCard />} label="Billing" badge="PRO" />
+          <Dropdown.Action icon={<Users />} label="Team settings" />
           <Divider />
           <Dropdown.RadioList
             label="Theme"
@@ -157,7 +178,7 @@ function AccountMenu() {
             label="Compact mode"
           />
           <Divider />
-          <Dropdown.Action danger icon={<Icon i="logout" />} label="Sign out" />
+          <Dropdown.Action danger icon={<LogOut />} label="Sign out" />
         </Dropdown.Menu>
       }
     >
@@ -174,63 +195,28 @@ function FileContextMenu() {
       placement="bottom-start"
       content={
         <Dropdown.Menu>
-          <Dropdown.Action
-            icon={<Icon i="edit" />}
-            label="Rename"
-            hintText="F2"
-          />
-          <Dropdown.Action
-            icon={<Icon i="content_copy" />}
-            label="Duplicate"
-            hintText="⌘+D"
-          />
-          <Dropdown.Action
-            icon={<Icon i="drive_file_move" />}
-            label="Move to..."
-          />
-          <Dropdown.ChildMenu icon={<Icon i="ios_share" />} label="Share">
-            <Dropdown.Action
-              icon={<Icon i="link" />}
-              label="Copy link"
-              hintText="⌘+L"
-            />
-            <Dropdown.Action icon={<Icon i="mail" />} label="Send by email" />
-            <Dropdown.Action
-              icon={<Icon i="group_add" />}
-              label="Invite collaborators"
-            />
+          <Dropdown.Action icon={<Pencil />} label="Rename" hintText="F2" />
+          <Dropdown.Action icon={<Copy />} label="Duplicate" hintText="⌘+D" />
+          <Dropdown.Action icon={<FolderInput />} label="Move to..." />
+          <Dropdown.ChildMenu icon={<Share2 />} label="Share">
+            <Dropdown.Action icon={<Link />}     label="Copy link"            hintText="⌘+L" />
+            <Dropdown.Action icon={<Mail />}     label="Send by email" />
+            <Dropdown.Action icon={<UserPlus />} label="Invite collaborators" />
           </Dropdown.ChildMenu>
-          <Dropdown.ChildMenu icon={<Icon i="download" />} label="Export as">
-            <Dropdown.Action label="PDF" icon={<Icon i="picture_as_pdf" />} />
-            <Dropdown.Action label="Markdown" icon={<Icon i="code" />} />
-            <Dropdown.Action
-              label="Plain text"
-              icon={<Icon i="text_snippet" />}
-            />
+          <Dropdown.ChildMenu icon={<Download />} label="Export as">
+            <Dropdown.Action label="PDF"        icon={<FileText />} />
+            <Dropdown.Action label="Markdown"   icon={<Code />} />
+            <Dropdown.Action label="Plain text" icon={<AlignLeft />} />
           </Dropdown.ChildMenu>
           <Divider />
-          <Dropdown.Action icon={<Icon i="star" />} label="Add to favourites" />
-          <Dropdown.Action
-            icon={<Icon i="history" />}
-            label="Version history"
-            badge="12"
-          />
+          <Dropdown.Action icon={<Star />}    label="Add to favourites" />
+          <Dropdown.Action icon={<History />} label="Version history" badge="12" />
           <Divider />
-          <Dropdown.Action
-            danger
-            icon={<Icon i="delete" />}
-            label="Move to trash"
-            hintText="⌫"
-          />
+          <Dropdown.Action danger icon={<Trash />} label="Move to trash" hintText="⌫" />
         </Dropdown.Menu>
       }
     >
-      <Button
-        icon={<Icon i="more_horiz" />}
-        label="Actions"
-        showLabel={false}
-        tooltip="File actions"
-      />
+      <Button icon={<Pencil />} label="Actions" showLabel={false} tooltip="File actions" />
     </Dropdown>
   );
 }
@@ -243,39 +229,20 @@ function AsChildDemo() {
       placement="bottom-start"
       content={
         <Dropdown.Menu>
-          <Dropdown.Action
-            asChild
-            icon={<Icon i="home" />}
-            label="Dashboard"
-            hintText="⌘+1"
-          >
+          <Dropdown.Action asChild icon={<Home />} label="Dashboard" hintText="⌘+1">
             <a href="#dashboard" onClick={(e) => e.preventDefault()} />
           </Dropdown.Action>
-          <Dropdown.Action
-            asChild
-            icon={<Icon i="settings" />}
-            label="Settings"
-            hintText="⌘+,"
-          >
+          <Dropdown.Action asChild icon={<Settings />} label="Settings" hintText="⌘+,">
             <a href="#settings" onClick={(e) => e.preventDefault()} />
           </Dropdown.Action>
           <Divider />
-          <Dropdown.Action
-            asChild
-            icon={<Icon i="help" />}
-            label="Documentation"
-          >
-            <a
-              href="https://example.com"
-              target="_blank"
-              rel="noreferrer"
-              onClick={(e) => e.preventDefault()}
-            />
+          <Dropdown.Action asChild icon={<HelpCircle />} label="Documentation">
+            <a href="https://example.com" target="_blank" rel="noreferrer" onClick={(e) => e.preventDefault()} />
           </Dropdown.Action>
         </Dropdown.Menu>
       }
     >
-      <Button icon={<Icon i="menu" />} label="Navigation" />
+      <Button icon={<Menu />} label="Navigation" />
     </Dropdown>
   );
 }

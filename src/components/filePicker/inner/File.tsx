@@ -6,7 +6,6 @@ import {
   FileStatus,
 } from '../FilePicker.types.ts';
 import s from './file.module.scss';
-import { Icon } from 'components/icon';
 import { Loading } from 'components/loading';
 import { Popover } from 'components/popover';
 import { Text } from 'components/text';
@@ -16,7 +15,7 @@ import { useFilePickerContext } from '../FilePicker.context.ts';
 import { deleteFileRequest } from '../FilePicker.utils.ts';
 import { useLocalization } from '../../application/useLocalization.tsx';
 import { CloseButton } from 'components/closeButton/CloseButton.tsx';
-import { RotateCw } from 'lucide-react';
+import { CircleAlert, RotateCw } from 'lucide-react';
 import { Button } from 'components/button/Button.tsx';
 
 export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
@@ -41,11 +40,11 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
         setProgress(
           uploadedBytes > file?.size
             ? 100
-            : Math.round((uploadedBytes / file?.size) * 100)
+            : Math.round((uploadedBytes / file?.size) * 100),
         );
       }
     },
-    [file?.size]
+    [file?.size],
   );
 
   const setStartStatus = useCallback(() => {
@@ -90,48 +89,54 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
   }, [url, name, file, pickerItem]);
 
   // SSR: requires client — XMLHttpRequest is browser-only
-  const uploadFile = useCallback(async (context: FilePickerUploadContext) => {
-    if (file) {
-      const request = new XMLHttpRequest();
-      request.open(context.method, context.url);
+  const uploadFile = useCallback(
+    async (context: FilePickerUploadContext) => {
+      if (file) {
+        const request = new XMLHttpRequest();
+        request.open(context.method, context.url);
 
-      const formData = new FormData();
-      formData.append(context.name, context.file);
+        const formData = new FormData();
+        formData.append(context.name, context.file);
 
-      context.startUploading();
+        context.startUploading();
 
-      request.upload.addEventListener('progress', (e) => {
-        context.setProgress(e.loaded);
-      });
+        request.upload.addEventListener('progress', (e) => {
+          context.setProgress(e.loaded);
+        });
 
-      request.onerror = () => {
-        context.fail();
-      };
+        request.onerror = () => {
+          context.fail();
+        };
 
-      request.onload = (e: ProgressEvent<XMLHttpRequestEventTarget>) => {
-        const xhr = e.target as XMLHttpRequest;
-        if (xhr?.status >= 200 && xhr.status < 300) {
-          context.complete();
-        } else {
-          context.fail(t('filePicker.errorMessage'));
-        }
-      };
+        request.onload = (e: ProgressEvent<XMLHttpRequestEventTarget>) => {
+          const xhr = e.target as XMLHttpRequest;
+          if (xhr?.status >= 200 && xhr.status < 300) {
+            context.complete();
+          } else {
+            context.fail(t('filePicker.errorMessage'));
+          }
+        };
 
-      request.send(formData);
-    }
-  }, [file]);
-
-  const onRemoveClick = useCallback(async (event: React.MouseEvent) => {
-    if (autoUpload) {
-      if (removeFileFn) {
-        await removeFileFn(deleteContext);
-      } else {
-        await deleteFileRequest(deleteContext);
+        request.send(formData);
       }
-    }
+    },
+    [file],
+  );
 
-    onDeleteClick(pickerItem, event);
-  }, [autoUpload, removeFileFn, deleteContext, onDeleteClick, pickerItem]);
+  const onRemoveClick = useCallback(
+    async (event: React.MouseEvent) => {
+      if (autoUpload) {
+        if (removeFileFn) {
+          await removeFileFn(deleteContext);
+        } else {
+          await deleteFileRequest(deleteContext);
+        }
+      }
+
+      onDeleteClick(pickerItem, event);
+    },
+    [autoUpload, removeFileFn, deleteContext, onDeleteClick, pickerItem],
+  );
 
   useEffect(() => {
     if (autoUpload && uploadContext && file && status === 'selected') {
@@ -160,12 +165,15 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
       {errorMessage ? (
         <Popover
           placement="top"
-          showArrow
           trigger={['click', 'hover']}
-          content={<Text.Paragraph size="s">{errorMessage}</Text.Paragraph>}
+          content={
+            <Text block size={4}>
+              {errorMessage}
+            </Text>
+          }
         >
           <div className={s.Alert}>
-            <Icon i="warning" />
+            <CircleAlert />
           </div>
         </Popover>
       ) : null}

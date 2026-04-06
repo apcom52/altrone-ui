@@ -2,11 +2,12 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Select } from './Select.tsx';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { Button, Flex, Icon } from 'components';
+import { Button, Flex } from 'components';
 import { useState } from 'react';
 import { Text } from '../text';
 import { Option } from './Select.types.ts';
 import { SELECT_COUNTRIES } from './constants.ts';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 // import { userEvent, within, expect } from '@storybook/test';
 
 const story: Meta<typeof Select> = {
@@ -160,9 +161,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               <Button
                 style={{ minWidth: '300px' }}
                 label={(selectedOptions as Option)?.label}
-                additionalIcon={
-                  <Icon i={expanded ? 'expand_less' : 'expand_more'} />
-                }
+                additionalIcon={expanded ? <ChevronUp /> : <ChevronDown />}
               />
             )}
           />
@@ -179,9 +178,6 @@ export const TextInputStory: StoryObj<typeof Flex> = {
                 label={(selectedOptions as Option[])
                   .map((item) => `[${item?.label}]`)
                   .join(', ')}
-                rightIcon={
-                  <Icon i={expanded ? 'expand_less' : 'expand_more'} />
-                }
               />
             )}
           />

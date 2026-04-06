@@ -18,11 +18,11 @@ import {
 import { Popover } from 'components/popover';
 import { PopoverDatePickerContent } from '../inner/PopoverDatePickerContent.tsx';
 import { TextInput } from 'components/textInput';
-import { Icon } from 'components/icon';
 import warningOnce from 'rc-util/es/warning';
 import { useConfiguration } from 'components/configuration';
 import { useLocalization } from 'components/application';
 import { useLocale } from 'utils';
+import { Calendar } from 'lucide-react';
 
 export const RangePicker = memo<RangePickerProps>((props) => {
   const t = useLocalization();
@@ -53,7 +53,7 @@ export const RangePicker = memo<RangePickerProps>((props) => {
   useEffect(() => {
     warningOnce(
       !(minDate && maxDate && minDate.isSameOrAfter(maxDate)),
-      '[DatePicker]: minDate prop has to be before maxDate'
+      '[DatePicker]: minDate prop has to be before maxDate',
     );
   }, [minDate, maxDate]);
 
@@ -69,7 +69,7 @@ export const RangePicker = memo<RangePickerProps>((props) => {
   const onChangeHandler = useCallback(
     (
       selectedDate: Dayjs | undefined,
-      event?: React.MouseEvent<HTMLButtonElement>
+      event?: React.MouseEvent<HTMLButtonElement>,
     ) => {
       if (!selectedDate) {
         onChange?.([], event);
@@ -145,7 +145,7 @@ export const RangePicker = memo<RangePickerProps>((props) => {
                 <TextInput.IconIsland
                   className={s.ArrowIcon}
                   placement="right"
-                  icon={<Icon i="calendar_month" />}
+                  icon={<Calendar />}
                 />
               ) : null}
             </TextInput>

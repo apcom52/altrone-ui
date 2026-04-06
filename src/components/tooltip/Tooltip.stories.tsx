@@ -1,7 +1,28 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Avatar, Button, Divider, Flex, Icon, Text } from 'components';
+import { Avatar, Button, Divider, Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { Tooltip } from './Tooltip.tsx';
+import {
+  AlignCenter,
+  AlignLeft,
+  AlignRight,
+  Bold,
+  Download,
+  History,
+  Image,
+  Italic,
+  Link,
+  Play,
+  Save,
+  Settings,
+  Sparkles,
+  Strikethrough,
+  Table,
+  Terminal,
+  Trash,
+  Underline,
+} from 'lucide-react';
+import { ReactElement } from 'react';
 
 const story: Meta<typeof Tooltip> = {
   title: 'Components/Containers/Tooltip',
@@ -28,18 +49,18 @@ export const TooltipStory: StoryObj<typeof Tooltip> = {
           <Flex direction="horizontal" gap="l" align="center">
             <Tooltip content="Файл не найден на сервере" />
             <Tooltip content="Нажмите, чтобы открыть настройки">
-              <Button icon={<Icon i="settings" />} label="Настройки" />
+              <Button icon={<Settings />} label="Настройки" />
             </Tooltip>
             <Tooltip content="Запустить тесты" kbd="⌘+T">
               <Button
-                icon={<Icon i="play_arrow" />}
+                icon={<Play />}
                 label="Тесты"
                 showLabel={false}
               />
             </Tooltip>
             <Tooltip content="Сохранить изменения" kbd="⌘+S">
               <Button
-                icon={<Icon i="save" />}
+                icon={<Save />}
                 label="Сохранить"
                 showLabel={false}
                 variant="submit"
@@ -47,7 +68,7 @@ export const TooltipStory: StoryObj<typeof Tooltip> = {
             </Tooltip>
             <Tooltip content="Удалить безвозвратно" kbd="⌫">
               <Button
-                icon={<Icon i="delete" />}
+                icon={<Trash />}
                 label="Удалить"
                 showLabel={false}
                 danger
@@ -73,14 +94,14 @@ export const TooltipStory: StoryObj<typeof Tooltip> = {
               content="Открыть командную строку редактора"
               kbd="⌘+P"
             >
-              <Button icon={<Icon i="terminal" />} label="Команды" />
+              <Button icon={<Terminal />} label="Команды" />
             </Tooltip>
             <Tooltip
               title="Форматирование"
               content="Применить автоформатирование ко всему файлу"
               kbd="⇧+⌥+F"
             >
-              <Button icon={<Icon i="auto_fix_high" />} label="Форматировать" />
+              <Button icon={<Sparkles />} label="Форматировать" />
             </Tooltip>
             <Tooltip
               title="Git blame"
@@ -88,7 +109,7 @@ export const TooltipStory: StoryObj<typeof Tooltip> = {
               kbd="⌘+⇧+G"
             >
               <Button
-                icon={<Icon i="history" />}
+                icon={<History />}
                 label="История"
                 showLabel={false}
               />
@@ -97,7 +118,7 @@ export const TooltipStory: StoryObj<typeof Tooltip> = {
               title="Недоступно"
               content="Сначала выберите хотя бы одну строку в таблице"
             >
-              <Button icon={<Icon i="download" />} label="Экспорт" disabled />
+              <Button icon={<Download />} label="Экспорт" disabled />
             </Tooltip>
           </Flex>
         </Flex>
@@ -195,15 +216,17 @@ export const TooltipStory: StoryObj<typeof Tooltip> = {
               width: 'fit-content',
             }}
           >
-            {[
-              { icon: 'format_bold', label: 'Жирный', kbd: '⌘+B' },
-              { icon: 'format_italic', label: 'Курсив', kbd: '⌘+I' },
-              { icon: 'format_underlined', label: 'Подчёркнутый', kbd: '⌘+U' },
-              { icon: 'strikethrough_s', label: 'Зачёркнутый', kbd: '⌘+⇧+S' },
-            ].map(({ icon, label, kbd }) => (
-              <Tooltip key={icon} content={label} kbd={kbd} placement="bottom">
+            {(
+              [
+                { icon: <Bold />, label: 'Жирный', kbd: '⌘+B' },
+                { icon: <Italic />, label: 'Курсив', kbd: '⌘+I' },
+                { icon: <Underline />, label: 'Подчёркнутый', kbd: '⌘+U' },
+                { icon: <Strikethrough />, label: 'Зачёркнутый', kbd: '⌘+⇧+S' },
+              ] as { icon: ReactElement; label: string; kbd: string }[]
+            ).map(({ icon, label, kbd }) => (
+              <Tooltip key={label} content={label} kbd={kbd} placement="bottom">
                 <Button
-                  icon={<Icon i={icon} />}
+                  icon={icon}
                   label={label}
                   showLabel={false}
                   variant="text"
@@ -214,22 +237,16 @@ export const TooltipStory: StoryObj<typeof Tooltip> = {
               direction="vertical"
               style={{ height: 20, margin: '0 4px' }}
             />
-            {[
-              {
-                icon: 'format_align_left',
-                label: 'По левому краю',
-                kbd: '⌘+⇧+L',
-              },
-              { icon: 'format_align_center', label: 'По центру', kbd: '⌘+⇧+E' },
-              {
-                icon: 'format_align_right',
-                label: 'По правому краю',
-                kbd: '⌘+⇧+R',
-              },
-            ].map(({ icon, label, kbd }) => (
-              <Tooltip key={icon} content={label} kbd={kbd} placement="bottom">
+            {(
+              [
+                { icon: <AlignLeft />, label: 'По левому краю', kbd: '⌘+⇧+L' },
+                { icon: <AlignCenter />, label: 'По центру', kbd: '⌘+⇧+E' },
+                { icon: <AlignRight />, label: 'По правому краю', kbd: '⌘+⇧+R' },
+              ] as { icon: ReactElement; label: string; kbd: string }[]
+            ).map(({ icon, label, kbd }) => (
+              <Tooltip key={label} content={label} kbd={kbd} placement="bottom">
                 <Button
-                  icon={<Icon i={icon} />}
+                  icon={icon}
                   label={label}
                   showLabel={false}
                   variant="text"
@@ -240,14 +257,16 @@ export const TooltipStory: StoryObj<typeof Tooltip> = {
               direction="vertical"
               style={{ height: 20, margin: '0 4px' }}
             />
-            {[
-              { icon: 'link', label: 'Вставить ссылку', kbd: '⌘+K' },
-              { icon: 'image', label: 'Вставить изображение' },
-              { icon: 'table_chart', label: 'Вставить таблицу' },
-            ].map(({ icon, label, kbd }) => (
-              <Tooltip key={icon} content={label} kbd={kbd} placement="bottom">
+            {(
+              [
+                { icon: <Link />, label: 'Вставить ссылку', kbd: '⌘+K' },
+                { icon: <Image />, label: 'Вставить изображение', kbd: undefined },
+                { icon: <Table />, label: 'Вставить таблицу', kbd: undefined },
+              ] as { icon: ReactElement; label: string; kbd?: string }[]
+            ).map(({ icon, label, kbd }) => (
+              <Tooltip key={label} content={label} kbd={kbd} placement="bottom">
                 <Button
-                  icon={<Icon i={icon} />}
+                  icon={icon}
                   label={label}
                   showLabel={false}
                   variant="text"

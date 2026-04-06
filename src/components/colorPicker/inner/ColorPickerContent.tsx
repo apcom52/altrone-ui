@@ -1,7 +1,6 @@
 import {
   Button,
   Flex,
-  Icon,
   NumberInput,
   Tabs,
   TextInput,
@@ -12,13 +11,12 @@ import { ColorPickerProps } from '../ColorPicker.types';
 import { ColorPreset } from './ColorPreset';
 import s from './colorPickerContent.module.scss';
 import { HexAlphaColorPicker } from 'react-colorful';
-import { Delete } from 'lucide-react';
+import { Delete, Grid3X3, Palette } from 'lucide-react';
 
-interface ColorPickerContentProps
-  extends Pick<
-    ColorPickerProps,
-    'colorPresets' | 'value' | 'onChange' | 'allowPalette' | 'clearable'
-  > {
+interface ColorPickerContentProps extends Pick<
+  ColorPickerProps,
+  'colorPresets' | 'value' | 'onChange' | 'allowPalette' | 'clearable'
+> {
   closePopup: () => void;
 }
 
@@ -100,13 +98,13 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
       {tabsAmount >= 2 ? (
         <Tabs>
           <Tabs.Item
-            icon={<Icon i="apps" />}
+            icon={<Grid3X3 />}
             label={t('colorPicker.savedColors')}
             onClick={() => setMode('presets')}
             selected={mode === 'presets'}
           />
           <Tabs.Item
-            icon={<Icon i="palette" />}
+            icon={<Palette />}
             label={t('colorPicker.palette')}
             onClick={() => setMode('palette')}
             selected={mode === 'palette'}

@@ -1,20 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import {
-  Avatar,
-  Button,
-  Flex,
-  Icon,
-  Progress,
-  Radio,
-  Tags,
-  Text,
-} from 'components';
+import { Avatar, Button, Flex, Progress, Radio, Tags, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Popover } from './Popover.tsx';
 import { PopoverRef } from './Popover.types.ts';
 import { getAllPlacements } from './utils/placementUtils';
+import { ChevronDown, ChevronUp, Lightbulb, Logs, Rocket } from 'lucide-react';
 // import { expect, userEvent, within } from '@storybook/test';
 
 const story: Meta<typeof Popover> = {
@@ -76,7 +68,7 @@ export const PopoverStory: StoryObj<typeof Flex> = {
             </Flex>
           }
         >
-          <Button label="Show more details" icon={<Icon i="lightbulb" />} />
+          <Button label="Show more details" icon={<Lightbulb />} />
         </Popover>
         <Popover
           style={{ maxWidth: '150px' }}
@@ -600,7 +592,7 @@ export const MissionControlStory: StoryObj<typeof Flex> = {
             {({ opened }) => (
               <Button
                 label={opened ? 'Close' : `Phase: ${missionPhase}`}
-                icon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
+                icon={opened ? <ChevronUp /> : <ChevronDown />}
               />
             )}
           </Popover>
@@ -666,10 +658,7 @@ export const MissionControlStory: StoryObj<typeof Flex> = {
               </Flex>
             )}
           >
-            <Button
-              label={`Logs (${logs.length})`}
-              icon={<Icon i="description" />}
-            />
+            <Button label={`Logs (${logs.length})`} icon={<Logs />} />
           </Popover>
         </Flex>
 
@@ -706,7 +695,7 @@ export const MissionControlStory: StoryObj<typeof Flex> = {
               <Button
                 label="Launch Control"
                 variant="submit"
-                icon={<Icon i="rocket_launch" />}
+                icon={<Rocket />}
               />
             </Popover>
           </Flex>

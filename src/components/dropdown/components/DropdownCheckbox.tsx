@@ -1,12 +1,12 @@
 import { DropdownCheckboxProps } from '../Dropdown.types';
 import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
-import { Icon } from 'components/icon';
 import s from './action.module.scss';
 import { useConfiguration } from 'components/configuration';
 import { useId } from 'react';
 import { useDropdownItemHover } from '../useDropdownItemHover';
 import { mergeRefs } from 'utils/mergeRefs';
+import { Check } from 'lucide-react';
 
 export function DropdownCheckbox({
   ref,
@@ -73,7 +73,7 @@ export function DropdownCheckbox({
       {...props}
     >
       {itemBackgroundElement}
-      <div className={s.Icon}>{checked ? <Icon i="check" /> : null}</div>
+      <div className={s.Icon}>{checked ? <Check /> : null}</div>
       <div className={s.Label}>{label}</div>
     </button>
   );

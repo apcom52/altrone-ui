@@ -3,9 +3,7 @@ import { Flex } from '../../flex';
 import { Text } from '../../text';
 import { DataTable } from '../DataTable.tsx';
 import { EMPLOYEES, EmployeeType } from './EMPLOYEES.ts';
-import { Icon } from '../../icon';
-// import { expect, userEvent, within } from '@storybook/test';
-import { AsyncUtils } from '../../../utils';
+import { Check, X } from 'lucide-react';
 
 export const FiltersDataTableStory: StoryObj<typeof Flex> = {
   name: 'e2e tests for filters',
@@ -35,7 +33,7 @@ export const FiltersDataTableStory: StoryObj<typeof Flex> = {
               filterable: true,
               Component: ({ value }) => (
                 <Text size={3} block>
-                  {value ? <Icon i="check" /> : <Icon i="close" />}
+                  {value ? <Check /> : <X />}
                 </Text>
               ),
             },

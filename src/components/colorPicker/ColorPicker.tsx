@@ -3,7 +3,6 @@ import { ColorPickerProps, ColorPreset } from './ColorPicker.types';
 import {
   TextInput,
   Popover,
-  Icon,
   useConfiguration,
   useLocalization,
   DummyBox,
@@ -13,6 +12,7 @@ import { ColorPickerContent } from './inner/ColorPickerContent';
 import { Size } from 'types';
 import { isValidElement, useCallback } from 'react';
 import { Slot } from 'utils/components/Slot';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const EMPTY_COLOR_PRESETS: ColorPreset[] = [];
 
@@ -84,17 +84,25 @@ export const ColorPicker = (props: ColorPickerProps) => {
       {({ opened }) => {
         if (asChild) {
           if (!isValidElement(children)) {
-            console.error('[ColorPicker] asChild requires a single valid React element as children');
+            console.error(
+              '[ColorPicker] asChild requires a single valid React element as children',
+            );
             return null;
           }
 
-          const childProps = (children as React.ReactElement).props as Record<string, unknown>;
+          const childProps = (children as React.ReactElement).props as Record<
+            string,
+            unknown
+          >;
 
           return (
             <Slot
               ref={ref}
               className={clsx(childProps.className as string | undefined, cls)}
-              style={{ ...(childProps.style as React.CSSProperties | undefined), ...styles }}
+              style={{
+                ...(childProps.style as React.CSSProperties | undefined),
+                ...styles,
+              }}
               data-value={value || undefined}
               data-opened={opened}
             >
@@ -139,7 +147,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
             {!readOnly && (
               <TextInput.IconIsland
                 placement="right"
-                icon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
+                icon={opened ? <ChevronUp /> : <ChevronDown />}
               />
             )}
           </TextInput>

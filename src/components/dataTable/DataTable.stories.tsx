@@ -6,7 +6,6 @@ import { COUNTRIES } from '../scrollable/Scrollable.constants.ts';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Dropdown } from '../dropdown';
-import { Icon } from '../icon';
 import { Popover } from '../popover';
 import { EMPLOYEES, EmployeeType } from './stories/EMPLOYEES.ts';
 import { InvoiceStory } from './stories/InvoiceStory.tsx';
@@ -20,6 +19,7 @@ import { ProjectTrackerStory } from './stories/ProjectTrackerStory.tsx';
 import { ServerCallbacksStory } from './stories/ServerCallbacksStory.tsx';
 import { useState } from 'react';
 import { FilterType, Sorting } from './DataTable.types.ts';
+import { Play } from 'lucide-react';
 
 const meta: Meta<typeof DataTable<any>> = {
   component: DataTable,
@@ -55,7 +55,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
       direction: 'desc',
     });
     const [defaultFilters, setDefaultFilters] = useState<Filter[] | undefined>(
-      []
+      [],
     );
 
     return (
@@ -95,7 +95,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               setDefaultSorting(
                 defaultSorting
                   ? undefined
-                  : { field: 'country', direction: 'desc' }
+                  : { field: 'country', direction: 'desc' },
               )
             }
           />
@@ -108,14 +108,8 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <Dropdown
             content={
               <Dropdown.Menu>
-                <Dropdown.Action
-                  icon={<Icon i="play_arrow" />}
-                  label="Test A"
-                />
-                <Dropdown.Action
-                  icon={<Icon i="play_arrow" />}
-                  label="Test B"
-                />
+                <Dropdown.Action icon={<Play />} label="Test A" />
+                <Dropdown.Action icon={<Play />} label="Test B" />
               </Dropdown.Menu>
             }
           >
@@ -125,10 +119,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             title="Custom popover"
             content={<Text block>Content is here</Text>}
           >
-            <DataTable.Action
-              icon={<Icon i="sports_esports" />}
-              label="Popover"
-            />
+            <DataTable.Action icon={<Play />} label="Popover" />
           </Popover>
         </DataTable>
       </Flex>

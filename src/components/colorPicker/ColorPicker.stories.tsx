@@ -1,11 +1,21 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Button, Divider, Flex, Icon, Text, Tooltip } from 'components';
+import { Button, Divider, Flex, Text, Tooltip } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { ColorPicker } from './ColorPicker.tsx';
 import { COLORS } from './COLORS.ts';
 import { useState } from 'react';
 import { ColorPreset } from './ColorPicker.types.ts';
+import {
+  Baseline,
+  Bold,
+  Italic,
+  Paintbrush,
+  TextAlignCenter,
+  TextAlignEnd,
+  TextAlignStart,
+  Underline,
+} from 'lucide-react';
 
 const story: Meta<typeof ColorPicker> = {
   title: 'Components/Form/ColorPicker',
@@ -59,8 +69,12 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
   name: 'Using ColorPicker',
   render: () => {
     const [basic, setBasic] = useState<string | undefined>('#3B82F6');
-    const [paletteOnly, setPaletteOnly] = useState<string | undefined>('#22C55E');
-    const [presetsOnly, setPresetsOnly] = useState<string | undefined>(COLORS[4].value);
+    const [paletteOnly, setPaletteOnly] = useState<string | undefined>(
+      '#22C55E',
+    );
+    const [presetsOnly, setPresetsOnly] = useState<string | undefined>(
+      COLORS[4].value,
+    );
     const [clearable, setClearable] = useState<string | undefined>('#F59E0B');
     const [textColor, setTextColor] = useState<string | undefined>('#0F172A');
     const [highlight, setHighlight] = useState<string | undefined>('#FEF08A');
@@ -73,10 +87,11 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
 
     return (
       <Flex direction="vertical" gap="xl" style={{ padding: '20px' }}>
-
         {/* Basic modes */}
         <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">Режимы выбора цвета</Text>
+          <Text size={5} weight="bold">
+            Режимы выбора цвета
+          </Text>
           <Text>
             Компонент поддерживает три режима: палитра + пресеты, только палитра
             и только пресеты. Если пресеты переданы, они показываются по
@@ -84,7 +99,9 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
           </Text>
           <Flex direction="horizontal" gap="m" align="center">
             <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">Палитра + пресеты</Text>
+              <Text size={3} color="secondary">
+                Палитра + пресеты
+              </Text>
               <ColorPicker
                 colorPresets={COLORS}
                 value={basic}
@@ -93,7 +110,9 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
               />
             </Flex>
             <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">Только палитра</Text>
+              <Text size={3} color="secondary">
+                Только палитра
+              </Text>
               <ColorPicker
                 value={paletteOnly}
                 onChange={setPaletteOnly}
@@ -101,7 +120,9 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
               />
             </Flex>
             <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">Только пресеты</Text>
+              <Text size={3} color="secondary">
+                Только пресеты
+              </Text>
               <ColorPicker
                 colorPresets={COLORS}
                 value={presetsOnly}
@@ -111,7 +132,9 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
               />
             </Flex>
             <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">С кнопкой очистки</Text>
+              <Text size={3} color="secondary">
+                С кнопкой очистки
+              </Text>
               <ColorPicker
                 colorPresets={COLORS}
                 value={clearable}
@@ -127,23 +150,46 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
 
         {/* Sizes */}
         <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">Размеры</Text>
+          <Text size={5} weight="bold">
+            Размеры
+          </Text>
           <Text>
             Три размера — <code>s</code>, <code>m</code> (по умолчанию) и{' '}
             <code>l</code> — позволяют вписать пикер в любой интерфейс.
           </Text>
           <Flex direction="horizontal" gap="m" align="center">
             <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">size="s"</Text>
-              <ColorPicker value={basic} onChange={setBasic} size="s" colorPresets={COLORS} />
+              <Text size={3} color="secondary">
+                size="s"
+              </Text>
+              <ColorPicker
+                value={basic}
+                onChange={setBasic}
+                size="s"
+                colorPresets={COLORS}
+              />
             </Flex>
             <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">size="m"</Text>
-              <ColorPicker value={basic} onChange={setBasic} size="m" colorPresets={COLORS} />
+              <Text size={3} color="secondary">
+                size="m"
+              </Text>
+              <ColorPicker
+                value={basic}
+                onChange={setBasic}
+                size="m"
+                colorPresets={COLORS}
+              />
             </Flex>
             <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">size="l"</Text>
-              <ColorPicker value={basic} onChange={setBasic} size="l" colorPresets={COLORS} />
+              <Text size={3} color="secondary">
+                size="l"
+              </Text>
+              <ColorPicker
+                value={basic}
+                onChange={setBasic}
+                size="l"
+                colorPresets={COLORS}
+              />
             </Flex>
           </Flex>
         </Flex>
@@ -152,26 +198,38 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
 
         {/* States */}
         <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">Состояния</Text>
+          <Text size={5} weight="bold">
+            Состояния
+          </Text>
           <Flex direction="horizontal" gap="m" align="center">
             <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">Обычный</Text>
+              <Text size={3} color="secondary">
+                Обычный
+              </Text>
               <ColorPicker value="#3B82F6" onChange={() => null} />
             </Flex>
             <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">readOnly</Text>
+              <Text size={3} color="secondary">
+                readOnly
+              </Text>
               <ColorPicker value="#3B82F6" onChange={() => null} readOnly />
             </Flex>
             <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">disabled</Text>
+              <Text size={3} color="secondary">
+                disabled
+              </Text>
               <ColorPicker value="#3B82F6" onChange={() => null} disabled />
             </Flex>
             <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">Без значения</Text>
+              <Text size={3} color="secondary">
+                Без значения
+              </Text>
               <ColorPicker onChange={() => null} placeholder="Не выбран" />
             </Flex>
             <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">transparent</Text>
+              <Text size={3} color="secondary">
+                transparent
+              </Text>
               <ColorPicker value="#3B82F6" onChange={() => null} transparent />
             </Flex>
           </Flex>
@@ -181,7 +239,9 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
 
         {/* asChild */}
         <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">Свой триггер (asChild)</Text>
+          <Text size={5} weight="bold">
+            Свой триггер (asChild)
+          </Text>
           <Text>
             Проп <code>asChild</code> позволяет использовать любой элемент как
             триггер пикера. Все пропы взаимодействия (открытие, закрытие,
@@ -190,8 +250,16 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
           <Flex direction="horizontal" gap="l" align="center">
             {/* Color swatch */}
             <Flex direction="vertical" gap="xs" align="center">
-              <Text size={3} color="secondary">Цветовой кружок</Text>
-              <ColorPicker value={swatch} onChange={setSwatch} asChild colorPresets={COLORS} clearable>
+              <Text size={3} color="secondary">
+                Цветовой кружок
+              </Text>
+              <ColorPicker
+                value={swatch}
+                onChange={setSwatch}
+                asChild
+                colorPresets={COLORS}
+                clearable
+              >
                 <div
                   title="Нажмите, чтобы изменить цвет"
                   style={{
@@ -209,8 +277,15 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
 
             {/* Button with color label */}
             <Flex direction="vertical" gap="xs" align="center">
-              <Text size={3} color="secondary">Кнопка с цветом</Text>
-              <ColorPicker value={swatch} onChange={setSwatch} asChild colorPresets={COLORS}>
+              <Text size={3} color="secondary">
+                Кнопка с цветом
+              </Text>
+              <ColorPicker
+                value={swatch}
+                onChange={setSwatch}
+                asChild
+                colorPresets={COLORS}
+              >
                 <Button
                   label={swatch ?? 'Выбрать'}
                   icon={
@@ -231,7 +306,9 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
 
             {/* Inline swatch in text */}
             <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">В строке текста</Text>
+              <Text size={3} color="secondary">
+                В строке текста
+              </Text>
               <Flex direction="horizontal" gap="xs" align="center">
                 <Text>Цвет акцента:</Text>
                 <ColorPicker value={swatch} onChange={setSwatch} asChild>
@@ -258,7 +335,9 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
 
         {/* Document editor scenario */}
         <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">Редактор документа</Text>
+          <Text size={5} weight="bold">
+            Редактор документа
+          </Text>
           <Text>
             Реальный сценарий: панель форматирования текста с выбором цвета
             символов, цвета выделения и фона страницы.
@@ -279,16 +358,34 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
             }}
           >
             <Tooltip content="Жирный" kbd="⌘+B" placement="bottom">
-              <Button icon={<Icon i="format_bold" />} label="Жирный" showLabel={false} variant="text" />
+              <Button
+                icon={<Bold />}
+                label="Жирный"
+                showLabel={false}
+                variant="text"
+              />
             </Tooltip>
             <Tooltip content="Курсив" kbd="⌘+I" placement="bottom">
-              <Button icon={<Icon i="format_italic" />} label="Курсив" showLabel={false} variant="text" />
+              <Button
+                icon={<Italic />}
+                label="Курсив"
+                showLabel={false}
+                variant="text"
+              />
             </Tooltip>
             <Tooltip content="Подчёркнутый" kbd="⌘+U" placement="bottom">
-              <Button icon={<Icon i="format_underlined" />} label="Подч." showLabel={false} variant="text" />
+              <Button
+                icon={<Underline />}
+                label="Подч."
+                showLabel={false}
+                variant="text"
+              />
             </Tooltip>
 
-            <Divider direction="vertical" style={{ height: 20, margin: '0 2px' }} />
+            <Divider
+              direction="vertical"
+              style={{ height: 20, margin: '0 2px' }}
+            />
 
             {/* Text color — Tooltip cannot wrap ColorPicker (asChild): floating-ui ref conflict */}
             <ColorPicker
@@ -303,8 +400,13 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
                 showLabel={false}
                 variant="text"
                 icon={
-                  <Flex direction="vertical" gap="xs" align="center" style={{ gap: 2 }}>
-                    <Icon i="format_color_text" />
+                  <Flex
+                    direction="vertical"
+                    gap="xs"
+                    align="center"
+                    style={{ gap: 2 }}
+                  >
+                    <Baseline />
                     <div
                       style={{
                         width: 14,
@@ -333,14 +435,16 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
                 variant="text"
                 icon={
                   <Flex direction="vertical" align="center" style={{ gap: 2 }}>
-                    <Icon i="border_color" />
+                    <Paintbrush />
                     <div
                       style={{
                         width: 14,
                         height: 3,
                         borderRadius: 2,
                         backgroundColor: highlight || 'transparent',
-                        border: highlight ? 'none' : '1px dashed var(--border-2)',
+                        border: highlight
+                          ? 'none'
+                          : '1px dashed var(--border-2)',
                       }}
                     />
                   </Flex>
@@ -348,16 +452,34 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
               />
             </ColorPicker>
 
-            <Divider direction="vertical" style={{ height: 20, margin: '0 2px' }} />
+            <Divider
+              direction="vertical"
+              style={{ height: 20, margin: '0 2px' }}
+            />
 
             <Tooltip content="По левому краю" kbd="⌘+⇧+L" placement="bottom">
-              <Button icon={<Icon i="format_align_left" />} label="Лево" showLabel={false} variant="text" />
+              <Button
+                icon={<TextAlignStart />}
+                label="Лево"
+                showLabel={false}
+                variant="text"
+              />
             </Tooltip>
             <Tooltip content="По центру" kbd="⌘+⇧+E" placement="bottom">
-              <Button icon={<Icon i="format_align_center" />} label="Центр" showLabel={false} variant="text" />
+              <Button
+                icon={<TextAlignCenter />}
+                label="Центр"
+                showLabel={false}
+                variant="text"
+              />
             </Tooltip>
             <Tooltip content="По правому краю" kbd="⌘+⇧+R" placement="bottom">
-              <Button icon={<Icon i="format_align_right" />} label="Право" showLabel={false} variant="text" />
+              <Button
+                icon={<TextAlignEnd />}
+                label="Право"
+                showLabel={false}
+                variant="text"
+              />
             </Tooltip>
           </Flex>
 
@@ -415,7 +537,13 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
               }}
             >
               Это пример текста документа.{' '}
-              <span style={{ backgroundColor: highlight, borderRadius: 3, padding: '1px 2px' }}>
+              <span
+                style={{
+                  backgroundColor: highlight,
+                  borderRadius: 3,
+                  padding: '1px 2px',
+                }}
+              >
                 Выделенный фрагмент
               </span>{' '}
               отображает выбранный цвет подсветки, а весь текст использует
@@ -428,7 +556,9 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
 
         {/* Design tokens editor */}
         <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">Редактор дизайн-токенов</Text>
+          <Text size={5} weight="bold">
+            Редактор дизайн-токенов
+          </Text>
           <Text>
             Пример интерфейса для управления цветами бренда. Пресеты ускоряют
             работу, полная палитра даёт точный контроль.
@@ -436,7 +566,11 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
           <Flex direction="vertical" gap="s" style={{ maxWidth: 400 }}>
             {[
               { label: '--color-primary', value: token1, setter: setToken1 },
-              { label: '--color-primary-dark', value: token2, setter: setToken2 },
+              {
+                label: '--color-primary-dark',
+                value: token2,
+                setter: setToken2,
+              },
               { label: '--color-success', value: token3, setter: setToken3 },
               { label: '--color-danger', value: token4, setter: setToken4 },
             ].map(({ label, value: tokenValue, setter }) => (
@@ -462,7 +596,13 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
                     flexShrink: 0,
                   }}
                 />
-                <Text style={{ flex: 1, fontFamily: 'var(--font-family-code)', fontSize: 12 }}>
+                <Text
+                  style={{
+                    flex: 1,
+                    fontFamily: 'var(--font-family-code)',
+                    fontSize: 12,
+                  }}
+                >
                   {label}
                 </Text>
                 <ColorPicker
@@ -476,7 +616,6 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
             ))}
           </Flex>
         </Flex>
-
       </Flex>
     );
   },

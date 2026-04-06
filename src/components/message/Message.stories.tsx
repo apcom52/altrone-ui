@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Button, Flex, Icon, Message, Text } from 'components';
+import { Button, Flex, Message, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { useBoolean } from '../../utils';
-import { Info, Check, AlertCircle, X } from 'lucide-react';
+import { Info, Check, AlertCircle, CircleAlert } from 'lucide-react';
 
 const story: Meta<typeof Message> = {
   title: 'Components/Display/Message',
@@ -150,7 +150,7 @@ export const AccessibilityStory: StoryObj<typeof Flex> = {
       <Flex direction="vertical" gap="l" align="start">
         <Button onClick={enable} label="Show alert" />
         {visible && (
-          <Message role="danger" icon={<Icon i="error" />}>
+          <Message role="danger" icon={<CircleAlert />}>
             Oops! Something went wrong. Please try again later.
           </Message>
         )}

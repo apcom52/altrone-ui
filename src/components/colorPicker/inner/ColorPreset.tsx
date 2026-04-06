@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import { ColorPickerPresetProps } from '../ColorPicker.types';
 import s from './colorPreset.module.scss';
-import { Icon } from 'components/icon';
 import { GlobalUtils } from 'utils';
 import { useCallback, useMemo, MouseEvent } from 'react';
+import { Check } from 'lucide-react';
 
 export const ColorPreset = (props: ColorPickerPresetProps) => {
   const { name, title, value, selected, onChange } = props;
@@ -34,7 +34,7 @@ export const ColorPreset = (props: ColorPickerPresetProps) => {
       style={{ backgroundColor: value }}
       onClick={handleClick}
     >
-      {selected ? <Icon i="check" className={s.Icon} /> : null}
+      {selected ? <Check className={s.Icon} /> : null}
     </button>
   );
 };

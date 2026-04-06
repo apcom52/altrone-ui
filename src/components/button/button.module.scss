@@ -187,9 +187,9 @@
 }
 
 .Selected {
-  --button-background-color: color(display-p3 1 1 1);
-  --button-hover-background-color: color(display-p3 1 1 1);
-  --button-active-background-color: color(display-p3 1 1 1);
+  --button-background-color: var(--white);
+  --button-hover-background-color: var(--white);
+  --button-active-background-color: var(--white);
   --button-text-color: var(--accent-10);
 
   &.Primary {
@@ -308,7 +308,7 @@
     --button-hover-background-color: oklch(98.5% 0 0);
     --button-active-background-color: oklch(97% 0 0);
     --button-border-color: var(--white);
-    --button-text-color: black;
+    --button-text-color: var(--black);
     --button-disabled-text-color: var(--black-a6);
     --button-badge-background-color: var(--black-a3);
 

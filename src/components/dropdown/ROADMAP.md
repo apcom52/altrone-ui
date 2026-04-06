@@ -27,9 +27,7 @@
 При большом количестве пунктов меню выходит за пределы экрана. `Dropdown.Menu` должно поддерживать `maxHeight` с внутренним скроллом.
 
 ```tsx
-<Dropdown.Menu maxHeight={300}>
-  {/* много пунктов */}
-</Dropdown.Menu>
+<Dropdown.Menu maxHeight={300}>{/* много пунктов */}</Dropdown.Menu>
 ```
 
 ---
@@ -90,7 +88,7 @@
   label="Open in new tab"
   href="/dashboard"
   target="_blank"
-  icon={<Icon i="open_in_new" />}
+  icon={<ExternalLink />}
 />
 ```
 
@@ -104,7 +102,7 @@
 <Dropdown.Action
   label="Export as CSV"
   description="Download all rows as a spreadsheet"
-  icon={<Icon i="download" />}
+  icon={<Download />}
 />
 ```
 
