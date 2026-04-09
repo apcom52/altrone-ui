@@ -1,11 +1,9 @@
-import {
-  Button,
-  Flex,
-  NumberInput,
-  Tabs,
-  TextInput,
-  useLocalization,
-} from 'components';
+import { Button } from 'components/button/Button.tsx';
+import { Flex } from 'components/flex/Flex.tsx';
+import { NumberInput } from 'components/numberInput/NumberInput.tsx';
+import { Tabs } from 'components/tabs/Tabs.tsx';
+import { TextInput } from 'components/textInput/TextInput.tsx';
+import { useLocalization } from 'components/application';
 import { FocusEventHandler, useCallback, useEffect, useState } from 'react';
 import { ColorPickerProps } from '../ColorPicker.types';
 import { ColorPreset } from './ColorPreset';

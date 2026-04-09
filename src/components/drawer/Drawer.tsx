@@ -9,7 +9,6 @@ import { Scrollable } from 'components/scrollable';
 import clsx from 'clsx';
 import { useBoolean } from 'utils';
 import { createPortal } from 'react-dom';
-import { useConfiguration } from 'components/configuration';
 import { useLocalization } from '../application';
 
 export const Drawer = (props: DrawerProps) => {
@@ -29,7 +28,6 @@ export const Drawer = (props: DrawerProps) => {
   } = props;
 
   const t = useLocalization();
-  const { drawer: drawerConfig = {} } = useConfiguration();
 
   const { value: isOpen, setValue: setIsOpen } = useBoolean(false);
   const {
@@ -66,11 +64,9 @@ export const Drawer = (props: DrawerProps) => {
       [s.EndSide]: placement === 'end',
     },
     className,
-    drawerConfig.className,
   );
 
   const styles = {
-    ...drawerConfig.style,
     ...style,
     width: `${width}px`,
   };

@@ -2,7 +2,6 @@ import { DropdownCheckboxProps } from '../Dropdown.types';
 import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import s from './action.module.scss';
-import { useConfiguration } from 'components/configuration';
 import { useId } from 'react';
 import { useDropdownItemHover } from '../useDropdownItemHover';
 import { mergeRefs } from 'utils/mergeRefs';
@@ -26,9 +25,6 @@ export function DropdownCheckbox({
   const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
     useDropdownItemHover();
 
-  const { dropdown: { checkbox: dropdownCheckboxConfiguration = {} } = {} } =
-    useConfiguration();
-
   const cls = clsx(
     s.Action,
     'no-selection',
@@ -37,11 +33,9 @@ export function DropdownCheckbox({
       [s.Focused]: focused,
     },
     className,
-    dropdownCheckboxConfiguration.className,
   );
 
   const styles = {
-    ...dropdownCheckboxConfiguration.style,
     ...style,
   };
 

@@ -33,7 +33,7 @@ export class GlobalUtils {
   }
 
   public static isTestEnvironment() {
-    return window.__TEST_ENV__ === 'true';
+    return typeof window !== 'undefined' && window.__TEST_ENV__ === 'true';
   }
 
   public static getNumberDelimitersByLocale(locale: string = 'en-US') {

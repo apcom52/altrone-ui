@@ -3,15 +3,11 @@ import { BreadcrumbsProps } from './Breadcrumbs.types.ts';
 import s from './breadcrumbs.module.scss';
 import clsx from 'clsx';
 import { Item } from './components';
-import { useConfiguration } from 'components/configuration';
 
 const BreadcrumbsComponent = memo<BreadcrumbsProps>(
   ({ ref, children, className, style, ...restProps }) => {
-    const { breadcrumbs: breadcrumbsConfig = {} } = useConfiguration();
-
-    const cls = clsx(s.Breadcrumbs, className, breadcrumbsConfig.className);
+    const cls = clsx(s.Breadcrumbs, className);
     const styles = {
-      ...breadcrumbsConfig.style,
       ...style,
     };
 

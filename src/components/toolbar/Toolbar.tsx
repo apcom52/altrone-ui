@@ -3,7 +3,6 @@ import s from './toolbar.module.scss';
 import { ToolbarProps } from './Toolbar.types.ts';
 import clsx from 'clsx';
 import { Action, Center, Group, Leading, Title, Trailing } from './components';
-import { useConfiguration } from 'components/configuration';
 import { ToolbarPlacementContext } from './Toolbar.context.ts';
 
 const ToolbarComponent = memo(
@@ -17,8 +16,6 @@ const ToolbarComponent = memo(
     style,
     ...restProps
   }: ToolbarProps) => {
-    const { toolbar: toolbarConfig = {} } = useConfiguration();
-
     const cls = clsx(
       s.ToolbarWrapper,
       {
@@ -30,11 +27,9 @@ const ToolbarComponent = memo(
         [s.Backdrop]: showBackdrop,
       },
       className,
-      toolbarConfig.className,
     );
 
     const styles = {
-      ...toolbarConfig.style,
       ...style,
     };
 
@@ -46,7 +41,9 @@ const ToolbarComponent = memo(
           style={styles}
           role="toolbar"
           aria-orientation={
-            placement === 'left' || placement === 'right' ? 'vertical' : 'horizontal'
+            placement === 'left' || placement === 'right'
+              ? 'vertical'
+              : 'horizontal'
           }
           {...restProps}
         >

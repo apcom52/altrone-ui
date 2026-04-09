@@ -6,6 +6,8 @@
 }
 
 .Avatar {
+  --_avatar-bg: var(--interactive-1);
+
   position: relative;
   display: inline-flex;
   border-radius: 50%;
@@ -16,7 +18,7 @@
   flex-shrink: 0;
   user-select: none;
   overflow: hidden;
-  background-color: var(--interactive-1);
+  background-color: var(--_avatar-bg);
 
   &:after {
     position: absolute;
@@ -42,6 +44,8 @@
   font-size: var(--avatar-text-size);
   font-weight: var(--avatar-text-weight);
   z-index: 2;
+  /* auto-contrast via oklch relative colors: dark bg → white text, light bg → black text */
+  color: var(--_avatar-text-color, oklch(from var(--_avatar-bg) calc((0.5 - l) * 9999) 0 0));
 }
 
 .Image {

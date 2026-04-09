@@ -5,7 +5,6 @@ import { CalendarDate } from './CalendarDate';
 import { dayjsInstance as dayjs } from 'utils';
 import type { Dayjs } from 'dayjs';
 import s from './calendar.module.scss';
-import { useConfiguration } from 'components/configuration';
 
 export const Calendar = memo(
   ({
@@ -21,13 +20,9 @@ export const Calendar = memo(
     style,
     ...restProps
   }: CalendarProps) => {
-    const { calendar: calendarConfig = {}, locale: localeConfig } =
-      useConfiguration();
-
-    const cls = clsx(s.Calendar, className, calendarConfig.className);
+    const cls = clsx(s.Calendar, className);
 
     const styles = {
-      ...calendarConfig.style,
       ...style,
     };
 
@@ -54,7 +49,7 @@ export const Calendar = memo(
     const calendarDates = useMemo(() => {
       const result: Dayjs[] = [];
 
-      const monthLocale = month.locale(localeConfig?.locale ?? 'en-US');
+      const monthLocale = month.locale('en-US');
       const daysInMonth = monthLocale.daysInMonth();
       const firstDay = monthLocale.startOf('month');
 
@@ -87,7 +82,7 @@ export const Calendar = memo(
       }
 
       return result;
-    }, [month, localeConfig?.locale, firstDayOfWeek]);
+    }, [month, firstDayOfWeek]);
 
     const cursorDate_dj = cursorDate ? dayjs(cursorDate) : undefined;
 

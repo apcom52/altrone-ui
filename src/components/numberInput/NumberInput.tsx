@@ -2,7 +2,6 @@ import { useCallback, useMemo, useRef } from 'react';
 import { NumberInputProps } from './NumberInput.types.ts';
 import { TextInput } from 'components/textInput';
 import { ArrayUtils, mergeRefs, useShowControls } from 'utils';
-import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import { Spinner } from './inner/Spinner.tsx';
 import {
@@ -41,9 +40,6 @@ export const NumberInput = ({
   const numberInputRef = useRef<HTMLInputElement | null>(null);
   const mergedInputRef = useMemo(() => mergeRefs(numberInputRef, ref), [ref]);
 
-  const { numberInput: numberInputConfig = {}, locale: localeConfig = {} } =
-    useConfiguration();
-
   const {
     name: formFieldName,
     invalid: formFieldInvalid,
@@ -60,29 +56,20 @@ export const NumberInput = ({
 
   const needToShowControl = useShowControls({
     propValue: showControls,
-    configValue: numberInputConfig.showControls,
     readOnly,
   });
 
   const allowLeadingZerosValue =
-    typeof allowLeadingZeros === 'boolean'
-      ? allowLeadingZeros
-      : numberInputConfig.allowLeadingZeros ?? false;
+    typeof allowLeadingZeros === 'boolean' ? allowLeadingZeros : false;
 
   const digitsAfterPointValue =
-    typeof digitsAfterPoint === 'number'
-      ? digitsAfterPoint
-      : (numberInputConfig.digitsAfterPoint ?? 2);
+    typeof digitsAfterPoint === 'number' ? digitsAfterPoint : 2;
 
   const groupingDelimiterValue =
-    typeof groupingDelimiter === 'string'
-      ? groupingDelimiter
-      : (localeConfig.numberGrouping ?? ' ');
+    typeof groupingDelimiter === 'string' ? groupingDelimiter : ' ';
 
   const decimalDelimiterValue =
-    typeof decimalDelimiter === 'string'
-      ? decimalDelimiter
-      : (localeConfig.numberDecimal ?? '.');
+    typeof decimalDelimiter === 'string' ? decimalDelimiter : '.';
 
   const safeChildren = ArrayUtils.getSafeArray(children);
 
@@ -93,11 +80,9 @@ export const NumberInput = ({
       [inputStyles.Invalid]: inputInvalid,
       [inputStyles.Readonly]: readOnly,
     },
-    numberInputConfig.className,
     className,
   );
   const styles = {
-    ...numberInputConfig.style,
     ...style,
   };
 

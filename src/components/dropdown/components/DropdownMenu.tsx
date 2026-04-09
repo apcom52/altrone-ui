@@ -1,7 +1,6 @@
 import { DropdownMenuProps } from '../Dropdown.types';
 import clsx from 'clsx';
 import s from './action.module.scss';
-import { useConfiguration } from 'components/configuration';
 import { DropdownHoverProvider } from '../DropdownHover.contexts';
 
 export function DropdownMenu({
@@ -13,18 +12,9 @@ export function DropdownMenu({
   style,
   ...props
 }: DropdownMenuProps) {
-  const { dropdown: { menu: dropdownMenuConfig = {} } = {} } =
-    useConfiguration();
-
-  const cls = clsx(
-    s.Menu,
-    'no-selection',
-    className,
-    dropdownMenuConfig.className,
-  );
+  const cls = clsx(s.Menu, 'no-selection', className);
 
   const styles = {
-    ...dropdownMenuConfig.style,
     ...style,
   };
 

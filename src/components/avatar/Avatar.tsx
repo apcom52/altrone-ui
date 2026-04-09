@@ -1,10 +1,7 @@
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import s from './avatar.module.scss';
 import clsx from 'clsx';
 import { AvatarProps } from './Avatar.types';
-import { useConfiguration } from 'components/configuration';
-import { GlobalUtils } from 'utils';
-import { useAltroneTheme } from 'components/application';
 
 export const Avatar = memo((props: AvatarProps) => {
   const {
@@ -12,45 +9,19 @@ export const Avatar = memo((props: AvatarProps) => {
     firstName,
     lastName,
     size,
-    color,
+    backgroundColor,
+    textColor,
     imageSrc,
     className,
     style,
     ...restProps
   } = props;
 
-  const theme = useAltroneTheme();
-
-  const { avatar: avatarConfig = {} } = useConfiguration();
-  const internalRef = useRef<HTMLDivElement>(null);
-  const [textColor, setTextColor] = useState<string>('var(--white)');
   const [imageError, setImageError] = useState(false);
-
-  const mergedRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      internalRef.current = node;
-      if (typeof ref === 'function') ref(node);
-      else if (ref)
-        (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
-    },
-    [ref],
-  );
 
   useEffect(() => {
     setImageError(false);
   }, [imageSrc]);
-
-  useEffect(() => {
-    const el = internalRef.current;
-    if (!el) return;
-    const computedColor = window.getComputedStyle(el).backgroundColor;
-    const hex = GlobalUtils.rgbToHex(computedColor);
-    setTextColor(
-      GlobalUtils.getColorLuminance(hex) === 'dark'
-        ? 'var(--white)'
-        : 'var(--black)',
-    );
-  }, [color, theme.theme]);
 
   const cls = clsx(
     s.Avatar,
@@ -61,13 +32,12 @@ export const Avatar = memo((props: AvatarProps) => {
       [s.XLarge]: size === 'xl',
     },
     className,
-    avatarConfig.className,
   );
 
-  const styles = {
-    ...avatarConfig.style,
-    backgroundColor: color,
+  const styles: React.CSSProperties & Record<string, unknown> = {
     ...style,
+    ...(backgroundColor ? { '--_avatar-bg': backgroundColor } : {}),
+    ...(textColor ? { '--_avatar-text-color': textColor } : {}),
   };
 
   const fullName = [firstName, lastName].join(' ').trim();
@@ -75,7 +45,7 @@ export const Avatar = memo((props: AvatarProps) => {
 
   return (
     <div
-      ref={mergedRef}
+      ref={ref}
       className={cls}
       aria-label={fullName}
       style={styles}
@@ -89,9 +59,7 @@ export const Avatar = memo((props: AvatarProps) => {
           onError={() => setImageError(true)}
         />
       ) : (
-        <span className={s.Letters} style={{ color: textColor }}>
-          {initials}
-        </span>
+        <span className={s.Letters}>{initials}</span>
       )}
     </div>
   );

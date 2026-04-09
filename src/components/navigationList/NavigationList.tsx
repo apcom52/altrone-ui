@@ -1,36 +1,41 @@
 import { memo, useId } from 'react';
 import { NavigationListProps } from './NavigationList.types.ts';
 import s from './navigationList.module.scss';
-import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
-import { Group, GroupAction, Link, LinkAction, Header, Footer } from './components';
+import {
+  Group,
+  GroupAction,
+  Link,
+  LinkAction,
+  Header,
+  Footer,
+} from './components';
 import {
   NavigationListIdContext,
   NavigationListLevelContext,
 } from './NavigationList.context.ts';
 
-const NavigationListComponent = memo(({ ref, children, className, style, ...restProps }: NavigationListProps) => {
-  const { navigationList: navigationListConfig = {} } = useConfiguration();
+const NavigationListComponent = memo(
+  ({ ref, children, className, style, ...restProps }: NavigationListProps) => {
+    const id = useId();
 
-  const id = useId();
+    const cls = clsx(s.NavigationList, className);
 
-  const cls = clsx(s.NavigationList, className, navigationListConfig.className);
+    const styles = {
+      ...style,
+    };
 
-  const styles = {
-    ...navigationListConfig.style,
-    ...style,
-  };
-
-  return (
-    <nav ref={ref} className={cls} style={styles} {...restProps}>
-      <NavigationListLevelContext.Provider value={0}>
-        <NavigationListIdContext.Provider value={id}>
-          {children}
-        </NavigationListIdContext.Provider>
-      </NavigationListLevelContext.Provider>
-    </nav>
-  );
-});
+    return (
+      <nav ref={ref} className={cls} style={styles} {...restProps}>
+        <NavigationListLevelContext.Provider value={0}>
+          <NavigationListIdContext.Provider value={id}>
+            {children}
+          </NavigationListIdContext.Provider>
+        </NavigationListLevelContext.Provider>
+      </nav>
+    );
+  },
+);
 
 const NavigationListNamespace = Object.assign(NavigationListComponent, {
   Group,

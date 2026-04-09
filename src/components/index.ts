@@ -11,7 +11,6 @@ export * from './checkbox';
 export * from './closeButton';
 export * from './collapsedList';
 export * from './colorPicker';
-export * from './configuration';
 
 export * from './dataGrid';
 export * from './dataTable';
@@ -32,7 +31,6 @@ export * from './form';
 export * from './grid';
 
 export * from './label';
-export * from './list';
 export * from './loading';
 
 export * from './message';

@@ -1,5 +1,4 @@
 import React, { memo, useId, useRef, useState } from 'react';
-import { useConfiguration } from 'components/configuration';
 import { HelpCircle } from 'lucide-react';
 import { TooltipProps } from './Tooltip.types.ts';
 import clsx from 'clsx';
@@ -38,16 +37,8 @@ export const Tooltip = memo(
 
     const arrowRef = useRef<SVGSVGElement>(null);
 
-    const { tooltip: tooltipConfig = {} } = useConfiguration();
-
-    const cls = clsx(
-      s.Tooltip,
-      { [s.WithTitle]: title },
-      className,
-      tooltipConfig.className,
-    );
+    const cls = clsx(s.Tooltip, { [s.WithTitle]: title }, className);
     const styles = {
-      ...tooltipConfig.style,
       ...style,
       ...(maxWidth !== undefined ? { maxWidth } : undefined),
     };

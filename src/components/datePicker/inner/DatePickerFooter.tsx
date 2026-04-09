@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import s from './footer.module.scss';
 import { Button } from 'components/button';
-import { Icon } from 'components/icon';
 import {
   useDateContext,
   useDatePickerCloseFn,
@@ -21,18 +20,18 @@ export const DatePickerFooter = memo<DatePickerFooterProps>(
 
     const currentDateButtonVisible = picker !== 'range';
     const clearButtonVisible = Boolean(
-      clearable && selectedDates.length && selectedDates[0]
+      clearable && selectedDates.length && selectedDates[0],
     );
 
     const currentDateLabel =
       picker === 'day'
         ? t('datePicker.today')
         : picker === 'month'
-        ? t('datePicker.thisMonth')
-        : t('datePicker.thisYear');
+          ? t('datePicker.thisMonth')
+          : t('datePicker.thisYear');
 
     const onCurrentDateButtonClick = (
-      event: React.MouseEvent<HTMLButtonElement>
+      event: React.MouseEvent<HTMLButtonElement>,
     ) => {
       let thisDay = dayjs();
 
@@ -58,12 +57,9 @@ export const DatePickerFooter = memo<DatePickerFooterProps>(
           <Button label={t('common.clear')} onClick={onClearButtonClick} />
         )}
         {currentDateButtonVisible && (
-          <Button
-            label={currentDateLabel}
-            onClick={onCurrentDateButtonClick}
-          />
+          <Button label={currentDateLabel} onClick={onCurrentDateButtonClick} />
         )}
       </div>
     );
-  }
+  },
 );

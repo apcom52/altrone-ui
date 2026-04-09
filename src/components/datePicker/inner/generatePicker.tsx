@@ -19,14 +19,13 @@ import { Popover } from '../../popover';
 import { PopoverDatePickerContent } from './PopoverDatePickerContent.tsx';
 import { TextInput } from 'components/textInput';
 import warningOnce from 'rc-util/es/warning';
-import { useConfiguration } from 'components/configuration';
 import { useLocalization } from 'components/application';
 import { Dayjs } from 'dayjs';
 import { useLocale } from '../../../utils/hooks/useLocale.ts';
 import { Calendar } from 'lucide-react';
 
 export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
-  picker: Picker = 'day'
+  picker: Picker = 'day',
 ) {
   return (props: DatePickerProps) => {
     const {
@@ -52,29 +51,28 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
     useEffect(() => {
       warningOnce(
         !(minDate && maxDate && minDate.isSameOrAfter(maxDate)),
-        '[DatePicker]: minDate prop has to be before maxDate'
+        '[DatePicker]: minDate prop has to be before maxDate',
       );
     }, [minDate, maxDate]);
 
     const [currentMonth, setCurrentMonth] = useState(() => value || dayjs());
     const [view, setView] = useState(picker);
     const [hoveredDate, setHoveredDate] = useState<Dayjs | undefined>(
-      undefined
+      undefined,
     );
 
-    const { datePicker: datePickerConfig = {} } = useConfiguration();
     const locale = useLocale({
-      dateFormat: format ?? datePickerConfig.dateFormat,
-      monthFormat: format ?? datePickerConfig.monthFormat,
-      yearFormat: format ?? datePickerConfig.yearFormat,
+      dateFormat: format,
+      monthFormat: format,
+      yearFormat: format,
     });
 
     const pickerDateFormat =
       picker === 'day'
         ? locale.dateFormat
         : picker === 'month'
-        ? locale.monthFormat
-        : locale.yearFormat;
+          ? locale.monthFormat
+          : locale.yearFormat;
 
     const cls = clsx(
       s.DatePicker,
@@ -82,21 +80,19 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
         [s.Readonly]: readOnly,
       },
       className,
-      datePickerConfig.className
     );
     const styles = {
-      ...datePickerConfig.style,
       ...style,
     };
 
     const onChangeHandler = useCallback(
       (
         selectedDate: Dayjs | undefined,
-        event?: React.MouseEvent<HTMLButtonElement>
+        event?: React.MouseEvent<HTMLButtonElement>,
       ) => {
         onChange?.(selectedDate, event);
       },
-      [onChange]
+      [onChange],
     );
 
     const onPopoverOpenChange = useCallback(
@@ -105,7 +101,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
           setView(picker);
         }
       },
-      [picker]
+      [picker],
     );
 
     const datePickerValueContext = useMemo<DatePickerContextType>(() => {

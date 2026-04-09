@@ -4,7 +4,6 @@ import {
   RadioListDropdownContext,
 } from '../Dropdown.contexts';
 import { useId, useMemo } from 'react';
-import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import s from './radioList.module.scss';
 
@@ -17,9 +16,6 @@ export function DropdownRadioList({
   style,
   ...props
 }: DropdownRadioListProps) {
-  const { dropdown: { radioList: dropdownRadioListConfig = {} } = {} } =
-    useConfiguration();
-
   const labelId = useId();
 
   const contextValue: DropdownRadioContext = useMemo(
@@ -30,14 +26,8 @@ export function DropdownRadioList({
     [value, onChange],
   );
 
-  const cls = clsx(
-    s.RadioList,
-    'no-selection',
-    className,
-    dropdownRadioListConfig.className,
-  );
+  const cls = clsx(s.RadioList, 'no-selection', className);
   const styles = {
-    ...dropdownRadioListConfig.style,
     ...style,
   };
 

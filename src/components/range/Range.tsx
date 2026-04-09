@@ -2,7 +2,6 @@ import { memo, useMemo, useCallback, useRef, useEffect, useState } from 'react';
 import { RangeProps } from './Range.types';
 import s from './range.module.scss';
 import clsx from 'clsx';
-import { useConfiguration } from 'components/configuration';
 import { motion } from 'framer-motion';
 
 export const Range = memo<RangeProps>((props) => {
@@ -27,8 +26,6 @@ export const Range = memo<RangeProps>((props) => {
     ...restProps
   } = props;
 
-  const { range: rangeConfig = {} } = useConfiguration();
-
   const isDragging = useRef(false);
   const rangeValue = useRef(value);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -46,7 +43,7 @@ export const Range = memo<RangeProps>((props) => {
         (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
       }
     },
-    [ref]
+    [ref],
   );
 
   const calculateValue = useCallback(
@@ -68,7 +65,7 @@ export const Range = memo<RangeProps>((props) => {
       const stepsCount = Math.round((rawValue - min) / step);
       return Math.min(max, Math.max(min, min + stepsCount * step));
     },
-    [min, max, step, direction]
+    [min, max, step, direction],
   );
 
   // Handlers are created inside pointerdown closure so removeEventListener
@@ -98,7 +95,7 @@ export const Range = memo<RangeProps>((props) => {
       document.addEventListener('pointermove', handleMove);
       document.addEventListener('pointerup', handleUp);
     },
-    [calculateValue, onChange, onValueCommit]
+    [calculateValue, onChange, onValueCommit],
   );
 
   const handleKeyDown = useCallback(
@@ -128,7 +125,7 @@ export const Range = memo<RangeProps>((props) => {
           break;
       }
     },
-    [value, min, max, step, onChange, onValueCommit]
+    [value, min, max, step, onChange, onValueCommit],
   );
 
   const leftOffset = useMemo(() => {
@@ -153,31 +150,22 @@ export const Range = memo<RangeProps>((props) => {
     return { width: leftOffset };
   }, [direction, leftOffset]);
 
-  const cls = clsx(
-    s.Range,
-    {
-      [s.Small]: size === 's',
-      [s.Large]: size === 'l',
-      [s.Vertical]: direction === 'vertical',
-      [s.ShowLabelAlways]: showCurrentValue === 'always',
-      [s.Disabled]: disabled,
-      [s.ReadOnly]: readOnly,
-    },
-    rangeConfig.className
-  );
+  const cls = clsx(s.Range, {
+    [s.Small]: size === 's',
+    [s.Large]: size === 'l',
+    [s.Vertical]: direction === 'vertical',
+    [s.ShowLabelAlways]: showCurrentValue === 'always',
+    [s.Disabled]: disabled,
+    [s.ReadOnly]: readOnly,
+  });
 
   useEffect(() => {
     rangeValue.current = value;
   }, [value]);
 
-  const activeTrackCls = clsx(
-    s.ActiveTrack,
-    activeTrackClassName,
-    rangeConfig.activeTrackClassName
-  );
+  const activeTrackCls = clsx(s.ActiveTrack, activeTrackClassName);
 
   const styles = {
-    ...rangeConfig.style,
     ...style,
   };
 

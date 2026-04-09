@@ -3,7 +3,6 @@ import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { useRadioListDropdownContext } from '../Dropdown.contexts.ts';
 import s from './action.module.scss';
-import { useConfiguration } from 'components/configuration';
 import { useId } from 'react';
 import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
 import { mergeRefs } from 'utils/mergeRefs';
@@ -19,28 +18,18 @@ export function DropdownRadioItem({
   focused,
   ...props
 }: DropdownRadioListItem) {
-  const { dropdown: { radioItem: dropdownRadioItemConfig = {} } = {} } =
-    useConfiguration();
-
   const id = useId();
   const { ref: listItemRef } = useListItem();
 
   const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
     useDropdownItemHover();
 
-  const cls = clsx(
-    s.Action,
-    'no-selection',
-    className,
-    {
-      [s.DisabledAction]: disabled,
-      [s.Focused]: focused,
-    },
-    dropdownRadioItemConfig.className,
-  );
+  const cls = clsx(s.Action, 'no-selection', className, {
+    [s.DisabledAction]: disabled,
+    [s.Focused]: focused,
+  });
 
   const styles = {
-    ...dropdownRadioItemConfig.style,
     ...style,
   };
 

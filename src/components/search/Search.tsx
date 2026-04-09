@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import { SearchProps } from './Search.types.ts';
 import { TextInput } from 'components/textInput';
 import { Search as SearchIcon, Delete } from 'lucide-react';
-import { useConfiguration } from 'components/configuration';
 import { useLocalization } from 'components/application';
 import { AutocompleteInput } from 'components/autocompleteInput';
 import { ArrayUtils, mergeRefs } from 'utils';
@@ -25,13 +24,9 @@ export const Search = ({
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const { search: searchConfig = {} } = useConfiguration();
-
   const haveValue = Boolean(restProps.value);
 
-  const needToShowControl = Boolean(
-    (showControls ?? searchConfig.showControls ?? true) && haveValue,
-  );
+  const needToShowControl = Boolean((showControls ?? true) && haveValue);
 
   const safeChildren = ArrayUtils.getSafeArray(children);
 
@@ -40,11 +35,9 @@ export const Search = ({
     {
       [s.Empty]: !haveValue,
     },
-    searchConfig.className,
     className,
   );
   const styles = {
-    ...searchConfig.style,
     ...style,
   };
 

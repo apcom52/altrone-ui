@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import { ActionIslandProps } from '../TextInput.types.ts';
 import s from './action.module.scss';
-import { useConfiguration } from 'components/configuration';
 import { motion } from 'motion/react';
 
 export const ActionIsland = ({
@@ -15,9 +14,6 @@ export const ActionIsland = ({
   style,
   ...restProps
 }: ActionIslandProps) => {
-  const { textInput: { actionIsland: actionIslandConfig = {} } = {} } =
-    useConfiguration();
-
   const cls = clsx(
     s.ActionIsland,
     {
@@ -27,11 +23,9 @@ export const ActionIsland = ({
       [s.OnlyIcon]: icon && showLabel === false,
     },
     className,
-    actionIslandConfig.className
   );
 
   const styles = {
-    ...actionIslandConfig.style,
     ...style,
   };
 

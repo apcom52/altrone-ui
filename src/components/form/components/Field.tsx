@@ -5,7 +5,6 @@ import { Tooltip } from 'components/tooltip';
 import { HelpCircle } from 'lucide-react';
 import clsx from 'clsx';
 import { useFormContext } from '../Form.context.ts';
-import { useConfiguration } from '../../configuration';
 import { FormFieldContext } from './Field.context.ts';
 
 export const Field = memo<FormFieldProps>(
@@ -23,8 +22,6 @@ export const Field = memo<FormFieldProps>(
     style,
     ...restProps
   }) => {
-    const { form: { field: fieldConfig = {} } = {} } = useConfiguration();
-
     const formState = useFormContext();
 
     const errorMessageContent =
@@ -46,11 +43,9 @@ export const Field = memo<FormFieldProps>(
         [s.Invalid]: invalidField,
       },
       className,
-      fieldConfig.className,
     );
 
     const styles = {
-      ...fieldConfig.style,
       ...style,
     };
 

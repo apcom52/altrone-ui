@@ -1,9 +1,9 @@
 import { memo, useEffect } from 'react';
 import { MessageProps } from './Message.types.ts';
-import { Flex, CloseButton } from 'components';
+import { Flex } from 'components/flex/Flex.tsx';
+import { CloseButton } from 'components/closeButton/CloseButton.tsx';
 import s from './message.module.scss';
 import clsx from 'clsx';
-import { useConfiguration } from 'components/configuration';
 import { GlobalUtils } from '../../utils';
 
 export const Message = memo<MessageProps>(
@@ -21,8 +21,6 @@ export const Message = memo<MessageProps>(
     compact = false,
     ...props
   }) => {
-    const { message: messageConfig = {} } = useConfiguration();
-
     const cls = clsx(
       s.Message,
       {
@@ -33,11 +31,9 @@ export const Message = memo<MessageProps>(
         [s.Compact]: compact,
       },
       className,
-      messageConfig.className
     );
 
     const styles = {
-      ...messageConfig.style,
       ...style,
     };
 
@@ -72,5 +68,5 @@ export const Message = memo<MessageProps>(
         {onClose ? <CloseButton onClick={onClose} /> : null}
       </Flex>
     );
-  }
+  },
 );

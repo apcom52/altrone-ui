@@ -4,7 +4,6 @@ import { SpoilerProps } from './Spoiler.types.ts';
 import clsx from 'clsx';
 import s from './spoiler.module.scss';
 import { useBoolean } from '../../utils';
-import { useConfiguration } from 'components/configuration';
 import { Plus, Minus } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 
@@ -19,14 +18,11 @@ export const Spoiler = memo(
     onToggle,
     ...restProps
   }: SpoilerProps) => {
-    const { spoiler: spoilerConfig = {} } = useConfiguration();
-
     const { value: opened, toggle } = useBoolean(openedByDefault);
 
-    const cls = clsx(s.Spoiler, className, spoilerConfig.className);
+    const cls = clsx(s.Spoiler, className);
 
     const styles = {
-      ...spoilerConfig.style,
       ...style,
     };
 

@@ -3,12 +3,9 @@ import s from './item.module.scss';
 import { SideNavigationItemProps } from '../SideNavigation.types.ts';
 import clsx from 'clsx';
 import { useScrollSpy } from '../../../utils/components/ScrollSpy.tsx';
-import { useConfiguration } from 'components/configuration';
 
 export const Item = memo<SideNavigationItemProps>(
   ({ label, href, children, className, ...restProps }) => {
-    const { sideNavigation: sideNavigationConfig = {} } = useConfiguration();
-
     const { activeItem, observeNewSelector } = useScrollSpy();
 
     useEffect(() => {
@@ -21,8 +18,6 @@ export const Item = memo<SideNavigationItemProps>(
       s.Item,
       {
         [s.Selected]: isSelected,
-        [sideNavigationConfig.selectedItemClassName!]:
-          sideNavigationConfig.selectedItemClassName && isSelected,
       },
       className,
     );

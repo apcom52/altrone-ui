@@ -30,7 +30,6 @@ import { useBoolean, DOMUtils } from 'utils';
 import clsx from 'clsx';
 import s from './popover.module.scss';
 import { CloseButton } from 'components/closeButton';
-import { useConfiguration } from 'components/configuration';
 import { AnimatePresence, motion } from 'motion/react';
 import { getPlacementConfig } from './utils/placementUtils';
 import {
@@ -70,14 +69,11 @@ export const Popover = ({
   onOpenChange,
   ...restProps
 }: PopoverProps) => {
-
   const popoverId = useId();
 
   const [activeIndex, setActiveIndex] = useState<number | null>(
-    defaultListNavigationIndex
+    defaultListNavigationIndex,
   );
-
-  const { popover: popoverConfig = {} } = useConfiguration();
 
   const lastStateChangeReason = useRef<OpenChangeReason | undefined>(undefined);
 
@@ -185,7 +181,7 @@ export const Popover = ({
       actualPlacement,
       transformOrigin: getTransformOrigin(actualPlacement, overlap),
     }),
-    [opened, context, activeIndex, actualPlacement, hide, open, overlap]
+    [opened, context, activeIndex, actualPlacement, hide, open, overlap],
   );
 
   const popoverParentClose = usePopoverCloseContext();
@@ -215,11 +211,10 @@ export const Popover = ({
     s.GlassEffect,
     {
       [s.InsideNotification]: childrenRef.current?.closest(
-        '[data-notification="true"]'
+        '[data-notification="true"]',
       ),
     },
     className,
-    popoverConfig.className
   );
 
   const floatingBox = (
@@ -262,12 +257,11 @@ export const Popover = ({
               {...getFloatingProps({
                 ...restProps,
                 style: {
-                  ...popoverConfig.style,
                   ...style,
                   ...{
                     transformOrigin: getTransformOrigin(
                       actualPlacement,
-                      overlap
+                      overlap,
                     ),
                   },
                   ...(overlap
@@ -284,7 +278,11 @@ export const Popover = ({
                 <div className={s.Header}>
                   {title ? <div className={s.Heading}>{title}</div> : null}
                   {showCloseButton ? (
-                    <CloseButton label="Close" onClick={hide} className={s.Close} />
+                    <CloseButton
+                      label="Close"
+                      onClick={hide}
+                      className={s.Close}
+                    />
                   ) : null}
                 </div>
               )}
@@ -321,12 +319,14 @@ export const Popover = ({
       <AnimatePresence mode="wait">
         {opened && (
           <FloatingPortal
-              root={
-                typeof window !== 'undefined'
-                  ? (document.querySelector('[data-altrone-root]') as HTMLElement) ?? undefined
-                  : undefined
-              }
-            >
+            root={
+              typeof window !== 'undefined'
+                ? ((document.querySelector(
+                    '[data-altrone-root]',
+                  ) as HTMLElement) ?? undefined)
+                : undefined
+            }
+          >
             {floatingBox}
           </FloatingPortal>
         )}

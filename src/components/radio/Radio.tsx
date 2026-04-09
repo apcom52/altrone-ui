@@ -1,7 +1,6 @@
 import { ChangeEventHandler, memo, useCallback, useId, useMemo } from 'react';
 import clsx from 'clsx';
 import s from './radio.module.scss';
-import { useConfiguration } from 'components/configuration';
 import { RadioContext, RadioProps } from './Radio.types.ts';
 import { RadioItem } from './components';
 import { ArrayUtils } from 'utils';
@@ -24,19 +23,15 @@ const RadioWrapper = memo<RadioProps>(
 
     const radioName = typeof name === 'string' && name ? name : id;
 
-    const { radio: radioConfig = {} } = useConfiguration();
-
     const cls = clsx(
       s.RadioList,
       {
         [s.Vertical]: direction === 'vertical',
       },
       className,
-      radioConfig.className,
     );
 
     const styles = {
-      ...radioConfig.style,
       ...style,
     };
 

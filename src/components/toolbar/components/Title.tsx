@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { ToolbarTitleProps } from '../Toolbar.types';
 import s from './title.module.scss';
 import { ChevronDown } from 'lucide-react';
-import { Button } from 'components/button';
+import { Button } from 'components/button/Button.tsx';
 import { motion } from 'motion/react';
 
 export const Title = memo(({ ref, label, className, clickable = false, ...restProps }: ToolbarTitleProps) => {

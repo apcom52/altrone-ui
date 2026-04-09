@@ -6,13 +6,12 @@ import { Button } from 'components/button';
 import { useLocalization } from 'components/application';
 import { Field } from './inner/Field';
 import { Spoiler } from 'components/spoiler';
-import { useConfiguration } from 'components/configuration';
 
 const CommonFields = Symbol('CommonFields');
 
-function DataGridComponent<T extends Record<string, unknown> = Record<string, unknown>>(
-  props: DataGridProps<T>
-) {
+function DataGridComponent<
+  T extends Record<string, unknown> = Record<string, unknown>,
+>(props: DataGridProps<T>) {
   const {
     ref,
     data,
@@ -28,8 +27,6 @@ function DataGridComponent<T extends Record<string, unknown> = Record<string, un
   } = props;
 
   const t = useLocalization();
-
-  const { dataGrid: dataGridConfig = {} } = useConfiguration();
 
   const groupedFields = useMemo(() => {
     const result: Record<string | symbol, DataGridFieldType[]> = {
@@ -51,9 +48,8 @@ function DataGridComponent<T extends Record<string, unknown> = Record<string, un
     return result;
   }, [fields]);
 
-  const cls = clsx(s.DataGrid, className, dataGridConfig.className);
+  const cls = clsx(s.DataGrid, className);
   const styles = {
-    ...dataGridConfig.style,
     ...style,
   };
 

@@ -4,22 +4,14 @@ import { SideNavigationProps } from './SideNavigation.types.ts';
 import { Item } from './components';
 import { ScrollSpy } from '../../utils/components/ScrollSpy.tsx';
 import clsx from 'clsx';
-import { useConfiguration } from 'components/configuration';
 
 const SideNavigationComponent = memo<SideNavigationProps>(
   ({ title, children, className, style, ref, ...restProps }) => {
-    const { sideNavigation: sideNavigationConfig = {} } = useConfiguration();
+    const cls = clsx(s.SideNavigation, className);
 
-    const cls = clsx(
-      s.SideNavigation,
-      className,
-      sideNavigationConfig.className,
-    );
-
-    const titleCls = clsx(s.Title, sideNavigationConfig.titleClassName);
+    const titleCls = clsx(s.Title);
 
     const styles = {
-      ...sideNavigationConfig.style,
       ...style,
     };
 

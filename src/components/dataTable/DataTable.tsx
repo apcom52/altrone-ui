@@ -3,7 +3,6 @@ import { DataTableCoreContext } from './DataTable.context';
 import { Action, RowActions, RowAction } from './components';
 import s from './dataTable.module.scss';
 import { Children, useEffect, useMemo, useRef } from 'react';
-import { useConfiguration } from '../configuration';
 import clsx from 'clsx';
 import {
   getCoreRowModel,
@@ -27,10 +26,8 @@ import {
 } from './filters';
 
 const DataTableComponent = <DataType extends object>(
-  props: DataTableProps<DataType>
+  props: DataTableProps<DataType>,
 ) => {
-  const { dataTable: dataTableConfig = {} } = useConfiguration();
-
   const {
     ref,
     children,
@@ -146,9 +143,8 @@ const DataTableComponent = <DataType extends object>(
     isFirstRender.current = false;
   }, []);
 
-  const cls = clsx(s.Table, props.className, dataTableConfig.className);
+  const cls = clsx(s.Table, props.className);
   const styles = {
-    ...dataTableConfig.style,
     ...props.style,
   };
 

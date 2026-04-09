@@ -3,8 +3,7 @@ import { useDatePickerViewContext } from '../DatePicker.contexts.ts';
 import { useYearRanges } from '../utils.ts';
 import { useLocalizationContext } from '../../application/useLocalization.tsx';
 import { Button } from 'components/button';
-import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
-import { Dropdown } from 'components/dropdown/index.ts';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export const DatePickerHeader = () => {
   const { viewMode, setViewMode, currentMonth, setCurrentMonth } =

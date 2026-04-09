@@ -8,7 +8,6 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { PaginationProps } from './Pagination.types.ts';
-import { useConfiguration } from 'components/configuration';
 import { useLocalization } from '../application';
 import { Button } from 'components/button/index.ts';
 import { Flex } from 'components/flex/Flex.tsx';
@@ -56,7 +55,6 @@ export const Pagination = memo<PaginationProps>(
     style,
     ...restProps
   }) => {
-    const { pagination: paginationConfig = {} } = useConfiguration();
     const t = useLocalization();
 
     const pageItems = useMemo(
@@ -64,8 +62,8 @@ export const Pagination = memo<PaginationProps>(
       [currentPage, totalPages, siblings],
     );
 
-    const cls = clsx(s.Pagination, className, paginationConfig.className);
-    const styles = { ...paginationConfig.style, ...style };
+    const cls = clsx(s.Pagination, className);
+    const styles = { ...style };
 
     return (
       <Flex

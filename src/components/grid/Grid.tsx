@@ -3,7 +3,6 @@ import { GridProps } from './Grid.types.ts';
 import { Column } from './components';
 import s from './styles.module.scss';
 import clsx from 'clsx';
-import { useConfiguration } from '../configuration';
 import { Gap } from 'types';
 
 const gapVars: Record<Gap, string> = {
@@ -17,38 +16,32 @@ const gapVars: Record<Gap, string> = {
   xxl: 'var(--xxl-gap)',
 };
 
-const GridComponent = memo<GridProps>(({
-  ref,
-  children,
-  wrap = true,
-  gap = 'none',
-  rowGap = 'none',
-  className,
-  style,
-  ...restProps
-}) => {
-  const { grid: gridConfig = {} } = useConfiguration();
-
-  const cls = clsx(
-    s.Grid,
-    { [s.NoWrap]: !wrap },
-    gridConfig.className,
+const GridComponent = memo<GridProps>(
+  ({
+    ref,
+    children,
+    wrap = true,
+    gap = 'none',
+    rowGap = 'none',
     className,
-  );
+    style,
+    ...restProps
+  }) => {
+    const cls = clsx(s.Grid, { [s.NoWrap]: !wrap }, className);
 
-  const styles = {
-    ...gridConfig.style,
-    ...style,
-    '--column-spacing': gapVars[gap],
-    '--row-spacing': gapVars[rowGap],
-  };
+    const styles = {
+      ...style,
+      '--column-spacing': gapVars[gap],
+      '--row-spacing': gapVars[rowGap],
+    };
 
-  return (
-    <div ref={ref} className={cls} style={styles} {...restProps}>
-      {children}
-    </div>
-  );
-});
+    return (
+      <div ref={ref} className={cls} style={styles} {...restProps}>
+        {children}
+      </div>
+    );
+  },
+);
 
 const GridNamespace = Object.assign(GridComponent, {
   Column: Column,

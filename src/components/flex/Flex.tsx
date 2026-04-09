@@ -2,7 +2,6 @@ import { createElement, memo } from 'react';
 import { FlexProps } from './Flex.types.ts';
 import clsx from 'clsx';
 import s from './flex.module.scss';
-import { useConfiguration } from 'components/configuration';
 import { Gap } from 'types';
 
 const gapVars: Record<Gap, string> = {
@@ -31,8 +30,6 @@ export const Flex = memo<FlexProps>(
     wrap = false,
     ...props
   }) => {
-    const { flex: flexConfig = {} } = useConfiguration();
-
     const cls = clsx(
       s.Flex,
       {
@@ -48,11 +45,9 @@ export const Flex = memo<FlexProps>(
         [s.Flex_wrap]: wrap,
       },
       className,
-      flexConfig.className,
     );
 
     const styles = {
-      ...flexConfig.style,
       ...style,
       gap: gapVars[gap],
     };

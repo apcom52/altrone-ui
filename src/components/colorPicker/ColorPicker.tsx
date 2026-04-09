@@ -1,12 +1,9 @@
 import clsx from 'clsx';
 import { ColorPickerProps, ColorPreset } from './ColorPicker.types';
-import {
-  TextInput,
-  Popover,
-  useConfiguration,
-  useLocalization,
-  DummyBox,
-} from 'components';
+import { TextInput } from 'components/textInput/TextInput.tsx';
+import { Popover } from 'components/popover/Popover.tsx';
+import { useLocalization } from 'components/application';
+import { DummyBox } from 'components/dummyBox/DummyBox.tsx';
 import s from './styles.module.scss';
 import { ColorPickerContent } from './inner/ColorPickerContent';
 import { Size } from 'types';
@@ -45,8 +42,6 @@ export const ColorPicker = (props: ColorPickerProps) => {
     ...restProps
   } = props;
 
-  const { colorPicker: colorPickerConfig = {} } = useConfiguration();
-
   const handleChange = useCallback(
     (color?: string) => {
       onChange(typeof color === 'string' ? color.toLowerCase() : value);
@@ -54,12 +49,11 @@ export const ColorPicker = (props: ColorPickerProps) => {
     [onChange, value],
   );
 
-  const cls = clsx(s.ColorPicker, colorPickerConfig.className, className, {
+  const cls = clsx(s.ColorPicker, className, {
     [s.Readonly]: readOnly,
   });
 
   const styles = {
-    ...colorPickerConfig.style,
     ...style,
   };
 

@@ -2,11 +2,10 @@ import s from './altroneApplication.module.scss';
 import { AltroneApplicationProps, Theme } from './AltroneApplication.types.ts';
 import { useMediaMatch } from 'utils';
 import clsx from 'clsx';
-import { Configuration } from 'components/configuration';
 import { useEffect, useMemo, useState } from 'react';
 import { Toast } from 'components/toasts/Toast.tsx';
 import { ThemeContext, ThemeContextType } from './useTheme.ts';
-import { Screen } from '../index.ts';
+import { Screen } from 'components/screen/Screen.tsx';
 
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
@@ -95,11 +94,9 @@ export const AltroneApplication = ({
     >
       <ThemeContext.Provider value={themeContext}>
         <AltroneLocalization language={language} customLabels={customLabels}>
-          <Configuration {...config}>
-            <DialogProvider>
-              <Toast>{children}</Toast>
-            </DialogProvider>
-          </Configuration>
+          <DialogProvider>
+            <Toast>{children}</Toast>
+          </DialogProvider>
         </AltroneLocalization>
       </ThemeContext.Provider>
     </Screen>

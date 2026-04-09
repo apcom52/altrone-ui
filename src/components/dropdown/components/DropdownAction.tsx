@@ -4,7 +4,6 @@ import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { useCloseDropdownContext } from '../Dropdown.contexts.ts';
 import s from './action.module.scss';
-import { useConfiguration } from 'components/configuration';
 import { useEffect, useId } from 'react';
 import { usePopoverCurrentIndex } from '../../popover/Popover.tsx';
 import { Badge } from 'components/badge/Badge.tsx';
@@ -37,8 +36,6 @@ export function DropdownAction(props: DropdownActionProps) {
 
   const isFocused = currentIndex === index;
 
-  const { dropdown: { action: actionConfig = {} } = {} } = useConfiguration();
-
   const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
     useDropdownItemHover();
 
@@ -59,13 +56,11 @@ export function DropdownAction(props: DropdownActionProps) {
       [s.Focused]: focused,
     },
     className,
-    actionConfig.className,
   );
 
-  const badgeCls = clsx(s.Badge, actionConfig.badgeClassName);
+  const badgeCls = clsx(s.Badge);
 
   const styles = {
-    ...actionConfig.style,
     ...style,
   };
 
@@ -123,11 +118,15 @@ export function DropdownAction(props: DropdownActionProps) {
 
   if (asChild) {
     if (!isValidElement(children)) {
-      console.error('[DropdownAction] asChild requires a valid React element as children');
+      console.error(
+        '[DropdownAction] asChild requires a valid React element as children',
+      );
       return null;
     }
 
-    const childWithContent = cloneWithRef(children, { children: actionContent });
+    const childWithContent = cloneWithRef(children, {
+      children: actionContent,
+    });
 
     return (
       <Slot ref={ref} {...(sharedProps as AnyObject)}>

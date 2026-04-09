@@ -2,7 +2,6 @@ import { memo } from 'react';
 import s from './dummyBox.module.scss';
 import clsx from 'clsx';
 import { DummyBoxProps } from './DummyBox.types';
-import { useConfiguration } from 'components/configuration';
 
 export const DummyBox = memo<DummyBoxProps>((props) => {
   const {
@@ -15,12 +14,9 @@ export const DummyBox = memo<DummyBoxProps>((props) => {
     ...restProps
   } = props;
 
-  const { dummyBox: dummyBoxConfig = {} } = useConfiguration();
-
-  const cls = clsx(s.DummyBox, className, dummyBoxConfig.className);
+  const cls = clsx(s.DummyBox, className);
 
   const styles = {
-    ...dummyBoxConfig.style,
     ...style,
     width,
     minWidth: width,

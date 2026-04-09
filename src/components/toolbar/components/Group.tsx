@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import { ToolbarGroupProps } from '../Toolbar.types.ts';
 import s from './group.module.scss';
-import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import { motion } from 'motion/react';
 
@@ -15,8 +14,6 @@ export const Group = memo(
     style,
     ...restProps
   }: ToolbarGroupProps) => {
-    const { toolbar: toolbarConfig = {} } = useConfiguration();
-
     const cls = clsx(
       s.Group,
       {
@@ -25,7 +22,6 @@ export const Group = memo(
         [s.Between]: align === 'between',
       },
       className,
-      toolbarConfig.groupClassName,
     );
 
     const styles = {
@@ -34,7 +30,13 @@ export const Group = memo(
     };
 
     return (
-      <motion.div ref={ref} layout className={cls} style={styles} {...restProps}>
+      <motion.div
+        ref={ref}
+        layout
+        className={cls}
+        style={styles}
+        {...restProps}
+      >
         {children}
       </motion.div>
     );

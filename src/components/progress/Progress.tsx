@@ -2,7 +2,6 @@ import { memo } from 'react';
 import { ProgressContext, ProgressProps } from './Progress.types.ts';
 import clsx from 'clsx';
 import s from './progress.module.scss';
-import { useConfiguration } from 'components/configuration';
 
 export const Progress = memo<ProgressProps>(
   ({
@@ -16,8 +15,6 @@ export const Progress = memo<ProgressProps>(
     ref,
     ...props
   }) => {
-    const { progress: progressConfig = {} } = useConfiguration();
-
     const cls = clsx(
       s.Progress,
       {
@@ -25,22 +22,19 @@ export const Progress = memo<ProgressProps>(
         [s.Large]: size === 'l',
       },
       className,
-      progressConfig.className,
     );
 
     const styles = {
-      ...progressConfig.style,
       ...style,
     };
 
-    const activeCls = clsx(
-      s.Active,
-      activeSegmentClassName,
-      progressConfig.activeSegmentClassName,
-    );
+    const activeCls = clsx(s.Active, activeSegmentClassName);
 
     const safeMax = max || 1;
-    const percentage = Math.min(100, Math.max(0, Math.round((value / safeMax) * 100)));
+    const percentage = Math.min(
+      100,
+      Math.max(0, Math.round((value / safeMax) * 100)),
+    );
 
     const progressContext: ProgressContext = {
       value,
@@ -72,9 +66,7 @@ export const Progress = memo<ProgressProps>(
             width: `${percentage}%`,
           }}
         />
-        <div className={s.Label}>
-          {childrenElement}
-        </div>
+        <div className={s.Label}>{childrenElement}</div>
       </div>
     );
   },

@@ -2,13 +2,20 @@ import { memo } from 'react';
 import clsx from 'clsx';
 import { LabelProps } from './Label.types';
 import s from './styles.module.scss';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context';
 
 export const Label = memo(
-  ({ ref, children, className, style, color = 'default', size = 'm', variant = 'solid', rounding = 'rounded', ...props }: LabelProps) => {
-    const { label: labelConfig = {} } = useConfiguration();
-
-    const cls = clsx(s.Label, className, labelConfig.className, {
+  ({
+    ref,
+    children,
+    className,
+    style,
+    color = 'default',
+    size = 'm',
+    variant = 'solid',
+    rounding = 'rounded',
+    ...props
+  }: LabelProps) => {
+    const cls = clsx(s.Label, className, {
       [s.Soft]: variant === 'soft',
       [s.Outline]: variant === 'outline',
       [s.Pill]: rounding === 'pill',
@@ -30,8 +37,12 @@ export const Label = memo(
       [s.XLarge]: size === 'xl',
     });
 
-    const styles = { ...labelConfig.style, ...style };
+    const styles = { ...style };
 
-    return <div ref={ref} className={cls} style={styles} {...props}>{children}</div>;
+    return (
+      <div ref={ref} className={cls} style={styles} {...props}>
+        {children}
+      </div>
+    );
   },
 );

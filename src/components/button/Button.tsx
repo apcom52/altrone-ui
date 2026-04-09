@@ -2,9 +2,9 @@ import { isValidElement, memo, ReactElement } from 'react';
 import { ButtonProps } from './Button.types.ts';
 import s from './button.module.scss';
 import clsx from 'clsx';
-import { useConfiguration } from 'components/configuration';
 import { HTMLMotionProps, motion } from 'motion/react';
-import { Loading, Tooltip } from 'components/index.ts';
+import { Loading } from 'components/loading/Loading.tsx';
+import { Tooltip } from 'components/tooltip/Tooltip.tsx';
 import { ButtonSuccessIcon } from './inner/Success.tsx';
 import { ButtonFailedIcon } from './inner/Failed.tsx';
 import { Slot } from 'utils/components/Slot.tsx';
@@ -36,8 +36,6 @@ export const Button = memo((props: ButtonProps) => {
     ...restProps
   } = props;
 
-  const { button: buttonConfig = {} } = useConfiguration();
-
   const isSingleIcon = !showLabel && !!icon && !additionalIcon;
   const isLoading = state === 'loading';
 
@@ -56,11 +54,9 @@ export const Button = memo((props: ButtonProps) => {
       [s.Selected]: selected,
     },
     className,
-    buttonConfig.className,
   );
 
   const styles = {
-    ...buttonConfig.style,
     ...style,
   };
 

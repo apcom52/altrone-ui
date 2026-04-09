@@ -1,9 +1,7 @@
 import React, { memo } from 'react';
 import type { TextProps } from './Text.types.ts';
-import { useConfiguration } from '../configuration';
 import clsx from 'clsx';
 import s from './text.module.scss';
-import { TextSizeContext, useTextSize } from './Text.context.ts';
 
 // Internal permissive type — unions all variants for implementation convenience.
 // The public API is constrained by the TextProps union in the cast below.
@@ -56,11 +54,6 @@ const TextImpl = ({
   ref,
   ...restProps
 }: TextImplProps) => {
-  const { text: textConfig = {} } = useConfiguration();
-
-  const contextSize = useTextSize();
-  const textSize = size ?? contextSize ?? 4;
-
   const cls = clsx(
     s.Text,
     {
@@ -68,15 +61,15 @@ const TextImpl = ({
       [s.WeightMedium]: weight === 'medium',
       [s.WeightBold]: weight === 'bold',
       [s.WeightLight]: weight === 'light',
-      [s.Size1]: textSize === 1,
-      [s.Size2]: textSize === 2,
-      [s.Size3]: textSize === 3,
-      [s.Size4]: textSize === 4,
-      [s.Size5]: textSize === 5,
-      [s.Size6]: textSize === 6,
-      [s.Size7]: textSize === 7,
-      [s.Size8]: textSize === 8,
-      [s.Size9]: textSize === 9,
+      [s.Size1]: size === 1,
+      [s.Size2]: size === 2,
+      [s.Size3]: size === 3,
+      [s.Size4]: size === 4,
+      [s.Size5]: size === 5,
+      [s.Size6]: size === 6,
+      [s.Size7]: size === 7,
+      [s.Size8]: size === 8,
+      [s.Size9]: size === 9,
       [s.Item]: item,
       [s.List]: list === 'numeric' || list === 'marked',
       [s.Italic]: italic,
@@ -99,20 +92,12 @@ const TextImpl = ({
       [s.ColorWarning]: color === 'warning',
     },
     className,
-    textConfig.className,
   );
 
   const styles: React.CSSProperties & Record<string, unknown> = {
-    ...textConfig.style,
     ...style,
     ...(lineClamp !== undefined ? { '--_text-line-clamp': lineClamp } : {}),
   };
-
-  const wrappedChildren = (
-    <TextSizeContext.Provider value={textSize}>
-      {children}
-    </TextSizeContext.Provider>
-  );
 
   if (asChild) {
     if (!React.isValidElement(children)) {
@@ -166,7 +151,7 @@ const TextImpl = ({
           }
         : {})}
     >
-      {wrappedChildren}
+      {children}
     </Tag>
   );
 };

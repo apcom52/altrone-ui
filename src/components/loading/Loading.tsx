@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import clsx from 'clsx';
 import { LoadingProps } from './Loading.types.ts';
-import { useConfiguration } from '../configuration';
 import s from './loading.module.scss';
 
 export const Loading = memo<LoadingProps>(
@@ -13,13 +12,10 @@ export const Loading = memo<LoadingProps>(
     style,
     ...restProps
   }) => {
-    const { loading: loadingConfig = {} } = useConfiguration();
+    const currentColor = color ?? 'var(--loadingColor)';
 
-    const currentColor = color ?? loadingConfig.color ?? 'var(--loadingColor)';
-
-    const cls = clsx(s.Loading, className, loadingConfig.className);
+    const cls = clsx(s.Loading, className);
     const styles = {
-      ...loadingConfig.style,
       ...style,
       color: currentColor,
     };

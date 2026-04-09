@@ -1,6 +1,5 @@
 import { TextareaProps } from './Textarea.types.ts';
 import { TextInput } from '../textInput';
-import { useConfiguration } from '../configuration/AltroneConfiguration.context.ts';
 import clsx from 'clsx';
 import s from './textarea.module.scss';
 import { useFormField } from '../form/components/Field.context.ts';
@@ -17,8 +16,6 @@ export const Textarea = ({
   readOnly,
   ...restProps
 }: TextareaProps) => {
-  const { textarea: textareaConfig = {} } = useConfiguration();
-
   const {
     name: formFieldName,
     invalid: formFieldInvalid,
@@ -35,10 +32,9 @@ export const Textarea = ({
 
   // TextInput (via asChild/Slot) already applies Input, Invalid, Readonly classes —
   // only add Textarea-specific class here to avoid duplication
-  const cls = clsx(s.Textarea, textareaConfig.className, className);
+  const cls = clsx(s.Textarea, className);
 
   const styles = {
-    ...textareaConfig.style,
     ...style,
   };
 

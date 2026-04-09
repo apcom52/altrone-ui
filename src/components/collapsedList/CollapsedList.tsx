@@ -6,7 +6,6 @@ import {
 import { ArrayUtils, useBoolean } from 'utils';
 import { Button } from 'components/button';
 import { Flex } from 'components/flex';
-import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import s from './collapsed-list.module.scss';
 import { useLocalization } from '../application/useLocalization.tsx';
@@ -26,12 +25,9 @@ export const CollapsedList = memo<CollapsedListProps>(
   }) => {
     const t = useLocalization();
 
-    const { collapsedList: collapsedListConfig = {} } = useConfiguration();
-
     const { value: expanded, toggle } = useBoolean(false);
 
-    const limitValue =
-      typeof limit === 'number' ? limit : (collapsedListConfig.limit ?? 5);
+    const limitValue = typeof limit === 'number' ? (limit ?? 5) : 5;
 
     const safeArray = ArrayUtils.getSafeArray(children);
 
@@ -57,10 +53,7 @@ export const CollapsedList = memo<CollapsedListProps>(
       expanded,
     };
 
-    const customExpandButtonLabel =
-      typeof expandButtonLabel !== 'undefined'
-        ? expandButtonLabel
-        : collapsedListConfig.expandButtonLabel;
+    const customExpandButtonLabel = expandButtonLabel;
 
     const expandButtonLabelText = customExpandButtonLabel
       ? typeof customExpandButtonLabel === 'function'
@@ -68,10 +61,9 @@ export const CollapsedList = memo<CollapsedListProps>(
         : customExpandButtonLabel
       : defaultExpandButtonLabel;
 
-    const cls = clsx(s.CollapsedList, className, collapsedListConfig.className);
+    const cls = clsx(s.CollapsedList, className);
 
     const styles = {
-      ...collapsedListConfig.style,
       ...style,
     };
 

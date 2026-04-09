@@ -2,18 +2,24 @@ import { isValidElement, memo } from 'react';
 import { TagsItemProps } from '../Tags.types.ts';
 import s from './item.module.scss';
 import clsx from 'clsx';
-import { useConfiguration } from '../../configuration';
 import { Slot } from 'utils/components/Slot.tsx';
 
 export const Item = memo(
-  ({ ref, className, label, asChild, children, ...restProps }: TagsItemProps) => {
-    const { tags: { item: tagsItemConfig = {} } = {} } = useConfiguration();
-
-    const cls = clsx(s.Item, className, tagsItemConfig.className);
+  ({
+    ref,
+    className,
+    label,
+    asChild,
+    children,
+    ...restProps
+  }: TagsItemProps) => {
+    const cls = clsx(s.Item, className);
 
     if (asChild) {
       if (!isValidElement(children)) {
-        console.error('[Tags.Item] asChild requires a valid React element as children');
+        console.error(
+          '[Tags.Item] asChild requires a valid React element as children',
+        );
         return null;
       }
       return (

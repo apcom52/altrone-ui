@@ -8,7 +8,6 @@ import {
 } from 'react';
 import { AutocompleteInputProps } from './AutocompleteInput.types.ts';
 import { ArrayUtils, useDebouncedEffect, useShowControls } from 'utils';
-import { useConfiguration } from 'components/configuration';
 import { useLocalization } from 'components/application';
 import { TextInput } from 'components/textInput';
 import { Empty } from 'components/empty';
@@ -36,12 +35,9 @@ export const AutocompleteInput = <T = string,>({
   ...restProps
 }: AutocompleteInputProps<T>) => {
   const t = useLocalization();
-  const { autocompleteInput: autocompleteInputConfig = {} } =
-    useConfiguration();
 
   const isControlsVisible = useShowControls({
     propValue: showControls,
-    configValue: autocompleteInputConfig.showControls,
   });
 
   const dropdownRef = useRef<PopoverRef | null>(null);
@@ -57,9 +53,8 @@ export const AutocompleteInput = <T = string,>({
 
   const safeChildren = ArrayUtils.getSafeArray(children);
 
-  const cls = clsx(autocompleteInputConfig.className, className);
+  const cls = clsx(className);
   const styles = {
-    ...autocompleteInputConfig.style,
     ...style,
   };
 

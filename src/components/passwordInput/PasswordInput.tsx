@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { PasswordInputProps } from './PasswordInput.types.ts';
 import { TextInput } from '../textInput';
 import { ArrayUtils, useShowControls } from '../../utils';
-import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import { useLocalization } from '../application/useLocalization.tsx';
 import { Eye, EyeOff } from 'lucide-react';
@@ -18,11 +17,8 @@ export const PasswordInput = ({
 }: PasswordInputProps) => {
   const t = useLocalization();
 
-  const { passwordInput: passwordInputConfig = {} } = useConfiguration();
-
   const needToShowControl = useShowControls({
     propValue: showControls,
-    configValue: passwordInputConfig.showControls,
     readOnly,
   });
 
@@ -30,9 +26,8 @@ export const PasswordInput = ({
 
   const safeChildren = ArrayUtils.getSafeArray(children);
 
-  const cls = clsx(passwordInputConfig.className, className);
+  const cls = clsx(className);
   const styles = {
-    ...passwordInputConfig.style,
     ...style,
   };
 

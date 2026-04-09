@@ -19,7 +19,6 @@ import { Popover } from 'components/popover';
 import { PopoverDatePickerContent } from '../inner/PopoverDatePickerContent.tsx';
 import { TextInput } from 'components/textInput';
 import warningOnce from 'rc-util/es/warning';
-import { useConfiguration } from 'components/configuration';
 import { useLocalization } from 'components/application';
 import { useLocale } from 'utils';
 import { Calendar } from 'lucide-react';
@@ -40,13 +39,11 @@ export const RangePicker = memo<RangePickerProps>((props) => {
     ...restProps
   } = props;
 
-  const { datePicker: datePickerConfig = {} } = useConfiguration();
-
   const locale = useLocale({
-    dateFormat: format || datePickerConfig.rangeFormat,
+    dateFormat: format,
   });
 
-  const rangeFormatEmpty = datePickerConfig.rangeFormatEmpty || '...';
+  const rangeFormatEmpty = '...';
   const dateFormat = locale.dateFormat;
 
   // Single check covers both directions

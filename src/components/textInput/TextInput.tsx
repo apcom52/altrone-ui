@@ -18,7 +18,6 @@ import {
   LoadingIsland,
   TextIsland,
 } from './components';
-import { useConfiguration } from 'components/configuration';
 import { useFormField } from '../form/components/Field.context.ts';
 import { AltChildren } from 'utils';
 import {
@@ -61,8 +60,6 @@ const TextInputComponent = ({
     typeof disabled === 'boolean' ? disabled : formFieldDisabled;
   const inputSize = size || formFieldSize;
 
-  const { textInput: inputConfig = {} } = useConfiguration();
-
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const { enable: focus, disable: blur } = useBoolean(false);
@@ -94,7 +91,6 @@ const TextInputComponent = ({
       [s.Readonly]: readonlyStyles && restProps.readOnly,
     },
     className,
-    inputConfig.className,
   );
 
   const wrapperStyles = {
@@ -170,14 +166,15 @@ const TextInputComponent = ({
   useResizeObserver(rightIslandsContainerRef);
 
   const styles = {
-    ...inputConfig.style,
     ...style,
-    paddingLeft: leftIslands.length && leftIslandsContainerRef.current
-      ? `${leftIslandsContainerRef.current.offsetWidth}px`
-      : undefined,
-    paddingRight: rightIslands.length && rightIslandsContainerRef.current
-      ? `${rightIslandsContainerRef.current.offsetWidth}px`
-      : undefined,
+    paddingLeft:
+      leftIslands.length && leftIslandsContainerRef.current
+        ? `${leftIslandsContainerRef.current.offsetWidth}px`
+        : undefined,
+    paddingRight:
+      rightIslands.length && rightIslandsContainerRef.current
+        ? `${rightIslandsContainerRef.current.offsetWidth}px`
+        : undefined,
   };
 
   let inputElement: ReactElement | null = null;

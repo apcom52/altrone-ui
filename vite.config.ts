@@ -23,9 +23,7 @@ export default defineConfig({
         'vitest/*.tsx',
         '@fontsource',
       ],
-      output: {
-        banner: `'use client';`,
-      },
+      output: {},
     },
   },
   test: {

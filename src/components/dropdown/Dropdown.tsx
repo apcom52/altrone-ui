@@ -5,7 +5,6 @@ import { DropdownProps } from './Dropdown.types';
 import { CloseDropdownContext } from './Dropdown.contexts.ts';
 import s from './dropdown.module.scss';
 import clsx from 'clsx';
-import { useConfiguration } from 'components/configuration';
 
 export function DropdownWrapper(props: DropdownProps) {
   const {
@@ -22,12 +21,9 @@ export function DropdownWrapper(props: DropdownProps) {
     ...restProps
   } = props;
 
-  const { dropdown: dropdownConfig = {} } = useConfiguration();
-
-  const cls = clsx(s.DropdownPopover, className, dropdownConfig.className);
+  const cls = clsx(s.DropdownPopover, className);
 
   const styles = {
-    ...dropdownConfig.style,
     ...style,
   };
 

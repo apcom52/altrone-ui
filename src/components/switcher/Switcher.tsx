@@ -2,7 +2,6 @@ import { ChangeEventHandler, KeyboardEventHandler, memo, useRef } from 'react';
 import { SwitcherProps } from './Switcher.types.ts';
 import clsx from 'clsx';
 import s from './switcher.module.scss';
-import { useConfiguration } from 'components/configuration';
 
 export const Switcher = memo<SwitcherProps>(
   ({
@@ -17,8 +16,6 @@ export const Switcher = memo<SwitcherProps>(
     name,
     ...restProps
   }) => {
-    const { switcher: switcherConfig = {} } = useConfiguration();
-
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const cls = clsx(
@@ -29,11 +26,9 @@ export const Switcher = memo<SwitcherProps>(
         [s.Danger]: danger,
       },
       className,
-      switcherConfig.className,
     );
 
     const styles = {
-      ...switcherConfig.style,
       ...style,
     };
 

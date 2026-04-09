@@ -6,6 +6,7 @@ export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   firstName: string;
   lastName?: string;
   size?: Size;
-  color?: string;
+  backgroundColor?: string;
+  textColor?: string;
   imageSrc?: string;
 }

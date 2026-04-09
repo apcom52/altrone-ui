@@ -2,7 +2,6 @@ import { memo } from 'react';
 import { BottomNavigationItemProps } from '../BottomNavigation.types.ts';
 import clsx from 'clsx';
 import s from './item.module.scss';
-import { useConfiguration } from 'components/configuration';
 import { RenderFuncProp } from 'types';
 import { Badge } from 'components/badge/Badge.tsx';
 import { motion, useAnimationControls } from 'framer-motion';
@@ -42,9 +41,6 @@ const bottomNavigationItemComponent: RenderFuncProp<
 };
 
 export const Item = memo<BottomNavigationItemProps>((props) => {
-  const { bottomNavigation: bottomNavigationConfig = {} } = useConfiguration();
-  const { item: bottomNavigationItemConfig = {} } = bottomNavigationConfig;
-
   const {
     ref,
     className,
@@ -56,19 +52,11 @@ export const Item = memo<BottomNavigationItemProps>((props) => {
     s.Item,
     {
       [s.Selected]: props.selected,
-      ...(bottomNavigationConfig.selectedItemClassName && props.selected
-        ? { [bottomNavigationConfig.selectedItemClassName]: true }
-        : {}),
-      ...(bottomNavigationItemConfig.selectedItemClassName && props.selected
-        ? { [bottomNavigationItemConfig.selectedItemClassName]: true }
-        : {}),
     },
-    bottomNavigationItemConfig.className,
-    className
+    className,
   );
 
   const styles = {
-    ...bottomNavigationItemConfig.style,
     ...props.style,
   };
 

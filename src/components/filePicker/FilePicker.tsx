@@ -18,7 +18,6 @@ import s from './filePicker.module.scss';
 import { File } from './inner';
 import { Flex } from 'components/flex';
 import { deleteFileRequest } from './FilePicker.utils.ts';
-import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import { FilePickerContext } from './FilePicker.context.ts';
 import { useLocalization } from '../application/useLocalization.tsx';
@@ -45,7 +44,6 @@ export const FilePicker = memo<FilePickerProps>(
     ...restProps
   }) => {
     const t = useLocalization();
-    const { filePicker: filePickerConfig = {} } = useConfiguration();
 
     const [internalFileList, setInternalFileList] = useState<
       InternalFileItem[]
@@ -138,9 +136,8 @@ export const FilePicker = memo<FilePickerProps>(
       [isControlled, onChange],
     );
 
-    const cls = clsx(s.FilePicker, className, filePickerConfig.className);
+    const cls = clsx(s.FilePicker, className);
     const styles = {
-      ...filePickerConfig.style,
       ...style,
     };
 

@@ -5,7 +5,6 @@ import { DropdownWrapper } from '../Dropdown.tsx';
 import { DropdownMenu } from './DropdownMenu.tsx';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import s from './action.module.scss';
-import { useConfiguration } from 'components/configuration';
 import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
 
 export function DropdownChildMenu({
@@ -17,24 +16,14 @@ export function DropdownChildMenu({
   icon,
   ...props
 }: DropdownChildMenuProps) {
-  const { dropdown: { childMenu: dropdownChildMenuConfiguration = {} } = {} } =
-    useConfiguration();
-
   const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
     useDropdownItemHover();
 
-  const cls = clsx(
-    s.Action,
-    'no-selection',
-    className,
-    {
-      [s.DisabledAction]: disabled,
-    },
-    dropdownChildMenuConfiguration.className,
-  );
+  const cls = clsx(s.Action, 'no-selection', className, {
+    [s.DisabledAction]: disabled,
+  });
 
   const styles = {
-    ...dropdownChildMenuConfiguration.style,
     ...style,
   };
 

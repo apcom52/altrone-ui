@@ -3,7 +3,6 @@ import { ModalContext, ModalProps } from './Modal.types.ts';
 import { CloseButton } from '../closeButton';
 import { Button } from '../button';
 import clsx from 'clsx';
-import { useConfiguration } from 'components/configuration';
 import { DOMUtils, GlobalUtils, useBoolean } from '../../utils';
 import { createPortal } from 'react-dom';
 import s from './modal.module.scss';
@@ -32,7 +31,6 @@ export const Modal = memo<ModalProps>(
 
     const titleId = useId();
 
-    const { modal: modalConfig = {} } = useConfiguration();
     const {
       value: opened,
       disable: hide,
@@ -46,11 +44,9 @@ export const Modal = memo<ModalProps>(
         [s.Large]: size === 'l',
       },
       className,
-      modalConfig.className
     );
 
     const styles = {
-      ...modalConfig.style,
       ...style,
     };
 
@@ -176,5 +172,5 @@ export const Modal = memo<ModalProps>(
         {opened ? createPortal(modalContent, altroneRoot) : null}
       </>
     );
-  }
+  },
 );

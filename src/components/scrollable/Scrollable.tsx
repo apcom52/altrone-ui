@@ -1,20 +1,16 @@
 import { memo, useImperativeHandle, useRef } from 'react';
 import { ScrollableProps } from './Scrollable.types.ts';
 import clsx from 'clsx';
-import { useConfiguration } from 'components/configuration';
 import s from './scrollable.module.scss';
 import 'overlayscrollbars/overlayscrollbars.css';
 import 'components/scrollable/scrollable-theme.css';
-import { OverlayScrollbarsComponent, OverlayScrollbarsComponentRef } from 'overlayscrollbars-react';
+import {
+  OverlayScrollbarsComponent,
+  OverlayScrollbarsComponentRef,
+} from 'overlayscrollbars-react';
 
 export const Scrollable = memo<ScrollableProps>(
-  ({
-    children,
-    className,
-    style,
-    ref,
-    ...props
-  }) => {
+  ({ children, className, style, ref, ...props }) => {
     const scrollableRef = useRef<OverlayScrollbarsComponentRef>(null);
 
     useImperativeHandle(ref, () => {
@@ -22,12 +18,9 @@ export const Scrollable = memo<ScrollableProps>(
       return instance?.elements().viewport ?? null;
     }, []);
 
-    const { scrollable: scrollableConfig = {} } = useConfiguration();
-
-    const cls = clsx(s.Scrollable, className, scrollableConfig.className);
+    const cls = clsx(s.Scrollable, className);
 
     const styles = {
-      ...scrollableConfig.style,
       ...style,
     };
 
@@ -49,5 +42,5 @@ export const Scrollable = memo<ScrollableProps>(
         </OverlayScrollbarsComponent>
       </div>
     );
-  }
+  },
 );
