@@ -75,7 +75,7 @@ export const AutoContrastStory: StoryObj<typeof Avatar> = {
       <Text size={5} weight="bold" block>
         Dark backgrounds → white text
       </Text>
-      <Flex gap="m" wrap="wrap">
+      <Flex gap="m" wrap>
         <Avatar firstName="Alice" lastName="Blue" backgroundColor="#1e3a5f" />
         <Avatar firstName="Bob" lastName="Purple" backgroundColor="#4a1d96" />
         <Avatar firstName="Carol" lastName="Green" backgroundColor="#064e3b" />
@@ -86,7 +86,7 @@ export const AutoContrastStory: StoryObj<typeof Avatar> = {
       <Text size={5} weight="bold" block>
         Light backgrounds → black text
       </Text>
-      <Flex gap="m" wrap="wrap">
+      <Flex gap="m" wrap>
         <Avatar firstName="Alice" lastName="Yellow" backgroundColor="#fef08a" />
         <Avatar firstName="Bob" lastName="Mint" backgroundColor="#bbf7d0" />
         <Avatar firstName="Carol" lastName="Sky" backgroundColor="#bae6fd" />
@@ -183,7 +183,7 @@ export const StackedGroupStory: StoryObj<typeof Avatar> = {
           align="center"
           style={{ paddingLeft: 12 }}
         >
-          {TEAM.map((member, i) => (
+          {TEAM.map((member) => (
             <Avatar
               key={member.firstName}
               firstName={member.firstName}

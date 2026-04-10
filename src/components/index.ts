@@ -53,6 +53,7 @@ export * from './search';
 export * from './select';
 export * from './sideNavigation';
 export * from './skeleton';
+export * from './splitter';
 export * from './spoiler';
 export * from './switcher';
 

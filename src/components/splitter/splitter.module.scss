@@ -1,0 +1,206 @@
+:global([data-altrone-root='true']) {
+  --splitter-gutter: 10px;
+  --splitter-line-size: 1px;
+  --splitter-handle-length: 32px;
+  --splitter-handle-thickness: 4px;
+  --splitter-line-color: var(--border-1);
+  --splitter-handle-color: var(--border-2);
+  --splitter-handle-hover-color: var(--solid-1);
+  --splitter-handle-active-color: var(--accent-9);
+  --splitter-collapse-btn-size: 22px;
+  --splitter-collapse-btn-icon: 10px;
+  --splitter-panel-transition: 0.2s ease;
+}
+
+/* ── Container ─────────────────────────────────────────────────── */
+
+.Splitter {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.Vertical {
+  flex-direction: column;
+}
+
+/* ── Panel ─────────────────────────────────────────────────────── */
+
+.Panel {
+  overflow: auto;
+  min-width: 0;
+  min-height: 0;
+  /* flex values are set via inline style */
+  transition: flex var(--splitter-panel-transition);
+}
+
+/* Applied to the Splitter root while dragging — disables flex transition on all panels */
+.Dragging .Panel {
+  transition: none;
+}
+
+/* ── Divider ───────────────────────────────────────────────────── */
+
+.Divider {
+  position: relative;
+  flex: 0 0 var(--splitter-gutter);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: col-resize;
+  touch-action: none;
+  user-select: none;
+  outline: none;
+
+  /* visible line */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: var(--splitter-line-size);
+    background: var(--splitter-line-color);
+    transition: background 0.15s;
+    pointer-events: none;
+  }
+
+  &:focus-visible {
+    &::before {
+      background: var(--accent-7);
+      width: 2px;
+    }
+
+    .Handle {
+      background: var(--splitter-handle-active-color);
+    }
+  }
+
+  &:hover:not(.DividerDisabled) {
+    .Handle {
+      background: var(--splitter-handle-hover-color);
+    }
+
+    .CollapseBtn {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+
+.DividerVertical {
+  flex: 0 0 var(--splitter-gutter);
+  cursor: row-resize;
+  flex-direction: row;
+
+  &::before {
+    top: 50%;
+    left: 0;
+    right: 0;
+    bottom: auto;
+    width: 100%;
+    height: var(--splitter-line-size);
+    transform: translateY(-50%);
+  }
+}
+
+.DividerActive {
+  &::before {
+    background: var(--accent-7);
+  }
+
+  .Handle {
+    background: var(--splitter-handle-active-color);
+    transform: scale(1.1);
+  }
+}
+
+.DividerDisabled {
+  cursor: default;
+}
+
+/* ── Drag handle pill ──────────────────────────────────────────── */
+
+.Handle {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: var(--splitter-handle-thickness);
+  height: var(--splitter-handle-length);
+  border-radius: 9999px;
+  background: var(--splitter-handle-color);
+  transition: background 0.15s, transform 0.15s;
+  pointer-events: none;
+}
+
+.HandleVertical {
+  width: var(--splitter-handle-length);
+  height: var(--splitter-handle-thickness);
+}
+
+.HandleHidden {
+  opacity: 0;
+}
+
+/* ── Collapse buttons ──────────────────────────────────────────── */
+
+.CollapseBtn {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--splitter-collapse-btn-size);
+  height: var(--splitter-collapse-btn-size);
+  border-radius: 50%;
+  border: 1px solid var(--border-1);
+  background: var(--background-2);
+  backdrop-filter: var(--glass-effects);
+  color: var(--text-1);
+  cursor: pointer;
+  padding: 0;
+  font-size: var(--splitter-collapse-btn-icon);
+  line-height: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s, background 0.15s, border-color 0.15s;
+
+  &:hover {
+    background: var(--interactive-2);
+    border-color: var(--border-2);
+  }
+
+  &:focus-visible {
+    opacity: 1;
+    pointer-events: auto;
+    outline: 2px solid var(--accent-9);
+    outline-offset: 1px;
+  }
+}
+
+/* Always visible when the adjacent panel is collapsed */
+.CollapseBtnVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Horizontal splitter → buttons are above/below center handle */
+.CollapseBtnBefore {
+  top: var(--xl-gap);
+}
+
+.CollapseBtnAfter {
+  bottom: var(--xl-gap);
+}
+
+/* Vertical splitter → buttons are left/right of center handle */
+.CollapseBtnBeforeV {
+  left: var(--xl-gap);
+}
+
+.CollapseBtnAfterV {
+  right: var(--xl-gap);
+}
