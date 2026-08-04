@@ -1,4 +1,34 @@
-// Spacing variables have been removed.
-// Use semantic gap variables instead:
-// --xs-gap (4px), --s-gap (6px), --gap (8px), --l-gap (12px),
-// --xl-gap (24px), --xxl-gap (36px)
+:global([data-altrone-root='true']) {
+  /**
+   * Semantic spacing roles, named by purpose rather than magnitude. Alias
+   * the existing primitive gap scale (--narrow-gap … --xxl-gap, defined in
+   * altroneApplication.module.scss) instead of introducing new raw values,
+   * so the primitive scale stays the single source of truth for "how many
+   * px" and this layer only decides "which primitive for which purpose".
+   */
+  --space-inline: var(--s-gap); /* icon <-> text gap */
+  --space-stack: var(--gap); /* vertical rhythm between fields/list items */
+  --space-content: var(--gap); /* padding inside content containers */
+  --space-section: var(--xl-gap); /* gap between large layout blocks */
+  --space-inset-compact: var(--xs-gap); /* dense lists/tables */
+
+  /**
+   * Control-role matrix (role x size): internal control padding varies by
+   * component `size`, unlike the roles above. Seeded from the primitive
+   * scale as a starting point — components currently pick their own
+   * per-size padding independently (e.g. Button, TextInput), and none of
+   * them match this seed exactly. Migrating an individual component onto
+   * these tokens is a per-component follow-up, not implied by adding them.
+   */
+  --space-control-x-mini: var(--xs-gap);
+  --space-control-x-s: var(--s-gap);
+  --space-control-x-m: var(--gap);
+  --space-control-x-l: var(--l-gap);
+  --space-control-x-xl: var(--xl-gap);
+
+  --space-control-y-mini: var(--narrow-gap);
+  --space-control-y-s: var(--xs-gap);
+  --space-control-y-m: var(--s-gap);
+  --space-control-y-l: var(--gap);
+  --space-control-y-xl: var(--l-gap);
+}

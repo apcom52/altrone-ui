@@ -1,6 +1,6 @@
 .Footer {
   position: sticky;
   bottom: 0;
-  padding: 8px;
+  padding: var(--space-content);
   z-index: var(--level-fixed);
 }
