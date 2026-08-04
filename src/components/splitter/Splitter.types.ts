@@ -40,7 +40,7 @@ export interface SplitterProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Fired when a drag interaction ends */
   onResizeEnd?: (sizes: number[], event: PointerEvent) => void;
   /** Fired when a panel is collapsed or expanded */
-  onCollapse?: (panelIndex: number, collapsed: boolean) => void;
+  onCollapse?: (panelIndex: number, collapsed: boolean, event?: React.MouseEvent<HTMLButtonElement>) => void;
   /** Show or hide the built-in collapse/expand buttons. Default: true */
   showControls?: boolean;
   /** Ref that exposes imperative collapse/expand/toggle API */

@@ -7,7 +7,7 @@ import { Flex } from '../flex/index.ts';
 import React, { useRef, useState } from 'react';
 
 const story: Meta<typeof Splitter> = {
-  title: 'Components/Layout/Splitter',
+  title: 'Components/Containers/Splitter',
   component: Splitter,
   decorators: [StorybookDecorator],
   parameters: {
@@ -37,17 +37,28 @@ const Label = ({ children }: { children: React.ReactNode }) => (
 // Fake file-tree lines
 const FileTree = () => (
   <Flex direction="vertical" gap="xs" style={{ padding: '12px 8px' }}>
-    {['📁 src', '  📁 components', '    📄 Splitter.tsx', '    📄 Splitter.types.ts', '  📁 utils', '    📄 helpers.ts', '📄 package.json', '📄 vite.config.ts'].map(
-      (line) => (
-        <Text
-          key={line}
-          size={3}
-          style={{ fontFamily: 'var(--font-family-code)', whiteSpace: 'pre', cursor: 'default' }}
-        >
-          {line}
-        </Text>
-      ),
-    )}
+    {[
+      '📁 src',
+      '  📁 components',
+      '    📄 Splitter.tsx',
+      '    📄 Splitter.types.ts',
+      '  📁 utils',
+      '    📄 helpers.ts',
+      '📄 package.json',
+      '📄 vite.config.ts',
+    ].map((line) => (
+      <Text
+        key={line}
+        size={3}
+        style={{
+          fontFamily: 'var(--font-family-code)',
+          whiteSpace: 'pre',
+          cursor: 'default',
+        }}
+      >
+        {line}
+      </Text>
+    ))}
   </Flex>
 );
 
@@ -78,7 +89,11 @@ const CodeBlock = () => (
       ');',
     ].map((line, i) => (
       <div key={i} style={{ display: 'flex', gap: 16 }}>
-        <Text size={3} color="muted" style={{ width: 24, textAlign: 'right', flexShrink: 0 }}>
+        <Text
+          size={3}
+          color="muted"
+          style={{ width: 24, textAlign: 'right', flexShrink: 0 }}
+        >
           {i + 1}
         </Text>
         <span style={{ whiteSpace: 'pre' }}>{line || ' '}</span>
@@ -219,7 +234,14 @@ export const MinMaxConstraints: StoryObj<typeof Splitter> = {
 export const IDELayout: StoryObj<typeof Splitter> = {
   name: 'IDE layout (nested)',
   render: () => (
-    <Splitter style={{ height: 480, border: '1px solid var(--border-1)', borderRadius: 8, overflow: 'hidden' }}>
+    <Splitter
+      style={{
+        height: 480,
+        border: '1px solid var(--border-1)',
+        borderRadius: 8,
+        overflow: 'hidden',
+      }}
+    >
       {/* Left: file tree */}
       <Splitter.Panel defaultSize={20} min={12} max={35} collapsible>
         <Flex
@@ -232,7 +254,9 @@ export const IDELayout: StoryObj<typeof Splitter> = {
               borderBottom: '1px solid var(--border-1)',
             }}
           >
-            <Text size={3} weight="medium">Explorer</Text>
+            <Text size={3} weight="medium">
+              Explorer
+            </Text>
           </div>
           <FileTree />
         </Flex>
@@ -250,7 +274,9 @@ export const IDELayout: StoryObj<typeof Splitter> = {
                   background: 'var(--background-2)',
                 }}
               >
-                <Text size={3} color="muted">Splitter.tsx</Text>
+                <Text size={3} color="muted">
+                  Splitter.tsx
+                </Text>
               </div>
               <CodeBlock />
             </div>
@@ -264,13 +290,25 @@ export const IDELayout: StoryObj<typeof Splitter> = {
                   borderBottom: '1px solid var(--border-1)',
                 }}
               >
-                <Text size={3} weight="medium">Terminal</Text>
+                <Text size={3} weight="medium">
+                  Terminal
+                </Text>
               </div>
-              <div style={{ padding: '10px 16px', fontFamily: 'var(--font-family-code)', fontSize: 'var(--text-size-3)' }}>
-                <Text size={3} color="success">✓</Text>
+              <div
+                style={{
+                  padding: '10px 16px',
+                  fontFamily: 'var(--font-family-code)',
+                  fontSize: 'var(--text-size-3)',
+                }}
+              >
+                <Text size={3} color="success">
+                  ✓
+                </Text>
                 <Text size={3}> vite build — compiled in 1.2s</Text>
                 <br />
-                <Text size={3} color="muted">$ _</Text>
+                <Text size={3} color="muted">
+                  $ _
+                </Text>
               </div>
             </div>
           </Splitter.Panel>
@@ -294,17 +332,16 @@ export const ResizeCallback: StoryObj<typeof Splitter> = {
             </Text>
           ))}
         </Flex>
-        <Splitter
-          style={{ height: 260 }}
-          onResize={(s) => setSizes(s)}
-        >
+        <Splitter style={{ height: 260 }} onResize={(s) => setSizes(s)}>
           <Splitter.Panel defaultSize={50}>
             <div style={{ ...panelStyle(), height: '100%' }}>
               <Label>Panel 1</Label>
             </div>
           </Splitter.Panel>
           <Splitter.Panel>
-            <div style={{ ...panelStyle('var(--background-1)'), height: '100%' }}>
+            <div
+              style={{ ...panelStyle('var(--background-1)'), height: '100%' }}
+            >
               <Label>Panel 2</Label>
             </div>
           </Splitter.Panel>
@@ -425,7 +462,9 @@ export const ExternalControlStory: StoryObj<typeof Splitter> = {
             </div>
           </Splitter.Panel>
           <Splitter.Panel min={20} collapsible>
-            <div style={{ ...panelStyle('var(--background-1)'), height: '100%' }}>
+            <div
+              style={{ ...panelStyle('var(--background-1)'), height: '100%' }}
+            >
               <CodeBlock />
             </div>
           </Splitter.Panel>
@@ -433,18 +472,20 @@ export const ExternalControlStory: StoryObj<typeof Splitter> = {
             <div style={{ ...panelStyle(), height: '100%' }}>
               <Flex direction="vertical" gap="s" style={{ padding: 4 }}>
                 <Text weight="medium">Inspector</Text>
-                {['Component', 'Props', 'State', 'Hooks', 'Events'].map((item) => (
-                  <div
-                    key={item}
-                    style={{
-                      padding: '6px 8px',
-                      background: 'var(--interactive-1)',
-                      borderRadius: 'var(--controlRounding)',
-                    }}
-                  >
-                    <Text size={3}>{item}</Text>
-                  </div>
-                ))}
+                {['Component', 'Props', 'State', 'Hooks', 'Events'].map(
+                  (item) => (
+                    <div
+                      key={item}
+                      style={{
+                        padding: '6px 8px',
+                        background: 'var(--interactive-1)',
+                        borderRadius: 'var(--controlRounding)',
+                      }}
+                    >
+                      <Text size={3}>{item}</Text>
+                    </div>
+                  ),
+                )}
               </Flex>
             </div>
           </Splitter.Panel>

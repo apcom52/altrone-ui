@@ -7,7 +7,6 @@ import { dayjsInstance as dayjs } from 'utils';
 import { Dayjs } from 'dayjs';
 import { RangePickerValue } from './DatePicker.types.ts';
 import { DatePicker } from './DatePicker.tsx';
-import { Configuration } from '../configuration';
 
 // Earliest date the user can book — today
 const TODAY = dayjs();
@@ -37,23 +36,23 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   render: () => {
     // Day picker state
     const [departureDate, setDepartureDate] = useState<Dayjs | undefined>(
-      undefined
+      undefined,
     );
     const [returnDate, setReturnDate] = useState<Dayjs | undefined>(
-      TODAY.add(14, 'day')
+      TODAY.add(14, 'day'),
     );
 
     // Month picker state
     const [reportMonth, setReportMonth] = useState<Dayjs | undefined>(
-      TODAY.startOf('month')
+      TODAY.startOf('month'),
     );
     const [budgetMonth, setBudgetMonth] = useState<Dayjs | undefined>(
-      undefined
+      undefined,
     );
 
     // Year picker state
     const [fiscalYear, setFiscalYear] = useState<Dayjs | undefined>(
-      TODAY.startOf('year')
+      TODAY.startOf('year'),
     );
     const [birthYear, setBirthYear] = useState<Dayjs | undefined>(undefined);
 
@@ -92,12 +91,13 @@ export const TextInputStory: StoryObj<typeof Flex> = {
               <Form.Field label="Selected values">
                 <Text block style={{ opacity: departureDate ? 1 : 0.45 }}>
                   Departure:{' '}
-                  {departureDate
-                    ? departureDate.format('LL')
-                    : 'not selected'}
+                  {departureDate ? departureDate.format('LL') : 'not selected'}
                 </Text>
                 <Text block style={{ opacity: returnDate ? 1 : 0.45 }}>
-                  Return: {returnDate ? returnDate.format('DD/MM/YYYY') : 'not selected'}
+                  Return:{' '}
+                  {returnDate
+                    ? returnDate.format('DD/MM/YYYY')
+                    : 'not selected'}
                 </Text>
               </Form.Field>
             </Grid.Column>
@@ -106,13 +106,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <Grid>
             <Grid.Column span={3} style={{ padding: '8px' }}>
               <Form.Field label="Russian locale">
-                <Configuration locale={{ locale: 'ru-RU' }}>
-                  <DatePicker
-                    value={returnDate}
-                    onChange={(v) => setReturnDate(v)}
-                    clearable
-                  />
-                </Configuration>
+                <DatePicker
+                  value={returnDate}
+                  onChange={(v) => setReturnDate(v)}
+                  clearable
+                />
               </Form.Field>
             </Grid.Column>
             <Grid.Column span={3} style={{ padding: '8px' }}>
@@ -126,18 +124,12 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             </Grid.Column>
             <Grid.Column span={3} style={{ padding: '8px' }}>
               <Form.Field label="Read-only (confirmed booking)">
-                <DatePicker
-                  value={TODAY.add(7, 'day')}
-                  readOnly
-                />
+                <DatePicker value={TODAY.add(7, 'day')} readOnly />
               </Form.Field>
             </Grid.Column>
             <Grid.Column span={3} style={{ padding: '8px' }}>
               <Form.Field label="Disabled">
-                <DatePicker
-                  value={returnDate}
-                  disabled
-                />
+                <DatePicker value={returnDate} disabled />
               </Form.Field>
             </Grid.Column>
           </Grid>
@@ -174,10 +166,14 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             <Grid.Column span={4} style={{ padding: '8px' }}>
               <Form.Field label="Selected values">
                 <Text block style={{ opacity: reportMonth ? 1 : 0.45 }}>
-                  Report: {reportMonth ? reportMonth.format('MMMM YYYY') : 'not selected'}
+                  Report:{' '}
+                  {reportMonth
+                    ? reportMonth.format('MMMM YYYY')
+                    : 'not selected'}
                 </Text>
                 <Text block style={{ opacity: budgetMonth ? 1 : 0.45 }}>
-                  Budget: {budgetMonth ? budgetMonth.format('MMM YY') : 'not selected'}
+                  Budget:{' '}
+                  {budgetMonth ? budgetMonth.format('MMM YY') : 'not selected'}
                 </Text>
               </Form.Field>
             </Grid.Column>
@@ -186,13 +182,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <Grid>
             <Grid.Column span={3} style={{ padding: '8px' }}>
               <Form.Field label="Russian locale">
-                <Configuration locale={{ locale: 'ru-RU' }}>
-                  <DatePicker.MonthPicker
-                    value={reportMonth}
-                    onChange={(v) => setReportMonth(v)}
-                    clearable
-                  />
-                </Configuration>
+                <DatePicker.MonthPicker
+                  value={reportMonth}
+                  onChange={(v) => setReportMonth(v)}
+                  clearable
+                />
               </Form.Field>
             </Grid.Column>
             <Grid.Column span={3} style={{ padding: '8px' }}>
@@ -214,10 +208,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             </Grid.Column>
             <Grid.Column span={3} style={{ padding: '8px' }}>
               <Form.Field label="Disabled">
-                <DatePicker.MonthPicker
-                  value={reportMonth}
-                  disabled
-                />
+                <DatePicker.MonthPicker value={reportMonth} disabled />
               </Form.Field>
             </Grid.Column>
           </Grid>
@@ -254,10 +245,12 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             <Grid.Column span={4} style={{ padding: '8px' }}>
               <Form.Field label="Selected values">
                 <Text block style={{ opacity: fiscalYear ? 1 : 0.45 }}>
-                  Fiscal: {fiscalYear ? fiscalYear.format('YYYY') : 'not selected'}
+                  Fiscal:{' '}
+                  {fiscalYear ? fiscalYear.format('YYYY') : 'not selected'}
                 </Text>
                 <Text block style={{ opacity: birthYear ? 1 : 0.45 }}>
-                  Birth year: {birthYear ? birthYear.format('YYYY [г.]') : 'not selected'}
+                  Birth year:{' '}
+                  {birthYear ? birthYear.format('YYYY [г.]') : 'not selected'}
                 </Text>
               </Form.Field>
             </Grid.Column>
@@ -266,13 +259,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <Grid>
             <Grid.Column span={3} style={{ padding: '8px' }}>
               <Form.Field label="Russian locale">
-                <Configuration locale={{ locale: 'ru-RU' }}>
-                  <DatePicker.YearPicker
-                    value={fiscalYear}
-                    onChange={(v) => setFiscalYear(v)}
-                    clearable
-                  />
-                </Configuration>
+                <DatePicker.YearPicker
+                  value={fiscalYear}
+                  onChange={(v) => setFiscalYear(v)}
+                  clearable
+                />
               </Form.Field>
             </Grid.Column>
             <Grid.Column span={3} style={{ padding: '8px' }}>
@@ -286,18 +277,12 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             </Grid.Column>
             <Grid.Column span={3} style={{ padding: '8px' }}>
               <Form.Field label="Read-only">
-                <DatePicker.YearPicker
-                  value={TODAY.startOf('year')}
-                  readOnly
-                />
+                <DatePicker.YearPicker value={TODAY.startOf('year')} readOnly />
               </Form.Field>
             </Grid.Column>
             <Grid.Column span={3} style={{ padding: '8px' }}>
               <Form.Field label="Disabled">
-                <DatePicker.YearPicker
-                  value={fiscalYear}
-                  disabled
-                />
+                <DatePicker.YearPicker value={fiscalYear} disabled />
               </Form.Field>
             </Grid.Column>
           </Grid>
@@ -392,13 +377,11 @@ export const RangeStory: StoryObj<typeof Flex> = {
             </Grid.Column>
             <Grid.Column span={4} style={{ padding: '8px' }}>
               <Form.Field label="Russian locale">
-                <Configuration locale={{ locale: 'ru-RU' }}>
-                  <DatePicker.RangePicker
-                    value={contractRange}
-                    onChange={(v) => setContractRange(v ?? [])}
-                    clearable
-                  />
-                </Configuration>
+                <DatePicker.RangePicker
+                  value={contractRange}
+                  onChange={(v) => setContractRange(v ?? [])}
+                  clearable
+                />
               </Form.Field>
             </Grid.Column>
             <Grid.Column span={4} style={{ padding: '8px' }}>
@@ -438,10 +421,7 @@ export const RangeStory: StoryObj<typeof Flex> = {
             </Grid.Column>
             <Grid.Column span={4} style={{ padding: '8px' }}>
               <Form.Field label="Disabled">
-                <DatePicker.RangePicker
-                  value={contractRange}
-                  disabled
-                />
+                <DatePicker.RangePicker value={contractRange} disabled />
               </Form.Field>
             </Grid.Column>
           </Grid>

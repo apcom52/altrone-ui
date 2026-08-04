@@ -1,0 +1,135 @@
+/* ── Divider ───────────────────────────────────────────────────── */
+
+.Divider {
+  position: relative;
+  flex: 0 0 var(--splitter-gutter);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: col-resize;
+  touch-action: none;
+  user-select: none;
+  outline: none;
+
+  /* visible line */
+
+  &:focus-visible {
+    &::before {
+      background: var(--accent-7);
+      width: 2px;
+    }
+
+    .Handle {
+      background: var(--splitter-handle-active-color);
+    }
+  }
+
+  &:hover:not(.DividerDisabled) {
+    .Handle {
+      background: var(--splitter-handle-hover-color);
+    }
+
+    .CollapseBtn {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+
+.DividerVertical {
+  flex: 0 0 var(--splitter-gutter);
+  cursor: row-resize;
+  flex-direction: row;
+
+  &::before {
+    top: 50%;
+    left: 0;
+    right: 0;
+    bottom: auto;
+    width: 100%;
+    height: var(--splitter-line-size);
+    transform: translateY(-50%);
+  }
+}
+
+.DividerActive {
+  &::before {
+    background: var(--accent-7);
+  }
+
+  .Handle {
+    background: var(--splitter-handle-active-color);
+    transform: scale(1.2);
+  }
+}
+
+.DividerDisabled {
+  cursor: default;
+}
+
+/* ── Drag handle pill ──────────────────────────────────────────── */
+
+.Handle {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: var(--splitter-handle-thickness);
+  height: var(--splitter-handle-length);
+  border-radius: 9999px;
+  background: var(--splitter-handle-color);
+  transition:
+    background 0.15s,
+    transform 0.15s;
+  pointer-events: none;
+}
+
+.HandleVertical {
+  width: var(--splitter-handle-length);
+  height: var(--splitter-handle-thickness);
+}
+
+.HandleHidden {
+  opacity: 0;
+}
+
+/* ── Collapse buttons ──────────────────────────────────────────── */
+
+.CollapseBtn {
+  position: absolute;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.15s,
+    background 0.15s,
+    border-color 0.15s;
+
+  &:focus-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* Always visible when the adjacent panel is collapsed */
+.CollapseBtnVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Horizontal splitter → buttons are above/below center handle */
+.CollapseBtnBefore {
+  top: var(--xl-gap);
+}
+
+.CollapseBtnAfter {
+  bottom: var(--xl-gap);
+}
+
+/* Vertical splitter → buttons are left/right of center handle */
+.CollapseBtnBeforeV {
+  left: var(--xl-gap);
+}
+
+.CollapseBtnAfterV {
+  right: var(--xl-gap);
+}
