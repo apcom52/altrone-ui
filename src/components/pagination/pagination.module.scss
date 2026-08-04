@@ -4,9 +4,12 @@
 }
 
 .Pagination {
-  padding: 4px;
+  --pagination-gap: 4px;
+
+  padding: var(--pagination-gap);
   background: var(--pagination-background);
-  border-radius: calc(var(--pagination-rounding) + 4px);
+  --radius-outer: calc(var(--pagination-rounding) + var(--pagination-gap));
+  border-radius: var(--radius-outer);
   user-select: none;
 }
 

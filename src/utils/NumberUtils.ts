@@ -29,4 +29,23 @@ export class NumberUtils {
     const n = Number(v);
     return Number.isFinite(n) ? n : null;
   };
+
+  /**
+   * Concentric radius formula (see rules/radius.md): floors at `floor`,
+   * but passes `outerRadius` through unchanged when it's already at/below
+   * the floor (e.g. an explicit 0 = "no radius").
+   *
+   * @example
+   * NumberUtils.concentricRadius(24, 8)  // 16
+   * NumberUtils.concentricRadius(24, 40) // 2 (floored)
+   * NumberUtils.concentricRadius(0, 8)   // 0 (explicit "no radius")
+   */
+  static concentricRadius(
+    outerRadius: number,
+    gap: number,
+    floor: number = 2,
+  ): number {
+    if (outerRadius < floor) return outerRadius;
+    return Math.max(floor, outerRadius - gap);
+  }
 }

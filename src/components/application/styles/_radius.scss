@@ -1,9 +1,34 @@
 :root {
-  --radius-none: 0;
+  /**
+   * Seed values for starting a new radius scope (assign to --radius-outer).
+   * Nested descendants derive from --radius-outer instead of picking
+   * another seed here, so parent and child never drift apart.
+   */
+  --radius-none: 0px;
   --radius-mini: 2px;
   --radius-s: 4px;
   --radius-m: 8px;
   --radius-l: 12px;
   --radius-xl: 16px;
   --radius-circle: 50%;
+
+  /**
+   * Concentric radius: radius_child = radius_parent - gap, floored at
+   * --radius-mini so a big gap can't round a corner away to square. If the
+   * inherited radius is already at/below the floor (e.g. explicitly 0),
+   * that's an intentional choice and passes through unchanged — clamp()
+   * resolves to its max argument when min > max.
+   *
+   * @example
+   *   --radius-outer: clamp(var(--radius-mini), calc(var(--radius-outer) - <gap>), var(--radius-outer));
+   *   border-radius: var(--radius-outer);
+   */
+  --radius-outer: var(--radius-none);
+}
+
+/** Registered so --radius-outer can animate — a plain custom property interpolates as a string, not a length. */
+@property --radius-outer {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
 }
