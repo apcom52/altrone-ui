@@ -2,7 +2,7 @@
   display: inline-flex;
   align-items: center;
   background: var(--glass-background-color);
-  box-shadow: var(--shadow-1), var(--shadow-4);
+  box-shadow: var(--elevation-overlay-shadow);
   backdrop-filter: blur(32px) saturate(180%);
   padding: 4px;
   border-radius: 21px;

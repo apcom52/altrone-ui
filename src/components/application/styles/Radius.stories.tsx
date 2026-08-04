@@ -226,25 +226,13 @@ export const Overview: StoryObj = {
         being pulled up to the floor.
       </Paragraph>
 
-      <Heading>Why not a static size table</Heading>
+      <Heading>Why a shared variable, not a hardcoded number</Heading>
       <Paragraph>
-        The library used to hardcode a radius per component size, and any
-        nested element that needed to match its container had to add its
-        own hand-picked offset. <code>Pagination</code> is a real example
-        that shipped this way:
-      </Paragraph>
-      <Code>{`.Pagination {
-  padding: 4px;
-  border-radius: calc(var(--pagination-rounding) + 4px);
-  /* the "4px" here and the padding above are the same
-     number, written twice, with no link between them */
-}`}</Code>
-      <Paragraph>
-        Nothing enforced that the <code>4px</code> gap in the radius
-        calculation matched the <code>4px</code> padding — a future edit to
-        either one would quietly break the concentric look. The fix ties
-        both to one variable and publishes the result as{' '}
-        <code>--radius-outer</code>, so any descendant can pick it up:
+        When two measurements need to agree — a container&rsquo;s padding
+        and how much its radius should shrink by, say — tying them to one
+        variable is safer than writing the same number in two places by
+        hand. <code>Pagination</code> is a real example: its padding and
+        its radius gap are the same value, expressed once:
       </Paragraph>
       <Code>{`.Pagination {
   --pagination-gap: 4px;
@@ -253,7 +241,11 @@ export const Overview: StoryObj = {
   --radius-outer: calc(var(--pagination-rounding) + var(--pagination-gap));
   border-radius: var(--radius-outer);
 }`}</Code>
-      <Paragraph>Same pixels on screen, one source of truth:</Paragraph>
+      <Paragraph>
+        Changing <code>--pagination-gap</code> updates the padding and the
+        radius together — they can&rsquo;t drift apart into two different
+        numbers for what is really one relationship:
+      </Paragraph>
       <Pagination currentPage={3} totalPages={12} onChange={() => {}} />
 
       <Heading>Animating a radius change</Heading>

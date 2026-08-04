@@ -8,7 +8,7 @@
   display: grid;
   position: sticky;
   top: 0;
-  z-index: var(--level-sticky);
+  z-index: var(--elevation-sticky-z-index);
   transition: border-radius 0.2s linear;
   padding: var(--data-table-padding);
 }
@@ -38,7 +38,7 @@
   border-radius: 32px;
   background-color: var(--data-table-header-background-color);
   backdrop-filter: blur(32px) saturate(180%);
-  box-shadow: var(--shadow-1);
+  box-shadow: var(--elevation-sticky-shadow);
 }
 
 .SortIcon {

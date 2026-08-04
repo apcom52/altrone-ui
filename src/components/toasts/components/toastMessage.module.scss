@@ -13,7 +13,7 @@
   color: var(--toast-text-color);
   font-size: var(--text-size-3);
   line-height: var(--text-line-height-3);
-  box-shadow: var(--shadow-1), var(--shadow-5);
+  box-shadow: var(--elevation-toast-shadow);
   gap: 4px;
   cursor: default;
   max-width: 420px;

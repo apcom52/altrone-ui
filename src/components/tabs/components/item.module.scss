@@ -44,7 +44,7 @@
   background-color: var(--tabs-item-active-background-color);
   backdrop-filter: blur(16px) saturate(180%);
   border-radius: var(--tabs-item-rounding);
-  box-shadow: var(--shadow-1), var(--shadow-2);
+  box-shadow: var(--elevation-raised-shadow);
   z-index: 0;
 }
 

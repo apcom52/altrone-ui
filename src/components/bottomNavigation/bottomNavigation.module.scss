@@ -16,7 +16,7 @@
   background: var(--glass-background-color);
   border-radius: var(--bottom-navigation-rounding);
   backdrop-filter: blur(64px) saturate(180%);
-  box-shadow: var(--shadow-1), var(--shadow-5);
+  box-shadow: var(--elevation-raised-shadow);
 }
 
 .Floating {

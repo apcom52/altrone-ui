@@ -20,3 +20,34 @@
   --shadow-5: 0 0 0 1px var(--gray-a3), 0 12px 60px var(--black-a3),
     0 16px 64px var(--gray-a2), 0 16px 36px -20px var(--gray-a7);
 }
+
+/**
+ * Dark-theme shadows. The --gray-aN hairline/outline layers above need no
+ * override — in dark mode --gray-aN is already a light overlay (see
+ * colors/_gray.scss), so it reads as a highlight on a dark surface for
+ * free. Only the --black-aN blur/spread layers are overridden here: pure
+ * black at light-mode opacity is close to invisible against an
+ * already-dark surface, so each is shifted ~4 steps up the alpha scale
+ * (e.g. --black-a1 -> --black-a5) to stay legible. First pass — revisit
+ * once Box's tonal materials land (see rules/elevation.md).
+ */
+:global([data-altrone-root='true'][data-altrone-theme='dark']) {
+  --shadow-inset: inset 0 0 0 1px var(--gray-a5),
+    inset 0 1.5px 2px 0 var(--gray-a2), inset 0 1.5px 2px 0 var(--black-a6);
+
+  --shadow-1: 0 0 0 1px var(--gray-a3), 0 0 0 0.5px var(--black-a5),
+    0 1px 1px 0 var(--gray-a2), 0 2px 1px -1px var(--black-a5),
+    0 1px 3px 0 var(--black-a5);
+
+  --shadow-2: 0 0 0 1px var(--gray-a3), 0 2px 3px -2px var(--gray-a3),
+    0 3px 12px -4px var(--black-a6), 0 4px 16px -8px var(--black-a6);
+
+  --shadow-3: 0 0 0 1px var(--gray-a3), 0 8px 40px var(--black-a5),
+    0 12px 32px -16px var(--gray-a3);
+
+  --shadow-4: 0 0 0 1px var(--gray-a3), 0 12px 60px var(--black-a7),
+    0 12px 32px -16px var(--gray-a5);
+
+  --shadow-5: 0 0 0 1px var(--gray-a3), 0 12px 60px var(--black-a7),
+    0 16px 64px var(--gray-a2), 0 16px 36px -20px var(--gray-a7);
+}

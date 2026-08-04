@@ -185,21 +185,21 @@ export const Overview: StoryObj = {
 
       <Heading>In practice</Heading>
       <Paragraph>
-        Same pixels on screen, now with a name attached instead of a bare
-        number — for example in <code>DataGrid</code>:
+        <code>DataGrid</code> uses <code>--space-stack</code> in two places
+        that serve the same purpose — the gap above its toolbar and the
+        gap between its field rows are both, conceptually, the same
+        vertical rhythm:
       </Paragraph>
       <Code>{`.DataGrid {
-  gap: 8px; /* was: no indication this is the same idea as .Fields below */
-}
-.Fields {
-  gap: 8px;
-}`}</Code>
-      <Code>{`.DataGrid {
   gap: var(--space-stack);
 }
 .Fields {
   gap: var(--space-stack);
 }`}</Code>
+      <Paragraph>
+        Both reference one role, so they can&rsquo;t drift into two
+        different values for what is really one idea.
+      </Paragraph>
 
       <Heading>Control padding — role × size (seed, not final)</Heading>
       <Paragraph>

@@ -37,7 +37,7 @@
   background: var(--drawer-background-color);
   backdrop-filter: var(--glass-effects);
   padding: 0;
-  box-shadow: var(--shadow-1), var(--shadow-4);
+  box-shadow: var(--elevation-overlay-shadow);
 }
 
 .EndSide {

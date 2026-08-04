@@ -22,7 +22,7 @@
   height: var(--range-height);
   overflow: hidden;
   border-radius: var(--range-rounding);
-  box-shadow: var(--shadow-1), var(--shadow-2);
+  box-shadow: var(--elevation-raised-shadow);
   background-color: var(--range-track-background-color);
   color: var(--range-text-color);
   cursor: pointer;

@@ -19,7 +19,7 @@
 .Root {
   position: fixed;
   inset: 0;
-  z-index: var(--level-toast);
+  z-index: var(--elevation-toast-z-index);
   pointer-events: none;
 }
 

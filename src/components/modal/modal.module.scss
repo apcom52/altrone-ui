@@ -36,12 +36,12 @@
   width: var(--modal-size);
   background: var(--modal-background-color);
   backdrop-filter: blur(32px) saturate(180%);
-  box-shadow: var(--shadow-1), var(--shadow-5);
+  box-shadow: var(--elevation-modal-shadow);
   border-radius: 24px;
   padding: 8px;
   gap: var(--l-gap);
   offset: 0;
-  z-index: var(--level-modal);
+  z-index: var(--elevation-modal-z-index);
   border: none;
   pointer-events: all;
 }

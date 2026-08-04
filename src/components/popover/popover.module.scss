@@ -13,12 +13,12 @@
   flex-direction: column;
   position: absolute;
   padding: 8px;
-  z-index: var(--level-popover);
+  z-index: var(--elevation-overlay-z-index);
   transition: box-shadow var(--transitionDuration) ease;
   background: var(--glass-background-color);
   backdrop-filter: blur(32px) saturate(180%);
   border-radius: 24px;
-  box-shadow: var(--shadow-1), var(--shadow-4);
+  box-shadow: var(--elevation-overlay-shadow);
   font-family: 'Inter Variable', sans-serif;
   transform-origin: top left;
   will-change: transform, opacity, top, left;
