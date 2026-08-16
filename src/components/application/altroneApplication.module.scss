@@ -1,5 +1,6 @@
 @use 'styles/breakpoints';
 @use 'styles/elevation';
+@use 'styles/motion';
 @use 'styles/radius';
 @use 'styles/shadow';
 @use 'styles/size';
@@ -15,9 +16,13 @@
 @use 'colors/indigo';
 @use 'colors/blue';
 @use 'colors/teal';
+@use 'colors/green';
 @use 'colors/brown';
 @use 'colors/amber';
+@use 'colors/orange';
 @use 'colors/common';
+@use 'colors/status';
+@use 'colors/categorical';
 
 @import 'src/global/mixins';
 
@@ -51,6 +56,13 @@
   --app-text-color: var(--text-2);
   --app-font-family: var(--font-family-base);
 
+  /**
+   * Disabled state gets its own dedicated (solid, non-alpha) palette
+   * instead of opacity: opacity is unpredictable layered over glass/
+   * translucent materials, since alpha channels stack.
+   */
+  --disabled-background: var(--gray-3);
+  --disabled-border: var(--gray-6);
   --disabled-text-color: var(--gray-9);
   --placeholder-text-color: var(--gray-a9);
 

@@ -10,6 +10,7 @@
   justify-content: center;
 }
 
+/** Deliberately not reduced under prefers-reduced-motion: a functional loading state, not decorative motion. */
 .Spinner {
   transform-origin: center;
   animation: rotate 2s linear infinite;

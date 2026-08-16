@@ -183,7 +183,7 @@
 }
 
 .Danger {
-  --button-text-color: var(--danger-color);
+  --button-text-color: var(--danger-text-1);
 }
 
 .Selected {
@@ -313,7 +313,7 @@
     --button-badge-background-color: var(--black-a3);
 
     &.Danger {
-      --button-text-color: var(--danger-color);
+      --button-text-color: var(--danger-text-1);
     }
   }
 }

@@ -3,6 +3,7 @@ import { AltroneApplicationProps, Theme } from './AltroneApplication.types.ts';
 import { useMediaMatch } from 'utils';
 import clsx from 'clsx';
 import { useEffect, useMemo, useState } from 'react';
+import { MotionConfig } from 'motion/react';
 import { Toast } from 'components/toasts/Toast.tsx';
 import { ThemeContext, ThemeContextType } from './useTheme.ts';
 import { Screen } from 'components/screen/Screen.tsx';
@@ -80,25 +81,27 @@ export const AltroneApplication = ({
   });
 
   return (
-    <Screen
-      ref={ref}
-      className={cls}
-      data-altrone-root="true"
-      data-altrone-accent={accent}
-      data-altrone-theme={theme}
-      id={id}
-      style={style}
-      sidebar={sidebar}
-      header={header}
-      {...props}
-    >
-      <ThemeContext.Provider value={themeContext}>
-        <AltroneLocalization language={language} customLabels={customLabels}>
-          <DialogProvider>
-            <Toast>{children}</Toast>
-          </DialogProvider>
-        </AltroneLocalization>
-      </ThemeContext.Provider>
-    </Screen>
+    <MotionConfig reducedMotion="user">
+      <Screen
+        ref={ref}
+        className={cls}
+        data-altrone-root="true"
+        data-altrone-accent={accent}
+        data-altrone-theme={theme}
+        id={id}
+        style={style}
+        sidebar={sidebar}
+        header={header}
+        {...props}
+      >
+        <ThemeContext.Provider value={themeContext}>
+          <AltroneLocalization language={language} customLabels={customLabels}>
+            <DialogProvider>
+              <Toast>{children}</Toast>
+            </DialogProvider>
+          </AltroneLocalization>
+        </ThemeContext.Provider>
+      </Screen>
+    </MotionConfig>
   );
 };

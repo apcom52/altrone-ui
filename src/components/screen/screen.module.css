@@ -45,6 +45,6 @@
   left: 0;
   width: 100%;
   height: 56px;
-  background: var(--accent-a3);
+  background: var(--color-header-backdrop);
   backdrop-filter: blur(8px);
 }

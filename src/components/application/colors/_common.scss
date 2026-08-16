@@ -1,15 +1,20 @@
 :global([data-altrone-root='true']) {
-  --danger-color: color(display-p3 0.744 0.234 0.222);
-  --success-color: color(display-p3 0.332 0.634 0.442);
-  --warning-color: color(display-p3 0.959 0.741 0.274);
-
   --focus-color: color(display-p3 0 0 0);
+
+  /** Modal/Drawer backdrop dimming — shared so every overlay dims consistently */
+  --color-overlay-scrim: var(--black-a3);
+
+  /** Accent-tinted backdrop behind Screen.Header (deliberately colored, not neutral) */
+  --color-header-backdrop: var(--accent-a3);
+
+  /** Text selection highlight */
+  --color-selection: var(--accent-a5);
 }
 
 :global([data-altrone-root='true'][data-altrone-theme='dark']) {
-  --danger-color: color(display-p3 0.831 0.345 0.231);
-  --success-color: color(display-p3 0.227 0.403 0.298);
-  --warning-color: color(display-p3 1 0.87 0.15);
-
   --focus-color: color(display-p3 1 1 1);
+}
+
+:global([data-altrone-root='true']) ::selection {
+  background: var(--color-selection);
 }

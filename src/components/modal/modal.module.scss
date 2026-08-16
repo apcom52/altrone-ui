@@ -2,9 +2,8 @@
 
 :global([data-altrone-root='true']) {
   --modal-background-color: var(--glass-background-color);
-  --modal-backdrop-background-color: var(--backdropColor);
   --modal-header-text-color: var(--text-2);
-  --modal-backdrop-color: var(--black-a3);
+  --modal-backdrop-color: var(--color-overlay-scrim);
 }
 
 .Backdrop {

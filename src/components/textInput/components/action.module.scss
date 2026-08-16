@@ -52,14 +52,14 @@
 }
 
 .Danger {
-  --text-input-action-island-text-color: var(--danger-color);
+  --text-input-action-island-text-color: var(--danger-text-1);
 
   &:hover,
   &:focus-visible {
-    --text-input-action-island-text-color: var(--danger-color);
+    --text-input-action-island-text-color: var(--danger-text-1);
   }
 
   &:active {
-    --text-input-action-island-text-color: var(--danger-color);
+    --text-input-action-island-text-color: var(--danger-text-1);
   }
 }

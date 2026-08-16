@@ -1,0 +1,129 @@
+/**
+ * Semantic status colors: danger/success/warning/info as purpose-named
+ * roles over a color scale, instead of handing out raw --danger-1/--danger-2
+ * to consumers — same primitive + semantic-alias approach as spacing/radius.
+ *
+ * danger/success/warning are fixed hues, independent of the chosen
+ * --accent (so accent="red" never visually blends with danger, per Radix
+ * Themes convention). info is the exception — it follows --accent itself,
+ * since it's about the primary flow rather than a universal state that
+ * needs to stay recognizable regardless of branding. No dark-theme
+ * override is needed here — every alias points at a hue step (e.g.
+ * --red-9) or --accent-N, and those already redefine themselves under
+ * [data-altrone-theme='dark'].
+ *
+ * Role scale (same 12-step convention as --background/--border/--solid/
+ * --text over gray, see altroneApplication.module.scss):
+ *   1-2  background   — page/panel fill for a status area
+ *   3-5  interactive   — component background (rest/hover/active)
+ *   6-8  border        — subtle border / UI border / hover border
+ *   9-10 solid         — solid fill (e.g. a filled danger button)
+ *   11-12 text         — low/high-contrast text
+ */
+:global([data-altrone-root='true']) {
+  // danger -> red
+  --danger-background-1: var(--red-1);
+  --danger-background-a1: var(--red-a1);
+  --danger-background-2: var(--red-2);
+  --danger-background-a2: var(--red-a2);
+  --danger-interactive-1: var(--red-3);
+  --danger-interactive-a1: var(--red-a3);
+  --danger-interactive-2: var(--red-4);
+  --danger-interactive-a2: var(--red-a4);
+  --danger-interactive-3: var(--red-5);
+  --danger-interactive-a3: var(--red-a5);
+  --danger-border-1: var(--red-6);
+  --danger-border-a1: var(--red-a6);
+  --danger-border-2: var(--red-7);
+  --danger-border-a2: var(--red-a7);
+  --danger-border-3: var(--red-8);
+  --danger-border-a3: var(--red-a8);
+  --danger-solid-1: var(--red-9);
+  --danger-solid-a1: var(--red-a9);
+  --danger-solid-2: var(--red-10);
+  --danger-solid-a2: var(--red-a10);
+  --danger-text-1: var(--red-11);
+  --danger-text-a1: var(--red-a11);
+  --danger-text-2: var(--red-12);
+  --danger-text-a2: var(--red-a12);
+
+  // success -> green
+  --success-background-1: var(--green-1);
+  --success-background-a1: var(--green-a1);
+  --success-background-2: var(--green-2);
+  --success-background-a2: var(--green-a2);
+  --success-interactive-1: var(--green-3);
+  --success-interactive-a1: var(--green-a3);
+  --success-interactive-2: var(--green-4);
+  --success-interactive-a2: var(--green-a4);
+  --success-interactive-3: var(--green-5);
+  --success-interactive-a3: var(--green-a5);
+  --success-border-1: var(--green-6);
+  --success-border-a1: var(--green-a6);
+  --success-border-2: var(--green-7);
+  --success-border-a2: var(--green-a7);
+  --success-border-3: var(--green-8);
+  --success-border-a3: var(--green-a8);
+  --success-solid-1: var(--green-9);
+  --success-solid-a1: var(--green-a9);
+  --success-solid-2: var(--green-10);
+  --success-solid-a2: var(--green-a10);
+  --success-text-1: var(--green-11);
+  --success-text-a1: var(--green-a11);
+  --success-text-2: var(--green-12);
+  --success-text-a2: var(--green-a12);
+
+  // warning -> amber
+  --warning-background-1: var(--amber-1);
+  --warning-background-a1: var(--amber-a1);
+  --warning-background-2: var(--amber-2);
+  --warning-background-a2: var(--amber-a2);
+  --warning-interactive-1: var(--amber-3);
+  --warning-interactive-a1: var(--amber-a3);
+  --warning-interactive-2: var(--amber-4);
+  --warning-interactive-a2: var(--amber-a4);
+  --warning-interactive-3: var(--amber-5);
+  --warning-interactive-a3: var(--amber-a5);
+  --warning-border-1: var(--amber-6);
+  --warning-border-a1: var(--amber-a6);
+  --warning-border-2: var(--amber-7);
+  --warning-border-a2: var(--amber-a7);
+  --warning-border-3: var(--amber-8);
+  --warning-border-a3: var(--amber-a8);
+  --warning-solid-1: var(--amber-9);
+  --warning-solid-a1: var(--amber-a9);
+  --warning-solid-2: var(--amber-10);
+  --warning-solid-a2: var(--amber-a10);
+  --warning-text-1: var(--amber-11);
+  --warning-text-a1: var(--amber-a11);
+  --warning-text-2: var(--amber-12);
+  --warning-text-a2: var(--amber-a12);
+
+  // info -> accent (not a fixed hue like the other three statuses — info
+  // is about drawing attention to something tied to the primary flow, so
+  // it deliberately follows whatever --accent the consumer has chosen)
+  --info-background-1: var(--accent-1);
+  --info-background-a1: var(--accent-a1);
+  --info-background-2: var(--accent-2);
+  --info-background-a2: var(--accent-a2);
+  --info-interactive-1: var(--accent-3);
+  --info-interactive-a1: var(--accent-a3);
+  --info-interactive-2: var(--accent-4);
+  --info-interactive-a2: var(--accent-a4);
+  --info-interactive-3: var(--accent-5);
+  --info-interactive-a3: var(--accent-a5);
+  --info-border-1: var(--accent-6);
+  --info-border-a1: var(--accent-a6);
+  --info-border-2: var(--accent-7);
+  --info-border-a2: var(--accent-a7);
+  --info-border-3: var(--accent-8);
+  --info-border-a3: var(--accent-a8);
+  --info-solid-1: var(--accent-9);
+  --info-solid-a1: var(--accent-a9);
+  --info-solid-2: var(--accent-10);
+  --info-solid-a2: var(--accent-a10);
+  --info-text-1: var(--accent-11);
+  --info-text-a1: var(--accent-a11);
+  --info-text-2: var(--accent-12);
+  --info-text-a2: var(--accent-a12);
+}

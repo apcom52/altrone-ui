@@ -10,9 +10,9 @@
   --text-rounding: 8px;
 
   --text-color-muted: var(--text-1);
-  --text-color-danger: var(--danger-color);
-  --text-color-success: var(--success-color);
-  --text-color-warning: var(--warning-color);
+  --text-color-danger: var(--danger-text-1);
+  --text-color-success: var(--success-text-1);
+  --text-color-warning: var(--warning-text-1);
 }
 
 :global([data-altrone-root='true'][data-altrone-theme='dark']) {

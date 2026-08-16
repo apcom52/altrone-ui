@@ -2,6 +2,7 @@ import { memo, useEffect, useState } from 'react';
 import s from './avatar.module.scss';
 import clsx from 'clsx';
 import { AvatarProps } from './Avatar.types';
+import { ColorUtils } from 'utils';
 
 export const Avatar = memo((props: AvatarProps) => {
   const {
@@ -34,14 +35,19 @@ export const Avatar = memo((props: AvatarProps) => {
     className,
   );
 
-  const styles: React.CSSProperties & Record<string, unknown> = {
-    ...style,
-    ...(backgroundColor ? { '--_avatar-bg': backgroundColor } : {}),
-    ...(textColor ? { '--_avatar-text-color': textColor } : {}),
-  };
-
   const fullName = [firstName, lastName].join(' ').trim();
   const initials = `${firstName.trimStart().charAt(0)}${lastName ? lastName?.trimStart().charAt(0) : ''}`;
+
+  // No explicit backgroundColor: fall back to a categorical color derived
+  // from the name, so a given person keeps the same background across
+  // renders instead of everyone sharing one flat neutral fill.
+  const categoricalIndex = ColorUtils.getCategoricalColorIndex(fullName) + 1;
+
+  const styles: React.CSSProperties & Record<string, unknown> = {
+    ...style,
+    '--_avatar-bg': backgroundColor ?? `var(--category-${categoricalIndex})`,
+    ...(textColor ? { '--_avatar-text-color': textColor } : {}),
+  };
 
   return (
     <div

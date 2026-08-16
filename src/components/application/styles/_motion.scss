@@ -1,0 +1,21 @@
+/**
+ * Motion durations/easing as CSS custom properties — single source of
+ * truth, zeroed under prefers-reduced-motion so any component using them
+ * automatically gets reduced motion for free, without its own media query.
+ *
+ * This only covers plain CSS transitions/animations. JS-driven motion
+ * (the `motion` library) is handled separately via
+ * `<MotionConfig reducedMotion="user">` in AltroneApplication.
+ */
+:global([data-altrone-root='true']) {
+  --motion-duration-fast: 0.1s;
+  --motion-duration-base: 0.2s;
+  --motion-easing-standard: ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global([data-altrone-root='true']) {
+    --motion-duration-fast: 0s;
+    --motion-duration-base: 0s;
+  }
+}

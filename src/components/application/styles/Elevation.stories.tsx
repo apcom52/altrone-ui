@@ -125,16 +125,19 @@ box-shadow: var(--elevation-modal-shadow);`}</Code>
       <Paragraph>
         <code>--shadow-*</code> is built from two kinds of layers: a
         hairline <code>--gray-aN</code> outline and a soft{' '}
-        <code>--black-aN</code> blur. The outline needs no special handling
-        in dark mode — Altrone already defines <code>--gray-aN</code> as a
-        light overlay there (see <code>colors/_gray.scss</code>), so it
-        reads as a highlight against a dark surface on its own. The blur
-        does: plain black at light-mode opacity barely registers against
-        an already-dark surface, so under{' '}
-        <code>[data-altrone-theme=&apos;dark&apos;]</code> each{' '}
-        <code>--black-aN</code> reference is shifted ~4 steps up the alpha
-        scale (e.g. <code>--black-a1</code> → <code>--black-a5</code>) to
-        stay legible. Switch the theme toolbar above to dark to see the
+        <code>--black-aN</code> blur — and both need boosting in dark mode,
+        not just the blur. <code>--gray-aN</code> is already a light
+        overlay in dark mode (see <code>colors/_gray.scss</code>), so the
+        outline reads as a highlight on its own, but at its usual tier
+        it&rsquo;s faint; the blur is the bigger issue, since plain black at
+        light-mode opacity barely separates from an already-dark surface.
+        Under <code>[data-altrone-theme=&apos;dark&apos;]</code>, the
+        outline is shifted a few steps up the alpha scale and the blur
+        considerably more (e.g. <code>--black-a1</code> →{' '}
+        <code>--black-a7</code>) — <code>--background-1</code> and{' '}
+        <code>--background-2</code> sit close together in lightness, so the
+        shadow has to do most of the work of separating a surface from the
+        page behind it. Switch the theme toolbar above to dark to see the
         swatches respond.
       </Paragraph>
       <Paragraph>

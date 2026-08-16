@@ -1,8 +1,8 @@
 :global([data-altrone-root='true']) {
   --form-field-label-text-color: var(--text-2);
   --form-field-description-text-color: var(--text-1);
-  --form-field-required-mark-color: var(--danger-color);
-  --form-field-error-message-text-color: var(--danger-color);
+  --form-field-required-mark-color: var(--danger-text-1);
+  --form-field-error-message-text-color: var(--danger-text-1);
 }
 
 .Field {

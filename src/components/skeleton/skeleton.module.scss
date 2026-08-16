@@ -6,6 +6,10 @@
 .Skeleton {
   background-color: var(--skeleton-background-color);
   animation: skeleton-animate 3s ease-in-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 }
 
 @keyframes skeleton-animate {
