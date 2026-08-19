@@ -1,6 +1,10 @@
 export { useMediaMatch } from './useMediaMatch';
 export { useConstructor } from './useConstructor';
 export { useResizeObserver } from './useResizeObserver';
+export { useBreakpoint } from './useBreakpoint';
+export type { BreakpointName, UseBreakpointResult } from './useBreakpoint';
+export { useContainerQuery, useElementSize } from './useContainerQuery';
+export type { ElementSize } from './useContainerQuery';
 export { useBoolean } from './useBoolean';
 export { useDebouncedMemo } from './useDebouncedMemo.ts';
 export { useNumber } from './useNumber.ts';
