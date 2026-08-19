@@ -1,20 +1,12 @@
 :global([data-altrone-root='true']) {
   --calendarDateBackgroundColor: transparent;
-  --calendarDateTextColor: var(--default-900);
-  --calendarDateTodayTextColor: var(--primary-500);
-  --calendarDateSelectedDateBackgroundColor: var(--primary-100);
-  --calendarDateSelectedDateTextColor: var(--primary-800);
+  --calendarDateTextColor: var(--text-2);
+  --calendarDateTodayTextColor: var(--accent-9);
+  --calendarDateSelectedDateBackgroundColor: var(--accent-3);
+  --calendarDateSelectedDateTextColor: var(--accent-11);
   --calendar-gap: 4px;
   --calendar-date-height: 34px;
   --calendar-date-padding: 4px 8px;
-}
-
-:global([data-altrone-root='true'][data-altrone-theme='dark']) {
-  --calendarDateBackgroundColor: transparent;
-  --calendarDateTextColor: var(--default-50);
-  --calendarDateTodayTextColor: var(--primary-600);
-  --calendarDateSelectedDateBackgroundColor: var(--primary-900);
-  --calendarDateSelectedDateTextColor: var(--primary-50);
 }
 
 .Calendar {

@@ -12,12 +12,18 @@ describe('Application', () => {
     expect(screen.getByTestId('app').tagName).toBe('BODY');
   });
 
-  test('when dark theme is applied className should contain .AltroneDark', () => {
+  test('when dark theme is applied the root gets data-altrone-theme="dark"', () => {
     const { rerender } = render(<AltroneApplication data-testid="app" />);
-    expect(screen.getByTestId('app')).not.toHaveClass('AltroneDark');
+    expect(screen.getByTestId('app')).toHaveAttribute(
+      'data-altrone-theme',
+      'light',
+    );
 
     rerender(<AltroneApplication theme="dark" data-testid="app" />);
-    expect(screen.getByTestId('app')).toHaveClass('AltroneDark');
+    expect(screen.getByTestId('app')).toHaveAttribute(
+      'data-altrone-theme',
+      'dark',
+    );
   });
 
   test('check that [data-altrone-root] exists', () => {

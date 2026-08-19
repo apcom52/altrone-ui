@@ -6,12 +6,14 @@ import type { Localization } from 'locales';
 export type Theme = 'auto' | 'light' | 'dark';
 export type Accent =
   | 'red'
-  | 'pink'
-  | 'purple'
-  | 'indigo'
-  | 'blue'
-  | 'teal'
+  | 'orange'
   | 'amber'
+  | 'green'
+  | 'teal'
+  | 'blue'
+  | 'indigo'
+  | 'purple'
+  | 'pink'
   | 'brown';
 export type Language = 'en' | 'ru' | 'fr' | 'ge' | 'sp';
 

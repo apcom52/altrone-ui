@@ -81,13 +81,13 @@ const LanguageSuggestion = ({
         gap: 10,
         padding: '8px 12px',
         width: '100%',
-        background: isActive ? 'var(--primary-50)' : 'transparent',
+        background: isActive ? 'var(--accent-3)' : 'transparent',
         border: 'none',
         cursor: 'pointer',
         textAlign: 'left',
       }}
     >
-      <Code size={16} style={{ flexShrink: 0, color: 'var(--primary-500)' }} />
+      <Code size={16} style={{ flexShrink: 0, color: 'var(--accent-9)' }} />
       <span style={{ flex: 1 }}>
         <strong>{suggestion.name.slice(0, inputValue.length)}</strong>
         {suggestion.name.slice(inputValue.length)}

@@ -1,11 +1,7 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --popoverSolidBackgroundColor: var(--default-100);
-
-  &:global(.AltroneDark) {
-    --popoverSolidBackgroundColor: var(--default-800);
-  }
+:global([data-altrone-root='true']) {
+  --popoverSolidBackgroundColor: var(--background-2);
 }
 
 .Popover {

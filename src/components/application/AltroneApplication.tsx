@@ -2,11 +2,12 @@ import s from './altroneApplication.module.scss';
 import { AltroneApplicationProps, Theme } from './AltroneApplication.types.ts';
 import { useMediaMatch } from 'utils';
 import clsx from 'clsx';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { MotionConfig } from 'motion/react';
 import { Toast } from 'components/toasts/Toast.tsx';
 import { ThemeContext, ThemeContextType } from './useTheme.ts';
 import { Screen } from 'components/screen/Screen.tsx';
+import { getThemeInitScript } from './getThemeInitScript.ts';
 
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
@@ -51,11 +52,12 @@ export const AltroneApplication = ({
     }
   }, [mediaScheme, initialTheme]);
 
-  // Applied to <html> so global styles (scrollbar, selection, etc.) pick up the theme
-  useEffect(() => {
-    document
-      .querySelector('html')
-      ?.classList.toggle('AltroneDark', theme === 'dark');
+  // Applied to <html> (in addition to data-altrone-theme on the root below)
+  // so global, non-scoped styles (scrollbar, ::selection, etc.) and portals
+  // outside data-altrone-root still pick up the theme. useLayoutEffect
+  // instead of useEffect so this runs before paint, not after.
+  useLayoutEffect(() => {
+    document.documentElement.setAttribute('data-altrone-theme', theme);
   }, [theme]);
 
   const themeContext = useMemo<ThemeContextType>(
@@ -74,34 +76,38 @@ export const AltroneApplication = ({
     }
   }, [config?.locale?.locale]);
 
-  // AltroneDark is also set on this element (in addition to <html>) so that
-  // portals rendered inside data-altrone-root inherit dark-mode CSS variables
-  const cls = clsx(s.AltroneApp, s.Application, className, {
-    AltroneDark: theme === 'dark',
-  });
+  const cls = clsx(s.AltroneApp, s.Application, className);
 
   return (
-    <MotionConfig reducedMotion="user">
-      <Screen
-        ref={ref}
-        className={cls}
-        data-altrone-root="true"
-        data-altrone-accent={accent}
-        data-altrone-theme={theme}
-        id={id}
-        style={style}
-        sidebar={sidebar}
-        header={header}
-        {...props}
-      >
-        <ThemeContext.Provider value={themeContext}>
-          <AltroneLocalization language={language} customLabels={customLabels}>
-            <DialogProvider>
-              <Toast>{children}</Toast>
-            </DialogProvider>
-          </AltroneLocalization>
-        </ThemeContext.Provider>
-      </Screen>
-    </MotionConfig>
+    <>
+      {/* Best-effort FOUC prevention: runs as the browser parses this HTML,
+          before hydration. For a guarantee in streaming SSR, render
+          getThemeInitScript() in the document <head> yourself instead. */}
+      <script
+        dangerouslySetInnerHTML={{ __html: getThemeInitScript(initialTheme) }}
+      />
+      <MotionConfig reducedMotion="user">
+        <Screen
+          ref={ref}
+          className={cls}
+          data-altrone-root="true"
+          data-altrone-accent={accent}
+          data-altrone-theme={theme}
+          id={id}
+          style={style}
+          sidebar={sidebar}
+          header={header}
+          {...props}
+        >
+          <ThemeContext.Provider value={themeContext}>
+            <AltroneLocalization language={language} customLabels={customLabels}>
+              <DialogProvider>
+                <Toast>{children}</Toast>
+              </DialogProvider>
+            </AltroneLocalization>
+          </ThemeContext.Provider>
+        </Screen>
+      </MotionConfig>
+    </>
   );
 };

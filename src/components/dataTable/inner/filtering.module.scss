@@ -1,11 +1,7 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --dataTableFilteringEmptyTextColor: var(--default-500);
-}
-
-:global(.AltroneDark) {
-  --dataTableFilteringEmptyTextColor: var(--default-400);
+:global([data-altrone-root='true']) {
+  --dataTableFilteringEmptyTextColor: var(--text-1);
 }
 
 .FilterRow {

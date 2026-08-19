@@ -119,7 +119,7 @@
 }
 
 .Disabled {
-  --range-text-color: var(--default-400);
+  --range-text-color: var(--disabled-text-color);
   --range-active-track-background-color: var(
     --range-disabled-active-track-background-color
   );

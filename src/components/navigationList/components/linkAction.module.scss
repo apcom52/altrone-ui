@@ -1,15 +1,9 @@
 @import 'src/global/mixins';
 
-:root {
-  --navigationListLinkActionTextColor: var(--default-700);
-  --navigationListLinkActionHoveredTextColor: var(--default-800);
-  --navigationListLinkActionPressedTextColor: var(--default-900);
-}
-
-:global(.AltroneDark) {
-  --navigationListLinkActionTextColor: var(--default-200);
-  --navigationListLinkActionHoveredTextColor: var(--default-100);
-  --navigationListLinkActionPressedTextColor: var(--default-50);
+:global([data-altrone-root='true']) {
+  --navigationListLinkActionTextColor: var(--text-1);
+  --navigationListLinkActionHoveredTextColor: var(--text-2);
+  --navigationListLinkActionPressedTextColor: var(--text-2);
 }
 
 .Action {

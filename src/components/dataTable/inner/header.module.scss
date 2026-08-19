@@ -1,9 +1,5 @@
-:global(:root) {
-  --dataTableHeaderBackgroundColor: var(--default-100);
-}
-
-:global(.AltroneDark) {
-  --dataTableHeaderBackgroundColor: var(--default-800);
+:global([data-altrone-root='true']) {
+  --dataTableHeaderBackgroundColor: var(--background-2);
 }
 
 .Header {

@@ -1,17 +1,10 @@
 @import 'src/global/mixins';
 
-:root {
+:global([data-altrone-root='true']) {
   --navigationListGroupActionBackgroundColor: transparent;
-  --navigationListGroupActionTextColor: var(--default-900);
-  --navigationListGroupActionHoveredBackgroundColor: var(--default-100);
-  --navigationListGroupActionPressedBackgroundColor: var(--default-200);
-}
-
-:global(.AltroneDark) {
-  --navigationListGroupActionBackgroundColor: transparent;
-  --navigationListGroupActionTextColor: var(--default-50);
-  --navigationListGroupActionHoveredBackgroundColor: var(--default-800);
-  --navigationListGroupActionPressedBackgroundColor: var(--default-700);
+  --navigationListGroupActionTextColor: var(--text-2);
+  --navigationListGroupActionHoveredBackgroundColor: var(--interactive-1);
+  --navigationListGroupActionPressedBackgroundColor: var(--interactive-2);
 }
 
 .Action {

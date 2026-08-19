@@ -441,7 +441,7 @@ export const PlacementInfoStory: StoryObj<typeof Flex> = {
             block
             style={{
               padding: '8px',
-              backgroundColor: 'var(--default-100)',
+              backgroundColor: 'var(--background-2)',
               borderRadius: '4px',
               fontFamily: 'monospace',
             }}
