@@ -14,6 +14,32 @@ export interface ToolbarActionProps extends Omit<ButtonProps, 'variant'> {
   kbd?: string;
 }
 
+export interface ToolbarBackActionProps
+  extends Omit<ToolbarActionProps, 'label' | 'icon' | 'showLabel'> {
+  showLabel?: boolean;
+}
+
+export interface ToolbarSearchActionProps
+  extends Omit<ToolbarActionProps, 'label' | 'icon' | 'showLabel'> {
+  showLabel?: boolean;
+}
+
+export interface ToolbarSidebarToggleActionProps
+  extends Omit<ToolbarActionProps, 'label' | 'icon' | 'showLabel'> {
+  /** Current sidebar state — controlled, this component holds no state of its own. */
+  collapsed: boolean;
+  showLabel?: boolean;
+}
+
+export interface ToolbarBackForwardActionProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  ref?: React.Ref<HTMLDivElement>;
+  onBack: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onForward: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  backDisabled?: boolean;
+  forwardDisabled?: boolean;
+}
+
 export interface ToolbarTitleProps extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
   label: string;

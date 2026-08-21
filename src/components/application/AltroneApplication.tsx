@@ -6,7 +6,6 @@ import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { MotionConfig } from 'motion/react';
 import { Toast } from 'components/toasts/Toast.tsx';
 import { ThemeContext, ThemeContextType } from './useTheme.ts';
-import { Screen } from 'components/screen/Screen.tsx';
 import { getThemeInitScript } from './getThemeInitScript.ts';
 
 import '@fontsource-variable/inter';
@@ -33,8 +32,6 @@ export const AltroneApplication = ({
   config,
   language = 'en',
   customLabels = {},
-  sidebar,
-  header,
   ...props
 }: AltroneApplicationProps) => {
   const [theme, setTheme] = useState<Theme>(() =>
@@ -76,7 +73,7 @@ export const AltroneApplication = ({
     }
   }, [config?.locale?.locale]);
 
-  const cls = clsx(s.AltroneApp, s.Application, className);
+  const cls = clsx(s.AltroneApp, className);
 
   return (
     <>
@@ -87,7 +84,7 @@ export const AltroneApplication = ({
         dangerouslySetInnerHTML={{ __html: getThemeInitScript(initialTheme) }}
       />
       <MotionConfig reducedMotion="user">
-        <Screen
+        <div
           ref={ref}
           className={cls}
           data-altrone-root="true"
@@ -95,8 +92,6 @@ export const AltroneApplication = ({
           data-altrone-theme={theme}
           id={id}
           style={style}
-          sidebar={sidebar}
-          header={header}
           {...props}
         >
           <ThemeContext.Provider value={themeContext}>
@@ -106,7 +101,7 @@ export const AltroneApplication = ({
               </DialogProvider>
             </AltroneLocalization>
           </ThemeContext.Provider>
-        </Screen>
+        </div>
       </MotionConfig>
     </>
   );

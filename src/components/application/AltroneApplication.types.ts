@@ -1,6 +1,5 @@
 import type { HTMLAttributes, Ref } from 'react';
 import { ConsumerConfigurationContext } from '../configuration/AltroneConfiguration.context.ts';
-import { ScreenProps } from 'components/screen/Screen.types.ts';
 import type { Localization } from 'locales';
 
 export type Theme = 'auto' | 'light' | 'dark';
@@ -24,6 +23,4 @@ export interface AltroneApplicationProps extends HTMLAttributes<HTMLDivElement> 
   accent?: Accent;
   config?: Partial<ConsumerConfigurationContext>;
   customLabels?: Partial<Localization>;
-  sidebar?: ScreenProps['sidebar'];
-  header?: ScreenProps['header'];
 }

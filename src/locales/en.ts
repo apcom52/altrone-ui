@@ -37,6 +37,13 @@ export const en: Localization = {
   search: {
     placeholder: 'Search',
   },
+  toolbar: {
+    back: 'Back',
+    forward: 'Forward',
+    search: 'Search',
+    collapseSidebar: 'Collapse sidebar',
+    expandSidebar: 'Expand sidebar',
+  },
   pagination: {
     navigation: 'Pagination',
     previous: 'Previous page',

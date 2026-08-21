@@ -2,7 +2,18 @@ import { memo } from 'react';
 import s from './toolbar.module.scss';
 import { ToolbarProps } from './Toolbar.types.ts';
 import clsx from 'clsx';
-import { Action, Center, Group, Leading, Title, Trailing } from './components';
+import {
+  Action,
+  BackAction,
+  BackForwardAction,
+  Center,
+  Group,
+  Leading,
+  SearchAction,
+  SidebarToggleAction,
+  Title,
+  Trailing,
+} from './components';
 import { ToolbarPlacementContext } from './Toolbar.context.ts';
 
 const ToolbarComponent = memo(
@@ -61,6 +72,10 @@ const ToolbarNamespace = Object.assign(ToolbarComponent, {
   Center,
   Trailing,
   Title,
+  BackAction,
+  SearchAction,
+  SidebarToggleAction,
+  BackForwardAction,
 });
 
 export { ToolbarNamespace as Toolbar };

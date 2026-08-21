@@ -38,6 +38,13 @@ export const sp: Localization = {
   search: {
     placeholder: 'Buscar',
   },
+  toolbar: {
+    back: 'Atrás',
+    forward: 'Adelante',
+    search: 'Buscar',
+    collapseSidebar: 'Contraer barra lateral',
+    expandSidebar: 'Expandir barra lateral',
+  },
   pagination: {
     navigation: 'Paginación',
     previous: 'Página anterior',

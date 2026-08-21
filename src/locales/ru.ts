@@ -37,6 +37,13 @@ export const ru: Localization = {
   search: {
     placeholder: 'Поиск',
   },
+  toolbar: {
+    back: 'Назад',
+    forward: 'Вперёд',
+    search: 'Поиск',
+    collapseSidebar: 'Свернуть сайдбар',
+    expandSidebar: 'Развернуть сайдбар',
+  },
   pagination: {
     navigation: 'Пагинация',
     previous: 'Предыдущая страница',

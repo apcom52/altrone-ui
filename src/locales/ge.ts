@@ -38,6 +38,13 @@ export const ge: Localization = {
   search: {
     placeholder: 'Suchen',
   },
+  toolbar: {
+    back: 'Zurück',
+    forward: 'Vorwärts',
+    search: 'Suchen',
+    collapseSidebar: 'Seitenleiste einklappen',
+    expandSidebar: 'Seitenleiste ausklappen',
+  },
   pagination: {
     navigation: 'Seitennavigation',
     previous: 'Vorherige Seite',

@@ -615,4 +615,94 @@ export const DesignCanvasStory: StoryObj<typeof Toolbar> = {
   },
 };
 
+export const HeaderActionsStory: StoryObj<typeof Toolbar> = {
+  name: 'Header Actions',
+  render: () => {
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const [historyIndex, setHistoryIndex] = useState(1);
+    const historyLength = 3;
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={9} weight="bold">
+          Toolbar Header Actions
+        </Text>
+        <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
+          A small set of pre-configured <code>Toolbar.Action</code>s for the
+          controls a typical app header reaches for over and over — back,
+          search, a sidebar toggle, browser-style back/forward history. Each
+          is fully controlled: it renders whatever state you pass in and
+          calls your handler, without holding any state of its own.
+        </Text>
+
+        <Text block size={7} weight="bold" style={{ marginTop: 8 }}>
+          Back &amp; Search
+        </Text>
+        <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
+          Icon-only by default, each with a localized{' '}
+          <code>aria-label</code> — pass <code>showLabel</code> to reveal
+          the text.
+        </Text>
+        <Toolbar showBackdrop={false}>
+          <Toolbar.Leading>
+            <Toolbar.Group>
+              <Toolbar.BackAction onClick={() => {}} />
+            </Toolbar.Group>
+            <Toolbar.Group>
+              <Toolbar.SearchAction onClick={() => {}} />
+            </Toolbar.Group>
+          </Toolbar.Leading>
+        </Toolbar>
+
+        <Text block size={7} weight="bold" style={{ marginTop: 8 }}>
+          Sidebar Toggle
+        </Text>
+        <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
+          Controlled by a <code>collapsed</code> boolean — the same value
+          you&rsquo;d pass to <code>Screen.Sidebar</code>&rsquo;s own{' '}
+          <code>collapsed</code> prop, so both stay in sync from one piece
+          of state you own. Icon and label swap automatically.
+        </Text>
+        <Toolbar showBackdrop={false}>
+          <Toolbar.Leading>
+            <Toolbar.Group>
+              <Toolbar.SidebarToggleAction
+                collapsed={sidebarCollapsed}
+                onClick={() => setSidebarCollapsed((v) => !v)}
+              />
+            </Toolbar.Group>
+          </Toolbar.Leading>
+        </Toolbar>
+        <Text size={3} color="muted">
+          Sidebar is currently {sidebarCollapsed ? 'collapsed' : 'expanded'}.
+        </Text>
+
+        <Text block size={7} weight="bold" style={{ marginTop: 8 }}>
+          Back / Forward
+        </Text>
+        <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
+          A single segmented control, browser/macOS-style — not two
+          independent buttons. Each half disables on its own when
+          there&rsquo;s nowhere left to go.
+        </Text>
+        <Toolbar showBackdrop={false}>
+          <Toolbar.Leading>
+            <Toolbar.BackForwardAction
+              backDisabled={historyIndex <= 0}
+              forwardDisabled={historyIndex >= historyLength - 1}
+              onBack={() => setHistoryIndex((i) => Math.max(0, i - 1))}
+              onForward={() =>
+                setHistoryIndex((i) => Math.min(historyLength - 1, i + 1))
+              }
+            />
+          </Toolbar.Leading>
+        </Toolbar>
+        <Text size={3} color="muted">
+          History position: {historyIndex + 1} of {historyLength}.
+        </Text>
+      </Flex>
+    );
+  },
+};
+
 export default story;

@@ -44,6 +44,13 @@ export interface Localization {
   search: {
     placeholder: string;
   };
+  toolbar: {
+    back: string;
+    forward: string;
+    search: string;
+    collapseSidebar: string;
+    expandSidebar: string;
+  };
   pagination: {
     navigation: string;
     previous: string;

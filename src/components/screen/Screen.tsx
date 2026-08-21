@@ -1,33 +1,55 @@
-import { memo, useMemo, useState } from 'react';
-import s from './screen.module.css';
-import { ScreenProps } from './Screen.types';
-import { ScreenSidebarContext } from './Screen.context';
+import { memo } from 'react';
+import clsx from 'clsx';
+import s from './screen.module.scss';
+import { ScreenProps } from './Screen.types.ts';
+import {
+  Header,
+  Sidebar,
+  Content,
+  Footer,
+  ListDetail,
+  Dashboard,
+  Form,
+  Settings,
+  DataView,
+  Auth,
+  Empty,
+  Error as ScreenError,
+} from './components';
 
-export const Screen = memo<ScreenProps>(({ ref, children, sidebar, header, ...restProps }) => {
+const ScreenBase = memo(
+  ({ ref, children, size, className, style, ...restProps }: ScreenProps) => {
+    const cls = clsx(
+      s.Screen,
+      {
+        [s.Mini]: size === 'mini',
+        [s.Small]: size === 's',
+        [s.Medium]: size === 'm',
+        [s.Large]: size === 'l',
+        [s.XLarge]: size === 'xl',
+      },
+      className,
+    );
 
-  const [sidebarVisible, setSidebarVisible] = useState(true);
-
-  const hasSidebar = Boolean(sidebar && sidebarVisible);
-  const hasHeader = Boolean(header);
-
-  const contextValue = useMemo(
-    () => ({
-      visible: hasSidebar,
-      setVisible: setSidebarVisible,
-    }),
-    [hasSidebar, sidebar],
-  );
-
-  return (
-    <ScreenSidebarContext value={contextValue}>
-      <div ref={ref} className={s.Screen} {...restProps}>
-        {hasSidebar && <aside className={s.Sidebar}>{sidebar}</aside>}
-        <div className={s.Layout}>
-          {hasHeader && <header className={s.Header}>{header}</header>}
-          <main className={s.Content}>{children}</main>
-        </div>
-        {hasHeader && <div className={s.HeaderBackdrop} />}
+    return (
+      <div ref={ref} className={cls} style={style} {...restProps}>
+        {children}
       </div>
-    </ScreenSidebarContext>
-  );
+    );
+  },
+);
+
+export const Screen = Object.assign(ScreenBase, {
+  Header,
+  Sidebar,
+  Content,
+  Footer,
+  ListDetail,
+  Dashboard,
+  Form,
+  Settings,
+  DataView,
+  Auth,
+  Empty,
+  Error: ScreenError,
 });

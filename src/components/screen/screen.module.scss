@@ -1,0 +1,159 @@
+:global([data-altrone-root='true']) {
+  --screen-sidebar-width: 300px;
+}
+
+.Screen {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: 'header' 'content' 'footer';
+  min-height: 100vh;
+
+  &:has(> .Sidebar) {
+    grid-template-columns: var(--screen-sidebar-width) 1fr;
+    grid-template-areas:
+      'sidebar header'
+      'sidebar content'
+      'sidebar footer';
+    transition: grid-template-columns var(--motion-duration-base)
+      var(--motion-easing-standard);
+  }
+
+  &:has(> .Sidebar.Collapsed) {
+    grid-template-columns: 0 1fr;
+  }
+}
+
+.Header {
+  grid-area: header;
+  position: sticky;
+  top: 0;
+  z-index: var(--elevation-sticky-z-index);
+  box-shadow: var(--elevation-sticky-shadow);
+  background: var(--color-header-backdrop);
+  backdrop-filter: blur(8px);
+  padding: var(--space-content);
+}
+
+.Sidebar {
+  grid-area: sidebar;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: var(--space-content);
+  transition: padding var(--motion-duration-base) var(--motion-easing-standard);
+}
+
+/** Grid column collapse is driven by the parent's :has(> .Sidebar.Collapsed) above; this just clips the (still-mounted) content instead of letting it reflow oddly as the column shrinks. */
+.Sidebar.Collapsed {
+  padding: 0;
+  overflow: hidden;
+}
+
+.Content {
+  grid-area: content;
+  padding: var(--space-content);
+
+  /**
+   * Deliberately no overflow-y/scroll here. Content is a *sibling* of
+   * Header/Sidebar (not their ancestor), and `position: sticky` only
+   * activates against a scrolling ancestor — a scroll box on Content
+   * alone can never make Header or Sidebar stick to it. The whole
+   * .Screen scrolls as one unit instead (via the page/viewport), which
+   * is what actually gives Header's sticky + backdrop-blur something to
+   * blur, and what makes Sidebar's sticky positioning meaningful.
+   */
+
+  /** Size constrains content width only — the grid/sidebar/header layout is unaffected. */
+  max-width: var(--screen-content-max-width, none);
+  margin-inline: auto;
+  width: 100%;
+}
+
+.Footer {
+  grid-area: footer;
+  padding: var(--space-content);
+}
+
+.Mini {
+  --screen-content-max-width: var(--breakpoint-xs);
+}
+
+.Small {
+  --screen-content-max-width: var(--breakpoint-sm);
+}
+
+.Medium {
+  --screen-content-max-width: var(--breakpoint-md);
+}
+
+.Large {
+  --screen-content-max-width: var(--breakpoint-lg);
+}
+
+.XLarge {
+  --screen-content-max-width: var(--breakpoint-xl);
+}
+
+/**
+ * Presets below only ever restyle .Content (and, for ListDetail, replace
+ * it with a list/detail split) — never .Screen's own grid areas. Header/
+ * Sidebar/Footer keep working identically to plain Screen in every preset.
+ */
+
+.ListDetailContent {
+  display: flex;
+  padding: 0;
+}
+
+.List {
+  flex-shrink: 0;
+  width: 320px;
+  overflow-y: auto;
+  border-right: 1px solid var(--border-1);
+  padding: var(--space-content);
+}
+
+.Detail {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: var(--space-content);
+}
+
+.Dashboard {
+  .Content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    align-content: start;
+    gap: var(--space-section);
+  }
+}
+
+.Form {
+  .Content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100%;
+  }
+}
+
+.DataView {
+  .Content {
+    padding: 0;
+  }
+}
+
+.Centered {
+  .Content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    text-align: center;
+  }
+}

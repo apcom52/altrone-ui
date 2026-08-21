@@ -1,6 +1,6 @@
 import React from 'react';
-import { expect, test, describe } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { expect, test, describe, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Configuration, AltroneApplication, Toolbar } from '../src/components';
 
 describe('Toolbar', () => {
@@ -73,5 +73,64 @@ describe('Toolbar', () => {
     expect(screen.getByTestId('toolbar')).toHaveStyle('color: rgb(0, 0, 255)');
     expect(screen.getByTestId('group')).toHaveClass('group');
     expect(screen.getByTestId('action')).toHaveClass('action');
+  });
+});
+
+describe('Toolbar header actions', () => {
+  test('BackAction is icon-only with an accessible label and fires onClick', () => {
+    const onClick = vi.fn();
+    render(
+      <AltroneApplication>
+        <Toolbar.BackAction onClick={onClick} />
+      </AltroneApplication>,
+    );
+
+    const button = screen.getByRole('button', { name: 'Back' });
+    fireEvent.click(button);
+    expect(onClick).toHaveBeenCalledOnce();
+  });
+
+  test('SidebarToggleAction swaps icon/label based on the controlled collapsed prop', () => {
+    const { rerender } = render(
+      <AltroneApplication>
+        <Toolbar.SidebarToggleAction collapsed={false} onClick={() => {}} />
+      </AltroneApplication>,
+    );
+    expect(
+      screen.getByRole('button', { name: 'Collapse sidebar' }),
+    ).toBeInTheDocument();
+
+    rerender(
+      <AltroneApplication>
+        <Toolbar.SidebarToggleAction collapsed={true} onClick={() => {}} />
+      </AltroneApplication>,
+    );
+    expect(
+      screen.getByRole('button', { name: 'Expand sidebar' }),
+    ).toBeInTheDocument();
+  });
+
+  test('BackForwardAction disables and triggers each half independently', () => {
+    const onBack = vi.fn();
+    const onForward = vi.fn();
+    render(
+      <AltroneApplication>
+        <Toolbar.BackForwardAction
+          onBack={onBack}
+          onForward={onForward}
+          backDisabled
+        />
+      </AltroneApplication>,
+    );
+
+    const backButton = screen.getByRole('button', { name: 'Back' });
+    const forwardButton = screen.getByRole('button', { name: 'Forward' });
+
+    expect(backButton).toBeDisabled();
+    expect(forwardButton).not.toBeDisabled();
+
+    fireEvent.click(forwardButton);
+    expect(onForward).toHaveBeenCalledOnce();
+    expect(onBack).not.toHaveBeenCalled();
   });
 });
