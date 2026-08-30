@@ -182,6 +182,26 @@
   --box-blur: var(--glass-effects);
 }
 
+/* The "raised neutral glass control" look — a frosted fill, a 1px --gray-a3
+   hairline and a layered contact/ambient shadow, reproducing the chrome the
+   default Button had before it moved onto Box. Fill and edge are fixed, not
+   tone-driven (this is deliberately a neutral material); `tone` still drives
+   text through --box-tone-text. The hairline is an outset ring, not the base
+   --box-border, so the box keeps its exact former footprint.
+   --box-elevation-shadow stays last so an explicit `elevation` composes on top. */
+.MaterialPlate {
+  --box-fill: var(--glass-background-color);
+  --box-blur: var(--glass-effects);
+
+  box-shadow:
+    0 0 0 1px var(--gray-a3),
+    0 0 0 0.5px var(--black-a1),
+    0 1px 1px 0 var(--gray-a2),
+    0 2px 1px -1px var(--black-a1),
+    0 1px 3px 0 var(--black-a1),
+    var(--box-elevation-shadow);
+}
+
 /* .MaterialTransparent and .MaterialGhost: no fill/border at rest — base already provides that. */
 
 .MaterialOutline {
@@ -255,6 +275,31 @@
   cursor: pointer;
 }
 
+/* Hover — a lighter preview of the pressed state. `.Pressable` only: an
+   `.Editable` frame's trigger is `:focus-within` by design (see box.md), so a
+   hover wash there would fight the typing state. `:not(:active)` hands off
+   cleanly to the press rules below regardless of source order. Fill-bearing
+   materials nudge brightness; materials with nothing at rest bring a wash in. */
+
+.Pressable.MaterialSolid:hover:not(:active) {
+  filter: brightness(1.03);
+}
+
+.Pressable.MaterialGlass:hover:not(:active),
+.Pressable.MaterialPlate:hover:not(:active) {
+  filter: brightness(1.04);
+}
+
+.Pressable.MaterialTranslucent:hover:not(:active) {
+  --box-fill: var(--box-tone-translucent-strong);
+}
+
+.Pressable.MaterialTransparent:hover:not(:active),
+.Pressable.MaterialGhost:hover:not(:active),
+.Pressable.MaterialOutline:hover:not(:active) {
+  --box-fill: var(--box-tone-translucent);
+}
+
 .Pressable.MaterialSolid:active {
   filter: brightness(0.92);
 }
@@ -262,6 +307,8 @@
 .Pressable.MaterialTranslucent:active,
 .Editable.MaterialTranslucent:focus-within {
   --box-fill: var(--box-tone-translucent-strong);
+
+  filter: brightness(0.97);
 }
 
 .Pressable.MaterialGlass:active,
@@ -271,16 +318,27 @@
   backdrop-filter: var(--glass-press-effects);
 }
 
+/* Matches the former default Button — a press deepens the backdrop blur and
+   lifts brightness a touch; fill, edge and shadow are unchanged. */
+.Pressable.MaterialPlate:active,
+.Editable.MaterialPlate:focus-within {
+  backdrop-filter: var(--glass-press-effects);
+}
+
+.Pressable.MaterialPlate:active {
+  filter: brightness(1.1);
+}
+
 .Pressable.MaterialTransparent:active,
 .Editable.MaterialTransparent:focus-within,
 .Pressable.MaterialGhost:active,
 .Editable.MaterialGhost:focus-within {
-  --box-fill: var(--box-tone-translucent);
+  --box-fill: var(--box-tone-translucent-strong);
 }
 
 .Pressable.MaterialOutline:active,
 .Editable.MaterialOutline:focus-within {
-  --box-fill: var(--box-tone-translucent);
+  --box-fill: var(--box-tone-translucent-strong);
   --box-border-color: var(--box-tone-border-strong);
 }
 

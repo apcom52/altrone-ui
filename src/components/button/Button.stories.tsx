@@ -18,6 +18,7 @@ import {
   Mail,
   Pause,
   Play,
+  Plus,
   Repeat,
   Save,
   Search,
@@ -92,10 +93,14 @@ export const Overview: StoryObj<typeof Button> = {
       <Paragraph>
         <code>Button</code> is the library&rsquo;s primary interactive control —
         the thing a user presses to submit a form, trigger an action, or toggle
-        a tool. It always forwards its <code>ref</code> to the actual DOM
-        element it renders, so it composes transparently with{' '}
-        <code>Tooltip</code>, <code>Popover</code> and <code>Dropdown</code>{' '}
-        without any special-casing.
+        a tool. It&rsquo;s a <code>Box</code> underneath (shape{' '}
+        <code>pill</code>, with <code>material</code>/<code>tone</code> chosen
+        by <code>variant</code>), so its fill, press feedback and focus ring are
+        the same primitives every other chip-like component uses. It always
+        forwards its <code>ref</code> to the actual DOM element it renders, so
+        it composes transparently with <code>Tooltip</code>,{' '}
+        <code>Popover</code> and <code>Dropdown</code> without any
+        special-casing.
       </Paragraph>
 
       <Heading>Three variants, one purpose each</Heading>
@@ -180,16 +185,7 @@ const AffordanceExample = () => (
       icon={<FileText />}
       additionalIcon={<ChevronDown />}
     />
-    <Button
-      variant="submit"
-      label="Save"
-      icon={<Save />}
-      badge={
-        <Text size={1} weight="bold">
-          ⌘S
-        </Text>
-      }
-    />
+    <Button variant="submit" label="Save" icon={<Save />} badge="⌘S" />
   </Flex>
 );
 
@@ -209,24 +205,31 @@ export const IconsAndBadges: StoryObj<typeof Button> = {
       </Paragraph>
       <IconOnlyExample />
 
-      <Heading>icon leads, additionalIcon trails</Heading>
+      <Heading>Icon leads, additionalIcon trails</Heading>
       <Paragraph>
-        <code>icon</code> always sits before the label; <code>additionalIcon</code>{' '}
-        sits after it. The trailing slot is where an affordance hint goes — a{' '}
-        <code>ChevronDown</code> that says &ldquo;this opens a menu&rdquo;, an{' '}
-        <code>ExternalLink</code> that says &ldquo;this leaves the app&rdquo; —
-        without taking the leading slot from the action&rsquo;s own icon.
+        <code>Icon</code> always sits before the label;{' '}
+        <code>additionalIcon</code> sits after it. The trailing slot is where an
+        affordance hint goes — a <code>ChevronDown</code> that says &ldquo;this
+        opens a menu&rdquo;, an <code>ExternalLink</code> that says &ldquo;this
+        leaves the app&rdquo; — without taking the leading slot from the
+        action&rsquo;s own icon.
       </Paragraph>
       <AffordanceExample />
 
       <Heading>Badges ride along with the content</Heading>
       <Paragraph>
         <code>badge</code> overlays a small count or status onto the
-        button&rsquo;s content — an unread count on a notification bell, a status
-        word on a disabled action. It accepts any node, so it isn&rsquo;t limited
-        to counts: the <code>Save</code> button above carries a keyboard-shortcut
-        hint in the same corner. It never changes what the button does, only what
-        it reports.
+        button&rsquo;s content — an unread count on a notification bell, a
+        status word on a disabled action. It accepts any node, so it isn&rsquo;t
+        limited to counts: the <code>Save</code> button above carries a
+        keyboard-shortcut hint in the same corner. It never changes what the
+        button does, only what it reports.
+      </Paragraph>
+      <Paragraph>
+        On a labelled button the badge sits inline at the end of the content
+        row. On an icon-only button there&rsquo;s no room for that, so it turns
+        into a small <code>plate</code> chip floating over the top-right corner —
+        the notification-badge pattern (see the bell above).
       </Paragraph>
 
       <Heading>A real trigger: Dropdown</Heading>
@@ -282,14 +285,58 @@ const SizePlayground = () => {
         <Button
           size={size}
           variant="default"
+          label="Inbox"
+          icon={<Mail />}
+          badge="8"
+        />
+        <Button
+          size={size}
+          variant="default"
           label="Notifications"
           icon={<Bell />}
           showLabel={false}
+          badge={3}
         />
       </Flex>
     </Flex>
   );
 };
+
+const BadgeSizeMatrix = () => (
+  <Flex direction="vertical" gap="m">
+    {SIZES.map(({ value, label }) => (
+      <Flex key={value} gap="m" align="center" wrap>
+        <Text size={2} color="muted" style={{ width: 56 }}>
+          {label}
+        </Text>
+        <Button
+          size={value}
+          variant="default"
+          label="Inbox"
+          icon={<Mail />}
+          badge="8"
+        />
+        <Button size={value} variant="submit" label="Updates" badge="99+" />
+        <Button
+          size={value}
+          variant="default"
+          label="Messages"
+          icon={<Mail />}
+          showLabel={false}
+          badge="8"
+        />
+        <Button
+          size={value}
+          variant="default"
+          label="Alerts"
+          icon={<Bell />}
+          showLabel={false}
+          badge={3}
+        />
+      </Flex>
+    ))}
+  </Flex>
+);
 
 export const Sizes: StoryObj<typeof Button> = {
   name: 'Sizes',
@@ -305,6 +352,70 @@ export const Sizes: StoryObj<typeof Button> = {
         view&rsquo;s single most important action.
       </Paragraph>
       <SizePlayground />
+
+      <Heading>Badges scale with the tier</Heading>
+      <Paragraph>
+        The badge&rsquo;s size, padding and type all follow the button&rsquo;s{' '}
+        <code>size</code>. On a labelled button it stays inline at the end of the
+        content; on an icon-only button it&rsquo;s a <code>plate</code> chip in
+        the top-right corner. In neither case does it change the button&rsquo;s
+        height.
+      </Paragraph>
+      <BadgeSizeMatrix />
+    </Flex>
+  ),
+};
+
+/* ---------------------------------------------------------------------- */
+/* Animated content                                                        */
+/* ---------------------------------------------------------------------- */
+
+const FollowButtonDemo = () => {
+  const [following, setFollowing] = useState(false);
+
+  return (
+    <Button
+      variant={following ? 'default' : 'submit'}
+      label={following ? 'Following' : 'Follow'}
+      icon={following ? <Check /> : <Plus />}
+      onClick={() => setFollowing((v) => !v)}
+    />
+  );
+};
+
+const InboxButtonDemo = () => {
+  const [count, setCount] = useState(0);
+
+  return (
+    <Button
+      variant="default"
+      label="Inbox"
+      icon={<Mail />}
+      badge={count || undefined}
+      onClick={() => setCount((c) => (c + 1) % 4)}
+    />
+  );
+};
+
+export const AnimatedContent: StoryObj<typeof Button> = {
+  name: 'Animated content changes',
+  parameters: chromaticBoth,
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Heading>The width eases when the content changes</Heading>
+      <Paragraph>
+        Swapping <code>label</code>, switching the <code>icon</code>, or showing
+        a <code>badge</code> changes how wide the button needs to be.{' '}
+        <code>Button</code> animates that with <code>motion</code>&rsquo;s
+        layout animation — the box and its content slide to the new size instead
+        of jumping. It follows <code>prefers-reduced-motion</code> (through{' '}
+        <code>AltroneApplication</code>&rsquo;s <code>MotionConfig</code>), so
+        the change is instant when reduced motion is on.
+      </Paragraph>
+      <Flex gap="m" align="center" wrap>
+        <FollowButtonDemo />
+        <InboxButtonDemo />
+      </Flex>
     </Flex>
   ),
 };
@@ -487,7 +598,12 @@ const AppBarExample = () => (
       showLabel={false}
       badge="3"
     />
-    <Button variant="text" label="Settings" icon={<Settings />} showLabel={false} />
+    <Button
+      variant="text"
+      label="Settings"
+      icon={<Settings />}
+      showLabel={false}
+    />
   </Flex>
 );
 
@@ -567,8 +683,9 @@ export const Toolbars: StoryObj<typeof Button> = {
         <code>icon</code> and <code>label</code> with state, and real toggles
         (shuffle, repeat) that use <code>selected</code> for{' '}
         <code>aria-pressed</code>. The primary control is one <code>size</code>{' '}
-        up (<code>l</code> against <code>s</code>) so the eye lands on it first —
-        size is doing the emphasis work that <code>variant</code> does elsewhere.
+        up (<code>l</code> against <code>s</code>) so the eye lands on it first
+        — size is doing the emphasis work that <code>variant</code> does
+        elsewhere.
       </Paragraph>
       <MediaToolbarExample />
     </Flex>
@@ -589,7 +706,12 @@ const AsChildExample = () => (
     >
       <a href="https://altrone.dev" target="_blank" rel="noreferrer" />
     </Button>
-    <Button asChild variant="default" label="Download report" icon={<Download />}>
+    <Button
+      asChild
+      variant="default"
+      label="Download report"
+      icon={<Download />}
+    >
       <a href="/report.pdf" download />
     </Button>
   </Flex>
@@ -704,12 +826,12 @@ export const InContext: StoryObj<typeof Button> = {
 
       <Heading>Inline confirm, no modal</Heading>
       <Paragraph>
-        For a low-stakes destructive action the confirmation can happen in place:
-        the first press swaps the neutral <code>danger</code> button for a filled{' '}
-        <code>submit</code> + <code>Cancel</code> pair, the second press runs the
-        request through <code>state</code> (<code>loading</code> →{' '}
-        <code>succeeded</code>) on that same button. No <code>Dialog</code>, no
-        focus trap — the whole exchange stays on one control.
+        For a low-stakes destructive action the confirmation can happen in
+        place: the first press swaps the neutral <code>danger</code> button for
+        a filled <code>submit</code> + <code>Cancel</code> pair, the second
+        press runs the request through <code>state</code> (<code>loading</code>{' '}
+        → <code>succeeded</code>) on that same button. No <code>Dialog</code>,
+        no focus trap — the whole exchange stays on one control.
       </Paragraph>
       <InlineConfirmExample />
     </Flex>

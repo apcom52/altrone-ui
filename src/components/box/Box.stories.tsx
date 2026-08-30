@@ -570,6 +570,7 @@ export const Sizes: StoryObj<typeof Box> = {
 const materials: BoxMaterial[] = [
   'solid',
   'glass',
+  'plate',
   'translucent',
   'transparent',
   'outline',
@@ -594,7 +595,7 @@ const MaterialRow = () => (
   </Flex>
 );
 
-/** The same six materials over a busy panel — where `glass` finally reads. */
+/** The same materials over a busy panel — where `glass`/`plate` finally read. */
 const MaterialsOverPhoto = () => (
   <div className="box-photo">
     <Flex gap="m" wrap>
@@ -710,18 +711,26 @@ export const Materials: StoryObj<typeof Box> = {
   render: () => (
     <div className="box-wrapper">
       <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
-        <Heading>Six fill treatments, one shared press behavior</Heading>
+        <Heading>Seven fill treatments, one shared interaction model</Heading>
         <Paragraph>
           Each material differs in what&rsquo;s there at rest — a full fill (
           <Text code>solid</Text>), a blurred translucent one (
-          <Text code>glass</Text>), a flat translucent one (
+          <Text code>glass</Text>), that same frosted fill plus a hairline edge
+          and a resting shadow so it reads as raised off the surface (
+          <Text code>plate</Text>), a flat translucent one (
           <Text code>translucent</Text>), nothing at all (
           <Text code>transparent</Text>), a static border (
           <Text code>outline</Text>), or a border that only shows up on
-          interaction (<Text code>ghost</Text>). Click and hold any of the chips
-          below — every material still responds to a press, just by moving a
-          different property (fill alpha, brightness, backdrop saturation) so
-          the feedback always suits what&rsquo;s already there to change.
+          interaction (<Text code>ghost</Text>).
+        </Paragraph>
+        <Paragraph>
+          Every <Text code>pressable</Text> material reacts the same way in two
+          steps: hover is a lighter preview — a brightness nudge on the
+          fill-bearing materials, a faint wash brought in on the ones with
+          nothing at rest — and a press takes that one step further (stronger
+          alpha, more backdrop saturation, a firmer border). Hover always yields
+          to the press. Move the pointer over the chips below, then click and
+          hold.
         </Paragraph>
         <MaterialRow />
 
@@ -745,13 +754,15 @@ export const Materials: StoryObj<typeof Box> = {
         </Paragraph>
         <MaterialToneMatrix />
 
-        <Heading>The same six, read as a button hierarchy</Heading>
+        <Heading>Read as a button hierarchy</Heading>
         <Paragraph>
           Nothing here is a <Text code>Button</Text> — each is a{' '}
           <Text code>pressable</Text> <Text code>focusable</Text>{' '}
           <Text code>Box</Text>. Swapping only the material walks the row from
           &ldquo;the primary action on the screen&rdquo; down to &ldquo;a quiet
-          escape hatch&rdquo;.
+          escape hatch&rdquo;. (<Text code>Button</Text> itself maps its{' '}
+          <Text code>default</Text> variant to <Text code>plate</Text>, its{' '}
+          <Text code>submit</Text> to <Text code>solid</Text>.)
         </Paragraph>
         <ButtonHierarchy />
       </Flex>

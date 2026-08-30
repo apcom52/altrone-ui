@@ -4,7 +4,13 @@ import type { BasicComponentStyleConfig, Size } from 'types';
 export type BoxShape = 'rect' | 'rounded' | 'squircle' | 'circle' | 'pill';
 
 export type BoxMaterial =
-  'solid' | 'glass' | 'translucent' | 'transparent' | 'outline' | 'ghost';
+  | 'solid'
+  | 'glass'
+  | 'plate'
+  | 'translucent'
+  | 'transparent'
+  | 'outline'
+  | 'ghost';
 
 export type BoxTone =
   'neutral' | 'accent' | 'danger' | 'success' | 'warning' | 'info';

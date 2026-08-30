@@ -1,17 +1,37 @@
-import { isValidElement, memo, ReactElement } from 'react';
+import { isValidElement, memo, ReactElement, Ref } from 'react';
 import { ButtonProps } from './Button.types.ts';
 import s from './button.module.scss';
 import clsx from 'clsx';
 import { HTMLMotionProps, motion } from 'motion/react';
+import { Box, BoxMaterial } from 'components/box';
 import { Loading } from 'components/loading/Loading.tsx';
 import { Tooltip } from 'components/tooltip/Tooltip.tsx';
 import { ButtonSuccessIcon } from './inner/Success.tsx';
 import { ButtonFailedIcon } from './inner/Failed.tsx';
-import { Slot } from 'utils/components/Slot.tsx';
 import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
 import { AnyObject } from 'utils/types.ts';
+import { Size } from 'types';
 
-const MotionSlot = motion.create(Slot);
+type Variant = NonNullable<ButtonProps['variant']>;
+
+const MATERIAL_BY_VARIANT: Record<Variant, BoxMaterial> = {
+  submit: 'solid',
+  default: 'plate',
+  text: 'transparent',
+};
+
+/* Horizontal padding only — Button's own hand-tuned scale, not Box's
+   control-role matrix (see spacing.md, where it's called out as intentionally
+   off-matrix). Vertical padding is 0: the height is set purely by Box's
+   `min-height: var(--box-size)` so it stays exactly the size tier regardless
+   of content (a taller `badge` no longer inflates it). */
+const PADDING_X_BY_SIZE: Record<Size, string> = {
+  mini: '6px',
+  s: 'var(--gap)',
+  m: 'var(--l-gap)',
+  l: '16px',
+  xl: '20px',
+};
 
 export const Button = memo((props: ButtonProps) => {
   const {
@@ -43,9 +63,7 @@ export const Button = memo((props: ButtonProps) => {
     s.Button,
     {
       [s.Primary]: variant === 'submit',
-      [s.Text]: variant === 'text',
       [s.SingleIcon]: isSingleIcon,
-      [s.Danger]: danger,
       [s.WithLoading]: state !== 'idle',
       [s.Mini]: size === 'mini',
       [s.Small]: size === 's',
@@ -56,38 +74,55 @@ export const Button = memo((props: ButtonProps) => {
     className,
   );
 
-  const styles = {
-    ...style,
-  };
-
   const buttonDisabled = disabled || state !== 'idle';
   const tooltipContent = tooltip ?? label;
 
-  const a11yProps = {
-    'aria-label': !showLabel ? label : undefined,
-    'aria-pressed': selected ? (true as const) : undefined,
-    'aria-busy': isLoading ? (true as const) : undefined,
-  };
+  const padding = isSingleIcon ? 0 : { x: PADDING_X_BY_SIZE[size], y: 0 };
+
+  const boxTone = danger ? 'danger' : variant === 'submit' ? 'accent' : 'neutral';
+
+  /* On a labelled button the badge sits inline at the end of the content row.
+     On an icon-only button there's no room for that, so it becomes a `plate`
+     chip floating over the top-right corner (rendered outside the content row,
+     positioned against the button element). */
+  const badgeElement = badge ? (
+    <Box
+      shape="pill"
+      material={isSingleIcon ? 'plate' : 'translucent'}
+      tone="neutral"
+      size="var(--button-badge-size)"
+      width="auto"
+      padding={{ x: 'var(--button-badge-padding)', y: 0 }}
+      className={clsx(s.ButtonBadge, { [s.ButtonBadgeCorner]: isSingleIcon })}
+    >
+      {badge}
+    </Box>
+  ) : null;
 
   const buttonContent = (
     <>
-      <div className={s.ButtonContent}>
-        {icon ? <div className={s.ButtonIcon}>{icon}</div> : null}
+      <motion.div className={s.ButtonContent} layout>
+        {icon ? (
+          <motion.div className={s.ButtonIcon} layout>
+            {icon}
+          </motion.div>
+        ) : null}
         {showLabel && label ? (
-          <span className={s.ButtonLabel}>{label}</span>
+          <motion.span className={s.ButtonLabel} layout>
+            {label}
+          </motion.span>
         ) : null}
         {additionalIcon ? (
-          <div className={s.ButtonIcon}>{additionalIcon}</div>
+          <motion.div className={s.ButtonIcon} layout>
+            {additionalIcon}
+          </motion.div>
         ) : null}
-        {badge ? <div className={s.ButtonBadge}>{badge}</div> : null}
-      </div>
+        {isSingleIcon ? null : badgeElement}
+      </motion.div>
+      {isSingleIcon ? badgeElement : null}
       {isLoading ? (
         <div className={s.ButtonLoading}>
-          <Loading
-            size="16px"
-            strokeWidth="1.5"
-            color="var(--button-text-color)"
-          />
+          <Loading size="16px" strokeWidth="1.5" color="currentColor" />
         </div>
       ) : null}
       {state === 'succeeded' && <ButtonSuccessIcon />}
@@ -95,7 +130,19 @@ export const Button = memo((props: ButtonProps) => {
     </>
   );
 
-  let buttonElement: ReactElement;
+  const a11yProps = {
+    'aria-label': !showLabel ? label : undefined,
+    'aria-pressed': selected ? (true as const) : undefined,
+    'aria-busy': isLoading ? (true as const) : undefined,
+  };
+
+  const innerProps: AnyObject = {
+    disabled: buttonDisabled,
+    ...a11yProps,
+    ...restProps,
+  };
+
+  let inner: ReactElement;
 
   if (asChild) {
     if (!isValidElement(children)) {
@@ -105,54 +152,52 @@ export const Button = memo((props: ButtonProps) => {
       return null;
     }
 
-    const childWithContent = cloneWithRef(children as ReactElement, {
+    inner = cloneWithRef(children as ReactElement, {
+      ...innerProps,
       children: buttonContent,
-    });
-
-    buttonElement = (
-      <MotionSlot
-        ref={ref}
-        className={cls}
-        style={styles}
-        disabled={buttonDisabled}
-        transition={{ duration: 0.2, ease: 'linear' }}
-        whileTap={{ scale: 0.95 }}
-        {...a11yProps}
-        {...(restProps as AnyObject)}
-      >
-        {childWithContent}
-      </MotionSlot>
-    );
+    } as AnyObject);
   } else {
-    buttonElement = (
+    inner = (
       <motion.button
         type={type}
-        className={cls}
+        layout
         transition={{
-          duration: 0.2,
-          ease: 'linear',
+          layout: { duration: 0.25, ease: 'easeOut' },
+          scale: { duration: 0.2, ease: 'linear' },
         }}
-        style={styles}
-        ref={ref}
-        disabled={buttonDisabled}
-        whileTap={{
-          scale: 0.95,
-        }}
-        {...a11yProps}
-        {...(restProps as HTMLMotionProps<'button'>)}
+        whileTap={{ scale: 0.95 }}
+        {...(innerProps as HTMLMotionProps<'button'>)}
       >
         {buttonContent}
       </motion.button>
     );
   }
 
+  const boxElement = (
+    <Box
+      asChild
+      ref={ref as Ref<HTMLElement>}
+      shape={isSingleIcon ? 'circle' : 'pill'}
+      material={MATERIAL_BY_VARIANT[variant]}
+      tone={boxTone}
+      size={size}
+      padding={padding}
+      pressable
+      focusable
+      className={cls}
+      style={style}
+    >
+      {inner}
+    </Box>
+  );
+
   if (!showLabel && tooltipContent) {
     return (
       <Tooltip content={tooltipContent} ref={ref}>
-        {buttonElement}
+        {boxElement}
       </Tooltip>
     );
   }
 
-  return buttonElement;
+  return boxElement;
 });
