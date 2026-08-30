@@ -1,293 +1,717 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Button, Flex, Icon, Text } from 'components';
+import { Button, Dropdown, Flex, Radio, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import {
-  Camera,
-  Send,
-  Images,
-  ChevronDown,
-  AArrowDown,
-  AArrowUp,
-  Phone,
-  MessageCircle,
-  Delete,
-  Check,
-  X,
-  Heart,
-  LoaderPinwheel,
-  Wifi,
-  Bluetooth,
-  Link,
-} from 'lucide-react';
-// import { fn } from '@storybook/test';
 import { ButtonProps } from './Button.types.ts';
-import { Role, Size } from '../../types';
+import { Size } from 'types';
 import { useState } from 'react';
-import { motion } from 'motion/react';
+import {
+  Bell,
+  Bold,
+  Check,
+  ChevronDown,
+  Clock,
+  Download,
+  ExternalLink,
+  FileText,
+  Italic,
+  Mail,
+  Pause,
+  Play,
+  Repeat,
+  Save,
+  Search,
+  Settings,
+  Shuffle,
+  SkipBack,
+  SkipForward,
+  Trash2,
+  Underline,
+  Upload,
+} from 'lucide-react';
 
 const story: Meta<typeof Button> = {
   title: 'Components/Form/Button',
   component: Button,
   decorators: [StorybookDecorator],
-  // args: {
-  //   onClick: fn(),
-  //   onMouseEnter: fn(),
-  //   onMouseLeave: fn(),
-  //   onFocus: fn(),
-  //   onBlur: fn(),
-  // },
+  args: {},
   argTypes: {},
 };
 
-const renderButtonsWithRole = (
-  type: ButtonProps['variant'],
-  args: ButtonProps,
-) => {
-  const [loading, setLoading] = useState(false);
-  const [successed, setSuccessed] = useState(false);
-  const [failed, setFailed] = useState(false);
-  const [selected1, setSelected1] = useState(false);
-  const [selected2, setSelected2] = useState(false);
-
-  return (
-    <Flex gap="m" align="start" wrap>
-      <Button
-        {...args}
-        variant={type}
-        label="Reset"
-        data-testid={`button-${type}`}
-      />
-      <Button
-        {...args}
-        variant={type}
-        label="Cancel"
-        data-testid={`button-${type}`}
-        badge="NEW"
-      />
-      <Button {...args} variant={type} label="Submit" icon={<Send />} />
-      <Button {...args} variant={type} label="Take a photo" icon={<Camera />} />
-      <Button
-        {...args}
-        variant={type}
-        label="Choose from gallery"
-        icon={<Images />}
-        badge="2"
-      />
-      <Button
-        {...args}
-        variant={type}
-        label="More options"
-        additionalIcon={<ChevronDown />}
-      />
-      <Button
-        {...args}
-        variant={type}
-        icon={<Phone />}
-        disabled
-        label="Call to..."
-      />
-      <Button
-        {...args}
-        variant={type}
-        disabled
-        icon={<MessageCircle />}
-        label="Chat with support"
-        badge="Not working"
-      />
-      <Button
-        {...args}
-        variant={type}
-        label="Sort ascending"
-        showLabel={false}
-        icon={<AArrowUp />}
-      />
-      <Button
-        {...args}
-        variant={type}
-        label="Sort descending"
-        showLabel={false}
-        icon={<AArrowDown />}
-      />
-      <Button
-        {...args}
-        variant={type}
-        label="Close"
-        showLabel={false}
-        icon={<X />}
-      />
-      <Button
-        {...args}
-        variant={type}
-        label="Done"
-        showLabel={false}
-        icon={<Check />}
-      />
-      <Button
-        {...args}
-        variant={type}
-        label="Delete"
-        showLabel={false}
-        icon={<Delete />}
-        danger
-      />
-      <Button
-        {...args}
-        variant={type}
-        label="Delete"
-        icon={<Delete />}
-        danger
-      />
-      <Button {...args} variant={type} label="Reject" danger />
-      <Button {...args} variant={type} disabled label="Pay later" danger />
-      <Button {...args} variant={type} label="Pay later" badge="+20%" danger />
-      <Button
-        {...args}
-        variant={type}
-        label="Like"
-        badge="25k"
-        icon={<Heart />}
-        additionalIcon={<Heart />}
-      />
-      <Button
-        {...args}
-        variant={type}
-        label="Click to show loading"
-        badge="Loading"
-        icon={<LoaderPinwheel />}
-        state={loading ? 'loading' : 'idle'}
-        onClick={() => setLoading(!loading)}
-      />
-      <Button
-        {...args}
-        variant={type}
-        label="Click to finish"
-        icon={<Check />}
-        state={successed ? 'succeeded' : 'idle'}
-        onClick={() => setSuccessed(!successed)}
-      />
-      <Button
-        {...args}
-        variant={type}
-        label="Approve"
-        state={failed ? 'failed' : 'idle'}
-        onClick={() => setFailed(!failed)}
-      />
-      <Button
-        {...args}
-        variant={type}
-        icon={<Wifi />}
-        label="Home"
-        selected={selected1}
-        onClick={() => setSelected1(!selected1)}
-      />
-      <Button
-        {...args}
-        variant={type}
-        icon={<Bluetooth />}
-        label="Bluetooth"
-        showLabel={false}
-        selected={selected2}
-        onClick={() => setSelected2(!selected2)}
-      />
-      <Button
-        {...args}
-        variant={type}
-        icon={<Link />}
-        label="Button as link"
-        asChild
-      >
-        <motion.a />
-      </Button>
-    </Flex>
-  );
-};
-
-const renderButtonsWithSize = (size: Size) => {
-  return (
-    <Flex gap="m" align="start">
-      <Button size={size} variant="default" label="Like" icon={<Heart />} />
-      <Button size={size} variant="default" label="Like" />
-      <Button
-        size={size}
-        variant="default"
-        label="Like"
-        icon={<Heart />}
-        showLabel={false}
-      />
-      <Button size={size} variant="submit" label="Like" icon={<Heart />} />
-      <Button size={size} variant="text" label="Like" icon={<Heart />} />
-      <Button size={size} label="Like" icon={<Heart />} />
-      <Button
-        size={size}
-        variant="default"
-        label="Like"
-        icon={<Heart />}
-        badge="48"
-      />
-    </Flex>
-  );
-};
-
-export const ButtonStory: StoryObj<typeof Button> = {
-  name: 'Using Buttons',
-  parameters: {
-    chromatic: {
-      modes: {
-        light: allModes['light desktop'],
-        dark: allModes['dark desktop'],
-      },
+const chromaticBoth = {
+  chromatic: {
+    modes: {
+      light: allModes['light desktop'],
+      dark: allModes['dark desktop'],
     },
   },
-  render: ({ ...args }) => (
-    <Flex direction="vertical" gap="l">
-      <Text block size={5} weight="bold">
-        Default buttons
+};
+
+const Heading = ({ children }: { children: string }) => (
+  <Text block size={7} weight="bold" style={{ marginTop: 8 }}>
+    {children}
+  </Text>
+);
+
+const Paragraph = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={4} style={{ maxWidth: 680, lineHeight: 1.6 }}>
+    {children}
+  </Text>
+);
+
+/* ---------------------------------------------------------------------- */
+/* Overview                                                                */
+/* ---------------------------------------------------------------------- */
+
+const DialogFooterExample = () => (
+  <Flex
+    gap="m"
+    justify="end"
+    align="center"
+    style={{
+      padding: 16,
+      background: 'var(--gray-a2)',
+      borderRadius: 'var(--radius-l)',
+      width: 420,
+    }}
+  >
+    <Button variant="text" label="Learn more" />
+    <Button variant="default" label="Cancel" />
+    <Button variant="submit" label="Save changes" icon={<Check />} />
+  </Flex>
+);
+
+export const Overview: StoryObj<typeof Button> = {
+  name: 'Overview',
+  parameters: chromaticBoth,
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Text block size={9} weight="bold">
+        Button
       </Text>
-      {renderButtonsWithRole('default', args)}
-      <Text block size={5} weight="bold">
-        Submit buttons
+      <Paragraph>
+        <code>Button</code> is the library&rsquo;s primary interactive control —
+        the thing a user presses to submit a form, trigger an action, or toggle
+        a tool. It always forwards its <code>ref</code> to the actual DOM
+        element it renders, so it composes transparently with{' '}
+        <code>Tooltip</code>, <code>Popover</code> and <code>Dropdown</code>{' '}
+        without any special-casing.
+      </Paragraph>
+
+      <Heading>Three variants, one purpose each</Heading>
+      <Paragraph>
+        A view rarely needs more than one visual weight of action at a time: one
+        thing to confirm, one or more things to back out of, and sometimes a
+        lower-emphasis link-like action alongside them. The <code>variant</code>{' '}
+        prop maps directly onto that:
+      </Paragraph>
+      <Text list="marked">
+        <Text item>
+          <code>submit</code> — the one filled, accent-colored action in a view.
+          Named after what it almost always is: the button that confirms a form
+          or commits a change.
+        </Text>
+        <Text item>
+          <code>default</code> — a neutral, glass-material action. Used for
+          everything that isn&rsquo;t the primary commit: cancel, back,
+          secondary choices.
+        </Text>
+        <Text item>
+          <code>text</code> — no fill, no border, text-only until hovered. For
+          the lowest-emphasis action in a group, or an inline link-like action
+          next to more prominent buttons.
+        </Text>
       </Text>
-      {renderButtonsWithRole('submit', args)}
-      <Text block size={5} weight="bold">
-        Text buttons
-      </Text>
-      {renderButtonsWithRole('text', args)}
+      <DialogFooterExample />
     </Flex>
   ),
 };
 
-export const ButtonSizeStory: StoryObj<typeof Button> = {
-  name: 'Different sizes of buttons',
-  parameters: {
-    chromatic: {
-      modes: {
-        light: allModes['light desktop'],
-      },
-    },
-  },
+/* ---------------------------------------------------------------------- */
+/* Icons & badges                                                          */
+/* ---------------------------------------------------------------------- */
+
+const IconOnlyExample = () => (
+  <Flex gap="m" align="center">
+    <Button
+      variant="default"
+      label="Notifications"
+      icon={<Bell />}
+      showLabel={false}
+      badge="3"
+    />
+    <Text size={3} color="muted">
+      Icon-only, with a badge and an automatic tooltip
+    </Text>
+  </Flex>
+);
+
+const ExportDropdownExample = () => (
+  <Dropdown
+    placement="bottom-start"
+    content={
+      <Dropdown.Menu>
+        <Dropdown.Action icon={<FileText />} label="Export as PDF" />
+        <Dropdown.Action icon={<Download />} label="Export as CSV" />
+      </Dropdown.Menu>
+    }
+  >
+    {() => (
+      <Button
+        variant="default"
+        label="Export"
+        icon={<Download />}
+        showLabel={false}
+      />
+    )}
+  </Dropdown>
+);
+
+const AffordanceExample = () => (
+  <Flex gap="m" align="center" wrap>
+    <Button
+      variant="default"
+      label="Open dashboard"
+      additionalIcon={<ExternalLink />}
+    />
+    <Button
+      variant="default"
+      label="Sort"
+      icon={<FileText />}
+      additionalIcon={<ChevronDown />}
+    />
+    <Button
+      variant="submit"
+      label="Save"
+      icon={<Save />}
+      badge={
+        <Text size={1} weight="bold">
+          ⌘S
+        </Text>
+      }
+    />
+  </Flex>
+);
+
+export const IconsAndBadges: StoryObj<typeof Button> = {
+  name: 'Icons, tooltips & badges',
+  parameters: chromaticBoth,
   render: () => (
-    <Flex direction="vertical" gap="l">
-      <Text block size={5} weight="bold">
-        Mini buttons
-      </Text>
-      {renderButtonsWithSize('mini')}
-      <Text block size={5} weight="bold">
-        Small buttons
-      </Text>
-      {renderButtonsWithSize('s')}
-      <Text block size={5} weight="bold">
-        Medium buttons
-      </Text>
-      {renderButtonsWithSize('m')}
-      <Text block size={5} weight="bold">
-        Large buttons
-      </Text>
-      {renderButtonsWithSize('l')}
-      <Text block size={5} weight="bold">
-        XL buttons
-      </Text>
-      {renderButtonsWithSize('xl')}
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Heading>Icon-only buttons stay accessible</Heading>
+      <Paragraph>
+        Setting <code>showLabel={'{false}'}</code> shrinks the button to a
+        square icon target, but <code>label</code> is still required — it
+        becomes the button&rsquo;s <code>aria-label</code> and, unless a
+        separate <code>tooltip</code> is given, the tooltip shown on hover. A
+        screen-reader user and a mouse user both still learn what the button
+        does.
+      </Paragraph>
+      <IconOnlyExample />
+
+      <Heading>icon leads, additionalIcon trails</Heading>
+      <Paragraph>
+        <code>icon</code> always sits before the label; <code>additionalIcon</code>{' '}
+        sits after it. The trailing slot is where an affordance hint goes — a{' '}
+        <code>ChevronDown</code> that says &ldquo;this opens a menu&rdquo;, an{' '}
+        <code>ExternalLink</code> that says &ldquo;this leaves the app&rdquo; —
+        without taking the leading slot from the action&rsquo;s own icon.
+      </Paragraph>
+      <AffordanceExample />
+
+      <Heading>Badges ride along with the content</Heading>
+      <Paragraph>
+        <code>badge</code> overlays a small count or status onto the
+        button&rsquo;s content — an unread count on a notification bell, a status
+        word on a disabled action. It accepts any node, so it isn&rsquo;t limited
+        to counts: the <code>Save</code> button above carries a keyboard-shortcut
+        hint in the same corner. It never changes what the button does, only what
+        it reports.
+      </Paragraph>
+
+      <Heading>A real trigger: Dropdown</Heading>
+      <Paragraph>
+        Because <code>Button</code> always forwards its ref to its root DOM node
+        — including when that node sits inside the tooltip <code>Button</code>{' '}
+        renders internally for icon-only buttons — <code>Dropdown</code> can
+        position its menu against a plain <code>Button</code> with no adapter
+        code:
+      </Paragraph>
+      <ExportDropdownExample />
+    </Flex>
+  ),
+};
+
+/* ---------------------------------------------------------------------- */
+/* Sizes                                                                   */
+/* ---------------------------------------------------------------------- */
+
+const SIZES: { value: Size; label: string }[] = [
+  { value: 'mini', label: 'Mini' },
+  { value: 's', label: 'Small' },
+  { value: 'm', label: 'Medium' },
+  { value: 'l', label: 'Large' },
+  { value: 'xl', label: 'XLarge' },
+];
+
+const SizePlayground = () => {
+  const [size, setSize] = useState<Size>('m');
+
+  return (
+    <Flex direction="vertical" gap="m">
+      <Radio
+        direction="horizontal"
+        name="button-size"
+        value={size}
+        onChange={(value) => setSize(value as Size)}
+      >
+        {SIZES.map(({ value, label }) => (
+          <Radio.Item key={value} value={value}>
+            {label}
+          </Radio.Item>
+        ))}
+      </Radio>
+      <Flex gap="m" align="center" wrap>
+        <Button size={size} variant="default" label="Cancel" />
+        <Button
+          size={size}
+          variant="submit"
+          label="Save changes"
+          icon={<Check />}
+        />
+        <Button
+          size={size}
+          variant="default"
+          label="Notifications"
+          icon={<Bell />}
+          showLabel={false}
+        />
+      </Flex>
+    </Flex>
+  );
+};
+
+export const Sizes: StoryObj<typeof Button> = {
+  name: 'Sizes',
+  parameters: chromaticBoth,
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Heading>Sizes</Heading>
+      <Paragraph>
+        <code>size</code> is an explicit, author-set choice — it never changes
+        on its own based on viewport, matching the rest of the library. Pick{' '}
+        <code>mini</code>/<code>s</code> for dense toolbars and inline actions,{' '}
+        <code>m</code> for most forms, and <code>l</code>/<code>xl</code> for a
+        view&rsquo;s single most important action.
+      </Paragraph>
+      <SizePlayground />
+    </Flex>
+  ),
+};
+
+/* ---------------------------------------------------------------------- */
+/* Async states                                                            */
+/* ---------------------------------------------------------------------- */
+
+const SaveButtonDemo = ({
+  outcome = 'succeeded',
+  label = 'Save changes',
+}: {
+  outcome?: 'succeeded' | 'failed';
+  label?: string;
+}) => {
+  const [state, setState] = useState<ButtonProps['state']>('idle');
+
+  const handleSave = () => {
+    setState('loading');
+    setTimeout(() => {
+      setState(outcome);
+      setTimeout(() => setState('idle'), 1600);
+    }, 1200);
+  };
+
+  return (
+    <Button
+      variant="submit"
+      label={label}
+      icon={<Save />}
+      danger={outcome === 'failed'}
+      state={state}
+      onClick={handleSave}
+    />
+  );
+};
+
+export const AsyncStates: StoryObj<typeof Button> = {
+  name: 'Loading, success & failure',
+  parameters: chromaticBoth,
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Heading>The button reports its own async state</Heading>
+      <Paragraph>
+        <code>state</code> (<code>idle</code>/<code>loading</code>/
+        <code>succeeded</code>/<code>failed</code>) is fully controlled by the
+        consumer, same as everywhere else in the library — the button itself has
+        no idea what &ldquo;saving&rdquo; means, it just renders a spinner or a
+        checkmark for whatever state it&rsquo;s given. That means a save action
+        doesn&rsquo;t need a separate spinner overlay wrapped around it; the
+        feedback lives on the control the user just pressed.
+      </Paragraph>
+      <Paragraph>
+        Click each button to simulate a request. The first resolves
+        successfully; the second fails and stays <code>danger</code> while it
+        shows the failure, so the outcome is never signalled by the icon alone.
+      </Paragraph>
+      <Flex gap="m" align="center" wrap>
+        <SaveButtonDemo outcome="succeeded" />
+        <SaveButtonDemo outcome="failed" label="Sync now" />
+      </Flex>
+    </Flex>
+  ),
+};
+
+/* ---------------------------------------------------------------------- */
+/* Selected & danger                                                       */
+/* ---------------------------------------------------------------------- */
+
+const FormattingToolbar = () => {
+  const [bold, setBold] = useState(false);
+  const [italic, setItalic] = useState(false);
+  const [underline, setUnderline] = useState(false);
+
+  return (
+    <Flex gap="s">
+      <Button
+        size="s"
+        variant="text"
+        label="Bold"
+        icon={<Bold />}
+        showLabel={false}
+        selected={bold}
+        onClick={() => setBold(!bold)}
+      />
+      <Button
+        size="s"
+        variant="text"
+        label="Italic"
+        icon={<Italic />}
+        showLabel={false}
+        selected={italic}
+        onClick={() => setItalic(!italic)}
+      />
+      <Button
+        size="s"
+        variant="text"
+        label="Underline"
+        icon={<Underline />}
+        showLabel={false}
+        selected={underline}
+        onClick={() => setUnderline(!underline)}
+      />
+    </Flex>
+  );
+};
+
+export const SelectedAndDanger: StoryObj<typeof Button> = {
+  name: 'Toggles & destructive actions',
+  parameters: chromaticBoth,
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Heading>Selected marks a toggle, not a route</Heading>
+      <Paragraph>
+        <code>selected</code> sets <code>aria-pressed</code> and gives the
+        button a distinct pressed appearance. It&rsquo;s for a control that
+        toggles on/off — a formatting option, a filter chip — not for marking
+        the current page in navigation. Each button here tracks its own boolean;
+        toggling one doesn&rsquo;t affect the others.
+      </Paragraph>
+      <FormattingToolbar />
+
+      <Heading>Danger overlays the chosen variant</Heading>
+      <Paragraph>
+        <code>danger</code> is a boolean, not its own variant — it recolors
+        whichever <code>variant</code> is already in use, so a destructive
+        action keeps the same visual weight (text/default/submit) it would have
+        had, just recolored as a warning.
+      </Paragraph>
+      <Flex gap="m" align="center">
+        <Button
+          variant="default"
+          label="Delete project"
+          icon={<Trash2 />}
+          danger
+        />
+        <Button
+          variant="submit"
+          label="Delete permanently"
+          icon={<Trash2 />}
+          danger
+        />
+        <Button variant="text" label="Remove" danger />
+      </Flex>
+    </Flex>
+  ),
+};
+
+/* ---------------------------------------------------------------------- */
+/* Toolbars & icon clusters                                                */
+/* ---------------------------------------------------------------------- */
+
+const clusterStyle = {
+  padding: 12,
+  background: 'var(--gray-a2)',
+  borderRadius: 'var(--radius-l)',
+  width: 'fit-content',
+} as const;
+
+const AppBarExample = () => (
+  <Flex gap="s" align="center" style={clusterStyle}>
+    <Button
+      variant="text"
+      label="Search"
+      tooltip="Search    ⌘K"
+      icon={<Search />}
+      showLabel={false}
+    />
+    <Button
+      variant="text"
+      label="Messages"
+      icon={<Mail />}
+      showLabel={false}
+      badge="12"
+    />
+    <Button
+      variant="text"
+      label="Notifications"
+      icon={<Bell />}
+      showLabel={false}
+      badge="3"
+    />
+    <Button variant="text" label="Settings" icon={<Settings />} showLabel={false} />
+  </Flex>
+);
+
+const MediaToolbarExample = () => {
+  const [playing, setPlaying] = useState(false);
+  const [shuffle, setShuffle] = useState(false);
+  const [repeat, setRepeat] = useState(false);
+
+  return (
+    <Flex gap="s" align="center" style={clusterStyle}>
+      <Button
+        size="s"
+        variant="text"
+        label="Shuffle"
+        icon={<Shuffle />}
+        showLabel={false}
+        selected={shuffle}
+        onClick={() => setShuffle((v) => !v)}
+      />
+      <Button
+        size="s"
+        variant="text"
+        label="Previous track"
+        icon={<SkipBack />}
+        showLabel={false}
+      />
+      <Button
+        size="l"
+        variant="submit"
+        label={playing ? 'Pause' : 'Play'}
+        icon={playing ? <Pause /> : <Play />}
+        showLabel={false}
+        onClick={() => setPlaying((v) => !v)}
+      />
+      <Button
+        size="s"
+        variant="text"
+        label="Next track"
+        icon={<SkipForward />}
+        showLabel={false}
+      />
+      <Button
+        size="s"
+        variant="text"
+        label="Repeat"
+        icon={<Repeat />}
+        showLabel={false}
+        selected={repeat}
+        onClick={() => setRepeat((v) => !v)}
+      />
+    </Flex>
+  );
+};
+
+export const Toolbars: StoryObj<typeof Button> = {
+  name: 'Toolbars & icon clusters',
+  parameters: chromaticBoth,
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Heading>Persistent chrome stays quiet</Heading>
+      <Paragraph>
+        When a row of buttons lives permanently on screen — an app bar, a
+        toolbar — <code>variant="text"</code> keeps every button visually silent
+        until it&rsquo;s hovered or focused, so the cluster reads as chrome
+        rather than a wall of calls to action. Each button is still icon-only
+        with a required <code>label</code> behind it: that <code>label</code> is
+        the <code>aria-label</code> and the hover tooltip. One button overrides{' '}
+        <code>tooltip</code> to also show its shortcut, and <code>badge</code>{' '}
+        carries unread counts without growing the hit target.
+      </Paragraph>
+      <AppBarExample />
+
+      <Heading>One cluster, several jobs</Heading>
+      <Paragraph>
+        A media transport bar packs three different kinds of button into one
+        strip: momentary actions (skip), a primary play/pause that swaps its own{' '}
+        <code>icon</code> and <code>label</code> with state, and real toggles
+        (shuffle, repeat) that use <code>selected</code> for{' '}
+        <code>aria-pressed</code>. The primary control is one <code>size</code>{' '}
+        up (<code>l</code> against <code>s</code>) so the eye lands on it first —
+        size is doing the emphasis work that <code>variant</code> does elsewhere.
+      </Paragraph>
+      <MediaToolbarExample />
+    </Flex>
+  ),
+};
+
+/* ---------------------------------------------------------------------- */
+/* Button in context                                                       */
+/* ---------------------------------------------------------------------- */
+
+const AsChildExample = () => (
+  <Flex gap="m" align="center" wrap>
+    <Button
+      asChild
+      variant="submit"
+      label="Read the docs"
+      additionalIcon={<ExternalLink />}
+    >
+      <a href="https://altrone.dev" target="_blank" rel="noreferrer" />
+    </Button>
+    <Button asChild variant="default" label="Download report" icon={<Download />}>
+      <a href="/report.pdf" download />
+    </Button>
+  </Flex>
+);
+
+const SplitButtonExample = () => (
+  <Flex gap="s" align="center">
+    <Button variant="submit" label="Publish" icon={<Upload />} />
+    <Dropdown
+      placement="bottom-end"
+      content={
+        <Dropdown.Menu>
+          <Dropdown.Action icon={<Clock />} label="Schedule for later" />
+          <Dropdown.Action icon={<FileText />} label="Save as draft" />
+        </Dropdown.Menu>
+      }
+    >
+      {() => (
+        <Button
+          variant="submit"
+          label="More publish options"
+          icon={<ChevronDown />}
+          showLabel={false}
+        />
+      )}
+    </Dropdown>
+  </Flex>
+);
+
+const InlineConfirmExample = () => {
+  const [confirming, setConfirming] = useState(false);
+  const [state, setState] = useState<ButtonProps['state']>('idle');
+
+  if (state !== 'idle') {
+    return (
+      <Button
+        variant="submit"
+        label="Delete file"
+        icon={<Trash2 />}
+        danger
+        state={state}
+      />
+    );
+  }
+
+  if (!confirming) {
+    return (
+      <Button
+        variant="default"
+        label="Delete file"
+        icon={<Trash2 />}
+        danger
+        onClick={() => setConfirming(true)}
+      />
+    );
+  }
+
+  return (
+    <Flex gap="s" align="center">
+      <Button
+        variant="submit"
+        label="Yes, delete it"
+        icon={<Trash2 />}
+        danger
+        onClick={() => {
+          setState('loading');
+          setTimeout(() => {
+            setState('succeeded');
+            setTimeout(() => {
+              setState('idle');
+              setConfirming(false);
+            }, 1400);
+          }, 1000);
+        }}
+      />
+      <Button
+        variant="text"
+        label="Cancel"
+        onClick={() => setConfirming(false)}
+      />
+    </Flex>
+  );
+};
+
+export const InContext: StoryObj<typeof Button> = {
+  name: 'Button in context',
+  parameters: chromaticBoth,
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Heading>A button that is really a link</Heading>
+      <Paragraph>
+        When the action is navigation — open a page, download a file — the
+        element should be an <code>&lt;a&gt;</code>, not a{' '}
+        <code>&lt;button&gt;</code>, so it gets middle-click, &ldquo;open in new
+        tab&rdquo; and <code>download</code> for free. Pass <code>asChild</code>{' '}
+        with the <code>&lt;a&gt;</code> as the single child: the button merges
+        its class, ref and content onto that element instead of rendering its
+        own.
+      </Paragraph>
+      <AsChildExample />
+
+      <Heading>Split button: one default, a menu of alternates</Heading>
+      <Paragraph>
+        A split button is just two buttons of the same <code>variant</code> side
+        by side — the primary one does the common thing on click, the icon-only
+        one opens a <code>Dropdown</code> of the rarer options. No new prop: the
+        icon-only button forwards its ref to <code>Dropdown</code> the way any
+        trigger does, and its <code>label</code> becomes that trigger&rsquo;s
+        accessible name.
+      </Paragraph>
+      <SplitButtonExample />
+
+      <Heading>Inline confirm, no modal</Heading>
+      <Paragraph>
+        For a low-stakes destructive action the confirmation can happen in place:
+        the first press swaps the neutral <code>danger</code> button for a filled{' '}
+        <code>submit</code> + <code>Cancel</code> pair, the second press runs the
+        request through <code>state</code> (<code>loading</code> →{' '}
+        <code>succeeded</code>) on that same button. No <code>Dialog</code>, no
+        focus trap — the whole exchange stays on one control.
+      </Paragraph>
+      <InlineConfirmExample />
     </Flex>
   ),
 };

@@ -1,0 +1,303 @@
+.Box {
+  --box-radius: 0px;
+  --box-fill: transparent;
+  --box-border-width: 0px;
+  --box-border-color: transparent;
+  --box-blur: none;
+
+  --box-size: var(--base-control-size);
+  --box-padding-x: var(--space-control-x-m);
+  --box-padding-y: var(--space-control-y-m);
+
+  --box-elevation-shadow: var(--elevation-flat-shadow);
+
+  box-sizing: border-box;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* --box-square is set only for an arbitrary `size` (square); --box-width /
+     --box-height come from the width/height props and win over it. */
+  width: var(--box-width, var(--box-square, auto));
+  height: var(--box-height, var(--box-square, auto));
+  min-height: var(--box-size);
+  padding: var(--box-padding-y) var(--box-padding-x);
+  background: var(--box-fill);
+  border-radius: var(--box-radius);
+  backdrop-filter: var(--box-blur);
+  color: var(--box-tone-text, inherit);
+  z-index: var(--elevation-flat-z-index);
+  /* The border is the inset layer here, not the `border` property — it never
+     affects layout, follows `border-radius`/`corner-shape` cleanly, and rides
+     the same box-shadow transition as elevation. */
+  box-shadow:
+    inset 0 0 0 var(--box-border-width) var(--box-border-color),
+    var(--box-elevation-shadow);
+  outline: none;
+
+  transition:
+    background-color 0.2s ease,
+    filter 0.2s ease,
+    backdrop-filter 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* ------------------------------------------------------------------ */
+/* Shape — corner algorithm only; radius amount is --radius-outer          */
+/* ------------------------------------------------------------------ */
+
+.ShapeRect {
+  /* Forced 0 regardless of the ambient --radius-outer a parent scope supplies. */
+  --box-radius: 0px;
+}
+
+.ShapeRounded {
+  --box-radius: var(--radius-outer);
+}
+
+.ShapeSquircle {
+  /* Fallback (no `corner-shape` support): a plain border-radius carves a
+     visibly larger corner than a real squircle of the same nominal radius, so
+     scale it down by --squircle-fallback-ratio to match the corner "fullness".
+     Where `corner-shape` is supported the radius is used as-is. */
+  --box-radius: calc(var(--radius-outer) * var(--squircle-fallback-ratio));
+
+  @supports (corner-shape: squircle) {
+    --box-radius: var(--radius-outer);
+
+    corner-shape: squircle;
+  }
+}
+
+.ShapeCircle {
+  --box-radius: 50%;
+
+  aspect-ratio: 1;
+  width: var(--box-width, var(--box-square, var(--box-size)));
+  padding: 0;
+}
+
+.ShapePill {
+  /* Forced capsule ends regardless of the ambient --radius-outer or the size. */
+  --box-radius: var(--radius-pill);
+}
+
+/* ------------------------------------------------------------------ */
+/* Tone — fill/border/text values referenced by material rules below   */
+/* ------------------------------------------------------------------ */
+
+.ToneNeutral {
+  --box-tone-solid: var(--solid-1);
+  --box-tone-solid-text: var(--background-1);
+  --box-tone-translucent: var(--interactive-a1);
+  --box-tone-translucent-strong: var(--interactive-a3);
+  --box-tone-border: var(--border-a2);
+  --box-tone-border-strong: var(--border-a3);
+  --box-tone-text: var(--text-2);
+}
+
+.ToneAccent,
+.ToneInfo {
+  /* info deliberately has no fixed hue — it aliases --accent-N, see color.md */
+  --box-tone-solid: var(--accent-9);
+  --box-tone-solid-text: var(--white);
+  --box-tone-translucent: var(--accent-a3);
+  --box-tone-translucent-strong: var(--accent-a5);
+  --box-tone-border: var(--accent-a7);
+  --box-tone-border-strong: var(--accent-a9);
+  --box-tone-text: var(--accent-11);
+}
+
+.ToneDanger {
+  --box-tone-solid: var(--danger-solid-1);
+  --box-tone-solid-text: var(--white);
+  --box-tone-translucent: var(--danger-interactive-a1);
+  --box-tone-translucent-strong: var(--danger-interactive-a3);
+  --box-tone-border: var(--danger-border-a2);
+  --box-tone-border-strong: var(--danger-border-a3);
+  --box-tone-text: var(--danger-text-1);
+}
+
+.ToneSuccess {
+  --box-tone-solid: var(--success-solid-1);
+  --box-tone-solid-text: var(--white);
+  --box-tone-translucent: var(--success-interactive-a1);
+  --box-tone-translucent-strong: var(--success-interactive-a3);
+  --box-tone-border: var(--success-border-a2);
+  --box-tone-border-strong: var(--success-border-a3);
+  --box-tone-text: var(--success-text-1);
+}
+
+.ToneWarning {
+  --box-tone-solid: var(--warning-solid-1);
+  --box-tone-solid-text: var(--white);
+  --box-tone-translucent: var(--warning-interactive-a1);
+  --box-tone-translucent-strong: var(--warning-interactive-a3);
+  --box-tone-border: var(--warning-border-a2);
+  --box-tone-border-strong: var(--warning-border-a3);
+  --box-tone-text: var(--warning-text-1);
+}
+
+/**
+ * `color` prop: a categorical (`--category-N`) or arbitrary color in
+ * `--box-color`. The palette only ships a solid step, so the translucent /
+ * border / text roles are derived from it here rather than pulled from a
+ * 12-step scale. Solid text auto-contrasts via oklch relative colors, the
+ * same trick Avatar uses.
+ */
+.ToneCustom {
+  --box-tone-solid: var(--box-color);
+  --box-tone-solid-text: oklch(from var(--box-color) calc((0.5 - l) * 9999) 0 0);
+  --box-tone-translucent: color-mix(in oklab, var(--box-color) 14%, transparent);
+  --box-tone-translucent-strong: color-mix(
+    in oklab,
+    var(--box-color) 26%,
+    transparent
+  );
+  --box-tone-border: color-mix(in oklab, var(--box-color) 45%, transparent);
+  --box-tone-border-strong: color-mix(
+    in oklab,
+    var(--box-color) 68%,
+    transparent
+  );
+  --box-tone-text: color-mix(in oklab, var(--box-color) 82%, var(--text-1));
+}
+
+/* ------------------------------------------------------------------ */
+/* Material — fill/blur/border at rest. "Pressed"/"engaged" look is    */
+/* shared by :active (pressable) and :focus-within (editable) below.   */
+/* ------------------------------------------------------------------ */
+
+.MaterialSolid {
+  --box-fill: var(--box-tone-solid);
+  --box-tone-text: var(--box-tone-solid-text);
+}
+
+.MaterialTranslucent {
+  --box-fill: var(--box-tone-translucent);
+}
+
+.MaterialGlass {
+  --box-fill: var(--box-tone-translucent);
+  --box-blur: var(--glass-effects);
+}
+
+/* .MaterialTransparent and .MaterialGhost: no fill/border at rest — base already provides that. */
+
+.MaterialOutline {
+  --box-border-width: 1px;
+  --box-border-color: var(--box-tone-border);
+}
+
+/* ------------------------------------------------------------------ */
+/* Sizes                                                                */
+/* ------------------------------------------------------------------ */
+
+.Mini {
+  --box-size: 16px;
+  --box-padding-x: var(--space-control-x-mini);
+  --box-padding-y: var(--space-control-y-mini);
+}
+
+.Small {
+  --box-size: 24px;
+  --box-padding-x: var(--space-control-x-s);
+  --box-padding-y: var(--space-control-y-s);
+}
+
+.Large {
+  --box-size: 40px;
+  --box-padding-x: var(--space-control-x-l);
+  --box-padding-y: var(--space-control-y-l);
+}
+
+.XLarge {
+  --box-size: 48px;
+  --box-padding-x: var(--space-control-x-xl);
+  --box-padding-y: var(--space-control-y-xl);
+}
+
+/* ------------------------------------------------------------------ */
+/* Elevation — z-index + shadow as one role, see elevation.md          */
+/* ------------------------------------------------------------------ */
+
+.ElevationRaised {
+  z-index: var(--elevation-raised-z-index);
+  --box-elevation-shadow: var(--elevation-raised-shadow);
+}
+
+.ElevationSticky {
+  z-index: var(--elevation-sticky-z-index);
+  --box-elevation-shadow: var(--elevation-sticky-shadow);
+}
+
+.ElevationOverlay {
+  z-index: var(--elevation-overlay-z-index);
+  --box-elevation-shadow: var(--elevation-overlay-shadow);
+}
+
+.ElevationModal {
+  z-index: var(--elevation-modal-z-index);
+  --box-elevation-shadow: var(--elevation-modal-shadow);
+}
+
+.ElevationToast {
+  z-index: var(--elevation-toast-z-index);
+  --box-elevation-shadow: var(--elevation-toast-shadow);
+}
+
+/* ------------------------------------------------------------------ */
+/* Interaction — pure CSS pseudo-classes, no JS state (Box must stay   */
+/* SSR-safe and hold no state of its own).                             */
+/* ------------------------------------------------------------------ */
+
+.Pressable {
+  cursor: pointer;
+}
+
+.Pressable.MaterialSolid:active {
+  filter: brightness(0.92);
+}
+
+.Pressable.MaterialTranslucent:active,
+.Editable.MaterialTranslucent:focus-within {
+  --box-fill: var(--box-tone-translucent-strong);
+}
+
+.Pressable.MaterialGlass:active,
+.Editable.MaterialGlass:focus-within {
+  --box-fill: var(--box-tone-translucent-strong);
+
+  backdrop-filter: var(--glass-press-effects);
+}
+
+.Pressable.MaterialTransparent:active,
+.Editable.MaterialTransparent:focus-within,
+.Pressable.MaterialGhost:active,
+.Editable.MaterialGhost:focus-within {
+  --box-fill: var(--box-tone-translucent);
+}
+
+.Pressable.MaterialOutline:active,
+.Editable.MaterialOutline:focus-within {
+  --box-fill: var(--box-tone-translucent);
+  --box-border-color: var(--box-tone-border-strong);
+}
+
+.MaterialGhost:focus-visible,
+.Pressable.MaterialGhost:active,
+.Editable.MaterialGhost:focus-within {
+  --box-border-width: 1px;
+  --box-border-color: var(--box-tone-border);
+}
+
+/* Always the same ring regardless of material — predictable for screen-reader users. */
+.Focusable:focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
+}
+
+.Editable:focus-within {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
+}

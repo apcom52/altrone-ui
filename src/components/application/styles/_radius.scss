@@ -12,6 +12,18 @@
   --radius-xl: 16px;
   --radius-circle: 50%;
 
+  /** Capsule ends — a value large enough that the corners stay fully round at any height. */
+  --radius-pill: 9999px;
+
+  /**
+   * `corner-shape: squircle` carves a smaller corner area than a plain
+   * border-radius arc of the same nominal radius. Where `corner-shape` isn't
+   * supported, multiply the radius by this ratio so the fallback corner reads
+   * as roughly as "full" as the real squircle. Empirical, area-matched — tune
+   * in [0.5 … 0.6] if the squircle exponent changes.
+   */
+  --squircle-fallback-ratio: 0.5;
+
   /**
    * Concentric radius: radius_child = radius_parent - gap, floored at
    * --radius-mini so a big gap can't round a corner away to square. If the
