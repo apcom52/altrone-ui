@@ -17,3 +17,23 @@ body.sb-show-main {
   background-position: center !important;
   background-repeat: no-repeat !important;
 }
+
+/* "Reduced motion" toolbar toggle (StorybookDecorator adds the class). The
+   `motion` library is handled in JS via <MotionConfig>; this covers plain CSS
+   transitions/animations, including components that hardcode a duration instead
+   of using the --motion-duration-* tokens. */
+html.sb-reduce-motion [data-altrone-root='true'] {
+  --motion-duration-fast: 0s;
+  --motion-duration-base: 0s;
+}
+
+html.sb-reduce-motion *,
+html.sb-reduce-motion *::before,
+html.sb-reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  transition-delay: 0s !important;
+  scroll-behavior: auto !important;
+}

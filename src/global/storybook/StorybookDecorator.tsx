@@ -1,8 +1,11 @@
 import { AltroneApplication } from '../../components';
 import s from './decorator.module.scss';
 import { useEffect } from 'react';
+import { MotionConfig } from 'motion/react';
 
 export const StorybookDecorator = (Story: any, options: any) => {
+  const reduceMotion = options.globals.reduceMotion === 'on';
+
   useEffect(() => {
     document.body.classList.toggle(
       s.WithImage,
@@ -11,6 +14,10 @@ export const StorybookDecorator = (Story: any, options: any) => {
         : false,
     );
   }, [options.globals.backgrounds?.value]);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('sb-reduce-motion', reduceMotion);
+  }, [reduceMotion]);
 
   return (
     <AltroneApplication
@@ -40,7 +47,11 @@ export const StorybookDecorator = (Story: any, options: any) => {
         },
       }}
     >
-      <Story />
+      {/* Innermost MotionConfig wins over AltroneApplication's own
+          `reducedMotion="user"`, so the toolbar toggle can force it. */}
+      <MotionConfig reducedMotion={reduceMotion ? 'always' : 'user'}>
+        <Story />
+      </MotionConfig>
     </AltroneApplication>
   );
 };

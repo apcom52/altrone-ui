@@ -2,7 +2,11 @@ import { isValidElement, memo, ReactElement, Ref } from 'react';
 import { ButtonProps } from './Button.types.ts';
 import s from './button.module.scss';
 import clsx from 'clsx';
-import { HTMLMotionProps, motion } from 'motion/react';
+import {
+  HTMLMotionProps,
+  motion,
+  useReducedMotionConfig,
+} from 'motion/react';
 import { Box, BoxMaterial } from 'components/box';
 import { Loading } from 'components/loading/Loading.tsx';
 import { Tooltip } from 'components/tooltip/Tooltip.tsx';
@@ -59,6 +63,11 @@ export const Button = memo((props: ButtonProps) => {
   const isSingleIcon = !showLabel && !!icon && !additionalIcon;
   const isLoading = state === 'loading';
 
+  /* `MotionConfig`'s `reducedMotion` doesn't reliably suppress `layout`
+     animations, so gate them explicitly. Follows both the OS setting and a
+     `<MotionConfig reducedMotion>` override. */
+  const animateLayout = !useReducedMotionConfig();
+
   const cls = clsx(
     s.Button,
     {
@@ -101,19 +110,19 @@ export const Button = memo((props: ButtonProps) => {
 
   const buttonContent = (
     <>
-      <motion.div className={s.ButtonContent} layout>
+      <motion.div className={s.ButtonContent} layout={animateLayout}>
         {icon ? (
-          <motion.div className={s.ButtonIcon} layout>
+          <motion.div className={s.ButtonIcon} layout={animateLayout}>
             {icon}
           </motion.div>
         ) : null}
         {showLabel && label ? (
-          <motion.span className={s.ButtonLabel} layout>
+          <motion.span className={s.ButtonLabel} layout={animateLayout}>
             {label}
           </motion.span>
         ) : null}
         {additionalIcon ? (
-          <motion.div className={s.ButtonIcon} layout>
+          <motion.div className={s.ButtonIcon} layout={animateLayout}>
             {additionalIcon}
           </motion.div>
         ) : null}
@@ -160,7 +169,7 @@ export const Button = memo((props: ButtonProps) => {
     inner = (
       <motion.button
         type={type}
-        layout
+        layout={animateLayout}
         transition={{
           layout: { duration: 0.25, ease: 'easeOut' },
           scale: { duration: 0.2, ease: 'linear' },

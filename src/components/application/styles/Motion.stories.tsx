@@ -53,6 +53,13 @@ export const Overview: StoryObj = {
         2.3.3. Altrone has two layers for this, depending on where an
         animation is implemented.
       </Paragraph>
+      <Paragraph>
+        Use the <strong>Motion</strong> toggle in the Storybook toolbar to
+        preview any story with reduced motion forced on — it flips{' '}
+        <code>{'<MotionConfig reducedMotion>'}</code> to{' '}
+        <code>always</code> and zeroes the CSS duration tokens, without
+        touching your OS setting.
+      </Paragraph>
 
       <Heading>Plain CSS</Heading>
       <Paragraph>

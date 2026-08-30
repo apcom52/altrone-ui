@@ -92,9 +92,23 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    reduceMotion: {
+      description: 'Simulate prefers-reduced-motion',
+      defaultValue: 'off',
+      toolbar: {
+        title: 'Motion',
+        icon: 'lightning',
+        items: [
+          { value: 'off', icon: 'lightning', title: 'Motion' },
+          { value: 'on', icon: 'lightningoff', title: 'Reduced motion' },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
   initialGlobals: {
     theme: 'light',
+    reduceMotion: 'off',
   },
 };
 
