@@ -72,6 +72,7 @@ export const Button = memo((props: ButtonProps) => {
     s.Button,
     {
       [s.Primary]: variant === 'submit',
+      [s.Danger]: danger,
       [s.SingleIcon]: isSingleIcon,
       [s.WithLoading]: state !== 'idle',
       [s.Mini]: size === 'mini',

@@ -204,6 +204,15 @@
     --box-tone-text: var(--black);
   }
 
+  /* On that white fill a danger submit reads its intent through red text, not
+     the black the plain `.Primary` override sets (light theme is white-on-red
+     and needs no change). `--danger-solid-1` (not the softer `--danger-text-1`,
+     which the dark scale lightens toward coral) — a deep, theme-stable red that
+     holds contrast against white. */
+  .Primary.Danger:not([disabled]) {
+    --box-tone-text: var(--danger-solid-1);
+  }
+
   .Primary[disabled] {
     --box-fill: var(--disabled-background);
     --box-tone-text: var(--disabled-text-color);

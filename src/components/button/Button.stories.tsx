@@ -228,8 +228,8 @@ export const IconsAndBadges: StoryObj<typeof Button> = {
       <Paragraph>
         On a labelled button the badge sits inline at the end of the content
         row. On an icon-only button there&rsquo;s no room for that, so it turns
-        into a small <code>plate</code> chip floating over the top-right corner —
-        the notification-badge pattern (see the bell above).
+        into a small <code>plate</code> chip floating over the top-right corner
+        — the notification-badge pattern (see the bell above).
       </Paragraph>
 
       <Heading>A real trigger: Dropdown</Heading>
@@ -356,10 +356,10 @@ export const Sizes: StoryObj<typeof Button> = {
       <Heading>Badges scale with the tier</Heading>
       <Paragraph>
         The badge&rsquo;s size, padding and type all follow the button&rsquo;s{' '}
-        <code>size</code>. On a labelled button it stays inline at the end of the
-        content; on an icon-only button it&rsquo;s a <code>plate</code> chip in
-        the top-right corner. In neither case does it change the button&rsquo;s
-        height.
+        <code>size</code>. On a labelled button it stays inline at the end of
+        the content; on an icon-only button it&rsquo;s a <code>plate</code> chip
+        in the top-right corner. In neither case does it change the
+        button&rsquo;s height.
       </Paragraph>
       <BadgeSizeMatrix />
     </Flex>
@@ -560,6 +560,95 @@ export const SelectedAndDanger: StoryObj<typeof Button> = {
         />
         <Button variant="text" label="Remove" danger />
       </Flex>
+    </Flex>
+  ),
+};
+
+/* ---------------------------------------------------------------------- */
+/* Disabled                                                                */
+/* ---------------------------------------------------------------------- */
+
+const DisabledRow = ({ disabled = false }: { disabled?: boolean }) => (
+  <Flex gap="m" align="center" wrap>
+    <Button
+      variant="submit"
+      label="Save changes"
+      icon={<Save />}
+      disabled={disabled}
+    />
+    <Button variant="default" label="Cancel" disabled={disabled} />
+    <Button variant="text" label="Learn more" disabled={disabled} />
+    <Button
+      variant="default"
+      label="Delete"
+      icon={<Trash2 />}
+      danger
+      disabled={disabled}
+    />
+    <Button
+      variant="default"
+      label="Notifications"
+      icon={<Bell />}
+      showLabel={false}
+      badge="3"
+      disabled={disabled}
+    />
+    <Button danger variant="submit" label="Delete" disabled={disabled} />
+  </Flex>
+);
+
+const AutoDisabledDemo = () => {
+  const [state, setState] = useState<ButtonProps['state']>('idle');
+
+  return (
+    <Button
+      variant="submit"
+      label="Submit"
+      icon={<Check />}
+      state={state}
+      onClick={() => {
+        setState('loading');
+        setTimeout(() => setState('succeeded'), 1200);
+        setTimeout(() => setState('idle'), 2600);
+      }}
+    />
+  );
+};
+
+export const Disabled: StoryObj<typeof Button> = {
+  name: 'Disabled',
+  parameters: chromaticBoth,
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Heading>One flat treatment for every variant</Heading>
+      <Paragraph>
+        <code>disabled</code> sets the native attribute (so the button leaves
+        the tab order and fires no events) and switches the fill, border and
+        text to the dedicated <code>--disabled-*</code> tokens — not an opacity
+        knocked over the enabled look. Every <code>variant</code>,{' '}
+        <code>danger</code> included, collapses to the same muted state, so a
+        disabled control never competes for attention with an active one.
+      </Paragraph>
+      <Flex direction="vertical" gap="s">
+        <Text size={2} color="muted">
+          Enabled
+        </Text>
+        <DisabledRow />
+        <Text size={2} color="muted" style={{ marginTop: 8 }}>
+          Disabled
+        </Text>
+        <DisabledRow disabled />
+      </Flex>
+
+      <Heading>A busy button disables itself</Heading>
+      <Paragraph>
+        You don&rsquo;t have to pair <code>disabled</code> with{' '}
+        <code>state</code>: any non-<code>idle</code> <code>state</code> (
+        <code>loading</code>/<code>succeeded</code>/<code>failed</code>) already
+        blocks clicks and sets <code>aria-busy</code>, so a submit can&rsquo;t
+        be fired twice while its request is in flight. Click to try:
+      </Paragraph>
+      <AutoDisabledDemo />
     </Flex>
   ),
 };
