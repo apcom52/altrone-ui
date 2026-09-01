@@ -1,46 +1,27 @@
-import clsx from 'clsx';
+import { Button } from 'components/button';
 import { ActionIslandProps } from '../TextInput.types.ts';
-import s from './action.module.scss';
-import { motion } from 'motion/react';
+import { useIslandSize } from '../TextInput.context.ts';
 
+/**
+ * A `Button` locked to the in-field `plate` chip. Everything else — press/focus
+ * feedback, icon-only circle + auto tooltip, `state`, `badge`, `disabled` — is
+ * `Button`'s own behaviour, not reimplemented here.
+ */
 export const ActionIsland = ({
   ref,
-  showLabel = true,
-  label,
-  icon,
-  className,
   placement,
-  danger = false,
-  style,
+  size,
   ...restProps
 }: ActionIslandProps) => {
-  const cls = clsx(
-    s.ActionIsland,
-    {
-      [s.LeftSide]: !placement || placement === 'left',
-      [s.RightSide]: placement === 'right',
-      [s.Danger]: danger,
-      [s.OnlyIcon]: icon && showLabel === false,
-    },
-    className,
-  );
-
-  const styles = {
-    ...style,
-  };
+  const islandSize = useIslandSize();
 
   return (
-    <motion.button
-      type="button"
-      title={label}
-      className={cls}
-      ref={ref}
-      style={styles}
-      whileTap={{ scale: 0.98 }}
+    <Button
       {...restProps}
-    >
-      {icon ? <div className={s.Icon}>{icon}</div> : null}
-      {showLabel ? <div className={s.Label}>{label}</div> : null}
-    </motion.button>
+      ref={ref}
+      variant="default"
+      size={size ?? islandSize}
+      data-placement={placement}
+    />
   );
 };

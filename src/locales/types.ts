@@ -37,6 +37,9 @@ export interface Localization {
     increase: string;
     decrease: string;
   };
+  textInput: {
+    loading: string;
+  };
   passwordInput: {
     showPassword: string;
     hidePassword: string;

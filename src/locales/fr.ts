@@ -30,6 +30,9 @@ export const fr: Localization = {
     increase: 'Augmenter',
     decrease: 'Diminuer',
   },
+  textInput: {
+    loading: 'Chargement',
+  },
   passwordInput: {
     showPassword: 'Afficher le mot de passe',
     hidePassword: 'Masquer le mot de passe',

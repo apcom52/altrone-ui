@@ -331,7 +331,7 @@ export const FeaturesStory: StoryObj<typeof Flex> = {
             placeholder="e.g. Type, Rust, Go…"
             renderSuggestion={(props) => <LanguageSuggestion {...props} />}
           >
-            <TextInput.IconIsland icon={<Globe size={16} />} placement="left" />
+            <TextInput.IconIsland icon={<Globe size={16} />} placement="start" />
           </AutocompleteInput>
         </Flex>
       </Flex>

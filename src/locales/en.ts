@@ -30,6 +30,9 @@ export const en: Localization = {
     increase: 'Increase',
     decrease: 'Decrease',
   },
+  textInput: {
+    loading: 'Loading',
+  },
   passwordInput: {
     showPassword: 'Show password',
     hidePassword: 'Hide password',

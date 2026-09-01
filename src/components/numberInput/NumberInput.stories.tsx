@@ -74,7 +74,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           >
             <TextInput.TextIsland label="Age:" />
             <TextInput.ActionIsland
-              placement="right"
+              placement="end"
               icon={<Delete />}
               label="Clear"
             />

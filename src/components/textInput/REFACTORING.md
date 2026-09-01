@@ -64,13 +64,15 @@ onClick?: () => void;
 
 ## Сводная таблица
 
-| Приоритет | Файл | Проблема |
-|---|---|---|
-| 🟡 Средний | `TextInput.types.ts:46` | `onClick` в `ActionIslandProps` сужает тип, убирает `MouseEvent` |
-| 🟡 Средний | `textInput.module.scss:70` | `!important` на CSS-переменной в `.Invalid` |
-| 🟡 Средний | `textInput.module.scss:79–81` | `outline: none` при `:focus-visible` в `.Readonly` — нарушение доступности |
-| 🟢 Низкий | `TextInput.tsx:57` | `inputValue` — избыточный алиас переменной |
-| 🟢 Низкий | `textInput.module.scss` | Захардкоженные отступы и font-weight вместо CSS-переменных |
+Все пункты ниже закрыты миграцией `TextInput` на `Box` (changelog v4, 01-09-2026):
+
+| Приоритет | Файл | Проблема | Как закрыто |
+|---|---|---|---|
+| 🟡 Средний | `TextInput.types.ts` | `onClick` в `ActionIslandProps` сужал тип | `ActionIslandProps` расширяет `ButtonHTMLAttributes<HTMLElement>` |
+| 🟡 Средний | `textInput.module.scss` | `!important` на CSS-переменной в `.Invalid` | `.Invalid` удалён; ошибка через `tone="danger"` у `Box` |
+| 🟡 Средний | `textInput.module.scss` | `outline: none` при `:focus-visible` в `.Readonly` | Фокус-кольцо на обёртке (`Box` `editable`), у `.Readonly` не подавляется |
+| 🟢 Низкий | `TextInput.tsx` | `inputValue` — избыточный алиас | удалён |
+| 🟢 Низкий | `textInput.module.scss` | Захардкоженные отступы/`font-weight` | spacing-токены + `Box`; статические таблицы по размерам удалены |
 
 ---
 

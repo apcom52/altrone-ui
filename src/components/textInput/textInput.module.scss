@@ -1,181 +1,133 @@
-@import 'src/global/mixins';
+/**
+ * TextInput is a `Box` (shape / material / tone / size / editable — fill,
+ * border, radius, elevation, the focus-within ring and the "engaged while
+ * typing" look all come from Box). This stylesheet only carries what Box
+ * doesn't own: the field's own per-size typography, the flex row that lays out
+ * islands around the input, the transparent `<input>` reset, and the two
+ * states Box has no concept of — `readonly` and `disabled`.
+ */
 
-:global([data-altrone-root='true']) {
-  --text-input-background-color: var(--background-2);
-  --text-input-focused-background-color: var(--background-1);
-  --text-input-disabled-background-color: var(--gray-4);
-  --text-input-border-color: var(--border-a1);
-  --text-input-text-color: var(--text-2);
-  --text-input-island-text-color: var(--text-1);
-  --text-input-placeholder-color: var(--placeholder-text-color);
-  --text-input-font-size: var(--text-4);
-  --text-input-size: 32px;
-  --text-input-rounding: 16px;
-  --text-input-horizontal-padding: 8px;
-  --text-input-vertical-padding: 6px;
-
+.TextInput {
+  /* Typography stays in px — the typographic scale is still deferred (see
+     typography.md); icon size follows the field `size`. */
+  --text-input-font-size: var(--text-size-4);
   --text-input-icon-size: 16px;
 
-  --text-input-action-island-background-color: var(--interactive-a1);
-  --text-input-action-island-text-color: var(--text-2);
-  --text-input-action-island-hover-background-color: var(--interactive-a2);
-  --text-input-action-island-active-background-color: var(--interactive-a3);
-  --text-input-action-island-text-size: 12px;
-  --text-input-action-island-rounding: 12px;
-  --text-input-action-island-size: 24px;
-  --text-input-action-island-icon-size: 14px;
-  --text-input-action-island-horizontal-offset: 8px;
+  /* Gap between the field's border and the island content (islands carry no
+     horizontal padding of their own) — applied by `.StartIslands`/`.EndIslands`
+     below. `mini` zeroes it (no room to spare: the island is already exactly
+     the field's height there). */
+  --text-input-island-outer-inset: var(--space-inset-compact);
 
-  --text-input-islands-gap: 2px;
-  --text-input-islands-offset: 4px;
+  width: 100%;
 }
 
-.Wrapper {
+.Field {
   display: flex;
-  position: relative;
-  flex-direction: column;
+  align-self: stretch;
+  align-items: center;
+  gap: var(--space-inline);
   width: 100%;
-  height: var(--text-input-size);
+  min-width: 0;
+}
+
+.StartIslands,
+.EndIslands {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-inline);
+}
+
+/* Pull the container in by the field's own `--box-padding-x` (inherited from
+   the wrapper Box, scales per size via its `.Mini`/`.Small`/`.Large`/`.XLarge`)
+   and leave exactly `--text-input-island-outer-inset` between the border and
+   the island content. Without this an island would drift out to the full
+   control padding (24px at `xl`). No per-size table: every term already
+   scales/holds on its own. */
+.StartIslands {
+  margin-left: calc(var(--text-input-island-outer-inset) - var(--box-padding-x));
+}
+
+.EndIslands {
+  margin-right: calc(var(--text-input-island-outer-inset) - var(--box-padding-x));
 }
 
 .Input {
-  width: 100%;
-  background: var(--text-input-background-color);
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: var(--text-input-font-size);
+  font-weight: var(--text-weight-medium);
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  border-radius: var(--text-input-rounding);
-  border: 1px solid var(--text-input-border-color);
-  padding: var(--text-input-vertical-padding)
-    var(--text-input-horizontal-padding);
-  height: var(--text-input-size);
-  outline: none;
-  color: var(--text-input-text-color);
-  font-weight: var(--text-weight-medium);
-  font-size: var(--text-input-font-size);
-  line-height: var(--text-input-size);
-  transition: background-color 0.2s linear;
-
-  &:focus-visible {
-    background-color: var(--text-input-focused-background-color);
-    outline: 2px solid var(--focus-color);
-    outline-offset: 2px;
-  }
 
   &::placeholder {
-    color: var(--text-input-placeholder-color);
+    color: var(--placeholder-text-color);
   }
 
   &:disabled {
-    --text-input-text-color: var(--disabled-text-color);
-    --text-input-background-color: var(--text-input-disabled-background-color);
-  }
-
-  &:invalid,
-  &.Invalid {
-    --text-input-text-color: var(--danger-text-1);
+    /* The wrapper already carries the disabled look; keep the native control
+       from dimming on top of it. */
+    -webkit-text-fill-color: currentColor;
+    opacity: 1;
   }
 }
 
-.Readonly {
-  --text-input-background-color: transparent;
-  --text-input-border-color: transparent;
+/* transparent variant: show the same wash on hover and on focus. Box gives
+   `editable` no hover at all, and its `:focus-within` fill is the *strong* tint
+   (`--box-tone-translucent-strong`) — so the fill visibly deepened when the
+   caret entered the field. Both states now use the plain `--box-tone-translucent`
+   (the wash the `text` Button gets).
+
+   `.Transparent.Transparent` is a deliberate specificity bump: otherwise this
+   ties box.module's `.Editable.MaterialTransparent:focus-within`, which loads
+   later and would win. */
+.TextInput.Transparent.Transparent:hover,
+.TextInput.Transparent.Transparent:focus-within {
+  --box-fill: var(--box-tone-translucent);
 }
 
-.Transparent {
-  --text-input-background-color: transparent;
-  --text-input-border-color: transparent;
-  --text-input-disabled-background-color: transparent;
-  --text-input-focused-background-color: var(--interactive-a2);
+/* Readonly: drop the material entirely so the value reads as plain text, while
+   staying focusable for copy. `.TextInput` compound outranks Box's material. */
+.TextInput.Readonly {
+  --box-fill: transparent;
 
-  &:hover,
-  &:focus-visible {
-    --text-input-background-color: var(--interactive-a1);
-  }
+  box-shadow: var(--box-elevation-shadow);
+}
+
+.TextInput.Disabled {
+  --box-tone-text: var(--disabled-text-color);
+  --box-fill: var(--disabled-background);
+
+  pointer-events: none;
 }
 
 .Mini {
-  --text-input-font-size: 10px;
-  --text-input-size: 16px;
-  --text-input-rounding: 8px;
-  --text-input-horizontal-padding: 4px;
-  --text-input-vertical-padding: 6px;
-
+  --text-input-font-size: var(--text-size-2);
   --text-input-icon-size: 12px;
-
-  --text-input-action-island-text-size: 8px;
-  --text-input-action-island-rounding: 6px;
-  --text-input-action-island-size: 12px;
-  --text-input-action-island-horizontal-offset: 4px;
-  --text-input-action-island-icon-size: 10px;
+  --text-input-island-outer-inset: 0px;
 }
 
 .Small {
-  --text-input-font-size: 12px;
-  --text-input-size: 24px;
-  --text-input-rounding: 12px;
-  --text-input-horizontal-padding: 6px;
-  --text-input-vertical-padding: 6px;
-
+  --text-input-font-size: var(--text-size-3);
   --text-input-icon-size: 14px;
-
-  --text-input-action-island-text-size: 10px;
-  --text-input-action-island-rounding: 8px;
-  --text-input-action-island-size: 16px;
-  --text-input-action-island-horizontal-offset: 6px;
-  --text-input-action-island-icon-size: 12px;
 }
 
 .Large {
-  --text-input-font-size: 16px;
-  --text-input-size: 40px;
-  --text-input-rounding: 20px;
-  --text-input-horizontal-padding: 12px;
-  --text-input-vertical-padding: 6px;
-
+  --text-input-font-size: var(--text-size-5);
   --text-input-icon-size: 18px;
-
-  --text-input-action-island-text-size: 14px;
-  --text-input-action-island-rounding: 16px;
-  --text-input-action-island-size: 32px;
-  --text-input-action-island-horizontal-offset: 10px;
-  --text-input-action-island-icon-size: 16px;
 }
 
 .XLarge {
-  --text-input-font-size: 20px;
-  --text-input-size: 48px;
-  --text-input-rounding: 24px;
-  --text-input-horizontal-padding: 14px;
-  --text-input-vertical-padding: 6px;
-
+  --text-input-font-size: var(--text-size-7);
   --text-input-icon-size: 24px;
-
-  --text-input-action-island-text-size: 16px;
-  --text-input-action-island-rounding: 20px;
-  --text-input-action-island-size: 40px;
-  --text-input-action-island-horizontal-offset: 12px;
-  --text-input-action-island-icon-size: 18px;
-}
-
-.LeftIslands,
-.RightIslands {
-  display: flex;
-  position: absolute;
-  top: 0;
-  align-items: center;
-  gap: var(--text-input-islands-gap);
-  height: var(--text-input-size);
-  pointer-events: none;
-  color: var(--text-input-island-text-color);
-  padding-left: var(--text-input-islands-offset);
-  padding-right: var(--text-input-islands-offset);
-}
-
-.LeftIslands {
-  left: 0;
-}
-
-.RightIslands {
-  right: 0;
 }

@@ -115,7 +115,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
             readOnly={true}
             readonlyStyles={readOnly}
             size={size}
-            transparent={transparent}
+            variant={transparent ? 'transparent' : undefined}
             onChange={() => null}
             {...restProps}
           >
@@ -140,7 +140,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
             </TextInput.CustomIsland>
             {!readOnly && (
               <TextInput.IconIsland
-                placement="right"
+                placement="end"
                 icon={opened ? <ChevronUp /> : <ChevronDown />}
               />
             )}

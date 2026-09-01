@@ -156,7 +156,7 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
               readOnly={readOnly ?? !(searchable && searchMode)}
               readonlyStyles={Boolean(readOnly)}
               size={size}
-              transparent={props.transparent}
+              variant={props.transparent ? 'transparent' : undefined}
               onChange={setUserQuery}
               onFocus={
                 searchable
@@ -178,7 +178,7 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
             >
               {needToShowClearButton && (
                 <TextInput.ActionIsland
-                  placement="right"
+                  placement="end"
                   label={t('common.clear')}
                   icon={<Delete />}
                   showLabel={false}
@@ -188,7 +188,7 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
               )}
               <TextInput.IconIsland
                 className={s.ArrowIcon}
-                placement="right"
+                placement="end"
                 icon={
                   searchMode ? (
                     <Search />

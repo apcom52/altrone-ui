@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import s from './loading.module.scss';
-import { forwardRef } from 'react';
 import { LoadingIslandProps } from '../TextInput.types.ts';
 import { Loading } from '../../loading';
 import { useTextInputSize } from '../TextInput.context.ts';
 import { Size } from 'types/entity.ts';
+import { useLocalization } from '../../application/useLocalization.tsx';
 
 const LoadingSizes: Record<Size, string> = {
   mini: '12px',
@@ -14,22 +14,24 @@ const LoadingSizes: Record<Size, string> = {
   xl: '24px',
 };
 
-export const LoadingIsland = forwardRef<HTMLDivElement, LoadingIslandProps>(
-  ({ className, style, ...props }, ref) => {
-    const inputSize = useTextInputSize();
+export const LoadingIsland = ({
+  ref,
+  className,
+  placement,
+  ...props
+}: LoadingIslandProps) => {
+  const t = useLocalization();
 
-    const cls = clsx(s.LoadingIsland, className);
-
-    const styles = {
-      ...style,
-    };
-
-    const loadingSize = LoadingSizes[inputSize];
-
-    return (
-      <div className={cls} style={styles} role="status" ref={ref} {...props}>
-        <Loading size={loadingSize} strokeWidth="1.5" />
-      </div>
-    );
-  },
-);
+  return (
+    <div
+      ref={ref}
+      data-placement={placement}
+      className={clsx(s.LoadingIsland, className)}
+      role="status"
+      aria-label={t('textInput.loading')}
+      {...props}
+    >
+      <Loading size={LoadingSizes[useTextInputSize()]} strokeWidth="1.5" />
+    </div>
+  );
+};

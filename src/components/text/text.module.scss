@@ -9,6 +9,11 @@
   --text-list-offset: 24px;
   --text-rounding: 8px;
 
+  /* Prose leading for `block` paragraphs — looser than the tight per-size
+     `--line-height-*` tokens. An explicit `size` still wins (its rule comes
+     later in this file). */
+  --text-block-line-height: 1.6;
+
   --text-color-muted: var(--text-1);
   --text-color-danger: var(--danger-text-1);
   --text-color-success: var(--success-text-1);
@@ -35,6 +40,7 @@
 .Block {
   display: block;
   margin: 0;
+  line-height: var(--text-block-line-height);
 }
 
 .WeightMedium {

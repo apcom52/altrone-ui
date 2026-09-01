@@ -76,7 +76,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
             maxLength={10}
           >
             <TextInput.TextIsland
-              placement="right"
+              placement="end"
               label={`${value4.length}/10`}
             />
           </Search>

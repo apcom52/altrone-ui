@@ -8,6 +8,7 @@ import { Eye, EyeOff } from 'lucide-react';
 
 export const PasswordInput = ({
   ref,
+  inputRef,
   showControls,
   children,
   className,
@@ -37,13 +38,14 @@ export const PasswordInput = ({
       className={cls}
       style={styles}
       ref={ref}
+      inputRef={inputRef}
       readOnly={readOnly}
       {...restProps}
     >
       {...safeChildren}
       {needToShowControl ? (
         <TextInput.ActionIsland
-          placement="right"
+          placement="end"
           label={
             type === 'password'
               ? t('passwordInput.showPassword')

@@ -30,6 +30,9 @@ export const ru: Localization = {
     increase: 'Увеличить',
     decrease: 'Уменьшить',
   },
+  textInput: {
+    loading: 'Загрузка',
+  },
   passwordInput: {
     showPassword: 'Показать пароль',
     hidePassword: 'Скрыть пароль',

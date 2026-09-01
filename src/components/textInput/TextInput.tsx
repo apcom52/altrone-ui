@@ -1,15 +1,13 @@
 import React, {
-  FocusEventHandler,
   isValidElement,
   ReactElement,
   useCallback,
   useMemo,
-  useRef,
 } from 'react';
-import { TextInputProps } from './TextInput.types.ts';
+import { IslandPlacement, TextInputProps } from './TextInput.types.ts';
 import s from './textInput.module.scss';
 import clsx from 'clsx';
-import { useResizeObserver, useBoolean, DOMUtils } from 'utils';
+import { DOMUtils, AltChildren } from 'utils';
 import {
   ActionIsland,
   CharCounterIsland,
@@ -19,15 +17,25 @@ import {
   TextIsland,
 } from './components';
 import { useFormField } from '../form/components/Field.context.ts';
-import { AltChildren } from 'utils';
 import {
   TextInputSizeContext,
   TextInputValueSizeContext,
 } from './TextInput.context.ts';
 import { Slot } from 'utils/components/Slot.tsx';
+import { Box } from 'components/box';
+
+const ISLAND_TYPES = [
+  TextIsland,
+  IconIsland,
+  ActionIsland,
+  CustomIsland,
+  LoadingIsland,
+  CharCounterIsland,
+];
 
 const TextInputComponent = ({
   ref,
+  inputRef,
   children,
   value,
   onChange,
@@ -58,91 +66,47 @@ const TextInputComponent = ({
     typeof invalid === 'boolean' ? invalid : formFieldInvalid;
   const inputDisabled =
     typeof disabled === 'boolean' ? disabled : formFieldDisabled;
-  const inputSize = size || formFieldSize;
+  const inputSize = size || formFieldSize || 'm';
 
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const isReadonly = readonlyStyles && Boolean(restProps.readOnly);
 
-  const { enable: focus, disable: blur } = useBoolean(false);
-
-  const onFocusHandler: FocusEventHandler<HTMLInputElement> = useCallback(
-    (e) => {
-      onFocus?.(e);
-      focus();
-    },
-    [onFocus],
-  );
-
-  const wrapperCls = clsx(
-    s.Wrapper,
-    {
-      [s.Mini]: inputSize === 'mini',
-      [s.Small]: inputSize === 's',
-      [s.Large]: inputSize === 'l',
-      [s.XLarge]: inputSize === 'xl',
-      [s.Transparent]: variant === 'transparent',
-    },
-    wrapperClassName,
-  );
-
-  const cls = clsx(
-    s.Input,
-    {
-      [s.Invalid]: inputInvalid,
-      [s.Readonly]: readonlyStyles && restProps.readOnly,
-    },
-    className,
-  );
-
-  const wrapperStyles = {
-    ...wrapperStyle,
-  };
-
-  const leftIslandsContainerRef = useRef<HTMLDivElement | null>(null);
-  const rightIslandsContainerRef = useRef<HTMLDivElement | null>(null);
-
-  const [leftIslands, rightIslands, nonIslandElements, asChildElement] =
+  const [startIslands, endIslands, nonIslandElements, asChildElement] =
     useMemo(() => {
-      const islands = new AltChildren(children).filterNodes();
-      const elementList = islands.toArray() as ReactElement[];
+      const elementList = new AltChildren(children)
+        .filterNodes()
+        .toArray() as ReactElement[];
 
       const islandElements: ReactElement[] = [];
       const nonIslands: ReactElement[] = [];
 
       for (const element of elementList) {
-        if (element && typeof element !== 'string') {
-          if (
-            DOMUtils.containsElementType(element, [
-              TextIsland,
-              IconIsland,
-              ActionIsland,
-              CustomIsland,
-              LoadingIsland,
-              CharCounterIsland,
-            ])
-          ) {
-            islandElements.push(element);
-          } else {
-            nonIslands.push(element);
-          }
+        if (
+          element &&
+          typeof element !== 'string' &&
+          DOMUtils.containsElementType(element, ISLAND_TYPES)
+        ) {
+          islandElements.push(element);
         } else {
           nonIslands.push(element);
         }
       }
 
-      const left = islandElements.filter(
-        (island) =>
-          !island?.props?.placement || island?.props?.placement === 'left',
+      const placementOf = (el: ReactElement): IslandPlacement | undefined =>
+        (el.props as { placement?: IslandPlacement }).placement || 'start';
+
+      const start = islandElements.filter(
+        (island) => (placementOf(island) ?? 'start') === 'start',
       );
-      const right = islandElements.filter(
-        (island) => island?.props?.placement === 'right',
+      const end = islandElements.filter(
+        (island) => placementOf(island) === 'end',
       );
 
       if (asChild) {
         const [first, ...rest] = nonIslands;
-        return [left, right, rest, first ?? null] as const;
+        return [start, end, rest, first ?? null] as const;
       }
 
-      return [left, right, nonIslands, null] as const;
+      return [start, end, nonIslands, null] as const;
     }, [children, asChild]);
 
   const onChangeHandler = useCallback<
@@ -154,37 +118,28 @@ const TextInputComponent = ({
     [onChange],
   );
 
-  const onBlurHandler: FocusEventHandler<HTMLInputElement> = useCallback(
-    (e) => {
-      onBlur?.(e);
-      blur();
-    },
-    [onBlur],
-  );
-
-  useResizeObserver(leftIslandsContainerRef);
-  useResizeObserver(rightIslandsContainerRef);
-
-  const styles = {
-    ...style,
-    paddingLeft:
-      leftIslands.length && leftIslandsContainerRef.current
-        ? `${leftIslandsContainerRef.current.offsetWidth}px`
-        : undefined,
-    paddingRight:
-      rightIslands.length && rightIslandsContainerRef.current
-        ? `${rightIslandsContainerRef.current.offsetWidth}px`
-        : undefined,
-  };
-
-  let inputElement: ReactElement | null = null;
-
-  const valueSize = useMemo(() => {
-    return {
+  const valueSize = useMemo(
+    () => ({
       valueLength: value?.length ?? 0,
       maxLength: restProps.maxLength,
-    };
-  }, [value, restProps.maxLength]);
+    }),
+    [value, restProps.maxLength],
+  );
+
+  const fieldProps = {
+    value,
+    onChange: onChangeHandler,
+    onFocus,
+    onBlur,
+    className: clsx(s.Input, className),
+    style,
+    'aria-invalid': inputInvalid,
+    name: inputName,
+    disabled: inputDisabled,
+    ...restProps,
+  };
+
+  let inputElement: ReactElement | null;
 
   if (asChild) {
     if (!isValidElement(asChildElement)) {
@@ -195,76 +150,63 @@ const TextInputComponent = ({
     }
 
     inputElement = (
-      <Slot
-        ref={ref}
-        value={value}
-        onChange={onChangeHandler}
-        onFocus={onFocusHandler}
-        onBlur={onBlurHandler}
-        className={cls}
-        style={styles}
-        aria-invalid={inputInvalid}
-        name={inputName}
-        disabled={inputDisabled}
-        {...restProps}
-      >
+      <Slot ref={inputRef} {...fieldProps}>
         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
         {asChildElement as ReactElement<any>}
       </Slot>
     );
   } else {
-    inputElement = (
-      <input
-        type="text"
-        ref={(element) => {
-          inputRef.current = element;
-          if (typeof ref === 'function') {
-            ref(element);
-          } else if (ref) {
-            ref.current = element;
-          }
-        }}
-        value={value}
-        onChange={onChangeHandler}
-        onFocus={onFocusHandler}
-        onBlur={onBlurHandler}
-        className={cls}
-        style={styles}
-        aria-invalid={inputInvalid}
-        name={inputName}
-        disabled={inputDisabled}
-        {...restProps}
-      />
-    );
+    inputElement = <input type="text" ref={inputRef} {...fieldProps} />;
   }
 
+  /**
+   * `padding={{ y: 0 }}`: height is then the size tier exactly
+   * (`min-height: var(--box-size)`) — islands, which are ~one tier tall, can't
+   * inflate it. Horizontal padding stays on the value Box sets from `size`.
+   */
   return (
-    <div className={wrapperCls} style={wrapperStyles}>
-      <TextInputSizeContext.Provider value={inputSize || 'm'}>
+    <Box
+      ref={ref}
+      editable
+      shape="pill"
+      material={variant === 'transparent' ? 'transparent' : 'plate'}
+      tone={inputInvalid ? 'danger' : 'neutral'}
+      size={inputSize}
+      padding={{ y: 0 }}
+      className={clsx(
+        s.TextInput,
+        {
+          [s.Transparent]: variant === 'transparent',
+          [s.Mini]: inputSize === 'mini',
+          [s.Small]: inputSize === 's',
+          [s.Large]: inputSize === 'l',
+          [s.XLarge]: inputSize === 'xl',
+          [s.Readonly]: isReadonly,
+          [s.Disabled]: inputDisabled,
+        },
+        wrapperClassName,
+      )}
+      style={wrapperStyle}
+    >
+      <TextInputSizeContext.Provider value={inputSize}>
         <TextInputValueSizeContext.Provider value={valueSize}>
-          {inputElement}
-          {leftIslands.length ? (
-            <div
-              ref={leftIslandsContainerRef}
-              className={s.LeftIslands}
-              data-altrone-island="left"
-            >
-              {leftIslands}
-            </div>
-          ) : null}
-          {rightIslands.length ? (
-            <div
-              ref={rightIslandsContainerRef}
-              className={s.RightIslands}
-              data-altrone-island="right"
-            >
-              {rightIslands}
-            </div>
-          ) : null}
-          {nonIslandElements}
+          <div className={s.Field}>
+            {startIslands.length ? (
+              <div className={s.StartIslands} data-altrone-island="start">
+                {startIslands}
+              </div>
+            ) : null}
+            {inputElement}
+            {endIslands.length ? (
+              <div className={s.EndIslands} data-altrone-island="end">
+                {endIslands}
+              </div>
+            ) : null}
+            {nonIslandElements}
+          </div>
         </TextInputValueSizeContext.Provider>
       </TextInputSizeContext.Provider>
-    </div>
+    </Box>
   );
 };
 

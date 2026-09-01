@@ -31,6 +31,9 @@ export const sp: Localization = {
     increase: 'Aumentar',
     decrease: 'Disminuir',
   },
+  textInput: {
+    loading: 'Cargando',
+  },
   passwordInput: {
     showPassword: 'Mostrar contraseña',
     hidePassword: 'Ocultar contraseña',

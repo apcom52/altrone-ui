@@ -12,6 +12,7 @@ const GET_SUGGESTIONS_MOCK = () => [];
 
 export const Search = ({
   ref,
+  inputRef: consumerInputRef,
   showControls,
   children,
   className,
@@ -63,7 +64,8 @@ export const Search = ({
 
   return (
     <AutocompleteInput
-      ref={mergeRefs(inputRef, ref)}
+      ref={ref}
+      inputRef={mergeRefs(inputRef, consumerInputRef)}
       className={cls}
       style={styles}
       {...restProps}
@@ -72,12 +74,12 @@ export const Search = ({
       showControls={needToShowControl}
     >
       {haveValue && (
-        <TextInput.IconIsland icon={<SearchIcon />} placement="left" />
+        <TextInput.IconIsland icon={<SearchIcon />} placement="start" />
       )}
       {haveValue ? safeChildren : null}
       {needToShowControl ? (
         <TextInput.ActionIsland
-          placement="right"
+          placement="end"
           label={t('common.clear')}
           showLabel={false}
           disabled={restProps.disabled}

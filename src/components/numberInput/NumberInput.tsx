@@ -10,7 +10,6 @@ import {
   OnValueChange,
 } from 'react-number-format';
 import s from './numberInput.module.scss';
-import inputStyles from '../textInput/textInput.module.scss';
 import { DOMUtils } from 'utils';
 import { useFormField } from '../form/components/Field.context.ts';
 
@@ -73,15 +72,7 @@ export const NumberInput = ({
 
   const safeChildren = ArrayUtils.getSafeArray(children);
 
-  const cls = clsx(
-    inputStyles.Input,
-    s.NumberInput,
-    {
-      [inputStyles.Invalid]: inputInvalid,
-      [inputStyles.Readonly]: readOnly,
-    },
-    className,
-  );
+  const cls = clsx(s.NumberInput, className);
   const styles = {
     ...style,
   };
@@ -134,6 +125,7 @@ export const NumberInput = ({
       name={inputName}
       disabled={inputDisabled}
       invalid={inputInvalid}
+      readOnly={readOnly}
     >
       <NumericFormat
         type="text"
@@ -151,7 +143,7 @@ export const NumberInput = ({
       />
       {safeChildren}
       {needToShowControl ? (
-        <TextInput.CustomIsland placement="right">
+        <TextInput.CustomIsland placement="end">
           <Spinner
             disabled={inputDisabled}
             disabledUp={Boolean(

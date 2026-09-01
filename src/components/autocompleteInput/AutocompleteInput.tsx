@@ -3,11 +3,17 @@ import {
   KeyboardEventHandler,
   MouseEvent,
   KeyboardEvent,
+  useMemo,
   useRef,
   useState,
 } from 'react';
 import { AutocompleteInputProps } from './AutocompleteInput.types.ts';
-import { ArrayUtils, useDebouncedEffect, useShowControls } from 'utils';
+import {
+  ArrayUtils,
+  mergeRefs,
+  useDebouncedEffect,
+  useShowControls,
+} from 'utils';
 import { useLocalization } from 'components/application';
 import { TextInput } from 'components/textInput';
 import { Empty } from 'components/empty';
@@ -21,6 +27,7 @@ import s from './autocompleteInput.module.scss';
 
 export const AutocompleteInput = <T = string,>({
   ref,
+  inputRef,
   children,
   className,
   style,
@@ -41,6 +48,11 @@ export const AutocompleteInput = <T = string,>({
   });
 
   const dropdownRef = useRef<PopoverRef | null>(null);
+  const fieldRef = useRef<HTMLInputElement | null>(null);
+  const composedInputRef = useMemo(
+    () => mergeRefs(fieldRef, inputRef),
+    [inputRef],
+  );
   const suggestionWasSelected = useRef(false);
   const getSuggestionsRef = useRef(getSuggestions);
   getSuggestionsRef.current = getSuggestions;
@@ -67,14 +79,17 @@ export const AutocompleteInput = <T = string,>({
   ) => {
     if (typeof window === 'undefined') return;
 
+    const fieldNode = fieldRef.current;
+    if (!fieldNode) return;
+
     const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
       HTMLInputElement.prototype,
       'value',
     )?.set;
-    nativeInputValueSetter?.call(dropdownRef.current?.childrenNode, inputValue);
+    nativeInputValueSetter?.call(fieldNode, inputValue);
 
     const changeEvent = new Event('change', { bubbles: true });
-    dropdownRef.current?.childrenNode?.dispatchEvent(changeEvent);
+    fieldNode.dispatchEvent(changeEvent);
     suggestionWasSelected.current = true;
     onSelect?.(suggestion, inputValue, event);
   };
@@ -207,16 +222,17 @@ export const AutocompleteInput = <T = string,>({
     >
       <TextInput
         ref={ref}
+        inputRef={composedInputRef}
         className={cls}
         style={styles}
         onKeyDown={onKeyDown}
         {...restProps}
       >
         {isLoadingIslandVisible ? (
-          <TextInput.LoadingIsland placement="right" />
+          <TextInput.LoadingIsland placement="end" />
         ) : null}
         {error !== null ? (
-          <TextInput.CustomIsland placement="right">
+          <TextInput.CustomIsland placement="end">
             <Tooltip content={t('autocompleteInput.loadError')}>
               <span className={s.ErrorIcon}>
                 <CircleAlert />

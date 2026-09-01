@@ -141,7 +141,7 @@ export const RangePicker = memo<RangePickerProps>((props) => {
               {!readOnly ? (
                 <TextInput.IconIsland
                   className={s.ArrowIcon}
-                  placement="right"
+                  placement="end"
                   icon={<Calendar />}
                 />
               ) : null}

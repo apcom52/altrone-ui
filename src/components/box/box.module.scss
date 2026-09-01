@@ -147,8 +147,14 @@
  */
 .ToneCustom {
   --box-tone-solid: var(--box-color);
-  --box-tone-solid-text: oklch(from var(--box-color) calc((0.5 - l) * 9999) 0 0);
-  --box-tone-translucent: color-mix(in oklab, var(--box-color) 14%, transparent);
+  --box-tone-solid-text: oklch(
+    from var(--box-color) calc((0.5 - l) * 9999) 0 0
+  );
+  --box-tone-translucent: color-mix(
+    in oklab,
+    var(--box-color) 14%,
+    transparent
+  );
   --box-tone-translucent-strong: color-mix(
     in oklab,
     var(--box-color) 26%,
@@ -200,6 +206,7 @@
     0 2px 1px -1px var(--black-a1),
     0 1px 3px 0 var(--black-a1),
     var(--box-elevation-shadow);
+  border: none;
 }
 
 /* .MaterialTransparent and .MaterialGhost: no fill/border at rest — base already provides that. */

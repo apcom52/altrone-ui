@@ -31,6 +31,9 @@ export const ge: Localization = {
     increase: 'Erhöhen',
     decrease: 'Verringern',
   },
+  textInput: {
+    loading: 'Wird geladen',
+  },
   passwordInput: {
     showPassword: 'Passwort anzeigen',
     hidePassword: 'Passwort verbergen',

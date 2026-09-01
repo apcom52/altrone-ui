@@ -1,8 +1,18 @@
-@import 'src/global/mixins';
-
+/* Passive island. */
 .LoadingIsland {
   display: inline-flex;
   align-items: center;
+  padding: 0;
   pointer-events: none;
-  padding: 0 4px;
+  color: var(--text-1);
+}
+
+/* The island touching the field border (first at the start, last at the end)
+   gets an extra pad so it doesn't sit cramped against the edge. */
+:global([data-altrone-island='start']) > .LoadingIsland:first-child {
+  padding-left: var(--space-inset-compact);
+}
+
+:global([data-altrone-island='end']) > .LoadingIsland:last-child {
+  padding-right: var(--space-inset-compact);
 }
