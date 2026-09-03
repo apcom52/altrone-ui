@@ -33,10 +33,6 @@ export interface Localization {
     placeholder: string;
     errorMessage: string;
   };
-  numberInput: {
-    increase: string;
-    decrease: string;
-  };
   textInput: {
     loading: string;
   };

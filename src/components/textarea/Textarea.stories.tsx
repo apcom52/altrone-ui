@@ -2,16 +2,12 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Textarea } from './Textarea.tsx';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { Flex } from '../flex';
-import { useState } from 'react';
-import { Text } from '../text';
+import { Announcement, CommentComposer, ProfileBio, SnippetEditor } from './stories';
 
 const story: Meta<typeof Textarea> = {
   title: 'Components/Form/Textarea',
   component: Textarea,
   decorators: [StorybookDecorator],
-  args: {},
-  argTypes: {},
   parameters: {
     chromatic: {
       modes: {
@@ -22,26 +18,24 @@ const story: Meta<typeof Textarea> = {
   },
 };
 
-export const TextInputStory: StoryObj<typeof Flex> = {
-  name: 'Using Textarea',
-  render: () => {
-    const [value1, setValue1] = useState('');
+export const WritingAComment: StoryObj = {
+  name: 'Writing a comment',
+  render: () => <CommentComposer />,
+};
 
-    return (
-      <Flex direction="vertical" gap="l">
-        <Text size={5} weight="bold" block>
-          TextArea component
-        </Text>
-        <Flex direction="horizontal" gap="l">
-          <Textarea
-            value={value1}
-            onChange={setValue1}
-            placeholder="Type your story here"
-          />
-        </Flex>
-      </Flex>
-    );
-  },
+export const ProfileBioStory: StoryObj = {
+  name: 'A profile field, edited in place',
+  render: () => <ProfileBio />,
+};
+
+export const SnippetEditorStory: StoryObj = {
+  name: 'Paste a config',
+  render: () => <SnippetEditor />,
+};
+
+export const AnnouncementStory: StoryObj = {
+  name: 'Compose & preview',
+  render: () => <Announcement />,
 };
 
 export default story;

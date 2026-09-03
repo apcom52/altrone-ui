@@ -27,10 +27,6 @@ export const ge: Localization = {
     errorMessage:
       'Datei kann nicht hochgeladen werden. Bitte versuchen Sie es erneut',
   },
-  numberInput: {
-    increase: 'Erhöhen',
-    decrease: 'Verringern',
-  },
   textInput: {
     loading: 'Wird geladen',
   },

@@ -1,10 +1,21 @@
-.Textarea {
+/* Double class outranks `.Input` (`textInput.module.scss`, `padding: 0`), which
+   loads first — TextInput zeroes the wrapper's vertical padding so a single-line
+   field is exactly its size tier tall. A textarea needs that gap back, and on
+   the field itself so it scrolls with the text rather than clipping at the edge. */
+.Textarea.Textarea {
   resize: vertical;
   min-height: 72px;
+  padding-block: var(--space-control-y-m);
   line-height: var(--text-line-height-3);
 }
 
 .Wrapper {
+  /* `rounded` reads its radius from --radius-outer; without a seed it would
+     resolve to 0 (rect). 16px is the corner a `pill` TextInput of the default
+     size (`m`, 32px height) resolves to — matching it keeps Textarea in the
+     same family without the capsule ends `pill` would give a tall box. */
+  --radius-outer: var(--radius-xl);
+
   min-height: var(--height);
   height: unset;
 }

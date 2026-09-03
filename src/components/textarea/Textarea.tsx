@@ -1,5 +1,6 @@
 import { TextareaProps } from './Textarea.types.ts';
 import { TextInput } from '../textInput';
+import { ArrayUtils } from '../../utils';
 import clsx from 'clsx';
 import s from './textarea.module.scss';
 import { useFormField } from '../form/components/Field.context.ts';
@@ -12,6 +13,7 @@ export const Textarea = ({
   invalid,
   disabled,
   size,
+  shape = 'rounded',
   children,
   readOnly,
   ...restProps
@@ -38,9 +40,17 @@ export const Textarea = ({
     ...style,
   };
 
+  /**
+   * Spread the island children flat next to `<textarea>`. Passing `{children}`
+   * as-is nests them one array deep, and TextInput's `filterNodes()` drops the
+   * nested array whole — islands never reach it. (Same fix as PasswordInput.)
+   */
+  const safeChildren = ArrayUtils.getSafeArray(children);
+
   return (
     <TextInput
       asChild
+      shape={shape}
       className={cls}
       style={styles}
       wrapperClassName={s.Wrapper}
@@ -52,7 +62,7 @@ export const Textarea = ({
       {...restProps}
     >
       <textarea ref={ref} />
-      {children}
+      {...safeChildren}
     </TextInput>
   );
 };

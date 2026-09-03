@@ -148,7 +148,6 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
               onBlur={handleRGBFieldBlur}
               min={0}
               max={255}
-              showControls={false}
               placeholder="0"
               title="R"
             >
@@ -160,7 +159,6 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
               onBlur={handleRGBFieldBlur}
               min={0}
               max={255}
-              showControls={false}
               placeholder="0"
               title="G"
             >
@@ -172,7 +170,6 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
               onBlur={handleRGBFieldBlur}
               min={0}
               max={255}
-              showControls={false}
               placeholder="0"
               title="B"
             >

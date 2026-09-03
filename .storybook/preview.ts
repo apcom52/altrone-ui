@@ -16,6 +16,30 @@ const preview: Preview = {
         light: { name: 'Light', value: 'color(display-p3 0.988 0.988 0.992)' },
         amber: { name: 'Amber', value: 'color(display-p3 1 0.77 0.26)' },
         indigo: { name: 'Indigo', value: 'color(display-p3 0.357 0.357 0.81)' },
+        /* Token-based patterns. `StorybookDecorator` stamps `data-altrone-root`
+           / `data-altrone-accent` onto `<html>` (theme is already mirrored
+           there), so `--gray-*` / `--background-*` / `--accent-*` and their
+           dark overrides resolve on `<body>`, where these are painted. */
+        accentPattern: {
+          name: 'Accent color pattern',
+          value:
+            'radial-gradient(var(--accent-4) 17%, var(--accent-3) 18% 35%, transparent 36.5%) -20px -20px / 80px 80px, radial-gradient(var(--accent-4) 17%, var(--accent-3) 18% 35%, transparent 36.5%) 20px 20px / 80px 80px, radial-gradient(var(--accent-3) 34%, var(--accent-4) 36% 68%, transparent 70%) 0 0 / 40px 40px, repeating-linear-gradient(45deg, var(--accent-4) -12.5% 12.5%, var(--accent-3) 0 37.5%) 0 0 / 80px 80px var(--accent-2)',
+        },
+        gridPattern: {
+          name: 'Grid',
+          value:
+            'linear-gradient(var(--gray-a6) 1px, transparent 1px) -1px -1px / 50px 50px, linear-gradient(90deg, var(--gray-a6) 1px, transparent 1px) -1px -1px / 50px 50px, linear-gradient(var(--gray-a4) 0.5px, transparent 0.5px) -0.5px -0.5px / 10px 10px, linear-gradient(90deg, var(--gray-a4) 0.5px, var(--background-1) 0.5px) -0.5px -0.5px / 10px 10px var(--background-1)',
+        },
+        wavyPattern: {
+          name: 'Wavy',
+          value:
+            'repeating-radial-gradient(circle at 0 0, transparent 0, var(--background-1) 10px), repeating-linear-gradient(var(--accent-a6), var(--accent-9)) var(--background-1)',
+        },
+        chessPattern: {
+          name: 'Chess',
+          value:
+            'linear-gradient(45deg, var(--gray-a4) 25%, transparent 25%, transparent 75%, var(--gray-a4) 75%) 0 0 / 20px 20px, linear-gradient(-45deg, var(--gray-a4) 25%, transparent 25%, transparent 75%, var(--gray-a4) 75%) 0 0 / 20px 20px var(--background-1)',
+        },
         mountains: {
           name: 'El Capitan',
           value:

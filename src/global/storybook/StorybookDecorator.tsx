@@ -5,15 +5,25 @@ import { MotionConfig } from 'motion/react';
 
 export const StorybookDecorator = (Story: any, options: any) => {
   const reduceMotion = options.globals.reduceMotion === 'on';
+  const accent = options.globals.accent || 'blue';
+  const backgroundValue: string = options.globals.backgrounds?.value ?? '';
 
   useEffect(() => {
     document.body.classList.toggle(
-      s.WithImage,
-      options.globals.backgrounds
-        ? options.globals.backgrounds.value === 'image'
-        : false,
+      'sb-bg-cover',
+      backgroundValue.includes('url('),
     );
-  }, [options.globals.backgrounds?.value]);
+  }, [backgroundValue]);
+
+  /* Stamp the Altrone scoping attributes onto <html> so every design token
+     (`--gray-*`, `--background-*`, `--accent-*` and their dark overrides)
+     resolves outside the app root too — the Storybook pattern backgrounds are
+     painted on <body> and read these. `data-altrone-theme` is already mirrored
+     to <html> by `AltroneApplication`. */
+  useEffect(() => {
+    document.documentElement.setAttribute('data-altrone-root', 'true');
+    document.documentElement.setAttribute('data-altrone-accent', accent);
+  }, [accent]);
 
   useEffect(() => {
     document.documentElement.classList.toggle('sb-reduce-motion', reduceMotion);

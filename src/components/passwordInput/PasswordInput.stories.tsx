@@ -2,19 +2,17 @@ import { Meta, StoryObj } from '@storybook/react';
 import { PasswordInput } from './PasswordInput.tsx';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { Flex } from '../flex';
-import { useState } from 'react';
-import { Text } from '../text';
-import { TextInput } from '../textInput';
-import { Delete } from 'lucide-react';
-// import { userEvent, within, expect } from '@storybook/test';
+import {
+  DeploymentSecrets,
+  GeneratePassword,
+  NewPassword,
+  UnlockScreen,
+} from './stories';
 
 const story: Meta<typeof PasswordInput> = {
   title: 'Components/Form/PasswordInput',
   component: PasswordInput,
   decorators: [StorybookDecorator],
-  args: {},
-  argTypes: {},
   parameters: {
     chromatic: {
       modes: {
@@ -25,69 +23,24 @@ const story: Meta<typeof PasswordInput> = {
   },
 };
 
-export const TextInputStory: StoryObj<typeof Flex> = {
-  name: 'Using PasswordInput',
-  render: () => {
-    const [value1, setValue1] = useState('');
-    const [value2, setValue2] = useState('');
-    const [value3, setValue3] = useState('');
-    const [value4, setValue4] = useState('');
+export const CreatingAPassword: StoryObj = {
+  name: 'Creating a password',
+  render: () => <NewPassword />,
+};
 
-    return (
-      <Flex direction="vertical" gap="l">
-        <Text size={5} weight="bold" block>
-          PasswordInput
-        </Text>
-        <Flex direction="horizontal" gap="l">
-          <PasswordInput
-            value={value1}
-            onChange={setValue1}
-            placeholder="Standard PasswordInput"
-            data-testid="password"
-          />
-          <PasswordInput
-            value={value2}
-            onChange={setValue2}
-            placeholder="Disabled PasswordInput"
-            disabled
-          />
-          <PasswordInput
-            value={value3}
-            onChange={setValue3}
-            placeholder="PasswordInput without controls"
-            showControls={false}
-          />
-        </Flex>
-        <Flex direction="horizontal" gap="l">
-          <PasswordInput
-            value={value4}
-            onChange={setValue4}
-            placeholder="PasswordInput with custom islands"
-          >
-            <TextInput.TextIsland label="Password:" />
-            <TextInput.ActionIsland
-              placement="end"
-              icon={<Delete />}
-              label="Clear"
-            />
-          </PasswordInput>
-        </Flex>
-      </Flex>
-    );
-  },
-  // play: ({ canvasElement, step }) => {
-  //   const canvas = within(canvasElement);
+export const EditingSecrets: StoryObj = {
+  name: 'Editing secret values',
+  render: () => <DeploymentSecrets />,
+};
 
-  //   step('check controls', async () => {
-  //     expect(canvas.getByTestId('password')).toHaveAttribute(
-  //       'type',
-  //       'password',
-  //     );
-  //     await userEvent.type(canvas.getByTestId('password'), 'test');
-  //     await userEvent.click(canvas.queryAllByText('visibility')[0]);
-  //     expect(canvas.getByTestId('password')).toHaveAttribute('type', 'text');
-  //   });
-  // },
+export const Unlock: StoryObj = {
+  name: 'Unlock screen',
+  render: () => <UnlockScreen />,
+};
+
+export const SuggestStrong: StoryObj = {
+  name: 'Suggest a strong password',
+  render: () => <GeneratePassword />,
 };
 
 export default story;

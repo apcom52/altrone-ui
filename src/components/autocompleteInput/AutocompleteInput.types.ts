@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactNode } from 'react';
 import { TextInputProps } from '../textInput/TextInput.types.ts';
 
 type AutocompleteSuggestionsContext = {
@@ -12,7 +12,6 @@ export type AutocompleteSuggestionsFunc<T = string> = (
 export type AutocompleteRenderSuggestionContext<T = string> = {
   inputValue: string;
   suggestion: T;
-  onSelect: (value: string, event: React.MouseEvent<HTMLElement>) => void;
 };
 
 export interface AutocompleteInputProps<T = string> extends TextInputProps {
@@ -20,7 +19,7 @@ export interface AutocompleteInputProps<T = string> extends TextInputProps {
   getSuggestionValue?: (suggestion: T) => string;
   renderSuggestion?: (
     context: AutocompleteRenderSuggestionContext<T>,
-  ) => ReactElement;
+  ) => ReactNode;
   onSelect?: (
     suggestion: T,
     inputValue: string,

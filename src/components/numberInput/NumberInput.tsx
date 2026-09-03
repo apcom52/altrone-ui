@@ -1,21 +1,19 @@
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback } from 'react';
 import { NumberInputProps } from './NumberInput.types.ts';
 import { TextInput } from 'components/textInput';
-import { ArrayUtils, mergeRefs, useShowControls } from 'utils';
+import { ArrayUtils } from 'utils';
 import clsx from 'clsx';
-import { Spinner } from './inner/Spinner.tsx';
 import {
   NumberFormatValues,
   NumericFormat,
   OnValueChange,
 } from 'react-number-format';
 import s from './numberInput.module.scss';
-import { DOMUtils } from 'utils';
 import { useFormField } from '../form/components/Field.context.ts';
 
 export const NumberInput = ({
   ref,
-  showControls,
+  inputRef,
   children,
   className,
   style,
@@ -36,9 +34,6 @@ export const NumberInput = ({
   readOnly,
   ...restProps
 }: NumberInputProps) => {
-  const numberInputRef = useRef<HTMLInputElement | null>(null);
-  const mergedInputRef = useMemo(() => mergeRefs(numberInputRef, ref), [ref]);
-
   const {
     name: formFieldName,
     invalid: formFieldInvalid,
@@ -52,11 +47,6 @@ export const NumberInput = ({
   const inputDisabled =
     typeof disabled === 'boolean' ? disabled : formFieldDisabled;
   const inputSize = size || formFieldSize;
-
-  const needToShowControl = useShowControls({
-    propValue: showControls,
-    readOnly,
-  });
 
   const allowLeadingZerosValue =
     typeof allowLeadingZeros === 'boolean' ? allowLeadingZeros : false;
@@ -99,24 +89,10 @@ export const NumberInput = ({
     [min, max],
   );
 
-  const spinnerChangeValue = useCallback(
-    (diff: number) => {
-      if (numberInputRef.current) {
-        DOMUtils.triggerEvent({
-          element: numberInputRef.current,
-          value: (value || 0) + diff,
-          eventType: 'change',
-          senderObject: HTMLInputElement.prototype,
-          propertyName: 'value',
-        });
-      }
-    },
-    [value],
-  );
-
   return (
     <TextInput
       asChild
+      ref={ref}
       type="text"
       value={value !== undefined ? String(value) : undefined}
       className={cls}
@@ -136,28 +112,13 @@ export const NumberInput = ({
         allowNegative={allowNegative}
         decimalSeparator={decimalDelimiterValue}
         decimalScale={digitsAfterPointValue}
+        fixedDecimalScale={fixedDecimalScale}
         readOnly={readOnly}
-        getInputRef={mergedInputRef}
+        getInputRef={inputRef}
         isAllowed={onAllowedCheck}
         {...restProps}
       />
-      {safeChildren}
-      {needToShowControl ? (
-        <TextInput.CustomIsland placement="end">
-          <Spinner
-            disabled={inputDisabled}
-            disabledUp={Boolean(
-              typeof max === 'number' && value && value >= max,
-            )}
-            disabledDown={
-              typeof min === 'number' && value !== undefined && value <= min
-            }
-            onDownClick={() => spinnerChangeValue(-1)}
-            onUpClick={() => spinnerChangeValue(1)}
-            size={inputSize}
-          />
-        </TextInput.CustomIsland>
-      ) : null}
+      {...safeChildren}
     </TextInput>
   );
 };

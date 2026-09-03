@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { FolderKanban, Home, Settings } from 'lucide-react';
 
 const story: Meta<typeof Screen.Form> = {
-  title: 'Components/Containers/Screen/Form',
+  title: 'Components/Core/Screen/Form',
   component: Screen.Form,
   decorators: [StorybookDecorator],
 };

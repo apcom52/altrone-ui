@@ -31,12 +31,49 @@
   min-width: 0;
 }
 
+/* Multi-line field (Textarea): lay the islands out as a footer *below* the
+   textarea instead of in the same row. On a single-line field an island shares
+   the line with the input; on a textarea that would shorten every wrapped line
+   and indent the text past a start island. The textarea takes a full-width flex
+   line (`flex-basis: 100%`), wrapping the islands onto a row beneath it — submit
+   hint left, char counter pushed right with `margin-left: auto`. */
+.Field:has(textarea) {
+  flex-wrap: wrap;
+  align-items: flex-start;
+  row-gap: var(--space-control-y-m);
+}
+
+/* Box zeroes its vertical padding; when there's a wrapped footer row, give it
+   its own breathing room from the bottom border (a plain textarea keeps the
+   symmetric inset from its own `padding-block`). */
+.Field:has(textarea):has(.StartIslands, .EndIslands) {
+  padding-bottom: var(--space-control-y-m);
+}
+
+.Field:has(textarea) > .Input {
+  order: -1;
+  flex: 1 1 100%;
+  /* `.Input` is `height: 100%` for a single-line field; on the wrapping footer
+     layout that makes the textarea eat the whole field and the wrapped island
+     row overflows below it. Let it size to its own content instead. */
+  height: auto;
+}
+
+.Field:has(textarea) > .StartIslands {
+  margin: 0;
+}
+
+.Field:has(textarea) > .EndIslands {
+  margin: 0 0 0 auto;
+}
+
 .StartIslands,
 .EndIslands {
   display: flex;
   flex: none;
   align-items: center;
-  gap: var(--space-inline);
+  /* Tight row of chip-buttons — 4px, not the 6px icon<->text `--space-inline`. */
+  gap: var(--space-inset-compact);
 }
 
 /* Pull the container in by the field's own `--box-padding-x` (inherited from

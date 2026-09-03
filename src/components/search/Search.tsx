@@ -10,7 +10,7 @@ import s from './search.module.scss';
 
 const GET_SUGGESTIONS_MOCK = () => [];
 
-export const Search = ({
+export const Search = <T = string,>({
   ref,
   inputRef: consumerInputRef,
   showControls,
@@ -20,7 +20,7 @@ export const Search = ({
   placeholder,
   getSuggestions,
   ...restProps
-}: SearchProps) => {
+}: SearchProps<T>) => {
   const t = useLocalization();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -63,7 +63,7 @@ export const Search = ({
   };
 
   return (
-    <AutocompleteInput
+    <AutocompleteInput<T>
       ref={ref}
       inputRef={mergeRefs(inputRef, consumerInputRef)}
       className={cls}

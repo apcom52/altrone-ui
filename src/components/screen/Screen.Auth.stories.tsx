@@ -3,7 +3,7 @@ import { Button, Flex, Form, Screen, Text, TextInput } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 
 const story: Meta<typeof Screen.Auth> = {
-  title: 'Components/Containers/Screen/Auth',
+  title: 'Components/Core/Screen/Auth',
   component: Screen.Auth,
   decorators: [StorybookDecorator],
 };

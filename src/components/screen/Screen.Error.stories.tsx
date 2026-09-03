@@ -4,7 +4,7 @@ import { StorybookDecorator } from 'global/storybook';
 import { TriangleAlert } from 'lucide-react';
 
 const story: Meta<typeof Screen.Error> = {
-  title: 'Components/Containers/Screen/Error',
+  title: 'Components/Core/Screen/Error',
   component: Screen.Error,
   decorators: [StorybookDecorator],
 };

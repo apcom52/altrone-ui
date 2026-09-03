@@ -30,7 +30,7 @@ import {
 import './boxStory.css';
 
 const story: Meta<typeof Box> = {
-  title: 'Components/Atoms/Box',
+  title: 'Components/Core/Box',
   component: Box,
   decorators: [StorybookDecorator],
   args: {},

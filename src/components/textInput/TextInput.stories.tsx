@@ -22,6 +22,7 @@ import {
   TriangleAlert,
 } from 'lucide-react';
 import { Size } from 'types/entity.ts';
+import { InlineEdit, OtpEntry } from './stories';
 
 const story: Meta<typeof TextInput> = {
   title: 'Components/Form/TextInput',
@@ -393,6 +394,16 @@ export const CustomField: StoryObj<typeof Flex> = {
       </Flex>
     );
   },
+};
+
+export const InlineEditing: StoryObj = {
+  name: 'Editing a value in place',
+  render: () => <InlineEdit />,
+};
+
+export const OneTimeCode: StoryObj = {
+  name: 'One-time code',
+  render: () => <OtpEntry />,
 };
 
 export default story;

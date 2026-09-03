@@ -1,3 +1,4 @@
-export { ArticleStory } from './ArticleStory.tsx';
-export { FormattedArticle } from './FormattedArticle.tsx';
-export { TextFeaturesShowcase } from './TextFeaturesShowcase.tsx';
+export { TypeSpecimen } from './TypeSpecimen.tsx';
+export { ReleaseNotes } from './ReleaseNotes.tsx';
+export { ActivityLog } from './ActivityLog.tsx';
+export { Composition } from './Composition.tsx';

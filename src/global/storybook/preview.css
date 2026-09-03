@@ -12,7 +12,10 @@ body {
   box-sizing: border-box;
 } 
 
-body.sb-show-main {
+/* Image backgrounds (El Capitan, Tahoe, …) should cover the canvas. Tiled
+   patterns must NOT — `StorybookDecorator` adds `sb-bg-cover` only for `url(...)`
+   values so the "Accent color pattern" keeps its own size/position/repeat. */
+body.sb-show-main.sb-bg-cover {
   background-size: cover !important;
   background-position: center !important;
   background-repeat: no-repeat !important;

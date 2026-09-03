@@ -27,10 +27,6 @@ export const sp: Localization = {
     errorMessage:
       'No se puede cargar el archivo. Por favor, inténtelo de nuevo',
   },
-  numberInput: {
-    increase: 'Aumentar',
-    decrease: 'Disminuir',
-  },
   textInput: {
     loading: 'Cargando',
   },

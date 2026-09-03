@@ -2,20 +2,17 @@ import { Meta, StoryObj } from '@storybook/react';
 import { NumberInput } from './NumberInput.tsx';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { Flex } from '../flex';
-import { useState } from 'react';
-import { Text } from '../text';
-import { TextInput } from '../textInput';
-import { Icon } from '../icon';
-import { Delete } from 'lucide-react';
-// import { userEvent, within, expect } from '@storybook/test';
+import {
+  MoneyInput,
+  OrderEditor,
+  PortForwarding,
+  SplitBill,
+} from './stories';
 
 const story: Meta<typeof NumberInput> = {
   title: 'Components/Form/NumberInput',
   component: NumberInput,
   decorators: [StorybookDecorator],
-  args: {},
-  argTypes: {},
   parameters: {
     chromatic: {
       modes: {
@@ -26,103 +23,24 @@ const story: Meta<typeof NumberInput> = {
   },
 };
 
-export const TextInputStory: StoryObj<typeof Flex> = {
-  name: 'Using NumberInput',
-  render: () => {
-    const [value1, setValue1] = useState<number | undefined>(1);
-    const [value2, setValue2] = useState<number | undefined>();
-    const [value3, setValue3] = useState<number | undefined>(-25);
-    const [value4, setValue4] = useState<number | undefined>(40);
-    const [value5, setValue5] = useState<number | undefined>(undefined);
-    const [value6, setValue6] = useState<number | undefined>(undefined);
+export const OrderLineItems: StoryObj = {
+  name: 'An order, line by line',
+  render: () => <OrderEditor />,
+};
 
-    return (
-      <Flex direction="vertical" gap="l">
-        <Text size={5} weight="bold" block>
-          NumberInput
-        </Text>
-        <Flex direction="horizontal" gap="l">
-          <NumberInput
-            value={value1}
-            onChange={setValue1}
-            placeholder="Standard NumberInput (max: 10k)"
-            data-testid="number"
-            max={10000}
-          />
-          <NumberInput
-            value={value2}
-            onChange={setValue2}
-            placeholder="Disabled NumberInput"
-            disabled
-          />
-          <NumberInput
-            value={value3}
-            onChange={setValue3}
-            placeholder="NumberInput without controls"
-            showControls={false}
-            allowNegative
-            min={-100}
-            max={100}
-          />
-        </Flex>
-        <Flex direction="horizontal" gap="l">
-          <NumberInput
-            value={value4}
-            onChange={setValue4}
-            min={0}
-            placeholder="NumberInput with custom islands"
-          >
-            <TextInput.TextIsland label="Age:" />
-            <TextInput.ActionIsland
-              placement="end"
-              icon={<Delete />}
-              label="Clear"
-            />
-          </NumberInput>
-        </Flex>
-        <Text size={5} weight="bold" block>
-          Different sizes of NumberInput
-        </Text>
-        <Flex direction="horizontal" gap="l">
-          <NumberInput
-            value={value5}
-            onChange={setValue5}
-            placeholder="0,00"
-            decimalDelimiter=","
-            groupingDelimiter="."
-            size="s"
-          />
-          <NumberInput
-            value={value6}
-            onChange={setValue6}
-            placeholder="0.00"
-            decimalDelimiter="."
-            groupingDelimiter=","
-            digitsAfterPoint={2}
-            allowNegative
-            size="l"
-          />
-        </Flex>
-      </Flex>
-    );
-  },
-  // play: async ({ canvasElement, step }) => {
-  //   const canvas = within(canvasElement);
+export const FormattedMoney: StoryObj = {
+  name: 'Money, formatted as you type',
+  render: () => <MoneyInput />,
+};
 
-  //   const field = canvas.getByTestId('number');
+export const BillSplitter: StoryObj = {
+  name: 'Split the bill',
+  render: () => <SplitBill />,
+};
 
-  //   await step('check that user can only enter digits', async () => {
-  //     await userEvent.type(field, '12abc 4');
-  //     expect(field).toHaveValue('124');
-  //   });
-
-  //   await step('check that spinner works correctly', async () => {
-  //     await userEvent.click(canvas.getAllByText('keyboard_arrow_up')[0]);
-  //     expect(field).toHaveValue('125');
-  //     await userEvent.click(canvas.getAllByText('keyboard_arrow_down')[0]);
-  //     expect(field).toHaveValue('124');
-  //   });
-  // },
+export const Ports: StoryObj = {
+  name: 'Port forwarding rules',
+  render: () => <PortForwarding />,
 };
 
 export default story;

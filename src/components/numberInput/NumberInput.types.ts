@@ -8,8 +8,6 @@ export interface NumberInputProps extends Omit<
   value?: number;
   onChange: (value?: number, e?: SyntheticEvent<HTMLInputElement>) => void;
 
-  showControls?: boolean;
-
   allowNegative?: boolean;
 
   decimalDelimiter?: string;

@@ -3,7 +3,7 @@ import { Empty, Screen } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 
 const story: Meta<typeof Screen.Empty> = {
-  title: 'Components/Containers/Screen/Empty',
+  title: 'Components/Core/Screen/Empty',
   component: Screen.Empty,
   decorators: [StorybookDecorator],
 };

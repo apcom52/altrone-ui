@@ -2,11 +2,7 @@ import { isValidElement, memo, ReactElement, Ref } from 'react';
 import { ButtonProps } from './Button.types.ts';
 import s from './button.module.scss';
 import clsx from 'clsx';
-import {
-  HTMLMotionProps,
-  motion,
-  useReducedMotionConfig,
-} from 'motion/react';
+import { HTMLMotionProps, motion, useReducedMotionConfig } from 'motion/react';
 import { Box, BoxMaterial } from 'components/box';
 import { Loading } from 'components/loading/Loading.tsx';
 import { Tooltip } from 'components/tooltip/Tooltip.tsx';
@@ -67,6 +63,7 @@ export const Button = memo((props: ButtonProps) => {
      animations, so gate them explicitly. Follows both the OS setting and a
      `<MotionConfig reducedMotion>` override. */
   const animateLayout = !useReducedMotionConfig();
+  const animateLayoutValue = animateLayout ? 'size' : undefined;
 
   const cls = clsx(
     s.Button,
@@ -89,7 +86,11 @@ export const Button = memo((props: ButtonProps) => {
 
   const padding = isSingleIcon ? 0 : { x: PADDING_X_BY_SIZE[size], y: 0 };
 
-  const boxTone = danger ? 'danger' : variant === 'submit' ? 'accent' : 'neutral';
+  const boxTone = danger
+    ? 'danger'
+    : variant === 'submit'
+      ? 'accent'
+      : 'neutral';
 
   /* On a labelled button the badge sits inline at the end of the content row.
      On an icon-only button there's no room for that, so it becomes a `plate`
@@ -111,19 +112,19 @@ export const Button = memo((props: ButtonProps) => {
 
   const buttonContent = (
     <>
-      <motion.div className={s.ButtonContent} layout={animateLayout}>
+      <motion.div className={s.ButtonContent} layout={animateLayoutValue}>
         {icon ? (
-          <motion.div className={s.ButtonIcon} layout={animateLayout}>
+          <motion.div className={s.ButtonIcon} layout={animateLayoutValue}>
             {icon}
           </motion.div>
         ) : null}
         {showLabel && label ? (
-          <motion.span className={s.ButtonLabel} layout={animateLayout}>
+          <motion.span className={s.ButtonLabel} layout={animateLayoutValue}>
             {label}
           </motion.span>
         ) : null}
         {additionalIcon ? (
-          <motion.div className={s.ButtonIcon} layout={animateLayout}>
+          <motion.div className={s.ButtonIcon} layout={animateLayoutValue}>
             {additionalIcon}
           </motion.div>
         ) : null}
@@ -162,15 +163,18 @@ export const Button = memo((props: ButtonProps) => {
       return null;
     }
 
-    inner = cloneWithRef(children as ReactElement, {
-      ...innerProps,
-      children: buttonContent,
-    } as AnyObject);
+    inner = cloneWithRef(
+      children as ReactElement,
+      {
+        ...innerProps,
+        children: buttonContent,
+      } as AnyObject,
+    );
   } else {
     inner = (
       <motion.button
         type={type}
-        layout={animateLayout}
+        layout={animateLayoutValue}
         transition={{
           layout: { duration: 0.25, ease: 'easeOut' },
           scale: { duration: 0.2, ease: 'linear' },

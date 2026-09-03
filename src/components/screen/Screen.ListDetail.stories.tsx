@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Archive, Inbox, Mail, Send } from 'lucide-react';
 
 const story: Meta<typeof Screen.ListDetail> = {
-  title: 'Components/Containers/Screen/ListDetail',
+  title: 'Components/Core/Screen/ListDetail',
   component: Screen.ListDetail,
   decorators: [StorybookDecorator],
 };

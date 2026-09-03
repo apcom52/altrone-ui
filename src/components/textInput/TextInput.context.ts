@@ -11,6 +11,10 @@ export const TextInputValueSizeContext = createContext<{
 export const useTextInputValueSize = () =>
   useContext(TextInputValueSizeContext);
 
+/** The field's resolved `disabled` — an `ActionIsland` folds it into its own. */
+export const TextInputDisabledContext = createContext(false);
+export const useTextInputDisabled = () => useContext(TextInputDisabledContext);
+
 /**
  * Islands render one control tier below the field they sit in (floored at
  * `mini`) — an `m` field carries `s` islands. Keeps an `ActionIsland` visibly

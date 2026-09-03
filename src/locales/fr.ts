@@ -26,10 +26,6 @@ export const fr: Localization = {
     placeholder: 'Choisir un fichier',
     errorMessage: 'Impossible de télécharger le fichier. Veuillez réessayer',
   },
-  numberInput: {
-    increase: 'Augmenter',
-    decrease: 'Diminuer',
-  },
   textInput: {
     loading: 'Chargement',
   },

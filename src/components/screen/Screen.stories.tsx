@@ -5,7 +5,7 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { useState } from 'react';
 
 const story: Meta<typeof Screen> = {
-  title: 'Components/Containers/Screen',
+  title: 'Components/Core/Screen',
   component: Screen,
   decorators: [StorybookDecorator],
   args: {},

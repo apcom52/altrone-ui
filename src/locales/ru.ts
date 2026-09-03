@@ -26,10 +26,6 @@ export const ru: Localization = {
     placeholder: 'Выбрать файл',
     errorMessage: 'Возникла ошибка при загрузке файла. Попробуйте еще раз',
   },
-  numberInput: {
-    increase: 'Увеличить',
-    decrease: 'Уменьшить',
-  },
   textInput: {
     loading: 'Загрузка',
   },

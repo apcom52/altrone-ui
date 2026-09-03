@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Home, Settings, Users } from 'lucide-react';
 
 const story: Meta<typeof Screen.DataView> = {
-  title: 'Components/Containers/Screen/DataView',
+  title: 'Components/Core/Screen/DataView',
   component: Screen.DataView,
   decorators: [StorybookDecorator],
 };

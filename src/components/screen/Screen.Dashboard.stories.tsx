@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ChartPie, Home, Settings } from 'lucide-react';
 
 const story: Meta<typeof Screen.Dashboard> = {
-  title: 'Components/Containers/Screen/Dashboard',
+  title: 'Components/Core/Screen/Dashboard',
   component: Screen.Dashboard,
   decorators: [StorybookDecorator],
 };

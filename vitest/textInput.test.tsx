@@ -116,6 +116,18 @@ describe('TextInput', () => {
     expect(screen.getByTestId('action')).toHaveAttribute('aria-busy', 'true');
   });
 
+  test('a disabled field disables its ActionIslands', () => {
+    render(
+      <AltroneApplication>
+        <TextInput data-testid="input" disabled>
+          <TextInput.ActionIsland label="Clear" data-testid="action" />
+        </TextInput>
+      </AltroneApplication>,
+    );
+
+    expect(screen.getByTestId('action')).toBeDisabled();
+  });
+
   test('invalid sets aria-invalid on the input', () => {
     render(
       <AltroneApplication>

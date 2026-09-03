@@ -18,6 +18,7 @@ import {
 } from './components';
 import { useFormField } from '../form/components/Field.context.ts';
 import {
+  TextInputDisabledContext,
   TextInputSizeContext,
   TextInputValueSizeContext,
 } from './TextInput.context.ts';
@@ -41,6 +42,7 @@ const TextInputComponent = ({
   onChange,
   className,
   variant = 'default',
+  shape = 'pill',
   style,
   wrapperClassName,
   wrapperStyle,
@@ -168,7 +170,7 @@ const TextInputComponent = ({
     <Box
       ref={ref}
       editable
-      shape="pill"
+      shape={shape}
       material={variant === 'transparent' ? 'transparent' : 'plate'}
       tone={inputInvalid ? 'danger' : 'neutral'}
       size={inputSize}
@@ -189,22 +191,24 @@ const TextInputComponent = ({
       style={wrapperStyle}
     >
       <TextInputSizeContext.Provider value={inputSize}>
-        <TextInputValueSizeContext.Provider value={valueSize}>
-          <div className={s.Field}>
-            {startIslands.length ? (
-              <div className={s.StartIslands} data-altrone-island="start">
-                {startIslands}
-              </div>
-            ) : null}
-            {inputElement}
-            {endIslands.length ? (
-              <div className={s.EndIslands} data-altrone-island="end">
-                {endIslands}
-              </div>
-            ) : null}
-            {nonIslandElements}
-          </div>
-        </TextInputValueSizeContext.Provider>
+        <TextInputDisabledContext.Provider value={Boolean(inputDisabled)}>
+          <TextInputValueSizeContext.Provider value={valueSize}>
+            <div className={s.Field}>
+              {startIslands.length ? (
+                <div className={s.StartIslands} data-altrone-island="start">
+                  {startIslands}
+                </div>
+              ) : null}
+              {inputElement}
+              {endIslands.length ? (
+                <div className={s.EndIslands} data-altrone-island="end">
+                  {endIslands}
+                </div>
+              ) : null}
+              {nonIslandElements}
+            </div>
+          </TextInputValueSizeContext.Provider>
+        </TextInputDisabledContext.Provider>
       </TextInputSizeContext.Provider>
     </Box>
   );

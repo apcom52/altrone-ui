@@ -1,6 +1,7 @@
 import React, { ChangeEvent, PropsWithChildren, ReactElement } from 'react';
 import { Size } from 'types';
 import type { ButtonProps } from '../button/Button.types.ts';
+import type { BoxShape } from '../box/Box.types.ts';
 
 export type IslandPlacement = 'start' | 'end';
 
@@ -16,6 +17,12 @@ export interface TextInputProps
   /** Forwarded to the underlying `<input>` (or the `asChild` element). */
   inputRef?: React.Ref<HTMLInputElement>;
   variant?: 'default' | 'transparent';
+  /**
+   * Corner shape of the visual wrapper. Defaults to `'pill'` — right for a
+   * single-line field. Multi-line consumers (`Textarea`) override it with
+   * `'rounded'`, where a capsule end makes no sense.
+   */
+  shape?: BoxShape;
   value?: string;
   onChange?: (value: string, event: ChangeEvent) => void;
   /** Class for the visual wrapper. `className` targets the `<input>`. */

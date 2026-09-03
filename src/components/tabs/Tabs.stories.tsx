@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Avatar, Flex, Progress, Text } from 'components';
+import { Avatar, Button, Flex, Popover, Progress, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Tabs } from './Tabs.tsx';
@@ -535,6 +535,72 @@ export const TabsStory: StoryObj<typeof Tabs> = {
             ))}
           </Flex>
         )}
+      </Flex>
+    );
+  },
+};
+
+export const TabsInsideOverlayStory: StoryObj<typeof Tabs> = {
+  name: 'Inside a Popover',
+  render: () => {
+    const PanelTabs = () => {
+      const [tab, setTab] = useState<'activity' | 'members' | 'settings'>(
+        'activity',
+      );
+
+      return (
+        <Flex direction="vertical" gap="m" style={{ width: 320 }}>
+          <Tabs>
+            <Tabs.Item
+              icon={<Clock size={14} />}
+              label="Activity"
+              selected={tab === 'activity'}
+              onClick={() => setTab('activity')}
+            />
+            <Tabs.Item
+              icon={<Users size={14} />}
+              label="Members"
+              selected={tab === 'members'}
+              onClick={() => setTab('members')}
+            />
+            <Tabs.Item
+              icon={<Settings size={14} />}
+              label="Settings"
+              selected={tab === 'settings'}
+              onClick={() => setTab('settings')}
+            />
+          </Tabs>
+          <Text size={3} block>
+            {tab === 'activity' &&
+              'Eleven commits and three deployments landed this week.'}
+            {tab === 'members' && 'Alex, Maya and Dan have write access.'}
+            {tab === 'settings' && 'Notifications are on; the channel is public.'}
+          </Text>
+        </Flex>
+      );
+    };
+
+    return (
+      <Flex
+        direction="vertical"
+        gap="l"
+        style={{ maxWidth: 640, margin: '0 auto' }}
+      >
+        <Text size={5} weight="bold" block>
+          The active-tab backdrop settles in place
+        </Text>
+        <Text size={3} block>
+          The sliding backdrop under the selected tab is a{' '}
+          <Text code>motion</Text> layout animation. The tablist is its own
+          reference frame (a <Text code>layoutRoot</Text>), so a container
+          repositioning underneath it — a <Text code>Popover</Text> is painted at
+          its origin for a frame before it is placed — is not read as a layout
+          change. The backdrop appears under the selected tab and animates only
+          when you switch tabs, instead of flying in from the corner.
+        </Text>
+        <Popover placement="bottom" title="Project panel" content={<PanelTabs />}>
+          <Button label="Open panel" />
+        </Popover>
       </Flex>
     );
   },

@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { Bell, Palette, Shield, User } from 'lucide-react';
 
 const story: Meta<typeof Screen.Settings> = {
-  title: 'Components/Containers/Screen/Settings',
+  title: 'Components/Core/Screen/Settings',
   component: Screen.Settings,
   decorators: [StorybookDecorator],
 };

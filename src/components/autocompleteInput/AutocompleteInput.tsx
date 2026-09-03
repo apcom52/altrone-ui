@@ -1,5 +1,4 @@
 import {
-  Fragment,
   KeyboardEventHandler,
   MouseEvent,
   KeyboardEvent,
@@ -21,6 +20,7 @@ import { Tooltip } from 'components/tooltip';
 import clsx from 'clsx';
 import { Dropdown } from 'components/dropdown';
 import { Scrollable } from 'components/scrollable';
+import { AutocompleteSuggestion } from './components';
 import { PopoverRef } from 'components/popover';
 import { CircleAlert } from 'lucide-react';
 import s from './autocompleteInput.module.scss';
@@ -154,25 +154,15 @@ export const AutocompleteInput = <T = string,>({
     const key = String(suggestion) + suggestionIndex;
     const value = getSuggestionValue(suggestion);
 
-    if (renderSuggestion) {
-      return (
-        <Fragment key={key}>
-          {renderSuggestion({
-            inputValue: restProps.value || '',
-            suggestion,
-            onSelect: (inputValue, e) =>
-              selectSuggestion(suggestion, inputValue, e),
-          })}
-        </Fragment>
-      );
-    }
-
     return (
-      <Dropdown.Action
-        keyProp={key}
-        label={value}
-        onClick={(e) => selectSuggestion(suggestion, value, e)}
-      />
+      <AutocompleteSuggestion
+        key={key}
+        onSelect={(e) => selectSuggestion(suggestion, value, e)}
+      >
+        {renderSuggestion
+          ? renderSuggestion({ inputValue: restProps.value || '', suggestion })
+          : value}
+      </AutocompleteSuggestion>
     );
   });
 

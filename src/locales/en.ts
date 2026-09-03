@@ -26,10 +26,6 @@ export const en: Localization = {
     placeholder: 'Choose file',
     errorMessage: 'Cannot upload the file. Please try again',
   },
-  numberInput: {
-    increase: 'Increase',
-    decrease: 'Decrease',
-  },
   textInput: {
     loading: 'Loading',
   },

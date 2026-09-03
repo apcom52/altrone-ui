@@ -14,3 +14,4 @@ export { useScrollObserver } from './useScrollObserver.ts';
 export { useDidUpdate } from './useDidUpdate.ts';
 export { useLocale } from './useLocale.ts';
 export { useShowControls } from './useShowControls.ts';
+export { useOverlayItemBackground } from './useOverlayItemBackground';
