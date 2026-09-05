@@ -8,12 +8,14 @@ import s from './action.module.scss';
 import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
 
 export function DropdownChildMenu({
+  ref,
   children,
   label,
   disabled,
   className,
   style,
   icon,
+  size = 'm',
   ...props
 }: DropdownChildMenuProps) {
   const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
@@ -21,6 +23,10 @@ export function DropdownChildMenu({
 
   const cls = clsx(s.Action, 'no-selection', className, {
     [s.DisabledAction]: disabled,
+    [s.Mini]: size === 'mini',
+    [s.Small]: size === 's',
+    [s.Large]: size === 'l',
+    [s.XLarge]: size === 'xl',
   });
 
   const styles = {
@@ -36,6 +42,7 @@ export function DropdownChildMenu({
     >
       {({ opened }) => (
         <CompositeItem
+          ref={ref}
           disabled={disabled}
           className={clsx(cls, {
             [s.OpenedAction]: opened,

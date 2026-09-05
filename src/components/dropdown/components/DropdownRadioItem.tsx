@@ -6,7 +6,7 @@ import s from './action.module.scss';
 import { useId } from 'react';
 import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
 import { mergeRefs } from 'utils/mergeRefs';
-import { Check } from 'lucide-react';
+import { CheckIcon } from 'components/checkbox';
 
 export function DropdownRadioItem({
   ref,
@@ -16,6 +16,7 @@ export function DropdownRadioItem({
   className,
   style,
   focused,
+  size = 'm',
   ...props
 }: DropdownRadioListItem) {
   const id = useId();
@@ -27,6 +28,10 @@ export function DropdownRadioItem({
   const cls = clsx(s.Action, 'no-selection', className, {
     [s.DisabledAction]: disabled,
     [s.Focused]: focused,
+    [s.Mini]: size === 'mini',
+    [s.Small]: size === 's',
+    [s.Large]: size === 'l',
+    [s.XLarge]: size === 'xl',
   });
 
   const styles = {
@@ -62,7 +67,9 @@ export function DropdownRadioItem({
       {...props}
     >
       {itemBackgroundElement}
-      <div className={s.Icon}>{value === selectedValue ? <Check /> : null}</div>
+      <div className={s.Icon}>
+        <CheckIcon checked={value === selectedValue} />
+      </div>
       <div className={s.Label}>{label}</div>
     </button>
   );

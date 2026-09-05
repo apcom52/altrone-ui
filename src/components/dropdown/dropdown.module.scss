@@ -1,3 +1,11 @@
 .DropdownPopover {
+  /* Consumes part of the popover's inherited radius budget — see radius.md;
+     .Menu (action.module.scss) consumes the rest for the item row itself. */
+  --radius-outer: clamp(
+    var(--radius-mini),
+    calc(var(--radius-outer) - 2px),
+    var(--radius-outer)
+  );
+  border-radius: var(--radius-outer);
   padding: 2px;
 }

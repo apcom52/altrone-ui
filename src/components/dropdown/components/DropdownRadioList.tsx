@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import s from './radioList.module.scss';
 
 export function DropdownRadioList({
+  ref,
   onChange,
   value,
   children,
@@ -34,6 +35,7 @@ export function DropdownRadioList({
   return (
     <RadioListDropdownContext.Provider value={contextValue}>
       <div
+        ref={ref}
         role="radiogroup"
         aria-labelledby={labelId}
         className={cls}

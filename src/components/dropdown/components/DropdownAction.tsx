@@ -1,19 +1,20 @@
-import { isValidElement } from 'react';
+import { isValidElement, useEffect, useId } from 'react';
 import { DropdownActionProps } from '../Dropdown.types';
 import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { useCloseDropdownContext } from '../Dropdown.contexts.ts';
 import s from './action.module.scss';
-import { useEffect, useId } from 'react';
 import { usePopoverCurrentIndex } from '../../popover/Popover.tsx';
 import { Badge } from 'components/badge/Badge.tsx';
 import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
 import { Slot } from 'utils/components/Slot.tsx';
 import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
 import { AnyObject } from 'utils/types.ts';
+import { mergeRefs } from 'utils/mergeRefs';
 
 export function DropdownAction(props: DropdownActionProps) {
   const {
+    ref,
     className,
     style,
     danger,
@@ -26,13 +27,14 @@ export function DropdownAction(props: DropdownActionProps) {
     hintText,
     keyProp,
     badge,
+    size = 'm',
     ...htmlProps
   } = props;
 
   const id = useId();
 
   const currentIndex = usePopoverCurrentIndex();
-  const { ref, index } = useListItem();
+  const { ref: listItemRef, index } = useListItem();
 
   const isFocused = currentIndex === index;
 
@@ -54,6 +56,10 @@ export function DropdownAction(props: DropdownActionProps) {
       [s.DisabledAction]: props.disabled,
       [s.DangerAction]: danger,
       [s.Focused]: focused,
+      [s.Mini]: size === 'mini',
+      [s.Small]: size === 's',
+      [s.Large]: size === 'l',
+      [s.XLarge]: size === 'xl',
     },
     className,
   );
@@ -95,7 +101,6 @@ export function DropdownAction(props: DropdownActionProps) {
     type: 'button' as const,
     style: styles,
     className: cls,
-    role: 'button',
     'data-active': isFocused,
     'data-index': index,
     id: props.id || id,
@@ -105,9 +110,12 @@ export function DropdownAction(props: DropdownActionProps) {
     onMouseLeave,
   };
 
+  const mergedRef = mergeRefs(ref, listItemRef);
+
   if (renderFunc) {
-    return renderFunc(ref, {
+    return renderFunc(mergedRef, {
       ...sharedProps,
+      role: 'button',
       icon,
       label: label ?? '',
       hintText,
@@ -129,14 +137,14 @@ export function DropdownAction(props: DropdownActionProps) {
     });
 
     return (
-      <Slot ref={ref} {...(sharedProps as AnyObject)}>
+      <Slot ref={mergedRef} role="button" {...(sharedProps as AnyObject)}>
         {childWithContent}
       </Slot>
     );
   }
 
   return (
-    <button ref={ref} {...sharedProps}>
+    <button ref={mergedRef} {...sharedProps}>
       {actionContent}
     </button>
   );

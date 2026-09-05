@@ -7,16 +7,28 @@
   --dropdown-opened-text-color: var(--text-2);
 
   --dropdown-badge-background-color: var(--interactive-a2);
-  --dropdown-badge-rounding: 10px;
+  --dropdown-badge-rounding: var(--radius-pill);
   --dropdown-badge-min-width: 20px;
   --dropdown-badge-size: 20px;
   --dropdown-badge-padding: 6px;
-  --dropdown-badge-font-size: 10px;
+  --dropdown-badge-font-size: var(--text-size-2);
+
+  /* size='m' is the default tier — mini/s/l/xl overrides live on .Mini/.Small/.Large/.XLarge below. */
+  --dropdown-action-height: 32px;
+  --dropdown-action-padding-x: 8px;
+  --dropdown-action-font-size: var(--text-size-4);
+  --dropdown-action-icon-size: 18px;
 }
 
 .Menu {
   display: flex;
   flex-direction: column;
+  /* Consumes part of the popover's inherited radius budget — see radius.md. */
+  --radius-outer: clamp(
+    var(--radius-mini),
+    calc(var(--radius-outer) - 4px),
+    var(--radius-outer)
+  );
   padding: 4px;
   overflow-y: auto;
   position: relative;
@@ -26,17 +38,17 @@
   display: flex;
   position: relative;
   align-items: center;
-  padding: 6px 8px;
-  border-radius: 16px;
-  // background: var(--dropdown-background-color);
+  padding: 0 var(--dropdown-action-padding-x);
+  border-radius: var(--radius-outer);
   border: none;
   text-align: left;
   color: var(--dropdown-text-color);
   cursor: pointer;
-  gap: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  height: 32px;
+  gap: var(--space-inline);
+  font-size: var(--dropdown-action-font-size);
+  font-weight: var(--text-weight-medium);
+  /* Kept ≥24px even at size="mini" — hit-area minimum, see accessibility.md. */
+  height: var(--dropdown-action-height);
   outline: 0;
   background-color: transparent;
   text-decoration: none;
@@ -47,6 +59,34 @@
       scale: 1.02;
     }
   }
+}
+
+.Mini {
+  --dropdown-action-height: 24px;
+  --dropdown-action-padding-x: 6px;
+  --dropdown-action-font-size: var(--text-size-2);
+  --dropdown-action-icon-size: 14px;
+}
+
+.Small {
+  --dropdown-action-height: 28px;
+  --dropdown-action-padding-x: 8px;
+  --dropdown-action-font-size: var(--text-size-3);
+  --dropdown-action-icon-size: 16px;
+}
+
+.Large {
+  --dropdown-action-height: 36px;
+  --dropdown-action-padding-x: 10px;
+  --dropdown-action-font-size: var(--text-size-5);
+  --dropdown-action-icon-size: 20px;
+}
+
+.XLarge {
+  --dropdown-action-height: 40px;
+  --dropdown-action-padding-x: 12px;
+  --dropdown-action-font-size: var(--text-size-6);
+  --dropdown-action-icon-size: 22px;
 }
 
 .DangerAction {
@@ -60,13 +100,13 @@
   align-items: center;
   justify-content: center;
   min-width: 24px;
-  font-size: 18px;
+  font-size: var(--dropdown-action-icon-size);
   height: 24px;
 }
 
 .Label {
   flex: 1;
-  // overflow: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -104,7 +144,7 @@
   background: var(--dropdown-badge-background-color);
   border-radius: var(--dropdown-badge-rounding);
   font-size: var(--dropdown-badge-font-size);
-  font-weight: 600;
+  font-weight: var(--text-weight-bold);
   margin-right: -2px;
   line-height: var(--dropdown-badge-size);
   min-width: var(--dropdown-badge-min-width);
