@@ -1,4 +1,4 @@
-import { ChangeEventHandler, KeyboardEventHandler, memo, useRef } from 'react';
+import { ChangeEventHandler, memo, useRef } from 'react';
 import { SwitcherProps } from './Switcher.types.ts';
 import clsx from 'clsx';
 import s from './switcher.module.scss';
@@ -14,6 +14,10 @@ export const Switcher = memo<SwitcherProps>(
     danger,
     disabled,
     name,
+    size = 'm',
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-describedby': ariaDescribedBy,
     ...restProps
   }) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
@@ -24,48 +28,37 @@ export const Switcher = memo<SwitcherProps>(
         [s.Checked]: checked,
         [s.Disabled]: disabled,
         [s.Danger]: danger,
+        [s.Mini]: size === 'mini',
+        [s.Small]: size === 's',
+        [s.Large]: size === 'l',
+        [s.XLarge]: size === 'xl',
       },
       className,
     );
 
-    const styles = {
-      ...style,
-    };
-
-    const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
-      onChange?.(!checked, e);
-    };
-
-    const onKeyDown: KeyboardEventHandler = (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        inputRef.current?.click();
-      }
+    const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (event) => {
+      onChange?.(!checked, event);
     };
 
     return (
-      <label
-        ref={ref}
-        role="switch"
-        aria-checked={checked}
-        className={cls}
-        style={styles}
-        tabIndex={0}
-        onKeyDown={onKeyDown}
-        {...restProps}
-      >
+      <label ref={ref} className={cls} style={style} {...restProps}>
         <input
           ref={inputRef}
           type="checkbox"
-          onChange={onChangeHandler}
+          role="switch"
+          className={s.Input}
           checked={checked}
           name={name}
           disabled={disabled}
-          className={s.Input}
+          onChange={onChangeHandler}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledBy}
+          aria-describedby={ariaDescribedBy}
         />
-        <div className={s.Button}>
-          <div className={s.Handle} />
-        </div>
-        {children ? <div className={s.Label}>{children}</div> : null}
+        <span className={s.Button}>
+          <span className={s.Handle} />
+        </span>
+        {children ? <span className={s.Label}>{children}</span> : null}
       </label>
     );
   },

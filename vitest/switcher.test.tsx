@@ -1,47 +1,73 @@
-import React from 'react';
-import { expect, test, describe } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { Configuration, AltroneApplication, Switcher } from '../src/components';
-
-class ResizeObserver {
-  observe() {}
-  unobserve() {}
-}
-
-beforeAll(() => {
-  // @ts-ignore
-  window.ResizeObserver = ResizeObserver;
-});
+import React, { createRef } from 'react';
+import { expect, test, describe, vi } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { Switcher } from '../src/components';
 
 describe('Switcher', () => {
-  test('check that className and style props works', () => {
+  test('renders as an accessible switch', () => {
     render(
-      <AltroneApplication>
-        <Switcher
-          data-testid="switcher"
-          className="cls"
-          style={{ color: 'rgb(0, 0, 255)' }}
-        />
-      </AltroneApplication>,
+      <Switcher checked={false} onChange={vi.fn()}>
+        Dark mode
+      </Switcher>,
     );
 
-    expect(screen.getByTestId('switcher')).toHaveClass('cls');
-    expect(screen.getByTestId('switcher')).toHaveStyle('color: rgb(0, 0, 255)');
+    const input = screen.getByRole('switch', { name: 'Dark mode' });
+    expect(input.tagName).toBe('INPUT');
+    expect(input).not.toBeChecked();
   });
 
-  test('check that Checkbox configuration works correctly', () => {
+  test('clicking the label toggles and reports the next state', () => {
+    const onChange = vi.fn();
     render(
-      <AltroneApplication>
-        <Configuration
-          switcher={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
-        >
-          <Switcher data-testid="switcher" />
-        </Configuration>
-      </AltroneApplication>,
+      <Switcher checked={false} onChange={onChange}>
+        Notifications
+      </Switcher>,
     );
 
-    const element = screen.getByTestId('switcher');
-    expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
+    fireEvent.click(screen.getByText('Notifications'));
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange.mock.calls[0][0]).toBe(true);
+  });
+
+  test('disabled is applied to the native input', () => {
+    render(
+      <Switcher checked disabled onChange={vi.fn()}>
+        Auto-save
+      </Switcher>,
+    );
+
+    expect(screen.getByRole('switch', { name: 'Auto-save' })).toBeDisabled();
+  });
+
+  test('a bare switch takes its name from aria-label', () => {
+    render(<Switcher aria-label="Compact layout" onChange={vi.fn()} />);
+
+    expect(
+      screen.getByRole('switch', { name: 'Compact layout' }),
+    ).toBeInTheDocument();
+  });
+
+  test('forwards ref to the root <label>', () => {
+    const ref = createRef<HTMLLabelElement>();
+    render(<Switcher ref={ref} onChange={vi.fn()}>Label</Switcher>);
+
+    expect(ref.current).toBeInstanceOf(HTMLLabelElement);
+  });
+
+  test('className and style apply to the root <label>', () => {
+    render(
+      <Switcher
+        data-testid="switcher"
+        className="cls"
+        style={{ color: 'rgb(0, 0, 255)' }}
+        onChange={vi.fn()}
+      />,
+    );
+
+    const label = screen.getByTestId('switcher');
+    expect(label.tagName).toBe('LABEL');
+    expect(label).toHaveClass('cls');
+    expect(label).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });
