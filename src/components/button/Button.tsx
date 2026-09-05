@@ -51,6 +51,7 @@ export const Button = memo((props: ButtonProps) => {
     selected = false,
     disabled,
     tooltip,
+    kbd,
     asChild,
     children,
     ...restProps
@@ -207,7 +208,7 @@ export const Button = memo((props: ButtonProps) => {
 
   if (!showLabel && tooltipContent) {
     return (
-      <Tooltip content={tooltipContent} ref={ref}>
+      <Tooltip content={tooltipContent} kbd={kbd} ref={ref}>
         {boxElement}
       </Tooltip>
     );

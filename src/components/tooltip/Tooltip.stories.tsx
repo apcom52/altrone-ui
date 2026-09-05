@@ -1,14 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Avatar, Button, Divider, Flex, Text } from 'components';
-import { StorybookDecorator } from 'global/storybook';
-import { Tooltip } from './Tooltip.tsx';
+import React, { ReactElement, useRef } from 'react';
 import {
   AlignCenter,
   AlignLeft,
   AlignRight,
   Bold,
   Download,
-  History,
   Image,
   Italic,
   Link,
@@ -22,262 +19,313 @@ import {
   Trash,
   Underline,
 } from 'lucide-react';
-import { ReactElement } from 'react';
+import { Avatar, Button, Divider, Flex, Text } from 'components';
+import { StorybookDecorator } from 'global/storybook';
+import { allModes } from '../../../.storybook/modes.ts';
+import { Tooltip } from './Tooltip.tsx';
 
 const story: Meta<typeof Tooltip> = {
   title: 'Components/Containers/Tooltip',
   component: Tooltip,
   decorators: [StorybookDecorator],
-  args: {},
-  argTypes: {},
-};
-
-export const TooltipStory: StoryObj<typeof Tooltip> = {
-  name: 'Using Tooltips',
-  render: () => {
-    return (
-      <Flex direction="vertical" gap="xl" style={{ padding: '20px' }}>
-        {/* Basic */}
-        <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">
-            Базовые тултипы
-          </Text>
-          <Text>
-            Без дочернего элемента рендерится иконка-вопрос. Тултип появляется
-            через 500 мс после наведения.
-          </Text>
-          <Flex direction="horizontal" gap="l" align="center">
-            <Tooltip content="Файл не найден на сервере" />
-            <Tooltip content="Нажмите, чтобы открыть настройки">
-              <Button icon={<Settings />} label="Настройки" />
-            </Tooltip>
-            <Tooltip content="Запустить тесты" kbd="⌘+T">
-              <Button
-                icon={<Play />}
-                label="Тесты"
-                showLabel={false}
-              />
-            </Tooltip>
-            <Tooltip content="Сохранить изменения" kbd="⌘+S">
-              <Button
-                icon={<Save />}
-                label="Сохранить"
-                showLabel={false}
-                variant="submit"
-              />
-            </Tooltip>
-            <Tooltip content="Удалить безвозвратно" kbd="⌫">
-              <Button
-                icon={<Trash />}
-                label="Удалить"
-                showLabel={false}
-                danger
-              />
-            </Tooltip>
-          </Flex>
-        </Flex>
-
-        <Divider />
-
-        {/* title prop */}
-        <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">
-            С заголовком
-          </Text>
-          <Text>
-            Проп <code>title</code> добавляет строку-заголовок над контентом —
-            удобно для более информативных подсказок.
-          </Text>
-          <Flex direction="horizontal" gap="l" align="center">
-            <Tooltip
-              title="Горячая клавиша"
-              content="Открыть командную строку редактора"
-              kbd="⌘+P"
-            >
-              <Button icon={<Terminal />} label="Команды" />
-            </Tooltip>
-            <Tooltip
-              title="Форматирование"
-              content="Применить автоформатирование ко всему файлу"
-              kbd="⇧+⌥+F"
-            >
-              <Button icon={<Sparkles />} label="Форматировать" />
-            </Tooltip>
-            <Tooltip
-              title="Git blame"
-              content="Показать историю изменений для выбранных строк"
-              kbd="⌘+⇧+G"
-            >
-              <Button
-                icon={<History />}
-                label="История"
-                showLabel={false}
-              />
-            </Tooltip>
-            <Tooltip
-              title="Недоступно"
-              content="Сначала выберите хотя бы одну строку в таблице"
-            >
-              <Button icon={<Download />} label="Экспорт" disabled />
-            </Tooltip>
-          </Flex>
-        </Flex>
-
-        <Divider />
-
-        {/* maxWidth */}
-        <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">
-            Ширина тултипа
-          </Text>
-          <Text>
-            По умолчанию <code>maxWidth</code> = 300px. Можно расширить для
-            длинных описаний или сузить для коротких меток.
-          </Text>
-          <Flex direction="horizontal" gap="l" align="center">
-            <Tooltip content="Кратко" maxWidth={120}>
-              <Button label="Узкий" />
-            </Tooltip>
-            <Tooltip
-              title="Описание настройки"
-              content="Включает экспериментальный рендерер на основе WebGPU. Может быть нестабильным на некоторых видеокартах и версиях драйверов."
-              maxWidth={420}
-            >
-              <Button label="Широкий" />
-            </Tooltip>
-            <Tooltip
-              title="Автор последнего коммита"
-              content="Alex Petrov · feat/dropdown-refactor · 2 часа назад"
-              maxWidth={360}
-            >
-              <Avatar
-                firstName="Alex"
-                lastName="Petrov"
-                color="#6366f1"
-                size="s"
-              />
-            </Tooltip>
-          </Flex>
-        </Flex>
-
-        <Divider />
-
-        {/* Placements */}
-        <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">
-            Расположение
-          </Text>
-          <Text>
-            Тултип адаптируется к краям экрана; можно задать предпочтительную
-            сторону.
-          </Text>
-          <Flex direction="horizontal" gap="l" align="center">
-            {(
-              [
-                ['top', 'Сверху'],
-                ['bottom', 'Снизу'],
-                ['left', 'Слева'],
-                ['right', 'Справа'],
-                ['top-start', 'Сверху-лево'],
-                ['top-end', 'Сверху-право'],
-              ] as const
-            ).map(([placement, label]) => (
-              <Tooltip
-                key={placement}
-                content={`placement="${placement}"`}
-                placement={placement}
-              >
-                <Button label={label} />
-              </Tooltip>
-            ))}
-          </Flex>
-        </Flex>
-
-        <Divider />
-
-        {/* Toolbar example */}
-        <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">
-            Тулбар редактора
-          </Text>
-          <Text>
-            Реальный сценарий: тултипы с горячими клавишами на каждой кнопке
-            панели форматирования.
-          </Text>
-          <Flex
-            direction="horizontal"
-            gap="xs"
-            align="center"
-            style={{
-              background: 'var(--glass-background-color)',
-              border: '1px solid var(--border-1)',
-              borderRadius: 12,
-              padding: '6px 10px',
-              width: 'fit-content',
-            }}
-          >
-            {(
-              [
-                { icon: <Bold />, label: 'Жирный', kbd: '⌘+B' },
-                { icon: <Italic />, label: 'Курсив', kbd: '⌘+I' },
-                { icon: <Underline />, label: 'Подчёркнутый', kbd: '⌘+U' },
-                { icon: <Strikethrough />, label: 'Зачёркнутый', kbd: '⌘+⇧+S' },
-              ] as { icon: ReactElement; label: string; kbd: string }[]
-            ).map(({ icon, label, kbd }) => (
-              <Tooltip key={label} content={label} kbd={kbd} placement="bottom">
-                <Button
-                  icon={icon}
-                  label={label}
-                  showLabel={false}
-                  variant="text"
-                />
-              </Tooltip>
-            ))}
-            <Divider
-              direction="vertical"
-              style={{ height: 20, margin: '0 4px' }}
-            />
-            {(
-              [
-                { icon: <AlignLeft />, label: 'По левому краю', kbd: '⌘+⇧+L' },
-                { icon: <AlignCenter />, label: 'По центру', kbd: '⌘+⇧+E' },
-                { icon: <AlignRight />, label: 'По правому краю', kbd: '⌘+⇧+R' },
-              ] as { icon: ReactElement; label: string; kbd: string }[]
-            ).map(({ icon, label, kbd }) => (
-              <Tooltip key={label} content={label} kbd={kbd} placement="bottom">
-                <Button
-                  icon={icon}
-                  label={label}
-                  showLabel={false}
-                  variant="text"
-                />
-              </Tooltip>
-            ))}
-            <Divider
-              direction="vertical"
-              style={{ height: 20, margin: '0 4px' }}
-            />
-            {(
-              [
-                { icon: <Link />, label: 'Вставить ссылку', kbd: '⌘+K' },
-                { icon: <Image />, label: 'Вставить изображение', kbd: undefined },
-                { icon: <Table />, label: 'Вставить таблицу', kbd: undefined },
-              ] as { icon: ReactElement; label: string; kbd?: string }[]
-            ).map(({ icon, label, kbd }) => (
-              <Tooltip key={label} content={label} kbd={kbd} placement="bottom">
-                <Button
-                  icon={icon}
-                  label={label}
-                  showLabel={false}
-                  variant="text"
-                />
-              </Tooltip>
-            ))}
-          </Flex>
-        </Flex>
-      </Flex>
-    );
+  parameters: {
+    chromatic: {
+      modes: {
+        light: allModes['light desktop'],
+        dark: allModes['dark desktop'],
+      },
+    },
   },
 };
 
 export default story;
+
+const Heading = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={6} weight="bold" style={{ marginTop: 8 }}>
+    {children}
+  </Text>
+);
+
+const Paragraph = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={4} style={{ maxWidth: 620, lineHeight: 1.6 }}>
+    {children}
+  </Text>
+);
+
+const Caption = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={3} color="muted">
+    {children}
+  </Text>
+);
+
+// ─── 1. The basics ───────────────────────────────────────────────────────────
+
+export const OverviewStory: StoryObj<typeof Tooltip> = {
+  name: 'Hover, focus, and a shortcut',
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Text size={7} weight="bold" block>
+        Tooltip
+      </Text>
+      <Paragraph>
+        A floating label anchored to a trigger via floating-ui, with a
+        directional arrow. It opens 500ms after a hover, immediately on
+        keyboard focus, and closes as soon as the pointer leaves or focus
+        moves away. <Text code>kbd</Text> appends a shortcut badge after the
+        text.
+      </Paragraph>
+      <Flex direction="horizontal" gap="l" align="center" wrap>
+        <Tooltip content="File not found on the server" />
+        <Tooltip content="Click to open settings">
+          <Button icon={<Settings />} label="Settings" />
+        </Tooltip>
+        <Tooltip content="Run tests" kbd="⌘+T">
+          <Button icon={<Play />} label="Tests" showLabel={false} />
+        </Tooltip>
+        <Tooltip content="Save changes" kbd="⌘+S">
+          <Button
+            icon={<Save />}
+            label="Save"
+            showLabel={false}
+            variant="submit"
+          />
+        </Tooltip>
+        <Tooltip content="Delete permanently" kbd="⌫">
+          <Button icon={<Trash />} label="Delete" showLabel={false} danger />
+        </Tooltip>
+      </Flex>
+      <Caption>
+        The leftmost tooltip has no <Text code>children</Text> at all — a{' '}
+        <Text code>HelpCircle</Text> button is rendered automatically.
+      </Caption>
+    </Flex>
+  ),
+};
+
+// ─── 2. Title, width, and rich content ───────────────────────────────────────
+
+export const RichContentStory: StoryObj<typeof Tooltip> = {
+  name: 'Title, width, and rich content',
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Heading>A bold heading, and how wide the panel gets</Heading>
+      <Paragraph>
+        <Text code>title</Text> adds a bold line above <Text code>content</Text>.{' '}
+        <Text code>maxWidth</Text> overrides the 300px default — narrower for a
+        short label, wider for a paragraph. <Text code>content</Text> also
+        accepts a <Text code>ReactElement</Text>, not just a string.
+      </Paragraph>
+      <Flex direction="horizontal" gap="l" align="center" wrap>
+        <Tooltip
+          title="Keyboard shortcut"
+          content="Open the editor's command palette"
+          kbd="⌘+P"
+        >
+          <Button icon={<Terminal />} label="Commands" />
+        </Tooltip>
+        <Tooltip content="Brief" maxWidth={120}>
+          <Button label="Narrow" />
+        </Tooltip>
+        <Tooltip
+          title="Setting description"
+          content="Enables an experimental WebGPU-based renderer. May be unstable on some GPUs and driver versions."
+          maxWidth={420}
+        >
+          <Button label="Wide" />
+        </Tooltip>
+        <Tooltip
+          content={
+            <Flex direction="vertical" gap="xs">
+              <Text weight="bold">Plan limits</Text>
+              <Text size={3}>5 projects · 3 team members · 10 GB storage</Text>
+            </Flex>
+          }
+          maxWidth={240}
+        >
+          <Avatar firstName="Alex" lastName="Petrov" color="#6366f1" size="s" />
+        </Tooltip>
+      </Flex>
+    </Flex>
+  ),
+};
+
+// ─── 3. Placement ─────────────────────────────────────────────────────────────
+
+export const PlacementStory: StoryObj<typeof Tooltip> = {
+  name: 'Placement, and auto-flip near edges',
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Heading>Six anchors</Heading>
+      <Paragraph>
+        <Text code>placement</Text> takes any floating-ui position, defaulting
+        to <Text code>'top'</Text>. Both <Text code>flip</Text> and{' '}
+        <Text code>shift</Text> are always on, so a tooltip that would run off
+        the viewport near an edge repositions itself automatically.
+      </Paragraph>
+      <Flex direction="horizontal" gap="l" align="center" wrap>
+        {(
+          [
+            ['top', 'Top'],
+            ['bottom', 'Bottom'],
+            ['left', 'Left'],
+            ['right', 'Right'],
+            ['top-start', 'Top-start'],
+            ['top-end', 'Top-end'],
+          ] as const
+        ).map(([placement, label]) => (
+          <Tooltip
+            key={placement}
+            content={`placement="${placement}"`}
+            placement={placement}
+          >
+            <Button size="s" label={label} />
+          </Tooltip>
+        ))}
+      </Flex>
+    </Flex>
+  ),
+};
+
+// ─── 4. A disabled trigger ────────────────────────────────────────────────────
+
+export const DisabledTriggerStory: StoryObj<typeof Tooltip> = {
+  name: 'Wrapping a disabled trigger',
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Heading>No mouse events, no tooltip</Heading>
+      <Paragraph>
+        A disabled <Text code>{'<button>'}</Text> fires no pointer events at
+        all, so a tooltip on it directly never opens. Wrap it in a plain{' '}
+        <Text code>{'<span>'}</Text> instead — the span becomes the trigger
+        and forwards hover/focus to <Text code>Tooltip</Text>, while the
+        button underneath stays visibly disabled.
+      </Paragraph>
+      <Tooltip content="Select at least one row first">
+        <span>
+          <Button icon={<Download />} label="Export" disabled />
+        </span>
+      </Tooltip>
+    </Flex>
+  ),
+};
+
+// ─── 5. Components that tooltip themselves ───────────────────────────────────
+
+const TOOLBAR_GROUPS: { icon: ReactElement; label: string; kbd?: string }[][] = [
+  [
+    { icon: <Bold />, label: 'Bold', kbd: '⌘+B' },
+    { icon: <Italic />, label: 'Italic', kbd: '⌘+I' },
+    { icon: <Underline />, label: 'Underline', kbd: '⌘+U' },
+    { icon: <Strikethrough />, label: 'Strikethrough', kbd: '⌘+⇧+S' },
+  ],
+  [
+    { icon: <AlignLeft />, label: 'Align left', kbd: '⌘+⇧+L' },
+    { icon: <AlignCenter />, label: 'Align center', kbd: '⌘+⇧+E' },
+    { icon: <AlignRight />, label: 'Align right', kbd: '⌘+⇧+R' },
+  ],
+  [
+    { icon: <Link />, label: 'Insert link', kbd: '⌘+K' },
+    { icon: <Image />, label: 'Insert image' },
+    { icon: <Table />, label: 'Insert table' },
+  ],
+];
+
+export const ToolbarStory: StoryObj<typeof Tooltip> = {
+  name: 'Components that tooltip themselves',
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Heading>Don&rsquo;t wrap a self-tooltipping control</Heading>
+      <Paragraph>
+        An icon-only <Text code>Button</Text> (<Text code>showLabel={'{false}'}</Text>)
+        already renders its own <Text code>Tooltip</Text> from{' '}
+        <Text code>label</Text>. Wrapping it in another <Text code>Tooltip</Text>{' '}
+        stacks two panels that both open on hover — instead, override the text
+        with the button&rsquo;s <Text code>tooltip</Text> prop and add the
+        shortcut with <Text code>kbd</Text>.
+      </Paragraph>
+      <Flex
+        direction="horizontal"
+        gap="xs"
+        align="center"
+        style={{
+          background: 'var(--glass-background-color)',
+          border: '1px solid var(--border-1)',
+          borderRadius: 12,
+          padding: '6px 10px',
+          width: 'fit-content',
+        }}
+      >
+        {TOOLBAR_GROUPS.map((group, groupIndex) => (
+          <React.Fragment key={groupIndex}>
+            {groupIndex > 0 ? (
+              <Divider
+                direction="vertical"
+                style={{ height: 20, margin: '0 4px' }}
+              />
+            ) : null}
+            {group.map(({ icon, label, kbd }) => (
+              <Button
+                key={label}
+                icon={icon}
+                label={label}
+                kbd={kbd}
+                showLabel={false}
+                variant="text"
+              />
+            ))}
+          </React.Fragment>
+        ))}
+      </Flex>
+      <Caption>
+        Every button here shows a tooltip on hover, but none of them is wrapped
+        in <Text code>{'<Tooltip>'}</Text>.
+      </Caption>
+    </Flex>
+  ),
+};
+
+// ─── 6. A ref that survives the chain ────────────────────────────────────────
+
+function RefChainDemo() {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [focused, setFocused] = React.useState(false);
+
+  return (
+    <Flex direction="vertical" gap="m" align="start">
+      <Tooltip content="Also readable via its own ref" title="Sparkles">
+        <Button
+          ref={buttonRef}
+          icon={<Sparkles />}
+          label="Format document"
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+        />
+      </Tooltip>
+      <Caption>
+        Button&rsquo;s own <Text code>ref</Text>{' '}
+        {focused ? 'is focused right now.' : 'is idle.'} It still points at the
+        real button — <Text code>Tooltip</Text> merges its own reference
+        tracking with the child&rsquo;s <Text code>ref</Text> instead of
+        replacing it.
+      </Caption>
+    </Flex>
+  );
+}
+
+export const RefChainStory: StoryObj<typeof Tooltip> = {
+  name: 'A ref on the wrapped element',
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Heading>Refs pass through untouched</Heading>
+      <Paragraph>
+        <Text code>{'<Tooltip><Button ref={x} /></Tooltip>'}</Text> is a common
+        shape — a <Text code>Button</Text> inside a <Text code>Tooltip</Text>{' '}
+        inside a <Text code>Dropdown</Text> trigger, say. <Text code>Tooltip</Text>{' '}
+        needs the child&rsquo;s DOM node for floating-ui&rsquo;s own
+        positioning, but that must never come at the cost of the ref the
+        consumer put there themselves.
+      </Paragraph>
+      <RefChainDemo />
+    </Flex>
+  ),
+};

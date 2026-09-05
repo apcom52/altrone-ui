@@ -1,9 +1,9 @@
-import React, { memo, useId, useRef, useState } from 'react';
+import React, { memo, useCallback, useId, useRef, useState } from 'react';
 import { HelpCircle } from 'lucide-react';
 import { TooltipProps } from './Tooltip.types.ts';
 import clsx from 'clsx';
 import s from './tooltip.module.scss';
-import { DOMUtils } from '../../utils';
+import { DOMUtils, mergeRefs } from '../../utils';
 import {
   arrow,
   autoUpdate,
@@ -36,6 +36,7 @@ export const Tooltip = memo(
     const tooltipId = useId();
 
     const arrowRef = useRef<SVGSVGElement>(null);
+    const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
 
     const cls = clsx(s.Tooltip, { [s.WithTitle]: title }, className);
     const styles = {
@@ -77,13 +78,36 @@ export const Tooltip = memo(
       </button>
     );
 
+    const setReference = useCallback(
+      (element: HTMLElement | null) => {
+        refs.setReference(element);
+        setPortalRoot(
+          (element?.closest('[data-altrone-root]') as HTMLElement) ??
+            document.body,
+        );
+      },
+      [refs],
+    );
+
     const childElement = DOMUtils.cloneNode(safeChildElement, {
       ...getReferenceProps(
         React.isValidElement(safeChildElement)
           ? (safeChildElement.props as any)
           : {},
       ),
-      ref: DOMUtils.composeRefs(refs.setReference, ref),
+      /* Merges the child's own `ref` (e.g. `<Button ref={x}>` inside a
+         Tooltip) instead of overwriting it — see ref-forwarding.md. */
+      ref: mergeRefs(
+        React.isValidElement(safeChildElement)
+          ? (
+              safeChildElement as React.ReactElement<{
+                ref?: React.Ref<HTMLElement>;
+              }>
+            ).props.ref
+          : undefined,
+        setReference,
+        ref,
+      ),
       tabIndex:
         (React.isValidElement(safeChildElement)
           ? (safeChildElement.props as any).tabIndex
@@ -94,16 +118,8 @@ export const Tooltip = memo(
       <>
         {childElement}
         <AnimatePresence>
-          {opened && (
-            <FloatingPortal
-              root={
-                typeof window !== 'undefined'
-                  ? ((document.querySelector(
-                      '[data-altrone-root]',
-                    ) as HTMLElement) ?? undefined)
-                  : undefined
-              }
-            >
+          {opened && portalRoot && (
+            <FloatingPortal root={portalRoot}>
               <motion.div
                 ref={refs.setFloating}
                 id={tooltipId}

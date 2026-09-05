@@ -8,6 +8,8 @@ export interface ButtonProps extends Omit<
   label: string;
   showLabel?: boolean;
   tooltip?: string | ReactElement;
+  /** Shortcut badge for the auto-tooltip shown when `showLabel` is false. */
+  kbd?: string;
 
   icon?: ReactElement;
   additionalIcon?: ReactElement;
