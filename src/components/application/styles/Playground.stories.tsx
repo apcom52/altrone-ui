@@ -1,0 +1,349 @@
+import { Meta, StoryObj } from '@storybook/react';
+import { Flex } from 'components';
+import { StorybookDecorator } from 'global/storybook';
+
+const story: Meta = {
+  title: 'Playground',
+  decorators: [StorybookDecorator],
+};
+
+export default story;
+
+/* Figma export — a red arrow gliding over three glass tiles. */
+const ArrowTilesIcon = () => (
+  <svg
+    width="96"
+    height="96"
+    viewBox="0 0 48 48"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g filter="url(#filter0_f_18_300)">
+      <circle cx="25" cy="24" r="5" fill="url(#paint0_linear_18_300)" />
+    </g>
+    <path
+      d="M26.2614 31.8385C25.38 32.397 24.3397 31.4016 24.8587 30.4964L27.6428 25.6402C28.025 24.9736 27.5437 24.1429 26.7752 24.1429H9C8.44772 24.1429 8 23.6951 8 23.1429V21.8571C8 21.3049 8.44772 20.8571 9 20.8571H26.7752C27.5437 20.8571 28.025 20.0264 27.6428 19.3598L24.8587 14.5036C24.3397 13.5984 25.38 12.603 26.2614 13.1615L39.6668 21.6553C40.2865 22.0479 40.2865 22.9521 39.6668 23.3447L26.2614 31.8385Z"
+      fill="url(#paint1_linear_18_300)"
+    />
+    <foreignObject x="1" y="21" width="20" height="24">
+      <div
+        style={{
+          backdropFilter: 'blur(2px)',
+          clipPath: 'url(#bgblur_0_18_300_clip_path)',
+          height: '100%',
+          width: '100%',
+        }}
+      />
+    </foreignObject>
+    <g filter="url(#filter1_d_18_300)" data-figma-bg-blur-radius="4">
+      <rect
+        x="5"
+        y="25"
+        width="12"
+        height="12"
+        rx="2"
+        fill="url(#paint2_linear_18_300)"
+        shapeRendering="crispEdges"
+      />
+      <rect
+        x="5.5"
+        y="25.5"
+        width="11"
+        height="11"
+        rx="1.5"
+        stroke="url(#paint3_linear_18_300)"
+        shapeRendering="crispEdges"
+      />
+    </g>
+    <foreignObject x="14" y="21" width="20" height="24">
+      <div
+        style={{
+          backdropFilter: 'blur(2px)',
+          clipPath: 'url(#bgblur_1_18_300_clip_path)',
+          height: '100%',
+          width: '100%',
+        }}
+      />
+    </foreignObject>
+    <g filter="url(#filter2_d_18_300)" data-figma-bg-blur-radius="4">
+      <rect
+        x="18"
+        y="25"
+        width="12"
+        height="12"
+        rx="2"
+        fill="url(#paint4_linear_18_300)"
+        shapeRendering="crispEdges"
+      />
+      <rect
+        x="18.5"
+        y="25.5"
+        width="11"
+        height="11"
+        rx="1.5"
+        stroke="url(#paint5_linear_18_300)"
+        shapeRendering="crispEdges"
+      />
+    </g>
+    <foreignObject x="27" y="21" width="20" height="24">
+      <div
+        style={{
+          backdropFilter: 'blur(2px)',
+          clipPath: 'url(#bgblur_2_18_300_clip_path)',
+          height: '100%',
+          width: '100%',
+        }}
+      />
+    </foreignObject>
+    <g filter="url(#filter3_d_18_300)" data-figma-bg-blur-radius="4">
+      <rect
+        x="31"
+        y="25"
+        width="12"
+        height="12"
+        rx="2"
+        fill="url(#paint6_linear_18_300)"
+        shapeRendering="crispEdges"
+      />
+      <rect
+        x="31.5"
+        y="25.5"
+        width="11"
+        height="11"
+        rx="1.5"
+        stroke="url(#paint7_linear_18_300)"
+        shapeRendering="crispEdges"
+      />
+    </g>
+    <defs>
+      <filter
+        id="filter0_f_18_300"
+        x="4"
+        y="3"
+        width="42"
+        height="42"
+        filterUnits="userSpaceOnUse"
+        colorInterpolationFilters="sRGB"
+      >
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="BackgroundImageFix"
+          result="shape"
+        />
+        <feGaussianBlur stdDeviation="8" result="effect1_foregroundBlur_18_300" />
+      </filter>
+      <filter
+        id="filter1_d_18_300"
+        x="1"
+        y="21"
+        width="20"
+        height="24"
+        filterUnits="userSpaceOnUse"
+        colorInterpolationFilters="sRGB"
+      >
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
+        <feColorMatrix
+          in="SourceAlpha"
+          type="matrix"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          result="hardAlpha"
+        />
+        <feOffset dy="4" />
+        <feGaussianBlur stdDeviation="2" />
+        <feComposite in2="hardAlpha" operator="out" />
+        <feColorMatrix
+          type="matrix"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+        />
+        <feBlend
+          mode="normal"
+          in2="BackgroundImageFix"
+          result="effect1_dropShadow_18_300"
+        />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="effect1_dropShadow_18_300"
+          result="shape"
+        />
+      </filter>
+      <clipPath id="bgblur_0_18_300_clip_path" transform="translate(-1 -21)">
+        <rect x="5" y="25" width="12" height="12" rx="2" />
+      </clipPath>
+      <filter
+        id="filter2_d_18_300"
+        x="14"
+        y="21"
+        width="20"
+        height="24"
+        filterUnits="userSpaceOnUse"
+        colorInterpolationFilters="sRGB"
+      >
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
+        <feColorMatrix
+          in="SourceAlpha"
+          type="matrix"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          result="hardAlpha"
+        />
+        <feOffset dy="4" />
+        <feGaussianBlur stdDeviation="2" />
+        <feComposite in2="hardAlpha" operator="out" />
+        <feColorMatrix
+          type="matrix"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+        />
+        <feBlend
+          mode="normal"
+          in2="BackgroundImageFix"
+          result="effect1_dropShadow_18_300"
+        />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="effect1_dropShadow_18_300"
+          result="shape"
+        />
+      </filter>
+      <clipPath id="bgblur_1_18_300_clip_path" transform="translate(-14 -21)">
+        <rect x="18" y="25" width="12" height="12" rx="2" />
+      </clipPath>
+      <filter
+        id="filter3_d_18_300"
+        x="27"
+        y="21"
+        width="20"
+        height="24"
+        filterUnits="userSpaceOnUse"
+        colorInterpolationFilters="sRGB"
+      >
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
+        <feColorMatrix
+          in="SourceAlpha"
+          type="matrix"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          result="hardAlpha"
+        />
+        <feOffset dy="4" />
+        <feGaussianBlur stdDeviation="2" />
+        <feComposite in2="hardAlpha" operator="out" />
+        <feColorMatrix
+          type="matrix"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+        />
+        <feBlend
+          mode="normal"
+          in2="BackgroundImageFix"
+          result="effect1_dropShadow_18_300"
+        />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="effect1_dropShadow_18_300"
+          result="shape"
+        />
+      </filter>
+      <clipPath id="bgblur_2_18_300_clip_path" transform="translate(-27 -21)">
+        <rect x="31" y="25" width="12" height="12" rx="2" />
+      </clipPath>
+      <linearGradient
+        id="paint0_linear_18_300"
+        x1="20"
+        y1="19"
+        x2="30"
+        y2="29"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="#FF0B0B" />
+        <stop offset="1" stopColor="#9C0506" />
+      </linearGradient>
+      <linearGradient
+        id="paint1_linear_18_300"
+        x1="8"
+        y1="11"
+        x2="29.5785"
+        y2="41.9604"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="#F68E7A" />
+        <stop offset="1" stopColor="#D13415" />
+      </linearGradient>
+      <linearGradient
+        id="paint2_linear_18_300"
+        x1="3.2"
+        y1="38.2"
+        x2="17"
+        y2="25"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="white" stopOpacity="0.2" />
+        <stop offset="1" stopColor="white" stopOpacity="0.5" />
+      </linearGradient>
+      <linearGradient
+        id="paint3_linear_18_300"
+        x1="15.8"
+        y1="38.2"
+        x2="5"
+        y2="25.3"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="white" stopOpacity="0" />
+        <stop offset="1" stopColor="white" />
+      </linearGradient>
+      <linearGradient
+        id="paint4_linear_18_300"
+        x1="16.2"
+        y1="38.2"
+        x2="30"
+        y2="25"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="white" stopOpacity="0.2" />
+        <stop offset="1" stopColor="white" stopOpacity="0.5" />
+      </linearGradient>
+      <linearGradient
+        id="paint5_linear_18_300"
+        x1="28.8"
+        y1="38.2"
+        x2="18"
+        y2="25.3"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="white" stopOpacity="0" />
+        <stop offset="1" stopColor="white" />
+      </linearGradient>
+      <linearGradient
+        id="paint6_linear_18_300"
+        x1="29.2"
+        y1="38.2"
+        x2="43"
+        y2="25"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="white" stopOpacity="0.2" />
+        <stop offset="1" stopColor="white" stopOpacity="0.5" />
+      </linearGradient>
+      <linearGradient
+        id="paint7_linear_18_300"
+        x1="41.8"
+        y1="38.2"
+        x2="31"
+        y2="25.3"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="white" stopOpacity="0" />
+        <stop offset="1" stopColor="white" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+export const Empty: StoryObj = {
+  render: () => (
+    <Flex align="center" justify="center" style={{ flex: 1, minHeight: '80vh' }}>
+      <ArrowTilesIcon />
+    </Flex>
+  ),
+};

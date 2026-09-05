@@ -15,14 +15,19 @@ export const StorybookDecorator = (Story: any, options: any) => {
     );
   }, [backgroundValue]);
 
-  /* Stamp the Altrone scoping attributes onto <html> so every design token
-     (`--gray-*`, `--background-*`, `--accent-*` and their dark overrides)
-     resolves outside the app root too — the Storybook pattern backgrounds are
-     painted on <body> and read these. `data-altrone-theme` is already mirrored
-     to <html> by `AltroneApplication`. */
+  /* Mirror the accent onto <html> so the accent-based Storybook pattern
+     backgrounds (painted on <body>) resolve `--accent-*`. Do NOT stamp
+     `data-altrone-root` here — it is the portal anchor (`document.querySelector`
+     in Popover/Dropdown), and a second match on <html> would pull every portal
+     out of the `.AltroneApp` cascade. The gray/background tokens the other
+     patterns need are bridged in `preview.css` instead. `data-altrone-theme` is
+     already mirrored to <html> by `AltroneApplication`. */
   useEffect(() => {
-    document.documentElement.setAttribute('data-altrone-root', 'true');
     document.documentElement.setAttribute('data-altrone-accent', accent);
+    /* Clean up the attribute an earlier build of this decorator used to set —
+       otherwise portals (Popover/Dropdown) anchor to <html> and lose the
+       `.AltroneApp` token scope. */
+    document.documentElement.removeAttribute('data-altrone-root');
   }, [accent]);
 
   useEffect(() => {

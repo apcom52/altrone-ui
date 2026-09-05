@@ -36,6 +36,9 @@ export const fr: Localization = {
   search: {
     placeholder: 'Rechercher',
   },
+  select: {
+    notFound: 'Aucun résultat',
+  },
   toolbar: {
     back: 'Précédent',
     forward: 'Suivant',

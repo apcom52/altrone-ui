@@ -36,6 +36,9 @@ export const ru: Localization = {
   search: {
     placeholder: 'Поиск',
   },
+  select: {
+    notFound: 'Ничего не найдено',
+  },
   toolbar: {
     back: 'Назад',
     forward: 'Вперёд',

@@ -1,20 +1,29 @@
 import { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import { Avatar, Button, Flex, Progress, Radio, Tags, Text } from 'components';
+import React, { useRef, useState } from 'react';
+import { useListItem } from '@floating-ui/react';
+import {
+  ChevronDown,
+  Copy,
+  Filter,
+  Info,
+  Link2,
+  MapPin,
+  RefreshCw,
+  ShieldAlert,
+  Smile,
+  Trash2,
+} from 'lucide-react';
+import { Button, Flex, Progress, Switcher, Text, TextInput } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Popover } from './Popover.tsx';
-import { PopoverRef } from './Popover.types.ts';
+import type { PopoverRef, PopoverTrigger } from './Popover.types.ts';
 import { getAllPlacements } from './utils/placementUtils';
-import { ChevronDown, ChevronUp, Lightbulb, Logs, Rocket } from 'lucide-react';
-// import { expect, userEvent, within } from '@storybook/test';
 
 const story: Meta<typeof Popover> = {
   title: 'Components/Containers/Popover',
   component: Popover,
   decorators: [StorybookDecorator],
-  args: {},
-  argTypes: {},
   parameters: {
     chromatic: {
       modes: {
@@ -25,684 +34,535 @@ const story: Meta<typeof Popover> = {
   },
 };
 
-export const PopoverStory: StoryObj<typeof Flex> = {
-  name: 'Using Popover',
-  render: () => (
-    <Flex direction="vertical" gap="l">
-      <Text size={5} weight="bold" block>
-        Basic Popovers
-      </Text>
-      <Flex direction="horizontal" gap="l">
-        <Popover
-          placement="bottom"
-          title="System update"
-          showCloseButton
-          data-testid="popover-click"
-          content={
-            <Flex direction="vertical" gap="m">
-              <Text size={3} block>
-                We're gearing up for a system update packed with improvements
-              </Text>
-              <Flex justify="center" direction="horizontal" gap="s">
-                <Button variant="default" label="Reschedule update" />
-                <Button variant="submit" label="Update now" />
-              </Flex>
-            </Flex>
-          }
-        >
-          <Button label="Open popover" data-testid="button-click" />
-        </Popover>
-        <Popover
-          placement="bottom"
-          title="System update"
-          showCloseButton
-          content={
-            <Flex direction="vertical" gap="m">
-              <Text size={3} block>
-                We're gearing up for a system update packed with improvements
-              </Text>
-              <Flex justify="end" direction="horizontal" gap="s">
-                <Button label="Reschedule update" />
-                <Button label="Update now" />
-              </Flex>
-            </Flex>
-          }
-        >
-          <Button label="Show more details" icon={<Lightbulb />} />
-        </Popover>
-        <Popover
-          style={{ maxWidth: '150px' }}
-          content={
-            <Text size={3} block>
-              <Text weight="bold">Resilience</Text> - Bouncing back from
-              adversity with strength and adaptability.
-            </Text>
-          }
-        >
-          <Button label="Resilience" />
-        </Popover>
-        <Popover
-          style={{ maxWidth: '200px' }}
-          data-testid="popover-parent"
-          content={
-            <Text size={3} block>
-              Click here to open child popover{' '}
+export default story;
+
+const Heading = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={6} weight="bold" style={{ marginTop: 8 }}>
+    {children}
+  </Text>
+);
+
+const Paragraph = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
+    {children}
+  </Text>
+);
+
+const Caption = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={3} color="muted">
+    {children}
+  </Text>
+);
+
+// ─── 1. Triggers ─────────────────────────────────────────────────────────────
+
+export const TriggersStory: StoryObj<typeof Popover> = {
+  name: 'Ways to open',
+  render: () => {
+    const cases: { trigger: PopoverTrigger | PopoverTrigger[]; note: string }[] =
+      [
+        { trigger: 'click', note: 'Tap to open, tap-away or Esc to close.' },
+        {
+          trigger: 'hover',
+          note: 'Opens after 500 ms, closes 250 ms after you leave (safe-polygon path to the panel).',
+        },
+        {
+          trigger: 'focus',
+          note: 'Opens on keyboard focus only (`visibleOnly`). Great for hint bubbles on inputs.',
+        },
+        {
+          trigger: ['click', 'focus'],
+          note: 'Combined — a click opens it without instantly re-closing on the focus that follows.',
+        },
+      ];
+
+    return (
+      <Flex direction="vertical" gap="xl" style={{ maxWidth: 640 }}>
+        <Text size={7} weight="bold" block>
+          Popover
+        </Text>
+        <Paragraph>
+          A floating panel anchored to a trigger element via floating-ui. It
+          portals to the app root, traps focus, closes on Esc / outside-press,
+          and animates in and out.
+        </Paragraph>
+
+        <Heading>Ways to open</Heading>
+        <Paragraph>
+          The <Text code>trigger</Text> prop takes <Text code>'click'</Text>,{' '}
+          <Text code>'hover'</Text>, <Text code>'focus'</Text>, or an array of
+          them.
+        </Paragraph>
+        <Flex direction="horizontal" gap="l" wrap>
+          {cases.map(({ trigger, note }) => (
+            <Flex
+              key={String(trigger)}
+              direction="vertical"
+              gap="s"
+              style={{ width: 260 }}
+            >
               <Popover
-                data-testid="popover-child"
+                trigger={trigger}
                 content={
-                  <Text size={3} block>
-                    This is child popover!
+                  <Text size={3} style={{ maxWidth: 200 }}>
+                    {note}
                   </Text>
                 }
               >
-                <Button label="Open" data-testid="button-child" />
+                <Button
+                  label={
+                    Array.isArray(trigger) ? trigger.join(' + ') : trigger
+                  }
+                />
               </Popover>
-            </Text>
-          }
-        >
-          <Button label="Parent popover" data-testid="button-parent" />
-        </Popover>
+              <Caption>{note}</Caption>
+            </Flex>
+          ))}
+        </Flex>
       </Flex>
-      <Text size={5} weight="bold" block>
-        How to trigger the popover?
-      </Text>
-      <Flex direction="horizontal" gap="l">
-        <Popover
-          trigger="click"
-          placement="top"
-          content={
-            <Text size={3} block>
-              Join Our Newsletter for Exciting Updates &{' '}
-              <Text href="#">Special Deals</Text>!
-            </Text>
-          }
-        >
-          <Button label="Click me" />
-        </Popover>
-        <Popover
-          trigger="hover"
-          placement="top"
-          data-testid="popover-hover"
-          content={() => (
-            <Text size={3} block>
-              Join Our Newsletter for Exciting Updates &{' '}
-              <Text href="#">Special Deals</Text>!
-            </Text>
-          )}
-        >
-          <Button label="Hover me" data-testid="button-hover" />
-        </Popover>
-        <Popover
-          trigger="focus"
-          placement="top"
-          data-testid="popover-focus"
-          content={
-            <Text size={3} block>
-              Join Our Newsletter for Exciting Updates &{' '}
-              <Text href="#">Special Deals</Text>!
-            </Text>
-          }
-        >
-          <Button label="Focus me" data-testid="button-focus" />
-        </Popover>
-      </Flex>
-      <Flex direction="horizontal" gap="l"></Flex>
-      <Text size={5} weight="bold" block>
-        Different placement of popover
-      </Text>
-      <Flex direction="horizontal" gap="l">
-        <Popover
-          placement="top"
-          title="Unraveling Dark Matter's Mystery"
-          showCloseButton
-          style={{ maxWidth: '250px' }}
-          content={
-            <Text size={3} block>
-              Dark matter, comprising 27% of the universe, defies detection
-              despite its gravitational influence on celestial bodies. Theories
-              abound regarding its composition, yet conclusive evidence remains
-              elusive. Astronomers employ advanced technologies in a relentless
-              pursuit to shed light on this cosmic enigma.
-            </Text>
-          }
-        >
-          <Button label="Top" />
-        </Popover>
-        <Popover
-          placement="right"
-          title="Unraveling Dark Matter's Mystery"
-          showCloseButton
-          style={{ maxWidth: '250px' }}
-          content={
-            <Text size={3} block>
-              Dark matter, comprising 27% of the universe, defies detection
-              despite its gravitational influence on celestial bodies. Theories
-              abound regarding its composition, yet conclusive evidence remains
-              elusive. Astronomers employ advanced technologies in a relentless
-              pursuit to shed light on this cosmic enigma.
-            </Text>
-          }
-        >
-          <Button label="Right" />
-        </Popover>
-        <Popover
-          placement="bottom"
-          title="Unraveling Dark Matter's Mystery"
-          showCloseButton
-          openedByDefault
-          style={{ maxWidth: '260px' }}
-          content={
-            <Text size={3} block>
-              Dark matter, comprising 27% of the universe, defies detection
-              despite its gravitational influence on celestial bodies. Theories
-              abound regarding its composition, yet conclusive evidence remains
-              elusive. Astronomers employ advanced technologies in a relentless
-              pursuit to shed light on this cosmic enigma.
-            </Text>
-          }
-        >
-          <Button label="Bottom" />
-        </Popover>
-        <Popover
-          placement="left"
-          title="Unraveling Dark Matter's Mystery"
-          showCloseButton
-          style={{ maxWidth: '250px' }}
-          content={
-            <Text size={3} block>
-              Dark matter, comprising 27% of the universe, defies detection
-              despite its gravitational influence on celestial bodies. Theories
-              abound regarding its composition, yet conclusive evidence remains
-              elusive. Astronomers employ advanced technologies in a relentless
-              pursuit to shed light on this cosmic enigma.
-            </Text>
-          }
-        >
-          <Button label="Left" />
-        </Popover>
-      </Flex>
-      <Text size={5} weight="bold" block>
-        Disabled popovers
-      </Text>
-      <Flex direction="horizontal" gap="l">
-        <Popover
-          placement="top"
-          title="Unraveling Dark Matter's Mystery"
-          enabled={false}
-          showCloseButton
-          data-testid="popover-disabled"
-          style={{ maxWidth: '250px' }}
-          content={
-            <Text size={3} block>
-              Dark matter, comprising 27% of the universe, defies detection
-              despite its gravitational influence on celestial bodies. Theories
-              abound regarding its composition, yet conclusive evidence remains
-              elusive. Astronomers employ advanced technologies in a relentless
-              pursuit to shed light on this cosmic enigma.
-            </Text>
-          }
-        >
-          <Button label="No popover here" data-testid="button-disabled" />
-        </Popover>
-      </Flex>
-    </Flex>
-  ),
+    );
+  },
 };
 
-export const OverlapPopoverStory: StoryObj<typeof Flex> = {
-  name: 'Overlap Popover',
+// ─── 2. Placement, auto-flip, matching width ────────────────────────────────
+
+export const AnchoringStory: StoryObj<typeof Popover> = {
+  name: 'Anchoring, auto-flip & matching width',
   render: () => (
-    <Flex direction="vertical" gap="l">
-      <Text size={5} weight="bold" block>
-        Overlap Popovers
-      </Text>
-      <Text size={3} block>
-        Popovers with overlap=true completely cover the children element at the
-        same coordinates
-      </Text>
-      <Flex direction="horizontal" gap="l">
-        <Popover
-          overlap
-          title="Overlap Popover"
-          showCloseButton
-          content={
-            <Flex direction="vertical" gap="m">
-              <Text size={3} block>
-                This popover overlaps with the button at its starting position
-              </Text>
-              <Button label="Action" />
-            </Flex>
-          }
-        >
-          <Button label="Overlap Popover" />
-        </Popover>
-        <Popover
-          overlap
-          placement="bottom"
-          title="Bottom Overlap"
-          showCloseButton
-          content={
-            <Flex direction="vertical" gap="m">
-              <Text size={3} block>
-                This popover appears below the button with overlap
-              </Text>
-            </Flex>
-          }
-        >
-          <Button label="Bottom Overlap" />
-        </Popover>
+    <Flex direction="vertical" gap="xl" style={{ maxWidth: 720 }}>
+      <Heading>Twelve anchors</Heading>
+      <Paragraph>
+        <Text code>placement</Text> accepts every floating-ui position. Each
+        button below opens its panel on the named side; <Text code>shift</Text>{' '}
+        keeps it in view near screen edges.
+      </Paragraph>
+      <Flex
+        direction="horizontal"
+        gap="m"
+        wrap
+        style={{ maxWidth: 560, margin: '40px 0' }}
+      >
+        {getAllPlacements().map(({ value, label }) => (
+          <Popover
+            key={value}
+            placement={value}
+            content={<Text size={3}>Placed at “{label}”.</Text>}
+          >
+            <Button size="s" label={label} />
+          </Popover>
+        ))}
       </Flex>
+
+      <Heading>Auto</Heading>
+      <Paragraph>
+        <Text code>placement="auto"</Text> lets floating-ui pick whichever side
+        has room. Scroll this one to the edge of the viewport and reopen — it
+        flips to stay visible.
+      </Paragraph>
+      <Popover
+        placement="auto"
+        content={<Text size={3}>I land wherever I fit.</Text>}
+      >
+        <Button icon={<MapPin />} label="Auto-placed" />
+      </Popover>
+
+      <Heading>Matching the trigger's width</Heading>
+      <Paragraph>
+        <Text code>parentWidth</Text> stretches the panel to the trigger's
+        exact width — useful when the panel is a preview of the control itself,
+        not an independently-sized menu.
+      </Paragraph>
+      <Popover
+        parentWidth
+        placement="bottom"
+        content={
+          <Flex direction="vertical" gap="xs" style={{ padding: '2px 0' }}>
+            <Text size={3} color="muted">
+              Q3 coverage
+            </Text>
+            <Progress value={72} max={100} />
+            <Text size={2} color="muted">
+              72% of target reached
+            </Text>
+          </Flex>
+        }
+      >
+        <Button label="Export quarterly report" style={{ width: 280 }} />
+      </Popover>
     </Flex>
   ),
 };
 
-export const AllPlacementsStory: StoryObj<typeof Flex> = {
-  name: 'All Placements',
+// ─── 3. Overlap + list navigation ────────────────────────────────────────────
+
+const EMOJIS = ['👍', '❤️', '😂', '🎉', '👀'];
+
+/** Registers itself with the enclosing `FloatingList` so arrow keys can reach it. */
+const ReactionButton = ({
+  emoji,
+  selected,
+  onSelect,
+}: {
+  emoji: string;
+  selected: boolean;
+  onSelect: () => void;
+}) => {
+  const { ref } = useListItem();
+
+  return (
+    <Button
+      ref={ref}
+      variant={selected ? 'submit' : 'default'}
+      label={emoji}
+      onClick={onSelect}
+      style={{ fontSize: 18, minWidth: 40 }}
+    />
+  );
+};
+
+export const ReactionsStory: StoryObj<typeof Popover> = {
+  name: 'Reactions: overlap + arrow-key picking',
   render: () => {
-    const placements = getAllPlacements();
+    const [picked, setPicked] = useState('👍');
+    const [virtualFocus, setVirtualFocus] = useState(false);
 
     return (
-      <Flex direction="vertical" gap="l">
-        <Text size={5} weight="bold" block>
-          All Placement Options
-        </Text>
-        <Text size={3} block>
-          Demonstration of all available placement options for popovers
-        </Text>
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
+        <Heading>Overlap + list navigation</Heading>
+        <Paragraph>
+          <Text code>overlap</Text> lets the panel cover its trigger — the
+          reaction button becomes the row's first slot instead of pushing
+          content below it. <Text code>listNavigation</Text> (with{' '}
+          <Text code>defaultListNavigationIndex</Text>) lets Arrow keys walk the
+          row, starting on “🎉”; each button registers itself via floating-ui's{' '}
+          <Text code>useListItem()</Text> — that's the same mechanism{' '}
+          <Text code>Dropdown</Text> uses internally, available directly on{' '}
+          <Text code>Popover</Text> for content that isn't a menu.
+        </Paragraph>
+        <Flex direction="horizontal" gap="m" align="center">
+          <Popover
+            overlap
+            listNavigation
+            defaultListNavigationIndex={3}
+            virtualNavigationFocus={virtualFocus}
+            placement="bottom-start"
+            content={({ closePopup }) => (
+              <Flex direction="horizontal" gap="xs">
+                {EMOJIS.map((emoji) => (
+                  <ReactionButton
+                    key={emoji}
+                    emoji={emoji}
+                    selected={emoji === picked}
+                    onSelect={() => {
+                      setPicked(emoji);
+                      closePopup();
+                    }}
+                  />
+                ))}
+              </Flex>
+            )}
+          >
+            <Button icon={<Smile />} label={`You reacted ${picked}`} />
+          </Popover>
+          <Switcher checked={virtualFocus} onChange={setVirtualFocus}>
+            Virtual focus
+          </Switcher>
+        </Flex>
+        <Caption>
+          <Text code>virtualNavigationFocus</Text> swaps real DOM focus moves for
+          an <Text code>aria-activedescendant</Text> — the row stays visually
+          the same either way.
+        </Caption>
+      </Flex>
+    );
+  },
+};
 
-        <Flex
-          direction="vertical"
-          gap="l"
-          style={{ paddingTop: '200px', paddingBottom: '200px' }}
+// ─── 4. Titled dialog + focus trap ───────────────────────────────────────────
+
+export const ShareStory: StoryObj<typeof Popover> = {
+  name: 'A share panel',
+  render: () => {
+    const [copied, setCopied] = useState(false);
+    const [restricted, setRestricted] = useState(true);
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+        <Heading>Header, close button, trapped focus</Heading>
+        <Paragraph>
+          <Text code>title</Text> plus <Text code>showCloseButton</Text> turn
+          the panel into a labelled <Text code>role="dialog"</Text>.{' '}
+          <Text code>focusTrap</Text> (on by default) keeps Tab cycling inside
+          it — try tabbing through the field, the switch and the close button
+          without ever leaving the panel.
+        </Paragraph>
+        <Popover
+          title="Share “Q3 roadmap”"
+          showCloseButton
+          placement="bottom-start"
+          content={
+            <Flex direction="vertical" gap="m" style={{ width: 280 }}>
+              <TextInput value="https://altrone.app/d/q3-roadmap" readOnly size="s">
+                <TextInput.ActionIsland
+                  placement="end"
+                  label="Copy link"
+                  icon={<Copy />}
+                  showLabel={false}
+                  onClick={() => {
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 1200);
+                  }}
+                />
+              </TextInput>
+              {copied && <Caption>Copied to clipboard.</Caption>}
+              <Switcher checked={restricted} onChange={setRestricted}>
+                Only people I invite
+              </Switcher>
+            </Flex>
+          }
         >
-          {placements.map((placement) => (
-            <Flex
-              key={placement.value}
-              direction="horizontal"
-              gap="m"
-              align="center"
-            >
-              <Text size={3} block style={{ minWidth: '400px' }}>
-                {placement.label}:
-              </Text>
+          <Button label="Share" icon={<Link2 />} />
+        </Popover>
+      </Flex>
+    );
+  },
+};
+
+// ─── 5. Nested + closeAllSequence ────────────────────────────────────────────
+
+const ConfirmField = ({ onConfirm }: { onConfirm: () => void }) => {
+  const [value, setValue] = useState('');
+
+  return (
+    <Flex direction="horizontal" gap="s">
+      <TextInput
+        value={value}
+        onChange={setValue}
+        placeholder="DELETE"
+        size="s"
+      />
+      <Button
+        label="Confirm"
+        variant="submit"
+        danger
+        disabled={value !== 'DELETE'}
+        onClick={onConfirm}
+      />
+    </Flex>
+  );
+};
+
+export const NestedStory: StoryObj<typeof Popover> = {
+  name: 'Confirm, twice — then bail out of both',
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+      <Heading>Nested popovers</Heading>
+      <Paragraph>
+        A popover opened from inside another popover's content stacks on top of
+        it. Both levels get their own <Text code>closePopup</Text>; the inner
+        one also gets <Text code>closeAllSequence</Text> to collapse the whole
+        chain — a single "never mind" that doesn't require closing each level
+        in turn.
+      </Paragraph>
+      <Popover
+        title="Delete workspace"
+        showCloseButton
+        content={({ closePopup }) => (
+          <Flex direction="vertical" gap="m" style={{ width: 260 }}>
+            <Text size={3}>This removes every project inside it.</Text>
+            <Flex direction="horizontal" gap="s" justify="end">
+              <Button label="Cancel" onClick={closePopup} />
               <Popover
-                placement={placement.value}
-                title={`${placement.label} Popover`}
-                showCloseButton
-                content={
-                  <Flex direction="vertical" gap="m">
-                    <Text size={3} block>
-                      This is a {placement.label.toLowerCase()} popover
+                placement="bottom-end"
+                title="Are you really sure?"
+                content={({ closeAllSequence }) => (
+                  <Flex direction="vertical" gap="m" style={{ width: 240 }}>
+                    <Text size={3}>
+                      Type <Text code>DELETE</Text> below. This can't be undone.
                     </Text>
-                    <Button label="Action" />
+                    <ConfirmField onConfirm={closeAllSequence} />
+                    <Button
+                      variant="text"
+                      label="Never mind, cancel everything"
+                      onClick={closeAllSequence}
+                    />
                   </Flex>
-                }
+                )}
               >
-                <Button label={`${placement.label} Popover`} />
+                <Button
+                  label="Continue"
+                  variant="submit"
+                  danger
+                  icon={<Trash2 />}
+                />
               </Popover>
             </Flex>
-          ))}
+          </Flex>
+        )}
+      >
+        <Button label="Delete workspace" danger icon={<ShieldAlert />} />
+      </Popover>
+    </Flex>
+  ),
+};
+
+// ─── 6. openedByDefault + enabled ────────────────────────────────────────────
+
+export const AvailabilityStory: StoryObj<typeof Popover> = {
+  name: 'Opened by default, and switched off entirely',
+  render: () => {
+    const [dismissed, setDismissed] = useState(false);
+    const [ticketsEnabled, setTicketsEnabled] = useState(true);
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+        <Heading>An onboarding hint</Heading>
+        <Paragraph>
+          <Text code>openedByDefault</Text> starts a popover open on mount —
+          handy for a one-time coach-mark. It's still an ordinary,
+          uncontrolled popover afterwards: closing it just closes it, the
+          trigger reopens it normally.
+        </Paragraph>
+        <Popover
+          openedByDefault
+          placement="right"
+          title="New: quick filters"
+          showCloseButton
+          content={
+            <Text size={3} style={{ maxWidth: 220 }}>
+              Filter by owner or status without leaving this page.
+            </Text>
+          }
+          onOpenChange={(open) => setDismissed(!open)}
+        >
+          <Button icon={<Filter />} label="Filters" />
+        </Popover>
+        <Caption>
+          {dismissed
+            ? 'Dismissed — click “Filters” to open it like any other popover.'
+            : 'Open by default, as soon as this story mounts.'}
+        </Caption>
+
+        <Heading>Switched off entirely</Heading>
+        <Paragraph>
+          <Text code>{'enabled={false}'}</Text> renders only the trigger — no
+          floating-ui wiring, no listeners, nothing to open. A feature flag or
+          an out-of-stock state can turn a popover off without conditionally
+          rendering two different trees.
+        </Paragraph>
+        <Flex direction="horizontal" gap="m" align="center">
+          <Popover
+            enabled={ticketsEnabled}
+            content={<Text size={3}>Two seats left in row F.</Text>}
+          >
+            <Button
+              label={ticketsEnabled ? 'Seat map' : 'Sold out'}
+              disabled={!ticketsEnabled}
+            />
+          </Popover>
+          <Switcher checked={ticketsEnabled} onChange={setTicketsEnabled}>
+            Tickets on sale
+          </Switcher>
         </Flex>
       </Flex>
     );
   },
 };
 
-export const OverlapPlacementsStory: StoryObj<typeof Flex> = {
-  name: 'Overlap Placements',
+// ─── 7. Reading and driving the open state ───────────────────────────────────
+
+export const StateStory: StoryObj<typeof Popover> = {
+  name: 'Reading and driving the open state',
   render: () => {
-    const placements = getAllPlacements();
+    const popoverRef = useRef<PopoverRef>(null);
+    const [loading, setLoading] = useState(false);
+    const [placement, setPlacement] = useState('—');
+    const [log, setLog] = useState<string[]>([]);
 
-    return (
-      <Flex direction="vertical" gap="l">
-        <Text size={5} weight="bold" block>
-          Overlap Placements
-        </Text>
-        <Text size={3} block>
-          All placement options in overlap mode - popovers are positioned
-          relative to their trigger elements:
-          <br />• <strong>top/bottom/left/right</strong> - centered
-          <br />• <strong>*-start</strong> - aligned to start edge
-          <br />• <strong>*-end</strong> - aligned to end edge
-        </Text>
-
-        <Flex
-          direction="vertical"
-          gap="l"
-          style={{ paddingTop: '200px', paddingBottom: '200px' }}
-        >
-          {placements.map((placement) => (
-            <Flex
-              key={placement.value}
-              direction="horizontal"
-              gap="m"
-              align="center"
-            >
-              <Text size={3} block style={{ minWidth: '120px' }}>
-                {placement.label}:
-              </Text>
-              <Popover
-                overlap
-                placement={placement.value}
-                title={`${placement.label} Overlap`}
-                showCloseButton
-                content={
-                  <Flex direction="vertical" gap="m">
-                    <Text size={3} block>
-                      {placement.value.includes('start')
-                        ? 'Aligned to start edge'
-                        : placement.value.includes('end')
-                          ? 'Aligned to end edge'
-                          : 'Centered'}{' '}
-                      - {placement.label.toLowerCase()} popover
-                    </Text>
-                    <Button label="Action" />
-                  </Flex>
-                }
-              >
-                <Button label={`${placement.label} Overlap`} />
-              </Popover>
-            </Flex>
-          ))}
-        </Flex>
-      </Flex>
-    );
-  },
-};
-
-export const PlacementInfoStory: StoryObj<typeof Flex> = {
-  name: 'Placement Info',
-  render: () => {
-    const [placementInfo, setPlacementInfo] = React.useState<string>('');
-    const popoverRef = React.useRef<any>(null);
-
-    const handleOpenChange = (opened: boolean) => {
-      if (opened && popoverRef.current) {
-        const { actualPlacement, transformOrigin } = popoverRef.current;
-        setPlacementInfo(
-          `Placement: ${actualPlacement}, Transform Origin: ${transformOrigin}`,
-        );
-      }
+    const openAfterFetch = () => {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        popoverRef.current?.openPopup();
+        setPlacement(popoverRef.current?.actualPlacement ?? '—');
+      }, 900);
     };
 
     return (
-      <Flex direction="vertical" gap="l">
-        <Text size={5} weight="bold" block>
-          Placement Information
-        </Text>
-        <Text size={3} block>
-          This example shows how to get the actual placement and transform
-          origin from the popover ref when using auto placement.
-        </Text>
-
-        {placementInfo && (
-          <Text
-            size={3}
-            block
-            style={{
-              padding: '8px',
-              backgroundColor: 'var(--background-2)',
-              borderRadius: '4px',
-              fontFamily: 'monospace',
-            }}
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
+        <Heading>Imperative API via ref</Heading>
+        <Paragraph>
+          <Text code>ref</Text> exposes <Text code>openPopup</Text>,{' '}
+          <Text code>closePopup</Text>, the resolved{' '}
+          <Text code>actualPlacement</Text> and the live <Text code>opened</Text>{' '}
+          flag — for opening a popover after an async step, or reading where it
+          landed.
+        </Paragraph>
+        <Flex direction="horizontal" gap="s" align="center" wrap>
+          <Button
+            label={loading ? 'Loading…' : 'Fetch, then open'}
+            icon={<RefreshCw />}
+            disabled={loading}
+            onClick={openAfterFetch}
+          />
+          <Button
+            label="Close"
+            onClick={() => popoverRef.current?.closePopup()}
+          />
+          <Popover
+            ref={popoverRef}
+            placement="right"
+            content={<Text size={3}>Opened by an external control.</Text>}
           >
-            {placementInfo}
-          </Text>
-        )}
+            <Button label="Anchor" icon={<Info />} />
+          </Popover>
+        </Flex>
+        <Caption>Last resolved placement: {placement}</Caption>
 
+        <Heading>A trigger that knows its own state</Heading>
+        <Paragraph>
+          Pass a function as <Text code>children</Text> to read{' '}
+          <Text code>opened</Text> — here the chevron flips. Every change also
+          fires <Text code>onOpenChange(open, event, reason)</Text>;{' '}
+          <Text code>reason</Text> says <em>how</em> it changed.
+        </Paragraph>
         <Popover
-          ref={popoverRef}
-          placement="auto"
-          title="Auto Placement"
-          showCloseButton
-          onOpenChange={handleOpenChange}
-          content={
-            <Flex direction="vertical" gap="m">
-              <Text size={3} block>
-                This popover uses auto placement. Check the info above to see
-                the actual placement and transform origin.
-              </Text>
-              <Button label="Action" />
-            </Flex>
+          onOpenChange={(open, _event, reason) =>
+            setLog((l) =>
+              [`${open ? 'opened' : 'closed'} · ${reason ?? '—'}`, ...l].slice(
+                0,
+                5,
+              ),
+            )
           }
+          content={<Text size={3}>Try Esc, an outside click, or Tab away.</Text>}
         >
-          <Button label="Auto Placement Popover" />
-        </Popover>
-      </Flex>
-    );
-  },
-};
-
-const CREW = [
-  {
-    first: 'Alex',
-    last: 'Chen',
-    role: 'Commander',
-    readiness: 87,
-    tags: ['Navigation', 'EVA'],
-  },
-  {
-    first: 'Maria',
-    last: 'Santos',
-    role: 'Engineer',
-    readiness: 62,
-    tags: ['Systems', 'Propulsion'],
-  },
-  {
-    first: 'Yuki',
-    last: 'Tanaka',
-    role: 'Science Officer',
-    readiness: 94,
-    tags: ['Biology', 'Research'],
-  },
-];
-
-const INITIAL_LOGS = [
-  { id: 1, text: 'Engine burn completed — Δv +312 m/s' },
-  { id: 2, text: 'Navigation beacon signal degraded' },
-  { id: 3, text: 'Life support pressure nominal' },
-];
-
-export const MissionControlStory: StoryObj<typeof Flex> = {
-  name: 'Mission Control (feature showcase)',
-  render: () => {
-    const launchRef = React.useRef<PopoverRef>(null);
-    const [missionPhase, setMissionPhase] = React.useState('cruise');
-    const [logs, setLogs] = React.useState(INITIAL_LOGS);
-
-    return (
-      <Flex direction="vertical" gap="xl" style={{ padding: 24 }}>
-        {/* ── 1. Hover trigger: crew cards ── */}
-        <Flex direction="vertical" gap="s">
-          <Text size={5} weight="bold" block>
-            Crew manifest
-          </Text>
-          <Text size={3} block>
-            Hover over an avatar to see the crew member's profile.
-          </Text>
-          <Flex direction="horizontal" gap="m" style={{ marginTop: 8 }}>
-            {CREW.map((member) => (
-              <Popover
-                key={member.first}
-                trigger="hover"
-                placement="bottom"
-                style={{ width: 250 }}
-                content={
-                  <Flex direction="vertical" gap="m">
-                    <Flex direction="horizontal" gap="m" align="center">
-                      <Avatar
-                        firstName={member.first}
-                        lastName={member.last}
-                        size="l"
-                      />
-                      <Flex direction="vertical" gap="xs">
-                        <Text size={3} weight="bold">
-                          {member.first} {member.last}
-                        </Text>
-                        <Text size={2}>{member.role}</Text>
-                      </Flex>
-                    </Flex>
-                    <Progress value={member.readiness} max={100}>
-                      <>Mission readiness: {String(member.readiness)}%</>
-                    </Progress>
-                    <Tags>
-                      {member.tags.map((tag) => (
-                        <Tags.Item key={tag} label={tag} />
-                      ))}
-                    </Tags>
-                  </Flex>
-                }
-              >
-                <Avatar firstName={member.first} lastName={member.last} />
-              </Popover>
-            ))}
-          </Flex>
-        </Flex>
-
-        {/* ── 2. children render function: trigger reacts to open state ── */}
-        <Flex direction="vertical" gap="s" align="start">
-          <Text size={5} weight="bold" block>
-            Mission phase
-          </Text>
-          <Text size={3} block>
-            The trigger is a <Text weight="bold">render function</Text> — the
-            button label and icon update based on whether the popover is open.
-          </Text>
-          <Popover
-            placement="bottom-start"
-            title="Select mission phase"
-            showCloseButton
-            style={{ width: 240 }}
-            content={({ closePopup }) => (
-              <Flex direction="vertical" gap="m">
-                <Radio
-                  value={missionPhase}
-                  onChange={(v) => setMissionPhase(v)}
-                  direction="vertical"
-                >
-                  <Radio.Item value="launch">Launch</Radio.Item>
-                  <Radio.Item value="cruise">Cruise</Radio.Item>
-                  <Radio.Item value="approach">Approach</Radio.Item>
-                  <Radio.Item value="landing">Landing</Radio.Item>
-                </Radio>
-                <Button label="Apply" variant="submit" onClick={closePopup} />
-              </Flex>
-            )}
-          >
-            {({ opened }) => (
-              <Button
-                label={opened ? 'Close' : `Phase: ${missionPhase}`}
-                icon={opened ? <ChevronUp /> : <ChevronDown />}
-              />
-            )}
-          </Popover>
-        </Flex>
-
-        {/* ── 3. Nested popovers + cascade close ── */}
-        <Flex direction="vertical" gap="s" align="start">
-          <Text size={5} weight="bold" block>
-            Mission logs
-          </Text>
-          <Text size={3} block>
-            Opens a nested confirmation popover. Clicking{' '}
-            <Text weight="bold">Archive</Text> calls{' '}
-            <Text code>closeAllSequence</Text> — closes the entire chain at
-            once.
-          </Text>
-          <Popover
-            placement="bottom-start"
-            title="Mission logs"
-            showCloseButton
-            style={{ width: 320 }}
-            content={() => (
-              <Flex direction="vertical" gap="m">
-                {logs.length === 0 ? (
-                  <Text size={3} block>
-                    No logs remaining.
-                  </Text>
-                ) : (
-                  logs.map((log) => (
-                    <Text key={log.id} size={3} block>
-                      — {log.text}
-                    </Text>
-                  ))
-                )}
-                {logs.length > 0 && (
-                  <Popover
-                    placement="right"
-                    title="Confirm archive"
-                    style={{ width: 240 }}
-                    content={({ closeAllSequence }) => (
-                      <Flex direction="vertical" gap="m">
-                        <Text size={3} block>
-                          Archive all {logs.length} entries? This cannot be
-                          undone.
-                        </Text>
-                        <Flex direction="horizontal" gap="s">
-                          <Button label="Cancel" onClick={closeAllSequence} />
-                          <Button
-                            label="Archive"
-                            variant="submit"
-                            onClick={() => {
-                              setLogs([]);
-                              closeAllSequence();
-                            }}
-                          />
-                        </Flex>
-                      </Flex>
-                    )}
-                  >
-                    <Button label="Archive all…" />
-                  </Popover>
-                )}
-              </Flex>
-            )}
-          >
-            <Button label={`Logs (${logs.length})`} icon={<Logs />} />
-          </Popover>
-        </Flex>
-
-        {/* ── 4. Imperative API via ref ── */}
-        <Flex direction="vertical" gap="s" align="start">
-          <Text size={5} weight="bold" block>
-            Launch sequence
-          </Text>
-          <Text size={3} block>
-            External buttons control the popover via{' '}
-            <Text code>ref.openPopup()</Text> /{' '}
-            <Text code>ref.closePopup()</Text> without touching the trigger.
-          </Text>
-          <Flex direction="horizontal" gap="m" align="center">
+          {({ opened }) => (
             <Button
-              label="Open externally"
-              onClick={() => launchRef.current?.openPopup()}
-            />
-            <Button
-              label="Close externally"
-              onClick={() => launchRef.current?.closePopup()}
-            />
-            <Popover
-              ref={launchRef}
-              placement="right"
-              title="T-10 seconds"
-              showCloseButton
-              content={
-                <Text size={3} block>
-                  All systems nominal. Launch is confirmed. Good luck, crew.
-                </Text>
+              label="Preferences"
+              additionalIcon={
+                <ChevronDown
+                  style={{
+                    transform: opened ? 'rotate(180deg)' : 'none',
+                    transition: 'transform 150ms',
+                  }}
+                />
               }
-            >
-              <Button
-                label="Launch Control"
-                variant="submit"
-                icon={<Rocket />}
-              />
-            </Popover>
-          </Flex>
+            />
+          )}
+        </Popover>
+        <Flex direction="vertical" gap="xs">
+          {log.length === 0 ? (
+            <Caption>No events yet.</Caption>
+          ) : (
+            log.map((entry, i) => (
+              <Text key={i} size={2} color="muted">
+                {entry}
+              </Text>
+            ))
+          )}
         </Flex>
       </Flex>
     );
   },
 };
-
-export default story;

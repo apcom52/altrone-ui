@@ -1,117 +1,174 @@
-import React from 'react';
-import { expect, test, describe } from 'vitest';
+import React, { useEffect, useRef } from 'react';
+import { expect, test, describe, vi, beforeAll } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Button, Configuration, Popover } from '../src';
+import { AltroneApplication, Button, Popover } from '../src';
+import type { PopoverRef } from '../src/components/popover';
+
+class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+beforeAll(() => {
+  // @ts-ignore
+  window.ResizeObserver = ResizeObserver;
+});
+
+const renderPopover = (props: Partial<React.ComponentProps<typeof Popover>>) =>
+  render(
+    <AltroneApplication>
+      <Popover content="Popover content" {...(props as any)}>
+        {props.children ?? <Button label="Trigger" data-testid="trigger" />}
+      </Popover>
+    </AltroneApplication>,
+  );
 
 describe('Popover', () => {
-  test('need to be rendered when openByDefault prop is passed', () => {
-    render(
-      <Popover content="Popover content" openedByDefault data-testid="popover">
-        <Button label="Test" data-testid="button" />
-      </Popover>,
-    );
-
-    const content = screen.getByText('Popover content');
-    expect(content).toBeInTheDocument();
+  test('renders content when openedByDefault', () => {
+    renderPopover({ openedByDefault: true });
+    expect(screen.getByText('Popover content')).toBeInTheDocument();
   });
 
-  test('need to be rendered only after clicking on the button', () => {
+  test('opens on trigger click, closed until then', () => {
+    renderPopover({});
+    expect(screen.queryByText('Popover content')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId('trigger'));
+    expect(screen.getByText('Popover content')).toBeInTheDocument();
+  });
+
+  test('shows the title, and the close button only with showCloseButton', () => {
+    const { rerender } = renderPopover({
+      openedByDefault: true,
+      title: 'Popover title',
+    });
+    expect(screen.getByText('Popover title')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /close/i }),
+    ).not.toBeInTheDocument();
+
+    rerender(
+      <AltroneApplication>
+        <Popover
+          content="Popover content"
+          openedByDefault
+          title="Popover title"
+          showCloseButton
+        >
+          <Button label="Trigger" data-testid="trigger" />
+        </Popover>
+      </AltroneApplication>,
+    );
+    expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
+  });
+
+  test('a titled popover is a labelled dialog', () => {
+    renderPopover({ openedByDefault: true, title: 'Settings' });
+
+    const dialog = screen.getByRole('dialog');
+    const labelledBy = dialog.getAttribute('aria-labelledby');
+    expect(labelledBy).toBeTruthy();
+    expect(document.getElementById(labelledBy as string)).toHaveTextContent(
+      'Settings',
+    );
+  });
+
+  test('no dialog role for a plain (headerless) popover', () => {
+    renderPopover({ openedByDefault: true });
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  test('forces tabIndex on the trigger, preserving an explicit one', () => {
+    const { rerender } = renderPopover({
+      openedByDefault: true,
+      children: <Button data-testid="src" tabIndex={2} />,
+    });
+    expect(screen.getByTestId('src')).toHaveAttribute('tabindex', '2');
+
+    rerender(
+      <AltroneApplication>
+        <Popover content="c" openedByDefault>
+          <Button data-testid="src" />
+        </Popover>
+      </AltroneApplication>,
+    );
+    expect(screen.getByTestId('src')).toHaveAttribute('tabindex', '0');
+  });
+
+  test("merges the trigger's own ref instead of swallowing it", () => {
+    const captured: HTMLElement[] = [];
+    const Trigger = () => {
+      const ref = useRef<HTMLButtonElement>(null);
+      useEffect(() => {
+        if (ref.current) captured.push(ref.current);
+      });
+      return <Button ref={ref} label="Trigger" data-testid="trigger" />;
+    };
+
     render(
-      <Popover content="Popover content" data-testid="popover">
-        <Button label="Test" data-testid="button" />
-      </Popover>,
+      <AltroneApplication>
+        <Popover content="c">
+          <Trigger />
+        </Popover>
+      </AltroneApplication>,
+    );
+
+    expect(captured[0]).toBe(screen.getByTestId('trigger'));
+  });
+
+  test('imperative ref opens and closes the popover', () => {
+    const Harness = () => {
+      const popoverRef = useRef<PopoverRef>(null);
+      return (
+        <>
+          <button
+            data-testid="ext-open"
+            onClick={() => popoverRef.current?.openPopup()}
+          >
+            open
+          </button>
+          <Popover ref={popoverRef} content="Popover content">
+            <Button label="Trigger" />
+          </Popover>
+        </>
+      );
+    };
+
+    render(
+      <AltroneApplication>
+        <Harness />
+      </AltroneApplication>,
     );
 
     expect(screen.queryByText('Popover content')).not.toBeInTheDocument();
-
-    const button = screen.getByTestId('button');
-    fireEvent.click(button);
-
-    expect(screen.queryByText('Popover content')).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('ext-open'));
+    expect(screen.getByText('Popover content')).toBeInTheDocument();
   });
 
-  test('need to be show title', () => {
-    render(
-      <Popover
-        title="Popover title"
-        content="Popover content"
-        openedByDefault
-        data-testid="popover"
-      >
-        <Button label="Test" data-testid="button" />
-      </Popover>,
-    );
+  test('onOpenChange reports the open state and a reason', () => {
+    const onOpenChange = vi.fn();
+    renderPopover({ onOpenChange });
 
-    expect(screen.getByText('Popover title')).toBeInTheDocument();
-    expect(screen.queryByText('close')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('trigger'));
+
+    expect(onOpenChange).toHaveBeenCalledWith(
+      true,
+      expect.anything(),
+      expect.any(String),
+    );
   });
 
-  test('need to be show close button with title', () => {
-    const { rerender } = render(
-      <Popover
-        title="Popover title"
-        content="Popover content"
-        openedByDefault
-        showCloseButton
-        data-testid="popover"
-      >
-        <Button label="Test" data-testid="button" />
-      </Popover>,
+  test('Escape requests a close with reason "escape-key"', () => {
+    const onOpenChange = vi.fn();
+    renderPopover({ openedByDefault: true, onOpenChange });
+
+    fireEvent.keyDown(document.body, { key: 'Escape' });
+
+    expect(onOpenChange).toHaveBeenCalledWith(
+      false,
+      expect.anything(),
+      'escape-key',
     );
-
-    expect(screen.getByText('Popover title')).toBeInTheDocument();
-    expect(screen.getByText('close')).toBeInTheDocument();
-
-    rerender(
-      <Popover
-        content="Popover content"
-        openedByDefault
-        showCloseButton
-        data-testid="popover"
-      >
-        <Button label="Test" data-testid="button" />
-      </Popover>,
-    );
-
-    expect(screen.queryByText('Popover title')).not.toBeInTheDocument();
-    expect(screen.getByText('close')).toBeInTheDocument();
-  });
-
-  test('should configuration works correctly', () => {
-    render(
-      <Configuration
-        popover={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
-      >
-        <Popover
-          content={<div>content</div>}
-          openedByDefault
-          data-testid="element"
-        >
-          <Button />
-        </Popover>
-      </Configuration>,
-    );
-
-    const element = screen.getByTestId('element');
-    expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
-  });
-
-  test('tabIndex prop need to applied automatically', () => {
-    const { rerender } = render(
-      <Popover content={<div>content</div>} openedByDefault>
-        <Button data-testid="source" tabIndex={2} />
-      </Popover>,
-    );
-
-    expect(screen.getByTestId('source')).toHaveAttribute('tabindex', '2');
-
-    rerender(
-      <Popover content={<div>content</div>} openedByDefault>
-        <Button data-testid="source" />
-      </Popover>,
-    );
-
-    expect(screen.getByTestId('source')).toHaveAttribute('tabindex', '0');
   });
 });

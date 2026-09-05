@@ -1,33 +1,24 @@
-@import 'src/global/mixins';
-
 :global([data-altrone-root='true']) {
-  --popoverSolidBackgroundColor: var(--background-2);
+  /* Seeds Box's `radius` -> `--radius-outer` for `shape="rounded"`. 24px matches
+     the popover's original (pre-Box) corner. */
+  --popover-radius: 24px;
 }
 
+/* Surface (glass fill, backdrop blur, rounded corners, overlay elevation) is
+   Box's `material="plate"` + `shape="rounded"` + `elevation="overlay"` — incl.
+   its own box-shadow transition. This only overrides Box's control defaults for
+   a stacking panel. */
 .Popover {
   display: flex;
   flex-direction: column;
-  position: absolute;
-  padding: 8px;
-  z-index: var(--elevation-overlay-z-index);
-  transition: box-shadow var(--transitionDuration) ease;
-  background: var(--glass-background-color);
-  backdrop-filter: blur(32px) saturate(180%);
-  border-radius: 24px;
-  box-shadow: var(--elevation-overlay-shadow);
-  font-family: 'Inter Variable', sans-serif;
-  transform-origin: top left;
-  will-change: transform, opacity, top, left;
-}
-
-.GlassEffect {
-  background: var(--glass-background-color);
-  -webkit-backdrop-filter: var(--glass-background-blur);
-  backdrop-filter: var(--glass-effects);
+  align-items: stretch;
+  justify-content: flex-start;
+  min-height: 0;
 }
 
 .Content {
-  @include paragraph;
+  font-size: var(--text-size-4);
+  line-height: var(--line-height-4);
 }
 
 .Header {
@@ -35,36 +26,28 @@
   position: relative;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--l-gap);
-  height: 32px;
+  margin-bottom: var(--space-stack);
+  min-height: 32px;
 }
 
 .Heading {
   display: -webkit-box;
-  line-clamp: 2;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
+  padding-inline: 40px;
   color: var(--text-2);
-  font-weight: 600;
+  font-weight: var(--text-weight-medium);
+  font-size: var(--text-size-3);
   text-align: center;
-  font-size: 14px;
-  padding-right: 40px;
-  padding-left: 40px;
 }
 
 .Close {
   position: absolute;
   right: 0;
-}
-
-.Arrow {
-  position: absolute;
-  background: var(--popoverSolidBackgroundColor);
-  width: 14px;
-  height: 14px;
 }
 
 .InsideNotification {

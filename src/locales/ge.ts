@@ -37,6 +37,9 @@ export const ge: Localization = {
   search: {
     placeholder: 'Suchen',
   },
+  select: {
+    notFound: 'Nichts gefunden',
+  },
   toolbar: {
     back: 'Zurück',
     forward: 'Vorwärts',

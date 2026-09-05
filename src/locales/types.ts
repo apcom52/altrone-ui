@@ -43,6 +43,9 @@ export interface Localization {
   search: {
     placeholder: string;
   };
+  select: {
+    notFound: string;
+  };
   toolbar: {
     back: string;
     forward: string;

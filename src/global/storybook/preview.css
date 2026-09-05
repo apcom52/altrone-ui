@@ -1,3 +1,19 @@
+/* Storybook-only token bridge: the pattern backgrounds are painted on <body>,
+   which is outside `.AltroneApp` / `[data-altrone-root]` where these are
+   normally scoped. Kept in sync with `application/colors/_gray.scss`.
+   `data-altrone-theme` is mirrored onto <html> by `AltroneApplication`. */
+:root {
+  --gray-a4: color(display-p3 0.012 0.012 0.184 / 0.091);
+  --gray-a6: color(display-p3 0.008 0.008 0.165 / 0.15);
+  --background-1: color(display-p3 0.988 0.988 0.992);
+}
+
+:root[data-altrone-theme='dark'] {
+  --gray-a4: color(display-p3 0.882 0.953 0.996 / 0.111);
+  --gray-a6: color(display-p3 0.882 0.949 0.996 / 0.183);
+  --background-1: color(display-p3 0.067 0.067 0.074);
+}
+
 /* Базовые стили для Storybook */
 body {
   font-family: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

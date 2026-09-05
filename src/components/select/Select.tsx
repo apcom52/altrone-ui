@@ -1,5 +1,14 @@
-import { SelectContext, SelectProps } from './Select.types.ts';
-import { isValidElement, memo, useId, useMemo } from 'react';
+import { SelectContextValue, SelectProps } from './Select.types.ts';
+import {
+  CSSProperties,
+  isValidElement,
+  memo,
+  ReactElement,
+  useId,
+  useMemo,
+  useState,
+} from 'react';
+import { AnyObject } from 'utils/types.ts';
 import { Dropdown } from 'components/dropdown';
 import { Delete, Search, ChevronDown, ChevronUp } from 'lucide-react';
 import { Scrollable } from 'components/scrollable';
@@ -10,8 +19,9 @@ import { PopoverContentContext } from 'components/popover';
 import { useSelect } from './useSelect.ts';
 import { useLocalization } from 'components/application';
 import { Slot } from 'utils/components/Slot.tsx';
+import { SelectContext } from './Select.context.ts';
 
-const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
+const SelectComponent = (props: SelectProps) => {
   const {
     name,
     multiple,
@@ -23,9 +33,13 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
     className,
     style,
     parentWidth = true,
+    disabled,
+    transparent,
+    menuHeight,
+    renderFunc,
+    onChange,
     onFocus,
     onBlur,
-    onChange,
     children,
     options,
     asChild,
@@ -36,6 +50,7 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
 
   const id = useId();
   const selectName = name || id;
+  const listboxId = `${id}-listbox`;
 
   const t = useLocalization();
 
@@ -52,161 +67,206 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
     clearValue,
   } = useSelect(props);
 
+  const isTransparent = Boolean(transparent);
+
+  const [opened, setOpened] = useState(false);
+
   const menu = useMemo(
     () =>
       ({ closePopup }: PopoverContentContext) => (
-        <div style={{ height: '250px' }}>
-          <Scrollable>
-            <Dropdown.Menu>
-              {filteredOptions.map((option) => {
-                const checked = Array.isArray(selectedOptions)
-                  ? selectedOptions.includes(option)
-                  : selectedOptions === option;
+        <div
+          className={s.Menu}
+          role="listbox"
+          id={listboxId}
+          style={
+            menuHeight
+              ? ({
+                  '--select-menu-height': `${menuHeight}px`,
+                } as CSSProperties)
+              : undefined
+          }
+        >
+          <Scrollable className={s.MenuScroll} overflowX="hidden">
+            {filteredOptions.length === 0 ? (
+              <div className={s.Empty}>{t('select.notFound')}</div>
+            ) : (
+              <Dropdown.Menu role="presentation">
+                {filteredOptions.map((option) => {
+                  const checked = Array.isArray(selectedOptions)
+                    ? selectedOptions.some(
+                        (item) => item.value === option.value,
+                      )
+                    : selectedOptions?.value === option.value;
 
-                return (
-                  <Dropdown.Checkbox
-                    checked={checked}
-                    focused={checked}
-                    onChange={() => {
-                      selectValue(option.value);
-                      if (!multiple) {
-                        closePopup();
-                      }
-                    }}
-                    key={option.value}
-                    label={String(option.label)}
-                  />
-                );
-              })}
-            </Dropdown.Menu>
+                  return (
+                    <Dropdown.Checkbox
+                      key={option.value}
+                      role="option"
+                      aria-selected={checked}
+                      checked={checked}
+                      focused={checked}
+                      disabled={option.disabled}
+                      label={option.label}
+                      onChange={() => {
+                        selectValue(option.value);
+                        if (!multiple) {
+                          closePopup();
+                        }
+                      }}
+                    />
+                  );
+                })}
+              </Dropdown.Menu>
+            )}
           </Scrollable>
         </div>
       ),
-    [filteredOptions, selectedOptions, multiple, selectValue],
+    [
+      filteredOptions,
+      selectedOptions,
+      multiple,
+      selectValue,
+      menuHeight,
+      listboxId,
+      t,
+    ],
   );
 
   const cls = clsx(s.Select, className);
-  const styles = {
-    ...style,
+  const needToShowClearButton =
+    clearable && (Array.isArray(value) ? value.length > 0 : Boolean(value));
+
+  const hiddenInputs = multiple ? (
+    (Array.isArray(value) ? value : []).map((item, index) => (
+      <input
+        key={`${item}-${index}`}
+        type="hidden"
+        name={`${selectName}[]`}
+        value={item}
+      />
+    ))
+  ) : (
+    <input
+      type="hidden"
+      name={selectName}
+      value={value != null ? String(value) : ''}
+    />
+  );
+
+  const context: SelectContextValue = {
+    expanded: opened,
+    value,
+    selectedOptions,
+    disabled: Boolean(disabled),
+    multiple: Boolean(multiple),
+    clearValue,
   };
 
-  const isMultiple = Array.isArray(value);
+  const renderTrigger = () => {
+    if (renderFunc) {
+      return renderFunc({ ...context, className: cls, style });
+    }
 
-  const needToShowClearButton =
-    clearable && (isMultiple ? value?.length > 0 : value);
+    if (asChild) {
+      if (!isValidElement(children)) {
+        console.error(
+          '[Select] asChild requires a valid React element as children',
+        );
+        return null;
+      }
+      return (
+        <Slot className={cls} style={style}>
+          {children as ReactElement<AnyObject>}
+        </Slot>
+      );
+    }
 
-  return (
-    <div className={s.SelectWrapper} ref={ref}>
-      <div className={s.FormInputs}>
-        {multiple ? (
-          <>
-            {Array.isArray(value) &&
-              value.map((item, itemIndex) => (
-                <input
-                  key={itemIndex}
-                  type="hidden"
-                  name={`${selectName}[]`}
-                  value={item}
-                />
-              ))}
-          </>
-        ) : (
-          <input
-            type="hidden"
-            name={selectName}
-            value={value != null ? String(value) : ''}
+    return (
+      <TextInput
+        className={cls}
+        style={style}
+        role="combobox"
+        aria-expanded={opened}
+        aria-controls={listboxId}
+        aria-haspopup="listbox"
+        value={searchMode ? userQuery : valueString}
+        placeholder={valueString || placeholder}
+        readOnly={readOnly ?? !(searchable && searchMode)}
+        readonlyStyles={Boolean(readOnly)}
+        size={size}
+        disabled={disabled}
+        variant={isTransparent ? 'transparent' : 'default'}
+        onChange={setUserQuery}
+        onFocus={
+          searchable
+            ? (e) => {
+                focusSelect();
+                onFocus?.(e);
+              }
+            : onFocus
+        }
+        onBlur={
+          searchable
+            ? (e) => {
+                blurSelect();
+                onBlur?.(e);
+              }
+            : onBlur
+        }
+        {...restProps}
+      >
+        {needToShowClearButton && (
+          <TextInput.ActionIsland
+            placement="end"
+            label={t('common.clear')}
+            icon={<Delete />}
+            showLabel={false}
+            disabled={false}
+            onClick={(event) => clearValue(event)}
           />
         )}
-      </div>
-      <Dropdown
-        placement="bottom-start"
-        parentWidth={parentWidth}
-        content={menu}
-        focusTrapTargets={searchMode ? ['reference'] : ['content']}
-        defaultListNavigationIndex={-1}
-        listNavigation
-        overlap
-      >
-        {({ opened }) => {
-          const selectContext: SelectContext<Value> = {
-            expanded: opened,
-            value,
-            selectedOptions,
-            disabled: Boolean(props.disabled),
-            multiple: Boolean(props.multiple),
-            clearValue,
-          };
-
-          if (asChild) {
-            if (!isValidElement(children)) {
-              console.error(
-                '[Select] asChild requires a valid React element as children',
-              );
-              return null;
-            }
-            return <Slot {...selectContext}>{children}</Slot>;
+        <TextInput.IconIsland
+          className={s.ArrowIcon}
+          placement="end"
+          icon={
+            searchMode ? (
+              <Search />
+            ) : opened ? (
+              <ChevronUp />
+            ) : (
+              <ChevronDown />
+            )
           }
+        />
+      </TextInput>
+    );
+  };
 
-          return (
-            <TextInput
-              className={cls}
-              style={styles}
-              value={searchMode ? userQuery : valueString}
-              placeholder={valueString ? valueString : placeholder}
-              readOnly={readOnly ?? !(searchable && searchMode)}
-              readonlyStyles={Boolean(readOnly)}
-              size={size}
-              variant={props.transparent ? 'transparent' : undefined}
-              onChange={setUserQuery}
-              onFocus={
-                searchable
-                  ? (e) => {
-                      focusSelect();
-                      onFocus?.(e);
-                    }
-                  : onFocus
-              }
-              onBlur={
-                searchable
-                  ? (e) => {
-                      blurSelect();
-                      onBlur?.(e);
-                    }
-                  : onBlur
-              }
-              {...restProps}
-            >
-              {needToShowClearButton && (
-                <TextInput.ActionIsland
-                  placement="end"
-                  label={t('common.clear')}
-                  icon={<Delete />}
-                  showLabel={false}
-                  disabled={false}
-                  onClick={clearValue}
-                />
-              )}
-              <TextInput.IconIsland
-                className={s.ArrowIcon}
-                placement="end"
-                icon={
-                  searchMode ? (
-                    <Search />
-                  ) : opened ? (
-                    <ChevronUp />
-                  ) : (
-                    <ChevronDown />
-                  )
-                }
-              />
-            </TextInput>
-          );
-        }}
-      </Dropdown>
-    </div>
+  return (
+    <SelectContext.Provider value={context}>
+      {/* `ref` sits on the wrapper, not the trigger: the Dropdown clones the
+          trigger and takes over its `ref` for floating-ui positioning without
+          merging, so a `ref` on the trigger would be dropped. The wrapper still
+          spans the whole control. */}
+      <div className={s.SelectWrapper} ref={ref}>
+        {hiddenInputs}
+        <Dropdown
+          placement="bottom-start"
+          parentWidth={parentWidth}
+          content={menu}
+          focusTrapTargets={searchMode ? ['reference'] : ['content']}
+          defaultListNavigationIndex={-1}
+          listNavigation
+          overlap={!searchable}
+          onOpenChange={setOpened}
+        >
+          {renderTrigger}
+        </Dropdown>
+      </div>
+    </SelectContext.Provider>
   );
 };
 
-const Select = memo(SelectComponent) as typeof SelectComponent;
+const Select = memo(SelectComponent);
 
 export { Select };

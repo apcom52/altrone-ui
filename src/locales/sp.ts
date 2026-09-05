@@ -37,6 +37,9 @@ export const sp: Localization = {
   search: {
     placeholder: 'Buscar',
   },
+  select: {
+    notFound: 'No se encontró nada',
+  },
   toolbar: {
     back: 'Atrás',
     forward: 'Adelante',

@@ -12,8 +12,7 @@ const preview: Preview = {
     },
     backgrounds: {
       options: {
-        dark: { name: 'Dark', value: 'color(display-p3 0.113 0.125 0.14)' },
-        light: { name: 'Light', value: 'color(display-p3 0.988 0.988 0.992)' },
+        solid: { name: 'Solid', value: 'var(--background-1)' },
         amber: { name: 'Amber', value: 'color(display-p3 1 0.77 0.26)' },
         indigo: { name: 'Indigo', value: 'color(display-p3 0.357 0.357 0.81)' },
         /* Token-based patterns. `StorybookDecorator` stamps `data-altrone-root`
@@ -39,6 +38,11 @@ const preview: Preview = {
           name: 'Chess',
           value:
             'linear-gradient(45deg, var(--gray-a4) 25%, transparent 25%, transparent 75%, var(--gray-a4) 75%) 0 0 / 20px 20px, linear-gradient(-45deg, var(--gray-a4) 25%, transparent 25%, transparent 75%, var(--gray-a4) 75%) 0 0 / 20px 20px var(--background-1)',
+        },
+        dotsGridPattern: {
+          name: 'Dots Grid',
+          value:
+            'radial-gradient(circle, var(--gray-a6) 1.2px, transparent 1.2px) 0 0 / 15px 15px var(--background-1)',
         },
         mountains: {
           name: 'El Capitan',

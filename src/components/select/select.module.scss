@@ -1,17 +1,5 @@
-@import 'src/global/inputMixins';
-
 :global([data-altrone-root='true']) {
-  --selectBackgroundColor: var(--interactive-1);
-  --selectHoverBackgroundColor: var(--interactive-2);
-  --selectTextColor: var(--text-1);
-  --selectHoverTextColor: var(--text-2);
-  --selectPlaceholderTextColor: var(--text-1);
-  --selectPlaceholderHoverTextColor: var(--text-2);
-  --selectInvalidTextColor: var(--danger-text-1);
-  --selectIslandTextSize: 14px;
-  --selectIslandHeight: 20px;
-  --selectHorizontalOffset: var(--s-gap);
-  --selectVerticalOffset: var(--narrow-gap);
+  --select-menu-height: 250px;
 }
 
 .SelectWrapper {
@@ -24,9 +12,27 @@
 }
 
 .ArrowIcon {
-  @include inputIsland;
+  pointer-events: none;
 }
 
-.FormInputs {
-  display: none;
+.Menu {
+  overflow: hidden;
+}
+
+/* The scroll host grows with its content and only scrolls past
+   `--select-menu-height` (overridable per instance via the `menuHeight` prop).
+   The `.Menu` descendant selector wins over `Scrollable`'s own `height: 100%`.
+   `overflow: hidden` also suppresses the native horizontal bar that would flash
+   before OverlayScrollbars initializes (the axis itself is disabled via the
+   `overflowX="hidden"` prop). */
+.Menu .MenuScroll {
+  height: auto;
+  max-height: var(--select-menu-height);
+  overflow: hidden;
+}
+
+.Empty {
+  padding: var(--space-content);
+  color: var(--text-2);
+  text-align: center;
 }

@@ -1,4 +1,4 @@
-import { Placement, Rect } from '@floating-ui/react';
+import { Placement } from '@floating-ui/react';
 
 export interface PlacementConfig {
   offset: number;
@@ -6,88 +6,32 @@ export interface PlacementConfig {
   shouldUseAutoPlacement: boolean;
 }
 
+/** Center placements have no `@floating-ui` alignment — pin them to `-start` for overlap. */
+const OVERLAP_PLACEMENT: Record<string, Placement> = {
+  top: 'top-start',
+  bottom: 'bottom-start',
+  left: 'left-start',
+  right: 'right-start',
+};
+
 /**
- * Получает конфигурацию для placement в зависимости от режима overlap
+ * Resolves the `useFloating` placement + offset for a given `placement` prop.
+ * `overlap` mode covers the trigger, so it never auto-places and uses a
+ * negative offset (applied in `createOverlapMiddleware`).
  */
 export const getPlacementConfig = (
   placement: 'auto' | Placement,
-  overlap: boolean
+  overlap: boolean,
 ): PlacementConfig => {
   if (overlap) {
-    // Для overlap режима используем специальные placement'ы
-    const overlapPlacements: Record<string, PlacementConfig> = {
-      top: {
-        offset: -4,
-        placement: 'top-start',
-        shouldUseAutoPlacement: false,
-      },
-      bottom: {
-        offset: -4,
-        placement: 'bottom-start',
-        shouldUseAutoPlacement: false,
-      },
-      left: {
-        offset: -4,
-        placement: 'left-start',
-        shouldUseAutoPlacement: false,
-      },
-      right: {
-        offset: -4,
-        placement: 'right-start',
-        shouldUseAutoPlacement: false,
-      },
-      'top-start': {
-        offset: -4,
-        placement: 'top-start',
-        shouldUseAutoPlacement: false,
-      },
-      'top-end': {
-        offset: -4,
-        placement: 'top-end',
-        shouldUseAutoPlacement: false,
-      },
-      'bottom-start': {
-        offset: -4,
-        placement: 'bottom-start',
-        shouldUseAutoPlacement: false,
-      },
-      'bottom-end': {
-        offset: -4,
-        placement: 'bottom-end',
-        shouldUseAutoPlacement: false,
-      },
-      'left-start': {
-        offset: -4,
-        placement: 'left-start',
-        shouldUseAutoPlacement: false,
-      },
-      'left-end': {
-        offset: -4,
-        placement: 'left-end',
-        shouldUseAutoPlacement: false,
-      },
-      'right-start': {
-        offset: -4,
-        placement: 'right-start',
-        shouldUseAutoPlacement: false,
-      },
-      'right-end': {
-        offset: -4,
-        placement: 'right-end',
-        shouldUseAutoPlacement: false,
-      },
-    };
+    const resolved =
+      placement === 'auto'
+        ? 'bottom-start'
+        : (OVERLAP_PLACEMENT[placement] ?? placement);
 
-    return (
-      overlapPlacements[placement] || {
-        offset: -4,
-        placement: 'top-start',
-        shouldUseAutoPlacement: false,
-      }
-    );
+    return { offset: -4, placement: resolved, shouldUseAutoPlacement: false };
   }
 
-  // Обычный режим
   return {
     offset: 4,
     placement: placement === 'auto' ? 'top' : placement,
@@ -95,78 +39,7 @@ export const getPlacementConfig = (
   };
 };
 
-/**
- * Применяет стили для overlap режима
- */
-export const applyOverlapStyles = (
-  elements: { floating: HTMLElement },
-  rects: { reference: Rect; floating: Rect },
-  placement: Placement
-): void => {
-  const { floating } = elements;
-  const { reference, floating: floatingRect } = rects;
-
-  // Базовые координаты
-  let left = reference.x;
-  let top = reference.y;
-  const halfFloatingWidth = floatingRect.width / 2;
-
-  switch (placement) {
-    case 'bottom':
-      left = reference.x + reference.width / 2 - halfFloatingWidth;
-      top = reference.y - 4;
-      break;
-    case 'bottom-start':
-    case 'right-start':
-      left = reference.x - 4;
-      top = reference.y - 4;
-      break;
-    case 'bottom-end':
-    case 'left-start':
-      left = reference.x + reference.width - floatingRect.width + 8;
-      top = reference.y - 4;
-      break;
-
-    case 'top':
-      left = reference.x + reference.width / 2;
-      top = reference.y + reference.height;
-      break;
-    case 'top-start':
-    case 'right-end':
-      left = reference.x - 4;
-      top = reference.y + reference.height + 4 - floatingRect.height;
-      break;
-    case 'top-end':
-    case 'left-end':
-      left = reference.x + reference.width - floatingRect.width + 4;
-      top = reference.y + reference.height + 4 - floatingRect.height;
-      break;
-
-    case 'left':
-      left = reference.x;
-      top = reference.y + reference.height / 2;
-      break;
-
-    case 'right':
-      left = reference.x + reference.width - floatingRect.width + 8;
-      top = reference.y + reference.height / 2;
-      break;
-
-    default:
-      left = reference.x;
-      top = reference.y;
-  }
-
-  Object.assign(floating.style, {
-    left: `${left}px`,
-    top: `${top}px`,
-    position: 'absolute',
-  });
-};
-
-/**
- * Получает список всех доступных placement'ов для демонстрации
- */
+/** All named placements — used by the placement showcase story. */
 export const getAllPlacements = (): Array<{
   value: Placement;
   label: string;

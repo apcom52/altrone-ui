@@ -10,7 +10,7 @@ import {
 } from 'overlayscrollbars-react';
 
 export const Scrollable = memo<ScrollableProps>(
-  ({ children, className, style, ref, ...props }) => {
+  ({ children, className, style, ref, overflowX, overflowY, ...props }) => {
     const scrollableRef = useRef<OverlayScrollbarsComponentRef>(null);
 
     useImperativeHandle(ref, () => {
@@ -35,6 +35,14 @@ export const Scrollable = memo<ScrollableProps>(
               autoHide: 'move',
               autoHideDelay: 300,
             },
+            ...(overflowX || overflowY
+              ? {
+                  overflow: {
+                    ...(overflowX ? { x: overflowX } : {}),
+                    ...(overflowY ? { y: overflowY } : {}),
+                  },
+                }
+              : {}),
           }}
           ref={scrollableRef}
         >
