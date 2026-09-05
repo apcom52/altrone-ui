@@ -1,57 +1,75 @@
-@import 'src/global/mixins';
-
 .RadioItem {
+  --radio-size: 24px;
+  --radio-dot-size: 12px;
+  --radio-label-size: var(--text-size-4);
+  --radio-label-line-height: var(--line-height-4);
+
   display: flex;
   align-items: center;
   gap: var(--gap);
-  outline: 0;
   cursor: pointer;
+  /* Row stays >=24px even at size="mini" — hit-area minimum, see accessibility.md. */
+  min-height: max(24px, var(--radio-size));
 
   &:hover {
     --radio-background-color: var(--radio-hover-background-color);
   }
-
-  &:focus-visible {
-    .Button {
-      outline: 2px solid var(--focus-color);
-      outline-offset: 2px;
-    }
-  }
 }
 
+/* Visually hidden, but kept in the accessibility tree — the real, focusable
+   radio. Native arrow-key navigation between options only works while these
+   inputs are actually in the tree. */
 .Input {
-  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
-.Label {
-  color: var(--radio-text-color);
-  font-weight: 500;
-  font-size: 14px;
+.Input:focus-visible + .Button {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
 }
 
 .Button {
-  position: relative;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--radio-size);
+  height: var(--radio-size);
+  border-radius: var(--radius-circle);
   background-color: var(--radio-background-color);
-  transition: background-color 0.1s linear;
+  transition: background-color var(--motion-duration-fast)
+    var(--motion-easing-standard);
   box-shadow:
     0 0 0 1px var(--radio-border-color),
     var(--shadow-1);
   flex-shrink: 0;
+}
 
-  &:after {
-    display: none;
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    top: 6px;
-    left: 6px;
-    background-color: var(--radio-icon-color);
-    border-radius: 50%;
-  }
+.Dot {
+  width: var(--radio-dot-size);
+  height: var(--radio-dot-size);
+  border-radius: var(--radius-circle);
+  background-color: var(--radio-icon-color);
+  opacity: 0;
+  transform: scale(0.4);
+  transition:
+    opacity var(--motion-duration-fast) var(--motion-easing-standard),
+    transform var(--motion-duration-base) var(--motion-easing-standard);
+}
+
+.Label {
+  color: var(--radio-text-color);
+  font-size: var(--radio-label-size);
+  line-height: var(--radio-label-line-height);
+  font-weight: var(--text-weight-regular);
 }
 
 .Checked {
@@ -59,15 +77,50 @@
   --radio-icon-color: var(--radio-checked-icon-color);
   --radio-border-color: var(--radio-checked-border-color);
 
-  .Button:after {
-    display: block;
-  }
-
   &:hover {
     --radio-background-color: var(--radio-checked-background-color);
+  }
+
+  .Dot {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
 .Disabled {
-  @include disabled;
+  --radio-background-color: var(--background-a2);
+  --radio-icon-color: var(--disabled-text-color);
+  --radio-border-color: var(--disabled-border);
+  --radio-text-color: var(--disabled-text-color);
+
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.Mini {
+  --radio-size: 16px;
+  --radio-dot-size: 6px;
+  --radio-label-size: var(--text-size-3);
+  --radio-label-line-height: var(--line-height-3);
+}
+
+.Small {
+  --radio-size: 20px;
+  --radio-dot-size: 8px;
+  --radio-label-size: var(--text-size-3);
+  --radio-label-line-height: var(--line-height-3);
+}
+
+.Large {
+  --radio-size: 28px;
+  --radio-dot-size: 14px;
+  --radio-label-size: var(--text-size-5);
+  --radio-label-line-height: var(--line-height-5);
+}
+
+.XLarge {
+  --radio-size: 32px;
+  --radio-dot-size: 16px;
+  --radio-label-size: var(--text-size-6);
+  --radio-label-line-height: var(--line-height-6);
 }

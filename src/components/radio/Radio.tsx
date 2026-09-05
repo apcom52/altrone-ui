@@ -17,6 +17,7 @@ const RadioWrapper = memo<RadioProps>(
     direction = 'horizontal',
     name,
     disabled,
+    size = 'm',
     ...restProps
   }) => {
     const id = useId();
@@ -49,8 +50,9 @@ const RadioWrapper = memo<RadioProps>(
         value,
         disabled: Boolean(disabled),
         onChange: onChangeHandler,
+        size,
       };
-    }, [onChangeHandler, value, radioName, disabled]);
+    }, [onChangeHandler, value, radioName, disabled, size]);
 
     return (
       <RadioContextWrapper.Provider value={radioContext}>

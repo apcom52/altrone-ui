@@ -1,64 +1,66 @@
-import { KeyboardEventHandler, memo, useRef } from 'react';
+import { memo } from 'react';
 import { RadioItemProps } from '../Radio.types.ts';
 import s from './item.module.scss';
 import clsx from 'clsx';
 import { useRadioContext } from '../Radio.context.ts';
 
 export const RadioItem = memo<RadioItemProps>(
-  ({ ref, children, value, className, disabled, style, ...restProps }) => {
+  ({
+    ref,
+    children,
+    value,
+    className,
+    disabled,
+    style,
+    size: itemSize,
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-describedby': ariaDescribedBy,
+    ...restProps
+  }) => {
     const {
       value: radioValue,
       disabled: radioDisabled,
       name,
       onChange,
+      size: groupSize,
     } = useRadioContext();
-
-    const inputRef = useRef<HTMLInputElement>(null);
 
     const itemChecked = radioValue === value;
     const itemDisabled = Boolean(radioDisabled || disabled);
-
-    const onKeyDown: KeyboardEventHandler = (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        inputRef.current?.click();
-      }
-    };
+    const size = itemSize ?? groupSize;
 
     const cls = clsx(
       s.RadioItem,
       {
         [s.Checked]: itemChecked,
         [s.Disabled]: itemDisabled,
+        [s.Mini]: size === 'mini',
+        [s.Small]: size === 's',
+        [s.Large]: size === 'l',
+        [s.XLarge]: size === 'xl',
       },
       className,
     );
 
-    const styles = {
-      ...style,
-    };
-
     return (
-      <label
-        ref={ref}
-        aria-disabled={itemDisabled}
-        tabIndex={itemDisabled ? -1 : 0}
-        className={cls}
-        onKeyDown={onKeyDown}
-        style={styles}
-        {...restProps}
-      >
+      <label ref={ref} className={cls} style={style} {...restProps}>
         <input
           type="radio"
+          className={s.Input}
           name={name}
-          ref={inputRef}
           checked={itemChecked}
           value={value}
-          onChange={onChange}
-          className={s.Input}
           disabled={itemDisabled}
+          onChange={onChange}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledBy}
+          aria-describedby={ariaDescribedBy}
         />
-        <div className={s.Button} />
-        {children ? <div className={s.Label}>{children}</div> : null}
+        <span className={s.Button}>
+          <span className={s.Dot} />
+        </span>
+        {children ? <span className={s.Label}>{children}</span> : null}
       </label>
     );
   },

@@ -4,13 +4,14 @@ import React, {
   PropsWithChildren,
   ReactElement,
 } from 'react';
-import { Direction } from 'types';
+import { Direction, Size } from 'types';
 
 export type RadioContext = {
   value: string | number;
   onChange: ChangeEventHandler<HTMLInputElement>;
   name: string;
   disabled: boolean;
+  size: Size;
 };
 
 export interface RadioProps
@@ -20,7 +21,7 @@ export interface RadioProps
   > {
   ref?: React.Ref<HTMLDivElement>;
   value: string | number;
-  onChange: (value: string, e: ChangeEvent) => void;
+  onChange: (value: string, event: ChangeEvent<HTMLInputElement>) => void;
   children:
     | ReactElement<RadioItemProps>
     | (ReactElement<RadioItemProps> | null | false)[]
@@ -29,6 +30,7 @@ export interface RadioProps
   name?: string;
   direction?: Direction;
   disabled?: boolean;
+  size?: Size;
 }
 
 export interface RadioItemProps
@@ -37,4 +39,6 @@ export interface RadioItemProps
   ref?: React.Ref<HTMLLabelElement>;
   value: string | number;
   disabled?: boolean;
+  /** Overrides the group's `size` for this item only. */
+  size?: Size;
 }
