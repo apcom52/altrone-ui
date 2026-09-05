@@ -262,18 +262,29 @@ export const SizesStory: StoryObj<typeof Select> = {
 
 // ─── 5. Custom trigger ───────────────────────────────────────────────────────
 
-/** `asChild` trigger — reads live state from context, no props threaded. */
-const RegionTrigger = ({ ref }: { ref?: React.Ref<HTMLButtonElement> }) => {
+/**
+ * `asChild` trigger — reads live state from `useSelectContext()`, and must
+ * spread the props it receives (`onClick`, `aria-*`, `ref`, …) onto its root
+ * element or the Select never opens.
+ */
+const RegionTrigger = ({
+  ref,
+  style,
+  ...rest
+}: React.ComponentPropsWithoutRef<'button'> & {
+  ref?: React.Ref<HTMLButtonElement>;
+}) => {
   const { expanded, selectedOptions } = useSelectContext();
   const count = Array.isArray(selectedOptions) ? selectedOptions.length : 0;
 
   return (
     <Button
+      {...rest}
       ref={ref}
       icon={<Globe />}
       label={count ? `${count} regions` : 'Pick regions'}
       additionalIcon={expanded ? <ChevronUp /> : <ChevronDown />}
-      style={{ minWidth: 200 }}
+      style={{ minWidth: 200, ...style }}
     />
   );
 };

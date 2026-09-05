@@ -32,7 +32,7 @@ export const Switcher = memo<SwitcherProps>(
       ...style,
     };
 
-    const onChangeHandler: ChangeEventHandler = (e) => {
+    const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
       onChange?.(!checked, e);
     };
 

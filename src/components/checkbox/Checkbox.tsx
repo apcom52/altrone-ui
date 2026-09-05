@@ -1,4 +1,4 @@
-import { ChangeEventHandler, KeyboardEventHandler, memo, useRef } from 'react';
+import { ChangeEventHandler, memo, useEffect, useRef } from 'react';
 import { CheckboxProps } from './Checkbox.types.ts';
 import clsx from 'clsx';
 import s from './checkbox.module.scss';
@@ -13,12 +13,24 @@ export const Checkbox = memo<CheckboxProps>(
     className,
     style,
     danger,
-    indeterminate,
+    indeterminate = false,
     disabled,
     name,
+    size = 'm',
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-describedby': ariaDescribedBy,
     ...restProps
   }) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
+
+    /* `indeterminate` is a DOM property, not an attribute — it can only be set
+       imperatively, and it's what makes AT announce the checkbox as "mixed". */
+    useEffect(() => {
+      if (inputRef.current) {
+        inputRef.current.indeterminate = indeterminate;
+      }
+    }, [indeterminate]);
 
     const cls = clsx(
       s.Checkbox,
@@ -26,50 +38,40 @@ export const Checkbox = memo<CheckboxProps>(
         [s.Checked]: checked || indeterminate,
         [s.Disabled]: disabled,
         [s.Danger]: danger,
+        [s.Mini]: size === 'mini',
+        [s.Small]: size === 's',
+        [s.Large]: size === 'l',
+        [s.XLarge]: size === 'xl',
       },
       className,
     );
 
-    const styles = {
-      ...style,
-    };
-
-    const onChangeHandler: ChangeEventHandler = (e) => {
-      onChange?.(!checked, e);
-    };
-
-    const onKeyDown: KeyboardEventHandler = (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        inputRef.current?.click();
-      }
+    const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (event) => {
+      onChange?.(!checked, event);
     };
 
     return (
-      <label
-        ref={ref}
-        className={cls}
-        style={styles}
-        tabIndex={0}
-        onKeyDown={onKeyDown}
-        {...restProps}
-      >
+      <label ref={ref} className={cls} style={style} {...restProps}>
         <input
           ref={inputRef}
           type="checkbox"
-          onChange={onChangeHandler}
+          className={s.Input}
           checked={checked}
           name={name}
-          className={s.Input}
           disabled={disabled}
+          onChange={onChangeHandler}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledBy}
+          aria-describedby={ariaDescribedBy}
         />
-        <div className={s.Button}>
+        <span className={s.Button}>
           {indeterminate ? (
-            <div className={s.Indetermination} />
+            <span className={s.Indetermination} />
           ) : (
             <CheckIcon checked={checked} />
           )}
-        </div>
-        {children ? <div className={s.Label}>{children}</div> : null}
+        </span>
+        {children ? <span className={s.Label}>{children}</span> : null}
       </label>
     );
   },

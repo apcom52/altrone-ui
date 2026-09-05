@@ -1,5 +1,3 @@
-@import 'src/global/mixins';
-
 :global([data-altrone-root='true']) {
   --checkbox-background-color: var(--interactive-1);
   --checkbox-checked-background-color: var(--accent-5);
@@ -10,64 +8,79 @@
   --checkbox-danger-background-color: var(--red-9);
   --checkbox-danger-checked-background-color: var(--red-10);
   --checkbox-text-color: var(--text-2);
+  --checkbox-rounding: var(--radius-m);
+
+  /* size='m' tier — mini/s/l/xl override these on .Mini/.Small/.Large/.XLarge. */
   --checkbox-size: 24px;
-  --checkbox-rounding: 8px;
+  --checkbox-row-height: 32px;
+  --checkbox-check-icon-size: 12px;
   --checkbox-indetermination-size: 10px;
-  --checkbox-indetermination-rounding: 4px;
+  --checkbox-label-size: var(--text-size-4);
+  --checkbox-label-line-height: var(--line-height-4);
 }
 
 .Checkbox {
   display: flex;
   align-items: center;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  border: none;
-  background: transparent;
   gap: var(--gap);
   cursor: pointer;
-  padding: 3px 4px;
-  height: 32px;
-  border-radius: var(--checkbox-rounding);
-  outline: none;
+  /* Row stays >=24px even at size="mini" — hit-area minimum, see accessibility.md. */
+  min-height: var(--checkbox-row-height);
 
-  @include no-selection;
+  -webkit-user-select: none;
+  user-select: none;
 
   &:hover {
     --checkbox-background-color: var(--checkbox-hover-background-color);
   }
-
-  &:focus-visible {
-    .Button {
-      outline: 2px solid var(--focus-color);
-      outline-offset: 2px;
-    }
-  }
 }
 
+/* Visually hidden, but kept in the accessibility tree (unlike `display: none`) —
+   this is the real, focusable checkbox that carries role/checked/disabled and
+   native Space-to-toggle. */
 .Input {
-  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.Input:focus-visible + .Button {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
 }
 
 .Button {
+  --radius-outer: var(--checkbox-rounding);
+
   display: flex;
   align-items: center;
   justify-content: center;
   width: var(--checkbox-size);
   height: var(--checkbox-size);
   background-color: var(--checkbox-background-color);
-  border-radius: var(--checkbox-rounding);
-  transition: background-color 0.1s linear;
+  border-radius: var(--radius-outer);
+  transition: background-color var(--motion-duration-fast)
+    var(--motion-easing-standard);
   box-shadow:
     0 0 0 1px var(--checkbox-border-color),
     var(--shadow-1);
   color: var(--checkbox-icon-color);
   flex-shrink: 0;
+  --check-icon-size: var(--checkbox-check-icon-size);
 }
 
 .Label {
   color: var(--checkbox-text-color);
-  @include label;
+  font-size: var(--checkbox-label-size);
+  line-height: var(--checkbox-label-line-height);
+  font-weight: var(--text-weight-regular);
 }
 
 .Checked {
@@ -82,13 +95,18 @@
 .Indetermination {
   width: var(--checkbox-indetermination-size);
   height: var(--checkbox-indetermination-size);
-  border-radius: var(--checkbox-indetermination-rounding);
+  border-radius: var(--radius-s);
   background-color: var(--checkbox-icon-color);
 }
 
 .Disabled {
   --checkbox-background-color: var(--background-a2);
-  --checkbox-icon-color: var(--text-a2);
+  /* Also override the accent border `.Checked` sets — a disabled checkbox
+     stays fully neutral whether it's checked or not. */
+  --checkbox-border-color: var(--disabled-border);
+  /* `--text-a2` is `--gray-a12` — near-full-strength, so the check read just
+     as bold as an enabled one. Match the muted label instead. */
+  --checkbox-icon-color: var(--disabled-text-color);
   --checkbox-text-color: var(--disabled-text-color);
   cursor: not-allowed;
   pointer-events: none;
@@ -96,4 +114,42 @@
 
 .Danger {
   --checkbox-text-color: var(--danger-text-1);
+}
+
+.Mini {
+  --checkbox-size: 16px;
+  /* The 16px box needs a smaller corner or it reads as a circle — a Radio. */
+  --checkbox-rounding: var(--radius-s);
+  --checkbox-row-height: 24px;
+  --checkbox-check-icon-size: 9px;
+  --checkbox-indetermination-size: 6px;
+  --checkbox-label-size: var(--text-size-3);
+  --checkbox-label-line-height: var(--line-height-3);
+}
+
+.Small {
+  --checkbox-size: 20px;
+  --checkbox-row-height: 28px;
+  --checkbox-check-icon-size: 11px;
+  --checkbox-indetermination-size: 8px;
+  --checkbox-label-size: var(--text-size-3);
+  --checkbox-label-line-height: var(--line-height-3);
+}
+
+.Large {
+  --checkbox-size: 28px;
+  --checkbox-row-height: 36px;
+  --checkbox-check-icon-size: 15px;
+  --checkbox-indetermination-size: 12px;
+  --checkbox-label-size: var(--text-size-5);
+  --checkbox-label-line-height: var(--line-height-5);
+}
+
+.XLarge {
+  --checkbox-size: 32px;
+  --checkbox-row-height: 40px;
+  --checkbox-check-icon-size: 18px;
+  --checkbox-indetermination-size: 14px;
+  --checkbox-label-size: var(--text-size-6);
+  --checkbox-label-line-height: var(--line-height-6);
 }
