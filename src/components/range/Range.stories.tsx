@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { ALargeSmall, SunMedium } from 'lucide-react';
 
 const story: Meta<typeof Range> = {
-  title: 'Components/Form/Range',
+  title: 'Components/Controls/Range',
   component: Range,
   decorators: [StorybookDecorator],
   args: {},

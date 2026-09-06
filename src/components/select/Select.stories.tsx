@@ -10,7 +10,7 @@ import { Option } from './Select.types.ts';
 import { SELECT_COUNTRIES } from './constants.ts';
 
 const story: Meta<typeof Select> = {
-  title: 'Components/Form/Select',
+  title: 'Components/Controls/Select',
   component: Select,
   decorators: [StorybookDecorator],
   parameters: {

@@ -14,7 +14,7 @@ const TODAY = dayjs();
 const MAX_BOOKING_DATE = TODAY.add(2, 'year');
 
 const story: Meta<typeof DatePicker> = {
-  title: 'Components/Form/DatePicker',
+  title: 'Components/Controls/DatePicker',
   component: DatePicker,
   decorators: [StorybookDecorator],
   args: {},

@@ -26,6 +26,8 @@ export const sp: Localization = {
     placeholder: 'Elegir archivo',
     errorMessage:
       'No se puede cargar el archivo. Por favor, inténtelo de nuevo',
+    untitledFile: 'Archivo sin nombre',
+    retryUpload: 'Reintentar la carga',
   },
   textInput: {
     loading: 'Cargando',

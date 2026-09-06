@@ -10,7 +10,7 @@ import {
 } from './stories';
 
 const story: Meta<typeof NumberInput> = {
-  title: 'Components/Form/NumberInput',
+  title: 'Components/Controls/NumberInput',
   component: NumberInput,
   decorators: [StorybookDecorator],
   parameters: {

@@ -16,13 +16,13 @@ import {
 } from './FilePicker.types.ts';
 import s from './filePicker.module.scss';
 import { File } from './inner';
-import { Flex } from 'components/flex';
 import { deleteFileRequest } from './FilePicker.utils.ts';
 import clsx from 'clsx';
 import { FilePickerContext } from './FilePicker.context.ts';
 import { useLocalization } from '../application/useLocalization.tsx';
 import { GlobalUtils } from 'utils';
 import { Upload } from 'lucide-react';
+import { HTMLMotionProps, motion, useReducedMotionConfig } from 'motion/react';
 
 export const FilePicker = memo<FilePickerProps>(
   ({
@@ -39,6 +39,7 @@ export const FilePicker = memo<FilePickerProps>(
     autoUploadFn,
     removeFileFn,
     placeholder,
+    size = 'm',
     className,
     style,
     ...restProps
@@ -84,14 +85,18 @@ export const FilePicker = memo<FilePickerProps>(
         url,
         name,
         method,
+        size,
         autoUploadFn,
         removeFileFn,
       };
-    }, [autoUpload, autoUploadFn, removeFileFn, method, url, name]);
+    }, [autoUpload, autoUploadFn, removeFileFn, method, url, name, size]);
 
     const onChangeFileInput = useCallback(
       async (e: ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = Array.from(e.target.files || []);
+        /* Reset the native input so picking the *same* file again (e.g. after
+           removing it) still fires a change event. */
+        e.target.value = '';
         if (selectedFiles.length === 0) return;
 
         if (multiple) {
@@ -141,14 +146,17 @@ export const FilePicker = memo<FilePickerProps>(
       ...style,
     };
 
+    /* `layoutRoot` makes it the reference frame for the chips' size animations:
+       its own position resolves instantly, so the picker moving in the layout
+       doesn't cascade into chip animations (same pattern as Tabs). */
+    const animateLayout = !useReducedMotionConfig();
+
     return (
       <FilePickerContext.Provider value={filePickerContext}>
-        <Flex
-          direction="horizontal"
-          gap="m"
-          align="center"
-          wrap
-          {...restProps}
+        <motion.div
+          layout={animateLayout ? true : undefined}
+          layoutRoot
+          {...(restProps as HTMLMotionProps<'div'>)}
           ref={ref}
           className={cls}
           style={styles}
@@ -174,11 +182,12 @@ export const FilePicker = memo<FilePickerProps>(
             />
           ))}
           <Button
+            size={size}
             icon={<Upload />}
             label={placeholder || t('filePicker.placeholder')}
             onClick={chooseFiles}
           />
-        </Flex>
+        </motion.div>
       </FilePickerContext.Provider>
     );
   },

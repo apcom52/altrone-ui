@@ -25,6 +25,8 @@ export const en: Localization = {
     noFiles: 'No files chosen',
     placeholder: 'Choose file',
     errorMessage: 'Cannot upload the file. Please try again',
+    untitledFile: 'Untitled file',
+    retryUpload: 'Try uploading again',
   },
   textInput: {
     loading: 'Loading',

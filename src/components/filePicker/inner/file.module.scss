@@ -1,102 +1,98 @@
-@import 'src/global/mixins';
-
 :global([data-altrone-root='true']) {
   --file-picker-item-background-color: var(--interactive-1);
   --file-picker-progress-color: var(--accent-3);
-  --file-picker-item-close-background-color: var(--background-2);
-  --file-picker-item-close-hovered-background-color: var(--accent-4);
   --file-picker-item-size-text-color: var(--text-1);
   --file-picker-item-text-color: var(--text-2);
 
   --file-picker-invalid-item-background-color: var(--red-3);
-  --file-picker-invalid-item-close-background-color: var(--red-4);
-  --file-picker-invalid-item-hovered-close-background-color: var(--red-5);
-  --file-picker-invalid-item-size-text-color: var(--red-11);
   --file-picker-invalid-item-text-color: var(--red-12);
 }
 
 .File {
+  /* size='m' tier — mini/s/l/xl override these below. */
+  --file-picker-item-height: 32px;
+  --file-picker-item-padding-left: var(--l-gap);
+  --file-picker-item-name-size: var(--text-size-4);
+  --file-picker-item-meta-size: var(--text-size-3);
+
   display: flex;
   position: relative;
   align-items: center;
-  gap: 4px;
+  gap: var(--xs-gap);
   background: var(--file-picker-item-background-color);
-  padding: 4px 4px 4px 12px;
-  border-radius: 16px;
-  transition: background-color 0.2s linear, color 0.2s linear;
+  padding: 0 var(--xs-gap) 0 var(--file-picker-item-padding-left);
+  border-radius: calc(var(--file-picker-item-height) / 2);
+  transition:
+    background-color var(--motion-duration-base) var(--motion-easing-standard),
+    color var(--motion-duration-base) var(--motion-easing-standard);
   cursor: default;
-  //overflow: hidden;
   max-width: 280px;
-  height: 32px;
+  height: var(--file-picker-item-height);
 
-  @include no-selection;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .FileName {
   color: var(--file-picker-item-text-color);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--file-picker-item-name-size);
+  font-weight: var(--text-weight-medium);
   z-index: 2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
   flex: 1;
+  /* A bit of breathing room before the size / actions that follow. */
+  padding-right: var(--xs-gap);
 }
 
+/* Doubles as the upload indicator: a left-anchored fill that grows with
+   `progress` while `status === 'loading'` (rendered only in that state). */
 .Progress {
   position: absolute;
   height: 100%;
   left: 0;
   background: var(--file-picker-progress-color);
-  width: 100px;
   z-index: 1;
-  flex: 0;
-  border-radius: 8px;
-  transition: width 0.2s ease;
+  border-radius: var(--radius-m);
+  transition: width var(--motion-duration-base) var(--motion-easing-standard);
 }
 
-.Close {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-  font-size: 12px;
-  cursor: pointer;
-  border-radius: 50%;
-  border: none;
-  transition: background-color 0.2s linear, color 0.2s linear;
-  background: var(--file-picker-item-close-background-color);
-  color: var(--file-picker-item-text-color);
+/* Keep the row controls above the progress fill. */
+.Control {
   z-index: 2;
-
-  &:hover,
-  &:focus-visible {
-    background: var(--file-picker-item-close-hovered-background-color);
-  }
-
-  @include focus;
 }
 
 .Size {
   color: var(--file-picker-item-size-text-color);
-  font-size: 12px;
-  font-weight: 500;
+  font-size: var(--file-picker-item-meta-size);
+  font-weight: var(--text-weight-medium);
   z-index: 2;
   white-space: nowrap;
   flex: 0;
   line-height: 1;
-  padding: 0 4px;
+  padding: 0 var(--xs-gap);
 }
 
 .Alert {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  /* Breathing room around the icon (also widens the hit target). */
+  padding: 0 var(--xs-gap);
+  border: none;
+  background: none;
+  font-size: var(--file-picker-item-name-size);
   color: var(--file-picker-invalid-item-text-color);
   cursor: pointer;
+  z-index: 2;
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
+    border-radius: var(--radius-s);
+  }
 }
 
 .Invalid {
@@ -109,20 +105,38 @@
   .Size {
     color: var(--file-picker-invalid-item-text-color);
   }
+}
 
-  .Progress {
-    display: none;
+.Mini {
+  /* Matches Box's mini `--box-size` so the chip lines up with the mini button. */
+  --file-picker-item-height: 16px;
+  --file-picker-item-padding-left: var(--s-gap);
+  --file-picker-item-name-size: var(--text-size-3);
+  --file-picker-item-meta-size: var(--text-size-2);
+
+  /* Pull the trailing control tight to the edge at this size. */
+  .Control {
+    margin-right: calc(var(--xs-gap) * -1);
   }
+}
 
-  .Close {
-    background: var(--file-picker-invalid-item-close-background-color);
-    color: var(--file-picker-invalid-item-text-color);
+.Small {
+  --file-picker-item-height: 28px;
+  --file-picker-item-padding-left: 10px;
+  --file-picker-item-name-size: var(--text-size-3);
+  --file-picker-item-meta-size: var(--text-size-2);
+}
 
-    &:hover,
-    &:focus-visible {
-      background: var(
-        --file-picker-invalid-item-hovered-close-background-color
-      );
-    }
-  }
+.Large {
+  --file-picker-item-height: 36px;
+  --file-picker-item-padding-left: 14px;
+  --file-picker-item-name-size: var(--text-size-5);
+  --file-picker-item-meta-size: var(--text-size-4);
+}
+
+.XLarge {
+  --file-picker-item-height: 40px;
+  --file-picker-item-padding-left: 16px;
+  --file-picker-item-name-size: var(--text-size-6);
+  --file-picker-item-meta-size: var(--text-size-4);
 }

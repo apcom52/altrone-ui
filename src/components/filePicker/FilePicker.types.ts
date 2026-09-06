@@ -1,4 +1,5 @@
 import { AnyObject } from '../../utils';
+import { Size } from '../../types';
 
 export type FileItem = AnyObject &
   Partial<{
@@ -17,6 +18,7 @@ export interface FilePickerContextType {
   url?: string;
   method?: HTMLFormElement['method'];
   name?: string;
+  size: Size;
   autoUploadFn?: (context: FilePickerUploadContext) => Promise<void>;
   removeFileFn?: (context: FilePickerRemoveContext) => Promise<void>;
 }
@@ -43,6 +45,7 @@ export interface FilePickerProps
   multiple?: boolean;
   accept?: string;
   placeholder?: string;
+  size?: Size;
   autoUploadFn?: (context: FilePickerUploadContext) => Promise<void>;
   removeFileFn?: (context: FilePickerRemoveContext) => Promise<void>;
 }

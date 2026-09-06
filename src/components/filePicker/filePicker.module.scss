@@ -1,17 +1,25 @@
-@import 'src/global/mixins';
-
 :global([data-altrone-root='true']) {
-  --filePickerEmptyTextColor: var(--text-1);
+  --file-picker-empty-text-color: var(--text-1);
 }
 
 .FilePicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap);
+  width: 100%;
 }
 
+/* The real <input type="file"> is triggered programmatically by the button, so
+   it's kept out of the layout and the tab order entirely — the button is the
+   accessible surface. */
 .Input {
   display: none;
 }
 
 .EmptyLabel {
-  @include sm-paragraph;
-  color: var(--filePickerEmptyTextColor);
+  color: var(--file-picker-empty-text-color);
+  font-size: var(--text-size-4);
+  line-height: var(--line-height-4);
+  font-weight: var(--text-weight-regular);
 }

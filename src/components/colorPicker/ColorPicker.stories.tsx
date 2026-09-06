@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 
 const story: Meta<typeof ColorPicker> = {
-  title: 'Components/Form/ColorPicker',
+  title: 'Components/Controls/ColorPicker',
   component: ColorPicker,
   decorators: [StorybookDecorator],
   args: {},

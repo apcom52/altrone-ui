@@ -6,7 +6,7 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Size } from 'types';
 
 const story: Meta<typeof Switcher> = {
-  title: 'Components/Form/Switcher',
+  title: 'Components/Controls/Switcher',
   component: Switcher,
   decorators: [StorybookDecorator],
   parameters: {

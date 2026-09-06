@@ -10,7 +10,7 @@ import {
 } from './stories';
 
 const story: Meta<typeof PasswordInput> = {
-  title: 'Components/Form/PasswordInput',
+  title: 'Components/Controls/PasswordInput',
   component: PasswordInput,
   decorators: [StorybookDecorator],
   parameters: {

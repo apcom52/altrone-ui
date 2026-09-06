@@ -5,7 +5,7 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Announcement, CommentComposer, ProfileBio, SnippetEditor } from './stories';
 
 const story: Meta<typeof Textarea> = {
-  title: 'Components/Form/Textarea',
+  title: 'Components/Controls/Textarea',
   component: Textarea,
   decorators: [StorybookDecorator],
   parameters: {

@@ -5,18 +5,28 @@ import {
   FileProps,
   FileStatus,
 } from '../FilePicker.types.ts';
+import { Size } from '../../../types';
 import s from './file.module.scss';
-import { Loading } from 'components/loading';
 import { Popover } from 'components/popover';
+import { Tooltip } from 'components/tooltip';
 import { Text } from 'components/text';
 import clsx from 'clsx';
 import { FileUtils } from 'utils';
 import { useFilePickerContext } from '../FilePicker.context.ts';
 import { deleteFileRequest } from '../FilePicker.utils.ts';
 import { useLocalization } from '../../application/useLocalization.tsx';
-import { CloseButton } from 'components/closeButton/CloseButton.tsx';
-import { CircleAlert, RotateCw } from 'lucide-react';
+import { CircleAlert, RotateCw, Trash2 } from 'lucide-react';
 import { Button } from 'components/button/Button.tsx';
+import { motion, useReducedMotionConfig } from 'motion/react';
+
+/** Chip size -> size for its inline retry / delete buttons (a tier smaller). */
+const CONTROL_SIZE: Record<Size, Size> = {
+  mini: 'mini',
+  s: 'mini',
+  m: 's',
+  l: 's',
+  xl: 'm',
+};
 
 export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
   const t = useLocalization();
@@ -25,10 +35,13 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
     url,
     method = 'POST',
     name = 'file',
+    size = 'm',
     autoUploadFn,
     removeFileFn,
     autoUpload,
   } = useFilePickerContext();
+
+  const controlSize = CONTROL_SIZE[size];
 
   const [status, setStatus] = useState<FileStatus>('selected');
   const [progress, setProgress] = useState(0);
@@ -108,7 +121,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
           context.fail();
         };
 
-        request.onload = (e: ProgressEvent<XMLHttpRequestEventTarget>) => {
+        request.onload = (e: ProgressEvent) => {
           const xhr = e.target as XMLHttpRequest;
           if (xhr?.status >= 200 && xhr.status < 300) {
             context.complete();
@@ -150,17 +163,42 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
 
   const cls = clsx(s.File, {
     [s.Invalid]: status === 'failed',
+    [s.Mini]: size === 'mini',
+    [s.Small]: size === 's',
+    [s.Large]: size === 'l',
+    [s.XLarge]: size === 'xl',
   });
 
-  const fileName = pickerItem.filename || file?.name || 'Untitled file';
+  const fileName =
+    pickerItem.filename || file?.name || t('filePicker.untitledFile');
   const showFileSize = Boolean(file && file?.size > 0);
 
+  /* Animate the chip's size *and* position as contents change (name resolves,
+     size text / actions appear, failed state widens it) and as sibling chips
+     reflow around it — relative to the picker's `layoutRoot`. */
+  const animateLayout = useReducedMotionConfig() ? undefined : true;
+
   return (
-    <div className={cls} title={file?.name}>
-      <div className={s.Progress} style={{ width: `${progress}%` }} />
-      <div className={s.FileName}>{fileName}</div>
+    <motion.div
+      className={cls}
+      layout={animateLayout}
+      transition={{ layout: { duration: 0.25, ease: 'easeOut' } }}
+    >
+      {status === 'loading' ? (
+        <div
+          className={s.Progress}
+          style={{ width: `${progress}%` }}
+          role="progressbar"
+          aria-valuenow={progress}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        />
+      ) : null}
+      <Tooltip content={fileName} placement="top">
+        <span className={s.FileName}>{fileName}</span>
+      </Tooltip>
       {showFileSize ? (
-        <div className={s.Size}>{FileUtils.getFileSize(file?.size || 0)}</div>
+        <span className={s.Size}>{FileUtils.getFileSize(file?.size || 0)}</span>
       ) : null}
       {errorMessage ? (
         <Popover
@@ -172,24 +210,31 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
             </Text>
           }
         >
-          <div className={s.Alert}>
+          <button type="button" className={s.Alert} aria-label={errorMessage}>
             <CircleAlert />
-          </div>
+          </button>
         </Popover>
       ) : null}
-      {status === 'loading' ? <Loading size="12px" strokeWidth="1px" /> : null}
       {status === 'failed' ? (
         <Button
-          size="s"
+          className={s.Control}
+          size={controlSize}
           icon={<RotateCw />}
-          label={t('common.refresh')}
+          label={t('filePicker.retryUpload')}
           onClick={() => setStatus('selected')}
           showLabel={false}
         />
       ) : null}
       {status !== 'loading' ? (
-        <CloseButton size="s" onClick={onRemoveClick} />
+        <Button
+          className={s.Control}
+          size={controlSize}
+          icon={<Trash2 />}
+          label={t('common.delete')}
+          onClick={onRemoveClick}
+          showLabel={false}
+        />
       ) : null}
-    </div>
+    </motion.div>
   );
 });

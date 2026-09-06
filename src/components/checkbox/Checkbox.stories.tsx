@@ -6,7 +6,7 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Size } from 'types';
 
 const story: Meta<typeof Checkbox> = {
-  title: 'Components/Form/Checkbox',
+  title: 'Components/Controls/Checkbox',
   component: Checkbox,
   decorators: [StorybookDecorator],
   parameters: {

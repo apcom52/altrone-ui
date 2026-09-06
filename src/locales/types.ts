@@ -32,6 +32,8 @@ export interface Localization {
     noFiles: string;
     placeholder: string;
     errorMessage: string;
+    untitledFile: string;
+    retryUpload: string;
   };
   textInput: {
     loading: string;

@@ -25,7 +25,7 @@ import { Size } from 'types/entity.ts';
 import { InlineEdit, OtpEntry } from './stories';
 
 const story: Meta<typeof TextInput> = {
-  title: 'Components/Form/TextInput',
+  title: 'Components/Controls/TextInput',
   component: TextInput,
   decorators: [StorybookDecorator],
   parameters: {

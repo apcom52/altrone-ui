@@ -32,7 +32,7 @@ import {
 } from 'lucide-react';
 
 const story: Meta<typeof Button> = {
-  title: 'Components/Form/Button',
+  title: 'Components/Controls/Button',
   component: Button,
   decorators: [StorybookDecorator],
   args: {},

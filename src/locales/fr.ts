@@ -25,6 +25,8 @@ export const fr: Localization = {
     noFiles: 'Aucun fichier sélectionné',
     placeholder: 'Choisir un fichier',
     errorMessage: 'Impossible de télécharger le fichier. Veuillez réessayer',
+    untitledFile: 'Fichier sans nom',
+    retryUpload: 'Réessayer le téléchargement',
   },
   textInput: {
     loading: 'Chargement',

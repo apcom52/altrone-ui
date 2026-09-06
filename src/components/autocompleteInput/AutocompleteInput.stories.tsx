@@ -10,7 +10,7 @@ import {
 } from './stories';
 
 const story: Meta<typeof AutocompleteInput> = {
-  title: 'Components/Form/AutocompleteInput',
+  title: 'Components/Controls/AutocompleteInput',
   component: AutocompleteInput,
   decorators: [StorybookDecorator],
   parameters: {

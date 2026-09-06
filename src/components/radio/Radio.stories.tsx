@@ -6,7 +6,7 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Size } from 'types';
 
 const story: Meta<typeof Radio> = {
-  title: 'Components/Form/Radio',
+  title: 'Components/Controls/Radio',
   component: Radio,
   decorators: [StorybookDecorator],
   parameters: {

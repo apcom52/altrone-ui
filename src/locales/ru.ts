@@ -25,6 +25,8 @@ export const ru: Localization = {
     noFiles: 'Файлы не выбраны',
     placeholder: 'Выбрать файл',
     errorMessage: 'Возникла ошибка при загрузке файла. Попробуйте еще раз',
+    untitledFile: 'Файл без имени',
+    retryUpload: 'Повторить загрузку',
   },
   textInput: {
     loading: 'Загрузка',

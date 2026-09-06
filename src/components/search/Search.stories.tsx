@@ -5,7 +5,7 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { DocsSearch, GlobalSearch, TableFilter } from './stories';
 
 const story: Meta<typeof Search> = {
-  title: 'Components/Form/Search',
+  title: 'Components/Controls/Search',
   component: Search,
   decorators: [StorybookDecorator],
   parameters: {

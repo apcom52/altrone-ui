@@ -26,6 +26,8 @@ export const ge: Localization = {
     placeholder: 'Datei auswählen',
     errorMessage:
       'Datei kann nicht hochgeladen werden. Bitte versuchen Sie es erneut',
+    untitledFile: 'Unbenannte Datei',
+    retryUpload: 'Erneut hochladen',
   },
   textInput: {
     loading: 'Wird geladen',
