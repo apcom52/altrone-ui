@@ -155,4 +155,8 @@ export const fr: Localization = {
   autocompleteInput: {
     loadError: 'Une erreur est survenue lors du chargement des données',
   },
+  calendar: {
+    previousMonth: 'Mois précédent',
+    nextMonth: 'Mois suivant',
+  },
 };

@@ -156,4 +156,8 @@ export const ge: Localization = {
   autocompleteInput: {
     loadError: 'Beim Laden der Daten ist ein Fehler aufgetreten',
   },
+  calendar: {
+    previousMonth: 'Vorheriger Monat',
+    nextMonth: 'Nächster Monat',
+  },
 };

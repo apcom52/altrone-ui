@@ -1,45 +1,197 @@
 :global([data-altrone-root='true']) {
-  --calendarDateBackgroundColor: transparent;
-  --calendarDateTextColor: var(--text-2);
-  --calendarDateTodayTextColor: var(--accent-9);
-  --calendarDateSelectedDateBackgroundColor: var(--accent-3);
-  --calendarDateSelectedDateTextColor: var(--accent-11);
-  --calendar-gap: 4px;
-  --calendar-date-height: 34px;
-  --calendar-date-padding: 4px 8px;
+  --calendar-cell-size: 32px;
+  /** The calendar is exactly seven day cells wide. */
+  --calendar-width: calc(var(--calendar-cell-size) * 7);
+  --calendar-cell-text-size: 14px;
+  /** Hover / selected pill radius — mirrors DatePicker's day cell. */
+  --calendar-cell-radius: 16px;
+
+  --calendar-cell-text-color: var(--text-2);
+  --calendar-cell-weekend-text-color: var(--accent-12);
+  --calendar-cell-today-text-color: var(--accent-11);
+  --calendar-cell-outside-text-color: var(--disabled-text-color);
+  --calendar-cell-hover-backdrop-color: var(--interactive-a1);
+  --calendar-cell-selected-text-color: var(--accent-11);
+  --calendar-band-color: var(--accent-a3);
+
+  --calendar-weekday-text-color: var(--text-1);
+  --calendar-weekday-text-size: 10px;
+
+  --calendar-header-text-color: var(--text-2);
+  --calendar-header-text-size: 14px;
 }
 
 .Calendar {
+  width: var(--calendar-width);
+  user-select: none;
+}
+
+/** With chrome (header / weekday row) the root stacks its sections. */
+.Calendar:not(.Bare) {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--s-gap);
+}
+
+/** `.Bare` — low-level usage: the root *is* the day grid (no wrapper). */
+.Grid,
+.Weekdays,
+.Calendar.Bare {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: var(--calendar-gap);
+  grid-template-columns: repeat(7, var(--calendar-cell-size));
+}
+
+.Header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  height: var(--calendar-cell-size);
+}
+
+.NavButton {
+  flex: none;
+}
+
+.Caption {
+  flex: 1;
+  text-align: center;
+  font-size: var(--calendar-header-text-size);
+  font-weight: 600;
+  color: var(--calendar-header-text-color);
+  text-transform: capitalize;
+}
+
+.Weekday {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--calendar-cell-size);
+  font-size: var(--calendar-weekday-text-size);
+  font-weight: 500;
+  color: var(--calendar-weekday-text-color);
+  text-transform: capitalize;
+}
+
+.Empty {
+  width: var(--calendar-cell-size);
+  height: var(--calendar-cell-size);
 }
 
 .Date {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--calendar-cell-size);
+  height: var(--calendar-cell-size);
+  padding: 0;
   border: none;
-  padding: var(--calendar-date-padding);
-  text-align: left;
-  height: var(--calendar-date-height);
-  color: var(--calendarDateTextColor);
-  opacity: 0.5;
-  border-radius: var(--controlRounding);
-  background-color: var(--calendarDateBackgroundColor);
+  background: transparent;
+  color: var(--calendar-cell-text-color);
+  font-size: var(--calendar-cell-text-size);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: none;
+  }
 }
 
-.ActiveMonth {
-  background-color: var(--surface);
+.DateLabel {
+  position: relative;
+  z-index: 2;
+}
+
+/** Hover / focus backdrop. */
+.Date::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--calendar-cell-radius);
+  opacity: 0;
+  transition: opacity var(--motion-duration-fast) var(--motion-easing-standard);
+  z-index: 0;
+}
+
+.Date:hover::after,
+.Date:focus-visible::after {
+  background-color: var(--calendar-cell-hover-backdrop-color);
   opacity: 1;
 }
 
-.Today {
-  color: var(--calendarDateTodayTextColor);
+/**
+ * Selected "glass" chip. Mount/unmount is animated by `motion` in
+ * `CalendarDate` (scale-in with a light spring bounce, scale-out on exit).
+ */
+.SelectedPill {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--calendar-cell-radius);
+  background-color: var(--glass-background-color);
+  box-shadow: var(--elevation-raised-shadow);
+  z-index: 1;
 }
 
-.Disabled {
-  pointer-events: none;
+/**
+ * The range band. Adjacent in-range cells touch, so the fill reads as one
+ * continuous block. Only its outer corners round (to the pill radius) — the
+ * points where the band steps between week rows stay square. `CalendarDate`
+ * decides which of the four corners each cell rounds.
+ */
+.InRange::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--calendar-band-color);
+  z-index: 0;
+}
+
+.BandRoundTopLeft::before {
+  border-top-left-radius: var(--calendar-cell-radius);
+}
+
+.BandRoundBottomLeft::before {
+  border-bottom-left-radius: var(--calendar-cell-radius);
+}
+
+.BandRoundTopRight::before {
+  border-top-right-radius: var(--calendar-cell-radius);
+}
+
+.BandRoundBottomRight::before {
+  border-bottom-right-radius: var(--calendar-cell-radius);
 }
 
 .Selected {
-  background-color: var(--calendarDateSelectedDateBackgroundColor);
-  color: var(--calendarDateSelectedDateTextColor);
+  color: var(--calendar-cell-selected-text-color);
+}
+
+.Today:not(.Selected):not(.OutsideMonth) {
+  color: var(--calendar-cell-today-text-color);
+}
+
+.Weekend:not(.Selected):not(.Today):not(.OutsideMonth) {
+  color: var(--calendar-cell-weekend-text-color);
+}
+
+/** Adjacent-month days stay muted regardless of weekend / today. */
+.OutsideMonth {
+  color: var(--calendar-cell-outside-text-color);
+  cursor: default;
+
+  &::after {
+    display: none;
+  }
+}
+
+.Disabled {
+  color: var(--disabled-text-color);
+  pointer-events: none;
+
+  &::before,
+  &::after {
+    display: none;
+  }
 }

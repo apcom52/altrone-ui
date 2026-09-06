@@ -156,4 +156,8 @@ export const sp: Localization = {
   autocompleteInput: {
     loadError: 'Se produjo un error al cargar los datos',
   },
+  calendar: {
+    previousMonth: 'Mes anterior',
+    nextMonth: 'Mes siguiente',
+  },
 };

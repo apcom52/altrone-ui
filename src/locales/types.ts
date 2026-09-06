@@ -147,4 +147,8 @@ export interface Localization {
   autocompleteInput: {
     loadError: string;
   };
+  calendar: {
+    previousMonth: string;
+    nextMonth: string;
+  };
 }

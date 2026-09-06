@@ -155,4 +155,8 @@ export const ru: Localization = {
   autocompleteInput: {
     loadError: 'Возникла ошибка при загрузке данных',
   },
+  calendar: {
+    previousMonth: 'Предыдущий месяц',
+    nextMonth: 'Следующий месяц',
+  },
 };
