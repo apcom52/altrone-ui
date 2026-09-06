@@ -1,6 +1,8 @@
 import { ReactElement, ReactNode } from 'react';
 import { Direction, Size } from 'types';
 
+export type RangeVariant = 'default' | 'fill';
+
 export interface RangeProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   ref?: React.Ref<HTMLDivElement>;
@@ -16,6 +18,12 @@ export interface RangeProps
     value: number,
     event: PointerEvent | React.KeyboardEvent<HTMLDivElement>
   ) => void;
+  /**
+   * `default` — a thin track with a round thumb, the shape a range input has
+   * everywhere else. `fill` — the iOS Control Center slab: the whole control
+   * is the track and its fill level is the handle.
+   */
+  variant?: RangeVariant;
   direction?: Direction;
   min?: number;
   max?: number;

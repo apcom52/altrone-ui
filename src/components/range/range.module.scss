@@ -1,137 +1,343 @@
 @import 'src/global/mixins';
 
 :global([data-altrone-root='true']) {
-  --range-track-background-color: var(--interactive-a1);
-  --range-active-track-background-color: var(--accent-3);
-  --range-active-track-hover-background-color: var(--accent-4);
-  --range-active-track-active-background-color: var(--accent-5);
-  --range-disabled-active-track-background-color: var(--disabled-text-color);
-  --range-text-color: var(--text-2);
-  --range-border-color: var(--border-a1);
-  --range-height: 32px;
-  --range-rounding: 16px;
+  --range-track-color: var(--interactive-3);
+  --range-fill-color: var(--accent-9);
+  --range-fill-hover-color: var(--accent-10);
+  --range-value-text-color: var(--text-2);
+  --range-value-background-color: var(--background-1);
+  --range-fill-surface-color: var(--interactive-a1);
+
+  /* Thumb reproduces Box's `plate` material (frosted fill + layered hairline
+     and contact shadow) — see box.module.scss `.MaterialPlate`. */
+  --range-thumb-fill: var(--glass-background-color);
+  --range-thumb-shadow:
+    0 0 0 1px var(--gray-a3), 0 0 0 0.5px var(--black-a1),
+    0 1px 1px 0 var(--gray-a2), 0 2px 1px -1px var(--black-a1),
+    0 1px 3px 0 var(--black-a1);
 }
 
 .Range {
-  --range-active-track-bg: var(--range-active-track-background-color);
+  --range-size: 32px;
+  --range-track-thickness: 4px;
+  --range-thumb-size: 16px;
+  --range-thumb-grow: calc(var(--range-thumb-size) / 2.5);
+  --range-fill-radius: var(--radius-l);
+  --range-value-font-size: var(--text-size-3);
 
+  position: relative;
   display: flex;
   align-items: center;
-  position: relative;
+  gap: 8px;
   width: 100%;
-  height: var(--range-height);
-  overflow: hidden;
-  border-radius: var(--range-rounding);
-  box-shadow: var(--elevation-raised-shadow);
-  background-color: var(--range-track-background-color);
-  color: var(--range-text-color);
+  min-height: max(var(--range-thumb-size), 24px);
+  color: var(--range-value-text-color);
   cursor: pointer;
-  backdrop-filter: blur(64px) saturate(180%);
+  outline: none;
 
   @include no-selection;
-  @include focus;
-
-  &:focus-visible,
-  &:hover {
-    --range-active-track-bg: var(--range-active-track-hover-background-color);
-
-    .Value {
-      opacity: 1;
-    }
-  }
 
   &:active {
-    --range-active-track-bg: var(--range-active-track-active-background-color);
     cursor: ew-resize;
   }
-
-  &[data-range-active='true'] {
-    .Value {
-      opacity: 1;
-    }
-  }
 }
 
-.ShowLabelAlways {
-  .Value {
-    opacity: 1;
-  }
+/* Focus ring: around the thumb for `default`, around the whole slab for `fill`. */
+.Range:not(.Fill):focus-visible .Thumb,
+.Fill:focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
 }
 
-.Input {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  overflow: hidden;
-  opacity: 0;
+.Track {
+  position: relative;
+  flex: 1;
+  height: var(--range-track-thickness);
+  border-radius: var(--radius-pill);
+  background-color: var(--range-track-color);
 }
 
 .ActiveTrack {
   position: absolute;
   left: 0;
+  top: 0;
   height: 100%;
+  border-radius: inherit;
+  background-color: var(--range-fill-color);
   pointer-events: none;
-  background-color: var(--range-active-track-bg);
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-  box-shadow: 1px 0 5px 0 rgba(0, 0, 0, 0.05);
-  transition: background-color 0.2s ease;
+  transition: background-color var(--motion-duration-fast)
+    var(--motion-easing-standard);
+}
+
+.Thumb {
+  position: absolute;
+  top: 50%;
+  width: var(--range-thumb-size);
+  height: var(--range-thumb-size);
+  /* Half the thumb height, not 50% — a circle and a widened pill then share
+     the same radius, so the shape morphs by width alone with no radius jump. */
+  border-radius: calc(var(--range-thumb-size) / 2);
+  background-color: var(--range-thumb-fill);
+  backdrop-filter: var(--glass-effects);
+  box-shadow: var(--range-thumb-shadow);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition:
+    width var(--motion-duration-fast) var(--motion-easing-standard),
+    height var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.Range:active:not(.Disabled):not(.ReadOnly) .Thumb,
+.Range[data-range-active='true'] .Thumb {
+  width: calc(var(--range-thumb-size) + var(--range-thumb-grow));
 }
 
 .Value {
-  pointer-events: none;
   position: absolute;
-  right: 8px;
+  z-index: var(--level-tooltip);
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%);
+  padding: 2px 6px;
+  border-radius: var(--radius-s);
+  background-color: var(--range-value-text-color);
+  color: var(--range-value-background-color);
+  font-size: var(--range-value-font-size);
+  line-height: 1.4;
+  font-weight: var(--text-weight-medium);
+  white-space: nowrap;
   opacity: 0;
-  transition: opacity 0.2s ease-in-out;
-  mix-blend-mode: luminosity;
-
-  @include label-heading;
+  transition: opacity var(--motion-duration-fast) var(--motion-easing-standard);
+  pointer-events: none;
 }
 
 .Icon {
-  pointer-events: none;
-  position: absolute;
-  left: 8px;
-  height: 100%;
   display: flex;
   align-items: center;
+  flex-shrink: 0;
   font-size: 18px;
-  mix-blend-mode: luminosity;
+  color: var(--range-value-text-color);
+  pointer-events: none;
+}
+
+.Range:hover .ActiveTrack {
+  background-color: var(--range-fill-hover-color);
+}
+
+.Range:hover .Value,
+.Range:focus-visible .Value,
+.Range[data-range-active='true'] .Value,
+.ShowValueAlways .Value {
+  opacity: 1;
+}
+
+/* Dark theme: the thumb keeps a white cap, the way a native macOS/iOS slider
+   knob does — same inversion the submit Button applies. */
+:global([data-altrone-theme='dark']) .Thumb {
+  --range-thumb-fill: var(--white);
+}
+
+/* ---------- fill variant (iOS Control Center slab) ---------- */
+
+.Fill {
+  gap: 0;
+  height: var(--range-size);
+  min-height: 0;
+  border-radius: var(--range-fill-radius);
+  overflow: hidden;
+  background-color: var(--range-fill-surface-color);
+  box-shadow: var(--elevation-raised-shadow);
+  backdrop-filter: var(--glass-effects);
+  transition: filter var(--motion-duration-fast) var(--motion-easing-standard);
+
+  &:active:not(.Disabled):not(.ReadOnly) {
+    filter: brightness(0.96);
+  }
+
+  .Track {
+    position: absolute;
+    inset: 0;
+    flex: none;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background-color: transparent;
+  }
+
+  .ActiveTrack {
+    border-radius: 0;
+  }
+
+  .Thumb {
+    display: none;
+  }
+
+  /* Value chip reproduces the labelled Button badge: translucent-neutral pill,
+     frosted so it reads against the accent fill behind it. */
+  .Value {
+    top: 50%;
+    right: 6px;
+    bottom: auto;
+    transform: translateY(-50%);
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    background-color: var(--interactive-a3);
+    color: var(--range-value-text-color);
+    backdrop-filter: var(--glass-effects);
+  }
+
+  .Icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+/* ---------- sizes ---------- */
+
+.Mini {
+  --range-size: 24px;
+  --range-track-thickness: 3px;
+  --range-thumb-size: 12px;
+  --range-fill-radius: var(--radius-m);
+  --range-value-font-size: var(--text-size-2);
+
+  .Icon {
+    font-size: 14px;
+  }
 }
 
 .Small {
-  --range-height: 20px;
+  --range-size: 26px;
+  --range-thumb-size: 14px;
+  --range-fill-radius: var(--radius-m);
+  --range-value-font-size: var(--text-size-2);
 
   .Icon {
-    font-size: 12px;
+    font-size: 16px;
   }
 }
 
 .Large {
-  --range-height: 40px;
+  --range-size: 40px;
+  --range-track-thickness: 6px;
+  --range-thumb-size: 20px;
 
   .Icon {
     font-size: 22px;
   }
 }
 
+.XLarge {
+  --range-size: 48px;
+  --range-track-thickness: 8px;
+  --range-thumb-size: 24px;
+  --range-fill-radius: var(--radius-xl);
+
+  .Icon {
+    font-size: 26px;
+  }
+}
+
+/* ---------- vertical ---------- */
+
+.Vertical {
+  flex-direction: column;
+  width: max(var(--range-thumb-size), 24px);
+  height: 100%;
+  min-height: 0;
+
+  &:active {
+    cursor: ns-resize;
+  }
+
+  .Track {
+    flex: 1;
+    width: var(--range-track-thickness);
+    height: auto;
+  }
+
+  .ActiveTrack {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+  }
+
+  .Thumb {
+    top: auto;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    transition:
+      width var(--motion-duration-fast) var(--motion-easing-standard),
+      height var(--motion-duration-fast) var(--motion-easing-standard);
+  }
+
+  .Value {
+    bottom: auto;
+    left: calc(100% + 10px);
+    transform: translateY(50%);
+  }
+}
+
+.Vertical.Range:active:not(.Disabled):not(.ReadOnly) .Thumb,
+.Vertical.Range[data-range-active='true'] .Thumb {
+  width: var(--range-thumb-size);
+  height: calc(var(--range-thumb-size) + var(--range-thumb-grow));
+}
+
+.Fill.Vertical {
+  flex-direction: row;
+  width: var(--range-size);
+  height: 100%;
+
+  .Track {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    height: auto;
+    flex: none;
+  }
+
+  .Value {
+    top: 8px;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    transform: translateX(-50%);
+  }
+
+  .Icon {
+    left: 50%;
+    top: auto;
+    bottom: 8px;
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- states ---------- */
+
 .Disabled {
-  --range-text-color: var(--disabled-text-color);
-  --range-active-track-background-color: var(
-    --range-disabled-active-track-background-color
-  );
+  --range-fill-color: var(--disabled-background);
+  --range-fill-hover-color: var(--disabled-background);
+  --range-value-text-color: var(--disabled-text-color);
 
   cursor: default;
+
+  .Thumb {
+    --range-thumb-fill: var(--disabled-background);
+
+    box-shadow: 0 0 0 1px var(--disabled-border);
+    backdrop-filter: none;
+  }
+
+  &:active {
+    cursor: default;
+  }
 }
 
 .ReadOnly {
-  --range-active-track-background-color: transparent;
-  --range-track-background-color: transparent;
-  --range-border-color: transparent;
-
   cursor: default;
   user-select: unset;
   -webkit-user-select: unset;
@@ -141,46 +347,16 @@
   }
 }
 
-.ReadOnlyLabel {
-  @include paragraph;
-  user-select: all;
-  color: var(--range-text-color);
+.Fill.ReadOnly {
+  background-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
-.Vertical {
-  width: var(--range-height);
-  height: 100%;
-
-  .ActiveTrack {
-    width: 100%;
-    height: 0;
-    bottom: 0;
-    border-top-right-radius: 2px;
-    border-top-left-radius: 2px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-
-  .Value {
-    right: auto;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 8px;
-  }
-
-  .Icon {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    left: 0;
-    bottom: 4px;
-    height: var(--range-height);
-    top: auto;
-  }
-
-  &:active {
-    cursor: ns-resize;
-  }
+.ReadOnlyLabel {
+  user-select: all;
+  color: var(--range-value-text-color);
+  font-size: var(--text-size-4);
+  line-height: var(--line-height-4);
+  font-weight: var(--text-weight-regular);
 }
