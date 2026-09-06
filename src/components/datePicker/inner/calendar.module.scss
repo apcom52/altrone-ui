@@ -1,3 +1,9 @@
+/**
+ * The popover content is locked to the day grid's width (seven `Calendar`
+ * cells) so the month / year views — whose grids are `width: 100%` — don't
+ * collapse to the header's intrinsic width.
+ */
 .Calendar {
+  width: var(--calendar-width);
   padding: 0;
 }

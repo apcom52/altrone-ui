@@ -1,0 +1,67 @@
+/** Month / year cell — same visual language as `Calendar.Date`, shaped as a pill. */
+.Cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 34px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--date-picker-cell-text-color);
+  font-size: var(--date-picker-cell-text-size);
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 999px;
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.Label {
+  position: relative;
+  z-index: 2;
+}
+
+/** Hover / focus backdrop. */
+.Cell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity var(--motion-duration-fast) var(--motion-easing-standard);
+  z-index: 0;
+}
+
+.Cell:hover::after,
+.Cell:focus-visible::after {
+  background-color: var(--date-picker-cell-backdrop-color);
+  opacity: 1;
+}
+
+/** Selected "glass" chip — mount/unmount animated by `motion` in `PickerCell`. */
+.SelectedPill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: var(--glass-background-color);
+  box-shadow: var(--elevation-raised-shadow);
+  z-index: 1;
+}
+
+.Selected {
+  color: var(--date-picker-cell-selected-text-color);
+}
+
+.Disabled {
+  color: var(--disabled-text-color);
+  cursor: default;
+
+  &::after {
+    display: none;
+  }
+}

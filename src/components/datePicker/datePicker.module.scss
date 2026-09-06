@@ -2,16 +2,11 @@
   --date-picker-header-text-color: var(--text-2);
   --date-picker-header-text-size: 14px;
   --date-picker-header-hover-text-color: var(--accent-11);
+
   --date-picker-cell-text-color: var(--text-2);
-  --date-picker-cell-weekend-text-color: var(--accent-12);
   --date-picker-cell-text-size: 14px;
   --date-picker-cell-backdrop-color: var(--interactive-a1);
-  --date-picker-cell-today-text-color: var(--accent-11);
-  --date-picker-cell-weekday-text-color: var(--text-11);
-
   --date-picker-cell-selected-text-color: var(--accent-11);
-  --date-picker-cell-selected-backdrop-color: var(--accent-a4);
-  --date-picker-cell-selected-border-color: var(--accent-a6);
 }
 
 .DatePickerWrapper {

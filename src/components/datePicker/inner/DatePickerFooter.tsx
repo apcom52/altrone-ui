@@ -51,6 +51,10 @@ export const DatePickerFooter = memo<DatePickerFooterProps>(
       closePopup();
     };
 
+    if (!clearButtonVisible && !currentDateButtonVisible) {
+      return null;
+    }
+
     return (
       <div className={s.Footer}>
         {clearButtonVisible && (

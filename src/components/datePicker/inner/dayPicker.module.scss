@@ -1,26 +1,3 @@
-@import 'src/global/mixins';
-
 .Wrapper {
   outline: 0;
-}
-
-.DayPicker {
-  @include no-selection;
-  gap: 0;
-}
-
-.DayNames {
-  display: flex;
-  align-items: center;
-}
-
-.DayName {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  font-weight: 500;
-  font-size: 10px;
-  color: var(--date-picker-cell-weekday-text-color);
 }
