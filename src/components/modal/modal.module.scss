@@ -1,22 +1,30 @@
-@import 'src/global/mixins';
-
 :global([data-altrone-root='true']) {
   --modal-background-color: var(--glass-background-color);
   --modal-header-text-color: var(--text-2);
   --modal-backdrop-color: var(--color-overlay-scrim);
+  --modal-border-radius: var(--radius-xl);
+  --modal-padding: var(--space-content);
 }
 
 .Backdrop {
   --modal-size: 400px;
 
   position: fixed;
+  inset: 0;
   width: 100%;
   height: 100%;
-  top: 0;
-  left: 0;
   z-index: var(--level-modal-backdrop);
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.Overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--modal-backdrop-color);
+  pointer-events: none;
 }
 
 .Dialog {
@@ -26,6 +34,8 @@
   width: 100%;
   margin: 40px auto;
   pointer-events: none;
+  /** Scale anchors at the top so the enter/exit animation reads as coming from above. */
+  transform-origin: top center;
 }
 
 .ModalContent {
@@ -33,42 +43,46 @@
   flex-direction: column;
   min-width: var(--modal-size);
   width: var(--modal-size);
+  max-width: calc(100vw - 2 * var(--modal-padding));
   background: var(--modal-background-color);
-  backdrop-filter: blur(32px) saturate(180%);
+  backdrop-filter: var(--glass-effects);
   box-shadow: var(--elevation-modal-shadow);
-  border-radius: 24px;
-  padding: 8px;
+  border-radius: var(--modal-border-radius);
+  padding: var(--modal-padding);
   gap: var(--l-gap);
-  offset: 0;
   z-index: var(--elevation-modal-z-index);
   border: none;
   pointer-events: all;
+
+  &:focus-visible {
+    outline: none;
+  }
 }
 
 .Close {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: var(--modal-padding);
+  right: var(--modal-padding);
 }
 
 .Title {
   width: 100%;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 32px;
+  font-size: var(--text-size-5);
+  font-weight: var(--text-weight-bold);
+  line-height: var(--line-height-8);
   color: var(--modal-header-text-color);
   text-align: center;
 }
 
 .Content {
-  @include paragraph;
+  font-size: var(--text-size-4);
+  line-height: var(--line-height-4);
 }
 
 .Footer {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: var(--l-gap);
 }
 
@@ -80,17 +94,8 @@
 }
 
 .RightFooter {
+  margin-left: auto;
   justify-content: flex-end;
-}
-
-.Overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: var(--modal-backdrop-color);
-  pointer-events: none;
 }
 
 .Small {

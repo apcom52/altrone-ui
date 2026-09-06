@@ -1,10 +1,11 @@
 import React from 'react';
-import { expect, test, describe } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { Configuration, AltroneApplication, Modal } from '../src/components';
+import { createPortal } from 'react-dom';
+import { expect, test, describe, vi } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { AltroneApplication, Modal } from '../src/components';
 
 describe('Modal', () => {
-  test('check that className and style props works', () => {
+  test('className and style are applied to the root element', () => {
     render(
       <AltroneApplication>
         <Modal
@@ -23,24 +24,109 @@ describe('Modal', () => {
     expect(screen.getByTestId('modal')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
-  test('check that CollapsedList configuration works correctly', () => {
+  test("opening the modal keeps the trigger's own onClick", () => {
+    const triggerClick = vi.fn();
+
     render(
       <AltroneApplication>
-        <Configuration
-          modal={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
-        >
-          <Modal
-            data-testid="modal"
-            content={<div>content</div>}
-            openedByDefault={true}
-          >
-            <button>test</button>
-          </Modal>
-        </Configuration>
+        <Modal content={<div>content</div>}>
+          <button onClick={triggerClick}>open</button>
+        </Modal>
       </AltroneApplication>,
     );
 
-    expect(screen.getByTestId('modal')).toHaveClass('cls');
-    expect(screen.getByTestId('modal')).toHaveStyle('color: rgb(0, 0, 255)');
+    fireEvent.click(screen.getByText('open'));
+
+    expect(triggerClick).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+
+  test('clicking the backdrop closes the modal', () => {
+    const onClose = vi.fn();
+
+    render(
+      <AltroneApplication>
+        <Modal
+          data-testid="modal"
+          content={<div>content</div>}
+          onClose={onClose}
+          openedByDefault={true}
+        >
+          <button>test</button>
+        </Modal>
+      </AltroneApplication>,
+    );
+
+    fireEvent.click(screen.getByTestId('modal'));
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  test('clicking inside the dialog does not close the modal', () => {
+    const onClose = vi.fn();
+
+    render(
+      <AltroneApplication>
+        <Modal
+          content={<div>content</div>}
+          onClose={onClose}
+          openedByDefault={true}
+        >
+          <button>test</button>
+        </Modal>
+      </AltroneApplication>,
+    );
+
+    fireEvent.click(screen.getByText('content'));
+
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  test('clicking a modal-owned overlay that portals out does not close it', () => {
+    const onClose = vi.fn();
+
+    render(
+      <AltroneApplication>
+        <Modal
+          content={
+            <>
+              content
+              {createPortal(
+                <button>portaled option</button>,
+                document.body,
+              )}
+            </>
+          }
+          onClose={onClose}
+          openedByDefault={true}
+        >
+          <button>test</button>
+        </Modal>
+      </AltroneApplication>,
+    );
+
+    fireEvent.click(screen.getByText('portaled option'));
+
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  test('Escape closes the modal and calls onClose exactly once', () => {
+    const onClose = vi.fn();
+
+    render(
+      <AltroneApplication>
+        <Modal
+          content={<div>content</div>}
+          onClose={onClose}
+          openedByDefault={true}
+        >
+          <button>test</button>
+        </Modal>
+      </AltroneApplication>,
+    );
+
+    fireEvent.keyDown(document.body, { key: 'Escape' });
+
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 });
