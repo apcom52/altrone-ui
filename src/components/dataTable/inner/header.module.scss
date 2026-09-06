@@ -1,15 +1,8 @@
-:global([data-altrone-root='true']) {
-  --dataTableHeaderBackgroundColor: var(--background-2);
-}
-
 .Header {
   display: flex;
   align-items: center;
-  padding: 8px;
-  background-color: var(--dataTableHeaderBackgroundColor);
+  padding: 8px 8px 0;
   gap: var(--xl-gap);
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
 }
 
 .Actions {

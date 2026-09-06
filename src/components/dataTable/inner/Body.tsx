@@ -1,35 +1,37 @@
-import { useDataTableCore } from '../DataTable.context.tsx';
+import { createElement, FC } from 'react';
+import { useDataTableContext } from '../DataTable.context.tsx';
 import { Checkbox } from '../../checkbox';
-import s from './body.module.scss';
-import {
-  DataTableColumnType,
-  DataTableRenderRowActionsContext,
-  DataTableRowActionsProps,
-} from '../DataTable.types.ts';
-import { createElement, ReactElement } from 'react';
 import { Empty } from 'components/empty/Empty.tsx';
+import { useLocalization } from '../../application';
+import {
+  CellRenderer,
+  DataTableBodyProps,
+  DataTableColumn,
+} from '../DataTable.types.ts';
 import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
 import { CellRenderers } from '../DataTable.constants.ts';
+import s from './body.module.scss';
 
-interface BodyProps {
-  renderRowActions?: (
-    context: DataTableRenderRowActionsContext
-  ) => ReactElement<DataTableRowActionsProps>;
-}
-
-export const Body = ({ renderRowActions }: BodyProps) => {
-  const table = useDataTableCore();
-  const selectableMode = table.getState().selectableMode || false;
+export const Body = <T extends object>({
+  renderRowActions,
+  showEmptyBanner = true,
+}: DataTableBodyProps<T>) => {
+  const t = useLocalization();
+  const { table, selectMode } = useDataTableContext<T>();
 
   const columnsTemplate = useDataTableColumnsTemplate(
-    selectableMode,
-    Boolean(renderRowActions)
+    selectMode,
+    Boolean(renderRowActions),
   );
+
+  const rows = table.getRowModel().rows;
 
   return (
     <div className={s.TableBody}>
-      {table.getRowModel().rows.length === 0 ? <Empty>No data</Empty> : null}
-      {table.getRowModel().rows.map((row) => {
+      {rows.length === 0 && showEmptyBanner ? (
+        <Empty>{t('dataTable.empty')}</Empty>
+      ) : null}
+      {rows.map((row) => {
         const isSelected = row.getIsSelected();
 
         return (
@@ -39,7 +41,7 @@ export const Body = ({ renderRowActions }: BodyProps) => {
             data-selected={isSelected}
             style={{ gridTemplateColumns: columnsTemplate }}
           >
-            {selectableMode ? (
+            {selectMode ? (
               <div className={s.CheckboxCell}>
                 <Checkbox
                   checked={isSelected}
@@ -47,38 +49,32 @@ export const Body = ({ renderRowActions }: BodyProps) => {
                 />
               </div>
             ) : null}
-            {row.getVisibleCells().map((cell, cellIndex) => {
-              // Получаем тип колонки и конфигурацию из метаданных
-              const meta = cell.column.columnDef.meta as
-                | {
-                    type?: DataTableColumnType;
-                    options?: any;
-                    columnConfig?: any;
-                  }
-                | undefined;
-              const columnType =
-                (meta?.type as DataTableColumnType) || 'string';
-              const columnConfig = meta?.columnConfig;
-              const Renderer =
-                CellRenderers[columnType] || CellRenderers.string;
+            {row.getVisibleCells().map((cell) => {
+              const meta = cell.column.columnDef.meta;
+              const columnType = meta?.dataType ?? 'string';
+              const Renderer = CellRenderers[columnType] ?? CellRenderers.string;
+
+              const rendererProps: CellRenderer<T> = {
+                value: cell.getValue(),
+                item: row.original,
+                columnConfig:
+                  (meta?.columnConfig as DataTableColumn<T>) ??
+                  ({ accessor: cell.column.id } as DataTableColumn<T>),
+                table,
+              };
 
               return (
-                <div key={`${cell.id}-${cellIndex}`} className={s.Cell}>
-                  {createElement(Renderer, {
-                    value: cell.getValue(),
-                    item: row.original,
-                    columnConfig: columnConfig || {
-                      accessor: cell.column.id,
-                      type: columnType,
-                    },
-                    table,
-                  })}
+                <div key={cell.id} className={s.Cell}>
+                  {createElement(
+                    Renderer as FC<CellRenderer<T>>,
+                    rendererProps,
+                  )}
                 </div>
               );
             })}
-            {Boolean(renderRowActions) ? (
+            {renderRowActions ? (
               <div className={s.Cell}>
-                {renderRowActions?.({
+                {renderRowActions({
                   row: row.original,
                   rowIndex: row.index,
                   selected: isSelected,

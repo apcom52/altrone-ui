@@ -1,16 +1,17 @@
-import { useDataTableCore } from './DataTable.context';
+import { useDataTableContext } from './DataTable.context.tsx';
 
+/** Builds the `grid-template-columns` string shared by the header row and body rows. */
 export function useDataTableColumnsTemplate(
-  selectableMode: boolean,
-  rowActions: boolean
+  selectMode: boolean,
+  rowActions: boolean,
 ) {
-  const tableCore = useDataTableCore();
+  const { table } = useDataTableContext();
 
-  const columns = tableCore.getVisibleLeafColumns();
+  const columns = table.getVisibleLeafColumns();
 
   let columnTemplate = columns.map((col) => `${col.getSize()}px`).join(' ');
 
-  if (selectableMode) {
+  if (selectMode) {
     columnTemplate = '32px ' + columnTemplate;
   }
 

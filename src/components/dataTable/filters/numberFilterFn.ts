@@ -1,7 +1,7 @@
 import { FilterFn } from '@tanstack/react-table';
 import { NumberUtils } from 'utils';
 
-export const numberFilterFn: FilterFn<any> = (row, columnId, filterValue) => {
+export const numberFilterFn: FilterFn<any, any> = (row, columnId, filterValue) => {
   if (!filterValue || !filterValue.rule) return true;
 
   const raw = row.getValue<any>(columnId);
@@ -50,21 +50,7 @@ export const numberFilterFn: FilterFn<any> = (row, columnId, filterValue) => {
   // ----- Equal / notEqual -----
 
   if (rule === 'equal') {
-    // Используем строгое сравнение с учетом возможных проблем с типами
-    const result = number === left;
-    // Отладка: логируем только если результат неожиданный
-    if (!result && Math.abs((number || 0) - (left || 0)) < 0.0001) {
-      console.warn('Number filter equal comparison issue:', {
-        number,
-        left,
-        raw,
-        val,
-        rule,
-        columnId,
-      });
-    }
-    console.log('>> numberFilter filtering', val, result);
-    return result;
+    return number === left;
   }
 
   if (rule === 'notEqual') {

@@ -6,7 +6,6 @@ import { Skeleton } from 'components/skeleton';
 
 export const NumberRenderer = <T extends object>({
   value,
-  item,
   columnConfig,
   table,
 }: CellRenderer<T>) => {

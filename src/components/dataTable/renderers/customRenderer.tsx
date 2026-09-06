@@ -36,7 +36,7 @@ export const CustomRenderer = <T extends object>({
   return (
     <div className={s.Custom}>
       <Text size={4} weight="medium" block>
-        {renderReadMode?.({ value, item, columnConfig })}
+        {renderReadMode?.({ value, item, columnConfig, table })}
       </Text>
     </div>
   );

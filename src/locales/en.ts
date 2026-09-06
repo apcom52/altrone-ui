@@ -20,6 +20,8 @@ export const en: Localization = {
     next: 'Next',
     prev: 'Prev',
     clickToChangeView: 'Click to change view',
+    startDate: 'Start date',
+    endDate: 'End date',
   },
   filePicker: {
     noFiles: 'No files chosen',
@@ -68,6 +70,8 @@ export const en: Localization = {
     and: 'AND',
     noFilters:
       'No filters are currently applied. Click "Add Filter" to create a new filter.',
+    empty: 'No data',
+    chooseRule: 'Choose rule',
     shownRows: {
       zero: '{{count}} rows shown',
       one: '{{count}} rows shown',
@@ -127,6 +131,18 @@ export const en: Localization = {
       lte: '≤',
       between: 'is between',
       beyond: 'is beyond',
+    },
+    selectFilter: {
+      has: 'is one of',
+      notHas: 'is none of',
+    },
+    colorFilter: {
+      has: 'is one of',
+      notHas: 'is none of',
+    },
+    passwordFilter: {
+      empty: 'is empty',
+      notEmpty: 'is not empty',
     },
   },
   photoViewer: {

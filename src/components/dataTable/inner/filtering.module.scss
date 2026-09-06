@@ -6,16 +6,19 @@
 
 .FilterRow {
   display: grid;
-  grid-template-columns: 165px 135px 240px 32px;
+  grid-template-columns: 165px 135px minmax(0, 1fr) 32px;
+  align-items: center;
   gap: var(--s-gap);
 }
 
-.FilterRow_zeroColumns {
-  grid-template-columns: 165px 135px 32px;
+.ControlCell {
+  min-width: 0;
 }
 
-.FilterRow_twoColumns {
-  grid-template-columns: 165px 135px 120px 120px 32px;
+.ControlPair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-gap);
 }
 
 .NoFilters {

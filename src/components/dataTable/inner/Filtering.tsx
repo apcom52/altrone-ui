@@ -1,124 +1,103 @@
 import { useCallback, useMemo, useState } from 'react';
+import { Column, ColumnFilter } from '@tanstack/react-table';
+import { Plus } from 'lucide-react';
 import { Button } from 'components/button';
 import { Dropdown } from 'components/dropdown';
 import { Flex } from 'components/flex';
 import { Form } from 'components/form';
 import { Popover } from 'components/popover';
-import { useDataTableCore } from '../DataTable.context.tsx';
-import { useLocalization } from 'components/application';
-import { Column, ColumnFilter } from '@tanstack/react-table';
-import { Plus } from 'lucide-react';
 import { Empty } from 'components/empty/Empty.tsx';
-import { FilterRow } from './FilterRow.tsx';
+import { useLocalization } from 'components/application';
+import { AnyObject } from '../../../utils';
+import { useDataTableContext } from '../DataTable.context.tsx';
+import { DataTableFeatures } from '../DataTable.features.ts';
+import { DataTableFilterValue } from '../DataTable.types.ts';
 import { RulesByDataType } from '../DataTable.constants.ts';
+import { FilterRow } from './FilterRow.tsx';
+
+const columnHeaderLabel = (column: Column<DataTableFeatures, AnyObject>) =>
+  typeof column.columnDef.header === 'string'
+    ? column.columnDef.header
+    : String(column.id);
 
 export const Filtering = () => {
   const t = useLocalization();
 
-  const table = useDataTableCore();
-  const mode = table.options.meta?.mode || 'read';
+  const { table, loading } = useDataTableContext();
 
   const filterableColumns = table
     .getAllLeafColumns()
     .filter((column) => column.getCanFilter());
 
-  const filters = table.getState().columnFilters;
+  const filters = table.state.columnFilters;
 
-  const [internalFilters, setInternalFilters] =
-    useState<ColumnFilter[]>(filters);
+  const [draftFilters, setDraftFilters] = useState<ColumnFilter[]>(filters);
 
-  const freeToFilterColumns = useMemo(() => {
-    return filterableColumns.filter(
-      (column) => !internalFilters.some((filter) => filter.id === column.id)
-    );
-  }, [filterableColumns, internalFilters]);
+  const freeToFilterColumns = useMemo(
+    () =>
+      filterableColumns.filter(
+        (column) => !draftFilters.some((filter) => filter.id === column.id),
+      ),
+    [filterableColumns, draftFilters],
+  );
 
-  const handleAddFilter = useCallback((column: Column<any>) => {
-    const filterFn = column.columnDef.filterFn;
-    // Получаем тип из meta или из filterFn
-    const meta = column.columnDef.meta as
-      | { type?: string; options?: { level?: 'day' | 'month' | 'year' } }
-      | undefined;
-    const columnType =
-      meta?.type || (typeof filterFn === 'string' ? filterFn : undefined);
+  const addFilter = useCallback((column: Column<DataTableFeatures, AnyObject>) => {
+    const meta = column.columnDef.meta;
+    const dataType = meta?.dataType;
+    if (!dataType || !RulesByDataType[dataType]) return;
 
-    if (
-      !columnType ||
-      !RulesByDataType[columnType as keyof typeof RulesByDataType]
-    ) {
-      return;
+    const rules = RulesByDataType[dataType];
+    if (!rules || rules.length === 0) return;
+
+    const value: DataTableFilterValue = { rule: String(rules[0].value) };
+    if (dataType === 'date') {
+      value.level =
+        (meta?.options as { level?: 'day' | 'month' | 'year' } | undefined)
+          ?.level ?? 'day';
     }
 
-    const rules = RulesByDataType[columnType as keyof typeof RulesByDataType];
-    if (!rules || rules.length === 0) {
-      return;
-    }
-
-    const baseFilterValue: any = {
-      rule: rules[0].value,
-      join: 'AND',
-      value: '',
-      additionalValue: '',
-    };
-
-    // Для дат добавляем level из options
-    if (columnType === 'date' && meta?.options) {
-      const level = meta.options.level || 'day';
-      baseFilterValue.level = level;
-    }
-
-    setInternalFilters((old) => [
-      ...old,
-      {
-        id: column.id,
-        value: baseFilterValue,
-      },
-    ]);
+    setDraftFilters((old) => [...old, { id: column.id, value }]);
   }, []);
 
   const changeFilter = useCallback(
-    (accessor: string, field: string, value: unknown) => {
-      setInternalFilters((old) => {
-        return old.map((filter) => {
-          if (filter.id === accessor) {
-            const currentValue = filter.value || {};
-            return { ...filter, value: { ...currentValue, [field]: value } };
-          }
-          return filter;
-        });
-      });
+    (id: string, field: keyof DataTableFilterValue, value: unknown) => {
+      setDraftFilters((old) =>
+        old.map((filter) =>
+          filter.id === id
+            ? {
+                ...filter,
+                value: {
+                  ...(filter.value as DataTableFilterValue),
+                  [field]: value,
+                },
+              }
+            : filter,
+        ),
+      );
     },
-    []
+    [],
   );
 
-  const deleteFilter = useCallback((accessor: string) => {
-    setInternalFilters((old) => {
-      return old.filter((filter) => filter.id !== accessor);
-    });
+  const deleteFilter = useCallback((id: string) => {
+    setDraftFilters((old) => old.filter((filter) => filter.id !== id));
   }, []);
-
-  const resetPagination = useCallback(() => {
-    table.resetPageIndex();
-  }, [table]);
 
   return (
     <Popover
       title={t('dataTable.filtering')}
       showCloseButton
       placement="bottom"
-      style={{
-        minWidth: '280px',
-      }}
+      style={{ minWidth: '280px' }}
       overlap
       content={({ closePopup }) => (
         <Form>
-          {internalFilters.length === 0 ? (
+          {draftFilters.length === 0 ? (
             <Empty>{t('dataTable.noFilters')}</Empty>
           ) : null}
-          {internalFilters.map((filter) => (
+          {draftFilters.map((filter) => (
             <FilterRow
               key={filter.id}
-              filter={filter}
+              filter={filter as { id: string; value: DataTableFilterValue }}
               changeFilter={(field, value) =>
                 changeFilter(filter.id, field, value)
               }
@@ -130,21 +109,13 @@ export const Filtering = () => {
               closeParentPopover={false}
               content={
                 <Dropdown.Menu>
-                  {freeToFilterColumns.map((column) => {
-                    // Получаем заголовок колонки безопасным способом
-                    const headerValue =
-                      column.columnDef.header?.() || String(column.id);
-
-                    return (
-                      <Dropdown.Action
-                        key={column.id}
-                        label={headerValue}
-                        onClick={() => {
-                          handleAddFilter(column);
-                        }}
-                      />
-                    );
-                  })}
+                  {freeToFilterColumns.map((column) => (
+                    <Dropdown.Action
+                      key={column.id}
+                      label={columnHeaderLabel(column)}
+                      onClick={() => addFilter(column)}
+                    />
+                  ))}
                 </Dropdown.Menu>
               }
             >
@@ -158,16 +129,16 @@ export const Filtering = () => {
               label={t('common.clear')}
               onClick={() => {
                 table.resetColumnFilters();
-                setInternalFilters([]);
-                resetPagination();
+                setDraftFilters([]);
+                table.resetPageIndex();
                 closePopup();
               }}
             />
             <Button
               label={t('common.apply')}
               onClick={() => {
-                table.setColumnFilters(internalFilters);
-                resetPagination();
+                table.setColumnFilters(draftFilters);
+                table.resetPageIndex();
                 closePopup();
               }}
               variant="submit"
@@ -179,7 +150,7 @@ export const Filtering = () => {
       <Button
         label={t('dataTable.filters')}
         badge={filters.length ? filters.length : undefined}
-        disabled={mode === 'loading'}
+        disabled={loading}
       />
     </Popover>
   );

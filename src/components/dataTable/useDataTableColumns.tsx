@@ -1,75 +1,46 @@
-// createColumnHelperVersion.ts
-import {
-  createColumnHelper,
-  ColumnDef,
-  FilterFnOption,
-  FilterFn,
-} from '@tanstack/react-table';
-import { DataTableColumn, DataTableColumnType } from './DataTable.types';
+import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
+import { DataTableColumn, DataTableColumnMeta } from './DataTable.types.ts';
+import {
+  DataTableFeatures,
+  filterFnForType,
+  sortFnForType,
+} from './DataTable.features.ts';
 
+/**
+ * Translates the library's declarative `DataTableColumn` list into TanStack
+ * Table `ColumnDef`s. Everything type-specific (renderer, filter fn, sort fn) is
+ * resolved here from `column.type`; the rest of the component only ever sees
+ * `ColumnDef`s and the table instance.
+ */
 export function useDataTableColumns<T extends object>(
-  columns: DataTableColumn<T>[]
-): ColumnDef<T, any>[] {
-  const resolveFilterFn = (type: DataTableColumnType) => {
-    if (['string', 'text'].includes(type)) {
-      return 'text';
-    }
-
-    if (['number', 'currency'].includes(type)) {
-      return 'number';
-    }
-
-    if (['password'].includes(type)) {
-      return 'password';
-    }
-
-    if (['boolean'].includes(type)) {
-      return 'boolean';
-    }
-
-    if (['date'].includes(type)) {
-      return 'date';
-    }
-
-    if (['select'].includes(type)) {
-      return 'select';
-    }
-
-    if (['color'].includes(type)) {
-      return 'color';
-    }
-
-    return 'customText';
-  };
-
+  columns: DataTableColumn<T>[],
+  resizableColumns: boolean,
+): ColumnDef<DataTableFeatures, T, unknown>[] {
   return useMemo(() => {
-    const helper = createColumnHelper<T>();
-
     return columns
-      .filter((c) => c.visible !== false)
-      .map((c) => {
+      .filter((column) => column.visible !== false)
+      .map((column): ColumnDef<DataTableFeatures, T, unknown> => {
+        const type = column.type ?? 'string';
         const filterType =
-          typeof c.filterable === 'string'
-            ? (c.filterable as DataTableColumnType)
-            : (c.type as DataTableColumnType) || 'string';
+          typeof column.filterable === 'string' ? column.filterable : type;
 
-        return helper.accessor(c.accessor as any, {
-          id: String(c.accessor),
-          header: () => c.label ?? String(c.accessor),
-          cell: (info) => {
-            return String(info.getValue());
-          },
-          size: c.width,
-          enableSorting: c.sortable === true,
-          enableColumnFilter: Boolean(c.filterable),
-          filterFn: resolveFilterFn(filterType) as unknown as FilterFn<T>,
+        return {
+          id: String(column.accessor),
+          accessorKey: String(column.accessor),
+          header: column.label ?? String(column.accessor),
+          size: column.width,
+          enableSorting: column.sortable === true,
+          sortingFn: sortFnForType(type),
+          enableColumnFilter: Boolean(column.filterable),
+          filterFn: filterFnForType(filterType) ?? 'text',
+          enableResizing: column.resizable ?? resizableColumns,
           meta: {
-            type: c.type || 'string',
-            options: c.options,
-            columnConfig: c, // Сохраняем всю конфигурацию колонки
-          },
-        });
+            dataType: type,
+            options: column.options,
+            columnConfig: column,
+          } as DataTableColumnMeta,
+        } as ColumnDef<DataTableFeatures, T, unknown>;
       });
-  }, [columns]);
+  }, [columns, resizableColumns]);
 }

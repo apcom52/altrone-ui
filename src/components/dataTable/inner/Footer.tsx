@@ -1,61 +1,42 @@
-import { useDataTableCore } from '../DataTable.context.tsx';
-import { Tooltip } from 'components/tooltip';
+import { useDataTableContext } from '../DataTable.context.tsx';
 import { Pagination } from 'components/pagination';
-import s from './footer.module.scss';
 import { useLocalization } from '../../application/useLocalization.tsx';
-import { motion } from 'motion/react';
+import s from './footer.module.scss';
 
 export const Footer = () => {
   const t = useLocalization();
+  const { table, selectMode } = useDataTableContext();
 
-  const tableCore = useDataTableCore();
-  const selectableMode = tableCore.getState().selectableMode || false;
-  const selectedRowCount = tableCore.getSelectedRowModel().rows.length;
+  const selectedRowCount = table.getSelectedRowModel().rows.length;
+  const visibleRowCount = table.getRowModel().rows.length;
+  const { pageIndex } = table.state.pagination;
+  const pageCount = table.getPageCount();
 
-  const currentPage = tableCore.getState().pagination.pageIndex + 1;
-  const totalPages = tableCore.getPageCount() + 1;
-
-  const rowsPerPage = tableCore.getState().pagination.pageSize;
-
-  const statusText = selectableMode ? (
-    <div>
-      {t('dataTable.selectedRows', {
+  const statusText = selectMode
+    ? t('dataTable.selectedRows', {
         plural: true,
         value: selectedRowCount,
-        vars: {
-          count: selectedRowCount,
-        },
-      })}
-    </div>
-  ) : (
-    <div>
-      {t('dataTable.shownRows', {
+        vars: { count: selectedRowCount },
+      })
+    : t('dataTable.shownRows', {
         plural: true,
-        value: rowsPerPage,
-        vars: {
-          count: rowsPerPage,
-        },
-      })}
-    </div>
-  );
+        value: visibleRowCount,
+        vars: { count: visibleRowCount },
+      });
 
   return (
     <div className={s.Footer}>
       <div className={s.Backdrop} />
       <div className={s.StatusBar}>{statusText}</div>
-      <div className={s.Pagination}>
-        {totalPages - 1 > 0
-          ? 1 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages - 1}
-                onChange={(page) => {
-                  tableCore.setPageIndex(page - 1);
-                }}
-              />
-            )
-          : null}
-      </div>
+      {pageCount > 1 ? (
+        <div className={s.Pagination}>
+          <Pagination
+            currentPage={pageIndex + 1}
+            totalPages={pageCount}
+            onChange={(page) => table.setPageIndex(page - 1)}
+          />
+        </div>
+      ) : null}
     </div>
   );
 };

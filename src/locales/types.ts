@@ -27,6 +27,8 @@ export interface Localization {
     next: string;
     prev: string;
     clickToChangeView: string;
+    startDate: string;
+    endDate: string;
   };
   filePicker: {
     noFiles: string;
@@ -74,6 +76,8 @@ export interface Localization {
     where: string;
     and: string;
     noFilters: string;
+    empty: string;
+    chooseRule: string;
     shownRows: PluralString;
     selectedRows: PluralString;
     totalRows: string;
@@ -119,6 +123,18 @@ export interface Localization {
       lte: string;
       between: string;
       beyond: string;
+    };
+    selectFilter: {
+      has: string;
+      notHas: string;
+    };
+    colorFilter: {
+      has: string;
+      notHas: string;
+    };
+    passwordFilter: {
+      empty: string;
+      notEmpty: string;
     };
   };
   photoViewer: {

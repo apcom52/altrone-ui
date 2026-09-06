@@ -1,10 +1,11 @@
 import { ButtonProps } from '../button/Button.types.ts';
 import { AnyObject, StrictReactElements } from '../../utils';
-import { Option } from '../select/Select.types.ts';
 import { ReactElement, ReactNode } from 'react';
-import { ColumnFilter, Table } from '@tanstack/react-table';
+import { Table } from '@tanstack/react-table';
+import type { DataTableFeatures } from './DataTable.features.ts';
 
 export type Sort = 'asc' | 'desc';
+
 export type DataTableColumnType =
   | 'string'
   | 'text'
@@ -23,7 +24,22 @@ export type Sorting = {
   direction: Sort;
 };
 
-// Базовый интерфейс колонки
+/** One entry of the table's active filter state, mirrors TanStack's `ColumnFilter`. */
+export interface DataTableFilter {
+  /** Column id — equal to the column's `accessor`. */
+  id: string;
+  value: DataTableFilterValue;
+}
+
+export interface DataTableFilterValue {
+  /** One of the `*FilterRules` values for the column's type. */
+  rule: string;
+  /** The compared value. A tuple for `between`-style rules, absent for `empty`/`notEmpty`. */
+  value?: unknown;
+  /** Carried for `date` columns so the filter function knows the comparison granularity. */
+  level?: 'day' | 'month' | 'year';
+}
+
 export interface DataTableColumnBase<T extends object> {
   accessor: keyof T;
   label?: string;
@@ -31,9 +47,10 @@ export interface DataTableColumnBase<T extends object> {
   visible?: boolean;
   filterable?: boolean | DataTableColumnType;
   sortable?: boolean;
+  /** Opt this column out of resizing when the table has `resizableColumns`. */
+  resizable?: boolean;
 }
 
-// Специфичные опции для разных типов колонок
 export interface CurrencyColumnOptions<T extends object> {
   currency?: string;
   currencyAccessor?: keyof T;
@@ -43,12 +60,6 @@ export interface NumberColumnOptions {
   digitsAfterPoint?: number;
 }
 
-export interface ArrayColumnOptions {
-  arrayDelimiter?: string;
-  arrayAccessor?: string;
-}
-
-// Типы колонок с их специфичными опциями
 export type DataTableColumn<T extends object> =
   | (DataTableColumnBase<T> & {
       type?: 'string' | 'text';
@@ -104,13 +115,25 @@ export type DataTableRenderContext<T extends object> = {
   selectedItems: T[];
 };
 
-export type DataTableRenderRowActionsContext = {
-  row: object;
+export type DataTableRenderRowActionsContext<T extends object = AnyObject> = {
+  row: T;
   rowIndex: number;
   selected: boolean;
 };
 
 export type DataTableMode = 'loading' | 'read' | 'select';
+
+/** Per-table `meta`, reachable in cell renderers via `table.options.meta`. */
+export interface DataTableMeta {
+  mode: DataTableMode;
+}
+
+/** Per-column `meta`, reachable via `column.columnDef.meta`. */
+export interface DataTableColumnMeta<T extends object = AnyObject> {
+  dataType: DataTableColumnType;
+  options: DataTableColumn<T>['options'];
+  columnConfig: DataTableColumn<T>;
+}
 
 export interface DataTableProps<T extends object>
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
@@ -126,15 +149,17 @@ export interface DataTableProps<T extends object>
   selectable?: boolean;
   showFooter?: boolean;
   showEmptyBanner?: boolean;
+  /** Lets every column be resized by dragging its header edge. Off by default. */
+  resizableColumns?: boolean;
   renderRowActions?: (
-    context: DataTableRenderRowActionsContext
+    context: DataTableRenderRowActionsContext<T>,
   ) => ReactElement<DataTableRowActionsProps>;
   defaultPage?: number;
   defaultSort?: Sorting;
-  defaultFilters?: Filter[];
+  defaultFilters?: DataTableFilter[];
   onPageChange?: (currentPage: number) => void;
   onSortChange?: (sort?: Sorting) => void;
-  onFilterChange?: (appliedFilters?: Filter[]) => void;
+  onFilterChange?: (appliedFilters: DataTableFilter[]) => void;
   onModeChange?: (mode: DataTableMode) => void;
 }
 
@@ -202,103 +227,10 @@ export enum PasswordFilterRules {
   notEmpty = 'notEmpty',
 }
 
-export enum FilterType {
-  string = 'string',
-  number = 'number',
-  array = 'array',
-  boolean = 'boolean',
-  date = 'date',
-  password = 'password',
-}
-
-export type StringFilter = {
-  field: string;
-  type: FilterType.string;
-  columnType: DataTableColumnType;
-  conditions: {
-    rule: StringFilterRules;
-    join: 'AND' | 'OR';
-    value: string;
-  }[];
-};
-
-export type NumberFilter = {
-  field: string;
-  type: FilterType.number;
-  columnType: DataTableColumnType;
-  conditions: {
-    rule: NumberFilterRules;
-    join: 'AND' | 'OR';
-    value: number;
-    minValue?: number;
-    maxValue?: number;
-  }[];
-};
-
-export type ArrayFilter = {
-  field: string;
-  type: FilterType.array;
-  columnType: DataTableColumnType;
-  conditions: {
-    rule: ArrayFilterRules;
-    join: 'AND' | 'OR';
-    value: unknown[];
-    options: Option[];
-  }[];
-};
-
-export type BooleanFilter = {
-  field: string;
-  type: FilterType.boolean;
-  columnType: DataTableColumnType;
-  conditions: {
-    rule: BooleanFilterRules;
-    join: 'AND' | 'OR';
-    value: unknown;
-  }[];
-};
-
-export type DateFilter = {
-  field: string;
-  type: FilterType.date;
-  columnType: DataTableColumnType;
-  conditions: {
-    rule: DateFilterRules;
-    join: 'AND' | 'OR';
-    value?: string;
-    minValue?: string;
-    maxValue?: string;
-  }[];
-};
-
-export type PasswordFilter = {
-  field: string;
-  type: FilterType.password;
-  columnType: DataTableColumnType;
-  conditions: {
-    rule: PasswordFilterRules;
-    join: 'AND' | 'OR';
-    value?: string;
-  }[];
-};
-
-export type Filter =
-  | StringFilter
-  | NumberFilter
-  | ArrayFilter
-  | BooleanFilter
-  | DateFilter
-  | PasswordFilter;
-
 export interface FilterRowProps {
-  filter: ColumnFilter;
-  changeFilter: (field: string, value: unknown) => void;
+  filter: DataTableFilter;
+  changeFilter: (field: keyof DataTableFilterValue, value: unknown) => void;
   deleteFilter: () => void;
-}
-
-export interface FilterFuncArgs<T extends AnyObject, FilterType> {
-  row: T;
-  filter: FilterType;
 }
 
 export interface DataTableBodyProps<T extends object> {
@@ -318,9 +250,9 @@ export interface DataTableRowActionsProps
   children: StrictReactElements<DataTableRowActionProps>;
 }
 
-export interface CellRenderer<T extends object = any> {
+export interface CellRenderer<T extends object = AnyObject> {
   value: unknown;
   item: T;
   columnConfig: DataTableColumn<T>;
-  table: Table<T>;
+  table: Table<DataTableFeatures, T>;
 }

@@ -1,6 +1,6 @@
 import { FilterFn } from '@tanstack/react-table';
 
-export const passwordFilterFn: FilterFn<any> = (row, columnId, filterValue) => {
+export const passwordFilterFn: FilterFn<any, any> = (row, columnId, filterValue) => {
   if (!filterValue || !filterValue.rule) return true;
 
   const raw = row.getValue<string>(columnId);

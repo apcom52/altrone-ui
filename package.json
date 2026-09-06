@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@floating-ui/react": "0.27.7",
-    "@tanstack/react-table": "^8.21.3",
+    "@tanstack/react-table": "^9.2.4",
     "clsx": "2.1.1",
     "dayjs": "1.11.13",
     "debounce": "2.2.0",

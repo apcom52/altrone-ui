@@ -56,3 +56,37 @@
 .Sortable {
   cursor: pointer;
 }
+
+/* Same visual language as the Splitter divider handle. */
+.Resizer {
+  position: absolute;
+  top: 0;
+  right: calc(var(--splitter-gutter) / -2);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--splitter-gutter);
+  height: 100%;
+  cursor: col-resize;
+  user-select: none;
+  touch-action: none;
+}
+
+/* Size & color only — the reveal / grow-in / active-bump are animated by
+   `motion` in ColumnHeaders.tsx (opacity + scaleY). */
+.ResizerHandle {
+  width: var(--splitter-handle-thickness);
+  height: 16px;
+  border-radius: 9999px;
+  background: var(--splitter-handle-color);
+  transition: background var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.Resizer:hover .ResizerHandle {
+  background: var(--splitter-handle-hover-color);
+}
+
+.ResizerActive .ResizerHandle {
+  background: var(--splitter-handle-active-color);
+}

@@ -20,6 +20,8 @@ export const ru: Localization = {
     next: 'Следующий',
     prev: 'Предыдущий',
     clickToChangeView: 'Нажмите для изменения вида',
+    startDate: 'Начало',
+    endDate: 'Конец',
   },
   filePicker: {
     noFiles: 'Файлы не выбраны',
@@ -68,6 +70,8 @@ export const ru: Localization = {
     and: 'ТАКЖЕ',
     noFilters:
       'Нет выбранных фильтров. Чтобы создать, нажмите на "Добавить фильтр"',
+    empty: 'Нет данных',
+    chooseRule: 'Выберите правило',
     shownRows: {
       zero: 'Показывается {{count}} строк',
       one: 'Показывается {{count}} строка',
@@ -127,6 +131,18 @@ export const ru: Localization = {
       lte: '≤',
       between: 'между',
       beyond: 'за пределами',
+    },
+    selectFilter: {
+      has: 'одно из',
+      notHas: 'ни одно из',
+    },
+    colorFilter: {
+      has: 'один из',
+      notHas: 'ни один из',
+    },
+    passwordFilter: {
+      empty: 'пусто',
+      notEmpty: 'не пусто',
     },
   },
   photoViewer: {

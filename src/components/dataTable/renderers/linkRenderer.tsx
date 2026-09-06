@@ -18,25 +18,19 @@ export const LinkRenderer = <T extends object>({
       </div>
     );
   }
-  const defaultHref = String(value);
-  const defaultText = String(value);
+  const raw = value == null ? '' : String(value);
+  const options =
+    columnConfig.type === 'link' ? columnConfig.options : undefined;
 
-  const href =
-    columnConfig.type === 'link'
-      ? columnConfig.options?.hrefTransformer?.(value, item)
-      : defaultHref;
-  const text =
-    columnConfig.type === 'link'
-      ? columnConfig.options?.textTransformer?.(value, item)
-      : defaultText;
+  const href = options?.hrefTransformer?.(value, item) ?? raw;
+  const text = options?.textTransformer?.(value, item) ?? raw;
 
-  return (
-    <Text
-      size={4}
-      weight="medium"
-      className={s.Link}
-      href={href ? String(href) : undefined}
-    >
+  return href ? (
+    <Text size={4} weight="medium" className={s.Link} href={String(href)}>
+      {String(text)}
+    </Text>
+  ) : (
+    <Text size={4} weight="medium" className={s.Link}>
       {String(text)}
     </Text>
   );

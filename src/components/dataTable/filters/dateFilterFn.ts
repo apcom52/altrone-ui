@@ -1,7 +1,7 @@
 import { FilterFn } from '@tanstack/react-table';
 import { dayjs } from 'components/calendar/index.ts';
 
-export const dateFilterFn: FilterFn<any> = (row, columnId, filterValue) => {
+export const dateFilterFn: FilterFn<any, any> = (row, columnId, filterValue) => {
   if (!filterValue || !filterValue.rule) return true;
 
   const raw = row.getValue<any>(columnId);

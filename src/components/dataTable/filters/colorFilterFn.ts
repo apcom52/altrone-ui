@@ -1,6 +1,6 @@
 import { FilterFn } from '@tanstack/react-table';
 
-export const colorFilterFn: FilterFn<any> = (row, columnId, filterValue) => {
+export const colorFilterFn: FilterFn<any, any> = (row, columnId, filterValue) => {
   if (!filterValue || !filterValue.rule) return true;
 
   const raw = row.getValue<any>(columnId);
