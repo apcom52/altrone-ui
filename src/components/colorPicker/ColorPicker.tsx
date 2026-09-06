@@ -7,15 +7,21 @@ import { DummyBox } from 'components/dummyBox/DummyBox.tsx';
 import s from './styles.module.scss';
 import { ColorPickerContent } from './inner/ColorPickerContent';
 import { Size } from 'types';
-import { isValidElement, useCallback } from 'react';
+import {
+  isValidElement,
+  useCallback,
+  type ReactElement,
+  type SyntheticEvent,
+} from 'react';
 import { Slot } from 'utils/components/Slot';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const EMPTY_COLOR_PRESETS: ColorPreset[] = [];
 
-const SIZES: Record<Size, number> = {
-  mini: 16,
-  s: 20,
+/** Swatch diameter per tier — roughly two thirds of the matching `Box` height (16/24/32/40/48). */
+const PREVIEW_SIZES: Record<Size, number> = {
+  mini: 10,
+  s: 16,
   m: 20,
   l: 28,
   xl: 32,
@@ -37,14 +43,16 @@ export const ColorPicker = (props: ColorPickerProps) => {
     readOnly = false,
     clearable = false,
     transparent,
+    disabled = false,
     asChild = false,
     children,
+    renderFunc,
     ...restProps
   } = props;
 
   const handleChange = useCallback(
-    (color?: string) => {
-      onChange(typeof color === 'string' ? color.toLowerCase() : value);
+    (color: string | undefined, event?: SyntheticEvent) => {
+      onChange(typeof color === 'string' ? color.toLowerCase() : value, event);
     },
     [onChange, value],
   );
@@ -52,10 +60,6 @@ export const ColorPicker = (props: ColorPickerProps) => {
   const cls = clsx(s.ColorPicker, className, {
     [s.Readonly]: readOnly,
   });
-
-  const styles = {
-    ...style,
-  };
 
   return (
     <Popover
@@ -67,6 +71,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
           onChange={handleChange}
           allowPalette={allowPalette}
           clearable={clearable}
+          size={size}
           closePopup={closePopup}
         />
       )}
@@ -76,6 +81,17 @@ export const ColorPicker = (props: ColorPickerProps) => {
       overlap
     >
       {({ opened }) => {
+        if (renderFunc) {
+          return renderFunc({
+            value,
+            opened,
+            disabled,
+            placeholder,
+            className: cls,
+            style,
+          });
+        }
+
         if (asChild) {
           if (!isValidElement(children)) {
             console.error(
@@ -84,10 +100,8 @@ export const ColorPicker = (props: ColorPickerProps) => {
             return null;
           }
 
-          const childProps = (children as React.ReactElement).props as Record<
-            string,
-            unknown
-          >;
+          const childElement = children as ReactElement<Record<string, unknown>>;
+          const childProps = childElement.props;
 
           return (
             <Slot
@@ -95,12 +109,12 @@ export const ColorPicker = (props: ColorPickerProps) => {
               className={clsx(childProps.className as string | undefined, cls)}
               style={{
                 ...(childProps.style as React.CSSProperties | undefined),
-                ...styles,
+                ...style,
               }}
               data-value={value || undefined}
               data-opened={opened}
             >
-              {children}
+              {childElement}
             </Slot>
           );
         }
@@ -109,11 +123,12 @@ export const ColorPicker = (props: ColorPickerProps) => {
           <TextInput
             ref={ref}
             className={cls}
-            style={styles}
+            style={style}
             value={value || ''}
             placeholder={placeholder}
             readOnly={true}
             readonlyStyles={readOnly}
+            disabled={disabled}
             size={size}
             variant={transparent ? 'transparent' : undefined}
             onChange={() => null}
@@ -125,15 +140,15 @@ export const ColorPicker = (props: ColorPickerProps) => {
                   className={s.ColorPreview}
                   style={{
                     backgroundColor: value,
-                    width: SIZES[size],
-                    height: SIZES[size],
+                    width: PREVIEW_SIZES[size],
+                    height: PREVIEW_SIZES[size],
                   }}
                 />
               ) : (
                 <DummyBox
                   className={s.ColorPreview}
-                  width={SIZES[size] + 'px'}
-                  height={SIZES[size] + 'px'}
+                  width={PREVIEW_SIZES[size] + 'px'}
+                  height={PREVIEW_SIZES[size] + 'px'}
                   radius="50%"
                 />
               )}

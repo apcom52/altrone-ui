@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Button, Divider, Flex, Text, Tooltip } from 'components';
+import { Button, Divider, Flex, Range, Text, TextInput } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { ColorPicker } from './ColorPicker.tsx';
@@ -9,11 +9,8 @@ import { ColorPreset } from './ColorPicker.types.ts';
 import {
   Baseline,
   Bold,
+  Highlighter,
   Italic,
-  Paintbrush,
-  TextAlignCenter,
-  TextAlignEnd,
-  TextAlignStart,
   Underline,
 } from 'lucide-react';
 
@@ -21,8 +18,6 @@ const story: Meta<typeof ColorPicker> = {
   title: 'Components/Controls/ColorPicker',
   component: ColorPicker,
   decorators: [StorybookDecorator],
-  args: {},
-  argTypes: {},
   parameters: {
     chromatic: {
       modes: {
@@ -32,550 +27,308 @@ const story: Meta<typeof ColorPicker> = {
   },
 };
 
+export default story;
+
+type Story = StoryObj<typeof ColorPicker>;
+
+const Heading = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={6} weight="bold" style={{ marginTop: 8 }}>
+    {children}
+  </Text>
+);
+
+const Lead = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={3} style={{ maxWidth: 620, lineHeight: 1.6 }}>
+    {children}
+  </Text>
+);
+
+const Field = ({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) => (
+  <Flex direction="vertical" gap="xs">
+    <Text size={2} color="muted">
+      {label}
+    </Text>
+    {children}
+  </Flex>
+);
+
 const BRAND_COLORS: ColorPreset[] = [
-  { name: 'Primary', title: 'Primary', value: '#3B82F6' },
-  { name: 'Primary Dark', title: 'Primary Dark', value: '#1D4ED8' },
-  { name: 'Success', title: 'Success', value: '#22C55E' },
-  { name: 'Warning', title: 'Warning', value: '#F59E0B' },
-  { name: 'Danger', title: 'Danger', value: '#EF4444' },
-  { name: 'Surface', title: 'Surface', value: '#F8FAFC' },
-  { name: 'Muted', title: 'Muted', value: '#94A3B8' },
-  { name: 'Dark', title: 'Dark', value: '#0F172A' },
+  { name: 'Iris', title: 'Iris', value: '#5b5bd6' },
+  { name: 'Iris Deep', title: 'Iris Deep', value: '#3a3aa8' },
+  { name: 'Mint', title: 'Mint', value: '#3dd68c' },
+  { name: 'Sun', title: 'Sun', value: '#f5a623' },
+  { name: 'Ember', title: 'Ember', value: '#e5484d' },
+  { name: 'Ink', title: 'Ink', value: '#1c2024' },
+  { name: 'Fog', title: 'Fog', value: '#e6e8eb' },
 ];
 
-const TEXT_COLORS: ColorPreset[] = [
-  { name: 'Black', title: 'Чёрный', value: '#0F172A' },
-  { name: 'Dark Gray', title: 'Тёмно-серый', value: '#334155' },
-  { name: 'Gray', title: 'Серый', value: '#64748B' },
-  { name: 'Red', title: 'Красный', value: '#DC2626' },
-  { name: 'Orange', title: 'Оранжевый', value: '#EA580C' },
-  { name: 'Amber', title: 'Янтарный', value: '#D97706' },
-  { name: 'Green', title: 'Зелёный', value: '#16A34A' },
-  { name: 'Blue', title: 'Синий', value: '#2563EB' },
-  { name: 'Violet', title: 'Фиолетовый', value: '#7C3AED' },
-  { name: 'Pink', title: 'Розовый', value: '#DB2777' },
-];
+/* ------------------------------------------------------------------ */
+/* 1. Three ways to pick                                               */
+/* ------------------------------------------------------------------ */
 
-const HIGHLIGHT_COLORS: ColorPreset[] = [
-  { name: 'Yellow', title: 'Жёлтый', value: '#FEF08A' },
-  { name: 'Green', title: 'Зелёный', value: '#BBF7D0' },
-  { name: 'Blue', title: 'Голубой', value: '#BAE6FD' },
-  { name: 'Pink', title: 'Розовый', value: '#FBCFE8' },
-  { name: 'Orange', title: 'Оранжевый', value: '#FED7AA' },
-  { name: 'Purple', title: 'Фиолетовый', value: '#E9D5FF' },
-];
-
-export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
-  name: 'Using ColorPicker',
+export const ThreeWaysToPick: Story = {
+  name: 'Three ways to pick',
   render: () => {
-    const [basic, setBasic] = useState<string | undefined>('#3B82F6');
+    const [full, setFull] = useState<string | undefined>('#5b5bd6');
     const [paletteOnly, setPaletteOnly] = useState<string | undefined>(
-      '#22C55E',
+      '#3dd68c',
     );
     const [presetsOnly, setPresetsOnly] = useState<string | undefined>(
       COLORS[4].value,
     );
-    const [clearable, setClearable] = useState<string | undefined>('#F59E0B');
-    const [textColor, setTextColor] = useState<string | undefined>('#0F172A');
-    const [highlight, setHighlight] = useState<string | undefined>('#FEF08A');
-    const [background, setBackground] = useState<string | undefined>('#FFFFFF');
-    const [swatch, setSwatch] = useState<string | undefined>('#3B82F6');
-    const [token1, setToken1] = useState<string | undefined>('#3B82F6');
-    const [token2, setToken2] = useState<string | undefined>('#1D4ED8');
-    const [token3, setToken3] = useState<string | undefined>('#22C55E');
-    const [token4, setToken4] = useState<string | undefined>('#EF4444');
+    const [erasable, setErasable] = useState<string | undefined>('#f5a623');
 
     return (
-      <Flex direction="vertical" gap="xl" style={{ padding: '20px' }}>
-        {/* Basic modes */}
-        <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">
-            Режимы выбора цвета
-          </Text>
-          <Text>
-            Компонент поддерживает три режима: палитра + пресеты, только палитра
-            и только пресеты. Если пресеты переданы, они показываются по
-            умолчанию.
-          </Text>
-          <Flex direction="horizontal" gap="m" align="center">
-            <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">
-                Палитра + пресеты
-              </Text>
-              <ColorPicker
-                colorPresets={COLORS}
-                value={basic}
-                onChange={setBasic}
-                clearable
-              />
-            </Flex>
-            <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">
-                Только палитра
-              </Text>
-              <ColorPicker
-                value={paletteOnly}
-                onChange={setPaletteOnly}
-                placeholder="Выбрать цвет"
-              />
-            </Flex>
-            <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">
-                Только пресеты
-              </Text>
-              <ColorPicker
-                colorPresets={COLORS}
-                value={presetsOnly}
-                onChange={setPresetsOnly}
-                allowPalette={false}
-                placeholder="Из набора"
-              />
-            </Flex>
-            <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">
-                С кнопкой очистки
-              </Text>
-              <ColorPicker
-                colorPresets={COLORS}
-                value={clearable}
-                onChange={setClearable}
-                clearable
-                placeholder="С очисткой"
-              />
-            </Flex>
-          </Flex>
-        </Flex>
+      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 720 }}>
+        <Heading>Three ways to pick</Heading>
+        <Lead>
+          The popover adapts to what you give it. Pass{' '}
+          <Text code>colorPresets</Text> and consumers get a swatch grid; the
+          free-form palette rides alongside it on a second tab. Drop the presets
+          and the palette fills the whole popover. Set{' '}
+          <Text code>allowPalette={'{false}'}</Text> and the picker becomes a
+          strict swatch chooser with no way to invent an off-brand colour.
+        </Lead>
 
-        <Divider />
-
-        {/* Sizes */}
-        <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">
-            Размеры
-          </Text>
-          <Text>
-            Три размера — <code>s</code>, <code>m</code> (по умолчанию) и{' '}
-            <code>l</code> — позволяют вписать пикер в любой интерфейс.
-          </Text>
-          <Flex direction="horizontal" gap="m" align="center">
-            <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">
-                size="s"
-              </Text>
-              <ColorPicker
-                value={basic}
-                onChange={setBasic}
-                size="s"
-                colorPresets={COLORS}
-              />
-            </Flex>
-            <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">
-                size="m"
-              </Text>
-              <ColorPicker
-                value={basic}
-                onChange={setBasic}
-                size="m"
-                colorPresets={COLORS}
-              />
-            </Flex>
-            <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">
-                size="l"
-              </Text>
-              <ColorPicker
-                value={basic}
-                onChange={setBasic}
-                size="l"
-                colorPresets={COLORS}
-              />
-            </Flex>
-          </Flex>
-        </Flex>
-
-        <Divider />
-
-        {/* States */}
-        <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">
-            Состояния
-          </Text>
-          <Flex direction="horizontal" gap="m" align="center">
-            <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">
-                Обычный
-              </Text>
-              <ColorPicker value="#3B82F6" onChange={() => null} />
-            </Flex>
-            <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">
-                readOnly
-              </Text>
-              <ColorPicker value="#3B82F6" onChange={() => null} readOnly />
-            </Flex>
-            <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">
-                disabled
-              </Text>
-              <ColorPicker value="#3B82F6" onChange={() => null} disabled />
-            </Flex>
-            <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">
-                Без значения
-              </Text>
-              <ColorPicker onChange={() => null} placeholder="Не выбран" />
-            </Flex>
-            <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">
-                transparent
-              </Text>
-              <ColorPicker value="#3B82F6" onChange={() => null} transparent />
-            </Flex>
-          </Flex>
-        </Flex>
-
-        <Divider />
-
-        {/* asChild */}
-        <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">
-            Свой триггер (asChild)
-          </Text>
-          <Text>
-            Проп <code>asChild</code> позволяет использовать любой элемент как
-            триггер пикера. Все пропы взаимодействия (открытие, закрытие,
-            позиционирование) автоматически мержатся на дочерний элемент.
-          </Text>
-          <Flex direction="horizontal" gap="l" align="center">
-            {/* Color swatch */}
-            <Flex direction="vertical" gap="xs" align="center">
-              <Text size={3} color="secondary">
-                Цветовой кружок
-              </Text>
-              <ColorPicker
-                value={swatch}
-                onChange={setSwatch}
-                asChild
-                colorPresets={COLORS}
-                clearable
-              >
-                <div
-                  title="Нажмите, чтобы изменить цвет"
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: '50%',
-                    backgroundColor: swatch || 'var(--interactive-2)',
-                    border: '2px solid var(--border-2)',
-                    cursor: 'pointer',
-                    transition: 'transform 0.15s ease',
-                  }}
-                />
-              </ColorPicker>
-            </Flex>
-
-            {/* Button with color label */}
-            <Flex direction="vertical" gap="xs" align="center">
-              <Text size={3} color="secondary">
-                Кнопка с цветом
-              </Text>
-              <ColorPicker
-                value={swatch}
-                onChange={setSwatch}
-                asChild
-                colorPresets={COLORS}
-              >
-                <Button
-                  label={swatch ?? 'Выбрать'}
-                  icon={
-                    <div
-                      style={{
-                        width: 12,
-                        height: 12,
-                        borderRadius: 3,
-                        backgroundColor: swatch || 'var(--border-2)',
-                        border: '1px solid var(--border-a2)',
-                        flexShrink: 0,
-                      }}
-                    />
-                  }
-                />
-              </ColorPicker>
-            </Flex>
-
-            {/* Inline swatch in text */}
-            <Flex direction="vertical" gap="xs">
-              <Text size={3} color="secondary">
-                В строке текста
-              </Text>
-              <Flex direction="horizontal" gap="xs" align="center">
-                <Text>Цвет акцента:</Text>
-                <ColorPicker value={swatch} onChange={setSwatch} asChild>
-                  <span
-                    style={{
-                      display: 'inline-block',
-                      width: 20,
-                      height: 20,
-                      borderRadius: 4,
-                      backgroundColor: swatch || 'var(--interactive-2)',
-                      border: '1px solid var(--border-2)',
-                      cursor: 'pointer',
-                      verticalAlign: 'middle',
-                    }}
-                  />
-                </ColorPicker>
-                <Text>{swatch ?? '—'}</Text>
-              </Flex>
-            </Flex>
-          </Flex>
-        </Flex>
-
-        <Divider />
-
-        {/* Document editor scenario */}
-        <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">
-            Редактор документа
-          </Text>
-          <Text>
-            Реальный сценарий: панель форматирования текста с выбором цвета
-            символов, цвета выделения и фона страницы.
-          </Text>
-
-          {/* Toolbar */}
-          <Flex
-            direction="horizontal"
-            gap="xs"
-            align="center"
-            style={{
-              background: 'var(--glass-background-color)',
-              backdropFilter: 'var(--glass-effects)',
-              border: '1px solid var(--border-1)',
-              borderRadius: 10,
-              padding: '6px 10px',
-              width: 'fit-content',
-            }}
-          >
-            <Tooltip content="Жирный" kbd="⌘+B" placement="bottom">
-              <Button
-                icon={<Bold />}
-                label="Жирный"
-                showLabel={false}
-                variant="text"
-              />
-            </Tooltip>
-            <Tooltip content="Курсив" kbd="⌘+I" placement="bottom">
-              <Button
-                icon={<Italic />}
-                label="Курсив"
-                showLabel={false}
-                variant="text"
-              />
-            </Tooltip>
-            <Tooltip content="Подчёркнутый" kbd="⌘+U" placement="bottom">
-              <Button
-                icon={<Underline />}
-                label="Подч."
-                showLabel={false}
-                variant="text"
-              />
-            </Tooltip>
-
-            <Divider
-              direction="vertical"
-              style={{ height: 20, margin: '0 2px' }}
+        <Flex direction="horizontal" gap="l" wrap align="start">
+          <Field label="Presets + palette">
+            <ColorPicker
+              colorPresets={COLORS}
+              value={full}
+              onChange={setFull}
             />
-
-            {/* Text color — Tooltip cannot wrap ColorPicker (asChild): floating-ui ref conflict */}
+          </Field>
+          <Field label="Palette only">
             <ColorPicker
-              value={textColor}
-              onChange={setTextColor}
-              colorPresets={TEXT_COLORS}
-              asChild
-            >
-              <Button
-                title="Цвет текста"
-                label="Цвет текста"
-                showLabel={false}
-                variant="text"
-                icon={
-                  <Flex
-                    direction="vertical"
-                    gap="xs"
-                    align="center"
-                    style={{ gap: 2 }}
-                  >
-                    <Baseline />
-                    <div
-                      style={{
-                        width: 14,
-                        height: 3,
-                        borderRadius: 2,
-                        backgroundColor: textColor || 'var(--text-2)',
-                      }}
-                    />
-                  </Flex>
-                }
-              />
-            </ColorPicker>
-
-            {/* Highlight color */}
+              value={paletteOnly}
+              onChange={setPaletteOnly}
+              placeholder="Pick a colour"
+            />
+          </Field>
+          <Field label="Presets only — allowPalette={false}">
             <ColorPicker
-              value={highlight}
-              onChange={setHighlight}
-              colorPresets={HIGHLIGHT_COLORS}
+              colorPresets={COLORS}
+              value={presetsOnly}
+              onChange={setPresetsOnly}
               allowPalette={false}
-              asChild
-            >
-              <Button
-                title="Цвет выделения"
-                label="Выделение"
-                showLabel={false}
-                variant="text"
-                icon={
-                  <Flex direction="vertical" align="center" style={{ gap: 2 }}>
-                    <Paintbrush />
-                    <div
-                      style={{
-                        width: 14,
-                        height: 3,
-                        borderRadius: 2,
-                        backgroundColor: highlight || 'transparent',
-                        border: highlight
-                          ? 'none'
-                          : '1px dashed var(--border-2)',
-                      }}
-                    />
-                  </Flex>
-                }
-              />
-            </ColorPicker>
-
-            <Divider
-              direction="vertical"
-              style={{ height: 20, margin: '0 2px' }}
+              placeholder="From the set"
             />
+          </Field>
+          <Field label="clearable — adds Clear / Apply">
+            <ColorPicker
+              colorPresets={COLORS}
+              value={erasable}
+              onChange={setErasable}
+              clearable
+              placeholder="Optional colour"
+            />
+          </Field>
+        </Flex>
+      </Flex>
+    );
+  },
+};
 
-            <Tooltip content="По левому краю" kbd="⌘+⇧+L" placement="bottom">
-              <Button
-                icon={<TextAlignStart />}
-                label="Лево"
-                showLabel={false}
-                variant="text"
-              />
-            </Tooltip>
-            <Tooltip content="По центру" kbd="⌘+⇧+E" placement="bottom">
-              <Button
-                icon={<TextAlignCenter />}
-                label="Центр"
-                showLabel={false}
-                variant="text"
-              />
-            </Tooltip>
-            <Tooltip content="По правому краю" kbd="⌘+⇧+R" placement="bottom">
-              <Button
-                icon={<TextAlignEnd />}
-                label="Право"
-                showLabel={false}
-                variant="text"
-              />
-            </Tooltip>
-          </Flex>
+/* ------------------------------------------------------------------ */
+/* 2. Gradient Forge                                                   */
+/* ------------------------------------------------------------------ */
 
-          {/* Document preview */}
-          <div
-            style={{
-              padding: '32px 40px',
-              borderRadius: 12,
-              border: '1px solid var(--border-1)',
-              backgroundColor: background,
-              maxWidth: 560,
-              minHeight: 160,
-              position: 'relative',
-            }}
-          >
-            <div
-              style={{
-                position: 'absolute',
-                top: 10,
-                right: 12,
-              }}
-            >
+export const GradientForge: Story = {
+  name: 'Gradient Forge',
+  render: () => {
+    const [angle, setAngle] = useState(135);
+    const [stops, setStops] = useState<string[]>([
+      '#5b5bd6',
+      '#e5484d',
+      '#f5a623',
+    ]);
+
+    const css = `linear-gradient(${angle}deg, ${stops.join(', ')})`;
+
+    const setStop = (index: number, next?: string) =>
+      setStops((prev) =>
+        prev.map((stop, i) => (i === index ? next ?? stop : stop)),
+      );
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 640 }}>
+        <Heading>Gradient Forge</Heading>
+        <Lead>
+          Three pickers, one angle slider, and a running CSS declaration. Each
+          swatch feeds a stop in a <Text code>linear-gradient()</Text>; the
+          preview and the code block update on every change.
+        </Lead>
+
+        <div
+          style={{
+            height: 160,
+            borderRadius: 14,
+            border: '1px solid var(--border-1)',
+            background: css,
+          }}
+        />
+
+        <Flex direction="horizontal" gap="l" wrap align="start">
+          {stops.map((stop, index) => (
+            <Field key={index} label={`Stop ${index + 1}`}>
               <ColorPicker
-                value={background}
-                onChange={setBackground}
-                colorPresets={[
-                  { name: 'White', title: 'Белый', value: '#FFFFFF' },
-                  { name: 'Cream', title: 'Кремовый', value: '#FFFBEB' },
-                  { name: 'Light Blue', title: 'Голубой', value: '#EFF6FF' },
-                  { name: 'Light Green', title: 'Мятный', value: '#F0FDF4' },
-                  { name: 'Dark', title: 'Тёмный', value: '#1E293B' },
-                ]}
-                asChild
-              >
-                <div
-                  title="Цвет фона страницы"
-                  style={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: '50%',
-                    backgroundColor: background,
-                    border: '1.5px solid var(--border-2)',
-                    cursor: 'pointer',
-                    boxShadow: '0 1px 3px var(--border-a2)',
-                  }}
-                />
-              </ColorPicker>
+                value={stop}
+                onChange={(next) => setStop(index, next)}
+                colorPresets={BRAND_COLORS}
+              />
+            </Field>
+          ))}
+          <Field label={`Angle — ${angle}°`}>
+            <div style={{ width: 220 }}>
+              <Range
+                min={0}
+                max={360}
+                value={angle}
+                onChange={setAngle}
+                renderLabel={(value) => `${value}°`}
+                showCurrentValue="always"
+              />
             </div>
-            <p
-              style={{
-                margin: 0,
-                color: textColor,
-                lineHeight: 1.7,
-                fontSize: 15,
-              }}
-            >
-              Это пример текста документа.{' '}
-              <span
-                style={{
-                  backgroundColor: highlight,
-                  borderRadius: 3,
-                  padding: '1px 2px',
-                }}
-              >
-                Выделенный фрагмент
-              </span>{' '}
-              отображает выбранный цвет подсветки, а весь текст использует
-              выбранный цвет символов.
-            </p>
-          </div>
+          </Field>
         </Flex>
 
-        <Divider />
+        <Text
+          block
+          code
+          style={{
+            display: 'block',
+            padding: '12px 16px',
+            background: 'var(--gray-a3)',
+            borderRadius: 'var(--radius-s)',
+            whiteSpace: 'pre-wrap',
+          }}
+        >
+          {`background: ${css};`}
+        </Text>
+      </Flex>
+    );
+  },
+};
 
-        {/* Design tokens editor */}
-        <Flex direction="vertical" gap="m">
-          <Text size={5} weight="bold">
-            Редактор дизайн-токенов
-          </Text>
-          <Text>
-            Пример интерфейса для управления цветами бренда. Пресеты ускоряют
-            работу, полная палитра даёт точный контроль.
-          </Text>
-          <Flex direction="vertical" gap="s" style={{ maxWidth: 400 }}>
-            {[
-              { label: '--color-primary', value: token1, setter: setToken1 },
-              {
-                label: '--color-primary-dark',
-                value: token2,
-                setter: setToken2,
-              },
-              { label: '--color-success', value: token3, setter: setToken3 },
-              { label: '--color-danger', value: token4, setter: setToken4 },
-            ].map(({ label, value: tokenValue, setter }) => (
+/* ------------------------------------------------------------------ */
+/* 3. Neon Sign Studio                                                 */
+/* ------------------------------------------------------------------ */
+
+export const NeonSignStudio: Story = {
+  name: 'Neon Sign Studio',
+  render: () => {
+    const [glow, setGlow] = useState<string | undefined>('#3dd68c');
+    const [wall, setWall] = useState<string | undefined>('#1c2024');
+    const [word, setWord] = useState('altrone');
+
+    const glowColor = glow ?? '#ffffff';
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 620 }}>
+        <Heading>Neon Sign Studio</Heading>
+        <Lead>
+          A picker is only as good as the thing it recolours. Here the glow
+          swatch drives a stack of <Text code>text-shadow</Text> layers and the
+          wall swatch paints the backdrop — the alpha channel of the palette is
+          handy for a soft outer bloom.
+        </Lead>
+
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: 200,
+            borderRadius: 16,
+            background: wall,
+            border: '1px solid var(--border-1)',
+          }}
+        >
+          <span
+            style={{
+              fontSize: 56,
+              fontWeight: 700,
+              letterSpacing: 4,
+              color: '#fdfdfd',
+              textShadow: `0 0 4px ${glowColor}, 0 0 12px ${glowColor}, 0 0 32px ${glowColor}, 0 0 64px ${glowColor}`,
+            }}
+          >
+            {word || 'neon'}
+          </span>
+        </div>
+
+        <Flex direction="horizontal" gap="l" wrap align="start">
+          <Field label="Glow (try the alpha slider)">
+            <ColorPicker value={glow} onChange={setGlow} />
+          </Field>
+          <Field label="Wall">
+            <ColorPicker
+              value={wall}
+              onChange={setWall}
+              colorPresets={[
+                { name: 'Ink', title: 'Ink', value: '#1c2024' },
+                { name: 'Plum', title: 'Plum', value: '#2b1a2e' },
+                { name: 'Navy', title: 'Navy', value: '#13233b' },
+                { name: 'Coal', title: 'Coal', value: '#0a0a0a' },
+              ]}
+              allowPalette={false}
+            />
+          </Field>
+          <Field label="Sign text">
+            <TextInput
+              value={word}
+              maxLength={10}
+              onChange={setWord}
+              style={{ width: 160 }}
+            />
+          </Field>
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* 4. Building a palette                                               */
+/* ------------------------------------------------------------------ */
+
+const TOKENS = [
+  { name: '--accent', fallback: '#5b5bd6' },
+  { name: '--accent-hover', fallback: '#4a4ac2' },
+  { name: '--surface', fallback: '#ffffff' },
+  { name: '--text', fallback: '#1c2024' },
+];
+
+export const BuildingAPalette: Story = {
+  name: 'Building a palette',
+  render: () => {
+    const [values, setValues] = useState<Record<string, string | undefined>>(
+      Object.fromEntries(TOKENS.map((token) => [token.name, token.fallback])),
+    );
+
+    const resolve = (name: string) =>
+      values[name] ?? TOKENS.find((token) => token.name === name)?.fallback;
+
+    return (
+      <Flex direction="horizontal" gap="xl" style={{ padding: 24 }} wrap>
+        <Flex direction="vertical" gap="m" style={{ maxWidth: 380 }}>
+          <Heading>Building a palette</Heading>
+          <Lead>
+            Four tokens, four pickers. Brand presets keep the common choices one
+            click away; the palette tab is there for the moment a designer wants
+            a value that isn&apos;t in the system yet.
+          </Lead>
+
+          <Flex direction="vertical" gap="s">
+            {TOKENS.map((token) => (
               <Flex
-                key={label}
+                key={token.name}
                 direction="horizontal"
                 gap="m"
                 align="center"
@@ -588,26 +341,22 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
               >
                 <div
                   style={{
-                    width: 28,
-                    height: 28,
+                    width: 26,
+                    height: 26,
                     borderRadius: 6,
-                    backgroundColor: tokenValue,
+                    background: resolve(token.name),
                     border: '1px solid var(--border-a2)',
                     flexShrink: 0,
                   }}
                 />
-                <Text
-                  style={{
-                    flex: 1,
-                    fontFamily: 'var(--font-family-code)',
-                    fontSize: 12,
-                  }}
-                >
-                  {label}
+                <Text code style={{ flex: 1, fontSize: 12 }}>
+                  {token.name}
                 </Text>
                 <ColorPicker
-                  value={tokenValue}
-                  onChange={setter}
+                  value={values[token.name]}
+                  onChange={(next) =>
+                    setValues((prev) => ({ ...prev, [token.name]: next }))
+                  }
                   colorPresets={BRAND_COLORS}
                   size="s"
                   clearable
@@ -616,9 +365,378 @@ export const ColorPickerStory: StoryObj<typeof ColorPicker> = {
             ))}
           </Flex>
         </Flex>
+
+        <Flex direction="vertical" gap="xs">
+          <Text size={2} color="muted">
+            Live preview
+          </Text>
+          <div
+            style={{
+              width: 260,
+              padding: 20,
+              borderRadius: 12,
+              background: resolve('--surface'),
+              border: '1px solid var(--border-1)',
+              color: resolve('--text'),
+            }}
+          >
+            <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 6 }}>
+              Weekly digest
+            </div>
+            <div style={{ fontSize: 13, opacity: 0.75, marginBottom: 16 }}>
+              Twelve people joined your workspace this week.
+            </div>
+            <button
+              style={{
+                border: 'none',
+                borderRadius: 8,
+                padding: '8px 14px',
+                color: '#fff',
+                fontWeight: 600,
+                cursor: 'pointer',
+                background: resolve('--accent'),
+              }}
+              onMouseEnter={(event) => {
+                event.currentTarget.style.background =
+                  resolve('--accent-hover') ?? '';
+              }}
+              onMouseLeave={(event) => {
+                event.currentTarget.style.background = resolve('--accent') ?? '';
+              }}
+            >
+              View report
+            </button>
+          </div>
+        </Flex>
       </Flex>
     );
   },
 };
 
-export default story;
+/* ------------------------------------------------------------------ */
+/* 5. Writing desk                                                     */
+/* ------------------------------------------------------------------ */
+
+const TEXT_COLORS: ColorPreset[] = [
+  { name: 'Ink', title: 'Ink', value: '#1c2024' },
+  { name: 'Slate', title: 'Slate', value: '#3b4149' },
+  { name: 'Rust', title: 'Rust', value: '#ad1a12' },
+  { name: 'Pine', title: 'Pine', value: '#1a7f5a' },
+  { name: 'Sea', title: 'Sea', value: '#1f6feb' },
+  { name: 'Plum', title: 'Plum', value: '#7c3aed' },
+];
+
+const HIGHLIGHT_COLORS: ColorPreset[] = [
+  { name: 'Butter', title: 'Butter', value: '#fef08a' },
+  { name: 'Aloe', title: 'Aloe', value: '#bbf7d0' },
+  { name: 'Sky', title: 'Sky', value: '#bae6fd' },
+  { name: 'Rose', title: 'Rose', value: '#fbcfe8' },
+];
+
+export const WritingDesk: Story = {
+  name: 'Writing desk',
+  render: () => {
+    const [textColor, setTextColor] = useState<string | undefined>('#1c2024');
+    const [highlight, setHighlight] = useState<string | undefined>('#fef08a');
+    const [paper, setPaper] = useState<string | undefined>('#ffffff');
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 620 }}>
+        <Heading>Writing desk</Heading>
+        <Lead>
+          The realistic case: colour controls tucked into a formatting toolbar,
+          each one an <Text code>asChild</Text> trigger so the picker rides on a{' '}
+          <Text code>Button</Text> instead of a text field. Character colour and
+          page colour keep the full palette; the highlighter is locked to a
+          short preset list.
+        </Lead>
+
+        <Flex
+          direction="horizontal"
+          gap="xs"
+          align="center"
+          style={{
+            border: '1px solid var(--border-1)',
+            borderRadius: 10,
+            padding: '6px 8px',
+            width: 'fit-content',
+          }}
+        >
+          <Button icon={<Bold />} label="Bold" showLabel={false} variant="text" />
+          <Button
+            icon={<Italic />}
+            label="Italic"
+            showLabel={false}
+            variant="text"
+          />
+          <Button
+            icon={<Underline />}
+            label="Underline"
+            showLabel={false}
+            variant="text"
+          />
+
+          <Divider direction="vertical" style={{ height: 20, margin: '0 4px' }} />
+
+          <ColorPicker
+            value={textColor}
+            onChange={setTextColor}
+            colorPresets={TEXT_COLORS}
+            asChild
+          >
+            <Button
+              title="Character colour"
+              label="Character colour"
+              showLabel={false}
+              variant="text"
+              icon={
+                <Flex direction="vertical" align="center" style={{ gap: 2 }}>
+                  <Baseline />
+                  <div
+                    style={{
+                      width: 14,
+                      height: 3,
+                      borderRadius: 2,
+                      background: textColor || 'var(--text-2)',
+                    }}
+                  />
+                </Flex>
+              }
+            />
+          </ColorPicker>
+
+          <ColorPicker
+            value={highlight}
+            onChange={setHighlight}
+            colorPresets={HIGHLIGHT_COLORS}
+            allowPalette={false}
+            asChild
+          >
+            <Button
+              title="Highlight colour"
+              label="Highlight colour"
+              showLabel={false}
+              variant="text"
+              icon={
+                <Flex direction="vertical" align="center" style={{ gap: 2 }}>
+                  <Highlighter />
+                  <div
+                    style={{
+                      width: 14,
+                      height: 3,
+                      borderRadius: 2,
+                      background: highlight || 'transparent',
+                      border: highlight ? 'none' : '1px dashed var(--border-2)',
+                    }}
+                  />
+                </Flex>
+              }
+            />
+          </ColorPicker>
+
+          <Divider direction="vertical" style={{ height: 20, margin: '0 4px' }} />
+
+          <ColorPicker
+            value={paper}
+            onChange={setPaper}
+            colorPresets={[
+              { name: 'White', title: 'White', value: '#ffffff' },
+              { name: 'Cream', title: 'Cream', value: '#fffbeb' },
+              { name: 'Mist', title: 'Mist', value: '#eff6ff' },
+              { name: 'Sage', title: 'Sage', value: '#f0fdf4' },
+            ]}
+            clearable
+            asChild
+          >
+            <Button label="Page colour" variant="text" showLabel={false} title="Page colour" />
+          </ColorPicker>
+        </Flex>
+
+        <div
+          style={{
+            padding: '28px 32px',
+            borderRadius: 12,
+            border: '1px solid var(--border-1)',
+            background: paper,
+            minHeight: 140,
+          }}
+        >
+          <p style={{ margin: 0, color: textColor, lineHeight: 1.7, fontSize: 15 }}>
+            The quick brown fox jumps over the lazy dog.{' '}
+            <span
+              style={{
+                background: highlight,
+                borderRadius: 3,
+                padding: '1px 3px',
+              }}
+            >
+              This clause is highlighted
+            </span>{' '}
+            and the paragraph as a whole uses the chosen character colour on the
+            chosen page colour.
+          </p>
+        </div>
+      </Flex>
+    );
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* 6. Sizes, states & custom triggers                                  */
+/* ------------------------------------------------------------------ */
+
+export const SizesStatesAndTriggers: Story = {
+  name: 'Sizes, states & custom triggers',
+  render: () => {
+    const [value, setValue] = useState<string | undefined>('#5b5bd6');
+    const [swatch, setSwatch] = useState<string | undefined>('#e5484d');
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 720 }}>
+        <Heading>Sizes</Heading>
+        <Lead>
+          The trigger is a <Text code>TextInput</Text> under the hood, so it
+          honours the same <Text code>size</Text> scale. The preview dot and the
+          hex / RGB inputs inside the popover follow suit.
+        </Lead>
+        <Flex direction="horizontal" gap="l" align="center" wrap>
+          {(['mini', 's', 'm', 'l', 'xl'] as const).map((size) => (
+            <Field key={size} label={`size="${size}"`}>
+              <ColorPicker
+                value={value}
+                onChange={setValue}
+                size={size}
+                colorPresets={COLORS}
+              />
+            </Field>
+          ))}
+        </Flex>
+
+        <Divider />
+
+        <Heading>States</Heading>
+        <Flex direction="horizontal" gap="l" align="center" wrap>
+          <Field label="default">
+            <ColorPicker value="#5b5bd6" onChange={() => {}} />
+          </Field>
+          <Field label="readOnly">
+            <ColorPicker value="#5b5bd6" onChange={() => {}} readOnly />
+          </Field>
+          <Field label="disabled">
+            <ColorPicker value="#5b5bd6" onChange={() => {}} disabled />
+          </Field>
+          <Field label="empty">
+            <ColorPicker onChange={() => {}} placeholder="Not set" />
+          </Field>
+          <Field label="transparent">
+            <ColorPicker value="#5b5bd6" onChange={() => {}} transparent />
+          </Field>
+        </Flex>
+
+        <Divider />
+
+        <Heading>Custom triggers</Heading>
+        <Lead>
+          <Text code>asChild</Text> merges the trigger behaviour onto whatever
+          single element you pass — a bare swatch, a labelled button, or an
+          inline chip inside running text. <Text code>renderFunc</Text> goes one
+          step further and hands you <Text code>value</Text> /{' '}
+          <Text code>opened</Text> to build the trigger from scratch.
+        </Lead>
+
+        <Field label="renderFunc">
+          <ColorPicker
+            value={swatch}
+            onChange={setSwatch}
+            colorPresets={COLORS}
+            renderFunc={({ value, opened }) => (
+              <Button
+                variant={opened ? 'submit' : 'default'}
+                label={value ?? 'No colour'}
+                icon={
+                  <div
+                    style={{
+                      width: 12,
+                      height: 12,
+                      borderRadius: '50%',
+                      background: value || 'var(--border-2)',
+                    }}
+                  />
+                }
+              />
+            )}
+          />
+        </Field>
+        <Flex direction="horizontal" gap="xl" align="center" wrap>
+          <Field label="Bare swatch">
+            <ColorPicker
+              value={swatch}
+              onChange={setSwatch}
+              colorPresets={COLORS}
+              clearable
+              asChild
+            >
+              <div
+                title="Click to recolour"
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: '50%',
+                  background: swatch || 'var(--interactive-2)',
+                  border: '2px solid var(--border-2)',
+                  cursor: 'pointer',
+                }}
+              />
+            </ColorPicker>
+          </Field>
+
+          <Field label="Labelled button">
+            <ColorPicker
+              value={swatch}
+              onChange={setSwatch}
+              colorPresets={COLORS}
+              asChild
+            >
+              <Button
+                label={swatch ?? 'Choose'}
+                icon={
+                  <div
+                    style={{
+                      width: 12,
+                      height: 12,
+                      borderRadius: 3,
+                      background: swatch || 'var(--border-2)',
+                      border: '1px solid var(--border-a2)',
+                      flexShrink: 0,
+                    }}
+                  />
+                }
+              />
+            </ColorPicker>
+          </Field>
+
+          <Field label="Inline in text">
+            <Flex direction="horizontal" gap="xs" align="center">
+              <Text>Accent</Text>
+              <ColorPicker value={swatch} onChange={setSwatch} asChild>
+                <span
+                  style={{
+                    display: 'inline-block',
+                    width: 18,
+                    height: 18,
+                    borderRadius: 4,
+                    background: swatch || 'var(--interactive-2)',
+                    border: '1px solid var(--border-2)',
+                    cursor: 'pointer',
+                    verticalAlign: 'middle',
+                  }}
+                />
+              </ColorPicker>
+              <Text>{swatch ?? '—'}</Text>
+            </Flex>
+          </Field>
+        </Flex>
+      </Flex>
+    );
+  },
+};
