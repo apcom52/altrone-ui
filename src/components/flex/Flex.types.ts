@@ -1,12 +1,12 @@
-import React from 'react';
-import { Align, Direction, Gap, Justify } from 'types';
+import { HTMLAttributes, JSX, Ref } from 'react';
+import { Direction, Gap, Justify } from 'types';
 
-export interface FlexProps extends React.HTMLAttributes<HTMLDivElement> {
-  ref?: React.Ref<HTMLElement>;
-  tagName?: keyof React.JSX.IntrinsicElements;
+export interface FlexProps extends HTMLAttributes<HTMLElement> {
+  ref?: Ref<HTMLElement>;
+  tagName?: keyof JSX.IntrinsicElements;
   gap?: Gap;
   direction?: Direction;
-  align?: Align;
+  align?: 'start' | 'center' | 'end';
   justify?: Justify;
   disableInnerMargins?: boolean;
   wrap?: boolean;

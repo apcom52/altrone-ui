@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { createElement } from 'react';
 import { GridProps } from './Grid.types.ts';
 import { Column } from './components';
 import s from './styles.module.scss';
@@ -16,35 +16,30 @@ const gapVars: Record<Gap, string> = {
   xxl: 'var(--xxl-gap)',
 };
 
-const GridComponent = memo<GridProps>(
-  ({
-    ref,
+const GridComponent = ({
+  ref,
+  tagName = 'div',
+  children,
+  wrap = true,
+  gap = 'none',
+  rowGap = 'none',
+  className,
+  style,
+  ...restProps
+}: GridProps) =>
+  createElement(
+    tagName,
+    {
+      ...restProps,
+      ref,
+      className: clsx(s.Grid, { [s.NoWrap]: !wrap }, className),
+      style: {
+        ...style,
+        '--grid-column-spacing': gapVars[gap],
+        '--grid-row-spacing': gapVars[rowGap],
+      },
+    },
     children,
-    wrap = true,
-    gap = 'none',
-    rowGap = 'none',
-    className,
-    style,
-    ...restProps
-  }) => {
-    const cls = clsx(s.Grid, { [s.NoWrap]: !wrap }, className);
+  );
 
-    const styles = {
-      ...style,
-      '--column-spacing': gapVars[gap],
-      '--row-spacing': gapVars[rowGap],
-    };
-
-    return (
-      <div ref={ref} className={cls} style={styles} {...restProps}>
-        {children}
-      </div>
-    );
-  },
-);
-
-const GridNamespace = Object.assign(GridComponent, {
-  Column: Column,
-});
-
-export { GridNamespace as Grid };
+export const Grid = Object.assign(GridComponent, { Column });

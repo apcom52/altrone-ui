@@ -1,11 +1,11 @@
 .Grid {
-  --column-spacing: 0px;
-  --row-spacing: 0px;
+  --grid-column-spacing: 0px;
+  --grid-row-spacing: 0px;
 
   display: flex;
   flex-wrap: wrap;
-  column-gap: var(--column-spacing);
-  row-gap: var(--row-spacing);
+  column-gap: var(--grid-column-spacing);
+  row-gap: var(--grid-row-spacing);
   width: 100%;
 }
 

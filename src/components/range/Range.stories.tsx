@@ -98,8 +98,8 @@ export const Darkroom: Story = {
           The natural home of the <Text code>default</Text> variant: a stack of
           adjustment sliders that each run from a negative to a positive extreme
           through a neutral centre. <Text code>renderLabel</Text> puts the sign
-          back on the number, and <Text code>onValueCommit</Text> is where a real
-          editor re-runs the expensive develop pass —{' '}
+          back on the number, and <Text code>onValueCommit</Text> is where a
+          real editor re-runs the expensive develop pass —{' '}
           <Text code>onChange</Text> only drives the cheap live preview.
         </Lead>
 
@@ -221,7 +221,10 @@ export const MixingDesk: Story = {
             </Flex>
           ))}
 
-          <Divider direction="vertical" style={{ margin: '0 4px', height: 220 }} />
+          <Divider
+            direction="vertical"
+            style={{ margin: '0 4px', height: 220 }}
+          />
 
           <Flex direction="vertical" align="center" gap="s">
             <div style={{ height: 220 }}>
@@ -332,7 +335,7 @@ export const NowPlaying: Story = {
             showCurrentValue="always"
             renderLabel={mmss}
           />
-          <Flex direction="horizontal" align="between">
+          <Flex direction="horizontal" justify="between">
             <Text size={2} color="muted">
               {mmss(position)}
             </Text>
@@ -557,13 +560,14 @@ export const Anatomy: Story = {
 
         <Heading>Value label &amp; keyboard</Heading>
         <Lead>
-          <Text code>showCurrentValue</Text> takes <Text code>&quot;active&quot;</Text>{' '}
-          (visible while hovered, focused, or dragging — the default),{' '}
-          <Text code>&quot;always&quot;</Text>, or <Text code>false</Text>. Once
-          focused, the track responds to <Text kbd>←</Text> <Text kbd>→</Text>{' '}
-          <Text kbd>↑</Text> <Text kbd>↓</Text> by one <Text code>step</Text>,
-          and <Text kbd>Home</Text> / <Text kbd>End</Text> jump to the ends —
-          every press also fires <Text code>onValueCommit</Text>.
+          <Text code>showCurrentValue</Text> takes{' '}
+          <Text code>&quot;active&quot;</Text> (visible while hovered, focused,
+          or dragging — the default), <Text code>&quot;always&quot;</Text>, or{' '}
+          <Text code>false</Text>. Once focused, the track responds to{' '}
+          <Text kbd>←</Text> <Text kbd>→</Text> <Text kbd>↑</Text>{' '}
+          <Text kbd>↓</Text> by one <Text code>step</Text>, and{' '}
+          <Text kbd>Home</Text> / <Text kbd>End</Text> jump to the ends — every
+          press also fires <Text code>onValueCommit</Text>.
         </Lead>
         <Flex direction="horizontal" gap="xl" wrap style={{ maxWidth: 640 }}>
           <Field label={<Text code>&quot;active&quot;</Text>}>

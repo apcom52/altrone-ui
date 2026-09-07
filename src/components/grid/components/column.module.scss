@@ -1,11 +1,16 @@
 .Column {
-  --column-size: 1;
-  --column-offset: 0;
+  --grid-column-size: 1;
+  --grid-column-offset: 0;
 
   min-width: 0;
   flex: 0 0 auto;
-  // Account for 11 gaps in a 12-column row when calculating each column's width
-  width: calc(var(--column-size) * (100% - 11 * var(--column-spacing, 0px)) / 12);
+  /* A span of N reclaims the N-1 column gaps that fall inside it, on top of its
+     share of the gap-free width — so any row whose sizes sum to 12 fills the
+     track exactly, with no drift at the right edge. */
+  width: calc(
+    var(--grid-column-size) * (100% - 11 * var(--grid-column-spacing, 0px)) /
+      12 + (var(--grid-column-size) - 1) * var(--grid-column-spacing, 0px)
+  );
 }
 
 .AutoSize {
@@ -14,6 +19,10 @@
 }
 
 .Offset {
-  // Each offset unit equals one column width at the current gap setting
-  margin-left: calc(var(--column-offset) * (100% - 11 * var(--column-spacing, 0px)) / 12);
+  /* Mirror the column-width formula: N base units plus the N gaps that precede
+     the offset column. */
+  margin-left: calc(
+    var(--grid-column-offset) * (100% - 11 * var(--grid-column-spacing, 0px)) /
+      12 + var(--grid-column-offset) * var(--grid-column-spacing, 0px)
+  );
 }

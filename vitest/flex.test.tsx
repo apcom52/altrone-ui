@@ -1,50 +1,67 @@
-import React from 'react';
-import { expect, test, describe } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { Configuration, Flex } from '../src';
+import { createRef } from 'react';
+import { expect, test, describe, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { Flex } from '../src';
 
 describe('Flex', () => {
-  test('check that properties works correctly', () => {
+  test('renders a div by default and swaps the element via tagName', () => {
     const { rerender } = render(
       <Flex data-testid="flex">
-        <div>flex content</div>
+        <span>content</span>
       </Flex>,
     );
 
-    expect(screen.getByText('flex content')).toBeInTheDocument();
     expect(screen.getByTestId('flex').tagName).toBe('DIV');
+    expect(screen.getByText('content')).toBeInTheDocument();
 
     rerender(
-      <Flex tagName="span" data-testid="flex">
-        <div>flex content</div>
+      <Flex tagName="ul" data-testid="flex">
+        <li>content</li>
       </Flex>,
     );
 
-    expect(screen.getByTestId('flex').tagName).toBe('SPAN');
+    expect(screen.getByTestId('flex').tagName).toBe('UL');
+    expect(screen.getByText('content')).toBeInTheDocument();
   });
 
-  test('check that custom className and styles works', () => {
-    render(
-      <Flex className="cls" style={{ fontSize: '20px' }} data-testid="flex">
-        <div>flex content</div>
-      </Flex>,
-    );
+  test('maps the gap token to the inline gap value, defaulting to 0px', () => {
+    const { rerender } = render(<Flex data-testid="flex" />);
+    expect(screen.getByTestId('flex')).toHaveStyle('gap: 0px');
 
-    expect(screen.getByTestId('flex')).toHaveClass('cls');
-    expect(screen.getByTestId('flex')).toHaveStyle('font-size: 20px');
+    rerender(<Flex gap="l" data-testid="flex" />);
+    expect(screen.getByTestId('flex')).toHaveStyle('gap: var(--l-gap)');
   });
 
-  test('check that configuration works', () => {
+  test('merges consumer className and style alongside the computed gap', () => {
     render(
-      <Configuration
-        flex={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
-      >
-        <Flex data-testid="element">content</Flex>
-      </Configuration>,
+      <Flex
+        className="cls"
+        style={{ fontSize: '20px' }}
+        gap="m"
+        data-testid="flex"
+      />,
     );
 
-    const element = screen.getByTestId('element');
-    expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
+    const flex = screen.getByTestId('flex');
+    expect(flex).toHaveClass('cls');
+    expect(flex).toHaveStyle({ fontSize: '20px', gap: 'var(--gap)' });
+  });
+
+  test('forwards arbitrary DOM props to the root element', () => {
+    const onClick = vi.fn();
+    render(<Flex data-testid="flex" aria-label="toolbar" onClick={onClick} />);
+
+    const flex = screen.getByTestId('flex');
+    expect(flex).toHaveAttribute('aria-label', 'toolbar');
+
+    fireEvent.click(flex);
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  test('forwards ref to the root element', () => {
+    const ref = createRef<HTMLElement>();
+    render(<Flex ref={ref} data-testid="flex" />);
+
+    expect(ref.current).toBe(screen.getByTestId('flex'));
   });
 });

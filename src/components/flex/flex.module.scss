@@ -36,6 +36,8 @@
   justify-content: space-between;
 }
 
+/* `!important` is deliberate: it must beat a child's own class-based margin so
+   that `gap` stays the single source of spacing inside a Flex. */
 .Flex_disableInnerMargins > * {
   margin: 0 !important;
 }
