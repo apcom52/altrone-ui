@@ -152,6 +152,15 @@ export interface Localization {
   closeButton: {
     ariaLabel: string;
   };
+  dialog: {
+    alertTitle: string;
+    confirmTitle: string;
+    promptTitle: string;
+    ok: string;
+    confirm: string;
+    cancel: string;
+    promptPlaceholder: string;
+  };
   colorPicker: {
     placeholder: string;
     savedColors: string;

@@ -130,16 +130,19 @@ export const Modal = (props: ModalProps) => {
   const showFooter =
     showCancelButton || hasLeftActions || hasRenderableNodes(actionsElement);
 
-  const safeChild = (
-    React.isValidElement(children) ? children : <span>{children}</span>
-  ) as ReactElement<{ onClick?: React.MouseEventHandler }>;
+  let triggerElement: React.ReactNode = null;
+  if (children != null) {
+    const safeChild = (
+      React.isValidElement(children) ? children : <span>{children}</span>
+    ) as ReactElement<{ onClick?: React.MouseEventHandler }>;
 
-  const triggerElement = DOMUtils.cloneNode(safeChild, {
-    onClick: (event: MouseEvent<HTMLElement>) => {
-      safeChild.props.onClick?.(event);
-      open();
-    },
-  });
+    triggerElement = DOMUtils.cloneNode(safeChild, {
+      onClick: (event: MouseEvent<HTMLElement>) => {
+        safeChild.props.onClick?.(event);
+        open();
+      },
+    });
+  }
 
   const onBackdropClick = (event: MouseEvent<HTMLDivElement>) => {
     /**

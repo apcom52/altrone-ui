@@ -35,78 +35,71 @@ type ConfirmInternal = ConfirmOptions & {
 
 type PromptInternal = PromptOptions & {
   type: 'prompt';
-  resolve: (result: string | number) => void;
+  resolve: (result: string | number | null) => void;
 };
 
 export type DialogState = AlertInternal | ConfirmInternal | PromptInternal;
 
-let openDialog:
-  | ((dialog: AlertInternal | ConfirmInternal | PromptInternal) => void)
-  | null = null;
+type DialogHandler = (dialog: DialogState) => void;
 
-export const registerDialogHandler = (
-  handler: (dialog: AlertInternal | ConfirmInternal | PromptInternal) => void
-) => {
-  openDialog = handler;
+/**
+ * A stack rather than a single ref so nested `DialogProvider`s (and tests that
+ * mount/unmount their own) don't clobber each other — the most recently mounted
+ * provider handles new dialogs, and unmounting one falls back to the previous.
+ */
+const handlers: DialogHandler[] = [];
+
+export const registerDialogHandler = (handler: DialogHandler) => {
+  handlers.push(handler);
 };
 
-export const unregisterDialogHandler = () => {
-  openDialog = null;
+export const unregisterDialogHandler = (handler: DialogHandler) => {
+  const index = handlers.lastIndexOf(handler);
+  if (index !== -1) {
+    handlers.splice(index, 1);
+  }
 };
 
-export const showAlert = (options?: AlertOptions): Promise<void> => {
+const dispatch = (dialog: DialogState): boolean => {
+  const handler = handlers[handlers.length - 1];
+  if (!handler) {
+    console.warn('DialogProvider is not mounted');
+    return false;
+  }
+
+  handler(dialog);
+  return true;
+};
+
+export const showAlert = (options: AlertOptions): Promise<void> => {
   return new Promise((resolve) => {
-    if (!openDialog) {
-      console.warn('DialogProvider is not mounted');
+    if (!dispatch({ type: 'alert', ...options, resolve })) {
       resolve();
-      return;
     }
-
-    openDialog({
-      type: 'alert',
-      ...(options || { title: '', message: '' }),
-      resolve,
-    });
   });
 };
 
-export const showConfirm = (options?: ConfirmOptions): Promise<boolean> => {
+export const showConfirm = (options: ConfirmOptions): Promise<boolean> => {
   return new Promise((resolve) => {
-    if (!openDialog) {
-      console.warn('DialogProvider is not mounted');
+    if (!dispatch({ type: 'confirm', ...options, resolve })) {
       resolve(false);
-      return;
     }
-
-    openDialog({
-      type: 'confirm',
-      ...(options || { title: '', message: '' }),
-      resolve,
-    });
   });
 };
 
 export const showPrompt = (
-  options: PromptOptions
+  options: PromptOptions,
 ): Promise<string | number | null> => {
   return new Promise((resolve) => {
-    if (!openDialog) {
-      console.warn('DialogProvider is not mounted');
-      resolve(null);
-      return;
-    }
-
-    const params = options || {};
-
-    openDialog({
+    const dispatched = dispatch({
       type: 'prompt',
-      title: params.title,
-      message: params.message,
-      inputType: params.inputType ?? 'string',
-      placeholder: params.placeholder ?? 'Input your value',
-      confirmText: params.confirmText,
-      cancelText: params.cancelText,
+      ...options,
+      inputType: options.inputType ?? 'string',
       resolve,
     });
+
+    if (!dispatched) {
+      resolve(null);
+    }
   });
 };

@@ -161,6 +161,15 @@ export const sp: Localization = {
   closeButton: {
     ariaLabel: 'Cerrar',
   },
+  dialog: {
+    alertTitle: 'Aviso',
+    confirmTitle: 'Confirmación',
+    promptTitle: 'Entrada',
+    ok: 'OK',
+    confirm: 'Confirmar',
+    cancel: 'Cancelar',
+    promptPlaceholder: 'Introduce un valor',
+  },
   colorPicker: {
     placeholder: 'Seleccionar color',
     savedColors: 'Colores guardados',

@@ -10,7 +10,12 @@ type ModalRenderProp<T> = T | ((context: ModalContext) => T);
 export interface ModalProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'content'> {
   ref?: React.Ref<HTMLDivElement>;
-  children: ReactElement<{ onClick?: React.MouseEventHandler }>;
+  /**
+   * Trigger element — cloned with an `onClick` that opens the modal, merged
+   * with any `onClick` it already has. Omit it for a fully controlled modal
+   * (open via `openedByDefault`, close via `onClose`), e.g. `DialogProvider`.
+   */
+  children?: ReactElement<{ onClick?: React.MouseEventHandler }>;
   content: ModalRenderProp<ReactElement>;
   openedByDefault?: boolean;
   onClose?: () => void;

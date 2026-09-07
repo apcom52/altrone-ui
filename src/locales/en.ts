@@ -160,6 +160,15 @@ export const en: Localization = {
   closeButton: {
     ariaLabel: 'Close',
   },
+  dialog: {
+    alertTitle: 'Alert',
+    confirmTitle: 'Confirm',
+    promptTitle: 'Prompt',
+    ok: 'OK',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    promptPlaceholder: 'Enter a value',
+  },
   colorPicker: {
     placeholder: 'Pick a color',
     savedColors: 'Saved colors',

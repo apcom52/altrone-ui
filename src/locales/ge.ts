@@ -161,6 +161,15 @@ export const ge: Localization = {
   closeButton: {
     ariaLabel: 'Schließen',
   },
+  dialog: {
+    alertTitle: 'Hinweis',
+    confirmTitle: 'Bestätigung',
+    promptTitle: 'Eingabe',
+    ok: 'OK',
+    confirm: 'Bestätigen',
+    cancel: 'Abbrechen',
+    promptPlaceholder: 'Wert eingeben',
+  },
   colorPicker: {
     placeholder: 'Farbe auswählen',
     savedColors: 'Gespeicherte Farben',

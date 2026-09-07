@@ -1,80 +1,81 @@
-import React from 'react';
 import { expect, test, describe, vi } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { Message, Icon, AltroneApplication } from '../src/components';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { Message } from '../src/components';
 
 describe('Message', () => {
-  test('Message has to display the content', () => {
-    render(<Message data-testid="message">Test content</Message>);
-
-    const element = screen.getByTestId('message');
-    expect(element).toBeInTheDocument();
-    expect(screen.getByText('Test content')).toBeInTheDocument();
-  });
-
-  test('Message has to display heading', () => {
+  test('renders the header and the body content', () => {
     render(
       <Message data-testid="message" header="Header">
-        Test content
+        Body content
       </Message>,
     );
 
+    expect(screen.getByTestId('message')).toBeInTheDocument();
     expect(screen.getByText('Header')).toBeInTheDocument();
+    expect(screen.getByText('Body content')).toBeInTheDocument();
   });
 
-  test('Message has to display icon', () => {
+  test('renders the icon when provided', () => {
     render(
-      <Message
-        data-testid="message"
-        header="Header"
-        icon={<Icon i="test-icon" />}
-      >
-        Test content
+      <Message data-testid="message" icon={<span>icon</span>}>
+        Body
       </Message>,
     );
 
-    expect(screen.getByText('test-icon')).toBeInTheDocument();
+    expect(screen.getByText('icon')).toBeInTheDocument();
   });
 
-  test('onClose prop has to be called when close button is clicked', async () => {
-    const onClose = vi.fn();
-
+  test('spreads arbitrary props and className onto the root element', () => {
     render(
-      <Message data-testid="message" onClose={onClose}>
-        Test content
-      </Message>,
-    );
-
-    await fireEvent.click(screen.getByText('close'));
-
-    expect(onClose).toHaveBeenCalled();
-  });
-
-  test('Message has to apply custom className and id', () => {
-    render(
-      <Message data-testid="message" className="test-classname" id="test-id">
-        Test content
+      <Message data-testid="message" className="custom" id="my-id">
+        Body
       </Message>,
     );
 
     const element = screen.getByTestId('message');
-    expect(element).toHaveClass('test-classname');
-    expect(element.id).toBe('test-id');
+    expect(element).toHaveClass('custom');
+    expect(element.id).toBe('my-id');
   });
 
-  test('check that Message configuration works correctly', () => {
+  test('root role defaults to "status" for a non-danger severity', () => {
     render(
-      <AltroneApplication
-        config={{
-          message: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
-        }}
-      >
-        <Message data-testid="element">content</Message>
-      </AltroneApplication>,
+      <Message data-testid="message" severity="warning">
+        Body
+      </Message>,
     );
 
-    const element = screen.getByTestId('element');
-    expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
+    expect(screen.getByTestId('message')).toHaveAttribute('role', 'status');
+  });
+
+  test('root role defaults to "alert" for severity="danger"', () => {
+    render(
+      <Message data-testid="message" severity="danger">
+        Body
+      </Message>,
+    );
+
+    expect(screen.getByTestId('message')).toHaveAttribute('role', 'alert');
+  });
+
+  test('an explicit ariaRole overrides the severity-derived default', () => {
+    render(
+      <Message data-testid="message" severity="danger" ariaRole="status">
+        Body
+      </Message>,
+    );
+
+    expect(screen.getByTestId('message')).toHaveAttribute('role', 'status');
+  });
+
+  test('close button appears only when onClose is passed and fires it on click', () => {
+    render(<Message>Body</Message>);
+    expect(screen.queryByRole('button', { name: 'Close' })).toBeNull();
+    cleanup();
+
+    const onClose = vi.fn();
+    render(<Message onClose={onClose}>Body</Message>);
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 });

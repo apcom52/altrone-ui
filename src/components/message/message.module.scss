@@ -1,28 +1,42 @@
 @import 'src/global/mixins';
 
 :global([data-altrone-root='true']) {
-  --message-background-color: var(--background-2);
-  --message-border-color: var(--border-1);
-  --message-accent-text-color: var(--accent-12);
   --message-text-color: var(--text-2);
   --message-icon-size: 24px;
-
-  --message-padding: 8px;
   --message-rounding: 24px;
-  --message-border-width: 2px;
 }
 
-.Message {
-  padding: var(--message-padding);
-  background: var(--message-background-color);
-  border-radius: 0 var(--message-rounding) var(--message-rounding) 0;
-  border-left: var(--message-border-width) solid var(--message-border-color);
+/**
+ * Message is a `Box` (shape/material/tone/padding — see box.md). This
+ * stylesheet only carries what Box doesn't own: the banner layout (Box's base
+ * is a centered inline-flex control) and the per-part typography. The
+ * `.Message` compound in the selectors lifts specificity above box.module's
+ * base rules.
+ */
+.Message.Message {
+  --radius-outer: var(--message-rounding);
+
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--l-gap);
+  width: 100%;
+  min-height: 0;
+  text-align: left;
 }
 
 .Icon {
+  flex-shrink: 0;
   height: var(--message-icon-size);
   font-size: var(--message-icon-size);
-  color: var(--message-accent-text-color);
+  color: var(--box-tone-text);
+}
+
+/* Keep the round CloseButton round — the flex row must not stretch it. */
+.Close {
+  flex-shrink: 0;
+  align-self: flex-start;
 }
 
 .Text {
@@ -32,7 +46,7 @@
 }
 
 .Header {
-  color: var(--message-accent-text-color);
+  color: var(--box-tone-text);
   font-weight: var(--text-weight-medium);
   font-size: var(--text-size-4);
   line-height: var(--line-height-4);
@@ -51,32 +65,7 @@
   gap: var(--gap);
 }
 
-.RolePrimary {
-  --message-background-color: var(--accent-2);
-  --message-border-color: var(--accent-6);
-}
-
-.RoleSuccess {
-  --message-background-color: var(--teal-3);
-  --message-border-color: var(--teal-6);
-  --message-accent-text-color: var(--teal-12);
-}
-
-.RoleWarning {
-  --message-background-color: var(--amber-3);
-  --message-border-color: var(--amber-6);
-  --message-accent-text-color: var(--amber-12);
-}
-
-.RoleDanger {
-  --message-background-color: var(--red-3);
-  --message-border-color: var(--red-6);
-  --message-accent-text-color: var(--red-12);
-}
-
-.Compact {
-  border-left: none;
-  border-radius: var(--message-rounding);
+.Compact.Compact {
   align-items: center;
 
   .Content {
@@ -85,6 +74,10 @@
     align-items: center;
     flex: 1;
     flex-wrap: wrap;
+  }
+
+  .Close {
+    align-self: center;
   }
 
   .Text {
