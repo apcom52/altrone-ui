@@ -1,20 +1,15 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { StorybookDecorator } from '../../global/storybook';
+import { useState } from 'react';
+import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
 import { Text } from '../text';
 import { Spoiler } from './Spoiler.tsx';
-import { Checkbox } from 'components/checkbox';
-import { Button } from 'components/button/Button.tsx';
-import { Label } from 'components/label/Label.tsx';
-import { useState } from 'react';
 
 const story: Meta<typeof Spoiler> = {
   title: 'Components/Containers/Spoiler',
   component: Spoiler,
   decorators: [StorybookDecorator],
-  args: {},
-  argTypes: {},
   parameters: {
     chromatic: {
       modes: {
@@ -25,233 +20,217 @@ const story: Meta<typeof Spoiler> = {
   },
 };
 
-// ─── Settings Page ────────────────────────────────────────────────────────────
+export default story;
 
-type AccentColor = 'blue' | 'teal' | 'purple' | 'pink' | 'amber';
-type ThemeMode = 'light' | 'dark' | 'system';
-type PlanTier = 'free' | 'pro' | 'team';
+const Heading = ({ children }: { children: string }) => (
+  <Text block size={7} weight="bold" style={{ marginTop: 8 }}>
+    {children}
+  </Text>
+);
 
-const ACCENT_COLORS: { id: AccentColor; label: string; color: React.ComponentProps<typeof Label>['color'] }[] = [
-  { id: 'blue',   label: 'Blue',   color: 'blue' },
-  { id: 'teal',   label: 'Teal',   color: 'teal' },
-  { id: 'purple', label: 'Purple', color: 'purple' },
-  { id: 'pink',   label: 'Pink',   color: 'pink' },
-  { id: 'amber',  label: 'Amber',  color: 'amber' },
-];
+const Paragraph = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
+    {children}
+  </Text>
+);
 
-const PLAN_CONFIG: Record<PlanTier, { label: string; color: React.ComponentProps<typeof Label>['color']; seats: string; storage: string; price: string }> = {
-  free:  { label: 'Free',  color: 'default', seats: '1 seat',      storage: '1 GB',   price: '$0 / mo' },
-  pro:   { label: 'Pro',   color: 'blue',    seats: '1 seat',      storage: '50 GB',  price: '$12 / mo' },
-  team:  { label: 'Team',  color: 'purple',  seats: 'Up to 25',    storage: '500 GB', price: '$49 / mo' },
+const Prose = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={3} style={{ lineHeight: 1.6 }}>
+    {children}
+  </Text>
+);
+
+// ─── Overview ────────────────────────────────────────────────────────────────
+
+export const Overview: StoryObj<typeof Spoiler> = {
+  name: 'Overview',
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+      <Text block size={9} weight="bold">
+        Spoiler
+      </Text>
+      <Paragraph>
+        <Text code>Spoiler</Text> is an uncontrolled disclosure: a heading that
+        stays visible and a content area that expands and collapses beneath it.
+        The heading is a real <Text code>&lt;button&gt;</Text> with{' '}
+        <Text code>aria-expanded</Text>, and it shows a <Text code>+</Text> when
+        closed, a <Text code>−</Text> when open. Height animates over 200 ms.
+      </Paragraph>
+
+      <Spoiler title="What is altrone-ui?">
+        <Prose>
+          A React component library with a design-token system — spacing,
+          colour, radius and motion all come from CSS custom properties, so
+          components stay visually consistent and theme-aware.
+        </Prose>
+      </Spoiler>
+    </Flex>
+  ),
 };
 
-function SettingRow({ label, description, children }: { label: string; description?: string; children: React.ReactNode }) {
-  return (
-    <Flex align="center" style={{ minHeight: 40 }}>
-      <Flex direction="vertical" gap="xs" style={{ flex: 1, minWidth: 0 }}>
-        <Text size={3} block>{label}</Text>
-        {description && <Text size={2} color="secondary" block>{description}</Text>}
-      </Flex>
-      <div style={{ flexShrink: 0 }}>{children}</div>
+// ─── Open by default ────────────────────────────────────────────────────────
+
+export const OpenByDefault: StoryObj<typeof Spoiler> = {
+  name: 'Open by default',
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+      <Heading>Open by default</Heading>
+      <Paragraph>
+        Pass <Text code>openedByDefault</Text> to render the spoiler expanded on
+        mount. State is still uncontrolled afterwards — the component owns it.
+      </Paragraph>
+
+      <Spoiler title="Installation" openedByDefault>
+        <Prose>
+          Add the package and its peer dependencies, then import styles.
+        </Prose>
+      </Spoiler>
     </Flex>
-  );
-}
+  ),
+};
 
-export const AppSettingsStory: StoryObj<typeof Flex> = {
-  name: 'App Settings',
+// ─── Grouped ────────────────────────────────────────────────────────────────
+
+const FAQ = [
+  {
+    q: 'Can I use it with Next.js?',
+    a: 'Yes. Components are SSR-safe and read no browser APIs during render.',
+  },
+  {
+    q: 'Is it tree-shakeable?',
+    a: 'Yes — the package ships ES modules, so bundlers drop unused components.',
+  },
+  {
+    q: 'How do I change the accent colour?',
+    a: 'Set data-altrone-accent on the application root; every accent token follows.',
+  },
+];
+
+export const Grouped: StoryObj<typeof Spoiler> = {
+  name: 'Grouped',
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+      <Heading>Grouped</Heading>
+      <Paragraph>
+        Adjacent spoilers get a divider and a little top padding between them
+        automatically, so a stack reads as one list — an FAQ, a set of nested
+        settings.
+      </Paragraph>
+
+      <Flex direction="vertical">
+        {FAQ.map(({ q, a }) => (
+          <Spoiler key={q} title={q}>
+            <Prose>{a}</Prose>
+          </Spoiler>
+        ))}
+      </Flex>
+    </Flex>
+  ),
+};
+
+// ─── Toggle callback ────────────────────────────────────────────────────────
+
+const SECTIONS = [
+  { title: 'Appearance', body: 'Theme, accent colour, reduced motion.' },
+  { title: 'Notifications', body: 'Comments, mentions, weekly digest.' },
+  { title: 'Privacy & data', body: 'Usage analytics, crash reports, profile.' },
+  { title: 'Developer', body: 'API keys, debug logging, SDK version.' },
+];
+
+export const ToggleCallback: StoryObj<typeof Spoiler> = {
+  name: 'Toggle callback',
   render: () => {
-    // Appearance
-    const [theme, setTheme] = useState<ThemeMode>('system');
-    const [accent, setAccent] = useState<AccentColor>('blue');
-    const [reduceMotion, setReduceMotion] = useState(false);
-    const [compactMode, setCompactMode] = useState(false);
-
-    // Notifications
-    const [notifyComments, setNotifyComments] = useState(true);
-    const [notifyMentions, setNotifyMentions] = useState(true);
-    const [notifyDigest, setNotifyDigest] = useState(false);
-    const [notifyPush, setNotifyPush] = useState(false);
-
-    // Privacy
-    const [analytics, setAnalytics] = useState(true);
-    const [errorReporting, setErrorReporting] = useState(true);
-    const [publicProfile, setPublicProfile] = useState(false);
-
-    // Billing
-    const [plan] = useState<PlanTier>('pro');
-
-    // Developer
-    const [debugMode, setDebugMode] = useState(false);
-    const [showApiKey, setShowApiKey] = useState(false);
-
-    // Track expanded
-    const [expandedCount, setExpandedCount] = useState(1);
-    const handleToggle = (opened: boolean) =>
-      setExpandedCount((n) => opened ? n + 1 : n - 1);
-
-    const planInfo = PLAN_CONFIG[plan];
+    const [openCount, setOpenCount] = useState(1);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
-        <Flex direction="vertical" gap="xs">
-          <Text size={5} weight="bold" block>Settings</Text>
-          <Text color="secondary" block>
-            {expandedCount} section{expandedCount !== 1 ? 's' : ''} expanded
-          </Text>
-        </Flex>
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+        <Heading>Toggle callback</Heading>
+        <Paragraph>
+          <Text code>onToggle(opened, event)</Text> fires after each toggle;{' '}
+          <Text code>opened</Text> is the state the spoiler is moving to. Here
+          it keeps a running count of open sections.
+        </Paragraph>
 
-        <Flex direction="vertical" gap="s">
+        <Text block size={3} color="muted">
+          {openCount} section{openCount === 1 ? '' : 's'} open
+        </Text>
 
-          {/* ── Appearance ── */}
-          <Spoiler title="Appearance" openedByDefault onToggle={handleToggle}>
-            <Flex direction="vertical" gap="m">
-              <SettingRow label="Theme">
-                <Flex gap="xs">
-                  {(['light', 'dark', 'system'] as ThemeMode[]).map((t) => (
-                    <Button
-                      key={t}
-                      size="s"
-                      label={t.charAt(0).toUpperCase() + t.slice(1)}
-                      selected={theme === t}
-                      onClick={() => setTheme(t)}
-                    />
-                  ))}
-                </Flex>
-              </SettingRow>
-
-              <SettingRow label="Accent color">
-                <Flex gap="xs">
-                  {ACCENT_COLORS.map(({ id, label, color }) => (
-                    <Label
-                      key={id}
-                      color={color}
-                      variant={accent === id ? 'solid' : 'soft'}
-                      size="s"
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => setAccent(id)}
-                    >
-                      {label}
-                    </Label>
-                  ))}
-                </Flex>
-              </SettingRow>
-
-              <SettingRow
-                label="Reduce motion"
-                description="Disable animations across the interface"
-              >
-                <Checkbox checked={reduceMotion} onChange={setReduceMotion} />
-              </SettingRow>
-
-              <SettingRow
-                label="Compact mode"
-                description="Decrease spacing and component sizes"
-              >
-                <Checkbox checked={compactMode} onChange={setCompactMode} />
-              </SettingRow>
-            </Flex>
-          </Spoiler>
-
-          {/* ── Notifications ── */}
-          <Spoiler title="Notifications" onToggle={handleToggle}>
-            <Flex direction="vertical" gap="m">
-              <SettingRow label="New comments" description="Notify when someone comments on your work">
-                <Checkbox checked={notifyComments} onChange={setNotifyComments} />
-              </SettingRow>
-              <SettingRow label="Mentions" description="Notify when you're mentioned in a thread">
-                <Checkbox checked={notifyMentions} onChange={setNotifyMentions} />
-              </SettingRow>
-              <SettingRow label="Weekly digest" description="Summary of activity sent every Monday">
-                <Checkbox checked={notifyDigest} onChange={setNotifyDigest} />
-              </SettingRow>
-              <SettingRow label="Push notifications" description="Browser and mobile push alerts">
-                <Checkbox checked={notifyPush} onChange={setNotifyPush} />
-              </SettingRow>
-            </Flex>
-          </Spoiler>
-
-          {/* ── Privacy ── */}
-          <Spoiler title="Privacy & Data" onToggle={handleToggle}>
-            <Flex direction="vertical" gap="m">
-              <SettingRow
-                label="Usage analytics"
-                description="Help improve the product by sharing anonymous usage data"
-              >
-                <Checkbox checked={analytics} onChange={setAnalytics} />
-              </SettingRow>
-              <SettingRow
-                label="Crash reports"
-                description="Automatically send error reports to our team"
-              >
-                <Checkbox checked={errorReporting} onChange={setErrorReporting} />
-              </SettingRow>
-              <SettingRow
-                label="Public profile"
-                description="Allow others to find your profile by name or email"
-              >
-                <Checkbox checked={publicProfile} onChange={setPublicProfile} />
-              </SettingRow>
-              <Button size="s" label="Download my data" />
-            </Flex>
-          </Spoiler>
-
-          {/* ── Billing ── */}
-          <Spoiler title="Plan & Billing" onToggle={handleToggle}>
-            <Flex direction="vertical" gap="m">
-              <SettingRow label="Current plan">
-                <Label color={planInfo.color} variant="soft">{planInfo.label}</Label>
-              </SettingRow>
-              <SettingRow label="Seats">
-                <Text size={3}>{planInfo.seats}</Text>
-              </SettingRow>
-              <SettingRow label="Storage">
-                <Text size={3}>{planInfo.storage}</Text>
-              </SettingRow>
-              <SettingRow label="Price">
-                <Text size={3} weight="bold">{planInfo.price}</Text>
-              </SettingRow>
-              <Flex gap="s">
-                <Button size="s" label="Upgrade to Team" />
-                <Button size="s" label="Manage subscription" />
-              </Flex>
-            </Flex>
-          </Spoiler>
-
-          {/* ── Developer ── */}
-          <Spoiler title="Developer" onToggle={handleToggle}>
-            <Flex direction="vertical" gap="m">
-              <SettingRow label="API key">
-                <Flex gap="xs" align="center">
-                  <Label variant="soft" color="default" size="s">
-                    {showApiKey ? 'sk-live-xK9mP2qR4nL7wT1' : 'sk-live-••••••••••••••••'}
-                  </Label>
-                  <Button
-                    size="s"
-                    label={showApiKey ? 'Hide' : 'Reveal'}
-                    onClick={() => setShowApiKey((v) => !v)}
-                  />
-                </Flex>
-              </SettingRow>
-              <SettingRow
-                label="Debug mode"
-                description="Log component renders and context updates to console"
-              >
-                <Checkbox checked={debugMode} onChange={setDebugMode} />
-              </SettingRow>
-              <SettingRow label="SDK version">
-                <Label variant="soft" color="teal" size="s">v3.14.2</Label>
-              </SettingRow>
-              <Flex gap="s">
-                <Button size="s" label="Regenerate API key" />
-                <Button size="s" label="View docs" />
-              </Flex>
-            </Flex>
-          </Spoiler>
-
+        <Flex direction="vertical">
+          {SECTIONS.map(({ title, body }, i) => (
+            <Spoiler
+              key={title}
+              title={title}
+              openedByDefault={i === 0}
+              onToggle={(opened) =>
+                setOpenCount((n) => (opened ? n + 1 : n - 1))
+              }
+            >
+              <Prose>{body}</Prose>
+            </Spoiler>
+          ))}
         </Flex>
       </Flex>
     );
   },
 };
 
-export default story;
+// ─── Rich heading and content ──────────────────────────────────────────────
+
+export const RichContent: StoryObj<typeof Spoiler> = {
+  name: 'Rich heading and content',
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+      <Heading>Rich heading and content</Heading>
+      <Paragraph>
+        <Text code>title</Text> takes any node, not just a string — pair a label
+        with a count or a status. The content area is a plain container; put
+        whatever layout you need inside.
+      </Paragraph>
+
+      <Spoiler
+        title={
+          <Flex gap="s" align="center" justify="between">
+            <Text weight="bold">Attachments</Text>
+            <Text size={2} color="muted">
+              3 files
+            </Text>
+          </Flex>
+        }
+        openedByDefault
+      >
+        <Flex direction="vertical" gap="s">
+          {['design-spec.pdf', 'screenshot.png', 'notes.md'].map((file) => (
+            <Text key={file} size={3}>
+              {file}
+            </Text>
+          ))}
+        </Flex>
+      </Spoiler>
+    </Flex>
+  ),
+};
+
+// ─── Accessibility ─────────────────────────────────────────────────────────
+
+export const Accessibility: StoryObj<typeof Spoiler> = {
+  name: 'Accessibility',
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+      <Heading>Accessibility</Heading>
+      <Paragraph>
+        The heading is a native <Text code>&lt;button&gt;</Text>, so it&rsquo;s
+        focusable and toggles on <Text code>Enter</Text> and{' '}
+        <Text code>Space</Text> with no extra handlers. It exposes{' '}
+        <Text code>aria-expanded</Text> and <Text code>aria-controls</Text>{' '}
+        pointing at the content region; the <Text code>+</Text> /{' '}
+        <Text code>−</Text> icon is <Text code>aria-hidden</Text> since the
+        state is already announced. Focus shows a{' '}
+        <Text code>:focus-visible</Text> ring only.
+      </Paragraph>
+
+      <Spoiler title="Keyboard: focus me and press Enter">
+        <Prose>Toggled entirely from the keyboard.</Prose>
+      </Spoiler>
+    </Flex>
+  ),
+};

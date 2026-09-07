@@ -3,6 +3,7 @@
   --spoiler-border-color: var(--border-1);
   --spoiler-text-size: var(--text-size-3);
   --spoiler-heading-line-height: 32px;
+  --spoiler-icon-size: 18px;
 }
 
 .Spoiler {
@@ -18,18 +19,25 @@
 }
 
 .Heading {
+  appearance: none;
+  width: 100%;
+  margin: 0;
+  padding: 0 var(--gap);
+  border: 0;
+  background: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--gap);
   color: var(--spoiler-text-color);
   cursor: pointer;
   transition:
     background-color 0.2s ease,
     color 0.2s ease;
+  font: inherit;
   font-size: var(--spoiler-text-size);
   font-weight: var(--text-weight-bold);
   line-height: var(--spoiler-heading-line-height);
+  text-align: left;
   user-select: none;
 
   &:focus {
@@ -43,14 +51,29 @@
   }
 }
 
+.Title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .ArrowIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: inherit;
+  flex-shrink: 0;
+
+  svg {
+    width: var(--spoiler-icon-size);
+    height: var(--spoiler-icon-size);
+  }
 }
 
+/* Only the collapsing wrapper — no padding here, or it would pop in/out as the
+   height animates. The padding lives on .ContentInner, which keeps a stable box. */
 .Content {
-  padding: var(--gap);
   overflow: hidden;
+}
+
+.ContentInner {
+  padding: var(--gap);
 }
