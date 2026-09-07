@@ -1,85 +1,88 @@
-import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { AltroneApplication, Progress } from '../src/components';
-
-class ResizeObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
-}
-
-beforeAll(() => {
-  // @ts-ignore
-  window.ResizeObserver = ResizeObserver;
-});
+import { Progress } from '../src/components';
 
 describe('Progress', () => {
-  test('need to show progress', () => {
-    render(
-      <>
-        <Progress data-testid="progress" value={15} max={100} />
-        <Progress data-testid="progress2" value={15} max={30} />
-      </>,
-    );
+  test('defaults the label to the rounded fill percentage', () => {
+    render(<Progress data-testid="progress" value={15} max={30} />);
 
-    expect(screen.queryByTestId('progress')).toBeInTheDocument();
+    const bar = screen.getByTestId('progress');
+    expect(bar).toBeInTheDocument();
     expect(screen.getByText('50%')).toBeInTheDocument();
-    expect(screen.getByText('15%')).toBeInTheDocument();
+    expect(bar).toHaveAttribute('role', 'progressbar');
+    expect(bar).toHaveAttribute('aria-valuenow', '15');
+    expect(bar).toHaveAttribute('aria-valuemin', '0');
+    expect(bar).toHaveAttribute('aria-valuemax', '30');
   });
 
-  test('need to render custom labels', () => {
+  test('renders a string label and a render-function label', () => {
     render(
       <>
         <Progress value={15} max={100}>
-          Progress with label
+          Uploading
         </Progress>
-        <Progress value={15} max={30}>
-          {({ value, max, percentage }) => (
-            <div>{`${value}-${max}-${percentage}`}</div>
+        <Progress value={15} min={5} max={25}>
+          {({ value, min, max, percentage }) => (
+            <span>{`${value}-${min}-${max}-${percentage}`}</span>
           )}
         </Progress>
       </>,
     );
 
-    expect(screen.getByText('Progress with label')).toBeInTheDocument();
-    expect(screen.getByText('15-30-50')).toBeInTheDocument();
+    expect(screen.getByText('Uploading')).toBeInTheDocument();
+    /* (15 - 5) / (25 - 5) = 50% */
+    expect(screen.getByText('15-5-25-50')).toBeInTheDocument();
   });
 
-  test('Progress has to apply custom className and id', () => {
+  test('a string label becomes the accessible name', () => {
+    render(
+      <Progress data-testid="progress" value={40}>
+        Downloading update
+      </Progress>,
+    );
+
+    expect(screen.getByTestId('progress')).toHaveAttribute(
+      'aria-label',
+      'Downloading update',
+    );
+  });
+
+  test('respects a non-zero min for the fill and ARIA', () => {
+    render(<Progress data-testid="progress" value={150} min={100} max={200} />);
+
+    const bar = screen.getByTestId('progress');
+    expect(bar).toHaveAttribute('aria-valuemin', '100');
+    expect(bar).toHaveAttribute('aria-valuenow', '150');
+    expect(screen.getByText('50%')).toBeInTheDocument();
+  });
+
+  test('clamps an out-of-range value in the label and aria-valuenow', () => {
+    render(<Progress data-testid="progress" value={250} max={100} />);
+
+    const bar = screen.getByTestId('progress');
+    expect(screen.getByText('100%')).toBeInTheDocument();
+    expect(bar).toHaveAttribute('aria-valuenow', '100');
+  });
+
+  test('does not divide by zero when min === max', () => {
+    render(<Progress data-testid="progress" value={5} min={10} max={10} />);
+
+    /* span collapses to 0 — guard keeps the percentage a real number (0). */
+    expect(screen.getByText('0%')).toBeInTheDocument();
+  });
+
+  test('applies custom className and forwards arbitrary props', () => {
     render(
       <Progress
         data-testid="progress"
         value={10}
-        max={100}
         className="cls"
-        style={{ color: 'red' }}
+        id="my-progress"
       />,
     );
 
-    expect(screen.getByTestId('progress')).toHaveClass('cls');
-    expect(screen.getByTestId('progress')).toHaveStyle('color: rgb(255, 0, 0)');
-  });
-
-  test('check that Progress configuration works correctly', () => {
-    render(
-      <AltroneApplication
-        config={{
-          progress: {
-            className: 'cls',
-            style: { color: 'rgb(0, 0, 255)' },
-            activeSegmentClassName: 'activeCls',
-          },
-        }}
-      >
-        <Progress data-testid="progress" value={10} max={100} />
-      </AltroneApplication>,
-    );
-
-    expect(screen.getByTestId('progress')).toHaveClass('cls');
-    expect(screen.getByTestId('progress')).toHaveStyle('color: rgb(0, 0, 255)');
-    expect(
-      screen.getByTestId('progress').querySelector('.activeCls'),
-    ).toBeInTheDocument();
+    const bar = screen.getByTestId('progress');
+    expect(bar).toHaveClass('cls');
+    expect(bar.id).toBe('my-progress');
   });
 });

@@ -1,35 +1,20 @@
-import { memo } from 'react';
+import { Ref } from 'react';
 import { TagsProps } from './Tags.types.ts';
-import clsx from 'clsx';
 import { Flex } from '../flex';
 import { Item } from './components/Item.tsx';
 
-const Tags = memo<TagsProps>(
-  ({ children, className, style, ref, ...props }) => {
-    const cls = clsx(className);
-
-    const styles = {
-      ...style,
-    };
-
-    return (
-      <Flex
-        ref={ref}
-        className={cls}
-        style={styles}
-        direction="horizontal"
-        gap="m"
-        {...props}
-        wrap
-      >
-        {children}
-      </Flex>
-    );
-  },
+const TagsBase = ({ ref, children, className, style, ...props }: TagsProps) => (
+  <Flex
+    ref={ref as Ref<HTMLElement>}
+    className={className}
+    style={style}
+    direction="horizontal"
+    gap="m"
+    wrap
+    {...props}
+  >
+    {children}
+  </Flex>
 );
 
-const TagsNamespace = Object.assign(Tags, {
-  Item,
-});
-
-export { TagsNamespace as Tags };
+export const Tags = Object.assign(TagsBase, { Item });

@@ -4,13 +4,21 @@
 }
 
 .Item {
-  font-size: var(--text-size-3);
-  font-weight: var(--text-weight-medium);
-  line-height: var(--text-line-height-3);
   color: var(--tags-item-text-color);
-  transition: color 0.2s linear;
+  font-size: var(--text-size-4);
+  line-height: var(--line-height-4);
+  font-weight: var(--text-weight-medium);
   text-decoration: none;
+}
+
+.Interactive {
   cursor: pointer;
+  transition: color 0.2s linear;
+
+  &:focus-visible {
+    /* The colour shift + underline below is the focus indicator; drop the UA outline. */
+    outline: none;
+  }
 
   &:hover,
   &:focus-visible {

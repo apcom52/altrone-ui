@@ -1,13 +1,16 @@
-import React from 'react';
+import { AnchorHTMLAttributes, HTMLAttributes, ReactNode, Ref } from 'react';
 
-export interface TagsProps extends React.HTMLAttributes<HTMLDivElement> {
-  ref?: React.Ref<HTMLDivElement>;
+export interface TagsProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
 }
 
-export interface TagsItemProps
-  extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'children'> {
+export interface TagsItemProps extends Omit<
+  AnchorHTMLAttributes<HTMLElement>,
+  'children'
+> {
   label: string;
-  ref?: React.Ref<HTMLAnchorElement>;
+  ref?: Ref<HTMLElement>;
+  /** Merge the tag styling onto a single child element (Slot). Use for router links. */
   asChild?: boolean;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
