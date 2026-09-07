@@ -1,9 +1,10 @@
+export { Toast } from './Toast';
 export { useToast } from './Toast.context';
 export type {
   ToastOptions,
   NotificationOptions,
   ToastVariant,
-  ToastItemPosition,
+  ToastPlacement,
   ToastAction,
   NotificationAction,
 } from './Toast.types';

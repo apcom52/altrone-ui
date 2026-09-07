@@ -1,0 +1,141 @@
+/* `.Slot` is the `layout` (reflow) wrapper, `.Item` the enter/exit wrapper;
+   `.Toast` / `.Notification` sit on the inner `Box`, alongside its own `.Box`
+   class. The doubled selectors lift specificity above `.Box` / `.MaterialPlate`
+   for the layout and fill overrides. */
+
+.Slot {
+  display: flex;
+  max-width: 100%;
+  pointer-events: auto;
+}
+
+.Item {
+  display: flex;
+  max-width: 100%;
+}
+
+// ─── Toast pill ──────────────────────────────────────────────────────────────
+
+.Toast.Toast {
+  /* plate's frosted fill is see-through over page content — opaque it up */
+  --box-fill: var(--toast-surface);
+
+  gap: 4px;
+  max-width: var(--toast-max-width);
+  color: var(--text-2);
+  font-size: var(--text-size-3);
+  line-height: var(--line-height-3);
+  cursor: default;
+}
+
+.Icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  background-color: var(--interactive-a1);
+  border-radius: 50%;
+}
+
+.Icon_default {
+  color: var(--toast-default-icon-color);
+}
+.Icon_success {
+  color: var(--toast-success-icon-color);
+}
+.Icon_warning {
+  color: var(--toast-warning-icon-color);
+}
+.Icon_danger {
+  color: var(--toast-danger-icon-color);
+}
+
+.Message {
+  flex: 1;
+  padding: 0 4px;
+  font-weight: var(--text-weight-medium);
+}
+
+.Action {
+  flex-shrink: 0;
+}
+
+.Close {
+  flex-shrink: 0;
+}
+
+// ─── Notification card ───────────────────────────────────────────────────────
+
+.Notification.Notification {
+  --box-fill: var(--toast-surface);
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  width: var(--notification-width);
+  overflow: hidden;
+  color: var(--text-2);
+}
+
+.Image {
+  width: 100%;
+  height: var(--notification-image-height);
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.NotificationClose {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
+.Body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-stack);
+  padding: var(--space-content);
+}
+
+.Header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-inline);
+  padding-right: 28px; // room for the close button
+}
+
+.NotificationIcon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  color: var(--text-2);
+  background-color: var(--interactive-a1);
+  border-radius: 50%;
+}
+
+.Title {
+  font-size: var(--text-size-4);
+  font-weight: var(--text-weight-bold);
+  line-height: var(--line-height-4);
+  color: var(--text-1);
+}
+
+.Content {
+  font-size: var(--text-size-3);
+  line-height: var(--line-height-3);
+}
+
+.Actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-inline);
+  margin-top: 4px;
+}

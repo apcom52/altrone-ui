@@ -1,8 +1,9 @@
 :global([data-altrone-root='true']) {
-  --toast-background-color: var(--glass-background-color);
-  --toast-border-color: var(--border-a1);
-  --toast-text-color: var(--text-2);
-  --toast-border-radius: 100px;
+  --toast-max-width: 420px;
+
+  /* Cards float over live page content with no scrim, so the surface is
+     opaque — the frosted `plate` fill alone reads as see-through here. */
+  --toast-surface: var(--gray-1);
 
   --toast-default-icon-color: var(--text-2);
   --toast-success-icon-color: var(--teal-9);
@@ -10,7 +11,6 @@
   --toast-danger-icon-color: var(--red-9);
 
   --notification-width: 320px;
-  --notification-border-radius: 20px;
   --notification-image-height: 140px;
 }
 
@@ -23,37 +23,39 @@
   pointer-events: none;
 }
 
-// ─── Position containers ──────────────────────────────────────────────────────
+// ─── Stacks ───────────────────────────────────────────────────────────────────
 
-.Container {
+.Stack {
   position: absolute;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 16px;
+  gap: var(--space-stack);
+  padding: var(--space-content);
   pointer-events: none;
 
-  &.Top {
+  &.Start {
     top: 0;
   }
 
-  &.Bottom {
+  &.End {
     bottom: 0;
   }
+}
 
-  &.Left {
+.ToastStack {
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+
+.NotificationStack {
+  &.SideStart {
     left: 0;
     align-items: flex-start;
   }
 
-  &.Right {
+  &.SideEnd {
     right: 0;
     align-items: flex-end;
-  }
-
-  &.Center {
-    left: 50%;
-    transform: translateX(-50%);
-    align-items: center;
   }
 }

@@ -161,6 +161,9 @@ export const sp: Localization = {
   closeButton: {
     ariaLabel: 'Cerrar',
   },
+  toast: {
+    regionLabel: 'Notificaciones',
+  },
   dialog: {
     alertTitle: 'Aviso',
     confirmTitle: 'Confirmación',

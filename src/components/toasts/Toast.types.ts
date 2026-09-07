@@ -2,13 +2,12 @@ import React from 'react';
 
 export type ToastVariant = 'default' | 'success' | 'warning' | 'danger';
 
-export type ToastItemPosition =
-  | 'top'
-  | 'bottom'
-  | 'top-left'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-right';
+/**
+ * Logical placement, resolved against the writing direction:
+ * - vertical (`toastPlacement` / `notificationPlacement`): `start` = top, `end` = bottom
+ * - horizontal (`notificationSide`): `start` = left, `end` = right
+ */
+export type ToastPlacement = 'start' | 'end';
 
 export interface ToastAction {
   label: string;
@@ -37,8 +36,6 @@ export interface ToastOptions {
   duration?: number;
   /** Whether to auto-close. Defaults to true. */
   autoClose?: boolean;
-  /** Vertical position on screen. Defaults to 'bottom'. */
-  position?: 'top' | 'bottom';
 }
 
 export interface NotificationOptions {
@@ -52,8 +49,6 @@ export interface NotificationOptions {
   icon?: React.ReactNode;
   /** List of action buttons shown at the bottom. */
   actions?: NotificationAction[];
-  /** Position on screen. Defaults to 'bottom-right'. */
-  position?: ToastItemPosition;
   /** Auto-close delay in ms. Defaults to 6000. */
   duration?: number;
   /** Whether to auto-close. Defaults to true. */
@@ -71,7 +66,6 @@ export interface ToastItem {
   action?: ToastAction;
   duration: number;
   autoClose: boolean;
-  position: ToastItemPosition;
 }
 
 export interface NotificationItem {
@@ -82,7 +76,6 @@ export interface NotificationItem {
   image?: string;
   icon?: React.ReactNode;
   actions?: NotificationAction[];
-  position: ToastItemPosition;
   duration: number;
   autoClose: boolean;
 }
@@ -102,4 +95,10 @@ export interface ToastContextType {
 
 export interface ToastsProviderProps {
   children: React.ReactNode;
+  /** Vertical placement of the toast stack (centred horizontally). Defaults to 'end' (bottom). */
+  toastPlacement?: ToastPlacement;
+  /** Horizontal side of the notification stack. Defaults to 'end' (right). */
+  notificationSide?: ToastPlacement;
+  /** Vertical placement of the notification stack. Defaults to 'end' (bottom). */
+  notificationPlacement?: ToastPlacement;
 }

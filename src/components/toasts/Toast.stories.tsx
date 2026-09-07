@@ -1,1208 +1,646 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Avatar, Button, CloseButton, Flex, Text } from 'components';
-import { StorybookDecorator } from 'global/storybook';
-import { useState, type ReactNode } from 'react';
+import { useState } from 'react';
 import {
-  AlertTriangle,
   Bell,
-  Check,
-  CheckCircle2,
+  Cookie,
   Download,
-  GitBranch,
   GitPullRequest,
   ImageIcon,
-  Mail,
   MessageCircle,
   RefreshCw,
-  Rocket,
-  Shield,
+  ShieldCheck,
+  SlidersHorizontal,
   Trash2,
-  Upload,
-  UserPlus,
-  X,
-  Zap,
 } from 'lucide-react';
-import { Toast } from './Toast.tsx';
+import { Button, Flex, Select, Switcher, Text } from 'components';
+import { StorybookDecorator } from 'global/storybook';
+import { allModes } from '../../../.storybook/modes.ts';
+import { Toast } from './Toast';
 import { useToast } from './Toast.context';
-import type { ToastItemPosition, ToastVariant } from './Toast.types';
+import type { ToastPlacement, ToastVariant } from './Toast.types';
 
 const story: Meta<typeof Toast> = {
-  title: 'Components/Display/Toast',
+  title: 'Components/Display/Notifications',
   component: Toast,
   decorators: [StorybookDecorator],
-};
-
-// ─── Toast messages story ─────────────────────────────────────────────────────
-
-export const ToastMessagesStory: StoryObj<typeof Flex> = {
-  name: 'Toast messages',
-  render: () => {
-    const { toast } = useToast();
-    const [position, setPosition] = useState<'top' | 'bottom'>('bottom');
-
-    const variants: {
-      variant: ToastVariant;
-      label: string;
-      message: string;
-    }[] = [
-      {
-        variant: 'default',
-        label: 'Default',
-        message: '3 items moved to archive.',
+  parameters: {
+    chromatic: {
+      modes: {
+        light: allModes['light desktop'],
+        dark: allModes['dark desktop'],
       },
-      {
-        variant: 'success',
-        label: 'Success',
-        message: 'File uploaded successfully.',
-      },
-      {
-        variant: 'warning',
-        label: 'Warning',
-        message: 'Unsaved changes will be lost.',
-      },
-      {
-        variant: 'danger',
-        label: 'Danger',
-        message: 'Failed to connect. Check your network.',
-      },
-    ];
-
-    return (
-      <Flex direction="vertical" gap="xl" style={{ maxWidth: 560 }}>
-        <Flex direction="vertical" gap="s">
-          <Text size={5} weight="bold" block>
-            Toast messages
-          </Text>
-          <Text color="muted" block>
-            Simple pill-shaped messages, ideal for quick feedback. Appear at the
-            top or bottom centre of the screen.
-          </Text>
-        </Flex>
-
-        {/* Position toggle */}
-        <Flex direction="horizontal" gap="m" align="center">
-          <Text size={3} color="muted">
-            Position:
-          </Text>
-          {(['top', 'bottom'] as const).map((pos) => (
-            <Button
-              key={pos}
-              label={pos}
-              size="s"
-              onClick={() => setPosition(pos)}
-            />
-          ))}
-          <Text size={3} weight="medium">
-            {position}
-          </Text>
-        </Flex>
-
-        {/* Variants */}
-        <Flex direction="vertical" gap="m">
-          <Text size={4} weight="bold" block>
-            Variants
-          </Text>
-          <Flex direction="horizontal" gap="m" wrap>
-            {variants.map(({ variant, label, message }) => (
-              <Button
-                key={variant}
-                size="s"
-                label={label}
-                onClick={() => toast(message, { variant, position })}
-              />
-            ))}
-          </Flex>
-        </Flex>
-
-        {/* With action */}
-        <Flex direction="vertical" gap="m">
-          <Text size={4} weight="bold" block>
-            With action button
-          </Text>
-          <Flex direction="horizontal" gap="m" wrap>
-            <Button
-              size="s"
-              label="Delete file"
-              onClick={() =>
-                toast('Report.pdf deleted.', {
-                  variant: 'danger',
-                  position,
-                  action: {
-                    label: 'Undo',
-                    onClick: () =>
-                      toast('Deletion undone.', {
-                        variant: 'success',
-                        position,
-                      }),
-                  },
-                })
-              }
-            />
-            <Button
-              size="s"
-              label="Update available"
-              onClick={() =>
-                toast('A new version is ready to install.', {
-                  position,
-                  action: {
-                    label: 'Install now',
-                    onClick: () => toast('Installing update…', { position }),
-                  },
-                })
-              }
-            />
-            <Button
-              size="s"
-              label="Upload complete"
-              onClick={() =>
-                toast('design-v3.fig uploaded to shared drive.', {
-                  variant: 'success',
-                  position,
-                  icon: <Upload size={15} />,
-                  action: {
-                    label: 'View file',
-                    onClick: () => {},
-                  },
-                })
-              }
-            />
-          </Flex>
-        </Flex>
-
-        {/* Custom icon / no icon */}
-        <Flex direction="vertical" gap="m">
-          <Text size={4} weight="bold" block>
-            Custom icon / no icon
-          </Text>
-          <Flex direction="horizontal" gap="m" wrap>
-            <Button
-              size="s"
-              label="Custom icon"
-              onClick={() =>
-                toast('Pull request #142 merged.', {
-                  position,
-                  icon: <GitPullRequest size={15} />,
-                })
-              }
-            />
-            <Button
-              size="s"
-              label="No icon"
-              onClick={() => toast('Settings saved.', { position, icon: null })}
-            />
-          </Flex>
-        </Flex>
-
-        {/* Auto-close off */}
-        <Flex direction="vertical" gap="m">
-          <Text size={4} weight="bold" block>
-            Persistent (autoClose: false)
-          </Text>
-          <Flex direction="horizontal" gap="m">
-            <Button
-              size="s"
-              label="Show persistent"
-              onClick={() =>
-                toast('Sync in progress — do not close the window.', {
-                  position,
-                  icon: <Download size={15} />,
-                  autoClose: false,
-                })
-              }
-            />
-          </Flex>
-        </Flex>
-      </Flex>
-    );
-  },
-};
-
-// ─── Notifications story ──────────────────────────────────────────────────────
-
-const POSITIONS: { label: string; value: ToastItemPosition }[] = [
-  { label: 'Top', value: 'top' },
-  { label: 'Bottom', value: 'bottom' },
-  { label: 'Top left', value: 'top-left' },
-  { label: 'Top right', value: 'top-right' },
-  { label: 'Bottom left', value: 'bottom-left' },
-  { label: 'Bottom right', value: 'bottom-right' },
-];
-
-export const NotificationsStory: StoryObj<typeof Flex> = {
-  name: 'Notifications',
-  render: () => {
-    const { notification } = useToast();
-    const [position, setPosition] = useState<ToastItemPosition>('bottom-right');
-
-    return (
-      <Flex direction="vertical" gap="xl" style={{ maxWidth: 580 }}>
-        <Flex direction="vertical" gap="s">
-          <Text size={5} weight="bold" block>
-            Notifications
-          </Text>
-          <Text color="muted" block>
-            Rich notification cards with optional title, image, icon, and action
-            buttons. Can be placed at any corner or at the centre top / bottom.
-          </Text>
-        </Flex>
-
-        {/* Position selector */}
-        <Flex direction="vertical" gap="s">
-          <Text size={3} color="muted">
-            Position:
-          </Text>
-          <Flex direction="horizontal" gap="m" wrap>
-            {POSITIONS.map((p) => (
-              <Button
-                key={p.value}
-                size="s"
-                label={p.label}
-                onClick={() => setPosition(p.value)}
-              />
-            ))}
-            <Text size={3} weight="medium" style={{ alignSelf: 'center' }}>
-              {position}
-            </Text>
-          </Flex>
-        </Flex>
-
-        {/* Basic */}
-        <Flex direction="vertical" gap="m">
-          <Text size={4} weight="bold" block>
-            Basic
-          </Text>
-          <Flex direction="horizontal" gap="m" wrap>
-            <Button
-              size="s"
-              label="Content only"
-              onClick={() =>
-                notification({
-                  content: 'Your session will expire in 5 minutes.',
-                  position,
-                })
-              }
-            />
-            <Button
-              size="s"
-              label="With title"
-              onClick={() =>
-                notification({
-                  title: 'Session expiring',
-                  content:
-                    'Your session will expire in 5 minutes. Save your work.',
-                  position,
-                })
-              }
-            />
-          </Flex>
-        </Flex>
-
-        {/* With icon */}
-        <Flex direction="vertical" gap="m">
-          <Text size={4} weight="bold" block>
-            With icon
-          </Text>
-          <Flex direction="horizontal" gap="m" wrap>
-            <Button
-              size="s"
-              label="New message"
-              onClick={() =>
-                notification({
-                  title: 'New message from Alex',
-                  content: 'Hey, are you free for a quick call at 3 pm today?',
-                  icon: <MessageCircle size={16} />,
-                  position,
-                })
-              }
-            />
-            <Button
-              size="s"
-              label="PR review"
-              onClick={() =>
-                notification({
-                  title: 'Review requested',
-                  content:
-                    'Petra Park requested your review on PR #142 — Remove lodash.',
-                  icon: <GitPullRequest size={16} />,
-                  position,
-                  duration: 8000,
-                })
-              }
-            />
-            <Button
-              size="s"
-              label="New email"
-              onClick={() =>
-                notification({
-                  title: 'Unread emails',
-                  content: 'You have 3 unread messages in your inbox.',
-                  icon: <Mail size={16} />,
-                  position,
-                })
-              }
-            />
-          </Flex>
-        </Flex>
-
-        {/* With actions */}
-        <Flex direction="vertical" gap="m">
-          <Text size={4} weight="bold" block>
-            With action buttons
-          </Text>
-          <Flex direction="horizontal" gap="m" wrap>
-            <Button
-              size="s"
-              label="Confirm delete"
-              onClick={() =>
-                notification({
-                  title: 'Delete project?',
-                  content:
-                    'This will permanently remove Nebula Platform and all its data. This action cannot be undone.',
-                  icon: <Trash2 size={16} />,
-                  position,
-                  autoClose: false,
-                  actions: [
-                    {
-                      label: 'Cancel',
-                      onClick: () => {},
-                    },
-                    {
-                      label: 'Delete',
-                      danger: true,
-                      onClick: () =>
-                        notification({
-                          content: 'Project deleted.',
-                          position,
-                        }),
-                    },
-                  ],
-                })
-              }
-            />
-            <Button
-              size="s"
-              label="Software update"
-              onClick={() =>
-                notification({
-                  title: 'Update available — v3.1.0',
-                  content:
-                    'Bug fixes, performance improvements, and new components.',
-                  icon: <Bell size={16} />,
-                  position,
-                  actions: [
-                    {
-                      label: 'Later',
-                      onClick: () => {},
-                    },
-                    {
-                      label: 'Install now',
-                      onClick: () =>
-                        notification({
-                          content: 'Installing v3.1.0…',
-                          position,
-                        }),
-                    },
-                  ],
-                })
-              }
-            />
-          </Flex>
-        </Flex>
-
-        {/* With image */}
-        <Flex direction="vertical" gap="m">
-          <Text size={4} weight="bold" block>
-            With header image
-          </Text>
-          <Flex direction="horizontal" gap="m" wrap>
-            <Button
-              size="s"
-              label="Photo uploaded"
-              onClick={() =>
-                notification({
-                  title: 'Photo ready',
-                  content:
-                    'Your export has been processed and is ready to download.',
-                  image:
-                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=640&q=80',
-                  icon: <ImageIcon size={16} />,
-                  position,
-                  actions: [
-                    {
-                      label: 'Download',
-                      onClick: () => {},
-                    },
-                  ],
-                })
-              }
-            />
-          </Flex>
-        </Flex>
-
-        {/* Persistent */}
-        <Flex direction="vertical" gap="m">
-          <Text size={4} weight="bold" block>
-            Persistent (autoClose: false)
-          </Text>
-          <Flex direction="horizontal" gap="m">
-            <Button
-              size="s"
-              label="Show persistent"
-              onClick={() =>
-                notification({
-                  title: 'Background sync',
-                  content: 'Syncing your workspace. This may take a moment.',
-                  icon: <Download size={16} />,
-                  position,
-                  autoClose: false,
-                })
-              }
-            />
-          </Flex>
-        </Flex>
-      </Flex>
-    );
-  },
-};
-
-// ─── App demo story ───────────────────────────────────────────────────────────
-
-type InboxItemType = 'message' | 'review' | 'task' | 'system' | 'alert';
-
-interface InboxItem {
-  id: number;
-  type: InboxItemType;
-  author?: { firstName: string; lastName: string };
-  title: string;
-  preview: string;
-  time: string;
-  read: boolean;
-}
-
-const INITIAL_INBOX: InboxItem[] = [
-  {
-    id: 1,
-    type: 'message',
-    author: { firstName: 'Maya', lastName: 'Reed' },
-    title: 'Maya Reed mentioned you',
-    preview:
-      '@you can you double-check the OAuth redirect URI? Something looks off in staging.',
-    time: '2m ago',
-    read: false,
-  },
-  {
-    id: 2,
-    type: 'review',
-    author: { firstName: 'Petra', lastName: 'Park' },
-    title: 'PR #142 — Remove lodash',
-    preview: 'Petra Park requested your review. 4 files changed, +312 −890.',
-    time: '18m ago',
-    read: false,
-  },
-  {
-    id: 3,
-    type: 'system',
-    author: undefined,
-    title: 'Staging deployed — v3.2.1',
-    preview:
-      'Build succeeded in 2m 14s. 0 errors, 2 warnings. Branch: feat/billing.',
-    time: '34m ago',
-    read: false,
-  },
-  {
-    id: 4,
-    type: 'task',
-    author: { firstName: 'Alex', lastName: 'Kim' },
-    title: 'Task completed by Alex Kim',
-    preview: '"Migrate auth service to OAuth 2.0" marked as done.',
-    time: '1h ago',
-    read: true,
-  },
-  {
-    id: 5,
-    type: 'alert',
-    author: undefined,
-    title: 'High memory usage — prod-worker-3',
-    preview:
-      'Worker pod reached 87% memory. Consider scaling or investigating leaks.',
-    time: '2h ago',
-    read: true,
-  },
-  {
-    id: 6,
-    type: 'message',
-    author: { firstName: 'Dan', lastName: 'Sousa' },
-    title: 'Dan Sousa replied to you',
-    preview:
-      'Pushed a fix — the pooling config was using the wrong max_connections value.',
-    time: '3h ago',
-    read: true,
-  },
-  {
-    id: 7,
-    type: 'review',
-    author: { firstName: 'Maya', lastName: 'Reed' },
-    title: 'PR #138 — Onboarding flow',
-    preview: 'Maya Reed approved your pull request. Ready to merge.',
-    time: '5h ago',
-    read: true,
-  },
-];
-
-const TYPE_ICONS: Record<InboxItemType, ReactNode> = {
-  message: <MessageCircle size={14} />,
-  review: <GitPullRequest size={14} />,
-  task: <CheckCircle2 size={14} />,
-  system: <Rocket size={14} />,
-  alert: <AlertTriangle size={14} />,
-};
-
-const TYPE_COLORS: Record<InboxItemType, string> = {
-  message: 'var(--accent-9)',
-  review: 'var(--purple-9)',
-  task: 'var(--teal-9)',
-  system: 'var(--blue-9)',
-  alert: 'var(--amber-9)',
-};
-
-type TabFilter = 'all' | 'messages' | 'reviews' | 'system';
-
-const TAB_FILTERS: Record<TabFilter, (item: InboxItem) => boolean> = {
-  all: () => true,
-  messages: (item) => item.type === 'message',
-  reviews: (item) => item.type === 'review',
-  system: (item) => item.type === 'system' || item.type === 'alert',
-};
-
-export const AppDemoStory: StoryObj<typeof Flex> = {
-  name: 'App demo — Inbox & events',
-  render: () => {
-    const { toast, notification } = useToast();
-    const [items, setItems] = useState<InboxItem[]>(INITIAL_INBOX);
-    const [tab, setTab] = useState<TabFilter>('all');
-
-    const unread = items.filter((i) => !i.read).length;
-    const visible = items.filter(TAB_FILTERS[tab]);
-
-    const markRead = (id: number) =>
-      setItems((prev) =>
-        prev.map((i) => (i.id === id ? { ...i, read: true } : i)),
-      );
-
-    const removeItem = (id: number, label: string) => {
-      setItems((prev) => prev.filter((i) => i.id !== id));
-      const removedItem = items.find((i) => i.id === id);
-      toast(`"${label}" dismissed.`, {
-        variant: 'default',
-        position: 'bottom',
-        action: {
-          label: 'Undo',
-          onClick: () => {
-            if (removedItem) {
-              setItems((prev) => {
-                const idx = INITIAL_INBOX.findIndex((i) => i.id === id);
-                const next = [...prev];
-                next.splice(idx, 0, removedItem);
-                return next;
-              });
-              toast('Item restored.', {
-                variant: 'success',
-                position: 'bottom',
-              });
-            }
-          },
-        },
-      });
-    };
-
-    const archiveAll = () => {
-      const count = items.filter((i) => !i.read).length;
-      if (count === 0) {
-        toast('Nothing to archive — all caught up.', {
-          variant: 'default',
-          position: 'bottom',
-          icon: <Check size={15} />,
-        });
-        return;
-      }
-      const snapshot = [...items];
-      setItems([]);
-      toast(`${count} item${count !== 1 ? 's' : ''} archived.`, {
-        position: 'bottom',
-        action: {
-          label: 'Undo',
-          onClick: () => {
-            setItems(snapshot);
-            toast('Inbox restored.', {
-              variant: 'success',
-              position: 'bottom',
-            });
-          },
-        },
-      });
-    };
-
-    return (
-      <Flex
-        direction="horizontal"
-        gap="xl"
-        style={{ maxWidth: 900, minHeight: 600 }}
-      >
-        {/* ── Left: Inbox ─────────────────────────────────────────── */}
-        <Flex direction="vertical" gap="l" style={{ flex: 1, minWidth: 0 }}>
-          {/* Header */}
-          <Flex direction="horizontal" align="center" gap="m">
-            <Flex direction="vertical" gap="xxs" style={{ flex: 1 }}>
-              <Flex direction="horizontal" align="center" gap="s">
-                <Text size={6} weight="bold">
-                  Inbox
-                </Text>
-                {unread > 0 && (
-                  <span
-                    style={{
-                      background: 'var(--accent-9)',
-                      color: 'var(--white)',
-                      borderRadius: 10,
-                      fontSize: 11,
-                      fontWeight: 700,
-                      padding: '1px 7px',
-                      lineHeight: '18px',
-                    }}
-                  >
-                    {unread}
-                  </span>
-                )}
-              </Flex>
-              <Text size={3} color="muted">
-                Nebula Platform
-              </Text>
-            </Flex>
-            <Button size="s" label="Archive all" onClick={archiveAll} />
-          </Flex>
-
-          {/* Filter tabs */}
-          <Flex
-            direction="horizontal"
-            gap="s"
-            style={{
-              borderBottom: '1px solid var(--border-1)',
-              paddingBottom: 8,
-            }}
-          >
-            {(
-              [
-                { key: 'all', label: 'All' },
-                { key: 'messages', label: 'Messages' },
-                { key: 'reviews', label: 'Reviews' },
-                { key: 'system', label: 'System' },
-              ] as { key: TabFilter; label: string }[]
-            ).map(({ key, label }) => (
-              <Button key={key} onClick={() => setTab(key)} label={label} />
-            ))}
-          </Flex>
-
-          {/* Item list */}
-          <Flex direction="vertical" gap="s">
-            {visible.length === 0 && (
-              <Flex
-                direction="vertical"
-                align="center"
-                gap="s"
-                style={{ padding: '40px 0' }}
-              >
-                <CheckCircle2 size={32} color="var(--text-3)" />
-                <Text color="muted" size={3}>
-                  All caught up
-                </Text>
-              </Flex>
-            )}
-
-            {visible.map((item) => (
-              <div
-                key={item.id}
-                onClick={() => markRead(item.id)}
-                style={{
-                  padding: '12px 14px',
-                  borderRadius: 14,
-                  border: `1px solid ${item.read ? 'var(--border-1)' : 'var(--accent-5)'}`,
-                  background: item.read
-                    ? 'var(--background-2)'
-                    : 'var(--accent-2)',
-                  cursor: 'default',
-                  transition: 'border-color 0.15s',
-                }}
-              >
-                <Flex direction="horizontal" gap="m" align="flex-start">
-                  {/* Avatar or icon */}
-                  <div style={{ flexShrink: 0, marginTop: 2 }}>
-                    {item.author ? (
-                      <Avatar
-                        size="s"
-                        firstName={item.author.firstName}
-                        lastName={item.author.lastName}
-                      />
-                    ) : (
-                      <div
-                        style={{
-                          width: 28,
-                          height: 28,
-                          borderRadius: '50%',
-                          background: 'var(--interactive-a2)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: TYPE_COLORS[item.type],
-                        }}
-                      >
-                        {TYPE_ICONS[item.type]}
-                      </div>
-                    )}
-                  </div>
-
-                  <Flex
-                    direction="vertical"
-                    gap="xxs"
-                    style={{ flex: 1, minWidth: 0 }}
-                  >
-                    <Flex direction="horizontal" align="center" gap="s">
-                      <Text
-                        size={3}
-                        weight={item.read ? 'regular' : 'bold'}
-                        truncate
-                        style={{ flex: 1 }}
-                      >
-                        {item.title}
-                      </Text>
-                      {!item.read && (
-                        <div
-                          style={{
-                            width: 7,
-                            height: 7,
-                            borderRadius: '50%',
-                            background: 'var(--accent-9)',
-                            flexShrink: 0,
-                          }}
-                        />
-                      )}
-                      <Text size={2} color="muted" style={{ flexShrink: 0 }}>
-                        {item.time}
-                      </Text>
-                    </Flex>
-                    <Text size={3} color="muted" truncate>
-                      {item.preview}
-                    </Text>
-
-                    {/* Actions */}
-                    <Flex
-                      direction="horizontal"
-                      gap="s"
-                      style={{ marginTop: 6 }}
-                    >
-                      {item.type === 'message' && (
-                        <Button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            markRead(item.id);
-                            toast('Reply sent.', {
-                              variant: 'success',
-                              position: 'bottom',
-                              icon: <Mail size={15} />,
-                            });
-                          }}
-                          label="Reply"
-                        />
-                      )}
-                      {item.type === 'review' && (
-                        <>
-                          <Button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              markRead(item.id);
-                              toast('PR approved.', {
-                                variant: 'success',
-                                position: 'bottom',
-                                icon: <Check size={15} />,
-                              });
-                            }}
-                            label="Review"
-                          />
-                          <Button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              markRead(item.id);
-                              toast('Review submitted — changes requested.', {
-                                variant: 'warning',
-                                position: 'bottom',
-                              });
-                            }}
-                            label="Request changes"
-                          />
-                        </>
-                      )}
-                      {item.type === 'alert' && (
-                        <Button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            markRead(item.id);
-                            toast('Acknowledged. Monitoring continued.', {
-                              variant: 'warning',
-                              position: 'bottom',
-                            });
-                          }}
-                          label="Acknowledge"
-                        />
-                      )}
-                      <CloseButton
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          removeItem(item.id, item.title);
-                        }}
-                      />
-                    </Flex>
-                  </Flex>
-                </Flex>
-              </div>
-            ))}
-          </Flex>
-        </Flex>
-
-        {/* ── Right: Event simulator ─────────────────────────────── */}
-        <Flex
-          direction="vertical"
-          gap="l"
-          style={{
-            width: 260,
-            flexShrink: 0,
-            borderLeft: '1px solid var(--border-1)',
-            paddingLeft: 24,
-          }}
-        >
-          <Flex direction="vertical" gap="xxs">
-            <Text size={4} weight="bold">
-              Simulate events
-            </Text>
-            <Text size={3} color="muted">
-              Trigger incoming notifications
-            </Text>
-          </Flex>
-
-          {/* People events */}
-          <Flex direction="vertical" gap="s">
-            <Text
-              size={2}
-              color="muted"
-              weight="bold"
-              style={{ textTransform: 'uppercase', letterSpacing: '0.06em' }}
-            >
-              People
-            </Text>
-            <Button
-              size="s"
-              label="New direct message"
-              onClick={() =>
-                notification({
-                  title: 'Alex Kim',
-                  content:
-                    'Can you jump on a quick call? Need to walk through the billing flow.',
-                  icon: <MessageCircle size={16} />,
-                  position: 'top-right',
-                  actions: [
-                    {
-                      label: 'Reply',
-                      onClick: () =>
-                        toast('Reply sent.', {
-                          variant: 'success',
-                          position: 'bottom',
-                        }),
-                    },
-                  ],
-                })
-              }
-            />
-            <Button
-              size="s"
-              label="Team invite"
-              onClick={() =>
-                notification({
-                  title: 'You have been invited',
-                  content:
-                    'Maya Reed invited you to join the Design team in Nebula Platform.',
-                  icon: <UserPlus size={16} />,
-                  position: 'top-right',
-                  autoClose: false,
-                  actions: [
-                    {
-                      label: 'Decline',
-                      danger: true,
-                      onClick: () =>
-                        toast('Invite declined.', {
-                          variant: 'warning',
-                          position: 'bottom',
-                        }),
-                    },
-                    {
-                      label: 'Accept',
-                      onClick: () =>
-                        toast('Welcome to the Design team!', {
-                          variant: 'success',
-                          position: 'bottom',
-                        }),
-                    },
-                  ],
-                })
-              }
-            />
-            <Button
-              size="s"
-              label="PR review request"
-              onClick={() =>
-                notification({
-                  title: 'Review requested',
-                  content:
-                    'Petra Park needs your review on PR #148 — Add dark mode tokens.',
-                  icon: <GitPullRequest size={16} />,
-                  position: 'top-right',
-                  actions: [
-                    {
-                      label: 'Open PR',
-                      onClick: () =>
-                        toast('Opening in browser…', { position: 'bottom' }),
-                    },
-                  ],
-                })
-              }
-            />
-            <Button
-              size="s"
-              label="Mention in thread"
-              onClick={() =>
-                notification({
-                  title: 'Dan Sousa mentioned you',
-                  content:
-                    '@you take a look at the connection pooling thread, left a summary.',
-                  icon: <Bell size={16} />,
-                  position: 'top-right',
-                })
-              }
-            />
-          </Flex>
-
-          {/* System events */}
-          <Flex direction="vertical" gap="s">
-            <Text
-              size={2}
-              color="muted"
-              weight="bold"
-              style={{ textTransform: 'uppercase', letterSpacing: '0.06em' }}
-            >
-              System
-            </Text>
-            <Button
-              size="s"
-              label="Deploy succeeded"
-              onClick={() =>
-                notification({
-                  title: 'Production deployed',
-                  content: 'v3.2.2 is live. Build time 1m 58s, 0 errors.',
-                  image:
-                    'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=640&q=70',
-                  icon: <Rocket size={16} />,
-                  position: 'bottom-right',
-                  actions: [{ label: 'View logs', onClick: () => {} }],
-                })
-              }
-            />
-            <Button
-              size="s"
-              label="Build failed"
-              onClick={() =>
-                notification({
-                  title: 'Build failed — feat/billing',
-                  content:
-                    'TypeScript error in src/billing/stripe.ts:142. Push a fix to retry.',
-                  icon: <GitBranch size={16} />,
-                  position: 'bottom-right',
-                  autoClose: false,
-                  actions: [
-                    {
-                      label: 'View error',
-                      onClick: () =>
-                        toast('Opening build log…', { position: 'bottom' }),
-                    },
-                  ],
-                })
-              }
-            />
-            <Button
-              size="s"
-              label="Sync complete"
-              onClick={() =>
-                toast('Workspace synced — all changes saved.', {
-                  variant: 'success',
-                  position: 'bottom',
-                  icon: <RefreshCw size={15} />,
-                })
-              }
-            />
-            <Button
-              size="s"
-              label="API rate limit"
-              onClick={() =>
-                toast('GitHub API rate limit reached. Retry in 58 seconds.', {
-                  variant: 'warning',
-                  position: 'bottom',
-                  action: {
-                    label: 'Retry now',
-                    onClick: () =>
-                      toast('Retrying…', {
-                        position: 'bottom',
-                        icon: <RefreshCw size={15} />,
-                      }),
-                  },
-                })
-              }
-            />
-            <Button
-              size="s"
-              label="Critical error"
-              onClick={() =>
-                toast('Payment webhook failed — transaction not recorded.', {
-                  variant: 'danger',
-                  position: 'bottom',
-                  autoClose: false,
-                  action: {
-                    label: 'Investigate',
-                    onClick: () => {},
-                  },
-                })
-              }
-            />
-          </Flex>
-
-          {/* Security */}
-          <Flex direction="vertical" gap="s">
-            <Text
-              size={2}
-              color="muted"
-              weight="bold"
-              style={{ textTransform: 'uppercase', letterSpacing: '0.06em' }}
-            >
-              Security
-            </Text>
-            <Button
-              size="s"
-              label="New login detected"
-              onClick={() =>
-                notification({
-                  title: 'New sign-in from Berlin, DE',
-                  content:
-                    'Chrome on macOS · April 1, 2026 at 14:32. Not you? Secure your account.',
-                  icon: <Shield size={16} />,
-                  position: 'top-left',
-                  autoClose: false,
-                  actions: [
-                    {
-                      label: "That's me",
-                      onClick: () =>
-                        toast('Login confirmed.', {
-                          variant: 'success',
-                          position: 'bottom',
-                        }),
-                    },
-                    {
-                      label: 'Secure account',
-                      danger: true,
-                      onClick: () =>
-                        toast('Sending account recovery email…', {
-                          variant: 'warning',
-                          position: 'bottom',
-                        }),
-                    },
-                  ],
-                })
-              }
-            />
-            <Button
-              size="s"
-              label="Dependency CVE"
-              onClick={() =>
-                notification({
-                  title: 'Critical vulnerability detected',
-                  content:
-                    'CVE-2025-1337 in lodash@4.17.20. Update to ≥4.17.22 immediately.',
-                  icon: <AlertTriangle size={16} />,
-                  position: 'top-left',
-                  autoClose: false,
-                  actions: [
-                    {
-                      label: 'Update now',
-                      onClick: () =>
-                        toast('Running npm update…', {
-                          variant: 'warning',
-                          position: 'bottom',
-                          icon: <Zap size={15} />,
-                        }),
-                    },
-                  ],
-                })
-              }
-            />
-          </Flex>
-
-          {/* Files */}
-          <Flex direction="vertical" gap="s">
-            <Text
-              size={2}
-              color="muted"
-              weight="bold"
-              style={{ textTransform: 'uppercase', letterSpacing: '0.06em' }}
-            >
-              Files
-            </Text>
-            <Button
-              size="s"
-              label="Export ready"
-              onClick={() =>
-                notification({
-                  title: 'Export complete',
-                  content: 'dashboard-report-Q2.pdf is ready — 4.2 MB.',
-                  image:
-                    'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=640&q=70',
-                  icon: <Download size={16} />,
-                  position: 'bottom-right',
-                  actions: [
-                    {
-                      label: 'Download',
-                      onClick: () =>
-                        toast('Downloading…', {
-                          position: 'bottom',
-                          icon: <Download size={15} />,
-                        }),
-                    },
-                  ],
-                })
-              }
-            />
-            <Button
-              size="s"
-              label="Large upload complete"
-              onClick={() =>
-                toast('design-system-v3.fig uploaded — 248 MB.', {
-                  variant: 'success',
-                  position: 'bottom',
-                  icon: <Upload size={15} />,
-                  action: {
-                    label: 'View file',
-                    onClick: () => {},
-                  },
-                })
-              }
-            />
-          </Flex>
-        </Flex>
-      </Flex>
-    );
+    },
   },
 };
 
 export default story;
+
+const Section = ({ children }: { children: string }) => (
+  <Text block size={6} weight="bold" style={{ marginTop: 8 }}>
+    {children}
+  </Text>
+);
+
+const Paragraph = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={4} style={{ maxWidth: 660, lineHeight: 1.6 }}>
+    {children}
+  </Text>
+);
+
+const VARIANTS: ToastVariant[] = ['default', 'success', 'warning', 'danger'];
+
+const LONG_TEXT =
+  'This message is intentionally long, to check that the card wraps its text, keeps the close button reachable, and holds its max width without shoving the action button off-screen.';
+
+// ─── Overview ────────────────────────────────────────────────────────────────
+
+export const Overview: StoryObj<typeof Toast> = {
+  name: 'Overview',
+  render: () => {
+    const { toast, notification } = useToast();
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={9} weight="bold">
+          Toast
+        </Text>
+        <Paragraph>
+          One imperative notification system with two display modes. Call{' '}
+          <Text code>useToast()</Text> for <Text code>toast()</Text> — a brief,
+          pill-shaped message — and <Text code>notification()</Text> — a rich
+          card with an optional title, image, icon and action buttons. Both
+          return an <Text code>id</Text> you can pass to <Text code>dismiss()</Text>.
+        </Paragraph>
+        <Paragraph>
+          Both modes render on a <Text code>Box</Text> with{' '}
+          <Text code>material=&quot;plate&quot;</Text> and{' '}
+          <Text code>elevation=&quot;toast&quot;</Text>, so the surface, radius
+          and shadow match the rest of the library. Entrance and exit are a{' '}
+          <Text code>motion</Text> spring — there is no third-party toast
+          dependency. Auto-close pauses while the pointer is over a card and
+          resumes on leave.
+        </Paragraph>
+        <Paragraph>
+          <Text code>AltroneApplication</Text> already mounts the provider, so in
+          an app you only ever call the hook. Placement is set once, globally —
+          see the <Text weight="medium">Placement</Text> story.
+        </Paragraph>
+
+        <Flex direction="horizontal" gap="s" wrap>
+          <Button
+            size="s"
+            label="Show a toast"
+            onClick={() =>
+              toast('Changes saved.', { variant: 'success' })
+            }
+          />
+          <Button
+            size="s"
+            label="Show a notification"
+            onClick={() =>
+              notification({
+                title: 'New message from Alex',
+                content: 'Are you free for a quick call at 3 pm today?',
+                icon: <MessageCircle size={16} />,
+                actions: [{ label: 'Reply', onClick: () => {} }],
+              })
+            }
+          />
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
+// ─── Toast messages ──────────────────────────────────────────────────────────
+
+export const ToastMessages: StoryObj<typeof Toast> = {
+  name: 'Toast messages',
+  render: () => {
+    const { toast } = useToast();
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Section>Toast messages</Section>
+        <Paragraph>
+          A toast confirms that something happened — a file saved, an item
+          archived, a request sent. It is short, non-blocking, and disappears on
+          its own after <Text code>duration</Text> (4 s by default). Keep the
+          message to one line; if the user must decide something, use a
+          notification instead.
+        </Paragraph>
+
+        <Text block size={4} weight="bold">
+          Variants
+        </Text>
+        <Paragraph>
+          Four variants, each with its own default icon. The icon sits in a
+          tinted circular chip; <Text code>default</Text> is neutral,{' '}
+          <Text code>success</Text> / <Text code>warning</Text> /{' '}
+          <Text code>danger</Text> pick up the matching status colour.
+        </Paragraph>
+        <Flex direction="horizontal" gap="s" wrap>
+          {VARIANTS.map((variant) => (
+            <Button
+              key={variant}
+              size="s"
+              label={variant}
+              onClick={() =>
+                toast(
+                  {
+                    default: '3 items moved to archive.',
+                    success: 'File uploaded successfully.',
+                    warning: 'Unsaved changes will be lost.',
+                    danger: 'Failed to connect. Check your network.',
+                  }[variant],
+                  { variant },
+                )
+              }
+            />
+          ))}
+        </Flex>
+
+        <Text block size={4} weight="bold">
+          Icon
+        </Text>
+        <Paragraph>
+          Omit <Text code>icon</Text> for the variant default, pass a node to
+          override it, or pass <Text code>null</Text> to drop it entirely.
+        </Paragraph>
+        <Flex direction="horizontal" gap="s" wrap>
+          <Button
+            size="s"
+            label="Custom icon"
+            onClick={() =>
+              toast('Pull request #142 merged.', {
+                icon: <GitPullRequest size={15} />,
+              })
+            }
+          />
+          <Button
+            size="s"
+            label="No icon"
+            onClick={() => toast('Settings saved.', { icon: null })}
+          />
+        </Flex>
+
+        <Text block size={4} weight="bold">
+          Action
+        </Text>
+        <Paragraph>
+          A single <Text code>action</Text> button lives inside the pill — most
+          often an <Text weight="medium">Undo</Text>. Clicking it runs the
+          callback and closes the toast.
+        </Paragraph>
+        <Flex direction="horizontal" gap="s" wrap>
+          <Button
+            size="s"
+            label="Delete file"
+            onClick={() =>
+              toast('Report.pdf deleted.', {
+                variant: 'danger',
+                action: {
+                  label: 'Undo',
+                  onClick: () =>
+                    toast('Deletion undone.', { variant: 'success' }),
+                },
+              })
+            }
+          />
+          <Button
+            size="s"
+            label="Long message"
+            onClick={() =>
+              toast(LONG_TEXT, {
+                action: { label: 'View', onClick: () => {} },
+              })
+            }
+          />
+        </Flex>
+
+        <Text block size={4} weight="bold">
+          Duration and persistence
+        </Text>
+        <Paragraph>
+          Auto-close pauses while the pointer hovers the toast, so a short{' '}
+          <Text code>duration</Text> is still readable. Set{' '}
+          <Text code>autoClose: false</Text> for a toast that stays until the
+          user (or <Text code>dismiss()</Text>) closes it — use this sparingly,
+          for ongoing background work.
+        </Paragraph>
+        <Flex direction="horizontal" gap="s" wrap>
+          <Button
+            size="s"
+            label="1 s — hover to hold"
+            onClick={() =>
+              toast('Hover me before I disappear.', { duration: 1000 })
+            }
+          />
+          <Button
+            size="s"
+            label="Persistent"
+            onClick={() =>
+              toast('Sync in progress — do not close the window.', {
+                icon: <Download size={15} />,
+                autoClose: false,
+              })
+            }
+          />
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
+// ─── Notifications ───────────────────────────────────────────────────────────
+
+export const Notifications: StoryObj<typeof Toast> = {
+  name: 'Notifications',
+  render: () => {
+    const { notification } = useToast();
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Section>Notifications</Section>
+        <Paragraph>
+          A notification is a card for something the user may want to read or act
+          on — an incoming message, a review request, a finished export, a
+          security alert. <Text code>content</Text> is the only required option;{' '}
+          <Text code>title</Text>, <Text code>icon</Text>, <Text code>image</Text>{' '}
+          and <Text code>actions</Text> are each optional.
+        </Paragraph>
+
+        <Text block size={4} weight="bold">
+          Content, title and icon
+        </Text>
+        <Paragraph>
+          With just <Text code>content</Text> the card is a single paragraph.
+          Add a <Text code>title</Text> for a headline and an{' '}
+          <Text code>icon</Text> to signal the source at a glance.
+        </Paragraph>
+        <Flex direction="horizontal" gap="s" wrap>
+          <Button
+            size="s"
+            label="Content only"
+            onClick={() =>
+              notification({
+                content: 'Your session will expire in 5 minutes.',
+              })
+            }
+          />
+          <Button
+            size="s"
+            label="Title + icon"
+            onClick={() =>
+              notification({
+                title: 'Review requested',
+                content:
+                  'Petra Park asked for your review on PR #142 — Remove lodash.',
+                icon: <GitPullRequest size={16} />,
+              })
+            }
+          />
+        </Flex>
+
+        <Text block size={4} weight="bold">
+          Actions
+        </Text>
+        <Paragraph>
+          Up to a few <Text code>actions</Text> render as buttons at the foot of
+          the card; each runs its callback and then closes the card. Mark a
+          destructive one with <Text code>danger</Text>. A card that asks a
+          question should set <Text code>autoClose: false</Text> so it waits for
+          an answer.
+        </Paragraph>
+        <Flex direction="horizontal" gap="s" wrap>
+          <Button
+            size="s"
+            label="Confirm delete"
+            onClick={() =>
+              notification({
+                title: 'Delete project?',
+                content:
+                  'This permanently removes Nebula Platform and all its data.',
+                icon: <Trash2 size={16} />,
+                autoClose: false,
+                actions: [
+                  { label: 'Cancel', onClick: () => {} },
+                  {
+                    label: 'Delete',
+                    danger: true,
+                    onClick: () =>
+                      notification({ content: 'Project deleted.' }),
+                  },
+                ],
+              })
+            }
+          />
+          <Button
+            size="s"
+            label="Update available"
+            onClick={() =>
+              notification({
+                title: 'Update available — v3.1.0',
+                content:
+                  'Bug fixes, performance improvements, and new components.',
+                icon: <Bell size={16} />,
+                actions: [
+                  { label: 'Later', onClick: () => {} },
+                  { label: 'Install', onClick: () => {} },
+                ],
+              })
+            }
+          />
+        </Flex>
+
+        <Text block size={4} weight="bold">
+          Header image and long content
+        </Text>
+        <Paragraph>
+          An <Text code>image</Text> renders full-bleed across the top of the
+          card, clipped to its corners. Long <Text code>content</Text> wraps and
+          the card grows to fit.
+        </Paragraph>
+        <Flex direction="horizontal" gap="s" wrap>
+          <Button
+            size="s"
+            label="With image"
+            onClick={() =>
+              notification({
+                title: 'Export ready',
+                content: 'dashboard-report-Q2.pdf is ready — 4.2 MB.',
+                image:
+                  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=640&q=80',
+                icon: <ImageIcon size={16} />,
+                actions: [{ label: 'Download', onClick: () => {} }],
+              })
+            }
+          />
+          <Button
+            size="s"
+            label="Long content"
+            onClick={() =>
+              notification({
+                title: 'New sign-in from Berlin, DE',
+                content: LONG_TEXT,
+                icon: <ShieldCheck size={16} />,
+                autoClose: false,
+                actions: [
+                  { label: "That's me", onClick: () => {} },
+                  { label: 'Secure account', danger: true, onClick: () => {} },
+                ],
+              })
+            }
+          />
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
+// ─── Placement ───────────────────────────────────────────────────────────────
+
+const PLACEMENT_OPTIONS = [
+  { label: 'start', value: 'start' },
+  { label: 'end', value: 'end' },
+];
+
+const PlacementDemo = () => {
+  const { toast, notification } = useToast();
+  return (
+    <Flex direction="horizontal" gap="s" wrap>
+      <Button
+        size="s"
+        label="Toast"
+        onClick={() => toast('Workspace synced.', { variant: 'success' })}
+      />
+      <Button
+        size="s"
+        label="Notification"
+        onClick={() =>
+          notification({
+            title: 'Deploy succeeded',
+            content: 'v3.2.2 is live. Build time 1 m 58 s.',
+            icon: <RefreshCw size={16} />,
+          })
+        }
+      />
+    </Flex>
+  );
+};
+
+export const Placement: StoryObj<typeof Toast> = {
+  name: 'Placement',
+  render: () => {
+    const [toastPlacement, setToastPlacement] = useState<ToastPlacement>('end');
+    const [notificationSide, setNotificationSide] =
+      useState<ToastPlacement>('end');
+    const [notificationPlacement, setNotificationPlacement] =
+      useState<ToastPlacement>('end');
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Section>Placement</Section>
+        <Paragraph>
+          Placement is app-wide, not per call. Set it on{' '}
+          <Text code>
+            &lt;AltroneApplication toastPlacement notificationSide
+            notificationPlacement&gt;
+          </Text>{' '}
+          (each also accepted directly on <Text code>&lt;Toast&gt;</Text>). Every
+          value is logical — <Text code>&apos;start&apos;</Text> /{' '}
+          <Text code>&apos;end&apos;</Text> — and resolves against the writing
+          direction.
+        </Paragraph>
+        <Text size={4} list="marked" style={{ maxWidth: 660, lineHeight: 1.6 }}>
+          <Text item>
+            <Text code>toastPlacement</Text> — vertical edge of the toast stack:{' '}
+            <Text code>start</Text> = top, <Text code>end</Text> = bottom. Toasts
+            are always centred horizontally.
+          </Text>
+          <Text item>
+            <Text code>notificationSide</Text> — horizontal edge of the
+            notification stack: <Text code>start</Text> = left,{' '}
+            <Text code>end</Text> = right.
+          </Text>
+          <Text item>
+            <Text code>notificationPlacement</Text> — vertical edge of the
+            notification stack.
+          </Text>
+        </Text>
+        <Paragraph>
+          There is exactly one toast stack and one notification stack; the props
+          only move them. Newer cards stack toward the earlier ones from the
+          chosen edge.
+        </Paragraph>
+
+        <Flex direction="horizontal" gap="l" wrap>
+          <Flex direction="vertical" gap="xs" style={{ width: 200 }}>
+            <Text size={3} weight="medium">
+              toastPlacement
+            </Text>
+            <Select
+              size="s"
+              value={toastPlacement}
+              options={PLACEMENT_OPTIONS}
+              onChange={(value) =>
+                setToastPlacement(value === 'start' ? 'start' : 'end')
+              }
+            />
+          </Flex>
+          <Flex direction="vertical" gap="xs" style={{ width: 200 }}>
+            <Text size={3} weight="medium">
+              notificationSide
+            </Text>
+            <Select
+              size="s"
+              value={notificationSide}
+              options={PLACEMENT_OPTIONS}
+              onChange={(value) =>
+                setNotificationSide(value === 'start' ? 'start' : 'end')
+              }
+            />
+          </Flex>
+          <Flex direction="vertical" gap="xs" style={{ width: 200 }}>
+            <Text size={3} weight="medium">
+              notificationPlacement
+            </Text>
+            <Select
+              size="s"
+              value={notificationPlacement}
+              options={PLACEMENT_OPTIONS}
+              onChange={(value) =>
+                setNotificationPlacement(value === 'start' ? 'start' : 'end')
+              }
+            />
+          </Flex>
+        </Flex>
+
+        <Toast
+          toastPlacement={toastPlacement}
+          notificationSide={notificationSide}
+          notificationPlacement={notificationPlacement}
+        >
+          <PlacementDemo />
+        </Toast>
+      </Flex>
+    );
+  },
+};
+
+// ─── Cookie consent ─────────────────────────────────────────────────────────
+
+const CookiePreferencesForm = ({ onDone }: { onDone: () => void }) => {
+  const { toast } = useToast();
+  const [analytics, setAnalytics] = useState(false);
+  const [marketing, setMarketing] = useState(false);
+
+  return (
+    <Flex direction="vertical" gap="m">
+      <Flex direction="vertical" gap="s">
+        <Switcher checked disabled>
+          Strictly necessary — always on
+        </Switcher>
+        <Switcher
+          checked={analytics}
+          onChange={(checked) => setAnalytics(checked)}
+        >
+          Analytics
+        </Switcher>
+        <Switcher
+          checked={marketing}
+          onChange={(checked) => setMarketing(checked)}
+        >
+          Marketing
+        </Switcher>
+      </Flex>
+      <Flex direction="horizontal" gap="s">
+        <Button size="s" label="Cancel" onClick={onDone} />
+        <Button
+          size="s"
+          label="Save choices"
+          onClick={() => {
+            toast(
+              `Saved — analytics ${analytics ? 'on' : 'off'}, marketing ${
+                marketing ? 'on' : 'off'
+              }.`,
+              { variant: 'success' },
+            );
+            onDone();
+          }}
+        />
+      </Flex>
+    </Flex>
+  );
+};
+
+const CookieConsentDemo = () => {
+  const { toast, notification, dismiss } = useToast();
+
+  const openPreferences = () => {
+    const id = notification({
+      title: 'Cookie preferences',
+      icon: <SlidersHorizontal size={16} />,
+      autoClose: false,
+      content: <CookiePreferencesForm onDone={() => dismiss(id)} />,
+    });
+  };
+
+  const showBanner = () => {
+    notification({
+      title: 'We value your privacy',
+      icon: <Cookie size={16} />,
+      autoClose: false,
+      content:
+        'We use cookies to run the site, measure traffic, and personalise content. You can accept all, reject the non-essential ones, or choose per category.',
+      actions: [
+        {
+          label: 'Reject non-essential',
+          onClick: () => toast('Only essential cookies will be used.'),
+        },
+        { label: 'Manage', onClick: openPreferences },
+        {
+          label: 'Accept all',
+          onClick: () =>
+            toast('All cookies accepted.', { variant: 'success' }),
+        },
+      ],
+    });
+  };
+
+  return (
+    <Button size="s" label="Open the cookie banner" onClick={showBanner} />
+  );
+};
+
+export const CookieConsent: StoryObj<typeof Toast> = {
+  name: 'Cookie consent',
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Section>Cookie consent</Section>
+      <Paragraph>
+        A cookie banner is a persistent notification, not a toast: it must not
+        auto-dismiss, it carries several actions, and closing it is a deliberate
+        choice. It is <Text code>autoClose: false</Text>, uses{' '}
+        <Text code>actions</Text> for the top-level choices, and — for the
+        per-category screen — passes an interactive form as{' '}
+        <Text code>content</Text>. Because <Text code>content</Text> is captured
+        when <Text code>notification()</Text> is called, that form owns its state
+        and dismisses its own card via the id returned from{' '}
+        <Text code>notification()</Text>.
+      </Paragraph>
+      <Paragraph>
+        Place it clear of the primary flow —{' '}
+        <Text code>notificationSide=&quot;start&quot;</Text> with{' '}
+        <Text code>notificationPlacement=&quot;end&quot;</Text> keeps it at the
+        bottom-left, away from bottom-right call-to-action buttons. In a real app
+        it is shown once, near the root, on the first visit; here a button stands
+        in for that.
+      </Paragraph>
+
+      <Toast notificationSide="start" notificationPlacement="end">
+        <CookieConsentDemo />
+      </Toast>
+    </Flex>
+  ),
+};

@@ -161,6 +161,9 @@ export const ge: Localization = {
   closeButton: {
     ariaLabel: 'Schließen',
   },
+  toast: {
+    regionLabel: 'Benachrichtigungen',
+  },
   dialog: {
     alertTitle: 'Hinweis',
     confirmTitle: 'Bestätigung',

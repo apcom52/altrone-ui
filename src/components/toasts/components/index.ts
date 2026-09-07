@@ -1,2 +1,1 @@
-export { ToastMessage } from './ToastMessage';
-export { Notification } from './Notification';
+export { ToastCard } from './ToastCard';

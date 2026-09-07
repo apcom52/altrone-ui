@@ -60,12 +60,6 @@ export const Button = memo((props: ButtonProps) => {
   const isSingleIcon = !showLabel && !!icon && !additionalIcon;
   const isLoading = state === 'loading';
 
-  /* `MotionConfig`'s `reducedMotion` doesn't reliably suppress `layout`
-     animations, so gate them explicitly. Follows both the OS setting and a
-     `<MotionConfig reducedMotion>` override. */
-  const animateLayout = !useReducedMotionConfig();
-  const animateLayoutValue = animateLayout ? 'size' : undefined;
-
   const cls = clsx(
     s.Button,
     {
@@ -113,21 +107,13 @@ export const Button = memo((props: ButtonProps) => {
 
   const buttonContent = (
     <>
-      <motion.div className={s.ButtonContent} layout={animateLayoutValue}>
-        {icon ? (
-          <motion.div className={s.ButtonIcon} layout={animateLayoutValue}>
-            {icon}
-          </motion.div>
-        ) : null}
+      <motion.div className={s.ButtonContent}>
+        {icon ? <motion.div className={s.ButtonIcon}>{icon}</motion.div> : null}
         {showLabel && label ? (
-          <motion.span className={s.ButtonLabel} layout={animateLayoutValue}>
-            {label}
-          </motion.span>
+          <motion.span className={s.ButtonLabel}>{label}</motion.span>
         ) : null}
         {additionalIcon ? (
-          <motion.div className={s.ButtonIcon} layout={animateLayoutValue}>
-            {additionalIcon}
-          </motion.div>
+          <motion.div className={s.ButtonIcon}>{additionalIcon}</motion.div>
         ) : null}
         {isSingleIcon ? null : badgeElement}
       </motion.div>
@@ -175,9 +161,7 @@ export const Button = memo((props: ButtonProps) => {
     inner = (
       <motion.button
         type={type}
-        layout={animateLayoutValue}
         transition={{
-          layout: { duration: 0.25, ease: 'easeOut' },
           scale: { duration: 0.2, ease: 'linear' },
         }}
         whileTap={{ scale: 0.95 }}

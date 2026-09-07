@@ -32,6 +32,9 @@ export const AltroneApplication = ({
   config,
   language = 'en',
   customLabels = {},
+  toastPlacement,
+  notificationSide,
+  notificationPlacement,
   ...props
 }: AltroneApplicationProps) => {
   const [theme, setTheme] = useState<Theme>(() =>
@@ -97,7 +100,13 @@ export const AltroneApplication = ({
           <ThemeContext.Provider value={themeContext}>
             <AltroneLocalization language={language} customLabels={customLabels}>
               <DialogProvider>
-                <Toast>{children}</Toast>
+                <Toast
+                  toastPlacement={toastPlacement}
+                  notificationSide={notificationSide}
+                  notificationPlacement={notificationPlacement}
+                >
+                  {children}
+                </Toast>
               </DialogProvider>
             </AltroneLocalization>
           </ThemeContext.Provider>
