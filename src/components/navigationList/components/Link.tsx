@@ -1,18 +1,39 @@
-import React, { memo, useMemo, isValidElement, ReactElement } from 'react';
+import React, {
+  memo,
+  useEffect,
+  useMemo,
+  isValidElement,
+  ReactElement,
+  ReactNode,
+  KeyboardEvent,
+  MouseEvent,
+} from 'react';
 import clsx from 'clsx';
 import s from './link.module.scss';
 import { NavigationListLinkProps } from '../NavigationList.types.ts';
-import { AltChildren, DOMUtils, useBoolean } from '../../../utils';
+import { AltChildren, DOMUtils } from '../../../utils';
 import { LinkAction } from './LinkAction.tsx';
 import {
+  NAV_LINK_ATTR,
   NavigationListLevelContext,
+  useNavigationListHideHover,
   useNavigationListId,
   useNavigationListLevel,
 } from '../NavigationList.context.ts';
-import { Badge } from 'components/badge/Badge.tsx';
+import { Box } from 'components/box';
+import { Text } from 'components/text/Text.tsx';
 import { motion } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
 import { Slot } from 'utils/components/Slot';
+
+/** Near-critically damped — the selected highlight slides between items
+    without overshoot. */
+const SELECTED_TRANSITION = {
+  type: 'spring',
+  stiffness: 420,
+  damping: 40,
+  mass: 0.9,
+} as const;
 
 // ─── ItemContent ──────────────────────────────────────────────────────────────
 
@@ -33,11 +54,31 @@ const ItemContent = ({
 }: ItemContentProps) => (
   <div className={s.Label}>
     {icon ? <div className={s.Icon}>{icon}</div> : null}
-    <div className={s.LabelText}>{label}</div>
-    {badge ? <Badge className={s.Badge}>{badge}</Badge> : null}
+    <Text className={s.LabelText} truncate>
+      {label}
+    </Text>
+    {badge ? (
+      <Box
+        className={s.Badge}
+        shape="pill"
+        material="translucent"
+        tone="neutral"
+        size="var(--navigation-list-badge-size)"
+        width="auto"
+        padding={{ x: 'var(--navigation-list-badge-padding)', y: 0 }}
+      >
+        {typeof badge === 'string' || typeof badge === 'number' ? (
+          <Text size={2} weight="bold">
+            {badge}
+          </Text>
+        ) : (
+          badge
+        )}
+      </Box>
+    ) : null}
     {actions.length ? <div className={s.Actions}>{actions}</div> : null}
     {opened ? (
-      <div className={s.ChildrenIcon}>
+      <div className={s.ChildrenIcon} aria-hidden>
         <ChevronDown />
       </div>
     ) : null}
@@ -62,15 +103,28 @@ const LinkInner = memo(
     nestedLinks,
     level,
     selected,
+    disabled,
     badge,
     asChild,
     asChildElement,
     className,
     style,
+    href,
+    onClick,
+    onKeyDown,
     ...restProps
   }: LinkInnerProps) => {
     const navigationListId = useNavigationListId();
-    const { value: hovered, enable: hover, disable: unhover } = useBoolean();
+    const hideHover = useNavigationListHideHover();
+
+    /* Clicking an item while hovering it leaves the shared hover backdrop
+       sitting on top of what's now the selected item, and no pointer event
+       fires to re-evaluate — hide it. */
+    useEffect(() => {
+      if (selected) {
+        hideHover();
+      }
+    }, [selected, hideHover]);
 
     const showNestedLinks = nestedLinks.length > 0 && selected;
 
@@ -89,18 +143,51 @@ const LinkInner = memo(
       [s.ThirdLevelList]: level > 0,
     });
 
-    const hoverProps = {
-      onMouseEnter: !selected ? hover : undefined,
-      onMouseLeave: unhover,
+    const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+      if (disabled) {
+        event.preventDefault();
+        return;
+      }
+      onClick?.(event);
     };
+
+    /* An `<a>` without `href` isn't keyboard-activatable on its own, so relay
+       Enter/Space to the click handler when the item acts as a button. */
+    const handleKeyDown = (event: KeyboardEvent<HTMLAnchorElement>) => {
+      onKeyDown?.(event);
+      if (disabled || href || event.defaultPrevented) {
+        return;
+      }
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        onClick?.(event as unknown as MouseEvent<HTMLAnchorElement>);
+      }
+    };
+
+    const resolvedHref = disabled ? undefined : href;
+
+    /* Only the keys we actually want to set — spreading `href: undefined` onto
+       an `asChild` element would wipe the href the consumer put on it. */
+    const interactionProps: Record<string, unknown> = {
+      [NAV_LINK_ATTR]: '',
+      onClick: handleClick,
+      onKeyDown: handleKeyDown,
+      tabIndex: disabled ? -1 : resolvedHref ? undefined : 0,
+      'aria-current': selected ? 'page' : undefined,
+      'aria-disabled': disabled || undefined,
+    };
+    if (resolvedHref !== undefined) {
+      interactionProps.href = resolvedHref;
+    }
 
     const inner = (
       <>
-        {hovered && (
+        {selected && !disabled && (
           <motion.div
             layout
-            layoutId={`${navigationListId}-nav-link-backdrop-${level}`}
-            className={s.Backdrop}
+            layoutId={`${navigationListId}-nav-link-selected-${level}`}
+            className={s.SelectedBackdrop}
+            transition={SELECTED_TRANSITION}
           />
         )}
         {content}
@@ -123,10 +210,8 @@ const LinkInner = memo(
         return null;
       }
       const childWithContent = React.cloneElement(
-        asChildElement as React.ReactElement,
-        {
-          children: inner,
-        },
+        asChildElement as ReactElement<{ children?: ReactNode }>,
+        { children: inner },
       );
       return (
         <>
@@ -134,7 +219,7 @@ const LinkInner = memo(
             ref={ref}
             className={className}
             style={style}
-            {...hoverProps}
+            {...interactionProps}
             {...restProps}
           >
             {childWithContent}
@@ -146,15 +231,15 @@ const LinkInner = memo(
 
     return (
       <>
-        <div
-          ref={ref as React.Ref<HTMLDivElement>}
+        <a
+          ref={ref}
           className={className}
           style={style}
-          {...hoverProps}
+          {...interactionProps}
           {...restProps}
         >
           {inner}
-        </div>
+        </a>
         {nested}
       </>
     );
@@ -169,6 +254,8 @@ export const Link = memo(
     className,
     style,
     asChild,
+    selected,
+    disabled,
     children,
     ...restProps
   }: NavigationListLinkProps) => {
@@ -196,19 +283,21 @@ export const Link = memo(
       return [actions, nestedLinks, asChildElement];
     }, [children]);
 
-    const cls = clsx(s.Link, { [s.Selected]: restProps.selected }, className);
-
-    const styles = {
-      ...style,
-    };
+    const cls = clsx(
+      s.Link,
+      { [s.Selected]: selected, [s.Disabled]: disabled },
+      className,
+    );
 
     return (
       <LinkInner
         ref={ref}
         className={cls}
-        style={styles}
+        style={style}
         asChild={asChild}
         asChildElement={asChildElement}
+        selected={selected}
+        disabled={disabled}
         actions={actions}
         nestedLinks={nestedLinks}
         level={listLevel}

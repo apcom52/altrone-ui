@@ -1,51 +1,115 @@
 .Group {
   display: inline-flex;
   align-items: center;
-  background: var(--glass-background-color);
-  box-shadow: var(--elevation-overlay-shadow);
-  backdrop-filter: blur(32px) saturate(180%);
-  padding: 4px;
-  border-radius: 21px;
-  gap: 2px;
+  gap: var(--narrow-gap);
   width: fit-content;
   pointer-events: all;
 }
 
-.Leading,
-.Trailing,
-.Center {
-  position: absolute;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  gap: var(--gap);
+/* Liquid-glass pill: translucent fill + heavy blur, a soft drop shadow to
+   lift it off the surface, a bright specular line along the top edge and a
+   faint rim tracing the whole capsule. Applied for every `variant` except
+   `plain`. Material tokens come from the parent `.Toolbar`
+   (see toolbar.module.scss). */
+.Pill {
+  padding: var(--xs-gap);
+  border-radius: var(--radius-pill);
+  background: var(--toolbar-pill-fill);
+  backdrop-filter: var(--toolbar-pill-blur);
+  -webkit-backdrop-filter: var(--toolbar-pill-blur);
+  box-shadow:
+    var(--elevation-raised-shadow),
+    inset 0 1px 0 0 var(--toolbar-glass-highlight),
+    inset 0 0 0 1px var(--toolbar-glass-rim);
 }
 
 [aria-orientation='vertical'] .Group {
   flex-direction: column;
 }
 
-[aria-orientation='vertical'] .Trailing,
-[aria-orientation='vertical'] .Leading,
-[aria-orientation='vertical'] .Center {
-  height: 100%;
-  width: 56px;
-  flex-direction: column;
-}
-
-.Leading {
-  justify-content: start;
-}
-
-.Trailing {
-  justify-content: end;
-}
-
-.Center {
+.AlignCenter {
   justify-content: center;
 }
 
-.Separator {
-  flex: 1;
+.AlignEnd {
+  justify-content: flex-end;
+}
+
+.AlignBetween {
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* ── layout regions ────────────────────────────────────────── */
+
+.Region {
+  display: flex;
+  align-items: center;
+  gap: var(--toolbar-gap, var(--gap));
+  min-width: 0;
+}
+
+.Leading {
+  grid-column: 1;
+  justify-self: start;
+  justify-content: flex-start;
+}
+
+.Center {
+  grid-column: 2;
+  justify-self: center;
+  justify-content: center;
+}
+
+.Trailing {
+  grid-column: 3;
+  justify-self: end;
+  justify-content: flex-end;
+}
+
+[aria-orientation='vertical'] .Region {
+  flex-direction: column;
+}
+
+[aria-orientation='vertical'] .Leading {
+  grid-column: auto;
+  grid-row: 1;
+  justify-self: auto;
+  align-self: start;
+}
+
+[aria-orientation='vertical'] .Center {
+  grid-column: auto;
+  grid-row: 2;
+  align-self: center;
+}
+
+[aria-orientation='vertical'] .Trailing {
+  grid-column: auto;
+  grid-row: 3;
+  justify-self: auto;
+  align-self: end;
+}
+
+/* ── separator ─────────────────────────────────────────────── */
+
+.SeparatorSpace {
+  flex: 1 1 auto;
+  align-self: stretch;
+}
+
+.SeparatorLine {
+  flex: none;
+  align-self: center;
+  width: 1px;
+  height: 60%;
+  margin-inline: var(--xs-gap);
+  background: var(--border-1);
+}
+
+[aria-orientation='vertical'] .SeparatorLine {
+  width: 60%;
+  height: 1px;
+  margin-inline: 0;
+  margin-block: var(--xs-gap);
 }

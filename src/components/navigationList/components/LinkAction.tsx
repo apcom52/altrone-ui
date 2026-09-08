@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import React from 'react';
 import { NavigationListLinkActionProps } from '../NavigationList.types.ts';
-import clsx from 'clsx';
 import { Button } from 'components/button/Button.tsx';
 
 export const LinkAction = memo(
@@ -14,12 +13,8 @@ export const LinkAction = memo(
     onClick,
     ...restProps
   }: NavigationListLinkActionProps) => {
-    const cls = clsx(className);
-
-    const styles = {
-      ...style,
-    };
-
+    /* Sits inside a clickable `NavigationList.Link` — stop the event so
+       activating the action doesn't also navigate the parent link. */
     const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
       e.stopPropagation();
       e.preventDefault();
@@ -30,10 +25,9 @@ export const LinkAction = memo(
       <Button
         ref={ref}
         size="s"
-        variant="text"
-        className={cls}
+        className={className}
+        style={style}
         title={label}
-        style={styles}
         icon={icon}
         label={label}
         showLabel={false}

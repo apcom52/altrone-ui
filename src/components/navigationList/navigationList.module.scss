@@ -1,7 +1,10 @@
 :global([data-altrone-root='true']) {
     --navigation-list-background-color: var(--glass-background-color);
+    --navigation-list-chrome-background-color: var(--background-1);
+    --navigation-list-chrome-border-color: var(--border-1);
     --navigation-list-width: 300px;
     --navigation-list-rounding: 24px;
+    --navigation-list-padding: 8px;
 
     --navigation-list-group-text-size: 12px;
     --navigation-list-group-text-color: var(--text-1);
@@ -9,27 +12,40 @@
     --navigation-list-link-background-color: transparent;
     --navigation-list-link-backdrop-color: var(--interactive-a1);
     --navigation-list-link-rounding: 16px;
+    --navigation-list-secondary-link-border-color: var(--border-1);
     --navigation-list-link-text-color: var(--text-2);
     --navigation-list-link-text-size: 14px;
     --navigation-list-link-icon-size: 18px;
     --navigation-list-link-selected-background-color: var(--background-1);
     --navigation-list-link-selected-text-color: var(--accent-12);
 
-    --navigation-list-badge-background-color: var(--interactive-a1);
-    --navigation-list-badge-text-color: var(--text-2);
-    --navigation-list-badge-size: 24px;
-    --navigation-list-badge-rounding: 12px;
+    --navigation-list-badge-size: 20px;
+    --navigation-list-badge-min-width: 20px;
+    --navigation-list-badge-padding: 6px;
     --navigation-list-badge-font-size: 10px;
 }
 
 .NavigationList {
+    position: relative;
     display: flex;
     flex-direction: column;
     background: var(--navigation-list-background-color);
     backdrop-filter: blur(32px) saturate(180%);
-    padding: 8px;
+    padding: var(--navigation-list-padding);
     border-radius: var(--navigation-list-rounding);
     width: var(--navigation-list-width);
     box-shadow: var(--elevation-raised-shadow);
     height: 100%;
+}
+
+/* Single element shared across all links — moved onto the hovered one. Sits
+   behind the links (transparent bg) but above the container background. */
+.HoverBackdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    border-radius: var(--navigation-list-link-rounding);
+    background-color: var(--navigation-list-link-backdrop-color);
+    pointer-events: none;
 }

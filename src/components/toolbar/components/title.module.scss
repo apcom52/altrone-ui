@@ -1,14 +1,32 @@
 .Title {
   display: flex;
   align-items: center;
-  gap: var(--gap);
+  gap: var(--xs-gap);
+  padding-inline: var(--xs-gap);
   font-weight: var(--text-weight-bold);
-  font-size: var(--text-size-3);
+  font-size: var(--toolbar-title-size, var(--text-size-5));
+  line-height: var(--toolbar-title-line-height, var(--line-height-5));
   color: var(--text-12);
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
-  padding: 0 8px;
+  white-space: nowrap;
 }
 
-.ToggleButton {
-  pointer-events: none;
+/* Chevron scales with the title font-size (which follows the toolbar `size`). */
+.Chevron {
+  width: 1em;
+  height: 1em;
+  opacity: 0.55;
+}
+
+/* Floating toolbars sit over arbitrary content — lift the text off it. */
+.OnContent {
+  color: var(--text-12);
+  text-shadow: 0 1px 8px rgb(0 0 0 / 0.25);
+}
+
+/* A clickable title is the trigger for a popover/menu — the consumer wraps
+   it in `Dropdown`; it just needs to read as pressable. A static title is
+   plain text (no chevron, default cursor). */
+.Clickable {
+  cursor: pointer;
+  user-select: none;
 }

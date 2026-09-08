@@ -1,25 +1,25 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 
 export interface NavigationListProps extends React.HTMLAttributes<HTMLElement> {
   ref?: React.Ref<HTMLElement>;
 }
 
-export interface NavigationListGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface NavigationListGroupProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
   title?: string;
 }
 
-export interface NavigationListGroupActionProps extends Omit<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
-  'children'
-> {
+export interface NavigationListGroupActionProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   ref?: React.Ref<HTMLButtonElement>;
   label: string;
   icon: React.JSX.Element;
 }
 
-export interface NavigationListLinkProps extends React.HTMLAttributes<HTMLDivElement> {
-  ref?: React.Ref<HTMLElement>;
+export interface NavigationListLinkProps
+  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  ref?: React.Ref<HTMLAnchorElement>;
   label: string;
   icon?: React.JSX.Element;
   selected?: boolean;
@@ -28,19 +28,19 @@ export interface NavigationListLinkProps extends React.HTMLAttributes<HTMLDivEle
   asChild?: boolean;
 }
 
-export interface NavigationListLinkActionProps extends Omit<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
-  'children'
-> {
+export interface NavigationListLinkActionProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   ref?: React.Ref<HTMLButtonElement>;
   label: string;
   icon: React.JSX.Element;
 }
 
-export interface NavigationListHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface NavigationListHeaderProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
 }
 
-export interface NavigationListFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface NavigationListFooterProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
 }

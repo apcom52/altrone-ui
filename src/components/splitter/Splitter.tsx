@@ -1,7 +1,20 @@
-import React, { memo, useCallback, useId, useImperativeHandle, useRef, useState } from 'react';
-import s from './splitter.module.scss';
+import {
+  Children,
+  Fragment,
+  useCallback,
+  useId,
+  useImperativeHandle,
+  useRef,
+  useState,
+  type MutableRefObject,
+} from 'react';
 import clsx from 'clsx';
-import type { SplitterHandle as SplitterHandleType, SplitterProps } from './Splitter.types.ts';
+import { useLocalization } from '../application';
+import s from './splitter.module.scss';
+import type {
+  SplitterHandle as SplitterHandleType,
+  SplitterProps,
+} from './Splitter.types.ts';
 import { Panel } from './components/Panel.tsx';
 import { SplitterDivider, dividerActiveClass } from './inner/Divider.tsx';
 import { isPanelElement, initSizes } from './utils/splitterUtils.ts';
@@ -19,10 +32,12 @@ const SplitterBase = ({
   onResizeEnd,
   onCollapse,
   showControls = true,
+  collapsedControlsVisibility = 'always',
   controlRef,
   ...restProps
 }: SplitterProps) => {
   const uid = useId();
+  const t = useLocalization();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const mergedRef = useCallback(
@@ -30,17 +45,19 @@ const SplitterBase = ({
       containerRef.current = node;
       if (typeof ref === 'function') ref(node);
       else if (ref)
-        (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        (ref as MutableRefObject<HTMLDivElement | null>).current = node;
     },
     [ref],
   );
 
-  const panelElements = React.Children.toArray(children).filter(isPanelElement);
+  const panelElements = Children.toArray(children).filter(isPanelElement);
   const panels = panelElements.map((el) => el.props);
   const n = panels.length;
 
   const [sizes, setSizes] = useState<number[]>(() => initSizes(panels));
-  const [collapsed, setCollapsed] = useState<boolean[]>(() => new Array(n).fill(false));
+  const [collapsed, setCollapsed] = useState<boolean[]>(() =>
+    new Array(n).fill(false),
+  );
 
   // Stable refs so hot-path callbacks have zero React state dependencies.
   const panelsRef = useRef(panels);
@@ -84,8 +101,6 @@ const SplitterBase = ({
     onCollapse,
   });
 
-  // ── Imperative handle ──────────────────────────────────────────
-
   const collapsedRef = useRef(collapsed);
   collapsedRef.current = collapsed;
 
@@ -101,10 +116,11 @@ const SplitterBase = ({
     [handleCollapse, liveSizes],
   );
 
-  // ── Render ─────────────────────────────────────────────────────
-
-  // Suppress liveSizes sync warning: isDragging ref is updated in pointer handlers
-  // which run after render, so this render-time sync is intentional and safe.
+  /**
+   * Suppress the liveSizes sync warning: `isDragging` is a ref updated in the
+   * pointer handlers (which run after render), so this render-time sync is
+   * intentional and safe.
+   */
   if (!isDragging.current) {
     liveSizes.current = sizes;
   }
@@ -124,18 +140,15 @@ const SplitterBase = ({
         const panelId = `${uid}-panel-${i}`;
 
         return (
-          <React.Fragment key={i}>
+          <Fragment key={i}>
             <div
               id={panelId}
               ref={(el) => {
                 panelRefs.current[i] = el;
               }}
-              className={s.Panel}
-              style={{
-                flex: `${size} ${size} 0`,
-                overflow: isCollapsed ? 'hidden' : undefined,
-              }}
-              aria-label={`Panel ${i + 1}`}
+              className={clsx(s.Panel, { [s.PanelCollapsed]: isCollapsed })}
+              style={{ flex: `${size} ${size} 0` }}
+              aria-label={t('splitter.panel', { vars: { index: i + 1 } })}
             >
               {panel.props.children}
             </div>
@@ -153,6 +166,7 @@ const SplitterBase = ({
                   collapsed[i + 1]
                 }
                 showControls={showControls}
+                collapsedControlsVisibility={collapsedControlsVisibility}
                 sizeLeft={sizes[i]}
                 minLeft={panels[i].min ?? 0}
                 maxLeft={panels[i].max ?? 100}
@@ -168,13 +182,11 @@ const SplitterBase = ({
                 onCollapseRight={(e) => handleCollapse(i + 1, undefined, e)}
               />
             )}
-          </React.Fragment>
+          </Fragment>
         );
       })}
     </div>
   );
 };
 
-export const Splitter = Object.assign(memo(SplitterBase), {
-  Panel,
-});
+export const Splitter = Object.assign(SplitterBase, { Panel });

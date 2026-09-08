@@ -64,6 +64,9 @@ export function useSplitterDrag({
 
   const handlePointerDown = useCallback(
     (index: number, e: React.PointerEvent<HTMLDivElement>) => {
+      // A press that originated on a collapse button is not a drag.
+      if ((e.target as HTMLElement).closest('button')) return;
+
       e.preventDefault();
 
       const el = e.currentTarget as HTMLDivElement;

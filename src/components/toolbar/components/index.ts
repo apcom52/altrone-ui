@@ -1,5 +1,7 @@
 export { Action } from './Action.tsx';
 export { Group } from './Group.tsx';
+export { Separator } from './Separator.tsx';
+export { Logo } from './Logo.tsx';
 export { Leading } from './Leading.tsx';
 export { Trailing } from './Trailing.tsx';
 export { Center } from './Center.tsx';

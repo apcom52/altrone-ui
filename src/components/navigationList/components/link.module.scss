@@ -7,12 +7,14 @@
   cursor: pointer;
   color: var(--navigation-list-link-text-color);
   background-color: var(--navigation-list-link-background-color);
-  transition: background-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
   font-weight: 500;
   font-size: var(--navigation-list-link-text-size);
   text-decoration: none;
   z-index: 1;
-  gap: 8px;
+  gap: 4px;
   user-select: none;
 
   &:focus {
@@ -24,35 +26,27 @@
     outline-offset: 2px;
     border-radius: var(--navigation-list-link-rounding);
   }
+}
 
-  &:before {
-    position: absolute;
-    display: block;
-    width: 50%;
-    left: 25%;
-    top: 25%;
-    height: 50%;
-    border-radius: 6px;
-    content: '';
-    opacity: 0;
-    z-index: -1;
-    background-color: var(--navigationListHoveredLinkBackgroundColor);
-    transition:
-      top 0.2s ease,
-      left 0.2s ease,
-      width 0.2s ease,
-      height 0.2s ease;
+.Disabled {
+  cursor: default;
+  pointer-events: none;
+  color: var(--disabled-text-color);
+
+  .Icon {
+    color: var(--disabled-text-color);
   }
 }
 
-.Backdrop {
+/* The selected item's fill lives on this layer (not on `.Link`) so a shared
+   `layoutId` slides it between items when the selection moves. */
+.SelectedBackdrop {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
+  z-index: -1;
   border-radius: var(--navigation-list-link-rounding);
-  background-color: var(--navigation-list-link-backdrop-color);
+  background-color: var(--navigation-list-link-selected-background-color);
+  box-shadow: var(--shadow-1);
   pointer-events: none;
 }
 
@@ -63,21 +57,30 @@
   color: var(--navigation-list-link-text-color);
   font-size: var(--navigation-list-link-icon-size);
   margin-left: -24px;
+  /* On top of the row's 4px gap — keeps the icon→label spacing at 8px. */
+  margin-right: 4px;
 }
 
 .Label {
   display: flex;
   align-items: center;
   z-index: 1;
-  gap: 6px;
+  gap: 4px;
   flex: 1;
 }
 
 .LabelText {
   flex: 1;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Wins over `Text`'s own `--text-color` so the label follows the link's
+   colour — including the accent colour of the selected state. */
+.Label .LabelText {
+  color: inherit;
 }
 
 .Actions {
@@ -86,11 +89,6 @@
   align-items: center;
   gap: 2px;
   margin-left: auto;
-}
-
-.NestedList {
-  display: flex;
-  flex-direction: column;
 }
 
 .SecondLevelList {
@@ -126,23 +124,15 @@
   margin-right: 4px;
 }
 
+/* A `Box` pill, styled to match the badge on a `Button`. This layer only
+   carries the dimensional tuning `Box` doesn't own — small type and a
+   min-width so a 2-digit count doesn't collapse. */
 .Badge {
-  color: var(--navigation-list-badge-text-color);
-  background-color: var(--navigation-list-badge-background-color);
-  height: var(--navigation-list-badge-size);
-  min-width: var(--navigation-list-badge-size);
-  border-radius: var(--navigation-list-badge-rounding);
-  padding: 0 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-width: var(--navigation-list-badge-min-width);
   font-size: var(--navigation-list-badge-font-size);
-  font-weight: 500;
+  font-weight: var(--text-weight-bold);
 }
 
 .Selected {
-  background-color: var(--navigation-list-link-selected-background-color);
   color: var(--navigation-list-link-selected-text-color);
-  border-radius: var(--navigation-list-link-rounding);
-  box-shadow: var(--shadow-1);
 }

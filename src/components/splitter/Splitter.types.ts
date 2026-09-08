@@ -1,5 +1,8 @@
 import React from 'react';
 
+/** How a collapsed panel's expand button is shown on its divider. */
+export type SplitterCollapsedControlsVisibility = 'always' | 'hover' | 'never';
+
 export interface SplitterHandle {
   /** Collapse a panel by index */
   collapse: (panelIndex: number) => void;
@@ -17,7 +20,7 @@ export interface SplitterPanelProps {
   children?: React.ReactNode;
   /** Allow this panel to be fully collapsed via the divider toggle button */
   collapsible?: boolean;
-  /** Initial size in percent (0–100). Uncontrolled. */
+  /** Initial size in percent (0–100). Uncontrolled — panels without one share the remaining space equally. */
   defaultSize?: number;
   /** Minimum size in percent (0–100). Default: 0 */
   min?: number;
@@ -25,8 +28,6 @@ export interface SplitterPanelProps {
   max?: number;
   /** When false the adjacent divider becomes non-draggable. Default: true */
   resizable?: boolean;
-  /** Controlled size in percent (0–100). Treated as initial size (uncontrolled semantics). */
-  size?: number;
 }
 
 export interface SplitterProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -43,6 +44,13 @@ export interface SplitterProps extends React.HTMLAttributes<HTMLDivElement> {
   onCollapse?: (panelIndex: number, collapsed: boolean, event?: React.MouseEvent<HTMLButtonElement>) => void;
   /** Show or hide the built-in collapse/expand buttons. Default: true */
   showControls?: boolean;
+  /**
+   * How the expand button on a collapsed panel's divider is shown.
+   * `'always'` (default) — persistently visible while the panel is collapsed.
+   * `'hover'` — only on divider hover / button focus, like the other controls.
+   * `'never'` — not rendered; expand such a panel via `controlRef`.
+   */
+  collapsedControlsVisibility?: SplitterCollapsedControlsVisibility;
   /** Ref that exposes imperative collapse/expand/toggle API */
   controlRef?: React.Ref<SplitterHandle>;
 }

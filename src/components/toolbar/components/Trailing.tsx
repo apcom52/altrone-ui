@@ -3,12 +3,15 @@ import { ToolbarTrailingProps } from '../Toolbar.types.ts';
 import s from './group.module.scss';
 import clsx from 'clsx';
 
-export const Trailing = memo(({ ref, children, className, style, ...restProps }: ToolbarTrailingProps) => {
-  const cls = clsx(s.Trailing, className);
-
-  return (
-    <div ref={ref} className={cls} style={style} {...restProps}>
+export const Trailing = memo(
+  ({ ref, children, className, ...restProps }: ToolbarTrailingProps) => (
+    <div
+      ref={ref}
+      className={clsx(s.Region, s.Trailing, className)}
+      data-toolbar-region="trailing"
+      {...restProps}
+    >
       {children}
     </div>
-  );
-});
+  ),
+);

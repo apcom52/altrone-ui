@@ -4,6 +4,7 @@ import s from './group.module.scss';
 import { NavigationListGroupProps } from '../NavigationList.types.ts';
 import { AltChildren, DOMUtils } from '../../../utils';
 import { GroupAction } from './GroupAction.tsx';
+import { Text } from 'components/text/Text.tsx';
 
 export const Group = memo(
   ({
@@ -15,11 +16,6 @@ export const Group = memo(
     ...restProps
   }: NavigationListGroupProps) => {
     const cls = clsx(s.Group, className);
-    const titleCls = clsx(s.Title);
-
-    const styles = {
-      ...style,
-    };
 
     const [actions, links] = useMemo(() => {
       const actions: ReactElement[] = [];
@@ -40,12 +36,27 @@ export const Group = memo(
       return [actions, links];
     }, [children]);
 
+    const hasHeader = Boolean(title) || actions.length > 0;
+
     return (
-      <div ref={ref} className={cls} style={styles} {...restProps}>
-        <div className={s.Header}>
-          {title ? <div className={titleCls}>{title}</div> : null}
-          <div className={s.Actions}>{actions}</div>
-        </div>
+      <div
+        ref={ref}
+        className={cls}
+        style={style}
+        role="group"
+        aria-label={title}
+        {...restProps}
+      >
+        {hasHeader ? (
+          <div className={s.Header}>
+            {title ? (
+              <Text className={s.Title} size={3} weight="medium" truncate>
+                {title}
+              </Text>
+            ) : null}
+            {actions.length ? <div className={s.Actions}>{actions}</div> : null}
+          </div>
+        ) : null}
         {links}
       </div>
     );

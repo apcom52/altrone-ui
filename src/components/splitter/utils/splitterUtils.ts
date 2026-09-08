@@ -25,7 +25,7 @@ export function initSizes(panels: SplitterPanelProps[]): number[] {
 
   for (let i = 0; i < n; i++) {
     const p = panels[i];
-    const raw = p.size ?? p.defaultSize;
+    const raw = p.defaultSize;
     if (raw !== undefined) {
       sizes[i] = Math.max(p.min ?? 0, Math.min(p.max ?? 100, raw));
       totalAssigned += sizes[i];

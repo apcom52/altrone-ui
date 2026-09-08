@@ -11,56 +11,31 @@
   user-select: none;
   outline: none;
 
-  /* visible line */
-
-  &:focus-visible {
-    &::before {
-      background: var(--accent-7);
-      width: 2px;
-    }
-
-    .Handle {
-      background: var(--splitter-handle-active-color);
-    }
+  &:focus-visible .Handle {
+    background: var(--splitter-handle-active-color);
   }
 
-  &:hover:not(.DividerDisabled) {
-    .Handle {
-      background: var(--splitter-handle-hover-color);
-    }
+  &:hover:not(.DividerDisabled) .Handle {
+    background: var(--splitter-handle-hover-color);
+  }
 
-    .CollapseBtn {
-      opacity: 1;
-      pointer-events: auto;
-    }
+  /**
+   * No `:not(.DividerDisabled)` here — a divider next to a collapsed panel is
+   * disabled for dragging, but its expand button must still reveal on hover.
+   */
+  &:hover .CollapseBtn {
+    opacity: 1;
   }
 }
 
 .DividerVertical {
-  flex: 0 0 var(--splitter-gutter);
   cursor: row-resize;
   flex-direction: row;
-
-  &::before {
-    top: 50%;
-    left: 0;
-    right: 0;
-    bottom: auto;
-    width: 100%;
-    height: var(--splitter-line-size);
-    transform: translateY(-50%);
-  }
 }
 
-.DividerActive {
-  &::before {
-    background: var(--accent-7);
-  }
-
-  .Handle {
-    background: var(--splitter-handle-active-color);
-    transform: scale(1.2);
-  }
+.DividerActive .Handle {
+  background: var(--splitter-handle-active-color);
+  transform: scale(1.2);
 }
 
 .DividerDisabled {
@@ -75,11 +50,11 @@
   flex-shrink: 0;
   width: var(--splitter-handle-thickness);
   height: var(--splitter-handle-length);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   background: var(--splitter-handle-color);
   transition:
-    background 0.15s,
-    transform 0.15s;
+    background var(--motion-duration-fast) var(--motion-easing-standard),
+    transform var(--motion-duration-fast) var(--motion-easing-standard);
   pointer-events: none;
 }
 
@@ -98,25 +73,30 @@
   position: absolute;
   z-index: 2;
   opacity: 0;
-  pointer-events: none;
+  /**
+   * Stays hit-testable while invisible: hovering it reveals it (`:hover`
+   * propagates to `.Divider`), and its own `pointerdown` stops the event
+   * before the divider reads it as a drag. Gating `pointer-events` on the
+   * divider's thin hover strip made the buttons unclickable — the press
+   * started a resize instead.
+   */
+  pointer-events: auto;
   transition:
-    opacity 0.15s,
-    background 0.15s,
-    border-color 0.15s;
+    opacity var(--motion-duration-fast) var(--motion-easing-standard),
+    background var(--motion-duration-fast) var(--motion-easing-standard),
+    border-color var(--motion-duration-fast) var(--motion-easing-standard);
 
   &:focus-visible {
     opacity: 1;
-    pointer-events: auto;
   }
 }
 
 /* Always visible when the adjacent panel is collapsed */
 .CollapseBtnVisible {
   opacity: 1;
-  pointer-events: auto;
 }
 
-/* Horizontal splitter → buttons are above/below center handle */
+/* Horizontal splitter → buttons are above/below the centre handle */
 .CollapseBtnBefore {
   top: var(--xl-gap);
 }
@@ -125,7 +105,7 @@
   bottom: var(--xl-gap);
 }
 
-/* Vertical splitter → buttons are left/right of center handle */
+/* Vertical splitter → buttons are left/right of the centre handle */
 .CollapseBtnBeforeV {
   left: var(--xl-gap);
 }

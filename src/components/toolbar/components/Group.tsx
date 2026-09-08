@@ -3,6 +3,7 @@ import { ToolbarGroupProps } from '../Toolbar.types.ts';
 import s from './group.module.scss';
 import clsx from 'clsx';
 import { motion } from 'motion/react';
+import { useToolbarContext } from '../Toolbar.context.ts';
 
 export const Group = memo(
   ({
@@ -10,16 +11,21 @@ export const Group = memo(
     children,
     align = 'start',
     weight,
+    variant,
     className,
     style,
     ...restProps
   }: ToolbarGroupProps) => {
+    const ctx = useToolbarContext();
+    const resolvedVariant = variant ?? ctx.variant;
+
     const cls = clsx(
       s.Group,
       {
-        [s.Center]: align === 'center',
-        [s.End]: align === 'end',
-        [s.Between]: align === 'between',
+        [s.Pill]: resolvedVariant !== 'plain',
+        [s.AlignCenter]: align === 'center',
+        [s.AlignEnd]: align === 'end',
+        [s.AlignBetween]: align === 'between',
       },
       className,
     );
@@ -30,13 +36,7 @@ export const Group = memo(
     };
 
     return (
-      <motion.div
-        ref={ref}
-        layout
-        className={cls}
-        style={styles}
-        {...restProps}
-      >
+      <motion.div ref={ref} layout className={cls} style={styles} {...restProps}>
         {children}
       </motion.div>
     );

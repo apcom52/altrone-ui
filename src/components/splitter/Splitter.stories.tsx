@@ -2,8 +2,11 @@ import { Meta, StoryObj } from '@storybook/react';
 import { StorybookDecorator } from '../../global/storybook/index.ts';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Splitter, SplitterHandle } from './index.ts';
+import type { SplitterCollapsedControlsVisibility } from './index.ts';
 import { Text } from '../text/index.ts';
 import { Flex } from '../flex/index.ts';
+import { Button } from '../button/index.ts';
+import { Radio } from '../radio/index.ts';
 import React, { useRef, useState } from 'react';
 
 const story: Meta<typeof Splitter> = {
@@ -208,6 +211,61 @@ export const CollapsiblePanels: StoryObj<typeof Splitter> = {
   ),
 };
 
+export const CollapsedControlsVisibilityStory: StoryObj<typeof Splitter> = {
+  name: 'Collapsed panel — expand-button visibility',
+  render: () => {
+    const [mode, setMode] =
+      useState<SplitterCollapsedControlsVisibility>('always');
+
+    return (
+      <Flex direction="vertical" gap="l">
+        <Flex direction="vertical" gap="xs">
+          <Text size={3} weight="medium" block>
+            collapsedControlsVisibility
+          </Text>
+          <Radio
+            value={mode}
+            name="collapsed-controls-visibility"
+            onChange={(v) =>
+              setMode(v as SplitterCollapsedControlsVisibility)
+            }
+          >
+            <Radio.Item value="always">
+              always — expand arrow stays pinned while the panel is collapsed
+            </Radio.Item>
+            <Radio.Item value="hover">
+              hover — the arrow only appears when the divider is hovered
+            </Radio.Item>
+            <Radio.Item value="never">
+              never — no arrow; expand from outside via controlRef
+            </Radio.Item>
+          </Radio>
+          <Text size={3} color="muted" block>
+            Collapse the left panel, then move the mouse away from the divider to
+            compare.
+          </Text>
+        </Flex>
+
+        <Splitter style={{ height: 280 }} collapsedControlsVisibility={mode}>
+          <Splitter.Panel defaultSize={28} min={15} collapsible>
+            <div style={{ ...panelStyle(), height: '100%' }}>
+              <Flex direction="vertical" gap="s">
+                <Text weight="medium">Sidebar</Text>
+                <FileTree />
+              </Flex>
+            </div>
+          </Splitter.Panel>
+          <Splitter.Panel>
+            <div style={{ ...panelStyle('var(--background-1)'), height: '100%' }}>
+              <CodeBlock />
+            </div>
+          </Splitter.Panel>
+        </Splitter>
+      </Flex>
+    );
+  },
+};
+
 export const MinMaxConstraints: StoryObj<typeof Splitter> = {
   name: 'Min / max constraints',
   render: () => (
@@ -366,86 +424,60 @@ export const ExternalControlStory: StoryObj<typeof Splitter> = {
     };
 
     const panels = [
-      { label: 'Sidebar', color: 'var(--background-2)' },
-      { label: 'Content', color: 'var(--background-1)' },
-      { label: 'Inspector', color: 'var(--background-2)' },
+      { label: 'Sidebar' },
+      { label: 'Content' },
+      { label: 'Inspector' },
     ];
 
     return (
       <Flex direction="vertical" gap="m">
         {/* Toolbar — external controls */}
-        <div
+        <Flex
+          direction="horizontal"
+          gap="s"
+          align="center"
           style={{
-            display: 'flex',
-            gap: 8,
             padding: '8px 12px',
             background: 'var(--background-2)',
-            borderRadius: 8,
+            borderRadius: 'var(--radius-l)',
             border: '1px solid var(--border-1)',
-            alignItems: 'center',
           }}
         >
           <Text size={3} weight="medium" style={{ marginRight: 4 }}>
             View:
           </Text>
           {panels.map((panel, i) => (
-            <button
+            <Button
               key={i}
+              label={panel.label}
+              variant={collapsed[i] ? 'default' : 'submit'}
+              size="s"
               onClick={() => controlRef.current?.toggle(i)}
-              style={{
-                padding: '4px 12px',
-                borderRadius: 6,
-                border: '1px solid var(--border-1)',
-                background: collapsed[i]
-                  ? 'var(--interactive-1)'
-                  : 'var(--accent-9)',
-                color: collapsed[i] ? 'var(--text-2)' : 'var(--white)',
-                cursor: 'pointer',
-                fontSize: 'var(--text-size-3)',
-                fontWeight: 'var(--text-weight-medium)',
-                transition: 'background 0.15s, color 0.15s',
-              }}
-            >
-              {collapsed[i] ? '＋' : '－'} {panel.label}
-            </button>
+            />
           ))}
-          <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
-            <button
+          <Flex direction="horizontal" gap="s" style={{ marginLeft: 'auto' }}>
+            <Button
+              label="Focus mode"
+              variant="text"
+              size="s"
               onClick={() => {
                 controlRef.current?.collapse(0);
                 controlRef.current?.expand(1);
                 controlRef.current?.collapse(2);
               }}
-              style={{
-                padding: '4px 12px',
-                borderRadius: 6,
-                border: '1px solid var(--border-1)',
-                background: 'var(--interactive-1)',
-                cursor: 'pointer',
-                fontSize: 'var(--text-size-3)',
-              }}
-            >
-              Focus mode
-            </button>
-            <button
+            />
+            <Button
+              label="Reset"
+              variant="text"
+              size="s"
               onClick={() => {
                 controlRef.current?.expand(0);
                 controlRef.current?.expand(1);
                 controlRef.current?.expand(2);
               }}
-              style={{
-                padding: '4px 12px',
-                borderRadius: 6,
-                border: '1px solid var(--border-1)',
-                background: 'var(--interactive-1)',
-                cursor: 'pointer',
-                fontSize: 'var(--text-size-3)',
-              }}
-            >
-              Reset
-            </button>
-          </div>
-        </div>
+            />
+          </Flex>
+        </Flex>
 
         <Splitter
           style={{ height: 340 }}

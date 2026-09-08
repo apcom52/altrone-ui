@@ -1,2 +1,7 @@
 export { Splitter } from './Splitter.tsx';
-export type { SplitterProps, SplitterPanelProps, SplitterHandle } from './Splitter.types.ts';
+export type {
+  SplitterProps,
+  SplitterPanelProps,
+  SplitterHandle,
+  SplitterCollapsedControlsVisibility,
+} from './Splitter.types.ts';

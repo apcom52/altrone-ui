@@ -1,10 +1,10 @@
 :global([data-altrone-root='true']) {
-  --switcher-background-color: var(--interactive-a1);
+  --switcher-background-color: var(--interactive-1);
   --switcher-border-color: var(--border-a1);
   --switcher-label-text-color: var(--text-2);
   --switcher-icon-color: var(--solid-a1);
-  --switcher-hover-background-color: var(--interactive-a2);
-  --switcher-checked-background-color: var(--accent-a3);
+  --switcher-hover-background-color: var(--interactive-2);
+  --switcher-checked-background-color: var(--accent-3);
   --switcher-checked-border-color: var(--accent-a5);
   --switcher-checked-icon-color: var(--accent-12);
 }
@@ -118,7 +118,7 @@
 }
 
 .Disabled {
-  --switcher-background-color: var(--background-a2);
+  --switcher-background-color: var(--disabled-background);
   --switcher-icon-color: var(--disabled-text-color);
   --switcher-border-color: var(--disabled-border);
   --switcher-label-text-color: var(--disabled-text-color);
@@ -127,7 +127,7 @@
   pointer-events: none;
 
   &:hover {
-    --switcher-background-color: var(--background-a2);
+    --switcher-background-color: var(--disabled-background);
   }
 }
 

@@ -1,14 +1,12 @@
 :global([data-altrone-root='true']) {
   --splitter-gutter: 10px;
-  --splitter-line-size: 1px;
   --splitter-handle-length: 32px;
   --splitter-handle-thickness: 6px;
   --splitter-handle-color: var(--border-a3);
   --splitter-handle-hover-color: var(--solid-a1);
   --splitter-handle-active-color: var(--accent-a12);
-  --splitter-collapse-btn-size: 22px;
-  --splitter-collapse-btn-icon: 10px;
-  --splitter-panel-transition: 0.2s ease;
+  --splitter-panel-transition: var(--motion-duration-base)
+    var(--motion-easing-standard);
 }
 
 /* ── Container ─────────────────────────────────────────────────── */
@@ -18,7 +16,6 @@
   flex-direction: row;
   width: 100%;
   height: 100%;
-  /* overflow: hidden; */
 }
 
 .Vertical {
@@ -35,7 +32,11 @@
   transition: flex var(--splitter-panel-transition);
 }
 
-/* Applied to the Splitter root while dragging — disables flex transition on all panels */
+.PanelCollapsed {
+  overflow: hidden;
+}
+
+/* Applied to the Splitter root while dragging — disables the flex transition on all panels */
 .Dragging .Panel {
   transition: none;
 }

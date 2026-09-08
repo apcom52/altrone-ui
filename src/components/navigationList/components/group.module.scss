@@ -15,11 +15,12 @@
   margin-bottom: 4px;
 }
 
-.Title {
+/* Two classes so it wins over `Text`'s own single-class `--text-color` /
+   `font-size` rules regardless of stylesheet order. */
+.Header .Title {
   padding-left: 6px;
   color: var(--navigation-list-group-text-color);
   font-size: var(--navigation-list-group-text-size);
-  font-weight: 500;
   line-height: 20px;
 }
 

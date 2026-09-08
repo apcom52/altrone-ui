@@ -1,79 +1,244 @@
-.ToolbarWrapper {
-  pointer-events: none;
-  padding: 0;
-}
-
 .Toolbar {
+  --toolbar-size: 56px;
+  --toolbar-inset: 12px;
+  --toolbar-gap: var(--gap);
+
+  /* Liquid-glass material. The `Group` pill stays a neutral translucent
+     capsule in every variant; the `glass` variant additionally gives the
+     whole strip an accent-tinted blurred fill. Both carry a specular line
+     along the top edge and a faint rim. */
+  --toolbar-pill-fill: var(--glass-background-color);
+  --toolbar-pill-blur: var(--glass-effects);
+  --toolbar-glass-fill: var(--color-header-backdrop);
+  --toolbar-glass-blur: var(--glass-effects);
+  --toolbar-glass-rim: var(--glass-border-color);
+  --toolbar-glass-highlight: rgb(255 255 255 / 0.55);
+
+  box-sizing: border-box;
   display: flex;
-  position: relative;
   align-items: center;
-  height: 56px;
+  gap: var(--toolbar-gap);
+  min-height: var(--toolbar-size);
+  padding-inline: var(--toolbar-inset);
 }
 
-.Absolute {
-  position: absolute;
+:global([data-altrone-theme='dark']) .Toolbar {
+  --toolbar-glass-highlight: rgb(255 255 255 / 0.12);
 }
 
-.Backdrop {
-  background: linear-gradient(to bottom, var(--gray-a8) 0%, transparent 100%);
+/* ── sizes ─────────────────────────────────────────────────── */
+
+.SizeMini {
+  --toolbar-size: 40px;
+  --toolbar-inset: 6px;
+  --toolbar-title-size: var(--text-size-3);
+  --toolbar-title-line-height: var(--line-height-3);
+  --toolbar-logo-size: 24px;
 }
 
-.Top {
-  width: 100%;
-
-  &.Absolute {
-    top: 0;
-    left: 0;
-  }
+.SizeS {
+  --toolbar-size: 48px;
+  --toolbar-inset: 8px;
+  --toolbar-title-size: var(--text-size-4);
+  --toolbar-title-line-height: var(--line-height-4);
+  --toolbar-logo-size: 28px;
 }
 
-.Bottom {
-  width: 100%;
-
-  &.Absolute {
-    bottom: 0;
-    left: 0;
-  }
-
-  &.Backdrop {
-    background: linear-gradient(to top, var(--gray-a8) 0%, transparent 100%);
-  }
+.SizeM {
+  --toolbar-size: 56px;
+  --toolbar-inset: 12px;
+  --toolbar-title-size: var(--text-size-5);
+  --toolbar-title-line-height: var(--line-height-5);
+  --toolbar-logo-size: 32px;
 }
 
-.Left {
-  height: 100%;
-  width: 72px;
-
-  &.Absolute {
-    top: 0;
-    left: 0;
-  }
-
-  &.Backdrop {
-    background: linear-gradient(to right, var(--gray-a8) 0%, transparent 100%);
-  }
+.SizeL {
+  --toolbar-size: 64px;
+  --toolbar-inset: 16px;
+  --toolbar-title-size: var(--text-size-6);
+  --toolbar-title-line-height: var(--line-height-6);
+  --toolbar-logo-size: 36px;
 }
 
-.Right {
-  height: 100%;
-  width: 72px;
-
-  &.Absolute {
-    top: 0;
-    right: 0;
-  }
-
-  &.Backdrop {
-    background: linear-gradient(to left, var(--gray-a8) 0%, transparent 100%);
-  }
+.SizeXl {
+  --toolbar-size: 72px;
+  --toolbar-inset: 20px;
+  --toolbar-title-size: var(--text-size-7);
+  --toolbar-title-line-height: var(--line-height-7);
+  --toolbar-logo-size: 40px;
 }
+
+/* ── vertical placement ────────────────────────────────────── */
 
 .Left,
 .Right {
-  padding: 8px;
+  flex-direction: column;
+  min-height: 0;
+  width: var(--toolbar-size);
+  min-width: var(--toolbar-size);
+  height: 100%;
+  padding-inline: 0;
+  padding-block: var(--toolbar-inset);
+}
 
-  .Toolbar {
-    height: 100%;
-    width: 56px;
-  }
+/* ── variants ──────────────────────────────────────────────────
+   plain    — no toolbar fill, groups flat (Group drops its `.Pill`).
+   floating — no toolbar fill, groups are glass pills, strip pinned to
+              its edge and click-through.
+   glass    — accent-tinted blurred toolbar fill + hairline, glass pills. */
+
+.Plain {
+  background: transparent;
+}
+
+.Glass {
+  background: var(--toolbar-background, var(--toolbar-glass-fill));
+  backdrop-filter: var(--toolbar-glass-blur);
+  -webkit-backdrop-filter: var(--toolbar-glass-blur);
+  box-shadow: inset 0 1px 0 0 var(--toolbar-glass-highlight);
+}
+
+.Glass.Top {
+  border-bottom: 1px solid var(--toolbar-glass-rim);
+}
+
+.Glass.Bottom {
+  border-top: 1px solid var(--toolbar-glass-rim);
+}
+
+.Glass.Left {
+  border-right: 1px solid var(--toolbar-glass-rim);
+}
+
+.Glass.Right {
+  border-left: 1px solid var(--toolbar-glass-rim);
+}
+
+/* `floating` pins itself to the `placement` edge of the nearest positioned
+   ancestor and lets the pointer fall through everywhere except its islands. */
+.Floating {
+  position: absolute;
+  background: transparent;
+  pointer-events: none;
+}
+
+.Floating.Top {
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.Floating.Bottom {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.Floating.Left {
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.Floating.Right {
+  top: 0;
+  right: 0;
+  height: 100%;
+}
+
+.FloatingInner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--toolbar-gap);
+  width: 100%;
+  min-height: var(--toolbar-size);
+}
+
+.Floating.Left .FloatingInner,
+.Floating.Right .FloatingInner {
+  flex-direction: column;
+  width: var(--toolbar-size);
+  min-height: 0;
+  height: 100%;
+}
+
+/* Only the interactive islands inside a floating toolbar catch the pointer —
+   the strip and the (full grid-track wide) regions stay click-through. */
+.Floating .FloatingInner,
+.Floating [data-toolbar-region] {
+  pointer-events: none;
+}
+
+.Floating .FloatingInner > *:not([data-toolbar-region]),
+.Floating [data-toolbar-region] > * {
+  pointer-events: auto;
+}
+
+/* ── sticky ────────────────────────────────────────────────── */
+
+.Sticky {
+  position: sticky;
+  z-index: var(--elevation-sticky-z-index);
+}
+
+.Sticky.Top {
+  top: 0;
+}
+
+.Sticky.Bottom {
+  bottom: 0;
+}
+
+.Sticky.Left,
+.Sticky.Right {
+  top: 0;
+}
+
+/* At rest the bar has only its specular line; once it's pinned and content
+   scrolls under it, add the sticky drop shadow (condensed-on-scroll look). */
+.Glass.Sticky {
+  box-shadow:
+    var(--elevation-sticky-shadow),
+    inset 0 1px 0 0 var(--toolbar-glass-highlight);
+}
+
+/* ── backdrop scrim (mainly for `floating` over content) ───── */
+
+.Backdrop.Top {
+  background: linear-gradient(to bottom, var(--gray-a8) 0%, transparent 100%);
+}
+
+.Backdrop.Bottom {
+  background: linear-gradient(to top, var(--gray-a8) 0%, transparent 100%);
+}
+
+.Backdrop.Left {
+  background: linear-gradient(to right, var(--gray-a8) 0%, transparent 100%);
+}
+
+.Backdrop.Right {
+  background: linear-gradient(to left, var(--gray-a8) 0%, transparent 100%);
+}
+
+/* ── region layout ─────────────────────────────────────────────
+   With Leading/Center/Trailing present, lay the toolbar out as a
+   3-track grid so Center stays optically centered no matter how wide
+   the side regions get. A flat list of actions/groups (no regions)
+   keeps the plain flex row from `.Toolbar`. `:has` crosses the CSS
+   Module boundary via the stable `data-toolbar-region` attribute. */
+
+.Glass:has(> [data-toolbar-region]),
+.Plain:has(> [data-toolbar-region]),
+.FloatingInner:has(> [data-toolbar-region]) {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+}
+
+.Left:has(> [data-toolbar-region]),
+.Right:has(> [data-toolbar-region]),
+.Floating.Left .FloatingInner:has(> [data-toolbar-region]),
+.Floating.Right .FloatingInner:has(> [data-toolbar-region]) {
+  grid-template-columns: none;
+  grid-template-rows: 1fr auto 1fr;
 }

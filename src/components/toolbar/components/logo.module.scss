@@ -1,0 +1,15 @@
+.Logo {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--toolbar-logo-size, 32px);
+  height: var(--toolbar-logo-size, 32px);
+}
+
+.Logo > svg,
+.Logo > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

@@ -1,6 +1,22 @@
 .Footer {
   position: sticky;
-  bottom: 0;
-  padding: var(--space-content);
+  /* 1px past the edge so `useStuck`'s IntersectionObserver can tell pinned
+     from at-rest. */
+  bottom: -1px;
   z-index: var(--level-fixed);
+  /* Bleed over the container's padding so the bar spans the full width and
+     its bottom corners sit flush with the container's rounding. */
+  margin: 0 calc(-1 * var(--navigation-list-padding))
+    calc(-1 * var(--navigation-list-padding));
+  padding: var(--space-content);
+  background: var(--navigation-list-chrome-background-color);
+  border-top: 1px solid var(--navigation-list-chrome-border-color);
+  border-radius: 0 0 var(--navigation-list-rounding)
+    var(--navigation-list-rounding);
+  transition: border-radius 0.15s ease;
+}
+
+/* Pinned: no rounding — it's no longer sitting in the container's corner. */
+.Footer[data-stuck] {
+  border-radius: 0;
 }
