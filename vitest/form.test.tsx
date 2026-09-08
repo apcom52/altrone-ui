@@ -1,16 +1,12 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import {
-  Configuration,
-  AltroneApplication,
-  Form,
-  TextInput,
-} from '../src/components';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { AltroneApplication, Form, TextInput } from '../src/components';
 
 class ResizeObserver {
   observe() {}
   unobserve() {}
+  disconnect() {}
 }
 
 beforeAll(() => {
@@ -145,7 +141,9 @@ describe('Form', () => {
       </AltroneApplication>,
     );
 
-    expect(screen.getByText('help_outline')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Hello, world!' }),
+    ).toBeInTheDocument();
   });
 
   test('check that className and style props works', () => {
@@ -163,32 +161,33 @@ describe('Form', () => {
     expect(screen.getByTestId('form')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
-  test('check that Form configuration works correctly', () => {
-    render(
+  test('submit is prevented by default, but left alone when a form action is set', () => {
+    const onSubmit = vi.fn();
+
+    const { rerender } = render(
       <AltroneApplication>
-        <Configuration
-          form={{
-            className: 'cls',
-            style: { color: 'rgb(0, 0, 255)' },
-            field: {
-              className: 'child-cls',
-              style: { color: 'red' },
-            },
-          }}
-        >
-          <Form data-testid="form">
-            <Form.Field data-testid="field" />
-          </Form>
-          ,
-        </Configuration>
+        <Form data-testid="form" onSubmit={onSubmit}>
+          <Form.Field label="Field" name="field">
+            <TextInput />
+          </Form.Field>
+        </Form>
       </AltroneApplication>,
     );
 
-    const form = screen.getByTestId('form');
-    const field = screen.getByTestId('field');
-    expect(form).toHaveClass('cls');
-    expect(form).toHaveStyle('color: rgb(0, 0, 255)');
-    expect(field).toHaveClass('child-cls');
-    expect(field).toHaveStyle('color: rgb(255, 0, 0)');
+    fireEvent.submit(screen.getByTestId('form'));
+    expect(onSubmit.mock.calls[0][0].defaultPrevented).toBe(true);
+
+    rerender(
+      <AltroneApplication>
+        <Form data-testid="form" action="/submit" onSubmit={onSubmit}>
+          <Form.Field label="Field" name="field">
+            <TextInput />
+          </Form.Field>
+        </Form>
+      </AltroneApplication>,
+    );
+
+    fireEvent.submit(screen.getByTestId('form'));
+    expect(onSubmit.mock.calls[1][0].defaultPrevented).toBe(false);
   });
 });

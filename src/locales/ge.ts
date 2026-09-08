@@ -188,4 +188,9 @@ export const ge: Localization = {
     previousMonth: 'Vorheriger Monat',
     nextMonth: 'Nächster Monat',
   },
+  splitter: {
+    collapsePanel: 'Bereich einklappen',
+    expandPanel: 'Bereich ausklappen',
+    panel: 'Bereich {{index}}',
+  },
 };

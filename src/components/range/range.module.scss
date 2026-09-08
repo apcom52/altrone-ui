@@ -92,11 +92,8 @@
   width: calc(var(--range-thumb-size) + var(--range-thumb-grow));
 }
 
-.Value {
-  position: absolute;
-  z-index: var(--level-tooltip);
-  bottom: calc(100% + 10px);
-  transform: translateX(-50%);
+.Value,
+.ValueFloating {
   padding: 2px 6px;
   border-radius: var(--radius-s);
   background-color: var(--range-value-text-color);
@@ -105,9 +102,20 @@
   line-height: 1.4;
   font-weight: var(--text-weight-medium);
   white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Inline chip — the `fill` variant only (see `.Fill .Value`). */
+.Value {
+  position: absolute;
+  z-index: var(--level-tooltip);
   opacity: 0;
   transition: opacity var(--motion-duration-fast) var(--motion-easing-standard);
-  pointer-events: none;
+}
+
+/* Anchored to the thumb through a portal; floating-ui sets position/transform. */
+.ValueFloating {
+  z-index: var(--level-tooltip);
 }
 
 .Icon {
@@ -272,12 +280,6 @@
     transition:
       width var(--motion-duration-fast) var(--motion-easing-standard),
       height var(--motion-duration-fast) var(--motion-easing-standard);
-  }
-
-  .Value {
-    bottom: auto;
-    left: calc(100% + 10px);
-    transform: translateY(50%);
   }
 }
 

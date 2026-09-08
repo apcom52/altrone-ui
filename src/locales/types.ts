@@ -179,4 +179,9 @@ export interface Localization {
     previousMonth: string;
     nextMonth: string;
   };
+  splitter: {
+    collapsePanel: string;
+    expandPanel: string;
+    panel: string;
+  };
 }

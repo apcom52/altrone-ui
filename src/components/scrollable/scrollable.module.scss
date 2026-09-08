@@ -1,8 +1,9 @@
-.ScrollableRoot {
+.Scrollable {
+  /** `min-height: 0` lets it shrink and scroll inside a flex column parent. */
   min-height: 0;
   height: 100%;
 }
 
-.Scrollable {
+.Os {
   height: 100%;
 }

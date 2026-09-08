@@ -1,7 +1,25 @@
 import { useMemo, useCallback, useRef, useEffect, useState } from 'react';
+import {
+  autoUpdate,
+  flip,
+  FloatingPortal,
+  offset as floatingOffset,
+  shift,
+  useFloating,
+} from '@floating-ui/react';
+import { AnimatePresence, motion } from 'motion/react';
 import { RangeProps } from './Range.types';
 import s from './range.module.scss';
 import clsx from 'clsx';
+
+/**
+ * `:focus-visible` in `Element.matches()` throws on browsers that don't support
+ * the selector; check once so the focus handler can fall back to plain focus.
+ */
+const FOCUS_VISIBLE_SUPPORTED =
+  typeof CSS !== 'undefined' &&
+  typeof CSS.supports === 'function' &&
+  CSS.supports('selector(:focus-visible)');
 
 export const Range = (props: RangeProps) => {
   const {
@@ -32,9 +50,25 @@ export const Range = (props: RangeProps) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFocusVisible, setIsFocusVisible] = useState(false);
+  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
 
   const isFill = variant === 'fill';
   const isVertical = direction === 'vertical';
+
+  /**
+   * The value bubble is anchored to the thumb through a portal, so it escapes
+   * any `overflow` ancestor (a scrolling `Drawer` body, a `Popover`, a table
+   * cell) instead of being clipped by it. The `fill` variant keeps its inline
+   * chip — it lives inside the slab and is meant to.
+   */
+  const { refs: valueRefs, floatingStyles: valueFloatingStyles } = useFloating({
+    open: true,
+    placement: isVertical ? 'right' : 'top',
+    middleware: [floatingOffset(10), flip(), shift({ padding: 8 })],
+    whileElementsMounted: autoUpdate,
+  });
 
   // Merge internal root ref with consumer ref.
   // Memoized so a changing callback-ref identity doesn't force React 19 to run
@@ -42,6 +76,12 @@ export const Range = (props: RangeProps) => {
   const mergedRef = useCallback(
     (node: HTMLDivElement | null) => {
       rootRef.current = node;
+      setPortalRoot(
+        node
+          ? ((node.closest('[data-altrone-root]') as HTMLElement) ??
+              document.body)
+          : null,
+      );
       if (typeof ref === 'function') {
         ref(node);
       } else if (ref) {
@@ -161,11 +201,23 @@ export const Range = (props: RangeProps) => {
   const showValue =
     showCurrentValue === 'always' || showCurrentValue === 'active';
 
+  const valueVisible =
+    showValue &&
+    (showCurrentValue === 'always' || isActive || isHovered || isFocusVisible);
+
   return (
     <div
       className={cls}
       style={style}
       onPointerDown={disabled || readOnly ? undefined : handlePointerDown}
+      onPointerEnter={() => setIsHovered(true)}
+      onPointerLeave={() => setIsHovered(false)}
+      onFocus={(event) =>
+        setIsFocusVisible(
+          FOCUS_VISIBLE_SUPPORTED ? event.target.matches(':focus-visible') : true,
+        )
+      }
+      onBlur={() => setIsFocusVisible(false)}
       ref={mergedRef}
       data-range-active={isActive}
       tabIndex={disabled || readOnly ? -1 : 0}
@@ -193,14 +245,37 @@ export const Range = (props: RangeProps) => {
               className={clsx(s.ActiveTrack, activeTrackClassName)}
               style={fillStyle}
             />
-            {!isFill ? <div className={s.Thumb} style={thumbStyle} /> : null}
+            {!isFill ? (
+              <div
+                ref={valueRefs.setReference}
+                className={s.Thumb}
+                style={thumbStyle}
+              />
+            ) : null}
             {icon && isFill ? <div className={s.Icon}>{icon}</div> : null}
-            {showValue ? (
-              <div className={s.Value} style={isFill ? undefined : thumbStyle}>
-                {labelElement}
-              </div>
+            {showValue && isFill ? (
+              <div className={s.Value}>{labelElement}</div>
             ) : null}
           </div>
+          {showValue && !isFill && portalRoot ? (
+            <FloatingPortal root={portalRoot}>
+              <AnimatePresence>
+                {valueVisible ? (
+                  <motion.div
+                    ref={valueRefs.setFloating}
+                    className={s.ValueFloating}
+                    style={valueFloatingStyles}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.12 }}
+                  >
+                    {labelElement}
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
+            </FloatingPortal>
+          ) : null}
         </>
       )}
     </div>

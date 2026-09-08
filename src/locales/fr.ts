@@ -187,4 +187,9 @@ export const fr: Localization = {
     previousMonth: 'Mois précédent',
     nextMonth: 'Mois suivant',
   },
+  splitter: {
+    collapsePanel: 'Réduire le panneau',
+    expandPanel: 'Développer le panneau',
+    panel: 'Panneau {{index}}',
+  },
 };

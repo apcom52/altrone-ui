@@ -188,4 +188,9 @@ export const sp: Localization = {
     previousMonth: 'Mes anterior',
     nextMonth: 'Mes siguiente',
   },
+  splitter: {
+    collapsePanel: 'Contraer panel',
+    expandPanel: 'Expandir panel',
+    panel: 'Panel {{index}}',
+  },
 };

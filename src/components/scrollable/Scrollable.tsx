@@ -1,54 +1,53 @@
-import { memo, useImperativeHandle, useRef } from 'react';
-import { ScrollableProps } from './Scrollable.types.ts';
+import { useMemo } from 'react';
 import clsx from 'clsx';
-import s from './scrollable.module.scss';
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import 'overlayscrollbars/overlayscrollbars.css';
-import 'components/scrollable/scrollable-theme.css';
-import {
-  OverlayScrollbarsComponent,
-  OverlayScrollbarsComponentRef,
-} from 'overlayscrollbars-react';
+import './scrollable-theme.css';
+import { ScrollableProps } from './Scrollable.types.ts';
+import s from './scrollable.module.scss';
 
-export const Scrollable = memo<ScrollableProps>(
-  ({ children, className, style, ref, overflowX, overflowY, ...props }) => {
-    const scrollableRef = useRef<OverlayScrollbarsComponentRef>(null);
-
-    useImperativeHandle(ref, () => {
-      const instance = scrollableRef.current?.osInstance() as HTMLDivElement;
-      return instance?.elements().viewport ?? null;
-    }, []);
-
-    const cls = clsx(s.Scrollable, className);
-
-    const styles = {
-      ...style,
-    };
-
-    return (
-      <div style={styles} className={s.ScrollableRoot} {...props}>
-        <OverlayScrollbarsComponent
-          defer
-          className={cls}
-          style={{ height: '100%' }}
-          options={{
-            scrollbars: {
-              autoHide: 'move',
-              autoHideDelay: 300,
+/**
+ * `ref` points at the wrapper element (the visible box), not the inner
+ * OverlayScrollbars viewport — that's the node overlays anchor to, and the
+ * viewport is an implementation detail of the scrollbar library.
+ */
+export const Scrollable = ({
+  ref,
+  children,
+  className,
+  style,
+  maxHeight,
+  overflowX,
+  overflowY,
+  ...restProps
+}: ScrollableProps) => {
+  const options = useMemo(
+    () => ({
+      scrollbars: { autoHide: 'move' as const, autoHideDelay: 300 },
+      ...(overflowX || overflowY
+        ? {
+            overflow: {
+              ...(overflowX ? { x: overflowX } : null),
+              ...(overflowY ? { y: overflowY } : null),
             },
-            ...(overflowX || overflowY
-              ? {
-                  overflow: {
-                    ...(overflowX ? { x: overflowX } : {}),
-                    ...(overflowY ? { y: overflowY } : {}),
-                  },
-                }
-              : {}),
-          }}
-          ref={scrollableRef}
-        >
-          {children}
-        </OverlayScrollbarsComponent>
-      </div>
-    );
-  },
-);
+          }
+        : null),
+    }),
+    [overflowX, overflowY],
+  );
+
+  return (
+    <div
+      ref={ref}
+      className={clsx(s.Scrollable, className)}
+      style={
+        maxHeight != null ? { ...style, maxHeight, height: 'auto' } : style
+      }
+      {...restProps}
+    >
+      <OverlayScrollbarsComponent defer className={s.Os} options={options}>
+        {children}
+      </OverlayScrollbarsComponent>
+    </div>
+  );
+};

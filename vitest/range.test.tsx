@@ -1,12 +1,7 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import {
-  Configuration,
-  AltroneApplication,
-  Radio,
-  Range,
-} from '../src/components';
+import { AltroneApplication, Range } from '../src/components';
 
 describe('Range', () => {
   test('check that inner input has all necessary attributes', () => {
@@ -66,15 +61,14 @@ describe('Range', () => {
     expect(element2).toHaveAttribute('aria-valuetext', '44m2');
   });
 
-  test('check renderLabel prop works', () => {
+  test('renderLabel drives the visible read-only label', () => {
     render(
       <AltroneApplication>
         <Range
           value={44}
           onChange={() => null}
-          direction="vertical"
+          readOnly
           data-testid="range2"
-          disabled
           renderLabel={(value) => `${value}m2`}
         />
       </AltroneApplication>,
@@ -105,26 +99,23 @@ describe('Range', () => {
     expect(element).toHaveClass('active-cls');
   });
 
-  test('check that configuration works correctly', () => {
-    const { container } = render(
+  test('value bubble portals out of the root so an overflow ancestor cannot clip it', () => {
+    render(
       <AltroneApplication>
-        <Configuration
-          range={{
-            className: 'cls',
-            style: { color: 'rgb(0, 0, 255)' },
-            activeTrackClassName: 'active-cls',
-          }}
-        >
-          <Range value={44} onChange={() => null} data-testid="range" />
-        </Configuration>
+        <Range
+          value={30}
+          onChange={() => null}
+          showCurrentValue="always"
+          data-testid="range3"
+          renderLabel={(value) => `${value}%`}
+        />
       </AltroneApplication>,
     );
 
-    const element = screen.getByTestId('range');
-    expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
+    const root = screen.getByTestId('range3');
+    const bubble = screen.getByText('30%');
 
-    const element2 = container.querySelector('.active-cls');
-    expect(element2).toBeInTheDocument();
+    expect(bubble).toBeInTheDocument();
+    expect(root).not.toContainElement(bubble);
   });
 });

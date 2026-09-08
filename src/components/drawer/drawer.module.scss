@@ -2,71 +2,91 @@
   --drawer-background-color: var(--glass-background-color);
   --drawer-header-text-color: var(--text-2);
   --drawer-backdrop-color: var(--color-overlay-scrim);
-  --drawer-rounding: 24px;
-}
-
-.DrawerWrapper {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  z-index: var(--level-offcanvas-backdrop);
-}
-
-.Backdrop {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  z-index: var(--level-offcanvas-backdrop);
-  background-color: var(--drawer-backdrop-color);
+  --drawer-border-radius: 24px;
+  --drawer-padding: var(--space-content);
+  --drawer-content-padding: var(--l-gap);
 }
 
 .Drawer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--level-offcanvas-backdrop);
+  /** Clip the panel while it sits off-screen during the slide, so it doesn't
+      add a page-level horizontal scrollbar. */
+  overflow: hidden;
+}
+
+.Backdrop {
   position: absolute;
+  inset: 0;
+  background-color: var(--drawer-backdrop-color);
+}
+
+.Panel {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  height: calc(100vh - 16px);
+  max-width: calc(100vw - 16px);
   z-index: var(--level-offcanvas);
   display: flex;
   flex-direction: column;
-  top: 8px;
-  left: 0;
-  height: calc(100vh - 16px);
-  gap: 16px;
-  border-radius: var(--drawer-rounding);
+  border-radius: var(--drawer-border-radius);
   background: var(--drawer-background-color);
   backdrop-filter: var(--glass-effects);
-  padding: 0;
   box-shadow: var(--elevation-overlay-shadow);
+  /** Enter/exit scale grows out of the screen edge the panel slides from. */
+  transform-origin: left center;
 }
 
-.EndSide {
+.End .Panel {
   left: unset;
-  right: 0;
+  right: 8px;
+  transform-origin: right center;
 }
 
-.Content {
-}
-
-.DrawerBody {
+.Body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 8px;
-  gap: 8px;
+  padding: var(--drawer-padding);
+  gap: var(--gap);
+
+  &:focus-visible {
+    outline: none;
+  }
 }
 
-.DrawerHeader {
+.Header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--gap);
+  min-height: 32px;
 }
 
-.DrawerTitle {
-  flex: 1;
+/**
+ * The two action groups share the row equally (`flex: 1 1 0`), so the title
+ * between them stays centred on the panel regardless of how many buttons land
+ * on either side.
+ */
+.HeaderSide {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--xs-gap);
+}
+
+.HeaderEnd {
+  justify-content: flex-end;
+}
+
+.Title {
+  flex: 0 1 auto;
+  min-width: 0;
   font-size: var(--text-size-4);
   font-weight: var(--text-weight-bold);
-  line-height: var(--text-line-height-4);
+  line-height: var(--line-height-4);
   color: var(--drawer-header-text-color);
   text-align: center;
   overflow: hidden;
@@ -74,12 +94,25 @@
   white-space: nowrap;
 }
 
-.DrawerContent {
+.Content {
   flex: 1;
   min-height: 0;
   display: flex;
   flex-direction: column;
+  /**
+   * Pull the scroll viewport out to the panel edges, cancelling the body
+   * padding, so the gutter can live *inside* the scroll box (`.ScrollInset`).
+   * Otherwise the viewport clips focus rings and shadows on edge content
+   * before they reach the visible panel edge.
+   */
+  margin: calc(var(--gap) * -1) calc(var(--drawer-padding) * -1)
+    calc(var(--drawer-padding) * -1);
 }
 
-.DrawerFooter {
+.ScrollInset {
+  padding: var(--drawer-content-padding);
+}
+
+.Footer {
+  flex-shrink: 0;
 }

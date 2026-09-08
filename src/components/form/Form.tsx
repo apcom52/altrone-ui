@@ -1,62 +1,51 @@
-import { FormEventHandler, memo, useMemo } from 'react';
+import { FormEventHandler, useMemo } from 'react';
+import clsx from 'clsx';
+import { AnyObject } from 'utils';
 import { FormContextType, FormProps } from './Form.types.ts';
-import { Flex } from 'components/flex';
+import { FormContext } from './Form.context.ts';
 import { Field } from './components';
 import s from './form.module.scss';
-import { FormContext } from './Form.context.ts';
-import clsx from 'clsx';
 
-const FormComponent = memo(
-  <FormState extends Record<string, unknown>>({
-    ref,
-    children,
-    errorMessages = {},
-    disabled,
-    onSubmit,
-    size = 'm',
-    className,
-    style,
-    ...restProps
-  }: FormProps<FormState>) => {
-    const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+const FormComponent = <FormState extends AnyObject>({
+  ref,
+  children,
+  errorMessages = {},
+  disabled,
+  onSubmit,
+  size = 'm',
+  className,
+  style,
+  ...restProps
+}: FormProps<FormState>) => {
+  const formContext = useMemo<FormContextType>(
+    () => ({ errorMessages, disabled, size }),
+    [errorMessages, disabled, size],
+  );
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    /**
+     * Leave a native `<form action>` (e.g. a Server Action) alone — only take
+     * over the submit when the consumer handles it in JS via `onSubmit`.
+     */
+    if (!restProps.action) {
       event.preventDefault();
-      onSubmit?.(event);
-    };
+    }
+    onSubmit?.(event);
+  };
 
-    const formContext = useMemo<FormContextType>(
-      () => ({
-        errorMessages,
-        disabled,
-        size,
-      }),
-      [errorMessages, disabled, size],
-    );
+  return (
+    <form
+      ref={ref}
+      className={clsx(s.Form, className)}
+      style={style}
+      onSubmit={handleSubmit}
+      {...restProps}
+    >
+      <FormContext.Provider value={formContext}>
+        <div className={s.FieldStack}>{children}</div>
+      </FormContext.Provider>
+    </form>
+  );
+};
 
-    const cls = clsx(s.Form, className);
-    const styles = {
-      ...style,
-    };
-
-    return (
-      <form
-        className={cls}
-        style={styles}
-        ref={ref}
-        onSubmit={handleSubmit}
-        {...restProps}
-      >
-        <FormContext.Provider value={formContext}>
-          <Flex direction="vertical" align="start" gap="l">
-            {children}
-          </Flex>
-        </FormContext.Provider>
-      </form>
-    );
-  },
-);
-
-const FormNamespace = Object.assign(FormComponent, {
-  Field: Field,
-});
-
-export { FormNamespace as Form };
+export const Form = Object.assign(FormComponent, { Field });

@@ -19,83 +19,191 @@ const story: Meta<typeof Scrollable> = {
   },
 };
 
-export const ScrollableStory: StoryObj<typeof Scrollable> = {
-  name: 'Using Scrollable',
+export default story;
+
+const Heading = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={7} weight="bold" style={{ marginTop: 8 }}>
+    {children}
+  </Text>
+);
+
+const Paragraph = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={4} style={{ maxWidth: 680, lineHeight: 1.6 }} color="muted">
+    {children}
+  </Text>
+);
+
+const CountryList = ({ count = COUNTRIES.length }: { count?: number }) => (
+  <Flex
+    direction="vertical"
+    gap="s"
+    style={{ padding: 'var(--space-content)' }}
+  >
+    {COUNTRIES.slice(0, count).map((item) => (
+      <Flex key={item.country} direction="horizontal" gap="s" align="center">
+        <Text size={5}>{item.flag}</Text>
+        <Text size={4}>
+          <Text weight="bold">{item.country}</Text> — {item.capital}
+        </Text>
+      </Flex>
+    ))}
+  </Flex>
+);
+
+const Frame = ({
+  children,
+  height = 240,
+  width = 320,
+}: {
+  children: React.ReactNode;
+  height?: number;
+  width?: number;
+}) => (
+  <Flex
+    direction="vertical"
+    style={{
+      height,
+      width,
+      border: '1px solid var(--border-1)',
+      borderRadius: 'var(--radius-l)',
+      overflow: 'hidden',
+    }}
+  >
+    {children}
+  </Flex>
+);
+
+export const Overview: StoryObj<typeof Scrollable> = {
+  name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="xl">
-      <Text block size={5} weight="bold">
-        Overflow content
+    <Flex direction="vertical" gap="l" align="start" style={{ padding: 24 }}>
+      <Text block size={9} weight="bold">
+        Scrollable
       </Text>
-      <div style={{ height: '240px' }}>
-        <Scrollable>
-          <Flex direction="vertical" gap="m" style={{ padding: '8px 12px' }}>
-            {COUNTRIES.map((item) => (
-              <Flex key={item.country} direction="horizontal" gap="m" align="center">
-                <span style={{ fontSize: 24 }}>{item.flag}</span>
-                <Text>
-                  <Text weight="bold">{item.country}</Text>
-                  {' — '}
-                  {item.capital}
-                </Text>
-              </Flex>
-            ))}
-          </Flex>
-        </Scrollable>
-      </div>
+      <Paragraph>
+        A wrapper that scrolls its overflow behind a thin, auto-hiding,
+        theme-aware scrollbar that overlays the content instead of taking
+        layout width the way a native scrollbar does. Reach for it where a
+        native <Text code>overflow: auto</Text> bar would look heavy — side
+        panels, dropdown menus, a <Text code>Drawer</Text> body.
+      </Paragraph>
+      <Paragraph>
+        By default the box fills its parent's height, so the parent must be
+        sized. Pass <Text code>maxHeight</Text> when there is no such parent.
+      </Paragraph>
 
-      <Text block size={5} weight="bold">
-        Content that fits — no scroll
-      </Text>
-      <div style={{ height: '240px' }}>
-        <Scrollable>
-          <Flex direction="vertical" gap="m" style={{ padding: '8px 12px' }}>
-            {COUNTRIES.slice(0, 3).map((item) => (
-              <Flex key={item.country} direction="horizontal" gap="m" align="center">
-                <span style={{ fontSize: 24 }}>{item.flag}</span>
-                <Text>
-                  <Text weight="bold">{item.country}</Text>
-                  {' — '}
-                  {item.capital}
-                </Text>
-              </Flex>
-            ))}
-          </Flex>
-        </Scrollable>
-      </div>
+      <Heading>Filling a sized parent</Heading>
+      <Paragraph>
+        The common case: a fixed-height container, Scrollable stretched to it.
+        When the content is shorter than the box, no scrollbar appears.
+      </Paragraph>
+      <Flex direction="horizontal" gap="l" wrap>
+        <Frame>
+          <Scrollable>
+            <CountryList />
+          </Scrollable>
+        </Frame>
+        <Frame>
+          <Scrollable>
+            <CountryList count={3} />
+          </Scrollable>
+        </Frame>
+      </Flex>
 
-      <Text block size={5} weight="bold">
-        Inside a panel
-      </Text>
-      <Flex direction="horizontal" gap="l" style={{ height: '300px' }}>
-        <div
+      <Heading>maxHeight — grow, then scroll</Heading>
+      <Paragraph>
+        With no sized parent to fill, <Text code>maxHeight</Text> lets the box
+        grow with its content up to the cap and scroll past it. This is how
+        dropdown menus keep a long option list in check.
+      </Paragraph>
+      <Flex direction="horizontal" gap="l" wrap align="start">
+        <Flex
+          direction="vertical"
           style={{
-            width: '260px',
-            height: '100%',
+            width: 260,
             border: '1px solid var(--border-1)',
-            borderRadius: '8px',
+            borderRadius: 'var(--radius-l)',
             overflow: 'hidden',
           }}
         >
-          <Scrollable>
-            <Flex direction="vertical" gap="m" style={{ padding: '12px' }}>
-              {COUNTRIES.map((item) => (
-                <Flex key={item.country} direction="horizontal" gap="m" align="center">
-                  <span style={{ fontSize: 20 }}>{item.flag}</span>
-                  <Text size={4}>{item.country}</Text>
-                </Flex>
-              ))}
-            </Flex>
+          <Scrollable maxHeight={200}>
+            <CountryList />
           </Scrollable>
-        </div>
-        <Flex direction="vertical" gap="s">
-          <Text block weight="bold">Select a country from the list</Text>
-          <Text block color="muted" size={3}>
-            Scroll through the list on the left to find a country.
-          </Text>
+        </Flex>
+        <Flex
+          direction="vertical"
+          style={{
+            width: 260,
+            border: '1px solid var(--border-1)',
+            borderRadius: 'var(--radius-l)',
+            overflow: 'hidden',
+          }}
+        >
+          <Scrollable maxHeight={200}>
+            <CountryList count={3} />
+          </Scrollable>
         </Flex>
       </Flex>
+
+      <Heading>Per-axis overflow</Heading>
+      <Paragraph>
+        <Text code>overflowX</Text> and <Text code>overflowY</Text> each take an
+        OverlayScrollbars behaviour (<Text code>'scroll'</Text>,{' '}
+        <Text code>'hidden'</Text>, <Text code>'visible'</Text>, …) and default
+        to <Text code>'scroll'</Text>. Here the row scrolls sideways only.
+      </Paragraph>
+      <Frame width={360} height={120}>
+        <Scrollable overflowX="scroll" overflowY="hidden">
+          <Flex
+            direction="horizontal"
+            gap="s"
+            style={{ padding: 'var(--space-content)', width: 'max-content' }}
+          >
+            {COUNTRIES.map((item) => (
+              <Flex
+                key={item.country}
+                direction="horizontal"
+                gap="xs"
+                align="center"
+                style={{
+                  padding: '4px 10px',
+                  borderRadius: 'var(--radius-pill)',
+                  background: 'var(--interactive-1)',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <Text size={4}>{item.flag}</Text>
+                <Text size={3}>{item.country}</Text>
+              </Flex>
+            ))}
+          </Flex>
+        </Scrollable>
+      </Frame>
+
+      <Heading>Inside a flex column</Heading>
+      <Paragraph>
+        The wrapper sets <Text code>min-height: 0</Text>, so it shrinks and
+        scrolls next to a fixed header in a flex column instead of pushing the
+        column taller.
+      </Paragraph>
+      <Frame>
+        <Flex
+          direction="horizontal"
+          align="center"
+          style={{
+            padding: 'var(--space-content)',
+            borderBottom: '1px solid var(--border-1)',
+            flexShrink: 0,
+          }}
+        >
+          <Text weight="bold">Countries</Text>
+        </Flex>
+        <Flex direction="vertical" style={{ flex: 1, minHeight: 0 }}>
+          <Scrollable>
+            <CountryList />
+          </Scrollable>
+        </Flex>
+      </Frame>
     </Flex>
   ),
 };
-
-export default story;

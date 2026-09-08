@@ -1,11 +1,12 @@
 import React from 'react';
-import { expect, test, describe } from 'vitest';
+import { expect, test, describe, beforeAll } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Configuration, List, Scrollable } from '../src/components';
+import { Scrollable } from '../src/components';
 
 class ResizeObserver {
   observe() {}
   unobserve() {}
+  disconnect() {}
 }
 
 beforeAll(() => {
@@ -14,15 +15,18 @@ beforeAll(() => {
 });
 
 describe('Scrollable', () => {
-  test('check that render works correctly', () => {
+  test('renders its children', () => {
     render(<Scrollable>scroll content</Scrollable>);
 
     expect(screen.getByText('scroll content')).toBeInTheDocument();
   });
 
-  test('check that className and style props works', () => {
+  test('className, style and ref all resolve to the wrapper element', () => {
+    const ref = React.createRef<HTMLDivElement>();
+
     render(
       <Scrollable
+        ref={ref}
         data-testid="scroll"
         className="cls"
         style={{ fontSize: '18px' }}
@@ -31,21 +35,22 @@ describe('Scrollable', () => {
       </Scrollable>,
     );
 
-    expect(screen.getByTestId('scroll')).toHaveClass('cls');
-    expect(screen.getByTestId('scroll')).toHaveStyle('font-size: 18px');
+    const wrapper = screen.getByTestId('scroll');
+    expect(wrapper).toHaveClass('cls');
+    expect(wrapper).toHaveStyle('font-size: 18px');
+    expect(ref.current).toBe(wrapper);
   });
 
-  test('check that Scrollable configuration works correctly', () => {
+  test('maxHeight caps the box and drops the parent-filling height', () => {
     render(
-      <Configuration
-        scrollable={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
-      >
-        <Scrollable data-testid="element">scroll content</Scrollable>
-      </Configuration>,
+      <Scrollable maxHeight={200} data-testid="scroll">
+        scroll content
+      </Scrollable>,
     );
 
-    const element = screen.getByTestId('element');
-    expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
+    expect(screen.getByTestId('scroll')).toHaveStyle({
+      maxHeight: '200px',
+      height: 'auto',
+    });
   });
 });

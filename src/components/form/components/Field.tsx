@@ -1,83 +1,76 @@
-import { memo, useMemo } from 'react';
-import type { FormFieldProps } from '../Form.types.ts';
-import s from './field.module.scss';
-import { Tooltip } from 'components/tooltip';
-import { HelpCircle } from 'lucide-react';
+import { useMemo } from 'react';
 import clsx from 'clsx';
+import { HelpCircle } from 'lucide-react';
+import { Tooltip } from 'components/tooltip';
+import type { FormFieldProps } from '../Form.types.ts';
 import { useFormContext } from '../Form.context.ts';
 import { FormFieldContext } from './Field.context.ts';
+import s from './field.module.scss';
 
-export const Field = memo<FormFieldProps>(
-  ({
-    ref,
-    children,
-    label,
-    required,
-    hintText,
-    disabled,
-    name,
-    errorMessage,
-    description,
-    className,
-    style,
-    ...restProps
-  }) => {
-    const formState = useFormContext();
+export const Field = ({
+  ref,
+  children,
+  label,
+  required,
+  hintText,
+  disabled,
+  name,
+  errorMessage,
+  description,
+  className,
+  style,
+  ...restProps
+}: FormFieldProps) => {
+  const form = useFormContext();
 
-    const errorMessageContent =
-      errorMessage || formState.errorMessages?.[String(name)] || '';
-    const invalidField = Boolean(errorMessageContent);
+  const resolvedError =
+    errorMessage || (name ? form.errorMessages?.[name] : undefined) || '';
+  const invalid = Boolean(resolvedError);
 
-    const hintElement = hintText?.trim() ? (
-      <Tooltip content={hintText}>
-        <button type="button" className={s.HintIcon} aria-label={hintText}>
-          <HelpCircle size={12} />
-        </button>
-      </Tooltip>
-    ) : null;
+  const fieldContext = useMemo(
+    () => ({
+      name,
+      disabled:
+        typeof disabled === 'boolean' ? disabled : (form.disabled ?? false),
+      invalid,
+      size: form.size,
+    }),
+    [name, disabled, invalid, form.disabled, form.size],
+  );
 
-    const cls = clsx(
-      s.Field,
-      {
-        [s.Disabled]: disabled,
-        [s.Invalid]: invalidField,
-      },
-      className,
-    );
+  const hintElement = hintText?.trim() ? (
+    <Tooltip content={hintText}>
+      <button type="button" className={s.HintIcon} aria-label={hintText}>
+        <HelpCircle size={12} />
+      </button>
+    </Tooltip>
+  ) : null;
 
-    const styles = {
-      ...style,
-    };
-
-    const fieldContext = useMemo(() => {
-      return {
-        name,
-        disabled:
-          typeof disabled === 'boolean'
-            ? disabled
-            : formState.disabled || false,
-        invalid: invalidField,
-        size: formState.size,
-      };
-    }, [name, invalidField, formState.size, formState.disabled, disabled]);
-
-    return (
-      <FormFieldContext.Provider value={fieldContext}>
-        <div ref={ref} className={cls} style={styles} {...restProps}>
-          <div className={s.Label}>
-            {label}
-            {required ? <div className={s.Asterisk}>*</div> : null}
-            {hintElement}
-          </div>
-          <div className={s.Control}>{children}</div>
-          {invalidField ? (
-            <div className={s.ErrorMessage}>{errorMessageContent}</div>
-          ) : null}
-          {description ? (
-            <div className={s.Description}>{description}</div>
-          ) : null}
+  return (
+    <FormFieldContext.Provider value={fieldContext}>
+      <div
+        ref={ref}
+        className={clsx(
+          s.Field,
+          { [s.Disabled]: disabled, [s.Invalid]: invalid },
+          className,
+        )}
+        style={style}
+        {...restProps}
+      >
+        <div className={s.Label}>
+          {label}
+          {required ? <span className={s.Asterisk}>*</span> : null}
+          {hintElement}
         </div>
-      </FormFieldContext.Provider>
-    );
-  },
-);
+        <div className={s.Control}>{children}</div>
+        {invalid ? (
+          <div className={s.ErrorMessage}>{resolvedError}</div>
+        ) : null}
+        {description ? (
+          <div className={s.Description}>{description}</div>
+        ) : null}
+      </div>
+    </FormFieldContext.Provider>
+  );
+};

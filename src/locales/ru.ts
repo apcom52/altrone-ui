@@ -187,4 +187,9 @@ export const ru: Localization = {
     previousMonth: 'Предыдущий месяц',
     nextMonth: 'Следующий месяц',
   },
+  splitter: {
+    collapsePanel: 'Свернуть панель',
+    expandPanel: 'Развернуть панель',
+    panel: 'Панель {{index}}',
+  },
 };

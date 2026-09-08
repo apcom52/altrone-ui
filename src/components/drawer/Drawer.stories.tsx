@@ -1,382 +1,253 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import {
   Button,
-  DataGrid,
   Flex,
   Form,
-  Radio,
-  Select,
-  Spoiler,
-  Switcher,
-  Textarea,
+  Text,
   TextInput,
+  Textarea,
+  Spoiler,
 } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Drawer } from './Drawer.tsx';
-import { DATA_GRID_DATA } from 'components/dataGrid/DataGrid.constants.ts';
-import { DeployDrawerStory } from './stories/Drawer.story.Deploy.tsx';
+import { FilterPanelStory } from './stories/Drawer.story.FilterPanel.tsx';
+import { RecordDetailStory } from './stories/Drawer.story.RecordDetail.tsx';
+import { Bell, History, PanelRight, Share2, SlidersHorizontal } from 'lucide-react';
 
 const story: Meta<typeof Drawer> = {
   title: 'Components/Containers/Drawer',
   component: Drawer,
   decorators: [StorybookDecorator],
-  args: {},
-  argTypes: {},
   parameters: {
     chromatic: {
       modes: {
         light: allModes['light desktop'],
+        dark: allModes['dark desktop'],
       },
     },
   },
 };
 
-export const PaginationStory: StoryObj<typeof Drawer> = {
-  name: 'Using Drawer',
-  render: () => {
-    return (
-      <Flex direction="vertical" gap="l" align="start">
-        <Drawer
-          title="Very Long Drawer Title with a lot of text that should wrap"
-          onDone={() => {
-            return new Promise((resolve) => {
-              setTimeout(() => {
-                resolve(true);
-              }, 1000);
-            });
-          }}
-          content={
-            <DataGrid
-              data={DATA_GRID_DATA}
-              onChange={() => {}}
-              mode="read"
-              showToolbar={false}
-              onChangeMode={() => {}}
-              fields={[
-                {
-                  accessor: 'username',
-                  label: 'Object Name',
-                  type: 'string',
-                  maxLength: 40,
-                },
-                {
-                  accessor: 'description',
-                  label: 'Description',
-                  type: 'text',
-                  maxLength: 500,
-                },
-                {
-                  accessor: 'age',
-                  label: 'Protocol Version (field with a very long label)',
-                  type: 'number',
-                  min: 0,
-                  max: 300,
-                },
-                {
-                  accessor: 'salary',
-                  label: 'Energy Balance',
-                  type: 'currency',
-                  currency: 'CRD', // fictional currency "Creds"
-                },
-                {
-                  accessor: 'secretKey',
-                  label: 'Security Key',
-                  type: 'password',
-                },
-                {
-                  accessor: 'birthDate',
-                  label: 'Activation Date',
-                  type: 'date',
-                  minDate: '2000-01-01',
-                },
-                {
-                  accessor: 'contractMonth',
-                  label: 'Sync Month',
-                  type: 'date',
-                  level: 'month',
-                },
-                {
-                  accessor: 'foundationYear',
-                  label: 'Log Year',
-                  type: 'date',
-                  level: 'year',
-                },
-                {
-                  accessor: 'isActive',
-                  label: 'Active',
-                  type: 'boolean',
-                },
-                {
-                  accessor: 'isActive',
-                  type: 'boolean',
-                  trueLabel: 'Yes',
-                  falseLabel: 'No',
-                },
-                {
-                  accessor: 'role',
-                  label: 'Category',
-                  type: 'select',
-                  options: [
-                    { value: 'observer', label: 'Observer' },
-                    { value: 'executor', label: 'Executor' },
-                    { value: 'sentinel', label: 'Sentinel' },
-                    { value: 'archivist', label: 'Archivist' },
-                  ],
-                },
-                {
-                  accessor: 'roles',
-                  label: 'Categories',
-                  type: 'select',
-                  multiple: true,
-                  options: [
-                    { value: 'observer', label: 'Observer' },
-                    { value: 'executor', label: 'Executor' },
-                    { value: 'sentinel', label: 'Sentinel' },
-                    { value: 'archivist', label: 'Archivist' },
-                  ],
-                },
-                {
-                  accessor: 'website',
-                  label: 'Archive Link',
-                  type: 'link',
-                  linkText: 'Open Record',
-                  linkTransformer: (value) => String(value),
-                },
-                {
-                  accessor: 'themeColor',
-                  label: 'Theme Color',
-                  type: 'color',
-                  colorPresets: [
-                    { name: 'Purple', title: 'Purple', value: '#7F5DFF' },
-                    { name: 'Orange', title: 'Orange', value: '#FF7F5D' },
-                    { name: 'Green', title: 'Green', value: '#5DFF7F' },
-                    { name: 'Blue', title: 'Blue', value: '#5D7FFF' },
-                  ],
-                  allowPalette: true,
-                },
-              ]}
-            />
-          }
-        >
-          <Button label="Open drawer" />
+export default story;
+
+const Heading = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={7} weight="bold" style={{ marginTop: 8 }}>
+    {children}
+  </Text>
+);
+
+const Paragraph = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={4} style={{ maxWidth: 680, lineHeight: 1.6 }} color="muted">
+    {children}
+  </Text>
+);
+
+const filler = (
+  <Flex direction="vertical" gap="m">
+    <Text block size={4}>
+      A drawer suits a task long enough to need its own space but not important
+      enough to seize the screen — a filter set, a detail view, a form the user
+      fills without losing sight of where they came from.
+    </Text>
+    <Text block size={4}>
+      The panel scrolls its own content, so it is the right home for something
+      that would burst a <Text code>Modal</Text>. Keep the header action to a
+      single confirming choice.
+    </Text>
+  </Flex>
+);
+
+const longForm = (
+  <Form>
+    <Form.Field label="Project name">
+      <TextInput />
+    </Form.Field>
+    <Form.Field label="Slug">
+      <TextInput />
+    </Form.Field>
+    <Form.Field label="Description">
+      <Textarea />
+    </Form.Field>
+    <Spoiler title="Advanced">
+      <Form>
+        <Form.Field label="Repository URL">
+          <TextInput />
+        </Form.Field>
+        <Form.Field label="Build command">
+          <TextInput />
+        </Form.Field>
+        <Form.Field label="Notes">
+          <Textarea />
+        </Form.Field>
+      </Form>
+    </Spoiler>
+  </Form>
+);
+
+export const Overview: StoryObj<typeof Drawer> = {
+  name: 'Overview',
+  render: () => (
+    <Flex direction="vertical" gap="l" align="start" style={{ padding: 24 }}>
+      <Text block size={9} weight="bold">
+        Drawer
+      </Text>
+      <Paragraph>
+        A panel that slides in from the edge of the screen over a dimmed
+        backdrop. The trigger is whatever you pass as{' '}
+        <Text code>children</Text> — Drawer clones it and adds its own{' '}
+        <Text code>onClick</Text> alongside any handler the element already had.
+        Open state is managed internally; reach <Text code>closeDrawer</Text>{' '}
+        through the render-prop form of <Text code>content</Text>,{' '}
+        <Text code>footer</Text>, <Text code>startActions</Text>, or{' '}
+        <Text code>endActions</Text>.
+      </Paragraph>
+      <Paragraph>
+        Focus is trapped inside the panel while it is open and returns to the
+        trigger on close. <Text kbd>Esc</Text> and a click on the backdrop both
+        close it.
+      </Paragraph>
+
+      <Heading>Anatomy</Heading>
+      <Paragraph>
+        A header with a close button and an action group on each side, with the{' '}
+        <Text code>title</Text> centred on the panel between them; a scrollable{' '}
+        <Text code>content</Text> area; and an optional <Text code>footer</Text>{' '}
+        pinned below the scroll. Passing <Text code>onDone</Text> puts a submit
+        button in the header.
+      </Paragraph>
+      <Drawer title="Edit project" content={longForm} onDone={async () => {}}>
+        <Button label="Open drawer" icon={<PanelRight />} />
+      </Drawer>
+
+      <Heading>Placement</Heading>
+      <Paragraph>
+        <Text code>placement="start"</Text> (default) slides in from the left,{' '}
+        <Text code>placement="end"</Text> from the right. Match it to where the
+        trigger lives and what the panel is for — navigation on the start edge,
+        contextual detail on the end.
+      </Paragraph>
+      <Flex direction="horizontal" gap="m" wrap>
+        <Drawer title="Navigation" placement="start" content={filler}>
+          <Button label="From the start" icon={<SlidersHorizontal />} />
         </Drawer>
-        <Drawer
-          title="Very Long Drawer Title with a lot of text that should wrap"
-          placement="end"
-          width={600}
-          content={
-            <DataGrid
-              data={DATA_GRID_DATA}
-              onChange={() => {}}
-              mode="read"
-              showToolbar={false}
-              onChangeMode={() => {}}
-              fields={[
-                {
-                  accessor: 'username',
-                  label: 'Object Name',
-                  type: 'string',
-                  maxLength: 40,
-                },
-                {
-                  accessor: 'description',
-                  label: 'Description',
-                  type: 'text',
-                  maxLength: 500,
-                },
-                {
-                  accessor: 'age',
-                  label: 'Protocol Version',
-                  type: 'number',
-                  min: 0,
-                  max: 300,
-                },
-                {
-                  accessor: 'salary',
-                  label: 'Energy Balance',
-                  type: 'currency',
-                  currency: 'CRD', // fictional currency "Creds"
-                },
-                {
-                  accessor: 'secretKey',
-                  label: 'Security Key',
-                  type: 'password',
-                },
-                {
-                  accessor: 'birthDate',
-                  label: 'Activation Date',
-                  type: 'date',
-                  minDate: '2000-01-01',
-                },
-                {
-                  accessor: 'contractMonth',
-                  label: 'Sync Month',
-                  type: 'date',
-                  level: 'month',
-                },
-                {
-                  accessor: 'foundationYear',
-                  label: 'Log Year',
-                  type: 'date',
-                  level: 'year',
-                },
-                {
-                  accessor: 'isActive',
-                  label: 'Active',
-                  type: 'boolean',
-                },
-                {
-                  accessor: 'isActive',
-                  type: 'boolean',
-                  trueLabel: 'Yes',
-                  falseLabel: 'No',
-                },
-                {
-                  accessor: 'role',
-                  label: 'Category',
-                  type: 'select',
-                  options: [
-                    { value: 'observer', label: 'Observer' },
-                    { value: 'executor', label: 'Executor' },
-                    { value: 'sentinel', label: 'Sentinel' },
-                    { value: 'archivist', label: 'Archivist' },
-                  ],
-                },
-                {
-                  accessor: 'roles',
-                  label: 'Categories',
-                  type: 'select',
-                  multiple: true,
-                  options: [
-                    { value: 'observer', label: 'Observer' },
-                    { value: 'executor', label: 'Executor' },
-                    { value: 'sentinel', label: 'Sentinel' },
-                    { value: 'archivist', label: 'Archivist' },
-                  ],
-                },
-                {
-                  accessor: 'website',
-                  label: 'Archive Link',
-                  type: 'link',
-                  linkText: 'Open Record',
-                  linkTransformer: (value) => String(value),
-                },
-                {
-                  accessor: 'themeColor',
-                  label: 'Theme Color',
-                  type: 'color',
-                  colorPresets: [
-                    { name: 'Purple', title: 'Purple', value: '#7F5DFF' },
-                    { name: 'Orange', title: 'Orange', value: '#FF7F5D' },
-                    { name: 'Green', title: 'Green', value: '#5DFF7F' },
-                    { name: 'Blue', title: 'Blue', value: '#5D7FFF' },
-                  ],
-                  allowPalette: true,
-                },
-              ]}
-            />
-          }
-        >
-          <Button label="Open drawer from the right side" />
-        </Drawer>
-        <Drawer
-          title="Create project"
-          onDone={() => {
-            return new Promise((resolve) => {
-              setTimeout(() => {
-                resolve(true);
-              }, 1000);
-            });
-          }}
-          renderDoneButton={({ closeDrawer }) => (
-            <Button label="Done" onClick={closeDrawer} />
-          )}
-          content={
-            <Flex direction="vertical">
-              <Spoiler title="Basic information">
-                <Form>
-                  <Form.Field label="Project name">
-                    <TextInput />
-                  </Form.Field>
-                  <Form.Field label="Slug">
-                    <TextInput />
-                  </Form.Field>
-                  <Form.Field label="Description">
-                    <Textarea />
-                  </Form.Field>
-                  <Form.Field label="Status">
-                    <Select
-                      options={[
-                        { value: 'active', label: 'Active' },
-                        { value: 'paused', label: 'Paused' },
-                        { value: 'archived', label: 'Archived' },
-                      ]}
-                      onChange={() => {}}
-                    />
-                  </Form.Field>
-                  <Form.Field label="Environment">
-                    <Radio
-                      onChange={() => {}}
-                      value="development"
-                      name="environment"
-                    >
-                      <Radio.Item value="development">Development</Radio.Item>
-                      <Radio.Item value="production">Production</Radio.Item>
-                    </Radio>
-                  </Form.Field>
-                </Form>
-              </Spoiler>
-              <Spoiler title="Ownership & access">
-                <Form>
-                  <Form.Field label="Owner">
-                    <Select
-                      options={[
-                        { value: '1', label: 'John Doe' },
-                        { value: '2', label: 'Jane Smith' },
-                        { value: '3', label: 'Jim Beam' },
-                      ]}
-                      onChange={() => {}}
-                    />
-                  </Form.Field>
-                  <Form.Field label="Default role for new users">
-                    <Select
-                      options={[
-                        { value: 'observer', label: 'Admin' },
-                        { value: 'executor', label: 'Manager' },
-                        { value: 'sentinel', label: 'Viewer' },
-                      ]}
-                      onChange={() => {}}
-                    />
-                  </Form.Field>
-                  <Form.Field>
-                    <Switcher onChange={() => {}} checked={true}>
-                      Allow public API access
-                    </Switcher>
-                  </Form.Field>
-                  <Form.Field>
-                    <Switcher onChange={() => {}} checked={true}>
-                      Allow invites by email
-                    </Switcher>
-                  </Form.Field>
-                </Form>
-              </Spoiler>
-            </Flex>
-          }
-          footer={
-            <Flex gap="s">
-              <Button label="Reset" />
-              <Button label="Help" />
-            </Flex>
-          }
-        >
-          <Button label="Edit record" />
+        <Drawer title="Notifications" placement="end" content={filler}>
+          <Button label="From the end" icon={<Bell />} showLabel={false} />
         </Drawer>
       </Flex>
-    );
-  },
+
+      <Heading>Width</Heading>
+      <Paragraph>
+        <Text code>width</Text> is a pixel number, defaulting to{' '}
+        <Text code>400</Text>. The panel never exceeds the viewport minus its
+        edge inset, so a large value degrades gracefully on small screens.
+      </Paragraph>
+      <Flex direction="horizontal" gap="m" wrap>
+        <Drawer title="Compact" width={320} content={filler}>
+          <Button label="320" />
+        </Drawer>
+        <Drawer title="Default" content={filler}>
+          <Button label="400" />
+        </Drawer>
+        <Drawer title="Roomy" width={560} content={filler}>
+          <Button label="560" />
+        </Drawer>
+      </Flex>
+
+      <Heading>The Done button and async onDone</Heading>
+      <Paragraph>
+        While the promise returned by <Text code>onDone</Text> is pending the
+        button shows a loading state. Resolving to <Text code>false</Text> keeps
+        the drawer open — use it when validation fails; any other value
+        (including nothing) closes it.
+      </Paragraph>
+      <ValidatingDrawer />
+
+      <Heading>Header actions</Heading>
+      <Paragraph>
+        <Text code>startActions</Text> and <Text code>endActions</Text> add
+        controls to either side of the header — one element or several. Both
+        take the render-prop form for <Text code>closeDrawer</Text>. Supplying{' '}
+        <Text code>endActions</Text> replaces the default Done button; the title
+        stays centred whatever lands on each side.
+      </Paragraph>
+      <Drawer
+        title="Document"
+        content={filler}
+        startActions={
+          <Button
+            label="Version history"
+            icon={<History />}
+            showLabel={false}
+            variant="text"
+          />
+        }
+        endActions={({ closeDrawer }) => [
+          <Button
+            key="share"
+            label="Share"
+            icon={<Share2 />}
+            showLabel={false}
+            variant="text"
+          />,
+          <Button
+            key="save"
+            label="Save"
+            variant="submit"
+            onClick={closeDrawer}
+          />,
+        ]}
+      >
+        <Button label="Open document" icon={<PanelRight />} />
+      </Drawer>
+
+      <Heading>Reduced motion</Heading>
+      <Paragraph>
+        Under <Text code>prefers-reduced-motion</Text> the slide and the
+        backdrop fade are dropped — the panel simply mounts and unmounts.
+      </Paragraph>
+    </Flex>
+  ),
 };
 
-export { DeployDrawerStory };
+const ValidatingDrawer = () => {
+  const [name, setName] = useState('');
+  const [error, setError] = useState('');
 
-export default story;
+  const handleDone = async () => {
+    setError('');
+    if (!name.trim()) {
+      setError('Give the workspace a name before continuing.');
+      return false;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+    setName('');
+    return true;
+  };
+
+  return (
+    <Drawer
+      title="New workspace"
+      placement="end"
+      onDone={handleDone}
+      onClose={() => setError('')}
+      content={
+        <Form>
+          {error && (
+            <Text block size={3} color="danger">
+              {error}
+            </Text>
+          )}
+          <Form.Field label="Workspace name">
+            <TextInput value={name} onChange={(value) => setName(value)} />
+          </Form.Field>
+        </Form>
+      }
+    >
+      <Button label="Create workspace" variant="submit" />
+    </Drawer>
+  );
+};
+
+export { FilterPanelStory, RecordDetailStory };

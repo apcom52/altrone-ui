@@ -4,7 +4,13 @@ import { Size } from 'types';
 export interface FormProps<FormState extends AnyObject>
   extends Omit<React.FormHTMLAttributes<HTMLFormElement>, 'size'> {
   ref?: React.Ref<HTMLFormElement>;
-  errorMessages?: Record<keyof FormState | string, string | undefined | null>;
+  /**
+   * Field name → error text. Keys of `FormState` autocomplete; any other
+   * string is still accepted.
+   */
+  errorMessages?: Partial<
+    Record<keyof FormState | (string & {}), string | undefined | null>
+  >;
   size?: Size;
   disabled?: boolean;
 }
