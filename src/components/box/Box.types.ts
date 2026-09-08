@@ -10,7 +10,11 @@ export type BoxMaterial =
   | 'translucent'
   | 'transparent'
   | 'outline'
-  | 'ghost';
+  | 'ghost'
+  /** Diagonal-hatch placeholder surface — a faint tinted fill, a hairline
+      border and soft cross-hatch lines. For "content goes here" stubs, empty
+      drop targets and unset swatches. Tone-driven. */
+  | 'hatch';
 
 export type BoxTone =
   'neutral' | 'accent' | 'danger' | 'success' | 'warning' | 'info';

@@ -575,6 +575,7 @@ const materials: BoxMaterial[] = [
   'transparent',
   'outline',
   'ghost',
+  'hatch',
 ];
 
 const MaterialRow = () => (
@@ -711,7 +712,7 @@ export const Materials: StoryObj<typeof Box> = {
   render: () => (
     <div className="box-wrapper">
       <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
-        <Heading>Seven fill treatments, one shared interaction model</Heading>
+        <Heading>Eight fill treatments, one shared interaction model</Heading>
         <Paragraph>
           Each material differs in what&rsquo;s there at rest — a full fill (
           <Text code>solid</Text>), a blurred translucent one (
@@ -720,8 +721,10 @@ export const Materials: StoryObj<typeof Box> = {
           <Text code>plate</Text>), a flat translucent one (
           <Text code>translucent</Text>), nothing at all (
           <Text code>transparent</Text>), a static border (
-          <Text code>outline</Text>), or a border that only shows up on
-          interaction (<Text code>ghost</Text>).
+          <Text code>outline</Text>), a border that only shows up on
+          interaction (<Text code>ghost</Text>), or a diagonal-hatch placeholder
+          surface for &ldquo;content goes here&rdquo; stubs and empty drop
+          targets (<Text code>hatch</Text>).
         </Paragraph>
         <Paragraph>
           Every <Text code>pressable</Text> material reacts the same way in two

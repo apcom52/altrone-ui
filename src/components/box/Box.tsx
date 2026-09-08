@@ -136,6 +136,7 @@ export const Box = memo((props: BoxProps) => {
       [s.MaterialTransparent]: material === 'transparent',
       [s.MaterialOutline]: material === 'outline',
       [s.MaterialGhost]: material === 'ghost',
+      [s.MaterialHatch]: material === 'hatch',
 
       [s.ToneNeutral]: !customColor && tone === 'neutral',
       [s.ToneAccent]: !customColor && tone === 'accent',

@@ -20,7 +20,6 @@ export * from './dialog';
 export * from './divider';
 export * from './drawer';
 export * from './dropdown';
-export * from './dummyBox';
 
 export * from './empty';
 export * from './entityList';

@@ -3,7 +3,7 @@ import { Flex } from './index.ts';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Text } from '../text';
-import { DummyBox } from '../dummyBox';
+import { Box } from '../box';
 import type { Gap } from 'types';
 
 const story: Meta<typeof Flex> = {
@@ -122,7 +122,7 @@ export const Overview: StoryObj<typeof Flex> = {
       </Paragraph>
 
       <Flex gap="m" align="center">
-        <DummyBox width="40px" height="40px" radius="var(--radius-circle)" />
+        <Box shape="circle" material="hatch" size={40} />
         <Flex direction="vertical" gap="xxs">
           <Text weight="medium">Alice Morgan</Text>
           <Text size={3} color="muted">

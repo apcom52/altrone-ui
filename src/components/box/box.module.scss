@@ -216,6 +216,27 @@
   --box-border-color: var(--box-tone-border);
 }
 
+/* Placeholder surface: a faint tinted wash, a hairline edge and soft diagonal
+   hatch lines. The `background` shorthand in `.Box` sets the colour; this rule
+   (later in source) layers the repeating-gradient image over it. Line spacing
+   is a fixed length so the texture stays consistent at any box size. */
+.MaterialHatch {
+  --box-hatch-line: var(--box-tone-border-strong);
+  --box-hatch-gap: 9px;
+
+  --box-fill: var(--box-tone-translucent);
+  --box-border-width: 1px;
+  --box-border-color: var(--box-tone-border);
+
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--box-hatch-line) 0,
+    var(--box-hatch-line) 1px,
+    transparent 1px,
+    transparent var(--box-hatch-gap)
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /* Sizes                                                                */
 /* ------------------------------------------------------------------ */
@@ -307,6 +328,10 @@
   --box-fill: var(--box-tone-translucent);
 }
 
+.Pressable.MaterialHatch:hover:not(:active) {
+  --box-fill: var(--box-tone-translucent-strong);
+}
+
 .Pressable.MaterialSolid:active {
   filter: brightness(0.92);
 }
@@ -344,7 +369,9 @@
 }
 
 .Pressable.MaterialOutline:active,
-.Editable.MaterialOutline:focus-within {
+.Editable.MaterialOutline:focus-within,
+.Pressable.MaterialHatch:active,
+.Editable.MaterialHatch:focus-within {
   --box-fill: var(--box-tone-translucent-strong);
   --box-border-color: var(--box-tone-border-strong);
 }

@@ -4,7 +4,7 @@ import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
 import { Text } from '../text';
-import { DummyBox } from '../dummyBox';
+import { Box } from '../box';
 import { Scrollable } from '../scrollable';
 import type { Gap } from 'types';
 import type { GridColumnOffset, GridColumnSize } from './Grid.types.ts';
@@ -336,19 +336,19 @@ export const NoWrap: StoryObj<typeof Grid> = {
       <Subheading>wrap (default)</Subheading>
       <Grid gap="m" rowGap="m">
         <Grid.Column size={4}>
-          <DummyBox height="72px" />
+          <Box material="hatch" width="100%" height={72} />
         </Grid.Column>
         <Grid.Column size={4}>
-          <DummyBox height="72px" />
+          <Box material="hatch" width="100%" height={72} />
         </Grid.Column>
         <Grid.Column size={4}>
-          <DummyBox height="72px" />
+          <Box material="hatch" width="100%" height={72} />
         </Grid.Column>
         <Grid.Column size={8}>
-          <DummyBox height="48px" />
+          <Box material="hatch" width="100%" height={48} />
         </Grid.Column>
         <Grid.Column size={4}>
-          <DummyBox height="48px" />
+          <Box material="hatch" width="100%" height={48} />
         </Grid.Column>
       </Grid>
 
@@ -433,7 +433,7 @@ const Panel = ({
       </Text>
     ) : null}
     {Array.from({ length: lines }).map((_, i) => (
-      <DummyBox key={i} height="12px" width={`${65 + (i % 3) * 12}%`} />
+      <Box key={i} material="hatch" height={12} width={`${65 + (i % 3) * 12}%`} />
     ))}
   </Flex>
 );

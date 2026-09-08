@@ -3,7 +3,7 @@ import { ColorPickerProps, ColorPreset } from './ColorPicker.types';
 import { TextInput } from 'components/textInput/TextInput.tsx';
 import { Popover } from 'components/popover/Popover.tsx';
 import { useLocalization } from 'components/application';
-import { DummyBox } from 'components/dummyBox/DummyBox.tsx';
+import { Box } from 'components/box';
 import s from './styles.module.scss';
 import { ColorPickerContent } from './inner/ColorPickerContent';
 import { Size } from 'types';
@@ -145,11 +145,11 @@ export const ColorPicker = (props: ColorPickerProps) => {
                   }}
                 />
               ) : (
-                <DummyBox
-                  className={s.ColorPreview}
-                  width={PREVIEW_SIZES[size] + 'px'}
-                  height={PREVIEW_SIZES[size] + 'px'}
-                  radius="50%"
+                <Box
+                  shape="circle"
+                  material="hatch"
+                  size={PREVIEW_SIZES[size]}
+                  style={{ marginLeft: 2 }}
                 />
               )}
             </TextInput.CustomIsland>
