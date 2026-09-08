@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { Ref } from 'react';
 import {
   CollapsedListContext,
   CollapsedListProps,
@@ -11,84 +11,64 @@ import s from './collapsed-list.module.scss';
 import { useLocalization } from '../application/useLocalization.tsx';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
-export const CollapsedList = memo<CollapsedListProps>(
-  ({
-    ref,
-    children,
-    limit,
-    expandButtonLabel,
-    className,
-    style,
-    gap,
-    hideExpandButtonAfterUsage = false,
-    ...restProps
-  }) => {
-    const t = useLocalization();
+export const CollapsedList = ({
+  ref,
+  children,
+  limit,
+  expandButtonLabel,
+  className,
+  style,
+  gap,
+  hideExpandButtonAfterUsage = false,
+  ...restProps
+}: CollapsedListProps) => {
+  const t = useLocalization();
+  const { value: expanded, toggle } = useBoolean(false);
 
-    const { value: expanded, toggle } = useBoolean(false);
+  const limitValue = limit ?? 5;
+  const items = ArrayUtils.getSafeArray(children);
+  const hiddenItems = Math.max(0, items.length - limitValue);
 
-    const limitValue = typeof limit === 'number' ? (limit ?? 5) : 5;
+  const visibleChildren = expanded ? items : items.slice(0, limitValue);
+  const showExpandButton =
+    (hiddenItems > 0 && !expanded) || (expanded && !hideExpandButtonAfterUsage);
 
-    const safeArray = ArrayUtils.getSafeArray(children);
+  const context: CollapsedListContext = {
+    hiddenItems,
+    totalItems: items.length,
+    expanded,
+  };
 
-    const visibleChildren = expanded
-      ? safeArray
-      : safeArray.slice(0, limitValue);
-    const restElementsLength = Math.max(0, safeArray.length - limitValue);
-    const showExpandButton =
-      (restElementsLength > 0 && !expanded) ||
-      (!hideExpandButtonAfterUsage && expanded);
+  const buttonLabel =
+    typeof expandButtonLabel === 'function'
+      ? expandButtonLabel(context)
+      : (expandButtonLabel ??
+        (expanded
+          ? t('collapsedList.collapse')
+          : t('collapsedList.expand', { vars: { count: hiddenItems } })));
 
-    const defaultExpandButtonLabel = expanded
-      ? t('collapsedList.collapse')
-      : t('collapsedList.expand', {
-          vars: {
-            count: restElementsLength,
-          },
-        });
-
-    const collapsedListContext: CollapsedListContext = {
-      hiddenItems: restElementsLength,
-      totalItems: safeArray.length,
-      expanded,
-    };
-
-    const customExpandButtonLabel = expandButtonLabel;
-
-    const expandButtonLabelText = customExpandButtonLabel
-      ? typeof customExpandButtonLabel === 'function'
-        ? customExpandButtonLabel(collapsedListContext)
-        : customExpandButtonLabel
-      : defaultExpandButtonLabel;
-
-    const cls = clsx(s.CollapsedList, className);
-
-    const styles = {
-      ...style,
-    };
-
-    return (
-      <Flex
-        ref={ref}
-        direction="vertical"
-        className={cls}
-        align="start"
-        style={styles}
-        gap="m"
-        {...restProps}
-      >
-        <Flex direction="vertical" gap={gap}>
-          {visibleChildren}
-        </Flex>
-        {showExpandButton ? (
-          <Button
-            variant="text"
-            label={expandButtonLabelText}
-            additionalIcon={expanded ? <ChevronUp /> : <ChevronDown />}
-            onClick={toggle}
-          />
-        ) : null}
+  return (
+    <Flex
+      ref={ref as Ref<HTMLElement>}
+      direction="vertical"
+      align="start"
+      gap="m"
+      className={clsx(s.CollapsedList, className)}
+      style={style}
+      {...restProps}
+    >
+      <Flex direction="vertical" gap={gap}>
+        {visibleChildren}
       </Flex>
-    );
-  },
-);
+      {showExpandButton ? (
+        <Button
+          variant="text"
+          size="s"
+          label={buttonLabel}
+          additionalIcon={expanded ? <ChevronUp /> : <ChevronDown />}
+          onClick={toggle}
+        />
+      ) : null}
+    </Flex>
+  );
+};
