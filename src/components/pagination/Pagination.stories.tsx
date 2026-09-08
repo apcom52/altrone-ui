@@ -1,16 +1,14 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { ReactNode, useState } from 'react';
 import { Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Pagination } from './Pagination.tsx';
-import { useState } from 'react';
 
 const story: Meta<typeof Pagination> = {
   title: 'Components/Navigation/Pagination',
   component: Pagination,
   decorators: [StorybookDecorator],
-  args: {},
-  argTypes: {},
   parameters: {
     chromatic: {
       modes: {
@@ -21,100 +19,130 @@ const story: Meta<typeof Pagination> = {
   },
 };
 
-export const PaginationStory: StoryObj<typeof Pagination> = {
-  name: 'Using Pagination',
+export default story;
+
+const Heading = ({ children }: { children: string }) => (
+  <Text block size={7} weight="bold" style={{ marginTop: 16 }}>
+    {children}
+  </Text>
+);
+
+const Paragraph = ({ children }: { children: ReactNode }) => (
+  <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
+    {children}
+  </Text>
+);
+
+const Case = ({ title, children }: { title: string; children: ReactNode }) => (
+  <Flex direction="vertical" gap="s">
+    <Text size={3} weight="medium" block>
+      {title}
+    </Text>
+    {children}
+  </Flex>
+);
+
+// ─── Overview ────────────────────────────────────────────────────────────────
+
+export const Overview: StoryObj<typeof Pagination> = {
+  name: 'Overview',
   render: () => {
-    const [page1, setPage1] = useState(1);
-    const [page2, setPage2] = useState(6);
-    const [page3, setPage3] = useState(50);
-    const [page4, setPage4] = useState(3);
-    const [page5, setPage5] = useState(4);
+    const [page, setPage] = useState(6);
 
     return (
-      <Flex direction="vertical" gap="xl">
-        <Flex direction="vertical" gap="xs">
-          <Text size={5} weight="bold" block>
-            Default — siblings=1, showEdgeButtons=false
-          </Text>
-          <Text size={3} block>
-            Few pages: always shows all numbers without ellipsis
-          </Text>
-        </Flex>
-        <Pagination
-          currentPage={page1}
-          totalPages={5}
-          showEdgeButtons={false}
-          onChange={(p) => setPage1(p)}
-        />
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={9} weight="bold">
+          Pagination
+        </Text>
+
+        <Paragraph>
+          <Text code>Pagination</Text> is a controlled page switcher — a{' '}
+          <Text code>&lt;nav&gt;</Text> landmark with previous/next arrows,{' '}
+          numbered page buttons, and (by default) first/last jumps. You own the{' '}
+          state: pass <Text code>currentPage</Text> and{' '}
+          <Text code>totalPages</Text>, and update your state from{' '}
+          <Text code>onChange(page, event)</Text>.
+        </Paragraph>
+
+        <Heading>The number window</Heading>
+        <Paragraph>
+          It always shows page 1 and the last page, plus{' '}
+          <Text code>siblings</Text> pages on each side of the current one (
+          <Text code>1</Text> by default). Gaps collapse into an ellipsis. The
+          current page button is <Text code>selected</Text> and carries{' '}
+          <Text code>aria-current="page"</Text>; arrows disable at the ends.
+        </Paragraph>
 
         <Flex direction="vertical" gap="xs">
-          <Text size={5} weight="bold" block>
-            Many pages — current in the middle
-          </Text>
-          <Text size={3} block>
-            Ellipsis on both sides
+          <Pagination
+            currentPage={page}
+            totalPages={20}
+            onChange={(p) => setPage(p)}
+          />
+          <Text size={2} color="muted" block>
+            page {page} of 20
           </Text>
         </Flex>
-        <Pagination
-          currentPage={page2}
-          totalPages={20}
-          onChange={(p) => setPage2(p)}
-        />
 
-        <Flex direction="vertical" gap="xs">
-          <Text size={5} weight="bold" block>
-            Large range — siblings=2
-          </Text>
-          <Text size={3} block>
-            Shows 2 pages on each side of the current page
-          </Text>
-        </Flex>
-        <Pagination
-          currentPage={page3}
-          totalPages={100}
-          siblings={2}
-          onChange={(p) => setPage3(p)}
-        />
+        <Heading>Variations</Heading>
 
-        <Flex direction="vertical" gap="xs">
-          <Text size={5} weight="bold" block>
-            showEdgeButtons=false
-          </Text>
-          <Text size={3} block>
-            First/last jump buttons are hidden
-          </Text>
-        </Flex>
-        <Pagination
-          currentPage={page4}
-          totalPages={12}
-          showEdgeButtons={false}
-          onChange={(p) => setPage4(p)}
-        />
+        <Case title="Few pages — no ellipsis">
+          <Pagination currentPage={2} totalPages={5} onChange={() => {}} />
+        </Case>
 
-        <Flex direction="vertical" gap="xs">
-          <Text size={5} weight="bold" block>
-            Single page
-          </Text>
-          <Text size={3} block>
-            All navigation is disabled when there is only one page
-          </Text>
-        </Flex>
-        <Pagination currentPage={1} totalPages={1} onChange={() => null} />
+        <Case title="siblings={2}">
+          <Pagination
+            currentPage={50}
+            totalPages={100}
+            siblings={2}
+            onChange={() => {}}
+          />
+        </Case>
 
-        <Flex direction="vertical" gap="xs">
-          <Text size={5} weight="bold" block>
-            siblings=3
-          </Text>
-        </Flex>
-        <Pagination
-          currentPage={page5}
-          totalPages={10}
-          siblings={3}
-          onChange={(p) => setPage5(p)}
-        />
+        <Case title="showEdgeButtons={false}">
+          <Pagination
+            currentPage={4}
+            totalPages={12}
+            showEdgeButtons={false}
+            onChange={() => {}}
+          />
+        </Case>
+
+        <Case title="At the last page — next/last disabled">
+          <Pagination currentPage={12} totalPages={12} onChange={() => {}} />
+        </Case>
+
+        <Case title="Single page — everything disabled">
+          <Pagination currentPage={1} totalPages={1} onChange={() => {}} />
+        </Case>
       </Flex>
     );
   },
 };
 
-export default story;
+// ─── Interactive ─────────────────────────────────────────────────────────────
+
+export const Interactive: StoryObj<typeof Pagination> = {
+  name: 'Interactive',
+  args: {
+    currentPage: 1,
+    totalPages: 25,
+    siblings: 1,
+    showEdgeButtons: true,
+  },
+  render: (args) => {
+    const [page, setPage] = useState(args.currentPage);
+    return (
+      <Flex direction="vertical" gap="s">
+        <Pagination
+          {...args}
+          currentPage={page}
+          onChange={(p) => setPage(p)}
+        />
+        <Text size={2} color="muted" block>
+          page {page} of {args.totalPages}
+        </Text>
+      </Flex>
+    );
+  },
+};

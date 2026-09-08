@@ -6,6 +6,10 @@
   list-style-type: none;
   padding: 0;
   gap: var(--gap);
+
+  &:last-child .Separator {
+    display: none;
+  }
 }
 
 .Item {
@@ -42,6 +46,12 @@
 .Label {
   font-size: var(--breadcrumbs-text-size);
   font-weight: var(--text-weight-medium);
+}
+
+/* Wins over `Text`'s own `--text-color` so the label follows the item's
+   colour — hover and the current-page accent. */
+.Item .Label {
+  color: inherit;
 }
 
 .Current {

@@ -6,6 +6,7 @@
 .Pagination {
   --pagination-gap: 4px;
 
+  width: fit-content;
   padding: var(--pagination-gap);
   background: var(--pagination-background);
   --radius-outer: calc(var(--pagination-rounding) + var(--pagination-gap));

@@ -13,11 +13,10 @@
   padding: var(--xl-gap) var(--gap);
 }
 
+/* Typography comes from the `Text` props on the element; this is a targeting
+   hook plus the neutral title colour. */
 .Title {
   color: var(--side-navigation-item-text-color);
-  font-size: var(--side-navigation-item-text-size);
-  font-weight: var(--text-weight-medium);
-  line-height: var(--line-height-4);
 }
 
 .Menu {

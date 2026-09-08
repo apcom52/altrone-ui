@@ -11,6 +11,9 @@ export const ru: Localization = {
     edit: 'Редактировать',
     done: 'Готово',
   },
+  breadcrumbs: {
+    label: 'Хлебные крошки',
+  },
   datePicker: {
     placeholder: 'Выбрать дату',
     placeholderRange: 'Выбрать период',

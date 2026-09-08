@@ -11,6 +11,9 @@ export const sp: Localization = {
     edit: 'Editar',
     done: 'Listo',
   },
+  breadcrumbs: {
+    label: 'Ruta de navegación',
+  },
   datePicker: {
     placeholder: 'Seleccionar fecha',
     placeholderRange: 'Seleccionar período',

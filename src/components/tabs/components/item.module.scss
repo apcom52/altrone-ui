@@ -7,16 +7,21 @@
   justify-content: center;
   height: var(--tabs-item-size);
   padding: 4px 8px;
+  margin: 0;
+  border: none;
   background-color: var(--tabs-item-background-color);
   color: var(--tabs-item-text-color);
   transition: background-color 0.2s linear;
+  font-family: inherit;
   font-size: var(--tabs-item-font-size);
   font-weight: var(--text-weight-medium);
   gap: var(--space-inline);
   z-index: 2;
   border-radius: var(--tabs-item-rounding);
 
+  @include no-appearance;
   @include no-selection;
+  @include focus;
   text-decoration: none;
   cursor: pointer;
 
@@ -35,6 +40,12 @@
   }
 }
 
+.Disabled {
+  cursor: default;
+  pointer-events: none;
+  color: var(--disabled-text-color);
+}
+
 .Backdrop {
   position: absolute;
   top: 0;
@@ -49,6 +60,9 @@
 }
 
 .Icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: var(--tabs-item-icon-size);
   height: var(--tabs-item-icon-size);
   z-index: 1;
@@ -56,16 +70,16 @@
 
 .Label {
   z-index: 1;
+  color: inherit;
 }
 
+/* A `Box` pill, styled to match a `Button`'s badge — this layer carries only
+   the dimensional tuning `Box` doesn't own. */
 .Badge {
-  color: var(--tabs-item-badge-text-color);
-  background-color: var(--tabs-item-badge-background-color);
   margin-left: 2px;
   margin-right: -4px;
-  font-size: var(--tabs-item-badge-text-size);
   min-width: var(--tabs-item-badge-size);
-  min-height: var(--tabs-item-badge-size);
-  border-radius: var(--tabs-item-badge-rounding);
+  font-size: var(--tabs-item-badge-text-size);
+  font-weight: var(--text-weight-bold);
   z-index: 1;
 }

@@ -1,8 +1,9 @@
-import { isValidElement, memo } from 'react';
+import { isValidElement, memo, ReactElement, Ref } from 'react';
 import { TabsItemProps } from '../Tabs.types.ts';
 import s from './item.module.scss';
 import clsx from 'clsx';
-import { Badge } from 'components/badge/Badge.tsx';
+import { Box } from 'components/box';
+import { Text } from 'components/text/Text.tsx';
 import { motion, useAnimationControls } from 'motion/react';
 import { useTabsContext } from '../Tabs.context.ts';
 import { Slot } from 'utils/components/Slot.tsx';
@@ -12,7 +13,7 @@ type TabItemContentProps = Omit<
   'renderFunc' | 'asChild' | 'children'
 >;
 
-// Separate component so hooks are called correctly
+/* Separate component so its hooks aren't conditional on `renderFunc`/`asChild`. */
 const TabItemContent = memo(
   ({
     ref,
@@ -21,21 +22,15 @@ const TabItemContent = memo(
     showLabel = true,
     badge,
     selected,
+    disabled,
+    href,
     ...restProps
   }: TabItemContentProps) => {
     const { backdropId } = useTabsContext();
     const backdropControls = useAnimationControls();
 
-    const badgeCls = clsx(s.Badge);
-
-    return (
-      <a
-        ref={ref}
-        role="tab"
-        aria-selected={selected}
-        title={label}
-        {...restProps}
-      >
+    const inner = (
+      <>
         {selected ? (
           <motion.div
             animate={backdropControls}
@@ -51,9 +46,60 @@ const TabItemContent = memo(
           />
         ) : null}
         {icon ? <div className={s.Icon}>{icon}</div> : null}
-        {showLabel ? <div className={s.Label}>{label}</div> : null}
-        {badge ? <Badge className={badgeCls}>{badge}</Badge> : null}
-      </a>
+        {showLabel ? <Text className={s.Label}>{label}</Text> : null}
+        {badge ? (
+          <Box
+            className={s.Badge}
+            shape="pill"
+            material="translucent"
+            tone="neutral"
+            size="var(--tabs-item-badge-size)"
+            width="auto"
+            padding={{ x: 'var(--tabs-item-badge-padding)', y: 0 }}
+          >
+            {typeof badge === 'string' || typeof badge === 'number' ? (
+              <Text size={2} weight="bold">
+                {badge}
+              </Text>
+            ) : (
+              badge
+            )}
+          </Box>
+        ) : null}
+      </>
+    );
+
+    const shared: Record<string, unknown> = {
+      role: 'tab',
+      'aria-selected': Boolean(selected),
+      'aria-disabled': disabled || undefined,
+      'aria-label': showLabel ? undefined : label,
+      tabIndex: selected ? 0 : -1,
+      title: label,
+      ...restProps,
+    };
+
+    if (href) {
+      return (
+        <a
+          ref={ref as Ref<HTMLAnchorElement>}
+          href={disabled ? undefined : href}
+          {...shared}
+        >
+          {inner}
+        </a>
+      );
+    }
+
+    return (
+      <button
+        ref={ref as Ref<HTMLButtonElement>}
+        disabled={disabled}
+        {...shared}
+        type="button"
+      >
+        {inner}
+      </button>
     );
   },
 );
@@ -71,12 +117,16 @@ export const Item = memo(
       s.Item,
       {
         [s.Selected]: restProps.selected,
+        [s.Disabled]: restProps.disabled,
       },
       className,
     );
 
     if (renderFunc) {
-      return renderFunc(ref ?? null, { ...restProps, className: cls });
+      return renderFunc((ref ?? null) as Ref<HTMLAnchorElement>, {
+        ...restProps,
+        className: cls,
+      });
     }
 
     if (asChild) {
@@ -91,10 +141,12 @@ export const Item = memo(
           ref={ref}
           className={cls}
           role="tab"
-          aria-selected={restProps.selected}
+          aria-selected={Boolean(restProps.selected)}
+          aria-disabled={restProps.disabled || undefined}
+          tabIndex={restProps.selected ? 0 : -1}
           {...restProps}
         >
-          {children}
+          {children as ReactElement<Record<string, unknown>>}
         </Slot>
       );
     }

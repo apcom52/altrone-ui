@@ -9,11 +9,11 @@
 .Label {
   color: var(--side-navigation-item-text-color);
   font-size: var(--side-navigation-item-text-size);
-  font-weight: 500;
-  line-height: 20px;
+  font-weight: var(--text-weight-medium);
+  line-height: var(--line-height-4);
   cursor: pointer;
   text-decoration: none;
-  transition: color 0.2s linear, font-weight 0.2s linear;
+  transition: color 0.2s linear;
 
   @include focus;
 
@@ -25,7 +25,7 @@
 
 .Selected {
   .Label {
-    font-weight: 600;
+    font-weight: var(--text-weight-bold);
     color: var(--side-navigation-item-active-text-color);
   }
 }

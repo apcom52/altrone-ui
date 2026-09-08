@@ -11,6 +11,9 @@ export const fr: Localization = {
     edit: 'Modifier',
     done: 'Terminé',
   },
+  breadcrumbs: {
+    label: "Fil d'Ariane",
+  },
   datePicker: {
     placeholder: 'Sélectionner une date',
     placeholderRange: 'Sélectionner une période',

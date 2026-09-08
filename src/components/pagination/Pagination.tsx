@@ -14,6 +14,10 @@ import { Flex } from 'components/flex/Flex.tsx';
 
 type PageItem = number | '...';
 
+/**
+ * Page-number window: always the first and last page, up to `siblings` pages
+ * on each side of `current`, and an ellipsis wherever a gap is skipped.
+ */
 function buildPageItems(
   current: number,
   total: number,
@@ -57,29 +61,39 @@ export const Pagination = memo<PaginationProps>(
   }) => {
     const t = useLocalization();
 
+    if (
+      import.meta.env.DEV &&
+      totalPages >= 1 &&
+      (currentPage < 1 || currentPage > totalPages)
+    ) {
+      console.warn(
+        `[Pagination] currentPage (${currentPage}) is outside 1..${totalPages}. It's a controlled prop — clamp it in your onChange handler.`,
+      );
+    }
+
     const pageItems = useMemo(
       () => buildPageItems(currentPage, totalPages, siblings),
       [currentPage, totalPages, siblings],
     );
 
-    const cls = clsx(s.Pagination, className);
-    const styles = { ...style };
+    const isFirst = currentPage <= 1;
+    const isLast = currentPage >= totalPages;
 
     return (
       <Flex
+        ref={ref}
+        tagName="nav"
         gap="xs"
         align="center"
-        ref={ref}
-        role="navigation"
         aria-label={t('pagination.navigation')}
-        className={cls}
-        style={{ width: 'fit-content', ...styles }}
+        className={clsx(s.Pagination, className)}
+        style={style}
         {...restProps}
       >
         {showEdgeButtons && (
           <Button
             icon={<ChevronFirst />}
-            disabled={currentPage <= 1}
+            disabled={isFirst}
             label={t('pagination.firstPage')}
             onClick={(e) => onChange(1, e)}
             showLabel={false}
@@ -88,7 +102,7 @@ export const Pagination = memo<PaginationProps>(
 
         <Button
           icon={<ChevronLeft />}
-          disabled={currentPage <= 1}
+          disabled={isFirst}
           label={t('pagination.previous')}
           onClick={(e) => onChange(currentPage - 1, e)}
           showLabel={false}
@@ -105,7 +119,6 @@ export const Pagination = memo<PaginationProps>(
               label={String(item)}
               variant="text"
               selected={item === currentPage}
-              disabled={item === currentPage}
               onClick={(e) => onChange(item, e)}
               aria-label={t('pagination.page', { vars: { page: item } })}
               aria-current={item === currentPage ? 'page' : undefined}
@@ -115,7 +128,7 @@ export const Pagination = memo<PaginationProps>(
 
         <Button
           icon={<ChevronRight />}
-          disabled={currentPage >= totalPages}
+          disabled={isLast}
           label={t('pagination.next')}
           onClick={(e) => onChange(currentPage + 1, e)}
           showLabel={false}
@@ -124,7 +137,7 @@ export const Pagination = memo<PaginationProps>(
         {showEdgeButtons && (
           <Button
             icon={<ChevronLast />}
-            disabled={currentPage >= totalPages}
+            disabled={isLast}
             label={t('pagination.lastPage')}
             onClick={(e) => onChange(totalPages, e)}
             showLabel={false}

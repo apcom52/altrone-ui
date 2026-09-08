@@ -3,7 +3,7 @@ import { Avatar, Button, Flex, Popover, Progress, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Tabs } from './Tabs.tsx';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import {
   LayoutDashboard,
   CheckSquare,
@@ -16,6 +16,8 @@ import {
   Clock,
   CheckCircle2,
   Circle,
+  Bell,
+  Star,
 } from 'lucide-react';
 
 const story: Meta<typeof Tabs> = {
@@ -29,6 +31,149 @@ const story: Meta<typeof Tabs> = {
         dark: allModes['dark desktop'],
       },
     },
+  },
+};
+
+export default story;
+
+// ─── Prose helpers ───────────────────────────────────────────────────────────
+
+const Heading = ({ children }: { children: string }) => (
+  <Text block size={7} weight="bold" style={{ marginTop: 16 }}>
+    {children}
+  </Text>
+);
+
+const Paragraph = ({ children }: { children: ReactNode }) => (
+  <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
+    {children}
+  </Text>
+);
+
+// ─── Overview ────────────────────────────────────────────────────────────────
+
+export const Overview: StoryObj<typeof Tabs> = {
+  name: 'Overview',
+  render: () => {
+    const [tab, setTab] = useState('overview');
+    const [seg, setSeg] = useState('day');
+    const sel = (id: string) => tab === id;
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={9} weight="bold">
+          Tabs
+        </Text>
+
+        <Paragraph>
+          <Text code>Tabs</Text> is a compact segmented control — a{' '}
+          <Text code>role="tablist"</Text> pill holding{' '}
+          <Text code>Tabs.Item</Text>s. The selected item sits under a sliding{' '}
+          <Text code>motion</Text> backdrop that animates between items (with a
+          small scale pulse on each hop). It renders the tab strip only —
+          swapping the panel below is up to you, keyed off <Text code>selected</Text>.
+        </Paragraph>
+
+        <Heading>Anatomy</Heading>
+        <Paragraph>
+          Each <Text code>Tabs.Item</Text> takes a <Text code>label</Text> and
+          optionally an <Text code>icon</Text> / <Text code>badge</Text>. By
+          default it's a <Text code>&lt;button type="button" role="tab"&gt;</Text>;
+          pass <Text code>href</Text> to get an <Text code>&lt;a&gt;</Text>{' '}
+          instead. Drive selection with <Text code>selected</Text> +{' '}
+          <Text code>onClick</Text>.
+        </Paragraph>
+
+        <Tabs>
+          <Tabs.Item
+            icon={<LayoutDashboard size={14} />}
+            label="Overview"
+            selected={sel('overview')}
+            onClick={() => setTab('overview')}
+          />
+          <Tabs.Item
+            icon={<Star size={14} />}
+            label="Favorites"
+            selected={sel('favorites')}
+            onClick={() => setTab('favorites')}
+          />
+          <Tabs.Item
+            icon={<Settings size={14} />}
+            label="Settings"
+            selected={sel('settings')}
+            onClick={() => setTab('settings')}
+          />
+        </Tabs>
+
+        <Heading>Badges &amp; icon-only</Heading>
+        <Paragraph>
+          <Text code>badge</Text> renders a corner pill (a string, number, or
+          element). Set <Text code>showLabel={'{false}'}</Text> for an icon-only
+          tab — <Text code>label</Text> still becomes its{' '}
+          <Text code>aria-label</Text>.
+        </Paragraph>
+
+        <Tabs>
+          <Tabs.Item
+            icon={<MessageSquare size={14} />}
+            label="Messages"
+            badge={8}
+            selected={sel('messages')}
+            onClick={() => setTab('messages')}
+          />
+          <Tabs.Item
+            icon={<Bell size={14} />}
+            label="Alerts"
+            badge="9+"
+            selected={sel('alerts')}
+            onClick={() => setTab('alerts')}
+          />
+          <Tabs.Item
+            icon={<Settings size={14} />}
+            label="Preferences"
+            showLabel={false}
+            selected={sel('prefs')}
+            onClick={() => setTab('prefs')}
+          />
+        </Tabs>
+
+        <Heading>Labels only (segmented control)</Heading>
+        <Paragraph>
+          Without icons it reads as a segmented switch. Keyboard:{' '}
+          <Text kbd>Tab</Text> reaches the selected item, then{' '}
+          <Text kbd>←</Text> / <Text kbd>→</Text> (and <Text kbd>Home</Text> /{' '}
+          <Text kbd>End</Text>) move focus, <Text kbd>Enter</Text> /{' '}
+          <Text kbd>Space</Text> activates.
+        </Paragraph>
+
+        <Tabs>
+          <Tabs.Item
+            label="Day"
+            selected={seg === 'day'}
+            onClick={() => setSeg('day')}
+          />
+          <Tabs.Item
+            label="Week"
+            selected={seg === 'week'}
+            onClick={() => setSeg('week')}
+          />
+          <Tabs.Item
+            label="Month"
+            selected={seg === 'month'}
+            onClick={() => setSeg('month')}
+          />
+          <Tabs.Item label="Year" disabled />
+        </Tabs>
+
+        <Heading>Router links with asChild</Heading>
+        <Paragraph>
+          Set <Text code>asChild</Text> and pass a single element — your
+          router's <Text code>&lt;Link&gt;</Text>. The item merges its role,
+          styling, and props onto it. (<Text code>renderFunc</Text> still works
+          but is deprecated.)
+        </Paragraph>
+      </Flex>
+    );
   },
 };
 
@@ -605,5 +750,3 @@ export const TabsInsideOverlayStory: StoryObj<typeof Tabs> = {
     );
   },
 };
-
-export default story;
