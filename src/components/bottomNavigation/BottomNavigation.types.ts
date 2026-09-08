@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { RenderFuncProp } from '../../types';
 
 export interface BottomNavigationProps
@@ -13,6 +13,14 @@ export interface BottomNavigationItemProps
   icon: ReactElement;
   label: string;
   selected?: boolean;
-  renderFunc?: RenderFuncProp<HTMLAnchorElement, BottomNavigationItemProps>;
   badge?: string | number | ReactElement;
+  /**
+   * Merge the item's styling, ref and interaction props onto a single child
+   * element (Slot pattern) instead of rendering an `<a>` — use to wrap a
+   * router `<Link>`. The icon, label, badge and backdrop still come from props.
+   */
+  asChild?: boolean;
+  children?: ReactNode;
+  /** @deprecated Prefer `asChild`. Custom render function `(ref, props) => ReactElement`. */
+  renderFunc?: RenderFuncProp<HTMLAnchorElement, BottomNavigationItemProps>;
 }

@@ -1,68 +1,113 @@
-import { memo } from 'react';
+import {
+  isValidElement,
+  memo,
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useRef,
+} from 'react';
 import { BottomNavigationItemProps } from '../BottomNavigation.types.ts';
 import clsx from 'clsx';
 import s from './item.module.scss';
-import { RenderFuncProp } from 'types';
-import { Badge } from 'components/badge/Badge.tsx';
-import { motion, useAnimationControls } from 'framer-motion';
-import { useBottomNavigationContext } from '../BottomNavigation.context.tsx';
+import { Box } from 'components/box';
+import { Text } from 'components/text/Text.tsx';
+import { useBottomNavigationSelect } from '../BottomNavigation.context.tsx';
+import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
+import { DOMUtils } from '../../../utils';
 
-const bottomNavigationItemComponent: RenderFuncProp<
-  HTMLAnchorElement,
-  BottomNavigationItemProps
-> = (ref, props) => {
-  const { icon, label, badge, selected, ...restProps } = props;
-  const bottomNavigationId = useBottomNavigationContext();
+type ItemContentProps = Pick<BottomNavigationItemProps, 'icon' | 'label' | 'badge'>;
 
-  const backdropControls = useAnimationControls();
+const ItemContent = ({ icon, label, badge }: ItemContentProps) => (
+  <>
+    <div className={s.Icon}>{icon}</div>
+    <Text className={s.Label} truncate>
+      {label}
+    </Text>
+    {badge ? (
+      <Box
+        className={s.Badge}
+        shape="pill"
+        material="plate"
+        tone="neutral"
+        size="var(--bottom-navigation-badge-size)"
+        width="auto"
+        padding={{ x: 'var(--bottom-navigation-badge-padding)', y: 0 }}
+      >
+        {typeof badge === 'string' || typeof badge === 'number' ? (
+          <Text size={2} weight="bold">
+            {badge}
+          </Text>
+        ) : (
+          badge
+        )}
+      </Box>
+    ) : null}
+  </>
+);
 
-  return (
-    <a ref={ref} {...restProps}>
-      {selected && (
-        <motion.div
-          animate={backdropControls}
-          layout
-          layoutId={`${bottomNavigationId}-backdrop`}
-          className={s.Backdrop}
-          onLayoutAnimationStart={() => {
-            // Extra animation on each backdrop move
-            backdropControls.start({
-              scale: [1, 0.85, 1],
-              transition: { duration: 0.4, ease: 'easeInOut' },
-            });
-          }}
-        />
-      )}
-      <div className={s.Icon}>{icon}</div>
-      <div className={s.Label}>{label}</div>
-      {badge ? <Badge className={s.Badge}>{badge}</Badge> : null}
-    </a>
-  );
-};
-
-export const Item = memo<BottomNavigationItemProps>((props) => {
-  const {
+export const Item = memo(
+  ({
     ref,
     className,
-    renderFunc = bottomNavigationItemComponent,
+    style,
+    icon,
+    label,
+    badge,
+    selected,
+    asChild,
+    children,
+    renderFunc,
     ...restProps
-  } = props;
+  }: BottomNavigationItemProps) => {
+    const cls = clsx(s.Item, { [s.Selected]: selected }, className);
 
-  const cls = clsx(
-    s.Item,
-    {
-      [s.Selected]: props.selected,
-    },
-    className,
-  );
+    const select = useBottomNavigationSelect();
+    const elementRef = useRef<HTMLAnchorElement>(null);
 
-  const styles = {
-    ...props.style,
-  };
+    useEffect(() => {
+      select(elementRef.current, Boolean(selected));
+    }, [selected, select]);
 
-  return renderFunc(ref ?? null, {
-    ...restProps,
-    className: cls,
-    style: styles,
-  });
-});
+    if (renderFunc) {
+      return renderFunc(ref ?? null, {
+        ...restProps,
+        icon,
+        label,
+        badge,
+        selected,
+        className: cls,
+        style,
+      });
+    }
+
+    const content = <ItemContent icon={icon} label={label} badge={badge} />;
+
+    const composedRef = DOMUtils.composeRefs(ref, elementRef);
+    const interactionProps = {
+      className: cls,
+      style,
+      'aria-current': selected ? ('page' as const) : undefined,
+      ...restProps,
+    };
+
+    if (asChild) {
+      if (!isValidElement(children)) {
+        console.error(
+          '[BottomNavigation.Item] asChild requires a valid React element as children',
+        );
+        return null;
+      }
+      return cloneWithRef(children as ReactElement<{ children?: ReactNode }>, {
+        ...interactionProps,
+        ref: composedRef,
+        children: content,
+      });
+    }
+
+    return (
+      <a ref={composedRef} {...interactionProps}>
+        {content}
+      </a>
+    );
+  },
+);
