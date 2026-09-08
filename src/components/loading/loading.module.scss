@@ -1,7 +1,6 @@
-@import 'src/global/mixins';
-
 :global([data-altrone-root='true']) {
   --loading-color: var(--text-2);
+  --loading-track-opacity: 0.16;
 }
 
 .Loading {
@@ -10,12 +9,20 @@
   justify-content: center;
 }
 
-/** Deliberately not reduced under prefers-reduced-motion: a functional loading state, not decorative motion. */
+/** Deliberately not reduced under prefers-reduced-motion: a functional loading
+    state, not decorative motion. */
 .Spinner {
   transform-origin: center;
   animation: rotate 2s linear infinite;
   will-change: transform;
   overflow: visible;
+}
+
+.Track {
+  fill: none;
+  stroke: currentColor;
+  opacity: var(--loading-track-opacity);
+  transition: stroke 0.5s ease;
 }
 
 .Active {
@@ -26,13 +33,6 @@
   stroke-linecap: round;
   animation: stretch 1.5s ease-in-out infinite;
   will-change: stroke-dasharray, stroke-dashoffset;
-  transition: stroke 0.5s ease;
-}
-
-.Background {
-  fill: none;
-  stroke: currentColor;
-  opacity: 0;
   transition: stroke 0.5s ease;
 }
 

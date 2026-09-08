@@ -14,6 +14,9 @@ export const ge: Localization = {
   breadcrumbs: {
     label: 'Brotkrümelnavigation',
   },
+  loading: {
+    label: 'Wird geladen',
+  },
   datePicker: {
     placeholder: 'Datum auswählen',
     placeholderRange: 'Zeitraum auswählen',

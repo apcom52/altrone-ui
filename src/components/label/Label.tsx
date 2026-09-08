@@ -37,10 +37,8 @@ export const Label = memo(
       [s.XLarge]: size === 'xl',
     });
 
-    const styles = { ...style };
-
     return (
-      <div ref={ref} className={cls} style={styles} {...props}>
+      <div ref={ref} className={cls} style={style} {...props}>
         {children}
       </div>
     );

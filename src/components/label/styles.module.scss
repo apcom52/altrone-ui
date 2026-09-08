@@ -20,32 +20,35 @@
   line-height: var(--line-height-3);
 }
 
+/* Status colours use the semantic role tokens (see color.md), not raw hue
+   steps — so `success` follows the design system's success hue (green), not a
+   hardcoded teal. */
 .Primary {
-  --label-solid-background-color: var(--accent-9);
-  --label-background-color: var(--accent-3);
+  --label-solid-background-color: var(--info-solid-1);
+  --label-background-color: var(--info-interactive-1);
   --label-solid-text-color: var(--white);
-  --label-text-color: var(--accent-12);
+  --label-text-color: var(--info-text-2);
 }
 
 .Warning {
-  --label-solid-background-color: var(--amber-9);
-  --label-background-color: var(--amber-3);
+  --label-solid-background-color: var(--warning-solid-1);
+  --label-background-color: var(--warning-interactive-1);
   --label-solid-text-color: var(--white);
-  --label-text-color: var(--amber-12);
+  --label-text-color: var(--warning-text-2);
 }
 
 .Success {
-  --label-solid-background-color: var(--teal-9);
-  --label-background-color: var(--teal-3);
+  --label-solid-background-color: var(--success-solid-1);
+  --label-background-color: var(--success-interactive-1);
   --label-solid-text-color: var(--white);
-  --label-text-color: var(--teal-12);
+  --label-text-color: var(--success-text-2);
 }
 
 .Danger {
-  --label-solid-background-color: var(--red-9);
-  --label-background-color: var(--red-3);
+  --label-solid-background-color: var(--danger-solid-1);
+  --label-background-color: var(--danger-interactive-1);
   --label-solid-text-color: var(--white);
-  --label-text-color: var(--red-12);
+  --label-text-color: var(--danger-text-2);
 }
 
 .Amber {

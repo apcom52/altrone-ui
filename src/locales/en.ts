@@ -14,6 +14,9 @@ export const en: Localization = {
   breadcrumbs: {
     label: 'Breadcrumb',
   },
+  loading: {
+    label: 'Loading',
+  },
   datePicker: {
     placeholder: 'Select date',
     placeholderRange: 'Select period',

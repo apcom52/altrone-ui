@@ -14,6 +14,9 @@ export const fr: Localization = {
   breadcrumbs: {
     label: "Fil d'Ariane",
   },
+  loading: {
+    label: 'Chargement',
+  },
   datePicker: {
     placeholder: 'Sélectionner une date',
     placeholderRange: 'Sélectionner une période',

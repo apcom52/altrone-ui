@@ -21,6 +21,9 @@ export interface Localization {
   breadcrumbs: {
     label: string;
   };
+  loading: {
+    label: string;
+  };
   datePicker: {
     placeholder: string;
     placeholderRange: string;

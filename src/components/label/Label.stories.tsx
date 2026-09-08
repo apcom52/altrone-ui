@@ -20,8 +20,43 @@ const story: Meta<typeof Label> = {
   },
 };
 
+export default story;
+
+export const Overview: StoryObj<typeof Label> = {
+  name: 'Overview',
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Text block size={9} weight="bold">
+        Label
+      </Text>
+      <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
+        A small tag for a status or a category — not an HTML{' '}
+        <Text code>&lt;label&gt;</Text>. Pick a <Text code>color</Text>: a
+        semantic one (<Text code>primary</Text> / <Text code>success</Text> /{' '}
+        <Text code>warning</Text> / <Text code>danger</Text>, which follow the
+        design-system status hues), one of the ten categorical hues (
+        <Text code>blue</Text>, <Text code>teal</Text>, …), or{' '}
+        <Text code>default</Text> for neutral. Cross it with a{' '}
+        <Text code>variant</Text> (<Text code>solid</Text> /{' '}
+        <Text code>soft</Text> / <Text code>outline</Text>), a{' '}
+        <Text code>rounding</Text> (<Text code>rounded</Text> /{' '}
+        <Text code>pill</Text>) and a <Text code>size</Text>.
+      </Text>
+      <Flex gap="s" wrap align="center">
+        <Label color="success" variant="soft">Done</Label>
+        <Label color="warning" variant="soft">In review</Label>
+        <Label color="danger" variant="soft">Blocked</Label>
+        <Label color="primary" variant="soft">Beta</Label>
+        <Label color="default">Draft</Label>
+        <Label color="indigo" rounding="pill">v2.0.0</Label>
+        <Label color="teal" variant="outline">SDK</Label>
+      </Flex>
+    </Flex>
+  ),
+};
+
 export const TextInputStory: StoryObj<typeof Flex> = {
-  name: 'Using Labels',
+  name: 'Showcase',
   render: () => {
     return (
       <Flex direction="vertical" gap="l">
@@ -103,5 +138,3 @@ export const TextInputStory: StoryObj<typeof Flex> = {
     );
   },
 };
-
-export default story;
