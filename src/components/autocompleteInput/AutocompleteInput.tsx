@@ -201,7 +201,7 @@ export const AutocompleteInput = <T = string,>({
       content={
         <Scrollable maxHeight="200px">
           {isEmpty ? (
-            <Empty transparent />
+            <Empty size="s" />
           ) : (
             <Dropdown.Menu>{suggestionElements}</Dropdown.Menu>
           )}

@@ -5,18 +5,18 @@ import { DividerProps } from './Divider.types.ts';
 
 export const Divider = memo<DividerProps>(
   ({ ref, direction, className, style, ...props }) => {
-    const cls = clsx(
-      s.Divider,
-      {
-        [s.Vertical]: direction === 'vertical',
-      },
-      className,
+    const vertical = direction === 'vertical';
+
+    const cls = clsx(s.Divider, { [s.Vertical]: vertical }, className);
+
+    return (
+      <hr
+        ref={ref}
+        className={cls}
+        style={style}
+        aria-orientation={vertical ? 'vertical' : undefined}
+        {...props}
+      />
     );
-
-    const styles = {
-      ...style,
-    };
-
-    return <hr ref={ref} className={cls} style={styles} {...props} />;
   },
 );

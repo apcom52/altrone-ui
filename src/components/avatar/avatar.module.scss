@@ -3,6 +3,8 @@
   --avatar-text-size: 16px;
   --avatar-text-weight: var(--text-weight-bold);
   --avatar-size: 32px;
+  /* Decorative top-left sheen — a fixed light source, not theme-driven. */
+  --avatar-sheen-color: rgba(255, 255, 255, 0.25);
 }
 
 .Avatar {
@@ -30,7 +32,7 @@
     z-index: 0;
     background: radial-gradient(
       at 0% 0%,
-      rgba(255, 255, 255, 0.25),
+      var(--avatar-sheen-color),
       transparent 100%
     );
   }

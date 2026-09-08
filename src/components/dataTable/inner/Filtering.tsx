@@ -92,7 +92,7 @@ export const Filtering = () => {
       content={({ closePopup }) => (
         <Form>
           {draftFilters.length === 0 ? (
-            <Empty>{t('dataTable.noFilters')}</Empty>
+            <Empty size="s">{t('dataTable.noFilters')}</Empty>
           ) : null}
           {draftFilters.map((filter) => (
             <FilterRow

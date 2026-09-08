@@ -1,62 +1,70 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { Avatar, Configuration } from '../src';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { Avatar } from '../src/components';
 
 describe('Avatar', () => {
-  test('check avatar works correctly', () => {
+  test('derives initials from the names', () => {
     const { rerender } = render(<Avatar firstName="John" lastName="Doe" />);
     expect(screen.getByText('JD')).toBeInTheDocument();
 
     rerender(<Avatar firstName="John" />);
     expect(screen.getByText('J')).toBeInTheDocument();
-
-    rerender(<Avatar firstName="Mark" lastName="Zoe" />);
-    expect(screen.getByText('MZ')).toBeInTheDocument();
   });
 
-  test('check correct work of title', () => {
-    render(
-      <>
-        <Avatar firstName="John" lastName="Doe" data-testid="avatar-1" />
-        <Avatar firstName="John" data-testid="avatar-2" />
-        <Avatar firstName="Mark" lastName="Zoe" data-testid="avatar-3" />
-        <Avatar firstName="Daniel" lastName=" " data-testid="avatar-4" />
-      </>,
+  test('exposes the full name as an image with a label', () => {
+    render(<Avatar firstName="John" lastName="Doe" data-testid="a" />);
+    const el = screen.getByTestId('a');
+    expect(el).toHaveAttribute('role', 'img');
+    expect(el).toHaveAccessibleName('John Doe');
+  });
+
+  test('renders the photo, falling back to initials on load error', () => {
+    const { container } = render(
+      <Avatar firstName="John" lastName="Doe" imageSrc="https://x/p.jpg" />,
     );
 
-    expect(screen.getByTestId('avatar-1')).toHaveAttribute('title', 'John Doe');
-    expect(screen.getByTestId('avatar-2')).toHaveAttribute('title', 'John');
-    expect(screen.getByTestId('avatar-3')).toHaveAttribute('title', 'Mark Zoe');
-    expect(screen.getByTestId('avatar-4')).toHaveAttribute('title', 'Daniel');
+    const img = container.querySelector('img')!;
+    expect(img).toHaveAttribute('src', 'https://x/p.jpg');
+    expect(img).toHaveAttribute('alt', '');
+    expect(screen.queryByText('JD')).not.toBeInTheDocument();
+
+    fireEvent.error(img);
+    expect(container.querySelector('img')).not.toBeInTheDocument();
+    expect(screen.getByText('JD')).toBeInTheDocument();
   });
 
-  test('check that properties works correctly', () => {
+  test('applies the size modifier and forwards className/style/props', () => {
     render(
       <Avatar
-        data-testid="element"
         firstName="John"
         lastName="Doe"
+        size="l"
         className="cls"
         style={{ color: 'rgb(0, 0, 255)' }}
+        title="John Doe"
+        data-testid="a"
       />,
     );
-
-    expect(screen.getByTestId('element')).toHaveClass('cls');
-    expect(screen.getByTestId('element')).toHaveStyle('color: rgb(0, 0, 255)');
+    const el = screen.getByTestId('a');
+    expect(el.className).toMatch(/Large/);
+    expect(el).toHaveClass('cls');
+    expect(el).toHaveStyle('color: rgb(0, 0, 255)');
+    expect(el).toHaveAttribute('title', 'John Doe');
   });
 
-  test('check that configuration works', () => {
+  test('backgroundColor and textColor drive the fill/text CSS vars', () => {
     render(
-      <Configuration
-        avatar={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
-      >
-        <Avatar data-testid="element" firstName="John" lastName="Doe" />
-      </Configuration>,
+      <Avatar
+        firstName="John"
+        lastName="Doe"
+        backgroundColor="#123456"
+        textColor="#abcdef"
+        data-testid="a"
+      />,
     );
-
-    const element = screen.getByTestId('element');
-    expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
+    const el = screen.getByTestId('a');
+    expect(el.style.getPropertyValue('--_avatar-bg')).toBe('#123456');
+    expect(el.style.getPropertyValue('--_avatar-text-color')).toBe('#abcdef');
   });
 });

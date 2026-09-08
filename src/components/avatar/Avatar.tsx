@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { CSSProperties, memo, useEffect, useState } from 'react';
 import s from './avatar.module.scss';
 import clsx from 'clsx';
 import { AvatarProps } from './Avatar.types';
@@ -36,36 +36,41 @@ export const Avatar = memo((props: AvatarProps) => {
   );
 
   const fullName = [firstName, lastName].join(' ').trim();
-  const initials = `${firstName.trimStart().charAt(0)}${lastName ? lastName?.trimStart().charAt(0) : ''}`;
+  const initials = `${firstName.trimStart().charAt(0)}${lastName ? lastName.trimStart().charAt(0) : ''}`;
 
-  // No explicit backgroundColor: fall back to a categorical color derived
-  // from the name, so a given person keeps the same background across
-  // renders instead of everyone sharing one flat neutral fill.
+  /* No explicit backgroundColor: fall back to a categorical colour keyed by
+     the name, so a given person keeps the same fill across renders instead of
+     everyone sharing one flat neutral. */
   const categoricalIndex = ColorUtils.getCategoricalColorIndex(fullName) + 1;
 
-  const styles: React.CSSProperties & Record<string, unknown> = {
+  const styles: CSSProperties & Record<string, unknown> = {
     ...style,
     '--_avatar-bg': backgroundColor ?? `var(--category-${categoricalIndex})`,
     ...(textColor ? { '--_avatar-text-color': textColor } : {}),
   };
 
+  const showImage = Boolean(imageSrc) && !imageError;
+
   return (
     <div
       ref={ref}
       className={cls}
-      aria-label={fullName}
+      role="img"
+      aria-label={fullName || undefined}
       style={styles}
       {...restProps}
     >
-      {imageSrc && !imageError ? (
+      {showImage ? (
         <img
           src={imageSrc}
           className={s.Image}
-          alt={fullName}
+          alt=""
           onError={() => setImageError(true)}
         />
       ) : (
-        <span className={s.Letters}>{initials}</span>
+        <span className={s.Letters} aria-hidden="true">
+          {initials}
+        </span>
       )}
     </div>
   );

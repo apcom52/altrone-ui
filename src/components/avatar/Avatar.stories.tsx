@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { ReactNode } from 'react';
 import { StorybookDecorator } from '../../global/storybook/index.ts';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex/index.ts';
@@ -29,6 +30,79 @@ const story: Meta<typeof Avatar> = {
       },
     },
   },
+};
+
+export default story;
+
+const Heading = ({ children }: { children: string }) => (
+  <Text block size={7} weight="bold" style={{ marginTop: 16 }}>
+    {children}
+  </Text>
+);
+
+const Paragraph = ({ children }: { children: ReactNode }) => (
+  <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
+    {children}
+  </Text>
+);
+
+export const Overview: StoryObj<typeof Avatar> = {
+  name: 'Overview',
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Text block size={9} weight="bold">
+        Avatar
+      </Text>
+
+      <Paragraph>
+        <Text code>Avatar</Text> is a round identity chip. It shows a photo
+        (<Text code>imageSrc</Text>) and falls back to initials automatically if
+        the image fails to load. The element is <Text code>role="img"</Text>{' '}
+        labelled with the full name.
+      </Paragraph>
+
+      <Heading>Colour</Heading>
+      <Paragraph>
+        With no <Text code>backgroundColor</Text>, the fill is a categorical
+        hue keyed by the name — the same person always gets the same colour.
+        Text colour auto-contrasts against the fill (via an{' '}
+        <Text code>oklch</Text> relative-colour calc); pass{' '}
+        <Text code>textColor</Text> to override it.
+      </Paragraph>
+
+      <Flex gap="m" wrap>
+        {['Ada Lovelace', 'Alan Turing', 'Grace Hopper', 'Linus Torvalds', 'Rich Hickey'].map(
+          (n) => {
+            const [first, last] = n.split(' ');
+            return <Avatar key={n} firstName={first} lastName={last} />;
+          },
+        )}
+      </Flex>
+
+      <Heading>Sizes</Heading>
+      <Flex gap="m" align="center">
+        {(['mini', 's', undefined, 'l', 'xl'] as const).map((sz, i) => (
+          <Avatar key={i} firstName="Maya" lastName="Reed" size={sz} />
+        ))}
+      </Flex>
+
+      <Heading>Photo &amp; fallback</Heading>
+      <Flex gap="m" align="center">
+        <Avatar
+          firstName="Nino"
+          lastName="Kobakhidze"
+          imageSrc="https://i.pravatar.cc/64?img=21"
+          size="l"
+        />
+        <Avatar
+          firstName="Nino"
+          lastName="Kobakhidze"
+          imageSrc="https://broken.url/x.jpg"
+          size="l"
+        />
+      </Flex>
+    </Flex>
+  ),
 };
 
 // Team members used across stories
@@ -276,5 +350,3 @@ export const WithPhotoStory: StoryObj<typeof Avatar> = {
     </Flex>
   ),
 };
-
-export default story;
