@@ -7,6 +7,19 @@
   ],
   "main": "dist/index.js",
   "types": "dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./logos": {
+      "types": "./dist/src/logos/index.d.ts",
+      "import": "./dist/logos.js"
+    },
+    "./style.css": "./dist/style.css",
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "publish:release": "npm run test && npm run test-storybook && npm run build && npm publish",
     "publish:beta": "npm run test && npm run test-storybook && npm run build && npm publish --tag beta",
@@ -85,6 +98,7 @@
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^3.9.1",
     "vite-plugin-lib-inject-css": "^2.1.1",
+    "vite-plugin-svgr": "^5.2.0",
     "vite-tsconfig-paths": "4.3.2",
     "vitest": "1.4.0",
     "zod": "^4.3.6"
