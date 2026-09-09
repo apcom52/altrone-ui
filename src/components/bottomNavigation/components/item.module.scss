@@ -44,20 +44,6 @@
   color: inherit;
 }
 
-/* A `Box` pill in the top-right corner, styled like a single-icon `Button`'s
-   badge. This layer carries only the dimensional tuning `Box` doesn't own. */
-.Badge {
-  position: absolute;
-  top: 0;
-  right: 0;
-  transform: translate(35%, -35%);
-  min-width: var(--bottom-navigation-badge-min-width);
-  font-size: var(--bottom-navigation-badge-font-size);
-  font-weight: var(--text-weight-bold);
-  pointer-events: none;
-  z-index: 2;
-}
-
 .Selected {
   color: var(--bottom-navigation-selected-item-text-color);
 }

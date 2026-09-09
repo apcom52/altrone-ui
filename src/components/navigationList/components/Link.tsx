@@ -20,8 +20,8 @@ import {
   useNavigationListId,
   useNavigationListLevel,
 } from '../NavigationList.context.ts';
-import { Box } from 'components/box';
 import { Text } from 'components/text/Text.tsx';
+import { Badge } from 'internal/badge';
 import { motion } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
 import { Slot } from 'utils/components/Slot';
@@ -57,25 +57,7 @@ const ItemContent = ({
     <Text className={s.LabelText} truncate>
       {label}
     </Text>
-    {badge ? (
-      <Box
-        className={s.Badge}
-        shape="pill"
-        material="translucent"
-        tone="neutral"
-        size="var(--navigation-list-badge-size)"
-        width="auto"
-        padding={{ x: 'var(--navigation-list-badge-padding)', y: 0 }}
-      >
-        {typeof badge === 'string' || typeof badge === 'number' ? (
-          <Text size={2} weight="bold">
-            {badge}
-          </Text>
-        ) : (
-          badge
-        )}
-      </Box>
-    ) : null}
+    {badge ? <Badge size="m">{badge}</Badge> : null}
     {actions.length ? <div className={s.Actions}>{actions}</div> : null}
     {opened ? (
       <div className={s.ChildrenIcon} aria-hidden>

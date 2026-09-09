@@ -103,7 +103,7 @@ export const Overview: StoryObj<typeof Box> = {
           <Text code>Badge</Text>, <Text code>Tag</Text>,{' '}
           <Text code>Avatar</Text>, a card. It isn&rsquo;t for structurally
           complex components like <Text code>Splitter</Text> or{' '}
-          <Text code>DataGrid</Text> — those use <Text code>Box</Text> for
+          <Text code>DataTable</Text> — those use <Text code>Box</Text> for
           individual internal parts (e.g. <Text code>Splitter.Divider</Text>),
           not as their whole implementation.
         </Paragraph>

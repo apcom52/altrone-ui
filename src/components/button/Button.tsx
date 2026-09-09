@@ -4,6 +4,7 @@ import s from './button.module.scss';
 import clsx from 'clsx';
 import { HTMLMotionProps, motion, useReducedMotionConfig } from 'motion/react';
 import { Box, BoxMaterial } from 'components/box';
+import { Badge } from 'internal/badge';
 import { Loading } from 'components/loading/Loading.tsx';
 import { Tooltip } from 'components/tooltip/Tooltip.tsx';
 import { ButtonSuccessIcon } from './inner/Success.tsx';
@@ -92,17 +93,13 @@ export const Button = memo((props: ButtonProps) => {
      chip floating over the top-right corner (rendered outside the content row,
      positioned against the button element). */
   const badgeElement = badge ? (
-    <Box
-      shape="pill"
-      material={isSingleIcon ? 'plate' : 'translucent'}
-      tone="neutral"
-      size="var(--button-badge-size)"
-      width="auto"
-      padding={{ x: 'var(--button-badge-padding)', y: 0 }}
-      className={clsx(s.ButtonBadge, { [s.ButtonBadgeCorner]: isSingleIcon })}
+    <Badge
+      placement={isSingleIcon ? 'corner' : 'inline'}
+      size={size}
+      className={isSingleIcon ? undefined : s.ButtonBadge}
     >
       {badge}
-    </Box>
+    </Badge>
   ) : null;
 
   const buttonContent = (

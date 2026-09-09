@@ -42,14 +42,12 @@ import {
   Dropdown,
   Flex,
   PopoverRef,
-  Select,
   Text,
   Toolbar,
 } from 'components';
-import { Badge } from 'components/badge';
+import { Badge } from 'internal/badge';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { Size } from 'types';
 
 const story: Meta<typeof Dropdown> = {
   title: 'Components/Containers/Dropdown',
@@ -101,14 +99,6 @@ const INBOX_ITEMS = [
   },
   { subject: 'Re: Design tokens migration status', unread: false },
   { subject: 'Invoice #4471 has been paid', unread: false },
-];
-
-const SIZE_OPTIONS = [
-  { value: 'mini', label: 'mini' },
-  { value: 's', label: 's' },
-  { value: 'm', label: 'm' },
-  { value: 'l', label: 'l' },
-  { value: 'xl', label: 'xl' },
 ];
 
 // ─── 1. Anatomy: a branch switcher ──────────────────────────────────────────
@@ -389,67 +379,7 @@ export const AsChildStory: StoryObj<typeof Dropdown> = {
   ),
 };
 
-// ─── 5. Sizes ────────────────────────────────────────────────────────────────
-
-function SizesDemo() {
-  const [size, setSize] = useState<Size>('m');
-  const [starred, setStarred] = useState(true);
-
-  return (
-    <Flex direction="vertical" gap="m" align="start">
-      <Select
-        value={size}
-        onChange={(v) => setSize((v as Size) ?? 'm')}
-        options={SIZE_OPTIONS}
-        style={{ width: 120 }}
-      />
-      <Dropdown
-        placement="bottom-start"
-        content={
-          <Dropdown.Menu>
-            <Dropdown.Action
-              size={size}
-              icon={<Star />}
-              label="Starred"
-              hintText="⌘+S"
-            />
-            <Dropdown.Checkbox
-              size={size}
-              checked={starred}
-              onChange={setStarred}
-              label="Show in sidebar"
-            />
-            <Dropdown.ChildMenu size={size} icon={<Share2 />} label="Share">
-              <Dropdown.Action label="Copy link" icon={<Link />} />
-            </Dropdown.ChildMenu>
-          </Dropdown.Menu>
-        }
-      >
-        <Button label={`size="${size}"`} additionalIcon={<ChevronDown />} />
-      </Dropdown>
-    </Flex>
-  );
-}
-
-export const SizesStory: StoryObj<typeof Dropdown> = {
-  name: 'Sizes',
-  render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
-      <Heading>mini, s, m, l, xl</Heading>
-      <Paragraph>
-        <Text code>size</Text> is accepted independently by{' '}
-        <Text code>Dropdown.Action</Text>, <Text code>Dropdown.Checkbox</Text>,{' '}
-        <Text code>Dropdown.RadioItem</Text> and{' '}
-        <Text code>Dropdown.ChildMenu</Text> — a menu can even mix tiers row by
-        row. Row height stays at or above 24px at every tier, including{' '}
-        <Text code>"mini"</Text>, to keep the hit area accessible.
-      </Paragraph>
-      <SizesDemo />
-    </Flex>
-  ),
-};
-
-// ─── 6. Hover trigger + overflowing content ─────────────────────────────────
+// ─── 5. Hover trigger + overflowing content ─────────────────────────────────
 
 function InboxRow({ subject, unread }: { subject: string; unread: boolean }) {
   const [isUnread, setIsUnread] = useState(unread);
@@ -521,7 +451,7 @@ export const HoverTriggerStory: StoryObj<typeof Dropdown> = {
   ),
 };
 
-// ─── 7. Inside a Toolbar ─────────────────────────────────────────────────────
+// ─── 6. Inside a Toolbar ─────────────────────────────────────────────────────
 
 function FormattingMenu() {
   const [highlight, setHighlight] = useState(false);
@@ -579,7 +509,7 @@ export const ToolbarStory: StoryObj<typeof Dropdown> = {
   ),
 };
 
-// ─── 8. Imperative control via ref ───────────────────────────────────────────
+// ─── 7. Imperative control via ref ───────────────────────────────────────────
 
 function ImperativeRefDemo() {
   const dropdownRef = useRef<PopoverRef>(null);

@@ -2,8 +2,8 @@ import { isValidElement, memo, ReactElement, Ref } from 'react';
 import { TabsItemProps } from '../Tabs.types.ts';
 import s from './item.module.scss';
 import clsx from 'clsx';
-import { Box } from 'components/box';
 import { Text } from 'components/text/Text.tsx';
+import { Badge } from 'internal/badge';
 import { motion, useAnimationControls } from 'motion/react';
 import { useTabsContext } from '../Tabs.context.ts';
 import { Slot } from 'utils/components/Slot.tsx';
@@ -48,23 +48,9 @@ const TabItemContent = memo(
         {icon ? <div className={s.Icon}>{icon}</div> : null}
         {showLabel ? <Text className={s.Label}>{label}</Text> : null}
         {badge ? (
-          <Box
-            className={s.Badge}
-            shape="pill"
-            material="translucent"
-            tone="neutral"
-            size="var(--tabs-item-badge-size)"
-            width="auto"
-            padding={{ x: 'var(--tabs-item-badge-padding)', y: 0 }}
-          >
-            {typeof badge === 'string' || typeof badge === 'number' ? (
-              <Text size={2} weight="bold">
-                {badge}
-              </Text>
-            ) : (
-              badge
-            )}
-          </Box>
+          <Badge className={s.Badge} size="s">
+            {badge}
+          </Badge>
         ) : null}
       </>
     );

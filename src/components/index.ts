@@ -13,7 +13,6 @@ export * from './closeButton';
 export * from './collapsedList';
 export * from './colorPicker';
 
-export * from './dataGrid';
 export * from './dataTable';
 export * from './datePicker';
 export * from './dialog';
@@ -22,7 +21,6 @@ export * from './drawer';
 export * from './dropdown';
 
 export * from './empty';
-export * from './entityList';
 
 export * from './filePicker';
 export * from './flex';

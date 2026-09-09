@@ -185,12 +185,12 @@ export const Overview: StoryObj = {
 
       <Heading>In practice</Heading>
       <Paragraph>
-        <code>DataGrid</code> uses <code>--space-stack</code> in two places
-        that serve the same purpose — the gap above its toolbar and the
+        <code>Form</code> uses <code>--space-stack</code> in two places
+        that serve the same purpose — the gap above its actions row and the
         gap between its field rows are both, conceptually, the same
         vertical rhythm:
       </Paragraph>
-      <Code>{`.DataGrid {
+      <Code>{`.Form {
   gap: var(--space-stack);
 }
 .Fields {

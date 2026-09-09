@@ -124,15 +124,6 @@
   margin-right: 4px;
 }
 
-/* A `Box` pill, styled to match the badge on a `Button`. This layer only
-   carries the dimensional tuning `Box` doesn't own — small type and a
-   min-width so a 2-digit count doesn't collapse. */
-.Badge {
-  min-width: var(--navigation-list-badge-min-width);
-  font-size: var(--navigation-list-badge-font-size);
-  font-weight: var(--text-weight-bold);
-}
-
 .Selected {
   color: var(--navigation-list-link-selected-text-color);
 }

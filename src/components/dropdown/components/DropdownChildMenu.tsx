@@ -15,7 +15,6 @@ export function DropdownChildMenu({
   className,
   style,
   icon,
-  size = 'm',
   ...props
 }: DropdownChildMenuProps) {
   const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
@@ -23,10 +22,6 @@ export function DropdownChildMenu({
 
   const cls = clsx(s.Action, 'no-selection', className, {
     [s.DisabledAction]: disabled,
-    [s.Mini]: size === 'mini',
-    [s.Small]: size === 's',
-    [s.Large]: size === 'l',
-    [s.XLarge]: size === 'xl',
   });
 
   const styles = {

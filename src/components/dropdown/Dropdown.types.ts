@@ -6,7 +6,6 @@ import { PopoverProps } from 'components/popover/Popover.types';
 import { ReactElement, ReactNode, Ref } from 'react';
 import { RenderFuncProp } from '../../types';
 import { RenderFunction } from 'utils';
-import { Size } from 'types';
 
 export interface DropdownActionProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -19,7 +18,6 @@ export interface DropdownActionProps
   disabled?: boolean;
   focused?: boolean;
   asChild?: boolean;
-  size?: Size;
   renderFunc?: RenderFuncProp<
     HTMLButtonElement,
     DropdownActionProps & { keyProp?: string }
@@ -39,7 +37,6 @@ export interface DropdownCheckboxProps
   label: string;
   focused?: boolean;
   disabled?: boolean;
-  size?: Size;
 }
 
 export interface DropdownRadioListProps<T = string>
@@ -60,7 +57,6 @@ export interface DropdownRadioListItem<T = string>
   label: string;
   disabled?: boolean;
   focused?: boolean;
-  size?: Size;
 }
 
 export interface DropdownChildMenuProps
@@ -70,7 +66,6 @@ export interface DropdownChildMenuProps
   children: ReactElement | null | (ReactElement | null)[];
   label: string;
   disabled?: boolean;
-  size?: Size;
 }
 
 export interface DropdownMenuProps

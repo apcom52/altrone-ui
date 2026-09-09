@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { useCloseDropdownContext } from '../Dropdown.contexts.ts';
 import s from './action.module.scss';
 import { usePopoverCurrentIndex } from '../../popover/Popover.tsx';
-import { Badge } from 'components/badge/Badge.tsx';
+import { Badge } from 'internal/badge';
 import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
 import { Slot } from 'utils/components/Slot.tsx';
 import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
@@ -27,7 +27,6 @@ export function DropdownAction(props: DropdownActionProps) {
     hintText,
     keyProp,
     badge,
-    size = 'm',
     ...htmlProps
   } = props;
 
@@ -56,15 +55,9 @@ export function DropdownAction(props: DropdownActionProps) {
       [s.DisabledAction]: props.disabled,
       [s.DangerAction]: danger,
       [s.Focused]: focused,
-      [s.Mini]: size === 'mini',
-      [s.Small]: size === 's',
-      [s.Large]: size === 'l',
-      [s.XLarge]: size === 'xl',
     },
     className,
   );
-
-  const badgeCls = clsx(s.Badge);
 
   const styles = {
     ...style,
@@ -89,7 +82,7 @@ export function DropdownAction(props: DropdownActionProps) {
       <div className={s.Icon}>{icon}</div>
       <div className={s.Label}>{label}</div>
       {badge ? (
-        <Badge className={badgeCls}>{badge}</Badge>
+        <Badge className={s.Badge}>{badge}</Badge>
       ) : hintText ? (
         <div className={s.Hint}>{hintText}</div>
       ) : null}

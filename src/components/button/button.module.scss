@@ -14,11 +14,6 @@
   --button-icon-size: 16px;
   --button-gap: var(--gap);
 
-  --button-badge-min-width: 20px;
-  --button-badge-size: 20px;
-  --button-badge-padding: 6px;
-  --button-badge-font-size: 10px;
-
   appearance: none;
   border: none;
   margin: 0;
@@ -66,37 +61,13 @@
   justify-content: center;
 }
 
-/**
- * The badge is a `Box` (pill). This layer only carries the dimensional tuning
- * Box doesn't own — small type and a min-width so a 2-digit count doesn't
- * collapse.
- */
-.ButtonBadge {
-  min-width: var(--button-badge-min-width);
-  font-size: var(--button-badge-font-size);
-  font-weight: var(--text-weight-bold);
-}
-
 /* Inline badge on a labelled button: bleeds into the trailing padding and
    follows the button's resolved text colour (white on `submit`, inverted in
-   dark) instead of the neutral badge tone's default. */
+   dark) instead of the neutral badge tone's default. Sizing, min-width and the
+   icon-only corner placement are owned by `Badge` (internal/badge). */
 .ButtonContent > .ButtonBadge {
-  margin-right: calc(-1 * var(--button-badge-padding));
+  margin-right: calc(-1 * var(--badge-padding-x));
   color: inherit;
-}
-
-/* Icon-only button: a `plate` chip floating over the top-right corner. It's
-   rendered outside `.ButtonContent`, so it positions against the button
-   element and doesn't push the icon off-centre. The `.Button` ancestor lifts
-   `position` above box.module's `.Box { position: relative }` (same element,
-   equal specificity otherwise). Its fill is always light (`plate` isn't
-   tone-driven), so it keeps the neutral tone's dark text. */
-.Button .ButtonBadgeCorner {
-  position: absolute;
-  top: 0;
-  right: 0;
-  transform: translate(35%, -35%);
-  pointer-events: none;
 }
 
 .ButtonLoading {
@@ -141,11 +112,6 @@
   --button-icon-size: 11px;
   --button-gap: 4px;
 
-  --button-badge-min-width: 12px;
-  --button-badge-size: 12px;
-  --button-badge-padding: 4px;
-  --button-badge-font-size: 8px;
-
   &.SingleIcon {
     --button-icon-size: 10px;
   }
@@ -155,11 +121,6 @@
   --button-font-size: 12px;
   --button-icon-size: 14px;
   --button-gap: 4px;
-
-  --button-badge-min-width: 16px;
-  --button-badge-size: 16px;
-  --button-badge-padding: 4px;
-  --button-badge-font-size: 8px;
 
   &.SingleIcon {
     --button-icon-size: 14px;
@@ -171,11 +132,6 @@
   --button-icon-size: 18px;
   --button-gap: 8px;
 
-  --button-badge-min-width: 28px;
-  --button-badge-size: 28px;
-  --button-badge-padding: 8px;
-  --button-badge-font-size: 12px;
-
   &.SingleIcon {
     --button-icon-size: 22px;
   }
@@ -185,11 +141,6 @@
   --button-font-size: 20px;
   --button-icon-size: 24px;
   --button-gap: 12px;
-
-  --button-badge-min-width: 32px;
-  --button-badge-size: 32px;
-  --button-badge-padding: 12px;
-  --button-badge-font-size: 14px;
 
   &.SingleIcon {
     --button-icon-size: 26px;

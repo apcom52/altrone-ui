@@ -29,6 +29,7 @@ const config: StorybookConfig = {
       resolve: {
         alias: {
           components: '/src/components',
+          internal: '/src/internal',
           hooks: '/src/hooks',
           types: '/src/types',
           utils: '/src/utils',

@@ -16,7 +16,6 @@ export function DropdownCheckbox({
   className,
   focused,
   style,
-  size = 'm',
   ...props
 }: DropdownCheckboxProps) {
   const id = useId();
@@ -32,10 +31,6 @@ export function DropdownCheckbox({
     {
       [s.DisabledAction]: disabled,
       [s.Focused]: focused,
-      [s.Mini]: size === 'mini',
-      [s.Small]: size === 's',
-      [s.Large]: size === 'l',
-      [s.XLarge]: size === 'xl',
     },
     className,
   );

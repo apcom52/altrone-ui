@@ -73,13 +73,10 @@
   color: inherit;
 }
 
-/* A `Box` pill, styled to match a `Button`'s badge — this layer carries only
-   the dimensional tuning `Box` doesn't own. */
+/* Sizing is owned by `Badge` (internal/badge); this only nudges it into the
+   tab's content row. */
 .Badge {
   margin-left: 2px;
   margin-right: -4px;
-  min-width: var(--tabs-item-badge-size);
-  font-size: var(--tabs-item-badge-text-size);
-  font-weight: var(--text-weight-bold);
   z-index: 1;
 }

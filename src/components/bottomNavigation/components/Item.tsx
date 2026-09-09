@@ -9,8 +9,8 @@ import {
 import { BottomNavigationItemProps } from '../BottomNavigation.types.ts';
 import clsx from 'clsx';
 import s from './item.module.scss';
-import { Box } from 'components/box';
 import { Text } from 'components/text/Text.tsx';
+import { Badge } from 'internal/badge';
 import { useBottomNavigationSelect } from '../BottomNavigation.context.tsx';
 import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
 import { DOMUtils } from '../../../utils';
@@ -24,23 +24,9 @@ const ItemContent = ({ icon, label, badge }: ItemContentProps) => (
       {label}
     </Text>
     {badge ? (
-      <Box
-        className={s.Badge}
-        shape="pill"
-        material="plate"
-        tone="neutral"
-        size="var(--bottom-navigation-badge-size)"
-        width="auto"
-        padding={{ x: 'var(--bottom-navigation-badge-padding)', y: 0 }}
-      >
-        {typeof badge === 'string' || typeof badge === 'number' ? (
-          <Text size={2} weight="bold">
-            {badge}
-          </Text>
-        ) : (
-          badge
-        )}
-      </Box>
+      <Badge placement="corner" size="m">
+        {badge}
+      </Badge>
     ) : null}
   </>
 );

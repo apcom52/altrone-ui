@@ -76,6 +76,7 @@ export default defineConfig({
     resolve: {
       alias: {
         components: resolve(__dirname, './src/components'),
+        internal: resolve(__dirname, './src/internal'),
         hooks: resolve(__dirname, './src/hooks'),
         types: resolve(__dirname, './src/types'),
         utils: resolve(__dirname, './src/utils'),

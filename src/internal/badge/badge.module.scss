@@ -1,0 +1,55 @@
+/* Dimensional tuning Box doesn't own. Defaults are the `m` tier; the size
+   classes override the four --badge-* values. Box reads them through the
+   `height`/`padding` props set in Badge.tsx. */
+.Badge {
+  --badge-height: 20px;
+  --badge-min-width: 20px;
+  --badge-padding-x: 6px;
+  --badge-font-size: 10px;
+
+  min-width: var(--badge-min-width);
+  font-size: var(--badge-font-size);
+  font-weight: var(--text-weight-bold);
+  line-height: 1;
+}
+
+.Mini {
+  --badge-height: 12px;
+  --badge-min-width: 12px;
+  --badge-padding-x: 4px;
+  --badge-font-size: 8px;
+}
+
+.Small {
+  --badge-height: 16px;
+  --badge-min-width: 16px;
+  --badge-padding-x: 4px;
+  --badge-font-size: 8px;
+}
+
+.Large {
+  --badge-height: 28px;
+  --badge-min-width: 28px;
+  --badge-padding-x: 8px;
+  --badge-font-size: 12px;
+}
+
+.XLarge {
+  --badge-height: 32px;
+  --badge-min-width: 32px;
+  --badge-padding-x: 12px;
+  --badge-font-size: 14px;
+}
+
+/* Compound selector so it beats box.module's `.Box { position: relative }`
+   (equal specificity otherwise, and stylesheet order isn't guaranteed). The
+   nearest positioned ancestor — any Box, or the consumer's own root — is the
+   anchor. */
+.Badge.Corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(35%, -35%);
+  pointer-events: none;
+  z-index: 2;
+}
