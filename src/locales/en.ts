@@ -183,8 +183,8 @@ export const en: Localization = {
     savedColors: 'Saved colors',
     palette: 'Palette',
   },
-  empty: {
-    noData: 'No data',
+  result: {
+    empty: 'No data',
   },
   autocompleteInput: {
     loadError: 'An error occurred while loading data',

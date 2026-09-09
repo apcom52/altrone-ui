@@ -175,8 +175,8 @@ export interface Localization {
     savedColors: string;
     palette: string;
   };
-  empty: {
-    noData: string;
+  result: {
+    empty: string;
   };
   autocompleteInput: {
     loadError: string;

@@ -20,8 +20,6 @@ export * from './divider';
 export * from './drawer';
 export * from './dropdown';
 
-export * from './empty';
-
 export * from './filePicker';
 export * from './flex';
 export * from './form';
@@ -44,6 +42,8 @@ export * from './progress';
 
 export * from './radio';
 export * from './range';
+
+export * from './result';
 
 export * from './screen';
 export * from './scrollable';

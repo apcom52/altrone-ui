@@ -183,8 +183,8 @@ export const fr: Localization = {
     savedColors: 'Couleurs sauvegardées',
     palette: 'Palette',
   },
-  empty: {
-    noData: 'Aucune donnée',
+  result: {
+    empty: 'Aucune donnée',
   },
   autocompleteInput: {
     loadError: 'Une erreur est survenue lors du chargement des données',

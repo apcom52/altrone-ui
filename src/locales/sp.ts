@@ -184,8 +184,8 @@ export const sp: Localization = {
     savedColors: 'Colores guardados',
     palette: 'Paleta',
   },
-  empty: {
-    noData: 'No hay datos',
+  result: {
+    empty: 'No hay datos',
   },
   autocompleteInput: {
     loadError: 'Se produjo un error al cargar los datos',

@@ -184,8 +184,8 @@ export const ge: Localization = {
     savedColors: 'Gespeicherte Farben',
     palette: 'Palette',
   },
-  empty: {
-    noData: 'Keine Daten',
+  result: {
+    empty: 'Keine Daten',
   },
   autocompleteInput: {
     loadError: 'Beim Laden der Daten ist ein Fehler aufgetreten',

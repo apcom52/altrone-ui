@@ -6,7 +6,7 @@ import { Dropdown } from 'components/dropdown';
 import { Flex } from 'components/flex';
 import { Form } from 'components/form';
 import { Popover } from 'components/popover';
-import { Empty } from 'components/empty/Empty.tsx';
+import { Result } from 'components/result';
 import { useLocalization } from 'components/application';
 import { AnyObject } from '../../../utils';
 import { useDataTableContext } from '../DataTable.context.tsx';
@@ -92,7 +92,7 @@ export const Filtering = () => {
       content={({ closePopup }) => (
         <Form>
           {draftFilters.length === 0 ? (
-            <Empty size="s">{t('dataTable.noFilters')}</Empty>
+            <Result size="s">{t('dataTable.noFilters')}</Result>
           ) : null}
           {draftFilters.map((filter) => (
             <FilterRow

@@ -15,7 +15,7 @@ import {
 } from 'utils';
 import { useLocalization } from 'components/application';
 import { TextInput } from 'components/textInput';
-import { Empty } from 'components/empty';
+import { Result } from 'components/result';
 import { Tooltip } from 'components/tooltip';
 import clsx from 'clsx';
 import { Dropdown } from 'components/dropdown';
@@ -201,7 +201,7 @@ export const AutocompleteInput = <T = string,>({
       content={
         <Scrollable maxHeight="200px">
           {isEmpty ? (
-            <Empty size="s" />
+            <Result size="s" />
           ) : (
             <Dropdown.Menu>{suggestionElements}</Dropdown.Menu>
           )}

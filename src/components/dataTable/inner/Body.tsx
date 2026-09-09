@@ -1,7 +1,7 @@
 import { createElement, FC } from 'react';
 import { useDataTableContext } from '../DataTable.context.tsx';
 import { Checkbox } from '../../checkbox';
-import { Empty } from 'components/empty/Empty.tsx';
+import { Result } from 'components/result';
 import { useLocalization } from '../../application';
 import {
   CellRenderer,
@@ -29,7 +29,7 @@ export const Body = <T extends object>({
   return (
     <div className={s.TableBody}>
       {rows.length === 0 && showEmptyBanner ? (
-        <Empty>{t('dataTable.empty')}</Empty>
+        <Result>{t('dataTable.empty')}</Result>
       ) : null}
       {rows.map((row) => {
         const isSelected = row.getIsSelected();

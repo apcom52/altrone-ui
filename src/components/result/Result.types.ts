@@ -1,12 +1,22 @@
 import React from 'react';
 import { Size } from 'types';
 
-export interface EmptyProps
+export type ResultStatus = 'empty' | 'info' | 'success' | 'warning' | 'error';
+
+export interface ResultProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   ref?: React.Ref<HTMLDivElement>;
-  /** Icon shown in the media chip. Default: a "no results" icon. */
+  /**
+   * The kind of feedback. Drives the default icon and the media-chip tint.
+   * Default: `'empty'` (a neutral "no data" state).
+   */
+  status?: ResultStatus;
+  /** Custom icon in the media chip. Overrides the `status` default. */
   icon?: React.ReactNode;
-  /** Short heading. Default: the localized "No data". */
+  /**
+   * Short heading. Falls back to `children` / `description`, then — for
+   * `status="empty"` only — the localized "No data".
+   */
   title?: React.ReactNode;
   /** Supporting line under the title. `children` is used when this is omitted. */
   description?: React.ReactNode;

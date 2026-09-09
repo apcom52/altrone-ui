@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Empty, Screen } from 'components';
+import { Result, Screen } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 
 const story: Meta<typeof Screen.Empty> = {
@@ -11,10 +11,10 @@ const story: Meta<typeof Screen.Empty> = {
 export default story;
 
 export const Overview: StoryObj<typeof Screen.Empty> = {
-  name: 'Using Empty',
+  name: 'Using Result',
   render: () => (
     <Screen.Empty>
-      <Empty>No projects yet</Empty>
+      <Result>No projects yet</Result>
     </Screen.Empty>
   ),
 };

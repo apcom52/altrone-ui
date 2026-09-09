@@ -183,8 +183,8 @@ export const ru: Localization = {
     savedColors: 'Сохраненные цвета',
     palette: 'Палитра',
   },
-  empty: {
-    noData: 'Нет данных',
+  result: {
+    empty: 'Нет данных',
   },
   autocompleteInput: {
     loadError: 'Возникла ошибка при загрузке данных',
