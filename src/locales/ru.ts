@@ -166,7 +166,7 @@ export const ru: Localization = {
   closeButton: {
     ariaLabel: 'Закрыть',
   },
-  toast: {
+  notifications: {
     regionLabel: 'Уведомления',
   },
   dialog: {

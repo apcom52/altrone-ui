@@ -2,29 +2,29 @@ import { useCallback, useState } from 'react';
 import { AnimatePresence } from 'motion/react';
 import clsx from 'clsx';
 import { useLocalization } from 'components/application';
-import { ToastContext } from './Toast.context';
+import { NotificationsContext } from './Notifications.context';
 import type {
-  AnyToastItem,
+  AnyNotificationItem,
   NotificationItem,
   NotificationOptions,
   ToastItem,
   ToastOptions,
-  ToastsProviderProps,
-} from './Toast.types';
-import { ToastCard } from './components/ToastCard';
-import s from './toast.module.scss';
+  NotificationsProviderProps,
+} from './Notifications.types';
+import { NotificationCard } from './components/NotificationCard';
+import s from './notifications.module.scss';
 
 let counter = 0;
-const nextId = () => `altrone-toast-${++counter}`;
+const nextId = () => `altrone-notification-${++counter}`;
 
-export const Toast = ({
+export const Notifications = ({
   children,
   toastPlacement = 'end',
   notificationSide = 'end',
   notificationPlacement = 'end',
-}: ToastsProviderProps) => {
+}: NotificationsProviderProps) => {
   const t = useLocalization();
-  const [items, setItems] = useState<AnyToastItem[]>([]);
+  const [items, setItems] = useState<AnyNotificationItem[]>([]);
 
   const dismiss = useCallback((id: string) => {
     setItems((prev) => prev.filter((item) => item.id !== id));
@@ -77,12 +77,12 @@ export const Toast = ({
   };
 
   return (
-    <ToastContext.Provider value={{ toast, notification, dismiss }}>
+    <NotificationsContext.Provider value={{ toast, notification, dismiss }}>
       {children}
       <div
         className={s.Root}
         role="region"
-        aria-label={t('toast.regionLabel')}
+        aria-label={t('notifications.regionLabel')}
         aria-live="polite"
         aria-atomic="false"
       >
@@ -95,7 +95,7 @@ export const Toast = ({
         >
           <AnimatePresence initial={false}>
             {toasts.map((item) => (
-              <ToastCard
+              <NotificationCard
                 key={item.id}
                 item={item}
                 enter={toastEnter}
@@ -115,7 +115,7 @@ export const Toast = ({
         >
           <AnimatePresence initial={false}>
             {notifications.map((item) => (
-              <ToastCard
+              <NotificationCard
                 key={item.id}
                 item={item}
                 enter={notificationEnter}
@@ -125,6 +125,6 @@ export const Toast = ({
           </AnimatePresence>
         </div>
       </div>
-    </ToastContext.Provider>
+    </NotificationsContext.Provider>
   );
 };

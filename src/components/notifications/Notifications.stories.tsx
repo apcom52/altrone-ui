@@ -15,13 +15,13 @@ import {
 import { Button, Flex, Select, Switcher, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { Toast } from './Toast';
-import { useToast } from './Toast.context';
-import type { ToastPlacement, ToastVariant } from './Toast.types';
+import { Notifications } from './Notifications';
+import { useNotifications } from './Notifications.context';
+import type { NotificationPlacement, ToastVariant } from './Notifications.types';
 
-const story: Meta<typeof Toast> = {
+const story: Meta<typeof Notifications> = {
   title: 'Components/Display/Notifications',
-  component: Toast,
+  component: Notifications,
   decorators: [StorybookDecorator],
   parameters: {
     chromatic: {
@@ -54,19 +54,19 @@ const LONG_TEXT =
 
 // ─── Overview ────────────────────────────────────────────────────────────────
 
-export const Overview: StoryObj<typeof Toast> = {
+export const Overview: StoryObj<typeof Notifications> = {
   name: 'Overview',
   render: () => {
-    const { toast, notification } = useToast();
+    const { toast, notification } = useNotifications();
 
     return (
       <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Text block size={9} weight="bold">
-          Toast
+          Notifications
         </Text>
         <Paragraph>
           One imperative notification system with two display modes. Call{' '}
-          <Text code>useToast()</Text> for <Text code>toast()</Text> — a brief,
+          <Text code>useNotifications()</Text> for <Text code>toast()</Text> — a brief,
           pill-shaped message — and <Text code>notification()</Text> — a rich
           card with an optional title, image, icon and action buttons. Both
           return an <Text code>id</Text> you can pass to <Text code>dismiss()</Text>.
@@ -114,10 +114,10 @@ export const Overview: StoryObj<typeof Toast> = {
 
 // ─── Toast messages ──────────────────────────────────────────────────────────
 
-export const ToastMessages: StoryObj<typeof Toast> = {
+export const ToastMessages: StoryObj<typeof Notifications> = {
   name: 'Toast messages',
   render: () => {
-    const { toast } = useToast();
+    const { toast } = useNotifications();
 
     return (
       <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
@@ -252,16 +252,16 @@ export const ToastMessages: StoryObj<typeof Toast> = {
   },
 };
 
-// ─── Notifications ───────────────────────────────────────────────────────────
+// ─── Notification cards ──────────────────────────────────────────────────────
 
-export const Notifications: StoryObj<typeof Toast> = {
-  name: 'Notifications',
+export const NotificationCards: StoryObj<typeof Notifications> = {
+  name: 'Notification cards',
   render: () => {
-    const { notification } = useToast();
+    const { notification } = useNotifications();
 
     return (
       <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
-        <Section>Notifications</Section>
+        <Section>Notification cards</Section>
         <Paragraph>
           A notification is a card for something the user may want to read or act
           on — an incoming message, a review request, a finished export, a
@@ -406,7 +406,7 @@ const PLACEMENT_OPTIONS = [
 ];
 
 const PlacementDemo = () => {
-  const { toast, notification } = useToast();
+  const { toast, notification } = useNotifications();
   return (
     <Flex direction="horizontal" gap="s" wrap>
       <Button
@@ -429,14 +429,15 @@ const PlacementDemo = () => {
   );
 };
 
-export const Placement: StoryObj<typeof Toast> = {
+export const Placement: StoryObj<typeof Notifications> = {
   name: 'Placement',
   render: () => {
-    const [toastPlacement, setToastPlacement] = useState<ToastPlacement>('end');
+    const [toastPlacement, setToastPlacement] =
+      useState<NotificationPlacement>('end');
     const [notificationSide, setNotificationSide] =
-      useState<ToastPlacement>('end');
+      useState<NotificationPlacement>('end');
     const [notificationPlacement, setNotificationPlacement] =
-      useState<ToastPlacement>('end');
+      useState<NotificationPlacement>('end');
 
     return (
       <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
@@ -447,7 +448,7 @@ export const Placement: StoryObj<typeof Toast> = {
             &lt;AltroneApplication toastPlacement notificationSide
             notificationPlacement&gt;
           </Text>{' '}
-          (each also accepted directly on <Text code>&lt;Toast&gt;</Text>). Every
+          (each also accepted directly on <Text code>&lt;Notifications&gt;</Text>). Every
           value is logical — <Text code>&apos;start&apos;</Text> /{' '}
           <Text code>&apos;end&apos;</Text> — and resolves against the writing
           direction.
@@ -516,13 +517,13 @@ export const Placement: StoryObj<typeof Toast> = {
           </Flex>
         </Flex>
 
-        <Toast
+        <Notifications
           toastPlacement={toastPlacement}
           notificationSide={notificationSide}
           notificationPlacement={notificationPlacement}
         >
           <PlacementDemo />
-        </Toast>
+        </Notifications>
       </Flex>
     );
   },
@@ -531,7 +532,7 @@ export const Placement: StoryObj<typeof Toast> = {
 // ─── Cookie consent ─────────────────────────────────────────────────────────
 
 const CookiePreferencesForm = ({ onDone }: { onDone: () => void }) => {
-  const { toast } = useToast();
+  const { toast } = useNotifications();
   const [analytics, setAnalytics] = useState(false);
   const [marketing, setMarketing] = useState(false);
 
@@ -575,7 +576,7 @@ const CookiePreferencesForm = ({ onDone }: { onDone: () => void }) => {
 };
 
 const CookieConsentDemo = () => {
-  const { toast, notification, dismiss } = useToast();
+  const { toast, notification, dismiss } = useNotifications();
 
   const openPreferences = () => {
     const id = notification({
@@ -613,7 +614,7 @@ const CookieConsentDemo = () => {
   );
 };
 
-export const CookieConsent: StoryObj<typeof Toast> = {
+export const CookieConsent: StoryObj<typeof Notifications> = {
   name: 'Cookie consent',
   render: () => (
     <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
@@ -638,9 +639,9 @@ export const CookieConsent: StoryObj<typeof Toast> = {
         in for that.
       </Paragraph>
 
-      <Toast notificationSide="start" notificationPlacement="end">
+      <Notifications notificationSide="start" notificationPlacement="end">
         <CookieConsentDemo />
-      </Toast>
+      </Notifications>
     </Flex>
   ),
 };

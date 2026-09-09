@@ -158,7 +158,7 @@ export interface Localization {
   closeButton: {
     ariaLabel: string;
   };
-  toast: {
+  notifications: {
     regionLabel: string;
   };
   dialog: {

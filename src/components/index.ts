@@ -62,6 +62,6 @@ export * from './tags';
 export * from './text';
 export * from './textarea';
 export * from './textInput';
-export * from './toasts';
+export * from './notifications';
 export * from './toolbar';
 export * from './tooltip';

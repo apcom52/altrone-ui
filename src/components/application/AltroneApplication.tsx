@@ -4,7 +4,7 @@ import { useMediaMatch } from 'utils';
 import clsx from 'clsx';
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { MotionConfig } from 'motion/react';
-import { Toast } from 'components/toasts/Toast.tsx';
+import { Notifications } from 'components/notifications/Notifications.tsx';
 import { ThemeContext, ThemeContextType } from './useTheme.ts';
 import { getThemeInitScript } from './getThemeInitScript.ts';
 
@@ -100,13 +100,13 @@ export const AltroneApplication = ({
           <ThemeContext.Provider value={themeContext}>
             <AltroneLocalization language={language} customLabels={customLabels}>
               <DialogProvider>
-                <Toast
+                <Notifications
                   toastPlacement={toastPlacement}
                   notificationSide={notificationSide}
                   notificationPlacement={notificationPlacement}
                 >
                   {children}
-                </Toast>
+                </Notifications>
               </DialogProvider>
             </AltroneLocalization>
           </ThemeContext.Provider>

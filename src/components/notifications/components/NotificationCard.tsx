@@ -5,9 +5,9 @@ import clsx from 'clsx';
 import { Box } from 'components/box';
 import { Button } from 'components/button';
 import { CloseButton } from 'components/closeButton';
-import type { AnyToastItem, ToastVariant } from '../Toast.types';
+import type { AnyNotificationItem, ToastVariant } from '../Notifications.types';
 import { useAutoClose } from './useAutoClose';
-import s from './toastCard.module.scss';
+import s from './notificationCard.module.scss';
 
 const VARIANT_ICON: Record<ToastVariant, ReactNode> = {
   default: <Info size={15} />,
@@ -36,8 +36,8 @@ const LAYOUT_TRANSITION: Transition = {
   mass: 0.9,
 };
 
-interface ToastCardProps {
-  item: AnyToastItem;
+interface NotificationCardProps {
+  item: AnyNotificationItem;
   /** Offset (px) the card slides in from / out to, derived from the global placement. */
   enter: { x: number; y: number };
   onClose: () => void;
@@ -55,7 +55,7 @@ interface ToastCardProps {
  * transform off the `layout` node stops a `layout`-projected descendant
  * (`Button`) from counter-scaling against the card's own entrance.
  */
-export const ToastCard = ({ item, enter, onClose }: ToastCardProps) => {
+export const NotificationCard = ({ item, enter, onClose }: NotificationCardProps) => {
   const { pause, resume } = useAutoClose(item.autoClose, item.duration, onClose);
 
   const enterExit = {

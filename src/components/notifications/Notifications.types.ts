@@ -7,7 +7,7 @@ export type ToastVariant = 'default' | 'success' | 'warning' | 'danger';
  * - vertical (`toastPlacement` / `notificationPlacement`): `start` = top, `end` = bottom
  * - horizontal (`notificationSide`): `start` = left, `end` = right
  */
-export type ToastPlacement = 'start' | 'end';
+export type NotificationPlacement = 'start' | 'end';
 
 export interface ToastAction {
   label: string;
@@ -80,11 +80,11 @@ export interface NotificationItem {
   autoClose: boolean;
 }
 
-export type AnyToastItem = ToastItem | NotificationItem;
+export type AnyNotificationItem = ToastItem | NotificationItem;
 
 // ─── Context ──────────────────────────────────────────────────────────────────
 
-export interface ToastContextType {
+export interface NotificationsContextType {
   /** Show a simple pill-shaped toast message. Returns the toast id. */
   toast: (message: string, options?: ToastOptions) => string;
   /** Show a rich notification card. Returns the notification id. */
@@ -93,12 +93,12 @@ export interface ToastContextType {
   dismiss: (id: string) => void;
 }
 
-export interface ToastsProviderProps {
+export interface NotificationsProviderProps {
   children: React.ReactNode;
   /** Vertical placement of the toast stack (centred horizontally). Defaults to 'end' (bottom). */
-  toastPlacement?: ToastPlacement;
+  toastPlacement?: NotificationPlacement;
   /** Horizontal side of the notification stack. Defaults to 'end' (right). */
-  notificationSide?: ToastPlacement;
+  notificationSide?: NotificationPlacement;
   /** Vertical placement of the notification stack. Defaults to 'end' (bottom). */
-  notificationPlacement?: ToastPlacement;
+  notificationPlacement?: NotificationPlacement;
 }

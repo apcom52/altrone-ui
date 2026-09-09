@@ -1,6 +1,6 @@
 import type { HTMLAttributes, Ref } from 'react';
 import { ConsumerConfigurationContext } from '../configuration/AltroneConfiguration.context.ts';
-import type { ToastPlacement } from '../toasts';
+import type { NotificationPlacement } from '../notifications';
 import type { Localization } from 'locales';
 
 export type Theme = 'auto' | 'light' | 'dark';
@@ -25,9 +25,9 @@ export interface AltroneApplicationProps extends HTMLAttributes<HTMLDivElement> 
   config?: Partial<ConsumerConfigurationContext>;
   customLabels?: Partial<Localization>;
   /** Vertical placement of the toast stack (centred horizontally). Defaults to 'end' (bottom). */
-  toastPlacement?: ToastPlacement;
+  toastPlacement?: NotificationPlacement;
   /** Horizontal side of the notification stack. Defaults to 'end' (right). */
-  notificationSide?: ToastPlacement;
+  notificationSide?: NotificationPlacement;
   /** Vertical placement of the notification stack. Defaults to 'end' (bottom). */
-  notificationPlacement?: ToastPlacement;
+  notificationPlacement?: NotificationPlacement;
 }
