@@ -25,7 +25,7 @@ export const Dashboard: StoryObj<typeof Screen> = {
     return (
       <Screen title="Analytics">
         <Screen.Header>
-          <Toolbar variant="floating" size="m">
+          <Toolbar variant="solid" size="m">
             <Toolbar.Group>
               <Toolbar.SidebarToggleAction
                 collapsed={collapsed}

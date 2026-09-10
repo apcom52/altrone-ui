@@ -18,7 +18,7 @@ export const Title = memo(
     const cls = clsx(
       s.Title,
       {
-        [s.OnContent]: variant === 'floating',
+        [s.OnContent]: variant === 'grouped',
         [s.Clickable]: clickable,
       },
       className,

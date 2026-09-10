@@ -1,36 +1,45 @@
+import type { CSSProperties } from 'react';
 import clsx from 'clsx';
-import { Box } from 'components/box';
 import s from '../screen.module.scss';
 import { ScreenHeaderProps } from '../Screen.types.ts';
 
+const toLength = (value: number | string): string =>
+  typeof value === 'number' ? `${value}px` : value;
+
 /**
- * The bar is a `Box` with the `glass` material (frosted, accent-tinted fill)
- * and the `sticky` elevation role. `Box`'s Slot replaces `className`/`style`,
- * so they're passed through `Box`, not the `<header>`. `.HeaderInner` carries
- * the layout: it's `margin`-inset past the overlapping sidebar so both a
- * flex-flow (`plain`) and an absolutely-positioned (`floating`) toolbar clear
- * it.
+ * A transparent, fixed positioning zone pinned to the top of the screen —
+ * it carries no fill of its own. The visible bar is the `Toolbar` the
+ * consumer drops in: use `variant="solid"` (the default) for the frosted,
+ * accent-tinted header surface, or `variant="grouped"` for floating pills
+ * over the content.
+ *
+ * `.HeaderInner` is `margin`-inset past the overlapping sidebar so the bar
+ * clears it; `insetStart` overrides that gutter (see `ScreenHeaderProps`).
  */
 export const Header = ({
   ref,
   children,
   className,
   style,
+  insetStart,
   ...restProps
-}: ScreenHeaderProps) => (
-  <Box
-    asChild
-    ref={ref}
-    className={clsx(s.Header, className)}
-    style={style}
-    material="glass"
-    tone="accent"
-    shape="rect"
-    elevation="sticky"
-    {...restProps}
-  >
-    <header>
+}: ScreenHeaderProps) => {
+  const rootStyle =
+    insetStart === undefined
+      ? style
+      : ({
+          ...style,
+          '--screen-header-inset-start': toLength(insetStart),
+        } as CSSProperties);
+
+  return (
+    <header
+      ref={ref}
+      className={clsx(s.Header, className)}
+      style={rootStyle}
+      {...restProps}
+    >
       <div className={s.HeaderInner}>{children}</div>
     </header>
-  </Box>
-);
+  );
+};

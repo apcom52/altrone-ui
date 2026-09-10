@@ -7,18 +7,13 @@ import { Toolbar } from './Toolbar.tsx';
 import {
   AlignCenter,
   AlignLeft,
-  AlignRight,
   Bell,
   Bold,
   Circle,
-  CaseSensitive,
   Ellipsis,
   Eye,
-  Grid3X3,
   Images,
   Italic,
-  Layers,
-  Maximize2,
   MessageCircle,
   MousePointer2,
   Pen,
@@ -26,19 +21,14 @@ import {
   Plus,
   RectangleHorizontal,
   Redo2,
-  Send,
   Settings,
   Share,
-  Strikethrough,
   Trash2,
   Type,
-  Underline,
   Undo2,
-  ZoomIn,
-  ZoomOut,
 } from 'lucide-react';
 import { Dropdown } from 'components/dropdown/index.ts';
-import { ReactElement, useState } from 'react';
+import { useState } from 'react';
 import { Label } from 'components/label/Label.tsx';
 import { Avatar } from 'components/avatar/Avatar.tsx';
 import { TextInput } from 'components/textInput/TextInput.tsx';
@@ -77,7 +67,7 @@ export const Overview: StoryObj<typeof Toolbar> = {
         toolbars — <Text code>Toolbar.Group</Text> collects controls into
         blurred glass capsules with a specular top edge. The same component
         dresses up as an application header, a panel header inside a frame, or
-        an overlay floating above a canvas.
+        a row of floating glass pills over a canvas.
       </Text>
 
       <Text block size={7} weight="bold" style={{ marginTop: 8 }}>
@@ -85,10 +75,11 @@ export const Overview: StoryObj<typeof Toolbar> = {
       </Text>
       <Text block size={4} style={{ lineHeight: 1.6 }}>
         <Text code>variant</Text> picks how much surface the toolbar carries —{' '}
-        <Text code>plain</Text> (nothing, flat buttons), <Text code>floating</Text>{' '}
-        (glass group pills over an invisible click-through strip),{' '}
-        <Text code>glass</Text> (default — an accent-tinted blurred bar plus the
-        pills). The <Text code>Variants</Text> story lays all three side by side.
+        <Text code>plain</Text> (nothing, flat buttons), <Text code>grouped</Text>{' '}
+        (glass group pills over a transparent strip),{' '}
+        <Text code>solid</Text> (default — an accent-tinted blurred bar plus the
+        pills). All three flow in normal document order. The{' '}
+        <Text code>Variants</Text> story lays them side by side.
       </Text>
 
       <Text block size={7} weight="bold" style={{ marginTop: 8 }}>
@@ -188,7 +179,7 @@ export const Variants: StoryObj<typeof Toolbar> = {
   name: 'Variants',
   render: () => {
     const cases: {
-      variant: 'plain' | 'floating' | 'glass';
+      variant: 'plain' | 'grouped' | 'solid';
       title: string;
       note: string;
     }[] = [
@@ -198,13 +189,13 @@ export const Variants: StoryObj<typeof Toolbar> = {
         note: 'No toolbar fill, no group material — flat text buttons. For a strip on a surface that already has its own background.',
       },
       {
-        variant: 'floating',
-        title: 'floating',
-        note: 'No toolbar fill, but each Toolbar.Group is a raised glass pill. The strip pins to its edge and is click-through between the pills.',
+        variant: 'grouped',
+        title: 'grouped',
+        note: 'No toolbar fill, but each Toolbar.Group is a raised glass pill. The strip stays transparent, so the pills read as islands on the surface behind them.',
       },
       {
-        variant: 'glass',
-        title: 'glass — default',
+        variant: 'solid',
+        title: 'solid — default',
         note: 'Accent-tinted, blurred toolbar fill with a hairline edge, plus the glass group pills. A self-sufficient header.',
       },
     ];
@@ -251,7 +242,7 @@ export const Variants: StoryObj<typeof Toolbar> = {
           A group takes its look from the toolbar, but{' '}
           <Text code>Toolbar.Group variant</Text> overrides it — one raised
           glass pill in an otherwise chrome-less <Text code>plain</Text> bar, or
-          a flat cluster inside a <Text code>glass</Text> bar.
+          a flat cluster inside a <Text code>solid</Text> bar.
         </Text>
         <div
           style={{
@@ -269,7 +260,7 @@ export const Variants: StoryObj<typeof Toolbar> = {
               <Toolbar.Title label="Report.pdf" />
             </Toolbar.Leading>
             <Toolbar.Trailing>
-              <Toolbar.Group variant="glass">
+              <Toolbar.Group variant="solid">
                 <Toolbar.Action
                   label="Share"
                   icon={<Share />}
@@ -1041,315 +1032,6 @@ export const HeaderActions: StoryObj<typeof Toolbar> = {
         <Text size={3} color="muted">
           History position: {historyIndex + 1} of {historyLength}.
         </Text>
-      </Flex>
-    );
-  },
-};
-
-/* ─────────────────────────────────────────────────────────────
-   Floating overlay — design canvas
-   ───────────────────────────────────────────────────────────── */
-
-type CanvasTool = 'cursor' | 'rect' | 'ellipse' | 'text' | 'pen';
-
-const TOOLS: {
-  id: CanvasTool;
-  icon: ReactElement;
-  label: string;
-  kbd: string;
-}[] = [
-  { id: 'cursor', icon: <MousePointer2 />, label: 'Move', kbd: 'V' },
-  { id: 'rect', icon: <RectangleHorizontal />, label: 'Rectangle', kbd: 'R' },
-  { id: 'ellipse', icon: <Circle />, label: 'Ellipse', kbd: 'O' },
-  { id: 'text', icon: <Type />, label: 'Text', kbd: 'T' },
-  { id: 'pen', icon: <Pen />, label: 'Pen', kbd: 'P' },
-];
-
-function CenterToolbarContent({ activeTool }: { activeTool: CanvasTool }) {
-  if (activeTool === 'cursor') {
-    return (
-      <Toolbar.Group>
-        <Toolbar.Action
-          icon={<AlignLeft />}
-          label="Align left"
-          showLabel={false}
-          kbd="⌘⇧L"
-        />
-        <Toolbar.Action
-          icon={<AlignCenter />}
-          label="Align center"
-          showLabel={false}
-          kbd="⌘⇧C"
-        />
-        <Toolbar.Action
-          icon={<AlignRight />}
-          label="Align right"
-          showLabel={false}
-          kbd="⌘⇧R"
-        />
-      </Toolbar.Group>
-    );
-  }
-
-  if (activeTool === 'text') {
-    return (
-      <Toolbar.Group>
-        <Toolbar.Action icon={<Bold />} label="Bold" showLabel={false} kbd="⌘B" />
-        <Toolbar.Action
-          icon={<Italic />}
-          label="Italic"
-          showLabel={false}
-          kbd="⌘I"
-        />
-        <Toolbar.Action
-          icon={<Underline />}
-          label="Underline"
-          showLabel={false}
-          kbd="⌘U"
-        />
-        <Toolbar.Action
-          icon={<Strikethrough />}
-          label="Strikethrough"
-          showLabel={false}
-        />
-        <Toolbar.Action
-          icon={<CaseSensitive />}
-          label="Font size"
-          showLabel={false}
-        />
-      </Toolbar.Group>
-    );
-  }
-
-  if (activeTool === 'rect' || activeTool === 'ellipse') {
-    return (
-      <Toolbar.Group>
-        <Toolbar.Action icon={<PencilLine />} label="Stroke" showLabel={false} />
-        <Toolbar.Action icon={<Grid3X3 />} label="Fill" showLabel={false} />
-        <Toolbar.Action
-          icon={<Layers />}
-          label="Corner radius"
-          showLabel={false}
-        />
-      </Toolbar.Group>
-    );
-  }
-
-  if (activeTool === 'pen') {
-    return (
-      <Toolbar.Group>
-        <Toolbar.Action label="Close path" showLabel icon={<Pen />} />
-        <Toolbar.Action label="Smooth" showLabel />
-        <Toolbar.Action label="Corner" showLabel />
-      </Toolbar.Group>
-    );
-  }
-
-  return null;
-}
-
-const CANVAS_SHAPES = [
-  { x: 60, y: 60, w: 280, h: 160, r: 12, bg: 'var(--accent-3)', label: 'Hero' },
-  { x: 60, y: 240, w: 130, h: 80, r: 8, bg: 'var(--teal-3)', label: 'Card A' },
-  { x: 210, y: 240, w: 130, h: 80, r: 8, bg: 'var(--amber-3)', label: 'Card B' },
-  { x: 60, y: 340, w: 280, h: 40, r: 20, bg: 'var(--accent-9)', label: '' },
-];
-
-export const FloatingOverlay: StoryObj<typeof Toolbar> = {
-  name: 'Floating overlay (design canvas)',
-  render: () => {
-    const [activeTool, setActiveTool] = useState<CanvasTool>('cursor');
-    const [zoom, setZoom] = useState(100);
-
-    const changeZoom = (delta: number) =>
-      setZoom((z) => Math.min(400, Math.max(25, z + delta)));
-
-    return (
-      <Flex direction="vertical" gap="m">
-        <Text block size={7} weight="bold">
-          Floating overlay
-        </Text>
-        <Text block size={4} style={{ maxWidth: 720, lineHeight: 1.6 }}>
-          <Text code>variant="floating"</Text> pins the toolbar to its{' '}
-          <Text code>placement</Text> edge inside the nearest positioned
-          ancestor and turns the strip click-through — only the{' '}
-          <Text code>Toolbar.Group</Text> glass pills stay interactive, so the
-          canvas underneath keeps receiving the pointer. Add{' '}
-          <Text code>showBackdrop</Text> for a scrim that lifts the pills off
-          busy content.
-        </Text>
-
-        <div
-          style={{
-            position: 'relative',
-            height: 460,
-            borderRadius: 12,
-            overflow: 'hidden',
-            background: 'var(--gray-2)',
-          }}
-        >
-          <Toolbar
-            variant="floating"
-            placement="top"
-            showBackdrop
-            style={{ zIndex: 100 }}
-          >
-            <Toolbar.Leading>
-              <Toolbar.Group>
-                <Toolbar.Action
-                  icon={<Undo2 />}
-                  label="Undo"
-                  showLabel={false}
-                  kbd="⌘Z"
-                  onClick={() => {}}
-                />
-                <Toolbar.Action
-                  icon={<Redo2 />}
-                  label="Redo"
-                  showLabel={false}
-                  kbd="⌘⇧Z"
-                  onClick={() => {}}
-                />
-              </Toolbar.Group>
-              <Dropdown
-                content={
-                  <Dropdown.Menu>
-                    <Dropdown.Action label="Rename file" />
-                    <Dropdown.Action label="Duplicate" />
-                    <Dropdown.Action label="Export…" />
-                  </Dropdown.Menu>
-                }
-              >
-                <Toolbar.Title label="Landing Page" clickable />
-              </Dropdown>
-            </Toolbar.Leading>
-
-            <Toolbar.Center>
-              <CenterToolbarContent activeTool={activeTool} />
-            </Toolbar.Center>
-
-            <Toolbar.Trailing>
-              <Toolbar.Group>
-                <Toolbar.Action
-                  icon={<ZoomOut />}
-                  label="Zoom out"
-                  showLabel={false}
-                  onClick={() => changeZoom(-25)}
-                />
-                <Toolbar.Action
-                  icon={<Maximize2 />}
-                  label={`${zoom}%`}
-                  showLabel
-                  onClick={() => setZoom(100)}
-                />
-                <Toolbar.Action
-                  icon={<ZoomIn />}
-                  label="Zoom in"
-                  showLabel={false}
-                  onClick={() => changeZoom(25)}
-                />
-              </Toolbar.Group>
-              <Toolbar.Group>
-                <Toolbar.Action
-                  icon={<Share />}
-                  label="Share"
-                  showLabel={false}
-                  badge="3"
-                  onClick={() => {}}
-                />
-                <Toolbar.Action
-                  icon={<Send />}
-                  label="Publish"
-                  showLabel={false}
-                  onClick={() => {}}
-                />
-              </Toolbar.Group>
-            </Toolbar.Trailing>
-          </Toolbar>
-
-          <Toolbar
-            variant="floating"
-            placement="left"
-            style={{ zIndex: 100 }}
-          >
-            <Toolbar.Center>
-              <Toolbar.Group>
-                {TOOLS.map((tool) => (
-                  <Toolbar.Action
-                    key={tool.id}
-                    icon={tool.icon}
-                    label={tool.label}
-                    kbd={tool.kbd}
-                    showLabel={false}
-                    selected={activeTool === tool.id}
-                    onClick={() => setActiveTool(tool.id)}
-                  />
-                ))}
-              </Toolbar.Group>
-            </Toolbar.Center>
-          </Toolbar>
-
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              paddingTop: 56,
-              paddingLeft: 72,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <div
-              style={{
-                position: 'relative',
-                width: 400,
-                height: 420,
-                background: 'white',
-                borderRadius: 4,
-                boxShadow: '0 8px 48px rgba(0,0,0,0.12)',
-                transform: `scale(${zoom / 100})`,
-                transition: 'transform 0.2s ease',
-              }}
-            >
-              {CANVAS_SHAPES.map((shape, i) => (
-                <div
-                  key={i}
-                  style={{
-                    position: 'absolute',
-                    left: shape.x,
-                    top: shape.y,
-                    width: shape.w,
-                    height: shape.h,
-                    borderRadius: shape.r,
-                    background: shape.bg,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: 11,
-                    color: 'var(--text-2)',
-                    fontWeight: 500,
-                  }}
-                >
-                  {shape.label}
-                </div>
-              ))}
-            </div>
-
-            <div
-              style={{
-                position: 'absolute',
-                bottom: 24,
-                left: '50%',
-                transform: 'translateX(-50%)',
-              }}
-            >
-              <Label variant="soft">
-                {TOOLS.find((t) => t.id === activeTool)?.label} · {zoom}%
-              </Label>
-            </div>
-          </div>
-        </div>
       </Flex>
     );
   },

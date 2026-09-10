@@ -2,21 +2,23 @@ import React from 'react';
 import { ButtonProps } from 'components/button/Button.types';
 import { Align, Size } from 'types';
 
-export type ToolbarVariant = 'plain' | 'floating' | 'glass';
+export type ToolbarVariant = 'plain' | 'grouped' | 'solid';
 export type ToolbarPlacement = 'top' | 'bottom' | 'left' | 'right';
 
 export interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
   /**
-   * How much surface the toolbar carries, from least to most chrome:
+   * How much surface the toolbar carries, from least to most chrome. All
+   * three lay out identically and flow in normal document order — the
+   * toolbar never positions itself.
    * - `plain` — no toolbar fill, no group material. Actions are flat text
    *   buttons in a bare row. For a toolbar dropped onto a surface that
-   *   already provides its own background (e.g. `Screen.Header`).
-   * - `floating` — no toolbar fill, but every `Toolbar.Group` is a raised
+   *   already provides its own background.
+   * - `grouped` — no toolbar fill, but every `Toolbar.Group` is a raised
    *   liquid-glass pill (blurred fill, specular edge, drop shadow). The
-   *   strip pins to its `placement` edge and is click-through except for
-   *   those pills — canvas / editor overlays.
-   * - `glass` (default) — an accent-tinted, blurred toolbar fill with a
+   *   strip itself stays transparent — the pills read as islands on
+   *   whatever surface is behind them.
+   * - `solid` (default) — an accent-tinted, blurred toolbar fill with a
    *   hairline on its content-facing edge, plus the same glass pills for
    *   groups. A self-sufficient app / frame header.
    */
@@ -26,7 +28,7 @@ export interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: Size;
   /** Stick to the `placement` edge of the nearest scroll container. */
   sticky?: boolean;
-  /** Blurred gradient scrim under the toolbar — mainly useful with `floating` over content. */
+  /** Blurred gradient scrim behind the toolbar — lifts `grouped` pills off busy content. */
   showBackdrop?: boolean;
   /** @deprecated use `sticky`. Will be removed in v4. */
   fixed?: boolean;
@@ -76,7 +78,7 @@ export interface ToolbarGroupProps extends React.HTMLAttributes<HTMLDivElement> 
   weight?: number;
   /**
    * Overrides the toolbar's `variant` for this one group: `plain` drops the
-   * glass pill (bare row), `floating` / `glass` force it on. Defaults to
+   * glass pill (bare row), `grouped` / `solid` force it on. Defaults to
    * whatever the parent `Toolbar` uses.
    */
   variant?: ToolbarVariant;

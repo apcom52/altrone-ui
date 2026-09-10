@@ -29,8 +29,8 @@ const SIZE_CLASS = {
 
 const VARIANT_CLASS = {
   plain: s.Plain,
-  floating: s.Floating,
-  glass: s.Glass,
+  grouped: s.Grouped,
+  solid: s.Solid,
 } as const;
 
 const PLACEMENT_CLASS = {
@@ -44,7 +44,7 @@ const ToolbarComponent = memo(
   ({
     ref,
     children,
-    variant = 'glass',
+    variant = 'solid',
     placement = 'top',
     size = 'm',
     sticky = false,
@@ -86,11 +86,7 @@ const ToolbarComponent = memo(
           aria-orientation={orientation}
           {...restProps}
         >
-          {variant === 'floating' ? (
-            <div className={s.FloatingInner}>{children}</div>
-          ) : (
-            children
-          )}
+          {children}
         </div>
       </ToolbarContext.Provider>
     );

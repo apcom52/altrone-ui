@@ -17,7 +17,7 @@
   opacity: 0.55;
 }
 
-/* Floating toolbars sit over arbitrary content — lift the text off it. */
+/* `grouped` toolbars sit over arbitrary content — lift the text off it. */
 .OnContent {
   color: var(--text-12);
   text-shadow: 0 1px 8px rgb(0 0 0 / 0.25);

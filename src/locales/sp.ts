@@ -60,6 +60,7 @@ export const sp: Localization = {
   screen: {
     sidebarLabel: 'Barra lateral',
     bottomNavigationLabel: 'Navegación inferior',
+    asideLabel: 'Detalles',
   },
   pagination: {
     navigation: 'Paginación',

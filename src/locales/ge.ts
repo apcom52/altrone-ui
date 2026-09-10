@@ -60,6 +60,7 @@ export const ge: Localization = {
   screen: {
     sidebarLabel: 'Seitenleiste',
     bottomNavigationLabel: 'Untere Navigation',
+    asideLabel: 'Details',
   },
   pagination: {
     navigation: 'Seitennavigation',

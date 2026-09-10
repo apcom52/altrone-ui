@@ -41,7 +41,7 @@ export interface BoxProps
     Omit<HTMLAttributes<HTMLElement>, 'color' | 'className' | 'style'> {
   ref?: Ref<HTMLElement>;
 
-  /** Corner algorithm. Actual rounding amount still comes from `--radius-outer` (see radius.md) — `shape` doesn't set a radius value itself, except `rect` (forced 0), `circle` (forced 50%), and `pill` (forced capsule ends — stays a capsule at any size). */
+  /** Corner algorithm. Actual rounding amount still comes from `--radius-outer` (see radius.md) — `shape` doesn't set a radius value itself, except `rect` (forced 0), `circle` (forced 50%), and `pill` (forced capsule ends — stays a capsule at any size). `rounded` (the default) floors at `--radius-mini` (2px), so a Box is never hard-square without `shape="rect"`. */
   shape?: BoxShape;
   material?: BoxMaterial;
   tone?: BoxTone;
@@ -85,7 +85,8 @@ export interface BoxProps
    * (a number is px, a string is used verbatim, e.g. `'var(--radius-l)'`), so
    * `rounded`/`squircle` round to it and nested descendants derive from it too
    * (see radius.md). `rect`/`circle`/`pill` force their own radius and ignore it.
-   * Without it the amount comes from the inherited `--radius-outer`.
+   * Without it the amount comes from the inherited `--radius-outer`, floored at
+   * `--radius-mini` (2px) for `rounded`.
    *
    * For `squircle` this is the value used where the browser supports
    * `corner-shape`; the plain-`border-radius` fallback is scaled down by

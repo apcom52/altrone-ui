@@ -192,7 +192,7 @@ export const AdaptiveApp: StoryObj<typeof Screen> = {
     return (
       <Screen title="Stride" mobileBreakpoint="lg">
         <Screen.Header>
-          <Toolbar variant="floating" size="m">
+          <Toolbar variant="solid" size="m">
             {!isLg && (
               <Toolbar.Group>
                 <Toolbar.SidebarToggleAction

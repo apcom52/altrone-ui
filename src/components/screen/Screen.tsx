@@ -7,6 +7,7 @@ import { ScreenContextProvider } from './Screen.context.ts';
 import {
   Header,
   Sidebar,
+  Aside,
   Content,
   Footer,
   BottomNavigation,
@@ -29,6 +30,7 @@ const ScreenBase = ({
   contentAlign = 'start',
   mobileBreakpoint = 'md',
   sidebarWidth,
+  asideWidth,
   className,
   style,
   ...restProps
@@ -52,9 +54,14 @@ const ScreenBase = ({
     className,
   );
 
-  const rootStyle = sidebarWidth
-    ? ({ ...style, '--screen-sidebar-width': sidebarWidth } as CSSProperties)
-    : style;
+  const rootStyle =
+    sidebarWidth || asideWidth
+      ? ({
+          ...style,
+          ...(sidebarWidth && { '--screen-sidebar-width': sidebarWidth }),
+          ...(asideWidth && { '--screen-aside-width': asideWidth }),
+        } as CSSProperties)
+      : style;
 
   return (
     <ScreenContextProvider value={{ sidebarMode }}>
@@ -75,6 +82,7 @@ const ScreenBase = ({
 export const Screen = Object.assign(ScreenBase, {
   Header,
   Sidebar,
+  Aside,
   Content,
   Footer,
   BottomNavigation,

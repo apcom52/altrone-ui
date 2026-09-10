@@ -34,6 +34,11 @@ export interface ScreenProps extends HTMLAttributes<HTMLDivElement> {
   mobileBreakpoint?: ScreenMobileBreakpoint;
   /** Width of the inline sidebar column. Default: `300px`. */
   sidebarWidth?: string;
+  /**
+   * Width of the `Screen.Aside` column when it's a direct grid child (not
+   * wrapped in a `Splitter`, which owns its own sizing). Default: `320px`.
+   */
+  asideWidth?: string;
 }
 
 /**
@@ -52,6 +57,15 @@ interface ScreenZoneVisibilityProps {
 
 export interface ScreenHeaderProps extends HTMLAttributes<HTMLElement> {
   ref?: Ref<HTMLElement>;
+  /**
+   * Distance from the screen's leading edge to where the header toolbar
+   * starts — the gutter that keeps the bar clear of the overlapping
+   * `Screen.Sidebar`. A number is px, a string is used verbatim
+   * (`'var(--space-section)'`). Defaults to reserving the inline sidebar's
+   * width plus the standard content gutter; pass `0` to run the bar full
+   * width regardless of the sidebar.
+   */
+  insetStart?: number | string;
 }
 
 export interface ScreenSidebarProps
@@ -65,12 +79,18 @@ export interface ScreenSidebarProps
    * its content by animating a start inset (no overflow clipping). Wire this
    * to the same boolean you pass to `Toolbar.SidebarToggleAction`'s
    * `collapsed` prop.
+   *
+   * Leave it undefined (uncontrolled) and the sidebar is a persistent column
+   * inline and simply drops out once the viewport goes overlay — it never
+   * covers the screen with no way to close it. To make it summonable on
+   * mobile, control it and wire `Toolbar.SidebarToggleAction`.
    */
   collapsed?: boolean;
   /**
-   * Called in overlay mode when the user dismisses the sidebar — clicking the
-   * scrim or pressing `Escape`. Set your `collapsed` state to `true` here;
-   * focus returns to wherever it was before the panel opened.
+   * Called when the user dismisses the overlay sidebar — clicking the scrim
+   * or pressing `Escape`. Set your `collapsed` state to `true` here; focus
+   * returns to wherever it was before the panel opened. Even without it, the
+   * scrim / `Escape` still visually dismiss the overlay (it's never a trap).
    */
   onClose?: () => void;
 }
@@ -87,4 +107,17 @@ export interface ScreenBottomNavigationProps
   extends HTMLAttributes<HTMLElement>,
     ScreenZoneVisibilityProps {
   ref?: Ref<HTMLElement>;
+}
+
+export interface ScreenAsideProps
+  extends HTMLAttributes<HTMLElement>,
+    ScreenZoneVisibilityProps {
+  ref?: Ref<HTMLElement>;
+  /**
+   * Controlled, presentational: `true` collapses the column to zero width and
+   * `Screen.Content` reclaims the space; the `<aside>` stays mounted as an
+   * `inert` anchor. Only meaningful when `Screen.Aside` is a direct grid
+   * column — inside a `Splitter`, the panel owns collapse.
+   */
+  collapsed?: boolean;
 }

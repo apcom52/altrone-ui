@@ -32,7 +32,7 @@ export const AdaptiveShell: StoryObj<typeof Screen> = {
   render: () => (
     <Screen title="Music">
       <Screen.Header>
-        <Toolbar variant="floating" size="m">
+        <Toolbar variant="solid" size="m">
           <Toolbar.Title label="Listen now" />
           <Toolbar.Separator />
           <Toolbar.SearchAction showLabel={false} />

@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
+import { useState } from 'react';
 import type { Meta } from '@storybook/react';
 import { Flex, Screen, Text } from 'components';
+import { useBreakpoint } from 'utils';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../../.storybook/modes.ts';
 
@@ -83,3 +85,27 @@ export const surface = (padding: number) => ({
   borderRadius: 'var(--radius-l)',
   background: 'var(--gray-a2)',
 });
+
+const INLINE_FLAG = { sm: 'isSm', md: 'isMd', lg: 'isLg' } as const;
+
+/**
+ * Controlled `Screen.Sidebar` state for the example screens: open as a
+ * persistent column while inline, closed once the viewport drops to overlay,
+ * and flipped by the header toggle (only worth showing in overlay). Spread
+ * `collapsed` / `onClose` into `Screen.Sidebar` and pass `collapsed` / the
+ * toggle handler to `Toolbar.SidebarToggleAction`. Pass the same value here
+ * as `Screen`'s `mobileBreakpoint`.
+ */
+export const useDemoSidebar = (mobileBreakpoint: 'sm' | 'md' | 'lg' = 'md') => {
+  const breakpoint = useBreakpoint();
+  const isInline = breakpoint[INLINE_FLAG[mobileBreakpoint]];
+  const [openOnMobile, setOpenOnMobile] = useState(false);
+
+  return {
+    collapsed: isInline ? false : !openOnMobile,
+    onClose: () => setOpenOnMobile(false),
+    toggle: () => setOpenOnMobile((open) => !open),
+    /** The header toggle only earns its place in overlay mode. */
+    showToggle: !isInline,
+  };
+};

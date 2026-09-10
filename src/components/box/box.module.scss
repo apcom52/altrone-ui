@@ -52,7 +52,10 @@
 }
 
 .ShapeRounded {
-  --box-radius: var(--radius-outer);
+  /* Default to --radius-mini (2px) rather than a hard square when no ambient
+     radius scope is set. A larger --radius-outer — an ancestor scope or the
+     `radius` prop — still wins; use shape="rect" for a true 0 corner. */
+  --box-radius: max(var(--radius-outer), var(--radius-mini));
 }
 
 .ShapeSquircle {

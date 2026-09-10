@@ -1,10 +1,25 @@
+/* Registered so a consumer (e.g. Screen.Header, widening the leading inset to
+   clear an overlapping sidebar) can animate it — a plain custom property would
+   jump between values instead of tweening. */
+@property --toolbar-inset-start {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
 .Toolbar {
   --toolbar-size: 56px;
   --toolbar-inset: 12px;
+  /* Per-edge insets, each overridable on its own (default to the symmetric
+     `--toolbar-inset`). The bar's fill still reaches the edge — only the
+     content is pushed in. `--toolbar-inset-start` is `@property`-registered
+     above so a consumer can animate it. */
+  --toolbar-inset-start: var(--toolbar-inset);
+  --toolbar-inset-end: var(--toolbar-inset);
   --toolbar-gap: var(--gap);
 
   /* Liquid-glass material. The `Group` pill stays a neutral translucent
-     capsule in every variant; the `glass` variant additionally gives the
+     capsule in every variant; the `solid` variant additionally gives the
      whole strip an accent-tinted blurred fill. Both carry a specular line
      along the top edge and a faint rim. */
   --toolbar-pill-fill: var(--glass-background-color);
@@ -20,6 +35,9 @@
   gap: var(--toolbar-gap);
   min-height: var(--toolbar-size);
   padding-inline: var(--toolbar-inset);
+  padding-inline-start: var(--toolbar-inset-start);
+  padding-inline-end: var(--toolbar-inset-end);
+  transition: padding-inline-start 0.42s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 :global([data-altrone-theme='dark']) .Toolbar {
@@ -82,97 +100,41 @@
 }
 
 /* ── variants ──────────────────────────────────────────────────
-   plain    — no toolbar fill, groups flat (Group drops its `.Pill`).
-   floating — no toolbar fill, groups are glass pills, strip pinned to
-              its edge and click-through.
-   glass    — accent-tinted blurred toolbar fill + hairline, glass pills. */
+   plain   — no toolbar fill, groups flat (Group drops its `.Pill`).
+   grouped — no toolbar fill, groups are glass pills reading as islands
+             on whatever surface is behind the (transparent) strip.
+   solid   — accent-tinted blurred toolbar fill + hairline, glass pills.
+   All three flow in normal document order — no self-positioning. */
 
 .Plain {
   background: transparent;
 }
 
-.Glass {
+.Grouped {
+  background: transparent;
+}
+
+.Solid {
   background: var(--toolbar-background, var(--toolbar-glass-fill));
   backdrop-filter: var(--toolbar-glass-blur);
   -webkit-backdrop-filter: var(--toolbar-glass-blur);
   box-shadow: inset 0 1px 0 0 var(--toolbar-glass-highlight);
 }
 
-.Glass.Top {
+.Solid.Top {
   border-bottom: 1px solid var(--toolbar-glass-rim);
 }
 
-.Glass.Bottom {
+.Solid.Bottom {
   border-top: 1px solid var(--toolbar-glass-rim);
 }
 
-.Glass.Left {
+.Solid.Left {
   border-right: 1px solid var(--toolbar-glass-rim);
 }
 
-.Glass.Right {
+.Solid.Right {
   border-left: 1px solid var(--toolbar-glass-rim);
-}
-
-/* `floating` pins itself to the `placement` edge of the nearest positioned
-   ancestor and lets the pointer fall through everywhere except its islands. */
-.Floating {
-  position: absolute;
-  background: transparent;
-  pointer-events: none;
-}
-
-.Floating.Top {
-  top: 0;
-  left: 0;
-  width: 100%;
-}
-
-.Floating.Bottom {
-  bottom: 0;
-  left: 0;
-  width: 100%;
-}
-
-.Floating.Left {
-  top: 0;
-  left: 0;
-  height: 100%;
-}
-
-.Floating.Right {
-  top: 0;
-  right: 0;
-  height: 100%;
-}
-
-.FloatingInner {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--toolbar-gap);
-  width: 100%;
-  min-height: var(--toolbar-size);
-}
-
-.Floating.Left .FloatingInner,
-.Floating.Right .FloatingInner {
-  flex-direction: column;
-  width: var(--toolbar-size);
-  min-height: 0;
-  height: 100%;
-}
-
-/* Only the interactive islands inside a floating toolbar catch the pointer —
-   the strip and the (full grid-track wide) regions stay click-through. */
-.Floating .FloatingInner,
-.Floating [data-toolbar-region] {
-  pointer-events: none;
-}
-
-.Floating .FloatingInner > *:not([data-toolbar-region]),
-.Floating [data-toolbar-region] > * {
-  pointer-events: auto;
 }
 
 /* ── sticky ────────────────────────────────────────────────── */
@@ -197,13 +159,13 @@
 
 /* At rest the bar has only its specular line; once it's pinned and content
    scrolls under it, add the sticky drop shadow (condensed-on-scroll look). */
-.Glass.Sticky {
+.Solid.Sticky {
   box-shadow:
     var(--elevation-sticky-shadow),
     inset 0 1px 0 0 var(--toolbar-glass-highlight);
 }
 
-/* ── backdrop scrim (mainly for `floating` over content) ───── */
+/* ── backdrop scrim (mainly for `grouped` over content) ───── */
 
 .Backdrop.Top {
   background: linear-gradient(to bottom, var(--gray-a8) 0%, transparent 100%);
@@ -228,17 +190,15 @@
    keeps the plain flex row from `.Toolbar`. `:has` crosses the CSS
    Module boundary via the stable `data-toolbar-region` attribute. */
 
-.Glass:has(> [data-toolbar-region]),
+.Solid:has(> [data-toolbar-region]),
 .Plain:has(> [data-toolbar-region]),
-.FloatingInner:has(> [data-toolbar-region]) {
+.Grouped:has(> [data-toolbar-region]) {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
 }
 
 .Left:has(> [data-toolbar-region]),
-.Right:has(> [data-toolbar-region]),
-.Floating.Left .FloatingInner:has(> [data-toolbar-region]),
-.Floating.Right .FloatingInner:has(> [data-toolbar-region]) {
+.Right:has(> [data-toolbar-region]) {
   grid-template-columns: none;
   grid-template-rows: 1fr auto 1fr;
 }

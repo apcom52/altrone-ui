@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import {
   AnimatePresence,
@@ -43,7 +43,7 @@ const OFFSCREEN_X = '-120%';
 export const Sidebar = ({
   ref,
   children,
-  collapsed = false,
+  collapsed: collapsedProp,
   onClose,
   className,
   style,
@@ -56,8 +56,33 @@ export const Sidebar = ({
   const reducedMotion = useReducedMotionConfig() ?? false;
   const visible = useZoneVisible(visibleFrom, hiddenFrom);
 
+  const collapsed = collapsedProp ?? false;
   const isOverlay = sidebarMode === 'overlay';
-  const scrimOpen = isOverlay && !collapsed;
+
+  /**
+   * Local dismiss so the overlay is never a trap: the scrim / `Escape` can
+   * always hide it, even when `onClose` isn't wired (or `collapsed` is left
+   * uncontrolled). An uncontrolled sidebar drops out on entering overlay
+   * rather than covering the screen with no way back; a controlled one still
+   * gets closed here and stays authoritative via its own state.
+   */
+  const [dismissed, setDismissed] = useState(false);
+
+  useEffect(() => {
+    if (isOverlay && collapsedProp === undefined) setDismissed(true);
+  }, [isOverlay, collapsedProp]);
+
+  useEffect(() => {
+    if (!isOverlay || collapsedProp === false) setDismissed(false);
+  }, [isOverlay, collapsedProp]);
+
+  const effectivelyCollapsed = collapsed || (isOverlay && dismissed);
+  const scrimOpen = isOverlay && !effectivelyCollapsed;
+
+  const handleClose = useCallback(() => {
+    setDismissed(true);
+    onClose?.();
+  }, [onClose]);
 
   const asideRef = useRef<HTMLElement>(null);
 
@@ -68,7 +93,7 @@ export const Sidebar = ({
     asideRef.current?.focus();
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose?.();
+      if (event.key === 'Escape') handleClose();
     };
     document.addEventListener('keydown', onKeyDown);
 
@@ -76,7 +101,7 @@ export const Sidebar = ({
       document.removeEventListener('keydown', onKeyDown);
       previouslyFocused?.focus?.();
     };
-  }, [scrimOpen, onClose]);
+  }, [scrimOpen, handleClose]);
 
   if (!visible) {
     return null;
@@ -107,23 +132,27 @@ export const Sidebar = ({
             key="scrim"
             className={s.Scrim}
             aria-hidden="true"
-            onClick={onClose}
+            onClick={handleClose}
             {...scrimAnimation}
           />
         )}
       </AnimatePresence>
       <aside
         ref={mergeRefs(ref, asideRef)}
-        className={clsx(s.Sidebar, { [s.Collapsed]: collapsed }, className)}
+        className={clsx(
+          s.Sidebar,
+          { [s.Collapsed]: effectivelyCollapsed },
+          className,
+        )}
         style={style}
         aria-label={t('screen.sidebarLabel')}
-        inert={collapsed}
+        inert={effectivelyCollapsed}
         tabIndex={scrimOpen ? -1 : undefined}
         {...restProps}
       >
         {/* initial={false}: no slide-in on first paint when the sidebar starts open. */}
         <AnimatePresence initial={false}>
-          {!collapsed && (
+          {!effectivelyCollapsed && (
             <motion.div
               key="panel"
               className={s.SidebarPanel}

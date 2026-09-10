@@ -18,7 +18,7 @@ export const Reader: StoryObj<typeof Screen> = {
   render: () => (
     <Screen title="The Timeless Way of Building" size="m">
       <Screen.Header>
-        <Toolbar variant="floating" size="m">
+        <Toolbar variant="solid" size="m">
           <Toolbar.Logo>
             <img
               src="https://help.apple.com/assets/67DB47E269E8D943E20D7C8C/67DB47E569E8D943E20D7C92/en_US/efdd967a11ce8c7e441948d3f26510ce.png"

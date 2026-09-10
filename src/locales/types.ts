@@ -66,6 +66,7 @@ export interface Localization {
   screen: {
     sidebarLabel: string;
     bottomNavigationLabel: string;
+    asideLabel: string;
   };
   pagination: {
     navigation: string;

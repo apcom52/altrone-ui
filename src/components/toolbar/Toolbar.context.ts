@@ -12,7 +12,7 @@ export interface ToolbarContextValue {
 export const ToolbarContext = createContext<ToolbarContextValue>({
   placement: 'top',
   orientation: 'horizontal',
-  variant: 'glass',
+  variant: 'solid',
   size: 'm',
 });
 
