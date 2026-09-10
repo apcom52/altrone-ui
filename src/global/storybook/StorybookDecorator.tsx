@@ -34,9 +34,11 @@ export const StorybookDecorator = (Story: any, options: any) => {
     document.documentElement.classList.toggle('sb-reduce-motion', reduceMotion);
   }, [reduceMotion]);
 
+  const fullBleed = options.parameters?.layout === 'fullscreen';
+
   return (
     <AltroneApplication
-      className={s.Wrapper}
+      className={fullBleed ? s.WrapperBleed : s.Wrapper}
       theme={options.globals.theme === 'dark' ? 'dark' : 'light'}
       language={options.globals.lang || 'en'}
       accent={options.globals.accent || 'blue'}

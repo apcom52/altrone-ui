@@ -41,4 +41,52 @@ describe('Screen', () => {
 
     expect(testingScreen.queryByRole('complementary')).not.toBeInTheDocument();
   });
+
+  test('title labels the root as a region', () => {
+    render(
+      <Screen title="Billing">
+        <Screen.Content>Content</Screen.Content>
+      </Screen>,
+    );
+
+    expect(
+      testingScreen.getByRole('region', { name: 'Billing' }),
+    ).toBeInTheDocument();
+  });
+
+  test('contentAlign="center" adds the centering modifier class', () => {
+    const { container } = render(
+      <Screen contentAlign="center">
+        <Screen.Content>Content</Screen.Content>
+      </Screen>,
+    );
+
+    expect(
+      container.querySelector('[class*="ContentCenter"]'),
+    ).toBeInTheDocument();
+  });
+
+  test('collapsing the Sidebar marks the <aside> inert', () => {
+    const { rerender } = render(
+      <Screen>
+        <Screen.Sidebar data-testid="sidebar">
+          <button type="button">Nav item</button>
+        </Screen.Sidebar>
+        <Screen.Content>Content</Screen.Content>
+      </Screen>,
+    );
+
+    expect(testingScreen.getByTestId('sidebar')).not.toHaveAttribute('inert');
+
+    rerender(
+      <Screen>
+        <Screen.Sidebar data-testid="sidebar" collapsed>
+          <button type="button">Nav item</button>
+        </Screen.Sidebar>
+        <Screen.Content>Content</Screen.Content>
+      </Screen>,
+    );
+
+    expect(testingScreen.getByTestId('sidebar')).toHaveAttribute('inert');
+  });
 });

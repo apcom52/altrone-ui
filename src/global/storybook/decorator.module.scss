@@ -14,3 +14,8 @@
   padding: var(--gap) var(--xl-gap);
   min-height: 100%;
 }
+
+/** For `layout: 'fullscreen'` stories (e.g. Screen) — no padding, fills the viewport so a full-bleed layout reaches every edge and its footer sticks to the bottom. */
+.WrapperBleed {
+  min-height: 100vh;
+}

@@ -57,6 +57,9 @@ export const ge: Localization = {
     collapseSidebar: 'Seitenleiste einklappen',
     expandSidebar: 'Seitenleiste ausklappen',
   },
+  screen: {
+    sidebarLabel: 'Seitenleiste',
+  },
   pagination: {
     navigation: 'Seitennavigation',
     previous: 'Vorherige Seite',

@@ -56,6 +56,9 @@ export const ru: Localization = {
     collapseSidebar: 'Свернуть сайдбар',
     expandSidebar: 'Развернуть сайдбар',
   },
+  screen: {
+    sidebarLabel: 'Боковая панель',
+  },
   pagination: {
     navigation: 'Пагинация',
     previous: 'Предыдущая страница',

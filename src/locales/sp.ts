@@ -57,6 +57,9 @@ export const sp: Localization = {
     collapseSidebar: 'Contraer barra lateral',
     expandSidebar: 'Expandir barra lateral',
   },
+  screen: {
+    sidebarLabel: 'Barra lateral',
+  },
   pagination: {
     navigation: 'Paginación',
     previous: 'Página anterior',

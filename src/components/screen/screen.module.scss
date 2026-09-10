@@ -1,69 +1,150 @@
 :global([data-altrone-root='true']) {
   --screen-sidebar-width: 300px;
+  --screen-header-height: 56px;
 }
 
 .Screen {
+  /**
+   * Left offset the reserved (inline) sidebar imposes on flow content — the
+   * sidebar itself is `position: fixed` and animates (see Sidebar.tsx). `0px`
+   * when there's no sidebar, it's collapsed, or we're in overlay mode. The
+   * grid pads itself by this so content reflows without overflow clipping;
+   * `.Footer` breaks back out of it to run its band full-width. Curve matches
+   * the Drawer panel slide.
+   */
+  --screen-sidebar-inset: 0px;
+  /** Just the sidebar panel's width when it reserves layout space (`0` otherwise) — the header/footer chrome inset builds on this, the grid content inset (`--screen-sidebar-inset`) adds its own gutters. */
+  --screen-sidebar-reserved: 0px;
+  /**
+   * Distance from the screen's inline edges to where header/footer chrome
+   * content sits: the `.HeaderInner` gutter (`--space-content`) + the
+   * `Toolbar` `size="m"` inset (`--toolbar-inset`, 12px — not referenceable
+   * from here). Footer matches it so the two form one vertical line; override
+   * this if the header uses a different `Toolbar` size.
+   */
+  --screen-chrome-inset: calc(var(--space-content) + 12px);
+  /** Vertical breathing room inside Content / Footer — deliberately roomy. */
+  --screen-content-padding-block: calc(var(--space-content) * 2);
+
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
   grid-template-areas: 'header' 'content' 'footer';
   min-height: 100vh;
-
-  &:has(> .Sidebar) {
-    grid-template-columns: var(--screen-sidebar-width) 1fr;
-    grid-template-areas:
-      'sidebar header'
-      'sidebar content'
-      'sidebar footer';
-    transition: grid-template-columns var(--motion-duration-base)
-      var(--motion-easing-standard);
-  }
-
-  &:has(> .Sidebar.Collapsed) {
-    grid-template-columns: 0 1fr;
-  }
+  padding-inline-start: var(--screen-sidebar-inset);
+  transition: padding-inline-start 0.42s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.Header {
+.Screen:has(> .Sidebar):not(.SidebarOverlay) {
+  --screen-sidebar-reserved: var(--screen-sidebar-width);
+  --screen-sidebar-inset: calc(
+    var(--screen-sidebar-width) + 2 * var(--space-content)
+  );
+}
+
+.Screen:has(> .Sidebar.Collapsed):not(.SidebarOverlay) {
+  --screen-sidebar-reserved: 0px;
+  --screen-sidebar-inset: 0px;
+}
+
+/**
+ * The bar's fill, frost, shadow and z-index come from
+ * `<Box material="glass" tone="accent" elevation="sticky">` (Header.tsx).
+ * The `<header>` runs edge to edge; `.HeaderInner` is a `position: relative`
+ * box, `margin`-inset past the overlapping sidebar, that the toolbar fills —
+ * `margin` (not padding) so an abspos `floating` toolbar is inset too.
+ */
+.Screen > .Header {
+  --box-fill: var(--color-header-backdrop);
+
   grid-area: header;
-  position: sticky;
-  top: 0;
-  z-index: var(--elevation-sticky-z-index);
-  box-shadow: var(--elevation-sticky-shadow);
-  background: var(--color-header-backdrop);
-  backdrop-filter: blur(8px);
-  padding: var(--space-content);
-}
-
-.Sidebar {
-  grid-area: sidebar;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow-y: auto;
-  padding: var(--space-content);
-  transition: padding var(--motion-duration-base) var(--motion-easing-standard);
-}
-
-/** Grid column collapse is driven by the parent's :has(> .Sidebar.Collapsed) above; this just clips the (still-mounted) content instead of letting it reflow oddly as the column shrinks. */
-.Sidebar.Collapsed {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  /* Undo Box's control-sized inline-flex box — `.HeaderInner` does the layout. */
+  display: block;
+  min-height: 0;
+  height: var(--screen-header-height);
   padding: 0;
-  overflow: hidden;
+  color: inherit;
+}
+
+.HeaderInner {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  margin-inline: var(--space-content);
+  /* Reserve the sidebar on the leading side; the Toolbar's own inset adds the rest of --screen-chrome-inset. */
+  margin-inline-start: calc(
+    var(--screen-sidebar-reserved) + var(--space-content)
+  );
+  transition: margin-inline-start 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/** The single toolbar child fills the inset area. */
+.HeaderInner > * {
+  flex: 1;
+  min-width: 0;
+}
+
+/** The fixed header is out of flow — push the scrolling content below it. */
+.Screen:has(> .Header) > .Content {
+  padding-block-start: calc(
+    var(--screen-content-padding-block) + var(--screen-header-height)
+  );
+}
+
+/**
+ * `position: fixed` in both modes, floating 8px in from the screen edges (the
+ * same gutter Drawer's panel uses). It never lives in the grid — inline mode
+ * reserves room via the `.Screen` start inset above; overlay mode floats over
+ * the content with a scrim. `.SidebarPanel` is what actually moves.
+ */
+.Sidebar {
+  position: fixed;
+  inset-block: var(--space-content);
+  inset-inline-start: 0;
+  margin-inline: var(--space-content);
+  width: min(var(--screen-sidebar-width), 85vw);
+  z-index: var(--level-fixed);
+}
+
+.SidebarOverlay > .Sidebar {
+  z-index: var(--elevation-overlay-z-index);
+}
+
+.Sidebar.Collapsed {
+  pointer-events: none;
+}
+
+.SidebarPanel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  /** The open/close scale inflates from the leading edge (matches Drawer). */
+  transform-origin: left center;
+}
+
+.Scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--level-offcanvas-backdrop);
+  background: var(--color-overlay-scrim);
+  border: none;
+  cursor: pointer;
 }
 
 .Content {
   grid-area: content;
-  padding: var(--space-content);
+  padding: var(--screen-content-padding-block) var(--space-content);
 
   /**
-   * Deliberately no overflow-y/scroll here. Content is a *sibling* of
-   * Header/Sidebar (not their ancestor), and `position: sticky` only
-   * activates against a scrolling ancestor — a scroll box on Content
-   * alone can never make Header or Sidebar stick to it. The whole
-   * .Screen scrolls as one unit instead (via the page/viewport), which
-   * is what actually gives Header's sticky + backdrop-blur something to
-   * blur, and what makes Sidebar's sticky positioning meaningful.
+   * Deliberately no overflow-y/scroll here. The whole .Screen scrolls as one
+   * unit (via the page/viewport) — that's what gives the fixed header
+   * something to sit over and blur.
    */
 
   /** Size constrains content width only — the grid/sidebar/header layout is unaffected. */
@@ -72,9 +153,35 @@
   width: 100%;
 }
 
+/**
+ * A subtle chrome band, distinct from the content surface. It breaks out of
+ * the grid's sidebar inset to run edge to edge (behind the sidebar, like the
+ * header); `.FooterInner` re-insets the content past the sidebar.
+ */
 .Footer {
   grid-area: footer;
-  padding: var(--space-content);
+  margin-inline-start: calc(-1 * var(--screen-sidebar-inset));
+  background: var(--background-2);
+  border-block-start: 1px solid var(--border-1);
+  transition: margin-inline-start 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.FooterInner {
+  display: flex;
+  align-items: center;
+  /** Roomier than Content — the footer should breathe. */
+  padding-block: calc(var(--space-content) * 3);
+  /* Align to the header: same edge inset on the trailing side, same + the reserved sidebar on the leading side, so the two form one vertical line. */
+  padding-inline-end: var(--screen-chrome-inset);
+  padding-inline-start: calc(
+    var(--screen-sidebar-reserved) + var(--screen-chrome-inset)
+  );
+  transition: padding-inline-start 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.FooterInner > * {
+  flex: 1;
+  min-width: 0;
 }
 
 .Mini {
@@ -98,62 +205,14 @@
 }
 
 /**
- * Presets below only ever restyle .Content (and, for ListDetail, replace
- * it with a list/detail split) — never .Screen's own grid areas. Header/
- * Sidebar/Footer keep working identically to plain Screen in every preset.
+ * contentAlign="center": box-center Screen.Content in both axes. Text
+ * alignment is left to the content itself (a form stays left-aligned, a
+ * Result centers its own text) — this only positions the block.
  */
-
-.ListDetailContent {
+.ContentCenter > .Content {
   display: flex;
-  padding: 0;
-}
-
-.List {
-  flex-shrink: 0;
-  width: 320px;
-  overflow-y: auto;
-  border-right: 1px solid var(--border-1);
-  padding: var(--space-content);
-}
-
-.Detail {
-  flex: 1;
-  min-width: 0;
-  overflow-y: auto;
-  padding: var(--space-content);
-}
-
-.Dashboard {
-  .Content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    align-content: start;
-    gap: var(--space-section);
-  }
-}
-
-.Form {
-  .Content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 100%;
-  }
-}
-
-.DataView {
-  .Content {
-    padding: 0;
-  }
-}
-
-.Centered {
-  .Content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100%;
-    text-align: center;
-  }
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
 }
