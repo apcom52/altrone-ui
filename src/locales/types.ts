@@ -65,6 +65,7 @@ export interface Localization {
   };
   screen: {
     sidebarLabel: string;
+    bottomNavigationLabel: string;
   };
   pagination: {
     navigation: string;

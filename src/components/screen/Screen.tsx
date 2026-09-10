@@ -4,7 +4,13 @@ import { useBreakpoint } from 'utils';
 import s from './screen.module.scss';
 import { ScreenMobileBreakpoint, ScreenProps } from './Screen.types.ts';
 import { ScreenContextProvider } from './Screen.context.ts';
-import { Header, Sidebar, Content, Footer } from './components';
+import {
+  Header,
+  Sidebar,
+  Content,
+  Footer,
+  BottomNavigation,
+} from './components';
 
 const BREAKPOINT_FLAG: Record<
   ScreenMobileBreakpoint,
@@ -71,4 +77,5 @@ export const Screen = Object.assign(ScreenBase, {
   Sidebar,
   Content,
   Footer,
+  BottomNavigation,
 });

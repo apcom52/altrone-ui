@@ -66,6 +66,33 @@ describe('Screen', () => {
     ).toBeInTheDocument();
   });
 
+  test('renders Screen.BottomNavigation as a <nav>', () => {
+    render(
+      <Screen>
+        <Screen.Content>Content</Screen.Content>
+        <Screen.BottomNavigation data-testid="bottom-nav">
+          Tabs
+        </Screen.BottomNavigation>
+      </Screen>,
+    );
+
+    expect(testingScreen.getByTestId('bottom-nav').tagName).toBe('NAV');
+  });
+
+  test('a zone gated by visibleFrom renders nothing below that breakpoint', () => {
+    /* jsdom's matchMedia mock reports every breakpoint as unmatched. */
+    render(
+      <Screen>
+        <Screen.Sidebar data-testid="sidebar" visibleFrom="lg">
+          Nav
+        </Screen.Sidebar>
+        <Screen.Content>Content</Screen.Content>
+      </Screen>,
+    );
+
+    expect(testingScreen.queryByTestId('sidebar')).not.toBeInTheDocument();
+  });
+
   test('collapsing the Sidebar marks the <aside> inert', () => {
     const { rerender } = render(
       <Screen>

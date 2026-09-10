@@ -58,6 +58,7 @@ export const ru: Localization = {
   },
   screen: {
     sidebarLabel: 'Боковая панель',
+    bottomNavigationLabel: 'Нижняя навигация',
   },
   pagination: {
     navigation: 'Пагинация',

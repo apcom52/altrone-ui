@@ -12,6 +12,7 @@ import { useLocalization } from 'components/application/useLocalization.tsx';
 import s from '../screen.module.scss';
 import { ScreenSidebarProps } from '../Screen.types.ts';
 import { useScreenContext } from '../Screen.context.ts';
+import { useZoneVisible } from './useZoneVisible.ts';
 
 /**
  * Open/close is the exact `Drawer` animation in both modes — keep these in
@@ -46,11 +47,14 @@ export const Sidebar = ({
   onClose,
   className,
   style,
+  visibleFrom,
+  hiddenFrom,
   ...restProps
 }: ScreenSidebarProps) => {
   const t = useLocalization();
   const { sidebarMode } = useScreenContext();
   const reducedMotion = useReducedMotionConfig() ?? false;
+  const visible = useZoneVisible(visibleFrom, hiddenFrom);
 
   const isOverlay = sidebarMode === 'overlay';
   const scrimOpen = isOverlay && !collapsed;
@@ -73,6 +77,10 @@ export const Sidebar = ({
       previouslyFocused?.focus?.();
     };
   }, [scrimOpen, onClose]);
+
+  if (!visible) {
+    return null;
+  }
 
   const panelAnimation: HTMLMotionProps<'div'> = reducedMotion
     ? {}

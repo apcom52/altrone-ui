@@ -4,9 +4,12 @@
      from at-rest. */
   bottom: -1px;
   z-index: var(--level-fixed);
-  /* Bleed over the container's padding so the bar spans the full width and
-     its bottom corners sit flush with the container's rounding. */
-  margin: 0 calc(-1 * var(--navigation-list-padding))
+  /* `auto` top margin pins the footer to the bottom of a full-height
+     NavigationList (flex column) instead of letting it trail the content.
+     The negative inline/bottom margins bleed over the container's padding so
+     the bar spans the full width and its bottom corners sit flush with the
+     container's rounding. */
+  margin: auto calc(-1 * var(--navigation-list-padding))
     calc(-1 * var(--navigation-list-padding));
   padding: var(--space-content);
   background: var(--navigation-list-chrome-background-color);

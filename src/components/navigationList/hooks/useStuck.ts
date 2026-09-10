@@ -35,9 +35,17 @@ export const useStuck = () => {
       return;
     }
 
+    /* Fall back to the sticky element's containing block, not the viewport
+       (`root: null`): when an ancestor animates with a transform (e.g.
+       `Screen.Sidebar` sliding in) a viewport-rooted observer briefly sees the
+       element off-screen and reports it stuck, flashing the pinned style. The
+       containing block moves together with the element, so the ratio holds. */
+    const root =
+      getScrollParent(el) ?? (el.offsetParent as Element | null);
+
     const observer = new IntersectionObserver(
       ([entry]) => setStuck(entry.intersectionRatio < 1),
-      { root: getScrollParent(el), threshold: [1] },
+      { root, threshold: [1] },
     );
     observer.observe(el);
 

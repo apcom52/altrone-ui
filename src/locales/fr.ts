@@ -58,6 +58,7 @@ export const fr: Localization = {
   },
   screen: {
     sidebarLabel: 'Barre latérale',
+    bottomNavigationLabel: 'Navigation inférieure',
   },
   pagination: {
     navigation: 'Pagination',

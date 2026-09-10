@@ -58,6 +58,7 @@ export const en: Localization = {
   },
   screen: {
     sidebarLabel: 'Sidebar',
+    bottomNavigationLabel: 'Bottom navigation',
   },
   pagination: {
     navigation: 'Pagination',

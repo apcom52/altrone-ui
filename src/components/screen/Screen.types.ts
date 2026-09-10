@@ -1,7 +1,14 @@
 import type { HTMLAttributes, Ref } from 'react';
 import type { Size } from 'types';
+import type { BreakpointName } from 'utils';
 
 export type ScreenMobileBreakpoint = 'sm' | 'md' | 'lg';
+
+/**
+ * Viewport breakpoint token for a zone's `visibleFrom` / `hiddenFrom` —
+ * mirrors the `--breakpoint-*` custom properties (`useBreakpoint`).
+ */
+export type ScreenBreakpoint = BreakpointName;
 
 export interface ScreenProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
@@ -20,18 +27,36 @@ export interface ScreenProps extends HTMLAttributes<HTMLDivElement> {
   contentAlign?: 'start' | 'center';
   /**
    * Viewport width below which `Screen.Sidebar` switches from an inline grid
-   * column to an off-canvas overlay panel with a scrim. Default: `'md'`.
+   * column to an off-canvas overlay panel with a scrim. Independent of the
+   * zone's own `visibleFrom` / `hiddenFrom` (which control whether it renders
+   * at all). Default: `'md'`.
    */
   mobileBreakpoint?: ScreenMobileBreakpoint;
   /** Width of the inline sidebar column. Default: `300px`. */
   sidebarWidth?: string;
 }
 
+/**
+ * Breakpoint-gated visibility, shared by the zones that adapt per device
+ * (`Screen.Sidebar`, `Screen.BottomNavigation`). Set neither to keep the zone
+ * always mounted (its mode still adapts — e.g. the sidebar goes overlay below
+ * `mobileBreakpoint`). Set one, or both to bound the zone to a band. When out
+ * of range the zone renders nothing, so it reserves no layout space.
+ */
+interface ScreenZoneVisibilityProps {
+  /** Render this zone only at viewport widths `>=` the breakpoint. */
+  visibleFrom?: ScreenBreakpoint;
+  /** Render this zone only at viewport widths `<` the breakpoint. */
+  hiddenFrom?: ScreenBreakpoint;
+}
+
 export interface ScreenHeaderProps extends HTMLAttributes<HTMLElement> {
   ref?: Ref<HTMLElement>;
 }
 
-export interface ScreenSidebarProps extends HTMLAttributes<HTMLElement> {
+export interface ScreenSidebarProps
+  extends HTMLAttributes<HTMLElement>,
+    ScreenZoneVisibilityProps {
   ref?: Ref<HTMLElement>;
   /**
    * Controlled, presentational: `true` removes the sidebar from the layout.
@@ -55,5 +80,11 @@ export interface ScreenContentProps extends HTMLAttributes<HTMLElement> {
 }
 
 export interface ScreenFooterProps extends HTMLAttributes<HTMLElement> {
+  ref?: Ref<HTMLElement>;
+}
+
+export interface ScreenBottomNavigationProps
+  extends HTMLAttributes<HTMLElement>,
+    ScreenZoneVisibilityProps {
   ref?: Ref<HTMLElement>;
 }

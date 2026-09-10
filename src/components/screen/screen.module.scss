@@ -1,6 +1,7 @@
 :global([data-altrone-root='true']) {
   --screen-sidebar-width: 300px;
   --screen-header-height: 56px;
+  --screen-bottom-nav-height: 64px;
 }
 
 .Screen {
@@ -108,6 +109,9 @@
   inset-inline-start: 0;
   margin-inline: var(--space-content);
   width: min(var(--screen-sidebar-width), 85vw);
+  /* Fill the viewport minus the top/bottom gutters — explicit so a flex/grid
+     ancestor can't collapse the panel shorter than the screen. */
+  min-block-size: calc(100vh - 2 * var(--space-content));
   z-index: var(--level-fixed);
 }
 
@@ -128,6 +132,13 @@
   transform-origin: left center;
 }
 
+/** Whatever the consumer drops in (usually a NavigationList) fills the panel
+    height, so its own footer can pin to the bottom rather than trail the content. */
+.SidebarPanel > * {
+  flex: 1;
+  min-height: 0;
+}
+
 .Scrim {
   position: fixed;
   inset: 0;
@@ -135,6 +146,69 @@
   background: var(--color-overlay-scrim);
   border: none;
   cursor: pointer;
+}
+
+/**
+ * The touch counterpart to `.Sidebar`: a fixed, full-width bar pinned to the
+ * bottom. `Screen` owns only the geometry — the navigation itself is the
+ * consumer's child. Like the `floating` header toolbar the bar is
+ * `pointer-events: none` with its content re-enabled, so the gaps around a
+ * centered pill nav stay click-through.
+ */
+.BottomNavigation {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: var(--level-fixed);
+  display: flex;
+  /* Float the bar off every edge by the same gutter `.Sidebar` keeps — plus
+     the iOS home-indicator inset on the bottom. */
+  padding: var(--space-content) var(--space-content)
+    calc(var(--space-content) + env(safe-area-inset-bottom, 0px));
+  pointer-events: none;
+}
+
+.BottomNavigationInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--screen-bottom-nav-height);
+}
+
+.BottomNavigationInner > * {
+  pointer-events: auto;
+}
+
+/** Total space the bar occupies (gutter above + bar + gutter below + safe-area) — the offset flow content needs. */
+.Screen:has(> .BottomNavigation) {
+  --screen-bottom-nav-space: calc(
+    var(--screen-bottom-nav-height) + 2 * var(--space-content) +
+      env(safe-area-inset-bottom, 0px)
+  );
+}
+
+.Screen:has(> .BottomNavigation) > .Content {
+  padding-block-end: calc(
+    var(--screen-content-padding-block) + var(--screen-bottom-nav-space)
+  );
+}
+
+/** The grey footer band stops above the bar rather than sitting under it. */
+.Screen:has(> .BottomNavigation) > .Footer {
+  margin-block-end: var(--screen-bottom-nav-space);
+}
+
+/**
+ * Inline only: keep the reserved sidebar clear of the bar when both are on
+ * screen (desktop). The overlay drawer stays full height and simply floats
+ * over the bar.
+ */
+.Screen:not(.SidebarOverlay):has(> .BottomNavigation) > .Sidebar {
+  inset-block-end: var(--screen-bottom-nav-space);
+  min-block-size: calc(
+    100vh - var(--space-content) - var(--screen-bottom-nav-space)
+  );
 }
 
 .Content {
