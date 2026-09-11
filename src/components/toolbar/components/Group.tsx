@@ -36,7 +36,7 @@ export const Group = memo(
     };
 
     return (
-      <motion.div ref={ref} layout className={cls} style={styles} {...restProps}>
+      <motion.div ref={ref} className={cls} style={styles} {...restProps}>
         {children}
       </motion.div>
     );

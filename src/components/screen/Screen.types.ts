@@ -97,6 +97,14 @@ export interface ScreenSidebarProps
 
 export interface ScreenContentProps extends HTMLAttributes<HTMLElement> {
   ref?: Ref<HTMLElement>;
+  /**
+   * Caps the content column's width and centres it in the space it's given —
+   * empty gutters on either side (or the `Screen.Aside` column on the trailing
+   * side). A number is px, a string is used verbatim
+   * (`'clamp(320px, 50vw, 640px)'`). Overrides the width `Screen`'s `size`
+   * prop would otherwise impose. Default: no cap.
+   */
+  maxWidth?: number | string;
 }
 
 export interface ScreenFooterProps extends HTMLAttributes<HTMLElement> {

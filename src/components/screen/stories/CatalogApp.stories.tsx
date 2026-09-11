@@ -19,7 +19,7 @@ import { screenMeta, useDemoSidebar } from './shared.tsx';
 
 const meta: Meta<typeof Screen> = {
   ...screenMeta,
-  title: 'Components/Core/Screen/Catalog app',
+  title: 'Components/Core/Screen',
   parameters: { ...screenMeta.parameters, chromatic: { disable: true } },
 };
 
@@ -238,7 +238,10 @@ const ProductInspector = ({
         <Field label="In stock" value={`${product.stock}`} />
         <Field label="Min. order" value={`${product.minimumOrderQuantity}`} />
         <Field label="Weight" value={`${product.weight} kg`} />
-        <Field label="Dimensions" value={`${width} × ${height} × ${depth} cm`} />
+        <Field
+          label="Dimensions"
+          value={`${width} × ${height} × ${depth} cm`}
+        />
         <Field label="Warranty" value={product.warrantyInformation} />
         <Field label="Shipping" value={product.shippingInformation} />
         <Field label="Returns" value={product.returnPolicy} />
@@ -308,7 +311,7 @@ const ProductInspector = ({
  * `<Splitter>` land in the content row with no `gridArea` of its own.
  */
 export const CatalogApp: StoryObj<typeof Screen> = {
-  name: 'Catalog app (three-pane)',
+  name: 'Marketplace',
   render: () => {
     const [categories, setCategories] = useState<Category[] | null>(null);
     const [activeCategory, setActiveCategory] = useState('smartphones');
@@ -395,10 +398,7 @@ export const CatalogApp: StoryObj<typeof Screen> = {
           </Toolbar>
         </Screen.Header>
 
-        <Screen.Sidebar
-          collapsed={sidebar.collapsed}
-          onClose={sidebar.onClose}
-        >
+        <Screen.Sidebar collapsed={sidebar.collapsed} onClose={sidebar.onClose}>
           <NavigationList>
             <NavigationList.Group title="Categories">
               {categories === null && !error
@@ -451,7 +451,11 @@ export const CatalogApp: StoryObj<typeof Screen> = {
                 ) : loadingProducts || !products ? (
                   <Flex direction="vertical" gap="s">
                     {[...Array(8)].map((_, i) => (
-                      <Skeleton key={i} height="80px" radius="var(--radius-l)" />
+                      <Skeleton
+                        key={i}
+                        height="80px"
+                        radius="var(--radius-l)"
+                      />
                     ))}
                   </Flex>
                 ) : (

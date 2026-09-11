@@ -1,7 +1,7 @@
 @import 'src/global/mixins';
 
 :global([data-altrone-root='true']) {
-  --progress-active-background-color: var(--accent-9);
+  --progress-active-background-color: var(--accent-5);
   --progress-text-color: var(--accent-12);
 
   --progress-height: 32px;

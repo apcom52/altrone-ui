@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import clsx from 'clsx';
 import s from '../screen.module.scss';
 import { ScreenContentProps } from '../Screen.types.ts';
@@ -7,9 +8,26 @@ export const Content = ({
   children,
   className,
   style,
+  maxWidth,
   ...restProps
-}: ScreenContentProps) => (
-  <main ref={ref} className={clsx(s.Content, className)} style={style} {...restProps}>
-    {children}
-  </main>
-);
+}: ScreenContentProps) => {
+  const rootStyle =
+    maxWidth === undefined
+      ? style
+      : ({
+          ...style,
+          '--screen-content-max-width':
+            typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth,
+        } as CSSProperties);
+
+  return (
+    <main
+      ref={ref}
+      className={clsx(s.Content, className)}
+      style={rootStyle}
+      {...restProps}
+    >
+      {children}
+    </main>
+  );
+};

@@ -877,6 +877,25 @@ export const TitleStates: StoryObj<typeof Toolbar> = {
           </Toolbar>
         ))}
       </Flex>
+
+      <Flex direction="vertical" gap="s">
+        <Text size={3} color="muted">
+          a title longer than the row — truncates, doesn't shove the actions off
+        </Text>
+        <Toolbar style={{ maxWidth: 340 }}>
+          <Toolbar.Leading>
+            <Toolbar.Title label="Notes from the Q3 planning offsite — draft 4" />
+          </Toolbar.Leading>
+          <Toolbar.Trailing>
+            <Toolbar.Action label="Share" icon={<Share />} showLabel={false} />
+            <Toolbar.Action
+              label="More"
+              icon={<Ellipsis />}
+              showLabel={false}
+            />
+          </Toolbar.Trailing>
+        </Toolbar>
+      </Flex>
     </Flex>
   ),
 };

@@ -27,10 +27,23 @@
   );
   /** Vertical breathing room inside Content / Footer — deliberately roomy. */
   --screen-content-padding-block: calc(var(--space-content) * 2);
+  /**
+   * Bottom-edge clearance for the last band before the screen edge: the iOS
+   * home-indicator inset (`env(safe-area-inset-bottom)`, `0px` unless the
+   * consumer's viewport is `viewport-fit=cover`). `Screen.BottomNavigation`
+   * raises it to the full bar reservation below.
+   */
+  --screen-bottom-safe: env(safe-area-inset-bottom, 0px);
 
   position: relative;
   display: grid;
-  grid-template-columns: 1fr;
+  /* `minmax(0, …)`, not a bare `1fr`: a bare `1fr` is `minmax(auto, 1fr)`, so a
+     `Screen.Content` whose child scrolls horizontally (a wide board, a table)
+     inflates the track to that child's max-content width — dragging the
+     full-width `.Footer` / `.Header` band off the right edge with it. The
+     min-0 floor keeps the column bound to the viewport and moves the overflow
+     into the scrolling child where it belongs. */
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto 1fr auto;
   grid-template-areas: 'header' 'content' 'footer';
   min-height: 100vh;
@@ -229,6 +242,7 @@
     var(--screen-bottom-nav-height) + 2 * var(--space-content) +
       env(safe-area-inset-bottom, 0px)
   );
+  --screen-bottom-safe: var(--screen-bottom-nav-space);
 }
 
 .Screen:has(> .BottomNavigation) .Content,
@@ -238,9 +252,17 @@
   );
 }
 
-/** The grey footer band stops above the bar rather than sitting under it. */
-.Screen:has(> .BottomNavigation) > .Footer {
-  margin-block-end: var(--screen-bottom-nav-space);
+/**
+ * No footer: Content / Aside is the last band, so it carries the bottom-edge
+ * clearance itself — the home-indicator inset, or the bar reservation when a
+ * `Screen.BottomNavigation` is present (already handled by the rule above, so
+ * this only adds the inset for the plain case).
+ */
+.Screen:not(:has(> .Footer)):not(:has(> .BottomNavigation)) .Content,
+.Screen:not(:has(> .Footer)):not(:has(> .BottomNavigation)) .Aside {
+  padding-block-end: calc(
+    var(--screen-content-padding-block) + var(--screen-bottom-safe)
+  );
 }
 
 /**
@@ -257,6 +279,10 @@
 
 .Content {
   grid-area: content;
+  /* Never let content's intrinsic width push the grid track (and the chrome
+     bands that span it) past the viewport — a horizontally scrolling child
+     owns its own overflow. */
+  min-width: 0;
   padding: var(--screen-content-padding-block) var(--space-content);
 
   /**
@@ -265,7 +291,13 @@
    * something to sit over and blur.
    */
 
-  /** Size constrains content width only — the grid/sidebar/header layout is unaffected. */
+  /**
+   * Caps content width only — the grid/sidebar/header layout is unaffected.
+   * `--screen-content-max-width` comes from `Screen`'s `size` class, or is set
+   * inline on this element by `Screen.Content`'s own `maxWidth` prop (which
+   * wins). `margin-inline: auto` centres the capped column, leaving gutters
+   * (or the `Screen.Aside` column) beside it.
+   */
   max-width: var(--screen-content-max-width, none);
   margin-inline: auto;
   width: 100%;
@@ -315,6 +347,13 @@
   align-items: center;
   /** Roomier than Content — the footer should breathe. */
   padding-block: calc(var(--space-content) * 3);
+  /* The footer is the last band before the screen edge: its bottom padding
+     also clears the home indicator, or the fixed bottom bar when one is
+     present (`--screen-bottom-safe` folds both in). The band itself still
+     reaches the very bottom edge. */
+  padding-block-end: calc(
+    var(--space-content) * 3 + var(--screen-bottom-safe)
+  );
   /* Same vertical line as Content and the header toolbar. */
   padding-inline-start: var(--screen-content-inset-start);
   padding-inline-end: var(--space-content);

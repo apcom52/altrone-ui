@@ -2,7 +2,14 @@ import s from './altroneApplication.module.scss';
 import { AltroneApplicationProps, Theme } from './AltroneApplication.types.ts';
 import { useMediaMatch } from 'utils';
 import clsx from 'clsx';
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { MotionConfig } from 'motion/react';
 import { Notifications } from 'components/notifications/Notifications.tsx';
 import { ThemeContext, ThemeContextType } from './useTheme.ts';
@@ -60,6 +67,52 @@ export const AltroneApplication = ({
     document.documentElement.setAttribute('data-altrone-theme', theme);
   }, [theme]);
 
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const setRootRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      rootRef.current = node;
+      if (typeof ref === 'function') {
+        ref(node);
+      } else if (ref) {
+        (ref as { current: HTMLDivElement | null }).current = node;
+      }
+    },
+    [ref],
+  );
+
+  /**
+   * Safari paints the *document* background (not the scrolled element's) in the
+   * overscroll / rubber-band area. The color tokens live on the app root, not
+   * on `<html>`, so mirror the resolved app background onto `<body>`/`<html>` —
+   * else that area flashes white on scroll.
+   */
+  useLayoutEffect(() => {
+    const node = rootRef.current;
+    if (!node) {
+      return;
+    }
+
+    const background = getComputedStyle(node).backgroundColor;
+    if (
+      !background ||
+      background === 'transparent' ||
+      background === 'rgba(0, 0, 0, 0)'
+    ) {
+      return;
+    }
+
+    const { body, documentElement } = document;
+    const prevBody = body.style.backgroundColor;
+    const prevRoot = documentElement.style.backgroundColor;
+    body.style.backgroundColor = background;
+    documentElement.style.backgroundColor = background;
+
+    return () => {
+      body.style.backgroundColor = prevBody;
+      documentElement.style.backgroundColor = prevRoot;
+    };
+  }, [theme]);
+
   const themeContext = useMemo<ThemeContextType>(
     () => ({
       theme: theme,
@@ -88,7 +141,7 @@ export const AltroneApplication = ({
       />
       <MotionConfig reducedMotion="user">
         <div
-          ref={ref}
+          ref={setRootRef}
           className={cls}
           data-altrone-root="true"
           data-altrone-accent={accent}

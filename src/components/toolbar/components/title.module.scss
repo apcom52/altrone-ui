@@ -7,7 +7,17 @@
   font-size: var(--toolbar-title-size, var(--text-size-5));
   line-height: var(--toolbar-title-line-height, var(--line-height-5));
   color: var(--text-12);
-  white-space: nowrap;
+  /* Shrinkable so a long title ellipsizes (via `.Label`) instead of shoving
+     the rest of the toolbar off the edge in a tight header. */
+  min-width: 0;
+}
+
+/* The label inherits the title's size/color/shadow; it only adds truncation
+   and needs its own min-width:0 to actually clip inside the flex row.
+   Descendant selector so `color: inherit` beats `Text`'s own base color. */
+.Title .Label {
+  min-width: 0;
+  color: inherit;
 }
 
 /* Chevron scales with the title font-size (which follows the toolbar `size`). */
