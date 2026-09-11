@@ -204,4 +204,8 @@ export const sp: Localization = {
     expandPanel: 'Expandir panel',
     panel: 'Panel {{index}}',
   },
+  image: {
+    loading: 'Cargando imagen',
+    brokenImage: 'No se pudo cargar la imagen',
+  },
 };

@@ -195,4 +195,8 @@ export interface Localization {
     expandPanel: string;
     panel: string;
   };
+  image: {
+    loading: string;
+    brokenImage: string;
+  };
 }

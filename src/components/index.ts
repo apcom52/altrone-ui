@@ -26,6 +26,8 @@ export * from './form';
 
 export * from './grid';
 
+export * from './image';
+
 export * from './label';
 export * from './loading';
 

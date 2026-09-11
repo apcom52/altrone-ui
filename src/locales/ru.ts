@@ -203,4 +203,8 @@ export const ru: Localization = {
     expandPanel: 'Развернуть панель',
     panel: 'Панель {{index}}',
   },
+  image: {
+    loading: 'Загрузка изображения',
+    brokenImage: 'Не удалось загрузить изображение',
+  },
 };

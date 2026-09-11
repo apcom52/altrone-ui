@@ -203,4 +203,8 @@ export const en: Localization = {
     expandPanel: 'Expand panel',
     panel: 'Panel {{index}}',
   },
+  image: {
+    loading: 'Loading image',
+    brokenImage: 'Image failed to load',
+  },
 };

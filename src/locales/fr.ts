@@ -144,16 +144,16 @@ export const fr: Localization = {
       beyond: 'est au-delà',
     },
     selectFilter: {
-      has: 'est l\'un de',
-      notHas: 'n\'est aucun de',
+      has: "est l'un de",
+      notHas: "n'est aucun de",
     },
     colorFilter: {
-      has: 'est l\'une de',
-      notHas: 'n\'est aucune de',
+      has: "est l'une de",
+      notHas: "n'est aucune de",
     },
     passwordFilter: {
       empty: 'est vide',
-      notEmpty: 'n\'est pas vide',
+      notEmpty: "n'est pas vide",
     },
   },
   photoViewer: {
@@ -202,5 +202,9 @@ export const fr: Localization = {
     collapsePanel: 'Réduire le panneau',
     expandPanel: 'Développer le panneau',
     panel: 'Panneau {{index}}',
+  },
+  image: {
+    loading: "Chargement de l'image",
+    brokenImage: "Échec du chargement de l'image",
   },
 };

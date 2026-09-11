@@ -204,4 +204,8 @@ export const ge: Localization = {
     expandPanel: 'Bereich ausklappen',
     panel: 'Bereich {{index}}',
   },
+  image: {
+    loading: 'Bild wird geladen',
+    brokenImage: 'Bild konnte nicht geladen werden',
+  },
 };
