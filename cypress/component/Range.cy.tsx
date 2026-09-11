@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { AltroneApplication, Range } from '../../src';
+import { Application, Range } from '../../src';
 
 const RangeWrapper = ({ onValueCommit }: { onValueCommit?: () => void }) => {
   const [value, setValue] = useState(12);
 
   return (
-    <AltroneApplication theme="light">
+    <Application theme="light">
       <Range
         data-testid="range"
         value={value}
@@ -14,7 +14,7 @@ const RangeWrapper = ({ onValueCommit }: { onValueCommit?: () => void }) => {
         name="input"
         onValueCommit={onValueCommit}
       />
-    </AltroneApplication>
+    </Application>
   );
 };
 

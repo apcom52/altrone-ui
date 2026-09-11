@@ -244,7 +244,9 @@ export const Overview: StoryObj = {
         <Text size={3}>
           <code>--color-overlay-scrim</code> — the dimming layer behind{' '}
           <code>Modal</code>/<code>Drawer</code>, shared by both instead of
-          each defining its own copy of the same value.
+          each defining its own copy of the same value. Has a dark-theme
+          override (<code>--black-a7</code>) — the light-theme value alone
+          barely dimmed anything over an already near-black background.
         </Text>
         <Text size={3}>
           <code>--color-header-backdrop</code> — the blurred bar behind{' '}

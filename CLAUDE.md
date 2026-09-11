@@ -2,7 +2,7 @@
 
 ## Overview
 
-`altrone-ui` — the component library published to npm as `altrone-ui`. This is the source of truth for every UI component used across the workspace (consumed by `docs/`, and by external apps). Consumers wrap their app in `<AltroneApplication>` and use components from the library directly.
+`altrone-ui` — the component library published to npm as `altrone-ui`. This is the source of truth for every UI component used across the workspace (consumed by `docs/`, and by external apps). Consumers wrap their app in `<Application>` and use components from the library directly.
 
 ## Stack
 
@@ -21,8 +21,7 @@
 ```
 src/
   components/          # all UI components (one folder per component, see rules/components.md)
-    application/        # <AltroneApplication> — root provider (theme, locale, config, toasts)
-    configuration/       # <Configuration> + useConfiguration() — global config overrides
+    application/        # <Application> — root provider (theme, locale, dialogs, toasts)
     <ComponentName>/     # each component follows the same layout (see rules/components.md)
   locales/              # i18n dictionaries: en, ru, fr, ge, sp
   utils/                # shared hooks and helpers

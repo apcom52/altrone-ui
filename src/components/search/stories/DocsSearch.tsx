@@ -16,7 +16,7 @@ interface Doc {
 }
 
 const DOCS: Doc[] = [
-  { title: 'Installation', section: 'Getting started', snippet: 'Add altrone-ui to your project with npm or pnpm and wrap the tree in AltroneApplication.' },
+  { title: 'Installation', section: 'Getting started', snippet: 'Add altrone-ui to your project with npm or pnpm and wrap the tree in Application.' },
   { title: 'Theming', section: 'Foundations', snippet: 'Every colour and type value is a CSS custom property; switch light and dark with a data attribute.' },
   { title: 'Form.Field', section: 'Components', snippet: 'Wrap any input to inject name, invalid, disabled and size from context and render the label.' },
   { title: 'TextInput islands', section: 'Components', snippet: 'Icons, actions, counters and prefixes drop into the field as children and lay out in a flex row.' },

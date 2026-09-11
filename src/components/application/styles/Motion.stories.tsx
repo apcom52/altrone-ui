@@ -86,7 +86,7 @@ export const Overview: StoryObj = {
       <Paragraph>
         Everything animated through <code>motion/react</code> (Modal,
         Popover, Tooltip, Toast, Spoiler, and more) is covered globally —{' '}
-        <code>AltroneApplication</code> wraps its tree in{' '}
+        <code>Application</code> wraps its tree in{' '}
         <code>{'<MotionConfig reducedMotion="user">'}</code>, so individual
         components don&rsquo;t each need to check the media query
         themselves.

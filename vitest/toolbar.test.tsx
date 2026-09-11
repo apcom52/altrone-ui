@@ -1,12 +1,12 @@
 import React from 'react';
 import { expect, test, describe, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { AltroneApplication, Toolbar } from '../src/components';
+import { Application, Toolbar } from '../src/components';
 
 describe('Toolbar', () => {
   test('check that className and style props works', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Toolbar
           data-testid="toolbar"
           className="cls"
@@ -25,7 +25,7 @@ describe('Toolbar', () => {
             />
           </Toolbar.Group>
         </Toolbar>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('toolbar')).toHaveClass('cls');
@@ -38,12 +38,12 @@ describe('Toolbar', () => {
 
   test('toolbar `size` cascades to nested Toolbar.Action unless the action overrides it', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Toolbar size="mini">
           <Toolbar.Action label="inherited" />
           <Toolbar.Action label="overridden" size="xl" />
         </Toolbar>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByRole('button', { name: 'inherited' }).className).toMatch(
@@ -58,17 +58,17 @@ describe('Toolbar', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
     const { rerender } = render(
-      <AltroneApplication>
+      <Application>
         <Toolbar fixed />
-      </AltroneApplication>,
+      </Application>,
     );
     expect(warn).toHaveBeenCalledWith(expect.stringContaining('fixed'));
 
     warn.mockClear();
     rerender(
-      <AltroneApplication>
+      <Application>
         <Toolbar sticky />
-      </AltroneApplication>,
+      </Application>,
     );
     expect(warn).not.toHaveBeenCalled();
 
@@ -77,11 +77,11 @@ describe('Toolbar', () => {
 
   test('floating variant wraps children in a click-through inner layer; glass does not', () => {
     const { rerender } = render(
-      <AltroneApplication>
+      <Application>
         <Toolbar variant="floating">
           <Toolbar.Group data-testid="group" />
         </Toolbar>
-      </AltroneApplication>,
+      </Application>,
     );
 
     const group = screen.getByTestId('group');
@@ -91,11 +91,11 @@ describe('Toolbar', () => {
     expect(group.parentElement?.parentElement).toBe(toolbar);
 
     rerender(
-      <AltroneApplication>
+      <Application>
         <Toolbar variant="glass">
           <Toolbar.Group data-testid="group" />
         </Toolbar>
-      </AltroneApplication>,
+      </Application>,
     );
     expect(screen.getByTestId('group').parentElement).toBe(
       screen.getByTestId('group').closest('[role="toolbar"]'),
@@ -104,49 +104,49 @@ describe('Toolbar', () => {
 
   test('Toolbar.Group is a glass pill in every variant except `plain`', () => {
     const { rerender } = render(
-      <AltroneApplication>
+      <Application>
         <Toolbar variant="glass">
           <Toolbar.Group data-testid="group" />
         </Toolbar>
-      </AltroneApplication>,
+      </Application>,
     );
     expect(screen.getByTestId('group').className).toMatch(/Pill/);
 
     rerender(
-      <AltroneApplication>
+      <Application>
         <Toolbar variant="floating">
           <Toolbar.Group data-testid="group" />
         </Toolbar>
-      </AltroneApplication>,
+      </Application>,
     );
     expect(screen.getByTestId('group').className).toMatch(/Pill/);
 
     rerender(
-      <AltroneApplication>
+      <Application>
         <Toolbar variant="plain">
           <Toolbar.Group data-testid="group" />
         </Toolbar>
-      </AltroneApplication>,
+      </Application>,
     );
     expect(screen.getByTestId('group').className).not.toMatch(/Pill/);
   });
 
   test('Toolbar.Group `variant` overrides the toolbar variant per group', () => {
     const { rerender } = render(
-      <AltroneApplication>
+      <Application>
         <Toolbar variant="plain">
           <Toolbar.Group data-testid="group" variant="glass" />
         </Toolbar>
-      </AltroneApplication>,
+      </Application>,
     );
     expect(screen.getByTestId('group').className).toMatch(/Pill/);
 
     rerender(
-      <AltroneApplication>
+      <Application>
         <Toolbar variant="glass">
           <Toolbar.Group data-testid="group" variant="plain" />
         </Toolbar>
-      </AltroneApplication>,
+      </Application>,
     );
     expect(screen.getByTestId('group').className).not.toMatch(/Pill/);
   });
@@ -154,7 +154,7 @@ describe('Toolbar', () => {
   test('Toolbar.Logo renders its mark and forwards a ref', () => {
     const ref = { current: null as HTMLDivElement | null };
     render(
-      <AltroneApplication>
+      <Application>
         <Toolbar>
           <Toolbar.Leading>
             <Toolbar.Logo ref={ref} data-testid="logo">
@@ -162,7 +162,7 @@ describe('Toolbar', () => {
             </Toolbar.Logo>
           </Toolbar.Leading>
         </Toolbar>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('mark')).toBeInTheDocument();
@@ -171,22 +171,22 @@ describe('Toolbar', () => {
 
   test('Toolbar.Title is plain text until `clickable`, then gets a chevron + pointer', () => {
     const { rerender } = render(
-      <AltroneApplication>
+      <Application>
         <Toolbar>
           <Toolbar.Title label="Docs" />
         </Toolbar>
-      </AltroneApplication>,
+      </Application>,
     );
     const staticTitle = screen.getByText('Docs');
     expect(staticTitle.className).not.toMatch(/Clickable/);
     expect(staticTitle.querySelector('svg')).toBeNull();
 
     rerender(
-      <AltroneApplication>
+      <Application>
         <Toolbar>
           <Toolbar.Title label="Docs" clickable />
         </Toolbar>
-      </AltroneApplication>,
+      </Application>,
     );
     const clickableTitle = screen.getByText('Docs');
     expect(clickableTitle.className).toMatch(/Clickable/);
@@ -198,9 +198,9 @@ describe('Toolbar header actions', () => {
   test('BackAction is icon-only with an accessible label and fires onClick', () => {
     const onClick = vi.fn();
     render(
-      <AltroneApplication>
+      <Application>
         <Toolbar.BackAction onClick={onClick} />
-      </AltroneApplication>,
+      </Application>,
     );
 
     const button = screen.getByRole('button', { name: 'Back' });
@@ -210,18 +210,18 @@ describe('Toolbar header actions', () => {
 
   test('SidebarToggleAction swaps icon/label based on the controlled collapsed prop', () => {
     const { rerender } = render(
-      <AltroneApplication>
+      <Application>
         <Toolbar.SidebarToggleAction collapsed={false} onClick={() => {}} />
-      </AltroneApplication>,
+      </Application>,
     );
     expect(
       screen.getByRole('button', { name: 'Collapse sidebar' }),
     ).toBeInTheDocument();
 
     rerender(
-      <AltroneApplication>
+      <Application>
         <Toolbar.SidebarToggleAction collapsed={true} onClick={() => {}} />
-      </AltroneApplication>,
+      </Application>,
     );
     expect(
       screen.getByRole('button', { name: 'Expand sidebar' }),
@@ -232,13 +232,13 @@ describe('Toolbar header actions', () => {
     const onBack = vi.fn();
     const onForward = vi.fn();
     render(
-      <AltroneApplication>
+      <Application>
         <Toolbar.BackForwardAction
           onBack={onBack}
           onForward={onForward}
           backDisabled
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     const backButton = screen.getByRole('button', { name: 'Back' });

@@ -1,17 +1,17 @@
 import React from 'react';
 import { expect, test, describe, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { AltroneApplication, Drawer } from '../src/components';
+import { Application, Drawer } from '../src/components';
 
 const renderDrawer = (
   props: Partial<React.ComponentProps<typeof Drawer>> = {},
 ) =>
   render(
-    <AltroneApplication>
+    <Application>
       <Drawer content={<div>drawer content</div>} {...props}>
         {props.children ?? <button>open</button>}
       </Drawer>
-    </AltroneApplication>,
+    </Application>,
   );
 
 describe('Drawer', () => {

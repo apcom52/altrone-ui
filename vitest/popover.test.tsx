@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { expect, test, describe, vi, beforeAll } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { AltroneApplication, Button, Popover } from '../src';
+import { Application, Button, Popover } from '../src';
 import type { PopoverRef } from '../src/components/popover';
 
 class ResizeObserver {
@@ -17,11 +17,11 @@ beforeAll(() => {
 
 const renderPopover = (props: Partial<React.ComponentProps<typeof Popover>>) =>
   render(
-    <AltroneApplication>
+    <Application>
       <Popover content="Popover content" {...(props as any)}>
         {props.children ?? <Button label="Trigger" data-testid="trigger" />}
       </Popover>
-    </AltroneApplication>,
+    </Application>,
   );
 
 describe('Popover', () => {
@@ -49,7 +49,7 @@ describe('Popover', () => {
     ).not.toBeInTheDocument();
 
     rerender(
-      <AltroneApplication>
+      <Application>
         <Popover
           content="Popover content"
           openedByDefault
@@ -58,7 +58,7 @@ describe('Popover', () => {
         >
           <Button label="Trigger" data-testid="trigger" />
         </Popover>
-      </AltroneApplication>,
+      </Application>,
     );
     expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
   });
@@ -87,11 +87,11 @@ describe('Popover', () => {
     expect(screen.getByTestId('src')).toHaveAttribute('tabindex', '2');
 
     rerender(
-      <AltroneApplication>
+      <Application>
         <Popover content="c" openedByDefault>
           <Button data-testid="src" />
         </Popover>
-      </AltroneApplication>,
+      </Application>,
     );
     expect(screen.getByTestId('src')).toHaveAttribute('tabindex', '0');
   });
@@ -107,11 +107,11 @@ describe('Popover', () => {
     };
 
     render(
-      <AltroneApplication>
+      <Application>
         <Popover content="c">
           <Trigger />
         </Popover>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(captured[0]).toBe(screen.getByTestId('trigger'));
@@ -136,9 +136,9 @@ describe('Popover', () => {
     };
 
     render(
-      <AltroneApplication>
+      <Application>
         <Harness />
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.queryByText('Popover content')).not.toBeInTheDocument();

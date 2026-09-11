@@ -1,7 +1,7 @@
 import React from 'react';
 import { expect, test, describe, vi, beforeAll } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { AltroneApplication } from '../src/components';
+import { Application } from '../src/components';
 import { Calendar } from '../src/components/calendar/Calendar';
 import { CalendarRenderDateProps } from '../src/components/calendar/Calendar.types';
 import {
@@ -23,7 +23,7 @@ beforeAll(() => {
 });
 
 const renderCalendar = (ui: React.ReactElement) =>
-  render(<AltroneApplication>{ui}</AltroneApplication>);
+  render(<Application>{ui}</Application>);
 
 const cellDates = (root: HTMLElement) =>
   Array.from(root.querySelectorAll('[data-full-date]')).map(

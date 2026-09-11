@@ -1,6 +1,15 @@
-import { Locale } from '../../components/configuration/AltroneConfiguration.context.ts';
 import { useMemo } from 'react';
 import { GlobalUtils } from '../GlobalUtils.ts';
+
+export interface Locale {
+  /** BCP 47 locale tag (e.g. `en-US`), used for date/number formatting via `Intl`. */
+  locale: string;
+  dateFormat: string;
+  monthFormat: string;
+  yearFormat: string;
+  numberGrouping: string;
+  numberDecimal: string;
+}
 
 const EMPTY_PROPS = {};
 

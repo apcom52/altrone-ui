@@ -1,11 +1,15 @@
 import s from './altroneApplication.module.scss';
-import { AltroneApplicationProps, Theme } from './AltroneApplication.types.ts';
+import { ApplicationProps, Theme } from './Application.types.ts';
 import { useMediaMatch } from 'utils';
 import clsx from 'clsx';
 import {
+  cloneElement,
+  isValidElement,
+  ReactElement,
+  ReactNode,
   useCallback,
-  useEffect,
   useLayoutEffect,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -14,6 +18,7 @@ import { MotionConfig } from 'motion/react';
 import { Notifications } from 'components/notifications/Notifications.tsx';
 import { ThemeContext, ThemeContextType } from './useTheme.ts';
 import { getThemeInitScript } from './getThemeInitScript.ts';
+import { AnyObject } from 'utils/types.ts';
 
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
@@ -28,7 +33,7 @@ function resolveInitialTheme(initialTheme: Theme): Exclude<Theme, 'auto'> {
     : 'light';
 }
 
-export const AltroneApplication = ({
+export const Application = ({
   ref,
   children,
   className,
@@ -36,14 +41,14 @@ export const AltroneApplication = ({
   style,
   theme: initialTheme = 'auto',
   accent = 'blue',
-  config,
   language = 'en',
   customLabels = {},
   toastPlacement,
   notificationSide,
   notificationPlacement,
+  asChild = false,
   ...props
-}: AltroneApplicationProps) => {
+}: ApplicationProps) => {
   const [theme, setTheme] = useState<Theme>(() =>
     resolveInitialTheme(initialTheme),
   );
@@ -121,15 +126,49 @@ export const AltroneApplication = ({
     [theme, setTheme],
   );
 
-  useEffect(() => {
-    if (!config?.locale?.locale) {
-      console.warn(
-        "[AltroneApplication]: you haven't set locale of your application. By default locale is en-US",
-      );
-    }
-  }, [config?.locale?.locale]);
-
   const cls = clsx(s.AltroneApp, className);
+
+  const providerTree = (content: ReactNode) => (
+    <ThemeContext.Provider value={themeContext}>
+      <AltroneLocalization language={language} customLabels={customLabels}>
+        <DialogProvider>
+          <Notifications
+            toastPlacement={toastPlacement}
+            notificationSide={notificationSide}
+            notificationPlacement={notificationPlacement}
+          >
+            {content}
+          </Notifications>
+        </DialogProvider>
+      </AltroneLocalization>
+    </ThemeContext.Provider>
+  );
+
+  const rootProps = {
+    ref: setRootRef,
+    className: cls,
+    'data-altrone-root': 'true',
+    'data-altrone-accent': accent,
+    'data-altrone-theme': theme,
+    id,
+    style,
+    ...props,
+  };
+
+  let root: ReactElement;
+  if (asChild) {
+    if (!isValidElement(children)) {
+      console.error(
+        '[Application] asChild requires a single valid React element child',
+      );
+      root = <div {...rootProps} />;
+    } else {
+      const child = children as ReactElement<AnyObject>;
+      root = cloneElement(child, rootProps, providerTree(child.props.children));
+    }
+  } else {
+    root = <div {...rootProps}>{providerTree(children)}</div>;
+  }
 
   return (
     <>
@@ -139,32 +178,7 @@ export const AltroneApplication = ({
       <script
         dangerouslySetInnerHTML={{ __html: getThemeInitScript(initialTheme) }}
       />
-      <MotionConfig reducedMotion="user">
-        <div
-          ref={setRootRef}
-          className={cls}
-          data-altrone-root="true"
-          data-altrone-accent={accent}
-          data-altrone-theme={theme}
-          id={id}
-          style={style}
-          {...props}
-        >
-          <ThemeContext.Provider value={themeContext}>
-            <AltroneLocalization language={language} customLabels={customLabels}>
-              <DialogProvider>
-                <Notifications
-                  toastPlacement={toastPlacement}
-                  notificationSide={notificationSide}
-                  notificationPlacement={notificationPlacement}
-                >
-                  {children}
-                </Notifications>
-              </DialogProvider>
-            </AltroneLocalization>
-          </ThemeContext.Provider>
-        </div>
-      </MotionConfig>
+      <MotionConfig reducedMotion="user">{root}</MotionConfig>
     </>
   );
 };

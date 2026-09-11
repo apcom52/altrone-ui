@@ -81,6 +81,33 @@ const ThemeToggleDemo = () => {
             --accent-3 / --accent-11
           </Text>
         </div>
+        <div
+          style={{
+            padding: 16,
+            borderRadius: 12,
+            width: 160,
+            background:
+              'linear-gradient(135deg, var(--accent-9), var(--purple-9))',
+          }}
+        >
+          <div
+            style={{
+              padding: 12,
+              borderRadius: 8,
+              background: 'var(--glass-background-color)',
+              backdropFilter: 'var(--glass-effects)',
+              WebkitBackdropFilter: 'var(--glass-effects)',
+              border: '1px solid var(--glass-border-color)',
+            }}
+          >
+            <Text size={4} weight="bold">
+              Glass
+            </Text>
+            <Text block size={3} color="muted">
+              --glass-background-color
+            </Text>
+          </div>
+        </div>
       </Flex>
       <Text size={3} color="muted">
         Current: <code>data-altrone-theme=&quot;{theme}&quot;</code> — flip
@@ -108,7 +135,7 @@ export const Overview: StoryObj = {
 
       <Heading>Controlling it</Heading>
       <Paragraph>
-        <code>{'<AltroneApplication theme="...">'}</code> accepts{' '}
+        <code>{'<Application theme="...">'}</code> accepts{' '}
         <code>&apos;auto&apos;</code> (default — follows{' '}
         <code>prefers-color-scheme</code>), <code>&apos;light&apos;</code>,
         or <code>&apos;dark&apos;</code>. From inside the tree, read or
@@ -145,6 +172,18 @@ setTheme('dark');`}</Code>
         built from <code>--black-aN</code>, which doesn&rsquo;t adapt on
         its own, so the dark variant is overridden explicitly.
       </Paragraph>
+      <Paragraph>
+        Same category of bug, twice found the hard way: <code>--glass-background-color</code>{' '}
+        and <code>--color-overlay-scrim</code> both had dark-mode values
+        picked as if they were independent colors, when in practice they
+        sit on top of <code>--background-1</code>/<code>-2</code> and need
+        to contrast against them specifically. A near-black glass fill or a
+        black scrim barely reads over an already near-black page — the{' '}
+        <code>Glass</code> swatch above uses{' '}
+        <code>--gray-a6</code>, the light-tinted alpha scale{' '}
+        <code>--gray-aN</code> already uses for dark-mode overlays, so it
+        lifts off the page instead of blending into it.
+      </Paragraph>
 
       <Heading>Avoiding a flash of the wrong theme</Heading>
       <Paragraph>
@@ -161,7 +200,7 @@ setTheme('dark');`}</Code>
   dangerouslySetInnerHTML={{ __html: getThemeInitScript(theme) }}
 />`}</Code>
       <Paragraph>
-        <code>AltroneApplication</code> already renders this itself as a
+        <code>Application</code> already renders this itself as a
         best-effort default. For a hard guarantee under streaming SSR,
         place it in your document&rsquo;s <code>&lt;head&gt;</code>{' '}
         yourself, before any themed content.

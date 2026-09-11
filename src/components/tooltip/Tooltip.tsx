@@ -142,6 +142,7 @@ export const Tooltip = memo(
                   tipRadius={4}
                   width={8}
                   height={4}
+                  fill="var(--tooltip-arrow-color)"
                 />
               </motion.div>
             </FloatingPortal>

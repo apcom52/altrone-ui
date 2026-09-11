@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { AltroneApplication, DataTable } from '../src/components';
+import { Application, DataTable } from '../src/components';
 import {
   textFilterFn,
   numberFilterFn,
@@ -28,7 +28,7 @@ const PEOPLE = [
 
 const renderTable = (props: Partial<Parameters<typeof DataTable>[0]> = {}) =>
   render(
-    <AltroneApplication config={{ locale: { locale: 'en-US' } }}>
+    <Application config={{ locale: { locale: 'en-US' } }}>
       <DataTable
         data={PEOPLE}
         rowsPerPage={3}
@@ -40,7 +40,7 @@ const renderTable = (props: Partial<Parameters<typeof DataTable>[0]> = {}) =>
         ]}
         {...props}
       />
-    </AltroneApplication>,
+    </Application>,
   );
 
 /** All rendered body rows (the grid uses divs, not a <table>). */
@@ -155,13 +155,13 @@ describe('DataTable component', () => {
 
   test('showEmptyBanner renders an empty state for no data', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <DataTable
           data={[]}
           data-testid="table"
           columns={[{ accessor: 'name', label: 'Name' }]}
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('table')).toHaveTextContent('No data');

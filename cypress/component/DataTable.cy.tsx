@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { AltroneApplication, DataTable } from '../../src';
+import { Application, DataTable } from '../../src';
 import { DataTableColumn } from '../../src/components/dataTable/DataTable.types';
 
 type Person = {
@@ -31,9 +31,9 @@ const COLUMNS: DataTableColumn<Person>[] = [
 
 const mount = (ui: ReactNode) =>
   cy.mount(
-    <AltroneApplication config={{ locale: { locale: 'en-US' } }}>
+    <Application config={{ locale: { locale: 'en-US' } }}>
       {ui}
-    </AltroneApplication>,
+    </Application>,
   );
 
 const rows = () => cy.get('[data-selected]');

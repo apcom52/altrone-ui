@@ -7,7 +7,7 @@ import {
   act,
 } from '@testing-library/react';
 import {
-  AltroneApplication,
+  Application,
   showAlert,
   showConfirm,
   showPrompt,
@@ -25,9 +25,9 @@ describe('Dialogs', () => {
 
   test('showConfirm resolves true when the confirm button is pressed', async () => {
     render(
-      <AltroneApplication>
+      <Application>
         <div />
-      </AltroneApplication>,
+      </Application>,
     );
 
     let result!: Promise<boolean>;
@@ -46,9 +46,9 @@ describe('Dialogs', () => {
 
   test('dismissing a prompt via onClose resolves null, not the typed value', async () => {
     render(
-      <AltroneApplication>
+      <Application>
         <div />
-      </AltroneApplication>,
+      </Application>,
     );
 
     let result!: Promise<string | number | null>;
@@ -65,9 +65,9 @@ describe('Dialogs', () => {
 
   test('default button labels come from the active locale', async () => {
     render(
-      <AltroneApplication language="ru">
+      <Application language="ru">
         <div />
-      </AltroneApplication>,
+      </Application>,
     );
 
     act(() => {

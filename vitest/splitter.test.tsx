@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { expect, test, describe, vi, beforeAll } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { AltroneApplication } from '../src/components';
+import { Application } from '../src/components';
 import { Splitter } from '../src/components/splitter';
 import type { SplitterHandle } from '../src/components/splitter';
 
@@ -17,7 +17,7 @@ beforeAll(() => {
 });
 
 const renderSplitter = (ui: React.ReactNode) =>
-  render(<AltroneApplication>{ui}</AltroneApplication>);
+  render(<Application>{ui}</Application>);
 
 describe('Splitter', () => {
   test('renders one region per Panel and a separator between each pair', () => {
@@ -136,9 +136,9 @@ describe('Splitter', () => {
     ).toBeInTheDocument();
 
     rerender(
-      <AltroneApplication>
+      <Application>
         <Harness visibility="never" />
-      </AltroneApplication>,
+      </Application>,
     );
     fireEvent.click(screen.getByText('collapse'));
     expect(
@@ -163,7 +163,7 @@ describe('Splitter', () => {
     ).toBeInTheDocument();
 
     rerender(
-      <AltroneApplication>
+      <Application>
         <Splitter showControls={false}>
           <Splitter.Panel collapsible>
             <div>a</div>
@@ -172,7 +172,7 @@ describe('Splitter', () => {
             <div>b</div>
           </Splitter.Panel>
         </Splitter>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(

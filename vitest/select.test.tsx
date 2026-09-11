@@ -1,7 +1,7 @@
 import React from 'react';
 import { expect, test, describe, vi, beforeAll } from 'vitest';
 import { act, fireEvent, render, renderHook, screen } from '@testing-library/react';
-import { AltroneApplication, Select } from '../src/components';
+import { Application, Select } from '../src/components';
 import { useSelect } from '../src/components/select/useSelect';
 import type { SelectProps } from '../src/components/select/Select.types';
 
@@ -24,7 +24,7 @@ const OPTIONS = [
 
 const renderSelect = (props: Partial<React.ComponentProps<typeof Select>>) =>
   render(
-    <AltroneApplication>
+    <Application>
       <Select
         data-testid="select"
         placeholder="Country"
@@ -33,7 +33,7 @@ const renderSelect = (props: Partial<React.ComponentProps<typeof Select>>) =>
         onChange={() => {}}
         {...props}
       />
-    </AltroneApplication>,
+    </Application>,
   );
 
 describe('Select — rendering', () => {

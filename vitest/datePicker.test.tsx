@@ -3,7 +3,7 @@ import { expect, test, describe, vi, beforeAll } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import {
   Configuration,
-  AltroneApplication,
+  Application,
   Button,
   DatePicker,
 } from '../src/components';
@@ -30,13 +30,13 @@ const openPopover = () => {
 describe('DatePicker', () => {
   test('check that className and style props works', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <DatePicker
           data-testid="date-picker"
           className="cls"
           style={{ color: 'rgb(0, 0, 255)' }}
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('date-picker')).toHaveClass('cls');
@@ -47,13 +47,13 @@ describe('DatePicker', () => {
 
   test('check that Checkbox configuration works correctly', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Configuration
           datePicker={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
         >
           <DatePicker data-testid="date-picker" />
         </Configuration>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('date-picker')).toHaveClass('cls');
@@ -65,13 +65,13 @@ describe('DatePicker', () => {
   test('opens a Calendar day grid and reports the clicked day', () => {
     const onChange = vi.fn();
     render(
-      <AltroneApplication>
+      <Application>
         <DatePicker
           data-testid="date-picker"
           value={dayjs('2024-08-15')}
           onChange={onChange}
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     openPopover();
@@ -90,13 +90,13 @@ describe('DatePicker', () => {
   test('RangePicker closes an in-progress range on the second day click', () => {
     const onChange = vi.fn();
     render(
-      <AltroneApplication>
+      <Application>
         <DatePicker.RangePicker
           data-testid="date-picker"
           value={[dayjs('2024-08-10')]}
           onChange={onChange}
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     openPopover();
@@ -115,7 +115,7 @@ describe('DatePicker', () => {
     const seen: string[] = [];
 
     render(
-      <AltroneApplication>
+      <Application>
         <DatePicker
           value={dayjs('2024-08-15')}
           onChange={onChange}
@@ -124,7 +124,7 @@ describe('DatePicker', () => {
             return <Button data-testid="trigger" label={displayValue} />;
           }}
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(seen.at(-1)).toContain('2024');

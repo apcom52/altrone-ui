@@ -58,6 +58,10 @@
     "react-hotkeys-hook": "4.6.2",
     "react-number-format": "5.4.4"
   },
+  "peerDependencies": {
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0"
+  },
   "devDependencies": {
     "@babel/preset-env": "^7.27.2",
     "@babel/preset-react": "7.24.1",

@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { ColorPicker, AltroneApplication } from '../../src';
+import { ColorPicker, Application } from '../../src';
 import { COLORS } from '../../src/components/colorPicker/COLORS';
 
 const ColorPickerWrapper = () => {
   const [value, setValue] = useState('#00ff00');
 
   return (
-    <AltroneApplication>
+    <Application>
       <ColorPicker
         data-testid="picker"
         value={value}
@@ -15,7 +15,7 @@ const ColorPickerWrapper = () => {
         }}
         colorPresets={COLORS}
       />
-    </AltroneApplication>
+    </Application>
   );
 };
 

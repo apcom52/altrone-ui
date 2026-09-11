@@ -1,16 +1,23 @@
 @import 'src/global/mixins';
 
 :global([data-altrone-root='true']) {
-  /* Deliberately theme-invariant (an "inverted" surface, same idea as
-     Radix/Material tooltips) — not the light/dark surface scale. */
+  /* An "inverted" surface (Radix/Material-style), not the light/dark surface scale. */
   --tooltip-background-color: color(display-p3 0.064 0.07 0.067);
   --tooltip-text-color: color(display-p3 0.927 0.933 0.93);
   --tooltip-button-text-color: var(--text-2);
   --tooltip-button-background-color: var(--glass-background-color);
   --tooltip-button-border-color: var(--border-1);
 
+  /* Matches the bubble by default — the arrow is just a pointer extension of it. */
+  --tooltip-arrow-color: var(--tooltip-background-color);
+
   /* Seeds Box's `radius` -> `--radius-outer`, same pattern as --popover-radius. */
   --tooltip-radius: 10px;
+}
+
+:global([data-altrone-root='true'][data-altrone-theme='dark']) {
+  /** Was near-identical to `--gray-1`; the arrow can't be outlined (see .Tooltip), so lift the fill itself instead. */
+  --tooltip-background-color: var(--gray-6);
 }
 
 .QuestionMark {
@@ -44,6 +51,7 @@
   max-width: 300px;
   font-size: var(--text-size-3);
   line-height: var(--line-height-3);
+  /** No box-shadow/border by design — it can't wrap the arrow's triangle correctly. */
   z-index: var(--level-tooltip);
 
   &.WithTitle {

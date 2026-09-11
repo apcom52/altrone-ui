@@ -1,12 +1,12 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { AltroneApplication, Range } from '../src/components';
+import { Application, Range } from '../src/components';
 
 describe('Range', () => {
   test('check that inner input has all necessary attributes', () => {
     const { container } = render(
-      <AltroneApplication>
+      <Application>
         <Range
           value={15}
           min={-50}
@@ -14,7 +14,7 @@ describe('Range', () => {
           onChange={() => null}
           name="test"
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     const element = container.querySelector('input') as HTMLInputElement;
@@ -24,7 +24,7 @@ describe('Range', () => {
 
   test('check aria attributes', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Range
           value={15}
           min={-50}
@@ -41,7 +41,7 @@ describe('Range', () => {
           disabled
           renderLabel={(value) => `${value}m2`}
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     const element = screen.getByTestId('range1');
@@ -63,7 +63,7 @@ describe('Range', () => {
 
   test('renderLabel drives the visible read-only label', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Range
           value={44}
           onChange={() => null}
@@ -71,7 +71,7 @@ describe('Range', () => {
           data-testid="range2"
           renderLabel={(value) => `${value}m2`}
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     const element = screen.getByTestId('range2');
@@ -80,7 +80,7 @@ describe('Range', () => {
 
   test('check that className, style, activeTrackClassName props works', () => {
     const { container } = render(
-      <AltroneApplication>
+      <Application>
         <Range
           value={44}
           onChange={() => null}
@@ -89,7 +89,7 @@ describe('Range', () => {
           style={{ color: 'rgb(0, 0, 255)' }}
           activeTrackClassName="active-cls"
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('range')).toHaveClass('cls');
@@ -101,7 +101,7 @@ describe('Range', () => {
 
   test('value bubble portals out of the root so an overflow ancestor cannot clip it', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Range
           value={30}
           onChange={() => null}
@@ -109,7 +109,7 @@ describe('Range', () => {
           data-testid="range3"
           renderLabel={(value) => `${value}%`}
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     const root = screen.getByTestId('range3');

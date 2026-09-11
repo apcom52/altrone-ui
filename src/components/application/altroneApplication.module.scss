@@ -194,8 +194,9 @@
 
 :global([data-altrone-root='true'][data-altrone-theme='dark']) {
   /** glass effect — dark mode overrides */
-  --glass-background-color: color(display-p3 0.05 0.05 0.07 / 0.6);
-  --glass-border-color: color(display-p3 1 1 1 / 0.08);
+  /** Was a near-black fill, almost identical to `--gray-1` — blended into the page instead of lifting off it. */
+  --glass-background-color: var(--gray-a6);
+  --glass-border-color: color(display-p3 1 1 1 / 0.12);
   --glass-background-blur: blur(32px);
   --glass-effects: blur(32px) saturate(110%);
   --glass-press-effects: blur(28px) saturate(110%) brightness(1.08);

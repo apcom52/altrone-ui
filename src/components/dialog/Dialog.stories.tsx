@@ -68,7 +68,7 @@ export const Overview: StoryObj<typeof DialogProvider> = {
           (ask for one value). Each returns a Promise, so the calling code reads
           top to bottom — no callbacks, no local “is the dialog open” state.
           Rendering is handled by <Text code>DialogProvider</Text>, mounted for
-          you inside <Text code>AltroneApplication</Text>.
+          you inside <Text code>Application</Text>.
         </Paragraph>
         <Paragraph>
           Reach for a dialog only when you genuinely need to block the flow.

@@ -1,7 +1,7 @@
 import React, { createRef } from 'react';
 import { expect, test, describe, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { AltroneApplication, FilePicker } from '../src';
+import { Application, FilePicker } from '../src';
 
 class ResizeObserver {
   observe() {}
@@ -14,7 +14,7 @@ beforeAll(() => {
 });
 
 const renderPicker = (ui: React.ReactElement) =>
-  render(<AltroneApplication>{ui}</AltroneApplication>);
+  render(<Application>{ui}</Application>);
 
 describe('FilePicker', () => {
   test('shows the empty label and the pick button when there are no files', () => {

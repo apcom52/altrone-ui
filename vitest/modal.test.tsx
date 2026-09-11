@@ -2,12 +2,12 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { expect, test, describe, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { AltroneApplication, Modal } from '../src/components';
+import { Application, Modal } from '../src/components';
 
 describe('Modal', () => {
   test('className and style are applied to the root element', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Modal
           data-testid="modal"
           className="cls"
@@ -17,7 +17,7 @@ describe('Modal', () => {
         >
           <button>test</button>
         </Modal>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('modal')).toHaveClass('cls');
@@ -28,11 +28,11 @@ describe('Modal', () => {
     const triggerClick = vi.fn();
 
     render(
-      <AltroneApplication>
+      <Application>
         <Modal content={<div>content</div>}>
           <button onClick={triggerClick}>open</button>
         </Modal>
-      </AltroneApplication>,
+      </Application>,
     );
 
     fireEvent.click(screen.getByText('open'));
@@ -45,7 +45,7 @@ describe('Modal', () => {
     const onClose = vi.fn();
 
     render(
-      <AltroneApplication>
+      <Application>
         <Modal
           data-testid="modal"
           content={<div>content</div>}
@@ -54,7 +54,7 @@ describe('Modal', () => {
         >
           <button>test</button>
         </Modal>
-      </AltroneApplication>,
+      </Application>,
     );
 
     fireEvent.click(screen.getByTestId('modal'));
@@ -66,7 +66,7 @@ describe('Modal', () => {
     const onClose = vi.fn();
 
     render(
-      <AltroneApplication>
+      <Application>
         <Modal
           content={<div>content</div>}
           onClose={onClose}
@@ -74,7 +74,7 @@ describe('Modal', () => {
         >
           <button>test</button>
         </Modal>
-      </AltroneApplication>,
+      </Application>,
     );
 
     fireEvent.click(screen.getByText('content'));
@@ -86,7 +86,7 @@ describe('Modal', () => {
     const onClose = vi.fn();
 
     render(
-      <AltroneApplication>
+      <Application>
         <Modal
           content={
             <>
@@ -102,7 +102,7 @@ describe('Modal', () => {
         >
           <button>test</button>
         </Modal>
-      </AltroneApplication>,
+      </Application>,
     );
 
     fireEvent.click(screen.getByText('portaled option'));
@@ -114,7 +114,7 @@ describe('Modal', () => {
     const onClose = vi.fn();
 
     render(
-      <AltroneApplication>
+      <Application>
         <Modal
           content={<div>content</div>}
           onClose={onClose}
@@ -122,7 +122,7 @@ describe('Modal', () => {
         >
           <button>test</button>
         </Modal>
-      </AltroneApplication>,
+      </Application>,
     );
 
     fireEvent.keyDown(document.body, { key: 'Escape' });

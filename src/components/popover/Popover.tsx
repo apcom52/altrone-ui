@@ -250,7 +250,7 @@ export const Popover = ({
         Boolean(element?.closest('[data-notification="true"]')),
       );
       /* Falls back to `document.body` (never stays `null`) so a trigger
-         rendered outside any `AltroneApplication` still opens — matching
+         rendered outside any `Application` still opens — matching
          `FloatingPortal`'s own default root. */
       setPortalRoot(
         (element?.closest('[data-altrone-root]') as HTMLElement) ??

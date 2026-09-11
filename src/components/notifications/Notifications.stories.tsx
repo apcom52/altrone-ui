@@ -81,7 +81,7 @@ export const Overview: StoryObj<typeof Notifications> = {
           resumes on leave.
         </Paragraph>
         <Paragraph>
-          <Text code>AltroneApplication</Text> already mounts the provider, so in
+          <Text code>Application</Text> already mounts the provider, so in
           an app you only ever call the hook. Placement is set once, globally —
           see the <Text weight="medium">Placement</Text> story.
         </Paragraph>
@@ -445,7 +445,7 @@ export const Placement: StoryObj<typeof Notifications> = {
         <Paragraph>
           Placement is app-wide, not per call. Set it on{' '}
           <Text code>
-            &lt;AltroneApplication toastPlacement notificationSide
+            &lt;Application toastPlacement notificationSide
             notificationPlacement&gt;
           </Text>{' '}
           (each also accepted directly on <Text code>&lt;Notifications&gt;</Text>). Every

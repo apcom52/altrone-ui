@@ -13,6 +13,9 @@
 
 :global([data-altrone-root='true'][data-altrone-theme='dark']) {
   --focus-color: color(display-p3 1 1 1);
+
+  /** `--black-a3` barely dimmed anything over an already near-black background. */
+  --color-overlay-scrim: var(--black-a7);
 }
 
 :global([data-altrone-root='true']) ::selection {

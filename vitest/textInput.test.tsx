@@ -1,12 +1,12 @@
 import React, { createRef } from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { AltroneApplication, TextInput } from '../src';
+import { Application, TextInput } from '../src';
 
 describe('TextInput', () => {
   test('renders every island type, split by placement', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <TextInput data-testid="input">
           <TextInput.TextIsland label="Prefix" data-testid="text-island" />
           <TextInput.IconIsland
@@ -20,7 +20,7 @@ describe('TextInput', () => {
           </TextInput.CustomIsland>
           <TextInput.LoadingIsland placement="end" data-testid="loading-island" />
         </TextInput>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('text-island').closest('[data-altrone-island]'))
@@ -34,7 +34,7 @@ describe('TextInput', () => {
 
   test('wrapperClassName/wrapperStyle target the wrapper, className/style the input', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <TextInput
           data-testid="input"
           wrapperClassName="wrapperCls"
@@ -42,7 +42,7 @@ describe('TextInput', () => {
           className="inputCls"
           style={{ color: 'rgb(0, 0, 255)' }}
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     const input = screen.getByTestId('input');
@@ -60,9 +60,9 @@ describe('TextInput', () => {
     const inputRef = createRef<HTMLInputElement>();
 
     render(
-      <AltroneApplication>
+      <Application>
         <TextInput data-testid="input" ref={ref} inputRef={inputRef} />
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(inputRef.current).toBe(screen.getByTestId('input'));
@@ -74,12 +74,12 @@ describe('TextInput', () => {
 
   test('asChild uses the first non-island child as the field element', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <TextInput asChild>
           <textarea data-testid="field" />
           <TextInput.TextIsland label="note" />
         </TextInput>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('field').tagName).toBe('TEXTAREA');
@@ -87,11 +87,11 @@ describe('TextInput', () => {
 
   test('wrapper zeroes its vertical padding so islands cannot inflate the height', () => {
     const { container } = render(
-      <AltroneApplication>
+      <Application>
         <TextInput data-testid="input">
           <TextInput.ActionIsland label="Go" data-testid="action-island" />
         </TextInput>
-      </AltroneApplication>,
+      </Application>,
     );
 
     const wrapper = container.querySelector('[style*="--box-padding-y"]');
@@ -102,7 +102,7 @@ describe('TextInput', () => {
 
   test('ActionIsland forwards Button-only props (it is a Button)', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <TextInput data-testid="input">
           <TextInput.ActionIsland
             label="Save"
@@ -110,7 +110,7 @@ describe('TextInput', () => {
             data-testid="action"
           />
         </TextInput>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('action')).toHaveAttribute('aria-busy', 'true');
@@ -118,11 +118,11 @@ describe('TextInput', () => {
 
   test('a disabled field disables its ActionIslands', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <TextInput data-testid="input" disabled>
           <TextInput.ActionIsland label="Clear" data-testid="action" />
         </TextInput>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('action')).toBeDisabled();
@@ -130,9 +130,9 @@ describe('TextInput', () => {
 
   test('invalid sets aria-invalid on the input', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <TextInput data-testid="input" invalid />
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('input')).toHaveAttribute('aria-invalid', 'true');

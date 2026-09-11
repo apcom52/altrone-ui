@@ -17,7 +17,7 @@
   background: var(--toolbar-pill-fill);
   backdrop-filter: var(--toolbar-pill-blur);
   -webkit-backdrop-filter: var(--toolbar-pill-blur);
-  box-shadow: var(--elevation-raised-shadow);
+  box-shadow: var(--elevation-sticky-shadow);
 }
 
 [aria-orientation='vertical'] .Group {

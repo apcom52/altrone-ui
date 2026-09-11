@@ -409,7 +409,7 @@ export const AnimatedContent: StoryObj<typeof Button> = {
         <code>Button</code> animates that with <code>motion</code>&rsquo;s
         layout animation — the box and its content slide to the new size instead
         of jumping. It follows <code>prefers-reduced-motion</code> (through{' '}
-        <code>AltroneApplication</code>&rsquo;s <code>MotionConfig</code>), so
+        <code>Application</code>&rsquo;s <code>MotionConfig</code>), so
         the change is instant when reduced motion is on.
       </Paragraph>
       <Flex gap="m" align="center" wrap>

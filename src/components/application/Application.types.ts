@@ -1,5 +1,4 @@
-import type { HTMLAttributes, Ref } from 'react';
-import { ConsumerConfigurationContext } from '../configuration/AltroneConfiguration.context.ts';
+import type { HTMLAttributes, ReactNode, Ref } from 'react';
 import type { NotificationPlacement } from '../notifications';
 import type { Localization } from 'locales';
 
@@ -17,12 +16,11 @@ export type Accent =
   | 'brown';
 export type Language = 'en' | 'ru' | 'fr' | 'ge' | 'sp';
 
-export interface AltroneApplicationProps extends HTMLAttributes<HTMLDivElement> {
+export interface ApplicationProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   language?: Language;
   theme?: Theme;
   accent?: Accent;
-  config?: Partial<ConsumerConfigurationContext>;
   customLabels?: Partial<Localization>;
   /** Vertical placement of the toast stack (centred horizontally). Defaults to 'end' (bottom). */
   toastPlacement?: NotificationPlacement;
@@ -30,4 +28,11 @@ export interface AltroneApplicationProps extends HTMLAttributes<HTMLDivElement> 
   notificationSide?: NotificationPlacement;
   /** Vertical placement of the notification stack. Defaults to 'end' (bottom). */
   notificationPlacement?: NotificationPlacement;
+  /**
+   * Radix Slot polymorphism — merges the root's attributes/classes onto the
+   * single child instead of rendering a wrapping `<div>` (e.g. a consumer's
+   * own `<body>`). The child's own children become the provider tree's content.
+   */
+  asChild?: boolean;
+  children?: ReactNode;
 }

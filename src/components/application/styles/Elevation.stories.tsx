@@ -141,11 +141,19 @@ box-shadow: var(--elevation-modal-shadow);`}</Code>
         swatches respond.
       </Paragraph>
       <Paragraph>
-        The exact opacity shifts are a starting point rather than a
-        finished design — the more &ldquo;correct&rdquo; Material 3 answer
-        (lighten the surface itself instead of leaning on shadow) is a
-        separate, larger piece of work, worth revisiting once{' '}
-        <code>Box</code>&rsquo;s tonal materials exist.
+        The other half of the Material 3 answer — lighten the surface
+        itself instead of leaning on shadow alone — turned out not to need{' '}
+        <code>Box</code>&rsquo;s materials at all: <code>--glass-background-color</code>
+        &rsquo;s dark-mode value used to be a near-black tint almost
+        identical to <code>--gray-1</code>, so every glass surface
+        (<code>Modal</code>, <code>Drawer</code>, <code>Tabs.Item</code>,
+        &hellip;) blended into the page instead of lifting off it. It now
+        points at <code>--gray-a6</code>, the same light-tinted alpha scale{' '}
+        <code>--gray-aN</code> already uses for dark-mode overlays — see{' '}
+        <code>dark-theme.md</code>. A from-scratch tonal-elevation model
+        (background tone driven by numeric elevation, independent of the{' '}
+        <code>glass</code> material specifically) is still open, tied to{' '}
+        <code>Box</code>&rsquo;s materials landing.
       </Paragraph>
     </Flex>
   ),

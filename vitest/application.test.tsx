@@ -1,25 +1,34 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { AltroneApplication, Button, Spoiler } from '../src';
+import { Application } from '../src';
 
 describe('Application', () => {
-  test('custom tagName should work', () => {
-    const { rerender } = render(<AltroneApplication data-testid="app" />);
+  test('renders a div root by default', () => {
+    render(<Application data-testid="app" />);
     expect(screen.getByTestId('app').tagName).toBe('DIV');
+  });
 
-    rerender(<AltroneApplication tagName="body" data-testid="app" />);
-    expect(screen.getByTestId('app').tagName).toBe('BODY');
+  test('asChild merges root attributes onto the passed element', () => {
+    render(
+      <Application asChild data-testid="app">
+        <section>content</section>
+      </Application>,
+    );
+    const root = screen.getByTestId('app');
+    expect(root.tagName).toBe('SECTION');
+    expect(root).toHaveAttribute('data-altrone-root', 'true');
+    expect(root).toHaveTextContent('content');
   });
 
   test('when dark theme is applied the root gets data-altrone-theme="dark"', () => {
-    const { rerender } = render(<AltroneApplication data-testid="app" />);
+    const { rerender } = render(<Application data-testid="app" />);
     expect(screen.getByTestId('app')).toHaveAttribute(
       'data-altrone-theme',
       'light',
     );
 
-    rerender(<AltroneApplication theme="dark" data-testid="app" />);
+    rerender(<Application theme="dark" data-testid="app" />);
     expect(screen.getByTestId('app')).toHaveAttribute(
       'data-altrone-theme',
       'dark',
@@ -27,31 +36,7 @@ describe('Application', () => {
   });
 
   test('check that [data-altrone-root] exists', () => {
-    render(<AltroneApplication data-testid="app" />);
+    render(<Application data-testid="app" />);
     expect(screen.getByTestId('app')).toHaveAttribute('data-altrone-root');
-  });
-
-  test('check that configuration props works', () => {
-    render(
-      <AltroneApplication
-        data-testid="app"
-        config={{
-          button: {
-            className: 'testCls',
-          },
-          spoiler: {
-            style: {
-              borderRadius: 10,
-            },
-          },
-        }}
-      >
-        <Button label="Test" data-testid="button" />
-        <Spoiler title="Test" data-testid="spoiler" />
-      </AltroneApplication>,
-    );
-
-    expect(screen.getByTestId('button')).toHaveClass('testCls');
-    expect(screen.getByTestId('spoiler')).toHaveStyle('border-radius: 10px');
   });
 });

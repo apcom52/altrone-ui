@@ -1,7 +1,7 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { AltroneApplication, CloseButton } from '../src/components';
+import { Application, CloseButton } from '../src/components';
 import { vi } from 'vitest';
 
 class ResizeObserver {
@@ -42,7 +42,7 @@ describe('CloseButton', () => {
 
   test('check that CloseButton configuration works correctly', () => {
     render(
-      <AltroneApplication
+      <Application
         config={{
           closeButton: {
             className: 'cls',
@@ -51,7 +51,7 @@ describe('CloseButton', () => {
         }}
       >
         <CloseButton data-testid="closeButton" />
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('closeButton')).toHaveClass('cls');
