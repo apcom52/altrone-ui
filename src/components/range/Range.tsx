@@ -1,11 +1,29 @@
-import { memo, useMemo, useCallback, useRef, useEffect, useState } from 'react';
+import { useMemo, useCallback, useRef, useEffect, useState } from 'react';
+import {
+  autoUpdate,
+  flip,
+  FloatingPortal,
+  offset as floatingOffset,
+  shift,
+  useFloating,
+} from '@floating-ui/react';
+import { AnimatePresence, motion } from 'motion/react';
 import { RangeProps } from './Range.types';
 import s from './range.module.scss';
 import clsx from 'clsx';
-import { useConfiguration } from 'components/configuration';
 
-export const Range = memo<RangeProps>((props) => {
+/**
+ * `:focus-visible` in `Element.matches()` throws on browsers that don't support
+ * the selector; check once so the focus handler can fall back to plain focus.
+ */
+const FOCUS_VISIBLE_SUPPORTED =
+  typeof CSS !== 'undefined' &&
+  typeof CSS.supports === 'function' &&
+  CSS.supports('selector(:focus-visible)');
+
+export const Range = (props: RangeProps) => {
   const {
+    ref,
     value,
     onChange,
     onValueCommit,
@@ -14,6 +32,7 @@ export const Range = memo<RangeProps>((props) => {
     step = 1,
     icon,
     showCurrentValue = 'active',
+    variant = 'default',
     size = 'm',
     style,
     direction = 'horizontal',
@@ -22,164 +41,187 @@ export const Range = memo<RangeProps>((props) => {
     readOnly,
     name,
     activeTrackClassName,
+    className,
     ...restProps
   } = props;
 
-  const { range: rangeConfig = {} } = useConfiguration();
-
   const isDragging = useRef(false);
   const rangeValue = useRef(value);
+  const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
-  const isFocused = useRef(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFocusVisible, setIsFocusVisible] = useState(false);
+  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
 
-  const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent) => {
-      if (!isFocused.current) return;
+  const isFill = variant === 'fill';
+  const isVertical = direction === 'vertical';
 
-      switch (event.key) {
-        case 'ArrowLeft':
-        case 'ArrowDown':
-          event.preventDefault();
-          onChange(Math.max(min, value - step));
-          onValueCommit?.(Math.max(min, value - step));
-          break;
-        case 'ArrowRight':
-        case 'ArrowUp':
-          event.preventDefault();
-          onChange(Math.min(max, value + step));
-          onValueCommit?.(Math.min(max, value + step));
-          break;
-        case 'Home':
-          event.preventDefault();
-          onChange(min);
-          onValueCommit?.(min);
-          break;
-        case 'End':
-          event.preventDefault();
-          onChange(max);
-          onValueCommit?.(max);
-          break;
+  /**
+   * The value bubble is anchored to the thumb through a portal, so it escapes
+   * any `overflow` ancestor (a scrolling `Drawer` body, a `Popover`, a table
+   * cell) instead of being clipped by it. The `fill` variant keeps its inline
+   * chip — it lives inside the slab and is meant to.
+   */
+  const { refs: valueRefs, floatingStyles: valueFloatingStyles } = useFloating({
+    open: true,
+    placement: isVertical ? 'right' : 'top',
+    middleware: [floatingOffset(10), flip(), shift({ padding: 8 })],
+    whileElementsMounted: autoUpdate,
+  });
+
+  // Merge internal root ref with consumer ref.
+  // Memoized so a changing callback-ref identity doesn't force React 19 to run
+  // detach + attach on every render.
+  const mergedRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      rootRef.current = node;
+      setPortalRoot(
+        node
+          ? ((node.closest('[data-altrone-root]') as HTMLElement) ??
+              document.body)
+          : null,
+      );
+      if (typeof ref === 'function') {
+        ref(node);
+      } else if (ref) {
+        (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
       }
     },
-    [value, min, max, step, onChange, onValueCommit],
+    [ref],
   );
 
   const calculateValue = useCallback(
     (clientX: number, clientY: number) => {
-      if (!trackRef.current) return value;
+      const measureEl = trackRef.current ?? rootRef.current;
+      if (!measureEl) return min;
 
-      const rect = trackRef.current.getBoundingClientRect();
-      let percentage;
+      const rect = measureEl.getBoundingClientRect();
+      const ratio =
+        direction === 'vertical'
+          ? (rect.bottom - clientY) / rect.height
+          : (clientX - rect.left) / rect.width;
 
-      if (direction === 'vertical') {
-        const clickPosition = rect.bottom - clientY;
-        percentage = clickPosition / rect.height;
-      } else {
-        const clickPosition = clientX - rect.left;
-        percentage = clickPosition / rect.width;
-      }
-
-      const rawValue = min + (max - min) * percentage;
+      const rawValue = min + (max - min) * ratio;
       const stepsCount = Math.round((rawValue - min) / step);
       return Math.min(max, Math.max(min, min + stepsCount * step));
     },
-    [min, max, step, value, direction],
+    [min, max, step, direction],
   );
 
+  // Move/up handlers are created inside the pointerdown closure so that
+  // removeEventListener always gets the exact reference addEventListener saw —
+  // a re-render mid-drag can't leave a stale listener bound to `document`.
   const handlePointerDown = useCallback(
     (event: React.PointerEvent<HTMLDivElement>) => {
       event.preventDefault();
       isDragging.current = true;
       setIsActive(true);
-      const newValue = calculateValue(event.clientX, event.clientY);
-      onChange(newValue);
+      onChange(calculateValue(event.clientX, event.clientY), event);
 
-      document.addEventListener('pointermove', handlePointerMove);
-      document.addEventListener('pointerup', handlePointerUp);
+      const handleMove = (e: PointerEvent) => {
+        if (!isDragging.current) return;
+        onChange(calculateValue(e.clientX, e.clientY), e);
+      };
+
+      const handleUp = (e: PointerEvent) => {
+        onValueCommit?.(rangeValue.current, e);
+        isDragging.current = false;
+        setIsActive(false);
+        document.removeEventListener('pointermove', handleMove);
+        document.removeEventListener('pointerup', handleUp);
+      };
+
+      document.addEventListener('pointermove', handleMove);
+      document.addEventListener('pointerup', handleUp);
     },
-    [calculateValue, onChange],
+    [calculateValue, onChange, onValueCommit],
   );
 
-  const handlePointerMove = useCallback(
-    (event: PointerEvent) => {
-      if (!isDragging.current) return;
-      const newValue = calculateValue(event.clientX, event.clientY);
-      onChange(newValue);
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      let next: number | null = null;
+      switch (event.key) {
+        case 'ArrowLeft':
+        case 'ArrowDown':
+          next = Math.max(min, value - step);
+          break;
+        case 'ArrowRight':
+        case 'ArrowUp':
+          next = Math.min(max, value + step);
+          break;
+        case 'Home':
+          next = min;
+          break;
+        case 'End':
+          next = max;
+          break;
+      }
+      if (next === null) return;
+      event.preventDefault();
+      onChange(next, event);
+      onValueCommit?.(next, event);
     },
-    [calculateValue, onChange],
+    [value, min, max, step, onChange, onValueCommit],
   );
 
-  const handlePointerUp = useCallback(() => {
-    onValueCommit?.(rangeValue.current);
-    isDragging.current = false;
-    setIsActive(false);
-
-    document.removeEventListener('pointermove', handlePointerMove);
-    document.removeEventListener('pointerup', handlePointerUp);
-  }, [onValueCommit]);
-
-  const leftOffset = useMemo(() => {
-    return `${((value - min) / (max - min)) * 100}%`;
+  const offset = useMemo(() => {
+    const ratio = max === min ? 0 : (value - min) / (max - min);
+    return `${Math.min(100, Math.max(0, ratio * 100))}%`;
   }, [value, min, max]);
 
-  const labelElement = useMemo(() => {
-    if (renderLabel) {
-      return renderLabel(value);
-    }
-    return value;
-  }, [value, renderLabel]);
+  const labelElement = useMemo(
+    () => (renderLabel ? renderLabel(value) : value),
+    [value, renderLabel],
+  );
 
-  const activeTrackStyle = useMemo(() => {
-    if (direction === 'vertical') {
-      return {
-        height: leftOffset,
-        bottom: 0,
-        top: 'auto',
-      };
-    }
-    return { width: leftOffset };
-  }, [direction, leftOffset]);
+  const fillStyle = isVertical ? { height: offset } : { width: offset };
+  const thumbStyle = isVertical ? { bottom: offset } : { left: offset };
 
   const cls = clsx(
     s.Range,
     {
+      [s.Fill]: isFill,
+      [s.Mini]: size === 'mini',
       [s.Small]: size === 's',
       [s.Large]: size === 'l',
-      [s.Vertical]: direction === 'vertical',
-      [s.ShowLabelAlways]: showCurrentValue === 'always',
+      [s.XLarge]: size === 'xl',
+      [s.Vertical]: isVertical,
+      [s.ShowValueAlways]: showCurrentValue === 'always',
       [s.Disabled]: disabled,
       [s.ReadOnly]: readOnly,
     },
-    rangeConfig.className,
+    className,
   );
 
   useEffect(() => {
     rangeValue.current = value;
   }, [value]);
 
-  const activeTrackCls = clsx(
-    s.ActiveTrack,
-    activeTrackClassName,
-    rangeConfig.activeTrackClassName,
-  );
+  const showValue =
+    showCurrentValue === 'always' || showCurrentValue === 'active';
 
-  const styles = {
-    ...rangeConfig.style,
-    ...style,
-  };
+  const valueVisible =
+    showValue &&
+    (showCurrentValue === 'always' || isActive || isHovered || isFocusVisible);
 
   return (
     <div
       className={cls}
-      style={styles}
-      onPointerDown={disabled ? undefined : handlePointerDown}
-      ref={trackRef}
+      style={style}
+      onPointerDown={disabled || readOnly ? undefined : handlePointerDown}
+      onPointerEnter={() => setIsHovered(true)}
+      onPointerLeave={() => setIsHovered(false)}
+      onFocus={(event) =>
+        setIsFocusVisible(
+          FOCUS_VISIBLE_SUPPORTED ? event.target.matches(':focus-visible') : true,
+        )
+      }
+      onBlur={() => setIsFocusVisible(false)}
+      ref={mergedRef}
       data-range-active={isActive}
-      tabIndex={0}
-      onFocus={() => (isFocused.current = true)}
-      onBlur={() => (isFocused.current = false)}
-      onKeyDown={!disabled ? handleKeyDown : undefined}
+      tabIndex={disabled || readOnly ? -1 : 0}
+      onKeyDown={disabled || readOnly ? undefined : handleKeyDown}
       role="slider"
       aria-valuemin={min}
       aria-valuemax={max}
@@ -193,17 +235,49 @@ export const Range = memo<RangeProps>((props) => {
       {...restProps}
     >
       <input type="hidden" value={value} tabIndex={-1} name={name} />
-      {!readOnly ? (
-        <>
-          <div className={activeTrackCls} style={activeTrackStyle} />
-          {showCurrentValue === 'always' || showCurrentValue === 'active' ? (
-            <div className={s.Value}>{labelElement}</div>
-          ) : null}
-          {icon ? <div className={s.Icon}>{icon}</div> : null}
-        </>
-      ) : (
+      {readOnly ? (
         <div className={s.ReadOnlyLabel}>{labelElement}</div>
+      ) : (
+        <>
+          {icon && !isFill ? <div className={s.Icon}>{icon}</div> : null}
+          <div className={s.Track} ref={trackRef}>
+            <div
+              className={clsx(s.ActiveTrack, activeTrackClassName)}
+              style={fillStyle}
+            />
+            {!isFill ? (
+              <div
+                ref={valueRefs.setReference}
+                className={s.Thumb}
+                style={thumbStyle}
+              />
+            ) : null}
+            {icon && isFill ? <div className={s.Icon}>{icon}</div> : null}
+            {showValue && isFill ? (
+              <div className={s.Value}>{labelElement}</div>
+            ) : null}
+          </div>
+          {showValue && !isFill && portalRoot ? (
+            <FloatingPortal root={portalRoot}>
+              <AnimatePresence>
+                {valueVisible ? (
+                  <motion.div
+                    ref={valueRefs.setFloating}
+                    className={s.ValueFloating}
+                    style={valueFloatingStyles}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.12 }}
+                  >
+                    {labelElement}
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
+            </FloatingPortal>
+          ) : null}
+        </>
       )}
     </div>
   );
-});
+};

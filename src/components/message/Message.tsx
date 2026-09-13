@@ -1,79 +1,68 @@
-import { memo, useEffect } from 'react';
-import { MessageProps } from './Message.types.ts';
-import { Flex, CloseButton } from 'components';
-import s from './message.module.scss';
+import { Ref } from 'react';
 import clsx from 'clsx';
-import { useConfiguration } from 'components/configuration';
-import { GlobalUtils } from '../../utils';
+import { Box, BoxTone } from 'components/box';
+import { Flex } from 'components/flex/Flex.tsx';
+import { CloseButton } from 'components/closeButton/CloseButton.tsx';
+import { MessageProps } from './Message.types.ts';
+import s from './message.module.scss';
 
-export const Message = memo<MessageProps>(
-  ({
-    children,
-    className,
-    header,
-    icon,
-    role,
-    severity,
-    style,
-    ariaRole = 'alert',
-    actions,
-    onClose,
-    compact = false,
-    ...props
-  }) => {
-    const { message: messageConfig = {} } = useConfiguration();
+const TONE_BY_SEVERITY: Record<
+  'primary' | 'success' | 'warning' | 'danger',
+  BoxTone
+> = {
+  primary: 'accent',
+  success: 'success',
+  warning: 'warning',
+  danger: 'danger',
+};
 
-    // TODO: in 4.0 version we need to remove role prop
-    const messageRole = severity ?? role ?? 'default';
+export const Message = ({
+  ref,
+  children,
+  className,
+  style,
+  header,
+  icon,
+  severity,
+  ariaRole,
+  actions,
+  onClose,
+  compact = false,
+  ...restProps
+}: MessageProps) => {
+  const resolvedAriaRole =
+    ariaRole ?? (severity === 'danger' ? 'alert' : 'status');
 
-    const cls = clsx(
-      s.Message,
-      {
-        [s.RolePrimary]: messageRole === 'primary',
-        [s.RoleSuccess]: messageRole === 'success',
-        [s.RoleWarning]: messageRole === 'warning',
-        [s.RoleDanger]: messageRole === 'danger',
-        [s.Compact]: compact,
-      },
-      className,
-      messageConfig.className,
-    );
+  const tone: BoxTone =
+    severity && severity !== 'default' ? TONE_BY_SEVERITY[severity] : 'neutral';
 
-    const styles = {
-      ...messageConfig.style,
-      ...style,
-    };
+  const cls = clsx(s.Message, { [s.Compact]: compact }, className);
 
-    useEffect(() => {
-      if (role) {
-        GlobalUtils.deprecatedMessage('Message', 'role', 'severity', '4.0');
-      }
-    }, [role]);
-
-    return (
-      <Flex
-        className={cls}
-        gap="l"
-        direction="horizontal"
-        style={styles}
-        role={ariaRole}
-        {...props}
-      >
-        {icon ? <div className={s.Icon}>{icon}</div> : null}
-        <Flex
-          direction="vertical"
-          className={s.Content}
-          gap="m"
-          justify="center"
-        >
-          <div className={s.Text}>
-            {header ? <div className={s.Header}>{header}</div> : null}
-            {children ? <div className={s.Body}>{children}</div> : null}
-          </div>
-          {actions ? <div className={s.Actions}>{actions}</div> : null}
-        </Flex>
-        {onClose ? <CloseButton onClick={onClose} /> : null}
+  return (
+    <Box
+      ref={ref as Ref<HTMLElement>}
+      className={cls}
+      style={style}
+      role={resolvedAriaRole}
+      shape="rounded"
+      material="glass"
+      tone={tone}
+      padding={icon ? 8 : { x: 16, y: 8 }}
+      {...restProps}
+    >
+      {icon ? (
+        <div className={s.Icon} aria-hidden="true">
+          {icon}
+        </div>
+      ) : null}
+      <Flex direction="vertical" className={s.Content} gap="m" justify="center">
+        <div className={s.Text}>
+          {header ? <div className={s.Header}>{header}</div> : null}
+          {children ? <div className={s.Body}>{children}</div> : null}
+        </div>
+        {actions ? <div className={s.Actions}>{actions}</div> : null}
       </Flex>
-    );
-  },
-);
+      {onClose ? <CloseButton className={s.Close} onClick={onClose} /> : null}
+    </Box>
+  );
+};

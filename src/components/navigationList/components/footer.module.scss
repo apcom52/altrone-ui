@@ -1,0 +1,15 @@
+.Footer {
+  z-index: var(--level-fixed);
+  /* `auto` top margin pins the footer to the bottom of `.NavigationList`
+     (flex column) instead of letting it trail the content. The negative
+     inline/bottom margins bleed over the container's padding so the bar
+     spans the full width and its bottom corners sit flush with the
+     container's rounding. */
+  margin: auto calc(-1 * var(--navigation-list-padding))
+    calc(-1 * var(--navigation-list-padding));
+  padding: var(--space-content);
+  background: var(--navigation-list-chrome-background-color);
+  border-top: 1px solid var(--navigation-list-chrome-border-color);
+  border-radius: 0 0 var(--navigation-list-rounding)
+    var(--navigation-list-rounding);
+}

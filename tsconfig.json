@@ -22,7 +22,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "src/tanstack-table.d.ts"],
   "exclude": ["src/global/storybook", "cypress", "./cypress.config.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

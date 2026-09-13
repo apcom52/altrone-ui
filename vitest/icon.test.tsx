@@ -1,7 +1,7 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { AltroneApplication, Icon } from '../src';
+import { Application, Icon } from '../src';
 
 describe('Icon', () => {
   test('check that properties works correctly', () => {
@@ -33,13 +33,13 @@ describe('Icon', () => {
 
   test('check that configuration works', () => {
     render(
-      <AltroneApplication
+      <Application
         config={{
           icon: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
         }}
       >
         <Icon i="check" data-testid="element" />
-      </AltroneApplication>,
+      </Application>,
     );
 
     const element = screen.getByTestId('element');

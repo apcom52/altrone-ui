@@ -1,11 +1,8 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --searchPlaceholderColor: var(--default-500);
-}
-
-:global(.AltroneDark) {
-  --searchPlaceholderColor: var(--default-400);
+:global([data-altrone-root='true']) {
+  --search-placeholder-color: var(--placeholder-text-color);
+  --search-icon-size: 18px;
 }
 
 .Search {
@@ -13,13 +10,17 @@
   -moz-appearance: none;
   appearance: none;
 
-  &::-ms-clear, &::-ms-reveal {
+  &::-ms-clear,
+  &::-ms-reveal {
     display: none;
     width: 0;
     height: 0;
   }
 
-  &::-webkit-search-decoration, &::-webkit-search-cancel-button, &::-webkit-search-results-button, &::-webkit-search-results-decoration {
+  &::-webkit-search-decoration,
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-results-button,
+  &::-webkit-search-results-decoration {
     display: none;
   }
 }
@@ -32,8 +33,8 @@
   display: flex;
   position: absolute;
   width: 80%;
-  height: var(--height);
-  color: var(--searchPlaceholderColor);
+  height: 100%;
+  color: var(--search-placeholder-color);
   top: 0;
   left: 10%;
   justify-content: center;
@@ -41,7 +42,7 @@
   align-items: center;
   pointer-events: none;
   gap: var(--narrow-gap);
-  z-index: 1001;
+  z-index: var(--level-sticky);
 
   @include paragraph;
 }
@@ -60,7 +61,7 @@
 
 .PlaceholderIcon {
   display: inline-block;
-  font-size: 18px;
-  height: 18px;
-  width: 18px;
+  font-size: var(--search-icon-size);
+  height: var(--search-icon-size);
+  width: var(--search-icon-size);
 }

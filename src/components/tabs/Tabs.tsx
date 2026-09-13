@@ -1,76 +1,97 @@
-import { memo, useRef, useState } from 'react';
+import { memo, useId, useRef, KeyboardEvent } from 'react';
 import { TabsProps } from './Tabs.types.ts';
 import clsx from 'clsx';
 import s from './tabs.module.scss';
-import { useConfiguration } from 'components/configuration';
-import { Flex } from '../flex';
 import { Item } from './components/Item.tsx';
+import { LayoutGroup, motion, type HTMLMotionProps } from 'motion/react';
+import { TabsContext } from './Tabs.context.ts';
+import { DOMUtils } from '../../utils';
 
-const Tabs = memo<TabsProps>(({ children, className, style, ...props }) => {
-  const { tabs: tabsConfig = {} } = useConfiguration();
+const NAV_KEYS = [
+  'ArrowRight',
+  'ArrowLeft',
+  'ArrowUp',
+  'ArrowDown',
+  'Home',
+  'End',
+];
 
-  const containerRef = useRef<HTMLDivElement>(null);
+const TabsComponent = memo<TabsProps>(
+  ({ children, className, style, ref, ...props }) => {
+    const backdropId = useId();
+    const rootRef = useRef<HTMLDivElement>(null);
 
-  const [selectedTabRect, setSelectedTabRect] = useState<Pick<
-    DOMRect,
-    'left' | 'width'
-  > | null>(null);
+    const cls = clsx(s.Tabs, className);
 
-  const cls = clsx(s.Tabs, className, tabsConfig.className);
-
-  const styles = {
-    ...tabsConfig.style,
-    ...style,
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const tabElement = (e.target as HTMLElement).closest('[role="tab"]');
-    const isTablist = e.target === e.currentTarget;
-
-    if (tabElement) {
-      const containerRect = containerRef.current?.getBoundingClientRect();
-      const elementRect = tabElement.getBoundingClientRect();
-
-      setSelectedTabRect(
-        elementRect && containerRect
-          ? {
-              width: elementRect.width,
-              left: elementRect.left - containerRect.left,
-            }
-          : null,
+    /* Roving-ish focus: Tab/Shift+Tab reach the selected tab (it's the only
+       `tabindex={0}`), arrow keys and Home/End move focus between the rest. */
+    const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+      props.onKeyDown?.(event);
+      if (!NAV_KEYS.includes(event.key) || event.defaultPrevented) {
+        return;
+      }
+      const list = rootRef.current;
+      if (!list) {
+        return;
+      }
+      const tabs = Array.from(
+        list.querySelectorAll<HTMLElement>(
+          '[role="tab"]:not([aria-disabled="true"]):not(:disabled)',
+        ),
       );
-    } else if (!isTablist) {
-      setSelectedTabRect(null);
-    }
-  };
+      if (tabs.length < 2) {
+        return;
+      }
+      const current = Math.max(
+        0,
+        tabs.indexOf(document.activeElement as HTMLElement),
+      );
+      let next = current;
+      if (event.key === 'Home') {
+        next = 0;
+      } else if (event.key === 'End') {
+        next = tabs.length - 1;
+      } else if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+        next = (current + 1) % tabs.length;
+      } else {
+        next = (current - 1 + tabs.length) % tabs.length;
+      }
+      event.preventDefault();
+      tabs[next].focus();
+    };
 
-  return (
-    <div
-      className={cls}
-      style={styles}
-      onMouseMove={handleMouseMove}
-      role="tablist"
-      ref={containerRef}
-      {...props}
-    >
-      <div
-        className={s.TabsUnderlay}
-        style={
-          selectedTabRect
-            ? {
-                left: selectedTabRect.left + 2,
-                width: selectedTabRect.width - 4,
-              }
-            : {}
-        }
-      />
-      {children}
-    </div>
-  );
-});
+    return (
+      <TabsContext.Provider value={{ backdropId }}>
+        <div className={s.TabsContainer}>
+          {/* `layoutRoot`: makes the tablist the reference frame for the
+              active-tab backdrop's shared layout animation. Its own position
+              resolves instantly, so mounting inside a repositioning container
+              (e.g. a Popover placed after its first paint) doesn't fling the
+              backdrop in from the corner. */}
+          <motion.div
+            layout
+            layoutRoot
+            className={cls}
+            style={style}
+            role="tablist"
+            ref={DOMUtils.composeRefs(ref, rootRef)}
+            /* `motion.div` redefines some DOM event handlers (`onAnimationStart`,
+               `onDrag*`) with signatures that clash with React's
+               `HTMLAttributes`; `Tabs` never receives those, so widen the
+               passthrough props to satisfy the cast. */
+            {...(props as HTMLMotionProps<'div'>)}
+            onKeyDown={handleKeyDown}
+          >
+            <LayoutGroup>{children}</LayoutGroup>
+          </motion.div>
+        </div>
+      </TabsContext.Provider>
+    );
+  },
+);
 
-const TagsNamespace = Object.assign(Tabs, {
+const TabsNamespace = Object.assign(TabsComponent, {
   Item,
 });
 
-export { TagsNamespace as Tabs };
+export { TabsNamespace as Tabs };

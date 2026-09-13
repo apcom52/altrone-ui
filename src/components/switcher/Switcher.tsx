@@ -1,11 +1,11 @@
-import { ChangeEventHandler, KeyboardEventHandler, memo, useRef } from 'react';
+import { ChangeEventHandler, memo, useRef } from 'react';
 import { SwitcherProps } from './Switcher.types.ts';
 import clsx from 'clsx';
 import s from './switcher.module.scss';
-import { useConfiguration } from 'components/configuration';
 
 export const Switcher = memo<SwitcherProps>(
   ({
+    ref,
     children,
     checked = false,
     onChange,
@@ -14,10 +14,12 @@ export const Switcher = memo<SwitcherProps>(
     danger,
     disabled,
     name,
+    size = 'm',
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-describedby': ariaDescribedBy,
     ...restProps
   }) => {
-    const { switcher: switcherConfig = {} } = useConfiguration();
-
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const cls = clsx(
@@ -26,48 +28,37 @@ export const Switcher = memo<SwitcherProps>(
         [s.Checked]: checked,
         [s.Disabled]: disabled,
         [s.Danger]: danger,
+        [s.Mini]: size === 'mini',
+        [s.Small]: size === 's',
+        [s.Large]: size === 'l',
+        [s.XLarge]: size === 'xl',
       },
       className,
-      switcherConfig.className,
     );
 
-    const styles = {
-      ...switcherConfig.style,
-      ...style,
-    };
-
-    const onChangeHandler: ChangeEventHandler = (e) => {
-      onChange?.(!checked, e);
-    };
-
-    const onKeyDown: KeyboardEventHandler = (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        inputRef.current?.click();
-      }
+    const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (event) => {
+      onChange?.(!checked, event);
     };
 
     return (
-      <label
-        role="checkbox"
-        aria-checked={checked}
-        className={cls}
-        style={styles}
-        tabIndex={0}
-        onKeyDown={onKeyDown}
-        {...restProps}
-      >
+      <label ref={ref} className={cls} style={style} {...restProps}>
         <input
           ref={inputRef}
           type="checkbox"
-          onChange={onChangeHandler}
+          role="switch"
+          className={s.Input}
           checked={checked}
           name={name}
-          className={s.Input}
+          disabled={disabled}
+          onChange={onChangeHandler}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledBy}
+          aria-describedby={ariaDescribedBy}
         />
-        <div className={s.Button}>
-          <div className={s.Handle} />
-        </div>
-        <div className={s.Label}>{children}</div>
+        <span className={s.Button}>
+          <span className={s.Handle} />
+        </span>
+        {children ? <span className={s.Label}>{children}</span> : null}
       </label>
     );
   },

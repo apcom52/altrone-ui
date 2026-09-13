@@ -4,20 +4,30 @@ import {
   CloseButton,
   Dropdown,
   Flex,
-  Icon,
   Text,
   TextInput,
 } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { useState } from 'react';
+import {
+  CircleUser,
+  Search,
+  Folder,
+  ChevronDown,
+  Delete,
+  Ban,
+  Repeat,
+  Share,
+  TriangleAlert,
+} from 'lucide-react';
+import { Size } from 'types/entity.ts';
+import { InlineEdit, OtpEntry } from './stories';
 
 const story: Meta<typeof TextInput> = {
-  title: 'Components/Form/TextInput',
+  title: 'Components/Controls/TextInput',
   component: TextInput,
   decorators: [StorybookDecorator],
-  args: {},
-  argTypes: {},
   parameters: {
     chromatic: {
       modes: {
@@ -28,431 +38,372 @@ const story: Meta<typeof TextInput> = {
   },
 };
 
-export const TextInputStory: StoryObj<typeof Flex> = {
-  name: 'Using TextInputs',
+export const Overview: StoryObj<typeof Flex> = {
+  name: 'Overview',
   render: () => {
-    const [value1, setValue1] = useState('');
-    const [value2, setValue2] = useState('Hello!');
-    const [value3, setValue3] = useState(
-      'Invalid value (need to have only 3 characters to be valid)',
-    );
-    const [value4, setValue4] = useState('Lord Voldemort');
+    const [value, setValue] = useState('');
+    const [filled, setFilled] = useState('altrone-ui');
+    const [pin, setPin] = useState('12');
     const [readonly, setReadonly] = useState(true);
-    const [value5, setValue5] = useState('');
-    const [value6, setValue6] = useState('');
 
     return (
-      <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Basic TextInputs</Text.Heading>
-        <Flex direction="horizontal" gap="l" align="center">
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+        <Text size={6} weight="bold" block>
+          TextInput
+        </Text>
+        <Text block>
+          A single-line text field. Visually it is a <Text code>Box</Text> — the
+          frame, fill, corner radius, elevation and the focus ring while typing
+          all come from the primitive, so every button-like control in the
+          library shares one material system. This stylesheet only adds the
+          field&apos;s own typography and the row that arranges islands around
+          the input.
+        </Text>
+
+        <Text size={4} weight="bold" block>
+          States
+        </Text>
+        <Text block>
+          The field reads its <Text code>name</Text>, <Text code>invalid</Text>,{' '}
+          <Text code>disabled</Text> and <Text code>size</Text> from a
+          surrounding <Text code>Form.Field</Text> when the prop is not passed
+          explicitly.
+        </Text>
+        <Flex direction="vertical" gap="m">
           <TextInput
-            value={value1}
-            onChange={setValue1}
-            placeholder="Type something"
+            value={value}
+            onChange={setValue}
+            placeholder="Empty — placeholder shown"
+          />
+          <TextInput value={filled} onChange={setFilled} />
+          <TextInput
+            value={pin}
+            onChange={setPin}
+            placeholder="Exactly 3 characters"
+            invalid={pin.length !== 3}
           />
           <TextInput
-            value={value2}
-            onChange={setValue2}
-            placeholder="Type something"
-          />
-          <TextInput
-            value={''}
+            value=""
             onChange={() => null}
             disabled
-            placeholder="Disabled input"
-          />
-          <TextInput
-            value={value3}
-            onChange={setValue3}
-            placeholder="Type 3 characters"
-            invalid={value3.length !== 3}
+            placeholder="Disabled"
           />
         </Flex>
-        <Text.Heading role="inner">Transparent TextInputs</Text.Heading>
-        <Flex direction="horizontal" gap="l">
+
+        <Text size={4} weight="bold" block>
+          Read-only
+        </Text>
+        <Text block>
+          With <Text code>readonlyStyles</Text> (on by default) a read-only
+          field drops its material and reads as plain text, while staying
+          focusable so the value can be selected and copied.
+        </Text>
+        <Flex direction="horizontal" gap="s" align="center">
           <TextInput
-            value={value1}
-            onChange={setValue1}
-            placeholder="Type something"
-            transparent
-          />
-          <TextInput
-            value={value2}
-            onChange={setValue2}
-            placeholder="Type something"
-            transparent
-          />
-          <TextInput
-            value={''}
+            value="Lord Voldemort"
             onChange={() => null}
-            disabled
-            placeholder="Disabled input"
-            transparent
+            readOnly={readonly}
           />
-          <TextInput
-            value={value3}
-            onChange={setValue3}
-            placeholder="Type 3 characters"
-            invalid={value3.length !== 3}
-            transparent
-          />
-        </Flex>
-        <Text.Heading role="inner">Read-only mode</Text.Heading>
-        <Flex direction="horizontal" gap="s">
-          <TextInput value={value4} onChange={setValue4} readOnly={readonly} />
           <Button
             label={readonly ? 'Edit' : 'Save'}
             onClick={() => setReadonly(!readonly)}
           />
-          <TextInput
-            value={''}
-            onChange={() => null}
-            placeholder="Placeholder for read-only"
-            readOnly={readonly}
-          />
         </Flex>
-        <Text.Heading role="inner">Small TextInputs</Text.Heading>
+      </Flex>
+    );
+  },
+};
+
+export const Materials: StoryObj<typeof Flex> = {
+  name: 'Materials',
+  render: () => {
+    const [a, setA] = useState('');
+    const [b, setB] = useState('');
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+        <Text size={6} weight="bold" block>
+          Materials
+        </Text>
+        <Text size={4} weight="bold" block>
+          default
+        </Text>
+        <Text block>
+          The <Text code>default</Text> variant is a <Text code>plate</Text>{' '}
+          material — a frosted fill with a hairline edge, the same surface the
+          default <Text code>Button</Text> uses. It suits a field that sits on a
+          plain page background.
+        </Text>
+        <TextInput value={a} onChange={setA} placeholder="default variant" />
+
+        <Text size={4} weight="bold" block>
+          transparent
+        </Text>
+        <Text block>
+          The <Text code>transparent</Text> variant has no fill or edge at rest
+          and washes in the same tint on hover and on focus (like the{' '}
+          <Text code>text</Text> Button). Use it for fields embedded in dense
+          chrome — a toolbar, a table filter row, a segmented control.
+        </Text>
         <TextInput
-          size="s"
-          value={value5}
-          onChange={setValue5}
-          placeholder="Type something in the small TextInput"
-        />
-        <Text.Heading role="inner">Large TextInputs</Text.Heading>
-        <TextInput
-          size="l"
-          value={value6}
-          onChange={setValue6}
-          placeholder="Type something in the large TextInput"
-        />
-        <Text.Heading role="inner">
-          TextInput without rainbow effect
-        </Text.Heading>
-        <TextInput
-          size="s"
-          value={value5}
-          onChange={setValue5}
-          placeholder="This just a TextInput without rainbow effect"
-          rainbowEffect={false}
+          value={b}
+          onChange={setB}
+          placeholder="transparent variant"
+          variant="transparent"
         />
       </Flex>
     );
   },
 };
 
-export const IslandsStory: StoryObj<typeof Flex> = {
-  name: 'Using islands',
+export const Islands: StoryObj<typeof Flex> = {
+  name: 'Islands',
   render: () => {
-    const [value1, setValue1] = useState('');
-    const [value2, setValue2] = useState('npm install altrone-ui');
-    const [value3, setValue3] = useState('10111');
-
-    const [value4, setValue4] = useState('');
-    const [value5, setValue5] = useState('');
-    const [value6, setValue6] = useState('');
-
-    const [value7, setValue7] = useState('');
-    const [value8, setValue8] = useState('');
-    const [value9, setValue9] = useState('');
+    const [amount, setAmount] = useState('');
+    const [cmd, setCmd] = useState('npm install altrone-ui');
+    const [file, setFile] = useState('');
+    const [user, setUser] = useState('');
+    const [note, setNote] = useState('');
+    const [chars, setChars] = useState('');
 
     return (
-      <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Text Islands</Text.Heading>
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+        <Text size={6} weight="bold" block>
+          Islands
+        </Text>
+        <Text block>
+          Any <Text code>TextInput.*Island</Text> passed as a child is pulled
+          out of the content and laid into a flex row beside the input —{' '}
+          <Text code>placement=&quot;start&quot;</Text> (the default) or{' '}
+          <Text code>placement=&quot;end&quot;</Text>. The passive ones are
+          plain inline chips; <Text code>ActionIsland</Text> is a{' '}
+          <Text code>Button</Text>.
+        </Text>
+
+        <Text size={4} weight="bold" block>
+          Text &amp; icon
+        </Text>
+        <Text block>
+          Static, non-interactive labels — a currency symbol, a command prefix,
+          a leading glyph.
+        </Text>
         <Flex direction="horizontal" gap="l">
-          <TextInput
-            value={value1}
-            onChange={setValue1}
-            placeholder="Type something"
-          >
-            <TextInput.TextIsland label="$" />
-            <TextInput.TextIsland placement="right" label=".00" />
+          <TextInput value={amount} onChange={setAmount} placeholder="0">
+            <TextInput.TextIsland placement="start" label="$" />
+            <TextInput.TextIsland placement="end" label=".00" />
           </TextInput>
-          <TextInput
-            value={value2}
-            onChange={setValue2}
-            placeholder="Type something"
-          >
+          <TextInput value={cmd} onChange={setCmd}>
             <TextInput.TextIsland label="cmd:" />
           </TextInput>
-          <TextInput
-            value={value3}
-            onChange={setValue3}
-            placeholder="Enter your zip"
-            maxLength={10}
-          >
-            <TextInput.TextIsland
-              placement="right"
-              label={`${value3.length}/10`}
-            />
-          </TextInput>
         </Flex>
+        <TextInput value={file} onChange={setFile} placeholder="Find a file">
+          <TextInput.IconIsland icon={<Search />} />
+          <TextInput.IconIsland icon={<Folder />} />
+          <TextInput.IconIsland placement="end" icon={<ChevronDown />} />
+        </TextInput>
+
+        <Text size={4} weight="bold" block>
+          Action
+        </Text>
+        <Text block>
+          An <Text code>ActionIsland</Text> is a <Text code>Button</Text> locked
+          to the in-field <Text code>plate</Text> chip — it takes the whole
+          Button API (<Text code>state</Text>, <Text code>badge</Text>,{' '}
+          <Text code>tooltip</Text>, …) bar <Text code>variant</Text>. With{' '}
+          <Text code>showLabel</Text> false it is a circular icon-only button
+          with an auto tooltip from <Text code>label</Text>.
+        </Text>
         <Flex direction="horizontal" gap="l">
-          <TextInput
-            value={value1}
-            onChange={setValue1}
-            placeholder="Type something"
-            size="s"
-          >
-            <TextInput.TextIsland label="$" />
-            <TextInput.TextIsland placement="right" label=".00" />
-          </TextInput>
-          <TextInput
-            value={value2}
-            onChange={setValue2}
-            placeholder="Type something"
-            size="s"
-          >
-            <TextInput.TextIsland label="cmd:" />
-          </TextInput>
-          <TextInput
-            value={value3}
-            onChange={setValue3}
-            placeholder="Enter your zip"
-            size="s"
-            maxLength={10}
-          >
-            <TextInput.TextIsland
-              placement="right"
-              label={`${value3.length}/10`}
-            />
-          </TextInput>
-        </Flex>
-        <Flex direction="horizontal" gap="l">
-          <TextInput
-            value={value1}
-            onChange={setValue1}
-            placeholder="Type something"
-            size="l"
-          >
-            <TextInput.TextIsland label="$" />
-            <TextInput.TextIsland placement="right" label=".00" />
-          </TextInput>
-          <TextInput
-            value={value2}
-            onChange={setValue2}
-            placeholder="Type something"
-            size="l"
-          >
-            <TextInput.TextIsland label="cmd:" />
-          </TextInput>
-          <TextInput
-            value={value3}
-            onChange={setValue3}
-            placeholder="Enter your zip"
-            size="l"
-            maxLength={10}
-          >
-            <TextInput.TextIsland
-              placement="right"
-              label={`${value3.length}/10`}
-            />
-          </TextInput>
-        </Flex>
-        <Text.Heading role="inner">Icon Islands</Text.Heading>
-        <Flex direction="horizontal" gap="l">
-          <TextInput
-            value={value4}
-            onChange={setValue4}
-            placeholder="Type something"
-          >
-            <TextInput.IconIsland icon={<Icon i="account_circle" />} />
-          </TextInput>
-          <TextInput
-            value={value5}
-            onChange={setValue5}
-            placeholder="Ask AI Assistant"
-          >
-            <TextInput.IconIsland
-              placement="right"
-              icon={<Icon i="auto_awesome" />}
-            />
-          </TextInput>
-          <TextInput
-            value={value6}
-            onChange={setValue6}
-            placeholder="Find a file"
-          >
-            <TextInput.IconIsland icon={<Icon i="search" />} />
-            <TextInput.IconIsland icon={<Icon i="folder" />} />
-            <TextInput.IconIsland
-              placement="right"
-              icon={<Icon i="expand_more" />}
-            />
-          </TextInput>
-        </Flex>
-        <Flex direction="horizontal" gap="l">
-          <TextInput
-            value={value6}
-            onChange={setValue6}
-            placeholder="Find a file"
-            size="s"
-          >
-            <TextInput.IconIsland icon={<Icon i="search" />} />
-            <TextInput.IconIsland icon={<Icon i="folder" />} />
-            <TextInput.IconIsland
-              placement="right"
-              icon={<Icon i="expand_more" />}
-            />
-          </TextInput>
-          <TextInput
-            value={value6}
-            onChange={setValue6}
-            placeholder="Find a file"
-            size="l"
-          >
-            <TextInput.IconIsland icon={<Icon i="search" />} />
-            <TextInput.IconIsland icon={<Icon i="folder" />} />
-            <TextInput.IconIsland
-              placement="right"
-              icon={<Icon i="expand_more" />}
-            />
-          </TextInput>
-        </Flex>
-        <Text.Heading role="inner">Action Islands</Text.Heading>
-        <Flex direction="horizontal" gap="l">
-          <TextInput value={value7} onChange={setValue7} placeholder="Username">
+          <TextInput value={user} onChange={setUser} placeholder="Username">
             <Dropdown
               content={
                 <Dropdown.Menu>
                   <Dropdown.Action
                     label="@Wolf"
-                    onClick={() => setValue7('Wolf')}
+                    onClick={() => setUser('Wolf')}
                   />
                   <Dropdown.Action
                     label="@Fox"
-                    onClick={() => setValue7('Fox')}
+                    onClick={() => setUser('Fox')}
                   />
                   <Dropdown.Action
                     label="@Bear"
-                    onClick={() => setValue7('Bear')}
-                  />
-                  <Dropdown.Action
-                    label="@Chicken"
-                    onClick={() => setValue7('Chicken')}
+                    onClick={() => setUser('Bear')}
                   />
                 </Dropdown.Menu>
               }
+              overlap
             >
               <TextInput.ActionIsland
-                icon={<Icon i="account_circle" />}
+                icon={<CircleUser />}
                 label="Pick a user"
               />
             </Dropdown>
             <TextInput.ActionIsland
-              icon={<Icon i="backspace" />}
+              icon={<Delete />}
               label="Clear field"
               showLabel={false}
-              placement="right"
-              onClick={() => setValue7('')}
+              placement="end"
+              onClick={() => setUser('')}
             />
           </TextInput>
-
-          <TextInput value={value7} onChange={setValue7} placeholder="Username">
+          <TextInput value={user} onChange={setUser} placeholder="Username">
             <TextInput.ActionIsland
-              icon={<Icon i="block" />}
+              icon={<Ban />}
               label="Disabled action"
               disabled
             />
             <TextInput.ActionIsland
-              icon={<Icon i="replay" />}
+              icon={<Repeat />}
               label="Revert changes"
-              placement="right"
+              placement="end"
               danger
             />
           </TextInput>
         </Flex>
+        <TextInput
+          value={note}
+          onChange={setNote}
+          placeholder="Write your thoughts"
+          variant="transparent"
+        >
+          <TextInput.ActionIsland
+            icon={<Share />}
+            label="Share"
+            placement="end"
+            onClick={() => setNote('')}
+          />
+          <TextInput.ActionIsland
+            icon={<ChevronDown />}
+            label="More options"
+            showLabel={false}
+            placement="end"
+          />
+        </TextInput>
+
+        <Text size={4} weight="bold" block>
+          Loading, custom &amp; char counter
+        </Text>
+        <Text block>
+          <Text code>LoadingIsland</Text> shows a spinner with a localized{' '}
+          <Text code>aria-label</Text>; <Text code>CustomIsland</Text> keeps
+          pointer events so arbitrary interactive content works;{' '}
+          <Text code>CharCounterIsland</Text> reads the field&apos;s value
+          length and <Text code>maxLength</Text>.
+        </Text>
         <Flex direction="horizontal" gap="l">
-          <TextInput
-            value={value8}
-            onChange={setValue8}
-            placeholder="User Password"
-            size="s"
-          >
-            <TextInput.ActionIsland
-              label="Generate"
-              placement="right"
-              onClick={() => setValue8('')}
-            />
+          <TextInput value={note} onChange={setNote} placeholder="Loading…">
+            <TextInput.LoadingIsland placement="end" />
           </TextInput>
           <TextInput
-            value={value8}
-            onChange={setValue8}
-            placeholder="Write your thoughts"
-            size="l"
+            value={note}
+            onChange={setNote}
+            placeholder="Custom island"
           >
-            <TextInput.ActionIsland
-              icon={<Icon i="share" />}
-              label="Share"
-              placement="right"
-              onClick={() => setValue8('')}
-            />
-            <TextInput.ActionIsland
-              icon={<Icon i="expand_more" />}
-              label="Show more options"
-              showLabel={false}
-              placement="right"
-            />
-          </TextInput>
-        </Flex>
-        <Text.Heading role="inner">Custom Islands</Text.Heading>
-        <Flex direction="horizontal" gap="l">
-          <TextInput
-            value={value9}
-            onChange={setValue9}
-            placeholder="<-- Close button as custom island"
-          >
-            <TextInput.CustomIsland>
-              <CloseButton />
+            <TextInput.CustomIsland placement="end">
+              <CloseButton size="s" />
             </TextInput.CustomIsland>
           </TextInput>
         </Flex>
-        <Text.Heading role="inner">Loading Islands</Text.Heading>
-        <Flex direction="horizontal" gap="l">
-          <TextInput
-            value={value9}
-            onChange={setValue9}
-            placeholder="That input loads something"
-          >
-            <TextInput.LoadingIsland />
-          </TextInput>
-          <TextInput
-            value={value9}
-            onChange={setValue9}
-            placeholder="That input loads something"
-            size="s"
-          >
-            <TextInput.LoadingIsland placement="right" />
-          </TextInput>
-          <TextInput
-            value={value9}
-            onChange={setValue9}
-            placeholder="That input loads something"
-            size="l"
-          >
-            <TextInput.LoadingIsland placement="right" />
-          </TextInput>
-        </Flex>
+        <TextInput
+          value={chars}
+          onChange={setChars}
+          placeholder="Type something"
+          maxLength={8}
+        >
+          <TextInput.TextIsland label="Chars:" />
+          <TextInput.CharCounterIsland placement="end" />
+        </TextInput>
       </Flex>
     );
   },
 };
 
-export const CustomInputStory: StoryObj<typeof Flex> = {
-  name: 'Using custom input',
+export const Sizes: StoryObj<typeof Flex> = {
+  name: 'Sizes',
+  render: () => {
+    const [value, setValue] = useState('');
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
+        <Text size={6} weight="bold" block>
+          Sizes
+        </Text>
+        <Text block>
+          <Text code>size</Text> (<Text code>mini</Text> / <Text code>s</Text> /{' '}
+          <Text code>m</Text> / <Text code>l</Text> / <Text code>xl</Text>)
+          drives the field height, padding and radius through{' '}
+          <Text code>Box</Text>, and the typography and icon size through this
+          stylesheet. It is an explicit prop — it never changes with the
+          viewport.
+        </Text>
+        {(['mini', 's', 'm', 'l', 'xl'] as Size[]).map((size) => (
+          <Flex direction="vertical" gap="s" key={size}>
+            <Text weight="bold" block>
+              {size.toUpperCase()}
+            </Text>
+            <Flex direction="horizontal" gap="l">
+              <TextInput
+                value={value}
+                onChange={setValue}
+                placeholder="Plain"
+                size={size}
+              />
+              <TextInput
+                value={value}
+                onChange={setValue}
+                placeholder="With islands"
+                size={size}
+              >
+                <TextInput.IconIsland icon={<CircleUser />} />
+                <TextInput.ActionIsland
+                  label="Alert"
+                  icon={<TriangleAlert />}
+                  placement="end"
+                  onClick={() => setValue('')}
+                />
+              </TextInput>
+            </Flex>
+          </Flex>
+        ))}
+      </Flex>
+    );
+  },
+};
+
+export const CustomField: StoryObj<typeof Flex> = {
+  name: 'Custom field element',
   render: () => {
     const [value, setValue] = useState('0');
 
     return (
-      <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">
-          Using custom component instead of standard input
-        </Text.Heading>
-        <TextInput value={value} onChange={setValue} Component={<textarea />}>
-          <TextInput.TextIsland label="Left island" />
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+        <Text size={6} weight="bold" block>
+          Custom field element
+        </Text>
+        <Text block>
+          With <Text code>asChild</Text> the first non-island child becomes the
+          field element, so the wrapper, islands and value wiring can be reused
+          over a <Text code>&lt;textarea&gt;</Text> or a masked-input library
+          component.
+        </Text>
+        <TextInput value={value} onChange={setValue} asChild>
+          <textarea rows={3} />
+          <TextInput.TextIsland label="note:" />
         </TextInput>
       </Flex>
     );
   },
+};
+
+export const InlineEditing: StoryObj = {
+  name: 'Editing a value in place',
+  render: () => <InlineEdit />,
+};
+
+export const OneTimeCode: StoryObj = {
+  name: 'One-time code',
+  render: () => <OtpEntry />,
 };
 
 export default story;

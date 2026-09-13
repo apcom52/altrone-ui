@@ -2,12 +2,14 @@ import { DropdownRadioListItem } from '../Dropdown.types';
 import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { useRadioListDropdownContext } from '../Dropdown.contexts.ts';
-import { Icon } from '../../icon';
 import s from './action.module.scss';
-import { useConfiguration } from 'components/configuration';
 import { useId } from 'react';
+import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
+import { mergeRefs } from 'utils/mergeRefs';
+import { CheckIcon } from 'components/checkbox';
 
 export function DropdownRadioItem({
+  ref,
   value,
   label,
   disabled,
@@ -16,24 +18,18 @@ export function DropdownRadioItem({
   focused,
   ...props
 }: DropdownRadioListItem) {
-  const { dropdown: { radioItem: dropdownRadioItemConfig = {} } = {} } =
-    useConfiguration();
-
   const id = useId();
-  const { ref } = useListItem();
+  const { ref: listItemRef } = useListItem();
 
-  const cls = clsx(
-    s.Action,
-    className,
-    {
-      [s.DisabledAction]: disabled,
-      [s.Focused]: focused,
-    },
-    dropdownRadioItemConfig.className,
-  );
+  const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
+    useDropdownItemHover();
+
+  const cls = clsx(s.Action, 'no-selection', className, {
+    [s.DisabledAction]: disabled,
+    [s.Focused]: focused,
+  });
 
   const styles = {
-    ...dropdownRadioItemConfig.style,
     ...style,
   };
 
@@ -43,7 +39,7 @@ export function DropdownRadioItem({
     onChange(value);
   };
 
-  const onKeyDownPress: React.KeyboardEventHandler = (e) => {
+  const onKeyDownPress: React.KeyboardEventHandler<HTMLButtonElement> = (e) => {
     if (e.key === 'Enter') {
       onSelect?.();
     }
@@ -51,7 +47,7 @@ export function DropdownRadioItem({
 
   return (
     <button
-      ref={ref}
+      ref={mergeRefs(listItemRef, ref)}
       type="button"
       onKeyDown={onKeyDownPress}
       onClick={onSelect}
@@ -61,10 +57,13 @@ export function DropdownRadioItem({
       className={cls}
       style={styles}
       id={id}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       {...props}
     >
+      {itemBackgroundElement}
       <div className={s.Icon}>
-        {value === selectedValue ? <Icon i="check" /> : null}
+        <CheckIcon checked={value === selectedValue} />
       </div>
       <div className={s.Label}>{label}</div>
     </button>

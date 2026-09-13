@@ -1,7 +1,7 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { AltroneApplication, Configuration, List } from '../src/components';
+import { Application, Configuration, List } from '../src/components';
 
 const ITEMS = [
   { name: 'Item 1' },
@@ -75,22 +75,22 @@ describe('List', () => {
 
   test('check that showEmptyBanner works correctly', () => {
     const { rerender } = render(
-      <AltroneApplication>
+      <Application>
         <List data={[]} renderItem={() => <div />} data-testid="list" />
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('list')).toHaveTextContent('No data');
 
     rerender(
-      <AltroneApplication>
+      <Application>
         <List
           data={[]}
           renderItem={() => <div />}
           data-testid="list"
           showEmptyBanner={false}
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('list')).not.toHaveTextContent('No data');

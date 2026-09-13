@@ -1,52 +1,76 @@
 import React, { ChangeEvent, PropsWithChildren, ReactElement } from 'react';
 import { Size } from 'types';
+import type { ButtonProps } from '../button/Button.types.ts';
+import type { BoxShape } from '../box/Box.types.ts';
+
+export type IslandPlacement = 'start' | 'end';
 
 export interface TextInputProps
-  extends PropsWithChildren,
+  extends
+    PropsWithChildren,
     Omit<
       React.InputHTMLAttributes<HTMLInputElement>,
       'onChange' | 'size' | 'children'
     > {
+  /** Forwarded to the visual wrapper (a `Box`). Use `inputRef` for the field node itself. */
+  ref?: React.Ref<HTMLElement>;
+  /** Forwarded to the underlying `<input>` (or the `asChild` element). */
+  inputRef?: React.Ref<HTMLInputElement>;
+  variant?: 'default' | 'transparent';
+  /**
+   * Corner shape of the visual wrapper. Defaults to `'pill'` — right for a
+   * single-line field. Multi-line consumers (`Textarea`) override it with
+   * `'rounded'`, where a capsule end makes no sense.
+   */
+  shape?: BoxShape;
   value?: string;
   onChange?: (value: string, event: ChangeEvent) => void;
+  /** Class for the visual wrapper. `className` targets the `<input>`. */
   wrapperClassName?: string;
+  /** Style for the visual wrapper. `style` targets the `<input>`. */
   wrapperStyle?: React.CSSProperties;
   invalid?: boolean;
   size?: Size;
-  rainbowEffect?: boolean;
-  transparent?: boolean;
-  Component?: ReactElement;
+  asChild?: boolean;
   readonlyStyles?: boolean;
 }
 
 export interface TextIslandProps extends React.HTMLAttributes<HTMLDivElement> {
+  ref?: React.Ref<HTMLDivElement>;
   label: string;
-  placement?: 'left' | 'right';
+  placement?: IslandPlacement;
 }
 
 export interface IconIslandProps extends React.HTMLAttributes<HTMLDivElement> {
+  ref?: React.Ref<HTMLDivElement>;
   icon: ReactElement;
-  placement?: 'left' | 'right';
+  placement?: IslandPlacement;
 }
 
-export interface LoadingIslandProps
-  extends React.HTMLAttributes<HTMLDivElement> {
-  placement?: 'left' | 'right';
+export interface LoadingIslandProps extends React.HTMLAttributes<HTMLDivElement> {
+  ref?: React.Ref<HTMLDivElement>;
+  placement?: IslandPlacement;
 }
 
-type MergedActionIslandProps = React.ButtonHTMLAttributes<HTMLElement>;
-
-export interface ActionIslandProps
-  extends Omit<MergedActionIslandProps, 'role' | 'onClick'> {
-  label: string;
-  icon?: ReactElement;
-  showLabel?: boolean;
-  placement?: 'left' | 'right';
-  danger?: boolean;
-  onClick?: () => void;
+/**
+ * `ActionIsland` renders a `<Button variant="default">`, so it accepts the full
+ * `Button` API (`state`, `badge`, `tooltip`, `selected`, `icon`, …) except
+ * `variant`, which is locked to the in-field `plate` chip. `size` defaults to
+ * one tier below the field.
+ */
+export interface ActionIslandProps extends Omit<ButtonProps, 'variant' | 'role'> {
+  placement?: IslandPlacement;
 }
 
-export interface CustomIslandProps
-  extends React.HTMLAttributes<HTMLDivElement> {
-  placement?: 'left' | 'right';
+export interface CustomIslandProps extends React.HTMLAttributes<HTMLDivElement> {
+  ref?: React.Ref<HTMLDivElement>;
+  placement?: IslandPlacement;
+}
+
+export interface CharCounterIslandProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'children'
+> {
+  ref?: React.Ref<HTMLDivElement>;
+  placement?: IslandPlacement;
 }

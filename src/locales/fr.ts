@@ -8,6 +8,14 @@ export const fr: Localization = {
     cancel: 'Annuler',
     delete: 'Supprimer',
     refresh: 'Actualiser',
+    edit: 'Modifier',
+    done: 'Terminé',
+  },
+  breadcrumbs: {
+    label: "Fil d'Ariane",
+  },
+  loading: {
+    label: 'Chargement',
   },
   datePicker: {
     placeholder: 'Sélectionner une date',
@@ -18,15 +26,18 @@ export const fr: Localization = {
     next: 'Suivant',
     prev: 'Précédent',
     clickToChangeView: 'Cliquer pour changer de vue',
+    startDate: 'Date de début',
+    endDate: 'Date de fin',
   },
   filePicker: {
     noFiles: 'Aucun fichier sélectionné',
     placeholder: 'Choisir un fichier',
     errorMessage: 'Impossible de télécharger le fichier. Veuillez réessayer',
+    untitledFile: 'Fichier sans nom',
+    retryUpload: 'Réessayer le téléchargement',
   },
-  numberInput: {
-    increase: 'Augmenter',
-    decrease: 'Diminuer',
+  textInput: {
+    loading: 'Chargement',
   },
   passwordInput: {
     showPassword: 'Afficher le mot de passe',
@@ -35,12 +46,28 @@ export const fr: Localization = {
   search: {
     placeholder: 'Rechercher',
   },
+  select: {
+    notFound: 'Aucun résultat',
+  },
+  toolbar: {
+    back: 'Précédent',
+    forward: 'Suivant',
+    search: 'Rechercher',
+    collapseSidebar: 'Réduire la barre latérale',
+    expandSidebar: 'Développer la barre latérale',
+  },
+  screen: {
+    sidebarLabel: 'Barre latérale',
+    bottomNavigationLabel: 'Navigation inférieure',
+    asideLabel: 'Détails',
+  },
   pagination: {
-    progress: '{{current}} sur {{total}}',
-    title: 'Aller à la page',
-    action: 'Aller',
+    navigation: 'Pagination',
     previous: 'Page précédente',
     next: 'Page suivante',
+    firstPage: 'Première page',
+    lastPage: 'Dernière page',
+    page: 'Page {{page}}',
   },
   dataTable: {
     filters: 'Filtres',
@@ -54,6 +81,8 @@ export const fr: Localization = {
     and: 'ET',
     noFilters:
       'Aucun filtre n\'est actuellement appliqué. Cliquez sur "Ajouter un filtre" pour créer un nouveau filtre.',
+    empty: 'Aucune donnée',
+    chooseRule: 'Choisir une règle',
     shownRows: {
       zero: '{{count}} lignes affichées',
       one: '{{count}} ligne affichée',
@@ -114,6 +143,18 @@ export const fr: Localization = {
       between: 'est entre',
       beyond: 'est au-delà',
     },
+    selectFilter: {
+      has: "est l'un de",
+      notHas: "n'est aucun de",
+    },
+    colorFilter: {
+      has: "est l'une de",
+      notHas: "n'est aucune de",
+    },
+    passwordFilter: {
+      empty: 'est vide',
+      notEmpty: "n'est pas vide",
+    },
   },
   photoViewer: {
     previous: 'Photo précédente',
@@ -130,12 +171,40 @@ export const fr: Localization = {
   closeButton: {
     ariaLabel: 'Fermer',
   },
+  notifications: {
+    regionLabel: 'Notifications',
+  },
+  dialog: {
+    alertTitle: 'Alerte',
+    confirmTitle: 'Confirmation',
+    promptTitle: 'Saisie',
+    ok: 'OK',
+    confirm: 'Confirmer',
+    cancel: 'Annuler',
+    promptPlaceholder: 'Saisissez une valeur',
+  },
   colorPicker: {
     placeholder: 'Choisir une couleur',
     savedColors: 'Couleurs sauvegardées',
     palette: 'Palette',
   },
-  empty: {
-    noData: 'Aucune donnée',
+  result: {
+    empty: 'Aucune donnée',
+  },
+  autocompleteInput: {
+    loadError: 'Une erreur est survenue lors du chargement des données',
+  },
+  calendar: {
+    previousMonth: 'Mois précédent',
+    nextMonth: 'Mois suivant',
+  },
+  splitter: {
+    collapsePanel: 'Réduire le panneau',
+    expandPanel: 'Développer le panneau',
+    panel: 'Panneau {{index}}',
+  },
+  image: {
+    loading: "Chargement de l'image",
+    brokenImage: "Échec du chargement de l'image",
   },
 };

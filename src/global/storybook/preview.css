@@ -1,0 +1,58 @@
+/* Storybook-only token bridge: the pattern backgrounds are painted on <body>,
+   which is outside `.AltroneApp` / `[data-altrone-root]` where these are
+   normally scoped. Kept in sync with `application/colors/_gray.scss`.
+   `data-altrone-theme` is mirrored onto <html> by `AltroneApplication`. */
+:root {
+  --gray-a4: color(display-p3 0.012 0.012 0.184 / 0.091);
+  --gray-a6: color(display-p3 0.008 0.008 0.165 / 0.15);
+  --background-1: color(display-p3 0.988 0.988 0.992);
+}
+
+:root[data-altrone-theme='dark'] {
+  --gray-a4: color(display-p3 0.882 0.953 0.996 / 0.111);
+  --gray-a6: color(display-p3 0.882 0.949 0.996 / 0.183);
+  --background-1: color(display-p3 0.067 0.067 0.074);
+}
+
+/* Базовые стили для Storybook */
+body {
+  font-family: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+} 
+
+/* Image backgrounds (El Capitan, Tahoe, …) should cover the canvas. Tiled
+   patterns must NOT — `StorybookDecorator` adds `sb-bg-cover` only for `url(...)`
+   values so the "Accent color pattern" keeps its own size/position/repeat. */
+body.sb-show-main.sb-bg-cover {
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+/* "Reduced motion" toolbar toggle (StorybookDecorator adds the class). The
+   `motion` library is handled in JS via <MotionConfig>; this covers plain CSS
+   transitions/animations, including components that hardcode a duration instead
+   of using the --motion-duration-* tokens. */
+html.sb-reduce-motion [data-altrone-root='true'] {
+  --motion-duration-fast: 0s;
+  --motion-duration-base: 0s;
+}
+
+html.sb-reduce-motion *,
+html.sb-reduce-motion *::before,
+html.sb-reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  transition-delay: 0s !important;
+  scroll-behavior: auto !important;
+}

@@ -1,0 +1,61 @@
+:global([data-altrone-root='true']) {
+  --toast-max-width: 420px;
+
+  /* Cards float over live page content with no scrim, so the surface is
+     opaque — the frosted `plate` fill alone reads as see-through here. */
+  --toast-surface: var(--gray-1);
+
+  --toast-default-icon-color: var(--text-2);
+  --toast-success-icon-color: var(--teal-9);
+  --toast-warning-icon-color: var(--amber-9);
+  --toast-danger-icon-color: var(--red-9);
+
+  --notification-width: 320px;
+  --notification-image-height: 140px;
+}
+
+// ─── Portal root ──────────────────────────────────────────────────────────────
+
+.Root {
+  position: fixed;
+  inset: 0;
+  z-index: var(--elevation-toast-z-index);
+  pointer-events: none;
+}
+
+// ─── Stacks ───────────────────────────────────────────────────────────────────
+
+.Stack {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-stack);
+  padding: var(--space-content);
+  pointer-events: none;
+
+  &.Start {
+    top: 0;
+  }
+
+  &.End {
+    bottom: 0;
+  }
+}
+
+.ToastStack {
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+
+.NotificationStack {
+  &.SideStart {
+    left: 0;
+    align-items: flex-start;
+  }
+
+  &.SideEnd {
+    right: 0;
+    align-items: flex-end;
+  }
+}

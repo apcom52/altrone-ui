@@ -8,6 +8,14 @@ export const ge: Localization = {
     cancel: 'Abbrechen',
     delete: 'Löschen',
     refresh: 'Aktualisieren',
+    edit: 'Bearbeiten',
+    done: 'Fertig',
+  },
+  breadcrumbs: {
+    label: 'Brotkrümelnavigation',
+  },
+  loading: {
+    label: 'Wird geladen',
   },
   datePicker: {
     placeholder: 'Datum auswählen',
@@ -18,16 +26,19 @@ export const ge: Localization = {
     next: 'Nächste',
     prev: 'Vorherige',
     clickToChangeView: 'Klicken Sie, um die Ansicht zu ändern',
+    startDate: 'Startdatum',
+    endDate: 'Enddatum',
   },
   filePicker: {
     noFiles: 'Keine Dateien ausgewählt',
     placeholder: 'Datei auswählen',
     errorMessage:
       'Datei kann nicht hochgeladen werden. Bitte versuchen Sie es erneut',
+    untitledFile: 'Unbenannte Datei',
+    retryUpload: 'Erneut hochladen',
   },
-  numberInput: {
-    increase: 'Erhöhen',
-    decrease: 'Verringern',
+  textInput: {
+    loading: 'Wird geladen',
   },
   passwordInput: {
     showPassword: 'Passwort anzeigen',
@@ -36,12 +47,28 @@ export const ge: Localization = {
   search: {
     placeholder: 'Suchen',
   },
+  select: {
+    notFound: 'Nichts gefunden',
+  },
+  toolbar: {
+    back: 'Zurück',
+    forward: 'Vorwärts',
+    search: 'Suchen',
+    collapseSidebar: 'Seitenleiste einklappen',
+    expandSidebar: 'Seitenleiste ausklappen',
+  },
+  screen: {
+    sidebarLabel: 'Seitenleiste',
+    bottomNavigationLabel: 'Untere Navigation',
+    asideLabel: 'Details',
+  },
   pagination: {
-    progress: '{{current}} von {{total}}',
-    title: 'Zur Seite navigieren',
-    action: 'Navigieren',
+    navigation: 'Seitennavigation',
     previous: 'Vorherige Seite',
     next: 'Nächste Seite',
+    firstPage: 'Erste Seite',
+    lastPage: 'Letzte Seite',
+    page: 'Seite {{page}}',
   },
   dataTable: {
     filters: 'Filter',
@@ -55,6 +82,8 @@ export const ge: Localization = {
     and: 'UND',
     noFilters:
       'Derzeit sind keine Filter angewendet. Klicken Sie auf "Filter hinzufügen", um einen neuen Filter zu erstellen.',
+    empty: 'Keine Daten',
+    chooseRule: 'Regel wählen',
     shownRows: {
       zero: '{{count}} Zeilen angezeigt',
       one: '{{count}} Zeile angezeigt',
@@ -115,6 +144,18 @@ export const ge: Localization = {
       between: 'ist zwischen',
       beyond: 'ist außerhalb',
     },
+    selectFilter: {
+      has: 'ist eines von',
+      notHas: 'ist keines von',
+    },
+    colorFilter: {
+      has: 'ist eine von',
+      notHas: 'ist keine von',
+    },
+    passwordFilter: {
+      empty: 'ist leer',
+      notEmpty: 'ist nicht leer',
+    },
   },
   photoViewer: {
     previous: 'Vorheriges Foto',
@@ -131,12 +172,40 @@ export const ge: Localization = {
   closeButton: {
     ariaLabel: 'Schließen',
   },
+  notifications: {
+    regionLabel: 'Benachrichtigungen',
+  },
+  dialog: {
+    alertTitle: 'Hinweis',
+    confirmTitle: 'Bestätigung',
+    promptTitle: 'Eingabe',
+    ok: 'OK',
+    confirm: 'Bestätigen',
+    cancel: 'Abbrechen',
+    promptPlaceholder: 'Wert eingeben',
+  },
   colorPicker: {
     placeholder: 'Farbe auswählen',
     savedColors: 'Gespeicherte Farben',
     palette: 'Palette',
   },
-  empty: {
-    noData: 'Keine Daten',
+  result: {
+    empty: 'Keine Daten',
+  },
+  autocompleteInput: {
+    loadError: 'Beim Laden der Daten ist ein Fehler aufgetreten',
+  },
+  calendar: {
+    previousMonth: 'Vorheriger Monat',
+    nextMonth: 'Nächster Monat',
+  },
+  splitter: {
+    collapsePanel: 'Bereich einklappen',
+    expandPanel: 'Bereich ausklappen',
+    panel: 'Bereich {{index}}',
+  },
+  image: {
+    loading: 'Bild wird geladen',
+    brokenImage: 'Bild konnte nicht geladen werden',
   },
 };

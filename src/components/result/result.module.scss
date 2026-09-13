@@ -1,0 +1,108 @@
+:global([data-altrone-root='true']) {
+  --result-padding: var(--xl-gap);
+  --result-gap: var(--l-gap);
+
+  --result-media-size: 48px;
+  --result-media-background: var(--interactive-1);
+  --result-media-color: var(--text-1);
+  --result-icon-size: 22px;
+
+  --result-description-max-width: 34ch;
+}
+
+.Result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--result-gap);
+  padding: var(--result-padding);
+  text-align: center;
+}
+
+/* Status tint — only the media chip changes colour; the text stays neutral.
+   Uses the semantic role tokens (see color.md), not raw hue steps. */
+.StatusInfo {
+  --result-media-background: var(--info-interactive-1);
+  --result-media-color: var(--info-text-1);
+}
+
+.StatusSuccess {
+  --result-media-background: var(--success-interactive-1);
+  --result-media-color: var(--success-text-1);
+}
+
+.StatusWarning {
+  --result-media-background: var(--warning-interactive-1);
+  --result-media-color: var(--warning-text-1);
+}
+
+.StatusError {
+  --result-media-background: var(--danger-interactive-1);
+  --result-media-color: var(--danger-text-1);
+}
+
+.Media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--result-media-size);
+  height: var(--result-media-size);
+  border-radius: 50%;
+  background: var(--result-media-background);
+  color: var(--result-media-color);
+  font-size: var(--result-icon-size);
+
+  svg {
+    width: 1em;
+    height: 1em;
+  }
+}
+
+.Content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--narrow-gap);
+}
+
+.Description {
+  max-width: var(--result-description-max-width);
+  text-wrap: pretty;
+}
+
+.Actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s-gap);
+  margin-top: var(--xs-gap);
+}
+
+.Mini {
+  --result-padding: var(--gap);
+  --result-gap: var(--xs-gap);
+  --result-media-size: 28px;
+  --result-icon-size: 14px;
+}
+
+.Small {
+  --result-padding: var(--l-gap);
+  --result-gap: var(--gap);
+  --result-media-size: 36px;
+  --result-icon-size: 18px;
+}
+
+.Large {
+  --result-padding: var(--xxl-gap);
+  --result-media-size: 64px;
+  --result-icon-size: 30px;
+}
+
+.XLarge {
+  --result-padding: var(--xxl-gap);
+  --result-gap: var(--xl-gap);
+  --result-media-size: 80px;
+  --result-icon-size: 38px;
+  --result-description-max-width: 44ch;
+}

@@ -1,117 +1,107 @@
-import React from 'react';
-import { expect, test, describe } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { Configuration, AltroneApplication, Radio } from '../src/components';
-
-class ResizeObserver {
-  observe() {}
-  unobserve() {}
-}
-
-beforeAll(() => {
-  // @ts-ignore
-  window.ResizeObserver = ResizeObserver;
-});
+import React, { createRef } from 'react';
+import { expect, test, describe, vi } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { Radio } from '../src/components';
 
 describe('Radio', () => {
-  test('check that all inner items are rendered', () => {
+  test('renders one native radio input per item, sharing a name', () => {
     render(
-      <AltroneApplication>
-        <Radio
-          data-testid="radio"
-          value="0"
-          onChange={() => null}
-          name="radio"
-          className="cls"
-          style={{ color: 'rgb(0, 0, 255)' }}
-        >
-          <Radio.Item
-            data-testid="radio-item"
-            className="inner-cls"
-            style={{ color: 'yellow' }}
-            value="0"
-          >
-            First option
-          </Radio.Item>
-          <Radio.Item value="1">Second option</Radio.Item>
-          <Radio.Item value="2" disabled>
-            Third option
-          </Radio.Item>
-        </Radio>
-      </AltroneApplication>,
+      <Radio value="a" onChange={vi.fn()} name="plan">
+        <Radio.Item value="a">Free</Radio.Item>
+        <Radio.Item value="b">Pro</Radio.Item>
+        <Radio.Item value="c" disabled>
+          Enterprise
+        </Radio.Item>
+      </Radio>,
     );
 
-    expect(screen.getByText('First option')).toBeInTheDocument();
-    expect(screen.getByText('First option').parentElement).toHaveAttribute(
-      'aria-checked',
-      'true',
-    );
-    expect(screen.getByText('Second option')).toBeInTheDocument();
-    expect(screen.getByText('Third option')).toBeInTheDocument();
-    expect(screen.getByText('Third option').parentElement).toHaveAttribute(
-      'aria-disabled',
-      'true',
-    );
+    const radios = screen.getAllByRole('radio');
+    expect(radios).toHaveLength(3);
+    radios.forEach((r) => expect(r).toHaveAttribute('name', 'plan'));
+
+    expect(screen.getByRole('radio', { name: 'Free' })).toBeChecked();
+    expect(screen.getByRole('radio', { name: 'Pro' })).not.toBeChecked();
+    expect(screen.getByRole('radio', { name: 'Enterprise' })).toBeDisabled();
   });
 
-  test('check that className and style props works', () => {
+  test('selecting an item calls onChange with its value and the event', () => {
+    const onChange = vi.fn();
     render(
-      <AltroneApplication>
-        <Radio
-          data-testid="radio"
-          value="0"
-          onChange={() => null}
-          name="radio"
-          className="cls"
-          style={{ color: 'rgb(0, 0, 255)' }}
-        >
-          <Radio.Item
-            data-testid="radio-item"
-            className="inner-cls"
-            style={{ color: 'yellow' }}
-            value="0"
-          >
-            First option
-          </Radio.Item>
-          <Radio.Item value="1">Second option</Radio.Item>
-        </Radio>
-      </AltroneApplication>,
+      <Radio value="a" onChange={onChange} name="plan">
+        <Radio.Item value="a">Free</Radio.Item>
+        <Radio.Item value="b">Pro</Radio.Item>
+      </Radio>,
     );
 
-    expect(screen.getByTestId('radio')).toHaveClass('cls');
-    expect(screen.getByTestId('radio')).toHaveStyle('color: rgb(0, 0, 255)');
-    expect(screen.getByTestId('radio-item')).toHaveClass('inner-cls');
-    expect(screen.getByTestId('radio-item')).toHaveStyle(
-      'color: rgb(255, 255, 0)',
-    );
+    fireEvent.click(screen.getByText('Pro'));
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange.mock.calls[0][0]).toBe('b');
+    expect(onChange.mock.calls[0][1]).toHaveProperty('currentTarget');
   });
 
-  test('check that Textarea configuration works correctly', () => {
+  test('group-level disabled disables every item', () => {
     render(
-      <AltroneApplication>
-        <Configuration
-          radio={{
-            className: 'cls',
-            style: { color: 'rgb(0, 0, 255)' },
-          }}
-        >
-          <Radio
-            data-testid="radio"
-            value="0"
-            onChange={() => null}
-            name="radio"
-          >
-            <Radio.Item data-testid="radio-item" value="0">
-              First option
-            </Radio.Item>
-            <Radio.Item value="1">Second option</Radio.Item>
-          </Radio>
-        </Configuration>
-      </AltroneApplication>,
+      <Radio value="a" onChange={vi.fn()} name="plan" disabled>
+        <Radio.Item value="a">Free</Radio.Item>
+        <Radio.Item value="b">Pro</Radio.Item>
+      </Radio>,
     );
 
-    const element = screen.getByTestId('radio');
-    expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
+    screen.getAllByRole('radio').forEach((r) => expect(r).toBeDisabled());
+  });
+
+  test('a bare item takes its name from aria-label', () => {
+    render(
+      <Radio value="a" onChange={vi.fn()} name="c">
+        <Radio.Item value="a" aria-label="Option A" />
+        <Radio.Item value="b" aria-label="Option B" />
+      </Radio>,
+    );
+
+    expect(screen.getByRole('radio', { name: 'Option A' })).toBeInTheDocument();
+  });
+
+  test('forwards refs to the group <div> and the item <label>', () => {
+    const groupRef = createRef<HTMLDivElement>();
+    const itemRef = createRef<HTMLLabelElement>();
+
+    render(
+      <Radio ref={groupRef} value="a" onChange={vi.fn()} name="c">
+        <Radio.Item ref={itemRef} value="a">
+          Free
+        </Radio.Item>
+      </Radio>,
+    );
+
+    expect(groupRef.current).toBeInstanceOf(HTMLDivElement);
+    expect(itemRef.current).toBeInstanceOf(HTMLLabelElement);
+  });
+
+  test('className and style apply to the group and the item', () => {
+    render(
+      <Radio
+        data-testid="group"
+        value="a"
+        onChange={vi.fn()}
+        name="c"
+        className="group-cls"
+        style={{ color: 'rgb(0, 0, 255)' }}
+      >
+        <Radio.Item
+          data-testid="item"
+          value="a"
+          className="item-cls"
+          style={{ color: 'rgb(255, 255, 0)' }}
+        >
+          Free
+        </Radio.Item>
+      </Radio>,
+    );
+
+    expect(screen.getByTestId('group')).toHaveClass('group-cls');
+    expect(screen.getByTestId('group')).toHaveStyle('color: rgb(0, 0, 255)');
+    expect(screen.getByTestId('item')).toHaveClass('item-cls');
+    expect(screen.getByTestId('item')).toHaveStyle('color: rgb(255, 255, 0)');
   });
 });

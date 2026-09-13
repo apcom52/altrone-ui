@@ -1,17 +1,8 @@
-@import 'src/global/mixins';
-
-:global(:root) {
-  --formFieldLabelTextColor: var(--default-700);
-  --formFieldDescriptionTextColor: var(--default-500);
-  --formFieldRequiredMarkColor: var(--danger-600);
-  --formFieldErrorMessageTextColor: var(--danger-700);
-}
-
-:global(.AltroneDark) {
-  --formFieldLabelTextColor: var(--default-200);
-  --formFieldDescriptionTextColor: var(--default-500);
-  --formFieldRequiredMarkColor: var(--danger-400);
-  --formFieldErrorMessageTextColor: var(--danger-400);
+:global([data-altrone-root='true']) {
+  --form-field-label-text-color: var(--text-2);
+  --form-field-description-text-color: var(--text-1);
+  --form-field-required-mark-color: var(--danger-text-1);
+  --form-field-error-message-text-color: var(--danger-text-1);
 }
 
 .Field {
@@ -25,30 +16,43 @@
   display: flex;
   align-items: center;
 
-  @include label-heading;
-  color: var(--formFieldLabelTextColor);
+  color: var(--form-field-label-text-color);
+  font-size: var(--text-size-4);
+  line-height: var(--line-height-4);
+  font-weight: var(--text-weight-medium);
 }
 
 .HintIcon {
-  margin-left: var(--s-gap);
-  font-size: 12px;
-  width: 18px !important;
-  height: 18px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: var(--space-inline);
+  width: 18px;
+  height: 18px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
 }
 
 .Asterisk {
-  color: var(--formFieldRequiredMarkColor);
+  color: var(--form-field-required-mark-color);
   margin-left: 2px;
 }
 
 .ErrorMessage {
-  @include sm-paragraph;
-  color: var(--formFieldErrorMessageTextColor);
+  color: var(--form-field-error-message-text-color);
+  font-size: var(--text-size-3);
+  line-height: var(--line-height-3);
+  font-weight: var(--text-weight-regular);
 }
 
 .Description {
-  @include sm-paragraph;
-  color: var(--formFieldDescriptionTextColor);
+  color: var(--form-field-description-text-color);
+  font-size: var(--text-size-3);
+  line-height: var(--line-height-3);
+  font-weight: var(--text-weight-regular);
 }
 
 .Control {
@@ -57,12 +61,12 @@
 
 .Invalid {
   .Label {
-    color: var(--formFieldErrorMessageTextColor);
+    color: var(--form-field-error-message-text-color);
   }
 }
 
 .Disabled {
   .Label {
-    @include disabled;
+    color: var(--disabled-text-color);
   }
 }

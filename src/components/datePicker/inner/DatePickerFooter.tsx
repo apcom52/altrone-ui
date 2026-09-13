@@ -1,13 +1,12 @@
 import { memo } from 'react';
 import s from './footer.module.scss';
 import { Button } from 'components/button';
-import { Icon } from 'components/icon';
 import {
   useDateContext,
   useDatePickerCloseFn,
   useDatePickerViewContext,
 } from '../DatePicker.contexts.ts';
-import dayjs from 'dayjs';
+import { dayjsInstance as dayjs } from 'utils';
 import { DatePickerFooterProps } from '../DatePicker.types.ts';
 import { useLocalization } from '../../application/useLocalization.tsx';
 
@@ -31,7 +30,9 @@ export const DatePickerFooter = memo<DatePickerFooterProps>(
           ? t('datePicker.thisMonth')
           : t('datePicker.thisYear');
 
-    const onCurrentDateButtonClick = () => {
+    const onCurrentDateButtonClick = (
+      event: React.MouseEvent<HTMLButtonElement>,
+    ) => {
       let thisDay = dayjs();
 
       if (picker === 'month') {
@@ -41,33 +42,26 @@ export const DatePickerFooter = memo<DatePickerFooterProps>(
       }
 
       setCurrentMonth(thisDay);
-      onDayClicked(thisDay);
+      onDayClicked(thisDay, event);
       closePopup();
     };
 
-    const onClearButtonClick = () => {
-      onDayClicked(undefined);
+    const onClearButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+      onDayClicked(undefined, event);
       closePopup();
     };
+
+    if (!clearButtonVisible && !currentDateButtonVisible) {
+      return null;
+    }
 
     return (
       <div className={s.Footer}>
         {clearButtonVisible && (
-          <Button
-            transparent
-            leftIcon={<Icon i="backspace" />}
-            label={t('common.clear')}
-            onClick={onClearButtonClick}
-          />
+          <Button label={t('common.clear')} onClick={onClearButtonClick} />
         )}
-        <div className={s.Separator} />
         {currentDateButtonVisible && (
-          <Button
-            transparent
-            leftIcon={<Icon i="event" />}
-            label={currentDateLabel}
-            onClick={onCurrentDateButtonClick}
-          />
+          <Button label={currentDateLabel} onClick={onCurrentDateButtonClick} />
         )}
       </div>
     );

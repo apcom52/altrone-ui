@@ -1,17 +1,12 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import {
-  Configuration,
-  AltroneApplication,
-  Radio,
-  Range,
-} from '../src/components';
+import { Application, Range } from '../src/components';
 
 describe('Range', () => {
   test('check that inner input has all necessary attributes', () => {
     const { container } = render(
-      <AltroneApplication>
+      <Application>
         <Range
           value={15}
           min={-50}
@@ -19,7 +14,7 @@ describe('Range', () => {
           onChange={() => null}
           name="test"
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     const element = container.querySelector('input') as HTMLInputElement;
@@ -29,7 +24,7 @@ describe('Range', () => {
 
   test('check aria attributes', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Range
           value={15}
           min={-50}
@@ -46,7 +41,7 @@ describe('Range', () => {
           disabled
           renderLabel={(value) => `${value}m2`}
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     const element = screen.getByTestId('range1');
@@ -66,18 +61,17 @@ describe('Range', () => {
     expect(element2).toHaveAttribute('aria-valuetext', '44m2');
   });
 
-  test('check renderLabel prop works', () => {
+  test('renderLabel drives the visible read-only label', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Range
           value={44}
           onChange={() => null}
-          direction="vertical"
+          readOnly
           data-testid="range2"
-          disabled
           renderLabel={(value) => `${value}m2`}
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     const element = screen.getByTestId('range2');
@@ -86,7 +80,7 @@ describe('Range', () => {
 
   test('check that className, style, activeTrackClassName props works', () => {
     const { container } = render(
-      <AltroneApplication>
+      <Application>
         <Range
           value={44}
           onChange={() => null}
@@ -95,7 +89,7 @@ describe('Range', () => {
           style={{ color: 'rgb(0, 0, 255)' }}
           activeTrackClassName="active-cls"
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('range')).toHaveClass('cls');
@@ -105,26 +99,23 @@ describe('Range', () => {
     expect(element).toHaveClass('active-cls');
   });
 
-  test('check that configuration works correctly', () => {
-    const { container } = render(
-      <AltroneApplication>
-        <Configuration
-          range={{
-            className: 'cls',
-            style: { color: 'rgb(0, 0, 255)' },
-            activeTrackClassName: 'active-cls',
-          }}
-        >
-          <Range value={44} onChange={() => null} data-testid="range" />
-        </Configuration>
-      </AltroneApplication>,
+  test('value bubble portals out of the root so an overflow ancestor cannot clip it', () => {
+    render(
+      <Application>
+        <Range
+          value={30}
+          onChange={() => null}
+          showCurrentValue="always"
+          data-testid="range3"
+          renderLabel={(value) => `${value}%`}
+        />
+      </Application>,
     );
 
-    const element = screen.getByTestId('range');
-    expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
+    const root = screen.getByTestId('range3');
+    const bubble = screen.getByText('30%');
 
-    const element2 = container.querySelector('.active-cls');
-    expect(element2).toBeInTheDocument();
+    expect(bubble).toBeInTheDocument();
+    expect(root).not.toContainElement(bubble);
   });
 });

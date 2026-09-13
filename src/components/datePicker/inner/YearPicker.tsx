@@ -1,12 +1,12 @@
 import { memo, useEffect, useMemo, useRef } from 'react';
 import s from './yearPicker.module.scss';
+import { PickerCell } from './PickerCell.tsx';
 import {
   useDateContext,
   useDatePickerCloseFn,
   useDatePickerViewContext,
 } from '../DatePicker.contexts.ts';
 import { useYearRanges } from '../utils.ts';
-import clsx from 'clsx';
 import { Composite, CompositeItem } from '@floating-ui/react';
 
 export const YearPicker = memo<{ autoClose?: boolean }>(
@@ -16,19 +16,15 @@ export const YearPicker = memo<{ autoClose?: boolean }>(
     const { selectedDates, onDayClicked, minDate, maxDate } = useDateContext();
     const closePopup = useDatePickerCloseFn();
 
-    const containerRef = useRef<HTMLDivElement>(null);
-
     const selectedYear = selectedDates[0];
-
     const [startYear, endYear] = useYearRanges(currentMonth);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
       containerRef.current?.focus();
     }, []);
 
     const years = useMemo(() => {
-      const elements = [];
-
       const onYearClick = (year: number) => {
         const newDate = currentMonth.set('year', year);
         setCurrentMonth(newDate);
@@ -44,44 +40,48 @@ export const YearPicker = memo<{ autoClose?: boolean }>(
         setViewMode('month');
       };
 
+      const result = [];
       for (let year = startYear; year <= endYear; year++) {
         const isSelected =
           picker === 'year' &&
-          selectedYear &&
-          selectedYear.isSame(currentMonth.year(year), 'year');
+          Boolean(selectedYear && selectedYear.year() === year);
+        const isDisabled =
+          Boolean(minDate && year < minDate.year()) ||
+          Boolean(maxDate && year > maxDate.year());
 
-        const cls = clsx(s.Year, {
-          [s.Selected]: isSelected,
-        });
-
-        const isDateLessThanMin = minDate ? year < minDate.year() : false;
-        const isDateGreaterThanMax = maxDate ? year > maxDate.year() : false;
-        const isDateDisabled = isDateLessThanMin || isDateGreaterThanMax;
-
-        elements.push(
+        result.push(
           <CompositeItem
             key={year}
-            disabled={isDateDisabled}
-            render={(htmlProps) => {
-              return (
-                <button
-                  type="button"
-                  className={cls}
-                  onClick={() => onYearClick(year)}
-                  autoFocus={isSelected}
-                  disabled={isDateDisabled}
-                  {...htmlProps}
-                >
-                  {year}
-                </button>
-              );
-            }}
+            disabled={isDisabled}
+            render={({ onSelect: _onSelect, ...htmlProps }) => (
+              <PickerCell
+                {...htmlProps}
+                label={year}
+                selected={isSelected}
+                disabled={isDisabled}
+                onSelect={() => onYearClick(year)}
+                data-index={year}
+                aria-label={String(year)}
+              />
+            )}
           />,
         );
       }
-
-      return elements;
-    }, [picker, startYear, endYear, currentMonth, autoClose]);
+      return result;
+    }, [
+      autoClose,
+      currentMonth,
+      picker,
+      selectedYear,
+      startYear,
+      endYear,
+      minDate,
+      maxDate,
+      setCurrentMonth,
+      setViewMode,
+      onDayClicked,
+      closePopup,
+    ]);
 
     return (
       <Composite

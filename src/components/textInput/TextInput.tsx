@@ -1,262 +1,218 @@
 import React, {
-  cloneElement,
-  FocusEventHandler,
-  forwardRef,
+  isValidElement,
   ReactElement,
   useCallback,
   useMemo,
-  useRef,
 } from 'react';
-import { TextInputProps } from './TextInput.types.ts';
+import { IslandPlacement, TextInputProps } from './TextInput.types.ts';
 import s from './textInput.module.scss';
 import clsx from 'clsx';
-import { useRainbowEffect } from 'components/application';
-import { useResizeObserver, useBoolean, DOMUtils } from 'utils';
+import { DOMUtils, AltChildren } from 'utils';
 import {
   ActionIsland,
+  CharCounterIsland,
   CustomIsland,
   IconIsland,
   LoadingIsland,
   TextIsland,
 } from './components';
-import { useConfiguration } from 'components/configuration';
-import { useFormField } from '../form/components/Field.tsx';
-import { AltChildren } from 'utils';
-import { TextInputSizeContext } from './TextInput.context.ts';
+import { useFormField } from '../form/components/Field.context.ts';
+import {
+  TextInputDisabledContext,
+  TextInputSizeContext,
+  TextInputValueSizeContext,
+} from './TextInput.context.ts';
+import { Slot } from 'utils/components/Slot.tsx';
+import { Box } from 'components/box';
 
-const TextInputComponent = forwardRef<HTMLInputElement, TextInputProps>(
-  (props, ref) => {
-    const {
-      children,
-      value,
-      onChange,
-      className,
-      transparent = false,
-      style,
-      wrapperClassName,
-      wrapperStyle,
-      invalid,
-      size,
-      rainbowEffect,
-      onFocus,
-      onBlur,
-      Component,
-      readonlyStyles = true,
-      name,
-      disabled,
-      ...restProps
-    } = props;
+const ISLAND_TYPES = [
+  TextIsland,
+  IconIsland,
+  ActionIsland,
+  CustomIsland,
+  LoadingIsland,
+  CharCounterIsland,
+];
 
-    const {
-      name: formFieldName,
-      invalid: formFieldInvalid,
-      disabled: formFieldDisabled,
-      size: formFieldSize,
-    } = useFormField();
+const TextInputComponent = ({
+  ref,
+  inputRef,
+  children,
+  value,
+  onChange,
+  className,
+  variant = 'default',
+  shape = 'pill',
+  style,
+  wrapperClassName,
+  wrapperStyle,
+  invalid,
+  size,
+  onFocus,
+  onBlur,
+  asChild = false,
+  readonlyStyles = true,
+  name,
+  disabled,
+  ...restProps
+}: TextInputProps) => {
+  const {
+    name: formFieldName,
+    invalid: formFieldInvalid,
+    disabled: formFieldDisabled,
+    size: formFieldSize,
+  } = useFormField();
 
-    const inputValue = value;
-    const inputName = typeof name === 'string' ? name : formFieldName;
-    const inputInvalid =
-      typeof invalid === 'boolean' ? invalid : formFieldInvalid;
-    const inputDisabled =
-      typeof disabled === 'boolean' ? disabled : formFieldDisabled;
-    const inputSize = size || formFieldSize;
+  const inputName = typeof name === 'string' ? name : formFieldName;
+  const inputInvalid =
+    typeof invalid === 'boolean' ? invalid : formFieldInvalid;
+  const inputDisabled =
+    typeof disabled === 'boolean' ? disabled : formFieldDisabled;
+  const inputSize = size || formFieldSize || 'm';
 
-    const { textInput: inputConfig = {} } = useConfiguration();
+  const isReadonly = readonlyStyles && Boolean(restProps.readOnly);
 
-    const isRainbowPropsActivated =
-      typeof rainbowEffect === 'boolean'
-        ? rainbowEffect
-        : inputConfig.rainbowEffect || true;
+  const [startIslands, endIslands, nonIslandElements, asChildElement] =
+    useMemo(() => {
+      const elementList = new AltChildren(children)
+        .filterNodes()
+        .toArray() as ReactElement[];
 
-    const inputRef = useRef<HTMLInputElement | null>(null);
-
-    const { value: focused, enable: focus, disable: blur } = useBoolean(false);
-
-    const isRainbowNeeded = Boolean(
-      !(restProps.readOnly && readonlyStyles) &&
-        !inputDisabled &&
-        !focused &&
-        isRainbowPropsActivated,
-    );
-
-    const onFocusHandler: FocusEventHandler<HTMLInputElement> = useCallback(
-      (e) => {
-        onFocus?.(e);
-        focus();
-      },
-      [onFocus],
-    );
-
-    const rainbowProps = useRainbowEffect(isRainbowNeeded, {
-      onMouseEnter: restProps.onMouseEnter,
-      onMouseMove: restProps.onMouseMove,
-      onMouseLeave: restProps.onMouseLeave,
-      onWheel: restProps.onWheel,
-      onFocus: onFocusHandler,
-      opacity: 0.33,
-      blur: 36,
-    });
-
-    const wrapperCls = clsx(
-      s.Wrapper,
-      {
-        [s.Small]: inputSize === 's',
-        [s.Large]: inputSize === 'l',
-      },
-      wrapperClassName,
-    );
-
-    const cls = clsx(
-      s.Input,
-      {
-        [s.Invalid]: inputInvalid,
-        [s.Readonly]: readonlyStyles && restProps.readOnly,
-        [s.Transparent]: transparent,
-      },
-      className,
-      inputConfig.className,
-    );
-
-    const wrapperStyles = {
-      ...wrapperStyle,
-    };
-
-    const leftIslandsContainerRef = useRef<HTMLDivElement | null>(null);
-    const rightIslandsContainerRef = useRef<HTMLDivElement | null>(null);
-
-    const [leftIslands, rightIslands, nonIslandElements] = useMemo(() => {
-      const islands = new AltChildren(children).filterNodes();
-
-      const elementList = islands.toArray() as ReactElement[];
-
-      const islandElements = [];
-      const nonIslandElements = [];
+      const islandElements: ReactElement[] = [];
+      const nonIslands: ReactElement[] = [];
 
       for (const element of elementList) {
-        if (element && typeof element !== 'string') {
-          if (
-            DOMUtils.containsElementType(element, [
-              TextIsland,
-              IconIsland,
-              ActionIsland,
-              CustomIsland,
-              LoadingIsland,
-            ])
-          ) {
-            islandElements.push(element);
-          } else {
-            nonIslandElements.push(element);
-          }
+        if (
+          element &&
+          typeof element !== 'string' &&
+          DOMUtils.containsElementType(element, ISLAND_TYPES)
+        ) {
+          islandElements.push(element);
         } else {
-          nonIslandElements.push(element);
+          nonIslands.push(element);
         }
       }
 
-      const left = islandElements.filter(
-        (island) =>
-          !island?.props?.placement || island?.props?.placement === 'left',
+      const placementOf = (el: ReactElement): IslandPlacement | undefined =>
+        (el.props as { placement?: IslandPlacement }).placement || 'start';
+
+      const start = islandElements.filter(
+        (island) => (placementOf(island) ?? 'start') === 'start',
       );
-      const right = islandElements.filter(
-        (island) => island?.props?.placement === 'right',
+      const end = islandElements.filter(
+        (island) => placementOf(island) === 'end',
       );
 
-      return [left, right, nonIslandElements];
-    }, [children]);
+      if (asChild) {
+        const [first, ...rest] = nonIslands;
+        return [start, end, rest, first ?? null] as const;
+      }
 
-    const onChangeHandler = useCallback<
-      React.ChangeEventHandler<HTMLInputElement>
-    >(
-      (e) => {
-        onChange?.(e.target.value, e);
-      },
-      [onChange],
-    );
+      return [start, end, nonIslands, null] as const;
+    }, [children, asChild]);
 
-    const onBlurHandler: FocusEventHandler<HTMLInputElement> = useCallback(
-      (e) => {
-        onBlur?.(e);
-        blur();
-      },
-      [onFocus],
-    );
+  const onChangeHandler = useCallback<
+    React.ChangeEventHandler<HTMLInputElement>
+  >(
+    (e) => {
+      onChange?.(e.target.value, e);
+    },
+    [onChange],
+  );
 
-    useResizeObserver(leftIslandsContainerRef);
-    useResizeObserver(rightIslandsContainerRef);
+  const valueSize = useMemo(
+    () => ({
+      valueLength: value?.length ?? 0,
+      maxLength: restProps.maxLength,
+    }),
+    [value, restProps.maxLength],
+  );
 
-    const styles = {
-      ...style,
-      ...inputConfig.style,
-      paddingLeft: leftIslands.length
-        ? leftIslandsContainerRef.current?.offsetWidth + 'px'
-        : undefined,
-      paddingRight: rightIslands.length
-        ? rightIslandsContainerRef.current?.offsetWidth + 'px'
-        : undefined,
-    };
+  const fieldProps = {
+    value,
+    onChange: onChangeHandler,
+    onFocus,
+    onBlur,
+    className: clsx(s.Input, className),
+    style,
+    'aria-invalid': inputInvalid,
+    name: inputName,
+    disabled: inputDisabled,
+    ...restProps,
+  };
 
-    let inputElement = null;
-    if (Component) {
-      inputElement = cloneElement(Component, {
-        ref,
-        value: inputValue,
-        onChange: onChangeHandler,
-        'aria-invalid': inputInvalid,
-        onBlur: onBlurHandler,
-        className,
-        style: styles,
-        name: inputName,
-        disabled: inputDisabled,
-        ...restProps,
-        ...Component.props,
-        ...rainbowProps,
-      });
-    } else {
-      inputElement = (
-        <input
-          type="text"
-          ref={(element) => {
-            inputRef.current = element;
-            if (typeof ref === 'function') {
-              ref(element);
-            } else if (ref) {
-              ref.current = element;
-            }
-          }}
-          value={inputValue}
-          onChange={onChangeHandler}
-          className={cls}
-          style={styles}
-          aria-invalid={inputInvalid}
-          onBlur={onBlurHandler}
-          name={inputName}
-          disabled={inputDisabled}
-          {...restProps}
-          {...rainbowProps}
-        />
+  let inputElement: ReactElement | null;
+
+  if (asChild) {
+    if (!isValidElement(asChildElement)) {
+      console.error(
+        '[TextInput] asChild requires a valid React element as the first non-island child',
       );
+      return null;
     }
 
-    return (
-      <div className={wrapperCls} style={wrapperStyles}>
-        <TextInputSizeContext.Provider value={inputSize || 'm'}>
-          {inputElement}
-          {leftIslands.length ? (
-            <div ref={leftIslandsContainerRef} className={s.LeftIslands}>
-              {leftIslands}
-            </div>
-          ) : null}
-          {rightIslands.length ? (
-            <div ref={rightIslandsContainerRef} className={s.RightIslands}>
-              {rightIslands}
-            </div>
-          ) : null}
-          {nonIslandElements}
-        </TextInputSizeContext.Provider>
-      </div>
+    inputElement = (
+      <Slot ref={inputRef} {...fieldProps}>
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        {asChildElement as ReactElement<any>}
+      </Slot>
     );
-  },
-);
+  } else {
+    inputElement = <input type="text" ref={inputRef} {...fieldProps} />;
+  }
+
+  /**
+   * `padding={{ y: 0 }}`: height is then the size tier exactly
+   * (`min-height: var(--box-size)`) — islands, which are ~one tier tall, can't
+   * inflate it. Horizontal padding stays on the value Box sets from `size`.
+   */
+  return (
+    <Box
+      ref={ref}
+      editable
+      shape={shape}
+      material={variant === 'transparent' ? 'transparent' : 'plate'}
+      tone={inputInvalid ? 'danger' : 'neutral'}
+      size={inputSize}
+      padding={{ y: 0 }}
+      className={clsx(
+        s.TextInput,
+        {
+          [s.Transparent]: variant === 'transparent',
+          [s.Mini]: inputSize === 'mini',
+          [s.Small]: inputSize === 's',
+          [s.Large]: inputSize === 'l',
+          [s.XLarge]: inputSize === 'xl',
+          [s.Readonly]: isReadonly,
+          [s.Disabled]: inputDisabled,
+        },
+        wrapperClassName,
+      )}
+      style={wrapperStyle}
+    >
+      <TextInputSizeContext.Provider value={inputSize}>
+        <TextInputDisabledContext.Provider value={Boolean(inputDisabled)}>
+          <TextInputValueSizeContext.Provider value={valueSize}>
+            <div className={s.Field}>
+              {startIslands.length ? (
+                <div className={s.StartIslands} data-altrone-island="start">
+                  {startIslands}
+                </div>
+              ) : null}
+              {inputElement}
+              {endIslands.length ? (
+                <div className={s.EndIslands} data-altrone-island="end">
+                  {endIslands}
+                </div>
+              ) : null}
+              {nonIslandElements}
+            </div>
+          </TextInputValueSizeContext.Provider>
+        </TextInputDisabledContext.Provider>
+      </TextInputSizeContext.Provider>
+    </Box>
+  );
+};
 
 const TextInputNamespace = Object.assign(TextInputComponent, {
   TextIsland: TextIsland,
@@ -264,6 +220,7 @@ const TextInputNamespace = Object.assign(TextInputComponent, {
   ActionIsland: ActionIsland,
   CustomIsland: CustomIsland,
   LoadingIsland: LoadingIsland,
+  CharCounterIsland: CharCounterIsland,
 });
 
 export { TextInputNamespace as TextInput };

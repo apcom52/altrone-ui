@@ -1,32 +1,31 @@
-.Tabs {
-  --tabs-gap: var(--xs-gap);
+:global([data-altrone-root='true']) {
+  --tabs-background-color: var(--background-a2);
+  --tabs-border-color: var(--border-a1);
+  --tabs-item-background-color: transparent;
+  --tabs-item-hover-background-color: var(--interactive-a2);
+  --tabs-item-active-background-color: var(--glass-background-color);
+  --tabs-item-border-color: var(--border-a2);
+  --tabs-item-text-color: var(--text-2);
 
-  display: flex;
-  gap: var(--gap);
-  position: relative;
-
-  &:has([role='tab']:hover) {
-    .TabsUnderlay {
-      opacity: 1;
-    }
-  }
+  --tabs-item-size: 24px;
+  --tabs-item-icon-size: 16px;
+  --tabs-item-font-size: 14px;
+  --tabs-item-rounding: 12px;
 }
 
-.TabsUnderlay {
-  position: absolute;
-  z-index: 0;
-  left: 0;
-  top: 4px;
-  width: 0;
-  height: 26px;
-  border-radius: 6px;
-  pointer-events: none;
-  background-color: var(--tabs-item-hover-background-color);
-  opacity: 0;
-  transition:
-    width 0.1s ease,
-    height 0.1s ease,
-    left 0.1s ease,
-    top 0.1s ease,
-    opacity 0.1s ease;
+.TabsContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.Tabs {
+  display: inline-flex;
+  position: relative;
+  height: 32px;
+  border-radius: 16px;
+  background-color: var(--tabs-background-color);
+  box-shadow: 0 0 0 1px var(--tabs-border-color);
+  padding: 4px;
+  gap: var(--s-gap);
 }

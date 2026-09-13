@@ -1,58 +1,53 @@
-@import 'src/global/mixins';
-
-:global(:root) {
-  --popoverSolidBackgroundColor: var(--default-100);
-
-  &:global(.AltroneDark) {
-    --popoverSolidBackgroundColor: var(--default-800);
-  }
+:global([data-altrone-root='true']) {
+  /* Seeds Box's `radius` -> `--radius-outer` for `shape="rounded"`. 24px matches
+     the popover's original (pre-Box) corner. */
+  --popover-radius: 24px;
 }
 
+/* Surface (glass fill, backdrop blur, rounded corners, overlay elevation) is
+   Box's `material="plate"` + `shape="rounded"` + `elevation="overlay"` — incl.
+   its own box-shadow transition. This only overrides Box's control defaults for
+   a stacking panel. */
 .Popover {
   display: flex;
   flex-direction: column;
-  position: absolute;
-  padding: var(--gap);
-  z-index: var(--level-popover);
-  transition: box-shadow var(--transitionDuration) ease;
-  background: var(--popoverSolidBackgroundColor);
-  border-radius: 8px;
-  box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--glass-border-color);
-  font-family: "Inter Variable", sans-serif;
-}
-
-.GlassEffect {
-  background: var(--glass-background-color);
-  -webkit-backdrop-filter: var(--glass-background-blur);
-  backdrop-filter: var(--glass-background-blur);
+  align-items: stretch;
+  justify-content: flex-start;
+  min-height: 0;
 }
 
 .Content {
-  @include paragraph;
+  font-size: var(--text-size-4);
+  line-height: var(--line-height-4);
 }
 
 .Header {
   display: flex;
-  align-items: start;
+  position: relative;
+  align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--l-gap);
+  margin-bottom: var(--space-stack);
+  min-height: 32px;
 }
 
 .Heading {
-  @include group-heading;
-  color: var(--headingTextColor);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  padding-inline: 40px;
+  color: var(--text-2);
+  font-weight: var(--text-weight-bold);
+  font-size: var(--text-size-4);
+  text-align: center;
 }
 
 .Close {
-  margin-left: var(--xl-gap);
-}
-
-.Arrow {
   position: absolute;
-  background: var(--popoverSolidBackgroundColor);
-  width: 14px;
-  height: 14px;
+  right: 0;
 }
 
 .InsideNotification {

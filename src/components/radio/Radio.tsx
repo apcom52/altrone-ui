@@ -1,7 +1,6 @@
 import { ChangeEventHandler, memo, useCallback, useId, useMemo } from 'react';
 import clsx from 'clsx';
 import s from './radio.module.scss';
-import { useConfiguration } from 'components/configuration';
 import { RadioContext, RadioProps } from './Radio.types.ts';
 import { RadioItem } from './components';
 import { ArrayUtils } from 'utils';
@@ -9,6 +8,7 @@ import { RadioContextWrapper } from './Radio.context.ts';
 
 const RadioWrapper = memo<RadioProps>(
   ({
+    ref,
     children,
     value,
     onChange,
@@ -17,13 +17,12 @@ const RadioWrapper = memo<RadioProps>(
     direction = 'horizontal',
     name,
     disabled,
+    size = 'm',
     ...restProps
   }) => {
     const id = useId();
 
     const radioName = typeof name === 'string' && name ? name : id;
-
-    const { radio: radioConfig = {} } = useConfiguration();
 
     const cls = clsx(
       s.RadioList,
@@ -31,11 +30,9 @@ const RadioWrapper = memo<RadioProps>(
         [s.Vertical]: direction === 'vertical',
       },
       className,
-      radioConfig.className,
     );
 
     const styles = {
-      ...radioConfig.style,
       ...style,
     };
 
@@ -53,12 +50,13 @@ const RadioWrapper = memo<RadioProps>(
         value,
         disabled: Boolean(disabled),
         onChange: onChangeHandler,
+        size,
       };
-    }, [onChangeHandler, value, radioName, disabled]);
+    }, [onChangeHandler, value, radioName, disabled, size]);
 
     return (
       <RadioContextWrapper.Provider value={radioContext}>
-        <div className={cls} style={styles} {...restProps}>
+        <div ref={ref} className={cls} style={styles} {...restProps}>
           {safeChildren}
         </div>
       </RadioContextWrapper.Provider>

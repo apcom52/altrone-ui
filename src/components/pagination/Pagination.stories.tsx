@@ -1,18 +1,14 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { ReactNode, useState } from 'react';
 import { Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Pagination } from './Pagination.tsx';
-import { useState } from 'react';
-import { userEvent, within, expect } from '@storybook/test';
-import { AsyncUtils } from '../../utils';
 
 const story: Meta<typeof Pagination> = {
   title: 'Components/Navigation/Pagination',
   component: Pagination,
   decorators: [StorybookDecorator],
-  args: {},
-  argTypes: {},
   parameters: {
     chromatic: {
       modes: {
@@ -23,73 +19,130 @@ const story: Meta<typeof Pagination> = {
   },
 };
 
-export const PaginationStory: StoryObj<typeof Pagination> = {
-  name: 'Using Flex',
+export default story;
+
+const Heading = ({ children }: { children: string }) => (
+  <Text block size={7} weight="bold" style={{ marginTop: 16 }}>
+    {children}
+  </Text>
+);
+
+const Paragraph = ({ children }: { children: ReactNode }) => (
+  <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
+    {children}
+  </Text>
+);
+
+const Case = ({ title, children }: { title: string; children: ReactNode }) => (
+  <Flex direction="vertical" gap="s">
+    <Text size={3} weight="medium" block>
+      {title}
+    </Text>
+    {children}
+  </Flex>
+);
+
+// ─── Overview ────────────────────────────────────────────────────────────────
+
+export const Overview: StoryObj<typeof Pagination> = {
+  name: 'Overview',
   render: () => {
-    const [page1, setPage1] = useState(1);
-    const [page2, setPage2] = useState(5);
-    const [page3, setPage3] = useState(1);
+    const [page, setPage] = useState(6);
 
     return (
-      <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Pagination</Text.Heading>
-        <Flex direction="horizontal" gap="m">
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={9} weight="bold">
+          Pagination
+        </Text>
+
+        <Paragraph>
+          <Text code>Pagination</Text> is a controlled page switcher — a{' '}
+          <Text code>&lt;nav&gt;</Text> landmark with previous/next arrows,{' '}
+          numbered page buttons, and (by default) first/last jumps. You own the{' '}
+          state: pass <Text code>currentPage</Text> and{' '}
+          <Text code>totalPages</Text>, and update your state from{' '}
+          <Text code>onChange(page, event)</Text>.
+        </Paragraph>
+
+        <Heading>The number window</Heading>
+        <Paragraph>
+          It always shows page 1 and the last page, plus{' '}
+          <Text code>siblings</Text> pages on each side of the current one (
+          <Text code>1</Text> by default). Gaps collapse into an ellipsis. The
+          current page button is <Text code>selected</Text> and carries{' '}
+          <Text code>aria-current="page"</Text>; arrows disable at the ends.
+        </Paragraph>
+
+        <Flex direction="vertical" gap="xs">
           <Pagination
-            data-testid="pagination"
-            currentPage={page1}
-            totalPages={5}
-            setPage={setPage1}
+            currentPage={page}
+            totalPages={20}
+            onChange={(p) => setPage(p)}
           />
-          <Pagination currentPage={page2} totalPages={120} setPage={setPage2} />
-          <Pagination currentPage={page3} totalPages={1} setPage={setPage3} />
+          <Text size={2} color="muted" block>
+            page {page} of 20
+          </Text>
         </Flex>
+
+        <Heading>Variations</Heading>
+
+        <Case title="Few pages — no ellipsis">
+          <Pagination currentPage={2} totalPages={5} onChange={() => {}} />
+        </Case>
+
+        <Case title="siblings={2}">
+          <Pagination
+            currentPage={50}
+            totalPages={100}
+            siblings={2}
+            onChange={() => {}}
+          />
+        </Case>
+
+        <Case title="showEdgeButtons={false}">
+          <Pagination
+            currentPage={4}
+            totalPages={12}
+            showEdgeButtons={false}
+            onChange={() => {}}
+          />
+        </Case>
+
+        <Case title="At the last page — next/last disabled">
+          <Pagination currentPage={12} totalPages={12} onChange={() => {}} />
+        </Case>
+
+        <Case title="Single page — everything disabled">
+          <Pagination currentPage={1} totalPages={1} onChange={() => {}} />
+        </Case>
       </Flex>
     );
   },
-  play: async ({ step, canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    await step('Need to show popover and navigate to page', async () => {
-      await userEvent.click(canvas.getByText('1 of 5'));
-
-      const inputElement = canvas.getByLabelText('Navigate to page');
-
-      inputElement.focus();
-      await userEvent.keyboard('{ArrowRight}');
-      await userEvent.keyboard('{backspace}');
-      await userEvent.type(inputElement, '4');
-      await userEvent.click(canvas.getByText('Navigate'));
-      await AsyncUtils.timeout(1);
-
-      await expect(canvas.getByText('4 of 5')).toBeInTheDocument();
-    });
-
-    await step('Need to work correctly with wrong inputed page', async () => {
-      await userEvent.click(canvas.getByText('4 of 5'));
-
-      const inputElement = canvas.getByLabelText('Navigate to page');
-
-      inputElement.focus();
-      await userEvent.keyboard('{ArrowRight}');
-      await userEvent.keyboard('{backspace}');
-      await userEvent.type(inputElement, '0');
-      await userEvent.click(canvas.getByText('Navigate'));
-      await AsyncUtils.timeout(1);
-
-      await expect(canvas.getByText('1 of 5')).toBeInTheDocument();
-
-      await userEvent.click(canvas.getByText('1 of 5'));
-
-      canvas.getByLabelText('Navigate to page').focus();
-      await userEvent.keyboard('{ArrowRight}');
-      await userEvent.keyboard('{backspace}');
-      await userEvent.type(inputElement, '55');
-      await userEvent.click(canvas.getByText('Navigate'));
-      await AsyncUtils.timeout(1);
-
-      await expect(canvas.getByText('5 of 5')).toBeInTheDocument();
-    });
-  },
 };
 
-export default story;
+// ─── Interactive ─────────────────────────────────────────────────────────────
+
+export const Interactive: StoryObj<typeof Pagination> = {
+  name: 'Interactive',
+  args: {
+    currentPage: 1,
+    totalPages: 25,
+    siblings: 1,
+    showEdgeButtons: true,
+  },
+  render: (args) => {
+    const [page, setPage] = useState(args.currentPage);
+    return (
+      <Flex direction="vertical" gap="s">
+        <Pagination
+          {...args}
+          currentPage={page}
+          onChange={(p) => setPage(p)}
+        />
+        <Text size={2} color="muted" block>
+          page {page} of {args.totalPages}
+        </Text>
+      </Flex>
+    );
+  },
+};

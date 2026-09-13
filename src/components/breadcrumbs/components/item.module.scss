@@ -1,61 +1,79 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --breadcrumbsItemTextColor: var(--default-700);
-  --breadcrumbsCurrentItemTextColor: var(--default-900);
-  --breadcrumbsHoveredItemTextColor: var(--default-800);
-  --breadcrumbsPressedItemTextColor: var(--primary-600);
-}
+.ListItem {
+  display: inline-flex;
+  align-items: center;
+  list-style-type: none;
+  padding: 0;
+  gap: var(--gap);
 
-:global(.AltroneDark) {
-  --breadcrumbsItemTextColor: var(--default-200);
-  --breadcrumbsCurrentItemTextColor: var(--default-50);
-  --breadcrumbsHoveredItemTextColor: var(--default-100);
-  --breadcrumbsPressedItemTextColor: var(--primary-400);
+  &:last-child .Separator {
+    display: none;
+  }
 }
 
 .Item {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   background-color: transparent;
   border: none;
-  gap: var(--s-gap);
   cursor: pointer;
   @include no-selection;
-  color: var(--breadcrumbsItemTextColor);
+  color: var(--breadcrumbs-item-text-color);
   transition: color 0.2s linear;
   text-decoration: none;
-  border-radius: 6px;
 
-  @include focus;
-
-  &:hover {
-    color: var(--breadcrumbsHoveredItemTextColor);
+  &:hover,
+  &:focus-visible {
+    color: var(--breadcrumbs-item-hover-text-color);
   }
+}
 
-  &:active {
-    color: var(--breadcrumbsPressedItemTextColor);
-  }
+.Content {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-gap);
 }
 
 .Icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  height: 18px;
+  font-size: var(--breadcrumbs-icon-size);
+  height: var(--breadcrumbs-icon-size);
 }
 
 .Label {
-  @include sm-paragraph;
-  font-weight: 500;
+  font-size: var(--breadcrumbs-text-size);
+  font-weight: var(--text-weight-medium);
+}
+
+/* Wins over `Text`'s own `--text-color` so the label follows the item's
+   colour — hover and the current-page accent. */
+.Item .Label {
+  color: inherit;
 }
 
 .Current {
+  --breadcrumbs-item-text-color: var(--breadcrumbs-current-item-text-color);
   cursor: default;
+  color: var(--breadcrumbs-current-item-text-color);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--breadcrumbs-current-item-text-color);
+  }
 
   .Label {
-    font-weight: 600;
-    color: var(--breadcrumbsCurrentItemTextColor);
+    font-weight: var(--text-weight-bold);
   }
+}
+
+.Separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--breadcrumbs-separator-size);
+  height: var(--breadcrumbs-separator-size);
+  color: var(--breadcrumbs-separator-color);
 }

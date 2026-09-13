@@ -1,12 +1,39 @@
-@import "../../../global/mixins";
+@import '../../../global/mixins';
 
-.CurrencyCell {
+.String {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.Text {
+  display: block;
+}
+
+.Number {
+  display: block;
+}
+
+.Currency {
+  display: block;
   text-align: right;
 }
 
-.BooleanCell {
+.CurrencySkeleton {
   display: flex;
-  font-size: 20px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.Boolean {
+  display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 18px;
+}
+
+.Color {
+  padding: 0;
 }

@@ -2,28 +2,35 @@ import {
   ChangeEvent,
   memo,
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
 import { Button } from '../button';
-import { FileItem, FilePickerProps } from './FilePicker.types.ts';
+import {
+  FileItem,
+  FilePickerContextType,
+  FilePickerProps,
+  InternalFileItem,
+} from './FilePicker.types.ts';
 import s from './filePicker.module.scss';
 import { File } from './inner';
-import { FilePickerContextType } from './FilePicker.types.ts';
-import { Flex } from 'components/flex';
-import { Icon } from 'components/icon';
 import { deleteFileRequest } from './FilePicker.utils.ts';
-import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import { FilePickerContext } from './FilePicker.context.ts';
 import { useLocalization } from '../application/useLocalization.tsx';
 import { GlobalUtils } from 'utils';
+import { Upload } from 'lucide-react';
+import { HTMLMotionProps, motion, useReducedMotionConfig } from 'motion/react';
 
 export const FilePicker = memo<FilePickerProps>(
   ({
+    ref,
     accept,
     defaultValue = [],
+    value,
+    onChange,
     multiple = false,
     url,
     autoUpload = true,
@@ -32,30 +39,45 @@ export const FilePicker = memo<FilePickerProps>(
     autoUploadFn,
     removeFileFn,
     placeholder,
+    size = 'm',
     className,
     style,
     ...restProps
   }) => {
     const t = useLocalization();
 
-    const { filePicker: filePickerConfig = {} } = useConfiguration();
+    const [internalFileList, setInternalFileList] = useState<
+      InternalFileItem[]
+    >(() =>
+      defaultValue.map((item) => ({
+        ...item,
+        id: item.id ?? GlobalUtils.uuid(),
+      })),
+    );
 
-    const [fileList, setFileList] = useState<FileItem[]>(() => {
-      if (defaultValue) {
-        return defaultValue.map((item) => ({
+    const isControlled = value !== undefined;
+
+    const fileList = useMemo<InternalFileItem[]>(() => {
+      if (isControlled) {
+        return (value as FileItem[]).map((item) => ({
           ...item,
-          id: GlobalUtils.uuid(),
-        }));
+          id: item.id ?? GlobalUtils.uuid(),
+        })) as InternalFileItem[];
       }
+      return internalFileList;
+    }, [isControlled, value, internalFileList]);
 
-      return [];
-    });
+    // Tracks the current resolved list so callbacks don't need fileList in their deps
+    const fileListRef = useRef<InternalFileItem[]>(fileList);
+    useEffect(() => {
+      fileListRef.current = fileList;
+    }, [fileList]);
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-    const chooseFiles = () => {
+    const chooseFiles = useCallback(() => {
       fileInputRef.current?.click();
-    };
+    }, []);
 
     const filePickerContext = useMemo<FilePickerContextType>(() => {
       return {
@@ -63,72 +85,79 @@ export const FilePicker = memo<FilePickerProps>(
         url,
         name,
         method,
+        size,
         autoUploadFn,
         removeFileFn,
       };
-    }, [autoUpload, autoUploadFn, removeFileFn, method, url, name]);
+    }, [autoUpload, autoUploadFn, removeFileFn, method, url, name, size]);
 
-    const onChangeFileInput = async (e: ChangeEvent<HTMLInputElement>) => {
-      const selectedFiles = e.target.files || [];
+    const onChangeFileInput = useCallback(
+      async (e: ChangeEvent<HTMLInputElement>) => {
+        const selectedFiles = Array.from(e.target.files || []);
+        /* Reset the native input so picking the *same* file again (e.g. after
+           removing it) still fires a change event. */
+        e.target.value = '';
+        if (selectedFiles.length === 0) return;
 
-      if (selectedFiles.length === 0) {
-        return;
-      }
-
-      for (const file of selectedFiles) {
         if (multiple) {
-          setFileList((old) => [
-            ...old,
-            {
-              id: GlobalUtils.uuid(),
-              file,
-            },
-          ]);
+          const newItems: InternalFileItem[] = selectedFiles.map((file) => ({
+            id: GlobalUtils.uuid(),
+            file,
+          }));
+          const newList = [...fileListRef.current, ...newItems];
+          if (!isControlled) setInternalFileList(newList);
+          onChange?.(newList, e);
         } else {
-          setFileList((old) => {
-            if (old.length && autoUpload) {
-              const deleteContext = {
-                url: String(url),
-                name: String(url),
-                pickerItem: old[0],
-              };
-
-              if (removeFileFn) {
-                void removeFileFn(deleteContext);
-              } else {
-                void deleteFileRequest(deleteContext);
-              }
+          // Async side effect runs before state update, outside of any setState call
+          const currentList = fileListRef.current;
+          if (currentList.length && autoUpload) {
+            const deleteCtx = {
+              url: String(url),
+              name: String(name),
+              pickerItem: currentList[0],
+            };
+            if (removeFileFn) {
+              await removeFileFn(deleteCtx);
+            } else {
+              await deleteFileRequest(deleteCtx);
             }
-
-            return [
-              {
-                id: GlobalUtils.uuid(),
-                file,
-              },
-            ];
-          });
+          }
+          const newList: InternalFileItem[] = [
+            { id: GlobalUtils.uuid(), file: selectedFiles[0] },
+          ];
+          if (!isControlled) setInternalFileList(newList);
+          onChange?.(newList, e);
         }
-      }
-    };
+      },
+      [multiple, autoUpload, url, name, removeFileFn, onChange, isControlled],
+    );
 
-    const deleteFile = useCallback((item: FileItem) => {
-      setFileList((old) => old.filter((file) => file.id !== item.id));
-    }, []);
+    const deleteFile = useCallback(
+      (item: InternalFileItem, event: React.MouseEvent) => {
+        const newList = fileListRef.current.filter((f) => f.id !== item.id);
+        if (!isControlled) setInternalFileList(newList);
+        onChange?.(newList, event);
+      },
+      [isControlled, onChange],
+    );
 
-    const cls = clsx(s.FilePicker, className, filePickerConfig.className);
+    const cls = clsx(s.FilePicker, className);
     const styles = {
-      ...filePickerConfig.style,
       ...style,
     };
 
+    /* `layoutRoot` makes it the reference frame for the chips' size animations:
+       its own position resolves instantly, so the picker moving in the layout
+       doesn't cascade into chip animations (same pattern as Tabs). */
+    const animateLayout = !useReducedMotionConfig();
+
     return (
       <FilePickerContext.Provider value={filePickerContext}>
-        <Flex
-          direction="horizontal"
-          gap="m"
-          align="center"
-          wrap
-          {...restProps}
+        <motion.div
+          layout={animateLayout ? true : undefined}
+          layoutRoot
+          {...(restProps as HTMLMotionProps<'div'>)}
+          ref={ref}
           className={cls}
           style={styles}
         >
@@ -144,22 +173,21 @@ export const FilePicker = memo<FilePickerProps>(
           {fileList.length === 0 ? (
             <div className={s.EmptyLabel}>{t('filePicker.noFiles')}</div>
           ) : null}
-          {fileList.map?.((item) => {
-            return (
-              <File
-                key={`${item.id}`}
-                file={item.file}
-                pickerItem={item}
-                onDeleteClick={deleteFile}
-              />
-            );
-          })}
+          {fileList.map((item) => (
+            <File
+              key={item.id}
+              file={item.file}
+              pickerItem={item}
+              onDeleteClick={deleteFile}
+            />
+          ))}
           <Button
-            leftIcon={<Icon i="file_upload" />}
+            size={size}
+            icon={<Upload />}
             label={placeholder || t('filePicker.placeholder')}
             onClick={chooseFiles}
           />
-        </Flex>
+        </motion.div>
       </FilePickerContext.Provider>
     );
   },

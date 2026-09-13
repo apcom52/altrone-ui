@@ -1,8 +1,15 @@
-import { PopoverProps } from '../popover';
-import { ReactNode } from 'react';
+import { Placement } from '@floating-ui/react';
+import type { CSSProperties, ReactElement, ReactNode, Ref } from 'react';
 
-export interface TooltipTypes extends Omit<PopoverProps, 'children'> {
-  content: string | JSX.Element;
+export interface TooltipProps {
+  ref?: Ref<HTMLElement>;
+  content: string | ReactElement;
+  title?: string;
+  kbd?: string;
+  maxWidth?: number | string;
   children?: ReactNode;
   childrenClassName?: string;
+  className?: string;
+  style?: CSSProperties;
+  placement?: Placement;
 }

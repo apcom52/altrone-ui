@@ -1,74 +1,49 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --bottomNavigationItemTextColor: var(--default-700);
-  --bottomNavigationHoveredItemTextColor: var(--primary-600);
-  --bottomNavigationPressedItemTextColor: var(--primary-700);
-  --bottom-navigation-badge-background: linear-gradient(
-    to bottom right,
-    #eb7dcc 0%,
-    #a18cd1 100%
-  );
-  --bottom-navigation-badge-text-color: white;
-}
-
-:global(.AltroneDark) {
-  --bottomNavigationItemTextColor: var(--default-200);
-  --bottomNavigationHoveredItemTextColor: var(--primary-400);
-  --bottomNavigationPressedItemTextColor: var(--primary-300);
-  --bottom-navigation-badge-background: linear-gradient(
-    to bottom right,
-    #9d3f8a 0%,
-    #5e4e95 100%
-  );
-  --bottom-navigation-badge-text-color: white;
-}
-
 .Item {
   display: flex;
   position: relative;
+  z-index: 1;
   flex-direction: column;
   align-items: center;
-  gap: var(--xs-gap);
+  gap: 4px;
+  min-width: var(--bottom-navigation-item-min-width);
+  padding: 6px 10px;
   border: none;
-  width: 64px;
   background: transparent;
   cursor: pointer;
-  color: var(--bottomNavigationItemTextColor);
+  color: var(--bottom-navigation-item-text-color);
   transition: color 0.2s linear;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: var(--bottom-navigation-item-rounding);
 
   @include no-appearance;
   @include no-selection;
   @include focus;
-
-  &:hover,
-  &.Selected {
-    color: var(--bottomNavigationHoveredItemTextColor);
-  }
-
-  &:active {
-    color: var(--bottomNavigationPressedItemTextColor);
-  }
 }
 
 .Icon {
-  font-size: 24px;
-  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--bottom-navigation-item-icon-size);
+  height: var(--bottom-navigation-item-icon-size);
+  z-index: 1;
 }
 
 .Label {
-  @include sm-paragraph;
+  font-size: var(--bottom-navigation-item-text-size);
+  font-weight: 500;
+  line-height: 16px;
+  z-index: 1;
 }
 
-.Badge {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: var(--bottom-navigation-badge-background);
-  color: var(--bottom-navigation-badge-text-color);
-  text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
-  border-radius: 4px;
+/* Wins over `Text`'s own `--text-color` so the label follows the item's
+   colour, including the selected accent. */
+.Item .Label {
+  color: inherit;
+}
+
+.Selected {
+  color: var(--bottom-navigation-selected-item-text-color);
 }

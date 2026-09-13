@@ -1,226 +1,300 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { ReactNode } from 'react';
 import { Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
+import { allModes } from '../../../.storybook/modes.ts';
 import { SideNavigation } from './SideNavigation.tsx';
 
 const story: Meta<typeof SideNavigation> = {
   title: 'Components/Navigation/SideNavigation',
   component: SideNavigation,
   decorators: [StorybookDecorator],
-  args: {},
-  argTypes: {},
-};
-
-export const TooltipStory: StoryObj<typeof SideNavigation> = {
-  name: 'Using TopNavigation',
-  render: () => {
-    return (
-      <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Standard TopNavigation</Text.Heading>
-        <Flex direction="horizontal">
-          <div style={{ width: '600px' }}>
-            <Text.Heading role="title">
-              The Evolution of Artificial Intelligence: Past, Present, and
-              Future
-            </Text.Heading>
-            <Text.Heading id="introduction" level={2} role="heading">
-              Introduction
-            </Text.Heading>
-            <Text.Paragraph>
-              Artificial Intelligence (AI) has been a topic of fascination and
-              speculation for decades. From its inception in theoretical
-              frameworks to its current applications in various industries, AI
-              has transformed significantly. This article explores the evolution
-              of AI, its current state, and future prospects, highlighting key
-              milestones and technological advancements.
-            </Text.Paragraph>
-            <Text.Heading id="genesis" level={2} role="heading">
-              The Genesis of Artificial Intelligence
-            </Text.Heading>
-            <Text.Heading id="concepts" level={3} role="subheading">
-              Early Concepts and Theories
-            </Text.Heading>
-            <Text.Paragraph>
-              The concept of AI dates back to ancient history, where myths and
-              stories about artificial beings endowed with intelligence were
-              common. However, the formal study of AI began in the 20th century.
-            </Text.Paragraph>
-            <Text.Heading level={3} role="inner">
-              Alan Turing and the Turing Test
-            </Text.Heading>
-            <Text.Paragraph>
-              Alan Turing, often considered the father of computer science,
-              proposed the idea of a machine that could simulate any human
-              intelligence. The Turing Test, introduced in 1950, became a
-              fundamental criterion for determining a machine's ability to
-              exhibit intelligent behavior equivalent to that of a human.
-            </Text.Paragraph>
-            <Text.Heading level={3} role="inner">
-              The Dartmouth Conference of 1956
-            </Text.Heading>
-            <Text.Paragraph>
-              This conference marked the official birth of AI as a field of
-              study. Researchers such as John McCarthy, Marvin Minsky, Nathaniel
-              Rochester, and Claude Shannon outlined a research agenda that
-              shaped AI's initial decades.
-            </Text.Paragraph>
-            <Text.Heading id="ai_programs" level={3} role="subheading">
-              Early AI Programs and Achievements
-            </Text.Heading>
-            <Text.Heading level={3} role="inner">
-              Logic Theorist and General Problem Solver
-            </Text.Heading>
-            <Text.Paragraph>
-              The Logic Theorist, developed by Allen Newell and Herbert A. Simon
-              in 1956, was one of the first AI programs capable of proving
-              mathematical theorems. The General Problem Solver (GPS), created
-              by the same team, aimed to solve a wide range of problems using a
-              general approach, laying the groundwork for future AI systems.
-            </Text.Paragraph>
-            <Text.Heading level={3} role="inner">
-              ELIZA and Early Natural Language Processing
-            </Text.Heading>
-            <Text.Paragraph>
-              Joseph Weizenbaum's ELIZA, created in the mid-1960s, simulated
-              conversation with a human using simple pattern matching and
-              substitution methodology. ELIZA demonstrated the potential for
-              machines to engage in human-like interactions, sparking interest
-              in natural language processing (NLP).
-            </Text.Paragraph>
-            <Text.Heading id="evolution" level={2} role="heading">
-              The Evolution and Expansion of AI
-            </Text.Heading>
-            <Text.Heading id="rise" level={3} role="subheading">
-              The Rise of Machine Learning
-            </Text.Heading>
-            <Text.Heading level={4} role="inner">
-              From Rule-Based Systems to Learning Algorithms
-            </Text.Heading>
-            <Text.Paragraph>
-              Early AI systems relied heavily on predefined rules and logic,
-              which limited their flexibility and scalability. The shift towards
-              machine learning in the 1980s and 1990s introduced algorithms
-              capable of learning from data, significantly enhancing AI's
-              capabilities.
-            </Text.Paragraph>
-            <Text.Heading level={4} role="inner">
-              Neural Networks and Deep Learning
-            </Text.Heading>
-            <Text.Paragraph>
-              The revival of neural networks in the late 1980s, particularly
-              with the backpropagation algorithm, marked a significant
-              advancement in AI. The advent of deep learning in the 2010s,
-              driven by increased computational power and large datasets,
-              enabled breakthroughs in image and speech recognition.
-            </Text.Paragraph>
-            <Text.Heading id="ai_in_21" level={3} role="subheading">
-              AI in the 21st Century
-            </Text.Heading>
-            <Text.Heading level={4} role="inner">
-              AI in Everyday Applications
-            </Text.Heading>
-            <Text.Paragraph>
-              AI technologies have become integral to everyday life, powering
-              virtual assistants like Siri and Alexa, recommendation systems on
-              platforms like Netflix and Amazon, and autonomous vehicles.
-              Machine learning models are used in healthcare for diagnosing
-              diseases, in finance for detecting fraud, and in marketing for
-              personalized advertising.
-            </Text.Paragraph>
-            <Text.Heading level={4} role="inner">
-              Ethical and Societal Implications
-            </Text.Heading>
-            <Text.Paragraph>
-              The widespread adoption of AI raises important ethical and
-              societal questions, including concerns about privacy, bias, and
-              job displacement. Initiatives like the development of ethical AI
-              frameworks and regulations aim to address these challenges and
-              ensure the responsible use of AI technologies.
-            </Text.Paragraph>
-            <Text.Heading id="conclusion" level={2} role="heading">
-              Conclusion
-            </Text.Heading>
-            <Text.Paragraph>
-              Artificial Intelligence has come a long way since its early days,
-              evolving from theoretical concepts to practical applications that
-              permeate various aspects of life. As AI continues to advance, it
-              promises to bring about transformative changes across industries
-              while also posing significant ethical and societal challenges. By
-              fostering responsible development and addressing these challenges,
-              we can harness the full potential of AI to benefit humanity.
-            </Text.Paragraph>
-            <Text.Heading id="references" level={2} role="heading">
-              References
-            </Text.Heading>
-            <Text.List type="numeric">
-              <Text.ListItem>
-                Russell, S., & Norvig, P. (2020). Artificial Intelligence: A
-                Modern Approach (4th ed.). Pearson.
-              </Text.ListItem>
-              <Text.ListItem>
-                Mitchell, T. M. (1997). Machine Learning. McGraw-Hill.
-              </Text.ListItem>
-              <Text.ListItem>
-                Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep
-                Learning. MIT Press.
-              </Text.ListItem>
-              <Text.ListItem>
-                OpenAI. (2020). GPT-3 Technical Report.
-              </Text.ListItem>
-            </Text.List>
-          </div>
-          <div
-            style={{
-              background: 'var(--dataTableHoveredRowBackgroundColor)',
-              position: 'fixed',
-              width: '300px',
-              flex: 1,
-              right: 0,
-              top: 0,
-              height: '100%',
-            }}
-          >
-            <SideNavigation title="Contents">
-              <SideNavigation.Item
-                href="#introduction"
-                label="Introduction"
-                data-testid="link1"
-              />
-              <SideNavigation.Item
-                href="#genesis"
-                label="The Genesis of Artificial Intelligence"
-                data-testid="link2"
-              >
-                <SideNavigation.Item
-                  href="#concepts"
-                  label="Early Concepts and Theories"
-                />
-                <SideNavigation.Item
-                  href="#ai_programs"
-                  label="Early AI Programs and Achievements"
-                />
-              </SideNavigation.Item>
-              <SideNavigation.Item
-                href="#evolution"
-                label="The Evolution and Expansion of AI"
-              >
-                <SideNavigation.Item
-                  href="#rise"
-                  label="The Rise of Machine Learning"
-                />
-                <SideNavigation.Item
-                  href="#ai_in_21"
-                  label="AI in the 21st Century"
-                />
-              </SideNavigation.Item>
-              <SideNavigation.Item href="#conclusion" label="Conclusion" />
-              <SideNavigation.Item href="#references" label="References" />
-            </SideNavigation>
-          </div>
-        </Flex>
-      </Flex>
-    );
+  parameters: {
+    chromatic: {
+      modes: {
+        light: allModes['light desktop'],
+        dark: allModes['dark desktop'],
+      },
+    },
   },
 };
 
 export default story;
+
+// ─── Prose helpers ───────────────────────────────────────────────────────────
+
+const Heading = ({ children }: { children: string }) => (
+  <Text block size={7} weight="bold" style={{ marginTop: 16 }}>
+    {children}
+  </Text>
+);
+
+const Paragraph = ({ children }: { children: ReactNode }) => (
+  <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
+    {children}
+  </Text>
+);
+
+// ─── Overview ────────────────────────────────────────────────────────────────
+
+export const Overview: StoryObj<typeof SideNavigation> = {
+  name: 'Overview',
+  render: () => (
+    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Text block size={9} weight="bold">
+        SideNavigation
+      </Text>
+
+      <Paragraph>
+        <Text code>SideNavigation</Text> is an on-page table of contents. It
+        renders a <Text code>&lt;nav&gt;</Text> of anchor links and highlights
+        whichever section is currently in view, tracked with an{' '}
+        <Text code>IntersectionObserver</Text> (<Text code>ScrollSpy</Text>).
+        Use it for long documents — docs pages, guides, settings.
+      </Paragraph>
+
+      <Paragraph>
+        It is <Text weight="bold">not</Text> <Text code>NavigationList</Text>.{' '}
+        <Text code>SideNavigation</Text> is intra-page (hash anchors);{' '}
+        <Text code>NavigationList</Text> is app-level route navigation.
+      </Paragraph>
+
+      <Heading>Anatomy</Heading>
+      <Paragraph>
+        An optional <Text code>title</Text> (the <Text code>&lt;nav&gt;</Text>{' '}
+        is <Text code>aria-labelledby</Text> it) over a list of{' '}
+        <Text code>SideNavigation.Item</Text>s. Each item needs a{' '}
+        <Text code>href</Text> that matches an element <Text code>id</Text> on
+        the page and a <Text code>label</Text>. The active item gets{' '}
+        <Text code>aria-current="page"</Text> and turns bold + accent-colored.
+      </Paragraph>
+
+      <Heading>Nesting</Heading>
+      <Paragraph>
+        Put <Text code>SideNavigation.Item</Text>s inside an item for
+        sub-sections. Nested items are always visible (not collapsible) and
+        indented one step. Every level is spied independently.
+      </Paragraph>
+
+      <Text block size={2} color="muted" style={{ marginTop: 8 }}>
+        A live scroll-spy example is in the “Documentation page” story — scroll
+        the canvas and watch the sidebar follow.
+      </Text>
+
+      <SideNavigation title="On this page">
+        <SideNavigation.Item href="#a" label="Introduction" />
+        <SideNavigation.Item href="#b" label="Getting started">
+          <SideNavigation.Item href="#b1" label="Install" />
+          <SideNavigation.Item href="#b2" label="Configure" />
+        </SideNavigation.Item>
+        <SideNavigation.Item href="#c" label="API reference" />
+        <SideNavigation.Item href="#d" label="FAQ" />
+      </SideNavigation>
+    </Flex>
+  ),
+};
+
+// ─── Documentation page (live scroll-spy) ────────────────────────────────────
+
+type Section = {
+  id: string;
+  title: string;
+  body: string[];
+  children?: { id: string; title: string; body: string[] }[];
+};
+
+const SECTIONS: Section[] = [
+  {
+    id: 'overview',
+    title: 'Overview',
+    body: [
+      'A design system is a collection of reusable components, guided by clear standards, that can be assembled to build any number of applications. It is the single source of truth that bridges design and engineering.',
+      'Unlike a UI kit, a mature design system also includes design tokens, interaction guidelines, accessibility standards, documentation, and contribution workflows. It is a product other teams build on.',
+    ],
+  },
+  {
+    id: 'principles',
+    title: 'Core Principles',
+    body: [
+      'Every successful design system rests on a small set of principles that guide every decision, from token names to component APIs. Without them, teams default to local optimizations that fragment the system.',
+    ],
+    children: [
+      {
+        id: 'consistency',
+        title: 'Consistency',
+        body: [
+          'When similar actions look and behave the same across a product, users transfer knowledge without relearning. Consistency is predictability, not uniformity — a button in a modal and one in a toolbar should feel like siblings.',
+        ],
+      },
+      {
+        id: 'reusability',
+        title: 'Reusability',
+        body: [
+          'A component that solves one problem is a feature, not a system component. Reusability requires identifying what varies between use cases and turning those variations into props, slots, or configuration.',
+        ],
+      },
+      {
+        id: 'accessibility',
+        title: 'Accessibility',
+        body: [
+          'Accessibility is a practice, not a checklist. Building accessible components from the start costs far less than retrofitting: keyboard navigation, correct ARIA, adequate contrast, screen-reader support.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'tokens',
+    title: 'Design Tokens',
+    body: [
+      'Design tokens are named variables that store visual decisions, replacing hard-coded values so a single change propagates everywhere.',
+    ],
+    children: [
+      {
+        id: 'colors',
+        title: 'Colors',
+        body: [
+          'A palette of hues in twelve-plus lightness steps, mapped to semantic roles — background, border, text, interactive, solid — so components adapt to theme changes without per-case overrides.',
+        ],
+      },
+      {
+        id: 'typography',
+        title: 'Typography',
+        body: [
+          'A limited, semantically named type scale — heading, subheader, paragraph, label, caption — so components reference roles, not raw pixels.',
+        ],
+      },
+      {
+        id: 'spacing',
+        title: 'Spacing',
+        body: [
+          'A scale built on multiples of a base unit makes layout mechanical: every gap, padding, and margin is a token, so layouts compose without collisions.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'components',
+    title: 'Components',
+    body: [
+      'Component architecture follows atomic design: atoms (Button, Input), molecules (SearchInput, FormRow), organisms (DataTable, DatePicker). Each level has a clear contract for input, output, and what it tells its parent.',
+    ],
+  },
+  {
+    id: 'theming',
+    title: 'Theming',
+    body: [
+      'Theming changes the visual language without touching component logic. CSS custom properties cascade, are overridable at any scope, and cost nothing at runtime.',
+      'Define theme values on a root selector, override them per theme, and have components reference only semantic tokens. Switching themes is a data attribute toggle on <html> — no re-renders.',
+    ],
+  },
+  {
+    id: 'governance',
+    title: 'Governance',
+    body: [
+      'A design system without governance decays: components diverge, tokens proliferate, docs drift. Governance is the process that keeps it healthy — contribution guidelines, review, versioning, a channel for consumers.',
+      'Inner-source models work well: open contribution via templated PRs, a small core owning API and accessibility review, semantic versioning, changelogs, and a deprecation policy of at least one major version.',
+    ],
+  },
+];
+
+export const DocumentationPage: StoryObj<typeof SideNavigation> = {
+  name: 'Documentation page',
+  render: () => (
+    <>
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          right: 0,
+          width: 260,
+          height: '100vh',
+          borderLeft: '1px solid var(--border-1)',
+          background: 'var(--background-2)',
+          overflowY: 'auto',
+          padding: '24px 0',
+          zIndex: 10,
+        }}
+      >
+        <SideNavigation title="On this page">
+          {SECTIONS.map((section) => (
+            <SideNavigation.Item
+              key={section.id}
+              href={`#${section.id}`}
+              label={section.title}
+            >
+              {section.children?.map((child) => (
+                <SideNavigation.Item
+                  key={child.id}
+                  href={`#${child.id}`}
+                  label={child.title}
+                />
+              ))}
+            </SideNavigation.Item>
+          ))}
+        </SideNavigation>
+      </div>
+
+      <div style={{ maxWidth: 680, paddingRight: 300 }}>
+        <Text size={8} weight="bold" block>
+          Design Systems: A Practical Guide
+        </Text>
+        <Text block color="muted">
+          A reference for teams building and maintaining component libraries at
+          scale.
+        </Text>
+
+        {SECTIONS.map((section) => (
+          <div key={section.id}>
+            <Text
+              size={6}
+              weight="bold"
+              block
+              id={section.id}
+              style={{ marginTop: 40 }}
+            >
+              {section.title}
+            </Text>
+            {section.body.map((p, i) => (
+              <Text key={i} block>
+                {p}
+              </Text>
+            ))}
+            {section.children?.map((child) => (
+              <div key={child.id}>
+                <Text
+                  size={5}
+                  weight="bold"
+                  block
+                  id={child.id}
+                  style={{ marginTop: 24 }}
+                >
+                  {child.title}
+                </Text>
+                {child.body.map((p, i) => (
+                  <Text key={i} block>
+                    {p}
+                  </Text>
+                ))}
+              </div>
+            ))}
+          </div>
+        ))}
+
+        <div style={{ height: 400 }} />
+      </div>
+    </>
+  ),
+};
+
+// ─── Without a title ─────────────────────────────────────────────────────────
+
+export const WithoutTitle: StoryObj<typeof SideNavigation> = {
+  name: 'Without title',
+  render: () => (
+    <SideNavigation>
+      <SideNavigation.Item href="#intro" label="Introduction" />
+      <SideNavigation.Item href="#core" label="Core concepts" />
+      <SideNavigation.Item href="#advanced" label="Advanced usage" />
+    </SideNavigation>
+  ),
+};

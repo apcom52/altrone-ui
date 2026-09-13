@@ -8,6 +8,14 @@ export const sp: Localization = {
     cancel: 'Cancelar',
     delete: 'Eliminar',
     refresh: 'Actualizar',
+    edit: 'Editar',
+    done: 'Listo',
+  },
+  breadcrumbs: {
+    label: 'Ruta de navegación',
+  },
+  loading: {
+    label: 'Cargando',
   },
   datePicker: {
     placeholder: 'Seleccionar fecha',
@@ -18,16 +26,19 @@ export const sp: Localization = {
     next: 'Siguiente',
     prev: 'Anterior',
     clickToChangeView: 'Haga clic para cambiar la vista',
+    startDate: 'Fecha de inicio',
+    endDate: 'Fecha de fin',
   },
   filePicker: {
     noFiles: 'No hay archivos seleccionados',
     placeholder: 'Elegir archivo',
     errorMessage:
       'No se puede cargar el archivo. Por favor, inténtelo de nuevo',
+    untitledFile: 'Archivo sin nombre',
+    retryUpload: 'Reintentar la carga',
   },
-  numberInput: {
-    increase: 'Aumentar',
-    decrease: 'Disminuir',
+  textInput: {
+    loading: 'Cargando',
   },
   passwordInput: {
     showPassword: 'Mostrar contraseña',
@@ -36,12 +47,28 @@ export const sp: Localization = {
   search: {
     placeholder: 'Buscar',
   },
+  select: {
+    notFound: 'No se encontró nada',
+  },
+  toolbar: {
+    back: 'Atrás',
+    forward: 'Adelante',
+    search: 'Buscar',
+    collapseSidebar: 'Contraer barra lateral',
+    expandSidebar: 'Expandir barra lateral',
+  },
+  screen: {
+    sidebarLabel: 'Barra lateral',
+    bottomNavigationLabel: 'Navegación inferior',
+    asideLabel: 'Detalles',
+  },
   pagination: {
-    progress: '{{current}} de {{total}}',
-    title: 'Ir a la página',
-    action: 'Navegar',
+    navigation: 'Paginación',
     previous: 'Página anterior',
     next: 'Página siguiente',
+    firstPage: 'Primera página',
+    lastPage: 'Última página',
+    page: 'Página {{page}}',
   },
   dataTable: {
     filters: 'Filtros',
@@ -55,6 +82,8 @@ export const sp: Localization = {
     and: 'Y',
     noFilters:
       'No hay filtros aplicados actualmente. Haga clic en "Añadir filtro" para crear uno nuevo.',
+    empty: 'Sin datos',
+    chooseRule: 'Elegir regla',
     shownRows: {
       zero: '{{count}} filas mostradas',
       one: '{{count}} fila mostrada',
@@ -115,6 +144,18 @@ export const sp: Localization = {
       between: 'está entre',
       beyond: 'está más allá',
     },
+    selectFilter: {
+      has: 'es uno de',
+      notHas: 'no es ninguno de',
+    },
+    colorFilter: {
+      has: 'es uno de',
+      notHas: 'no es ninguno de',
+    },
+    passwordFilter: {
+      empty: 'está vacío',
+      notEmpty: 'no está vacío',
+    },
   },
   photoViewer: {
     previous: 'Foto anterior',
@@ -131,12 +172,40 @@ export const sp: Localization = {
   closeButton: {
     ariaLabel: 'Cerrar',
   },
+  notifications: {
+    regionLabel: 'Notificaciones',
+  },
+  dialog: {
+    alertTitle: 'Aviso',
+    confirmTitle: 'Confirmación',
+    promptTitle: 'Entrada',
+    ok: 'OK',
+    confirm: 'Confirmar',
+    cancel: 'Cancelar',
+    promptPlaceholder: 'Introduce un valor',
+  },
   colorPicker: {
     placeholder: 'Seleccionar color',
     savedColors: 'Colores guardados',
     palette: 'Paleta',
   },
-  empty: {
-    noData: 'No hay datos',
+  result: {
+    empty: 'No hay datos',
+  },
+  autocompleteInput: {
+    loadError: 'Se produjo un error al cargar los datos',
+  },
+  calendar: {
+    previousMonth: 'Mes anterior',
+    nextMonth: 'Mes siguiente',
+  },
+  splitter: {
+    collapsePanel: 'Contraer panel',
+    expandPanel: 'Expandir panel',
+    panel: 'Panel {{index}}',
+  },
+  image: {
+    loading: 'Cargando imagen',
+    brokenImage: 'No se pudo cargar la imagen',
   },
 };

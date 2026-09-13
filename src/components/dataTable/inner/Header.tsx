@@ -1,83 +1,52 @@
-import { memo, useMemo } from 'react';
-import { Icon } from 'components/icon';
+import { ReactNode } from 'react';
+import { SquareCheckBig, Square } from 'lucide-react';
 import { Button } from 'components/button';
+import { Tooltip } from 'components/tooltip/Tooltip.tsx';
 import { useDataTableContext } from '../DataTable.context';
-import { DataTableProps } from '../DataTable.types';
-import { ArrayUtils } from 'utils';
-import s from './header.module.scss';
-import { Filtering } from './Filtering.tsx';
+import { DataTableRenderContext } from '../DataTable.types';
+import { AnyObject } from '../../../utils';
 import { useLocalization } from '../../application';
+import { Filtering } from './Filtering.tsx';
+import s from './header.module.scss';
 
-interface DataTableHeaderProps<T extends object> {
-  children: DataTableProps<T>['children'];
-  selectable: boolean;
+interface DataTableHeaderProps {
+  children?:
+    | ReactNode
+    | ((context: DataTableRenderContext<AnyObject>) => ReactNode);
 }
 
-const DataTableHeader = <T extends object>({
-  children,
-  selectable,
-}: DataTableHeaderProps<T>) => {
+export const DataTableHeader = ({ children }: DataTableHeaderProps) => {
   const t = useLocalization();
+  const { table, loading, selectable, selectMode, setSelectMode } =
+    useDataTableContext();
 
-  const {
-    initialData,
-    filters,
-    searchBy,
-    columns,
-    selectableMode,
-    selectedRows,
-    setSelectableMode,
-  } = useDataTableContext();
+  const selectedItems = table
+    .getSelectedRowModel()
+    .rows.map((row) => row.original);
 
-  const selectedItems = useMemo(() => {
-    return selectedRows.map((index) => initialData[index] as T);
-  }, [selectedRows, initialData]);
-
-  const childrenActions =
+  const childrenActions: ReactNode =
     typeof children === 'function'
-      ? children({
-          selectableMode,
-          selectedItems: selectedItems,
-        })
+      ? children({ selectableMode: selectMode, selectedItems })
       : children;
 
-  const safeChildrenArray = ArrayUtils.getSafeArray(childrenActions);
-
-  const isHeaderVisible = Boolean(
-    filters.length || searchBy || selectable || safeChildrenArray.length,
-  );
-
-  const columnsWithFilters = useMemo(() => {
-    return columns.filter((item) => item.filterable);
-  }, [columns]);
-
-  const selectableButton = selectable ? (
-    <Button
-      leftIcon={
-        <Icon i={selectableMode ? 'check_box_outline_blank' : 'check_box'} />
-      }
-      onClick={() => setSelectableMode(!selectableMode)}
-      title={
-        selectableMode
-          ? t('dataTable.disableSelectableMode')
-          : t('dataTable.selectableMode')
-      }
-    />
-  ) : null;
-
-  if (!isHeaderVisible) {
-    return null;
-  }
-
-  const actionsContainer = (
-    <div className={s.Actions}>
-      {selectableButton}
-      {childrenActions}
-      {columnsWithFilters.length > 0 ? <Filtering /> : null}
+  return (
+    <div className={s.Header}>
+      <div className={s.Actions}>
+        {selectable ? (
+          <Tooltip content={t('dataTable.selectableMode')}>
+            <Button
+              icon={selectMode ? <Square /> : <SquareCheckBig />}
+              label={t('dataTable.selectableMode')}
+              showLabel={false}
+              onClick={() => setSelectMode(!selectMode)}
+              selected={selectMode}
+              disabled={loading}
+            />
+          </Tooltip>
+        ) : null}
+        {childrenActions}
+        <Filtering />
+      </div>
     </div>
   );
-
-  return <div className={s.Header}>{actionsContainer}</div>;
 };
-
-export default memo(DataTableHeader) as typeof DataTableHeader;

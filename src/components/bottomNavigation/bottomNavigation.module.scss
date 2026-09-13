@@ -1,15 +1,49 @@
-:global(:root) {
-  --bottomNavigationBackgroundColor: var(--default-200);
-}
-
-:global(.AltroneDark) {
-  --bottomNavigationBackgroundColor: var(--default-700);
+:global([data-altrone-root='true']) {
+  --bottom-navigation-item-text-color: var(--text-2);
+  --bottom-navigation-selected-item-text-color: var(--accent-11);
+  --bottom-navigation-item-backdrop-color: var(--glass-background-color);
+  --bottom-navigation-item-icon-size: 24px;
+  --bottom-navigation-item-text-size: 12px;
+  --bottom-navigation-item-rounding: 18px;
+  --bottom-navigation-item-min-width: 64px;
+  --bottom-navigation-rounding: 22px;
+  --bottom-navigation-padding: 4px;
 }
 
 .BottomNavigation {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--l-gap) var(--l-gap);
-  background: var(--bottomNavigationBackgroundColor);
+  padding: var(--bottom-navigation-padding);
+  background: var(--glass-background-color);
+  border-radius: var(--bottom-navigation-rounding);
+  backdrop-filter: blur(64px) saturate(180%);
+  box-shadow: var(--elevation-raised-shadow);
+}
+
+/* Single shared element, moved by the container over the selected item. The
+   wrapper carries the sliding position; the inner `.Backdrop` carries the
+   look and the scale pulse. */
+.BackdropWrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.Backdrop {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--bottom-navigation-item-rounding);
+  background-color: var(--bottom-navigation-item-backdrop-color);
+  box-shadow: var(--elevation-raised-shadow);
+}
+
+.Floating {
+  position: fixed;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
 }

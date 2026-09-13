@@ -1,4 +1,4 @@
-import { AltroneApplication, Button, Flex, Icon, Role } from '../../src';
+import { Application, Button, Flex, Icon, Role } from '../../src';
 
 Cypress.Screenshot.defaults({
   overwrite: true,
@@ -10,7 +10,7 @@ describe('Button.cy.tsx', () => {
   it('check shapshot', () => {
     cy.viewport(1360, 720);
     cy.mount(
-      <AltroneApplication>
+      <Application>
         <Flex gap="l" direction="vertical">
           {allRoles.map((role) => (
             <Flex gap="s" direction="vertical">
@@ -86,7 +86,7 @@ describe('Button.cy.tsx', () => {
             </Flex>
           ))}
         </Flex>
-      </AltroneApplication>,
+      </Application>,
     );
 
     cy.compareSnapshot('button-light-1');
@@ -95,7 +95,7 @@ describe('Button.cy.tsx', () => {
   it('check dark theme shapshot', () => {
     cy.viewport(1360, 720);
     cy.mount(
-      <AltroneApplication theme="dark">
+      <Application theme="dark">
         <Flex gap="l" direction="vertical">
           {allRoles.map((role) => (
             <Flex gap="s" direction="vertical">
@@ -171,7 +171,7 @@ describe('Button.cy.tsx', () => {
             </Flex>
           ))}
         </Flex>
-      </AltroneApplication>,
+      </Application>,
     );
 
     cy.compareSnapshot('button-dark-1');

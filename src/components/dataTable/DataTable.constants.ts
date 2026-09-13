@@ -2,10 +2,26 @@ import { Option } from '../select/Select.types.ts';
 import {
   ArrayFilterRules,
   BooleanFilterRules,
+  CellRenderer,
+  ColorFilterRules,
+  DataTableColumnType,
   DateFilterRules,
   NumberFilterRules,
+  PasswordFilterRules,
+  SelectFilterRules,
   StringFilterRules,
 } from './DataTable.types.ts';
+import { BooleanRenderer } from './renderers/booleanRenderer.tsx';
+import { ColorRenderer } from './renderers/colorRenderer.tsx';
+import { CurrencyRenderer } from './renderers/currencyRenderer.tsx';
+import { CustomRenderer } from './renderers/customRenderer.tsx';
+import { DateRenderer } from './renderers/dateRenderer.tsx';
+import { LinkRenderer } from './renderers/linkRenderer.tsx';
+import { NumberRenderer } from './renderers/numberRenderer.tsx';
+import { PasswordRenderer } from './renderers/passwordRenderer.tsx';
+import { SelectRenderer } from './renderers/selectRenderer.tsx';
+import { StringRenderer } from './renderers/stringRenderer.tsx';
+import { TextRenderer } from './renderers/textRenderer.tsx';
 
 interface FilteringRuleOption extends Option {
   columns?: 0 | 1 | 2;
@@ -175,3 +191,75 @@ export const DataTableDateRules: FilteringRuleOption[] = [
     columns: 2,
   },
 ];
+
+export const DataTablePasswordRules: FilteringRuleOption[] = [
+  {
+    value: PasswordFilterRules.empty,
+    label: 'dataTable.passwordFilter.empty',
+    columns: 0,
+  },
+  {
+    value: PasswordFilterRules.notEmpty,
+    label: 'dataTable.passwordFilter.notEmpty',
+    columns: 0,
+  },
+];
+
+export const DataTableSelectRules: FilteringRuleOption[] = [
+  {
+    value: SelectFilterRules.has,
+    label: 'dataTable.selectFilter.has',
+    columns: 1,
+  },
+  {
+    value: SelectFilterRules.notHas,
+    label: 'dataTable.selectFilter.notHas',
+    columns: 1,
+  },
+];
+
+export const DataTableColorRules: FilteringRuleOption[] = [
+  {
+    value: ColorFilterRules.has,
+    label: 'dataTable.colorFilter.has',
+    columns: 1,
+  },
+  {
+    value: ColorFilterRules.notHas,
+    label: 'dataTable.colorFilter.notHas',
+    columns: 1,
+  },
+];
+
+export const RulesByDataType: Partial<
+  Record<DataTableColumnType, FilteringRuleOption[]>
+> = {
+  string: DataTableStringRules,
+  text: DataTableStringRules,
+  number: DataTableNumberRules,
+  currency: DataTableNumberRules,
+  password: DataTablePasswordRules,
+  boolean: DataTableBooleanRules,
+  date: DataTableDateRules,
+  select: DataTableSelectRules,
+  color: DataTableColorRules,
+};
+
+export const CellRenderers: Partial<
+  Record<DataTableColumnType, React.FC<CellRenderer<any>>>
+> & {
+  string: React.FC<CellRenderer<any>>;
+  text: React.FC<CellRenderer<any>>;
+} = {
+  string: StringRenderer,
+  text: TextRenderer,
+  number: NumberRenderer,
+  currency: CurrencyRenderer,
+  boolean: BooleanRenderer,
+  date: DateRenderer,
+  password: PasswordRenderer,
+  select: SelectRenderer,
+  link: LinkRenderer,
+  color: ColorRenderer,
+  custom: CustomRenderer,
+};

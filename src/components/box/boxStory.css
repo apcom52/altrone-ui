@@ -1,0 +1,73 @@
+.box-wrapper {
+  --bg-color-1: var(--accent-4);
+  --bg-color-2: var(--accent-3);
+
+  background-color: #e5e5f7;
+  opacity: 0.8;
+  margin: calc(-1 * var(--gap)) calc(-1 * var(--xl-gap));
+  padding: var(--gap) var(--xl-gap);
+  min-height: 100vh;
+  background-image:
+    radial-gradient(
+      var(--bg-color-1) 17%,
+      var(--bg-color-2) 18% 35%,
+      transparent 36.5%
+    ),
+    radial-gradient(
+      var(--bg-color-1) 17%,
+      var(--bg-color-2) 18% 35%,
+      transparent 36.5%
+    ),
+    radial-gradient(
+      var(--bg-color-2) 34%,
+      var(--bg-color-1) 36% 68%,
+      transparent 70%
+    ),
+    repeating-linear-gradient(
+      45deg,
+      var(--bg-color-1) -12.5% 12.5%,
+      var(--bg-color-2) 0 37.5%
+    );
+  background-position:
+    -20px -20px,
+    20px 20px,
+    0 0,
+    0 0;
+  background-size:
+    80px 80px,
+    80px 80px,
+    40px 40px,
+    80px 80px;
+}
+
+/* A vivid, busy "photo" panel — the only place `glass` visibly differs from
+   `translucent`, because the blur needs something behind it to chew on. */
+.box-photo {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  padding: 28px;
+  background:
+    radial-gradient(circle at 18% 22%, #ff8787, transparent 42%),
+    radial-gradient(circle at 82% 18%, #74c0fc, transparent 40%),
+    radial-gradient(circle at 62% 88%, #ffe066, transparent 46%),
+    radial-gradient(circle at 8% 92%, #63e6be, transparent 44%),
+    linear-gradient(135deg, #7048e8, #1098ad);
+}
+
+.box-photo-caption {
+  position: absolute;
+  inset: auto 12px 10px auto;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Neutral framed surface for showcasing elevation without the patterned bg. */
+.box-stage {
+  border-radius: 16px;
+  padding: 32px;
+  background: var(--background-2);
+  border: 1px solid var(--border-a1);
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { AltroneApplication, Text } from '../src';
+import { Application, Text } from '../src';
 
 describe('Text', () => {
   test('Text has to have article tag and apply custom css class and id', () => {
@@ -192,7 +192,7 @@ describe('Text', () => {
 
   test('check that Text configuration works correctly', () => {
     render(
-      <AltroneApplication
+      <Application
         config={{
           text: {
             section: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
@@ -223,7 +223,7 @@ describe('Text', () => {
           <Text.Code data-testid="code">content</Text.Code>
           <Text.Keyboard data-testid="keyboard">content</Text.Keyboard>
         </Text>
-      </AltroneApplication>,
+      </Application>,
     );
 
     const screenName = screen.getByTestId('screenName');

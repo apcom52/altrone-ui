@@ -1,20 +1,8 @@
-:global(:root) {
-  --dataTableHeaderBackgroundColor: var(--default-100);
-}
-
-:global(.AltroneDark) {
-  --dataTableHeaderBackgroundColor: var(--default-800);
-}
-
 .Header {
   display: flex;
   align-items: center;
-  height: 32px;
-  padding: 4px 6px;
-  background-color: var(--dataTableHeaderBackgroundColor);
+  padding: 8px 8px 0;
   gap: var(--xl-gap);
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
 }
 
 .Actions {

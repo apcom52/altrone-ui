@@ -1,4 +1,4 @@
-import { Theme } from './AltroneApplication.types.ts';
+import { Theme } from './Application.types.ts';
 import { createContext, useContext } from 'react';
 
 export type ThemeContextType = {

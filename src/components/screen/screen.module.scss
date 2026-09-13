@@ -1,0 +1,399 @@
+:global([data-altrone-root='true']) {
+  --screen-sidebar-width: 300px;
+  --screen-header-height: 56px;
+  --screen-bottom-nav-height: 64px;
+}
+
+.Screen {
+  /**
+   * Left offset the reserved (inline) sidebar imposes on flow content — the
+   * sidebar itself is `position: fixed` and animates (see Sidebar.tsx). `0px`
+   * when there's no sidebar, it's collapsed, or we're in overlay mode. The
+   * grid pads itself by this so content reflows without overflow clipping;
+   * `.Footer` breaks back out of it to run its band full-width. Curve matches
+   * the Drawer panel slide.
+   */
+  --screen-sidebar-inset: 0px;
+  /**
+   * The one vertical line the header toolbar, `Screen.Content` and the footer
+   * all align their content to. It's exactly where `Screen.Content`'s text
+   * sits — the grid's sidebar padding (`--screen-sidebar-inset`, which already
+   * bakes in a gutter past the sidebar) plus `Screen.Content`'s own inline
+   * padding (`--space-content`). `0px` + `--space-content` when there's no
+   * inline sidebar. Header and footer are pushed to this same value.
+   */
+  --screen-content-inset-start: calc(
+    var(--screen-sidebar-inset) + var(--space-content)
+  );
+  /** Vertical breathing room inside Content / Footer — deliberately roomy. */
+  --screen-content-padding-block: calc(var(--space-content) * 2);
+  /**
+   * Bottom-edge clearance for the last band before the screen edge: the iOS
+   * home-indicator inset (`env(safe-area-inset-bottom)`, `0px` unless the
+   * consumer's viewport is `viewport-fit=cover`). `Screen.BottomNavigation`
+   * raises it to the full bar reservation below.
+   */
+  --screen-bottom-safe: env(safe-area-inset-bottom, 0px);
+
+  position: relative;
+  display: grid;
+  /* `minmax(0, …)`, not a bare `1fr`: a bare `1fr` is `minmax(auto, 1fr)`, so a
+     `Screen.Content` whose child scrolls horizontally (a wide board, a table)
+     inflates the track to that child's max-content width — dragging the
+     full-width `.Footer` / `.Header` band off the right edge with it. The
+     min-0 floor keeps the column bound to the viewport and moves the overflow
+     into the scrolling child where it belongs. */
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: 'header' 'content' 'footer';
+  min-height: 100vh;
+  padding-inline-start: var(--screen-sidebar-inset);
+  transition:
+    padding-inline-start 0.42s cubic-bezier(0.32, 0.72, 0, 1),
+    grid-template-columns 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/**
+ * Any direct child that isn't a known zone lands in the content row — so a
+ * `Splitter` wrapping `Screen.Content` + `Screen.Aside` (the resizable-boundary
+ * pattern) needs no `grid-area` of its own.
+ */
+.Screen
+  > *:not(.Header):not(.Sidebar):not(.Aside):not(.Content):not(.Footer):not(
+    .BottomNavigation
+  ):not(.Scrim) {
+  grid-area: content;
+  min-width: 0;
+}
+
+.Screen:has(> .Sidebar):not(.SidebarOverlay) {
+  --screen-sidebar-inset: calc(
+    var(--screen-sidebar-width) + 2 * var(--space-content)
+  );
+}
+
+.Screen:has(> .Sidebar.Collapsed):not(.SidebarOverlay) {
+  --screen-sidebar-inset: 0px;
+}
+
+/* A trailing `Screen.Aside` (used bare, not inside a Splitter) turns the
+   content row into two columns; header and footer still span the full width.
+   Content is `minmax(0, 1fr)` so it yields as the aside column holds its width;
+   `collapsed` drops that column to zero and Content reclaims it. */
+.Screen:has(> .Aside) {
+  grid-template-columns: minmax(0, 1fr) var(--screen-aside-width, 320px);
+  grid-template-areas:
+    'header header'
+    'content aside'
+    'footer footer';
+}
+
+.Screen:has(> .Aside.Collapsed) {
+  grid-template-columns: minmax(0, 1fr) 0;
+}
+
+/**
+ * A transparent, fixed positioning zone — the visible bar is the consumer's
+ * `Toolbar` (its `solid` variant paints the frosted accent fill, hairline and
+ * sticky shadow). The `<header>` and `.HeaderInner` both run edge to edge —
+ * `position: fixed`, full viewport width — so the toolbar's fill is
+ * full-bleed. The gutter that keeps the toolbar's *content* clear of the
+ * overlapping sidebar is pushed into the toolbar as its `--toolbar-inset-start`
+ * (leading padding), not a wrapper margin, so the fill still reaches the edge.
+ */
+.Screen > .Header {
+  grid-area: header;
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: var(--screen-header-height);
+  z-index: var(--elevation-sticky-z-index);
+  color: inherit;
+}
+
+.HeaderInner {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+}
+
+/**
+ * The single toolbar child fills the header full width — its `solid` fill is
+ * full-bleed. Only its *content padding* is inset to the shared vertical line
+ * (`--screen-content-inset-start`, overridable on the leading side via the
+ * Screen.Header `insetStart` prop). `--toolbar-inset-start` is a registered
+ * `@property`, so the leading inset animates with the sidebar collapse.
+ * Targeting the toolbar directly rather than letting `.HeaderInner` set the
+ * values by inheritance — the toolbar declares its own per-size defaults,
+ * which inheritance wouldn't override.
+ */
+.HeaderInner > * {
+  flex: 1;
+  min-width: 0;
+}
+
+.HeaderInner > [role='toolbar'] {
+  --toolbar-inset-start: var(
+    --screen-header-inset-start,
+    var(--screen-content-inset-start)
+  );
+  --toolbar-inset-end: var(--space-content);
+}
+
+/**
+ * The fixed header is out of flow — push the content zones below it.
+ * Descendant, not `> `: Content / Aside may be nested inside a `Splitter`.
+ */
+.Screen:has(> .Header) .Content,
+.Screen:has(> .Header) .Aside {
+  padding-block-start: calc(
+    var(--screen-content-padding-block) + var(--screen-header-height)
+  );
+}
+
+/**
+ * `position: fixed` in both modes, floating 8px in from the screen edges (the
+ * same gutter Drawer's panel uses). It never lives in the grid — inline mode
+ * reserves room via the `.Screen` start inset above; overlay mode floats over
+ * the content with a scrim. `.SidebarPanel` is what actually moves.
+ */
+.Sidebar {
+  position: fixed;
+  inset-block: var(--space-content);
+  inset-inline-start: 0;
+  margin-inline: var(--space-content);
+  width: min(var(--screen-sidebar-width), 85vw);
+  /* Fill the viewport minus the top/bottom gutters — explicit so a flex/grid
+     ancestor can't collapse the panel shorter than the screen. */
+  min-block-size: calc(100vh - 2 * var(--space-content));
+  z-index: var(--level-fixed);
+}
+
+.SidebarOverlay > .Sidebar {
+  z-index: var(--elevation-overlay-z-index);
+}
+
+.Sidebar.Collapsed {
+  pointer-events: none;
+}
+
+.SidebarPanel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  /** The open/close scale inflates from the leading edge (matches Drawer). */
+  transform-origin: left center;
+}
+
+/** Whatever the consumer drops in (usually a NavigationList) fills the panel
+    height, so its own footer can pin to the bottom rather than trail the content. */
+.SidebarPanel > * {
+  flex: 1;
+  min-height: 0;
+}
+
+.Scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--level-offcanvas-backdrop);
+  background: var(--color-overlay-scrim);
+  border: none;
+  cursor: pointer;
+}
+
+/**
+ * The touch counterpart to `.Sidebar`: a fixed, full-width bar pinned to the
+ * bottom. `Screen` owns only the geometry — the navigation itself is the
+ * consumer's child. Like the `floating` header toolbar the bar is
+ * `pointer-events: none` with its content re-enabled, so the gaps around a
+ * centered pill nav stay click-through.
+ */
+.BottomNavigation {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: var(--level-fixed);
+  display: flex;
+  /* Float the bar off every edge by the same gutter `.Sidebar` keeps — plus
+     the iOS home-indicator inset on the bottom. */
+  padding: var(--space-content) var(--space-content)
+    calc(var(--space-content) + env(safe-area-inset-bottom, 0px));
+  pointer-events: none;
+}
+
+.BottomNavigationInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--screen-bottom-nav-height);
+}
+
+.BottomNavigationInner > * {
+  pointer-events: auto;
+}
+
+/** Total space the bar occupies (gutter above + bar + gutter below + safe-area) — the offset flow content needs. */
+.Screen:has(> .BottomNavigation) {
+  --screen-bottom-nav-space: calc(
+    var(--screen-bottom-nav-height) + 2 * var(--space-content) +
+      env(safe-area-inset-bottom, 0px)
+  );
+  --screen-bottom-safe: var(--screen-bottom-nav-space);
+}
+
+.Screen:has(> .BottomNavigation) .Content,
+.Screen:has(> .BottomNavigation) .Aside {
+  padding-block-end: calc(
+    var(--screen-content-padding-block) + var(--screen-bottom-nav-space)
+  );
+}
+
+/**
+ * No footer: Content / Aside is the last band, so it carries the bottom-edge
+ * clearance itself — the home-indicator inset, or the bar reservation when a
+ * `Screen.BottomNavigation` is present (already handled by the rule above, so
+ * this only adds the inset for the plain case).
+ */
+.Screen:not(:has(> .Footer)):not(:has(> .BottomNavigation)) .Content,
+.Screen:not(:has(> .Footer)):not(:has(> .BottomNavigation)) .Aside {
+  padding-block-end: calc(
+    var(--screen-content-padding-block) + var(--screen-bottom-safe)
+  );
+}
+
+/**
+ * Inline only: keep the reserved sidebar clear of the bar when both are on
+ * screen (desktop). The overlay drawer stays full height and simply floats
+ * over the bar.
+ */
+.Screen:not(.SidebarOverlay):has(> .BottomNavigation) > .Sidebar {
+  inset-block-end: var(--screen-bottom-nav-space);
+  min-block-size: calc(
+    100vh - var(--space-content) - var(--screen-bottom-nav-space)
+  );
+}
+
+.Content {
+  grid-area: content;
+  /* Never let content's intrinsic width push the grid track (and the chrome
+     bands that span it) past the viewport — a horizontally scrolling child
+     owns its own overflow. */
+  min-width: 0;
+  padding: var(--screen-content-padding-block) var(--space-content);
+
+  /**
+   * Deliberately no overflow-y/scroll here. The whole .Screen scrolls as one
+   * unit (via the page/viewport) — that's what gives the fixed header
+   * something to sit over and blur.
+   */
+
+  /**
+   * Caps content width only — the grid/sidebar/header layout is unaffected.
+   * `--screen-content-max-width` comes from `Screen`'s `size` class, or is set
+   * inline on this element by `Screen.Content`'s own `maxWidth` prop (which
+   * wins). `margin-inline: auto` centres the capped column, leaving gutters
+   * (or the `Screen.Aside` column) beside it.
+   */
+  max-width: var(--screen-content-max-width, none);
+  margin-inline: auto;
+  width: 100%;
+}
+
+/**
+ * `Screen.Aside` — a trailing companion column to Content. Used bare it's a
+ * grid column (width from `--screen-aside-width` on `.Screen`, set via the
+ * `asideWidth` prop); wrapped in a `Splitter.Panel` it just fills the panel.
+ * Either way: below the fixed header, no background of its own. Not resizable
+ * on its own — the `Splitter` provides that.
+ */
+.Aside {
+  grid-area: aside;
+  display: flex;
+  box-sizing: border-box;
+  min-inline-size: 0;
+  padding: var(--screen-content-padding-block) var(--space-content);
+}
+
+.AsideCollapsed {
+  padding-inline: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.AsideInner {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+/**
+ * A subtle chrome band, distinct from the content surface. It breaks out of
+ * the grid's sidebar inset to run edge to edge (behind the sidebar, like the
+ * header); `.FooterInner` re-insets the content past the sidebar.
+ */
+.Footer {
+  grid-area: footer;
+  margin-inline-start: calc(-1 * var(--screen-sidebar-inset));
+  background: var(--background-2);
+  border-block-start: 1px solid var(--border-1);
+  transition: margin-inline-start 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.FooterInner {
+  display: flex;
+  align-items: center;
+  /** Roomier than Content — the footer should breathe. */
+  padding-block: calc(var(--space-content) * 3);
+  /* The footer is the last band before the screen edge: its bottom padding
+     also clears the home indicator, or the fixed bottom bar when one is
+     present (`--screen-bottom-safe` folds both in). The band itself still
+     reaches the very bottom edge. */
+  padding-block-end: calc(
+    var(--space-content) * 3 + var(--screen-bottom-safe)
+  );
+  /* Same vertical line as Content and the header toolbar. */
+  padding-inline-start: var(--screen-content-inset-start);
+  padding-inline-end: var(--space-content);
+  transition: padding-inline-start 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.FooterInner > * {
+  flex: 1;
+  min-width: 0;
+}
+
+.Mini {
+  --screen-content-max-width: var(--breakpoint-xs);
+}
+
+.Small {
+  --screen-content-max-width: var(--breakpoint-sm);
+}
+
+.Medium {
+  --screen-content-max-width: var(--breakpoint-md);
+}
+
+.Large {
+  --screen-content-max-width: var(--breakpoint-lg);
+}
+
+.XLarge {
+  --screen-content-max-width: var(--breakpoint-xl);
+}
+
+/**
+ * contentAlign="center": box-center Screen.Content in both axes. Text
+ * alignment is left to the content itself (a form stays left-aligned, a
+ * Result centers its own text) — this only positions the block.
+ */
+.ContentCenter > .Content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+}

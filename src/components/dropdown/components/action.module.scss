@@ -1,93 +1,71 @@
-@import 'src/global/mixins';
+:global([data-altrone-root='true']) {
+  --dropdown-background-color: var(--interactive-a1);
+  --dropdown-press-background-color: var(--interactive-a2);
+  --dropdown-text-color: var(--text-2);
+  --dropdown-hint-text-color: var(--solid-1);
+  --dropdown-opened-background-color: var(--interactive-a3);
+  --dropdown-opened-text-color: var(--text-2);
 
-:global(:root) {
-  --dropdownActionBackgroundColor: transparent;
-  --dropdownActionHoverColor: var(--primary-500);
-  --dropdownActionPressColor: var(--primary-600);
-  --dropdownActionTextColor: var(--default-900);
-  --dropdownActionHoverTextColor: var(--default-50);
-  --dropdownActionPressTextColor: var(--default-50);
-  --dropdownHintTextColor: var(--disabledTextColor);
-  --dropdownOpenedBackgroundColor: var(--default-200);
-  --dropdownOpenedTextColor: var(--default-900);
-  --dropdown-badge-background-color: var(--default-200);
-  --dropdown-badge-text-color: var(--default-700);
-  --dropdown-badge-hover-background-color: var(--primary-700);
-  --dropdown-badge-hover-text-color: var(--default-50);
+  /* Menu rows are a single fixed density — no `size` prop. */
+  --dropdown-action-height: 32px;
+  --dropdown-action-padding-x: 8px;
+  --dropdown-action-font-size: var(--text-size-4);
+  --dropdown-action-icon-size: 18px;
 }
 
-:global(.AltroneDark) {
-  --dropdownActionBackgroundColor: transparent;
-  --dropdownActionHoverColor: var(--primary-700);
-  --dropdownActionPressColor: var(--primary-600);
-  --dropdownActionTextColor: var(--default-50);
-  --dropdownActionHoverTextColor: var(--default-50);
-  --dropdownActionPressTextColor: var(--default-50);
-  --dropdownHintTextColor: var(--disabledTextColor);
-  --dropdownOpenedBackgroundColor: var(--default-700);
-  --dropdownOpenedTextColor: var(--default-50);
-  --dropdown-badge-background-color: var(--default-700);
-  --dropdown-badge-text-color: var(--default-50);
-  --dropdown-badge-hover-background-color: var(--primary-400);
-  --dropdown-badge-hover-text-color: var(--default-50);
-
-  .DangerAction {
-    --dropdownActionBackgroundColor: transparent;
-    --dropdownActionHoverColor: var(--danger-700);
-    --dropdownActionPressColor: var(--danger-600);
-    --dropdownActionTextColor: var(--danger-600);
-
-    --dropdown-badge-background-color: var(--danger-700);
-    --dropdown-badge-text-color: var(--danger-50);
-    --dropdown-badge-hover-background-color: var(--danger-400);
-    --dropdown-badge-hover-text-color: var(--danger-50);
-  }
+.Menu {
+  display: flex;
+  flex-direction: column;
+  /* Consumes part of the popover's inherited radius budget — see radius.md. */
+  --radius-outer: clamp(
+    var(--radius-mini),
+    calc(var(--radius-outer) - 4px),
+    var(--radius-outer)
+  );
+  padding: 4px;
+  overflow-y: auto;
+  position: relative;
 }
 
 .Action {
   display: flex;
+  position: relative;
   align-items: center;
-  padding: var(--xs-gap) var(--l-gap) var(--xs-gap) var(--xs-gap);
-  border-radius: 6px;
-  background: var(--dropdownActionBackgroundColor);
+  padding: 0 var(--dropdown-action-padding-x);
+  border-radius: var(--radius-outer);
   border: none;
   text-align: left;
-  color: var(--dropdownActionTextColor);
+  color: var(--dropdown-text-color);
   cursor: pointer;
-  @include sm-paragraph;
-  @include no-selection;
-  gap: var(--gap);
-  height: 24px;
+  gap: var(--space-inline);
+  font-size: var(--dropdown-action-font-size);
+  font-weight: var(--text-weight-medium);
+  height: var(--dropdown-action-height);
   outline: 0;
-
-  &:hover,
-  &:focus-visible,
-  &[data-active='true']:not(.OpenedAction),
-  &.Focused {
-    background: var(--dropdownActionHoverColor);
-    color: var(--dropdownActionHoverTextColor);
-    --dropdownHintTextColor: var(--default-100);
-    --dropdown-badge-background-color: var(
-      --dropdown-badge-hover-background-color
-    );
-    --dropdown-badge-text-color: var(--dropdown-badge-hover-text-color);
-  }
+  background-color: transparent;
+  text-decoration: none;
 
   &:active {
-    background: var(--dropdownActionPressColor);
-    color: var(--dropdownActionPressTextColor);
-    --dropdownHintTextColor: var(--default-100);
-    --dropdown-badge-background-color: var(
-      --dropdown-badge-hover-background-color
-    );
-    --dropdown-badge-text-color: var(--dropdown-badge-hover-text-color);
+    .ItemBackground {
+      background-color: var(--dropdown-press-background-color);
+      scale: 1.02;
+    }
   }
 }
 
+.DangerAction {
+  --dropdown-background-color: var(--red-a3);
+  --dropdown-press-background-color: var(--red-a4);
+  --dropdown-text-color: var(--danger-text-1);
+}
+
 .Icon {
-  min-width: 16px;
-  font-size: 16px;
-  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  font-size: var(--dropdown-action-icon-size);
+  height: 24px;
 }
 
 .Label {
@@ -98,17 +76,20 @@
 }
 
 .Hint {
-  @include code;
-  font-size: 10px;
-  color: var(--dropdownHintTextColor);
+  font-family: var(--font-family-code);
+  font-size: var(--text-size-3);
+  line-height: var(--line-height-3);
+  color: var(--dropdown-hint-text-color);
   text-align: right;
 }
 
 .Arrow {
-  min-width: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
   font-size: 16px;
-  height: 16px;
-  margin-right: -8px;
+  height: 24px;
 }
 
 .DisabledAction {
@@ -118,27 +99,28 @@
 
 .OpenedAction {
   pointer-events: none;
-  --dropdownActionBackgroundColor: var(--dropdownOpenedBackgroundColor);
-  --dropdownActionTextColor: var(--dropdownOpenedTextColor);
+  background-color: var(--dropdown-opened-background-color);
 }
 
-.DangerAction {
-  --dropdownActionBackgroundColor: transparent;
-  --dropdownActionHoverColor: var(--danger-500);
-  --dropdownActionPressColor: var(--danger-600);
-  --dropdownActionTextColor: var(--danger-500);
-  --dropdownActionHoverTextColor: var(--danger-50);
-  --dropdownActionPressTextColor: var(--danger-50);
-  --dropdownHintTextColor: var(--danger-300);
-
-  --dropdown-badge-background-color: var(--danger-500);
-  --dropdown-badge-text-color: var(--danger-50);
-  --dropdown-badge-hover-background-color: var(--danger-700);
-  --dropdown-badge-hover-text-color: var(--danger-50);
+/* Look and sizing are owned by `Badge` (internal/badge); this only tucks it
+   against the row's trailing edge. */
+.Action .Badge {
+  margin-right: -2px;
 }
 
-.Badge {
-  color: var(--dropdown-badge-text-color);
-  background-color: var(--dropdown-badge-background-color);
-  margin-right: -8px;
+.ItemBackground {
+  position: absolute;
+  background-color: var(--dropdown-background-color);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  will-change: background-color, transform, top, left;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.Menu:not(:has(.Action > .Icon:not(:empty))) .Action .Icon {
+  display: none;
 }

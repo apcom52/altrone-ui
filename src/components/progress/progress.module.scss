@@ -1,27 +1,28 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --progressBackgroundColor: var(--default-100);
-  --progressActiveBackgroundColor: var(--default-300);
-  --progressTextColor: var(--default-700);
+:global([data-altrone-root='true']) {
+  --progress-active-background-color: var(--accent-5);
+  --progress-text-color: var(--accent-12);
+
+  --progress-height: 32px;
+  --progress-padding-inline: 8px;
 }
 
-:global(.AltroneDark) {
-  --progressBackgroundColor: var(--default-800);
-  --progressActiveBackgroundColor: var(--default-600);
-  --progressTextColor: var(--default-200);
-}
-
-.Progress {
+/**
+ * Progress is a `Box` (shape="pill", material="glass" — see box.md). Box owns
+ * the pill radius and the track fill (its neutral frosted material); this
+ * stylesheet paints the active fill + label and overrides Box's centered
+ * inline-flex control layout for a full-width bar. The `.Progress` compound
+ * lifts specificity above box.module's base rules.
+ */
+.Progress.Progress {
   display: flex;
-  position: relative;
-  align-items: center;
+  justify-content: flex-start;
   width: 100%;
-  border-radius: 6px;
-  height: 24px;
-  background-color: var(--progressBackgroundColor);
+  height: var(--progress-height);
+  min-height: 0;
+  padding: 0 var(--progress-padding-inline);
   overflow: hidden;
-  padding: 4px 8px;
 
   @include no-selection;
 }
@@ -31,27 +32,55 @@
   left: 0;
   top: 0;
   height: 100%;
-  background-color: var(--progressActiveBackgroundColor);
+  background-color: var(--progress-active-background-color);
 }
 
 .Label {
-  @include label;
+  /* Sits above the absolutely-positioned .Active fill (flex items honor
+     z-index without an explicit position). */
   z-index: 1;
-  color: var(--progressTextColor);
+  color: var(--progress-text-color);
+  font-size: var(--text-size-4);
+  line-height: var(--line-height-4);
+  font-weight: var(--text-weight-medium);
+}
+
+.Mini {
+  --progress-height: 18px;
+  --progress-padding-inline: 6px;
+
+  .Label {
+    font-size: var(--text-size-2);
+    line-height: var(--line-height-2);
+  }
 }
 
 .Small {
-  height: 20px;
+  --progress-height: 24px;
 
   .Label {
-    @include small-label;
+    font-size: var(--text-size-3);
+    line-height: var(--line-height-3);
   }
 }
 
 .Large {
-  height: 32px;
+  --progress-height: 40px;
 
   .Label {
-    @include label-heading;
+    font-size: var(--text-size-5);
+    line-height: var(--line-height-5);
+    font-weight: var(--text-weight-bold);
+  }
+}
+
+.XLarge {
+  --progress-height: 48px;
+  --progress-padding-inline: 12px;
+
+  .Label {
+    font-size: var(--text-size-6);
+    line-height: var(--line-height-6);
+    font-weight: var(--text-weight-bold);
   }
 }

@@ -1,15 +1,14 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import { mergeConfig } from 'vite';
-const tsconfigPaths = require('vite-tsconfig-paths');
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
 
   addons: [
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
     '@storybook/addon-themes',
+    '@storybook/addon-docs'
   ],
 
   framework: {
@@ -26,12 +25,18 @@ const config: StorybookConfig = {
 
   viteFinal: async (config) => {
     return mergeConfig(config, {
-      plugins: [tsconfigPaths.default()],
+      plugins: [tsconfigPaths()],
+      resolve: {
+        alias: {
+          components: '/src/components',
+          internal: '/src/internal',
+          hooks: '/src/hooks',
+          types: '/src/types',
+          utils: '/src/utils',
+          locales: '/src/locales',
+        },
+      },
     });
-  },
-
-  typescript: {
-    reactDocgen: 'react-docgen-typescript',
   },
 };
 export default config;

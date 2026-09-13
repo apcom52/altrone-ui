@@ -6,6 +6,7 @@ export const FilePickerContext = createContext<FilePickerContextType>({
   url: '',
   method: '',
   name: '',
+  size: 'm',
   autoUploadFn: async () => new Promise<void>((_) => {}),
   removeFileFn: async () => new Promise<void>((_) => {}),
 });

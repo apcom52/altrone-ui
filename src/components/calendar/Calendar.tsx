@@ -1,134 +1,276 @@
-import { CalendarProps } from './Calendar.types';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import clsx from 'clsx';
-import { memo, useMemo } from 'react';
-import { CalendarDate } from './CalendarDate';
-import dayjs from 'dayjs';
-import IsBetween from 'dayjs/plugin/isBetween';
-import IsToday from 'dayjs/plugin/isToday';
+import type { Dayjs } from 'dayjs';
+import { dayjsInstance as dayjs } from 'utils';
+import { useLocalizationContext } from '../application/useLocalization';
+import {
+  CalendarDateRange,
+  CalendarProps,
+  CalendarRenderDateProps,
+  CalendarSelection,
+} from './Calendar.types';
+import {
+  buildCalendarGrid,
+  getMonthCaption,
+  getWeekdayNames,
+  nextRange,
+  orderRange,
+  resolveBcp47,
+  resolveFirstWeekday,
+} from './calendarUtils';
+import { CalendarDate } from './components/CalendarDate';
+import { CalendarHeader } from './components/CalendarHeader';
 import s from './calendar.module.scss';
-import IsSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import IsSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import LocalizedFormat from 'dayjs/plugin/localizedFormat';
-import WeekOfYear from 'dayjs/plugin/weekOfYear';
-import LocaleData from 'dayjs/plugin/localeData';
-import { useConfiguration } from 'components/configuration';
 
-dayjs.extend(IsBetween);
-dayjs.extend(IsToday);
-dayjs.extend(IsSameOrBefore);
-dayjs.extend(IsSameOrAfter);
-dayjs.extend(LocalizedFormat);
-dayjs.extend(WeekOfYear);
-dayjs.extend(LocaleData);
+const EMPTY_DATES: Dayjs[] = [];
 
-export const dayjsInstance = dayjs;
+const asArray = (value: CalendarSelection): Dayjs[] =>
+  Array.isArray(value) ? value : EMPTY_DATES;
 
-/**
- * This component is used to show the selected month
- * @param month
- * @param selectedDates
- * @param onDateChange
- * @param DateComponent
- * @param disabled
- * @param className
- * @constructor
- */
-export const Calendar = memo(
+const asRange = (value: CalendarSelection): CalendarDateRange =>
+  value && typeof value === 'object' && !Array.isArray(value) && !dayjs.isDayjs(value)
+    ? (value as CalendarDateRange)
+    : {};
+
+const CalendarComponent = memo(
   ({
-    month = dayjs(),
-    selectedDates = [dayjs()],
-    cursorDate,
-    onDateChange,
-    DateComponent = CalendarDate,
-    disabled,
+    ref,
     className,
     style,
+    mode,
+    value,
+    defaultValue,
+    onSelect,
+    month,
+    defaultMonth,
+    onMonthChange,
+    firstDayOfWeek = 'auto',
+    locale,
+    minDate,
+    maxDate,
+    isDateDisabled,
+    disabled,
+    showHeader,
+    showNavigation = true,
+    showWeekdays,
+    showOutsideDays = true,
+    DateComponent = CalendarDate,
+    selectedDates,
+    cursorDate,
+    onDateChange,
     ...restProps
   }: CalendarProps) => {
-    const { calendar: calendarConfig = {}, locale: localeConfig } =
-      useConfiguration();
+    const { language } = useLocalizationContext();
+    const bcp47 = resolveBcp47(language, locale);
 
-    const cls = clsx(s.Calendar, className, calendarConfig.className);
+    const isControlledMonth = month !== undefined;
+    const [internalMonth, setInternalMonth] = useState<Dayjs>(
+      month ?? defaultMonth ?? dayjs(),
+    );
+    const displayMonth = month ?? internalMonth;
 
-    const styles = {
-      ...calendarConfig.style,
-      ...style,
-    };
+    const isControlledValue = value !== undefined;
+    const [internalValue, setInternalValue] = useState<CalendarSelection>(
+      defaultValue ?? (mode === 'multiple' ? EMPTY_DATES : mode === 'range' ? {} : undefined),
+    );
+    const selection = isControlledValue ? value : internalValue;
 
-    const calendarDates = useMemo(() => {
-      const result = [];
+    const [hoveredDate, setHoveredDate] = useState<Dayjs | undefined>(undefined);
 
-      const monthLocale = month.locale(localeConfig?.locale ?? 'en-US');
+    const firstWeekday = useMemo(
+      () => resolveFirstWeekday(bcp47, firstDayOfWeek),
+      [bcp47, firstDayOfWeek],
+    );
+    const weekdayNames = useMemo(
+      () => getWeekdayNames(bcp47, firstWeekday),
+      [bcp47, firstWeekday],
+    );
+    const grid = useMemo(
+      () => buildCalendarGrid(displayMonth, firstWeekday),
+      [displayMonth, firstWeekday],
+    );
 
-      const daysInMonth = monthLocale.daysInMonth();
-      const firstDay = monthLocale.startOf('month');
+    const changeMonth = useCallback(
+      (next: Dayjs) => {
+        if (!isControlledMonth) setInternalMonth(next);
+        onMonthChange?.(next);
+      },
+      [isControlledMonth, onMonthChange],
+    );
 
-      let currentDate = dayjs(firstDay);
+    const selectedDatesResolved = useMemo<Dayjs[]>(() => {
+      if (!mode) return selectedDates ?? EMPTY_DATES;
+      if (mode === 'single') return dayjs.isDayjs(selection) ? [selection] : EMPTY_DATES;
+      if (mode === 'multiple') return asArray(selection);
+      const range = asRange(selection);
+      return [range.from, range.to].filter(Boolean) as Dayjs[];
+    }, [mode, selection, selectedDates]);
 
-      for (let day = 1; day <= daysInMonth; day++) {
-        if (day === 1) {
-          let startOfWeek = currentDate.startOf('week');
+    const effectiveRange = useMemo<CalendarDateRange | null>(() => {
+      if (mode !== 'range') return null;
+      const range = asRange(selection);
+      if (range.from && range.to) return range;
+      if (range.from && hoveredDate) {
+        return orderRange({ from: range.from, to: hoveredDate });
+      }
+      if (range.from) return { from: range.from, to: range.from };
+      return null;
+    }, [mode, selection, hoveredDate]);
 
-          if (startOfWeek.isBefore(currentDate)) {
-            while (startOfWeek.isBefore(currentDate)) {
-              result.push(startOfWeek);
-              startOfWeek = startOfWeek.add(1, 'day');
-            }
-          }
-
-          result.push(currentDate);
-        } else if (day === daysInMonth) {
-          result.push(currentDate);
-
-          const endOfWeek = currentDate.endOf('week');
-
-          if (endOfWeek.isAfter(currentDate)) {
-            currentDate = currentDate.add(1, 'day');
-            while (currentDate.isBefore(endOfWeek)) {
-              result.push(currentDate);
-              currentDate = currentDate.add(1, 'day');
-            }
-          }
-        } else {
-          result.push(currentDate);
+    const handleSelect = useCallback(
+      (date: Dayjs, event: React.MouseEvent<HTMLButtonElement>) => {
+        if (!mode) {
+          onDateChange?.(date, event);
+          return;
         }
 
-        currentDate = currentDate.add(1, 'day');
+        let next: CalendarSelection;
+        if (mode === 'single') {
+          next = date;
+        } else if (mode === 'multiple') {
+          const current = asArray(selection);
+          next = current.some((d) => d.isSame(date, 'day'))
+            ? current.filter((d) => !d.isSame(date, 'day'))
+            : [...current, date];
+        } else {
+          next = nextRange(asRange(selection), date);
+          setHoveredDate(undefined);
+        }
+
+        if (!isControlledValue) setInternalValue(next);
+        onSelect?.(next, event);
+      },
+      [mode, selection, isControlledValue, onDateChange, onSelect],
+    );
+
+    const handleHover = useCallback(
+      (date?: Dayjs) => {
+        if (mode === 'range') setHoveredDate(date);
+      },
+      [mode],
+    );
+
+    const headerVisible = showHeader ?? Boolean(mode);
+    const weekdaysVisible = showWeekdays ?? Boolean(mode);
+    const hasChrome = headerVisible || weekdaysVisible;
+    const cursor = cursorDate ? dayjs(cursorDate) : undefined;
+    const rangeAnchor = selectedDates?.[0];
+
+    /** Whether the (range or legacy cursor) band covers a given grid cell. */
+    const isBanded = (date: Dayjs): boolean => {
+      if (
+        effectiveRange &&
+        date.isSameOrAfter(effectiveRange.from, 'day') &&
+        date.isSameOrBefore(effectiveRange.to, 'day')
+      ) {
+        return true;
+      }
+      if (cursor && rangeAnchor) {
+        return (
+          (date.isSameOrAfter(rangeAnchor, 'day') &&
+            date.isSameOrBefore(cursor, 'day')) ||
+          (date.isSameOrBefore(rangeAnchor, 'day') &&
+            date.isSameOrAfter(cursor, 'day'))
+        );
+      }
+      return false;
+    };
+
+    const bandedFlags = grid.map(isBanded);
+
+    const days = grid.map((date, index) => {
+      const fromAnotherMonth = !date.isSame(displayMonth, 'month');
+
+      if (fromAnotherMonth && !showOutsideDays) {
+        return <div key={index} className={s.Empty} aria-hidden />;
       }
 
-      return result;
-    }, [month]);
+      const column = index % 7;
+      const selected = selectedDatesResolved.some((d) =>
+        d?.isSame?.(date, 'day'),
+      );
+      const disabledDay =
+        Boolean(disabled) ||
+        Boolean(minDate && date.isBefore(minDate, 'day')) ||
+        Boolean(maxDate && date.isAfter(maxDate, 'day')) ||
+        Boolean(isDateDisabled?.(date));
 
-    const cursorDate_dj = cursorDate ? dayjs(cursorDate) : undefined;
+      const inRange = effectiveRange
+        ? date.isSameOrAfter(effectiveRange.from, 'day') &&
+          date.isSameOrBefore(effectiveRange.to, 'day')
+        : false;
+
+      const cellProps: CalendarRenderDateProps = {
+        currentDate: date,
+        weekDay: date.day(),
+        fromAnotherMonth,
+        today: date.isToday(),
+        selected,
+        disabled: disabledDay,
+        cursorHighlighted: Boolean(cursor && rangeAnchor) && bandedFlags[index],
+        inRange,
+        rangeStart: effectiveRange
+          ? date.isSame(effectiveRange.from, 'day')
+          : false,
+        rangeEnd: effectiveRange
+          ? date.isSame(effectiveRange.to, 'day')
+          : false,
+        startOfWeek: column === 0,
+        endOfWeek: column === 6,
+        inRangeAbove: index >= 7 ? bandedFlags[index - 7] : false,
+        inRangeBelow: index < 35 ? bandedFlags[index + 7] : false,
+        onSelect: handleSelect,
+        onHover: handleHover,
+      };
+
+      return <DateComponent key={index} {...cellProps} />;
+    });
+
+    if (!hasChrome) {
+      return (
+        <div
+          ref={ref}
+          className={clsx(s.Calendar, s.Bare, className)}
+          style={style}
+          {...restProps}
+        >
+          {days}
+        </div>
+      );
+    }
 
     return (
-      <div className={cls} style={styles} {...restProps}>
-        {calendarDates.map((date) => {
-          const fromAnotherMonth = !date.isSame(month, 'month');
-          const isDateSelected = Boolean(
-            selectedDates.find((d) => d?.isSame?.(date, 'day')),
-          );
+      <div
+        ref={ref}
+        className={clsx(s.Calendar, className)}
+        style={style}
+        {...restProps}
+      >
+        {headerVisible ? (
+          <CalendarHeader
+            caption={getMonthCaption(displayMonth, bcp47)}
+            showNavigation={showNavigation}
+            onPrev={() => changeMonth(displayMonth.subtract(1, 'month'))}
+            onNext={() => changeMonth(displayMonth.add(1, 'month'))}
+          />
+        ) : null}
 
-          const isCursorHighlighted = cursorDate_dj
-            ? date.isSameOrAfter(selectedDates[0]) &&
-              date.isSameOrBefore(cursorDate_dj)
-            : false;
+        {weekdaysVisible ? (
+          <div className={s.Weekdays}>
+            {weekdayNames.map((name, index) => (
+              <div key={index} className={s.Weekday}>
+                {name}
+              </div>
+            ))}
+          </div>
+        ) : null}
 
-          return (
-            <DateComponent
-              key={date.toISOString()}
-              weekDay={date.day()}
-              currentDate={date}
-              fromAnotherMonth={fromAnotherMonth}
-              today={date.isToday()}
-              selected={isDateSelected}
-              cursorHighlighted={isCursorHighlighted}
-              onSelect={onDateChange}
-              disabled={Boolean(disabled)}
-            />
-          );
-        })}
+        <div className={s.Grid}>{days}</div>
       </div>
     );
   },
 );
+
+export const Calendar = Object.assign(CalendarComponent, {
+  Date: CalendarDate,
+});

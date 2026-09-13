@@ -21,8 +21,8 @@ export class DOMUtils {
   static isFragment(element: ReactNode) {
     return Boolean(
       element &&
-        React.isValidElement(element) &&
-        element.type === React.Fragment,
+      React.isValidElement(element) &&
+      element.type === React.Fragment,
     );
   }
 
@@ -109,5 +109,19 @@ export class DOMUtils {
     checkNode(element);
 
     return result;
+  }
+
+  static composeRefs<T>(...refs: Array<React.Ref<T> | undefined>) {
+    return (node: T) => {
+      refs.forEach((ref) => {
+        if (!ref) return;
+
+        if (typeof ref === "function") {
+          ref(node);
+        } else {
+          (ref as React.MutableRefObject<T | null>).current = node;
+        }
+      });
+    };
   }
 }

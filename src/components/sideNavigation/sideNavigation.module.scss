@@ -1,11 +1,9 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --sideNavigationTitleTextColor: var(--default-900);
-}
-
-:global(.AltroneDark) {
-  --sideNavigationTitleTextColor: var(--default-50);
+:global([data-altrone-root='true']) {
+  --side-navigation-item-text-color: var(--text-2);
+  --side-navigation-item-active-text-color: var(--accent-11);
+  --side-navigation-item-text-size: 14px;
 }
 
 .SideNavigation {
@@ -15,9 +13,10 @@
   padding: var(--xl-gap) var(--gap);
 }
 
+/* Typography comes from the `Text` props on the element; this is a targeting
+   hook plus the neutral title colour. */
 .Title {
-  @include group-heading;
-  color: var(--sideNavigationTitleTextColor);
+  color: var(--side-navigation-item-text-color);
 }
 
 .Menu {

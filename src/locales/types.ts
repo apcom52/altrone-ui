@@ -15,6 +15,14 @@ export interface Localization {
     cancel: string;
     delete: string;
     refresh: string;
+    edit: string;
+    done: string;
+  };
+  breadcrumbs: {
+    label: string;
+  };
+  loading: {
+    label: string;
   };
   datePicker: {
     placeholder: string;
@@ -25,15 +33,18 @@ export interface Localization {
     next: string;
     prev: string;
     clickToChangeView: string;
+    startDate: string;
+    endDate: string;
   };
   filePicker: {
     noFiles: string;
     placeholder: string;
     errorMessage: string;
+    untitledFile: string;
+    retryUpload: string;
   };
-  numberInput: {
-    increase: string;
-    decrease: string;
+  textInput: {
+    loading: string;
   };
   passwordInput: {
     showPassword: string;
@@ -42,12 +53,28 @@ export interface Localization {
   search: {
     placeholder: string;
   };
+  select: {
+    notFound: string;
+  };
+  toolbar: {
+    back: string;
+    forward: string;
+    search: string;
+    collapseSidebar: string;
+    expandSidebar: string;
+  };
+  screen: {
+    sidebarLabel: string;
+    bottomNavigationLabel: string;
+    asideLabel: string;
+  };
   pagination: {
-    progress: string;
-    title: string;
-    action: string;
+    navigation: string;
     previous: string;
     next: string;
+    firstPage: string;
+    lastPage: string;
+    page: string;
   };
   dataTable: {
     filters: string;
@@ -60,6 +87,8 @@ export interface Localization {
     where: string;
     and: string;
     noFilters: string;
+    empty: string;
+    chooseRule: string;
     shownRows: PluralString;
     selectedRows: PluralString;
     totalRows: string;
@@ -106,6 +135,18 @@ export interface Localization {
       between: string;
       beyond: string;
     };
+    selectFilter: {
+      has: string;
+      notHas: string;
+    };
+    colorFilter: {
+      has: string;
+      notHas: string;
+    };
+    passwordFilter: {
+      empty: string;
+      notEmpty: string;
+    };
   };
   photoViewer: {
     previous: string;
@@ -122,12 +163,40 @@ export interface Localization {
   closeButton: {
     ariaLabel: string;
   };
+  notifications: {
+    regionLabel: string;
+  };
+  dialog: {
+    alertTitle: string;
+    confirmTitle: string;
+    promptTitle: string;
+    ok: string;
+    confirm: string;
+    cancel: string;
+    promptPlaceholder: string;
+  };
   colorPicker: {
     placeholder: string;
     savedColors: string;
     palette: string;
   };
-  empty: {
-    noData: string;
+  result: {
+    empty: string;
+  };
+  autocompleteInput: {
+    loadError: string;
+  };
+  calendar: {
+    previousMonth: string;
+    nextMonth: string;
+  };
+  splitter: {
+    collapsePanel: string;
+    expandPanel: string;
+    panel: string;
+  };
+  image: {
+    loading: string;
+    brokenImage: string;
   };
 }

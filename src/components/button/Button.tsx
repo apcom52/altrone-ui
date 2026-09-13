@@ -1,158 +1,199 @@
+import { isValidElement, memo, ReactElement, Ref } from 'react';
 import { ButtonProps } from './Button.types.ts';
-import { Flex } from 'components/flex';
 import s from './button.module.scss';
 import clsx from 'clsx';
-import { useConfiguration } from 'components/configuration';
-import { useRainbowEffect, useAltroneTheme } from 'components/application';
-import { forwardRef, memo, useEffect } from 'react';
-import { RenderFuncProp } from 'types';
-import { GlobalUtils } from '../../utils';
-import { Loading } from '../loading';
-import { Badge } from 'components/badge/Badge.tsx';
+import { HTMLMotionProps, motion, useReducedMotionConfig } from 'motion/react';
+import { Box, BoxMaterial } from 'components/box';
+import { Badge } from 'internal/badge';
+import { Loading } from 'components/loading/Loading.tsx';
+import { Tooltip } from 'components/tooltip/Tooltip.tsx';
+import { ButtonSuccessIcon } from './inner/Success.tsx';
+import { ButtonFailedIcon } from './inner/Failed.tsx';
+import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
+import { AnyObject } from 'utils/types.ts';
+import { Size } from 'types';
 
-const buttonRenderFunc: RenderFuncProp<HTMLButtonElement, ButtonProps> = (
-  ref,
-  props,
-) => {
-  const { ariaRole, ...restProps } = props;
+type Variant = NonNullable<ButtonProps['variant']>;
 
-  delete restProps.showLabel;
-  delete restProps.leftIcon;
-  delete restProps.rightIcon;
-  delete restProps.transparent;
-  delete restProps.loading;
-
-  return <button ref={ref} role={props.ariaRole} {...restProps} />;
+const MATERIAL_BY_VARIANT: Record<Variant, BoxMaterial> = {
+  submit: 'solid',
+  default: 'plate',
+  text: 'transparent',
 };
 
-export const Button = memo(
-  forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
-    const {
-      label,
-      showLabel,
-      leftIcon,
-      rightIcon,
-      transparent,
-      role,
-      severity,
-      ariaRole = 'button',
-      size = 'm',
-      className,
-      style,
-      rainbowEffect,
-      loading,
-      badge,
-      renderFunc = buttonRenderFunc,
-    } = props;
+/* Horizontal padding only — Button's own hand-tuned scale, not Box's
+   control-role matrix (see spacing.md, where it's called out as intentionally
+   off-matrix). Vertical padding is 0: the height is set purely by Box's
+   `min-height: var(--box-size)` so it stays exactly the size tier regardless
+   of content (a taller `badge` no longer inflates it). */
+const PADDING_X_BY_SIZE: Record<Size, string> = {
+  mini: '6px',
+  s: 'var(--gap)',
+  m: 'var(--l-gap)',
+  l: '16px',
+  xl: '20px',
+};
 
-    const { button: buttonConfig = {} } = useConfiguration();
+export const Button = memo((props: ButtonProps) => {
+  const {
+    label,
+    icon,
+    additionalIcon,
+    variant = 'default',
+    type = 'button',
+    showLabel = true,
+    danger,
+    size = 'm',
+    className,
+    style,
+    state = 'idle',
+    badge,
+    ref,
+    selected = false,
+    disabled,
+    tooltip,
+    kbd,
+    asChild,
+    children,
+    ...restProps
+  } = props;
 
-    const buttonSeverity = severity ?? role ?? 'default';
+  const isSingleIcon = !showLabel && !!icon && !additionalIcon;
+  const isLoading = state === 'loading';
 
-    const { theme } = useAltroneTheme();
+  const cls = clsx(
+    s.Button,
+    {
+      [s.Primary]: variant === 'submit',
+      [s.Danger]: danger,
+      [s.SingleIcon]: isSingleIcon,
+      [s.WithLoading]: state !== 'idle',
+      [s.Mini]: size === 'mini',
+      [s.Small]: size === 's',
+      [s.Large]: size === 'l',
+      [s.XLarge]: size === 'xl',
+      [s.Selected]: selected,
+    },
+    className,
+  );
 
-    const isRainbowPropsActivated =
-      typeof rainbowEffect === 'boolean'
-        ? rainbowEffect
-        : buttonConfig.rainbowEffect || true;
+  const buttonDisabled = disabled || state !== 'idle';
+  const tooltipContent = tooltip ?? label;
 
-    const isRainbowNeeded = buttonSeverity === 'default';
+  const padding = isSingleIcon ? 0 : { x: PADDING_X_BY_SIZE[size], y: 0 };
 
-    const rainbowEffects = useRainbowEffect(
-      isRainbowPropsActivated && isRainbowNeeded,
+  const boxTone = danger
+    ? 'danger'
+    : variant === 'submit'
+      ? 'accent'
+      : 'neutral';
+
+  /* On a labelled button the badge sits inline at the end of the content row.
+     On an icon-only button there's no room for that, so it becomes a `plate`
+     chip floating over the top-right corner (rendered outside the content row,
+     positioned against the button element). */
+  const badgeElement = badge ? (
+    <Badge
+      placement={isSingleIcon ? 'corner' : 'inline'}
+      size={size}
+      className={isSingleIcon ? undefined : s.ButtonBadge}
+    >
+      {badge}
+    </Badge>
+  ) : null;
+
+  const buttonContent = (
+    <>
+      <motion.div className={s.ButtonContent}>
+        {icon ? <motion.div className={s.ButtonIcon}>{icon}</motion.div> : null}
+        {showLabel && label ? (
+          <motion.span className={s.ButtonLabel}>{label}</motion.span>
+        ) : null}
+        {additionalIcon ? (
+          <motion.div className={s.ButtonIcon}>{additionalIcon}</motion.div>
+        ) : null}
+        {isSingleIcon ? null : badgeElement}
+      </motion.div>
+      {isSingleIcon ? badgeElement : null}
+      {isLoading ? (
+        <div className={s.ButtonLoading}>
+          <Loading size="16px" strokeWidth="1.5" color="currentColor" />
+        </div>
+      ) : null}
+      {state === 'succeeded' && <ButtonSuccessIcon />}
+      {state === 'failed' && <ButtonFailedIcon />}
+    </>
+  );
+
+  const a11yProps = {
+    'aria-label': !showLabel ? label : undefined,
+    'aria-pressed': selected ? (true as const) : undefined,
+    'aria-busy': isLoading ? (true as const) : undefined,
+  };
+
+  const innerProps: AnyObject = {
+    disabled: buttonDisabled,
+    ...a11yProps,
+    ...restProps,
+  };
+
+  let inner: ReactElement;
+
+  if (asChild) {
+    if (!isValidElement(children)) {
+      console.error(
+        '[Button] asChild requires a valid React element as children',
+      );
+      return null;
+    }
+
+    inner = cloneWithRef(
+      children as ReactElement,
       {
-        onMouseEnter: props.onMouseEnter,
-        onMouseMove: props.onMouseMove,
-        onMouseLeave: props.onMouseLeave,
-        onWheel: props.onWheel,
-        onFocus: props.onFocus,
-        opacity: theme === 'dark' ? 0.33 : 1,
-        blur: 11,
-      },
+        ...innerProps,
+        children: buttonContent,
+      } as AnyObject,
     );
-
-    const isOnlyIcon =
-      typeof showLabel === 'boolean'
-        ? !showLabel
-        : Boolean(!label && (leftIcon || rightIcon));
-
-    const cls = clsx(
-      s.Button,
-      {
-        [s.Button_transparent]: transparent,
-        [s.Primary]: buttonSeverity === 'primary',
-        [s.Success]: buttonSeverity === 'success',
-        [s.Warning]: buttonSeverity === 'warning',
-        [s.Danger]: buttonSeverity === 'danger',
-        [s.Small]: size === 's',
-        [s.Large]: size === 'l',
-        [s.OnlyIcon]: isOnlyIcon,
-        [s.WithLoading]: loading,
-      },
-      className,
-      buttonConfig.className,
+  } else {
+    inner = (
+      <motion.button
+        type={type}
+        transition={{
+          scale: { duration: 0.2, ease: 'linear' },
+        }}
+        whileTap={{ scale: 0.95 }}
+        {...(innerProps as HTMLMotionProps<'button'>)}
+      >
+        {buttonContent}
+      </motion.button>
     );
+  }
 
-    const styles = {
-      ...buttonConfig.style,
-      ...style,
-    };
+  const boxElement = (
+    <Box
+      asChild
+      ref={ref as Ref<HTMLElement>}
+      shape={isSingleIcon ? 'circle' : 'pill'}
+      material={MATERIAL_BY_VARIANT[variant]}
+      tone={boxTone}
+      size={size}
+      padding={padding}
+      pressable
+      focusable
+      className={cls}
+      style={style}
+    >
+      {inner}
+    </Box>
+  );
 
-    const loadingSize = size === 'l' ? '20px' : size === 's' ? '12px' : '16px';
-
-    const loadingNode = loading ? (
-      <div className={s.ButtonLoading}>
-        <Loading
-          strokeWidth="1.5"
-          size={loadingSize}
-          color="var(--button-loading-color)"
-        />
-      </div>
-    ) : null;
-
-    const badgeCls = clsx(s.Badge, buttonConfig.badgeClassName);
-
-    const buttonContent = !isOnlyIcon ? (
-      <Flex gap={size === 'l' ? 's' : 'xs'} align="center">
-        {leftIcon ? <div className={s.Icon}>{leftIcon}</div> : null}
-        <div className={s.Label}>{label}</div>
-        {rightIcon ? <div className={s.Icon}>{rightIcon}</div> : null}
-        {badge && <Badge className={badgeCls}>{badge}</Badge>}
-        {loadingNode}
-      </Flex>
-    ) : (
-      <div className={s.Icon}>
-        {leftIcon || rightIcon}
-        {badge && <Badge className={badgeCls}>{badge}</Badge>}
-        {loadingNode}
-      </div>
+  if (!showLabel && tooltipContent) {
+    return (
+      <Tooltip content={tooltipContent} kbd={kbd} ref={ref}>
+        {boxElement}
+      </Tooltip>
     );
+  }
 
-    useEffect(() => {
-      if (role) {
-        GlobalUtils.deprecatedMessage('Button', 'role', 'severity', '4.0');
-      }
-    }, [role]);
-
-    useEffect(() => {
-      if (!label) {
-        console.warn(
-          GlobalUtils.formatConsoleMessage(
-            '[Altrone]: you passed empty [[label]] prop in Button, but it will be required in 4.0. Please fill [[label]] prop now and set [[showLabel]] to [[false]] if necessary',
-          ),
-        );
-      }
-    }, [label]);
-
-    return renderFunc(ref, {
-      type: 'button',
-      ...props,
-      ...rainbowEffects,
-      ariaRole,
-      className: cls,
-      style: styles,
-      children: buttonContent,
-      title: props.title ?? label,
-    });
-  }),
-);
+  return boxElement;
+});

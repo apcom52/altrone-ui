@@ -3,9 +3,17 @@
     padding: 0 !important;
   }
 
-  html, body {
+  html,
+  body {
     height: 100%;
   }
+}
+
+/** Transparent app background so Storybook's own Backgrounds toolbar controls
+    the canvas — also no-ops Application's body/html background mirror. */
+.Wrapper,
+.WrapperBleed {
+  --app-background: transparent;
 }
 
 .Wrapper {
@@ -15,10 +23,7 @@
   min-height: 100%;
 }
 
-.WithImage {
-  height: 100%;
-  background: url(https://external-preview.redd.it/ji7lWIkgeEVP8ek7gEhpcsFQfxnrKho2dSUxH_HeSmo.jpg?auto=webp&s=90a7723ddd764e91055dd6b2d6b0214cfd17c25c);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+/** For `layout: 'fullscreen'` stories (e.g. Screen) — no padding, fills the viewport so a full-bleed layout reaches every edge and its footer sticks to the bottom. */
+.WrapperBleed {
+  min-height: 100vh;
 }

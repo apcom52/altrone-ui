@@ -1,135 +1,170 @@
-@import 'src/global/mixins';
+/**
+ * TextInput is a `Box` (shape / material / tone / size / editable — fill,
+ * border, radius, elevation, the focus-within ring and the "engaged while
+ * typing" look all come from Box). This stylesheet only carries what Box
+ * doesn't own: the field's own per-size typography, the flex row that lays out
+ * islands around the input, the transparent `<input>` reset, and the two
+ * states Box has no concept of — `readonly` and `disabled`.
+ */
 
-:global(:root) {
-  --inputBackgroundColor: var(--default-200);
-  --inputHoverBackgroundColor: var(--default-300);
-  --inputTextColor: var(--default-700);
-  --inputHoverTextColor: var(--default-800);
-  --inputPlaceholderTextColor: var(--default-400);
-  --inputPlaceholderHoverTextColor: var(--default-500);
-  --inputInvalidTextColor: var(--danger-800);
-  --inputIslandTextSize: 14px;
-  --inputIslandHeight: 20px;
-  --inputHorizontalOffset: var(--s-gap);
-  --inputVerticalOffset: var(--narrow-gap);
-}
+.TextInput {
+  /* Typography stays in px — the typographic scale is still deferred (see
+     typography.md); icon size follows the field `size`. */
+  --text-input-font-size: var(--text-size-4);
+  --text-input-icon-size: 16px;
 
-:global(.AltroneDark) {
-  --inputBackgroundColor: var(--default-700);
-  --inputHoverBackgroundColor: var(--default-600);
-  --inputTextColor: var(--default-100);
-  --inputHoverTextColor: var(--default-50);
-  --inputPlaceholderTextColor: var(--default-500);
-  --inputPlaceholderHoverTextColor: var(--default-400);
-  --inputInvalidTextColor: var(--danger-600);
-}
+  /* Gap between the field's border and the island content (islands carry no
+     horizontal padding of their own) — applied by `.StartIslands`/`.EndIslands`
+     below. `mini` zeroes it (no room to spare: the island is already exactly
+     the field's height there). */
+  --text-input-island-outer-inset: var(--space-inset-compact);
 
-.Wrapper {
-  --height: 24px;
-
-  display: flex;
-  position: relative;
-  flex-direction: column;
   width: 100%;
-  height: var(--height);
+}
+
+.Field {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  gap: var(--space-inline);
+  width: 100%;
+  min-width: 0;
+}
+
+/* Multi-line field (Textarea): lay the islands out as a footer *below* the
+   textarea instead of in the same row. On a single-line field an island shares
+   the line with the input; on a textarea that would shorten every wrapped line
+   and indent the text past a start island. The textarea takes a full-width flex
+   line (`flex-basis: 100%`), wrapping the islands onto a row beneath it — submit
+   hint left, char counter pushed right with `margin-left: auto`. */
+.Field:has(textarea) {
+  flex-wrap: wrap;
+  align-items: flex-start;
+  row-gap: var(--space-control-y-m);
+}
+
+/* Box zeroes its vertical padding; when there's a wrapped footer row, give it
+   its own breathing room from the bottom border (a plain textarea keeps the
+   symmetric inset from its own `padding-block`). */
+.Field:has(textarea):has(.StartIslands, .EndIslands) {
+  padding-bottom: var(--space-control-y-m);
+}
+
+.Field:has(textarea) > .Input {
+  order: -1;
+  flex: 1 1 100%;
+  /* `.Input` is `height: 100%` for a single-line field; on the wrapping footer
+     layout that makes the textarea eat the whole field and the wrapped island
+     row overflows below it. Let it size to its own content instead. */
+  height: auto;
+}
+
+.Field:has(textarea) > .StartIslands {
+  margin: 0;
+}
+
+.Field:has(textarea) > .EndIslands {
+  margin: 0 0 0 auto;
+}
+
+.StartIslands,
+.EndIslands {
+  display: flex;
+  flex: none;
+  align-items: center;
+  /* Tight row of chip-buttons — 4px, not the 6px icon<->text `--space-inline`. */
+  gap: var(--space-inset-compact);
+}
+
+/* Pull the container in by the field's own `--box-padding-x` (inherited from
+   the wrapper Box, scales per size via its `.Mini`/`.Small`/`.Large`/`.XLarge`)
+   and leave exactly `--text-input-island-outer-inset` between the border and
+   the island content. Without this an island would drift out to the full
+   control padding (24px at `xl`). No per-size table: every term already
+   scales/holds on its own. */
+.StartIslands {
+  margin-left: calc(var(--text-input-island-outer-inset) - var(--box-padding-x));
+}
+
+.EndIslands {
+  margin-right: calc(var(--text-input-island-outer-inset) - var(--box-padding-x));
 }
 
 .Input {
-  --bgColor: var(--inputBackgroundColor);
-  --fgColor: var(--inputTextColor);
-  --placeholderColor: var(--inputPlaceholderTextColor);
-
-  width: 100%;
-  background: var(--bgColor);
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: var(--text-input-font-size);
+  font-weight: var(--text-weight-medium);
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  border-radius: 6px;
-  border: none;
-  padding: var(--inputVerticalOffset) var(--inputHorizontalOffset);
-  height: var(--height);
-  outline: none;
-  color: var(--fgColor);
-
-  @include paragraph;
-
-  &:hover,
-  &:focus-visible {
-    --bgColor: var(--inputHoverBackgroundColor);
-    --fgColor: var(--inputHoverTextColor);
-    --placeholderColor: var(--inputPlaceholderHoverTextColor);
-  }
 
   &::placeholder {
-    color: var(--placeholderColor);
+    color: var(--placeholder-text-color);
   }
 
   &:disabled {
-    opacity: 0.5;
-    pointer-events: none;
-  }
-
-  &:invalid {
-    --fgColor: var(--inputInvalidTextColor);
+    /* The wrapper already carries the disabled look; keep the native control
+       from dimming on top of it. */
+    -webkit-text-fill-color: currentColor;
+    opacity: 1;
   }
 }
 
-.Invalid {
-  --fgColor: var(--inputInvalidTextColor) !important;
+/* transparent variant: show the same wash on hover and on focus. Box gives
+   `editable` no hover at all, and its `:focus-within` fill is the *strong* tint
+   (`--box-tone-translucent-strong`) — so the fill visibly deepened when the
+   caret entered the field. Both states now use the plain `--box-tone-translucent`
+   (the wash the `text` Button gets).
+
+   `.Transparent.Transparent` is a deliberate specificity bump: otherwise this
+   ties box.module's `.Editable.MaterialTransparent:focus-within`, which loads
+   later and would win. */
+.TextInput.Transparent.Transparent:hover,
+.TextInput.Transparent.Transparent:focus-within {
+  --box-fill: var(--box-tone-translucent);
 }
 
-.Readonly {
-  --bgColor: transparent !important;
-  --inputPlaceholderTextColor: var(--default-500);
-  --inputPlaceholderHoverTextColor: var(--default-500);
+/* Readonly: drop the material entirely so the value reads as plain text, while
+   staying focusable for copy. `.TextInput` compound outranks Box's material. */
+.TextInput.Readonly {
+  --box-fill: transparent;
+
+  box-shadow: var(--box-elevation-shadow);
 }
 
-.Transparent {
-  --bgColor: transparent;
-}
+.TextInput.Disabled {
+  --box-tone-text: var(--disabled-text-color);
+  --box-fill: var(--disabled-background);
 
-.Small {
-  --height: 20px;
-  --inputIslandTextSize: 12px;
-  --inputIslandHeight: 16px;
-  --actionIslandTextSize: var(--smallLabelFontSize);
-
-  .Input {
-    @include sm-paragraph;
-  }
-}
-
-.Large {
-  --height: 32px;
-  --inputIslandTextSize: 16px;
-  --inputIslandHeight: 24px;
-  --inputVerticalOffset: 4px;
-  --inputHorizontalOffset: 6px;
-  --actionIslandTextSize: var(--groupHeadingFontSize);
-
-  .Input {
-    @include big-paragraph;
-  }
-}
-
-.LeftIslands,
-.RightIslands {
-  display: flex;
-  position: absolute;
-  top: 0;
-  align-items: center;
-  gap: var(--xs-gap);
-  height: var(--height);
-  padding: var(--inputVerticalOffset) var(--inputHorizontalOffset);
   pointer-events: none;
 }
 
-.LeftIslands {
-  left: 0;
-  padding-right: var(--inputHorizontalOffset);
+.Mini {
+  --text-input-font-size: var(--text-size-2);
+  --text-input-icon-size: 12px;
+  --text-input-island-outer-inset: 0px;
 }
 
-.RightIslands {
-  right: 0;
-  padding-left: var(--inputHorizontalOffset);
+.Small {
+  --text-input-font-size: var(--text-size-3);
+  --text-input-icon-size: 14px;
+}
+
+.Large {
+  --text-input-font-size: var(--text-size-5);
+  --text-input-icon-size: 18px;
+}
+
+.XLarge {
+  --text-input-font-size: var(--text-size-7);
+  --text-input-icon-size: 24px;
 }

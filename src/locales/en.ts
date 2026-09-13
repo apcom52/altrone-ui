@@ -8,6 +8,14 @@ export const en: Localization = {
     cancel: 'Cancel',
     delete: 'Delete',
     refresh: 'Refresh',
+    edit: 'Edit',
+    done: 'Done',
+  },
+  breadcrumbs: {
+    label: 'Breadcrumb',
+  },
+  loading: {
+    label: 'Loading',
   },
   datePicker: {
     placeholder: 'Select date',
@@ -18,15 +26,18 @@ export const en: Localization = {
     next: 'Next',
     prev: 'Prev',
     clickToChangeView: 'Click to change view',
+    startDate: 'Start date',
+    endDate: 'End date',
   },
   filePicker: {
     noFiles: 'No files chosen',
     placeholder: 'Choose file',
     errorMessage: 'Cannot upload the file. Please try again',
+    untitledFile: 'Untitled file',
+    retryUpload: 'Try uploading again',
   },
-  numberInput: {
-    increase: 'Increase',
-    decrease: 'Decrease',
+  textInput: {
+    loading: 'Loading',
   },
   passwordInput: {
     showPassword: 'Show password',
@@ -35,12 +46,28 @@ export const en: Localization = {
   search: {
     placeholder: 'Search',
   },
+  select: {
+    notFound: 'Nothing found',
+  },
+  toolbar: {
+    back: 'Back',
+    forward: 'Forward',
+    search: 'Search',
+    collapseSidebar: 'Collapse sidebar',
+    expandSidebar: 'Expand sidebar',
+  },
+  screen: {
+    sidebarLabel: 'Sidebar',
+    bottomNavigationLabel: 'Bottom navigation',
+    asideLabel: 'Details',
+  },
   pagination: {
-    progress: '{{current}} of {{total}}',
-    title: 'Navigate to page',
-    action: 'Navigate',
+    navigation: 'Pagination',
     previous: 'Previous page',
     next: 'Next page',
+    firstPage: 'First page',
+    lastPage: 'Last page',
+    page: 'Page {{page}}',
   },
   dataTable: {
     filters: 'Filters',
@@ -54,6 +81,8 @@ export const en: Localization = {
     and: 'AND',
     noFilters:
       'No filters are currently applied. Click "Add Filter" to create a new filter.',
+    empty: 'No data',
+    chooseRule: 'Choose rule',
     shownRows: {
       zero: '{{count}} rows shown',
       one: '{{count}} rows shown',
@@ -114,6 +143,18 @@ export const en: Localization = {
       between: 'is between',
       beyond: 'is beyond',
     },
+    selectFilter: {
+      has: 'is one of',
+      notHas: 'is none of',
+    },
+    colorFilter: {
+      has: 'is one of',
+      notHas: 'is none of',
+    },
+    passwordFilter: {
+      empty: 'is empty',
+      notEmpty: 'is not empty',
+    },
   },
   photoViewer: {
     previous: 'Previous photo',
@@ -130,12 +171,40 @@ export const en: Localization = {
   closeButton: {
     ariaLabel: 'Close',
   },
+  notifications: {
+    regionLabel: 'Notifications',
+  },
+  dialog: {
+    alertTitle: 'Alert',
+    confirmTitle: 'Confirm',
+    promptTitle: 'Prompt',
+    ok: 'OK',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    promptPlaceholder: 'Enter a value',
+  },
   colorPicker: {
     placeholder: 'Pick a color',
     savedColors: 'Saved colors',
     palette: 'Palette',
   },
-  empty: {
-    noData: 'No data',
+  result: {
+    empty: 'No data',
+  },
+  autocompleteInput: {
+    loadError: 'An error occurred while loading data',
+  },
+  calendar: {
+    previousMonth: 'Previous month',
+    nextMonth: 'Next month',
+  },
+  splitter: {
+    collapsePanel: 'Collapse panel',
+    expandPanel: 'Expand panel',
+    panel: 'Panel {{index}}',
+  },
+  image: {
+    loading: 'Loading image',
+    brokenImage: 'Image failed to load',
   },
 };

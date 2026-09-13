@@ -1,148 +1,92 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --dataTableHeadingCellBackgroundColor: var(--default-100);
-  --dataTableHeadingCellBorderColor: var(--default-400);
-  --dataTableHeadingCellTextColor: var(--default-700);
-  --dataTableHeadingCellSortedTextColor: var(--default-900);
-  --dataTableHeadingSortIconColor: var(--default-400);
-  --dataTableHoveredHeadingCellBackgroundColor: var(--default-200);
-  --dataTableHoveredHeadingCellTextColor: var(--default-800);
-}
-
-:global(.AltroneDark) {
-  --dataTableHeadingCellBackgroundColor: var(--default-800);
-  --dataTableHeadingCellBorderColor: var(--default-600);
-  --dataTableHeadingCellTextColor: var(--default-200);
-  --dataTableHeadingCellSortedTextColor: var(--default-50);
-  --dataTableHeadingSortIconColor: var(--default-400);
-  --dataTableHoveredHeadingCellBackgroundColor: var(--default-700);
-  --dataTableHoveredHeadingCellTextColor: var(--default-100);
-}
-
 .Wrapper {
-  background-color: var(--dataTableHeadingCellBackgroundColor);
+  --data-table-header-rounding: var(--data-table-rounding);
 }
 
 .HeaderRow {
-  position: sticky;
-  background-color: var(--dataTableHeadingCellBackgroundColor);
-  top: 0;
-  z-index: var(--level-sticky);
-}
-
-.ColumnHeaders {
-  width: 100%;
   display: grid;
-  grid-template-columns: var(--columnTemplate);
-  align-items: center;
-  background-color: var(--dataTableHeadingCellBackgroundColor);
   position: sticky;
   top: 0;
-  border-bottom: 1px solid var(--dataTableHeadingCellBorderColor);
+  z-index: var(--elevation-sticky-z-index);
+  transition: border-radius 0.2s linear;
+  padding: var(--data-table-padding);
 }
 
 .Cell {
+  display: flex;
   position: relative;
-  color: var(--dataTableHeadingCellTextColor);
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: var(--data-table-header-text-color);
+  padding: 8px;
 }
 
-.CellContent {
-  padding: 10px 12px;
-  flex: 1;
-  @include label-heading;
-  text-align: center;
-  transition: background-color 0.2s linear;
-  width: 100%;
-  height: 100%;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
+.Label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
-.Title {
-  position: relative;
+
+.Backdrop {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  border-radius: 32px;
+  background-color: var(--data-table-header-background-color);
+  backdrop-filter: blur(32px) saturate(180%);
+  box-shadow: var(--elevation-sticky-shadow);
 }
 
 .SortIcon {
   display: flex;
   align-items: center;
+  justify-content: center;
   position: absolute;
-  left: calc(100% + 4px);
-  font-size: 16px;
-  top: 0;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 0.2s linear;
-  color: var(--dataTableHeadingSortIconColor);
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  height: 14px;
 }
 
-.SortableColumn {
+.Sortable {
   cursor: pointer;
-  @include no-selection;
-  @include focus;
-  border-radius: 4px;
-  height: 1px;
-
-  &:hover .CellBackground,
-  &:focus-visible .CellBackground {
-    opacity: 1;
-  }
-
-  &:hover .SortIcon,
-  &:focus-visible .SortIcon {
-    opacity: 1;
-  }
-
-  .CellContent {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 }
 
-.SortedColumn {
-  color: var(--dataTableHeadingCellSortedTextColor);
-
-  .SortIcon {
-    opacity: 1;
-    color: var(--dataTableHeadingCellSortedTextColor);
-  }
-}
-
-.CheckableColumn {
-  padding: 7px 7px;
-  height: 36px;
-  width: 40px;
-
-  &:hover {
-    background-color: transparent;
-  }
-}
-
-.WithoutHeading {
-  .Cell {
-    &:first-of-type {
-      border-top-left-radius: 6px;
-    }
-
-    &:last-of-type {
-      border-top-right-radius: 6px;
-    }
-  }
-}
-
-.CellWithWidth {
-  word-break: break-all;
-}
-
-.CellBackground {
+/* Same visual language as the Splitter divider handle. */
+.Resizer {
   position: absolute;
-  width: 100%;
-  height: 100%;
   top: 0;
-  left: 0;
-  opacity: 0;
-  background-color: var(--dataTableHoveredHeadingCellBackgroundColor);
-  color: var(--dataTableHoveredHeadingCellTextColor);
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
+  right: calc(var(--splitter-gutter) / -2);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--splitter-gutter);
+  height: 100%;
+  cursor: col-resize;
+  user-select: none;
+  touch-action: none;
+}
+
+/* Size & color only — the reveal / grow-in / active-bump are animated by
+   `motion` in ColumnHeaders.tsx (opacity + scaleY). */
+.ResizerHandle {
+  width: var(--splitter-handle-thickness);
+  height: 16px;
+  border-radius: 9999px;
+  background: var(--splitter-handle-color);
+  transition: background var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.Resizer:hover .ResizerHandle {
+  background: var(--splitter-handle-hover-color);
+}
+
+.ResizerActive .ResizerHandle {
+  background: var(--splitter-handle-active-color);
 }

@@ -3,20 +3,16 @@ import { DataTableRowActionsProps } from '../DataTable.types';
 import { Flex } from 'components/flex';
 import { Dropdown } from 'components/dropdown';
 import { Button } from 'components/button';
-import { Icon } from 'components/icon';
 import { useLocalization } from 'components/application/useLocalization.tsx';
-import { useConfiguration } from 'components/configuration';
+import { Ellipsis } from 'lucide-react';
 import clsx from 'clsx';
 
 export const RowActions = memo<DataTableRowActionsProps>(
   ({ children, className, style, ...restProps }) => {
     const t = useLocalization();
 
-    const { dataTable: { rowActions: rowActionsConfig = {} } = {} } =
-      useConfiguration();
-
-    const cls = clsx(rowActionsConfig.className, className);
-    const styles = { ...rowActionsConfig.style, ...style };
+    const cls = clsx(className);
+    const styles = { ...style };
 
     const [collapsedActions, visibleActions] = useMemo(() => {
       if (!children) return [[], []];
@@ -26,26 +22,27 @@ export const RowActions = memo<DataTableRowActionsProps>(
       if (childrenArray.length < 2) return [[], childrenArray];
 
       const collapsed = childrenArray
-        .filter((child) => child && child?.props.collapsed)
+        .filter((child) => child && child.props && child?.props.collapsed)
         .map((child, childIndex) => {
           if (!child) return null;
 
-          const { collapsed, leftIcon, rightIcon, severity, ...restProps } =
+          const { collapsed, icon, additionalIcon, danger, ...restProps } =
             child.props;
-
-          const isDanger = severity === 'danger';
 
           return (
             <Dropdown.Action
               key={childIndex}
-              icon={leftIcon || rightIcon}
-              danger={isDanger}
+              icon={icon || additionalIcon}
+              danger={danger}
               {...restProps}
             />
           );
-        });
+        })
+        .filter(Boolean);
 
-      const visible = childrenArray.filter((child) => !child?.props.collapsed);
+      const visible = childrenArray.filter(
+        (child) => child && !child?.props.collapsed,
+      );
 
       return [collapsed, visible];
     }, [children]);
@@ -58,14 +55,14 @@ export const RowActions = memo<DataTableRowActionsProps>(
           <Button
             label={t('dataTable.moreActions')}
             showLabel={false}
-            leftIcon={<Icon i="more_horiz" />}
+            icon={<Ellipsis />}
           />
         </Dropdown>
       );
     }, [collapsedActions]);
 
     return (
-      <Flex gap="s" className={cls} style={styles} {...restProps}>
+      <Flex gap="s" className={cls} justify="end" style={styles} {...restProps}>
         {...visibleActions}
         {collapsedActionsDropdown}
       </Flex>

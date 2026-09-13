@@ -1,35 +1,26 @@
-import { forwardRef } from 'react';
+import { memo } from 'react';
 import { NavigationListGroupActionProps } from '../NavigationList.types.ts';
-import s from './groupAction.module.scss';
-import clsx from 'clsx';
-import { useConfiguration } from '../../configuration';
+import { Button } from 'components/button/Button.tsx';
 
-export const GroupAction = forwardRef<
-  HTMLButtonElement,
-  NavigationListGroupActionProps
->((props, ref) => {
-  const { label, icon, className, style, ...restProps } = props;
-
-  const { navigationList: { groupAction: groupActionConfig = {} } = {} } =
-    useConfiguration();
-
-  const cls = clsx(s.Action, className, groupActionConfig.className);
-
-  const styles = {
-    ...groupActionConfig.style,
-    ...style,
-  };
-
-  return (
-    <button
-      type="button"
-      className={cls}
+export const GroupAction = memo(
+  ({
+    ref,
+    label,
+    icon,
+    className,
+    style,
+    ...restProps
+  }: NavigationListGroupActionProps) => (
+    <Button
       ref={ref}
+      size="s"
+      className={className}
+      style={style}
       title={label}
-      style={styles}
+      icon={icon}
+      label={label}
+      showLabel={false}
       {...restProps}
-    >
-      <div className={s.Icon}>{icon}</div>
-    </button>
-  );
-});
+    />
+  ),
+);

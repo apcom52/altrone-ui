@@ -1,25 +1,7 @@
-@import 'src/global/mixins';
-@import 'mixins';
-
 .YearPicker {
   display: grid;
-  width: 188px;
+  width: var(--calendar-width);
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(5, 24px);
-  grid-gap: var(--s-gap);
+  gap: 4px;
   outline: 0;
-}
-
-.Year {
-  @include picker-item;
-  @include focus;
-
-  &:disabled {
-    pointer-events: none;
-    opacity: 0.5;
-  }
-}
-
-.Selected {
-  @include selected-picker-item;
 }

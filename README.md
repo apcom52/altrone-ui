@@ -57,7 +57,7 @@ New **`Range`** component, **DataTable** row actions and new glass surface.
     <tr valign='top'>
         <td>
 <ul>
-    <li><a href="https://altrone.vercel.app/components/application">AltroneApplication</a></li>
+    <li><a href="https://altrone.vercel.app/components/application">Application</a></li>
     <li><a href="https://altrone.vercel.app/components/configuration">Configuration</a></li>
     <li><a href="https://altrone.vercel.app/components/text">Text</a></li>
     <li><a href="https://altrone.vercel.app/components/icon">Icon</a></li>

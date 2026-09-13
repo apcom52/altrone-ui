@@ -1,9 +1,46 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import { expect, test, describe, vitest } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Button, Configuration, Dropdown } from '../src/components';
 
 describe('Dropdown', () => {
+  test('forwards ref to the root DOM element of Action/Checkbox/RadioItem/ChildMenu', () => {
+    const actionRef = createRef<HTMLButtonElement>();
+    const checkboxRef = createRef<HTMLButtonElement>();
+    const radioItemRef = createRef<HTMLButtonElement>();
+    const childMenuRef = createRef<HTMLElement>();
+
+    render(
+      <Dropdown
+        content={
+          <Dropdown.Menu>
+            <Dropdown.Action ref={actionRef} label="Action" />
+            <Dropdown.Checkbox
+              ref={checkboxRef}
+              checked={false}
+              onChange={vitest.fn()}
+              label="Checkbox"
+            />
+            <Dropdown.RadioList value="" onChange={vitest.fn()}>
+              <Dropdown.RadioItem ref={radioItemRef} value="" label="Radio" />
+            </Dropdown.RadioList>
+            <Dropdown.ChildMenu ref={childMenuRef} label="Child">
+              <Dropdown.Action label="Nested" />
+            </Dropdown.ChildMenu>
+          </Dropdown.Menu>
+        }
+        openedByDefault
+      >
+        <Button label="Test" />
+      </Dropdown>,
+    );
+
+    expect(actionRef.current).toBeInstanceOf(HTMLButtonElement);
+    expect(checkboxRef.current).toBeInstanceOf(HTMLButtonElement);
+    expect(radioItemRef.current).toBeInstanceOf(HTMLButtonElement);
+    expect(childMenuRef.current).toBeInstanceOf(HTMLElement);
+  });
+
   test('check that render menu correctly', () => {
     render(
       <Dropdown

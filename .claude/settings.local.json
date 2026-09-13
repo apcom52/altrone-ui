@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(for f:*)",
+      "Bash(do echo:*)",
+      "Read(//Users/apcom/projects/altrone-ui/src/components/$f/**)",
+      "Bash(done)",
+      "Bash(awk -F: '{print $NF}')",
+      "Bash(sort -t: -k1,1)"
+    ]
+  }
+}

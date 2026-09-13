@@ -1,35 +1,28 @@
-import { forwardRef } from 'react';
 import { DropdownMenuProps } from '../Dropdown.types';
 import clsx from 'clsx';
-import s from './menu.module.scss';
-import { useConfiguration } from 'components/configuration';
+import s from './action.module.scss';
+import { DropdownHoverProvider } from '../DropdownHover.contexts';
 
-export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
-  (
-    {
-      children,
-      className,
-      defaultFocusItemIndex = 0,
-      onChangeFocusItemIndex,
-      style,
-      ...props
-    },
-    ref,
-  ) => {
-    const { dropdown: { menu: dropdownMenuConfig = {} } = {} } =
-      useConfiguration();
+export function DropdownMenu({
+  ref,
+  children,
+  className,
+  defaultFocusItemIndex = 0,
+  onChangeFocusItemIndex,
+  style,
+  ...props
+}: DropdownMenuProps) {
+  const cls = clsx(s.Menu, 'no-selection', className);
 
-    const cls = clsx(s.Menu, className, dropdownMenuConfig.className);
+  const styles = {
+    ...style,
+  };
 
-    const styles = {
-      ...dropdownMenuConfig.style,
-      ...style,
-    };
-
-    return (
+  return (
+    <DropdownHoverProvider>
       <div ref={ref} className={cls} style={styles} {...props}>
         {children}
       </div>
-    );
-  },
-);
+    </DropdownHoverProvider>
+  );
+}

@@ -1,7 +1,8 @@
 .CheckIcon {
-  width: 12px;
-  height: 12px;
+  width: var(--check-icon-size, 12px);
+  height: var(--check-icon-size, 12px);
   opacity: 0;
+  transition: opacity var(--motion-duration-fast) var(--motion-easing-standard);
 }
 
 .Checked {
@@ -9,5 +10,8 @@
 }
 
 .Path {
-  transition: stroke-dasharray 0.3s linear;
+  /* Direct feedback on a user action, but routed through the motion tokens so
+     it still zeroes out under prefers-reduced-motion. */
+  transition: stroke-dasharray var(--motion-duration-base)
+    var(--motion-easing-standard);
 }

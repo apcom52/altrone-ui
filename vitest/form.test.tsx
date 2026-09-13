@@ -1,16 +1,12 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import {
-  Configuration,
-  AltroneApplication,
-  Form,
-  TextInput,
-} from '../src/components';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { Application, Form, TextInput } from '../src/components';
 
 class ResizeObserver {
   observe() {}
   unobserve() {}
+  disconnect() {}
 }
 
 beforeAll(() => {
@@ -21,13 +17,13 @@ beforeAll(() => {
 describe('Form', () => {
   test('we need to wrap content into <form> tag', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Form data-testid="form">
           <Form.Field label="Field Label" data-testid="field">
             <TextInput />
           </Form.Field>
         </Form>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('form').tagName).toBe('FORM');
@@ -36,7 +32,7 @@ describe('Form', () => {
 
   test('we need to show error message', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Form
           data-testid="form"
           errorMessages={{
@@ -55,7 +51,7 @@ describe('Form', () => {
             <TextInput />
           </Form.Field>
         </Form>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByText('Error message for field 1')).toBeInTheDocument();
@@ -64,7 +60,7 @@ describe('Form', () => {
 
   test('we need to make all nested fields as disabled', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Form data-testid="form" disabled={true}>
           <Form.Field name="field1" label="Field Label" data-testid="field1">
             <TextInput data-testid="control-1" />
@@ -73,7 +69,7 @@ describe('Form', () => {
             <TextInput data-testid="control-2" />
           </Form.Field>
         </Form>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('control-1')).toBeDisabled();
@@ -82,7 +78,7 @@ describe('Form', () => {
 
   test('we need to show required asterisk', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Form data-testid="form" disabled={true}>
           <Form.Field
             name="field1"
@@ -96,7 +92,7 @@ describe('Form', () => {
             <TextInput data-testid="control-2" />
           </Form.Field>
         </Form>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByText('*')).toBeInTheDocument();
@@ -104,7 +100,7 @@ describe('Form', () => {
 
   test('we need to show field description', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Form data-testid="form" disabled={true}>
           <Form.Field
             name="field1"
@@ -119,7 +115,7 @@ describe('Form', () => {
             <TextInput data-testid="control-2" />
           </Form.Field>
         </Form>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByText('field description')).toBeInTheDocument();
@@ -127,7 +123,7 @@ describe('Form', () => {
 
   test('we need to show hint text', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Form data-testid="form" disabled={true}>
           <Form.Field
             name="field1"
@@ -142,53 +138,56 @@ describe('Form', () => {
             <TextInput data-testid="control-2" />
           </Form.Field>
         </Form>
-      </AltroneApplication>,
+      </Application>,
     );
 
-    expect(screen.getByText('help_outline')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Hello, world!' }),
+    ).toBeInTheDocument();
   });
 
   test('check that className and style props works', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Form
           data-testid="form"
           className="cls"
           style={{ color: 'rgb(0, 0, 255)' }}
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('form')).toHaveClass('cls');
     expect(screen.getByTestId('form')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
-  test('check that Form configuration works correctly', () => {
-    render(
-      <AltroneApplication>
-        <Configuration
-          form={{
-            className: 'cls',
-            style: { color: 'rgb(0, 0, 255)' },
-            field: {
-              className: 'child-cls',
-              style: { color: 'red' },
-            },
-          }}
-        >
-          <Form data-testid="form">
-            <Form.Field data-testid="field" />
-          </Form>
-          ,
-        </Configuration>
-      </AltroneApplication>,
+  test('submit is prevented by default, but left alone when a form action is set', () => {
+    const onSubmit = vi.fn();
+
+    const { rerender } = render(
+      <Application>
+        <Form data-testid="form" onSubmit={onSubmit}>
+          <Form.Field label="Field" name="field">
+            <TextInput />
+          </Form.Field>
+        </Form>
+      </Application>,
     );
 
-    const form = screen.getByTestId('form');
-    const field = screen.getByTestId('field');
-    expect(form).toHaveClass('cls');
-    expect(form).toHaveStyle('color: rgb(0, 0, 255)');
-    expect(field).toHaveClass('child-cls');
-    expect(field).toHaveStyle('color: rgb(255, 0, 0)');
+    fireEvent.submit(screen.getByTestId('form'));
+    expect(onSubmit.mock.calls[0][0].defaultPrevented).toBe(true);
+
+    rerender(
+      <Application>
+        <Form data-testid="form" action="/submit" onSubmit={onSubmit}>
+          <Form.Field label="Field" name="field">
+            <TextInput />
+          </Form.Field>
+        </Form>
+      </Application>,
+    );
+
+    fireEvent.submit(screen.getByTestId('form'));
+    expect(onSubmit.mock.calls[1][0].defaultPrevented).toBe(false);
   });
 });

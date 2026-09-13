@@ -1,135 +1,160 @@
-@import 'src/global/mixins';
-
-:global(:root) {
-  --switcherBackgroundColor: var(--default-200);
-  --switcherHandleBackgroundColor: var(--default-50);
-  --switcherLabelTextColor: var(--default-900);
-  --switcherHoverBackgroundColor: var(--default-300);
-  --switcherCheckedBackgroundColor: var(--primary-500);
-  --switcherСheckedHandleBackgroundColor: var(--default-50);
-  --switcherCheckedHoverBackgroundColor: var(--primary-600);
-  --switcherDangerBackgroundColor: var(--danger-100);
-  --switcherDangerHandleBackgroundColor: var(--default-50);
-  --switcherDangerTextColor: var(--danger-600);
-  --switcherDangerHoverBackgroundColor: var(--danger-200);
-  --switcherDangerCheckedBackgroundColor: var(--danger-500);
-  --switcherDangerСheckedHandleBackgroundColor: var(--default-50);
-  --switcherDangerCheckedHoverBackgroundColor: var(--danger-600);
-}
-
-:global(.AltroneDark) {
-  --switcherBackgroundColor: var(--default-700);
-  --switcherLabelTextColor: var(--default-50);
-  --switcherHoverBackgroundColor: var(--default-600);
-  --switcherCheckedBackgroundColor: var(--primary-700);
-  --switcherCheckedHoverBackgroundColor: var(--primary-600);
-  --switcherDangerBackgroundColor: var(--danger-800);
-  --switcherDangerTextColor: var(--danger-400);
-  --switcherDangerHoverBackgroundColor: var(--danger-700);
-  --switcherDangerCheckedBackgroundColor: var(--danger-500);
-  --switcherDangerCheckedHoverBackgroundColor: var(--danger-400);
+:global([data-altrone-root='true']) {
+  --switcher-background-color: var(--interactive-1);
+  --switcher-border-color: var(--border-a1);
+  --switcher-label-text-color: var(--text-2);
+  --switcher-icon-color: var(--solid-a1);
+  --switcher-hover-background-color: var(--interactive-2);
+  --switcher-checked-background-color: var(--accent-3);
+  --switcher-checked-border-color: var(--accent-a5);
+  --switcher-checked-icon-color: var(--accent-12);
 }
 
 .Switcher {
-  --bgColor: var(--switcherBackgroundColor);
-  --fgColor: var(--switcherLabelTextColor);
-  --handleColor: var(--switcherHandleBackgroundColor);
-  --focusColor: var(--focus);
+  /* size='m' tier. The derived values live here (not on :root) so that a
+     per-size override of --switcher-track-height on this same element
+     re-resolves them — a :root-level `calc(var(...))` would freeze at the
+     value computed on :root and just inherit down unchanged. */
+  --switcher-track-height: 24px;
+  --switcher-track-width: calc(var(--switcher-track-height) * 2);
+  --switcher-handle-inset: calc(var(--switcher-track-height) / 8);
+  --switcher-handle-size: calc(var(--switcher-track-height) * 2 / 3);
+  --switcher-handle-checked-size: var(--switcher-track-height);
+  --switcher-label-size: var(--text-size-4);
+  --switcher-label-line-height: var(--line-height-4);
 
   display: flex;
   align-items: center;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  border: none;
-  background: transparent;
   gap: var(--gap);
   cursor: pointer;
-  padding: 3px 4px;
-  height: 24px;
-  border-radius: 4px;
-  outline: none;
+  /* Row stays >=24px even at size="mini" — hit-area minimum, see accessibility.md. */
+  min-height: max(24px, var(--switcher-track-height));
+  border-radius: var(--radius-s);
 
-  @include no-selection;
+  -webkit-user-select: none;
+  user-select: none;
 
-  &:hover, &:focus-visible {
-    --bgColor: var(--checkboxHoverBackgroundColor);
+  &:hover {
+    --switcher-background-color: var(--switcher-hover-background-color);
   }
 
-  &:focus-visible {
-    .Button {
-      outline: 4px solid var(--focusColor);
-      outline-offset: 1px;
-    }
+  &:has(.Input:focus-visible) {
+    --switcher-background-color: var(--switcher-hover-background-color);
   }
 }
 
+/* Visually hidden, but kept in the accessibility tree — the real, focusable
+   switch that carries role/checked/disabled and native Space-to-toggle. */
 .Input {
-  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.Input:focus-visible + .Button {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
 }
 
 .Button {
   display: flex;
   position: relative;
   align-items: center;
-  width: 36px;
-  height: 18px;
-  background-color: var(--bgColor);
-  border-radius: 12px;
-  transition: background-color 0.1s linear;
-  color: var(--checkboxCheckedIconColor);
+  width: var(--switcher-track-width);
+  height: var(--switcher-track-height);
+  background-color: var(--switcher-background-color);
+  border-radius: calc(var(--switcher-track-height) / 2);
+  transition: background-color var(--motion-duration-fast)
+    var(--motion-easing-standard);
+  color: var(--switcher-icon-color);
+  box-shadow:
+    0 0 0 1px var(--switcher-border-color),
+    var(--shadow-1);
+  flex-shrink: 0;
 }
 
 .Handle {
   position: absolute;
-  background-color: var(--switcherHandleBackgroundColor);
-  width: 12px;
-  left: 3px;
-  height: 12px;
-  border-radius: 50%;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .25);
-  transition: left 0.2s ease;
+  background-color: var(--switcher-icon-color);
+  left: var(--switcher-handle-inset);
+  width: var(--switcher-handle-size);
+  height: var(--switcher-handle-size);
+  border-radius: calc(var(--switcher-handle-size) / 2);
+  transition:
+    left var(--motion-duration-base) var(--motion-easing-standard),
+    width var(--motion-duration-base) var(--motion-easing-standard);
 }
 
 .Label {
-  color: var(--fgColor);
-  @include sm-paragraph;
+  color: var(--switcher-label-text-color);
+  font-size: var(--switcher-label-size);
+  line-height: var(--switcher-label-line-height);
+  font-weight: var(--text-weight-regular);
 }
 
 .Checked {
-  --bgColor: var(--checkboxCheckedBackgroundColor);
+  --switcher-background-color: var(--switcher-checked-background-color);
+  --switcher-icon-color: var(--switcher-checked-icon-color);
+  --switcher-border-color: var(--switcher-checked-border-color);
 
-  &:hover, &:focus-visible {
-    --bgColor: var(--checkboxCheckedHoverBackgroundColor);
+  &:hover {
+    --switcher-background-color: var(--switcher-checked-background-color);
   }
 
   .Handle {
-    left: 21px;
+    left: calc(
+      var(--switcher-track-width) - var(--switcher-handle-inset) -
+        var(--switcher-handle-checked-size)
+    );
+    width: var(--switcher-handle-checked-size);
+    border-radius: calc(var(--switcher-handle-checked-size) / 2);
   }
 }
 
 .Disabled {
-  @include disabled;
+  --switcher-background-color: var(--disabled-background);
+  --switcher-icon-color: var(--disabled-text-color);
+  --switcher-border-color: var(--disabled-border);
+  --switcher-label-text-color: var(--disabled-text-color);
+
+  cursor: not-allowed;
+  pointer-events: none;
+
+  &:hover {
+    --switcher-background-color: var(--disabled-background);
+  }
 }
 
 .Danger {
-  --bgColor: var(--checkboxDangerBackgroundColor);
-  --fgColor: var(--checkboxDangerTextColor);
-  --focusColor: var(--focusDanger);
+  --switcher-label-text-color: var(--danger-text-1);
+}
 
-  &:hover, &:focus-visible {
-    --bgColor: var(--checkboxDangerHoverBackgroundColor);
-  }
+.Mini {
+  --switcher-track-height: 16px;
+  --switcher-label-size: var(--text-size-3);
+  --switcher-label-line-height: var(--line-height-3);
+}
 
-  &.Checked {
-    --bgColor: var(--checkboxDangerCheckedBackgroundColor);
+.Small {
+  --switcher-track-height: 20px;
+  --switcher-label-size: var(--text-size-3);
+  --switcher-label-line-height: var(--line-height-3);
+}
 
-    &:hover, &:focus-visible {
-      --bgColor: var(--checkboxDangerCheckedHoverBackgroundColor);
-    }
-  }
+.Large {
+  --switcher-track-height: 28px;
+  --switcher-label-size: var(--text-size-5);
+  --switcher-label-line-height: var(--line-height-5);
+}
 
-  &.Indetermination {
-    background-color: var(--checkboxDangerCheckedBackgroundColor);
-  }
+.XLarge {
+  --switcher-track-height: 32px;
+  --switcher-label-size: var(--text-size-6);
+  --switcher-label-line-height: var(--line-height-6);
 }

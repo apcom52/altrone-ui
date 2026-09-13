@@ -1,327 +1,157 @@
-import { memo, useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { Column, ColumnFilter } from '@tanstack/react-table';
+import { Plus } from 'lucide-react';
 import { Button } from 'components/button';
 import { Dropdown } from 'components/dropdown';
 import { Flex } from 'components/flex';
 import { Form } from 'components/form';
-import { Icon } from 'components/icon';
 import { Popover } from 'components/popover';
-import { useDataTableContext } from '../DataTable.context.tsx';
-import {
-  ArrayFilterRules,
-  BooleanFilterRules,
-  DataTableColumnType,
-  DateFilterRules,
-  Filter,
-  FilterType,
-  NumberFilterRules,
-  StringFilterRules,
-} from '../DataTable.types.ts';
-import { FilterRow } from './FilterRow.tsx';
-import s from './filtering.module.scss';
-import { Option } from '../../select/Select.types.ts';
+import { Result } from 'components/result';
 import { useLocalization } from 'components/application';
-import { getCellType } from '../DataTable.utils.ts';
+import { AnyObject } from '../../../utils';
+import { useDataTableContext } from '../DataTable.context.tsx';
+import { DataTableFeatures } from '../DataTable.features.ts';
+import { DataTableFilterValue } from '../DataTable.types.ts';
+import { RulesByDataType } from '../DataTable.constants.ts';
+import { FilterRow } from './FilterRow.tsx';
 
-export const Filtering = memo(() => {
+const columnHeaderLabel = (column: Column<DataTableFeatures, AnyObject>) =>
+  typeof column.columnDef.header === 'string'
+    ? column.columnDef.header
+    : String(column.id);
+
+export const Filtering = () => {
   const t = useLocalization();
 
-  const { initialData, filters, setFilters, columns, setPage } =
-    useDataTableContext();
+  const { table, loading } = useDataTableContext();
 
-  const columnsWithFilters = useMemo(() => {
-    return columns.filter((item) => item.filterable);
-  }, [columns]);
+  const filterableColumns = table
+    .getAllLeafColumns()
+    .filter((column) => column.getCanFilter());
 
-  const [internalFilters, setInternalFilters] = useState<Filter[]>(filters);
+  const filters = table.state.columnFilters;
 
-  const addNewFilter = (
-    accessor: string,
-    type: FilterType,
-    columnType: DataTableColumnType,
-    createAtIndex: number = -1,
-  ) => {
-    setInternalFilters((old) => {
-      let newFilter: Filter = {
-        field: accessor,
-        type: FilterType.string,
-        columnType: columnType,
-        conditions: [],
-      };
+  const [draftFilters, setDraftFilters] = useState<ColumnFilter[]>(filters);
 
-      if (type === FilterType.string) {
-        newFilter = {
-          field: accessor,
-          type: FilterType.string,
-          columnType: columnType,
-          conditions: [
-            {
-              rule: StringFilterRules.contain,
-              join: 'AND',
-              value: '',
-            },
-          ],
-        };
-      } else if (type === FilterType.number) {
-        newFilter = {
-          field: accessor,
-          type: FilterType.number,
-          columnType: columnType,
-          conditions: [
-            {
-              rule: NumberFilterRules.equal,
-              join: 'AND',
-              value: 0,
-              minValue: 0,
-              maxValue: 0,
-            },
-          ],
-        };
-      } else if (type === FilterType.array) {
-        const optionsSet = new Set();
-        initialData.forEach((row) => {
-          const rowItem = row as Record<string, any[]>;
+  const freeToFilterColumns = useMemo(
+    () =>
+      filterableColumns.filter(
+        (column) => !draftFilters.some((filter) => filter.id === column.id),
+      ),
+    [filterableColumns, draftFilters],
+  );
 
-          if (Array.isArray(rowItem[accessor])) {
-            for (const item of rowItem[accessor]) {
-              optionsSet.add(item);
-            }
-          }
-        });
+  const addFilter = useCallback((column: Column<DataTableFeatures, AnyObject>) => {
+    const meta = column.columnDef.meta;
+    const dataType = meta?.dataType;
+    if (!dataType || !RulesByDataType[dataType]) return;
 
-        const options: Option[] = Array.from(optionsSet).map((item) => ({
-          label: String(item),
-          value: String(item),
-        }));
+    const rules = RulesByDataType[dataType];
+    if (!rules || rules.length === 0) return;
 
-        newFilter = {
-          field: accessor,
-          type: FilterType.array,
-          columnType: columnType,
-          conditions: [
-            {
-              rule: ArrayFilterRules.has,
-              join: 'AND',
-              value: options.length ? [options[0].value] : [],
-              options: options,
-            },
-          ],
-        };
-      } else if (type === FilterType.boolean) {
-        newFilter = {
-          field: accessor,
-          type: FilterType.boolean,
-          columnType: columnType,
-          conditions: [
-            {
-              rule: BooleanFilterRules.positive,
-              join: 'AND',
-              value: undefined,
-            },
-          ],
-        };
-      } else if (type === FilterType.date) {
-        newFilter = {
-          field: accessor,
-          type: FilterType.date,
-          columnType: columnType,
-          conditions: [
-            {
-              rule: DateFilterRules.equal,
-              join: 'AND',
-              value: undefined,
-              minValue: undefined,
-              maxValue: undefined,
-            },
-          ],
-        };
-      }
+    const value: DataTableFilterValue = { rule: String(rules[0].value) };
+    if (dataType === 'date') {
+      value.level =
+        (meta?.options as { level?: 'day' | 'month' | 'year' } | undefined)
+          ?.level ?? 'day';
+    }
 
-      if (createAtIndex !== -1) {
-        return [
-          ...old.slice(0, createAtIndex),
-          newFilter,
-          ...old.slice(createAtIndex),
-        ];
-      }
-
-      return [...old, newFilter];
-    });
-  };
+    setDraftFilters((old) => [...old, { id: column.id, value }]);
+  }, []);
 
   const changeFilter = useCallback(
-    (oldFilterIndex: number, accessor: string, type?: DataTableColumnType) => {
-      deleteFilter(oldFilterIndex, 'field');
-
-      const filterType = getCellType(initialData?.[0], accessor, type);
-      const columnType = columns.find(
-        (item) => item.accessor === accessor,
-      )?.type;
-
-      if (!filterType) return;
-
-      addNewFilter(accessor, filterType, columnType || 'text', oldFilterIndex);
-    },
-    [columns, initialData],
-  );
-
-  const changeField = useCallback(
-    (filterIndex: number, field: string, value: unknown) => {
-      setInternalFilters((old) => {
-        const currentFilter = old[filterIndex];
-
-        if (!currentFilter) {
-          return old;
-        }
-
-        let currentCondition = currentFilter.conditions[0] as Record<
-          string,
-          unknown
-        >;
-        currentCondition[field] = value;
-
-        return [...old];
-      });
+    (id: string, field: keyof DataTableFilterValue, value: unknown) => {
+      setDraftFilters((old) =>
+        old.map((filter) =>
+          filter.id === id
+            ? {
+                ...filter,
+                value: {
+                  ...(filter.value as DataTableFilterValue),
+                  [field]: value,
+                },
+              }
+            : filter,
+        ),
+      );
     },
     [],
   );
 
-  const deleteFilter = useCallback(
-    (filterIndex: number, source: 'delete' | 'field') => {
-      setInternalFilters((old) => {
-        const newFilters = old.filter((_, index) => index !== filterIndex);
-
-        if (source === 'delete' && newFilters.length === 0) {
-          setPage(1);
-          setFilters([]);
-        }
-
-        return newFilters;
-      });
-    },
-    [],
-  );
+  const deleteFilter = useCallback((id: string) => {
+    setDraftFilters((old) => old.filter((filter) => filter.id !== id));
+  }, []);
 
   return (
     <Popover
       title={t('dataTable.filtering')}
       showCloseButton
       placement="bottom"
-      style={{
-        minWidth: '280px',
-      }}
+      style={{ minWidth: '280px' }}
+      overlap
       content={({ closePopup }) => (
         <Form>
-          {internalFilters.length === 0 ? (
-            <div className={s.NoFilters}>
-              <div className={s.NoFiltersIcon}>
-                <Icon i="filter_alt_off" />
-              </div>
-              <div className={s.NoFiltersDescription}>
-                {t('dataTable.noFilters')}
-              </div>
-            </div>
+          {draftFilters.length === 0 ? (
+            <Result size="s">{t('dataTable.noFilters')}</Result>
           ) : null}
-          {internalFilters.map((filter, filterIndex) => {
-            return (
-              <Form.Field
-                key={filterIndex}
-                label={
-                  filterIndex === 0 ? t('dataTable.where') : t('dataTable.and')
-                }
-              >
-                <FilterRow
-                  filterIndex={filterIndex}
-                  filter={filter}
-                  columns={columnsWithFilters}
-                  changeField={changeField}
-                  deleteFilter={deleteFilter}
-                  changeFilter={changeFilter}
-                />
-              </Form.Field>
-            );
-          })}
-          <Flex gap="m" direction="horizontal" justify="between">
+          {draftFilters.map((filter) => (
+            <FilterRow
+              key={filter.id}
+              filter={filter as { id: string; value: DataTableFilterValue }}
+              changeFilter={(field, value) =>
+                changeFilter(filter.id, field, value)
+              }
+              deleteFilter={() => deleteFilter(filter.id)}
+            />
+          ))}
+          <Flex gap="m" direction="horizontal" justify="center">
             <Dropdown
               closeParentPopover={false}
               content={
                 <Dropdown.Menu>
-                  {columnsWithFilters.map((filter, filterIndex) => {
-                    const filterType = getCellType(
-                      initialData?.[0],
-                      filter.accessor,
-                      filter.type,
-                    );
-
-                    if (!filterType) return null;
-
-                    const FILTER_TYPE_ICON: Record<string, string> = {
-                      string: 'title',
-                      number: '123',
-                      array: 'data_array',
-                      boolean: 'check_circle_outline',
-                      date: 'calendar_month',
-                    };
-
-                    const label = filter.label || filter.accessor;
-
-                    return (
-                      <Dropdown.Action
-                        key={filterIndex}
-                        icon={<Icon i={FILTER_TYPE_ICON[filterType]} />}
-                        label={label}
-                        onClick={() =>
-                          addNewFilter(
-                            filter.accessor,
-                            filterType,
-                            filter.type || 'text',
-                          )
-                        }
-                        title={label}
-                      />
-                    );
-                  })}
+                  {freeToFilterColumns.map((column) => (
+                    <Dropdown.Action
+                      key={column.id}
+                      label={columnHeaderLabel(column)}
+                      onClick={() => addFilter(column)}
+                    />
+                  ))}
                 </Dropdown.Menu>
               }
             >
               <Button
-                leftIcon={<Icon i="add" />}
+                icon={<Plus />}
                 label={t('dataTable.addFilter')}
+                disabled={freeToFilterColumns.length === 0}
               />
             </Dropdown>
-            <Flex gap="m" justify="end" direction="horizontal">
-              <Button
-                leftIcon={<Icon i="backspace" />}
-                label={t('common.clear')}
-                onClick={() => {
-                  setInternalFilters([]);
-                  setFilters([]);
-                  closePopup();
-                }}
-              />
-              <Button
-                leftIcon={<Icon i="filter_alt" />}
-                severity="primary"
-                label={t('common.apply')}
-                title={t('common.apply')}
-                onClick={() => {
-                  setPage(1);
-                  setFilters(internalFilters);
-                  closePopup();
-                }}
-              />
-            </Flex>
+            <Button
+              label={t('common.clear')}
+              onClick={() => {
+                table.resetColumnFilters();
+                setDraftFilters([]);
+                table.resetPageIndex();
+                closePopup();
+              }}
+            />
+            <Button
+              label={t('common.apply')}
+              onClick={() => {
+                table.setColumnFilters(draftFilters);
+                table.resetPageIndex();
+                closePopup();
+              }}
+              variant="submit"
+            />
           </Flex>
         </Form>
       )}
     >
-      {({ opened }) => (
-        <Button
-          leftIcon={<Icon i="filter_alt" />}
-          title={t('dataTable.filters')}
-          label={`${t('dataTable.filters')}${filters?.length ? ` (${filters.length})` : ''}`}
-          rightIcon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
-        />
-      )}
+      <Button
+        label={t('dataTable.filters')}
+        badge={filters.length ? filters.length : undefined}
+        disabled={loading}
+      />
     </Popover>
   );
-});
+};

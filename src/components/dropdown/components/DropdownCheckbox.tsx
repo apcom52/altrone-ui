@@ -1,12 +1,14 @@
 import { DropdownCheckboxProps } from '../Dropdown.types';
 import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
-import { Icon } from 'components/icon';
 import s from './action.module.scss';
-import { useConfiguration } from 'components/configuration';
 import { useId } from 'react';
+import { useDropdownItemHover } from '../useDropdownItemHover';
+import { mergeRefs } from 'utils/mergeRefs';
+import { CheckIcon } from 'components/checkbox';
 
 export function DropdownCheckbox({
+  ref,
   checked,
   onChange,
   disabled,
@@ -18,23 +20,22 @@ export function DropdownCheckbox({
 }: DropdownCheckboxProps) {
   const id = useId();
 
-  const { ref } = useListItem();
+  const { ref: listItemRef } = useListItem();
 
-  const { dropdown: { checkbox: dropdownCheckboxConfiguration = {} } = {} } =
-    useConfiguration();
+  const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
+    useDropdownItemHover();
 
   const cls = clsx(
     s.Action,
+    'no-selection',
     {
       [s.DisabledAction]: disabled,
       [s.Focused]: focused,
     },
     className,
-    dropdownCheckboxConfiguration.className,
   );
 
   const styles = {
-    ...dropdownCheckboxConfiguration.style,
     ...style,
   };
 
@@ -42,7 +43,7 @@ export function DropdownCheckbox({
     onChange(!checked);
   };
 
-  const onKeyDownPress: React.KeyboardEventHandler = (e) => {
+  const onKeyDownPress: React.KeyboardEventHandler<HTMLButtonElement> = (e) => {
     if (e.key === 'Enter') {
       onChange(!checked);
     }
@@ -51,6 +52,8 @@ export function DropdownCheckbox({
   return (
     <button
       type="button"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       onKeyDown={onKeyDownPress}
       onClick={onSelect}
       disabled={disabled}
@@ -58,12 +61,15 @@ export function DropdownCheckbox({
       role="checkbox"
       aria-checked={checked}
       style={styles}
-      ref={ref}
+      ref={mergeRefs(listItemRef, ref)}
       id={id}
       title={label}
       {...props}
     >
-      <div className={s.Icon}>{checked ? <Icon i="check" /> : null}</div>
+      {itemBackgroundElement}
+      <div className={s.Icon}>
+        <CheckIcon checked={checked} />
+      </div>
       <div className={s.Label}>{label}</div>
     </button>
   );

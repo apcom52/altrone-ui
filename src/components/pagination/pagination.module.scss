@@ -1,83 +1,25 @@
-@import 'src/global/mixins';
-
-:global(:root) {
-  --paginationBackgroundColor: var(--default-200);
-  --paginationTextColor: var(--default-700);
-  --paginationHoverBackgroundColor: var(--default-300);
-  --paginationPressedBackgroundColor: var(--default-400);
-}
-
-:global(.AltroneDark) {
-  --paginationBackgroundColor: var(--default-700);
-  --paginationTextColor: var(--default-50);
-  --paginationHoverBackgroundColor: var(--default-600);
-  --paginationPressedBackgroundColor: var(--default-500);
+:global([data-altrone-root='true']) {
+  --pagination-background: transparent;
+  --pagination-rounding: var(--radius-m);
 }
 
 .Pagination {
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  padding: 2px;
-  background: var(--paginationBackgroundColor);
-  height: 24px;
-  border-radius: 6px;
+  --pagination-gap: 4px;
 
-  @include no-selection;
+  width: fit-content;
+  padding: var(--pagination-gap);
+  background: var(--pagination-background);
+  --radius-outer: calc(var(--pagination-rounding) + var(--pagination-gap));
+  border-radius: var(--radius-outer);
+  user-select: none;
 }
 
-.NavButton {
+.Ellipsis {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-  font-size: 14px;
-  padding: 0;
-  color: var(--paginationTextColor);
-  transition: background-color 0.2s ease;
-
-  @include no-appearance;
-  background: none;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-
-  @include focus;
-
-  &:hover, &:focus-visible {
-    background: var(--paginationHoverBackgroundColor);
-  }
-
-  &:active {
-    background: var(--paginationPressedBackgroundColor);
-  }
-
-  &:disabled {
-    @include disabled;
-  }
-}
-
-.CurrentPage {
-  min-width: 80px;
-  height: 20px;
-  @include no-appearance;
-  @include sm-paragraph;
-  color: var(--paginationTextColor);
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
-
-  background: transparent;
-  border: none;
-  cursor: pointer;
-
-  @include focus;
-
-  &:hover, &:focus-visible, &.Opened {
-    background: var(--paginationHoverBackgroundColor);
-  }
-
-  &:disabled {
-    @include disabled;
-  }
+  width: 32px;
+  height: 32px;
+  color: var(--text-2);
+  font-size: var(--text-size-4);
 }

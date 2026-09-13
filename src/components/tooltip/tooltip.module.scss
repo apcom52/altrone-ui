@@ -1,19 +1,23 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --tooltipBackgroundColor: var(--default-100);
-  --tooltipBorderColor: var(--default-200);
-  --tooltipHoveredBackgroundColor: var(--default-200);
-  --tooltipTextColor: var(--default-700);
-  --tooltipHoveredTextColor: var(--default-900);
+:global([data-altrone-root='true']) {
+  /* An "inverted" surface (Radix/Material-style), not the light/dark surface scale. */
+  --tooltip-background-color: color(display-p3 0.064 0.07 0.067);
+  --tooltip-text-color: color(display-p3 0.927 0.933 0.93);
+  --tooltip-button-text-color: var(--text-2);
+  --tooltip-button-background-color: var(--glass-background-color);
+  --tooltip-button-border-color: var(--border-1);
+
+  /* Matches the bubble by default — the arrow is just a pointer extension of it. */
+  --tooltip-arrow-color: var(--tooltip-background-color);
+
+  /* Seeds Box's `radius` -> `--radius-outer`, same pattern as --popover-radius. */
+  --tooltip-radius: 10px;
 }
 
-:global(.AltroneDark) {
-  --tooltipBackgroundColor: var(--default-800);
-  --tooltipBorderColor: var(--default-700);
-  --tooltipHoveredBackgroundColor: var(--default-700);
-  --tooltipTextColor: var(--default-200);
-  --tooltipHoveredTextColor: var(--default-50);
+:global([data-altrone-root='true'][data-altrone-theme='dark']) {
+  /** Was near-identical to `--gray-1`; the arrow can't be outlined (see .Tooltip), so lift the fill itself instead. */
+  --tooltip-background-color: var(--gray-6);
 }
 
 .QuestionMark {
@@ -22,17 +26,55 @@
   justify-content: center;
   width: 24px;
   height: 24px;
+  padding: 0;
   font-size: 16px;
-  background-color: var(--tooltipBackgroundColor);
-  border: 1px solid var(--tooltipBorderColor);
-  color: var(--tooltipTextColor);
-  border-radius: 50%;
+  background-color: var(--tooltip-button-background-color);
+  border: 1px solid var(--tooltip-button-border-color);
+  backdrop-filter: blur(32px) saturate(180%);
+  color: var(--tooltip-button-text-color);
+  border-radius: var(--radius-circle);
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
   @include focus;
+}
 
-  &:hover, &:focus-visible {
-    background-color: var(--tooltipHoveredBackgroundColor);
-    color: var(--tooltipHoveredTextColor);
+.Tooltip {
+  --radius-outer: var(--tooltip-radius);
+
+  background: var(--tooltip-background-color);
+  color: var(--tooltip-text-color);
+  padding: 4px 8px;
+  border-radius: var(--radius-outer);
+  font-weight: var(--text-weight-medium);
+  max-width: 300px;
+  font-size: var(--text-size-3);
+  line-height: var(--line-height-3);
+  /** No box-shadow/border by design — it can't wrap the arrow's triangle correctly. */
+  z-index: var(--level-tooltip);
+
+  &.WithTitle {
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
   }
+}
+
+.Title {
+  font-weight: var(--text-weight-bold);
+  font-size: var(--text-size-3);
+  line-height: var(--line-height-3);
+  opacity: 0.7;
+}
+
+.Content {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.Kbd {
+  color: var(--solid-2);
 }

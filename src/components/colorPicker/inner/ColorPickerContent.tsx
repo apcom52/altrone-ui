@@ -1,207 +1,187 @@
-import {
-  Button,
-  Flex,
-  Icon,
-  NumberInput,
-  Tabs,
-  TextInput,
-  useLocalization,
-} from 'components';
+import { Button } from 'components/button/Button.tsx';
+import { Flex } from 'components/flex/Flex.tsx';
+import { NumberInput } from 'components/numberInput/NumberInput.tsx';
+import { Tabs } from 'components/tabs/Tabs.tsx';
+import { TextInput } from 'components/textInput/TextInput.tsx';
+import { useLocalization } from 'components/application';
 import { FocusEventHandler, useCallback, useEffect, useState } from 'react';
 import { ColorPickerProps } from '../ColorPicker.types';
 import { ColorPreset } from './ColorPreset';
 import s from './colorPickerContent.module.scss';
 import { HexAlphaColorPicker } from 'react-colorful';
+import { Delete, Grid3X3, Palette } from 'lucide-react';
 
-interface ColorPickerContentProps
-  extends Pick<
-    ColorPickerProps,
-    'colorPresets' | 'value' | 'onChange' | 'allowPalette' | 'clearable'
-  > {
+const HEX6 = /^[0-9A-Fa-f]{6}$/;
+
+type Channel = 'r' | 'g' | 'b';
+
+/** Splits `#rrggbb(aa)` into decimal channels + the raw alpha byte; degrades to black on malformed input. */
+const parseChannels = (color: string | undefined) => {
+  const hex = (color ?? '').replace('#', '');
+  if (hex.length < 6) {
+    return { r: 0, g: 0, b: 0, alpha: '' };
+  }
+  return {
+    r: parseInt(hex.slice(0, 2), 16),
+    g: parseInt(hex.slice(2, 4), 16),
+    b: parseInt(hex.slice(4, 6), 16),
+    alpha: hex.slice(6, 8),
+  };
+};
+
+const toHexByte = (value: number) =>
+  Math.max(0, Math.min(255, Math.round(value || 0)))
+    .toString(16)
+    .padStart(2, '0');
+
+interface ColorPickerContentProps extends Pick<
+  ColorPickerProps,
+  'colorPresets' | 'value' | 'onChange' | 'allowPalette' | 'clearable' | 'size'
+> {
   closePopup: () => void;
 }
 
 export const ColorPickerContent = (props: ColorPickerContentProps) => {
-  const { colorPresets, value = '#000000', onChange, allowPalette } = props;
+  const {
+    colorPresets,
+    value = '#000000',
+    onChange,
+    allowPalette = true,
+    clearable,
+    size,
+    closePopup,
+  } = props;
 
   const t = useLocalization();
 
-  const _allowPalette = typeof allowPalette === 'boolean' ? allowPalette : true;
+  const presetsEnabled = Boolean(colorPresets?.length);
+  const paletteEnabled = presetsEnabled ? allowPalette : true;
+  const showTabs = presetsEnabled && paletteEnabled;
 
-  const presetsEnabled = Boolean(props.colorPresets?.length);
-  const paletteEnabled = presetsEnabled ? _allowPalette : true;
-  const tabsAmount = Number(presetsEnabled) + Number(paletteEnabled);
-
-  const [mode, setMode] = useState<'presets' | 'palette'>(() => {
-    if (presetsEnabled) {
-      return 'presets';
-    }
-
-    return 'palette';
-  });
-
-  const [localColor, setLocalColor] = useState(value ? value.slice(1, 7) : '');
-
-  const [hexR, hexG, hexB] = value
-    ? [value.slice(1, 3), value.slice(3, 5), value.slice(5, 7)]
-    : ['00', '00', '00'];
-
-  const [red, setRed] = useState<number | undefined>(parseInt(hexR, 16));
-  const [green, setGreen] = useState<number | undefined>(parseInt(hexG, 16));
-  const [blue, setBlue] = useState<number | undefined>(parseInt(hexB, 16));
-
-  useEffect(() => {
-    setRed(parseInt(hexR, 16));
-    setGreen(parseInt(hexG, 16));
-    setBlue(parseInt(hexB, 16));
-  }, [hexR, hexG, hexB]);
-
-  const handleBlur = useCallback<FocusEventHandler>(
-    (e) => {
-      const isValidHexColor = (value: string): boolean => {
-        const hexColorRegex = /^[0-9A-Fa-f]{6}$/;
-        return hexColorRegex.test(value);
-      };
-
-      const input = e.target as HTMLInputElement;
-      if (isValidHexColor(input.value)) {
-        onChange(`#${input.value}`);
-      } else {
-        setLocalColor('');
-        onChange(undefined);
-      }
-    },
-    [hexR, hexG, hexB, onChange],
+  const [mode, setMode] = useState<'presets' | 'palette'>(
+    presetsEnabled ? 'presets' : 'palette',
   );
 
-  const handleRGBFieldBlur = useCallback(() => {
-    const alphaValue = value.slice(7, 9);
+  const [hexDraft, setHexDraft] = useState('');
+  const [rgb, setRgb] = useState(() => parseChannels(value));
 
-    onChange(
-      `#${(red || 0).toString(16).padStart(2, '0')}${(green || 0)
-        .toString(16)
-        .padStart(
-          2,
-          '0',
-        )}${(blue || 0).toString(16).padStart(2, '0')}${alphaValue}`,
-    );
-  }, [red, green, blue, onChange]);
-
-  const handleClearClick = () => {
-    props.onChange(undefined);
-    props.closePopup();
-  };
-
+  /** Re-sync the editable fields whenever the color changes from the outside (palette drag, preset click). */
   useEffect(() => {
-    setLocalColor(value ? value.slice(1, 7) : '');
+    setRgb(parseChannels(value));
+    setHexDraft(value ? value.replace('#', '').slice(0, 6) : '');
   }, [value]);
+
+  const commitHex = useCallback<FocusEventHandler>(
+    (event) => {
+      const next = (event.target as HTMLInputElement).value;
+      if (HEX6.test(next)) {
+        onChange(`#${next}`, event);
+      } else {
+        setHexDraft('');
+        onChange(undefined, event);
+      }
+    },
+    [onChange],
+  );
+
+  const commitRgb = useCallback(() => {
+    const { alpha } = parseChannels(value);
+    onChange(
+      `#${toHexByte(rgb.r)}${toHexByte(rgb.g)}${toHexByte(rgb.b)}${alpha}`,
+    );
+  }, [rgb, onChange, value]);
+
+  const handleClear = () => {
+    onChange(undefined);
+    closePopup();
+  };
 
   return (
     <Flex direction="vertical" gap="m" className={s.ColorPicker}>
-      {tabsAmount >= 2 ? (
+      {showTabs ? (
         <Tabs>
           <Tabs.Item
-            icon={<Icon i="apps" />}
-            showLabel={false}
+            icon={<Grid3X3 />}
             label={t('colorPicker.savedColors')}
             onClick={() => setMode('presets')}
             selected={mode === 'presets'}
           />
           <Tabs.Item
-            icon={<Icon i="palette" />}
+            icon={<Palette />}
             label={t('colorPicker.palette')}
-            showLabel={false}
             onClick={() => setMode('palette')}
             selected={mode === 'palette'}
           />
         </Tabs>
       ) : null}
+
       {mode === 'presets' ? (
         <Flex direction="horizontal" gap="m" wrap>
-          {colorPresets?.map((preset, presetIndex) => (
+          {colorPresets?.map((preset, index) => (
             <ColorPreset
-              key={`${presetIndex}-${preset.name}`}
+              key={`${index}-${preset.name}`}
               onChange={onChange}
-              selected={preset.value === value}
+              selected={preset.value.toLowerCase() === value?.toLowerCase()}
               {...preset}
             />
           ))}
         </Flex>
       ) : null}
+
       {mode === 'palette' ? (
-        <HexAlphaColorPicker
-          color={value}
-          onChange={onChange}
-          defaultValue="#000000ff"
-          className={s.Palette}
-        />
-      ) : null}
-      {mode === 'palette' ? (
-        <Flex direction="vertical" gap="s">
-          <Flex direction="horizontal" gap="s">
+        <>
+          <HexAlphaColorPicker
+            color={value}
+            onChange={(color) => onChange(color)}
+            className={s.Palette}
+          />
+          <Flex direction="vertical" gap="s">
             <TextInput
               maxLength={6}
-              style={{ width: 84 }}
+              size={size}
+              wrapperClassName={s.HexField}
               placeholder="000000"
-              value={localColor}
-              onChange={setLocalColor}
-              onBlur={handleBlur}
+              value={hexDraft}
+              onChange={setHexDraft}
+              onBlur={commitHex}
             >
               <TextInput.TextIsland label="#" />
             </TextInput>
-            <NumberInput
-              value={red}
-              onChange={setRed}
-              onBlur={handleRGBFieldBlur}
-              min={0}
-              max={255}
-              showControls={false}
-              placeholder="0"
-              title="R"
-            />
-            <NumberInput
-              value={green}
-              onChange={setGreen}
-              onBlur={handleRGBFieldBlur}
-              min={0}
-              max={255}
-              showControls={false}
-              placeholder="0"
-              title="G"
-            />
-            <NumberInput
-              value={blue}
-              onChange={setBlue}
-              onBlur={handleRGBFieldBlur}
-              min={0}
-              max={255}
-              showControls={false}
-              placeholder="0"
-              title="B"
-            />
+            <Flex direction="horizontal" gap="s" className={s.ChannelRow}>
+              {(['r', 'g', 'b'] as Channel[]).map((channel) => (
+                <div key={channel} className={s.ChannelCell}>
+                  <NumberInput
+                    size={size}
+                    value={rgb[channel]}
+                    onChange={(next) =>
+                      setRgb((prev) => ({ ...prev, [channel]: next ?? 0 }))
+                    }
+                    onBlur={commitRgb}
+                    min={0}
+                    max={255}
+                    placeholder="0"
+                    title={channel.toUpperCase()}
+                  >
+                    <TextInput.TextIsland label={channel.toUpperCase()} />
+                  </NumberInput>
+                </div>
+              ))}
+            </Flex>
           </Flex>
-          <Flex direction="horizontal" gap="s">
-            <div className={s.InputLabel} style={{ width: 84 }}>
-              HEX
-            </div>
-            <div className={s.InputLabel} style={{ flex: 1 }}>
-              R
-            </div>
-            <div className={s.InputLabel} style={{ flex: 1 }}>
-              G
-            </div>
-            <div className={s.InputLabel} style={{ flex: 1 }}>
-              B
-            </div>
-          </Flex>
-        </Flex>
+        </>
       ) : null}
-      {props.clearable ? (
-        <Flex>
+
+      {clearable ? (
+        <Flex justify="center" gap="s">
           <Button
-            leftIcon={<Icon i="backspace" />}
+            icon={<Delete />}
             label={t('common.clear')}
-            onClick={handleClearClick}
+            onClick={handleClear}
+          />
+          <Button
+            label={t('common.apply')}
+            variant="submit"
+            onClick={closePopup}
           />
         </Flex>
       ) : null}

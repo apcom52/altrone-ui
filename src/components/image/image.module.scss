@@ -1,0 +1,133 @@
+:global([data-altrone-root='true']) {
+  --image-broken-media-size: 40px;
+  --image-broken-media-background: var(--interactive-1);
+  --image-broken-media-color: var(--text-1);
+  --image-broken-icon-size: 18px;
+}
+
+.Image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-inline);
+  margin: 0;
+  max-width: 100%;
+}
+
+.Frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--image-width, 100%);
+  height: var(--image-height, auto);
+  /* Guards against collapsing to zero height while loading, when both the
+     preloader and the (visually hidden) `img` are position: absolute and
+     there's nothing left in flow to size the frame. */
+  min-height: var(--image-min-height, 200px);
+  /* Deliberately no border-radius/overflow/border/shadow here — with
+     `fit="contain"`/`"scale-down"`/`"none"` the picture can render smaller
+     than the frame, and any of those on the frame itself would trace the
+     full box (plus the surrounding empty letterbox), not the picture. Each
+     visual state below (.Media/.Broken/.Preloader) carries its own, sized to
+     whatever it actually renders. */
+}
+
+.Media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-position: var(--image-object-position, center);
+  border-radius: var(--image-radius, var(--radius-l));
+  /* Clips arbitrary `children` content (svg, a framework's own image
+     component) to the rounded corners — a plain `<img>` already clips to its
+     own border-radius without this, but a wrapping `<div>` around custom
+     children doesn't. */
+  overflow: hidden;
+}
+
+/* Border + shadow live on the picture's own box, not the frame — so with
+   `fit="contain"`/`"scale-down"`, an image narrower than the frame gets them
+   hugging its own edges instead of tracing the empty letterbox space around
+   it. `<img>` (`src` mode) only — an arbitrary `children` element is a
+   consumer-authored picture (its own next/image, its own svg styling), so
+   whether it gets a border/shadow of its own is the consumer's call, not
+   something Image should impose on top of it. `--border-a1` is `--gray-a6`
+   (see theming.md/dark-theme.md), an alpha gray that already resolves dark
+   under `[data-altrone-theme='dark']` — no separate dark-mode override
+   needed. `--elevation-raised-shadow` is the same light-lift role
+   `Tabs.Item`/`DatePicker`'s day use (see elevation.md). */
+img.Media {
+  outline: 1px solid var(--border-a1);
+  outline-offset: -1px;
+  box-shadow: var(--elevation-raised-shadow);
+}
+
+.FitCover,
+.FitFill {
+  object-fit: var(--image-fit);
+}
+
+/* `contain`/`scale-down`/`none` can render smaller than the frame — shrinking
+   the box itself to the content (instead of 100%) is what makes the border
+   and shadow hug the visible picture rather than the surrounding empty
+   space. `<img>` (a real replaced element with known intrinsic dimensions)
+   only — a bare `children` element like an inline `<svg>` with no
+   width/height of its own has no intrinsic size for this to shrink-wrap to,
+   and collapses to 0×0 instead, so `children` mode stays at the 100% default
+   above regardless of `fit` and relies on the child sizing itself. */
+img.FitContain,
+img.FitScaleDown,
+img.FitNone {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: var(--image-fit);
+}
+
+.Hidden {
+  /* Kept mounted (not `display: none`) so the `img` still fires `load`/`error`
+     while the preloader sits on top of it. */
+  visibility: hidden;
+  position: absolute;
+  inset: 0;
+}
+
+.Preloader {
+  /* No border/shadow here — those are reserved for an actual picture (see
+     `.Media`), not the loading/error placeholders. */
+  position: absolute;
+  inset: 0;
+  border-radius: var(--image-radius, var(--radius-l));
+  overflow: hidden;
+}
+
+.Broken {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--background-1);
+  border-radius: var(--image-radius, var(--radius-l));
+  overflow: hidden;
+}
+
+.BrokenMedia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--image-broken-media-size);
+  height: var(--image-broken-media-size);
+  border-radius: 50%;
+  background: var(--image-broken-media-background);
+  color: var(--image-broken-media-color);
+  font-size: var(--image-broken-icon-size);
+
+  svg {
+    width: 1em;
+    height: 1em;
+  }
+}

@@ -1,60 +1,76 @@
-import { memo, ReactEventHandler } from 'react';
+import { MouseEvent, useId } from 'react';
 import { SpoilerProps } from './Spoiler.types.ts';
 import clsx from 'clsx';
-import { Icon } from '../icon';
 import s from './spoiler.module.scss';
-import { useBoolean } from '../../utils';
-import { useConfiguration } from 'components/configuration';
+import { useBoolean } from 'utils';
+import { Plus, Minus } from 'lucide-react';
+import { AnimatePresence, motion, type Transition } from 'motion/react';
 
-export const Spoiler = memo<SpoilerProps>(
-  ({
-    children,
-    className,
-    style,
-    openedByDefault = false,
-    title,
-    onToggle,
-    ...restProps
-  }) => {
-    const { spoiler: spoilerConfig = {} } = useConfiguration();
+/** Near-critically damped — a lively settle, no visible bounce. */
+const EXPAND_TRANSITION: Transition = {
+  height: { type: 'spring', stiffness: 300, damping: 30, mass: 0.8 },
+  opacity: { duration: 0.15, ease: 'linear' },
+};
+/** Quick, clean close — no spring so it doesn't linger. */
+const COLLAPSE_TRANSITION: Transition = {
+  height: { duration: 0.18, ease: [0.4, 0, 1, 1] },
+  opacity: { duration: 0.1, ease: 'linear' },
+};
 
-    const { value: opened, setValue: setOpened } = useBoolean(openedByDefault);
+export const Spoiler = ({
+  ref,
+  children,
+  className,
+  style,
+  openedByDefault = false,
+  title,
+  onToggle,
+  ...restProps
+}: SpoilerProps) => {
+  const { value: opened, toggle } = useBoolean(openedByDefault);
+  const contentId = useId();
 
-    const cls = clsx(
-      s.Spoiler,
-      {
-        [s.Opened]: opened,
-      },
-      className,
-      spoilerConfig.className,
-    );
+  const handleToggle = (event: MouseEvent<HTMLButtonElement>) => {
+    toggle();
+    onToggle?.(!opened, event);
+  };
 
-    const styles = {
-      ...spoilerConfig.style,
-      ...style,
-    };
-
-    const onToggleHandler: ReactEventHandler<HTMLDetailsElement> = (event) => {
-      setOpened((event.target as HTMLDetailsElement).open);
-      onToggle?.(event);
-    };
-
-    return (
-      <details
-        className={cls}
-        open={opened}
-        style={styles}
-        {...restProps}
-        onToggle={onToggleHandler}
+  return (
+    <div
+      ref={ref}
+      className={clsx(s.Spoiler, className)}
+      style={style}
+      {...restProps}
+    >
+      <button
+        type="button"
+        className={s.Heading}
+        aria-expanded={opened}
+        aria-controls={contentId}
+        onClick={handleToggle}
       >
-        <summary tabIndex={0} className={s.Heading}>
-          {title}
-          <div className={s.ArrowIcon} aria-hidden={true}>
-            <Icon i={opened ? 'expand_less' : 'expand_more'} />
-          </div>
-        </summary>
-        <div className={s.Content}>{children}</div>
-      </details>
-    );
-  },
-);
+        <span className={s.Title}>{title}</span>
+        <span className={s.ArrowIcon} aria-hidden={true}>
+          {opened ? <Minus /> : <Plus />}
+        </span>
+      </button>
+      <AnimatePresence initial={false}>
+        {opened && (
+          <motion.div
+            id={contentId}
+            className={s.Content}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{
+              height: 'auto',
+              opacity: 1,
+              transition: EXPAND_TRANSITION,
+            }}
+            exit={{ height: 0, opacity: 0, transition: COLLAPSE_TRANSITION }}
+          >
+            <div className={s.ContentInner}>{children}</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};

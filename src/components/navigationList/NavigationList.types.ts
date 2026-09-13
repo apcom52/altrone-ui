@@ -1,39 +1,46 @@
-import { RenderFuncProp } from 'types';
-import { ReactElement } from 'react';
+import React from 'react';
 
-export interface NavigationListProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+export interface NavigationListProps extends React.HTMLAttributes<HTMLElement> {
+  ref?: React.Ref<HTMLElement>;
+}
 
 export interface NavigationListGroupProps
   extends React.HTMLAttributes<HTMLDivElement> {
+  ref?: React.Ref<HTMLDivElement>;
   title?: string;
 }
 
 export interface NavigationListGroupActionProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+  ref?: React.Ref<HTMLButtonElement>;
   label: string;
-  icon: JSX.Element;
+  icon: React.JSX.Element;
 }
 
 export interface NavigationListLinkProps
   extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  ref?: React.Ref<HTMLAnchorElement>;
   label: string;
-  icon?: JSX.Element;
+  icon?: React.JSX.Element;
   selected?: boolean;
-  badge?: string | number | JSX.Element;
-  renderFunc?: RenderFuncProp<
-    HTMLAnchorElement,
-    NavigationListLinkPropsWithActions
-  >;
+  badge?: string | number | React.JSX.Element;
+  disabled?: boolean;
+  asChild?: boolean;
 }
-
-export type NavigationListLinkPropsWithActions = NavigationListLinkProps & {
-  actions: ReactElement[];
-  level: number;
-};
 
 export interface NavigationListLinkActionProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+  ref?: React.Ref<HTMLButtonElement>;
   label: string;
-  icon: JSX.Element;
+  icon: React.JSX.Element;
+}
+
+export interface NavigationListHeaderProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  ref?: React.Ref<HTMLDivElement>;
+}
+
+export interface NavigationListFooterProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  ref?: React.Ref<HTMLDivElement>;
 }

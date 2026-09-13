@@ -1,143 +1,89 @@
+import { createElement, FC } from 'react';
 import { useDataTableContext } from '../DataTable.context.tsx';
-import clsx from 'clsx';
-import { DataTableCellProps } from '../DataTableCell.tsx';
 import { Checkbox } from '../../checkbox';
-import s from './body.module.scss';
-import { useVisibleColumns } from '../useVisibleColumns.ts';
-import { DataTableBodyProps, DataTableColumnType } from '../DataTable.types.ts';
-import {
-  DataTableTextRenderer,
-  DataTableCurrencyRenderer,
-  DataTableNumberRenderer,
-  DataTableDateRenderer,
-  DataTableMonthRenderer,
-  DataTableYearRenderer,
-  DataTableBooleanRenderer,
-  DataTableArrayRenderer,
-} from '../renderers';
-import { createElement } from 'react';
+import { Result } from 'components/result';
 import { useLocalization } from '../../application';
-import { GlobalUtils } from '../../../utils';
-import { Empty } from 'components/empty/Empty.tsx';
+import {
+  CellRenderer,
+  DataTableBodyProps,
+  DataTableColumn,
+} from '../DataTable.types.ts';
+import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
+import { CellRenderers } from '../DataTable.constants.ts';
+import s from './body.module.scss';
 
-const CELL_RENDERERS: Record<
-  DataTableColumnType,
-  React.FC<DataTableCellProps<any>>
-> = {
-  text: DataTableTextRenderer,
-  number: DataTableNumberRenderer,
-  boolean: DataTableBooleanRenderer,
-  array: DataTableArrayRenderer,
-  currency: DataTableCurrencyRenderer,
-  date: DataTableDateRenderer,
-  month: DataTableMonthRenderer,
-  year: DataTableYearRenderer,
-};
-
-export const Body = <T extends object>(props: DataTableBodyProps<T>) => {
-  const { showEmptyBanner = true, renderRowActions } = props;
-
-  const {
-    data,
-    columns,
-    page,
-    rowsPerPage,
-    selectableMode,
-    selectedRows,
-    selectRow,
-  } = useDataTableContext<T>();
-
+export const Body = <T extends object>({
+  renderRowActions,
+  showEmptyBanner = true,
+}: DataTableBodyProps<T>) => {
   const t = useLocalization();
+  const { table, selectMode } = useDataTableContext<T>();
 
-  const start = (page - 1) * rowsPerPage;
-  const end = page * rowsPerPage;
+  const columnsTemplate = useDataTableColumnsTemplate(
+    selectMode,
+    Boolean(renderRowActions),
+  );
 
-  const visibleColumns = useVisibleColumns(columns);
+  const rows = table.getRowModel().rows;
 
   return (
-    <tbody className={s.TableBody}>
-      {data.length === 0 && showEmptyBanner ? (
-        <tr>
-          <td colSpan={visibleColumns.length}>
-            <Empty />
-          </td>
-        </tr>
+    <div className={s.TableBody}>
+      {rows.length === 0 && showEmptyBanner ? (
+        <Result>{t('dataTable.empty')}</Result>
       ) : null}
-      {data.slice(start, end).map((row, rowIndex) => {
-        const currentRowIndex = (page - 1) * rowsPerPage + rowIndex;
-        const isSelected = selectedRows.indexOf(currentRowIndex) > -1;
+      {rows.map((row) => {
+        const isSelected = row.getIsSelected();
 
         return (
-          <tr
-            key={rowIndex}
-            className={clsx(s.Row, {
-              [s.Selected]: isSelected,
-            })}
+          <div
+            key={row.id}
+            className={s.Row}
+            data-selected={isSelected}
+            style={{ gridTemplateColumns: columnsTemplate }}
           >
-            {selectableMode && (
-              <td className={clsx(s.Cell, s.CheckboxCell)}>
+            {selectMode ? (
+              <div className={s.CheckboxCell}>
                 <Checkbox
                   checked={isSelected}
-                  onChange={() => selectRow(currentRowIndex)}
-                  title={t(
-                    isSelected
-                      ? 'dataTable.deselectRow'
-                      : 'dataTable.selectRow',
-                  )}
+                  onChange={() => row.toggleSelected()}
                 />
-              </td>
-            )}
-            {visibleColumns.map((column, columnIndex) => {
-              const accessor = column.accessor as keyof T;
+              </div>
+            ) : null}
+            {row.getVisibleCells().map((cell) => {
+              const meta = cell.column.columnDef.meta;
+              const columnType = meta?.dataType ?? 'string';
+              const Renderer = CellRenderers[columnType] ?? CellRenderers.string;
 
-              const props = {
-                accessor: accessor,
-                item: row,
-                value: row[accessor],
-                rowIndex,
-                columnIndex,
-                columnOptions: column.options,
+              const rendererProps: CellRenderer<T> = {
+                value: cell.getValue(),
+                item: row.original,
+                columnConfig:
+                  (meta?.columnConfig as DataTableColumn<T>) ??
+                  ({ accessor: cell.column.id } as DataTableColumn<T>),
+                table,
               };
 
-              let content;
-
-              if (column.renderFunc) {
-                content = column.renderFunc({ current: null }, props);
-              } else if (column.Component) {
-                console.warn(
-                  GlobalUtils.formatConsoleMessage(
-                    '[Altrone]: property [[Component]] in DataTable component is deprecated. Use [[renderFunc]] instead. Will be removed in version 4.0',
-                  ),
-                );
-
-                const CellComponent = column.Component;
-                content = <CellComponent {...props} />;
-              } else {
-                const CellComponent =
-                  typeof column.type === 'string'
-                    ? CELL_RENDERERS[column.type] || DataTableTextRenderer
-                    : DataTableTextRenderer;
-                content = createElement(CellComponent, props);
-              }
-
-              const cls = clsx(s.Cell, {
-                [s.CellWithWidth]: Boolean(column.width),
-              });
-
               return (
-                <td key={columnIndex} className={cls}>
-                  {content}
-                </td>
+                <div key={cell.id} className={s.Cell}>
+                  {createElement(
+                    Renderer as FC<CellRenderer<T>>,
+                    rendererProps,
+                  )}
+                </div>
               );
             })}
             {renderRowActions ? (
-              <td className={clsx(s.Cell)}>
-                {renderRowActions({ row, rowIndex, selected: isSelected })}
-              </td>
+              <div className={s.Cell}>
+                {renderRowActions({
+                  row: row.original,
+                  rowIndex: row.index,
+                  selected: isSelected,
+                })}
+              </div>
             ) : null}
-          </tr>
+          </div>
         );
       })}
-    </tbody>
+    </div>
   );
 };

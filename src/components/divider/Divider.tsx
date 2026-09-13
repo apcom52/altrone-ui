@@ -2,26 +2,21 @@ import { memo } from 'react';
 import s from './divider.module.scss';
 import clsx from 'clsx';
 import { DividerProps } from './Divider.types.ts';
-import { useConfiguration } from '../configuration';
 
 export const Divider = memo<DividerProps>(
-  ({ direction, className, style, ...props }) => {
-    const { divider: dividerConfig = {} } = useConfiguration();
+  ({ ref, direction, className, style, ...props }) => {
+    const vertical = direction === 'vertical';
 
-    const cls = clsx(
-      s.Divider,
-      {
-        [s.Vertical]: direction === 'vertical',
-      },
-      className,
-      dividerConfig.className,
+    const cls = clsx(s.Divider, { [s.Vertical]: vertical }, className);
+
+    return (
+      <hr
+        ref={ref}
+        className={cls}
+        style={style}
+        aria-orientation={vertical ? 'vertical' : undefined}
+        {...props}
+      />
     );
-
-    const styles = {
-      ...dividerConfig.style,
-      ...style,
-    };
-
-    return <hr role="separator" className={cls} style={styles} {...props} />;
   },
 );

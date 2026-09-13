@@ -1,7 +1,7 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { AltroneApplication, Configuration, Search, TextInput } from '../src';
+import { Application, Configuration, Search, TextInput } from '../src';
 
 class ResizeObserver {
   observe() {}
@@ -16,7 +16,7 @@ beforeAll(() => {
 describe('Search', () => {
   test('check that custom className and styles works', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Search
           getSuggestions={() => []}
           className="cls"
@@ -25,7 +25,7 @@ describe('Search', () => {
         >
           <TextInput.TextIsland data-testid="island" label="Text" />
         </Search>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('search')).toHaveClass('cls');
@@ -34,7 +34,7 @@ describe('Search', () => {
 
   test('check that configuration works', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Configuration
           search={{
             className: 'cls',
@@ -43,7 +43,7 @@ describe('Search', () => {
         >
           <Search getSuggestions={() => []} data-testid="search" />
         </Configuration>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('search')).toHaveClass('cls');

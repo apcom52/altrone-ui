@@ -3,30 +3,35 @@ import {
   PopoverContentContext,
 } from 'components/popover';
 import { PopoverProps } from 'components/popover/Popover.types';
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, Ref } from 'react';
 import { RenderFuncProp } from '../../types';
 import { RenderFunction } from 'utils';
 
 export interface DropdownActionProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: React.Ref<HTMLButtonElement>;
   label: string;
-  icon?: JSX.Element;
+  icon?: React.ReactElement;
   hintText?: string;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   danger?: boolean;
   disabled?: boolean;
   focused?: boolean;
+  asChild?: boolean;
   renderFunc?: RenderFuncProp<
     HTMLButtonElement,
     DropdownActionProps & { keyProp?: string }
   >;
   'data-active'?: boolean;
+  'data-dropdown-action'?: boolean;
+  'data-index'?: number;
   keyProp?: string;
-  badge?: string | number | JSX.Element;
+  badge?: string | number | React.ReactElement;
 }
 
 export interface DropdownCheckboxProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
+  ref?: React.Ref<HTMLButtonElement>;
   checked: boolean;
   onChange: (state: boolean) => void;
   label: string;
@@ -36,6 +41,7 @@ export interface DropdownCheckboxProps
 
 export interface DropdownRadioListProps<T = string>
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+  ref?: React.Ref<HTMLDivElement>;
   value: T;
   onChange: (value: T) => void;
   children:
@@ -46,6 +52,7 @@ export interface DropdownRadioListProps<T = string>
 
 export interface DropdownRadioListItem<T = string>
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'value'> {
+  ref?: React.Ref<HTMLButtonElement>;
   value: T;
   label: string;
   disabled?: boolean;
@@ -54,6 +61,7 @@ export interface DropdownRadioListItem<T = string>
 
 export interface DropdownChildMenuProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  ref?: React.Ref<HTMLElement>;
   icon?: ReactElement;
   children: ReactElement | null | (ReactElement | null)[];
   label: string;
@@ -62,6 +70,7 @@ export interface DropdownChildMenuProps
 
 export interface DropdownMenuProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
+  ref?: Ref<HTMLDivElement>;
   children: ReactElement | null | (ReactElement | null)[];
   defaultFocusItemIndex?: number;
   onChangeFocusItemIndex?: (index: number) => void;

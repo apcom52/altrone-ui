@@ -1,173 +1,107 @@
-import { memo, useMemo } from 'react';
-import { useDataTableContext } from '../DataTable.context.tsx';
-import s from './columnHeaders.module.scss';
-import { Icon } from '../../icon';
 import clsx from 'clsx';
-import { Checkbox } from '../../checkbox';
-import { range } from 'lodash-es';
-import { useVisibleColumns } from '../useVisibleColumns.ts';
-import { GlobalUtils } from '../../../utils';
-import { DataTableProps } from '../DataTable.types.ts';
-import { useLocalization } from 'components/application/useLocalization.tsx';
+import { motion } from 'motion/react';
+import { flexRender } from '@tanstack/react-table';
+import { ArrowUp, ArrowDown } from 'lucide-react';
+import { useDataTableContext } from '../DataTable.context.tsx';
+import { Text } from '../../text';
+import { useLocalization } from '../../application';
+import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
+import s from './columnHeaders.module.scss';
 
-interface ColumnHeadersProps<T extends object> {
-  headingVisible?: boolean;
-  renderRowActions?: DataTableProps<T>['renderRowActions'];
+interface ColumnHeadersProps {
+  hasRowActions?: boolean;
 }
 
-export const ColumnHeaders = memo<ColumnHeadersProps<any>>(
-  ({ headingVisible = true, renderRowActions }) => {
-    const {
-      columns,
-      page,
-      data,
-      rowsPerPage,
-      sortBy,
-      sortType,
-      selectableMode,
-      selectedRows,
-      setSelectedRows,
-      setSortType,
-      setSortBy,
-    } = useDataTableContext();
+/** Grow-in / active-bump for the resize handle. The active label is propagated
+ *  from the header cell via `whileHover` / `animate`. */
+const resizeHandleVariants = {
+  rest: { opacity: 0, scaleY: 0.4 },
+  hover: { opacity: 1, scaleY: 1 },
+  resizing: { opacity: 1, scaleY: 1.15 },
+};
 
-    const t = useLocalization();
+export const ColumnHeaders = ({ hasRowActions = false }: ColumnHeadersProps) => {
+  const t = useLocalization();
+  const { table, selectMode } = useDataTableContext();
 
-    const visibleColumns = useVisibleColumns(columns);
+  const columnsTemplate = useDataTableColumnsTemplate(selectMode, hasRowActions);
 
-    const start = (page - 1) * rowsPerPage;
-    const visibleData = data.slice(start, page * rowsPerPage);
-    const end = start + visibleData.length;
+  /** none → desc → asc → none */
+  const cycleSort = (columnId: string) => {
+    const current = table.state.sorting[0];
+    if (!current || current.id !== columnId) {
+      table.setSorting([{ id: columnId, desc: true }]);
+      return;
+    }
+    if (current.desc) {
+      table.setSorting([{ id: columnId, desc: false }]);
+      return;
+    }
+    table.setSorting([]);
+  };
 
-    const checkboxState = useMemo(() => {
-      const visibleColumnIds = range(start, end);
+  return (
+    <div
+      className={clsx(s.Wrapper, s.HeaderRow)}
+      style={{ gridTemplateColumns: columnsTemplate }}
+    >
+      <div className={s.Backdrop} />
+      {selectMode ? <div /> : null}
+      {table.getFlatHeaders().map((header) => {
+        const isSortable = header.column.getCanSort();
+        const sortDirection = header.column.getIsSorted();
+        const canResize = header.column.getCanResize();
 
-      if (selectedRows.length === 0) {
-        return 'none';
-      }
+        const isResizing = header.column.getIsResizing();
 
-      return visibleColumnIds.reduce((acc, itemIndex) => {
-        if (acc === 'partial' || selectedRows.indexOf(itemIndex) === -1) {
-          return 'partial';
-        }
-
-        return 'all';
-      }, 'all');
-    }, [start, end, selectedRows]);
-
-    const onCheckboxChange = (state: boolean) => {
-      const visibleColumnIds = range(start, end);
-
-      const currentRows = new Set(selectedRows);
-
-      for (const index of visibleColumnIds) {
-        if (state) {
-          currentRows.add(index);
-        } else {
-          currentRows.delete(index);
-        }
-      }
-
-      setSelectedRows(Array.from(currentRows));
-    };
-
-    const onColumnHeaderClick = (accessor: keyof (typeof data)[0]) => {
-      if (sortBy === accessor) {
-        if (sortType === 'asc') {
-          setSortType('desc');
-        } else if (sortType === 'desc') {
-          setSortType('asc');
-          setSortBy(undefined);
-        }
-      } else {
-        setSortType('asc');
-        setSortBy(accessor);
-      }
-    };
-
-    const cls = clsx(s.Wrapper, {
-      [s.WithoutHeading]: !headingVisible,
-    });
-
-    return (
-      <thead className={cls}>
-        <tr className={s.HeaderRow}>
-          {selectableMode && (
-            <th className={clsx(s.Cell, s.CheckableColumn)}>
-              <Checkbox
-                checked={checkboxState === 'all'}
-                indeterminate={checkboxState === 'partial'}
-                onChange={onCheckboxChange}
-              />
-            </th>
-          )}
-          {visibleColumns.map((column, columnIndex) => {
-            const isCurrentColumnSorted = sortBy === column.accessor;
-
-            if (!column.type) {
-              console.warn(
-                GlobalUtils.formatConsoleMessage(
-                  '[Altrone]: please set a [[type]] prop for your DataTable columns. This will make the component work more reliably',
-                ),
-              );
-            }
-
-            const cls = clsx(s.Cell, {
-              [s.SortableColumn]: column.sortable || isCurrentColumnSorted,
-              [s.SortedColumn]: isCurrentColumnSorted,
-              [s.CellWithWidth]: Boolean(column.width),
-            });
-
-            const isArrowVisible = column.sortable || isCurrentColumnSorted;
-
-            return (
-              <th
-                key={columnIndex}
-                className={cls}
-                onClick={
-                  column.sortable
-                    ? () =>
-                        onColumnHeaderClick(
-                          column.accessor as keyof (typeof data)[0],
-                        )
-                    : undefined
-                }
-                tabIndex={column.sortable ? 0 : undefined}
-                style={{
-                  width: column.width ? column.width : undefined,
-                }}
-              >
-                {column.sortable ? <div className={s.CellBackground} /> : null}
-                <div className={s.CellContent}>
-                  <span className={s.Title}>
-                    {String(column.label || column.accessor)}
-                    {isArrowVisible ? (
-                      <div className={s.SortIcon}>
-                        <Icon
-                          i={
-                            isCurrentColumnSorted
-                              ? sortType === 'asc'
-                                ? 'arrow_upward'
-                                : 'arrow_downward'
-                              : 'swap_vert'
-                          }
-                        />
-                      </div>
-                    ) : null}
-                  </span>
-                </div>
-              </th>
-            );
-          })}
-          {renderRowActions ? (
-            <th className={clsx(s.Cell)}>
-              <div className={s.CellContent}>
-                <span className={s.Title}>{t('dataTable.actions')}</span>
+        return (
+          <motion.div
+            key={header.id}
+            className={clsx(s.Cell, { [s.Sortable]: isSortable })}
+            title={header.id}
+            onClick={isSortable ? () => cycleSort(header.id) : undefined}
+            initial="rest"
+            animate={isResizing ? 'resizing' : 'rest'}
+            whileHover="hover"
+          >
+            <Text size={4} weight="bold" className={s.Label}>
+              {flexRender(header.column.columnDef.header, header.getContext())}
+            </Text>
+            {sortDirection === 'asc' ? (
+              <div className={s.SortIcon}>
+                <ArrowUp />
               </div>
-            </th>
-          ) : null}
-        </tr>
-      </thead>
-    );
-  },
-);
+            ) : null}
+            {sortDirection === 'desc' ? (
+              <div className={s.SortIcon}>
+                <ArrowDown />
+              </div>
+            ) : null}
+            {canResize ? (
+              <div
+                data-resize-handle={header.id}
+                className={clsx(s.Resizer, { [s.ResizerActive]: isResizing })}
+                onMouseDown={(event) => header.getResizeHandler()(event)}
+                onTouchStart={(event) => header.getResizeHandler()(event)}
+                onClick={(event) => event.stopPropagation()}
+              >
+                <motion.div
+                  className={s.ResizerHandle}
+                  variants={resizeHandleVariants}
+                  transition={{ type: 'spring', stiffness: 500, damping: 32 }}
+                />
+              </div>
+            ) : null}
+          </motion.div>
+        );
+      })}
+      {hasRowActions ? (
+        <div className={s.Cell}>
+          <Text size={4} weight="bold" className={s.Label}>
+            {t('dataTable.actions')}
+          </Text>
+        </div>
+      ) : null}
+    </div>
+  );
+};

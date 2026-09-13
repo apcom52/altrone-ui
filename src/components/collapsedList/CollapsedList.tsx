@@ -1,100 +1,74 @@
-import { memo } from 'react';
+import { Ref } from 'react';
 import {
   CollapsedListContext,
   CollapsedListProps,
 } from './CollapsedList.types.ts';
 import { ArrayUtils, useBoolean } from 'utils';
 import { Button } from 'components/button';
-import { Icon } from 'components/icon';
 import { Flex } from 'components/flex';
-import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 import s from './collapsed-list.module.scss';
 import { useLocalization } from '../application/useLocalization.tsx';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
-export const CollapsedList = memo<CollapsedListProps>(
-  ({
-    children,
-    limit,
-    expandButtonLabel,
-    className,
-    style,
-    gap,
-    hideExpandButtonAfterUsage = false,
-    ...restProps
-  }) => {
-    const t = useLocalization();
+export const CollapsedList = ({
+  ref,
+  children,
+  limit,
+  expandButtonLabel,
+  className,
+  style,
+  gap,
+  hideExpandButtonAfterUsage = false,
+  ...restProps
+}: CollapsedListProps) => {
+  const t = useLocalization();
+  const { value: expanded, toggle } = useBoolean(false);
 
-    const { collapsedList: collapsedListConfig = {} } = useConfiguration();
+  const limitValue = limit ?? 5;
+  const items = ArrayUtils.getSafeArray(children);
+  const hiddenItems = Math.max(0, items.length - limitValue);
 
-    const { value: expanded, toggle } = useBoolean(false);
+  const visibleChildren = expanded ? items : items.slice(0, limitValue);
+  const showExpandButton =
+    (hiddenItems > 0 && !expanded) || (expanded && !hideExpandButtonAfterUsage);
 
-    const limitValue =
-      typeof limit === 'number' ? limit : collapsedListConfig.limit || 5;
+  const context: CollapsedListContext = {
+    hiddenItems,
+    totalItems: items.length,
+    expanded,
+  };
 
-    const safeArray = ArrayUtils.getSafeArray(children);
+  const buttonLabel =
+    typeof expandButtonLabel === 'function'
+      ? expandButtonLabel(context)
+      : (expandButtonLabel ??
+        (expanded
+          ? t('collapsedList.collapse')
+          : t('collapsedList.expand', { vars: { count: hiddenItems } })));
 
-    const visibleChildren = expanded
-      ? safeArray
-      : safeArray.slice(0, limitValue);
-    const restElementsLength = safeArray.length - limitValue;
-    const showExpandButton =
-      (restElementsLength > 0 && !expanded) ||
-      (!hideExpandButtonAfterUsage && expanded);
-
-    const defaultExpandButtonLabel = expanded
-      ? t('collapsedList.collapse')
-      : t('collapsedList.expand', {
-          vars: {
-            count: restElementsLength,
-          },
-        });
-
-    const collapsedListContext: CollapsedListContext = {
-      hiddenItems: restElementsLength,
-      totalItems: safeArray.length,
-      expanded,
-    };
-
-    const customExpandButtonLabel =
-      typeof expandButtonLabel !== 'undefined'
-        ? expandButtonLabel
-        : collapsedListConfig.expandButtonLabel;
-
-    const expandButtonLabelText = customExpandButtonLabel
-      ? typeof customExpandButtonLabel === 'function'
-        ? customExpandButtonLabel(collapsedListContext)
-        : customExpandButtonLabel
-      : defaultExpandButtonLabel;
-
-    const cls = clsx(s.CollapsedList, className, collapsedListConfig.className);
-
-    const styles = {
-      ...collapsedListConfig.style,
-      ...style,
-    };
-
-    return (
-      <Flex
-        direction="vertical"
-        className={cls}
-        align="start"
-        style={styles}
-        gap="m"
-        {...restProps}
-      >
-        <Flex direction="vertical" gap={gap}>
-          {visibleChildren}
-        </Flex>
-        {showExpandButton ? (
-          <Button
-            transparent
-            label={expandButtonLabelText}
-            rightIcon={<Icon i={expanded ? 'expand_less' : 'expand_more'} />}
-            onClick={toggle}
-          />
-        ) : null}
+  return (
+    <Flex
+      ref={ref as Ref<HTMLElement>}
+      direction="vertical"
+      align="start"
+      gap="m"
+      className={clsx(s.CollapsedList, className)}
+      style={style}
+      {...restProps}
+    >
+      <Flex direction="vertical" gap={gap}>
+        {visibleChildren}
       </Flex>
-    );
-  },
-);
+      {showExpandButton ? (
+        <Button
+          variant="text"
+          size="s"
+          label={buttonLabel}
+          additionalIcon={expanded ? <ChevronUp /> : <ChevronDown />}
+          onClick={toggle}
+        />
+      ) : null}
+    </Flex>
+  );
+};

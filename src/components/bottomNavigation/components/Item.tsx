@@ -1,60 +1,99 @@
-import { forwardRef } from 'react';
+import {
+  isValidElement,
+  memo,
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useRef,
+} from 'react';
 import { BottomNavigationItemProps } from '../BottomNavigation.types.ts';
 import clsx from 'clsx';
 import s from './item.module.scss';
-import { useConfiguration } from 'components/configuration';
-import { RenderFuncProp } from 'types';
-import { Badge } from 'components/badge/Badge.tsx';
+import { Text } from 'components/text/Text.tsx';
+import { Badge } from 'internal/badge';
+import { useBottomNavigationSelect } from '../BottomNavigation.context.tsx';
+import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
+import { DOMUtils } from '../../../utils';
 
-const bottomNavigationItemComponent: RenderFuncProp<
-  HTMLAnchorElement,
-  BottomNavigationItemProps
-> = (ref, props) => {
-  const { icon, label, badge, ...restProps } = props;
+type ItemContentProps = Pick<BottomNavigationItemProps, 'icon' | 'label' | 'badge'>;
 
-  return (
-    <a ref={ref} {...restProps}>
-      <div className={s.Icon}>{icon}</div>
-      <div className={s.Label}>{label}</div>
-      {badge ? <Badge className={s.Badge}>{badge}</Badge> : null}
-    </a>
-  );
-};
+const ItemContent = ({ icon, label, badge }: ItemContentProps) => (
+  <>
+    <div className={s.Icon}>{icon}</div>
+    <Text className={s.Label} truncate>
+      {label}
+    </Text>
+    {badge ? (
+      <Badge placement="corner" size="m">
+        {badge}
+      </Badge>
+    ) : null}
+  </>
+);
 
-export const Item = forwardRef<HTMLAnchorElement, BottomNavigationItemProps>(
-  (props, ref) => {
-    const { bottomNavigation: bottomNavigationConfig = {} } =
-      useConfiguration();
-    const { item: bottomNavigationItemConfig = {} } = bottomNavigationConfig;
+export const Item = memo(
+  ({
+    ref,
+    className,
+    style,
+    icon,
+    label,
+    badge,
+    selected,
+    asChild,
+    children,
+    renderFunc,
+    ...restProps
+  }: BottomNavigationItemProps) => {
+    const cls = clsx(s.Item, { [s.Selected]: selected }, className);
 
-    const {
-      className,
-      renderFunc = bottomNavigationItemComponent,
-      ...restProps
-    } = props;
+    const select = useBottomNavigationSelect();
+    const elementRef = useRef<HTMLAnchorElement>(null);
 
-    const cls = clsx(
-      s.Item,
-      {
-        [s.Selected]: props.selected,
-        [String(bottomNavigationConfig.selectedItemClassName)]:
-          bottomNavigationConfig.selectedItemClassName && props.selected,
-        [String(bottomNavigationItemConfig.selectedItemClassName)]:
-          bottomNavigationItemConfig.selectedItemClassName && props.selected,
-      },
-      bottomNavigationItemConfig.className,
-      className,
-    );
+    useEffect(() => {
+      select(elementRef.current, Boolean(selected));
+    }, [selected, select]);
 
-    const styles = {
-      ...bottomNavigationItemConfig.style,
-      ...props.style,
+    if (renderFunc) {
+      return renderFunc(ref ?? null, {
+        ...restProps,
+        icon,
+        label,
+        badge,
+        selected,
+        className: cls,
+        style,
+      });
+    }
+
+    const content = <ItemContent icon={icon} label={label} badge={badge} />;
+
+    const composedRef = DOMUtils.composeRefs(ref, elementRef);
+    const interactionProps = {
+      className: cls,
+      style,
+      'aria-current': selected ? ('page' as const) : undefined,
+      ...restProps,
     };
 
-    return renderFunc(ref, {
-      ...restProps,
-      className: cls,
-      style: styles,
-    });
+    if (asChild) {
+      if (!isValidElement(children)) {
+        console.error(
+          '[BottomNavigation.Item] asChild requires a valid React element as children',
+        );
+        return null;
+      }
+      return cloneWithRef(children as ReactElement<{ children?: ReactNode }>, {
+        ...interactionProps,
+        ref: composedRef,
+        children: content,
+      });
+    }
+
+    return (
+      <a ref={composedRef} {...interactionProps}>
+        {content}
+      </a>
+    );
   },
 );

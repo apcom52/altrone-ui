@@ -1,0 +1,115 @@
+/* ── Divider ───────────────────────────────────────────────────── */
+
+.Divider {
+  position: relative;
+  flex: 0 0 var(--splitter-gutter);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: col-resize;
+  touch-action: none;
+  user-select: none;
+  outline: none;
+
+  &:focus-visible .Handle {
+    background: var(--splitter-handle-active-color);
+  }
+
+  &:hover:not(.DividerDisabled) .Handle {
+    background: var(--splitter-handle-hover-color);
+  }
+
+  /**
+   * No `:not(.DividerDisabled)` here — a divider next to a collapsed panel is
+   * disabled for dragging, but its expand button must still reveal on hover.
+   */
+  &:hover .CollapseBtn {
+    opacity: 1;
+  }
+}
+
+.DividerVertical {
+  cursor: row-resize;
+  flex-direction: row;
+}
+
+.DividerActive .Handle {
+  background: var(--splitter-handle-active-color);
+  transform: scale(1.2);
+}
+
+.DividerDisabled {
+  cursor: default;
+}
+
+/* ── Drag handle pill ──────────────────────────────────────────── */
+
+.Handle {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: var(--splitter-handle-thickness);
+  height: var(--splitter-handle-length);
+  border-radius: var(--radius-pill);
+  background: var(--splitter-handle-color);
+  transition:
+    background var(--motion-duration-fast) var(--motion-easing-standard),
+    transform var(--motion-duration-fast) var(--motion-easing-standard);
+  pointer-events: none;
+}
+
+.HandleVertical {
+  width: var(--splitter-handle-length);
+  height: var(--splitter-handle-thickness);
+}
+
+.HandleHidden {
+  opacity: 0;
+}
+
+/* ── Collapse buttons ──────────────────────────────────────────── */
+
+.CollapseBtn {
+  position: absolute;
+  z-index: 2;
+  opacity: 0;
+  /**
+   * Stays hit-testable while invisible: hovering it reveals it (`:hover`
+   * propagates to `.Divider`), and its own `pointerdown` stops the event
+   * before the divider reads it as a drag. Gating `pointer-events` on the
+   * divider's thin hover strip made the buttons unclickable — the press
+   * started a resize instead.
+   */
+  pointer-events: auto;
+  transition:
+    opacity var(--motion-duration-fast) var(--motion-easing-standard),
+    background var(--motion-duration-fast) var(--motion-easing-standard),
+    border-color var(--motion-duration-fast) var(--motion-easing-standard);
+
+  &:focus-visible {
+    opacity: 1;
+  }
+}
+
+/* Always visible when the adjacent panel is collapsed */
+.CollapseBtnVisible {
+  opacity: 1;
+}
+
+/* Horizontal splitter → buttons are above/below the centre handle */
+.CollapseBtnBefore {
+  top: var(--xl-gap);
+}
+
+.CollapseBtnAfter {
+  bottom: var(--xl-gap);
+}
+
+/* Vertical splitter → buttons are left/right of the centre handle */
+.CollapseBtnBeforeV {
+  left: var(--xl-gap);
+}
+
+.CollapseBtnAfterV {
+  right: var(--xl-gap);
+}

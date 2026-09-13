@@ -1,15 +1,16 @@
-export interface SideNavigationProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+import React from 'react';
+
+export interface SideNavigationProps extends React.HTMLAttributes<HTMLElement> {
+  /** Optional heading above the links (e.g. "On this page"). */
   title?: string;
+  ref?: React.Ref<HTMLElement>;
 }
 
 export interface SideNavigationItemProps
-  extends React.HTMLAttributes<HTMLAnchorElement> {
+  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  /** CSS selector of the target section, e.g. `"#introduction"`. */
   href: string;
   label: string;
-}
-
-export interface SideNavigationContextType {
-  currentItem: string;
-  setItem: (id: string) => void;
+  /** Forwarded to the root `<li>`. */
+  ref?: React.Ref<HTMLLIElement>;
 }

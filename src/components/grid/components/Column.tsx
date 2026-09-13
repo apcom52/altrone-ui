@@ -1,41 +1,36 @@
-import { memo } from 'react';
+import { createElement } from 'react';
 import { GridColumnProps } from '../Grid.types.ts';
 import clsx from 'clsx';
 import s from './column.module.scss';
-import { useConfiguration } from 'components';
 
-export const Column = memo<GridColumnProps>((props) => {
-  const {
-    size = 'auto',
-    offset = 0,
-    className,
-    style,
-    children,
-    ...restProps
-  } = props;
-
-  const { grid: { column: columnConfig = {} } = {} } = useConfiguration();
-
-  const cls = clsx(
-    s.Column,
+export const Column = ({
+  ref,
+  tagName = 'div',
+  size = 'auto',
+  offset = 0,
+  className,
+  style,
+  children,
+  ...restProps
+}: GridColumnProps) =>
+  createElement(
+    tagName,
     {
-      [s.AutoSize]: size === 'auto',
-      [s.Offset]: offset,
+      ...restProps,
+      ref,
+      className: clsx(
+        s.Column,
+        {
+          [s.AutoSize]: size === 'auto',
+          [s.Offset]: offset > 0,
+        },
+        className,
+      ),
+      style: {
+        ...style,
+        '--grid-column-size': size === 'auto' ? undefined : size,
+        ...(offset > 0 && { '--grid-column-offset': offset }),
+      },
     },
-    className,
-    columnConfig.className,
+    children,
   );
-
-  const styles = {
-    ...columnConfig.style,
-    ...style,
-    '--column-size': size,
-    '--column-offset': offset,
-  };
-
-  return (
-    <div className={cls} style={styles} {...restProps}>
-      {children}
-    </div>
-  );
-});

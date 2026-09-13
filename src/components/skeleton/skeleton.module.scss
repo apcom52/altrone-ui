@@ -1,0 +1,25 @@
+:global([data-altrone-root='true']) {
+  --skeleton-background-color: var(--interactive-a1);
+  --skeleton-animate-background-color: var(--interactive-a2);
+}
+
+.Skeleton {
+  background-color: var(--skeleton-background-color);
+  animation: skeleton-animate 3s ease-in-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes skeleton-animate {
+  0% {
+    background-color: var(--skeleton-background-color);
+  }
+  50% {
+    background-color: var(--skeleton-animate-background-color);
+  }
+  100% {
+    background-color: var(--skeleton-background-color);
+  }
+}

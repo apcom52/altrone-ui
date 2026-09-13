@@ -8,6 +8,14 @@ export const ru: Localization = {
     cancel: 'Отмена',
     delete: 'Удалить',
     refresh: 'Обновить',
+    edit: 'Редактировать',
+    done: 'Готово',
+  },
+  breadcrumbs: {
+    label: 'Хлебные крошки',
+  },
+  loading: {
+    label: 'Загрузка',
   },
   datePicker: {
     placeholder: 'Выбрать дату',
@@ -18,15 +26,18 @@ export const ru: Localization = {
     next: 'Следующий',
     prev: 'Предыдущий',
     clickToChangeView: 'Нажмите для изменения вида',
+    startDate: 'Начало',
+    endDate: 'Конец',
   },
   filePicker: {
     noFiles: 'Файлы не выбраны',
     placeholder: 'Выбрать файл',
     errorMessage: 'Возникла ошибка при загрузке файла. Попробуйте еще раз',
+    untitledFile: 'Файл без имени',
+    retryUpload: 'Повторить загрузку',
   },
-  numberInput: {
-    increase: 'Увеличить',
-    decrease: 'Уменьшить',
+  textInput: {
+    loading: 'Загрузка',
   },
   passwordInput: {
     showPassword: 'Показать пароль',
@@ -35,12 +46,28 @@ export const ru: Localization = {
   search: {
     placeholder: 'Поиск',
   },
+  select: {
+    notFound: 'Ничего не найдено',
+  },
+  toolbar: {
+    back: 'Назад',
+    forward: 'Вперёд',
+    search: 'Поиск',
+    collapseSidebar: 'Свернуть сайдбар',
+    expandSidebar: 'Развернуть сайдбар',
+  },
+  screen: {
+    sidebarLabel: 'Боковая панель',
+    bottomNavigationLabel: 'Нижняя навигация',
+    asideLabel: 'Сведения',
+  },
   pagination: {
-    progress: '{{current}} из {{total}}',
-    title: 'Перейти на страницу',
-    action: 'Перейти',
+    navigation: 'Пагинация',
     previous: 'Предыдущая страница',
     next: 'Следующая страница',
+    firstPage: 'Первая страница',
+    lastPage: 'Последняя страница',
+    page: 'Страница {{page}}',
   },
   dataTable: {
     filters: 'Фильтры',
@@ -54,6 +81,8 @@ export const ru: Localization = {
     and: 'ТАКЖЕ',
     noFilters:
       'Нет выбранных фильтров. Чтобы создать, нажмите на "Добавить фильтр"',
+    empty: 'Нет данных',
+    chooseRule: 'Выберите правило',
     shownRows: {
       zero: 'Показывается {{count}} строк',
       one: 'Показывается {{count}} строка',
@@ -114,6 +143,18 @@ export const ru: Localization = {
       between: 'между',
       beyond: 'за пределами',
     },
+    selectFilter: {
+      has: 'одно из',
+      notHas: 'ни одно из',
+    },
+    colorFilter: {
+      has: 'один из',
+      notHas: 'ни один из',
+    },
+    passwordFilter: {
+      empty: 'пусто',
+      notEmpty: 'не пусто',
+    },
   },
   photoViewer: {
     previous: 'Предыдущее изображение',
@@ -130,12 +171,40 @@ export const ru: Localization = {
   closeButton: {
     ariaLabel: 'Закрыть',
   },
+  notifications: {
+    regionLabel: 'Уведомления',
+  },
+  dialog: {
+    alertTitle: 'Уведомление',
+    confirmTitle: 'Подтверждение',
+    promptTitle: 'Ввод значения',
+    ok: 'ОК',
+    confirm: 'Подтвердить',
+    cancel: 'Отмена',
+    promptPlaceholder: 'Введите значение',
+  },
   colorPicker: {
     placeholder: 'Выбрать цвет',
     savedColors: 'Сохраненные цвета',
     palette: 'Палитра',
   },
-  empty: {
-    noData: 'Нет данных',
+  result: {
+    empty: 'Нет данных',
+  },
+  autocompleteInput: {
+    loadError: 'Возникла ошибка при загрузке данных',
+  },
+  calendar: {
+    previousMonth: 'Предыдущий месяц',
+    nextMonth: 'Следующий месяц',
+  },
+  splitter: {
+    collapsePanel: 'Свернуть панель',
+    expandPanel: 'Развернуть панель',
+    panel: 'Панель {{index}}',
+  },
+  image: {
+    loading: 'Загрузка изображения',
+    brokenImage: 'Не удалось загрузить изображение',
   },
 };

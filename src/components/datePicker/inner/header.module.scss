@@ -1,20 +1,13 @@
 @import 'src/global/mixins';
 
-:global(:root) {
-  --datePickerHeaderTextColor: var(--default-900);
-  --datePickerHeaderHoverTextColor: var(--primary-500);
-}
-
-:global(.AltroneDark) {
-  --datePickerHeaderTextColor: var(--default-50);
-  --datePickerHeaderHoverTextColor: var(--primary-700);
-}
-
 .Header {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: var(--xl-gap);
+  gap: var(--gap);
   justify-content: space-between;
+  height: 32px;
+  width: 100%;
 
   @include group-heading;
 }
@@ -22,55 +15,18 @@
 .CurrentDate {
   display: flex;
   align-items: center;
-  min-width: 100px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  color: var(--date-picker-header-text-color);
+  font-size: var(--date-picker-header-text-size);
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
   appearance: none;
   border: none;
   background-color: transparent;
-  padding: 0;
   cursor: pointer;
-  color: var(--datePickerHeaderTextColor);
-  transition: color 0.1s linear;
-  text-transform: capitalize;
 
-  @include group-heading;
-  margin-right: var(--xs-gap);
-
-  &:hover, &:focus-visible {
-    color: var(--datePickerHeaderHoverTextColor);
-  }
-
+  &:hover,
   &:focus-visible {
-    outline: none;
-  }
-}
-
-.Navigation {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--s-gap);
-}
-
-.Button {
-  display: flex;
-  align-items: center;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  border: none;
-  background-color: transparent;
-  font-size: 18px;
-  padding: 0;
-  cursor: pointer;
-  color: var(--datePickerHeaderTextColor);
-
-  &:hover, &:focus-visible {
-    color: var(--primary-600);
-  }
-
-  &:focus-visible {
-    outline: none;
+    color: var(--date-picker-header-hover-text-color);
   }
 }

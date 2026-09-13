@@ -1,60 +1,62 @@
-import { forwardRef, useState } from 'react';
+import { useState } from 'react';
 import { PasswordInputProps } from './PasswordInput.types.ts';
 import { TextInput } from '../textInput';
-import { Icon } from '../icon';
-import { ArrayUtils } from '../../utils';
-import { useConfiguration } from 'components/configuration';
+import { ArrayUtils, useShowControls } from '../../utils';
 import clsx from 'clsx';
 import { useLocalization } from '../application/useLocalization.tsx';
+import { Eye, EyeOff } from 'lucide-react';
 
-export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
-  ({ showControls, children, className, style, ...restProps }, ref) => {
-    const t = useLocalization();
+export const PasswordInput = ({
+  ref,
+  inputRef,
+  showControls,
+  children,
+  className,
+  style,
+  readOnly,
+  ...restProps
+}: PasswordInputProps) => {
+  const t = useLocalization();
 
-    const { passwordInput: passwordInputConfig = {} } = useConfiguration();
+  const needToShowControl = useShowControls({
+    propValue: showControls,
+    readOnly,
+  });
 
-    const needToShowControl =
-      typeof showControls === 'boolean'
-        ? showControls
-        : typeof passwordInputConfig.showControls === 'boolean'
-          ? passwordInputConfig.showControls
-          : true;
+  const [type, setType] = useState<'password' | 'text'>('password');
 
-    const [type, setType] = useState('password');
+  const safeChildren = ArrayUtils.getSafeArray(children);
 
-    const safeChildren = ArrayUtils.getSafeArray(children);
+  const cls = clsx(className);
+  const styles = {
+    ...style,
+  };
 
-    const cls = clsx(passwordInputConfig.className, className);
-    const styles = {
-      ...passwordInputConfig.style,
-      ...style,
-    };
-
-    return (
-      <TextInput
-        type={type}
-        className={cls}
-        style={styles}
-        ref={ref}
-        {...restProps}
-      >
-        {...safeChildren}
-        {needToShowControl ? (
-          <TextInput.ActionIsland
-            placement="right"
-            label={
-              type === 'password'
-                ? t('passwordInput.showPassword')
-                : t('passwordInput.hidePassword')
-            }
-            showLabel={false}
-            onClick={() => setType(type === 'password' ? 'text' : 'password')}
-            icon={
-              <Icon i={type === 'password' ? 'visibility' : 'visibility_off'} />
-            }
-          />
-        ) : null}
-      </TextInput>
-    );
-  },
-);
+  return (
+    <TextInput
+      type={type}
+      className={cls}
+      style={styles}
+      ref={ref}
+      inputRef={inputRef}
+      readOnly={readOnly}
+      {...restProps}
+    >
+      {...safeChildren}
+      {needToShowControl ? (
+        <TextInput.ActionIsland
+          placement="end"
+          label={
+            type === 'password'
+              ? t('passwordInput.showPassword')
+              : t('passwordInput.hidePassword')
+          }
+          showLabel={false}
+          onClick={() => setType(type === 'password' ? 'text' : 'password')}
+          icon={type === 'password' ? <Eye /> : <EyeOff />}
+          aria-pressed={type === 'text'}
+        />
+      ) : null}
+    </TextInput>
+  );
+};

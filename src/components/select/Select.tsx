@@ -1,17 +1,27 @@
-import { SelectContext, SelectProps } from './Select.types.ts';
-import { cloneElement, memo, useEffect, useId, useMemo } from 'react';
+import { SelectContextValue, SelectProps } from './Select.types.ts';
+import {
+  CSSProperties,
+  isValidElement,
+  memo,
+  ReactElement,
+  useId,
+  useMemo,
+  useState,
+} from 'react';
+import { AnyObject } from 'utils/types.ts';
 import { Dropdown } from 'components/dropdown';
-import { Icon } from 'components/icon';
+import { Delete, Search, ChevronDown, ChevronUp } from 'lucide-react';
 import { Scrollable } from 'components/scrollable';
 import { TextInput } from 'components/textInput';
 import s from './select.module.scss';
 import clsx from 'clsx';
 import { PopoverContentContext } from 'components/popover';
 import { useSelect } from './useSelect.ts';
-import { useConfiguration } from 'components/configuration';
-import { GlobalUtils } from 'utils/GlobalUtils.ts';
+import { useLocalization } from 'components/application';
+import { Slot } from 'utils/components/Slot.tsx';
+import { SelectContext } from './Select.context.ts';
 
-const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
+const SelectComponent = (props: SelectProps) => {
   const {
     name,
     multiple,
@@ -23,20 +33,26 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
     className,
     style,
     parentWidth = true,
-    Component,
+    disabled,
+    transparent,
+    menuHeight,
+    renderFunc,
+    onChange,
     onFocus,
     onBlur,
-    onChange,
     children,
     options,
-    renderFunc,
+    asChild,
+    readOnly,
+    ref,
     ...restProps
   } = props;
 
   const id = useId();
   const selectName = name || id;
+  const listboxId = `${id}-listbox`;
 
-  const { select: selectConfig = {} } = useConfiguration();
+  const t = useLocalization();
 
   const {
     selectedOptions,
@@ -51,157 +67,206 @@ const SelectComponent = <Value = unknown,>(props: SelectProps<Value>) => {
     clearValue,
   } = useSelect(props);
 
+  const isTransparent = Boolean(transparent);
+
+  const [opened, setOpened] = useState(false);
+
   const menu = useMemo(
     () =>
       ({ closePopup }: PopoverContentContext) => (
-        <Scrollable maxHeight="250px">
-          <Dropdown.Menu>
-            {filteredOptions.map((option, optionIndex) => {
-              const checked = Array.isArray(selectedOptions)
-                ? selectedOptions.includes(option)
-                : selectedOptions === option;
+        <div
+          className={s.Menu}
+          role="listbox"
+          id={listboxId}
+          style={
+            menuHeight
+              ? ({
+                  '--select-menu-height': `${menuHeight}px`,
+                } as CSSProperties)
+              : undefined
+          }
+        >
+          <Scrollable className={s.MenuScroll} overflowX="hidden">
+            {filteredOptions.length === 0 ? (
+              <div className={s.Empty}>{t('select.notFound')}</div>
+            ) : (
+              <Dropdown.Menu role="presentation">
+                {filteredOptions.map((option) => {
+                  const checked = Array.isArray(selectedOptions)
+                    ? selectedOptions.some(
+                        (item) => item.value === option.value,
+                      )
+                    : selectedOptions?.value === option.value;
 
-              return (
-                <Dropdown.Checkbox
-                  checked={checked}
-                  focused={checked}
-                  onChange={() => {
-                    selectValue(option.value);
-                    if (!multiple) {
-                      closePopup();
-                    }
-                  }}
-                  key={optionIndex}
-                  label={String(option.label)}
-                />
-              );
-            })}
-          </Dropdown.Menu>
-        </Scrollable>
+                  return (
+                    <Dropdown.Checkbox
+                      key={option.value}
+                      role="option"
+                      aria-selected={checked}
+                      checked={checked}
+                      focused={checked}
+                      disabled={option.disabled}
+                      label={option.label}
+                      onChange={() => {
+                        selectValue(option.value);
+                        if (!multiple) {
+                          closePopup();
+                        }
+                      }}
+                    />
+                  );
+                })}
+              </Dropdown.Menu>
+            )}
+          </Scrollable>
+        </div>
       ),
-    [filteredOptions, selectedOptions, multiple, selectValue],
+    [
+      filteredOptions,
+      selectedOptions,
+      multiple,
+      selectValue,
+      menuHeight,
+      listboxId,
+      t,
+    ],
   );
 
-  const cls = clsx(s.Select, className, selectConfig.className);
-  const styles = {
-    ...selectConfig.style,
-    ...style,
-  };
-
-  const isMultiple = Array.isArray(value);
-
+  const cls = clsx(s.Select, className);
   const needToShowClearButton =
-    clearable && (isMultiple ? value?.length > 0 : value);
+    clearable && (Array.isArray(value) ? value.length > 0 : Boolean(value));
 
-  const selectContext: SelectContext = {
-    expanded: false,
+  const hiddenInputs = multiple ? (
+    (Array.isArray(value) ? value : []).map((item, index) => (
+      <input
+        key={`${item}-${index}`}
+        type="hidden"
+        name={`${selectName}[]`}
+        value={item}
+      />
+    ))
+  ) : (
+    <input
+      type="hidden"
+      name={selectName}
+      value={value != null ? String(value) : ''}
+    />
+  );
+
+  const context: SelectContextValue = {
+    expanded: opened,
     value,
     selectedOptions,
-    disabled: Boolean(props.disabled),
-    multiple: Boolean(props.multiple),
+    disabled: Boolean(disabled),
+    multiple: Boolean(multiple),
     clearValue,
   };
 
-  useEffect(() => {
-    if (Component) {
-      GlobalUtils.deprecatedMessage('Select', 'Component', 'renderFunc', '4.0');
+  const renderTrigger = () => {
+    if (renderFunc) {
+      return renderFunc({ ...context, className: cls, style });
     }
-  }, [Component]);
+
+    if (asChild) {
+      if (!isValidElement(children)) {
+        console.error(
+          '[Select] asChild requires a valid React element as children',
+        );
+        return null;
+      }
+      return (
+        <Slot className={cls} style={style}>
+          {children as ReactElement<AnyObject>}
+        </Slot>
+      );
+    }
+
+    return (
+      <TextInput
+        className={cls}
+        style={style}
+        role="combobox"
+        aria-expanded={opened}
+        aria-controls={listboxId}
+        aria-haspopup="listbox"
+        value={searchMode ? userQuery : valueString}
+        placeholder={valueString || placeholder}
+        readOnly={readOnly ?? !(searchable && searchMode)}
+        readonlyStyles={Boolean(readOnly)}
+        size={size}
+        disabled={disabled}
+        variant={isTransparent ? 'transparent' : 'default'}
+        onChange={setUserQuery}
+        onFocus={
+          searchable
+            ? (e) => {
+                focusSelect();
+                onFocus?.(e);
+              }
+            : onFocus
+        }
+        onBlur={
+          searchable
+            ? (e) => {
+                blurSelect();
+                onBlur?.(e);
+              }
+            : onBlur
+        }
+        {...restProps}
+      >
+        {needToShowClearButton && (
+          <TextInput.ActionIsland
+            placement="end"
+            label={t('common.clear')}
+            icon={<Delete />}
+            showLabel={false}
+            disabled={false}
+            onClick={(event) => clearValue(event)}
+          />
+        )}
+        <TextInput.IconIsland
+          className={s.ArrowIcon}
+          placement="end"
+          icon={
+            searchMode ? (
+              <Search />
+            ) : opened ? (
+              <ChevronUp />
+            ) : (
+              <ChevronDown />
+            )
+          }
+        />
+      </TextInput>
+    );
+  };
 
   return (
-    <div className={s.SelectWrapper}>
-      <div className={s.FormInputs}>
-        {multiple ? (
-          <>
-            {Array.isArray(value) &&
-              value.map((item, itemIndex) => (
-                <input
-                  key={itemIndex}
-                  type="hidden"
-                  name={`${selectName}[]`}
-                  value={item}
-                />
-              ))}
-          </>
-        ) : (
-          <input type="hidden" name={selectName} value={String(value)} />
-        )}
+    <SelectContext.Provider value={context}>
+      {/* `ref` sits on the wrapper, not the trigger: the Dropdown clones the
+          trigger and takes over its `ref` for floating-ui positioning without
+          merging, so a `ref` on the trigger would be dropped. The wrapper still
+          spans the whole control. */}
+      <div className={s.SelectWrapper} ref={ref}>
+        {hiddenInputs}
+        <Dropdown
+          placement="bottom-start"
+          parentWidth={parentWidth}
+          content={menu}
+          focusTrapTargets={searchMode ? ['reference'] : ['content']}
+          defaultListNavigationIndex={-1}
+          listNavigation
+          overlap={!searchable}
+          onOpenChange={setOpened}
+        >
+          {renderTrigger}
+        </Dropdown>
       </div>
-      <Dropdown
-        placement="bottom-start"
-        parentWidth={parentWidth}
-        content={menu}
-        focusTrapTargets={searchMode ? ['reference'] : ['content']}
-        defaultListNavigationIndex={-1}
-        listNavigation
-      >
-        {({ opened }) => {
-          if (Component) {
-            if (typeof Component === 'function') {
-              return Component({ ...selectContext, expanded: opened });
-            } else {
-              return cloneElement(Component, {
-                ...selectContext,
-                expanded: opened,
-              });
-            }
-          } else if (renderFunc) {
-            return renderFunc({
-              ...selectContext,
-              expanded: opened,
-            });
-          }
-
-          return (
-            <TextInput
-              className={cls}
-              style={styles}
-              value={searchMode ? userQuery : valueString}
-              placeholder={valueString ? valueString : placeholder}
-              readOnly={
-                props.readonly ? props.readonly : !(searchable && searchMode)
-              }
-              readonlyStyles={!props.readonly ? false : true}
-              size={size}
-              transparent={props.transparent}
-              onChange={setUserQuery}
-              onFocus={searchable ? focusSelect : undefined}
-              onBlur={searchable ? blurSelect : undefined}
-              {...restProps}
-            >
-              {needToShowClearButton && (
-                <TextInput.ActionIsland
-                  placement="right"
-                  label="Clear"
-                  icon={<Icon i="backspace" />}
-                  showLabel={false}
-                  disabled={false}
-                  onClick={clearValue}
-                />
-              )}
-              <TextInput.IconIsland
-                className={s.ArrowIcon}
-                placement="right"
-                icon={
-                  <Icon
-                    i={
-                      searchMode
-                        ? 'search'
-                        : opened
-                          ? 'expand_less'
-                          : 'expand_more'
-                    }
-                  />
-                }
-              />
-            </TextInput>
-          );
-        }}
-      </Dropdown>
-    </div>
+    </SelectContext.Provider>
   );
 };
 
-const Select = memo(SelectComponent) as typeof SelectComponent;
+const Select = memo(SelectComponent);
 
 export { Select };

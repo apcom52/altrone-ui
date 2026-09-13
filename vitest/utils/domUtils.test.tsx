@@ -6,8 +6,8 @@ import {
   Icon,
   NavigationList,
   Popover,
+  Select,
   TextInput,
-  TopNavigation,
 } from '../../src';
 import { Fragment } from 'react';
 
@@ -106,7 +106,7 @@ describe('DomUtils', () => {
             <Icon i="abc" />
           </Flex>
         </Popover>,
-        [TopNavigation, NavigationList],
+        [Select, NavigationList],
       ),
     ).toBe(false);
 

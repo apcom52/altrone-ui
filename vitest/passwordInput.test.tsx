@@ -2,7 +2,7 @@ import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import {
-  AltroneApplication,
+  Application,
   Configuration,
   PasswordInput,
   TextInput,
@@ -21,11 +21,11 @@ beforeAll(() => {
 describe('Password', () => {
   test('need to show special island', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <PasswordInput data-testid="password">
           <TextInput.TextIsland data-testid="island" label="Text" />
         </PasswordInput>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('island')).toBeInTheDocument();
@@ -34,11 +34,11 @@ describe('Password', () => {
 
   test('need to hide special island when showControls is falsy', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <PasswordInput showControls={false} data-testid="password">
           <TextInput.TextIsland data-testid="island" label="Text" />
         </PasswordInput>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('island')).toBeInTheDocument();
@@ -47,13 +47,13 @@ describe('Password', () => {
 
   test('check that custom className and styles works', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <PasswordInput
           data-testid="input"
           className="cls"
           style={{ color: 'rgb(0, 0, 255)' }}
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('input')).toHaveClass('cls');
@@ -62,7 +62,7 @@ describe('Password', () => {
 
   test('check that configuration works', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Configuration
           passwordInput={{
             className: 'cls',
@@ -72,7 +72,7 @@ describe('Password', () => {
         >
           <PasswordInput data-testid="input" />
         </Configuration>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('input')).toHaveClass('cls');

@@ -2,7 +2,7 @@ import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import {
-  AltroneApplication,
+  Application,
   AutocompleteInput,
   Configuration,
   TextInput,
@@ -21,11 +21,11 @@ beforeAll(() => {
 describe('AutocompleteInput', () => {
   test('need to show islands', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <AutocompleteInput getSuggestions={() => []} data-testid="combobox">
           <TextInput.TextIsland data-testid="island" label="Text" />
         </AutocompleteInput>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('combobox')).toBeInTheDocument();
@@ -33,7 +33,7 @@ describe('AutocompleteInput', () => {
 
   test('check that custom className and styles works', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <AutocompleteInput
           getSuggestions={() => []}
           className="cls"
@@ -42,7 +42,7 @@ describe('AutocompleteInput', () => {
         >
           <TextInput.TextIsland data-testid="island" label="Text" />
         </AutocompleteInput>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('combobox')).toHaveClass('cls');
@@ -51,7 +51,7 @@ describe('AutocompleteInput', () => {
 
   test('check that configuration works', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Configuration
           autocompleteInput={{
             className: 'cls',
@@ -60,7 +60,7 @@ describe('AutocompleteInput', () => {
         >
           <AutocompleteInput getSuggestions={() => []} data-testid="combobox" />
         </Configuration>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('combobox')).toHaveClass('cls');

@@ -1,16 +1,10 @@
 import {
-  arrow,
-  autoPlacement,
   autoUpdate,
-  flip,
   FloatingFocusManager,
   FloatingList,
   FloatingPortal,
-  offset,
   OpenChangeReason,
   safePolygon,
-  shift,
-  size,
   useClick,
   useDismiss,
   useFloating,
@@ -20,68 +14,104 @@ import {
   useListNavigation,
 } from '@floating-ui/react';
 import React, {
-  createContext,
-  forwardRef,
-  useContext,
+  CSSProperties,
+  ReactElement,
+  useCallback,
+  useId,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from 'react';
-import {
-  PopoverProps,
-  PopoverRef,
-  PopoverChildrenContext,
-  PopoverContentContext,
-} from './Popover.types.ts';
-import { useBoolean, DOMUtils } from 'utils';
+import { PopoverProps, PopoverChildrenContext } from './Popover.types.ts';
+import { useBoolean, DOMUtils, mergeRefs } from 'utils';
 import clsx from 'clsx';
 import s from './popover.module.scss';
+import { Box } from 'components/box';
 import { CloseButton } from 'components/closeButton';
-import { PopoverArrow } from './inner/PopoverArrow.tsx';
-import { useConfiguration } from 'components/configuration';
+import { AnimatePresence, motion, type Transition } from 'motion/react';
+import { getPlacementConfig } from './utils/placementUtils';
+import {
+  createMiddleware,
+  createOverlapMiddleware,
+} from './utils/middlewareUtils';
+import { getTransformOrigin } from './utils/getTransformOrigin';
+import {
+  PopoverCloseContext,
+  PopoverCurrentId,
+  PopoverCurrentIndex,
+  usePopoverCloseContext,
+} from './Popover.context.ts';
 
-const PopoverCloseContext = createContext<undefined | (() => void)>(undefined);
-const usePopoverCloseContext = () => useContext(PopoverCloseContext);
+export {
+  usePopoverCurrentId,
+  usePopoverCurrentIndex,
+} from './Popover.context.ts';
 
-const PopoverCurrentIndex = createContext<number | null>(null);
-export const usePopoverCurrentIndex = () => useContext(PopoverCurrentIndex);
+const ENTER_TRANSITION: Transition = {
+  duration: 0.4,
+  ease: 'backOut',
+  bounce: 0.2,
+};
 
-export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
-  const {
-    children,
-    content,
-    openedByDefault = false,
-    enabled = true,
-    title,
-    placement = 'auto',
-    trigger = 'click',
-    focusTrap = true,
-    parentWidth = false,
-    showCloseButton = false,
-    showArrow = false,
-    listNavigation: enableListNavigation = false,
-    defaultListNavigationIndex = null,
-    virtualNavigationFocus = false,
-    focusTrapTargets = ['reference', 'content'],
-    className,
-    style,
-    onOpenChange,
-    ...restProps
-  } = props;
+const EXIT_TRANSITION: Transition = {
+  duration: 0.15,
+  ease: [0.4, 0, 1, 1],
+};
+
+export const Popover = ({
+  ref,
+  children,
+  content,
+  openedByDefault = false,
+  enabled = true,
+  title,
+  placement = 'auto',
+  trigger = 'click',
+  focusTrap = true,
+  parentWidth = false,
+  showCloseButton = false,
+  listNavigation: enableListNavigation = false,
+  defaultListNavigationIndex = null,
+  virtualNavigationFocus = false,
+  focusTrapTargets = ['reference', 'content'],
+  overlap = false,
+  className,
+  style,
+  role,
+  'aria-labelledby': ariaLabelledBy,
+  onOpenChange,
+  ...restProps
+}: PopoverProps) => {
+  const popoverId = useId();
+  const headingId = `${popoverId}-heading`;
 
   const [activeIndex, setActiveIndex] = useState<number | null>(
     defaultListNavigationIndex,
   );
-
-  const { popover: popoverConfig = {} } = useConfiguration();
+  const [insideNotification, setInsideNotification] = useState(false);
+  /* Portal into the trigger's *own* Altrone root, not the first one in the
+     document — a global `querySelector` grabs the wrong instance whenever the
+     page has more than one (Storybook Docs, multiple apps) or a stale
+     `data-altrone-root` left on `<html>`. Resolved from `.closest()` in
+     `setReference`, once the trigger has actually mounted — starting `null`
+     and gating the portal on it (below) rather than guessing a root up front
+     matters for `openedByDefault`: the trigger (and its ancestor app root)
+     haven't committed to the document yet on the very first render, so an
+     eager `document.querySelector` here would find nothing and portal that
+     first paint into `document.body`, outside the app's token scope
+     (unstyled) — fixing itself only once something else re-renders it. */
+  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
 
   const lastStateChangeReason = useRef<OpenChangeReason | undefined>(undefined);
 
   const childrenRef = useRef<HTMLElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
-  const arrowRef = useRef<HTMLDivElement | null>(null);
 
-  const triggersList = Array.isArray(trigger) ? trigger : [trigger];
+  const triggersList = useMemo(
+    () => (Array.isArray(trigger) ? trigger : [trigger]),
+    [trigger],
+  );
 
   const {
     value: opened,
@@ -90,42 +120,46 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     setValue: setOpened,
   } = useBoolean(openedByDefault);
 
-  const { refs, floatingStyles, context } = useFloating({
-    open: opened,
-    onOpenChange: (state, _, reason) => {
-      const hasFocusTrigger = triggersList.includes('focus');
+  const placementConfig = useMemo(
+    () => getPlacementConfig(placement, overlap),
+    [placement, overlap],
+  );
 
+  const middleware = useMemo(
+    () =>
+      overlap
+        ? createOverlapMiddleware(placementConfig, parentWidth)
+        : createMiddleware(placementConfig, parentWidth),
+    [overlap, placementConfig, parentWidth],
+  );
+
+  const {
+    refs,
+    context,
+    x,
+    y,
+    strategy,
+    placement: actualPlacement,
+  } = useFloating({
+    open: opened,
+    onOpenChange: (state, event, reason) => {
+      /* Workaround: with both `click` and `focus` triggers, a click on the
+         reference fires a `reference-press` right after the `click` opened it,
+         which would immediately close it. Swallow that specific pair. */
+      const hasFocusTrigger = triggersList.includes('focus');
       const skipRule =
         lastStateChangeReason.current === 'click' &&
         reason === 'reference-press';
+
       if (!(hasFocusTrigger && skipRule)) {
         setOpened(state);
       }
 
-      onOpenChange?.(state);
+      onOpenChange?.(state, event, reason);
       lastStateChangeReason.current = reason;
     },
-    placement: placement !== 'auto' ? placement : 'top',
-    middleware: [
-      offset(4),
-      placement === 'auto' ? autoPlacement() : flip(),
-      shift({
-        padding: 4,
-      }),
-      size({
-        apply({ rects, elements }) {
-          if (parentWidth) {
-            Object.assign(elements.floating.style, {
-              width: `${rects.reference.width}px`,
-            });
-          }
-        },
-      }),
-      arrow({
-        element: arrowRef,
-        padding: 8,
-      }),
-    ],
+    placement: placementConfig.placement,
+    middleware,
     whileElementsMounted: autoUpdate,
   });
 
@@ -136,10 +170,7 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
 
   const hoverTrigger = useHover(context, {
     enabled: triggersList.includes('hover'),
-    delay: {
-      open: 500,
-      close: 250,
-    },
+    delay: { open: 500, close: 250 },
     handleClose: safePolygon(),
   });
 
@@ -185,22 +216,16 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
       contentNode: contentRef.current,
       closePopup: hide,
       openPopup: open,
+      actualPlacement,
+      transformOrigin: getTransformOrigin(actualPlacement, overlap),
     }),
-    [opened, context, activeIndex],
+    [opened, context, activeIndex, actualPlacement, hide, open, overlap],
   );
 
   const popoverParentClose = usePopoverCloseContext();
-  const parentClosePopover = popoverParentClose ? popoverParentClose : hide;
+  const closeAllSequence = popoverParentClose ?? hide;
 
-  const popoverContext: PopoverContentContext = {
-    closePopup: hide,
-    closeAllSequence: parentClosePopover,
-  };
-
-  const childrenContext: PopoverChildrenContext = {
-    opened,
-    closePopup: hide,
-  };
+  const childrenContext: PopoverChildrenContext = { opened, closePopup: hide };
   const originChildElement =
     typeof children === 'function' ? children(childrenContext) : children;
   const safeChildElement = React.isValidElement(originChildElement) ? (
@@ -209,19 +234,39 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     <span>{originChildElement}</span>
   );
 
-  const showHeader = showCloseButton || title;
+  const showHeader = showCloseButton || Boolean(title);
 
   const popoverCls = clsx(
     s.Popover,
-    {
-      [s.GlassEffect]: !showArrow,
-      [s.InsideNotification]: childrenRef.current?.closest(
-        '[data-notification="true"]',
-      ),
-    },
+    { [s.InsideNotification]: insideNotification },
     className,
-    popoverConfig.className,
   );
+
+  const setReference = useCallback(
+    (element: HTMLElement | null) => {
+      refs.setReference(element);
+      childrenRef.current = element;
+      setInsideNotification(
+        Boolean(element?.closest('[data-notification="true"]')),
+      );
+      /* Falls back to `document.body` (never stays `null`) so a trigger
+         rendered outside any `Application` still opens — matching
+         `FloatingPortal`'s own default root. */
+      setPortalRoot(
+        (element?.closest('[data-altrone-root]') as HTMLElement) ??
+          document.body,
+      );
+    },
+    [refs],
+  );
+
+  const floatingStyle: CSSProperties = {
+    ...style,
+    transformOrigin: getTransformOrigin(actualPlacement, overlap),
+    left: x ?? 0,
+    top: y ?? 0,
+    position: strategy,
+  };
 
   const floatingBox = (
     <FloatingFocusManager
@@ -231,53 +276,68 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
     >
       <FloatingList elementsRef={listNavigationRef}>
         <PopoverCurrentIndex.Provider value={activeIndex}>
-          <div
-            ref={(elementRef: HTMLDivElement) => {
-              refs.setFloating(elementRef);
-              contentRef.current = elementRef;
-            }}
-            className={popoverCls}
-            role="region"
-            {...getFloatingProps({
-              ...restProps,
-              style: {
-                ...popoverConfig.style,
-                ...style,
-                ...floatingStyles,
-              },
-            })}
-          >
-            {showHeader && (
-              <div className={s.Header}>
-                {title ? <div className={s.Heading}>{title}</div> : null}
-                {showCloseButton ? (
-                  <CloseButton onClick={hide} className={s.Close} />
-                ) : null}
-              </div>
-            )}
-            <div
-              className={s.Content}
-              ref={contentRef ? contentRef : undefined}
+          <PopoverCurrentId.Provider value={popoverId}>
+            {/* Box owns the surface: glass fill, backdrop blur, rounded corners
+                seeded from `--popover-radius`, and the `overlay` elevation
+                (shadow + z-index). The `motion.div` it renders through `asChild`
+                keeps the enter/exit + `layout` animation and the floating-ui
+                positioning. */}
+            <Box
+              asChild
+              material="plate"
+              tone="neutral"
+              shape="rounded"
+              elevation="overlay"
+              radius="var(--popover-radius)"
+              padding="var(--space-content)"
+              className={popoverCls}
+              style={floatingStyle}
+              {...getFloatingProps(restProps)}
             >
-              {typeof content === 'function'
-                ? content(popoverContext)
-                : content}
-            </div>
-            {showArrow && <PopoverArrow ref={arrowRef} context={context} />}
-          </div>
+              <motion.div
+                ref={(element: HTMLDivElement) => {
+                  refs.setFloating(element);
+                  contentRef.current = element;
+                }}
+                layout="size"
+                role={role ?? (showHeader ? 'dialog' : undefined)}
+                aria-labelledby={title ? headingId : ariaLabelledBy}
+                initial={{ opacity: 0, scale: 0.1 }}
+                animate={{ opacity: 1, scale: 1, transition: ENTER_TRANSITION }}
+                exit={{ opacity: 0, scale: 0.1, transition: EXIT_TRANSITION }}
+              >
+                {showHeader && (
+                  <div className={s.Header}>
+                    {title ? (
+                      <div className={s.Heading} id={headingId}>
+                        {title}
+                      </div>
+                    ) : null}
+                    {showCloseButton ? (
+                      <CloseButton onClick={hide} className={s.Close} />
+                    ) : null}
+                  </div>
+                )}
+                <div className={s.Content}>
+                  {typeof content === 'function'
+                    ? content({ closePopup: hide, closeAllSequence })
+                    : content}
+                </div>
+              </motion.div>
+            </Box>
+          </PopoverCurrentId.Provider>
         </PopoverCurrentIndex.Provider>
       </FloatingList>
     </FloatingFocusManager>
   );
 
   const childrenElement = DOMUtils.cloneNode(safeChildElement, {
-    ...getReferenceProps({
-      ...safeChildElement.props,
-    }),
-    ref: (elementRef: HTMLElement) => {
-      refs.setReference(elementRef);
-      childrenRef.current = elementRef;
-    },
+    ...getReferenceProps({ ...safeChildElement.props }),
+    ref: mergeRefs(
+      (safeChildElement as ReactElement<{ ref?: React.Ref<HTMLElement> }>).props
+        .ref,
+      setReference,
+    ),
     tabIndex: safeChildElement.props.tabIndex ?? 0,
   });
 
@@ -286,19 +346,13 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((props, ref) => {
   }
 
   return (
-    <PopoverCloseContext.Provider value={parentClosePopover}>
+    <PopoverCloseContext.Provider value={closeAllSequence}>
       {childrenElement}
-      {opened && (
-        <FloatingPortal
-          data-test="test"
-          root={
-            (document.querySelector('[data-altrone-root]') as HTMLElement) ||
-            document.body
-          }
-        >
-          {floatingBox}
-        </FloatingPortal>
-      )}
+      <AnimatePresence mode="wait">
+        {opened && portalRoot && (
+          <FloatingPortal root={portalRoot}>{floatingBox}</FloatingPortal>
+        )}
+      </AnimatePresence>
     </PopoverCloseContext.Provider>
   );
-});
+};
