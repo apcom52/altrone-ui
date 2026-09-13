@@ -1,8 +1,4 @@
 .Header {
-  position: sticky;
-  /* 1px past the edge so `useStuck`'s IntersectionObserver can tell pinned
-     from at-rest. */
-  top: -1px;
   z-index: var(--level-fixed);
   /* Bleed over the container's padding so the bar spans the full width and
      its top corners sit flush with the container's rounding. */
@@ -13,10 +9,4 @@
   border-bottom: 1px solid var(--navigation-list-chrome-border-color);
   border-radius: var(--navigation-list-rounding) var(--navigation-list-rounding) 0
     0;
-  transition: border-radius 0.15s ease;
-}
-
-/* Pinned: no rounding — it's no longer sitting in the container's corner. */
-.Header[data-stuck] {
-  border-radius: 0;
 }

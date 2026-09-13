@@ -20,6 +20,13 @@ export interface ApplicationProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   language?: Language;
   theme?: Theme;
+  /**
+   * Remember the resolved theme (`'light'` / `'dark'`) in `localStorage` and
+   * restore it on the next visit — takes priority over `theme`/system
+   * preference once a value has been stored (i.e. after the user has
+   * actually toggled it once). Default `false`.
+   */
+  persistTheme?: boolean;
   accent?: Accent;
   customLabels?: Partial<Localization>;
   /** Vertical placement of the toast stack (centred horizontally). Defaults to 'end' (bottom). */

@@ -1,13 +1,9 @@
 .Footer {
-  position: sticky;
-  /* 1px past the edge so `useStuck`'s IntersectionObserver can tell pinned
-     from at-rest. */
-  bottom: -1px;
   z-index: var(--level-fixed);
-  /* `auto` top margin pins the footer to the bottom of a full-height
-     NavigationList (flex column) instead of letting it trail the content.
-     The negative inline/bottom margins bleed over the container's padding so
-     the bar spans the full width and its bottom corners sit flush with the
+  /* `auto` top margin pins the footer to the bottom of `.NavigationList`
+     (flex column) instead of letting it trail the content. The negative
+     inline/bottom margins bleed over the container's padding so the bar
+     spans the full width and its bottom corners sit flush with the
      container's rounding. */
   margin: auto calc(-1 * var(--navigation-list-padding))
     calc(-1 * var(--navigation-list-padding));
@@ -16,10 +12,4 @@
   border-top: 1px solid var(--navigation-list-chrome-border-color);
   border-radius: 0 0 var(--navigation-list-rounding)
     var(--navigation-list-rounding);
-  transition: border-radius 0.15s ease;
-}
-
-/* Pinned: no rounding — it's no longer sitting in the container's corner. */
-.Footer[data-stuck] {
-  border-radius: 0;
 }

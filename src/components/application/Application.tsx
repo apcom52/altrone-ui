@@ -17,7 +17,7 @@ import {
 import { MotionConfig } from 'motion/react';
 import { Notifications } from 'components/notifications/Notifications.tsx';
 import { ThemeContext, ThemeContextType } from './useTheme.ts';
-import { getThemeInitScript } from './getThemeInitScript.ts';
+import { getThemeInitScript, THEME_STORAGE_KEY } from './getThemeInitScript.ts';
 import { AnyObject } from 'utils/types.ts';
 
 import '@fontsource-variable/inter';
@@ -40,6 +40,7 @@ export const Application = ({
   id,
   style,
   theme: initialTheme = 'auto',
+  persistTheme = false,
   accent = 'blue',
   language = 'en',
   customLabels = {},
@@ -55,14 +56,31 @@ export const Application = ({
 
   const mediaScheme = useMediaMatch('(prefers-color-scheme: dark)');
 
-  // Respond to runtime changes: system theme switch or prop change
+  // Respond to runtime changes: stored preference, system theme switch, or prop change
   useEffect(() => {
+    if (persistTheme) {
+      const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+      if (stored === 'light' || stored === 'dark') {
+        setTheme(stored);
+        return;
+      }
+    }
     if (initialTheme === 'auto') {
       setTheme(mediaScheme ? 'dark' : 'light');
     } else {
       setTheme(initialTheme);
     }
-  }, [mediaScheme, initialTheme]);
+  }, [mediaScheme, initialTheme, persistTheme]);
+
+  const persistingSetTheme = useCallback(
+    (next: Theme) => {
+      setTheme(next);
+      if (persistTheme) {
+        window.localStorage.setItem(THEME_STORAGE_KEY, next);
+      }
+    },
+    [persistTheme],
+  );
 
   // Applied to <html> (in addition to data-altrone-theme on the root below)
   // so global, non-scoped styles (scrollbar, ::selection, etc.) and portals
@@ -121,9 +139,9 @@ export const Application = ({
   const themeContext = useMemo<ThemeContextType>(
     () => ({
       theme: theme,
-      setTheme,
+      setTheme: persistingSetTheme,
     }),
-    [theme, setTheme],
+    [theme, persistingSetTheme],
   );
 
   const cls = clsx(s.AltroneApp, className);
@@ -176,7 +194,9 @@ export const Application = ({
           before hydration. For a guarantee in streaming SSR, render
           getThemeInitScript() in the document <head> yourself instead. */}
       <script
-        dangerouslySetInnerHTML={{ __html: getThemeInitScript(initialTheme) }}
+        dangerouslySetInnerHTML={{
+          __html: getThemeInitScript(initialTheme, persistTheme),
+        }}
       />
       <MotionConfig reducedMotion="user">{root}</MotionConfig>
     </>

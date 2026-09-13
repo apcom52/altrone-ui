@@ -3,9 +3,17 @@
     padding: 0 !important;
   }
 
-  html, body {
+  html,
+  body {
     height: 100%;
   }
+}
+
+/** Transparent app background so Storybook's own Backgrounds toolbar controls
+    the canvas — also no-ops Application's body/html background mirror. */
+.Wrapper,
+.WrapperBleed {
+  --app-background: transparent;
 }
 
 .Wrapper {
