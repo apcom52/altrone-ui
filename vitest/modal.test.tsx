@@ -13,7 +13,7 @@ describe('Modal', () => {
           className="cls"
           style={{ color: 'rgb(0, 0, 255)' }}
           content={<div>content</div>}
-          openedByDefault={true}
+          defaultOpen={true}
         />
       </Application>,
     );
@@ -49,7 +49,7 @@ describe('Modal', () => {
           data-testid="modal"
           content={<div>content</div>}
           onClose={onClose}
-          openedByDefault={true}
+          defaultOpen={true}
         />
       </Application>,
     );
@@ -67,7 +67,7 @@ describe('Modal', () => {
         <Modal
           content={<div>content</div>}
           onClose={onClose}
-          openedByDefault={true}
+          defaultOpen={true}
         />
       </Application>,
     );
@@ -90,7 +90,7 @@ describe('Modal', () => {
             </>
           }
           onClose={onClose}
-          openedByDefault={true}
+          defaultOpen={true}
         />
       </Application>,
     );
@@ -108,7 +108,7 @@ describe('Modal', () => {
         <Modal
           content={<div>content</div>}
           onClose={onClose}
-          openedByDefault={true}
+          defaultOpen={true}
         />
       </Application>,
     );

@@ -125,7 +125,7 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
       {dialog && (
         <Modal
           title={dialog.title || defaultTitle}
-          openedByDefault
+          defaultOpen
           onClose={cancel}
           size="s"
           showCancelButton={false}

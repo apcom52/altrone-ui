@@ -57,9 +57,6 @@ export interface Localization {
     notFound: string;
   };
   toolbar: {
-    back: string;
-    forward: string;
-    search: string;
     collapseSidebar: string;
     expandSidebar: string;
   };
@@ -177,6 +174,7 @@ export interface Localization {
   };
   colorPicker: {
     placeholder: string;
+    title: string;
     savedColors: string;
     palette: string;
   };

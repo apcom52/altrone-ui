@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import clsx from 'clsx';
 import { useLocalization } from 'components/application/useLocalization.tsx';
 import s from '../screen.module.scss';
@@ -15,7 +16,8 @@ import { useZoneVisible } from './useZoneVisible.ts';
 export const Aside = ({
   ref,
   children,
-  collapsed = false,
+  collapsed: collapsedProp,
+  defaultCollapsed = false,
   className,
   style,
   visibleFrom,
@@ -24,6 +26,9 @@ export const Aside = ({
 }: ScreenAsideProps) => {
   const t = useLocalization();
   const visible = useZoneVisible(visibleFrom, hiddenFrom);
+
+  const [internalCollapsed] = useState(defaultCollapsed);
+  const collapsed = collapsedProp ?? internalCollapsed;
 
   if (!visible) {
     return null;

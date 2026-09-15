@@ -153,7 +153,7 @@ function GitBranchMenu() {
         </Dropdown.Menu>
       }
     >
-      {({ opened }) => (
+      {({ open: opened }) => (
         <Button
           icon={<GitBranch />}
           label={currentBranch}
@@ -480,7 +480,7 @@ function FormattingMenu() {
             </Dropdown.Menu>
           }
         >
-          {({ opened }) => (
+          {({ open: opened }) => (
             <Toolbar.Action
               icon={<MoreHorizontal />}
               label="More formatting"

@@ -195,19 +195,6 @@ describe('Toolbar', () => {
 });
 
 describe('Toolbar header actions', () => {
-  test('BackAction is icon-only with an accessible label and fires onClick', () => {
-    const onClick = vi.fn();
-    render(
-      <Application>
-        <Toolbar.BackAction onClick={onClick} />
-      </Application>,
-    );
-
-    const button = screen.getByRole('button', { name: 'Back' });
-    fireEvent.click(button);
-    expect(onClick).toHaveBeenCalledOnce();
-  });
-
   test('SidebarToggleAction swaps icon/label based on the controlled collapsed prop', () => {
     const { rerender } = render(
       <Application>
@@ -226,29 +213,5 @@ describe('Toolbar header actions', () => {
     expect(
       screen.getByRole('button', { name: 'Expand sidebar' }),
     ).toBeInTheDocument();
-  });
-
-  test('BackForwardAction disables and triggers each half independently', () => {
-    const onBack = vi.fn();
-    const onForward = vi.fn();
-    render(
-      <Application>
-        <Toolbar.BackForwardAction
-          onBack={onBack}
-          onForward={onForward}
-          backDisabled
-        />
-      </Application>,
-    );
-
-    const backButton = screen.getByRole('button', { name: 'Back' });
-    const forwardButton = screen.getByRole('button', { name: 'Forward' });
-
-    expect(backButton).toBeDisabled();
-    expect(forwardButton).not.toBeDisabled();
-
-    fireEvent.click(forwardButton);
-    expect(onForward).toHaveBeenCalledOnce();
-    expect(onBack).not.toHaveBeenCalled();
   });
 });

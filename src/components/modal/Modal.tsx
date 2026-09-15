@@ -62,7 +62,7 @@ export const Modal = (props: ModalProps) => {
     content,
     enabled = true,
     open,
-    openedByDefault = false,
+    defaultOpen = false,
     title,
     additionalActions,
     actions,
@@ -106,7 +106,7 @@ export const Modal = (props: ModalProps) => {
       };
 
   const isControlled = open !== undefined;
-  const { value: internalOpened, disable: hide } = useBoolean(openedByDefault);
+  const { value: internalOpened, disable: hide } = useBoolean(defaultOpen);
   const opened = isControlled ? open : internalOpened;
 
   const handleClose = useCallback(() => {

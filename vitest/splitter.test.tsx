@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { expect, test, describe, vi, beforeAll } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Application } from '../src/components';
@@ -144,6 +144,52 @@ describe('Splitter', () => {
     expect(
       screen.queryByRole('button', { name: 'Expand panel' }),
     ).not.toBeInTheDocument();
+  });
+
+  test('controlled `sizes`: collapsing notifies via onSizesChange but leaves the DOM untouched until fed back', () => {
+    const onSizesChange = vi.fn();
+
+    renderSplitter(
+      <Splitter sizes={[40, 60]} onSizesChange={onSizesChange}>
+        <Splitter.Panel collapsible>
+          <div>side</div>
+        </Splitter.Panel>
+        <Splitter.Panel>
+          <div>main</div>
+        </Splitter.Panel>
+      </Splitter>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Collapse panel' }));
+
+    expect(onSizesChange).toHaveBeenCalledWith([0, 100]);
+    // sizes prop unchanged — the neighbor's flex stays at its original 60, not 100
+    expect(screen.getByText('main').parentElement).toHaveStyle('flex: 60 60 0');
+  });
+
+  test('controlled `sizes`: fed back through onSizesChange, the collapse renders through', () => {
+    const Harness = () => {
+      const [sizes, setSizes] = useState([40, 60]);
+      return (
+        <Splitter sizes={sizes} onSizesChange={setSizes}>
+          <Splitter.Panel collapsible>
+            <div>side</div>
+          </Splitter.Panel>
+          <Splitter.Panel>
+            <div>main</div>
+          </Splitter.Panel>
+        </Splitter>
+      );
+    };
+
+    renderSplitter(<Harness />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Collapse panel' }));
+
+    expect(screen.getByText('side').parentElement).toHaveStyle('flex: 0 0 0');
+    expect(screen.getByText('main').parentElement).toHaveStyle(
+      'flex: 100 100 0',
+    );
   });
 
   test('collapse buttons carry a localized label and honour showControls', () => {

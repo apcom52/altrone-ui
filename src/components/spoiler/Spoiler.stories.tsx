@@ -50,11 +50,14 @@ export const Overview: StoryObj<typeof Spoiler> = {
         Spoiler
       </Text>
       <Paragraph>
-        <Text code>Spoiler</Text> is an uncontrolled disclosure: a heading that
-        stays visible and a content area that expands and collapses beneath it.
-        The heading is a real <Text code>&lt;button&gt;</Text> with{' '}
-        <Text code>aria-expanded</Text>, and it shows a <Text code>+</Text> when
-        closed, a <Text code>−</Text> when open. Height animates over 200 ms.
+        <Text code>Spoiler</Text> is a disclosure: a heading that stays visible
+        and a content area that expands and collapses beneath it. Uncontrolled
+        by default (it owns its own open state, seeded by{' '}
+        <Text code>defaultOpen</Text>), or pass <Text code>open</Text> to drive
+        it from outside. The heading is a real{' '}
+        <Text code>&lt;button&gt;</Text> with <Text code>aria-expanded</Text>,
+        and it shows a <Text code>+</Text> when closed, a <Text code>−</Text>{' '}
+        when open. Height animates over 200 ms.
       </Paragraph>
 
       <Spoiler title="What is altrone-ui?">
@@ -76,17 +79,48 @@ export const OpenByDefault: StoryObj<typeof Spoiler> = {
     <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Heading>Open by default</Heading>
       <Paragraph>
-        Pass <Text code>openedByDefault</Text> to render the spoiler expanded on
+        Pass <Text code>defaultOpen</Text> to render the spoiler expanded on
         mount. State is still uncontrolled afterwards — the component owns it.
       </Paragraph>
 
-      <Spoiler title="Installation" openedByDefault>
+      <Spoiler title="Installation" defaultOpen>
         <Prose>
           Add the package and its peer dependencies, then import styles.
         </Prose>
       </Spoiler>
     </Flex>
   ),
+};
+
+// ─── Controlled open ────────────────────────────────────────────────────────
+
+export const ControlledOpen: StoryObj<typeof Spoiler> = {
+  name: 'Controlled open',
+  render: () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+        <Heading>Controlled open</Heading>
+        <Paragraph>
+          Passing <Text code>open</Text> (instead of{' '}
+          <Text code>defaultOpen</Text>) makes it controlled: it renders
+          whatever state it's given and only asks to change it via{' '}
+          <Text code>onToggle</Text>.
+        </Paragraph>
+
+        <Flex gap="s" align="center">
+          <Text block size={3} color="muted">
+            {open ? 'Expanded' : 'Collapsed'}
+          </Text>
+        </Flex>
+
+        <Spoiler title="Advanced settings" open={open} onToggle={setOpen}>
+          <Prose>Driven entirely by the parent's own state.</Prose>
+        </Spoiler>
+      </Flex>
+    );
+  },
 };
 
 // ─── Grouped ────────────────────────────────────────────────────────────────
@@ -146,8 +180,8 @@ export const ToggleCallback: StoryObj<typeof Spoiler> = {
       <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
         <Heading>Toggle callback</Heading>
         <Paragraph>
-          <Text code>onToggle(opened, event)</Text> fires after each toggle;{' '}
-          <Text code>opened</Text> is the state the spoiler is moving to. Here
+          <Text code>onToggle(open, event)</Text> fires after each toggle;{' '}
+          <Text code>open</Text> is the state the spoiler is moving to. Here
           it keeps a running count of open sections.
         </Paragraph>
 
@@ -160,9 +194,9 @@ export const ToggleCallback: StoryObj<typeof Spoiler> = {
             <Spoiler
               key={title}
               title={title}
-              openedByDefault={i === 0}
-              onToggle={(opened) =>
-                setOpenCount((n) => (opened ? n + 1 : n - 1))
+              defaultOpen={i === 0}
+              onToggle={(open) =>
+                setOpenCount((n) => (open ? n + 1 : n - 1))
               }
             >
               <Prose>{body}</Prose>
@@ -196,7 +230,7 @@ export const RichContent: StoryObj<typeof Spoiler> = {
             </Text>
           </Flex>
         }
-        openedByDefault
+        defaultOpen
       >
         <Flex direction="vertical" gap="s">
           {['design-spec.pdf', 'screenshot.png', 'notes.md'].map((file) => (

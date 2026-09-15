@@ -9,7 +9,7 @@
 - Header with `title` + `showCloseButton`
 - `listNavigation` with virtual focus and active index
 - `overlap` mode — popover covers the trigger
-- `openedByDefault`, `enabled`
+- `open` (controlled) + `defaultOpen` (uncontrolled), `enabled`
 - `onOpenChange` callback
 - `ref` with imperative API (`openPopup`, `closePopup`, `actualPlacement`, etc.)
 - Nested popovers with cascade close via context
@@ -19,23 +19,6 @@
 ---
 
 ## 🔴 High priority
-
-### Controlled mode (`open` prop)
-
-Currently the open state is only uncontrolled (`openedByDefault`). Many real use cases require full control from the parent — e.g. opening a popover programmatically after an async operation.
-
-```tsx
-// Proposed API
-<Popover open={isOpen} onOpenChange={setIsOpen} content={...}>
-  <Button label="Open" />
-</Popover>
-```
-
-- Add `open?: boolean` to `PopoverProps`
-- When `open` is provided, treat as controlled: skip internal `setOpened`, only call `onOpenChange`
-- `openedByDefault` stays as the uncontrolled initializer
-
----
 
 ### Configurable hover delay (`hoverDelay`)
 

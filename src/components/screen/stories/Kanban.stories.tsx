@@ -39,6 +39,7 @@ import {
   MessageSquare,
   Paperclip,
   Plus,
+  Search,
   Settings,
   SlidersHorizontal,
   Tag,
@@ -1471,7 +1472,7 @@ export const Kanban: StoryObj<typeof Screen> = {
               </Toolbar.Group>
             ) : null}
             <Toolbar.Group>
-              <Toolbar.SearchAction showLabel={false} />
+              <Toolbar.Action label="Search" icon={<Search />} showLabel={false} />
               <Toolbar.Action
                 label="Notifications"
                 icon={<Bell />}

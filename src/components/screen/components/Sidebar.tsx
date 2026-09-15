@@ -44,7 +44,9 @@ export const Sidebar = ({
   ref,
   children,
   collapsed: collapsedProp,
+  defaultCollapsed = false,
   onClose,
+  onCollapsedChange,
   className,
   style,
   visibleFrom,
@@ -52,37 +54,49 @@ export const Sidebar = ({
   ...restProps
 }: ScreenSidebarProps) => {
   const t = useLocalization();
-  const { sidebarMode } = useScreenContext();
+  const { sidebarMode, registerSidebar } = useScreenContext();
   const reducedMotion = useReducedMotionConfig() ?? false;
   const visible = useZoneVisible(visibleFrom, hiddenFrom);
 
-  const collapsed = collapsedProp ?? false;
+  const isControlled = collapsedProp !== undefined;
+  const [internalCollapsed, setInternalCollapsed] = useState(defaultCollapsed);
+  const collapsed = isControlled ? collapsedProp : internalCollapsed;
   const isOverlay = sidebarMode === 'overlay';
 
+  const setCollapsed = useCallback(
+    (next: boolean) => {
+      if (!isControlled) setInternalCollapsed(next);
+      onCollapsedChange?.(next);
+    },
+    [isControlled, onCollapsedChange],
+  );
+
   /**
-   * Local dismiss so the overlay is never a trap: the scrim / `Escape` can
-   * always hide it, even when `onClose` isn't wired (or `collapsed` is left
-   * uncontrolled). An uncontrolled sidebar drops out on entering overlay
-   * rather than covering the screen with no way back; a controlled one still
-   * gets closed here and stays authoritative via its own state.
+   * Uncontrolled sidebars auto-hide on entering overlay — a persistent
+   * inline column would otherwise cover the whole screen with no way to
+   * close it. Controlled sidebars are the consumer's own responsibility.
    */
-  const [dismissed, setDismissed] = useState(false);
-
   useEffect(() => {
-    if (isOverlay && collapsedProp === undefined) setDismissed(true);
-  }, [isOverlay, collapsedProp]);
-
-  useEffect(() => {
-    if (!isOverlay || collapsedProp === false) setDismissed(false);
-  }, [isOverlay, collapsedProp]);
-
-  const effectivelyCollapsed = collapsed || (isOverlay && dismissed);
-  const scrimOpen = isOverlay && !effectivelyCollapsed;
+    if (isOverlay && !isControlled) setInternalCollapsed(true);
+  }, [isOverlay, isControlled]);
 
   const handleClose = useCallback(() => {
-    setDismissed(true);
+    setCollapsed(true);
     onClose?.();
-  }, [onClose]);
+  }, [setCollapsed, onClose]);
+
+  const handleToggle = useCallback(() => {
+    setCollapsed(!collapsed);
+  }, [setCollapsed, collapsed]);
+
+  /** Publishes state one level up (`Screen`) so `Toolbar.SidebarToggleAction` — a sibling — can read/drive it. */
+  useEffect(() => {
+    if (!visible) return;
+    registerSidebar({ collapsed, toggle: handleToggle });
+    return () => registerSidebar(null);
+  }, [registerSidebar, collapsed, handleToggle, visible]);
+
+  const scrimOpen = isOverlay && !collapsed;
 
   const asideRef = useRef<HTMLElement>(null);
 
@@ -141,18 +155,18 @@ export const Sidebar = ({
         ref={mergeRefs(ref, asideRef)}
         className={clsx(
           s.Sidebar,
-          { [s.Collapsed]: effectivelyCollapsed },
+          { [s.Collapsed]: collapsed },
           className,
         )}
         style={style}
         aria-label={t('screen.sidebarLabel')}
-        inert={effectivelyCollapsed}
+        inert={collapsed}
         tabIndex={scrimOpen ? -1 : undefined}
         {...restProps}
       >
         {/* initial={false}: no slide-in on first paint when the sidebar starts open. */}
         <AnimatePresence initial={false}>
-          {!effectivelyCollapsed && (
+          {!collapsed && (
             <motion.div
               key="panel"
               className={s.SidebarPanel}

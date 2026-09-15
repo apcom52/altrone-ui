@@ -2,6 +2,7 @@ import React from 'react';
 import { expect, test, describe, vitest, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import {
+  Application,
   Button,
   ColorPicker,
   Configuration,
@@ -82,6 +83,18 @@ describe('ColorPicker', () => {
 
     expect(await screen.findByTestId('render-func')).toBeInTheDocument();
     expect(await screen.findByText(value)).toBeInTheDocument();
+  });
+
+  test('the popover shows a localized title', () => {
+    render(
+      <Application language="ru">
+        <ColorPicker data-testid="picker" onChange={() => null} />
+      </Application>,
+    );
+
+    fireEvent.click(screen.getByTestId('picker'));
+
+    expect(screen.getByText('Выберите цвет')).toBeInTheDocument();
   });
 
   test('check that className and style props works', () => {

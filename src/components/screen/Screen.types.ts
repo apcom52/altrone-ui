@@ -73,24 +73,40 @@ export interface ScreenSidebarProps
     ScreenZoneVisibilityProps {
   ref?: Ref<HTMLElement>;
   /**
-   * Controlled, presentational: `true` removes the sidebar from the layout.
-   * In both modes the panel animates out `Drawer`-style and unmounts; the
-   * `<aside>` anchor stays in the DOM (`inert`) and, inline, `Screen` reflows
-   * its content by animating a start inset (no overflow clipping). Wire this
-   * to the same boolean you pass to `Toolbar.SidebarToggleAction`'s
-   * `collapsed` prop.
+   * `true` removes the sidebar from the layout. In both modes the panel
+   * animates out `Drawer`-style and unmounts; the `<aside>` anchor stays in
+   * the DOM (`inert`) and, inline, `Screen` reflows its content by animating
+   * a start inset (no overflow clipping).
    *
-   * Leave it undefined (uncontrolled) and the sidebar is a persistent column
-   * inline and simply drops out once the viewport goes overlay — it never
-   * covers the screen with no way to close it. To make it summonable on
-   * mobile, control it and wire `Toolbar.SidebarToggleAction`.
+   * Controlled: pass this to own the state yourself — wire it to the same
+   * boolean you give `Toolbar.SidebarToggleAction`'s `collapsed`, and handle
+   * `onClose`/`onCollapsedChange` to write it back.
+   *
+   * Uncontrolled (omit this prop): the sidebar tracks its own state, seeded
+   * by `defaultCollapsed`, and auto-hides on entering overlay (a persistent
+   * column would otherwise cover the whole screen with no way to close it).
+   * A `Toolbar.SidebarToggleAction` elsewhere in the same `Screen` — also
+   * without its own `collapsed` — reads and toggles this automatically
+   * through `Screen`'s context, no shared state to wire up yourself.
    */
   collapsed?: boolean;
+  /** Initial collapsed state for an uncontrolled sidebar. Ignored once `collapsed` is passed. */
+  defaultCollapsed?: boolean;
   /**
-   * Called when the user dismisses the overlay sidebar — clicking the scrim
-   * or pressing `Escape`. Set your `collapsed` state to `true` here; focus
-   * returns to wherever it was before the panel opened. Even without it, the
-   * scrim / `Escape` still visually dismiss the overlay (it's never a trap).
+   * Fires whenever the collapsed state is asked to change — the scrim,
+   * `Escape`, or a `Toolbar.SidebarToggleAction` toggle. Pairs with
+   * `collapsed`; in uncontrolled mode this is purely a notification (the
+   * sidebar already updated itself).
+   */
+  onCollapsedChange?: (collapsed: boolean) => void;
+  /**
+   * Called specifically when the user dismisses the *overlay* sidebar —
+   * clicking the scrim or pressing `Escape`. A narrower sibling of
+   * `onCollapsedChange` for consumers that only care about that one
+   * interaction; controlled, set your `collapsed` state to `true` here.
+   * Focus returns to wherever it was before the panel opened. Even without
+   * it, the scrim / `Escape` still visually dismiss the overlay (it's never
+   * a trap).
    */
   onClose?: () => void;
 }
@@ -122,10 +138,15 @@ export interface ScreenAsideProps
     ScreenZoneVisibilityProps {
   ref?: Ref<HTMLElement>;
   /**
-   * Controlled, presentational: `true` collapses the column to zero width and
-   * `Screen.Content` reclaims the space; the `<aside>` stays mounted as an
-   * `inert` anchor. Only meaningful when `Screen.Aside` is a direct grid
-   * column — inside a `Splitter`, the panel owns collapse.
+   * `true` collapses the column to zero width and `Screen.Content` reclaims
+   * the space; the `<aside>` stays mounted as an `inert` anchor. Only
+   * meaningful when `Screen.Aside` is a direct grid column — inside a
+   * `Splitter`, the panel owns collapse.
+   *
+   * Controlled: pass this to own the state yourself. Omit it (uncontrolled)
+   * and the column tracks its own state, seeded by `defaultCollapsed`.
    */
   collapsed?: boolean;
+  /** Initial collapsed state for an uncontrolled aside. Ignored once `collapsed` is passed. */
+  defaultCollapsed?: boolean;
 }

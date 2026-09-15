@@ -1,9 +1,13 @@
-import type { CSSProperties } from 'react';
+import { useMemo, useState, type CSSProperties } from 'react';
 import clsx from 'clsx';
 import { useBreakpoint } from 'utils';
 import s from './screen.module.scss';
 import { ScreenMobileBreakpoint, ScreenProps } from './Screen.types.ts';
-import { ScreenContextProvider } from './Screen.context.ts';
+import {
+  ScreenContextProvider,
+  ScreenContextValue,
+  ScreenSidebarState,
+} from './Screen.context.ts';
 import {
   Header,
   Sidebar,
@@ -40,6 +44,17 @@ const ScreenBase = ({
     ? 'inline'
     : 'overlay';
 
+  /**
+   * Lives here (not in `Sidebar`) because `Toolbar.SidebarToggleAction` — a
+   * `Screen.Header` descendant — is a sibling of `Screen.Sidebar`, not an
+   * ancestor of it; the only shared ancestor that can host this is `Screen`.
+   */
+  const [sidebar, registerSidebar] = useState<ScreenSidebarState | null>(null);
+  const contextValue = useMemo<ScreenContextValue>(
+    () => ({ sidebarMode, sidebar, registerSidebar }),
+    [sidebarMode, sidebar],
+  );
+
   const cls = clsx(
     s.Screen,
     {
@@ -64,7 +79,7 @@ const ScreenBase = ({
       : style;
 
   return (
-    <ScreenContextProvider value={{ sidebarMode }}>
+    <ScreenContextProvider value={contextValue}>
       <div
         ref={ref}
         className={cls}

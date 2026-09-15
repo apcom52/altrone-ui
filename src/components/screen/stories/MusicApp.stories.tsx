@@ -600,7 +600,9 @@ export const MusicApp: StoryObj<typeof Screen> = {
             <Toolbar.Title label="Soundwave" />
             <Toolbar.Separator />
             <Toolbar.Group>
-              <Toolbar.SearchAction
+              <Toolbar.Action
+                label="Search"
+                icon={<Search />}
                 showLabel={false}
                 onClick={() => setTab('search')}
               />

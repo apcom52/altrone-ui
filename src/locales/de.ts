@@ -1,6 +1,6 @@
 import { Localization } from './types.ts';
 
-export const ge: Localization = {
+export const de: Localization = {
   common: {
     clear: 'Löschen',
     apply: 'Anwenden',
@@ -51,9 +51,6 @@ export const ge: Localization = {
     notFound: 'Nichts gefunden',
   },
   toolbar: {
-    back: 'Zurück',
-    forward: 'Vorwärts',
-    search: 'Suchen',
     collapseSidebar: 'Seitenleiste einklappen',
     expandSidebar: 'Seitenleiste ausklappen',
   },
@@ -186,6 +183,7 @@ export const ge: Localization = {
   },
   colorPicker: {
     placeholder: 'Farbe auswählen',
+    title: 'Farbe auswählen',
     savedColors: 'Gespeicherte Farben',
     palette: 'Palette',
   },

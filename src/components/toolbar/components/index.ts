@@ -6,7 +6,4 @@ export { Leading } from './Leading.tsx';
 export { Trailing } from './Trailing.tsx';
 export { Center } from './Center.tsx';
 export { Title } from './Title.tsx';
-export { BackAction } from './BackAction.tsx';
-export { SearchAction } from './SearchAction.tsx';
 export { SidebarToggleAction } from './SidebarToggleAction.tsx';
-export { BackForwardAction } from './BackForwardAction.tsx';

@@ -406,7 +406,7 @@ export const NestedStory: StoryObj<typeof Popover> = {
   ),
 };
 
-// ─── 6. openedByDefault + enabled ────────────────────────────────────────────
+// ─── 6. defaultOpen + enabled ────────────────────────────────────────────────
 
 export const AvailabilityStory: StoryObj<typeof Popover> = {
   name: 'Opened by default, and switched off entirely',
@@ -418,13 +418,13 @@ export const AvailabilityStory: StoryObj<typeof Popover> = {
       <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
         <Heading>An onboarding hint</Heading>
         <Paragraph>
-          <Text code>openedByDefault</Text> starts a popover open on mount —
+          <Text code>defaultOpen</Text> starts a popover open on mount —
           handy for a one-time coach-mark. It's still an ordinary,
           uncontrolled popover afterwards: closing it just closes it, the
           trigger reopens it normally.
         </Paragraph>
         <Popover
-          openedByDefault
+          defaultOpen
           placement="right"
           title="New: quick filters"
           showCloseButton
@@ -494,7 +494,7 @@ export const StateStory: StoryObj<typeof Popover> = {
         <Paragraph>
           <Text code>ref</Text> exposes <Text code>openPopup</Text>,{' '}
           <Text code>closePopup</Text>, the resolved{' '}
-          <Text code>actualPlacement</Text> and the live <Text code>opened</Text>{' '}
+          <Text code>actualPlacement</Text> and the live <Text code>open</Text>{' '}
           flag — for opening a popover after an async step, or reading where it
           landed.
         </Paragraph>
@@ -522,7 +522,7 @@ export const StateStory: StoryObj<typeof Popover> = {
         <Heading>A trigger that knows its own state</Heading>
         <Paragraph>
           Pass a function as <Text code>children</Text> to read{' '}
-          <Text code>opened</Text> — here the chevron flips. Every change also
+          <Text code>open</Text> — here the chevron flips. Every change also
           fires <Text code>onOpenChange(open, event, reason)</Text>;{' '}
           <Text code>reason</Text> says <em>how</em> it changed.
         </Paragraph>
@@ -537,7 +537,7 @@ export const StateStory: StoryObj<typeof Popover> = {
           }
           content={<Text size={3}>Try Esc, an outside click, or Tab away.</Text>}
         >
-          {({ opened }) => (
+          {({ open: opened }) => (
             <Button
               label="Preferences"
               additionalIcon={
@@ -561,6 +561,42 @@ export const StateStory: StoryObj<typeof Popover> = {
               </Text>
             ))
           )}
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
+// ─── 8. Controlled open ───────────────────────────────────────────────────────
+
+export const ControlledStory: StoryObj<typeof Popover> = {
+  name: 'Controlled open',
+  render: () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
+        <Paragraph>
+          Passing <Text code>open</Text> (instead of{' '}
+          <Text code>defaultOpen</Text>) makes the popover controlled: it
+          renders whatever state it's given and only asks to change it via{' '}
+          <Text code>onOpenChange</Text> — the escape key, an outside click,
+          and imperative <Text code>ref.openPopup()</Text>/
+          <Text code>closePopup()</Text> all route through it instead of
+          closing the popover on their own.
+        </Paragraph>
+        <Flex gap="s" align="center">
+          <Button
+            label={open ? 'Close from outside' : 'Open from outside'}
+            onClick={() => setOpen((v) => !v)}
+          />
+          <Popover
+            open={open}
+            onOpenChange={setOpen}
+            content={<Text size={3}>Try Esc or an outside click too.</Text>}
+          >
+            <Button label="Trigger" />
+          </Popover>
         </Flex>
       </Flex>
     );

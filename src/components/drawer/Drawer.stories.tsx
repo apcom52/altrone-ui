@@ -104,7 +104,7 @@ export const Overview: StoryObj<typeof Drawer> = {
         backdrop. Unlike <Text code>Popover</Text>/<Text code>Dropdown</Text>/
         <Text code>Tooltip</Text>, a drawer isn&apos;t attached to a trigger
         element — open it explicitly via the <Text code>open</Text> prop (or let
-        it manage its own state with <Text code>openedByDefault</Text>) and
+        it manage its own state with <Text code>defaultOpen</Text>) and
         close it via <Text code>onClose</Text> or the render-prop form of{' '}
         <Text code>content</Text>, <Text code>footer</Text>,{' '}
         <Text code>startActions</Text>, or <Text code>endActions</Text> (which

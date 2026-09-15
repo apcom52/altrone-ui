@@ -4,13 +4,10 @@ import { ToolbarProps } from './Toolbar.types.ts';
 import clsx from 'clsx';
 import {
   Action,
-  BackAction,
-  BackForwardAction,
   Center,
   Group,
   Leading,
   Logo,
-  SearchAction,
   Separator,
   SidebarToggleAction,
   Title,
@@ -102,10 +99,7 @@ const ToolbarNamespace = Object.assign(ToolbarComponent, {
   Center,
   Trailing,
   Title,
-  BackAction,
-  SearchAction,
   SidebarToggleAction,
-  BackForwardAction,
 });
 
 export { ToolbarNamespace as Toolbar };

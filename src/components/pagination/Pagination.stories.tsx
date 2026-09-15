@@ -56,12 +56,14 @@ export const Overview: StoryObj<typeof Pagination> = {
         </Text>
 
         <Paragraph>
-          <Text code>Pagination</Text> is a controlled page switcher — a{' '}
+          <Text code>Pagination</Text> is a page switcher — a{' '}
           <Text code>&lt;nav&gt;</Text> landmark with previous/next arrows,{' '}
-          numbered page buttons, and (by default) first/last jumps. You own the{' '}
-          state: pass <Text code>currentPage</Text> and{' '}
-          <Text code>totalPages</Text>, and update your state from{' '}
-          <Text code>onChange(page, event)</Text>.
+          numbered page buttons, and (by default) first/last jumps. Pass{' '}
+          <Text code>currentPage</Text> to own the state yourself (update it
+          from <Text code>onChange(page, event)</Text>), or omit it and use{' '}
+          <Text code>defaultPage</Text> to let the component track its own
+          page — <Text code>onChange</Text> still fires either way, if you
+          just want to know when the page changed.
         </Paragraph>
 
         <Heading>The number window</Heading>
@@ -114,6 +116,10 @@ export const Overview: StoryObj<typeof Pagination> = {
 
         <Case title="Single page — everything disabled">
           <Pagination currentPage={1} totalPages={1} onChange={() => {}} />
+        </Case>
+
+        <Case title="Uncontrolled — defaultPage, no currentPage">
+          <Pagination defaultPage={3} totalPages={10} />
         </Case>
       </Flex>
     );

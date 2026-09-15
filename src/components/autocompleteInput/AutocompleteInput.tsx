@@ -173,7 +173,7 @@ export const AutocompleteInput = <T = string,>({
     }
 
     if (
-      dropdownRef.current?.opened &&
+      dropdownRef.current?.open &&
       typeof dropdownRef.current?.activeIndex === 'number' &&
       dropdownRef.current?.activeIndex > -1 &&
       e.key === 'Enter'

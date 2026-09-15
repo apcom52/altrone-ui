@@ -62,7 +62,7 @@ export const Drawer = (props: DrawerProps) => {
     placement = 'start',
     width = 400,
     open,
-    openedByDefault = false,
+    defaultOpen = false,
     onClose,
     onDone,
     startActions,
@@ -78,7 +78,7 @@ export const Drawer = (props: DrawerProps) => {
   const reducedMotion = useReducedMotionConfig() ?? false;
 
   const isControlled = open !== undefined;
-  const { value: internalOpened, disable: hide } = useBoolean(openedByDefault);
+  const { value: internalOpened, disable: hide } = useBoolean(defaultOpen);
   const isOpen = isControlled ? open : internalOpened;
   const {
     value: isLoading,

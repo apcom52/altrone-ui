@@ -6,7 +6,9 @@ import {
   useImperativeHandle,
   useRef,
   useState,
+  type Dispatch,
   type MutableRefObject,
+  type SetStateAction,
 } from 'react';
 import clsx from 'clsx';
 import { useLocalization } from '../application';
@@ -27,6 +29,8 @@ const SplitterBase = ({
   orientation = 'horizontal',
   className,
   style,
+  sizes: sizesProp,
+  onSizesChange,
   onResize,
   onResizeStart,
   onResizeEnd,
@@ -54,7 +58,26 @@ const SplitterBase = ({
   const panels = panelElements.map((el) => el.props);
   const n = panels.length;
 
-  const [sizes, setSizes] = useState<number[]>(() => initSizes(panels));
+  const isSizesControlled = sizesProp !== undefined;
+  const [uncontrolledSizes, setUncontrolledSizes] = useState<number[]>(() =>
+    initSizes(panels),
+  );
+  const sizes = isSizesControlled ? sizesProp : uncontrolledSizes;
+  const sizesRef = useRef(sizes);
+  sizesRef.current = sizes;
+
+  const setSizes = useCallback<Dispatch<SetStateAction<number[]>>>(
+    (action) => {
+      const next =
+        typeof action === 'function'
+          ? (action as (prev: number[]) => number[])(sizesRef.current)
+          : action;
+      if (!isSizesControlled) setUncontrolledSizes(next);
+      onSizesChange?.(next);
+    },
+    [isSizesControlled, onSizesChange],
+  );
+
   const [collapsed, setCollapsed] = useState<boolean[]>(() =>
     new Array(n).fill(false),
   );

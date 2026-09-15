@@ -21,6 +21,7 @@ import {
   Heart,
   Library as LibraryIcon,
   List,
+  Search,
 } from 'lucide-react';
 import { screenMeta } from './shared.tsx';
 
@@ -415,7 +416,7 @@ const Contents = ({
  *   centres it (gutters + the Aside column beside it); mobile drops the cap and
  *   the column runs edge to edge.
  * - **Header controls.** Desktop keeps text labels (`‹ Library`, *Contents*,
- *   *Like*). Mobile goes icon-only — a bare `Toolbar.BackAction` arrow and
+ *   *Like*). Mobile goes icon-only — a bare back-arrow `Toolbar.Action` and
  *   `showLabel={false}` on the rest — so the row fits a handset. `Toolbar.Title`
  *   truncates the book title to whatever space is left.
  *
@@ -490,7 +491,12 @@ export const Reader: StoryObj<typeof Screen> = {
               <>
                 <Toolbar.Group>
                   {isCompact ? (
-                    <Toolbar.BackAction onClick={closeBook} />
+                    <Toolbar.Action
+                      label="Library"
+                      icon={<ChevronLeft />}
+                      showLabel={false}
+                      onClick={closeBook}
+                    />
                   ) : (
                     <Toolbar.Action
                       label="Library"
@@ -551,7 +557,7 @@ export const Reader: StoryObj<typeof Screen> = {
                 <Toolbar.Title label="Reader" />
                 <Toolbar.Separator />
                 <Toolbar.Group>
-                  <Toolbar.SearchAction showLabel={false} />
+                  <Toolbar.Action label="Search" icon={<Search />} showLabel={false} />
                 </Toolbar.Group>
                 <Toolbar.Group>
                   <Avatar firstName="Ada" lastName="Lovelace" />

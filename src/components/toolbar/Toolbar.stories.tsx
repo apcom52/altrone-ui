@@ -7,6 +7,8 @@ import { Toolbar } from './Toolbar.tsx';
 import {
   AlignCenter,
   AlignLeft,
+  ArrowLeft,
+  ArrowRight,
   Bell,
   Bold,
   Circle,
@@ -21,6 +23,7 @@ import {
   Plus,
   RectangleHorizontal,
   Redo2,
+  Search,
   Settings,
   Share,
   Trash2,
@@ -619,12 +622,19 @@ export const ComponentHeader: StoryObj<typeof Toolbar> = {
           <Toolbar.Logo>
             <AltroneMark />
           </Toolbar.Logo>
-          <Toolbar.BackForwardAction onBack={() => {}} onForward={() => {}} />
+          <Toolbar.Group>
+            <Toolbar.Action label="Back" icon={<ArrowLeft />} showLabel={false} />
+            <Toolbar.Action
+              label="Forward"
+              icon={<ArrowRight />}
+              showLabel={false}
+            />
+          </Toolbar.Group>
           <Toolbar.Title label="Button" />
         </Toolbar.Leading>
         <Toolbar.Trailing>
           <Toolbar.Group>
-            <Toolbar.SearchAction onClick={() => {}} />
+            <Toolbar.Action label="Search" icon={<Search />} showLabel={false} />
             <Toolbar.Action
               label="Notifications"
               icon={<Bell />}
@@ -976,8 +986,6 @@ export const HeaderActions: StoryObj<typeof Toolbar> = {
   name: 'Header action presets',
   render: () => {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-    const [historyIndex, setHistoryIndex] = useState(1);
-    const historyLength = 3;
 
     return (
       <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
@@ -985,34 +993,20 @@ export const HeaderActions: StoryObj<typeof Toolbar> = {
           Header action presets
         </Text>
         <Text block size={4} style={{ lineHeight: 1.6 }}>
-          Pre-composed <Text code>Toolbar.Action</Text>s for the controls a
-          typical header reaches for over and over. Each is fully controlled —
-          it renders the state you pass and calls your handler, holding nothing
-          of its own — and icon-only by default with a localized{' '}
-          <Text code>aria-label</Text>.
+          <Text code>Toolbar.SidebarToggleAction</Text> is the one pre-composed
+          action left in the header preset family — icon-only by default, a
+          localized <Text code>aria-label</Text>, and the icon/label swap
+          automatically with the sidebar state.
         </Text>
 
         <Text block size={5} weight="bold" style={{ marginTop: 8 }}>
-          Back &amp; Search
-        </Text>
-        <Toolbar>
-          <Toolbar.Leading>
-            <Toolbar.Group>
-              <Toolbar.BackAction onClick={() => {}} />
-            </Toolbar.Group>
-            <Toolbar.Group>
-              <Toolbar.SearchAction onClick={() => {}} />
-            </Toolbar.Group>
-          </Toolbar.Leading>
-        </Toolbar>
-
-        <Text block size={5} weight="bold" style={{ marginTop: 8 }}>
-          Sidebar toggle
+          Controlled
         </Text>
         <Text block size={4} style={{ lineHeight: 1.6 }}>
-          Drive it from the same <Text code>collapsed</Text> boolean you pass to{' '}
-          <Text code>Screen.Sidebar</Text> so the two stay in sync. Icon and
-          label swap automatically.
+          Pass <Text code>collapsed</Text> and the component holds no state of
+          its own — wire it to the same boolean you give{' '}
+          <Text code>Screen.Sidebar</Text>, and your own <Text code>onClick</Text>{' '}
+          decides what happens.
         </Text>
         <Toolbar>
           <Toolbar.Leading>
@@ -1029,27 +1023,15 @@ export const HeaderActions: StoryObj<typeof Toolbar> = {
         </Text>
 
         <Text block size={5} weight="bold" style={{ marginTop: 8 }}>
-          Back / Forward
+          Uncontrolled — wired to Screen automatically
         </Text>
         <Text block size={4} style={{ lineHeight: 1.6 }}>
-          One segmented control, browser/macOS-style — not two loose buttons.
-          Each half disables on its own when there is nowhere left to go, and it
-          renders its own <Text code>Toolbar.Group</Text> (do not wrap it).
-        </Text>
-        <Toolbar>
-          <Toolbar.Leading>
-            <Toolbar.BackForwardAction
-              backDisabled={historyIndex <= 0}
-              forwardDisabled={historyIndex >= historyLength - 1}
-              onBack={() => setHistoryIndex((i) => Math.max(0, i - 1))}
-              onForward={() =>
-                setHistoryIndex((i) => Math.min(historyLength - 1, i + 1))
-              }
-            />
-          </Toolbar.Leading>
-        </Toolbar>
-        <Text size={3} color="muted">
-          History position: {historyIndex + 1} of {historyLength}.
+          Omit <Text code>collapsed</Text> inside a <Text code>Screen</Text> whose{' '}
+          <Text code>Screen.Sidebar</Text> is itself uncontrolled: the action
+          reads and toggles it through <Text code>Screen</Text>'s own context —
+          no state to wire up yourself. See{' '}
+          <Text code>Components/Core/Screen/Dashboard</Text> for a live example
+          (a real layout reads better there than nested inside this one).
         </Text>
       </Flex>
     );

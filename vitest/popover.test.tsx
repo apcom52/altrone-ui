@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { expect, test, describe, vi, beforeAll } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Application, Button, Popover } from '../src';
 import type { PopoverRef } from '../src/components/popover';
 
@@ -25,8 +25,8 @@ const renderPopover = (props: Partial<React.ComponentProps<typeof Popover>>) =>
   );
 
 describe('Popover', () => {
-  test('renders content when openedByDefault', () => {
-    renderPopover({ openedByDefault: true });
+  test('renders content when defaultOpen', () => {
+    renderPopover({ defaultOpen: true });
     expect(screen.getByText('Popover content')).toBeInTheDocument();
   });
 
@@ -40,7 +40,7 @@ describe('Popover', () => {
 
   test('shows the title, and the close button only with showCloseButton', () => {
     const { rerender } = renderPopover({
-      openedByDefault: true,
+      defaultOpen: true,
       title: 'Popover title',
     });
     expect(screen.getByText('Popover title')).toBeInTheDocument();
@@ -52,7 +52,7 @@ describe('Popover', () => {
       <Application>
         <Popover
           content="Popover content"
-          openedByDefault
+          defaultOpen
           title="Popover title"
           showCloseButton
         >
@@ -64,7 +64,7 @@ describe('Popover', () => {
   });
 
   test('a titled popover is a labelled dialog', () => {
-    renderPopover({ openedByDefault: true, title: 'Settings' });
+    renderPopover({ defaultOpen: true, title: 'Settings' });
 
     const dialog = screen.getByRole('dialog');
     const labelledBy = dialog.getAttribute('aria-labelledby');
@@ -75,20 +75,20 @@ describe('Popover', () => {
   });
 
   test('no dialog role for a plain (headerless) popover', () => {
-    renderPopover({ openedByDefault: true });
+    renderPopover({ defaultOpen: true });
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   test('forces tabIndex on the trigger, preserving an explicit one', () => {
     const { rerender } = renderPopover({
-      openedByDefault: true,
+      defaultOpen: true,
       children: <Button data-testid="src" tabIndex={2} />,
     });
     expect(screen.getByTestId('src')).toHaveAttribute('tabindex', '2');
 
     rerender(
       <Application>
-        <Popover content="c" openedByDefault>
+        <Popover content="c" defaultOpen>
           <Button data-testid="src" />
         </Popover>
       </Application>,
@@ -161,7 +161,7 @@ describe('Popover', () => {
 
   test('Escape requests a close with reason "escape-key"', () => {
     const onOpenChange = vi.fn();
-    renderPopover({ openedByDefault: true, onOpenChange });
+    renderPopover({ defaultOpen: true, onOpenChange });
 
     fireEvent.keyDown(document.body, { key: 'Escape' });
 
@@ -170,5 +170,67 @@ describe('Popover', () => {
       expect.anything(),
       'escape-key',
     );
+  });
+
+  test('controlled `open`: Escape only asks via onOpenChange, stays open until fed back', () => {
+    const onOpenChange = vi.fn();
+    renderPopover({ open: true, onOpenChange });
+
+    fireEvent.keyDown(document.body, { key: 'Escape' });
+
+    expect(onOpenChange).toHaveBeenCalledWith(
+      false,
+      expect.anything(),
+      'escape-key',
+    );
+    // still open — the consumer hasn't fed the new value back in yet
+    expect(screen.getByText('Popover content')).toBeInTheDocument();
+  });
+
+  test('controlled `open`: fed back through onOpenChange, Escape closes it', async () => {
+    const Harness = () => {
+      const [open, setOpen] = React.useState(true);
+      return (
+        <Popover open={open} onOpenChange={setOpen} content="Popover content">
+          <Button label="Trigger" />
+        </Popover>
+      );
+    };
+
+    render(
+      <Application>
+        <Harness />
+      </Application>,
+    );
+
+    fireEvent.keyDown(document.body, { key: 'Escape' });
+
+    await waitFor(() =>
+      expect(screen.queryByText('Popover content')).not.toBeInTheDocument(),
+    );
+  });
+
+  test('controlled `open`: imperative openPopup/closePopup route through onOpenChange instead of self-managing', () => {
+    const onOpenChange = vi.fn();
+    const popoverRef = { current: null } as React.RefObject<PopoverRef | null>;
+
+    render(
+      <Application>
+        <Popover
+          ref={popoverRef as React.Ref<PopoverRef>}
+          open={false}
+          onOpenChange={onOpenChange}
+          content="Popover content"
+        >
+          <Button label="Trigger" />
+        </Popover>
+      </Application>,
+    );
+
+    popoverRef.current?.openPopup();
+
+    expect(onOpenChange).toHaveBeenCalledWith(true, undefined, undefined);
+    // still closed — controlled, and the prop wasn't updated
+    expect(screen.queryByText('Popover content')).not.toBeInTheDocument();
   });
 });

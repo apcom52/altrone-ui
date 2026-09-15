@@ -10,10 +10,10 @@ export interface DrawerProps extends Omit<
   'content' | 'children'
 > {
   ref?: React.Ref<HTMLDivElement>;
-  /** Controlled open state. Omit for an uncontrolled drawer (see `openedByDefault`). */
+  /** Controlled open state. Omit for an uncontrolled drawer (see `defaultOpen`). */
   open?: boolean;
   /** Initial open state for an uncontrolled drawer. Ignored once `open` is passed. */
-  openedByDefault?: boolean;
+  defaultOpen?: boolean;
   title?: string;
   content?: RenderFunction<ReactElement, DrawerContext>;
   footer?: RenderFunction<ReactElement, DrawerContext>;

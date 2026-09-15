@@ -14,7 +14,7 @@ import {
   Text,
   Toolbar,
 } from 'components';
-import { Plus, Star, X } from 'lucide-react';
+import { Plus, Search, Star, X } from 'lucide-react';
 import { screenMeta, useDemoSidebar } from './shared.tsx';
 
 const meta: Meta<typeof Screen> = {
@@ -389,7 +389,7 @@ export const CatalogApp: StoryObj<typeof Screen> = {
             <Toolbar.Title label="Catalog" />
             <Toolbar.Separator />
             <Toolbar.Group>
-              <Toolbar.SearchAction showLabel={false} />
+              <Toolbar.Action label="Search" icon={<Search />} showLabel={false} />
               <Toolbar.Action label="Add product" icon={<Plus />} />
             </Toolbar.Group>
             <Toolbar.Group>

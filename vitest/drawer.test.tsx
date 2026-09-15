@@ -8,7 +8,7 @@ const renderDrawer = (
 ) =>
   render(
     <Application>
-      <Drawer content={<div>drawer content</div>} openedByDefault {...props} />
+      <Drawer content={<div>drawer content</div>} defaultOpen {...props} />
     </Application>,
   );
 

@@ -34,6 +34,13 @@ export interface SplitterProps extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
   /** Axis along which panels are split. Default: 'horizontal' */
   orientation?: 'horizontal' | 'vertical';
+  /**
+   * Controlled panel sizes (percent, aligned to panel order), pairs with
+   * `onSizesChange`. Omit for uncontrolled (each panel's own `defaultSize`).
+   */
+  sizes?: number[];
+  /** Fires whenever sizes settle — end of a drag, or a panel collapse/expand. Pairs with `sizes`. */
+  onSizesChange?: (sizes: number[]) => void;
   /** Fired on every pointer-move during drag */
   onResize?: (sizes: number[], event: PointerEvent) => void;
   /** Fired when a drag interaction begins */

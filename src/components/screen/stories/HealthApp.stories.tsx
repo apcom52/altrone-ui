@@ -45,6 +45,7 @@ import {
   Pill,
   Plus,
   Scale,
+  Search,
   Settings,
   Trash2,
   User,
@@ -1147,7 +1148,7 @@ export const HealthApp: StoryObj<typeof Screen> = {
             <Toolbar.Title label={activeTab.label} />
             <Toolbar.Separator />
             <Toolbar.Group>
-              <Toolbar.SearchAction showLabel={false} />
+              <Toolbar.Action label="Search" icon={<Search />} showLabel={false} />
               <NotificationsModal count={pendingMeds} />
             </Toolbar.Group>
             <Toolbar.Group>

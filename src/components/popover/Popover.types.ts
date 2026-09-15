@@ -5,7 +5,7 @@ import { CustomRenderFunction } from 'utils';
 export type PopoverTrigger = 'click' | 'focus' | 'hover';
 
 export type PopoverRef = {
-  opened: boolean;
+  open: boolean;
   activeIndex: number | null;
   context: FloatingContext;
   childrenNode: HTMLElement | null;
@@ -18,7 +18,7 @@ export type PopoverRef = {
 };
 
 export type PopoverChildrenContext = {
-  opened: boolean;
+  open: boolean;
   closePopup: () => void;
 };
 
@@ -33,7 +33,10 @@ export interface PopoverProps
   ref?: React.Ref<PopoverRef>;
   children: ReactElement | CustomRenderFunction<PopoverChildrenContext>;
   content: ReactElement | CustomRenderFunction<PopoverContentContext>;
-  openedByDefault?: boolean;
+  /** Controlled open state. Omit for an uncontrolled popover (see `defaultOpen`). */
+  open?: boolean;
+  /** Initial open state for an uncontrolled popover. Ignored once `open` is passed. */
+  defaultOpen?: boolean;
   enabled?: boolean;
   title?: string;
   placement?: 'auto' | Placement;

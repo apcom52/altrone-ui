@@ -1,4 +1,4 @@
-import { Localization, en, ru, ge, fr, sp } from 'locales';
+import { Localization, en, ru, de, fr, es, zh } from 'locales';
 import {
   createContext,
   PropsWithChildren,
@@ -10,7 +10,7 @@ import { NestedKeys } from 'utils';
 import { get, merge } from 'lodash-es';
 
 interface LocalizationProps extends PropsWithChildren {
-  language: 'en' | 'ru' | 'fr' | 'ge' | 'sp';
+  language: 'en' | 'ru' | 'fr' | 'de' | 'es' | 'zh';
   customLabels: Partial<Localization>;
 }
 
@@ -36,8 +36,9 @@ const DICTIONARIES = {
   en,
   ru,
   fr,
-  ge,
-  sp,
+  de,
+  es,
+  zh,
 };
 
 export const AltroneLocalization = ({

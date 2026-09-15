@@ -64,6 +64,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
   return (
     <Popover
       placement="bottom-start"
+      title={t('colorPicker.title')}
       content={({ closePopup }) => (
         <ColorPickerContent
           colorPresets={colorPresets}
@@ -80,7 +81,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
       listNavigation
       overlap
     >
-      {({ opened }) => {
+      {({ open: opened }) => {
         if (renderFunc) {
           return renderFunc({
             value,

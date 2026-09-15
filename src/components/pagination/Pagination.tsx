@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useState } from 'react';
 import s from './pagination.module.scss';
 import clsx from 'clsx';
 import {
@@ -51,6 +51,7 @@ export const Pagination = memo<PaginationProps>(
   ({
     ref,
     currentPage,
+    defaultPage = 1,
     totalPages,
     onChange,
     showEdgeButtons = true,
@@ -61,23 +62,36 @@ export const Pagination = memo<PaginationProps>(
   }) => {
     const t = useLocalization();
 
+    const isControlled = currentPage !== undefined;
+    const [uncontrolledPage, setUncontrolledPage] = useState(defaultPage);
+    const page = isControlled ? currentPage : uncontrolledPage;
+
+    const handleChange = (
+      next: number,
+      event: React.MouseEvent<HTMLButtonElement>,
+    ) => {
+      if (!isControlled) setUncontrolledPage(next);
+      onChange?.(next, event);
+    };
+
     if (
       import.meta.env.DEV &&
+      isControlled &&
       totalPages >= 1 &&
-      (currentPage < 1 || currentPage > totalPages)
+      (page < 1 || page > totalPages)
     ) {
       console.warn(
-        `[Pagination] currentPage (${currentPage}) is outside 1..${totalPages}. It's a controlled prop — clamp it in your onChange handler.`,
+        `[Pagination] currentPage (${page}) is outside 1..${totalPages}. It's a controlled prop — clamp it in your onChange handler.`,
       );
     }
 
     const pageItems = useMemo(
-      () => buildPageItems(currentPage, totalPages, siblings),
-      [currentPage, totalPages, siblings],
+      () => buildPageItems(page, totalPages, siblings),
+      [page, totalPages, siblings],
     );
 
-    const isFirst = currentPage <= 1;
-    const isLast = currentPage >= totalPages;
+    const isFirst = page <= 1;
+    const isLast = page >= totalPages;
 
     return (
       <Flex
@@ -95,7 +109,7 @@ export const Pagination = memo<PaginationProps>(
             icon={<ChevronFirst />}
             disabled={isFirst}
             label={t('pagination.firstPage')}
-            onClick={(e) => onChange(1, e)}
+            onClick={(e) => handleChange(1, e)}
             showLabel={false}
           />
         )}
@@ -104,7 +118,7 @@ export const Pagination = memo<PaginationProps>(
           icon={<ChevronLeft />}
           disabled={isFirst}
           label={t('pagination.previous')}
-          onClick={(e) => onChange(currentPage - 1, e)}
+          onClick={(e) => handleChange(page - 1, e)}
           showLabel={false}
         />
 
@@ -118,10 +132,10 @@ export const Pagination = memo<PaginationProps>(
               key={item}
               label={String(item)}
               variant="text"
-              selected={item === currentPage}
-              onClick={(e) => onChange(item, e)}
+              selected={item === page}
+              onClick={(e) => handleChange(item, e)}
               aria-label={t('pagination.page', { vars: { page: item } })}
-              aria-current={item === currentPage ? 'page' : undefined}
+              aria-current={item === page ? 'page' : undefined}
             />
           ),
         )}
@@ -130,7 +144,7 @@ export const Pagination = memo<PaginationProps>(
           icon={<ChevronRight />}
           disabled={isLast}
           label={t('pagination.next')}
-          onClick={(e) => onChange(currentPage + 1, e)}
+          onClick={(e) => handleChange(page + 1, e)}
           showLabel={false}
         />
 
@@ -139,7 +153,7 @@ export const Pagination = memo<PaginationProps>(
             icon={<ChevronLast />}
             disabled={isLast}
             label={t('pagination.lastPage')}
-            onClick={(e) => onChange(totalPages, e)}
+            onClick={(e) => handleChange(totalPages, e)}
             showLabel={false}
           />
         )}

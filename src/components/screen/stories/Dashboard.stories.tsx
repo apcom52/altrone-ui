@@ -13,24 +13,22 @@ const meta: Meta<typeof Screen> = {
 export default meta;
 
 /**
- * Header toggle drives a collapsible `Screen.Sidebar`; the card grid reflows
- * as the content column widens, and a `Screen.Footer` carries the sync status
- * as a full-width chrome band.
+ * Both `Screen.Sidebar` and `Toolbar.SidebarToggleAction` are left
+ * uncontrolled here — no `collapsed` prop on either. They stay in sync on
+ * their own via `Screen`'s context: the toggle reads/drives the sidebar's own
+ * state, and the sidebar auto-hides once the layout drops to overlay. No
+ * `useState` needed for this — see `Screen.Sidebar`'s "Controlled" story for
+ * when you do need to own the state yourself (persisting it, say).
  */
 export const Dashboard: StoryObj<typeof Screen> = {
   name: 'Dashboard',
   render: () => {
-    const [collapsed, setCollapsed] = useState(false);
-
     return (
       <Screen title="Analytics">
         <Screen.Header>
           <Toolbar variant="solid" size="m">
             <Toolbar.Group>
-              <Toolbar.SidebarToggleAction
-                collapsed={collapsed}
-                onClick={() => setCollapsed((v) => !v)}
-              />
+              <Toolbar.SidebarToggleAction />
             </Toolbar.Group>
             <Toolbar.Title label="Overview" />
             <Toolbar.Separator />
@@ -46,7 +44,7 @@ export const Dashboard: StoryObj<typeof Screen> = {
             </Toolbar.Group>
           </Toolbar>
         </Screen.Header>
-        <Screen.Sidebar collapsed={collapsed} onClose={() => setCollapsed(true)}>
+        <Screen.Sidebar>
           <NavigationList>
             <NavigationList.Group title="Reports">
               <NavigationList.Link icon={<Home />} label="Overview" selected />
@@ -80,6 +78,56 @@ export const Dashboard: StoryObj<typeof Screen> = {
             </Text>
           </Flex>
         </Screen.Footer>
+      </Screen>
+    );
+  },
+};
+
+/**
+ * The controlled counterpart: `collapsed`/`onClose` (on `Screen.Sidebar`) and
+ * `collapsed`/`onClick` (on `Toolbar.SidebarToggleAction`) all wired to one
+ * `useState`. Reach for this when the sidebar's state needs to live outside
+ * `Screen` — persisted to `localStorage`, say — the uncontrolled `Dashboard`
+ * story above covers the common case with no state to manage at all.
+ */
+export const ControlledSidebar: StoryObj<typeof Screen> = {
+  name: 'Controlled sidebar',
+  render: () => {
+    const [collapsed, setCollapsed] = useState(false);
+
+    return (
+      <Screen title="Analytics">
+        <Screen.Header>
+          <Toolbar variant="solid" size="m">
+            <Toolbar.Group>
+              <Toolbar.SidebarToggleAction
+                collapsed={collapsed}
+                onClick={() => setCollapsed((v) => !v)}
+              />
+            </Toolbar.Group>
+            <Toolbar.Title label="Overview" />
+          </Toolbar>
+        </Screen.Header>
+        <Screen.Sidebar collapsed={collapsed} onClose={() => setCollapsed(true)}>
+          <NavigationList>
+            <NavigationList.Group title="Reports">
+              <NavigationList.Link icon={<Home />} label="Overview" selected />
+              <NavigationList.Link icon={<Users />} label="Audience" />
+            </NavigationList.Group>
+          </NavigationList>
+        </Screen.Sidebar>
+        <Screen.Content>
+          <div
+            style={{
+              display: 'grid',
+              gap: 'var(--space-section)',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            }}
+          >
+            <Card title="Visitors" value="48.2k" hint="+12% WoW" />
+            <Card title="Sign-ups" value="1,904" hint="+4% WoW" />
+          </div>
+        </Screen.Content>
       </Screen>
     );
   },

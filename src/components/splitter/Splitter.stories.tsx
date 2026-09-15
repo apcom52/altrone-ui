@@ -409,6 +409,60 @@ export const ResizeCallback: StoryObj<typeof Splitter> = {
   },
 };
 
+export const ControlledSizesStory: StoryObj<typeof Splitter> = {
+  name: 'Controlled sizes',
+  render: () => {
+    const [sizes, setSizes] = useState<number[]>([30, 70]);
+
+    return (
+      <Flex direction="vertical" gap="m">
+        <Text size={3} block style={{ maxWidth: 640, lineHeight: 1.6 }}>
+          Passing <Text code>sizes</Text> (instead of each panel's own{' '}
+          <Text code>defaultSize</Text>) makes the whole layout controlled —
+          the splitter renders whatever it's given and only asks to change it
+          via <Text code>onSizesChange</Text>, fired at the end of a drag or
+          on collapse/expand. Useful for persisting a layout (e.g. to
+          localStorage) and restoring it on the next visit.
+        </Text>
+
+        <Flex gap="s">
+          <Button
+            label="30 / 70"
+            variant={sizes[0] === 30 ? 'submit' : 'default'}
+            size="s"
+            onClick={() => setSizes([30, 70])}
+          />
+          <Button
+            label="50 / 50"
+            variant={sizes[0] === 50 ? 'submit' : 'default'}
+            size="s"
+            onClick={() => setSizes([50, 50])}
+          />
+        </Flex>
+
+        <Splitter
+          style={{ height: 220 }}
+          sizes={sizes}
+          onSizesChange={setSizes}
+        >
+          <Splitter.Panel collapsible>
+            <div style={{ ...panelStyle(), height: '100%' }}>
+              <Label>Panel 1: {sizes[0].toFixed(1)}%</Label>
+            </div>
+          </Splitter.Panel>
+          <Splitter.Panel>
+            <div
+              style={{ ...panelStyle('var(--background-1)'), height: '100%' }}
+            >
+              <Label>Panel 2: {sizes[1].toFixed(1)}%</Label>
+            </div>
+          </Splitter.Panel>
+        </Splitter>
+      </Flex>
+    );
+  },
+};
+
 export const ExternalControlStory: StoryObj<typeof Splitter> = {
   name: 'External control via controlRef',
   render: () => {

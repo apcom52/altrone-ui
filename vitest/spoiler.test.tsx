@@ -1,4 +1,4 @@
-import { createRef } from 'react';
+import { createRef, useState } from 'react';
 import { expect, test, describe, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Spoiler } from '../src';
@@ -30,9 +30,9 @@ describe('Spoiler', () => {
     );
   });
 
-  test('openedByDefault renders the content on mount', () => {
+  test('defaultOpen renders the content on mount', () => {
     render(
-      <Spoiler title="Title" openedByDefault>
+      <Spoiler title="Title" defaultOpen>
         Body content
       </Spoiler>,
     );
@@ -42,7 +42,7 @@ describe('Spoiler', () => {
 
   test('the header controls the content region via aria-controls', () => {
     render(
-      <Spoiler title="Title" openedByDefault>
+      <Spoiler title="Title" defaultOpen>
         Body content
       </Spoiler>,
     );
@@ -68,6 +68,38 @@ describe('Spoiler', () => {
 
     fireEvent.click(header);
     expect(onToggle).toHaveBeenLastCalledWith(false, expect.anything());
+  });
+
+  test('controlled `open`: clicking asks via onToggle, stays put until fed back', () => {
+    const onToggle = vi.fn();
+    render(
+      <Spoiler title="Title" open={false} onToggle={onToggle}>
+        Body content
+      </Spoiler>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Title' }));
+
+    expect(onToggle).toHaveBeenCalledWith(true, expect.anything());
+    // still collapsed — the consumer hasn't fed the new value back in yet
+    expect(screen.queryByText('Body content')).not.toBeInTheDocument();
+  });
+
+  test('controlled `open`: fed back through onToggle, clicking expands it', () => {
+    const Harness = () => {
+      const [open, setOpen] = useState(false);
+      return (
+        <Spoiler title="Title" open={open} onToggle={setOpen}>
+          Body content
+        </Spoiler>
+      );
+    };
+
+    render(<Harness />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Title' }));
+
+    expect(screen.getByText('Body content')).toBeInTheDocument();
   });
 
   test('forwards className, style and ref to the root element', () => {

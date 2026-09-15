@@ -12,10 +12,10 @@ export interface ModalProps extends Omit<
 > {
   ref?: React.Ref<HTMLDivElement>;
   content: RenderFunction<ReactElement, ModalContext>;
-  /** Controlled open state. Omit for an uncontrolled modal (see `openedByDefault`). */
+  /** Controlled open state. Omit for an uncontrolled modal (see `defaultOpen`). */
   open?: boolean;
   /** Initial open state for an uncontrolled modal. Ignored once `open` is passed. */
-  openedByDefault?: boolean;
+  defaultOpen?: boolean;
   onClose?: () => void;
   enabled?: boolean;
   title?: string;

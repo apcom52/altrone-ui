@@ -14,7 +14,7 @@ export type Accent =
   | 'purple'
   | 'pink'
   | 'brown';
-export type Language = 'en' | 'ru' | 'fr' | 'ge' | 'sp';
+export type Language = 'en' | 'ru' | 'fr' | 'de' | 'es' | 'zh';
 
 export interface ApplicationProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;

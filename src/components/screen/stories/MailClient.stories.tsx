@@ -25,6 +25,7 @@ import {
   Inbox,
   Paperclip,
   Reply,
+  Search,
   Send,
   Star,
   Trash2,
@@ -522,7 +523,7 @@ export const MailClient: StoryObj<typeof Screen> = {
               />
             </Toolbar.Group>
             <Toolbar.Group>
-              <Toolbar.SearchAction showLabel={false} />
+              <Toolbar.Action label="Search" icon={<Search />} showLabel={false} />
               <Toolbar.Action
                 label="Notifications"
                 icon={<Bell />}
