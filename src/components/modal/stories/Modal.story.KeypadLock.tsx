@@ -10,6 +10,7 @@ const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 export const KeypadLockStory: StoryObj<typeof Modal> = {
   name: 'Focused task — a keypad, no chrome',
   render: () => {
+    const [open, setOpen] = useState(false);
     const [unlocked, setUnlocked] = useState(false);
     const [entry, setEntry] = useState('');
     const [wrong, setWrong] = useState(false);
@@ -46,11 +47,20 @@ export const KeypadLockStory: StoryObj<typeof Modal> = {
             : 'A modal is a good home for one small task that needs full attention. The PIN is 2409.'}
         </Text>
 
+        <Button
+          label={unlocked ? 'Vault unlocked' : 'Unlock to deploy'}
+          icon={unlocked ? <LockOpen size={14} /> : <Lock size={14} />}
+          disabled={unlocked}
+          onClick={() => setOpen(true)}
+        />
+
         <Modal
           title="Enter release PIN"
           size="s"
           showCancelButton={false}
+          open={open}
           onClose={() => {
+            setOpen(false);
             setEntry('');
             setWrong(false);
           }}
@@ -65,16 +75,18 @@ export const KeypadLockStory: StoryObj<typeof Modal> = {
                       height: 14,
                       borderRadius: 'var(--radius-circle)',
                       background:
-                        i < entry.length
-                          ? 'var(--accent-9)'
-                          : 'var(--gray-a5)',
+                        i < entry.length ? 'var(--accent-9)' : 'var(--gray-a5)',
                       transition: 'background 120ms',
                     }}
                   />
                 ))}
               </Flex>
 
-              <Text block size={3} style={{ color: 'var(--danger-text-1)', minHeight: 16 }}>
+              <Text
+                block
+                size={3}
+                style={{ color: 'var(--danger-text-1)', minHeight: 16 }}
+              >
                 {wrong ? 'Wrong PIN — try again' : ''}
               </Text>
 
@@ -119,13 +131,7 @@ export const KeypadLockStory: StoryObj<typeof Modal> = {
               </Flex>
             </Flex>
           )}
-        >
-          <Button
-            label={unlocked ? 'Vault unlocked' : 'Unlock to deploy'}
-            icon={unlocked ? <LockOpen size={14} /> : <Lock size={14} />}
-            disabled={unlocked}
-          />
-        </Modal>
+        />
       </Flex>
     );
   },

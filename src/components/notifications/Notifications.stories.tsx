@@ -12,7 +12,7 @@ import {
   SlidersHorizontal,
   Trash2,
 } from 'lucide-react';
-import { Button, Flex, Select, Switcher, Text } from 'components';
+import { Button, Flex, Select, Switch, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Notifications } from './Notifications';
@@ -539,21 +539,21 @@ const CookiePreferencesForm = ({ onDone }: { onDone: () => void }) => {
   return (
     <Flex direction="vertical" gap="m">
       <Flex direction="vertical" gap="s">
-        <Switcher checked disabled>
+        <Switch checked disabled>
           Strictly necessary — always on
-        </Switcher>
-        <Switcher
+        </Switch>
+        <Switch
           checked={analytics}
           onChange={(checked) => setAnalytics(checked)}
         >
           Analytics
-        </Switcher>
-        <Switcher
+        </Switch>
+        <Switch
           checked={marketing}
           onChange={(checked) => setMarketing(checked)}
         >
           Marketing
-        </Switcher>
+        </Switch>
       </Flex>
       <Flex direction="horizontal" gap="s">
         <Button size="s" label="Cancel" onClick={onDone} />

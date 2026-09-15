@@ -6,18 +6,18 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import { BottomNavigationItemProps } from '../BottomNavigation.types.ts';
+import { BottomNavigationLinkProps } from '../BottomNavigation.types.ts';
 import clsx from 'clsx';
-import s from './item.module.scss';
+import s from './link.module.scss';
 import { Text } from 'components/text/Text.tsx';
 import { Badge } from 'internal/badge';
 import { useBottomNavigationSelect } from '../BottomNavigation.context.tsx';
 import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
 import { DOMUtils } from '../../../utils';
 
-type ItemContentProps = Pick<BottomNavigationItemProps, 'icon' | 'label' | 'badge'>;
+type LinkContentProps = Pick<BottomNavigationLinkProps, 'icon' | 'label' | 'badge'>;
 
-const ItemContent = ({ icon, label, badge }: ItemContentProps) => (
+const LinkContent = ({ icon, label, badge }: LinkContentProps) => (
   <>
     <div className={s.Icon}>{icon}</div>
     <Text className={s.Label} truncate>
@@ -31,7 +31,7 @@ const ItemContent = ({ icon, label, badge }: ItemContentProps) => (
   </>
 );
 
-export const Item = memo(
+export const Link = memo(
   ({
     ref,
     className,
@@ -44,8 +44,8 @@ export const Item = memo(
     children,
     renderFunc,
     ...restProps
-  }: BottomNavigationItemProps) => {
-    const cls = clsx(s.Item, { [s.Selected]: selected }, className);
+  }: BottomNavigationLinkProps) => {
+    const cls = clsx(s.Link, { [s.Selected]: selected }, className);
 
     const select = useBottomNavigationSelect();
     const elementRef = useRef<HTMLAnchorElement>(null);
@@ -66,7 +66,7 @@ export const Item = memo(
       });
     }
 
-    const content = <ItemContent icon={icon} label={label} badge={badge} />;
+    const content = <LinkContent icon={icon} label={label} badge={badge} />;
 
     const composedRef = DOMUtils.composeRefs(ref, elementRef);
     const interactionProps = {
@@ -79,7 +79,7 @@ export const Item = memo(
     if (asChild) {
       if (!isValidElement(children)) {
         console.error(
-          '[BottomNavigation.Item] asChild requires a valid React element as children',
+          '[BottomNavigation.Link] asChild requires a valid React element as children',
         );
         return null;
       }

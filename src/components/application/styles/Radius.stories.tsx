@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Text, Pagination, Range } from 'components';
+import { Flex, Text, Pagination, Slider } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { NumberUtils } from 'utils';
 import { useState } from 'react';
@@ -55,7 +55,7 @@ const ConcentricPlayground = () => {
           <Text block size={3} weight="medium">
             Outer radius
           </Text>
-          <Range
+          <Slider
             min={0}
             max={48}
             value={outer}
@@ -68,7 +68,7 @@ const ConcentricPlayground = () => {
           <Text block size={3} weight="medium">
             Gap
           </Text>
-          <Range
+          <Slider
             min={0}
             max={48}
             value={gap}

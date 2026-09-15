@@ -8,8 +8,8 @@ import {
   useFloating,
 } from '@floating-ui/react';
 import { AnimatePresence, motion } from 'motion/react';
-import { RangeProps } from './Range.types';
-import s from './range.module.scss';
+import { SliderProps } from './Slider.types';
+import s from './slider.module.scss';
 import clsx from 'clsx';
 
 /**
@@ -21,7 +21,34 @@ const FOCUS_VISIBLE_SUPPORTED =
   typeof CSS.supports === 'function' &&
   CSS.supports('selector(:focus-visible)');
 
-export const Range = (props: RangeProps) => {
+/**
+ * The value bubble is portaled to the shared app root, not to whichever
+ * overlay it's visually inside — so its own z-index alone decides whether it
+ * renders above or below a `Modal`/`Drawer` open elsewhere on the page. Walk
+ * up from the slider root and check whether any ancestor already resolved a
+ * z-index at or above `--level-offcanvas-backdrop` — the first "real overlay"
+ * tier, right after page-level chrome like `Screen.Header` (`--level-fixed`):
+ * if so, the slider itself is nested inside some overlay (`Modal`, `Drawer`,
+ * `Popover`, `Dropdown`, …) and its bubble needs tooltip level to clear that
+ * overlay; otherwise it must stay below any overlay that might open elsewhere.
+ */
+const isInsideElevatedOverlay = (node: HTMLElement) => {
+  const threshold =
+    parseInt(
+      getComputedStyle(node).getPropertyValue('--level-offcanvas-backdrop'),
+      10,
+    ) || 1040;
+
+  for (let el = node.parentElement; el; el = el.parentElement) {
+    const zIndex = getComputedStyle(el).zIndex;
+    if (zIndex !== 'auto' && Number(zIndex) >= threshold) {
+      return true;
+    }
+  }
+  return false;
+};
+
+export const Slider = (props: SliderProps) => {
   const {
     ref,
     value,
@@ -46,13 +73,14 @@ export const Range = (props: RangeProps) => {
   } = props;
 
   const isDragging = useRef(false);
-  const rangeValue = useRef(value);
+  const sliderValue = useRef(value);
   const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isFocusVisible, setIsFocusVisible] = useState(false);
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
+  const [insideOverlay, setInsideOverlay] = useState(false);
 
   const isFill = variant === 'fill';
   const isVertical = direction === 'vertical';
@@ -82,6 +110,7 @@ export const Range = (props: RangeProps) => {
               document.body)
           : null,
       );
+      setInsideOverlay(node ? isInsideElevatedOverlay(node) : false);
       if (typeof ref === 'function') {
         ref(node);
       } else if (ref) {
@@ -125,7 +154,7 @@ export const Range = (props: RangeProps) => {
       };
 
       const handleUp = (e: PointerEvent) => {
-        onValueCommit?.(rangeValue.current, e);
+        onValueCommit?.(sliderValue.current, e);
         isDragging.current = false;
         setIsActive(false);
         document.removeEventListener('pointermove', handleMove);
@@ -179,7 +208,7 @@ export const Range = (props: RangeProps) => {
   const thumbStyle = isVertical ? { bottom: offset } : { left: offset };
 
   const cls = clsx(
-    s.Range,
+    s.Slider,
     {
       [s.Fill]: isFill,
       [s.Mini]: size === 'mini',
@@ -195,7 +224,7 @@ export const Range = (props: RangeProps) => {
   );
 
   useEffect(() => {
-    rangeValue.current = value;
+    sliderValue.current = value;
   }, [value]);
 
   const showValue =
@@ -214,12 +243,14 @@ export const Range = (props: RangeProps) => {
       onPointerLeave={() => setIsHovered(false)}
       onFocus={(event) =>
         setIsFocusVisible(
-          FOCUS_VISIBLE_SUPPORTED ? event.target.matches(':focus-visible') : true,
+          FOCUS_VISIBLE_SUPPORTED
+            ? event.target.matches(':focus-visible')
+            : true,
         )
       }
       onBlur={() => setIsFocusVisible(false)}
       ref={mergedRef}
-      data-range-active={isActive}
+      data-slider-active={isActive}
       tabIndex={disabled || readOnly ? -1 : 0}
       onKeyDown={disabled || readOnly ? undefined : handleKeyDown}
       role="slider"
@@ -254,7 +285,13 @@ export const Range = (props: RangeProps) => {
             ) : null}
             {icon && isFill ? <div className={s.Icon}>{icon}</div> : null}
             {showValue && isFill ? (
-              <div className={s.Value}>{labelElement}</div>
+              <div
+                className={clsx(s.Value, {
+                  [s.ValueElevated]: insideOverlay,
+                })}
+              >
+                {labelElement}
+              </div>
             ) : null}
           </div>
           {showValue && !isFill && portalRoot ? (
@@ -263,7 +300,9 @@ export const Range = (props: RangeProps) => {
                 {valueVisible ? (
                   <motion.div
                     ref={valueRefs.setFloating}
-                    className={s.ValueFloating}
+                    className={clsx(s.ValueFloating, {
+                      [s.ValueElevated]: insideOverlay,
+                    })}
                     style={valueFloatingStyles}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}

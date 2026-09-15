@@ -1,9 +1,8 @@
-import React, {
+import {
   useCallback,
   useEffect,
   useId,
   type MouseEvent,
-  type ReactElement,
   type ReactNode,
 } from 'react';
 import { createPortal } from 'react-dom';
@@ -19,7 +18,7 @@ import {
 import { ModalContext, ModalProps } from './Modal.types.ts';
 import { CloseButton } from '../closeButton';
 import { Button } from '../button';
-import { DOMUtils, GlobalUtils, useBoolean } from '../../utils';
+import { GlobalUtils, useBoolean } from '../../utils';
 import { useLocalization } from '../application';
 import s from './modal.module.scss';
 
@@ -60,12 +59,12 @@ const getPortalRoot = () => {
 export const Modal = (props: ModalProps) => {
   const {
     ref,
-    children,
     content,
     enabled = true,
+    open,
     openedByDefault = false,
     title,
-    leftActions,
+    additionalActions,
     actions,
     size = 'm',
     className,
@@ -106,43 +105,33 @@ export const Modal = (props: ModalProps) => {
         exit: { ...PANEL_EXIT_KEYFRAMES, transition: PANEL_EXIT_TRANSITION },
       };
 
-  const {
-    value: opened,
-    enable: open,
-    disable: hide,
-  } = useBoolean(openedByDefault);
+  const isControlled = open !== undefined;
+  const { value: internalOpened, disable: hide } = useBoolean(openedByDefault);
+  const opened = isControlled ? open : internalOpened;
 
   const handleClose = useCallback(() => {
-    hide();
+    if (!isControlled) {
+      hide();
+    }
     onClose?.();
-  }, [hide, onClose]);
+  }, [isControlled, hide, onClose]);
 
   const modalContext: ModalContext = { closeModal: handleClose };
 
   const contentElement =
     typeof content === 'function' ? content(modalContext) : content;
-  const leftActionsElement =
-    typeof leftActions === 'function' ? leftActions(modalContext) : leftActions;
+  const additionalActionsElement =
+    typeof additionalActions === 'function'
+      ? additionalActions(modalContext)
+      : additionalActions;
   const actionsElement =
     typeof actions === 'function' ? actions(modalContext) : actions;
 
-  const hasLeftActions = hasRenderableNodes(leftActionsElement);
+  const hasAdditionalActions = hasRenderableNodes(additionalActionsElement);
   const showFooter =
-    showCancelButton || hasLeftActions || hasRenderableNodes(actionsElement);
-
-  let triggerElement: React.ReactNode = null;
-  if (children != null) {
-    const safeChild = (
-      React.isValidElement(children) ? children : <span>{children}</span>
-    ) as ReactElement<{ onClick?: React.MouseEventHandler }>;
-
-    triggerElement = DOMUtils.cloneNode(safeChild, {
-      onClick: (event: MouseEvent<HTMLElement>) => {
-        safeChild.props.onClick?.(event);
-        open();
-      },
-    });
-  }
+    showCancelButton ||
+    hasAdditionalActions ||
+    hasRenderableNodes(actionsElement);
 
   const onBackdropClick = (event: MouseEvent<HTMLDivElement>) => {
     /**
@@ -233,8 +222,10 @@ export const Modal = (props: ModalProps) => {
                 <div className={s.Content}>{contentElement}</div>
                 {showFooter && (
                   <div className={s.Footer}>
-                    {hasLeftActions && (
-                      <div className={s.LeftFooter}>{leftActionsElement}</div>
+                    {hasAdditionalActions && (
+                      <div className={s.LeftFooter}>
+                        {additionalActionsElement}
+                      </div>
                     )}
                     <div className={s.RightFooter}>
                       {showCancelButton && (
@@ -255,10 +246,5 @@ export const Modal = (props: ModalProps) => {
     </AnimatePresence>
   );
 
-  return (
-    <>
-      {triggerElement}
-      {enabled && portalRoot ? createPortal(modalContent, portalRoot) : null}
-    </>
-  );
+  return enabled && portalRoot ? createPortal(modalContent, portalRoot) : null;
 };

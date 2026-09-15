@@ -1,23 +1,19 @@
-import {
-  Children,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import {
   ColumnFiltersState,
+  functionalUpdate,
+  PaginationState,
   SortingState,
+  Updater,
   useTable,
 } from '@tanstack/react-table';
 import { AnyObject } from '../../utils';
-import { DataTableFilter, DataTableProps } from './DataTable.types';
+import { DataTableFilter, DataTableProps, Sorting } from './DataTable.types';
 import { DataTableContext, DataTableContextValue } from './DataTable.context';
 import { dataTableFeatures } from './DataTable.features';
 import { useDataTableColumns } from './useDataTableColumns';
-import { Action, RowActions, RowAction } from './components';
+import { Action, RowAction } from './components';
 import { Body, ColumnHeaders, Header, Footer } from './inner';
 import s from './dataTable.module.scss';
 
@@ -26,7 +22,7 @@ const DataTableComponent = <DataType extends object>(
 ) => {
   const {
     ref,
-    children,
+    actions,
     selectable = false,
     showFooter = true,
     rowsPerPage = 20,
@@ -38,11 +34,14 @@ const DataTableComponent = <DataType extends object>(
     defaultPage = 0,
     defaultSort,
     defaultFilters,
+    page,
+    sort,
+    filters,
     onPageChange,
     onSortChange,
     onFilterChange,
     onModeChange,
-    renderRowActions,
+    rowActions,
     className,
     style,
     ...restProps
@@ -55,6 +54,80 @@ const DataTableComponent = <DataType extends object>(
 
   const columnDefs = useDataTableColumns<DataType>(columns, resizableColumns);
 
+  const isPageControlled = page !== undefined;
+  const isSortControlled = sort !== undefined;
+  const isFiltersControlled = filters !== undefined;
+
+  const [uncontrolledPage, setUncontrolledPage] = useState(defaultPage + 1);
+  const [uncontrolledSort, setUncontrolledSort] = useState(defaultSort);
+  const [uncontrolledFilters, setUncontrolledFilters] = useState(
+    defaultFilters ?? [],
+  );
+
+  const currentPage = isPageControlled ? page : uncontrolledPage;
+  const currentSort = isSortControlled ? (sort ?? undefined) : uncontrolledSort;
+  const currentFilters = isFiltersControlled ? filters : uncontrolledFilters;
+
+  const handlePaginationChange = useCallback(
+    (updater: Updater<PaginationState>) => {
+      const next = functionalUpdate(updater, {
+        pageIndex: currentPage - 1,
+        pageSize: rowsPerPage,
+      });
+      if (!isPageControlled) setUncontrolledPage(next.pageIndex + 1);
+      onPageChange?.(next.pageIndex + 1);
+    },
+    [currentPage, rowsPerPage, isPageControlled, onPageChange],
+  );
+
+  const handleSortingChange = useCallback(
+    (updater: Updater<SortingState>) => {
+      const prevSorting: SortingState = currentSort
+        ? [{ id: currentSort.field, desc: currentSort.direction === 'desc' }]
+        : [];
+      const nextSorting = functionalUpdate(updater, prevSorting);
+      const next: Sorting | undefined =
+        nextSorting.length === 0
+          ? undefined
+          : { field: nextSorting[0].id, direction: nextSorting[0].desc ? 'desc' : 'asc' };
+      if (!isSortControlled) setUncontrolledSort(next);
+      onSortChange?.(next);
+    },
+    [currentSort, isSortControlled, onSortChange],
+  );
+
+  const handleColumnFiltersChange = useCallback(
+    (updater: Updater<ColumnFiltersState>) => {
+      const next = functionalUpdate(
+        updater,
+        currentFilters as unknown as ColumnFiltersState,
+      );
+      const nextFilters = next as unknown as DataTableFilter[];
+      if (!isFiltersControlled) setUncontrolledFilters(nextFilters);
+      onFilterChange?.(nextFilters);
+    },
+    [currentFilters, isFiltersControlled, onFilterChange],
+  );
+
+  /**
+   * TanStack memoizes the sorted/filtered row models on referential identity
+   * of `state.sorting`/`state.pagination` — a fresh literal on every render
+   * (even with the same value) looks like a change and re-triggers
+   * `autoResetPageIndex`, snapping the page back to 0 after every interaction.
+   */
+  const paginationState = useMemo<PaginationState>(
+    () => ({ pageIndex: currentPage - 1, pageSize: rowsPerPage }),
+    [currentPage, rowsPerPage],
+  );
+
+  const sortingState = useMemo<SortingState>(
+    () =>
+      currentSort
+        ? [{ id: currentSort.field, desc: currentSort.direction === 'desc' }]
+        : [],
+    [currentSort?.field, currentSort?.direction],
+  );
+
   const table = useTable<typeof dataTableFeatures, DataType>({
     features: dataTableFeatures,
     data,
@@ -63,48 +136,21 @@ const DataTableComponent = <DataType extends object>(
     enableRowSelection: selectable,
     enableColumnResizing: resizableColumns,
     columnResizeMode: 'onChange',
-    initialState: {
-      pagination: { pageIndex: defaultPage, pageSize: rowsPerPage },
-      sorting: defaultSort
-        ? ([
-            { id: defaultSort.field, desc: defaultSort.direction === 'desc' },
-          ] as SortingState)
-        : [],
-      columnFilters: (defaultFilters ?? []) as ColumnFiltersState,
+    /**
+     * With a controlled `page`, the consumer owns page validity (e.g.
+     * restoring page + filters together from a URL) — the table must not
+     * silently snap it back to 0 whenever sorting/filtering changes.
+     */
+    autoResetPageIndex: !isPageControlled,
+    state: {
+      pagination: paginationState,
+      sorting: sortingState,
+      columnFilters: currentFilters as unknown as ColumnFiltersState,
     },
+    onPaginationChange: handlePaginationChange,
+    onSortingChange: handleSortingChange,
+    onColumnFiltersChange: handleColumnFiltersChange,
   });
-
-  /** Callbacks fire on user interaction only, never on the initial mount. */
-  const isFirstRender = useRef(true);
-
-  const { pageIndex } = table.state.pagination;
-  useEffect(() => {
-    if (isFirstRender.current) return;
-    onPageChange?.(pageIndex + 1);
-  }, [pageIndex]);
-
-  const { sorting } = table.state;
-  useEffect(() => {
-    if (isFirstRender.current || !onSortChange) return;
-    onSortChange(
-      sorting.length === 0
-        ? undefined
-        : {
-            field: sorting[0].id,
-            direction: sorting[0].desc ? 'desc' : 'asc',
-          },
-    );
-  }, [sorting]);
-
-  const { columnFilters } = table.state;
-  useEffect(() => {
-    if (isFirstRender.current || !onFilterChange) return;
-    onFilterChange(columnFilters as unknown as DataTableFilter[]);
-  }, [columnFilters]);
-
-  useEffect(() => {
-    isFirstRender.current = false;
-  }, []);
 
   const setSelectMode = useCallback(
     (next: boolean) => {
@@ -117,10 +163,10 @@ const DataTableComponent = <DataType extends object>(
 
   const headerVisible = useMemo(
     () =>
-      Children.count(children) > 0 ||
+      Boolean(actions) ||
       columns.some((column) => column.filterable) ||
       selectable,
-    [children, columns, selectable],
+    [actions, columns, selectable],
   );
 
   const contextValue = useMemo(
@@ -139,13 +185,10 @@ const DataTableComponent = <DataType extends object>(
       value={contextValue as unknown as DataTableContextValue<AnyObject>}
     >
       <div className={s.Wrapper} ref={ref}>
-        {headerVisible ? <Header>{children}</Header> : null}
+        {headerVisible ? <Header actions={actions} /> : null}
         <div className={clsx(s.Table, className)} style={style} {...restProps}>
-          <ColumnHeaders hasRowActions={Boolean(renderRowActions)} />
-          <Body
-            renderRowActions={renderRowActions}
-            showEmptyBanner={showEmptyBanner}
-          />
+          <ColumnHeaders hasRowActions={Boolean(rowActions)} />
+          <Body rowActions={rowActions} showEmptyBanner={showEmptyBanner} />
         </div>
         {showFooter ? <Footer /> : null}
       </div>
@@ -155,7 +198,6 @@ const DataTableComponent = <DataType extends object>(
 
 const DataTableNamespace = Object.assign(DataTableComponent, {
   Action,
-  RowActions,
   RowAction,
 });
 

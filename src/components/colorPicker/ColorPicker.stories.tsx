@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Button, Divider, Flex, Range, Text, TextInput } from 'components';
+import { Button, Divider, Flex, Slider, Text, TextInput } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { ColorPicker } from './ColorPicker.tsx';
@@ -186,7 +186,7 @@ export const GradientForge: Story = {
           ))}
           <Field label={`Angle — ${angle}°`}>
             <div style={{ width: 220 }}>
-              <Range
+              <Slider
                 min={0}
                 max={360}
                 value={angle}

@@ -1,13 +1,13 @@
-# Заметки по рефакторингу — components/textarea
+# Заметки по рефакторингу — components/textArea
 
 ---
 
-## Textarea.tsx
+## TextArea.tsx
 
 ### `forwardRef` вместо React 19 — нарушение соглашения проекта
 
 ```tsx
-export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   (props, ref) => { ... }
 );
 ```
@@ -17,7 +17,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 ### `cls` применяется дважды к разным элементам
 
 ```tsx
-const cls = clsx(s.Textarea, inputStyles.Input, { ... }, textareaConfig.className, className);
+const cls = clsx(s.TextArea, inputStyles.Input, { ... }, textareaConfig.className, className);
 
 return (
   <TextInput
@@ -33,7 +33,7 @@ return (
 ### `children` деструктурируется, но нигде не используется
 
 ```tsx
-const Textarea = forwardRef<...>(({ className, style, name, invalid, disabled, size, children, readOnly, ...restProps }, ref) => {
+const TextArea = forwardRef<...>(({ className, style, name, invalid, disabled, size, children, readOnly, ...restProps }, ref) => {
   // children не используется в JSX
 ```
 
@@ -41,7 +41,7 @@ const Textarea = forwardRef<...>(({ className, style, name, invalid, disabled, s
 
 ---
 
-## textarea.module.scss
+## textArea.module.scss
 
 ### `.WithIslands` определён, но никогда не применяется
 
@@ -51,7 +51,7 @@ const Textarea = forwardRef<...>(({ className, style, name, invalid, disabled, s
 }
 ```
 
-Класс существует в SCSS, но `Textarea.tsx` его не добавляет ни при каких условиях. Мёртвый CSS.
+Класс существует в SCSS, но `TextArea.tsx` его не добавляет ни при каких условиях. Мёртвый CSS.
 
 ---
 
@@ -59,7 +59,7 @@ const Textarea = forwardRef<...>(({ className, style, name, invalid, disabled, s
 
 | Приоритет | Файл | Проблема |
 |---|---|---|
-| 🟠 Высокий | `Textarea.tsx:10` | `forwardRef` вместо React 19 ref-как-проп |
-| 🟠 Высокий | `Textarea.tsx:41–68` | `cls` применяется к обёртке `TextInput` и к `<textarea>` одновременно — дублирование классов |
-| 🟡 Средний | `Textarea.tsx:19` | `children` деструктурируется, но не рендерится — молча игнорируется |
-| 🟢 Низкий | `textarea.module.scss:12–14` | `.WithIslands` — мёртвый CSS, никогда не применяется |
+| 🟠 Высокий | `TextArea.tsx:10` | `forwardRef` вместо React 19 ref-как-проп |
+| 🟠 Высокий | `TextArea.tsx:41–68` | `cls` применяется к обёртке `TextInput` и к `<textarea>` одновременно — дублирование классов |
+| 🟡 Средний | `TextArea.tsx:19` | `children` деструктурируется, но не рендерится — молча игнорируется |
+| 🟢 Низкий | `textArea.module.scss:12–14` | `.WithIslands` — мёртвый CSS, никогда не применяется |

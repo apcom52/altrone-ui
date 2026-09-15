@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Check, Copy, RefreshCw } from 'lucide-react';
-import { Flex, Switcher, Text, TextInput } from 'components';
+import { Flex, Switch, Text, TextInput } from 'components';
 import { PasswordInput } from '../PasswordInput.tsx';
 
 const LOWER = 'abcdefghijkmnpqrstuvwxyz';
@@ -85,7 +85,7 @@ export const GeneratePassword = () => {
           </Flex>
         </Flex>
         <Flex direction="horizontal" gap="s" align="center">
-          <Switcher checked={symbols} onChange={() => setSymbols((s) => !s)} />
+          <Switch checked={symbols} onChange={() => setSymbols((s) => !s)} />
           <Text size={2} color="muted">
             Include symbols
           </Text>

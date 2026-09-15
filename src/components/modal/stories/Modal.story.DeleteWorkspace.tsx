@@ -9,6 +9,7 @@ const WORKSPACE = 'concentric-radius';
 export const DeleteWorkspaceStory: StoryObj<typeof Modal> = {
   name: 'Destructive — type-to-confirm',
   render: () => {
+    const [open, setOpen] = useState(false);
     const [deleted, setDeleted] = useState(false);
     const [confirmText, setConfirmText] = useState('');
 
@@ -23,8 +24,8 @@ export const DeleteWorkspaceStory: StoryObj<typeof Modal> = {
           <Text block size={4} color="muted">
             {deleted ? (
               <>
-                Workspace <Text code>{WORKSPACE}</Text> is gone. This story reset
-                would normally be a redirect.
+                Workspace <Text code>{WORKSPACE}</Text> is gone. This story
+                reset would normally be a redirect.
               </>
             ) : (
               <>
@@ -35,12 +36,28 @@ export const DeleteWorkspaceStory: StoryObj<typeof Modal> = {
           </Text>
         </Flex>
 
+        <Button
+          label="Delete workspace"
+          danger
+          icon={<Trash2 size={14} />}
+          onClick={() => setOpen(true)}
+        />
+
         <Modal
           title="Delete this workspace?"
           size="s"
-          onClose={() => setConfirmText('')}
-          leftActions={[
-            <Button label="Export data first" variant="text" icon={<RotateCcw size={14} />} />,
+          open={open}
+          onClose={() => {
+            setOpen(false);
+            setConfirmText('');
+          }}
+          additionalActions={[
+            <Button
+              key="export"
+              label="Export data first"
+              variant="text"
+              icon={<RotateCcw size={14} />}
+            />,
           ]}
           content={
             <Flex direction="vertical" gap="m">
@@ -73,9 +90,7 @@ export const DeleteWorkspaceStory: StoryObj<typeof Modal> = {
               }}
             />
           )}
-        >
-          <Button label="Delete workspace" danger icon={<Trash2 size={14} />} />
-        </Modal>
+        />
 
         {deleted && (
           <Button

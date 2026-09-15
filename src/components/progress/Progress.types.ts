@@ -1,5 +1,6 @@
 import { HTMLAttributes, ReactNode, Ref } from 'react';
 import { Size } from 'types';
+import { RenderFunction } from '../../utils';
 
 export type ProgressContext = {
   value: number;
@@ -27,5 +28,5 @@ export interface ProgressProps extends Omit<
    * receives `{ value, min, max, percentage }`. A non-string label carries no
    * accessible name — pass `aria-label` when using one.
    */
-  children?: ReactNode | ((context: ProgressContext) => ReactNode);
+  label?: RenderFunction<ReactNode, ProgressContext>;
 }

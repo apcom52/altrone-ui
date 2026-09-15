@@ -28,7 +28,7 @@ describe('SideNavigation', () => {
         className="cls"
         style={{ color: 'rgb(255, 0, 0)' }}
       >
-        <SideNavigation.Item href="#a" label="Section A" />
+        <SideNavigation.Link href="#a" label="Section A" />
       </SideNavigation>,
     );
 
@@ -41,15 +41,15 @@ describe('SideNavigation', () => {
     expect(nav).toHaveAccessibleName('On this page');
   });
 
-  test('an Item is an <li> containing an anchor to its href', () => {
+  test('a Link is an <li> containing an anchor to its href', () => {
     const ref = createRef<HTMLLIElement>();
     render(
       <SideNavigation>
-        <SideNavigation.Item
+        <SideNavigation.Link
           ref={ref}
           href="#overview"
           label="Overview"
-          className="item-cls"
+          className="link-cls"
         />
       </SideNavigation>,
     );
@@ -59,17 +59,17 @@ describe('SideNavigation', () => {
 
     const li = ref.current!;
     expect(li.tagName).toBe('LI');
-    expect(li).toHaveClass('item-cls');
+    expect(li).toHaveClass('link-cls');
     expect(li).toContainElement(link);
   });
 
-  test('nested items render inside a child list', () => {
+  test('nested links render inside a child list', () => {
     render(
       <SideNavigation>
-        <SideNavigation.Item href="#guide" label="Guide">
-          <SideNavigation.Item href="#install" label="Installation" />
-          <SideNavigation.Item href="#config" label="Configuration" />
-        </SideNavigation.Item>
+        <SideNavigation.Link href="#guide" label="Guide">
+          <SideNavigation.Link href="#install" label="Installation" />
+          <SideNavigation.Link href="#config" label="Configuration" />
+        </SideNavigation.Link>
       </SideNavigation>,
     );
 

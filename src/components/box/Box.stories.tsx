@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Box, CloseButton, Flex, Range, Text } from 'components';
+import { Box, CloseButton, Flex, Slider, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { BoxMaterial, BoxShape, BoxTone, BoxElevation } from './Box.types.ts';
@@ -197,7 +197,7 @@ const ShapePlayground = () => {
         <Text block size={3} weight="medium">
           Ambient --radius-outer
         </Text>
-        <Range
+        <Slider
           min={0}
           max={40}
           value={outer}

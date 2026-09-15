@@ -19,7 +19,7 @@ export interface TextInputProps
   variant?: 'default' | 'transparent';
   /**
    * Corner shape of the visual wrapper. Defaults to `'pill'` — right for a
-   * single-line field. Multi-line consumers (`Textarea`) override it with
+   * single-line field. Multi-line consumers (`TextArea`) override it with
    * `'rounded'`, where a capsule end makes no sense.
    */
   shape?: BoxShape;

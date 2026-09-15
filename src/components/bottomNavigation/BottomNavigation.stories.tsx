@@ -118,10 +118,10 @@ export const Overview: StoryObj<typeof BottomNavigation> = {
 
         <Paragraph>
           <Text code>BottomNavigation</Text> is a mobile-style tab bar: a row of{' '}
-          <Text code>BottomNavigation.Item</Text>s, each an icon over a short
+          <Text code>BottomNavigation.Link</Text>s, each an icon over a short
           label. The active tab is marked <Text code>selected</Text> and gets a
           raised backdrop that slides between tabs (with a small scale pulse on
-          each hop). Every item renders a real <Text code>&lt;a&gt;</Text>.
+          each hop). Every link renders a real <Text code>&lt;a&gt;</Text>.
         </Paragraph>
 
         <Heading>Anatomy</Heading>
@@ -132,25 +132,25 @@ export const Overview: StoryObj<typeof BottomNavigation> = {
         </Paragraph>
 
         <BottomNavigation floating={false}>
-          <BottomNavigation.Item
+          <BottomNavigation.Link
             icon={<Home />}
             label="Home"
             selected={sel('home')}
             onClick={() => setTab('home')}
           />
-          <BottomNavigation.Item
+          <BottomNavigation.Link
             icon={<Compass />}
             label="Explore"
             selected={sel('explore')}
             onClick={() => setTab('explore')}
           />
-          <BottomNavigation.Item
+          <BottomNavigation.Link
             icon={<Bell />}
             label="Activity"
             selected={sel('activity')}
             onClick={() => setTab('activity')}
           />
-          <BottomNavigation.Item
+          <BottomNavigation.Link
             icon={<User />}
             label="Profile"
             selected={sel('profile')}
@@ -161,33 +161,33 @@ export const Overview: StoryObj<typeof BottomNavigation> = {
         <Heading>Badges</Heading>
         <Paragraph>
           <Text code>badge</Text> takes a string, a number, or an element and
-          renders it as a pill in the item's top-right corner — the same chip a
+          renders it as a pill in the link's top-right corner — the same chip a
           single-icon <Text code>Button</Text> uses (<Text code>plate</Text>{' '}
           material, corner offset).
         </Paragraph>
 
         <BottomNavigation floating={false}>
-          <BottomNavigation.Item
+          <BottomNavigation.Link
             icon={<Home />}
             label="Home"
             selected={sel('b-home')}
             onClick={() => setTab('b-home')}
           />
-          <BottomNavigation.Item
+          <BottomNavigation.Link
             icon={<MessageCircle />}
             label="Messages"
             badge={12}
             selected={sel('b-messages')}
             onClick={() => setTab('b-messages')}
           />
-          <BottomNavigation.Item
+          <BottomNavigation.Link
             icon={<Bell />}
             label="Alerts"
             badge="9+"
             selected={sel('b-alerts')}
             onClick={() => setTab('b-alerts')}
           />
-          <BottomNavigation.Item
+          <BottomNavigation.Link
             icon={<Sparkles />}
             label="What's new"
             badge="NEW"
@@ -209,7 +209,7 @@ export const Overview: StoryObj<typeof BottomNavigation> = {
         <Heading>Router links</Heading>
         <Paragraph>
           Set <Text code>asChild</Text> and pass your router's{' '}
-          <Text code>&lt;Link&gt;</Text> as the only child — the item merges its
+          <Text code>&lt;Link&gt;</Text> as the only child — the link merges its
           styling, ref and props onto it, and still supplies the icon, label,
           badge and backdrop. (<Text code>renderFunc</Text> still works but is
           deprecated in favor of <Text code>asChild</Text>.)
@@ -238,32 +238,32 @@ export const MusicApp: StoryObj<typeof BottomNavigation> = {
       <PhoneMock
         bar={
           <BottomNavigation floating={false}>
-            <BottomNavigation.Item
+            <BottomNavigation.Link
               icon={<PlusSquare />}
               label="Listen Now"
               selected={sel('listen')}
               onClick={() => setTab('listen')}
             />
-            <BottomNavigation.Item
+            <BottomNavigation.Link
               icon={<Compass />}
               label="Browse"
               selected={sel('browse')}
               onClick={() => setTab('browse')}
             />
-            <BottomNavigation.Item
+            <BottomNavigation.Link
               icon={<Radio />}
               label="Radio"
               selected={sel('radio')}
               onClick={() => setTab('radio')}
             />
-            <BottomNavigation.Item
+            <BottomNavigation.Link
               icon={<Library />}
               label="Library"
               badge={3}
               selected={sel('library')}
               onClick={() => setTab('library')}
             />
-            <BottomNavigation.Item
+            <BottomNavigation.Link
               icon={<Search />}
               label="Search"
               selected={sel('search')}
@@ -300,32 +300,32 @@ export const MobileBanking: StoryObj<typeof BottomNavigation> = {
       <PhoneMock
         bar={
           <BottomNavigation floating={false}>
-            <BottomNavigation.Item
+            <BottomNavigation.Link
               icon={<Home />}
               label="Home"
               selected={sel('home')}
               onClick={() => setTab('home')}
             />
-            <BottomNavigation.Item
+            <BottomNavigation.Link
               icon={<CreditCard />}
               label="Cards"
               selected={sel('cards')}
               onClick={() => setTab('cards')}
             />
-            <BottomNavigation.Item
+            <BottomNavigation.Link
               icon={<Send />}
               label="Pay"
               badge={2}
               selected={sel('pay')}
               onClick={() => setTab('pay')}
             />
-            <BottomNavigation.Item
+            <BottomNavigation.Link
               icon={<PieChart />}
               label="Insights"
               selected={sel('insights')}
               onClick={() => setTab('insights')}
             />
-            <BottomNavigation.Item
+            <BottomNavigation.Link
               icon={<User />}
               label="Profile"
               badge="!"
@@ -363,32 +363,32 @@ export const SocialFeed: StoryObj<typeof BottomNavigation> = {
       <PhoneMock
         bar={
           <BottomNavigation floating={false}>
-            <BottomNavigation.Item
+            <BottomNavigation.Link
               icon={<Home />}
               label="Feed"
               selected={sel('feed')}
               onClick={() => setTab('feed')}
             />
-            <BottomNavigation.Item
+            <BottomNavigation.Link
               icon={<Compass />}
               label="Explore"
               selected={sel('explore')}
               onClick={() => setTab('explore')}
             />
-            <BottomNavigation.Item
+            <BottomNavigation.Link
               icon={<PlusSquare />}
               label="Create"
               selected={sel('create')}
               onClick={() => setTab('create')}
             />
-            <BottomNavigation.Item
+            <BottomNavigation.Link
               icon={<Bell />}
               label="Alerts"
               badge={128}
               selected={sel('notifications')}
               onClick={() => setTab('notifications')}
             />
-            <BottomNavigation.Item
+            <BottomNavigation.Link
               icon={<Wallet />}
               label="Wallet"
               selected={sel('wallet')}
@@ -418,26 +418,26 @@ export const Floating: StoryObj<typeof BottomNavigation> = {
           &mdash; scroll the Storybook canvas and it stays put.
         </Paragraph>
         <BottomNavigation>
-          <BottomNavigation.Item
+          <BottomNavigation.Link
             icon={<Home />}
             label="Home"
             selected={sel('home')}
             onClick={() => setTab('home')}
           />
-          <BottomNavigation.Item
+          <BottomNavigation.Link
             icon={<Search />}
             label="Search"
             selected={sel('search')}
             onClick={() => setTab('search')}
           />
-          <BottomNavigation.Item
+          <BottomNavigation.Link
             icon={<Bell />}
             label="Alerts"
             badge={5}
             selected={sel('alerts')}
             onClick={() => setTab('alerts')}
           />
-          <BottomNavigation.Item
+          <BottomNavigation.Link
             icon={<User />}
             label="Profile"
             selected={sel('profile')}

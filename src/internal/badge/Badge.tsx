@@ -6,7 +6,7 @@ import s from './badge.module.scss';
 
 /**
  * Internal counter/label chip shared by `Button`, `Tabs.Item`,
- * `NavigationList.Link`, `BottomNavigation.Item` and `Dropdown.Action`. A `Box`
+ * `NavigationList.Link`, `BottomNavigation.Link` and `Dropdown.Action`. A `Box`
  * pill; this stylesheet only carries the per-size dimensional tuning `Box`
  * doesn't own (small type, a `min-width` so a 2-digit count stays a capsule)
  * and the `corner` positioning.

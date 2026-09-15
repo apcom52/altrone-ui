@@ -519,7 +519,7 @@ export const MusicApp: StoryObj<typeof Screen> = {
 
     const barItems = isLg
       ? DESTINATIONS.map((destination) => (
-          <BottomNavigation.Item
+          <BottomNavigation.Link
             key={destination.id}
             href="#"
             icon={destination.icon}
@@ -535,7 +535,7 @@ export const MusicApp: StoryObj<typeof Screen> = {
           ...DESTINATIONS.filter((destination) =>
             PRIMARY.includes(destination.id),
           ).map((destination) => (
-            <BottomNavigation.Item
+            <BottomNavigation.Link
               key={destination.id}
               href="#"
               icon={destination.icon}
@@ -573,7 +573,7 @@ export const MusicApp: StoryObj<typeof Screen> = {
             }
           >
             {() => (
-              <BottomNavigation.Item
+              <BottomNavigation.Link
                 icon={<MoreHorizontal />}
                 label="Menu"
                 selected={OVERFLOW.some(

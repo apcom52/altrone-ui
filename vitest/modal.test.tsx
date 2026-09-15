@@ -14,9 +14,7 @@ describe('Modal', () => {
           style={{ color: 'rgb(0, 0, 255)' }}
           content={<div>content</div>}
           openedByDefault={true}
-        >
-          <button>test</button>
-        </Modal>
+        />
       </Application>,
     );
 
@@ -24,20 +22,21 @@ describe('Modal', () => {
     expect(screen.getByTestId('modal')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
-  test("opening the modal keeps the trigger's own onClick", () => {
-    const triggerClick = vi.fn();
-
-    render(
+  test('`open` controls visibility', () => {
+    const { rerender } = render(
       <Application>
-        <Modal content={<div>content</div>}>
-          <button onClick={triggerClick}>open</button>
-        </Modal>
+        <Modal content={<div>content</div>} open={false} />
       </Application>,
     );
 
-    fireEvent.click(screen.getByText('open'));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 
-    expect(triggerClick).toHaveBeenCalledTimes(1);
+    rerender(
+      <Application>
+        <Modal content={<div>content</div>} open={true} />
+      </Application>,
+    );
+
     expect(screen.getByRole('dialog')).toBeInTheDocument();
   });
 
@@ -51,9 +50,7 @@ describe('Modal', () => {
           content={<div>content</div>}
           onClose={onClose}
           openedByDefault={true}
-        >
-          <button>test</button>
-        </Modal>
+        />
       </Application>,
     );
 
@@ -71,9 +68,7 @@ describe('Modal', () => {
           content={<div>content</div>}
           onClose={onClose}
           openedByDefault={true}
-        >
-          <button>test</button>
-        </Modal>
+        />
       </Application>,
     );
 
@@ -91,17 +86,12 @@ describe('Modal', () => {
           content={
             <>
               content
-              {createPortal(
-                <button>portaled option</button>,
-                document.body,
-              )}
+              {createPortal(<button>portaled option</button>, document.body)}
             </>
           }
           onClose={onClose}
           openedByDefault={true}
-        >
-          <button>test</button>
-        </Modal>
+        />
       </Application>,
     );
 
@@ -119,9 +109,7 @@ describe('Modal', () => {
           content={<div>content</div>}
           onClose={onClose}
           openedByDefault={true}
-        >
-          <button>test</button>
-        </Modal>
+        />
       </Application>,
     );
 

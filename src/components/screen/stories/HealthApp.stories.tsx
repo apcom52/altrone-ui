@@ -13,14 +13,14 @@ import {
   NavigationList,
   NumberInput,
   Progress,
-  Range,
+  Slider,
   Screen,
   Select,
   showAlert,
   showConfirm,
-  Switcher,
+  Switch,
   Text,
-  Textarea,
+  TextArea,
   TextInput,
   Toolbar,
 } from 'components';
@@ -152,12 +152,36 @@ type Med = {
 };
 
 const SEED_MEDS: Med[] = [
-  { id: 'd3', name: 'Vitamin D3', dose: '2000 IU', schedule: 'Morning', taken: true },
-  { id: 'omega', name: 'Omega-3', dose: '1000 mg', schedule: 'With lunch', taken: false },
-  { id: 'mag', name: 'Magnesium', dose: '300 mg', schedule: 'Before bed', taken: false },
+  {
+    id: 'd3',
+    name: 'Vitamin D3',
+    dose: '2000 IU',
+    schedule: 'Morning',
+    taken: true,
+  },
+  {
+    id: 'omega',
+    name: 'Omega-3',
+    dose: '1000 mg',
+    schedule: 'With lunch',
+    taken: false,
+  },
+  {
+    id: 'mag',
+    name: 'Magnesium',
+    dose: '300 mg',
+    schedule: 'Before bed',
+    taken: false,
+  },
 ];
 
-type Workout = { id: string; type: string; minutes: number; kcal: number; when: string };
+type Workout = {
+  id: string;
+  type: string;
+  minutes: number;
+  kcal: number;
+  when: string;
+};
 
 const SEED_WORKOUTS: Workout[] = [
   { id: 'w1', type: 'Morning run', minutes: 32, kcal: 288, when: '07:15' },
@@ -182,15 +206,29 @@ const WORKOUT_TYPES = [
 
 const EFFORT_LABELS = ['Very easy', 'Easy', 'Moderate', 'Hard', 'All out'];
 
-const BLOOD_TYPES = ['O+', 'O−', 'A+', 'A−', 'B+', 'B−', 'AB+', 'AB−'].map((v) => ({
-  value: v,
-  label: v,
-}));
+const BLOOD_TYPES = ['O+', 'O−', 'A+', 'A−', 'B+', 'B−', 'AB+', 'AB−'].map(
+  (v) => ({
+    value: v,
+    label: v,
+  }),
+);
 
 const NOTIFICATIONS = [
-  { id: 1, title: 'Time to move', body: 'You are 1,760 steps short of today’s goal.' },
-  { id: 2, title: 'Medication reminder', body: 'Magnesium is scheduled for tonight.' },
-  { id: 3, title: 'Weekly report', body: 'Resting heart rate is down 3 bpm this week.' },
+  {
+    id: 1,
+    title: 'Time to move',
+    body: 'You are 1,760 steps short of today’s goal.',
+  },
+  {
+    id: 2,
+    title: 'Medication reminder',
+    body: 'Magnesium is scheduled for tonight.',
+  },
+  {
+    id: 3,
+    title: 'Weekly report',
+    body: 'Resting heart rate is down 3 bpm this week.',
+  },
 ];
 
 /* ------------------------------------------------------------------ *
@@ -220,9 +258,11 @@ const MetricCard = ({
     <Text size={7} weight="bold">
       {value}
     </Text>
-    <Progress value={percentage} aria-label={`${label}: ${goalLabel}`}>
-      {goalLabel}
-    </Progress>
+    <Progress
+      value={percentage}
+      aria-label={`${label}: ${goalLabel}`}
+      label={goalLabel}
+    />
   </Flex>
 );
 
@@ -259,7 +299,12 @@ const TrendBadge = ({
  * Interactive modals
  * ------------------------------------------------------------------ */
 
-const LogWorkoutModal = ({ onLog }: { onLog: (workout: Omit<Workout, 'id'>) => void }) => {
+const LogWorkoutModal = ({
+  onLog,
+}: {
+  onLog: (workout: Omit<Workout, 'id'>) => void;
+}) => {
+  const [open, setOpen] = useState(false);
   const [type, setType] = useState('Run');
   const [minutes, setMinutes] = useState<number | undefined>(30);
   const [effort, setEffort] = useState(3);
@@ -273,64 +318,80 @@ const LogWorkoutModal = ({ onLog }: { onLog: (workout: Omit<Workout, 'id'>) => v
   };
 
   return (
-    <Modal
-      title="Log a workout"
-      size="m"
-      onClose={reset}
-      content={
-        <Form>
-          <Form.Field label="Activity">
-            <Select
-              value={type}
-              options={WORKOUT_TYPES}
-              onChange={(value) => setType(value as string)}
-            />
-          </Form.Field>
-          <Form.Field
-            label="Duration"
-            hintText="Minutes of moderate-to-vigorous effort"
-          >
-            <NumberInput value={minutes} onChange={setMinutes} min={1} max={600} />
-          </Form.Field>
-          <Form.Field label={`Perceived effort — ${EFFORT_LABELS[effort - 1]}`}>
-            <Range
-              value={effort}
-              min={1}
-              max={5}
-              step={1}
-              showCurrentValue="always"
-              onChange={(value) => setEffort(value)}
-            />
-          </Form.Field>
-        </Form>
-      }
-      actions={({ closeModal }) => (
-        <Button
-          label={saving ? 'Saving…' : 'Save workout'}
-          variant="submit"
-          state={saving ? 'loading' : 'idle'}
-          icon={<Check size={14} />}
-          onClick={async () => {
-            if (!minutes) {
-              return;
-            }
+    <>
+      <Button
+        label="Log workout"
+        variant="submit"
+        icon={<Plus />}
+        onClick={() => setOpen(true)}
+      />
+      <Modal
+        title="Log a workout"
+        size="m"
+        open={open}
+        onClose={() => {
+          setOpen(false);
+          reset();
+        }}
+        content={
+          <Form>
+            <Form.Field label="Activity">
+              <Select
+                value={type}
+                options={WORKOUT_TYPES}
+                onChange={(value) => setType(value as string)}
+              />
+            </Form.Field>
+            <Form.Field
+              label="Duration"
+              hintText="Minutes of moderate-to-vigorous effort"
+            >
+              <NumberInput
+                value={minutes}
+                onChange={setMinutes}
+                min={1}
+                max={600}
+              />
+            </Form.Field>
+            <Form.Field
+              label={`Perceived effort — ${EFFORT_LABELS[effort - 1]}`}
+            >
+              <Slider
+                value={effort}
+                min={1}
+                max={5}
+                step={1}
+                showCurrentValue="always"
+                onChange={(value) => setEffort(value)}
+              />
+            </Form.Field>
+          </Form>
+        }
+        actions={({ closeModal }) => (
+          <Button
+            label={saving ? 'Saving…' : 'Save workout'}
+            variant="submit"
+            state={saving ? 'loading' : 'idle'}
+            icon={<Check size={14} />}
+            onClick={async () => {
+              if (!minutes) {
+                return;
+              }
 
-            setSaving(true);
-            await new Promise((resolve) => setTimeout(resolve, 900));
-            onLog({
-              type,
-              minutes,
-              kcal: Math.round(minutes * (4 + effort)),
-              when: 'Just now',
-            });
-            reset();
-            closeModal();
-          }}
-        />
-      )}
-    >
-      <Button label="Log workout" variant="submit" icon={<Plus />} />
-    </Modal>
+              setSaving(true);
+              await new Promise((resolve) => setTimeout(resolve, 900));
+              onLog({
+                type,
+                minutes,
+                kcal: Math.round(minutes * (4 + effort)),
+                when: 'Just now',
+              });
+              closeModal();
+            }}
+          />
+        )}
+      />
+    </>
   );
 };
 
@@ -341,81 +402,19 @@ const VitalCard = ({
   vital: Vital;
   onAddReading: (id: string, value: number) => void;
 }) => {
+  const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState<number | undefined>();
 
   const [latest, previous] = vital.history;
   const delta = previous ? latest.value - previous.value : 0;
 
   return (
-    <Modal
-      title={vital.label}
-      size="m"
-      onClose={() => setDraft(undefined)}
-      content={() => (
-        <Flex direction="vertical" gap="m">
-          <Flex align="end" gap="xs">
-            <Text size={9} weight="bold">
-              {latest.value}
-            </Text>
-            <Text size={3} color="muted">
-              {vital.unit}
-            </Text>
-          </Flex>
-          <TrendBadge delta={delta} unit={vital.unit} invert={vital.lowerIsBetter} />
-
-          <Divider />
-
-          <Text size={2} color="muted">
-            Recent readings
-          </Text>
-          <Flex direction="vertical" gap="xs">
-            {vital.history.map((reading) => (
-              <Flex key={reading.date} align="center" justify="between">
-                <Text size={3}>{reading.date}</Text>
-                <Text size={3} weight="medium">
-                  {reading.value} {vital.unit}
-                </Text>
-              </Flex>
-            ))}
-          </Flex>
-
-          <Divider />
-
-          <Form>
-            <Form.Field
-              label={`Add a reading (${vital.unit})`}
-              hintText={`Target range ${vital.target}`}
-            >
-              <NumberInput
-                value={draft}
-                onChange={setDraft}
-                placeholder={String(latest.value)}
-              />
-            </Form.Field>
-          </Form>
-        </Flex>
-      )}
-      actions={({ closeModal }) => (
-        <Button
-          label="Save reading"
-          variant="submit"
-          icon={<Plus size={14} />}
-          onClick={() => {
-            if (draft === undefined) {
-              return;
-            }
-
-            onAddReading(vital.id, draft);
-            setDraft(undefined);
-            closeModal();
-          }}
-        />
-      )}
-    >
+    <>
       <Flex
         align="center"
         justify="between"
         style={{ ...surface(0), padding: '14px 16px', cursor: 'pointer' }}
+        onClick={() => setOpen(true)}
       >
         <Flex align="center" gap="s">
           {vital.icon}
@@ -438,7 +437,80 @@ const VitalCard = ({
           <ChevronRight size={16} />
         </Flex>
       </Flex>
-    </Modal>
+      <Modal
+        title={vital.label}
+        size="m"
+        open={open}
+        onClose={() => {
+          setOpen(false);
+          setDraft(undefined);
+        }}
+        content={() => (
+          <Flex direction="vertical" gap="m">
+            <Flex align="end" gap="xs">
+              <Text size={9} weight="bold">
+                {latest.value}
+              </Text>
+              <Text size={3} color="muted">
+                {vital.unit}
+              </Text>
+            </Flex>
+            <TrendBadge
+              delta={delta}
+              unit={vital.unit}
+              invert={vital.lowerIsBetter}
+            />
+
+            <Divider />
+
+            <Text size={2} color="muted">
+              Recent readings
+            </Text>
+            <Flex direction="vertical" gap="xs">
+              {vital.history.map((reading) => (
+                <Flex key={reading.date} align="center" justify="between">
+                  <Text size={3}>{reading.date}</Text>
+                  <Text size={3} weight="medium">
+                    {reading.value} {vital.unit}
+                  </Text>
+                </Flex>
+              ))}
+            </Flex>
+
+            <Divider />
+
+            <Form>
+              <Form.Field
+                label={`Add a reading (${vital.unit})`}
+                hintText={`Target range ${vital.target}`}
+              >
+                <NumberInput
+                  value={draft}
+                  onChange={setDraft}
+                  placeholder={String(latest.value)}
+                />
+              </Form.Field>
+            </Form>
+          </Flex>
+        )}
+        actions={({ closeModal }) => (
+          <Button
+            label="Save reading"
+            variant="submit"
+            icon={<Plus size={14} />}
+            onClick={() => {
+              if (draft === undefined) {
+                return;
+              }
+
+              onAddReading(vital.id, draft);
+              setDraft(undefined);
+              closeModal();
+            }}
+          />
+        )}
+      />
+    </>
   );
 };
 
@@ -447,6 +519,7 @@ const AddMedicationModal = ({
 }: {
   onAdd: (med: Omit<Med, 'id' | 'taken'>) => void;
 }) => {
+  const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
   const [dose, setDose] = useState('');
   const [schedule, setSchedule] = useState('Morning');
@@ -460,54 +533,67 @@ const AddMedicationModal = ({
   };
 
   return (
-    <Modal
-      title="Add medication"
-      size="m"
-      onClose={reset}
-      content={
-        <Form errorMessages={{ name: error }}>
-          <Form.Field label="Name" name="name" required>
-            <TextInput
-              value={name}
-              placeholder="e.g. Omega-3"
-              onChange={(value) => {
-                setName(value);
-                setError('');
-              }}
-            />
-          </Form.Field>
-          <Form.Field label="Dose" name="dose">
-            <TextInput value={dose} onChange={setDose} placeholder="e.g. 1000 mg" />
-          </Form.Field>
-          <Form.Field label="When to take it" name="schedule">
-            <Select
-              value={schedule}
-              options={MED_SCHEDULES}
-              onChange={(value) => setSchedule(value as string)}
-            />
-          </Form.Field>
-        </Form>
-      }
-      actions={({ closeModal }) => (
-        <Button
-          label="Add"
-          variant="submit"
-          icon={<Plus size={14} />}
-          onClick={() => {
-            if (!name.trim()) {
-              setError('Give the medication a name.');
-              return;
-            }
+    <>
+      <Button
+        label="Add medication"
+        icon={<Plus size={14} />}
+        size="s"
+        onClick={() => setOpen(true)}
+      />
+      <Modal
+        title="Add medication"
+        size="m"
+        open={open}
+        onClose={() => {
+          setOpen(false);
+          reset();
+        }}
+        content={
+          <Form errorMessages={{ name: error }}>
+            <Form.Field label="Name" name="name" required>
+              <TextInput
+                value={name}
+                placeholder="e.g. Omega-3"
+                onChange={(value) => {
+                  setName(value);
+                  setError('');
+                }}
+              />
+            </Form.Field>
+            <Form.Field label="Dose" name="dose">
+              <TextInput
+                value={dose}
+                onChange={setDose}
+                placeholder="e.g. 1000 mg"
+              />
+            </Form.Field>
+            <Form.Field label="When to take it" name="schedule">
+              <Select
+                value={schedule}
+                options={MED_SCHEDULES}
+                onChange={(value) => setSchedule(value as string)}
+              />
+            </Form.Field>
+          </Form>
+        }
+        actions={({ closeModal }) => (
+          <Button
+            label="Add"
+            variant="submit"
+            icon={<Plus size={14} />}
+            onClick={() => {
+              if (!name.trim()) {
+                setError('Give the medication a name.');
+                return;
+              }
 
-            onAdd({ name: name.trim(), dose: dose.trim() || '—', schedule });
-            reset();
-            closeModal();
-          }}
-        />
-      )}
-    >
-      <Button label="Add medication" icon={<Plus size={14} />} size="s" />
-    </Modal>
+              onAdd({ name: name.trim(), dose: dose.trim() || '—', schedule });
+              closeModal();
+            }}
+          />
+        )}
+      />
+    </>
   );
 };
 
@@ -525,6 +611,7 @@ const EditProfileModal = ({
   profile: HealthProfile;
   onSave: (next: HealthProfile) => void;
 }) => {
+  const [open, setOpen] = useState(false);
   const [height, setHeight] = useState<number | undefined>(profile.height);
   const [weight, setWeight] = useState<number | undefined>(profile.weight);
   const [bloodType, setBloodType] = useState(profile.bloodType);
@@ -538,89 +625,122 @@ const EditProfileModal = ({
   };
 
   return (
-    <Modal
-      title="Health profile"
-      size="m"
-      onClose={reset}
-      content={
-        <Form>
-          <Form.Field label="Height (cm)">
-            <NumberInput value={height} onChange={setHeight} min={100} max={250} />
-          </Form.Field>
-          <Form.Field label="Weight (kg)">
-            <NumberInput value={weight} onChange={setWeight} min={30} max={300} />
-          </Form.Field>
-          <Form.Field label="Blood type">
-            <Select
-              value={bloodType}
-              options={BLOOD_TYPES}
-              onChange={(value) => setBloodType(value as string)}
-            />
-          </Form.Field>
-          <Form.Field
-            label="Conditions & allergies"
-            hintText="Shared with clinicians you grant access to"
-          >
-            <Textarea
-              value={conditions}
-              onChange={setConditions}
-              placeholder="e.g. Penicillin allergy"
-            />
-          </Form.Field>
-        </Form>
-      }
-      actions={({ closeModal }) => (
-        <Button
-          label="Save profile"
-          variant="submit"
-          onClick={() => {
-            onSave({
-              height: height ?? profile.height,
-              weight: weight ?? profile.weight,
-              bloodType,
-              conditions,
-            });
-            closeModal();
-          }}
-        />
-      )}
-    >
-      <Button label="Edit health profile" variant="submit" icon={<PencilLine />} />
-    </Modal>
+    <>
+      <Button
+        label="Edit health profile"
+        variant="submit"
+        icon={<PencilLine />}
+        onClick={() => setOpen(true)}
+      />
+      <Modal
+        title="Health profile"
+        size="m"
+        open={open}
+        onClose={() => {
+          setOpen(false);
+          reset();
+        }}
+        content={
+          <Form>
+            <Form.Field label="Height (cm)">
+              <NumberInput
+                value={height}
+                onChange={setHeight}
+                min={100}
+                max={250}
+              />
+            </Form.Field>
+            <Form.Field label="Weight (kg)">
+              <NumberInput
+                value={weight}
+                onChange={setWeight}
+                min={30}
+                max={300}
+              />
+            </Form.Field>
+            <Form.Field label="Blood type">
+              <Select
+                value={bloodType}
+                options={BLOOD_TYPES}
+                onChange={(value) => setBloodType(value as string)}
+              />
+            </Form.Field>
+            <Form.Field
+              label="Conditions & allergies"
+              hintText="Shared with clinicians you grant access to"
+            >
+              <TextArea
+                value={conditions}
+                onChange={setConditions}
+                placeholder="e.g. Penicillin allergy"
+              />
+            </Form.Field>
+          </Form>
+        }
+        actions={({ closeModal }) => (
+          <Button
+            label="Save profile"
+            variant="submit"
+            onClick={() => {
+              onSave({
+                height: height ?? profile.height,
+                weight: weight ?? profile.weight,
+                bloodType,
+                conditions,
+              });
+              closeModal();
+            }}
+          />
+        )}
+      />
+    </>
   );
 };
 
-const NotificationsModal = ({ count }: { count: number }) => (
-  <Modal
-    title="Notifications"
-    size="s"
-    showCancelButton={false}
-    content={
-      <Flex direction="vertical" gap="s">
-        {NOTIFICATIONS.map((item) => (
-          <Flex key={item.id} direction="vertical" gap="xs" style={surface(12)}>
-            <Text size={3} weight="bold">
-              {item.title}
-            </Text>
-            <Text size={2} color="muted">
-              {item.body}
-            </Text>
+const NotificationsModal = ({ count }: { count: number }) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Toolbar.Action
+        label="Notifications"
+        icon={<Bell />}
+        showLabel={false}
+        badge={count || undefined}
+        onClick={() => setOpen(true)}
+      />
+      <Modal
+        title="Notifications"
+        size="s"
+        showCancelButton={false}
+        open={open}
+        onClose={() => setOpen(false)}
+        content={
+          <Flex direction="vertical" gap="s">
+            {NOTIFICATIONS.map((item) => (
+              <Flex
+                key={item.id}
+                direction="vertical"
+                gap="xs"
+                style={surface(12)}
+              >
+                <Text size={3} weight="bold">
+                  {item.title}
+                </Text>
+                <Text size={2} color="muted">
+                  {item.body}
+                </Text>
+              </Flex>
+            ))}
           </Flex>
-        ))}
-      </Flex>
-    }
-    actions={({ closeModal }) => (
-      <Button label="Mark all read" variant="submit" onClick={closeModal} />
-    )}
-  >
-    <Toolbar.Action
-      label="Notifications"
-      icon={<Bell />}
-      showLabel={false}
-      badge={count || undefined}
-    />
-  </Modal>
-);
+        }
+        actions={({ closeModal }) => (
+          <Button label="Mark all read" variant="submit" onClick={closeModal} />
+        )}
+      />
+    </>
+  );
+};
 
 /* ------------------------------------------------------------------ *
  * Screens
@@ -641,7 +761,8 @@ const TodayScreen = ({
   meds: Med[];
   onGoToMeds: () => void;
 }) => {
-  const moveKcal = 320 + workouts.reduce((sum, workout) => sum + workout.kcal, 0);
+  const moveKcal =
+    320 + workouts.reduce((sum, workout) => sum + workout.kcal, 0);
   const takenMeds = meds.filter((med) => med.taken).length;
 
   return (
@@ -687,7 +808,7 @@ const TodayScreen = ({
             Hydration
           </Text>
         </Flex>
-        <Range
+        <Slider
           value={hydration}
           min={0}
           max={3}
@@ -806,7 +927,8 @@ const MedsScreen = ({
           header={`${pending.length} still to take today`}
         >
           <Text size={3}>
-            Mark each dose as you take it so your adherence streak stays accurate.
+            Mark each dose as you take it so your adherence streak stays
+            accurate.
           </Text>
         </Message>
       )}
@@ -835,11 +957,11 @@ const MedsScreen = ({
               </Text>
             </Flex>
             <Flex align="center" gap="m">
-              <Switcher checked={med.taken} onChange={() => onToggle(med.id)}>
+              <Switch checked={med.taken} onChange={() => onToggle(med.id)}>
                 <Text size={2} color="muted">
                   Taken
                 </Text>
-              </Switcher>
+              </Switch>
               <Button
                 label={`Remove ${med.name}`}
                 icon={<Trash2 />}
@@ -916,7 +1038,8 @@ const ProfileScreen = ({
           if (confirmed) {
             await showAlert({
               title: 'Signed out',
-              message: 'This is a demo — you have not actually been signed out.',
+              message:
+                'This is a demo — you have not actually been signed out.',
             });
           }
         }}
@@ -940,7 +1063,7 @@ const ProfileScreen = ({
  *
  * Each screen carries its own interactive surface — `Modal` forms for logging a
  * workout, adding a vital reading, adding a medication and editing the health
- * profile; `Switcher`s for marking doses taken; `showConfirm` / `showAlert`
+ * profile; `Switch`s for marking doses taken; `showConfirm` / `showAlert`
  * dialogs for destructive or terminal actions.
  */
 export const HealthApp: StoryObj<typeof Screen> = {
@@ -968,10 +1091,7 @@ export const HealthApp: StoryObj<typeof Screen> = {
     );
 
     const logWorkout = (workout: Omit<Workout, 'id'>) =>
-      setWorkouts((prev) => [
-        { ...workout, id: `w${Date.now()}` },
-        ...prev,
-      ]);
+      setWorkouts((prev) => [{ ...workout, id: `w${Date.now()}` }, ...prev]);
 
     const addVitalReading = (id: string, value: number) =>
       setVitals((prev) =>
@@ -993,7 +1113,10 @@ export const HealthApp: StoryObj<typeof Screen> = {
       );
 
     const addMed = (med: Omit<Med, 'id' | 'taken'>) =>
-      setMeds((prev) => [...prev, { ...med, id: `m${Date.now()}`, taken: false }]);
+      setMeds((prev) => [
+        ...prev,
+        { ...med, id: `m${Date.now()}`, taken: false },
+      ]);
 
     const removeMed = async (med: Med) => {
       const confirmed = await showConfirm({
@@ -1165,7 +1288,7 @@ export const HealthApp: StoryObj<typeof Screen> = {
         <Screen.BottomNavigation hiddenFrom="lg">
           <BottomNavigation floating={false}>
             {APP_TABS.map((t) => (
-              <BottomNavigation.Item
+              <BottomNavigation.Link
                 key={t.id}
                 href="#"
                 icon={t.icon}

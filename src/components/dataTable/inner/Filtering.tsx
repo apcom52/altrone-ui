@@ -89,6 +89,9 @@ export const Filtering = () => {
       placement="bottom"
       style={{ minWidth: '280px' }}
       overlap
+      onOpenChange={(open) => {
+        if (open) setDraftFilters(filters);
+      }}
       content={({ closePopup }) => (
         <Form>
           {draftFilters.length === 0 ? (

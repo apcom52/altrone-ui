@@ -63,16 +63,16 @@ export const Overview: StoryObj<typeof SideNavigation> = {
       <Paragraph>
         An optional <Text code>title</Text> (the <Text code>&lt;nav&gt;</Text>{' '}
         is <Text code>aria-labelledby</Text> it) over a list of{' '}
-        <Text code>SideNavigation.Item</Text>s. Each item needs a{' '}
+        <Text code>SideNavigation.Link</Text>s. Each link needs a{' '}
         <Text code>href</Text> that matches an element <Text code>id</Text> on
-        the page and a <Text code>label</Text>. The active item gets{' '}
+        the page and a <Text code>label</Text>. The active link gets{' '}
         <Text code>aria-current="page"</Text> and turns bold + accent-colored.
       </Paragraph>
 
       <Heading>Nesting</Heading>
       <Paragraph>
-        Put <Text code>SideNavigation.Item</Text>s inside an item for
-        sub-sections. Nested items are always visible (not collapsible) and
+        Put <Text code>SideNavigation.Link</Text>s inside a link for
+        sub-sections. Nested links are always visible (not collapsible) and
         indented one step. Every level is spied independently.
       </Paragraph>
 
@@ -82,13 +82,13 @@ export const Overview: StoryObj<typeof SideNavigation> = {
       </Text>
 
       <SideNavigation title="On this page">
-        <SideNavigation.Item href="#a" label="Introduction" />
-        <SideNavigation.Item href="#b" label="Getting started">
-          <SideNavigation.Item href="#b1" label="Install" />
-          <SideNavigation.Item href="#b2" label="Configure" />
-        </SideNavigation.Item>
-        <SideNavigation.Item href="#c" label="API reference" />
-        <SideNavigation.Item href="#d" label="FAQ" />
+        <SideNavigation.Link href="#a" label="Introduction" />
+        <SideNavigation.Link href="#b" label="Getting started">
+          <SideNavigation.Link href="#b1" label="Install" />
+          <SideNavigation.Link href="#b2" label="Configure" />
+        </SideNavigation.Link>
+        <SideNavigation.Link href="#c" label="API reference" />
+        <SideNavigation.Link href="#d" label="FAQ" />
       </SideNavigation>
     </Flex>
   ),
@@ -217,19 +217,19 @@ export const DocumentationPage: StoryObj<typeof SideNavigation> = {
       >
         <SideNavigation title="On this page">
           {SECTIONS.map((section) => (
-            <SideNavigation.Item
+            <SideNavigation.Link
               key={section.id}
               href={`#${section.id}`}
               label={section.title}
             >
               {section.children?.map((child) => (
-                <SideNavigation.Item
+                <SideNavigation.Link
                   key={child.id}
                   href={`#${child.id}`}
                   label={child.title}
                 />
               ))}
-            </SideNavigation.Item>
+            </SideNavigation.Link>
           ))}
         </SideNavigation>
       </div>
@@ -292,9 +292,9 @@ export const WithoutTitle: StoryObj<typeof SideNavigation> = {
   name: 'Without title',
   render: () => (
     <SideNavigation>
-      <SideNavigation.Item href="#intro" label="Introduction" />
-      <SideNavigation.Item href="#core" label="Core concepts" />
-      <SideNavigation.Item href="#advanced" label="Advanced usage" />
+      <SideNavigation.Link href="#intro" label="Introduction" />
+      <SideNavigation.Link href="#core" label="Core concepts" />
+      <SideNavigation.Link href="#advanced" label="Advanced usage" />
     </SideNavigation>
   ),
 };

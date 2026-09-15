@@ -9,7 +9,7 @@ import { Text } from '../text';
 import s from './dialog.module.scss';
 import { Button } from 'components/button';
 import { Flex } from 'components/flex';
-import { Textarea } from 'components/textarea';
+import { TextArea } from 'components/textArea';
 import { TextInput } from 'components/textInput';
 import { NumberInput } from 'components/numberInput';
 import { PasswordInput } from 'components/passwordInput';
@@ -99,7 +99,7 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (dialogState.inputType === 'text') {
       return (
-        <Textarea
+        <TextArea
           value={stringValue}
           onChange={(value) => setPromptValue(value)}
           placeholder={placeholder}

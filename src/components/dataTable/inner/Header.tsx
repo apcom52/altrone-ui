@@ -1,33 +1,27 @@
-import { ReactNode } from 'react';
 import { SquareCheckBig, Square } from 'lucide-react';
 import { Button } from 'components/button';
 import { Tooltip } from 'components/tooltip/Tooltip.tsx';
 import { useDataTableContext } from '../DataTable.context';
-import { DataTableRenderContext } from '../DataTable.types';
-import { AnyObject } from '../../../utils';
+import { DataTableHeaderProps } from '../DataTable.types';
 import { useLocalization } from '../../application';
 import { Filtering } from './Filtering.tsx';
 import s from './header.module.scss';
 
-interface DataTableHeaderProps {
-  children?:
-    | ReactNode
-    | ((context: DataTableRenderContext<AnyObject>) => ReactNode);
-}
-
-export const DataTableHeader = ({ children }: DataTableHeaderProps) => {
+export const DataTableHeader = <T extends object>({
+  actions,
+}: DataTableHeaderProps<T>) => {
   const t = useLocalization();
   const { table, loading, selectable, selectMode, setSelectMode } =
-    useDataTableContext();
+    useDataTableContext<T>();
 
   const selectedItems = table
     .getSelectedRowModel()
     .rows.map((row) => row.original);
 
-  const childrenActions: ReactNode =
-    typeof children === 'function'
-      ? children({ selectableMode: selectMode, selectedItems })
-      : children;
+  const resolvedActions =
+    typeof actions === 'function'
+      ? actions({ selectableMode: selectMode, selectedItems })
+      : actions;
 
   return (
     <div className={s.Header}>
@@ -44,7 +38,7 @@ export const DataTableHeader = ({ children }: DataTableHeaderProps) => {
             />
           </Tooltip>
         ) : null}
-        {childrenActions}
+        {resolvedActions}
         <Filtering />
       </div>
     </div>

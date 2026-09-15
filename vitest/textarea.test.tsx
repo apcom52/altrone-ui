@@ -1,7 +1,7 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Configuration, Application, Textarea } from '../src/components';
+import { Configuration, Application, TextArea } from '../src/components';
 
 class ResizeObserver {
   observe() {}
@@ -13,34 +13,34 @@ beforeAll(() => {
   window.ResizeObserver = ResizeObserver;
 });
 
-describe('Textarea', () => {
+describe('TextArea', () => {
   test('check that className and style props works', () => {
     render(
       <Application>
-        <Textarea
-          data-testid="textarea"
+        <TextArea
+          data-testid="textArea"
           className="cls"
           style={{ color: 'rgb(0, 0, 255)' }}
         />
       </Application>,
     );
 
-    expect(screen.getByTestId('textarea')).toHaveClass('cls');
-    expect(screen.getByTestId('textarea')).toHaveStyle('color: rgb(0, 0, 255)');
+    expect(screen.getByTestId('textArea')).toHaveClass('cls');
+    expect(screen.getByTestId('textArea')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
-  test('check that Textarea configuration works correctly', () => {
+  test('check that TextArea configuration works correctly', () => {
     render(
       <Application>
         <Configuration
-          textarea={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
+          textArea={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
         >
-          <Textarea data-testid="textarea" />
+          <TextArea data-testid="textArea" />
         </Configuration>
       </Application>,
     );
 
-    const element = screen.getByTestId('textarea');
+    const element = screen.getByTestId('textArea');
     expect(element).toHaveClass('cls');
     expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });

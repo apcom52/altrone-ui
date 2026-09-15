@@ -4,7 +4,6 @@ import { Dropdown, Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { NavigationList } from './NavigationList.tsx';
-import { LinkAction } from './components';
 import {
   Archive,
   BarChart2,
@@ -76,6 +75,27 @@ const Paragraph = ({ children }: { children: React.ReactNode }) => (
   <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
     {children}
   </Text>
+);
+
+/**
+ * A small icon-only button for `Group`/`Link`'s `actions` prop — the same
+ * shape `GroupAction`/`LinkAction` used to render before those sub-components
+ * were replaced by the prop.
+ */
+const NavAction = ({
+  label,
+  icon,
+}: {
+  label: string;
+  icon: React.JSX.Element;
+}) => (
+  <Button
+    size="s"
+    title={label}
+    label={label}
+    icon={icon}
+    showLabel={false}
+  />
 );
 
 // ─── Overview ────────────────────────────────────────────────────────────────
@@ -223,32 +243,37 @@ export const Overview: StoryObj<typeof NavigationList> = {
 
         <Heading>Row actions &amp; group actions</Heading>
         <Paragraph>
-          <Text code>LinkAction</Text> puts icon buttons at the end of a row for
-          per&#8209;item commands; it stops the click from reaching the parent
-          link, so triggering an action never navigates.{' '}
-          <Text code>GroupAction</Text> does the same in a group header &mdash;
-          for an &ldquo;add&rdquo; button or a menu trigger. Both take a
-          required <Text code>label</Text> that becomes their accessible name.
+          <Text code>Link</Text> and <Text code>Group</Text> both accept an{' '}
+          <Text code>actions</Text> prop &mdash; a <Text code>JSX.Element</Text>{' '}
+          (or, for <Text code>Link</Text>, a{' '}
+          <Text code>{'(context) => JSX.Element'}</Text> that reads{' '}
+          <Text code>selected</Text>/<Text code>disabled</Text>) rendered at the
+          end of the row or in the group header. Clicks and keyboard activation
+          inside <Text code>actions</Text> are stopped from bubbling, so
+          triggering an action inside a <Text code>Link</Text> never also
+          navigates it.
         </Paragraph>
 
         <NavigationList style={{ height: 'auto' }}>
-          <NavigationList.Group title="Projects">
-            <NavigationList.GroupAction label="New project" icon={<Plus />} />
-            <Dropdown
-              content={
-                <Dropdown.Menu>
-                  <Dropdown.Action label="Sort by name" />
-                  <Dropdown.Action label="Sort by activity" />
-                  <Dropdown.Action label="Hide archived" />
-                </Dropdown.Menu>
-              }
-            >
-              <NavigationList.GroupAction
-                label="Options"
-                icon={<MoreHorizontal />}
-              />
-            </Dropdown>
-
+          <NavigationList.Group
+            title="Projects"
+            actions={
+              <>
+                <NavAction label="New project" icon={<Plus />} />
+                <Dropdown
+                  content={
+                    <Dropdown.Menu>
+                      <Dropdown.Action label="Sort by name" />
+                      <Dropdown.Action label="Sort by activity" />
+                      <Dropdown.Action label="Hide archived" />
+                    </Dropdown.Menu>
+                  }
+                >
+                  <NavAction label="Options" icon={<MoreHorizontal />} />
+                </Dropdown>
+              </>
+            }
+          >
             <NavigationList.Link
               icon={<Hash />}
               label="Alpha"
@@ -261,10 +286,13 @@ export const Overview: StoryObj<typeof NavigationList> = {
               badge="3"
               selected={sel('beta')}
               onClick={() => setSection('beta')}
-            >
-              <LinkAction label="Open in new tab" icon={<Globe />} />
-              <LinkAction label="Archive project" icon={<Archive />} />
-            </NavigationList.Link>
+              actions={
+                <>
+                  <NavAction label="Open in new tab" icon={<Globe />} />
+                  <NavAction label="Archive project" icon={<Archive />} />
+                </>
+              }
+            />
           </NavigationList.Group>
         </NavigationList>
 
@@ -436,23 +464,25 @@ export const ProjectManagementStory: StoryObj<typeof NavigationList> = {
             />
           </NavigationList.Group>
 
-          <NavigationList.Group title="Projects">
-            <NavigationList.GroupAction label="New project" icon={<Plus />} />
-            <Dropdown
-              content={
-                <Dropdown.Menu>
-                  <Dropdown.Action label="Sort by name" />
-                  <Dropdown.Action label="Sort by activity" />
-                  <Dropdown.Action label="Hide archived" />
-                </Dropdown.Menu>
-              }
-            >
-              <NavigationList.GroupAction
-                label="Options"
-                icon={<MoreHorizontal />}
-              />
-            </Dropdown>
-
+          <NavigationList.Group
+            title="Projects"
+            actions={
+              <>
+                <NavAction label="New project" icon={<Plus />} />
+                <Dropdown
+                  content={
+                    <Dropdown.Menu>
+                      <Dropdown.Action label="Sort by name" />
+                      <Dropdown.Action label="Sort by activity" />
+                      <Dropdown.Action label="Hide archived" />
+                    </Dropdown.Menu>
+                  }
+                >
+                  <NavAction label="Options" icon={<MoreHorizontal />} />
+                </Dropdown>
+              </>
+            }
+          >
             <NavigationList.Link
               icon={<Hash />}
               label="Alpha"
@@ -465,10 +495,13 @@ export const ProjectManagementStory: StoryObj<typeof NavigationList> = {
               selected={sel('beta')}
               onClick={() => setActive('beta')}
               badge="3"
-            >
-              <LinkAction label="Open in new tab" icon={<Globe />} />
-              <LinkAction label="Archive project" icon={<Archive />} />
-            </NavigationList.Link>
+              actions={
+                <>
+                  <NavAction label="Open in new tab" icon={<Globe />} />
+                  <NavAction label="Archive project" icon={<Archive />} />
+                </>
+              }
+            />
             <NavigationList.Link
               icon={<Hash />}
               label="Gamma"
@@ -484,8 +517,10 @@ export const ProjectManagementStory: StoryObj<typeof NavigationList> = {
             />
           </NavigationList.Group>
 
-          <NavigationList.Group title="Teams">
-            <NavigationList.GroupAction label="Add team" icon={<Plus />} />
+          <NavigationList.Group
+            title="Teams"
+            actions={<NavAction label="Add team" icon={<Plus />} />}
+          >
             <NavigationList.Link
               icon={<Users />}
               label="Engineering"
@@ -636,18 +671,16 @@ export const CodeRepositoryStory: StoryObj<typeof NavigationList> = {
               label="Files"
               selected={sel('code')}
               onClick={() => setActive('code')}
-            >
-              <LinkAction label="Clone repository" icon={<Globe />} />
-            </NavigationList.Link>
+              actions={<NavAction label="Clone repository" icon={<Globe />} />}
+            />
             <NavigationList.Link
               icon={<GitBranch />}
               label="Branches"
               selected={sel('branches')}
               onClick={() => setActive('branches')}
               badge="3"
-            >
-              <LinkAction label="New branch" icon={<Plus />} />
-            </NavigationList.Link>
+              actions={<NavAction label="New branch" icon={<Plus />} />}
+            />
             <NavigationList.Link
               icon={<Tag />}
               label="Tags"
@@ -657,20 +690,25 @@ export const CodeRepositoryStory: StoryObj<typeof NavigationList> = {
             />
           </NavigationList.Group>
 
-          <NavigationList.Group title="Issues">
-            <NavigationList.GroupAction label="New issue" icon={<Plus />} />
-            <Dropdown
-              content={
-                <Dropdown.Menu>
-                  <Dropdown.Action label="Filter by assignee" />
-                  <Dropdown.Action label="Filter by label" />
-                  <Dropdown.Action label="Filter by milestone" />
-                </Dropdown.Menu>
-              }
-            >
-              <NavigationList.GroupAction label="Filter" icon={<Search />} />
-            </Dropdown>
-
+          <NavigationList.Group
+            title="Issues"
+            actions={
+              <>
+                <NavAction label="New issue" icon={<Plus />} />
+                <Dropdown
+                  content={
+                    <Dropdown.Menu>
+                      <Dropdown.Action label="Filter by assignee" />
+                      <Dropdown.Action label="Filter by label" />
+                      <Dropdown.Action label="Filter by milestone" />
+                    </Dropdown.Menu>
+                  }
+                >
+                  <NavAction label="Filter" icon={<Search />} />
+                </Dropdown>
+              </>
+            }
+          >
             <NavigationList.Link
               icon={<Circle />}
               label="All issues"
@@ -721,9 +759,8 @@ export const CodeRepositoryStory: StoryObj<typeof NavigationList> = {
               selected={sel('pr-review')}
               onClick={() => setActive('pr-review')}
               badge="2"
-            >
-              <LinkAction label="Approve all" icon={<CheckCircle2 />} />
-            </NavigationList.Link>
+              actions={<NavAction label="Approve all" icon={<CheckCircle2 />} />}
+            />
           </NavigationList.Group>
 
           <NavigationList.Group title="Actions">
@@ -869,18 +906,23 @@ export const EcommerceAdminStory: StoryObj<typeof NavigationList> = {
             />
           </NavigationList.Group>
 
-          <NavigationList.Group title="Catalog">
-            <NavigationList.GroupAction label="Add product" icon={<Plus />} />
+          <NavigationList.Group
+            title="Catalog"
+            actions={<NavAction label="Add product" icon={<Plus />} />}
+          >
             <NavigationList.Link
               icon={<ShoppingBag />}
               label="Products"
               selected={sel('products')}
               onClick={() => setActive('products')}
               badge="1 240"
-            >
-              <LinkAction label="Import via CSV" icon={<Package />} />
-              <LinkAction label="Bulk edit" icon={<Pencil />} />
-            </NavigationList.Link>
+              actions={
+                <>
+                  <NavAction label="Import via CSV" icon={<Package />} />
+                  <NavAction label="Bulk edit" icon={<Pencil />} />
+                </>
+              }
+            />
             <NavigationList.Link
               icon={<Layers />}
               label="Categories"
@@ -903,8 +945,10 @@ export const EcommerceAdminStory: StoryObj<typeof NavigationList> = {
             />
           </NavigationList.Group>
 
-          <NavigationList.Group title="Orders">
-            <NavigationList.GroupAction label="Export" icon={<Archive />} />
+          <NavigationList.Group
+            title="Orders"
+            actions={<NavAction label="Export" icon={<Archive />} />}
+          >
             <NavigationList.Link
               icon={<ShoppingCart />}
               label="All orders"
@@ -918,9 +962,8 @@ export const EcommerceAdminStory: StoryObj<typeof NavigationList> = {
               selected={sel('orders-new')}
               onClick={() => setActive('orders-new')}
               badge="12"
-            >
-              <LinkAction label="Process all" icon={<CheckCircle2 />} />
-            </NavigationList.Link>
+              actions={<NavAction label="Process all" icon={<CheckCircle2 />} />}
+            />
             <NavigationList.Link
               icon={<Clock />}
               label="Processing"
@@ -944,8 +987,10 @@ export const EcommerceAdminStory: StoryObj<typeof NavigationList> = {
             />
           </NavigationList.Group>
 
-          <NavigationList.Group title="Customers">
-            <NavigationList.GroupAction label="Add segment" icon={<Plus />} />
+          <NavigationList.Group
+            title="Customers"
+            actions={<NavAction label="Add segment" icon={<Plus />} />}
+          >
             <NavigationList.Link
               icon={<Users />}
               label="All customers"

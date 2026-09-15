@@ -8,10 +8,10 @@ import { TextInput } from '../textInput';
 import { PasswordInput } from '../passwordInput';
 import { Button } from '../button';
 import { NumberInput } from '../numberInput';
-import { Textarea } from '../textarea';
+import { TextArea } from '../textArea';
 import { Select } from '../select';
 import { DatePicker } from '../datePicker';
-import { Switcher } from '../switcher';
+import { Switch } from '../switch';
 import { AutocompleteInput } from '../autocompleteInput';
 import { Search } from '../search';
 import { useState } from 'react';
@@ -310,7 +310,7 @@ export const InteractiveStory: StoryObj<typeof Flex> = {
             name="bio"
             description="Tell us a little about yourself (optional)"
           >
-            <Textarea
+            <TextArea
               value={values.bio}
               onChange={(v) => setValues((s) => ({ ...s, bio: v }))}
               placeholder="I'm a developer who loves building great UIs..."
@@ -331,12 +331,12 @@ export const InteractiveStory: StoryObj<typeof Flex> = {
             </Form.Field>
 
             <Form.Field label="Newsletter" name="newsletter">
-              <Switcher
+              <Switch
                 checked={values.newsletter}
                 onChange={(v) => setValues((s) => ({ ...s, newsletter: v }))}
               >
                 Subscribe to product updates
-              </Switcher>
+              </Switch>
             </Form.Field>
           </Flex>
 
@@ -375,7 +375,7 @@ export const DisabledStory: StoryObj<typeof Flex> = {
           />
         </Form.Field>
         <Form.Field label="Bio" name="bio">
-          <Textarea
+          <TextArea
             value="Loves clean code and well-designed APIs."
             onChange={() => null}
           />
@@ -509,7 +509,7 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
             <Text code>Select</Text>, an amount is a <Text code>NumberInput</Text>,
             a day is a <Text code>DatePicker</Text>, an open-ended set of cities is
             an <Text code>AutocompleteInput</Text>, and free text is a{' '}
-            <Text code>Textarea</Text>. <Text code>Search</Text> sits apart — it
+            <Text code>TextArea</Text>. <Text code>Search</Text> sits apart — it
             retrieves an existing record to prefill, it isn&apos;t a field.
           </Text>
         </Flex>
@@ -635,7 +635,7 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
             name="notes"
             description="Equipment, seating, anything the manager should know (optional)"
           >
-            <Textarea
+            <TextArea
               value={values.notes}
               onChange={(v) => set('notes', v)}
               placeholder="Ordered a MacBook Pro, sitting with the platform team…"
@@ -643,12 +643,12 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
           </Form.Field>
 
           <Form.Field label="Welcome email" name="sendWelcome">
-            <Switcher
+            <Switch
               checked={values.sendWelcome}
               onChange={(v) => set('sendWelcome', v)}
             >
               Send the welcome email on the start date
-            </Switcher>
+            </Switch>
           </Form.Field>
 
           <Flex direction="horizontal" gap="s">

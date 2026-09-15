@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Avatar, Button, Flex, Text, TextInput } from 'components';
-import { Textarea } from '../Textarea.tsx';
+import { TextArea } from '../TextArea.tsx';
 
 const LIMIT = 500;
 
@@ -54,7 +54,7 @@ export const CommentComposer = () => {
         ))}
       </Flex>
 
-      <Textarea
+      <TextArea
         value={draft}
         onChange={setDraft}
         maxLength={LIMIT}
@@ -73,7 +73,7 @@ export const CommentComposer = () => {
           </Text>
         </TextInput.CustomIsland>
         <TextInput.CharCounterIsland placement="end" />
-      </Textarea>
+      </TextArea>
 
       <Flex direction="horizontal" gap="s">
         <Button

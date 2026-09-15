@@ -67,6 +67,9 @@ export const Result = ({
     className,
   );
 
+  const resolvedActions =
+    typeof actions === 'function' ? actions(undefined) : actions;
+
   return (
     <div
       ref={ref}
@@ -102,7 +105,9 @@ export const Result = ({
           ) : null}
         </div>
       ) : null}
-      {actions ? <div className={s.Actions}>{actions}</div> : null}
+      {resolvedActions ? (
+        <div className={s.Actions}>{resolvedActions}</div>
+      ) : null}
     </div>
   );
 };

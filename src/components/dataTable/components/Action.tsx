@@ -13,8 +13,8 @@ export const Action = ({
   return (
     <Button
       ref={ref}
-      title={label}
-      label={showLabel ? label : ''}
+      label={label}
+      showLabel={showLabel}
       disabled={loading}
       {...restProps}
     />

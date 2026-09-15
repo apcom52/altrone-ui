@@ -1,6 +1,6 @@
 import { ButtonProps } from '../button/Button.types.ts';
-import { AnyObject, StrictReactElements } from '../../utils';
-import { ReactElement, ReactNode } from 'react';
+import { AnyObject, RenderFunction, StrictReactElements } from '../../utils';
+import { ReactNode } from 'react';
 import { Table } from '@tanstack/react-table';
 import type { DataTableFeatures } from './DataTable.features.ts';
 
@@ -140,10 +140,14 @@ export interface DataTableProps<T extends object>
   ref?: React.Ref<HTMLDivElement>;
   data: T[];
   columns: DataTableColumn<T>[];
-  children?:
-    | ReactElement
-    | ReactElement[]
-    | ((context: DataTableRenderContext<T>) => ReactElement | ReactElement[]);
+  /**
+   * Rendered in the table header, before the filtering control. One
+   * `DataTable.Action` or several.
+   */
+  actions?: RenderFunction<
+    StrictReactElements<DataTableActionProps>,
+    DataTableRenderContext<T>
+  >;
   mode?: DataTableMode;
   rowsPerPage?: number;
   selectable?: boolean;
@@ -151,21 +155,30 @@ export interface DataTableProps<T extends object>
   showEmptyBanner?: boolean;
   /** Lets every column be resized by dragging its header edge. Off by default. */
   resizableColumns?: boolean;
-  renderRowActions?: (
-    context: DataTableRenderRowActionsContext<T>,
-  ) => ReactElement<DataTableRowActionsProps>;
+  /**
+   * Rendered in a trailing actions column, one `DataTable.RowAction` (or
+   * several) per row. A `collapsed` `RowAction` folds into an overflow menu.
+   */
+  rowActions?: RenderFunction<
+    StrictReactElements<DataTableRowActionProps>,
+    DataTableRenderRowActionsContext<T>
+  >;
   defaultPage?: number;
   defaultSort?: Sorting;
   defaultFilters?: DataTableFilter[];
+  /** Controlled current page (1-based), pairs with `onPageChange`. Omit for uncontrolled (`defaultPage`). */
+  page?: number;
+  /** Controlled sort; `null` means controlled with no sort applied. Omit for uncontrolled (`defaultSort`). */
+  sort?: Sorting | null;
+  /** Controlled active filters, pairs with `onFilterChange`. Omit for uncontrolled (`defaultFilters`). */
+  filters?: DataTableFilter[];
   onPageChange?: (currentPage: number) => void;
   onSortChange?: (sort?: Sorting) => void;
   onFilterChange?: (appliedFilters: DataTableFilter[]) => void;
   onModeChange?: (mode: DataTableMode) => void;
 }
 
-export interface DataTableActionProps extends ButtonProps {
-  showLabel?: boolean;
-}
+export interface DataTableActionProps extends ButtonProps {}
 
 export enum StringFilterRules {
   empty = 'empty',
@@ -235,7 +248,11 @@ export interface FilterRowProps {
 
 export interface DataTableBodyProps<T extends object> {
   showEmptyBanner?: boolean;
-  renderRowActions?: DataTableProps<T>['renderRowActions'];
+  rowActions?: DataTableProps<T>['rowActions'];
+}
+
+export interface DataTableHeaderProps<T extends object> {
+  actions?: DataTableProps<T>['actions'];
 }
 
 export interface DataTableRowActionProps
@@ -243,11 +260,6 @@ export interface DataTableRowActionProps
   label: string;
   collapsed?: boolean;
   onClick?: () => void;
-}
-
-export interface DataTableRowActionsProps
-  extends React.HTMLAttributes<HTMLDivElement> {
-  children: StrictReactElements<DataTableRowActionProps>;
 }
 
 export interface CellRenderer<T extends object = AnyObject> {

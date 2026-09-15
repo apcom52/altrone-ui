@@ -1,9 +1,9 @@
 import { ChangeEventHandler, memo, useRef } from 'react';
-import { SwitcherProps } from './Switcher.types.ts';
+import { SwitchProps } from './Switch.types.ts';
 import clsx from 'clsx';
-import s from './switcher.module.scss';
+import s from './switch.module.scss';
 
-export const Switcher = memo<SwitcherProps>(
+export const Switch = memo<SwitchProps>(
   ({
     ref,
     children,
@@ -23,7 +23,7 @@ export const Switcher = memo<SwitcherProps>(
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const cls = clsx(
-      s.Switcher,
+      s.Switch,
       {
         [s.Checked]: checked,
         [s.Disabled]: disabled,

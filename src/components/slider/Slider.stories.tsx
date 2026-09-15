@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Button, Divider, Flex, Text } from 'components';
+import { Button, Divider, Flex, Modal, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { Range } from './Range.tsx';
+import { Slider } from './Slider.tsx';
 import { useState } from 'react';
 import {
   Contrast,
@@ -18,9 +18,9 @@ import {
   VolumeX,
 } from 'lucide-react';
 
-const story: Meta<typeof Range> = {
-  title: 'Components/Controls/Range',
-  component: Range,
+const story: Meta<typeof Slider> = {
+  title: 'Components/Controls/Slider',
+  component: Slider,
   decorators: [StorybookDecorator],
   parameters: {
     chromatic: {
@@ -33,7 +33,7 @@ const story: Meta<typeof Range> = {
 
 export default story;
 
-type Story = StoryObj<typeof Range>;
+type Story = StoryObj<typeof Slider>;
 
 const Heading = ({ children }: { children: React.ReactNode }) => (
   <Text block size={6} weight="bold" style={{ marginTop: 8 }}>
@@ -116,7 +116,7 @@ export const Darkroom: Story = {
 
         <Flex direction="vertical" gap="m">
           <Field label={`Exposure — ${signed(exposure)}`}>
-            <Range
+            <Slider
               min={-100}
               max={100}
               value={exposure}
@@ -127,7 +127,7 @@ export const Darkroom: Story = {
             />
           </Field>
           <Field label={`Contrast — ${signed(contrast)}`}>
-            <Range
+            <Slider
               min={-100}
               max={100}
               value={contrast}
@@ -138,7 +138,7 @@ export const Darkroom: Story = {
             />
           </Field>
           <Field label={`Saturation — ${signed(saturation)}`}>
-            <Range
+            <Slider
               min={-100}
               max={100}
               value={saturation}
@@ -151,7 +151,7 @@ export const Darkroom: Story = {
             />
           </Field>
           <Field label={`Warmth — ${signed(warmth)}`}>
-            <Range
+            <Slider
               min={-100}
               max={100}
               value={warmth}
@@ -207,7 +207,7 @@ export const MixingDesk: Story = {
           {CHANNELS.map((name, index) => (
             <Flex key={name} direction="vertical" align="center" gap="s">
               <div style={{ height: 220 }}>
-                <Range
+                <Slider
                   direction="vertical"
                   variant="fill"
                   value={levels[index]}
@@ -228,7 +228,7 @@ export const MixingDesk: Story = {
 
           <Flex direction="vertical" align="center" gap="s">
             <div style={{ height: 220 }}>
-              <Range
+              <Slider
                 direction="vertical"
                 variant="fill"
                 size="l"
@@ -253,7 +253,7 @@ export const MixingDesk: Story = {
                 {name}
               </Text>
               <div style={{ flex: 1 }}>
-                <Range
+                <Slider
                   size="s"
                   min={-50}
                   max={50}
@@ -293,10 +293,10 @@ export const NowPlaying: Story = {
         <Heading>Now Playing</Heading>
         <Lead>
           Two sliders, two roles. The scrubber is a hairline{' '}
-          <Text code>default</Text> Range — it should recede into the card until
-          you reach for it, and the value bubble does the talking. Volume is a{' '}
-          <Text code>fill</Text> slab, the tactile control you nudge without
-          looking.
+          <Text code>default</Text> Slider — it should recede into the card
+          until you reach for it, and the value bubble does the talking. Volume
+          is a <Text code>fill</Text> slab, the tactile control you nudge
+          without looking.
         </Lead>
 
         <Flex
@@ -328,7 +328,7 @@ export const NowPlaying: Story = {
             </Flex>
           </Flex>
 
-          <Range
+          <Slider
             value={position}
             max={duration}
             onChange={setPosition}
@@ -352,7 +352,7 @@ export const NowPlaying: Story = {
               onClick={() => setPlaying((p) => !p)}
             />
             <div style={{ flex: 1 }}>
-              <Range
+              <Slider
                 variant="fill"
                 size="s"
                 value={volume}
@@ -406,7 +406,7 @@ export const Thermostat: Story = {
           }}
         >
           <div style={{ height: 260 }}>
-            <Range
+            <Slider
               direction="vertical"
               variant="fill"
               size="xl"
@@ -456,7 +456,7 @@ export const Anatomy: Story = {
         <Heading>Two variants</Heading>
         <Lead>
           <Text code>default</Text> is the thin track with a round thumb — the
-          shape a range control has almost everywhere, and the right pick for
+          shape a slider control has almost everywhere, and the right pick for
           forms and dense panels. <Text code>fill</Text> is the iOS Control
           Centre slab: the whole control is the track and its fill level is the
           handle. Expressive and tactile, but heavy — reserve it for media and
@@ -464,10 +464,10 @@ export const Anatomy: Story = {
         </Lead>
         <Flex direction="vertical" gap="m" style={{ maxWidth: 420 }}>
           <Field label={<Text code>variant=&quot;default&quot;</Text>}>
-            <Range value={a} onChange={setA} />
+            <Slider value={a} onChange={setA} />
           </Field>
           <Field label={<Text code>variant=&quot;fill&quot;</Text>}>
-            <Range variant="fill" value={a} onChange={setA} />
+            <Slider variant="fill" value={a} onChange={setA} />
           </Field>
         </Flex>
 
@@ -486,10 +486,10 @@ export const Anatomy: Story = {
                 {size}
               </Text>
               <div style={{ flex: 1 }}>
-                <Range size={size} value={b} onChange={setB} />
+                <Slider size={size} value={b} onChange={setB} />
               </div>
               <div style={{ flex: 1 }}>
-                <Range size={size} variant="fill" value={b} onChange={setB} />
+                <Slider size={size} variant="fill" value={b} onChange={setB} />
               </div>
             </Flex>
           ))}
@@ -505,7 +505,7 @@ export const Anatomy: Story = {
         </Lead>
         <Flex direction="horizontal" gap="xl">
           <div style={{ height: 220 }}>
-            <Range
+            <Slider
               direction="vertical"
               value={b}
               onChange={setB}
@@ -513,7 +513,7 @@ export const Anatomy: Story = {
             />
           </div>
           <div style={{ height: 220 }}>
-            <Range
+            <Slider
               direction="vertical"
               variant="fill"
               value={b}
@@ -535,10 +535,10 @@ export const Anatomy: Story = {
         </Lead>
         <Flex direction="vertical" gap="m" style={{ maxWidth: 420 }}>
           <Field label="disabled — default">
-            <Range value={35} onChange={() => null} disabled />
+            <Slider value={35} onChange={() => null} disabled />
           </Field>
           <Field label="disabled — fill">
-            <Range
+            <Slider
               variant="fill"
               value={35}
               onChange={() => null}
@@ -547,7 +547,7 @@ export const Anatomy: Story = {
             />
           </Field>
           <Field label="readOnly">
-            <Range
+            <Slider
               value={72}
               onChange={() => null}
               readOnly
@@ -572,20 +572,69 @@ export const Anatomy: Story = {
         <Flex direction="horizontal" gap="xl" wrap style={{ maxWidth: 640 }}>
           <Field label={<Text code>&quot;active&quot;</Text>}>
             <div style={{ width: 200 }}>
-              <Range value={a} onChange={setA} />
+              <Slider value={a} onChange={setA} />
             </div>
           </Field>
           <Field label={<Text code>&quot;always&quot;</Text>}>
             <div style={{ width: 200 }}>
-              <Range value={a} onChange={setA} showCurrentValue="always" />
+              <Slider value={a} onChange={setA} showCurrentValue="always" />
             </div>
           </Field>
           <Field label={<Text code>false</Text>}>
             <div style={{ width: 200 }}>
-              <Range value={a} onChange={setA} showCurrentValue={false} />
+              <Slider value={a} onChange={setA} showCurrentValue={false} />
             </div>
           </Field>
         </Flex>
+      </Flex>
+    );
+  },
+};
+
+export const ElevationInModals: Story = {
+  name: 'Elevation vs. Modal',
+  render: () => {
+    const [pageValue, setPageValue] = useState(72);
+    const [modalValue, setModalValue] = useState(35);
+    const [open, setOpen] = useState(false);
+
+    return (
+      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 520 }}>
+        <Heading>Elevation vs. Modal</Heading>
+        <Lead>
+          The value bubble is portaled to the shared app root, so its own
+          z-index decides whether it renders above or below an unrelated{' '}
+          <Text code>Modal</Text> open elsewhere on the page — it can&apos;t
+          rely on DOM nesting. A slider with{' '}
+          <Text code>showCurrentValue=&quot;always&quot;</Text> sitting on the
+          page must stay <em>under</em> a <Text code>Modal</Text>; the same
+          slider used <em>inside</em> a <Text code>Modal</Text> must stay{' '}
+          <em>above</em> it, to clear the panel it belongs to. Open the modal
+          below and check that the page slider&apos;s bubble no longer shows
+          through it, while the slider inside the modal still reads clearly.
+        </Lead>
+        <Field label="On the page (always visible)">
+          <Slider
+            value={pageValue}
+            onChange={setPageValue}
+            showCurrentValue="always"
+          />
+        </Field>
+        <Button label="Open modal" onClick={() => setOpen(true)} />
+        <Modal
+          open={open}
+          onClose={() => setOpen(false)}
+          title="Volume"
+          content={
+            <Field label="Inside the modal (always visible)">
+              <Slider
+                value={modalValue}
+                onChange={setModalValue}
+                showCurrentValue="always"
+              />
+            </Field>
+          }
+        />
       </Flex>
     );
   },

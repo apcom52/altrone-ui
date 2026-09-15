@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Flex, Text } from 'components';
-import { Textarea } from '../Textarea.tsx';
+import { TextArea } from '../TextArea.tsx';
 
 const SAMPLE = `{
   "name": "web",
@@ -39,7 +39,7 @@ export const SnippetEditor = () => {
           Paste a config
         </Text>
         <Text block>
-          A tall <Text code>Textarea</Text> for machine text — bump{' '}
+          A tall <Text code>TextArea</Text> for machine text — bump{' '}
           <Text code>size</Text>, drag the resize handle for a big payload, and
           drive validation from the value. <Text code>invalid</Text> flips the
           moment the JSON stops parsing.
@@ -47,7 +47,7 @@ export const SnippetEditor = () => {
       </Flex>
 
       <Flex direction="vertical" gap="xs">
-        <Textarea
+        <TextArea
           value={text}
           onChange={setText}
           size="l"

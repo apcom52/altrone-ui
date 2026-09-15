@@ -1,4 +1,4 @@
-import type { MouseEventHandler, ReactElement, ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import {
@@ -19,10 +19,10 @@ import {
   Select,
   showAlert,
   showConfirm,
-  Switcher,
+  Switch,
   Tabs,
   Text,
-  Textarea,
+  TextArea,
   TextInput,
   Toolbar,
 } from 'components';
@@ -542,7 +542,7 @@ const NewTaskModal = ({
   defaultColumnId,
   defaultPriority,
   onCreate,
-  children,
+  trigger,
 }: {
   columns: ColumnDef[];
   members: Member[];
@@ -550,9 +550,10 @@ const NewTaskModal = ({
   defaultColumnId?: string;
   defaultPriority: Priority;
   onCreate: (task: Omit<Task, 'id'>) => void;
-  children: ReactElement<{ onClick?: MouseEventHandler }>;
+  trigger: (props: { onClick: () => void }) => ReactElement;
 }) => {
   const firstColumn = defaultColumnId ?? columns[0]?.id;
+  const [open, setOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [columnId, setColumnId] = useState(firstColumn);
   const [priority, setPriority] = useState<Priority>(defaultPriority);
@@ -570,90 +571,94 @@ const NewTaskModal = ({
   };
 
   return (
-    <Modal
-      title="New task"
-      size="m"
-      onClose={reset}
-      content={
-        <Form errorMessages={{ title: error }}>
-          <Form.Field label="Title" name="title" required>
-            <TextInput
-              value={title}
-              placeholder="What needs to happen?"
-              onChange={(value) => {
-                setTitle(value);
-                setError('');
-              }}
-            />
-          </Form.Field>
-          <Form.Field label="Column" name="column">
-            <Select
-              value={columnId}
-              options={columns.map((c) => ({ value: c.id, label: c.name }))}
-              onChange={(value) => setColumnId(value as string)}
-            />
-          </Form.Field>
-          <Form.Field label="Priority" name="priority">
-            <Select
-              value={priority}
-              options={PRIORITY_OPTIONS}
-              onChange={(value) => setPriority(value as Priority)}
-            />
-          </Form.Field>
-          <Form.Field label="Assignees" name="assignees">
-            <Select
-              multiple
-              value={assigneeIds}
-              placeholder="Nobody yet"
-              options={members.map((m) => ({
-                value: m.id,
-                label: `${m.firstName} ${m.lastName}`,
-              }))}
-              onChange={(value) => setAssigneeIds((value as string[]) ?? [])}
-            />
-          </Form.Field>
-          <Form.Field label="Labels" name="labels">
-            <Select
-              multiple
-              value={labelIds}
-              placeholder="No labels"
-              options={labels.map((l) => ({ value: l.id, label: l.name }))}
-              onChange={(value) => setLabelIds((value as string[]) ?? [])}
-            />
-          </Form.Field>
-        </Form>
-      }
-      actions={({ closeModal }) => (
-        <Button
-          label="Create task"
-          variant="submit"
-          icon={<Plus size={14} />}
-          onClick={() => {
-            if (!title.trim()) {
-              setError('Give the task a title.');
-              return;
-            }
+    <>
+      {trigger({ onClick: () => setOpen(true) })}
+      <Modal
+        title="New task"
+        size="m"
+        open={open}
+        onClose={() => {
+          setOpen(false);
+          reset();
+        }}
+        content={
+          <Form errorMessages={{ title: error }}>
+            <Form.Field label="Title" name="title" required>
+              <TextInput
+                value={title}
+                placeholder="What needs to happen?"
+                onChange={(value) => {
+                  setTitle(value);
+                  setError('');
+                }}
+              />
+            </Form.Field>
+            <Form.Field label="Column" name="column">
+              <Select
+                value={columnId}
+                options={columns.map((c) => ({ value: c.id, label: c.name }))}
+                onChange={(value) => setColumnId(value as string)}
+              />
+            </Form.Field>
+            <Form.Field label="Priority" name="priority">
+              <Select
+                value={priority}
+                options={PRIORITY_OPTIONS}
+                onChange={(value) => setPriority(value as Priority)}
+              />
+            </Form.Field>
+            <Form.Field label="Assignees" name="assignees">
+              <Select
+                multiple
+                value={assigneeIds}
+                placeholder="Nobody yet"
+                options={members.map((m) => ({
+                  value: m.id,
+                  label: `${m.firstName} ${m.lastName}`,
+                }))}
+                onChange={(value) => setAssigneeIds((value as string[]) ?? [])}
+              />
+            </Form.Field>
+            <Form.Field label="Labels" name="labels">
+              <Select
+                multiple
+                value={labelIds}
+                placeholder="No labels"
+                options={labels.map((l) => ({ value: l.id, label: l.name }))}
+                onChange={(value) => setLabelIds((value as string[]) ?? [])}
+              />
+            </Form.Field>
+          </Form>
+        }
+        actions={({ closeModal }) => (
+          <Button
+            label="Create task"
+            variant="submit"
+            icon={<Plus size={14} />}
+            onClick={() => {
+              if (!title.trim()) {
+                setError('Give the task a title.');
+                return;
+              }
 
-            onCreate({
-              columnId: columnId ?? columns[0].id,
-              title: title.trim(),
-              description: '',
-              labelIds,
-              assigneeIds,
-              priority,
-              subtasks: [],
-              comments: [],
-              attachments: 0,
-              due: 'No date',
-            });
-            reset();
-            closeModal();
-          }}
-        />
-      )}
-    >
-      {children}
-    </Modal>
+              onCreate({
+                columnId: columnId ?? columns[0].id,
+                title: title.trim(),
+                description: '',
+                labelIds,
+                assigneeIds,
+                priority,
+                subtasks: [],
+                comments: [],
+                attachments: 0,
+                due: 'No date',
+              });
+              closeModal();
+            }}
+          />
+        )}
+      />
+    </>
   );
 };
 
@@ -664,7 +669,7 @@ const TaskDetailModal = ({
   columns,
   onUpdate,
   onDelete,
-  children,
+  trigger,
 }: {
   task: Task;
   members: Member[];
@@ -672,8 +677,9 @@ const TaskDetailModal = ({
   columns: ColumnDef[];
   onUpdate: (id: string, patch: Partial<Task>) => void;
   onDelete: (id: string) => void;
-  children: ReactElement<{ onClick?: MouseEventHandler }>;
+  trigger: (props: { onClick: () => void }) => ReactElement;
 }) => {
+  const [open, setOpen] = useState(false);
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.description);
   const [newSubtask, setNewSubtask] = useState('');
@@ -727,271 +733,289 @@ const TaskDetailModal = ({
   };
 
   return (
-    <Modal
-      title="Task"
-      size="l"
-      onClose={reset}
-      content={
-        <Flex gap="l" wrap align="start">
-          <Flex
-            direction="vertical"
-            gap="m"
-            style={{ flex: '2 1 320px', minWidth: 0 }}
-          >
-            <Form>
-              <Form.Field label="Title">
-                <TextInput value={title} onChange={setTitle} />
-              </Form.Field>
-              <Form.Field label="Description">
-                <Textarea
-                  value={description}
-                  onChange={setDescription}
-                  placeholder="Add more detail…"
-                  style={{ minHeight: 120 }}
+    <>
+      {trigger({ onClick: () => setOpen(true) })}
+      <Modal
+        title="Task"
+        size="l"
+        open={open}
+        onClose={() => {
+          setOpen(false);
+          reset();
+        }}
+        content={
+          <Flex gap="l" wrap align="start">
+            <Flex
+              direction="vertical"
+              gap="m"
+              style={{ flex: '2 1 320px', minWidth: 0 }}
+            >
+              <Form>
+                <Form.Field label="Title">
+                  <TextInput value={title} onChange={setTitle} />
+                </Form.Field>
+                <Form.Field label="Description">
+                  <TextArea
+                    value={description}
+                    onChange={setDescription}
+                    placeholder="Add more detail…"
+                    style={{ minHeight: 120 }}
+                  />
+                </Form.Field>
+              </Form>
+
+              <Divider />
+
+              <Flex align="center" gap="s">
+                <ListChecks size={16} />
+                <Text size={4} weight="bold">
+                  Checklist
+                </Text>
+                <Text size={2} color="muted">
+                  {doneCount}/{task.subtasks.length}
+                </Text>
+              </Flex>
+              {task.subtasks.length > 0 ? (
+                <Progress
+                  value={Math.round((doneCount / task.subtasks.length) * 100)}
+                  aria-label={`Checklist ${doneCount} of ${task.subtasks.length}`}
+                  size="s"
                 />
-              </Form.Field>
-            </Form>
-
-            <Divider />
-
-            <Flex align="center" gap="s">
-              <ListChecks size={16} />
-              <Text size={4} weight="bold">
-                Checklist
-              </Text>
-              <Text size={2} color="muted">
-                {doneCount}/{task.subtasks.length}
-              </Text>
-            </Flex>
-            {task.subtasks.length > 0 ? (
-              <Progress
-                value={Math.round((doneCount / task.subtasks.length) * 100)}
-                aria-label={`Checklist ${doneCount} of ${task.subtasks.length}`}
-                size="s"
-              />
-            ) : null}
-            <Flex direction="vertical" gap="xs">
-              {task.subtasks.map((subtask) => (
-                <Flex key={subtask.id} align="center" justify="between" gap="s">
-                  <Switcher
-                    checked={subtask.done}
-                    onChange={() =>
-                      onUpdate(task.id, {
-                        subtasks: task.subtasks.map((s) =>
-                          s.id === subtask.id ? { ...s, done: !s.done } : s,
-                        ),
-                      })
-                    }
+              ) : null}
+              <Flex direction="vertical" gap="xs">
+                {task.subtasks.map((subtask) => (
+                  <Flex
+                    key={subtask.id}
+                    align="center"
+                    justify="between"
+                    gap="s"
                   >
-                    <Text size={3} color={subtask.done ? 'muted' : undefined}>
-                      {subtask.title}
-                    </Text>
-                  </Switcher>
-                  <Button
-                    label={`Remove ${subtask.title}`}
-                    icon={<Trash2 />}
-                    showLabel={false}
-                    variant="text"
-                    danger
-                    size="s"
-                    onClick={() =>
+                    <Switch
+                      checked={subtask.done}
+                      onChange={() =>
+                        onUpdate(task.id, {
+                          subtasks: task.subtasks.map((s) =>
+                            s.id === subtask.id ? { ...s, done: !s.done } : s,
+                          ),
+                        })
+                      }
+                    >
+                      <Text size={3} color={subtask.done ? 'muted' : undefined}>
+                        {subtask.title}
+                      </Text>
+                    </Switch>
+                    <Button
+                      label={`Remove ${subtask.title}`}
+                      icon={<Trash2 />}
+                      showLabel={false}
+                      variant="text"
+                      danger
+                      size="s"
+                      onClick={() =>
+                        onUpdate(task.id, {
+                          subtasks: task.subtasks.filter(
+                            (s) => s.id !== subtask.id,
+                          ),
+                        })
+                      }
+                    />
+                  </Flex>
+                ))}
+              </Flex>
+              <Flex gap="s">
+                <TextInput
+                  value={newSubtask}
+                  onChange={setNewSubtask}
+                  placeholder="Add an item"
+                />
+                <Button
+                  label="Add checklist item"
+                  icon={<Plus />}
+                  showLabel={false}
+                  onClick={addSubtask}
+                />
+              </Flex>
+
+              <Divider />
+
+              <Flex align="center" gap="s">
+                <MessageSquare size={16} />
+                <Text size={4} weight="bold">
+                  Comments
+                </Text>
+              </Flex>
+              <Flex direction="vertical" gap="s">
+                {task.comments.length === 0 ? (
+                  <Text size={2} color="muted">
+                    No comments yet.
+                  </Text>
+                ) : (
+                  task.comments.map((comment) => {
+                    const author = members.find(
+                      (m) => m.id === comment.authorId,
+                    );
+                    return (
+                      <Flex key={comment.id} gap="s">
+                        <Avatar
+                          firstName={author?.firstName ?? 'A'}
+                          lastName={author?.lastName}
+                          size="s"
+                        />
+                        <Flex
+                          direction="vertical"
+                          gap="xxs"
+                          style={{ flex: 1, minWidth: 0 }}
+                        >
+                          <Flex align="center" gap="s">
+                            <Text size={2} weight="medium">
+                              {memberName(comment.authorId)}
+                            </Text>
+                            <Text size={2} color="muted">
+                              {comment.time}
+                            </Text>
+                          </Flex>
+                          <Text size={3} block>
+                            {comment.text}
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    );
+                  })
+                )}
+              </Flex>
+              <Flex gap="s">
+                <TextInput
+                  value={newComment}
+                  onChange={setNewComment}
+                  placeholder="Write a comment…"
+                />
+                <Button
+                  label="Send comment"
+                  icon={<Plus />}
+                  showLabel={false}
+                  onClick={addComment}
+                />
+              </Flex>
+            </Flex>
+
+            <Flex
+              direction="vertical"
+              gap="m"
+              style={{ flex: '1 1 220px', minWidth: 0 }}
+            >
+              <Form>
+                <Form.Field label="Status">
+                  <Select
+                    value={task.columnId}
+                    options={columns.map((c) => ({
+                      value: c.id,
+                      label: c.name,
+                    }))}
+                    onChange={(value) =>
+                      onUpdate(task.id, { columnId: value as string })
+                    }
+                  />
+                </Form.Field>
+                <Form.Field label="Priority">
+                  <Select
+                    value={task.priority}
+                    options={PRIORITY_OPTIONS}
+                    onChange={(value) =>
+                      onUpdate(task.id, { priority: value as Priority })
+                    }
+                  />
+                </Form.Field>
+                <Form.Field label="Assignees">
+                  <Select
+                    multiple
+                    value={task.assigneeIds}
+                    placeholder="Nobody yet"
+                    options={members.map((m) => ({
+                      value: m.id,
+                      label: `${m.firstName} ${m.lastName}`,
+                    }))}
+                    onChange={(value) =>
                       onUpdate(task.id, {
-                        subtasks: task.subtasks.filter(
-                          (s) => s.id !== subtask.id,
-                        ),
+                        assigneeIds: (value as string[]) ?? [],
                       })
                     }
                   />
+                </Form.Field>
+                <Form.Field label="Labels">
+                  <Select
+                    multiple
+                    value={task.labelIds}
+                    placeholder="No labels"
+                    options={labels.map((l) => ({
+                      value: l.id,
+                      label: l.name,
+                    }))}
+                    onChange={(value) =>
+                      onUpdate(task.id, { labelIds: (value as string[]) ?? [] })
+                    }
+                  />
+                </Form.Field>
+              </Form>
+              <Box
+                material="plate"
+                shape="rounded"
+                radius="12px"
+                padding={{ x: 12, y: 10 }}
+              >
+                <Flex direction="vertical" gap="xxs">
+                  <Text size={2} color="muted">
+                    Due date
+                  </Text>
+                  <Text
+                    size={3}
+                    weight="medium"
+                    color={task.due === 'Overdue' ? 'danger' : undefined}
+                  >
+                    {task.due}
+                  </Text>
                 </Flex>
-              ))}
-            </Flex>
-            <Flex gap="s">
-              <TextInput
-                value={newSubtask}
-                onChange={setNewSubtask}
-                placeholder="Add an item"
-              />
-              <Button
-                label="Add checklist item"
-                icon={<Plus />}
-                showLabel={false}
-                onClick={addSubtask}
-              />
-            </Flex>
-
-            <Divider />
-
-            <Flex align="center" gap="s">
-              <MessageSquare size={16} />
-              <Text size={4} weight="bold">
-                Comments
-              </Text>
-            </Flex>
-            <Flex direction="vertical" gap="s">
-              {task.comments.length === 0 ? (
-                <Text size={2} color="muted">
-                  No comments yet.
-                </Text>
-              ) : (
-                task.comments.map((comment) => {
-                  const author = members.find((m) => m.id === comment.authorId);
-                  return (
-                    <Flex key={comment.id} gap="s">
-                      <Avatar
-                        firstName={author?.firstName ?? 'A'}
-                        lastName={author?.lastName}
-                        size="s"
-                      />
-                      <Flex
-                        direction="vertical"
-                        gap="xxs"
-                        style={{ flex: 1, minWidth: 0 }}
-                      >
-                        <Flex align="center" gap="s">
-                          <Text size={2} weight="medium">
-                            {memberName(comment.authorId)}
-                          </Text>
-                          <Text size={2} color="muted">
-                            {comment.time}
-                          </Text>
-                        </Flex>
-                        <Text size={3} block>
-                          {comment.text}
-                        </Text>
-                      </Flex>
-                    </Flex>
-                  );
-                })
-              )}
-            </Flex>
-            <Flex gap="s">
-              <TextInput
-                value={newComment}
-                onChange={setNewComment}
-                placeholder="Write a comment…"
-              />
-              <Button
-                label="Send comment"
-                icon={<Plus />}
-                showLabel={false}
-                onClick={addComment}
-              />
+              </Box>
             </Flex>
           </Flex>
-
-          <Flex
-            direction="vertical"
-            gap="m"
-            style={{ flex: '1 1 220px', minWidth: 0 }}
-          >
-            <Form>
-              <Form.Field label="Status">
-                <Select
-                  value={task.columnId}
-                  options={columns.map((c) => ({ value: c.id, label: c.name }))}
-                  onChange={(value) =>
-                    onUpdate(task.id, { columnId: value as string })
-                  }
-                />
-              </Form.Field>
-              <Form.Field label="Priority">
-                <Select
-                  value={task.priority}
-                  options={PRIORITY_OPTIONS}
-                  onChange={(value) =>
-                    onUpdate(task.id, { priority: value as Priority })
-                  }
-                />
-              </Form.Field>
-              <Form.Field label="Assignees">
-                <Select
-                  multiple
-                  value={task.assigneeIds}
-                  placeholder="Nobody yet"
-                  options={members.map((m) => ({
-                    value: m.id,
-                    label: `${m.firstName} ${m.lastName}`,
-                  }))}
-                  onChange={(value) =>
-                    onUpdate(task.id, {
-                      assigneeIds: (value as string[]) ?? [],
-                    })
-                  }
-                />
-              </Form.Field>
-              <Form.Field label="Labels">
-                <Select
-                  multiple
-                  value={task.labelIds}
-                  placeholder="No labels"
-                  options={labels.map((l) => ({ value: l.id, label: l.name }))}
-                  onChange={(value) =>
-                    onUpdate(task.id, { labelIds: (value as string[]) ?? [] })
-                  }
-                />
-              </Form.Field>
-            </Form>
-            <Box
-              material="plate"
-              shape="rounded"
-              radius="12px"
-              padding={{ x: 12, y: 10 }}
-            >
-              <Flex direction="vertical" gap="xxs">
-                <Text size={2} color="muted">
-                  Due date
-                </Text>
-                <Text
-                  size={3}
-                  weight="medium"
-                  color={task.due === 'Overdue' ? 'danger' : undefined}
-                >
-                  {task.due}
-                </Text>
-              </Flex>
-            </Box>
-          </Flex>
-        </Flex>
-      }
-      actions={({ closeModal }) => (
-        <Flex gap="s">
-          <Button
-            label="Save changes"
-            variant="submit"
-            icon={<Check size={14} />}
-            onClick={() => {
-              onUpdate(task.id, {
-                title: title.trim() || task.title,
-                description,
-              });
-              closeModal();
-            }}
-          />
-          <Button
-            label="Delete task"
-            danger
-            variant="text"
-            icon={<Trash2 size={14} />}
-            onClick={async () => {
-              const confirmed = await showConfirm({
-                title: 'Delete this task?',
-                message: 'It will be removed from the board for everyone.',
-                confirmText: 'Delete',
-                rejectText: 'Keep',
-                danger: true,
-              });
-
-              if (confirmed) {
-                onDelete(task.id);
+        }
+        actions={({ closeModal }) => (
+          <Flex gap="s">
+            <Button
+              label="Save changes"
+              variant="submit"
+              icon={<Check size={14} />}
+              onClick={() => {
+                onUpdate(task.id, {
+                  title: title.trim() || task.title,
+                  description,
+                });
                 closeModal();
-              }
-            }}
-          />
-        </Flex>
-      )}
-    >
-      {children}
-    </Modal>
+              }}
+            />
+            <Button
+              label="Delete task"
+              danger
+              variant="text"
+              icon={<Trash2 size={14} />}
+              onClick={async () => {
+                const confirmed = await showConfirm({
+                  title: 'Delete this task?',
+                  message: 'It will be removed from the board for everyone.',
+                  confirmText: 'Delete',
+                  rejectText: 'Keep',
+                  danger: true,
+                });
+
+                if (confirmed) {
+                  onDelete(task.id);
+                  closeModal();
+                }
+              }}
+            />
+          </Flex>
+        )}
+      />
+    </>
   );
 };
 
@@ -1032,102 +1056,103 @@ const TaskCard = ({
       columns={columns}
       onUpdate={onUpdate}
       onDelete={onDelete}
-    >
-      <Box
-        shape="rounded"
-        material="plate"
-        radius="12px"
-        padding={compact ? { x: 12, y: 10 } : { x: 14, y: 12 }}
-        pressable
-        focusable
-        role="button"
-        tabIndex={0}
-        style={{ width: '100%', cursor: 'pointer' }}
-      >
-        <Flex
-          direction="vertical"
-          gap={compact ? 'xs' : 's'}
-          style={{ width: '100%', minWidth: 0 }}
+      trigger={({ onClick }) => (
+        <Box
+          shape="rounded"
+          material="plate"
+          radius="12px"
+          padding={compact ? { x: 12, y: 10 } : { x: 14, y: 12 }}
+          pressable
+          focusable
+          role="button"
+          tabIndex={0}
+          onClick={onClick}
+          style={{ width: '100%', cursor: 'pointer' }}
         >
-          {showCover && !compact && task.coverHue ? (
-            <Box
-              height={4}
-              shape="pill"
-              material="solid"
-              color={task.coverHue}
-              style={{ width: '100%' }}
-            />
-          ) : null}
+          <Flex
+            direction="vertical"
+            gap={compact ? 'xs' : 's'}
+            style={{ width: '100%', minWidth: 0 }}
+          >
+            {showCover && !compact && task.coverHue ? (
+              <Box
+                height={4}
+                shape="pill"
+                material="solid"
+                color={task.coverHue}
+                style={{ width: '100%' }}
+              />
+            ) : null}
 
-          {cardLabels.length > 0 ? (
-            <Flex gap="xs" wrap>
-              {cardLabels.map((label) => (
-                <Label
-                  key={label.id}
-                  size="mini"
-                  variant="soft"
-                  color={label.color}
-                >
-                  {label.name}
-                </Label>
-              ))}
-            </Flex>
-          ) : null}
+            {cardLabels.length > 0 ? (
+              <Flex gap="xs" wrap>
+                {cardLabels.map((label) => (
+                  <Label
+                    key={label.id}
+                    size="mini"
+                    variant="soft"
+                    color={label.color}
+                  >
+                    {label.name}
+                  </Label>
+                ))}
+              </Flex>
+            ) : null}
 
-          <Text size={3} weight="medium" block>
-            {task.title}
-          </Text>
+            <Text size={3} weight="medium" block>
+              {task.title}
+            </Text>
 
-          {!compact && task.subtasks.length > 0 ? (
-            <Progress
-              value={Math.round((done / task.subtasks.length) * 100)}
-              aria-label={`Checklist ${done} of ${task.subtasks.length}`}
-              size="mini"
-            >
-              {`${done}/${task.subtasks.length}`}
-            </Progress>
-          ) : null}
+            {!compact && task.subtasks.length > 0 ? (
+              <Progress
+                value={Math.round((done / task.subtasks.length) * 100)}
+                aria-label={`Checklist ${done} of ${task.subtasks.length}`}
+                size="mini"
+                label={`${done}/${task.subtasks.length}`}
+              />
+            ) : null}
 
-          <Flex align="center" gap="s" style={{ width: '100%', minWidth: 0 }}>
-            <Label
-              size="mini"
-              variant={priority.variant}
-              color={priority.color}
-            >
-              {priority.label}
-            </Label>
-            <Flex align="center" gap="xxs">
-              <CalendarDays size={13} />
-              <Text
-                size={2}
-                color={task.due === 'Overdue' ? 'danger' : 'muted'}
-                nowrap
+            <Flex align="center" gap="s" style={{ width: '100%', minWidth: 0 }}>
+              <Label
+                size="mini"
+                variant={priority.variant}
+                color={priority.color}
               >
-                {task.due}
-              </Text>
+                {priority.label}
+              </Label>
+              <Flex align="center" gap="xxs">
+                <CalendarDays size={13} />
+                <Text
+                  size={2}
+                  color={task.due === 'Overdue' ? 'danger' : 'muted'}
+                  nowrap
+                >
+                  {task.due}
+                </Text>
+              </Flex>
+              <Flex style={{ flex: 1 }} />
+              {task.comments.length > 0 ? (
+                <Flex align="center" gap="xxs">
+                  <MessageSquare size={13} />
+                  <Text size={2} color="muted">
+                    {task.comments.length}
+                  </Text>
+                </Flex>
+              ) : null}
+              {task.attachments > 0 ? (
+                <Flex align="center" gap="xxs">
+                  <Paperclip size={13} />
+                  <Text size={2} color="muted">
+                    {task.attachments}
+                  </Text>
+                </Flex>
+              ) : null}
+              <AssigneeStack ids={task.assigneeIds} members={members} />
             </Flex>
-            <Flex style={{ flex: 1 }} />
-            {task.comments.length > 0 ? (
-              <Flex align="center" gap="xxs">
-                <MessageSquare size={13} />
-                <Text size={2} color="muted">
-                  {task.comments.length}
-                </Text>
-              </Flex>
-            ) : null}
-            {task.attachments > 0 ? (
-              <Flex align="center" gap="xxs">
-                <Paperclip size={13} />
-                <Text size={2} color="muted">
-                  {task.attachments}
-                </Text>
-              </Flex>
-            ) : null}
-            <AssigneeStack ids={task.assigneeIds} members={members} />
           </Flex>
-        </Flex>
-      </Box>
-    </TaskDetailModal>
+        </Box>
+      )}
+    />
   );
 };
 
@@ -1180,15 +1205,17 @@ const BoardColumn = ({
           defaultColumnId={column.id}
           defaultPriority={defaultPriority}
           onCreate={onCreate}
-        >
-          <Button
-            label={`Add a card to ${column.name}`}
-            icon={<Plus />}
-            showLabel={false}
-            variant="text"
-            size="s"
-          />
-        </NewTaskModal>
+          trigger={({ onClick }) => (
+            <Button
+              label={`Add a card to ${column.name}`}
+              icon={<Plus />}
+              showLabel={false}
+              variant="text"
+              size="s"
+              onClick={onClick}
+            />
+          )}
+        />
       </Flex>
 
       {over ? (
@@ -1433,9 +1460,14 @@ export const Kanban: StoryObj<typeof Screen> = {
                   labels={labels}
                   defaultPriority={defaultPriority}
                   onCreate={createTask}
-                >
-                  <Toolbar.Action label="New task" icon={<Plus />} />
-                </NewTaskModal>
+                  trigger={({ onClick }) => (
+                    <Toolbar.Action
+                      label="New task"
+                      icon={<Plus />}
+                      onClick={onClick}
+                    />
+                  )}
+                />
               </Toolbar.Group>
             ) : null}
             <Toolbar.Group>
@@ -1627,7 +1659,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                       title="Show cover colours on cards"
                       hint="A thin coloured strip along the top of each card."
                     >
-                      <Switcher
+                      <Switch
                         checked={showCovers}
                         onChange={(value) => setShowCovers(value)}
                       />
@@ -1636,7 +1668,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                       title="Compact card layout"
                       hint="Hide covers and checklist progress to fit more cards on screen."
                     >
-                      <Switcher
+                      <Switch
                         checked={compactCards}
                         onChange={(value) => setCompactCards(value)}
                       />
@@ -1726,14 +1758,14 @@ export const Kanban: StoryObj<typeof Screen> = {
                             >
                               {count} {count === 1 ? 'card' : 'cards'}
                             </Text>
-                            <Switcher
+                            <Switch
                               checked={column.visible}
                               onChange={() => toggleColumnVisible(column.id)}
                             >
                               <Text size={2} color="muted">
                                 Visible
                               </Text>
-                            </Switcher>
+                            </Switch>
                             <Button
                               label={`Remove ${column.name}`}
                               icon={<Trash2 />}
@@ -1958,7 +1990,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                       title="A card is assigned to me"
                       hint="Someone adds you as an assignee."
                     >
-                      <Switcher
+                      <Switch
                         checked={notify.assigned}
                         onChange={(value) =>
                           setNotify((prev) => ({ ...prev, assigned: value }))
@@ -1966,7 +1998,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                       />
                     </SettingRow>
                     <SettingRow title="A card I follow changes column">
-                      <Switcher
+                      <Switch
                         checked={notify.moved}
                         onChange={(value) =>
                           setNotify((prev) => ({ ...prev, moved: value }))
@@ -1974,7 +2006,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                       />
                     </SettingRow>
                     <SettingRow title="I'm mentioned in a comment">
-                      <Switcher
+                      <Switch
                         checked={notify.mention}
                         onChange={(value) =>
                           setNotify((prev) => ({ ...prev, mention: value }))
@@ -1985,7 +2017,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                       title="A card is due soon"
                       hint="24 hours before the due date."
                     >
-                      <Switcher
+                      <Switch
                         checked={notify.dueSoon}
                         onChange={(value) =>
                           setNotify((prev) => ({ ...prev, dueSoon: value }))
@@ -1996,7 +2028,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                       title="Weekly digest"
                       hint="A Monday summary of what shipped last week."
                     >
-                      <Switcher
+                      <Switch
                         checked={notify.digest}
                         onChange={(value) =>
                           setNotify((prev) => ({ ...prev, digest: value }))

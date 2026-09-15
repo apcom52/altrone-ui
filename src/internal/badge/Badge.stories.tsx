@@ -25,7 +25,7 @@ export const Overview: StoryObj<typeof Badge> = {
         The internal counter/label chip. A <Text code>Box</Text> pill shared by{' '}
         <Text code>Button</Text>, <Text code>Tabs.Item</Text>,{' '}
         <Text code>NavigationList.Link</Text>,{' '}
-        <Text code>BottomNavigation.Item</Text> and{' '}
+        <Text code>BottomNavigation.Link</Text> and{' '}
         <Text code>Dropdown.Action</Text>. Not part of the public API — use{' '}
         <Text code>Label</Text> for standalone tags.
       </Text>

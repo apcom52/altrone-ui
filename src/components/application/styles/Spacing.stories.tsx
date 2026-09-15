@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Text, Range } from 'components';
+import { Flex, Text, Slider } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { useState } from 'react';
 import { Heart } from 'lucide-react';
@@ -75,7 +75,7 @@ const PrimitiveSwitcher = () => {
         <Text block size={3} weight="medium">
           --space-content aliased to: --{tier}
         </Text>
-        <Range
+        <Slider
           min={0}
           max={tiers.length - 1}
           value={tierIndex}

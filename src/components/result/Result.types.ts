@@ -1,5 +1,6 @@
 import React from 'react';
 import { Size } from 'types';
+import { ActionsProp } from '../../utils';
 
 export type ResultStatus = 'empty' | 'info' | 'success' | 'warning' | 'error';
 
@@ -21,7 +22,7 @@ export interface ResultProps
   /** Supporting line under the title. `children` is used when this is omitted. */
   description?: React.ReactNode;
   /** Action buttons row, rendered below the text. */
-  actions?: React.ReactNode;
+  actions?: ActionsProp;
   /** Density (`mini`/`s`/`m`/`l`/`xl`). Default: `'m'`. */
   size?: Size;
   children?: React.ReactNode;

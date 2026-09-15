@@ -1,10 +1,15 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import { Flame, Pencil, RefreshCw, Trash } from 'lucide-react';
 import { DataTable } from './index';
-import { DataTableColumn, DataTableFilter } from './DataTable.types';
+import {
+  DataTableColumn,
+  DataTableFilter,
+  Sorting as SortingValue,
+} from './DataTable.types';
 import { Flex } from '../flex';
 import { Text } from '../text';
+import { Button } from '../button';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 
@@ -349,18 +354,18 @@ export const RowSelection: Story = {
           { accessor: 'role', label: 'Role' },
           { accessor: 'department', label: 'Department' },
         ]}
-      >
-        {({ selectableMode, selectedItems }) =>
-          selectableMode ? (
-            <DataTable.Action
-              label={`Email ${selectedItems.length} selected`}
-              onClick={() => undefined}
-            />
-          ) : (
-            <></>
-          )
+        actions={({ selectableMode, selectedItems }) =>
+          selectableMode
+            ? [
+                <DataTable.Action
+                  key="email"
+                  label={`Email ${selectedItems.length} selected`}
+                  onClick={() => undefined}
+                />,
+              ]
+            : null
         }
-      </DataTable>
+      />
     </Flex>
   ),
 };
@@ -374,60 +379,64 @@ export const Actions: Story = {
   render: () => (
     <Flex direction="vertical" gap="xl" style={{ maxWidth: 1000 }}>
       <Section title="Toolbar actions">
-        Any element passed as a child renders in the header next to the filter
-        button. <Text code>DataTable.Action</Text> is a pre-wired{' '}
+        Elements passed via <Text code>actions</Text> render in the header next
+        to the filter button. <Text code>DataTable.Action</Text> is a pre-wired{' '}
         <Text code>Button</Text> that disables itself while the table is loading.
       </Section>
 
       <Section title="Per-row actions">
-        <Text code>renderRowActions</Text> adds a trailing actions column. Return
-        a <Text code>DataTable.RowActions</Text> with{' '}
-        <Text code>DataTable.RowAction</Text> children; mark the less important
-        ones <Text code>collapsed</Text> and they fold into an overflow menu.
+        <Text code>rowActions</Text> adds a trailing actions column &mdash; a{' '}
+        <Text code>DataTable.RowAction</Text> (or several) per row, as a plain
+        element or as <Text code>{'(context) => JSX.Element'}</Text>. Mark the
+        less important ones <Text code>collapsed</Text> and they fold into an
+        overflow menu.
       </Section>
 
       <DataTable<Employee>
         data={EMPLOYEES}
         rowsPerPage={8}
         selectable
-        renderRowActions={({ rowIndex, selected }) => (
-          <DataTable.RowActions>
+        rowActions={({ rowIndex, selected }) => [
+          <DataTable.RowAction
+            key="edit"
+            label="Edit"
+            icon={<Pencil />}
+            showLabel={false}
+            onClick={() => undefined}
+          />,
+          <DataTable.RowAction
+            key="promote"
+            label="Promote"
+            collapsed
+            icon={<Flame />}
+            onClick={() => undefined}
+          />,
+          selected ? (
             <DataTable.RowAction
-              label="Edit"
-              icon={<Pencil />}
-              showLabel={false}
-              onClick={() => undefined}
-            />
-            <DataTable.RowAction
-              label="Promote"
+              key="admin"
+              label="Make admin"
               collapsed
-              icon={<Flame />}
               onClick={() => undefined}
             />
-            {selected ? (
-              <DataTable.RowAction
-                label="Make admin"
-                collapsed
-                onClick={() => undefined}
-              />
-            ) : null}
-            <DataTable.RowAction
-              label={`Delete #${rowIndex}`}
-              collapsed
-              danger
-              icon={<Trash />}
-              onClick={() => undefined}
-            />
-          </DataTable.RowActions>
-        )}
+          ) : null,
+          <DataTable.RowAction
+            key="delete"
+            label={`Delete #${rowIndex}`}
+            collapsed
+            danger
+            icon={<Trash />}
+            onClick={() => undefined}
+          />,
+        ]}
         columns={[
           { accessor: 'name', label: 'Name' },
           { accessor: 'role', label: 'Role' },
           { accessor: 'department', label: 'Department' },
         ]}
-      >
-        <DataTable.Action label="Add employee" onClick={() => undefined} />
-      </DataTable>
+        actions={
+          <DataTable.Action label="Add employee" onClick={() => undefined} />
+        }
+      />
     </Flex>
   ),
 };
@@ -527,13 +536,14 @@ export const ServerCallbacks: Story = {
             record(`filters → ${filters.length} active`)
           }
           columns={RICH_COLUMNS}
-        >
-          <DataTable.Action
-            label="Refresh"
-            icon={<RefreshCw />}
-            onClick={() => record('manual refresh')}
-          />
-        </DataTable>
+          actions={
+            <DataTable.Action
+              label="Refresh"
+              icon={<RefreshCw />}
+              onClick={() => record('manual refresh')}
+            />
+          }
+        />
 
         <Flex direction="vertical" gap="xs">
           <Text weight="bold" block>
@@ -549,6 +559,85 @@ export const ServerCallbacks: Story = {
             ))
           )}
         </Flex>
+      </Flex>
+    );
+  },
+};
+
+/* ------------------------------------------------------------------ *
+ * Controlled state
+ * ------------------------------------------------------------------ */
+
+export const ControlledState: Story = {
+  name: 'Controlled page/sort/filters',
+  render: () => {
+    const [page, setPage] = useState(1);
+    const [sort, setSort] = useState<SortingValue | null>(null);
+    const [filters, setFilters] = useState<DataTableFilter[]>([]);
+
+    /** Stands in for a real router's query string — this is what would live in the URL. */
+    const address = useMemo(() => {
+      const params = new URLSearchParams();
+      params.set('page', String(page));
+      if (sort) params.set('sort', `${sort.field}:${sort.direction}`);
+      if (filters.length > 0) params.set('filters', String(filters.length));
+      return `/employees?${params.toString()}`;
+    }, [page, sort, filters]);
+
+    const openDeepLink = () => {
+      setPage(2);
+      setSort({ field: 'age', direction: 'desc' });
+      setFilters([{ id: 'department', value: { rule: 'has', value: ['R&D'] } }]);
+    };
+
+    return (
+      <Flex direction="vertical" gap="xl" style={{ maxWidth: 1000 }}>
+        <Section title="Owning state from outside">
+          Passing <Text code>page</Text>/<Text code>sort</Text>/
+          <Text code>filters</Text> (instead of their <Text code>default*</Text>{' '}
+          counterparts) makes that slice of state controlled: the table renders
+          whatever it's given and only asks to change it via
+          <Text code>onPageChange</Text>/<Text code>onSortChange</Text>/
+          <Text code>onFilterChange</Text>. Each is controlled independently —
+          this demo controls all three to keep them in sync with a fake address
+          bar below, standing in for a real router query string.
+        </Section>
+
+        <Flex direction="vertical" gap="xs">
+          <Text weight="bold" block>
+            Address bar
+          </Text>
+          <Text code block>
+            {address}
+          </Text>
+        </Flex>
+
+        <Flex align="center" gap="s">
+          <Button
+            label="Open deep link: page 2, oldest first, R&D"
+            onClick={openDeepLink}
+          />
+          <Button
+            label="Reset"
+            onClick={() => {
+              setPage(1);
+              setSort(null);
+              setFilters([]);
+            }}
+          />
+        </Flex>
+
+        <DataTable<Employee>
+          data={EMPLOYEES}
+          rowsPerPage={3}
+          page={page}
+          sort={sort}
+          filters={filters}
+          onPageChange={setPage}
+          onSortChange={(nextSort) => setSort(nextSort ?? null)}
+          onFilterChange={setFilters}
+          columns={RICH_COLUMNS}
+        />
       </Flex>
     );
   },

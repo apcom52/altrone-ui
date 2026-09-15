@@ -45,8 +45,8 @@ const filler = (
     <Text block size={4}>
       A modal takes the whole screen hostage — the backdrop blocks every click
       behind it, focus is trapped inside, and <Text code>Escape</Text> is the
-      only way out that doesn&apos;t involve a button. Spend that interruption on
-      a decision, never on something the user could have read in place.
+      only way out that doesn&apos;t involve a button. Spend that interruption
+      on a decision, never on something the user could have read in place.
     </Text>
     <Text block size={4}>
       Keep the body short. If the content starts to scroll, the dialog has
@@ -64,45 +64,27 @@ export const Overview: StoryObj<typeof Modal> = {
         Modal
       </Text>
       <Paragraph>
-        An interruption with a title, a body, and a row of actions. The trigger
-        is whatever you pass as <Text code>children</Text> — Modal clones it and
-        adds its own <Text code>onClick</Text> alongside any handler the element
-        already had. Open state is managed internally; reach{' '}
-        <Text code>closeModal</Text> through the render-prop form of{' '}
+        An interruption with a title, a body, and a row of actions. Unlike{' '}
+        <Text code>Popover</Text>/<Text code>Dropdown</Text>/
+        <Text code>Tooltip</Text>, a modal isn&apos;t attached to a trigger
+        element — open it explicitly via the <Text code>open</Text> prop (or let
+        it manage its own state with <Text code>openedByDefault</Text>) and
+        close it via <Text code>onClose</Text> or the render-prop form of{' '}
         <Text code>content</Text>, <Text code>actions</Text>, or{' '}
-        <Text code>leftActions</Text>.
+        <Text code>additionalActions</Text>.
       </Paragraph>
 
       <Heading>Anatomy</Heading>
       <Paragraph>
         Header with a centered title and a close button, a content area, and a
-        footer split in two: <Text code>leftActions</Text> for a secondary or
-        destructive action set apart from the main flow, and{' '}
-        <Text code>actions</Text> on the right for the primary choice. A built-in
-        Cancel button sits before <Text code>actions</Text> unless you pass{' '}
-        <Text code>showCancelButton={'{false}'}</Text>.
+        footer split in two: <Text code>additionalActions</Text> for a secondary
+        or destructive action set apart from the main flow, and{' '}
+        <Text code>actions</Text> on the right for the primary choice. A
+        built-in Cancel button sits before <Text code>actions</Text> unless you
+        pass <Text code>showCancelButton={'{false}'}</Text>.
       </Paragraph>
       <Flex direction="horizontal" gap="m" wrap>
-        <Modal
-          title="Rename branch"
-          data-testid="modal"
-          content={filler}
-          leftActions={[
-            <Tooltip content="Read the naming guide">
-              <Button
-                label="Help"
-                icon={<LifeBuoy />}
-                showLabel={false}
-                variant="text"
-              />
-            </Tooltip>,
-          ]}
-          actions={({ closeModal }) => (
-            <Button label="Rename" variant="submit" onClick={closeModal} />
-          )}
-        >
-          <Button label="Open modal" />
-        </Modal>
+        <AnatomyDemo />
       </Flex>
 
       <Heading>Sizes</Heading>
@@ -112,41 +94,115 @@ export const Overview: StoryObj<typeof Modal> = {
         <Text code>l</Text> (640&nbsp;px) when the body needs room to breathe.
       </Paragraph>
       <Flex direction="horizontal" gap="m" wrap>
-        <Modal title="Small" size="s" content={filler}>
-          <Button label="Small" />
-        </Modal>
-        <Modal title="Medium" size="m" content={filler}>
-          <Button label="Medium" />
-        </Modal>
-        <Modal title="Large" size="l" content={filler}>
-          <Button label="Large" />
-        </Modal>
+        <SizeDemo size="s" label="Small" />
+        <SizeDemo size="m" label="Medium" />
+        <SizeDemo size="l" label="Large" />
       </Flex>
 
       <Heading>Closing from the content</Heading>
       <Paragraph>
         Pass a function to <Text code>content</Text> to get{' '}
-        <Text code>closeModal</Text> where the work actually finishes — here, once
-        a fake save resolves.
+        <Text code>closeModal</Text> where the work actually finishes — here,
+        once a fake save resolves.
       </Paragraph>
-      <Modal
-        title="Save changes"
-        showCancelButton={false}
-        content={({ closeModal }) => <FakeSave onDone={closeModal} />}
-      >
-        <Button label="Save…" icon={<Sparkles />} />
-      </Modal>
+      <SaveDemo />
 
       <Heading>Disabled</Heading>
       <Paragraph>
-        With <Text code>enabled={'{false}'}</Text> the trigger renders but never
-        opens anything — useful while a precondition is still loading.
+        With <Text code>enabled={'{false}'}</Text> the modal never renders —
+        useful to hold off portalling anything while a precondition is still
+        loading, even if something upstream already asked it to open.
       </Paragraph>
-      <Modal enabled={false} title="Never opens" content={filler}>
-        <Button label="Disabled trigger" />
-      </Modal>
+      <DisabledDemo />
     </Flex>
   ),
+};
+
+const AnatomyDemo = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button label="Open modal" onClick={() => setOpen(true)} />
+      <Modal
+        title="Rename branch"
+        data-testid="modal"
+        content={filler}
+        open={open}
+        onClose={() => setOpen(false)}
+        additionalActions={[
+          <Tooltip key="help" content="Read the naming guide">
+            <Button
+              label="Help"
+              icon={<LifeBuoy />}
+              showLabel={false}
+              variant="text"
+            />
+          </Tooltip>,
+        ]}
+        actions={({ closeModal }) => (
+          <Button label="Rename" variant="submit" onClick={closeModal} />
+        )}
+      />
+    </>
+  );
+};
+
+const SizeDemo = ({
+  size,
+  label,
+}: {
+  size: 's' | 'm' | 'l';
+  label: string;
+}) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button label={label} onClick={() => setOpen(true)} />
+      <Modal
+        title={label}
+        size={size}
+        content={filler}
+        open={open}
+        onClose={() => setOpen(false)}
+      />
+    </>
+  );
+};
+
+const SaveDemo = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button label="Save…" icon={<Sparkles />} onClick={() => setOpen(true)} />
+      <Modal
+        title="Save changes"
+        showCancelButton={false}
+        open={open}
+        onClose={() => setOpen(false)}
+        content={({ closeModal }) => <FakeSave onDone={closeModal} />}
+      />
+    </>
+  );
+};
+
+const DisabledDemo = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button label="Never opens" onClick={() => setOpen(true)} />
+      <Modal
+        enabled={false}
+        title="Never opens"
+        content={filler}
+        open={open}
+        onClose={() => setOpen(false)}
+      />
+    </>
+  );
 };
 
 const FakeSave = ({ onDone }: { onDone: () => void }) => {

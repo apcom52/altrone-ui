@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Text, Switcher } from 'components';
+import { Flex, Text, Switch } from 'components';
 import { useAltroneTheme } from 'components/application';
 import { StorybookDecorator } from 'global/storybook';
 
@@ -43,12 +43,12 @@ const ThemeToggleDemo = () => {
 
   return (
     <Flex direction="vertical" gap="m">
-      <Switcher
+      <Switch
         checked={theme === 'dark'}
         onChange={(checked) => setTheme(checked ? 'dark' : 'light')}
       >
         Dark theme
-      </Switcher>
+      </Switch>
       <Flex gap="m" wrap>
         <div
           style={{

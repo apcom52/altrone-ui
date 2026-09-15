@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ReactElement, ReactNode, useState } from 'react';
-import { Image, Flex, Grid, Text, Switcher, Loading } from 'components';
+import { Image, Flex, Grid, Text, Switch, Loading } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 
@@ -184,7 +184,7 @@ const LoadingScenario = ({
   return (
     <Flex direction="vertical" gap="s">
       <Flex align="center" gap="m">
-        <Switcher checked={loaded} onChange={setLoaded} />
+        <Switch checked={loaded} onChange={setLoaded} />
         <Text size={3}>{loaded ? 'Loaded' : 'Loading'}</Text>
       </Flex>
       <Paragraph>{description}</Paragraph>

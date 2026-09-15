@@ -43,7 +43,7 @@ export * from './popover';
 export * from './progress';
 
 export * from './radio';
-export * from './range';
+export * from './slider';
 
 export * from './result';
 
@@ -55,12 +55,12 @@ export * from './sideNavigation';
 export * from './skeleton';
 export * from './splitter';
 export * from './spoiler';
-export * from './switcher';
+export * from './switch';
 
 export * from './tabs';
 export * from './tags';
 export * from './text';
-export * from './textarea';
+export * from './textArea';
 export * from './textInput';
 export * from './notifications';
 export * from './toolbar';

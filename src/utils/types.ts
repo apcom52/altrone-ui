@@ -21,3 +21,12 @@ export type StrictReactElements<T extends object> =
   | null
   | undefined
   | Array<ReactElement<T> | null | undefined>;
+
+/**
+ * Canonical shape for every `actions` prop across the library: one or
+ * several action elements, or a function of `Ctx` returning them.
+ */
+export type ActionsProp<Ctx = undefined> = RenderFunction<
+  StrictReactElements<AnyObject>,
+  Ctx
+>;

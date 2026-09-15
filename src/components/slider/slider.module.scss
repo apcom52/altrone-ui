@@ -1,37 +1,37 @@
 @import 'src/global/mixins';
 
 :global([data-altrone-root='true']) {
-  --range-track-color: var(--interactive-3);
-  --range-fill-color: var(--accent-9);
-  --range-fill-hover-color: var(--accent-10);
-  --range-value-text-color: var(--text-2);
-  --range-value-background-color: var(--background-1);
-  --range-fill-surface-color: var(--interactive-a1);
+  --slider-track-color: var(--interactive-3);
+  --slider-fill-color: var(--accent-9);
+  --slider-fill-hover-color: var(--accent-10);
+  --slider-value-text-color: var(--text-2);
+  --slider-value-background-color: var(--background-1);
+  --slider-fill-surface-color: var(--interactive-a1);
 
   /* Thumb reproduces Box's `plate` material (frosted fill + layered hairline
      and contact shadow) — see box.module.scss `.MaterialPlate`. */
-  --range-thumb-fill: var(--glass-background-color);
-  --range-thumb-shadow:
+  --slider-thumb-fill: var(--glass-background-color);
+  --slider-thumb-shadow:
     0 0 0 1px var(--gray-a3), 0 0 0 0.5px var(--black-a1),
     0 1px 1px 0 var(--gray-a2), 0 2px 1px -1px var(--black-a1),
     0 1px 3px 0 var(--black-a1);
 }
 
-.Range {
-  --range-size: 32px;
-  --range-track-thickness: 4px;
-  --range-thumb-size: 16px;
-  --range-thumb-grow: calc(var(--range-thumb-size) / 2.5);
-  --range-fill-radius: var(--radius-l);
-  --range-value-font-size: var(--text-size-3);
+.Slider {
+  --slider-size: 32px;
+  --slider-track-thickness: 4px;
+  --slider-thumb-size: 16px;
+  --slider-thumb-grow: calc(var(--slider-thumb-size) / 2.5);
+  --slider-fill-radius: var(--radius-l);
+  --slider-value-font-size: var(--text-size-3);
 
   position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
   width: 100%;
-  min-height: max(var(--range-thumb-size), 24px);
-  color: var(--range-value-text-color);
+  min-height: max(var(--slider-thumb-size), 24px);
+  color: var(--slider-value-text-color);
   cursor: pointer;
   outline: none;
 
@@ -43,7 +43,7 @@
 }
 
 /* Focus ring: around the thumb for `default`, around the whole slab for `fill`. */
-.Range:not(.Fill):focus-visible .Thumb,
+.Slider:not(.Fill):focus-visible .Thumb,
 .Fill:focus-visible {
   outline: 2px solid var(--focus-color);
   outline-offset: 2px;
@@ -52,9 +52,9 @@
 .Track {
   position: relative;
   flex: 1;
-  height: var(--range-track-thickness);
+  height: var(--slider-track-thickness);
   border-radius: var(--radius-pill);
-  background-color: var(--range-track-color);
+  background-color: var(--slider-track-color);
 }
 
 .ActiveTrack {
@@ -63,7 +63,7 @@
   top: 0;
   height: 100%;
   border-radius: inherit;
-  background-color: var(--range-fill-color);
+  background-color: var(--slider-fill-color);
   pointer-events: none;
   transition: background-color var(--motion-duration-fast)
     var(--motion-easing-standard);
@@ -72,14 +72,14 @@
 .Thumb {
   position: absolute;
   top: 50%;
-  width: var(--range-thumb-size);
-  height: var(--range-thumb-size);
+  width: var(--slider-thumb-size);
+  height: var(--slider-thumb-size);
   /* Half the thumb height, not 50% — a circle and a widened pill then share
      the same radius, so the shape morphs by width alone with no radius jump. */
-  border-radius: calc(var(--range-thumb-size) / 2);
-  background-color: var(--range-thumb-fill);
+  border-radius: calc(var(--slider-thumb-size) / 2);
+  background-color: var(--slider-thumb-fill);
   backdrop-filter: var(--glass-effects);
-  box-shadow: var(--range-thumb-shadow);
+  box-shadow: var(--slider-thumb-shadow);
   transform: translate(-50%, -50%);
   pointer-events: none;
   transition:
@@ -87,34 +87,48 @@
     height var(--motion-duration-fast) var(--motion-easing-standard);
 }
 
-.Range:active:not(.Disabled):not(.ReadOnly) .Thumb,
-.Range[data-range-active='true'] .Thumb {
-  width: calc(var(--range-thumb-size) + var(--range-thumb-grow));
+.Slider:active:not(.Disabled):not(.ReadOnly) .Thumb,
+.Slider[data-slider-active='true'] .Thumb {
+  width: calc(var(--slider-thumb-size) + var(--slider-thumb-grow));
 }
 
 .Value,
 .ValueFloating {
   padding: 2px 6px;
   border-radius: var(--radius-s);
-  background-color: var(--range-value-text-color);
-  color: var(--range-value-background-color);
-  font-size: var(--range-value-font-size);
+  background-color: var(--slider-value-text-color);
+  color: var(--slider-value-background-color);
+  font-size: var(--slider-value-font-size);
   line-height: 1.4;
   font-weight: var(--text-weight-medium);
   white-space: nowrap;
   pointer-events: none;
 }
 
+/*
+ * Both are portaled to the shared app root, not to whichever overlay they're
+ * visually inside — so with `showCurrentValue="always"` the bubble stays
+ * mounted (and z-indexed) regardless of an unrelated `Modal`/`Drawer` opening
+ * elsewhere on the page. Default to `--level-fixed`, safely below
+ * `--level-modal-backdrop`; `.ValueElevated` (applied only when the slider is
+ * actually nested inside a dialog) bumps it to tooltip level so it still
+ * clears the overlay it belongs to.
+ */
+
 /* Inline chip — the `fill` variant only (see `.Fill .Value`). */
 .Value {
   position: absolute;
-  z-index: var(--level-tooltip);
+  z-index: var(--level-fixed);
   opacity: 0;
   transition: opacity var(--motion-duration-fast) var(--motion-easing-standard);
 }
 
 /* Anchored to the thumb through a portal; floating-ui sets position/transform. */
 .ValueFloating {
+  z-index: var(--level-fixed);
+}
+
+.ValueElevated {
   z-index: var(--level-tooltip);
 }
 
@@ -123,17 +137,17 @@
   align-items: center;
   flex-shrink: 0;
   font-size: 18px;
-  color: var(--range-value-text-color);
+  color: var(--slider-value-text-color);
   pointer-events: none;
 }
 
-.Range:hover .ActiveTrack {
-  background-color: var(--range-fill-hover-color);
+.Slider:hover .ActiveTrack {
+  background-color: var(--slider-fill-hover-color);
 }
 
-.Range:hover .Value,
-.Range:focus-visible .Value,
-.Range[data-range-active='true'] .Value,
+.Slider:hover .Value,
+.Slider:focus-visible .Value,
+.Slider[data-slider-active='true'] .Value,
 .ShowValueAlways .Value {
   opacity: 1;
 }
@@ -141,18 +155,18 @@
 /* Dark theme: the thumb keeps a white cap, the way a native macOS/iOS slider
    knob does — same inversion the submit Button applies. */
 :global([data-altrone-theme='dark']) .Thumb {
-  --range-thumb-fill: var(--white);
+  --slider-thumb-fill: var(--white);
 }
 
 /* ---------- fill variant (iOS Control Center slab) ---------- */
 
 .Fill {
   gap: 0;
-  height: var(--range-size);
+  height: var(--slider-size);
   min-height: 0;
-  border-radius: var(--range-fill-radius);
+  border-radius: var(--slider-fill-radius);
   overflow: hidden;
-  background-color: var(--range-fill-surface-color);
+  background-color: var(--slider-fill-surface-color);
   box-shadow: var(--elevation-raised-shadow);
   backdrop-filter: var(--glass-effects);
   transition: filter var(--motion-duration-fast) var(--motion-easing-standard);
@@ -189,7 +203,7 @@
     padding: 2px 8px;
     border-radius: var(--radius-pill);
     background-color: var(--interactive-a3);
-    color: var(--range-value-text-color);
+    color: var(--slider-value-text-color);
     backdrop-filter: var(--glass-effects);
   }
 
@@ -204,11 +218,11 @@
 /* ---------- sizes ---------- */
 
 .Mini {
-  --range-size: 24px;
-  --range-track-thickness: 3px;
-  --range-thumb-size: 12px;
-  --range-fill-radius: var(--radius-m);
-  --range-value-font-size: var(--text-size-2);
+  --slider-size: 24px;
+  --slider-track-thickness: 3px;
+  --slider-thumb-size: 12px;
+  --slider-fill-radius: var(--radius-m);
+  --slider-value-font-size: var(--text-size-2);
 
   .Icon {
     font-size: 14px;
@@ -216,10 +230,10 @@
 }
 
 .Small {
-  --range-size: 26px;
-  --range-thumb-size: 14px;
-  --range-fill-radius: var(--radius-m);
-  --range-value-font-size: var(--text-size-2);
+  --slider-size: 26px;
+  --slider-thumb-size: 14px;
+  --slider-fill-radius: var(--radius-m);
+  --slider-value-font-size: var(--text-size-2);
 
   .Icon {
     font-size: 16px;
@@ -227,9 +241,9 @@
 }
 
 .Large {
-  --range-size: 40px;
-  --range-track-thickness: 6px;
-  --range-thumb-size: 20px;
+  --slider-size: 40px;
+  --slider-track-thickness: 6px;
+  --slider-thumb-size: 20px;
 
   .Icon {
     font-size: 22px;
@@ -237,10 +251,10 @@
 }
 
 .XLarge {
-  --range-size: 48px;
-  --range-track-thickness: 8px;
-  --range-thumb-size: 24px;
-  --range-fill-radius: var(--radius-xl);
+  --slider-size: 48px;
+  --slider-track-thickness: 8px;
+  --slider-thumb-size: 24px;
+  --slider-fill-radius: var(--radius-xl);
 
   .Icon {
     font-size: 26px;
@@ -251,7 +265,7 @@
 
 .Vertical {
   flex-direction: column;
-  width: max(var(--range-thumb-size), 24px);
+  width: max(var(--slider-thumb-size), 24px);
   height: 100%;
   min-height: 0;
 
@@ -261,7 +275,7 @@
 
   .Track {
     flex: 1;
-    width: var(--range-track-thickness);
+    width: var(--slider-track-thickness);
     height: auto;
   }
 
@@ -283,15 +297,15 @@
   }
 }
 
-.Vertical.Range:active:not(.Disabled):not(.ReadOnly) .Thumb,
-.Vertical.Range[data-range-active='true'] .Thumb {
-  width: var(--range-thumb-size);
-  height: calc(var(--range-thumb-size) + var(--range-thumb-grow));
+.Vertical.Slider:active:not(.Disabled):not(.ReadOnly) .Thumb,
+.Vertical.Slider[data-slider-active='true'] .Thumb {
+  width: var(--slider-thumb-size);
+  height: calc(var(--slider-thumb-size) + var(--slider-thumb-grow));
 }
 
 .Fill.Vertical {
   flex-direction: row;
-  width: var(--range-size);
+  width: var(--slider-size);
   height: 100%;
 
   .Track {
@@ -321,14 +335,14 @@
 /* ---------- states ---------- */
 
 .Disabled {
-  --range-fill-color: var(--disabled-background);
-  --range-fill-hover-color: var(--disabled-background);
-  --range-value-text-color: var(--disabled-text-color);
+  --slider-fill-color: var(--disabled-background);
+  --slider-fill-hover-color: var(--disabled-background);
+  --slider-value-text-color: var(--disabled-text-color);
 
   cursor: default;
 
   .Thumb {
-    --range-thumb-fill: var(--disabled-background);
+    --slider-thumb-fill: var(--disabled-background);
 
     box-shadow: 0 0 0 1px var(--disabled-border);
     backdrop-filter: none;
@@ -357,7 +371,7 @@
 
 .ReadOnlyLabel {
   user-select: all;
-  color: var(--range-value-text-color);
+  color: var(--slider-value-text-color);
   font-size: var(--text-size-4);
   line-height: var(--line-height-4);
   font-weight: var(--text-weight-regular);

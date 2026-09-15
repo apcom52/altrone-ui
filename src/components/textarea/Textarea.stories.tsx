@@ -1,12 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Textarea } from './Textarea.tsx';
+import { TextArea } from './TextArea.tsx';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Announcement, CommentComposer, ProfileBio, SnippetEditor } from './stories';
 
-const story: Meta<typeof Textarea> = {
-  title: 'Components/Controls/Textarea',
-  component: Textarea,
+const story: Meta<typeof TextArea> = {
+  title: 'Components/Controls/TextArea',
+  component: TextArea,
   decorators: [StorybookDecorator],
   parameters: {
     chromatic: {

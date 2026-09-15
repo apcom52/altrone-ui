@@ -43,7 +43,7 @@ const roles = [
     name: 'raised',
     z: 'auto',
     example:
-      'Tabs item, DatePicker day, Range track, NavigationList, BottomNavigation',
+      'Tabs item, DatePicker day, Slider track, NavigationList, BottomNavigation',
   },
   { name: 'sticky', z: 'var(--level-sticky)', example: 'DataTable column headers' },
   { name: 'overlay', z: 'var(--level-popover)', example: 'Popover, Drawer, Toolbar group' },

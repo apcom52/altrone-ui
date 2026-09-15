@@ -6,7 +6,7 @@ import {
   Form,
   Text,
   TextInput,
-  Textarea,
+  TextArea,
   Spoiler,
 } from 'components';
 import { StorybookDecorator } from 'global/storybook';
@@ -14,7 +14,13 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Drawer } from './Drawer.tsx';
 import { FilterPanelStory } from './stories/Drawer.story.FilterPanel.tsx';
 import { RecordDetailStory } from './stories/Drawer.story.RecordDetail.tsx';
-import { Bell, History, PanelRight, Share2, SlidersHorizontal } from 'lucide-react';
+import {
+  Bell,
+  History,
+  PanelRight,
+  Share2,
+  SlidersHorizontal,
+} from 'lucide-react';
 
 const story: Meta<typeof Drawer> = {
   title: 'Components/Containers/Drawer',
@@ -68,7 +74,7 @@ const longForm = (
       <TextInput />
     </Form.Field>
     <Form.Field label="Description">
-      <Textarea />
+      <TextArea />
     </Form.Field>
     <Spoiler title="Advanced">
       <Form>
@@ -79,7 +85,7 @@ const longForm = (
           <TextInput />
         </Form.Field>
         <Form.Field label="Notes">
-          <Textarea />
+          <TextArea />
         </Form.Field>
       </Form>
     </Spoiler>
@@ -95,13 +101,14 @@ export const Overview: StoryObj<typeof Drawer> = {
       </Text>
       <Paragraph>
         A panel that slides in from the edge of the screen over a dimmed
-        backdrop. The trigger is whatever you pass as{' '}
-        <Text code>children</Text> — Drawer clones it and adds its own{' '}
-        <Text code>onClick</Text> alongside any handler the element already had.
-        Open state is managed internally; reach <Text code>closeDrawer</Text>{' '}
-        through the render-prop form of <Text code>content</Text>,{' '}
-        <Text code>footer</Text>, <Text code>startActions</Text>, or{' '}
-        <Text code>endActions</Text>.
+        backdrop. Unlike <Text code>Popover</Text>/<Text code>Dropdown</Text>/
+        <Text code>Tooltip</Text>, a drawer isn&apos;t attached to a trigger
+        element — open it explicitly via the <Text code>open</Text> prop (or let
+        it manage its own state with <Text code>openedByDefault</Text>) and
+        close it via <Text code>onClose</Text> or the render-prop form of{' '}
+        <Text code>content</Text>, <Text code>footer</Text>,{' '}
+        <Text code>startActions</Text>, or <Text code>endActions</Text> (which
+        all receive <Text code>closeDrawer</Text>).
       </Paragraph>
       <Paragraph>
         Focus is trapped inside the panel while it is open and returns to the
@@ -117,9 +124,7 @@ export const Overview: StoryObj<typeof Drawer> = {
         pinned below the scroll. Passing <Text code>onDone</Text> puts a submit
         button in the header.
       </Paragraph>
-      <Drawer title="Edit project" content={longForm} onDone={async () => {}}>
-        <Button label="Open drawer" icon={<PanelRight />} />
-      </Drawer>
+      <AnatomyDrawerDemo />
 
       <Heading>Placement</Heading>
       <Paragraph>
@@ -129,12 +134,19 @@ export const Overview: StoryObj<typeof Drawer> = {
         contextual detail on the end.
       </Paragraph>
       <Flex direction="horizontal" gap="m" wrap>
-        <Drawer title="Navigation" placement="start" content={filler}>
-          <Button label="From the start" icon={<SlidersHorizontal />} />
-        </Drawer>
-        <Drawer title="Notifications" placement="end" content={filler}>
-          <Button label="From the end" icon={<Bell />} showLabel={false} />
-        </Drawer>
+        <PlacementDrawerDemo
+          placement="start"
+          title="Navigation"
+          label="From the start"
+          icon={<SlidersHorizontal />}
+        />
+        <PlacementDrawerDemo
+          placement="end"
+          title="Notifications"
+          label="From the end"
+          icon={<Bell />}
+          showLabel={false}
+        />
       </Flex>
 
       <Heading>Width</Heading>
@@ -144,15 +156,9 @@ export const Overview: StoryObj<typeof Drawer> = {
         edge inset, so a large value degrades gracefully on small screens.
       </Paragraph>
       <Flex direction="horizontal" gap="m" wrap>
-        <Drawer title="Compact" width={320} content={filler}>
-          <Button label="320" />
-        </Drawer>
-        <Drawer title="Default" content={filler}>
-          <Button label="400" />
-        </Drawer>
-        <Drawer title="Roomy" width={560} content={filler}>
-          <Button label="560" />
-        </Drawer>
+        <WidthDrawerDemo width={320} title="Compact" label="320" />
+        <WidthDrawerDemo title="Default" label="400" />
+        <WidthDrawerDemo width={560} title="Roomy" label="560" />
       </Flex>
 
       <Heading>The Done button and async onDone</Heading>
@@ -172,9 +178,112 @@ export const Overview: StoryObj<typeof Drawer> = {
         <Text code>endActions</Text> replaces the default Done button; the title
         stays centred whatever lands on each side.
       </Paragraph>
+      <DocumentDrawerDemo />
+
+      <Heading>Reduced motion</Heading>
+      <Paragraph>
+        Under <Text code>prefers-reduced-motion</Text> the slide and the
+        backdrop fade are dropped — the panel simply mounts and unmounts.
+      </Paragraph>
+    </Flex>
+  ),
+};
+
+const AnatomyDrawerDemo = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button
+        label="Open drawer"
+        icon={<PanelRight />}
+        onClick={() => setOpen(true)}
+      />
+      <Drawer
+        title="Edit project"
+        content={longForm}
+        onDone={async () => {}}
+        open={open}
+        onClose={() => setOpen(false)}
+      />
+    </>
+  );
+};
+
+const PlacementDrawerDemo = ({
+  placement,
+  title,
+  label,
+  icon,
+  showLabel,
+}: {
+  placement: 'start' | 'end';
+  title: string;
+  label: string;
+  icon: React.ReactElement;
+  showLabel?: boolean;
+}) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button
+        label={label}
+        icon={icon}
+        showLabel={showLabel}
+        onClick={() => setOpen(true)}
+      />
+      <Drawer
+        title={title}
+        placement={placement}
+        content={filler}
+        open={open}
+        onClose={() => setOpen(false)}
+      />
+    </>
+  );
+};
+
+const WidthDrawerDemo = ({
+  width,
+  title,
+  label,
+}: {
+  width?: number;
+  title: string;
+  label: string;
+}) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button label={label} onClick={() => setOpen(true)} />
+      <Drawer
+        title={title}
+        width={width}
+        content={filler}
+        open={open}
+        onClose={() => setOpen(false)}
+      />
+    </>
+  );
+};
+
+const DocumentDrawerDemo = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button
+        label="Open document"
+        icon={<PanelRight />}
+        onClick={() => setOpen(true)}
+      />
       <Drawer
         title="Document"
         content={filler}
+        open={open}
+        onClose={() => setOpen(false)}
         startActions={
           <Button
             label="Version history"
@@ -198,20 +307,13 @@ export const Overview: StoryObj<typeof Drawer> = {
             onClick={closeDrawer}
           />,
         ]}
-      >
-        <Button label="Open document" icon={<PanelRight />} />
-      </Drawer>
-
-      <Heading>Reduced motion</Heading>
-      <Paragraph>
-        Under <Text code>prefers-reduced-motion</Text> the slide and the
-        backdrop fade are dropped — the panel simply mounts and unmounts.
-      </Paragraph>
-    </Flex>
-  ),
+      />
+    </>
+  );
 };
 
 const ValidatingDrawer = () => {
+  const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
   const [error, setError] = useState('');
 
@@ -227,26 +329,35 @@ const ValidatingDrawer = () => {
   };
 
   return (
-    <Drawer
-      title="New workspace"
-      placement="end"
-      onDone={handleDone}
-      onClose={() => setError('')}
-      content={
-        <Form>
-          {error && (
-            <Text block size={3} color="danger">
-              {error}
-            </Text>
-          )}
-          <Form.Field label="Workspace name">
-            <TextInput value={name} onChange={(value) => setName(value)} />
-          </Form.Field>
-        </Form>
-      }
-    >
-      <Button label="Create workspace" variant="submit" />
-    </Drawer>
+    <>
+      <Button
+        label="Create workspace"
+        variant="submit"
+        onClick={() => setOpen(true)}
+      />
+      <Drawer
+        title="New workspace"
+        placement="end"
+        open={open}
+        onDone={handleDone}
+        onClose={() => {
+          setOpen(false);
+          setError('');
+        }}
+        content={
+          <Form>
+            {error && (
+              <Text block size={3} color="danger">
+                {error}
+              </Text>
+            )}
+            <Form.Field label="Workspace name">
+              <TextInput value={name} onChange={(value) => setName(value)} />
+            </Form.Field>
+          </Form>
+        }
+      />
+    </>
   );
 };
 

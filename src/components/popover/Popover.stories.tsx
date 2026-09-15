@@ -13,7 +13,7 @@ import {
   Smile,
   Trash2,
 } from 'lucide-react';
-import { Button, Flex, Progress, Switcher, Text, TextInput } from 'components';
+import { Button, Flex, Progress, Switch, Text, TextInput } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Popover } from './Popover.tsx';
@@ -264,9 +264,9 @@ export const ReactionsStory: StoryObj<typeof Popover> = {
           >
             <Button icon={<Smile />} label={`You reacted ${picked}`} />
           </Popover>
-          <Switcher checked={virtualFocus} onChange={setVirtualFocus}>
+          <Switch checked={virtualFocus} onChange={setVirtualFocus}>
             Virtual focus
-          </Switcher>
+          </Switch>
         </Flex>
         <Caption>
           <Text code>virtualNavigationFocus</Text> swaps real DOM focus moves for
@@ -315,9 +315,9 @@ export const ShareStory: StoryObj<typeof Popover> = {
                 />
               </TextInput>
               {copied && <Caption>Copied to clipboard.</Caption>}
-              <Switcher checked={restricted} onChange={setRestricted}>
+              <Switch checked={restricted} onChange={setRestricted}>
                 Only people I invite
-              </Switcher>
+              </Switch>
             </Flex>
           }
         >
@@ -460,9 +460,9 @@ export const AvailabilityStory: StoryObj<typeof Popover> = {
               disabled={!ticketsEnabled}
             />
           </Popover>
-          <Switcher checked={ticketsEnabled} onChange={setTicketsEnabled}>
+          <Switch checked={ticketsEnabled} onChange={setTicketsEnabled}>
             Tickets on sale
-          </Switcher>
+          </Switch>
         </Flex>
       </Flex>
     );

@@ -31,7 +31,7 @@
   min-width: 0;
 }
 
-/* Multi-line field (Textarea): lay the islands out as a footer *below* the
+/* Multi-line field (TextArea): lay the islands out as a footer *below* the
    textarea instead of in the same row. On a single-line field an island shares
    the line with the input; on a textarea that would shorten every wrapped line
    and indent the text past a start island. The textarea takes a full-width flex

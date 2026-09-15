@@ -38,6 +38,9 @@ export const Message = ({
 
   const cls = clsx(s.Message, { [s.Compact]: compact }, className);
 
+  const resolvedActions =
+    typeof actions === 'function' ? actions(undefined) : actions;
+
   return (
     <Box
       ref={ref as Ref<HTMLElement>}
@@ -60,7 +63,9 @@ export const Message = ({
           {header ? <div className={s.Header}>{header}</div> : null}
           {children ? <div className={s.Body}>{children}</div> : null}
         </div>
-        {actions ? <div className={s.Actions}>{actions}</div> : null}
+        {resolvedActions ? (
+          <div className={s.Actions}>{resolvedActions}</div>
+        ) : null}
       </Flex>
       {onClose ? <CloseButton className={s.Close} onClick={onClose} /> : null}
     </Box>

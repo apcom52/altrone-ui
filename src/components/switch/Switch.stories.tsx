@@ -1,13 +1,13 @@
 import { Meta, StoryObj } from '@storybook/react';
 import React, { useMemo, useState } from 'react';
-import { Flex, Switcher, Text } from 'components';
+import { Flex, Switch, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Size } from 'types';
 
-const story: Meta<typeof Switcher> = {
-  title: 'Components/Controls/Switcher',
-  component: Switcher,
+const story: Meta<typeof Switch> = {
+  title: 'Components/Controls/Switch',
+  component: Switch,
   decorators: [StorybookDecorator],
   parameters: {
     chromatic: {
@@ -41,7 +41,7 @@ const Caption = ({ children }: { children: React.ReactNode }) => (
 
 // ─── 1. States ───────────────────────────────────────────────────────────────
 
-export const OverviewStory: StoryObj<typeof Switcher> = {
+export const OverviewStory: StoryObj<typeof Switch> = {
   name: 'States',
   render: () => {
     const [notifications, setNotifications] = useState(true);
@@ -51,7 +51,7 @@ export const OverviewStory: StoryObj<typeof Switcher> = {
     return (
       <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Text size={7} weight="bold" block>
-          Switcher
+          Switch
         </Text>
         <Paragraph>
           A toggle for a setting that takes effect immediately — no separate
@@ -63,22 +63,22 @@ export const OverviewStory: StoryObj<typeof Switcher> = {
         </Paragraph>
 
         <Flex direction="vertical" gap="s">
-          <Switcher checked={notifications} onChange={setNotifications}>
+          <Switch checked={notifications} onChange={setNotifications}>
             Email notifications
-          </Switcher>
-          <Switcher checked={beta} onChange={setBeta}>
+          </Switch>
+          <Switch checked={beta} onChange={setBeta}>
             Join the beta channel
-          </Switcher>
-          <Switcher danger checked={bulkDelete} onChange={setBulkDelete}>
+          </Switch>
+          <Switch danger checked={bulkDelete} onChange={setBulkDelete}>
             Enable bulk delete mode
-          </Switcher>
-          <Switcher disabled>Managed by your admin</Switcher>
-          <Switcher checked disabled>
+          </Switch>
+          <Switch disabled>Managed by your admin</Switch>
+          <Switch checked disabled>
             Always on for this workspace
-          </Switcher>
+          </Switch>
         </Flex>
         <Caption>
-          Use <Text code>Switcher</Text> for an instant on/off; use{' '}
+          Use <Text code>Switch</Text> for an instant on/off; use{' '}
           <Text code>Checkbox</Text> when the choice is part of a form the user
           submits later.
         </Caption>
@@ -91,7 +91,7 @@ export const OverviewStory: StoryObj<typeof Switcher> = {
 
 const SIZES: Size[] = ['mini', 's', 'm', 'l', 'xl'];
 
-export const SizesStory: StoryObj<typeof Switcher> = {
+export const SizesStory: StoryObj<typeof Switch> = {
   name: 'Sizes',
   render: () => {
     const [on, setOn] = useState<Record<string, boolean>>(
@@ -112,14 +112,14 @@ export const SizesStory: StoryObj<typeof Switcher> = {
 
         <Flex direction="vertical" gap="s">
           {SIZES.map((sz) => (
-            <Switcher
+            <Switch
               key={sz}
               size={sz}
               checked={on[sz]}
               onChange={(next) => setOn((prev) => ({ ...prev, [sz]: next }))}
             >
               size=&quot;{sz}&quot;
-            </Switcher>
+            </Switch>
           ))}
         </Flex>
       </Flex>
@@ -135,7 +135,7 @@ const SETTINGS = [
   { key: 'telemetry', label: 'Usage analytics', hint: 'Share anonymous stats' },
 ] as const;
 
-export const SettingsListStory: StoryObj<typeof Switcher> = {
+export const SettingsListStory: StoryObj<typeof Switch> = {
   name: 'A settings list',
   render: () => {
     const [values, setValues] = useState<Record<string, boolean>>({
@@ -166,7 +166,7 @@ export const SettingsListStory: StoryObj<typeof Switcher> = {
                   index === 0 ? 'none' : '1px solid var(--border-1)',
               }}
             >
-              <Switcher
+              <Switch
                 checked={values[key]}
                 onChange={(next) =>
                   setValues((prev) => ({ ...prev, [key]: next }))
@@ -178,7 +178,7 @@ export const SettingsListStory: StoryObj<typeof Switcher> = {
                     {hint}
                   </Text>
                 </Flex>
-              </Switcher>
+              </Switch>
             </Flex>
           ))}
         </Flex>
@@ -189,7 +189,7 @@ export const SettingsListStory: StoryObj<typeof Switcher> = {
 
 // ─── 4. Without a label ──────────────────────────────────────────────────────
 
-export const NoLabelStory: StoryObj<typeof Switcher> = {
+export const NoLabelStory: StoryObj<typeof Switch> = {
   name: 'Without a visible label',
   render: () => {
     const [wifi, setWifi] = useState(true);
@@ -205,7 +205,7 @@ export const NoLabelStory: StoryObj<typeof Switcher> = {
 
         <Flex align="center" gap="m">
           <Text>Wi-Fi</Text>
-          <Switcher aria-label="Wi-Fi" checked={wifi} onChange={setWifi} />
+          <Switch aria-label="Wi-Fi" checked={wifi} onChange={setWifi} />
         </Flex>
       </Flex>
     );

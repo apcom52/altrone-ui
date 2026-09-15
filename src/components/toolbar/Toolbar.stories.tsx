@@ -32,7 +32,7 @@ import { useState } from 'react';
 import { Label } from 'components/label/Label.tsx';
 import { Avatar } from 'components/avatar/Avatar.tsx';
 import { TextInput } from 'components/textInput/TextInput.tsx';
-import { Switcher } from 'components/switcher/Switcher.tsx';
+import { Switch } from 'components/switch/Switch.tsx';
 
 const story: Meta<typeof Toolbar> = {
   title: 'Components/Containers/Toolbar',
@@ -666,7 +666,7 @@ export const FrameToolbar: StoryObj<typeof Toolbar> = {
           The same <Text code>glass</Text> variant scoped to a single frame — an
           editor pane, a card, a preview window. Here it is the header of a code
           panel: a <Text code>Toolbar.Title</Text>, a live toggle built from{' '}
-          <Text code>Switcher</Text>, and a small action cluster on the right.
+          <Text code>Switch</Text>, and a small action cluster on the right.
         </Text>
 
         <div
@@ -681,9 +681,9 @@ export const FrameToolbar: StoryObj<typeof Toolbar> = {
               <Toolbar.Title label="index.tsx" />
             </Toolbar.Leading>
             <Toolbar.Trailing>
-              <Switcher checked={wrap} onChange={() => setWrap((v) => !v)}>
+              <Switch checked={wrap} onChange={() => setWrap((v) => !v)}>
                 Wrap
-              </Switcher>
+              </Switch>
               <Toolbar.Separator variant="line" />
               <Toolbar.Group>
                 <Toolbar.Action

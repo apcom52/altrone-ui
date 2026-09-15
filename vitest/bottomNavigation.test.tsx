@@ -15,14 +15,14 @@ beforeAll(() => {
 });
 
 describe('BottomNavigation', () => {
-  test('forwards className/style to the container and renders items as links', () => {
+  test('forwards className/style to the container and renders links as anchors', () => {
     render(
       <BottomNavigation
         data-testid="bar"
         className="cls"
         style={{ color: 'rgb(255, 0, 0)' }}
       >
-        <BottomNavigation.Item
+        <BottomNavigation.Link
           data-testid="home"
           label="Home"
           icon={<span />}
@@ -36,11 +36,11 @@ describe('BottomNavigation', () => {
     expect(screen.getByTestId('home').tagName).toBe('A');
   });
 
-  test('the selected item is marked with aria-current', () => {
+  test('the selected link is marked with aria-current', () => {
     render(
       <BottomNavigation>
-        <BottomNavigation.Item data-testid="home" label="Home" icon={<span />} />
-        <BottomNavigation.Item
+        <BottomNavigation.Link data-testid="home" label="Home" icon={<span />} />
+        <BottomNavigation.Link
           data-testid="search"
           label="Search"
           icon={<span />}
@@ -56,7 +56,7 @@ describe('BottomNavigation', () => {
   test('renders the badge content', () => {
     render(
       <BottomNavigation>
-        <BottomNavigation.Item
+        <BottomNavigation.Link
           label="Alerts"
           icon={<span />}
           badge="9+"
@@ -68,11 +68,11 @@ describe('BottomNavigation', () => {
     expect(screen.getByTestId('alerts')).toHaveTextContent('9+');
   });
 
-  test('fires onClick when an item is activated', () => {
+  test('fires onClick when a link is activated', () => {
     const onClick = vi.fn();
     render(
       <BottomNavigation>
-        <BottomNavigation.Item
+        <BottomNavigation.Link
           label="Home"
           icon={<span />}
           onClick={onClick}
@@ -85,12 +85,12 @@ describe('BottomNavigation', () => {
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
-  test('asChild merges the item onto a custom element with the icon/label inside', () => {
+  test('asChild merges the link onto a custom element with the icon/label inside', () => {
     render(
       <BottomNavigation>
-        <BottomNavigation.Item asChild label="Home" icon={<span>ICON</span>}>
+        <BottomNavigation.Link asChild label="Home" icon={<span>ICON</span>}>
           <div data-testid="custom" />
-        </BottomNavigation.Item>
+        </BottomNavigation.Link>
       </BottomNavigation>,
     );
 
@@ -103,7 +103,7 @@ describe('BottomNavigation', () => {
   test('renderFunc still overrides the rendered element', () => {
     render(
       <BottomNavigation>
-        <BottomNavigation.Item
+        <BottomNavigation.Link
           label="Home"
           icon={<span />}
           renderFunc={(ref, props) => (

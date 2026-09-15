@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Application, DataTable } from '../src/components';
 import {
@@ -141,6 +141,16 @@ describe('DataTable component', () => {
     expect(screen.getByDisplayValue('role')).toBeInTheDocument();
   });
 
+  test('the filter panel reflects a controlled `filters` prop set before it was ever opened', () => {
+    renderTable({
+      filters: [{ id: 'role', value: { rule: 'has', value: ['Engineer'] } }],
+    });
+
+    fireEvent.click(screen.getByText('Filters'));
+
+    expect(screen.getByDisplayValue('role')).toBeInTheDocument();
+  });
+
   test('selectable reveals a checkbox column only after toggling select mode', () => {
     renderTable({ selectable: true });
 
@@ -173,5 +183,77 @@ describe('DataTable component', () => {
     expect(
       screen.getByTestId('table').querySelectorAll('[class*="Skeleton"]').length,
     ).toBeGreaterThan(0);
+  });
+
+  test('rowActions accepts a plain element, rendered identically for every row', () => {
+    renderTable({
+      rowActions: <DataTable.RowAction label="Edit" onClick={() => undefined} />,
+    });
+
+    expect(
+      screen.getAllByRole('button', { name: 'Edit' }).length,
+    ).toBeGreaterThan(0);
+  });
+
+  test('rowActions accepts a function receiving row context', () => {
+    renderTable({
+      rowActions: ({ row }) => (
+        <DataTable.RowAction
+          label={`Edit ${row.name}`}
+          onClick={() => undefined}
+        />
+      ),
+    });
+
+    expect(screen.getByRole('button', { name: 'Edit Ada' })).toBeInTheDocument();
+  });
+
+  test('controlled `page` ignores its own pagination until the consumer updates the prop', () => {
+    const onPageChange = vi.fn();
+    const { rerender } = renderTable({ page: 1, onPageChange });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Next page' }));
+
+    expect(onPageChange).toHaveBeenCalledWith(2);
+    // still page 1 — the consumer hasn't fed the new page back in yet
+    expect(bodyRows().map((r) => r.textContent)?.[0]).toContain('Ada');
+
+    rerender(
+      <Application config={{ locale: { locale: 'en-US' } }}>
+        <DataTable
+          data={PEOPLE}
+          rowsPerPage={3}
+          page={2}
+          onPageChange={onPageChange}
+          data-testid="table"
+          columns={[
+            { accessor: 'name', label: 'Name', sortable: true, filterable: true },
+            { accessor: 'role', label: 'Role', type: 'select', filterable: true },
+            { accessor: 'age', label: 'Age', type: 'number', sortable: true },
+          ]}
+        />
+      </Application>,
+    );
+
+    expect(bodyRows().map((r) => r.textContent)?.[0]).toContain('Katherine');
+  });
+
+  test('collapsed RowActions fold into an overflow menu', () => {
+    renderTable({
+      rowsPerPage: 1,
+      rowActions: () => [
+        <DataTable.RowAction key="edit" label="Edit" onClick={() => undefined} />,
+        <DataTable.RowAction
+          key="delete"
+          label="Delete"
+          collapsed
+          onClick={() => undefined}
+        />,
+      ],
+    });
+
+    expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Delete' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'More actions' })).toBeInTheDocument();
   });
 });

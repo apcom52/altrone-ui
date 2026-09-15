@@ -1,11 +1,11 @@
-import { TextareaProps } from './Textarea.types.ts';
+import { TextAreaProps } from './TextArea.types.ts';
 import { TextInput } from '../textInput';
 import { ArrayUtils } from '../../utils';
 import clsx from 'clsx';
-import s from './textarea.module.scss';
+import s from './textArea.module.scss';
 import { useFormField } from '../form/components/Field.context.ts';
 
-export const Textarea = ({
+export const TextArea = ({
   ref,
   className,
   style,
@@ -17,7 +17,7 @@ export const Textarea = ({
   children,
   readOnly,
   ...restProps
-}: TextareaProps) => {
+}: TextAreaProps) => {
   const {
     name: formFieldName,
     invalid: formFieldInvalid,
@@ -33,8 +33,8 @@ export const Textarea = ({
   const inputSize = size || formFieldSize;
 
   // TextInput (via asChild/Slot) already applies Input, Invalid, Readonly classes —
-  // only add Textarea-specific class here to avoid duplication
-  const cls = clsx(s.Textarea, className);
+  // only add TextArea-specific class here to avoid duplication
+  const cls = clsx(s.TextArea, className);
 
   const styles = {
     ...style,

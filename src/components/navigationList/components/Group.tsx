@@ -1,15 +1,15 @@
-import { memo, ReactElement, useMemo } from 'react';
+import { memo } from 'react';
 import clsx from 'clsx';
 import s from './group.module.scss';
 import { NavigationListGroupProps } from '../NavigationList.types.ts';
-import { AltChildren, DOMUtils } from '../../../utils';
-import { GroupAction } from './GroupAction.tsx';
+import { AltChildren } from '../../../utils';
 import { Text } from 'components/text/Text.tsx';
 
 export const Group = memo(
   ({
     ref,
     title,
+    actions,
     children,
     className,
     style,
@@ -17,26 +17,11 @@ export const Group = memo(
   }: NavigationListGroupProps) => {
     const cls = clsx(s.Group, className);
 
-    const [actions, links] = useMemo(() => {
-      const actions: ReactElement[] = [];
-      const links: ReactElement[] = [];
+    const links = new AltChildren(children).filterNodes().toArray();
 
-      new AltChildren(children)
-        .filterNodes()
-        .toArray()
-        .forEach((elem) => {
-          const element = elem as ReactElement;
-          if (DOMUtils.containsElementType(element, [GroupAction])) {
-            actions.push(element);
-          } else {
-            links.push(element);
-          }
-        });
-
-      return [actions, links];
-    }, [children]);
-
-    const hasHeader = Boolean(title) || actions.length > 0;
+    const resolvedActions =
+      typeof actions === 'function' ? actions(undefined) : actions;
+    const hasHeader = Boolean(title) || Boolean(resolvedActions);
 
     return (
       <div
@@ -54,7 +39,9 @@ export const Group = memo(
                 {title}
               </Text>
             ) : null}
-            {actions.length ? <div className={s.Actions}>{actions}</div> : null}
+            {resolvedActions ? (
+              <div className={s.Actions}>{resolvedActions}</div>
+            ) : null}
           </div>
         ) : null}
         {links}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Flex, Text } from 'components';
-import { Textarea } from '../Textarea.tsx';
+import { TextArea } from '../TextArea.tsx';
 
 const SAVED_DEFAULT =
   'Design systems engineer. Currently untangling a decade of CSS into tokens. Off the clock: long-distance cycling and worse coffee than I admit.';
@@ -23,7 +23,7 @@ export const ProfileBio = () => {
         <Text block>
           The other half of a form: multi-line copy. Read-only until you hit
           Edit, a minimum-length gate while editing, and back to a flat,
-          copy-friendly block on save — all the same <Text code>Textarea</Text>,
+          copy-friendly block on save — all the same <Text code>TextArea</Text>,
           just toggling <Text code>readOnly</Text> and <Text code>invalid</Text>.
         </Text>
       </Flex>
@@ -46,7 +46,7 @@ export const ProfileBio = () => {
           )}
         </Flex>
 
-        <Textarea
+        <TextArea
           id="bio"
           value={editing ? draft : saved}
           onChange={setDraft}

@@ -1,10 +1,10 @@
 import { memo, useEffect } from 'react';
-import s from './item.module.scss';
-import { SideNavigationItemProps } from '../SideNavigation.types.ts';
+import s from './link.module.scss';
+import { SideNavigationLinkProps } from '../SideNavigation.types.ts';
 import clsx from 'clsx';
 import { useScrollSpy } from '../../../utils/components/ScrollSpy.tsx';
 
-export const Item = memo<SideNavigationItemProps>(
+export const Link = memo<SideNavigationLinkProps>(
   ({ ref, label, href, children, className, style, ...restProps }) => {
     const { activeItem, observeNewSelector } = useScrollSpy();
 
@@ -14,7 +14,7 @@ export const Item = memo<SideNavigationItemProps>(
 
     const isSelected = activeItem === href;
 
-    const cls = clsx(s.Item, { [s.Selected]: isSelected }, className);
+    const cls = clsx(s.Link, { [s.Selected]: isSelected }, className);
 
     return (
       <li ref={ref} className={cls} style={style}>

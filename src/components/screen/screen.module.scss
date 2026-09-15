@@ -107,7 +107,16 @@
   inset-block-start: 0;
   inset-inline: 0;
   height: var(--screen-header-height);
-  z-index: var(--elevation-sticky-z-index);
+  /* Strictly between `--level-sticky` and `--level-fixed`, not
+     `--elevation-sticky-z-index` outright — this is page-level fixed chrome,
+     so it must outrank the generic in-content "sticky" role a component like
+     DataTable's column headers also claims (sharing that role meant an
+     ordinary scrolling DataTable inside Screen.Content could tie with the
+     header on z-index and win the stacking order by DOM position, rendering
+     over it). It still has to stay *below* `.Sidebar` (`--level-fixed`),
+     which floats a rounded panel over the header's top-left corner and is
+     meant to sit in front of it. */
+  z-index: calc(var(--level-fixed) - 1);
   color: inherit;
 }
 

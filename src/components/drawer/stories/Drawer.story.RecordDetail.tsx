@@ -8,7 +8,7 @@ import {
   Form,
   Select,
   Text,
-  Textarea,
+  TextArea,
   TextInput,
 } from 'components';
 import { Drawer } from '../Drawer.tsx';
@@ -33,9 +33,27 @@ const roleLabel = (role: Role) =>
   ROLES.find((item) => item.value === role)?.label ?? role;
 
 const INITIAL: Member[] = [
-  { id: 1, firstName: 'Mara', lastName: 'Ilić', role: 'designer', note: 'Owns the design system.' },
-  { id: 2, firstName: 'Devon', lastName: 'Okafor', role: 'engineer', note: 'On the rendering pipeline.' },
-  { id: 3, firstName: 'Sasha', lastName: 'Petrova', role: 'pm', note: 'Runs the roadmap reviews.' },
+  {
+    id: 1,
+    firstName: 'Mara',
+    lastName: 'Ilić',
+    role: 'designer',
+    note: 'Owns the design system.',
+  },
+  {
+    id: 2,
+    firstName: 'Devon',
+    lastName: 'Okafor',
+    role: 'engineer',
+    note: 'On the rendering pipeline.',
+  },
+  {
+    id: 3,
+    firstName: 'Sasha',
+    lastName: 'Petrova',
+    role: 'pm',
+    note: 'Runs the roadmap reviews.',
+  },
   { id: 4, firstName: 'Ken', lastName: 'Alvarez', role: 'engineer', note: '' },
 ];
 
@@ -46,6 +64,7 @@ const MemberRow = ({
   member: Member;
   onSave: (next: Member) => void;
 }) => {
+  const [open, setOpen] = useState(false);
   const [firstName, setFirstName] = useState(member.firstName);
   const [lastName, setLastName] = useState(member.lastName);
   const [role, setRole] = useState<Role>(member.role);
@@ -78,69 +97,75 @@ const MemberRow = ({
   };
 
   return (
-    <Drawer
-      title="Edit member"
-      placement="end"
-      width={420}
-      onDone={handleDone}
-      onClose={reset}
-      content={
-        <Flex direction="vertical" gap="l">
-          <Flex direction="horizontal" gap="m" align="center">
-            <Avatar
-              firstName={firstName || member.firstName}
-              lastName={lastName}
-              size="l"
-            />
-            <Flex direction="vertical" gap="xs">
-              <Text block size={5} weight="bold">
-                {firstName} {lastName}
-              </Text>
-              <Text block size={3} color="muted">
-                {roleLabel(role)}
-              </Text>
-            </Flex>
-          </Flex>
-
-          <Divider />
-
-          <Form>
-            {error && (
-              <Text block size={3} color="danger">
-                {error}
-              </Text>
-            )}
-            <Form.Field label="First name">
-              <TextInput
-                value={firstName}
-                onChange={(value) => setFirstName(value)}
-              />
-            </Form.Field>
-            <Form.Field label="Last name">
-              <TextInput
-                value={lastName}
-                onChange={(value) => setLastName(value)}
-              />
-            </Form.Field>
-            <Form.Field label="Role">
-              <Select
-                options={ROLES}
-                value={role}
-                onChange={(value) => setRole(value as Role)}
-              />
-            </Form.Field>
-            <Form.Field label="Note">
-              <Textarea value={note} onChange={(value) => setNote(value)} />
-            </Form.Field>
-          </Form>
-        </Flex>
-      }
-    >
+    <>
       <Button
         variant="text"
         label={`${member.firstName} ${member.lastName} · ${roleLabel(member.role)}`}
+        onClick={() => setOpen(true)}
       />
-    </Drawer>
+      <Drawer
+        title="Edit member"
+        placement="end"
+        width={420}
+        open={open}
+        onDone={handleDone}
+        onClose={() => {
+          setOpen(false);
+          reset();
+        }}
+        content={
+          <Flex direction="vertical" gap="l">
+            <Flex direction="horizontal" gap="m" align="center">
+              <Avatar
+                firstName={firstName || member.firstName}
+                lastName={lastName}
+                size="l"
+              />
+              <Flex direction="vertical" gap="xs">
+                <Text block size={5} weight="bold">
+                  {firstName} {lastName}
+                </Text>
+                <Text block size={3} color="muted">
+                  {roleLabel(role)}
+                </Text>
+              </Flex>
+            </Flex>
+
+            <Divider />
+
+            <Form>
+              {error && (
+                <Text block size={3} color="danger">
+                  {error}
+                </Text>
+              )}
+              <Form.Field label="First name">
+                <TextInput
+                  value={firstName}
+                  onChange={(value) => setFirstName(value)}
+                />
+              </Form.Field>
+              <Form.Field label="Last name">
+                <TextInput
+                  value={lastName}
+                  onChange={(value) => setLastName(value)}
+                />
+              </Form.Field>
+              <Form.Field label="Role">
+                <Select
+                  options={ROLES}
+                  value={role}
+                  onChange={(value) => setRole(value as Role)}
+                />
+              </Form.Field>
+              <Form.Field label="Note">
+                <TextArea value={note} onChange={(value) => setNote(value)} />
+              </Form.Field>
+            </Form>
+          </Flex>
+        }
+      />
+    </>
   );
 };
 

@@ -1,21 +1,21 @@
 @import 'src/global/mixins';
 
-.Item {
+.Link {
   display: flex;
   position: relative;
   z-index: 1;
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  min-width: var(--bottom-navigation-item-min-width);
+  min-width: var(--bottom-navigation-link-min-width);
   padding: 6px 10px;
   border: none;
   background: transparent;
   cursor: pointer;
-  color: var(--bottom-navigation-item-text-color);
+  color: var(--bottom-navigation-link-text-color);
   transition: color 0.2s linear;
   text-decoration: none;
-  border-radius: var(--bottom-navigation-item-rounding);
+  border-radius: var(--bottom-navigation-link-rounding);
 
   @include no-appearance;
   @include no-selection;
@@ -26,24 +26,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--bottom-navigation-item-icon-size);
-  height: var(--bottom-navigation-item-icon-size);
+  font-size: var(--bottom-navigation-link-icon-size);
+  height: var(--bottom-navigation-link-icon-size);
   z-index: 1;
 }
 
 .Label {
-  font-size: var(--bottom-navigation-item-text-size);
+  font-size: var(--bottom-navigation-link-text-size);
   font-weight: 500;
   line-height: 16px;
   z-index: 1;
 }
 
-/* Wins over `Text`'s own `--text-color` so the label follows the item's
+/* Wins over `Text`'s own `--text-color` so the label follows the link's
    colour, including the selected accent. */
-.Item .Label {
+.Link .Label {
   color: inherit;
 }
 
 .Selected {
-  color: var(--bottom-navigation-selected-item-text-color);
+  color: var(--bottom-navigation-selected-link-text-color);
 }

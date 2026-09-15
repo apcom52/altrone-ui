@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Flex, Text } from 'components';
-import { Textarea } from '../Textarea.tsx';
+import { TextArea } from '../TextArea.tsx';
 
 const START =
   "We're moving the weekly sync to Thursdays at 10:00.\n\nThe Monday slot clashed with the release window for half the team. Notes will still land in #announcements by end of day either way.";
@@ -24,7 +24,7 @@ export const Announcement = () => {
         </Text>
         <Text block>
           The write / preview split: the same string feeds an editable{' '}
-          <Text code>Textarea</Text> on the left and a <Text code>Text</Text>
+          <Text code>TextArea</Text> on the left and a <Text code>Text</Text>
           -rendered preview on the right. Blank lines become paragraphs and pick
           up the <Text code>1.6</Text> block leading.
         </Text>
@@ -35,7 +35,7 @@ export const Announcement = () => {
           <Text size={2} weight="bold" color="muted" block>
             DRAFT
           </Text>
-          <Textarea
+          <TextArea
             value={draft}
             onChange={setDraft}
             size="l"

@@ -71,16 +71,18 @@ export const Overview: StoryObj<typeof Tabs> = {
           <Text code>Tabs.Item</Text>s. The selected item sits under a sliding{' '}
           <Text code>motion</Text> backdrop that animates between items (with a
           small scale pulse on each hop). It renders the tab strip only —
-          swapping the panel below is up to you, keyed off <Text code>selected</Text>.
+          swapping the panel below is up to you, keyed off{' '}
+          <Text code>selected</Text>.
         </Paragraph>
 
         <Heading>Anatomy</Heading>
         <Paragraph>
           Each <Text code>Tabs.Item</Text> takes a <Text code>label</Text> and
           optionally an <Text code>icon</Text> / <Text code>badge</Text>. By
-          default it's a <Text code>&lt;button type="button" role="tab"&gt;</Text>;
-          pass <Text code>href</Text> to get an <Text code>&lt;a&gt;</Text>{' '}
-          instead. Drive selection with <Text code>selected</Text> +{' '}
+          default it's a{' '}
+          <Text code>&lt;button type="button" role="tab"&gt;</Text>; pass{' '}
+          <Text code>href</Text> to get an <Text code>&lt;a&gt;</Text> instead.
+          Drive selection with <Text code>selected</Text> +{' '}
           <Text code>onClick</Text>.
         </Paragraph>
 
@@ -239,10 +241,38 @@ const TASKS = [
 ];
 
 const TEAM = [
-  { key: 'AK', firstName: 'Alex', lastName: 'Kim', role: 'Tech Lead', tasks: 12, done: 9 },
-  { key: 'MR', firstName: 'Maya', lastName: 'Reed', role: 'Product Designer', tasks: 8, done: 5 },
-  { key: 'DS', firstName: 'Dan', lastName: 'Sousa', role: 'Backend Engineer', tasks: 10, done: 6 },
-  { key: 'PP', firstName: 'Petra', lastName: 'Park', role: 'Frontend Engineer', tasks: 9, done: 7 },
+  {
+    key: 'AK',
+    firstName: 'Alex',
+    lastName: 'Kim',
+    role: 'Tech Lead',
+    tasks: 12,
+    done: 9,
+  },
+  {
+    key: 'MR',
+    firstName: 'Maya',
+    lastName: 'Reed',
+    role: 'Product Designer',
+    tasks: 8,
+    done: 5,
+  },
+  {
+    key: 'DS',
+    firstName: 'Dan',
+    lastName: 'Sousa',
+    role: 'Backend Engineer',
+    tasks: 10,
+    done: 6,
+  },
+  {
+    key: 'PP',
+    firstName: 'Petra',
+    lastName: 'Park',
+    role: 'Frontend Engineer',
+    tasks: 9,
+    done: 7,
+  },
 ];
 
 const TEAM_BY_KEY = Object.fromEntries(TEAM.map((m) => [m.key, m]));
@@ -455,9 +485,8 @@ export const TabsStory: StoryObj<typeof Tabs> = {
               <Progress
                 value={TASKS.filter((t) => t.status === 'done').length}
                 max={TASKS.length}
-              >
-                {({ value, max }) => `${value} of ${max} tasks done`}
-              </Progress>
+                label={({ value, max }) => `${value} of ${max} tasks done`}
+              />
             </Flex>
 
             <Flex direction="vertical" gap="m">
@@ -545,7 +574,9 @@ export const TabsStory: StoryObj<typeof Tabs> = {
                   />
                   <Avatar
                     size="s"
-                    firstName={TEAM_BY_KEY[task.assignee]?.firstName ?? task.assignee}
+                    firstName={
+                      TEAM_BY_KEY[task.assignee]?.firstName ?? task.assignee
+                    }
                     lastName={TEAM_BY_KEY[task.assignee]?.lastName}
                   />
                 </Flex>
@@ -570,9 +601,14 @@ export const TabsStory: StoryObj<typeof Tabs> = {
                   background: 'var(--background-2)',
                 }}
               >
-                <Avatar firstName={member.firstName} lastName={member.lastName} />
+                <Avatar
+                  firstName={member.firstName}
+                  lastName={member.lastName}
+                />
                 <Flex direction="vertical" gap="xxs" style={{ flex: 1 }}>
-                  <Text weight="bold">{member.firstName} {member.lastName}</Text>
+                  <Text weight="bold">
+                    {member.firstName} {member.lastName}
+                  </Text>
                   <Text size={3} color="muted">
                     {member.role}
                   </Text>
@@ -719,7 +755,8 @@ export const TabsInsideOverlayStory: StoryObj<typeof Tabs> = {
             {tab === 'activity' &&
               'Eleven commits and three deployments landed this week.'}
             {tab === 'members' && 'Alex, Maya and Dan have write access.'}
-            {tab === 'settings' && 'Notifications are on; the channel is public.'}
+            {tab === 'settings' &&
+              'Notifications are on; the channel is public.'}
           </Text>
         </Flex>
       );
@@ -738,12 +775,17 @@ export const TabsInsideOverlayStory: StoryObj<typeof Tabs> = {
           The sliding backdrop under the selected tab is a{' '}
           <Text code>motion</Text> layout animation. The tablist is its own
           reference frame (a <Text code>layoutRoot</Text>), so a container
-          repositioning underneath it — a <Text code>Popover</Text> is painted at
-          its origin for a frame before it is placed — is not read as a layout
-          change. The backdrop appears under the selected tab and animates only
-          when you switch tabs, instead of flying in from the corner.
+          repositioning underneath it — a <Text code>Popover</Text> is painted
+          at its origin for a frame before it is placed — is not read as a
+          layout change. The backdrop appears under the selected tab and
+          animates only when you switch tabs, instead of flying in from the
+          corner.
         </Text>
-        <Popover placement="bottom" title="Project panel" content={<PanelTabs />}>
+        <Popover
+          placement="bottom"
+          title="Project panel"
+          content={<PanelTabs />}
+        >
           <Button label="Open panel" />
         </Popover>
       </Flex>

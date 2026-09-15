@@ -379,7 +379,7 @@ const Contents = ({
     ) : (
       <SideNavigation title="Contents">
         {state.chapters.map((chapter, index) => (
-          <SideNavigation.Item
+          <SideNavigation.Link
             key={index}
             href={`#chapter-${index}`}
             label={`${index + 1}. ${chapter.title}`}
@@ -614,7 +614,7 @@ export const Reader: StoryObj<typeof Screen> = {
         {view === 'library' ? (
           <Screen.BottomNavigation hiddenFrom="md">
             <BottomNavigation floating={false}>
-              <BottomNavigation.Item
+              <BottomNavigation.Link
                 href="#"
                 icon={<LibraryIcon />}
                 label="All stories"
@@ -625,7 +625,7 @@ export const Reader: StoryObj<typeof Screen> = {
                   setFilter('all');
                 }}
               />
-              <BottomNavigation.Item
+              <BottomNavigation.Link
                 href="#"
                 icon={<Heart />}
                 label="Liked"

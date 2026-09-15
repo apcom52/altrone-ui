@@ -5,7 +5,7 @@ import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
 import { Text } from '../text';
-import { Switcher } from '../switcher';
+import { Switch } from '../switch';
 import { Calendar } from './Calendar.tsx';
 import {
   CalendarDateRange,
@@ -375,30 +375,30 @@ export const FitsAnywhere: Story = {
         </Text>
 
         <Flex direction="horizontal" gap="l" wrap>
-          <Switcher
+          <Switch
             checked={showHeader}
             onChange={(checked) => setShowHeader(checked)}
           >
             showHeader
-          </Switcher>
-          <Switcher
+          </Switch>
+          <Switch
             checked={showNavigation}
             onChange={(checked) => setShowNavigation(checked)}
           >
             showNavigation
-          </Switcher>
-          <Switcher
+          </Switch>
+          <Switch
             checked={showWeekdays}
             onChange={(checked) => setShowWeekdays(checked)}
           >
             showWeekdays
-          </Switcher>
-          <Switcher
+          </Switch>
+          <Switch
             checked={showOutsideDays}
             onChange={(checked) => setShowOutsideDays(checked)}
           >
             showOutsideDays
-          </Switcher>
+          </Switch>
         </Flex>
 
         <Calendar

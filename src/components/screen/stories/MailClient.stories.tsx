@@ -11,7 +11,7 @@ import {
   NavigationList,
   Screen,
   Text,
-  Textarea,
+  TextArea,
   TextInput,
   Toolbar,
 } from 'components';
@@ -443,7 +443,7 @@ const MailCompose = ({ onClose }: { onClose: () => void }) => {
         value={subject}
         onChange={(value) => setSubject(value)}
       />
-      <Textarea
+      <TextArea
         placeholder="Write your message…"
         value={body}
         onChange={(value) => setBody(value)}

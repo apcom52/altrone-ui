@@ -9,7 +9,7 @@ const clamp = (value: number, min: number, max: number) =>
 
 export const Progress = ({
   ref,
-  children,
+  label: labelProp,
   className,
   style,
   min = 0,
@@ -38,9 +38,9 @@ export const Progress = ({
   const progressContext: ProgressContext = { value, min, max, percentage };
 
   const label =
-    typeof children === 'function'
-      ? children(progressContext)
-      : (children ?? `${percentage}%`);
+    typeof labelProp === 'function'
+      ? labelProp(progressContext)
+      : (labelProp ?? `${percentage}%`);
 
   return (
     <Box
@@ -52,7 +52,7 @@ export const Progress = ({
       aria-valuenow={clampedValue}
       aria-valuemin={min}
       aria-valuemax={max}
-      aria-label={typeof children === 'string' ? children : undefined}
+      aria-label={typeof labelProp === 'string' ? labelProp : undefined}
       className={cls}
       style={style}
       {...props}

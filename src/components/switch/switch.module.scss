@@ -1,0 +1,160 @@
+:global([data-altrone-root='true']) {
+  --switch-background-color: var(--interactive-1);
+  --switch-border-color: var(--border-a1);
+  --switch-label-text-color: var(--text-2);
+  --switch-icon-color: var(--solid-a1);
+  --switch-hover-background-color: var(--interactive-2);
+  --switch-checked-background-color: var(--accent-3);
+  --switch-checked-border-color: var(--accent-a5);
+  --switch-checked-icon-color: var(--accent-12);
+}
+
+.Switch {
+  /* size='m' tier. The derived values live here (not on :root) so that a
+     per-size override of --switch-track-height on this same element
+     re-resolves them — a :root-level `calc(var(...))` would freeze at the
+     value computed on :root and just inherit down unchanged. */
+  --switch-track-height: 24px;
+  --switch-track-width: calc(var(--switch-track-height) * 2);
+  --switch-handle-inset: calc(var(--switch-track-height) / 8);
+  --switch-handle-size: calc(var(--switch-track-height) * 2 / 3);
+  --switch-handle-checked-size: var(--switch-track-height);
+  --switch-label-size: var(--text-size-4);
+  --switch-label-line-height: var(--line-height-4);
+
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  cursor: pointer;
+  /* Row stays >=24px even at size="mini" — hit-area minimum, see accessibility.md. */
+  min-height: max(24px, var(--switch-track-height));
+  border-radius: var(--radius-s);
+
+  -webkit-user-select: none;
+  user-select: none;
+
+  &:hover {
+    --switch-background-color: var(--switch-hover-background-color);
+  }
+
+  &:has(.Input:focus-visible) {
+    --switch-background-color: var(--switch-hover-background-color);
+  }
+}
+
+/* Visually hidden, but kept in the accessibility tree — the real, focusable
+   switch that carries role/checked/disabled and native Space-to-toggle. */
+.Input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.Input:focus-visible + .Button {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
+}
+
+.Button {
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: var(--switch-track-width);
+  height: var(--switch-track-height);
+  background-color: var(--switch-background-color);
+  border-radius: calc(var(--switch-track-height) / 2);
+  transition: background-color var(--motion-duration-fast)
+    var(--motion-easing-standard);
+  color: var(--switch-icon-color);
+  box-shadow:
+    0 0 0 1px var(--switch-border-color),
+    var(--shadow-1);
+  flex-shrink: 0;
+}
+
+.Handle {
+  position: absolute;
+  background-color: var(--switch-icon-color);
+  left: var(--switch-handle-inset);
+  width: var(--switch-handle-size);
+  height: var(--switch-handle-size);
+  border-radius: calc(var(--switch-handle-size) / 2);
+  transition:
+    left var(--motion-duration-base) var(--motion-easing-standard),
+    width var(--motion-duration-base) var(--motion-easing-standard);
+}
+
+.Label {
+  color: var(--switch-label-text-color);
+  font-size: var(--switch-label-size);
+  line-height: var(--switch-label-line-height);
+  font-weight: var(--text-weight-regular);
+}
+
+.Checked {
+  --switch-background-color: var(--switch-checked-background-color);
+  --switch-icon-color: var(--switch-checked-icon-color);
+  --switch-border-color: var(--switch-checked-border-color);
+
+  &:hover {
+    --switch-background-color: var(--switch-checked-background-color);
+  }
+
+  .Handle {
+    left: calc(
+      var(--switch-track-width) - var(--switch-handle-inset) -
+        var(--switch-handle-checked-size)
+    );
+    width: var(--switch-handle-checked-size);
+    border-radius: calc(var(--switch-handle-checked-size) / 2);
+  }
+}
+
+.Disabled {
+  --switch-background-color: var(--disabled-background);
+  --switch-icon-color: var(--disabled-text-color);
+  --switch-border-color: var(--disabled-border);
+  --switch-label-text-color: var(--disabled-text-color);
+
+  cursor: not-allowed;
+  pointer-events: none;
+
+  &:hover {
+    --switch-background-color: var(--disabled-background);
+  }
+}
+
+.Danger {
+  --switch-label-text-color: var(--danger-text-1);
+}
+
+.Mini {
+  --switch-track-height: 16px;
+  --switch-label-size: var(--text-size-3);
+  --switch-label-line-height: var(--line-height-3);
+}
+
+.Small {
+  --switch-track-height: 20px;
+  --switch-label-size: var(--text-size-3);
+  --switch-label-line-height: var(--line-height-3);
+}
+
+.Large {
+  --switch-track-height: 28px;
+  --switch-label-size: var(--text-size-5);
+  --switch-label-line-height: var(--line-height-5);
+}
+
+.XLarge {
+  --switch-track-height: 32px;
+  --switch-label-size: var(--text-size-6);
+  --switch-label-line-height: var(--line-height-6);
+}

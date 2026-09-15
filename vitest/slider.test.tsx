@@ -1,13 +1,13 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Application, Range } from '../src/components';
+import { Application, Slider } from '../src/components';
 
-describe('Range', () => {
+describe('Slider', () => {
   test('check that inner input has all necessary attributes', () => {
     const { container } = render(
       <Application>
-        <Range
+        <Slider
           value={15}
           min={-50}
           max={100}
@@ -25,26 +25,26 @@ describe('Range', () => {
   test('check aria attributes', () => {
     render(
       <Application>
-        <Range
+        <Slider
           value={15}
           min={-50}
           max={500}
           onChange={() => null}
           readOnly
-          data-testid="range1"
+          data-testid="slider1"
         />
-        <Range
+        <Slider
           value={44}
           onChange={() => null}
           direction="vertical"
-          data-testid="range2"
+          data-testid="slider2"
           disabled
           renderLabel={(value) => `${value}m2`}
         />
       </Application>,
     );
 
-    const element = screen.getByTestId('range1');
+    const element = screen.getByTestId('slider1');
     expect(element).toHaveAttribute('role', 'slider');
     expect(element).toHaveAttribute('aria-orientation', 'horizontal');
     expect(element).toHaveAttribute('aria-valuenow', '15');
@@ -52,7 +52,7 @@ describe('Range', () => {
     expect(element).toHaveAttribute('aria-valuemax', '500');
     expect(element).toHaveAttribute('aria-valuetext', '15');
 
-    const element2 = screen.getByTestId('range2');
+    const element2 = screen.getByTestId('slider2');
     expect(element2).toHaveAttribute('role', 'slider');
     expect(element2).toHaveAttribute('aria-orientation', 'vertical');
     expect(element2).toHaveAttribute('aria-valuenow', '44');
@@ -64,27 +64,27 @@ describe('Range', () => {
   test('renderLabel drives the visible read-only label', () => {
     render(
       <Application>
-        <Range
+        <Slider
           value={44}
           onChange={() => null}
           readOnly
-          data-testid="range2"
+          data-testid="slider2"
           renderLabel={(value) => `${value}m2`}
         />
       </Application>,
     );
 
-    const element = screen.getByTestId('range2');
+    const element = screen.getByTestId('slider2');
     expect(element).toHaveTextContent('44m2');
   });
 
   test('check that className, style, activeTrackClassName props works', () => {
     const { container } = render(
       <Application>
-        <Range
+        <Slider
           value={44}
           onChange={() => null}
-          data-testid="range"
+          data-testid="slider"
           className="cls"
           style={{ color: 'rgb(0, 0, 255)' }}
           activeTrackClassName="active-cls"
@@ -92,8 +92,8 @@ describe('Range', () => {
       </Application>,
     );
 
-    expect(screen.getByTestId('range')).toHaveClass('cls');
-    expect(screen.getByTestId('range')).toHaveStyle('color: rgb(0, 0, 255)');
+    expect(screen.getByTestId('slider')).toHaveClass('cls');
+    expect(screen.getByTestId('slider')).toHaveStyle('color: rgb(0, 0, 255)');
 
     const element = container.querySelector('.active-cls');
     expect(element).toHaveClass('active-cls');
@@ -102,17 +102,17 @@ describe('Range', () => {
   test('value bubble portals out of the root so an overflow ancestor cannot clip it', () => {
     render(
       <Application>
-        <Range
+        <Slider
           value={30}
           onChange={() => null}
           showCurrentValue="always"
-          data-testid="range3"
+          data-testid="slider3"
           renderLabel={(value) => `${value}%`}
         />
       </Application>,
     );
 
-    const root = screen.getByTestId('range3');
+    const root = screen.getByTestId('slider3');
     const bubble = screen.getByText('30%');
 
     expect(bubble).toBeInTheDocument();

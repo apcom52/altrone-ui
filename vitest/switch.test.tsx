@@ -1,14 +1,14 @@
 import React, { createRef } from 'react';
 import { expect, test, describe, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Switcher } from '../src/components';
+import { Switch } from '../src/components';
 
-describe('Switcher', () => {
+describe('Switch', () => {
   test('renders as an accessible switch', () => {
     render(
-      <Switcher checked={false} onChange={vi.fn()}>
+      <Switch checked={false} onChange={vi.fn()}>
         Dark mode
-      </Switcher>,
+      </Switch>,
     );
 
     const input = screen.getByRole('switch', { name: 'Dark mode' });
@@ -19,9 +19,9 @@ describe('Switcher', () => {
   test('clicking the label toggles and reports the next state', () => {
     const onChange = vi.fn();
     render(
-      <Switcher checked={false} onChange={onChange}>
+      <Switch checked={false} onChange={onChange}>
         Notifications
-      </Switcher>,
+      </Switch>,
     );
 
     fireEvent.click(screen.getByText('Notifications'));
@@ -32,16 +32,16 @@ describe('Switcher', () => {
 
   test('disabled is applied to the native input', () => {
     render(
-      <Switcher checked disabled onChange={vi.fn()}>
+      <Switch checked disabled onChange={vi.fn()}>
         Auto-save
-      </Switcher>,
+      </Switch>,
     );
 
     expect(screen.getByRole('switch', { name: 'Auto-save' })).toBeDisabled();
   });
 
   test('a bare switch takes its name from aria-label', () => {
-    render(<Switcher aria-label="Compact layout" onChange={vi.fn()} />);
+    render(<Switch aria-label="Compact layout" onChange={vi.fn()} />);
 
     expect(
       screen.getByRole('switch', { name: 'Compact layout' }),
@@ -50,22 +50,22 @@ describe('Switcher', () => {
 
   test('forwards ref to the root <label>', () => {
     const ref = createRef<HTMLLabelElement>();
-    render(<Switcher ref={ref} onChange={vi.fn()}>Label</Switcher>);
+    render(<Switch ref={ref} onChange={vi.fn()}>Label</Switch>);
 
     expect(ref.current).toBeInstanceOf(HTMLLabelElement);
   });
 
   test('className and style apply to the root <label>', () => {
     render(
-      <Switcher
-        data-testid="switcher"
+      <Switch
+        data-testid="switch"
         className="cls"
         style={{ color: 'rgb(0, 0, 255)' }}
         onChange={vi.fn()}
       />,
     );
 
-    const label = screen.getByTestId('switcher');
+    const label = screen.getByTestId('switch');
     expect(label.tagName).toBe('LABEL');
     expect(label).toHaveClass('cls');
     expect(label).toHaveStyle('color: rgb(0, 0, 255)');

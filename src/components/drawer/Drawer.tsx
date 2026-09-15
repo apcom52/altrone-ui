@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useId,
-  type MouseEvent,
-  type ReactElement,
-} from 'react';
+import { useCallback, useEffect, useId } from 'react';
 import { createPortal } from 'react-dom';
 import clsx from 'clsx';
 import FocusTrap from 'focus-trap-react';
@@ -20,7 +14,7 @@ import { DrawerContext, DrawerProps } from './Drawer.types.ts';
 import { CloseButton } from '../closeButton';
 import { Button } from '../button';
 import { Scrollable } from '../scrollable';
-import { DOMUtils, GlobalUtils, useBoolean } from '../../utils';
+import { GlobalUtils, useBoolean } from '../../utils';
 import { useLocalization } from '../application';
 import s from './drawer.module.scss';
 
@@ -62,12 +56,13 @@ const getPortalRoot = () => {
 export const Drawer = (props: DrawerProps) => {
   const {
     ref,
-    children,
     content,
     footer,
     title,
     placement = 'start',
     width = 400,
+    open,
+    openedByDefault = false,
     onClose,
     onDone,
     startActions,
@@ -82,7 +77,9 @@ export const Drawer = (props: DrawerProps) => {
 
   const reducedMotion = useReducedMotionConfig() ?? false;
 
-  const { value: isOpen, enable: open, disable: hide } = useBoolean(false);
+  const isControlled = open !== undefined;
+  const { value: internalOpened, disable: hide } = useBoolean(openedByDefault);
+  const isOpen = isControlled ? open : internalOpened;
   const {
     value: isLoading,
     enable: startLoading,
@@ -90,9 +87,11 @@ export const Drawer = (props: DrawerProps) => {
   } = useBoolean(false);
 
   const handleClose = useCallback(() => {
-    hide();
+    if (!isControlled) {
+      hide();
+    }
     onClose?.();
-  }, [hide, onClose]);
+  }, [isControlled, hide, onClose]);
 
   const drawerContext: DrawerContext = { closeDrawer: handleClose };
 
@@ -177,16 +176,6 @@ export const Drawer = (props: DrawerProps) => {
         transition: BACKDROP_TRANSITION,
       };
 
-  const safeChild = children as ReactElement<{
-    onClick?: React.MouseEventHandler;
-  }>;
-  const triggerElement = DOMUtils.cloneNode(safeChild, {
-    onClick: (event: MouseEvent<HTMLElement>) => {
-      safeChild.props.onClick?.(event);
-      open();
-    },
-  });
-
   const portalRoot = getPortalRoot();
 
   const drawer = (
@@ -248,7 +237,9 @@ export const Drawer = (props: DrawerProps) => {
                     <div className={s.ScrollInset}>{contentElement}</div>
                   </Scrollable>
                 </div>
-                {footerElement && <div className={s.Footer}>{footerElement}</div>}
+                {footerElement && (
+                  <div className={s.Footer}>{footerElement}</div>
+                )}
               </div>
             </motion.div>
           </FocusTrap>
@@ -257,10 +248,5 @@ export const Drawer = (props: DrawerProps) => {
     </AnimatePresence>
   );
 
-  return (
-    <>
-      {triggerElement}
-      {portalRoot ? createPortal(drawer, portalRoot) : null}
-    </>
-  );
+  return portalRoot ? createPortal(drawer, portalRoot) : null;
 };

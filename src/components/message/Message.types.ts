@@ -1,5 +1,6 @@
 import { AriaRole, HTMLAttributes, ReactElement, ReactNode, Ref } from 'react';
 import { Role } from 'types';
+import { ActionsProp } from '../../utils';
 
 export interface MessageProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -9,7 +10,7 @@ export interface MessageProps extends Omit<
   icon?: ReactElement;
   header?: ReactNode;
   severity?: Role;
-  actions?: ReactElement[];
+  actions?: ActionsProp;
   onClose?: () => void;
   compact?: boolean;
   /**

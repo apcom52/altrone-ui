@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { Flex, Progress, Range, Text } from 'components';
+import { Flex, Progress, Slider, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 
@@ -93,24 +93,29 @@ export const Labels: StoryObj<typeof Progress> = {
     <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Labels</Section>
       <Paragraph>
-        With no <Text code>children</Text> the label is the rounded percentage.
-        A string replaces it wholesale. A render function gets{' '}
+        With no <Text code>label</Text> the text is the rounded percentage. A
+        string replaces it wholesale. A render function gets{' '}
         <Text code>{'{ value, min, max, percentage }'}</Text> — use it for
         &ldquo;X of Y&rdquo; counters or a custom phrasing.
       </Paragraph>
 
       <Flex direction="vertical" gap="m">
         <Progress value={42} />
-        <Progress value={42} aria-label="Uploading files">
-          Uploading files…
-        </Progress>
-        <Progress value={42} max={200} aria-label="42 of 200">
-          {({ value, max, percentage }) => (
+        <Progress
+          value={42}
+          aria-label="Uploading files"
+          label="Uploading files…"
+        />
+        <Progress
+          value={42}
+          max={200}
+          aria-label="42 of 200"
+          label={({ value, max, percentage }) => (
             <span>
               {value} of {max} ({percentage}%)
             </span>
           )}
-        </Progress>
+        />
       </Flex>
     </Flex>
   ),
@@ -130,18 +135,31 @@ export const ValueRange: StoryObj<typeof Progress> = {
       </Paragraph>
 
       <Flex direction="vertical" gap="m">
-        <Progress value={0} max={8} aria-label="Step 0 of 8">
-          {({ value, max }) => `Step ${value} of ${max}`}
-        </Progress>
-        <Progress value={3} max={8} aria-label="Step 3 of 8">
-          {({ value, max }) => `Step ${value} of ${max}`}
-        </Progress>
-        <Progress value={8} max={8} aria-label="Step 8 of 8">
-          {({ value, max }) => `Step ${value} of ${max}`}
-        </Progress>
-        <Progress value={140} min={100} max={200} aria-label="Temperature">
-          {({ value }) => `${value}°`}
-        </Progress>
+        <Progress
+          value={0}
+          max={8}
+          aria-label="Step 0 of 8"
+          label={({ value, max }) => `Step ${value} of ${max}`}
+        />
+        <Progress
+          value={3}
+          max={8}
+          aria-label="Step 3 of 8"
+          label={({ value, max }) => `Step ${value} of ${max}`}
+        />
+        <Progress
+          value={8}
+          max={8}
+          aria-label="Step 8 of 8"
+          label={({ value, max }) => `Step ${value} of ${max}`}
+        />
+        <Progress
+          value={140}
+          min={100}
+          max={200}
+          aria-label="Temperature"
+          label={({ value }) => `${value}°`}
+        />
       </Flex>
     </Flex>
   ),
@@ -158,11 +176,11 @@ export const LiveValue: StoryObj<typeof Progress> = {
         <Paragraph>
           <Text code>Progress</Text> is fully controlled — it renders whatever{' '}
           <Text code>value</Text> it&rsquo;s given. Drag the{' '}
-          <Text code>Range</Text> to update it.
+          <Text code>Slider</Text> to update it.
         </Paragraph>
 
         <Progress value={value} aria-label="Download" />
-        <Range
+        <Slider
           value={value}
           onChange={setValue}
           min={0}
@@ -192,23 +210,21 @@ export const Theming: StoryObj<typeof Progress> = {
         <Progress
           value={70}
           aria-label="Storage"
+          label="Storage used"
           style={{
             ['--progress-active-background-color' as string]: 'var(--teal-9)',
             ['--progress-text-color' as string]: 'var(--teal-12)',
           }}
-        >
-          Storage used
-        </Progress>
+        />
         <Progress
           value={92}
           aria-label="Quota"
+          label="Nearly full"
           style={{
             ['--progress-active-background-color' as string]: 'var(--red-9)',
             ['--progress-text-color' as string]: 'var(--red-12)',
           }}
-        >
-          Nearly full
-        </Progress>
+        />
       </Flex>
     </Flex>
   ),

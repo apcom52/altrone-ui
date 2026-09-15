@@ -10,10 +10,11 @@ import {
 } from '../DataTable.types.ts';
 import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
 import { CellRenderers } from '../DataTable.constants.ts';
+import { RowActionsCell } from './RowActionsCell.tsx';
 import s from './body.module.scss';
 
 export const Body = <T extends object>({
-  renderRowActions,
+  rowActions,
   showEmptyBanner = true,
 }: DataTableBodyProps<T>) => {
   const t = useLocalization();
@@ -21,7 +22,7 @@ export const Body = <T extends object>({
 
   const columnsTemplate = useDataTableColumnsTemplate(
     selectMode,
-    Boolean(renderRowActions),
+    Boolean(rowActions),
   );
 
   const rows = table.getRowModel().rows;
@@ -72,13 +73,17 @@ export const Body = <T extends object>({
                 </div>
               );
             })}
-            {renderRowActions ? (
+            {rowActions ? (
               <div className={s.Cell}>
-                {renderRowActions({
-                  row: row.original,
-                  rowIndex: row.index,
-                  selected: isSelected,
-                })}
+                <RowActionsCell>
+                  {typeof rowActions === 'function'
+                    ? rowActions({
+                        row: row.original,
+                        rowIndex: row.index,
+                        selected: isSelected,
+                      })
+                    : rowActions}
+                </RowActionsCell>
               </div>
             ) : null}
           </div>
