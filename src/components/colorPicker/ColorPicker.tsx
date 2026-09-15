@@ -46,7 +46,6 @@ export const ColorPicker = (props: ColorPickerProps) => {
     disabled = false,
     asChild = false,
     children,
-    renderFunc,
     ...restProps
   } = props;
 
@@ -82,17 +81,6 @@ export const ColorPicker = (props: ColorPickerProps) => {
       overlap
     >
       {({ open: opened }) => {
-        if (renderFunc) {
-          return renderFunc({
-            value,
-            opened,
-            disabled,
-            placeholder,
-            className: cls,
-            style,
-          });
-        }
-
         if (asChild) {
           if (!isValidElement(children)) {
             console.error(

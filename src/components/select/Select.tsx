@@ -36,7 +36,6 @@ const SelectComponent = (props: SelectProps) => {
     disabled,
     transparent,
     menuHeight,
-    renderFunc,
     onChange,
     onFocus,
     onBlur,
@@ -163,10 +162,6 @@ const SelectComponent = (props: SelectProps) => {
   };
 
   const renderTrigger = () => {
-    if (renderFunc) {
-      return renderFunc({ ...context, className: cls, style });
-    }
-
     if (asChild) {
       if (!isValidElement(children)) {
         console.error(

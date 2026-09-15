@@ -345,28 +345,35 @@ export const CustomElement: StoryObj<typeof Flex> = {
     <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>Custom element</Heading>
       <Paragraph>
-        <Text code>tagName</Text> renders the layout as any HTML element without
-        changing its flex behaviour — a <Text code>&lt;nav&gt;</Text> of links,
-        a <Text code>&lt;ul&gt;</Text> of items, a{' '}
-        <Text code>&lt;section&gt;</Text> wrapper.
+        <Text code>asChild</Text> merges the layout's computed className/style
+        onto whatever single element you wrap it around, without changing its
+        flex behaviour — a <Text code>&lt;nav&gt;</Text> of links, a{' '}
+        <Text code>&lt;ul&gt;</Text> of items, a <Text code>&lt;section&gt;</Text>{' '}
+        wrapper.
       </Paragraph>
 
-      <Code>{`<Flex tagName="nav" gap="m" align="center">
-  <a href="/">Home</a>
-  <a href="/docs">Docs</a>
+      <Code>{`<Flex asChild gap="m" align="center">
+  <nav>
+    <a href="/">Home</a>
+    <a href="/docs">Docs</a>
+  </nav>
 </Flex>`}</Code>
 
       <Flex
-        tagName="ul"
+        asChild
         direction="vertical"
         gap="s"
         style={{ listStyle: 'none', margin: 0, padding: 0 }}
       >
-        {['First item', 'Second item', 'Third item'].map((label) => (
-          <Flex tagName="li" key={label}>
-            <Cell label={label} />
-          </Flex>
-        ))}
+        <ul>
+          {['First item', 'Second item', 'Third item'].map((label) => (
+            <Flex asChild key={label}>
+              <li>
+                <Cell label={label} />
+              </li>
+            </Flex>
+          ))}
+        </ul>
       </Flex>
     </Flex>
   ),

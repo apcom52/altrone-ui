@@ -96,7 +96,7 @@ export const Pagination = memo<PaginationProps>(
     return (
       <Flex
         ref={ref}
-        tagName="nav"
+        asChild
         gap="xs"
         align="center"
         aria-label={t('pagination.navigation')}
@@ -104,59 +104,61 @@ export const Pagination = memo<PaginationProps>(
         style={style}
         {...restProps}
       >
-        {showEdgeButtons && (
-          <Button
-            icon={<ChevronFirst />}
-            disabled={isFirst}
-            label={t('pagination.firstPage')}
-            onClick={(e) => handleChange(1, e)}
-            showLabel={false}
-          />
-        )}
-
-        <Button
-          icon={<ChevronLeft />}
-          disabled={isFirst}
-          label={t('pagination.previous')}
-          onClick={(e) => handleChange(page - 1, e)}
-          showLabel={false}
-        />
-
-        {pageItems.map((item, index) =>
-          item === '...' ? (
-            <span key={`ellipsis-${index}`} className={s.Ellipsis} aria-hidden>
-              …
-            </span>
-          ) : (
+        <nav>
+          {showEdgeButtons && (
             <Button
-              key={item}
-              label={String(item)}
-              variant="text"
-              selected={item === page}
-              onClick={(e) => handleChange(item, e)}
-              aria-label={t('pagination.page', { vars: { page: item } })}
-              aria-current={item === page ? 'page' : undefined}
+              icon={<ChevronFirst />}
+              disabled={isFirst}
+              label={t('pagination.firstPage')}
+              onClick={(e) => handleChange(1, e)}
+              showLabel={false}
             />
-          ),
-        )}
+          )}
 
-        <Button
-          icon={<ChevronRight />}
-          disabled={isLast}
-          label={t('pagination.next')}
-          onClick={(e) => handleChange(page + 1, e)}
-          showLabel={false}
-        />
-
-        {showEdgeButtons && (
           <Button
-            icon={<ChevronLast />}
-            disabled={isLast}
-            label={t('pagination.lastPage')}
-            onClick={(e) => handleChange(totalPages, e)}
+            icon={<ChevronLeft />}
+            disabled={isFirst}
+            label={t('pagination.previous')}
+            onClick={(e) => handleChange(page - 1, e)}
             showLabel={false}
           />
-        )}
+
+          {pageItems.map((item, index) =>
+            item === '...' ? (
+              <span key={`ellipsis-${index}`} className={s.Ellipsis} aria-hidden>
+                …
+              </span>
+            ) : (
+              <Button
+                key={item}
+                label={String(item)}
+                variant="text"
+                selected={item === page}
+                onClick={(e) => handleChange(item, e)}
+                aria-label={t('pagination.page', { vars: { page: item } })}
+                aria-current={item === page ? 'page' : undefined}
+              />
+            ),
+          )}
+
+          <Button
+            icon={<ChevronRight />}
+            disabled={isLast}
+            label={t('pagination.next')}
+            onClick={(e) => handleChange(page + 1, e)}
+            showLabel={false}
+          />
+
+          {showEdgeButtons && (
+            <Button
+              icon={<ChevronLast />}
+              disabled={isLast}
+              label={t('pagination.lastPage')}
+              onClick={(e) => handleChange(totalPages, e)}
+              showLabel={false}
+            />
+          )}
+        </nav>
       </Flex>
     );
   },

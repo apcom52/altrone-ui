@@ -211,8 +211,7 @@ export const Overview: StoryObj<typeof BottomNavigation> = {
           Set <Text code>asChild</Text> and pass your router's{' '}
           <Text code>&lt;Link&gt;</Text> as the only child — the link merges its
           styling, ref and props onto it, and still supplies the icon, label,
-          badge and backdrop. (<Text code>renderFunc</Text> still works but is
-          deprecated in favor of <Text code>asChild</Text>.)
+          badge and backdrop.
         </Paragraph>
       </Flex>
     );

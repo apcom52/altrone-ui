@@ -45,7 +45,6 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
       style,
       autoClose = true,
       asChild = false,
-      renderFunc,
       children,
       ...restProps
     } = props;
@@ -149,10 +148,6 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
     );
 
     const renderTrigger = () => {
-      if (renderFunc) {
-        return renderFunc({ ...triggerContext, className: cls, style: styles });
-      }
-
       if (asChild) {
         if (!isValidElement(children)) {
           console.error(

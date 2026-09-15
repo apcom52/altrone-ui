@@ -36,7 +36,7 @@ export const Composition = () => {
 
       {/* Pull-quote — align + weight + muted attribution */}
       <Flex
-        tagName="blockquote"
+        asChild
         direction="vertical"
         gap="s"
         style={{
@@ -45,13 +45,15 @@ export const Composition = () => {
           paddingLeft: 16,
         }}
       >
-        <Text size={5} italic block>
-          Typography is the craft of endowing human language with a durable
-          visual form.
-        </Text>
-        <Text size={2} color="muted" block>
-          — Robert Bringhurst
-        </Text>
+        <blockquote>
+          <Text size={5} italic block>
+            Typography is the craft of endowing human language with a durable
+            visual form.
+          </Text>
+          <Text size={2} color="muted" block>
+            — Robert Bringhurst
+          </Text>
+        </blockquote>
       </Flex>
 
       {/* Empty state — built entirely from Text + Flex, centred */}

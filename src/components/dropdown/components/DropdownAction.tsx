@@ -19,7 +19,6 @@ export function DropdownAction(props: DropdownActionProps) {
     style,
     danger,
     focused,
-    renderFunc,
     asChild,
     children,
     icon,
@@ -104,18 +103,6 @@ export function DropdownAction(props: DropdownActionProps) {
   };
 
   const mergedRef = mergeRefs(ref, listItemRef);
-
-  if (renderFunc) {
-    return renderFunc(mergedRef, {
-      ...sharedProps,
-      role: 'button',
-      icon,
-      label: label ?? '',
-      hintText,
-      keyProp,
-      badge,
-    });
-  }
 
   if (asChild) {
     if (!isValidElement(children)) {

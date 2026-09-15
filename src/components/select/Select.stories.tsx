@@ -289,6 +289,32 @@ const RegionTrigger = ({
   );
 };
 
+/**
+ * Same `asChild` pattern as `RegionTrigger`, styled as a sort button instead.
+ */
+const SortTrigger = ({
+  ref,
+  style,
+  ...rest
+}: React.ComponentPropsWithoutRef<'button'> & {
+  ref?: React.Ref<HTMLButtonElement>;
+}) => {
+  const { expanded, selectedOptions } = useSelectContext();
+
+  return (
+    <Button
+      {...rest}
+      ref={ref}
+      icon={<ArrowDownWideNarrow />}
+      label={`Sort: ${
+        (selectedOptions as Option | undefined)?.label ?? 'Default'
+      }`}
+      additionalIcon={expanded ? <ChevronUp /> : <ChevronDown />}
+      style={{ minWidth: 220, ...style }}
+    />
+  );
+};
+
 export const CustomTriggerStory: StoryObj<typeof Select> = {
   name: 'Custom trigger',
   render: () => {
@@ -299,10 +325,10 @@ export const CustomTriggerStory: StoryObj<typeof Select> = {
       <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
         <Heading>Bring your own trigger</Heading>
         <Paragraph>
-          <Text code>renderFunc</Text> replaces the whole trigger and receives
-          the live state (<Text code>expanded</Text>,{' '}
-          <Text code>selectedOptions</Text>, <Text code>clearValue</Text>, …). A
-          nested component can read the same state with{' '}
+          <Text code>asChild</Text> replaces the whole trigger with the single
+          child element you pass. That element reads the live state (
+          <Text code>expanded</Text>, <Text code>selectedOptions</Text>,{' '}
+          <Text code>clearValue</Text>, …) with{' '}
           <Text code>useSelectContext()</Text>.
         </Paragraph>
 
@@ -311,17 +337,10 @@ export const CustomTriggerStory: StoryObj<typeof Select> = {
             value={sort}
             onChange={(next) => setSort(next as string | undefined)}
             options={SORTS}
-            renderFunc={({ expanded, selectedOptions }) => (
-              <Button
-                icon={<ArrowDownWideNarrow />}
-                label={`Sort: ${
-                  (selectedOptions as Option | undefined)?.label ?? 'Default'
-                }`}
-                additionalIcon={expanded ? <ChevronUp /> : <ChevronDown />}
-                style={{ minWidth: 220 }}
-              />
-            )}
-          />
+            asChild
+          >
+            <SortTrigger />
+          </Select>
 
           <Select
             value={region}
@@ -335,9 +354,8 @@ export const CustomTriggerStory: StoryObj<typeof Select> = {
         </Flex>
 
         <Caption>
-          Same list, two triggers — <Text code>renderFunc</Text> for the sort
-          button, <Text code>asChild</Text> for the region button (it shows a
-          count and a placeholder while empty).
+          Same <Text code>asChild</Text> pattern, two triggers — a sort button
+          and a region button (it shows a count and a placeholder while empty).
         </Caption>
       </Flex>
     );

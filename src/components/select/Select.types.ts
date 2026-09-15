@@ -22,11 +22,6 @@ export type SelectContextValue = {
   ) => void;
 };
 
-export type SelectRenderContext = SelectContextValue & {
-  className: string;
-  style?: React.CSSProperties;
-};
-
 export interface SelectProps
   extends Omit<
     React.InputHTMLAttributes<HTMLInputElement>,
@@ -50,16 +45,5 @@ export interface SelectProps
   menuHeight?: number;
   asChild?: boolean;
   children?: ReactElement;
-  /**
-   * Replaces the default `TextInput` trigger. Receives the live select state;
-   * read the same state from a nested component via `useSelectContext()`.
-   *
-   * @example
-   * renderFunc={({ expanded, selectedOptions }) => (
-   *   <Button label={(selectedOptions as Option)?.label}
-   *     additionalIcon={expanded ? <ChevronUp /> : <ChevronDown />} />
-   * )}
-   */
-  renderFunc?: (context: SelectRenderContext) => ReactElement;
   ref?: React.Ref<HTMLDivElement>;
 }

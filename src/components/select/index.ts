@@ -5,5 +5,4 @@ export type {
   Option,
   SelectValue,
   SelectContextValue,
-  SelectRenderContext,
 } from './Select.types.ts';

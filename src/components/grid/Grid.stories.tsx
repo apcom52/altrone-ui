@@ -374,29 +374,38 @@ export const CustomElement: StoryObj<typeof Grid> = {
     <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>Custom element</Heading>
       <Paragraph>
-        <Text code>tagName</Text> swaps the rendered element without changing
-        the layout — render the grid as a <Text code>&lt;ul&gt;</Text> and its
-        columns as <Text code>&lt;li&gt;</Text> when the content is semantically
-        a list, or as a <Text code>&lt;section&gt;</Text> for a page region.
+        <Text code>asChild</Text> merges the layout onto whatever single element
+        you wrap it around, without changing the layout itself — render the
+        grid as a <Text code>&lt;ul&gt;</Text> and its columns as{' '}
+        <Text code>&lt;li&gt;</Text> when the content is semantically a list, or
+        as a <Text code>&lt;section&gt;</Text> for a page region.
       </Paragraph>
 
-      <Code>{`<Grid tagName="ul" gap="m" rowGap="m">
-  {items.map((item) => (
-    <Grid.Column tagName="li" key={item.id} size={4}>…</Grid.Column>
-  ))}
+      <Code>{`<Grid asChild gap="m" rowGap="m">
+  <ul>
+    {items.map((item) => (
+      <Grid.Column asChild key={item.id} size={4}>
+        <li>…</li>
+      </Grid.Column>
+    ))}
+  </ul>
 </Grid>`}</Code>
 
       <Grid
-        tagName="ul"
+        asChild
         gap="m"
         rowGap="m"
         style={{ listStyle: 'none', margin: 0, padding: 0 }}
       >
-        {['One', 'Two', 'Three', 'Four', 'Five', 'Six'].map((label) => (
-          <Grid.Column tagName="li" key={label} size={4}>
-            <Cell label={label} />
-          </Grid.Column>
-        ))}
+        <ul>
+          {['One', 'Two', 'Three', 'Four', 'Five', 'Six'].map((label) => (
+            <Grid.Column asChild key={label} size={4}>
+              <li>
+                <Cell label={label} />
+              </li>
+            </Grid.Column>
+          ))}
+        </ul>
       </Grid>
     </Flex>
   ),

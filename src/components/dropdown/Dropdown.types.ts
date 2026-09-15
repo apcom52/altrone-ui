@@ -4,7 +4,6 @@ import {
 } from 'components/popover';
 import { PopoverProps } from 'components/popover/Popover.types';
 import { ReactElement, ReactNode, Ref } from 'react';
-import { RenderFuncProp } from '../../types';
 import { RenderFunction } from 'utils';
 
 export interface DropdownActionProps
@@ -18,10 +17,6 @@ export interface DropdownActionProps
   disabled?: boolean;
   focused?: boolean;
   asChild?: boolean;
-  renderFunc?: RenderFuncProp<
-    HTMLButtonElement,
-    DropdownActionProps & { keyProp?: string }
-  >;
   'data-active'?: boolean;
   'data-dropdown-action'?: boolean;
   'data-index'?: number;

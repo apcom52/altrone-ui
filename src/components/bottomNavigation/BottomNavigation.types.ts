@@ -1,5 +1,4 @@
 import React, { ReactElement, ReactNode } from 'react';
-import { RenderFuncProp } from '../../types';
 
 export interface BottomNavigationProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -21,6 +20,4 @@ export interface BottomNavigationLinkProps
    */
   asChild?: boolean;
   children?: ReactNode;
-  /** @deprecated Prefer `asChild`. Custom render function `(ref, props) => ReactElement`. */
-  renderFunc?: RenderFuncProp<HTMLAnchorElement, BottomNavigationLinkProps>;
 }

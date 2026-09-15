@@ -42,7 +42,6 @@ export const Link = memo(
     selected,
     asChild,
     children,
-    renderFunc,
     ...restProps
   }: BottomNavigationLinkProps) => {
     const cls = clsx(s.Link, { [s.Selected]: selected }, className);
@@ -53,18 +52,6 @@ export const Link = memo(
     useEffect(() => {
       select(elementRef.current, Boolean(selected));
     }, [selected, select]);
-
-    if (renderFunc) {
-      return renderFunc(ref ?? null, {
-        ...restProps,
-        icon,
-        label,
-        badge,
-        selected,
-        className: cls,
-        style,
-      });
-    }
 
     const content = <LinkContent icon={icon} label={label} badge={badge} />;
 

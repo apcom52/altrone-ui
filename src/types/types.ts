@@ -1,5 +1,3 @@
-import { Ref } from 'react';
-
 export type Point = {
   x: number;
   y: number;
@@ -11,11 +9,6 @@ export type Offset = {
   right: number;
   bottom: number;
 };
-
-export type RenderFuncProp<HTMLElementType, ElementProperties> = (
-  ref: Ref<HTMLElementType>,
-  props: Omit<ElementProperties, 'renderFunc'>
-) => JSX.Element;
 
 export interface HTMLElements {
   a: HTMLAnchorElement;

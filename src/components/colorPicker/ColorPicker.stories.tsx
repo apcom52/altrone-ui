@@ -639,34 +639,9 @@ export const SizesStatesAndTriggers: Story = {
         <Lead>
           <Text code>asChild</Text> merges the trigger behaviour onto whatever
           single element you pass — a bare swatch, a labelled button, or an
-          inline chip inside running text. <Text code>renderFunc</Text> goes one
-          step further and hands you <Text code>value</Text> /{' '}
-          <Text code>opened</Text> to build the trigger from scratch.
+          inline chip inside running text.
         </Lead>
 
-        <Field label="renderFunc">
-          <ColorPicker
-            value={swatch}
-            onChange={setSwatch}
-            colorPresets={COLORS}
-            renderFunc={({ value, opened }) => (
-              <Button
-                variant={opened ? 'submit' : 'default'}
-                label={value ?? 'No colour'}
-                icon={
-                  <div
-                    style={{
-                      width: 12,
-                      height: 12,
-                      borderRadius: '50%',
-                      background: value || 'var(--border-2)',
-                    }}
-                  />
-                }
-              />
-            )}
-          />
-        </Field>
         <Flex direction="horizontal" gap="xl" align="center" wrap>
           <Field label="Bare swatch">
             <ColorPicker

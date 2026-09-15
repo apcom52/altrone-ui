@@ -43,7 +43,6 @@ export const RangePicker = memo<RangePickerProps>((props) => {
     maxDate,
     autoClose = true,
     asChild = false,
-    renderFunc,
     children,
     ...restProps
   } = props;
@@ -132,10 +131,6 @@ export const RangePicker = memo<RangePickerProps>((props) => {
   );
 
   const renderTrigger = () => {
-    if (renderFunc) {
-      return renderFunc({ ...triggerContext, className: cls, style: styles });
-    }
-
     if (asChild) {
       if (!isValidElement(children)) {
         console.error(

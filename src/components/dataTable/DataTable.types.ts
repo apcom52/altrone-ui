@@ -256,7 +256,7 @@ export interface DataTableHeaderProps<T extends object> {
 }
 
 export interface DataTableRowActionProps
-  extends Omit<ButtonProps, 'label' | 'onClick' | 'renderFunc'> {
+  extends Omit<ButtonProps, 'label' | 'onClick'> {
   label: string;
   collapsed?: boolean;
   onClick?: () => void;

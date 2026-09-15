@@ -1,4 +1,4 @@
-import { HTMLAttributes, JSX, Ref } from 'react';
+import { HTMLAttributes, Ref } from 'react';
 import { Gap } from 'types';
 
 export type GridColumnSize =
@@ -8,7 +8,8 @@ export type GridColumnOffset = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
 export interface GridProps extends HTMLAttributes<HTMLElement> {
   ref?: Ref<HTMLElement>;
-  tagName?: keyof JSX.IntrinsicElements;
+  /** Merge Grid's computed className/style onto the single child element instead of rendering a `<div>`. */
+  asChild?: boolean;
   wrap?: boolean;
   gap?: Gap;
   rowGap?: Gap;
@@ -19,7 +20,8 @@ export interface GridColumnProps extends Omit<
   'size'
 > {
   ref?: Ref<HTMLElement>;
-  tagName?: keyof JSX.IntrinsicElements;
+  /** Merge Column's computed className/style onto the single child element instead of rendering a `<div>`. */
+  asChild?: boolean;
   size?: GridColumnSize;
   offset?: GridColumnOffset;
 }

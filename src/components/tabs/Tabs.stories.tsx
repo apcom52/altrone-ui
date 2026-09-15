@@ -171,8 +171,7 @@ export const Overview: StoryObj<typeof Tabs> = {
         <Paragraph>
           Set <Text code>asChild</Text> and pass a single element — your
           router's <Text code>&lt;Link&gt;</Text>. The item merges its role,
-          styling, and props onto it. (<Text code>renderFunc</Text> still works
-          but is deprecated.)
+          styling, and props onto it.
         </Paragraph>
       </Flex>
     );

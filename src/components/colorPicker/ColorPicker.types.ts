@@ -1,7 +1,5 @@
 import type {
-  CSSProperties,
   InputHTMLAttributes,
-  ReactElement,
   Ref,
   SyntheticEvent,
   MouseEvent,
@@ -42,16 +40,4 @@ export interface ColorPickerProps
   // When true, merges trigger props onto the single child element instead of rendering TextInput
   asChild?: boolean;
   children?: ReactNode;
-
-  // Replaces the default TextInput trigger with a custom element
-  renderFunc?: (props: ColorPickerRenderProps) => ReactElement;
-}
-
-export interface ColorPickerRenderProps {
-  value?: string;
-  opened: boolean;
-  disabled: boolean;
-  placeholder: string;
-  className?: string;
-  style?: CSSProperties;
 }

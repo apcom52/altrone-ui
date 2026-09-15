@@ -292,7 +292,7 @@ export const FieldStates: StoryObj = {
 
 /**
  * A trigger built as its own component: it reads the live picker state through
- * `useDatePickerTrigger()` instead of threading it through props, and forwards
+ * `useDatePickerTrigger()` instead of receiving it as props, and forwards
  * `ref` + the picker's props (`className` / `onClick` / aria) onto its `Button`.
  */
 const FancyTrigger = ({
@@ -315,8 +315,28 @@ const FancyTrigger = ({
   );
 };
 
+/** Same idea as `FancyTrigger`, styled as an inline text trigger instead. */
+const InlineTrigger = ({
+  ref,
+  ...rest
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  ref?: React.Ref<HTMLButtonElement>;
+}) => {
+  const { displayValue } = useDatePickerTrigger();
+
+  return (
+    <Button
+      ref={ref}
+      {...rest}
+      variant="text"
+      label={displayValue || 'Add a date'}
+      additionalIcon={<ChevronDown />}
+    />
+  );
+};
+
 export const CustomTrigger: StoryObj = {
-  name: 'Custom trigger — renderFunc & asChild',
+  name: 'Custom trigger — asChild',
   render: () => {
     const [asButton, setAsButton] = useState<Dayjs | undefined>(
       TODAY.add(4, 'day'),
@@ -333,48 +353,37 @@ export const CustomTrigger: StoryObj = {
         </Text>
         <Text block>
           By default the trigger is a read-only <Text code>TextInput</Text>.{' '}
-          <Text code>renderFunc</Text> swaps it for whatever element you return —
-          it receives the live trigger state (<Text code>displayValue</Text>,{' '}
-          <Text code>value</Text>, <Text code>expanded</Text>,{' '}
-          <Text code>clear</Text>) plus the picker&apos;s{' '}
-          <Text code>className</Text> / <Text code>style</Text>.{' '}
-          <Text code>asChild</Text> instead merges those onto an element you pass
-          as <Text code>children</Text>. Any component nested under the picker can
-          also read the state via <Text code>useDatePickerTrigger()</Text>.
+          <Text code>asChild</Text> merges the picker's{' '}
+          <Text code>className</Text> / <Text code>style</Text> / ref / click
+          handling onto an element you pass as <Text code>children</Text>. That
+          element — or anything nested under the picker — can read the live
+          trigger state (<Text code>displayValue</Text>, <Text code>value</Text>,{' '}
+          <Text code>expanded</Text>, <Text code>clear</Text>) via{' '}
+          <Text code>useDatePickerTrigger()</Text> instead of needing it passed
+          as props.
         </Text>
 
         <Panel>
           <Form>
             <Flex direction="vertical" gap="l">
-              <Form.Field label="renderFunc → a Button">
+              <Form.Field label="asChild → a component using useDatePickerTrigger()">
                 <DatePicker
                   value={asButton}
                   onChange={(value) => setAsButton(value)}
-                  renderFunc={({ displayValue, expanded }) => (
-                    <Button
-                      label={displayValue || 'Choose a date'}
-                      icon={<CalendarDays />}
-                      additionalIcon={
-                        expanded ? <ChevronUp /> : <ChevronDown />
-                      }
-                      selected={expanded}
-                    />
-                  )}
-                />
+                  asChild
+                >
+                  <FancyTrigger />
+                </DatePicker>
               </Form.Field>
 
-              <Form.Field label="renderFunc → an inline text trigger">
+              <Form.Field label="asChild → an inline text trigger">
                 <DatePicker
                   value={asChip}
                   onChange={(value) => setAsChip(value)}
-                  renderFunc={({ displayValue }) => (
-                    <Button
-                      variant="text"
-                      label={displayValue || 'Add a date'}
-                      additionalIcon={<ChevronDown />}
-                    />
-                  )}
-                />
+                  asChild
+                >
+                  <InlineTrigger />
+                </DatePicker>
               </Form.Field>
 
               <Form.Field label="asChild → your own element becomes the trigger">
@@ -393,16 +402,6 @@ export const CustomTrigger: StoryObj = {
                     }
                   />
                 </DatePicker>
-              </Form.Field>
-
-              <Form.Field label="renderFunc → a component using useDatePickerTrigger()">
-                <DatePicker
-                  value={asButton}
-                  onChange={(value) => setAsButton(value)}
-                  renderFunc={({ className, style }) => (
-                    <FancyTrigger className={className} style={style} />
-                  )}
-                />
               </Form.Field>
             </Flex>
           </Form>
