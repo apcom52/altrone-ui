@@ -16,7 +16,8 @@ export const Progress = ({
   value = 0,
   max = 100,
   size = 'm',
-  activeSegmentClassName,
+  activeClassName,
+  activeStyle,
   ...props
 }: ProgressProps) => {
   const cls = clsx(
@@ -58,8 +59,8 @@ export const Progress = ({
       {...props}
     >
       <div
-        className={clsx(s.Active, activeSegmentClassName)}
-        style={{ width: `${percentage}%` }}
+        className={clsx(s.Active, activeClassName)}
+        style={{ width: `${percentage}%`, ...activeStyle }}
       />
       <div className={s.Label}>{label}</div>
     </Box>

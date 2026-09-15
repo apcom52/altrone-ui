@@ -28,8 +28,9 @@ describe('Search', () => {
       </Application>,
     );
 
-    expect(screen.getByTestId('search')).toHaveClass('cls');
-    expect(screen.getByTestId('search')).toHaveStyle('color: rgb(0, 0, 255)');
+    const wrapper = screen.getByTestId('search').closest('.cls');
+    expect(wrapper).not.toBeNull();
+    expect(wrapper).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that configuration works', () => {

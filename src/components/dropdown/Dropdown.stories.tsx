@@ -521,7 +521,7 @@ function ImperativeRefDemo() {
         onClick={() => dropdownRef.current?.openPopup()}
       />
       <Dropdown
-        ref={dropdownRef}
+        controlRef={dropdownRef}
         placement="bottom-start"
         content={
           <Dropdown.Menu>
@@ -541,10 +541,11 @@ export const ImperativeStory: StoryObj<typeof Dropdown> = {
     <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>Opening it from outside</Heading>
       <Paragraph>
-        <Text code>Dropdown</Text> forwards <Text code>ref</Text> to the
-        underlying <Text code>Popover</Text>, so <Text code>openPopup</Text>/
+        <Text code>Dropdown</Text> forwards <Text code>controlRef</Text> to
+        the underlying <Text code>Popover</Text>, so <Text code>openPopup</Text>/
         <Text code>closePopup</Text> can drive the menu from anywhere — a
         neighbouring button here, or the end of an async action elsewhere.
+        Plain <Text code>ref</Text> still points at the trigger DOM element.
       </Paragraph>
       <ImperativeRefDemo />
     </Flex>

@@ -67,7 +67,8 @@ export const Slider = (props: SliderProps) => {
     disabled,
     readOnly,
     name,
-    activeTrackClassName,
+    activeClassName,
+    activeStyle,
     className,
     ...restProps
   } = props;
@@ -273,8 +274,8 @@ export const Slider = (props: SliderProps) => {
           {icon && !isFill ? <div className={s.Icon}>{icon}</div> : null}
           <div className={s.Track} ref={trackRef}>
             <div
-              className={clsx(s.ActiveTrack, activeTrackClassName)}
-              style={fillStyle}
+              className={clsx(s.ActiveTrack, activeClassName)}
+              style={{ ...fillStyle, ...activeStyle }}
             />
             {!isFill ? (
               <div

@@ -192,7 +192,7 @@ export const AutocompleteInput = <T = string,>({
 
   return (
     <Dropdown
-      ref={dropdownRef}
+      controlRef={dropdownRef}
       virtualNavigationFocus
       listNavigation
       focusTrap={false}

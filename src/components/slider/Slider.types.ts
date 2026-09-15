@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import { CSSProperties, ReactElement, ReactNode } from 'react';
 import { Direction, Size } from 'types';
 
 export type SliderVariant = 'default' | 'fill';
@@ -35,5 +35,8 @@ export interface SliderProps
   readOnly?: boolean;
   showCurrentValue?: 'active' | 'always' | false;
   renderLabel?: (value: number) => ReactNode;
-  activeTrackClassName?: string;
+  /** Class for the filled (active) portion of the track. */
+  activeClassName?: string;
+  /** Inline styles for the filled (active) portion of the track. */
+  activeStyle?: CSSProperties;
 }

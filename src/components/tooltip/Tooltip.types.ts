@@ -8,7 +8,10 @@ export interface TooltipProps {
   kbd?: string;
   maxWidth?: number | string;
   children?: ReactNode;
-  childrenClassName?: string;
+  /** Class for the auto-generated trigger button, shown when no `children` is given. Has no effect when a custom trigger is passed via `children`. */
+  triggerClassName?: string;
+  /** Inline styles for the auto-generated trigger button, shown when no `children` is given. Has no effect when a custom trigger is passed via `children`. */
+  triggerStyle?: CSSProperties;
   className?: string;
   style?: CSSProperties;
   placement?: Placement;

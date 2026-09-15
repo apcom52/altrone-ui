@@ -31,16 +31,9 @@ export const Search = <T = string,>({
 
   const safeChildren = ArrayUtils.getSafeArray(children);
 
-  const cls = clsx(
-    s.Search,
-    {
-      [s.Empty]: !haveValue,
-    },
-    className,
-  );
-  const styles = {
-    ...style,
-  };
+  const fieldCls = clsx(s.Search, {
+    [s.Empty]: !haveValue,
+  });
 
   const placeholderCls = clsx(s.Placeholder, {
     [s.DisabledPlaceholder]: restProps.disabled,
@@ -66,8 +59,9 @@ export const Search = <T = string,>({
     <AutocompleteInput<T>
       ref={ref}
       inputRef={mergeRefs(inputRef, consumerInputRef)}
-      className={cls}
-      style={styles}
+      className={className}
+      style={style}
+      inputClassName={fieldCls}
       {...restProps}
       type="search"
       getSuggestions={getSuggestions || GET_SUGGESTIONS_MOCK}

@@ -16,16 +16,17 @@ export interface SplitterHandle {
   getCollapsed: () => boolean[];
 }
 
-export interface SplitterPanelProps {
-  children?: React.ReactNode;
+export interface SplitterPanelProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Forwarded to the panel's root DOM element, alongside the internal drag/collapse ref. */
+  ref?: React.Ref<HTMLDivElement>;
   /** Allow this panel to be fully collapsed via the divider toggle button */
   collapsible?: boolean;
   /** Initial size in percent (0–100). Uncontrolled — panels without one share the remaining space equally. */
   defaultSize?: number;
   /** Minimum size in percent (0–100). Default: 0 */
-  min?: number;
+  minSize?: number;
   /** Maximum size in percent (0–100). Default: 100 */
-  max?: number;
+  maxSize?: number;
   /** When false the adjacent divider becomes non-draggable. Default: true */
   resizable?: boolean;
 }

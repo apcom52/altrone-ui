@@ -12,7 +12,7 @@ export function isPanelElement(
 
 /**
  * Builds the initial sizes array (percentages, sum ≈ 100).
- * Panels with an explicit size/defaultSize get that value (clamped to min/max).
+ * Panels with an explicit size/defaultSize get that value (clamped to minSize/maxSize).
  * Remaining space is split equally among unsized panels.
  */
 export function initSizes(panels: SplitterPanelProps[]): number[] {
@@ -27,7 +27,7 @@ export function initSizes(panels: SplitterPanelProps[]): number[] {
     const p = panels[i];
     const raw = p.defaultSize;
     if (raw !== undefined) {
-      sizes[i] = Math.max(p.min ?? 0, Math.min(p.max ?? 100, raw));
+      sizes[i] = Math.max(p.minSize ?? 0, Math.min(p.maxSize ?? 100, raw));
       totalAssigned += sizes[i];
     } else {
       unassigned++;
@@ -46,7 +46,7 @@ export function initSizes(panels: SplitterPanelProps[]): number[] {
 
 /**
  * Applies a resize delta (in %) to the two panels on either side of a divider.
- * Respects min/max constraints of both panels.
+ * Respects minSize/maxSize constraints of both panels.
  */
 export function calcDelta(
   sizes: number[],
@@ -58,10 +58,10 @@ export function calcDelta(
   const li = dividerIndex;
   const ri = dividerIndex + 1;
 
-  const minL = panels[li].min ?? 0;
-  const maxL = panels[li].max ?? 100;
-  const minR = panels[ri].min ?? 0;
-  const maxR = panels[ri].max ?? 100;
+  const minL = panels[li].minSize ?? 0;
+  const maxL = panels[li].maxSize ?? 100;
+  const minR = panels[ri].minSize ?? 0;
+  const maxR = panels[ri].maxSize ?? 100;
 
   const canGrow = Math.min(maxL - next[li], next[ri] - minR);
   const canShrink = Math.min(next[li] - minL, maxR - next[ri]);

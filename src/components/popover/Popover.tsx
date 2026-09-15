@@ -61,6 +61,7 @@ const EXIT_TRANSITION: Transition = {
 
 export const Popover = ({
   ref,
+  controlRef,
   children,
   content,
   open,
@@ -220,7 +221,7 @@ export const Popover = ({
   ]);
 
   useImperativeHandle(
-    ref,
+    controlRef,
     () => ({
       open: opened,
       context,
@@ -350,6 +351,7 @@ export const Popover = ({
       (safeChildElement as ReactElement<{ ref?: React.Ref<HTMLElement> }>).props
         .ref,
       setReference,
+      ref,
     ),
     tabIndex: safeChildElement.props.tabIndex ?? 0,
   });

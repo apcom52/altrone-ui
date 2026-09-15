@@ -40,9 +40,9 @@ describe('Select — rendering', () => {
   test('forwards className and style to the control', () => {
     renderSelect({ className: 'cls', style: { color: 'rgb(0, 0, 255)' } });
 
-    const el = screen.getByTestId('select');
-    expect(el).toHaveClass('cls');
-    expect(el).toHaveStyle('color: rgb(0, 0, 255)');
+    const wrapper = screen.getByTestId('select').closest('.cls');
+    expect(wrapper).not.toBeNull();
+    expect(wrapper).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('submits the value through a hidden input named after `name`', () => {

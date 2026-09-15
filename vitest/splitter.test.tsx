@@ -58,6 +58,24 @@ describe('Splitter', () => {
     expect(screen.getByText('right').parentElement).toHaveStyle('flex: 70 70 0');
   });
 
+  test('minSize/maxSize clamp the initial size derived from defaultSize', () => {
+    renderSplitter(
+      <Splitter>
+        <Splitter.Panel defaultSize={5} minSize={20}>
+          <div>left</div>
+        </Splitter.Panel>
+        <Splitter.Panel defaultSize={95} maxSize={60}>
+          <div>right</div>
+        </Splitter.Panel>
+      </Splitter>,
+    );
+
+    expect(screen.getByText('left').parentElement).toHaveStyle('flex: 20 20 0');
+    expect(screen.getByText('right').parentElement).toHaveStyle(
+      'flex: 60 60 0',
+    );
+  });
+
   test('imperative toggle collapses a panel and fires onCollapse', () => {
     const onCollapse = vi.fn();
 
@@ -190,6 +208,34 @@ describe('Splitter', () => {
     expect(screen.getByText('main').parentElement).toHaveStyle(
       'flex: 100 100 0',
     );
+  });
+
+  test('Panel forwards className/style/ref and arbitrary props to its root element', () => {
+    const panelRef = React.createRef<HTMLDivElement>();
+
+    renderSplitter(
+      <Splitter>
+        <Splitter.Panel
+          ref={panelRef}
+          className="cls"
+          style={{ color: 'rgb(255, 0, 0)' }}
+          data-testid="left-panel"
+        >
+          <div>left</div>
+        </Splitter.Panel>
+        <Splitter.Panel>
+          <div>right</div>
+        </Splitter.Panel>
+      </Splitter>,
+    );
+
+    const panel = screen.getByTestId('left-panel');
+    expect(panel).toBe(screen.getByText('left').parentElement);
+    expect(panel).toHaveClass('cls');
+    expect(panel).toHaveStyle('color: rgb(255, 0, 0)');
+    // internal sizing invariant survives a user-supplied `style`
+    expect(panel).toHaveStyle('flex: 50 50 0');
+    expect(panelRef.current).toBe(panel);
   });
 
   test('collapse buttons carry a localized label and honour showControls', () => {

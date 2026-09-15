@@ -117,7 +117,21 @@ describe('Popover', () => {
     expect(captured[0]).toBe(screen.getByTestId('trigger'));
   });
 
-  test('imperative ref opens and closes the popover', () => {
+  test('ref points at the trigger DOM element, alongside the trigger\'s own ref', () => {
+    const popoverRef = React.createRef<HTMLElement>();
+
+    render(
+      <Application>
+        <Popover ref={popoverRef} content="c">
+          <Button label="Trigger" data-testid="trigger" />
+        </Popover>
+      </Application>,
+    );
+
+    expect(popoverRef.current).toBe(screen.getByTestId('trigger'));
+  });
+
+  test('controlRef opens and closes the popover', () => {
     const Harness = () => {
       const popoverRef = useRef<PopoverRef>(null);
       return (
@@ -128,7 +142,7 @@ describe('Popover', () => {
           >
             open
           </button>
-          <Popover ref={popoverRef} content="Popover content">
+          <Popover controlRef={popoverRef} content="Popover content">
             <Button label="Trigger" />
           </Popover>
         </>
@@ -217,7 +231,7 @@ describe('Popover', () => {
     render(
       <Application>
         <Popover
-          ref={popoverRef as React.Ref<PopoverRef>}
+          controlRef={popoverRef as React.Ref<PopoverRef>}
           open={false}
           onOpenChange={onOpenChange}
           content="Popover content"

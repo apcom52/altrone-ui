@@ -52,6 +52,20 @@ describe('Tooltip', () => {
     expect(panel).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
+  test('triggerClassName/triggerStyle target the auto-generated HelpCircle button', () => {
+    render(
+      <Tooltip
+        content="Your secret API key"
+        triggerClassName="trigger-cls"
+        triggerStyle={{ color: 'rgb(255, 0, 0)' }}
+      />,
+    );
+
+    const button = screen.getByRole('button');
+    expect(button).toHaveClass('trigger-cls');
+    expect(button).toHaveStyle('color: rgb(255, 0, 0)');
+  });
+
   test('title and kbd render alongside content', () => {
     render(
       <Tooltip title="Keyboard shortcut" content="Saves the file" kbd="⌘S">

@@ -29,7 +29,8 @@ export const Tooltip = memo(
     style,
     kbd,
     maxWidth,
-    childrenClassName,
+    triggerClassName,
+    triggerStyle,
     placement = 'top',
   }: TooltipProps) => {
     const [opened, setOpened] = useState(false);
@@ -72,7 +73,8 @@ export const Tooltip = memo(
         type="button"
         aria-describedby={tooltipId}
         aria-label={typeof content === 'string' ? content : undefined}
-        className={clsx(s.QuestionMark, childrenClassName)}
+        className={clsx(s.QuestionMark, triggerClassName)}
+        style={triggerStyle}
       >
         <HelpCircle />
       </button>

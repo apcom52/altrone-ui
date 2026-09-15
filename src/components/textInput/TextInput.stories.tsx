@@ -45,6 +45,7 @@ export const Overview: StoryObj<typeof Flex> = {
     const [filled, setFilled] = useState('altrone-ui');
     const [pin, setPin] = useState('12');
     const [readonly, setReadonly] = useState(true);
+    const [styled, setStyled] = useState('42.00');
 
     return (
       <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
@@ -107,6 +108,31 @@ export const Overview: StoryObj<typeof Flex> = {
           <Button
             label={readonly ? 'Edit' : 'Save'}
             onClick={() => setReadonly(!readonly)}
+          />
+        </Flex>
+
+        <Text size={4} weight="bold" block>
+          Styling the wrapper vs. the input
+        </Text>
+        <Text block>
+          <Text code>className</Text>/<Text code>style</Text> target the root
+          DOM element (the visual wrapper <Text code>Box</Text>), like every
+          other component in the library. Use <Text code>inputClassName</Text>/
+          <Text code>inputStyle</Text> to reach the <Text code>{'<input>'}</Text>{' '}
+          itself.
+        </Text>
+        <Flex direction="horizontal" gap="l">
+          <TextInput
+            value={styled}
+            onChange={setStyled}
+            placeholder="Wrapper styled"
+            style={{ outline: '2px solid var(--danger-9)', outlineOffset: 2 }}
+          />
+          <TextInput
+            value={styled}
+            onChange={setStyled}
+            placeholder="Input styled"
+            inputStyle={{ textAlign: 'right' }}
           />
         </Flex>
       </Flex>

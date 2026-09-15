@@ -139,7 +139,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
             <TextInput
               maxLength={6}
               size={size}
-              wrapperClassName={s.HexField}
+              className={s.HexField}
               placeholder="000000"
               value={hexDraft}
               onChange={setHexDraft}

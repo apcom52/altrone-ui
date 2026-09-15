@@ -25,8 +25,9 @@ describe('TextArea', () => {
       </Application>,
     );
 
-    expect(screen.getByTestId('textArea')).toHaveClass('cls');
-    expect(screen.getByTestId('textArea')).toHaveStyle('color: rgb(0, 0, 255)');
+    const textArea = screen.getByTestId('textArea');
+    expect(textArea).toHaveClass('cls');
+    expect(textArea).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that TextArea configuration works correctly', () => {

@@ -492,11 +492,12 @@ export const StateStory: StoryObj<typeof Popover> = {
       <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
         <Heading>Imperative API via ref</Heading>
         <Paragraph>
-          <Text code>ref</Text> exposes <Text code>openPopup</Text>,{' '}
+          <Text code>controlRef</Text> exposes <Text code>openPopup</Text>,{' '}
           <Text code>closePopup</Text>, the resolved{' '}
           <Text code>actualPlacement</Text> and the live <Text code>open</Text>{' '}
           flag — for opening a popover after an async step, or reading where it
-          landed.
+          landed. Plain <Text code>ref</Text> still points at the trigger DOM
+          element.
         </Paragraph>
         <Flex direction="horizontal" gap="s" align="center" wrap>
           <Button
@@ -510,7 +511,7 @@ export const StateStory: StoryObj<typeof Popover> = {
             onClick={() => popoverRef.current?.closePopup()}
           />
           <Popover
-            ref={popoverRef}
+            controlRef={popoverRef}
             placement="right"
             content={<Text size={3}>Opened by an external control.</Text>}
           >
@@ -581,7 +582,7 @@ export const ControlledStory: StoryObj<typeof Popover> = {
           <Text code>defaultOpen</Text>) makes the popover controlled: it
           renders whatever state it's given and only asks to change it via{' '}
           <Text code>onOpenChange</Text> — the escape key, an outside click,
-          and imperative <Text code>ref.openPopup()</Text>/
+          and imperative <Text code>controlRef.openPopup()</Text>/
           <Text code>closePopup()</Text> all route through it instead of
           closing the popover on their own.
         </Paragraph>

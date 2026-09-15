@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Column, ColumnFilter } from '@tanstack/react-table';
-import { Plus } from 'lucide-react';
+import { Funnel, Plus } from 'lucide-react';
 import { Button } from 'components/button';
 import { Dropdown } from 'components/dropdown';
 import { Flex } from 'components/flex';
@@ -155,6 +155,7 @@ export const Filtering = () => {
       )}
     >
       <Toolbar.Action
+        icon={<Funnel />}
         label={t('dataTable.filters')}
         badge={filters.length ? filters.length : undefined}
         disabled={loading}

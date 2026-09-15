@@ -339,7 +339,7 @@ export const ApplicationHeader: StoryObj<typeof Toolbar> = {
                 value={query}
                 onChange={(value) => setQuery(value)}
                 placeholder="Search everything"
-                wrapperStyle={{ width: 280 }}
+                style={{ width: 280 }}
               />
             </Toolbar.Center>
             <Toolbar.Trailing>

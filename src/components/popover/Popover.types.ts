@@ -30,7 +30,10 @@ export type PopoverContentContext = {
 
 export interface PopoverProps
   extends Omit<React.HTMLAttributes<HTMLElement>, 'children' | 'content'> {
-  ref?: React.Ref<PopoverRef>;
+  /** Forwarded to the trigger DOM element. Use `controlRef` for the imperative open/close API. */
+  ref?: React.Ref<HTMLElement>;
+  /** Imperative open/close API (`PopoverRef`) — see `ref` for the DOM node itself. */
+  controlRef?: React.Ref<PopoverRef>;
   children: ReactElement | CustomRenderFunction<PopoverChildrenContext>;
   content: ReactElement | CustomRenderFunction<PopoverContentContext>;
   /** Controlled open state. Omit for an uncontrolled popover (see `defaultOpen`). */

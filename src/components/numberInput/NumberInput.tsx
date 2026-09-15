@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { NumberInputProps } from './NumberInput.types.ts';
 import { TextInput } from 'components/textInput';
 import { ArrayUtils } from 'utils';
-import clsx from 'clsx';
 import {
   NumberFormatValues,
   NumericFormat,
@@ -62,11 +61,6 @@ export const NumberInput = ({
 
   const safeChildren = ArrayUtils.getSafeArray(children);
 
-  const cls = clsx(s.NumberInput, className);
-  const styles = {
-    ...style,
-  };
-
   const onValueChange: OnValueChange = useCallback(
     ({ floatValue }, sourceInfo) => {
       onChange(floatValue || 0, sourceInfo.event);
@@ -95,8 +89,9 @@ export const NumberInput = ({
       ref={ref}
       type="text"
       value={value !== undefined ? String(value) : undefined}
-      className={cls}
-      style={styles}
+      className={className}
+      style={style}
+      inputClassName={s.NumberInput}
       size={inputSize}
       name={inputName}
       disabled={inputDisabled}

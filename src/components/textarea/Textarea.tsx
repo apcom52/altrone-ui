@@ -33,11 +33,7 @@ export const TextArea = ({
 
   // TextInput (via asChild/Slot) already applies Input, Invalid, Readonly classes —
   // only add TextArea-specific class here to avoid duplication
-  const cls = clsx(s.TextArea, className);
-
-  const styles = {
-    ...style,
-  };
+  const fieldCls = clsx(s.TextArea, className);
 
   /**
    * Spread the island children flat next to `<textarea>`. Passing `{children}`
@@ -49,9 +45,9 @@ export const TextArea = ({
   return (
     <TextInput
       asChild
-      className={cls}
-      style={styles}
-      wrapperClassName={s.Wrapper}
+      inputClassName={fieldCls}
+      inputStyle={style}
+      className={s.Wrapper}
       name={inputName}
       invalid={inputInvalid}
       disabled={inputDisabled}

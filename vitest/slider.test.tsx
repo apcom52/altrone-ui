@@ -78,7 +78,7 @@ describe('Slider', () => {
     expect(element).toHaveTextContent('44m2');
   });
 
-  test('check that className, style, activeTrackClassName props works', () => {
+  test('check that className, style, activeClassName, activeStyle props works', () => {
     const { container } = render(
       <Application>
         <Slider
@@ -87,7 +87,8 @@ describe('Slider', () => {
           data-testid="slider"
           className="cls"
           style={{ color: 'rgb(0, 0, 255)' }}
-          activeTrackClassName="active-cls"
+          activeClassName="active-cls"
+          activeStyle={{ color: 'rgb(255, 0, 0)' }}
         />
       </Application>,
     );
@@ -97,6 +98,7 @@ describe('Slider', () => {
 
     const element = container.querySelector('.active-cls');
     expect(element).toHaveClass('active-cls');
+    expect(element).toHaveStyle('color: rgb(255, 0, 0)');
   });
 
   test('value bubble portals out of the root so an overflow ancestor cannot clip it', () => {

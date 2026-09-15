@@ -424,7 +424,7 @@ export const CatalogApp: StoryObj<typeof Screen> = {
         </Screen.Sidebar>
 
         <Splitter>
-          <Splitter.Panel min={40}>
+          <Splitter.Panel minSize={40}>
             <Screen.Content>
               <Flex direction="vertical" gap="m">
                 <Flex align="end" gap="s">
@@ -474,7 +474,7 @@ export const CatalogApp: StoryObj<typeof Screen> = {
             </Screen.Content>
           </Splitter.Panel>
 
-          <Splitter.Panel defaultSize={34} min={24} max={46} collapsible>
+          <Splitter.Panel defaultSize={34} minSize={24} maxSize={46} collapsible>
             <Screen.Aside>
               {selected ? (
                 <ProductInspector

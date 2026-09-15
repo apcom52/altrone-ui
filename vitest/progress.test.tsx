@@ -84,4 +84,18 @@ describe('Progress', () => {
     expect(bar).toHaveClass('cls');
     expect(bar.id).toBe('my-progress');
   });
+
+  test('activeClassName/activeStyle target the filled segment', () => {
+    const { container } = render(
+      <Progress
+        value={50}
+        activeClassName="active-cls"
+        activeStyle={{ color: 'rgb(255, 0, 0)' }}
+      />,
+    );
+
+    const segment = container.querySelector('.active-cls');
+    expect(segment).not.toBeNull();
+    expect(segment).toHaveStyle('color: rgb(255, 0, 0)');
+  });
 });

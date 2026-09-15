@@ -107,8 +107,9 @@ describe('ColorPicker', () => {
       />,
     );
 
-    expect(screen.getByTestId('picker')).toHaveClass('cls');
-    expect(screen.getByTestId('picker')).toHaveStyle('color: rgb(0, 0, 255)');
+    const wrapper = screen.getByTestId('picker').closest('.cls');
+    expect(wrapper).not.toBeNull();
+    expect(wrapper).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that ColorPicker configuration works correctly', () => {

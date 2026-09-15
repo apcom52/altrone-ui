@@ -11,6 +11,7 @@ import {
   type SetStateAction,
 } from 'react';
 import clsx from 'clsx';
+import { mergeRefs } from 'utils';
 import { useLocalization } from '../application';
 import s from './splitter.module.scss';
 import type {
@@ -162,18 +163,36 @@ const SplitterBase = ({
         const size = isCollapsed ? 0 : sizes[i];
         const panelId = `${uid}-panel-${i}`;
 
+        const {
+          children: panelChildren,
+          className: panelClassName,
+          style: panelStyle,
+          ref: panelRef,
+          collapsible,
+          defaultSize,
+          minSize,
+          maxSize,
+          resizable,
+          ...panelRestProps
+        } = panel.props;
+
         return (
           <Fragment key={i}>
             <div
+              {...panelRestProps}
               id={panelId}
-              ref={(el) => {
+              ref={mergeRefs(panelRef, (el: HTMLDivElement | null) => {
                 panelRefs.current[i] = el;
-              }}
-              className={clsx(s.Panel, { [s.PanelCollapsed]: isCollapsed })}
-              style={{ flex: `${size} ${size} 0` }}
+              })}
+              className={clsx(
+                s.Panel,
+                { [s.PanelCollapsed]: isCollapsed },
+                panelClassName,
+              )}
+              style={{ ...panelStyle, flex: `${size} ${size} 0` }}
               aria-label={t('splitter.panel', { vars: { index: i + 1 } })}
             >
-              {panel.props.children}
+              {panelChildren}
             </div>
 
             {i < n - 1 && (
@@ -191,8 +210,8 @@ const SplitterBase = ({
                 showControls={showControls}
                 collapsedControlsVisibility={collapsedControlsVisibility}
                 sizeLeft={sizes[i]}
-                minLeft={panels[i].min ?? 0}
-                maxLeft={panels[i].max ?? 100}
+                minLeft={panels[i].minSize ?? 0}
+                maxLeft={panels[i].maxSize ?? 100}
                 leftCollapsible={panels[i].collapsible ?? false}
                 rightCollapsible={panels[i + 1].collapsible ?? false}
                 leftCollapsed={collapsed[i]}

@@ -39,10 +39,9 @@ describe('DatePicker', () => {
       </Application>,
     );
 
-    expect(screen.getByTestId('date-picker')).toHaveClass('cls');
-    expect(screen.getByTestId('date-picker')).toHaveStyle(
-      'color: rgb(0, 0, 255)',
-    );
+    const wrapper = screen.getByTestId('date-picker').closest('.cls');
+    expect(wrapper).not.toBeNull();
+    expect(wrapper).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that Checkbox configuration works correctly', () => {

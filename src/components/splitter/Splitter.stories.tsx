@@ -82,7 +82,7 @@ const CodeBlock = () => (
       '',
       'export const App = () => (',
       '  <Splitter style={{ height: 400 }}>',
-      '    <Splitter.Panel defaultSize={25} min={15} collapsible>',
+      '    <Splitter.Panel defaultSize={25} minSize={15} collapsible>',
       '      <FileTree />',
       '    </Splitter.Panel>',
       '    <Splitter.Panel>',
@@ -147,7 +147,7 @@ export const ThreeColumns: StoryObj<typeof Splitter> = {
   name: 'Three panels',
   render: () => (
     <Splitter style={{ height: 300 }}>
-      <Splitter.Panel defaultSize={20} min={12}>
+      <Splitter.Panel defaultSize={20} minSize={12}>
         <div style={panelStyle()}>
           <Label>Navigation</Label>
         </div>
@@ -157,7 +157,7 @@ export const ThreeColumns: StoryObj<typeof Splitter> = {
           <Label>Main content</Label>
         </div>
       </Splitter.Panel>
-      <Splitter.Panel defaultSize={25} min={15}>
+      <Splitter.Panel defaultSize={25} minSize={15}>
         <div style={panelStyle()}>
           <Label>Inspector</Label>
         </div>
@@ -174,7 +174,7 @@ export const CollapsiblePanels: StoryObj<typeof Splitter> = {
         Hover the divider to reveal collapse/expand arrows.
       </Text>
       <Splitter style={{ height: 320 }}>
-        <Splitter.Panel defaultSize={25} min={15} collapsible>
+        <Splitter.Panel defaultSize={25} minSize={15} collapsible>
           <div style={{ ...panelStyle(), height: '100%' }}>
             <Flex direction="vertical" gap="s">
               <Text weight="medium">File Explorer</Text>
@@ -187,7 +187,7 @@ export const CollapsiblePanels: StoryObj<typeof Splitter> = {
             <CodeBlock />
           </div>
         </Splitter.Panel>
-        <Splitter.Panel defaultSize={22} min={15} collapsible>
+        <Splitter.Panel defaultSize={22} minSize={15} collapsible>
           <div style={{ ...panelStyle(), height: '100%' }}>
             <Flex direction="vertical" gap="s" style={{ padding: 4 }}>
               <Text weight="medium">Properties</Text>
@@ -247,7 +247,7 @@ export const CollapsedControlsVisibilityStory: StoryObj<typeof Splitter> = {
         </Flex>
 
         <Splitter style={{ height: 280 }} collapsedControlsVisibility={mode}>
-          <Splitter.Panel defaultSize={28} min={15} collapsible>
+          <Splitter.Panel defaultSize={28} minSize={15} collapsible>
             <div style={{ ...panelStyle(), height: '100%' }}>
               <Flex direction="vertical" gap="s">
                 <Text weight="medium">Sidebar</Text>
@@ -274,12 +274,12 @@ export const MinMaxConstraints: StoryObj<typeof Splitter> = {
         Left panel: min 20%, max 50%. Right panel: min 30%.
       </Text>
       <Splitter style={{ height: 260 }}>
-        <Splitter.Panel defaultSize={35} min={20} max={50}>
+        <Splitter.Panel defaultSize={35} minSize={20} maxSize={50}>
           <div style={{ ...panelStyle(), height: '100%' }}>
             <Label>Constrained (20–50%)</Label>
           </div>
         </Splitter.Panel>
-        <Splitter.Panel min={30}>
+        <Splitter.Panel minSize={30}>
           <div style={{ ...panelStyle('var(--background-1)'), height: '100%' }}>
             <Label>Constrained (min 30%)</Label>
           </div>
@@ -301,7 +301,7 @@ export const IDELayout: StoryObj<typeof Splitter> = {
       }}
     >
       {/* Left: file tree */}
-      <Splitter.Panel defaultSize={20} min={12} max={35} collapsible>
+      <Splitter.Panel defaultSize={20} minSize={12} maxSize={35} collapsible>
         <Flex
           direction="vertical"
           style={{ height: '100%', background: 'var(--background-2)' }}
@@ -340,7 +340,7 @@ export const IDELayout: StoryObj<typeof Splitter> = {
             </div>
           </Splitter.Panel>
 
-          <Splitter.Panel defaultSize={28} min={15} collapsible>
+          <Splitter.Panel defaultSize={28} minSize={15} collapsible>
             <div style={{ height: '100%', background: 'var(--background-2)' }}>
               <div
                 style={{
@@ -539,7 +539,7 @@ export const ExternalControlStory: StoryObj<typeof Splitter> = {
           showControls={false}
           onCollapse={handleCollapse}
         >
-          <Splitter.Panel defaultSize={22} min={15} collapsible>
+          <Splitter.Panel defaultSize={22} minSize={15} collapsible>
             <div style={{ ...panelStyle(), height: '100%' }}>
               <Flex direction="vertical" gap="s">
                 <Text weight="medium">Sidebar</Text>
@@ -547,14 +547,14 @@ export const ExternalControlStory: StoryObj<typeof Splitter> = {
               </Flex>
             </div>
           </Splitter.Panel>
-          <Splitter.Panel min={20} collapsible>
+          <Splitter.Panel minSize={20} collapsible>
             <div
               style={{ ...panelStyle('var(--background-1)'), height: '100%' }}
             >
               <CodeBlock />
             </div>
           </Splitter.Panel>
-          <Splitter.Panel defaultSize={24} min={15} collapsible>
+          <Splitter.Panel defaultSize={24} minSize={15} collapsible>
             <div style={{ ...panelStyle(), height: '100%' }}>
               <Flex direction="vertical" gap="s" style={{ padding: 4 }}>
                 <Text weight="medium">Inspector</Text>
@@ -577,6 +577,34 @@ export const ExternalControlStory: StoryObj<typeof Splitter> = {
           </Splitter.Panel>
         </Splitter>
       </Flex>
+    );
+  },
+};
+
+export const StyledPanelStory: StoryObj<typeof Splitter> = {
+  name: 'Styling a panel directly',
+  render: () => {
+    const panelRef = useRef<HTMLDivElement>(null);
+
+    return (
+      <Splitter style={{ height: 200 }}>
+        <Splitter.Panel
+          ref={panelRef}
+          defaultSize={30}
+          className="my-panel"
+          style={{ padding: 16, background: 'var(--background-2)' }}
+        >
+          <Label>
+            Styled via `className`/`style`/`ref` on `Splitter.Panel` itself —
+            no wrapper `div` needed.
+          </Label>
+        </Splitter.Panel>
+        <Splitter.Panel>
+          <div style={panelStyle()}>
+            <Label>A plain panel, for comparison</Label>
+          </div>
+        </Splitter.Panel>
+      </Splitter>
     );
   },
 };

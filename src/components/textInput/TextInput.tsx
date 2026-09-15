@@ -43,8 +43,8 @@ const TextInputComponent = ({
   className,
   variant = 'default',
   style,
-  wrapperClassName,
-  wrapperStyle,
+  inputClassName,
+  inputStyle,
   invalid,
   size,
   onFocus,
@@ -132,8 +132,8 @@ const TextInputComponent = ({
     onChange: onChangeHandler,
     onFocus,
     onBlur,
-    className: clsx(s.Input, className),
-    style,
+    className: clsx(s.Input, inputClassName),
+    style: inputStyle,
     'aria-invalid': inputInvalid,
     name: inputName,
     disabled: inputDisabled,
@@ -185,9 +185,9 @@ const TextInputComponent = ({
           [s.Readonly]: isReadonly,
           [s.Disabled]: inputDisabled,
         },
-        wrapperClassName,
+        className,
       )}
-      style={wrapperStyle}
+      style={style}
     >
       <TextInputSizeContext.Provider value={inputSize}>
         <TextInputDisabledContext.Provider value={Boolean(inputDisabled)}>
