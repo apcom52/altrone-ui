@@ -42,7 +42,6 @@ const TextInputComponent = ({
   onChange,
   className,
   variant = 'default',
-  shape = 'pill',
   style,
   wrapperClassName,
   wrapperStyle,
@@ -170,7 +169,7 @@ const TextInputComponent = ({
     <Box
       ref={ref}
       editable
-      shape={shape}
+      shape="pill"
       material={variant === 'transparent' ? 'transparent' : 'plate'}
       tone={inputInvalid ? 'danger' : 'neutral'}
       size={inputSize}

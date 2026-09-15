@@ -12,13 +12,13 @@ export const Label = memo(
     color = 'default',
     size = 'm',
     variant = 'solid',
-    rounding = 'rounded',
+    shape = 'rounded',
     ...props
   }: LabelProps) => {
     const cls = clsx(s.Label, className, {
       [s.Soft]: variant === 'soft',
       [s.Outline]: variant === 'outline',
-      [s.Pill]: rounding === 'pill',
+      [s.Pill]: shape === 'pill',
       [s.Primary]: color === 'primary',
       [s.Success]: color === 'success',
       [s.Danger]: color === 'danger',

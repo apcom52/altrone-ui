@@ -1,7 +1,20 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ReactNode, useMemo, useState } from 'react';
-import { Flame, Pencil, RefreshCw, Trash } from 'lucide-react';
+import {
+  Download,
+  Ellipsis,
+  Flame,
+  Mail,
+  Pencil,
+  RefreshCw,
+  Star,
+  Trash,
+  UserPlus,
+} from 'lucide-react';
 import { DataTable } from './index';
+import { Toolbar } from '../toolbar';
+import { Dropdown } from '../dropdown';
+import { TextInput } from '../textInput';
 import {
   DataTableColumn,
   DataTableFilter,
@@ -55,29 +68,284 @@ interface Employee {
 type AnyRow = Record<string, unknown>;
 
 const EMPLOYEES: Employee[] = [
-  { id: 1, name: 'Ada Lovelace', bio: 'Wrote the first algorithm intended for a machine.', role: 'Principal Engineer', department: 'R&D', active: true, age: 36, salary: 185_000, currency: 'USD', hiredAt: '2019-03-11', password: 'analyticalengine', color: '#3b82f6', skills: ['Math', 'Analysis'], profile: 'https://example.com/ada' },
-  { id: 2, name: 'Alan Turing', bio: 'Formalised computation and the notion of an algorithm.', role: 'Research Lead', department: 'R&D', active: true, age: 41, salary: 172_000, currency: 'USD', hiredAt: '2018-06-01', password: 'enigma1940', color: '#22c55e', skills: ['Logic', 'Cryptography'], profile: 'https://example.com/alan' },
-  { id: 3, name: 'Grace Hopper', bio: 'Pioneered machine-independent programming languages.', role: 'Staff Engineer', department: 'Platform', active: false, age: 52, salary: 160_500, currency: 'USD', hiredAt: '2016-11-23', password: 'nanoseconds', color: '#a855f7', skills: ['Compilers', 'COBOL'], profile: 'https://example.com/grace' },
-  { id: 4, name: 'Katherine Johnson', bio: 'Calculated orbital mechanics for crewed spaceflight.', role: 'Senior Analyst', department: 'Data', active: true, age: 47, salary: 143_200, currency: 'USD', hiredAt: '2020-01-15', password: 'orbit1962', color: '#f59e0b', skills: ['Orbital Mechanics'], profile: 'https://example.com/katherine' },
-  { id: 5, name: 'Edsger Dijkstra', bio: 'Shortest paths, structured programming, and sharp opinions.', role: 'Principal Engineer', department: 'Platform', active: true, age: 58, salary: 191_000, currency: 'EUR', hiredAt: '2015-09-02', password: 'goto considered', color: '#ef4444', skills: ['Algorithms', 'Verification'], profile: 'https://example.com/edsger' },
-  { id: 6, name: 'Barbara Liskov', bio: 'Substitution principle and data abstraction.', role: 'Research Lead', department: 'R&D', active: true, age: 49, salary: 178_400, currency: 'USD', hiredAt: '2017-04-19', password: 'clu1974', color: '#14b8a6', skills: ['Type Systems', 'Distributed'], profile: 'https://example.com/barbara' },
-  { id: 7, name: 'Donald Knuth', bio: 'The Art of Computer Programming, TeX, literate programming.', role: 'Distinguished Engineer', department: 'R&D', active: false, age: 63, salary: 205_000, currency: 'USD', hiredAt: '2014-02-28', password: 'literate', color: '#3b82f6', skills: ['Analysis', 'Typesetting'], profile: 'https://example.com/donald' },
-  { id: 8, name: 'Radia Perlman', bio: 'Spanning Tree Protocol — "mother of the internet".', role: 'Staff Engineer', department: 'Networking', active: true, age: 45, salary: 168_900, currency: 'USD', hiredAt: '2019-08-05', password: 'spanningtree', color: '#22c55e', skills: ['Networking', 'Security'], profile: 'https://example.com/radia' },
-  { id: 9, name: 'Leslie Lamport', bio: 'LaTeX, logical clocks, Paxos, TLA+.', role: 'Distinguished Engineer', department: 'Platform', active: true, age: 61, salary: 210_000, currency: 'EUR', hiredAt: '2013-12-11', password: 'happensbefore', color: '#a855f7', skills: ['Distributed', 'Verification'], profile: 'https://example.com/leslie' },
-  { id: 10, name: 'Margaret Hamilton', bio: 'Led the Apollo on-board flight software team.', role: 'Senior Analyst', department: 'Data', active: true, age: 43, salary: 150_000, currency: 'USD', hiredAt: '2021-05-30', password: 'apollo11', color: '#f59e0b', skills: ['Reliability', 'Systems'], profile: 'https://example.com/margaret' },
-  { id: 11, name: 'Vint Cerf', bio: 'Co-designed the TCP/IP protocols.', role: 'Research Lead', department: 'Networking', active: false, age: 57, salary: 182_000, currency: 'USD', hiredAt: '2016-07-14', password: 'tcpip', color: '#ef4444', skills: ['Networking', 'Protocols'], profile: 'https://example.com/vint' },
-  { id: 12, name: 'Frances Allen', bio: 'Compiler optimisation, first woman to win the Turing Award.', role: 'Staff Engineer', department: 'Platform', active: true, age: 54, salary: 171_300, currency: 'USD', hiredAt: '2015-03-08', password: 'optimizer', color: '#14b8a6', skills: ['Compilers', 'Parallelism'], profile: 'https://example.com/frances' },
-  { id: 13, name: 'Tim Berners-Lee', bio: 'Invented the World Wide Web.', role: 'Principal Engineer', department: 'R&D', active: true, age: 50, salary: 188_600, currency: 'EUR', hiredAt: '2018-10-01', password: 'hypertext', color: '#3b82f6', skills: ['Web', 'Standards'], profile: 'https://example.com/tim' },
-  { id: 14, name: 'Shafi Goldwasser', bio: 'Foundations of modern cryptography.', role: 'Research Lead', department: 'R&D', active: true, age: 46, salary: 179_900, currency: 'USD', hiredAt: '2019-11-19', password: 'zeroknowledge', color: '#22c55e', skills: ['Cryptography', 'Complexity'], profile: 'https://example.com/shafi' },
-  { id: 15, name: 'Ken Thompson', bio: 'Unix, B, Go, and the Thompson hack.', role: 'Distinguished Engineer', department: 'Platform', active: false, age: 62, salary: 206_500, currency: 'USD', hiredAt: '2012-01-09', password: 'reflections', color: '#a855f7', skills: ['Systems', 'Languages'], profile: 'https://example.com/ken' },
+  {
+    id: 1,
+    name: 'Ada Lovelace',
+    bio: 'Wrote the first algorithm intended for a machine.',
+    role: 'Principal Engineer',
+    department: 'R&D',
+    active: true,
+    age: 36,
+    salary: 185_000,
+    currency: 'USD',
+    hiredAt: '2019-03-11',
+    password: 'analyticalengine',
+    color: '#3b82f6',
+    skills: ['Math', 'Analysis'],
+    profile: 'https://example.com/ada',
+  },
+  {
+    id: 2,
+    name: 'Alan Turing',
+    bio: 'Formalised computation and the notion of an algorithm.',
+    role: 'Research Lead',
+    department: 'R&D',
+    active: true,
+    age: 41,
+    salary: 172_000,
+    currency: 'USD',
+    hiredAt: '2018-06-01',
+    password: 'enigma1940',
+    color: '#22c55e',
+    skills: ['Logic', 'Cryptography'],
+    profile: 'https://example.com/alan',
+  },
+  {
+    id: 3,
+    name: 'Grace Hopper',
+    bio: 'Pioneered machine-independent programming languages.',
+    role: 'Staff Engineer',
+    department: 'Platform',
+    active: false,
+    age: 52,
+    salary: 160_500,
+    currency: 'USD',
+    hiredAt: '2016-11-23',
+    password: 'nanoseconds',
+    color: '#a855f7',
+    skills: ['Compilers', 'COBOL'],
+    profile: 'https://example.com/grace',
+  },
+  {
+    id: 4,
+    name: 'Katherine Johnson',
+    bio: 'Calculated orbital mechanics for crewed spaceflight.',
+    role: 'Senior Analyst',
+    department: 'Data',
+    active: true,
+    age: 47,
+    salary: 143_200,
+    currency: 'USD',
+    hiredAt: '2020-01-15',
+    password: 'orbit1962',
+    color: '#f59e0b',
+    skills: ['Orbital Mechanics'],
+    profile: 'https://example.com/katherine',
+  },
+  {
+    id: 5,
+    name: 'Edsger Dijkstra',
+    bio: 'Shortest paths, structured programming, and sharp opinions.',
+    role: 'Principal Engineer',
+    department: 'Platform',
+    active: true,
+    age: 58,
+    salary: 191_000,
+    currency: 'EUR',
+    hiredAt: '2015-09-02',
+    password: 'goto considered',
+    color: '#ef4444',
+    skills: ['Algorithms', 'Verification'],
+    profile: 'https://example.com/edsger',
+  },
+  {
+    id: 6,
+    name: 'Barbara Liskov',
+    bio: 'Substitution principle and data abstraction.',
+    role: 'Research Lead',
+    department: 'R&D',
+    active: true,
+    age: 49,
+    salary: 178_400,
+    currency: 'USD',
+    hiredAt: '2017-04-19',
+    password: 'clu1974',
+    color: '#14b8a6',
+    skills: ['Type Systems', 'Distributed'],
+    profile: 'https://example.com/barbara',
+  },
+  {
+    id: 7,
+    name: 'Donald Knuth',
+    bio: 'The Art of Computer Programming, TeX, literate programming.',
+    role: 'Distinguished Engineer',
+    department: 'R&D',
+    active: false,
+    age: 63,
+    salary: 205_000,
+    currency: 'USD',
+    hiredAt: '2014-02-28',
+    password: 'literate',
+    color: '#3b82f6',
+    skills: ['Analysis', 'Typesetting'],
+    profile: 'https://example.com/donald',
+  },
+  {
+    id: 8,
+    name: 'Radia Perlman',
+    bio: 'Spanning Tree Protocol — "mother of the internet".',
+    role: 'Staff Engineer',
+    department: 'Networking',
+    active: true,
+    age: 45,
+    salary: 168_900,
+    currency: 'USD',
+    hiredAt: '2019-08-05',
+    password: 'spanningtree',
+    color: '#22c55e',
+    skills: ['Networking', 'Security'],
+    profile: 'https://example.com/radia',
+  },
+  {
+    id: 9,
+    name: 'Leslie Lamport',
+    bio: 'LaTeX, logical clocks, Paxos, TLA+.',
+    role: 'Distinguished Engineer',
+    department: 'Platform',
+    active: true,
+    age: 61,
+    salary: 210_000,
+    currency: 'EUR',
+    hiredAt: '2013-12-11',
+    password: 'happensbefore',
+    color: '#a855f7',
+    skills: ['Distributed', 'Verification'],
+    profile: 'https://example.com/leslie',
+  },
+  {
+    id: 10,
+    name: 'Margaret Hamilton',
+    bio: 'Led the Apollo on-board flight software team.',
+    role: 'Senior Analyst',
+    department: 'Data',
+    active: true,
+    age: 43,
+    salary: 150_000,
+    currency: 'USD',
+    hiredAt: '2021-05-30',
+    password: 'apollo11',
+    color: '#f59e0b',
+    skills: ['Reliability', 'Systems'],
+    profile: 'https://example.com/margaret',
+  },
+  {
+    id: 11,
+    name: 'Vint Cerf',
+    bio: 'Co-designed the TCP/IP protocols.',
+    role: 'Research Lead',
+    department: 'Networking',
+    active: false,
+    age: 57,
+    salary: 182_000,
+    currency: 'USD',
+    hiredAt: '2016-07-14',
+    password: 'tcpip',
+    color: '#ef4444',
+    skills: ['Networking', 'Protocols'],
+    profile: 'https://example.com/vint',
+  },
+  {
+    id: 12,
+    name: 'Frances Allen',
+    bio: 'Compiler optimisation, first woman to win the Turing Award.',
+    role: 'Staff Engineer',
+    department: 'Platform',
+    active: true,
+    age: 54,
+    salary: 171_300,
+    currency: 'USD',
+    hiredAt: '2015-03-08',
+    password: 'optimizer',
+    color: '#14b8a6',
+    skills: ['Compilers', 'Parallelism'],
+    profile: 'https://example.com/frances',
+  },
+  {
+    id: 13,
+    name: 'Tim Berners-Lee',
+    bio: 'Invented the World Wide Web.',
+    role: 'Principal Engineer',
+    department: 'R&D',
+    active: true,
+    age: 50,
+    salary: 188_600,
+    currency: 'EUR',
+    hiredAt: '2018-10-01',
+    password: 'hypertext',
+    color: '#3b82f6',
+    skills: ['Web', 'Standards'],
+    profile: 'https://example.com/tim',
+  },
+  {
+    id: 14,
+    name: 'Shafi Goldwasser',
+    bio: 'Foundations of modern cryptography.',
+    role: 'Research Lead',
+    department: 'R&D',
+    active: true,
+    age: 46,
+    salary: 179_900,
+    currency: 'USD',
+    hiredAt: '2019-11-19',
+    password: 'zeroknowledge',
+    color: '#22c55e',
+    skills: ['Cryptography', 'Complexity'],
+    profile: 'https://example.com/shafi',
+  },
+  {
+    id: 15,
+    name: 'Ken Thompson',
+    bio: 'Unix, B, Go, and the Thompson hack.',
+    role: 'Distinguished Engineer',
+    department: 'Platform',
+    active: false,
+    age: 62,
+    salary: 206_500,
+    currency: 'USD',
+    hiredAt: '2012-01-09',
+    password: 'reflections',
+    color: '#a855f7',
+    skills: ['Systems', 'Languages'],
+    profile: 'https://example.com/ken',
+  },
 ];
 
 const RICH_COLUMNS: DataTableColumn<Employee>[] = [
-  { accessor: 'name', label: 'Name', type: 'string', sortable: true, filterable: true },
-  { accessor: 'role', label: 'Role', type: 'select', filterable: true, sortable: true },
-  { accessor: 'department', label: 'Department', type: 'select', filterable: true },
-  { accessor: 'active', label: 'Active', type: 'boolean', filterable: true, width: 90 },
-  { accessor: 'age', label: 'Age', type: 'number', sortable: true, filterable: true, width: 90 },
+  {
+    accessor: 'name',
+    label: 'Name',
+    type: 'string',
+    sortable: true,
+    filterable: true,
+  },
+  {
+    accessor: 'role',
+    label: 'Role',
+    type: 'select',
+    filterable: true,
+    sortable: true,
+  },
+  {
+    accessor: 'department',
+    label: 'Department',
+    type: 'select',
+    filterable: true,
+  },
+  {
+    accessor: 'active',
+    label: 'Active',
+    type: 'boolean',
+    filterable: true,
+    width: 90,
+  },
+  {
+    accessor: 'age',
+    label: 'Age',
+    type: 'number',
+    sortable: true,
+    filterable: true,
+    width: 90,
+  },
   {
     accessor: 'salary',
     label: 'Salary',
@@ -87,7 +355,14 @@ const RICH_COLUMNS: DataTableColumn<Employee>[] = [
     width: 140,
     options: { currencyAccessor: 'currency' },
   },
-  { accessor: 'hiredAt', label: 'Hired', type: 'date', sortable: true, filterable: true, width: 150 },
+  {
+    accessor: 'hiredAt',
+    label: 'Hired',
+    type: 'date',
+    sortable: true,
+    filterable: true,
+    width: 150,
+  },
   { accessor: 'skills', label: 'Skills', type: 'select', filterable: true },
 ];
 
@@ -155,12 +430,13 @@ export const ColumnTypes: Story = {
     <Flex direction="vertical" gap="xl" style={{ maxWidth: 1000 }}>
       <Section title="One renderer per type">
         The <Text code>type</Text> field selects the built-in renderer:{' '}
-        <Text code>string</Text>, <Text code>text</Text>, <Text code>number</Text>
-        , <Text code>currency</Text>, <Text code>date</Text>,{' '}
-        <Text code>boolean</Text>, <Text code>select</Text>,{' '}
-        <Text code>password</Text>, <Text code>color</Text>,{' '}
-        <Text code>link</Text>. <Text code>number</Text>/<Text code>currency</Text>
-        /<Text code>date</Text> format through the active locale;{' '}
+        <Text code>string</Text>, <Text code>text</Text>,{' '}
+        <Text code>number</Text>, <Text code>currency</Text>,{' '}
+        <Text code>date</Text>, <Text code>boolean</Text>,{' '}
+        <Text code>select</Text>, <Text code>password</Text>,{' '}
+        <Text code>color</Text>, <Text code>link</Text>.{' '}
+        <Text code>number</Text>/<Text code>currency</Text>/
+        <Text code>date</Text> format through the active locale;{' '}
         <Text code>currency</Text> can read its currency code from another field
         via <Text code>options.currencyAccessor</Text>.
       </Section>
@@ -256,7 +532,13 @@ export const Sorting: Story = {
         columns={[
           { accessor: 'name', label: 'Name', sortable: true },
           { accessor: 'department', label: 'Department', sortable: true },
-          { accessor: 'age', label: 'Age', type: 'number', sortable: true, width: 100 },
+          {
+            accessor: 'age',
+            label: 'Age',
+            type: 'number',
+            sortable: true,
+            width: 100,
+          },
           {
             accessor: 'salary',
             label: 'Salary',
@@ -265,7 +547,13 @@ export const Sorting: Story = {
             width: 140,
             options: { currencyAccessor: 'currency' },
           },
-          { accessor: 'hiredAt', label: 'Hired', type: 'date', sortable: true, width: 150 },
+          {
+            accessor: 'hiredAt',
+            label: 'Hired',
+            type: 'date',
+            sortable: true,
+            width: 150,
+          },
         ]}
       />
     </Flex>
@@ -281,10 +569,10 @@ export const Filtering: Story = {
     <Flex direction="vertical" gap="xl" style={{ maxWidth: 1000 }}>
       <Section title="The filter panel">
         Mark a column <Text code>filterable</Text> to expose it in the{' '}
-        <Text code>Filters</Text> panel in the header. Each column type brings its
-        own set of rules — text (<Text code>contains</Text>,{' '}
-        <Text code>equals</Text>, <Text code>is empty</Text>…), number and date (
-        <Text code>&gt;</Text>, <Text code>between</Text>…), boolean, and{' '}
+        <Text code>Filters</Text> panel in the header. Each column type brings
+        its own set of rules — text (<Text code>contains</Text>,{' '}
+        <Text code>equals</Text>, <Text code>is empty</Text>…), number and date
+        (<Text code>&gt;</Text>, <Text code>between</Text>…), boolean, and{' '}
         <Text code>select</Text>/<Text code>color</Text> (membership against the
         values present in the data). Pass <Text code>filterable</Text> a type
         string to filter a column as a different type than it renders.
@@ -355,15 +643,14 @@ export const RowSelection: Story = {
           { accessor: 'department', label: 'Department' },
         ]}
         actions={({ selectableMode, selectedItems }) =>
-          selectableMode
-            ? [
-                <DataTable.Action
-                  key="email"
-                  label={`Email ${selectedItems.length} selected`}
-                  onClick={() => undefined}
-                />,
-              ]
-            : null
+          selectableMode ? (
+            <Toolbar.Group key="email">
+              <DataTable.Action
+                label={`Email ${selectedItems.length} selected`}
+                onClick={() => undefined}
+              />
+            </Toolbar.Group>
+          ) : null
         }
       />
     </Flex>
@@ -379,9 +666,17 @@ export const Actions: Story = {
   render: () => (
     <Flex direction="vertical" gap="xl" style={{ maxWidth: 1000 }}>
       <Section title="Toolbar actions">
-        Elements passed via <Text code>actions</Text> render in the header next
-        to the filter button. <Text code>DataTable.Action</Text> is a pre-wired{' '}
-        <Text code>Button</Text> that disables itself while the table is loading.
+        The header is a <Text code>Toolbar</Text>: the select-mode toggle and
+        the filtering control always live in <Text code>Toolbar.Leading</Text>,
+        each wrapped in its own <Text code>Toolbar.Group</Text> pill. Elements
+        passed via <Text code>actions</Text> join them there by default &mdash;{' '}
+        <Text code>DataTable.Action</Text> is a pre-wired{' '}
+        <Text code>Toolbar.Action</Text> that disables itself while the table is
+        loading. Wrap your own actions in a <Text code>Toolbar.Group</Text> too,
+        so they read as a related cluster instead of loose buttons; wrap the
+        group in <Text code>Toolbar.Leading</Text> /{' '}
+        <Text code>Toolbar.Center</Text> / <Text code>Toolbar.Trailing</Text> to
+        place it in a specific region alongside the system controls.
       </Section>
 
       <Section title="Per-row actions">
@@ -434,11 +729,174 @@ export const Actions: Story = {
           { accessor: 'department', label: 'Department' },
         ]}
         actions={
-          <DataTable.Action label="Add employee" onClick={() => undefined} />
+          <Toolbar.Group>
+            <DataTable.Action label="Add employee" onClick={() => undefined} />
+          </Toolbar.Group>
         }
+      />
+
+      <Section title="Placing actions in Center / Trailing">
+        Here a search field is pinned to <Text code>Toolbar.Center</Text> and an
+        export button to <Text code>Toolbar.Trailing</Text>, while
+        <Text code>Toolbar.Leading</Text> still gets the filter control plus the
+        select-mode toggle.
+      </Section>
+
+      <DataTable<Employee>
+        data={EMPLOYEES}
+        rowsPerPage={8}
+        columns={[
+          { accessor: 'name', label: 'Name' },
+          { accessor: 'role', label: 'Role' },
+          { accessor: 'department', label: 'Department' },
+        ]}
+        actions={[
+          <Toolbar.Center key="search">
+            <Toolbar.Group>
+              <TextInput placeholder="Search employees" />
+            </Toolbar.Group>
+          </Toolbar.Center>,
+          <Toolbar.Trailing key="export">
+            <Toolbar.Group>
+              <DataTable.Action
+                label="Export"
+                icon={<Download />}
+                showLabel={false}
+                onClick={() => undefined}
+              />
+            </Toolbar.Group>
+          </Toolbar.Trailing>,
+        ]}
       />
     </Flex>
   ),
+};
+
+/* ------------------------------------------------------------------ *
+ * Custom actions
+ * ------------------------------------------------------------------ */
+
+const FAVORITE_IDS = new Set([1, 3, 5, 9, 13]);
+
+export const CustomActions: Story = {
+  name: 'Custom actions',
+  render: () => {
+    const [favoritesOnly, setFavoritesOnly] = useState(false);
+
+    const data = favoritesOnly
+      ? EMPLOYEES.filter((employee) => FAVORITE_IDS.has(employee.id))
+      : EMPLOYEES;
+
+    return (
+      <Flex direction="vertical" gap="xl" style={{ maxWidth: 1000 }}>
+        <Section title="A toolbar that reshapes itself around selection">
+          Nothing here is built into <Text code>DataTable</Text> &mdash; it's
+          plain <Text code>Toolbar</Text> composition inside the{' '}
+          <Text code>actions</Text> function. Outside select mode, the leading
+          group holds the primary action and the trailing group a view toggle.
+          Switching to select mode swaps the trailing group for a bulk-action
+          cluster plus a separated, dangerous one &mdash; each related set gets
+          its own <Text code>Toolbar.Group</Text>, with a{' '}
+          <Text code>Toolbar.Separator variant="line"</Text> marking the
+          boundary between "safe" and "destructive".
+        </Section>
+
+        <DataTable<Employee>
+          data={data}
+          rowsPerPage={8}
+          selectable
+          columns={[
+            { accessor: 'name', label: 'Name' },
+            { accessor: 'role', label: 'Role' },
+            { accessor: 'department', label: 'Department' },
+          ]}
+          actions={({ selectableMode, selectedItems }) =>
+            selectableMode
+              ? [
+                  <Toolbar.Center key="summary">
+                    <Text size={3} color="muted">
+                      {selectedItems.length === 0
+                        ? 'Select rows to enable bulk actions'
+                        : `${selectedItems.length} selected`}
+                    </Text>
+                  </Toolbar.Center>,
+                  <Toolbar.Trailing key="bulk">
+                    <Toolbar.Group>
+                      <DataTable.Action
+                        label="Email selected"
+                        icon={<Mail />}
+                        showLabel={false}
+                        badge={selectedItems.length || undefined}
+                        disabled={selectedItems.length === 0}
+                        onClick={() => undefined}
+                      />
+                      <Dropdown
+                        content={
+                          <Dropdown.Menu>
+                            <Dropdown.Action
+                              label="Add to team"
+                              icon={<UserPlus />}
+                            />
+                            <Dropdown.Action label="Promote" icon={<Flame />} />
+                          </Dropdown.Menu>
+                        }
+                      >
+                        <DataTable.Action
+                          label="More bulk actions"
+                          icon={<Ellipsis />}
+                          showLabel={false}
+                          disabled={selectedItems.length === 0}
+                          onClick={() => undefined}
+                        />
+                      </Dropdown>
+                    </Toolbar.Group>
+                    <Toolbar.Separator variant="line" />
+                    <Toolbar.Group>
+                      <DataTable.Action
+                        label="Remove from team"
+                        icon={<Trash />}
+                        showLabel={false}
+                        danger
+                        disabled={selectedItems.length === 0}
+                        onClick={() => undefined}
+                      />
+                    </Toolbar.Group>
+                  </Toolbar.Trailing>,
+                ]
+              : [
+                  <Toolbar.Group key="primary">
+                    <DataTable.Action
+                      label="Invite teammate"
+                      icon={<UserPlus />}
+                      onClick={() => undefined}
+                    />
+                  </Toolbar.Group>,
+                  <Toolbar.Center key="search">
+                    <Toolbar.Group>
+                      <TextInput
+                        placeholder="Search employees"
+                        variant="transparent"
+                      />
+                    </Toolbar.Group>
+                  </Toolbar.Center>,
+                  <Toolbar.Trailing key="view">
+                    <Toolbar.Group>
+                      <DataTable.Action
+                        label="Favorites only"
+                        icon={<Star />}
+                        showLabel={false}
+                        selected={favoritesOnly}
+                        kbd="⇧F"
+                        onClick={() => setFavoritesOnly((value) => !value)}
+                      />
+                    </Toolbar.Group>
+                  </Toolbar.Trailing>,
+                ]
+          }
+        />
+      </Flex>
+    );
+  },
 };
 
 /* ------------------------------------------------------------------ *
@@ -473,8 +931,8 @@ export const ColumnResizing: Story = {
     <Flex direction="vertical" gap="xl" style={{ maxWidth: 1000 }}>
       <Section title="Draggable column edges">
         <Text code>resizableColumns</Text> lets every column be resized by
-        dragging the handle on its right edge (hover a header to reveal it). Opt a
-        single column out with <Text code>resizable={'{false}'}</Text> on its
+        dragging the handle on its right edge (hover a header to reveal it). Opt
+        a single column out with <Text code>resizable={'{false}'}</Text> on its
         definition.
       </Section>
 
@@ -486,7 +944,12 @@ export const ColumnResizing: Story = {
           { accessor: 'name', label: 'Name', width: 180 },
           { accessor: 'bio', label: 'Bio', type: 'text', width: 280 },
           { accessor: 'role', label: 'Role', width: 180 },
-          { accessor: 'department', label: 'Department', width: 140, resizable: false },
+          {
+            accessor: 'department',
+            label: 'Department',
+            width: 140,
+            resizable: false,
+          },
         ]}
       />
     </Flex>
@@ -513,10 +976,10 @@ export const ServerCallbacks: Story = {
       <Flex direction="vertical" gap="xl" style={{ maxWidth: 1000 }}>
         <Section title="Reacting to state changes">
           <Text code>onPageChange</Text>, <Text code>onSortChange</Text> and{' '}
-          <Text code>onFilterChange</Text> fire on user interaction only (never on
-          mount). A real app would issue a request here and flip{' '}
-          <Text code>mode</Text> to <Text code>loading</Text> until it resolves —
-          which is what this demo fakes.
+          <Text code>onFilterChange</Text> fire on user interaction only (never
+          on mount). A real app would issue a request here and flip{' '}
+          <Text code>mode</Text> to <Text code>loading</Text> until it resolves
+          — which is what this demo fakes.
         </Section>
 
         <DataTable<Employee>
@@ -537,11 +1000,13 @@ export const ServerCallbacks: Story = {
           }
           columns={RICH_COLUMNS}
           actions={
-            <DataTable.Action
-              label="Refresh"
-              icon={<RefreshCw />}
-              onClick={() => record('manual refresh')}
-            />
+            <Toolbar.Group>
+              <DataTable.Action
+                label="Refresh"
+                icon={<RefreshCw />}
+                onClick={() => record('manual refresh')}
+              />
+            </Toolbar.Group>
           }
         />
 
@@ -587,7 +1052,9 @@ export const ControlledState: Story = {
     const openDeepLink = () => {
       setPage(2);
       setSort({ field: 'age', direction: 'desc' });
-      setFilters([{ id: 'department', value: { rule: 'has', value: ['R&D'] } }]);
+      setFilters([
+        { id: 'department', value: { rule: 'has', value: ['R&D'] } },
+      ]);
     };
 
     return (

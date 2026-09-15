@@ -14,6 +14,7 @@ import { DataTableFeatures } from '../DataTable.features.ts';
 import { DataTableFilterValue } from '../DataTable.types.ts';
 import { RulesByDataType } from '../DataTable.constants.ts';
 import { FilterRow } from './FilterRow.tsx';
+import { Toolbar } from 'components/toolbar/index.ts';
 
 const columnHeaderLabel = (column: Column<DataTableFeatures, AnyObject>) =>
   typeof column.columnDef.header === 'string'
@@ -41,23 +42,26 @@ export const Filtering = () => {
     [filterableColumns, draftFilters],
   );
 
-  const addFilter = useCallback((column: Column<DataTableFeatures, AnyObject>) => {
-    const meta = column.columnDef.meta;
-    const dataType = meta?.dataType;
-    if (!dataType || !RulesByDataType[dataType]) return;
+  const addFilter = useCallback(
+    (column: Column<DataTableFeatures, AnyObject>) => {
+      const meta = column.columnDef.meta;
+      const dataType = meta?.dataType;
+      if (!dataType || !RulesByDataType[dataType]) return;
 
-    const rules = RulesByDataType[dataType];
-    if (!rules || rules.length === 0) return;
+      const rules = RulesByDataType[dataType];
+      if (!rules || rules.length === 0) return;
 
-    const value: DataTableFilterValue = { rule: String(rules[0].value) };
-    if (dataType === 'date') {
-      value.level =
-        (meta?.options as { level?: 'day' | 'month' | 'year' } | undefined)
-          ?.level ?? 'day';
-    }
+      const value: DataTableFilterValue = { rule: String(rules[0].value) };
+      if (dataType === 'date') {
+        value.level =
+          (meta?.options as { level?: 'day' | 'month' | 'year' } | undefined)
+            ?.level ?? 'day';
+      }
 
-    setDraftFilters((old) => [...old, { id: column.id, value }]);
-  }, []);
+      setDraftFilters((old) => [...old, { id: column.id, value }]);
+    },
+    [],
+  );
 
   const changeFilter = useCallback(
     (id: string, field: keyof DataTableFilterValue, value: unknown) => {
@@ -150,7 +154,7 @@ export const Filtering = () => {
         </Form>
       )}
     >
-      <Button
+      <Toolbar.Action
         label={t('dataTable.filters')}
         badge={filters.length ? filters.length : undefined}
         disabled={loading}

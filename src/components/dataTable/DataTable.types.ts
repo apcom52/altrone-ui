@@ -141,13 +141,13 @@ export interface DataTableProps<T extends object>
   data: T[];
   columns: DataTableColumn<T>[];
   /**
-   * Rendered in the table header, before the filtering control. One
-   * `DataTable.Action` or several.
+   * Rendered in the header `Toolbar`, alongside the select-mode toggle and
+   * filtering control (both in `Toolbar.Leading`). One `DataTable.Action` or
+   * several land in `Toolbar.Leading` too; wrap content in `Toolbar.Leading`
+   * / `Toolbar.Center` / `Toolbar.Trailing` to place it in a specific region
+   * instead — it's added alongside the system controls, not replacing them.
    */
-  actions?: RenderFunction<
-    StrictReactElements<DataTableActionProps>,
-    DataTableRenderContext<T>
-  >;
+  actions?: RenderFunction<ReactNode, DataTableRenderContext<T>>;
   mode?: DataTableMode;
   rowsPerPage?: number;
   selectable?: boolean;

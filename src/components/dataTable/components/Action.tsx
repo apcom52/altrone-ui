@@ -1,4 +1,4 @@
-import { Button } from 'components/button';
+import { Toolbar } from 'components/toolbar';
 import { DataTableActionProps } from '../DataTable.types';
 import { useDataTableContext } from '../DataTable.context';
 
@@ -11,7 +11,7 @@ export const Action = ({
   const { loading } = useDataTableContext();
 
   return (
-    <Button
+    <Toolbar.Action
       ref={ref}
       label={label}
       showLabel={showLabel}

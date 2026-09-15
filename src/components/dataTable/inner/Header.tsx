@@ -1,11 +1,40 @@
+import { Children, isValidElement, ReactNode } from 'react';
 import { SquareCheckBig, Square } from 'lucide-react';
-import { Button } from 'components/button';
+import { Toolbar } from 'components/toolbar';
 import { Tooltip } from 'components/tooltip/Tooltip.tsx';
 import { useDataTableContext } from '../DataTable.context';
 import { DataTableHeaderProps } from '../DataTable.types';
 import { useLocalization } from '../../application';
 import { Filtering } from './Filtering.tsx';
-import s from './header.module.scss';
+
+interface PartitionedActions {
+  leading: ReactNode[];
+  center: ReactNode[];
+  trailing: ReactNode[];
+}
+
+/**
+ * Splits `actions` into toolbar regions: content wrapped in `Toolbar.Center`
+ * / `Toolbar.Trailing` goes to that region, everything else (including
+ * `Toolbar.Leading`-wrapped content) joins the system leading controls.
+ */
+const partitionActions = (children: ReactNode): PartitionedActions => {
+  const result: PartitionedActions = { leading: [], center: [], trailing: [] };
+
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && child.type === Toolbar.Center) {
+      result.center.push((child.props as { children?: ReactNode }).children);
+    } else if (isValidElement(child) && child.type === Toolbar.Trailing) {
+      result.trailing.push((child.props as { children?: ReactNode }).children);
+    } else if (isValidElement(child) && child.type === Toolbar.Leading) {
+      result.leading.push((child.props as { children?: ReactNode }).children);
+    } else {
+      result.leading.push(child);
+    }
+  });
+
+  return result;
+};
 
 export const DataTableHeader = <T extends object>({
   actions,
@@ -23,24 +52,34 @@ export const DataTableHeader = <T extends object>({
       ? actions({ selectableMode: selectMode, selectedItems })
       : actions;
 
+  const { leading, center, trailing } = partitionActions(resolvedActions);
+
   return (
-    <div className={s.Header}>
-      <div className={s.Actions}>
+    <Toolbar variant="grouped" style={{ '--toolbar-inset': '8px' }}>
+      <Toolbar.Leading>
         {selectable ? (
-          <Tooltip content={t('dataTable.selectableMode')}>
-            <Button
-              icon={selectMode ? <Square /> : <SquareCheckBig />}
-              label={t('dataTable.selectableMode')}
-              showLabel={false}
-              onClick={() => setSelectMode(!selectMode)}
-              selected={selectMode}
-              disabled={loading}
-            />
-          </Tooltip>
+          <Toolbar.Group>
+            <Tooltip content={t('dataTable.selectableMode')}>
+              <Toolbar.Action
+                icon={selectMode ? <Square /> : <SquareCheckBig />}
+                label={t('dataTable.selectableMode')}
+                showLabel={false}
+                onClick={() => setSelectMode(!selectMode)}
+                selected={selectMode}
+                disabled={loading}
+              />
+            </Tooltip>
+          </Toolbar.Group>
         ) : null}
-        {resolvedActions}
-        <Filtering />
-      </div>
-    </div>
+        <Toolbar.Group>
+          <Filtering />
+        </Toolbar.Group>
+        {leading}
+      </Toolbar.Leading>
+      {center.length > 0 ? <Toolbar.Center>{center}</Toolbar.Center> : null}
+      {trailing.length > 0 ? (
+        <Toolbar.Trailing>{trailing}</Toolbar.Trailing>
+      ) : null}
+    </Toolbar>
   );
 };

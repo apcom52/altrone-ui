@@ -12,8 +12,6 @@ export type Align = 'start' | 'center' | 'end' | 'between';
 
 export type Justify = 'start' | 'center' | 'end' | 'between';
 
-export type Radius = 'none' | 'mini' | 's' | 'm' | 'l' | 'xl' | 'circle';
-
 export type Surface = 'solid' | 'translucent' | 'transparent';
 
 export type LoadingState = 'concealed' | 'determined' | 'active';

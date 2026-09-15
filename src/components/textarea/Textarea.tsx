@@ -13,7 +13,6 @@ export const TextArea = ({
   invalid,
   disabled,
   size,
-  shape = 'rounded',
   children,
   readOnly,
   ...restProps
@@ -50,7 +49,6 @@ export const TextArea = ({
   return (
     <TextInput
       asChild
-      shape={shape}
       className={cls}
       style={styles}
       wrapperClassName={s.Wrapper}

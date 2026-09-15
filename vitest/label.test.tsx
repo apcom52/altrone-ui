@@ -24,13 +24,13 @@ describe('Label', () => {
     expect(el).toHaveStyle('letter-spacing: 1px');
   });
 
-  test('color / variant / rounding / size map to modifier classes', () => {
+  test('color / variant / shape / size map to modifier classes', () => {
     render(
       <Label
         data-testid="l"
         color="success"
         variant="soft"
-        rounding="pill"
+        shape="pill"
         size="l"
       >
         Done
