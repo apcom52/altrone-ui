@@ -16,8 +16,8 @@ export const SplitBill = () => {
   const perPerson = (b + tip) / p;
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 420 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 420 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Split the bill
         </Text>
@@ -28,8 +28,8 @@ export const SplitBill = () => {
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="m">
-        <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="m">
+        <Flex orientation="vertical" gap="xs">
           <Text asChild size={2} weight="medium">
             <label htmlFor="sb-bill">Bill total</label>
           </Text>
@@ -46,8 +46,8 @@ export const SplitBill = () => {
           </NumberInput>
         </Flex>
 
-        <Flex direction="horizontal" gap="m">
-          <Flex direction="vertical" gap="xs" style={{ flex: 1 }}>
+        <Flex orientation="horizontal" gap="m">
+          <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
             <Text asChild size={2} weight="medium">
               <label htmlFor="sb-people">People</label>
             </Text>
@@ -60,7 +60,7 @@ export const SplitBill = () => {
               digitsAfterPoint={0}
             />
           </Flex>
-          <Flex direction="vertical" gap="xs" style={{ flex: 1 }}>
+          <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
             <Text asChild size={2} weight="medium">
               <label htmlFor="sb-tip">Tip</label>
             </Text>
@@ -80,8 +80,8 @@ export const SplitBill = () => {
 
       <Divider />
 
-      <Flex direction="vertical" gap="xs">
-        <Flex direction="horizontal" align="center" justify="between">
+      <Flex orientation="vertical" gap="xs">
+        <Flex orientation="horizontal" align="center" justify="between">
           <Text size={2} color="muted">
             Tip ({tipPct ?? 0}%)
           </Text>
@@ -89,7 +89,7 @@ export const SplitBill = () => {
             ${money(tip)}
           </Text>
         </Flex>
-        <Flex direction="horizontal" align="center" justify="between">
+        <Flex orientation="horizontal" align="center" justify="between">
           <Text size={4} weight="bold">
             Each person pays
           </Text>

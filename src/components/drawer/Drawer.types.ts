@@ -20,16 +20,16 @@ export interface DrawerProps extends Omit<
   placement?: 'start' | 'end';
   width?: number;
   /**
-   * Controls on the start side of the header, after the close button — one
-   * element or several.
+   * Secondary controls on the start side of the header, after the close
+   * button — one element or several.
    */
-  startActions?: ActionsProp<DrawerContext>;
+  additionalActions?: ActionsProp<DrawerContext>;
   /**
-   * Controls on the end side of the header — one element or several. When
-   * omitted, `onDone` renders a Done button here instead; passing this
+   * Primary controls on the end side of the header — one element or several.
+   * When omitted, `onDone` renders a Done button here instead; passing this
    * replaces that button.
    */
-  endActions?: ActionsProp<DrawerContext>;
+  actions?: ActionsProp<DrawerContext>;
   onClose?: () => void;
   /**
    * Async handler for the built-in Done button. Returning `false` keeps the

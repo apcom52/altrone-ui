@@ -130,7 +130,7 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
           size="s"
           showCancelButton={false}
           content={
-            <Flex direction="vertical" gap="xl">
+            <Flex orientation="vertical" gap="xl">
               <Text block className={s.AlertMessage}>
                 {dialog.message}
               </Text>
@@ -144,7 +144,7 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
               )}
 
               {dialog.type === 'confirm' && (
-                <Flex gap="s" direction="vertical">
+                <Flex gap="s" orientation="vertical">
                   <Button
                     variant="submit"
                     label={dialog.confirmText || t('dialog.confirm')}
@@ -159,7 +159,7 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
               )}
 
               {dialog.type === 'prompt' && (
-                <Flex gap="s" direction="vertical">
+                <Flex gap="s" orientation="vertical">
                   {renderPromptInput(dialog)}
                   <Button
                     variant="submit"

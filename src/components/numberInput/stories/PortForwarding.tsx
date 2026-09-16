@@ -28,8 +28,8 @@ export const PortForwarding = () => {
   };
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 480 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 480 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Port forwarding rules
         </Text>
@@ -40,9 +40,9 @@ export const PortForwarding = () => {
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         {rules.map((r, i) => (
-          <Flex key={i} direction="horizontal" gap="s" align="center">
+          <Flex key={i} orientation="horizontal" gap="s" align="center">
             <Text code size={2} style={{ width: 72, textAlign: 'right' }}>
               {r.external}
             </Text>
@@ -59,11 +59,11 @@ export const PortForwarding = () => {
 
       <Divider />
 
-      <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="xs">
         <Text size={2} weight="medium" block>
           Add a rule
         </Text>
-        <Flex direction="horizontal" gap="s" align="center">
+        <Flex orientation="horizontal" gap="s" align="center">
           <Flex style={{ width: 120 }}>
             <NumberInput
               value={ext}

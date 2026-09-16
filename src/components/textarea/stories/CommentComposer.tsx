@@ -22,8 +22,8 @@ export const CommentComposer = () => {
   };
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 520 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Writing a comment
         </Text>
@@ -38,11 +38,11 @@ export const CommentComposer = () => {
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="m">
+      <Flex orientation="vertical" gap="m">
         {posted.map((c, i) => (
-          <Flex key={i} direction="horizontal" gap="s">
+          <Flex key={i} orientation="horizontal" gap="s">
             <Avatar firstName="Dana" lastName="Ruiz" size="s" />
-            <Flex direction="vertical" gap="xxs" style={{ flex: 1 }}>
+            <Flex orientation="vertical" gap="xxs" style={{ flex: 1 }}>
               <Text size={2} weight="medium">
                 Dana Ruiz
               </Text>
@@ -75,7 +75,7 @@ export const CommentComposer = () => {
         <TextInput.CharCounterIsland placement="end" />
       </TextArea>
 
-      <Flex direction="horizontal" gap="s">
+      <Flex orientation="horizontal" gap="s">
         <Button
           variant="submit"
           label="Comment"

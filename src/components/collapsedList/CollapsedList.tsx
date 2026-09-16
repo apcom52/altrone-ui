@@ -50,14 +50,14 @@ export const CollapsedList = ({
   return (
     <Flex
       ref={ref as Ref<HTMLElement>}
-      direction="vertical"
+      orientation="vertical"
       align="start"
       gap="m"
       className={clsx(s.CollapsedList, className)}
       style={style}
       {...restProps}
     >
-      <Flex direction="vertical" gap={gap}>
+      <Flex orientation="vertical" gap={gap}>
         {visibleChildren}
       </Flex>
       {showExpandButton ? (

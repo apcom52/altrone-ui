@@ -58,7 +58,7 @@ export const Message = ({
           {icon}
         </div>
       ) : null}
-      <Flex direction="vertical" className={s.Content} gap="m" justify="center">
+      <Flex orientation="vertical" className={s.Content} gap="m" justify="center">
         <div className={s.Text}>
           {header ? <div className={s.Header}>{header}</div> : null}
           {children ? <div className={s.Body}>{children}</div> : null}

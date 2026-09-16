@@ -89,7 +89,7 @@ const ContainerQueryDemo = () => {
         background: 'var(--background-2)',
       }}
     >
-      <Flex direction={isNarrow ? 'vertical' : 'horizontal'} gap="m">
+      <Flex orientation={isNarrow ? 'vertical' : 'horizontal'} gap="m">
         <div
           style={{
             flex: 1,
@@ -122,7 +122,7 @@ const ContainerQueryDemo = () => {
 export const Overview: StoryObj = {
   name: 'Responsiveness',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Responsiveness
       </Text>

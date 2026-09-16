@@ -84,12 +84,12 @@ const story: Meta<typeof Form> = {
 export const FieldStatesStory: StoryObj<typeof Flex> = {
   name: 'Field States',
   render: () => (
-    <Flex direction="vertical" gap="xl">
+    <Flex orientation="vertical" gap="xl">
       <Text size={5} weight="bold" block>
         Form.Field — all states
       </Text>
       <Form>
-        <Flex direction="horizontal" gap="l" align="start">
+        <Flex orientation="horizontal" gap="l" align="start">
           <Form.Field label="Default field" name="default">
             <TextInput placeholder="Type something" />
           </Form.Field>
@@ -107,7 +107,7 @@ export const FieldStatesStory: StoryObj<typeof Flex> = {
           </Form.Field>
         </Flex>
 
-        <Flex direction="horizontal" gap="l" align="start">
+        <Flex orientation="horizontal" gap="l" align="start">
           <Form.Field
             label="With description"
             name="description"
@@ -129,7 +129,7 @@ export const FieldStatesStory: StoryObj<typeof Flex> = {
           </Form.Field>
         </Flex>
 
-        <Flex direction="horizontal" gap="l" align="start">
+        <Flex orientation="horizontal" gap="l" align="start">
           <Form.Field
             label="Required + hint + description"
             name="combo"
@@ -229,7 +229,7 @@ export const InteractiveStory: StoryObj<typeof Flex> = {
 
     if (submitted) {
       return (
-        <Flex direction="vertical" gap="m" align="center">
+        <Flex orientation="vertical" gap="m" align="center">
           <Text size={6} weight="bold" block>Account created!</Text>
           <Text size={4} block>Welcome, {values.username}. Check {values.email} for the confirmation link.</Text>
           <Button label="Start over" icon={<RefreshCw />} onClick={handleReset} />
@@ -238,8 +238,8 @@ export const InteractiveStory: StoryObj<typeof Flex> = {
     }
 
     return (
-      <Flex direction="vertical" gap="l">
-        <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="l">
+        <Flex orientation="vertical" gap="xs">
           <Text size={6} weight="bold" block>Create an account</Text>
           <Text size={4} block>
             Try submitting with empty fields to see client-side errors.
@@ -248,7 +248,7 @@ export const InteractiveStory: StoryObj<typeof Flex> = {
         </Flex>
 
         <Form errorMessages={allErrors} onSubmit={handleSubmit}>
-          <Flex direction="horizontal" gap="l" align="start">
+          <Flex orientation="horizontal" gap="l" align="start">
             <Form.Field
               label="Username"
               name="username"
@@ -276,7 +276,7 @@ export const InteractiveStory: StoryObj<typeof Flex> = {
             </Form.Field>
           </Flex>
 
-          <Flex direction="horizontal" gap="l" align="start">
+          <Flex orientation="horizontal" gap="l" align="start">
             <Form.Field
               label="Password"
               name="password"
@@ -317,7 +317,7 @@ export const InteractiveStory: StoryObj<typeof Flex> = {
             />
           </Form.Field>
 
-          <Flex direction="horizontal" gap="l" align="start">
+          <Flex orientation="horizontal" gap="l" align="start">
             <Form.Field
               label="Age"
               name="age"
@@ -340,7 +340,7 @@ export const InteractiveStory: StoryObj<typeof Flex> = {
             </Form.Field>
           </Flex>
 
-          <Flex direction="horizontal" gap="s">
+          <Flex orientation="horizontal" gap="s">
             <Button label="Create account" icon={<Send />} role="primary" />
             <Button label="Reset" icon={<RefreshCw />} onClick={handleReset} />
           </Flex>
@@ -354,12 +354,12 @@ export const InteractiveStory: StoryObj<typeof Flex> = {
 export const DisabledStory: StoryObj<typeof Flex> = {
   name: 'Disabled Form',
   render: () => (
-    <Flex direction="vertical" gap="l">
+    <Flex orientation="vertical" gap="l">
       <Text size={5} weight="bold" block>
         Disabled — entire form locked
       </Text>
       <Form disabled>
-        <Flex direction="horizontal" gap="l" align="start">
+        <Flex orientation="horizontal" gap="l" align="start">
           <Form.Field label="Username" name="username" required>
             <TextInput value="john_doe" onChange={() => null} />
           </Form.Field>
@@ -390,13 +390,13 @@ export const DisabledStory: StoryObj<typeof Flex> = {
 export const SizesStory: StoryObj<typeof Flex> = {
   name: 'Form Sizes',
   render: () => (
-    <Flex direction="vertical" gap="xl">
+    <Flex orientation="vertical" gap="xl">
       <Text size={5} weight="bold" block>
         Form Sizes — s / m / l
       </Text>
-      <Flex direction="horizontal" gap="xl" align="start">
+      <Flex orientation="horizontal" gap="xl" align="start">
         {(['s', 'm', 'l'] as const).map((size) => (
-          <Flex key={size} direction="vertical" gap="s">
+          <Flex key={size} orientation="vertical" gap="s">
             <Text size={3} weight="bold" block>
               size="{size}"
             </Text>
@@ -475,7 +475,7 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
       )?.label;
 
       return (
-        <Flex direction="vertical" gap="m" style={{ maxWidth: 560 }}>
+        <Flex orientation="vertical" gap="m" style={{ maxWidth: 560 }}>
           <Text size={6} weight="bold" block>
             {created.fullName || 'New hire'} is set up
           </Text>
@@ -498,8 +498,8 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
     }
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
-        <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
+        <Flex orientation="vertical" gap="xs">
           <Text size={6} weight="bold" block>
             Onboard a new hire
           </Text>
@@ -514,7 +514,7 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
           </Text>
         </Flex>
 
-        <Flex direction="vertical" gap="xs">
+        <Flex orientation="vertical" gap="xs">
           <Text size={2} weight="medium" block>
             Start from an accepted applicant
           </Text>
@@ -545,7 +545,7 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
         </Flex>
 
         <Form>
-          <Flex direction="horizontal" gap="l" align="start">
+          <Flex orientation="horizontal" gap="l" align="start">
             <Form.Field label="Full name" name="fullName" required>
               <TextInput
                 value={values.fullName}
@@ -562,7 +562,7 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
             </Form.Field>
           </Flex>
 
-          <Flex direction="horizontal" gap="l" align="start">
+          <Flex orientation="horizontal" gap="l" align="start">
             <Form.Field
               label="Office"
               name="location"
@@ -589,7 +589,7 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
             </Form.Field>
           </Flex>
 
-          <Flex direction="horizontal" gap="l" align="start">
+          <Flex orientation="horizontal" gap="l" align="start">
             <Form.Field
               label="Annual salary"
               name="salary"
@@ -651,7 +651,7 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
             </Switch>
           </Form.Field>
 
-          <Flex direction="horizontal" gap="s">
+          <Flex orientation="horizontal" gap="s">
             <Button
               label="Create hire"
               icon={<Send />}

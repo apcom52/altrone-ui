@@ -60,7 +60,7 @@ export const Overview: StoryObj<typeof Tabs> = {
     const sel = (id: string) => tab === id;
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Text block size={9} weight="bold">
           Tabs
         </Text>
@@ -390,12 +390,12 @@ export const TabsStory: StoryObj<typeof Tabs> = {
 
     return (
       <Flex
-        direction="vertical"
+        orientation="vertical"
         gap="xl"
         style={{ maxWidth: '780px', margin: '0 auto' }}
       >
         {/* Project header */}
-        <Flex direction="vertical" gap="s">
+        <Flex orientation="vertical" gap="s">
           <Text size={7} weight="bold" block>
             Nebula Platform
           </Text>
@@ -443,8 +443,8 @@ export const TabsStory: StoryObj<typeof Tabs> = {
 
         {/* ── Overview ── */}
         {mainTab === 'overview' && (
-          <Flex direction="vertical" gap="xl">
-            <Flex direction="horizontal" gap="l">
+          <Flex orientation="vertical" gap="xl">
+            <Flex orientation="horizontal" gap="l">
               {[
                 { label: 'Total tasks', value: TASKS.length },
                 {
@@ -477,7 +477,7 @@ export const TabsStory: StoryObj<typeof Tabs> = {
               ))}
             </Flex>
 
-            <Flex direction="vertical" gap="m">
+            <Flex orientation="vertical" gap="m">
               <Text size={5} weight="bold" block>
                 Sprint progress
               </Text>
@@ -488,13 +488,13 @@ export const TabsStory: StoryObj<typeof Tabs> = {
               />
             </Flex>
 
-            <Flex direction="vertical" gap="m">
+            <Flex orientation="vertical" gap="m">
               <Text size={5} weight="bold" block>
                 Recent activity
               </Text>
-              <Flex direction="vertical" gap="s">
+              <Flex orientation="vertical" gap="s">
                 {ACTIVITY.map((item, i) => (
-                  <Flex key={i} direction="horizontal" gap="m" align="center">
+                  <Flex key={i} orientation="horizontal" gap="m" align="center">
                     <span style={{ color: 'var(--text-1)', flexShrink: 0 }}>
                       {item.icon}
                     </span>
@@ -520,7 +520,7 @@ export const TabsStory: StoryObj<typeof Tabs> = {
 
         {/* ── Tasks ── */}
         {mainTab === 'tasks' && (
-          <Flex direction="vertical" gap="l">
+          <Flex orientation="vertical" gap="l">
             {/* Second Tabs instance — filter tabs */}
             <Tabs>
               <Tabs.Item
@@ -546,11 +546,11 @@ export const TabsStory: StoryObj<typeof Tabs> = {
               />
             </Tabs>
 
-            <Flex direction="vertical" gap="s">
+            <Flex orientation="vertical" gap="s">
               {visibleTasks.map((task) => (
                 <Flex
                   key={task.id}
-                  direction="horizontal"
+                  orientation="horizontal"
                   gap="m"
                   align="center"
                   style={{
@@ -586,11 +586,11 @@ export const TabsStory: StoryObj<typeof Tabs> = {
 
         {/* ── Team ── */}
         {mainTab === 'team' && (
-          <Flex direction="vertical" gap="m">
+          <Flex orientation="vertical" gap="m">
             {TEAM.map((member) => (
               <Flex
                 key={member.key}
-                direction="horizontal"
+                orientation="horizontal"
                 gap="l"
                 align="center"
                 style={{
@@ -604,7 +604,7 @@ export const TabsStory: StoryObj<typeof Tabs> = {
                   firstName={member.firstName}
                   lastName={member.lastName}
                 />
-                <Flex direction="vertical" gap="xxs" style={{ flex: 1 }}>
+                <Flex orientation="vertical" gap="xxs" style={{ flex: 1 }}>
                   <Text weight="bold">
                     {member.firstName} {member.lastName}
                   </Text>
@@ -612,7 +612,7 @@ export const TabsStory: StoryObj<typeof Tabs> = {
                     {member.role}
                   </Text>
                 </Flex>
-                <Flex direction="vertical" gap="xxs" style={{ width: '160px' }}>
+                <Flex orientation="vertical" gap="xxs" style={{ width: '160px' }}>
                   <Text size={3} color="muted">
                     {member.done} / {member.tasks} tasks done
                   </Text>
@@ -625,11 +625,11 @@ export const TabsStory: StoryObj<typeof Tabs> = {
 
         {/* ── Discussions ── */}
         {mainTab === 'discussions' && (
-          <Flex direction="vertical" gap="m">
+          <Flex orientation="vertical" gap="m">
             {DISCUSSIONS.map((d) => (
               <Flex
                 key={d.id}
-                direction="horizontal"
+                orientation="horizontal"
                 gap="l"
                 style={{
                   padding: '16px',
@@ -647,11 +647,11 @@ export const TabsStory: StoryObj<typeof Tabs> = {
                   lastName={TEAM_BY_KEY[d.author]?.lastName}
                 />
                 <Flex
-                  direction="vertical"
+                  orientation="vertical"
                   gap="xs"
                   style={{ flex: 1, minWidth: 0 }}
                 >
-                  <Flex direction="horizontal" gap="m" align="center">
+                  <Flex orientation="horizontal" gap="m" align="center">
                     <Text weight={d.unread ? 'bold' : 'regular'} truncate>
                       {d.title}
                     </Text>
@@ -670,7 +670,7 @@ export const TabsStory: StoryObj<typeof Tabs> = {
                   <Text size={3} color="muted" truncate>
                     {d.preview}
                   </Text>
-                  <Flex direction="horizontal" gap="m">
+                  <Flex orientation="horizontal" gap="m">
                     <Text size={3} color="muted">
                       {d.replies} replies
                     </Text>
@@ -686,7 +686,7 @@ export const TabsStory: StoryObj<typeof Tabs> = {
 
         {/* ── Settings ── */}
         {mainTab === 'settings' && (
-          <Flex direction="vertical" gap="l">
+          <Flex orientation="vertical" gap="l">
             <Text size={5} weight="bold" block>
               Project settings
             </Text>
@@ -698,7 +698,7 @@ export const TabsStory: StoryObj<typeof Tabs> = {
             ].map((row) => (
               <Flex
                 key={row.label}
-                direction="horizontal"
+                orientation="horizontal"
                 align="center"
                 style={{
                   padding: '14px 16px',
@@ -729,7 +729,7 @@ export const TabsInsideOverlayStory: StoryObj<typeof Tabs> = {
       );
 
       return (
-        <Flex direction="vertical" gap="m" style={{ width: 320 }}>
+        <Flex orientation="vertical" gap="m" style={{ width: 320 }}>
           <Tabs>
             <Tabs.Item
               icon={<Clock size={14} />}
@@ -763,7 +763,7 @@ export const TabsInsideOverlayStory: StoryObj<typeof Tabs> = {
 
     return (
       <Flex
-        direction="vertical"
+        orientation="vertical"
         gap="l"
         style={{ maxWidth: 640, margin: '0 auto' }}
       >

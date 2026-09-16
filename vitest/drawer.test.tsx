@@ -68,12 +68,12 @@ describe('Drawer', () => {
     );
   });
 
-  test('startActions and endActions render; endActions replaces the Done button', () => {
+  test('additionalActions and actions render; actions replaces the Done button', () => {
     renderDrawer({
       title: 'Doc',
       onDone: async () => {},
-      startActions: <button>history</button>,
-      endActions: [
+      additionalActions: <button>history</button>,
+      actions: [
         <button key="a">share</button>,
         <button key="b">save</button>,
       ],

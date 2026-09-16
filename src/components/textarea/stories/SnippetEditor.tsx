@@ -33,8 +33,8 @@ export const SnippetEditor = () => {
   const lines = text.split('\n').length;
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 520 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Paste a config
         </Text>
@@ -46,7 +46,7 @@ export const SnippetEditor = () => {
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="xs">
         <TextArea
           value={text}
           onChange={setText}
@@ -56,7 +56,7 @@ export const SnippetEditor = () => {
           placeholder='{ "key": "value" }'
           style={{ minHeight: 160, fontFamily: 'var(--font-family-code)' }}
         />
-        <Flex direction="horizontal" gap="m" align="center" justify="between">
+        <Flex orientation="horizontal" gap="m" align="center" justify="between">
           <Text size={2} color={parsed.ok ? 'success' : 'danger'}>
             {parsed.ok ? '✓ ' : '✗ '}
             {parsed.message}

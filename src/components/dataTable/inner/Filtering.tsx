@@ -111,7 +111,7 @@ export const Filtering = () => {
               deleteFilter={() => deleteFilter(filter.id)}
             />
           ))}
-          <Flex gap="m" direction="horizontal" justify="center">
+          <Flex gap="m" orientation="horizontal" justify="center">
             <Dropdown
               closeParentPopover={false}
               content={

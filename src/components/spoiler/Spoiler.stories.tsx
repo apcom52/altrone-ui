@@ -45,7 +45,7 @@ const Prose = ({ children }: { children: React.ReactNode }) => (
 export const Overview: StoryObj<typeof Spoiler> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Text block size={9} weight="bold">
         Spoiler
       </Text>
@@ -76,7 +76,7 @@ export const Overview: StoryObj<typeof Spoiler> = {
 export const OpenByDefault: StoryObj<typeof Spoiler> = {
   name: 'Open by default',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Heading>Open by default</Heading>
       <Paragraph>
         Pass <Text code>defaultOpen</Text> to render the spoiler expanded on
@@ -100,7 +100,7 @@ export const ControlledOpen: StoryObj<typeof Spoiler> = {
     const [open, setOpen] = useState(false);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
         <Heading>Controlled open</Heading>
         <Paragraph>
           Passing <Text code>open</Text> (instead of{' '}
@@ -143,7 +143,7 @@ const FAQ = [
 export const Grouped: StoryObj<typeof Spoiler> = {
   name: 'Grouped',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Heading>Grouped</Heading>
       <Paragraph>
         Adjacent spoilers get a divider and a little top padding between them
@@ -151,7 +151,7 @@ export const Grouped: StoryObj<typeof Spoiler> = {
         settings.
       </Paragraph>
 
-      <Flex direction="vertical">
+      <Flex orientation="vertical">
         {FAQ.map(({ q, a }) => (
           <Spoiler key={q} title={q}>
             <Prose>{a}</Prose>
@@ -177,7 +177,7 @@ export const ToggleCallback: StoryObj<typeof Spoiler> = {
     const [openCount, setOpenCount] = useState(1);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
         <Heading>Toggle callback</Heading>
         <Paragraph>
           <Text code>onToggle(open, event)</Text> fires after each toggle;{' '}
@@ -189,7 +189,7 @@ export const ToggleCallback: StoryObj<typeof Spoiler> = {
           {openCount} section{openCount === 1 ? '' : 's'} open
         </Text>
 
-        <Flex direction="vertical">
+        <Flex orientation="vertical">
           {SECTIONS.map(({ title, body }, i) => (
             <Spoiler
               key={title}
@@ -213,7 +213,7 @@ export const ToggleCallback: StoryObj<typeof Spoiler> = {
 export const RichContent: StoryObj<typeof Spoiler> = {
   name: 'Rich heading and content',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Heading>Rich heading and content</Heading>
       <Paragraph>
         <Text code>title</Text> takes any node, not just a string — pair a label
@@ -232,7 +232,7 @@ export const RichContent: StoryObj<typeof Spoiler> = {
         }
         defaultOpen
       >
-        <Flex direction="vertical" gap="s">
+        <Flex orientation="vertical" gap="s">
           {['design-spec.pdf', 'screenshot.png', 'notes.md'].map((file) => (
             <Text key={file} size={3}>
               {file}
@@ -249,7 +249,7 @@ export const RichContent: StoryObj<typeof Spoiler> = {
 export const Accessibility: StoryObj<typeof Spoiler> = {
   name: 'Accessibility',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Heading>Accessibility</Heading>
       <Paragraph>
         The heading is a native <Text code>&lt;button&gt;</Text>, so it&rsquo;s

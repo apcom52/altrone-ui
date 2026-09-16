@@ -16,8 +16,8 @@ export const DeleteWorkspaceStory: StoryObj<typeof Modal> = {
     const matches = confirmText.trim() === WORKSPACE;
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 520 }}>
-        <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 520 }}>
+        <Flex orientation="vertical" gap="xs">
           <Text block size={7} weight="bold">
             Workspace settings
           </Text>
@@ -60,7 +60,7 @@ export const DeleteWorkspaceStory: StoryObj<typeof Modal> = {
             />,
           ]}
           content={
-            <Flex direction="vertical" gap="m">
+            <Flex orientation="vertical" gap="m">
               <Text block size={4}>
                 Every project, integration, and uploaded asset is deleted
                 immediately and permanently. There is no undo and no grace

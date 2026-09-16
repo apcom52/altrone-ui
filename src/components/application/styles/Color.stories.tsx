@@ -48,7 +48,7 @@ const roleSteps: { role: string; steps: [number, number] }[] = [
 ];
 
 const StatusCard = ({ name }: { name: string }) => (
-  <Flex direction="vertical" gap="s" style={{ width: 160 }}>
+  <Flex orientation="vertical" gap="s" style={{ width: 160 }}>
     <div
       style={{
         height: 64,
@@ -84,7 +84,7 @@ const StatusCard = ({ name }: { name: string }) => (
 );
 
 const HueScale = ({ hue }: { hue: string }) => (
-  <Flex direction="vertical" gap="s">
+  <Flex orientation="vertical" gap="s">
     <Text size={3} weight="medium">
       --{hue}-*
     </Text>
@@ -107,7 +107,7 @@ const HueScale = ({ hue }: { hue: string }) => (
 export const Overview: StoryObj = {
   name: 'Color System',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Color
       </Text>
@@ -146,7 +146,7 @@ export const Overview: StoryObj = {
         maps its 12 steps to the same five purpose-named roles, so reading
         one status&rsquo;s CSS teaches you how to read all of them:
       </Paragraph>
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         {roleSteps.map(({ role, steps }) => (
           <Text key={role} size={3}>
             <code>{role}</code> — steps {steps[0]}
@@ -179,7 +179,7 @@ export const Overview: StoryObj = {
         <code>accent</code> prop just repoints which hue{' '}
         <code>--accent-N</code> resolves to.
       </Paragraph>
-      <Flex direction="vertical" gap="m">
+      <Flex orientation="vertical" gap="m">
         {[
           'red',
           'orange',
@@ -240,7 +240,7 @@ export const Overview: StoryObj = {
       <Paragraph>
         A handful of one-off colors that don&rsquo;t belong to a scale:
       </Paragraph>
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         <Text size={3}>
           <code>--color-overlay-scrim</code> — the dimming layer behind{' '}
           <code>Modal</code>/<code>Drawer</code>, shared by both instead of

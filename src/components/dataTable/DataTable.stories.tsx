@@ -373,7 +373,7 @@ const Section = ({
   title: string;
   children: ReactNode;
 }) => (
-  <Flex direction="vertical" gap="s">
+  <Flex orientation="vertical" gap="s">
     <Text size={4} weight="bold" block>
       {title}
     </Text>
@@ -387,8 +387,8 @@ const Section = ({
 
 export const Overview: Story = {
   render: () => (
-    <Flex direction="vertical" gap="xl" style={{ maxWidth: 900 }}>
-      <Flex direction="vertical" gap="s">
+    <Flex orientation="vertical" gap="xl" style={{ maxWidth: 900 }}>
+      <Flex orientation="vertical" gap="s">
         <Text size={6} weight="bold" block>
           DataTable
         </Text>
@@ -427,7 +427,7 @@ export const Overview: Story = {
 export const ColumnTypes: Story = {
   name: 'Column types & renderers',
   render: () => (
-    <Flex direction="vertical" gap="xl" style={{ maxWidth: 1000 }}>
+    <Flex orientation="vertical" gap="xl" style={{ maxWidth: 1000 }}>
       <Section title="One renderer per type">
         The <Text code>type</Text> field selects the built-in renderer:{' '}
         <Text code>string</Text>, <Text code>text</Text>,{' '}
@@ -495,7 +495,7 @@ export const ColumnTypes: Story = {
               renderReadMode: ({ item }) => {
                 const row = item as Employee;
                 return (
-                  <Flex direction="vertical">
+                  <Flex orientation="vertical">
                     <Text weight="bold">{row.name}</Text>
                     <Text size={3}>{row.role}</Text>
                   </Flex>
@@ -516,7 +516,7 @@ export const ColumnTypes: Story = {
 
 export const Sorting: Story = {
   render: () => (
-    <Flex direction="vertical" gap="xl" style={{ maxWidth: 900 }}>
+    <Flex orientation="vertical" gap="xl" style={{ maxWidth: 900 }}>
       <Section title="Click-to-sort">
         Set <Text code>sortable</Text> on a column to make its header
         interactive. Clicking cycles through{' '}
@@ -566,7 +566,7 @@ export const Sorting: Story = {
 
 export const Filtering: Story = {
   render: () => (
-    <Flex direction="vertical" gap="xl" style={{ maxWidth: 1000 }}>
+    <Flex orientation="vertical" gap="xl" style={{ maxWidth: 1000 }}>
       <Section title="The filter panel">
         Mark a column <Text code>filterable</Text> to expose it in the{' '}
         <Text code>Filters</Text> panel in the header. Each column type brings
@@ -594,7 +594,7 @@ export const Filtering: Story = {
 
 export const Pagination: Story = {
   render: () => (
-    <Flex direction="vertical" gap="xl" style={{ maxWidth: 900 }}>
+    <Flex orientation="vertical" gap="xl" style={{ maxWidth: 900 }}>
       <Section title="Footer pagination">
         <Text code>rowsPerPage</Text> sets the page size and{' '}
         <Text code>defaultPage</Text> the starting page (zero-based). The footer
@@ -623,7 +623,7 @@ export const Pagination: Story = {
 
 export const RowSelection: Story = {
   render: () => (
-    <Flex direction="vertical" gap="xl" style={{ maxWidth: 900 }}>
+    <Flex orientation="vertical" gap="xl" style={{ maxWidth: 900 }}>
       <Section title="Selecting rows">
         <Text code>selectable</Text> adds a toggle to the header; turning it on
         reveals a checkbox column and switches the footer to a selection count.
@@ -664,7 +664,7 @@ export const RowSelection: Story = {
 export const Actions: Story = {
   name: 'Toolbar & row actions',
   render: () => (
-    <Flex direction="vertical" gap="xl" style={{ maxWidth: 1000 }}>
+    <Flex orientation="vertical" gap="xl" style={{ maxWidth: 1000 }}>
       <Section title="Toolbar actions">
         The header is a <Text code>Toolbar</Text>: the select-mode toggle and
         the filtering control always live in <Text code>Toolbar.Leading</Text>,
@@ -788,7 +788,7 @@ export const CustomActions: Story = {
       : EMPLOYEES;
 
     return (
-      <Flex direction="vertical" gap="xl" style={{ maxWidth: 1000 }}>
+      <Flex orientation="vertical" gap="xl" style={{ maxWidth: 1000 }}>
         <Section title="A toolbar that reshapes itself around selection">
           Nothing here is built into <Text code>DataTable</Text> &mdash; it's
           plain <Text code>Toolbar</Text> composition inside the{' '}
@@ -905,7 +905,7 @@ export const CustomActions: Story = {
 
 export const LoadingMode: Story = {
   render: () => (
-    <Flex direction="vertical" gap="xl" style={{ maxWidth: 900 }}>
+    <Flex orientation="vertical" gap="xl" style={{ maxWidth: 900 }}>
       <Section title="Skeleton rows">
         <Text code>mode="loading"</Text> swaps every cell for a type-appropriate
         skeleton and disables the toolbar. Use it between server requests while
@@ -928,7 +928,7 @@ export const LoadingMode: Story = {
 
 export const ColumnResizing: Story = {
   render: () => (
-    <Flex direction="vertical" gap="xl" style={{ maxWidth: 1000 }}>
+    <Flex orientation="vertical" gap="xl" style={{ maxWidth: 1000 }}>
       <Section title="Draggable column edges">
         <Text code>resizableColumns</Text> lets every column be resized by
         dragging the handle on its right edge (hover a header to reveal it). Opt
@@ -973,7 +973,7 @@ export const ServerCallbacks: Story = {
     };
 
     return (
-      <Flex direction="vertical" gap="xl" style={{ maxWidth: 1000 }}>
+      <Flex orientation="vertical" gap="xl" style={{ maxWidth: 1000 }}>
         <Section title="Reacting to state changes">
           <Text code>onPageChange</Text>, <Text code>onSortChange</Text> and{' '}
           <Text code>onFilterChange</Text> fire on user interaction only (never
@@ -1010,7 +1010,7 @@ export const ServerCallbacks: Story = {
           }
         />
 
-        <Flex direction="vertical" gap="xs">
+        <Flex orientation="vertical" gap="xs">
           <Text weight="bold" block>
             Event log
           </Text>
@@ -1058,7 +1058,7 @@ export const ControlledState: Story = {
     };
 
     return (
-      <Flex direction="vertical" gap="xl" style={{ maxWidth: 1000 }}>
+      <Flex orientation="vertical" gap="xl" style={{ maxWidth: 1000 }}>
         <Section title="Owning state from outside">
           Passing <Text code>page</Text>/<Text code>sort</Text>/
           <Text code>filters</Text> (instead of their <Text code>default*</Text>{' '}
@@ -1070,7 +1070,7 @@ export const ControlledState: Story = {
           bar below, standing in for a real router query string.
         </Section>
 
-        <Flex direction="vertical" gap="xs">
+        <Flex orientation="vertical" gap="xs">
           <Text weight="bold" block>
             Address bar
           </Text>
@@ -1116,7 +1116,7 @@ export const ControlledState: Story = {
 
 export const EmptyState: Story = {
   render: () => (
-    <Flex direction="vertical" gap="xl" style={{ maxWidth: 900 }}>
+    <Flex orientation="vertical" gap="xl" style={{ maxWidth: 900 }}>
       <Section title="No rows">
         When <Text code>data</Text> is empty (or every row is filtered out) the
         body shows an empty banner. Suppress it with{' '}

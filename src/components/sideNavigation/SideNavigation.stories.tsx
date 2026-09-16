@@ -40,7 +40,7 @@ const Paragraph = ({ children }: { children: ReactNode }) => (
 export const Overview: StoryObj<typeof SideNavigation> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         SideNavigation
       </Text>

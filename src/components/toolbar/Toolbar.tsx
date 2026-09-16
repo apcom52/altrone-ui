@@ -30,7 +30,7 @@ const VARIANT_CLASS = {
   solid: s.Solid,
 } as const;
 
-const PLACEMENT_CLASS = {
+const EDGE_CLASS = {
   top: s.Top,
   bottom: s.Bottom,
   left: s.Left,
@@ -42,7 +42,7 @@ const ToolbarComponent = memo(
     ref,
     children,
     variant = 'solid',
-    placement = 'top',
+    edge = 'top',
     size = 'm',
     sticky = false,
     fixed,
@@ -58,12 +58,12 @@ const ToolbarComponent = memo(
 
     const isSticky = sticky || fixed === true;
     const orientation =
-      placement === 'left' || placement === 'right' ? 'vertical' : 'horizontal';
+      edge === 'left' || edge === 'right' ? 'vertical' : 'horizontal';
 
     const cls = clsx(
       s.Toolbar,
       VARIANT_CLASS[variant],
-      PLACEMENT_CLASS[placement],
+      EDGE_CLASS[edge],
       SIZE_CLASS[size],
       {
         [s.Sticky]: isSticky,
@@ -74,7 +74,7 @@ const ToolbarComponent = memo(
 
     return (
       <ToolbarContext.Provider
-        value={{ placement, orientation, variant, size }}
+        value={{ edge, orientation, variant, size }}
       >
         <div
           ref={ref}

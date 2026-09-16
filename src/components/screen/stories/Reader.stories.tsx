@@ -192,7 +192,7 @@ const BookCard = ({
     }}
     style={{ height: '100%', cursor: 'pointer' }}
   >
-    <Flex direction="vertical" gap="s" style={{ height: '100%' }}>
+    <Flex orientation="vertical" gap="s" style={{ height: '100%' }}>
       <Flex justify="between" align="start" gap="s">
         <Text size={4} weight="bold" block style={{ flex: 1, minWidth: 0 }}>
           {book.title}
@@ -220,8 +220,8 @@ const LibraryView = ({
   isLiked: (id: string) => boolean;
   onOpen: (id: string) => void;
 }) => (
-  <Flex direction="vertical" gap="l">
-    <Flex direction="vertical" gap="xxs">
+  <Flex orientation="vertical" gap="l">
+    <Flex orientation="vertical" gap="xxs">
       <Text size={7} weight="bold" block>
         {filter === 'liked' ? 'Liked stories' : 'Short stories'}
       </Text>
@@ -269,11 +269,11 @@ const ChapterBlock = ({
 }) => (
   <Flex
     id={`chapter-${index}`}
-    direction="vertical"
+    orientation="vertical"
     gap="m"
     style={{ scrollMarginTop: SECTION_OFFSET }}
   >
-    <Flex direction="vertical" gap="xxs">
+    <Flex orientation="vertical" gap="xxs">
       <Text size={2} color="muted">
         Chapter {index + 1}
       </Text>
@@ -281,7 +281,7 @@ const ChapterBlock = ({
         {chapter.title}
       </Text>
     </Flex>
-    <Flex direction="vertical" gap="xxs">
+    <Flex orientation="vertical" gap="xxs">
       {chapter.lines.map((line, lineIndex) =>
         line.trim() === '' ? (
           <div key={lineIndex} style={{ height: 12 }} />
@@ -305,7 +305,7 @@ const ReaderView = ({
 }) => {
   if (state.loading) {
     return (
-      <Flex direction="vertical" gap="m">
+      <Flex orientation="vertical" gap="m">
         <Skeleton height="44px" width="60%" radius="var(--radius-m)" />
         <Skeleton height="20px" width="40%" radius="var(--radius-s)" />
         {[...Array(10)].map((_, i) => (
@@ -325,8 +325,8 @@ const ReaderView = ({
   }
 
   return (
-    <Flex direction="vertical" gap="xl">
-      <Flex direction="vertical" gap="s">
+    <Flex orientation="vertical" gap="xl">
+      <Flex orientation="vertical" gap="s">
         <Text size={8} weight="bold" block>
           {book.title}
         </Text>
@@ -367,12 +367,12 @@ const Contents = ({
   onNavigate?: () => void;
 }) => (
   <Flex
-    direction="vertical"
+    orientation="vertical"
     gap="m"
     style={sticky ? { position: 'sticky', top: SECTION_OFFSET } : { width: 240 }}
   >
     {state.loading ? (
-      <Flex direction="vertical" gap="xxs">
+      <Flex orientation="vertical" gap="xxs">
         {[...Array(6)].map((_, i) => (
           <Skeleton key={i} height="24px" radius="8px" />
         ))}

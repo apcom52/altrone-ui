@@ -49,7 +49,7 @@ export const OverviewStory: StoryObj<typeof Switch> = {
     const [bulkDelete, setBulkDelete] = useState(false);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Text size={7} weight="bold" block>
           Switch
         </Text>
@@ -62,7 +62,7 @@ export const OverviewStory: StoryObj<typeof Switch> = {
           <Text code>switch</Text> to assistive tech.
         </Paragraph>
 
-        <Flex direction="vertical" gap="s">
+        <Flex orientation="vertical" gap="s">
           <Switch checked={notifications} onChange={setNotifications}>
             Email notifications
           </Switch>
@@ -102,7 +102,7 @@ export const SizesStory: StoryObj<typeof Switch> = {
     );
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Heading>mini, s, m, l, xl</Heading>
         <Paragraph>
           One value — the track height — drives the whole control; the track
@@ -110,7 +110,7 @@ export const SizesStory: StoryObj<typeof Switch> = {
           scales too, and the clickable row never drops below 24px.
         </Paragraph>
 
-        <Flex direction="vertical" gap="s">
+        <Flex orientation="vertical" gap="s">
           {SIZES.map((sz) => (
             <Switch
               key={sz}
@@ -145,7 +145,7 @@ export const SettingsListStory: StoryObj<typeof Switch> = {
     });
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Heading>Label on the left, switch on the right</Heading>
         <Paragraph>
           The label text still comes from <Text code>children</Text> so the
@@ -153,7 +153,7 @@ export const SettingsListStory: StoryObj<typeof Switch> = {
           far edge.
         </Paragraph>
 
-        <Flex direction="vertical" style={{ maxWidth: 360 }}>
+        <Flex orientation="vertical" style={{ maxWidth: 360 }}>
           {SETTINGS.map(({ key, label, hint }, index) => (
             <Flex
               key={key}
@@ -172,7 +172,7 @@ export const SettingsListStory: StoryObj<typeof Switch> = {
                   setValues((prev) => ({ ...prev, [key]: next }))
                 }
               >
-                <Flex direction="vertical">
+                <Flex orientation="vertical">
                   <Text>{label}</Text>
                   <Text size={3} color="muted">
                     {hint}
@@ -195,7 +195,7 @@ export const NoLabelStory: StoryObj<typeof Switch> = {
     const [wifi, setWifi] = useState(true);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Heading>A bare switch</Heading>
         <Paragraph>
           With no <Text code>children</Text>, give it a name from context —{' '}

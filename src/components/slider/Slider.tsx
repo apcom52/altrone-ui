@@ -62,7 +62,7 @@ export const Slider = (props: SliderProps) => {
     variant = 'default',
     size = 'm',
     style,
-    direction = 'horizontal',
+    orientation = 'horizontal',
     renderLabel,
     disabled,
     readOnly,
@@ -84,7 +84,7 @@ export const Slider = (props: SliderProps) => {
   const [insideOverlay, setInsideOverlay] = useState(false);
 
   const isFill = variant === 'fill';
-  const isVertical = direction === 'vertical';
+  const isVertical = orientation === 'vertical';
 
   /**
    * The value bubble is anchored to the thumb through a portal, so it escapes
@@ -128,7 +128,7 @@ export const Slider = (props: SliderProps) => {
 
       const rect = measureEl.getBoundingClientRect();
       const ratio =
-        direction === 'vertical'
+        orientation === 'vertical'
           ? (rect.bottom - clientY) / rect.height
           : (clientX - rect.left) / rect.width;
 
@@ -136,7 +136,7 @@ export const Slider = (props: SliderProps) => {
       const stepsCount = Math.round((rawValue - min) / step);
       return Math.min(max, Math.max(min, min + stepsCount * step));
     },
-    [min, max, step, direction],
+    [min, max, step, orientation],
   );
 
   // Move/up handlers are created inside the pointerdown closure so that
@@ -263,7 +263,7 @@ export const Slider = (props: SliderProps) => {
       }
       aria-disabled={disabled}
       aria-readonly={readOnly}
-      aria-orientation={direction}
+      aria-orientation={orientation}
       {...restProps}
     >
       <input type="hidden" value={value} tabIndex={-1} name={name} />

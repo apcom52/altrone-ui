@@ -33,11 +33,11 @@
   padding: var(--space-content);
   pointer-events: none;
 
-  &.Start {
+  &.Top {
     top: 0;
   }
 
-  &.End {
+  &.Bottom {
     bottom: 0;
   }
 }
@@ -49,12 +49,12 @@
 }
 
 .NotificationStack {
-  &.SideStart {
+  &.AlignStart {
     left: 0;
     align-items: flex-start;
   }
 
-  &.SideEnd {
+  &.AlignEnd {
     right: 0;
     align-items: flex-end;
   }

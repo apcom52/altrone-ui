@@ -48,7 +48,7 @@ export const Overview: StoryObj<typeof Flex> = {
     const [styled, setStyled] = useState('42.00');
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 520 }}>
         <Text size={6} weight="bold" block>
           TextInput
         </Text>
@@ -70,7 +70,7 @@ export const Overview: StoryObj<typeof Flex> = {
           surrounding <Text code>Form.Field</Text> when the prop is not passed
           explicitly.
         </Text>
-        <Flex direction="vertical" gap="m">
+        <Flex orientation="vertical" gap="m">
           <TextInput
             value={value}
             onChange={setValue}
@@ -99,7 +99,7 @@ export const Overview: StoryObj<typeof Flex> = {
           field drops its material and reads as plain text, while staying
           focusable so the value can be selected and copied.
         </Text>
-        <Flex direction="horizontal" gap="s" align="center">
+        <Flex orientation="horizontal" gap="s" align="center">
           <TextInput
             value="Lord Voldemort"
             onChange={() => null}
@@ -121,7 +121,7 @@ export const Overview: StoryObj<typeof Flex> = {
           <Text code>inputStyle</Text> to reach the <Text code>{'<input>'}</Text>{' '}
           itself.
         </Text>
-        <Flex direction="horizontal" gap="l">
+        <Flex orientation="horizontal" gap="l">
           <TextInput
             value={styled}
             onChange={setStyled}
@@ -147,7 +147,7 @@ export const Materials: StoryObj<typeof Flex> = {
     const [b, setB] = useState('');
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 520 }}>
         <Text size={6} weight="bold" block>
           Materials
         </Text>
@@ -193,7 +193,7 @@ export const Islands: StoryObj<typeof Flex> = {
     const [chars, setChars] = useState('');
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 520 }}>
         <Text size={6} weight="bold" block>
           Islands
         </Text>
@@ -213,7 +213,7 @@ export const Islands: StoryObj<typeof Flex> = {
           Static, non-interactive labels — a currency symbol, a command prefix,
           a leading glyph.
         </Text>
-        <Flex direction="horizontal" gap="l">
+        <Flex orientation="horizontal" gap="l">
           <TextInput value={amount} onChange={setAmount} placeholder="0">
             <TextInput.TextIsland placement="start" label="$" />
             <TextInput.TextIsland placement="end" label=".00" />
@@ -239,7 +239,7 @@ export const Islands: StoryObj<typeof Flex> = {
           <Text code>showLabel</Text> false it is a circular icon-only button
           with an auto tooltip from <Text code>label</Text>.
         </Text>
-        <Flex direction="horizontal" gap="l">
+        <Flex orientation="horizontal" gap="l">
           <TextInput value={user} onChange={setUser} placeholder="Username">
             <Dropdown
               content={
@@ -317,7 +317,7 @@ export const Islands: StoryObj<typeof Flex> = {
           <Text code>CharCounterIsland</Text> reads the field&apos;s value
           length and <Text code>maxLength</Text>.
         </Text>
-        <Flex direction="horizontal" gap="l">
+        <Flex orientation="horizontal" gap="l">
           <TextInput value={note} onChange={setNote} placeholder="Loading…">
             <TextInput.LoadingIsland placement="end" />
           </TextInput>
@@ -351,7 +351,7 @@ export const Sizes: StoryObj<typeof Flex> = {
     const [value, setValue] = useState('');
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 560 }}>
         <Text size={6} weight="bold" block>
           Sizes
         </Text>
@@ -364,11 +364,11 @@ export const Sizes: StoryObj<typeof Flex> = {
           viewport.
         </Text>
         {(['mini', 's', 'm', 'l', 'xl'] as Size[]).map((size) => (
-          <Flex direction="vertical" gap="s" key={size}>
+          <Flex orientation="vertical" gap="s" key={size}>
             <Text weight="bold" block>
               {size.toUpperCase()}
             </Text>
-            <Flex direction="horizontal" gap="l">
+            <Flex orientation="horizontal" gap="l">
               <TextInput
                 value={value}
                 onChange={setValue}
@@ -403,7 +403,7 @@ export const CustomField: StoryObj<typeof Flex> = {
     const [value, setValue] = useState('0');
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 520 }}>
         <Text size={6} weight="bold" block>
           Custom field element
         </Text>

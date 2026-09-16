@@ -25,7 +25,7 @@ export default story;
 export const Overview: StoryObj<typeof Label> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Text block size={9} weight="bold">
         Label
       </Text>
@@ -59,7 +59,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Showcase',
   render: () => {
     return (
-      <Flex direction="vertical" gap="l">
+      <Flex orientation="vertical" gap="l">
         <Text size={5} weight="bold" block>
           Different labels (solid variant)
         </Text>

@@ -34,7 +34,7 @@ const Paragraph = ({ children }: { children: ReactNode }) => (
 );
 
 const Case = ({ title, children }: { title: string; children: ReactNode }) => (
-  <Flex direction="vertical" gap="s">
+  <Flex orientation="vertical" gap="s">
     <Text size={3} weight="medium" block>
       {title}
     </Text>
@@ -50,7 +50,7 @@ export const Overview: StoryObj<typeof Pagination> = {
     const [page, setPage] = useState(6);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Text block size={9} weight="bold">
           Pagination
         </Text>
@@ -75,7 +75,7 @@ export const Overview: StoryObj<typeof Pagination> = {
           <Text code>aria-current="page"</Text>; arrows disable at the ends.
         </Paragraph>
 
-        <Flex direction="vertical" gap="xs">
+        <Flex orientation="vertical" gap="xs">
           <Pagination
             currentPage={page}
             totalPages={20}
@@ -139,7 +139,7 @@ export const Interactive: StoryObj<typeof Pagination> = {
   render: (args) => {
     const [page, setPage] = useState(args.currentPage);
     return (
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         <Pagination
           {...args}
           currentPage={page}

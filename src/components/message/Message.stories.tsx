@@ -36,7 +36,7 @@ const Paragraph = ({ children }: { children: React.ReactNode }) => (
 export const Overview: StoryObj<typeof Message> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Message
       </Text>
@@ -77,7 +77,7 @@ export const Overview: StoryObj<typeof Message> = {
 export const Severities: StoryObj<typeof Message> = {
   name: 'Severities',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Severities</Section>
       <Paragraph>
         <Text code>severity</Text> sets the colour and the implied urgency. With
@@ -137,7 +137,7 @@ export const Severities: StoryObj<typeof Message> = {
 export const WithoutIcon: StoryObj<typeof Message> = {
   name: 'Without an icon',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Without an icon</Section>
       <Paragraph>
         When <Text code>icon</Text> is omitted the container widens its
@@ -167,7 +167,7 @@ export const Dismissible: StoryObj<typeof Message> = {
 
     return (
       <Flex
-        direction="vertical"
+        orientation="vertical"
         gap="l"
         align="start"
         style={{ maxWidth: 720 }}
@@ -200,7 +200,7 @@ export const Dismissible: StoryObj<typeof Message> = {
 export const WithActions: StoryObj<typeof Message> = {
   name: 'With actions',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>With actions</Section>
       <Paragraph>
         <Text code>actions</Text> takes an array of elements rendered in a row
@@ -238,7 +238,7 @@ export const WithActions: StoryObj<typeof Message> = {
 export const Compact: StoryObj<typeof Message> = {
   name: 'Compact',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Compact</Section>
       <Paragraph>
         <Text code>compact</Text> stops stacking the header above the body and
@@ -284,7 +284,7 @@ export const Accessibility: StoryObj<typeof Message> = {
 
     return (
       <Flex
-        direction="vertical"
+        orientation="vertical"
         gap="l"
         align="start"
         style={{ maxWidth: 720 }}

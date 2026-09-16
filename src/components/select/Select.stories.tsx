@@ -76,7 +76,7 @@ export const OverviewStory: StoryObj<typeof Select> = {
     const [team, setTeam] = useState<string | undefined>();
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Text size={7} weight="bold" block>
           Select
         </Text>
@@ -89,8 +89,8 @@ export const OverviewStory: StoryObj<typeof Select> = {
         </Paragraph>
 
         <Heading>New incident</Heading>
-        <Flex direction="horizontal" gap="l" align="start" wrap>
-          <Flex direction="vertical" gap="xs">
+        <Flex orientation="horizontal" gap="l" align="start" wrap>
+          <Flex orientation="vertical" gap="xs">
             <Caption>Severity</Caption>
             <Select
               name="severity"
@@ -100,7 +100,7 @@ export const OverviewStory: StoryObj<typeof Select> = {
               placeholder="Assess the blast radius"
             />
           </Flex>
-          <Flex direction="vertical" gap="xs">
+          <Flex orientation="vertical" gap="xs">
             <Caption>Owning team</Caption>
             <Select
               name="team"
@@ -135,7 +135,7 @@ export const MultipleStory: StoryObj<typeof Select> = {
     const chips = SELECT_COUNTRIES.filter((c) => markets.includes(c.value));
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Heading>Watchlist</Heading>
         <Paragraph>
           With <Text code>multiple</Text> the menu stays open on every pick and
@@ -152,7 +152,7 @@ export const MultipleStory: StoryObj<typeof Select> = {
           searchable
           clearable
         />
-        <Flex direction="horizontal" gap="xs" wrap>
+        <Flex orientation="horizontal" gap="xs" wrap>
           {chips.length === 0 ? (
             <Caption>No markets on the list yet.</Caption>
           ) : (
@@ -186,7 +186,7 @@ export const SearchStory: StoryObj<typeof Select> = {
     const [zone, setZone] = useState<string | undefined>();
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 480 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 480 }}>
         <Heading>Command-palette style search</Heading>
         <Paragraph>
           <Text code>searchable</Text> turns the control into a filter box on
@@ -216,7 +216,7 @@ export const SizesStory: StoryObj<typeof Select> = {
     const [sort, setSort] = useState<string | undefined>('new');
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 660 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 660 }}>
         <Heading>Sizes, side by side</Heading>
         <Paragraph>
           <Text code>size</Text> follows the shared control scale and passes
@@ -225,7 +225,7 @@ export const SizesStory: StoryObj<typeof Select> = {
           <Text code>l</Text>.
         </Paragraph>
         {(['s', 'm', 'l'] as const).map((size) => (
-          <Flex key={size} direction="horizontal" gap="s" align="center" wrap>
+          <Flex key={size} orientation="horizontal" gap="s" align="center" wrap>
             <Text size={2} color="muted" style={{ width: 14 }}>
               {size}
             </Text>
@@ -322,7 +322,7 @@ export const CustomTriggerStory: StoryObj<typeof Select> = {
     const [region, setRegion] = useState<string[]>(['france', 'germany']);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 520 }}>
         <Heading>Bring your own trigger</Heading>
         <Paragraph>
           <Text code>asChild</Text> replaces the whole trigger with the single
@@ -332,7 +332,7 @@ export const CustomTriggerStory: StoryObj<typeof Select> = {
           <Text code>useSelectContext()</Text>.
         </Paragraph>
 
-        <Flex direction="horizontal" gap="s" align="center" wrap>
+        <Flex orientation="horizontal" gap="s" align="center" wrap>
           <Select
             value={sort}
             onChange={(next) => setSort(next as string | undefined)}

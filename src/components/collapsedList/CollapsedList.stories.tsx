@@ -66,7 +66,7 @@ const rows = (names: string[] = PERMISSIONS) =>
 export const Overview: StoryObj<typeof CollapsedList> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 520 }}>
       <Text block size={9} weight="bold">
         CollapsedList
       </Text>
@@ -91,7 +91,7 @@ export const Overview: StoryObj<typeof CollapsedList> = {
 export const Limit: StoryObj<typeof CollapsedList> = {
   name: 'Limit',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>Limit</Heading>
       <Paragraph>
         <Text code>limit</Text> (default <Text code>5</Text>) is how many direct
@@ -101,7 +101,7 @@ export const Limit: StoryObj<typeof CollapsedList> = {
 
       <Flex gap="xl" align="start">
         {[2, 4].map((limit) => (
-          <Flex key={limit} direction="vertical" gap="xs" style={{ flex: 1 }}>
+          <Flex key={limit} orientation="vertical" gap="xs" style={{ flex: 1 }}>
             <Text size={3} weight="medium" block>
               limit={limit}
             </Text>
@@ -110,7 +110,7 @@ export const Limit: StoryObj<typeof CollapsedList> = {
             </CollapsedList>
           </Flex>
         ))}
-        <Flex direction="vertical" gap="xs" style={{ flex: 1 }}>
+        <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
           <Text size={3} weight="medium" block>
             limit={8} — fits, no button
           </Text>
@@ -128,7 +128,7 @@ export const Limit: StoryObj<typeof CollapsedList> = {
 export const ItemGap: StoryObj<typeof CollapsedList> = {
   name: 'Item gap',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>Item gap</Heading>
       <Paragraph>
         <Text code>gap</Text> sets the spacing between list items only — the
@@ -137,7 +137,7 @@ export const ItemGap: StoryObj<typeof CollapsedList> = {
 
       <Flex gap="xl" align="start">
         {(['xs', 'm', 'l'] as const).map((gap) => (
-          <Flex key={gap} direction="vertical" gap="xs" style={{ flex: 1 }}>
+          <Flex key={gap} orientation="vertical" gap="xs" style={{ flex: 1 }}>
             <Text size={3} weight="medium" block>
               gap={gap}
             </Text>
@@ -156,7 +156,7 @@ export const ItemGap: StoryObj<typeof CollapsedList> = {
 export const CustomLabel: StoryObj<typeof CollapsedList> = {
   name: 'Custom button label',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>Custom button label</Heading>
       <Paragraph>
         <Text code>expandButtonLabel</Text> takes a string, or a function that
@@ -165,7 +165,7 @@ export const CustomLabel: StoryObj<typeof CollapsedList> = {
       </Paragraph>
 
       <Flex gap="xl" align="start">
-        <Flex direction="vertical" gap="xs" style={{ flex: 1 }}>
+        <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
           <Text size={3} weight="medium" block>
             static string
           </Text>
@@ -178,7 +178,7 @@ export const CustomLabel: StoryObj<typeof CollapsedList> = {
           </CollapsedList>
         </Flex>
 
-        <Flex direction="vertical" gap="xs" style={{ flex: 1 }}>
+        <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
           <Text size={3} weight="medium" block>
             function of context
           </Text>
@@ -204,7 +204,7 @@ export const CustomLabel: StoryObj<typeof CollapsedList> = {
 export const OneWayReveal: StoryObj<typeof CollapsedList> = {
   name: 'One-way reveal',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 520 }}>
       <Heading>One-way reveal</Heading>
       <Paragraph>
         With <Text code>hideExpandButtonAfterUsage</Text> the button disappears

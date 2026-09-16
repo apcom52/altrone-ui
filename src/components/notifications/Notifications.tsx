@@ -19,9 +19,8 @@ const nextId = () => `altrone-notification-${++counter}`;
 
 export const Notifications = ({
   children,
-  toastPlacement = 'end',
-  notificationSide = 'end',
-  notificationPlacement = 'end',
+  toastPlacement = 'bottom',
+  notificationPlacement = 'bottom-end',
 }: NotificationsProviderProps) => {
   const t = useLocalization();
   const [items, setItems] = useState<AnyNotificationItem[]>([]);
@@ -70,10 +69,14 @@ export const Notifications = ({
     (item): item is NotificationItem => item.kind === 'notification',
   );
 
-  const toastEnter = { x: 0, y: toastPlacement === 'start' ? -28 : 28 };
+  const [notificationEdge, notificationAlign] = notificationPlacement.split(
+    '-',
+  ) as ['top' | 'bottom', 'start' | 'end'];
+
+  const toastEnter = { x: 0, y: toastPlacement === 'top' ? -28 : 28 };
   const notificationEnter = {
-    x: notificationSide === 'start' ? -36 : 36,
-    y: notificationPlacement === 'start' ? -20 : 20,
+    x: notificationAlign === 'start' ? -36 : 36,
+    y: notificationEdge === 'top' ? -20 : 20,
   };
 
   return (
@@ -87,10 +90,11 @@ export const Notifications = ({
         aria-atomic="false"
       >
         <div
+          data-testid="toast-stack"
           className={clsx(
             s.Stack,
             s.ToastStack,
-            toastPlacement === 'start' ? s.Start : s.End,
+            toastPlacement === 'top' ? s.Top : s.Bottom,
           )}
         >
           <AnimatePresence initial={false}>
@@ -106,11 +110,12 @@ export const Notifications = ({
         </div>
 
         <div
+          data-testid="notification-stack"
           className={clsx(
             s.Stack,
             s.NotificationStack,
-            notificationPlacement === 'start' ? s.Start : s.End,
-            notificationSide === 'start' ? s.SideStart : s.SideEnd,
+            notificationEdge === 'top' ? s.Top : s.Bottom,
+            notificationAlign === 'start' ? s.AlignStart : s.AlignEnd,
           )}
         >
           <AnimatePresence initial={false}>

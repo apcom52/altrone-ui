@@ -34,8 +34,8 @@ export const KeypadLockStory: StoryObj<typeof Modal> = {
     };
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 420 }}>
-        <Flex direction="horizontal" gap="s" align="center">
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 420 }}>
+        <Flex orientation="horizontal" gap="s" align="center">
           {unlocked ? <LockOpen size={18} /> : <Lock size={18} />}
           <Text block size={7} weight="bold">
             Release vault
@@ -65,8 +65,8 @@ export const KeypadLockStory: StoryObj<typeof Modal> = {
             setWrong(false);
           }}
           content={({ closeModal }) => (
-            <Flex direction="vertical" gap="l" align="center">
-              <Flex direction="horizontal" gap="s">
+            <Flex orientation="vertical" gap="l" align="center">
+              <Flex orientation="horizontal" gap="s">
                 {[0, 1, 2, 3].map((i) => (
                   <div
                     key={i}
@@ -90,7 +90,7 @@ export const KeypadLockStory: StoryObj<typeof Modal> = {
                 {wrong ? 'Wrong PIN — try again' : ''}
               </Text>
 
-              <Flex direction="horizontal" wrap gap="s" style={{ width: 216 }}>
+              <Flex orientation="horizontal" wrap gap="s" style={{ width: 216 }}>
                 {KEYS.map((key) => (
                   <Button
                     key={key}

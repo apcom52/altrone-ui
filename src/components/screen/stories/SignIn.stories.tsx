@@ -20,7 +20,7 @@ export const SignIn: StoryObj<typeof Screen> = {
     <Screen title="Sign in" contentAlign="center" size="s">
       <Screen.Content>
         <Flex
-          direction="vertical"
+          orientation="vertical"
           gap="l"
           style={{
             width: '100%',
@@ -35,7 +35,7 @@ export const SignIn: StoryObj<typeof Screen> = {
             Welcome back
           </Text>
           <Form>
-            <Flex direction="vertical" gap="m">
+            <Flex orientation="vertical" gap="m">
               <Form.Field label="Email" required>
                 <TextInput type="email" placeholder="you@example.com" />
               </Form.Field>

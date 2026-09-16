@@ -78,7 +78,7 @@ const Cell = ({
   label: string;
   children: React.ReactNode;
 }) => (
-  <Flex direction="vertical" gap="xs" align="center" style={{ width: 92 }}>
+  <Flex orientation="vertical" gap="xs" align="center" style={{ width: 92 }}>
     {children}
     <Label>{label}</Label>
   </Flex>
@@ -93,7 +93,7 @@ export const Overview: StoryObj<typeof Box> = {
   parameters: chromaticBoth,
   render: () => (
     <div className="box-wrapper">
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Text block size={9} weight="bold">
           Box
         </Text>
@@ -168,7 +168,7 @@ export const Overview: StoryObj<typeof Box> = {
           <Box shape="circle" material="translucent" tone="accent" size="xl">
             <Sparkles size={24} />
           </Box>
-          <Flex direction="vertical" gap="xs" style={{ flex: 1 }}>
+          <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
             <Text size={4} weight="bold">
               Deploy finished
             </Text>
@@ -192,7 +192,7 @@ const ShapePlayground = () => {
   const shapes: BoxShape[] = ['rect', 'rounded', 'squircle', 'circle', 'pill'];
 
   return (
-    <Flex direction="vertical" gap="m">
+    <Flex orientation="vertical" gap="m">
       <div style={{ width: 240 }}>
         <Text block size={3} weight="medium">
           Ambient --radius-outer
@@ -209,7 +209,7 @@ const ShapePlayground = () => {
       <div style={{ ['--radius-outer' as string]: `${outer}px` }}>
         <Flex gap="l" align="center">
           {shapes.map((shape) => (
-            <Flex key={shape} direction="vertical" gap="s" align="center">
+            <Flex key={shape} orientation="vertical" gap="s" align="center">
               <Box
                 shape={shape}
                 material="solid"
@@ -345,7 +345,7 @@ const RadiusOverrideRow = () => (
 /** Which shape the real components reach for, and why. */
 const ShapeInTheWild = () => (
   <Flex gap="xl" wrap align="start">
-    <Flex direction="vertical" gap="s" align="center" style={{ width: 140 }}>
+    <Flex orientation="vertical" gap="s" align="center" style={{ width: 140 }}>
       <Box shape="circle" material="solid" tone="accent" size="xl">
         <Text size={4} weight="bold" style={{ color: 'inherit' }}>
           AP
@@ -353,7 +353,7 @@ const ShapeInTheWild = () => (
       </Box>
       <Label>circle → Avatar</Label>
     </Flex>
-    <Flex direction="vertical" gap="s" align="center" style={{ width: 140 }}>
+    <Flex orientation="vertical" gap="s" align="center" style={{ width: 140 }}>
       <Box shape="rounded" material="translucent" tone="success" size="s">
         <Text size={3} weight="medium" style={{ color: 'inherit' }}>
           stable
@@ -361,7 +361,7 @@ const ShapeInTheWild = () => (
       </Box>
       <Label>rounded → Tag / Badge</Label>
     </Flex>
-    <Flex direction="vertical" gap="s" align="center" style={{ width: 140 }}>
+    <Flex orientation="vertical" gap="s" align="center" style={{ width: 140 }}>
       <Box
         shape="squircle"
         material="solid"
@@ -371,7 +371,7 @@ const ShapeInTheWild = () => (
       />
       <Label>squircle → Card</Label>
     </Flex>
-    <Flex direction="vertical" gap="s" align="center" style={{ width: 140 }}>
+    <Flex orientation="vertical" gap="s" align="center" style={{ width: 140 }}>
       <Box shape="pill" material="translucent" tone="accent" size="s" pressable>
         <Flex gap="xs" align="center">
           <Check size={12} />
@@ -382,7 +382,7 @@ const ShapeInTheWild = () => (
       </Box>
       <Label>pill → filter chip</Label>
     </Flex>
-    <Flex direction="vertical" gap="s" align="center" style={{ width: 140 }}>
+    <Flex orientation="vertical" gap="s" align="center" style={{ width: 140 }}>
       <Flex gap="none">
         <Box shape="rect" material="outline" tone="neutral" size="s">
           <Text size={3}>Q1</Text>
@@ -404,7 +404,7 @@ export const Shapes: StoryObj<typeof Box> = {
   parameters: chromaticBoth,
   render: () => (
     <div className="box-wrapper">
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
         <Heading>Shape is an algorithm, not a radius value</Heading>
         <ShapePlayground />
 
@@ -523,7 +523,7 @@ export const Sizes: StoryObj<typeof Box> = {
   parameters: chromaticBoth,
   render: () => (
     <div className="box-wrapper">
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
         <Heading>Named tiers</Heading>
         <Paragraph>
           <Text code>size</Text> takes the same <Text code>mini</Text>/
@@ -633,7 +633,7 @@ const MaterialToneMatrix = () => {
   ];
 
   return (
-    <Flex direction="vertical" gap="s">
+    <Flex orientation="vertical" gap="s">
       {materials.map((material) => (
         <Flex key={material} gap="s" align="center">
           <Label>
@@ -711,7 +711,7 @@ export const Materials: StoryObj<typeof Box> = {
   parameters: chromaticBoth,
   render: () => (
     <div className="box-wrapper">
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
         <Heading>Eight fill treatments, one shared interaction model</Heading>
         <Paragraph>
           Each material differs in what&rsquo;s there at rest — a full fill (
@@ -790,7 +790,7 @@ const ToneRow = () => (
   <Flex gap="m" wrap>
     {tones.map((tone) => (
       <div key={tone} style={{ width: 96 }}>
-        <Flex direction="vertical" gap="s" align="center">
+        <Flex orientation="vertical" gap="s" align="center">
           <Box material="solid" tone={tone} size="l" style={{ width: 80 }} />
           <Text size={3} color="muted">
             {tone}
@@ -816,7 +816,7 @@ const categoricalHues = [
 
 /** The 10 categorical hues via `color="teal"` etc., plus one arbitrary CSS color. */
 const CategoricalColorRow = () => (
-  <Flex direction="vertical" gap="m">
+  <Flex orientation="vertical" gap="m">
     <Flex gap="s" wrap>
       {categoricalHues.map((hue) => (
         <Cell key={hue} label={hue}>
@@ -956,7 +956,7 @@ const ElevationRoles = () => {
         {roles.map(({ role, example }) => (
           <Flex
             key={role}
-            direction="vertical"
+            orientation="vertical"
             gap="s"
             align="center"
             style={{ width: 150 }}
@@ -1003,7 +1003,7 @@ const HoverLiftCard = () => {
       <Box shape="squircle" material="translucent" tone="accent" size="xl">
         <Heart size={18} />
       </Box>
-      <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="xs">
         <Text size={3} weight="bold">
           Hover me
         </Text>
@@ -1030,7 +1030,7 @@ const ToastMockup = () => (
     }}
   >
     <AlertTriangle size={18} style={{ color: 'inherit', flexShrink: 0 }} />
-    <Flex direction="vertical" gap="xs" style={{ flex: 1 }}>
+    <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
       <Text size={3} weight="bold" style={{ color: 'inherit' }}>
         Build failed
       </Text>
@@ -1057,7 +1057,7 @@ export const ToneAndElevation: StoryObj<typeof Box> = {
   name: 'Tone & elevation',
   parameters: chromaticBoth,
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Heading>Tone picks the color</Heading>
       <Paragraph>
         Five of the six tones are fixed hues, independent of the
@@ -1456,7 +1456,7 @@ export const Interaction: StoryObj<typeof Box> = {
   name: 'Pressable, focusable & editable',
   parameters: chromaticBoth,
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Heading>Three interaction flags, all pure CSS</Heading>
       <Paragraph>
         <Text code>pressable</Text> reacts to <Text code>:active</Text>,{' '}

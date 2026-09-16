@@ -35,12 +35,12 @@ const Paragraph = ({ children }: { children: React.ReactNode }) => (
 
 const CountryList = ({ count = COUNTRIES.length }: { count?: number }) => (
   <Flex
-    direction="vertical"
+    orientation="vertical"
     gap="s"
     style={{ padding: 'var(--space-content)' }}
   >
     {COUNTRIES.slice(0, count).map((item) => (
-      <Flex key={item.country} direction="horizontal" gap="s" align="center">
+      <Flex key={item.country} orientation="horizontal" gap="s" align="center">
         <Text size={5}>{item.flag}</Text>
         <Text size={4}>
           <Text weight="bold">{item.country}</Text> — {item.capital}
@@ -60,7 +60,7 @@ const Frame = ({
   width?: number;
 }) => (
   <Flex
-    direction="vertical"
+    orientation="vertical"
     style={{
       height,
       width,
@@ -76,7 +76,7 @@ const Frame = ({
 export const Overview: StoryObj<typeof Scrollable> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" align="start" style={{ padding: 24 }}>
+    <Flex orientation="vertical" gap="l" align="start" style={{ padding: 24 }}>
       <Text block size={9} weight="bold">
         Scrollable
       </Text>
@@ -97,7 +97,7 @@ export const Overview: StoryObj<typeof Scrollable> = {
         The common case: a fixed-height container, Scrollable stretched to it.
         When the content is shorter than the box, no scrollbar appears.
       </Paragraph>
-      <Flex direction="horizontal" gap="l" wrap>
+      <Flex orientation="horizontal" gap="l" wrap>
         <Frame>
           <Scrollable>
             <CountryList />
@@ -116,9 +116,9 @@ export const Overview: StoryObj<typeof Scrollable> = {
         grow with its content up to the cap and scroll past it. This is how
         dropdown menus keep a long option list in check.
       </Paragraph>
-      <Flex direction="horizontal" gap="l" wrap align="start">
+      <Flex orientation="horizontal" gap="l" wrap align="start">
         <Flex
-          direction="vertical"
+          orientation="vertical"
           style={{
             width: 260,
             border: '1px solid var(--border-1)',
@@ -131,7 +131,7 @@ export const Overview: StoryObj<typeof Scrollable> = {
           </Scrollable>
         </Flex>
         <Flex
-          direction="vertical"
+          orientation="vertical"
           style={{
             width: 260,
             border: '1px solid var(--border-1)',
@@ -155,14 +155,14 @@ export const Overview: StoryObj<typeof Scrollable> = {
       <Frame width={360} height={120}>
         <Scrollable overflowX="scroll" overflowY="hidden">
           <Flex
-            direction="horizontal"
+            orientation="horizontal"
             gap="s"
             style={{ padding: 'var(--space-content)', width: 'max-content' }}
           >
             {COUNTRIES.map((item) => (
               <Flex
                 key={item.country}
-                direction="horizontal"
+                orientation="horizontal"
                 gap="xs"
                 align="center"
                 style={{
@@ -188,7 +188,7 @@ export const Overview: StoryObj<typeof Scrollable> = {
       </Paragraph>
       <Frame>
         <Flex
-          direction="horizontal"
+          orientation="horizontal"
           align="center"
           style={{
             padding: 'var(--space-content)',
@@ -198,7 +198,7 @@ export const Overview: StoryObj<typeof Scrollable> = {
         >
           <Text weight="bold">Countries</Text>
         </Flex>
-        <Flex direction="vertical" style={{ flex: 1, minHeight: 0 }}>
+        <Flex orientation="vertical" style={{ flex: 1, minHeight: 0 }}>
           <Scrollable>
             <CountryList />
           </Scrollable>

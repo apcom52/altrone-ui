@@ -17,7 +17,7 @@ const SIZES: BadgeSize[] = ['mini', 's', 'm', 'l', 'xl'];
 
 export const Overview: StoryObj<typeof Badge> = {
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Text block size={9} weight="bold">
         Badge
       </Text>
@@ -49,7 +49,7 @@ export const Overview: StoryObj<typeof Badge> = {
       </Flex>
 
       <Text block size={5} weight="bold">
-        Placement
+        Mode
       </Text>
       <Text block>
         <Text code>inline</Text> (default) — a translucent pill in a content row.{' '}
@@ -71,7 +71,7 @@ export const Overview: StoryObj<typeof Badge> = {
           >
             <Bell size={20} />
           </Text>
-          <Badge placement="corner" size="s">
+          <Badge mode="corner" size="s">
             3
           </Badge>
         </div>

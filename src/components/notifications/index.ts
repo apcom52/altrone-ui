@@ -4,6 +4,7 @@ export type {
   ToastOptions,
   NotificationOptions,
   ToastVariant,
+  ToastPlacement,
   NotificationPlacement,
   ToastAction,
   NotificationAction,

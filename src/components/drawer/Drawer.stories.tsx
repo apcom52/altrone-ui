@@ -51,7 +51,7 @@ const Paragraph = ({ children }: { children: React.ReactNode }) => (
 );
 
 const filler = (
-  <Flex direction="vertical" gap="m">
+  <Flex orientation="vertical" gap="m">
     <Text block size={4}>
       A drawer suits a task long enough to need its own space but not important
       enough to seize the screen — a filter set, a detail view, a form the user
@@ -95,7 +95,7 @@ const longForm = (
 export const Overview: StoryObj<typeof Drawer> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" align="start" style={{ padding: 24 }}>
+    <Flex orientation="vertical" gap="l" align="start" style={{ padding: 24 }}>
       <Text block size={9} weight="bold">
         Drawer
       </Text>
@@ -107,7 +107,7 @@ export const Overview: StoryObj<typeof Drawer> = {
         it manage its own state with <Text code>defaultOpen</Text>) and
         close it via <Text code>onClose</Text> or the render-prop form of{' '}
         <Text code>content</Text>, <Text code>footer</Text>,{' '}
-        <Text code>startActions</Text>, or <Text code>endActions</Text> (which
+        <Text code>additionalActions</Text>, or <Text code>actions</Text> (which
         all receive <Text code>closeDrawer</Text>).
       </Paragraph>
       <Paragraph>
@@ -133,7 +133,7 @@ export const Overview: StoryObj<typeof Drawer> = {
         trigger lives and what the panel is for — navigation on the start edge,
         contextual detail on the end.
       </Paragraph>
-      <Flex direction="horizontal" gap="m" wrap>
+      <Flex orientation="horizontal" gap="m" wrap>
         <PlacementDrawerDemo
           placement="start"
           title="Navigation"
@@ -155,7 +155,7 @@ export const Overview: StoryObj<typeof Drawer> = {
         <Text code>400</Text>. The panel never exceeds the viewport minus its
         edge inset, so a large value degrades gracefully on small screens.
       </Paragraph>
-      <Flex direction="horizontal" gap="m" wrap>
+      <Flex orientation="horizontal" gap="m" wrap>
         <WidthDrawerDemo width={320} title="Compact" label="320" />
         <WidthDrawerDemo title="Default" label="400" />
         <WidthDrawerDemo width={560} title="Roomy" label="560" />
@@ -172,10 +172,10 @@ export const Overview: StoryObj<typeof Drawer> = {
 
       <Heading>Header actions</Heading>
       <Paragraph>
-        <Text code>startActions</Text> and <Text code>endActions</Text> add
+        <Text code>additionalActions</Text> and <Text code>actions</Text> add
         controls to either side of the header — one element or several. Both
         take the render-prop form for <Text code>closeDrawer</Text>. Supplying{' '}
-        <Text code>endActions</Text> replaces the default Done button; the title
+        <Text code>actions</Text> replaces the default Done button; the title
         stays centred whatever lands on each side.
       </Paragraph>
       <DocumentDrawerDemo />
@@ -284,7 +284,7 @@ const DocumentDrawerDemo = () => {
         content={filler}
         open={open}
         onClose={() => setOpen(false)}
-        startActions={
+        additionalActions={
           <Button
             label="Version history"
             icon={<History />}
@@ -292,7 +292,7 @@ const DocumentDrawerDemo = () => {
             variant="text"
           />
         }
-        endActions={({ closeDrawer }) => [
+        actions={({ closeDrawer }) => [
           <Button
             key="share"
             label="Share"

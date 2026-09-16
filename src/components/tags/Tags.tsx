@@ -8,7 +8,7 @@ const TagsBase = ({ ref, children, className, style, ...props }: TagsProps) => (
     ref={ref as Ref<HTMLElement>}
     className={className}
     style={style}
-    direction="horizontal"
+    orientation="horizontal"
     gap="m"
     wrap
     {...props}

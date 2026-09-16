@@ -518,7 +518,7 @@ const SettingRow = ({
   children: ReactNode;
 }) => (
   <Flex align="center" justify="between" gap="m">
-    <Flex direction="vertical" gap="xxs" style={{ minWidth: 0 }}>
+    <Flex orientation="vertical" gap="xxs" style={{ minWidth: 0 }}>
       <Text size={3} weight="medium" block>
         {title}
       </Text>
@@ -747,7 +747,7 @@ const TaskDetailModal = ({
         content={
           <Flex gap="l" wrap align="start">
             <Flex
-              direction="vertical"
+              orientation="vertical"
               gap="m"
               style={{ flex: '2 1 320px', minWidth: 0 }}
             >
@@ -783,7 +783,7 @@ const TaskDetailModal = ({
                   size="s"
                 />
               ) : null}
-              <Flex direction="vertical" gap="xs">
+              <Flex orientation="vertical" gap="xs">
                 {task.subtasks.map((subtask) => (
                   <Flex
                     key={subtask.id}
@@ -845,7 +845,7 @@ const TaskDetailModal = ({
                   Comments
                 </Text>
               </Flex>
-              <Flex direction="vertical" gap="s">
+              <Flex orientation="vertical" gap="s">
                 {task.comments.length === 0 ? (
                   <Text size={2} color="muted">
                     No comments yet.
@@ -863,7 +863,7 @@ const TaskDetailModal = ({
                           size="s"
                         />
                         <Flex
-                          direction="vertical"
+                          orientation="vertical"
                           gap="xxs"
                           style={{ flex: 1, minWidth: 0 }}
                         >
@@ -900,7 +900,7 @@ const TaskDetailModal = ({
             </Flex>
 
             <Flex
-              direction="vertical"
+              orientation="vertical"
               gap="m"
               style={{ flex: '1 1 220px', minWidth: 0 }}
             >
@@ -963,7 +963,7 @@ const TaskDetailModal = ({
                 radius="12px"
                 padding={{ x: 12, y: 10 }}
               >
-                <Flex direction="vertical" gap="xxs">
+                <Flex orientation="vertical" gap="xxs">
                   <Text size={2} color="muted">
                     Due date
                   </Text>
@@ -1071,7 +1071,7 @@ const TaskCard = ({
           style={{ width: '100%', cursor: 'pointer' }}
         >
           <Flex
-            direction="vertical"
+            orientation="vertical"
             gap={compact ? 'xs' : 's'}
             style={{ width: '100%', minWidth: 0 }}
           >
@@ -1187,7 +1187,7 @@ const BoardColumn = ({
   const over = column.wipLimit > 0 && totalInColumn > column.wipLimit;
 
   return (
-    <Flex direction="vertical" gap="s" style={{ width: 300, flexShrink: 0 }}>
+    <Flex orientation="vertical" gap="s" style={{ width: 300, flexShrink: 0 }}>
       <Flex align="center" gap="s" style={{ paddingInline: 4 }}>
         <Box size={10} shape="circle" material="solid" color={column.hue} />
         <Text size={3} weight="bold">
@@ -1236,7 +1236,7 @@ const BoardColumn = ({
         style={{ flex: 1 }}
       >
         <Flex
-          direction="vertical"
+          orientation="vertical"
           gap="s"
           style={{ maxHeight: 'calc(100vh - 300px)', overflowY: 'auto' }}
         >
@@ -1548,7 +1548,7 @@ export const Kanban: StoryObj<typeof Screen> = {
               <Flex align="center" gap="s">
                 <Avatar firstName="Maya" lastName="Chen" size="m" />
                 <Flex
-                  direction="vertical"
+                  orientation="vertical"
                   gap="xs"
                   style={{ flex: 1, minWidth: 0 }}
                 >
@@ -1587,7 +1587,7 @@ export const Kanban: StoryObj<typeof Screen> = {
               style={{ width: '100%', paddingBottom: 'var(--space-content)' }}
             >
               <Flex
-                direction="vertical"
+                orientation="vertical"
                 gap="l"
                 style={{ maxWidth: 720, width: '100%' }}
               >
@@ -1629,7 +1629,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                 </Tabs>
 
                 {settingsTab === 'general' ? (
-                  <Flex direction="vertical" gap="m">
+                  <Flex orientation="vertical" gap="m">
                     <Form>
                       <Form.Field label="Board name">
                         <TextInput value={boardName} onChange={setBoardName} />
@@ -1648,7 +1648,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                           value={weekStart}
                           onChange={setWeekStart}
                           name="weekStart"
-                          direction="horizontal"
+                          orientation="horizontal"
                         >
                           <Radio.Item value="monday">Monday</Radio.Item>
                           <Radio.Item value="sunday">Sunday</Radio.Item>
@@ -1678,7 +1678,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                 ) : null}
 
                 {settingsTab === 'columns' ? (
-                  <Flex direction="vertical" gap="m">
+                  <Flex orientation="vertical" gap="m">
                     {columns.some(
                       (column) =>
                         column.wipLimit > 0 &&
@@ -1718,7 +1718,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                               color={column.hue}
                             />
                             <Flex
-                              direction="vertical"
+                              orientation="vertical"
                               style={{ width: 170, flexShrink: 0 }}
                             >
                               <TextInput
@@ -1729,7 +1729,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                               />
                             </Flex>
                             <Flex
-                              direction="vertical"
+                              orientation="vertical"
                               gap="xxs"
                               style={{ width: 130, flexShrink: 0 }}
                             >
@@ -1792,7 +1792,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                 ) : null}
 
                 {settingsTab === 'labels' ? (
-                  <Flex direction="vertical" gap="m">
+                  <Flex orientation="vertical" gap="m">
                     {labels.map((label) => (
                       <Box
                         key={label.id}
@@ -1810,7 +1810,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                             color={label.color}
                           />
                           <Flex
-                            direction="vertical"
+                            orientation="vertical"
                             style={{ width: 170, flexShrink: 0 }}
                           >
                             <TextInput
@@ -1827,7 +1827,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                             />
                           </Flex>
                           <Flex
-                            direction="vertical"
+                            orientation="vertical"
                             style={{ width: 150, flexShrink: 0 }}
                           >
                             <Select
@@ -1864,7 +1864,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                     <Divider />
                     <Flex align="end" gap="s" wrap>
                       <Flex
-                        direction="vertical"
+                        orientation="vertical"
                         style={{ width: 200, flexShrink: 0 }}
                       >
                         <TextInput
@@ -1874,7 +1874,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                         />
                       </Flex>
                       <Flex
-                        direction="vertical"
+                        orientation="vertical"
                         style={{ width: 150, flexShrink: 0 }}
                       >
                         <Select
@@ -1896,7 +1896,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                 ) : null}
 
                 {settingsTab === 'members' ? (
-                  <Flex direction="vertical" gap="m">
+                  <Flex orientation="vertical" gap="m">
                     {members.map((member) => (
                       <Box
                         key={member.id}
@@ -1911,7 +1911,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                             lastName={member.lastName}
                           />
                           <Flex
-                            direction="vertical"
+                            orientation="vertical"
                             gap="xxs"
                             style={{ flex: 1, minWidth: 120 }}
                           >
@@ -1923,7 +1923,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                             </Text>
                           </Flex>
                           <Flex
-                            direction="vertical"
+                            orientation="vertical"
                             style={{ width: 140, flexShrink: 0 }}
                           >
                             <Select
@@ -1957,7 +1957,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                     <Divider />
                     <Flex align="center" gap="s" wrap>
                       <Flex
-                        direction="vertical"
+                        orientation="vertical"
                         style={{ width: 240, flexShrink: 0 }}
                       >
                         <TextInput
@@ -1986,7 +1986,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                 ) : null}
 
                 {settingsTab === 'notifications' ? (
-                  <Flex direction="vertical" gap="m">
+                  <Flex orientation="vertical" gap="m">
                     <SettingRow
                       title="A card is assigned to me"
                       hint="Someone adds you as an assignee."
@@ -2048,7 +2048,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                   radius="12px"
                   padding={16}
                 >
-                  <Flex direction="vertical" gap="s">
+                  <Flex orientation="vertical" gap="s">
                     <Text size={4} weight="bold" block>
                       Danger zone
                     </Text>
@@ -2089,7 +2089,7 @@ export const Kanban: StoryObj<typeof Screen> = {
             <>
               <Flex align="center" gap="s" wrap style={{ paddingBottom: 12 }}>
                 <Flex
-                  direction="vertical"
+                  orientation="vertical"
                   style={{ width: 180, flexShrink: 0 }}
                 >
                   <TextInput
@@ -2099,7 +2099,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                   />
                 </Flex>
                 <Flex
-                  direction="vertical"
+                  orientation="vertical"
                   style={{ width: 170, flexShrink: 0 }}
                 >
                   <Select
@@ -2116,7 +2116,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                   />
                 </Flex>
                 <Flex
-                  direction="vertical"
+                  orientation="vertical"
                   style={{ width: 150, flexShrink: 0 }}
                 >
                   <Select
@@ -2133,7 +2133,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                   />
                 </Flex>
                 <Flex
-                  direction="vertical"
+                  orientation="vertical"
                   style={{ width: 150, flexShrink: 0 }}
                 >
                   <Select
@@ -2208,7 +2208,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                     }}
                   >
                     <Flex
-                      direction="vertical"
+                      orientation="vertical"
                       align="center"
                       justify="center"
                       gap="xs"

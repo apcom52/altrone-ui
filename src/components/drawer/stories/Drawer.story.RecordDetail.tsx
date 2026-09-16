@@ -114,14 +114,14 @@ const MemberRow = ({
           reset();
         }}
         content={
-          <Flex direction="vertical" gap="l">
-            <Flex direction="horizontal" gap="m" align="center">
+          <Flex orientation="vertical" gap="l">
+            <Flex orientation="horizontal" gap="m" align="center">
               <Avatar
                 firstName={firstName || member.firstName}
                 lastName={lastName}
                 size="l"
               />
-              <Flex direction="vertical" gap="xs">
+              <Flex orientation="vertical" gap="xs">
                 <Text block size={5} weight="bold">
                   {firstName} {lastName}
                 </Text>
@@ -175,8 +175,8 @@ export const RecordDetailStory: StoryObj<typeof Drawer> = {
     const [members, setMembers] = useState<Member[]>(INITIAL);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 480 }}>
-        <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 480 }}>
+        <Flex orientation="vertical" gap="xs">
           <Text block size={7} weight="bold">
             Team
           </Text>
@@ -187,7 +187,7 @@ export const RecordDetailStory: StoryObj<typeof Drawer> = {
           </Text>
         </Flex>
 
-        <Flex direction="vertical" gap="xs" align="start">
+        <Flex orientation="vertical" gap="xs" align="start">
           {members.map((member) => (
             <MemberRow
               key={member.id}

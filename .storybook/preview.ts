@@ -85,7 +85,7 @@ const preview: Preview = {
       toolbar: {
         title: 'Language',
         icon: 'globe',
-        items: ['EN', 'RU', 'FR', 'DE', 'ES', 'ZH'],
+        items: ['EN', 'RU', 'FR', 'DE', 'ES', 'ZH', 'PT', 'TR'],
         dynamicTitle: true,
       },
     },

@@ -49,7 +49,7 @@ export const OverviewStory: StoryObj<typeof Checkbox> = {
     const [purge, setPurge] = useState(false);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Text size={7} weight="bold" block>
           Checkbox
         </Text>
@@ -62,7 +62,7 @@ export const OverviewStory: StoryObj<typeof Checkbox> = {
           toggles it and screen readers read it as the checkbox&rsquo;s name.
         </Paragraph>
 
-        <Flex direction="vertical" gap="s">
+        <Flex orientation="vertical" gap="s">
           <Checkbox checked={terms} onChange={setTerms}>
             I agree to the terms of service
           </Checkbox>
@@ -104,7 +104,7 @@ export const IndeterminateStory: StoryObj<typeof Checkbox> = {
     const someChecked = checkedCount > 0 && !allChecked;
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Heading>One box that summarises the others</Heading>
         <Paragraph>
           <Text code>indeterminate</Text> shows a dash instead of a checkmark and
@@ -115,7 +115,7 @@ export const IndeterminateStory: StoryObj<typeof Checkbox> = {
           <Text code>!checked</Text>.
         </Paragraph>
 
-        <Flex direction="vertical" gap="xs">
+        <Flex orientation="vertical" gap="xs">
           <Checkbox
             checked={allChecked}
             indeterminate={someChecked}
@@ -127,7 +127,7 @@ export const IndeterminateStory: StoryObj<typeof Checkbox> = {
           >
             All permissions
           </Checkbox>
-          <Flex direction="vertical" gap="xs" style={{ paddingLeft: 28 }}>
+          <Flex orientation="vertical" gap="xs" style={{ paddingLeft: 28 }}>
             {PERMISSIONS.map((perm) => (
               <Checkbox
                 key={perm}
@@ -163,7 +163,7 @@ export const SizesStory: StoryObj<typeof Checkbox> = {
     );
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Heading>mini, s, m, l, xl</Heading>
         <Paragraph>
           <Text code>size</Text> scales the box, the checkmark, the dash and the
@@ -172,7 +172,7 @@ export const SizesStory: StoryObj<typeof Checkbox> = {
           area.
         </Paragraph>
 
-        <Flex direction="vertical" gap="xs">
+        <Flex orientation="vertical" gap="xs">
           {SIZES.map((sz) => (
             <Checkbox
               key={sz}
@@ -188,7 +188,7 @@ export const SizesStory: StoryObj<typeof Checkbox> = {
         </Flex>
 
         <Heading>Indeterminate at each size</Heading>
-        <Flex direction="horizontal" gap="l" align="center" wrap>
+        <Flex orientation="horizontal" gap="l" align="center" wrap>
           {SIZES.map((sz) => (
             <Checkbox key={sz} size={sz} indeterminate onChange={() => {}} />
           ))}
@@ -208,7 +208,7 @@ export const NoLabelStory: StoryObj<typeof Checkbox> = {
     const someChecked = rows.some(Boolean) && !allChecked;
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Heading>A bare checkbox in a table header</Heading>
         <Paragraph>
           With no <Text code>children</Text>, only the box renders. Give it an
@@ -217,7 +217,7 @@ export const NoLabelStory: StoryObj<typeof Checkbox> = {
           read.
         </Paragraph>
 
-        <Flex direction="vertical" style={{ maxWidth: 280 }}>
+        <Flex orientation="vertical" style={{ maxWidth: 280 }}>
           <Flex
             align="center"
             gap="s"

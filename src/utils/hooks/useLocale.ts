@@ -24,6 +24,8 @@ const DAYJS_LOCALE_BY_LANGUAGE: Record<string, string> = {
   de: 'de',
   es: 'es',
   zh: 'zh-cn',
+  pt: 'pt',
+  tr: 'tr',
 };
 
 const EMPTY_PROPS = {};

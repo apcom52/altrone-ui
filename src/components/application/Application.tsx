@@ -45,7 +45,6 @@ export const Application = ({
   language = 'en',
   customLabels = {},
   toastPlacement,
-  notificationSide,
   notificationPlacement,
   asChild = false,
   ...props
@@ -152,7 +151,6 @@ export const Application = ({
         <DialogProvider>
           <Notifications
             toastPlacement={toastPlacement}
-            notificationSide={notificationSide}
             notificationPlacement={notificationPlacement}
           >
             {content}

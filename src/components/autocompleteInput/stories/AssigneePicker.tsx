@@ -54,8 +54,8 @@ export const AssigneePicker = () => {
   );
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 400 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 400 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Assign a task
         </Text>
@@ -66,14 +66,14 @@ export const AssigneePicker = () => {
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="xs">
         <Text asChild size={2} weight="medium">
           <label htmlFor="ap-input">Assignee</label>
         </Text>
 
         {assignee ? (
           <Flex
-            direction="horizontal"
+            orientation="horizontal"
             gap="s"
             align="center"
             style={{

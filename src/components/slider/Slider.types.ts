@@ -1,5 +1,5 @@
 import { CSSProperties, ReactElement, ReactNode } from 'react';
-import { Direction, Size } from 'types';
+import { Orientation, Size } from 'types';
 
 export type SliderVariant = 'default' | 'fill';
 
@@ -24,7 +24,7 @@ export interface SliderProps
    * Center slab: the whole control is the track and its fill level is the handle.
    */
   variant?: SliderVariant;
-  direction?: Direction;
+  orientation?: Orientation;
   min?: number;
   max?: number;
   step?: number;

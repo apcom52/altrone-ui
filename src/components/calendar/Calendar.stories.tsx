@@ -64,7 +64,7 @@ const Receipt = ({
   hint?: string;
 }) => (
   <Flex
-    direction="vertical"
+    orientation="vertical"
     gap="none"
     style={{
       borderRadius: 'var(--radius-m)',
@@ -95,7 +95,7 @@ export const CheckInDate: Story = {
     const [checkIn, setCheckIn] = useState(() => dayjs('2024-08-14'));
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Text size={6} weight="bold" block>
           Cedar Cabin
         </Text>
@@ -109,7 +109,7 @@ export const CheckInDate: Story = {
           <Text code>DatePicker</Text> renders.
         </Text>
 
-        <Flex direction="horizontal" gap="xl" wrap align="start">
+        <Flex orientation="horizontal" gap="xl" wrap align="start">
           <Calendar
             mode="single"
             defaultMonth={SEASON}
@@ -143,7 +143,7 @@ export const ThreeQuestions: Story = {
     }));
 
     return (
-      <Flex direction="vertical" gap="l">
+      <Flex orientation="vertical" gap="l">
         <Text size={5} weight="bold" block>
           The same widget answers three different questions
         </Text>
@@ -154,8 +154,8 @@ export const ThreeQuestions: Story = {
           and <Text code>onSelect</Text> hands back the matching value shape.
         </Text>
 
-        <Flex direction="horizontal" gap="xl" wrap align="start">
-          <Flex direction="vertical" gap="s">
+        <Flex orientation="horizontal" gap="xl" wrap align="start">
+          <Flex orientation="vertical" gap="s">
             <Text weight="medium" block>
               Guest picks an arrival day — <Text code>single</Text>
             </Text>
@@ -170,7 +170,7 @@ export const ThreeQuestions: Story = {
             </Text>
           </Flex>
 
-          <Flex direction="vertical" gap="s">
+          <Flex orientation="vertical" gap="s">
             <Text weight="medium" block>
               Host schedules housekeeping — <Text code>multiple</Text>
             </Text>
@@ -186,7 +186,7 @@ export const ThreeQuestions: Story = {
             </Text>
           </Flex>
 
-          <Flex direction="vertical" gap="s">
+          <Flex orientation="vertical" gap="s">
             <Text weight="medium" block>
               Guest blocks out the whole stay — <Text code>range</Text>
             </Text>
@@ -229,7 +229,7 @@ export const CountingNights: Story = {
     }, [stay]);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 560 }}>
         <Text size={5} weight="bold" block>
           The nights add up as you hover
         </Text>
@@ -241,7 +241,7 @@ export const CountingNights: Story = {
           square.
         </Text>
 
-        <Flex direction="horizontal" gap="xl" wrap align="start">
+        <Flex orientation="horizontal" gap="xl" wrap align="start">
           <Calendar
             mode="range"
             defaultMonth={SEASON}
@@ -277,7 +277,7 @@ export const BookedAndClosed: Story = {
     const [stay, setStay] = useState<CalendarDateRange>(() => ({}));
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 560 }}>
         <Text size={5} weight="bold" block>
           Half the month is already off the table
         </Text>
@@ -318,7 +318,7 @@ export const GuestsFromEverywhere: Story = {
     ];
 
     return (
-      <Flex direction="vertical" gap="l">
+      <Flex orientation="vertical" gap="l">
         <Text size={5} weight="bold" block>
           Cedar Cabin takes bookings from everywhere
         </Text>
@@ -331,9 +331,9 @@ export const GuestsFromEverywhere: Story = {
           <Text code>firstDayOfWeek="monday" | "sunday"</Text>.
         </Text>
 
-        <Flex direction="horizontal" gap="xl" wrap align="start">
+        <Flex orientation="horizontal" gap="xl" wrap align="start">
           {guests.map((guest) => (
-            <Flex key={guest.city} direction="vertical" gap="s">
+            <Flex key={guest.city} orientation="vertical" gap="s">
               <Text weight="medium" block>
                 {guest.city} · <Text code>{guest.locale}</Text>
               </Text>
@@ -363,7 +363,7 @@ export const FitsAnywhere: Story = {
     const [showOutsideDays, setShowOutsideDays] = useState(true);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 560 }}>
         <Text size={5} weight="bold" block>
           The same calendar, embedded four ways
         </Text>
@@ -374,7 +374,7 @@ export const FitsAnywhere: Story = {
           chrome is an independent toggle — flip them to see what stays.
         </Text>
 
-        <Flex direction="horizontal" gap="l" wrap>
+        <Flex orientation="horizontal" gap="l" wrap>
           <Switch
             checked={showHeader}
             onChange={(checked) => setShowHeader(checked)}
@@ -463,7 +463,7 @@ export const HostAvailability: Story = {
     };
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 480 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 480 }}>
         <Text size={5} weight="bold" block>
           The host sees rates, not just dates
         </Text>

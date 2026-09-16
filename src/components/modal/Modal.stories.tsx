@@ -41,7 +41,7 @@ const Paragraph = ({ children }: { children: React.ReactNode }) => (
 );
 
 const filler = (
-  <Flex direction="vertical" gap="m">
+  <Flex orientation="vertical" gap="m">
     <Text block size={4}>
       A modal takes the whole screen hostage — the backdrop blocks every click
       behind it, focus is trapped inside, and <Text code>Escape</Text> is the
@@ -59,7 +59,7 @@ const filler = (
 export const Overview: StoryObj<typeof Modal> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" align="start" style={{ padding: 24 }}>
+    <Flex orientation="vertical" gap="l" align="start" style={{ padding: 24 }}>
       <Text block size={9} weight="bold">
         Modal
       </Text>
@@ -83,7 +83,7 @@ export const Overview: StoryObj<typeof Modal> = {
         built-in Cancel button sits before <Text code>actions</Text> unless you
         pass <Text code>showCancelButton={'{false}'}</Text>.
       </Paragraph>
-      <Flex direction="horizontal" gap="m" wrap>
+      <Flex orientation="horizontal" gap="m" wrap>
         <AnatomyDemo />
       </Flex>
 
@@ -93,7 +93,7 @@ export const Overview: StoryObj<typeof Modal> = {
         <Text code>m</Text> (400&nbsp;px, default) for a short form,{' '}
         <Text code>l</Text> (640&nbsp;px) when the body needs room to breathe.
       </Paragraph>
-      <Flex direction="horizontal" gap="m" wrap>
+      <Flex orientation="horizontal" gap="m" wrap>
         <SizeDemo size="s" label="Small" />
         <SizeDemo size="m" label="Medium" />
         <SizeDemo size="l" label="Large" />
@@ -209,7 +209,7 @@ const FakeSave = ({ onDone }: { onDone: () => void }) => {
   const [saving, setSaving] = useState(false);
 
   return (
-    <Flex direction="vertical" gap="m">
+    <Flex orientation="vertical" gap="m">
       <Text block size={4}>
         Your edits will replace the published version immediately.
       </Text>

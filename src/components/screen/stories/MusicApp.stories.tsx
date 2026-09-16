@@ -170,7 +170,7 @@ const CoverCard = ({
   title: string;
   subtitle?: string;
 }) => (
-  <Flex direction="vertical" gap="xs" style={{ minWidth: 0 }}>
+  <Flex orientation="vertical" gap="xs" style={{ minWidth: 0 }}>
     <img
       src={cover(seed)}
       alt=""
@@ -216,7 +216,7 @@ const TrackRow = ({
         background: 'var(--gray-a3)',
       }}
     />
-    <Flex direction="vertical" style={{ flex: 1, minWidth: 0 }}>
+    <Flex orientation="vertical" style={{ flex: 1, minWidth: 0 }}>
       <Text size={3} truncate block>
         {track.title}
       </Text>
@@ -233,7 +233,7 @@ const TrackRow = ({
 /* ── per-destination views ───────────────────────────────────── */
 
 const ListenNow = () => (
-  <Flex direction="vertical" gap="xl">
+  <Flex orientation="vertical" gap="xl">
     <Box
       material="translucent"
       tone="accent"
@@ -250,7 +250,7 @@ const ListenNow = () => (
           height={160}
           style={{ borderRadius: 'var(--radius-l)', objectFit: 'cover' }}
         />
-        <Flex direction="vertical" gap="xs" style={{ flex: 1, minWidth: 200 }}>
+        <Flex orientation="vertical" gap="xs" style={{ flex: 1, minWidth: 200 }}>
           <Text size={2} color="muted">
             Featured Playlist
           </Text>
@@ -272,7 +272,7 @@ const ListenNow = () => (
       </Flex>
     </Box>
 
-    <Flex direction="vertical" gap="m">
+    <Flex orientation="vertical" gap="m">
       <SectionTitle>Made for You</SectionTitle>
       <div style={GRID}>
         {MADE_FOR_YOU.map((playlist) => (
@@ -281,7 +281,7 @@ const ListenNow = () => (
       </div>
     </Flex>
 
-    <Flex direction="vertical" gap="m">
+    <Flex orientation="vertical" gap="m">
       <SectionTitle>Recently Played</SectionTitle>
       <div style={GRID}>
         {ALBUMS.map((album) => (
@@ -295,7 +295,7 @@ const ListenNow = () => (
       </div>
     </Flex>
 
-    <Flex direction="vertical" gap="m">
+    <Flex orientation="vertical" gap="m">
       <SectionTitle>Top Songs Today</SectionTitle>
       <Box
         material="plate"
@@ -303,7 +303,7 @@ const ListenNow = () => (
         padding={12}
         style={{ width: '100%' }}
       >
-        <Flex direction="vertical" gap="s">
+        <Flex orientation="vertical" gap="s">
           {TRACKS.map((track, i) => (
             <TrackRow key={track.title} index={i + 1} track={track} />
           ))}
@@ -314,8 +314,8 @@ const ListenNow = () => (
 );
 
 const Browse = () => (
-  <Flex direction="vertical" gap="xl">
-    <Flex direction="vertical" gap="m">
+  <Flex orientation="vertical" gap="xl">
+    <Flex orientation="vertical" gap="m">
       <SectionTitle>Browse by Mood</SectionTitle>
       <div style={GRID}>
         {MOODS.map((mood, i) => (
@@ -328,7 +328,7 @@ const Browse = () => (
             radius={12}
             style={{ minHeight: 88 }}
           >
-            <Flex direction="vertical" gap="l">
+            <Flex orientation="vertical" gap="l">
               <Text size={4} weight="bold" block>
                 {mood}
               </Text>
@@ -341,7 +341,7 @@ const Browse = () => (
       </div>
     </Flex>
 
-    <Flex direction="vertical" gap="m">
+    <Flex orientation="vertical" gap="m">
       <SectionTitle>New Releases</SectionTitle>
       <div style={GRID}>
         {ALBUMS.map((album) => (
@@ -358,9 +358,9 @@ const Browse = () => (
 );
 
 const RadioView = () => (
-  <Flex direction="vertical" gap="m">
+  <Flex orientation="vertical" gap="m">
     <SectionTitle>Stations</SectionTitle>
-    <Flex direction="vertical" gap="s">
+    <Flex orientation="vertical" gap="s">
       {STATIONS.map((station) => (
         <Box
           key={station.seed}
@@ -381,7 +381,7 @@ const RadioView = () => (
                 flexShrink: 0,
               }}
             />
-            <Flex direction="vertical" style={{ flex: 1, minWidth: 0 }}>
+            <Flex orientation="vertical" style={{ flex: 1, minWidth: 0 }}>
               <Text size={3} weight="medium" truncate block>
                 {station.name}
               </Text>
@@ -400,7 +400,7 @@ const RadioView = () => (
 );
 
 const Playlists = () => (
-  <Flex direction="vertical" gap="m">
+  <Flex orientation="vertical" gap="m">
     <SectionTitle>Your Playlists</SectionTitle>
     <div style={GRID}>
       {[...MADE_FOR_YOU, ...MADE_FOR_YOU.slice(0, 3)].map((playlist, i) => (
@@ -416,8 +416,8 @@ const Playlists = () => (
 );
 
 const Artists = () => (
-  <Flex direction="vertical" gap="xl">
-    <Flex direction="vertical" gap="m">
+  <Flex orientation="vertical" gap="xl">
+    <Flex orientation="vertical" gap="m">
       <SectionTitle>Artists You Follow</SectionTitle>
       <div
         style={{
@@ -426,7 +426,7 @@ const Artists = () => (
         }}
       >
         {ARTISTS.map(([first, last]) => (
-          <Flex key={first} direction="vertical" align="center" gap="xs">
+          <Flex key={first} orientation="vertical" align="center" gap="xs">
             <Avatar firstName={first} lastName={last || undefined} size="xl" />
             <Text size={2} weight="medium" truncate block>
               {`${first} ${last}`.trim()}
@@ -436,7 +436,7 @@ const Artists = () => (
       </div>
     </Flex>
 
-    <Flex direction="vertical" gap="m">
+    <Flex orientation="vertical" gap="m">
       <SectionTitle>Top Tracks</SectionTitle>
       <Box
         material="plate"
@@ -444,7 +444,7 @@ const Artists = () => (
         padding={12}
         style={{ width: '100%' }}
       >
-        <Flex direction="vertical" gap="s">
+        <Flex orientation="vertical" gap="s">
           {TRACKS.map((track, i) => (
             <TrackRow key={track.title} index={i + 1} track={track} />
           ))}
@@ -458,13 +458,13 @@ const SearchView = () => {
   const [query, setQuery] = useState('');
 
   return (
-    <Flex direction="vertical" gap="xl">
+    <Flex orientation="vertical" gap="xl">
       <TextInput
         value={query}
         onChange={(value) => setQuery(value)}
         placeholder="Artists, songs, or albums"
       />
-      <Flex direction="vertical" gap="m">
+      <Flex orientation="vertical" gap="m">
         <SectionTitle>Browse Genres</SectionTitle>
         <Flex gap="s" wrap>
           {[

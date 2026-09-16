@@ -1,16 +1,16 @@
 import { createContext, useContext } from 'react';
 import { Size } from 'types';
-import { ToolbarPlacement, ToolbarVariant } from './Toolbar.types.ts';
+import { ToolbarEdge, ToolbarVariant } from './Toolbar.types.ts';
 
 export interface ToolbarContextValue {
-  placement: ToolbarPlacement;
+  edge: ToolbarEdge;
   orientation: 'horizontal' | 'vertical';
   variant: ToolbarVariant;
   size: Size;
 }
 
 export const ToolbarContext = createContext<ToolbarContextValue>({
-  placement: 'top',
+  edge: 'top',
   orientation: 'horizontal',
   variant: 'solid',
   size: 'm',

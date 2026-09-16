@@ -50,8 +50,8 @@ export const PublishPostStory: StoryObj<typeof Modal> = {
     };
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 560 }}>
-        <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 560 }}>
+        <Flex orientation="vertical" gap="xs">
           <Text block size={7} weight="bold">
             The Concentric Blog
           </Text>
@@ -62,7 +62,7 @@ export const PublishPostStory: StoryObj<typeof Modal> = {
 
         {published ? (
           <Flex
-            direction="horizontal"
+            orientation="horizontal"
             gap="s"
             align="center"
             style={{
@@ -120,7 +120,7 @@ export const PublishPostStory: StoryObj<typeof Modal> = {
                 >
                   {VISIBILITY.map((option) => (
                     <Radio.Item key={option.value} value={option.value}>
-                      <Flex direction="horizontal" gap="xs" align="center">
+                      <Flex orientation="horizontal" gap="xs" align="center">
                         <VisibilityIcon value={option.value} />
                         <Text size={4}>{option.label}</Text>
                         <Text size={3} color="muted">
@@ -146,7 +146,7 @@ export const PublishPostStory: StoryObj<typeof Modal> = {
 
               <Form.Field>
                 <Switch checked={notify} onChange={(v) => setNotify(v)}>
-                  <Flex direction="horizontal" gap="xs" align="center">
+                  <Flex orientation="horizontal" gap="xs" align="center">
                     <Bell size={14} />
                     <Text size={4}>Email subscribers</Text>
                   </Flex>

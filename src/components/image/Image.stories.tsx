@@ -44,7 +44,7 @@ const Framework3rdPartyImage = ({ src, alt }: { src: string; alt: string }) => (
 export const Overview: StoryObj<typeof Image> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Text block size={9} weight="bold">
         Image
       </Text>
@@ -98,7 +98,7 @@ export const ObjectFit: StoryObj<typeof Image> = {
     const fits = ['cover', 'contain', 'fill', 'none', 'scale-down'] as const;
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Heading>Object-fit</Heading>
         <Paragraph>
           The same tall, narrow source photo under every <Text code>fit</Text>{' '}
@@ -128,7 +128,7 @@ export const ObjectFit: StoryObj<typeof Image> = {
 export const CustomPicture: StoryObj<typeof Image> = {
   name: 'Custom picture (children)',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Heading>Any picture element</Heading>
       <Paragraph>
         Pass a custom element as <Text code>children</Text> instead of{' '}
@@ -182,7 +182,7 @@ const LoadingScenario = ({
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <Flex direction="vertical" gap="s">
+    <Flex orientation="vertical" gap="s">
       <Flex align="center" gap="m">
         <Switch checked={loaded} onChange={setLoaded} />
         <Text size={3}>{loaded ? 'Loaded' : 'Loading'}</Text>
@@ -207,7 +207,7 @@ const LoadingScenario = ({
 export const Preloader: StoryObj<typeof Image> = {
   name: 'Preloader',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Heading>Preloader</Heading>
       <Paragraph>
         In <Text code>src</Text> mode the skeleton shows and hides itself
@@ -231,7 +231,7 @@ export const Preloader: StoryObj<typeof Image> = {
 export const Captions: StoryObj<typeof Image> = {
   name: 'Captions',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Heading>Captions</Heading>
       <Paragraph>
         <Text code>caption</Text> accepts any node, not just a string — useful

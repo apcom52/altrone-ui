@@ -256,7 +256,7 @@ const MailListItem = ({ mail, onOpen }: { mail: Mail; onOpen: () => void }) => (
     <Flex gap="m" align="center" style={{ width: '100%', minWidth: 0 }}>
       <Avatar firstName={mail.from} size="m" />
 
-      <Flex direction="vertical" gap="xxs" style={{ flex: 1, minWidth: 0 }}>
+      <Flex orientation="vertical" gap="xxs" style={{ flex: 1, minWidth: 0 }}>
         <Flex align="center" gap="s" style={{ width: '100%', minWidth: 0 }}>
           <Text
             size={3}
@@ -295,7 +295,7 @@ const MailListItem = ({ mail, onOpen }: { mail: Mail; onOpen: () => void }) => (
       </Flex>
 
       <Flex
-        direction="vertical"
+        orientation="vertical"
         align="center"
         justify="center"
         gap="xs"
@@ -320,7 +320,7 @@ const MailList = ({
   const mails = mailsFor(folder);
 
   return (
-    <Flex direction="vertical" gap="m">
+    <Flex orientation="vertical" gap="m">
       <Flex align="center" gap="m">
         <Text size={6} weight="bold" block>
           {folderLabel(folder)}
@@ -334,7 +334,7 @@ const MailList = ({
           Nothing here yet.
         </Text>
       ) : (
-        <Flex direction="vertical" gap="s">
+        <Flex orientation="vertical" gap="s">
           {mails.map((mail) => (
             <MailListItem
               key={mail.id}
@@ -357,7 +357,7 @@ const MailReader = ({
   backLabel: string;
   onBack: () => void;
 }) => (
-  <Flex direction="vertical" gap="m">
+  <Flex orientation="vertical" gap="m">
     <Toolbar variant="grouped" size="s">
       <Toolbar.Group>
         <Toolbar.Action
@@ -391,7 +391,7 @@ const MailReader = ({
     >
       <Flex align="center" gap="m" style={{ width: '100%', minWidth: 0 }}>
         <Avatar firstName={mail.from} size="m" />
-        <Flex direction="vertical" gap="xxs" style={{ flex: 1, minWidth: 0 }}>
+        <Flex orientation="vertical" gap="xxs" style={{ flex: 1, minWidth: 0 }}>
           <Text size={3} weight="medium" truncate block>
             {mail.from}
           </Text>
@@ -407,7 +407,7 @@ const MailReader = ({
 
     <Divider />
 
-    <Flex direction="vertical" gap="m">
+    <Flex orientation="vertical" gap="m">
       {mail.body.map((paragraph, i) => (
         <Text key={i} size={4} block>
           {paragraph}
@@ -430,7 +430,7 @@ const MailCompose = ({ onClose }: { onClose: () => void }) => {
   const [body, setBody] = useState('');
 
   return (
-    <Flex direction="vertical" gap="m">
+    <Flex orientation="vertical" gap="m">
       <Text size={6} weight="bold" block>
         New message
       </Text>

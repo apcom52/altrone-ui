@@ -102,14 +102,14 @@ const Frame = ({ children }: { children: React.ReactNode }) => (
 export const Overview: StoryObj<typeof Flex> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Flex
       </Text>
       <Paragraph>
         <Text code>Flex</Text> is a one-axis layout primitive — a typed wrapper
         over CSS flexbox. Instead of hand-written classes or inline styles it
-        exposes <Text code>direction</Text>, <Text code>align</Text>,{' '}
+        exposes <Text code>orientation</Text>, <Text code>align</Text>,{' '}
         <Text code>justify</Text>, <Text code>gap</Text> and{' '}
         <Text code>wrap</Text>, with <Text code>gap</Text> bound to the
         design-system spacing scale so spacing stays consistent without magic
@@ -123,7 +123,7 @@ export const Overview: StoryObj<typeof Flex> = {
 
       <Flex gap="m" align="center">
         <Box shape="circle" material="hatch" size={40} />
-        <Flex direction="vertical" gap="xxs">
+        <Flex orientation="vertical" gap="xxs">
           <Text weight="medium">Alice Morgan</Text>
           <Text size={3} color="muted">
             Product Designer
@@ -133,7 +133,7 @@ export const Overview: StoryObj<typeof Flex> = {
 
       <Code>{`<Flex gap="m" align="center">
   <Avatar firstName="Alice" />
-  <Flex direction="vertical" gap="xxs">
+  <Flex orientation="vertical" gap="xxs">
     <Text weight="medium">Alice Morgan</Text>
     <Text size={3} color="muted">Product Designer</Text>
   </Flex>
@@ -142,16 +142,16 @@ export const Overview: StoryObj<typeof Flex> = {
   ),
 };
 
-// ─── Direction ──────────────────────────────────────────────────────────────
+// ─── Orientation ─────────────────────────────────────────────────────────────
 
-export const DirectionStory: StoryObj<typeof Flex> = {
-  name: 'Direction',
+export const OrientationStory: StoryObj<typeof Flex> = {
+  name: 'Orientation',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
-      <Heading>Direction</Heading>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Heading>Orientation</Heading>
       <Paragraph>
-        <Text code>direction="horizontal"</Text> (the default) lays children out
-        in a row; <Text code>direction="vertical"</Text> stacks them. Flex is
+        <Text code>orientation="horizontal"</Text> (the default) lays children out
+        in a row; <Text code>orientation="vertical"</Text> stacks them. Flex is
         always full-width — a vertical stack fills its container.
       </Paragraph>
 
@@ -163,7 +163,7 @@ export const DirectionStory: StoryObj<typeof Flex> = {
       </Flex>
 
       <Subheading>vertical</Subheading>
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         <Cell label="One" />
         <Cell label="Two" />
         <Cell label="Three" />
@@ -177,18 +177,18 @@ export const DirectionStory: StoryObj<typeof Flex> = {
 export const AlignStory: StoryObj<typeof Flex> = {
   name: 'Align (cross axis)',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>Align — cross axis</Heading>
       <Paragraph>
         <Text code>align</Text> sets <Text code>align-items</Text> — the
         position of children on the axis perpendicular to{' '}
-        <Text code>direction</Text>. In a horizontal Flex that&rsquo;s vertical
+        <Text code>orientation</Text>. In a horizontal Flex that&rsquo;s vertical
         placement. With no <Text code>align</Text> children stretch to the
         tallest.
       </Paragraph>
 
       {(['start', 'center', 'end'] as const).map((align) => (
-        <Flex key={align} direction="vertical" gap="xxs">
+        <Flex key={align} orientation="vertical" gap="xxs">
           <Text size={3} weight="medium" block>
             align={align}
           </Text>
@@ -210,7 +210,7 @@ export const AlignStory: StoryObj<typeof Flex> = {
 export const JustifyStory: StoryObj<typeof Flex> = {
   name: 'Justify (main axis)',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>Justify — main axis</Heading>
       <Paragraph>
         <Text code>justify</Text> sets <Text code>justify-content</Text> — how
@@ -220,7 +220,7 @@ export const JustifyStory: StoryObj<typeof Flex> = {
       </Paragraph>
 
       {(['start', 'center', 'end', 'between'] as const).map((justify) => (
-        <Flex key={justify} direction="vertical" gap="xxs">
+        <Flex key={justify} orientation="vertical" gap="xxs">
           <Text size={3} weight="medium" block>
             justify={justify}
           </Text>
@@ -244,7 +244,7 @@ const GAPS: Gap[] = ['none', 'xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl'];
 export const GapStory: StoryObj<typeof Flex> = {
   name: 'Gap',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>Gap</Heading>
       <Paragraph>
         <Text code>gap</Text> is the space between children, on either axis.
@@ -254,7 +254,7 @@ export const GapStory: StoryObj<typeof Flex> = {
       </Paragraph>
 
       {GAPS.map((gap) => (
-        <Flex key={gap} direction="vertical" gap="xxs">
+        <Flex key={gap} orientation="vertical" gap="xxs">
           <Text size={3} weight="medium" block>
             {gap}
           </Text>
@@ -275,7 +275,7 @@ export const GapStory: StoryObj<typeof Flex> = {
 export const WrapStory: StoryObj<typeof Flex> = {
   name: 'Wrap',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 480 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 480 }}>
       <Heading>Wrap</Heading>
       <Paragraph>
         By default children never wrap and can overflow. <Text code>wrap</Text>{' '}
@@ -298,7 +298,7 @@ export const WrapStory: StoryObj<typeof Flex> = {
 export const InnerMarginsStory: StoryObj<typeof Flex> = {
   name: 'Disable inner margins',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>Disable inner margins</Heading>
       <Paragraph>
         <Text code>disableInnerMargins</Text> (on by default) zeroes the margins
@@ -310,7 +310,7 @@ export const InnerMarginsStory: StoryObj<typeof Flex> = {
 
       <Subheading>disableInnerMargins (default)</Subheading>
       <Frame>
-        <Flex direction="vertical" gap="s">
+        <Flex orientation="vertical" gap="s">
           <Text block size={5} weight="bold">
             Section title
           </Text>
@@ -323,7 +323,7 @@ export const InnerMarginsStory: StoryObj<typeof Flex> = {
 
       <Subheading>disableInnerMargins = false</Subheading>
       <Frame>
-        <Flex direction="vertical" gap="s" disableInnerMargins={false}>
+        <Flex orientation="vertical" gap="s" disableInnerMargins={false}>
           <Text block size={5} weight="bold">
             Section title
           </Text>
@@ -342,7 +342,7 @@ export const InnerMarginsStory: StoryObj<typeof Flex> = {
 export const CustomElement: StoryObj<typeof Flex> = {
   name: 'Custom element',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>Custom element</Heading>
       <Paragraph>
         <Text code>asChild</Text> merges the layout's computed className/style
@@ -361,7 +361,7 @@ export const CustomElement: StoryObj<typeof Flex> = {
 
       <Flex
         asChild
-        direction="vertical"
+        orientation="vertical"
         gap="s"
         style={{ listStyle: 'none', margin: 0, padding: 0 }}
       >

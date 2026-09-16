@@ -97,7 +97,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
   };
 
   return (
-    <Flex direction="vertical" gap="m" className={s.ColorPicker}>
+    <Flex orientation="vertical" gap="m" className={s.ColorPicker}>
       {showTabs ? (
         <Tabs>
           <Tabs.Item
@@ -116,7 +116,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
       ) : null}
 
       {mode === 'presets' ? (
-        <Flex direction="horizontal" gap="m" wrap>
+        <Flex orientation="horizontal" gap="m" wrap>
           {colorPresets?.map((preset, index) => (
             <ColorPreset
               key={`${index}-${preset.name}`}
@@ -135,7 +135,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
             onChange={(color) => onChange(color)}
             className={s.Palette}
           />
-          <Flex direction="vertical" gap="s">
+          <Flex orientation="vertical" gap="s">
             <TextInput
               maxLength={6}
               size={size}
@@ -147,7 +147,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
             >
               <TextInput.TextIsland label="#" />
             </TextInput>
-            <Flex direction="horizontal" gap="s" className={s.ChannelRow}>
+            <Flex orientation="horizontal" gap="s" className={s.ChannelRow}>
               {(['r', 'g', 'b'] as Channel[]).map((channel) => (
                 <div key={channel} className={s.ChannelCell}>
                   <NumberInput

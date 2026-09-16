@@ -24,7 +24,7 @@ const LinkContent = ({ icon, label, badge }: LinkContentProps) => (
       {label}
     </Text>
     {badge ? (
-      <Badge placement="corner" size="m">
+      <Badge mode="corner" size="m">
         {badge}
       </Badge>
     ) : null}

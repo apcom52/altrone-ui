@@ -35,7 +35,7 @@ const Paragraph = ({ children }: { children: React.ReactNode }) => (
 export const Overview: StoryObj<typeof Progress> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Progress
       </Text>
@@ -67,7 +67,7 @@ export const Overview: StoryObj<typeof Progress> = {
 export const Sizes: StoryObj<typeof Progress> = {
   name: 'Sizes',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Sizes</Section>
       <Paragraph>
         <Text code>size</Text> follows the shared scale (<Text code>mini</Text>{' '}
@@ -76,7 +76,7 @@ export const Sizes: StoryObj<typeof Progress> = {
         together.
       </Paragraph>
 
-      <Flex direction="vertical" gap="m">
+      <Flex orientation="vertical" gap="m">
         <Progress size="mini" value={60} />
         <Progress size="s" value={60} />
         <Progress size="m" value={60} />
@@ -90,7 +90,7 @@ export const Sizes: StoryObj<typeof Progress> = {
 export const Labels: StoryObj<typeof Progress> = {
   name: 'Labels',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Labels</Section>
       <Paragraph>
         With no <Text code>label</Text> the text is the rounded percentage. A
@@ -99,7 +99,7 @@ export const Labels: StoryObj<typeof Progress> = {
         &ldquo;X of Y&rdquo; counters or a custom phrasing.
       </Paragraph>
 
-      <Flex direction="vertical" gap="m">
+      <Flex orientation="vertical" gap="m">
         <Progress value={42} />
         <Progress
           value={42}
@@ -124,7 +124,7 @@ export const Labels: StoryObj<typeof Progress> = {
 export const ValueRange: StoryObj<typeof Progress> = {
   name: 'Value range',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Value range</Section>
       <Paragraph>
         <Text code>min</Text> and <Text code>max</Text> define the range. They
@@ -134,7 +134,7 @@ export const ValueRange: StoryObj<typeof Progress> = {
         ARIA.
       </Paragraph>
 
-      <Flex direction="vertical" gap="m">
+      <Flex orientation="vertical" gap="m">
         <Progress
           value={0}
           max={8}
@@ -171,7 +171,7 @@ export const LiveValue: StoryObj<typeof Progress> = {
     const [value, setValue] = useState(35);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Section>Live value</Section>
         <Paragraph>
           <Text code>Progress</Text> is fully controlled — it renders whatever{' '}
@@ -196,7 +196,7 @@ export const LiveValue: StoryObj<typeof Progress> = {
 export const Theming: StoryObj<typeof Progress> = {
   name: 'Theming',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Theming</Section>
       <Paragraph>
         The track is the Box&rsquo;s own neutral frosted fill. Two custom
@@ -206,7 +206,7 @@ export const Theming: StoryObj<typeof Progress> = {
         <Text code>style</Text> or a class.
       </Paragraph>
 
-      <Flex direction="vertical" gap="m">
+      <Flex orientation="vertical" gap="m">
         <Progress
           value={70}
           aria-label="Storage"

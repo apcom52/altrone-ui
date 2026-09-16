@@ -4,7 +4,7 @@ import React, {
   PropsWithChildren,
   ReactElement,
 } from 'react';
-import { Direction, Size } from 'types';
+import { Orientation, Size } from 'types';
 
 export type RadioContext = {
   value: string | number;
@@ -28,7 +28,7 @@ export interface RadioProps
     | null
     | false;
   name?: string;
-  direction?: Direction;
+  orientation?: Orientation;
   disabled?: boolean;
   size?: Size;
 }

@@ -48,7 +48,7 @@ export const Card = ({
   hint: string;
 }) => (
   <Flex
-    direction="vertical"
+    orientation="vertical"
     gap="xs"
     style={{
       padding: 16,
@@ -69,7 +69,7 @@ export const Card = ({
 );
 
 export const Stat = ({ label, value }: { label: string; value: string }) => (
-  <Flex direction="vertical" align="center" gap="xs">
+  <Flex orientation="vertical" align="center" gap="xs">
     <Text size={7} weight="bold">
       {value}
     </Text>

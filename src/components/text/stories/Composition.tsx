@@ -18,8 +18,8 @@ const bareInputStyle: CSSProperties = {
 
 export const Composition = () => {
   return (
-    <Flex direction="vertical" gap="xl" style={{ maxWidth: 560 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="xl" style={{ maxWidth: 560 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           One primitive, any element
         </Text>
@@ -37,7 +37,7 @@ export const Composition = () => {
       {/* Pull-quote — align + weight + muted attribution */}
       <Flex
         asChild
-        direction="vertical"
+        orientation="vertical"
         gap="s"
         style={{
           margin: 0,
@@ -58,7 +58,7 @@ export const Composition = () => {
 
       {/* Empty state — built entirely from Text + Flex, centred */}
       <Flex
-        direction="vertical"
+        orientation="vertical"
         gap="s"
         align="center"
         style={{
@@ -83,12 +83,12 @@ export const Composition = () => {
       </Flex>
 
       {/* Field — asChild <label>, helper (muted), error (danger) */}
-      <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="xs">
         <Text asChild size={2} weight="medium">
           <label htmlFor="ct-workspace">Workspace URL</label>
         </Text>
         <Flex
-          direction="horizontal"
+          orientation="horizontal"
           gap="xs"
           align="center"
           style={{
@@ -115,7 +115,7 @@ export const Composition = () => {
       </Flex>
 
       {/* Alignment row */}
-      <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="xs">
         <Text size={2} weight="bold" color="muted" block>
           align
         </Text>

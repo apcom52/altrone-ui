@@ -15,8 +15,8 @@ export const ProfileBio = () => {
   const tooShort = draft.trim().length < MIN;
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 480 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 480 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           A profile field, edited in place
         </Text>
@@ -28,8 +28,8 @@ export const ProfileBio = () => {
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="xs">
-        <Flex direction="horizontal" gap="m" align="center" justify="between">
+      <Flex orientation="vertical" gap="xs">
+        <Flex orientation="horizontal" gap="m" align="center" justify="between">
           <Text asChild size={2} weight="medium">
             <label htmlFor="bio">Bio</label>
           </Text>
@@ -69,7 +69,7 @@ export const ProfileBio = () => {
       </Flex>
 
       {editing && (
-        <Flex direction="horizontal" gap="s">
+        <Flex orientation="horizontal" gap="s">
           <Button
             variant="submit"
             label="Save"

@@ -100,7 +100,7 @@ const PRELOADED: FileItem[] = [
 export const OverviewStory: StoryObj<typeof FilePicker> = {
   name: 'Uploading a file',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Text size={7} weight="bold" block>
         FilePicker
       </Text>
@@ -137,7 +137,7 @@ export const OverviewStory: StoryObj<typeof FilePicker> = {
 export const MultipleStory: StoryObj<typeof FilePicker> = {
   name: 'Several files at once',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>Each file uploads on its own</Heading>
       <Paragraph>
         With <Text code>multiple</Text>, every picked file gets its own chip and
@@ -162,7 +162,7 @@ export const MultipleStory: StoryObj<typeof FilePicker> = {
 export const FailureStory: StoryObj<typeof FilePicker> = {
   name: 'When an upload fails',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>fail(), then retry</Heading>
       <Paragraph>
         Calling <Text code>ctx.fail(message)</Text> turns the chip red and shows
@@ -196,7 +196,7 @@ export const FailureStory: StoryObj<typeof FilePicker> = {
 export const DeferredStory: StoryObj<typeof FilePicker> = {
   name: 'Deferred upload (autoUpload = false)',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>Hold the files until the form is submitted</Heading>
       <Paragraph>
         <Text code>{'autoUpload={false}'}</Text> keeps every picked file in the{' '}
@@ -214,7 +214,7 @@ export const DeferredStory: StoryObj<typeof FilePicker> = {
 export const PreloadedStory: StoryObj<typeof FilePicker> = {
   name: 'Files already on the server',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>defaultValue</Heading>
       <Paragraph>
         Pass <Text code>defaultValue</Text> with just <Text code>filename</Text>s
@@ -241,7 +241,7 @@ export const ControlledStory: StoryObj<typeof FilePicker> = {
     const [files, setFiles] = useState<FileItem[]>([]);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Heading>Owning the list from outside</Heading>
         <Paragraph>
           Pass <Text code>value</Text> and <Text code>onChange</Text> to keep the
@@ -287,14 +287,14 @@ const SIZE_DEMO_FILES: FileItem[] = [
 export const SizesStory: StoryObj<typeof FilePicker> = {
   name: 'Sizes',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>mini, s, m, l, xl</Heading>
       <Paragraph>
         <Text code>size</Text> scales the pick button and the file chips
         together — chip height, the file name and size text, and the inline
         retry / delete buttons (a tier smaller than the chip).
       </Paragraph>
-      <Flex direction="vertical" gap="l">
+      <Flex orientation="vertical" gap="l">
         {SIZES.map((sz) => (
           <Flex key={sz} align="center" gap="m">
             <Caption>{sz}</Caption>

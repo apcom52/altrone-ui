@@ -54,7 +54,7 @@ const Field = ({
   label: React.ReactNode;
   children: React.ReactNode;
 }) => (
-  <Flex direction="vertical" gap="xs">
+  <Flex orientation="vertical" gap="xs">
     <Text size={2} color="muted">
       {label}
     </Text>
@@ -92,7 +92,7 @@ export const Darkroom: Story = {
     const signed = (value: number) => `${value > 0 ? '+' : ''}${value}`;
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 560 }}>
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 560 }}>
         <Heading>Darkroom</Heading>
         <Lead>
           The natural home of the <Text code>default</Text> variant: a stack of
@@ -114,7 +114,7 @@ export const Darkroom: Story = {
           }}
         />
 
-        <Flex direction="vertical" gap="m">
+        <Flex orientation="vertical" gap="m">
           <Field label={`Exposure — ${signed(exposure)}`}>
             <Slider
               min={-100}
@@ -193,7 +193,7 @@ export const MixingDesk: Story = {
       value === 0 ? 'C' : `${value < 0 ? 'L' : 'R'}${Math.abs(value)}`;
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 640 }}>
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 640 }}>
         <Heading>Mixing Desk</Heading>
         <Lead>
           The <Text code>fill</Text> variant earns its keep when a control wants
@@ -203,12 +203,12 @@ export const MixingDesk: Story = {
           precise centre matters more than a big target.
         </Lead>
 
-        <Flex direction="horizontal" gap="l" align="end">
+        <Flex orientation="horizontal" gap="l" align="end">
           {CHANNELS.map((name, index) => (
-            <Flex key={name} direction="vertical" align="center" gap="s">
+            <Flex key={name} orientation="vertical" align="center" gap="s">
               <div style={{ height: 220 }}>
                 <Slider
-                  direction="vertical"
+                  orientation="vertical"
                   variant="fill"
                   value={levels[index]}
                   onChange={(next) => setLevel(index, next)}
@@ -222,14 +222,14 @@ export const MixingDesk: Story = {
           ))}
 
           <Divider
-            direction="vertical"
+            orientation="vertical"
             style={{ margin: '0 4px', height: 220 }}
           />
 
-          <Flex direction="vertical" align="center" gap="s">
+          <Flex orientation="vertical" align="center" gap="s">
             <div style={{ height: 220 }}>
               <Slider
-                direction="vertical"
+                orientation="vertical"
                 variant="fill"
                 size="l"
                 value={master}
@@ -246,9 +246,9 @@ export const MixingDesk: Story = {
 
         <Divider />
 
-        <Flex direction="vertical" gap="s">
+        <Flex orientation="vertical" gap="s">
           {CHANNELS.map((name, index) => (
-            <Flex key={name} direction="horizontal" gap="m" align="center">
+            <Flex key={name} orientation="horizontal" gap="m" align="center">
               <Text size={2} color="muted" style={{ width: 48 }}>
                 {name}
               </Text>
@@ -289,7 +289,7 @@ export const NowPlaying: Story = {
     const VolumeIcon = volume === 0 ? VolumeX : volume < 50 ? Volume1 : Volume2;
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 460 }}>
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 460 }}>
         <Heading>Now Playing</Heading>
         <Lead>
           Two sliders, two roles. The scrubber is a hairline{' '}
@@ -300,7 +300,7 @@ export const NowPlaying: Story = {
         </Lead>
 
         <Flex
-          direction="vertical"
+          orientation="vertical"
           gap="m"
           style={{
             padding: 20,
@@ -309,7 +309,7 @@ export const NowPlaying: Story = {
             background: 'var(--background-2)',
           }}
         >
-          <Flex direction="horizontal" gap="m" align="center">
+          <Flex orientation="horizontal" gap="m" align="center">
             <div
               style={{
                 width: 56,
@@ -320,7 +320,7 @@ export const NowPlaying: Story = {
                 flexShrink: 0,
               }}
             />
-            <Flex direction="vertical" gap="xs">
+            <Flex orientation="vertical" gap="xs">
               <Text weight="bold">Parallel Lines</Text>
               <Text size={2} color="muted">
                 The Meridians — Long Distances
@@ -335,7 +335,7 @@ export const NowPlaying: Story = {
             showCurrentValue="always"
             renderLabel={mmss}
           />
-          <Flex direction="horizontal" justify="between">
+          <Flex orientation="horizontal" justify="between">
             <Text size={2} color="muted">
               {mmss(position)}
             </Text>
@@ -344,7 +344,7 @@ export const NowPlaying: Story = {
             </Text>
           </Flex>
 
-          <Flex direction="horizontal" gap="m" align="center">
+          <Flex orientation="horizontal" gap="m" align="center">
             <Button
               icon={playing ? <Pause /> : <Play />}
               label={playing ? 'Pause' : 'Play'}
@@ -382,7 +382,7 @@ export const Thermostat: Story = {
     const mix = cold.map((c, i) => Math.round(c + (warm[i] - c) * t));
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 520 }}>
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 520 }}>
         <Heading>Thermostat</Heading>
         <Lead>
           When the slider <Text weight="bold">is</Text> the interface, go{' '}
@@ -394,7 +394,7 @@ export const Thermostat: Story = {
         </Lead>
 
         <Flex
-          direction="horizontal"
+          orientation="horizontal"
           gap="xl"
           align="center"
           style={{
@@ -407,7 +407,7 @@ export const Thermostat: Story = {
         >
           <div style={{ height: 260 }}>
             <Slider
-              direction="vertical"
+              orientation="vertical"
               variant="fill"
               size="xl"
               min={16}
@@ -421,7 +421,7 @@ export const Thermostat: Story = {
             />
           </div>
 
-          <Flex direction="vertical" gap="xs">
+          <Flex orientation="vertical" gap="xs">
             <Text size={7} weight="bold" style={{ color: '#1c2024' }}>
               {target.toFixed(1)}°C
             </Text>
@@ -452,7 +452,7 @@ export const Anatomy: Story = {
     const sizes = ['mini', 's', 'm', 'l', 'xl'] as const;
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 720 }}>
         <Heading>Two variants</Heading>
         <Lead>
           <Text code>default</Text> is the thin track with a round thumb — the
@@ -462,7 +462,7 @@ export const Anatomy: Story = {
           handle. Expressive and tactile, but heavy — reserve it for media and
           ambient settings.
         </Lead>
-        <Flex direction="vertical" gap="m" style={{ maxWidth: 420 }}>
+        <Flex orientation="vertical" gap="m" style={{ maxWidth: 420 }}>
           <Field label={<Text code>variant=&quot;default&quot;</Text>}>
             <Slider value={a} onChange={setA} />
           </Field>
@@ -479,9 +479,9 @@ export const Anatomy: Story = {
           Size drives track thickness and thumb diameter, and for{' '}
           <Text code>fill</Text> the height of the slab.
         </Lead>
-        <Flex direction="vertical" gap="m">
+        <Flex orientation="vertical" gap="m">
           {sizes.map((size) => (
-            <Flex key={size} direction="horizontal" gap="l" align="center">
+            <Flex key={size} orientation="horizontal" gap="l" align="center">
               <Text code style={{ width: 44 }}>
                 {size}
               </Text>
@@ -499,14 +499,14 @@ export const Anatomy: Story = {
 
         <Heading>Vertical</Heading>
         <Lead>
-          Set <Text code>direction=&quot;vertical&quot;</Text> and give the
+          Set <Text code>orientation=&quot;vertical&quot;</Text> and give the
           control a height. The fill grows from the bottom; arrow keys keep
           working.
         </Lead>
-        <Flex direction="horizontal" gap="xl">
+        <Flex orientation="horizontal" gap="xl">
           <div style={{ height: 220 }}>
             <Slider
-              direction="vertical"
+              orientation="vertical"
               value={b}
               onChange={setB}
               showCurrentValue="always"
@@ -514,7 +514,7 @@ export const Anatomy: Story = {
           </div>
           <div style={{ height: 220 }}>
             <Slider
-              direction="vertical"
+              orientation="vertical"
               variant="fill"
               value={b}
               onChange={setB}
@@ -533,7 +533,7 @@ export const Anatomy: Story = {
           and renders the formatted value as selectable text — for a summary row
           where the number matters but can&apos;t be touched.
         </Lead>
-        <Flex direction="vertical" gap="m" style={{ maxWidth: 420 }}>
+        <Flex orientation="vertical" gap="m" style={{ maxWidth: 420 }}>
           <Field label="disabled — default">
             <Slider value={35} onChange={() => null} disabled />
           </Field>
@@ -569,7 +569,7 @@ export const Anatomy: Story = {
           <Text kbd>Home</Text> / <Text kbd>End</Text> jump to the ends — every
           press also fires <Text code>onValueCommit</Text>.
         </Lead>
-        <Flex direction="horizontal" gap="xl" wrap style={{ maxWidth: 640 }}>
+        <Flex orientation="horizontal" gap="xl" wrap style={{ maxWidth: 640 }}>
           <Field label={<Text code>&quot;active&quot;</Text>}>
             <div style={{ width: 200 }}>
               <Slider value={a} onChange={setA} />
@@ -599,7 +599,7 @@ export const ElevationInModals: Story = {
     const [open, setOpen] = useState(false);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 520 }}>
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 520 }}>
         <Heading>Elevation vs. Modal</Heading>
         <Lead>
           The value bubble is portaled to the shared app root, so its own

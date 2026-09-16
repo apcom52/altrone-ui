@@ -36,7 +36,7 @@ describe('Slider', () => {
         <Slider
           value={44}
           onChange={() => null}
-          direction="vertical"
+          orientation="vertical"
           data-testid="slider2"
           disabled
           renderLabel={(value) => `${value}m2`}

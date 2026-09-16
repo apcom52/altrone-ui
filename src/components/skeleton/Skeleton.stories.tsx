@@ -35,7 +35,7 @@ const Paragraph = ({ children }: { children: ReactNode }) => (
 export const Overview: StoryObj<typeof Skeleton> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Text block size={9} weight="bold">
         Skeleton
       </Text>
@@ -51,7 +51,7 @@ export const Overview: StoryObj<typeof Skeleton> = {
       </Paragraph>
 
       <Heading>Text lines</Heading>
-      <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="xs">
         <Skeleton width="100%" height="14px" radius="4px" />
         <Skeleton width="100%" height="14px" radius="4px" />
         <Skeleton width="70%" height="14px" radius="4px" />
@@ -60,7 +60,7 @@ export const Overview: StoryObj<typeof Skeleton> = {
       <Heading>Avatar + text</Heading>
       <Flex gap="m" align="center">
         <Skeleton width="48px" height="48px" radius="50%" />
-        <Flex direction="vertical" gap="xs" style={{ flex: 1 }}>
+        <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
           <Skeleton width="40%" height="14px" radius="4px" />
           <Skeleton width="60%" height="12px" radius="4px" />
         </Flex>
@@ -68,7 +68,7 @@ export const Overview: StoryObj<typeof Skeleton> = {
 
       <Heading>Card</Heading>
       <Flex
-        direction="vertical"
+        orientation="vertical"
         gap="m"
         style={{
           padding: 16,
@@ -83,7 +83,7 @@ export const Overview: StoryObj<typeof Skeleton> = {
       </Flex>
 
       <Heading>Repeated list</Heading>
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         {Array.from({ length: 4 }).map((_, i) => (
           <Flex key={i} gap="m" align="center">
             <Skeleton width="32px" height="32px" radius="50%" />

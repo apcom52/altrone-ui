@@ -16,7 +16,7 @@ export const Badge = memo(
     ref,
     children,
     className,
-    placement = 'inline',
+    mode = 'inline',
     size = 'm',
     tone = 'neutral',
     ...restProps
@@ -24,7 +24,7 @@ export const Badge = memo(
     <Box
       ref={ref}
       shape="pill"
-      material={placement === 'corner' ? 'plate' : 'translucent'}
+      material={mode === 'corner' ? 'plate' : 'translucent'}
       tone={tone}
       width="auto"
       height="var(--badge-height)"
@@ -32,7 +32,7 @@ export const Badge = memo(
       className={clsx(
         s.Badge,
         {
-          [s.Corner]: placement === 'corner',
+          [s.Corner]: mode === 'corner',
           [s.Mini]: size === 'mini',
           [s.Small]: size === 's',
           [s.Large]: size === 'l',

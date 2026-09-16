@@ -108,7 +108,7 @@ const ProductCard = ({
           flexShrink: 0,
         }}
       />
-      <Flex direction="vertical" gap="xxs" style={{ flex: 1, minWidth: 0 }}>
+      <Flex orientation="vertical" gap="xxs" style={{ flex: 1, minWidth: 0 }}>
         <Text size={3} weight="medium" truncate block>
           {product.title}
         </Text>
@@ -157,7 +157,7 @@ const ProductInspector = ({
 
   return (
     <Flex
-      direction="vertical"
+      orientation="vertical"
       gap="m"
       style={{
         position: 'sticky',
@@ -190,7 +190,7 @@ const ProductInspector = ({
         }}
       />
 
-      <Flex direction="vertical" gap="xxs">
+      <Flex orientation="vertical" gap="xxs">
         <Text size={5} weight="bold" block>
           {product.title}
         </Text>
@@ -233,7 +233,7 @@ const ProductInspector = ({
 
       <Divider />
 
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         <Field label="SKU" value={product.sku} />
         <Field label="In stock" value={`${product.stock}`} />
         <Field label="Min. order" value={`${product.minimumOrderQuantity}`} />
@@ -263,7 +263,7 @@ const ProductInspector = ({
           <Text size={2} color="muted" block>
             Recent reviews
           </Text>
-          <Flex direction="vertical" gap="s">
+          <Flex orientation="vertical" gap="s">
             {product.reviews.slice(0, 3).map((review, i) => (
               <Box
                 key={i}
@@ -272,7 +272,7 @@ const ProductInspector = ({
                 padding={10}
                 style={{ width: '100%' }}
               >
-                <Flex direction="vertical" gap="xxs">
+                <Flex orientation="vertical" gap="xxs">
                   <Flex align="center" gap="s">
                     <Flex align="center" gap="xxs">
                       <Star size={12} fill="currentColor" />
@@ -426,7 +426,7 @@ export const CatalogApp: StoryObj<typeof Screen> = {
         <Splitter>
           <Splitter.Panel minSize={40}>
             <Screen.Content>
-              <Flex direction="vertical" gap="m">
+              <Flex orientation="vertical" gap="m">
                 <Flex align="end" gap="s">
                   <Text
                     size={6}
@@ -449,7 +449,7 @@ export const CatalogApp: StoryObj<typeof Screen> = {
                     reload.
                   </Text>
                 ) : loadingProducts || !products ? (
-                  <Flex direction="vertical" gap="s">
+                  <Flex orientation="vertical" gap="s">
                     {[...Array(8)].map((_, i) => (
                       <Skeleton
                         key={i}
@@ -459,7 +459,7 @@ export const CatalogApp: StoryObj<typeof Screen> = {
                     ))}
                   </Flex>
                 ) : (
-                  <Flex direction="vertical" gap="s">
+                  <Flex orientation="vertical" gap="s">
                     {products.map((product) => (
                       <ProductCard
                         key={product.id}
@@ -483,7 +483,7 @@ export const CatalogApp: StoryObj<typeof Screen> = {
                 />
               ) : (
                 <Flex
-                  direction="vertical"
+                  orientation="vertical"
                   align="center"
                   gap="xs"
                   style={{ paddingBlock: 'var(--space-section)' }}

@@ -31,8 +31,8 @@ export const NewPassword = () => {
   const canSubmit = allPassed && matches;
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 420 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 420 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Choose a password
         </Text>
@@ -44,7 +44,7 @@ export const NewPassword = () => {
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="xs">
         <Text asChild size={2} weight="medium">
           <label htmlFor="np-password">New password</label>
         </Text>
@@ -56,7 +56,7 @@ export const NewPassword = () => {
           id="np-password"
         />
 
-        <Flex direction="horizontal" gap="xs" style={{ marginTop: 4 }}>
+        <Flex orientation="horizontal" gap="xs" style={{ marginTop: 4 }}>
           {[0, 1, 2, 3].map((i) => (
             <Flex
               key={i}
@@ -78,7 +78,7 @@ export const NewPassword = () => {
           </Text>
         )}
 
-        <Flex direction="vertical" gap="xxs" style={{ marginTop: 4 }}>
+        <Flex orientation="vertical" gap="xxs" style={{ marginTop: 4 }}>
           {RULES.map((rule, i) => (
             <Text
               key={rule.label}
@@ -91,7 +91,7 @@ export const NewPassword = () => {
         </Flex>
       </Flex>
 
-      <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="xs">
         <Text asChild size={2} weight="medium">
           <label htmlFor="np-confirm">Confirm password</label>
         </Text>

@@ -4,11 +4,9 @@ export type Role = 'default' | 'primary' | 'success' | 'warning' | 'danger';
 
 export type Gap = 'none' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl';
 
-export type Direction = 'vertical' | 'horizontal';
+export type Orientation = 'vertical' | 'horizontal';
 
-export type Side = 'start' | 'center' | 'end';
-
-export type Align = 'start' | 'center' | 'end' | 'between';
+export type Align = 'start' | 'center' | 'end';
 
 export type Justify = 'start' | 'center' | 'end' | 'between';
 

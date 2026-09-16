@@ -36,6 +36,32 @@ describe('Toolbar', () => {
     expect(screen.getByTestId('action')).toHaveStyle('color: rgb(255, 255, 0)');
   });
 
+  test('Toolbar.Group `justify="between"` distributes content along the main axis', () => {
+    render(
+      <Application>
+        <Toolbar.Group data-testid="group" justify="between">
+          <span>a</span>
+          <span>b</span>
+        </Toolbar.Group>
+      </Application>,
+    );
+
+    expect(screen.getByTestId('group').className).toMatch(/JustifyBetween/);
+  });
+
+  test('`edge="left"` flips `aria-orientation` to vertical', () => {
+    render(
+      <Application>
+        <Toolbar data-testid="toolbar" edge="left" />
+      </Application>,
+    );
+
+    expect(screen.getByTestId('toolbar')).toHaveAttribute(
+      'aria-orientation',
+      'vertical',
+    );
+  });
+
   test('toolbar `size` cascades to nested Toolbar.Action unless the action overrides it', () => {
     render(
       <Application>

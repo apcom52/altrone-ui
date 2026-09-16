@@ -90,7 +90,7 @@ const PhoneMock = ({
 );
 
 const Screen = ({ title, note }: { title: string; note?: string }) => (
-  <Flex direction="vertical" gap="s">
+  <Flex orientation="vertical" gap="s">
     <Text size={6} weight="bold" block>
       {title}
     </Text>
@@ -111,7 +111,7 @@ export const Overview: StoryObj<typeof BottomNavigation> = {
     const sel = (id: string) => tab === id;
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Text block size={9} weight="bold">
           BottomNavigation
         </Text>
@@ -411,7 +411,7 @@ export const Floating: StoryObj<typeof BottomNavigation> = {
     const sel = (id: string) => tab === id;
 
     return (
-      <Flex direction="vertical" gap="m" style={{ minHeight: 240 }}>
+      <Flex orientation="vertical" gap="m" style={{ minHeight: 240 }}>
         <Paragraph>
           The default. The bar is pinned to the bottom-center of the viewport
           &mdash; scroll the Storybook canvas and it stays put.

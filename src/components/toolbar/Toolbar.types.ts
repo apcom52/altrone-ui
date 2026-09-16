@@ -1,9 +1,9 @@
 import React from 'react';
 import { ButtonProps } from 'components/button/Button.types';
-import { Align, Size } from 'types';
+import { Justify, Size } from 'types';
 
 export type ToolbarVariant = 'plain' | 'grouped' | 'solid';
-export type ToolbarPlacement = 'top' | 'bottom' | 'left' | 'right';
+export type ToolbarEdge = 'top' | 'bottom' | 'left' | 'right';
 
 export interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
@@ -23,10 +23,10 @@ export interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
    *   groups. A self-sufficient app / frame header.
    */
   variant?: ToolbarVariant;
-  placement?: ToolbarPlacement;
+  edge?: ToolbarEdge;
   /** Drives toolbar height/padding and the default `size` of the actions inside it. */
   size?: Size;
-  /** Stick to the `placement` edge of the nearest scroll container. */
+  /** Stick to the `edge` of the nearest scroll container. */
   sticky?: boolean;
   /** Blurred gradient scrim behind the toolbar — lifts `grouped` pills off busy content. */
   showBackdrop?: boolean;
@@ -59,7 +59,7 @@ export interface ToolbarTitleProps extends React.HTMLAttributes<HTMLDivElement> 
 
 export interface ToolbarGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
-  align?: Align;
+  justify?: Justify;
   /** `flex` value — `weight={1}` makes the group eat the remaining space. */
   weight?: number;
   /**

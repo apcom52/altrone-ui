@@ -32,8 +32,8 @@ export const FontPicker = () => {
   );
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 420 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 420 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Pick a font
         </Text>
@@ -47,7 +47,7 @@ export const FontPicker = () => {
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="xs">
         <Text asChild size={2} weight="medium">
           <label htmlFor="fp-input">Font family</label>
         </Text>
@@ -62,7 +62,7 @@ export const FontPicker = () => {
         />
       </Flex>
 
-      <Flex direction="vertical" gap="xxs">
+      <Flex orientation="vertical" gap="xxs">
         <Text size={1} weight="bold" color="muted">
           {font.toUpperCase()}
         </Text>

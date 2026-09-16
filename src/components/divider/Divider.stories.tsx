@@ -36,7 +36,7 @@ const Paragraph = ({ children }: { children: ReactNode }) => (
 export const Overview: StoryObj<typeof Divider> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Text block size={9} weight="bold">
         Divider
       </Text>
@@ -45,7 +45,7 @@ export const Overview: StoryObj<typeof Divider> = {
         <Text code>Divider</Text> is a thin rule. It renders a native{' '}
         <Text code>&lt;hr&gt;</Text> (which already carries the{' '}
         <Text code>separator</Text> role). Default is horizontal; pass{' '}
-        <Text code>direction="vertical"</Text> to stand it up (it also gets{' '}
+        <Text code>orientation="vertical"</Text> to stand it up (it also gets{' '}
         <Text code>aria-orientation="vertical"</Text> and stretches to its
         flex row's height).
       </Paragraph>
@@ -55,7 +55,7 @@ export const Overview: StoryObj<typeof Divider> = {
         Separates stacked sections. The rule is slightly inset from the
         container edges.
       </Paragraph>
-      <Flex direction="vertical" gap="m">
+      <Flex orientation="vertical" gap="m">
         <Text block>Profile</Text>
         <Divider />
         <Text block>Security</Text>
@@ -65,12 +65,12 @@ export const Overview: StoryObj<typeof Divider> = {
 
       <Heading>Vertical</Heading>
       <Paragraph>Separates items in a row — a toolbar, a button group.</Paragraph>
-      <Flex direction="horizontal" gap="m" align="center">
+      <Flex orientation="horizontal" gap="m" align="center">
         <Button label="Cut" />
         <Button label="Copy" />
-        <Divider direction="vertical" />
+        <Divider orientation="vertical" />
         <Button label="Paste" />
-        <Divider direction="vertical" />
+        <Divider orientation="vertical" />
         <Button label="Delete" danger />
       </Flex>
     </Flex>

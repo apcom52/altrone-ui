@@ -94,7 +94,7 @@ export const Button = memo((props: ButtonProps) => {
      positioned against the button element). */
   const badgeElement = badge ? (
     <Badge
-      placement={isSingleIcon ? 'corner' : 'inline'}
+      mode={isSingleIcon ? 'corner' : 'inline'}
       size={size}
       className={isSingleIcon ? undefined : s.ButtonBadge}
     >

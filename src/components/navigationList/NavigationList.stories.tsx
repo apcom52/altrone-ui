@@ -108,7 +108,7 @@ export const Overview: StoryObj<typeof NavigationList> = {
     const sel = (id: string) => section === id;
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Text block size={9} weight="bold">
           NavigationList
         </Text>
@@ -412,7 +412,7 @@ export const ProjectManagementStory: StoryObj<typeof NavigationList> = {
     const sel = (id: ProjectSection) => active === id;
 
     return (
-      <Flex gap="l" direction="vertical">
+      <Flex gap="l" orientation="vertical">
         <Text size={5} weight="bold" block>
           Project Management
         </Text>
@@ -421,7 +421,7 @@ export const ProjectManagementStory: StoryObj<typeof NavigationList> = {
             <Flex align="center" gap="s">
               <Avatar firstName="Altrone" lastName="UI" size="s" />
               <Flex
-                direction="vertical"
+                orientation="vertical"
                 gap="xs"
                 style={{ flex: 1, minWidth: 0 }}
               >
@@ -584,7 +584,7 @@ export const ProjectManagementStory: StoryObj<typeof NavigationList> = {
             <Flex align="center" gap="s">
               <Avatar firstName="Alex" lastName="Chen" size="s" />
               <Flex
-                direction="vertical"
+                orientation="vertical"
                 gap="xs"
                 style={{ flex: 1, minWidth: 0 }}
               >
@@ -637,13 +637,13 @@ export const CodeRepositoryStory: StoryObj<typeof NavigationList> = {
     const sel = (id: RepoSection) => active === id;
 
     return (
-      <Flex gap="l" direction="vertical">
+      <Flex gap="l" orientation="vertical">
         <Text size={5} weight="bold" block>
           Code Repository
         </Text>
         <NavigationList>
           <NavigationList.Header>
-            <Flex direction="vertical" gap="xs">
+            <Flex orientation="vertical" gap="xs">
               <Flex align="center" gap="s">
                 <Label color="blue" variant="soft" size="s">
                   public
@@ -871,16 +871,16 @@ export const EcommerceAdminStory: StoryObj<typeof NavigationList> = {
     const sel = (id: ShopSection) => active === id;
 
     return (
-      <Flex gap="l" direction="vertical">
+      <Flex gap="l" orientation="vertical">
         <Text size={5} weight="bold" block>
           E-commerce Admin
         </Text>
         <NavigationList>
           <NavigationList.Header>
-            <Flex direction="vertical" gap="s">
+            <Flex orientation="vertical" gap="s">
               <Flex align="center" gap="s">
                 <Avatar firstName="Nova" lastName="Shop" size="s" />
-                <Flex direction="vertical" gap="xs" style={{ flex: 1 }}>
+                <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
                   <Text size={3} weight="bold" block>
                     Nova Shop
                   </Text>
@@ -1078,7 +1078,7 @@ export const EcommerceAdminStory: StoryObj<typeof NavigationList> = {
               gap="s"
               style={{ justifyContent: 'space-between' }}
             >
-              <Flex direction="vertical" gap="xs">
+              <Flex orientation="vertical" gap="xs">
                 <Text size={2} color="muted" block>
                   Monthly revenue
                 </Text>

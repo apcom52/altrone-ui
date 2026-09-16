@@ -167,7 +167,7 @@ function GitBranchMenu() {
 export const OverviewStory: StoryObj<typeof Dropdown> = {
   name: 'A branch switcher',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Text size={7} weight="bold" block>
         Dropdown
       </Text>
@@ -257,7 +257,7 @@ function AccountMenu() {
 export const AccountMenuStory: StoryObj<typeof Dropdown> = {
   name: 'Checkbox, RadioList and a badge',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>An account menu</Heading>
       <Paragraph>
         <Text code>Dropdown.RadioList</Text> for a mutually-exclusive theme,{' '}
@@ -268,7 +268,7 @@ export const AccountMenuStory: StoryObj<typeof Dropdown> = {
         without it acting like a clickable item. Trigger is an{' '}
         <Text code>Avatar</Text>.
       </Paragraph>
-      <Flex direction="horizontal">
+      <Flex orientation="horizontal">
         <AccountMenu />
       </Flex>
       <Caption>
@@ -322,7 +322,7 @@ function FileContextMenu() {
 export const NestedStory: StoryObj<typeof Dropdown> = {
   name: 'Nested submenus (ChildMenu)',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>A file context menu</Heading>
       <Paragraph>
         <Text code>Dropdown.ChildMenu</Text> opens its own{' '}
@@ -331,7 +331,7 @@ export const NestedStory: StoryObj<typeof Dropdown> = {
         compete for the same space — each is a menu in its own right, closable
         on its own or as part of the whole chain.
       </Paragraph>
-      <Flex direction="horizontal">
+      <Flex orientation="horizontal">
         <FileContextMenu />
       </Flex>
     </Flex>
@@ -363,7 +363,7 @@ function AsChildDemo() {
 export const AsChildStory: StoryObj<typeof Dropdown> = {
   name: 'Actions as links (asChild)',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>Rendering a different element</Heading>
       <Paragraph>
         <Text code>asChild</Text> merges an action&rsquo;s styles, hover state
@@ -372,7 +372,7 @@ export const AsChildStory: StoryObj<typeof Dropdown> = {
         <Text code>{'<a>'}</Text> that needs to look and behave like every
         other item in the menu.
       </Paragraph>
-      <Flex direction="horizontal">
+      <Flex orientation="horizontal">
         <AsChildDemo />
       </Flex>
     </Flex>
@@ -432,16 +432,16 @@ function InboxRow({ subject, unread }: { subject: string; unread: boolean }) {
 export const HoverTriggerStory: StoryObj<typeof Dropdown> = {
   name: 'Hover trigger, and a long label',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>Row actions in an inbox</Heading>
       <Paragraph>
         <Text code>trigger="hover"</Text> opens the menu without a click —
         useful for per-row actions in a list. The long subject line below is
         truncated with an ellipsis rather than wrapping or overflowing the row.
       </Paragraph>
-      <Flex direction="vertical" style={{ width: 420, maxWidth: '100%' }}>
+      <Flex orientation="vertical" style={{ width: 420, maxWidth: '100%' }}>
         {INBOX_ITEMS.map((item, index) => (
-          <Flex direction="vertical" key={item.subject}>
+          <Flex orientation="vertical" key={item.subject}>
             <InboxRow subject={item.subject} unread={item.unread} />
             {index < INBOX_ITEMS.length - 1 ? <Divider /> : null}
           </Flex>
@@ -496,7 +496,7 @@ function FormattingMenu() {
 export const ToolbarStory: StoryObj<typeof Dropdown> = {
   name: 'Inside a Toolbar',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>Overflow for a formatting toolbar</Heading>
       <Paragraph>
         The render-prop <Text code>children</Text> reads <Text code>opened</Text>{' '}
@@ -538,7 +538,7 @@ function ImperativeRefDemo() {
 export const ImperativeStory: StoryObj<typeof Dropdown> = {
   name: 'Imperative control via ref',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>Opening it from outside</Heading>
       <Paragraph>
         <Text code>Dropdown</Text> forwards <Text code>controlRef</Text> to

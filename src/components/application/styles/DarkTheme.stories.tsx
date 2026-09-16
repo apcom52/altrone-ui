@@ -42,7 +42,7 @@ const ThemeToggleDemo = () => {
   const { theme, setTheme } = useAltroneTheme();
 
   return (
-    <Flex direction="vertical" gap="m">
+    <Flex orientation="vertical" gap="m">
       <Switch
         checked={theme === 'dark'}
         onChange={(checked) => setTheme(checked ? 'dark' : 'light')}
@@ -120,7 +120,7 @@ const ThemeToggleDemo = () => {
 export const Overview: StoryObj = {
   name: 'Dark Theme',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Dark Theme
       </Text>

@@ -33,8 +33,8 @@ export const TableFilter = () => {
   }, [query]);
 
   return (
-    <Flex direction="vertical" gap="m" style={{ maxWidth: 460 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="m" style={{ maxWidth: 460 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Filtering a list
         </Text>
@@ -53,7 +53,7 @@ export const TableFilter = () => {
         placeholder="Filter members"
       />
 
-      <Flex direction="horizontal" gap="m" align="center" justify="between">
+      <Flex orientation="horizontal" gap="m" align="center" justify="between">
         <Text size={2} color="muted">
           {rows.length} of {TEAM.length}
         </Text>
@@ -64,11 +64,11 @@ export const TableFilter = () => {
         )}
       </Flex>
 
-      <Flex direction="vertical" gap="none">
+      <Flex orientation="vertical" gap="none">
         {rows.map((m) => (
           <Flex
             key={m.email}
-            direction="horizontal"
+            orientation="horizontal"
             gap="m"
             align="center"
             style={{
@@ -76,7 +76,7 @@ export const TableFilter = () => {
               borderTop: '1px solid var(--border-a1)',
             }}
           >
-            <Flex direction="vertical" style={{ flex: 1, minWidth: 0 }}>
+            <Flex orientation="vertical" style={{ flex: 1, minWidth: 0 }}>
               <Text size={3} truncate>
                 {m.name}
               </Text>

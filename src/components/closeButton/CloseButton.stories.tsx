@@ -29,7 +29,7 @@ export const Overview: StoryObj<typeof CloseButton> = {
     const [open, setOpen] = useState(true);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
         <Text block size={9} weight="bold">
           Close Button
         </Text>
@@ -94,7 +94,7 @@ export const Overview: StoryObj<typeof CloseButton> = {
 export const Sizes: StoryObj<typeof CloseButton> = {
   name: 'Sizes',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Text block size={6} weight="bold">
         mini, s, m, l, xl
       </Text>
@@ -104,7 +104,7 @@ export const Sizes: StoryObj<typeof CloseButton> = {
       </Text>
       <Flex gap="l" align="center">
         {SIZES.map((size) => (
-          <Flex key={size} direction="vertical" gap="s" align="center">
+          <Flex key={size} orientation="vertical" gap="s" align="center">
             <CloseButton size={size} />
             <Text size={2} color="muted">
               {size}
@@ -126,7 +126,7 @@ export const InContext: StoryObj<typeof CloseButton> = {
     ]);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
         <Text block size={6} weight="bold">
           Top-right of a header
         </Text>
@@ -135,7 +135,7 @@ export const InContext: StoryObj<typeof CloseButton> = {
           drawer or dialog header. Use <Text code>size=&quot;s&quot;</Text> so it
           doesn&rsquo;t outweigh the title.
         </Text>
-        <Flex direction="vertical" gap="s" style={{ maxWidth: 360 }}>
+        <Flex orientation="vertical" gap="s" style={{ maxWidth: 360 }}>
           {panels.map((name) => (
             <Box
               key={name}
@@ -178,7 +178,7 @@ export const InContext: StoryObj<typeof CloseButton> = {
 export const AccessibleName: StoryObj<typeof CloseButton> = {
   name: 'Accessible name & disabled',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Text block size={6} weight="bold">
         Accessible name
       </Text>
@@ -190,19 +190,19 @@ export const AccessibleName: StoryObj<typeof CloseButton> = {
         <Text code>label</Text>.
       </Text>
       <Flex gap="l" align="center">
-        <Flex direction="vertical" gap="s" align="center">
+        <Flex orientation="vertical" gap="s" align="center">
           <CloseButton />
           <Text size={2} color="muted">
             default
           </Text>
         </Flex>
-        <Flex direction="vertical" gap="s" align="center">
+        <Flex orientation="vertical" gap="s" align="center">
           <CloseButton label="Dismiss notification" />
           <Text size={2} color="muted">
             label=&quot;Dismiss notification&quot;
           </Text>
         </Flex>
-        <Flex direction="vertical" gap="s" align="center">
+        <Flex orientation="vertical" gap="s" align="center">
           <CloseButton disabled />
           <Text size={2} color="muted">
             disabled

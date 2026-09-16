@@ -17,8 +17,8 @@ export const Announcement = () => {
   const blocks = paragraphs(draft);
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Compose &amp; preview
         </Text>
@@ -30,8 +30,8 @@ export const Announcement = () => {
         </Text>
       </Flex>
 
-      <Flex direction="horizontal" gap="l">
-        <Flex direction="vertical" gap="xs" style={{ flex: 1 }}>
+      <Flex orientation="horizontal" gap="l">
+        <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
           <Text size={2} weight="bold" color="muted" block>
             DRAFT
           </Text>
@@ -44,12 +44,12 @@ export const Announcement = () => {
           />
         </Flex>
 
-        <Flex direction="vertical" gap="xs" style={{ flex: 1 }}>
+        <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
           <Text size={2} weight="bold" color="muted" block>
             PREVIEW
           </Text>
           <Flex
-            direction="vertical"
+            orientation="vertical"
             gap="s"
             style={{
               border: '1px solid var(--border-a1)',

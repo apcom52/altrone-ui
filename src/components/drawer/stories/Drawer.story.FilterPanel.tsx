@@ -137,9 +137,9 @@ export const FilterPanelStory: StoryObj<typeof Drawer> = {
     const preview = PRODUCTS.filter((product) => matches(product, draft));
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 560 }}>
-        <Flex direction="horizontal" justify="between" align="center">
-          <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 560 }}>
+        <Flex orientation="horizontal" justify="between" align="center">
+          <Flex orientation="vertical" gap="xs">
             <Text block size={7} weight="bold">
               Catalog
             </Text>
@@ -193,7 +193,7 @@ export const FilterPanelStory: StoryObj<typeof Drawer> = {
                 </Form.Field>
 
                 <Form.Field label="Brands">
-                  <Flex direction="vertical" gap="xs">
+                  <Flex orientation="vertical" gap="xs">
                     {BRANDS.map((brand) => (
                       <Checkbox
                         key={brand}
@@ -226,7 +226,7 @@ export const FilterPanelStory: StoryObj<typeof Drawer> = {
               </Form>
             }
             footer={({ closeDrawer }) => (
-              <Flex direction="horizontal" gap="s">
+              <Flex orientation="horizontal" gap="s">
                 <Button
                   label="Reset"
                   variant="text"
@@ -246,16 +246,16 @@ export const FilterPanelStory: StoryObj<typeof Drawer> = {
           />
         </Flex>
 
-        <Flex direction="vertical" gap="s">
+        <Flex orientation="vertical" gap="s">
           {visible.map((product) => (
             <Flex
               key={product.id}
-              direction="horizontal"
+              orientation="horizontal"
               align="center"
               justify="between"
               gap="m"
             >
-              <Flex direction="vertical" gap="xs">
+              <Flex orientation="vertical" gap="xs">
                 <Text block size={4} weight="medium">
                   {product.name}
                 </Text>
@@ -263,7 +263,7 @@ export const FilterPanelStory: StoryObj<typeof Drawer> = {
                   {product.brand}
                 </Text>
               </Flex>
-              <Flex direction="horizontal" align="center" gap="s">
+              <Flex orientation="horizontal" align="center" gap="s">
                 <Label variant="soft" size="s">
                   {product.category}
                 </Label>

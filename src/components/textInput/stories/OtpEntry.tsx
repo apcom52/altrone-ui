@@ -37,8 +37,8 @@ export const OtpEntry = () => {
   };
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 420 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 420 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           One-time code
         </Text>
@@ -50,7 +50,7 @@ export const OtpEntry = () => {
         </Text>
       </Flex>
 
-      <Flex direction="horizontal" gap="s">
+      <Flex orientation="horizontal" gap="s">
         {digits.map((d, i) => (
           <Flex key={i} style={{ width: 44 }}>
             <TextInput

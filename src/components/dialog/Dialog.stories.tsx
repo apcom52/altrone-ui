@@ -57,7 +57,7 @@ export const Overview: StoryObj<typeof DialogProvider> = {
     const [lastResult, setLastResult] = useState<string>('—');
 
     return (
-      <Flex direction="vertical" gap="l" align="start" style={{ padding: 24 }}>
+      <Flex orientation="vertical" gap="l" align="start" style={{ padding: 24 }}>
         <Text block size={9} weight="bold">
           Dialogs
         </Text>
@@ -117,7 +117,7 @@ export const Overview: StoryObj<typeof DialogProvider> = {
 export const Alerts: StoryObj<typeof DialogProvider> = {
   name: 'Alert — acknowledge and move on',
   render: () => (
-    <Flex direction="vertical" gap="l" align="start" style={{ padding: 24 }}>
+    <Flex orientation="vertical" gap="l" align="start" style={{ padding: 24 }}>
       <Heading>Alert</Heading>
       <Paragraph>
         One button, one job: make sure the user has seen something before
@@ -167,7 +167,7 @@ export const Confirms: StoryObj<typeof DialogProvider> = {
     const push = (line: string) => setLog((prev) => [line, ...prev].slice(0, 5));
 
     return (
-      <Flex direction="vertical" gap="l" align="start" style={{ padding: 24 }}>
+      <Flex orientation="vertical" gap="l" align="start" style={{ padding: 24 }}>
         <Heading>Confirm</Heading>
         <Paragraph>
           Returns <Text code>true</Text> or <Text code>false</Text>. Dismissing
@@ -205,7 +205,7 @@ export const Confirms: StoryObj<typeof DialogProvider> = {
           />
         </Flex>
         {log.length > 0 && (
-          <Flex direction="vertical" gap="xs" align="start">
+          <Flex orientation="vertical" gap="xs" align="start">
             {log.map((line, i) => (
               <Result key={i}>{line}</Result>
             ))}
@@ -222,7 +222,7 @@ export const Prompts: StoryObj<typeof DialogProvider> = {
     const [value, setValue] = useState<string>('—');
 
     return (
-      <Flex direction="vertical" gap="l" align="start" style={{ padding: 24 }}>
+      <Flex orientation="vertical" gap="l" align="start" style={{ padding: 24 }}>
         <Heading>Prompt</Heading>
         <Paragraph>
           A single input in a dialog. <Text code>inputType</Text> switches

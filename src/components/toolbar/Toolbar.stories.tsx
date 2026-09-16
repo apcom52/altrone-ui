@@ -60,7 +60,7 @@ export default story;
 export const Overview: StoryObj<typeof Toolbar> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 760 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 760 }}>
       <Text block size={9} weight="bold">
         Toolbar
       </Text>
@@ -204,7 +204,7 @@ export const Variants: StoryObj<typeof Toolbar> = {
     ];
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 760 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 760 }}>
         <Text block size={7} weight="bold">
           Variants
         </Text>
@@ -215,7 +215,7 @@ export const Variants: StoryObj<typeof Toolbar> = {
         </Text>
 
         {cases.map(({ variant, title, note }) => (
-          <Flex key={variant} direction="vertical" gap="s">
+          <Flex key={variant} orientation="vertical" gap="s">
             <Text size={3} weight="bold">
               {title}
             </Text>
@@ -298,7 +298,7 @@ export const ApplicationHeader: StoryObj<typeof Toolbar> = {
     const [query, setQuery] = useState('');
 
     return (
-      <Flex direction="vertical" gap="l">
+      <Flex orientation="vertical" gap="l">
         <Text block size={7} weight="bold">
           Application header
         </Text>
@@ -358,7 +358,7 @@ export const ApplicationHeader: StoryObj<typeof Toolbar> = {
             </Toolbar.Trailing>
           </Toolbar>
           <div style={{ padding: 24 }}>
-            <Flex direction="vertical" gap="m">
+            <Flex orientation="vertical" gap="m">
               {Array.from({ length: 12 }).map((_, i) => (
                 <Text key={i} block size={4} color="muted">
                   Content row {i + 1} — scroll to watch the header stay put.
@@ -606,7 +606,7 @@ function AltroneMark() {
 export const ComponentHeader: StoryObj<typeof Toolbar> = {
   name: 'Component doc header',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 760 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 760 }}>
       <Text block size={7} weight="bold">
         Component doc header
       </Text>
@@ -668,7 +668,7 @@ export const FrameToolbar: StoryObj<typeof Toolbar> = {
     const [wrap, setWrap] = useState(true);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Text block size={7} weight="bold">
           Frame / panel toolbar
         </Text>
@@ -765,7 +765,7 @@ export const FrameToolbar: StoryObj<typeof Toolbar> = {
 export const Sizes: StoryObj<typeof Toolbar> = {
   name: 'Sizes',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={7} weight="bold">
         Sizes
       </Text>
@@ -776,7 +776,7 @@ export const Sizes: StoryObj<typeof Toolbar> = {
         whole strip grows from one prop.
       </Text>
       {(['mini', 's', 'm', 'l', 'xl'] as const).map((size) => (
-        <Flex key={size} direction="vertical" gap="s">
+        <Flex key={size} orientation="vertical" gap="s">
           <Text size={3} color="muted">
             size="{size}"
           </Text>
@@ -817,7 +817,7 @@ export const Sizes: StoryObj<typeof Toolbar> = {
 export const TitleStates: StoryObj<typeof Toolbar> = {
   name: 'Title — static vs. menu',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={7} weight="bold">
         Title
       </Text>
@@ -829,7 +829,7 @@ export const TitleStates: StoryObj<typeof Toolbar> = {
         <Text code>size</Text>.
       </Text>
 
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         <Text size={3} color="muted">
           static
         </Text>
@@ -843,7 +843,7 @@ export const TitleStates: StoryObj<typeof Toolbar> = {
         </Toolbar>
       </Flex>
 
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         <Text size={3} color="muted">
           clickable — opens a Dropdown menu
         </Text>
@@ -867,7 +867,7 @@ export const TitleStates: StoryObj<typeof Toolbar> = {
         </Toolbar>
       </Flex>
 
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         <Text size={3} color="muted">
           clickable at size="s" / "l" / "xl"
         </Text>
@@ -888,7 +888,7 @@ export const TitleStates: StoryObj<typeof Toolbar> = {
         ))}
       </Flex>
 
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         <Text size={3} color="muted">
           a title longer than the row — truncates, doesn't shove the actions off
         </Text>
@@ -927,12 +927,12 @@ export const VerticalRail: StoryObj<typeof Toolbar> = {
     ];
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Text block size={7} weight="bold">
           Vertical rail
         </Text>
         <Text block size={4} style={{ lineHeight: 1.6 }}>
-          <Text code>placement="left"</Text> (or <Text code>"right"</Text>) turns
+          <Text code>edge="left"</Text> (or <Text code>"right"</Text>) turns
           the toolbar on its side, flips <Text code>aria-orientation</Text> to{' '}
           <Text code>vertical</Text>, and stacks regions top-to-bottom. Actions
           go icon-only with a tooltip.
@@ -948,7 +948,7 @@ export const VerticalRail: StoryObj<typeof Toolbar> = {
             background: 'var(--background-2)',
           }}
         >
-          <Toolbar placement="left">
+          <Toolbar edge="left">
             <Toolbar.Center>
               <Toolbar.Group>
                 {tools.map((t) => (
@@ -988,7 +988,7 @@ export const HeaderActions: StoryObj<typeof Toolbar> = {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Text block size={7} weight="bold">
           Header action presets
         </Text>

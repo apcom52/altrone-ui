@@ -1,7 +1,7 @@
 import type { HTMLAttributes, ReactElement, Ref } from 'react';
 import type { BoxTone } from 'components/box';
 
-export type BadgePlacement = 'inline' | 'corner';
+export type BadgeMode = 'inline' | 'corner';
 
 export type BadgeSize = 'mini' | 's' | 'm' | 'l' | 'xl';
 
@@ -15,7 +15,7 @@ export interface BadgeProps extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
    * of the nearest positioned ancestor (which must be `position: relative`,
    * as every `Box` is by default).
    */
-  placement?: BadgePlacement;
+  mode?: BadgeMode;
   /** One of the five control tiers; sets height, min-width, padding and text size. */
   size?: BadgeSize;
   /** Fill tone, forwarded to `Box`. Defaults to `neutral`. */

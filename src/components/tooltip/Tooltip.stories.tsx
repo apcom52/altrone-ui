@@ -63,7 +63,7 @@ const Caption = ({ children }: { children: React.ReactNode }) => (
 export const OverviewStory: StoryObj<typeof Tooltip> = {
   name: 'Hover, focus, and a shortcut',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Text size={7} weight="bold" block>
         Tooltip
       </Text>
@@ -74,7 +74,7 @@ export const OverviewStory: StoryObj<typeof Tooltip> = {
         moves away. <Text code>kbd</Text> appends a shortcut badge after the
         text.
       </Paragraph>
-      <Flex direction="horizontal" gap="l" align="center" wrap>
+      <Flex orientation="horizontal" gap="l" align="center" wrap>
         <Tooltip content="File not found on the server" />
         <Tooltip content="Click to open settings">
           <Button icon={<Settings />} label="Settings" />
@@ -107,7 +107,7 @@ export const OverviewStory: StoryObj<typeof Tooltip> = {
 export const RichContentStory: StoryObj<typeof Tooltip> = {
   name: 'Title, width, and rich content',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>A bold heading, and how wide the panel gets</Heading>
       <Paragraph>
         <Text code>title</Text> adds a bold line above <Text code>content</Text>.{' '}
@@ -115,7 +115,7 @@ export const RichContentStory: StoryObj<typeof Tooltip> = {
         short label, wider for a paragraph. <Text code>content</Text> also
         accepts a <Text code>ReactElement</Text>, not just a string.
       </Paragraph>
-      <Flex direction="horizontal" gap="l" align="center" wrap>
+      <Flex orientation="horizontal" gap="l" align="center" wrap>
         <Tooltip
           title="Keyboard shortcut"
           content="Open the editor's command palette"
@@ -135,7 +135,7 @@ export const RichContentStory: StoryObj<typeof Tooltip> = {
         </Tooltip>
         <Tooltip
           content={
-            <Flex direction="vertical" gap="xs">
+            <Flex orientation="vertical" gap="xs">
               <Text weight="bold">Plan limits</Text>
               <Text size={3}>5 projects · 3 team members · 10 GB storage</Text>
             </Flex>
@@ -154,7 +154,7 @@ export const RichContentStory: StoryObj<typeof Tooltip> = {
 export const PlacementStory: StoryObj<typeof Tooltip> = {
   name: 'Placement, and auto-flip near edges',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>Six anchors</Heading>
       <Paragraph>
         <Text code>placement</Text> takes any floating-ui position, defaulting
@@ -162,7 +162,7 @@ export const PlacementStory: StoryObj<typeof Tooltip> = {
         <Text code>shift</Text> are always on, so a tooltip that would run off
         the viewport near an edge repositions itself automatically.
       </Paragraph>
-      <Flex direction="horizontal" gap="l" align="center" wrap>
+      <Flex orientation="horizontal" gap="l" align="center" wrap>
         {(
           [
             ['top', 'Top'],
@@ -191,7 +191,7 @@ export const PlacementStory: StoryObj<typeof Tooltip> = {
 export const DisabledTriggerStory: StoryObj<typeof Tooltip> = {
   name: 'Wrapping a disabled trigger',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>No mouse events, no tooltip</Heading>
       <Paragraph>
         A disabled <Text code>{'<button>'}</Text> fires no pointer events at
@@ -233,7 +233,7 @@ const TOOLBAR_GROUPS: { icon: ReactElement; label: string; kbd?: string }[][] = 
 export const ToolbarStory: StoryObj<typeof Tooltip> = {
   name: 'Components that tooltip themselves',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>Don&rsquo;t wrap a self-tooltipping control</Heading>
       <Paragraph>
         An icon-only <Text code>Button</Text> (<Text code>showLabel={'{false}'}</Text>)
@@ -244,7 +244,7 @@ export const ToolbarStory: StoryObj<typeof Tooltip> = {
         shortcut with <Text code>kbd</Text>.
       </Paragraph>
       <Flex
-        direction="horizontal"
+        orientation="horizontal"
         gap="xs"
         align="center"
         style={{
@@ -259,7 +259,7 @@ export const ToolbarStory: StoryObj<typeof Tooltip> = {
           <React.Fragment key={groupIndex}>
             {groupIndex > 0 ? (
               <Divider
-                direction="vertical"
+                orientation="vertical"
                 style={{ height: 20, margin: '0 4px' }}
               />
             ) : null}
@@ -291,7 +291,7 @@ function RefChainDemo() {
   const [focused, setFocused] = React.useState(false);
 
   return (
-    <Flex direction="vertical" gap="m" align="start">
+    <Flex orientation="vertical" gap="m" align="start">
       <Tooltip content="Also readable via its own ref" title="Sparkles">
         <Button
           ref={buttonRef}
@@ -315,7 +315,7 @@ function RefChainDemo() {
 export const RefChainStory: StoryObj<typeof Tooltip> = {
   name: 'A ref on the wrapped element',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>Refs pass through untouched</Heading>
       <Paragraph>
         <Text code>{'<Tooltip><Button ref={x} /></Tooltip>'}</Text> is a common

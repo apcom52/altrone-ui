@@ -57,8 +57,8 @@ const entries: Entry[] = [
 
 export const ActivityLog = () => {
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 560 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           When space is the constraint
         </Text>
@@ -73,14 +73,14 @@ export const ActivityLog = () => {
       </Flex>
 
       <Flex
-        direction="vertical"
+        orientation="vertical"
         gap="s"
         style={{ width: 380, alignSelf: 'center' }}
       >
         {entries.map((e) => (
           <Flex
             key={e.title}
-            direction="vertical"
+            orientation="vertical"
             gap="xs"
             style={{
               border: '1px solid var(--border-a1)',
@@ -88,7 +88,7 @@ export const ActivityLog = () => {
               padding: '12px 14px',
             }}
           >
-            <Flex direction="horizontal" gap="s" align="center">
+            <Flex orientation="horizontal" gap="s" align="center">
               <Text size={1} weight="bold" color={e.severity} nowrap>
                 {e.tag}
               </Text>
@@ -109,7 +109,7 @@ export const ActivityLog = () => {
               {e.detail}
             </Text>
 
-            <Flex direction="horizontal" gap="s" align="center">
+            <Flex orientation="horizontal" gap="s" align="center">
               <Tooltip content={e.path}>
                 <Text
                   code

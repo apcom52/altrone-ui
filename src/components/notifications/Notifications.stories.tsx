@@ -17,7 +17,11 @@ import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Notifications } from './Notifications';
 import { useNotifications } from './Notifications.context';
-import type { NotificationPlacement, ToastVariant } from './Notifications.types';
+import type {
+  NotificationPlacement,
+  ToastPlacement,
+  ToastVariant,
+} from './Notifications.types';
 
 const story: Meta<typeof Notifications> = {
   title: 'Components/Display/Notifications',
@@ -60,7 +64,7 @@ export const Overview: StoryObj<typeof Notifications> = {
     const { toast, notification } = useNotifications();
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Text block size={9} weight="bold">
           Notifications
         </Text>
@@ -86,7 +90,7 @@ export const Overview: StoryObj<typeof Notifications> = {
           see the <Text weight="medium">Placement</Text> story.
         </Paragraph>
 
-        <Flex direction="horizontal" gap="s" wrap>
+        <Flex orientation="horizontal" gap="s" wrap>
           <Button
             size="s"
             label="Show a toast"
@@ -120,7 +124,7 @@ export const ToastMessages: StoryObj<typeof Notifications> = {
     const { toast } = useNotifications();
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Section>Toast messages</Section>
         <Paragraph>
           A toast confirms that something happened — a file saved, an item
@@ -139,7 +143,7 @@ export const ToastMessages: StoryObj<typeof Notifications> = {
           <Text code>success</Text> / <Text code>warning</Text> /{' '}
           <Text code>danger</Text> pick up the matching status colour.
         </Paragraph>
-        <Flex direction="horizontal" gap="s" wrap>
+        <Flex orientation="horizontal" gap="s" wrap>
           {VARIANTS.map((variant) => (
             <Button
               key={variant}
@@ -167,7 +171,7 @@ export const ToastMessages: StoryObj<typeof Notifications> = {
           Omit <Text code>icon</Text> for the variant default, pass a node to
           override it, or pass <Text code>null</Text> to drop it entirely.
         </Paragraph>
-        <Flex direction="horizontal" gap="s" wrap>
+        <Flex orientation="horizontal" gap="s" wrap>
           <Button
             size="s"
             label="Custom icon"
@@ -192,7 +196,7 @@ export const ToastMessages: StoryObj<typeof Notifications> = {
           often an <Text weight="medium">Undo</Text>. Clicking it runs the
           callback and closes the toast.
         </Paragraph>
-        <Flex direction="horizontal" gap="s" wrap>
+        <Flex orientation="horizontal" gap="s" wrap>
           <Button
             size="s"
             label="Delete file"
@@ -228,7 +232,7 @@ export const ToastMessages: StoryObj<typeof Notifications> = {
           user (or <Text code>dismiss()</Text>) closes it — use this sparingly,
           for ongoing background work.
         </Paragraph>
-        <Flex direction="horizontal" gap="s" wrap>
+        <Flex orientation="horizontal" gap="s" wrap>
           <Button
             size="s"
             label="1 s — hover to hold"
@@ -260,7 +264,7 @@ export const NotificationCards: StoryObj<typeof Notifications> = {
     const { notification } = useNotifications();
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Section>Notification cards</Section>
         <Paragraph>
           A notification is a card for something the user may want to read or act
@@ -278,7 +282,7 @@ export const NotificationCards: StoryObj<typeof Notifications> = {
           Add a <Text code>title</Text> for a headline and an{' '}
           <Text code>icon</Text> to signal the source at a glance.
         </Paragraph>
-        <Flex direction="horizontal" gap="s" wrap>
+        <Flex orientation="horizontal" gap="s" wrap>
           <Button
             size="s"
             label="Content only"
@@ -312,7 +316,7 @@ export const NotificationCards: StoryObj<typeof Notifications> = {
           question should set <Text code>autoClose: false</Text> so it waits for
           an answer.
         </Paragraph>
-        <Flex direction="horizontal" gap="s" wrap>
+        <Flex orientation="horizontal" gap="s" wrap>
           <Button
             size="s"
             label="Confirm delete"
@@ -361,7 +365,7 @@ export const NotificationCards: StoryObj<typeof Notifications> = {
           card, clipped to its corners. Long <Text code>content</Text> wraps and
           the card grows to fit.
         </Paragraph>
-        <Flex direction="horizontal" gap="s" wrap>
+        <Flex orientation="horizontal" gap="s" wrap>
           <Button
             size="s"
             label="With image"
@@ -400,15 +404,22 @@ export const NotificationCards: StoryObj<typeof Notifications> = {
 
 // ─── Placement ───────────────────────────────────────────────────────────────
 
-const PLACEMENT_OPTIONS = [
-  { label: 'start', value: 'start' },
-  { label: 'end', value: 'end' },
+const TOAST_PLACEMENT_OPTIONS = [
+  { label: 'top', value: 'top' },
+  { label: 'bottom', value: 'bottom' },
+];
+
+const NOTIFICATION_PLACEMENT_OPTIONS = [
+  { label: 'top-start', value: 'top-start' },
+  { label: 'top-end', value: 'top-end' },
+  { label: 'bottom-start', value: 'bottom-start' },
+  { label: 'bottom-end', value: 'bottom-end' },
 ];
 
 const PlacementDemo = () => {
   const { toast, notification } = useNotifications();
   return (
-    <Flex direction="horizontal" gap="s" wrap>
+    <Flex orientation="horizontal" gap="s" wrap>
       <Button
         size="s"
         label="Toast"
@@ -433,40 +444,37 @@ export const Placement: StoryObj<typeof Notifications> = {
   name: 'Placement',
   render: () => {
     const [toastPlacement, setToastPlacement] =
-      useState<NotificationPlacement>('end');
-    const [notificationSide, setNotificationSide] =
-      useState<NotificationPlacement>('end');
+      useState<ToastPlacement>('bottom');
     const [notificationPlacement, setNotificationPlacement] =
-      useState<NotificationPlacement>('end');
+      useState<NotificationPlacement>('bottom-end');
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Section>Placement</Section>
         <Paragraph>
           Placement is app-wide, not per call. Set it on{' '}
           <Text code>
-            &lt;Application toastPlacement notificationSide
-            notificationPlacement&gt;
+            &lt;Application toastPlacement notificationPlacement&gt;
           </Text>{' '}
-          (each also accepted directly on <Text code>&lt;Notifications&gt;</Text>). Every
-          value is logical — <Text code>&apos;start&apos;</Text> /{' '}
-          <Text code>&apos;end&apos;</Text> — and resolves against the writing
-          direction.
+          (each also accepted directly on <Text code>&lt;Notifications&gt;</Text>).
         </Paragraph>
         <Text size={4} list="marked" style={{ maxWidth: 660, lineHeight: 1.6 }}>
           <Text item>
             <Text code>toastPlacement</Text> — vertical edge of the toast stack:{' '}
-            <Text code>start</Text> = top, <Text code>end</Text> = bottom. Toasts
-            are always centred horizontally.
+            <Text code>top</Text> or <Text code>bottom</Text>. Toasts are
+            always centred horizontally.
           </Text>
           <Text item>
-            <Text code>notificationSide</Text> — horizontal edge of the
-            notification stack: <Text code>start</Text> = left,{' '}
-            <Text code>end</Text> = right.
-          </Text>
-          <Text item>
-            <Text code>notificationPlacement</Text> — vertical edge of the
-            notification stack.
+            <Text code>notificationPlacement</Text> — corner of the
+            notification stack, same <Text code>side-align</Text> shape as{' '}
+            <Text code>Popover</Text>/<Text code>Tooltip</Text>'s{' '}
+            <Text code>placement</Text>: <Text code>top-start</Text>,{' '}
+            <Text code>top-end</Text>, <Text code>bottom-start</Text> or{' '}
+            <Text code>bottom-end</Text>. The side (<Text code>top</Text>/
+            <Text code>bottom</Text>) is physical; the alignment along it (
+            <Text code>start</Text>/<Text code>end</Text>) is logical —{' '}
+            <Text code>start</Text> = left, <Text code>end</Text> = right,
+            resolved against the writing direction.
           </Text>
         </Text>
         <Paragraph>
@@ -475,43 +483,30 @@ export const Placement: StoryObj<typeof Notifications> = {
           chosen edge.
         </Paragraph>
 
-        <Flex direction="horizontal" gap="l" wrap>
-          <Flex direction="vertical" gap="xs" style={{ width: 200 }}>
+        <Flex orientation="horizontal" gap="l" wrap>
+          <Flex orientation="vertical" gap="xs" style={{ width: 200 }}>
             <Text size={3} weight="medium">
               toastPlacement
             </Text>
             <Select
               size="s"
               value={toastPlacement}
-              options={PLACEMENT_OPTIONS}
+              options={TOAST_PLACEMENT_OPTIONS}
               onChange={(value) =>
-                setToastPlacement(value === 'start' ? 'start' : 'end')
+                setToastPlacement(value === 'top' ? 'top' : 'bottom')
               }
             />
           </Flex>
-          <Flex direction="vertical" gap="xs" style={{ width: 200 }}>
-            <Text size={3} weight="medium">
-              notificationSide
-            </Text>
-            <Select
-              size="s"
-              value={notificationSide}
-              options={PLACEMENT_OPTIONS}
-              onChange={(value) =>
-                setNotificationSide(value === 'start' ? 'start' : 'end')
-              }
-            />
-          </Flex>
-          <Flex direction="vertical" gap="xs" style={{ width: 200 }}>
+          <Flex orientation="vertical" gap="xs" style={{ width: 200 }}>
             <Text size={3} weight="medium">
               notificationPlacement
             </Text>
             <Select
               size="s"
               value={notificationPlacement}
-              options={PLACEMENT_OPTIONS}
+              options={NOTIFICATION_PLACEMENT_OPTIONS}
               onChange={(value) =>
-                setNotificationPlacement(value === 'start' ? 'start' : 'end')
+                setNotificationPlacement(value as NotificationPlacement)
               }
             />
           </Flex>
@@ -519,7 +514,6 @@ export const Placement: StoryObj<typeof Notifications> = {
 
         <Notifications
           toastPlacement={toastPlacement}
-          notificationSide={notificationSide}
           notificationPlacement={notificationPlacement}
         >
           <PlacementDemo />
@@ -537,8 +531,8 @@ const CookiePreferencesForm = ({ onDone }: { onDone: () => void }) => {
   const [marketing, setMarketing] = useState(false);
 
   return (
-    <Flex direction="vertical" gap="m">
-      <Flex direction="vertical" gap="s">
+    <Flex orientation="vertical" gap="m">
+      <Flex orientation="vertical" gap="s">
         <Switch checked disabled>
           Strictly necessary — always on
         </Switch>
@@ -555,7 +549,7 @@ const CookiePreferencesForm = ({ onDone }: { onDone: () => void }) => {
           Marketing
         </Switch>
       </Flex>
-      <Flex direction="horizontal" gap="s">
+      <Flex orientation="horizontal" gap="s">
         <Button size="s" label="Cancel" onClick={onDone} />
         <Button
           size="s"
@@ -617,7 +611,7 @@ const CookieConsentDemo = () => {
 export const CookieConsent: StoryObj<typeof Notifications> = {
   name: 'Cookie consent',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Cookie consent</Section>
       <Paragraph>
         A cookie banner is a persistent notification, not a toast: it must not
@@ -632,14 +626,13 @@ export const CookieConsent: StoryObj<typeof Notifications> = {
       </Paragraph>
       <Paragraph>
         Place it clear of the primary flow —{' '}
-        <Text code>notificationSide=&quot;start&quot;</Text> with{' '}
-        <Text code>notificationPlacement=&quot;end&quot;</Text> keeps it at the
-        bottom-left, away from bottom-right call-to-action buttons. In a real app
-        it is shown once, near the root, on the first visit; here a button stands
-        in for that.
+        <Text code>notificationPlacement=&quot;bottom-start&quot;</Text> keeps
+        it at the bottom-left, away from bottom-right call-to-action buttons.
+        In a real app it is shown once, near the root, on the first visit;
+        here a button stands in for that.
       </Paragraph>
 
-      <Notifications notificationSide="start" notificationPlacement="end">
+      <Notifications notificationPlacement="bottom-start">
         <CookieConsentDemo />
       </Notifications>
     </Flex>

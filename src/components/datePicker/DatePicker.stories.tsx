@@ -38,7 +38,7 @@ const BOOKING_HORIZON = TODAY.add(1, 'year');
 
 const Panel = ({ children }: { children: React.ReactNode }) => (
   <Flex
-    direction="vertical"
+    orientation="vertical"
     gap="l"
     style={{
       maxWidth: 720,
@@ -61,7 +61,7 @@ export const DepartureDate: StoryObj = {
     );
 
     return (
-      <Flex direction="vertical" gap="xl">
+      <Flex orientation="vertical" gap="xl">
         <Text size={6} weight="bold" block>
           Kestrel — book a flight
         </Text>
@@ -77,7 +77,7 @@ export const DepartureDate: StoryObj = {
 
         <Panel>
           <Form>
-            <Flex direction="horizontal" gap="l" wrap>
+            <Flex orientation="horizontal" gap="l" wrap>
               <Form.Field
                 label="Departure"
                 hintText="Today through one year out"
@@ -127,7 +127,7 @@ export const LeaseWindow: StoryObj = {
     };
 
     return (
-      <Flex direction="vertical" gap="xl">
+      <Flex orientation="vertical" gap="xl">
         <Text size={5} weight="bold" block>
           Two dates, one field
         </Text>
@@ -142,7 +142,7 @@ export const LeaseWindow: StoryObj = {
 
         <Panel>
           <Form>
-            <Flex direction="horizontal" gap="l" wrap>
+            <Flex orientation="horizontal" gap="l" wrap>
               <Form.Field
                 label="Lease period"
                 hintText={summarise(lease)}
@@ -185,7 +185,7 @@ export const CoarserGrains: StoryObj = {
     );
 
     return (
-      <Flex direction="vertical" gap="xl">
+      <Flex orientation="vertical" gap="xl">
         <Text size={5} weight="bold" block>
           When the day doesn&apos;t matter
         </Text>
@@ -198,7 +198,7 @@ export const CoarserGrains: StoryObj = {
 
         <Panel>
           <Form>
-            <Flex direction="horizontal" gap="l" wrap>
+            <Flex orientation="horizontal" gap="l" wrap>
               <Form.Field
                 label="Crew roster month"
                 hintText={
@@ -240,7 +240,7 @@ export const FieldStates: StoryObj = {
     const [draft, setDraft] = useState<Dayjs | undefined>(undefined);
 
     return (
-      <Flex direction="vertical" gap="xl">
+      <Flex orientation="vertical" gap="xl">
         <Text size={5} weight="bold" block>
           Read-only, disabled, transparent, invalid
         </Text>
@@ -254,7 +254,7 @@ export const FieldStates: StoryObj = {
 
         <Panel>
           <Form>
-            <Flex direction="horizontal" gap="l" wrap>
+            <Flex orientation="horizontal" gap="l" wrap>
               <Form.Field label="Return leg (confirmed)">
                 <DatePicker value={confirmedLeg} readOnly />
               </Form.Field>
@@ -347,7 +347,7 @@ export const CustomTrigger: StoryObj = {
     );
 
     return (
-      <Flex direction="vertical" gap="xl">
+      <Flex orientation="vertical" gap="xl">
         <Text size={5} weight="bold" block>
           The field doesn&apos;t have to be a field
         </Text>
@@ -365,7 +365,7 @@ export const CustomTrigger: StoryObj = {
 
         <Panel>
           <Form>
-            <Flex direction="vertical" gap="l">
+            <Flex orientation="vertical" gap="l">
               <Form.Field label="asChild → a component using useDatePickerTrigger()">
                 <DatePicker
                   value={asButton}

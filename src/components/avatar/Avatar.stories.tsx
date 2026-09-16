@@ -49,7 +49,7 @@ const Paragraph = ({ children }: { children: ReactNode }) => (
 export const Overview: StoryObj<typeof Avatar> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Avatar
       </Text>
@@ -120,7 +120,7 @@ const TEAM = [
 export const SizesStory: StoryObj<typeof Avatar> = {
   name: 'Sizes',
   render: () => (
-    <Flex direction="vertical" gap="l">
+    <Flex orientation="vertical" gap="l">
       <Text size={5} weight="bold" block>
         All sizes
       </Text>
@@ -145,7 +145,7 @@ export const SizesStory: StoryObj<typeof Avatar> = {
 export const AutoContrastStory: StoryObj<typeof Avatar> = {
   name: 'Auto-contrast text color',
   render: () => (
-    <Flex direction="vertical" gap="l">
+    <Flex orientation="vertical" gap="l">
       <Text size={5} weight="bold" block>
         Dark backgrounds → white text
       </Text>
@@ -175,7 +175,7 @@ export const AutoContrastStory: StoryObj<typeof Avatar> = {
 export const CustomTextColorStory: StoryObj<typeof Avatar> = {
   name: 'Custom text color override',
   render: () => (
-    <Flex direction="vertical" gap="l">
+    <Flex orientation="vertical" gap="l">
       <Text size={5} weight="bold" block>
         textColor prop overrides auto-contrast
       </Text>
@@ -212,7 +212,7 @@ export const CustomTextColorStory: StoryObj<typeof Avatar> = {
 export const TeamRosterStory: StoryObj<typeof Avatar> = {
   name: 'Team roster',
   render: () => (
-    <Flex direction="vertical" gap="m" style={{ maxWidth: 320 }}>
+    <Flex orientation="vertical" gap="m" style={{ maxWidth: 320 }}>
       <Text size={5} weight="bold" block>
         Design team
       </Text>
@@ -228,7 +228,7 @@ export const TeamRosterStory: StoryObj<typeof Avatar> = {
             lastName={member.lastName}
             backgroundColor={member.backgroundColor}
           />
-          <Flex direction="vertical" gap="xs">
+          <Flex orientation="vertical" gap="xs">
             <Text weight="medium">
               {member.firstName} {member.lastName}
             </Text>
@@ -245,8 +245,8 @@ export const TeamRosterStory: StoryObj<typeof Avatar> = {
 export const StackedGroupStory: StoryObj<typeof Avatar> = {
   name: 'Stacked group',
   render: () => (
-    <Flex direction="vertical" gap="xl">
-      <Flex direction="vertical" gap="s">
+    <Flex orientation="vertical" gap="xl">
+      <Flex orientation="vertical" gap="s">
         <Text size={5} weight="bold" block>
           Project participants
         </Text>
@@ -270,7 +270,7 @@ export const StackedGroupStory: StoryObj<typeof Avatar> = {
         </Flex>
       </Flex>
 
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         <Text size={5} weight="bold" block>
           Small stacked group
         </Text>
@@ -304,7 +304,7 @@ export const StackedGroupStory: StoryObj<typeof Avatar> = {
 export const WithPhotoStory: StoryObj<typeof Avatar> = {
   name: 'With photo & fallback',
   render: () => (
-    <Flex direction="vertical" gap="l">
+    <Flex orientation="vertical" gap="l">
       <Text size={5} weight="bold" block>
         With photos
       </Text>

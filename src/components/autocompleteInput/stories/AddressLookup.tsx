@@ -27,7 +27,7 @@ const PlaceRow = ({
 }: AutocompleteRenderSuggestionContext<Place>) => (
   <>
     <MapPin size={15} style={{ color: 'var(--text-2)', flexShrink: 0 }} />
-    <Flex direction="vertical">
+    <Flex orientation="vertical">
       <Text size={3}>{suggestion.line1}</Text>
       <Text size={2} color="muted">
         {suggestion.city} · {suggestion.postcode}
@@ -64,8 +64,8 @@ export const AddressLookup = () => {
   );
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 460 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 460 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Address lookup against a slow API
         </Text>
@@ -79,7 +79,7 @@ export const AddressLookup = () => {
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="xs">
         <Text asChild size={2} weight="medium">
           <label htmlFor="al-input">Shipping address</label>
         </Text>
@@ -95,7 +95,7 @@ export const AddressLookup = () => {
           cacheResults
           placeholder="Start typing a street or postcode"
         />
-        <Flex direction="horizontal" gap="m" align="center" justify="between">
+        <Flex orientation="horizontal" gap="m" align="center" justify="between">
           <Text size={2} color="muted">
             Lookups sent: {calls}
           </Text>
@@ -111,7 +111,7 @@ export const AddressLookup = () => {
 
       {confirmed && (
         <Flex
-          direction="vertical"
+          orientation="vertical"
           gap="xxs"
           style={{
             border: '1px solid var(--success-border-a2)',

@@ -249,7 +249,7 @@ const MetricCard = ({
   goalLabel: string;
   percentage: number;
 }) => (
-  <Flex direction="vertical" gap="s" style={surface(16)}>
+  <Flex orientation="vertical" gap="s" style={surface(16)}>
     <Flex align="center" gap="xs">
       {icon}
       <Text size={2} color="muted">
@@ -419,7 +419,7 @@ const VitalCard = ({
       >
         <Flex align="center" gap="s">
           {vital.icon}
-          <Flex direction="vertical" gap="xs">
+          <Flex orientation="vertical" gap="xs">
             <Text size={3} weight="bold">
               {vital.label}
             </Text>
@@ -447,7 +447,7 @@ const VitalCard = ({
           setDraft(undefined);
         }}
         content={() => (
-          <Flex direction="vertical" gap="m">
+          <Flex orientation="vertical" gap="m">
             <Flex align="end" gap="xs">
               <Text size={9} weight="bold">
                 {latest.value}
@@ -467,7 +467,7 @@ const VitalCard = ({
             <Text size={2} color="muted">
               Recent readings
             </Text>
-            <Flex direction="vertical" gap="xs">
+            <Flex orientation="vertical" gap="xs">
               {vital.history.map((reading) => (
                 <Flex key={reading.date} align="center" justify="between">
                   <Text size={3}>{reading.date}</Text>
@@ -717,11 +717,11 @@ const NotificationsModal = ({ count }: { count: number }) => {
         open={open}
         onClose={() => setOpen(false)}
         content={
-          <Flex direction="vertical" gap="s">
+          <Flex orientation="vertical" gap="s">
             {NOTIFICATIONS.map((item) => (
               <Flex
                 key={item.id}
-                direction="vertical"
+                orientation="vertical"
                 gap="xs"
                 style={surface(12)}
               >
@@ -767,7 +767,7 @@ const TodayScreen = ({
   const takenMeds = meds.filter((med) => med.taken).length;
 
   return (
-    <Flex direction="vertical" gap="l">
+    <Flex orientation="vertical" gap="l">
       <Text size={7} weight="bold" block>
         Good morning, Alex
       </Text>
@@ -802,7 +802,7 @@ const TodayScreen = ({
         />
       </div>
 
-      <Flex direction="vertical" gap="s" style={surface(20)}>
+      <Flex orientation="vertical" gap="s" style={surface(20)}>
         <Flex align="center" gap="xs">
           <Droplets size={18} />
           <Text size={4} weight="bold">
@@ -825,7 +825,7 @@ const TodayScreen = ({
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         <Flex align="center" justify="between">
           <Text size={5} weight="bold">
             Today’s activity
@@ -841,7 +841,7 @@ const TodayScreen = ({
           >
             <Flex align="center" gap="s">
               <Activity size={16} />
-              <Flex direction="vertical" gap="xs">
+              <Flex orientation="vertical" gap="xs">
                 <Text size={3} weight="bold">
                   {workout.type}
                 </Text>
@@ -886,7 +886,7 @@ const VitalsScreen = ({
   vitals: Vital[];
   onAddReading: (id: string, value: number) => void;
 }) => (
-  <Flex direction="vertical" gap="m">
+  <Flex orientation="vertical" gap="m">
     <Text size={5} weight="bold" block>
       Latest measurements
     </Text>
@@ -921,7 +921,7 @@ const MedsScreen = ({
   const pending = meds.filter((med) => !med.taken);
 
   return (
-    <Flex direction="vertical" gap="m">
+    <Flex orientation="vertical" gap="m">
       {pending.length > 0 && (
         <Message
           severity="warning"
@@ -941,7 +941,7 @@ const MedsScreen = ({
         <AddMedicationModal onAdd={onAdd} />
       </Flex>
 
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         {meds.map((med) => (
           <Flex
             key={med.id}
@@ -949,7 +949,7 @@ const MedsScreen = ({
             justify="between"
             style={{ ...surface(0), padding: '12px 16px' }}
           >
-            <Flex direction="vertical" gap="xs">
+            <Flex orientation="vertical" gap="xs">
               <Text size={3} weight="bold">
                 {med.name}
               </Text>
@@ -988,13 +988,13 @@ const ProfileScreen = ({
   onSaveProfile: (next: HealthProfile) => void;
 }) => (
   <Flex
-    direction="vertical"
+    orientation="vertical"
     align="center"
     gap="m"
     style={{ paddingBlock: 'var(--space-section)' }}
   >
     <Avatar firstName="Alex" lastName="Rivera" size="l" />
-    <Flex direction="vertical" align="center" gap="xs">
+    <Flex orientation="vertical" align="center" gap="xs">
       <Text size={6} weight="bold">
         Alex Rivera
       </Text>
@@ -1231,7 +1231,7 @@ export const HealthApp: StoryObj<typeof Screen> = {
               <Flex align="center" gap="s">
                 <Avatar firstName="Alex" lastName="Rivera" size="s" />
                 <Flex
-                  direction="vertical"
+                  orientation="vertical"
                   gap="xs"
                   style={{ flex: 1, minWidth: 0 }}
                 >

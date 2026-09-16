@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode, Ref } from 'react';
-import type { NotificationPlacement } from '../notifications';
+import type { NotificationPlacement, ToastPlacement } from '../notifications';
 import type { Localization } from 'locales';
 
 export type Theme = 'auto' | 'light' | 'dark';
@@ -14,7 +14,7 @@ export type Accent =
   | 'purple'
   | 'pink'
   | 'brown';
-export type Language = 'en' | 'ru' | 'fr' | 'de' | 'es' | 'zh';
+export type Language = 'en' | 'ru' | 'fr' | 'de' | 'es' | 'zh' | 'pt' | 'tr';
 
 export interface ApplicationProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
@@ -29,11 +29,9 @@ export interface ApplicationProps extends HTMLAttributes<HTMLDivElement> {
   persistTheme?: boolean;
   accent?: Accent;
   customLabels?: Partial<Localization>;
-  /** Vertical placement of the toast stack (centred horizontally). Defaults to 'end' (bottom). */
-  toastPlacement?: NotificationPlacement;
-  /** Horizontal side of the notification stack. Defaults to 'end' (right). */
-  notificationSide?: NotificationPlacement;
-  /** Vertical placement of the notification stack. Defaults to 'end' (bottom). */
+  /** Vertical edge of the toast stack (centred horizontally). Defaults to 'bottom'. */
+  toastPlacement?: ToastPlacement;
+  /** Corner of the notification stack. Defaults to 'bottom-end'. */
   notificationPlacement?: NotificationPlacement;
   /**
    * Radix Slot polymorphism — merges the root's attributes/classes onto the

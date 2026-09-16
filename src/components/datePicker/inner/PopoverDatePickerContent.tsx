@@ -17,7 +17,7 @@ export const PopoverDatePickerContent = memo<DatePickerContentProps>(
     const cls = clsx(s.Calendar);
 
     return (
-      <Flex direction="vertical" gap="l" className={cls}>
+      <Flex orientation="vertical" gap="l" className={cls}>
         <DatePickerHeader />
         {viewMode === 'day' ? <DayPicker autoClose={autoClose} /> : null}
         {viewMode === 'month' ? <MonthPicker autoClose={autoClose} /> : null}

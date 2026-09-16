@@ -25,7 +25,7 @@ export const Flex = ({
   align,
   justify,
   gap = 'none',
-  direction = 'horizontal',
+  orientation = 'horizontal',
   style,
   disableInnerMargins = true,
   wrap = false,
@@ -34,7 +34,7 @@ export const Flex = ({
   const cls = clsx(
     s.Flex,
     {
-      [s.Flex_horizontal]: direction === 'horizontal',
+      [s.Flex_horizontal]: orientation === 'horizontal',
       [s.Flex_alignStart]: align === 'start',
       [s.Flex_alignCenter]: align === 'center',
       [s.Flex_alignEnd]: align === 'end',

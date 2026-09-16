@@ -9,7 +9,6 @@ import {
   type HTMLMotionProps,
   type Transition,
 } from 'motion/react';
-import { Check } from 'lucide-react';
 import { DrawerContext, DrawerProps } from './Drawer.types.ts';
 import { CloseButton } from '../closeButton';
 import { Button } from '../button';
@@ -65,8 +64,8 @@ export const Drawer = (props: DrawerProps) => {
     defaultOpen = false,
     onClose,
     onDone,
-    startActions,
-    endActions,
+    additionalActions,
+    actions,
     className,
     style,
     ...restProps
@@ -113,22 +112,20 @@ export const Drawer = (props: DrawerProps) => {
     typeof content === 'function' ? content(drawerContext) : content;
   const footerElement =
     typeof footer === 'function' ? footer(drawerContext) : footer;
-  const startActionsElement =
-    typeof startActions === 'function'
-      ? startActions(drawerContext)
-      : startActions;
-  const endActionsElement =
-    typeof endActions === 'function' ? endActions(drawerContext) : endActions;
+  const additionalActionsElement =
+    typeof additionalActions === 'function'
+      ? additionalActions(drawerContext)
+      : additionalActions;
+  const actionsElement =
+    typeof actions === 'function' ? actions(drawerContext) : actions;
 
-  /** `onDone` renders a Done button in the end slot unless `endActions` takes it over. */
+  /** `onDone` renders a Done button in the end slot unless `actions` takes it over. */
   const endContent =
-    endActionsElement ??
+    actionsElement ??
     (onDone !== undefined ? (
       <Button
-        icon={<Check />}
         variant="submit"
         label={t('common.done')}
-        showLabel={false}
         onClick={handleDone}
         state={isLoading ? 'loading' : 'idle'}
       />
@@ -223,7 +220,7 @@ export const Drawer = (props: DrawerProps) => {
                 <div className={s.Header}>
                   <div className={s.HeaderSide}>
                     <CloseButton onClick={handleClose} />
-                    {startActionsElement}
+                    {additionalActionsElement}
                   </div>
                   <div className={s.Title} id={titleId}>
                     {title}

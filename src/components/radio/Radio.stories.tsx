@@ -48,7 +48,7 @@ export const OverviewStory: StoryObj<typeof Radio> = {
     const [plan, setPlan] = useState('pro');
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Text size={7} weight="bold" block>
           Radio
         </Text>
@@ -70,7 +70,7 @@ export const OverviewStory: StoryObj<typeof Radio> = {
 
         <Heading>Stacked</Heading>
         <Radio
-          direction="vertical"
+          orientation="vertical"
           value={plan}
           onChange={setPlan}
           name="plan"
@@ -92,14 +92,14 @@ export const DisabledStory: StoryObj<typeof Radio> = {
     const [role, setRole] = useState('editor');
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Heading>One option locked</Heading>
         <Paragraph>
           <Text code>disabled</Text> on a single <Text code>Radio.Item</Text>{' '}
           takes it out of the group; on the <Text code>Radio</Text> container it
           disables every option at once.
         </Paragraph>
-        <Radio value={role} onChange={setRole} name="role" direction="vertical">
+        <Radio value={role} onChange={setRole} name="role" orientation="vertical">
           <Radio.Item value="viewer">Viewer</Radio.Item>
           <Radio.Item value="editor">Editor</Radio.Item>
           <Radio.Item value="admin" disabled>
@@ -130,7 +130,7 @@ export const SizesStory: StoryObj<typeof Radio> = {
     );
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Heading>mini, s, m, l, xl</Heading>
         <Paragraph>
           <Text code>size</Text> on the <Text code>Radio</Text> container scales
@@ -138,7 +138,7 @@ export const SizesStory: StoryObj<typeof Radio> = {
           The clickable row never drops below 24px.
         </Paragraph>
 
-        <Flex direction="vertical" gap="m">
+        <Flex orientation="vertical" gap="m">
           {SIZES.map((sz) => (
             <Radio
               key={sz}
@@ -174,7 +174,7 @@ export const ChoiceCardStory: StoryObj<typeof Radio> = {
     const [method, setMethod] = useState('express');
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Heading>A label can be more than one line</Heading>
         <Paragraph>
           <Text code>children</Text> takes any node — the whole row still
@@ -183,14 +183,14 @@ export const ChoiceCardStory: StoryObj<typeof Radio> = {
         </Paragraph>
 
         <Radio
-          direction="vertical"
+          orientation="vertical"
           value={method}
           onChange={setMethod}
           name="shipping"
         >
           {SHIPPING.map(({ value, title, meta }) => (
             <Radio.Item key={value} value={value}>
-              <Flex direction="vertical">
+              <Flex orientation="vertical">
                 <Text>{title}</Text>
                 <Text size={3} color="muted">
                   {meta}

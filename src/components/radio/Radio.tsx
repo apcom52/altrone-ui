@@ -14,7 +14,7 @@ const RadioWrapper = memo<RadioProps>(
     onChange,
     className,
     style,
-    direction = 'horizontal',
+    orientation = 'horizontal',
     name,
     disabled,
     size = 'm',
@@ -27,7 +27,7 @@ const RadioWrapper = memo<RadioProps>(
     const cls = clsx(
       s.RadioList,
       {
-        [s.Vertical]: direction === 'vertical',
+        [s.Vertical]: orientation === 'vertical',
       },
       className,
     );
