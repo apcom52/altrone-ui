@@ -214,7 +214,7 @@ describe('DataTable component', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Next page' }));
 
-    expect(onPageChange).toHaveBeenCalledWith(2);
+    expect(onPageChange).toHaveBeenCalledWith(2, expect.anything());
     // still page 1 — the consumer hasn't fed the new page back in yet
     expect(bodyRows().map((r) => r.textContent)?.[0]).toContain('Ada');
 

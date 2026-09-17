@@ -5,7 +5,7 @@ import s from './footer.module.scss';
 
 export const Footer = () => {
   const t = useLocalization();
-  const { table, selectMode } = useDataTableContext();
+  const { table, selectMode, notePendingEvent } = useDataTableContext();
 
   const selectedRowCount = table.getSelectedRowModel().rows.length;
   const visibleRowCount = table.getRowModel().rows.length;
@@ -33,7 +33,10 @@ export const Footer = () => {
           <Pagination
             currentPage={pageIndex + 1}
             totalPages={pageCount}
-            onChange={(page) => table.setPageIndex(page - 1)}
+            onChange={(page, event) => {
+              notePendingEvent(event);
+              table.setPageIndex(page - 1);
+            }}
           />
         </div>
       ) : null}

@@ -30,10 +30,17 @@ export interface DrawerProps extends Omit<
    * replaces that button.
    */
   actions?: ActionsProp<DrawerContext>;
-  onClose?: () => void;
+  /**
+   * `event` is the triggering backdrop click / close-button click / Escape
+   * keydown, or undefined when closed programmatically via
+   * `DrawerContext.closeDrawer()`.
+   */
+  onClose?: (event?: React.MouseEvent | KeyboardEvent) => void;
   /**
    * Async handler for the built-in Done button. Returning `false` keeps the
    * drawer open (e.g. failed validation); any other resolved value closes it.
    */
-  onDone?: () => Promise<boolean | void>;
+  onDone?: (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => Promise<boolean | void>;
 }

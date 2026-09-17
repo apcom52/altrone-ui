@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId } from 'react';
+import { useCallback, useEffect, useId, type MouseEvent } from 'react';
 import { createPortal } from 'react-dom';
 import clsx from 'clsx';
 import FocusTrap from 'focus-trap-react';
@@ -85,26 +85,29 @@ export const Drawer = (props: DrawerProps) => {
     disable: stopLoading,
   } = useBoolean(false);
 
-  const handleClose = useCallback(() => {
-    if (!isControlled) {
-      hide();
-    }
-    onClose?.();
-  }, [isControlled, hide, onClose]);
+  const handleClose = useCallback(
+    (event?: MouseEvent | KeyboardEvent) => {
+      if (!isControlled) {
+        hide();
+      }
+      onClose?.(event);
+    },
+    [isControlled, hide, onClose],
+  );
 
   const drawerContext: DrawerContext = { closeDrawer: handleClose };
 
-  const handleDone = async () => {
+  const handleDone = async (event: MouseEvent<HTMLButtonElement>) => {
     if (onDone === undefined) {
-      handleClose();
+      handleClose(event);
       return;
     }
 
     startLoading();
-    const result = await onDone();
+    const result = await onDone(event);
     stopLoading();
     if (result !== false) {
-      handleClose();
+      handleClose(event);
     }
   };
 
@@ -138,7 +141,7 @@ export const Drawer = (props: DrawerProps) => {
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        handleClose();
+        handleClose(event);
       }
     };
 

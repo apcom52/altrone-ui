@@ -47,7 +47,10 @@ export type CalendarRenderDateProps = {
   inRangeBelow: boolean;
   autoClose?: boolean;
   onSelect?: (date: Dayjs, event: React.MouseEvent<HTMLButtonElement>) => void;
-  onHover?: (date: Dayjs | undefined) => void;
+  onHover?: (
+    date: Dayjs | undefined,
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => void;
 };
 
 export interface CalendarProps
@@ -73,7 +76,10 @@ export interface CalendarProps
   /** Currently displayed month. Controlled via `month`, uncontrolled via `defaultMonth`. */
   month?: Dayjs;
   defaultMonth?: Dayjs;
-  onMonthChange?: (month: Dayjs) => void;
+  onMonthChange?: (
+    month: Dayjs,
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => void;
 
   /** `'auto'` (default) resolves the first weekday from the active locale. */
   firstDayOfWeek?: CalendarFirstDayOfWeek;

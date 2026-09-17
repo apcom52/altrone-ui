@@ -24,7 +24,7 @@ const columnHeaderLabel = (column: Column<DataTableFeatures, AnyObject>) =>
 export const Filtering = () => {
   const t = useLocalization();
 
-  const { table, loading } = useDataTableContext();
+  const { table, loading, notePendingEvent } = useDataTableContext();
 
   const filterableColumns = table
     .getAllLeafColumns()
@@ -134,17 +134,21 @@ export const Filtering = () => {
             </Dropdown>
             <Button
               label={t('common.clear')}
-              onClick={() => {
+              onClick={(event) => {
+                notePendingEvent(event);
                 table.resetColumnFilters();
                 setDraftFilters([]);
+                notePendingEvent(event);
                 table.resetPageIndex();
                 closePopup();
               }}
             />
             <Button
               label={t('common.apply')}
-              onClick={() => {
+              onClick={(event) => {
+                notePendingEvent(event);
                 table.setColumnFilters(draftFilters);
+                notePendingEvent(event);
                 table.resetPageIndex();
                 closePopup();
               }}

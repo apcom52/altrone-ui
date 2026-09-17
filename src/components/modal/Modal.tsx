@@ -109,12 +109,15 @@ export const Modal = (props: ModalProps) => {
   const { value: internalOpened, disable: hide } = useBoolean(defaultOpen);
   const opened = isControlled ? open : internalOpened;
 
-  const handleClose = useCallback(() => {
-    if (!isControlled) {
-      hide();
-    }
-    onClose?.();
-  }, [isControlled, hide, onClose]);
+  const handleClose = useCallback(
+    (event?: MouseEvent | KeyboardEvent) => {
+      if (!isControlled) {
+        hide();
+      }
+      onClose?.(event);
+    },
+    [isControlled, hide, onClose],
+  );
 
   const modalContext: ModalContext = { closeModal: handleClose };
 
@@ -141,7 +144,7 @@ export const Modal = (props: ModalProps) => {
      * look "outside" in the DOM even though they belong to the modal.
      */
     if (event.target === event.currentTarget) {
-      handleClose();
+      handleClose(event);
     }
 
     onClick?.(event);
@@ -154,7 +157,7 @@ export const Modal = (props: ModalProps) => {
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        handleClose();
+        handleClose(event);
       }
     };
 

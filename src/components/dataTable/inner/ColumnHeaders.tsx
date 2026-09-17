@@ -22,12 +22,13 @@ const resizeHandleVariants = {
 
 export const ColumnHeaders = ({ hasRowActions = false }: ColumnHeadersProps) => {
   const t = useLocalization();
-  const { table, selectMode } = useDataTableContext();
+  const { table, selectMode, notePendingEvent } = useDataTableContext();
 
   const columnsTemplate = useDataTableColumnsTemplate(selectMode, hasRowActions);
 
   /** none → desc → asc → none */
-  const cycleSort = (columnId: string) => {
+  const cycleSort = (columnId: string, event: React.MouseEvent) => {
+    notePendingEvent(event);
     const current = table.state.sorting[0];
     if (!current || current.id !== columnId) {
       table.setSorting([{ id: columnId, desc: true }]);
@@ -59,7 +60,9 @@ export const ColumnHeaders = ({ hasRowActions = false }: ColumnHeadersProps) => 
             key={header.id}
             className={clsx(s.Cell, { [s.Sortable]: isSortable })}
             title={header.id}
-            onClick={isSortable ? () => cycleSort(header.id) : undefined}
+            onClick={
+              isSortable ? (event) => cycleSort(header.id, event) : undefined
+            }
             initial="rest"
             animate={isResizing ? 'resizing' : 'rest'}
             whileHover="hover"

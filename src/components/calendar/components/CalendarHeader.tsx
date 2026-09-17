@@ -7,8 +7,8 @@ import s from '../calendar.module.scss';
 interface CalendarHeaderProps {
   caption: string;
   showNavigation: boolean;
-  onPrev: () => void;
-  onNext: () => void;
+  onPrev: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onNext: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const CalendarHeader = memo<CalendarHeaderProps>(

@@ -53,7 +53,7 @@ export const Slider = (props: SliderProps) => {
     ref,
     value,
     onChange,
-    onValueCommit,
+    onChangeEnd,
     min = 0,
     max = 100,
     step = 1,
@@ -155,7 +155,7 @@ export const Slider = (props: SliderProps) => {
       };
 
       const handleUp = (e: PointerEvent) => {
-        onValueCommit?.(sliderValue.current, e);
+        onChangeEnd?.(sliderValue.current, e);
         isDragging.current = false;
         setIsActive(false);
         document.removeEventListener('pointermove', handleMove);
@@ -165,7 +165,7 @@ export const Slider = (props: SliderProps) => {
       document.addEventListener('pointermove', handleMove);
       document.addEventListener('pointerup', handleUp);
     },
-    [calculateValue, onChange, onValueCommit],
+    [calculateValue, onChange, onChangeEnd],
   );
 
   const handleKeyDown = useCallback(
@@ -190,9 +190,9 @@ export const Slider = (props: SliderProps) => {
       if (next === null) return;
       event.preventDefault();
       onChange(next, event);
-      onValueCommit?.(next, event);
+      onChangeEnd?.(next, event);
     },
-    [value, min, max, step, onChange, onValueCommit],
+    [value, min, max, step, onChange, onChangeEnd],
   );
 
   const offset = useMemo(() => {

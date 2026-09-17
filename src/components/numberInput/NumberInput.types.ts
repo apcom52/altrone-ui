@@ -6,7 +6,10 @@ export interface NumberInputProps extends Omit<
   'type' | 'value' | 'onChange'
 > {
   value?: number;
-  onChange: (value?: number, e?: SyntheticEvent<HTMLInputElement>) => void;
+  onChange: (
+    value?: number,
+    event?: SyntheticEvent<HTMLInputElement>,
+  ) => void;
 
   allowNegative?: boolean;
 

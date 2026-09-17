@@ -20,12 +20,12 @@ export type NotificationPlacement =
 
 export interface ToastAction {
   label: string;
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export interface NotificationAction {
   label: string;
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   danger?: boolean;
 }
 
@@ -91,16 +91,7 @@ export interface NotificationItem {
 
 export type AnyNotificationItem = ToastItem | NotificationItem;
 
-// ─── Context ──────────────────────────────────────────────────────────────────
-
-export interface NotificationsContextType {
-  /** Show a simple pill-shaped toast message. Returns the toast id. */
-  toast: (message: string, options?: ToastOptions) => string;
-  /** Show a rich notification card. Returns the notification id. */
-  notification: (options: NotificationOptions) => string;
-  /** Programmatically dismiss a toast or notification by id. */
-  dismiss: (id: string) => void;
-}
+// ─── Provider ─────────────────────────────────────────────────────────────────
 
 export interface NotificationsProviderProps {
   children: React.ReactNode;

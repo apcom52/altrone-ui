@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Application, Slider } from '../../src';
 
-const SliderWrapper = ({ onValueCommit }: { onValueCommit?: () => void }) => {
+const SliderWrapper = ({ onChangeEnd }: { onChangeEnd?: () => void }) => {
   const [value, setValue] = useState(12);
 
   return (
@@ -12,7 +12,7 @@ const SliderWrapper = ({ onValueCommit }: { onValueCommit?: () => void }) => {
         onChange={setValue}
         showCurrentValue="always"
         name="input"
-        onValueCommit={onValueCommit}
+        onChangeEnd={onChangeEnd}
       />
     </Application>
   );
@@ -61,30 +61,30 @@ describe('Slider.cy.tsx', () => {
     cy.get('[name="input"]').should('have.value', 100);
   });
 
-  it('onValueCommit prop has to work correctly', () => {
-    const onValueCommit = cy.spy().as('onValueCommit');
+  it('onChangeEnd prop has to work correctly', () => {
+    const onChangeEnd = cy.spy().as('onChangeEnd');
 
     cy.viewport(1360, 720);
-    cy.mount(<SliderWrapper onValueCommit={onValueCommit} />);
+    cy.mount(<SliderWrapper onChangeEnd={onChangeEnd} />);
 
     cy.get('[data-testid="slider"]')
       .trigger('pointerdown', { clientX: 800, clientY: 20 })
       .trigger('pointerup');
-    cy.get('@onValueCommit').should('have.been.calledWith', 59);
+    cy.get('@onChangeEnd').should('have.been.calledWith', 59);
 
     cy.get('[data-testid="slider"]')
       .trigger('pointerdown', { clientX: 600, clientY: 20 })
       .trigger('pointerup');
-    cy.get('@onValueCommit').should('have.been.calledWith', 44);
+    cy.get('@onChangeEnd').should('have.been.calledWith', 44);
 
     cy.get('[data-testid="slider"]')
       .trigger('pointerdown', { clientX: 600, clientY: 20 })
       .trigger('pointermove', { clientX: 700, clientY: 20 })
       .trigger('pointerup');
-    cy.get('@onValueCommit').should('not.have.been.calledWith', 45);
-    cy.get('@onValueCommit').should('have.been.calledWith', 51);
+    cy.get('@onChangeEnd').should('not.have.been.calledWith', 45);
+    cy.get('@onChangeEnd').should('have.been.calledWith', 51);
 
     cy.get('[data-testid="slider"]').focus().type('{rightArrow}');
-    cy.get('@onValueCommit').should('have.been.calledWith', 52);
+    cy.get('@onChangeEnd').should('have.been.calledWith', 52);
   });
 });

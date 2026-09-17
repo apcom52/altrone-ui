@@ -172,10 +172,24 @@ export interface DataTableProps<T extends object>
   sort?: Sorting | null;
   /** Controlled active filters, pairs with `onFilterChange`. Omit for uncontrolled (`defaultFilters`). */
   filters?: DataTableFilter[];
-  onPageChange?: (currentPage: number) => void;
-  onSortChange?: (sort?: Sorting) => void;
-  onFilterChange?: (appliedFilters: DataTableFilter[]) => void;
-  onModeChange?: (mode: DataTableMode) => void;
+  /**
+   * `event` is undefined when the change is programmatic (e.g. an
+   * `autoResetPageIndex` triggered by a sort/filter change) rather than a
+   * direct user interaction.
+   */
+  onPageChange?: (
+    currentPage: number,
+    event?: React.MouseEvent<HTMLButtonElement>,
+  ) => void;
+  onSortChange?: (sort?: Sorting, event?: React.MouseEvent) => void;
+  onFilterChange?: (
+    appliedFilters: DataTableFilter[],
+    event?: React.MouseEvent<HTMLButtonElement>,
+  ) => void;
+  onModeChange?: (
+    mode: DataTableMode,
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => void;
 }
 
 export interface DataTableActionProps extends ButtonProps {}
@@ -255,11 +269,9 @@ export interface DataTableHeaderProps<T extends object> {
   actions?: DataTableProps<T>['actions'];
 }
 
-export interface DataTableRowActionProps
-  extends Omit<ButtonProps, 'label' | 'onClick'> {
+export interface DataTableRowActionProps extends Omit<ButtonProps, 'label'> {
   label: string;
   collapsed?: boolean;
-  onClick?: () => void;
 }
 
 export interface CellRenderer<T extends object = AnyObject> {

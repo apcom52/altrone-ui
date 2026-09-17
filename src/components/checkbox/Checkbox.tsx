@@ -47,7 +47,7 @@ export const Checkbox = memo<CheckboxProps>(
     );
 
     const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (event) => {
-      onChange?.(!checked, event);
+      onChange(!checked, event);
     };
 
     return (

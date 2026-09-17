@@ -98,7 +98,7 @@ export const Darkroom: Story = {
           The natural home of the <Text code>default</Text> variant: a stack of
           adjustment sliders that each run from a negative to a positive extreme
           through a neutral centre. <Text code>renderLabel</Text> puts the sign
-          back on the number, and <Text code>onValueCommit</Text> is where a
+          back on the number, and <Text code>onChangeEnd</Text> is where a
           real editor re-runs the expensive develop pass —{' '}
           <Text code>onChange</Text> only drives the cheap live preview.
         </Lead>
@@ -121,7 +121,7 @@ export const Darkroom: Story = {
               max={100}
               value={exposure}
               onChange={setExposure}
-              onValueCommit={() => setApplied(`exposure ${signed(exposure)}`)}
+              onChangeEnd={() => setApplied(`exposure ${signed(exposure)}`)}
               icon={<Sun />}
               renderLabel={signed}
             />
@@ -132,7 +132,7 @@ export const Darkroom: Story = {
               max={100}
               value={contrast}
               onChange={setContrast}
-              onValueCommit={() => setApplied(`contrast ${signed(contrast)}`)}
+              onChangeEnd={() => setApplied(`contrast ${signed(contrast)}`)}
               icon={<Contrast />}
               renderLabel={signed}
             />
@@ -143,7 +143,7 @@ export const Darkroom: Story = {
               max={100}
               value={saturation}
               onChange={setSaturation}
-              onValueCommit={() =>
+              onChangeEnd={() =>
                 setApplied(`saturation ${signed(saturation)}`)
               }
               icon={<Droplet />}
@@ -156,7 +156,7 @@ export const Darkroom: Story = {
               max={100}
               value={warmth}
               onChange={setWarmth}
-              onValueCommit={() => setApplied(`warmth ${signed(warmth)}`)}
+              onChangeEnd={() => setApplied(`warmth ${signed(warmth)}`)}
               icon={<Thermometer />}
               renderLabel={signed}
             />
@@ -567,7 +567,7 @@ export const Anatomy: Story = {
           <Text kbd>←</Text> <Text kbd>→</Text> <Text kbd>↑</Text>{' '}
           <Text kbd>↓</Text> by one <Text code>step</Text>, and{' '}
           <Text kbd>Home</Text> / <Text kbd>End</Text> jump to the ends — every
-          press also fires <Text code>onValueCommit</Text>.
+          press also fires <Text code>onChangeEnd</Text>.
         </Lead>
         <Flex orientation="horizontal" gap="xl" wrap style={{ maxWidth: 640 }}>
           <Field label={<Text code>&quot;active&quot;</Text>}>

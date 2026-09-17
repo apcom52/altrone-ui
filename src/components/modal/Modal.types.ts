@@ -16,7 +16,12 @@ export interface ModalProps extends Omit<
   open?: boolean;
   /** Initial open state for an uncontrolled modal. Ignored once `open` is passed. */
   defaultOpen?: boolean;
-  onClose?: () => void;
+  /**
+   * `event` is the triggering backdrop click / close-button click / Escape
+   * keydown, or undefined when closed programmatically via
+   * `ModalContext.closeModal()`.
+   */
+  onClose?: (event?: React.MouseEvent | KeyboardEvent) => void;
   enabled?: boolean;
   title?: string;
   size?: Size;

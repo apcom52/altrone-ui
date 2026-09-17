@@ -11,8 +11,8 @@ export type PopoverRef = {
   childrenNode: HTMLElement | null;
   /** The floating root element (the `.Popover` box), not the inner content wrapper. */
   contentNode: HTMLDivElement | null;
-  openPopup: () => void;
-  closePopup: () => void;
+  show: () => void;
+  hide: () => void;
   actualPlacement: Placement;
   transformOrigin: string;
 };

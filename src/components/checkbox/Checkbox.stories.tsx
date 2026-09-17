@@ -72,8 +72,10 @@ export const OverviewStory: StoryObj<typeof Checkbox> = {
           <Checkbox danger checked={purge} onChange={setPurge}>
             Permanently delete all records
           </Checkbox>
-          <Checkbox disabled>Unavailable in your plan</Checkbox>
-          <Checkbox checked disabled>
+          <Checkbox disabled onChange={() => undefined}>
+            Unavailable in your plan
+          </Checkbox>
+          <Checkbox checked disabled onChange={() => undefined}>
             Enforced by your workspace admin
           </Checkbox>
         </Flex>

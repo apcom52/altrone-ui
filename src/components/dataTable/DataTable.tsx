@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import {
   ColumnFiltersState,
@@ -68,6 +68,17 @@ const DataTableComponent = <DataType extends object>(
   const currentSort = isSortControlled ? (sort ?? undefined) : uncontrolledSort;
   const currentFilters = isFiltersControlled ? filters : uncontrolledFilters;
 
+  /** See `DataTableContextValue.notePendingEvent`. */
+  const pendingEventRef = useRef<React.SyntheticEvent | undefined>(undefined);
+  const notePendingEvent = useCallback((event: React.SyntheticEvent) => {
+    pendingEventRef.current = event;
+  }, []);
+  const consumePendingEvent = () => {
+    const event = pendingEventRef.current;
+    pendingEventRef.current = undefined;
+    return event;
+  };
+
   const handlePaginationChange = useCallback(
     (updater: Updater<PaginationState>) => {
       const next = functionalUpdate(updater, {
@@ -75,7 +86,10 @@ const DataTableComponent = <DataType extends object>(
         pageSize: rowsPerPage,
       });
       if (!isPageControlled) setUncontrolledPage(next.pageIndex + 1);
-      onPageChange?.(next.pageIndex + 1);
+      onPageChange?.(
+        next.pageIndex + 1,
+        consumePendingEvent() as React.MouseEvent<HTMLButtonElement>,
+      );
     },
     [currentPage, rowsPerPage, isPageControlled, onPageChange],
   );
@@ -91,7 +105,7 @@ const DataTableComponent = <DataType extends object>(
           ? undefined
           : { field: nextSorting[0].id, direction: nextSorting[0].desc ? 'desc' : 'asc' };
       if (!isSortControlled) setUncontrolledSort(next);
-      onSortChange?.(next);
+      onSortChange?.(next, consumePendingEvent() as React.MouseEvent);
     },
     [currentSort, isSortControlled, onSortChange],
   );
@@ -104,7 +118,10 @@ const DataTableComponent = <DataType extends object>(
       );
       const nextFilters = next as unknown as DataTableFilter[];
       if (!isFiltersControlled) setUncontrolledFilters(nextFilters);
-      onFilterChange?.(nextFilters);
+      onFilterChange?.(
+        nextFilters,
+        consumePendingEvent() as React.MouseEvent<HTMLButtonElement>,
+      );
     },
     [currentFilters, isFiltersControlled, onFilterChange],
   );
@@ -153,10 +170,10 @@ const DataTableComponent = <DataType extends object>(
   });
 
   const setSelectMode = useCallback(
-    (next: boolean) => {
+    (next: boolean, event: React.MouseEvent<HTMLButtonElement>) => {
       setSelectModeState(next);
       table.resetRowSelection();
-      onModeChange?.(next ? 'select' : 'read');
+      onModeChange?.(next ? 'select' : 'read', event);
     },
     [table, onModeChange],
   );
@@ -176,8 +193,9 @@ const DataTableComponent = <DataType extends object>(
       selectable,
       selectMode: selectable && selectMode,
       setSelectMode,
+      notePendingEvent,
     }),
-    [table, mode, selectable, selectMode, setSelectMode],
+    [table, mode, selectable, selectMode, setSelectMode, notePendingEvent],
   );
 
   return (

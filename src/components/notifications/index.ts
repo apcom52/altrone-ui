@@ -1,5 +1,9 @@
 export { Notifications } from './Notifications';
-export { useNotifications } from './Notifications.context';
+export {
+  showToast,
+  showNotification,
+  dismissNotification,
+} from './notificationsRegistry';
 export type {
   ToastOptions,
   NotificationOptions,

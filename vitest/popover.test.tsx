@@ -138,7 +138,7 @@ describe('Popover', () => {
         <>
           <button
             data-testid="ext-open"
-            onClick={() => popoverRef.current?.openPopup()}
+            onClick={() => popoverRef.current?.show()}
           >
             open
           </button>
@@ -224,7 +224,7 @@ describe('Popover', () => {
     );
   });
 
-  test('controlled `open`: imperative openPopup/closePopup route through onOpenChange instead of self-managing', () => {
+  test('controlled `open`: imperative show/hide route through onOpenChange instead of self-managing', () => {
     const onOpenChange = vi.fn();
     const popoverRef = { current: null } as React.RefObject<PopoverRef | null>;
 
@@ -241,7 +241,7 @@ describe('Popover', () => {
       </Application>,
     );
 
-    popoverRef.current?.openPopup();
+    popoverRef.current?.show();
 
     expect(onOpenChange).toHaveBeenCalledWith(true, undefined, undefined);
     // still closed — controlled, and the prop wasn't updated

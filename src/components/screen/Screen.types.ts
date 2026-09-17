@@ -1,4 +1,4 @@
-import type { HTMLAttributes, Ref } from 'react';
+import type { HTMLAttributes, MouseEvent, Ref } from 'react';
 import type { Size } from 'types';
 import type { BreakpointName } from 'utils';
 
@@ -108,7 +108,7 @@ export interface ScreenSidebarProps
    * it, the scrim / `Escape` still visually dismiss the overlay (it's never
    * a trap).
    */
-  onClose?: () => void;
+  onClose?: (event: MouseEvent | KeyboardEvent) => void;
 }
 
 export interface ScreenContentProps extends HTMLAttributes<HTMLElement> {

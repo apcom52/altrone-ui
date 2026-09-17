@@ -72,8 +72,10 @@ export const OverviewStory: StoryObj<typeof Switch> = {
           <Switch danger checked={bulkDelete} onChange={setBulkDelete}>
             Enable bulk delete mode
           </Switch>
-          <Switch disabled>Managed by your admin</Switch>
-          <Switch checked disabled>
+          <Switch disabled onChange={() => undefined}>
+            Managed by your admin
+          </Switch>
+          <Switch checked disabled onChange={() => undefined}>
             Always on for this workspace
           </Switch>
         </Flex>

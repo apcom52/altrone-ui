@@ -1,4 +1,11 @@
-import { AriaRole, HTMLAttributes, ReactElement, ReactNode, Ref } from 'react';
+import {
+  AriaRole,
+  HTMLAttributes,
+  MouseEvent,
+  ReactElement,
+  ReactNode,
+  Ref,
+} from 'react';
 import { Role } from 'types';
 import { ActionsProp } from '../../utils';
 
@@ -11,7 +18,7 @@ export interface MessageProps extends Omit<
   header?: ReactNode;
   severity?: Role;
   actions?: ActionsProp;
-  onClose?: () => void;
+  onClose?: (event: MouseEvent<HTMLButtonElement>) => void;
   compact?: boolean;
   /**
    * ARIA role for the root element. Defaults to `alert` (assertive — the

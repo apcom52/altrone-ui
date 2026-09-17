@@ -483,7 +483,7 @@ export const StateStory: StoryObj<typeof Popover> = {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
-        popoverRef.current?.openPopup();
+        popoverRef.current?.show();
         setPlacement(popoverRef.current?.actualPlacement ?? '—');
       }, 900);
     };
@@ -492,8 +492,8 @@ export const StateStory: StoryObj<typeof Popover> = {
       <Flex orientation="vertical" gap="l" style={{ maxWidth: 560 }}>
         <Heading>Imperative API via ref</Heading>
         <Paragraph>
-          <Text code>controlRef</Text> exposes <Text code>openPopup</Text>,{' '}
-          <Text code>closePopup</Text>, the resolved{' '}
+          <Text code>controlRef</Text> exposes <Text code>show</Text>,{' '}
+          <Text code>hide</Text>, the resolved{' '}
           <Text code>actualPlacement</Text> and the live <Text code>open</Text>{' '}
           flag — for opening a popover after an async step, or reading where it
           landed. Plain <Text code>ref</Text> still points at the trigger DOM
@@ -508,7 +508,7 @@ export const StateStory: StoryObj<typeof Popover> = {
           />
           <Button
             label="Close"
-            onClick={() => popoverRef.current?.closePopup()}
+            onClick={() => popoverRef.current?.hide()}
           />
           <Popover
             controlRef={popoverRef}
@@ -582,8 +582,8 @@ export const ControlledStory: StoryObj<typeof Popover> = {
           <Text code>defaultOpen</Text>) makes the popover controlled: it
           renders whatever state it's given and only asks to change it via{' '}
           <Text code>onOpenChange</Text> — the escape key, an outside click,
-          and imperative <Text code>controlRef.openPopup()</Text>/
-          <Text code>closePopup()</Text> all route through it instead of
+          and imperative <Text code>controlRef.show()</Text>/
+          <Text code>hide()</Text> all route through it instead of
           closing the popover on their own.
         </Paragraph>
         <Flex gap="s" align="center">

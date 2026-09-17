@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type MouseEvent,
+} from 'react';
 import clsx from 'clsx';
 import {
   AnimatePresence,
@@ -80,10 +86,13 @@ export const Sidebar = ({
     if (isOverlay && !isControlled) setInternalCollapsed(true);
   }, [isOverlay, isControlled]);
 
-  const handleClose = useCallback(() => {
-    setCollapsed(true);
-    onClose?.();
-  }, [setCollapsed, onClose]);
+  const handleClose = useCallback(
+    (event: MouseEvent | KeyboardEvent) => {
+      setCollapsed(true);
+      onClose?.(event);
+    },
+    [setCollapsed, onClose],
+  );
 
   const handleToggle = useCallback(() => {
     setCollapsed(!collapsed);
@@ -107,7 +116,7 @@ export const Sidebar = ({
     asideRef.current?.focus();
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') handleClose();
+      if (event.key === 'Escape') handleClose(event);
     };
     document.addEventListener('keydown', onKeyDown);
 

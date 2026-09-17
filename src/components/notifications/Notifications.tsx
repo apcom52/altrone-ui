@@ -1,8 +1,11 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { AnimatePresence } from 'motion/react';
 import clsx from 'clsx';
 import { useLocalization } from 'components/application';
-import { NotificationsContext } from './Notifications.context';
+import {
+  registerNotificationsController,
+  unregisterNotificationsController,
+} from './notificationsRegistry';
 import type {
   AnyNotificationItem,
   NotificationItem,
@@ -62,6 +65,12 @@ export const Notifications = ({
     return id;
   }, []);
 
+  useEffect(() => {
+    const controller = { toast, notification, dismiss };
+    registerNotificationsController(controller);
+    return () => unregisterNotificationsController(controller);
+  }, [toast, notification, dismiss]);
+
   const toasts = items.filter(
     (item): item is ToastItem => item.kind === 'toast',
   );
@@ -80,7 +89,7 @@ export const Notifications = ({
   };
 
   return (
-    <NotificationsContext.Provider value={{ toast, notification, dismiss }}>
+    <>
       {children}
       <div
         className={s.Root}
@@ -130,6 +139,6 @@ export const Notifications = ({
           </AnimatePresence>
         </div>
       </div>
-    </NotificationsContext.Provider>
+    </>
   );
 };

@@ -28,7 +28,10 @@ export interface DropdownCheckboxProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
   ref?: React.Ref<HTMLButtonElement>;
   checked: boolean;
-  onChange: (state: boolean) => void;
+  onChange: (
+    state: boolean,
+    event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>,
+  ) => void;
   label: string;
   focused?: boolean;
   disabled?: boolean;
@@ -38,7 +41,10 @@ export interface DropdownRadioListProps<T = string>
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   ref?: React.Ref<HTMLDivElement>;
   value: T;
-  onChange: (value: T) => void;
+  onChange: (
+    value: T,
+    event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>,
+  ) => void;
   children:
     | ReactElement<DropdownRadioListItem<T>>
     | ReactElement<DropdownRadioListItem<T>>[];
@@ -68,7 +74,10 @@ export interface DropdownMenuProps
   ref?: Ref<HTMLDivElement>;
   children: ReactElement | null | (ReactElement | null)[];
   defaultFocusItemIndex?: number;
-  onChangeFocusItemIndex?: (index: number) => void;
+  onChangeFocusItemIndex?: (
+    index: number,
+    event: React.KeyboardEvent<HTMLDivElement>,
+  ) => void;
 }
 
 export interface DropdownMenuRef {

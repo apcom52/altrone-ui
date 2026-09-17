@@ -14,7 +14,7 @@ export interface SliderProps
       | PointerEvent
       | React.KeyboardEvent<HTMLDivElement>
   ) => void;
-  onValueCommit?: (
+  onChangeEnd?: (
     value: number,
     event: PointerEvent | React.KeyboardEvent<HTMLDivElement>
   ) => void;

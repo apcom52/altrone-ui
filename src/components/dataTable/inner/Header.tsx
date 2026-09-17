@@ -64,7 +64,7 @@ export const DataTableHeader = <T extends object>({
                 icon={selectMode ? <Square /> : <SquareCheckBig />}
                 label={t('dataTable.selectableMode')}
                 showLabel={false}
-                onClick={() => setSelectMode(!selectMode)}
+                onClick={(event) => setSelectMode(!selectMode, event)}
                 selected={selectMode}
                 disabled={loading}
               />

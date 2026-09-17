@@ -112,7 +112,7 @@ export const AutocompleteInput = <T = string,>({
         setSuggestions(cached);
         setIsEmpty(cached.length === 0);
         if (cached.length > 0) {
-          dropdownRef.current?.openPopup();
+          dropdownRef.current?.show();
         }
         return;
       }
@@ -133,7 +133,7 @@ export const AutocompleteInput = <T = string,>({
         setIsEmpty(_suggestions.length === 0);
 
         if (_suggestions.length && !suggestionWasSelected.current) {
-          dropdownRef.current?.openPopup();
+          dropdownRef.current?.show();
         }
 
         setSuggestions(_suggestions);
@@ -168,7 +168,7 @@ export const AutocompleteInput = <T = string,>({
 
   const onKeyDown: KeyboardEventHandler = (e) => {
     if (e.key === 'Escape') {
-      dropdownRef.current?.closePopup();
+      dropdownRef.current?.hide();
       return;
     }
 

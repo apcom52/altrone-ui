@@ -106,8 +106,8 @@ const SelectComponent = (props: SelectProps) => {
                       focused={checked}
                       disabled={option.disabled}
                       label={option.label}
-                      onChange={() => {
-                        selectValue(option.value);
+                      onChange={(_checked, event) => {
+                        selectValue(option.value, event);
                         if (!multiple) {
                           closePopup();
                         }
