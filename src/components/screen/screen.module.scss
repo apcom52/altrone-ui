@@ -2,6 +2,17 @@
   --screen-sidebar-width: 300px;
   --screen-header-height: 56px;
   --screen-bottom-nav-height: 64px;
+  /**
+   * Reserved space at the top/bottom of the viewport occupied by fixed
+   * chrome — `0px` with no `Screen.Header` / `Screen.BottomNavigation`. A
+   * `position: sticky` element anywhere inside `Screen.Content` (e.g.
+   * DataTable's column-header row or its footer) should offset its
+   * `top`/`bottom` by these instead of a bare `0`, or it sticks at the true
+   * viewport edge and ends up underneath the fixed chrome instead of
+   * clear of it.
+   */
+  --top-safe-area: 0px;
+  --bottom-safe-area: 0px;
 }
 
 .Screen {
@@ -162,6 +173,11 @@
   );
 }
 
+/** Header height plus a breathing gap — see `--top-safe-area` above. */
+.Screen:has(> .Header) {
+  --top-safe-area: calc(var(--screen-header-height) + var(--xs-gap));
+}
+
 /**
  * `position: fixed` in both modes, floating 8px in from the screen edges (the
  * same gutter Drawer's panel uses). It never lives in the grid — inline mode
@@ -252,6 +268,8 @@
       env(safe-area-inset-bottom, 0px)
   );
   --screen-bottom-safe: var(--screen-bottom-nav-space);
+  /** Bar space plus a breathing gap — see `--bottom-safe-area` above. */
+  --bottom-safe-area: calc(var(--screen-bottom-nav-space) + var(--xs-gap));
 }
 
 .Screen:has(> .BottomNavigation) .Content,

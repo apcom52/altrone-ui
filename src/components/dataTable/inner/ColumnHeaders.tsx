@@ -1,3 +1,4 @@
+import type { Ref } from 'react';
 import clsx from 'clsx';
 import { motion } from 'motion/react';
 import { flexRender } from '@tanstack/react-table';
@@ -10,6 +11,10 @@ import s from './columnHeaders.module.scss';
 
 interface ColumnHeadersProps {
   hasRowActions?: boolean;
+  /** The sticky row itself — receives the per-side inset/radius custom properties. */
+  rowRef?: Ref<HTMLDivElement>;
+  /** Shifted by `transform` to mirror the body's horizontal scroll — see `useDataTableHorizontalScroll`. */
+  trackRef?: Ref<HTMLDivElement>;
 }
 
 /** Grow-in / active-bump for the resize handle. The active label is propagated
@@ -20,11 +25,18 @@ const resizeHandleVariants = {
   resizing: { opacity: 1, scaleY: 1.15 },
 };
 
-export const ColumnHeaders = ({ hasRowActions = false }: ColumnHeadersProps) => {
+export const ColumnHeaders = ({
+  hasRowActions = false,
+  rowRef,
+  trackRef,
+}: ColumnHeadersProps) => {
   const t = useLocalization();
   const { table, selectMode, notePendingEvent } = useDataTableContext();
 
-  const columnsTemplate = useDataTableColumnsTemplate(selectMode, hasRowActions);
+  const columnsTemplate = useDataTableColumnsTemplate(
+    selectMode,
+    hasRowActions,
+  );
 
   /** none → desc → asc → none */
   const cycleSort = (columnId: string, event: React.MouseEvent) => {
@@ -42,69 +54,75 @@ export const ColumnHeaders = ({ hasRowActions = false }: ColumnHeadersProps) => 
   };
 
   return (
-    <div
-      className={clsx(s.Wrapper, s.HeaderRow)}
-      style={{ gridTemplateColumns: columnsTemplate }}
-    >
+    <div ref={rowRef} className={clsx(s.Wrapper, s.HeaderRow)}>
       <div className={s.Backdrop} />
-      {selectMode ? <div /> : null}
-      {table.getFlatHeaders().map((header) => {
-        const isSortable = header.column.getCanSort();
-        const sortDirection = header.column.getIsSorted();
-        const canResize = header.column.getCanResize();
+      <div
+        ref={trackRef}
+        className={s.HeaderRowTrack}
+        style={{ gridTemplateColumns: columnsTemplate }}
+      >
+        {selectMode ? <div /> : null}
+        {table.getFlatHeaders().map((header) => {
+          const isSortable = header.column.getCanSort();
+          const sortDirection = header.column.getIsSorted();
+          const canResize = header.column.getCanResize();
 
-        const isResizing = header.column.getIsResizing();
+          const isResizing = header.column.getIsResizing();
 
-        return (
-          <motion.div
-            key={header.id}
-            className={clsx(s.Cell, { [s.Sortable]: isSortable })}
-            title={header.id}
-            onClick={
-              isSortable ? (event) => cycleSort(header.id, event) : undefined
-            }
-            initial="rest"
-            animate={isResizing ? 'resizing' : 'rest'}
-            whileHover="hover"
-          >
+          return (
+            <motion.div
+              key={header.id}
+              className={clsx(s.Cell, { [s.Sortable]: isSortable })}
+              title={header.id}
+              onClick={
+                isSortable ? (event) => cycleSort(header.id, event) : undefined
+              }
+              initial="rest"
+              animate={isResizing ? 'resizing' : 'rest'}
+              whileHover="hover"
+            >
+              <Text size={4} weight="bold" className={s.Label}>
+                {flexRender(
+                  header.column.columnDef.header,
+                  header.getContext(),
+                )}
+              </Text>
+              {sortDirection === 'asc' ? (
+                <div className={s.SortIcon}>
+                  <ArrowUp />
+                </div>
+              ) : null}
+              {sortDirection === 'desc' ? (
+                <div className={s.SortIcon}>
+                  <ArrowDown />
+                </div>
+              ) : null}
+              {canResize ? (
+                <div
+                  data-resize-handle={header.id}
+                  className={clsx(s.Resizer, { [s.ResizerActive]: isResizing })}
+                  onMouseDown={(event) => header.getResizeHandler()(event)}
+                  onTouchStart={(event) => header.getResizeHandler()(event)}
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <motion.div
+                    className={s.ResizerHandle}
+                    variants={resizeHandleVariants}
+                    transition={{ type: 'spring', stiffness: 500, damping: 32 }}
+                  />
+                </div>
+              ) : null}
+            </motion.div>
+          );
+        })}
+        {hasRowActions ? (
+          <div className={s.Cell}>
             <Text size={4} weight="bold" className={s.Label}>
-              {flexRender(header.column.columnDef.header, header.getContext())}
+              {t('dataTable.actions')}
             </Text>
-            {sortDirection === 'asc' ? (
-              <div className={s.SortIcon}>
-                <ArrowUp />
-              </div>
-            ) : null}
-            {sortDirection === 'desc' ? (
-              <div className={s.SortIcon}>
-                <ArrowDown />
-              </div>
-            ) : null}
-            {canResize ? (
-              <div
-                data-resize-handle={header.id}
-                className={clsx(s.Resizer, { [s.ResizerActive]: isResizing })}
-                onMouseDown={(event) => header.getResizeHandler()(event)}
-                onTouchStart={(event) => header.getResizeHandler()(event)}
-                onClick={(event) => event.stopPropagation()}
-              >
-                <motion.div
-                  className={s.ResizerHandle}
-                  variants={resizeHandleVariants}
-                  transition={{ type: 'spring', stiffness: 500, damping: 32 }}
-                />
-              </div>
-            ) : null}
-          </motion.div>
-        );
-      })}
-      {hasRowActions ? (
-        <div className={s.Cell}>
-          <Text size={4} weight="bold" className={s.Label}>
-            {t('dataTable.actions')}
-          </Text>
-        </div>
-      ) : null}
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 };

@@ -135,8 +135,10 @@ export interface DataTableColumnMeta<T extends object = AnyObject> {
   columnConfig: DataTableColumn<T>;
 }
 
-export interface DataTableProps<T extends object>
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
+export interface DataTableProps<T extends object> extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'children'
+> {
   ref?: React.Ref<HTMLDivElement>;
   data: T[];
   columns: DataTableColumn<T>[];
@@ -263,6 +265,8 @@ export interface FilterRowProps {
 export interface DataTableBodyProps<T extends object> {
   showEmptyBanner?: boolean;
   rowActions?: DataTableProps<T>['rowActions'];
+  /** The element that actually scrolls horizontally — see `useDataTableHorizontalScroll`. */
+  scrollRef?: React.Ref<HTMLDivElement>;
 }
 
 export interface DataTableHeaderProps<T extends object> {

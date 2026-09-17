@@ -1,15 +1,39 @@
 @import 'src/global/mixins';
 
 .Wrapper {
-  --data-table-header-rounding: var(--data-table-rounding);
+  /* `.Backdrop`'s resting (not scrolled away from an edge) radius — kept as
+     its own token rather than aliasing `--data-table-rounding` since the
+     pill reads better fully rounded (a bigger value than the table's own
+     24px corner) at this row's height. `useDataTableHorizontalScroll`
+     mirrors this exact value as its `RESTING_RADIUS` JS constant. */
+  --data-table-header-rounding: 32px;
 }
 
+/**
+ * The sticky element itself — deliberately NOT the grid, and deliberately
+ * clipping (`overflow: hidden`) rather than scrolling. Any ancestor with a
+ * non-`visible` overflow becomes the nearest containing block for a
+ * descendant's `position: sticky`, so if this row scrolled horizontally on
+ * its own, its `top` would stick to *this box* instead of the page. Instead
+ * `.HeaderRowTrack` (full natural width) sits inside, shifted by `transform`
+ * in sync with the body's real horizontal scroll — see
+ * `useDataTableHorizontalScroll`.
+ */
 .HeaderRow {
-  display: grid;
   position: sticky;
-  top: 0;
+  /* `0` with no ambient fixed chrome (e.g. a `Screen.Header`) above this
+     table — see `--top-safe-area` in `screen.module.scss`. Without it this
+     row sticks at the true viewport top and ends up hidden under the header
+     instead of below it. */
+  top: var(--top-safe-area, 0px);
   z-index: var(--elevation-sticky-z-index);
-  transition: border-radius 0.2s linear;
+  width: 100%;
+  overflow: hidden;
+}
+
+.HeaderRowTrack {
+  display: grid;
+  width: max-content;
   padding: var(--data-table-padding);
 }
 
@@ -29,13 +53,26 @@
   text-overflow: ellipsis;
 }
 
+/**
+ * Inset/radius per side (start = left, end = right in LTR) are driven live
+ * by `useDataTableHorizontalScroll` as custom properties on `.HeaderRow`, so
+ * the pill un-insets and un-rounds toward whichever edge has scrolled out of
+ * view — a floating rounded pill only reads as "this is the end of the row"
+ * on a side that's actually at the end. The `8px`/rounding fallbacks are the
+ * resting look before that effect runs (or without JS).
+ */
 .Backdrop {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  width: calc(100% - 16px);
-  height: calc(100% - 16px);
-  border-radius: 32px;
+  inset-block: 8px;
+  inset-inline-start: var(--data-table-header-inset-start, 8px);
+  inset-inline-end: var(--data-table-header-inset-end, 8px);
+  border-radius: var(
+      --data-table-header-radius-start,
+      var(--data-table-header-rounding)
+    )
+    var(--data-table-header-radius-end, var(--data-table-header-rounding))
+    var(--data-table-header-radius-end, var(--data-table-header-rounding))
+    var(--data-table-header-radius-start, var(--data-table-header-rounding));
   background-color: var(--data-table-header-background-color);
   backdrop-filter: blur(32px) saturate(180%);
   box-shadow: var(--elevation-sticky-shadow);
@@ -80,7 +117,8 @@
   height: 16px;
   border-radius: 9999px;
   background: var(--splitter-handle-color);
-  transition: background var(--motion-duration-fast) var(--motion-easing-standard);
+  transition: background var(--motion-duration-fast)
+    var(--motion-easing-standard);
 }
 
 .Resizer:hover .ResizerHandle {

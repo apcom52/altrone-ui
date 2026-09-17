@@ -11,6 +11,10 @@
   --_avatar-bg: var(--interactive-1);
 
   position: relative;
+  /* Without this, `.Letters`'/`:after`'s `z-index` compare against unrelated
+     ancestors (e.g. a sticky DataTable footer) instead of staying local to
+     the avatar, since `position: relative` alone doesn't create a stacking context. */
+  isolation: isolate;
   display: inline-flex;
   border-radius: 50%;
   align-items: center;

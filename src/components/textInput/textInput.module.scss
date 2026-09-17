@@ -83,11 +83,15 @@
    control padding (24px at `xl`). No per-size table: every term already
    scales/holds on its own. */
 .StartIslands {
-  margin-left: calc(var(--text-input-island-outer-inset) - var(--box-padding-x));
+  margin-left: calc(
+    var(--text-input-island-outer-inset) - var(--box-padding-x)
+  );
 }
 
 .EndIslands {
-  margin-right: calc(var(--text-input-island-outer-inset) - var(--box-padding-x));
+  margin-right: calc(
+    var(--text-input-island-outer-inset) - var(--box-padding-x)
+  );
 }
 
 .Input {

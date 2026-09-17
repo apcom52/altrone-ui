@@ -16,6 +16,7 @@ import s from './body.module.scss';
 export const Body = <T extends object>({
   rowActions,
   showEmptyBanner = true,
+  scrollRef,
 }: DataTableBodyProps<T>) => {
   const t = useLocalization();
   const { table, selectMode } = useDataTableContext<T>();
@@ -28,7 +29,7 @@ export const Body = <T extends object>({
   const rows = table.getRowModel().rows;
 
   return (
-    <div className={s.TableBody}>
+    <div ref={scrollRef} className={s.TableBody}>
       {rows.length === 0 && showEmptyBanner ? (
         <Result>{t('dataTable.empty')}</Result>
       ) : null}
@@ -53,7 +54,8 @@ export const Body = <T extends object>({
             {row.getVisibleCells().map((cell) => {
               const meta = cell.column.columnDef.meta;
               const columnType = meta?.dataType ?? 'string';
-              const Renderer = CellRenderers[columnType] ?? CellRenderers.string;
+              const Renderer =
+                CellRenderers[columnType] ?? CellRenderers.string;
 
               const rendererProps: CellRenderer<T> = {
                 value: cell.getValue(),

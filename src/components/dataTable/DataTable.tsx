@@ -13,6 +13,7 @@ import { DataTableFilter, DataTableProps, Sorting } from './DataTable.types';
 import { DataTableContext, DataTableContextValue } from './DataTable.context';
 import { dataTableFeatures } from './DataTable.features';
 import { useDataTableColumns } from './useDataTableColumns';
+import { useDataTableHorizontalScroll } from './useDataTableHorizontalScroll';
 import { Action, RowAction } from './components';
 import { Body, ColumnHeaders, Header, Footer } from './inner';
 import s from './dataTable.module.scss';
@@ -103,7 +104,10 @@ const DataTableComponent = <DataType extends object>(
       const next: Sorting | undefined =
         nextSorting.length === 0
           ? undefined
-          : { field: nextSorting[0].id, direction: nextSorting[0].desc ? 'desc' : 'asc' };
+          : {
+              field: nextSorting[0].id,
+              direction: nextSorting[0].desc ? 'desc' : 'asc',
+            };
       if (!isSortControlled) setUncontrolledSort(next);
       onSortChange?.(next, consumePendingEvent() as React.MouseEvent);
     },
@@ -198,6 +202,9 @@ const DataTableComponent = <DataType extends object>(
     [table, mode, selectable, selectMode, setSelectMode, notePendingEvent],
   );
 
+  const { bodyScrollRef, headerRowRef, headerTrackRef } =
+    useDataTableHorizontalScroll();
+
   return (
     <DataTableContext.Provider
       value={contextValue as unknown as DataTableContextValue<AnyObject>}
@@ -205,8 +212,16 @@ const DataTableComponent = <DataType extends object>(
       <div className={s.Wrapper} ref={ref}>
         {headerVisible ? <Header actions={actions} /> : null}
         <div className={clsx(s.Table, className)} style={style} {...restProps}>
-          <ColumnHeaders hasRowActions={Boolean(rowActions)} />
-          <Body rowActions={rowActions} showEmptyBanner={showEmptyBanner} />
+          <ColumnHeaders
+            hasRowActions={Boolean(rowActions)}
+            rowRef={headerRowRef}
+            trackRef={headerTrackRef}
+          />
+          <Body
+            rowActions={rowActions}
+            showEmptyBanner={showEmptyBanner}
+            scrollRef={bodyScrollRef}
+          />
         </div>
         {showFooter ? <Footer /> : null}
       </div>

@@ -1,10 +1,22 @@
 @import 'src/global/mixins';
 
 .TableBody {
+  /* The only element that actually scrolls sideways — `ColumnHeaders`
+     mirrors this via `transform`, kept outside any scrolling ancestor so its
+     `position: sticky` stays relative to the page (see
+     `useDataTableHorizontalScroll`). */
+  overflow-x: auto;
 }
 
 .Row {
   display: grid;
+  /* Block-level `width: auto` resolves to the *container's* available width,
+     not this row's own (wider, fixed-px) `gridTemplateColumns` total — the
+     cells then overflow that undersized box while `.Row`'s own background/
+     border-bottom stop at its edge, going missing exactly where `.TableBody`
+     scrolls into view. Matches `.HeaderRowTrack`'s `width: max-content`. */
+  width: max-content;
+  min-width: 100%;
   align-items: center;
   border-bottom: 1px solid var(--data-table-border-color);
   background-color: var(--dataTableRowBackgroundColor);

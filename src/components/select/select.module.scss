@@ -9,6 +9,15 @@
 .Select {
   text-align: left;
   cursor: pointer;
+
+  /* Browsers set `cursor: text` on the native input regardless of `readonly`
+     — a specified UA value, which otherwise wins over the `pointer` this
+     wrapper inherits down. `inherit` only kicks in while the input is
+     actually read-only (i.e. not `searchable` in `searchMode`, where typing
+     is the point and the native text cursor is correct). */
+  input:read-only {
+    cursor: inherit;
+  }
 }
 
 .ArrowIcon {
