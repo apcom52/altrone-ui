@@ -3,7 +3,6 @@ import { ApplicationProps, Theme } from './Application.types.ts';
 import { useMediaMatch } from 'utils';
 import clsx from 'clsx';
 import {
-  cloneElement,
   isValidElement,
   ReactElement,
   ReactNode,
@@ -19,6 +18,8 @@ import { Notifications } from 'components/notifications/Notifications.tsx';
 import { ThemeContext, ThemeContextType } from './useTheme.ts';
 import { getThemeInitScript, THEME_STORAGE_KEY } from './getThemeInitScript.ts';
 import { AnyObject } from 'utils/types.ts';
+import { Slot } from 'utils/components/Slot.tsx';
+import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
 
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
@@ -180,7 +181,15 @@ export const Application = ({
       root = <div {...rootProps} />;
     } else {
       const child = children as ReactElement<AnyObject>;
-      root = cloneElement(child, rootProps, providerTree(child.props.children));
+      const childWithProviders = cloneWithRef(child, {
+        children: providerTree(child.props.children),
+      });
+      const { ref: slotRef, ...restRootProps } = rootProps;
+      root = (
+        <Slot ref={slotRef} {...restRootProps}>
+          {childWithProviders}
+        </Slot>
+      );
     }
   } else {
     root = <div {...rootProps}>{providerTree(children)}</div>;

@@ -23,6 +23,7 @@ import { useLocalization } from '../application/useLocalization.tsx';
 import { GlobalUtils } from 'utils';
 import { Upload } from 'lucide-react';
 import { HTMLMotionProps, motion, useReducedMotionConfig } from 'motion/react';
+import { useFormField } from '../form/components/Field.context.ts';
 
 export const FilePicker = memo<FilePickerProps>(
   ({
@@ -39,12 +40,24 @@ export const FilePicker = memo<FilePickerProps>(
     autoUploadFn,
     removeFileFn,
     placeholder,
-    size = 'm',
+    size,
+    disabled,
     className,
     style,
     ...restProps
   }) => {
     const t = useLocalization();
+
+    const {
+      name: formFieldName,
+      disabled: formFieldDisabled,
+      size: formFieldSize,
+    } = useFormField();
+
+    const pickerName = typeof name === 'string' ? name : formFieldName;
+    const pickerDisabled =
+      typeof disabled === 'boolean' ? disabled : formFieldDisabled;
+    const pickerSize = size || formFieldSize || 'm';
 
     const [internalFileList, setInternalFileList] = useState<
       InternalFileItem[]
@@ -83,13 +96,23 @@ export const FilePicker = memo<FilePickerProps>(
       return {
         autoUpload,
         url,
-        name,
+        name: pickerName,
         method,
-        size,
+        size: pickerSize,
+        disabled: pickerDisabled,
         autoUploadFn,
         removeFileFn,
       };
-    }, [autoUpload, autoUploadFn, removeFileFn, method, url, name, size]);
+    }, [
+      autoUpload,
+      autoUploadFn,
+      removeFileFn,
+      method,
+      url,
+      pickerName,
+      pickerSize,
+      pickerDisabled,
+    ]);
 
     const onChangeFileInput = useCallback(
       async (e: ChangeEvent<HTMLInputElement>) => {
@@ -113,7 +136,7 @@ export const FilePicker = memo<FilePickerProps>(
           if (currentList.length && autoUpload) {
             const deleteCtx = {
               url: String(url),
-              name: String(name),
+              name: String(pickerName),
               pickerItem: currentList[0],
             };
             if (removeFileFn) {
@@ -129,7 +152,15 @@ export const FilePicker = memo<FilePickerProps>(
           onChange?.(newList, e);
         }
       },
-      [multiple, autoUpload, url, name, removeFileFn, onChange, isControlled],
+      [
+        multiple,
+        autoUpload,
+        url,
+        pickerName,
+        removeFileFn,
+        onChange,
+        isControlled,
+      ],
     );
 
     const deleteFile = useCallback(
@@ -141,7 +172,7 @@ export const FilePicker = memo<FilePickerProps>(
       [isControlled, onChange],
     );
 
-    const cls = clsx(s.FilePicker, className);
+    const cls = clsx(s.FilePicker, { [s.Disabled]: pickerDisabled }, className);
     const styles = {
       ...style,
     };
@@ -163,11 +194,12 @@ export const FilePicker = memo<FilePickerProps>(
         >
           <input
             type="file"
-            name={name}
+            name={pickerName}
             accept={accept}
             ref={fileInputRef}
             className={s.Input}
             multiple={multiple}
+            disabled={pickerDisabled}
             onChange={onChangeFileInput}
           />
           {fileList.length === 0 ? (
@@ -182,7 +214,8 @@ export const FilePicker = memo<FilePickerProps>(
             />
           ))}
           <Button
-            size={size}
+            size={pickerSize}
+            disabled={pickerDisabled}
             icon={<Upload />}
             label={placeholder || t('filePicker.placeholder')}
             onClick={chooseFiles}

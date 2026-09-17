@@ -19,6 +19,7 @@ export interface FilePickerContextType {
   method?: HTMLFormElement['method'];
   name?: string;
   size: Size;
+  disabled?: boolean;
   autoUploadFn?: (context: FilePickerUploadContext) => Promise<void>;
   removeFileFn?: (context: FilePickerRemoveContext) => Promise<void>;
 }
@@ -26,17 +27,22 @@ export interface FilePickerContextType {
 export interface FileProps {
   file?: File;
   pickerItem: InternalFileItem;
-  onDeleteClick: (pickerItem: InternalFileItem, event: React.MouseEvent) => void;
+  onDeleteClick: (
+    pickerItem: InternalFileItem,
+    event: React.MouseEvent,
+  ) => void;
 }
 
-export interface FilePickerProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+export interface FilePickerProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'onChange'
+> {
   ref?: React.Ref<HTMLDivElement>;
   defaultValue?: FileItem[];
   value?: FileItem[];
   onChange?: (
     fileList: FileItem[],
-    event: React.ChangeEvent<HTMLInputElement> | React.MouseEvent
+    event: React.ChangeEvent<HTMLInputElement> | React.MouseEvent,
   ) => void;
   autoUpload?: boolean;
   url?: string;
@@ -46,6 +52,7 @@ export interface FilePickerProps
   accept?: string;
   placeholder?: string;
   size?: Size;
+  disabled?: boolean;
   autoUploadFn?: (context: FilePickerUploadContext) => Promise<void>;
   removeFileFn?: (context: FilePickerRemoveContext) => Promise<void>;
 }

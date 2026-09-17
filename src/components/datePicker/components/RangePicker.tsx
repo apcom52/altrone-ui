@@ -1,4 +1,11 @@
-import { isValidElement, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  isValidElement,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { dayjsInstance as dayjs } from 'utils';
 import { Dayjs } from 'dayjs';
 import clsx from 'clsx';
@@ -27,6 +34,7 @@ import warningOnce from 'rc-util/es/warning';
 import { useLocalization } from 'components/application';
 import { useLocale } from 'utils';
 import { Calendar } from 'lucide-react';
+import { useFormField } from '../../form/components/Field.context.ts';
 
 export const RangePicker = memo<RangePickerProps>((props) => {
   const t = useLocalization();
@@ -38,7 +46,7 @@ export const RangePicker = memo<RangePickerProps>((props) => {
     placeholder = t('datePicker.placeholderRange'),
     format,
     readOnly = false,
-    disabled = false,
+    disabled,
     minDate,
     maxDate,
     autoClose = true,
@@ -46,6 +54,10 @@ export const RangePicker = memo<RangePickerProps>((props) => {
     children,
     ...restProps
   } = props;
+
+  const { disabled: formFieldDisabled } = useFormField();
+  const pickerDisabled =
+    typeof disabled === 'boolean' ? disabled : formFieldDisabled;
 
   const locale = useLocale({
     dateFormat: format,
@@ -123,11 +135,11 @@ export const RangePicker = memo<RangePickerProps>((props) => {
       value,
       displayValue,
       expanded: opened,
-      disabled,
+      disabled: Boolean(pickerDisabled),
       clear: (event) =>
         onChange?.([], event as React.MouseEvent<HTMLButtonElement>),
     }),
-    [value, displayValue, opened, disabled, onChange],
+    [value, displayValue, opened, pickerDisabled, onChange],
   );
 
   const renderTrigger = () => {
@@ -152,7 +164,7 @@ export const RangePicker = memo<RangePickerProps>((props) => {
         value={displayValue}
         placeholder={placeholder}
         readonlyStyles={readOnly}
-        disabled={disabled}
+        disabled={pickerDisabled}
         {...restProps}
         readOnly={true}
       >
@@ -173,7 +185,7 @@ export const RangePicker = memo<RangePickerProps>((props) => {
         <DatePickerViewContext.Provider value={datePickerViewContext}>
           <DatePickerTriggerContext.Provider value={triggerContext}>
             <Popover
-              enabled={!readOnly && !disabled}
+              enabled={!readOnly && !pickerDisabled}
               placement="bottom-start"
               onOpenChange={setOpened}
               content={({ closePopup }) => (

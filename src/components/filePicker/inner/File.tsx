@@ -36,6 +36,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
     method = 'POST',
     name = 'file',
     size = 'm',
+    disabled,
     autoUploadFn,
     removeFileFn,
     autoUpload,
@@ -219,6 +220,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
         <Button
           className={s.Control}
           size={controlSize}
+          disabled={disabled}
           icon={<RotateCw />}
           label={t('filePicker.retryUpload')}
           onClick={() => setStatus('selected')}
@@ -229,6 +231,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
         <Button
           className={s.Control}
           size={controlSize}
+          disabled={disabled}
           icon={<Trash2 />}
           label={t('common.delete')}
           onClick={onRemoveClick}

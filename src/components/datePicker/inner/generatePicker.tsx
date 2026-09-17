@@ -1,4 +1,10 @@
-import { isValidElement, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  isValidElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { dayjsInstance as dayjs } from 'utils';
 import {
   BasicDatePickerProps,
@@ -26,6 +32,7 @@ import { useLocalization } from 'components/application';
 import { Dayjs } from 'dayjs';
 import { useLocale } from '../../../utils/hooks/useLocale.ts';
 import { Calendar } from 'lucide-react';
+import { useFormField } from '../../form/components/Field.context.ts';
 
 export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
   picker: Picker = 'day',
@@ -37,7 +44,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
       onChange,
       clearable = false,
       readOnly = false,
-      disabled = false,
+      disabled,
       minDate,
       maxDate,
       format,
@@ -50,6 +57,10 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
     } = props;
 
     const t = useLocalization();
+
+    const { disabled: formFieldDisabled } = useFormField();
+    const pickerDisabled =
+      typeof disabled === 'boolean' ? disabled : formFieldDisabled;
 
     // Warn once when minDate >= maxDate — single check covers both directions
     useEffect(() => {
@@ -137,14 +148,14 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
         value,
         displayValue,
         expanded: opened,
-        disabled,
+        disabled: Boolean(pickerDisabled),
         clear: (event) =>
           onChangeHandler(
             undefined,
             event as React.MouseEvent<HTMLButtonElement>,
           ),
       }),
-      [value, displayValue, opened, disabled, onChangeHandler],
+      [value, displayValue, opened, pickerDisabled, onChangeHandler],
     );
 
     const renderTrigger = () => {
@@ -169,7 +180,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
           value={displayValue}
           readonlyStyles={readOnly}
           placeholder={t('datePicker.placeholder')}
-          disabled={disabled}
+          disabled={pickerDisabled}
           {...restProps}
           readOnly={true}
         >
@@ -190,7 +201,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
           <DatePickerViewContext.Provider value={datePickerViewContext}>
             <DatePickerTriggerContext.Provider value={triggerContext}>
               <Popover
-                enabled={!readOnly && !disabled}
+                enabled={!readOnly && !pickerDisabled}
                 placement="bottom-start"
                 content={({ closePopup }) => (
                   <DatePickerCloseFnContext.Provider value={closePopup}>

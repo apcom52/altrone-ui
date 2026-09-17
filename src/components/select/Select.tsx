@@ -20,6 +20,7 @@ import { useSelect } from './useSelect.ts';
 import { useLocalization } from 'components/application';
 import { Slot } from 'utils/components/Slot.tsx';
 import { SelectContext } from './Select.context.ts';
+import { useFormField } from '../form/components/Field.context.ts';
 
 const SelectComponent = (props: SelectProps) => {
   const {
@@ -29,7 +30,7 @@ const SelectComponent = (props: SelectProps) => {
     placeholder,
     searchable,
     clearable,
-    size = 'm',
+    size,
     className,
     style,
     parentWidth = true,
@@ -48,7 +49,18 @@ const SelectComponent = (props: SelectProps) => {
   } = props;
 
   const id = useId();
-  const selectName = name || id;
+
+  const {
+    name: formFieldName,
+    disabled: formFieldDisabled,
+    size: formFieldSize,
+  } = useFormField();
+
+  const selectDisabled =
+    typeof disabled === 'boolean' ? disabled : formFieldDisabled;
+  const selectSize = size || formFieldSize || 'm';
+
+  const selectName = name || formFieldName || id;
   const listboxId = `${id}-listbox`;
 
   const t = useLocalization();
@@ -156,7 +168,7 @@ const SelectComponent = (props: SelectProps) => {
     expanded: opened,
     value,
     selectedOptions,
-    disabled: Boolean(disabled),
+    disabled: Boolean(selectDisabled),
     multiple: Boolean(multiple),
     clearValue,
   };
@@ -188,8 +200,8 @@ const SelectComponent = (props: SelectProps) => {
         placeholder={valueString || placeholder}
         readOnly={readOnly ?? !(searchable && searchMode)}
         readonlyStyles={Boolean(readOnly)}
-        size={size}
-        disabled={disabled}
+        size={selectSize}
+        disabled={selectDisabled}
         variant={isTransparent ? 'transparent' : 'default'}
         onChange={setUserQuery}
         onFocus={
@@ -224,13 +236,7 @@ const SelectComponent = (props: SelectProps) => {
           className={s.ArrowIcon}
           placement="end"
           icon={
-            searchMode ? (
-              <Search />
-            ) : opened ? (
-              <ChevronUp />
-            ) : (
-              <ChevronDown />
-            )
+            searchMode ? <Search /> : opened ? <ChevronUp /> : <ChevronDown />
           }
         />
       </TextInput>

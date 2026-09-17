@@ -3,6 +3,7 @@ import { CheckboxProps } from './Checkbox.types.ts';
 import clsx from 'clsx';
 import s from './checkbox.module.scss';
 import { CheckIcon } from './inner/checkIcon.tsx';
+import { useFormField } from '../form/components/Field.context.ts';
 
 export const Checkbox = memo<CheckboxProps>(
   ({
@@ -16,13 +17,24 @@ export const Checkbox = memo<CheckboxProps>(
     indeterminate = false,
     disabled,
     name,
-    size = 'm',
+    size,
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
     'aria-describedby': ariaDescribedBy,
     ...restProps
   }) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
+
+    const {
+      name: formFieldName,
+      disabled: formFieldDisabled,
+      size: formFieldSize,
+    } = useFormField();
+
+    const inputName = typeof name === 'string' ? name : formFieldName;
+    const inputDisabled =
+      typeof disabled === 'boolean' ? disabled : formFieldDisabled;
+    const inputSize = size || formFieldSize || 'm';
 
     /* `indeterminate` is a DOM property, not an attribute — it can only be set
        imperatively, and it's what makes AT announce the checkbox as "mixed". */
@@ -36,12 +48,12 @@ export const Checkbox = memo<CheckboxProps>(
       s.Checkbox,
       {
         [s.Checked]: checked || indeterminate,
-        [s.Disabled]: disabled,
+        [s.Disabled]: inputDisabled,
         [s.Danger]: danger,
-        [s.Mini]: size === 'mini',
-        [s.Small]: size === 's',
-        [s.Large]: size === 'l',
-        [s.XLarge]: size === 'xl',
+        [s.Mini]: inputSize === 'mini',
+        [s.Small]: inputSize === 's',
+        [s.Large]: inputSize === 'l',
+        [s.XLarge]: inputSize === 'xl',
       },
       className,
     );
@@ -57,8 +69,8 @@ export const Checkbox = memo<CheckboxProps>(
           type="checkbox"
           className={s.Input}
           checked={checked}
-          name={name}
-          disabled={disabled}
+          name={inputName}
+          disabled={inputDisabled}
           onChange={onChangeHandler}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}

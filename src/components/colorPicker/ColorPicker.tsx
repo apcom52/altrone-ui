@@ -15,6 +15,7 @@ import {
 } from 'react';
 import { Slot } from 'utils/components/Slot';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useFormField } from '../form/components/Field.context.ts';
 
 const EMPTY_COLOR_PRESETS: ColorPreset[] = [];
 
@@ -37,17 +38,23 @@ export const ColorPicker = (props: ColorPickerProps) => {
     className,
     style,
     placeholder = t('colorPicker.placeholder'),
-    size = 'm',
+    size,
     allowPalette = true,
     colorPresets = EMPTY_COLOR_PRESETS,
     readOnly = false,
     clearable = false,
     transparent,
-    disabled = false,
+    disabled,
     asChild = false,
     children,
     ...restProps
   } = props;
+
+  const { disabled: formFieldDisabled, size: formFieldSize } = useFormField();
+
+  const inputDisabled =
+    typeof disabled === 'boolean' ? disabled : formFieldDisabled;
+  const inputSize = size || formFieldSize || 'm';
 
   const handleChange = useCallback(
     (color: string | undefined, event?: SyntheticEvent) => {
@@ -71,7 +78,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
           onChange={handleChange}
           allowPalette={allowPalette}
           clearable={clearable}
-          size={size}
+          size={inputSize}
           closePopup={closePopup}
         />
       )}
@@ -89,7 +96,9 @@ export const ColorPicker = (props: ColorPickerProps) => {
             return null;
           }
 
-          const childElement = children as ReactElement<Record<string, unknown>>;
+          const childElement = children as ReactElement<
+            Record<string, unknown>
+          >;
           const childProps = childElement.props;
 
           return (
@@ -117,8 +126,8 @@ export const ColorPicker = (props: ColorPickerProps) => {
             placeholder={placeholder}
             readOnly={true}
             readonlyStyles={readOnly}
-            disabled={disabled}
-            size={size}
+            disabled={inputDisabled}
+            size={inputSize}
             variant={transparent ? 'transparent' : undefined}
             onChange={() => null}
             {...restProps}
@@ -129,15 +138,15 @@ export const ColorPicker = (props: ColorPickerProps) => {
                   className={s.ColorPreview}
                   style={{
                     backgroundColor: value,
-                    width: PREVIEW_SIZES[size],
-                    height: PREVIEW_SIZES[size],
+                    width: PREVIEW_SIZES[inputSize],
+                    height: PREVIEW_SIZES[inputSize],
                   }}
                 />
               ) : (
                 <Box
                   shape="circle"
                   material="hatch"
-                  size={PREVIEW_SIZES[size]}
+                  size={PREVIEW_SIZES[inputSize]}
                   style={{ marginLeft: 2 }}
                 />
               )}

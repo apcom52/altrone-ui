@@ -23,3 +23,7 @@
   line-height: var(--line-height-4);
   font-weight: var(--text-weight-regular);
 }
+
+.Disabled .EmptyLabel {
+  color: var(--disabled-text-color);
+}

@@ -5,6 +5,7 @@ import { RadioContext, RadioProps } from './Radio.types.ts';
 import { RadioItem } from './components';
 import { ArrayUtils } from 'utils';
 import { RadioContextWrapper } from './Radio.context.ts';
+import { useFormField } from '../form/components/Field.context.ts';
 
 const RadioWrapper = memo<RadioProps>(
   ({
@@ -17,12 +18,22 @@ const RadioWrapper = memo<RadioProps>(
     orientation = 'horizontal',
     name,
     disabled,
-    size = 'm',
+    size,
     ...restProps
   }) => {
     const id = useId();
 
-    const radioName = typeof name === 'string' && name ? name : id;
+    const {
+      name: formFieldName,
+      disabled: formFieldDisabled,
+      size: formFieldSize,
+    } = useFormField();
+
+    const radioName =
+      typeof name === 'string' && name ? name : formFieldName || id;
+    const radioDisabled =
+      typeof disabled === 'boolean' ? disabled : formFieldDisabled;
+    const radioSize = size || formFieldSize || 'm';
 
     const cls = clsx(
       s.RadioList,
@@ -48,11 +59,11 @@ const RadioWrapper = memo<RadioProps>(
       return {
         name: radioName,
         value,
-        disabled: Boolean(disabled),
+        disabled: Boolean(radioDisabled),
         onChange: onChangeHandler,
-        size,
+        size: radioSize,
       };
-    }, [onChangeHandler, value, radioName, disabled, size]);
+    }, [onChangeHandler, value, radioName, radioDisabled, radioSize]);
 
     return (
       <RadioContextWrapper.Provider value={radioContext}>

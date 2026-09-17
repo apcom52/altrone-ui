@@ -11,6 +11,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { SliderProps } from './Slider.types';
 import s from './slider.module.scss';
 import clsx from 'clsx';
+import { useFormField } from '../form/components/Field.context.ts';
 
 /**
  * `:focus-visible` in `Element.matches()` throws on browsers that don't support
@@ -60,7 +61,7 @@ export const Slider = (props: SliderProps) => {
     icon,
     showCurrentValue = 'active',
     variant = 'default',
-    size = 'm',
+    size,
     style,
     orientation = 'horizontal',
     renderLabel,
@@ -72,6 +73,17 @@ export const Slider = (props: SliderProps) => {
     className,
     ...restProps
   } = props;
+
+  const {
+    name: formFieldName,
+    disabled: formFieldDisabled,
+    size: formFieldSize,
+  } = useFormField();
+
+  const sliderName = typeof name === 'string' ? name : formFieldName;
+  const sliderDisabled =
+    typeof disabled === 'boolean' ? disabled : formFieldDisabled;
+  const sliderSize = size || formFieldSize || 'm';
 
   const isDragging = useRef(false);
   const sliderValue = useRef(value);
@@ -212,13 +224,13 @@ export const Slider = (props: SliderProps) => {
     s.Slider,
     {
       [s.Fill]: isFill,
-      [s.Mini]: size === 'mini',
-      [s.Small]: size === 's',
-      [s.Large]: size === 'l',
-      [s.XLarge]: size === 'xl',
+      [s.Mini]: sliderSize === 'mini',
+      [s.Small]: sliderSize === 's',
+      [s.Large]: sliderSize === 'l',
+      [s.XLarge]: sliderSize === 'xl',
       [s.Vertical]: isVertical,
       [s.ShowValueAlways]: showCurrentValue === 'always',
-      [s.Disabled]: disabled,
+      [s.Disabled]: sliderDisabled,
       [s.ReadOnly]: readOnly,
     },
     className,
@@ -239,7 +251,7 @@ export const Slider = (props: SliderProps) => {
     <div
       className={cls}
       style={style}
-      onPointerDown={disabled || readOnly ? undefined : handlePointerDown}
+      onPointerDown={sliderDisabled || readOnly ? undefined : handlePointerDown}
       onPointerEnter={() => setIsHovered(true)}
       onPointerLeave={() => setIsHovered(false)}
       onFocus={(event) =>
@@ -252,8 +264,8 @@ export const Slider = (props: SliderProps) => {
       onBlur={() => setIsFocusVisible(false)}
       ref={mergedRef}
       data-slider-active={isActive}
-      tabIndex={disabled || readOnly ? -1 : 0}
-      onKeyDown={disabled || readOnly ? undefined : handleKeyDown}
+      tabIndex={sliderDisabled || readOnly ? -1 : 0}
+      onKeyDown={sliderDisabled || readOnly ? undefined : handleKeyDown}
       role="slider"
       aria-valuemin={min}
       aria-valuemax={max}
@@ -261,12 +273,12 @@ export const Slider = (props: SliderProps) => {
       aria-valuetext={
         typeof labelElement === 'string' ? labelElement : String(value)
       }
-      aria-disabled={disabled}
+      aria-disabled={sliderDisabled}
       aria-readonly={readOnly}
       aria-orientation={orientation}
       {...restProps}
     >
-      <input type="hidden" value={value} tabIndex={-1} name={name} />
+      <input type="hidden" value={value} tabIndex={-1} name={sliderName} />
       {readOnly ? (
         <div className={s.ReadOnlyLabel}>{labelElement}</div>
       ) : (

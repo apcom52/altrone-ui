@@ -2,6 +2,7 @@ import { ChangeEventHandler, memo, useRef } from 'react';
 import { SwitchProps } from './Switch.types.ts';
 import clsx from 'clsx';
 import s from './switch.module.scss';
+import { useFormField } from '../form/components/Field.context.ts';
 
 export const Switch = memo<SwitchProps>(
   ({
@@ -14,7 +15,7 @@ export const Switch = memo<SwitchProps>(
     danger,
     disabled,
     name,
-    size = 'm',
+    size,
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
     'aria-describedby': ariaDescribedBy,
@@ -22,16 +23,27 @@ export const Switch = memo<SwitchProps>(
   }) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
 
+    const {
+      name: formFieldName,
+      disabled: formFieldDisabled,
+      size: formFieldSize,
+    } = useFormField();
+
+    const inputName = typeof name === 'string' ? name : formFieldName;
+    const inputDisabled =
+      typeof disabled === 'boolean' ? disabled : formFieldDisabled;
+    const inputSize = size || formFieldSize || 'm';
+
     const cls = clsx(
       s.Switch,
       {
         [s.Checked]: checked,
-        [s.Disabled]: disabled,
+        [s.Disabled]: inputDisabled,
         [s.Danger]: danger,
-        [s.Mini]: size === 'mini',
-        [s.Small]: size === 's',
-        [s.Large]: size === 'l',
-        [s.XLarge]: size === 'xl',
+        [s.Mini]: inputSize === 'mini',
+        [s.Small]: inputSize === 's',
+        [s.Large]: inputSize === 'l',
+        [s.XLarge]: inputSize === 'xl',
       },
       className,
     );
@@ -48,8 +60,8 @@ export const Switch = memo<SwitchProps>(
           role="switch"
           className={s.Input}
           checked={checked}
-          name={name}
-          disabled={disabled}
+          name={inputName}
+          disabled={inputDisabled}
           onChange={onChangeHandler}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}

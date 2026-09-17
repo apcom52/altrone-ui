@@ -13,9 +13,13 @@ import { Text } from 'components/text/Text.tsx';
 import { Badge } from 'internal/badge';
 import { useBottomNavigationSelect } from '../BottomNavigation.context.tsx';
 import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
+import { Slot } from 'utils/components/Slot.tsx';
 import { DOMUtils } from '../../../utils';
 
-type LinkContentProps = Pick<BottomNavigationLinkProps, 'icon' | 'label' | 'badge'>;
+type LinkContentProps = Pick<
+  BottomNavigationLinkProps,
+  'icon' | 'label' | 'badge'
+>;
 
 const LinkContent = ({ icon, label, badge }: LinkContentProps) => (
   <>
@@ -70,11 +74,15 @@ export const Link = memo(
         );
         return null;
       }
-      return cloneWithRef(children as ReactElement<{ children?: ReactNode }>, {
-        ...interactionProps,
-        ref: composedRef,
-        children: content,
-      });
+      const childWithContent = cloneWithRef(
+        children as ReactElement<{ children?: ReactNode }>,
+        { children: content },
+      );
+      return (
+        <Slot ref={composedRef} {...interactionProps}>
+          {childWithContent}
+        </Slot>
+      );
     }
 
     return (
