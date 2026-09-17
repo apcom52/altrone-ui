@@ -53,7 +53,8 @@ export interface ToolbarSidebarToggleActionProps
 
 export interface ToolbarTitleProps extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
-  label: string;
+  /** Overrides the native `div` `title` (tooltip) attribute — this is the rendered heading text. */
+  title: string;
   clickable?: boolean;
 }
 

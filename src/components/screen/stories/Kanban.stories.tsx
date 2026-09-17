@@ -1003,7 +1003,7 @@ const TaskDetailModal = ({
                   title: 'Delete this task?',
                   message: 'It will be removed from the board for everyone.',
                   confirmText: 'Delete',
-                  rejectText: 'Keep',
+                  cancelText: 'Keep',
                   danger: true,
                 });
 
@@ -1687,7 +1687,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                     ) ? (
                       <Message
                         severity="warning"
-                        header="Some columns are over their WIP limit"
+                        title="Some columns are over their WIP limit"
                       >
                         <Text size={3}>
                           Lower the amount of work in progress, or raise the
@@ -2067,7 +2067,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                             message:
                               'Members lose access until the board is restored.',
                             confirmText: 'Archive',
-                            rejectText: 'Cancel',
+                            cancelText: 'Cancel',
                             danger: true,
                           });
 

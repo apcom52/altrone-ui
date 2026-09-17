@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Flex, Tags, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
+import { Size } from 'types';
 
 const story: Meta<typeof Tags> = {
   title: 'Components/Display/Tags',
@@ -33,6 +34,8 @@ const Paragraph = ({ children }: { children: React.ReactNode }) => (
 );
 
 const TOPICS = ['AI', 'Design', 'Web', 'TypeScript', 'Performance', 'Tooling'];
+
+const SIZES: Size[] = ['mini', 's', 'm', 'l', 'xl'];
 
 export const Overview: StoryObj<typeof Tags> = {
   name: 'Overview',
@@ -162,6 +165,29 @@ export const RouterLinks: StoryObj<typeof Tags> = {
           </Tags.Item>
         ))}
       </Tags>
+    </Flex>
+  ),
+};
+
+export const Sizes: StoryObj<typeof Tags> = {
+  name: 'Sizes',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Section>Sizes</Section>
+      <Paragraph>
+        <Text code>size</Text> on <Text code>Tags</Text> scales the text size
+        of every <Text code>Tags.Item</Text> inside it.
+      </Paragraph>
+
+      <Flex orientation="vertical" gap="m">
+        {SIZES.map((sz) => (
+          <Tags key={sz} size={sz}>
+            <Tags.Item label={`#size-${sz}`} href={`/tags/size-${sz}`} />
+            <Tags.Item label="#Design" href="/tags/design" />
+            <Tags.Item label="#TypeScript" href="/tags/typescript" />
+          </Tags>
+        ))}
+      </Flex>
     </Flex>
   ),
 };

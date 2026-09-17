@@ -4,6 +4,7 @@ import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Tabs } from './Tabs.tsx';
 import { ReactNode, useState } from 'react';
+import { Size } from 'types';
 import {
   LayoutDashboard,
   CheckSquare,
@@ -50,6 +51,8 @@ const Paragraph = ({ children }: { children: ReactNode }) => (
   </Text>
 );
 
+const SIZES: Size[] = ['mini', 's', 'm', 'l', 'xl'];
+
 // ─── Overview ────────────────────────────────────────────────────────────────
 
 export const Overview: StoryObj<typeof Tabs> = {
@@ -57,6 +60,9 @@ export const Overview: StoryObj<typeof Tabs> = {
   render: () => {
     const [tab, setTab] = useState('overview');
     const [seg, setSeg] = useState('day');
+    const [sizeSel, setSizeSel] = useState<Record<string, string>>(
+      Object.fromEntries(SIZES.map((sz) => [sz, 'a'])),
+    );
     const sel = (id: string) => tab === id;
 
     return (
@@ -173,6 +179,35 @@ export const Overview: StoryObj<typeof Tabs> = {
           router's <Text code>&lt;Link&gt;</Text>. The item merges its role,
           styling, and props onto it.
         </Paragraph>
+
+        <Heading>Sizes</Heading>
+        <Paragraph>
+          <Text code>size</Text> on <Text code>Tabs</Text> scales the pill and
+          every <Text code>Tabs.Item</Text> inside it — height, icon size, text
+          size, and corner rounding all move together.
+        </Paragraph>
+
+        <Flex orientation="vertical" gap="m">
+          {SIZES.map((sz) => (
+            <Tabs key={sz} size={sz}>
+              <Tabs.Item
+                icon={<LayoutDashboard size={14} />}
+                label={`size="${sz}"`}
+                selected={sizeSel[sz] === 'a'}
+                onClick={() =>
+                  setSizeSel((prev) => ({ ...prev, [sz]: 'a' }))
+                }
+              />
+              <Tabs.Item
+                label="Favorites"
+                selected={sizeSel[sz] === 'b'}
+                onClick={() =>
+                  setSizeSel((prev) => ({ ...prev, [sz]: 'b' }))
+                }
+              />
+            </Tabs>
+          ))}
+        </Flex>
       </Flex>
     );
   },

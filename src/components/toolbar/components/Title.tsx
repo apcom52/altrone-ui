@@ -10,7 +10,7 @@ import { Text } from 'components/text/Text.tsx';
 export const Title = memo(
   ({
     ref,
-    label,
+    title,
     className,
     clickable = false,
     ...restProps
@@ -28,7 +28,7 @@ export const Title = memo(
     return (
       <motion.div ref={ref} className={cls} {...restProps}>
         <Text truncate weight="bold" className={s.Label}>
-          {label}
+          {title}
         </Text>
         {clickable && <ChevronDown className={s.Chevron} aria-hidden />}
       </motion.div>

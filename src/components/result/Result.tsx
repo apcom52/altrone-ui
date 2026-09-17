@@ -37,7 +37,6 @@ export const Result = ({
   status = 'empty',
   icon,
   title,
-  description,
   actions,
   size = 'm',
   children,
@@ -47,13 +46,12 @@ export const Result = ({
 }: ResultProps) => {
   const t = useLocalization();
 
-  const body = description ?? children;
   const hasTitle = title !== undefined;
-  /* A lone `children`/`description` line acts as the heading. */
+  /* A lone `children` line acts as the heading. */
   const fallbackTitle =
-    body ?? (status === 'empty' ? t('result.empty') : undefined);
+    children ?? (status === 'empty' ? t('result.empty') : undefined);
   const titleNode = hasTitle ? title : fallbackTitle;
-  const descriptionNode = hasTitle ? body : undefined;
+  const descriptionNode = hasTitle ? children : undefined;
 
   const cls = clsx(
     s.Result,

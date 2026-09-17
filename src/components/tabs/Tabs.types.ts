@@ -1,7 +1,10 @@
 import React, { ReactElement } from 'react';
+import { Size } from 'types';
 
 export interface TabsProps extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
+  /** One of the five control tiers; scales the tablist and every item. */
+  size?: Size;
 }
 
 export interface TabsItemProps

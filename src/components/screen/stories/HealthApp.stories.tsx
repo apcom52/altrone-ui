@@ -925,7 +925,7 @@ const MedsScreen = ({
       {pending.length > 0 && (
         <Message
           severity="warning"
-          header={`${pending.length} still to take today`}
+          title={`${pending.length} still to take today`}
         >
           <Text size={3}>
             Mark each dose as you take it so your adherence streak stays
@@ -1033,7 +1033,7 @@ const ProfileScreen = ({
             title: 'Sign out of Pulse?',
             message: 'Your data stays synced. You can sign back in any time.',
             confirmText: 'Sign out',
-            rejectText: 'Stay',
+            cancelText: 'Stay',
           });
 
           if (confirmed) {
@@ -1124,7 +1124,7 @@ export const HealthApp: StoryObj<typeof Screen> = {
         title: `Remove ${med.name}?`,
         message: 'It will no longer appear in your daily medication list.',
         confirmText: 'Remove',
-        rejectText: 'Keep',
+        cancelText: 'Keep',
         danger: true,
       });
 

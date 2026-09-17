@@ -9,7 +9,7 @@ export const Avatar = memo((props: AvatarProps) => {
     ref,
     firstName,
     lastName,
-    size,
+    size = 'm',
     backgroundColor,
     textColor,
     imageSrc,

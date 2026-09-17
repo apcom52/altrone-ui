@@ -11,11 +11,12 @@ import { ActionsProp } from '../../utils';
 
 export interface MessageProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
-  'role'
+  'role' | 'title'
 > {
   ref?: Ref<HTMLDivElement>;
   icon?: ReactElement;
-  header?: ReactNode;
+  /** Overrides the native `div` `title` (tooltip) attribute — this is the message's heading text. */
+  title?: ReactNode;
   severity?: Role;
   actions?: ActionsProp;
   onClose?: (event: MouseEvent<HTMLButtonElement>) => void;

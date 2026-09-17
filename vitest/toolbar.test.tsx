@@ -199,7 +199,7 @@ describe('Toolbar', () => {
     const { rerender } = render(
       <Application>
         <Toolbar>
-          <Toolbar.Title label="Docs" />
+          <Toolbar.Title title="Docs" />
         </Toolbar>
       </Application>,
     );
@@ -210,7 +210,7 @@ describe('Toolbar', () => {
     rerender(
       <Application>
         <Toolbar>
-          <Toolbar.Title label="Docs" clickable />
+          <Toolbar.Title title="Docs" clickable />
         </Toolbar>
       </Application>,
     );

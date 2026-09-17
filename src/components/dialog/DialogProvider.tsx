@@ -152,7 +152,7 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
                     onClick={accept}
                   />
                   <Button
-                    label={dialog.rejectText || t('dialog.cancel')}
+                    label={dialog.cancelText || t('dialog.cancel')}
                     onClick={cancel}
                   />
                 </Flex>

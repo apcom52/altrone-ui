@@ -3,7 +3,7 @@ import { Bell } from 'lucide-react';
 import { Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { Badge } from './Badge';
-import type { BadgeSize } from './Badge.types';
+import type { Size } from 'types';
 
 const story: Meta<typeof Badge> = {
   title: 'Internal/Badge',
@@ -13,7 +13,7 @@ const story: Meta<typeof Badge> = {
 
 export default story;
 
-const SIZES: BadgeSize[] = ['mini', 's', 'm', 'l', 'xl'];
+const SIZES: Size[] = ['mini', 's', 'm', 'l', 'xl'];
 
 export const Overview: StoryObj<typeof Badge> = {
   render: () => (

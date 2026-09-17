@@ -21,7 +21,7 @@ export const Message = ({
   children,
   className,
   style,
-  header,
+  title,
   icon,
   severity,
   ariaRole,
@@ -60,7 +60,7 @@ export const Message = ({
       ) : null}
       <Flex orientation="vertical" className={s.Content} gap="m" justify="center">
         <div className={s.Text}>
-          {header ? <div className={s.Header}>{header}</div> : null}
+          {title ? <div className={s.Header}>{title}</div> : null}
           {children ? <div className={s.Body}>{children}</div> : null}
         </div>
         {resolvedActions ? (

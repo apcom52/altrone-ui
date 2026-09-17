@@ -91,7 +91,7 @@ export const Overview: StoryObj<typeof DialogProvider> = {
               message:
                 'Every project and file tied to this account is removed immediately. This cannot be undone.',
               confirmText: 'Delete account',
-              rejectText: 'Keep it',
+              cancelText: 'Keep it',
               danger: true,
             });
 
@@ -184,7 +184,7 @@ export const Confirms: StoryObj<typeof DialogProvider> = {
                 title: 'Discard this draft?',
                 message: 'Your unsaved changes will be lost.',
                 confirmText: 'Discard',
-                rejectText: 'Keep editing',
+                cancelText: 'Keep editing',
                 danger: true,
               });
               push(`Discard draft → ${ok}`);
@@ -198,7 +198,7 @@ export const Confirms: StoryObj<typeof DialogProvider> = {
                 title: 'Publish to production?',
                 message: 'The release goes live for everyone right away.',
                 confirmText: 'Publish',
-                rejectText: 'Not yet',
+                cancelText: 'Not yet',
               });
               push(`Publish now → ${ok}`);
             }}

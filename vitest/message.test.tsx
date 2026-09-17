@@ -3,15 +3,15 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { Message } from '../src/components';
 
 describe('Message', () => {
-  test('renders the header and the body content', () => {
+  test('renders the title and the body content', () => {
     render(
-      <Message data-testid="message" header="Header">
+      <Message data-testid="message" title="Title">
         Body content
       </Message>,
     );
 
     expect(screen.getByTestId('message')).toBeInTheDocument();
-    expect(screen.getByText('Header')).toBeInTheDocument();
+    expect(screen.getByText('Title')).toBeInTheDocument();
     expect(screen.getByText('Body content')).toBeInTheDocument();
   });
 

@@ -18,8 +18,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: var(--pagination-ellipsis-size, 32px);
+  height: var(--pagination-ellipsis-size, 32px);
   color: var(--text-2);
-  font-size: var(--text-size-4);
+  font-size: var(--pagination-ellipsis-font-size, var(--text-size-4));
+}
+
+/* Mirrors Box's control-size scale (width/height) and Button's per-size
+   font-size, since the page/edge buttons are `Button`s at the same `size`. */
+.Mini {
+  --pagination-ellipsis-size: 16px;
+  --pagination-ellipsis-font-size: 10px;
+}
+
+.Small {
+  --pagination-ellipsis-size: 24px;
+  --pagination-ellipsis-font-size: 12px;
+}
+
+.Large {
+  --pagination-ellipsis-size: 40px;
+  --pagination-ellipsis-font-size: 16px;
+}
+
+.XLarge {
+  --pagination-ellipsis-size: 48px;
+  --pagination-ellipsis-font-size: 20px;
 }

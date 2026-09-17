@@ -56,6 +56,7 @@ export const Pagination = memo<PaginationProps>(
     onChange,
     showEdgeButtons = true,
     siblings = 1,
+    size = 'm',
     className,
     style,
     ...restProps
@@ -100,13 +101,23 @@ export const Pagination = memo<PaginationProps>(
         gap="xs"
         align="center"
         aria-label={t('pagination.navigation')}
-        className={clsx(s.Pagination, className)}
+        className={clsx(
+          s.Pagination,
+          {
+            [s.Mini]: size === 'mini',
+            [s.Small]: size === 's',
+            [s.Large]: size === 'l',
+            [s.XLarge]: size === 'xl',
+          },
+          className,
+        )}
         style={style}
         {...restProps}
       >
         <nav>
           {showEdgeButtons && (
             <Button
+              size={size}
               icon={<ChevronFirst />}
               disabled={isFirst}
               label={t('pagination.firstPage')}
@@ -116,6 +127,7 @@ export const Pagination = memo<PaginationProps>(
           )}
 
           <Button
+            size={size}
             icon={<ChevronLeft />}
             disabled={isFirst}
             label={t('pagination.previous')}
@@ -131,6 +143,7 @@ export const Pagination = memo<PaginationProps>(
             ) : (
               <Button
                 key={item}
+                size={size}
                 label={String(item)}
                 variant="text"
                 selected={item === page}
@@ -142,6 +155,7 @@ export const Pagination = memo<PaginationProps>(
           )}
 
           <Button
+            size={size}
             icon={<ChevronRight />}
             disabled={isLast}
             label={t('pagination.next')}
@@ -151,6 +165,7 @@ export const Pagination = memo<PaginationProps>(
 
           {showEdgeButtons && (
             <Button
+              size={size}
               icon={<ChevronLast />}
               disabled={isLast}
               label={t('pagination.lastPage')}

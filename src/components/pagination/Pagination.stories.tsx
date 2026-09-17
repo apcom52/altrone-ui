@@ -4,6 +4,7 @@ import { Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Pagination } from './Pagination.tsx';
+import { Size } from 'types';
 
 const story: Meta<typeof Pagination> = {
   title: 'Components/Navigation/Pagination',
@@ -41,6 +42,8 @@ const Case = ({ title, children }: { title: string; children: ReactNode }) => (
     {children}
   </Flex>
 );
+
+const SIZES: Size[] = ['mini', 's', 'm', 'l', 'xl'];
 
 // ─── Overview ────────────────────────────────────────────────────────────────
 
@@ -121,6 +124,26 @@ export const Overview: StoryObj<typeof Pagination> = {
         <Case title="Uncontrolled — defaultPage, no currentPage">
           <Pagination defaultPage={3} totalPages={10} />
         </Case>
+
+        <Heading>Sizes</Heading>
+        <Paragraph>
+          <Text code>size</Text> scales the arrow/page buttons and the
+          ellipsis together — it's forwarded to every underlying{' '}
+          <Text code>Button</Text>.
+        </Paragraph>
+
+        <Flex orientation="vertical" gap="m">
+          {SIZES.map((sz) => (
+            <Case key={sz} title={`size="${sz}"`}>
+              <Pagination
+                size={sz}
+                currentPage={6}
+                totalPages={20}
+                onChange={() => {}}
+              />
+            </Case>
+          ))}
+        </Flex>
       </Flex>
     );
   },

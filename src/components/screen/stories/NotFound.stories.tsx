@@ -21,14 +21,15 @@ export const NotFound: StoryObj<typeof Screen> = {
         <Result
           status="error"
           title="Page not found"
-          description="The page you were looking for doesn't exist or was moved."
           actions={
             <Flex gap="s">
               <Button label="Go home" variant="submit" />
               <Button label="Contact support" />
             </Flex>
           }
-        />
+        >
+          The page you were looking for doesn't exist or was moved.
+        </Result>
       </Screen.Content>
     </Screen>
   ),

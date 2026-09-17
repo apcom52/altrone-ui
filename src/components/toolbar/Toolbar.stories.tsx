@@ -141,7 +141,7 @@ const variantSample = (
           kbd="⌘⇧Z"
         />
       </Toolbar.Group>
-      <Toolbar.Title label="Report.pdf" />
+      <Toolbar.Title title="Report.pdf" />
     </Toolbar.Leading>
     <Toolbar.Trailing>
       <Toolbar.Group>
@@ -260,7 +260,7 @@ export const Variants: StoryObj<typeof Toolbar> = {
           <SampleContent />
           <Toolbar variant="plain">
             <Toolbar.Leading>
-              <Toolbar.Title label="Report.pdf" />
+              <Toolbar.Title title="Report.pdf" />
             </Toolbar.Leading>
             <Toolbar.Trailing>
               <Toolbar.Group variant="solid">
@@ -331,7 +331,7 @@ export const ApplicationHeader: StoryObj<typeof Toolbar> = {
                   </Dropdown.Menu>
                 }
               >
-                <Toolbar.Title label="Northwind" clickable />
+                <Toolbar.Title title="Northwind" clickable />
               </Dropdown>
             </Toolbar.Leading>
             <Toolbar.Center>
@@ -630,7 +630,7 @@ export const ComponentHeader: StoryObj<typeof Toolbar> = {
               showLabel={false}
             />
           </Toolbar.Group>
-          <Toolbar.Title label="Button" />
+          <Toolbar.Title title="Button" />
         </Toolbar.Leading>
         <Toolbar.Trailing>
           <Toolbar.Group>
@@ -688,7 +688,7 @@ export const FrameToolbar: StoryObj<typeof Toolbar> = {
         >
           <Toolbar size="s">
             <Toolbar.Leading>
-              <Toolbar.Title label="index.tsx" />
+              <Toolbar.Title title="index.tsx" />
             </Toolbar.Leading>
             <Toolbar.Trailing>
               <Switch checked={wrap} onChange={() => setWrap((v) => !v)}>
@@ -745,7 +745,7 @@ export const FrameToolbar: StoryObj<typeof Toolbar> = {
         >
           <Toolbar variant="plain" size="s">
             <Toolbar.Leading>
-              <Toolbar.Title label="Selection" />
+              <Toolbar.Title title="Selection" />
             </Toolbar.Leading>
             <Toolbar.Trailing>
               <Toolbar.Action label="Duplicate" icon={<Images />} />
@@ -791,7 +791,7 @@ export const Sizes: StoryObj<typeof Toolbar> = {
                   </Dropdown.Menu>
                 }
               >
-                <Toolbar.Title label="Documents" clickable />
+                <Toolbar.Title title="Documents" clickable />
               </Dropdown>
             </Toolbar.Leading>
             <Toolbar.Trailing>
@@ -835,7 +835,7 @@ export const TitleStates: StoryObj<typeof Toolbar> = {
         </Text>
         <Toolbar>
           <Toolbar.Leading>
-            <Toolbar.Title label="Untitled document" />
+            <Toolbar.Title title="Untitled document" />
           </Toolbar.Leading>
           <Toolbar.Trailing>
             <Toolbar.Action label="Share" icon={<Share />} showLabel={false} />
@@ -858,7 +858,7 @@ export const TitleStates: StoryObj<typeof Toolbar> = {
                 </Dropdown.Menu>
               }
             >
-              <Toolbar.Title label="Q3 planning" clickable />
+              <Toolbar.Title title="Q3 planning" clickable />
             </Dropdown>
           </Toolbar.Leading>
           <Toolbar.Trailing>
@@ -881,7 +881,7 @@ export const TitleStates: StoryObj<typeof Toolbar> = {
                   </Dropdown.Menu>
                 }
               >
-                <Toolbar.Title label="Acme Corp" clickable />
+                <Toolbar.Title title="Acme Corp" clickable />
               </Dropdown>
             </Toolbar.Leading>
           </Toolbar>
@@ -894,7 +894,7 @@ export const TitleStates: StoryObj<typeof Toolbar> = {
         </Text>
         <Toolbar style={{ maxWidth: 340 }}>
           <Toolbar.Leading>
-            <Toolbar.Title label="Notes from the Q3 planning offsite — draft 4" />
+            <Toolbar.Title title="Notes from the Q3 planning offsite — draft 4" />
           </Toolbar.Leading>
           <Toolbar.Trailing>
             <Toolbar.Action label="Share" icon={<Share />} showLabel={false} />
