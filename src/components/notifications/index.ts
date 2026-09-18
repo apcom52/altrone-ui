@@ -5,6 +5,7 @@ export {
   dismissNotification,
 } from './notificationsRegistry';
 export type {
+  NotificationsProviderProps,
   ToastOptions,
   NotificationOptions,
   ToastVariant,

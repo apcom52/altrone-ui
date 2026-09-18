@@ -20,6 +20,15 @@ export interface DrawerProps extends Omit<
   placement?: 'start' | 'end';
   width?: number;
   /**
+   * When `false`, a backdrop click or `Esc` no longer close the drawer — it
+   * shakes instead. The close button (see `showCloseButton`) and `onDone`
+   * still close it normally; this only gates the two implicit gestures.
+   * Defaults to `true`.
+   */
+  dismissible?: boolean;
+  /** Shows or hides the header close button. Defaults to `true`. */
+  showCloseButton?: boolean;
+  /**
    * Secondary controls on the start side of the header, after the close
    * button — one element or several.
    */

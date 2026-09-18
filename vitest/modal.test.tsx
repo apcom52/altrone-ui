@@ -46,7 +46,6 @@ describe('Modal', () => {
     render(
       <Application>
         <Modal
-          data-testid="modal"
           content={<div>content</div>}
           onClose={onClose}
           defaultOpen={true}
@@ -54,7 +53,7 @@ describe('Modal', () => {
       </Application>,
     );
 
-    fireEvent.click(screen.getByTestId('modal'));
+    fireEvent.click(document.querySelector('[class*="Backdrop"]')!);
 
     expect(onClose).toHaveBeenCalledTimes(1);
   });

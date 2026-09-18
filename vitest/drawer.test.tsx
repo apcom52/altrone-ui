@@ -47,6 +47,26 @@ describe('Drawer', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
+  test('dismissible={false} blocks backdrop click and Escape, not the close button', () => {
+    const onClose = vi.fn();
+    renderDrawer({ onClose, dismissible: false });
+
+    fireEvent.click(document.querySelector('[class*="Backdrop"]')!);
+    fireEvent.keyDown(document.body, { key: 'Escape' });
+    expect(onClose).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole('button', { name: /close/i }));
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  test('showCloseButton={false} hides the close button', () => {
+    renderDrawer({ showCloseButton: false });
+
+    expect(
+      screen.queryByRole('button', { name: /close/i }),
+    ).not.toBeInTheDocument();
+  });
+
   test('onDone resolving to false keeps the drawer open, any other value closes it', async () => {
     const onDone = vi
       .fn<[], Promise<boolean | void>>()
@@ -73,10 +93,7 @@ describe('Drawer', () => {
       title: 'Doc',
       onDone: async () => {},
       additionalActions: <button>history</button>,
-      actions: [
-        <button key="a">share</button>,
-        <button key="b">save</button>,
-      ],
+      actions: [<button key="a">share</button>, <button key="b">save</button>],
     });
 
     expect(screen.getByText('history')).toBeInTheDocument();

@@ -34,6 +34,9 @@
   color: var(--slider-value-text-color);
   cursor: pointer;
   outline: none;
+  /* Without this, dragging the thumb on a touch device also pans the page
+     (see `Splitter`'s `.Divider` for the same fix). */
+  touch-action: none;
 
   @include no-selection;
 
@@ -106,26 +109,29 @@
 }
 
 /*
- * Both are portaled to the shared app root, not to whichever overlay they're
- * visually inside — so with `showCurrentValue="always"` the bubble stays
- * mounted (and z-indexed) regardless of an unrelated `Modal`/`Drawer` opening
- * elsewhere on the page. Default to `--level-fixed`, safely below
- * `--level-modal-backdrop`; `.ValueElevated` (applied only when the slider is
- * actually nested inside a dialog) bumps it to tooltip level so it still
- * clears the overlay it belongs to.
+ * `.ValueFloating` is portaled to the shared app root, not to whichever
+ * overlay it's visually inside — so with `showCurrentValue="always"` the
+ * bubble stays mounted (and z-indexed) regardless of an unrelated
+ * `Modal`/`Drawer` opening elsewhere on the page. Default to
+ * `--level-dropdown` — below `Screen.Header`/sticky page chrome, so an
+ * always-visible bubble doesn't paint over the app's own fixed header;
+ * `.ValueElevated` (applied only when the slider is actually nested inside a
+ * dialog) bumps it to tooltip level so it still clears the overlay it
+ * belongs to.
  */
 
-/* Inline chip — the `fill` variant only (see `.Fill .Value`). */
+/* Inline chip — the `fill` variant only (see `.Fill .Value`), scoped to
+   `.Fill`'s own stacking context (`isolation: isolate` below). */
 .Value {
   position: absolute;
-  z-index: var(--level-fixed);
+  z-index: 1;
   opacity: 0;
   transition: opacity var(--motion-duration-fast) var(--motion-easing-standard);
 }
 
 /* Anchored to the thumb through a portal; floating-ui sets position/transform. */
 .ValueFloating {
-  z-index: var(--level-fixed);
+  z-index: var(--level-dropdown);
 }
 
 .ValueElevated {
@@ -166,6 +172,9 @@
   min-height: 0;
   border-radius: var(--slider-fill-radius);
   overflow: hidden;
+  /* Contains `.Value`'s z-index so it can't leak past this slab into the
+     page's stacking order — `.Fill` has no z-index of its own otherwise. */
+  isolation: isolate;
   background-color: var(--slider-fill-surface-color);
   box-shadow: var(--elevation-raised-shadow);
   backdrop-filter: var(--glass-effects);

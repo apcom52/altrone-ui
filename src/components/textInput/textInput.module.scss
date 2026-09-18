@@ -13,6 +13,16 @@
   --text-input-font-size: var(--text-size-4);
   --text-input-icon-size: 16px;
 
+  /**
+   * iOS Safari auto-zooms the viewport on focus when a field's computed
+   * font-size is under 16px. Floored here for the default (`m`) size only —
+   * `.Mini`/`.Small` below re-declare this variable and keep their smaller,
+   * deliberately compact font; the zoom is an accepted trade-off there.
+   */
+  @media (pointer: coarse) {
+    --text-input-font-size: 16px;
+  }
+
   /* Gap between the field's border and the island content (islands carry no
      horizontal padding of their own) — applied by `.StartIslands`/`.EndIslands`
      below. `mini` zeroes it (no room to spare: the island is already exactly

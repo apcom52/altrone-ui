@@ -1,5 +1,9 @@
 :global([data-altrone-root='true']) {
   --splitter-gutter: 10px;
+  /* Invisible touch/pointer hit area around the gutter, past the visible
+     10px — matches the project's ~24px hit-area floor without widening the
+     visible gutter (see `.Divider`/`.Resizer`'s `::before`). */
+  --splitter-touch-hit-area: 24px;
   --splitter-handle-length: 32px;
   --splitter-handle-thickness: 6px;
   --splitter-handle-color: var(--border-a3);

@@ -5,13 +5,19 @@
 .Sheet {
   position: fixed;
   inset: 0;
-  z-index: var(--level-offcanvas-backdrop);
+  /** Set inline from `elevation` (see Sheet.tsx) — this is what places a
+      whole Sheet instance (Drawer, Modal, ...) against *other* portaled
+      overlays; z-index here isn't itself elevation-scoped. */
 }
 
 .Backdrop {
   position: absolute;
   inset: 0;
   background-color: var(--sheet-backdrop-color);
+  /** `.Content`'s empty gutters pass touches through to this layer (see its
+      own `pointer-events: none` below) — without this, a touch-drag there
+      still pans the page on iOS even though `document.body` is locked. */
+  touch-action: none;
 }
 
 /**
@@ -88,11 +94,45 @@
 
 .PanelSlot {
   position: relative;
-  z-index: var(--level-offcanvas);
+  /** Only needs to beat `.Backdrop`'s `auto` within this one Sheet instance's
+      own stacking context (see `.Sheet`) — any explicit value does that. */
+  z-index: 1;
   display: flex;
   min-width: 0;
   min-height: 0;
   pointer-events: auto;
+}
+
+@keyframes sheetShake {
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translateX(-4px);
+  }
+
+  40%,
+  60% {
+    transform: translateX(4px);
+  }
+}
+
+/**
+ * Feedback for a rejected dismiss attempt (`dismissible={false}`) — direct
+ * feedback tied to the user's own action, so it stays under reduced motion
+ * (see motion.md) rather than being zeroed like decorative animation.
+ */
+.Shake {
+  animation: sheetShake 0.4s ease-in-out;
 }
 
 /** Enter/exit scale grows out of the screen edge the panel slides from. */

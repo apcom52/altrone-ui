@@ -1,56 +1,13 @@
-import { useCallback, useEffect, useId, type MouseEvent } from 'react';
-import { createPortal } from 'react-dom';
+import { useCallback, useId, type MouseEvent } from 'react';
 import clsx from 'clsx';
-import FocusTrap from 'focus-trap-react';
-import {
-  AnimatePresence,
-  motion,
-  useReducedMotionConfig,
-  type HTMLMotionProps,
-  type Transition,
-} from 'motion/react';
+import { Sheet } from 'internal/sheet';
 import { DrawerContext, DrawerProps } from './Drawer.types.ts';
 import { CloseButton } from '../closeButton';
 import { Button } from '../button';
 import { Scrollable } from '../scrollable';
-import { GlobalUtils, useBoolean } from '../../utils';
+import { useBoolean } from '../../utils';
 import { useLocalization } from '../application';
 import s from './drawer.module.scss';
-
-/** Distance the panel travels beyond its own width, so it starts fully off-screen. */
-const OFFSCREEN_MARGIN = 40;
-
-/**
- * Enter: the slide rides an iOS-style curve (decisive start, soft landing)
- * while the scale eases out past 1 — anchored to the screen edge by
- * `transform-origin`, so the panel reads as inflating out of that edge as it
- * arrives. Exit is a shorter accelerating retreat that shrinks a touch.
- */
-const PANEL_ENTER_TRANSITION: Transition = {
-  x: { duration: 0.52, ease: [0.32, 0.72, 0, 1] },
-  scale: { duration: 0.58, ease: [0.34, 1.56, 0.64, 1] },
-};
-
-const PANEL_EXIT_TRANSITION: Transition = {
-  duration: 0.3,
-  ease: [0.4, 0, 1, 1],
-};
-
-const BACKDROP_TRANSITION: Transition = {
-  duration: 0.35,
-  ease: 'easeOut',
-};
-
-const getPortalRoot = () => {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
-  return (
-    document.querySelector<HTMLElement>('[data-altrone-root="true"]') ??
-    document.body
-  );
-};
 
 export const Drawer = (props: DrawerProps) => {
   const {
@@ -62,6 +19,8 @@ export const Drawer = (props: DrawerProps) => {
     width = 400,
     open,
     defaultOpen = false,
+    dismissible = true,
+    showCloseButton = true,
     onClose,
     onDone,
     additionalActions,
@@ -73,8 +32,6 @@ export const Drawer = (props: DrawerProps) => {
 
   const t = useLocalization();
   const titleId = useId();
-
-  const reducedMotion = useReducedMotionConfig() ?? false;
 
   const isControlled = open !== undefined;
   const { value: internalOpened, disable: hide } = useBoolean(defaultOpen);
@@ -134,119 +91,38 @@ export const Drawer = (props: DrawerProps) => {
       />
     ) : null);
 
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        handleClose(event);
-      }
-    };
-
-    document.body.addEventListener('keydown', onKeyDown);
-    return () => document.body.removeEventListener('keydown', onKeyDown);
-  }, [isOpen, handleClose]);
-
-  /**
-   * The resting edge inset lives in CSS (`.Panel` left/right), so `x: 0` is the
-   * settled position — keeping it out of the transform means the drawer stays
-   * correctly inset even when reduced motion drops the animation entirely.
-   */
-  const initialX =
-    placement === 'start'
-      ? -(width + OFFSCREEN_MARGIN)
-      : width + OFFSCREEN_MARGIN;
-
-  const panelAnimation: HTMLMotionProps<'div'> = reducedMotion
-    ? {}
-    : {
-        initial: { x: initialX, scale: 0.85 },
-        animate: { x: 0, scale: 1, transition: PANEL_ENTER_TRANSITION },
-        exit: { x: initialX, scale: 0.88, transition: PANEL_EXIT_TRANSITION },
-      };
-
-  const backdropAnimation: HTMLMotionProps<'div'> = reducedMotion
-    ? {}
-    : {
-        initial: { opacity: 0 },
-        animate: { opacity: 1 },
-        exit: { opacity: 0 },
-        transition: BACKDROP_TRANSITION,
-      };
-
-  const portalRoot = getPortalRoot();
-
-  const drawer = (
-    <AnimatePresence>
-      {isOpen && (
-        <div
-          ref={ref}
-          className={clsx(
-            s.Drawer,
-            { [s.End]: placement === 'end' },
-            className,
-          )}
-          style={style}
-          {...restProps}
-        >
-          <motion.div
-            className={s.Backdrop}
-            onClick={handleClose}
-            {...backdropAnimation}
-          />
-          <FocusTrap
-            focusTrapOptions={{
-              /**
-               * Without this, focus-trap swallows pointer events landing
-               * outside the trap, so a click on the backdrop never reaches its
-               * own `onClick` and wouldn't close the drawer.
-               */
-              allowOutsideClick: true,
-              tabbableOptions: {
-                displayCheck: GlobalUtils.isTestEnvironment() ? 'none' : 'full',
-              },
-            }}
-          >
-            <motion.div
-              className={s.Panel}
-              style={{ width: `${width}px` }}
-              {...panelAnimation}
-            >
-              <div
-                className={s.Body}
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby={title ? titleId : undefined}
-              >
-                <div className={s.Header}>
-                  <div className={s.HeaderSide}>
-                    <CloseButton onClick={handleClose} />
-                    {additionalActionsElement}
-                  </div>
-                  <div className={s.Title} id={titleId}>
-                    {title}
-                  </div>
-                  <div className={clsx(s.HeaderSide, s.HeaderEnd)}>
-                    {endContent}
-                  </div>
-                </div>
-                <div className={s.Content}>
-                  <Scrollable>
-                    <div className={s.ScrollInset}>{contentElement}</div>
-                  </Scrollable>
-                </div>
-                {footerElement && (
-                  <div className={s.Footer}>{footerElement}</div>
-                )}
-              </div>
-            </motion.div>
-          </FocusTrap>
+  return (
+    <Sheet
+      ref={ref}
+      placement={placement}
+      width={width}
+      padding={0}
+      open={isOpen}
+      onClose={handleClose}
+      dismissible={dismissible}
+      className={className}
+      style={style}
+      aria-labelledby={title ? titleId : undefined}
+      {...restProps}
+    >
+      <div className={s.Body}>
+        <div className={s.Header}>
+          <div className={s.HeaderSide}>
+            {showCloseButton && <CloseButton onClick={handleClose} />}
+            {additionalActionsElement}
+          </div>
+          <div className={s.Title} id={titleId}>
+            {title}
+          </div>
+          <div className={clsx(s.HeaderSide, s.HeaderEnd)}>{endContent}</div>
         </div>
-      )}
-    </AnimatePresence>
+        <div className={s.Content}>
+          <Scrollable>
+            <div className={s.ScrollInset}>{contentElement}</div>
+          </Scrollable>
+        </div>
+        {footerElement && <div className={s.Footer}>{footerElement}</div>}
+      </div>
+    </Sheet>
   );
-
-  return portalRoot ? createPortal(drawer, portalRoot) : null;
 };

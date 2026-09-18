@@ -108,6 +108,17 @@
   cursor: col-resize;
   user-select: none;
   touch-action: none;
+
+  /* Widens the touch/pointer hit area past the visible 10px gutter, up to
+     the project's ~24px floor — see Splitter's `.Divider` for the same fix
+     and its rationale. */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0
+      calc((var(--splitter-touch-hit-area) - var(--splitter-gutter)) / -2);
+    touch-action: none;
+  }
 }
 
 /* Size & color only — the reveal / grow-in / active-bump are animated by

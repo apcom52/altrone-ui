@@ -2,6 +2,7 @@ import {
   useCallback,
   useEffect,
   useRef,
+  useState,
   type CSSProperties,
   type MouseEvent,
 } from 'react';
@@ -18,6 +19,8 @@ import {
 import { Box } from 'components/box';
 import { GlobalUtils, useBreakpoint } from 'utils';
 import { SheetPlacement, SheetProps } from './Sheet.types.ts';
+import { lockPageScroll, unlockPageScroll } from './scrollLock.ts';
+import { useVisualViewport } from './useVisualViewport.ts';
 import s from './sheet.module.scss';
 
 /** Mirrors `Screen`'s own `mobileBreakpoint` → `useBreakpoint()` flag mapping. */
@@ -96,6 +99,7 @@ export const Sheet = (props: SheetProps) => {
     ref,
     open = false,
     onClose,
+    dismissible = true,
     placement = 'bottom',
     mobileBreakpoint = 'sm',
     inset = 8,
@@ -109,12 +113,16 @@ export const Sheet = (props: SheetProps) => {
     className,
     style,
     children,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-label': ariaLabel,
+    'aria-describedby': ariaDescribedBy,
     ...restProps
   } = props;
 
   const reducedMotion = useReducedMotionConfig() ?? false;
   const panelRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const viewportRect = useVisualViewport(open);
 
   const breakpoint = useBreakpoint();
   const isMobile = !breakpoint[BREAKPOINT_FLAG[mobileBreakpoint]];
@@ -132,11 +140,25 @@ export const Sheet = (props: SheetProps) => {
       idiom); `full-screen` and `start`/`end` keep the panel's own scroll. */
   const isVerticalAutoScroll = !isHorizontal && resolvedHeight === 'auto';
 
+  const [shaking, setShaking] = useState(false);
+
+  const triggerShake = useCallback(() => {
+    /** Forces the animation to restart even if a previous shake is still
+        playing — a value change is what re-triggers a CSS animation, so it
+        has to actually toggle off first, not just stay `true`. */
+    setShaking(false);
+    requestAnimationFrame(() => setShaking(true));
+  }, []);
+
   const handleClose = useCallback(
     (event?: MouseEvent | KeyboardEvent) => {
+      if (!dismissible) {
+        triggerShake();
+        return;
+      }
       onClose?.(event);
     },
-    [onClose],
+    [dismissible, triggerShake, onClose],
   );
 
   useEffect(() => {
@@ -159,14 +181,28 @@ export const Sheet = (props: SheetProps) => {
       return;
     }
 
+    lockPageScroll();
+    return () => unlockPageScroll();
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
     /**
      * `initialFocus: false` below skips focus-trap's own initial focus, so
      * it never triggers the browser's built-in scroll-into-view — instead
      * focus the panel ourselves with `preventScroll`, keeping the
      * screen-level scroller (for `isVerticalAutoScroll`) at its resting
-     * position (spacer at the near edge, panel start at the far edge).
+     * position (spacer at the near edge, panel start at the far edge). Only
+     * a fallback: content with its own `autoFocus` element (e.g. `Modal`'s
+     * close button) already claims focus synchronously before this effect
+     * runs, and that's left alone.
      */
-    panelRef.current?.focus({ preventScroll: true });
+    if (!panelRef.current?.contains(document.activeElement)) {
+      panelRef.current?.focus({ preventScroll: true });
+    }
   }, [open]);
 
   const offscreen = OFFSCREEN_VALUE[resolvedPlacement];
@@ -225,7 +261,19 @@ export const Sheet = (props: SheetProps) => {
         <div
           ref={ref}
           className={clsx(s.Sheet, className)}
-          style={style}
+          style={
+            {
+              ...style,
+              zIndex: `var(--elevation-${elevation}-z-index)`,
+              /** Overrides the CSS `inset: 0` (which tracks the iOS layout
+                  viewport, not the keyboard-shrunk visible one) so the sheet
+                  never ends up anchored partly behind the keyboard. */
+              ...(viewportRect && {
+                top: viewportRect.offsetTop,
+                height: viewportRect.height,
+              }),
+            } as CSSProperties
+          }
           {...restProps}
         >
           <motion.div
@@ -282,8 +330,9 @@ export const Sheet = (props: SheetProps) => {
               }}
             >
               <motion.div
-                className={s.PanelSlot}
+                className={clsx(s.PanelSlot, { [s.Shake]: shaking })}
                 style={slotStyle}
+                onAnimationEnd={() => setShaking(false)}
                 {...panelAnimation}
               >
                 <Box
@@ -296,6 +345,9 @@ export const Sheet = (props: SheetProps) => {
                   className={s.Panel}
                   role="dialog"
                   aria-modal="true"
+                  aria-labelledby={ariaLabelledBy}
+                  aria-label={ariaLabel}
+                  aria-describedby={ariaDescribedBy}
                   tabIndex={-1}
                 >
                   {children}

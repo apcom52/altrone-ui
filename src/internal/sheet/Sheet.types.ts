@@ -21,6 +21,14 @@ export interface SheetProps extends Omit<
 > {
   ref?: Ref<HTMLDivElement>;
 
+  /**
+   * Most `HTMLAttributes` (`className`, `style`, `data-*`, ...) land on the
+   * outer fixed-position wrapper, not the panel. `aria-labelledby`/
+   * `aria-label`/`aria-describedby` are the exception — the panel `Box` is
+   * the actual `role="dialog"` element (it also sets `aria-modal="true"`
+   * itself), so those three are forwarded there instead.
+   */
+
   open?: boolean;
 
   /**
@@ -28,6 +36,14 @@ export interface SheetProps extends Omit<
    * when closed programmatically.
    */
   onClose?: (event?: React.MouseEvent | KeyboardEvent) => void;
+
+  /**
+   * When `false`, a backdrop click or `Esc` no longer calls `onClose` — the
+   * panel gives a brief shake instead, signalling the attempt was rejected.
+   * `onClose` still fires normally for any other trigger a consumer wires up
+   * itself (a close button, a confirm action). Defaults to `true`.
+   */
+  dismissible?: boolean;
 
   /**
    * Screen edge the panel slides in from. Ignored below `mobileBreakpoint`,

@@ -65,7 +65,9 @@ export const Overview: StoryObj<typeof Sheet> = {
       </Paragraph>
       <Paragraph>
         Focus is trapped inside the panel while it is open. <Text kbd>Esc</Text>{' '}
-        and a click on the backdrop both call <Text code>onClose</Text>.
+        and a click on the backdrop both call <Text code>onClose</Text> — unless{' '}
+        <Text code>{'dismissible={false}'}</Text> turns them off, in which case
+        they shake the panel instead.
       </Paragraph>
 
       <Heading>Anatomy</Heading>
@@ -150,6 +152,16 @@ export const Overview: StoryObj<typeof Sheet> = {
         both states just by resizing this window.
       </Paragraph>
       <ResponsiveDemo />
+
+      <Heading>Non-dismissible</Heading>
+      <Paragraph>
+        <Text code>{'dismissible={false}'}</Text> turns off backdrop-click and{' '}
+        <Text kbd>Esc</Text> — <Text code>onClose</Text> only fires for whatever
+        the consumer wires up itself (here, the <Text code>Done</Text> button).
+        Trying the backdrop or <Text kbd>Esc</Text> anyway gives the panel a
+        brief shake instead of closing it.
+      </Paragraph>
+      <NonDismissibleDemo />
 
       <Heading>Inset</Heading>
       <Paragraph>
@@ -287,6 +299,40 @@ const ResponsiveDemo = () => {
             Wide window: a 400px side panel, as configured. Narrower than
             1280px: forced to a bottom iOS sheet instead.
           </Text>
+        </Flex>
+      </Sheet>
+    </>
+  );
+};
+
+const NonDismissibleDemo = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button
+        label="Open non-dismissible sheet"
+        onClick={() => setOpen(true)}
+      />
+      <Sheet
+        placement="start"
+        dismissible={false}
+        open={open}
+        onClose={() => setOpen(false)}
+      >
+        <Flex orientation="vertical" gap="m">
+          <Text block size={5} weight="bold">
+            Accept the terms to continue
+          </Text>
+          <Text block size={4} color="muted">
+            Click the backdrop or press Esc — the panel shakes instead of
+            closing.
+          </Text>
+          <Button
+            label="Done"
+            variant="submit"
+            onClick={() => setOpen(false)}
+          />
         </Flex>
       </Sheet>
     </>

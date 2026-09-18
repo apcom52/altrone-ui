@@ -104,8 +104,8 @@ export const Overview: StoryObj<typeof Drawer> = {
         backdrop. Unlike <Text code>Popover</Text>/<Text code>Dropdown</Text>/
         <Text code>Tooltip</Text>, a drawer isn&apos;t attached to a trigger
         element — open it explicitly via the <Text code>open</Text> prop (or let
-        it manage its own state with <Text code>defaultOpen</Text>) and
-        close it via <Text code>onClose</Text> or the render-prop form of{' '}
+        it manage its own state with <Text code>defaultOpen</Text>) and close it
+        via <Text code>onClose</Text> or the render-prop form of{' '}
         <Text code>content</Text>, <Text code>footer</Text>,{' '}
         <Text code>additionalActions</Text>, or <Text code>actions</Text> (which
         all receive <Text code>closeDrawer</Text>).
@@ -113,7 +113,8 @@ export const Overview: StoryObj<typeof Drawer> = {
       <Paragraph>
         Focus is trapped inside the panel while it is open and returns to the
         trigger on close. <Text kbd>Esc</Text> and a click on the backdrop both
-        close it.
+        close it — unless <Text code>{'dismissible={false}'}</Text> turns them
+        off, in which case they shake the panel instead.
       </Paragraph>
 
       <Heading>Anatomy</Heading>
@@ -179,6 +180,19 @@ export const Overview: StoryObj<typeof Drawer> = {
         stays centred whatever lands on each side.
       </Paragraph>
       <DocumentDrawerDemo />
+
+      <Heading>Non-dismissible</Heading>
+      <Paragraph>
+        <Text code>{'dismissible={false}'}</Text> turns off backdrop-click and{' '}
+        <Text kbd>Esc</Text> — only the header close button (or{' '}
+        <Text code>onDone</Text>/<Text code>actions</Text>) can close it.{' '}
+        <Text code>{'showCloseButton={false}'}</Text> hides that button too, for
+        a drawer that only closes through its own footer action.
+      </Paragraph>
+      <Flex orientation="horizontal" gap="m" wrap>
+        <NonDismissibleDrawerDemo />
+        <NoCloseButtonDrawerDemo />
+      </Flex>
 
       <Heading>Reduced motion</Heading>
       <Paragraph>
@@ -355,6 +369,52 @@ const ValidatingDrawer = () => {
               <TextInput value={name} onChange={(value) => setName(value)} />
             </Form.Field>
           </Form>
+        }
+      />
+    </>
+  );
+};
+
+const NonDismissibleDrawerDemo = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button label="Non-dismissible" onClick={() => setOpen(true)} />
+      <Drawer
+        title="Accept the terms"
+        dismissible={false}
+        open={open}
+        onDone={async () => {}}
+        onClose={() => setOpen(false)}
+        content={
+          <Text block size={4}>
+            Click the backdrop or press Esc — the panel shakes instead of
+            closing. The close button and Done still work.
+          </Text>
+        }
+      />
+    </>
+  );
+};
+
+const NoCloseButtonDrawerDemo = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button label="No close button" onClick={() => setOpen(true)} />
+      <Drawer
+        title="Confirm export"
+        showCloseButton={false}
+        open={open}
+        onDone={async () => {}}
+        onClose={() => setOpen(false)}
+        content={
+          <Text block size={4}>
+            No close button in the header — the backdrop, Esc, and the Done
+            button below are the only ways out.
+          </Text>
         }
       />
     </>
