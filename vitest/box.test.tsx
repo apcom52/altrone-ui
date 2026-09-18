@@ -119,9 +119,9 @@ describe('Box', () => {
     expect(cls).toMatch(/ElevationOverlay/);
   });
 
-  test('the hatch material applies its modifier class', () => {
-    render(<Box material="hatch" data-testid="box" />);
-    expect(screen.getByTestId('box').className).toMatch(/MaterialHatch/);
+  test('the dotted material applies its modifier class', () => {
+    render(<Box material="dotted" data-testid="box" />);
+    expect(screen.getByTestId('box').className).toMatch(/MaterialDotted/);
   });
 
   test('a numeric size makes a square (--box-square/--box-size) and applies no named-tier class', () => {

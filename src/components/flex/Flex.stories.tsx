@@ -122,7 +122,7 @@ export const Overview: StoryObj<typeof Flex> = {
       </Paragraph>
 
       <Flex gap="m" align="center">
-        <Box shape="circle" material="hatch" size={40} />
+        <Box shape="circle" material="dotted" size={40} />
         <Flex orientation="vertical" gap="xxs">
           <Text weight="medium">Alice Morgan</Text>
           <Text size={3} color="muted">

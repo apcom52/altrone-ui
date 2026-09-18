@@ -6,6 +6,10 @@ import {
   registerNotificationsController,
   unregisterNotificationsController,
 } from './notificationsRegistry';
+import {
+  NotificationsDepthContext,
+  useNotificationsDepth,
+} from './Notifications.context';
 import type {
   AnyNotificationItem,
   NotificationItem,
@@ -26,6 +30,7 @@ export const Notifications = ({
   notificationPlacement = 'bottom-end',
 }: NotificationsProviderProps) => {
   const t = useLocalization();
+  const depth = useNotificationsDepth();
   const [items, setItems] = useState<AnyNotificationItem[]>([]);
 
   const dismiss = useCallback((id: string) => {
@@ -67,9 +72,9 @@ export const Notifications = ({
 
   useEffect(() => {
     const controller = { toast, notification, dismiss };
-    registerNotificationsController(controller);
+    registerNotificationsController(controller, depth);
     return () => unregisterNotificationsController(controller);
-  }, [toast, notification, dismiss]);
+  }, [toast, notification, dismiss, depth]);
 
   const toasts = items.filter(
     (item): item is ToastItem => item.kind === 'toast',
@@ -89,7 +94,7 @@ export const Notifications = ({
   };
 
   return (
-    <>
+    <NotificationsDepthContext.Provider value={depth + 1}>
       {children}
       <div
         className={s.Root}
@@ -139,6 +144,6 @@ export const Notifications = ({
           </AnimatePresence>
         </div>
       </div>
-    </>
+    </NotificationsDepthContext.Provider>
   );
 };

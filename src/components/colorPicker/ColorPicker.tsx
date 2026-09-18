@@ -145,7 +145,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
               ) : (
                 <Box
                   shape="circle"
-                  material="hatch"
+                  material="dotted"
                   size={PREVIEW_SIZES[inputSize]}
                   style={{ marginLeft: 2 }}
                 />

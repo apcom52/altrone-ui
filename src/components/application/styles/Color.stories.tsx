@@ -105,7 +105,7 @@ const HueScale = ({ hue }: { hue: string }) => (
 );
 
 export const Overview: StoryObj = {
-  name: 'Color System',
+  name: 'Color',
   render: () => (
     <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">

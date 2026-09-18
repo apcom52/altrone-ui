@@ -336,19 +336,19 @@ export const NoWrap: StoryObj<typeof Grid> = {
       <Subheading>wrap (default)</Subheading>
       <Grid gap="m" rowGap="m">
         <Grid.Column size={4}>
-          <Box material="hatch" width="100%" height={72} />
+          <Box material="dotted" width="100%" height={72} />
         </Grid.Column>
         <Grid.Column size={4}>
-          <Box material="hatch" width="100%" height={72} />
+          <Box material="dotted" width="100%" height={72} />
         </Grid.Column>
         <Grid.Column size={4}>
-          <Box material="hatch" width="100%" height={72} />
+          <Box material="dotted" width="100%" height={72} />
         </Grid.Column>
         <Grid.Column size={8}>
-          <Box material="hatch" width="100%" height={48} />
+          <Box material="dotted" width="100%" height={48} />
         </Grid.Column>
         <Grid.Column size={4}>
-          <Box material="hatch" width="100%" height={48} />
+          <Box material="dotted" width="100%" height={48} />
         </Grid.Column>
       </Grid>
 
@@ -442,7 +442,7 @@ const Panel = ({
       </Text>
     ) : null}
     {Array.from({ length: lines }).map((_, i) => (
-      <Box key={i} material="hatch" height={12} width={`${65 + (i % 3) * 12}%`} />
+      <Box key={i} material="dotted" height={12} width={`${65 + (i % 3) * 12}%`} />
     ))}
   </Flex>
 );

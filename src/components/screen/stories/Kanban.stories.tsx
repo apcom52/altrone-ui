@@ -2188,7 +2188,7 @@ export const Kanban: StoryObj<typeof Screen> = {
                   ))}
 
                   <Box
-                    material="hatch"
+                    material="dotted"
                     tone="neutral"
                     shape="rounded"
                     radius="16px"

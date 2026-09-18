@@ -313,30 +313,37 @@ export const Popover = ({
                   refs.setFloating(element);
                   contentRef.current = element;
                 }}
-                layout="size"
                 role={role ?? (showHeader ? 'dialog' : undefined)}
                 aria-labelledby={title ? headingId : ariaLabelledBy}
                 initial={{ opacity: 0, scale: 0.1 }}
                 animate={{ opacity: 1, scale: 1, transition: ENTER_TRANSITION }}
                 exit={{ opacity: 0, scale: 0.1, transition: EXIT_TRANSITION }}
               >
-                {showHeader && (
-                  <div className={s.Header}>
-                    {title ? (
-                      <div className={s.Heading} id={headingId}>
-                        {title}
-                      </div>
-                    ) : null}
-                    {showCloseButton ? (
-                      <CloseButton onClick={hide} className={s.Close} />
-                    ) : null}
+                {/* `layout="size"` lives on its own non-animated wrapper, never on
+                    the enter/exit node above — Motion drives layout resizing and an
+                    `animate`/`exit` `scale` through the same transform, and
+                    combining them on one element let floating-ui's concurrent
+                    autoUpdate repositioning compound into a runaway scale spike
+                    right as a nested submenu's exit started. */}
+                <motion.div layout="size">
+                  {showHeader && (
+                    <div className={s.Header}>
+                      {title ? (
+                        <div className={s.Heading} id={headingId}>
+                          {title}
+                        </div>
+                      ) : null}
+                      {showCloseButton ? (
+                        <CloseButton onClick={hide} className={s.Close} />
+                      ) : null}
+                    </div>
+                  )}
+                  <div className={s.Content}>
+                    {typeof content === 'function'
+                      ? content({ closePopup: hide, closeAllSequence })
+                      : content}
                   </div>
-                )}
-                <div className={s.Content}>
-                  {typeof content === 'function'
-                    ? content({ closePopup: hide, closeAllSequence })
-                    : content}
-                </div>
+                </motion.div>
               </motion.div>
             </Box>
           </PopoverCurrentId.Provider>

@@ -99,6 +99,19 @@
   --box-tone-text: var(--text-2);
 }
 
+/* Same gray scale as .ToneNeutral, shifted one role-step lighter: a light
+   gray solid fill (--interactive-2) with dark text, instead of neutral's
+   dark solid (--solid-1) with light text. */
+.ToneSubtle {
+  --box-tone-solid: var(--interactive-2);
+  --box-tone-solid-text: var(--text-2);
+  --box-tone-translucent: var(--interactive-a1);
+  --box-tone-translucent-strong: var(--interactive-a2);
+  --box-tone-border: var(--border-a1);
+  --box-tone-border-strong: var(--border-a2);
+  --box-tone-text: var(--text-1);
+}
+
 .ToneAccent,
 .ToneInfo {
   /* info deliberately has no fixed hue — it aliases --accent-N, see color.md */
@@ -222,25 +235,25 @@
   --box-border-color: var(--box-tone-border);
 }
 
-/* Placeholder surface: a faint tinted wash, a hairline edge and soft diagonal
-   hatch lines. The `background` shorthand in `.Box` sets the colour; this rule
-   (later in source) layers the repeating-gradient image over it. Line spacing
-   is a fixed length so the texture stays consistent at any box size. */
-.MaterialHatch {
-  --box-hatch-line: var(--box-tone-border-strong);
-  --box-hatch-gap: 9px;
+/* Placeholder surface: a faint tinted wash, a hairline edge and a dot-grid
+   texture — graph-paper dots, not a diagonal hatch or a line grid. A single
+   `radial-gradient` dot tiled via `background-size`, tone-driven like the
+   rest of the material. Scales with the box, not the viewport, so the
+   texture stays consistent at any box size. */
+.MaterialDotted {
+  --box-dotted-gap: 12px;
+  --box-dotted-radius: 1.2px;
 
   --box-fill: var(--box-tone-translucent);
   --box-border-width: 1px;
   --box-border-color: var(--box-tone-border);
 
-  background-image: repeating-linear-gradient(
-    -45deg,
-    var(--box-hatch-line) 0,
-    var(--box-hatch-line) 1px,
-    transparent 1px,
-    transparent var(--box-hatch-gap)
+  background-image: radial-gradient(
+    circle,
+    var(--box-tone-border-strong) var(--box-dotted-radius),
+    transparent var(--box-dotted-radius)
   );
+  background-size: var(--box-dotted-gap) var(--box-dotted-gap);
 }
 
 /* ------------------------------------------------------------------ */
@@ -334,7 +347,7 @@
   --box-fill: var(--box-tone-translucent);
 }
 
-.Pressable.MaterialHatch:hover:not(:active) {
+.Pressable.MaterialDotted:hover:not(:active) {
   --box-fill: var(--box-tone-translucent-strong);
 }
 
@@ -373,8 +386,8 @@
 
 .Pressable.MaterialOutline:active,
 .Editable.MaterialOutline:focus-within,
-.Pressable.MaterialHatch:active,
-.Editable.MaterialHatch:focus-within {
+.Pressable.MaterialDotted:active,
+.Editable.MaterialDotted:focus-within {
   --box-fill: var(--box-tone-translucent-strong);
   --box-border-color: var(--box-tone-border-strong);
 }

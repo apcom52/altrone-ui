@@ -11,13 +11,20 @@ export type BoxMaterial =
   | 'transparent'
   | 'outline'
   | 'ghost'
-  /** Diagonal-hatch placeholder surface — a faint tinted fill, a hairline
-      border and soft cross-hatch lines. For "content goes here" stubs, empty
-      drop targets and unset swatches. Tone-driven. */
-  | 'hatch';
+  /** Dot-grid placeholder surface — a faint tinted fill, a hairline border
+      and a tone-driven dot pattern. For "content goes here" stubs, empty
+      drop targets and unset swatches. */
+  | 'dotted';
 
 export type BoxTone =
-  'neutral' | 'accent' | 'danger' | 'success' | 'warning' | 'info';
+  | 'neutral'
+  | 'accent'
+  | 'danger'
+  | 'success'
+  | 'warning'
+  | 'info'
+  /** Same gray scale as `neutral`, one step lighter — a light gray fill instead of a dark solid one. */
+  | 'subtle';
 
 /** The 10 categorical hues (see colors/_categorical.scss). */
 export type BoxColorHue =

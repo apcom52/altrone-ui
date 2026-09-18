@@ -150,7 +150,7 @@ const AnimatedExample = () => {
 };
 
 export const Overview: StoryObj = {
-  name: 'Concentric Radius',
+  name: 'Radius',
   render: () => (
     <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">

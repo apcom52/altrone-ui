@@ -575,7 +575,7 @@ const materials: BoxMaterial[] = [
   'transparent',
   'outline',
   'ghost',
-  'hatch',
+  'dotted',
 ];
 
 const MaterialRow = () => (
@@ -722,9 +722,9 @@ export const Materials: StoryObj<typeof Box> = {
           <Text code>translucent</Text>), nothing at all (
           <Text code>transparent</Text>), a static border (
           <Text code>outline</Text>), a border that only shows up on interaction
-          (<Text code>ghost</Text>), or a diagonal-hatch placeholder surface for
+          (<Text code>ghost</Text>), or a dot-grid placeholder surface for
           &ldquo;content goes here&rdquo; stubs and empty drop targets (
-          <Text code>hatch</Text>).
+          <Text code>dotted</Text>).
         </Paragraph>
         <Paragraph>
           Every <Text code>pressable</Text> material reacts the same way in two
@@ -789,6 +789,7 @@ const tones: BoxTone[] = [
   'success',
   'warning',
   'info',
+  'subtle',
 ];
 
 const ToneRow = () => (
@@ -1065,11 +1066,15 @@ export const ToneAndElevation: StoryObj<typeof Box> = {
     <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Heading>Tone picks the color</Heading>
       <Paragraph>
-        Five of the six tones are fixed hues, independent of the
-        consumer&rsquo;s chosen accent color — <Text code>info</Text> is the one
+        Five of the seven tones are fixed hues, independent of the
+        consumer&rsquo;s chosen accent color — <Text code>info</Text> is one
         exception, aliasing <Text code>accent</Text> directly, since it&rsquo;s
         about the primary flow rather than a status that needs to stay
-        recognizable regardless of branding (see <Text code>color.md</Text>).
+        recognizable regardless of branding (see <Text code>color.md</Text>).{' '}
+        <Text code>subtle</Text> is the other: the same gray scale as{' '}
+        <Text code>neutral</Text>, just one role-step lighter — a light gray
+        solid fill instead of a dark one — for a surface that should read as
+        quiet chrome rather than a status or a call to action.
       </Paragraph>
       <ToneRow />
 

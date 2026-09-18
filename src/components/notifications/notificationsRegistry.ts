@@ -6,35 +6,50 @@ export type NotificationsController = {
   dismiss: (id: string) => void;
 };
 
+type ControllerEntry = {
+  controller: NotificationsController;
+  depth: number;
+};
+
 /**
  * A stack rather than a single ref so nested `Notifications` providers (and
- * tests that mount/unmount their own) don't clobber each other — the most
- * recently mounted provider handles new calls, and unmounting one falls back
- * to the previous.
+ * tests that mount/unmount their own) don't clobber each other. Entries carry
+ * their nesting `depth` because `useEffect` fires child-before-parent on
+ * mount, so a nested provider always registers before its ancestor — picking
+ * by registration order alone would hand new calls to the outer provider.
+ * `getController` picks the deepest entry, falling back to the most recently
+ * registered one among equal depths (e.g. separate top-level providers).
  */
-const controllers: NotificationsController[] = [];
+const controllers: ControllerEntry[] = [];
 
 export const registerNotificationsController = (
   controller: NotificationsController,
+  depth = 0,
 ) => {
-  controllers.push(controller);
+  controllers.push({ controller, depth });
 };
 
 export const unregisterNotificationsController = (
   controller: NotificationsController,
 ) => {
-  const index = controllers.lastIndexOf(controller);
+  const index = controllers.map((entry) => entry.controller).lastIndexOf(
+    controller,
+  );
   if (index !== -1) {
     controllers.splice(index, 1);
   }
 };
 
 const getController = (): NotificationsController | undefined => {
-  const controller = controllers[controllers.length - 1];
-  if (!controller) {
+  const entry = controllers.reduce<ControllerEntry | undefined>(
+    (deepest, current) =>
+      !deepest || current.depth >= deepest.depth ? current : deepest,
+    undefined,
+  );
+  if (!entry) {
     console.warn('Notifications is not mounted');
   }
-  return controller;
+  return entry?.controller;
 };
 
 export const showToast = (
