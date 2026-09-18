@@ -50,9 +50,11 @@ export interface BoxProps
    * A custom fill color, independent of the accent, taking priority over
    * `tone`. Either one of the categorical hue names (`'teal'`, `'indigo'`,
    * … — resolves to that hue's solid step, `--<hue>-9`) or any CSS color
-   * string (`'#f0abfc'`, `'var(--my-token)'`). All materials work on top of
+   * string (`'#f0abfc'`, `'var(--my-token)'`). Most materials work on top of
    * it — `solid` fills with it (auto-contrasting text), `translucent`/
-   * `glass`/`outline`/`ghost` derive their tints from it.
+   * `outline`/`ghost` derive their tints from it. `glass`/`plate` are the
+   * exception: their frosted fill is fixed and ignores both `tone` and
+   * `color` — only their text still follows it.
    *
    * @example
    * <Box color="teal" />

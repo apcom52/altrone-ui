@@ -56,9 +56,8 @@ export const Overview: StoryObj<typeof Message> = {
       </Paragraph>
       <Paragraph>
         The container is a <Text code>Box</Text> —{' '}
-        <Text code>material="glass"</Text>, <Text code>shape="rounded"</Text> —
-        so a message reads as a soft frosted panel consistent with the rest of
-        the library, and <Text code>severity</Text> maps straight onto the Box{' '}
+        <Text code>material="solid"</Text>, <Text code>shape="rounded"</Text> —
+        and <Text code>severity</Text> maps straight onto the Box{' '}
         <Text code>tone</Text>.
       </Paragraph>
 

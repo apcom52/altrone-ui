@@ -186,8 +186,11 @@
   --box-fill: var(--box-tone-translucent);
 }
 
+/* A frosted panel surface, independent of `tone` — glass is meant to read as
+   translucent material, not a tinted one. See `.MaterialPlate` below for the
+   same fill with a bordered control chrome on top. */
 .MaterialGlass {
-  --box-fill: var(--box-tone-translucent);
+  --box-fill: var(--glass-background-color);
   --box-blur: var(--glass-effects);
 }
 
@@ -346,20 +349,17 @@
   filter: brightness(0.97);
 }
 
-.Pressable.MaterialGlass:active,
-.Editable.MaterialGlass:focus-within {
-  --box-fill: var(--box-tone-translucent-strong);
-
-  backdrop-filter: var(--glass-press-effects);
-}
-
 /* Matches the former default Button — a press deepens the backdrop blur and
-   lifts brightness a touch; fill, edge and shadow are unchanged. */
+   lifts brightness a touch; fill, edge and shadow are unchanged. `MaterialGlass`
+   shares this (no bordered chrome, otherwise identical frosted fill). */
+.Pressable.MaterialGlass:active,
+.Editable.MaterialGlass:focus-within,
 .Pressable.MaterialPlate:active,
 .Editable.MaterialPlate:focus-within {
   backdrop-filter: var(--glass-press-effects);
 }
 
+.Pressable.MaterialGlass:active,
 .Pressable.MaterialPlate:active {
   filter: brightness(1.1);
 }

@@ -1,0 +1,129 @@
+:global([data-altrone-root='true']) {
+  --sheet-backdrop-color: var(--color-overlay-scrim);
+}
+
+.Sheet {
+  position: fixed;
+  inset: 0;
+  z-index: var(--level-offcanvas-backdrop);
+}
+
+.Backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: var(--sheet-backdrop-color);
+}
+
+/**
+ * The flex packing (and its `overflow: hidden` clip) lives on its own layer,
+ * separate from `.Backdrop` — `justify-content: flex-end` (`.End`/`.Bottom`)
+ * paired with an animating flex-item sibling has been observed to bleed a
+ * transient offset into an absolutely-positioned sibling's own box in this
+ * container; keeping `.Backdrop` out of that flex context sidesteps it
+ * regardless of the exact browser mechanism.
+ */
+.Content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  padding: var(--sheet-inset);
+  /** Clips the panel while it slides past the viewport edge, so an in-flight
+      transform never adds a page-level scrollbar (the container is `fixed`,
+      so this only guards against the transform's own paint, not layout). */
+  overflow: hidden;
+  /** Covers the full viewport like `.Backdrop`, but only the panel itself
+      (`.PanelSlot`, re-enabled below) should catch clicks — otherwise this
+      empty flex space would sit on top of `.Backdrop` and swallow every
+      backdrop click. */
+  pointer-events: none;
+}
+
+.Start {
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.End {
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.Top {
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.Bottom {
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/**
+ * `top`/`bottom` + `auto` height (the iOS-sheet idiom) scrolls here instead
+ * of inside `.Panel` — the whole panel scrolls into view rather than sitting
+ * in a fixed-size card with its own inner scrollbar. `.Spacer` (below) is
+ * what keeps the minimum far-edge gap, so `justify-content` no longer needs
+ * to pack toward either end — reset to flow order. Sliding the panel via
+ * `transform` doesn't affect scrollable overflow (that's computed from
+ * layout position, not the transformed one), so this never shows a spurious
+ * scrollbar mid-animation.
+ */
+.ScrollContent {
+  overflow-y: auto;
+  overflow-x: hidden;
+  justify-content: flex-start;
+}
+
+/** Without this, the flex algorithm's default "auto" minimum size lets a
+    tall panel get compressed to fit instead of the container scrolling. */
+.ScrollContent .PanelSlot {
+  flex-shrink: 0;
+}
+
+/** Grows to fill any leftover space (pinning a short panel to the anchor
+    edge) but never shrinks below the minimum far-edge gap. */
+.Spacer {
+  flex: 1 0 15vh;
+}
+
+.PanelSlot {
+  position: relative;
+  z-index: var(--level-offcanvas);
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  pointer-events: auto;
+}
+
+/** Enter/exit scale grows out of the screen edge the panel slides from. */
+.Start .PanelSlot {
+  transform-origin: left center;
+}
+
+.End .PanelSlot {
+  transform-origin: right center;
+}
+
+.Top .PanelSlot {
+  transform-origin: center top;
+}
+
+.Bottom .PanelSlot {
+  transform-origin: center bottom;
+}
+
+/** Overrides Box's own centering flex defaults so arbitrary content lays out
+    top-down and scrolls internally instead of being vertically centered. */
+.Panel {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+
+  &:focus-visible {
+    outline: none;
+  }
+}

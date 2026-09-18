@@ -715,16 +715,16 @@ export const Materials: StoryObj<typeof Box> = {
         <Heading>Eight fill treatments, one shared interaction model</Heading>
         <Paragraph>
           Each material differs in what&rsquo;s there at rest — a full fill (
-          <Text code>solid</Text>), a blurred translucent one (
-          <Text code>glass</Text>), that same frosted fill plus a hairline edge
-          and a resting shadow so it reads as raised off the surface (
-          <Text code>plate</Text>), a flat translucent one (
+          <Text code>solid</Text>), a fixed frosted one, independent of{' '}
+          <Text code>tone</Text> (<Text code>glass</Text>), that same frosted
+          fill plus a hairline edge and a resting shadow so it reads as raised
+          off the surface (<Text code>plate</Text>), a flat tone-tinted one (
           <Text code>translucent</Text>), nothing at all (
           <Text code>transparent</Text>), a static border (
-          <Text code>outline</Text>), a border that only shows up on
-          interaction (<Text code>ghost</Text>), or a diagonal-hatch placeholder
-          surface for &ldquo;content goes here&rdquo; stubs and empty drop
-          targets (<Text code>hatch</Text>).
+          <Text code>outline</Text>), a border that only shows up on interaction
+          (<Text code>ghost</Text>), or a diagonal-hatch placeholder surface for
+          &ldquo;content goes here&rdquo; stubs and empty drop targets (
+          <Text code>hatch</Text>).
         </Paragraph>
         <Paragraph>
           Every <Text code>pressable</Text> material reacts the same way in two
@@ -739,12 +739,14 @@ export const Materials: StoryObj<typeof Box> = {
 
         <Heading>Glass only earns its keep over busy content</Heading>
         <Paragraph>
-          On a flat page <Text code>glass</Text> and{' '}
-          <Text code>translucent</Text> look nearly identical — the{' '}
-          <Text code>backdrop-filter</Text> has nothing to blur. Put the same
-          row over a photo or a dense layout and the difference is the whole
-          point: <Text code>glass</Text> frosts what&rsquo;s behind it,{' '}
-          <Text code>translucent</Text> just tints it.
+          <Text code>glass</Text> and <Text code>plate</Text> share the exact
+          same fixed frosted fill — the difference is <Text code>plate</Text>
+          &rsquo;s hairline edge and resting shadow, which read as a raised
+          control chrome rather than a bare panel. Neither shows off its{' '}
+          <Text code>backdrop-filter</Text> blur on a flat page; put the same
+          row over a photo or a dense layout and the frosting becomes obvious —{' '}
+          <Text code>translucent</Text>, by contrast, just tints whatever tone
+          it&rsquo;s given and never blurs what&rsquo;s behind it.
         </Paragraph>
         <MaterialsOverPhoto />
 
@@ -753,7 +755,10 @@ export const Materials: StoryObj<typeof Box> = {
           <Text code>material</Text> and <Text code>tone</Text> are independent
           axes — the material decides <em>how much</em> of the tone shows (a
           solid fill, a faint wash, an edge), the tone decides <em>which</em>{' '}
-          color it pulls from.
+          color it pulls from. <Text code>glass</Text> and{' '}
+          <Text code>plate</Text> are the exception: their frosted fill is fixed
+          and doesn&rsquo;t move across the row — only their text color still
+          follows <Text code>tone</Text>.
         </Paragraph>
         <MaterialToneMatrix />
 

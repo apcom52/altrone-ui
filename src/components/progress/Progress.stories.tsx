@@ -53,10 +53,10 @@ export const Overview: StoryObj<typeof Progress> = {
       </Paragraph>
       <Paragraph>
         The track is a <Text code>Box</Text> (<Text code>shape="pill"</Text>,{' '}
-        <Text code>material="glass"</Text>), so its radius and frosted
-        background come from the shared Box system; the active fill and label
-        colours stay Progress&rsquo;s own, themeable via the{' '}
-        <Text code>--progress-*</Text> custom properties.
+        <Text code>material="solid"</Text>), so its radius and fill come from
+        the shared Box system; the active fill and label colours stay
+        Progress&rsquo;s own, themeable via the <Text code>--progress-*</Text>{' '}
+        custom properties.
       </Paragraph>
 
       <Progress value={62} />

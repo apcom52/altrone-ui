@@ -48,7 +48,7 @@ export const Message = ({
       style={style}
       role={resolvedAriaRole}
       shape="rounded"
-      material="glass"
+      material="solid"
       tone={tone}
       padding={icon ? 8 : { x: 16, y: 8 }}
       {...restProps}
@@ -58,7 +58,12 @@ export const Message = ({
           {icon}
         </div>
       ) : null}
-      <Flex orientation="vertical" className={s.Content} gap="m" justify="center">
+      <Flex
+        orientation="vertical"
+        className={s.Content}
+        gap="m"
+        justify="center"
+      >
         <div className={s.Text}>
           {title ? <div className={s.Header}>{title}</div> : null}
           {children ? <div className={s.Body}>{children}</div> : null}
