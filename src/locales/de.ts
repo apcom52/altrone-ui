@@ -53,6 +53,7 @@ export const de: Localization = {
   toolbar: {
     collapseSidebar: 'Seitenleiste einklappen',
     expandSidebar: 'Seitenleiste ausklappen',
+    moreActions: 'Mehr Aktionen',
   },
   screen: {
     sidebarLabel: 'Seitenleiste',

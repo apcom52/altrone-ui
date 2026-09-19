@@ -47,8 +47,7 @@ export const Progress = ({
     <Box
       ref={ref as Ref<HTMLElement>}
       shape="pill"
-      material="solid"
-      tone="neutral"
+      material="pale"
       role="progressbar"
       aria-valuenow={clampedValue}
       aria-valuemin={min}

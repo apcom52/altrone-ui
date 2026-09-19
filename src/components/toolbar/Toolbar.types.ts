@@ -4,6 +4,13 @@ import { Justify, Size } from 'types';
 
 export type ToolbarVariant = 'plain' | 'grouped' | 'solid';
 export type ToolbarEdge = 'top' | 'bottom' | 'left' | 'right';
+/**
+ * Collapse priority once a `Toolbar.Leading`/`Center`/`Trailing` (or a flat
+ * `Toolbar`) runs out of room: `low` collapses first, `medium` (default)
+ * only once every `low` item is already hidden, `high` never collapses.
+ * Collapsed items move into an overflow `Dropdown` appended to the row.
+ */
+export type ToolbarActionPriority = 'high' | 'medium' | 'low';
 
 export interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
@@ -37,6 +44,8 @@ export interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
 export interface ToolbarActionProps extends Omit<ButtonProps, 'variant'> {
   ref?: React.Ref<HTMLButtonElement>;
   kbd?: string;
+  /** @default 'medium' */
+  priority?: ToolbarActionPriority;
 }
 
 export interface ToolbarSidebarToggleActionProps
@@ -69,6 +78,8 @@ export interface ToolbarGroupProps extends React.HTMLAttributes<HTMLDivElement> 
    * whatever the parent `Toolbar` uses.
    */
   variant?: ToolbarVariant;
+  /** Collapse priority for the whole group as one unit. @default 'medium' */
+  priority?: ToolbarActionPriority;
 }
 
 export interface ToolbarSeparatorProps

@@ -38,7 +38,7 @@ describe('Label', () => {
     );
     const cn = screen.getByTestId('l').className;
     expect(cn).toMatch(/Success/);
-    expect(cn).toMatch(/Soft/);
+    expect(cn).toMatch(/Pale/);
     expect(cn).toMatch(/Pill/);
     expect(cn).toMatch(/Large/);
   });

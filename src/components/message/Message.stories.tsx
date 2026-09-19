@@ -56,7 +56,7 @@ export const Overview: StoryObj<typeof Message> = {
       </Paragraph>
       <Paragraph>
         The container is a <Text code>Box</Text> —{' '}
-        <Text code>material="solid"</Text>, <Text code>shape="rounded"</Text> —
+        <Text code>material="pale"</Text>, <Text code>shape="rounded"</Text> —
         and <Text code>severity</Text> maps straight onto the Box{' '}
         <Text code>tone</Text>.
       </Paragraph>

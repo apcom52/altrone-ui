@@ -11,6 +11,8 @@ import s from './columnHeaders.module.scss';
 
 interface ColumnHeadersProps {
   hasRowActions?: boolean;
+  /** True when there's no `DataTable.Header` row above this one — see `.RoundTop`. */
+  roundTop?: boolean;
   /** The sticky row itself — receives the per-side inset/radius custom properties. */
   rowRef?: Ref<HTMLDivElement>;
   /** Shifted by `transform` to mirror the body's horizontal scroll — see `useDataTableHorizontalScroll`. */
@@ -27,6 +29,7 @@ const resizeHandleVariants = {
 
 export const ColumnHeaders = ({
   hasRowActions = false,
+  roundTop = false,
   rowRef,
   trackRef,
 }: ColumnHeadersProps) => {
@@ -54,7 +57,10 @@ export const ColumnHeaders = ({
   };
 
   return (
-    <div ref={rowRef} className={clsx(s.Wrapper, s.HeaderRow)}>
+    <div
+      ref={rowRef}
+      className={clsx(s.Wrapper, s.HeaderRow, { [s.RoundTop]: roundTop })}
+    >
       <div className={s.Backdrop} />
       <div
         ref={trackRef}

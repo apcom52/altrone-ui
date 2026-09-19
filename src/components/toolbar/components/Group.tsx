@@ -12,6 +12,7 @@ export const Group = memo(
     justify = 'start',
     weight,
     variant,
+    priority,
     className,
     style,
     ...restProps

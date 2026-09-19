@@ -86,18 +86,12 @@
 
 /**
  * Box models neither a persistent "selected" state nor a value for it (open in
- * box.md), so the toggle look is layered here. It redefines the tone's own
- * fill vars rather than fighting `:hover`/`:active` on specificity — Box's
- * interaction rules then resolve to the selected colour by themselves, and the
- * only rule that has to outrank a material is this flat `.Button.Selected` one.
+ * box.md) — `text`/`default` selected buttons get it by switching Box's own
+ * `material`/`tone` props to `pale`/`accent` in Button.tsx, which resolves
+ * fill/text/hover/active through Box's normal material rules with no override
+ * needed here. `submit` keeps its own solid fill (unchanged by `selected`),
+ * so it still needs this one bump for the extra selected emphasis.
  */
-.Button.Selected {
-  --box-fill: var(--background-1);
-  --box-tone-text: var(--accent-11);
-  --box-tone-translucent: var(--background-1);
-  --box-tone-translucent-strong: var(--background-1);
-}
-
 .Button.Selected.Primary {
   --box-fill: var(--accent-10);
   --box-tone-text: var(--white);

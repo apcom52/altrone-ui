@@ -31,6 +31,19 @@
   overflow: hidden;
 }
 
+/**
+ * Applied only when there's no `DataTable.Header` (actions/filters) row
+ * above this one, so it sits flush against `.Wrapper`'s own rounded top
+ * corners (`--data-table-rounding`, `dataTable.module.scss`). Without it,
+ * `.Backdrop`'s un-inset/un-rounded scrolled-away state (see below) clips to
+ * a square corner here that pokes out past `.Wrapper`'s rounded silhouette,
+ * since `.Wrapper` itself doesn't clip its children.
+ */
+.RoundTop {
+  border-top-left-radius: var(--data-table-rounding);
+  border-top-right-radius: var(--data-table-rounding);
+}
+
 .HeaderRowTrack {
   display: grid;
   width: max-content;

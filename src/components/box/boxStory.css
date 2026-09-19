@@ -1,43 +1,11 @@
+/* Plain full-bleed wrapper — no ambient pattern, so material/tone fills read
+   at their true color instead of fighting a busy backdrop. Stories that need
+   a genuinely busy background to make a point (glass vs. translucent) reach
+   for the self-contained `.box-photo` panel below instead. */
 .box-wrapper {
-  --bg-color-1: var(--accent-4);
-  --bg-color-2: var(--accent-3);
-
-  background-color: #e5e5f7;
-  opacity: 0.8;
   margin: calc(-1 * var(--gap)) calc(-1 * var(--xl-gap));
   padding: var(--gap) var(--xl-gap);
   min-height: 100vh;
-  background-image:
-    radial-gradient(
-      var(--bg-color-1) 17%,
-      var(--bg-color-2) 18% 35%,
-      transparent 36.5%
-    ),
-    radial-gradient(
-      var(--bg-color-1) 17%,
-      var(--bg-color-2) 18% 35%,
-      transparent 36.5%
-    ),
-    radial-gradient(
-      var(--bg-color-2) 34%,
-      var(--bg-color-1) 36% 68%,
-      transparent 70%
-    ),
-    repeating-linear-gradient(
-      45deg,
-      var(--bg-color-1) -12.5% 12.5%,
-      var(--bg-color-2) 0 37.5%
-    );
-  background-position:
-    -20px -20px,
-    20px 20px,
-    0 0,
-    0 0;
-  background-size:
-    80px 80px,
-    80px 80px,
-    40px 40px,
-    80px 80px;
 }
 
 /* A vivid, busy "photo" panel — the only place `glass` visibly differs from

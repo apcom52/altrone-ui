@@ -66,6 +66,16 @@ export interface ScreenHeaderProps extends HTMLAttributes<HTMLElement> {
    * width regardless of the sidebar.
    */
   insetStart?: number | string;
+  /**
+   * `true` (default) pins the header to the top of the viewport as fixed
+   * chrome — `Screen.Content`/`Screen.Aside` reserve clearance for it and
+   * `--top-safe-area` (which DataTable's sticky column header/footer offset
+   * by) accounts for its height. `false` puts it back in normal document
+   * flow so it scrolls away with the page; no clearance is reserved and
+   * `--top-safe-area` stays `0px`, so an in-content sticky header sticks
+   * flush to the true viewport top once this one scrolls out of view.
+   */
+  fixed?: boolean;
 }
 
 export interface ScreenSidebarProps

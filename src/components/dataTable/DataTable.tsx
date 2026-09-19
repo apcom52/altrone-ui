@@ -214,6 +214,7 @@ const DataTableComponent = <DataType extends object>(
         <div className={clsx(s.Table, className)} style={style} {...restProps}>
           <ColumnHeaders
             hasRowActions={Boolean(rowActions)}
+            roundTop={!headerVisible}
             rowRef={headerRowRef}
             trackRef={headerTrackRef}
           />

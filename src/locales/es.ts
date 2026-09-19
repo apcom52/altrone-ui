@@ -53,6 +53,7 @@ export const es: Localization = {
   toolbar: {
     collapseSidebar: 'Contraer barra lateral',
     expandSidebar: 'Expandir barra lateral',
+    moreActions: 'Más acciones',
   },
   screen: {
     sidebarLabel: 'Barra lateral',

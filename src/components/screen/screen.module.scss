@@ -4,12 +4,12 @@
   --screen-bottom-nav-height: 64px;
   /**
    * Reserved space at the top/bottom of the viewport occupied by fixed
-   * chrome — `0px` with no `Screen.Header` / `Screen.BottomNavigation`. A
-   * `position: sticky` element anywhere inside `Screen.Content` (e.g.
-   * DataTable's column-header row or its footer) should offset its
-   * `top`/`bottom` by these instead of a bare `0`, or it sticks at the true
-   * viewport edge and ends up underneath the fixed chrome instead of
-   * clear of it.
+   * chrome — `0px` with no `Screen.Header` / `Screen.BottomNavigation`, or
+   * with a `Screen.Header` that opted out of `fixed`. A `position: sticky`
+   * element anywhere inside `Screen.Content` (e.g. DataTable's column-header
+   * row or its footer) should offset its `top`/`bottom` by these instead of
+   * a bare `0`, or it sticks at the true viewport edge and ends up
+   * underneath the fixed chrome instead of clear of it.
    */
   --top-safe-area: 0px;
   --bottom-safe-area: 0px;
@@ -131,6 +131,19 @@
   color: inherit;
 }
 
+/**
+ * `fixed={false}`: back in normal grid flow instead of pinned to the
+ * viewport — edge-to-edge via the same negative-margin bleed `.Footer` uses,
+ * since `position: fixed` no longer does it for free.
+ */
+.Screen > .Header.Static {
+  position: relative;
+  inset-block-start: auto;
+  inset-inline: auto;
+  margin-inline-start: calc(-1 * var(--screen-sidebar-inset));
+  transition: margin-inline-start 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
 .HeaderInner {
   position: relative;
   display: flex;
@@ -163,18 +176,25 @@
 }
 
 /**
- * The fixed header is out of flow — push the content zones below it.
- * Descendant, not `> `: Content / Aside may be nested inside a `Splitter`.
+ * A fixed header is out of flow — push the content zones below it. Not
+ * needed for `fixed={false}` (`.Static`): it stays in the grid row, so the
+ * row's own height already reserves the space. Descendant, not `> `:
+ * Content / Aside may be nested inside a `Splitter`.
  */
-.Screen:has(> .Header) .Content,
-.Screen:has(> .Header) .Aside {
+.Screen:has(> .Header:not(.Static)) .Content,
+.Screen:has(> .Header:not(.Static)) .Aside {
   padding-block-start: calc(
     var(--screen-content-padding-block) + var(--screen-header-height)
   );
 }
 
-/** Header height plus a breathing gap — see `--top-safe-area` above. */
-.Screen:has(> .Header) {
+/**
+ * Header height plus a breathing gap — see `--top-safe-area` above. Only for
+ * a fixed header: `fixed={false}` leaves nothing pinned over the viewport
+ * top once it scrolls away, so in-content sticky elements (DataTable's
+ * column header) should stick flush to the true top instead.
+ */
+.Screen:has(> .Header:not(.Static)) {
   --top-safe-area: calc(var(--screen-header-height) + var(--xs-gap));
 }
 

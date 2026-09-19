@@ -52,6 +52,7 @@ export const tr: Localization = {
   toolbar: {
     collapseSidebar: 'Kenar çubuğunu daralt',
     expandSidebar: 'Kenar çubuğunu genişlet',
+    moreActions: 'Diğer işlemler',
   },
   screen: {
     sidebarLabel: 'Kenar çubuğu',

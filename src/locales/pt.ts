@@ -52,6 +52,7 @@ export const pt: Localization = {
   toolbar: {
     collapseSidebar: 'Recolher barra lateral',
     expandSidebar: 'Expandir barra lateral',
+    moreActions: 'Mais ações',
   },
   screen: {
     sidebarLabel: 'Barra lateral',

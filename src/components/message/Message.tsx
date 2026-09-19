@@ -48,7 +48,7 @@ export const Message = ({
       style={style}
       role={resolvedAriaRole}
       shape="rounded"
-      material="solid"
+      material="pale"
       tone={tone}
       padding={icon ? 8 : { x: 16, y: 8 }}
       {...restProps}

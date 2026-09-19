@@ -572,6 +572,7 @@ const materials: BoxMaterial[] = [
   'glass',
   'plate',
   'translucent',
+  'pale',
   'transparent',
   'outline',
   'ghost',
@@ -712,14 +713,15 @@ export const Materials: StoryObj<typeof Box> = {
   render: () => (
     <div className="box-wrapper">
       <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
-        <Heading>Eight fill treatments, one shared interaction model</Heading>
+        <Heading>Nine fill treatments, one shared interaction model</Heading>
         <Paragraph>
           Each material differs in what&rsquo;s there at rest — a full fill (
           <Text code>solid</Text>), a fixed frosted one, independent of{' '}
           <Text code>tone</Text> (<Text code>glass</Text>), that same frosted
           fill plus a hairline edge and a resting shadow so it reads as raised
           off the surface (<Text code>plate</Text>), a flat tone-tinted one (
-          <Text code>translucent</Text>), nothing at all (
+          <Text code>translucent</Text>), the same tint made opaque (
+          <Text code>pale</Text>), nothing at all (
           <Text code>transparent</Text>), a static border (
           <Text code>outline</Text>), a border that only shows up on interaction
           (<Text code>ghost</Text>), or a dot-grid placeholder surface for
@@ -789,7 +791,6 @@ const tones: BoxTone[] = [
   'success',
   'warning',
   'info',
-  'subtle',
 ];
 
 const ToneRow = () => (
@@ -1066,15 +1067,17 @@ export const ToneAndElevation: StoryObj<typeof Box> = {
     <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Heading>Tone picks the color</Heading>
       <Paragraph>
-        Five of the seven tones are fixed hues, independent of the
-        consumer&rsquo;s chosen accent color — <Text code>info</Text> is one
-        exception, aliasing <Text code>accent</Text> directly, since it&rsquo;s
-        about the primary flow rather than a status that needs to stay
-        recognizable regardless of branding (see <Text code>color.md</Text>).{' '}
-        <Text code>subtle</Text> is the other: the same gray scale as{' '}
-        <Text code>neutral</Text>, just one role-step lighter — a light gray
-        solid fill instead of a dark one — for a surface that should read as
-        quiet chrome rather than a status or a call to action.
+        Five of the six tones are fixed hues, independent of the
+        consumer&rsquo;s chosen accent color — <Text code>info</Text> is the
+        one exception, aliasing <Text code>accent</Text> directly, since
+        it&rsquo;s about the primary flow rather than a status that needs to
+        stay recognizable regardless of branding (see{' '}
+        <Text code>color.md</Text>). For a quiet neutral surface — chrome
+        rather than a status or a call to action — reach for{' '}
+        <Text code>tone=&quot;neutral&quot;</Text> with{' '}
+        <Text code>material=&quot;pale&quot;</Text> instead of a dedicated
+        tone; see <Text weight="medium">Every material, against every
+        tone</Text> below.
       </Paragraph>
       <ToneRow />
 

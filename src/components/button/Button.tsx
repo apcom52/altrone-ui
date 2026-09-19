@@ -3,7 +3,7 @@ import { ButtonProps } from './Button.types.ts';
 import s from './button.module.scss';
 import clsx from 'clsx';
 import { HTMLMotionProps, motion, useReducedMotionConfig } from 'motion/react';
-import { Box, BoxMaterial } from 'components/box';
+import { Box, BoxMaterial, BoxTone } from 'components/box';
 import { Badge } from 'internal/badge';
 import { Loading } from 'components/loading/Loading.tsx';
 import { Tooltip } from 'components/tooltip/Tooltip.tsx';
@@ -82,9 +82,15 @@ export const Button = memo((props: ButtonProps) => {
 
   const padding = isSingleIcon ? 0 : { x: PADDING_X_BY_SIZE[size], y: 0 };
 
-  const boxTone = danger
+  /* `selected` gets `pale`/`accent` rather than the variant's own material —
+     opaque, so it stays visible over a frosted toolbar (unlike `translucent`),
+     and `submit` keeps its solid emphasis instead of being flattened to it. */
+  const material: BoxMaterial =
+    selected && variant !== 'submit' ? 'pale' : MATERIAL_BY_VARIANT[variant];
+
+  const boxTone: BoxTone = danger
     ? 'danger'
-    : variant === 'submit'
+    : selected || variant === 'submit'
       ? 'accent'
       : 'neutral';
 
@@ -174,7 +180,7 @@ export const Button = memo((props: ButtonProps) => {
       asChild
       ref={ref as Ref<HTMLElement>}
       shape={isSingleIcon ? 'circle' : 'pill'}
-      material={MATERIAL_BY_VARIANT[variant]}
+      material={material}
       tone={boxTone}
       size={size}
       padding={padding}

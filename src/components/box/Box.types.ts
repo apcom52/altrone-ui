@@ -8,6 +8,9 @@ export type BoxMaterial =
   | 'glass'
   | 'plate'
   | 'translucent'
+  /** Same tint as `translucent`, opaque instead of alpha — a pale, opaque
+      fill that doesn't blend with whatever sits behind it. */
+  | 'pale'
   | 'transparent'
   | 'outline'
   | 'ghost'
@@ -17,14 +20,7 @@ export type BoxMaterial =
   | 'dotted';
 
 export type BoxTone =
-  | 'neutral'
-  | 'accent'
-  | 'danger'
-  | 'success'
-  | 'warning'
-  | 'info'
-  /** Same gray scale as `neutral`, one step lighter — a light gray fill instead of a dark solid one. */
-  | 'subtle';
+  'neutral' | 'accent' | 'danger' | 'success' | 'warning' | 'info';
 
 /** The 10 categorical hues (see colors/_categorical.scss). */
 export type BoxColorHue =

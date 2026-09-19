@@ -8,6 +8,8 @@ import {
   Mail,
   MessageCircle,
   Phone,
+  Pin,
+  PinOff,
   Plus,
   Ticket as TicketIcon,
   Users,
@@ -267,7 +269,11 @@ const AgentCard = ({
  * switches between three pages kept in local state; `All tickets` is the
  * `DataTable` at full scale — sortable/filterable columns, pagination and
  * bulk selection over the whole dataset. A row's "View" action opens a
- * `Drawer` with the full ticket and inline status/assignee editing.
+ * `Drawer` with the full ticket and inline status/assignee editing. The
+ * toolbar's pin toggle flips `Screen.Header`'s `fixed` prop live — on
+ * `All tickets`, unpinning it shows `DataTable`'s sticky column header stick
+ * flush to the true viewport top once the header scrolls away, instead of
+ * clearing a pinned bar.
  */
 export const HelpdeskApp: StoryObj<typeof Screen> = {
   name: 'Helpdesk',
@@ -276,6 +282,7 @@ export const HelpdeskApp: StoryObj<typeof Screen> = {
     const [error, setError] = useState(false);
     const [activePage, setActivePage] = useState<Page>('overview');
     const [openTicketId, setOpenTicketId] = useState<number | null>(null);
+    const [headerFixed, setHeaderFixed] = useState(true);
 
     useEffect(() => {
       let cancelled = false;
@@ -441,13 +448,22 @@ export const HelpdeskApp: StoryObj<typeof Screen> = {
 
     return (
       <Screen title="Helpdesk">
-        <Screen.Header>
+        <Screen.Header fixed={headerFixed}>
           <Toolbar variant="solid" size="m">
             <Toolbar.Group>
               <Toolbar.SidebarToggleAction />
             </Toolbar.Group>
             <Toolbar.Title title={PAGE_TITLE[activePage]} />
             <Toolbar.Separator />
+            <Toolbar.Group>
+              <Toolbar.Action
+                label={headerFixed ? 'Unpin header' : 'Pin header'}
+                icon={headerFixed ? <Pin /> : <PinOff />}
+                showLabel={false}
+                selected={headerFixed}
+                onClick={() => setHeaderFixed((prev) => !prev)}
+              />
+            </Toolbar.Group>
             <Toolbar.Group>
               <Toolbar.Action label="New ticket" icon={<Plus />} />
             </Toolbar.Group>

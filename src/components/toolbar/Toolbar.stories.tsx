@@ -12,8 +12,10 @@ import {
   Bell,
   Bold,
   Circle,
+  Download,
   Ellipsis,
   Eye,
+  Filter,
   Images,
   Italic,
   MessageCircle,
@@ -21,13 +23,16 @@ import {
   Pen,
   PencilLine,
   Plus,
+  Printer,
   RectangleHorizontal,
   Redo2,
   Search,
   Settings,
   Share,
+  Star,
   Trash2,
   Type,
+  Underline,
   Undo2,
 } from 'lucide-react';
 import { Dropdown } from 'components/dropdown/index.ts';
@@ -36,6 +41,7 @@ import { Label } from 'components/label/Label.tsx';
 import { Avatar } from 'components/avatar/Avatar.tsx';
 import { TextInput } from 'components/textInput/TextInput.tsx';
 import { Switch } from 'components/switch/Switch.tsx';
+import { Slider } from 'components/slider/Slider.tsx';
 
 const story: Meta<typeof Toolbar> = {
   title: 'Components/Containers/Toolbar',
@@ -69,8 +75,8 @@ export const Overview: StoryObj<typeof Toolbar> = {
         <Text code>role="toolbar"</Text>, styled after Apple's liquid-glass
         toolbars — <Text code>Toolbar.Group</Text> collects controls into
         blurred glass capsules with a specular top edge. The same component
-        dresses up as an application header, a panel header inside a frame, or
-        a row of floating glass pills over a canvas.
+        dresses up as an application header, a panel header inside a frame, or a
+        row of floating glass pills over a canvas.
       </Text>
 
       <Text block size={7} weight="bold" style={{ marginTop: 8 }}>
@@ -78,8 +84,8 @@ export const Overview: StoryObj<typeof Toolbar> = {
       </Text>
       <Text block size={4} style={{ lineHeight: 1.6 }}>
         <Text code>variant</Text> picks how much surface the toolbar carries —{' '}
-        <Text code>plain</Text> (nothing, flat buttons), <Text code>grouped</Text>{' '}
-        (glass group pills over a transparent strip),{' '}
+        <Text code>plain</Text> (nothing, flat buttons),{' '}
+        <Text code>grouped</Text> (glass group pills over a transparent strip),{' '}
         <Text code>solid</Text> (default — an accent-tinted blurred bar plus the
         pills). All three flow in normal document order. The{' '}
         <Text code>Variants</Text> story lays them side by side.
@@ -95,13 +101,18 @@ export const Overview: StoryObj<typeof Toolbar> = {
         the centre stays optically centred no matter how wide the sides grow.
         Group related actions with <Text code>Toolbar.Group</Text>, push the
         rest to the far edge with a flexible <Text code>Toolbar.Separator</Text>
-        , or divide two groups with <Text code>Toolbar.Separator variant="line"</Text>.
+        , or divide two groups with{' '}
+        <Text code>Toolbar.Separator variant="line"</Text>.
       </Text>
       <Toolbar>
         <Toolbar.Leading>
           <Toolbar.Group>
             <Toolbar.Action label="Bold" icon={<Bold />} showLabel={false} />
-            <Toolbar.Action label="Italic" icon={<Italic />} showLabel={false} />
+            <Toolbar.Action
+              label="Italic"
+              icon={<Italic />}
+              showLabel={false}
+            />
           </Toolbar.Group>
           <Toolbar.Separator variant="line" />
           <Toolbar.Group>
@@ -133,7 +144,12 @@ const variantSample = (
   <>
     <Toolbar.Leading>
       <Toolbar.Group>
-        <Toolbar.Action label="Undo" icon={<Undo2 />} showLabel={false} kbd="⌘Z" />
+        <Toolbar.Action
+          label="Undo"
+          icon={<Undo2 />}
+          showLabel={false}
+          kbd="⌘Z"
+        />
         <Toolbar.Action
           label="Redo"
           icon={<Redo2 />}
@@ -146,7 +162,11 @@ const variantSample = (
     <Toolbar.Trailing>
       <Toolbar.Group>
         <Toolbar.Action label="Share" icon={<Share />} showLabel={false} />
-        <Toolbar.Action label="Comments" icon={<MessageCircle />} showLabel={false} />
+        <Toolbar.Action
+          label="Comments"
+          icon={<MessageCircle />}
+          showLabel={false}
+        />
         <Toolbar.Action label="More" icon={<Ellipsis />} showLabel={false} />
       </Toolbar.Group>
     </Toolbar.Trailing>
@@ -303,11 +323,11 @@ export const ApplicationHeader: StoryObj<typeof Toolbar> = {
           Application header
         </Text>
         <Text block size={4} style={{ maxWidth: 720, lineHeight: 1.6 }}>
-          The default <Text code>glass</Text> variant with <Text code>sticky</Text>{' '}
-          pins the header to the top of the scroll container. A branded title sits in{' '}
-          <Text code>Toolbar.Leading</Text>, global search in{' '}
-          <Text code>Toolbar.Center</Text>, account and app-level actions in{' '}
-          <Text code>Toolbar.Trailing</Text>.
+          The default <Text code>glass</Text> variant with{' '}
+          <Text code>sticky</Text> pins the header to the top of the scroll
+          container. A branded title sits in <Text code>Toolbar.Leading</Text>,
+          global search in <Text code>Toolbar.Center</Text>, account and
+          app-level actions in <Text code>Toolbar.Trailing</Text>.
         </Text>
 
         <div
@@ -611,8 +631,8 @@ export const ComponentHeader: StoryObj<typeof Toolbar> = {
         Component doc header
       </Text>
       <Text block size={4} style={{ lineHeight: 1.6 }}>
-        <Text code>Toolbar.Logo</Text> is a slot for the product mark, sized to a
-        square that tracks the toolbar <Text code>size</Text>. Here it opens a
+        <Text code>Toolbar.Logo</Text> is a slot for the product mark, sized to
+        a square that tracks the toolbar <Text code>size</Text>. Here it opens a
         docs header: logo, browser-style back/forward, the page title, then
         search / notifications / overflow on the trailing edge.
       </Text>
@@ -623,7 +643,11 @@ export const ComponentHeader: StoryObj<typeof Toolbar> = {
             <AltroneMark />
           </Toolbar.Logo>
           <Toolbar.Group>
-            <Toolbar.Action label="Back" icon={<ArrowLeft />} showLabel={false} />
+            <Toolbar.Action
+              label="Back"
+              icon={<ArrowLeft />}
+              showLabel={false}
+            />
             <Toolbar.Action
               label="Forward"
               icon={<ArrowRight />}
@@ -634,7 +658,11 @@ export const ComponentHeader: StoryObj<typeof Toolbar> = {
         </Toolbar.Leading>
         <Toolbar.Trailing>
           <Toolbar.Group>
-            <Toolbar.Action label="Search" icon={<Search />} showLabel={false} />
+            <Toolbar.Action
+              label="Search"
+              icon={<Search />}
+              showLabel={false}
+            />
             <Toolbar.Action
               label="Notifications"
               icon={<Bell />}
@@ -651,8 +679,8 @@ export const ComponentHeader: StoryObj<typeof Toolbar> = {
       </Toolbar>
 
       <Text block size={4} style={{ lineHeight: 1.6 }}>
-        Wrap the <Text code>Toolbar.Logo</Text> in an <Text code>{'<a>'}</Text> or
-        give it an <Text code>onClick</Text> when it should navigate home.
+        Wrap the <Text code>Toolbar.Logo</Text> in an <Text code>{'<a>'}</Text>{' '}
+        or give it an <Text code>onClick</Text> when it should navigate home.
       </Text>
     </Flex>
   ),
@@ -770,10 +798,11 @@ export const Sizes: StoryObj<typeof Toolbar> = {
         Sizes
       </Text>
       <Text block size={4} style={{ lineHeight: 1.6 }}>
-        <Text code>size</Text> sets the toolbar height and inset, cascades as the
-        default <Text code>size</Text> of every <Text code>Toolbar.Action</Text>{' '}
-        inside it, and scales <Text code>Toolbar.Title</Text> to match — the
-        whole strip grows from one prop.
+        <Text code>size</Text> sets the toolbar height and inset, cascades as
+        the default <Text code>size</Text> of every{' '}
+        <Text code>Toolbar.Action</Text> inside it, and scales{' '}
+        <Text code>Toolbar.Title</Text> to match — the whole strip grows from
+        one prop.
       </Text>
       {(['mini', 's', 'm', 'l', 'xl'] as const).map((size) => (
         <Flex key={size} orientation="vertical" gap="s">
@@ -796,7 +825,11 @@ export const Sizes: StoryObj<typeof Toolbar> = {
             </Toolbar.Leading>
             <Toolbar.Trailing>
               <Toolbar.Action label="New" icon={<Plus />} showLabel={false} />
-              <Toolbar.Action label="Share" icon={<Share />} showLabel={false} />
+              <Toolbar.Action
+                label="Share"
+                icon={<Share />}
+                showLabel={false}
+              />
               <Toolbar.Action
                 label="Settings"
                 icon={<Settings />}
@@ -823,9 +856,9 @@ export const TitleStates: StoryObj<typeof Toolbar> = {
       </Text>
       <Text block size={4} style={{ lineHeight: 1.6 }}>
         A plain <Text code>Toolbar.Title</Text> is just text. Add{' '}
-        <Text code>clickable</Text> when it opens a menu — it grows a chevron and
-        a pointer cursor, and you wrap it in a <Text code>Dropdown</Text> that
-        supplies the menu. Either way the title scales with the toolbar{' '}
+        <Text code>clickable</Text> when it opens a menu — it grows a chevron
+        and a pointer cursor, and you wrap it in a <Text code>Dropdown</Text>{' '}
+        that supplies the menu. Either way the title scales with the toolbar{' '}
         <Text code>size</Text>.
       </Text>
 
@@ -920,7 +953,12 @@ export const VerticalRail: StoryObj<typeof Toolbar> = {
     const [tool, setTool] = useState('select');
     const tools = [
       { id: 'select', icon: <MousePointer2 />, label: 'Select', kbd: 'V' },
-      { id: 'rect', icon: <RectangleHorizontal />, label: 'Rectangle', kbd: 'R' },
+      {
+        id: 'rect',
+        icon: <RectangleHorizontal />,
+        label: 'Rectangle',
+        kbd: 'R',
+      },
       { id: 'ellipse', icon: <Circle />, label: 'Ellipse', kbd: 'O' },
       { id: 'text', icon: <Type />, label: 'Text', kbd: 'T' },
       { id: 'pen', icon: <Pen />, label: 'Pen', kbd: 'P' },
@@ -932,8 +970,8 @@ export const VerticalRail: StoryObj<typeof Toolbar> = {
           Vertical rail
         </Text>
         <Text block size={4} style={{ lineHeight: 1.6 }}>
-          <Text code>edge="left"</Text> (or <Text code>"right"</Text>) turns
-          the toolbar on its side, flips <Text code>aria-orientation</Text> to{' '}
+          <Text code>edge="left"</Text> (or <Text code>"right"</Text>) turns the
+          toolbar on its side, flips <Text code>aria-orientation</Text> to{' '}
           <Text code>vertical</Text>, and stacks regions top-to-bottom. Actions
           go icon-only with a tooltip.
         </Text>
@@ -1005,8 +1043,8 @@ export const HeaderActions: StoryObj<typeof Toolbar> = {
         <Text block size={4} style={{ lineHeight: 1.6 }}>
           Pass <Text code>collapsed</Text> and the component holds no state of
           its own — wire it to the same boolean you give{' '}
-          <Text code>Screen.Sidebar</Text>, and your own <Text code>onClick</Text>{' '}
-          decides what happens.
+          <Text code>Screen.Sidebar</Text>, and your own{' '}
+          <Text code>onClick</Text> decides what happens.
         </Text>
         <Toolbar>
           <Toolbar.Leading>
@@ -1026,13 +1064,395 @@ export const HeaderActions: StoryObj<typeof Toolbar> = {
           Uncontrolled — wired to Screen automatically
         </Text>
         <Text block size={4} style={{ lineHeight: 1.6 }}>
-          Omit <Text code>collapsed</Text> inside a <Text code>Screen</Text> whose{' '}
-          <Text code>Screen.Sidebar</Text> is itself uncontrolled: the action
-          reads and toggles it through <Text code>Screen</Text>'s own context —
-          no state to wire up yourself. See{' '}
+          Omit <Text code>collapsed</Text> inside a <Text code>Screen</Text>{' '}
+          whose <Text code>Screen.Sidebar</Text> is itself uncontrolled: the
+          action reads and toggles it through <Text code>Screen</Text>'s own
+          context — no state to wire up yourself. See{' '}
           <Text code>Components/Core/Screen/Dashboard</Text> for a live example
           (a real layout reads better there than nested inside this one).
         </Text>
+      </Flex>
+    );
+  },
+};
+
+/* ─────────────────────────────────────────────────────────────
+   Overflow
+   ───────────────────────────────────────────────────────────── */
+
+/** A resizable frame around a toolbar, with its own width slider. */
+function OverflowDemo({
+  width,
+  onChangeWidth,
+  min = 160,
+  max = 640,
+  children,
+}: {
+  width: number;
+  onChangeWidth: (value: number) => void;
+  min?: number;
+  max?: number;
+  children: React.ReactNode;
+}) {
+  return (
+    <Flex orientation="vertical" gap="s">
+      <Slider
+        value={width}
+        onChange={onChangeWidth}
+        min={min}
+        max={max}
+        renderLabel={(value) => `${value}px`}
+        showCurrentValue="always"
+      />
+      <div
+        style={{
+          width,
+          border: '1px solid var(--border-1)',
+          borderRadius: 12,
+          overflow: 'hidden',
+        }}
+      >
+        {children}
+      </div>
+    </Flex>
+  );
+}
+
+export const Overflow: StoryObj<typeof Toolbar> = {
+  name: 'Overflow',
+  render: () => {
+    const [iconWidth, setIconWidth] = useState(640);
+    const [textWidth, setTextWidth] = useState(640);
+    const [leadingWidth, setLeadingWidth] = useState(640);
+    const [fullWidth, setFullWidth] = useState(640);
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 760 }}>
+        <Text block size={7} weight="bold">
+          Overflow
+        </Text>
+        <Text block size={4} style={{ lineHeight: 1.6 }}>
+          <Text code>Toolbar.Action</Text> and <Text code>Toolbar.Group</Text>{' '}
+          take a <Text code>priority</Text> — <Text code>'high'</Text> (never
+          collapses), <Text code>'medium'</Text> (the default — collapses once
+          every <Text code>'low'</Text> item is already hidden) or{' '}
+          <Text code>'low'</Text> (collapses first). Each{' '}
+          <Text code>Toolbar.Leading</Text> / <Text code>Center</Text> /{' '}
+          <Text code>Trailing</Text> (or a flat <Text code>Toolbar</Text> with
+          no regions) watches its own width and folds whatever no longer fits
+          into an overflow <Text code>Dropdown</Text>, lowest priority first —
+          within a tier, items collapse in reading order, leftmost first. The
+          trigger sits at whichever edge of the region is closest to the
+          toolbar's center — the end of <Text code>Leading</Text>/
+          <Text code>Center</Text> (chevrons pointing further in) or the start
+          of <Text code>Trailing</Text> (chevrons pointing back in) — and its
+          own chevrons flip with it. Drag a slider below to reshape a toolbar
+          the same way a real window resize would.
+        </Text>
+
+        <Text block size={5} weight="bold" style={{ marginTop: 8 }}>
+          Icon-only actions
+        </Text>
+        <Text block size={4} style={{ lineHeight: 1.6 }}>
+          <Text code>Star</Text> is <Text code>'high'</Text> — it never moves
+          into the overflow menu. <Text code>Filter</Text>/
+          <Text code>Print</Text>/<Text code>Download</Text> are{' '}
+          <Text code>'low'</Text> and collapse first, left to right, one at a
+          time. The <Text code>Share</Text>/<Text code>Comments</Text>{' '}
+          <Text code>Toolbar.Group</Text> is <Text code>'medium'</Text> (the
+          default) — it collapses as one unit only once every{' '}
+          <Text code>'low'</Text> action is already hidden, and both its actions
+          reappear flattened, side by side, in the overflow menu. The trigger
+          appears on the right — <Text code>Trailing</Text>'s own end sits at
+          the toolbar's edge, so its start (closest to the center) is where the
+          trigger belongs.
+        </Text>
+        <OverflowDemo width={iconWidth} onChangeWidth={setIconWidth} min={220}>
+          <Toolbar>
+            <Toolbar.Leading>
+              <Toolbar.Title title="Report.pdf" />
+            </Toolbar.Leading>
+            <Toolbar.Trailing>
+              <Toolbar.Action
+                label="Star"
+                icon={<Star />}
+                showLabel={false}
+                priority="high"
+              />
+              <Toolbar.Group priority="medium">
+                <Toolbar.Action
+                  label="Share"
+                  icon={<Share />}
+                  showLabel={false}
+                />
+                <Toolbar.Action
+                  label="Comments"
+                  icon={<MessageCircle />}
+                  showLabel={false}
+                />
+              </Toolbar.Group>
+              <Toolbar.Action
+                label="Filter"
+                icon={<Filter />}
+                showLabel={false}
+                priority="low"
+              />
+              <Toolbar.Action
+                label="Print"
+                icon={<Printer />}
+                showLabel={false}
+                priority="low"
+              />
+              <Toolbar.Action
+                label="Download"
+                icon={<Download />}
+                showLabel={false}
+                priority="low"
+              />
+            </Toolbar.Trailing>
+          </Toolbar>
+        </OverflowDemo>
+
+        <Text block size={5} weight="bold" style={{ marginTop: 8 }}>
+          Text actions
+        </Text>
+        <Text block size={4} style={{ lineHeight: 1.6 }}>
+          Collapsing measures whatever is actually rendered, so it works the
+          same for wide, label-only actions — no icon needed. No{' '}
+          <Text code>Toolbar.Leading</Text>/<Text code>Trailing</Text> here
+          either — a flat <Text code>Toolbar</Text> collapses its own direct
+          children the same way. <Text code>Completed</Text> is{' '}
+          <Text code>'low'</Text> and goes first, then{' '}
+          <Text code>Archived</Text>, then <Text code>Trash</Text>;{' '}
+          <Text code>All</Text> and <Text code>Active</Text> stay put.
+        </Text>
+        <OverflowDemo width={textWidth} onChangeWidth={setTextWidth} min={160}>
+          <Toolbar variant="plain">
+            <Toolbar.Action label="All" priority="high" />
+            <Toolbar.Action label="Active" priority="high" />
+            <Toolbar.Action label="Completed" priority="low" />
+            <Toolbar.Action label="Archived" priority="low" />
+            <Toolbar.Action label="Trash" priority="low" />
+          </Toolbar>
+        </OverflowDemo>
+
+        <Text block size={5} weight="bold" style={{ marginTop: 8 }}>
+          Overflow on the leading edge
+        </Text>
+        <Text block size={4} style={{ lineHeight: 1.6 }}>
+          <Text code>Toolbar.Leading</Text> collapses the same way, but its
+          trigger sits at its own end (nearest the toolbar's center) with
+          chevrons pointing further inward — a text-editor formatting cluster
+          here, with a static title pinned in <Text code>Toolbar.Trailing</Text>{' '}
+          so only the leading side moves.
+        </Text>
+        <OverflowDemo
+          width={leadingWidth}
+          onChangeWidth={setLeadingWidth}
+          min={160}
+        >
+          <Toolbar>
+            <Toolbar.Leading>
+              <Toolbar.Group priority="high">
+                <Toolbar.Action
+                  label="Bold"
+                  icon={<Bold />}
+                  showLabel={false}
+                />
+                <Toolbar.Action
+                  label="Italic"
+                  icon={<Italic />}
+                  showLabel={false}
+                />
+              </Toolbar.Group>
+              <Toolbar.Group priority="medium">
+                <Toolbar.Action
+                  label="Align left"
+                  icon={<AlignLeft />}
+                  showLabel={false}
+                />
+                <Toolbar.Action
+                  label="Align center"
+                  icon={<AlignCenter />}
+                  showLabel={false}
+                />
+              </Toolbar.Group>
+              <Toolbar.Action
+                label="Undo"
+                icon={<Undo2 />}
+                showLabel={false}
+                priority="low"
+              />
+              <Toolbar.Action
+                label="Redo"
+                icon={<Redo2 />}
+                showLabel={false}
+                priority="low"
+              />
+            </Toolbar.Leading>
+            <Toolbar.Trailing>
+              <Toolbar.Title title="Draft" />
+            </Toolbar.Trailing>
+          </Toolbar>
+        </OverflowDemo>
+
+        <Text block size={5} weight="bold" style={{ marginTop: 8 }}>
+          A more complete toolbar
+        </Text>
+        <Text block size={4} style={{ lineHeight: 1.6 }}>
+          A realistic header: a formatting cluster in{' '}
+          <Text code>Toolbar.Leading</Text>, search in{' '}
+          <Text code>Toolbar.Center</Text>, account actions in{' '}
+          <Text code>Toolbar.Trailing</Text>. Each region collapses on its own —
+          shrink far enough and both a leading and a trailing overflow trigger
+          show up at once, each pointing back toward the center.
+        </Text>
+        <OverflowDemo width={fullWidth} onChangeWidth={setFullWidth} min={200}>
+          <Toolbar>
+            <Toolbar.Leading>
+              <Toolbar.Group priority="high">
+                <Toolbar.Action
+                  label="Bold"
+                  icon={<Bold />}
+                  showLabel={false}
+                />
+                <Toolbar.Action
+                  label="Italic"
+                  icon={<Italic />}
+                  showLabel={false}
+                />
+              </Toolbar.Group>
+              <Toolbar.Action
+                label="Underline"
+                icon={<Underline />}
+                showLabel={false}
+                priority="low"
+              />
+            </Toolbar.Leading>
+            <Toolbar.Center>
+              <TextInput placeholder="Search" style={{ width: 120 }} />
+            </Toolbar.Center>
+            <Toolbar.Trailing>
+              <Toolbar.Action
+                label="Notifications"
+                icon={<Bell />}
+                showLabel={false}
+                priority="high"
+              />
+              <Toolbar.Action
+                label="Settings"
+                icon={<Settings />}
+                showLabel={false}
+                priority="low"
+              />
+              <Avatar firstName="Ada" lastName="Lovelace" size="s" />
+            </Toolbar.Trailing>
+          </Toolbar>
+        </OverflowDemo>
+      </Flex>
+    );
+  },
+};
+
+/* ─────────────────────────────────────────────────────────────
+   Vertical overflow
+   ───────────────────────────────────────────────────────────── */
+
+export const VerticalOverflow: StoryObj<typeof Toolbar> = {
+  name: 'Vertical overflow',
+  render: () => {
+    const [height, setHeight] = useState(560);
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={7} weight="bold">
+          Vertical overflow
+        </Text>
+        <Text block size={4} style={{ lineHeight: 1.6 }}>
+          On a vertical toolbar (<Text code>edge="left"</Text>/
+          <Text code>"right"</Text>) collapsing runs along the height instead —{' '}
+          <Text code>Toolbar.Leading</Text> (top) points its trigger further
+          down (<Text code>ChevronsDown</Text>) toward the center,{' '}
+          <Text code>Toolbar.Trailing</Text> (bottom) points back up (
+          <Text code>ChevronsUp</Text>). Everything else — priority order,
+          left-to-right (here top-to-bottom) collapse within a tier, groups
+          flattening into the menu — works exactly like the horizontal case.
+        </Text>
+
+        <Flex gap="xl" align="center">
+          <Slider
+            value={height}
+            onChange={setHeight}
+            min={160}
+            max={560}
+            orientation="vertical"
+            renderLabel={(value) => `${value}px`}
+            showCurrentValue="active"
+            style={{ height: 260 }}
+          />
+          <div
+            style={{
+              position: 'relative',
+              height,
+              width: 280,
+              border: '1px solid var(--border-1)',
+              borderRadius: 12,
+              overflow: 'hidden',
+              background: 'var(--background-2)',
+            }}
+          >
+            <Toolbar edge="left" style={{ height: '100%' }} variant="grouped">
+              <Toolbar.Leading>
+                <Toolbar.Group priority="high">
+                  <Toolbar.Action
+                    label="Select"
+                    icon={<MousePointer2 />}
+                    showLabel={false}
+                    priority="high"
+                  />
+                </Toolbar.Group>
+                <Toolbar.Group priority="medium">
+                  <Toolbar.Action
+                    label="Rectangle"
+                    icon={<RectangleHorizontal />}
+                    showLabel={false}
+                  />
+                  <Toolbar.Action
+                    label="Ellipse"
+                    icon={<Circle />}
+                    showLabel={false}
+                  />
+                </Toolbar.Group>
+                <Toolbar.Group priority="medium">
+                  <Toolbar.Action
+                    label="Text"
+                    icon={<Type />}
+                    showLabel={false}
+                    priority="low"
+                  />
+                </Toolbar.Group>
+                <Toolbar.Group priority="high">
+                  <Toolbar.Action
+                    label="Pen"
+                    icon={<Pen />}
+                    showLabel={false}
+                    priority="low"
+                  />
+                </Toolbar.Group>
+              </Toolbar.Leading>
+              <Toolbar.Trailing>
+                <Toolbar.Group priority="high">
+                  <Toolbar.Action
+                    label="Settings"
+                    icon={<Settings />}
+                    showLabel={false}
+                    priority="high"
+                  />
+                </Toolbar.Group>
+              </Toolbar.Trailing>
+            </Toolbar>
+          </div>
+        </Flex>
       </Flex>
     );
   },

@@ -59,6 +59,7 @@ export interface Localization {
   toolbar: {
     collapseSidebar: string;
     expandSidebar: string;
+    moreActions: string;
   };
   screen: {
     sidebarLabel: string;

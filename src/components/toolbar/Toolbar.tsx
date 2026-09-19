@@ -14,7 +14,8 @@ import {
   Trailing,
 } from './components';
 import { ToolbarContext } from './Toolbar.context.ts';
-import { GlobalUtils } from 'utils';
+import { GlobalUtils, mergeRefs } from 'utils';
+import { useToolbarOverflow } from './useToolbarOverflow.tsx';
 
 const SIZE_CLASS = {
   mini: s.SizeMini,
@@ -60,6 +61,8 @@ const ToolbarComponent = memo(
     const orientation =
       edge === 'left' || edge === 'right' ? 'vertical' : 'horizontal';
 
+    const { containerRef, content } = useToolbarOverflow(children, orientation);
+
     const cls = clsx(
       s.Toolbar,
       VARIANT_CLASS[variant],
@@ -77,13 +80,13 @@ const ToolbarComponent = memo(
         value={{ edge, orientation, variant, size }}
       >
         <div
-          ref={ref}
+          ref={mergeRefs(ref, containerRef)}
           className={cls}
           role="toolbar"
           aria-orientation={orientation}
           {...restProps}
         >
-          {children}
+          {content}
         </div>
       </ToolbarContext.Provider>
     );

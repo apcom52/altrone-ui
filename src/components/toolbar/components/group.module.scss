@@ -45,46 +45,57 @@
   min-width: 0;
 }
 
+/* `justify-self: stretch` (the grid default) fills the whole column instead
+   of shrink-wrapping to content — `justify-content` below still aligns the
+   actual buttons within that full box. A shrink-wrapped box would size
+   itself to its own content, so the overflow hook's `clientWidth` read
+   would always equal that content's own width instead of the column's real
+   constraint. */
 .Leading {
   grid-column: 1;
-  justify-self: start;
+  justify-self: stretch;
   justify-content: flex-start;
 }
 
 .Center {
   grid-column: 2;
-  justify-self: center;
+  justify-self: stretch;
   justify-content: center;
 }
 
 .Trailing {
   grid-column: 3;
-  justify-self: end;
+  justify-self: stretch;
   justify-content: flex-end;
 }
 
 [aria-orientation='vertical'] .Region {
   flex-direction: column;
+  min-height: 0;
 }
 
+/* `align-self: stretch` mirrors the horizontal `justify-self: stretch`
+   above — the block-axis analog, needed for the same reason (an
+   overflow-measuring `clientHeight` read that reflects the row's real
+   constraint, not the region's own shrink-wrapped content height). */
 [aria-orientation='vertical'] .Leading {
   grid-column: auto;
   grid-row: 1;
   justify-self: auto;
-  align-self: start;
+  align-self: stretch;
 }
 
 [aria-orientation='vertical'] .Center {
   grid-column: auto;
   grid-row: 2;
-  align-self: center;
+  align-self: stretch;
 }
 
 [aria-orientation='vertical'] .Trailing {
   grid-column: auto;
   grid-row: 3;
   justify-self: auto;
-  align-self: end;
+  align-self: stretch;
 }
 
 /* ── separator ─────────────────────────────────────────────── */

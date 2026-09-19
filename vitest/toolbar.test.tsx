@@ -2,6 +2,7 @@ import React from 'react';
 import { expect, test, describe, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Application, Toolbar } from '../src/components';
+import { resolveToolbarOverflow } from '../src/components/toolbar/useToolbarOverflow.tsx';
 
 describe('Toolbar', () => {
   test('check that className and style props works', () => {
@@ -217,6 +218,86 @@ describe('Toolbar', () => {
     const clickableTitle = screen.getByText('Docs');
     expect(clickableTitle.className).toMatch(/Clickable/);
     expect(clickableTitle.querySelector('svg')).not.toBeNull();
+  });
+});
+
+describe('Toolbar overflow', () => {
+  test('`priority` is stripped before reaching the DOM node', () => {
+    render(
+      <Application>
+        <Toolbar>
+          <Toolbar.Group data-testid="group" priority="low" />
+          <Toolbar.Action data-testid="action" label="test" priority="low" />
+        </Toolbar>
+      </Application>,
+    );
+
+    expect(screen.getByTestId('group')).not.toHaveAttribute('priority');
+    expect(screen.getByRole('button', { name: 'test' })).not.toHaveAttribute(
+      'priority',
+    );
+  });
+
+  test('resolveToolbarOverflow: nothing is hidden when everything fits', () => {
+    const items = [
+      { key: 'a', priority: 'low' as const },
+      { key: 'b', priority: 'high' as const },
+    ];
+    const sizes = new Map([
+      ['a', 40],
+      ['b', 40],
+    ]);
+
+    expect(resolveToolbarOverflow(items, sizes, 100, 8, 32)).toEqual(
+      new Set(),
+    );
+  });
+
+  test('resolveToolbarOverflow: `low` collapses before `medium`, and stops once it fits', () => {
+    const items = [
+      { key: 'low', priority: 'low' as const },
+      { key: 'medium', priority: 'medium' as const },
+    ];
+    const sizes = new Map([
+      ['low', 100],
+      ['medium', 10],
+    ]);
+
+    // Removing `low` alone is enough to fit — `medium` must stay visible.
+    expect(resolveToolbarOverflow(items, sizes, 20, 0, 10)).toEqual(
+      new Set(['low']),
+    );
+  });
+
+  test('resolveToolbarOverflow: `high` never collapses, even if the row still overflows', () => {
+    const items = [
+      { key: 'low', priority: 'low' as const },
+      { key: 'high', priority: 'high' as const },
+    ];
+    const sizes = new Map([
+      ['low', 40],
+      ['high', 200],
+    ]);
+
+    expect(resolveToolbarOverflow(items, sizes, 60, 8, 32)).toEqual(
+      new Set(['low']),
+    );
+  });
+
+  test('resolveToolbarOverflow: within the same priority, the earlier (leftmost/topmost) item collapses first', () => {
+    const items = [
+      { key: 'first', priority: 'medium' as const },
+      { key: 'second', priority: 'medium' as const },
+    ];
+    const sizes = new Map([
+      ['first', 40],
+      ['second', 40],
+    ]);
+
+    // Only one needs to go to fit — must be `first`, not `second`.
+    expect(resolveToolbarOverflow(items, sizes, 60, 8, 8)).toEqual(
+      new Set(['first']),
+    );
   });
 });
 

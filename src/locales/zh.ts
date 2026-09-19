@@ -52,6 +52,7 @@ export const zh: Localization = {
   toolbar: {
     collapseSidebar: '收起侧边栏',
     expandSidebar: '展开侧边栏',
+    moreActions: '更多操作',
   },
   screen: {
     sidebarLabel: '侧边栏',
