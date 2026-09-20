@@ -59,6 +59,17 @@ describe('ColorPicker', () => {
 
     expect(value).toBe('#dc143c');
 
+    /** Re-render with the committed value first — a controlled consumer always does this before the next interaction. */
+    rerender(
+      <ColorPicker
+        data-testid="picker"
+        value={value}
+        onChange={handleChange}
+        colorPresets={COLORS}
+        clearable
+      />,
+    );
+
     await fireEvent.click(screen.getByText('Clear'));
 
     expect(value).toBe(undefined);

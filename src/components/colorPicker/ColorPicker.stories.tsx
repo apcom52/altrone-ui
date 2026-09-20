@@ -93,7 +93,11 @@ export const ThreeWaysToPick: Story = {
           free-form palette rides alongside it on a second tab. Drop the presets
           and the palette fills the whole popover. Set{' '}
           <Text code>allowPalette={'{false}'}</Text> and the picker becomes a
-          strict swatch chooser with no way to invent an off-brand colour.
+          strict swatch chooser with no way to invent an off-brand colour.{' '}
+          <Text code>clearable</Text> adds a &ldquo;Clear&rdquo; action that
+          calls <Text code>onChange(undefined)</Text> — the readout under the
+          last field confirms it actually lands as <Text code>undefined</Text>,
+          not just the field going blank visually.
         </Lead>
 
         <Flex orientation="horizontal" gap="l" wrap align="start">
@@ -120,14 +124,19 @@ export const ThreeWaysToPick: Story = {
               placeholder="From the set"
             />
           </Field>
-          <Field label="clearable — adds Clear / Apply">
-            <ColorPicker
-              colorPresets={COLORS}
-              value={erasable}
-              onChange={setErasable}
-              clearable
-              placeholder="Optional colour"
-            />
+          <Field label="clearable — adds a Clear action next to Apply">
+            <Flex orientation="vertical" gap="xs">
+              <ColorPicker
+                colorPresets={COLORS}
+                value={erasable}
+                onChange={setErasable}
+                clearable
+                placeholder="Optional colour"
+              />
+              <Text size={1} color="muted">
+                Stored value: {erasable ?? 'undefined (cleared)'}
+              </Text>
+            </Flex>
           </Field>
         </Flex>
       </Flex>
@@ -615,6 +624,12 @@ export const SizesStatesAndTriggers: Story = {
         <Divider />
 
         <Heading>States</Heading>
+        <Lead>
+          With no <Text code>value</Text> and no explicit{' '}
+          <Text code>placeholder</Text>, the trigger falls back to
+          &ldquo;Choose a color&rdquo; and the preview swatch renders as a{' '}
+          <Text code>pale</Text>-material circle instead of a real color fill.
+        </Lead>
         <Flex orientation="horizontal" gap="l" align="center" wrap>
           <Field label="default">
             <ColorPicker value="#5b5bd6" onChange={() => {}} />
@@ -625,8 +640,8 @@ export const SizesStatesAndTriggers: Story = {
           <Field label="disabled">
             <ColorPicker value="#5b5bd6" onChange={() => {}} disabled />
           </Field>
-          <Field label="empty">
-            <ColorPicker onChange={() => {}} placeholder="Not set" />
+          <Field label="empty — default placeholder">
+            <ColorPicker onChange={() => {}} />
           </Field>
           <Field label="transparent">
             <ColorPicker value="#5b5bd6" onChange={() => {}} transparent />

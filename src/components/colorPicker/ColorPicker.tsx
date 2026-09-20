@@ -58,9 +58,9 @@ export const ColorPicker = (props: ColorPickerProps) => {
 
   const handleChange = useCallback(
     (color: string | undefined, event?: SyntheticEvent) => {
-      onChange(typeof color === 'string' ? color.toLowerCase() : value, event);
+      onChange(color?.toLowerCase(), event);
     },
-    [onChange, value],
+    [onChange],
   );
 
   const cls = clsx(s.ColorPicker, className, {
@@ -145,7 +145,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
               ) : (
                 <Box
                   shape="circle"
-                  material="dotted"
+                  material="pale"
                   size={PREVIEW_SIZES[inputSize]}
                   style={{ marginLeft: 2 }}
                 />

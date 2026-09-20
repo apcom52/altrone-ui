@@ -183,6 +183,9 @@ export const CoarserGrains: StoryObj = {
     const [airframeYear, setAirframeYear] = useState<Dayjs | undefined>(
       dayjs('2019'),
     );
+    const [retiredAirframeYear, setRetiredAirframeYear] = useState<
+      Dayjs | undefined
+    >(dayjs('2017'));
 
     return (
       <Flex orientation="vertical" gap="xl">
@@ -194,6 +197,11 @@ export const CoarserGrains: StoryObj = {
           the same factory as <Text code>DatePicker</Text> — only the popover&apos;s
           starting view changes. The stored value is still a full{' '}
           <Text code>Dayjs</Text>, snapped to the first of the month or year.
+          The footer&apos;s shortcut button (&ldquo;Today&rdquo; / &ldquo;This
+          month&rdquo; / &ldquo;This year&rdquo;) disables itself when the
+          current date falls outside <Text code>minDate</Text>/
+          <Text code>maxDate</Text> — a retired airframe&apos;s service window
+          below only reaches 2019, so &ldquo;This year&rdquo; is greyed out.
         </Text>
 
         <Panel>
@@ -222,6 +230,18 @@ export const CoarserGrains: StoryObj = {
                   onChange={(value) => setAirframeYear(value)}
                   minDate={dayjs('2005')}
                   maxDate={TODAY}
+                  format="YYYY"
+                />
+              </Form.Field>
+              <Form.Field
+                label="Retired airframe's last service year"
+                hintText="Service window ends in 2019 — the current year is out of range"
+              >
+                <DatePicker.YearPicker
+                  value={retiredAirframeYear}
+                  onChange={(value) => setRetiredAirframeYear(value)}
+                  minDate={dayjs('2005')}
+                  maxDate={dayjs('2019')}
                   format="YYYY"
                 />
               </Form.Field>

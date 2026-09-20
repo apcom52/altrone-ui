@@ -99,7 +99,7 @@
     'footer footer';
 }
 
-.Screen:has(> .Aside.Collapsed) {
+.Screen:has(> .Aside.AsideCollapsed) {
   grid-template-columns: minmax(0, 1fr) 0;
 }
 

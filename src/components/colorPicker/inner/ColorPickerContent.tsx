@@ -1,4 +1,3 @@
-import { Button } from 'components/button/Button.tsx';
 import { Flex } from 'components/flex/Flex.tsx';
 import { NumberInput } from 'components/numberInput/NumberInput.tsx';
 import { Tabs } from 'components/tabs/Tabs.tsx';
@@ -9,7 +8,8 @@ import { ColorPickerProps } from '../ColorPicker.types';
 import { ColorPreset } from './ColorPreset';
 import s from './colorPickerContent.module.scss';
 import { HexAlphaColorPicker } from 'react-colorful';
-import { Delete, Grid3X3, Palette } from 'lucide-react';
+import { Grid3X3, Palette } from 'lucide-react';
+import { ColorPickerFooter } from './ColorPickerFooter.tsx';
 
 const HEX6 = /^[0-9A-Fa-f]{6}$/;
 
@@ -171,20 +171,11 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
         </>
       ) : null}
 
-      {clearable ? (
-        <Flex justify="center" gap="s">
-          <Button
-            icon={<Delete />}
-            label={t('common.clear')}
-            onClick={handleClear}
-          />
-          <Button
-            label={t('common.apply')}
-            variant="submit"
-            onClick={closePopup}
-          />
-        </Flex>
-      ) : null}
+      <ColorPickerFooter
+        clearable={clearable}
+        onClear={handleClear}
+        onApply={closePopup}
+      />
     </Flex>
   );
 };

@@ -182,7 +182,7 @@ export const en: Localization = {
     promptPlaceholder: 'Enter a value',
   },
   colorPicker: {
-    placeholder: 'Pick a color',
+    placeholder: 'Choose a color',
     title: 'Select a color',
     savedColors: 'Saved colors',
     palette: 'Palette',
