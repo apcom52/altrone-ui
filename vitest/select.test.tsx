@@ -131,13 +131,13 @@ describe('useSelect — value handling', () => {
     expect(onChange).toHaveBeenLastCalledWith(['jp'], undefined);
   });
 
-  test('clearValue resets to undefined / [] by mode', () => {
+  test('clear resets to undefined / [] by mode', () => {
     const single = setup({ value: 'ru' });
-    act(() => single.result.current.clearValue());
+    act(() => single.result.current.clear());
     expect(single.onChange).toHaveBeenLastCalledWith(undefined, undefined);
 
     const many = setup({ multiple: true, value: ['fr', 'ru'] });
-    act(() => many.result.current.clearValue());
+    act(() => many.result.current.clear());
     expect(many.onChange).toHaveBeenLastCalledWith([], undefined);
   });
 

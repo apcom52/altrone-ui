@@ -256,4 +256,41 @@ describe('DataTable component', () => {
     expect(screen.queryByRole('button', { name: 'Delete' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'More actions' })).toBeInTheDocument();
   });
+
+  test('getRowId keeps an open row menu tied to its row when `data` is reordered externally', () => {
+    const onDelete = vi.fn();
+    const table = (data: typeof PEOPLE) => (
+      <Application config={{ locale: { locale: 'en-US' } }}>
+        <DataTable
+          data={data}
+          getRowId={(person) => String(person.id)}
+          data-testid="table"
+          columns={[{ accessor: 'name', label: 'Name' }]}
+          rowActions={({ row }) => [
+            <DataTable.RowAction key="edit" label="Edit" onClick={() => undefined} />,
+            <DataTable.RowAction
+              key="delete"
+              label="Delete"
+              collapsed
+              onClick={() => onDelete(row.name)}
+            />,
+          ]}
+        />
+      </Application>
+    );
+
+    const { rerender } = render(table(PEOPLE));
+
+    // Open the 3rd row's ("Grace") overflow menu.
+    fireEvent.click(screen.getAllByRole('button', { name: 'More actions' })[2]);
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument();
+
+    // A refetch reorders `data` — Grace moves from index 2 to index 0 —
+    // without `getRowId` this would leave the still-open menu attached to
+    // whichever row now occupies index 2 instead of following Grace.
+    rerender(table([PEOPLE[2], PEOPLE[0], PEOPLE[1]]));
+
+    fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
+    expect(onDelete).toHaveBeenCalledWith('Grace');
+  });
 });

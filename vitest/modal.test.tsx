@@ -99,6 +99,23 @@ describe('Modal', () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
+  test('showCloseButton={false} hides the header close button, footer stays untouched', () => {
+    render(
+      <Application>
+        <Modal
+          content={<div>content</div>}
+          showCloseButton={false}
+          defaultOpen={true}
+        />
+      </Application>,
+    );
+
+    expect(
+      screen.queryByRole('button', { name: 'Close' }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
+  });
+
   test('Escape closes the modal and calls onClose exactly once', () => {
     const onClose = vi.fn();
 

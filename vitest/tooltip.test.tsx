@@ -66,6 +66,18 @@ describe('Tooltip', () => {
     expect(button).toHaveStyle('color: rgb(255, 0, 0)');
   });
 
+  test('forwards HTMLAttributes like id/data-* to the trigger element', () => {
+    render(
+      <Tooltip content="Tooltip content" id="save-trigger" data-testid="save-trigger">
+        <button>Save</button>
+      </Tooltip>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Save' });
+    expect(trigger).toHaveAttribute('id', 'save-trigger');
+    expect(trigger).toHaveAttribute('data-testid', 'save-trigger');
+  });
+
   test('title and kbd render alongside content', () => {
     render(
       <Tooltip title="Keyboard shortcut" content="Saves the file" kbd="⌘S">
