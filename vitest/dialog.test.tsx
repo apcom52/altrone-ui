@@ -63,6 +63,28 @@ describe('Dialogs', () => {
     await expect(result).resolves.toBeNull();
   });
 
+  test('closing a dialog does not unmount it synchronously — the close animation gets a chance to run', async () => {
+    render(
+      <Application>
+        <div />
+      </Application>,
+    );
+
+    act(() => {
+      void showConfirm({
+        title: 'Delete it?',
+        message: 'This cannot be undone.',
+      });
+    });
+
+    await screen.findByText('This cannot be undone.');
+    fireEvent.click(screen.getByText('Confirm'));
+
+    // Right after the click, still synchronous — `Modal` must stay mounted
+    // for `AnimatePresence` to animate it out, not vanish in the same commit.
+    expect(screen.getByText('This cannot be undone.')).toBeInTheDocument();
+  });
+
   test('default button labels come from the active locale', async () => {
     render(
       <Application language="ru">

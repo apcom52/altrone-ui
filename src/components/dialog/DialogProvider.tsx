@@ -23,13 +23,20 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
   const [dialog, setDialog] = useState<DialogState | null>(null);
   const [promptValue, setPromptValue] = useState<PromptValue>(null);
 
+  const [displayDialog, setDisplayDialog] = useState<DialogState | null>(null);
+  if (dialog && dialog !== displayDialog) {
+    setDisplayDialog(dialog);
+  }
+
   useEffect(() => {
     registerDialogHandler(setDialog);
     return () => unregisterDialogHandler(setDialog);
   }, []);
 
   useEffect(() => {
-    setPromptValue(null);
+    if (dialog) {
+      setPromptValue(null);
+    }
   }, [dialog]);
 
   /** Resolve with the "dismissed" value for the current dialog type. */
@@ -62,9 +69,9 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const defaultTitle =
-    dialog?.type === 'confirm'
+    displayDialog?.type === 'confirm'
       ? t('dialog.confirmTitle')
-      : dialog?.type === 'prompt'
+      : displayDialog?.type === 'prompt'
         ? t('dialog.promptTitle')
         : t('dialog.alertTitle');
 
@@ -122,60 +129,62 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
     <>
       {children}
 
-      {dialog && (
-        <Modal
-          title={dialog.title || defaultTitle}
-          defaultOpen
-          onClose={cancel}
-          size="s"
-          showCancelButton={false}
-          content={
+      <Modal
+        title={displayDialog?.title || defaultTitle}
+        open={Boolean(dialog)}
+        onClose={cancel}
+        size="s"
+        showCancelButton={false}
+        content={
+          displayDialog ? (
             <Flex orientation="vertical" gap="xl">
               <Text block className={s.AlertMessage}>
-                {dialog.message}
+                {displayDialog.message}
               </Text>
 
-              {dialog.type === 'alert' && (
+              {displayDialog.type === 'alert' && (
                 <Button
                   variant="submit"
-                  label={dialog.okText || t('dialog.ok')}
+                  label={displayDialog.okText || t('dialog.ok')}
                   onClick={accept}
                 />
               )}
 
-              {dialog.type === 'confirm' && (
+              {displayDialog.type === 'confirm' && (
                 <Flex gap="s" orientation="vertical">
                   <Button
                     variant="submit"
-                    label={dialog.confirmText || t('dialog.confirm')}
-                    danger={dialog.danger}
+                    label={displayDialog.confirmText || t('dialog.confirm')}
+                    danger={displayDialog.danger}
                     onClick={accept}
                   />
                   <Button
-                    label={dialog.cancelText || t('dialog.cancel')}
+                    label={displayDialog.cancelText || t('dialog.cancel')}
                     onClick={cancel}
                   />
                 </Flex>
               )}
 
-              {dialog.type === 'prompt' && (
+              {displayDialog.type === 'prompt' && (
                 <Flex gap="s" orientation="vertical">
-                  {renderPromptInput(dialog)}
+                  {renderPromptInput(displayDialog)}
                   <Button
                     variant="submit"
-                    label={dialog.confirmText || t('dialog.confirm')}
+                    label={displayDialog.confirmText || t('dialog.confirm')}
                     onClick={accept}
                   />
                   <Button
-                    label={dialog.cancelText || t('dialog.cancel')}
+                    label={displayDialog.cancelText || t('dialog.cancel')}
                     onClick={cancel}
                   />
                 </Flex>
               )}
             </Flex>
-          }
-        />
-      )}
+          ) : (
+            <></>
+          )
+        }
+      />
     </>
   );
 };
