@@ -71,7 +71,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
     <Popover
       placement="bottom-start"
       title={t('colorPicker.title')}
-      content={({ closePopup }) => (
+      content={({ hide }) => (
         <ColorPickerContent
           colorPresets={colorPresets}
           value={value}
@@ -79,7 +79,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
           allowPalette={allowPalette}
           clearable={clearable}
           size={inputSize}
-          closePopup={closePopup}
+          hide={hide}
         />
       )}
       enabled={!readOnly}
@@ -93,7 +93,12 @@ export const ColorPicker = (props: ColorPickerProps) => {
             console.error(
               '[ColorPicker] asChild requires a single valid React element as children',
             );
-            return null;
+            /* A bare `<span />`, not `null` — the render function feeds
+               Popover's `children`, which clones `ref`/interaction props
+               onto whatever it gets back. A DOM node still needs to exist
+               here to receive them; a `null`/Fragment return would silently
+               drop the trigger's event handlers. */
+            return <span />;
           }
 
           const childElement = children as ReactElement<

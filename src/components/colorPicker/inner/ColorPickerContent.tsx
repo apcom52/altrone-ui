@@ -38,7 +38,7 @@ interface ColorPickerContentProps extends Pick<
   ColorPickerProps,
   'colorPresets' | 'value' | 'onChange' | 'allowPalette' | 'clearable' | 'size'
 > {
-  closePopup: () => void;
+  hide: () => void;
 }
 
 export const ColorPickerContent = (props: ColorPickerContentProps) => {
@@ -49,7 +49,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
     allowPalette = true,
     clearable,
     size,
-    closePopup,
+    hide,
   } = props;
 
   const t = useLocalization();
@@ -93,7 +93,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
 
   const handleClear = () => {
     onChange(undefined);
-    closePopup();
+    hide();
   };
 
   return (
@@ -174,7 +174,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
       <ColorPickerFooter
         clearable={clearable}
         onClear={handleClear}
-        onApply={closePopup}
+        onApply={hide}
       />
     </Flex>
   );

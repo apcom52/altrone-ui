@@ -188,8 +188,8 @@ export const RangePicker = memo<RangePickerProps>((props) => {
               enabled={!readOnly && !pickerDisabled}
               placement="bottom-start"
               onOpenChange={setOpened}
-              content={({ closePopup }) => (
-                <DatePickerCloseFnContext.Provider value={closePopup}>
+              content={({ hide }) => (
+                <DatePickerCloseFnContext.Provider value={hide}>
                   <PopoverDatePickerContent
                     clearable={props.clearable}
                     autoClose={autoClose}

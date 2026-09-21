@@ -32,8 +32,8 @@ export function DropdownWrapper(props: DropdownProps) {
       <CloseDropdownContext.Provider
         value={
           closeParentPopover
-            ? popoverProps.closeAllSequence
-            : popoverProps.closePopup
+            ? popoverProps.hideAllSequence
+            : popoverProps.hide
         }
       >
         {typeof content === 'function' ? content(popoverProps) : content}

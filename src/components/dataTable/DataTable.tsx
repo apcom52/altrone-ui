@@ -28,6 +28,7 @@ const DataTableComponent = <DataType extends object>(
     showFooter = true,
     rowsPerPage = 20,
     data,
+    getRowId,
     mode = 'read',
     columns,
     showEmptyBanner = true,
@@ -152,6 +153,7 @@ const DataTableComponent = <DataType extends object>(
   const table = useTable<typeof dataTableFeatures, DataType>({
     features: dataTableFeatures,
     data,
+    getRowId,
     columns: columnDefs,
     meta: { mode },
     enableRowSelection: selectable,

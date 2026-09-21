@@ -35,6 +35,7 @@ export const Modal = (props: ModalProps) => {
     style,
     onClick,
     onClose,
+    showCloseButton = true,
     showCancelButton = true,
     ...restProps
   } = props;
@@ -73,7 +74,7 @@ export const Modal = (props: ModalProps) => {
     [isControlled, hide, onClose],
   );
 
-  const modalContext: ModalContext = { closeModal: handleClose };
+  const modalContext: ModalContext = { hide: handleClose };
 
   const contentElement =
     typeof content === 'function' ? content(modalContext) : content;
@@ -108,11 +109,13 @@ export const Modal = (props: ModalProps) => {
       <div className={s.Body}>
         <div className={s.Title} id={titleId}>
           {title}
-          <CloseButton
-            ref={closeButtonRef}
-            className={s.Close}
-            onClick={handleClose}
-          />
+          {showCloseButton && (
+            <CloseButton
+              ref={closeButtonRef}
+              className={s.Close}
+              onClick={handleClose}
+            />
+          )}
         </div>
         <div className={s.Content}>{contentElement}</div>
         {showFooter && (

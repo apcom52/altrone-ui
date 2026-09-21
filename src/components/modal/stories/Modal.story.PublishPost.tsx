@@ -154,7 +154,7 @@ export const PublishPostStory: StoryObj<typeof Modal> = {
               </Form.Field>
             </Form>
           }
-          actions={({ closeModal }) => (
+          actions={({ hide }) => (
             <Button
               label={publishing ? 'Publishing…' : 'Publish now'}
               variant="submit"
@@ -170,7 +170,7 @@ export const PublishPostStory: StoryObj<typeof Modal> = {
                 await new Promise((resolve) => setTimeout(resolve, 1200));
                 setPublishing(false);
                 setPublished({ visibility, collection, notified: notify });
-                closeModal();
+                hide();
               }}
             />
           )}

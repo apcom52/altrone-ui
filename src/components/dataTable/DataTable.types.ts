@@ -143,6 +143,14 @@ export interface DataTableProps<T extends object> extends Omit<
   data: T[];
   columns: DataTableColumn<T>[];
   /**
+   * Stabilizes row identity across renders — without it, TanStack falls
+   * back to array position, so a `data` array reordered externally (a
+   * refetch, a websocket update) makes a row's own UI state (an open
+   * `rowActions` overflow menu) and any in-flight action stick to the old
+   * position instead of following the entity to its new one.
+   */
+  getRowId?: (row: T, index: number) => string;
+  /**
    * Rendered in the header `Toolbar`, alongside the select-mode toggle and
    * filtering control (both in `Toolbar.Leading`). One `DataTable.Action` or
    * several land in `Toolbar.Leading` too; wrap content in `Toolbar.Leading`

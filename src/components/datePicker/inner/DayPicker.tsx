@@ -29,7 +29,7 @@ export const DayPicker = memo<{ autoClose?: boolean }>(
       useDatePickerViewContext();
     const { selectedDates, onDayClicked, onRangeChange, minDate, maxDate } =
       useDateContext();
-    const closePopup = useDatePickerCloseFn();
+    const hide = useDatePickerCloseFn();
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -70,7 +70,7 @@ export const DayPicker = memo<{ autoClose?: boolean }>(
               const range = next as CalendarDateRange;
               onRangeChange?.(range, event);
               if (autoClose && range.from && range.to) {
-                closePopup();
+                hide();
               }
             }}
           />
@@ -82,7 +82,7 @@ export const DayPicker = memo<{ autoClose?: boolean }>(
             onSelect={(next, event) => {
               onDayClicked(next as Dayjs, event);
               if (autoClose) {
-                closePopup();
+                hide();
               }
             }}
           />

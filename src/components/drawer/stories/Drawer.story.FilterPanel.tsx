@@ -225,7 +225,7 @@ export const FilterPanelStory: StoryObj<typeof Drawer> = {
                 </Form.Field>
               </Form>
             }
-            footer={({ closeDrawer }) => (
+            footer={({ hide }) => (
               <Flex orientation="horizontal" gap="s">
                 <Button
                   label="Reset"
@@ -238,7 +238,7 @@ export const FilterPanelStory: StoryObj<typeof Drawer> = {
                   variant="submit"
                   onClick={() => {
                     setApplied(draft);
-                    closeDrawer();
+                    hide();
                   }}
                 />
               </Flex>

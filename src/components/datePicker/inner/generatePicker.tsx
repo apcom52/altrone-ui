@@ -203,8 +203,8 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
               <Popover
                 enabled={!readOnly && !pickerDisabled}
                 placement="bottom-start"
-                content={({ closePopup }) => (
-                  <DatePickerCloseFnContext.Provider value={closePopup}>
+                content={({ hide }) => (
+                  <DatePickerCloseFnContext.Provider value={hide}>
                     <PopoverDatePickerContent
                       autoClose={autoClose}
                       clearable={clearable}

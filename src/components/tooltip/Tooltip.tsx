@@ -32,6 +32,7 @@ export const Tooltip = memo(
     triggerClassName,
     triggerStyle,
     placement = 'top',
+    ...restProps
   }: TooltipProps) => {
     const [opened, setOpened] = useState(false);
     const tooltipId = useId();
@@ -92,11 +93,12 @@ export const Tooltip = memo(
     );
 
     const childElement = DOMUtils.cloneNode(safeChildElement, {
-      ...getReferenceProps(
-        React.isValidElement(safeChildElement)
+      ...getReferenceProps({
+        ...restProps,
+        ...(React.isValidElement(safeChildElement)
           ? (safeChildElement.props as any)
-          : {},
-      ),
+          : {}),
+      }),
       /* Merges the child's own `ref` (e.g. `<Button ref={x}>` inside a
          Tooltip) instead of overwriting it — see ref-forwarding.md. */
       ref: mergeRefs(

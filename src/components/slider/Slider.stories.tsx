@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Button, Divider, Flex, Modal, Text } from 'components';
+import { Button, Divider, Flex, Modal, Select, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Slider } from './Slider.tsx';
@@ -591,12 +591,19 @@ export const Anatomy: Story = {
   },
 };
 
+const MODAL_REGIONS = [
+  { value: 'eu', label: 'Europe' },
+  { value: 'na', label: 'North America' },
+  { value: 'apac', label: 'Asia-Pacific' },
+];
+
 export const ElevationInModals: Story = {
   name: 'Elevation vs. Modal',
   render: () => {
     const [pageValue, setPageValue] = useState(72);
     const [modalValue, setModalValue] = useState(35);
     const [open, setOpen] = useState(false);
+    const [region, setRegion] = useState<string>();
 
     return (
       <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 520 }}>
@@ -609,9 +616,10 @@ export const ElevationInModals: Story = {
           <Text code>showCurrentValue=&quot;always&quot;</Text> sitting on the
           page must stay <em>under</em> a <Text code>Modal</Text>; the same
           slider used <em>inside</em> a <Text code>Modal</Text> must stay{' '}
-          <em>above</em> it, to clear the panel it belongs to. Open the modal
-          below and check that the page slider&apos;s bubble no longer shows
-          through it, while the slider inside the modal still reads clearly.
+          <em>above</em> it, to clear the panel it belongs to — but not above
+          a <Text code>Select</Text> dropdown that happens to be open in that
+          same modal. Open the modal, open the region dropdown, then drag the
+          slider: the bubble reads clearly without covering the open menu.
         </Lead>
         <Field label="On the page (always visible)">
           <Slider
@@ -626,13 +634,23 @@ export const ElevationInModals: Story = {
           onClose={() => setOpen(false)}
           title="Volume"
           content={
-            <Field label="Inside the modal (always visible)">
-              <Slider
-                value={modalValue}
-                onChange={setModalValue}
-                showCurrentValue="always"
-              />
-            </Field>
+            <Flex orientation="vertical" gap="l">
+              <Field label="Region">
+                <Select
+                  value={region}
+                  onChange={(value) => setRegion(value as string)}
+                  options={MODAL_REGIONS}
+                  placeholder="Choose a region"
+                />
+              </Field>
+              <Field label="Inside the modal (always visible)">
+                <Slider
+                  value={modalValue}
+                  onChange={setModalValue}
+                  showCurrentValue="always"
+                />
+              </Field>
+            </Flex>
           }
         />
       </Flex>

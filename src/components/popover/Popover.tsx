@@ -237,9 +237,9 @@ export const Popover = ({
   );
 
   const popoverParentClose = usePopoverCloseContext();
-  const closeAllSequence = popoverParentClose ?? hide;
+  const hideAllSequence = popoverParentClose ?? hide;
 
-  const childrenContext: PopoverChildrenContext = { open: opened, closePopup: hide };
+  const childrenContext: PopoverChildrenContext = { open: opened, hide };
   const originChildElement =
     typeof children === 'function' ? children(childrenContext) : children;
   const safeChildElement = React.isValidElement(originChildElement) ? (
@@ -340,7 +340,7 @@ export const Popover = ({
                   )}
                   <div className={s.Content}>
                     {typeof content === 'function'
-                      ? content({ closePopup: hide, closeAllSequence })
+                      ? content({ hide, hideAllSequence })
                       : content}
                   </div>
                 </motion.div>
@@ -368,7 +368,7 @@ export const Popover = ({
   }
 
   return (
-    <PopoverCloseContext.Provider value={closeAllSequence}>
+    <PopoverCloseContext.Provider value={hideAllSequence}>
       {childrenElement}
       <AnimatePresence mode="wait">
         {opened && portalRoot && (

@@ -76,7 +76,7 @@ export const DeleteWorkspaceStory: StoryObj<typeof Modal> = {
               />
             </Flex>
           }
-          actions={({ closeModal }) => (
+          actions={({ hide }) => (
             <Button
               label="Delete workspace"
               variant="submit"
@@ -86,7 +86,7 @@ export const DeleteWorkspaceStory: StoryObj<typeof Modal> = {
               onClick={() => {
                 setDeleted(true);
                 setConfirmText('');
-                closeModal();
+                hide();
               }}
             />
           )}

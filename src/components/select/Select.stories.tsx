@@ -328,7 +328,7 @@ export const CustomTriggerStory: StoryObj<typeof Select> = {
           <Text code>asChild</Text> replaces the whole trigger with the single
           child element you pass. That element reads the live state (
           <Text code>expanded</Text>, <Text code>selectedOptions</Text>,{' '}
-          <Text code>clearValue</Text>, …) with{' '}
+          <Text code>clear</Text>, …) with{' '}
           <Text code>useSelectContext()</Text>.
         </Paragraph>
 

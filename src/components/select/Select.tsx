@@ -75,7 +75,7 @@ const SelectComponent = (props: SelectProps) => {
     blurSelect,
     valueString = '',
     filteredOptions,
-    clearValue,
+    clear,
   } = useSelect(props);
 
   const isTransparent = Boolean(transparent);
@@ -84,7 +84,7 @@ const SelectComponent = (props: SelectProps) => {
 
   const menu = useMemo(
     () =>
-      ({ closePopup }: PopoverContentContext) => (
+      ({ hide }: PopoverContentContext) => (
         <div
           className={s.Menu}
           role="listbox"
@@ -121,7 +121,7 @@ const SelectComponent = (props: SelectProps) => {
                       onChange={(_checked, event) => {
                         selectValue(option.value, event);
                         if (!multiple) {
-                          closePopup();
+                          hide();
                         }
                       }}
                     />
@@ -170,7 +170,7 @@ const SelectComponent = (props: SelectProps) => {
     selectedOptions,
     disabled: Boolean(selectDisabled),
     multiple: Boolean(multiple),
-    clearValue,
+    clear,
   };
 
   const renderTrigger = () => {
@@ -229,7 +229,7 @@ const SelectComponent = (props: SelectProps) => {
             icon={<Delete />}
             showLabel={false}
             disabled={false}
-            onClick={(event) => clearValue(event)}
+            onClick={(event) => clear(event)}
           />
         )}
         <TextInput.IconIsland

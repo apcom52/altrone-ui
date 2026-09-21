@@ -81,10 +81,23 @@ export const Overview: StoryObj<typeof Modal> = {
         or destructive action set apart from the main flow, and{' '}
         <Text code>actions</Text> on the right for the primary choice. A
         built-in Cancel button sits before <Text code>actions</Text> unless you
-        pass <Text code>showCancelButton={'{false}'}</Text>.
+        pass <Text code>showCancelButton={'{false}'}</Text>; the header close
+        button is likewise on by default and can be hidden with{' '}
+        <Text code>showCloseButton={'{false}'}</Text>.
       </Paragraph>
       <Flex orientation="horizontal" gap="m" wrap>
         <AnatomyDemo />
+      </Flex>
+
+      <Heading>Forcing an explicit choice</Heading>
+      <Paragraph>
+        Combine <Text code>showCloseButton={'{false}'}</Text> and{' '}
+        <Text code>showCancelButton={'{false}'}</Text> when a decision can only
+        be made through the footer actions — there's no header close button and
+        no implicit Cancel to fall back on.
+      </Paragraph>
+      <Flex orientation="horizontal" gap="m" wrap>
+        <ForcedChoiceDemo />
       </Flex>
 
       <Heading>Sizes</Heading>
@@ -102,7 +115,7 @@ export const Overview: StoryObj<typeof Modal> = {
       <Heading>Closing from the content</Heading>
       <Paragraph>
         Pass a function to <Text code>content</Text> to get{' '}
-        <Text code>closeModal</Text> where the work actually finishes — here,
+        <Text code>hide</Text> where the work actually finishes — here,
         once a fake save resolves.
       </Paragraph>
       <SaveDemo />
@@ -140,8 +153,34 @@ const AnatomyDemo = () => {
             />
           </Tooltip>,
         ]}
-        actions={({ closeModal }) => (
-          <Button label="Rename" variant="submit" onClick={closeModal} />
+        actions={({ hide }) => (
+          <Button label="Rename" variant="submit" onClick={hide} />
+        )}
+      />
+    </>
+  );
+};
+
+const ForcedChoiceDemo = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button label="Review terms" onClick={() => setOpen(true)} />
+      <Modal
+        title="Updated Terms of Service"
+        showCloseButton={false}
+        showCancelButton={false}
+        open={open}
+        onClose={() => setOpen(false)}
+        content={
+          <Text block size={4}>
+            We&apos;ve updated our terms. You need to accept them to keep
+            using the workspace.
+          </Text>
+        }
+        actions={({ hide }) => (
+          <Button label="Accept" variant="submit" onClick={hide} />
         )}
       />
     </>
@@ -182,7 +221,7 @@ const SaveDemo = () => {
         showCancelButton={false}
         open={open}
         onClose={() => setOpen(false)}
-        content={({ closeModal }) => <FakeSave onDone={closeModal} />}
+        content={({ hide }) => <FakeSave onDone={hide} />}
       />
     </>
   );

@@ -3,7 +3,7 @@ import { Size } from 'types';
 import { ActionsProp, RenderFunction } from '../../utils';
 
 export interface ModalContext {
-  closeModal: () => void;
+  hide: () => void;
 }
 
 export interface ModalProps extends Omit<
@@ -19,12 +19,14 @@ export interface ModalProps extends Omit<
   /**
    * `event` is the triggering backdrop click / close-button click / Escape
    * keydown, or undefined when closed programmatically via
-   * `ModalContext.closeModal()`.
+   * `ModalContext.hide()`.
    */
   onClose?: (event?: React.MouseEvent | KeyboardEvent) => void;
   enabled?: boolean;
   title?: string;
   size?: Size;
+  /** Shows or hides the header close button. Defaults to `true`. */
+  showCloseButton?: boolean;
   showCancelButton?: boolean;
   actions?: ActionsProp<ModalContext>;
   /** Secondary actions, rendered on the opposite side of the footer from `actions` (left, in our layout). */

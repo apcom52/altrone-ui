@@ -684,11 +684,17 @@ export const Actions: Story = {
         <Text code>DataTable.RowAction</Text> (or several) per row, as a plain
         element or as <Text code>{'(context) => JSX.Element'}</Text>. Mark the
         less important ones <Text code>collapsed</Text> and they fold into an
-        overflow menu.
+        overflow menu. Pass <Text code>getRowId</Text> whenever{' '}
+        <Text code>data</Text> can be reordered from outside the table (a
+        refetch, a websocket update) &mdash; without it, row identity falls
+        back to array position, so an already-open row menu (or any other
+        per-row state) sticks to the old position instead of following the
+        row it belongs to.
       </Section>
 
       <DataTable<Employee>
         data={EMPLOYEES}
+        getRowId={(employee) => String(employee.id)}
         rowsPerPage={8}
         selectable
         rowActions={({ rowIndex, selected }) => [

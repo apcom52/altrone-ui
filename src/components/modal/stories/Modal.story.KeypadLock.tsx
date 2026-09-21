@@ -64,7 +64,7 @@ export const KeypadLockStory: StoryObj<typeof Modal> = {
             setEntry('');
             setWrong(false);
           }}
-          content={({ closeModal }) => (
+          content={({ hide }) => (
             <Flex orientation="vertical" gap="l" align="center">
               <Flex orientation="horizontal" gap="s">
                 {[0, 1, 2, 3].map((i) => (
@@ -126,7 +126,7 @@ export const KeypadLockStory: StoryObj<typeof Modal> = {
                   showLabel={false}
                   icon={<LockOpen size={18} />}
                   disabled={entry.length < 4}
-                  onClick={() => check(closeModal)}
+                  onClick={() => check(hide)}
                 />
               </Flex>
             </Flex>

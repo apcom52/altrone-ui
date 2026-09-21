@@ -62,11 +62,11 @@ export function DropdownAction(props: DropdownActionProps) {
     ...style,
   };
 
-  const closePopup = useCloseDropdownContext();
+  const hide = useCloseDropdownContext();
 
   const onSelect = (event: React.MouseEvent<HTMLButtonElement>) => {
     props?.onClick?.(event);
-    closePopup();
+    hide();
   };
 
   const onKeyDownPress: React.KeyboardEventHandler<HTMLButtonElement> = (e) => {

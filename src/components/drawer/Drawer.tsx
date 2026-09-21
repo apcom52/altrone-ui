@@ -52,7 +52,7 @@ export const Drawer = (props: DrawerProps) => {
     [isControlled, hide, onClose],
   );
 
-  const drawerContext: DrawerContext = { closeDrawer: handleClose };
+  const drawerContext: DrawerContext = { hide: handleClose };
 
   const handleDone = async (event: MouseEvent<HTMLButtonElement>) => {
     if (onDone === undefined) {

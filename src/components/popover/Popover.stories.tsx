@@ -246,7 +246,7 @@ export const ReactionsStory: StoryObj<typeof Popover> = {
             defaultListNavigationIndex={3}
             virtualNavigationFocus={virtualFocus}
             placement="bottom-start"
-            content={({ closePopup }) => (
+            content={({ hide }) => (
               <Flex orientation="horizontal" gap="xs">
                 {EMOJIS.map((emoji) => (
                   <ReactionButton
@@ -255,7 +255,7 @@ export const ReactionsStory: StoryObj<typeof Popover> = {
                     selected={emoji === picked}
                     onSelect={() => {
                       setPicked(emoji);
-                      closePopup();
+                      hide();
                     }}
                   />
                 ))}
@@ -328,7 +328,7 @@ export const ShareStory: StoryObj<typeof Popover> = {
   },
 };
 
-// ─── 5. Nested + closeAllSequence ────────────────────────────────────────────
+// ─── 5. Nested + hideAllSequence ─────────────────────────────────────────────
 
 const ConfirmField = ({ onConfirm }: { onConfirm: () => void }) => {
   const [value, setValue] = useState('');
@@ -359,32 +359,32 @@ export const NestedStory: StoryObj<typeof Popover> = {
       <Heading>Nested popovers</Heading>
       <Paragraph>
         A popover opened from inside another popover's content stacks on top of
-        it. Both levels get their own <Text code>closePopup</Text>; the inner
-        one also gets <Text code>closeAllSequence</Text> to collapse the whole
+        it. Both levels get their own <Text code>hide</Text>; the inner
+        one also gets <Text code>hideAllSequence</Text> to collapse the whole
         chain — a single "never mind" that doesn't require closing each level
         in turn.
       </Paragraph>
       <Popover
         title="Delete workspace"
         showCloseButton
-        content={({ closePopup }) => (
+        content={({ hide }) => (
           <Flex orientation="vertical" gap="m" style={{ width: 260 }}>
             <Text size={3}>This removes every project inside it.</Text>
             <Flex orientation="horizontal" gap="s" justify="end">
-              <Button label="Cancel" onClick={closePopup} />
+              <Button label="Cancel" onClick={hide} />
               <Popover
                 placement="bottom-end"
                 title="Are you really sure?"
-                content={({ closeAllSequence }) => (
+                content={({ hideAllSequence }) => (
                   <Flex orientation="vertical" gap="m" style={{ width: 240 }}>
                     <Text size={3}>
                       Type <Text code>DELETE</Text> below. This can't be undone.
                     </Text>
-                    <ConfirmField onConfirm={closeAllSequence} />
+                    <ConfirmField onConfirm={hideAllSequence} />
                     <Button
                       variant="text"
                       label="Never mind, cancel everything"
-                      onClick={closeAllSequence}
+                      onClick={hideAllSequence}
                     />
                   </Flex>
                 )}

@@ -511,11 +511,11 @@ export const Reader: StoryObj<typeof Screen> = {
                   {isCompact ? (
                     <Popover
                       placement="bottom-end"
-                      content={({ closePopup }) => (
+                      content={({ hide }) => (
                         <Contents
                           state={state}
                           progress={progress}
-                          onNavigate={closePopup}
+                          onNavigate={hide}
                         />
                       )}
                     >

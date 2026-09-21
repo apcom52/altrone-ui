@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { ActionsProp, RenderFunction } from '../../utils';
 
 export interface DrawerContext {
-  closeDrawer: () => void;
+  hide: () => void;
 }
 
 export interface DrawerProps extends Omit<
@@ -42,7 +42,7 @@ export interface DrawerProps extends Omit<
   /**
    * `event` is the triggering backdrop click / close-button click / Escape
    * keydown, or undefined when closed programmatically via
-   * `DrawerContext.closeDrawer()`.
+   * `DrawerContext.hide()`.
    */
   onClose?: (event?: React.MouseEvent | KeyboardEvent) => void;
   /**

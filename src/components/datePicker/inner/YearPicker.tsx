@@ -14,7 +14,7 @@ export const YearPicker = memo<{ autoClose?: boolean }>(
     const { picker, currentMonth, setViewMode, setCurrentMonth } =
       useDatePickerViewContext();
     const { selectedDates, onDayClicked, minDate, maxDate } = useDateContext();
-    const closePopup = useDatePickerCloseFn();
+    const hide = useDatePickerCloseFn();
 
     const selectedYear = selectedDates[0];
     const [startYear, endYear] = useYearRanges(currentMonth);
@@ -32,7 +32,7 @@ export const YearPicker = memo<{ autoClose?: boolean }>(
         if (picker === 'year') {
           onDayClicked(newDate);
           if (autoClose) {
-            closePopup();
+            hide();
           }
           return;
         }
@@ -80,7 +80,7 @@ export const YearPicker = memo<{ autoClose?: boolean }>(
       setCurrentMonth,
       setViewMode,
       onDayClicked,
-      closePopup,
+      hide,
     ]);
 
     return (

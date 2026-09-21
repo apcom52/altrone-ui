@@ -631,7 +631,7 @@ const NewTaskModal = ({
             </Form.Field>
           </Form>
         }
-        actions={({ closeModal }) => (
+        actions={({ hide }) => (
           <Button
             label="Create task"
             variant="submit"
@@ -654,7 +654,7 @@ const NewTaskModal = ({
                 attachments: 0,
                 due: 'No date',
               });
-              closeModal();
+              hide();
             }}
           />
         )}
@@ -979,7 +979,7 @@ const TaskDetailModal = ({
             </Flex>
           </Flex>
         }
-        actions={({ closeModal }) => (
+        actions={({ hide }) => (
           <Flex gap="s">
             <Button
               label="Save changes"
@@ -990,7 +990,7 @@ const TaskDetailModal = ({
                   title: title.trim() || task.title,
                   description,
                 });
-                closeModal();
+                hide();
               }}
             />
             <Button
@@ -1009,7 +1009,7 @@ const TaskDetailModal = ({
 
                 if (confirmed) {
                   onDelete(task.id);
-                  closeModal();
+                  hide();
                 }
               }}
             />

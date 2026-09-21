@@ -108,7 +108,7 @@ export const Overview: StoryObj<typeof Drawer> = {
         via <Text code>onClose</Text> or the render-prop form of{' '}
         <Text code>content</Text>, <Text code>footer</Text>,{' '}
         <Text code>additionalActions</Text>, or <Text code>actions</Text> (which
-        all receive <Text code>closeDrawer</Text>).
+        all receive <Text code>hide</Text>).
       </Paragraph>
       <Paragraph>
         Focus is trapped inside the panel while it is open and returns to the
@@ -175,7 +175,7 @@ export const Overview: StoryObj<typeof Drawer> = {
       <Paragraph>
         <Text code>additionalActions</Text> and <Text code>actions</Text> add
         controls to either side of the header — one element or several. Both
-        take the render-prop form for <Text code>closeDrawer</Text>. Supplying{' '}
+        take the render-prop form for <Text code>hide</Text>. Supplying{' '}
         <Text code>actions</Text> replaces the default Done button; the title
         stays centred whatever lands on each side.
       </Paragraph>
@@ -306,7 +306,7 @@ const DocumentDrawerDemo = () => {
             variant="text"
           />
         }
-        actions={({ closeDrawer }) => [
+        actions={({ hide }) => [
           <Button
             key="share"
             label="Share"
@@ -318,7 +318,7 @@ const DocumentDrawerDemo = () => {
             key="save"
             label="Save"
             variant="submit"
-            onClick={closeDrawer}
+            onClick={hide}
           />,
         ]}
       />

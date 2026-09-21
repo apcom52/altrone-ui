@@ -733,14 +733,14 @@ export const HelpdeskApp: StoryObj<typeof Screen> = {
               </Flex>
             );
           }}
-          actions={({ closeDrawer }) => (
+          actions={({ hide }) => (
             <Button
               label="Mark resolved"
               icon={<Check />}
               onClick={() => {
                 if (openTicket)
                   updateTicket(openTicket.id, { status: 'resolved' });
-                closeDrawer();
+                hide();
               }}
             />
           )}

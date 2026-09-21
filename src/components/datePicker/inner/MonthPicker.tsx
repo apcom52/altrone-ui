@@ -15,7 +15,7 @@ export const MonthPicker = memo<{ autoClose?: boolean }>(
       useDatePickerViewContext();
     const { selectedDates, onDayClicked, minDate, maxDate } = useDateContext();
     const { language = 'en' } = useLocalizationContext();
-    const closePopup = useDatePickerCloseFn();
+    const hide = useDatePickerCloseFn();
 
     const selectedMonth = selectedDates[0];
     const containerRef = useRef<HTMLDivElement>(null);
@@ -32,7 +32,7 @@ export const MonthPicker = memo<{ autoClose?: boolean }>(
         if (picker === 'month') {
           onDayClicked(newDate);
           if (autoClose) {
-            closePopup();
+            hide();
           }
           return;
         }
@@ -80,7 +80,7 @@ export const MonthPicker = memo<{ autoClose?: boolean }>(
       setCurrentMonth,
       setViewMode,
       onDayClicked,
-      closePopup,
+      hide,
     ]);
 
     return (

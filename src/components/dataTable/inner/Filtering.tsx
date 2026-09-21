@@ -96,7 +96,7 @@ export const Filtering = () => {
       onOpenChange={(open) => {
         if (open) setDraftFilters(filters);
       }}
-      content={({ closePopup }) => (
+      content={({ hide }) => (
         <Form>
           {draftFilters.length === 0 ? (
             <Result size="s">{t('dataTable.noFilters')}</Result>
@@ -140,7 +140,7 @@ export const Filtering = () => {
                 setDraftFilters([]);
                 notePendingEvent(event);
                 table.resetPageIndex();
-                closePopup();
+                hide();
               }}
             />
             <Button
@@ -150,7 +150,7 @@ export const Filtering = () => {
                 table.setColumnFilters(draftFilters);
                 notePendingEvent(event);
                 table.resetPageIndex();
-                closePopup();
+                hide();
               }}
               variant="submit"
             />

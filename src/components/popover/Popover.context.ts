@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react';
 
 /**
  * Close handler that walks up nested popovers — a child popover calls it to
- * dismiss the whole chain (see `PopoverContentContext.closeAllSequence`).
+ * dismiss the whole chain (see `PopoverContentContext.hideAllSequence`).
  */
 export const PopoverCloseContext = createContext<undefined | (() => void)>(
   undefined,

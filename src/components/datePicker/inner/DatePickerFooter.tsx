@@ -16,7 +16,7 @@ export const DatePickerFooter = memo<DatePickerFooterProps>(
 
     const { picker, setCurrentMonth } = useDatePickerViewContext();
     const { selectedDates, onDayClicked, minDate, maxDate } = useDateContext();
-    const closePopup = useDatePickerCloseFn();
+    const hide = useDatePickerCloseFn();
 
     const currentDateButtonVisible = picker !== 'range';
     const clearButtonVisible = Boolean(
@@ -50,12 +50,12 @@ export const DatePickerFooter = memo<DatePickerFooterProps>(
 
       setCurrentMonth(thisDay);
       onDayClicked(thisDay, event);
-      closePopup();
+      hide();
     };
 
     const onClearButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       onDayClicked(undefined, event);
-      closePopup();
+      hide();
     };
 
     if (!clearButtonVisible && !currentDateButtonVisible) {

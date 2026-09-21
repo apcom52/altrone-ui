@@ -17,7 +17,7 @@ export type SelectContextValue = {
   selectedOptions: Option | Option[] | undefined;
   disabled: boolean;
   multiple: boolean;
-  clearValue: (
+  clear: (
     event?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
   ) => void;
 };

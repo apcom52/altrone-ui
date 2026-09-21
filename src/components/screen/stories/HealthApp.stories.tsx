@@ -368,7 +368,7 @@ const LogWorkoutModal = ({
             </Form.Field>
           </Form>
         }
-        actions={({ closeModal }) => (
+        actions={({ hide }) => (
           <Button
             label={saving ? 'Saving…' : 'Save workout'}
             variant="submit"
@@ -387,7 +387,7 @@ const LogWorkoutModal = ({
                 kcal: Math.round(minutes * (4 + effort)),
                 when: 'Just now',
               });
-              closeModal();
+              hide();
             }}
           />
         )}
@@ -494,7 +494,7 @@ const VitalCard = ({
             </Form>
           </Flex>
         )}
-        actions={({ closeModal }) => (
+        actions={({ hide }) => (
           <Button
             label="Save reading"
             variant="submit"
@@ -506,7 +506,7 @@ const VitalCard = ({
 
               onAddReading(vital.id, draft);
               setDraft(undefined);
-              closeModal();
+              hide();
             }}
           />
         )}
@@ -577,7 +577,7 @@ const AddMedicationModal = ({
             </Form.Field>
           </Form>
         }
-        actions={({ closeModal }) => (
+        actions={({ hide }) => (
           <Button
             label="Add"
             variant="submit"
@@ -589,7 +589,7 @@ const AddMedicationModal = ({
               }
 
               onAdd({ name: name.trim(), dose: dose.trim() || '—', schedule });
-              closeModal();
+              hide();
             }}
           />
         )}
@@ -678,7 +678,7 @@ const EditProfileModal = ({
             </Form.Field>
           </Form>
         }
-        actions={({ closeModal }) => (
+        actions={({ hide }) => (
           <Button
             label="Save profile"
             variant="submit"
@@ -689,7 +689,7 @@ const EditProfileModal = ({
                 bloodType,
                 conditions,
               });
-              closeModal();
+              hide();
             }}
           />
         )}
@@ -735,8 +735,8 @@ const NotificationsModal = ({ count }: { count: number }) => {
             ))}
           </Flex>
         }
-        actions={({ closeModal }) => (
-          <Button label="Mark all read" variant="submit" onClick={closeModal} />
+        actions={({ hide }) => (
+          <Button label="Mark all read" variant="submit" onClick={hide} />
         )}
       />
     </>

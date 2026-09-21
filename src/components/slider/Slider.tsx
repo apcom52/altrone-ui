@@ -23,30 +23,29 @@ const FOCUS_VISIBLE_SUPPORTED =
   CSS.supports('selector(:focus-visible)');
 
 /**
- * The value bubble is portaled to the shared app root, not to whichever
- * overlay it's visually inside — so its own z-index alone decides whether it
- * renders above or below a `Modal`/`Drawer` open elsewhere on the page. Walk
- * up from the slider root and check whether any ancestor already resolved a
- * z-index at or above `--level-offcanvas-backdrop` — the first "real overlay"
- * tier, right after page-level chrome like `Screen.Header` (`--level-fixed`):
- * if so, the slider itself is nested inside some overlay (`Modal`, `Drawer`,
- * `Popover`, `Dropdown`, …) and its bubble needs tooltip level to clear that
- * overlay; otherwise it must stay below any overlay that might open elsewhere.
+ * The value bubble is portaled to the shared app root, so its own z-index
+ * alone decides whether it renders above unrelated content elsewhere on the
+ * page (an open `Select`/`Dropdown`, `--level-popover`). Returns the highest
+ * ancestor z-index at/above `--level-offcanvas-backdrop` (the slider is
+ * nested inside some overlay) so `Slider.tsx` can clear exactly that
+ * ancestor instead of jumping to a fixed tier that would out-rank overlays
+ * opened elsewhere.
  */
-const isInsideElevatedOverlay = (node: HTMLElement) => {
+const findAncestorOverlayZIndex = (node: HTMLElement): number | null => {
   const threshold =
     parseInt(
       getComputedStyle(node).getPropertyValue('--level-offcanvas-backdrop'),
       10,
     ) || 1040;
 
+  let highest: number | null = null;
   for (let el = node.parentElement; el; el = el.parentElement) {
-    const zIndex = getComputedStyle(el).zIndex;
-    if (zIndex !== 'auto' && Number(zIndex) >= threshold) {
-      return true;
+    const zIndex = Number(getComputedStyle(el).zIndex);
+    if (!Number.isNaN(zIndex) && (highest === null || zIndex > highest)) {
+      highest = zIndex;
     }
   }
-  return false;
+  return highest !== null && highest >= threshold ? highest : null;
 };
 
 export const Slider = (props: SliderProps) => {
@@ -93,7 +92,7 @@ export const Slider = (props: SliderProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isFocusVisible, setIsFocusVisible] = useState(false);
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
-  const [insideOverlay, setInsideOverlay] = useState(false);
+  const [overlayZIndex, setOverlayZIndex] = useState<number | null>(null);
 
   const isFill = variant === 'fill';
   const isVertical = orientation === 'vertical';
@@ -123,7 +122,7 @@ export const Slider = (props: SliderProps) => {
               document.body)
           : null,
       );
-      setInsideOverlay(node ? isInsideElevatedOverlay(node) : false);
+      setOverlayZIndex(node ? findAncestorOverlayZIndex(node) : null);
       if (typeof ref === 'function') {
         ref(node);
       } else if (ref) {
@@ -300,7 +299,7 @@ export const Slider = (props: SliderProps) => {
             {showValue && isFill ? (
               <div
                 className={clsx(s.Value, {
-                  [s.ValueElevated]: insideOverlay,
+                  [s.ValueElevated]: overlayZIndex !== null,
                 })}
               >
                 {labelElement}
@@ -313,10 +312,13 @@ export const Slider = (props: SliderProps) => {
                 {valueVisible ? (
                   <motion.div
                     ref={valueRefs.setFloating}
-                    className={clsx(s.ValueFloating, {
-                      [s.ValueElevated]: insideOverlay,
-                    })}
-                    style={valueFloatingStyles}
+                    className={s.ValueFloating}
+                    style={{
+                      ...valueFloatingStyles,
+                      ...(overlayZIndex !== null
+                        ? { zIndex: overlayZIndex + 1 }
+                        : undefined),
+                    }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}

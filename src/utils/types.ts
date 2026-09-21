@@ -14,8 +14,6 @@ export type RenderFunction<ReturnType, Arguments = undefined> =
   | ReturnType
   | ((data: Arguments) => ReturnType);
 
-export type CustomRenderFunction<Arguments> = (data: Arguments) => ReactNode;
-
 export type StrictReactElements<T extends object> =
   | ReactElement<T>
   | null
