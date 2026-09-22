@@ -11,11 +11,12 @@ import {
 import { ChevronsDown, ChevronsLeft, ChevronsRight, ChevronsUp } from 'lucide-react';
 import { Dropdown } from 'components/dropdown';
 import { useLocalization } from 'components/application';
-import { Action, Group } from './components';
+import { Action, Group, Separator } from './components';
 import {
   ToolbarActionPriority,
   ToolbarActionProps,
   ToolbarGroupProps,
+  ToolbarSeparatorProps,
 } from './Toolbar.types.ts';
 
 const PRIORITY_WEIGHT: Record<ToolbarActionPriority, number> = {
@@ -68,6 +69,16 @@ export function resolveToolbarOverflow(
   }
 
   return hidden;
+}
+
+/** A flexible `Toolbar.Separator` (`variant="space"`, the default) grows to fill leftover
+ *  space — its stretched rendered width isn't a real requirement, so it must never be
+ *  counted toward how much room the row needs. */
+export function isFlexibleSpacer(child: ReactElement): boolean {
+  return (
+    child.type === Separator &&
+    ((child.props as ToolbarSeparatorProps).variant ?? 'space') === 'space'
+  );
 }
 
 function getItemPriority(child: ReactElement): ToolbarActionPriority {
@@ -138,6 +149,12 @@ function getTriggerIcon(
   return triggerEdge === 'end' ? <ChevronsRight /> : <ChevronsLeft />;
 }
 
+export interface UseToolbarOverflowOptions {
+  triggerEdge?: ToolbarOverflowTriggerEdge;
+  /** Called whenever the region's full (uncollapsed) content size changes — lets `Toolbar` balance `Leading`/`Trailing`'s shared track width by actual need instead of a rigid 50/50 split. */
+  onNaturalSizeChange?: (size: number) => void;
+}
+
 /**
  * Collapses the direct children of a toolbar row (`Toolbar.Action` /
  * `Toolbar.Group`, each an atomic unit) into an overflow `Dropdown` once
@@ -152,7 +169,7 @@ function getTriggerIcon(
 export function useToolbarOverflow(
   children: ReactNode,
   orientation: 'horizontal' | 'vertical',
-  triggerEdge: ToolbarOverflowTriggerEdge = 'end',
+  { triggerEdge = 'end', onNaturalSizeChange }: UseToolbarOverflowOptions = {},
 ) {
   const t = useLocalization();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -176,6 +193,16 @@ export function useToolbarOverflow(
     [childArray],
   );
 
+  const flexibleSpacerKeys = useMemo(
+    () =>
+      new Set(
+        childArray
+          .filter((child) => isFlexibleSpacer(child))
+          .map((child) => String(child.key)),
+      ),
+    [childArray],
+  );
+
   /**
    * `hiddenKeys` is a dep so this reruns once the trigger itself mounts,
    * letting the second pass size it correctly instead of assuming 0.
@@ -195,7 +222,7 @@ export function useToolbarOverflow(
 
       visibleItems.forEach((item, index) => {
         const node = nodes[index + nodeOffset];
-        if (!node) return;
+        if (!node || flexibleSpacerKeys.has(item.key)) return;
         const measured =
           orientation === 'vertical' ? node.offsetHeight : node.offsetWidth;
         if (measured > 0) sizesRef.current.set(item.key, measured);
@@ -214,6 +241,12 @@ export function useToolbarOverflow(
         parseFloat(
           orientation === 'vertical' ? style.rowGap : style.columnGap,
         ) || 0;
+
+      const naturalSize =
+        items.reduce((sum, item) => sum + (sizesRef.current.get(item.key) ?? 0), 0) +
+        gap * Math.max(items.length - 1, 0);
+      onNaturalSizeChange?.(naturalSize);
+
       const triggerSize = triggerRef.current
         ? orientation === 'vertical'
           ? triggerRef.current.offsetHeight
@@ -243,7 +276,14 @@ export function useToolbarOverflow(
     const observer = new ResizeObserver(recalculate);
     observer.observe(container);
     return () => observer.disconnect();
-  }, [items, orientation, hiddenKeys, triggerEdge]);
+  }, [
+    items,
+    orientation,
+    hiddenKeys,
+    triggerEdge,
+    onNaturalSizeChange,
+    flexibleSpacerKeys,
+  ]);
 
   const visibleChildren: ReactNode[] = [];
   const hiddenElements: ReactElement[] = [];

@@ -29,7 +29,7 @@ import { screenMeta } from './shared.tsx';
 
 const meta: Meta<typeof Screen> = {
   ...screenMeta,
-  title: 'Components/Core/Screen/Music app',
+  title: 'Applications/Music app',
   parameters: { ...screenMeta.parameters, chromatic: { disable: true } },
 };
 
@@ -597,7 +597,7 @@ export const MusicApp: StoryObj<typeof Screen> = {
                 style={{ objectFit: 'contain' }}
               />
             </Toolbar.Logo>
-            <Toolbar.Title label="Soundwave" />
+            <Toolbar.Title title="Soundwave" />
             <Toolbar.Separator />
             <Toolbar.Group>
               <Toolbar.Action

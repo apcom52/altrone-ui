@@ -56,7 +56,7 @@ import { screenMeta, Stat, surface } from './shared.tsx';
 
 const meta: Meta<typeof Screen> = {
   ...screenMeta,
-  title: 'Components/Core/Screen/Health app',
+  title: 'Applications/Health app',
   parameters: { ...screenMeta.parameters, chromatic: { disable: true } },
 };
 
@@ -1145,7 +1145,7 @@ export const HealthApp: StoryObj<typeof Screen> = {
                 />
               </Toolbar.Group>
             )}
-            <Toolbar.Title label={activeTab.label} />
+            <Toolbar.Title title={activeTab.label} />
             <Toolbar.Separator />
             <Toolbar.Group>
               <Toolbar.Action label="Search" icon={<Search />} showLabel={false} />

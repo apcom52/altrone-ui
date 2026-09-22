@@ -51,7 +51,7 @@ import { screenMeta, useDemoSidebar } from './shared.tsx';
 
 const meta: Meta<typeof Screen> = {
   ...screenMeta,
-  title: 'Components/Core/Screen/Kanban',
+  title: 'Applications/Kanban',
   parameters: { ...screenMeta.parameters, chromatic: { disable: true } },
 };
 
@@ -1450,7 +1450,7 @@ export const Kanban: StoryObj<typeof Screen> = {
               </Toolbar.Group>
             ) : null}
             <Toolbar.Title
-              label={view === 'settings' ? 'Board settings' : boardName}
+              title={view === 'settings' ? 'Board settings' : boardName}
             />
             <Toolbar.Separator />
             {view === 'board' ? (

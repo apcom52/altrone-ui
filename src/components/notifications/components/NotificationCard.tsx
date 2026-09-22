@@ -89,7 +89,7 @@ export const NotificationCard = ({ item, enter, onClose }: NotificationCardProps
             shape="pill"
             material="plate"
             elevation="toast"
-            padding={4}
+            padding="var(--space-content)"
             className={clsx(s.Toast, s[`Toast_${variant}`])}
           >
             {displayIcon !== null && displayIcon !== undefined ? (

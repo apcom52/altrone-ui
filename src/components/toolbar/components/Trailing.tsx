@@ -4,16 +4,16 @@ import s from './group.module.scss';
 import clsx from 'clsx';
 import { mergeRefs } from 'utils';
 import { useToolbarOverflow } from '../useToolbarOverflow.tsx';
-import { useToolbarContext } from '../Toolbar.context.ts';
+import { useToolbarContext, useToolbarBalance } from '../Toolbar.context.ts';
 
 export const Trailing = memo(
   ({ ref, children, className, ...restProps }: ToolbarTrailingProps) => {
     const { orientation } = useToolbarContext();
-    const { containerRef, content } = useToolbarOverflow(
-      children,
-      orientation,
-      'start',
-    );
+    const balance = useToolbarBalance();
+    const { containerRef, content } = useToolbarOverflow(children, orientation, {
+      triggerEdge: 'start',
+      onNaturalSizeChange: (size) => balance?.reportNaturalSize('trailing', size),
+    });
 
     return (
       <div

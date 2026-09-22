@@ -19,7 +19,7 @@ import { screenMeta, useDemoSidebar } from './shared.tsx';
 
 const meta: Meta<typeof Screen> = {
   ...screenMeta,
-  title: 'Components/Core/Screen',
+  title: 'Applications',
   parameters: { ...screenMeta.parameters, chromatic: { disable: true } },
 };
 
@@ -386,10 +386,14 @@ export const CatalogApp: StoryObj<typeof Screen> = {
                 />
               </Toolbar.Logo>
             )}
-            <Toolbar.Title label="Catalog" />
+            <Toolbar.Title title="Catalog" />
             <Toolbar.Separator />
             <Toolbar.Group>
-              <Toolbar.Action label="Search" icon={<Search />} showLabel={false} />
+              <Toolbar.Action
+                label="Search"
+                icon={<Search />}
+                showLabel={false}
+              />
               <Toolbar.Action label="Add product" icon={<Plus />} />
             </Toolbar.Group>
             <Toolbar.Group>
@@ -474,7 +478,12 @@ export const CatalogApp: StoryObj<typeof Screen> = {
             </Screen.Content>
           </Splitter.Panel>
 
-          <Splitter.Panel defaultSize={34} minSize={24} maxSize={46} collapsible>
+          <Splitter.Panel
+            defaultSize={34}
+            minSize={24}
+            maxSize={46}
+            collapsible
+          >
             <Screen.Aside>
               {selected ? (
                 <ProductInspector

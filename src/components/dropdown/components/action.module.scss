@@ -8,7 +8,7 @@
 
   /* Menu rows are a single fixed density — no `size` prop. */
   --dropdown-action-height: 32px;
-  --dropdown-action-padding-x: 8px;
+  --dropdown-action-padding-x: var(--space-content);
   --dropdown-action-font-size: var(--text-size-4);
   --dropdown-action-icon-size: 18px;
 }

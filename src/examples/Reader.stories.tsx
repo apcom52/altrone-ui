@@ -27,7 +27,7 @@ import { screenMeta } from './shared.tsx';
 
 const meta: Meta<typeof Screen> = {
   ...screenMeta,
-  title: 'Components/Core/Screen/Reader',
+  title: 'Applications/Reader',
   parameters: { ...screenMeta.parameters, chromatic: { disable: true } },
 };
 
@@ -505,7 +505,7 @@ export const Reader: StoryObj<typeof Screen> = {
                     />
                   )}
                 </Toolbar.Group>
-                <Toolbar.Title label={activeBook.title} />
+                <Toolbar.Title title={activeBook.title} />
                 <Toolbar.Separator />
                 <Toolbar.Group>
                   {isCompact ? (
@@ -554,7 +554,7 @@ export const Reader: StoryObj<typeof Screen> = {
                 <Toolbar.Logo>
                   <BookOpen size={26} />
                 </Toolbar.Logo>
-                <Toolbar.Title label="Reader" />
+                <Toolbar.Title title="Reader" />
                 <Toolbar.Separator />
                 <Toolbar.Group>
                   <Toolbar.Action label="Search" icon={<Search />} showLabel={false} />

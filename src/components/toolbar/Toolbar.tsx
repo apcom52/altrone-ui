@@ -13,9 +13,10 @@ import {
   Title,
   Trailing,
 } from './components';
-import { ToolbarContext } from './Toolbar.context.ts';
+import { ToolbarBalanceContext, ToolbarContext } from './Toolbar.context.ts';
 import { GlobalUtils, mergeRefs } from 'utils';
 import { useToolbarOverflow } from './useToolbarOverflow.tsx';
+import { useToolbarRegionBalance } from './useToolbarRegionBalance.ts';
 
 const SIZE_CLASS = {
   mini: s.SizeMini,
@@ -62,6 +63,7 @@ const ToolbarComponent = memo(
       edge === 'left' || edge === 'right' ? 'vertical' : 'horizontal';
 
     const { containerRef, content } = useToolbarOverflow(children, orientation);
+    const balance = useToolbarRegionBalance(containerRef, orientation);
 
     const cls = clsx(
       s.Toolbar,
@@ -76,18 +78,18 @@ const ToolbarComponent = memo(
     );
 
     return (
-      <ToolbarContext.Provider
-        value={{ edge, orientation, variant, size }}
-      >
-        <div
-          ref={mergeRefs(ref, containerRef)}
-          className={cls}
-          role="toolbar"
-          aria-orientation={orientation}
-          {...restProps}
-        >
-          {content}
-        </div>
+      <ToolbarContext.Provider value={{ edge, orientation, variant, size }}>
+        <ToolbarBalanceContext.Provider value={balance}>
+          <div
+            ref={mergeRefs(ref, containerRef)}
+            className={cls}
+            role="toolbar"
+            aria-orientation={orientation}
+            {...restProps}
+          >
+            {content}
+          </div>
+        </ToolbarBalanceContext.Provider>
       </ToolbarContext.Provider>
     );
   },

@@ -4,7 +4,7 @@ import { screenMeta } from './shared.tsx';
 
 const meta: Meta<typeof Screen> = {
   ...screenMeta,
-  title: 'Components/Core/Screen/Sign in',
+  title: 'Applications/Sign in',
 };
 
 export default meta;

@@ -156,6 +156,8 @@ export const Slider = (props: SliderProps) => {
   const handlePointerDown = useCallback(
     (event: React.PointerEvent<HTMLDivElement>) => {
       event.preventDefault();
+      const target = event.currentTarget;
+      target.setPointerCapture(event.pointerId);
       isDragging.current = true;
       setIsActive(true);
       onChange(calculateValue(event.clientX, event.clientY), event);
@@ -169,6 +171,7 @@ export const Slider = (props: SliderProps) => {
         onChangeEnd?.(sliderValue.current, e);
         isDragging.current = false;
         setIsActive(false);
+        target.releasePointerCapture(event.pointerId);
         document.removeEventListener('pointermove', handleMove);
         document.removeEventListener('pointerup', handleUp);
       };

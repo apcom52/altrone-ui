@@ -4,14 +4,14 @@ import type { Meta } from '@storybook/react';
 import { Flex, Screen, Text } from 'components';
 import { useBreakpoint } from 'utils';
 import { StorybookDecorator } from 'global/storybook';
-import { allModes } from '../../../../.storybook/modes.ts';
+import { allModes } from '../../.storybook/modes.ts';
 
 /**
- * Shared config for the `Screen` example stories — each file adds its own
- * `title` under `Components/Core/Screen/*`. `Screen` is a bare layout shell
- * (a CSS grid with `Screen.Header` / `Screen.Sidebar` / `Screen.Content` /
- * `Screen.Footer` / `Screen.BottomNavigation`); every file here is a small
- * application skeleton reaching for a different layout the primitive supports.
+ * Shared config for the application example stories — each file adds its own
+ * `title` under `Applications/*`. Every file here is a small, realistic app
+ * built on `Screen` (a bare layout shell — `Screen.Header` / `Screen.Sidebar` /
+ * `Screen.Content` / `Screen.Footer` / `Screen.BottomNavigation`), each
+ * reaching for a different layout the primitive supports.
  */
 export const screenMeta = {
   component: Screen,

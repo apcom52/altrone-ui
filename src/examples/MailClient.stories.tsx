@@ -34,7 +34,7 @@ import { screenMeta, useDemoSidebar } from './shared.tsx';
 
 const meta: Meta<typeof Screen> = {
   ...screenMeta,
-  title: 'Components/Core/Screen/Mail client',
+  title: 'Applications/Mail client',
 };
 
 export default meta;
@@ -511,7 +511,7 @@ export const MailClient: StoryObj<typeof Screen> = {
                 />
               </Toolbar.Logo>
             )}
-            <Toolbar.Title label="Mail" />
+            <Toolbar.Title title="Mail" />
             <Toolbar.Separator />
             <Toolbar.Group>
               <Toolbar.Action

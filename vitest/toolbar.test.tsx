@@ -2,7 +2,11 @@ import React from 'react';
 import { expect, test, describe, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Application, Toolbar } from '../src/components';
-import { resolveToolbarOverflow } from '../src/components/toolbar/useToolbarOverflow.tsx';
+import {
+  resolveToolbarOverflow,
+  isFlexibleSpacer,
+} from '../src/components/toolbar/useToolbarOverflow.tsx';
+import { resolveToolbarRegionBalance } from '../src/components/toolbar/useToolbarRegionBalance.ts';
 
 describe('Toolbar', () => {
   test('check that className and style props works', () => {
@@ -238,6 +242,19 @@ describe('Toolbar overflow', () => {
     );
   });
 
+  test('isFlexibleSpacer: true only for a `Toolbar.Separator` with variant "space" (the default) — its stretched width is not a real requirement and must never be measured', () => {
+    expect(
+      isFlexibleSpacer(<Toolbar.Separator />),
+    ).toBe(true);
+    expect(
+      isFlexibleSpacer(<Toolbar.Separator variant="space" />),
+    ).toBe(true);
+    expect(
+      isFlexibleSpacer(<Toolbar.Separator variant="line" />),
+    ).toBe(false);
+    expect(isFlexibleSpacer(<Toolbar.Action label="x" />)).toBe(false);
+  });
+
   test('resolveToolbarOverflow: nothing is hidden when everything fits', () => {
     const items = [
       { key: 'a', priority: 'low' as const },
@@ -298,6 +315,29 @@ describe('Toolbar overflow', () => {
     expect(resolveToolbarOverflow(items, sizes, 60, 8, 8)).toEqual(
       new Set(['first']),
     );
+  });
+});
+
+describe('Toolbar region balance', () => {
+  test('resolveToolbarRegionBalance: grants each side its exact need plus half the leftover when both fit', () => {
+    expect(resolveToolbarRegionBalance(89, 234, 598)).toEqual([
+      89 + (598 - 89 - 234) / 2,
+      234 + (598 - 89 - 234) / 2,
+    ]);
+  });
+
+  test('resolveToolbarRegionBalance: never grants less than the exact need when both fit', () => {
+    const [leadingTrack, trailingTrack] = resolveToolbarRegionBalance(
+      89,
+      234,
+      598,
+    );
+    expect(leadingTrack).toBeGreaterThanOrEqual(89);
+    expect(trailingTrack).toBeGreaterThanOrEqual(234);
+  });
+
+  test('resolveToolbarRegionBalance: falls back to an even split once both together do not fit', () => {
+    expect(resolveToolbarRegionBalance(236, 46, 250)).toEqual([125, 125]);
   });
 });
 

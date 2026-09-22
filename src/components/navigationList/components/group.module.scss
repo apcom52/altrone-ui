@@ -22,6 +22,9 @@
   color: var(--navigation-list-group-text-color);
   font-size: var(--navigation-list-group-text-size);
   line-height: 20px;
+  /* Same reasoning as `.Label` in link.module.scss — a long title needs to
+     shrink below its content size for the ellipsis to kick in. */
+  min-width: 0;
 }
 
 .Actions {

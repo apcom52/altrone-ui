@@ -354,6 +354,53 @@ export const Overview: StoryObj<typeof NavigationList> = {
           </NavigationList.Group>
         </NavigationList>
 
+        <Heading>Long labels &amp; titles</Heading>
+        <Paragraph>
+          Group <Text code>title</Text> and link <Text code>label</Text> both
+          truncate with an ellipsis instead of wrapping or pushing the fixed{' '}
+          <Text code>--navigation-list-width</Text> wider — even when the
+          group also has header <Text code>actions</Text>, which keep their
+          own space and stay fully visible instead of being squeezed out.
+          The same holds for a link's badge, actions and nested&#8209;links
+          chevron.
+        </Paragraph>
+
+        <NavigationList style={{ height: 'auto' }}>
+          <NavigationList.Group
+            title="Quarterly Engineering Roadmap, Planning & Cross-functional Alignment"
+            actions={<NavAction label="Add item" icon={<Plus />} />}
+          >
+            <NavigationList.Link
+              icon={<LayoutDashboard />}
+              label="Cross-team Infrastructure Modernization Initiative"
+              selected={sel('long-1')}
+              onClick={() => setSection('long-1')}
+            />
+            <NavigationList.Link
+              icon={<Bell />}
+              label="Notifications and Alerting Pipeline Redesign"
+              badge="24"
+              selected={sel('long-2')}
+              onClick={() => setSection('long-2')}
+              actions={
+                <NavAction label="Open in new tab" icon={<Globe />} />
+              }
+            />
+            <NavigationList.Link
+              icon={<Users />}
+              label="Platform Reliability & On-call Rotation Working Group"
+              selected={sel('long-3')}
+              onClick={() => setSection('long-3')}
+            >
+              <NavigationList.Link
+                label="Incident Response Runbook Overhaul for Payment Services"
+                selected={sel('long-3-nested')}
+                onClick={() => setSection('long-3-nested')}
+              />
+            </NavigationList.Link>
+          </NavigationList.Group>
+        </NavigationList>
+
         <Heading>Router integration with asChild</Heading>
         <Paragraph>
           Set <Text code>asChild</Text> and pass a single element &mdash; your

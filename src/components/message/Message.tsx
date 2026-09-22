@@ -50,7 +50,11 @@ export const Message = ({
       shape="rounded"
       material="pale"
       tone={tone}
-      padding={icon ? 8 : { x: 16, y: 8 }}
+      padding={
+        icon
+          ? 'var(--space-content)'
+          : { x: 'calc(var(--space-content) * 2)', y: 'var(--space-content)' }
+      }
       {...restProps}
     >
       {icon ? (

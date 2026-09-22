@@ -23,6 +23,7 @@
   text-decoration: none;
   -webkit-user-select: none;
   user-select: none;
+  min-width: var(--box-size);
 }
 
 .Button[disabled] {

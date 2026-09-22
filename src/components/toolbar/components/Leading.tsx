@@ -4,12 +4,15 @@ import s from './group.module.scss';
 import clsx from 'clsx';
 import { mergeRefs } from 'utils';
 import { useToolbarOverflow } from '../useToolbarOverflow.tsx';
-import { useToolbarContext } from '../Toolbar.context.ts';
+import { useToolbarContext, useToolbarBalance } from '../Toolbar.context.ts';
 
 export const Leading = memo(
   ({ ref, children, className, ...restProps }: ToolbarLeadingProps) => {
     const { orientation } = useToolbarContext();
-    const { containerRef, content } = useToolbarOverflow(children, orientation);
+    const balance = useToolbarBalance();
+    const { containerRef, content } = useToolbarOverflow(children, orientation, {
+      onNaturalSizeChange: (size) => balance?.reportNaturalSize('leading', size),
+    });
 
     return (
       <div

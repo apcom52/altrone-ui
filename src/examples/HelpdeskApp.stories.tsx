@@ -38,7 +38,7 @@ import { Card, screenMeta } from './shared.tsx';
 
 const meta: Meta<typeof Screen> = {
   ...screenMeta,
-  title: 'Components/Core/Screen/Helpdesk',
+  title: 'Applications/Helpdesk',
   parameters: { ...screenMeta.parameters, chromatic: { disable: true } },
 };
 
