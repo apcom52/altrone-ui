@@ -1,14 +1,10 @@
 import { memo, useMemo, useState } from 'react';
 import s from './pagination.module.scss';
 import clsx from 'clsx';
-import {
-  ChevronFirst,
-  ChevronLast,
-  ChevronLeft,
-  ChevronRight,
-} from 'lucide-react';
+import { ChevronFirst, ChevronLast } from 'lucide-react';
 import { PaginationProps } from './Pagination.types.ts';
 import { useLocalization } from '../application';
+import { useIcons } from '../application/useIcons.tsx';
 import { Button } from 'components/button/index.ts';
 import { Flex } from 'components/flex/Flex.tsx';
 
@@ -59,9 +55,14 @@ export const Pagination = memo<PaginationProps>(
     size = 'm',
     className,
     style,
+    prevIcon,
+    nextIcon,
+    firstPageIcon,
+    lastPageIcon,
     ...restProps
   }) => {
     const t = useLocalization();
+    const icons = useIcons();
 
     const isControlled = currentPage !== undefined;
     const [uncontrolledPage, setUncontrolledPage] = useState(defaultPage);
@@ -118,7 +119,7 @@ export const Pagination = memo<PaginationProps>(
           {showEdgeButtons && (
             <Button
               size={size}
-              icon={<ChevronFirst />}
+              icon={firstPageIcon ?? <ChevronFirst />}
               disabled={isFirst}
               label={t('pagination.firstPage')}
               onClick={(e) => handleChange(1, e)}
@@ -128,7 +129,7 @@ export const Pagination = memo<PaginationProps>(
 
           <Button
             size={size}
-            icon={<ChevronLeft />}
+            icon={prevIcon ?? icons.prev}
             disabled={isFirst}
             label={t('pagination.previous')}
             onClick={(e) => handleChange(page - 1, e)}
@@ -156,7 +157,7 @@ export const Pagination = memo<PaginationProps>(
 
           <Button
             size={size}
-            icon={<ChevronRight />}
+            icon={nextIcon ?? icons.next}
             disabled={isLast}
             label={t('pagination.next')}
             onClick={(e) => handleChange(page + 1, e)}
@@ -166,7 +167,7 @@ export const Pagination = memo<PaginationProps>(
           {showEdgeButtons && (
             <Button
               size={size}
-              icon={<ChevronLast />}
+              icon={lastPageIcon ?? <ChevronLast />}
               disabled={isLast}
               label={t('pagination.lastPage')}
               onClick={(e) => handleChange(totalPages, e)}

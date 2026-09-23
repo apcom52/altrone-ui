@@ -8,10 +8,11 @@ import { useToolbarContext, useToolbarBalance } from '../Toolbar.context.ts';
 
 export const Trailing = memo(
   ({ ref, children, className, ...restProps }: ToolbarTrailingProps) => {
-    const { orientation } = useToolbarContext();
+    const { orientation, icons } = useToolbarContext();
     const balance = useToolbarBalance();
     const { containerRef, content } = useToolbarOverflow(children, orientation, {
       triggerEdge: 'start',
+      overflowIcons: icons,
       onNaturalSizeChange: (size) => balance?.reportNaturalSize('trailing', size),
     });
 

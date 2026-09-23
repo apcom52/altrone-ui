@@ -4,6 +4,7 @@ import { Box, Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { CloseButton } from './CloseButton.tsx';
+import { CircleX } from 'lucide-react';
 
 const story: Meta<typeof CloseButton> = {
   title: 'Components/Atoms/CloseButton',
@@ -35,15 +36,16 @@ export const Overview: StoryObj<typeof CloseButton> = {
         </Text>
         <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
           A ready-made icon button for dismissing panels, modals, toasts and
-          cards. It&rsquo;s a <Text code>Button</Text> locked to the{' '}
-          <Text code>X</Text> icon with <Text code>showLabel=&#123;false&#125;</Text>,
-          its hover tooltip turned off (the glyph speaks for itself), and an
-          accessible name from the localized{' '}
-          <Text code>closeButton.ariaLabel</Text> string. Everything else —{' '}
-          <Text code>size</Text>, <Text code>onClick</Text>,{' '}
-          <Text code>disabled</Text>, <Text code>className</Text>,{' '}
-          <Text code>ref</Text>, <Text code>asChild</Text> — passes straight
-          through to <Text code>Button</Text>.
+          cards. It&rsquo;s a <Text code>Button</Text> defaulting to the{' '}
+          <Text code>X</Text> icon (overridable via <Text code>icon</Text>)
+          with <Text code>showLabel=&#123;false&#125;</Text>, its hover
+          tooltip turned off (the glyph speaks for itself), and an accessible
+          name from the localized <Text code>closeButton.ariaLabel</Text>{' '}
+          string. Everything else — <Text code>size</Text>,{' '}
+          <Text code>onClick</Text>, <Text code>disabled</Text>,{' '}
+          <Text code>className</Text>, <Text code>ref</Text>,{' '}
+          <Text code>asChild</Text> — passes straight through to{' '}
+          <Text code>Button</Text>.
         </Text>
 
         {open ? (
@@ -209,6 +211,23 @@ export const AccessibleName: StoryObj<typeof CloseButton> = {
           </Text>
         </Flex>
       </Flex>
+    </Flex>
+  ),
+};
+
+export const CustomIcon: StoryObj<typeof CloseButton> = {
+  name: 'Custom icon',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Text block size={6} weight="bold">
+        Overriding the glyph
+      </Text>
+      <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
+        <Text code>icon</Text> replaces the default <Text code>X</Text> —
+        useful when a consumer&rsquo;s own icon set shouldn&rsquo;t be mixed
+        with the library&rsquo;s defaults.
+      </Text>
+      <CloseButton icon={<CircleX />} />
     </Flex>
   ),
 };

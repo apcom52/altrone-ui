@@ -2,7 +2,6 @@ import type { Ref } from 'react';
 import clsx from 'clsx';
 import { motion } from 'motion/react';
 import { flexRender } from '@tanstack/react-table';
-import { ArrowUp, ArrowDown } from 'lucide-react';
 import { useDataTableContext } from '../DataTable.context.tsx';
 import { Text } from '../../text';
 import { useLocalization } from '../../application';
@@ -34,7 +33,7 @@ export const ColumnHeaders = ({
   trackRef,
 }: ColumnHeadersProps) => {
   const t = useLocalization();
-  const { table, selectMode, notePendingEvent } = useDataTableContext();
+  const { table, icons, selectMode, notePendingEvent } = useDataTableContext();
 
   const columnsTemplate = useDataTableColumnsTemplate(
     selectMode,
@@ -94,14 +93,10 @@ export const ColumnHeaders = ({
                 )}
               </Text>
               {sortDirection === 'asc' ? (
-                <div className={s.SortIcon}>
-                  <ArrowUp />
-                </div>
+                <div className={s.SortIcon}>{icons.sortAsc}</div>
               ) : null}
               {sortDirection === 'desc' ? (
-                <div className={s.SortIcon}>
-                  <ArrowDown />
-                </div>
+                <div className={s.SortIcon}>{icons.sortDesc}</div>
               ) : null}
               {canResize ? (
                 <div

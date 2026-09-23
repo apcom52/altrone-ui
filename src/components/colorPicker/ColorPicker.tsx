@@ -14,8 +14,8 @@ import {
   type SyntheticEvent,
 } from 'react';
 import { Slot } from 'utils/components/Slot';
-import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useFormField } from '../form/components/Field.context.ts';
+import { useIcons } from 'components/application/useIcons.tsx';
 
 const EMPTY_COLOR_PRESETS: ColorPreset[] = [];
 
@@ -47,9 +47,14 @@ export const ColorPicker = (props: ColorPickerProps) => {
     disabled,
     asChild = false,
     children,
+    openIcon,
+    closeIcon,
+    presetsTabIcon,
+    paletteTabIcon,
     ...restProps
   } = props;
 
+  const icons = useIcons();
   const { disabled: formFieldDisabled, size: formFieldSize } = useFormField();
 
   const inputDisabled =
@@ -80,6 +85,8 @@ export const ColorPicker = (props: ColorPickerProps) => {
           clearable={clearable}
           size={inputSize}
           hide={hide}
+          presetsTabIcon={presetsTabIcon}
+          paletteTabIcon={paletteTabIcon}
         />
       )}
       enabled={!readOnly}
@@ -159,7 +166,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
             {!readOnly && (
               <TextInput.IconIsland
                 placement="end"
-                icon={opened ? <ChevronUp /> : <ChevronDown />}
+                icon={opened ? (closeIcon ?? icons.close) : (openIcon ?? icons.open)}
               />
             )}
           </TextInput>

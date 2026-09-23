@@ -1,8 +1,13 @@
 import { X } from 'lucide-react';
 import { motion } from 'motion/react';
+import { ReactElement } from 'react';
 import s from './failed.module.scss';
 
-export const ButtonFailedIcon = () => {
+interface ButtonFailedIconProps {
+  icon?: ReactElement;
+}
+
+export const ButtonFailedIcon = ({ icon = <X /> }: ButtonFailedIconProps) => {
   return (
     <motion.div
       className={s.Failed}
@@ -14,7 +19,7 @@ export const ButtonFailedIcon = () => {
       }}
       animate={{ opacity: 1, scale: 1, translateX: '-50%', translateY: '-50%' }}
     >
-      <X />
+      {icon}
     </motion.div>
   );
 };

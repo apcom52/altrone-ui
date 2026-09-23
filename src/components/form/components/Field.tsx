@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import clsx from 'clsx';
-import { HelpCircle } from 'lucide-react';
 import { Tooltip } from 'components/tooltip';
 import type { FormFieldProps } from '../Form.types.ts';
 import { useFormContext } from '../Form.context.ts';
 import { FormFieldContext } from './Field.context.ts';
+import { useIcons } from 'components/application/useIcons.tsx';
 import s from './field.module.scss';
 
 export const Field = ({
@@ -13,6 +13,7 @@ export const Field = ({
   label,
   required,
   hintText,
+  hintIcon,
   disabled,
   name,
   errorMessage,
@@ -22,6 +23,7 @@ export const Field = ({
   ...restProps
 }: FormFieldProps) => {
   const form = useFormContext();
+  const icons = useIcons();
 
   const resolvedError =
     errorMessage || (name ? form.errorMessages?.[name] : undefined) || '';
@@ -41,7 +43,7 @@ export const Field = ({
   const hintElement = hintText?.trim() ? (
     <Tooltip content={hintText}>
       <button type="button" className={s.HintIcon} aria-label={hintText}>
-        <HelpCircle size={12} />
+        {hintIcon ?? icons.help}
       </button>
     </Tooltip>
   ) : null;

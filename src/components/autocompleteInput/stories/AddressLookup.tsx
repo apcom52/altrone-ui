@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import { MapPin } from 'lucide-react';
+import { MapPin, ServerCrash } from 'lucide-react';
 import { Button, Flex, Text } from 'components';
 import { AutocompleteInput } from '../AutocompleteInput.tsx';
 import {
@@ -73,9 +73,11 @@ export const AddressLookup = () => {
           The real-world autocomplete: an async <Text code>getSuggestions</Text>{' '}
           with a ~650ms round-trip (watch the spinner island),{' '}
           <Text code>minChars=3</Text> so it doesn&apos;t fire on every keystroke,{' '}
-          <Text code>cacheResults</Text> so re-typing a prefix is free, and{' '}
+          <Text code>cacheResults</Text> so re-typing a prefix is free,{' '}
           <Text code>onError</Text> surfacing a failure without breaking the
-          field.
+          field, and <Text code>errorIcon</Text> swapping the default glyph
+          (<Text code>Application.icons.error</Text>) for one that reads as
+          &ldquo;server down&rdquo;.
         </Text>
       </Flex>
 
@@ -94,6 +96,7 @@ export const AddressLookup = () => {
           minChars={3}
           cacheResults
           placeholder="Start typing a street or postcode"
+          errorIcon={<ServerCrash />}
         />
         <Flex orientation="horizontal" gap="m" align="center" justify="between">
           <Text size={2} color="muted">

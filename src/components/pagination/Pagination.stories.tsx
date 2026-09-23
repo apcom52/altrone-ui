@@ -1,5 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ReactNode, useState } from 'react';
+import {
+  ArrowLeftCircle,
+  ArrowRightCircle,
+  ChevronsLeft,
+  ChevronsRight,
+} from 'lucide-react';
 import { Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
@@ -123,6 +129,28 @@ export const Overview: StoryObj<typeof Pagination> = {
 
         <Case title="Uncontrolled — defaultPage, no currentPage">
           <Pagination defaultPage={3} totalPages={10} />
+        </Case>
+
+        <Heading>Custom icons</Heading>
+        <Paragraph>
+          <Text code>prevIcon</Text> / <Text code>nextIcon</Text> fall back to{' '}
+          <Text code>Application.icons.prev</Text> / <Text code>.next</Text>{' '}
+          (shared with <Text code>Calendar</Text> and <Text code>DatePicker</Text>)
+          when omitted. <Text code>firstPageIcon</Text> /{' '}
+          <Text code>lastPageIcon</Text> have no shared role — they're unique to{' '}
+          <Text code>Pagination</Text>.
+        </Paragraph>
+
+        <Case title="prevIcon / nextIcon / firstPageIcon / lastPageIcon">
+          <Pagination
+            currentPage={6}
+            totalPages={20}
+            onChange={() => {}}
+            prevIcon={<ArrowLeftCircle />}
+            nextIcon={<ArrowRightCircle />}
+            firstPageIcon={<ChevronsLeft />}
+            lastPageIcon={<ChevronsRight />}
+          />
         </Case>
 
         <Heading>Sizes</Heading>

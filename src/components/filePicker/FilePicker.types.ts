@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import { AnyObject } from '../../utils';
 import { Size } from '../../types';
 
@@ -22,6 +23,12 @@ export interface FilePickerContextType {
   disabled?: boolean;
   autoUploadFn?: (context: FilePickerUploadContext) => Promise<void>;
   removeFileFn?: (context: FilePickerRemoveContext) => Promise<void>;
+  /** Resolved icon for a failed file (already merged with the shared `icons.error` default). */
+  errorIcon: ReactElement;
+  /** Icon for the retry button on a failed file. */
+  retryIcon: ReactElement;
+  /** Icon for the delete button on a file. */
+  deleteIcon: ReactElement;
 }
 
 export interface FileProps {
@@ -55,6 +62,14 @@ export interface FilePickerProps extends Omit<
   disabled?: boolean;
   autoUploadFn?: (context: FilePickerUploadContext) => Promise<void>;
   removeFileFn?: (context: FilePickerRemoveContext) => Promise<void>;
+  /** Icon for the upload prompt button. Defaults to an upload glyph. */
+  uploadIcon?: ReactElement;
+  /** Icon shown on a failed file. Defaults to the shared `icons.error`. */
+  errorIcon?: ReactElement;
+  /** Icon for the retry button on a failed file. Defaults to a rotate glyph. */
+  retryIcon?: ReactElement;
+  /** Icon for the delete button on a file. Defaults to a trash glyph. */
+  deleteIcon?: ReactElement;
 }
 
 export type FilePickerUploadContext = {

@@ -1,21 +1,14 @@
 import type { ReactNode } from 'react';
 import clsx from 'clsx';
-import { AlertTriangle, CheckCircle2, Info, SearchX, XCircle } from 'lucide-react';
+import { SearchX } from 'lucide-react';
 import { useLocalization } from 'components/application/useLocalization.tsx';
+import { useIcons } from 'components/application/useIcons.tsx';
 import { Text } from 'components/text/Text.tsx';
 import type { ResultProps, ResultStatus } from './Result.types';
 import s from './result.module.scss';
 
 const TITLE_SIZE = { mini: 2, s: 3, m: 4, l: 5, xl: 6 } as const;
 const DESCRIPTION_SIZE = { mini: 1, s: 2, m: 3, l: 4, xl: 5 } as const;
-
-const STATUS_ICON: Record<ResultStatus, ReactNode> = {
-  empty: <SearchX />,
-  info: <Info />,
-  success: <CheckCircle2 />,
-  warning: <AlertTriangle />,
-  error: <XCircle />,
-};
 
 const STATUS_CLASS: Record<ResultStatus, string | undefined> = {
   empty: undefined,
@@ -45,6 +38,14 @@ export const Result = ({
   ...restProps
 }: ResultProps) => {
   const t = useLocalization();
+  const icons = useIcons();
+  const statusIcon: Record<ResultStatus, ReactNode> = {
+    empty: <SearchX />,
+    info: icons.info,
+    success: icons.success,
+    warning: icons.warning,
+    error: icons.danger,
+  };
 
   const hasTitle = title !== undefined;
   /* A lone `children` line acts as the heading. */
@@ -77,7 +78,7 @@ export const Result = ({
       {...restProps}
     >
       <div className={s.Media} aria-hidden="true">
-        {icon ?? STATUS_ICON[status]}
+        {icon ?? statusIcon[status]}
       </div>
       {titleNode != null || descriptionNode != null ? (
         <div className={s.Content}>

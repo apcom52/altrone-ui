@@ -11,6 +11,7 @@ import {
   Bug,
   Calendar,
   CheckCircle2,
+  ChevronsUp,
   Circle,
   Clock,
   Code,
@@ -238,6 +239,28 @@ export const Overview: StoryObj<typeof NavigationList> = {
               selected={sel('design')}
               onClick={() => setSection('design')}
             />
+          </NavigationList.Group>
+        </NavigationList>
+
+        <Heading>Custom expanded-state icon</Heading>
+        <Paragraph>
+          <Text code>childrenIcon</Text> overrides the chevron shown next to
+          a link while its nested links are expanded.
+        </Paragraph>
+
+        <NavigationList style={{ height: 'auto' }}>
+          <NavigationList.Group title="Teams">
+            <NavigationList.Link
+              icon={<Users />}
+              label="Engineering"
+              badge="8"
+              childrenIcon={<ChevronsUp />}
+              selected={sel('engineering-custom-icon')}
+              onClick={() => setSection('engineering-custom-icon')}
+            >
+              <NavigationList.Link label="Frontend" />
+              <NavigationList.Link label="Backend" />
+            </NavigationList.Link>
           </NavigationList.Group>
         </NavigationList>
 

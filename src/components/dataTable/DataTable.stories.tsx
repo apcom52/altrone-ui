@@ -1,14 +1,25 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ReactNode, useMemo, useState } from 'react';
 import {
+  ArrowDownWideNarrow,
+  ArrowUpNarrowWide,
+  Ban,
+  CheckSquare,
+  CircleCheck,
+  CircleX,
   Download,
   Ellipsis,
   Flame,
+  ListFilter,
+  ListPlus,
   Mail,
+  MoreVertical,
   Pencil,
   RefreshCw,
+  SquareDashed,
   Star,
   Trash,
+  Trash2,
   UserPlus,
 } from 'lucide-react';
 import { DataTable } from './index';
@@ -1135,6 +1146,51 @@ export const EmptyState: Story = {
           { accessor: 'name', label: 'Name' },
           { accessor: 'role', label: 'Role' },
         ]}
+      />
+    </Flex>
+  ),
+};
+
+/* ------------------------------------------------------------------ *
+ * Custom icons
+ * ------------------------------------------------------------------ */
+
+export const CustomIcons: Story = {
+  render: () => (
+    <Flex orientation="vertical" gap="xl" style={{ maxWidth: 900 }}>
+      <Section title="Overriding the built-in icons">
+        Icons that are unique to <Text code>DataTable</Text> (sort direction,
+        filter controls, the selection-mode toggle, row actions, boolean
+        cells) are grouped under one <Text code>icons</Text> prop instead of a
+        separate prop per role — pass only the ones you want to change.
+      </Section>
+
+      <DataTable<Employee>
+        data={EMPLOYEES}
+        getRowId={(employee) => String(employee.id)}
+        selectable
+        rowsPerPage={5}
+        columns={RICH_COLUMNS}
+        rowActions={() => [
+          <DataTable.RowAction
+            key="delete"
+            label="Delete"
+            icon={<Trash2 />}
+            onClick={() => undefined}
+          />,
+        ]}
+        icons={{
+          sortAsc: <ArrowUpNarrowWide />,
+          sortDesc: <ArrowDownWideNarrow />,
+          filter: <ListFilter />,
+          enableSelection: <CheckSquare />,
+          disableSelection: <SquareDashed />,
+          rowActions: <MoreVertical />,
+          booleanTrue: <CircleCheck />,
+          booleanFalse: <CircleX />,
+          deleteFilter: <Ban />,
+          addFilter: <ListPlus />,
+        }}
       />
     </Flex>
   ),

@@ -1,8 +1,22 @@
 import { ButtonProps } from '../button/Button.types.ts';
 import { AnyObject, RenderFunction, StrictReactElements } from '../../utils';
-import { ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { Table } from '@tanstack/react-table';
 import type { DataTableFeatures } from './DataTable.features.ts';
+
+/** Icons unique to `DataTable`, overridable as a group via the `icons` prop. */
+export interface DataTableIconSet {
+  sortAsc: ReactElement;
+  sortDesc: ReactElement;
+  filter: ReactElement;
+  addFilter: ReactElement;
+  deleteFilter: ReactElement;
+  enableSelection: ReactElement;
+  disableSelection: ReactElement;
+  rowActions: ReactElement;
+  booleanTrue: ReactElement;
+  booleanFalse: ReactElement;
+}
 
 export type Sort = 'asc' | 'desc';
 
@@ -126,6 +140,7 @@ export type DataTableMode = 'loading' | 'read' | 'select';
 /** Per-table `meta`, reachable in cell renderers via `table.options.meta`. */
 export interface DataTableMeta {
   mode: DataTableMode;
+  icons: DataTableIconSet;
 }
 
 /** Per-column `meta`, reachable via `column.columnDef.meta`. */
@@ -165,6 +180,8 @@ export interface DataTableProps<T extends object> extends Omit<
   showEmptyBanner?: boolean;
   /** Lets every column be resized by dragging its header edge. Off by default. */
   resizableColumns?: boolean;
+  /** Overrides for icons unique to `DataTable` (sort, filter, row actions, boolean cells). */
+  icons?: Partial<DataTableIconSet>;
   /**
    * Rendered in a trailing actions column, one `DataTable.RowAction` (or
    * several) per row. A `collapsed` `RowAction` folds into an overflow menu.

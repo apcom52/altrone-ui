@@ -8,9 +8,10 @@ import { useToolbarContext, useToolbarBalance } from '../Toolbar.context.ts';
 
 export const Center = memo(
   ({ ref, children, className, ...restProps }: ToolbarCenterProps) => {
-    const { orientation } = useToolbarContext();
+    const { orientation, icons } = useToolbarContext();
     const balance = useToolbarBalance();
     const { containerRef, content } = useToolbarOverflow(children, orientation, {
+      overflowIcons: icons,
       onNaturalSizeChange: (size) => balance?.reportNaturalSize('center', size),
     });
 

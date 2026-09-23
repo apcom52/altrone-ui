@@ -3,6 +3,7 @@ import { ReactElement, ReactNode, useState } from 'react';
 import { Image, Flex, Grid, Text, Switch, Loading } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
+import { CameraOff } from 'lucide-react';
 
 const story: Meta<typeof Image> = {
   title: 'Components/Core/Image',
@@ -85,6 +86,20 @@ export const Overview: StoryObj<typeof Image> = {
         src="https://this-domain-does-not-exist.invalid/photo.jpg"
         alt="Team offsite photo"
         caption="This URL is intentionally broken for the demo."
+        width="100%"
+        height={160}
+      />
+
+      <Heading>Custom broken-image icon</Heading>
+      <Paragraph>
+        <Text code>brokenIcon</Text> overrides the placeholder glyph shown on
+        load failure.
+      </Paragraph>
+      <Image
+        src="https://this-domain-does-not-exist.invalid/photo.jpg"
+        alt="Team offsite photo"
+        brokenIcon={<CameraOff />}
+        caption="brokenIcon={<CameraOff />}"
         width="100%"
         height={160}
       />

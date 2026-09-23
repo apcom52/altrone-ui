@@ -3,6 +3,7 @@ import { PasswordInput } from './PasswordInput.tsx';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import {
+  CustomIcons,
   DeploymentSecrets,
   GeneratePassword,
   NewPassword,
@@ -41,6 +42,11 @@ export const Unlock: StoryObj = {
 export const SuggestStrong: StoryObj = {
   name: 'Suggest a strong password',
   render: () => <GeneratePassword />,
+};
+
+export const CustomToggleIcons: StoryObj = {
+  name: 'Custom show/hide icons',
+  render: () => <CustomIcons />,
 };
 
 export default story;

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { Dayjs } from 'dayjs';
-import { Trash } from 'lucide-react';
 import { Select } from 'components/select';
 import { TextInput } from 'components/textInput';
 import { NumberInput } from 'components/numberInput';
@@ -21,7 +20,7 @@ export const FilterRow = ({
 }: FilterRowProps) => {
   const t = useLocalization();
 
-  const { table } = useDataTableContext();
+  const { table, icons } = useDataTableContext();
   const column = table.getColumn(filter.id);
   const meta = column?.columnDef.meta;
   const dataType = meta?.dataType;
@@ -262,7 +261,7 @@ export const FilterRow = ({
         {columnCount === 2 ? pairControl() : null}
       </div>
       <Button
-        icon={<Trash />}
+        icon={icons.deleteFilter}
         label={t('common.delete')}
         onClick={deleteFilter}
         showLabel={false}

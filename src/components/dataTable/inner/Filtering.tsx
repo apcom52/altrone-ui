@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Column, ColumnFilter } from '@tanstack/react-table';
-import { Funnel, Plus } from 'lucide-react';
 import { Button } from 'components/button';
 import { Dropdown } from 'components/dropdown';
 import { Flex } from 'components/flex';
@@ -24,7 +23,7 @@ const columnHeaderLabel = (column: Column<DataTableFeatures, AnyObject>) =>
 export const Filtering = () => {
   const t = useLocalization();
 
-  const { table, loading, notePendingEvent } = useDataTableContext();
+  const { table, icons, loading, notePendingEvent } = useDataTableContext();
 
   const filterableColumns = table
     .getAllLeafColumns()
@@ -127,7 +126,7 @@ export const Filtering = () => {
               }
             >
               <Button
-                icon={<Plus />}
+                icon={icons.addFilter}
                 label={t('dataTable.addFilter')}
                 disabled={freeToFilterColumns.length === 0}
               />
@@ -159,7 +158,7 @@ export const Filtering = () => {
       )}
     >
       <Toolbar.Action
-        icon={<Funnel />}
+        icon={icons.filter}
         label={t('dataTable.filters')}
         badge={filters.length ? filters.length : undefined}
         disabled={loading}

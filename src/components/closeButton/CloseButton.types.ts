@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, Ref } from 'react';
+import type { ButtonHTMLAttributes, ReactElement, Ref } from 'react';
 import type { ButtonProps } from 'components/button/Button.types';
 
 export interface CloseButtonProps
@@ -13,4 +13,6 @@ export interface CloseButtonProps
    * `closeButton.ariaLabel` string.
    */
   label?: string;
+  /** Overrides the glyph. Defaults to an X. */
+  icon?: ReactElement;
 }

@@ -5,6 +5,7 @@ import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Size } from 'types';
 import { FileItem, FilePickerUploadContext } from './FilePicker.types.ts';
+import { FileUp, RefreshCw, ShieldAlert, X } from 'lucide-react';
 
 const story: Meta<typeof FilePicker> = {
   title: 'Components/Controls/FilePicker',
@@ -309,6 +310,36 @@ export const SizesStory: StoryObj<typeof FilePicker> = {
           </Flex>
         ))}
       </Flex>
+    </Flex>
+  ),
+};
+
+// ─── 6. Custom icons ────────────────────────────────────────────────────────
+
+export const CustomIconsStory: StoryObj<typeof FilePicker> = {
+  name: 'Custom icons',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Heading>Custom icons</Heading>
+      <Paragraph>
+        <Text code>uploadIcon</Text>/<Text code>retryIcon</Text>/
+        <Text code>deleteIcon</Text> are unique to <Text code>FilePicker</Text>{' '}
+        — local overrides only. <Text code>errorIcon</Text> instead defaults
+        to the shared <Text code>icons.error</Text> role (also used by{' '}
+        <Text code>AutocompleteInput</Text>), settable once via{' '}
+        <Text code>Application</Text>&apos;s <Text code>icons</Text> prop, or
+        overridden here for this instance only.
+      </Paragraph>
+      <FilePicker
+        name="upload-custom-icons"
+        multiple
+        autoUploadFn={uploadAlwaysFails}
+        placeholder="Pick files (always fails)"
+        uploadIcon={<FileUp />}
+        errorIcon={<ShieldAlert />}
+        retryIcon={<RefreshCw />}
+        deleteIcon={<X />}
+      />
     </Flex>
   ),
 };

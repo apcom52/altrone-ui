@@ -12,6 +12,17 @@ export type ToolbarEdge = 'top' | 'bottom' | 'left' | 'right';
  */
 export type ToolbarActionPriority = 'high' | 'medium' | 'low';
 
+/** Icons unique to `Toolbar`, overridable as a group via the `icons` prop. */
+export interface ToolbarIconSet {
+  sidebarExpand: React.ReactElement;
+  sidebarCollapse: React.ReactElement;
+  titleMenu: React.ReactElement;
+  overflowUp: React.ReactElement;
+  overflowDown: React.ReactElement;
+  overflowLeft: React.ReactElement;
+  overflowRight: React.ReactElement;
+}
+
 export interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
   /**
@@ -39,6 +50,8 @@ export interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
   showBackdrop?: boolean;
   /** @deprecated use `sticky`. Will be removed in v4. */
   fixed?: boolean;
+  /** Overrides for icons unique to `Toolbar` (sidebar toggle, title menu, overflow trigger). */
+  icons?: Partial<ToolbarIconSet>;
 }
 
 export interface ToolbarActionProps extends Omit<ButtonProps, 'variant'> {

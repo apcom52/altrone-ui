@@ -14,8 +14,10 @@ import {
   Download,
   ExternalLink,
   FileText,
+  Frown,
   Italic,
   Mail,
+  PartyPopper,
   Pause,
   Play,
   Plus,
@@ -477,6 +479,45 @@ export const AsyncStates: StoryObj<typeof Button> = {
         <SaveButtonDemo outcome="succeeded" />
         <SaveButtonDemo outcome="failed" label="Sync now" />
       </Flex>
+    </Flex>
+  ),
+};
+
+const CustomAsyncIconsDemo = () => {
+  const [state, setState] = useState<ButtonProps['state']>('idle');
+
+  const handleSave = () => {
+    setState('loading');
+    setTimeout(() => setState('succeeded'), 1200);
+    setTimeout(() => setState('idle'), 2800);
+  };
+
+  return (
+    <Button
+      variant="submit"
+      label="Save changes"
+      icon={<Save />}
+      successIcon={<PartyPopper />}
+      failedIcon={<Frown />}
+      state={state}
+      onClick={handleSave}
+    />
+  );
+};
+
+export const CustomAsyncIcons: StoryObj<typeof Button> = {
+  name: 'Custom success/failure icons',
+  parameters: chromaticBoth,
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Heading>Swap the built-in success/failure glyphs</Heading>
+      <Paragraph>
+        <code>successIcon</code>/<code>failedIcon</code> replace the default
+        checkmark/X shown for <code>state=&quot;succeeded&quot;</code>/
+        <code>&quot;failed&quot;</code> — useful when a consumer&rsquo;s own
+        icon set shouldn&rsquo;t be mixed with the library&rsquo;s defaults.
+      </Paragraph>
+      <CustomAsyncIconsDemo />
     </Flex>
   ),
 };

@@ -56,6 +56,9 @@ export interface ImageProps
   /** Overrides the default `Skeleton` preloader. */
   preloader?: ReactElement;
 
+  /** Overrides the default broken-image icon shown when loading fails. */
+  brokenIcon?: ReactElement;
+
   onLoad?: (event: SyntheticEvent<HTMLImageElement>) => void;
   onError?: (event: SyntheticEvent<HTMLImageElement>) => void;
 }

@@ -10,7 +10,6 @@ import {
 } from 'react';
 import { AnyObject } from 'utils/types.ts';
 import { Dropdown } from 'components/dropdown';
-import { Delete, Search, ChevronDown, ChevronUp } from 'lucide-react';
 import { Scrollable } from 'components/scrollable';
 import { TextInput } from 'components/textInput';
 import s from './select.module.scss';
@@ -21,6 +20,7 @@ import { useLocalization } from 'components/application';
 import { Slot } from 'utils/components/Slot.tsx';
 import { SelectContext } from './Select.context.ts';
 import { useFormField } from '../form/components/Field.context.ts';
+import { useIcons } from 'components/application/useIcons.tsx';
 
 const SelectComponent = (props: SelectProps) => {
   const {
@@ -45,10 +45,15 @@ const SelectComponent = (props: SelectProps) => {
     asChild,
     readOnly,
     ref,
+    openIcon,
+    closeIcon,
+    searchIcon,
+    clearIcon,
     ...restProps
   } = props;
 
   const id = useId();
+  const icons = useIcons();
 
   const {
     name: formFieldName,
@@ -226,7 +231,7 @@ const SelectComponent = (props: SelectProps) => {
           <TextInput.ActionIsland
             placement="end"
             label={t('common.clear')}
-            icon={<Delete />}
+            icon={clearIcon ?? icons.clear}
             showLabel={false}
             disabled={false}
             onClick={(event) => clear(event)}
@@ -236,7 +241,11 @@ const SelectComponent = (props: SelectProps) => {
           className={s.ArrowIcon}
           placement="end"
           icon={
-            searchMode ? <Search /> : opened ? <ChevronUp /> : <ChevronDown />
+            searchMode
+              ? (searchIcon ?? icons.search)
+              : opened
+                ? (closeIcon ?? icons.close)
+                : (openIcon ?? icons.open)
           }
         />
       </TextInput>

@@ -3,7 +3,14 @@ import { useState } from 'react';
 import { Button, Flex, Form, Text } from 'components';
 import { dayjsInstance as dayjs } from 'utils';
 import { Dayjs } from 'dayjs';
-import { CalendarDays, ChevronDown, ChevronUp } from 'lucide-react';
+import {
+  ArrowLeftCircle,
+  ArrowRightCircle,
+  CalendarClock,
+  CalendarDays,
+  ChevronDown,
+  ChevronUp,
+} from 'lucide-react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { RangePickerValue } from './DatePicker.types.ts';
@@ -425,6 +432,43 @@ export const CustomTrigger: StoryObj = {
               </Form.Field>
             </Flex>
           </Form>
+        </Panel>
+      </Flex>
+    );
+  },
+};
+
+
+export const CustomIcons: StoryObj = {
+  name: 'Custom navigation and trigger icons',
+  render: () => {
+    const [date, setDate] = useState<Dayjs | undefined>(TODAY);
+
+    return (
+      <Flex orientation="vertical" gap="xl">
+        <Text size={6} weight="bold" block>
+          Swapping the icons
+        </Text>
+        <Text block>
+          <Text code>prevIcon</Text> / <Text code>nextIcon</Text> override the
+          popover header's month navigation — shared with{' '}
+          <Text code>Calendar</Text> and <Text code>Pagination</Text> via{' '}
+          <Text code>Application.icons</Text> when omitted.{' '}
+          <Text code>triggerIcon</Text> overrides the trailing calendar glyph
+          on the field itself, which has no shared role since only{' '}
+          <Text code>DatePicker</Text> uses it.
+        </Text>
+
+        <Panel>
+          <Form.Field label="Departure">
+            <DatePicker
+              value={date}
+              onChange={(value) => setDate(value)}
+              prevIcon={<ArrowLeftCircle />}
+              nextIcon={<ArrowRightCircle />}
+              triggerIcon={<CalendarClock />}
+            />
+          </Form.Field>
         </Panel>
       </Flex>
     );

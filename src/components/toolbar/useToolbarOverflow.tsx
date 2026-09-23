@@ -8,7 +8,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import { ChevronsDown, ChevronsLeft, ChevronsRight, ChevronsUp } from 'lucide-react';
 import { Dropdown } from 'components/dropdown';
 import { useLocalization } from 'components/application';
 import { Action, Group, Separator } from './components';
@@ -16,6 +15,7 @@ import {
   ToolbarActionPriority,
   ToolbarActionProps,
   ToolbarGroupProps,
+  ToolbarIconSet,
   ToolbarSeparatorProps,
 } from './Toolbar.types.ts';
 
@@ -140,19 +140,22 @@ const EMPTY_SET: ReadonlySet<string> = new Set();
 export type ToolbarOverflowTriggerEdge = 'start' | 'end';
 
 function getTriggerIcon(
+  icons: ToolbarIconSet,
   orientation: 'horizontal' | 'vertical',
   triggerEdge: ToolbarOverflowTriggerEdge,
 ) {
   if (orientation === 'vertical') {
-    return triggerEdge === 'end' ? <ChevronsDown /> : <ChevronsUp />;
+    return triggerEdge === 'end' ? icons.overflowDown : icons.overflowUp;
   }
-  return triggerEdge === 'end' ? <ChevronsRight /> : <ChevronsLeft />;
+  return triggerEdge === 'end' ? icons.overflowRight : icons.overflowLeft;
 }
 
 export interface UseToolbarOverflowOptions {
   triggerEdge?: ToolbarOverflowTriggerEdge;
   /** Called whenever the region's full (uncollapsed) content size changes — lets `Toolbar` balance `Leading`/`Trailing`'s shared track width by actual need instead of a rigid 50/50 split. */
   onNaturalSizeChange?: (size: number) => void;
+  /** Resolved icon set for the overflow trigger's directional chevron. */
+  overflowIcons: ToolbarIconSet;
 }
 
 /**
@@ -169,7 +172,11 @@ export interface UseToolbarOverflowOptions {
 export function useToolbarOverflow(
   children: ReactNode,
   orientation: 'horizontal' | 'vertical',
-  { triggerEdge = 'end', onNaturalSizeChange }: UseToolbarOverflowOptions = {},
+  {
+    triggerEdge = 'end',
+    onNaturalSizeChange,
+    overflowIcons,
+  }: UseToolbarOverflowOptions,
 ) {
   const t = useLocalization();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -304,7 +311,7 @@ export function useToolbarOverflow(
         <Action
           label={t('toolbar.moreActions')}
           showLabel={false}
-          icon={getTriggerIcon(orientation, triggerEdge)}
+          icon={getTriggerIcon(overflowIcons, orientation, triggerEdge)}
         />
       </Group>
     </Dropdown>

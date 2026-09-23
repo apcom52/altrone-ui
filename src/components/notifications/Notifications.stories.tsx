@@ -144,7 +144,12 @@ export const ToastMessages: StoryObj<typeof Notifications> = {
           Four variants, each with its own default icon. The icon sits in a
           tinted circular chip; <Text code>default</Text> is neutral,{' '}
           <Text code>success</Text> / <Text code>warning</Text> /{' '}
-          <Text code>danger</Text> pick up the matching status colour.
+          <Text code>danger</Text> pick up the matching status colour. The
+          defaults come from <Text code>Application.icons</Text> (
+          <Text code>.info</Text> / <Text code>.success</Text> /{' '}
+          <Text code>.warning</Text> / <Text code>.danger</Text>) — shared with{' '}
+          <Text code>Result</Text> — so overriding one of those roles updates
+          the toast defaults too.
         </Paragraph>
         <Flex orientation="horizontal" gap="s" wrap>
           {VARIANTS.map((variant) => (

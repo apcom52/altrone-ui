@@ -3,6 +3,7 @@ import type {
   Ref,
   SyntheticEvent,
   MouseEvent,
+  ReactElement,
   ReactNode,
 } from 'react';
 import { Size } from 'types';
@@ -36,6 +37,15 @@ export interface ColorPickerProps
   transparent?: boolean;
   readOnly?: boolean;
   clearable?: boolean;
+
+  /** Trigger chevron shown when the popover is closed. Defaults to the shared `icons.open`. */
+  openIcon?: ReactElement;
+  /** Trigger chevron shown when the popover is open. Defaults to the shared `icons.close`. */
+  closeIcon?: ReactElement;
+  /** Icon for the "saved colors" tab. Defaults to a grid glyph. */
+  presetsTabIcon?: ReactElement;
+  /** Icon for the "palette" tab. Defaults to a palette glyph. */
+  paletteTabIcon?: ReactElement;
 
   // When true, merges trigger props onto the single child element instead of rendering TextInput
   asChild?: boolean;

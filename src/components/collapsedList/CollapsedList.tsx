@@ -9,7 +9,7 @@ import { Flex } from 'components/flex';
 import clsx from 'clsx';
 import s from './collapsed-list.module.scss';
 import { useLocalization } from '../application/useLocalization.tsx';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useIcons } from '../application/useIcons.tsx';
 
 export const CollapsedList = ({
   ref,
@@ -20,9 +20,12 @@ export const CollapsedList = ({
   style,
   gap,
   hideExpandButtonAfterUsage = false,
+  openIcon,
+  closeIcon,
   ...restProps
 }: CollapsedListProps) => {
   const t = useLocalization();
+  const icons = useIcons();
   const { value: expanded, toggle } = useBoolean(false);
 
   const limitValue = limit ?? 5;
@@ -65,7 +68,9 @@ export const CollapsedList = ({
           variant="text"
           size="s"
           label={buttonLabel}
-          additionalIcon={expanded ? <ChevronUp /> : <ChevronDown />}
+          additionalIcon={
+            expanded ? (closeIcon ?? icons.close) : (openIcon ?? icons.open)
+          }
           onClick={toggle}
         />
       ) : null}

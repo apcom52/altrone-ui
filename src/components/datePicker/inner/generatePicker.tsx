@@ -53,6 +53,9 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
       autoClose = true,
       asChild = false,
       children,
+      prevIcon,
+      nextIcon,
+      triggerIcon,
       ...restProps
     } = props;
 
@@ -188,7 +191,7 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
             <TextInput.IconIsland
               className={s.ArrowIcon}
               placement="end"
-              icon={<Calendar />}
+              icon={triggerIcon ?? <Calendar />}
             />
           ) : null}
         </TextInput>
@@ -208,6 +211,8 @@ export function generatePicker<DatePickerProps extends BasicDatePickerProps>(
                     <PopoverDatePickerContent
                       autoClose={autoClose}
                       clearable={clearable}
+                      prevIcon={prevIcon}
+                      nextIcon={nextIcon}
                     />
                   </DatePickerCloseFnContext.Provider>
                 )}

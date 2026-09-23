@@ -58,6 +58,8 @@ const CalendarComponent = memo(
     selectedDates,
     cursorDate,
     onDateChange,
+    prevIcon,
+    nextIcon,
     ...restProps
   }: CalendarProps) => {
     const { language } = useLocalizationContext();
@@ -252,6 +254,8 @@ const CalendarComponent = memo(
             showNavigation={showNavigation}
             onPrev={(event) => changeMonth(displayMonth.subtract(1, 'month'), event)}
             onNext={(event) => changeMonth(displayMonth.add(1, 'month'), event)}
+            prevIcon={prevIcon}
+            nextIcon={nextIcon}
           />
         ) : null}
 

@@ -15,7 +15,7 @@ import { Switch } from '../switch';
 import { AutocompleteInput } from '../autocompleteInput';
 import { Search } from '../search';
 import { useState } from 'react';
-import { Send, RefreshCw } from 'lucide-react';
+import { Send, RefreshCw, Info } from 'lucide-react';
 import { dayjsInstance as dayjs } from '../../utils';
 import type { Dayjs } from 'dayjs';
 import type { Option } from '../select/Select.types.ts';
@@ -102,6 +102,15 @@ export const FieldStatesStory: StoryObj<typeof Flex> = {
             label="With hint"
             name="hint"
             hintText="This value must be globally unique across all workspaces"
+          >
+            <TextInput placeholder="workspace-slug" />
+          </Form.Field>
+
+          <Form.Field
+            label="Custom hint icon"
+            name="hintIcon"
+            hintText="Overrides the shared icons.help role for this field only"
+            hintIcon={<Info />}
           >
             <TextInput placeholder="workspace-slug" />
           </Form.Field>

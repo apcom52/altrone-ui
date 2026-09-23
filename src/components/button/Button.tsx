@@ -39,6 +39,8 @@ export const Button = memo((props: ButtonProps) => {
     label,
     icon,
     additionalIcon,
+    successIcon,
+    failedIcon,
     variant = 'default',
     type = 'button',
     showLabel = true,
@@ -126,8 +128,8 @@ export const Button = memo((props: ButtonProps) => {
           <Loading size="16px" strokeWidth="1.5" color="currentColor" />
         </div>
       ) : null}
-      {state === 'succeeded' && <ButtonSuccessIcon />}
-      {state === 'failed' && <ButtonFailedIcon />}
+      {state === 'succeeded' && <ButtonSuccessIcon icon={successIcon} />}
+      {state === 'failed' && <ButtonFailedIcon icon={failedIcon} />}
     </>
   );
 

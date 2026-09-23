@@ -38,7 +38,7 @@ const SELECTED_TRANSITION = {
 
 type ItemContentProps = Pick<
   NavigationListLinkProps,
-  'icon' | 'label' | 'badge'
+  'icon' | 'label' | 'badge' | 'childrenIcon'
 > & {
   actions: ReactNode;
   opened: boolean;
@@ -59,6 +59,7 @@ const ItemContent = ({
   label,
   actions,
   opened,
+  childrenIcon = <ChevronDown />,
 }: ItemContentProps) => (
   <div className={s.Label}>
     {icon ? <div className={s.Icon}>{icon}</div> : null}
@@ -77,7 +78,7 @@ const ItemContent = ({
     ) : null}
     {opened ? (
       <div className={s.ChildrenIcon} aria-hidden>
-        <ChevronDown />
+        {childrenIcon}
       </div>
     ) : null}
   </div>
@@ -103,6 +104,7 @@ const LinkInner = memo(
     selected,
     disabled,
     badge,
+    childrenIcon,
     asChild,
     asChildElement,
     className,
@@ -133,6 +135,7 @@ const LinkInner = memo(
         badge={badge}
         opened={Boolean(showNestedLinks)}
         actions={actions}
+        childrenIcon={childrenIcon}
       />
     );
 

@@ -5,6 +5,7 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
 import { Text } from '../text';
 import { Spoiler } from './Spoiler.tsx';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const story: Meta<typeof Spoiler> = {
   title: 'Components/Containers/Spoiler',
@@ -239,6 +240,29 @@ export const RichContent: StoryObj<typeof Spoiler> = {
             </Text>
           ))}
         </Flex>
+      </Spoiler>
+    </Flex>
+  ),
+};
+
+// ─── Custom icons ────────────────────────────────────────────────────────────
+
+export const CustomIcons: StoryObj<typeof Spoiler> = {
+  name: 'Custom expand/collapse icons',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
+      <Heading>Overriding the icons</Heading>
+      <Paragraph>
+        <Text code>expandIcon</Text>/<Text code>collapseIcon</Text> replace
+        the default plus/minus glyphs.
+      </Paragraph>
+
+      <Spoiler
+        title="Advanced settings"
+        expandIcon={<ChevronDown />}
+        collapseIcon={<ChevronUp />}
+      >
+        <Prose>Toggled with a chevron instead of plus/minus.</Prose>
       </Spoiler>
     </Flex>
   ),

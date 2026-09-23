@@ -20,10 +20,14 @@ import { deleteFileRequest } from './FilePicker.utils.ts';
 import clsx from 'clsx';
 import { FilePickerContext } from './FilePicker.context.ts';
 import { useLocalization } from '../application/useLocalization.tsx';
+import { useIcons } from '../application/useIcons.tsx';
 import { GlobalUtils } from 'utils';
-import { Upload } from 'lucide-react';
+import { RotateCw, Trash2, Upload } from 'lucide-react';
 import { HTMLMotionProps, motion, useReducedMotionConfig } from 'motion/react';
 import { useFormField } from '../form/components/Field.context.ts';
+
+const DEFAULT_RETRY_ICON = <RotateCw />;
+const DEFAULT_DELETE_ICON = <Trash2 />;
 
 export const FilePicker = memo<FilePickerProps>(
   ({
@@ -44,9 +48,14 @@ export const FilePicker = memo<FilePickerProps>(
     disabled,
     className,
     style,
+    uploadIcon,
+    errorIcon,
+    retryIcon,
+    deleteIcon,
     ...restProps
   }) => {
     const t = useLocalization();
+    const icons = useIcons();
 
     const {
       name: formFieldName,
@@ -102,6 +111,9 @@ export const FilePicker = memo<FilePickerProps>(
         disabled: pickerDisabled,
         autoUploadFn,
         removeFileFn,
+        errorIcon: errorIcon ?? icons.error,
+        retryIcon: retryIcon ?? DEFAULT_RETRY_ICON,
+        deleteIcon: deleteIcon ?? DEFAULT_DELETE_ICON,
       };
     }, [
       autoUpload,
@@ -112,6 +124,10 @@ export const FilePicker = memo<FilePickerProps>(
       pickerName,
       pickerSize,
       pickerDisabled,
+      errorIcon,
+      icons.error,
+      retryIcon,
+      deleteIcon,
     ]);
 
     const onChangeFileInput = useCallback(
@@ -216,7 +232,7 @@ export const FilePicker = memo<FilePickerProps>(
           <Button
             size={pickerSize}
             disabled={pickerDisabled}
-            icon={<Upload />}
+            icon={uploadIcon ?? <Upload />}
             label={placeholder || t('filePicker.placeholder')}
             onClick={chooseFiles}
           />

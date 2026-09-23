@@ -27,6 +27,8 @@ export interface NavigationListLinkProps
   badge?: string | number | React.JSX.Element;
   disabled?: boolean;
   asChild?: boolean;
+  /** Shown when the item's nested links are expanded. Defaults to a chevron. */
+  childrenIcon?: React.JSX.Element;
   /**
    * Rendered next to the label. Clicks/keyboard activation inside `actions`
    * are stopped from bubbling so they don't also trigger the link.

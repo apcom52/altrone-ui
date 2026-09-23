@@ -1,20 +1,13 @@
 import { type ReactNode } from 'react';
 import { motion, type Transition } from 'motion/react';
-import { AlertTriangle, CheckCircle2, Info, XCircle } from 'lucide-react';
 import clsx from 'clsx';
 import { Box } from 'components/box';
 import { Button } from 'components/button';
 import { CloseButton } from 'components/closeButton';
+import { useIcons } from 'components/application/useIcons.tsx';
 import type { AnyNotificationItem, ToastVariant } from '../Notifications.types';
 import { useAutoClose } from './useAutoClose';
 import s from './notificationCard.module.scss';
-
-const VARIANT_ICON: Record<ToastVariant, ReactNode> = {
-  default: <Info />,
-  success: <CheckCircle2 />,
-  warning: <AlertTriangle />,
-  danger: <XCircle />,
-};
 
 /** Pops past its resting scale and settles back — a small, deliberate bounce. */
 const ENTER_TRANSITION: Transition = {
@@ -64,6 +57,13 @@ export const NotificationCard = ({
   onClose,
 }: NotificationCardProps) => {
   const { pause, resume } = useAutoClose(item.autoClose, item.duration, onClose);
+  const icons = useIcons();
+  const variantIcon: Record<ToastVariant, ReactNode> = {
+    default: icons.info,
+    success: icons.success,
+    warning: icons.warning,
+    danger: icons.danger,
+  };
 
   const enterExit = {
     initial: { opacity: 0, scale: 0.9, x: enter.x, y: enter.y },
@@ -81,7 +81,7 @@ export const NotificationCard = ({
   if (item.kind === 'toast') {
     const { message, variant, icon, action } = item;
     /* icon === undefined → variant default; icon === null → no icon */
-    const displayIcon = icon === undefined ? VARIANT_ICON[variant] : icon;
+    const displayIcon = icon === undefined ? variantIcon[variant] : icon;
 
     return (
       <motion.div

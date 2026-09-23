@@ -1,8 +1,13 @@
 import { Check } from 'lucide-react';
 import { motion } from 'motion/react';
+import { ReactElement } from 'react';
 import s from './success.module.scss';
 
-export const ButtonSuccessIcon = () => {
+interface ButtonSuccessIconProps {
+  icon?: ReactElement;
+}
+
+export const ButtonSuccessIcon = ({ icon = <Check /> }: ButtonSuccessIconProps) => {
   return (
     <motion.div
       className={s.Success}
@@ -14,7 +19,7 @@ export const ButtonSuccessIcon = () => {
       }}
       animate={{ opacity: 1, scale: 1, translateX: '-50%', translateY: '-50%' }}
     >
-      <Check />
+      {icon}
     </motion.div>
   );
 };

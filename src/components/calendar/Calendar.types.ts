@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Dayjs } from 'dayjs';
 
 export type CalendarMode = 'single' | 'multiple' | 'range';
@@ -97,6 +97,10 @@ export interface CalendarProps
   showNavigation?: boolean;
   showWeekdays?: boolean;
   showOutsideDays?: boolean;
+
+  /** Overrides the header's previous/next month navigation icons. Defaults to `Application.icons.prev`/`.next`. */
+  prevIcon?: ReactElement;
+  nextIcon?: ReactElement;
 
   /** Low-level: override the day-cell renderer. */
   DateComponent?: React.FC<CalendarRenderDateProps>;

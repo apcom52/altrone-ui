@@ -95,8 +95,9 @@ export const OverviewStory: StoryObj<typeof Tooltip> = {
         </Tooltip>
       </Flex>
       <Caption>
-        The leftmost tooltip has no <Text code>children</Text> at all — a{' '}
-        <Text code>HelpCircle</Text> button is rendered automatically.
+        The leftmost tooltip has no <Text code>children</Text> at all — an
+        icon button is rendered automatically (customizable via{' '}
+        <Text code>triggerIcon</Text>).
       </Caption>
     </Flex>
   ),
@@ -326,6 +327,27 @@ export const RefChainStory: StoryObj<typeof Tooltip> = {
         consumer put there themselves.
       </Paragraph>
       <RefChainDemo />
+    </Flex>
+  ),
+};
+
+// ─── 7. Custom icons ─────────────────────────────────────────────────────────
+
+export const CustomIconStory: StoryObj<typeof Tooltip> = {
+  name: 'Custom trigger icon',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Heading>Custom trigger icon</Heading>
+      <Paragraph>
+        <Text code>triggerIcon</Text> replaces the auto-generated trigger&rsquo;s
+        icon — a role shared with <Text code>Form</Text>&rsquo;s hint button,
+        also settable once for both via <Text code>Application</Text>&apos;s{' '}
+        <Text code>icons</Text> prop. Has no effect when a custom trigger is
+        passed via <Text code>children</Text>.
+      </Paragraph>
+      <Flex orientation="horizontal" gap="l" align="center">
+        <Tooltip content="What is this?" triggerIcon={<Sparkles />} />
+      </Flex>
     </Flex>
   ),
 };

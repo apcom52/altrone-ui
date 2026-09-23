@@ -2,9 +2,11 @@ import { createContext, useContext, MouseEvent, SyntheticEvent } from 'react';
 import { ReactTable } from '@tanstack/react-table';
 import { AnyObject } from '../../utils';
 import type { DataTableFeatures } from './DataTable.features.ts';
+import type { DataTableIconSet } from './DataTable.types.ts';
 
 export interface DataTableContextValue<T extends object = AnyObject> {
   table: ReactTable<DataTableFeatures, T>;
+  icons: DataTableIconSet;
   /** `true` while `mode === 'loading'` — cells render skeletons. */
   loading: boolean;
   /** Whether row selection is available at all (the `selectable` prop). */

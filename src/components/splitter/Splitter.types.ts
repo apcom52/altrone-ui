@@ -3,6 +3,14 @@ import React from 'react';
 /** How a collapsed panel's expand button is shown on its divider. */
 export type SplitterCollapsedControlsVisibility = 'always' | 'hover' | 'never';
 
+/** Icons unique to `Splitter`, overridable as a group via the `icons` prop. */
+export interface SplitterIconSet {
+  chevronLeft: React.ReactElement;
+  chevronRight: React.ReactElement;
+  chevronUp: React.ReactElement;
+  chevronDown: React.ReactElement;
+}
+
 export interface SplitterHandle {
   /** Collapse a panel by index */
   collapse: (panelIndex: number) => void;
@@ -61,4 +69,6 @@ export interface SplitterProps extends React.HTMLAttributes<HTMLDivElement> {
   collapsedControlsVisibility?: SplitterCollapsedControlsVisibility;
   /** Ref that exposes imperative collapse/expand/toggle API */
   controlRef?: React.Ref<SplitterHandle>;
+  /** Overrides for the four directional chevrons used by the collapse controls. */
+  icons?: Partial<SplitterIconSet>;
 }

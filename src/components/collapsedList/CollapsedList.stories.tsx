@@ -6,6 +6,7 @@ import { Flex } from '../flex';
 import { Text } from '../text';
 import { Checkbox } from '../checkbox';
 import { CollapsedList } from './CollapsedList.tsx';
+import { CirclePlus, CircleMinus } from 'lucide-react';
 
 const story: Meta<typeof CollapsedList> = {
   title: 'Components/Containers/CollapsedList',
@@ -214,6 +215,33 @@ export const OneWayReveal: StoryObj<typeof CollapsedList> = {
       </Paragraph>
 
       <CollapsedList limit={3} gap="s" hideExpandButtonAfterUsage>
+        {rows()}
+      </CollapsedList>
+    </Flex>
+  ),
+};
+
+// ─── Custom icons ──────────────────────────────────────────────────────────
+
+export const CustomIcons: StoryObj<typeof CollapsedList> = {
+  name: 'Custom icons',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 520 }}>
+      <Heading>Custom icons</Heading>
+      <Paragraph>
+        <Text code>openIcon</Text>/<Text code>closeIcon</Text> override the
+        toggle button&rsquo;s chevron — a role shared with{' '}
+        <Text code>ColorPicker</Text> and <Text code>Select</Text>, also
+        settable once for all of them via <Text code>Application</Text>
+        &apos;s <Text code>icons</Text> prop.
+      </Paragraph>
+
+      <CollapsedList
+        limit={3}
+        gap="s"
+        openIcon={<CirclePlus />}
+        closeIcon={<CircleMinus />}
+      >
         {rows()}
       </CollapsedList>
     </Flex>

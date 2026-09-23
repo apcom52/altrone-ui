@@ -1,4 +1,4 @@
-import { HTMLAttributes, MouseEvent, ReactNode, Ref } from 'react';
+import { HTMLAttributes, MouseEvent, ReactElement, ReactNode, Ref } from 'react';
 
 export interface SpoilerProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -11,4 +11,8 @@ export interface SpoilerProps extends Omit<
   /** Initial open state for an uncontrolled spoiler. Ignored once `open` is passed. */
   defaultOpen?: boolean;
   onToggle?: (open: boolean, event: MouseEvent<HTMLButtonElement>) => void;
+  /** Icon shown while collapsed. Defaults to a plus. */
+  expandIcon?: ReactElement;
+  /** Icon shown while expanded. Defaults to a minus. */
+  collapseIcon?: ReactElement;
 }

@@ -730,3 +730,37 @@ export const SizesStatesAndTriggers: Story = {
     );
   },
 };
+
+/* ------------------------------------------------------------------ */
+/* 7. Custom icons                                                     */
+/* ------------------------------------------------------------------ */
+
+export const CustomIcons: Story = {
+  name: 'Custom icons',
+  render: () => {
+    const [value, setValue] = useState<string | undefined>('#5b5bd6');
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 620 }}>
+        <Heading>Custom icons</Heading>
+        <Lead>
+          <Text code>openIcon</Text>/<Text code>closeIcon</Text> override the
+          trigger chevron (shared with other components via{' '}
+          <Text code>Application</Text>&apos;s <Text code>icons</Text> prop),
+          while <Text code>presetsTabIcon</Text>/<Text code>paletteTabIcon</Text>{' '}
+          are unique to <Text code>ColorPicker</Text> and only take a local
+          override.
+        </Lead>
+        <ColorPicker
+          value={value}
+          onChange={setValue}
+          colorPresets={BRAND_COLORS}
+          openIcon={<Underline />}
+          closeIcon={<Bold />}
+          presetsTabIcon={<Baseline />}
+          paletteTabIcon={<Italic />}
+        />
+      </Flex>
+    );
+  },
+};

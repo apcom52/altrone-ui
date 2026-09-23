@@ -5,7 +5,7 @@ import { Flex } from 'components/flex';
 import { Dropdown } from 'components/dropdown';
 import { Button } from 'components/button';
 import { useLocalization } from 'components/application/useLocalization.tsx';
-import { Ellipsis } from 'lucide-react';
+import { useDataTableContext } from '../DataTable.context.tsx';
 
 export interface RowActionsCellProps {
   children: StrictReactElements<DataTableRowActionProps>;
@@ -15,6 +15,7 @@ export interface RowActionsCellProps {
     `collapsed` ones folded into an overflow menu. */
 export const RowActionsCell = memo<RowActionsCellProps>(({ children }) => {
   const t = useLocalization();
+  const { icons } = useDataTableContext();
 
   const [collapsedActions, visibleActions] = useMemo(() => {
     if (!children) return [[], []];
@@ -57,11 +58,11 @@ export const RowActionsCell = memo<RowActionsCellProps>(({ children }) => {
         <Button
           label={t('dataTable.moreActions')}
           showLabel={false}
-          icon={<Ellipsis />}
+          icon={icons.rowActions}
         />
       </Dropdown>
     );
-  }, [collapsedActions]);
+  }, [collapsedActions, icons]);
 
   return (
     <Flex gap="s" justify="end">

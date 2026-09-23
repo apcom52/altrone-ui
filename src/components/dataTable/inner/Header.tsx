@@ -1,5 +1,4 @@
 import { Children, isValidElement, ReactNode } from 'react';
-import { SquareCheckBig, Square } from 'lucide-react';
 import { Toolbar } from 'components/toolbar';
 import { Tooltip } from 'components/tooltip/Tooltip.tsx';
 import { useDataTableContext } from '../DataTable.context';
@@ -40,7 +39,7 @@ export const DataTableHeader = <T extends object>({
   actions,
 }: DataTableHeaderProps<T>) => {
   const t = useLocalization();
-  const { table, loading, selectable, selectMode, setSelectMode } =
+  const { table, icons, loading, selectable, selectMode, setSelectMode } =
     useDataTableContext<T>();
 
   const selectedItems = table
@@ -61,7 +60,7 @@ export const DataTableHeader = <T extends object>({
           <Toolbar.Group>
             <Tooltip content={t('dataTable.selectableMode')}>
               <Toolbar.Action
-                icon={selectMode ? <Square /> : <SquareCheckBig />}
+                icon={selectMode ? icons.disableSelection : icons.enableSelection}
                 label={t('dataTable.selectableMode')}
                 showLabel={false}
                 onClick={(event) => setSelectMode(!selectMode, event)}

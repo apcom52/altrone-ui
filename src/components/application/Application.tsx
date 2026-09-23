@@ -24,6 +24,7 @@ import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import { AltroneLocalization } from './useLocalization.tsx';
+import { AltroneIcons } from './useIcons.tsx';
 import { DialogProvider } from 'components/dialog/DialogProvider.tsx';
 
 function resolveInitialTheme(initialTheme: Theme): Exclude<Theme, 'auto'> {
@@ -45,6 +46,7 @@ export const Application = ({
   accent = 'blue',
   language = 'en',
   customLabels = {},
+  icons = {},
   toastPlacement,
   notificationPlacement,
   asChild = false,
@@ -149,14 +151,16 @@ export const Application = ({
   const providerTree = (content: ReactNode) => (
     <ThemeContext.Provider value={themeContext}>
       <AltroneLocalization language={language} customLabels={customLabels}>
-        <DialogProvider>
-          <Notifications
-            toastPlacement={toastPlacement}
-            notificationPlacement={notificationPlacement}
-          >
-            {content}
-          </Notifications>
-        </DialogProvider>
+        <AltroneIcons icons={icons}>
+          <DialogProvider>
+            <Notifications
+              toastPlacement={toastPlacement}
+              notificationPlacement={notificationPlacement}
+            >
+              {content}
+            </Notifications>
+          </DialogProvider>
+        </AltroneIcons>
       </AltroneLocalization>
     </ThemeContext.Provider>
   );

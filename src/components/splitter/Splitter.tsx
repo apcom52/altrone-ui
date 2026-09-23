@@ -4,6 +4,7 @@ import {
   useCallback,
   useId,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
   type Dispatch,
@@ -16,8 +17,10 @@ import { useLocalization } from '../application';
 import s from './splitter.module.scss';
 import type {
   SplitterHandle as SplitterHandleType,
+  SplitterIconSet,
   SplitterProps,
 } from './Splitter.types.ts';
+import { DEFAULT_SPLITTER_ICONS } from './splitterIcons.tsx';
 import { Panel } from './components/Panel.tsx';
 import { SplitterDivider, dividerActiveClass } from './inner/Divider.tsx';
 import { isPanelElement, initSizes } from './utils/splitterUtils.ts';
@@ -39,11 +42,17 @@ const SplitterBase = ({
   showControls = true,
   collapsedControlsVisibility = 'always',
   controlRef,
+  icons,
   ...restProps
 }: SplitterProps) => {
   const uid = useId();
   const t = useLocalization();
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const resolvedIcons = useMemo<SplitterIconSet>(
+    () => ({ ...DEFAULT_SPLITTER_ICONS, ...icons }),
+    [icons],
+  );
 
   const mergedRef = useCallback(
     (node: HTMLDivElement | null) => {
@@ -209,6 +218,7 @@ const SplitterBase = ({
                 }
                 showControls={showControls}
                 collapsedControlsVisibility={collapsedControlsVisibility}
+                icons={resolvedIcons}
                 sizeLeft={sizes[i]}
                 minLeft={panels[i].minSize ?? 0}
                 maxLeft={panels[i].maxSize ?? 100}

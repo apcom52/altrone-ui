@@ -18,8 +18,11 @@ import {
   Filter,
   Images,
   Italic,
+  Menu,
   MessageCircle,
   MousePointer2,
+  PanelLeft,
+  PanelLeftDashed,
   Pen,
   PencilLine,
   Plus,
@@ -1453,6 +1456,63 @@ export const VerticalOverflow: StoryObj<typeof Toolbar> = {
             </Toolbar>
           </div>
         </Flex>
+      </Flex>
+    );
+  },
+};
+
+/* ─────────────────────────────────────────────────────────────
+   Custom icons
+   ───────────────────────────────────────────────────────────── */
+
+export const CustomIcons: StoryObj<typeof Toolbar> = {
+  name: 'Custom icons',
+  render: () => {
+    const [collapsed, setCollapsed] = useState(false);
+    const [width, setWidth] = useState(280);
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 760 }}>
+        <Text block size={7} weight="bold">
+          Custom icons
+        </Text>
+        <Text block size={4} style={{ lineHeight: 1.6 }}>
+          Icons unique to <Text code>Toolbar</Text> (the sidebar toggle, the
+          clickable title's menu chevron, the overflow trigger) are grouped
+          under one <Text code>icons</Text> prop instead of a separate prop
+          per role — pass only the ones you want to change.
+        </Text>
+
+        <OverflowDemo width={width} onChangeWidth={setWidth} min={220}>
+          <Toolbar
+            icons={{
+              sidebarExpand: <PanelLeftDashed />,
+              sidebarCollapse: <PanelLeft />,
+              titleMenu: <Menu />,
+              overflowLeft: <ArrowLeft />,
+              overflowRight: <ArrowRight />,
+            }}
+          >
+            <Toolbar.Leading>
+              <Toolbar.Group>
+                <Toolbar.SidebarToggleAction
+                  collapsed={collapsed}
+                  onClick={() => setCollapsed((v) => !v)}
+                />
+              </Toolbar.Group>
+              <Toolbar.Title title="Report.pdf" clickable />
+            </Toolbar.Leading>
+            <Toolbar.Trailing>
+              <Toolbar.Action label="Share" icon={<Share />} showLabel={false} />
+              <Toolbar.Action label="Print" icon={<Printer />} showLabel={false} />
+              <Toolbar.Action
+                label="Download"
+                icon={<Download />}
+                showLabel={false}
+              />
+            </Toolbar.Trailing>
+          </Toolbar>
+        </OverflowDemo>
       </Flex>
     );
   },

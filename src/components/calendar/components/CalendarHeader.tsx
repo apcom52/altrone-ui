@@ -1,7 +1,7 @@
-import { memo } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { memo, ReactElement } from 'react';
 import { Button } from 'components/button';
 import { useLocalization } from '../../application/useLocalization';
+import { useIcons } from '../../application/useIcons.tsx';
 import s from '../calendar.module.scss';
 
 interface CalendarHeaderProps {
@@ -9,18 +9,21 @@ interface CalendarHeaderProps {
   showNavigation: boolean;
   onPrev: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onNext: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  prevIcon?: ReactElement;
+  nextIcon?: ReactElement;
 }
 
 export const CalendarHeader = memo<CalendarHeaderProps>(
-  ({ caption, showNavigation, onPrev, onNext }) => {
+  ({ caption, showNavigation, onPrev, onNext, prevIcon, nextIcon }) => {
     const t = useLocalization();
+    const icons = useIcons();
 
     return (
       <div className={s.Header}>
         {showNavigation ? (
           <Button
             className={s.NavButton}
-            icon={<ChevronLeft />}
+            icon={prevIcon ?? icons.prev}
             label={t('calendar.previousMonth')}
             showLabel={false}
             onClick={onPrev}
@@ -30,7 +33,7 @@ export const CalendarHeader = memo<CalendarHeaderProps>(
         {showNavigation ? (
           <Button
             className={s.NavButton}
-            icon={<ChevronRight />}
+            icon={nextIcon ?? icons.next}
             label={t('calendar.nextMonth')}
             showLabel={false}
             onClick={onNext}

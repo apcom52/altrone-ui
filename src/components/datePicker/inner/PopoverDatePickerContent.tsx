@@ -11,14 +11,14 @@ import { DatePickerContentProps } from '../DatePicker.types.ts';
 import clsx from 'clsx';
 
 export const PopoverDatePickerContent = memo<DatePickerContentProps>(
-  ({ clearable = false, autoClose = true }) => {
+  ({ clearable = false, autoClose = true, prevIcon, nextIcon }) => {
     const { viewMode } = useDatePickerViewContext();
 
     const cls = clsx(s.Calendar);
 
     return (
       <Flex orientation="vertical" gap="l" className={cls}>
-        <DatePickerHeader />
+        <DatePickerHeader prevIcon={prevIcon} nextIcon={nextIcon} />
         {viewMode === 'day' ? <DayPicker autoClose={autoClose} /> : null}
         {viewMode === 'month' ? <MonthPicker autoClose={autoClose} /> : null}
         {viewMode === 'year' ? <YearPicker autoClose={autoClose} /> : null}

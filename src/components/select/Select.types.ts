@@ -43,6 +43,14 @@ export interface SelectProps
   parentWidth?: boolean;
   /** Fixed height of the scrollable options list, px. Defaults to the `--select-menu-height` token. */
   menuHeight?: number;
+  /** Trigger chevron shown when the menu is closed. Defaults to the shared `icons.open`. */
+  openIcon?: ReactElement;
+  /** Trigger chevron shown when the menu is open. Defaults to the shared `icons.close`. */
+  closeIcon?: ReactElement;
+  /** Icon shown in the trigger while `searchable` and actively searching. Defaults to the shared `icons.search`. */
+  searchIcon?: ReactElement;
+  /** Icon for the clear button. Defaults to the shared `icons.clear`. */
+  clearIcon?: ReactElement;
   asChild?: boolean;
   children?: ReactElement;
   ref?: React.Ref<HTMLDivElement>;

@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useMemo, useState } from 'react';
 import type { Dayjs } from 'dayjs';
+import { ArrowLeftCircle, ArrowRightCircle } from 'lucide-react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
@@ -489,4 +490,29 @@ export const HostAvailability: Story = {
       </Flex>
     );
   },
+};
+
+export const CustomNavigationIcons: Story = {
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 360 }}>
+      <Text size={5} weight="bold" block>
+        Swapping the navigation icons
+      </Text>
+      <Text block>
+        <Text code>prevIcon</Text> / <Text code>nextIcon</Text> override the
+        header's month navigation for this one instance. Without them, the
+        header falls back to <Text code>Application.icons.prev</Text> /{' '}
+        <Text code>.next</Text> (shared with <Text code>DatePicker</Text> and{' '}
+        <Text code>Pagination</Text>) — see the <Text code>Foundations/Icons</Text>{' '}
+        story to override that shared default for every consumer at once.
+      </Text>
+
+      <Calendar
+        mode="single"
+        month={SEASON}
+        prevIcon={<ArrowLeftCircle />}
+        nextIcon={<ArrowRightCircle />}
+      />
+    </Flex>
+  ),
 };

@@ -8,6 +8,12 @@ import { Flex } from '../flex/index.ts';
 import { Button } from '../button/index.ts';
 import { Radio } from '../radio/index.ts';
 import React, { useRef, useState } from 'react';
+import {
+  ArrowLeftFromLine,
+  ArrowRightFromLine,
+  ArrowDownFromLine,
+  ArrowUpFromLine,
+} from 'lucide-react';
 
 const story: Meta<typeof Splitter> = {
   title: 'Components/Containers/Splitter',
@@ -607,6 +613,39 @@ export const StyledPanelStory: StoryObj<typeof Splitter> = {
       </Splitter>
     );
   },
+};
+
+export const CustomIcons: StoryObj<typeof Splitter> = {
+  name: 'Custom icons',
+  render: () => (
+    <Flex orientation="vertical" gap="l">
+      <Text size={3} color="muted" block>
+        The four directional chevrons used by the collapse controls are
+        grouped under one <Text code>icons</Text> prop — hover the divider to
+        see the overrides.
+      </Text>
+      <Splitter
+        style={{ height: 200 }}
+        icons={{
+          chevronLeft: <ArrowLeftFromLine />,
+          chevronRight: <ArrowRightFromLine />,
+          chevronUp: <ArrowUpFromLine />,
+          chevronDown: <ArrowDownFromLine />,
+        }}
+      >
+        <Splitter.Panel defaultSize={30} minSize={15} collapsible>
+          <div style={{ ...panelStyle(), height: '100%' }}>
+            <Label>Left panel</Label>
+          </div>
+        </Splitter.Panel>
+        <Splitter.Panel collapsible>
+          <div style={{ ...panelStyle('var(--background-1)'), height: '100%' }}>
+            <Label>Right panel</Label>
+          </div>
+        </Splitter.Panel>
+      </Splitter>
+    </Flex>
+  ),
 };
 
 export default story;

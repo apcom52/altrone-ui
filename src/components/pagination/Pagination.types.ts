@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Size } from 'types';
 
 export interface PaginationProps
@@ -16,4 +16,11 @@ export interface PaginationProps
   showEdgeButtons?: boolean;
   /** Page buttons to show on each side of the current page. Default: `1`. */
   siblings?: number;
+
+  /** Overrides the previous/next page icons. Defaults to `Application.icons.prev`/`.next`. */
+  prevIcon?: ReactElement;
+  nextIcon?: ReactElement;
+  /** Overrides the first/last page jump icons — only used when `showEdgeButtons` is `true`. */
+  firstPageIcon?: ReactElement;
+  lastPageIcon?: ReactElement;
 }

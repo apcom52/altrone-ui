@@ -1,6 +1,7 @@
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useMemo } from 'react';
 import s from './toolbar.module.scss';
-import { ToolbarProps } from './Toolbar.types.ts';
+import { ToolbarIconSet, ToolbarProps } from './Toolbar.types.ts';
+import { DEFAULT_TOOLBAR_ICONS } from './toolbarIcons.tsx';
 import clsx from 'clsx';
 import {
   Action,
@@ -49,6 +50,7 @@ const ToolbarComponent = memo(
     sticky = false,
     fixed,
     showBackdrop = false,
+    icons,
     className,
     ...restProps
   }: ToolbarProps) => {
@@ -62,7 +64,14 @@ const ToolbarComponent = memo(
     const orientation =
       edge === 'left' || edge === 'right' ? 'vertical' : 'horizontal';
 
-    const { containerRef, content } = useToolbarOverflow(children, orientation);
+    const resolvedIcons = useMemo<ToolbarIconSet>(
+      () => ({ ...DEFAULT_TOOLBAR_ICONS, ...icons }),
+      [icons],
+    );
+
+    const { containerRef, content } = useToolbarOverflow(children, orientation, {
+      overflowIcons: resolvedIcons,
+    });
     const balance = useToolbarRegionBalance(containerRef, orientation);
 
     const cls = clsx(
@@ -78,7 +87,9 @@ const ToolbarComponent = memo(
     );
 
     return (
-      <ToolbarContext.Provider value={{ edge, orientation, variant, size }}>
+      <ToolbarContext.Provider
+        value={{ edge, orientation, variant, size, icons: resolvedIcons }}
+      >
         <ToolbarBalanceContext.Provider value={balance}>
           <div
             ref={mergeRefs(ref, containerRef)}

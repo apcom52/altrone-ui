@@ -10,6 +10,7 @@ import s from './colorPickerContent.module.scss';
 import { HexAlphaColorPicker } from 'react-colorful';
 import { Grid3X3, Palette } from 'lucide-react';
 import { ColorPickerFooter } from './ColorPickerFooter.tsx';
+import type { ReactElement } from 'react';
 
 const HEX6 = /^[0-9A-Fa-f]{6}$/;
 
@@ -39,6 +40,8 @@ interface ColorPickerContentProps extends Pick<
   'colorPresets' | 'value' | 'onChange' | 'allowPalette' | 'clearable' | 'size'
 > {
   hide: () => void;
+  presetsTabIcon?: ReactElement;
+  paletteTabIcon?: ReactElement;
 }
 
 export const ColorPickerContent = (props: ColorPickerContentProps) => {
@@ -50,6 +53,8 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
     clearable,
     size,
     hide,
+    presetsTabIcon = <Grid3X3 />,
+    paletteTabIcon = <Palette />,
   } = props;
 
   const t = useLocalization();
@@ -101,13 +106,13 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
       {showTabs ? (
         <Tabs>
           <Tabs.Item
-            icon={<Grid3X3 />}
+            icon={presetsTabIcon}
             label={t('colorPicker.savedColors')}
             onClick={() => setMode('presets')}
             selected={mode === 'presets'}
           />
           <Tabs.Item
-            icon={<Palette />}
+            icon={paletteTabIcon}
             label={t('colorPicker.palette')}
             onClick={() => setMode('palette')}
             selected={mode === 'palette'}

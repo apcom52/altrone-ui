@@ -8,8 +8,25 @@ import {
   Updater,
   useTable,
 } from '@tanstack/react-table';
+import {
+  ArrowDown,
+  ArrowUp,
+  Check,
+  Ellipsis,
+  Funnel,
+  Minus,
+  Plus,
+  Square,
+  SquareCheckBig,
+  Trash,
+} from 'lucide-react';
 import { AnyObject } from '../../utils';
-import { DataTableFilter, DataTableProps, Sorting } from './DataTable.types';
+import {
+  DataTableFilter,
+  DataTableIconSet,
+  DataTableProps,
+  Sorting,
+} from './DataTable.types';
 import { DataTableContext, DataTableContextValue } from './DataTable.context';
 import { dataTableFeatures } from './DataTable.features';
 import { useDataTableColumns } from './useDataTableColumns';
@@ -17,6 +34,19 @@ import { useDataTableHorizontalScroll } from './useDataTableHorizontalScroll';
 import { Action, RowAction } from './components';
 import { Body, ColumnHeaders, Header, Footer } from './inner';
 import s from './dataTable.module.scss';
+
+const DEFAULT_DATA_TABLE_ICONS: DataTableIconSet = {
+  sortAsc: <ArrowUp />,
+  sortDesc: <ArrowDown />,
+  filter: <Funnel />,
+  addFilter: <Plus />,
+  deleteFilter: <Trash />,
+  enableSelection: <SquareCheckBig />,
+  disableSelection: <Square />,
+  rowActions: <Ellipsis />,
+  booleanTrue: <Check />,
+  booleanFalse: <Minus />,
+};
 
 const DataTableComponent = <DataType extends object>(
   props: DataTableProps<DataType>,
@@ -33,6 +63,7 @@ const DataTableComponent = <DataType extends object>(
     columns,
     showEmptyBanner = true,
     resizableColumns = false,
+    icons,
     defaultPage = 0,
     defaultSort,
     defaultFilters,
@@ -55,6 +86,11 @@ const DataTableComponent = <DataType extends object>(
   }, [mode]);
 
   const columnDefs = useDataTableColumns<DataType>(columns, resizableColumns);
+
+  const resolvedIcons = useMemo<DataTableIconSet>(
+    () => ({ ...DEFAULT_DATA_TABLE_ICONS, ...icons }),
+    [icons],
+  );
 
   const isPageControlled = page !== undefined;
   const isSortControlled = sort !== undefined;
@@ -155,7 +191,7 @@ const DataTableComponent = <DataType extends object>(
     data,
     getRowId,
     columns: columnDefs,
-    meta: { mode },
+    meta: { mode, icons: resolvedIcons },
     enableRowSelection: selectable,
     enableColumnResizing: resizableColumns,
     columnResizeMode: 'onChange',
@@ -195,13 +231,22 @@ const DataTableComponent = <DataType extends object>(
   const contextValue = useMemo(
     () => ({
       table,
+      icons: resolvedIcons,
       loading: mode === 'loading',
       selectable,
       selectMode: selectable && selectMode,
       setSelectMode,
       notePendingEvent,
     }),
-    [table, mode, selectable, selectMode, setSelectMode, notePendingEvent],
+    [
+      table,
+      resolvedIcons,
+      mode,
+      selectable,
+      selectMode,
+      setSelectMode,
+      notePendingEvent,
+    ],
   );
 
   const { bodyScrollRef, headerRowRef, headerTrackRef } =

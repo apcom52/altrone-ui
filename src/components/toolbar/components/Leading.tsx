@@ -8,9 +8,10 @@ import { useToolbarContext, useToolbarBalance } from '../Toolbar.context.ts';
 
 export const Leading = memo(
   ({ ref, children, className, ...restProps }: ToolbarLeadingProps) => {
-    const { orientation } = useToolbarContext();
+    const { orientation, icons } = useToolbarContext();
     const balance = useToolbarBalance();
     const { containerRef, content } = useToolbarOverflow(children, orientation, {
+      overflowIcons: icons,
       onNaturalSizeChange: (size) => balance?.reportNaturalSize('leading', size),
     });
 

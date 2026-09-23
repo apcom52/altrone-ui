@@ -52,6 +52,9 @@ export const RangePicker = memo<RangePickerProps>((props) => {
     autoClose = true,
     asChild = false,
     children,
+    prevIcon,
+    nextIcon,
+    triggerIcon,
     ...restProps
   } = props;
 
@@ -172,7 +175,7 @@ export const RangePicker = memo<RangePickerProps>((props) => {
           <TextInput.IconIsland
             className={s.ArrowIcon}
             placement="end"
-            icon={<Calendar />}
+            icon={triggerIcon ?? <Calendar />}
           />
         ) : null}
       </TextInput>
@@ -193,6 +196,8 @@ export const RangePicker = memo<RangePickerProps>((props) => {
                   <PopoverDatePickerContent
                     clearable={props.clearable}
                     autoClose={autoClose}
+                    prevIcon={prevIcon}
+                    nextIcon={nextIcon}
                   />
                 </DatePickerCloseFnContext.Provider>
               )}

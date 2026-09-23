@@ -19,5 +19,7 @@ export interface TooltipProps
   triggerClassName?: string;
   /** Inline styles for the auto-generated trigger button, shown when no `children` is given. Has no effect when a custom trigger is passed via `children`. */
   triggerStyle?: CSSProperties;
+  /** Icon for the auto-generated trigger button. Defaults to the shared `icons.help`. Has no effect when a custom trigger is passed via `children`. */
+  triggerIcon?: ReactElement;
   placement?: Placement;
 }

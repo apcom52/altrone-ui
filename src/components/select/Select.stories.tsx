@@ -361,3 +361,36 @@ export const CustomTriggerStory: StoryObj<typeof Select> = {
     );
   },
 };
+
+// ─── 5. Custom icons ───────────────────────────────────────────────────────
+
+export const CustomIconsStory: StoryObj<typeof Select> = {
+  name: 'Custom icons',
+  render: () => {
+    const [team, setTeam] = useState<string | undefined>();
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 480 }}>
+        <Heading>Custom icons</Heading>
+        <Paragraph>
+          <Text code>openIcon</Text>/<Text code>closeIcon</Text>/
+          <Text code>searchIcon</Text>/<Text code>clearIcon</Text> override the
+          roles this component shares with others (also settable once, for
+          every component, via <Text code>Application</Text>&apos;s{' '}
+          <Text code>icons</Text> prop).
+        </Paragraph>
+        <Select
+          value={team}
+          onChange={(next) => setTeam(next as string | undefined)}
+          options={TEAMS}
+          searchable
+          clearable
+          openIcon={<ChevronDown />}
+          closeIcon={<ChevronUp />}
+          searchIcon={<Globe />}
+          clearIcon={<ArrowDownWideNarrow />}
+        />
+      </Flex>
+    );
+  },
+};

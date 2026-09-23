@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { TextInputProps } from '../textInput/TextInput.types.ts';
 
 type AutocompleteSuggestionsContext = {
@@ -29,4 +29,6 @@ export interface AutocompleteInputProps<T = string> extends TextInputProps {
   showControls?: boolean;
   minChars?: number;
   cacheResults?: boolean;
+  /** Overrides the load-error icon. Defaults to `Application.icons.error`. */
+  errorIcon?: ReactElement;
 }

@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import { AnyObject } from 'utils';
 import { Size } from 'types';
 
@@ -22,6 +23,8 @@ export interface FormFieldProps
   label?: string;
   required?: boolean;
   hintText?: string;
+  /** Icon for the hint tooltip trigger, shown when `hintText` is set. Defaults to the shared `icons.help`. */
+  hintIcon?: ReactElement;
   disabled?: boolean;
   errorMessage?: string;
   description?: string;

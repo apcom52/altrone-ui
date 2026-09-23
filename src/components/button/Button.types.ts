@@ -13,6 +13,10 @@ export interface ButtonProps extends Omit<
 
   icon?: ReactElement;
   additionalIcon?: ReactElement;
+  /** Icon shown when `state` is `'succeeded'`. Defaults to a checkmark. */
+  successIcon?: ReactElement;
+  /** Icon shown when `state` is `'failed'`. Defaults to an X. */
+  failedIcon?: ReactElement;
 
   variant?: 'default' | 'submit' | 'text';
   state?: 'idle' | 'loading' | 'succeeded' | 'failed';

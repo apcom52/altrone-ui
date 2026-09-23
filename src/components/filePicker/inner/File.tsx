@@ -15,7 +15,6 @@ import { FileUtils } from 'utils';
 import { useFilePickerContext } from '../FilePicker.context.ts';
 import { deleteFileRequest } from '../FilePicker.utils.ts';
 import { useLocalization } from '../../application/useLocalization.tsx';
-import { CircleAlert, RotateCw, Trash2 } from 'lucide-react';
 import { Button } from 'components/button/Button.tsx';
 import { motion, useReducedMotionConfig } from 'motion/react';
 
@@ -40,6 +39,9 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
     autoUploadFn,
     removeFileFn,
     autoUpload,
+    errorIcon,
+    retryIcon,
+    deleteIcon,
   } = useFilePickerContext();
 
   const controlSize = CONTROL_SIZE[size];
@@ -212,7 +214,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
           }
         >
           <button type="button" className={s.Alert} aria-label={errorMessage}>
-            <CircleAlert />
+            {errorIcon}
           </button>
         </Popover>
       ) : null}
@@ -221,7 +223,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
           className={s.Control}
           size={controlSize}
           disabled={disabled}
-          icon={<RotateCw />}
+          icon={retryIcon}
           label={t('filePicker.retryUpload')}
           onClick={() => setStatus('selected')}
           showLabel={false}
@@ -232,7 +234,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
           className={s.Control}
           size={controlSize}
           disabled={disabled}
-          icon={<Trash2 />}
+          icon={deleteIcon}
           label={t('common.delete')}
           onClick={onRemoveClick}
           showLabel={false}

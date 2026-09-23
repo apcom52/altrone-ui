@@ -1,12 +1,18 @@
 import { createContext, useContext } from 'react';
 import { Size } from 'types';
-import { ToolbarEdge, ToolbarVariant } from './Toolbar.types.ts';
+import {
+  ToolbarEdge,
+  ToolbarIconSet,
+  ToolbarVariant,
+} from './Toolbar.types.ts';
+import { DEFAULT_TOOLBAR_ICONS } from './toolbarIcons.tsx';
 
 export interface ToolbarContextValue {
   edge: ToolbarEdge;
   orientation: 'horizontal' | 'vertical';
   variant: ToolbarVariant;
   size: Size;
+  icons: ToolbarIconSet;
 }
 
 export const ToolbarContext = createContext<ToolbarContextValue>({
@@ -14,6 +20,7 @@ export const ToolbarContext = createContext<ToolbarContextValue>({
   orientation: 'horizontal',
   variant: 'solid',
   size: 'm',
+  icons: DEFAULT_TOOLBAR_ICONS,
 });
 
 export const useToolbarContext = () => useContext(ToolbarContext);

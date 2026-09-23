@@ -14,6 +14,7 @@ import {
   useShowControls,
 } from 'utils';
 import { useLocalization } from 'components/application';
+import { useIcons } from 'components/application/useIcons.tsx';
 import { TextInput } from 'components/textInput';
 import { Result } from 'components/result';
 import { Tooltip } from 'components/tooltip';
@@ -22,7 +23,6 @@ import { Dropdown } from 'components/dropdown';
 import { Scrollable } from 'components/scrollable';
 import { AutocompleteSuggestion } from './components';
 import { PopoverRef } from 'components/popover';
-import { CircleAlert } from 'lucide-react';
 import s from './autocompleteInput.module.scss';
 
 export const AutocompleteInput = <T = string,>({
@@ -39,9 +39,11 @@ export const AutocompleteInput = <T = string,>({
   showControls,
   minChars = 1,
   cacheResults = false,
+  errorIcon,
   ...restProps
 }: AutocompleteInputProps<T>) => {
   const t = useLocalization();
+  const icons = useIcons();
 
   const isControlsVisible = useShowControls({
     propValue: showControls,
@@ -224,9 +226,7 @@ export const AutocompleteInput = <T = string,>({
         {error !== null ? (
           <TextInput.CustomIsland placement="end">
             <Tooltip content={t('autocompleteInput.loadError')}>
-              <span className={s.ErrorIcon}>
-                <CircleAlert />
-              </span>
+              <span className={s.ErrorIcon}>{errorIcon ?? icons.error}</span>
             </Tooltip>
           </TextInput.CustomIsland>
         ) : null}

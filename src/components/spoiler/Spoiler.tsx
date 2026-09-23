@@ -26,6 +26,8 @@ export const Spoiler = ({
   defaultOpen = false,
   title,
   onToggle,
+  expandIcon = <Plus />,
+  collapseIcon = <Minus />,
   ...restProps
 }: SpoilerProps) => {
   const isControlled = open !== undefined;
@@ -56,7 +58,7 @@ export const Spoiler = ({
       >
         <span className={s.Title}>{title}</span>
         <span className={s.ArrowIcon} aria-hidden={true}>
-          {opened ? <Minus /> : <Plus />}
+          {opened ? collapseIcon : expandIcon}
         </span>
       </button>
       <AnimatePresence initial={false}>

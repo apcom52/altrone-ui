@@ -1,9 +1,9 @@
 import React, { memo, useCallback, useId, useRef, useState } from 'react';
-import { HelpCircle } from 'lucide-react';
 import { TooltipProps } from './Tooltip.types.ts';
 import clsx from 'clsx';
 import s from './tooltip.module.scss';
 import { DOMUtils, mergeRefs } from '../../utils';
+import { useIcons } from '../application/useIcons.tsx';
 import {
   arrow,
   autoUpdate,
@@ -31,9 +31,11 @@ export const Tooltip = memo(
     maxWidth,
     triggerClassName,
     triggerStyle,
+    triggerIcon,
     placement = 'top',
     ...restProps
   }: TooltipProps) => {
+    const icons = useIcons();
     const [opened, setOpened] = useState(false);
     const tooltipId = useId();
 
@@ -77,7 +79,7 @@ export const Tooltip = memo(
         className={clsx(s.QuestionMark, triggerClassName)}
         style={triggerStyle}
       >
-        <HelpCircle />
+        {triggerIcon ?? icons.help}
       </button>
     );
 

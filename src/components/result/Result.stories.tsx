@@ -87,7 +87,12 @@ export const Overview: StoryObj<typeof Result> = {
         <Text code>empty</Text> (the default — a neutral &ldquo;no data&rdquo;
         state), <Text code>info</Text>, <Text code>success</Text>,{' '}
         <Text code>warning</Text>, <Text code>error</Text>. Only the chip is
-        coloured; the text stays neutral.
+        coloured; the text stays neutral. Every status but{' '}
+        <Text code>empty</Text> takes its default glyph from{' '}
+        <Text code>Application.icons</Text> (<Text code>.info</Text> /{' '}
+        <Text code>.success</Text> / <Text code>.warning</Text> /{' '}
+        <Text code>.danger</Text> for <Text code>error</Text>) — the same
+        roles <Text code>Notifications</Text> uses for its toast variants.
       </Paragraph>
       <Flex gap="l" align="start" wrap>
         {STATUSES.map((st) => (
