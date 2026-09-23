@@ -12,13 +12,19 @@
 .Item {
   display: flex;
   max-width: 100%;
+  /* Promotes this node to its own compositor layer up front, so entering
+     doesn't trigger a mid-animation layer promotion that briefly paints out
+     of order against a sibling `.Slot` being reflowed by `layout`. */
+  will-change: transform, opacity;
 }
 
 // ─── Toast pill ──────────────────────────────────────────────────────────────
 
 .Toast.Toast {
-  /* plate's frosted fill is see-through over page content — opaque it up */
+  /* plate's frosted fill is see-through over page content — opaque it up,
+     and drop the now-pointless blur behind it (caused an enter-animation glitch). */
   --box-fill: var(--toast-surface);
+  --box-blur: none;
 
   gap: 4px;
   max-width: var(--toast-max-width);
@@ -32,7 +38,13 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  padding: 4px;
+  /* Matches `CloseButton`'s `size="s"` icon-only glyph (`--button-icon-size`
+     for `.Small.SingleIcon`, button.module.scss) so both icons in the row
+     read as the same size. */
+  font-size: 14px;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
   background-color: var(--interactive-a1);
   border-radius: 50%;
 }
@@ -67,12 +79,18 @@
 // ─── Notification card ───────────────────────────────────────────────────────
 
 .Notification.Notification {
+  /* See `.Toast.Toast` above — opaque fill, blur behind it is pointless. */
   --box-fill: var(--toast-surface);
+  --box-blur: none;
 
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  justify-content: flex-start;
+  justify-content: center;
+  /* `.NotificationClose` is `top: 6px` + 24px (`size="s"`) tall — a
+     content-only card (no title/icon) is otherwise shorter than that and
+     clips the button. */
+  min-height: 36px;
   width: var(--notification-width);
   overflow: hidden;
   color: var(--text-2);
@@ -115,7 +133,12 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  padding: 8px;
+  justify-content: center;
+  /* Same 30px circle as the old 8px-padding version, but a bigger glyph
+     inside it (was 14px, inherited from the ambient text size). */
+  font-size: 18px;
+  width: 30px;
+  height: 30px;
   color: var(--text-2);
   background-color: var(--interactive-a1);
   border-radius: 50%;

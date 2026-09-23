@@ -10,18 +10,17 @@ import { useAutoClose } from './useAutoClose';
 import s from './notificationCard.module.scss';
 
 const VARIANT_ICON: Record<ToastVariant, ReactNode> = {
-  default: <Info size={15} />,
-  success: <CheckCircle2 size={15} />,
-  warning: <AlertTriangle size={15} />,
-  danger: <XCircle size={15} />,
+  default: <Info />,
+  success: <CheckCircle2 />,
+  warning: <AlertTriangle />,
+  danger: <XCircle />,
 };
 
-/** Lively but settled — a little overshoot, no visible ring. */
+/** Pops past its resting scale and settles back — a small, deliberate bounce. */
 const ENTER_TRANSITION: Transition = {
   type: 'spring',
-  stiffness: 240,
-  damping: 22,
-  mass: 0.9,
+  visualDuration: 0.3,
+  bounce: 0.35,
 };
 /** Quick, clean fade-out; siblings then close the gap on LAYOUT_TRANSITION. */
 const EXIT_TRANSITION: Transition = {
@@ -40,6 +39,9 @@ interface NotificationCardProps {
   item: AnyNotificationItem;
   /** Offset (px) the card slides in from / out to, derived from the global placement. */
   enter: { x: number; y: number };
+  /** Position in the stack (0 = oldest) — pins paint order so a card being
+      reflowed by `layout` can never render above a newer card mid-animation. */
+  stackIndex: number;
   onClose: () => void;
 }
 
@@ -55,7 +57,12 @@ interface NotificationCardProps {
  * transform off the `layout` node stops a `layout`-projected descendant
  * (`Button`) from counter-scaling against the card's own entrance.
  */
-export const NotificationCard = ({ item, enter, onClose }: NotificationCardProps) => {
+export const NotificationCard = ({
+  item,
+  enter,
+  stackIndex,
+  onClose,
+}: NotificationCardProps) => {
   const { pause, resume } = useAutoClose(item.autoClose, item.duration, onClose);
 
   const enterExit = {
@@ -77,7 +84,12 @@ export const NotificationCard = ({ item, enter, onClose }: NotificationCardProps
     const displayIcon = icon === undefined ? VARIANT_ICON[variant] : icon;
 
     return (
-      <motion.div layout className={s.Slot} transition={LAYOUT_TRANSITION}>
+      <motion.div
+        layout
+        className={s.Slot}
+        style={{ zIndex: stackIndex }}
+        transition={LAYOUT_TRANSITION}
+      >
         <motion.div
           className={s.Item}
           {...enterExit}
@@ -119,7 +131,12 @@ export const NotificationCard = ({ item, enter, onClose }: NotificationCardProps
   const { title, content, image, icon, actions } = item;
 
   return (
-    <motion.div layout className={s.Slot} transition={LAYOUT_TRANSITION}>
+    <motion.div
+      layout
+      className={s.Slot}
+      style={{ zIndex: stackIndex }}
+      transition={LAYOUT_TRANSITION}
+    >
       <motion.div
         className={s.Item}
         {...enterExit}

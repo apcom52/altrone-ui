@@ -112,11 +112,12 @@ export const Notifications = ({
           )}
         >
           <AnimatePresence initial={false}>
-            {toasts.map((item) => (
+            {toasts.map((item, index) => (
               <NotificationCard
                 key={item.id}
                 item={item}
                 enter={toastEnter}
+                stackIndex={index}
                 onClose={() => dismiss(item.id)}
               />
             ))}
@@ -133,11 +134,12 @@ export const Notifications = ({
           )}
         >
           <AnimatePresence initial={false}>
-            {notifications.map((item) => (
+            {notifications.map((item, index) => (
               <NotificationCard
                 key={item.id}
                 item={item}
                 enter={notificationEnter}
+                stackIndex={index}
                 onClose={() => dismiss(item.id)}
               />
             ))}
