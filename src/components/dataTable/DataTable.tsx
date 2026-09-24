@@ -249,7 +249,7 @@ const DataTableComponent = <DataType extends object>(
     ],
   );
 
-  const { bodyScrollRef, headerRowRef, headerTrackRef } =
+  const { scrollableRef, headerRowRef, headerTrackRef } =
     useDataTableHorizontalScroll();
 
   return (
@@ -268,7 +268,7 @@ const DataTableComponent = <DataType extends object>(
           <Body
             rowActions={rowActions}
             showEmptyBanner={showEmptyBanner}
-            scrollRef={bodyScrollRef}
+            scrollableRef={scrollableRef}
           />
         </div>
         {showFooter ? <Footer /> : null}

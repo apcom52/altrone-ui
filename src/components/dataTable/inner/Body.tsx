@@ -2,6 +2,7 @@ import { createElement, FC } from 'react';
 import { useDataTableContext } from '../DataTable.context.tsx';
 import { Checkbox } from '../../checkbox';
 import { Result } from 'components/result';
+import { Scrollable } from '../../scrollable';
 import { useLocalization } from '../../application';
 import {
   CellRenderer,
@@ -16,7 +17,7 @@ import s from './body.module.scss';
 export const Body = <T extends object>({
   rowActions,
   showEmptyBanner = true,
-  scrollRef,
+  scrollableRef,
 }: DataTableBodyProps<T>) => {
   const t = useLocalization();
   const { table, selectMode } = useDataTableContext<T>();
@@ -29,7 +30,12 @@ export const Body = <T extends object>({
   const rows = table.getRowModel().rows;
 
   return (
-    <div ref={scrollRef} className={s.TableBody}>
+    <Scrollable
+      controlRef={scrollableRef}
+      overflowX="scroll"
+      overflowY="visible"
+      className={s.TableBody}
+    >
       {rows.length === 0 && showEmptyBanner ? (
         <Result>{t('dataTable.empty')}</Result>
       ) : null}
@@ -91,6 +97,6 @@ export const Body = <T extends object>({
           </div>
         );
       })}
-    </div>
+    </Scrollable>
   );
 };

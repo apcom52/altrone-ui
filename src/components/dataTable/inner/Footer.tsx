@@ -33,6 +33,7 @@ export const Footer = () => {
           <Pagination
             currentPage={pageIndex + 1}
             totalPages={pageCount}
+            showEdgeButtons={false}
             onChange={(page, event) => {
               notePendingEvent(event);
               table.setPageIndex(page - 1);

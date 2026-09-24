@@ -22,7 +22,6 @@
   --slider-track-thickness: 4px;
   --slider-thumb-size: 16px;
   --slider-thumb-grow: calc(var(--slider-thumb-size) / 2.5);
-  --slider-fill-radius: var(--radius-l);
   --slider-value-font-size: var(--text-size-3);
 
   position: relative;
@@ -165,10 +164,18 @@
 /* ---------- fill variant (iOS Control Center slab) ---------- */
 
 .Fill {
+  /* Concentric with the slab's own pill radius: the chip is inset from the
+     edge by the same gap on every side, so it nests inside the rounded cap
+     instead of sitting at a flat offset unrelated to --slider-size. */
+  --slider-value-chip-height: calc(var(--slider-value-font-size) * 1.4 + 4px);
+  --slider-fill-inset: calc(
+    (var(--slider-size) - var(--slider-value-chip-height)) / 2
+  );
+
   gap: 0;
   height: var(--slider-size);
   min-height: 0;
-  border-radius: var(--slider-fill-radius);
+  border-radius: var(--radius-pill);
   overflow: hidden;
   /* Contains `.Value`'s z-index so it can't leak past this slab into the
      page's stacking order — `.Fill` has no z-index of its own otherwise. */
@@ -204,7 +211,7 @@
      frosted so it reads against the accent fill behind it. */
   .Value {
     top: 50%;
-    right: 6px;
+    right: var(--slider-fill-inset);
     bottom: auto;
     transform: translateY(-50%);
     padding: 2px 8px;
@@ -228,7 +235,6 @@
   --slider-size: 24px;
   --slider-track-thickness: 3px;
   --slider-thumb-size: 12px;
-  --slider-fill-radius: var(--radius-m);
   --slider-value-font-size: var(--text-size-2);
 
   .Icon {
@@ -239,7 +245,6 @@
 .Small {
   --slider-size: 26px;
   --slider-thumb-size: 14px;
-  --slider-fill-radius: var(--radius-m);
   --slider-value-font-size: var(--text-size-2);
 
   .Icon {
@@ -261,7 +266,6 @@
   --slider-size: 48px;
   --slider-track-thickness: 8px;
   --slider-thumb-size: 24px;
-  --slider-fill-radius: var(--radius-xl);
 
   .Icon {
     font-size: 26px;
@@ -324,7 +328,7 @@
   }
 
   .Value {
-    top: 8px;
+    top: var(--slider-fill-inset);
     left: 50%;
     right: auto;
     bottom: auto;

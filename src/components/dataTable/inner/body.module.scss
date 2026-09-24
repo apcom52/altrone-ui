@@ -1,11 +1,11 @@
 @import 'src/global/mixins';
 
 .TableBody {
-  /* The only element that actually scrolls sideways — `ColumnHeaders`
-     mirrors this via `transform`, kept outside any scrolling ancestor so its
+  /* Renders through `Scrollable` (see Body.tsx) — its viewport is the
+     element that actually scrolls sideways. `ColumnHeaders` mirrors that via
+     `transform`, kept outside any scrolling ancestor so its
      `position: sticky` stays relative to the page (see
      `useDataTableHorizontalScroll`). */
-  overflow-x: auto;
 }
 
 .Row {

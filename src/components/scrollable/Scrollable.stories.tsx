@@ -1,8 +1,10 @@
+import { useEffect, useRef, useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Text } from 'components';
+import { Button, Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Scrollable } from './Scrollable.tsx';
+import { ScrollableRef } from './Scrollable.types.ts';
 import { COUNTRIES } from './Scrollable.constants.ts';
 
 const story: Meta<typeof Scrollable> = {
@@ -72,6 +74,82 @@ const Frame = ({
     {children}
   </Flex>
 );
+
+const ImperativeScrollDemo = () => {
+  const controlRef = useRef<ScrollableRef>(null);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
+  useEffect(() => {
+    let rafId: number;
+    let viewport: HTMLElement | null = null;
+
+    const sync = () => setScrollLeft(Math.round(viewport?.scrollLeft ?? 0));
+
+    const waitForViewport = () => {
+      viewport = controlRef.current?.getViewport() ?? null;
+      if (!viewport) {
+        rafId = requestAnimationFrame(waitForViewport);
+        return;
+      }
+      sync();
+      viewport.addEventListener('scroll', sync, { passive: true });
+    };
+
+    waitForViewport();
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      viewport?.removeEventListener('scroll', sync);
+    };
+  }, []);
+
+  const scrollToEnd = () => {
+    const viewport = controlRef.current?.getViewport();
+    viewport?.scrollTo({ left: viewport.scrollWidth, behavior: 'smooth' });
+  };
+
+  return (
+    <Flex orientation="vertical" gap="s" align="start">
+      <Frame width={360} height={120}>
+        <Scrollable
+          controlRef={controlRef}
+          overflowX="scroll"
+          overflowY="hidden"
+        >
+          <Flex
+            orientation="horizontal"
+            gap="s"
+            style={{ padding: 'var(--space-content)', width: 'max-content' }}
+          >
+            {COUNTRIES.map((item) => (
+              <Flex
+                key={item.country}
+                orientation="horizontal"
+                gap="xs"
+                align="center"
+                style={{
+                  padding: '4px 10px',
+                  borderRadius: 'var(--radius-pill)',
+                  background: 'var(--interactive-1)',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <Text size={4}>{item.flag}</Text>
+                <Text size={3}>{item.country}</Text>
+              </Flex>
+            ))}
+          </Flex>
+        </Scrollable>
+      </Frame>
+      <Flex orientation="horizontal" gap="s" align="center">
+        <Button size="s" label="Scroll to end" onClick={scrollToEnd} />
+        <Text color="muted">
+          scrollLeft: <Text code>{scrollLeft}px</Text>
+        </Text>
+      </Flex>
+    </Flex>
+  );
+};
 
 export const Overview: StoryObj<typeof Scrollable> = {
   name: 'Overview',
@@ -204,6 +282,19 @@ export const Overview: StoryObj<typeof Scrollable> = {
           </Scrollable>
         </Flex>
       </Frame>
+
+      <Heading>Imperative access — controlRef</Heading>
+      <Paragraph>
+        <Text code>ref</Text> only reaches the wrapper box — the actual
+        scrolling element (OverlayScrollbars' viewport, with real{' '}
+        <Text code>scrollLeft</Text> and native <Text code>scroll</Text> events)
+        is reached through <Text code>controlRef</Text> and its{' '}
+        <Text code>getViewport()</Text> method instead. It initializes
+        asynchronously, so a consumer wiring up listeners on mount polls it
+        until it appears — exactly how <Text code>DataTable</Text> keeps its
+        sticky header column track in sync with the body below.
+      </Paragraph>
+      <ImperativeScrollDemo />
     </Flex>
   ),
 };

@@ -3,6 +3,7 @@ import { AnyObject, RenderFunction, StrictReactElements } from '../../utils';
 import { ReactElement, ReactNode } from 'react';
 import { Table } from '@tanstack/react-table';
 import type { DataTableFeatures } from './DataTable.features.ts';
+import type { ScrollableRef } from '../scrollable';
 
 /** Icons unique to `DataTable`, overridable as a group via the `icons` prop. */
 export interface DataTableIconSet {
@@ -290,8 +291,8 @@ export interface FilterRowProps {
 export interface DataTableBodyProps<T extends object> {
   showEmptyBanner?: boolean;
   rowActions?: DataTableProps<T>['rowActions'];
-  /** The element that actually scrolls horizontally — see `useDataTableHorizontalScroll`. */
-  scrollRef?: React.Ref<HTMLDivElement>;
+  /** The `Scrollable` that actually scrolls horizontally — see `useDataTableHorizontalScroll`. */
+  scrollableRef?: React.Ref<ScrollableRef>;
 }
 
 export interface DataTableHeaderProps<T extends object> {

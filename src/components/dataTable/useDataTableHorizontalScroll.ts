@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import type { ScrollableRef } from '../scrollable';
 
 /** Mirrors `.Backdrop`'s resting look in `columnHeaders.module.scss` — the
  *  pill's inset and the distance (px scrolled) over which it fully collapses
@@ -24,59 +25,84 @@ const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
  * scrolls out of view — a rounded, inset pill only reads correctly as "the
  * end of the row" when that side is actually the end. Reaching either true
  * edge restores the full resting pill on that side.
+ *
+ * The body renders through `Scrollable` (OverlayScrollbars), so the real
+ * scrolling node is its viewport element, reached via `controlRef` rather
+ * than a plain DOM `ref` — see `ScrollableRef`. It initializes asynchronously
+ * (`defer`), so this hook polls on `requestAnimationFrame` until it appears.
  */
 export function useDataTableHorizontalScroll() {
-  const bodyScrollRef = useRef<HTMLDivElement>(null);
+  const scrollableRef = useRef<ScrollableRef>(null);
   const headerRowRef = useRef<HTMLDivElement>(null);
   const headerTrackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const scrollEl = bodyScrollRef.current;
     const rowEl = headerRowRef.current;
     const trackEl = headerTrackRef.current;
-    if (!scrollEl || !rowEl || !trackEl) return;
+    if (!rowEl || !trackEl) return;
 
-    const sync = () => {
-      const scrollLeft = scrollEl.scrollLeft;
-      const distanceFromEnd =
-        scrollEl.scrollWidth - scrollEl.clientWidth - scrollLeft;
+    let rafId: number;
+    let detach: (() => void) | undefined;
 
-      const setSide = (side: 'start' | 'end', distanceFromEdge: number) => {
-        const progress = clamp01(distanceFromEdge / RESTING_RADIUS);
-        const inset = RESTING_INSET * (1 - progress);
-        const radius =
-          RESTING_RADIUS - progress * (RESTING_RADIUS - MIN_RADIUS);
-        rowEl.style.setProperty(
-          `--data-table-header-inset-${side}`,
-          `${inset}px`,
-        );
-        rowEl.style.setProperty(
-          `--data-table-header-radius-${side}`,
-          `${radius}px`,
-        );
+    const attach = (scrollEl: HTMLElement) => {
+      const sync = () => {
+        const scrollLeft = scrollEl.scrollLeft;
+        const distanceFromEnd =
+          scrollEl.scrollWidth - scrollEl.clientWidth - scrollLeft;
+
+        const setSide = (side: 'start' | 'end', distanceFromEdge: number) => {
+          const progress = clamp01(distanceFromEdge / RESTING_RADIUS);
+          const inset = RESTING_INSET * (1 - progress);
+          const radius =
+            RESTING_RADIUS - progress * (RESTING_RADIUS - MIN_RADIUS);
+          rowEl.style.setProperty(
+            `--data-table-header-inset-${side}`,
+            `${inset}px`,
+          );
+          rowEl.style.setProperty(
+            `--data-table-header-radius-${side}`,
+            `${radius}px`,
+          );
+        };
+
+        trackEl.style.transform = `translateX(${-scrollLeft}px)`;
+        setSide('start', scrollLeft);
+        setSide('end', distanceFromEnd);
       };
 
-      trackEl.style.transform = `translateX(${-scrollLeft}px)`;
-      setSide('start', scrollLeft);
-      setSide('end', distanceFromEnd);
+      sync();
+      scrollEl.addEventListener('scroll', sync, { passive: true });
+
+      /* Column resizing/container resizing changes scrollWidth/clientWidth
+         without firing a `scroll` event. Guarded like the other resize-driven
+         hooks in `utils/hooks` — absent in the Vitest/jsdom environment. */
+      const resizeObserver =
+        typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(sync);
+      resizeObserver?.observe(scrollEl);
+      resizeObserver?.observe(trackEl);
+
+      detach = () => {
+        scrollEl.removeEventListener('scroll', sync);
+        resizeObserver?.disconnect();
+      };
     };
 
-    sync();
-    scrollEl.addEventListener('scroll', sync, { passive: true });
+    const waitForViewport = () => {
+      const scrollEl = scrollableRef.current?.getViewport();
+      if (scrollEl) {
+        attach(scrollEl);
+        return;
+      }
+      rafId = requestAnimationFrame(waitForViewport);
+    };
 
-    /* Column resizing/container resizing changes scrollWidth/clientWidth
-       without firing a `scroll` event. Guarded like the other resize-driven
-       hooks in `utils/hooks` — absent in the Vitest/jsdom environment. */
-    const resizeObserver =
-      typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(sync);
-    resizeObserver?.observe(scrollEl);
-    resizeObserver?.observe(trackEl);
+    waitForViewport();
 
     return () => {
-      scrollEl.removeEventListener('scroll', sync);
-      resizeObserver?.disconnect();
+      cancelAnimationFrame(rafId);
+      detach?.();
     };
   }, []);
 
-  return { bodyScrollRef, headerRowRef, headerTrackRef };
+  return { scrollableRef, headerRowRef, headerTrackRef };
 }
