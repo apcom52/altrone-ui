@@ -280,6 +280,14 @@ export const Sheet = (props: SheetProps) => {
           <motion.div
             className={s.Backdrop}
             onClick={handleClose}
+            /** `.Content` is `pointer-events: none` outside `.PanelSlot` (see
+                its own comment), so a wheel over the backdrop gutter never
+                reaches its `overflow-y: auto` — forward it manually. */
+            onWheel={
+              isVerticalAutoScroll
+                ? (event) => contentRef.current?.scrollBy({ top: event.deltaY })
+                : undefined
+            }
             {...backdropAnimation}
           />
           <div

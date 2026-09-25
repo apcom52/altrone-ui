@@ -65,6 +65,43 @@ const filler = (
   </Flex>
 );
 
+const ACTIVITY_LOG_ENTRIES = [
+  ['Alex Petrov', 'created the project', '2 minutes ago'],
+  ['Alex Petrov', 'invited maria@company.com', '14 minutes ago'],
+  ['CI', 'deployed build #1042 to staging', '38 minutes ago'],
+  ['Maria Ivanova', 'renamed the "api" branch to "api-v2"', '1 hour ago'],
+  ['Maria Ivanova', 'merged pull request #88', '1 hour ago'],
+  ['CI', 'deployed build #1041 to staging', '2 hours ago'],
+  ['Alex Petrov', 'commented on issue #212', '3 hours ago'],
+  ['Dmitry Volkov', 'changed the billing plan to Team', '5 hours ago'],
+  ['CI', 'deployed build #1040 to production', '6 hours ago'],
+  ['Maria Ivanova', 'opened pull request #88', '7 hours ago'],
+  ['Alex Petrov', 'archived the "legacy-import" project', 'yesterday'],
+  ['Dmitry Volkov', 'added a new API key', 'yesterday'],
+  ['CI', 'deployed build #1039 to staging', 'yesterday'],
+  ['Maria Ivanova', 'closed issue #205', '2 days ago'],
+  ['Alex Petrov', 'transferred ownership to Dmitry Volkov', '2 days ago'],
+  ['CI', 'deployed build #1038 to production', '3 days ago'],
+  ['Dmitry Volkov', 'revoked an API key', '3 days ago'],
+  ['Maria Ivanova', 'created the "api" branch', '4 days ago'],
+  ['Alex Petrov', 'created the project', '5 days ago'],
+] as const;
+
+const longActivityLog = (
+  <Flex orientation="vertical" gap="s">
+    {ACTIVITY_LOG_ENTRIES.map(([actor, action, when], index) => (
+      <Flex orientation="vertical" gap="xs" key={index}>
+        <Text block size={4}>
+          <Text weight="bold">{actor}</Text> {action}
+        </Text>
+        <Text block size={3} color="muted">
+          {when}
+        </Text>
+      </Flex>
+    ))}
+  </Flex>
+);
+
 const longForm = (
   <Form>
     <Form.Field label="Project name">
@@ -161,6 +198,14 @@ export const Overview: StoryObj<typeof Drawer> = {
         <WidthDrawerDemo title="Default" label="400" />
         <WidthDrawerDemo width={560} title="Roomy" label="560" />
       </Flex>
+
+      <Heading>Long content</Heading>
+      <Paragraph>
+        Unlike <Text code>Modal</Text>, a drawer&apos;s <Text code>content</Text>{' '}
+        area scrolls internally — the header and footer stay pinned in place
+        no matter how long the body gets.
+      </Paragraph>
+      <LongContentDrawerDemo />
 
       <Heading>The Done button and async onDone</Heading>
       <Paragraph>
@@ -321,6 +366,27 @@ const DocumentDrawerDemo = () => {
             onClick={hide}
           />,
         ]}
+      />
+    </>
+  );
+};
+
+const LongContentDrawerDemo = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button
+        label="Open activity log"
+        icon={<History />}
+        onClick={() => setOpen(true)}
+      />
+      <Drawer
+        title="Activity log"
+        content={longActivityLog}
+        open={open}
+        onClose={() => setOpen(false)}
+        footer={<Button label="Export as CSV" />}
       />
     </>
   );

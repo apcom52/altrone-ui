@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { expect, test, describe } from 'vitest';
+import { expect, test, describe, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Tooltip } from '../src/components';
 
@@ -90,5 +90,43 @@ describe('Tooltip', () => {
     expect(screen.getByText('Keyboard shortcut')).toBeInTheDocument();
     expect(screen.getByText('Saves the file')).toBeInTheDocument();
     expect(screen.getByText('⌘S')).toBeInTheDocument();
+  });
+
+  test('defaultOpen renders the panel without any interaction', () => {
+    render(
+      <Tooltip content="Saves your changes" defaultOpen>
+        <button>Save</button>
+      </Tooltip>,
+    );
+
+    expect(screen.getByText('Saves your changes')).toBeInTheDocument();
+  });
+
+  test('trigger="click" does not open on focus, and opens on click', () => {
+    render(
+      <Tooltip content="Saves your changes" trigger="click">
+        <button>Save</button>
+      </Tooltip>,
+    );
+
+    fireEvent.focus(screen.getByRole('button', { name: 'Save' }));
+    expect(screen.queryByText('Saves your changes')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Save' }));
+    expect(screen.getByText('Saves your changes')).toBeInTheDocument();
+  });
+
+  test('onOpenChange fires with the new state and reason on focus', () => {
+    const onOpenChange = vi.fn();
+
+    render(
+      <Tooltip content="Saves your changes" onOpenChange={onOpenChange}>
+        <button>Save</button>
+      </Tooltip>,
+    );
+
+    fireEvent.focus(screen.getByRole('button', { name: 'Save' }));
+
+    expect(onOpenChange).toHaveBeenCalledWith(true, expect.anything(), 'focus');
   });
 });

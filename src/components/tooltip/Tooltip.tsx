@@ -1,8 +1,15 @@
-import React, { memo, useCallback, useId, useRef, useState } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { TooltipProps } from './Tooltip.types.ts';
 import clsx from 'clsx';
 import s from './tooltip.module.scss';
-import { DOMUtils, mergeRefs } from '../../utils';
+import { DOMUtils, mergeRefs, useBoolean } from '../../utils';
 import { useIcons } from '../application/useIcons.tsx';
 import {
   arrow,
@@ -11,7 +18,9 @@ import {
   FloatingArrow,
   FloatingPortal,
   offset,
+  OpenChangeReason,
   shift,
+  useClick,
   useFloating,
   useFocus,
   useHover,
@@ -33,10 +42,13 @@ export const Tooltip = memo(
     triggerStyle,
     triggerIcon,
     placement = 'top',
+    defaultOpen = false,
+    trigger = ['hover', 'focus'],
+    onOpenChange,
     ...restProps
   }: TooltipProps) => {
     const icons = useIcons();
-    const [opened, setOpened] = useState(false);
+    const { value: opened, setValue: setOpened } = useBoolean(defaultOpen);
     const tooltipId = useId();
 
     const arrowRef = useRef<SVGSVGElement>(null);
@@ -48,10 +60,23 @@ export const Tooltip = memo(
       ...(maxWidth !== undefined ? { maxWidth } : undefined),
     };
 
+    const triggersList = useMemo(
+      () => (Array.isArray(trigger) ? trigger : [trigger]),
+      [trigger],
+    );
+
+    const commitOpenChange = useCallback(
+      (state: boolean, event?: Event, reason?: OpenChangeReason) => {
+        setOpened(state);
+        onOpenChange?.(state, event, reason);
+      },
+      [setOpened, onOpenChange],
+    );
+
     const { refs, floatingStyles, context } = useFloating({
       open: opened,
       placement: placement,
-      onOpenChange: setOpened,
+      onOpenChange: commitOpenChange,
       middleware: [
         offset(10),
         flip(),
@@ -61,12 +86,21 @@ export const Tooltip = memo(
       whileElementsMounted: autoUpdate,
     });
 
-    const hover = useHover(context, { delay: { open: 500, close: 0 } });
-    const focus = useFocus(context);
+    const hoverTrigger = useHover(context, {
+      enabled: triggersList.includes('hover'),
+      delay: { open: 500, close: 0 },
+    });
+    const focusTrigger = useFocus(context, {
+      enabled: triggersList.includes('focus'),
+    });
+    const clickTrigger = useClick(context, {
+      enabled: triggersList.includes('click'),
+    });
 
     const { getReferenceProps, getFloatingProps } = useInteractions([
-      hover,
-      focus,
+      hoverTrigger,
+      focusTrigger,
+      clickTrigger,
     ]);
 
     const safeChildElement = DOMUtils.cloneNode(children, {

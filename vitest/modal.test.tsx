@@ -116,6 +116,25 @@ describe('Modal', () => {
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
   });
 
+  test('scrolling over the backdrop scrolls the panel instead of doing nothing', () => {
+    render(
+      <Application>
+        <Modal content={<div>content</div>} defaultOpen={true} />
+      </Application>,
+    );
+
+    const scrollContent = document.querySelector('[class*="ScrollContent"]')!;
+    /** jsdom doesn't implement `scrollBy` at all — stub it to assert the call. */
+    const scrollBySpy = vi.fn();
+    (scrollContent as HTMLElement).scrollBy = scrollBySpy;
+
+    fireEvent.wheel(document.querySelector('[class*="Backdrop"]')!, {
+      deltaY: 120,
+    });
+
+    expect(scrollBySpy).toHaveBeenCalledWith({ top: 120 });
+  });
+
   test('Escape closes the modal and calls onClose exactly once', () => {
     const onClose = vi.fn();
 

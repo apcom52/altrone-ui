@@ -17,6 +17,9 @@
   align-items: center;
   gap: var(--gap);
   min-height: 32px;
+  /** `.Content` cancels the flex `gap` below the header (see its own
+      comment), so this padding is the only space left above the content. */
+  padding-bottom: var(--drawer-content-padding);
 }
 
 /**
@@ -70,4 +73,7 @@
 
 .Footer {
   flex-shrink: 0;
+  /** Mirrors `.Header`'s `padding-bottom` — `.Content` cancels the flex
+      `gap` above the footer too. */
+  padding-top: var(--drawer-content-padding);
 }

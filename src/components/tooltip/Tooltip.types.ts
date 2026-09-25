@@ -1,5 +1,7 @@
-import { Placement } from '@floating-ui/react';
+import { OpenChangeReason, Placement } from '@floating-ui/react';
 import type { CSSProperties, HTMLAttributes, ReactElement, ReactNode, Ref } from 'react';
+
+export type TooltipTrigger = 'hover' | 'focus' | 'click';
 
 /**
  * `id`/`aria-*`/`data-*`/native event handlers land on the trigger element
@@ -22,4 +24,18 @@ export interface TooltipProps
   /** Icon for the auto-generated trigger button. Defaults to the shared `icons.help`. Has no effect when a custom trigger is passed via `children`. */
   triggerIcon?: ReactElement;
   placement?: Placement;
+  /** Initial open state for the uncontrolled tooltip. */
+  defaultOpen?: boolean;
+  /** How the tooltip is triggered — a single mode or a combination. Defaults to `['hover', 'focus']`. */
+  trigger?: TooltipTrigger | TooltipTrigger[];
+  /**
+   * Fired whenever the open state changes. `event` / `reason` come from
+   * floating-ui — `reason` tells you *how* it changed (`'escape-key'`,
+   * `'outside-press'`, `'hover'`, …).
+   */
+  onOpenChange?: (
+    open: boolean,
+    event?: Event,
+    reason?: OpenChangeReason,
+  ) => void;
 }

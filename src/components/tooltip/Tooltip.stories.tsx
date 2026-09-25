@@ -351,3 +351,83 @@ export const CustomIconStory: StoryObj<typeof Tooltip> = {
     </Flex>
   ),
 };
+
+// ─── 8. Trigger modes ─────────────────────────────────────────────────────────
+
+export const TriggerModesStory: StoryObj<typeof Tooltip> = {
+  name: 'Trigger modes',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Heading>Hover, focus, click, or a mix</Heading>
+      <Paragraph>
+        <Text code>trigger</Text> accepts a single mode or an array of
+        modes — <Text code>'hover'</Text>, <Text code>'focus'</Text>,{' '}
+        <Text code>'click'</Text>. It defaults to{' '}
+        <Text code>{"['hover', 'focus']"}</Text>, the previous fixed
+        behavior.
+      </Paragraph>
+      <Flex orientation="horizontal" gap="l" align="center" wrap>
+        <Tooltip content="Opens on hover only" trigger="hover">
+          <Button label="Hover only" />
+        </Tooltip>
+        <Tooltip content="Opens on keyboard focus only" trigger="focus">
+          <Button label="Focus only" />
+        </Tooltip>
+        <Tooltip content="Opens on click, closes on outside press" trigger="click">
+          <Button label="Click only" />
+        </Tooltip>
+        <Tooltip
+          content="Opens on hover, focus, or click"
+          trigger={['hover', 'focus', 'click']}
+        >
+          <Button label="Hover, focus, and click" />
+        </Tooltip>
+      </Flex>
+    </Flex>
+  ),
+};
+
+// ─── 9. Default open and onOpenChange ────────────────────────────────────────
+
+function OpenStateDemo() {
+  const [log, setLog] = React.useState<string[]>([]);
+
+  return (
+    <Flex orientation="vertical" gap="m" align="start">
+      <Tooltip
+        content="Starts open, and reports every change below"
+        defaultOpen
+        onOpenChange={(open, _event, reason) =>
+          setLog((prev) => [...prev, `${open ? 'opened' : 'closed'} (${reason ?? 'initial'})`])
+        }
+      >
+        <Button label="Hover, then move away" />
+      </Tooltip>
+      <Flex orientation="vertical" gap="xs">
+        {log.length === 0 ? (
+          <Caption>No changes yet.</Caption>
+        ) : (
+          log.map((entry, index) => <Caption key={index}>{entry}</Caption>)
+        )}
+      </Flex>
+    </Flex>
+  );
+}
+
+export const OpenStateStory: StoryObj<typeof Tooltip> = {
+  name: 'Default open and onOpenChange',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Heading>An uncontrolled tooltip that still reports its state</Heading>
+      <Paragraph>
+        <Text code>defaultOpen</Text> shows the tooltip on first render — this
+        one starts open. <Text code>onOpenChange</Text> fires on every
+        transition (<Text code>reason</Text> comes straight from floating-ui,
+        e.g. <Text code>'hover'</Text> or <Text code>'escape-key'</Text>) so a
+        consumer can observe or log the state without taking over control of
+        it.
+      </Paragraph>
+      <OpenStateDemo />
+    </Flex>
+  ),
+};

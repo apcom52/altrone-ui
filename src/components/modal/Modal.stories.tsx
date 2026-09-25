@@ -56,6 +56,40 @@ const filler = (
   </Flex>
 );
 
+const TERMS_CLAUSES = [
+  'You must be at least 18 years old, or the age of majority in your jurisdiction, to create an account.',
+  'You are responsible for keeping your credentials confidential and for all activity under your account.',
+  'The service is provided on an "as is" basis, without any warranty of uninterrupted or error-free operation.',
+  'We may suspend or terminate an account that violates these terms, with or without prior notice.',
+  'Content you upload remains yours, but you grant us a license to store and display it as part of the service.',
+  'Automated scraping, load testing, or reverse engineering of the service is not permitted.',
+  'Fees, once charged, are non-refundable except where required by local law.',
+  'We may change these terms at any time; continued use after a change counts as acceptance.',
+  'Export of data you own is available at any time in a machine-readable format, free of charge.',
+  'We are not liable for indirect or consequential damages arising from use of the service.',
+  'Disputes are resolved through binding arbitration rather than in court, unless local law forbids it.',
+  'Third-party integrations you enable are governed by their own separate terms.',
+  'We may share aggregated, de-identified usage data with partners for product research.',
+  'Accounts inactive for more than two years may be archived and eventually deleted.',
+  'You may not use the service to store or transmit unlawful content.',
+  'These terms are governed by the laws of the jurisdiction where the company is registered.',
+] as const;
+
+const longContent = (
+  <Flex orientation="vertical" gap="m">
+    <Text block size={4}>
+      We&apos;ve updated our Terms of Service. Read through the changes below
+      before continuing — this is exactly the kind of content that outgrows a
+      fixed-size panel.
+    </Text>
+    {TERMS_CLAUSES.map((clause, index) => (
+      <Text block size={4} key={index}>
+        {index + 1}. {clause}
+      </Text>
+    ))}
+  </Flex>
+);
+
 export const Overview: StoryObj<typeof Modal> = {
   name: 'Overview',
   render: () => (
@@ -111,6 +145,18 @@ export const Overview: StoryObj<typeof Modal> = {
         <SizeDemo size="m" label="Medium" />
         <SizeDemo size="l" label="Large" />
       </Flex>
+
+      <Heading>Long content</Heading>
+      <Paragraph>
+        A modal has no inner scrollbar of its own — <Text code>top</Text>/
+        <Text code>bottom</Text> placements with an <Text code>auto</Text>{' '}
+        height scroll at the screen level instead, so a panel taller than the
+        viewport slides the whole thing (header and footer included) with the
+        page. It still works, but it&apos;s the exception: reach for it only
+        when the content is genuinely unpredictable in length, not as a
+        substitute for trimming the copy.
+      </Paragraph>
+      <LongContentDemo />
 
       <Heading>Closing from the content</Heading>
       <Paragraph>
@@ -205,6 +251,25 @@ const SizeDemo = ({
         content={filler}
         open={open}
         onClose={() => setOpen(false)}
+      />
+    </>
+  );
+};
+
+const LongContentDemo = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button label="Review updated terms" onClick={() => setOpen(true)} />
+      <Modal
+        title="Updated Terms of Service"
+        content={longContent}
+        open={open}
+        onClose={() => setOpen(false)}
+        actions={({ hide }) => (
+          <Button label="Accept" variant="submit" onClick={hide} />
+        )}
       />
     </>
   );
