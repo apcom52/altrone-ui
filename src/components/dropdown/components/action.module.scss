@@ -11,6 +11,7 @@
   --dropdown-action-padding-x: var(--space-content);
   --dropdown-action-font-size: var(--text-size-4);
   --dropdown-action-icon-size: 18px;
+  --dropdown-menu-max-height: 320px;
 }
 
 .Menu {
@@ -22,9 +23,13 @@
     calc(var(--radius-outer) - 4px),
     var(--radius-outer)
   );
-  padding: 4px;
-  overflow-y: auto;
   position: relative;
+}
+
+.MenuContent {
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
 }
 
 .Action {

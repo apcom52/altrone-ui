@@ -13,6 +13,7 @@ import {
 } from 'react';
 import clsx from 'clsx';
 import { mergeRefs } from 'utils';
+import { Scrollable } from '../scrollable';
 import { useLocalization } from '../application';
 import s from './splitter.module.scss';
 import type {
@@ -201,7 +202,7 @@ const SplitterBase = ({
               style={{ ...panelStyle, flex: `${size} ${size} 0` }}
               aria-label={t('splitter.panel', { vars: { index: i + 1 } })}
             >
-              {panelChildren}
+              <Scrollable>{panelChildren}</Scrollable>
             </div>
 
             {i < n - 1 && (

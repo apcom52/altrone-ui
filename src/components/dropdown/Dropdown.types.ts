@@ -3,7 +3,7 @@ import {
   PopoverContentContext,
 } from 'components/popover';
 import { PopoverProps } from 'components/popover/Popover.types';
-import { ReactElement, ReactNode, Ref } from 'react';
+import { CSSProperties, ReactElement, ReactNode, Ref } from 'react';
 import { RenderFunction } from 'utils';
 
 export interface DropdownActionProps
@@ -78,6 +78,8 @@ export interface DropdownMenuProps
     index: number,
     event: React.KeyboardEvent<HTMLDivElement>,
   ) => void;
+  /** Caps the menu's height and scrolls past it; defaults to `--dropdown-menu-max-height`. */
+  maxHeight?: CSSProperties['maxHeight'];
 }
 
 export interface DropdownMenuRef {

@@ -551,3 +551,58 @@ export const ImperativeStory: StoryObj<typeof Dropdown> = {
     </Flex>
   ),
 };
+
+// ─── 8. A long menu, capped and scrolling ───────────────────────────────────
+
+const TIMEZONES = [
+  'UTC',
+  'Europe/London',
+  'Europe/Berlin',
+  'Europe/Moscow',
+  'Europe/Istanbul',
+  'Africa/Cairo',
+  'Africa/Johannesburg',
+  'Asia/Dubai',
+  'Asia/Karachi',
+  'Asia/Kolkata',
+  'Asia/Dhaka',
+  'Asia/Bangkok',
+  'Asia/Singapore',
+  'Asia/Shanghai',
+  'Asia/Tokyo',
+  'Asia/Seoul',
+  'Australia/Sydney',
+  'Pacific/Auckland',
+  'America/Sao_Paulo',
+  'America/New_York',
+  'America/Chicago',
+  'America/Denver',
+  'America/Los_Angeles',
+];
+
+export const LongMenuStory: StoryObj<typeof Dropdown> = {
+  name: 'A long menu, capped and scrolling',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Heading>Capped by default</Heading>
+      <Paragraph>
+        <Text code>Dropdown.Menu</Text> caps its own height at{' '}
+        <Text code>--dropdown-menu-max-height</Text> (320px) and scrolls past
+        it, via <Text code>Scrollable</Text> — no ancestor has to provide one.
+        Pass <Text code>maxHeight</Text> to override it per instance, the way{' '}
+        <Text code>Select</Text>'s <Text code>menuHeight</Text> prop does.
+      </Paragraph>
+      <Dropdown
+        content={
+          <Dropdown.Menu>
+            {TIMEZONES.map((zone) => (
+              <Dropdown.Action key={zone} label={zone} />
+            ))}
+          </Dropdown.Menu>
+        }
+      >
+        <Button label="Pick a timezone" additionalIcon={<ChevronDown />} />
+      </Dropdown>
+    </Flex>
+  ),
+};

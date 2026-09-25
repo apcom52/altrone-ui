@@ -20,7 +20,6 @@ import { Result } from 'components/result';
 import { Tooltip } from 'components/tooltip';
 import clsx from 'clsx';
 import { Dropdown } from 'components/dropdown';
-import { Scrollable } from 'components/scrollable';
 import { AutocompleteSuggestion } from './components';
 import { PopoverRef } from 'components/popover';
 import s from './autocompleteInput.module.scss';
@@ -201,13 +200,11 @@ export const AutocompleteInput = <T = string,>({
       style={{ display: needToShowDropdown ? 'flex' : 'none' }}
       defaultListNavigationIndex={-1}
       content={
-        <Scrollable maxHeight="200px">
-          {isEmpty ? (
-            <Result size="s" />
-          ) : (
-            <Dropdown.Menu>{suggestionElements}</Dropdown.Menu>
-          )}
-        </Scrollable>
+        isEmpty ? (
+          <Result size="s" />
+        ) : (
+          <Dropdown.Menu maxHeight="200px">{suggestionElements}</Dropdown.Menu>
+        )
       }
       trigger={['click', 'focus']}
       parentWidth

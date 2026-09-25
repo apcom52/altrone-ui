@@ -10,7 +10,6 @@ import {
 } from 'react';
 import { AnyObject } from 'utils/types.ts';
 import { Dropdown } from 'components/dropdown';
-import { Scrollable } from 'components/scrollable';
 import { TextInput } from 'components/textInput';
 import s from './select.module.scss';
 import clsx from 'clsx';
@@ -102,39 +101,40 @@ const SelectComponent = (props: SelectProps) => {
               : undefined
           }
         >
-          <Scrollable className={s.MenuScroll} overflowX="hidden">
-            {filteredOptions.length === 0 ? (
-              <div className={s.Empty}>{t('select.notFound')}</div>
-            ) : (
-              <Dropdown.Menu role="presentation">
-                {filteredOptions.map((option) => {
-                  const checked = Array.isArray(selectedOptions)
-                    ? selectedOptions.some(
-                        (item) => item.value === option.value,
-                      )
-                    : selectedOptions?.value === option.value;
+          {filteredOptions.length === 0 ? (
+            <div className={s.Empty}>{t('select.notFound')}</div>
+          ) : (
+            <Dropdown.Menu
+              role="presentation"
+              maxHeight="var(--select-menu-height)"
+            >
+              {filteredOptions.map((option) => {
+                const checked = Array.isArray(selectedOptions)
+                  ? selectedOptions.some(
+                      (item) => item.value === option.value,
+                    )
+                  : selectedOptions?.value === option.value;
 
-                  return (
-                    <Dropdown.Checkbox
-                      key={option.value}
-                      role="option"
-                      aria-selected={checked}
-                      checked={checked}
-                      focused={checked}
-                      disabled={option.disabled}
-                      label={option.label}
-                      onChange={(_checked, event) => {
-                        selectValue(option.value, event);
-                        if (!multiple) {
-                          hide();
-                        }
-                      }}
-                    />
-                  );
-                })}
-              </Dropdown.Menu>
-            )}
-          </Scrollable>
+                return (
+                  <Dropdown.Checkbox
+                    key={option.value}
+                    role="option"
+                    aria-selected={checked}
+                    checked={checked}
+                    focused={checked}
+                    disabled={option.disabled}
+                    label={option.label}
+                    onChange={(_checked, event) => {
+                      selectValue(option.value, event);
+                      if (!multiple) {
+                        hide();
+                      }
+                    }}
+                  />
+                );
+              })}
+            </Dropdown.Menu>
+          )}
         </div>
       ),
     [

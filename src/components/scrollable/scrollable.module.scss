@@ -2,8 +2,18 @@
   /** `min-height: 0` lets it shrink and scroll inside a flex column parent. */
   min-height: 0;
   height: 100%;
+  /**
+   * Flex (not a plain block) so `.Os` below resolves a real height even when
+   * `maxHeight` overrides this element's own `height` to `auto` — a plain
+   * percentage height on `.Os` would resolve to `auto` too in that case
+   * (a box whose own height comes from `max-height`, not `height`, isn't
+   * "definite" for percentage-height children), silently breaking the cap.
+   */
+  display: flex;
+  flex-direction: column;
 }
 
 .Os {
-  height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
 }

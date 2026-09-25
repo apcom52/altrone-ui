@@ -2,6 +2,7 @@ import { DropdownMenuProps } from '../Dropdown.types';
 import clsx from 'clsx';
 import s from './action.module.scss';
 import { DropdownHoverProvider } from '../DropdownHover.contexts';
+import { Scrollable } from 'components/scrollable';
 
 export function DropdownMenu({
   ref,
@@ -10,6 +11,7 @@ export function DropdownMenu({
   defaultFocusItemIndex = 0,
   onChangeFocusItemIndex,
   style,
+  maxHeight,
   ...props
 }: DropdownMenuProps) {
   const cls = clsx(s.Menu, 'no-selection', className);
@@ -21,7 +23,12 @@ export function DropdownMenu({
   return (
     <DropdownHoverProvider>
       <div ref={ref} className={cls} style={styles} {...props}>
-        {children}
+        <Scrollable
+          overflowX="hidden"
+          maxHeight={maxHeight ?? 'var(--dropdown-menu-max-height)'}
+        >
+          <div className={s.MenuContent}>{children}</div>
+        </Scrollable>
       </div>
     </DropdownHoverProvider>
   );

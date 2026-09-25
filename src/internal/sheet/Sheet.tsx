@@ -17,6 +17,7 @@ import {
   type Transition,
 } from 'motion/react';
 import { Box } from 'components/box';
+import { Scrollable } from 'components/scrollable';
 import { GlobalUtils, useBreakpoint } from 'utils';
 import { SheetPlacement, SheetProps } from './Sheet.types.ts';
 import { lockPageScroll, unlockPageScroll } from './scrollLock.ts';
@@ -350,7 +351,14 @@ export const Sheet = (props: SheetProps) => {
                   aria-describedby={ariaDescribedBy}
                   tabIndex={-1}
                 >
-                  {children}
+                  {/* `isVerticalAutoScroll` already scrolls at `.ScrollContent`
+                      (screen level, see sheet.module.scss) — Scrollable here
+                      too would nest a second, inert scroll viewport. */}
+                  {isVerticalAutoScroll ? (
+                    children
+                  ) : (
+                    <Scrollable>{children}</Scrollable>
+                  )}
                 </Box>
               </motion.div>
             </FocusTrap>
