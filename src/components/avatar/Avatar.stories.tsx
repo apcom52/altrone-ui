@@ -2,6 +2,8 @@ import { Meta, StoryObj } from '@storybook/react';
 import { ReactNode } from 'react';
 import { StorybookDecorator } from '../../global/storybook/index.ts';
 import { allModes } from '../../../.storybook/modes.ts';
+import { Plus } from 'lucide-react';
+import { Button } from '../button/index.ts';
 import { Flex } from '../flex/index.ts';
 import { Text } from '../text/index.ts';
 import { Avatar } from './Avatar.tsx';
@@ -55,28 +57,31 @@ export const Overview: StoryObj<typeof Avatar> = {
       </Text>
 
       <Paragraph>
-        <Text code>Avatar</Text> is a round identity chip. It shows a photo
-        (<Text code>imageSrc</Text>) and falls back to initials automatically if
+        <Text code>Avatar</Text> is a round identity chip. It shows a photo (
+        <Text code>imageSrc</Text>) and falls back to initials automatically if
         the image fails to load. The element is <Text code>role="img"</Text>{' '}
         labelled with the full name.
       </Paragraph>
 
       <Heading>Colour</Heading>
       <Paragraph>
-        With no <Text code>backgroundColor</Text>, the fill is a categorical
-        hue keyed by the name — the same person always gets the same colour.
-        Text colour auto-contrasts against the fill (via an{' '}
-        <Text code>oklch</Text> relative-colour calc); pass{' '}
-        <Text code>textColor</Text> to override it.
+        With no <Text code>backgroundColor</Text>, the fill is a categorical hue
+        keyed by the name — the same person always gets the same colour. Text
+        colour auto-contrasts against the fill (via an <Text code>oklch</Text>{' '}
+        relative-colour calc); pass <Text code>textColor</Text> to override it.
       </Paragraph>
 
       <Flex gap="m" wrap>
-        {['Ada Lovelace', 'Alan Turing', 'Grace Hopper', 'Linus Torvalds', 'Rich Hickey'].map(
-          (n) => {
-            const [first, last] = n.split(' ');
-            return <Avatar key={n} firstName={first} lastName={last} />;
-          },
-        )}
+        {[
+          'Ada Lovelace',
+          'Alan Turing',
+          'Grace Hopper',
+          'Linus Torvalds',
+          'Rich Hickey',
+        ].map((n) => {
+          const [first, last] = n.split(' ');
+          return <Avatar key={n} firstName={first} lastName={last} />;
+        })}
       </Flex>
 
       <Heading>Sizes</Heading>
@@ -132,11 +137,21 @@ export const SizesStory: StoryObj<typeof Avatar> = {
         <Avatar firstName="Alex" lastName="Morgan" size="xl" />
       </Flex>
       <Flex gap="m" align="center">
-        <Text size={2} color="muted">mini</Text>
-        <Text size={2} color="muted">s</Text>
-        <Text size={2} color="muted">m</Text>
-        <Text size={2} color="muted">l</Text>
-        <Text size={2} color="muted">xl</Text>
+        <Text size={2} color="muted">
+          mini
+        </Text>
+        <Text size={2} color="muted">
+          s
+        </Text>
+        <Text size={2} color="muted">
+          m
+        </Text>
+        <Text size={2} color="muted">
+          l
+        </Text>
+        <Text size={2} color="muted">
+          xl
+        </Text>
       </Flex>
     </Flex>
   ),
@@ -166,7 +181,11 @@ export const AutoContrastStory: StoryObj<typeof Avatar> = {
         <Avatar firstName="Carol" lastName="Sky" backgroundColor="#bae6fd" />
         <Avatar firstName="Dan" lastName="Pink" backgroundColor="#fbcfe8" />
         <Avatar firstName="Eva" lastName="Peach" backgroundColor="#fed7aa" />
-        <Avatar firstName="Frank" lastName="Lavender" backgroundColor="#e9d5ff" />
+        <Avatar
+          firstName="Frank"
+          lastName="Lavender"
+          backgroundColor="#e9d5ff"
+        />
       </Flex>
     </Flex>
   ),
@@ -255,7 +274,8 @@ export const StackedGroupStory: StoryObj<typeof Avatar> = {
         </Text>
         <Flex
           align="center"
-          style={{ paddingLeft: 12 }}
+          style={{ paddingLeft: 14 }}
+          disableInnerMargins={false}
         >
           {TEAM.map((member) => (
             <Avatar
@@ -263,7 +283,10 @@ export const StackedGroupStory: StoryObj<typeof Avatar> = {
               firstName={member.firstName}
               lastName={member.lastName}
               backgroundColor={member.backgroundColor}
-              style={{ marginLeft: -12, boxShadow: '0 0 0 2px var(--background-1)' }}
+              style={{
+                marginLeft: -6,
+                boxShadow: '0 0 0 2px var(--background-1)',
+              }}
               title={`${member.firstName} ${member.lastName}`}
             />
           ))}
@@ -277,6 +300,7 @@ export const StackedGroupStory: StoryObj<typeof Avatar> = {
         <Flex
           align="center"
           style={{ paddingLeft: 8 }}
+          disableInnerMargins={false}
         >
           {TEAM.slice(0, 4).map((member) => (
             <Avatar
@@ -285,15 +309,21 @@ export const StackedGroupStory: StoryObj<typeof Avatar> = {
               lastName={member.lastName}
               backgroundColor={member.backgroundColor}
               size="s"
-              style={{ marginLeft: -8, boxShadow: '0 0 0 2px var(--background-1)' }}
+              style={{
+                marginLeft: -8,
+                boxShadow: '0 0 0 2px var(--background-1)',
+              }}
               title={`${member.firstName} ${member.lastName}`}
             />
           ))}
-          <Avatar
-            firstName="+4"
-            lastName=""
+          <Button
+            label="Show 4 more members"
+            icon={<Plus />}
+            showLabel={false}
             size="s"
-            style={{ marginLeft: -8, boxShadow: '0 0 0 2px var(--background-1)' }}
+            style={{
+              marginLeft: -8,
+            }}
           />
         </Flex>
       </Flex>

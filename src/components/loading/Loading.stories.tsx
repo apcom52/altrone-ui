@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { ReactNode } from 'react';
-import { Flex, Text } from 'components';
+import { ReactNode, useState } from 'react';
+import { Flex, Slider, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Loading } from './Loading.tsx';
@@ -33,6 +33,22 @@ const Paragraph = ({ children }: { children: ReactNode }) => (
   </Text>
 );
 
+const DeterminateDemo = () => {
+  const [progress, setProgress] = useState(40);
+
+  return (
+    <Flex gap="l" align="center">
+      <Loading size={48} strokeWidth={4} value={progress} />
+      <Slider
+        value={progress}
+        onChange={setProgress}
+        style={{ width: 240 }}
+        showCurrentValue="always"
+      />
+    </Flex>
+  );
+};
+
 export const Overview: StoryObj<typeof Loading> = {
   name: 'Overview',
   render: () => (
@@ -62,6 +78,24 @@ export const Overview: StoryObj<typeof Loading> = {
         <Loading size={40} strokeWidth={3} />
         <Loading size={64} strokeWidth={4} />
       </Flex>
+
+      <Heading>Determinate progress</Heading>
+      <Paragraph>
+        Pass <Text code>value</Text> (0–100) to turn the spinner into a
+        determinate circular progress indicator: it stops spinning, draws a
+        fixed arc starting at 12 o&rsquo;clock, and exposes{' '}
+        <Text code>role="progressbar"</Text> with{' '}
+        <Text code>aria-valuenow</Text>/<Text code>aria-valuemin</Text>/
+        <Text code>aria-valuemax</Text> instead of the indeterminate{' '}
+        <Text code>role="status"</Text>.
+      </Paragraph>
+      <Flex gap="l" align="center">
+        <Loading size={40} strokeWidth={3} value={25} />
+        <Loading size={40} strokeWidth={3} value={60} />
+        <Loading size={40} strokeWidth={3} value={100} />
+      </Flex>
+
+      <DeterminateDemo />
 
       <Heading>Colour</Heading>
       <Paragraph>

@@ -10,6 +10,7 @@ export const Loading = memo<LoadingProps>(
     color,
     size = '24px',
     strokeWidth = '2',
+    value,
     className,
     style,
     'aria-label': ariaLabel,
@@ -24,6 +25,11 @@ export const Loading = memo<LoadingProps>(
     const center = numericSize / 2;
     const radius = Math.max(0, numericSize / 2 - numericStroke / 2);
 
+    const isDeterminate = value !== undefined;
+    const clampedValue = isDeterminate
+      ? Math.min(100, Math.max(0, value))
+      : undefined;
+
     const cls = clsx(s.Loading, className);
 
     return (
@@ -31,12 +37,15 @@ export const Loading = memo<LoadingProps>(
         ref={ref}
         className={cls}
         style={{ ...style, color: color ?? 'var(--loading-color)' }}
-        role="status"
+        role={isDeterminate ? 'progressbar' : 'status'}
         aria-label={ariaLabel ?? t('loading.label')}
+        aria-valuenow={clampedValue}
+        aria-valuemin={isDeterminate ? 0 : undefined}
+        aria-valuemax={isDeterminate ? 100 : undefined}
         {...restProps}
       >
         <svg
-          className={s.Spinner}
+          className={clsx(s.Spinner, { [s.Determinate]: isDeterminate })}
           viewBox={`0 0 ${numericSize} ${numericSize}`}
           width={size}
           height={size}
@@ -51,12 +60,20 @@ export const Loading = memo<LoadingProps>(
             fill="none"
           />
           <circle
-            className={s.Active}
+            className={clsx(s.Active, { [s.Determinate]: isDeterminate })}
             cx={center}
             cy={center}
             r={radius}
             pathLength="100"
             strokeWidth={numericStroke}
+            /* Inline style, not the stroke-dasharray attribute — a CSS class
+               rule (.Active's own dasharray) always beats a presentation
+               attribute, so the attribute alone would be silently ignored. */
+            style={
+              isDeterminate
+                ? { strokeDasharray: `${clampedValue}, 100` }
+                : undefined
+            }
             fill="none"
           />
         </svg>
