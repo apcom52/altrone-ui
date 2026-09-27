@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { Flex, Progress, Range, Text } from 'components';
+import { Flex, Progress, Slider, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 
@@ -35,7 +35,7 @@ const Paragraph = ({ children }: { children: React.ReactNode }) => (
 export const Overview: StoryObj<typeof Progress> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Progress
       </Text>
@@ -53,10 +53,10 @@ export const Overview: StoryObj<typeof Progress> = {
       </Paragraph>
       <Paragraph>
         The track is a <Text code>Box</Text> (<Text code>shape="pill"</Text>,{' '}
-        <Text code>material="glass"</Text>), so its radius and frosted
-        background come from the shared Box system; the active fill and label
-        colours stay Progress&rsquo;s own, themeable via the{' '}
-        <Text code>--progress-*</Text> custom properties.
+        <Text code>material="solid"</Text>), so its radius and fill come from
+        the shared Box system; the active fill and label colours stay
+        Progress&rsquo;s own, themeable via the <Text code>--progress-*</Text>{' '}
+        custom properties.
       </Paragraph>
 
       <Progress value={62} />
@@ -67,7 +67,7 @@ export const Overview: StoryObj<typeof Progress> = {
 export const Sizes: StoryObj<typeof Progress> = {
   name: 'Sizes',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Sizes</Section>
       <Paragraph>
         <Text code>size</Text> follows the shared scale (<Text code>mini</Text>{' '}
@@ -76,7 +76,7 @@ export const Sizes: StoryObj<typeof Progress> = {
         together.
       </Paragraph>
 
-      <Flex direction="vertical" gap="m">
+      <Flex orientation="vertical" gap="m">
         <Progress size="mini" value={60} />
         <Progress size="s" value={60} />
         <Progress size="m" value={60} />
@@ -90,27 +90,32 @@ export const Sizes: StoryObj<typeof Progress> = {
 export const Labels: StoryObj<typeof Progress> = {
   name: 'Labels',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Labels</Section>
       <Paragraph>
-        With no <Text code>children</Text> the label is the rounded percentage.
-        A string replaces it wholesale. A render function gets{' '}
+        With no <Text code>label</Text> the text is the rounded percentage. A
+        string replaces it wholesale. A render function gets{' '}
         <Text code>{'{ value, min, max, percentage }'}</Text> — use it for
         &ldquo;X of Y&rdquo; counters or a custom phrasing.
       </Paragraph>
 
-      <Flex direction="vertical" gap="m">
+      <Flex orientation="vertical" gap="m">
         <Progress value={42} />
-        <Progress value={42} aria-label="Uploading files">
-          Uploading files…
-        </Progress>
-        <Progress value={42} max={200} aria-label="42 of 200">
-          {({ value, max, percentage }) => (
+        <Progress
+          value={42}
+          aria-label="Uploading files"
+          label="Uploading files…"
+        />
+        <Progress
+          value={42}
+          max={200}
+          aria-label="42 of 200"
+          label={({ value, max, percentage }) => (
             <span>
               {value} of {max} ({percentage}%)
             </span>
           )}
-        </Progress>
+        />
       </Flex>
     </Flex>
   ),
@@ -119,7 +124,7 @@ export const Labels: StoryObj<typeof Progress> = {
 export const ValueRange: StoryObj<typeof Progress> = {
   name: 'Value range',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Value range</Section>
       <Paragraph>
         <Text code>min</Text> and <Text code>max</Text> define the range. They
@@ -129,19 +134,32 @@ export const ValueRange: StoryObj<typeof Progress> = {
         ARIA.
       </Paragraph>
 
-      <Flex direction="vertical" gap="m">
-        <Progress value={0} max={8} aria-label="Step 0 of 8">
-          {({ value, max }) => `Step ${value} of ${max}`}
-        </Progress>
-        <Progress value={3} max={8} aria-label="Step 3 of 8">
-          {({ value, max }) => `Step ${value} of ${max}`}
-        </Progress>
-        <Progress value={8} max={8} aria-label="Step 8 of 8">
-          {({ value, max }) => `Step ${value} of ${max}`}
-        </Progress>
-        <Progress value={140} min={100} max={200} aria-label="Temperature">
-          {({ value }) => `${value}°`}
-        </Progress>
+      <Flex orientation="vertical" gap="m">
+        <Progress
+          value={0}
+          max={8}
+          aria-label="Step 0 of 8"
+          label={({ value, max }) => `Step ${value} of ${max}`}
+        />
+        <Progress
+          value={3}
+          max={8}
+          aria-label="Step 3 of 8"
+          label={({ value, max }) => `Step ${value} of ${max}`}
+        />
+        <Progress
+          value={8}
+          max={8}
+          aria-label="Step 8 of 8"
+          label={({ value, max }) => `Step ${value} of ${max}`}
+        />
+        <Progress
+          value={140}
+          min={100}
+          max={200}
+          aria-label="Temperature"
+          label={({ value }) => `${value}°`}
+        />
       </Flex>
     </Flex>
   ),
@@ -153,16 +171,16 @@ export const LiveValue: StoryObj<typeof Progress> = {
     const [value, setValue] = useState(35);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Section>Live value</Section>
         <Paragraph>
           <Text code>Progress</Text> is fully controlled — it renders whatever{' '}
           <Text code>value</Text> it&rsquo;s given. Drag the{' '}
-          <Text code>Range</Text> to update it.
+          <Text code>Slider</Text> to update it.
         </Paragraph>
 
         <Progress value={value} aria-label="Download" />
-        <Range
+        <Slider
           value={value}
           onChange={setValue}
           min={0}
@@ -178,7 +196,7 @@ export const LiveValue: StoryObj<typeof Progress> = {
 export const Theming: StoryObj<typeof Progress> = {
   name: 'Theming',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Theming</Section>
       <Paragraph>
         The track is the Box&rsquo;s own neutral frosted fill. Two custom
@@ -188,27 +206,25 @@ export const Theming: StoryObj<typeof Progress> = {
         <Text code>style</Text> or a class.
       </Paragraph>
 
-      <Flex direction="vertical" gap="m">
+      <Flex orientation="vertical" gap="m">
         <Progress
           value={70}
           aria-label="Storage"
+          label="Storage used"
           style={{
             ['--progress-active-background-color' as string]: 'var(--teal-9)',
             ['--progress-text-color' as string]: 'var(--teal-12)',
           }}
-        >
-          Storage used
-        </Progress>
+        />
         <Progress
           value={92}
           aria-label="Quota"
+          label="Nearly full"
           style={{
             ['--progress-active-background-color' as string]: 'var(--red-9)',
             ['--progress-text-color' as string]: 'var(--red-12)',
           }}
-        >
-          Nearly full
-        </Progress>
+        />
       </Flex>
     </Flex>
   ),

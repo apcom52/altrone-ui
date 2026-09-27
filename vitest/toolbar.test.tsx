@@ -2,6 +2,11 @@ import React from 'react';
 import { expect, test, describe, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Application, Toolbar } from '../src/components';
+import {
+  resolveToolbarOverflow,
+  isFlexibleSpacer,
+} from '../src/components/toolbar/useToolbarOverflow.tsx';
+import { resolveToolbarRegionBalance } from '../src/components/toolbar/useToolbarRegionBalance.ts';
 
 describe('Toolbar', () => {
   test('check that className and style props works', () => {
@@ -34,6 +39,32 @@ describe('Toolbar', () => {
     expect(screen.getByTestId('group')).toHaveStyle('color: rgb(255, 0, 0)');
     expect(screen.getByTestId('action')).toHaveClass('action');
     expect(screen.getByTestId('action')).toHaveStyle('color: rgb(255, 255, 0)');
+  });
+
+  test('Toolbar.Group `justify="between"` distributes content along the main axis', () => {
+    render(
+      <Application>
+        <Toolbar.Group data-testid="group" justify="between">
+          <span>a</span>
+          <span>b</span>
+        </Toolbar.Group>
+      </Application>,
+    );
+
+    expect(screen.getByTestId('group').className).toMatch(/JustifyBetween/);
+  });
+
+  test('`edge="left"` flips `aria-orientation` to vertical', () => {
+    render(
+      <Application>
+        <Toolbar data-testid="toolbar" edge="left" />
+      </Application>,
+    );
+
+    expect(screen.getByTestId('toolbar')).toHaveAttribute(
+      'aria-orientation',
+      'vertical',
+    );
   });
 
   test('toolbar `size` cascades to nested Toolbar.Action unless the action overrides it', () => {
@@ -173,7 +204,7 @@ describe('Toolbar', () => {
     const { rerender } = render(
       <Application>
         <Toolbar>
-          <Toolbar.Title label="Docs" />
+          <Toolbar.Title title="Docs" />
         </Toolbar>
       </Application>,
     );
@@ -184,7 +215,7 @@ describe('Toolbar', () => {
     rerender(
       <Application>
         <Toolbar>
-          <Toolbar.Title label="Docs" clickable />
+          <Toolbar.Title title="Docs" clickable />
         </Toolbar>
       </Application>,
     );
@@ -194,20 +225,123 @@ describe('Toolbar', () => {
   });
 });
 
-describe('Toolbar header actions', () => {
-  test('BackAction is icon-only with an accessible label and fires onClick', () => {
-    const onClick = vi.fn();
+describe('Toolbar overflow', () => {
+  test('`priority` is stripped before reaching the DOM node', () => {
     render(
       <Application>
-        <Toolbar.BackAction onClick={onClick} />
+        <Toolbar>
+          <Toolbar.Group data-testid="group" priority="low" />
+          <Toolbar.Action data-testid="action" label="test" priority="low" />
+        </Toolbar>
       </Application>,
     );
 
-    const button = screen.getByRole('button', { name: 'Back' });
-    fireEvent.click(button);
-    expect(onClick).toHaveBeenCalledOnce();
+    expect(screen.getByTestId('group')).not.toHaveAttribute('priority');
+    expect(screen.getByRole('button', { name: 'test' })).not.toHaveAttribute(
+      'priority',
+    );
   });
 
+  test('isFlexibleSpacer: true only for a `Toolbar.Separator` with variant "space" (the default) — its stretched width is not a real requirement and must never be measured', () => {
+    expect(
+      isFlexibleSpacer(<Toolbar.Separator />),
+    ).toBe(true);
+    expect(
+      isFlexibleSpacer(<Toolbar.Separator variant="space" />),
+    ).toBe(true);
+    expect(
+      isFlexibleSpacer(<Toolbar.Separator variant="line" />),
+    ).toBe(false);
+    expect(isFlexibleSpacer(<Toolbar.Action label="x" />)).toBe(false);
+  });
+
+  test('resolveToolbarOverflow: nothing is hidden when everything fits', () => {
+    const items = [
+      { key: 'a', priority: 'low' as const },
+      { key: 'b', priority: 'high' as const },
+    ];
+    const sizes = new Map([
+      ['a', 40],
+      ['b', 40],
+    ]);
+
+    expect(resolveToolbarOverflow(items, sizes, 100, 8, 32)).toEqual(
+      new Set(),
+    );
+  });
+
+  test('resolveToolbarOverflow: `low` collapses before `medium`, and stops once it fits', () => {
+    const items = [
+      { key: 'low', priority: 'low' as const },
+      { key: 'medium', priority: 'medium' as const },
+    ];
+    const sizes = new Map([
+      ['low', 100],
+      ['medium', 10],
+    ]);
+
+    // Removing `low` alone is enough to fit — `medium` must stay visible.
+    expect(resolveToolbarOverflow(items, sizes, 20, 0, 10)).toEqual(
+      new Set(['low']),
+    );
+  });
+
+  test('resolveToolbarOverflow: `high` never collapses, even if the row still overflows', () => {
+    const items = [
+      { key: 'low', priority: 'low' as const },
+      { key: 'high', priority: 'high' as const },
+    ];
+    const sizes = new Map([
+      ['low', 40],
+      ['high', 200],
+    ]);
+
+    expect(resolveToolbarOverflow(items, sizes, 60, 8, 32)).toEqual(
+      new Set(['low']),
+    );
+  });
+
+  test('resolveToolbarOverflow: within the same priority, the earlier (leftmost/topmost) item collapses first', () => {
+    const items = [
+      { key: 'first', priority: 'medium' as const },
+      { key: 'second', priority: 'medium' as const },
+    ];
+    const sizes = new Map([
+      ['first', 40],
+      ['second', 40],
+    ]);
+
+    // Only one needs to go to fit — must be `first`, not `second`.
+    expect(resolveToolbarOverflow(items, sizes, 60, 8, 8)).toEqual(
+      new Set(['first']),
+    );
+  });
+});
+
+describe('Toolbar region balance', () => {
+  test('resolveToolbarRegionBalance: grants each side its exact need plus half the leftover when both fit', () => {
+    expect(resolveToolbarRegionBalance(89, 234, 598)).toEqual([
+      89 + (598 - 89 - 234) / 2,
+      234 + (598 - 89 - 234) / 2,
+    ]);
+  });
+
+  test('resolveToolbarRegionBalance: never grants less than the exact need when both fit', () => {
+    const [leadingTrack, trailingTrack] = resolveToolbarRegionBalance(
+      89,
+      234,
+      598,
+    );
+    expect(leadingTrack).toBeGreaterThanOrEqual(89);
+    expect(trailingTrack).toBeGreaterThanOrEqual(234);
+  });
+
+  test('resolveToolbarRegionBalance: falls back to an even split once both together do not fit', () => {
+    expect(resolveToolbarRegionBalance(236, 46, 250)).toEqual([125, 125]);
+  });
+});
+
+describe('Toolbar header actions', () => {
   test('SidebarToggleAction swaps icon/label based on the controlled collapsed prop', () => {
     const { rerender } = render(
       <Application>
@@ -226,29 +360,5 @@ describe('Toolbar header actions', () => {
     expect(
       screen.getByRole('button', { name: 'Expand sidebar' }),
     ).toBeInTheDocument();
-  });
-
-  test('BackForwardAction disables and triggers each half independently', () => {
-    const onBack = vi.fn();
-    const onForward = vi.fn();
-    render(
-      <Application>
-        <Toolbar.BackForwardAction
-          onBack={onBack}
-          onForward={onForward}
-          backDisabled
-        />
-      </Application>,
-    );
-
-    const backButton = screen.getByRole('button', { name: 'Back' });
-    const forwardButton = screen.getByRole('button', { name: 'Forward' });
-
-    expect(backButton).toBeDisabled();
-    expect(forwardButton).not.toBeDisabled();
-
-    fireEvent.click(forwardButton);
-    expect(onForward).toHaveBeenCalledOnce();
-    expect(onBack).not.toHaveBeenCalled();
   });
 });

@@ -6,7 +6,10 @@ export const useCloseDropdownContext = () => useContext(CloseDropdownContext);
 
 export type DropdownRadioContext = {
   value: any;
-  onChange: (value: any) => void;
+  onChange: (
+    value: any,
+    event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>,
+  ) => void;
 };
 export const RadioListDropdownContext = createContext<DropdownRadioContext>({
   value: '',

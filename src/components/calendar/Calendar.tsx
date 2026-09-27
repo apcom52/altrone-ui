@@ -58,6 +58,8 @@ const CalendarComponent = memo(
     selectedDates,
     cursorDate,
     onDateChange,
+    prevIcon,
+    nextIcon,
     ...restProps
   }: CalendarProps) => {
     const { language } = useLocalizationContext();
@@ -91,9 +93,9 @@ const CalendarComponent = memo(
     );
 
     const changeMonth = useCallback(
-      (next: Dayjs) => {
+      (next: Dayjs, event: React.MouseEvent<HTMLButtonElement>) => {
         if (!isControlledMonth) setInternalMonth(next);
-        onMonthChange?.(next);
+        onMonthChange?.(next, event);
       },
       [isControlledMonth, onMonthChange],
     );
@@ -144,7 +146,7 @@ const CalendarComponent = memo(
     );
 
     const handleHover = useCallback(
-      (date?: Dayjs) => {
+      (date: Dayjs | undefined, _event: React.MouseEvent<HTMLButtonElement>) => {
         if (mode === 'range') setHoveredDate(date);
       },
       [mode],
@@ -250,8 +252,10 @@ const CalendarComponent = memo(
           <CalendarHeader
             caption={getMonthCaption(displayMonth, bcp47)}
             showNavigation={showNavigation}
-            onPrev={() => changeMonth(displayMonth.subtract(1, 'month'))}
-            onNext={() => changeMonth(displayMonth.add(1, 'month'))}
+            onPrev={(event) => changeMonth(displayMonth.subtract(1, 'month'), event)}
+            onNext={(event) => changeMonth(displayMonth.add(1, 'month'), event)}
+            prevIcon={prevIcon}
+            nextIcon={nextIcon}
           />
         ) : null}
 

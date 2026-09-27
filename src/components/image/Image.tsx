@@ -36,6 +36,7 @@ export const Image = memo((props: ImageProps) => {
     caption,
     isLoading,
     preloader,
+    brokenIcon,
     onLoad,
     onError,
     className,
@@ -85,7 +86,7 @@ export const Image = memo((props: ImageProps) => {
         aria-label={alt || t('image.brokenImage')}
       >
         <div className={s.BrokenMedia} aria-hidden="true">
-          <ImageOff />
+          {brokenIcon ?? <ImageOff />}
         </div>
       </div>
     ) : (

@@ -35,7 +35,7 @@ export function DropdownChildMenu({
       }
       placement="right"
     >
-      {({ opened }) => (
+      {({ open: opened }) => (
         <CompositeItem
           ref={ref}
           disabled={disabled}

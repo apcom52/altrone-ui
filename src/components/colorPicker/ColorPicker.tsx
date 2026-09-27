@@ -14,7 +14,8 @@ import {
   type SyntheticEvent,
 } from 'react';
 import { Slot } from 'utils/components/Slot';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useFormField } from '../form/components/Field.context.ts';
+import { useIcons } from 'components/application/useIcons.tsx';
 
 const EMPTY_COLOR_PRESETS: ColorPreset[] = [];
 
@@ -37,24 +38,34 @@ export const ColorPicker = (props: ColorPickerProps) => {
     className,
     style,
     placeholder = t('colorPicker.placeholder'),
-    size = 'm',
+    size,
     allowPalette = true,
     colorPresets = EMPTY_COLOR_PRESETS,
     readOnly = false,
     clearable = false,
     transparent,
-    disabled = false,
+    disabled,
     asChild = false,
     children,
-    renderFunc,
+    openIcon,
+    closeIcon,
+    presetsTabIcon,
+    paletteTabIcon,
     ...restProps
   } = props;
 
+  const icons = useIcons();
+  const { disabled: formFieldDisabled, size: formFieldSize } = useFormField();
+
+  const inputDisabled =
+    typeof disabled === 'boolean' ? disabled : formFieldDisabled;
+  const inputSize = size || formFieldSize || 'm';
+
   const handleChange = useCallback(
     (color: string | undefined, event?: SyntheticEvent) => {
-      onChange(typeof color === 'string' ? color.toLowerCase() : value, event);
+      onChange(color?.toLowerCase(), event);
     },
-    [onChange, value],
+    [onChange],
   );
 
   const cls = clsx(s.ColorPicker, className, {
@@ -64,15 +75,18 @@ export const ColorPicker = (props: ColorPickerProps) => {
   return (
     <Popover
       placement="bottom-start"
-      content={({ closePopup }) => (
+      title={t('colorPicker.title')}
+      content={({ hide }) => (
         <ColorPickerContent
           colorPresets={colorPresets}
           value={value}
           onChange={handleChange}
           allowPalette={allowPalette}
           clearable={clearable}
-          size={size}
-          closePopup={closePopup}
+          size={inputSize}
+          hide={hide}
+          presetsTabIcon={presetsTabIcon}
+          paletteTabIcon={paletteTabIcon}
         />
       )}
       enabled={!readOnly}
@@ -80,27 +94,23 @@ export const ColorPicker = (props: ColorPickerProps) => {
       listNavigation
       overlap
     >
-      {({ opened }) => {
-        if (renderFunc) {
-          return renderFunc({
-            value,
-            opened,
-            disabled,
-            placeholder,
-            className: cls,
-            style,
-          });
-        }
-
+      {({ open: opened }) => {
         if (asChild) {
           if (!isValidElement(children)) {
             console.error(
               '[ColorPicker] asChild requires a single valid React element as children',
             );
-            return null;
+            /* A bare `<span />`, not `null` — the render function feeds
+               Popover's `children`, which clones `ref`/interaction props
+               onto whatever it gets back. A DOM node still needs to exist
+               here to receive them; a `null`/Fragment return would silently
+               drop the trigger's event handlers. */
+            return <span />;
           }
 
-          const childElement = children as ReactElement<Record<string, unknown>>;
+          const childElement = children as ReactElement<
+            Record<string, unknown>
+          >;
           const childProps = childElement.props;
 
           return (
@@ -128,8 +138,8 @@ export const ColorPicker = (props: ColorPickerProps) => {
             placeholder={placeholder}
             readOnly={true}
             readonlyStyles={readOnly}
-            disabled={disabled}
-            size={size}
+            disabled={inputDisabled}
+            size={inputSize}
             variant={transparent ? 'transparent' : undefined}
             onChange={() => null}
             {...restProps}
@@ -140,15 +150,15 @@ export const ColorPicker = (props: ColorPickerProps) => {
                   className={s.ColorPreview}
                   style={{
                     backgroundColor: value,
-                    width: PREVIEW_SIZES[size],
-                    height: PREVIEW_SIZES[size],
+                    width: PREVIEW_SIZES[inputSize],
+                    height: PREVIEW_SIZES[inputSize],
                   }}
                 />
               ) : (
                 <Box
                   shape="circle"
-                  material="hatch"
-                  size={PREVIEW_SIZES[size]}
+                  material="pale"
+                  size={PREVIEW_SIZES[inputSize]}
                   style={{ marginLeft: 2 }}
                 />
               )}
@@ -156,7 +166,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
             {!readOnly && (
               <TextInput.IconIsland
                 placement="end"
-                icon={opened ? <ChevronUp /> : <ChevronDown />}
+                icon={opened ? (closeIcon ?? icons.close) : (openIcon ?? icons.open)}
               />
             )}
           </TextInput>

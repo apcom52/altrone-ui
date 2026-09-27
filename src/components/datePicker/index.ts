@@ -7,5 +7,4 @@ export type {
   RangePickerProps,
   RangePickerValue,
   DatePickerTriggerContextType,
-  DatePickerRenderContext,
 } from './DatePicker.types.ts';

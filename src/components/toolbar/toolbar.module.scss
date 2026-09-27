@@ -25,10 +25,10 @@
   --toolbar-pill-fill: var(--glass-background-color);
   --toolbar-pill-blur: var(--glass-effects);
   --toolbar-glass-fill: var(--color-header-backdrop);
-  /* Own blur radius (8px), independent of the shared `--glass-effects`
+  /* Own blur radius (32px), independent of the shared `--glass-effects`
      64px/32px scale — saturate stays whatever that theme's `--glass-effects`
      already uses. */
-  --toolbar-glass-blur: blur(8px) saturate(180%);
+  --toolbar-glass-blur: blur(32px) saturate(180%);
   --toolbar-glass-rim: var(--glass-border-color);
   --toolbar-glass-highlight: rgb(255 255 255 / 0.55);
 
@@ -45,7 +45,7 @@
 
 :global([data-altrone-theme='dark']) .Toolbar {
   --toolbar-glass-highlight: rgb(255 255 255 / 0.12);
-  --toolbar-glass-blur: blur(8px) saturate(110%);
+  --toolbar-glass-blur: blur(32px) saturate(110%);
 }
 
 /* ── sizes ─────────────────────────────────────────────────── */
@@ -122,6 +122,10 @@
   background: var(--toolbar-background, var(--toolbar-glass-fill));
   backdrop-filter: var(--toolbar-glass-blur);
   box-shadow: inset 0 1px 0 0 var(--toolbar-glass-highlight);
+  /* Promotes the bar to its own compositing layer — a 32px backdrop-filter is
+     expensive to recompute on every repaint of the content scrolling under it. */
+  will-change: backdrop-filter;
+  transform: translateZ(0);
 }
 
 .Solid.Top {
@@ -191,17 +195,27 @@
    3-track grid so Center stays optically centered no matter how wide
    the side regions get. A flat list of actions/groups (no regions)
    keeps the plain flex row from `.Toolbar`. `:has` crosses the CSS
-   Module boundary via the stable `data-toolbar-region` attribute. */
+   Module boundary via the stable `data-toolbar-region` attribute.
+
+   The Leading/Trailing tracks default to an even `1fr`/`1fr` split, but
+   `useToolbarRegionBalance` (Toolbar.tsx) overrides `--toolbar-leading-track`
+   / `--toolbar-trailing-track` with each side's actual uncollapsed content
+   size once both are known — an even split alone wastes the shorter side's
+   half and can collapse the other side needlessly even with room to spare. */
 
 .Solid:has(> [data-toolbar-region]),
 .Plain:has(> [data-toolbar-region]),
 .Grouped:has(> [data-toolbar-region]) {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns:
+    var(--toolbar-leading-track, 1fr) auto
+    var(--toolbar-trailing-track, 1fr);
 }
 
 .Left:has(> [data-toolbar-region]),
 .Right:has(> [data-toolbar-region]) {
   grid-template-columns: none;
-  grid-template-rows: 1fr auto 1fr;
+  grid-template-rows:
+    var(--toolbar-leading-track, 1fr) auto
+    var(--toolbar-trailing-track, 1fr);
 }

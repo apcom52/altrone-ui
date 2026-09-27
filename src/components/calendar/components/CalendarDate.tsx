@@ -87,7 +87,7 @@ export const CalendarDate = memo(
         }}
         onMouseEnter={(event) => {
           onMouseEnter?.(event);
-          if (interactive) onHover?.(currentDate);
+          if (interactive) onHover?.(currentDate, event);
         }}
       >
         <AnimatePresence>

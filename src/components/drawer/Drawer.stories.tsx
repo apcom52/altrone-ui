@@ -6,7 +6,7 @@ import {
   Form,
   Text,
   TextInput,
-  Textarea,
+  TextArea,
   Spoiler,
 } from 'components';
 import { StorybookDecorator } from 'global/storybook';
@@ -14,7 +14,13 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Drawer } from './Drawer.tsx';
 import { FilterPanelStory } from './stories/Drawer.story.FilterPanel.tsx';
 import { RecordDetailStory } from './stories/Drawer.story.RecordDetail.tsx';
-import { Bell, History, PanelRight, Share2, SlidersHorizontal } from 'lucide-react';
+import {
+  Bell,
+  History,
+  PanelRight,
+  Share2,
+  SlidersHorizontal,
+} from 'lucide-react';
 
 const story: Meta<typeof Drawer> = {
   title: 'Components/Containers/Drawer',
@@ -45,7 +51,7 @@ const Paragraph = ({ children }: { children: React.ReactNode }) => (
 );
 
 const filler = (
-  <Flex direction="vertical" gap="m">
+  <Flex orientation="vertical" gap="m">
     <Text block size={4}>
       A drawer suits a task long enough to need its own space but not important
       enough to seize the screen — a filter set, a detail view, a form the user
@@ -59,6 +65,43 @@ const filler = (
   </Flex>
 );
 
+const ACTIVITY_LOG_ENTRIES = [
+  ['Alex Petrov', 'created the project', '2 minutes ago'],
+  ['Alex Petrov', 'invited maria@company.com', '14 minutes ago'],
+  ['CI', 'deployed build #1042 to staging', '38 minutes ago'],
+  ['Maria Ivanova', 'renamed the "api" branch to "api-v2"', '1 hour ago'],
+  ['Maria Ivanova', 'merged pull request #88', '1 hour ago'],
+  ['CI', 'deployed build #1041 to staging', '2 hours ago'],
+  ['Alex Petrov', 'commented on issue #212', '3 hours ago'],
+  ['Dmitry Volkov', 'changed the billing plan to Team', '5 hours ago'],
+  ['CI', 'deployed build #1040 to production', '6 hours ago'],
+  ['Maria Ivanova', 'opened pull request #88', '7 hours ago'],
+  ['Alex Petrov', 'archived the "legacy-import" project', 'yesterday'],
+  ['Dmitry Volkov', 'added a new API key', 'yesterday'],
+  ['CI', 'deployed build #1039 to staging', 'yesterday'],
+  ['Maria Ivanova', 'closed issue #205', '2 days ago'],
+  ['Alex Petrov', 'transferred ownership to Dmitry Volkov', '2 days ago'],
+  ['CI', 'deployed build #1038 to production', '3 days ago'],
+  ['Dmitry Volkov', 'revoked an API key', '3 days ago'],
+  ['Maria Ivanova', 'created the "api" branch', '4 days ago'],
+  ['Alex Petrov', 'created the project', '5 days ago'],
+] as const;
+
+const longActivityLog = (
+  <Flex orientation="vertical" gap="s">
+    {ACTIVITY_LOG_ENTRIES.map(([actor, action, when], index) => (
+      <Flex orientation="vertical" gap="xs" key={index}>
+        <Text block size={4}>
+          <Text weight="bold">{actor}</Text> {action}
+        </Text>
+        <Text block size={3} color="muted">
+          {when}
+        </Text>
+      </Flex>
+    ))}
+  </Flex>
+);
+
 const longForm = (
   <Form>
     <Form.Field label="Project name">
@@ -68,7 +111,7 @@ const longForm = (
       <TextInput />
     </Form.Field>
     <Form.Field label="Description">
-      <Textarea />
+      <TextArea />
     </Form.Field>
     <Spoiler title="Advanced">
       <Form>
@@ -79,7 +122,7 @@ const longForm = (
           <TextInput />
         </Form.Field>
         <Form.Field label="Notes">
-          <Textarea />
+          <TextArea />
         </Form.Field>
       </Form>
     </Spoiler>
@@ -89,24 +132,26 @@ const longForm = (
 export const Overview: StoryObj<typeof Drawer> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" align="start" style={{ padding: 24 }}>
+    <Flex orientation="vertical" gap="l" align="start" style={{ padding: 24 }}>
       <Text block size={9} weight="bold">
         Drawer
       </Text>
       <Paragraph>
         A panel that slides in from the edge of the screen over a dimmed
-        backdrop. The trigger is whatever you pass as{' '}
-        <Text code>children</Text> — Drawer clones it and adds its own{' '}
-        <Text code>onClick</Text> alongside any handler the element already had.
-        Open state is managed internally; reach <Text code>closeDrawer</Text>{' '}
-        through the render-prop form of <Text code>content</Text>,{' '}
-        <Text code>footer</Text>, <Text code>startActions</Text>, or{' '}
-        <Text code>endActions</Text>.
+        backdrop. Unlike <Text code>Popover</Text>/<Text code>Dropdown</Text>/
+        <Text code>Tooltip</Text>, a drawer isn&apos;t attached to a trigger
+        element — open it explicitly via the <Text code>open</Text> prop (or let
+        it manage its own state with <Text code>defaultOpen</Text>) and close it
+        via <Text code>onClose</Text> or the render-prop form of{' '}
+        <Text code>content</Text>, <Text code>footer</Text>,{' '}
+        <Text code>additionalActions</Text>, or <Text code>actions</Text> (which
+        all receive <Text code>hide</Text>).
       </Paragraph>
       <Paragraph>
         Focus is trapped inside the panel while it is open and returns to the
         trigger on close. <Text kbd>Esc</Text> and a click on the backdrop both
-        close it.
+        close it — unless <Text code>{'dismissible={false}'}</Text> turns them
+        off, in which case they shake the panel instead.
       </Paragraph>
 
       <Heading>Anatomy</Heading>
@@ -117,9 +162,7 @@ export const Overview: StoryObj<typeof Drawer> = {
         pinned below the scroll. Passing <Text code>onDone</Text> puts a submit
         button in the header.
       </Paragraph>
-      <Drawer title="Edit project" content={longForm} onDone={async () => {}}>
-        <Button label="Open drawer" icon={<PanelRight />} />
-      </Drawer>
+      <AnatomyDrawerDemo />
 
       <Heading>Placement</Heading>
       <Paragraph>
@@ -128,13 +171,20 @@ export const Overview: StoryObj<typeof Drawer> = {
         trigger lives and what the panel is for — navigation on the start edge,
         contextual detail on the end.
       </Paragraph>
-      <Flex direction="horizontal" gap="m" wrap>
-        <Drawer title="Navigation" placement="start" content={filler}>
-          <Button label="From the start" icon={<SlidersHorizontal />} />
-        </Drawer>
-        <Drawer title="Notifications" placement="end" content={filler}>
-          <Button label="From the end" icon={<Bell />} showLabel={false} />
-        </Drawer>
+      <Flex orientation="horizontal" gap="m" wrap>
+        <PlacementDrawerDemo
+          placement="start"
+          title="Navigation"
+          label="From the start"
+          icon={<SlidersHorizontal />}
+        />
+        <PlacementDrawerDemo
+          placement="end"
+          title="Notifications"
+          label="From the end"
+          icon={<Bell />}
+          showLabel={false}
+        />
       </Flex>
 
       <Heading>Width</Heading>
@@ -143,17 +193,19 @@ export const Overview: StoryObj<typeof Drawer> = {
         <Text code>400</Text>. The panel never exceeds the viewport minus its
         edge inset, so a large value degrades gracefully on small screens.
       </Paragraph>
-      <Flex direction="horizontal" gap="m" wrap>
-        <Drawer title="Compact" width={320} content={filler}>
-          <Button label="320" />
-        </Drawer>
-        <Drawer title="Default" content={filler}>
-          <Button label="400" />
-        </Drawer>
-        <Drawer title="Roomy" width={560} content={filler}>
-          <Button label="560" />
-        </Drawer>
+      <Flex orientation="horizontal" gap="m" wrap>
+        <WidthDrawerDemo width={320} title="Compact" label="320" />
+        <WidthDrawerDemo title="Default" label="400" />
+        <WidthDrawerDemo width={560} title="Roomy" label="560" />
       </Flex>
+
+      <Heading>Long content</Heading>
+      <Paragraph>
+        Unlike <Text code>Modal</Text>, a drawer&apos;s <Text code>content</Text>{' '}
+        area scrolls internally — the header and footer stay pinned in place
+        no matter how long the body gets.
+      </Paragraph>
+      <LongContentDrawerDemo />
 
       <Heading>The Done button and async onDone</Heading>
       <Paragraph>
@@ -166,16 +218,132 @@ export const Overview: StoryObj<typeof Drawer> = {
 
       <Heading>Header actions</Heading>
       <Paragraph>
-        <Text code>startActions</Text> and <Text code>endActions</Text> add
+        <Text code>additionalActions</Text> and <Text code>actions</Text> add
         controls to either side of the header — one element or several. Both
-        take the render-prop form for <Text code>closeDrawer</Text>. Supplying{' '}
-        <Text code>endActions</Text> replaces the default Done button; the title
+        take the render-prop form for <Text code>hide</Text>. Supplying{' '}
+        <Text code>actions</Text> replaces the default Done button; the title
         stays centred whatever lands on each side.
       </Paragraph>
+      <DocumentDrawerDemo />
+
+      <Heading>Non-dismissible</Heading>
+      <Paragraph>
+        <Text code>{'dismissible={false}'}</Text> turns off backdrop-click and{' '}
+        <Text kbd>Esc</Text> — only the header close button (or{' '}
+        <Text code>onDone</Text>/<Text code>actions</Text>) can close it.{' '}
+        <Text code>{'showCloseButton={false}'}</Text> hides that button too, for
+        a drawer that only closes through its own footer action.
+      </Paragraph>
+      <Flex orientation="horizontal" gap="m" wrap>
+        <NonDismissibleDrawerDemo />
+        <NoCloseButtonDrawerDemo />
+      </Flex>
+
+      <Heading>Reduced motion</Heading>
+      <Paragraph>
+        Under <Text code>prefers-reduced-motion</Text> the slide and the
+        backdrop fade are dropped — the panel simply mounts and unmounts.
+      </Paragraph>
+    </Flex>
+  ),
+};
+
+const AnatomyDrawerDemo = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button
+        label="Open drawer"
+        icon={<PanelRight />}
+        onClick={() => setOpen(true)}
+      />
+      <Drawer
+        title="Edit project"
+        content={longForm}
+        onDone={async () => {}}
+        open={open}
+        onClose={() => setOpen(false)}
+      />
+    </>
+  );
+};
+
+const PlacementDrawerDemo = ({
+  placement,
+  title,
+  label,
+  icon,
+  showLabel,
+}: {
+  placement: 'start' | 'end';
+  title: string;
+  label: string;
+  icon: React.ReactElement;
+  showLabel?: boolean;
+}) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button
+        label={label}
+        icon={icon}
+        showLabel={showLabel}
+        onClick={() => setOpen(true)}
+      />
+      <Drawer
+        title={title}
+        placement={placement}
+        content={filler}
+        open={open}
+        onClose={() => setOpen(false)}
+      />
+    </>
+  );
+};
+
+const WidthDrawerDemo = ({
+  width,
+  title,
+  label,
+}: {
+  width?: number;
+  title: string;
+  label: string;
+}) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button label={label} onClick={() => setOpen(true)} />
+      <Drawer
+        title={title}
+        width={width}
+        content={filler}
+        open={open}
+        onClose={() => setOpen(false)}
+      />
+    </>
+  );
+};
+
+const DocumentDrawerDemo = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button
+        label="Open document"
+        icon={<PanelRight />}
+        onClick={() => setOpen(true)}
+      />
       <Drawer
         title="Document"
         content={filler}
-        startActions={
+        open={open}
+        onClose={() => setOpen(false)}
+        additionalActions={
           <Button
             label="Version history"
             icon={<History />}
@@ -183,7 +351,7 @@ export const Overview: StoryObj<typeof Drawer> = {
             variant="text"
           />
         }
-        endActions={({ closeDrawer }) => [
+        actions={({ hide }) => [
           <Button
             key="share"
             label="Share"
@@ -195,23 +363,37 @@ export const Overview: StoryObj<typeof Drawer> = {
             key="save"
             label="Save"
             variant="submit"
-            onClick={closeDrawer}
+            onClick={hide}
           />,
         ]}
-      >
-        <Button label="Open document" icon={<PanelRight />} />
-      </Drawer>
+      />
+    </>
+  );
+};
 
-      <Heading>Reduced motion</Heading>
-      <Paragraph>
-        Under <Text code>prefers-reduced-motion</Text> the slide and the
-        backdrop fade are dropped — the panel simply mounts and unmounts.
-      </Paragraph>
-    </Flex>
-  ),
+const LongContentDrawerDemo = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button
+        label="Open activity log"
+        icon={<History />}
+        onClick={() => setOpen(true)}
+      />
+      <Drawer
+        title="Activity log"
+        content={longActivityLog}
+        open={open}
+        onClose={() => setOpen(false)}
+        footer={<Button label="Export as CSV" />}
+      />
+    </>
+  );
 };
 
 const ValidatingDrawer = () => {
+  const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
   const [error, setError] = useState('');
 
@@ -227,26 +409,81 @@ const ValidatingDrawer = () => {
   };
 
   return (
-    <Drawer
-      title="New workspace"
-      placement="end"
-      onDone={handleDone}
-      onClose={() => setError('')}
-      content={
-        <Form>
-          {error && (
-            <Text block size={3} color="danger">
-              {error}
-            </Text>
-          )}
-          <Form.Field label="Workspace name">
-            <TextInput value={name} onChange={(value) => setName(value)} />
-          </Form.Field>
-        </Form>
-      }
-    >
-      <Button label="Create workspace" variant="submit" />
-    </Drawer>
+    <>
+      <Button
+        label="Create workspace"
+        variant="submit"
+        onClick={() => setOpen(true)}
+      />
+      <Drawer
+        title="New workspace"
+        placement="end"
+        open={open}
+        onDone={handleDone}
+        onClose={() => {
+          setOpen(false);
+          setError('');
+        }}
+        content={
+          <Form>
+            {error && (
+              <Text block size={3} color="danger">
+                {error}
+              </Text>
+            )}
+            <Form.Field label="Workspace name">
+              <TextInput value={name} onChange={(value) => setName(value)} />
+            </Form.Field>
+          </Form>
+        }
+      />
+    </>
+  );
+};
+
+const NonDismissibleDrawerDemo = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button label="Non-dismissible" onClick={() => setOpen(true)} />
+      <Drawer
+        title="Accept the terms"
+        dismissible={false}
+        open={open}
+        onDone={async () => {}}
+        onClose={() => setOpen(false)}
+        content={
+          <Text block size={4}>
+            Click the backdrop or press Esc — the panel shakes instead of
+            closing. The close button and Done still work.
+          </Text>
+        }
+      />
+    </>
+  );
+};
+
+const NoCloseButtonDrawerDemo = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button label="No close button" onClick={() => setOpen(true)} />
+      <Drawer
+        title="Confirm export"
+        showCloseButton={false}
+        open={open}
+        onDone={async () => {}}
+        onClose={() => setOpen(false)}
+        content={
+          <Text block size={4}>
+            No close button in the header — the backdrop, Esc, and the Done
+            button below are the only ways out.
+          </Text>
+        }
+      />
+    </>
   );
 };
 

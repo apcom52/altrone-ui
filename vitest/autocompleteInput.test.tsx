@@ -45,8 +45,9 @@ describe('AutocompleteInput', () => {
       </Application>,
     );
 
-    expect(screen.getByTestId('combobox')).toHaveClass('cls');
-    expect(screen.getByTestId('combobox')).toHaveStyle('color: rgb(0, 0, 255)');
+    const wrapper = screen.getByTestId('combobox').closest('.cls');
+    expect(wrapper).not.toBeNull();
+    expect(wrapper).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that configuration works', () => {

@@ -22,17 +22,24 @@ export const Spoiler = ({
   children,
   className,
   style,
-  openedByDefault = false,
+  open,
+  defaultOpen = false,
   title,
   onToggle,
+  expandIcon = <Plus />,
+  collapseIcon = <Minus />,
   ...restProps
 }: SpoilerProps) => {
-  const { value: opened, toggle } = useBoolean(openedByDefault);
+  const isControlled = open !== undefined;
+  const { value: internalOpened, toggle: toggleInternal } =
+    useBoolean(defaultOpen);
+  const opened = isControlled ? open : internalOpened;
   const contentId = useId();
 
   const handleToggle = (event: MouseEvent<HTMLButtonElement>) => {
-    toggle();
-    onToggle?.(!opened, event);
+    const next = !opened;
+    if (!isControlled) toggleInternal();
+    onToggle?.(next, event);
   };
 
   return (
@@ -51,7 +58,7 @@ export const Spoiler = ({
       >
         <span className={s.Title}>{title}</span>
         <span className={s.ArrowIcon} aria-hidden={true}>
-          {opened ? <Minus /> : <Plus />}
+          {opened ? collapseIcon : expandIcon}
         </span>
       </button>
       <AnimatePresence initial={false}>

@@ -1,9 +1,27 @@
 import React from 'react';
 import { ButtonProps } from 'components/button/Button.types';
-import { Align, Size } from 'types';
+import { Justify, Size } from 'types';
 
 export type ToolbarVariant = 'plain' | 'grouped' | 'solid';
-export type ToolbarPlacement = 'top' | 'bottom' | 'left' | 'right';
+export type ToolbarEdge = 'top' | 'bottom' | 'left' | 'right';
+/**
+ * Collapse priority once a `Toolbar.Leading`/`Center`/`Trailing` (or a flat
+ * `Toolbar`) runs out of room: `low` collapses first, `medium` (default)
+ * only once every `low` item is already hidden, `high` never collapses.
+ * Collapsed items move into an overflow `Dropdown` appended to the row.
+ */
+export type ToolbarActionPriority = 'high' | 'medium' | 'low';
+
+/** Icons unique to `Toolbar`, overridable as a group via the `icons` prop. */
+export interface ToolbarIconSet {
+  sidebarExpand: React.ReactElement;
+  sidebarCollapse: React.ReactElement;
+  titleMenu: React.ReactElement;
+  overflowUp: React.ReactElement;
+  overflowDown: React.ReactElement;
+  overflowLeft: React.ReactElement;
+  overflowRight: React.ReactElement;
+}
 
 export interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
@@ -23,57 +41,48 @@ export interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
    *   groups. A self-sufficient app / frame header.
    */
   variant?: ToolbarVariant;
-  placement?: ToolbarPlacement;
+  edge?: ToolbarEdge;
   /** Drives toolbar height/padding and the default `size` of the actions inside it. */
   size?: Size;
-  /** Stick to the `placement` edge of the nearest scroll container. */
+  /** Stick to the `edge` of the nearest scroll container. */
   sticky?: boolean;
   /** Blurred gradient scrim behind the toolbar — lifts `grouped` pills off busy content. */
   showBackdrop?: boolean;
   /** @deprecated use `sticky`. Will be removed in v4. */
   fixed?: boolean;
+  /** Overrides for icons unique to `Toolbar` (sidebar toggle, title menu, overflow trigger). */
+  icons?: Partial<ToolbarIconSet>;
 }
 
 export interface ToolbarActionProps extends Omit<ButtonProps, 'variant'> {
   ref?: React.Ref<HTMLButtonElement>;
   kbd?: string;
-}
-
-export interface ToolbarBackActionProps
-  extends Omit<ToolbarActionProps, 'label' | 'icon' | 'showLabel'> {
-  showLabel?: boolean;
-}
-
-export interface ToolbarSearchActionProps
-  extends Omit<ToolbarActionProps, 'label' | 'icon' | 'showLabel'> {
-  showLabel?: boolean;
+  /** @default 'medium' */
+  priority?: ToolbarActionPriority;
 }
 
 export interface ToolbarSidebarToggleActionProps
   extends Omit<ToolbarActionProps, 'label' | 'icon' | 'showLabel'> {
-  /** Current sidebar state — controlled, this component holds no state of its own. */
-  collapsed: boolean;
+  /**
+   * Sidebar state. Omit to read/drive `Screen.Sidebar` automatically via
+   * `Screen`'s context (works only inside a `Screen` with an uncontrolled
+   * `Screen.Sidebar`). Pass it explicitly for full control — the component
+   * then holds no state of its own and you own `onClick` too.
+   */
+  collapsed?: boolean;
   showLabel?: boolean;
-}
-
-export interface ToolbarBackForwardActionProps
-  extends React.HTMLAttributes<HTMLDivElement> {
-  ref?: React.Ref<HTMLDivElement>;
-  onBack: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  onForward: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  backDisabled?: boolean;
-  forwardDisabled?: boolean;
 }
 
 export interface ToolbarTitleProps extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
-  label: string;
+  /** Overrides the native `div` `title` (tooltip) attribute — this is the rendered heading text. */
+  title: string;
   clickable?: boolean;
 }
 
 export interface ToolbarGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
-  align?: Align;
+  justify?: Justify;
   /** `flex` value — `weight={1}` makes the group eat the remaining space. */
   weight?: number;
   /**
@@ -82,6 +91,8 @@ export interface ToolbarGroupProps extends React.HTMLAttributes<HTMLDivElement> 
    * whatever the parent `Toolbar` uses.
    */
   variant?: ToolbarVariant;
+  /** Collapse priority for the whole group as one unit. @default 'medium' */
+  priority?: ToolbarActionPriority;
 }
 
 export interface ToolbarSeparatorProps

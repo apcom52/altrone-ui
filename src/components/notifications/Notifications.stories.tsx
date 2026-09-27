@@ -12,12 +12,20 @@ import {
   SlidersHorizontal,
   Trash2,
 } from 'lucide-react';
-import { Button, Flex, Select, Switcher, Text } from 'components';
+import { Button, Flex, Select, Switch, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Notifications } from './Notifications';
-import { useNotifications } from './Notifications.context';
-import type { NotificationPlacement, ToastVariant } from './Notifications.types';
+import {
+  dismissNotification,
+  showNotification,
+  showToast,
+} from './notificationsRegistry';
+import type {
+  NotificationPlacement,
+  ToastPlacement,
+  ToastVariant,
+} from './Notifications.types';
 
 const story: Meta<typeof Notifications> = {
   title: 'Components/Display/Notifications',
@@ -57,19 +65,18 @@ const LONG_TEXT =
 export const Overview: StoryObj<typeof Notifications> = {
   name: 'Overview',
   render: () => {
-    const { toast, notification } = useNotifications();
-
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Text block size={9} weight="bold">
           Notifications
         </Text>
         <Paragraph>
           One imperative notification system with two display modes. Call{' '}
-          <Text code>useNotifications()</Text> for <Text code>toast()</Text> — a brief,
-          pill-shaped message — and <Text code>notification()</Text> — a rich
-          card with an optional title, image, icon and action buttons. Both
-          return an <Text code>id</Text> you can pass to <Text code>dismiss()</Text>.
+          <Text code>showToast()</Text> for a brief, pill-shaped message —
+          and <Text code>showNotification()</Text> — a rich card with an
+          optional title, image, icon and action buttons. Both return an{' '}
+          <Text code>id</Text> you can pass to{' '}
+          <Text code>dismissNotification()</Text>.
         </Paragraph>
         <Paragraph>
           Both modes render on a <Text code>Box</Text> with{' '}
@@ -82,23 +89,25 @@ export const Overview: StoryObj<typeof Notifications> = {
         </Paragraph>
         <Paragraph>
           <Text code>Application</Text> already mounts the provider, so in
-          an app you only ever call the hook. Placement is set once, globally —
-          see the <Text weight="medium">Placement</Text> story.
+          an app you can call these functions from anywhere — a click
+          handler, a store action, outside React entirely. Placement is set
+          once, globally — see the <Text weight="medium">Placement</Text>{' '}
+          story.
         </Paragraph>
 
-        <Flex direction="horizontal" gap="s" wrap>
+        <Flex orientation="horizontal" gap="s" wrap>
           <Button
             size="s"
             label="Show a toast"
             onClick={() =>
-              toast('Changes saved.', { variant: 'success' })
+              showToast('Changes saved.', { variant: 'success' })
             }
           />
           <Button
             size="s"
             label="Show a notification"
             onClick={() =>
-              notification({
+              showNotification({
                 title: 'New message from Alex',
                 content: 'Are you free for a quick call at 3 pm today?',
                 icon: <MessageCircle size={16} />,
@@ -117,10 +126,8 @@ export const Overview: StoryObj<typeof Notifications> = {
 export const ToastMessages: StoryObj<typeof Notifications> = {
   name: 'Toast messages',
   render: () => {
-    const { toast } = useNotifications();
-
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Section>Toast messages</Section>
         <Paragraph>
           A toast confirms that something happened — a file saved, an item
@@ -137,16 +144,21 @@ export const ToastMessages: StoryObj<typeof Notifications> = {
           Four variants, each with its own default icon. The icon sits in a
           tinted circular chip; <Text code>default</Text> is neutral,{' '}
           <Text code>success</Text> / <Text code>warning</Text> /{' '}
-          <Text code>danger</Text> pick up the matching status colour.
+          <Text code>danger</Text> pick up the matching status colour. The
+          defaults come from <Text code>Application.icons</Text> (
+          <Text code>.info</Text> / <Text code>.success</Text> /{' '}
+          <Text code>.warning</Text> / <Text code>.danger</Text>) — shared with{' '}
+          <Text code>Result</Text> — so overriding one of those roles updates
+          the toast defaults too.
         </Paragraph>
-        <Flex direction="horizontal" gap="s" wrap>
+        <Flex orientation="horizontal" gap="s" wrap>
           {VARIANTS.map((variant) => (
             <Button
               key={variant}
               size="s"
               label={variant}
               onClick={() =>
-                toast(
+                showToast(
                   {
                     default: '3 items moved to archive.',
                     success: 'File uploaded successfully.',
@@ -167,12 +179,12 @@ export const ToastMessages: StoryObj<typeof Notifications> = {
           Omit <Text code>icon</Text> for the variant default, pass a node to
           override it, or pass <Text code>null</Text> to drop it entirely.
         </Paragraph>
-        <Flex direction="horizontal" gap="s" wrap>
+        <Flex orientation="horizontal" gap="s" wrap>
           <Button
             size="s"
             label="Custom icon"
             onClick={() =>
-              toast('Pull request #142 merged.', {
+              showToast('Pull request #142 merged.', {
                 icon: <GitPullRequest size={15} />,
               })
             }
@@ -180,7 +192,7 @@ export const ToastMessages: StoryObj<typeof Notifications> = {
           <Button
             size="s"
             label="No icon"
-            onClick={() => toast('Settings saved.', { icon: null })}
+            onClick={() => showToast('Settings saved.', { icon: null })}
           />
         </Flex>
 
@@ -192,17 +204,17 @@ export const ToastMessages: StoryObj<typeof Notifications> = {
           often an <Text weight="medium">Undo</Text>. Clicking it runs the
           callback and closes the toast.
         </Paragraph>
-        <Flex direction="horizontal" gap="s" wrap>
+        <Flex orientation="horizontal" gap="s" wrap>
           <Button
             size="s"
             label="Delete file"
             onClick={() =>
-              toast('Report.pdf deleted.', {
+              showToast('Report.pdf deleted.', {
                 variant: 'danger',
                 action: {
                   label: 'Undo',
                   onClick: () =>
-                    toast('Deletion undone.', { variant: 'success' }),
+                    showToast('Deletion undone.', { variant: 'success' }),
                 },
               })
             }
@@ -211,7 +223,7 @@ export const ToastMessages: StoryObj<typeof Notifications> = {
             size="s"
             label="Long message"
             onClick={() =>
-              toast(LONG_TEXT, {
+              showToast(LONG_TEXT, {
                 action: { label: 'View', onClick: () => {} },
               })
             }
@@ -225,22 +237,22 @@ export const ToastMessages: StoryObj<typeof Notifications> = {
           Auto-close pauses while the pointer hovers the toast, so a short{' '}
           <Text code>duration</Text> is still readable. Set{' '}
           <Text code>autoClose: false</Text> for a toast that stays until the
-          user (or <Text code>dismiss()</Text>) closes it — use this sparingly,
+          user (or <Text code>dismissNotification()</Text>) closes it — use this sparingly,
           for ongoing background work.
         </Paragraph>
-        <Flex direction="horizontal" gap="s" wrap>
+        <Flex orientation="horizontal" gap="s" wrap>
           <Button
             size="s"
             label="1 s — hover to hold"
             onClick={() =>
-              toast('Hover me before I disappear.', { duration: 1000 })
+              showToast('Hover me before I disappear.', { duration: 1000 })
             }
           />
           <Button
             size="s"
             label="Persistent"
             onClick={() =>
-              toast('Sync in progress — do not close the window.', {
+              showToast('Sync in progress — do not close the window.', {
                 icon: <Download size={15} />,
                 autoClose: false,
               })
@@ -257,10 +269,8 @@ export const ToastMessages: StoryObj<typeof Notifications> = {
 export const NotificationCards: StoryObj<typeof Notifications> = {
   name: 'Notification cards',
   render: () => {
-    const { notification } = useNotifications();
-
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Section>Notification cards</Section>
         <Paragraph>
           A notification is a card for something the user may want to read or act
@@ -278,12 +288,12 @@ export const NotificationCards: StoryObj<typeof Notifications> = {
           Add a <Text code>title</Text> for a headline and an{' '}
           <Text code>icon</Text> to signal the source at a glance.
         </Paragraph>
-        <Flex direction="horizontal" gap="s" wrap>
+        <Flex orientation="horizontal" gap="s" wrap>
           <Button
             size="s"
             label="Content only"
             onClick={() =>
-              notification({
+              showNotification({
                 content: 'Your session will expire in 5 minutes.',
               })
             }
@@ -292,7 +302,7 @@ export const NotificationCards: StoryObj<typeof Notifications> = {
             size="s"
             label="Title + icon"
             onClick={() =>
-              notification({
+              showNotification({
                 title: 'Review requested',
                 content:
                   'Petra Park asked for your review on PR #142 — Remove lodash.',
@@ -312,12 +322,12 @@ export const NotificationCards: StoryObj<typeof Notifications> = {
           question should set <Text code>autoClose: false</Text> so it waits for
           an answer.
         </Paragraph>
-        <Flex direction="horizontal" gap="s" wrap>
+        <Flex orientation="horizontal" gap="s" wrap>
           <Button
             size="s"
             label="Confirm delete"
             onClick={() =>
-              notification({
+              showNotification({
                 title: 'Delete project?',
                 content:
                   'This permanently removes Nebula Platform and all its data.',
@@ -329,7 +339,7 @@ export const NotificationCards: StoryObj<typeof Notifications> = {
                     label: 'Delete',
                     danger: true,
                     onClick: () =>
-                      notification({ content: 'Project deleted.' }),
+                      showNotification({ content: 'Project deleted.' }),
                   },
                 ],
               })
@@ -339,7 +349,7 @@ export const NotificationCards: StoryObj<typeof Notifications> = {
             size="s"
             label="Update available"
             onClick={() =>
-              notification({
+              showNotification({
                 title: 'Update available — v3.1.0',
                 content:
                   'Bug fixes, performance improvements, and new components.',
@@ -361,12 +371,12 @@ export const NotificationCards: StoryObj<typeof Notifications> = {
           card, clipped to its corners. Long <Text code>content</Text> wraps and
           the card grows to fit.
         </Paragraph>
-        <Flex direction="horizontal" gap="s" wrap>
+        <Flex orientation="horizontal" gap="s" wrap>
           <Button
             size="s"
             label="With image"
             onClick={() =>
-              notification({
+              showNotification({
                 title: 'Export ready',
                 content: 'dashboard-report-Q2.pdf is ready — 4.2 MB.',
                 image:
@@ -380,7 +390,7 @@ export const NotificationCards: StoryObj<typeof Notifications> = {
             size="s"
             label="Long content"
             onClick={() =>
-              notification({
+              showNotification({
                 title: 'New sign-in from Berlin, DE',
                 content: LONG_TEXT,
                 icon: <ShieldCheck size={16} />,
@@ -400,25 +410,31 @@ export const NotificationCards: StoryObj<typeof Notifications> = {
 
 // ─── Placement ───────────────────────────────────────────────────────────────
 
-const PLACEMENT_OPTIONS = [
-  { label: 'start', value: 'start' },
-  { label: 'end', value: 'end' },
+const TOAST_PLACEMENT_OPTIONS = [
+  { label: 'top', value: 'top' },
+  { label: 'bottom', value: 'bottom' },
+];
+
+const NOTIFICATION_PLACEMENT_OPTIONS = [
+  { label: 'top-start', value: 'top-start' },
+  { label: 'top-end', value: 'top-end' },
+  { label: 'bottom-start', value: 'bottom-start' },
+  { label: 'bottom-end', value: 'bottom-end' },
 ];
 
 const PlacementDemo = () => {
-  const { toast, notification } = useNotifications();
   return (
-    <Flex direction="horizontal" gap="s" wrap>
+    <Flex orientation="horizontal" gap="s" wrap>
       <Button
         size="s"
         label="Toast"
-        onClick={() => toast('Workspace synced.', { variant: 'success' })}
+        onClick={() => showToast('Workspace synced.', { variant: 'success' })}
       />
       <Button
         size="s"
         label="Notification"
         onClick={() =>
-          notification({
+          showNotification({
             title: 'Deploy succeeded',
             content: 'v3.2.2 is live. Build time 1 m 58 s.',
             icon: <RefreshCw size={16} />,
@@ -433,40 +449,37 @@ export const Placement: StoryObj<typeof Notifications> = {
   name: 'Placement',
   render: () => {
     const [toastPlacement, setToastPlacement] =
-      useState<NotificationPlacement>('end');
-    const [notificationSide, setNotificationSide] =
-      useState<NotificationPlacement>('end');
+      useState<ToastPlacement>('bottom');
     const [notificationPlacement, setNotificationPlacement] =
-      useState<NotificationPlacement>('end');
+      useState<NotificationPlacement>('bottom-end');
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Section>Placement</Section>
         <Paragraph>
           Placement is app-wide, not per call. Set it on{' '}
           <Text code>
-            &lt;Application toastPlacement notificationSide
-            notificationPlacement&gt;
+            &lt;Application toastPlacement notificationPlacement&gt;
           </Text>{' '}
-          (each also accepted directly on <Text code>&lt;Notifications&gt;</Text>). Every
-          value is logical — <Text code>&apos;start&apos;</Text> /{' '}
-          <Text code>&apos;end&apos;</Text> — and resolves against the writing
-          direction.
+          (each also accepted directly on <Text code>&lt;Notifications&gt;</Text>).
         </Paragraph>
         <Text size={4} list="marked" style={{ maxWidth: 660, lineHeight: 1.6 }}>
           <Text item>
             <Text code>toastPlacement</Text> — vertical edge of the toast stack:{' '}
-            <Text code>start</Text> = top, <Text code>end</Text> = bottom. Toasts
-            are always centred horizontally.
+            <Text code>top</Text> or <Text code>bottom</Text>. Toasts are
+            always centred horizontally.
           </Text>
           <Text item>
-            <Text code>notificationSide</Text> — horizontal edge of the
-            notification stack: <Text code>start</Text> = left,{' '}
-            <Text code>end</Text> = right.
-          </Text>
-          <Text item>
-            <Text code>notificationPlacement</Text> — vertical edge of the
-            notification stack.
+            <Text code>notificationPlacement</Text> — corner of the
+            notification stack, same <Text code>side-align</Text> shape as{' '}
+            <Text code>Popover</Text>/<Text code>Tooltip</Text>'s{' '}
+            <Text code>placement</Text>: <Text code>top-start</Text>,{' '}
+            <Text code>top-end</Text>, <Text code>bottom-start</Text> or{' '}
+            <Text code>bottom-end</Text>. The side (<Text code>top</Text>/
+            <Text code>bottom</Text>) is physical; the alignment along it (
+            <Text code>start</Text>/<Text code>end</Text>) is logical —{' '}
+            <Text code>start</Text> = left, <Text code>end</Text> = right,
+            resolved against the writing direction.
           </Text>
         </Text>
         <Paragraph>
@@ -475,43 +488,30 @@ export const Placement: StoryObj<typeof Notifications> = {
           chosen edge.
         </Paragraph>
 
-        <Flex direction="horizontal" gap="l" wrap>
-          <Flex direction="vertical" gap="xs" style={{ width: 200 }}>
+        <Flex orientation="horizontal" gap="l" wrap>
+          <Flex orientation="vertical" gap="xs" style={{ width: 200 }}>
             <Text size={3} weight="medium">
               toastPlacement
             </Text>
             <Select
               size="s"
               value={toastPlacement}
-              options={PLACEMENT_OPTIONS}
+              options={TOAST_PLACEMENT_OPTIONS}
               onChange={(value) =>
-                setToastPlacement(value === 'start' ? 'start' : 'end')
+                setToastPlacement(value === 'top' ? 'top' : 'bottom')
               }
             />
           </Flex>
-          <Flex direction="vertical" gap="xs" style={{ width: 200 }}>
-            <Text size={3} weight="medium">
-              notificationSide
-            </Text>
-            <Select
-              size="s"
-              value={notificationSide}
-              options={PLACEMENT_OPTIONS}
-              onChange={(value) =>
-                setNotificationSide(value === 'start' ? 'start' : 'end')
-              }
-            />
-          </Flex>
-          <Flex direction="vertical" gap="xs" style={{ width: 200 }}>
+          <Flex orientation="vertical" gap="xs" style={{ width: 200 }}>
             <Text size={3} weight="medium">
               notificationPlacement
             </Text>
             <Select
               size="s"
               value={notificationPlacement}
-              options={PLACEMENT_OPTIONS}
+              options={NOTIFICATION_PLACEMENT_OPTIONS}
               onChange={(value) =>
-                setNotificationPlacement(value === 'start' ? 'start' : 'end')
+                setNotificationPlacement(value as NotificationPlacement)
               }
             />
           </Flex>
@@ -519,7 +519,6 @@ export const Placement: StoryObj<typeof Notifications> = {
 
         <Notifications
           toastPlacement={toastPlacement}
-          notificationSide={notificationSide}
           notificationPlacement={notificationPlacement}
         >
           <PlacementDemo />
@@ -532,36 +531,35 @@ export const Placement: StoryObj<typeof Notifications> = {
 // ─── Cookie consent ─────────────────────────────────────────────────────────
 
 const CookiePreferencesForm = ({ onDone }: { onDone: () => void }) => {
-  const { toast } = useNotifications();
   const [analytics, setAnalytics] = useState(false);
   const [marketing, setMarketing] = useState(false);
 
   return (
-    <Flex direction="vertical" gap="m">
-      <Flex direction="vertical" gap="s">
-        <Switcher checked disabled>
+    <Flex orientation="vertical" gap="m">
+      <Flex orientation="vertical" gap="s">
+        <Switch checked disabled onChange={() => undefined}>
           Strictly necessary — always on
-        </Switcher>
-        <Switcher
+        </Switch>
+        <Switch
           checked={analytics}
           onChange={(checked) => setAnalytics(checked)}
         >
           Analytics
-        </Switcher>
-        <Switcher
+        </Switch>
+        <Switch
           checked={marketing}
           onChange={(checked) => setMarketing(checked)}
         >
           Marketing
-        </Switcher>
+        </Switch>
       </Flex>
-      <Flex direction="horizontal" gap="s">
+      <Flex orientation="horizontal" gap="s">
         <Button size="s" label="Cancel" onClick={onDone} />
         <Button
           size="s"
           label="Save choices"
           onClick={() => {
-            toast(
+            showToast(
               `Saved — analytics ${analytics ? 'on' : 'off'}, marketing ${
                 marketing ? 'on' : 'off'
               }.`,
@@ -576,19 +574,17 @@ const CookiePreferencesForm = ({ onDone }: { onDone: () => void }) => {
 };
 
 const CookieConsentDemo = () => {
-  const { toast, notification, dismiss } = useNotifications();
-
   const openPreferences = () => {
-    const id = notification({
+    const id = showNotification({
       title: 'Cookie preferences',
       icon: <SlidersHorizontal size={16} />,
       autoClose: false,
-      content: <CookiePreferencesForm onDone={() => dismiss(id)} />,
+      content: <CookiePreferencesForm onDone={() => dismissNotification(id)} />,
     });
   };
 
   const showBanner = () => {
-    notification({
+    showNotification({
       title: 'We value your privacy',
       icon: <Cookie size={16} />,
       autoClose: false,
@@ -597,13 +593,13 @@ const CookieConsentDemo = () => {
       actions: [
         {
           label: 'Reject non-essential',
-          onClick: () => toast('Only essential cookies will be used.'),
+          onClick: () => showToast('Only essential cookies will be used.'),
         },
         { label: 'Manage', onClick: openPreferences },
         {
           label: 'Accept all',
           onClick: () =>
-            toast('All cookies accepted.', { variant: 'success' }),
+            showToast('All cookies accepted.', { variant: 'success' }),
         },
       ],
     });
@@ -617,7 +613,7 @@ const CookieConsentDemo = () => {
 export const CookieConsent: StoryObj<typeof Notifications> = {
   name: 'Cookie consent',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Cookie consent</Section>
       <Paragraph>
         A cookie banner is a persistent notification, not a toast: it must not
@@ -626,20 +622,19 @@ export const CookieConsent: StoryObj<typeof Notifications> = {
         <Text code>actions</Text> for the top-level choices, and — for the
         per-category screen — passes an interactive form as{' '}
         <Text code>content</Text>. Because <Text code>content</Text> is captured
-        when <Text code>notification()</Text> is called, that form owns its state
+        when <Text code>showNotification()</Text> is called, that form owns its state
         and dismisses its own card via the id returned from{' '}
-        <Text code>notification()</Text>.
+        <Text code>showNotification()</Text>.
       </Paragraph>
       <Paragraph>
         Place it clear of the primary flow —{' '}
-        <Text code>notificationSide=&quot;start&quot;</Text> with{' '}
-        <Text code>notificationPlacement=&quot;end&quot;</Text> keeps it at the
-        bottom-left, away from bottom-right call-to-action buttons. In a real app
-        it is shown once, near the root, on the first visit; here a button stands
-        in for that.
+        <Text code>notificationPlacement=&quot;bottom-start&quot;</Text> keeps
+        it at the bottom-left, away from bottom-right call-to-action buttons.
+        In a real app it is shown once, near the root, on the first visit;
+        here a button stands in for that.
       </Paragraph>
 
-      <Notifications notificationSide="start" notificationPlacement="end">
+      <Notifications notificationPlacement="bottom-start">
         <CookieConsentDemo />
       </Notifications>
     </Flex>

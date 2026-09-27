@@ -13,6 +13,16 @@
   --text-input-font-size: var(--text-size-4);
   --text-input-icon-size: 16px;
 
+  /**
+   * iOS Safari auto-zooms the viewport on focus when a field's computed
+   * font-size is under 16px. Floored here for the default (`m`) size only —
+   * `.Mini`/`.Small` below re-declare this variable and keep their smaller,
+   * deliberately compact font; the zoom is an accepted trade-off there.
+   */
+  @media (pointer: coarse) {
+    --text-input-font-size: 16px;
+  }
+
   /* Gap between the field's border and the island content (islands carry no
      horizontal padding of their own) — applied by `.StartIslands`/`.EndIslands`
      below. `mini` zeroes it (no room to spare: the island is already exactly
@@ -31,7 +41,7 @@
   min-width: 0;
 }
 
-/* Multi-line field (Textarea): lay the islands out as a footer *below* the
+/* Multi-line field (TextArea): lay the islands out as a footer *below* the
    textarea instead of in the same row. On a single-line field an island shares
    the line with the input; on a textarea that would shorten every wrapped line
    and indent the text past a start island. The textarea takes a full-width flex
@@ -83,11 +93,15 @@
    control padding (24px at `xl`). No per-size table: every term already
    scales/holds on its own. */
 .StartIslands {
-  margin-left: calc(var(--text-input-island-outer-inset) - var(--box-padding-x));
+  margin-left: calc(
+    var(--text-input-island-outer-inset) - var(--box-padding-x)
+  );
 }
 
 .EndIslands {
-  margin-right: calc(var(--text-input-island-outer-inset) - var(--box-padding-x));
+  margin-right: calc(
+    var(--text-input-island-outer-inset) - var(--box-padding-x)
+  );
 }
 
 .Input {

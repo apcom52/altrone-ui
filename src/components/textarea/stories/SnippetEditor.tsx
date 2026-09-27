@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Flex, Text } from 'components';
-import { Textarea } from '../Textarea.tsx';
+import { TextArea } from '../TextArea.tsx';
 
 const SAMPLE = `{
   "name": "web",
@@ -33,21 +33,21 @@ export const SnippetEditor = () => {
   const lines = text.split('\n').length;
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 520 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Paste a config
         </Text>
         <Text block>
-          A tall <Text code>Textarea</Text> for machine text — bump{' '}
+          A tall <Text code>TextArea</Text> for machine text — bump{' '}
           <Text code>size</Text>, drag the resize handle for a big payload, and
           drive validation from the value. <Text code>invalid</Text> flips the
           moment the JSON stops parsing.
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="xs">
-        <Textarea
+      <Flex orientation="vertical" gap="xs">
+        <TextArea
           value={text}
           onChange={setText}
           size="l"
@@ -56,7 +56,7 @@ export const SnippetEditor = () => {
           placeholder='{ "key": "value" }'
           style={{ minHeight: 160, fontFamily: 'var(--font-family-code)' }}
         />
-        <Flex direction="horizontal" gap="m" align="center" justify="between">
+        <Flex orientation="horizontal" gap="m" align="center" justify="between">
           <Text size={2} color={parsed.ok ? 'success' : 'danger'}>
             {parsed.ok ? '✓ ' : '✗ '}
             {parsed.message}

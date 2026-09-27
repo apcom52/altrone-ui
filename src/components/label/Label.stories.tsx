@@ -25,7 +25,7 @@ export default story;
 export const Overview: StoryObj<typeof Label> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Text block size={9} weight="bold">
         Label
       </Text>
@@ -39,7 +39,7 @@ export const Overview: StoryObj<typeof Label> = {
         <Text code>default</Text> for neutral. Cross it with a{' '}
         <Text code>variant</Text> (<Text code>solid</Text> /{' '}
         <Text code>soft</Text> / <Text code>outline</Text>), a{' '}
-        <Text code>rounding</Text> (<Text code>rounded</Text> /{' '}
+        <Text code>shape</Text> (<Text code>rounded</Text> /{' '}
         <Text code>pill</Text>) and a <Text code>size</Text>.
       </Text>
       <Flex gap="s" wrap align="center">
@@ -48,7 +48,7 @@ export const Overview: StoryObj<typeof Label> = {
         <Label color="danger" variant="soft">Blocked</Label>
         <Label color="primary" variant="soft">Beta</Label>
         <Label color="default">Draft</Label>
-        <Label color="indigo" rounding="pill">v2.0.0</Label>
+        <Label color="indigo" shape="pill">v2.0.0</Label>
         <Label color="teal" variant="outline">SDK</Label>
       </Flex>
     </Flex>
@@ -59,7 +59,7 @@ export const TextInputStory: StoryObj<typeof Flex> = {
   name: 'Showcase',
   render: () => {
     return (
-      <Flex direction="vertical" gap="l">
+      <Flex orientation="vertical" gap="l">
         <Text size={5} weight="bold" block>
           Different labels (solid variant)
         </Text>
@@ -118,11 +118,11 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           Pills
         </Text>
         <Flex gap="m" wrap>
-          <Label color="default" rounding="pill">Processing</Label>
-          <Label color="primary" rounding="pill">In progress</Label>
-          <Label color="warning" rounding="pill">In review</Label>
-          <Label color="success" rounding="pill">Completed</Label>
-          <Label color="danger" rounding="pill">Cancelled</Label>
+          <Label color="default" shape="pill">Processing</Label>
+          <Label color="primary" shape="pill">In progress</Label>
+          <Label color="warning" shape="pill">In review</Label>
+          <Label color="success" shape="pill">Completed</Label>
+          <Label color="danger" shape="pill">Cancelled</Label>
         </Flex>
         <Text size={5} weight="bold" block>
           Sizes

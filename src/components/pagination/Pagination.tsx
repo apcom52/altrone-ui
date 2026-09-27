@@ -1,14 +1,10 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useState } from 'react';
 import s from './pagination.module.scss';
 import clsx from 'clsx';
-import {
-  ChevronFirst,
-  ChevronLast,
-  ChevronLeft,
-  ChevronRight,
-} from 'lucide-react';
+import { ChevronFirst, ChevronLast } from 'lucide-react';
 import { PaginationProps } from './Pagination.types.ts';
 import { useLocalization } from '../application';
+import { useIcons } from '../application/useIcons.tsx';
 import { Button } from 'components/button/index.ts';
 import { Flex } from 'components/flex/Flex.tsx';
 
@@ -51,98 +47,134 @@ export const Pagination = memo<PaginationProps>(
   ({
     ref,
     currentPage,
+    defaultPage = 1,
     totalPages,
     onChange,
     showEdgeButtons = true,
     siblings = 1,
+    size = 'm',
     className,
     style,
+    prevIcon,
+    nextIcon,
+    firstPageIcon,
+    lastPageIcon,
     ...restProps
   }) => {
     const t = useLocalization();
+    const icons = useIcons();
+
+    const isControlled = currentPage !== undefined;
+    const [uncontrolledPage, setUncontrolledPage] = useState(defaultPage);
+    const page = isControlled ? currentPage : uncontrolledPage;
+
+    const handleChange = (
+      next: number,
+      event: React.MouseEvent<HTMLButtonElement>,
+    ) => {
+      if (!isControlled) setUncontrolledPage(next);
+      onChange?.(next, event);
+    };
 
     if (
       import.meta.env.DEV &&
+      isControlled &&
       totalPages >= 1 &&
-      (currentPage < 1 || currentPage > totalPages)
+      (page < 1 || page > totalPages)
     ) {
       console.warn(
-        `[Pagination] currentPage (${currentPage}) is outside 1..${totalPages}. It's a controlled prop — clamp it in your onChange handler.`,
+        `[Pagination] currentPage (${page}) is outside 1..${totalPages}. It's a controlled prop — clamp it in your onChange handler.`,
       );
     }
 
     const pageItems = useMemo(
-      () => buildPageItems(currentPage, totalPages, siblings),
-      [currentPage, totalPages, siblings],
+      () => buildPageItems(page, totalPages, siblings),
+      [page, totalPages, siblings],
     );
 
-    const isFirst = currentPage <= 1;
-    const isLast = currentPage >= totalPages;
+    const isFirst = page <= 1;
+    const isLast = page >= totalPages;
 
     return (
       <Flex
         ref={ref}
-        tagName="nav"
+        asChild
         gap="xs"
         align="center"
         aria-label={t('pagination.navigation')}
-        className={clsx(s.Pagination, className)}
+        className={clsx(
+          s.Pagination,
+          {
+            [s.Mini]: size === 'mini',
+            [s.Small]: size === 's',
+            [s.Large]: size === 'l',
+            [s.XLarge]: size === 'xl',
+          },
+          className,
+        )}
         style={style}
         {...restProps}
       >
-        {showEdgeButtons && (
-          <Button
-            icon={<ChevronFirst />}
-            disabled={isFirst}
-            label={t('pagination.firstPage')}
-            onClick={(e) => onChange(1, e)}
-            showLabel={false}
-          />
-        )}
-
-        <Button
-          icon={<ChevronLeft />}
-          disabled={isFirst}
-          label={t('pagination.previous')}
-          onClick={(e) => onChange(currentPage - 1, e)}
-          showLabel={false}
-        />
-
-        {pageItems.map((item, index) =>
-          item === '...' ? (
-            <span key={`ellipsis-${index}`} className={s.Ellipsis} aria-hidden>
-              …
-            </span>
-          ) : (
+        <nav>
+          {showEdgeButtons && (
             <Button
-              key={item}
-              label={String(item)}
-              variant="text"
-              selected={item === currentPage}
-              onClick={(e) => onChange(item, e)}
-              aria-label={t('pagination.page', { vars: { page: item } })}
-              aria-current={item === currentPage ? 'page' : undefined}
+              size={size}
+              icon={firstPageIcon ?? <ChevronFirst />}
+              disabled={isFirst}
+              label={t('pagination.firstPage')}
+              onClick={(e) => handleChange(1, e)}
+              showLabel={false}
             />
-          ),
-        )}
+          )}
 
-        <Button
-          icon={<ChevronRight />}
-          disabled={isLast}
-          label={t('pagination.next')}
-          onClick={(e) => onChange(currentPage + 1, e)}
-          showLabel={false}
-        />
-
-        {showEdgeButtons && (
           <Button
-            icon={<ChevronLast />}
-            disabled={isLast}
-            label={t('pagination.lastPage')}
-            onClick={(e) => onChange(totalPages, e)}
+            size={size}
+            icon={prevIcon ?? icons.prev}
+            disabled={isFirst}
+            label={t('pagination.previous')}
+            onClick={(e) => handleChange(page - 1, e)}
             showLabel={false}
           />
-        )}
+
+          {pageItems.map((item, index) =>
+            item === '...' ? (
+              <span key={`ellipsis-${index}`} className={s.Ellipsis} aria-hidden>
+                …
+              </span>
+            ) : (
+              <Button
+                key={item}
+                size={size}
+                label={String(item)}
+                variant="text"
+                selected={item === page}
+                onClick={(e) => handleChange(item, e)}
+                aria-label={t('pagination.page', { vars: { page: item } })}
+                aria-current={item === page ? 'page' : undefined}
+              />
+            ),
+          )}
+
+          <Button
+            size={size}
+            icon={nextIcon ?? icons.next}
+            disabled={isLast}
+            label={t('pagination.next')}
+            onClick={(e) => handleChange(page + 1, e)}
+            showLabel={false}
+          />
+
+          {showEdgeButtons && (
+            <Button
+              size={size}
+              icon={lastPageIcon ?? <ChevronLast />}
+              disabled={isLast}
+              label={t('pagination.lastPage')}
+              onClick={(e) => handleChange(totalPages, e)}
+              showLabel={false}
+            />
+          )}
+        </nav>
       </Flex>
     );
   },

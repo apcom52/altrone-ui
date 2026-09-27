@@ -50,11 +50,9 @@ export const fr: Localization = {
     notFound: 'Aucun résultat',
   },
   toolbar: {
-    back: 'Précédent',
-    forward: 'Suivant',
-    search: 'Rechercher',
     collapseSidebar: 'Réduire la barre latérale',
     expandSidebar: 'Développer la barre latérale',
+    moreActions: "Plus d'actions",
   },
   screen: {
     sidebarLabel: 'Barre latérale',
@@ -185,6 +183,7 @@ export const fr: Localization = {
   },
   colorPicker: {
     placeholder: 'Choisir une couleur',
+    title: 'Choisir une couleur',
     savedColors: 'Couleurs sauvegardées',
     palette: 'Palette',
   },

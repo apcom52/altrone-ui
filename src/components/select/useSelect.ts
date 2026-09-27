@@ -64,7 +64,7 @@ export const useSelect = (props: SelectProps) => {
     return options.filter((item) => item.label.toLowerCase().includes(query));
   }, [options, userQuery, searchable]);
 
-  const clearValue = useCallback(
+  const clear = useCallback(
     (event?: SelectEvent) => {
       onChange(multiple ? [] : undefined, event);
     },
@@ -80,7 +80,7 @@ export const useSelect = (props: SelectProps) => {
     selectedOptions,
     valueString,
     selectValue,
-    clearValue,
+    clear,
     filteredOptions,
   };
 };

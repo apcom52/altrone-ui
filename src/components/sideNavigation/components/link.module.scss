@@ -1,0 +1,38 @@
+@import 'src/global/mixins';
+
+.Link {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.Label {
+  color: var(--side-navigation-link-text-color);
+  font-size: var(--side-navigation-link-text-size);
+  font-weight: var(--text-weight-medium);
+  line-height: var(--line-height-4);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s linear;
+
+  @include focus;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--side-navigation-link-active-text-color);
+  }
+}
+
+.Selected {
+  .Label {
+    font-weight: var(--text-weight-bold);
+    color: var(--side-navigation-link-active-text-color);
+  }
+}
+
+.Children {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding-left: var(--l-gap);
+}

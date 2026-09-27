@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Flex, Text } from 'components';
-import { Textarea } from '../Textarea.tsx';
+import { TextArea } from '../TextArea.tsx';
 
 const START =
   "We're moving the weekly sync to Thursdays at 10:00.\n\nThe Monday slot clashed with the release window for half the team. Notes will still land in #announcements by end of day either way.";
@@ -17,25 +17,25 @@ export const Announcement = () => {
   const blocks = paragraphs(draft);
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Compose &amp; preview
         </Text>
         <Text block>
           The write / preview split: the same string feeds an editable{' '}
-          <Text code>Textarea</Text> on the left and a <Text code>Text</Text>
+          <Text code>TextArea</Text> on the left and a <Text code>Text</Text>
           -rendered preview on the right. Blank lines become paragraphs and pick
           up the <Text code>1.6</Text> block leading.
         </Text>
       </Flex>
 
-      <Flex direction="horizontal" gap="l">
-        <Flex direction="vertical" gap="xs" style={{ flex: 1 }}>
+      <Flex orientation="horizontal" gap="l">
+        <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
           <Text size={2} weight="bold" color="muted" block>
             DRAFT
           </Text>
-          <Textarea
+          <TextArea
             value={draft}
             onChange={setDraft}
             size="l"
@@ -44,12 +44,12 @@ export const Announcement = () => {
           />
         </Flex>
 
-        <Flex direction="vertical" gap="xs" style={{ flex: 1 }}>
+        <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
           <Text size={2} weight="bold" color="muted" block>
             PREVIEW
           </Text>
           <Flex
-            direction="vertical"
+            orientation="vertical"
             gap="s"
             style={{
               border: '1px solid var(--border-a1)',

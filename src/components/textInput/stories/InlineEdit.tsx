@@ -40,8 +40,8 @@ export const InlineEdit = () => {
   };
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 460 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 460 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Editing a value in place
         </Text>
@@ -53,11 +53,11 @@ export const InlineEdit = () => {
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="none">
+      <Flex orientation="vertical" gap="none">
         {tasks.map((task) => (
           <Flex
             key={task.id}
-            direction="horizontal"
+            orientation="horizontal"
             gap="s"
             align="center"
             style={{

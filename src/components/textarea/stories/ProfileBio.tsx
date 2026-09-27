@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Flex, Text } from 'components';
-import { Textarea } from '../Textarea.tsx';
+import { TextArea } from '../TextArea.tsx';
 
 const SAVED_DEFAULT =
   'Design systems engineer. Currently untangling a decade of CSS into tokens. Off the clock: long-distance cycling and worse coffee than I admit.';
@@ -15,21 +15,21 @@ export const ProfileBio = () => {
   const tooShort = draft.trim().length < MIN;
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 480 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 480 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           A profile field, edited in place
         </Text>
         <Text block>
           The other half of a form: multi-line copy. Read-only until you hit
           Edit, a minimum-length gate while editing, and back to a flat,
-          copy-friendly block on save — all the same <Text code>Textarea</Text>,
+          copy-friendly block on save — all the same <Text code>TextArea</Text>,
           just toggling <Text code>readOnly</Text> and <Text code>invalid</Text>.
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="xs">
-        <Flex direction="horizontal" gap="m" align="center" justify="between">
+      <Flex orientation="vertical" gap="xs">
+        <Flex orientation="horizontal" gap="m" align="center" justify="between">
           <Text asChild size={2} weight="medium">
             <label htmlFor="bio">Bio</label>
           </Text>
@@ -46,7 +46,7 @@ export const ProfileBio = () => {
           )}
         </Flex>
 
-        <Textarea
+        <TextArea
           id="bio"
           value={editing ? draft : saved}
           onChange={setDraft}
@@ -69,7 +69,7 @@ export const ProfileBio = () => {
       </Flex>
 
       {editing && (
-        <Flex direction="horizontal" gap="s">
+        <Flex orientation="horizontal" gap="s">
           <Button
             variant="submit"
             label="Save"

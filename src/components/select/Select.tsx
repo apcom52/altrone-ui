@@ -10,8 +10,6 @@ import {
 } from 'react';
 import { AnyObject } from 'utils/types.ts';
 import { Dropdown } from 'components/dropdown';
-import { Delete, Search, ChevronDown, ChevronUp } from 'lucide-react';
-import { Scrollable } from 'components/scrollable';
 import { TextInput } from 'components/textInput';
 import s from './select.module.scss';
 import clsx from 'clsx';
@@ -20,6 +18,8 @@ import { useSelect } from './useSelect.ts';
 import { useLocalization } from 'components/application';
 import { Slot } from 'utils/components/Slot.tsx';
 import { SelectContext } from './Select.context.ts';
+import { useFormField } from '../form/components/Field.context.ts';
+import { useIcons } from 'components/application/useIcons.tsx';
 
 const SelectComponent = (props: SelectProps) => {
   const {
@@ -29,14 +29,13 @@ const SelectComponent = (props: SelectProps) => {
     placeholder,
     searchable,
     clearable,
-    size = 'm',
+    size,
     className,
     style,
     parentWidth = true,
     disabled,
     transparent,
     menuHeight,
-    renderFunc,
     onChange,
     onFocus,
     onBlur,
@@ -45,11 +44,27 @@ const SelectComponent = (props: SelectProps) => {
     asChild,
     readOnly,
     ref,
+    openIcon,
+    closeIcon,
+    searchIcon,
+    clearIcon,
     ...restProps
   } = props;
 
   const id = useId();
-  const selectName = name || id;
+  const icons = useIcons();
+
+  const {
+    name: formFieldName,
+    disabled: formFieldDisabled,
+    size: formFieldSize,
+  } = useFormField();
+
+  const selectDisabled =
+    typeof disabled === 'boolean' ? disabled : formFieldDisabled;
+  const selectSize = size || formFieldSize || 'm';
+
+  const selectName = name || formFieldName || id;
   const listboxId = `${id}-listbox`;
 
   const t = useLocalization();
@@ -64,7 +79,7 @@ const SelectComponent = (props: SelectProps) => {
     blurSelect,
     valueString = '',
     filteredOptions,
-    clearValue,
+    clear,
   } = useSelect(props);
 
   const isTransparent = Boolean(transparent);
@@ -73,7 +88,7 @@ const SelectComponent = (props: SelectProps) => {
 
   const menu = useMemo(
     () =>
-      ({ closePopup }: PopoverContentContext) => (
+      ({ hide }: PopoverContentContext) => (
         <div
           className={s.Menu}
           role="listbox"
@@ -86,39 +101,40 @@ const SelectComponent = (props: SelectProps) => {
               : undefined
           }
         >
-          <Scrollable className={s.MenuScroll} overflowX="hidden">
-            {filteredOptions.length === 0 ? (
-              <div className={s.Empty}>{t('select.notFound')}</div>
-            ) : (
-              <Dropdown.Menu role="presentation">
-                {filteredOptions.map((option) => {
-                  const checked = Array.isArray(selectedOptions)
-                    ? selectedOptions.some(
-                        (item) => item.value === option.value,
-                      )
-                    : selectedOptions?.value === option.value;
+          {filteredOptions.length === 0 ? (
+            <div className={s.Empty}>{t('select.notFound')}</div>
+          ) : (
+            <Dropdown.Menu
+              role="presentation"
+              maxHeight="var(--select-menu-height)"
+            >
+              {filteredOptions.map((option) => {
+                const checked = Array.isArray(selectedOptions)
+                  ? selectedOptions.some(
+                      (item) => item.value === option.value,
+                    )
+                  : selectedOptions?.value === option.value;
 
-                  return (
-                    <Dropdown.Checkbox
-                      key={option.value}
-                      role="option"
-                      aria-selected={checked}
-                      checked={checked}
-                      focused={checked}
-                      disabled={option.disabled}
-                      label={option.label}
-                      onChange={() => {
-                        selectValue(option.value);
-                        if (!multiple) {
-                          closePopup();
-                        }
-                      }}
-                    />
-                  );
-                })}
-              </Dropdown.Menu>
-            )}
-          </Scrollable>
+                return (
+                  <Dropdown.Checkbox
+                    key={option.value}
+                    role="option"
+                    aria-selected={checked}
+                    checked={checked}
+                    focused={checked}
+                    disabled={option.disabled}
+                    label={option.label}
+                    onChange={(_checked, event) => {
+                      selectValue(option.value, event);
+                      if (!multiple) {
+                        hide();
+                      }
+                    }}
+                  />
+                );
+              })}
+            </Dropdown.Menu>
+          )}
         </div>
       ),
     [
@@ -157,16 +173,12 @@ const SelectComponent = (props: SelectProps) => {
     expanded: opened,
     value,
     selectedOptions,
-    disabled: Boolean(disabled),
+    disabled: Boolean(selectDisabled),
     multiple: Boolean(multiple),
-    clearValue,
+    clear,
   };
 
   const renderTrigger = () => {
-    if (renderFunc) {
-      return renderFunc({ ...context, className: cls, style });
-    }
-
     if (asChild) {
       if (!isValidElement(children)) {
         console.error(
@@ -193,8 +205,8 @@ const SelectComponent = (props: SelectProps) => {
         placeholder={valueString || placeholder}
         readOnly={readOnly ?? !(searchable && searchMode)}
         readonlyStyles={Boolean(readOnly)}
-        size={size}
-        disabled={disabled}
+        size={selectSize}
+        disabled={selectDisabled}
         variant={isTransparent ? 'transparent' : 'default'}
         onChange={setUserQuery}
         onFocus={
@@ -219,23 +231,21 @@ const SelectComponent = (props: SelectProps) => {
           <TextInput.ActionIsland
             placement="end"
             label={t('common.clear')}
-            icon={<Delete />}
+            icon={clearIcon ?? icons.clear}
             showLabel={false}
             disabled={false}
-            onClick={(event) => clearValue(event)}
+            onClick={(event) => clear(event)}
           />
         )}
         <TextInput.IconIsland
           className={s.ArrowIcon}
           placement="end"
           icon={
-            searchMode ? (
-              <Search />
-            ) : opened ? (
-              <ChevronUp />
-            ) : (
-              <ChevronDown />
-            )
+            searchMode
+              ? (searchIcon ?? icons.search)
+              : opened
+                ? (closeIcon ?? icons.close)
+                : (openIcon ?? icons.open)
           }
         />
       </TextInput>

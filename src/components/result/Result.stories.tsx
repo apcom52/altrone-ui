@@ -67,7 +67,7 @@ const STATUSES: ResultStatus[] = ['empty', 'info', 'success', 'warning', 'error'
 export const Overview: StoryObj<typeof Result> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Result
       </Text>
@@ -75,7 +75,7 @@ export const Overview: StoryObj<typeof Result> = {
       <Paragraph>
         <Text code>Result</Text> is a centered feedback block: an icon in a
         tinted media chip, a short <Text code>title</Text>, an optional muted{' '}
-        <Text code>description</Text>, and an optional row of{' '}
+        <Text code>children</Text> line, and an optional row of{' '}
         <Text code>actions</Text>. <Text code>status</Text> covers the common
         cases and sets the default icon and the chip tint; an{' '}
         <Text code>error</Text> renders <Text code>role="alert"</Text>,
@@ -87,17 +87,19 @@ export const Overview: StoryObj<typeof Result> = {
         <Text code>empty</Text> (the default — a neutral &ldquo;no data&rdquo;
         state), <Text code>info</Text>, <Text code>success</Text>,{' '}
         <Text code>warning</Text>, <Text code>error</Text>. Only the chip is
-        coloured; the text stays neutral.
+        coloured; the text stays neutral. Every status but{' '}
+        <Text code>empty</Text> takes its default glyph from{' '}
+        <Text code>Application.icons</Text> (<Text code>.info</Text> /{' '}
+        <Text code>.success</Text> / <Text code>.warning</Text> /{' '}
+        <Text code>.danger</Text> for <Text code>error</Text>) — the same
+        roles <Text code>Notifications</Text> uses for its toast variants.
       </Paragraph>
       <Flex gap="l" align="start" wrap>
         {STATUSES.map((st) => (
           <Frame key={st}>
-            <Result
-              status={st}
-              size="s"
-              title={`status="${st}"`}
-              description="Supporting line"
-            />
+            <Result status={st} size="s" title={`status="${st}"`}>
+              Supporting line
+            </Result>
           </Frame>
         ))}
       </Flex>
@@ -105,8 +107,8 @@ export const Overview: StoryObj<typeof Result> = {
       <Heading>Anatomy</Heading>
       <Paragraph>
         With nothing passed it shows the <Text code>empty</Text> icon and the
-        localized &ldquo;No data&rdquo;. A lone <Text code>description</Text> (or{' '}
-        <Text code>children</Text>) is promoted to the title; pass an explicit{' '}
+        localized &ldquo;No data&rdquo;. A lone <Text code>children</Text>{' '}
+        line is promoted to the title; pass an explicit{' '}
         <Text code>title</Text> to get both lines. <Text code>icon</Text>{' '}
         overrides the status glyph.
       </Paragraph>
@@ -114,14 +116,16 @@ export const Overview: StoryObj<typeof Result> = {
         <Result
           icon={<FolderPlus />}
           title="No projects yet"
-          description="Projects group your work, deploys and members. Create the first one to get going."
           actions={
             <>
               <Button label="New project" icon={<Plus />} variant="submit" />
               <Button label="Import" icon={<Upload />} />
             </>
           }
-        />
+        >
+          Projects group your work, deploys and members. Create the first one
+          to get going.
+        </Result>
       </Frame>
 
       <Heading>Sizes</Heading>
@@ -133,7 +137,9 @@ export const Overview: StoryObj<typeof Result> = {
       <Flex gap="l" align="start" wrap>
         {(['mini', 's', 'm', 'l', 'xl'] as const).map((sz) => (
           <Frame key={sz}>
-            <Result size={sz} title={`size="${sz}"`} description="Muted line" />
+            <Result size={sz} title={`size="${sz}"`}>
+              Muted line
+            </Result>
           </Frame>
         ))}
       </Flex>
@@ -161,9 +167,11 @@ export const NoSearchResults: StoryObj<typeof Result> = {
       <Result
         icon={<SearchX />}
         title="No matches"
-        description="No documents match “q3 revenue forecast”. Try a shorter query or clear the filters."
         actions={<Button label="Clear filters" />}
-      />
+      >
+        No documents match “q3 revenue forecast”. Try a shorter query or clear
+        the filters.
+      </Result>
     </Frame>
   ),
 };
@@ -174,12 +182,10 @@ export const InboxZero: StoryObj<typeof Result> = {
   name: 'Empty — inbox zero',
   render: () => (
     <Frame>
-      <Result
-        size="l"
-        icon={<Inbox />}
-        title="You're all caught up"
-        description="No new messages. Anything that needs your attention will show up here."
-      />
+      <Result size="l" icon={<Inbox />} title="You're all caught up">
+        No new messages. Anything that needs your attention will show up
+        here.
+      </Result>
     </Frame>
   ),
 };
@@ -195,9 +201,10 @@ export const Success: StoryObj<typeof Result> = {
         size="l"
         icon={<MailCheck />}
         title="Invitations sent"
-        description="Four teammates will get an email with a link to join the workspace."
         actions={<Button label="Back to team" variant="submit" />}
-      />
+      >
+        Four teammates will get an email with a link to join the workspace.
+      </Result>
     </Frame>
   ),
 };
@@ -211,9 +218,10 @@ export const FailedToLoad: StoryObj<typeof Result> = {
       <Result
         status="error"
         title="Couldn't load activity"
-        description="Something went wrong on our side. This usually clears up on its own."
         actions={<Button label="Retry" icon={<RefreshCw />} />}
-      />
+      >
+        Something went wrong on our side. This usually clears up on its own.
+      </Result>
     </Frame>
   ),
 };
@@ -228,14 +236,16 @@ export const NoAccess: StoryObj<typeof Result> = {
         status="warning"
         icon={<ShieldAlert />}
         title="You don't have access to this project"
-        description="Ask an owner to add you, or switch to a workspace where you're a member."
         actions={
           <>
             <Button label="Request access" variant="submit" />
             <Button label="Switch workspace" icon={<RotateCcw />} />
           </>
         }
-      />
+      >
+        Ask an owner to add you, or switch to a workspace where you're a
+        member.
+      </Result>
     </Frame>
   ),
 };
@@ -249,14 +259,16 @@ export const FirstRun: StoryObj<typeof Result> = {
       <Result
         icon={<Users />}
         title="Invite your team"
-        description="Altrone is better with people. Add teammates to share projects and review work together."
         actions={
           <>
             <Button label="Invite members" icon={<Plus />} variant="submit" />
             <Button label="Copy invite link" />
           </>
         }
-      />
+      >
+        Altrone is better with people. Add teammates to share projects and
+        review work together.
+      </Result>
     </Frame>
   ),
 };

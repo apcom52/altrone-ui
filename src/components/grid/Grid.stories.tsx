@@ -91,7 +91,7 @@ const Cell = ({
 export const Overview: StoryObj<typeof Grid> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Grid
       </Text>
@@ -151,7 +151,7 @@ const SIZE_ROWS: number[][] = [
 export const ColumnSizes: StoryObj<typeof Grid> = {
   name: 'Column sizes',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>Column sizes</Heading>
       <Paragraph>
         The grid is always 12 units wide. A column&rsquo;s{' '}
@@ -160,7 +160,7 @@ export const ColumnSizes: StoryObj<typeof Grid> = {
         clean fit, though they don&rsquo;t have to.
       </Paragraph>
 
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         {SIZE_ROWS.map((sizes) => (
           <Grid key={sizes.join('-')} gap="s">
             {sizes.map((size, i) => (
@@ -180,7 +180,7 @@ export const ColumnSizes: StoryObj<typeof Grid> = {
 export const AutoColumns: StoryObj<typeof Grid> = {
   name: 'Auto columns',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>Auto columns</Heading>
       <Paragraph>
         A column with no <Text code>size</Text> (or{' '}
@@ -189,7 +189,7 @@ export const AutoColumns: StoryObj<typeof Grid> = {
         auto columns in one row split the remainder evenly.
       </Paragraph>
 
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         <Grid gap="s">
           <Grid.Column size={2}>
             <Cell label="2" muted />
@@ -234,7 +234,7 @@ const GAPS: Gap[] = ['none', 'xs', 's', 'm', 'l', 'xl', 'xxl'];
 export const GapAndRowGap: StoryObj<typeof Grid> = {
   name: 'Gap and row gap',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>Gap and row gap</Heading>
       <Paragraph>
         <Text code>gap</Text> sets the horizontal space between columns.{' '}
@@ -244,9 +244,9 @@ export const GapAndRowGap: StoryObj<typeof Grid> = {
       </Paragraph>
 
       <Subheading>gap</Subheading>
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         {GAPS.map((gap) => (
-          <Flex key={gap} direction="vertical" gap="xxs">
+          <Flex key={gap} orientation="vertical" gap="xxs">
             <Text size={3} weight="medium" block>
               {gap}
             </Text>
@@ -262,9 +262,9 @@ export const GapAndRowGap: StoryObj<typeof Grid> = {
       </Flex>
 
       <Subheading>rowGap</Subheading>
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         {(['none', 'm', 'xl'] as Gap[]).map((rowGap) => (
-          <Flex key={rowGap} direction="vertical" gap="xxs">
+          <Flex key={rowGap} orientation="vertical" gap="xxs">
             <Text size={3} weight="medium" block>
               rowGap={rowGap}
             </Text>
@@ -287,7 +287,7 @@ export const GapAndRowGap: StoryObj<typeof Grid> = {
 export const Offsets: StoryObj<typeof Grid> = {
   name: 'Offsets',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>Offsets</Heading>
       <Paragraph>
         <Text code>offset</Text> pushes a column to the right by N units before
@@ -296,7 +296,7 @@ export const Offsets: StoryObj<typeof Grid> = {
         tail = 12) or to indent one row against the others.
       </Paragraph>
 
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         {([0, 1, 2, 4, 6] as GridColumnOffset[]).map((offset) => (
           <Grid key={offset} gap="s">
             <Grid.Column size={3}>
@@ -324,7 +324,7 @@ export const Offsets: StoryObj<typeof Grid> = {
 export const NoWrap: StoryObj<typeof Grid> = {
   name: 'No wrap',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>No wrap</Heading>
       <Paragraph>
         By default columns wrap once a row exceeds 12 units. With{' '}
@@ -336,19 +336,19 @@ export const NoWrap: StoryObj<typeof Grid> = {
       <Subheading>wrap (default)</Subheading>
       <Grid gap="m" rowGap="m">
         <Grid.Column size={4}>
-          <Box material="hatch" width="100%" height={72} />
+          <Box material="dotted" width="100%" height={72} />
         </Grid.Column>
         <Grid.Column size={4}>
-          <Box material="hatch" width="100%" height={72} />
+          <Box material="dotted" width="100%" height={72} />
         </Grid.Column>
         <Grid.Column size={4}>
-          <Box material="hatch" width="100%" height={72} />
+          <Box material="dotted" width="100%" height={72} />
         </Grid.Column>
         <Grid.Column size={8}>
-          <Box material="hatch" width="100%" height={48} />
+          <Box material="dotted" width="100%" height={48} />
         </Grid.Column>
         <Grid.Column size={4}>
-          <Box material="hatch" width="100%" height={48} />
+          <Box material="dotted" width="100%" height={48} />
         </Grid.Column>
       </Grid>
 
@@ -371,32 +371,41 @@ export const NoWrap: StoryObj<typeof Grid> = {
 export const CustomElement: StoryObj<typeof Grid> = {
   name: 'Custom element',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Heading>Custom element</Heading>
       <Paragraph>
-        <Text code>tagName</Text> swaps the rendered element without changing
-        the layout — render the grid as a <Text code>&lt;ul&gt;</Text> and its
-        columns as <Text code>&lt;li&gt;</Text> when the content is semantically
-        a list, or as a <Text code>&lt;section&gt;</Text> for a page region.
+        <Text code>asChild</Text> merges the layout onto whatever single element
+        you wrap it around, without changing the layout itself — render the
+        grid as a <Text code>&lt;ul&gt;</Text> and its columns as{' '}
+        <Text code>&lt;li&gt;</Text> when the content is semantically a list, or
+        as a <Text code>&lt;section&gt;</Text> for a page region.
       </Paragraph>
 
-      <Code>{`<Grid tagName="ul" gap="m" rowGap="m">
-  {items.map((item) => (
-    <Grid.Column tagName="li" key={item.id} size={4}>…</Grid.Column>
-  ))}
+      <Code>{`<Grid asChild gap="m" rowGap="m">
+  <ul>
+    {items.map((item) => (
+      <Grid.Column asChild key={item.id} size={4}>
+        <li>…</li>
+      </Grid.Column>
+    ))}
+  </ul>
 </Grid>`}</Code>
 
       <Grid
-        tagName="ul"
+        asChild
         gap="m"
         rowGap="m"
         style={{ listStyle: 'none', margin: 0, padding: 0 }}
       >
-        {['One', 'Two', 'Three', 'Four', 'Five', 'Six'].map((label) => (
-          <Grid.Column tagName="li" key={label} size={4}>
-            <Cell label={label} />
-          </Grid.Column>
-        ))}
+        <ul>
+          {['One', 'Two', 'Three', 'Four', 'Five', 'Six'].map((label) => (
+            <Grid.Column asChild key={label} size={4}>
+              <li>
+                <Cell label={label} />
+              </li>
+            </Grid.Column>
+          ))}
+        </ul>
       </Grid>
     </Flex>
   ),
@@ -414,7 +423,7 @@ const Panel = ({
   lines?: number;
 }) => (
   <Flex
-    direction="vertical"
+    orientation="vertical"
     gap="s"
     style={{
       padding: 'var(--xl-gap)',
@@ -433,7 +442,7 @@ const Panel = ({
       </Text>
     ) : null}
     {Array.from({ length: lines }).map((_, i) => (
-      <Box key={i} material="hatch" height={12} width={`${65 + (i % 3) * 12}%`} />
+      <Box key={i} material="dotted" height={12} width={`${65 + (i % 3) * 12}%`} />
     ))}
   </Flex>
 );
@@ -441,7 +450,7 @@ const Panel = ({
 export const RealWorldLayout: StoryObj<typeof Grid> = {
   name: 'Real-world layout',
   render: () => (
-    <Flex direction="vertical" gap="l">
+    <Flex orientation="vertical" gap="l">
       <Heading>Real-world layout</Heading>
       <Paragraph>
         One grid drives a whole dashboard: a four-up stat row, a wide content

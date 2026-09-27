@@ -86,15 +86,15 @@ New **`Range`** component, **DataTable** row actions and new glass surface.
     <li><a href="https://altrone.vercel.app/components/numberInput">NumberInput</a></li>
     <li><a href="https://altrone.vercel.app/components/autocompleteInput">AutocompleteInput</a></li>
     <li><a href="https://altrone.vercel.app/components/search">Search</a></li>
-    <li><a href="https://altrone.vercel.app/components/textarea">Textarea</a></li>
+    <li><a href="https://altrone.vercel.app/components/textArea">TextArea</a></li>
     <li><a href="https://altrone.vercel.app/components/checkbox">Checkbox</a></li>
-    <li><a href="https://altrone.vercel.app/components/switcher">Switcher</a></li>
+    <li><a href="https://altrone.vercel.app/components/switch">Switch</a></li>
     <li><a href="https://altrone.vercel.app/components/radio">Radio</a></li>
     <li><a href="https://altrone.vercel.app/components/select">Select</a></li>
     <li><a href="https://altrone.vercel.app/components/datePicker">DatePicker</a></li>
     <li><a href="https://altrone.vercel.app/components/filePicker">FilePicker</a></li>
     <li><a href="https://altrone.vercel.app/components/colorPicker">ColorPicker</a></li>
-    <li><a href="https://altrone.vercel.app/components/range">Range</a></li>
+    <li><a href="https://altrone.vercel.app/components/slider">Slider</a></li>
 </ul></td>
     </tr>
     <tr>

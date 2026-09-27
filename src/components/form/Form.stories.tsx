@@ -8,14 +8,14 @@ import { TextInput } from '../textInput';
 import { PasswordInput } from '../passwordInput';
 import { Button } from '../button';
 import { NumberInput } from '../numberInput';
-import { Textarea } from '../textarea';
+import { TextArea } from '../textArea';
 import { Select } from '../select';
 import { DatePicker } from '../datePicker';
-import { Switcher } from '../switcher';
+import { Switch } from '../switch';
 import { AutocompleteInput } from '../autocompleteInput';
 import { Search } from '../search';
 import { useState } from 'react';
-import { Send, RefreshCw } from 'lucide-react';
+import { Send, RefreshCw, Info } from 'lucide-react';
 import { dayjsInstance as dayjs } from '../../utils';
 import type { Dayjs } from 'dayjs';
 import type { Option } from '../select/Select.types.ts';
@@ -84,12 +84,12 @@ const story: Meta<typeof Form> = {
 export const FieldStatesStory: StoryObj<typeof Flex> = {
   name: 'Field States',
   render: () => (
-    <Flex direction="vertical" gap="xl">
+    <Flex orientation="vertical" gap="xl">
       <Text size={5} weight="bold" block>
         Form.Field — all states
       </Text>
       <Form>
-        <Flex direction="horizontal" gap="l" align="start">
+        <Flex orientation="horizontal" gap="l" align="start">
           <Form.Field label="Default field" name="default">
             <TextInput placeholder="Type something" />
           </Form.Field>
@@ -105,9 +105,18 @@ export const FieldStatesStory: StoryObj<typeof Flex> = {
           >
             <TextInput placeholder="workspace-slug" />
           </Form.Field>
+
+          <Form.Field
+            label="Custom hint icon"
+            name="hintIcon"
+            hintText="Overrides the shared icons.help role for this field only"
+            hintIcon={<Info />}
+          >
+            <TextInput placeholder="workspace-slug" />
+          </Form.Field>
         </Flex>
 
-        <Flex direction="horizontal" gap="l" align="start">
+        <Flex orientation="horizontal" gap="l" align="start">
           <Form.Field
             label="With description"
             name="description"
@@ -129,7 +138,7 @@ export const FieldStatesStory: StoryObj<typeof Flex> = {
           </Form.Field>
         </Flex>
 
-        <Flex direction="horizontal" gap="l" align="start">
+        <Flex orientation="horizontal" gap="l" align="start">
           <Form.Field
             label="Required + hint + description"
             name="combo"
@@ -229,7 +238,7 @@ export const InteractiveStory: StoryObj<typeof Flex> = {
 
     if (submitted) {
       return (
-        <Flex direction="vertical" gap="m" align="center">
+        <Flex orientation="vertical" gap="m" align="center">
           <Text size={6} weight="bold" block>Account created!</Text>
           <Text size={4} block>Welcome, {values.username}. Check {values.email} for the confirmation link.</Text>
           <Button label="Start over" icon={<RefreshCw />} onClick={handleReset} />
@@ -238,8 +247,8 @@ export const InteractiveStory: StoryObj<typeof Flex> = {
     }
 
     return (
-      <Flex direction="vertical" gap="l">
-        <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="l">
+        <Flex orientation="vertical" gap="xs">
           <Text size={6} weight="bold" block>Create an account</Text>
           <Text size={4} block>
             Try submitting with empty fields to see client-side errors.
@@ -248,7 +257,7 @@ export const InteractiveStory: StoryObj<typeof Flex> = {
         </Flex>
 
         <Form errorMessages={allErrors} onSubmit={handleSubmit}>
-          <Flex direction="horizontal" gap="l" align="start">
+          <Flex orientation="horizontal" gap="l" align="start">
             <Form.Field
               label="Username"
               name="username"
@@ -276,7 +285,7 @@ export const InteractiveStory: StoryObj<typeof Flex> = {
             </Form.Field>
           </Flex>
 
-          <Flex direction="horizontal" gap="l" align="start">
+          <Flex orientation="horizontal" gap="l" align="start">
             <Form.Field
               label="Password"
               name="password"
@@ -310,14 +319,14 @@ export const InteractiveStory: StoryObj<typeof Flex> = {
             name="bio"
             description="Tell us a little about yourself (optional)"
           >
-            <Textarea
+            <TextArea
               value={values.bio}
               onChange={(v) => setValues((s) => ({ ...s, bio: v }))}
               placeholder="I'm a developer who loves building great UIs..."
             />
           </Form.Field>
 
-          <Flex direction="horizontal" gap="l" align="start">
+          <Flex orientation="horizontal" gap="l" align="start">
             <Form.Field
               label="Age"
               name="age"
@@ -331,16 +340,16 @@ export const InteractiveStory: StoryObj<typeof Flex> = {
             </Form.Field>
 
             <Form.Field label="Newsletter" name="newsletter">
-              <Switcher
+              <Switch
                 checked={values.newsletter}
                 onChange={(v) => setValues((s) => ({ ...s, newsletter: v }))}
               >
                 Subscribe to product updates
-              </Switcher>
+              </Switch>
             </Form.Field>
           </Flex>
 
-          <Flex direction="horizontal" gap="s">
+          <Flex orientation="horizontal" gap="s">
             <Button label="Create account" icon={<Send />} role="primary" />
             <Button label="Reset" icon={<RefreshCw />} onClick={handleReset} />
           </Flex>
@@ -354,12 +363,12 @@ export const InteractiveStory: StoryObj<typeof Flex> = {
 export const DisabledStory: StoryObj<typeof Flex> = {
   name: 'Disabled Form',
   render: () => (
-    <Flex direction="vertical" gap="l">
+    <Flex orientation="vertical" gap="l">
       <Text size={5} weight="bold" block>
         Disabled — entire form locked
       </Text>
       <Form disabled>
-        <Flex direction="horizontal" gap="l" align="start">
+        <Flex orientation="horizontal" gap="l" align="start">
           <Form.Field label="Username" name="username" required>
             <TextInput value="john_doe" onChange={() => null} />
           </Form.Field>
@@ -375,7 +384,7 @@ export const DisabledStory: StoryObj<typeof Flex> = {
           />
         </Form.Field>
         <Form.Field label="Bio" name="bio">
-          <Textarea
+          <TextArea
             value="Loves clean code and well-designed APIs."
             onChange={() => null}
           />
@@ -390,13 +399,13 @@ export const DisabledStory: StoryObj<typeof Flex> = {
 export const SizesStory: StoryObj<typeof Flex> = {
   name: 'Form Sizes',
   render: () => (
-    <Flex direction="vertical" gap="xl">
+    <Flex orientation="vertical" gap="xl">
       <Text size={5} weight="bold" block>
         Form Sizes — s / m / l
       </Text>
-      <Flex direction="horizontal" gap="xl" align="start">
+      <Flex orientation="horizontal" gap="xl" align="start">
         {(['s', 'm', 'l'] as const).map((size) => (
-          <Flex key={size} direction="vertical" gap="s">
+          <Flex key={size} orientation="vertical" gap="s">
             <Text size={3} weight="bold" block>
               size="{size}"
             </Text>
@@ -475,7 +484,7 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
       )?.label;
 
       return (
-        <Flex direction="vertical" gap="m" style={{ maxWidth: 560 }}>
+        <Flex orientation="vertical" gap="m" style={{ maxWidth: 560 }}>
           <Text size={6} weight="bold" block>
             {created.fullName || 'New hire'} is set up
           </Text>
@@ -498,8 +507,8 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
     }
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
-        <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
+        <Flex orientation="vertical" gap="xs">
           <Text size={6} weight="bold" block>
             Onboard a new hire
           </Text>
@@ -509,12 +518,12 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
             <Text code>Select</Text>, an amount is a <Text code>NumberInput</Text>,
             a day is a <Text code>DatePicker</Text>, an open-ended set of cities is
             an <Text code>AutocompleteInput</Text>, and free text is a{' '}
-            <Text code>Textarea</Text>. <Text code>Search</Text> sits apart — it
+            <Text code>TextArea</Text>. <Text code>Search</Text> sits apart — it
             retrieves an existing record to prefill, it isn&apos;t a field.
           </Text>
         </Flex>
 
-        <Flex direction="vertical" gap="xs">
+        <Flex orientation="vertical" gap="xs">
           <Text size={2} weight="medium" block>
             Start from an accepted applicant
           </Text>
@@ -545,7 +554,7 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
         </Flex>
 
         <Form>
-          <Flex direction="horizontal" gap="l" align="start">
+          <Flex orientation="horizontal" gap="l" align="start">
             <Form.Field label="Full name" name="fullName" required>
               <TextInput
                 value={values.fullName}
@@ -562,7 +571,7 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
             </Form.Field>
           </Flex>
 
-          <Flex direction="horizontal" gap="l" align="start">
+          <Flex orientation="horizontal" gap="l" align="start">
             <Form.Field
               label="Office"
               name="location"
@@ -589,7 +598,7 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
             </Form.Field>
           </Flex>
 
-          <Flex direction="horizontal" gap="l" align="start">
+          <Flex orientation="horizontal" gap="l" align="start">
             <Form.Field
               label="Annual salary"
               name="salary"
@@ -635,7 +644,7 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
             name="notes"
             description="Equipment, seating, anything the manager should know (optional)"
           >
-            <Textarea
+            <TextArea
               value={values.notes}
               onChange={(v) => set('notes', v)}
               placeholder="Ordered a MacBook Pro, sitting with the platform team…"
@@ -643,15 +652,15 @@ export const OnboardingStory: StoryObj<typeof Flex> = {
           </Form.Field>
 
           <Form.Field label="Welcome email" name="sendWelcome">
-            <Switcher
+            <Switch
               checked={values.sendWelcome}
               onChange={(v) => set('sendWelcome', v)}
             >
               Send the welcome email on the start date
-            </Switcher>
+            </Switch>
           </Form.Field>
 
-          <Flex direction="horizontal" gap="s">
+          <Flex orientation="horizontal" gap="s">
             <Button
               label="Create hire"
               icon={<Send />}

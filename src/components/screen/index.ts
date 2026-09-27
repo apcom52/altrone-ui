@@ -1,2 +1,12 @@
 export { Screen } from './Screen';
-export type { ScreenBreakpoint } from './Screen.types.ts';
+export type {
+  ScreenBreakpoint,
+  ScreenMobileBreakpoint,
+  ScreenProps,
+  ScreenHeaderProps,
+  ScreenSidebarProps,
+  ScreenContentProps,
+  ScreenFooterProps,
+  ScreenBottomNavigationProps,
+  ScreenAsideProps,
+} from './Screen.types.ts';

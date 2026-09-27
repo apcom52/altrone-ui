@@ -17,14 +17,9 @@ export type SelectContextValue = {
   selectedOptions: Option | Option[] | undefined;
   disabled: boolean;
   multiple: boolean;
-  clearValue: (
+  clear: (
     event?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
   ) => void;
-};
-
-export type SelectRenderContext = SelectContextValue & {
-  className: string;
-  style?: React.CSSProperties;
 };
 
 export interface SelectProps
@@ -48,18 +43,15 @@ export interface SelectProps
   parentWidth?: boolean;
   /** Fixed height of the scrollable options list, px. Defaults to the `--select-menu-height` token. */
   menuHeight?: number;
+  /** Trigger chevron shown when the menu is closed. Defaults to the shared `icons.open`. */
+  openIcon?: ReactElement;
+  /** Trigger chevron shown when the menu is open. Defaults to the shared `icons.close`. */
+  closeIcon?: ReactElement;
+  /** Icon shown in the trigger while `searchable` and actively searching. Defaults to the shared `icons.search`. */
+  searchIcon?: ReactElement;
+  /** Icon for the clear button. Defaults to the shared `icons.clear`. */
+  clearIcon?: ReactElement;
   asChild?: boolean;
   children?: ReactElement;
-  /**
-   * Replaces the default `TextInput` trigger. Receives the live select state;
-   * read the same state from a nested component via `useSelectContext()`.
-   *
-   * @example
-   * renderFunc={({ expanded, selectedOptions }) => (
-   *   <Button label={(selectedOptions as Option)?.label}
-   *     additionalIcon={expanded ? <ChevronUp /> : <ChevronDown />} />
-   * )}
-   */
-  renderFunc?: (context: SelectRenderContext) => ReactElement;
   ref?: React.Ref<HTMLDivElement>;
 }

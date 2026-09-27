@@ -1,14 +1,11 @@
 import { type KeyboardEvent, type MouseEvent, type PointerEvent } from 'react';
 import clsx from 'clsx';
-import {
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  ChevronUp,
-} from 'lucide-react';
 import { Button } from 'components/button';
 import { useLocalization } from '../../application';
-import type { SplitterCollapsedControlsVisibility } from '../Splitter.types.ts';
+import type {
+  SplitterCollapsedControlsVisibility,
+  SplitterIconSet,
+} from '../Splitter.types.ts';
 import s from './divider.module.scss';
 
 export interface DividerProps {
@@ -18,6 +15,7 @@ export interface DividerProps {
   isDisabled: boolean;
   showControls: boolean;
   collapsedControlsVisibility: SplitterCollapsedControlsVisibility;
+  icons: SplitterIconSet;
   sizeLeft: number;
   minLeft: number;
   maxLeft: number;
@@ -40,6 +38,7 @@ export const SplitterDivider = ({
   isDisabled,
   showControls,
   collapsedControlsVisibility,
+  icons,
   sizeLeft,
   minLeft,
   maxLeft,
@@ -67,21 +66,21 @@ export const SplitterDivider = ({
   const left = collapsedBtn(leftCollapsed);
   const right = collapsedBtn(rightCollapsed);
 
-  const CollapseLeftIcon = isHorizontal
+  const collapseLeftIcon = isHorizontal
     ? leftCollapsed
-      ? ChevronRight
-      : ChevronLeft
+      ? icons.chevronRight
+      : icons.chevronLeft
     : leftCollapsed
-      ? ChevronDown
-      : ChevronUp;
+      ? icons.chevronDown
+      : icons.chevronUp;
 
-  const CollapseRightIcon = isHorizontal
+  const collapseRightIcon = isHorizontal
     ? rightCollapsed
-      ? ChevronLeft
-      : ChevronRight
+      ? icons.chevronLeft
+      : icons.chevronRight
     : rightCollapsed
-      ? ChevronUp
-      : ChevronDown;
+      ? icons.chevronUp
+      : icons.chevronDown;
 
   return (
     <div
@@ -113,7 +112,7 @@ export const SplitterDivider = ({
           {leftCollapsible && left.render && (
             <Button
               size="s"
-              icon={<CollapseLeftIcon />}
+              icon={collapseLeftIcon}
               className={clsx(
                 s.CollapseBtn,
                 isHorizontal ? s.CollapseBtnBefore : s.CollapseBtnBeforeV,
@@ -133,7 +132,7 @@ export const SplitterDivider = ({
           {rightCollapsible && right.render && (
             <Button
               size="s"
-              icon={<CollapseRightIcon />}
+              icon={collapseRightIcon}
               className={clsx(
                 s.CollapseBtn,
                 isHorizontal ? s.CollapseBtnAfter : s.CollapseBtnAfterV,

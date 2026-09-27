@@ -27,8 +27,8 @@ describe('Divider', () => {
     expect(screen.getByTestId('d')).not.toHaveAttribute('aria-orientation');
   });
 
-  test('direction="vertical" sets the class and aria-orientation', () => {
-    render(<Divider direction="vertical" data-testid="d" />);
+  test('orientation="vertical" sets the class and aria-orientation', () => {
+    render(<Divider orientation="vertical" data-testid="d" />);
     const hr = screen.getByTestId('d');
     expect(hr.className).toMatch(/Vertical/);
     expect(hr).toHaveAttribute('aria-orientation', 'vertical');

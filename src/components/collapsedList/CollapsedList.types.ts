@@ -1,4 +1,4 @@
-import { HTMLAttributes, Ref } from 'react';
+import { HTMLAttributes, ReactElement, Ref } from 'react';
 import { RenderFunction } from 'utils';
 import { Gap } from 'types';
 
@@ -15,4 +15,8 @@ export interface CollapsedListProps extends HTMLAttributes<HTMLDivElement> {
   gap?: Gap;
   hideExpandButtonAfterUsage?: boolean;
   expandButtonLabel?: RenderFunction<string, CollapsedListContext>;
+  /** Toggle icon shown while collapsed. Defaults to the shared `icons.open`. */
+  openIcon?: ReactElement;
+  /** Toggle icon shown while expanded. Defaults to the shared `icons.close`. */
+  closeIcon?: ReactElement;
 }

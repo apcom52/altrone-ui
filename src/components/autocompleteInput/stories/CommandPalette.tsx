@@ -81,8 +81,8 @@ export const CommandPalette = () => {
   );
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 460 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 460 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           A command palette
         </Text>

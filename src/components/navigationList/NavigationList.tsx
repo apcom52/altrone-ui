@@ -11,14 +11,7 @@ import {
 import { NavigationListProps } from './NavigationList.types.ts';
 import s from './navigationList.module.scss';
 import clsx from 'clsx';
-import {
-  Group,
-  GroupAction,
-  Link,
-  LinkAction,
-  Header,
-  Footer,
-} from './components';
+import { Group, Link, Header, Footer } from './components';
 import {
   NAV_LINK_ATTR,
   NavigationListHideHoverContext,
@@ -167,9 +160,7 @@ const NavigationListComponent = memo(
 
 const NavigationListNamespace = Object.assign(NavigationListComponent, {
   Group,
-  GroupAction,
   Link,
-  LinkAction,
   Header,
   Footer,
 });

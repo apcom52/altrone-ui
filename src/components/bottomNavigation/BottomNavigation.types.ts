@@ -1,5 +1,4 @@
 import React, { ReactElement, ReactNode } from 'react';
-import { RenderFuncProp } from '../../types';
 
 export interface BottomNavigationProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -7,7 +6,7 @@ export interface BottomNavigationProps
   floating?: boolean;
 }
 
-export interface BottomNavigationItemProps
+export interface BottomNavigationLinkProps
   extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'children'> {
   ref?: React.Ref<HTMLAnchorElement>;
   icon: ReactElement;
@@ -21,6 +20,4 @@ export interface BottomNavigationItemProps
    */
   asChild?: boolean;
   children?: ReactNode;
-  /** @deprecated Prefer `asChild`. Custom render function `(ref, props) => ReactElement`. */
-  renderFunc?: RenderFuncProp<HTMLAnchorElement, BottomNavigationItemProps>;
 }

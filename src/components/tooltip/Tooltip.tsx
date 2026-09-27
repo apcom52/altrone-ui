@@ -1,9 +1,16 @@
-import React, { memo, useCallback, useId, useRef, useState } from 'react';
-import { HelpCircle } from 'lucide-react';
+import React, {
+  memo,
+  useCallback,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { TooltipProps } from './Tooltip.types.ts';
 import clsx from 'clsx';
 import s from './tooltip.module.scss';
-import { DOMUtils, mergeRefs } from '../../utils';
+import { DOMUtils, mergeRefs, useBoolean } from '../../utils';
+import { useIcons } from '../application/useIcons.tsx';
 import {
   arrow,
   autoUpdate,
@@ -11,7 +18,9 @@ import {
   FloatingArrow,
   FloatingPortal,
   offset,
+  OpenChangeReason,
   shift,
+  useClick,
   useFloating,
   useFocus,
   useHover,
@@ -29,10 +38,17 @@ export const Tooltip = memo(
     style,
     kbd,
     maxWidth,
-    childrenClassName,
+    triggerClassName,
+    triggerStyle,
+    triggerIcon,
     placement = 'top',
+    defaultOpen = false,
+    trigger = ['hover', 'focus'],
+    onOpenChange,
+    ...restProps
   }: TooltipProps) => {
-    const [opened, setOpened] = useState(false);
+    const icons = useIcons();
+    const { value: opened, setValue: setOpened } = useBoolean(defaultOpen);
     const tooltipId = useId();
 
     const arrowRef = useRef<SVGSVGElement>(null);
@@ -44,10 +60,23 @@ export const Tooltip = memo(
       ...(maxWidth !== undefined ? { maxWidth } : undefined),
     };
 
+    const triggersList = useMemo(
+      () => (Array.isArray(trigger) ? trigger : [trigger]),
+      [trigger],
+    );
+
+    const commitOpenChange = useCallback(
+      (state: boolean, event?: Event, reason?: OpenChangeReason) => {
+        setOpened(state);
+        onOpenChange?.(state, event, reason);
+      },
+      [setOpened, onOpenChange],
+    );
+
     const { refs, floatingStyles, context } = useFloating({
       open: opened,
       placement: placement,
-      onOpenChange: setOpened,
+      onOpenChange: commitOpenChange,
       middleware: [
         offset(10),
         flip(),
@@ -57,12 +86,21 @@ export const Tooltip = memo(
       whileElementsMounted: autoUpdate,
     });
 
-    const hover = useHover(context, { delay: { open: 500, close: 0 } });
-    const focus = useFocus(context);
+    const hoverTrigger = useHover(context, {
+      enabled: triggersList.includes('hover'),
+      delay: { open: 500, close: 0 },
+    });
+    const focusTrigger = useFocus(context, {
+      enabled: triggersList.includes('focus'),
+    });
+    const clickTrigger = useClick(context, {
+      enabled: triggersList.includes('click'),
+    });
 
     const { getReferenceProps, getFloatingProps } = useInteractions([
-      hover,
-      focus,
+      hoverTrigger,
+      focusTrigger,
+      clickTrigger,
     ]);
 
     const safeChildElement = DOMUtils.cloneNode(children, {
@@ -72,9 +110,10 @@ export const Tooltip = memo(
         type="button"
         aria-describedby={tooltipId}
         aria-label={typeof content === 'string' ? content : undefined}
-        className={clsx(s.QuestionMark, childrenClassName)}
+        className={clsx(s.QuestionMark, triggerClassName)}
+        style={triggerStyle}
       >
-        <HelpCircle />
+        {triggerIcon ?? icons.help}
       </button>
     );
 
@@ -90,11 +129,12 @@ export const Tooltip = memo(
     );
 
     const childElement = DOMUtils.cloneNode(safeChildElement, {
-      ...getReferenceProps(
-        React.isValidElement(safeChildElement)
+      ...getReferenceProps({
+        ...restProps,
+        ...(React.isValidElement(safeChildElement)
           ? (safeChildElement.props as any)
-          : {},
-      ),
+          : {}),
+      }),
       /* Merges the child's own `ref` (e.g. `<Button ref={x}>` inside a
          Tooltip) instead of overwriting it — see ref-forwarding.md. */
       ref: mergeRefs(

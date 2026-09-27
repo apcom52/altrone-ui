@@ -61,9 +61,11 @@ const EXIT_TRANSITION: Transition = {
 
 export const Popover = ({
   ref,
+  controlRef,
   children,
   content,
-  openedByDefault = false,
+  open,
+  defaultOpen = false,
   enabled = true,
   title,
   placement = 'auto',
@@ -96,7 +98,7 @@ export const Popover = ({
      `data-altrone-root` left on `<html>`. Resolved from `.closest()` in
      `setReference`, once the trigger has actually mounted — starting `null`
      and gating the portal on it (below) rather than guessing a root up front
-     matters for `openedByDefault`: the trigger (and its ancestor app root)
+     matters for `defaultOpen`: the trigger (and its ancestor app root)
      haven't committed to the document yet on the very first render, so an
      eager `document.querySelector` here would find nothing and portal that
      first paint into `document.body`, outside the app's token scope
@@ -113,12 +115,21 @@ export const Popover = ({
     [trigger],
   );
 
-  const {
-    value: opened,
-    enable: open,
-    disable: hide,
-    setValue: setOpened,
-  } = useBoolean(openedByDefault);
+  const isControlled = open !== undefined;
+  const { value: internalOpened, setValue: setInternalOpened } =
+    useBoolean(defaultOpen);
+  const opened = isControlled ? open : internalOpened;
+
+  const commitOpenChange = useCallback(
+    (state: boolean, event?: Event, reason?: OpenChangeReason) => {
+      if (!isControlled) setInternalOpened(state);
+      onOpenChange?.(state, event, reason);
+    },
+    [isControlled, setInternalOpened, onOpenChange],
+  );
+
+  const show = useCallback(() => commitOpenChange(true), [commitOpenChange]);
+  const hide = useCallback(() => commitOpenChange(false), [commitOpenChange]);
 
   const placementConfig = useMemo(
     () => getPlacementConfig(placement, overlap),
@@ -145,17 +156,20 @@ export const Popover = ({
     onOpenChange: (state, event, reason) => {
       /* Workaround: with both `click` and `focus` triggers, a click on the
          reference fires a `reference-press` right after the `click` opened it,
-         which would immediately close it. Swallow that specific pair. */
+         which would immediately close it. Swallow that specific pair entirely
+         (including the notification) — otherwise a controlled consumer would
+         see a spurious `onOpenChange(false)` right after opening. */
       const hasFocusTrigger = triggersList.includes('focus');
       const skipRule =
         lastStateChangeReason.current === 'click' &&
         reason === 'reference-press';
 
-      if (!(hasFocusTrigger && skipRule)) {
-        setOpened(state);
+      if (hasFocusTrigger && skipRule) {
+        lastStateChangeReason.current = reason;
+        return;
       }
 
-      onOpenChange?.(state, event, reason);
+      commitOpenChange(state, event, reason);
       lastStateChangeReason.current = reason;
     },
     placement: placementConfig.placement,
@@ -207,25 +221,25 @@ export const Popover = ({
   ]);
 
   useImperativeHandle(
-    ref,
+    controlRef,
     () => ({
-      opened,
+      open: opened,
       context,
       activeIndex,
       childrenNode: childrenRef.current,
       contentNode: contentRef.current,
-      closePopup: hide,
-      openPopup: open,
+      hide,
+      show,
       actualPlacement,
       transformOrigin: getTransformOrigin(actualPlacement, overlap),
     }),
-    [opened, context, activeIndex, actualPlacement, hide, open, overlap],
+    [opened, context, activeIndex, actualPlacement, hide, show, overlap],
   );
 
   const popoverParentClose = usePopoverCloseContext();
-  const closeAllSequence = popoverParentClose ?? hide;
+  const hideAllSequence = popoverParentClose ?? hide;
 
-  const childrenContext: PopoverChildrenContext = { opened, closePopup: hide };
+  const childrenContext: PopoverChildrenContext = { open: opened, hide };
   const originChildElement =
     typeof children === 'function' ? children(childrenContext) : children;
   const safeChildElement = React.isValidElement(originChildElement) ? (
@@ -299,30 +313,37 @@ export const Popover = ({
                   refs.setFloating(element);
                   contentRef.current = element;
                 }}
-                layout="size"
                 role={role ?? (showHeader ? 'dialog' : undefined)}
                 aria-labelledby={title ? headingId : ariaLabelledBy}
                 initial={{ opacity: 0, scale: 0.1 }}
                 animate={{ opacity: 1, scale: 1, transition: ENTER_TRANSITION }}
                 exit={{ opacity: 0, scale: 0.1, transition: EXIT_TRANSITION }}
               >
-                {showHeader && (
-                  <div className={s.Header}>
-                    {title ? (
-                      <div className={s.Heading} id={headingId}>
-                        {title}
-                      </div>
-                    ) : null}
-                    {showCloseButton ? (
-                      <CloseButton onClick={hide} className={s.Close} />
-                    ) : null}
+                {/* `layout="size"` lives on its own non-animated wrapper, never on
+                    the enter/exit node above — Motion drives layout resizing and an
+                    `animate`/`exit` `scale` through the same transform, and
+                    combining them on one element let floating-ui's concurrent
+                    autoUpdate repositioning compound into a runaway scale spike
+                    right as a nested submenu's exit started. */}
+                <motion.div layout="size">
+                  {showHeader && (
+                    <div className={s.Header}>
+                      {title ? (
+                        <div className={s.Heading} id={headingId}>
+                          {title}
+                        </div>
+                      ) : null}
+                      {showCloseButton ? (
+                        <CloseButton onClick={hide} className={s.Close} />
+                      ) : null}
+                    </div>
+                  )}
+                  <div className={s.Content}>
+                    {typeof content === 'function'
+                      ? content({ hide, hideAllSequence })
+                      : content}
                   </div>
-                )}
-                <div className={s.Content}>
-                  {typeof content === 'function'
-                    ? content({ closePopup: hide, closeAllSequence })
-                    : content}
-                </div>
+                </motion.div>
               </motion.div>
             </Box>
           </PopoverCurrentId.Provider>
@@ -337,6 +358,7 @@ export const Popover = ({
       (safeChildElement as ReactElement<{ ref?: React.Ref<HTMLElement> }>).props
         .ref,
       setReference,
+      ref,
     ),
     tabIndex: safeChildElement.props.tabIndex ?? 0,
   });
@@ -346,7 +368,7 @@ export const Popover = ({
   }
 
   return (
-    <PopoverCloseContext.Provider value={closeAllSequence}>
+    <PopoverCloseContext.Provider value={hideAllSequence}>
       {childrenElement}
       <AnimatePresence mode="wait">
         {opened && portalRoot && (

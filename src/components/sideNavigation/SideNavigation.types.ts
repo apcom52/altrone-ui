@@ -6,7 +6,7 @@ export interface SideNavigationProps extends React.HTMLAttributes<HTMLElement> {
   ref?: React.Ref<HTMLElement>;
 }
 
-export interface SideNavigationItemProps
+export interface SideNavigationLinkProps
   extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   /** CSS selector of the target section, e.g. `"#introduction"`. */
   href: string;

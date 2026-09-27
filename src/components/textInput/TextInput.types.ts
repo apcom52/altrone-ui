@@ -1,7 +1,6 @@
 import React, { ChangeEvent, PropsWithChildren, ReactElement } from 'react';
 import { Size } from 'types';
 import type { ButtonProps } from '../button/Button.types.ts';
-import type { BoxShape } from '../box/Box.types.ts';
 
 export type IslandPlacement = 'start' | 'end';
 
@@ -12,23 +11,21 @@ export interface TextInputProps
       React.InputHTMLAttributes<HTMLInputElement>,
       'onChange' | 'size' | 'children'
     > {
-  /** Forwarded to the visual wrapper (a `Box`). Use `inputRef` for the field node itself. */
+  /** Forwarded to the root DOM element (the visual wrapper `Box`). Use `inputRef` for the field node itself. */
   ref?: React.Ref<HTMLElement>;
   /** Forwarded to the underlying `<input>` (or the `asChild` element). */
   inputRef?: React.Ref<HTMLInputElement>;
   variant?: 'default' | 'transparent';
-  /**
-   * Corner shape of the visual wrapper. Defaults to `'pill'` — right for a
-   * single-line field. Multi-line consumers (`Textarea`) override it with
-   * `'rounded'`, where a capsule end makes no sense.
-   */
-  shape?: BoxShape;
   value?: string;
   onChange?: (value: string, event: ChangeEvent) => void;
-  /** Class for the visual wrapper. `className` targets the `<input>`. */
-  wrapperClassName?: string;
-  /** Style for the visual wrapper. `style` targets the `<input>`. */
-  wrapperStyle?: React.CSSProperties;
+  /** Targets the root DOM element (the visual wrapper `Box`), like every other component. Use `inputClassName` for the `<input>` itself. */
+  className?: string;
+  /** Targets the root DOM element (the visual wrapper `Box`). Use `inputStyle` for the `<input>` itself. */
+  style?: React.CSSProperties;
+  /** Class for the underlying `<input>` (or the `asChild` element). */
+  inputClassName?: string;
+  /** Style for the underlying `<input>` (or the `asChild` element). */
+  inputStyle?: React.CSSProperties;
   invalid?: boolean;
   size?: Size;
   asChild?: boolean;

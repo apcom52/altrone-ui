@@ -1,7 +1,7 @@
 import { memo, useId } from 'react';
 import s from './sideNavigation.module.scss';
 import { SideNavigationProps } from './SideNavigation.types.ts';
-import { Item } from './components';
+import { Link } from './components';
 import { ScrollSpy } from '../../utils/components/ScrollSpy.tsx';
 import { Text } from 'components/text/Text.tsx';
 import clsx from 'clsx';
@@ -33,7 +33,7 @@ const SideNavigationComponent = memo<SideNavigationProps>(
 );
 
 const SideNavigationNamespace = Object.assign(SideNavigationComponent, {
-  Item,
+  Link,
 });
 
 export { SideNavigationNamespace as SideNavigation };

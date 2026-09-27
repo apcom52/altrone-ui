@@ -62,8 +62,8 @@ const DocRow = ({
       }}
     >
       <FileText size={15} style={{ color: 'var(--text-2)', flexShrink: 0, marginTop: 2 }} />
-      <Flex direction="vertical" gap="xxs" style={{ minWidth: 0 }}>
-        <Flex direction="horizontal" gap="xs" align="center">
+      <Flex orientation="vertical" gap="xxs" style={{ minWidth: 0 }}>
+        <Flex orientation="horizontal" gap="xs" align="center">
           <Text size={3} weight="medium">
             {highlight(suggestion.title, inputValue)}
           </Text>
@@ -96,8 +96,8 @@ export const DocsSearch = () => {
   );
 
   return (
-    <Flex direction="horizontal" gap="xl" style={{ maxWidth: 640 }}>
-      <Flex direction="vertical" gap="m" style={{ width: 300, flexShrink: 0 }}>
+    <Flex orientation="horizontal" gap="xl" style={{ maxWidth: 640 }}>
+      <Flex orientation="vertical" gap="m" style={{ width: 300, flexShrink: 0 }}>
         <Text size={2} weight="bold" color="muted" block>
           DOCUMENTATION
         </Text>
@@ -116,7 +116,7 @@ export const DocsSearch = () => {
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="xs" style={{ flex: 1 }}>
+      <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
         <Text size={6} weight="bold" block>
           {opened ?? 'Pick a result'}
         </Text>

@@ -3,6 +3,14 @@ import React from 'react';
 /** How a collapsed panel's expand button is shown on its divider. */
 export type SplitterCollapsedControlsVisibility = 'always' | 'hover' | 'never';
 
+/** Icons unique to `Splitter`, overridable as a group via the `icons` prop. */
+export interface SplitterIconSet {
+  chevronLeft: React.ReactElement;
+  chevronRight: React.ReactElement;
+  chevronUp: React.ReactElement;
+  chevronDown: React.ReactElement;
+}
+
 export interface SplitterHandle {
   /** Collapse a panel by index */
   collapse: (panelIndex: number) => void;
@@ -16,16 +24,17 @@ export interface SplitterHandle {
   getCollapsed: () => boolean[];
 }
 
-export interface SplitterPanelProps {
-  children?: React.ReactNode;
+export interface SplitterPanelProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Forwarded to the panel's root DOM element, alongside the internal drag/collapse ref. */
+  ref?: React.Ref<HTMLDivElement>;
   /** Allow this panel to be fully collapsed via the divider toggle button */
   collapsible?: boolean;
   /** Initial size in percent (0–100). Uncontrolled — panels without one share the remaining space equally. */
   defaultSize?: number;
   /** Minimum size in percent (0–100). Default: 0 */
-  min?: number;
+  minSize?: number;
   /** Maximum size in percent (0–100). Default: 100 */
-  max?: number;
+  maxSize?: number;
   /** When false the adjacent divider becomes non-draggable. Default: true */
   resizable?: boolean;
 }
@@ -34,6 +43,13 @@ export interface SplitterProps extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
   /** Axis along which panels are split. Default: 'horizontal' */
   orientation?: 'horizontal' | 'vertical';
+  /**
+   * Controlled panel sizes (percent, aligned to panel order), pairs with
+   * `onSizesChange`. Omit for uncontrolled (each panel's own `defaultSize`).
+   */
+  sizes?: number[];
+  /** Fires whenever sizes settle — end of a drag, or a panel collapse/expand. Pairs with `sizes`. */
+  onSizesChange?: (sizes: number[]) => void;
   /** Fired on every pointer-move during drag */
   onResize?: (sizes: number[], event: PointerEvent) => void;
   /** Fired when a drag interaction begins */
@@ -53,4 +69,6 @@ export interface SplitterProps extends React.HTMLAttributes<HTMLDivElement> {
   collapsedControlsVisibility?: SplitterCollapsedControlsVisibility;
   /** Ref that exposes imperative collapse/expand/toggle API */
   controlRef?: React.Ref<SplitterHandle>;
+  /** Overrides for the four directional chevrons used by the collapse controls. */
+  icons?: Partial<SplitterIconSet>;
 }

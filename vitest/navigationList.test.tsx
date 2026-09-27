@@ -106,7 +106,7 @@ describe('NavigationList', () => {
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
-  test('LinkAction does not trigger its parent Link', () => {
+  test('a click inside actions does not trigger its parent Link', () => {
     const linkClick = vi.fn();
     const actionClick = vi.fn();
     render(
@@ -116,20 +116,31 @@ describe('NavigationList', () => {
           label="Project"
           onClick={linkClick}
           data-testid="link"
-        >
-          <NavigationList.LinkAction
-            label="Archive"
-            icon={<span />}
-            onClick={actionClick}
-            data-testid="action"
-          />
-        </NavigationList.Link>
+          actions={<button onClick={actionClick} data-testid="action" />}
+        />
       </NavigationList>,
     );
 
     fireEvent.click(screen.getByTestId('action'));
     expect(actionClick).toHaveBeenCalledTimes(1);
     expect(linkClick).not.toHaveBeenCalled();
+  });
+
+  test('actions receives selected/disabled as context when passed a function', () => {
+    render(
+      <NavigationList>
+        <NavigationList.Link
+          href="#"
+          label="Project"
+          selected
+          actions={({ selected }) => (
+            <span data-testid="action">{selected ? 'on' : 'off'}</span>
+          )}
+        />
+      </NavigationList>,
+    );
+
+    expect(screen.getByTestId('action')).toHaveTextContent('on');
   });
 
   test('nested links are revealed only when the parent is selected', () => {

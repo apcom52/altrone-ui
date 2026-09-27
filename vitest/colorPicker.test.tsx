@@ -2,6 +2,7 @@ import React from 'react';
 import { expect, test, describe, vitest, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import {
+  Application,
   Button,
   ColorPicker,
   Configuration,
@@ -58,6 +59,17 @@ describe('ColorPicker', () => {
 
     expect(value).toBe('#dc143c');
 
+    /** Re-render with the committed value first — a controlled consumer always does this before the next interaction. */
+    rerender(
+      <ColorPicker
+        data-testid="picker"
+        value={value}
+        onChange={handleChange}
+        colorPresets={COLORS}
+        clearable
+      />,
+    );
+
     await fireEvent.click(screen.getByText('Clear'));
 
     expect(value).toBe(undefined);
@@ -84,6 +96,18 @@ describe('ColorPicker', () => {
     expect(await screen.findByText(value)).toBeInTheDocument();
   });
 
+  test('the popover shows a localized title', () => {
+    render(
+      <Application language="ru">
+        <ColorPicker data-testid="picker" onChange={() => null} />
+      </Application>,
+    );
+
+    fireEvent.click(screen.getByTestId('picker'));
+
+    expect(screen.getByText('Выберите цвет')).toBeInTheDocument();
+  });
+
   test('check that className and style props works', () => {
     render(
       <ColorPicker
@@ -94,8 +118,9 @@ describe('ColorPicker', () => {
       />,
     );
 
-    expect(screen.getByTestId('picker')).toHaveClass('cls');
-    expect(screen.getByTestId('picker')).toHaveStyle('color: rgb(0, 0, 255)');
+    const wrapper = screen.getByTestId('picker').closest('.cls');
+    expect(wrapper).not.toBeNull();
+    expect(wrapper).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that ColorPicker configuration works correctly', () => {

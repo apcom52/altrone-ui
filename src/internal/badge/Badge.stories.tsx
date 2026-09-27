@@ -3,7 +3,7 @@ import { Bell } from 'lucide-react';
 import { Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { Badge } from './Badge';
-import type { BadgeSize } from './Badge.types';
+import type { Size } from 'types';
 
 const story: Meta<typeof Badge> = {
   title: 'Internal/Badge',
@@ -13,11 +13,11 @@ const story: Meta<typeof Badge> = {
 
 export default story;
 
-const SIZES: BadgeSize[] = ['mini', 's', 'm', 'l', 'xl'];
+const SIZES: Size[] = ['mini', 's', 'm', 'l', 'xl'];
 
 export const Overview: StoryObj<typeof Badge> = {
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Text block size={9} weight="bold">
         Badge
       </Text>
@@ -25,7 +25,7 @@ export const Overview: StoryObj<typeof Badge> = {
         The internal counter/label chip. A <Text code>Box</Text> pill shared by{' '}
         <Text code>Button</Text>, <Text code>Tabs.Item</Text>,{' '}
         <Text code>NavigationList.Link</Text>,{' '}
-        <Text code>BottomNavigation.Item</Text> and{' '}
+        <Text code>BottomNavigation.Link</Text> and{' '}
         <Text code>Dropdown.Action</Text>. Not part of the public API — use{' '}
         <Text code>Label</Text> for standalone tags.
       </Text>
@@ -49,7 +49,7 @@ export const Overview: StoryObj<typeof Badge> = {
       </Flex>
 
       <Text block size={5} weight="bold">
-        Placement
+        Mode
       </Text>
       <Text block>
         <Text code>inline</Text> (default) — a translucent pill in a content row.{' '}
@@ -71,7 +71,7 @@ export const Overview: StoryObj<typeof Badge> = {
           >
             <Bell size={20} />
           </Text>
-          <Badge placement="corner" size="s">
+          <Badge mode="corner" size="s">
             3
           </Badge>
         </div>

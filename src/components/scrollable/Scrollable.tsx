@@ -1,6 +1,9 @@
-import { useMemo } from 'react';
+import { useImperativeHandle, useMemo, useRef } from 'react';
 import clsx from 'clsx';
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
+import {
+  OverlayScrollbarsComponent,
+  OverlayScrollbarsComponentRef,
+} from 'overlayscrollbars-react';
 import 'overlayscrollbars/overlayscrollbars.css';
 import './scrollable-theme.css';
 import { ScrollableProps } from './Scrollable.types.ts';
@@ -9,10 +12,13 @@ import s from './scrollable.module.scss';
 /**
  * `ref` points at the wrapper element (the visible box), not the inner
  * OverlayScrollbars viewport — that's the node overlays anchor to, and the
- * viewport is an implementation detail of the scrollbar library.
+ * viewport is an implementation detail of the scrollbar library. Consumers
+ * needing the real scrolling element (e.g. to read `scrollLeft` or attach a
+ * native `scroll` listener) use `controlRef` instead — see `ScrollableRef`.
  */
 export const Scrollable = ({
   ref,
+  controlRef,
   children,
   className,
   style,
@@ -21,6 +27,17 @@ export const Scrollable = ({
   overflowY,
   ...restProps
 }: ScrollableProps) => {
+  const osRef = useRef<OverlayScrollbarsComponentRef>(null);
+
+  useImperativeHandle(
+    controlRef,
+    () => ({
+      getViewport: () =>
+        osRef.current?.osInstance()?.elements().viewport ?? null,
+    }),
+    [],
+  );
+
   const options = useMemo(
     () => ({
       scrollbars: { autoHide: 'move' as const, autoHideDelay: 300 },
@@ -45,7 +62,12 @@ export const Scrollable = ({
       }
       {...restProps}
     >
-      <OverlayScrollbarsComponent defer className={s.Os} options={options}>
+      <OverlayScrollbarsComponent
+        ref={osRef}
+        defer
+        className={s.Os}
+        options={options}
+      >
         {children}
       </OverlayScrollbarsComponent>
     </div>

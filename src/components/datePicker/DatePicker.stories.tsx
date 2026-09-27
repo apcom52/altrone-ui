@@ -3,7 +3,14 @@ import { useState } from 'react';
 import { Button, Flex, Form, Text } from 'components';
 import { dayjsInstance as dayjs } from 'utils';
 import { Dayjs } from 'dayjs';
-import { CalendarDays, ChevronDown, ChevronUp } from 'lucide-react';
+import {
+  ArrowLeftCircle,
+  ArrowRightCircle,
+  CalendarClock,
+  CalendarDays,
+  ChevronDown,
+  ChevronUp,
+} from 'lucide-react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { RangePickerValue } from './DatePicker.types.ts';
@@ -38,7 +45,7 @@ const BOOKING_HORIZON = TODAY.add(1, 'year');
 
 const Panel = ({ children }: { children: React.ReactNode }) => (
   <Flex
-    direction="vertical"
+    orientation="vertical"
     gap="l"
     style={{
       maxWidth: 720,
@@ -61,7 +68,7 @@ export const DepartureDate: StoryObj = {
     );
 
     return (
-      <Flex direction="vertical" gap="xl">
+      <Flex orientation="vertical" gap="xl">
         <Text size={6} weight="bold" block>
           Kestrel — book a flight
         </Text>
@@ -77,7 +84,7 @@ export const DepartureDate: StoryObj = {
 
         <Panel>
           <Form>
-            <Flex direction="horizontal" gap="l" wrap>
+            <Flex orientation="horizontal" gap="l" wrap>
               <Form.Field
                 label="Departure"
                 hintText="Today through one year out"
@@ -127,7 +134,7 @@ export const LeaseWindow: StoryObj = {
     };
 
     return (
-      <Flex direction="vertical" gap="xl">
+      <Flex orientation="vertical" gap="xl">
         <Text size={5} weight="bold" block>
           Two dates, one field
         </Text>
@@ -142,7 +149,7 @@ export const LeaseWindow: StoryObj = {
 
         <Panel>
           <Form>
-            <Flex direction="horizontal" gap="l" wrap>
+            <Flex orientation="horizontal" gap="l" wrap>
               <Form.Field
                 label="Lease period"
                 hintText={summarise(lease)}
@@ -183,9 +190,12 @@ export const CoarserGrains: StoryObj = {
     const [airframeYear, setAirframeYear] = useState<Dayjs | undefined>(
       dayjs('2019'),
     );
+    const [retiredAirframeYear, setRetiredAirframeYear] = useState<
+      Dayjs | undefined
+    >(dayjs('2017'));
 
     return (
-      <Flex direction="vertical" gap="xl">
+      <Flex orientation="vertical" gap="xl">
         <Text size={5} weight="bold" block>
           When the day doesn&apos;t matter
         </Text>
@@ -194,11 +204,16 @@ export const CoarserGrains: StoryObj = {
           the same factory as <Text code>DatePicker</Text> — only the popover&apos;s
           starting view changes. The stored value is still a full{' '}
           <Text code>Dayjs</Text>, snapped to the first of the month or year.
+          The footer&apos;s shortcut button (&ldquo;Today&rdquo; / &ldquo;This
+          month&rdquo; / &ldquo;This year&rdquo;) disables itself when the
+          current date falls outside <Text code>minDate</Text>/
+          <Text code>maxDate</Text> — a retired airframe&apos;s service window
+          below only reaches 2019, so &ldquo;This year&rdquo; is greyed out.
         </Text>
 
         <Panel>
           <Form>
-            <Flex direction="horizontal" gap="l" wrap>
+            <Flex orientation="horizontal" gap="l" wrap>
               <Form.Field
                 label="Crew roster month"
                 hintText={
@@ -225,6 +240,18 @@ export const CoarserGrains: StoryObj = {
                   format="YYYY"
                 />
               </Form.Field>
+              <Form.Field
+                label="Retired airframe's last service year"
+                hintText="Service window ends in 2019 — the current year is out of range"
+              >
+                <DatePicker.YearPicker
+                  value={retiredAirframeYear}
+                  onChange={(value) => setRetiredAirframeYear(value)}
+                  minDate={dayjs('2005')}
+                  maxDate={dayjs('2019')}
+                  format="YYYY"
+                />
+              </Form.Field>
             </Flex>
           </Form>
         </Panel>
@@ -240,7 +267,7 @@ export const FieldStates: StoryObj = {
     const [draft, setDraft] = useState<Dayjs | undefined>(undefined);
 
     return (
-      <Flex direction="vertical" gap="xl">
+      <Flex orientation="vertical" gap="xl">
         <Text size={5} weight="bold" block>
           Read-only, disabled, transparent, invalid
         </Text>
@@ -254,7 +281,7 @@ export const FieldStates: StoryObj = {
 
         <Panel>
           <Form>
-            <Flex direction="horizontal" gap="l" wrap>
+            <Flex orientation="horizontal" gap="l" wrap>
               <Form.Field label="Return leg (confirmed)">
                 <DatePicker value={confirmedLeg} readOnly />
               </Form.Field>
@@ -292,7 +319,7 @@ export const FieldStates: StoryObj = {
 
 /**
  * A trigger built as its own component: it reads the live picker state through
- * `useDatePickerTrigger()` instead of threading it through props, and forwards
+ * `useDatePickerTrigger()` instead of receiving it as props, and forwards
  * `ref` + the picker's props (`className` / `onClick` / aria) onto its `Button`.
  */
 const FancyTrigger = ({
@@ -315,8 +342,28 @@ const FancyTrigger = ({
   );
 };
 
+/** Same idea as `FancyTrigger`, styled as an inline text trigger instead. */
+const InlineTrigger = ({
+  ref,
+  ...rest
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  ref?: React.Ref<HTMLButtonElement>;
+}) => {
+  const { displayValue } = useDatePickerTrigger();
+
+  return (
+    <Button
+      ref={ref}
+      {...rest}
+      variant="text"
+      label={displayValue || 'Add a date'}
+      additionalIcon={<ChevronDown />}
+    />
+  );
+};
+
 export const CustomTrigger: StoryObj = {
-  name: 'Custom trigger — renderFunc & asChild',
+  name: 'Custom trigger — asChild',
   render: () => {
     const [asButton, setAsButton] = useState<Dayjs | undefined>(
       TODAY.add(4, 'day'),
@@ -327,54 +374,43 @@ export const CustomTrigger: StoryObj = {
     );
 
     return (
-      <Flex direction="vertical" gap="xl">
+      <Flex orientation="vertical" gap="xl">
         <Text size={5} weight="bold" block>
           The field doesn&apos;t have to be a field
         </Text>
         <Text block>
           By default the trigger is a read-only <Text code>TextInput</Text>.{' '}
-          <Text code>renderFunc</Text> swaps it for whatever element you return —
-          it receives the live trigger state (<Text code>displayValue</Text>,{' '}
-          <Text code>value</Text>, <Text code>expanded</Text>,{' '}
-          <Text code>clear</Text>) plus the picker&apos;s{' '}
-          <Text code>className</Text> / <Text code>style</Text>.{' '}
-          <Text code>asChild</Text> instead merges those onto an element you pass
-          as <Text code>children</Text>. Any component nested under the picker can
-          also read the state via <Text code>useDatePickerTrigger()</Text>.
+          <Text code>asChild</Text> merges the picker's{' '}
+          <Text code>className</Text> / <Text code>style</Text> / ref / click
+          handling onto an element you pass as <Text code>children</Text>. That
+          element — or anything nested under the picker — can read the live
+          trigger state (<Text code>displayValue</Text>, <Text code>value</Text>,{' '}
+          <Text code>expanded</Text>, <Text code>clear</Text>) via{' '}
+          <Text code>useDatePickerTrigger()</Text> instead of needing it passed
+          as props.
         </Text>
 
         <Panel>
           <Form>
-            <Flex direction="vertical" gap="l">
-              <Form.Field label="renderFunc → a Button">
+            <Flex orientation="vertical" gap="l">
+              <Form.Field label="asChild → a component using useDatePickerTrigger()">
                 <DatePicker
                   value={asButton}
                   onChange={(value) => setAsButton(value)}
-                  renderFunc={({ displayValue, expanded }) => (
-                    <Button
-                      label={displayValue || 'Choose a date'}
-                      icon={<CalendarDays />}
-                      additionalIcon={
-                        expanded ? <ChevronUp /> : <ChevronDown />
-                      }
-                      selected={expanded}
-                    />
-                  )}
-                />
+                  asChild
+                >
+                  <FancyTrigger />
+                </DatePicker>
               </Form.Field>
 
-              <Form.Field label="renderFunc → an inline text trigger">
+              <Form.Field label="asChild → an inline text trigger">
                 <DatePicker
                   value={asChip}
                   onChange={(value) => setAsChip(value)}
-                  renderFunc={({ displayValue }) => (
-                    <Button
-                      variant="text"
-                      label={displayValue || 'Add a date'}
-                      additionalIcon={<ChevronDown />}
-                    />
-                  )}
-                />
+                  asChild
+                >
+                  <InlineTrigger />
+                </DatePicker>
               </Form.Field>
 
               <Form.Field label="asChild → your own element becomes the trigger">
@@ -394,18 +430,45 @@ export const CustomTrigger: StoryObj = {
                   />
                 </DatePicker>
               </Form.Field>
-
-              <Form.Field label="renderFunc → a component using useDatePickerTrigger()">
-                <DatePicker
-                  value={asButton}
-                  onChange={(value) => setAsButton(value)}
-                  renderFunc={({ className, style }) => (
-                    <FancyTrigger className={className} style={style} />
-                  )}
-                />
-              </Form.Field>
             </Flex>
           </Form>
+        </Panel>
+      </Flex>
+    );
+  },
+};
+
+
+export const CustomIcons: StoryObj = {
+  name: 'Custom navigation and trigger icons',
+  render: () => {
+    const [date, setDate] = useState<Dayjs | undefined>(TODAY);
+
+    return (
+      <Flex orientation="vertical" gap="xl">
+        <Text size={6} weight="bold" block>
+          Swapping the icons
+        </Text>
+        <Text block>
+          <Text code>prevIcon</Text> / <Text code>nextIcon</Text> override the
+          popover header's month navigation — shared with{' '}
+          <Text code>Calendar</Text> and <Text code>Pagination</Text> via{' '}
+          <Text code>Application.icons</Text> when omitted.{' '}
+          <Text code>triggerIcon</Text> overrides the trailing calendar glyph
+          on the field itself, which has no shared role since only{' '}
+          <Text code>DatePicker</Text> uses it.
+        </Text>
+
+        <Panel>
+          <Form.Field label="Departure">
+            <DatePicker
+              value={date}
+              onChange={(value) => setDate(value)}
+              prevIcon={<ArrowLeftCircle />}
+              nextIcon={<ArrowRightCircle />}
+              triggerIcon={<CalendarClock />}
+            />
+          </Form.Field>
         </Panel>
       </Flex>
     );

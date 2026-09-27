@@ -1,8 +1,15 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { AnimatePresence } from 'motion/react';
 import clsx from 'clsx';
 import { useLocalization } from 'components/application';
-import { NotificationsContext } from './Notifications.context';
+import {
+  registerNotificationsController,
+  unregisterNotificationsController,
+} from './notificationsRegistry';
+import {
+  NotificationsDepthContext,
+  useNotificationsDepth,
+} from './Notifications.context';
 import type {
   AnyNotificationItem,
   NotificationItem,
@@ -19,11 +26,11 @@ const nextId = () => `altrone-notification-${++counter}`;
 
 export const Notifications = ({
   children,
-  toastPlacement = 'end',
-  notificationSide = 'end',
-  notificationPlacement = 'end',
+  toastPlacement = 'bottom',
+  notificationPlacement = 'bottom-end',
 }: NotificationsProviderProps) => {
   const t = useLocalization();
+  const depth = useNotificationsDepth();
   const [items, setItems] = useState<AnyNotificationItem[]>([]);
 
   const dismiss = useCallback((id: string) => {
@@ -63,6 +70,12 @@ export const Notifications = ({
     return id;
   }, []);
 
+  useEffect(() => {
+    const controller = { toast, notification, dismiss };
+    registerNotificationsController(controller, depth);
+    return () => unregisterNotificationsController(controller);
+  }, [toast, notification, dismiss, depth]);
+
   const toasts = items.filter(
     (item): item is ToastItem => item.kind === 'toast',
   );
@@ -70,14 +83,18 @@ export const Notifications = ({
     (item): item is NotificationItem => item.kind === 'notification',
   );
 
-  const toastEnter = { x: 0, y: toastPlacement === 'start' ? -28 : 28 };
+  const [notificationEdge, notificationAlign] = notificationPlacement.split(
+    '-',
+  ) as ['top' | 'bottom', 'start' | 'end'];
+
+  const toastEnter = { x: 0, y: toastPlacement === 'top' ? -28 : 28 };
   const notificationEnter = {
-    x: notificationSide === 'start' ? -36 : 36,
-    y: notificationPlacement === 'start' ? -20 : 20,
+    x: notificationAlign === 'start' ? -36 : 36,
+    y: notificationEdge === 'top' ? -20 : 20,
   };
 
   return (
-    <NotificationsContext.Provider value={{ toast, notification, dismiss }}>
+    <NotificationsDepthContext.Provider value={depth + 1}>
       {children}
       <div
         className={s.Root}
@@ -87,18 +104,20 @@ export const Notifications = ({
         aria-atomic="false"
       >
         <div
+          data-testid="toast-stack"
           className={clsx(
             s.Stack,
             s.ToastStack,
-            toastPlacement === 'start' ? s.Start : s.End,
+            toastPlacement === 'top' ? s.Top : s.Bottom,
           )}
         >
           <AnimatePresence initial={false}>
-            {toasts.map((item) => (
+            {toasts.map((item, index) => (
               <NotificationCard
                 key={item.id}
                 item={item}
                 enter={toastEnter}
+                stackIndex={index}
                 onClose={() => dismiss(item.id)}
               />
             ))}
@@ -106,25 +125,27 @@ export const Notifications = ({
         </div>
 
         <div
+          data-testid="notification-stack"
           className={clsx(
             s.Stack,
             s.NotificationStack,
-            notificationPlacement === 'start' ? s.Start : s.End,
-            notificationSide === 'start' ? s.SideStart : s.SideEnd,
+            notificationEdge === 'top' ? s.Top : s.Bottom,
+            notificationAlign === 'start' ? s.AlignStart : s.AlignEnd,
           )}
         >
           <AnimatePresence initial={false}>
-            {notifications.map((item) => (
+            {notifications.map((item, index) => (
               <NotificationCard
                 key={item.id}
                 item={item}
                 enter={notificationEnter}
+                stackIndex={index}
                 onClose={() => dismiss(item.id)}
               />
             ))}
           </AnimatePresence>
         </div>
       </div>
-    </NotificationsContext.Provider>
+    </NotificationsDepthContext.Provider>
   );
 };

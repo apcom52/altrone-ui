@@ -94,6 +94,8 @@
   --box-tone-solid-text: var(--background-1);
   --box-tone-translucent: var(--interactive-a1);
   --box-tone-translucent-strong: var(--interactive-a3);
+  --box-tone-pale: var(--interactive-1);
+  --box-tone-pale-strong: var(--interactive-3);
   --box-tone-border: var(--border-a2);
   --box-tone-border-strong: var(--border-a3);
   --box-tone-text: var(--text-2);
@@ -106,6 +108,8 @@
   --box-tone-solid-text: var(--white);
   --box-tone-translucent: var(--accent-a3);
   --box-tone-translucent-strong: var(--accent-a5);
+  --box-tone-pale: var(--accent-3);
+  --box-tone-pale-strong: var(--accent-5);
   --box-tone-border: var(--accent-a7);
   --box-tone-border-strong: var(--accent-a9);
   --box-tone-text: var(--accent-11);
@@ -116,6 +120,8 @@
   --box-tone-solid-text: var(--white);
   --box-tone-translucent: var(--danger-interactive-a1);
   --box-tone-translucent-strong: var(--danger-interactive-a3);
+  --box-tone-pale: var(--danger-interactive-1);
+  --box-tone-pale-strong: var(--danger-interactive-3);
   --box-tone-border: var(--danger-border-a2);
   --box-tone-border-strong: var(--danger-border-a3);
   --box-tone-text: var(--danger-text-1);
@@ -126,6 +132,8 @@
   --box-tone-solid-text: var(--white);
   --box-tone-translucent: var(--success-interactive-a1);
   --box-tone-translucent-strong: var(--success-interactive-a3);
+  --box-tone-pale: var(--success-interactive-1);
+  --box-tone-pale-strong: var(--success-interactive-3);
   --box-tone-border: var(--success-border-a2);
   --box-tone-border-strong: var(--success-border-a3);
   --box-tone-text: var(--success-text-1);
@@ -136,6 +144,8 @@
   --box-tone-solid-text: var(--white);
   --box-tone-translucent: var(--warning-interactive-a1);
   --box-tone-translucent-strong: var(--warning-interactive-a3);
+  --box-tone-pale: var(--warning-interactive-1);
+  --box-tone-pale-strong: var(--warning-interactive-3);
   --box-tone-border: var(--warning-border-a2);
   --box-tone-border-strong: var(--warning-border-a3);
   --box-tone-text: var(--warning-text-1);
@@ -163,6 +173,12 @@
     var(--box-color) 26%,
     transparent
   );
+  --box-tone-pale: color-mix(in oklab, var(--box-color) 14%, var(--background-1));
+  --box-tone-pale-strong: color-mix(
+    in oklab,
+    var(--box-color) 26%,
+    var(--background-1)
+  );
   --box-tone-border: color-mix(in oklab, var(--box-color) 45%, transparent);
   --box-tone-border-strong: color-mix(
     in oklab,
@@ -186,8 +202,18 @@
   --box-fill: var(--box-tone-translucent);
 }
 
+/* Same tint as `translucent`, opaque instead of alpha — doesn't blend with
+   whatever sits behind it (a photo, another tinted surface), and holds its
+   color reliably when stacked or layered. */
+.MaterialPale {
+  --box-fill: var(--box-tone-pale);
+}
+
+/* A frosted panel surface, independent of `tone` — glass is meant to read as
+   translucent material, not a tinted one. See `.MaterialPlate` below for the
+   same fill with a bordered control chrome on top. */
 .MaterialGlass {
-  --box-fill: var(--box-tone-translucent);
+  --box-fill: var(--glass-background-color);
   --box-blur: var(--glass-effects);
 }
 
@@ -219,25 +245,25 @@
   --box-border-color: var(--box-tone-border);
 }
 
-/* Placeholder surface: a faint tinted wash, a hairline edge and soft diagonal
-   hatch lines. The `background` shorthand in `.Box` sets the colour; this rule
-   (later in source) layers the repeating-gradient image over it. Line spacing
-   is a fixed length so the texture stays consistent at any box size. */
-.MaterialHatch {
-  --box-hatch-line: var(--box-tone-border-strong);
-  --box-hatch-gap: 9px;
+/* Placeholder surface: a faint tinted wash, a hairline edge and a dot-grid
+   texture — graph-paper dots, not a diagonal hatch or a line grid. A single
+   `radial-gradient` dot tiled via `background-size`, tone-driven like the
+   rest of the material. Scales with the box, not the viewport, so the
+   texture stays consistent at any box size. */
+.MaterialDotted {
+  --box-dotted-gap: 12px;
+  --box-dotted-radius: 1.2px;
 
   --box-fill: var(--box-tone-translucent);
   --box-border-width: 1px;
   --box-border-color: var(--box-tone-border);
 
-  background-image: repeating-linear-gradient(
-    -45deg,
-    var(--box-hatch-line) 0,
-    var(--box-hatch-line) 1px,
-    transparent 1px,
-    transparent var(--box-hatch-gap)
+  background-image: radial-gradient(
+    circle,
+    var(--box-tone-border-strong) var(--box-dotted-radius),
+    transparent var(--box-dotted-radius)
   );
+  background-size: var(--box-dotted-gap) var(--box-dotted-gap);
 }
 
 /* ------------------------------------------------------------------ */
@@ -325,13 +351,17 @@
   --box-fill: var(--box-tone-translucent-strong);
 }
 
+.Pressable.MaterialPale:hover:not(:active) {
+  --box-fill: var(--box-tone-pale-strong);
+}
+
 .Pressable.MaterialTransparent:hover:not(:active),
 .Pressable.MaterialGhost:hover:not(:active),
 .Pressable.MaterialOutline:hover:not(:active) {
   --box-fill: var(--box-tone-translucent);
 }
 
-.Pressable.MaterialHatch:hover:not(:active) {
+.Pressable.MaterialDotted:hover:not(:active) {
   --box-fill: var(--box-tone-translucent-strong);
 }
 
@@ -346,20 +376,24 @@
   filter: brightness(0.97);
 }
 
-.Pressable.MaterialGlass:active,
-.Editable.MaterialGlass:focus-within {
-  --box-fill: var(--box-tone-translucent-strong);
+.Pressable.MaterialPale:active,
+.Editable.MaterialPale:focus-within {
+  --box-fill: var(--box-tone-pale-strong);
 
-  backdrop-filter: var(--glass-press-effects);
+  filter: brightness(0.97);
 }
 
 /* Matches the former default Button — a press deepens the backdrop blur and
-   lifts brightness a touch; fill, edge and shadow are unchanged. */
+   lifts brightness a touch; fill, edge and shadow are unchanged. `MaterialGlass`
+   shares this (no bordered chrome, otherwise identical frosted fill). */
+.Pressable.MaterialGlass:active,
+.Editable.MaterialGlass:focus-within,
 .Pressable.MaterialPlate:active,
 .Editable.MaterialPlate:focus-within {
   backdrop-filter: var(--glass-press-effects);
 }
 
+.Pressable.MaterialGlass:active,
 .Pressable.MaterialPlate:active {
   filter: brightness(1.1);
 }
@@ -373,8 +407,8 @@
 
 .Pressable.MaterialOutline:active,
 .Editable.MaterialOutline:focus-within,
-.Pressable.MaterialHatch:active,
-.Editable.MaterialHatch:focus-within {
+.Pressable.MaterialDotted:active,
+.Editable.MaterialDotted:focus-within {
   --box-fill: var(--box-tone-translucent-strong);
   --box-border-color: var(--box-tone-border-strong);
 }

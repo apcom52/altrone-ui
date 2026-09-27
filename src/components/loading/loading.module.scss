@@ -18,6 +18,11 @@
   overflow: visible;
 }
 
+.Spinner.Determinate {
+  animation: none;
+  transform: rotate(-90deg);
+}
+
 .Track {
   fill: none;
   stroke: currentColor;
@@ -34,6 +39,13 @@
   animation: stretch 1.5s ease-in-out infinite;
   will-change: stroke-dasharray, stroke-dashoffset;
   transition: stroke 0.5s ease;
+}
+
+.Active.Determinate {
+  animation: none;
+  transition:
+    stroke-dasharray 0.3s ease,
+    stroke 0.5s ease;
 }
 
 @keyframes rotate {

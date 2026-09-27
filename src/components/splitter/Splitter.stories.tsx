@@ -8,6 +8,12 @@ import { Flex } from '../flex/index.ts';
 import { Button } from '../button/index.ts';
 import { Radio } from '../radio/index.ts';
 import React, { useRef, useState } from 'react';
+import {
+  ArrowLeftFromLine,
+  ArrowRightFromLine,
+  ArrowDownFromLine,
+  ArrowUpFromLine,
+} from 'lucide-react';
 
 const story: Meta<typeof Splitter> = {
   title: 'Components/Containers/Splitter',
@@ -39,7 +45,7 @@ const Label = ({ children }: { children: React.ReactNode }) => (
 
 // Fake file-tree lines
 const FileTree = () => (
-  <Flex direction="vertical" gap="xs" style={{ padding: '12px 8px' }}>
+  <Flex orientation="vertical" gap="xs" style={{ padding: '12px 8px' }}>
     {[
       '📁 src',
       '  📁 components',
@@ -82,7 +88,7 @@ const CodeBlock = () => (
       '',
       'export const App = () => (',
       '  <Splitter style={{ height: 400 }}>',
-      '    <Splitter.Panel defaultSize={25} min={15} collapsible>',
+      '    <Splitter.Panel defaultSize={25} minSize={15} collapsible>',
       '      <FileTree />',
       '    </Splitter.Panel>',
       '    <Splitter.Panel>',
@@ -147,7 +153,7 @@ export const ThreeColumns: StoryObj<typeof Splitter> = {
   name: 'Three panels',
   render: () => (
     <Splitter style={{ height: 300 }}>
-      <Splitter.Panel defaultSize={20} min={12}>
+      <Splitter.Panel defaultSize={20} minSize={12}>
         <div style={panelStyle()}>
           <Label>Navigation</Label>
         </div>
@@ -157,7 +163,7 @@ export const ThreeColumns: StoryObj<typeof Splitter> = {
           <Label>Main content</Label>
         </div>
       </Splitter.Panel>
-      <Splitter.Panel defaultSize={25} min={15}>
+      <Splitter.Panel defaultSize={25} minSize={15}>
         <div style={panelStyle()}>
           <Label>Inspector</Label>
         </div>
@@ -169,14 +175,14 @@ export const ThreeColumns: StoryObj<typeof Splitter> = {
 export const CollapsiblePanels: StoryObj<typeof Splitter> = {
   name: 'Collapsible panels',
   render: () => (
-    <Flex direction="vertical" gap="l">
+    <Flex orientation="vertical" gap="l">
       <Text size={3} color="muted" block>
         Hover the divider to reveal collapse/expand arrows.
       </Text>
       <Splitter style={{ height: 320 }}>
-        <Splitter.Panel defaultSize={25} min={15} collapsible>
+        <Splitter.Panel defaultSize={25} minSize={15} collapsible>
           <div style={{ ...panelStyle(), height: '100%' }}>
-            <Flex direction="vertical" gap="s">
+            <Flex orientation="vertical" gap="s">
               <Text weight="medium">File Explorer</Text>
               <FileTree />
             </Flex>
@@ -187,9 +193,9 @@ export const CollapsiblePanels: StoryObj<typeof Splitter> = {
             <CodeBlock />
           </div>
         </Splitter.Panel>
-        <Splitter.Panel defaultSize={22} min={15} collapsible>
+        <Splitter.Panel defaultSize={22} minSize={15} collapsible>
           <div style={{ ...panelStyle(), height: '100%' }}>
-            <Flex direction="vertical" gap="s" style={{ padding: 4 }}>
+            <Flex orientation="vertical" gap="s" style={{ padding: 4 }}>
               <Text weight="medium">Properties</Text>
               {['Component', 'Props', 'State', 'Hooks'].map((item) => (
                 <div
@@ -218,8 +224,8 @@ export const CollapsedControlsVisibilityStory: StoryObj<typeof Splitter> = {
       useState<SplitterCollapsedControlsVisibility>('always');
 
     return (
-      <Flex direction="vertical" gap="l">
-        <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="l">
+        <Flex orientation="vertical" gap="xs">
           <Text size={3} weight="medium" block>
             collapsedControlsVisibility
           </Text>
@@ -247,9 +253,9 @@ export const CollapsedControlsVisibilityStory: StoryObj<typeof Splitter> = {
         </Flex>
 
         <Splitter style={{ height: 280 }} collapsedControlsVisibility={mode}>
-          <Splitter.Panel defaultSize={28} min={15} collapsible>
+          <Splitter.Panel defaultSize={28} minSize={15} collapsible>
             <div style={{ ...panelStyle(), height: '100%' }}>
-              <Flex direction="vertical" gap="s">
+              <Flex orientation="vertical" gap="s">
                 <Text weight="medium">Sidebar</Text>
                 <FileTree />
               </Flex>
@@ -269,17 +275,17 @@ export const CollapsedControlsVisibilityStory: StoryObj<typeof Splitter> = {
 export const MinMaxConstraints: StoryObj<typeof Splitter> = {
   name: 'Min / max constraints',
   render: () => (
-    <Flex direction="vertical" gap="l">
+    <Flex orientation="vertical" gap="l">
       <Text size={3} color="muted" block>
         Left panel: min 20%, max 50%. Right panel: min 30%.
       </Text>
       <Splitter style={{ height: 260 }}>
-        <Splitter.Panel defaultSize={35} min={20} max={50}>
+        <Splitter.Panel defaultSize={35} minSize={20} maxSize={50}>
           <div style={{ ...panelStyle(), height: '100%' }}>
             <Label>Constrained (20–50%)</Label>
           </div>
         </Splitter.Panel>
-        <Splitter.Panel min={30}>
+        <Splitter.Panel minSize={30}>
           <div style={{ ...panelStyle('var(--background-1)'), height: '100%' }}>
             <Label>Constrained (min 30%)</Label>
           </div>
@@ -301,9 +307,9 @@ export const IDELayout: StoryObj<typeof Splitter> = {
       }}
     >
       {/* Left: file tree */}
-      <Splitter.Panel defaultSize={20} min={12} max={35} collapsible>
+      <Splitter.Panel defaultSize={20} minSize={12} maxSize={35} collapsible>
         <Flex
-          direction="vertical"
+          orientation="vertical"
           style={{ height: '100%', background: 'var(--background-2)' }}
         >
           <div
@@ -340,7 +346,7 @@ export const IDELayout: StoryObj<typeof Splitter> = {
             </div>
           </Splitter.Panel>
 
-          <Splitter.Panel defaultSize={28} min={15} collapsible>
+          <Splitter.Panel defaultSize={28} minSize={15} collapsible>
             <div style={{ height: '100%', background: 'var(--background-2)' }}>
               <div
                 style={{
@@ -382,7 +388,7 @@ export const ResizeCallback: StoryObj<typeof Splitter> = {
     const [sizes, setSizes] = useState<number[]>([50, 50]);
 
     return (
-      <Flex direction="vertical" gap="m">
+      <Flex orientation="vertical" gap="m">
         <Flex gap="xl">
           {sizes.map((s, i) => (
             <Text key={i} size={3} color="muted">
@@ -401,6 +407,60 @@ export const ResizeCallback: StoryObj<typeof Splitter> = {
               style={{ ...panelStyle('var(--background-1)'), height: '100%' }}
             >
               <Label>Panel 2</Label>
+            </div>
+          </Splitter.Panel>
+        </Splitter>
+      </Flex>
+    );
+  },
+};
+
+export const ControlledSizesStory: StoryObj<typeof Splitter> = {
+  name: 'Controlled sizes',
+  render: () => {
+    const [sizes, setSizes] = useState<number[]>([30, 70]);
+
+    return (
+      <Flex orientation="vertical" gap="m">
+        <Text size={3} block style={{ maxWidth: 640, lineHeight: 1.6 }}>
+          Passing <Text code>sizes</Text> (instead of each panel's own{' '}
+          <Text code>defaultSize</Text>) makes the whole layout controlled —
+          the splitter renders whatever it's given and only asks to change it
+          via <Text code>onSizesChange</Text>, fired at the end of a drag or
+          on collapse/expand. Useful for persisting a layout (e.g. to
+          localStorage) and restoring it on the next visit.
+        </Text>
+
+        <Flex gap="s">
+          <Button
+            label="30 / 70"
+            variant={sizes[0] === 30 ? 'submit' : 'default'}
+            size="s"
+            onClick={() => setSizes([30, 70])}
+          />
+          <Button
+            label="50 / 50"
+            variant={sizes[0] === 50 ? 'submit' : 'default'}
+            size="s"
+            onClick={() => setSizes([50, 50])}
+          />
+        </Flex>
+
+        <Splitter
+          style={{ height: 220 }}
+          sizes={sizes}
+          onSizesChange={setSizes}
+        >
+          <Splitter.Panel collapsible>
+            <div style={{ ...panelStyle(), height: '100%' }}>
+              <Label>Panel 1: {sizes[0].toFixed(1)}%</Label>
+            </div>
+          </Splitter.Panel>
+          <Splitter.Panel>
+            <div
+              style={{ ...panelStyle('var(--background-1)'), height: '100%' }}
+            >
+              <Label>Panel 2: {sizes[1].toFixed(1)}%</Label>
             </div>
           </Splitter.Panel>
         </Splitter>
@@ -430,10 +490,10 @@ export const ExternalControlStory: StoryObj<typeof Splitter> = {
     ];
 
     return (
-      <Flex direction="vertical" gap="m">
+      <Flex orientation="vertical" gap="m">
         {/* Toolbar — external controls */}
         <Flex
-          direction="horizontal"
+          orientation="horizontal"
           gap="s"
           align="center"
           style={{
@@ -455,7 +515,7 @@ export const ExternalControlStory: StoryObj<typeof Splitter> = {
               onClick={() => controlRef.current?.toggle(i)}
             />
           ))}
-          <Flex direction="horizontal" gap="s" style={{ marginLeft: 'auto' }}>
+          <Flex orientation="horizontal" gap="s" style={{ marginLeft: 'auto' }}>
             <Button
               label="Focus mode"
               variant="text"
@@ -485,24 +545,24 @@ export const ExternalControlStory: StoryObj<typeof Splitter> = {
           showControls={false}
           onCollapse={handleCollapse}
         >
-          <Splitter.Panel defaultSize={22} min={15} collapsible>
+          <Splitter.Panel defaultSize={22} minSize={15} collapsible>
             <div style={{ ...panelStyle(), height: '100%' }}>
-              <Flex direction="vertical" gap="s">
+              <Flex orientation="vertical" gap="s">
                 <Text weight="medium">Sidebar</Text>
                 <FileTree />
               </Flex>
             </div>
           </Splitter.Panel>
-          <Splitter.Panel min={20} collapsible>
+          <Splitter.Panel minSize={20} collapsible>
             <div
               style={{ ...panelStyle('var(--background-1)'), height: '100%' }}
             >
               <CodeBlock />
             </div>
           </Splitter.Panel>
-          <Splitter.Panel defaultSize={24} min={15} collapsible>
+          <Splitter.Panel defaultSize={24} minSize={15} collapsible>
             <div style={{ ...panelStyle(), height: '100%' }}>
-              <Flex direction="vertical" gap="s" style={{ padding: 4 }}>
+              <Flex orientation="vertical" gap="s" style={{ padding: 4 }}>
                 <Text weight="medium">Inspector</Text>
                 {['Component', 'Props', 'State', 'Hooks', 'Events'].map(
                   (item) => (
@@ -525,6 +585,67 @@ export const ExternalControlStory: StoryObj<typeof Splitter> = {
       </Flex>
     );
   },
+};
+
+export const StyledPanelStory: StoryObj<typeof Splitter> = {
+  name: 'Styling a panel directly',
+  render: () => {
+    const panelRef = useRef<HTMLDivElement>(null);
+
+    return (
+      <Splitter style={{ height: 200 }}>
+        <Splitter.Panel
+          ref={panelRef}
+          defaultSize={30}
+          className="my-panel"
+          style={{ padding: 16, background: 'var(--background-2)' }}
+        >
+          <Label>
+            Styled via `className`/`style`/`ref` on `Splitter.Panel` itself —
+            no wrapper `div` needed.
+          </Label>
+        </Splitter.Panel>
+        <Splitter.Panel>
+          <div style={panelStyle()}>
+            <Label>A plain panel, for comparison</Label>
+          </div>
+        </Splitter.Panel>
+      </Splitter>
+    );
+  },
+};
+
+export const CustomIcons: StoryObj<typeof Splitter> = {
+  name: 'Custom icons',
+  render: () => (
+    <Flex orientation="vertical" gap="l">
+      <Text size={3} color="muted" block>
+        The four directional chevrons used by the collapse controls are
+        grouped under one <Text code>icons</Text> prop — hover the divider to
+        see the overrides.
+      </Text>
+      <Splitter
+        style={{ height: 200 }}
+        icons={{
+          chevronLeft: <ArrowLeftFromLine />,
+          chevronRight: <ArrowRightFromLine />,
+          chevronUp: <ArrowUpFromLine />,
+          chevronDown: <ArrowDownFromLine />,
+        }}
+      >
+        <Splitter.Panel defaultSize={30} minSize={15} collapsible>
+          <div style={{ ...panelStyle(), height: '100%' }}>
+            <Label>Left panel</Label>
+          </div>
+        </Splitter.Panel>
+        <Splitter.Panel collapsible>
+          <div style={{ ...panelStyle('var(--background-1)'), height: '100%' }}>
+            <Label>Right panel</Label>
+          </div>
+        </Splitter.Panel>
+      </Splitter>
+    </Flex>
+  ),
 };
 
 export default story;

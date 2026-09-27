@@ -1,6 +1,27 @@
-import type { HTMLAttributes, ReactNode, Ref } from 'react';
-import type { NotificationPlacement } from '../notifications';
+import type { HTMLAttributes, ReactElement, ReactNode, Ref } from 'react';
+import type { NotificationPlacement, ToastPlacement } from '../notifications';
 import type { Localization } from 'locales';
+
+/**
+ * Icon roles shared by multiple components (e.g. `prev`/`next` navigation
+ * chevrons used by Calendar, DatePicker and Pagination) — override once via
+ * `Application.icons` instead of per component. Icons unique to a single
+ * component keep their own local override prop instead of joining this set.
+ */
+export interface IconSet {
+  prev: ReactElement;
+  next: ReactElement;
+  open: ReactElement;
+  close: ReactElement;
+  search: ReactElement;
+  clear: ReactElement;
+  error: ReactElement;
+  help: ReactElement;
+  info: ReactElement;
+  success: ReactElement;
+  warning: ReactElement;
+  danger: ReactElement;
+}
 
 export type Theme = 'auto' | 'light' | 'dark';
 export type Accent =
@@ -14,7 +35,7 @@ export type Accent =
   | 'purple'
   | 'pink'
   | 'brown';
-export type Language = 'en' | 'ru' | 'fr' | 'ge' | 'sp';
+export type Language = 'en' | 'ru' | 'fr' | 'de' | 'es' | 'zh' | 'pt' | 'tr';
 
 export interface ApplicationProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
@@ -29,11 +50,11 @@ export interface ApplicationProps extends HTMLAttributes<HTMLDivElement> {
   persistTheme?: boolean;
   accent?: Accent;
   customLabels?: Partial<Localization>;
-  /** Vertical placement of the toast stack (centred horizontally). Defaults to 'end' (bottom). */
-  toastPlacement?: NotificationPlacement;
-  /** Horizontal side of the notification stack. Defaults to 'end' (right). */
-  notificationSide?: NotificationPlacement;
-  /** Vertical placement of the notification stack. Defaults to 'end' (bottom). */
+  /** Overrides for the icon roles shared across components — see `IconSet`. */
+  icons?: Partial<IconSet>;
+  /** Vertical edge of the toast stack (centred horizontally). Defaults to 'bottom'. */
+  toastPlacement?: ToastPlacement;
+  /** Corner of the notification stack. Defaults to 'bottom-end'. */
   notificationPlacement?: NotificationPlacement;
   /**
    * Radix Slot polymorphism — merges the root's attributes/classes onto the

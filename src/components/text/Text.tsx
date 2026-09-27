@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import type { TextProps } from './Text.types.ts';
 import clsx from 'clsx';
 import s from './text.module.scss';
+import { Slot } from 'utils/components/Slot.tsx';
 
 // Internal permissive type — unions all variants for implementation convenience.
 // The public API is constrained by the TextProps union in the cast below.
@@ -108,16 +109,11 @@ const TextImpl = ({
       }
       return null;
     }
-    const child = children as React.ReactElement<Record<string, unknown>>;
-    return React.cloneElement(child, {
-      ...restProps,
-      className: clsx(cls, child.props['className'] as string | undefined),
-      style: {
-        ...styles,
-        ...(child.props['style'] as React.CSSProperties | undefined),
-      },
-      ref,
-    });
+    return (
+      <Slot ref={ref} className={cls} style={styles} {...restProps}>
+        {children as React.ReactElement<Record<string, unknown>>}
+      </Slot>
+    );
   }
 
   let tagName = 'span';

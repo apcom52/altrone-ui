@@ -18,14 +18,15 @@ describe('Progress', () => {
   test('renders a string label and a render-function label', () => {
     render(
       <>
-        <Progress value={15} max={100}>
-          Uploading
-        </Progress>
-        <Progress value={15} min={5} max={25}>
-          {({ value, min, max, percentage }) => (
+        <Progress value={15} max={100} label="Uploading" />
+        <Progress
+          value={15}
+          min={5}
+          max={25}
+          label={({ value, min, max, percentage }) => (
             <span>{`${value}-${min}-${max}-${percentage}`}</span>
           )}
-        </Progress>
+        />
       </>,
     );
 
@@ -36,9 +37,7 @@ describe('Progress', () => {
 
   test('a string label becomes the accessible name', () => {
     render(
-      <Progress data-testid="progress" value={40}>
-        Downloading update
-      </Progress>,
+      <Progress data-testid="progress" value={40} label="Downloading update" />,
     );
 
     expect(screen.getByTestId('progress')).toHaveAttribute(
@@ -84,5 +83,19 @@ describe('Progress', () => {
     const bar = screen.getByTestId('progress');
     expect(bar).toHaveClass('cls');
     expect(bar.id).toBe('my-progress');
+  });
+
+  test('activeClassName/activeStyle target the filled segment', () => {
+    const { container } = render(
+      <Progress
+        value={50}
+        activeClassName="active-cls"
+        activeStyle={{ color: 'rgb(255, 0, 0)' }}
+      />,
+    );
+
+    const segment = container.querySelector('.active-cls');
+    expect(segment).not.toBeNull();
+    expect(segment).toHaveStyle('color: rgb(255, 0, 0)');
   });
 });

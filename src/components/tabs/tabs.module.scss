@@ -11,6 +11,8 @@
   --tabs-item-icon-size: 16px;
   --tabs-item-font-size: 14px;
   --tabs-item-rounding: 12px;
+  --tabs-item-padding-y: 4px;
+  --tabs-item-padding-x: 8px;
 }
 
 .TabsContainer {
@@ -28,4 +30,54 @@
   box-shadow: 0 0 0 1px var(--tabs-border-color);
   padding: 4px;
   gap: var(--s-gap);
+}
+
+/* Each variant scales the tablist box (height/radius/padding) together with
+   the `--tabs-item-*` custom properties, which cascade down to `.Item`. */
+.Mini {
+  height: 16px;
+  border-radius: 8px;
+  padding: 0;
+  --tabs-item-size: 16px;
+  --tabs-item-icon-size: 12px;
+  --tabs-item-font-size: var(--text-size-3);
+  --tabs-item-rounding: 8px;
+  --tabs-item-padding-y: 2px;
+  --tabs-item-padding-x: 6px;
+}
+
+.Small {
+  height: 26px;
+  border-radius: 13px;
+  padding: 3px;
+  --tabs-item-size: 20px;
+  --tabs-item-icon-size: 14px;
+  --tabs-item-font-size: var(--text-size-3);
+  --tabs-item-rounding: 10px;
+  --tabs-item-padding-y: 3px;
+  --tabs-item-padding-x: 7px;
+}
+
+.Large {
+  height: 38px;
+  border-radius: 19px;
+  padding: 5px;
+  --tabs-item-size: 28px;
+  --tabs-item-icon-size: 18px;
+  --tabs-item-font-size: var(--text-size-5);
+  --tabs-item-rounding: 14px;
+  --tabs-item-padding-y: 5px;
+  --tabs-item-padding-x: 9px;
+}
+
+.XLarge {
+  height: 44px;
+  border-radius: 22px;
+  padding: 6px;
+  --tabs-item-size: 32px;
+  --tabs-item-icon-size: 20px;
+  --tabs-item-font-size: var(--text-size-6);
+  --tabs-item-rounding: 16px;
+  --tabs-item-padding-y: 6px;
+  --tabs-item-padding-x: 10px;
 }

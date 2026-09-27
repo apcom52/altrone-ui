@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Text, Range } from 'components';
+import { Flex, Text, Slider } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { useState } from 'react';
 import { Heart } from 'lucide-react';
@@ -48,7 +48,7 @@ const RoleDemo = ({
   label: string;
   children: React.ReactNode;
 }) => (
-  <Flex direction="vertical" gap="s" align="start">
+  <Flex orientation="vertical" gap="s" align="start">
     <Text size={3} weight="medium">
       {label} — <code>var({role})</code>
     </Text>
@@ -70,12 +70,12 @@ const PrimitiveSwitcher = () => {
   const tier = tiers[tierIndex];
 
   return (
-    <Flex direction="vertical" gap="m">
+    <Flex orientation="vertical" gap="m">
       <div style={{ width: 320 }}>
         <Text block size={3} weight="medium">
           --space-content aliased to: --{tier}
         </Text>
-        <Range
+        <Slider
           min={0}
           max={tiers.length - 1}
           value={tierIndex}
@@ -110,9 +110,9 @@ const PrimitiveSwitcher = () => {
 };
 
 export const Overview: StoryObj = {
-  name: 'Spacing Roles',
+  name: 'Spacing',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Spacing Roles
       </Text>
@@ -141,7 +141,7 @@ export const Overview: StoryObj = {
       </RoleDemo>
 
       <RoleDemo role="--space-stack" label="Vertical rhythm between rows">
-        <Flex direction="vertical" gap="xs" style={{ width: 200 }}>
+        <Flex orientation="vertical" gap="xs" style={{ width: 200 }}>
           {['First name', 'Last name', 'Email'].map((label) => (
             <div
               key={label}

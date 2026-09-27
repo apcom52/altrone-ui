@@ -12,8 +12,8 @@ export const MoneyInput = () => {
   const atLimit = (transfer ?? 0) >= BALANCE;
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 460 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 460 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Money, formatted as you type
         </Text>
@@ -28,8 +28,8 @@ export const MoneyInput = () => {
         </Text>
       </Flex>
 
-      <Flex direction="horizontal" gap="m">
-        <Flex direction="vertical" gap="xs" style={{ flex: 1 }}>
+      <Flex orientation="horizontal" gap="m">
+        <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
           <Text asChild size={2} weight="medium">
             <label htmlFor="mi-usd">Monthly budget · US</label>
           </Text>
@@ -48,7 +48,7 @@ export const MoneyInput = () => {
           </NumberInput>
         </Flex>
 
-        <Flex direction="vertical" gap="xs" style={{ flex: 1 }}>
+        <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
           <Text asChild size={2} weight="medium">
             <label htmlFor="mi-eur">Monatsbudget · EU</label>
           </Text>
@@ -68,7 +68,7 @@ export const MoneyInput = () => {
         </Flex>
       </Flex>
 
-      <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="xs">
         <Text asChild size={2} weight="medium">
           <label htmlFor="mi-transfer">Transfer amount</label>
         </Text>

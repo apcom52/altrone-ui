@@ -1,28 +1,34 @@
 import React, { ReactElement } from 'react';
 import { Size } from 'types';
+import { ActionsProp, RenderFunction } from '../../utils';
 
 export interface ModalContext {
-  closeModal: () => void;
+  hide: () => void;
 }
 
-type ModalRenderProp<T> = T | ((context: ModalContext) => T);
-
-export interface ModalProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'content'> {
+export interface ModalProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'content' | 'children'
+> {
   ref?: React.Ref<HTMLDivElement>;
+  content: RenderFunction<ReactElement, ModalContext>;
+  /** Controlled open state. Omit for an uncontrolled modal (see `defaultOpen`). */
+  open?: boolean;
+  /** Initial open state for an uncontrolled modal. Ignored once `open` is passed. */
+  defaultOpen?: boolean;
   /**
-   * Trigger element — cloned with an `onClick` that opens the modal, merged
-   * with any `onClick` it already has. Omit it for a fully controlled modal
-   * (open via `openedByDefault`, close via `onClose`), e.g. `DialogProvider`.
+   * `event` is the triggering backdrop click / close-button click / Escape
+   * keydown, or undefined when closed programmatically via
+   * `ModalContext.hide()`.
    */
-  children?: ReactElement<{ onClick?: React.MouseEventHandler }>;
-  content: ModalRenderProp<ReactElement>;
-  openedByDefault?: boolean;
-  onClose?: () => void;
+  onClose?: (event?: React.MouseEvent | KeyboardEvent) => void;
   enabled?: boolean;
   title?: string;
   size?: Size;
+  /** Shows or hides the header close button. Defaults to `true`. */
+  showCloseButton?: boolean;
   showCancelButton?: boolean;
-  leftActions?: ModalRenderProp<ReactElement | ReactElement[]>;
-  actions?: ModalRenderProp<ReactElement | ReactElement[]>;
+  actions?: ActionsProp<ModalContext>;
+  /** Secondary actions, rendered on the opposite side of the footer from `actions` (left, in our layout). */
+  additionalActions?: ActionsProp<ModalContext>;
 }

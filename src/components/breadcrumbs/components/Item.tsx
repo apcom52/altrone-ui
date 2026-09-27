@@ -31,6 +31,7 @@ export const Item = memo(
     children,
     label,
     icon,
+    separatorIcon = <ChevronRight />,
     ...restProps
   }: BreadcrumbsItemProps) => {
     const cls = clsx(s.Item, { [s.Current]: current }, className);
@@ -62,7 +63,7 @@ export const Item = memo(
         )}
         {/* Hidden on the last item via CSS (`:last-child`). */}
         <div className={s.Separator} aria-hidden="true">
-          <ChevronRight />
+          {separatorIcon}
         </div>
       </li>
     );

@@ -4,8 +4,8 @@ import clsx from 'clsx';
 import { DividerProps } from './Divider.types.ts';
 
 export const Divider = memo<DividerProps>(
-  ({ ref, direction, className, style, ...props }) => {
-    const vertical = direction === 'vertical';
+  ({ ref, orientation, className, style, ...props }) => {
+    const vertical = orientation === 'vertical';
 
     const cls = clsx(s.Divider, { [s.Vertical]: vertical }, className);
 

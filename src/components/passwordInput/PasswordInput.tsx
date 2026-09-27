@@ -10,6 +10,8 @@ export const PasswordInput = ({
   ref,
   inputRef,
   showControls,
+  showIcon = <Eye />,
+  hideIcon = <EyeOff />,
   children,
   className,
   style,
@@ -53,7 +55,7 @@ export const PasswordInput = ({
           }
           showLabel={false}
           onClick={() => setType(type === 'password' ? 'text' : 'password')}
-          icon={type === 'password' ? <Eye /> : <EyeOff />}
+          icon={type === 'password' ? showIcon : hideIcon}
           aria-pressed={type === 'text'}
         />
       ) : null}

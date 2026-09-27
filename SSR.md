@@ -19,7 +19,7 @@
 | **Avatar** | `avatar/Avatar.tsx` | 🔴 Client | `useState`, `useRef`, `useEffect`, `window.getComputedStyle` |
 | **Badge** | `badge/Badge.tsx` | 🟢 Server | Static JSX only, no hooks |
 | **BottomNavigation** | `bottomNavigation/BottomNavigation.tsx` | 🔴 Client | `useId`, Context Provider |
-| ↳ BottomNavigation.Item | `bottomNavigation/components/Item.tsx` | 🔴 Client | `useContext`, event handlers |
+| ↳ BottomNavigation.Link | `bottomNavigation/components/Link.tsx` | 🔴 Client | `useContext`, event handlers |
 | **Breadcrumbs** | `breadcrumbs/Breadcrumbs.tsx` | 🔴 Client | `useConfiguration` (`useContext`) |
 | ↳ Breadcrumbs.Item | `breadcrumbs/components/Item.tsx` | 🔴 Client | `useContext`, event handlers |
 | **Button** | `button/Button.tsx` | 🔴 Client | `motion/react`, `useRef`, `useState` |
@@ -59,16 +59,16 @@
 | **NumberInput** | `numberInput/NumberInput.tsx` | 🔴 Client | `useRef`, `useCallback`, `useMemo`, `useFormField` |
 | **PasswordInput** | `passwordInput/PasswordInput.tsx` | 🔴 Client | `useState`, `useShowControls` |
 | **Radio** | `radio/Radio.tsx` | 🔴 Client | `useId`, Context Provider, `useCallback` |
-| **Range** | `range/Range.tsx` | 🔴 Client | `useRef`, `useState`, `useEffect`, `motion/react` |
+| **Slider** | `slider/Slider.tsx` | 🔴 Client | `useRef`, `useState`, `useEffect`, `motion/react` |
 | **Screen** | `screen/Screen.tsx` | 🔴 Client | `useState`, `useMemo` |
 | **Search** | `search/Search.tsx` | 🔴 Client | `useRef`, DOM API |
 | **Skeleton** | `skeleton/Skeleton.tsx` | 🔴 Client | `motion/react` |
 | **Spoiler** | `spoiler/Spoiler.tsx` | 🔴 Client | `useBoolean`, `motion/react` |
-| **Switcher** | `switcher/Switcher.tsx` | 🔴 Client | `useRef`, `onChange`/`onKeyDown` with logic |
+| **Switch** | `switch/Switch.tsx` | 🔴 Client | `useRef`, `onChange`/`onKeyDown` with logic |
 | **Tags** | `tags/Tags.tsx` | 🔴 Client | `useCallback`, `useMemo`, Context |
 | **Text** | `text/Text.tsx` | 🟡 Server\* | No hooks — `memo()` only; size cascades via CSS |
 | **TextInput** | `textInput/TextInput.tsx` | 🔴 Client | `useRef`, `useCallback`, `useResizeObserver`, `useBoolean` |
-| **Textarea** | `textarea/Textarea.tsx` | 🔴 Client | `useFormField`, `useRef` |
+| **TextArea** | `textArea/TextArea.tsx` | 🔴 Client | `useFormField`, `useRef` |
 | **Toast** | `toasts/Toast.tsx` | 🔴 Client | `useState`, `useCallback`, `motion/react`, Context Provider |
 | **Toolbar** | `toolbar/Toolbar.tsx` | 🔴 Client | Context Provider |
 
@@ -90,7 +90,7 @@
 
 | Pattern | Components |
 |---------|------------|
-| `motion/react` | `Button`, `Range`, `Skeleton`, `Drawer`, `Modal`, `Spoiler`, `Toast`, `DataTable` |
+| `motion/react` | `Button`, `Slider`, `Skeleton`, `Drawer`, `Modal`, `Spoiler`, `Toast`, `DataTable` |
 | Context Provider | `AltroneApplication`, `BottomNavigation`, `Dialog`, `EntityList`, `NavigationList`, `Radio`, `Tags`, `Toast`, `Toolbar` |
 | `createPortal` | `Modal`, `Drawer` |
 | `window` / `document` | `AltroneApplication`, `Drawer`, `Modal`, `FilePicker`, `Search`, `AutocompleteInput` |

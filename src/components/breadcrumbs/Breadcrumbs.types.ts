@@ -11,6 +11,8 @@ export interface BreadcrumbsItemProps
   ref?: React.Ref<HTMLElement>;
   label?: string;
   icon?: ReactElement;
+  /** Separator shown after this item. Defaults to a chevron; hidden on the last item via CSS. */
+  separatorIcon?: ReactElement;
   /** The current page — the last item. Renders bold and sets `aria-current="page"`. */
   current?: boolean;
   /**

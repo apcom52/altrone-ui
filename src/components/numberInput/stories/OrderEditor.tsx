@@ -31,8 +31,8 @@ export const OrderEditor = () => {
   const total = subtotal + shipping;
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 540 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 540 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Order — line by line
         </Text>
@@ -44,10 +44,10 @@ export const OrderEditor = () => {
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="m">
+      <Flex orientation="vertical" gap="m">
         {CATALOG.map((p, i) => (
-          <Flex key={p.name} direction="horizontal" gap="m" align="center">
-            <Flex direction="vertical" gap="xxs" style={{ flex: 1, minWidth: 0 }}>
+          <Flex key={p.name} orientation="horizontal" gap="m" align="center">
+            <Flex orientation="vertical" gap="xxs" style={{ flex: 1, minWidth: 0 }}>
               <Text size={3} weight="medium" truncate>
                 {p.name}
               </Text>
@@ -79,8 +79,8 @@ export const OrderEditor = () => {
 
       <Divider />
 
-      <Flex direction="vertical" gap="xs">
-        <Flex direction="horizontal" gap="m" align="center" justify="between">
+      <Flex orientation="vertical" gap="xs">
+        <Flex orientation="horizontal" gap="m" align="center" justify="between">
           <Text size={2} color="muted">
             Subtotal
           </Text>
@@ -88,7 +88,7 @@ export const OrderEditor = () => {
             ${money(subtotal)}
           </Text>
         </Flex>
-        <Flex direction="horizontal" gap="m" align="center" justify="between">
+        <Flex orientation="horizontal" gap="m" align="center" justify="between">
           <Text size={2} color="muted">
             Shipping {shipping === 0 && '(free over $2,000)'}
           </Text>
@@ -98,7 +98,7 @@ export const OrderEditor = () => {
         </Flex>
       </Flex>
 
-      <Flex direction="horizontal" gap="m" align="center">
+      <Flex orientation="horizontal" gap="m" align="center">
         <Text size={4} weight="bold" style={{ flex: 1 }}>
           Order total
         </Text>

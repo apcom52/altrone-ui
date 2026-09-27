@@ -1,16 +1,25 @@
-import { AriaRole, HTMLAttributes, ReactElement, ReactNode, Ref } from 'react';
+import {
+  AriaRole,
+  HTMLAttributes,
+  MouseEvent,
+  ReactElement,
+  ReactNode,
+  Ref,
+} from 'react';
 import { Role } from 'types';
+import { ActionsProp } from '../../utils';
 
 export interface MessageProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
-  'role'
+  'role' | 'title'
 > {
   ref?: Ref<HTMLDivElement>;
   icon?: ReactElement;
-  header?: ReactNode;
+  /** Overrides the native `div` `title` (tooltip) attribute — this is the message's heading text. */
+  title?: ReactNode;
   severity?: Role;
-  actions?: ReactElement[];
-  onClose?: () => void;
+  actions?: ActionsProp;
+  onClose?: (event: MouseEvent<HTMLButtonElement>) => void;
   compact?: boolean;
   /**
    * ARIA role for the root element. Defaults to `alert` (assertive — the

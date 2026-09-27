@@ -39,10 +39,9 @@ describe('DatePicker', () => {
       </Application>,
     );
 
-    expect(screen.getByTestId('date-picker')).toHaveClass('cls');
-    expect(screen.getByTestId('date-picker')).toHaveStyle(
-      'color: rgb(0, 0, 255)',
-    );
+    const wrapper = screen.getByTestId('date-picker').closest('.cls');
+    expect(wrapper).not.toBeNull();
+    expect(wrapper).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that Checkbox configuration works correctly', () => {
@@ -85,6 +84,29 @@ describe('DatePicker', () => {
     );
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toBe('2024-08-20');
+  });
+
+  test('the displayed value follows the Application language, not just the placeholder', () => {
+    const { rerender } = render(
+      <Application language="en">
+        <DatePicker data-testid="date-picker" value={dayjs('2024-08-15')} />
+      </Application>,
+    );
+    expect(screen.getByTestId('date-picker')).toHaveValue('August 15, 2024');
+
+    rerender(
+      <Application language="de">
+        <DatePicker data-testid="date-picker" value={dayjs('2024-08-15')} />
+      </Application>,
+    );
+    expect(screen.getByTestId('date-picker')).toHaveValue('15. August 2024');
+
+    rerender(
+      <Application language="zh">
+        <DatePicker data-testid="date-picker" value={dayjs('2024-08-15')} />
+      </Application>,
+    );
+    expect(screen.getByTestId('date-picker')).toHaveValue('2024年8月15日');
   });
 
   test('RangePicker closes an in-progress range on the second day click', () => {

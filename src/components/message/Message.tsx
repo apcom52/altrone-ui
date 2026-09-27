@@ -21,7 +21,7 @@ export const Message = ({
   children,
   className,
   style,
-  header,
+  title,
   icon,
   severity,
   ariaRole,
@@ -38,6 +38,9 @@ export const Message = ({
 
   const cls = clsx(s.Message, { [s.Compact]: compact }, className);
 
+  const resolvedActions =
+    typeof actions === 'function' ? actions(undefined) : actions;
+
   return (
     <Box
       ref={ref as Ref<HTMLElement>}
@@ -45,9 +48,13 @@ export const Message = ({
       style={style}
       role={resolvedAriaRole}
       shape="rounded"
-      material="glass"
+      material="pale"
       tone={tone}
-      padding={icon ? 8 : { x: 16, y: 8 }}
+      padding={
+        icon
+          ? 'var(--space-content)'
+          : { x: 'calc(var(--space-content) * 2)', y: 'var(--space-content)' }
+      }
       {...restProps}
     >
       {icon ? (
@@ -55,12 +62,19 @@ export const Message = ({
           {icon}
         </div>
       ) : null}
-      <Flex direction="vertical" className={s.Content} gap="m" justify="center">
+      <Flex
+        orientation="vertical"
+        className={s.Content}
+        gap="m"
+        justify="center"
+      >
         <div className={s.Text}>
-          {header ? <div className={s.Header}>{header}</div> : null}
+          {title ? <div className={s.Header}>{title}</div> : null}
           {children ? <div className={s.Body}>{children}</div> : null}
         </div>
-        {actions ? <div className={s.Actions}>{actions}</div> : null}
+        {resolvedActions ? (
+          <div className={s.Actions}>{resolvedActions}</div>
+        ) : null}
       </Flex>
       {onClose ? <CloseButton className={s.Close} onClick={onClose} /> : null}
     </Box>

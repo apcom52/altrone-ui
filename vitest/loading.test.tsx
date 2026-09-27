@@ -44,4 +44,28 @@ describe('Loading', () => {
     expect(svg).toHaveAttribute('viewBox', '0 0 40 40');
     expect(svg).toHaveAttribute('aria-hidden', 'true');
   });
+
+  test('a value switches it to a determinate progressbar with matching aria attrs', () => {
+    render(<Loading value={42} />);
+    const el = screen.getByRole('progressbar');
+    expect(el).toHaveAttribute('aria-valuenow', '42');
+    expect(el).toHaveAttribute('aria-valuemin', '0');
+    expect(el).toHaveAttribute('aria-valuemax', '100');
+  });
+
+  test('an out-of-range value is clamped to 0–100', () => {
+    const { rerender, container } = render(<Loading value={150} />);
+    expect(screen.getByRole('progressbar')).toHaveAttribute(
+      'aria-valuenow',
+      '100',
+    );
+    const [, activeCircle] = container.querySelectorAll('circle');
+    expect(activeCircle).toHaveStyle('stroke-dasharray: 100, 100');
+
+    rerender(<Loading value={-10} />);
+    expect(screen.getByRole('progressbar')).toHaveAttribute(
+      'aria-valuenow',
+      '0',
+    );
+  });
 });

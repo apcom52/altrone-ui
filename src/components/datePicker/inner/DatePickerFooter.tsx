@@ -15,8 +15,8 @@ export const DatePickerFooter = memo<DatePickerFooterProps>(
     const t = useLocalization();
 
     const { picker, setCurrentMonth } = useDatePickerViewContext();
-    const { selectedDates, onDayClicked } = useDateContext();
-    const closePopup = useDatePickerCloseFn();
+    const { selectedDates, onDayClicked, minDate, maxDate } = useDateContext();
+    const hide = useDatePickerCloseFn();
 
     const currentDateButtonVisible = picker !== 'range';
     const clearButtonVisible = Boolean(
@@ -29,6 +29,13 @@ export const DatePickerFooter = memo<DatePickerFooterProps>(
         : picker === 'month'
           ? t('datePicker.thisMonth')
           : t('datePicker.thisYear');
+
+    const currentDateUnit =
+      picker === 'month' ? 'month' : picker === 'year' ? 'year' : 'day';
+    const now = dayjs();
+    const currentDateButtonDisabled =
+      Boolean(minDate && now.isBefore(minDate, currentDateUnit)) ||
+      Boolean(maxDate && now.isAfter(maxDate, currentDateUnit));
 
     const onCurrentDateButtonClick = (
       event: React.MouseEvent<HTMLButtonElement>,
@@ -43,12 +50,12 @@ export const DatePickerFooter = memo<DatePickerFooterProps>(
 
       setCurrentMonth(thisDay);
       onDayClicked(thisDay, event);
-      closePopup();
+      hide();
     };
 
     const onClearButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       onDayClicked(undefined, event);
-      closePopup();
+      hide();
     };
 
     if (!clearButtonVisible && !currentDateButtonVisible) {
@@ -61,7 +68,11 @@ export const DatePickerFooter = memo<DatePickerFooterProps>(
           <Button label={t('common.clear')} onClick={onClearButtonClick} />
         )}
         {currentDateButtonVisible && (
-          <Button label={currentDateLabel} onClick={onCurrentDateButtonClick} />
+          <Button
+            label={currentDateLabel}
+            onClick={onCurrentDateButtonClick}
+            disabled={currentDateButtonDisabled}
+          />
         )}
       </div>
     );

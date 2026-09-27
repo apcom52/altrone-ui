@@ -56,8 +56,9 @@ describe('Password', () => {
       </Application>,
     );
 
-    expect(screen.getByTestId('input')).toHaveClass('cls');
-    expect(screen.getByTestId('input')).toHaveStyle('color: rgb(0, 0, 255)');
+    const wrapper = screen.getByTestId('input').closest('.cls');
+    expect(wrapper).not.toBeNull();
+    expect(wrapper).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('check that configuration works', () => {

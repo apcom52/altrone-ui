@@ -1,48 +1,80 @@
-import {
-  Children,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import {
   ColumnFiltersState,
+  functionalUpdate,
+  PaginationState,
   SortingState,
+  Updater,
   useTable,
 } from '@tanstack/react-table';
+import {
+  ArrowDown,
+  ArrowUp,
+  Check,
+  Ellipsis,
+  Funnel,
+  Minus,
+  Plus,
+  Square,
+  SquareCheckBig,
+  Trash,
+} from 'lucide-react';
 import { AnyObject } from '../../utils';
-import { DataTableFilter, DataTableProps } from './DataTable.types';
+import {
+  DataTableFilter,
+  DataTableIconSet,
+  DataTableProps,
+  Sorting,
+} from './DataTable.types';
 import { DataTableContext, DataTableContextValue } from './DataTable.context';
 import { dataTableFeatures } from './DataTable.features';
 import { useDataTableColumns } from './useDataTableColumns';
-import { Action, RowActions, RowAction } from './components';
+import { useDataTableHorizontalScroll } from './useDataTableHorizontalScroll';
+import { Action, RowAction } from './components';
 import { Body, ColumnHeaders, Header, Footer } from './inner';
 import s from './dataTable.module.scss';
+
+const DEFAULT_DATA_TABLE_ICONS: DataTableIconSet = {
+  sortAsc: <ArrowUp />,
+  sortDesc: <ArrowDown />,
+  filter: <Funnel />,
+  addFilter: <Plus />,
+  deleteFilter: <Trash />,
+  enableSelection: <SquareCheckBig />,
+  disableSelection: <Square />,
+  rowActions: <Ellipsis />,
+  booleanTrue: <Check />,
+  booleanFalse: <Minus />,
+};
 
 const DataTableComponent = <DataType extends object>(
   props: DataTableProps<DataType>,
 ) => {
   const {
     ref,
-    children,
+    actions,
     selectable = false,
     showFooter = true,
     rowsPerPage = 20,
     data,
+    getRowId,
     mode = 'read',
     columns,
     showEmptyBanner = true,
     resizableColumns = false,
+    icons,
     defaultPage = 0,
     defaultSort,
     defaultFilters,
+    page,
+    sort,
+    filters,
     onPageChange,
     onSortChange,
     onFilterChange,
     onModeChange,
-    renderRowActions,
+    rowActions,
     className,
     style,
     ...restProps
@@ -55,96 +87,188 @@ const DataTableComponent = <DataType extends object>(
 
   const columnDefs = useDataTableColumns<DataType>(columns, resizableColumns);
 
+  const resolvedIcons = useMemo<DataTableIconSet>(
+    () => ({ ...DEFAULT_DATA_TABLE_ICONS, ...icons }),
+    [icons],
+  );
+
+  const isPageControlled = page !== undefined;
+  const isSortControlled = sort !== undefined;
+  const isFiltersControlled = filters !== undefined;
+
+  const [uncontrolledPage, setUncontrolledPage] = useState(defaultPage + 1);
+  const [uncontrolledSort, setUncontrolledSort] = useState(defaultSort);
+  const [uncontrolledFilters, setUncontrolledFilters] = useState(
+    defaultFilters ?? [],
+  );
+
+  const currentPage = isPageControlled ? page : uncontrolledPage;
+  const currentSort = isSortControlled ? (sort ?? undefined) : uncontrolledSort;
+  const currentFilters = isFiltersControlled ? filters : uncontrolledFilters;
+
+  /** See `DataTableContextValue.notePendingEvent`. */
+  const pendingEventRef = useRef<React.SyntheticEvent | undefined>(undefined);
+  const notePendingEvent = useCallback((event: React.SyntheticEvent) => {
+    pendingEventRef.current = event;
+  }, []);
+  const consumePendingEvent = () => {
+    const event = pendingEventRef.current;
+    pendingEventRef.current = undefined;
+    return event;
+  };
+
+  const handlePaginationChange = useCallback(
+    (updater: Updater<PaginationState>) => {
+      const next = functionalUpdate(updater, {
+        pageIndex: currentPage - 1,
+        pageSize: rowsPerPage,
+      });
+      if (!isPageControlled) setUncontrolledPage(next.pageIndex + 1);
+      onPageChange?.(
+        next.pageIndex + 1,
+        consumePendingEvent() as React.MouseEvent<HTMLButtonElement>,
+      );
+    },
+    [currentPage, rowsPerPage, isPageControlled, onPageChange],
+  );
+
+  const handleSortingChange = useCallback(
+    (updater: Updater<SortingState>) => {
+      const prevSorting: SortingState = currentSort
+        ? [{ id: currentSort.field, desc: currentSort.direction === 'desc' }]
+        : [];
+      const nextSorting = functionalUpdate(updater, prevSorting);
+      const next: Sorting | undefined =
+        nextSorting.length === 0
+          ? undefined
+          : {
+              field: nextSorting[0].id,
+              direction: nextSorting[0].desc ? 'desc' : 'asc',
+            };
+      if (!isSortControlled) setUncontrolledSort(next);
+      onSortChange?.(next, consumePendingEvent() as React.MouseEvent);
+    },
+    [currentSort, isSortControlled, onSortChange],
+  );
+
+  const handleColumnFiltersChange = useCallback(
+    (updater: Updater<ColumnFiltersState>) => {
+      const next = functionalUpdate(
+        updater,
+        currentFilters as unknown as ColumnFiltersState,
+      );
+      const nextFilters = next as unknown as DataTableFilter[];
+      if (!isFiltersControlled) setUncontrolledFilters(nextFilters);
+      onFilterChange?.(
+        nextFilters,
+        consumePendingEvent() as React.MouseEvent<HTMLButtonElement>,
+      );
+    },
+    [currentFilters, isFiltersControlled, onFilterChange],
+  );
+
+  /**
+   * TanStack memoizes the sorted/filtered row models on referential identity
+   * of `state.sorting`/`state.pagination` — a fresh literal on every render
+   * (even with the same value) looks like a change and re-triggers
+   * `autoResetPageIndex`, snapping the page back to 0 after every interaction.
+   */
+  const paginationState = useMemo<PaginationState>(
+    () => ({ pageIndex: currentPage - 1, pageSize: rowsPerPage }),
+    [currentPage, rowsPerPage],
+  );
+
+  const sortingState = useMemo<SortingState>(
+    () =>
+      currentSort
+        ? [{ id: currentSort.field, desc: currentSort.direction === 'desc' }]
+        : [],
+    [currentSort?.field, currentSort?.direction],
+  );
+
   const table = useTable<typeof dataTableFeatures, DataType>({
     features: dataTableFeatures,
     data,
+    getRowId,
     columns: columnDefs,
-    meta: { mode },
+    meta: { mode, icons: resolvedIcons },
     enableRowSelection: selectable,
     enableColumnResizing: resizableColumns,
     columnResizeMode: 'onChange',
-    initialState: {
-      pagination: { pageIndex: defaultPage, pageSize: rowsPerPage },
-      sorting: defaultSort
-        ? ([
-            { id: defaultSort.field, desc: defaultSort.direction === 'desc' },
-          ] as SortingState)
-        : [],
-      columnFilters: (defaultFilters ?? []) as ColumnFiltersState,
+    /**
+     * With a controlled `page`, the consumer owns page validity (e.g.
+     * restoring page + filters together from a URL) — the table must not
+     * silently snap it back to 0 whenever sorting/filtering changes.
+     */
+    autoResetPageIndex: !isPageControlled,
+    state: {
+      pagination: paginationState,
+      sorting: sortingState,
+      columnFilters: currentFilters as unknown as ColumnFiltersState,
     },
+    onPaginationChange: handlePaginationChange,
+    onSortingChange: handleSortingChange,
+    onColumnFiltersChange: handleColumnFiltersChange,
   });
 
-  /** Callbacks fire on user interaction only, never on the initial mount. */
-  const isFirstRender = useRef(true);
-
-  const { pageIndex } = table.state.pagination;
-  useEffect(() => {
-    if (isFirstRender.current) return;
-    onPageChange?.(pageIndex + 1);
-  }, [pageIndex]);
-
-  const { sorting } = table.state;
-  useEffect(() => {
-    if (isFirstRender.current || !onSortChange) return;
-    onSortChange(
-      sorting.length === 0
-        ? undefined
-        : {
-            field: sorting[0].id,
-            direction: sorting[0].desc ? 'desc' : 'asc',
-          },
-    );
-  }, [sorting]);
-
-  const { columnFilters } = table.state;
-  useEffect(() => {
-    if (isFirstRender.current || !onFilterChange) return;
-    onFilterChange(columnFilters as unknown as DataTableFilter[]);
-  }, [columnFilters]);
-
-  useEffect(() => {
-    isFirstRender.current = false;
-  }, []);
-
   const setSelectMode = useCallback(
-    (next: boolean) => {
+    (next: boolean, event: React.MouseEvent<HTMLButtonElement>) => {
       setSelectModeState(next);
       table.resetRowSelection();
-      onModeChange?.(next ? 'select' : 'read');
+      onModeChange?.(next ? 'select' : 'read', event);
     },
     [table, onModeChange],
   );
 
   const headerVisible = useMemo(
     () =>
-      Children.count(children) > 0 ||
+      Boolean(actions) ||
       columns.some((column) => column.filterable) ||
       selectable,
-    [children, columns, selectable],
+    [actions, columns, selectable],
   );
 
   const contextValue = useMemo(
     () => ({
       table,
+      icons: resolvedIcons,
       loading: mode === 'loading',
       selectable,
       selectMode: selectable && selectMode,
       setSelectMode,
+      notePendingEvent,
     }),
-    [table, mode, selectable, selectMode, setSelectMode],
+    [
+      table,
+      resolvedIcons,
+      mode,
+      selectable,
+      selectMode,
+      setSelectMode,
+      notePendingEvent,
+    ],
   );
+
+  const { scrollableRef, headerRowRef, headerTrackRef } =
+    useDataTableHorizontalScroll();
 
   return (
     <DataTableContext.Provider
       value={contextValue as unknown as DataTableContextValue<AnyObject>}
     >
       <div className={s.Wrapper} ref={ref}>
-        {headerVisible ? <Header>{children}</Header> : null}
+        {headerVisible ? <Header actions={actions} /> : null}
         <div className={clsx(s.Table, className)} style={style} {...restProps}>
-          <ColumnHeaders hasRowActions={Boolean(renderRowActions)} />
+          <ColumnHeaders
+            hasRowActions={Boolean(rowActions)}
+            roundTop={!headerVisible}
+            rowRef={headerRowRef}
+            trackRef={headerTrackRef}
+          />
           <Body
-            renderRowActions={renderRowActions}
+            rowActions={rowActions}
             showEmptyBanner={showEmptyBanner}
+            scrollableRef={scrollableRef}
           />
         </div>
         {showFooter ? <Footer /> : null}
@@ -155,7 +279,6 @@ const DataTableComponent = <DataType extends object>(
 
 const DataTableNamespace = Object.assign(DataTableComponent, {
   Action,
-  RowActions,
   RowAction,
 });
 

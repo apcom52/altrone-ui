@@ -4,17 +4,24 @@ import {
   useCallback,
   useId,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
+  type Dispatch,
   type MutableRefObject,
+  type SetStateAction,
 } from 'react';
 import clsx from 'clsx';
+import { mergeRefs } from 'utils';
+import { Scrollable } from '../scrollable';
 import { useLocalization } from '../application';
 import s from './splitter.module.scss';
 import type {
   SplitterHandle as SplitterHandleType,
+  SplitterIconSet,
   SplitterProps,
 } from './Splitter.types.ts';
+import { DEFAULT_SPLITTER_ICONS } from './splitterIcons.tsx';
 import { Panel } from './components/Panel.tsx';
 import { SplitterDivider, dividerActiveClass } from './inner/Divider.tsx';
 import { isPanelElement, initSizes } from './utils/splitterUtils.ts';
@@ -27,6 +34,8 @@ const SplitterBase = ({
   orientation = 'horizontal',
   className,
   style,
+  sizes: sizesProp,
+  onSizesChange,
   onResize,
   onResizeStart,
   onResizeEnd,
@@ -34,11 +43,17 @@ const SplitterBase = ({
   showControls = true,
   collapsedControlsVisibility = 'always',
   controlRef,
+  icons,
   ...restProps
 }: SplitterProps) => {
   const uid = useId();
   const t = useLocalization();
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const resolvedIcons = useMemo<SplitterIconSet>(
+    () => ({ ...DEFAULT_SPLITTER_ICONS, ...icons }),
+    [icons],
+  );
 
   const mergedRef = useCallback(
     (node: HTMLDivElement | null) => {
@@ -54,7 +69,26 @@ const SplitterBase = ({
   const panels = panelElements.map((el) => el.props);
   const n = panels.length;
 
-  const [sizes, setSizes] = useState<number[]>(() => initSizes(panels));
+  const isSizesControlled = sizesProp !== undefined;
+  const [uncontrolledSizes, setUncontrolledSizes] = useState<number[]>(() =>
+    initSizes(panels),
+  );
+  const sizes = isSizesControlled ? sizesProp : uncontrolledSizes;
+  const sizesRef = useRef(sizes);
+  sizesRef.current = sizes;
+
+  const setSizes = useCallback<Dispatch<SetStateAction<number[]>>>(
+    (action) => {
+      const next =
+        typeof action === 'function'
+          ? (action as (prev: number[]) => number[])(sizesRef.current)
+          : action;
+      if (!isSizesControlled) setUncontrolledSizes(next);
+      onSizesChange?.(next);
+    },
+    [isSizesControlled, onSizesChange],
+  );
+
   const [collapsed, setCollapsed] = useState<boolean[]>(() =>
     new Array(n).fill(false),
   );
@@ -139,18 +173,36 @@ const SplitterBase = ({
         const size = isCollapsed ? 0 : sizes[i];
         const panelId = `${uid}-panel-${i}`;
 
+        const {
+          children: panelChildren,
+          className: panelClassName,
+          style: panelStyle,
+          ref: panelRef,
+          collapsible,
+          defaultSize,
+          minSize,
+          maxSize,
+          resizable,
+          ...panelRestProps
+        } = panel.props;
+
         return (
           <Fragment key={i}>
             <div
+              {...panelRestProps}
               id={panelId}
-              ref={(el) => {
+              ref={mergeRefs(panelRef, (el: HTMLDivElement | null) => {
                 panelRefs.current[i] = el;
-              }}
-              className={clsx(s.Panel, { [s.PanelCollapsed]: isCollapsed })}
-              style={{ flex: `${size} ${size} 0` }}
+              })}
+              className={clsx(
+                s.Panel,
+                { [s.PanelCollapsed]: isCollapsed },
+                panelClassName,
+              )}
+              style={{ ...panelStyle, flex: `${size} ${size} 0` }}
               aria-label={t('splitter.panel', { vars: { index: i + 1 } })}
             >
-              {panel.props.children}
+              <Scrollable>{panelChildren}</Scrollable>
             </div>
 
             {i < n - 1 && (
@@ -167,9 +219,10 @@ const SplitterBase = ({
                 }
                 showControls={showControls}
                 collapsedControlsVisibility={collapsedControlsVisibility}
+                icons={resolvedIcons}
                 sizeLeft={sizes[i]}
-                minLeft={panels[i].min ?? 0}
-                maxLeft={panels[i].max ?? 100}
+                minLeft={panels[i].minSize ?? 0}
+                maxLeft={panels[i].maxSize ?? 100}
                 leftCollapsible={panels[i].collapsible ?? false}
                 rightCollapsible={panels[i + 1].collapsible ?? false}
                 leftCollapsed={collapsed[i]}

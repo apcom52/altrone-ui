@@ -113,18 +113,18 @@ describe('DomUtils', () => {
     expect(
       DOMUtils.containsElementType(
         <Popover content={null}>
-          <NavigationList.GroupAction label="abc" icon={<Icon i="test" />} />
+          <NavigationList.Link label="abc" icon={<Icon i="test" />} />
         </Popover>,
-        [NavigationList.GroupAction],
+        [NavigationList.Link],
       ),
     ).toBe(true);
 
     expect(
       DOMUtils.containsElementType(
         <Dropdown content={null}>
-          <NavigationList.GroupAction label="abc" icon={<Icon i="test" />} />
+          <NavigationList.Link label="abc" icon={<Icon i="test" />} />
         </Dropdown>,
-        [NavigationList.GroupAction],
+        [NavigationList.Link],
       ),
     ).toBe(true);
   });

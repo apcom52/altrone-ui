@@ -4,7 +4,7 @@ import { Dropdown, Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Breadcrumbs } from './Breadcrumbs.tsx';
-import { Ellipsis, Home } from 'lucide-react';
+import { ChevronsRight, Ellipsis, Home } from 'lucide-react';
 
 const story: Meta<typeof Breadcrumbs> = {
   title: 'Components/Navigation/Breadcrumbs',
@@ -39,7 +39,7 @@ const Paragraph = ({ children }: { children: ReactNode }) => (
 export const Overview: StoryObj<typeof Breadcrumbs> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Breadcrumbs
       </Text>
@@ -116,7 +116,7 @@ export const Overview: StoryObj<typeof Breadcrumbs> = {
 export const FileBrowser: StoryObj<typeof Breadcrumbs> = {
   name: 'File browser',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 560 }}>
       <Text size={5} weight="bold" block>
         ~/projects/altrone/core/src
       </Text>
@@ -134,6 +134,30 @@ export const FileBrowser: StoryObj<typeof Breadcrumbs> = {
           <a href="#3" />
         </Breadcrumbs.Item>
         <Breadcrumbs.Item label="src" current />
+      </Breadcrumbs>
+    </Flex>
+  ),
+};
+
+// ─── Custom separator ────────────────────────────────────────────────────────
+
+export const CustomSeparator: StoryObj<typeof Breadcrumbs> = {
+  name: 'Custom separator icon',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 560 }}>
+      <Heading>Overriding the separator</Heading>
+      <Paragraph>
+        <Text code>separatorIcon</Text> replaces the default chevron on a
+        single <Text code>Breadcrumbs.Item</Text> — set it on every item to
+        change the separator across the whole trail.
+      </Paragraph>
+      <Breadcrumbs>
+        <Breadcrumbs.Item
+          label="Account"
+          separatorIcon={<ChevronsRight />}
+        />
+        <Breadcrumbs.Item label="Billing" separatorIcon={<ChevronsRight />} />
+        <Breadcrumbs.Item label="Invoice #A-1042" current />
       </Breadcrumbs>
     </Flex>
   ),

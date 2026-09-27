@@ -1,5 +1,6 @@
-import { HTMLAttributes, ReactNode, Ref } from 'react';
+import { CSSProperties, HTMLAttributes, ReactNode, Ref } from 'react';
 import { Size } from 'types';
+import { RenderFunction } from '../../utils';
 
 export type ProgressContext = {
   value: number;
@@ -21,11 +22,14 @@ export interface ProgressProps extends Omit<
   /** Upper bound of the range. Default `100`. */
   max?: number;
   size?: Size;
-  activeSegmentClassName?: string;
+  /** Class for the filled (active) segment of the bar. */
+  activeClassName?: string;
+  /** Inline styles for the filled (active) segment of the bar. */
+  activeStyle?: CSSProperties;
   /**
    * Label content. Omit for the default `"{percentage}%"`. A render function
    * receives `{ value, min, max, percentage }`. A non-string label carries no
    * accessible name — pass `aria-label` when using one.
    */
-  children?: ReactNode | ((context: ProgressContext) => ReactNode);
+  label?: RenderFunction<ReactNode, ProgressContext>;
 }

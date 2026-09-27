@@ -38,7 +38,7 @@ export function useSplitterCollapse({
         setSizes((prev) => {
           const next = [...prev];
           const neighbor = panelIndex > 0 ? panelIndex - 1 : panelIndex + 1;
-          const available = next[neighbor] - (panelsRef.current[neighbor].min ?? 0);
+          const available = next[neighbor] - (panelsRef.current[neighbor].minSize ?? 0);
           const actual = Math.min(restore, available);
           next[panelIndex] = actual;
           next[neighbor] -= actual;

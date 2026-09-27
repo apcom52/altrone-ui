@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Dayjs } from 'dayjs';
 
 export type CalendarMode = 'single' | 'multiple' | 'range';
@@ -47,7 +47,10 @@ export type CalendarRenderDateProps = {
   inRangeBelow: boolean;
   autoClose?: boolean;
   onSelect?: (date: Dayjs, event: React.MouseEvent<HTMLButtonElement>) => void;
-  onHover?: (date: Dayjs | undefined) => void;
+  onHover?: (
+    date: Dayjs | undefined,
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => void;
 };
 
 export interface CalendarProps
@@ -73,7 +76,10 @@ export interface CalendarProps
   /** Currently displayed month. Controlled via `month`, uncontrolled via `defaultMonth`. */
   month?: Dayjs;
   defaultMonth?: Dayjs;
-  onMonthChange?: (month: Dayjs) => void;
+  onMonthChange?: (
+    month: Dayjs,
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => void;
 
   /** `'auto'` (default) resolves the first weekday from the active locale. */
   firstDayOfWeek?: CalendarFirstDayOfWeek;
@@ -91,6 +97,10 @@ export interface CalendarProps
   showNavigation?: boolean;
   showWeekdays?: boolean;
   showOutsideDays?: boolean;
+
+  /** Overrides the header's previous/next month navigation icons. Defaults to `Application.icons.prev`/`.next`. */
+  prevIcon?: ReactElement;
+  nextIcon?: ReactElement;
 
   /** Low-level: override the day-cell renderer. */
   DateComponent?: React.FC<CalendarRenderDateProps>;

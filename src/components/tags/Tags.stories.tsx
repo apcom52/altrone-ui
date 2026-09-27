@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Flex, Tags, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
+import { Size } from 'types';
 
 const story: Meta<typeof Tags> = {
   title: 'Components/Display/Tags',
@@ -34,10 +35,12 @@ const Paragraph = ({ children }: { children: React.ReactNode }) => (
 
 const TOPICS = ['AI', 'Design', 'Web', 'TypeScript', 'Performance', 'Tooling'];
 
+const SIZES: Size[] = ['mini', 's', 'm', 'l', 'xl'];
+
 export const Overview: StoryObj<typeof Tags> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Tags
       </Text>
@@ -69,7 +72,7 @@ export const Overview: StoryObj<typeof Tags> = {
 export const Links: StoryObj<typeof Tags> = {
   name: 'As links',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>As links</Section>
       <Paragraph>
         Pass <Text code>href</Text> and the item is a real anchor — focusable,
@@ -99,7 +102,7 @@ export const Clickable: StoryObj<typeof Tags> = {
       );
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Section>Clickable</Section>
         <Paragraph>
           With <Text code>onClick</Text> and no <Text code>href</Text>, the item
@@ -127,7 +130,7 @@ export const Clickable: StoryObj<typeof Tags> = {
 export const DisplayOnly: StoryObj<typeof Tags> = {
   name: 'Display only',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Display only</Section>
       <Paragraph>
         An item with neither <Text code>href</Text> nor{' '}
@@ -147,7 +150,7 @@ export const DisplayOnly: StoryObj<typeof Tags> = {
 export const RouterLinks: StoryObj<typeof Tags> = {
   name: 'Router links (asChild)',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Router links</Section>
       <Paragraph>
         <Text code>asChild</Text> merges the tag styling onto a single child
@@ -166,10 +169,33 @@ export const RouterLinks: StoryObj<typeof Tags> = {
   ),
 };
 
+export const Sizes: StoryObj<typeof Tags> = {
+  name: 'Sizes',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Section>Sizes</Section>
+      <Paragraph>
+        <Text code>size</Text> on <Text code>Tags</Text> scales the text size
+        of every <Text code>Tags.Item</Text> inside it.
+      </Paragraph>
+
+      <Flex orientation="vertical" gap="m">
+        {SIZES.map((sz) => (
+          <Tags key={sz} size={sz}>
+            <Tags.Item label={`#size-${sz}`} href={`/tags/size-${sz}`} />
+            <Tags.Item label="#Design" href="/tags/design" />
+            <Tags.Item label="#TypeScript" href="/tags/typescript" />
+          </Tags>
+        ))}
+      </Flex>
+    </Flex>
+  ),
+};
+
 export const InContext: StoryObj<typeof Tags> = {
   name: 'In context',
   render: () => (
-    <Flex direction="vertical" gap="m" style={{ maxWidth: 560 }}>
+    <Flex orientation="vertical" gap="m" style={{ maxWidth: 560 }}>
       <Text block size={7} weight="bold">
         Concentric radius, explained
       </Text>

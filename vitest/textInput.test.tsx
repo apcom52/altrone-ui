@@ -32,15 +32,15 @@ describe('TextInput', () => {
     expect(screen.getByTestId('loading-island')).toBeInTheDocument();
   });
 
-  test('wrapperClassName/wrapperStyle target the wrapper, className/style the input', () => {
+  test('className/style target the wrapper (root), inputClassName/inputStyle the input', () => {
     render(
       <Application>
         <TextInput
           data-testid="input"
-          wrapperClassName="wrapperCls"
-          wrapperStyle={{ color: 'rgb(255, 0, 0)' }}
-          className="inputCls"
-          style={{ color: 'rgb(0, 0, 255)' }}
+          className="wrapperCls"
+          style={{ color: 'rgb(255, 0, 0)' }}
+          inputClassName="inputCls"
+          inputStyle={{ color: 'rgb(0, 0, 255)' }}
         />
       </Application>,
     );
@@ -55,7 +55,7 @@ describe('TextInput', () => {
     expect(wrapper).not.toBe(input);
   });
 
-  test('ref points at the wrapper, inputRef at the field', () => {
+  test('ref points at the root (wrapper), inputRef at the field', () => {
     const ref = createRef<HTMLElement>();
     const inputRef = createRef<HTMLInputElement>();
 

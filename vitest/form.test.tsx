@@ -1,7 +1,19 @@
 import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Application, Form, TextInput } from '../src/components';
+import {
+  Application,
+  Checkbox,
+  ColorPicker,
+  DatePicker,
+  FilePicker,
+  Form,
+  Radio,
+  Select,
+  Slider,
+  Switch,
+  TextInput,
+} from '../src/components';
 
 class ResizeObserver {
   observe() {}
@@ -189,5 +201,127 @@ describe('Form', () => {
 
     fireEvent.submit(screen.getByTestId('form'));
     expect(onSubmit.mock.calls[1][0].defaultPrevented).toBe(false);
+  });
+});
+
+describe('Form disables non-TextInput controls too', () => {
+  test('Checkbox', () => {
+    render(
+      <Application>
+        <Form disabled>
+          <Form.Field>
+            <Checkbox checked={false} onChange={() => {}} />
+          </Form.Field>
+        </Form>
+      </Application>,
+    );
+
+    expect(screen.getByRole('checkbox')).toBeDisabled();
+  });
+
+  test('Switch', () => {
+    render(
+      <Application>
+        <Form disabled>
+          <Form.Field>
+            <Switch checked={false} onChange={() => {}} />
+          </Form.Field>
+        </Form>
+      </Application>,
+    );
+
+    expect(screen.getByRole('switch')).toBeDisabled();
+  });
+
+  test('Radio', () => {
+    render(
+      <Application>
+        <Form disabled>
+          <Form.Field>
+            <Radio value="a" onChange={() => {}}>
+              <Radio.Item value="a" />
+            </Radio>
+          </Form.Field>
+        </Form>
+      </Application>,
+    );
+
+    expect(screen.getByRole('radio')).toBeDisabled();
+  });
+
+  test('Select', () => {
+    render(
+      <Application>
+        <Form disabled>
+          <Form.Field>
+            <Select
+              options={[{ value: 'a', label: 'A' }]}
+              onChange={() => {}}
+            />
+          </Form.Field>
+        </Form>
+      </Application>,
+    );
+
+    expect(screen.getByRole('combobox')).toBeDisabled();
+  });
+
+  test('ColorPicker', () => {
+    render(
+      <Application>
+        <Form disabled>
+          <Form.Field>
+            <ColorPicker onChange={() => {}} />
+          </Form.Field>
+        </Form>
+      </Application>,
+    );
+
+    expect(screen.getByRole('textbox')).toBeDisabled();
+  });
+
+  test('FilePicker', () => {
+    render(
+      <Application>
+        <Form disabled>
+          <Form.Field>
+            <FilePicker />
+          </Form.Field>
+        </Form>
+      </Application>,
+    );
+
+    expect(screen.getByRole('button')).toBeDisabled();
+  });
+
+  test('DatePicker', () => {
+    render(
+      <Application>
+        <Form disabled>
+          <Form.Field>
+            <DatePicker />
+          </Form.Field>
+        </Form>
+      </Application>,
+    );
+
+    expect(screen.getByRole('textbox')).toBeDisabled();
+  });
+
+  test('Slider', () => {
+    render(
+      <Application>
+        <Form disabled>
+          <Form.Field>
+            <Slider value={0} onChange={() => {}} />
+          </Form.Field>
+        </Form>
+      </Application>,
+    );
+
+    expect(screen.getByRole('slider')).toHaveAttribute(
+      'aria-disabled',
+      'true',
+    );
   });
 });

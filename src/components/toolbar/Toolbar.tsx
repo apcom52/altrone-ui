@@ -1,23 +1,23 @@
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useMemo } from 'react';
 import s from './toolbar.module.scss';
-import { ToolbarProps } from './Toolbar.types.ts';
+import { ToolbarIconSet, ToolbarProps } from './Toolbar.types.ts';
+import { DEFAULT_TOOLBAR_ICONS } from './toolbarIcons.tsx';
 import clsx from 'clsx';
 import {
   Action,
-  BackAction,
-  BackForwardAction,
   Center,
   Group,
   Leading,
   Logo,
-  SearchAction,
   Separator,
   SidebarToggleAction,
   Title,
   Trailing,
 } from './components';
-import { ToolbarContext } from './Toolbar.context.ts';
-import { GlobalUtils } from 'utils';
+import { ToolbarBalanceContext, ToolbarContext } from './Toolbar.context.ts';
+import { GlobalUtils, mergeRefs } from 'utils';
+import { useToolbarOverflow } from './useToolbarOverflow.tsx';
+import { useToolbarRegionBalance } from './useToolbarRegionBalance.ts';
 
 const SIZE_CLASS = {
   mini: s.SizeMini,
@@ -33,7 +33,7 @@ const VARIANT_CLASS = {
   solid: s.Solid,
 } as const;
 
-const PLACEMENT_CLASS = {
+const EDGE_CLASS = {
   top: s.Top,
   bottom: s.Bottom,
   left: s.Left,
@@ -45,11 +45,12 @@ const ToolbarComponent = memo(
     ref,
     children,
     variant = 'solid',
-    placement = 'top',
+    edge = 'top',
     size = 'm',
     sticky = false,
     fixed,
     showBackdrop = false,
+    icons,
     className,
     ...restProps
   }: ToolbarProps) => {
@@ -61,12 +62,22 @@ const ToolbarComponent = memo(
 
     const isSticky = sticky || fixed === true;
     const orientation =
-      placement === 'left' || placement === 'right' ? 'vertical' : 'horizontal';
+      edge === 'left' || edge === 'right' ? 'vertical' : 'horizontal';
+
+    const resolvedIcons = useMemo<ToolbarIconSet>(
+      () => ({ ...DEFAULT_TOOLBAR_ICONS, ...icons }),
+      [icons],
+    );
+
+    const { containerRef, content } = useToolbarOverflow(children, orientation, {
+      overflowIcons: resolvedIcons,
+    });
+    const balance = useToolbarRegionBalance(containerRef, orientation);
 
     const cls = clsx(
       s.Toolbar,
       VARIANT_CLASS[variant],
-      PLACEMENT_CLASS[placement],
+      EDGE_CLASS[edge],
       SIZE_CLASS[size],
       {
         [s.Sticky]: isSticky,
@@ -77,17 +88,19 @@ const ToolbarComponent = memo(
 
     return (
       <ToolbarContext.Provider
-        value={{ placement, orientation, variant, size }}
+        value={{ edge, orientation, variant, size, icons: resolvedIcons }}
       >
-        <div
-          ref={ref}
-          className={cls}
-          role="toolbar"
-          aria-orientation={orientation}
-          {...restProps}
-        >
-          {children}
-        </div>
+        <ToolbarBalanceContext.Provider value={balance}>
+          <div
+            ref={mergeRefs(ref, containerRef)}
+            className={cls}
+            role="toolbar"
+            aria-orientation={orientation}
+            {...restProps}
+          >
+            {content}
+          </div>
+        </ToolbarBalanceContext.Provider>
       </ToolbarContext.Provider>
     );
   },
@@ -102,10 +115,7 @@ const ToolbarNamespace = Object.assign(ToolbarComponent, {
   Center,
   Trailing,
   Title,
-  BackAction,
-  SearchAction,
   SidebarToggleAction,
-  BackForwardAction,
 });
 
 export { ToolbarNamespace as Toolbar };

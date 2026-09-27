@@ -43,7 +43,7 @@ const roles = [
     name: 'raised',
     z: 'auto',
     example:
-      'Tabs item, DatePicker day, Range track, NavigationList, BottomNavigation',
+      'Tabs item, DatePicker day, Slider track, NavigationList, BottomNavigation',
   },
   { name: 'sticky', z: 'var(--level-sticky)', example: 'DataTable column headers' },
   { name: 'overlay', z: 'var(--level-popover)', example: 'Popover, Drawer, Toolbar group' },
@@ -52,7 +52,7 @@ const roles = [
 ];
 
 const Swatch = ({ role, example }: { role: string; example: string }) => (
-  <Flex direction="vertical" gap="s" align="center" style={{ width: 140 }}>
+  <Flex orientation="vertical" gap="s" align="center" style={{ width: 140 }}>
     <div
       style={{
         width: 96,
@@ -72,9 +72,9 @@ const Swatch = ({ role, example }: { role: string; example: string }) => (
 );
 
 export const Overview: StoryObj = {
-  name: 'Elevation Roles',
+  name: 'Elevation',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Elevation
       </Text>

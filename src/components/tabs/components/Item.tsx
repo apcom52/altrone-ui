@@ -8,12 +8,9 @@ import { motion, useAnimationControls } from 'motion/react';
 import { useTabsContext } from '../Tabs.context.ts';
 import { Slot } from 'utils/components/Slot.tsx';
 
-type TabItemContentProps = Omit<
-  TabsItemProps,
-  'renderFunc' | 'asChild' | 'children'
->;
+type TabItemContentProps = Omit<TabsItemProps, 'asChild' | 'children'>;
 
-/* Separate component so its hooks aren't conditional on `renderFunc`/`asChild`. */
+/* Separate component so its hooks aren't conditional on `asChild`. */
 const TabItemContent = memo(
   ({
     ref,
@@ -91,14 +88,7 @@ const TabItemContent = memo(
 );
 
 export const Item = memo(
-  ({
-    ref,
-    className,
-    renderFunc,
-    asChild,
-    children,
-    ...restProps
-  }: TabsItemProps) => {
+  ({ ref, className, asChild, children, ...restProps }: TabsItemProps) => {
     const cls = clsx(
       s.Item,
       {
@@ -107,13 +97,6 @@ export const Item = memo(
       },
       className,
     );
-
-    if (renderFunc) {
-      return renderFunc((ref ?? null) as Ref<HTMLAnchorElement>, {
-        ...restProps,
-        className: cls,
-      });
-    }
 
     if (asChild) {
       if (!isValidElement(children)) {

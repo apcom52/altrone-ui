@@ -2,6 +2,7 @@ import { createElement, FC } from 'react';
 import { useDataTableContext } from '../DataTable.context.tsx';
 import { Checkbox } from '../../checkbox';
 import { Result } from 'components/result';
+import { Scrollable } from '../../scrollable';
 import { useLocalization } from '../../application';
 import {
   CellRenderer,
@@ -10,24 +11,31 @@ import {
 } from '../DataTable.types.ts';
 import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
 import { CellRenderers } from '../DataTable.constants.ts';
+import { RowActionsCell } from './RowActionsCell.tsx';
 import s from './body.module.scss';
 
 export const Body = <T extends object>({
-  renderRowActions,
+  rowActions,
   showEmptyBanner = true,
+  scrollableRef,
 }: DataTableBodyProps<T>) => {
   const t = useLocalization();
   const { table, selectMode } = useDataTableContext<T>();
 
   const columnsTemplate = useDataTableColumnsTemplate(
     selectMode,
-    Boolean(renderRowActions),
+    Boolean(rowActions),
   );
 
   const rows = table.getRowModel().rows;
 
   return (
-    <div className={s.TableBody}>
+    <Scrollable
+      controlRef={scrollableRef}
+      overflowX="scroll"
+      overflowY="visible"
+      className={s.TableBody}
+    >
       {rows.length === 0 && showEmptyBanner ? (
         <Result>{t('dataTable.empty')}</Result>
       ) : null}
@@ -52,7 +60,8 @@ export const Body = <T extends object>({
             {row.getVisibleCells().map((cell) => {
               const meta = cell.column.columnDef.meta;
               const columnType = meta?.dataType ?? 'string';
-              const Renderer = CellRenderers[columnType] ?? CellRenderers.string;
+              const Renderer =
+                CellRenderers[columnType] ?? CellRenderers.string;
 
               const rendererProps: CellRenderer<T> = {
                 value: cell.getValue(),
@@ -72,18 +81,22 @@ export const Body = <T extends object>({
                 </div>
               );
             })}
-            {renderRowActions ? (
+            {rowActions ? (
               <div className={s.Cell}>
-                {renderRowActions({
-                  row: row.original,
-                  rowIndex: row.index,
-                  selected: isSelected,
-                })}
+                <RowActionsCell>
+                  {typeof rowActions === 'function'
+                    ? rowActions({
+                        row: row.original,
+                        rowIndex: row.index,
+                        selected: isSelected,
+                      })
+                    : rowActions}
+                </RowActionsCell>
               </div>
             ) : null}
           </div>
         );
       })}
-    </div>
+    </Scrollable>
   );
 };

@@ -17,7 +17,7 @@ const WEIGHTS = ['light', 'regular', 'medium', 'bold'] as const;
 
 export const TypeSpecimen = () => {
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Text size={8} weight="bold" block>
         One primitive for every string in the UI
       </Text>
@@ -41,9 +41,9 @@ export const TypeSpecimen = () => {
         so a <Text code>Tooltip</Text> or <Text code>Dropdown</Text> can anchor
         to any of them transparently.
       </Text>
-      <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="xs">
         {TAG_MAP.map(([prop, tag]) => (
-          <Flex key={prop} direction="horizontal" gap="m" align="center">
+          <Flex key={prop} orientation="horizontal" gap="m" align="center">
             <Text
               code
               size={2}
@@ -71,9 +71,9 @@ export const TypeSpecimen = () => {
         line-height of its step, which is what you want for headings and single
         rows.
       </Text>
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         {SIZES.map((n, i) => (
-          <Flex key={n} direction="horizontal" gap="m" align="center">
+          <Flex key={n} orientation="horizontal" gap="m" align="center">
             <Text
               code
               size={2}
@@ -90,9 +90,9 @@ export const TypeSpecimen = () => {
       <Text size={6} weight="bold" block>
         Weight
       </Text>
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         {WEIGHTS.map((w) => (
-          <Flex key={w} direction="horizontal" gap="m" align="center">
+          <Flex key={w} orientation="horizontal" gap="m" align="center">
             <Text
               code
               size={2}

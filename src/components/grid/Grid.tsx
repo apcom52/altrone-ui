@@ -1,9 +1,11 @@
-import { createElement } from 'react';
+import { isValidElement, ReactElement, Ref } from 'react';
 import { GridProps } from './Grid.types.ts';
 import { Column } from './components';
 import s from './styles.module.scss';
 import clsx from 'clsx';
 import { Gap } from 'types';
+import { Slot } from 'utils/components/Slot';
+import { AnyObject } from 'utils/types';
 
 const gapVars: Record<Gap, string> = {
   none: '0px',
@@ -18,7 +20,7 @@ const gapVars: Record<Gap, string> = {
 
 const GridComponent = ({
   ref,
-  tagName = 'div',
+  asChild = false,
   children,
   wrap = true,
   gap = 'none',
@@ -26,20 +28,33 @@ const GridComponent = ({
   className,
   style,
   ...restProps
-}: GridProps) =>
-  createElement(
-    tagName,
-    {
-      ...restProps,
-      ref,
-      className: clsx(s.Grid, { [s.NoWrap]: !wrap }, className),
-      style: {
-        ...style,
-        '--grid-column-spacing': gapVars[gap],
-        '--grid-row-spacing': gapVars[rowGap],
-      },
-    },
-    children,
+}: GridProps) => {
+  const cls = clsx(s.Grid, { [s.NoWrap]: !wrap }, className);
+  const styles = {
+    ...style,
+    '--grid-column-spacing': gapVars[gap],
+    '--grid-row-spacing': gapVars[rowGap],
+  };
+
+  if (asChild) {
+    if (!isValidElement(children)) {
+      console.error(
+        '[Grid] asChild requires a single valid React element as children',
+      );
+      return null;
+    }
+    return (
+      <Slot ref={ref} className={cls} style={styles} {...restProps}>
+        {children as ReactElement<AnyObject>}
+      </Slot>
+    );
+  }
+
+  return (
+    <div ref={ref as Ref<HTMLDivElement>} className={cls} style={styles} {...restProps}>
+      {children}
+    </div>
   );
+};
 
 export const Grid = Object.assign(GridComponent, { Column });

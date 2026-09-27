@@ -1,4 +1,3 @@
-import { Button } from 'components/button/Button.tsx';
 import { Flex } from 'components/flex/Flex.tsx';
 import { NumberInput } from 'components/numberInput/NumberInput.tsx';
 import { Tabs } from 'components/tabs/Tabs.tsx';
@@ -9,7 +8,9 @@ import { ColorPickerProps } from '../ColorPicker.types';
 import { ColorPreset } from './ColorPreset';
 import s from './colorPickerContent.module.scss';
 import { HexAlphaColorPicker } from 'react-colorful';
-import { Delete, Grid3X3, Palette } from 'lucide-react';
+import { Grid3X3, Palette } from 'lucide-react';
+import { ColorPickerFooter } from './ColorPickerFooter.tsx';
+import type { ReactElement } from 'react';
 
 const HEX6 = /^[0-9A-Fa-f]{6}$/;
 
@@ -38,7 +39,9 @@ interface ColorPickerContentProps extends Pick<
   ColorPickerProps,
   'colorPresets' | 'value' | 'onChange' | 'allowPalette' | 'clearable' | 'size'
 > {
-  closePopup: () => void;
+  hide: () => void;
+  presetsTabIcon?: ReactElement;
+  paletteTabIcon?: ReactElement;
 }
 
 export const ColorPickerContent = (props: ColorPickerContentProps) => {
@@ -49,7 +52,9 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
     allowPalette = true,
     clearable,
     size,
-    closePopup,
+    hide,
+    presetsTabIcon = <Grid3X3 />,
+    paletteTabIcon = <Palette />,
   } = props;
 
   const t = useLocalization();
@@ -93,21 +98,21 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
 
   const handleClear = () => {
     onChange(undefined);
-    closePopup();
+    hide();
   };
 
   return (
-    <Flex direction="vertical" gap="m" className={s.ColorPicker}>
+    <Flex orientation="vertical" gap="m" className={s.ColorPicker}>
       {showTabs ? (
         <Tabs>
           <Tabs.Item
-            icon={<Grid3X3 />}
+            icon={presetsTabIcon}
             label={t('colorPicker.savedColors')}
             onClick={() => setMode('presets')}
             selected={mode === 'presets'}
           />
           <Tabs.Item
-            icon={<Palette />}
+            icon={paletteTabIcon}
             label={t('colorPicker.palette')}
             onClick={() => setMode('palette')}
             selected={mode === 'palette'}
@@ -116,7 +121,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
       ) : null}
 
       {mode === 'presets' ? (
-        <Flex direction="horizontal" gap="m" wrap>
+        <Flex orientation="horizontal" gap="m" wrap>
           {colorPresets?.map((preset, index) => (
             <ColorPreset
               key={`${index}-${preset.name}`}
@@ -135,11 +140,11 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
             onChange={(color) => onChange(color)}
             className={s.Palette}
           />
-          <Flex direction="vertical" gap="s">
+          <Flex orientation="vertical" gap="s">
             <TextInput
               maxLength={6}
               size={size}
-              wrapperClassName={s.HexField}
+              className={s.HexField}
               placeholder="000000"
               value={hexDraft}
               onChange={setHexDraft}
@@ -147,7 +152,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
             >
               <TextInput.TextIsland label="#" />
             </TextInput>
-            <Flex direction="horizontal" gap="s" className={s.ChannelRow}>
+            <Flex orientation="horizontal" gap="s" className={s.ChannelRow}>
               {(['r', 'g', 'b'] as Channel[]).map((channel) => (
                 <div key={channel} className={s.ChannelCell}>
                   <NumberInput
@@ -171,20 +176,11 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
         </>
       ) : null}
 
-      {clearable ? (
-        <Flex justify="center" gap="s">
-          <Button
-            icon={<Delete />}
-            label={t('common.clear')}
-            onClick={handleClear}
-          />
-          <Button
-            label={t('common.apply')}
-            variant="submit"
-            onClick={closePopup}
-          />
-        </Flex>
-      ) : null}
+      <ColorPickerFooter
+        clearable={clearable}
+        onClear={handleClear}
+        onApply={hide}
+      />
     </Flex>
   );
 };

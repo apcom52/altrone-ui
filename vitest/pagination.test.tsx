@@ -99,6 +99,24 @@ describe('Pagination', () => {
     ).toBeInTheDocument();
   });
 
+  test('uncontrolled: navigates on its own and still calls onChange', () => {
+    const onChange = vi.fn();
+    render(<Pagination defaultPage={2} totalPages={5} onChange={onChange} />);
+
+    expect(screen.getByRole('button', { name: /page 2/i })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /next/i }));
+
+    expect(onChange).toHaveBeenLastCalledWith(3, expect.anything());
+    expect(screen.getByRole('button', { name: /page 3/i })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
+  });
+
   test('showEdgeButtons={false} hides the first/last jump buttons', () => {
     render(
       <Pagination

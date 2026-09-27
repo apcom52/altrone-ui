@@ -4,6 +4,7 @@ import { Box, Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { CloseButton } from './CloseButton.tsx';
+import { CircleX } from 'lucide-react';
 
 const story: Meta<typeof CloseButton> = {
   title: 'Components/Atoms/CloseButton',
@@ -29,21 +30,22 @@ export const Overview: StoryObj<typeof CloseButton> = {
     const [open, setOpen] = useState(true);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
         <Text block size={9} weight="bold">
           Close Button
         </Text>
         <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
           A ready-made icon button for dismissing panels, modals, toasts and
-          cards. It&rsquo;s a <Text code>Button</Text> locked to the{' '}
-          <Text code>X</Text> icon with <Text code>showLabel=&#123;false&#125;</Text>,
-          its hover tooltip turned off (the glyph speaks for itself), and an
-          accessible name from the localized{' '}
-          <Text code>closeButton.ariaLabel</Text> string. Everything else —{' '}
-          <Text code>size</Text>, <Text code>onClick</Text>,{' '}
-          <Text code>disabled</Text>, <Text code>className</Text>,{' '}
-          <Text code>ref</Text>, <Text code>asChild</Text> — passes straight
-          through to <Text code>Button</Text>.
+          cards. It&rsquo;s a <Text code>Button</Text> defaulting to the{' '}
+          <Text code>X</Text> icon (overridable via <Text code>icon</Text>)
+          with <Text code>showLabel=&#123;false&#125;</Text>, its hover
+          tooltip turned off (the glyph speaks for itself), and an accessible
+          name from the localized <Text code>closeButton.ariaLabel</Text>{' '}
+          string. Everything else — <Text code>size</Text>,{' '}
+          <Text code>onClick</Text>, <Text code>disabled</Text>,{' '}
+          <Text code>className</Text>, <Text code>ref</Text>,{' '}
+          <Text code>asChild</Text> — passes straight through to{' '}
+          <Text code>Button</Text>.
         </Text>
 
         {open ? (
@@ -94,7 +96,7 @@ export const Overview: StoryObj<typeof CloseButton> = {
 export const Sizes: StoryObj<typeof CloseButton> = {
   name: 'Sizes',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Text block size={6} weight="bold">
         mini, s, m, l, xl
       </Text>
@@ -104,7 +106,7 @@ export const Sizes: StoryObj<typeof CloseButton> = {
       </Text>
       <Flex gap="l" align="center">
         {SIZES.map((size) => (
-          <Flex key={size} direction="vertical" gap="s" align="center">
+          <Flex key={size} orientation="vertical" gap="s" align="center">
             <CloseButton size={size} />
             <Text size={2} color="muted">
               {size}
@@ -126,7 +128,7 @@ export const InContext: StoryObj<typeof CloseButton> = {
     ]);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
         <Text block size={6} weight="bold">
           Top-right of a header
         </Text>
@@ -135,7 +137,7 @@ export const InContext: StoryObj<typeof CloseButton> = {
           drawer or dialog header. Use <Text code>size=&quot;s&quot;</Text> so it
           doesn&rsquo;t outweigh the title.
         </Text>
-        <Flex direction="vertical" gap="s" style={{ maxWidth: 360 }}>
+        <Flex orientation="vertical" gap="s" style={{ maxWidth: 360 }}>
           {panels.map((name) => (
             <Box
               key={name}
@@ -178,7 +180,7 @@ export const InContext: StoryObj<typeof CloseButton> = {
 export const AccessibleName: StoryObj<typeof CloseButton> = {
   name: 'Accessible name & disabled',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Text block size={6} weight="bold">
         Accessible name
       </Text>
@@ -190,25 +192,42 @@ export const AccessibleName: StoryObj<typeof CloseButton> = {
         <Text code>label</Text>.
       </Text>
       <Flex gap="l" align="center">
-        <Flex direction="vertical" gap="s" align="center">
+        <Flex orientation="vertical" gap="s" align="center">
           <CloseButton />
           <Text size={2} color="muted">
             default
           </Text>
         </Flex>
-        <Flex direction="vertical" gap="s" align="center">
+        <Flex orientation="vertical" gap="s" align="center">
           <CloseButton label="Dismiss notification" />
           <Text size={2} color="muted">
             label=&quot;Dismiss notification&quot;
           </Text>
         </Flex>
-        <Flex direction="vertical" gap="s" align="center">
+        <Flex orientation="vertical" gap="s" align="center">
           <CloseButton disabled />
           <Text size={2} color="muted">
             disabled
           </Text>
         </Flex>
       </Flex>
+    </Flex>
+  ),
+};
+
+export const CustomIcon: StoryObj<typeof CloseButton> = {
+  name: 'Custom icon',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Text block size={6} weight="bold">
+        Overriding the glyph
+      </Text>
+      <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
+        <Text code>icon</Text> replaces the default <Text code>X</Text> —
+        useful when a consumer&rsquo;s own icon set shouldn&rsquo;t be mixed
+        with the library&rsquo;s defaults.
+      </Text>
+      <CloseButton icon={<CircleX />} />
     </Flex>
   ),
 };

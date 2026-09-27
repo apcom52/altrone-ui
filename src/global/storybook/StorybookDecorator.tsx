@@ -40,7 +40,7 @@ export const StorybookDecorator = (Story: any, options: any) => {
     <Application
       className={fullBleed ? s.WrapperBleed : s.Wrapper}
       theme={options.globals.theme === 'dark' ? 'dark' : 'light'}
-      language={options.globals.lang || 'en'}
+      language={(options.globals.lang || 'en').toLowerCase()}
       accent={options.globals.accent || 'blue'}
       customLabels={{
         path: {

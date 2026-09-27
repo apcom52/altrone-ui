@@ -29,7 +29,7 @@ describe('Dropdown', () => {
             </Dropdown.ChildMenu>
           </Dropdown.Menu>
         }
-        openedByDefault
+        defaultOpen
       >
         <Button label="Test" />
       </Dropdown>,
@@ -49,7 +49,7 @@ describe('Dropdown', () => {
             <Dropdown.Action label="Action" data-testid="action" />
           </Dropdown.Menu>
         }
-        openedByDefault
+        defaultOpen
         data-testid="dropdown"
       >
         <Button label="Test" data-testid="button" />
@@ -110,7 +110,7 @@ describe('Dropdown', () => {
             </Dropdown.ChildMenu>
           </Dropdown.Menu>
         }
-        openedByDefault
+        defaultOpen
         data-testid="dropdown"
       >
         <Button label="Test" data-testid="button" />
@@ -152,7 +152,7 @@ describe('Dropdown', () => {
       >
         <Dropdown
           content={<div>content</div>}
-          openedByDefault
+          defaultOpen
           data-testid="element"
         >
           <Button />

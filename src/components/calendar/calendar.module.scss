@@ -168,11 +168,11 @@
   color: var(--calendar-cell-selected-text-color);
 }
 
-.Today:not(.Selected):not(.OutsideMonth) {
+.Today:not(.Selected):not(.OutsideMonth):not(.Disabled) {
   color: var(--calendar-cell-today-text-color);
 }
 
-.Weekend:not(.Selected):not(.Today):not(.OutsideMonth) {
+.Weekend:not(.Selected):not(.Today):not(.OutsideMonth):not(.Disabled) {
   color: var(--calendar-cell-weekend-text-color);
 }
 

@@ -8,7 +8,7 @@
   --data-table-header-background-color: var(--glass-background-color);
   --data-table-header-text-color: var(--accent-12);
 
-  --data-table-rounding: 24px;
+  --data-table-rounding: 28px;
   --data-table-padding: 8px;
   --data-table-border-color: var(--border-a1);
 }
@@ -16,6 +16,11 @@
 .Wrapper {
   display: flex;
   width: fit-content;
+  /* Shrinks to content when it fits, but never grows past its container —
+     without this, a table wider than its container (many/wide columns)
+     pushes the whole page into horizontal scroll instead of scrolling
+     just `.Table` below. */
+  max-width: 100%;
   flex-direction: column;
   background-color: var(--data-table-background-color);
   border-radius: var(--data-table-rounding);
@@ -24,4 +29,8 @@
 
 .Table {
   width: 100%;
+  /* Flex items default to `min-width: auto` (their content's min-content
+     size), which would still force `.Wrapper` wider than its container
+     despite `max-width` above. */
+  min-width: 0;
 }

@@ -1,4 +1,11 @@
 import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
+import 'dayjs/locale/fr';
+import 'dayjs/locale/de';
+import 'dayjs/locale/es';
+import 'dayjs/locale/zh-cn';
+import 'dayjs/locale/pt';
+import 'dayjs/locale/tr';
 import IsBetween from 'dayjs/plugin/isBetween';
 import IsToday from 'dayjs/plugin/isToday';
 import IsSameOrBefore from 'dayjs/plugin/isSameOrBefore';

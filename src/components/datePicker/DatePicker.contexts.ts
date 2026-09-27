@@ -29,7 +29,7 @@ export const DatePickerTriggerContext =
 
 /**
  * Live trigger state (`value`, `displayValue`, `expanded`, `clear`) for a
- * component rendered inside a `DatePicker`'s `renderFunc` / `asChild` trigger.
+ * component rendered inside a `DatePicker`'s `asChild` trigger.
  * Throws when used outside a `DatePicker` / `RangePicker`.
  */
 export const useDatePickerTrigger = (): DatePickerTriggerContextType => {

@@ -1,12 +1,14 @@
 :global([data-altrone-root='true']) {
   --tags-item-text-color: var(--text-2);
   --tags-hovered-item-color: var(--accent-11);
+  --tags-item-font-size: var(--text-size-4);
+  --tags-item-line-height: var(--line-height-4);
 }
 
 .Item {
   color: var(--tags-item-text-color);
-  font-size: var(--text-size-4);
-  line-height: var(--line-height-4);
+  font-size: var(--tags-item-font-size);
+  line-height: var(--tags-item-line-height);
   font-weight: var(--text-weight-medium);
   text-decoration: none;
 }

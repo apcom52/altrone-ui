@@ -39,13 +39,13 @@ export function DropdownCheckbox({
     ...style,
   };
 
-  const onSelect = () => {
-    onChange(!checked);
+  const onSelect = (event: React.MouseEvent<HTMLButtonElement>) => {
+    onChange(!checked, event);
   };
 
   const onKeyDownPress: React.KeyboardEventHandler<HTMLButtonElement> = (e) => {
     if (e.key === 'Enter') {
-      onChange(!checked);
+      onChange(!checked, e);
     }
   };
 

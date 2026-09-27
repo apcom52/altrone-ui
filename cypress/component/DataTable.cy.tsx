@@ -101,17 +101,16 @@ describe('DataTable.cy.tsx', () => {
         data={PEOPLE}
         columns={COLUMNS}
         rowsPerPage={3}
-        renderRowActions={() => (
-          <DataTable.RowActions>
-            <DataTable.RowAction label="Edit" onClick={() => undefined} />
-            <DataTable.RowAction
-              label="Delete"
-              collapsed
-              danger
-              onClick={() => undefined}
-            />
-          </DataTable.RowActions>
-        )}
+        rowActions={() => [
+          <DataTable.RowAction key="edit" label="Edit" onClick={() => undefined} />,
+          <DataTable.RowAction
+            key="delete"
+            label="Delete"
+            collapsed
+            danger
+            onClick={() => undefined}
+          />,
+        ]}
       />,
     );
 

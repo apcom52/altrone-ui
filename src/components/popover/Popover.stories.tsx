@@ -13,7 +13,7 @@ import {
   Smile,
   Trash2,
 } from 'lucide-react';
-import { Button, Flex, Progress, Switcher, Text, TextInput } from 'components';
+import { Button, Flex, Progress, Switch, Text, TextInput } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Popover } from './Popover.tsx';
@@ -77,7 +77,7 @@ export const TriggersStory: StoryObj<typeof Popover> = {
       ];
 
     return (
-      <Flex direction="vertical" gap="xl" style={{ maxWidth: 640 }}>
+      <Flex orientation="vertical" gap="xl" style={{ maxWidth: 640 }}>
         <Text size={7} weight="bold" block>
           Popover
         </Text>
@@ -93,11 +93,11 @@ export const TriggersStory: StoryObj<typeof Popover> = {
           <Text code>'hover'</Text>, <Text code>'focus'</Text>, or an array of
           them.
         </Paragraph>
-        <Flex direction="horizontal" gap="l" wrap>
+        <Flex orientation="horizontal" gap="l" wrap>
           {cases.map(({ trigger, note }) => (
             <Flex
               key={String(trigger)}
-              direction="vertical"
+              orientation="vertical"
               gap="s"
               style={{ width: 260 }}
             >
@@ -129,7 +129,7 @@ export const TriggersStory: StoryObj<typeof Popover> = {
 export const AnchoringStory: StoryObj<typeof Popover> = {
   name: 'Anchoring, auto-flip & matching width',
   render: () => (
-    <Flex direction="vertical" gap="xl" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="xl" style={{ maxWidth: 720 }}>
       <Heading>Twelve anchors</Heading>
       <Paragraph>
         <Text code>placement</Text> accepts every floating-ui position. Each
@@ -137,7 +137,7 @@ export const AnchoringStory: StoryObj<typeof Popover> = {
         keeps it in view near screen edges.
       </Paragraph>
       <Flex
-        direction="horizontal"
+        orientation="horizontal"
         gap="m"
         wrap
         style={{ maxWidth: 560, margin: '40px 0' }}
@@ -176,7 +176,7 @@ export const AnchoringStory: StoryObj<typeof Popover> = {
         parentWidth
         placement="bottom"
         content={
-          <Flex direction="vertical" gap="xs" style={{ padding: '2px 0' }}>
+          <Flex orientation="vertical" gap="xs" style={{ padding: '2px 0' }}>
             <Text size={3} color="muted">
               Q3 coverage
             </Text>
@@ -227,7 +227,7 @@ export const ReactionsStory: StoryObj<typeof Popover> = {
     const [virtualFocus, setVirtualFocus] = useState(false);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 560 }}>
         <Heading>Overlap + list navigation</Heading>
         <Paragraph>
           <Text code>overlap</Text> lets the panel cover its trigger — the
@@ -239,15 +239,15 @@ export const ReactionsStory: StoryObj<typeof Popover> = {
           <Text code>Dropdown</Text> uses internally, available directly on{' '}
           <Text code>Popover</Text> for content that isn't a menu.
         </Paragraph>
-        <Flex direction="horizontal" gap="m" align="center">
+        <Flex orientation="horizontal" gap="m" align="center">
           <Popover
             overlap
             listNavigation
             defaultListNavigationIndex={3}
             virtualNavigationFocus={virtualFocus}
             placement="bottom-start"
-            content={({ closePopup }) => (
-              <Flex direction="horizontal" gap="xs">
+            content={({ hide }) => (
+              <Flex orientation="horizontal" gap="xs">
                 {EMOJIS.map((emoji) => (
                   <ReactionButton
                     key={emoji}
@@ -255,7 +255,7 @@ export const ReactionsStory: StoryObj<typeof Popover> = {
                     selected={emoji === picked}
                     onSelect={() => {
                       setPicked(emoji);
-                      closePopup();
+                      hide();
                     }}
                   />
                 ))}
@@ -264,9 +264,9 @@ export const ReactionsStory: StoryObj<typeof Popover> = {
           >
             <Button icon={<Smile />} label={`You reacted ${picked}`} />
           </Popover>
-          <Switcher checked={virtualFocus} onChange={setVirtualFocus}>
+          <Switch checked={virtualFocus} onChange={setVirtualFocus}>
             Virtual focus
-          </Switcher>
+          </Switch>
         </Flex>
         <Caption>
           <Text code>virtualNavigationFocus</Text> swaps real DOM focus moves for
@@ -287,7 +287,7 @@ export const ShareStory: StoryObj<typeof Popover> = {
     const [restricted, setRestricted] = useState(true);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 520 }}>
         <Heading>Header, close button, trapped focus</Heading>
         <Paragraph>
           <Text code>title</Text> plus <Text code>showCloseButton</Text> turn
@@ -301,7 +301,7 @@ export const ShareStory: StoryObj<typeof Popover> = {
           showCloseButton
           placement="bottom-start"
           content={
-            <Flex direction="vertical" gap="m" style={{ width: 280 }}>
+            <Flex orientation="vertical" gap="m" style={{ width: 280 }}>
               <TextInput value="https://altrone.app/d/q3-roadmap" readOnly size="s">
                 <TextInput.ActionIsland
                   placement="end"
@@ -315,9 +315,9 @@ export const ShareStory: StoryObj<typeof Popover> = {
                 />
               </TextInput>
               {copied && <Caption>Copied to clipboard.</Caption>}
-              <Switcher checked={restricted} onChange={setRestricted}>
+              <Switch checked={restricted} onChange={setRestricted}>
                 Only people I invite
-              </Switcher>
+              </Switch>
             </Flex>
           }
         >
@@ -328,13 +328,13 @@ export const ShareStory: StoryObj<typeof Popover> = {
   },
 };
 
-// ─── 5. Nested + closeAllSequence ────────────────────────────────────────────
+// ─── 5. Nested + hideAllSequence ─────────────────────────────────────────────
 
 const ConfirmField = ({ onConfirm }: { onConfirm: () => void }) => {
   const [value, setValue] = useState('');
 
   return (
-    <Flex direction="horizontal" gap="s">
+    <Flex orientation="horizontal" gap="s">
       <TextInput
         value={value}
         onChange={setValue}
@@ -355,36 +355,36 @@ const ConfirmField = ({ onConfirm }: { onConfirm: () => void }) => {
 export const NestedStory: StoryObj<typeof Popover> = {
   name: 'Confirm, twice — then bail out of both',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 520 }}>
       <Heading>Nested popovers</Heading>
       <Paragraph>
         A popover opened from inside another popover's content stacks on top of
-        it. Both levels get their own <Text code>closePopup</Text>; the inner
-        one also gets <Text code>closeAllSequence</Text> to collapse the whole
+        it. Both levels get their own <Text code>hide</Text>; the inner
+        one also gets <Text code>hideAllSequence</Text> to collapse the whole
         chain — a single "never mind" that doesn't require closing each level
         in turn.
       </Paragraph>
       <Popover
         title="Delete workspace"
         showCloseButton
-        content={({ closePopup }) => (
-          <Flex direction="vertical" gap="m" style={{ width: 260 }}>
+        content={({ hide }) => (
+          <Flex orientation="vertical" gap="m" style={{ width: 260 }}>
             <Text size={3}>This removes every project inside it.</Text>
-            <Flex direction="horizontal" gap="s" justify="end">
-              <Button label="Cancel" onClick={closePopup} />
+            <Flex orientation="horizontal" gap="s" justify="end">
+              <Button label="Cancel" onClick={hide} />
               <Popover
                 placement="bottom-end"
                 title="Are you really sure?"
-                content={({ closeAllSequence }) => (
-                  <Flex direction="vertical" gap="m" style={{ width: 240 }}>
+                content={({ hideAllSequence }) => (
+                  <Flex orientation="vertical" gap="m" style={{ width: 240 }}>
                     <Text size={3}>
                       Type <Text code>DELETE</Text> below. This can't be undone.
                     </Text>
-                    <ConfirmField onConfirm={closeAllSequence} />
+                    <ConfirmField onConfirm={hideAllSequence} />
                     <Button
                       variant="text"
                       label="Never mind, cancel everything"
-                      onClick={closeAllSequence}
+                      onClick={hideAllSequence}
                     />
                   </Flex>
                 )}
@@ -406,7 +406,7 @@ export const NestedStory: StoryObj<typeof Popover> = {
   ),
 };
 
-// ─── 6. openedByDefault + enabled ────────────────────────────────────────────
+// ─── 6. defaultOpen + enabled ────────────────────────────────────────────────
 
 export const AvailabilityStory: StoryObj<typeof Popover> = {
   name: 'Opened by default, and switched off entirely',
@@ -415,16 +415,16 @@ export const AvailabilityStory: StoryObj<typeof Popover> = {
     const [ticketsEnabled, setTicketsEnabled] = useState(true);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 520 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 520 }}>
         <Heading>An onboarding hint</Heading>
         <Paragraph>
-          <Text code>openedByDefault</Text> starts a popover open on mount —
+          <Text code>defaultOpen</Text> starts a popover open on mount —
           handy for a one-time coach-mark. It's still an ordinary,
           uncontrolled popover afterwards: closing it just closes it, the
           trigger reopens it normally.
         </Paragraph>
         <Popover
-          openedByDefault
+          defaultOpen
           placement="right"
           title="New: quick filters"
           showCloseButton
@@ -450,7 +450,7 @@ export const AvailabilityStory: StoryObj<typeof Popover> = {
           an out-of-stock state can turn a popover off without conditionally
           rendering two different trees.
         </Paragraph>
-        <Flex direction="horizontal" gap="m" align="center">
+        <Flex orientation="horizontal" gap="m" align="center">
           <Popover
             enabled={ticketsEnabled}
             content={<Text size={3}>Two seats left in row F.</Text>}
@@ -460,9 +460,9 @@ export const AvailabilityStory: StoryObj<typeof Popover> = {
               disabled={!ticketsEnabled}
             />
           </Popover>
-          <Switcher checked={ticketsEnabled} onChange={setTicketsEnabled}>
+          <Switch checked={ticketsEnabled} onChange={setTicketsEnabled}>
             Tickets on sale
-          </Switcher>
+          </Switch>
         </Flex>
       </Flex>
     );
@@ -483,22 +483,23 @@ export const StateStory: StoryObj<typeof Popover> = {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
-        popoverRef.current?.openPopup();
+        popoverRef.current?.show();
         setPlacement(popoverRef.current?.actualPlacement ?? '—');
       }, 900);
     };
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 560 }}>
         <Heading>Imperative API via ref</Heading>
         <Paragraph>
-          <Text code>ref</Text> exposes <Text code>openPopup</Text>,{' '}
-          <Text code>closePopup</Text>, the resolved{' '}
-          <Text code>actualPlacement</Text> and the live <Text code>opened</Text>{' '}
+          <Text code>controlRef</Text> exposes <Text code>show</Text>,{' '}
+          <Text code>hide</Text>, the resolved{' '}
+          <Text code>actualPlacement</Text> and the live <Text code>open</Text>{' '}
           flag — for opening a popover after an async step, or reading where it
-          landed.
+          landed. Plain <Text code>ref</Text> still points at the trigger DOM
+          element.
         </Paragraph>
-        <Flex direction="horizontal" gap="s" align="center" wrap>
+        <Flex orientation="horizontal" gap="s" align="center" wrap>
           <Button
             label={loading ? 'Loading…' : 'Fetch, then open'}
             icon={<RefreshCw />}
@@ -507,10 +508,10 @@ export const StateStory: StoryObj<typeof Popover> = {
           />
           <Button
             label="Close"
-            onClick={() => popoverRef.current?.closePopup()}
+            onClick={() => popoverRef.current?.hide()}
           />
           <Popover
-            ref={popoverRef}
+            controlRef={popoverRef}
             placement="right"
             content={<Text size={3}>Opened by an external control.</Text>}
           >
@@ -522,7 +523,7 @@ export const StateStory: StoryObj<typeof Popover> = {
         <Heading>A trigger that knows its own state</Heading>
         <Paragraph>
           Pass a function as <Text code>children</Text> to read{' '}
-          <Text code>opened</Text> — here the chevron flips. Every change also
+          <Text code>open</Text> — here the chevron flips. Every change also
           fires <Text code>onOpenChange(open, event, reason)</Text>;{' '}
           <Text code>reason</Text> says <em>how</em> it changed.
         </Paragraph>
@@ -537,7 +538,7 @@ export const StateStory: StoryObj<typeof Popover> = {
           }
           content={<Text size={3}>Try Esc, an outside click, or Tab away.</Text>}
         >
-          {({ opened }) => (
+          {({ open: opened }) => (
             <Button
               label="Preferences"
               additionalIcon={
@@ -551,7 +552,7 @@ export const StateStory: StoryObj<typeof Popover> = {
             />
           )}
         </Popover>
-        <Flex direction="vertical" gap="xs">
+        <Flex orientation="vertical" gap="xs">
           {log.length === 0 ? (
             <Caption>No events yet.</Caption>
           ) : (
@@ -561,6 +562,42 @@ export const StateStory: StoryObj<typeof Popover> = {
               </Text>
             ))
           )}
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
+// ─── 8. Controlled open ───────────────────────────────────────────────────────
+
+export const ControlledStory: StoryObj<typeof Popover> = {
+  name: 'Controlled open',
+  render: () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 560 }}>
+        <Paragraph>
+          Passing <Text code>open</Text> (instead of{' '}
+          <Text code>defaultOpen</Text>) makes the popover controlled: it
+          renders whatever state it's given and only asks to change it via{' '}
+          <Text code>onOpenChange</Text> — the escape key, an outside click,
+          and imperative <Text code>controlRef.show()</Text>/
+          <Text code>hide()</Text> all route through it instead of
+          closing the popover on their own.
+        </Paragraph>
+        <Flex gap="s" align="center">
+          <Button
+            label={open ? 'Close from outside' : 'Open from outside'}
+            onClick={() => setOpen((v) => !v)}
+          />
+          <Popover
+            open={open}
+            onOpenChange={setOpen}
+            content={<Text size={3}>Try Esc or an outside click too.</Text>}
+          >
+            <Button label="Trigger" />
+          </Popover>
         </Flex>
       </Flex>
     );

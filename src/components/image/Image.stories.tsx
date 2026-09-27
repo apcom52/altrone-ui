@@ -1,8 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ReactElement, ReactNode, useState } from 'react';
-import { Image, Flex, Grid, Text, Switcher, Loading } from 'components';
+import { Image, Flex, Grid, Text, Switch, Loading } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
+import { CameraOff } from 'lucide-react';
 
 const story: Meta<typeof Image> = {
   title: 'Components/Core/Image',
@@ -44,7 +45,7 @@ const Framework3rdPartyImage = ({ src, alt }: { src: string; alt: string }) => (
 export const Overview: StoryObj<typeof Image> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Text block size={9} weight="bold">
         Image
       </Text>
@@ -88,6 +89,20 @@ export const Overview: StoryObj<typeof Image> = {
         width="100%"
         height={160}
       />
+
+      <Heading>Custom broken-image icon</Heading>
+      <Paragraph>
+        <Text code>brokenIcon</Text> overrides the placeholder glyph shown on
+        load failure.
+      </Paragraph>
+      <Image
+        src="https://this-domain-does-not-exist.invalid/photo.jpg"
+        alt="Team offsite photo"
+        brokenIcon={<CameraOff />}
+        caption="brokenIcon={<CameraOff />}"
+        width="100%"
+        height={160}
+      />
     </Flex>
   ),
 };
@@ -98,7 +113,7 @@ export const ObjectFit: StoryObj<typeof Image> = {
     const fits = ['cover', 'contain', 'fill', 'none', 'scale-down'] as const;
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Heading>Object-fit</Heading>
         <Paragraph>
           The same tall, narrow source photo under every <Text code>fit</Text>{' '}
@@ -128,7 +143,7 @@ export const ObjectFit: StoryObj<typeof Image> = {
 export const CustomPicture: StoryObj<typeof Image> = {
   name: 'Custom picture (children)',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Heading>Any picture element</Heading>
       <Paragraph>
         Pass a custom element as <Text code>children</Text> instead of{' '}
@@ -182,9 +197,9 @@ const LoadingScenario = ({
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <Flex direction="vertical" gap="s">
+    <Flex orientation="vertical" gap="s">
       <Flex align="center" gap="m">
-        <Switcher checked={loaded} onChange={setLoaded} />
+        <Switch checked={loaded} onChange={setLoaded} />
         <Text size={3}>{loaded ? 'Loaded' : 'Loading'}</Text>
       </Flex>
       <Paragraph>{description}</Paragraph>
@@ -207,7 +222,7 @@ const LoadingScenario = ({
 export const Preloader: StoryObj<typeof Image> = {
   name: 'Preloader',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Heading>Preloader</Heading>
       <Paragraph>
         In <Text code>src</Text> mode the skeleton shows and hides itself
@@ -231,7 +246,7 @@ export const Preloader: StoryObj<typeof Image> = {
 export const Captions: StoryObj<typeof Image> = {
   name: 'Captions',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 640 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 640 }}>
       <Heading>Captions</Heading>
       <Paragraph>
         <Text code>caption</Text> accepts any node, not just a string — useful

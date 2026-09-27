@@ -60,6 +60,7 @@ npm run lint                 # ESLint
 @../.claude/rules/configuration.md
 @../.claude/rules/new-component-checklist.md
 @../.claude/rules/sync-core-docs-mcp.md
+@../.claude/rules/imperative-apis.md
 @../.claude/rules/target-architecture-status.md
 @../.claude/rules/application-screen.md
 @../.claude/rules/box.md

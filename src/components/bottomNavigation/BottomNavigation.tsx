@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { BottomNavigationProps } from './BottomNavigation.types.ts';
 import s from './bottomNavigation.module.scss';
 import clsx from 'clsx';
-import { Item } from './components';
+import { Link } from './components';
 import { BottomNavigationContext } from './BottomNavigation.context.tsx';
 import { motion, useAnimationControls } from 'motion/react';
 import { DOMUtils } from '../../utils';
@@ -116,7 +116,7 @@ const BottomNavigation = memo<BottomNavigationProps>(
 );
 
 const BottomNavigationNamespace = Object.assign(BottomNavigation, {
-  Item,
+  Link,
 });
 
 export { BottomNavigationNamespace as BottomNavigation };

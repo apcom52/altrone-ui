@@ -2,21 +2,30 @@ import React from 'react';
 
 export type ToastVariant = 'default' | 'success' | 'warning' | 'danger';
 
+/** Vertical edge of the toast stack (always centred horizontally). */
+export type ToastPlacement = 'top' | 'bottom';
+
 /**
- * Logical placement, resolved against the writing direction:
- * - vertical (`toastPlacement` / `notificationPlacement`): `start` = top, `end` = bottom
- * - horizontal (`notificationSide`): `start` = left, `end` = right
+ * Corner of the notification stack — same `side-align` shape as `floating-ui`'s
+ * `Placement` (e.g. `Popover`/`Tooltip`), so it teaches one vocabulary across
+ * the library instead of two separate axis props. The side (`top`/`bottom`) is
+ * physical; the alignment along it (`start`/`end`) is logical, resolved
+ * against the writing direction — `start` = left, `end` = right.
  */
-export type NotificationPlacement = 'start' | 'end';
+export type NotificationPlacement =
+  | 'top-start'
+  | 'top-end'
+  | 'bottom-start'
+  | 'bottom-end';
 
 export interface ToastAction {
   label: string;
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export interface NotificationAction {
   label: string;
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   danger?: boolean;
 }
 
@@ -82,23 +91,12 @@ export interface NotificationItem {
 
 export type AnyNotificationItem = ToastItem | NotificationItem;
 
-// ─── Context ──────────────────────────────────────────────────────────────────
-
-export interface NotificationsContextType {
-  /** Show a simple pill-shaped toast message. Returns the toast id. */
-  toast: (message: string, options?: ToastOptions) => string;
-  /** Show a rich notification card. Returns the notification id. */
-  notification: (options: NotificationOptions) => string;
-  /** Programmatically dismiss a toast or notification by id. */
-  dismiss: (id: string) => void;
-}
+// ─── Provider ─────────────────────────────────────────────────────────────────
 
 export interface NotificationsProviderProps {
   children: React.ReactNode;
-  /** Vertical placement of the toast stack (centred horizontally). Defaults to 'end' (bottom). */
-  toastPlacement?: NotificationPlacement;
-  /** Horizontal side of the notification stack. Defaults to 'end' (right). */
-  notificationSide?: NotificationPlacement;
-  /** Vertical placement of the notification stack. Defaults to 'end' (bottom). */
+  /** Vertical edge of the toast stack (centred horizontally). Defaults to 'bottom'. */
+  toastPlacement?: ToastPlacement;
+  /** Corner of the notification stack. Defaults to 'bottom-end'. */
   notificationPlacement?: NotificationPlacement;
 }

@@ -24,13 +24,13 @@ describe('Label', () => {
     expect(el).toHaveStyle('letter-spacing: 1px');
   });
 
-  test('color / variant / rounding / size map to modifier classes', () => {
+  test('color / variant / shape / size map to modifier classes', () => {
     render(
       <Label
         data-testid="l"
         color="success"
         variant="soft"
-        rounding="pill"
+        shape="pill"
         size="l"
       >
         Done
@@ -38,7 +38,7 @@ describe('Label', () => {
     );
     const cn = screen.getByTestId('l').className;
     expect(cn).toMatch(/Success/);
-    expect(cn).toMatch(/Soft/);
+    expect(cn).toMatch(/Pale/);
     expect(cn).toMatch(/Pill/);
     expect(cn).toMatch(/Large/);
   });

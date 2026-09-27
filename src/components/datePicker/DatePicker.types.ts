@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Dayjs } from 'dayjs';
 import { CalendarDateRange } from '../calendar/Calendar.types.ts';
 import { AnyObject } from '../../utils';
@@ -6,7 +6,7 @@ import { TextInputProps } from '../textInput/TextInput.types.ts';
 
 export type Picker = 'day' | 'month' | 'year' | 'range';
 
-/** Live trigger state, for a custom control passed via `renderFunc` / `asChild`. */
+/** Live trigger state, for a custom control passed via `asChild`. */
 export interface DatePickerTriggerContextType {
   /** `Dayjs` for day/month/year pickers, `(Dayjs | undefined)[]` for `RangePicker`. */
   value: Dayjs | RangePickerValue | undefined;
@@ -17,11 +17,6 @@ export interface DatePickerTriggerContextType {
   disabled: boolean;
   clear: (event?: React.MouseEvent<HTMLElement>) => void;
 }
-
-export type DatePickerRenderContext = DatePickerTriggerContextType & {
-  className: string;
-  style?: React.CSSProperties;
-};
 
 export interface BasicDatePickerProps<ValueType extends AnyObject = any>
   extends Omit<TextInputProps, 'value' | 'onChange' | 'ref' | 'children'> {
@@ -37,21 +32,15 @@ export interface BasicDatePickerProps<ValueType extends AnyObject = any>
   maxDate?: Dayjs;
   autoClose?: boolean;
 
-  /**
-   * Replaces the default `TextInput` trigger with the element it returns.
-   * Receives the live trigger state; the same state is available to any nested
-   * component through `useDatePickerTrigger()`.
-   *
-   * @example
-   * renderFunc={({ displayValue, expanded }) => (
-   *   <Button label={displayValue || 'Pick a date'}
-   *     icon={expanded ? <ChevronUp /> : <CalendarIcon />} />
-   * )}
-   */
-  renderFunc?: (context: DatePickerRenderContext) => React.ReactElement;
   /** Use `children` as the trigger, merging the picker's props onto it. */
   asChild?: boolean;
   children?: React.ReactElement;
+
+  /** Overrides the header's previous/next navigation icons. Defaults to `Application.icons.prev`/`.next`. */
+  prevIcon?: ReactElement;
+  nextIcon?: ReactElement;
+  /** Overrides the trigger's calendar glyph. Defaults to lucide's `Calendar`. */
+  triggerIcon?: ReactElement;
 }
 
 export interface DatePickerProps extends BasicDatePickerProps<Dayjs> {}
@@ -91,6 +80,8 @@ export interface DatePickerContextType {
 export interface DatePickerContentProps {
   clearable?: boolean;
   autoClose?: boolean;
+  prevIcon?: ReactElement;
+  nextIcon?: ReactElement;
 }
 
 export interface DatePickerFooterProps {

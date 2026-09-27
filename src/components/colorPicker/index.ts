@@ -1,6 +1,2 @@
 export * from './ColorPicker';
-export type {
-  ColorPreset,
-  ColorPickerProps,
-  ColorPickerRenderProps,
-} from './ColorPicker.types';
+export type { ColorPreset, ColorPickerProps } from './ColorPicker.types';

@@ -1,8 +1,10 @@
 import React, { ReactElement } from 'react';
-import { RenderFuncProp } from '../../types';
+import { Size } from 'types';
 
 export interface TabsProps extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>;
+  /** One of the five control tiers; scales the tablist and every item. */
+  size?: Size;
 }
 
 export interface TabsItemProps
@@ -22,6 +24,4 @@ export interface TabsItemProps
   asChild?: boolean;
   children?: ReactElement;
   ref?: React.Ref<HTMLElement>;
-  /** @deprecated Prefer `asChild`. Custom render function `(ref, props) => ReactElement`. */
-  renderFunc?: RenderFuncProp<HTMLAnchorElement, TabsItemProps>;
 }

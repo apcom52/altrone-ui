@@ -133,10 +133,11 @@ export const Box = memo((props: BoxProps) => {
       [s.MaterialGlass]: material === 'glass',
       [s.MaterialPlate]: material === 'plate',
       [s.MaterialTranslucent]: material === 'translucent',
+      [s.MaterialPale]: material === 'pale',
       [s.MaterialTransparent]: material === 'transparent',
       [s.MaterialOutline]: material === 'outline',
       [s.MaterialGhost]: material === 'ghost',
-      [s.MaterialHatch]: material === 'hatch',
+      [s.MaterialDotted]: material === 'dotted',
 
       [s.ToneNeutral]: !customColor && tone === 'neutral',
       [s.ToneAccent]: !customColor && tone === 'accent',

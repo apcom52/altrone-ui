@@ -1,14 +1,6 @@
 import { StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import {
-  Button,
-  Flex,
-  Form,
-  Radio,
-  Select,
-  Switcher,
-  Text,
-} from 'components';
+import { Button, Flex, Form, Radio, Select, Switch, Text } from 'components';
 import { Modal } from '../Modal.tsx';
 import { Send, Globe, Lock, Users, Bell, Check } from 'lucide-react';
 
@@ -36,6 +28,7 @@ const VisibilityIcon = ({ value }: { value: Visibility }) => {
 export const PublishPostStory: StoryObj<typeof Modal> = {
   name: 'Publish flow — async actions & validation',
   render: () => {
+    const [open, setOpen] = useState(false);
     const [published, setPublished] = useState<{
       visibility: Visibility;
       collection: string;
@@ -57,8 +50,8 @@ export const PublishPostStory: StoryObj<typeof Modal> = {
     };
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 560 }}>
-        <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 560 }}>
+        <Flex orientation="vertical" gap="xs">
           <Text block size={7} weight="bold">
             The Concentric Blog
           </Text>
@@ -69,7 +62,7 @@ export const PublishPostStory: StoryObj<typeof Modal> = {
 
         {published ? (
           <Flex
-            direction="horizontal"
+            orientation="horizontal"
             gap="s"
             align="center"
             style={{
@@ -81,10 +74,12 @@ export const PublishPostStory: StoryObj<typeof Modal> = {
           >
             <Check size={16} />
             <Text size={4}>
-              Published as{' '}
-              <Text weight="bold">{published.visibility}</Text> in{' '}
+              Published as <Text weight="bold">{published.visibility}</Text> in{' '}
               <Text weight="bold">
-                {COLLECTIONS.find((c) => c.value === published.collection)?.label}
+                {
+                  COLLECTIONS.find((c) => c.value === published.collection)
+                    ?.label
+                }
               </Text>
               {published.notified ? ' · subscribers notified' : ''}
             </Text>
@@ -95,10 +90,20 @@ export const PublishPostStory: StoryObj<typeof Modal> = {
           </Text>
         )}
 
+        <Button
+          label="Publish…"
+          icon={<Send size={14} />}
+          onClick={() => setOpen(true)}
+        />
+
         <Modal
           title="Publish article"
           size="m"
-          onClose={reset}
+          open={open}
+          onClose={() => {
+            setOpen(false);
+            reset();
+          }}
           content={
             <Form>
               {error && (
@@ -115,7 +120,7 @@ export const PublishPostStory: StoryObj<typeof Modal> = {
                 >
                   {VISIBILITY.map((option) => (
                     <Radio.Item key={option.value} value={option.value}>
-                      <Flex direction="horizontal" gap="xs" align="center">
+                      <Flex orientation="horizontal" gap="xs" align="center">
                         <VisibilityIcon value={option.value} />
                         <Text size={4}>{option.label}</Text>
                         <Text size={3} color="muted">
@@ -140,16 +145,16 @@ export const PublishPostStory: StoryObj<typeof Modal> = {
               </Form.Field>
 
               <Form.Field>
-                <Switcher checked={notify} onChange={(v) => setNotify(v)}>
-                  <Flex direction="horizontal" gap="xs" align="center">
+                <Switch checked={notify} onChange={(v) => setNotify(v)}>
+                  <Flex orientation="horizontal" gap="xs" align="center">
                     <Bell size={14} />
                     <Text size={4}>Email subscribers</Text>
                   </Flex>
-                </Switcher>
+                </Switch>
               </Form.Field>
             </Form>
           }
-          actions={({ closeModal }) => (
+          actions={({ hide }) => (
             <Button
               label={publishing ? 'Publishing…' : 'Publish now'}
               variant="submit"
@@ -165,13 +170,11 @@ export const PublishPostStory: StoryObj<typeof Modal> = {
                 await new Promise((resolve) => setTimeout(resolve, 1200));
                 setPublishing(false);
                 setPublished({ visibility, collection, notified: notify });
-                closeModal();
+                hide();
               }}
             />
           )}
-        >
-          <Button label="Publish…" icon={<Send size={14} />} />
-        </Modal>
+        />
       </Flex>
     );
   },

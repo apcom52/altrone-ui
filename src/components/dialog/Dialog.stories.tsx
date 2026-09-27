@@ -57,7 +57,7 @@ export const Overview: StoryObj<typeof DialogProvider> = {
     const [lastResult, setLastResult] = useState<string>('—');
 
     return (
-      <Flex direction="vertical" gap="l" align="start" style={{ padding: 24 }}>
+      <Flex orientation="vertical" gap="l" align="start" style={{ padding: 24 }}>
         <Text block size={9} weight="bold">
           Dialogs
         </Text>
@@ -91,7 +91,7 @@ export const Overview: StoryObj<typeof DialogProvider> = {
               message:
                 'Every project and file tied to this account is removed immediately. This cannot be undone.',
               confirmText: 'Delete account',
-              rejectText: 'Keep it',
+              cancelText: 'Keep it',
               danger: true,
             });
 
@@ -117,7 +117,7 @@ export const Overview: StoryObj<typeof DialogProvider> = {
 export const Alerts: StoryObj<typeof DialogProvider> = {
   name: 'Alert — acknowledge and move on',
   render: () => (
-    <Flex direction="vertical" gap="l" align="start" style={{ padding: 24 }}>
+    <Flex orientation="vertical" gap="l" align="start" style={{ padding: 24 }}>
       <Heading>Alert</Heading>
       <Paragraph>
         One button, one job: make sure the user has seen something before
@@ -167,7 +167,7 @@ export const Confirms: StoryObj<typeof DialogProvider> = {
     const push = (line: string) => setLog((prev) => [line, ...prev].slice(0, 5));
 
     return (
-      <Flex direction="vertical" gap="l" align="start" style={{ padding: 24 }}>
+      <Flex orientation="vertical" gap="l" align="start" style={{ padding: 24 }}>
         <Heading>Confirm</Heading>
         <Paragraph>
           Returns <Text code>true</Text> or <Text code>false</Text>. Dismissing
@@ -184,7 +184,7 @@ export const Confirms: StoryObj<typeof DialogProvider> = {
                 title: 'Discard this draft?',
                 message: 'Your unsaved changes will be lost.',
                 confirmText: 'Discard',
-                rejectText: 'Keep editing',
+                cancelText: 'Keep editing',
                 danger: true,
               });
               push(`Discard draft → ${ok}`);
@@ -198,14 +198,14 @@ export const Confirms: StoryObj<typeof DialogProvider> = {
                 title: 'Publish to production?',
                 message: 'The release goes live for everyone right away.',
                 confirmText: 'Publish',
-                rejectText: 'Not yet',
+                cancelText: 'Not yet',
               });
               push(`Publish now → ${ok}`);
             }}
           />
         </Flex>
         {log.length > 0 && (
-          <Flex direction="vertical" gap="xs" align="start">
+          <Flex orientation="vertical" gap="xs" align="start">
             {log.map((line, i) => (
               <Result key={i}>{line}</Result>
             ))}
@@ -222,7 +222,7 @@ export const Prompts: StoryObj<typeof DialogProvider> = {
     const [value, setValue] = useState<string>('—');
 
     return (
-      <Flex direction="vertical" gap="l" align="start" style={{ padding: 24 }}>
+      <Flex orientation="vertical" gap="l" align="start" style={{ padding: 24 }}>
         <Heading>Prompt</Heading>
         <Paragraph>
           A single input in a dialog. <Text code>inputType</Text> switches

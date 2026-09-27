@@ -1,11 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useMemo, useState } from 'react';
 import type { Dayjs } from 'dayjs';
+import { ArrowLeftCircle, ArrowRightCircle } from 'lucide-react';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Flex } from '../flex';
 import { Text } from '../text';
-import { Switcher } from '../switcher';
+import { Switch } from '../switch';
 import { Calendar } from './Calendar.tsx';
 import {
   CalendarDateRange,
@@ -64,7 +65,7 @@ const Receipt = ({
   hint?: string;
 }) => (
   <Flex
-    direction="vertical"
+    orientation="vertical"
     gap="none"
     style={{
       borderRadius: 'var(--radius-m)',
@@ -95,7 +96,7 @@ export const CheckInDate: Story = {
     const [checkIn, setCheckIn] = useState(() => dayjs('2024-08-14'));
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
         <Text size={6} weight="bold" block>
           Cedar Cabin
         </Text>
@@ -109,7 +110,7 @@ export const CheckInDate: Story = {
           <Text code>DatePicker</Text> renders.
         </Text>
 
-        <Flex direction="horizontal" gap="xl" wrap align="start">
+        <Flex orientation="horizontal" gap="xl" wrap align="start">
           <Calendar
             mode="single"
             defaultMonth={SEASON}
@@ -143,7 +144,7 @@ export const ThreeQuestions: Story = {
     }));
 
     return (
-      <Flex direction="vertical" gap="l">
+      <Flex orientation="vertical" gap="l">
         <Text size={5} weight="bold" block>
           The same widget answers three different questions
         </Text>
@@ -154,8 +155,8 @@ export const ThreeQuestions: Story = {
           and <Text code>onSelect</Text> hands back the matching value shape.
         </Text>
 
-        <Flex direction="horizontal" gap="xl" wrap align="start">
-          <Flex direction="vertical" gap="s">
+        <Flex orientation="horizontal" gap="xl" wrap align="start">
+          <Flex orientation="vertical" gap="s">
             <Text weight="medium" block>
               Guest picks an arrival day — <Text code>single</Text>
             </Text>
@@ -170,7 +171,7 @@ export const ThreeQuestions: Story = {
             </Text>
           </Flex>
 
-          <Flex direction="vertical" gap="s">
+          <Flex orientation="vertical" gap="s">
             <Text weight="medium" block>
               Host schedules housekeeping — <Text code>multiple</Text>
             </Text>
@@ -186,7 +187,7 @@ export const ThreeQuestions: Story = {
             </Text>
           </Flex>
 
-          <Flex direction="vertical" gap="s">
+          <Flex orientation="vertical" gap="s">
             <Text weight="medium" block>
               Guest blocks out the whole stay — <Text code>range</Text>
             </Text>
@@ -229,7 +230,7 @@ export const CountingNights: Story = {
     }, [stay]);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 560 }}>
         <Text size={5} weight="bold" block>
           The nights add up as you hover
         </Text>
@@ -241,7 +242,7 @@ export const CountingNights: Story = {
           square.
         </Text>
 
-        <Flex direction="horizontal" gap="xl" wrap align="start">
+        <Flex orientation="horizontal" gap="xl" wrap align="start">
           <Calendar
             mode="range"
             defaultMonth={SEASON}
@@ -277,7 +278,7 @@ export const BookedAndClosed: Story = {
     const [stay, setStay] = useState<CalendarDateRange>(() => ({}));
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 560 }}>
         <Text size={5} weight="bold" block>
           Half the month is already off the table
         </Text>
@@ -318,7 +319,7 @@ export const GuestsFromEverywhere: Story = {
     ];
 
     return (
-      <Flex direction="vertical" gap="l">
+      <Flex orientation="vertical" gap="l">
         <Text size={5} weight="bold" block>
           Cedar Cabin takes bookings from everywhere
         </Text>
@@ -331,9 +332,9 @@ export const GuestsFromEverywhere: Story = {
           <Text code>firstDayOfWeek="monday" | "sunday"</Text>.
         </Text>
 
-        <Flex direction="horizontal" gap="xl" wrap align="start">
+        <Flex orientation="horizontal" gap="xl" wrap align="start">
           {guests.map((guest) => (
-            <Flex key={guest.city} direction="vertical" gap="s">
+            <Flex key={guest.city} orientation="vertical" gap="s">
               <Text weight="medium" block>
                 {guest.city} · <Text code>{guest.locale}</Text>
               </Text>
@@ -363,7 +364,7 @@ export const FitsAnywhere: Story = {
     const [showOutsideDays, setShowOutsideDays] = useState(true);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 560 }}>
         <Text size={5} weight="bold" block>
           The same calendar, embedded four ways
         </Text>
@@ -374,31 +375,31 @@ export const FitsAnywhere: Story = {
           chrome is an independent toggle — flip them to see what stays.
         </Text>
 
-        <Flex direction="horizontal" gap="l" wrap>
-          <Switcher
+        <Flex orientation="horizontal" gap="l" wrap>
+          <Switch
             checked={showHeader}
             onChange={(checked) => setShowHeader(checked)}
           >
             showHeader
-          </Switcher>
-          <Switcher
+          </Switch>
+          <Switch
             checked={showNavigation}
             onChange={(checked) => setShowNavigation(checked)}
           >
             showNavigation
-          </Switcher>
-          <Switcher
+          </Switch>
+          <Switch
             checked={showWeekdays}
             onChange={(checked) => setShowWeekdays(checked)}
           >
             showWeekdays
-          </Switcher>
-          <Switcher
+          </Switch>
+          <Switch
             checked={showOutsideDays}
             onChange={(checked) => setShowOutsideDays(checked)}
           >
             showOutsideDays
-          </Switcher>
+          </Switch>
         </Flex>
 
         <Calendar
@@ -463,7 +464,7 @@ export const HostAvailability: Story = {
     };
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 480 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 480 }}>
         <Text size={5} weight="bold" block>
           The host sees rates, not just dates
         </Text>
@@ -489,4 +490,29 @@ export const HostAvailability: Story = {
       </Flex>
     );
   },
+};
+
+export const CustomNavigationIcons: Story = {
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 360 }}>
+      <Text size={5} weight="bold" block>
+        Swapping the navigation icons
+      </Text>
+      <Text block>
+        <Text code>prevIcon</Text> / <Text code>nextIcon</Text> override the
+        header's month navigation for this one instance. Without them, the
+        header falls back to <Text code>Application.icons.prev</Text> /{' '}
+        <Text code>.next</Text> (shared with <Text code>DatePicker</Text> and{' '}
+        <Text code>Pagination</Text>) — see the <Text code>Foundations/Icons</Text>{' '}
+        story to override that shared default for every consumer at once.
+      </Text>
+
+      <Calendar
+        mode="single"
+        month={SEASON}
+        prevIcon={<ArrowLeftCircle />}
+        nextIcon={<ArrowRightCircle />}
+      />
+    </Flex>
+  ),
 };

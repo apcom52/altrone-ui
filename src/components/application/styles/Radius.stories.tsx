@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Text, Pagination, Range } from 'components';
+import { Flex, Text, Pagination, Slider } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { NumberUtils } from 'utils';
 import { useState } from 'react';
@@ -49,13 +49,13 @@ const ConcentricPlayground = () => {
   const inner = NumberUtils.concentricRadius(outer, gap, RADIUS_FLOOR);
 
   return (
-    <Flex direction="vertical" gap="m">
+    <Flex orientation="vertical" gap="m">
       <Flex gap="l" wrap>
         <div style={{ width: 240 }}>
           <Text block size={3} weight="medium">
             Outer radius
           </Text>
-          <Range
+          <Slider
             min={0}
             max={48}
             value={outer}
@@ -68,7 +68,7 @@ const ConcentricPlayground = () => {
           <Text block size={3} weight="medium">
             Gap
           </Text>
-          <Range
+          <Slider
             min={0}
             max={48}
             value={gap}
@@ -118,7 +118,7 @@ const AnimatedExample = () => {
   const [pressed, setPressed] = useState(false);
 
   return (
-    <Flex direction="vertical" gap="s">
+    <Flex orientation="vertical" gap="s">
       <div
         onMouseDown={() => setPressed(true)}
         onMouseUp={() => setPressed(false)}
@@ -150,9 +150,9 @@ const AnimatedExample = () => {
 };
 
 export const Overview: StoryObj = {
-  name: 'Concentric Radius',
+  name: 'Radius',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Concentric Radius
       </Text>

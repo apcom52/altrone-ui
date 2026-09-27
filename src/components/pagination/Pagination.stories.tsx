@@ -1,9 +1,16 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ReactNode, useState } from 'react';
+import {
+  ArrowLeftCircle,
+  ArrowRightCircle,
+  ChevronsLeft,
+  ChevronsRight,
+} from 'lucide-react';
 import { Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Pagination } from './Pagination.tsx';
+import { Size } from 'types';
 
 const story: Meta<typeof Pagination> = {
   title: 'Components/Navigation/Pagination',
@@ -34,13 +41,15 @@ const Paragraph = ({ children }: { children: ReactNode }) => (
 );
 
 const Case = ({ title, children }: { title: string; children: ReactNode }) => (
-  <Flex direction="vertical" gap="s">
+  <Flex orientation="vertical" gap="s">
     <Text size={3} weight="medium" block>
       {title}
     </Text>
     {children}
   </Flex>
 );
+
+const SIZES: Size[] = ['mini', 's', 'm', 'l', 'xl'];
 
 // ─── Overview ────────────────────────────────────────────────────────────────
 
@@ -50,18 +59,20 @@ export const Overview: StoryObj<typeof Pagination> = {
     const [page, setPage] = useState(6);
 
     return (
-      <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
         <Text block size={9} weight="bold">
           Pagination
         </Text>
 
         <Paragraph>
-          <Text code>Pagination</Text> is a controlled page switcher — a{' '}
+          <Text code>Pagination</Text> is a page switcher — a{' '}
           <Text code>&lt;nav&gt;</Text> landmark with previous/next arrows,{' '}
-          numbered page buttons, and (by default) first/last jumps. You own the{' '}
-          state: pass <Text code>currentPage</Text> and{' '}
-          <Text code>totalPages</Text>, and update your state from{' '}
-          <Text code>onChange(page, event)</Text>.
+          numbered page buttons, and (by default) first/last jumps. Pass{' '}
+          <Text code>currentPage</Text> to own the state yourself (update it
+          from <Text code>onChange(page, event)</Text>), or omit it and use{' '}
+          <Text code>defaultPage</Text> to let the component track its own
+          page — <Text code>onChange</Text> still fires either way, if you
+          just want to know when the page changed.
         </Paragraph>
 
         <Heading>The number window</Heading>
@@ -73,7 +84,7 @@ export const Overview: StoryObj<typeof Pagination> = {
           <Text code>aria-current="page"</Text>; arrows disable at the ends.
         </Paragraph>
 
-        <Flex direction="vertical" gap="xs">
+        <Flex orientation="vertical" gap="xs">
           <Pagination
             currentPage={page}
             totalPages={20}
@@ -115,6 +126,52 @@ export const Overview: StoryObj<typeof Pagination> = {
         <Case title="Single page — everything disabled">
           <Pagination currentPage={1} totalPages={1} onChange={() => {}} />
         </Case>
+
+        <Case title="Uncontrolled — defaultPage, no currentPage">
+          <Pagination defaultPage={3} totalPages={10} />
+        </Case>
+
+        <Heading>Custom icons</Heading>
+        <Paragraph>
+          <Text code>prevIcon</Text> / <Text code>nextIcon</Text> fall back to{' '}
+          <Text code>Application.icons.prev</Text> / <Text code>.next</Text>{' '}
+          (shared with <Text code>Calendar</Text> and <Text code>DatePicker</Text>)
+          when omitted. <Text code>firstPageIcon</Text> /{' '}
+          <Text code>lastPageIcon</Text> have no shared role — they're unique to{' '}
+          <Text code>Pagination</Text>.
+        </Paragraph>
+
+        <Case title="prevIcon / nextIcon / firstPageIcon / lastPageIcon">
+          <Pagination
+            currentPage={6}
+            totalPages={20}
+            onChange={() => {}}
+            prevIcon={<ArrowLeftCircle />}
+            nextIcon={<ArrowRightCircle />}
+            firstPageIcon={<ChevronsLeft />}
+            lastPageIcon={<ChevronsRight />}
+          />
+        </Case>
+
+        <Heading>Sizes</Heading>
+        <Paragraph>
+          <Text code>size</Text> scales the arrow/page buttons and the
+          ellipsis together — it's forwarded to every underlying{' '}
+          <Text code>Button</Text>.
+        </Paragraph>
+
+        <Flex orientation="vertical" gap="m">
+          {SIZES.map((sz) => (
+            <Case key={sz} title={`size="${sz}"`}>
+              <Pagination
+                size={sz}
+                currentPage={6}
+                totalPages={20}
+                onChange={() => {}}
+              />
+            </Case>
+          ))}
+        </Flex>
       </Flex>
     );
   },
@@ -133,7 +190,7 @@ export const Interactive: StoryObj<typeof Pagination> = {
   render: (args) => {
     const [page, setPage] = useState(args.currentPage);
     return (
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         <Pagination
           {...args}
           currentPage={page}

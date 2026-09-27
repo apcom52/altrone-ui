@@ -3,7 +3,11 @@
 .Footer {
   display: flex;
   position: sticky;
-  bottom: 0;
+  /* `0` with no ambient fixed chrome (e.g. a `Screen.BottomNavigation`) below
+     this table — see `--bottom-safe-area` in `screen.module.scss`. Without it
+     this row sticks at the true viewport bottom and ends up hidden under the
+     nav bar instead of above it. */
+  bottom: var(--bottom-safe-area, 0px);
   align-items: center;
   justify-content: space-between;
   gap: var(--xl-gap);

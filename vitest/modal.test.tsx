@@ -13,10 +13,8 @@ describe('Modal', () => {
           className="cls"
           style={{ color: 'rgb(0, 0, 255)' }}
           content={<div>content</div>}
-          openedByDefault={true}
-        >
-          <button>test</button>
-        </Modal>
+          defaultOpen={true}
+        />
       </Application>,
     );
 
@@ -24,20 +22,21 @@ describe('Modal', () => {
     expect(screen.getByTestId('modal')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
-  test("opening the modal keeps the trigger's own onClick", () => {
-    const triggerClick = vi.fn();
-
-    render(
+  test('`open` controls visibility', () => {
+    const { rerender } = render(
       <Application>
-        <Modal content={<div>content</div>}>
-          <button onClick={triggerClick}>open</button>
-        </Modal>
+        <Modal content={<div>content</div>} open={false} />
       </Application>,
     );
 
-    fireEvent.click(screen.getByText('open'));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 
-    expect(triggerClick).toHaveBeenCalledTimes(1);
+    rerender(
+      <Application>
+        <Modal content={<div>content</div>} open={true} />
+      </Application>,
+    );
+
     expect(screen.getByRole('dialog')).toBeInTheDocument();
   });
 
@@ -47,17 +46,14 @@ describe('Modal', () => {
     render(
       <Application>
         <Modal
-          data-testid="modal"
           content={<div>content</div>}
           onClose={onClose}
-          openedByDefault={true}
-        >
-          <button>test</button>
-        </Modal>
+          defaultOpen={true}
+        />
       </Application>,
     );
 
-    fireEvent.click(screen.getByTestId('modal'));
+    fireEvent.click(document.querySelector('[class*="Backdrop"]')!);
 
     expect(onClose).toHaveBeenCalledTimes(1);
   });
@@ -70,10 +66,8 @@ describe('Modal', () => {
         <Modal
           content={<div>content</div>}
           onClose={onClose}
-          openedByDefault={true}
-        >
-          <button>test</button>
-        </Modal>
+          defaultOpen={true}
+        />
       </Application>,
     );
 
@@ -91,23 +85,54 @@ describe('Modal', () => {
           content={
             <>
               content
-              {createPortal(
-                <button>portaled option</button>,
-                document.body,
-              )}
+              {createPortal(<button>portaled option</button>, document.body)}
             </>
           }
           onClose={onClose}
-          openedByDefault={true}
-        >
-          <button>test</button>
-        </Modal>
+          defaultOpen={true}
+        />
       </Application>,
     );
 
     fireEvent.click(screen.getByText('portaled option'));
 
     expect(onClose).not.toHaveBeenCalled();
+  });
+
+  test('showCloseButton={false} hides the header close button, footer stays untouched', () => {
+    render(
+      <Application>
+        <Modal
+          content={<div>content</div>}
+          showCloseButton={false}
+          defaultOpen={true}
+        />
+      </Application>,
+    );
+
+    expect(
+      screen.queryByRole('button', { name: 'Close' }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
+  });
+
+  test('scrolling over the backdrop scrolls the panel instead of doing nothing', () => {
+    render(
+      <Application>
+        <Modal content={<div>content</div>} defaultOpen={true} />
+      </Application>,
+    );
+
+    const scrollContent = document.querySelector('[class*="ScrollContent"]')!;
+    /** jsdom doesn't implement `scrollBy` at all — stub it to assert the call. */
+    const scrollBySpy = vi.fn();
+    (scrollContent as HTMLElement).scrollBy = scrollBySpy;
+
+    fireEvent.wheel(document.querySelector('[class*="Backdrop"]')!, {
+      deltaY: 120,
+    });
+
+    expect(scrollBySpy).toHaveBeenCalledWith({ top: 120 });
   });
 
   test('Escape closes the modal and calls onClose exactly once', () => {
@@ -118,10 +143,8 @@ describe('Modal', () => {
         <Modal
           content={<div>content</div>}
           onClose={onClose}
-          openedByDefault={true}
-        >
-          <button>test</button>
-        </Modal>
+          defaultOpen={true}
+        />
       </Application>,
     );
 

@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Button, Divider, Flex, Range, Text, TextInput } from 'components';
+import { Button, Divider, Flex, Slider, Text, TextInput } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { ColorPicker } from './ColorPicker.tsx';
@@ -50,7 +50,7 @@ const Field = ({
   label: string;
   children: React.ReactNode;
 }) => (
-  <Flex direction="vertical" gap="xs">
+  <Flex orientation="vertical" gap="xs">
     <Text size={2} color="muted">
       {label}
     </Text>
@@ -85,7 +85,7 @@ export const ThreeWaysToPick: Story = {
     const [erasable, setErasable] = useState<string | undefined>('#f5a623');
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 720 }}>
         <Heading>Three ways to pick</Heading>
         <Lead>
           The popover adapts to what you give it. Pass{' '}
@@ -93,10 +93,14 @@ export const ThreeWaysToPick: Story = {
           free-form palette rides alongside it on a second tab. Drop the presets
           and the palette fills the whole popover. Set{' '}
           <Text code>allowPalette={'{false}'}</Text> and the picker becomes a
-          strict swatch chooser with no way to invent an off-brand colour.
+          strict swatch chooser with no way to invent an off-brand colour.{' '}
+          <Text code>clearable</Text> adds a &ldquo;Clear&rdquo; action that
+          calls <Text code>onChange(undefined)</Text> — the readout under the
+          last field confirms it actually lands as <Text code>undefined</Text>,
+          not just the field going blank visually.
         </Lead>
 
-        <Flex direction="horizontal" gap="l" wrap align="start">
+        <Flex orientation="horizontal" gap="l" wrap align="start">
           <Field label="Presets + palette">
             <ColorPicker
               colorPresets={COLORS}
@@ -120,14 +124,19 @@ export const ThreeWaysToPick: Story = {
               placeholder="From the set"
             />
           </Field>
-          <Field label="clearable — adds Clear / Apply">
-            <ColorPicker
-              colorPresets={COLORS}
-              value={erasable}
-              onChange={setErasable}
-              clearable
-              placeholder="Optional colour"
-            />
+          <Field label="clearable — adds a Clear action next to Apply">
+            <Flex orientation="vertical" gap="xs">
+              <ColorPicker
+                colorPresets={COLORS}
+                value={erasable}
+                onChange={setErasable}
+                clearable
+                placeholder="Optional colour"
+              />
+              <Text size={1} color="muted">
+                Stored value: {erasable ?? 'undefined (cleared)'}
+              </Text>
+            </Flex>
           </Field>
         </Flex>
       </Flex>
@@ -157,7 +166,7 @@ export const GradientForge: Story = {
       );
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 640 }}>
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 640 }}>
         <Heading>Gradient Forge</Heading>
         <Lead>
           Three pickers, one angle slider, and a running CSS declaration. Each
@@ -174,7 +183,7 @@ export const GradientForge: Story = {
           }}
         />
 
-        <Flex direction="horizontal" gap="l" wrap align="start">
+        <Flex orientation="horizontal" gap="l" wrap align="start">
           {stops.map((stop, index) => (
             <Field key={index} label={`Stop ${index + 1}`}>
               <ColorPicker
@@ -186,7 +195,7 @@ export const GradientForge: Story = {
           ))}
           <Field label={`Angle — ${angle}°`}>
             <div style={{ width: 220 }}>
-              <Range
+              <Slider
                 min={0}
                 max={360}
                 value={angle}
@@ -230,7 +239,7 @@ export const NeonSignStudio: Story = {
     const glowColor = glow ?? '#ffffff';
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 620 }}>
         <Heading>Neon Sign Studio</Heading>
         <Lead>
           A picker is only as good as the thing it recolours. Here the glow
@@ -263,7 +272,7 @@ export const NeonSignStudio: Story = {
           </span>
         </div>
 
-        <Flex direction="horizontal" gap="l" wrap align="start">
+        <Flex orientation="horizontal" gap="l" wrap align="start">
           <Field label="Glow (try the alpha slider)">
             <ColorPicker value={glow} onChange={setGlow} />
           </Field>
@@ -316,8 +325,8 @@ export const BuildingAPalette: Story = {
       values[name] ?? TOKENS.find((token) => token.name === name)?.fallback;
 
     return (
-      <Flex direction="horizontal" gap="xl" style={{ padding: 24 }} wrap>
-        <Flex direction="vertical" gap="m" style={{ maxWidth: 380 }}>
+      <Flex orientation="horizontal" gap="xl" style={{ padding: 24 }} wrap>
+        <Flex orientation="vertical" gap="m" style={{ maxWidth: 380 }}>
           <Heading>Building a palette</Heading>
           <Lead>
             Four tokens, four pickers. Brand presets keep the common choices one
@@ -325,11 +334,11 @@ export const BuildingAPalette: Story = {
             a value that isn&apos;t in the system yet.
           </Lead>
 
-          <Flex direction="vertical" gap="s">
+          <Flex orientation="vertical" gap="s">
             {TOKENS.map((token) => (
               <Flex
                 key={token.name}
-                direction="horizontal"
+                orientation="horizontal"
                 gap="m"
                 align="center"
                 style={{
@@ -366,7 +375,7 @@ export const BuildingAPalette: Story = {
           </Flex>
         </Flex>
 
-        <Flex direction="vertical" gap="xs">
+        <Flex orientation="vertical" gap="xs">
           <Text size={2} color="muted">
             Live preview
           </Text>
@@ -441,7 +450,7 @@ export const WritingDesk: Story = {
     const [paper, setPaper] = useState<string | undefined>('#ffffff');
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 620 }}>
         <Heading>Writing desk</Heading>
         <Lead>
           The realistic case: colour controls tucked into a formatting toolbar,
@@ -452,7 +461,7 @@ export const WritingDesk: Story = {
         </Lead>
 
         <Flex
-          direction="horizontal"
+          orientation="horizontal"
           gap="xs"
           align="center"
           style={{
@@ -476,7 +485,7 @@ export const WritingDesk: Story = {
             variant="text"
           />
 
-          <Divider direction="vertical" style={{ height: 20, margin: '0 4px' }} />
+          <Divider orientation="vertical" style={{ height: 20, margin: '0 4px' }} />
 
           <ColorPicker
             value={textColor}
@@ -490,7 +499,7 @@ export const WritingDesk: Story = {
               showLabel={false}
               variant="text"
               icon={
-                <Flex direction="vertical" align="center" style={{ gap: 2 }}>
+                <Flex orientation="vertical" align="center" style={{ gap: 2 }}>
                   <Baseline />
                   <div
                     style={{
@@ -518,7 +527,7 @@ export const WritingDesk: Story = {
               showLabel={false}
               variant="text"
               icon={
-                <Flex direction="vertical" align="center" style={{ gap: 2 }}>
+                <Flex orientation="vertical" align="center" style={{ gap: 2 }}>
                   <Highlighter />
                   <div
                     style={{
@@ -534,7 +543,7 @@ export const WritingDesk: Story = {
             />
           </ColorPicker>
 
-          <Divider direction="vertical" style={{ height: 20, margin: '0 4px' }} />
+          <Divider orientation="vertical" style={{ height: 20, margin: '0 4px' }} />
 
           <ColorPicker
             value={paper}
@@ -592,14 +601,14 @@ export const SizesStatesAndTriggers: Story = {
     const [swatch, setSwatch] = useState<string | undefined>('#e5484d');
 
     return (
-      <Flex direction="vertical" gap="l" style={{ padding: 24, maxWidth: 720 }}>
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 720 }}>
         <Heading>Sizes</Heading>
         <Lead>
           The trigger is a <Text code>TextInput</Text> under the hood, so it
           honours the same <Text code>size</Text> scale. The preview dot and the
           hex / RGB inputs inside the popover follow suit.
         </Lead>
-        <Flex direction="horizontal" gap="l" align="center" wrap>
+        <Flex orientation="horizontal" gap="l" align="center" wrap>
           {(['mini', 's', 'm', 'l', 'xl'] as const).map((size) => (
             <Field key={size} label={`size="${size}"`}>
               <ColorPicker
@@ -615,7 +624,13 @@ export const SizesStatesAndTriggers: Story = {
         <Divider />
 
         <Heading>States</Heading>
-        <Flex direction="horizontal" gap="l" align="center" wrap>
+        <Lead>
+          With no <Text code>value</Text> and no explicit{' '}
+          <Text code>placeholder</Text>, the trigger falls back to
+          &ldquo;Choose a color&rdquo; and the preview swatch renders as a{' '}
+          <Text code>pale</Text>-material circle instead of a real color fill.
+        </Lead>
+        <Flex orientation="horizontal" gap="l" align="center" wrap>
           <Field label="default">
             <ColorPicker value="#5b5bd6" onChange={() => {}} />
           </Field>
@@ -625,8 +640,8 @@ export const SizesStatesAndTriggers: Story = {
           <Field label="disabled">
             <ColorPicker value="#5b5bd6" onChange={() => {}} disabled />
           </Field>
-          <Field label="empty">
-            <ColorPicker onChange={() => {}} placeholder="Not set" />
+          <Field label="empty — default placeholder">
+            <ColorPicker onChange={() => {}} />
           </Field>
           <Field label="transparent">
             <ColorPicker value="#5b5bd6" onChange={() => {}} transparent />
@@ -639,35 +654,10 @@ export const SizesStatesAndTriggers: Story = {
         <Lead>
           <Text code>asChild</Text> merges the trigger behaviour onto whatever
           single element you pass — a bare swatch, a labelled button, or an
-          inline chip inside running text. <Text code>renderFunc</Text> goes one
-          step further and hands you <Text code>value</Text> /{' '}
-          <Text code>opened</Text> to build the trigger from scratch.
+          inline chip inside running text.
         </Lead>
 
-        <Field label="renderFunc">
-          <ColorPicker
-            value={swatch}
-            onChange={setSwatch}
-            colorPresets={COLORS}
-            renderFunc={({ value, opened }) => (
-              <Button
-                variant={opened ? 'submit' : 'default'}
-                label={value ?? 'No colour'}
-                icon={
-                  <div
-                    style={{
-                      width: 12,
-                      height: 12,
-                      borderRadius: '50%',
-                      background: value || 'var(--border-2)',
-                    }}
-                  />
-                }
-              />
-            )}
-          />
-        </Field>
-        <Flex direction="horizontal" gap="xl" align="center" wrap>
+        <Flex orientation="horizontal" gap="xl" align="center" wrap>
           <Field label="Bare swatch">
             <ColorPicker
               value={swatch}
@@ -716,7 +706,7 @@ export const SizesStatesAndTriggers: Story = {
           </Field>
 
           <Field label="Inline in text">
-            <Flex direction="horizontal" gap="xs" align="center">
+            <Flex orientation="horizontal" gap="xs" align="center">
               <Text>Accent</Text>
               <ColorPicker value={swatch} onChange={setSwatch} asChild>
                 <span
@@ -736,6 +726,40 @@ export const SizesStatesAndTriggers: Story = {
             </Flex>
           </Field>
         </Flex>
+      </Flex>
+    );
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* 7. Custom icons                                                     */
+/* ------------------------------------------------------------------ */
+
+export const CustomIcons: Story = {
+  name: 'Custom icons',
+  render: () => {
+    const [value, setValue] = useState<string | undefined>('#5b5bd6');
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 620 }}>
+        <Heading>Custom icons</Heading>
+        <Lead>
+          <Text code>openIcon</Text>/<Text code>closeIcon</Text> override the
+          trigger chevron (shared with other components via{' '}
+          <Text code>Application</Text>&apos;s <Text code>icons</Text> prop),
+          while <Text code>presetsTabIcon</Text>/<Text code>paletteTabIcon</Text>{' '}
+          are unique to <Text code>ColorPicker</Text> and only take a local
+          override.
+        </Lead>
+        <ColorPicker
+          value={value}
+          onChange={setValue}
+          colorPresets={BRAND_COLORS}
+          openIcon={<Underline />}
+          closeIcon={<Bold />}
+          presetsTabIcon={<Baseline />}
+          paletteTabIcon={<Italic />}
+        />
       </Flex>
     );
   },

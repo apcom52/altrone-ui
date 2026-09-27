@@ -35,13 +35,15 @@ export function DropdownRadioItem({
 
   const { value: selectedValue, onChange } = useRadioListDropdownContext();
 
-  const onSelect = () => {
-    onChange(value);
+  const onSelect = (
+    event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>,
+  ) => {
+    onChange(value, event);
   };
 
   const onKeyDownPress: React.KeyboardEventHandler<HTMLButtonElement> = (e) => {
     if (e.key === 'Enter') {
-      onSelect?.();
+      onSelect(e);
     }
   };
 

@@ -50,11 +50,9 @@ export const ru: Localization = {
     notFound: 'Ничего не найдено',
   },
   toolbar: {
-    back: 'Назад',
-    forward: 'Вперёд',
-    search: 'Поиск',
     collapseSidebar: 'Свернуть сайдбар',
     expandSidebar: 'Развернуть сайдбар',
+    moreActions: 'Еще действия',
   },
   screen: {
     sidebarLabel: 'Боковая панель',
@@ -185,6 +183,7 @@ export const ru: Localization = {
   },
   colorPicker: {
     placeholder: 'Выбрать цвет',
+    title: 'Выберите цвет',
     savedColors: 'Сохраненные цвета',
     palette: 'Палитра',
   },

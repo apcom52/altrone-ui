@@ -40,9 +40,9 @@ describe('Select — rendering', () => {
   test('forwards className and style to the control', () => {
     renderSelect({ className: 'cls', style: { color: 'rgb(0, 0, 255)' } });
 
-    const el = screen.getByTestId('select');
-    expect(el).toHaveClass('cls');
-    expect(el).toHaveStyle('color: rgb(0, 0, 255)');
+    const wrapper = screen.getByTestId('select').closest('.cls');
+    expect(wrapper).not.toBeNull();
+    expect(wrapper).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
   test('submits the value through a hidden input named after `name`', () => {
@@ -131,13 +131,13 @@ describe('useSelect — value handling', () => {
     expect(onChange).toHaveBeenLastCalledWith(['jp'], undefined);
   });
 
-  test('clearValue resets to undefined / [] by mode', () => {
+  test('clear resets to undefined / [] by mode', () => {
     const single = setup({ value: 'ru' });
-    act(() => single.result.current.clearValue());
+    act(() => single.result.current.clear());
     expect(single.onChange).toHaveBeenLastCalledWith(undefined, undefined);
 
     const many = setup({ multiple: true, value: ['fr', 'ru'] });
-    act(() => many.result.current.clearValue());
+    act(() => many.result.current.clear());
     expect(many.onChange).toHaveBeenLastCalledWith([], undefined);
   });
 

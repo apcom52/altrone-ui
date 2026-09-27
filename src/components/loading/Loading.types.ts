@@ -8,4 +8,10 @@ export interface LoadingProps extends React.HTMLAttributes<HTMLDivElement> {
   strokeWidth?: number | string;
   /** Stroke colour. Any CSS colour; defaults to `--loading-color`. */
   color?: string;
+  /**
+   * Progress percentage (0–100). When set, the spinner becomes a determinate
+   * circular progress indicator (`role="progressbar"`) instead of spinning
+   * indefinitely.
+   */
+  value?: number;
 }

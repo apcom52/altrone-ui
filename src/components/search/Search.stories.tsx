@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Search } from './Search.tsx';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
-import { DocsSearch, GlobalSearch, TableFilter } from './stories';
+import { CustomIcons, DocsSearch, GlobalSearch, TableFilter } from './stories';
 
 const story: Meta<typeof Search> = {
   title: 'Components/Controls/Search',
@@ -31,6 +31,11 @@ export const TableFilterStory: StoryObj = {
 export const GlobalSearchStory: StoryObj = {
   name: 'Search everything',
   render: () => <GlobalSearch />,
+};
+
+export const CustomIconsStory: StoryObj = {
+  name: 'Custom search and clear icons',
+  render: () => <CustomIcons />,
 };
 
 export default story;

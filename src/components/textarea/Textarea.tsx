@@ -1,11 +1,11 @@
-import { TextareaProps } from './Textarea.types.ts';
+import { TextAreaProps } from './TextArea.types.ts';
 import { TextInput } from '../textInput';
 import { ArrayUtils } from '../../utils';
 import clsx from 'clsx';
-import s from './textarea.module.scss';
+import s from './textArea.module.scss';
 import { useFormField } from '../form/components/Field.context.ts';
 
-export const Textarea = ({
+export const TextArea = ({
   ref,
   className,
   style,
@@ -13,11 +13,10 @@ export const Textarea = ({
   invalid,
   disabled,
   size,
-  shape = 'rounded',
   children,
   readOnly,
   ...restProps
-}: TextareaProps) => {
+}: TextAreaProps) => {
   const {
     name: formFieldName,
     invalid: formFieldInvalid,
@@ -33,12 +32,8 @@ export const Textarea = ({
   const inputSize = size || formFieldSize;
 
   // TextInput (via asChild/Slot) already applies Input, Invalid, Readonly classes —
-  // only add Textarea-specific class here to avoid duplication
-  const cls = clsx(s.Textarea, className);
-
-  const styles = {
-    ...style,
-  };
+  // only add TextArea-specific class here to avoid duplication
+  const fieldCls = clsx(s.TextArea, className);
 
   /**
    * Spread the island children flat next to `<textarea>`. Passing `{children}`
@@ -50,10 +45,9 @@ export const Textarea = ({
   return (
     <TextInput
       asChild
-      shape={shape}
-      className={cls}
-      style={styles}
-      wrapperClassName={s.Wrapper}
+      inputClassName={fieldCls}
+      inputStyle={style}
+      className={s.Wrapper}
       name={inputName}
       invalid={inputInvalid}
       disabled={inputDisabled}

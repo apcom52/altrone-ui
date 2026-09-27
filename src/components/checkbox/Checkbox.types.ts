@@ -10,5 +10,5 @@ export interface CheckboxProps
   disabled?: boolean;
   name?: string;
   size?: Size;
-  onChange?: (state: boolean, event: ChangeEvent<HTMLInputElement>) => void;
+  onChange: (checked: boolean, event: ChangeEvent<HTMLInputElement>) => void;
 }

@@ -7,8 +7,8 @@ import { Flex, Text } from 'components';
  */
 export const ReleaseNotes = () => {
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={2} weight="bold" color="success" nowrap>
           RELEASE · 2 Sep 2026
         </Text>

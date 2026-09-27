@@ -3,8 +3,7 @@ import {
   PopoverContentContext,
 } from 'components/popover';
 import { PopoverProps } from 'components/popover/Popover.types';
-import { ReactElement, ReactNode, Ref } from 'react';
-import { RenderFuncProp } from '../../types';
+import { CSSProperties, ReactElement, ReactNode, Ref } from 'react';
 import { RenderFunction } from 'utils';
 
 export interface DropdownActionProps
@@ -18,10 +17,6 @@ export interface DropdownActionProps
   disabled?: boolean;
   focused?: boolean;
   asChild?: boolean;
-  renderFunc?: RenderFuncProp<
-    HTMLButtonElement,
-    DropdownActionProps & { keyProp?: string }
-  >;
   'data-active'?: boolean;
   'data-dropdown-action'?: boolean;
   'data-index'?: number;
@@ -33,7 +28,10 @@ export interface DropdownCheckboxProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
   ref?: React.Ref<HTMLButtonElement>;
   checked: boolean;
-  onChange: (state: boolean) => void;
+  onChange: (
+    state: boolean,
+    event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>,
+  ) => void;
   label: string;
   focused?: boolean;
   disabled?: boolean;
@@ -43,7 +41,10 @@ export interface DropdownRadioListProps<T = string>
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   ref?: React.Ref<HTMLDivElement>;
   value: T;
-  onChange: (value: T) => void;
+  onChange: (
+    value: T,
+    event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>,
+  ) => void;
   children:
     | ReactElement<DropdownRadioListItem<T>>
     | ReactElement<DropdownRadioListItem<T>>[];
@@ -73,7 +74,12 @@ export interface DropdownMenuProps
   ref?: Ref<HTMLDivElement>;
   children: ReactElement | null | (ReactElement | null)[];
   defaultFocusItemIndex?: number;
-  onChangeFocusItemIndex?: (index: number) => void;
+  onChangeFocusItemIndex?: (
+    index: number,
+    event: React.KeyboardEvent<HTMLDivElement>,
+  ) => void;
+  /** Caps the menu's height and scrolls past it; defaults to `--dropdown-menu-max-height`. */
+  maxHeight?: CSSProperties['maxHeight'];
 }
 
 export interface DropdownMenuRef {

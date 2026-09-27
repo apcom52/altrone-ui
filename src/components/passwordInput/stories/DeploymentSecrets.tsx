@@ -31,8 +31,8 @@ export const DeploymentSecrets = () => {
   };
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 560 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 560 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Environment secrets
         </Text>
@@ -44,10 +44,10 @@ export const DeploymentSecrets = () => {
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="m">
+      <Flex orientation="vertical" gap="m">
         {secrets.map((secret) => (
-          <Flex key={secret.key} direction="vertical" gap="xs">
-            <Flex direction="horizontal" gap="s" align="center">
+          <Flex key={secret.key} orientation="vertical" gap="xs">
+            <Flex orientation="horizontal" gap="s" align="center">
               <Text code size={2}>
                 {secret.key}
               </Text>
@@ -72,7 +72,7 @@ export const DeploymentSecrets = () => {
         ))}
       </Flex>
 
-      <Flex direction="horizontal" gap="s">
+      <Flex orientation="horizontal" gap="s">
         <Button label="Save changes" variant="submit" onClick={() => undefined} />
         <Button label="Add secret" variant="text" onClick={() => undefined} />
       </Flex>

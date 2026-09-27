@@ -9,9 +9,10 @@ export const Group = memo(
   ({
     ref,
     children,
-    align = 'start',
+    justify = 'start',
     weight,
     variant,
+    priority,
     className,
     style,
     ...restProps
@@ -23,9 +24,9 @@ export const Group = memo(
       s.Group,
       {
         [s.Pill]: resolvedVariant !== 'plain',
-        [s.AlignCenter]: align === 'center',
-        [s.AlignEnd]: align === 'end',
-        [s.AlignBetween]: align === 'between',
+        [s.JustifyCenter]: justify === 'center',
+        [s.JustifyEnd]: justify === 'end',
+        [s.JustifyBetween]: justify === 'between',
       },
       className,
     );

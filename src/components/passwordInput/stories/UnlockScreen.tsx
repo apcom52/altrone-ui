@@ -32,8 +32,8 @@ export const UnlockScreen = () => {
   };
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 360 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 360 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Unlock
         </Text>
@@ -45,7 +45,7 @@ export const UnlockScreen = () => {
       </Flex>
 
       <Flex
-        direction="vertical"
+        orientation="vertical"
         gap="m"
         align="center"
         style={{

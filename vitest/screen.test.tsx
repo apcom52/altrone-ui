@@ -1,9 +1,35 @@
 import React from 'react';
-import { expect, test, describe } from 'vitest';
-import { render, screen as testingScreen } from '@testing-library/react';
-import { Screen } from '../src/components';
+import { expect, test, describe, vi, afterEach } from 'vitest';
+import { fireEvent, render, screen as testingScreen } from '@testing-library/react';
+import { Screen, Toolbar } from '../src/components';
+
+/** Forces `useBreakpoint()`'s `md` query to match, so `Screen.Sidebar` renders inline. */
+const mockInlineSidebar = () => {
+  vi.spyOn(window, 'matchMedia').mockImplementation(
+    (query) =>
+      ({
+        matches: query.includes('1024px'),
+        media: query,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      }) as unknown as MediaQueryList,
+  );
+};
 
 describe('Screen', () => {
+  afterEach(() => {
+    /* Reset to the default matchMedia mock from vitest.setup.ts (every query unmatched). */
+    vi.spyOn(window, 'matchMedia').mockImplementation(
+      (query) =>
+        ({
+          matches: false,
+          media: query,
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+        }) as unknown as MediaQueryList,
+    );
+  });
+
   test('renders Content as a <main> with no other zones present', () => {
     render(
       <Screen>
@@ -94,6 +120,9 @@ describe('Screen', () => {
   });
 
   test('collapsing the Sidebar marks the <aside> inert', () => {
+    /* Inline mode: an uncontrolled sidebar auto-hides in overlay mode (see the
+       describe block below), which would make the first assertion moot. */
+    mockInlineSidebar();
     const { rerender } = render(
       <Screen>
         <Screen.Sidebar data-testid="sidebar">
@@ -115,5 +144,83 @@ describe('Screen', () => {
     );
 
     expect(testingScreen.getByTestId('sidebar')).toHaveAttribute('inert');
+  });
+
+  describe('uncontrolled Sidebar/Aside + SidebarToggleAction', () => {
+    test('Sidebar.defaultCollapsed seeds the uncontrolled state (inline)', () => {
+      mockInlineSidebar();
+      render(
+        <Screen>
+          <Screen.Sidebar data-testid="sidebar" defaultCollapsed>
+            Nav
+          </Screen.Sidebar>
+          <Screen.Content>Content</Screen.Content>
+        </Screen>,
+      );
+
+      expect(testingScreen.getByTestId('sidebar')).toHaveAttribute('inert');
+    });
+
+    test('Aside.defaultCollapsed seeds the uncontrolled state', () => {
+      render(
+        <Screen>
+          <Screen.Content>Content</Screen.Content>
+          <Screen.Aside data-testid="aside" defaultCollapsed>
+            Details
+          </Screen.Aside>
+        </Screen>,
+      );
+
+      expect(testingScreen.getByTestId('aside')).toHaveAttribute('inert');
+    });
+
+    test('an uncontrolled SidebarToggleAction reads and toggles Screen.Sidebar via context', () => {
+      mockInlineSidebar();
+      render(
+        <Screen>
+          <Screen.Header>
+            <Toolbar>
+              <Toolbar.SidebarToggleAction />
+            </Toolbar>
+          </Screen.Header>
+          <Screen.Sidebar data-testid="sidebar">Nav</Screen.Sidebar>
+          <Screen.Content>Content</Screen.Content>
+        </Screen>,
+      );
+
+      expect(testingScreen.getByTestId('sidebar')).not.toHaveAttribute('inert');
+      expect(
+        testingScreen.getByRole('button', { name: 'Collapse sidebar' }),
+      ).toBeInTheDocument();
+
+      fireEvent.click(testingScreen.getByRole('button'));
+
+      expect(testingScreen.getByTestId('sidebar')).toHaveAttribute('inert');
+      expect(
+        testingScreen.getByRole('button', { name: 'Expand sidebar' }),
+      ).toBeInTheDocument();
+    });
+
+    test('a controlled SidebarToggleAction ignores context and calls its own onClick', () => {
+      mockInlineSidebar();
+      const onClick = vi.fn();
+      render(
+        <Screen>
+          <Screen.Header>
+            <Toolbar>
+              <Toolbar.SidebarToggleAction collapsed={false} onClick={onClick} />
+            </Toolbar>
+          </Screen.Header>
+          <Screen.Sidebar data-testid="sidebar">Nav</Screen.Sidebar>
+          <Screen.Content>Content</Screen.Content>
+        </Screen>,
+      );
+
+      fireEvent.click(testingScreen.getByRole('button'));
+
+      expect(onClick).toHaveBeenCalledOnce();
+      // controlled at `false` and the consumer's onClick doesn't flip it — stays open
+      expect(testingScreen.getByTestId('sidebar')).not.toHaveAttribute('inert');
+    });
   });
 });

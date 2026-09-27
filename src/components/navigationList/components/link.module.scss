@@ -67,6 +67,9 @@
   z-index: 1;
   gap: 4px;
   flex: 1;
+  /* Without this, a flex item's automatic minimum size is its content size,
+     so a long, unbreakable label pushes the row wider instead of eliding. */
+  min-width: 0;
 }
 
 .LabelText {

@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   height: var(--tabs-item-size);
-  padding: 4px 8px;
+  padding: var(--tabs-item-padding-y) var(--tabs-item-padding-x);
   margin: 0;
   border: none;
   background-color: var(--tabs-item-background-color);

@@ -8,8 +8,20 @@ type OverflowBehavior =
   | 'visible-hidden'
   | 'visible-scroll';
 
+/** Imperative access to the real scrolling element — see `Scrollable`'s `controlRef` prop. */
+export interface ScrollableRef {
+  /**
+   * The OverlayScrollbars viewport — the element with real `scrollLeft`/
+   * `scrollWidth` that fires native `scroll` events. Null until the
+   * scrollbar instance initializes.
+   */
+  getViewport: () => HTMLElement | null;
+}
+
 export interface ScrollableProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
+  /** Imperative access to the underlying scroll viewport — see `ScrollableRef`. */
+  controlRef?: Ref<ScrollableRef>;
   /** Per-axis overflow, forwarded to OverlayScrollbars. Both default to `'scroll'`. */
   overflowX?: OverflowBehavior;
   overflowY?: OverflowBehavior;

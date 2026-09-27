@@ -1,10 +1,14 @@
 import { createContext, useContext } from 'react';
-import type { NotificationsContextType } from './Notifications.types';
 
-export const NotificationsContext = createContext<NotificationsContextType>({
-  toast: () => '',
-  notification: () => '',
-  dismiss: () => {},
-});
+/**
+ * Tracks how deeply the current `Notifications` provider is nested inside
+ * other `Notifications` providers. `useEffect` fires child-before-parent on
+ * mount, so a nested provider always registers with the registry before its
+ * ancestor — depth lets the registry pick the innermost mounted provider
+ * instead of whichever one happened to register last.
+ */
+const NotificationsDepthContext = createContext(0);
 
-export const useNotifications = () => useContext(NotificationsContext);
+export const useNotificationsDepth = () => useContext(NotificationsDepthContext);
+
+export { NotificationsDepthContext };

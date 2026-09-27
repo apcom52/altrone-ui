@@ -83,7 +83,7 @@ highlightMatch?: boolean; // default: false
 
 Сейчас Escape не обрабатывается — dropdown остаётся открытым. Нужно закрывать его и возвращать фокус на поле.
 
-Реализация: в `onKeyDown` добавить `e.key === 'Escape' → dropdownRef.current?.closePopup()`.
+Реализация: в `onKeyDown` добавить `e.key === 'Escape' → dropdownRef.current?.hide()`.
 
 ---
 

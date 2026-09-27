@@ -9,9 +9,9 @@
 - Header with `title` + `showCloseButton`
 - `listNavigation` with virtual focus and active index
 - `overlap` mode — popover covers the trigger
-- `openedByDefault`, `enabled`
+- `open` (controlled) + `defaultOpen` (uncontrolled), `enabled`
 - `onOpenChange` callback
-- `ref` with imperative API (`openPopup`, `closePopup`, `actualPlacement`, etc.)
+- `ref` with imperative API (`show`, `hide`, `actualPlacement`, etc.)
 - Nested popovers with cascade close via context
 - Children and content as render functions
 - Framer Motion enter/exit animation
@@ -19,23 +19,6 @@
 ---
 
 ## 🔴 High priority
-
-### Controlled mode (`open` prop)
-
-Currently the open state is only uncontrolled (`openedByDefault`). Many real use cases require full control from the parent — e.g. opening a popover programmatically after an async operation.
-
-```tsx
-// Proposed API
-<Popover open={isOpen} onOpenChange={setIsOpen} content={...}>
-  <Button label="Open" />
-</Popover>
-```
-
-- Add `open?: boolean` to `PopoverProps`
-- When `open` is provided, treat as controlled: skip internal `setOpened`, only call `onOpenChange`
-- `openedByDefault` stays as the uncontrolled initializer
-
----
 
 ### Configurable hover delay (`hoverDelay`)
 
@@ -129,7 +112,7 @@ The header supports `title` + close button. There is no symmetrical footer for a
 >
 ```
 
-- Add `footer?: ReactElement | CustomRenderFunction<PopoverContentContext>` to `PopoverProps`
+- Add `footer?: RenderFunction<ReactElement, PopoverContentContext>` to `PopoverProps`
 - Render `<div className={s.Footer}>` below `.Content` when `footer` is provided
 - Style it symmetrically with the existing `.Header`
 

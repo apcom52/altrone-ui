@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Check, Copy, RefreshCw } from 'lucide-react';
-import { Flex, Switcher, Text, TextInput } from 'components';
+import { Flex, Switch, Text, TextInput } from 'components';
 import { PasswordInput } from '../PasswordInput.tsx';
 
 const LOWER = 'abcdefghijkmnpqrstuvwxyz';
@@ -32,8 +32,8 @@ export const GeneratePassword = () => {
   };
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 440 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 440 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Suggest a strong password
         </Text>
@@ -66,8 +66,8 @@ export const GeneratePassword = () => {
         />
       </PasswordInput>
 
-      <Flex direction="horizontal" gap="l" align="center" wrap>
-        <Flex direction="horizontal" gap="s" align="center">
+      <Flex orientation="horizontal" gap="l" align="center" wrap>
+        <Flex orientation="horizontal" gap="s" align="center">
           <Text size={2} color="muted">
             Length
           </Text>
@@ -84,8 +84,8 @@ export const GeneratePassword = () => {
             />
           </Flex>
         </Flex>
-        <Flex direction="horizontal" gap="s" align="center">
-          <Switcher checked={symbols} onChange={() => setSymbols((s) => !s)} />
+        <Flex orientation="horizontal" gap="s" align="center">
+          <Switch checked={symbols} onChange={() => setSymbols((s) => !s)} />
           <Text size={2} color="muted">
             Include symbols
           </Text>

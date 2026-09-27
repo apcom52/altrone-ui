@@ -1,39 +1,55 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactElement } from 'react';
+import { ActionsProp, RenderFunction } from '../../utils';
 
 export interface DrawerContext {
-  closeDrawer: () => void;
+  hide: () => void;
 }
 
-type DrawerRenderProp<T> = T | ((context: DrawerContext) => T);
-
-export interface DrawerProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'content'> {
+export interface DrawerProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'content' | 'children'
+> {
   ref?: React.Ref<HTMLDivElement>;
-  /**
-   * Trigger element — cloned with an `onClick` that opens the drawer, merged
-   * with any `onClick` it already has.
-   */
-  children: ReactElement<{ onClick?: React.MouseEventHandler }>;
+  /** Controlled open state. Omit for an uncontrolled drawer (see `defaultOpen`). */
+  open?: boolean;
+  /** Initial open state for an uncontrolled drawer. Ignored once `open` is passed. */
+  defaultOpen?: boolean;
   title?: string;
-  content?: DrawerRenderProp<ReactElement>;
-  footer?: DrawerRenderProp<ReactElement>;
+  content?: RenderFunction<ReactElement, DrawerContext>;
+  footer?: RenderFunction<ReactElement, DrawerContext>;
   placement?: 'start' | 'end';
   width?: number;
   /**
-   * Controls on the start side of the header, after the close button — one
-   * element or several.
+   * When `false`, a backdrop click or `Esc` no longer close the drawer — it
+   * shakes instead. The close button (see `showCloseButton`) and `onDone`
+   * still close it normally; this only gates the two implicit gestures.
+   * Defaults to `true`.
    */
-  startActions?: DrawerRenderProp<ReactNode>;
+  dismissible?: boolean;
+  /** Shows or hides the header close button. Defaults to `true`. */
+  showCloseButton?: boolean;
   /**
-   * Controls on the end side of the header — one element or several. When
-   * omitted, `onDone` renders a Done button here instead; passing this
+   * Secondary controls on the start side of the header, after the close
+   * button — one element or several.
+   */
+  additionalActions?: ActionsProp<DrawerContext>;
+  /**
+   * Primary controls on the end side of the header — one element or several.
+   * When omitted, `onDone` renders a Done button here instead; passing this
    * replaces that button.
    */
-  endActions?: DrawerRenderProp<ReactNode>;
-  onClose?: () => void;
+  actions?: ActionsProp<DrawerContext>;
+  /**
+   * `event` is the triggering backdrop click / close-button click / Escape
+   * keydown, or undefined when closed programmatically via
+   * `DrawerContext.hide()`.
+   */
+  onClose?: (event?: React.MouseEvent | KeyboardEvent) => void;
   /**
    * Async handler for the built-in Done button. Returning `false` keeps the
    * drawer open (e.g. failed validation); any other resolved value closes it.
    */
-  onDone?: () => Promise<boolean | void>;
+  onDone?: (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => Promise<boolean | void>;
 }

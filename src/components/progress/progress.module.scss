@@ -9,11 +9,11 @@
 }
 
 /**
- * Progress is a `Box` (shape="pill", material="glass" — see box.md). Box owns
- * the pill radius and the track fill (its neutral frosted material); this
- * stylesheet paints the active fill + label and overrides Box's centered
- * inline-flex control layout for a full-width bar. The `.Progress` compound
- * lifts specificity above box.module's base rules.
+ * Progress is a `Box` (shape="pill", material="solid"). Box owns the pill
+ * radius and the track fill; this stylesheet paints the active fill + label
+ * and overrides Box's centered inline-flex control layout for a full-width
+ * bar. The `.Progress` compound lifts specificity above box.module's base
+ * rules.
  */
 .Progress.Progress {
   display: flex;

@@ -9,6 +9,15 @@
 .Select {
   text-align: left;
   cursor: pointer;
+
+  /* Browsers set `cursor: text` on the native input regardless of `readonly`
+     — a specified UA value, which otherwise wins over the `pointer` this
+     wrapper inherits down. `inherit` only kicks in while the input is
+     actually read-only (i.e. not `searchable` in `searchMode`, where typing
+     is the point and the native text cursor is correct). */
+  input:read-only {
+    cursor: inherit;
+  }
 }
 
 .ArrowIcon {
@@ -16,18 +25,6 @@
 }
 
 .Menu {
-  overflow: hidden;
-}
-
-/* The scroll host grows with its content and only scrolls past
-   `--select-menu-height` (overridable per instance via the `menuHeight` prop).
-   The `.Menu` descendant selector wins over `Scrollable`'s own `height: 100%`.
-   `overflow: hidden` also suppresses the native horizontal bar that would flash
-   before OverlayScrollbars initializes (the axis itself is disabled via the
-   `overflowX="hidden"` prop). */
-.Menu .MenuScroll {
-  height: auto;
-  max-height: var(--select-menu-height);
   overflow: hidden;
 }
 

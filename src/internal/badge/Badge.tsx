@@ -6,7 +6,7 @@ import s from './badge.module.scss';
 
 /**
  * Internal counter/label chip shared by `Button`, `Tabs.Item`,
- * `NavigationList.Link`, `BottomNavigation.Item` and `Dropdown.Action`. A `Box`
+ * `NavigationList.Link`, `BottomNavigation.Link` and `Dropdown.Action`. A `Box`
  * pill; this stylesheet only carries the per-size dimensional tuning `Box`
  * doesn't own (small type, a `min-width` so a 2-digit count stays a capsule)
  * and the `corner` positioning.
@@ -16,7 +16,7 @@ export const Badge = memo(
     ref,
     children,
     className,
-    placement = 'inline',
+    mode = 'inline',
     size = 'm',
     tone = 'neutral',
     ...restProps
@@ -24,7 +24,7 @@ export const Badge = memo(
     <Box
       ref={ref}
       shape="pill"
-      material={placement === 'corner' ? 'plate' : 'translucent'}
+      material={mode === 'corner' ? 'plate' : 'translucent'}
       tone={tone}
       width="auto"
       height="var(--badge-height)"
@@ -32,7 +32,7 @@ export const Badge = memo(
       className={clsx(
         s.Badge,
         {
-          [s.Corner]: placement === 'corner',
+          [s.Corner]: mode === 'corner',
           [s.Mini]: size === 'mini',
           [s.Small]: size === 's',
           [s.Large]: size === 'l',

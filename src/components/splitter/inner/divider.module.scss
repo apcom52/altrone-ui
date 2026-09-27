@@ -26,11 +26,30 @@
   &:hover .CollapseBtn {
     opacity: 1;
   }
+
+  /**
+   * Widens the touch/pointer hit area past the visible 10px gutter, up to
+   * the project's ~24px floor — a real fingertip routinely misses a 10px
+   * strip, and a miss lands the touch on a (usually scrollable) panel
+   * instead, which iOS then treats as a page scroll rather than a resize.
+   */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0
+      calc((var(--splitter-touch-hit-area) - var(--splitter-gutter)) / -2);
+    touch-action: none;
+  }
 }
 
 .DividerVertical {
   cursor: row-resize;
   flex-direction: row;
+
+  &::before {
+    inset: calc((var(--splitter-touch-hit-area) - var(--splitter-gutter)) / -2)
+      0;
+  }
 }
 
 .DividerActive .Handle {

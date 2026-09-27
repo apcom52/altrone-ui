@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import { MapPin } from 'lucide-react';
+import { MapPin, ServerCrash } from 'lucide-react';
 import { Button, Flex, Text } from 'components';
 import { AutocompleteInput } from '../AutocompleteInput.tsx';
 import {
@@ -27,7 +27,7 @@ const PlaceRow = ({
 }: AutocompleteRenderSuggestionContext<Place>) => (
   <>
     <MapPin size={15} style={{ color: 'var(--text-2)', flexShrink: 0 }} />
-    <Flex direction="vertical">
+    <Flex orientation="vertical">
       <Text size={3}>{suggestion.line1}</Text>
       <Text size={2} color="muted">
         {suggestion.city} · {suggestion.postcode}
@@ -64,8 +64,8 @@ export const AddressLookup = () => {
   );
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 460 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 460 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Address lookup against a slow API
         </Text>
@@ -73,13 +73,15 @@ export const AddressLookup = () => {
           The real-world autocomplete: an async <Text code>getSuggestions</Text>{' '}
           with a ~650ms round-trip (watch the spinner island),{' '}
           <Text code>minChars=3</Text> so it doesn&apos;t fire on every keystroke,{' '}
-          <Text code>cacheResults</Text> so re-typing a prefix is free, and{' '}
+          <Text code>cacheResults</Text> so re-typing a prefix is free,{' '}
           <Text code>onError</Text> surfacing a failure without breaking the
-          field.
+          field, and <Text code>errorIcon</Text> swapping the default glyph
+          (<Text code>Application.icons.error</Text>) for one that reads as
+          &ldquo;server down&rdquo;.
         </Text>
       </Flex>
 
-      <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="xs">
         <Text asChild size={2} weight="medium">
           <label htmlFor="al-input">Shipping address</label>
         </Text>
@@ -94,8 +96,9 @@ export const AddressLookup = () => {
           minChars={3}
           cacheResults
           placeholder="Start typing a street or postcode"
+          errorIcon={<ServerCrash />}
         />
-        <Flex direction="horizontal" gap="m" align="center" justify="between">
+        <Flex orientation="horizontal" gap="m" align="center" justify="between">
           <Text size={2} color="muted">
             Lookups sent: {calls}
           </Text>
@@ -111,7 +114,7 @@ export const AddressLookup = () => {
 
       {confirmed && (
         <Flex
-          direction="vertical"
+          orientation="vertical"
           gap="xxs"
           style={{
             border: '1px solid var(--success-border-a2)',

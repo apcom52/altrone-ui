@@ -1,8 +1,23 @@
 import { ButtonProps } from '../button/Button.types.ts';
-import { AnyObject, StrictReactElements } from '../../utils';
+import { AnyObject, RenderFunction, StrictReactElements } from '../../utils';
 import { ReactElement, ReactNode } from 'react';
 import { Table } from '@tanstack/react-table';
 import type { DataTableFeatures } from './DataTable.features.ts';
+import type { ScrollableRef } from '../scrollable';
+
+/** Icons unique to `DataTable`, overridable as a group via the `icons` prop. */
+export interface DataTableIconSet {
+  sortAsc: ReactElement;
+  sortDesc: ReactElement;
+  filter: ReactElement;
+  addFilter: ReactElement;
+  deleteFilter: ReactElement;
+  enableSelection: ReactElement;
+  disableSelection: ReactElement;
+  rowActions: ReactElement;
+  booleanTrue: ReactElement;
+  booleanFalse: ReactElement;
+}
 
 export type Sort = 'asc' | 'desc';
 
@@ -126,6 +141,7 @@ export type DataTableMode = 'loading' | 'read' | 'select';
 /** Per-table `meta`, reachable in cell renderers via `table.options.meta`. */
 export interface DataTableMeta {
   mode: DataTableMode;
+  icons: DataTableIconSet;
 }
 
 /** Per-column `meta`, reachable via `column.columnDef.meta`. */
@@ -135,15 +151,29 @@ export interface DataTableColumnMeta<T extends object = AnyObject> {
   columnConfig: DataTableColumn<T>;
 }
 
-export interface DataTableProps<T extends object>
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
+export interface DataTableProps<T extends object> extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'children'
+> {
   ref?: React.Ref<HTMLDivElement>;
   data: T[];
   columns: DataTableColumn<T>[];
-  children?:
-    | ReactElement
-    | ReactElement[]
-    | ((context: DataTableRenderContext<T>) => ReactElement | ReactElement[]);
+  /**
+   * Stabilizes row identity across renders — without it, TanStack falls
+   * back to array position, so a `data` array reordered externally (a
+   * refetch, a websocket update) makes a row's own UI state (an open
+   * `rowActions` overflow menu) and any in-flight action stick to the old
+   * position instead of following the entity to its new one.
+   */
+  getRowId?: (row: T, index: number) => string;
+  /**
+   * Rendered in the header `Toolbar`, alongside the select-mode toggle and
+   * filtering control (both in `Toolbar.Leading`). One `DataTable.Action` or
+   * several land in `Toolbar.Leading` too; wrap content in `Toolbar.Leading`
+   * / `Toolbar.Center` / `Toolbar.Trailing` to place it in a specific region
+   * instead — it's added alongside the system controls, not replacing them.
+   */
+  actions?: RenderFunction<ReactNode, DataTableRenderContext<T>>;
   mode?: DataTableMode;
   rowsPerPage?: number;
   selectable?: boolean;
@@ -151,21 +181,46 @@ export interface DataTableProps<T extends object>
   showEmptyBanner?: boolean;
   /** Lets every column be resized by dragging its header edge. Off by default. */
   resizableColumns?: boolean;
-  renderRowActions?: (
-    context: DataTableRenderRowActionsContext<T>,
-  ) => ReactElement<DataTableRowActionsProps>;
+  /** Overrides for icons unique to `DataTable` (sort, filter, row actions, boolean cells). */
+  icons?: Partial<DataTableIconSet>;
+  /**
+   * Rendered in a trailing actions column, one `DataTable.RowAction` (or
+   * several) per row. A `collapsed` `RowAction` folds into an overflow menu.
+   */
+  rowActions?: RenderFunction<
+    StrictReactElements<DataTableRowActionProps>,
+    DataTableRenderRowActionsContext<T>
+  >;
   defaultPage?: number;
   defaultSort?: Sorting;
   defaultFilters?: DataTableFilter[];
-  onPageChange?: (currentPage: number) => void;
-  onSortChange?: (sort?: Sorting) => void;
-  onFilterChange?: (appliedFilters: DataTableFilter[]) => void;
-  onModeChange?: (mode: DataTableMode) => void;
+  /** Controlled current page (1-based), pairs with `onPageChange`. Omit for uncontrolled (`defaultPage`). */
+  page?: number;
+  /** Controlled sort; `null` means controlled with no sort applied. Omit for uncontrolled (`defaultSort`). */
+  sort?: Sorting | null;
+  /** Controlled active filters, pairs with `onFilterChange`. Omit for uncontrolled (`defaultFilters`). */
+  filters?: DataTableFilter[];
+  /**
+   * `event` is undefined when the change is programmatic (e.g. an
+   * `autoResetPageIndex` triggered by a sort/filter change) rather than a
+   * direct user interaction.
+   */
+  onPageChange?: (
+    currentPage: number,
+    event?: React.MouseEvent<HTMLButtonElement>,
+  ) => void;
+  onSortChange?: (sort?: Sorting, event?: React.MouseEvent) => void;
+  onFilterChange?: (
+    appliedFilters: DataTableFilter[],
+    event?: React.MouseEvent<HTMLButtonElement>,
+  ) => void;
+  onModeChange?: (
+    mode: DataTableMode,
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => void;
 }
 
-export interface DataTableActionProps extends ButtonProps {
-  showLabel?: boolean;
-}
+export interface DataTableActionProps extends ButtonProps {}
 
 export enum StringFilterRules {
   empty = 'empty',
@@ -235,19 +290,18 @@ export interface FilterRowProps {
 
 export interface DataTableBodyProps<T extends object> {
   showEmptyBanner?: boolean;
-  renderRowActions?: DataTableProps<T>['renderRowActions'];
+  rowActions?: DataTableProps<T>['rowActions'];
+  /** The `Scrollable` that actually scrolls horizontally — see `useDataTableHorizontalScroll`. */
+  scrollableRef?: React.Ref<ScrollableRef>;
 }
 
-export interface DataTableRowActionProps
-  extends Omit<ButtonProps, 'label' | 'onClick' | 'renderFunc'> {
+export interface DataTableHeaderProps<T extends object> {
+  actions?: DataTableProps<T>['actions'];
+}
+
+export interface DataTableRowActionProps extends Omit<ButtonProps, 'label'> {
   label: string;
   collapsed?: boolean;
-  onClick?: () => void;
-}
-
-export interface DataTableRowActionsProps
-  extends React.HTMLAttributes<HTMLDivElement> {
-  children: StrictReactElements<DataTableRowActionProps>;
 }
 
 export interface CellRenderer<T extends object = AnyObject> {

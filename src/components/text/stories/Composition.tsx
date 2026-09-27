@@ -18,8 +18,8 @@ const bareInputStyle: CSSProperties = {
 
 export const Composition = () => {
   return (
-    <Flex direction="vertical" gap="xl" style={{ maxWidth: 560 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="xl" style={{ maxWidth: 560 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           One primitive, any element
         </Text>
@@ -36,8 +36,8 @@ export const Composition = () => {
 
       {/* Pull-quote — align + weight + muted attribution */}
       <Flex
-        tagName="blockquote"
-        direction="vertical"
+        asChild
+        orientation="vertical"
         gap="s"
         style={{
           margin: 0,
@@ -45,18 +45,20 @@ export const Composition = () => {
           paddingLeft: 16,
         }}
       >
-        <Text size={5} italic block>
-          Typography is the craft of endowing human language with a durable
-          visual form.
-        </Text>
-        <Text size={2} color="muted" block>
-          — Robert Bringhurst
-        </Text>
+        <blockquote>
+          <Text size={5} italic block>
+            Typography is the craft of endowing human language with a durable
+            visual form.
+          </Text>
+          <Text size={2} color="muted" block>
+            — Robert Bringhurst
+          </Text>
+        </blockquote>
       </Flex>
 
       {/* Empty state — built entirely from Text + Flex, centred */}
       <Flex
-        direction="vertical"
+        orientation="vertical"
         gap="s"
         align="center"
         style={{
@@ -81,12 +83,12 @@ export const Composition = () => {
       </Flex>
 
       {/* Field — asChild <label>, helper (muted), error (danger) */}
-      <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="xs">
         <Text asChild size={2} weight="medium">
           <label htmlFor="ct-workspace">Workspace URL</label>
         </Text>
         <Flex
-          direction="horizontal"
+          orientation="horizontal"
           gap="xs"
           align="center"
           style={{
@@ -113,7 +115,7 @@ export const Composition = () => {
       </Flex>
 
       {/* Alignment row */}
-      <Flex direction="vertical" gap="xs">
+      <Flex orientation="vertical" gap="xs">
         <Text size={2} weight="bold" color="muted" block>
           align
         </Text>

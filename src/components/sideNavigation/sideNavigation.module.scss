@@ -1,9 +1,9 @@
 @import 'src/global/mixins';
 
 :global([data-altrone-root='true']) {
-  --side-navigation-item-text-color: var(--text-2);
-  --side-navigation-item-active-text-color: var(--accent-11);
-  --side-navigation-item-text-size: 14px;
+  --side-navigation-link-text-color: var(--text-2);
+  --side-navigation-link-active-text-color: var(--accent-11);
+  --side-navigation-link-text-size: 14px;
 }
 
 .SideNavigation {
@@ -16,7 +16,7 @@
 /* Typography comes from the `Text` props on the element; this is a targeting
    hook plus the neutral title colour. */
 .Title {
-  color: var(--side-navigation-item-text-color);
+  color: var(--side-navigation-link-text-color);
 }
 
 .Menu {

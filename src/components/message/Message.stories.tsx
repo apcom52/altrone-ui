@@ -36,7 +36,7 @@ const Paragraph = ({ children }: { children: React.ReactNode }) => (
 export const Overview: StoryObj<typeof Message> = {
   name: 'Overview',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Message
       </Text>
@@ -49,22 +49,21 @@ export const Overview: StoryObj<typeof Message> = {
       </Paragraph>
       <Paragraph>
         The only structural pieces are an optional <Text code>icon</Text>, an
-        optional <Text code>header</Text>, the body (<Text code>children</Text>
+        optional <Text code>title</Text>, the body (<Text code>children</Text>
         ), an optional row of <Text code>actions</Text>, and an optional close
         button that appears whenever <Text code>onClose</Text> is passed.
         Everything else is driven by <Text code>severity</Text>.
       </Paragraph>
       <Paragraph>
         The container is a <Text code>Box</Text> —{' '}
-        <Text code>material="glass"</Text>, <Text code>shape="rounded"</Text> —
-        so a message reads as a soft frosted panel consistent with the rest of
-        the library, and <Text code>severity</Text> maps straight onto the Box{' '}
+        <Text code>material="pale"</Text>, <Text code>shape="rounded"</Text> —
+        and <Text code>severity</Text> maps straight onto the Box{' '}
         <Text code>tone</Text>.
       </Paragraph>
 
       <Message
         icon={<Info />}
-        header="Custom code is not validated"
+        title="Custom code is not validated"
         actions={[<Button key="ok" label="OK, got it" />]}
         onClose={() => {}}
       >
@@ -77,7 +76,7 @@ export const Overview: StoryObj<typeof Message> = {
 export const Severities: StoryObj<typeof Message> = {
   name: 'Severities',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Severities</Section>
       <Paragraph>
         <Text code>severity</Text> sets the colour and the implied urgency. With
@@ -94,12 +93,12 @@ export const Severities: StoryObj<typeof Message> = {
         <Text code>ariaRole</Text> when a specific case needs it.
       </Paragraph>
 
-      <Message header="Neutral">
+      <Message title="Neutral">
         No severity — used for plain, non-urgent information.
       </Message>
       <Message
         icon={<Info />}
-        header="A new software update is available"
+        title="A new software update is available"
         severity="primary"
         actions={[<Button key="log" label="View the changelog" />]}
       >
@@ -107,20 +106,20 @@ export const Severities: StoryObj<typeof Message> = {
       </Message>
       <Message
         icon={<Check />}
-        header="Your export is ready"
+        title="Your export is ready"
         severity="success"
         actions={[<Button key="dl" label="Download" />]}
       />
       <Message
         icon={<TriangleAlert />}
-        header="You have no credits left"
+        title="You have no credits left"
         severity="warning"
       >
         Upgrade your plan to keep running exports.
       </Message>
       <Message
         icon={<CircleAlert />}
-        header="There was a problem with your submission"
+        title="There was a problem with your submission"
         severity="danger"
       >
         <Text block size={4}>
@@ -137,7 +136,7 @@ export const Severities: StoryObj<typeof Message> = {
 export const WithoutIcon: StoryObj<typeof Message> = {
   name: 'Without an icon',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Without an icon</Section>
       <Paragraph>
         When <Text code>icon</Text> is omitted the container widens its
@@ -145,11 +144,11 @@ export const WithoutIcon: StoryObj<typeof Message> = {
         hugging the rounded edge where the icon used to sit.
       </Paragraph>
 
-      <Message header="Draft saved">
+      <Message title="Draft saved">
         Your changes are stored locally and will sync when you reconnect.
       </Message>
       <Message
-        header="Payment method expiring"
+        title="Payment method expiring"
         severity="warning"
         actions={[<Button key="update" label="Update card" />]}
         onClose={() => {}}
@@ -167,7 +166,7 @@ export const Dismissible: StoryObj<typeof Message> = {
 
     return (
       <Flex
-        direction="vertical"
+        orientation="vertical"
         gap="l"
         align="start"
         style={{ maxWidth: 720 }}
@@ -183,7 +182,7 @@ export const Dismissible: StoryObj<typeof Message> = {
         {visible ? (
           <Message
             icon={<Info />}
-            header="New features are available"
+            title="New features are available"
             severity="primary"
             onClose={disable}
           >
@@ -200,7 +199,7 @@ export const Dismissible: StoryObj<typeof Message> = {
 export const WithActions: StoryObj<typeof Message> = {
   name: 'With actions',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>With actions</Section>
       <Paragraph>
         <Text code>actions</Text> takes an array of elements rendered in a row
@@ -211,7 +210,7 @@ export const WithActions: StoryObj<typeof Message> = {
 
       <Message
         icon={<Info />}
-        header="The data export you requested is ready!"
+        title="The data export you requested is ready!"
         severity="primary"
         actions={[
           <Button key="view" label="View the data" />,
@@ -221,7 +220,7 @@ export const WithActions: StoryObj<typeof Message> = {
       />
       <Message
         icon={<CircleAlert />}
-        header="Whoops! Something went wrong"
+        title="Whoops! Something went wrong"
         severity="danger"
         actions={[
           <Button key="retry" label="Retry" danger />,
@@ -238,10 +237,10 @@ export const WithActions: StoryObj<typeof Message> = {
 export const Compact: StoryObj<typeof Message> = {
   name: 'Compact',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Section>Compact</Section>
       <Paragraph>
-        <Text code>compact</Text> stops stacking the header above the body and
+        <Text code>compact</Text> stops stacking the title above the body and
         lays them out on a single wrapping line, vertically centred on the icon.
         Use it for short, low-stakes confirmations where a full banner would be
         too heavy.
@@ -249,14 +248,14 @@ export const Compact: StoryObj<typeof Message> = {
 
       <Message
         icon={<Check />}
-        header="Successfully uploaded"
+        title="Successfully uploaded"
         severity="success"
         compact
         onClose={() => {}}
       />
       <Message
         icon={<TriangleAlert />}
-        header="Weak password"
+        title="Weak password"
         severity="warning"
         compact
         onClose={() => {}}
@@ -265,7 +264,7 @@ export const Compact: StoryObj<typeof Message> = {
       </Message>
       <Message
         icon={<CircleAlert />}
-        header="Connection lost"
+        title="Connection lost"
         severity="danger"
         compact
         actions={[<Button key="retry" label="Retry" danger />]}
@@ -284,7 +283,7 @@ export const Accessibility: StoryObj<typeof Message> = {
 
     return (
       <Flex
-        direction="vertical"
+        orientation="vertical"
         gap="l"
         align="start"
         style={{ maxWidth: 720 }}

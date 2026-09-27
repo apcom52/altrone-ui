@@ -50,11 +50,9 @@ export const en: Localization = {
     notFound: 'Nothing found',
   },
   toolbar: {
-    back: 'Back',
-    forward: 'Forward',
-    search: 'Search',
     collapseSidebar: 'Collapse sidebar',
     expandSidebar: 'Expand sidebar',
+    moreActions: 'More actions',
   },
   screen: {
     sidebarLabel: 'Sidebar',
@@ -184,7 +182,8 @@ export const en: Localization = {
     promptPlaceholder: 'Enter a value',
   },
   colorPicker: {
-    placeholder: 'Pick a color',
+    placeholder: 'Choose a color',
+    title: 'Select a color',
     savedColors: 'Saved colors',
     palette: 'Palette',
   },

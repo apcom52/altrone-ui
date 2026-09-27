@@ -12,7 +12,6 @@ import clsx from 'clsx';
 import s from './link.module.scss';
 import { NavigationListLinkProps } from '../NavigationList.types.ts';
 import { AltChildren, DOMUtils } from '../../../utils';
-import { LinkAction } from './LinkAction.tsx';
 import {
   NAV_LINK_ATTR,
   NavigationListLevelContext,
@@ -39,10 +38,19 @@ const SELECTED_TRANSITION = {
 
 type ItemContentProps = Pick<
   NavigationListLinkProps,
-  'icon' | 'label' | 'badge'
+  'icon' | 'label' | 'badge' | 'childrenIcon'
 > & {
-  actions: ReactElement[];
+  actions: ReactNode;
   opened: boolean;
+};
+
+/* Sits inside a clickable `Link` — stop the event so activating an action
+   doesn't also trigger the link (navigation or onClick). */
+const stopActionsPropagation = (
+  event: MouseEvent<HTMLDivElement> | KeyboardEvent<HTMLDivElement>,
+) => {
+  event.stopPropagation();
+  event.preventDefault();
 };
 
 const ItemContent = ({
@@ -51,6 +59,7 @@ const ItemContent = ({
   label,
   actions,
   opened,
+  childrenIcon = <ChevronDown />,
 }: ItemContentProps) => (
   <div className={s.Label}>
     {icon ? <div className={s.Icon}>{icon}</div> : null}
@@ -58,10 +67,18 @@ const ItemContent = ({
       {label}
     </Text>
     {badge ? <Badge size="m">{badge}</Badge> : null}
-    {actions.length ? <div className={s.Actions}>{actions}</div> : null}
+    {actions ? (
+      <div
+        className={s.Actions}
+        onClick={stopActionsPropagation}
+        onKeyDown={stopActionsPropagation}
+      >
+        {actions}
+      </div>
+    ) : null}
     {opened ? (
       <div className={s.ChildrenIcon} aria-hidden>
-        <ChevronDown />
+        {childrenIcon}
       </div>
     ) : null}
   </div>
@@ -69,8 +86,8 @@ const ItemContent = ({
 
 // ─── LinkInner ────────────────────────────────────────────────────────────────
 
-type LinkInnerProps = Omit<NavigationListLinkProps, 'children'> & {
-  actions: ReactElement[];
+type LinkInnerProps = Omit<NavigationListLinkProps, 'children' | 'actions'> & {
+  actions: ReactNode;
   nestedLinks: ReactElement[];
   level: number;
   asChildElement: ReactElement | null;
@@ -87,6 +104,7 @@ const LinkInner = memo(
     selected,
     disabled,
     badge,
+    childrenIcon,
     asChild,
     asChildElement,
     className,
@@ -117,6 +135,7 @@ const LinkInner = memo(
         badge={badge}
         opened={Boolean(showNestedLinks)}
         actions={actions}
+        childrenIcon={childrenIcon}
       />
     );
 
@@ -187,7 +206,7 @@ const LinkInner = memo(
     if (asChild) {
       if (!isValidElement(asChildElement)) {
         console.error(
-          '[NavigationList] Link: when asChild=true, provide a single non-Link, non-action child element',
+          '[NavigationList] Link: when asChild=true, provide a single non-Link child element',
         );
         return null;
       }
@@ -238,13 +257,13 @@ export const Link = memo(
     asChild,
     selected,
     disabled,
+    actions,
     children,
     ...restProps
   }: NavigationListLinkProps) => {
     const listLevel = useNavigationListLevel();
 
-    const [actions, nestedLinks, asChildElement] = useMemo(() => {
-      const actions: ReactElement[] = [];
+    const [nestedLinks, asChildElement] = useMemo(() => {
       const nestedLinks: ReactElement[] = [];
       let asChildElement: ReactElement | null = null;
 
@@ -253,17 +272,18 @@ export const Link = memo(
         .toArray()
         .forEach((elem) => {
           const element = elem as ReactElement;
-          if (DOMUtils.containsElementType(element, [LinkAction])) {
-            actions.push(element);
-          } else if (DOMUtils.containsElementType(element, [Link])) {
+          if (DOMUtils.containsElementType(element, [Link])) {
             nestedLinks.push(element);
           } else if (!asChildElement) {
             asChildElement = element;
           }
         });
 
-      return [actions, nestedLinks, asChildElement];
+      return [nestedLinks, asChildElement];
     }, [children]);
+
+    const resolvedActions =
+      typeof actions === 'function' ? actions({ selected, disabled }) : actions;
 
     const cls = clsx(
       s.Link,
@@ -280,7 +300,7 @@ export const Link = memo(
         asChildElement={asChildElement}
         selected={selected}
         disabled={disabled}
-        actions={actions}
+        actions={resolvedActions ?? null}
         nestedLinks={nestedLinks}
         level={listLevel}
         {...restProps}

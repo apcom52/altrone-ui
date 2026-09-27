@@ -14,8 +14,10 @@ import {
   Download,
   ExternalLink,
   FileText,
+  Frown,
   Italic,
   Mail,
+  PartyPopper,
   Pause,
   Play,
   Plus,
@@ -86,7 +88,7 @@ export const Overview: StoryObj<typeof Button> = {
   name: 'Overview',
   parameters: chromaticBoth,
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 720 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
       <Text block size={9} weight="bold">
         Button
       </Text>
@@ -193,7 +195,7 @@ export const IconsAndBadges: StoryObj<typeof Button> = {
   name: 'Icons, tooltips & badges',
   parameters: chromaticBoth,
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Heading>Icon-only buttons stay accessible</Heading>
       <Paragraph>
         Setting <code>showLabel={'{false}'}</code> shrinks the button to a
@@ -261,9 +263,9 @@ const SizePlayground = () => {
   const [size, setSize] = useState<Size>('m');
 
   return (
-    <Flex direction="vertical" gap="m">
+    <Flex orientation="vertical" gap="m">
       <Radio
-        direction="horizontal"
+        orientation="horizontal"
         name="button-size"
         value={size}
         onChange={(value) => setSize(value as Size)}
@@ -303,7 +305,7 @@ const SizePlayground = () => {
 };
 
 const BadgeSizeMatrix = () => (
-  <Flex direction="vertical" gap="m">
+  <Flex orientation="vertical" gap="m">
     {SIZES.map(({ value, label }) => (
       <Flex key={value} gap="m" align="center" wrap>
         <Text size={2} color="muted" style={{ width: 56 }}>
@@ -342,7 +344,7 @@ export const Sizes: StoryObj<typeof Button> = {
   name: 'Sizes',
   parameters: chromaticBoth,
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Heading>Sizes</Heading>
       <Paragraph>
         <code>size</code> is an explicit, author-set choice — it never changes
@@ -401,7 +403,7 @@ export const AnimatedContent: StoryObj<typeof Button> = {
   name: 'Animated content changes',
   parameters: chromaticBoth,
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Heading>The width eases when the content changes</Heading>
       <Paragraph>
         Swapping <code>label</code>, switching the <code>icon</code>, or showing
@@ -457,7 +459,7 @@ export const AsyncStates: StoryObj<typeof Button> = {
   name: 'Loading, success & failure',
   parameters: chromaticBoth,
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Heading>The button reports its own async state</Heading>
       <Paragraph>
         <code>state</code> (<code>idle</code>/<code>loading</code>/
@@ -477,6 +479,45 @@ export const AsyncStates: StoryObj<typeof Button> = {
         <SaveButtonDemo outcome="succeeded" />
         <SaveButtonDemo outcome="failed" label="Sync now" />
       </Flex>
+    </Flex>
+  ),
+};
+
+const CustomAsyncIconsDemo = () => {
+  const [state, setState] = useState<ButtonProps['state']>('idle');
+
+  const handleSave = () => {
+    setState('loading');
+    setTimeout(() => setState('succeeded'), 1200);
+    setTimeout(() => setState('idle'), 2800);
+  };
+
+  return (
+    <Button
+      variant="submit"
+      label="Save changes"
+      icon={<Save />}
+      successIcon={<PartyPopper />}
+      failedIcon={<Frown />}
+      state={state}
+      onClick={handleSave}
+    />
+  );
+};
+
+export const CustomAsyncIcons: StoryObj<typeof Button> = {
+  name: 'Custom success/failure icons',
+  parameters: chromaticBoth,
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Heading>Swap the built-in success/failure glyphs</Heading>
+      <Paragraph>
+        <code>successIcon</code>/<code>failedIcon</code> replace the default
+        checkmark/X shown for <code>state=&quot;succeeded&quot;</code>/
+        <code>&quot;failed&quot;</code> — useful when a consumer&rsquo;s own
+        icon set shouldn&rsquo;t be mixed with the library&rsquo;s defaults.
+      </Paragraph>
+      <CustomAsyncIconsDemo />
     </Flex>
   ),
 };
@@ -527,7 +568,7 @@ export const SelectedAndDanger: StoryObj<typeof Button> = {
   name: 'Toggles & destructive actions',
   parameters: chromaticBoth,
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Heading>Selected marks a toggle, not a route</Heading>
       <Paragraph>
         <code>selected</code> sets <code>aria-pressed</code> and gives the
@@ -619,7 +660,7 @@ export const Disabled: StoryObj<typeof Button> = {
   name: 'Disabled',
   parameters: chromaticBoth,
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Heading>One flat treatment for every variant</Heading>
       <Paragraph>
         <code>disabled</code> sets the native attribute (so the button leaves
@@ -629,7 +670,7 @@ export const Disabled: StoryObj<typeof Button> = {
         <code>danger</code> included, collapses to the same muted state, so a
         disabled control never competes for attention with an active one.
       </Paragraph>
-      <Flex direction="vertical" gap="s">
+      <Flex orientation="vertical" gap="s">
         <Text size={2} color="muted">
           Enabled
         </Text>
@@ -751,7 +792,7 @@ export const Toolbars: StoryObj<typeof Button> = {
   name: 'Toolbars & icon clusters',
   parameters: chromaticBoth,
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Heading>Persistent chrome stays quiet</Heading>
       <Paragraph>
         When a row of buttons lives permanently on screen — an app bar, a
@@ -889,7 +930,7 @@ export const InContext: StoryObj<typeof Button> = {
   name: 'Button in context',
   parameters: chromaticBoth,
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 680 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
       <Heading>A button that is really a link</Heading>
       <Paragraph>
         When the action is navigation — open a page, download a file — the

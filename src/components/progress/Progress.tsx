@@ -9,14 +9,15 @@ const clamp = (value: number, min: number, max: number) =>
 
 export const Progress = ({
   ref,
-  children,
+  label: labelProp,
   className,
   style,
   min = 0,
   value = 0,
   max = 100,
   size = 'm',
-  activeSegmentClassName,
+  activeClassName,
+  activeStyle,
   ...props
 }: ProgressProps) => {
   const cls = clsx(
@@ -38,28 +39,27 @@ export const Progress = ({
   const progressContext: ProgressContext = { value, min, max, percentage };
 
   const label =
-    typeof children === 'function'
-      ? children(progressContext)
-      : (children ?? `${percentage}%`);
+    typeof labelProp === 'function'
+      ? labelProp(progressContext)
+      : (labelProp ?? `${percentage}%`);
 
   return (
     <Box
       ref={ref as Ref<HTMLElement>}
       shape="pill"
-      material="glass"
-      tone="neutral"
+      material="pale"
       role="progressbar"
       aria-valuenow={clampedValue}
       aria-valuemin={min}
       aria-valuemax={max}
-      aria-label={typeof children === 'string' ? children : undefined}
+      aria-label={typeof labelProp === 'string' ? labelProp : undefined}
       className={cls}
       style={style}
       {...props}
     >
       <div
-        className={clsx(s.Active, activeSegmentClassName)}
-        style={{ width: `${percentage}%` }}
+        className={clsx(s.Active, activeClassName)}
+        style={{ width: `${percentage}%`, ...activeStyle }}
       />
       <div className={s.Label}>{label}</div>
     </Box>

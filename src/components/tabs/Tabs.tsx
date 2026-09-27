@@ -17,11 +17,20 @@ const NAV_KEYS = [
 ];
 
 const TabsComponent = memo<TabsProps>(
-  ({ children, className, style, ref, ...props }) => {
+  ({ children, className, style, ref, size = 'm', ...props }) => {
     const backdropId = useId();
     const rootRef = useRef<HTMLDivElement>(null);
 
-    const cls = clsx(s.Tabs, className);
+    const cls = clsx(
+      s.Tabs,
+      {
+        [s.Mini]: size === 'mini',
+        [s.Small]: size === 's',
+        [s.Large]: size === 'l',
+        [s.XLarge]: size === 'xl',
+      },
+      className,
+    );
 
     /* Roving-ish focus: Tab/Shift+Tab reach the selected tab (it's the only
        `tabindex={0}`), arrow keys and Home/End move focus between the rest. */

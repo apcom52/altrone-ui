@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { SearchProps } from './Search.types.ts';
 import { TextInput } from 'components/textInput';
-import { Search as SearchIcon, Delete } from 'lucide-react';
 import { useLocalization } from 'components/application';
+import { useIcons } from 'components/application/useIcons.tsx';
 import { AutocompleteInput } from 'components/autocompleteInput';
 import { ArrayUtils, mergeRefs } from 'utils';
 import clsx from 'clsx';
@@ -19,9 +19,12 @@ export const Search = <T = string,>({
   style,
   placeholder,
   getSuggestions,
+  searchIcon,
+  clearIcon,
   ...restProps
 }: SearchProps<T>) => {
   const t = useLocalization();
+  const icons = useIcons();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -31,16 +34,9 @@ export const Search = <T = string,>({
 
   const safeChildren = ArrayUtils.getSafeArray(children);
 
-  const cls = clsx(
-    s.Search,
-    {
-      [s.Empty]: !haveValue,
-    },
-    className,
-  );
-  const styles = {
-    ...style,
-  };
+  const fieldCls = clsx(s.Search, {
+    [s.Empty]: !haveValue,
+  });
 
   const placeholderCls = clsx(s.Placeholder, {
     [s.DisabledPlaceholder]: restProps.disabled,
@@ -66,15 +62,16 @@ export const Search = <T = string,>({
     <AutocompleteInput<T>
       ref={ref}
       inputRef={mergeRefs(inputRef, consumerInputRef)}
-      className={cls}
-      style={styles}
+      className={className}
+      style={style}
+      inputClassName={fieldCls}
       {...restProps}
       type="search"
       getSuggestions={getSuggestions || GET_SUGGESTIONS_MOCK}
       showControls={needToShowControl}
     >
       {haveValue && (
-        <TextInput.IconIsland icon={<SearchIcon />} placement="start" />
+        <TextInput.IconIsland icon={searchIcon ?? icons.search} placement="start" />
       )}
       {haveValue ? safeChildren : null}
       {needToShowControl ? (
@@ -84,14 +81,12 @@ export const Search = <T = string,>({
           showLabel={false}
           disabled={restProps.disabled}
           onClick={onClearClick}
-          icon={<Delete />}
+          icon={clearIcon ?? icons.clear}
         />
       ) : null}
       {!haveValue ? (
         <div className={placeholderCls}>
-          <div className={s.PlaceholderIcon}>
-            <SearchIcon />
-          </div>
+          <div className={s.PlaceholderIcon}>{searchIcon ?? icons.search}</div>
           <div className={s.PlaceholderText}>{placeholderText}</div>
         </div>
       ) : null}

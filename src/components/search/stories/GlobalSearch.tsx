@@ -109,8 +109,8 @@ export const GlobalSearch = () => {
   );
 
   return (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 480 }}>
-      <Flex direction="vertical" gap="xs">
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 480 }}>
+      <Flex orientation="vertical" gap="xs">
         <Text size={6} weight="bold" block>
           Search everything
         </Text>

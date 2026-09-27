@@ -63,7 +63,7 @@ const Caption = ({ children }: { children: React.ReactNode }) => (
 export const OverviewStory: StoryObj<typeof Tooltip> = {
   name: 'Hover, focus, and a shortcut',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Text size={7} weight="bold" block>
         Tooltip
       </Text>
@@ -74,7 +74,7 @@ export const OverviewStory: StoryObj<typeof Tooltip> = {
         moves away. <Text code>kbd</Text> appends a shortcut badge after the
         text.
       </Paragraph>
-      <Flex direction="horizontal" gap="l" align="center" wrap>
+      <Flex orientation="horizontal" gap="l" align="center" wrap>
         <Tooltip content="File not found on the server" />
         <Tooltip content="Click to open settings">
           <Button icon={<Settings />} label="Settings" />
@@ -95,8 +95,9 @@ export const OverviewStory: StoryObj<typeof Tooltip> = {
         </Tooltip>
       </Flex>
       <Caption>
-        The leftmost tooltip has no <Text code>children</Text> at all — a{' '}
-        <Text code>HelpCircle</Text> button is rendered automatically.
+        The leftmost tooltip has no <Text code>children</Text> at all — an
+        icon button is rendered automatically (customizable via{' '}
+        <Text code>triggerIcon</Text>).
       </Caption>
     </Flex>
   ),
@@ -107,7 +108,7 @@ export const OverviewStory: StoryObj<typeof Tooltip> = {
 export const RichContentStory: StoryObj<typeof Tooltip> = {
   name: 'Title, width, and rich content',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>A bold heading, and how wide the panel gets</Heading>
       <Paragraph>
         <Text code>title</Text> adds a bold line above <Text code>content</Text>.{' '}
@@ -115,7 +116,7 @@ export const RichContentStory: StoryObj<typeof Tooltip> = {
         short label, wider for a paragraph. <Text code>content</Text> also
         accepts a <Text code>ReactElement</Text>, not just a string.
       </Paragraph>
-      <Flex direction="horizontal" gap="l" align="center" wrap>
+      <Flex orientation="horizontal" gap="l" align="center" wrap>
         <Tooltip
           title="Keyboard shortcut"
           content="Open the editor's command palette"
@@ -135,7 +136,7 @@ export const RichContentStory: StoryObj<typeof Tooltip> = {
         </Tooltip>
         <Tooltip
           content={
-            <Flex direction="vertical" gap="xs">
+            <Flex orientation="vertical" gap="xs">
               <Text weight="bold">Plan limits</Text>
               <Text size={3}>5 projects · 3 team members · 10 GB storage</Text>
             </Flex>
@@ -154,7 +155,7 @@ export const RichContentStory: StoryObj<typeof Tooltip> = {
 export const PlacementStory: StoryObj<typeof Tooltip> = {
   name: 'Placement, and auto-flip near edges',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>Six anchors</Heading>
       <Paragraph>
         <Text code>placement</Text> takes any floating-ui position, defaulting
@@ -162,7 +163,7 @@ export const PlacementStory: StoryObj<typeof Tooltip> = {
         <Text code>shift</Text> are always on, so a tooltip that would run off
         the viewport near an edge repositions itself automatically.
       </Paragraph>
-      <Flex direction="horizontal" gap="l" align="center" wrap>
+      <Flex orientation="horizontal" gap="l" align="center" wrap>
         {(
           [
             ['top', 'Top'],
@@ -191,7 +192,7 @@ export const PlacementStory: StoryObj<typeof Tooltip> = {
 export const DisabledTriggerStory: StoryObj<typeof Tooltip> = {
   name: 'Wrapping a disabled trigger',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>No mouse events, no tooltip</Heading>
       <Paragraph>
         A disabled <Text code>{'<button>'}</Text> fires no pointer events at
@@ -233,7 +234,7 @@ const TOOLBAR_GROUPS: { icon: ReactElement; label: string; kbd?: string }[][] = 
 export const ToolbarStory: StoryObj<typeof Tooltip> = {
   name: 'Components that tooltip themselves',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>Don&rsquo;t wrap a self-tooltipping control</Heading>
       <Paragraph>
         An icon-only <Text code>Button</Text> (<Text code>showLabel={'{false}'}</Text>)
@@ -244,7 +245,7 @@ export const ToolbarStory: StoryObj<typeof Tooltip> = {
         shortcut with <Text code>kbd</Text>.
       </Paragraph>
       <Flex
-        direction="horizontal"
+        orientation="horizontal"
         gap="xs"
         align="center"
         style={{
@@ -259,7 +260,7 @@ export const ToolbarStory: StoryObj<typeof Tooltip> = {
           <React.Fragment key={groupIndex}>
             {groupIndex > 0 ? (
               <Divider
-                direction="vertical"
+                orientation="vertical"
                 style={{ height: 20, margin: '0 4px' }}
               />
             ) : null}
@@ -291,7 +292,7 @@ function RefChainDemo() {
   const [focused, setFocused] = React.useState(false);
 
   return (
-    <Flex direction="vertical" gap="m" align="start">
+    <Flex orientation="vertical" gap="m" align="start">
       <Tooltip content="Also readable via its own ref" title="Sparkles">
         <Button
           ref={buttonRef}
@@ -315,7 +316,7 @@ function RefChainDemo() {
 export const RefChainStory: StoryObj<typeof Tooltip> = {
   name: 'A ref on the wrapped element',
   render: () => (
-    <Flex direction="vertical" gap="l" style={{ maxWidth: 620 }}>
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
       <Heading>Refs pass through untouched</Heading>
       <Paragraph>
         <Text code>{'<Tooltip><Button ref={x} /></Tooltip>'}</Text> is a common
@@ -326,6 +327,107 @@ export const RefChainStory: StoryObj<typeof Tooltip> = {
         consumer put there themselves.
       </Paragraph>
       <RefChainDemo />
+    </Flex>
+  ),
+};
+
+// ─── 7. Custom icons ─────────────────────────────────────────────────────────
+
+export const CustomIconStory: StoryObj<typeof Tooltip> = {
+  name: 'Custom trigger icon',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Heading>Custom trigger icon</Heading>
+      <Paragraph>
+        <Text code>triggerIcon</Text> replaces the auto-generated trigger&rsquo;s
+        icon — a role shared with <Text code>Form</Text>&rsquo;s hint button,
+        also settable once for both via <Text code>Application</Text>&apos;s{' '}
+        <Text code>icons</Text> prop. Has no effect when a custom trigger is
+        passed via <Text code>children</Text>.
+      </Paragraph>
+      <Flex orientation="horizontal" gap="l" align="center">
+        <Tooltip content="What is this?" triggerIcon={<Sparkles />} />
+      </Flex>
+    </Flex>
+  ),
+};
+
+// ─── 8. Trigger modes ─────────────────────────────────────────────────────────
+
+export const TriggerModesStory: StoryObj<typeof Tooltip> = {
+  name: 'Trigger modes',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Heading>Hover, focus, click, or a mix</Heading>
+      <Paragraph>
+        <Text code>trigger</Text> accepts a single mode or an array of
+        modes — <Text code>'hover'</Text>, <Text code>'focus'</Text>,{' '}
+        <Text code>'click'</Text>. It defaults to{' '}
+        <Text code>{"['hover', 'focus']"}</Text>, the previous fixed
+        behavior.
+      </Paragraph>
+      <Flex orientation="horizontal" gap="l" align="center" wrap>
+        <Tooltip content="Opens on hover only" trigger="hover">
+          <Button label="Hover only" />
+        </Tooltip>
+        <Tooltip content="Opens on keyboard focus only" trigger="focus">
+          <Button label="Focus only" />
+        </Tooltip>
+        <Tooltip content="Opens on click, closes on outside press" trigger="click">
+          <Button label="Click only" />
+        </Tooltip>
+        <Tooltip
+          content="Opens on hover, focus, or click"
+          trigger={['hover', 'focus', 'click']}
+        >
+          <Button label="Hover, focus, and click" />
+        </Tooltip>
+      </Flex>
+    </Flex>
+  ),
+};
+
+// ─── 9. Default open and onOpenChange ────────────────────────────────────────
+
+function OpenStateDemo() {
+  const [log, setLog] = React.useState<string[]>([]);
+
+  return (
+    <Flex orientation="vertical" gap="m" align="start">
+      <Tooltip
+        content="Starts open, and reports every change below"
+        defaultOpen
+        onOpenChange={(open, _event, reason) =>
+          setLog((prev) => [...prev, `${open ? 'opened' : 'closed'} (${reason ?? 'initial'})`])
+        }
+      >
+        <Button label="Hover, then move away" />
+      </Tooltip>
+      <Flex orientation="vertical" gap="xs">
+        {log.length === 0 ? (
+          <Caption>No changes yet.</Caption>
+        ) : (
+          log.map((entry, index) => <Caption key={index}>{entry}</Caption>)
+        )}
+      </Flex>
+    </Flex>
+  );
+}
+
+export const OpenStateStory: StoryObj<typeof Tooltip> = {
+  name: 'Default open and onOpenChange',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Heading>An uncontrolled tooltip that still reports its state</Heading>
+      <Paragraph>
+        <Text code>defaultOpen</Text> shows the tooltip on first render — this
+        one starts open. <Text code>onOpenChange</Text> fires on every
+        transition (<Text code>reason</Text> comes straight from floating-ui,
+        e.g. <Text code>'hover'</Text> or <Text code>'escape-key'</Text>) so a
+        consumer can observe or log the state without taking over control of
+        it.
+      </Paragraph>
+      <OpenStateDemo />
     </Flex>
   ),
 };

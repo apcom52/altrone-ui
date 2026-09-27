@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Column, ColumnFilter } from '@tanstack/react-table';
-import { Plus } from 'lucide-react';
 import { Button } from 'components/button';
 import { Dropdown } from 'components/dropdown';
 import { Flex } from 'components/flex';
@@ -14,6 +13,7 @@ import { DataTableFeatures } from '../DataTable.features.ts';
 import { DataTableFilterValue } from '../DataTable.types.ts';
 import { RulesByDataType } from '../DataTable.constants.ts';
 import { FilterRow } from './FilterRow.tsx';
+import { Toolbar } from 'components/toolbar/index.ts';
 
 const columnHeaderLabel = (column: Column<DataTableFeatures, AnyObject>) =>
   typeof column.columnDef.header === 'string'
@@ -23,7 +23,7 @@ const columnHeaderLabel = (column: Column<DataTableFeatures, AnyObject>) =>
 export const Filtering = () => {
   const t = useLocalization();
 
-  const { table, loading } = useDataTableContext();
+  const { table, icons, loading, notePendingEvent } = useDataTableContext();
 
   const filterableColumns = table
     .getAllLeafColumns()
@@ -41,23 +41,26 @@ export const Filtering = () => {
     [filterableColumns, draftFilters],
   );
 
-  const addFilter = useCallback((column: Column<DataTableFeatures, AnyObject>) => {
-    const meta = column.columnDef.meta;
-    const dataType = meta?.dataType;
-    if (!dataType || !RulesByDataType[dataType]) return;
+  const addFilter = useCallback(
+    (column: Column<DataTableFeatures, AnyObject>) => {
+      const meta = column.columnDef.meta;
+      const dataType = meta?.dataType;
+      if (!dataType || !RulesByDataType[dataType]) return;
 
-    const rules = RulesByDataType[dataType];
-    if (!rules || rules.length === 0) return;
+      const rules = RulesByDataType[dataType];
+      if (!rules || rules.length === 0) return;
 
-    const value: DataTableFilterValue = { rule: String(rules[0].value) };
-    if (dataType === 'date') {
-      value.level =
-        (meta?.options as { level?: 'day' | 'month' | 'year' } | undefined)
-          ?.level ?? 'day';
-    }
+      const value: DataTableFilterValue = { rule: String(rules[0].value) };
+      if (dataType === 'date') {
+        value.level =
+          (meta?.options as { level?: 'day' | 'month' | 'year' } | undefined)
+            ?.level ?? 'day';
+      }
 
-    setDraftFilters((old) => [...old, { id: column.id, value }]);
-  }, []);
+      setDraftFilters((old) => [...old, { id: column.id, value }]);
+    },
+    [],
+  );
 
   const changeFilter = useCallback(
     (id: string, field: keyof DataTableFilterValue, value: unknown) => {
@@ -89,7 +92,10 @@ export const Filtering = () => {
       placement="bottom"
       style={{ minWidth: '280px' }}
       overlap
-      content={({ closePopup }) => (
+      onOpenChange={(open) => {
+        if (open) setDraftFilters(filters);
+      }}
+      content={({ hide }) => (
         <Form>
           {draftFilters.length === 0 ? (
             <Result size="s">{t('dataTable.noFilters')}</Result>
@@ -104,7 +110,7 @@ export const Filtering = () => {
               deleteFilter={() => deleteFilter(filter.id)}
             />
           ))}
-          <Flex gap="m" direction="horizontal" justify="center">
+          <Flex gap="m" orientation="horizontal" justify="center">
             <Dropdown
               closeParentPopover={false}
               content={
@@ -120,26 +126,30 @@ export const Filtering = () => {
               }
             >
               <Button
-                icon={<Plus />}
+                icon={icons.addFilter}
                 label={t('dataTable.addFilter')}
                 disabled={freeToFilterColumns.length === 0}
               />
             </Dropdown>
             <Button
               label={t('common.clear')}
-              onClick={() => {
+              onClick={(event) => {
+                notePendingEvent(event);
                 table.resetColumnFilters();
                 setDraftFilters([]);
+                notePendingEvent(event);
                 table.resetPageIndex();
-                closePopup();
+                hide();
               }}
             />
             <Button
               label={t('common.apply')}
-              onClick={() => {
+              onClick={(event) => {
+                notePendingEvent(event);
                 table.setColumnFilters(draftFilters);
+                notePendingEvent(event);
                 table.resetPageIndex();
-                closePopup();
+                hide();
               }}
               variant="submit"
             />
@@ -147,7 +157,8 @@ export const Filtering = () => {
         </Form>
       )}
     >
-      <Button
+      <Toolbar.Action
+        icon={icons.filter}
         label={t('dataTable.filters')}
         badge={filters.length ? filters.length : undefined}
         disabled={loading}
