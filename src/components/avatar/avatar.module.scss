@@ -2,6 +2,7 @@
   --avatar-image-size: 28px;
   --avatar-text-size: 16px;
   --avatar-text-weight: var(--text-weight-bold);
+  --avatar-icon-size: 18px;
   --avatar-size: 32px;
   /* Decorative top-left sheen — a fixed light source, not theme-driven. */
   --avatar-sheen-color: rgba(255, 255, 255, 0.25);
@@ -60,26 +61,40 @@
   border-radius: 50%;
 }
 
+.Icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  font-size: var(--avatar-icon-size);
+  /* auto-contrast via oklch relative colors: dark bg → white icon, light bg → black icon */
+  color: var(--_avatar-text-color, oklch(from var(--_avatar-bg) calc((0.5 - l) * 9999) 0 0));
+}
+
 .Mini {
   --avatar-image-size: 14px;
   --avatar-text-size: 9px;
+  --avatar-icon-size: 10px;
   --avatar-size: 16px;
 }
 
 .Small {
   --avatar-image-size: 20px;
   --avatar-text-size: 14px;
+  --avatar-icon-size: 14px;
   --avatar-size: 24px;
 }
 
 .Large {
   --avatar-image-size: 36px;
   --avatar-text-size: 18px;
+  --avatar-icon-size: 22px;
   --avatar-size: 40px;
 }
 
 .XLarge {
   --avatar-image-size: 42px;
   --avatar-text-size: 22px;
+  --avatar-icon-size: 26px;
   --avatar-size: 48px;
 }
