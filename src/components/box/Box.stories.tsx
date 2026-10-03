@@ -1544,4 +1544,45 @@ export const Interaction: StoryObj<typeof Box> = {
   ),
 };
 
+export const NativeElements: StoryObj<typeof Box> = {
+  name: 'Native elements via asChild',
+  parameters: chromaticBoth,
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
+      <Heading>Any element can be the box</Heading>
+      <Paragraph>
+        With <Text code>asChild</Text>, <Text code>Box</Text> renders onto your
+        own element — a <Text code>&lt;button&gt;</Text>, a link, a form
+        control. The browser&rsquo;s default chrome for those elements (border,
+        margin, font, underline) is stripped, so only the{' '}
+        <Text code>material</Text>, <Text code>tone</Text> and{' '}
+        <Text code>shape</Text> you chose are drawn.
+      </Paragraph>
+      <Flex gap="m" align="center" wrap>
+        <Box asChild material="solid" tone="accent" pressable focusable>
+          <button type="button">Button</button>
+        </Box>
+        <Box asChild material="outline" tone="neutral" pressable focusable>
+          <a href="#native-elements">Link</a>
+        </Box>
+        <Box asChild material="translucent" tone="accent" editable>
+          <label>
+            <input
+              placeholder="Input"
+              style={{
+                border: 'none',
+                outline: 'none',
+                background: 'transparent',
+              }}
+            />
+          </label>
+        </Box>
+        <Box asChild material="pale" tone="danger" shape="pill">
+          <fieldset>Fieldset</fieldset>
+        </Box>
+      </Flex>
+    </Flex>
+  ),
+};
+
 export default story;
