@@ -80,10 +80,18 @@ export const Sidebar = ({
   /**
    * Uncontrolled sidebars auto-hide on entering overlay — a persistent
    * inline column would otherwise cover the whole screen with no way to
-   * close it. Controlled sidebars are the consumer's own responsibility.
+   * close it — and auto-restore on leaving it, so growing back past the
+   * breakpoint doesn't leave the sidebar stuck collapsed. Controlled
+   * sidebars are the consumer's own responsibility. The ref skips the
+   * mount run so `defaultCollapsed` isn't overridden before a real
+   * overlay/inline transition happens.
    */
+  const prevOverlayRef = useRef(isOverlay);
   useEffect(() => {
-    if (isOverlay && !isControlled) setInternalCollapsed(true);
+    if (!isControlled && prevOverlayRef.current !== isOverlay) {
+      setInternalCollapsed(isOverlay);
+    }
+    prevOverlayRef.current = isOverlay;
   }, [isOverlay, isControlled]);
 
   const handleClose = useCallback(
