@@ -10,6 +10,7 @@ import s from './file.module.scss';
 import { Popover } from 'components/popover';
 import { Tooltip } from 'components/tooltip';
 import { Text } from 'components/text';
+import { Progress } from 'components/progress';
 import clsx from 'clsx';
 import { FileUtils } from 'utils';
 import { useFilePickerContext } from '../FilePicker.context.ts';
@@ -188,13 +189,11 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
       transition={{ layout: { duration: 0.25, ease: 'easeOut' } }}
     >
       {status === 'loading' ? (
-        <div
+        <Progress
           className={s.Progress}
-          style={{ width: `${progress}%` }}
-          role="progressbar"
-          aria-valuenow={progress}
-          aria-valuemin={0}
-          aria-valuemax={100}
+          value={progress}
+          label={() => null}
+          aria-label={fileName}
         />
       ) : null}
       <Tooltip content={fileName} placement="top">

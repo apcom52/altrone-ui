@@ -47,16 +47,16 @@
   padding-right: var(--xs-gap);
 }
 
-/* Doubles as the upload indicator: a left-anchored fill that grows with
-   `progress` while `status === 'loading'` (rendered only in that state). */
-.Progress {
+.Progress.Progress {
+  --progress-height: 100%;
+  --progress-padding-inline: 0;
+  --progress-active-background-color: var(--file-picker-progress-color);
+
   position: absolute;
-  height: 100%;
-  left: 0;
-  background: var(--file-picker-progress-color);
+  inset: 0;
   z-index: 1;
-  border-radius: var(--radius-m);
-  transition: width var(--motion-duration-base) var(--motion-easing-standard);
+  pointer-events: none;
+  background: transparent;
 }
 
 /* Keep the row controls above the progress fill. */
