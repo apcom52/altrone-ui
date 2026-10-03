@@ -1,3 +1,13 @@
+:where(.Box) {
+  /* Resets UA defaults of native elements rendered via `asChild` (<button>,
+     <a>, <input>…); zero specificity so a component's own font/margin wins. */
+  appearance: none;
+  border: 0;
+  margin: 0;
+  font: inherit;
+  text-decoration: none;
+}
+
 .Box {
   --box-radius: 0px;
   --box-fill: transparent;
