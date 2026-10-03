@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { Ban, Check, Clock } from 'lucide-react';
 import { Label } from './Label.tsx';
 import { StorybookDecorator } from '../../global/storybook/index.ts';
 import { allModes } from '../../../.storybook/modes.ts';
@@ -133,6 +134,61 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <Label color="warning" size="m" variant="soft">In review</Label>
           <Label color="success" size="l" variant="soft">Completed</Label>
           <Label color="danger" size="xl" variant="soft">Cancelled</Label>
+        </Flex>
+        <Text size={5} weight="bold" block>
+          Status (dot, with and without an icon)
+        </Text>
+        <Flex gap="m" wrap align="center">
+          <Label color="default" variant="status">Queued</Label>
+          <Label color="primary" variant="status">In progress</Label>
+          <Label color="warning" variant="status">In review</Label>
+          <Label color="success" variant="status" icon={<Check />}>Completed</Label>
+          <Label color="danger" variant="status" icon={<Ban />}>Blocked</Label>
+        </Flex>
+        <Text size={5} weight="bold" block>
+          Sizes (status)
+        </Text>
+        <Flex gap="m" wrap align="start">
+          <Label color="success" size="mini" variant="status" icon={<Check />}>Completed</Label>
+          <Label color="success" size="s" variant="status" icon={<Check />}>Completed</Label>
+          <Label color="success" size="m" variant="status" icon={<Check />}>Completed</Label>
+          <Label color="success" size="l" variant="status" icon={<Check />}>Completed</Label>
+          <Label color="success" size="xl" variant="status" icon={<Check />}>Completed</Label>
+        </Flex>
+        <Text size={5} weight="bold" block>
+          Leading icon (non-status variants)
+        </Text>
+        <Flex gap="m" wrap align="center">
+          <Label color="primary" icon={<Clock />}>Pending</Label>
+          <Label color="success" variant="soft" icon={<Check />}>Verified</Label>
+          <Label color="danger" variant="outline" icon={<Ban />}>Revoked</Label>
+        </Flex>
+        <Text size={5} weight="bold" block>
+          Status (pill)
+        </Text>
+        <Flex gap="m" wrap align="center">
+          <Label color="default" variant="status" shape="pill">Queued</Label>
+          <Label color="warning" variant="status" shape="pill">In review</Label>
+          <Label color="success" variant="status" shape="pill" icon={<Check />}>Completed</Label>
+          <Label color="danger" variant="status" shape="pill" icon={<Ban />}>Blocked</Label>
+        </Flex>
+        <Text size={5} weight="bold" block>
+          Sizes (status pill)
+        </Text>
+        <Flex gap="m" wrap align="start">
+          <Label color="success" size="mini" variant="status" shape="pill" icon={<Check />}>Completed</Label>
+          <Label color="success" size="s" variant="status" shape="pill" icon={<Check />}>Completed</Label>
+          <Label color="success" size="m" variant="status" shape="pill" icon={<Check />}>Completed</Label>
+          <Label color="success" size="l" variant="status" shape="pill" icon={<Check />}>Completed</Label>
+          <Label color="success" size="xl" variant="status" shape="pill" icon={<Check />}>Completed</Label>
+        </Flex>
+        <Text size={5} weight="bold" block>
+          Leading icon (pill)
+        </Text>
+        <Flex gap="m" wrap align="center">
+          <Label color="primary" shape="pill" icon={<Clock />}>Pending</Label>
+          <Label color="success" variant="soft" shape="pill" icon={<Check />}>Verified</Label>
+          <Label color="danger" variant="outline" shape="pill" icon={<Ban />}>Revoked</Label>
         </Flex>
       </Flex>
     );

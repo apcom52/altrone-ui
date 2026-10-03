@@ -1,47 +1,107 @@
 /* Dimensional tuning Box doesn't own — fill, border and text now come from
    Box's material/tone/color (see Label.tsx). Defaults are the `m` tier;
-   the size classes override the padding/font values. Box reads padding
-   through the `padding` prop set in Label.tsx. */
+   the size classes override the padding/status-padding/font/dot/icon
+   values. Box reads padding through the `padding` prop set in Label.tsx. */
 .Label {
   --label-padding-x: 8px;
   --label-padding-y: 4px;
+  --label-status-padding-left: 4px;
+  --label-dot-size: 15px;
+  --label-icon-size: 12px;
 
+  gap: 4px;
   font-size: var(--text-size-3);
   line-height: var(--line-height-3);
+  font-weight: var(--text-weight-medium);
 }
 
 .Mini {
   --label-padding-x: 4px;
   --label-padding-y: 0px;
+  --label-status-padding-left: 0px;
+  --label-dot-size: 12px;
+  --label-icon-size: 10px;
 
   font-size: var(--text-size-1);
   line-height: var(--line-height-1);
-  font-weight: var(--text-weight-medium);
 }
 
 .Small {
   --label-padding-x: 6px;
   --label-padding-y: 3px;
+  --label-status-padding-left: 3px;
+  --label-dot-size: 13px;
+  --label-icon-size: 11px;
 
   font-size: var(--text-size-2);
   line-height: var(--line-height-2);
-  font-weight: var(--text-weight-medium);
 }
 
 .Large {
   --label-padding-x: 10px;
   --label-padding-y: 6px;
+  --label-status-padding-left: 5px;
+  --label-dot-size: 17px;
+  --label-icon-size: 14px;
 
   font-size: var(--text-size-4);
   line-height: var(--line-height-4);
-  font-weight: var(--text-weight-medium);
 }
 
 .XLarge {
   --label-padding-x: 14px;
   --label-padding-y: 8px;
+  --label-status-padding-left: 7px;
+  --label-dot-size: 19px;
+  --label-icon-size: 16px;
 
   font-size: var(--text-size-5);
   line-height: var(--line-height-5);
-  font-weight: var(--text-weight-medium);
+}
+
+/* `status` variant: pale fill (via Box's `material="pale"`) plus a hairline
+   border — Box's own `--box-border-*` vars, which `.MaterialPale` leaves
+   unset, so setting them here composes cleanly with the material. The
+   `.Label.Status` compound overrides Box's `padding` shorthand (equal
+   specificity otherwise, and stylesheet order isn't guaranteed) — the dot
+   already carries visual weight, so the status pill needs a tighter left
+   inset than the regular horizontal padding. */
+.Status {
+  --box-border-width: 1px;
+  --box-border-color: var(--box-tone-border);
+}
+
+.Label.Status {
+  padding-left: var(--label-status-padding-left);
+}
+
+.Icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--label-icon-size);
+}
+
+/* Rounds with the label itself, not a fixed circle: `--box-radius` is the
+   value Box already resolved for the label's own `shape`/`radius` (see
+   Label.tsx) and inherits from the root element. For `shape="pill"` that
+   value is `--radius-pill`, oversized for the dot's footprint, so it still
+   renders as a circle there. */
+.Dot {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--label-dot-size);
+  height: var(--label-dot-size);
+  border-radius: var(--box-radius);
+  background: var(--box-tone-solid);
+}
+
+/* Same footprint as a plain `.Dot` (size stays constant whether or not it
+   holds an icon) — only the icon's own font-size and color are added. */
+.DotIcon {
+  font-size: calc(var(--label-dot-size) * 0.6);
+  color: var(--box-tone-solid-text);
 }
