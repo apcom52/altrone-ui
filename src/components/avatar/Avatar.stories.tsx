@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { ReactNode } from 'react';
 import { StorybookDecorator } from '../../global/storybook/index.ts';
 import { allModes } from '../../../.storybook/modes.ts';
-import { Plus } from 'lucide-react';
+import { Bot, Plus, Users } from 'lucide-react';
 import { Button } from '../button/index.ts';
 import { Flex } from '../flex/index.ts';
 import { Text } from '../text/index.ts';
@@ -57,10 +57,12 @@ export const Overview: StoryObj<typeof Avatar> = {
       </Text>
 
       <Paragraph>
-        <Text code>Avatar</Text> is a round identity chip. It shows a photo (
-        <Text code>imageSrc</Text>) and falls back to initials automatically if
-        the image fails to load. The element is <Text code>role="img"</Text>{' '}
-        labelled with the full name.
+        <Text code>Avatar</Text> is a round identity chip. It resolves in this
+        order: a photo (<Text code>imageSrc</Text>), then an <Text code>icon</Text>
+        , then initials derived from <Text code>firstName</Text>/
+        <Text code>lastName</Text>. A broken photo falls back to the next tier
+        automatically. The element is <Text code>role="img"</Text> labelled
+        with the full name.
       </Paragraph>
 
       <Heading>Colour</Heading>
@@ -104,6 +106,23 @@ export const Overview: StoryObj<typeof Avatar> = {
           lastName="Kobakhidze"
           imageSrc="https://broken.url/x.jpg"
           size="l"
+        />
+      </Flex>
+
+      <Heading>Icon fallback</Heading>
+      <Paragraph>
+        Pass <Text code>icon</Text> for entities that don't have a personal
+        name — a bot, a shared team, an unknown user. It's shown whenever
+        there's no photo, taking priority over initials.
+      </Paragraph>
+      <Flex gap="m" align="center">
+        <Avatar icon={<Bot />} size="l" aria-label="Support bot" />
+        <Avatar icon={<Users />} size="l" aria-label="Design team" />
+        <Avatar
+          firstName="Alex"
+          icon={<Bot />}
+          size="l"
+          aria-label="Alex (automated)"
         />
       </Flex>
     </Flex>
@@ -326,6 +345,50 @@ export const StackedGroupStory: StoryObj<typeof Avatar> = {
             }}
           />
         </Flex>
+      </Flex>
+    </Flex>
+  ),
+};
+
+export const IconFallbackStory: StoryObj<typeof Avatar> = {
+  name: 'Icon fallback & priority',
+  render: () => (
+    <Flex orientation="vertical" gap="l">
+      <Text size={5} weight="bold" block>
+        Icon-only entities
+      </Text>
+      <Paragraph>
+        No <Text code>firstName</Text>/<Text code>lastName</Text> is required
+        — useful for bots, shared teams or an "unknown user" placeholder.
+      </Paragraph>
+      <Flex gap="m" align="center">
+        <Avatar icon={<Bot />} aria-label="Support bot" />
+        <Avatar icon={<Users />} backgroundColor="#6366f1" aria-label="Design team" />
+      </Flex>
+
+      <Text size={5} weight="bold" block>
+        Priority: photo &gt; icon &gt; initials
+      </Text>
+      <Paragraph>
+        With all three supplied, the photo wins. A broken photo falls back to
+        the icon, not straight to initials.
+      </Paragraph>
+      <Flex gap="m" align="center">
+        <Avatar
+          firstName="Alex"
+          lastName="Reed"
+          icon={<Bot />}
+          imageSrc="https://i.pravatar.cc/64?img=12"
+          size="l"
+        />
+        <Avatar
+          firstName="Alex"
+          lastName="Reed"
+          icon={<Bot />}
+          imageSrc="https://broken.url/x.jpg"
+          size="l"
+        />
+        <Avatar firstName="Alex" lastName="Reed" size="l" />
       </Flex>
     </Flex>
   ),

@@ -53,6 +53,39 @@ describe('Avatar', () => {
     expect(el).toHaveAttribute('title', 'John Doe');
   });
 
+  test('icon takes priority over initials, image takes priority over icon', () => {
+    const { container, rerender } = render(
+      <Avatar
+        firstName="John"
+        lastName="Doe"
+        icon={<svg data-testid="icon" />}
+      />,
+    );
+    expect(screen.getByTestId('icon')).toBeInTheDocument();
+    expect(screen.queryByText('JD')).not.toBeInTheDocument();
+
+    rerender(
+      <Avatar
+        firstName="John"
+        lastName="Doe"
+        icon={<svg data-testid="icon" />}
+        imageSrc="https://x/p.jpg"
+      />,
+    );
+    expect(container.querySelector('img')).toBeInTheDocument();
+    expect(screen.queryByTestId('icon')).not.toBeInTheDocument();
+
+    const img = container.querySelector('img')!;
+    fireEvent.error(img);
+    expect(screen.getByTestId('icon')).toBeInTheDocument();
+  });
+
+  test('renders with an icon and no name at all', () => {
+    render(<Avatar icon={<svg data-testid="icon" />} data-testid="a" />);
+    expect(screen.getByTestId('icon')).toBeInTheDocument();
+    expect(screen.getByTestId('a')).not.toHaveAccessibleName();
+  });
+
   test('backgroundColor and textColor drive the fill/text CSS vars', () => {
     render(
       <Avatar

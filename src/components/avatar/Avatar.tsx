@@ -13,6 +13,7 @@ export const Avatar = memo((props: AvatarProps) => {
     backgroundColor,
     textColor,
     imageSrc,
+    icon,
     className,
     style,
     ...restProps
@@ -35,8 +36,10 @@ export const Avatar = memo((props: AvatarProps) => {
     className,
   );
 
-  const fullName = [firstName, lastName].join(' ').trim();
-  const initials = `${firstName.trimStart().charAt(0)}${lastName ? lastName.trimStart().charAt(0) : ''}`;
+  const fullName = [firstName, lastName].filter(Boolean).join(' ').trim();
+  const initials = firstName
+    ? `${firstName.trimStart().charAt(0)}${lastName ? lastName.trimStart().charAt(0) : ''}`
+    : '';
 
   /* No explicit backgroundColor: fall back to a categorical colour keyed by
      the name, so a given person keeps the same fill across renders instead of
@@ -50,6 +53,7 @@ export const Avatar = memo((props: AvatarProps) => {
   };
 
   const showImage = Boolean(imageSrc) && !imageError;
+  const showIcon = !showImage && Boolean(icon);
 
   return (
     <div
@@ -67,6 +71,10 @@ export const Avatar = memo((props: AvatarProps) => {
           alt=""
           onError={() => setImageError(true)}
         />
+      ) : showIcon ? (
+        <span className={s.Icon} aria-hidden="true">
+          {icon}
+        </span>
       ) : (
         <span className={s.Letters} aria-hidden="true">
           {initials}
