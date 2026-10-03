@@ -49,6 +49,18 @@ export interface ApplicationProps extends HTMLAttributes<HTMLDivElement> {
    */
   persistTheme?: boolean;
   accent?: Accent;
+  /**
+   * Application name, appended to the document title as "<screen title> -
+   * <application name>" whenever a `Screen` with a `title` is mounted. With
+   * no `Screen.title`, the document title is just the application name.
+   */
+  applicationName?: string;
+  /**
+   * Automatically keeps `document.title` in sync with `Screen.title`/
+   * `applicationName`. `false` turns this off — `setPageTitle` still works,
+   * you just own `document.title` yourself otherwise. Default `true`.
+   */
+  manageTitle?: boolean;
   customLabels?: Partial<Localization>;
   /** Overrides for the icon roles shared across components — see `IconSet`. */
   icons?: Partial<IconSet>;

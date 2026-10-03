@@ -1,6 +1,7 @@
-import { useMemo, useState, type CSSProperties } from 'react';
+import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import clsx from 'clsx';
 import { useBreakpoint } from 'utils';
+import { setScreenTitle } from 'components/application/documentTitle.ts';
 import s from './screen.module.scss';
 import { ScreenMobileBreakpoint, ScreenProps } from './Screen.types.ts';
 import {
@@ -43,6 +44,11 @@ const ScreenBase = ({
   const sidebarMode = breakpoint[BREAKPOINT_FLAG[mobileBreakpoint]]
     ? 'inline'
     : 'overlay';
+
+  useEffect(() => {
+    setScreenTitle(title);
+    return () => setScreenTitle(undefined);
+  }, [title]);
 
   /**
    * Lives here (not in `Sidebar`) because `Toolbar.SidebarToggleAction` — a

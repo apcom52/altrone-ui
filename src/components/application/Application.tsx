@@ -26,6 +26,7 @@ import '@fontsource-variable/jetbrains-mono';
 import { AltroneLocalization } from './useLocalization.tsx';
 import { AltroneIcons } from './useIcons.tsx';
 import { DialogProvider } from 'components/dialog/DialogProvider.tsx';
+import { useDocumentTitle } from './useDocumentTitle.ts';
 
 function resolveInitialTheme(initialTheme: Theme): Exclude<Theme, 'auto'> {
   if (initialTheme !== 'auto') return initialTheme;
@@ -44,6 +45,8 @@ export const Application = ({
   theme: initialTheme = 'auto',
   persistTheme = false,
   accent = 'blue',
+  applicationName,
+  manageTitle = true,
   language = 'en',
   customLabels = {},
   icons = {},
@@ -55,6 +58,8 @@ export const Application = ({
   const [theme, setTheme] = useState<Theme>(() =>
     resolveInitialTheme(initialTheme),
   );
+
+  useDocumentTitle(applicationName, manageTitle);
 
   const mediaScheme = useMediaMatch('(prefers-color-scheme: dark)');
 

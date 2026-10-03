@@ -1,12 +1,14 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Avatar,
   BottomNavigation,
   Button,
   Flex,
   NavigationList,
+  resetPageTitle,
   Screen,
+  setPageTitle,
   Text,
   Toolbar,
 } from 'components';
@@ -108,6 +110,19 @@ export const Overview: StoryObj<typeof Screen> = {
         <Text code>contentAlign="center"</Text> additionally centers it in both
         axes — the combination suits a sign-in form or a full-page{' '}
         <Text code>Result</Text> state rather than a data-dense app screen.
+      </Paragraph>
+      <Heading>Document title</Heading>
+      <Paragraph>
+        With a <Text code>title</Text>, <Text code>Screen</Text> feeds the
+        browser tab title: <Text code>Application</Text> combines it with its
+        own <Text code>applicationName</Text> as "&lt;title&gt; -
+        &lt;applicationName&gt;" and keeps <Text code>document.title</Text> in
+        sync automatically. Set <Text code>Application</Text>'s{' '}
+        <Text code>manageTitle</Text> to <Text code>false</Text> to turn this
+        off and own <Text code>document.title</Text> yourself. The global{' '}
+        <Text code>setPageTitle</Text>/<Text code>resetPageTitle</Text>{' '}
+        functions override the computed value from anywhere — see the demo
+        below.
       </Paragraph>
     </Flex>
   ),
@@ -354,6 +369,64 @@ export const CenteredContent: StoryObj<typeof Screen> = {
             for a sign-in form or a full-page <Text code>Result</Text> state.
           </Text>
           <Button label="Get started">Get started</Button>
+        </Flex>
+      </Screen.Content>
+    </Screen>
+  ),
+};
+
+/* ---------------------------------------------------------------------- */
+/* Document title                                                          */
+/* ---------------------------------------------------------------------- */
+
+const DocumentTitleDemo = () => {
+  const [title, setTitle] = useState(() => document.title);
+
+  /* Polls rather than observes: `document.title` has no change event, and a
+     `MutationObserver` on `<title>` would be overkill for a docs demo. */
+  useEffect(() => {
+    const id = setInterval(() => setTitle(document.title), 200);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <Flex orientation="vertical" gap="m" align="start">
+      <Text>
+        Current <Text code>document.title</Text>: <Text code>{title}</Text>
+      </Text>
+      <Flex gap="s">
+        <Button
+          label="Override with setPageTitle"
+          onClick={() => setPageTitle('Custom title from setPageTitle()')}
+        />
+        <Button
+          label="Revert with resetPageTitle"
+          onClick={() => resetPageTitle()}
+        />
+      </Flex>
+    </Flex>
+  );
+};
+
+export const DocumentTitleStory: StoryObj<typeof Screen> = {
+  name: 'Document title',
+  parameters: fullscreen,
+  render: () => (
+    <Screen title="Document title demo">
+      <Screen.Content>
+        <Flex orientation="vertical" gap="l" style={{ maxWidth: 680 }}>
+          <Text block size={6} weight="bold">
+            Document title demo
+          </Text>
+          <Paragraph>
+            This <Text code>Screen</Text> has{' '}
+            <Text code>title="Document title demo"</Text> — check the browser
+            tab. The Storybook host's own <Text code>Application</Text> here
+            has no <Text code>applicationName</Text>, so the tab shows just
+            the screen title; in your app it would read "Document title demo
+            - &lt;applicationName&gt;".
+          </Paragraph>
+          <DocumentTitleDemo />
         </Flex>
       </Screen.Content>
     </Screen>
