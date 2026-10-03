@@ -16,7 +16,9 @@ export interface ScreenProps extends HTMLAttributes<HTMLDivElement> {
   size?: Size;
   /**
    * Accessible name for the screen's root region (`aria-label` +
-   * `role="region"`). Label-only — nothing is rendered visibly.
+   * `role="region"`) — nothing is rendered visibly. Also feeds
+   * `Application`'s automatic `document.title` ("<title> - <applicationName>"),
+   * unless `Application`'s `manageTitle` is `false`.
    */
   title?: string;
   /**
