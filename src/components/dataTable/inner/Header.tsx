@@ -42,6 +42,10 @@ export const DataTableHeader = <T extends object>({
   const { table, icons, loading, selectable, selectMode, setSelectMode } =
     useDataTableContext<T>();
 
+  const hasFilterableColumns = table
+    .getAllLeafColumns()
+    .some((column) => column.getCanFilter());
+
   const selectedItems = table
     .getSelectedRowModel()
     .rows.map((row) => row.original);
@@ -70,9 +74,11 @@ export const DataTableHeader = <T extends object>({
             </Tooltip>
           </Toolbar.Group>
         ) : null}
-        <Toolbar.Group>
-          <Filtering />
-        </Toolbar.Group>
+        {hasFilterableColumns ? (
+          <Toolbar.Group>
+            <Filtering />
+          </Toolbar.Group>
+        ) : null}
         {leading}
       </Toolbar.Leading>
       {center.length > 0 ? <Toolbar.Center>{center}</Toolbar.Center> : null}
