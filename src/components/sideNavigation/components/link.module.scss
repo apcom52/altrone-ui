@@ -11,11 +11,10 @@
   font-size: var(--side-navigation-link-text-size);
   font-weight: var(--text-weight-medium);
   line-height: var(--line-height-4);
+  border-radius: var(--radius-pill);
   cursor: pointer;
   text-decoration: none;
   transition: color 0.2s linear;
-
-  @include focus;
 
   &:hover,
   &:focus-visible {

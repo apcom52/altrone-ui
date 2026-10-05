@@ -17,6 +17,7 @@
   align-items: center;
   background-color: transparent;
   border: none;
+  border-radius: var(--radius-pill);
   cursor: pointer;
   @include no-selection;
   color: var(--breadcrumbs-item-text-color);

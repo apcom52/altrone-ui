@@ -41,7 +41,10 @@ export const ColumnHeaders = ({
   );
 
   /** none → desc → asc → none */
-  const cycleSort = (columnId: string, event: React.MouseEvent) => {
+  const cycleSort = (
+    columnId: string,
+    event: React.MouseEvent | React.KeyboardEvent,
+  ) => {
     notePendingEvent(event);
     const current = table.state.sorting[0];
     if (!current || current.id !== columnId) {
@@ -82,6 +85,18 @@ export const ColumnHeaders = ({
               onClick={
                 isSortable ? (event) => cycleSort(header.id, event) : undefined
               }
+              onKeyDown={
+                isSortable
+                  ? (event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        cycleSort(header.id, event);
+                      }
+                    }
+                  : undefined
+              }
+              tabIndex={isSortable ? 0 : undefined}
+              role={isSortable ? 'button' : undefined}
               initial="rest"
               animate={isResizing ? 'resizing' : 'rest'}
               whileHover="hover"
