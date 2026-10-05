@@ -61,15 +61,19 @@ export const ColumnHeaders = ({
   return (
     <div
       ref={rowRef}
+      role="rowgroup"
       className={clsx(s.Wrapper, s.HeaderRow, { [s.RoundTop]: roundTop })}
     >
-      <div className={s.Backdrop} />
+      <div className={s.Backdrop} aria-hidden="true" />
       <div
         ref={trackRef}
+        role="row"
         className={s.HeaderRowTrack}
         style={{ gridTemplateColumns: columnsTemplate }}
       >
-        {selectMode ? <div /> : null}
+        {selectMode ? (
+          <div role="columnheader" aria-label={t('dataTable.selectableMode')} />
+        ) : null}
         {table.getFlatHeaders().map((header) => {
           const isSortable = header.column.getCanSort();
           const sortDirection = header.column.getIsSorted();
@@ -96,7 +100,16 @@ export const ColumnHeaders = ({
                   : undefined
               }
               tabIndex={isSortable ? 0 : undefined}
-              role={isSortable ? 'button' : undefined}
+              role="columnheader"
+              aria-sort={
+                !isSortable
+                  ? undefined
+                  : sortDirection === 'asc'
+                    ? 'ascending'
+                    : sortDirection === 'desc'
+                      ? 'descending'
+                      : 'none'
+              }
               initial="rest"
               animate={isResizing ? 'resizing' : 'rest'}
               whileHover="hover"
@@ -132,7 +145,7 @@ export const ColumnHeaders = ({
           );
         })}
         {hasRowActions ? (
-          <div className={s.Cell}>
+          <div role="columnheader" className={s.Cell}>
             <Text size={4} weight="bold" className={s.Label}>
               {t('dataTable.actions')}
             </Text>

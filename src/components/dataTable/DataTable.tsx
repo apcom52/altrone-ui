@@ -258,7 +258,12 @@ const DataTableComponent = <DataType extends object>(
     >
       <div className={s.Wrapper} ref={ref}>
         {headerVisible ? <Header actions={actions} /> : null}
-        <div className={clsx(s.Table, className)} style={style} {...restProps}>
+        <div
+          role="table"
+          className={clsx(s.Table, className)}
+          style={style}
+          {...restProps}
+        >
           <ColumnHeaders
             hasRowActions={Boolean(rowActions)}
             roundTop={!headerVisible}
