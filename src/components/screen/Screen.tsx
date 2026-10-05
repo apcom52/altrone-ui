@@ -45,6 +45,9 @@ const ScreenBase = ({
     ? 'inline'
     : 'overlay';
 
+  const [modeResolved, setModeResolved] = useState(false);
+  useEffect(() => setModeResolved(true), []);
+
   useEffect(() => {
     setScreenTitle(title);
     return () => setScreenTitle(undefined);
@@ -57,8 +60,8 @@ const ScreenBase = ({
    */
   const [sidebar, registerSidebar] = useState<ScreenSidebarState | null>(null);
   const contextValue = useMemo<ScreenContextValue>(
-    () => ({ sidebarMode, sidebar, registerSidebar }),
-    [sidebarMode, sidebar],
+    () => ({ sidebarMode, modeResolved, sidebar, registerSidebar }),
+    [sidebarMode, modeResolved, sidebar],
   );
 
   const cls = clsx(

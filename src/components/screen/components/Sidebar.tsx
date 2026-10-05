@@ -60,7 +60,7 @@ export const Sidebar = ({
   ...restProps
 }: ScreenSidebarProps) => {
   const t = useLocalization();
-  const { sidebarMode, registerSidebar } = useScreenContext();
+  const { sidebarMode, modeResolved, registerSidebar } = useScreenContext();
   const reducedMotion = useReducedMotionConfig() ?? false;
   const visible = useZoneVisible(visibleFrom, hiddenFrom);
 
@@ -82,17 +82,24 @@ export const Sidebar = ({
    * inline column would otherwise cover the whole screen with no way to
    * close it — and auto-restore on leaving it, so growing back past the
    * breakpoint doesn't leave the sidebar stuck collapsed. Controlled
-   * sidebars are the consumer's own responsibility. The ref skips the
-   * mount run so `defaultCollapsed` isn't overridden before a real
-   * overlay/inline transition happens.
+   * sidebars are the consumer's own responsibility. The change that
+   * accompanies `modeResolved` flipping is skipped — that's the SSR default
+   * settling on the real viewport, so `defaultCollapsed` isn't overridden
+   * on mount.
    */
   const prevOverlayRef = useRef(isOverlay);
+  const prevResolvedRef = useRef(modeResolved);
   useEffect(() => {
-    if (!isControlled && prevOverlayRef.current !== isOverlay) {
+    if (
+      prevResolvedRef.current &&
+      !isControlled &&
+      prevOverlayRef.current !== isOverlay
+    ) {
       setInternalCollapsed(isOverlay);
     }
     prevOverlayRef.current = isOverlay;
-  }, [isOverlay, isControlled]);
+    prevResolvedRef.current = modeResolved;
+  }, [isOverlay, isControlled, modeResolved]);
 
   const handleClose = useCallback(
     (event: MouseEvent | KeyboardEvent) => {
