@@ -1166,3 +1166,153 @@ export const EcommerceAdminStory: StoryObj<typeof NavigationList> = {
     );
   },
 };
+
+// ─── Story: Nesting and truncation ────────────────────────────────────────────
+
+const LONG_LABEL =
+  'A very long item label that can never fit into the sidebar width';
+
+const DEEP_LEVELS = 6;
+
+const renderDeepLinks = (
+  level: number,
+  active: number,
+  setActive: (level: number) => void,
+): React.JSX.Element => (
+  <NavigationList.Link
+    icon={level % 2 ? <FolderOpen /> : <Layers />}
+    label={`Level ${level}`}
+    selected={active >= level}
+    onClick={(e) => {
+      e.preventDefault();
+      setActive(level);
+    }}
+  >
+    {level < DEEP_LEVELS ? renderDeepLinks(level + 1, active, setActive) : null}
+  </NavigationList.Link>
+);
+
+export const NestingAndTruncationStory: StoryObj<typeof NavigationList> = {
+  name: 'Nesting and Truncation',
+  render: () => {
+    const [active, setActive] = useState('own');
+    const [deepActive, setDeepActive] = useState(DEEP_LEVELS);
+    const sel = (id: string) => active === id;
+    const pick = (id: string) => (e: React.MouseEvent) => {
+      e.preventDefault();
+      setActive(id);
+    };
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={9} weight="bold">
+          Nesting and truncation
+        </Text>
+
+        <Paragraph>
+          Only the item that is actually selected gets the raised highlight. Its
+          parents stay selected too, but are marked with a quiet gray fill so
+          the path to the current page is visible without competing with it.
+          Every fill wraps the item's own content — icon included — at any
+          depth.
+        </Paragraph>
+
+        <Heading>Selected path</Heading>
+        <Paragraph>
+          Choose any item: the parents of the selected one are tinted gray.
+        </Paragraph>
+        <NavigationList>
+          <NavigationList.Group title="Restaurants">
+            <NavigationList.Link
+              icon={<FolderOpen />}
+              label="Restaurants"
+              selected={['own', 'franchise', 'franchise-all'].includes(active)}
+              onClick={pick('own')}
+            >
+              <NavigationList.Link
+                icon={<FolderOpen />}
+                label="Own"
+                selected={sel('own')}
+                onClick={pick('own')}
+              />
+              <NavigationList.Link
+                icon={<FolderOpen />}
+                label="Franchise"
+                selected={['franchise', 'franchise-all'].includes(active)}
+                onClick={pick('franchise')}
+              >
+                <NavigationList.Link
+                  icon={<Layers />}
+                  label="All franchise restaurants"
+                  selected={sel('franchise-all')}
+                  onClick={pick('franchise-all')}
+                />
+                <NavigationList.Link
+                  label="Without an icon"
+                  selected={sel('franchise-plain')}
+                  onClick={pick('franchise-plain')}
+                />
+              </NavigationList.Link>
+            </NavigationList.Link>
+          </NavigationList.Group>
+        </NavigationList>
+
+        <Heading>Deep nesting</Heading>
+        <Paragraph>
+          Six levels deep. Select any level to see the whole path above it
+          tinted gray.
+        </Paragraph>
+        <NavigationList>
+          <NavigationList.Group title="Deep tree">
+            {renderDeepLinks(1, deepActive, setDeepActive)}
+          </NavigationList.Group>
+        </NavigationList>
+
+        <Heading>Truncated labels</Heading>
+        <Paragraph>
+          A label that doesn't fit is cut with an ellipsis on every level, with
+          or without an icon, badge and actions.
+        </Paragraph>
+        <NavigationList>
+          <NavigationList.Group title={LONG_LABEL}>
+            <NavigationList.Link
+              icon={<Home />}
+              label={LONG_LABEL}
+              badge={12}
+              actions={<NavAction label="Edit" icon={<Pencil />} />}
+              selected
+            >
+              <NavigationList.Link
+                icon={<Inbox />}
+                label={LONG_LABEL}
+                badge={3}
+                actions={<NavAction label="Edit" icon={<Pencil />} />}
+                selected={sel('long-2')}
+                onClick={pick('long-2')}
+              >
+                <NavigationList.Link
+                  icon={<Tag />}
+                  label={LONG_LABEL}
+                  badge={7}
+                  actions={<NavAction label="Edit" icon={<Pencil />} />}
+                  selected={sel('long-3')}
+                  onClick={pick('long-3')}
+                />
+                <NavigationList.Link
+                  label={LONG_LABEL}
+                  selected={sel('long-3-plain')}
+                  onClick={pick('long-3-plain')}
+                />
+              </NavigationList.Link>
+            </NavigationList.Link>
+            <NavigationList.Link
+              label={LONG_LABEL}
+              disabled
+              icon={<Archive />}
+            />
+          </NavigationList.Group>
+        </NavigationList>
+      </Flex>
+    );
+  },
+};

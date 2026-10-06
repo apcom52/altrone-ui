@@ -16,10 +16,27 @@
   z-index: 1;
   gap: 4px;
   user-select: none;
+  margin-bottom: 2px;
+
+  /* Transparent bridge over the 2px gap below, so the pointer stays on the
+     link (hover/click) while moving between neighbours. */
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 2px;
+  }
 
   &:focus-visible {
     border-radius: var(--navigation-list-link-rounding);
   }
+}
+
+.Ancestor {
+  border-radius: var(--navigation-list-link-rounding);
+  background-color: var(--navigation-list-link-backdrop-color);
 }
 
 .Disabled {
@@ -50,6 +67,7 @@
   justify-content: center;
   color: var(--navigation-list-link-text-color);
   font-size: var(--navigation-list-link-icon-size);
+  flex-shrink: 0;
   margin-left: -24px;
   /* On top of the row's 4px gap — keeps the icon→label spacing at 8px. */
   margin-right: 4px;
@@ -86,6 +104,7 @@
   align-items: center;
   gap: 2px;
   margin-left: auto;
+  flex-shrink: 0;
 }
 
 .SecondLevelList {
@@ -93,7 +112,7 @@
   flex-direction: column;
 
   .Link {
-    padding-left: 54px;
+    margin-left: 14px;
   }
 }
 
@@ -101,11 +120,16 @@
   display: flex;
   flex-direction: column;
   border-left: 2px solid var(--navigation-list-secondary-link-border-color);
-  margin-left: 54px;
-  padding-left: 6px;
+  margin-left: 28px;
+  padding-left: 4px;
 
   .Link {
-    padding-left: 12px;
+    margin-left: 0;
+    padding-left: 6px;
+  }
+
+  .Icon {
+    margin-left: 0;
   }
 
   .ThirdLevelList {
@@ -119,6 +143,7 @@
   justify-content: center;
   font-size: 18px;
   margin-right: 4px;
+  flex-shrink: 0;
 }
 
 .Selected {

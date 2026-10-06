@@ -34,6 +34,21 @@ const SELECTED_TRANSITION = {
   mass: 0.9,
 } as const;
 
+const hasSelectedLink = (nodes: ReactElement[]): boolean =>
+  nodes.some((node) => {
+    const { selected, children } = node.props as NavigationListLinkProps;
+    if (selected) {
+      return true;
+    }
+    const nested = new AltChildren(children)
+      .filterNodes()
+      .toArray()
+      .filter((child) =>
+        DOMUtils.containsElementType(child as ReactElement, [Link]),
+      ) as ReactElement[];
+    return hasSelectedLink(nested);
+  });
+
 // ─── ItemContent ──────────────────────────────────────────────────────────────
 
 type ItemContentProps = Pick<
@@ -89,6 +104,7 @@ const ItemContent = ({
 type LinkInnerProps = Omit<NavigationListLinkProps, 'children' | 'actions'> & {
   actions: ReactNode;
   nestedLinks: ReactElement[];
+  ancestor: boolean;
   level: number;
   asChildElement: ReactElement | null;
 };
@@ -100,6 +116,7 @@ const LinkInner = memo(
     label,
     actions,
     nestedLinks,
+    ancestor,
     level,
     selected,
     disabled,
@@ -174,7 +191,7 @@ const LinkInner = memo(
       onClick: handleClick,
       onKeyDown: handleKeyDown,
       tabIndex: disabled ? -1 : resolvedHref ? undefined : 0,
-      'aria-current': selected ? 'page' : undefined,
+      'aria-current': ancestor ? 'true' : selected ? 'page' : undefined,
       'aria-disabled': disabled || undefined,
     };
     if (resolvedHref !== undefined) {
@@ -183,7 +200,7 @@ const LinkInner = memo(
 
     const inner = (
       <>
-        {selected && !disabled && (
+        {selected && !ancestor && !disabled && (
           <motion.div
             layout
             layoutId={`${navigationListId}-nav-link-selected-${level}`}
@@ -285,9 +302,16 @@ export const Link = memo(
     const resolvedActions =
       typeof actions === 'function' ? actions({ selected, disabled }) : actions;
 
+    const ancestor =
+      Boolean(selected) && !disabled && hasSelectedLink(nestedLinks);
+
     const cls = clsx(
       s.Link,
-      { [s.Selected]: selected, [s.Disabled]: disabled },
+      {
+        [s.Selected]: selected && !ancestor,
+        [s.Ancestor]: ancestor,
+        [s.Disabled]: disabled,
+      },
       className,
     );
 
@@ -302,6 +326,7 @@ export const Link = memo(
         disabled={disabled}
         actions={resolvedActions ?? null}
         nestedLinks={nestedLinks}
+        ancestor={ancestor}
         level={listLevel}
         {...restProps}
       />
