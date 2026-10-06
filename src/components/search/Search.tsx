@@ -8,8 +8,6 @@ import { ArrayUtils, mergeRefs } from 'utils';
 import clsx from 'clsx';
 import s from './search.module.scss';
 
-const GET_SUGGESTIONS_MOCK = () => [];
-
 export const Search = <T = string,>({
   ref,
   inputRef: consumerInputRef,
@@ -19,6 +17,13 @@ export const Search = <T = string,>({
   style,
   placeholder,
   getSuggestions,
+  getSuggestionValue,
+  renderSuggestion,
+  onSelect,
+  onError,
+  minChars,
+  cacheResults,
+  errorIcon,
   searchIcon,
   clearIcon,
   ...restProps
@@ -58,20 +63,13 @@ export const Search = <T = string,>({
     inputRef.current.dispatchEvent(changeEvent);
   };
 
-  return (
-    <AutocompleteInput<T>
-      ref={ref}
-      inputRef={mergeRefs(inputRef, consumerInputRef)}
-      className={className}
-      style={style}
-      inputClassName={fieldCls}
-      {...restProps}
-      type="search"
-      getSuggestions={getSuggestions || GET_SUGGESTIONS_MOCK}
-      showControls={needToShowControl}
-    >
+  const fieldChildren = (
+    <>
       {haveValue && (
-        <TextInput.IconIsland icon={searchIcon ?? icons.search} placement="start" />
+        <TextInput.IconIsland
+          icon={searchIcon ?? icons.search}
+          placement="start"
+        />
       )}
       {haveValue ? safeChildren : null}
       {needToShowControl ? (
@@ -90,6 +88,45 @@ export const Search = <T = string,>({
           <div className={s.PlaceholderText}>{placeholderText}</div>
         </div>
       ) : null}
+    </>
+  );
+
+  if (!getSuggestions) {
+    return (
+      <TextInput
+        ref={ref}
+        inputRef={mergeRefs(inputRef, consumerInputRef)}
+        className={className}
+        style={style}
+        inputClassName={fieldCls}
+        {...restProps}
+        type="search"
+      >
+        {fieldChildren}
+      </TextInput>
+    );
+  }
+
+  return (
+    <AutocompleteInput<T>
+      ref={ref}
+      inputRef={mergeRefs(inputRef, consumerInputRef)}
+      className={className}
+      style={style}
+      inputClassName={fieldCls}
+      {...restProps}
+      type="search"
+      getSuggestions={getSuggestions}
+      getSuggestionValue={getSuggestionValue}
+      renderSuggestion={renderSuggestion}
+      onSelect={onSelect}
+      onError={onError}
+      minChars={minChars}
+      cacheResults={cacheResults}
+      errorIcon={errorIcon}
+      showControls={needToShowControl}
+    >
+      {fieldChildren}
     </AutocompleteInput>
   );
 };
