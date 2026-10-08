@@ -142,16 +142,19 @@
    `.Transparent.Transparent` is a deliberate specificity bump: otherwise this
    ties box.module's `.Editable.MaterialTransparent:focus-within`, which loads
    later and would win. */
-.TextInput.Transparent.Transparent:hover,
-.TextInput.Transparent.Transparent:focus-within {
+.TextInput.Transparent.Transparent:not(.Readonly):hover,
+.TextInput.Transparent.Transparent:not(.Readonly):focus-within {
   --box-fill: var(--box-tone-translucent);
 }
 
 /* Readonly: drop the material entirely so the value reads as plain text, while
    staying focusable for copy. `.TextInput` compound outranks Box's material. */
-.TextInput.Readonly {
+.TextInput.Readonly,
+.TextInput.Readonly:focus-within {
   --box-fill: transparent;
+  --box-blur: none;
 
+  backdrop-filter: none;
   box-shadow: var(--box-elevation-shadow);
 }
 
@@ -162,23 +165,31 @@
   pointer-events: none;
 }
 
-.Mini {
+.TextInput.TextInput {
+  --box-padding-x: var(--l-gap);
+}
+
+.TextInput.Mini {
   --text-input-font-size: var(--text-size-2);
   --text-input-icon-size: 12px;
   --text-input-island-outer-inset: 0px;
+  --box-padding-x: var(--s-gap);
 }
 
-.Small {
+.TextInput.Small {
   --text-input-font-size: var(--text-size-3);
   --text-input-icon-size: 14px;
+  --box-padding-x: var(--gap);
 }
 
-.Large {
+.TextInput.Large {
   --text-input-font-size: var(--text-size-5);
   --text-input-icon-size: 18px;
+  --box-padding-x: 16px;
 }
 
-.XLarge {
+.TextInput.XLarge {
   --text-input-font-size: var(--text-size-7);
   --text-input-icon-size: 24px;
+  --box-padding-x: 20px;
 }
