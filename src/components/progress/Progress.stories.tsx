@@ -5,7 +5,7 @@ import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 
 const story: Meta<typeof Progress> = {
-  title: 'Components/Display/Progress',
+  title: 'Components/Feedback/Progress',
   component: Progress,
   decorators: [StorybookDecorator],
   parameters: {

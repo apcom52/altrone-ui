@@ -39,7 +39,7 @@ import { allModes } from '../../../.storybook/modes.ts';
 
 const meta: Meta<typeof DataTable<AnyRow>> = {
   component: DataTable,
-  title: 'Components/Display/DataTable',
+  title: 'Components/Content/DataTable',
   decorators: [StorybookDecorator],
   parameters: {
     chromatic: {

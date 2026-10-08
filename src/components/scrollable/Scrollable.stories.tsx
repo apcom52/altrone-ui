@@ -8,7 +8,7 @@ import { ScrollableRef } from './Scrollable.types.ts';
 import { COUNTRIES } from './Scrollable.constants.ts';
 
 const story: Meta<typeof Scrollable> = {
-  title: 'Components/Containers/Scrollable',
+  title: 'Components/Layout/Scrollable',
   component: Scrollable,
   decorators: [StorybookDecorator],
   parameters: {

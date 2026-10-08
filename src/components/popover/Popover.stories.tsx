@@ -21,7 +21,7 @@ import type { PopoverRef, PopoverTrigger } from './Popover.types.ts';
 import { getAllPlacements } from './utils/placementUtils';
 
 const story: Meta<typeof Popover> = {
-  title: 'Components/Containers/Popover',
+  title: 'Components/Overlays/Popover',
   component: Popover,
   decorators: [StorybookDecorator],
   parameters: {

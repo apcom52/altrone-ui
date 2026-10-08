@@ -66,7 +66,7 @@ const APPLICANTS: Applicant[] = [
 const TODAY = dayjs();
 
 const story: Meta<typeof Form> = {
-  title: 'Components/Containers/Form',
+  title: 'Components/Controls/Form',
   component: Form,
   decorators: [StorybookDecorator],
   args: {},

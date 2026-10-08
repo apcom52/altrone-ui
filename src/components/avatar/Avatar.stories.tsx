@@ -9,7 +9,7 @@ import { Text } from '../text/index.ts';
 import { Avatar } from './Avatar.tsx';
 
 const story: Meta<typeof Avatar> = {
-  title: 'Components/Atoms/Avatar',
+  title: 'Components/Content/Avatar',
   component: Avatar,
   decorators: [StorybookDecorator],
   args: {

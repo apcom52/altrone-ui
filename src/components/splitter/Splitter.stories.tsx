@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 
 const story: Meta<typeof Splitter> = {
-  title: 'Components/Containers/Splitter',
+  title: 'Components/Layout/Splitter',
   component: Splitter,
   decorators: [StorybookDecorator],
   parameters: {

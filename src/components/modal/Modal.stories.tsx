@@ -13,7 +13,7 @@ import { KeypadLockStory } from './stories/Modal.story.KeypadLock.tsx';
 import { LifeBuoy, Sparkles } from 'lucide-react';
 
 const story: Meta<typeof Modal> = {
-  title: 'Components/Containers/Modal',
+  title: 'Components/Overlays/Modal',
   component: Modal,
   decorators: [StorybookDecorator],
   parameters: {

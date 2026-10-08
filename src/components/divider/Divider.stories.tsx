@@ -6,7 +6,7 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Divider } from './Divider.tsx';
 
 const story: Meta<typeof Divider> = {
-  title: 'Components/Atoms/Divider',
+  title: 'Components/Layout/Divider',
   component: Divider,
   decorators: [StorybookDecorator],
   parameters: {

@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 
 const story: Meta<typeof Result> = {
-  title: 'Components/Display/Result',
+  title: 'Components/Feedback/Result',
   component: Result,
   decorators: [StorybookDecorator],
   parameters: {

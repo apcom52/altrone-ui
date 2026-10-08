@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 
 const story: Meta<typeof Drawer> = {
-  title: 'Components/Containers/Drawer',
+  title: 'Components/Overlays/Drawer',
   component: Drawer,
   decorators: [StorybookDecorator],
   parameters: {

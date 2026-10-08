@@ -9,7 +9,7 @@ import { CollapsedList } from './CollapsedList.tsx';
 import { CirclePlus, CircleMinus } from 'lucide-react';
 
 const story: Meta<typeof CollapsedList> = {
-  title: 'Components/Containers/CollapsedList',
+  title: 'Components/Layout/CollapsedList',
   component: CollapsedList,
   decorators: [StorybookDecorator],
   parameters: {
