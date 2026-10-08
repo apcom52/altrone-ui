@@ -123,7 +123,7 @@ export const Image = memo((props: ImageProps) => {
         {preloaderNode}
       </div>
       {caption ? (
-        <Text block size={4} color="muted" align="center">
+        <Text block size={4} color="muted" align="center" italic>
           {caption}
         </Text>
       ) : null}
