@@ -13,12 +13,8 @@ import { DataTableFeatures } from '../DataTable.features.ts';
 import { DataTableFilterValue } from '../DataTable.types.ts';
 import { RulesByDataType } from '../DataTable.constants.ts';
 import { FilterRow } from './FilterRow.tsx';
+import { columnHeaderLabel } from './columnHeaderLabel.ts';
 import { Toolbar } from 'components/toolbar/index.ts';
-
-const columnHeaderLabel = (column: Column<DataTableFeatures, AnyObject>) =>
-  typeof column.columnDef.header === 'string'
-    ? column.columnDef.header
-    : String(column.id);
 
 export const Filtering = () => {
   const t = useLocalization();
