@@ -474,3 +474,45 @@ export const CustomIcons: StoryObj = {
     );
   },
 };
+
+export const LongPage: StoryObj = {
+  name: 'Long page — opening far from the top',
+  render: () => {
+    const [date, setDate] = useState<Dayjs | undefined>();
+
+    return (
+      <Flex orientation="vertical" gap="xl">
+        <Text size={6} weight="bold" block>
+          Opening the picker on a long page
+        </Text>
+        <Text block>
+          The field sits far below the fold. Scroll down to it and open the
+          picker: the page must stay where it is instead of jumping to the top.
+        </Text>
+
+        {Array.from({ length: 12 }, (_, index) => (
+          <Panel key={index}>
+            <Text block>
+              Filler section {index + 1}. Dispatchers scroll through long
+              booking forms before they reach the departure date.
+            </Text>
+            <div style={{ height: 160 }} />
+          </Panel>
+        ))}
+
+        <Panel>
+          <Form.Field label="Departure">
+            <DatePicker
+              value={date}
+              onChange={(value) => setDate(value)}
+              minDate={TODAY}
+              maxDate={BOOKING_HORIZON}
+            />
+          </Form.Field>
+        </Panel>
+
+        <div style={{ height: 400 }} />
+      </Flex>
+    );
+  },
+};
