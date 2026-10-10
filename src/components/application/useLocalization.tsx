@@ -11,8 +11,8 @@ import { get, merge } from 'lodash-es';
 import { Language } from './Application.types.ts';
 
 interface LocalizationProps extends PropsWithChildren {
-  language: Language;
-  customLabels: Partial<Localization>;
+  language?: Language;
+  customLabels?: Partial<Localization>;
 }
 
 interface LocalizationContextType {
@@ -45,23 +45,31 @@ const DICTIONARIES = {
 };
 
 export const AltroneLocalization = ({
-  language = 'en',
+  language,
   customLabels = {},
   children,
 }: LocalizationProps) => {
+  const parent = useLocalizationContext();
+
   const context = useMemo(() => {
-    const lang = language || 'en';
+    if (!language) {
+      return {
+        language: parent.language,
+        dictionary: merge({}, parent.dictionary, customLabels),
+      };
+    }
+
     const dictionary = merge(
       {},
-      DICTIONARIES[lang as keyof typeof DICTIONARIES] || en,
+      DICTIONARIES[language as keyof typeof DICTIONARIES] || en,
       customLabels,
     );
 
     return {
-      language: lang,
+      language,
       dictionary,
     };
-  }, [language, customLabels]);
+  }, [language, customLabels, parent]);
 
   return (
     <LocalizationContext.Provider value={context}>

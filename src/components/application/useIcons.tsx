@@ -16,7 +16,7 @@ import { createContext, PropsWithChildren, useContext, useMemo } from 'react';
 import { IconSet } from './Application.types.ts';
 
 interface IconsProps extends PropsWithChildren {
-  icons: Partial<IconSet>;
+  icons?: Partial<IconSet>;
 }
 
 export const DEFAULT_ICONS: IconSet = {
@@ -37,9 +37,10 @@ export const DEFAULT_ICONS: IconSet = {
 const IconsContext = createContext<IconSet>(DEFAULT_ICONS);
 
 export const AltroneIcons = ({ icons = {}, children }: IconsProps) => {
+  const parent = useIcons();
   const context = useMemo<IconSet>(
-    () => ({ ...DEFAULT_ICONS, ...icons }),
-    [icons],
+    () => ({ ...parent, ...icons }),
+    [parent, icons],
   );
 
   return (
