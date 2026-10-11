@@ -7,7 +7,7 @@ import { Flex } from '../flex/index.ts';
 import { Text } from '../text/index.ts';
 
 const story: Meta<typeof Label> = {
-  title: 'Components/Atoms/Label',
+  title: 'Components/Controls/Label',
   component: Label,
   decorators: [StorybookDecorator],
   args: {},

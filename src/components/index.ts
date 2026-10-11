@@ -63,5 +63,6 @@ export * from './text';
 export * from './textArea';
 export * from './textInput';
 export * from './notifications';
+export * from './override';
 export * from './toolbar';
 export * from './tooltip';

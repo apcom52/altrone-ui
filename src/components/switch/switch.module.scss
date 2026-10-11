@@ -36,10 +36,6 @@
   &:hover {
     --switch-background-color: var(--switch-hover-background-color);
   }
-
-  &:has(.Input:focus-visible) {
-    --switch-background-color: var(--switch-hover-background-color);
-  }
 }
 
 /* Visually hidden, but kept in the accessibility tree — the real, focusable

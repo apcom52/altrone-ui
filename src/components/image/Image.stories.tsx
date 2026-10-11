@@ -6,7 +6,7 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { CameraOff } from 'lucide-react';
 
 const story: Meta<typeof Image> = {
-  title: 'Components/Core/Image',
+  title: 'Components/Content/Image',
   component: Image,
   decorators: [StorybookDecorator],
   parameters: {
@@ -138,6 +138,37 @@ export const ObjectFit: StoryObj<typeof Image> = {
       </Flex>
     );
   },
+};
+
+export const FillInTallFrame: StoryObj<typeof Image> = {
+  name: 'Fill in a tall frame',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Heading>Fill in a tall frame</Heading>
+      <Paragraph>
+        <Text code>fit="fill"</Text> ignores the source's aspect ratio and
+        stretches the picture to the frame on both axes. Here the source is a
+        tiny 120×60 image, while the frame is 300px tall — the picture is
+        stretched vertically far beyond its natural height and gets visibly
+        distorted. <Text code>cover</Text> and <Text code>contain</Text> keep
+        the proportions for comparison.
+      </Paragraph>
+      <Grid gap="m">
+        {(['fill', 'cover', 'contain'] as const).map((fit) => (
+          <Grid.Column key={fit} size={4}>
+            <Image
+              src="https://picsum.photos/seed/altrone-small/120/60"
+              alt={`Small wide photo, object-fit ${fit}`}
+              fit={fit}
+              width="100%"
+              height={300}
+              caption={fit}
+            />
+          </Grid.Column>
+        ))}
+      </Grid>
+    </Flex>
+  ),
 };
 
 export const CustomPicture: StoryObj<typeof Image> = {

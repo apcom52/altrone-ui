@@ -81,7 +81,7 @@ const NavigationListComponent = memo(
       );
       if (
         link &&
-        link.getAttribute('aria-current') !== 'page' &&
+        !link.hasAttribute('aria-current') &&
         link.getAttribute('aria-disabled') !== 'true'
       ) {
         showHoverOn(link);

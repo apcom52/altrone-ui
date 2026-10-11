@@ -50,7 +50,7 @@ import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 
 const story: Meta<typeof Dropdown> = {
-  title: 'Components/Containers/Dropdown',
+  title: 'Components/Overlays/Dropdown',
   component: Dropdown,
   decorators: [StorybookDecorator],
   parameters: {

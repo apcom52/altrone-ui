@@ -46,21 +46,19 @@
   overflow: hidden;
 }
 
-/* Border + shadow live on the picture's own box, not the frame — so with
-   `fit="contain"`/`"scale-down"`, an image narrower than the frame gets them
+/* Border lives on the picture's own box, not the frame — so with
+   `fit="contain"`/`"scale-down"`, an image narrower than the frame gets it
    hugging its own edges instead of tracing the empty letterbox space around
    it. `<img>` (`src` mode) only — an arbitrary `children` element is a
    consumer-authored picture (its own next/image, its own svg styling), so
-   whether it gets a border/shadow of its own is the consumer's call, not
+   whether it gets a border of its own is the consumer's call, not
    something Image should impose on top of it. `--border-a1` is `--gray-a6`
    (see theming.md/dark-theme.md), an alpha gray that already resolves dark
    under `[data-altrone-theme='dark']` — no separate dark-mode override
-   needed. `--elevation-raised-shadow` is the same light-lift role
-   `Tabs.Item`/`DatePicker`'s day use (see elevation.md). */
+   needed. */
 img.Media {
   outline: 1px solid var(--border-a1);
   outline-offset: -1px;
-  box-shadow: var(--elevation-raised-shadow);
 }
 
 .FitCover,
@@ -70,7 +68,7 @@ img.Media {
 
 /* `contain`/`scale-down`/`none` can render smaller than the frame — shrinking
    the box itself to the content (instead of 100%) is what makes the border
-   and shadow hug the visible picture rather than the surrounding empty
+   hug the visible picture rather than the surrounding empty
    space. `<img>` (a real replaced element with known intrinsic dimensions)
    only — a bare `children` element like an inline `<svg>` with no
    width/height of its own has no intrinsic size for this to shrink-wrap to,
@@ -95,7 +93,7 @@ img.FitNone {
 }
 
 .Preloader {
-  /* No border/shadow here — those are reserved for an actual picture (see
+  /* No border here — it is reserved for an actual picture (see
      `.Media`), not the loading/error placeholders. */
   position: absolute;
   inset: 0;

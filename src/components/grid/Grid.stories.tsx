@@ -10,7 +10,7 @@ import type { Gap } from 'types';
 import type { GridColumnOffset, GridColumnSize } from './Grid.types.ts';
 
 const story: Meta<typeof Grid> = {
-  title: 'Components/Containers/Grid',
+  title: 'Components/Layout/Grid',
   component: Grid,
   decorators: [StorybookDecorator],
   parameters: {

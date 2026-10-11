@@ -6,7 +6,7 @@ import { useBoolean } from '../../utils';
 import { Info, Check, TriangleAlert, CircleAlert } from 'lucide-react';
 
 const story: Meta<typeof Message> = {
-  title: 'Components/Display/Message',
+  title: 'Components/Feedback/Message',
   component: Message,
   decorators: [StorybookDecorator],
   parameters: {

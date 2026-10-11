@@ -47,7 +47,7 @@ import { Switch } from 'components/switch/Switch.tsx';
 import { Slider } from 'components/slider/Slider.tsx';
 
 const story: Meta<typeof Toolbar> = {
-  title: 'Components/Containers/Toolbar',
+  title: 'Components/Layout/Toolbar',
   component: Toolbar,
   decorators: [StorybookDecorator],
   parameters: {

@@ -9,7 +9,7 @@ import {
 import { allModes } from '../../../.storybook/modes.ts';
 
 const story: Meta = {
-  title: 'Components/Core/Text',
+  title: 'Components/Content/Text',
   decorators: [StorybookDecorator],
   parameters: {
     chromatic: {

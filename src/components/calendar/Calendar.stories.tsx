@@ -20,7 +20,7 @@ import { dayjsInstance as dayjs } from '../../utils';
  * product, so the props stay in a concrete context instead of an abstract demo.
  */
 const story: Meta<typeof Calendar> = {
-  title: 'Components/Display/Calendar',
+  title: 'Components/Content/Calendar',
   component: Calendar,
   decorators: [StorybookDecorator],
   parameters: {

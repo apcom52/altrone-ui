@@ -41,7 +41,10 @@ export const ColumnHeaders = ({
   );
 
   /** none → desc → asc → none */
-  const cycleSort = (columnId: string, event: React.MouseEvent) => {
+  const cycleSort = (
+    columnId: string,
+    event: React.MouseEvent | React.KeyboardEvent,
+  ) => {
     notePendingEvent(event);
     const current = table.state.sorting[0];
     if (!current || current.id !== columnId) {
@@ -58,15 +61,19 @@ export const ColumnHeaders = ({
   return (
     <div
       ref={rowRef}
+      role="rowgroup"
       className={clsx(s.Wrapper, s.HeaderRow, { [s.RoundTop]: roundTop })}
     >
-      <div className={s.Backdrop} />
+      <div className={s.Backdrop} aria-hidden="true" />
       <div
         ref={trackRef}
+        role="row"
         className={s.HeaderRowTrack}
         style={{ gridTemplateColumns: columnsTemplate }}
       >
-        {selectMode ? <div /> : null}
+        {selectMode ? (
+          <div role="columnheader" aria-label={t('dataTable.selectableMode')} />
+        ) : null}
         {table.getFlatHeaders().map((header) => {
           const isSortable = header.column.getCanSort();
           const sortDirection = header.column.getIsSorted();
@@ -81,6 +88,27 @@ export const ColumnHeaders = ({
               title={header.id}
               onClick={
                 isSortable ? (event) => cycleSort(header.id, event) : undefined
+              }
+              onKeyDown={
+                isSortable
+                  ? (event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        cycleSort(header.id, event);
+                      }
+                    }
+                  : undefined
+              }
+              tabIndex={isSortable ? 0 : undefined}
+              role="columnheader"
+              aria-sort={
+                !isSortable
+                  ? undefined
+                  : sortDirection === 'asc'
+                    ? 'ascending'
+                    : sortDirection === 'desc'
+                      ? 'descending'
+                      : 'none'
               }
               initial="rest"
               animate={isResizing ? 'resizing' : 'rest'}
@@ -117,7 +145,7 @@ export const ColumnHeaders = ({
           );
         })}
         {hasRowActions ? (
-          <div className={s.Cell}>
+          <div role="columnheader" className={s.Cell}>
             <Text size={4} weight="bold" className={s.Label}>
               {t('dataTable.actions')}
             </Text>

@@ -1,0 +1,16 @@
+/**
+ * Default keyboard focus ring for every focusable element inside the app.
+ * Zero specificity (`:where`), so any component rule — including
+ * `outline: none` — overrides it without a specificity fight. The ring
+ * follows the element's `border-radius`, so shape it there.
+ */
+:global([data-altrone-root='true']) {
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+}
+
+:global([data-altrone-root='true'])
+  :where(:focus-visible) {
+  outline: var(--focus-ring-width) solid var(--focus-color);
+  outline-offset: var(--focus-ring-offset);
+}

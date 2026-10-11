@@ -1,5 +1,4 @@
 import {
-  KeyboardEventHandler,
   MouseEvent,
   KeyboardEvent,
   useMemo,
@@ -35,6 +34,7 @@ export const AutocompleteInput = <T = string,>({
   renderSuggestion,
   onSelect,
   onError,
+  onKeyDown: consumerOnKeyDown,
   showControls,
   minChars = 1,
   cacheResults = false,
@@ -167,7 +167,10 @@ export const AutocompleteInput = <T = string,>({
     );
   });
 
-  const onKeyDown: KeyboardEventHandler = (e) => {
+  const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    consumerOnKeyDown?.(e);
+    if (e.defaultPrevented) return;
+
     if (e.key === 'Escape') {
       dropdownRef.current?.hide();
       return;
@@ -214,8 +217,8 @@ export const AutocompleteInput = <T = string,>({
         inputRef={composedInputRef}
         className={cls}
         style={styles}
-        onKeyDown={onKeyDown}
         {...restProps}
+        onKeyDown={onKeyDown}
       >
         {isLoadingIslandVisible ? (
           <TextInput.LoadingIsland placement="end" />

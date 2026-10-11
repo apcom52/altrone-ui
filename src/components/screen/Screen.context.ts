@@ -12,6 +12,11 @@ export interface ScreenContextValue {
    */
   sidebarMode: 'inline' | 'overlay';
   /**
+   * `false` until `Screen` has mounted and `sidebarMode` reflects the real
+   * viewport — before that it's the SSR default, not a user-visible change.
+   */
+  modeResolved: boolean;
+  /**
    * The mounted `Screen.Sidebar`'s live state, published by `Sidebar` itself
    * via `registerSidebar` — `null` when no `Screen.Sidebar` is mounted (or
    * there's no `Screen` ancestor at all). Lets `Toolbar.SidebarToggleAction`
@@ -23,6 +28,7 @@ export interface ScreenContextValue {
 
 const ScreenContext = createContext<ScreenContextValue>({
   sidebarMode: 'inline',
+  modeResolved: true,
   sidebar: null,
   registerSidebar: () => {},
 });

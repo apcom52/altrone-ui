@@ -28,7 +28,7 @@ import type {
 } from './Notifications.types';
 
 const story: Meta<typeof Notifications> = {
-  title: 'Components/Display/Notifications',
+  title: 'Components/Feedback/Notifications',
   component: Notifications,
   decorators: [StorybookDecorator],
   parameters: {

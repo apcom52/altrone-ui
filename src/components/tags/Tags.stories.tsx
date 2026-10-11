@@ -6,7 +6,7 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Size } from 'types';
 
 const story: Meta<typeof Tags> = {
-  title: 'Components/Display/Tags',
+  title: 'Components/Content/Tags',
   component: Tags,
   decorators: [StorybookDecorator],
   parameters: {

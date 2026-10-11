@@ -25,7 +25,7 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Tooltip } from './Tooltip.tsx';
 
 const story: Meta<typeof Tooltip> = {
-  title: 'Components/Containers/Tooltip',
+  title: 'Components/Overlays/Tooltip',
   component: Tooltip,
   decorators: [StorybookDecorator],
   parameters: {

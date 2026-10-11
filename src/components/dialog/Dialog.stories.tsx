@@ -10,7 +10,7 @@ import { Button } from 'components/button/index.ts';
 import { Trash2, KeyRound, Rocket, PencilLine } from 'lucide-react';
 
 const story: Meta<typeof DialogProvider> = {
-  title: 'Components/Display/Dialogs',
+  title: 'Components/Overlays/Dialogs',
   component: DialogProvider,
   decorators: [StorybookDecorator],
   parameters: {

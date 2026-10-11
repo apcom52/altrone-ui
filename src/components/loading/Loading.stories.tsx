@@ -6,7 +6,7 @@ import { allModes } from '../../../.storybook/modes.ts';
 import { Loading } from './Loading.tsx';
 
 const story: Meta<typeof Loading> = {
-  title: 'Components/Atoms/Loading',
+  title: 'Components/Feedback/Loading',
   component: Loading,
   decorators: [StorybookDecorator],
   parameters: {

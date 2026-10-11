@@ -8,7 +8,7 @@ import { Spoiler } from './Spoiler.tsx';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const story: Meta<typeof Spoiler> = {
-  title: 'Components/Containers/Spoiler',
+  title: 'Components/Layout/Spoiler',
   component: Spoiler,
   decorators: [StorybookDecorator],
   parameters: {

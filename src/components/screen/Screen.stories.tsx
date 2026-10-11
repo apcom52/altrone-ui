@@ -28,7 +28,7 @@ import {
 } from 'lucide-react';
 
 const story: Meta<typeof Screen> = {
-  title: 'Components/Core/Screen',
+  title: 'Components/Layout/Screen',
   component: Screen,
   decorators: [StorybookDecorator],
   parameters: {

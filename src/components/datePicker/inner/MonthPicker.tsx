@@ -21,7 +21,7 @@ export const MonthPicker = memo<{ autoClose?: boolean }>(
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-      containerRef.current?.focus();
+      containerRef.current?.focus({ preventScroll: true });
     }, []);
 
     const months = useMemo(() => {

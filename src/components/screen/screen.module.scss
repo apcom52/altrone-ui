@@ -205,6 +205,7 @@
  * the content with a scrim. `.SidebarPanel` is what actually moves.
  */
 .Sidebar {
+  outline: none;
   position: fixed;
   inset-block: var(--space-content);
   inset-inline-start: 0;

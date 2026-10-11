@@ -7,7 +7,7 @@ import { CloseButton } from './CloseButton.tsx';
 import { CircleX } from 'lucide-react';
 
 const story: Meta<typeof CloseButton> = {
-  title: 'Components/Atoms/CloseButton',
+  title: 'Components/Controls/CloseButton',
   component: CloseButton,
   decorators: [StorybookDecorator],
   parameters: {

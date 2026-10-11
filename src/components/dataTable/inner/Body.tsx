@@ -34,6 +34,7 @@ export const Body = <T extends object>({
       controlRef={scrollableRef}
       overflowX="scroll"
       overflowY="visible"
+      role="rowgroup"
       className={s.TableBody}
     >
       {rows.length === 0 && showEmptyBanner ? (
@@ -45,12 +46,14 @@ export const Body = <T extends object>({
         return (
           <div
             key={row.id}
+            role="row"
+            aria-selected={selectMode ? isSelected : undefined}
             className={s.Row}
             data-selected={isSelected}
             style={{ gridTemplateColumns: columnsTemplate }}
           >
             {selectMode ? (
-              <div className={s.CheckboxCell}>
+              <div role="cell" className={s.CheckboxCell}>
                 <Checkbox
                   checked={isSelected}
                   onChange={() => row.toggleSelected()}
@@ -73,7 +76,7 @@ export const Body = <T extends object>({
               };
 
               return (
-                <div key={cell.id} className={s.Cell}>
+                <div key={cell.id} role="cell" className={s.Cell}>
                   {createElement(
                     Renderer as FC<CellRenderer<T>>,
                     rendererProps,
@@ -82,7 +85,7 @@ export const Body = <T extends object>({
               );
             })}
             {rowActions ? (
-              <div className={s.Cell}>
+              <div role="cell" className={s.Cell}>
                 <RowActionsCell>
                   {typeof rowActions === 'function'
                     ? rowActions({

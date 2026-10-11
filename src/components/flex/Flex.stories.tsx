@@ -7,7 +7,7 @@ import { Box } from '../box';
 import type { Gap } from 'types';
 
 const story: Meta<typeof Flex> = {
-  title: 'Components/Containers/Flex',
+  title: 'Components/Layout/Flex',
   component: Flex,
   decorators: [StorybookDecorator],
   parameters: {

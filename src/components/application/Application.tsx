@@ -22,7 +22,9 @@ import { Slot } from 'utils/components/Slot.tsx';
 import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
 
 import '@fontsource-variable/inter';
+import '@fontsource-variable/inter/wght-italic.css';
 import '@fontsource-variable/jetbrains-mono';
+import '@fontsource-variable/jetbrains-mono/wght-italic.css';
 import { AltroneLocalization } from './useLocalization.tsx';
 import { AltroneIcons } from './useIcons.tsx';
 import { DialogProvider } from 'components/dialog/DialogProvider.tsx';

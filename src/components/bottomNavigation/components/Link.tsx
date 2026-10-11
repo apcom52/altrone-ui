@@ -1,5 +1,7 @@
 import {
   isValidElement,
+  KeyboardEvent,
+  MouseEvent,
   memo,
   ReactElement,
   ReactNode,
@@ -46,6 +48,8 @@ export const Link = memo(
     selected,
     asChild,
     children,
+    onClick,
+    onKeyDown,
     ...restProps
   }: BottomNavigationLinkProps) => {
     const cls = clsx(s.Link, { [s.Selected]: selected }, className);
@@ -60,9 +64,24 @@ export const Link = memo(
     const content = <LinkContent icon={icon} label={label} badge={badge} />;
 
     const composedRef = DOMUtils.composeRefs(ref, elementRef);
+    /* An `<a>` without `href` isn't focusable or keyboard-activatable on its own. */
+    const handleKeyDown = (event: KeyboardEvent<HTMLAnchorElement>) => {
+      onKeyDown?.(event);
+      if (restProps.href || event.defaultPrevented) {
+        return;
+      }
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        onClick?.(event as unknown as MouseEvent<HTMLAnchorElement>);
+      }
+    };
+
     const interactionProps = {
       className: cls,
       style,
+      onClick,
+      onKeyDown: handleKeyDown,
+      tabIndex: restProps.href ? undefined : 0,
       'aria-current': selected ? ('page' as const) : undefined,
       ...restProps,
     };

@@ -11,6 +11,7 @@ import { dayjs } from '../../calendar';
 import { useDataTableContext } from '../DataTable.context.tsx';
 import { FilterRowProps } from '../DataTable.types.ts';
 import { RulesByDataType } from '../DataTable.constants.ts';
+import { columnHeaderLabel } from './columnHeaderLabel.ts';
 import s from './filtering.module.scss';
 
 export const FilterRow = ({
@@ -246,7 +247,7 @@ export const FilterRow = ({
       <TextInput
         readOnly
         readonlyStyles
-        value={column ? String(column.id) : ''}
+        value={column ? columnHeaderLabel(column) : ''}
       />
       <Select
         value={currentRule}

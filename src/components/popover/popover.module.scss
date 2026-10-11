@@ -9,6 +9,7 @@
    its own box-shadow transition. This only overrides Box's control defaults for
    a stacking panel. */
 .Popover {
+  outline: none;
   display: flex;
   flex-direction: column;
   align-items: stretch;

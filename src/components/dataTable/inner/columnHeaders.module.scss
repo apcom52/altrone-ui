@@ -105,6 +105,10 @@
 
 .Sortable {
   cursor: pointer;
+
+  &:focus-visible {
+    border-radius: var(--radius-pill);
+  }
 }
 
 /* Same visual language as the Splitter divider handle. */
