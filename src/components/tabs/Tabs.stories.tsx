@@ -184,7 +184,7 @@ export const Overview: StoryObj<typeof Tabs> = {
         <Paragraph>
           <Text code>size</Text> on <Text code>Tabs</Text> scales the pill and
           every <Text code>Tabs.Item</Text> inside it — height, icon size, text
-          size, and corner rounding all move together.
+          size, badge size, and corner rounding all move together.
         </Paragraph>
 
         <Flex orientation="vertical" gap="m">
@@ -193,6 +193,7 @@ export const Overview: StoryObj<typeof Tabs> = {
               <Tabs.Item
                 icon={<LayoutDashboard size={14} />}
                 label={`size="${sz}"`}
+                badge={8}
                 selected={sizeSel[sz] === 'a'}
                 onClick={() =>
                   setSizeSel((prev) => ({ ...prev, [sz]: 'a' }))

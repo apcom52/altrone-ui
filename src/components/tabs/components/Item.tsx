@@ -7,6 +7,14 @@ import { Badge } from 'internal/badge';
 import { motion, useAnimationControls } from 'motion/react';
 import { useTabsContext } from '../Tabs.context.ts';
 import { Slot } from 'utils/components/Slot.tsx';
+import type { Size } from 'types';
+
+const BADGE_SIZE_CLASS: Partial<Record<Size, string>> = {
+  s: s.BadgeSmall,
+  m: s.BadgeMedium,
+  l: s.BadgeLarge,
+  xl: s.BadgeXLarge,
+};
 
 type TabItemContentProps = Omit<TabsItemProps, 'asChild' | 'children'>;
 
@@ -23,7 +31,7 @@ const TabItemContent = memo(
     href,
     ...restProps
   }: TabItemContentProps) => {
-    const { backdropId } = useTabsContext();
+    const { backdropId, size } = useTabsContext();
     const backdropControls = useAnimationControls();
 
     const inner = (
@@ -45,7 +53,10 @@ const TabItemContent = memo(
         {icon ? <div className={s.Icon}>{icon}</div> : null}
         {showLabel ? <Text className={s.Label}>{label}</Text> : null}
         {badge ? (
-          <Badge className={s.Badge} size="s">
+          <Badge
+            className={clsx(s.Badge, BADGE_SIZE_CLASS[size])}
+            size={size === 'mini' ? 's' : size}
+          >
             {badge}
           </Badge>
         ) : null}
