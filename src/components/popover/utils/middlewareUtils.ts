@@ -8,9 +8,13 @@ import {
 } from '@floating-ui/react';
 import { PlacementConfig } from './placementUtils';
 
-const matchReferenceWidth = (parentWidth: boolean): Middleware =>
+const applySize = (parentWidth: boolean): Middleware =>
   size({
-    apply({ rects, elements }) {
+    apply({ rects, elements, availableHeight }) {
+      elements.floating.style.setProperty(
+        '--popover-available-height',
+        `${availableHeight}px`,
+      );
       if (parentWidth) {
         Object.assign(elements.floating.style, {
           width: `${rects.reference.width}px`,
@@ -27,7 +31,7 @@ export const createMiddleware = (
   offset(config.offset),
   config.shouldUseAutoPlacement ? autoPlacement() : flip(),
   shift({ padding: 4 }),
-  matchReferenceWidth(parentWidth),
+  applySize(parentWidth),
 ];
 
 /**
@@ -52,5 +56,5 @@ export const createOverlapMiddleware = (
     return { mainAxis, crossAxis };
   }),
   shift({ padding: 4 }),
-  matchReferenceWidth(parentWidth),
+  applySize(parentWidth),
 ];

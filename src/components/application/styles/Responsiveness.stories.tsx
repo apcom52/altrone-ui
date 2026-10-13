@@ -174,6 +174,41 @@ return <div ref={ref}>{isNarrow ? <Stacked /> : <SideBySide />}</div>;`}</Code>
         already uses for viewport queries.
       </Paragraph>
 
+      <Heading>Mobile Safari: the viewport that moves</Heading>
+      <Paragraph>
+        On iOS the visible area changes under the page: Safari&rsquo;s bars
+        collapse and expand while scrolling, and the on-screen keyboard
+        covers the bottom without resizing the layout. Three rules keep
+        Altrone&rsquo;s fixed chrome and overlays inside what the user can
+        actually see.
+      </Paragraph>
+      <Paragraph>
+        <Text code>100vh</Text> means the viewport with the bars retracted,
+        so it is taller than the screen whenever they are shown. Page-level
+        minimums (<Text code>Screen</Text>) use <Text code>100svh</Text>;
+        fixed panels that must end exactly at the visible bottom edge
+        (<Text code>Screen.Sidebar</Text>) use <Text code>100dvh</Text>.
+      </Paragraph>
+      <Paragraph>
+        The keyboard is only reported by <Text code>visualViewport</Text> — no{' '}
+        <Text code>resize</Text> event, no CSS unit. <Text code>Modal</Text>,{' '}
+        <Text code>Drawer</Text> and the notification stacks size themselves
+        against it while open, and every popover (<Text code>Dropdown</Text>,{' '}
+        <Text code>Select</Text>, <Text code>AutocompleteInput</Text>)
+        repositions on its changes and caps its menu at the space left above
+        the keyboard.
+      </Paragraph>
+      <Paragraph>
+        Fixed chrome clears the notch and the home indicator through{' '}
+        <Text code>env(safe-area-inset-*)</Text>. These insets are{' '}
+        <Text code>0</Text> unless the app opts in with{' '}
+        <Text code>viewport-fit=cover</Text>:
+      </Paragraph>
+      <Code>{`<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, viewport-fit=cover"
+/>`}</Code>
+
       <Heading>What doesn&rsquo;t change</Heading>
       <Paragraph>
         A component&rsquo;s <code>size</code> prop stays an explicit,

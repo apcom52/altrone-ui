@@ -4,6 +4,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import dts from 'vite-plugin-dts';
 import svgr from 'vite-plugin-svgr';
 import { resolve } from 'path';
+import autoprefixer from 'autoprefixer';
 
 export default defineConfig({
   plugins: [
@@ -45,6 +46,9 @@ export default defineConfig({
       },
     }),
   ],
+  css: {
+    postcss: { plugins: [autoprefixer()] },
+  },
   publicDir: resolve(__dirname, './src/assets'),
   build: {
     target: ['es2022'],

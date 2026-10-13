@@ -121,6 +121,12 @@
   }
 }
 
+/** Zero specificity, so a component's own `touch-action: none` still wins.
+    Removes double-tap zoom on rapid taps (steppers, pagination, calendar). */
+:where(.AltroneApp) :where(button, a, label, [role='button'], [role='tab']) {
+  touch-action: manipulation;
+}
+
 :global(.lucide) {
   width: 1em !important;
   height: 1em !important;
@@ -134,6 +140,8 @@
   line-height: var(--line-height-4);
   color: var(--app-text-color);
   background-color: var(--app-background);
+  /** Controls draw their own pressed state — drop WebKit's gray tap flash. */
+  -webkit-tap-highlight-color: transparent;
 
   * {
     font-family: var(--app-font-family);

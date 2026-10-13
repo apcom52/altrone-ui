@@ -45,12 +45,9 @@ const ScreenBase = ({
     ? 'inline'
     : 'overlay';
 
-<<<<<<< ours
   const [modeResolved, setModeResolved] = useState(false);
   useEffect(() => setModeResolved(true), []);
 
-=======
->>>>>>> theirs
   useEffect(() => {
     setScreenTitle(title);
     return () => setScreenTitle(undefined);

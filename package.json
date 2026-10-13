@@ -82,6 +82,7 @@
     "@typescript-eslint/parser": "7.2.0",
     "@vitejs/plugin-react": "4.2.1",
     "@vitest/ui": "1.4.0",
+    "autoprefixer": "^10.6.1",
     "babel-plugin-transform-scss": "1.2.0",
     "cypress": "^14.0.0",
     "cypress-visual-regression": "^5.2.2",
@@ -110,5 +111,12 @@
   "author": {
     "name": "Alexander Perevezentsev",
     "email": "apcom@live.ru"
-  }
+  },
+  "browserslist": [
+    "last 2 chrome versions",
+    "last 2 firefox versions",
+    "last 2 edge versions",
+    "safari >= 15.4",
+    "ios_saf >= 15.4"
+  ]
 }

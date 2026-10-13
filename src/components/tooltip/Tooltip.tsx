@@ -88,6 +88,7 @@ export const Tooltip = memo(
 
     const hoverTrigger = useHover(context, {
       enabled: triggersList.includes('hover'),
+      mouseOnly: true,
       delay: { open: 500, close: 0 },
     });
     const focusTrigger = useFocus(context, {
