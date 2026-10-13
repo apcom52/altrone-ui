@@ -25,6 +25,9 @@
   background-color: var(--data-table-background-color);
   border-radius: var(--data-table-rounding);
   box-shadow: 0 0 0 1px var(--data-table-border-color);
+  /* `clip`, not `hidden`: `hidden` makes this a scroll container and breaks
+     the header/footer `position: sticky` relative to the page. */
+  overflow: clip;
 }
 
 .Table {
