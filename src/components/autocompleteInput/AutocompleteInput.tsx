@@ -217,6 +217,7 @@ export const AutocompleteInput = <T = string,>({
         inputRef={composedInputRef}
         className={cls}
         style={styles}
+        autoComplete="off"
         {...restProps}
         onKeyDown={onKeyDown}
       >
