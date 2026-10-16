@@ -1,13 +1,6 @@
-import React from 'react';
-import { expect, test, describe, vitest, vi } from 'vitest';
+import { expect, test, describe } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import {
-  Application,
-  Button,
-  ColorPicker,
-  Configuration,
-  Dropdown,
-} from '../src/components';
+import { Application, ColorPicker } from '../src/components';
 import { COLORS } from '../src/components/colorPicker/COLORS';
 class ResizeObserver {
   observe() {}
@@ -75,25 +68,21 @@ describe('ColorPicker', () => {
     expect(value).toBe(undefined);
   });
 
-  test('check renderFunc property', async () => {
-    const callbackFn = vi.fn();
-    const value = '#00ff00';
-
+  test('asChild uses the child as the trigger and opens the picker', async () => {
     render(
-      <ColorPicker
-        data-testid="picker"
-        value={value}
-        onChange={callbackFn}
-        renderFunc={({ value, opened }) => {
-          expect(opened).toBe(false);
-
-          return <div data-testid="render-func">{value}</div>;
-        }}
-      />,
+      <Application>
+        <ColorPicker value="#00ff00" onChange={() => null} asChild>
+          <button data-testid="custom-trigger">Pick</button>
+        </ColorPicker>
+      </Application>,
     );
 
-    expect(await screen.findByTestId('render-func')).toBeInTheDocument();
-    expect(await screen.findByText(value)).toBeInTheDocument();
+    const trigger = screen.getByTestId('custom-trigger');
+    expect(trigger).toHaveAttribute('data-value', '#00ff00');
+    expect(trigger).toHaveAttribute('data-opened', 'false');
+
+    fireEvent.click(trigger);
+    expect(await screen.findByText('Select a color')).toBeInTheDocument();
   });
 
   test('the popover shows a localized title', () => {
@@ -121,19 +110,5 @@ describe('ColorPicker', () => {
     const wrapper = screen.getByTestId('picker').closest('.cls');
     expect(wrapper).not.toBeNull();
     expect(wrapper).toHaveStyle('color: rgb(0, 0, 255)');
-  });
-
-  test('check that ColorPicker configuration works correctly', () => {
-    render(
-      <Configuration
-        colorPicker={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
-      >
-        <ColorPicker data-testid="element" onChange={() => null} />
-      </Configuration>,
-    );
-
-    const element = screen.getByTestId('element');
-    expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

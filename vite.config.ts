@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import dts from 'vite-plugin-dts';
@@ -77,15 +77,5 @@ export default defineConfig({
     include: ['vitest/**/*.test.{ts,tsx}'],
     setupFiles: ['./vitest/vitest.setup.ts'],
     globals: true,
-    resolve: {
-      alias: {
-        components: resolve(__dirname, './src/components'),
-        internal: resolve(__dirname, './src/internal'),
-        hooks: resolve(__dirname, './src/hooks'),
-        types: resolve(__dirname, './src/types'),
-        utils: resolve(__dirname, './src/utils'),
-        locales: resolve(__dirname, './src/locales'),
-      },
-    },
   },
 });

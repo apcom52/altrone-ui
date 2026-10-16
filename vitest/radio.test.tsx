@@ -1,4 +1,4 @@
-import React, { createRef } from 'react';
+import { createRef } from 'react';
 import { expect, test, describe, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Radio } from '../src/components';

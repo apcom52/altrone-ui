@@ -1,4 +1,3 @@
-import React from 'react';
 import { expect, test, describe, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { BottomNavigation } from '../src/components';
@@ -10,7 +9,6 @@ class ResizeObserver {
 }
 
 beforeAll(() => {
-  // @ts-ignore
   window.ResizeObserver = ResizeObserver;
 });
 
@@ -39,7 +37,11 @@ describe('BottomNavigation', () => {
   test('the selected link is marked with aria-current', () => {
     render(
       <BottomNavigation>
-        <BottomNavigation.Link data-testid="home" label="Home" icon={<span />} />
+        <BottomNavigation.Link
+          data-testid="home"
+          label="Home"
+          icon={<span />}
+        />
         <BottomNavigation.Link
           data-testid="search"
           label="Search"
@@ -50,7 +52,10 @@ describe('BottomNavigation', () => {
     );
 
     expect(screen.getByTestId('home')).not.toHaveAttribute('aria-current');
-    expect(screen.getByTestId('search')).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByTestId('search')).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
   });
 
   test('renders the badge content', () => {
@@ -98,27 +103,5 @@ describe('BottomNavigation', () => {
     expect(custom.tagName).toBe('DIV');
     expect(custom).toHaveTextContent('ICON');
     expect(custom).toHaveTextContent('Home');
-  });
-
-  test('renderFunc still overrides the rendered element', () => {
-    render(
-      <BottomNavigation>
-        <BottomNavigation.Link
-          label="Home"
-          icon={<span />}
-          renderFunc={(ref, props) => (
-            <button
-              ref={ref as React.Ref<HTMLButtonElement>}
-              className={props.className}
-              data-testid="rf"
-            >
-              {props.label}
-            </button>
-          )}
-        />
-      </BottomNavigation>,
-    );
-
-    expect(screen.getByTestId('rf').tagName).toBe('BUTTON');
   });
 });

@@ -1,12 +1,6 @@
-import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import {
-  Application,
-  AutocompleteInput,
-  Configuration,
-  TextInput,
-} from '../src';
+import { Application, AutocompleteInput, TextInput } from '../src';
 
 class ResizeObserver {
   observe() {}
@@ -48,23 +42,5 @@ describe('AutocompleteInput', () => {
     const wrapper = screen.getByTestId('combobox').closest('.cls');
     expect(wrapper).not.toBeNull();
     expect(wrapper).toHaveStyle('color: rgb(0, 0, 255)');
-  });
-
-  test('check that configuration works', () => {
-    render(
-      <Application>
-        <Configuration
-          autocompleteInput={{
-            className: 'cls',
-            style: { color: 'rgb(255, 0, 0)' },
-          }}
-        >
-          <AutocompleteInput getSuggestions={() => []} data-testid="combobox" />
-        </Configuration>
-      </Application>,
-    );
-
-    expect(screen.getByTestId('combobox')).toHaveClass('cls');
-    expect(screen.getByTestId('combobox')).toHaveStyle('color: rgb(255, 0, 0)');
   });
 });

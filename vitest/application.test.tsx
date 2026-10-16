@@ -1,4 +1,3 @@
-import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { act, render, screen } from '@testing-library/react';
 import { Application, Screen, setPageTitle, resetPageTitle } from '../src';

@@ -1,6 +1,7 @@
 import { describe, expect, test, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Application, DataTable } from '../src/components';
+import type { DataTableProps } from '../src/components/dataTable/DataTable.types';
 import {
   textFilterFn,
   numberFilterFn,
@@ -26,9 +27,11 @@ const PEOPLE = [
   { id: 5, name: 'Edsger', role: 'Engineer', age: 58, active: true, color: '#0f0', joined: '2018-01-30', skills: ['algo'] },
 ];
 
-const renderTable = (props: Partial<Parameters<typeof DataTable>[0]> = {}) =>
+type Person = (typeof PEOPLE)[number];
+
+const renderTable = (props: Partial<DataTableProps<Person>> = {}) =>
   render(
-    <Application config={{ locale: { locale: 'en-US' } }}>
+    <Application language="en">
       <DataTable
         data={PEOPLE}
         rowsPerPage={3}
@@ -137,8 +140,8 @@ describe('DataTable component', () => {
     fireEvent.click(screen.getByText('Add filter'));
     fireEvent.click(screen.getByRole('button', { name: 'Role' }));
 
-    // The read-only field of the new filter row echoes the column id.
-    expect(screen.getByDisplayValue('role')).toBeInTheDocument();
+    // The read-only field of the new filter row shows the column label.
+    expect(screen.getByDisplayValue('Role')).toBeInTheDocument();
   });
 
   test('the filter panel reflects a controlled `filters` prop set before it was ever opened', () => {
@@ -148,7 +151,7 @@ describe('DataTable component', () => {
 
     fireEvent.click(screen.getByText('Filters'));
 
-    expect(screen.getByDisplayValue('role')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Role')).toBeInTheDocument();
   });
 
   test('selectable reveals a checkbox column only after toggling select mode', () => {
@@ -219,7 +222,7 @@ describe('DataTable component', () => {
     expect(bodyRows().map((r) => r.textContent)?.[0]).toContain('Ada');
 
     rerender(
-      <Application config={{ locale: { locale: 'en-US' } }}>
+      <Application language="en">
         <DataTable
           data={PEOPLE}
           rowsPerPage={3}
@@ -260,7 +263,7 @@ describe('DataTable component', () => {
   test('getRowId keeps an open row menu tied to its row when `data` is reordered externally', () => {
     const onDelete = vi.fn();
     const table = (data: typeof PEOPLE) => (
-      <Application config={{ locale: { locale: 'en-US' } }}>
+      <Application language="en">
         <DataTable
           data={data}
           getRowId={(person) => String(person.id)}

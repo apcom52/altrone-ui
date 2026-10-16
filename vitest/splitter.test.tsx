@@ -12,9 +12,11 @@ class ResizeObserver {
 }
 
 beforeAll(() => {
-  // @ts-ignore
   window.ResizeObserver = ResizeObserver;
 });
+
+const panelOf = (text: string) =>
+  screen.getByText(text).closest('[id*="-panel-"]');
 
 const renderSplitter = (ui: React.ReactNode) =>
   render(<Application>{ui}</Application>);
@@ -52,10 +54,8 @@ describe('Splitter', () => {
       </Splitter>,
     );
 
-    expect(screen.getByText('left').parentElement).toHaveStyle(
-      'flex: 30 30 0',
-    );
-    expect(screen.getByText('right').parentElement).toHaveStyle('flex: 70 70 0');
+    expect(panelOf('left')).toHaveStyle('flex: 30 30 0');
+    expect(panelOf('right')).toHaveStyle('flex: 70 70 0');
   });
 
   test('minSize/maxSize clamp the initial size derived from defaultSize', () => {
@@ -70,10 +70,8 @@ describe('Splitter', () => {
       </Splitter>,
     );
 
-    expect(screen.getByText('left').parentElement).toHaveStyle('flex: 20 20 0');
-    expect(screen.getByText('right').parentElement).toHaveStyle(
-      'flex: 60 60 0',
-    );
+    expect(panelOf('left')).toHaveStyle('flex: 20 20 0');
+    expect(panelOf('right')).toHaveStyle('flex: 60 60 0');
   });
 
   test('imperative toggle collapses a panel and fires onCollapse', () => {
@@ -101,7 +99,7 @@ describe('Splitter', () => {
     fireEvent.click(screen.getByText('toggle'));
 
     expect(onCollapse).toHaveBeenCalledWith(0, true, undefined);
-    expect(screen.getByText('side').parentElement).toHaveStyle('flex: 0 0 0');
+    expect(panelOf('side')).toHaveStyle('flex: 0 0 0');
   });
 
   test('clicking a divider collapse button collapses that panel', () => {
@@ -121,15 +119,11 @@ describe('Splitter', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Collapse panel' }));
 
     expect(onCollapse).toHaveBeenCalledWith(0, true, expect.anything());
-    expect(screen.getByText('side').parentElement).toHaveStyle('flex: 0 0 0');
+    expect(panelOf('side')).toHaveStyle('flex: 0 0 0');
   });
 
   test('collapsedControlsVisibility="never" drops the expand button of a collapsed panel', () => {
-    const Harness = ({
-      visibility,
-    }: {
-      visibility: 'always' | 'never';
-    }) => {
+    const Harness = ({ visibility }: { visibility: 'always' | 'never' }) => {
       const ref = useRef<SplitterHandle>(null);
       return (
         <>
@@ -182,7 +176,7 @@ describe('Splitter', () => {
 
     expect(onSizesChange).toHaveBeenCalledWith([0, 100]);
     // sizes prop unchanged — the neighbor's flex stays at its original 60, not 100
-    expect(screen.getByText('main').parentElement).toHaveStyle('flex: 60 60 0');
+    expect(panelOf('main')).toHaveStyle('flex: 60 60 0');
   });
 
   test('controlled `sizes`: fed back through onSizesChange, the collapse renders through', () => {
@@ -204,10 +198,8 @@ describe('Splitter', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Collapse panel' }));
 
-    expect(screen.getByText('side').parentElement).toHaveStyle('flex: 0 0 0');
-    expect(screen.getByText('main').parentElement).toHaveStyle(
-      'flex: 100 100 0',
-    );
+    expect(panelOf('side')).toHaveStyle('flex: 0 0 0');
+    expect(panelOf('main')).toHaveStyle('flex: 100 100 0');
   });
 
   test('Panel forwards className/style/ref and arbitrary props to its root element', () => {
@@ -230,7 +222,7 @@ describe('Splitter', () => {
     );
 
     const panel = screen.getByTestId('left-panel');
-    expect(panel).toBe(screen.getByText('left').parentElement);
+    expect(panel).toBe(panelOf('left'));
     expect(panel).toHaveClass('cls');
     expect(panel).toHaveStyle('color: rgb(255, 0, 0)');
     // internal sizing invariant survives a user-supplied `style`

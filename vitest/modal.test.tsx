@@ -1,4 +1,3 @@
-import React from 'react';
 import { createPortal } from 'react-dom';
 import { expect, test, describe, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';

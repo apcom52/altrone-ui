@@ -71,10 +71,14 @@ describe('Grid', () => {
     ).toBe('');
   });
 
-  test('renders the element given by tagName for the container and columns', () => {
+  test('renders the element given by asChild for the container and columns', () => {
     render(
-      <Grid tagName="section" data-testid="grid">
-        <Grid.Column tagName="article" data-testid="column" />
+      <Grid asChild data-testid="grid">
+        <section>
+          <Grid.Column asChild data-testid="column">
+            <article />
+          </Grid.Column>
+        </section>
       </Grid>,
     );
 

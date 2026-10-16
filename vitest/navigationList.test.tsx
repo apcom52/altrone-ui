@@ -1,4 +1,3 @@
-import React from 'react';
 import { expect, test, describe, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { NavigationList } from '../src/components';
