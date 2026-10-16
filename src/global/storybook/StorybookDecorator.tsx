@@ -42,13 +42,6 @@ export const StorybookDecorator = (Story: any, options: any) => {
       theme={options.globals.theme === 'dark' ? 'dark' : 'light'}
       language={(options.globals.lang || 'en').toLowerCase()}
       accent={options.globals.accent || 'blue'}
-      customLabels={{
-        path: {
-          to: {
-            test: 'Test',
-          },
-        },
-      }}
     >
       {/* Innermost MotionConfig wins over Application's own
           `reducedMotion="user"`, so the toolbar toggle can force it. */}

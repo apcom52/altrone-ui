@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Flex, Text } from 'components';
-import { TextArea } from '../TextArea.tsx';
+import { TextArea } from '../Textarea.tsx';
 
 const SAMPLE = `{
   "name": "web",

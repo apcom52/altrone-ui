@@ -60,7 +60,7 @@ export * from './switch';
 export * from './tabs';
 export * from './tags';
 export * from './text';
-export * from './textArea';
+export * from './textarea';
 export * from './textInput';
 export * from './notifications';
 export * from './override';

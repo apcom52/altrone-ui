@@ -1,4 +1,4 @@
-import { TextAreaProps } from './TextArea.types.ts';
+import { TextAreaProps } from './Textarea.types.ts';
 import { TextInput } from '../textInput';
 import { ArrayUtils } from '../../utils';
 import clsx from 'clsx';

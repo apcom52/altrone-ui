@@ -9,7 +9,7 @@ import { Text } from '../text';
 import s from './dialog.module.scss';
 import { Button } from 'components/button';
 import { Flex } from 'components/flex';
-import { TextArea } from 'components/textArea';
+import { TextArea } from 'components/textarea';
 import { TextInput } from 'components/textInput';
 import { NumberInput } from 'components/numberInput';
 import { PasswordInput } from 'components/passwordInput';

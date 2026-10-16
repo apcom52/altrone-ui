@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Flex, Text } from 'components';
-import { TextArea } from '../TextArea.tsx';
+import { TextArea } from '../Textarea.tsx';
 
 const START =
   "We're moving the weekly sync to Thursdays at 10:00.\n\nThe Monday slot clashed with the release window for half the team. Notes will still land in #announcements by end of day either way.";

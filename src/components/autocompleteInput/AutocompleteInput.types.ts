@@ -14,7 +14,7 @@ export type AutocompleteRenderSuggestionContext<T = string> = {
   suggestion: T;
 };
 
-export interface AutocompleteInputProps<T = string> extends TextInputProps {
+export interface AutocompleteInputProps<T = string> extends Omit<TextInputProps, 'onSelect'> {
   getSuggestions: AutocompleteSuggestionsFunc<T>;
   getSuggestionValue?: (suggestion: T) => string;
   renderSuggestion?: (

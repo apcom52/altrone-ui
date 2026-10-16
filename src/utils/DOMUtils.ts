@@ -69,7 +69,7 @@ export class DOMUtils {
   };
 
   static getValidChildren(element: ReactNode) {
-    if (!isValidElement(element)) {
+    if (!isValidElement<{ children?: ReactNode }>(element)) {
       return [];
     }
 
