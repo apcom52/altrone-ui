@@ -14,7 +14,6 @@
 | Vite         | 5       | also used as library bundler (`vite-plugin-dts`) |
 | Storybook    | 8       | stories live next to the component                |
 | Vitest       | 1       | unit tests                                        |
-| Cypress      | 14      | visual regression tests                           |
 
 ## Structure
 
@@ -35,9 +34,7 @@ src/
 npm run storybook          # component dev environment
 npm run build               # library build (vite build)
 npm run test:unit           # Vitest
-npm run test:e2e-chrome     # Cypress component tests (Chrome)
-npm run test:e2e-firefox    # Cypress component tests (Firefox)
-npm run test:pre-release    # unit + e2e-chrome + e2e-firefox
+npm run test:pre-release    # unit tests
 npm run lint                 # ESLint
 ```
 
