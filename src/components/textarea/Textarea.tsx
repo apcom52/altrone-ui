@@ -2,7 +2,7 @@ import { TextAreaProps } from './Textarea.types.ts';
 import { TextInput } from '../textInput';
 import { ArrayUtils } from '../../utils';
 import clsx from 'clsx';
-import s from './textArea.module.scss';
+import s from './textarea.module.scss';
 import { useFormField } from '../form/components/Field.context.ts';
 
 export const TextArea = ({
