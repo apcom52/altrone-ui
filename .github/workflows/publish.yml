@@ -94,9 +94,10 @@ jobs:
           git tag "v$VERSION"
           git push --atomic origin "HEAD:refs/heads/$BRANCH" "v$VERSION"
 
+      - name: Update npm
+        run: npm install -g npm@latest
+
       - name: Publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           if [ "$TAG" = "release" ]; then
             npm publish --provenance --access public
