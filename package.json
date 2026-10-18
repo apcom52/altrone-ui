@@ -104,6 +104,10 @@
     "name": "Alexander Perevezentsev",
     "email": "apcom@live.ru"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apcom52/altrone-ui.git"
+  },
   "browserslist": [
     "last 2 chrome versions",
     "last 2 firefox versions",
