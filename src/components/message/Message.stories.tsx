@@ -159,6 +159,124 @@ export const WithoutIcon: StoryObj<typeof Message> = {
   ),
 };
 
+export const ContentVariations: StoryObj<typeof Message> = {
+  name: 'Content variations',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+      <Section>Content variations</Section>
+      <Paragraph>
+        Every piece of a message is optional. Leave out the{' '}
+        <Text code>title</Text>, the body or the <Text code>icon</Text> and the
+        layout closes up around what is left. Keep at least a title or a body —
+        a message with neither has nothing to announce.
+      </Paragraph>
+
+      <Section>Title and body, no icon</Section>
+      <Message title="Draft saved" severity="success">
+        Your changes are stored locally and will sync when you reconnect.
+      </Message>
+
+      <Section>Icon and body, no title</Section>
+      <Message icon={<Info />} severity="primary">
+        A new software update is available. See what&rsquo;s new in version 2.0.
+      </Message>
+
+      <Section>Icon and title, no body</Section>
+      <Message
+        icon={<Check />}
+        title="Your export is ready"
+        severity="success"
+      />
+
+      <Section>Only a title</Section>
+      <Message title="Changes are saved automatically" />
+
+      <Section>Only a body</Section>
+      <Message severity="warning">
+        You are viewing a read-only copy of this document.
+      </Message>
+
+      <Section>Only an icon and actions</Section>
+      <Message
+        icon={<CircleAlert />}
+        severity="danger"
+        actions={[<Button key="retry" label="Retry" danger />]}
+      />
+
+      <Section>Title and actions, no body or icon</Section>
+      <Message
+        title="Unsaved changes"
+        severity="warning"
+        actions={[
+          <Button key="save" label="Save" />,
+          <Button key="discard" label="Discard" />,
+        ]}
+        onClose={() => {}}
+      />
+
+      <Section>Compact without a title</Section>
+      <Message icon={<TriangleAlert />} severity="warning" compact>
+        Weak password. Add a few more characters.
+      </Message>
+
+      <Section>With and without a close button</Section>
+      <Paragraph>
+        The close button appears only when <Text code>onClose</Text> is passed.
+        It stays pinned to the top-right corner whatever else the message
+        contains.
+      </Paragraph>
+
+      <Message icon={<Info />} title="No close button" severity="primary">
+        Without <Text code>onClose</Text> the message stays on screen.
+      </Message>
+      <Message
+        icon={<Info />}
+        title="With a close button"
+        severity="primary"
+        onClose={() => {}}
+      >
+        Passing <Text code>onClose</Text> adds the button.
+      </Message>
+      <Message title="Only a title, no close button" severity="success" />
+      <Message
+        title="Only a title, with a close button"
+        severity="success"
+        onClose={() => {}}
+      />
+      <Message
+        icon={<TriangleAlert />}
+        title="Actions, no close button"
+        severity="warning"
+        actions={[<Button key="fix" label="Fix it" />]}
+      >
+        Two rows of content next to nothing in the corner.
+      </Message>
+      <Message
+        icon={<TriangleAlert />}
+        title="Actions and a close button"
+        severity="warning"
+        actions={[<Button key="fix" label="Fix it" />]}
+        onClose={() => {}}
+      >
+        Two rows of content with the button in the corner.
+      </Message>
+      <Message
+        icon={<Check />}
+        title="Compact, no close button"
+        severity="success"
+        compact
+      />
+      <Message
+        icon={<Check />}
+        title="Compact, with a close button"
+        severity="success"
+        compact
+        onClose={() => {}}
+      />
+    </Flex>
+  ),
+};
+
 export const Dismissible: StoryObj<typeof Message> = {
   name: 'Dismissible',
   render: () => {
