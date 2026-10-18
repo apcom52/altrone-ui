@@ -92,6 +92,7 @@
      clips the button. */
   min-height: 36px;
   width: var(--notification-width);
+  max-width: 100%;
   overflow: hidden;
   color: var(--text-2);
 }

@@ -1,6 +1,10 @@
 import { ChildrenType } from '../../src';
 import { AltChildren } from '../../src/utils/Children';
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
+
+type WithChildren = ReactElement<{ children: ReactNode[] }>;
+
+const childrenOf = (node: ReactNode) => (node as WithChildren).props.children;
 
 describe('Children Util class', () => {
   let layout: ChildrenType;
@@ -27,7 +31,7 @@ describe('Children Util class', () => {
   });
 
   test('has to return correct size', () => {
-    const children = (layout as ReactElement).props.children;
+    const children = childrenOf(layout);
 
     const inst = new AltChildren(children);
 
@@ -40,13 +44,13 @@ describe('Children Util class', () => {
     const singleChildren = new AltChildren(singleElement);
     expect(singleChildren.toArray()).toStrictEqual([singleElement]);
 
-    const children = (layout as ReactElement).props.children;
+    const children = childrenOf(layout);
     const multiChildren = new AltChildren(children);
     expect(multiChildren.toArray()).toStrictEqual([...children.slice(0, 7)]);
   });
 
   test('check filterNodes method', () => {
-    const children = (layout as ReactElement).props.children;
+    const children = childrenOf(layout);
     const multiChildren = new AltChildren(children);
 
     expect(multiChildren.filterNodes().toArray()).toStrictEqual([
@@ -57,7 +61,7 @@ describe('Children Util class', () => {
   });
 
   test('check flatten method', () => {
-    const children = (layout as ReactElement).props.children;
+    const children = childrenOf(layout);
     const multiChildren = new AltChildren([...children]);
 
     const flattenedArray = multiChildren.flatten(2).toArray();
@@ -67,9 +71,9 @@ describe('Children Util class', () => {
       children[1],
       children[2],
       children[3],
-      children[4].props.children[0],
-      children[4].props.children[1],
-      children[4].props.children[2],
+      childrenOf(children[4])[0],
+      childrenOf(children[4])[1],
+      childrenOf(children[4])[2],
       children[5],
       children[6],
     ]);
@@ -80,8 +84,8 @@ describe('Children Util class', () => {
     expect(smartFlattened).toStrictEqual([
       children[0],
       children[2],
-      children[4].props.children[1],
-      children[4].props.children[2],
+      childrenOf(children[4])[1],
+      childrenOf(children[4])[2],
     ]);
   });
 });

@@ -1,11 +1,11 @@
-import React from 'react';
 import { expect, test, describe, vi, beforeAll } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import {
-  Configuration,
   Application,
   Button,
+  ButtonProps,
   DatePicker,
+  useDatePickerTrigger,
 } from '../src/components';
 import { dayjsInstance as dayjs } from '../src/utils';
 
@@ -42,23 +42,6 @@ describe('DatePicker', () => {
     const wrapper = screen.getByTestId('date-picker').closest('.cls');
     expect(wrapper).not.toBeNull();
     expect(wrapper).toHaveStyle('color: rgb(0, 0, 255)');
-  });
-
-  test('check that Checkbox configuration works correctly', () => {
-    render(
-      <Application>
-        <Configuration
-          datePicker={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
-        >
-          <DatePicker data-testid="date-picker" />
-        </Configuration>
-      </Application>,
-    );
-
-    expect(screen.getByTestId('date-picker')).toHaveClass('cls');
-    expect(screen.getByTestId('date-picker')).toHaveStyle(
-      'color: rgb(0, 0, 255)',
-    );
   });
 
   test('opens a Calendar day grid and reports the clicked day', () => {
@@ -132,24 +115,22 @@ describe('DatePicker', () => {
     expect(call[1].format('YYYY-MM-DD')).toBe('2024-08-20');
   });
 
-  test('renderFunc replaces the trigger, exposes state, and still opens the calendar', () => {
+  test('asChild replaces the trigger, exposes state, and still opens the calendar', () => {
     const onChange = vi.fn();
-    const seen: string[] = [];
+    const Trigger = (props: Partial<ButtonProps>) => {
+      const { displayValue } = useDatePickerTrigger();
+      return <Button {...props} data-testid="trigger" label={displayValue} />;
+    };
 
     render(
       <Application>
-        <DatePicker
-          value={dayjs('2024-08-15')}
-          onChange={onChange}
-          renderFunc={({ displayValue }) => {
-            seen.push(displayValue);
-            return <Button data-testid="trigger" label={displayValue} />;
-          }}
-        />
+        <DatePicker value={dayjs('2024-08-15')} onChange={onChange} asChild>
+          <Trigger />
+        </DatePicker>
       </Application>,
     );
 
-    expect(seen.at(-1)).toContain('2024');
+    expect(screen.getByTestId('trigger')).toHaveTextContent('2024');
 
     fireEvent.click(screen.getByTestId('trigger'));
     fireEvent.click(

@@ -14,6 +14,7 @@ import {
   type Transition,
 } from 'motion/react';
 import { mergeRefs } from 'utils';
+import { lockPageScroll, unlockPageScroll } from 'internal/sheet';
 import { useLocalization } from 'components/application/useLocalization.tsx';
 import s from '../screen.module.scss';
 import { ScreenSidebarProps } from '../Screen.types.ts';
@@ -128,7 +129,8 @@ export const Sidebar = ({
     if (!scrimOpen) return;
 
     const previouslyFocused = document.activeElement as HTMLElement | null;
-    asideRef.current?.focus();
+    asideRef.current?.focus({ preventScroll: true });
+    lockPageScroll();
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') handleClose(event);
@@ -137,7 +139,8 @@ export const Sidebar = ({
 
     return () => {
       document.removeEventListener('keydown', onKeyDown);
-      previouslyFocused?.focus?.();
+      unlockPageScroll();
+      previouslyFocused?.focus?.({ preventScroll: true });
     };
   }, [scrimOpen, handleClose]);
 

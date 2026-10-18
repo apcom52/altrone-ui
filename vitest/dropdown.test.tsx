@@ -1,7 +1,7 @@
-import React, { createRef } from 'react';
+import { createRef } from 'react';
 import { expect, test, describe, vitest } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Button, Configuration, Dropdown } from '../src/components';
+import { Button, Dropdown } from '../src/components';
 
 describe('Dropdown', () => {
   test('forwards ref to the root DOM element of Action/Checkbox/RadioItem/ChildMenu', () => {
@@ -143,25 +143,5 @@ describe('Dropdown', () => {
     expect(screen.getByTestId('childmenu')).toHaveStyle(
       'color: rgb(0, 0, 255)',
     );
-  });
-
-  test('check that Scrollable configuration works correctly', () => {
-    render(
-      <Configuration
-        dropdown={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
-      >
-        <Dropdown
-          content={<div>content</div>}
-          defaultOpen
-          data-testid="element"
-        >
-          <Button />
-        </Dropdown>
-      </Configuration>,
-    );
-
-    const element = screen.getByTestId('element');
-    expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

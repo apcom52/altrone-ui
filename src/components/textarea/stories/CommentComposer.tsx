@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Avatar, Button, Flex, Text, TextInput } from 'components';
-import { TextArea } from '../TextArea.tsx';
+import { TextArea } from '../Textarea.tsx';
 
 const LIMIT = 500;
 

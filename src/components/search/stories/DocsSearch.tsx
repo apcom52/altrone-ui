@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { useListItem } from '@floating-ui/react';
 import { FileText } from 'lucide-react';
 import { Flex, Text } from 'components';
 import { Search } from '../Search.tsx';
@@ -7,7 +6,6 @@ import {
   AutocompleteRenderSuggestionContext,
   AutocompleteSuggestionsFunc,
 } from '../../autocompleteInput/AutocompleteInput.types.ts';
-import { usePopoverCurrentIndex } from '../../popover/Popover.tsx';
 
 interface Doc {
   title: string;
@@ -39,26 +37,16 @@ const highlight = (text: string, q: string) => {
 const DocRow = ({
   suggestion,
   inputValue,
-  onSelect,
 }: AutocompleteRenderSuggestionContext<Doc>) => {
-  const current = usePopoverCurrentIndex();
-  const { ref, index } = useListItem();
-  const active = index === current;
 
   return (
-    <button
-      ref={ref}
-      type="button"
-      onClick={(e) => onSelect(suggestion.title, e)}
+    <div
       style={{
         display: 'flex',
         gap: 10,
         width: '100%',
         padding: '8px 12px',
-        border: 'none',
-        cursor: 'pointer',
         textAlign: 'left',
-        background: active ? 'var(--accent-a3)' : 'transparent',
       }}
     >
       <FileText size={15} style={{ color: 'var(--text-2)', flexShrink: 0, marginTop: 2 }} />
@@ -75,7 +63,7 @@ const DocRow = ({
           {highlight(suggestion.snippet, inputValue)}
         </Text>
       </Flex>
-    </button>
+    </div>
   );
 };
 

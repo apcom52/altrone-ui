@@ -203,7 +203,9 @@ const SelectComponent = (props: SelectProps) => {
         aria-haspopup="listbox"
         value={searchMode ? userQuery : valueString}
         placeholder={valueString || placeholder}
-        readOnly={readOnly ?? !(searchable && searchMode)}
+        /** Not tied to `searchMode`: iOS won't raise the keyboard for a field
+            that was still `readonly` at the moment it got focus. */
+        readOnly={readOnly ?? !searchable}
         readonlyStyles={Boolean(readOnly)}
         size={selectSize}
         disabled={selectDisabled}

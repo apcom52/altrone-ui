@@ -34,7 +34,16 @@
    * inline sidebar. Header and footer are pushed to this same value.
    */
   --screen-content-inset-start: calc(
-    var(--screen-sidebar-inset) + var(--space-content)
+    var(--screen-sidebar-inset) + var(--screen-safe-start) +
+      var(--space-content)
+  );
+  /** Notch / Dynamic Island insets — non-zero only under `viewport-fit=cover`
+      (top in standalone mode, start/end in landscape). */
+  --screen-safe-top: env(safe-area-inset-top, 0px);
+  --screen-safe-start: env(safe-area-inset-left, 0px);
+  --screen-safe-end: env(safe-area-inset-right, 0px);
+  --screen-header-space: calc(
+    var(--screen-header-height) + var(--screen-safe-top)
   );
   /** Vertical breathing room inside Content / Footer — deliberately roomy. */
   --screen-content-padding-block: calc(var(--space-content) * 2);
@@ -58,7 +67,13 @@
   grid-template-rows: auto 1fr auto;
   grid-template-areas: 'header' 'content' 'footer';
   min-height: 100vh;
-  padding-inline-start: var(--screen-sidebar-inset);
+  /** `vh` on iOS is the viewport with Safari's bars retracted — `svh` keeps a
+      short page from scrolling while they're shown. */
+  min-height: 100svh;
+  padding-inline-start: calc(
+    var(--screen-sidebar-inset) + var(--screen-safe-start)
+  );
+  padding-inline-end: var(--screen-safe-end);
   transition:
     padding-inline-start 0.42s cubic-bezier(0.32, 0.72, 0, 1),
     grid-template-columns 0.35s cubic-bezier(0.32, 0.72, 0, 1);
@@ -117,7 +132,7 @@
   position: fixed;
   inset-block-start: 0;
   inset-inline: 0;
-  height: var(--screen-header-height);
+  height: var(--screen-header-space);
   /* Strictly between `--level-sticky` and `--level-fixed`, not
      `--elevation-sticky-z-index` outright — this is page-level fixed chrome,
      so it must outrank the generic in-content "sticky" role a component like
@@ -140,7 +155,10 @@
   position: relative;
   inset-block-start: auto;
   inset-inline: auto;
-  margin-inline-start: calc(-1 * var(--screen-sidebar-inset));
+  margin-inline-start: calc(
+    -1 * (var(--screen-sidebar-inset) + var(--screen-safe-start))
+  );
+  margin-inline-end: calc(-1 * var(--screen-safe-end));
   transition: margin-inline-start 0.42s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
@@ -165,6 +183,8 @@
 .HeaderInner > * {
   flex: 1;
   min-width: 0;
+  /** On the child, not the header, so the toolbar fill still runs under the status bar. */
+  padding-block-start: var(--screen-safe-top);
 }
 
 .HeaderInner > [role='toolbar'] {
@@ -172,7 +192,7 @@
     --screen-header-inset-start,
     var(--screen-content-inset-start)
   );
-  --toolbar-inset-end: var(--space-content);
+  --toolbar-inset-end: calc(var(--space-content) + var(--screen-safe-end));
 }
 
 /**
@@ -184,7 +204,7 @@
 .Screen:has(> .Header:not(.Static)) .Content,
 .Screen:has(> .Header:not(.Static)) .Aside {
   padding-block-start: calc(
-    var(--screen-content-padding-block) + var(--screen-header-height)
+    var(--screen-content-padding-block) + var(--screen-header-space)
   );
 }
 
@@ -195,7 +215,7 @@
  * column header) should stick flush to the true top instead.
  */
 .Screen:has(> .Header:not(.Static)) {
-  --top-safe-area: calc(var(--screen-header-height) + var(--xs-gap));
+  --top-safe-area: calc(var(--screen-header-space) + var(--xs-gap));
 }
 
 /**
@@ -207,18 +227,27 @@
 .Sidebar {
   outline: none;
   position: fixed;
-  inset-block: var(--space-content);
-  inset-inline-start: 0;
+  inset-block-start: calc(var(--space-content) + var(--screen-safe-top));
+  inset-block-end: calc(
+    var(--space-content) + env(safe-area-inset-bottom, 0px)
+  );
+  inset-inline-start: var(--screen-safe-start);
   margin-inline: var(--space-content);
   width: min(var(--screen-sidebar-width), 85vw);
   /* Fill the viewport minus the top/bottom gutters — explicit so a flex/grid
-     ancestor can't collapse the panel shorter than the screen. */
-  min-block-size: calc(100vh - 2 * var(--space-content));
+     ancestor can't collapse the panel shorter than the screen. `dvh`, not
+     `vh`: on iOS `vh` ignores Safari's bars and pushes the bottom under them. */
+  min-block-size: calc(
+    100dvh - 2 * var(--space-content) - var(--screen-safe-top) -
+      env(safe-area-inset-bottom, 0px)
+  );
   z-index: var(--level-fixed);
 }
 
+/** Offcanvas level: above the page chrome and its own scrim, below modals,
+    dialogs and the popovers opened from inside the panel. */
 .SidebarOverlay > .Sidebar {
-  z-index: var(--elevation-overlay-z-index);
+  z-index: var(--level-offcanvas);
 }
 
 .Sidebar.Collapsed {
@@ -248,6 +277,8 @@
   background: var(--color-overlay-scrim);
   border: none;
   cursor: pointer;
+  /** Without it a drag on the scrim still pans the page underneath on iOS. */
+  touch-action: none;
 }
 
 /**
@@ -265,8 +296,10 @@
   display: flex;
   /* Float the bar off every edge by the same gutter `.Sidebar` keeps — plus
      the iOS home-indicator inset on the bottom. */
-  padding: var(--space-content) var(--space-content)
-    calc(var(--space-content) + env(safe-area-inset-bottom, 0px));
+  padding: var(--space-content)
+    calc(var(--space-content) + var(--screen-safe-end))
+    calc(var(--space-content) + env(safe-area-inset-bottom, 0px))
+    calc(var(--space-content) + var(--screen-safe-start));
   pointer-events: none;
 }
 
@@ -321,7 +354,8 @@
 .Screen:not(.SidebarOverlay):has(> .BottomNavigation) > .Sidebar {
   inset-block-end: var(--screen-bottom-nav-space);
   min-block-size: calc(
-    100vh - var(--space-content) - var(--screen-bottom-nav-space)
+    100dvh - var(--space-content) - var(--screen-safe-top) -
+      var(--screen-bottom-nav-space)
   );
 }
 
@@ -384,7 +418,10 @@
  */
 .Footer {
   grid-area: footer;
-  margin-inline-start: calc(-1 * var(--screen-sidebar-inset));
+  margin-inline-start: calc(
+    -1 * (var(--screen-sidebar-inset) + var(--screen-safe-start))
+  );
+  margin-inline-end: calc(-1 * var(--screen-safe-end));
   background: var(--background-2);
   border-block-start: 1px solid var(--border-1);
   transition: margin-inline-start 0.42s cubic-bezier(0.32, 0.72, 0, 1);
@@ -404,7 +441,7 @@
   );
   /* Same vertical line as Content and the header toolbar. */
   padding-inline-start: var(--screen-content-inset-start);
-  padding-inline-end: var(--space-content);
+  padding-inline-end: calc(var(--space-content) + var(--screen-safe-end));
   transition: padding-inline-start 0.42s cubic-bezier(0.32, 0.72, 0, 1);
 }
 

@@ -2,7 +2,7 @@ import { isValidElement, memo, ReactElement, Ref } from 'react';
 import { ButtonProps } from './Button.types.ts';
 import s from './button.module.scss';
 import clsx from 'clsx';
-import { HTMLMotionProps, motion, useReducedMotionConfig } from 'motion/react';
+import { HTMLMotionProps, motion } from 'motion/react';
 import { Box, BoxMaterial, BoxTone } from 'components/box';
 import { Badge } from 'internal/badge';
 import { Loading } from 'components/loading/Loading.tsx';

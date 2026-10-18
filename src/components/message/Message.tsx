@@ -36,7 +36,15 @@ export const Message = ({
   const tone: BoxTone =
     severity && severity !== 'default' ? TONE_BY_SEVERITY[severity] : 'neutral';
 
-  const cls = clsx(s.Message, { [s.Compact]: compact }, className);
+  const cls = clsx(
+    s.Message,
+    {
+      [s.Compact]: compact,
+      [s.ActionsOnly]: !title && !children,
+      [s.WithClose]: !!onClose,
+    },
+    className,
+  );
 
   const resolvedActions =
     typeof actions === 'function' ? actions(undefined) : actions;
@@ -64,14 +72,16 @@ export const Message = ({
       ) : null}
       <Flex
         orientation="vertical"
-        className={s.Content}
+        className={clsx(s.Content, { [s.HasActions]: !!resolvedActions })}
         gap="m"
         justify="center"
       >
-        <div className={s.Text}>
-          {title ? <div className={s.Header}>{title}</div> : null}
-          {children ? <div className={s.Body}>{children}</div> : null}
-        </div>
+        {title || children ? (
+          <div className={s.Text}>
+            {title ? <div className={s.Header}>{title}</div> : null}
+            {children ? <div className={s.Body}>{children}</div> : null}
+          </div>
+        ) : null}
         {resolvedActions ? (
           <div className={s.Actions}>{resolvedActions}</div>
         ) : null}

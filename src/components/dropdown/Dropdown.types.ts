@@ -87,7 +87,7 @@ export interface DropdownMenuRef {
   menuNode: HTMLElement | null;
 }
 
-export interface DropdownProps extends PopoverProps {
+export interface DropdownProps extends Omit<PopoverProps, 'children' | 'content'> {
   closeParentPopover?: boolean;
   children: RenderFunction<ReactNode, PopoverChildrenContext>;
   content: RenderFunction<ReactNode, PopoverContentContext>;

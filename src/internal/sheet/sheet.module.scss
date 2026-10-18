@@ -76,6 +76,10 @@
  */
 .ScrollContent {
   overflow-y: auto;
+  overscroll-behavior: contain;
+  /** iOS Safari won't touch-scroll a `pointer-events: none` scroller, even
+      from a child that re-enables them — Sheet.tsx closes on its empty area. */
+  pointer-events: auto;
   overflow-x: hidden;
   justify-content: flex-start;
 }
@@ -89,7 +93,7 @@
 /** Grows to fill any leftover space (pinning a short panel to the anchor
     edge) but never shrinks below the minimum far-edge gap. */
 .Spacer {
-  flex: 1 0 15vh;
+  flex: 1 0 15svh;
 }
 
 .PanelSlot {
@@ -165,4 +169,9 @@
   &:focus-visible {
     outline: none;
   }
+}
+
+/** Stops a scroll that hits the panel's own edge from chaining to the page. */
+.Panel :global([data-overlayscrollbars-viewport]) {
+  overscroll-behavior: contain;
 }

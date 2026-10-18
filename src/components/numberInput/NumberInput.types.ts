@@ -3,9 +3,10 @@ import { SyntheticEvent } from 'react';
 
 export interface NumberInputProps extends Omit<
   TextInputProps,
-  'type' | 'value' | 'onChange'
+  'type' | 'value' | 'onChange' | 'defaultValue'
 > {
   value?: number;
+  defaultValue?: string | number;
   onChange: (
     value?: number,
     event?: SyntheticEvent<HTMLInputElement>,

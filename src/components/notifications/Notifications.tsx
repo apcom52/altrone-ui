@@ -19,6 +19,7 @@ import type {
   NotificationsProviderProps,
 } from './Notifications.types';
 import { NotificationCard } from './components/NotificationCard';
+import { useVisualViewport } from 'internal/sheet';
 import s from './notifications.module.scss';
 
 let counter = 0;
@@ -87,6 +88,9 @@ export const Notifications = ({
     '-',
   ) as ['top' | 'bottom', 'start' | 'end'];
 
+  /** Keeps the stacks inside the visible area while the iOS keyboard is open. */
+  const viewportRect = useVisualViewport(items.length > 0);
+
   const toastEnter = { x: 0, y: toastPlacement === 'top' ? -28 : 28 };
   const notificationEnter = {
     x: notificationAlign === 'start' ? -36 : 36,
@@ -98,6 +102,11 @@ export const Notifications = ({
       {children}
       <div
         className={s.Root}
+        style={
+          viewportRect
+            ? { top: viewportRect.offsetTop, height: viewportRect.height }
+            : undefined
+        }
         role="region"
         aria-label={t('notifications.regionLabel')}
         aria-live="polite"

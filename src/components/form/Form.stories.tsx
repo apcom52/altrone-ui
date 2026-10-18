@@ -8,7 +8,7 @@ import { TextInput } from '../textInput';
 import { PasswordInput } from '../passwordInput';
 import { Button } from '../button';
 import { NumberInput } from '../numberInput';
-import { TextArea } from '../textArea';
+import { TextArea } from '../textarea';
 import { Select } from '../select';
 import { DatePicker } from '../datePicker';
 import { Switch } from '../switch';

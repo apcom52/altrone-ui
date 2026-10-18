@@ -1,4 +1,3 @@
-import React from 'react';
 import { createPortal } from 'react-dom';
 import { expect, test, describe, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
@@ -116,23 +115,24 @@ describe('Modal', () => {
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
   });
 
-  test('scrolling over the backdrop scrolls the panel instead of doing nothing', () => {
+  test('the empty area of the scrolling layer closes the modal, the panel does not', () => {
+    const onClose = vi.fn();
+
     render(
       <Application>
-        <Modal content={<div>content</div>} defaultOpen={true} />
+        <Modal
+          content={<div>content</div>}
+          onClose={onClose}
+          defaultOpen={true}
+        />
       </Application>,
     );
 
-    const scrollContent = document.querySelector('[class*="ScrollContent"]')!;
-    /** jsdom doesn't implement `scrollBy` at all — stub it to assert the call. */
-    const scrollBySpy = vi.fn();
-    (scrollContent as HTMLElement).scrollBy = scrollBySpy;
+    fireEvent.click(screen.getByText('content'));
+    expect(onClose).not.toHaveBeenCalled();
 
-    fireEvent.wheel(document.querySelector('[class*="Backdrop"]')!, {
-      deltaY: 120,
-    });
-
-    expect(scrollBySpy).toHaveBeenCalledWith({ top: 120 });
+    fireEvent.click(document.querySelector('[class*="ScrollContent"]')!);
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 
   test('Escape closes the modal and calls onClose exactly once', () => {

@@ -1,6 +1,5 @@
-import React from 'react';
 import { expect, test, describe, vi } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Application, Toolbar } from '../src/components';
 import {
   resolveToolbarOverflow,
@@ -80,9 +79,9 @@ describe('Toolbar', () => {
     expect(screen.getByRole('button', { name: 'inherited' }).className).toMatch(
       /Mini/,
     );
-    expect(screen.getByRole('button', { name: 'overridden' }).className).toMatch(
-      /XLarge/,
-    );
+    expect(
+      screen.getByRole('button', { name: 'overridden' }).className,
+    ).toMatch(/XLarge/);
   });
 
   test('deprecated `fixed` prop warns, `sticky` does not', () => {
@@ -106,37 +105,10 @@ describe('Toolbar', () => {
     warn.mockRestore();
   });
 
-  test('floating variant wraps children in a click-through inner layer; glass does not', () => {
-    const { rerender } = render(
-      <Application>
-        <Toolbar variant="floating">
-          <Toolbar.Group data-testid="group" />
-        </Toolbar>
-      </Application>,
-    );
-
-    const group = screen.getByTestId('group');
-    const toolbar = group.closest('[role="toolbar"]');
-    expect(toolbar).not.toBeNull();
-    expect(group.parentElement).not.toBe(toolbar);
-    expect(group.parentElement?.parentElement).toBe(toolbar);
-
-    rerender(
-      <Application>
-        <Toolbar variant="glass">
-          <Toolbar.Group data-testid="group" />
-        </Toolbar>
-      </Application>,
-    );
-    expect(screen.getByTestId('group').parentElement).toBe(
-      screen.getByTestId('group').closest('[role="toolbar"]'),
-    );
-  });
-
   test('Toolbar.Group is a glass pill in every variant except `plain`', () => {
     const { rerender } = render(
       <Application>
-        <Toolbar variant="glass">
+        <Toolbar variant="grouped">
           <Toolbar.Group data-testid="group" />
         </Toolbar>
       </Application>,
@@ -145,7 +117,7 @@ describe('Toolbar', () => {
 
     rerender(
       <Application>
-        <Toolbar variant="floating">
+        <Toolbar variant="solid">
           <Toolbar.Group data-testid="group" />
         </Toolbar>
       </Application>,
@@ -166,7 +138,7 @@ describe('Toolbar', () => {
     const { rerender } = render(
       <Application>
         <Toolbar variant="plain">
-          <Toolbar.Group data-testid="group" variant="glass" />
+          <Toolbar.Group data-testid="group" variant="grouped" />
         </Toolbar>
       </Application>,
     );
@@ -174,7 +146,7 @@ describe('Toolbar', () => {
 
     rerender(
       <Application>
-        <Toolbar variant="glass">
+        <Toolbar variant="grouped">
           <Toolbar.Group data-testid="group" variant="plain" />
         </Toolbar>
       </Application>,
@@ -208,7 +180,7 @@ describe('Toolbar', () => {
         </Toolbar>
       </Application>,
     );
-    const staticTitle = screen.getByText('Docs');
+    const staticTitle = screen.getByText('Docs').parentElement as HTMLElement;
     expect(staticTitle.className).not.toMatch(/Clickable/);
     expect(staticTitle.querySelector('svg')).toBeNull();
 
@@ -219,7 +191,8 @@ describe('Toolbar', () => {
         </Toolbar>
       </Application>,
     );
-    const clickableTitle = screen.getByText('Docs');
+    const clickableTitle = screen.getByText('Docs')
+      .parentElement as HTMLElement;
     expect(clickableTitle.className).toMatch(/Clickable/);
     expect(clickableTitle.querySelector('svg')).not.toBeNull();
   });
@@ -243,15 +216,9 @@ describe('Toolbar overflow', () => {
   });
 
   test('isFlexibleSpacer: true only for a `Toolbar.Separator` with variant "space" (the default) — its stretched width is not a real requirement and must never be measured', () => {
-    expect(
-      isFlexibleSpacer(<Toolbar.Separator />),
-    ).toBe(true);
-    expect(
-      isFlexibleSpacer(<Toolbar.Separator variant="space" />),
-    ).toBe(true);
-    expect(
-      isFlexibleSpacer(<Toolbar.Separator variant="line" />),
-    ).toBe(false);
+    expect(isFlexibleSpacer(<Toolbar.Separator />)).toBe(true);
+    expect(isFlexibleSpacer(<Toolbar.Separator variant="space" />)).toBe(true);
+    expect(isFlexibleSpacer(<Toolbar.Separator variant="line" />)).toBe(false);
     expect(isFlexibleSpacer(<Toolbar.Action label="x" />)).toBe(false);
   });
 
@@ -265,9 +232,7 @@ describe('Toolbar overflow', () => {
       ['b', 40],
     ]);
 
-    expect(resolveToolbarOverflow(items, sizes, 100, 8, 32)).toEqual(
-      new Set(),
-    );
+    expect(resolveToolbarOverflow(items, sizes, 100, 8, 32)).toEqual(new Set());
   });
 
   test('resolveToolbarOverflow: `low` collapses before `medium`, and stops once it fits', () => {

@@ -2,7 +2,7 @@ import { cloneElement, memo, ReactElement } from 'react';
 import clsx from 'clsx';
 import { ToolbarTitleProps } from '../Toolbar.types';
 import s from './title.module.scss';
-import { motion } from 'motion/react';
+import { HTMLMotionProps, motion } from 'motion/react';
 import { useToolbarContext } from '../Toolbar.context.ts';
 import { Text } from 'components/text/Text.tsx';
 
@@ -25,7 +25,11 @@ export const Title = memo(
     );
 
     return (
-      <motion.div ref={ref} className={cls} {...restProps}>
+      <motion.div
+        ref={ref}
+        className={cls}
+        {...(restProps as HTMLMotionProps<'div'>)}
+      >
         <Text truncate weight="bold" className={s.Label}>
           {title}
         </Text>

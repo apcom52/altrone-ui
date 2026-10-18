@@ -1,2 +1,2 @@
-export { TextArea } from './TextArea.tsx';
-export type { TextAreaProps } from './TextArea.types.ts';
+export { TextArea } from './Textarea.tsx';
+export type { TextAreaProps } from './Textarea.types.ts';

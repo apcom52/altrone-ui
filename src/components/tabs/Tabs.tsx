@@ -70,7 +70,7 @@ const TabsComponent = memo<TabsProps>(
     };
 
     return (
-      <TabsContext.Provider value={{ backdropId }}>
+      <TabsContext.Provider value={{ backdropId, size }}>
         <div className={s.TabsContainer}>
           {/* `layoutRoot`: makes the tablist the reference frame for the
               active-tab backdrop's shared layout animation. Its own position

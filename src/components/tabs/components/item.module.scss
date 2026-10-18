@@ -73,9 +73,44 @@
 }
 
 /* Sizing is owned by `Badge` (internal/badge); this only nudges it into the
-   tab's content row. */
+   tab's content row. The right margin cancels the item's padding down to the
+   badge's vertical inset, so its end cap is concentric with the item's. */
 .Badge {
   margin-left: 2px;
-  margin-right: -4px;
+  margin-right: calc(
+    var(--tabs-item-padding-x) * -1 +
+      (var(--tabs-item-size) - var(--badge-height)) / 2
+  );
   z-index: 1;
+}
+
+/* Tab badges run a smaller box with larger type than `Badge`'s own tiers, so
+   every size but `mini` (which keeps `Badge`'s `s` tier) is tuned here. The
+   compound selector beats `Badge`'s own single-class size rules. */
+.Badge.BadgeSmall {
+  --badge-height: 14px;
+  --badge-min-width: 14px;
+  --badge-padding-x: 4px;
+  --badge-font-size: 10px;
+}
+
+.Badge.BadgeMedium {
+  --badge-height: 18px;
+  --badge-min-width: 18px;
+  --badge-padding-x: 5px;
+  --badge-font-size: 11px;
+}
+
+.Badge.BadgeLarge {
+  --badge-height: 20px;
+  --badge-min-width: 20px;
+  --badge-padding-x: 6px;
+  --badge-font-size: 12px;
+}
+
+.Badge.BadgeXLarge {
+  --badge-height: 24px;
+  --badge-min-width: 24px;
+  --badge-padding-x: 7px;
+  --badge-font-size: 14px;
 }

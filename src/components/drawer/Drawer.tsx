@@ -95,6 +95,7 @@ export const Drawer = (props: DrawerProps) => {
     <Sheet
       ref={ref}
       placement={placement}
+      elevation="modal"
       width={width}
       padding={0}
       open={isOpen}

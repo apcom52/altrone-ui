@@ -122,7 +122,6 @@ export const Sheet = (props: SheetProps) => {
 
   const reducedMotion = useReducedMotionConfig() ?? false;
   const panelRef = useRef<HTMLElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   const viewportRect = useVisualViewport(open);
 
   const breakpoint = useBreakpoint();
@@ -206,6 +205,18 @@ export const Sheet = (props: SheetProps) => {
     }
   }, [open]);
 
+  const visibleHeight = viewportRect?.height;
+
+  useEffect(() => {
+    /** The sheet shrinks only after iOS has already scrolled the focused field
+        into view, which can leave it under the keyboard — bring it back. */
+    const focused = document.activeElement;
+    if (visibleHeight == null || !panelRef.current?.contains(focused)) {
+      return;
+    }
+    focused?.scrollIntoView({ block: 'nearest' });
+  }, [visibleHeight]);
+
   const offscreen = OFFSCREEN_VALUE[resolvedPlacement];
 
   const panelAnimation: HTMLMotionProps<'div'> = reducedMotion
@@ -266,13 +277,6 @@ export const Sheet = (props: SheetProps) => {
             {
               ...style,
               zIndex: `var(--elevation-${elevation}-z-index)`,
-              /** Overrides the CSS `inset: 0` (which tracks the iOS layout
-                  viewport, not the keyboard-shrunk visible one) so the sheet
-                  never ends up anchored partly behind the keyboard. */
-              ...(viewportRect && {
-                top: viewportRect.offsetTop,
-                height: viewportRect.height,
-              }),
             } as CSSProperties
           }
           {...restProps}
@@ -280,18 +284,9 @@ export const Sheet = (props: SheetProps) => {
           <motion.div
             className={s.Backdrop}
             onClick={handleClose}
-            /** `.Content` is `pointer-events: none` outside `.PanelSlot` (see
-                its own comment), so a wheel over the backdrop gutter never
-                reaches its `overflow-y: auto` — forward it manually. */
-            onWheel={
-              isVerticalAutoScroll
-                ? (event) => contentRef.current?.scrollBy({ top: event.deltaY })
-                : undefined
-            }
             {...backdropAnimation}
           />
           <div
-            ref={contentRef}
             className={clsx(s.Content, {
               [s.Start]: resolvedPlacement === 'start',
               [s.End]: resolvedPlacement === 'end',
@@ -303,7 +298,29 @@ export const Sheet = (props: SheetProps) => {
               {
                 '--sheet-inset': `${inset}px`,
                 alignItems: crossAxisFills ? 'stretch' : 'center',
+                /** Only the panel layer follows the keyboard-shrunk visible
+                    area — the backdrop keeps covering the whole screen. */
+                ...(viewportRect && {
+                  top: viewportRect.offsetTop,
+                  height: viewportRect.height,
+                }),
               } as CSSProperties
+            }
+            onClick={
+              isVerticalAutoScroll
+                ? (event) => {
+                    /** `.ScrollContent` covers `.Backdrop`, so its own empty
+                        area stands in for it. Clicks bubbling from portaled
+                        popovers have other targets and are ignored. */
+                    const target = event.target as HTMLElement;
+                    if (
+                      target === event.currentTarget ||
+                      target.classList.contains(s.Spacer)
+                    ) {
+                      handleClose(event);
+                    }
+                  }
+                : undefined
             }
           >
             {isVerticalAutoScroll && resolvedPlacement === 'bottom' && (

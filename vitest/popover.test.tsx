@@ -11,18 +11,23 @@ class ResizeObserver {
 }
 
 beforeAll(() => {
-  // @ts-ignore
   window.ResizeObserver = ResizeObserver;
 });
 
-const renderPopover = (props: Partial<React.ComponentProps<typeof Popover>>) =>
-  render(
+const renderPopover = (
+  props: Partial<Omit<React.ComponentProps<typeof Popover>, 'children'>> & {
+    children?: React.ReactElement;
+  },
+) => {
+  const { children, ...rest } = props;
+  return render(
     <Application>
-      <Popover content="Popover content" {...(props as any)}>
-        {props.children ?? <Button label="Trigger" data-testid="trigger" />}
+      <Popover content={<div>Popover content</div>} {...rest}>
+        {children ?? <Button label="Trigger" data-testid="trigger" />}
       </Popover>
     </Application>,
   );
+};
 
 describe('Popover', () => {
   test('renders content when defaultOpen', () => {
@@ -51,7 +56,7 @@ describe('Popover', () => {
     rerender(
       <Application>
         <Popover
-          content="Popover content"
+          content={<div>Popover content</div>}
           defaultOpen
           title="Popover title"
           showCloseButton
@@ -82,14 +87,14 @@ describe('Popover', () => {
   test('forces tabIndex on the trigger, preserving an explicit one', () => {
     const { rerender } = renderPopover({
       defaultOpen: true,
-      children: <Button data-testid="src" tabIndex={2} />,
+      children: <Button label="Src" data-testid="src" tabIndex={2} />,
     });
     expect(screen.getByTestId('src')).toHaveAttribute('tabindex', '2');
 
     rerender(
       <Application>
-        <Popover content="c" defaultOpen>
-          <Button data-testid="src" />
+        <Popover content={<div>c</div>} defaultOpen>
+          <Button label="Src" data-testid="src" />
         </Popover>
       </Application>,
     );
@@ -108,7 +113,7 @@ describe('Popover', () => {
 
     render(
       <Application>
-        <Popover content="c">
+        <Popover content={<div>c</div>}>
           <Trigger />
         </Popover>
       </Application>,
@@ -117,12 +122,12 @@ describe('Popover', () => {
     expect(captured[0]).toBe(screen.getByTestId('trigger'));
   });
 
-  test('ref points at the trigger DOM element, alongside the trigger\'s own ref', () => {
+  test("ref points at the trigger DOM element, alongside the trigger's own ref", () => {
     const popoverRef = React.createRef<HTMLElement>();
 
     render(
       <Application>
-        <Popover ref={popoverRef} content="c">
+        <Popover ref={popoverRef} content={<div>c</div>}>
           <Button label="Trigger" data-testid="trigger" />
         </Popover>
       </Application>,
@@ -142,7 +147,7 @@ describe('Popover', () => {
           >
             open
           </button>
-          <Popover controlRef={popoverRef} content="Popover content">
+          <Popover controlRef={popoverRef} content={<div>Popover content</div>}>
             <Button label="Trigger" />
           </Popover>
         </>
@@ -205,7 +210,11 @@ describe('Popover', () => {
     const Harness = () => {
       const [open, setOpen] = React.useState(true);
       return (
-        <Popover open={open} onOpenChange={setOpen} content="Popover content">
+        <Popover
+          open={open}
+          onOpenChange={setOpen}
+          content={<div>Popover content</div>}
+        >
           <Button label="Trigger" />
         </Popover>
       );
@@ -234,7 +243,7 @@ describe('Popover', () => {
           controlRef={popoverRef as React.Ref<PopoverRef>}
           open={false}
           onOpenChange={onOpenChange}
-          content="Popover content"
+          content={<div>Popover content</div>}
         >
           <Button label="Trigger" />
         </Popover>

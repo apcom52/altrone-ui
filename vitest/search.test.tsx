@@ -1,7 +1,6 @@
-import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import { Application, Configuration, Search, TextInput } from '../src';
+import { Application, Search, TextInput } from '../src';
 
 class ResizeObserver {
   observe() {}
@@ -38,11 +37,7 @@ describe('Search', () => {
 
     render(
       <Application>
-        <Search
-          value="query"
-          onChange={() => undefined}
-          data-testid="search"
-        />
+        <Search value="query" onChange={() => undefined} data-testid="search" />
       </Application>,
     );
 
@@ -55,23 +50,5 @@ describe('Search', () => {
 
     expect(screen.queryByText('No data')).toBeNull();
     vi.useRealTimers();
-  });
-
-  test('check that configuration works', () => {
-    render(
-      <Application>
-        <Configuration
-          search={{
-            className: 'cls',
-            style: { color: 'red' },
-          }}
-        >
-          <Search getSuggestions={() => []} data-testid="search" />
-        </Configuration>
-      </Application>,
-    );
-
-    expect(screen.getByTestId('search')).toHaveClass('cls');
-    expect(screen.getByTestId('search')).toHaveStyle('color: rgb(255, 0, 0)');
   });
 });

@@ -3,13 +3,13 @@ import {
   DOMUtils,
   Dropdown,
   Flex,
-  Icon,
   NavigationList,
   Popover,
   Select,
   TextInput,
 } from '../../src';
 import { Fragment } from 'react';
+import { Home } from 'lucide-react';
 
 describe('DomUtils', () => {
   test('isFragment', async () => {
@@ -51,7 +51,7 @@ describe('DomUtils', () => {
 
     expect(
       DOMUtils.containsElementType(
-        <Popover content={null}>
+        <Popover content={<div />}>
           <Button label="abc" />
         </Popover>,
         [Popover],
@@ -60,11 +60,13 @@ describe('DomUtils', () => {
 
     expect(
       DOMUtils.containsElementType(
-        <Popover content={null}>
-          <Button label="abc" />
-          <TextInput />
+        <Popover content={<div />}>
           <Flex>
-            <Icon i="abc" />
+            <Button label="abc" />
+            <TextInput />
+            <Flex>
+              <Home />
+            </Flex>
           </Flex>
         </Popover>,
         [Button],
@@ -73,24 +75,28 @@ describe('DomUtils', () => {
 
     expect(
       DOMUtils.containsElementType(
-        <Popover content={null}>
-          <Button label="abc" />
-          <TextInput />
+        <Popover content={<div />}>
           <Flex>
-            <Icon i="abc" />
+            <Button label="abc" />
+            <TextInput />
+            <Flex>
+              <Home />
+            </Flex>
           </Flex>
         </Popover>,
-        [Icon],
+        [Home],
       ),
     ).toBe(true);
 
     expect(
       DOMUtils.containsElementType(
-        <Popover content={null}>
-          <Button label="abc" />
-          <TextInput />
+        <Popover content={<div />}>
           <Flex>
-            <Icon i="abc" />
+            <Button label="abc" />
+            <TextInput />
+            <Flex>
+              <Home />
+            </Flex>
           </Flex>
         </Popover>,
         [Button, NavigationList],
@@ -99,11 +105,13 @@ describe('DomUtils', () => {
 
     expect(
       DOMUtils.containsElementType(
-        <Popover content={null}>
-          <Button label="abc" />
-          <TextInput />
+        <Popover content={<div />}>
           <Flex>
-            <Icon i="abc" />
+            <Button label="abc" />
+            <TextInput />
+            <Flex>
+              <Home />
+            </Flex>
           </Flex>
         </Popover>,
         [Select, NavigationList],
@@ -112,8 +120,8 @@ describe('DomUtils', () => {
 
     expect(
       DOMUtils.containsElementType(
-        <Popover content={null}>
-          <NavigationList.Link label="abc" icon={<Icon i="test" />} />
+        <Popover content={<div />}>
+          <NavigationList.Link label="abc" icon={<Home />} />
         </Popover>,
         [NavigationList.Link],
       ),
@@ -121,8 +129,8 @@ describe('DomUtils', () => {
 
     expect(
       DOMUtils.containsElementType(
-        <Dropdown content={null}>
-          <NavigationList.Link label="abc" icon={<Icon i="test" />} />
+        <Dropdown content={<div />}>
+          <NavigationList.Link label="abc" icon={<Home />} />
         </Dropdown>,
         [NavigationList.Link],
       ),

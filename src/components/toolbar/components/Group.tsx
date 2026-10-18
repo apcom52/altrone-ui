@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { ToolbarGroupProps } from '../Toolbar.types.ts';
 import s from './group.module.scss';
 import clsx from 'clsx';
-import { motion } from 'motion/react';
+import { HTMLMotionProps, motion } from 'motion/react';
 import { useToolbarContext } from '../Toolbar.context.ts';
 
 export const Group = memo(
@@ -37,7 +37,12 @@ export const Group = memo(
     };
 
     return (
-      <motion.div ref={ref} className={cls} style={styles} {...restProps}>
+      <motion.div
+        ref={ref}
+        className={cls}
+        style={styles}
+        {...(restProps as HTMLMotionProps<'div'>)}
+      >
         {children}
       </motion.div>
     );

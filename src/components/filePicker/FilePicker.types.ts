@@ -42,7 +42,7 @@ export interface FileProps {
 
 export interface FilePickerProps extends Omit<
   React.HTMLAttributes<HTMLDivElement>,
-  'onChange'
+  'onChange' | 'defaultValue'
 > {
   ref?: React.Ref<HTMLDivElement>;
   defaultValue?: FileItem[];

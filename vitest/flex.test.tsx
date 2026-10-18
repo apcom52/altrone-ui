@@ -4,7 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Flex } from '../src';
 
 describe('Flex', () => {
-  test('renders a div by default and swaps the element via tagName', () => {
+  test('renders a div by default and swaps the element via asChild', () => {
     const { rerender } = render(
       <Flex data-testid="flex">
         <span>content</span>
@@ -15,8 +15,10 @@ describe('Flex', () => {
     expect(screen.getByText('content')).toBeInTheDocument();
 
     rerender(
-      <Flex tagName="ul" data-testid="flex">
-        <li>content</li>
+      <Flex asChild data-testid="flex">
+        <ul>
+          <li>content</li>
+        </ul>
       </Flex>,
     );
 

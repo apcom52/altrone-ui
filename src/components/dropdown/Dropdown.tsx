@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { Popover } from 'components/popover';
 import { PopoverContentContext } from 'components/popover';
+import { PopoverProps } from 'components/popover/Popover.types';
 import { DropdownProps } from './Dropdown.types';
 import { CloseDropdownContext } from './Dropdown.contexts.ts';
 import s from './dropdown.module.scss';
@@ -55,7 +56,7 @@ export function DropdownWrapper(props: DropdownProps) {
       {...restProps}
       listNavigation
     >
-      {children}
+      {children as PopoverProps['children']}
     </Popover>
   );
 }

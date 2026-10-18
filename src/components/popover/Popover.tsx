@@ -1,5 +1,4 @@
 import {
-  autoUpdate,
   FloatingFocusManager,
   FloatingList,
   FloatingPortal,
@@ -36,6 +35,7 @@ import {
   createOverlapMiddleware,
 } from './utils/middlewareUtils';
 import { getTransformOrigin } from './utils/getTransformOrigin';
+import { autoUpdateWithViewport } from './utils/autoUpdateWithViewport';
 import {
   PopoverCloseContext,
   PopoverCurrentId,
@@ -174,16 +174,19 @@ export const Popover = ({
     },
     placement: placementConfig.placement,
     middleware,
-    whileElementsMounted: autoUpdate,
+    whileElementsMounted: autoUpdateWithViewport,
   });
 
+  /** Touch has no hover, so a hover-only popover falls back to a tap there. */
   const clickTrigger = useClick(context, {
-    enabled: triggersList.includes('click'),
+    enabled: triggersList.includes('click') || triggersList.includes('hover'),
     event: 'click',
+    ignoreMouse: !triggersList.includes('click'),
   });
 
   const hoverTrigger = useHover(context, {
     enabled: triggersList.includes('hover'),
+    mouseOnly: true,
     delay: { open: 500, close: 250 },
     handleClose: safePolygon(),
   });

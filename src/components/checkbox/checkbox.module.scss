@@ -20,7 +20,9 @@
 }
 
 .Checkbox {
-  display: flex;
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
   align-items: center;
   gap: var(--gap);
   cursor: pointer;
@@ -100,7 +102,7 @@
 }
 
 .Disabled {
-  --checkbox-background-color: var(--background-a2);
+  --checkbox-background-color: var(--disabled-background);
   /* Also override the accent border `.Checked` sets — a disabled checkbox
      stays fully neutral whether it's checked or not. */
   --checkbox-border-color: var(--disabled-border);
@@ -118,8 +120,7 @@
 
 .Mini {
   --checkbox-size: 16px;
-  /* The 16px box needs a smaller corner or it reads as a circle — a Radio. */
-  --checkbox-rounding: var(--radius-s);
+  --checkbox-rounding: calc(var(--checkbox-size) / 2);
   --checkbox-row-height: 24px;
   --checkbox-check-icon-size: 9px;
   --checkbox-indetermination-size: 6px;

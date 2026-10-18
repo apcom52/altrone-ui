@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { useListItem } from '@floating-ui/react';
 import {
   FileText,
   Hash,
@@ -12,7 +11,6 @@ import {
   AutocompleteRenderSuggestionContext,
   AutocompleteSuggestionsFunc,
 } from '../../autocompleteInput/AutocompleteInput.types.ts';
-import { usePopoverCurrentIndex } from '../../popover/Popover.tsx';
 
 type Kind = 'person' | 'doc' | 'channel' | 'setting';
 
@@ -50,28 +48,18 @@ const INDEX: Hit[] = [
 const HitRow = ({
   suggestion,
   inputValue,
-  onSelect,
 }: AutocompleteRenderSuggestionContext<Hit>) => {
-  const current = usePopoverCurrentIndex();
-  const { ref, index } = useListItem();
-  const active = index === current;
   const i = suggestion.label.toLowerCase().indexOf(inputValue.toLowerCase());
 
   return (
-    <button
-      ref={ref}
-      type="button"
-      onClick={(e) => onSelect(suggestion.label, e)}
+    <div
       style={{
         display: 'flex',
         alignItems: 'center',
         gap: 10,
         width: '100%',
         padding: '8px 12px',
-        border: 'none',
-        cursor: 'pointer',
         textAlign: 'left',
-        background: active ? 'var(--accent-a3)' : 'transparent',
       }}
     >
       <Flex style={{ color: 'var(--text-2)' }}>{ICON[suggestion.kind]}</Flex>
@@ -91,7 +79,7 @@ const HitRow = ({
       <Text size={1} color="muted" nowrap>
         {KIND_LABEL[suggestion.kind]} · {suggestion.meta}
       </Text>
-    </button>
+    </div>
   );
 };
 

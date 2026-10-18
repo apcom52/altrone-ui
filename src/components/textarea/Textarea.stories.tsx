@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { TextArea } from './TextArea.tsx';
+import { TextArea } from './Textarea.tsx';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Announcement, CommentComposer, ProfileBio, SnippetEditor } from './stories';

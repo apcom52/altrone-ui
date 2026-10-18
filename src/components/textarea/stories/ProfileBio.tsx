@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Flex, Text } from 'components';
-import { TextArea } from '../TextArea.tsx';
+import { TextArea } from '../Textarea.tsx';
 
 const SAVED_DEFAULT =
   'Design systems engineer. Currently untangling a decade of CSS into tokens. Off the clock: long-distance cycling and worse coffee than I admit.';

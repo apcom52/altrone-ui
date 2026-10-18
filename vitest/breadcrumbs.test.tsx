@@ -2,6 +2,7 @@ import React, { createRef } from 'react';
 import { expect, test, describe, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Breadcrumbs } from '../src/components';
+import type { AnyObject } from '../src/utils/types';
 
 describe('Breadcrumbs', () => {
   test('renders a labelled <nav> with an <ol>, forwarding className/style/ref', () => {
@@ -67,7 +68,7 @@ describe('Breadcrumbs', () => {
     const { container } = render(
       <Breadcrumbs>
         <Breadcrumbs.Item label="Home" asChild>
-          {'not an element' as unknown as React.ReactElement}
+          {'not an element' as unknown as React.ReactElement<AnyObject>}
         </Breadcrumbs.Item>
       </Breadcrumbs>,
     );

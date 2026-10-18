@@ -4,6 +4,7 @@
   --message-text-color: var(--text-2);
   --message-icon-size: 24px;
   --message-rounding: 24px;
+  --message-close-size: 32px;
 }
 
 /**
@@ -31,6 +32,35 @@
   height: var(--message-icon-size);
   font-size: var(--message-icon-size);
   color: var(--box-tone-text);
+  margin-block: calc(
+    (var(--message-close-size) - var(--message-icon-size)) / 2
+  );
+}
+
+.Message.WithClose {
+  padding-inline-end: var(--space-content);
+}
+
+.Content {
+  --message-row-inset: calc(
+    (var(--message-close-size) - var(--line-height-4)) / 2
+  );
+
+  flex: 1;
+  min-width: 0;
+  padding-block: var(--message-row-inset);
+}
+
+.Content.HasActions {
+  padding-block-end: 0;
+}
+
+.ActionsOnly.ActionsOnly {
+  align-items: center;
+
+  .Content {
+    padding-block: 0;
+  }
 }
 
 /* Keep the round CloseButton round — the flex row must not stretch it. */

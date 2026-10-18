@@ -1,4 +1,4 @@
-import { Children, isValidElement, ReactNode } from 'react';
+import { Children, CSSProperties, isValidElement, ReactNode } from 'react';
 import { Toolbar } from 'components/toolbar';
 import { Tooltip } from 'components/tooltip/Tooltip.tsx';
 import { useDataTableContext } from '../DataTable.context';
@@ -58,7 +58,7 @@ export const DataTableHeader = <T extends object>({
   const { leading, center, trailing } = partitionActions(resolvedActions);
 
   return (
-    <Toolbar variant="grouped" style={{ '--toolbar-inset': '8px' }}>
+    <Toolbar variant="grouped" style={{ '--toolbar-inset': '8px' } as CSSProperties}>
       <Toolbar.Leading>
         {selectable ? (
           <Toolbar.Group>
