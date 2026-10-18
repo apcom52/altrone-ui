@@ -22,7 +22,9 @@
   --switch-label-size: var(--text-size-4);
   --switch-label-line-height: var(--line-height-4);
 
-  display: flex;
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
   align-items: center;
   gap: var(--gap);
   cursor: pointer;
@@ -105,8 +107,9 @@
 
   .Handle {
     left: calc(
-      var(--switch-track-width) - var(--switch-handle-inset) -
-        var(--switch-handle-checked-size)
+      var(--switch-track-width) - var(--switch-handle-inset) - var(
+          --switch-handle-checked-size
+        )
     );
     width: var(--switch-handle-checked-size);
     border-radius: calc(var(--switch-handle-checked-size) / 2);
@@ -135,6 +138,11 @@
   --switch-track-height: 16px;
   --switch-label-size: var(--text-size-3);
   --switch-label-line-height: var(--line-height-3);
+  --switch-handle-inset: 2px;
+  --switch-handle-size: calc(
+    var(--switch-track-height) - var(--switch-handle-inset) * 2
+  );
+  --switch-handle-checked-size: calc(var(--switch-handle-size) * 1.5);
 }
 
 .Small {
