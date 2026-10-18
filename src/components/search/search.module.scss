@@ -60,8 +60,16 @@
 }
 
 .PlaceholderIcon {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
   font-size: var(--search-icon-size);
   height: var(--search-icon-size);
   width: var(--search-icon-size);
+
+  svg {
+    display: block;
+  }
 }
