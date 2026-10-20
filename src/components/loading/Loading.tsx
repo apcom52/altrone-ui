@@ -37,6 +37,7 @@ export const Loading = memo<LoadingProps>(
         ref={ref}
         className={cls}
         style={{ ...style, color: color ?? 'var(--loading-color)' }}
+        data-motion-essential=""
         role={isDeterminate ? 'progressbar' : 'status'}
         aria-label={ariaLabel ?? t('loading.label')}
         aria-valuenow={clampedValue}
