@@ -26,7 +26,7 @@ import {
   useHover,
   useInteractions,
 } from '@floating-ui/react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, motion, useReducedMotionConfig } from 'motion/react';
 
 export const Tooltip = memo(
   ({
@@ -50,6 +50,7 @@ export const Tooltip = memo(
     const icons = useIcons();
     const { value: opened, setValue: setOpened } = useBoolean(defaultOpen);
     const tooltipId = useId();
+    const reducedMotion = useReducedMotionConfig() ?? false;
 
     const arrowRef = useRef<SVGSVGElement>(null);
     const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
@@ -167,9 +168,13 @@ export const Tooltip = memo(
                 role="tooltip"
                 className={cls}
                 style={{ ...floatingStyles, ...styles }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+                {...(reducedMotion
+                  ? {}
+                  : {
+                      initial: { opacity: 0 },
+                      animate: { opacity: 1 },
+                      exit: { opacity: 0 },
+                    })}
                 {...getFloatingProps()}
               >
                 {title ? <div className={s.Title}>{title}</div> : null}
