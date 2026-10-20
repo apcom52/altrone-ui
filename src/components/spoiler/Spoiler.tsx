@@ -4,7 +4,12 @@ import clsx from 'clsx';
 import s from './spoiler.module.scss';
 import { useBoolean } from 'utils';
 import { Plus, Minus } from 'lucide-react';
-import { AnimatePresence, motion, type Transition } from 'motion/react';
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotionConfig,
+  type Transition,
+} from 'motion/react';
 
 /** Near-critically damped — a lively settle, no visible bounce. */
 const EXPAND_TRANSITION: Transition = {
@@ -35,6 +40,7 @@ export const Spoiler = ({
     useBoolean(defaultOpen);
   const opened = isControlled ? open : internalOpened;
   const contentId = useId();
+  const fade = !useReducedMotionConfig();
 
   const handleToggle = (event: MouseEvent<HTMLButtonElement>) => {
     const next = !opened;
@@ -66,13 +72,17 @@ export const Spoiler = ({
           <motion.div
             id={contentId}
             className={s.Content}
-            initial={{ height: 0, opacity: 0 }}
+            initial={{ height: 0, ...(fade && { opacity: 0 }) }}
             animate={{
               height: 'auto',
-              opacity: 1,
+              ...(fade && { opacity: 1 }),
               transition: EXPAND_TRANSITION,
             }}
-            exit={{ height: 0, opacity: 0, transition: COLLAPSE_TRANSITION }}
+            exit={{
+              height: 0,
+              ...(fade && { opacity: 0 }),
+              transition: COLLAPSE_TRANSITION,
+            }}
           >
             <div className={s.ContentInner}>{children}</div>
           </motion.div>
