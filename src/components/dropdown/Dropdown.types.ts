@@ -61,7 +61,7 @@ export interface DropdownRadioListItem<T = string>
 }
 
 export interface DropdownChildMenuProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   ref?: React.Ref<HTMLElement>;
   icon?: ReactElement;
   children: ReactElement | null | (ReactElement | null)[];
