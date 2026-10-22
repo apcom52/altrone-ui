@@ -43,6 +43,25 @@ describe('Label', () => {
     expect(cn).toMatch(/Large/);
   });
 
+  test('orange and green resolve to categorical hues', () => {
+    render(
+      <>
+        <Label data-testid="o" color="orange">
+          Orange
+        </Label>
+        <Label data-testid="g" color="green">
+          Green
+        </Label>
+      </>,
+    );
+    expect(screen.getByTestId('o').style.getPropertyValue('--box-color')).toBe(
+      'var(--orange-9)',
+    );
+    expect(screen.getByTestId('g').style.getPropertyValue('--box-color')).toBe(
+      'var(--green-9)',
+    );
+  });
+
   test('the default color applies no colour modifier class', () => {
     render(<Label data-testid="l">Neutral</Label>);
     const cn = screen.getByTestId('l').className;
@@ -59,7 +78,11 @@ describe('Label', () => {
   });
 
   test('variant="status" renders a dot even without an icon', () => {
-    render(<Label data-testid="l" variant="status">Queued</Label>);
+    render(
+      <Label data-testid="l" variant="status">
+        Queued
+      </Label>,
+    );
     const el = screen.getByTestId('l');
     expect(el.querySelector('svg')).toBeNull();
     expect(el.firstElementChild?.tagName).toBe('SPAN');

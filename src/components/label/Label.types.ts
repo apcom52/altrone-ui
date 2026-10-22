@@ -10,9 +10,26 @@ export interface LabelProps extends React.HTMLAttributes<HTMLElement> {
    * `children`.
    */
   icon?: React.ReactElement;
-  color?: 'default' | 'primary' | 'success' | 'danger' | 'warning' | 'amber' | 'blue' | 'brown' | 'indigo' | 'pink' | 'purple' | 'red' | 'teal';
+  color?:
+    | 'default'
+    | 'primary'
+    | 'success'
+    | 'danger'
+    | 'warning'
+    | 'amber'
+    | 'blue'
+    | 'brown'
+    | 'green'
+    | 'indigo'
+    | 'orange'
+    | 'pink'
+    | 'purple'
+    | 'red'
+    | 'teal';
   /** `status` adds a pale fill, a border and a colored dot before `children`. */
   variant?: 'solid' | 'soft' | 'outline' | 'status';
   shape?: 'rounded' | 'pill';
   size?: Size;
+  /** Render onto a single child element instead of a `<div>`, e.g. a link. */
+  asChild?: boolean;
 }

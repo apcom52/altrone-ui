@@ -9,7 +9,9 @@ const CATEGORICAL_COLORS = new Set([
   'amber',
   'blue',
   'brown',
+  'green',
   'indigo',
+  'orange',
   'pink',
   'purple',
   'red',
@@ -29,17 +31,6 @@ const MATERIAL_BY_VARIANT: Record<string, BoxMaterial> = {
   soft: 'pale',
   outline: 'outline',
   status: 'pale',
-};
-
-/** Rounding per size tier — Label seeds its own fixed radius rather than
-    inheriting the ambient concentric-radius scope, matching its pre-Box
-    values. */
-const RADIUS_BY_SIZE: Record<string, number> = {
-  mini: 4,
-  s: 6,
-  m: 8,
-  l: 8,
-  xl: 12,
 };
 
 export const Label = memo(
@@ -66,7 +57,7 @@ export const Label = memo(
         tone={tone}
         color={hue}
         shape={shape === 'pill' ? 'pill' : 'rounded'}
-        radius={RADIUS_BY_SIZE[size]}
+        radius="var(--label-radius)"
         width="auto"
         height="auto"
         padding={{ x: 'var(--label-padding-x)', y: 'var(--label-padding-y)' }}
