@@ -4,6 +4,9 @@ import { LoadingProps } from './Loading.types.ts';
 import s from './loading.module.scss';
 import { useLocalization } from '../application';
 
+const PX_LENGTH = /^\d*\.?\d+(px)?$/;
+const DEFAULT_GEOMETRY_SIZE = 24;
+
 export const Loading = memo<LoadingProps>(
   ({
     ref,
@@ -18,14 +21,17 @@ export const Loading = memo<LoadingProps>(
   }) => {
     const t = useLocalization();
 
-    /* parseFloat, not parseInt — sizes may carry a unit ('24px') and stroke
-       widths a fraction ('1.5'). */
-    const numericSize = parseFloat(String(size));
+    /* SVG geometry needs a number: px sizes map 1:1, any other CSS length
+       (`2rem`, `50%`) draws in a 24-unit box that the `width`/`height`
+       scale, so `strokeWidth` stays relative to 24. */
+    const numericSize = PX_LENGTH.test(String(size).trim())
+      ? parseFloat(String(size))
+      : DEFAULT_GEOMETRY_SIZE;
     const numericStroke = parseFloat(String(strokeWidth));
     const center = numericSize / 2;
     const radius = Math.max(0, numericSize / 2 - numericStroke / 2);
 
-    const isDeterminate = value !== undefined;
+    const isDeterminate = value !== undefined && !Number.isNaN(value);
     const clampedValue = isDeterminate
       ? Math.min(100, Math.max(0, value))
       : undefined;
@@ -36,7 +42,7 @@ export const Loading = memo<LoadingProps>(
       <div
         ref={ref}
         className={cls}
-        style={{ ...style, color: color ?? 'var(--loading-color)' }}
+        style={color === undefined ? style : { ...style, color }}
         data-motion-essential=""
         role={isDeterminate ? 'progressbar' : 'status'}
         aria-label={ariaLabel ?? t('loading.label')}
