@@ -21,6 +21,7 @@ export interface IconSet {
   success: ReactElement;
   warning: ReactElement;
   danger: ReactElement;
+  dismiss: ReactElement;
 }
 
 export type Theme = 'auto' | 'light' | 'dark';
