@@ -53,7 +53,8 @@ export const Overview: StoryObj<typeof Divider> = {
       <Heading>Horizontal</Heading>
       <Paragraph>
         Separates stacked sections. The rule is slightly inset from the
-        container edges.
+        container edges, evenly on both sides — inside a{' '}
+        <Text code>Flex</Text> too, which strips its children&rsquo;s margins.
       </Paragraph>
       <Flex orientation="vertical" gap="m">
         <Text block>Profile</Text>
