@@ -138,4 +138,70 @@ describe('NumberInput', () => {
 
     expect(input).toHaveValue('-42');
   });
+
+  test('clearing the field reports `undefined` and keeps it empty', () => {
+    const onChange = vi.fn();
+    const Field = () => {
+      const [value, setValue] = useState<number | undefined>(20);
+      return (
+        <NumberInput
+          value={value}
+          onChange={(next) => {
+            onChange(next);
+            setValue(next);
+          }}
+          data-testid="number"
+        />
+      );
+    };
+    render(
+      <Application>
+        <Field />
+      </Application>,
+    );
+    const input = screen.getByTestId('number');
+
+    fireEvent.change(input, { target: { value: '' } });
+
+    expect(onChange).toHaveBeenLastCalledWith(undefined);
+    expect(input).toHaveValue('');
+  });
+
+  test('a lone minus survives in a controlled field on the way to a negative number', () => {
+    render(
+      <Application>
+        <ControlledNumberInput allowNegative />
+      </Application>,
+    );
+    const input = screen.getByTestId('number');
+
+    fireEvent.change(input, { target: { value: '-' } });
+    expect(input).toHaveValue('-');
+
+    fireEvent.change(input, { target: { value: '-5' } });
+    expect(input).toHaveValue('-5');
+  });
+
+  test('resetting `value` to `undefined` from outside clears the field', () => {
+    const Field = () => {
+      const [value, setValue] = useState<number | undefined>();
+      return (
+        <>
+          <NumberInput value={value} onChange={setValue} data-testid="number" />
+          <button onClick={() => setValue(undefined)}>reset</button>
+        </>
+      );
+    };
+    render(
+      <Application>
+        <Field />
+      </Application>,
+    );
+    const input = screen.getByTestId('number');
+
+    fireEvent.change(input, { target: { value: '80' } });
+    fireEvent.click(screen.getByText('reset'));
+
+    expect(input).toHaveValue('');
+  });
 });

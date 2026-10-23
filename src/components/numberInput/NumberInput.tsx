@@ -1,4 +1,4 @@
-import { FocusEvent, useCallback, useRef } from 'react';
+import { FocusEvent, useCallback, useState } from 'react';
 import { NumberInputProps } from './NumberInput.types.ts';
 import { TextInput } from 'components/textInput';
 import { ArrayUtils } from 'utils';
@@ -9,6 +9,15 @@ import {
 } from 'react-number-format';
 import s from './numberInput.module.scss';
 import { useFormField } from '../form/components/Field.context.ts';
+
+function toNumericString(value: string | number | undefined) {
+  return value === undefined ? '' : String(value);
+}
+
+function parseNumericString(text: string) {
+  const parsed = parseFloat(text);
+  return Number.isNaN(parsed) ? undefined : parsed;
+}
 
 export const NumberInput = ({
   ref,
@@ -23,6 +32,7 @@ export const NumberInput = ({
   allowLeadingZeros,
   groupingDelimiter,
   value,
+  defaultValue,
   size,
   onChange,
   min,
@@ -62,12 +72,28 @@ export const NumberInput = ({
 
   const safeChildren = ArrayUtils.getSafeArray(children);
 
-  const typedValueRef = useRef(value);
+  /**
+   * The typed text is kept apart from `value`: "-" and "" both parse to
+   * `undefined`, so `value` alone can't tell "the user is typing a minus" from
+   * "the field is empty". It's resynced only when `value` really changes.
+   */
+  const [typedText, setTypedText] = useState(() =>
+    toNumericString(value ?? defaultValue),
+  );
+  const [prevValue, setPrevValue] = useState(value);
+
+  if (value !== prevValue) {
+    setPrevValue(value);
+    if (value !== parseNumericString(typedText)) {
+      setTypedText(toNumericString(value));
+    }
+  }
 
   const onValueChange: OnValueChange = useCallback(
-    ({ floatValue }, sourceInfo) => {
-      typedValueRef.current = floatValue;
-      onChange(floatValue || 0, sourceInfo.event);
+    ({ floatValue, value: numericString }, sourceInfo) => {
+      if (sourceInfo.source !== 'event') return;
+      setTypedText(numericString);
+      onChange(floatValue, sourceInfo.event);
     },
     [onChange],
   );
@@ -87,7 +113,7 @@ export const NumberInput = ({
   );
 
   const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
-    const current = value ?? typedValueRef.current;
+    const current = parseNumericString(typedText);
 
     if (current !== undefined) {
       const clamped = Math.min(
@@ -96,7 +122,7 @@ export const NumberInput = ({
       );
 
       if (clamped !== current) {
-        typedValueRef.current = clamped;
+        setTypedText(String(clamped));
         onChange(clamped, event);
       }
     }
@@ -109,7 +135,7 @@ export const NumberInput = ({
       asChild
       ref={ref}
       type="text"
-      value={value !== undefined ? String(value) : undefined}
+      value={typedText}
       className={className}
       style={style}
       inputClassName={s.NumberInput}
@@ -122,6 +148,7 @@ export const NumberInput = ({
     >
       <NumericFormat
         type="text"
+        valueIsNumericString
         onValueChange={onValueChange}
         thousandsGroupStyle="thousand"
         thousandSeparator={groupingDelimiterValue}
