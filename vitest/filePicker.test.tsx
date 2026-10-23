@@ -77,6 +77,27 @@ describe('FilePicker', () => {
     vi.unstubAllGlobals();
   });
 
+  test('removes the file from the list even when the DELETE request fails', async () => {
+    const removeFileFn = vi.fn().mockRejectedValue(new Error('404'));
+    const onChange = vi.fn();
+
+    renderPicker(
+      <FilePicker
+        multiple
+        value={[{ filename: 'failed.txt' }]}
+        removeFileFn={removeFileFn}
+        onChange={onChange}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
+
+    await waitFor(() =>
+      expect(onChange).toHaveBeenLastCalledWith([], expect.anything()),
+    );
+    expect(removeFileFn).toHaveBeenCalledTimes(1);
+  });
+
   test('forwards ref to the root element', () => {
     const ref = createRef<HTMLDivElement>();
     renderPicker(<FilePicker ref={ref} />);

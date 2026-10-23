@@ -143,10 +143,14 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
   const onRemoveClick = useCallback(
     async (event: React.MouseEvent) => {
       if (autoUpload) {
-        if (removeFileFn) {
-          await removeFileFn(deleteContext);
-        } else if (url) {
-          await deleteFileRequest(deleteContext);
+        try {
+          if (removeFileFn) {
+            await removeFileFn(deleteContext);
+          } else if (url) {
+            await deleteFileRequest(deleteContext);
+          }
+        } catch {
+          /** A rejected DELETE (e.g. 404 for a file that never uploaded) must not keep the chip stuck in the list. */
         }
       }
 
