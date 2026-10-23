@@ -32,26 +32,30 @@
     margin-bottom: 6px;
   }
 
+  :global(.react-colorful__interactive:focus-visible .react-colorful__pointer) {
+    outline: var(--focus-ring-width) solid var(--black);
+  }
+
   :global(.react-colorful__saturation-pointer) {
     width: 24px;
     height: 24px;
-    border-radius: 6px;
+    border-radius: 50%;
   }
 
   :global(.react-colorful__hue-pointer) {
     width: 16px;
     height: 16px;
-    border-radius: 6px;
+    border-radius: 50%;
   }
 
   :global(.react-colorful__alpha-pointer) {
     width: 16px;
     height: 16px;
-    border-radius: 6px;
+    border-radius: 50%;
   }
 
   :global(.react-colorful__pointer-fill) {
-    border-radius: 4px;
+    border-radius: 50%;
   }
 
   :global(.react-colorful__hue) {

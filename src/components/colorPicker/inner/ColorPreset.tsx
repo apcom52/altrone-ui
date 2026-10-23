@@ -2,12 +2,19 @@ import clsx from 'clsx';
 import { ColorPickerPresetProps } from '../ColorPicker.types';
 import s from './colorPreset.module.scss';
 import { GlobalUtils } from 'utils';
-import { useCallback, useMemo, MouseEvent } from 'react';
+import { useCallback, useMemo, MouseEvent, Ref } from 'react';
 import { CheckIcon } from 'components/checkbox';
 import { motion, useAnimationControls } from 'motion/react';
 
-export const ColorPreset = (props: ColorPickerPresetProps) => {
-  const { name, title, value, selected, onChange } = props;
+interface ColorPresetProps extends ColorPickerPresetProps {
+  ref?: Ref<HTMLButtonElement>;
+  tabIndex?: number;
+  onFocus?: () => void;
+}
+
+export const ColorPreset = (props: ColorPresetProps) => {
+  const { ref, name, title, value, selected, onChange, tabIndex, onFocus } =
+    props;
 
   const controls = useAnimationControls();
 
@@ -35,9 +42,13 @@ export const ColorPreset = (props: ColorPickerPresetProps) => {
 
   return (
     <motion.button
+      ref={ref}
       type="button"
+      tabIndex={tabIndex}
+      onFocus={onFocus}
       title={title || name}
       aria-label={`${title || name}: ${value}`}
+      aria-pressed={Boolean(selected)}
       className={cls}
       style={{ backgroundColor: value }}
       onClick={handleClick}

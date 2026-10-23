@@ -3,9 +3,15 @@ import { NumberInput } from 'components/numberInput/NumberInput.tsx';
 import { Tabs } from 'components/tabs/Tabs.tsx';
 import { TextInput } from 'components/textInput/TextInput.tsx';
 import { useLocalization } from 'components/application';
-import { FocusEventHandler, useCallback, useEffect, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useState,
+  type FocusEvent,
+  type KeyboardEvent,
+} from 'react';
 import { ColorPickerProps } from '../ColorPicker.types';
-import { ColorPreset } from './ColorPreset';
+import { ColorPresetGrid } from './ColorPresetGrid';
 import s from './colorPickerContent.module.scss';
 import { HexAlphaColorPicker } from 'react-colorful';
 import { Grid3X3, Palette } from 'lucide-react';
@@ -76,9 +82,9 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
     setHexDraft(value ? value.replace('#', '').slice(0, 6) : '');
   }, [value]);
 
-  const commitHex = useCallback<FocusEventHandler>(
-    (event) => {
-      const next = (event.target as HTMLInputElement).value;
+  const commitHex = useCallback(
+    (event: FocusEvent<HTMLInputElement> | KeyboardEvent<HTMLInputElement>) => {
+      const next = event.currentTarget.value;
       if (HEX6.test(next)) {
         onChange(`#${next}`, event);
       } else {
@@ -121,16 +127,12 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
       ) : null}
 
       {mode === 'presets' ? (
-        <Flex orientation="horizontal" gap="m" wrap>
-          {colorPresets?.map((preset, index) => (
-            <ColorPreset
-              key={`${index}-${preset.name}`}
-              onChange={onChange}
-              selected={preset.value.toLowerCase() === value?.toLowerCase()}
-              {...preset}
-            />
-          ))}
-        </Flex>
+        <ColorPresetGrid
+          colorPresets={colorPresets ?? []}
+          value={value}
+          onChange={onChange}
+          label={t('colorPicker.savedColors')}
+        />
       ) : null}
 
       {mode === 'palette' ? (
@@ -149,6 +151,9 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
               value={hexDraft}
               onChange={setHexDraft}
               onBlur={commitHex}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') commitHex(event);
+              }}
             >
               <TextInput.TextIsland label="#" />
             </TextInput>
@@ -162,6 +167,9 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
                       setRgb((prev) => ({ ...prev, [channel]: next ?? 0 }))
                     }
                     onBlur={commitRgb}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter') commitRgb();
+                    }}
                     min={0}
                     max={255}
                     placeholder="0"
