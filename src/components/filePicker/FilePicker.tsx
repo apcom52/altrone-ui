@@ -151,13 +151,13 @@ export const FilePicker = memo<FilePickerProps>(
           const currentList = fileListRef.current;
           if (currentList.length && autoUpload) {
             const deleteCtx = {
-              url: String(url),
+              url: url ?? '',
               name: String(pickerName),
               pickerItem: currentList[0],
             };
             if (removeFileFn) {
               await removeFileFn(deleteCtx);
-            } else {
+            } else if (url) {
               await deleteFileRequest(deleteCtx);
             }
           }

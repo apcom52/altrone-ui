@@ -1,6 +1,6 @@
 import React, { createRef } from 'react';
 import { expect, test, describe, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Application, FilePicker } from '../src';
 
 class ResizeObserver {
@@ -50,6 +50,31 @@ describe('FilePicker', () => {
     );
 
     expect(screen.getByText('only.txt')).toBeInTheDocument();
+  });
+
+  test('without url, choosing and removing a file sends no requests', async () => {
+    const open = vi.spyOn(XMLHttpRequest.prototype, 'open');
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+    const onChange = vi.fn();
+
+    const { container } = renderPicker(<FilePicker onChange={onChange} />);
+    const input = container.querySelector('input[type="file"]')!;
+    fireEvent.change(input, {
+      target: { files: [new File(['x'], 'a.txt')] },
+    });
+
+    expect(await screen.findByText('a.txt')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
+
+    await waitFor(() =>
+      expect(onChange).toHaveBeenLastCalledWith([], expect.anything()),
+    );
+    expect(open).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
+
+    open.mockRestore();
+    vi.unstubAllGlobals();
   });
 
   test('forwards ref to the root element', () => {

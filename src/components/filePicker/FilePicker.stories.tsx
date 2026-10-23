@@ -206,6 +206,16 @@ export const DeferredStory: StoryObj<typeof FilePicker> = {
         <Text code>name</Text>) and uploads on its own submit.
       </Paragraph>
       <FilePicker name="attachments" multiple autoUpload={false} placeholder="Attach files" />
+      <Heading>No url, no upload function</Heading>
+      <Paragraph>
+        The built-in upload and delete requests go to <Text code>url</Text>. A
+        picker with <Text code>autoUpload</Text> on but no{' '}
+        <Text code>url</Text>, <Text code>autoUploadFn</Text> or{' '}
+        <Text code>removeFileFn</Text> has nowhere to send them, so it sends
+        nothing: picked files stay <Text code>selected</Text> and the delete
+        button removes them from the list straight away.
+      </Paragraph>
+      <FilePicker name="plain" multiple placeholder="Pick files" />
     </Flex>
   ),
 };

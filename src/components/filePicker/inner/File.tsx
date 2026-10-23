@@ -84,7 +84,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
 
   const uploadContext = useMemo<FilePickerUploadContext>(() => {
     return {
-      url: String(url),
+      url: url ?? '',
       name: String(name),
       method: String(method),
       file: file as File,
@@ -98,7 +98,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
 
   const deleteContext = useMemo<FilePickerRemoveContext>(() => {
     return {
-      url: String(url),
+      url: url ?? '',
       name: String(name),
       file,
       pickerItem,
@@ -145,21 +145,21 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
       if (autoUpload) {
         if (removeFileFn) {
           await removeFileFn(deleteContext);
-        } else {
+        } else if (url) {
           await deleteFileRequest(deleteContext);
         }
       }
 
       onDeleteClick(pickerItem, event);
     },
-    [autoUpload, removeFileFn, deleteContext, onDeleteClick, pickerItem],
+    [autoUpload, removeFileFn, url, deleteContext, onDeleteClick, pickerItem],
   );
 
   useEffect(() => {
     if (autoUpload && uploadContext && file && status === 'selected') {
       if (autoUploadFn) {
         void autoUploadFn(uploadContext);
-      } else {
+      } else if (url) {
         void uploadFile(uploadContext);
       }
     }
