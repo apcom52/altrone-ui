@@ -155,10 +155,14 @@ export const FilePicker = memo<FilePickerProps>(
               name: String(pickerName),
               pickerItem: currentList[0],
             };
-            if (removeFileFn) {
-              await removeFileFn(deleteCtx);
-            } else if (url) {
-              await deleteFileRequest(deleteCtx);
+            try {
+              if (removeFileFn) {
+                await removeFileFn(deleteCtx);
+              } else if (url) {
+                await deleteFileRequest(deleteCtx);
+              }
+            } catch {
+              /** A failed DELETE of the replaced file must not drop the newly chosen one. */
             }
           }
           const newList: InternalFileItem[] = [

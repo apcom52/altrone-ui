@@ -1,4 +1,11 @@
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   FilePickerRemoveContext,
   FilePickerUploadContext,
@@ -105,11 +112,16 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
     };
   }, [url, name, file, pickerItem]);
 
+  const requestRef = useRef<XMLHttpRequest | null>(null);
+
+  useEffect(() => () => requestRef.current?.abort(), []);
+
   // SSR: requires client — XMLHttpRequest is browser-only
   const uploadFile = useCallback(
     async (context: FilePickerUploadContext) => {
       if (file) {
         const request = new XMLHttpRequest();
+        requestRef.current = request;
         request.open(context.method, context.url);
 
         const formData = new FormData();

@@ -98,6 +98,48 @@ describe('FilePicker', () => {
     expect(removeFileFn).toHaveBeenCalledTimes(1);
   });
 
+  test('single mode keeps the new file when deleting the replaced one fails', async () => {
+    const removeFileFn = vi.fn().mockRejectedValue(new Error('500'));
+    const onChange = vi.fn();
+
+    const { container } = renderPicker(
+      <FilePicker
+        defaultValue={[{ filename: 'old.txt' }]}
+        removeFileFn={removeFileFn}
+        onChange={onChange}
+      />,
+    );
+    fireEvent.change(container.querySelector('input[type="file"]')!, {
+      target: { files: [new File(['x'], 'new.txt')] },
+    });
+
+    expect(await screen.findByText('new.txt')).toBeInTheDocument();
+    expect(screen.queryByText('old.txt')).not.toBeInTheDocument();
+    expect(removeFileFn).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledTimes(1);
+  });
+
+  test('replacing a file in single mode aborts its unfinished upload', async () => {
+    const send = vi
+      .spyOn(XMLHttpRequest.prototype, 'send')
+      .mockImplementation(() => {});
+    const abort = vi.spyOn(XMLHttpRequest.prototype, 'abort');
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true }));
+
+    const { container } = renderPicker(<FilePicker url="/upload" />);
+    const input = container.querySelector('input[type="file"]')!;
+    fireEvent.change(input, { target: { files: [new File(['x'], 'a.txt')] } });
+    await waitFor(() => expect(send).toHaveBeenCalledTimes(1));
+    expect(abort).not.toHaveBeenCalled();
+
+    fireEvent.change(input, { target: { files: [new File(['y'], 'b.txt')] } });
+    await waitFor(() => expect(abort).toHaveBeenCalledTimes(1));
+
+    send.mockRestore();
+    abort.mockRestore();
+    vi.unstubAllGlobals();
+  });
+
   test('forwards ref to the root element', () => {
     const ref = createRef<HTMLDivElement>();
     renderPicker(<FilePicker ref={ref} />);
