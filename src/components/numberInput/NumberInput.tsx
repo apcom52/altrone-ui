@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { FocusEvent, useCallback, useRef } from 'react';
 import { NumberInputProps } from './NumberInput.types.ts';
 import { TextInput } from 'components/textInput';
 import { ArrayUtils } from 'utils';
@@ -25,12 +25,13 @@ export const NumberInput = ({
   value,
   size,
   onChange,
-  min = 0,
+  min,
   max,
   invalid,
   name,
   disabled,
   readOnly,
+  onBlur,
   ...restProps
 }: NumberInputProps) => {
   const {
@@ -61,27 +62,47 @@ export const NumberInput = ({
 
   const safeChildren = ArrayUtils.getSafeArray(children);
 
+  const typedValueRef = useRef(value);
+
   const onValueChange: OnValueChange = useCallback(
     ({ floatValue }, sourceInfo) => {
+      typedValueRef.current = floatValue;
       onChange(floatValue || 0, sourceInfo.event);
     },
     [onChange],
   );
 
+  /**
+   * Out-of-range values are allowed while typing — "1" is on the way to "15"
+   * with `min={10}`. Refused only once more digits can't bring them back.
+   */
   const onAllowedCheck = useCallback(
-    ({ floatValue = 0 }: NumberFormatValues) => {
-      if (min !== undefined && floatValue < min) {
-        return false;
-      }
-
-      if (max !== undefined && floatValue > max) {
-        return false;
-      }
-
+    ({ floatValue }: NumberFormatValues) => {
+      if (floatValue === undefined) return true;
+      if (max !== undefined && floatValue > max && floatValue > 0) return false;
+      if (min !== undefined && floatValue < min && floatValue < 0) return false;
       return true;
     },
     [min, max],
   );
+
+  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+    const current = value ?? typedValueRef.current;
+
+    if (current !== undefined) {
+      const clamped = Math.min(
+        Math.max(current, min ?? -Infinity),
+        max ?? Infinity,
+      );
+
+      if (clamped !== current) {
+        typedValueRef.current = clamped;
+        onChange(clamped, event);
+      }
+    }
+
+    onBlur?.(event);
+  };
 
   return (
     <TextInput
@@ -97,6 +118,7 @@ export const NumberInput = ({
       disabled={inputDisabled}
       invalid={inputInvalid}
       readOnly={readOnly}
+      onBlur={handleBlur}
     >
       <NumericFormat
         type="text"

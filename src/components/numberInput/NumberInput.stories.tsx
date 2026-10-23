@@ -6,6 +6,7 @@ import {
   MoneyInput,
   OrderEditor,
   PortForwarding,
+  RangeLimits,
   SplitBill,
 } from './stories';
 
@@ -41,6 +42,11 @@ export const BillSplitter: StoryObj = {
 export const Ports: StoryObj = {
   name: 'Port forwarding rules',
   render: () => <PortForwarding />,
+};
+
+export const Range: StoryObj = {
+  name: 'Range limits while typing',
+  render: () => <RangeLimits />,
 };
 
 export default story;
