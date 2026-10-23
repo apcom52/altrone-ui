@@ -10,13 +10,15 @@ import {
 } from 'react';
 import { Dropdown } from 'components/dropdown';
 import { useLocalization } from 'components/application';
-import { Action, Group, Separator } from './components';
+import { Action, Group, Separator, SidebarToggleAction } from './components';
+import { SidebarToggleMenuAction } from './components/SidebarToggleAction.tsx';
 import {
   ToolbarActionPriority,
   ToolbarActionProps,
   ToolbarGroupProps,
   ToolbarIconSet,
   ToolbarSeparatorProps,
+  ToolbarSidebarToggleActionProps,
 } from './Toolbar.types.ts';
 
 const PRIORITY_WEIGHT: Record<ToolbarActionPriority, number> = {
@@ -81,23 +83,54 @@ export function isFlexibleSpacer(child: ReactElement): boolean {
   );
 }
 
-function getItemPriority(child: ReactElement): ToolbarActionPriority {
-  if (child.type === Action || child.type === Group) {
-    return (
-      (child.props as { priority?: ToolbarActionPriority }).priority ??
-      'medium'
-    );
-  }
-  return 'high';
+function isMenuRepresentable(node: ReactNode): node is ReactElement {
+  return (
+    isValidElement(node) &&
+    (node.type === Action || node.type === SidebarToggleAction)
+  );
 }
 
-function toDropdownAction(action: ReactElement<ToolbarActionProps>) {
-  const { label, icon, additionalIcon, danger, disabled, onClick } =
-    action.props;
+/**
+ * Only items whose every part has an overflow-menu form may collapse — a
+ * `Toolbar.Group` holding a `Search`, a text node or any custom element stays
+ * in the row regardless of its `priority`, so nothing silently disappears.
+ */
+export function isCollapsible(child: ReactElement): boolean {
+  if (child.type === Group) {
+    const groupChildren = Children.toArray(
+      (child.props as ToolbarGroupProps).children,
+    );
+    return (
+      groupChildren.length > 0 && groupChildren.every(isMenuRepresentable)
+    );
+  }
+  return isMenuRepresentable(child);
+}
+
+function getItemPriority(child: ReactElement): ToolbarActionPriority {
+  if (!isCollapsible(child)) return 'high';
+  return (
+    (child.props as { priority?: ToolbarActionPriority }).priority ?? 'medium'
+  );
+}
+
+function toMenuItem(item: ReactElement): ReactElement {
+  if (item.type === SidebarToggleAction) {
+    return (
+      <SidebarToggleMenuAction
+        key={item.key}
+        {...(item.props as ToolbarSidebarToggleActionProps)}
+      />
+    );
+  }
+
+  const { label, icon, additionalIcon, danger, disabled, onClick } = (
+    item as ReactElement<ToolbarActionProps>
+  ).props;
 
   return (
     <Dropdown.Action
-      key={action.key}
+      key={item.key}
       label={label}
       icon={icon ?? additionalIcon}
       danger={danger}
@@ -111,18 +144,11 @@ function toDropdownAction(action: ReactElement<ToolbarActionProps>) {
 function flattenHiddenItem(child: ReactElement): ReactElement[] {
   if (child.type === Group) {
     return Children.toArray((child.props as ToolbarGroupProps).children)
-      .filter(
-        (c): c is ReactElement<ToolbarActionProps> =>
-          isValidElement(c) && c.type === Action,
-      )
-      .map(toDropdownAction);
+      .filter(isMenuRepresentable)
+      .map(toMenuItem);
   }
 
-  if (child.type === Action) {
-    return [toDropdownAction(child as ReactElement<ToolbarActionProps>)];
-  }
-
-  return [];
+  return isMenuRepresentable(child) ? [toMenuItem(child)] : [];
 }
 
 const EMPTY_SET: ReadonlySet<string> = new Set();
@@ -161,9 +187,9 @@ export interface UseToolbarOverflowOptions {
 /**
  * Collapses the direct children of a toolbar row (`Toolbar.Action` /
  * `Toolbar.Group`, each an atomic unit) into an overflow `Dropdown` once
- * they no longer fit, respecting each item's `priority`. Children that
- * don't support `priority` (Title, Logo, Separator, arbitrary nodes) are
- * measured but never collapsed.
+ * they no longer fit, respecting each item's `priority`. Children with no
+ * overflow-menu form (Title, Logo, Separator, arbitrary nodes, and groups
+ * containing any of them) are measured but never collapsed.
  *
  * `orientation` is taken as a parameter rather than read from
  * `ToolbarContext` — the bare `Toolbar` root calls this before it provides
