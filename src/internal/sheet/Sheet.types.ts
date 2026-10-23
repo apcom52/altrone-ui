@@ -37,6 +37,9 @@ export interface SheetProps extends Omit<
    */
   onClose?: (event?: React.MouseEvent | KeyboardEvent) => void;
 
+  /** Fires once the close animation has finished and the panel has unmounted. */
+  onExitComplete?: () => void;
+
   /**
    * When `false`, a backdrop click or `Esc` no longer calls `onClose` — the
    * panel gives a brief shake instead, signalling the attempt was rejected.

@@ -22,6 +22,8 @@ export interface ModalProps extends Omit<
    * `ModalContext.hide()`.
    */
   onClose?: (event?: React.MouseEvent | KeyboardEvent) => void;
+  /** Fires once the close animation has finished and the modal has unmounted. */
+  onExitComplete?: () => void;
   enabled?: boolean;
   title?: string;
   size?: Size;

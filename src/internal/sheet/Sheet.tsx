@@ -100,6 +100,7 @@ export const Sheet = (props: SheetProps) => {
     ref,
     open = false,
     onClose,
+    onExitComplete,
     dismissible = true,
     placement = 'bottom',
     mobileBreakpoint = 'sm',
@@ -268,7 +269,7 @@ export const Sheet = (props: SheetProps) => {
   const portalRoot = getPortalRoot();
 
   const sheet = (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={onExitComplete}>
       {open && (
         <div
           ref={ref}
