@@ -144,6 +144,28 @@ describe('DataTable component', () => {
     expect(screen.getByDisplayValue('Role')).toBeInTheDocument();
   });
 
+  test('the filter menu lists only columns whose type has filter rules', () => {
+    renderTable({
+      columns: [
+        { accessor: 'name', label: 'Name', type: 'link', filterable: true },
+        { accessor: 'role', label: 'Role', type: 'custom', filterable: true },
+        { accessor: 'color', label: 'Color', type: 'custom', filterable: 'string' },
+      ],
+    });
+
+    fireEvent.click(screen.getByText('Filters'));
+    fireEvent.click(screen.getByText('Add filter'));
+
+    expect(screen.queryByRole('button', { name: 'Role' })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Name' }));
+    expect(screen.getByDisplayValue('Name')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Add filter'));
+    fireEvent.click(screen.getByRole('button', { name: 'Color' }));
+    expect(screen.getByDisplayValue('Color')).toBeInTheDocument();
+  });
+
   test('the filter panel reflects a controlled `filters` prop set before it was ever opened', () => {
     renderTable({
       filters: [{ id: 'role', value: { rule: 'has', value: ['Engineer'] } }],

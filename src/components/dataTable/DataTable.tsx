@@ -29,6 +29,7 @@ import {
 } from './DataTable.types';
 import { DataTableContext, DataTableContextValue } from './DataTable.context';
 import { dataTableFeatures } from './DataTable.features';
+import { columnFilterType } from './DataTable.constants';
 import { useDataTableColumns } from './useDataTableColumns';
 import { useDataTableHorizontalScroll } from './useDataTableHorizontalScroll';
 import { Action, RowAction } from './components';
@@ -223,7 +224,7 @@ const DataTableComponent = <DataType extends object>(
   const headerVisible = useMemo(
     () =>
       Boolean(actions) ||
-      columns.some((column) => column.filterable) ||
+      columns.some((column) => columnFilterType(column)) ||
       selectable,
     [actions, columns, selectable],
   );

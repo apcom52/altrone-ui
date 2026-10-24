@@ -4,6 +4,7 @@ import {
   BooleanFilterRules,
   CellRenderer,
   ColorFilterRules,
+  DataTableColumn,
   DataTableColumnType,
   DateFilterRules,
   NumberFilterRules,
@@ -236,6 +237,7 @@ export const RulesByDataType: Partial<
 > = {
   string: DataTableStringRules,
   text: DataTableStringRules,
+  link: DataTableStringRules,
   number: DataTableNumberRules,
   currency: DataTableNumberRules,
   password: DataTablePasswordRules,
@@ -243,6 +245,18 @@ export const RulesByDataType: Partial<
   date: DataTableDateRules,
   select: DataTableSelectRules,
   color: DataTableColorRules,
+};
+
+/** Filter type of a column, or `undefined` when it isn't filterable or its type has no filter rules. */
+export const columnFilterType = <T extends object>(
+  column: DataTableColumn<T>,
+): DataTableColumnType | undefined => {
+  if (!column.filterable) return undefined;
+  const type =
+    typeof column.filterable === 'string'
+      ? column.filterable
+      : (column.type ?? 'string');
+  return RulesByDataType[type] ? type : undefined;
 };
 
 export const CellRenderers: Partial<
