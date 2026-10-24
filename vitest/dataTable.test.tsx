@@ -166,6 +166,29 @@ describe('DataTable component', () => {
     expect(screen.getByDisplayValue('Color')).toBeInTheDocument();
   });
 
+  test('an explicit `filterable` type drives both the filter control and the filter function', () => {
+    renderTable({
+      columns: [
+        { accessor: 'name', label: 'Name' },
+        { accessor: 'age', label: 'Age', type: 'number', filterable: 'text' },
+      ],
+    });
+
+    fireEvent.click(screen.getByText('Filters'));
+    fireEvent.click(screen.getByText('Add filter'));
+    fireEvent.click(screen.getByRole('button', { name: 'Age' }));
+
+    const control = document.querySelector('[data-filter-control="true"]') as HTMLInputElement;
+    expect(control).not.toHaveAttribute('inputmode', 'numeric');
+    fireEvent.change(control, { target: { value: '4' } });
+    fireEvent.click(screen.getByText('Apply'));
+
+    expect(bodyRows().map((r) => r.textContent)).toEqual([
+      expect.stringContaining('Alan'),
+      expect.stringContaining('Katherine'),
+    ]);
+  });
+
   test('the filter panel reflects a controlled `filters` prop set before it was ever opened', () => {
     renderTable({
       filters: [{ id: 'role', value: { rule: 'has', value: ['Engineer'] } }],
