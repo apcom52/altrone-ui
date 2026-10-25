@@ -764,3 +764,58 @@ export const CustomIcons: Story = {
     );
   },
 };
+
+/* ------------------------------------------------------------------ */
+/* 8. Keyboard                                                         */
+/* ------------------------------------------------------------------ */
+
+export const Keyboard: Story = {
+  name: 'Keyboard',
+  render: () => {
+    const [color, setColor] = useState<string | undefined>('#5b5bd6');
+    const [accent, setAccent] = useState<string | undefined>('#3dd68c');
+
+    return (
+      <Flex
+        orientation="vertical"
+        gap="l"
+        style={{ padding: 24, maxWidth: 720 }}
+      >
+        <Heading>Picking a colour without a mouse</Heading>
+        <Lead>
+          Focus a field and press <Text kbd>Enter</Text>, <Text kbd>Space</Text>{' '}
+          or <Text kbd>↓</Text>. Focus moves straight into the popover and stays
+          there: <Text kbd>Tab</Text> and <Text kbd>Shift</Text>+
+          <Text kbd>Tab</Text> cycle through the tabs, the swatch grid, palette
+          sliders, fields and buttons, but never out onto the page — try it with
+          the second field right below.
+        </Lead>
+        <Lead>
+          The tabs switch with <Text kbd>←</Text> / <Text kbd>→</Text>. The
+          swatch grid is a single Tab stop: the arrow keys move focus between
+          swatches (<Text kbd>Home</Text> / <Text kbd>End</Text> jump to the
+          ends), <Text kbd>Enter</Text> or <Text kbd>Space</Text> picks one, and{' '}
+          <Text kbd>Tab</Text> goes straight on to the buttons. The palette
+          sliders move with the arrow keys. A value typed into the
+          hex or RGB fields is applied on <Text kbd>Enter</Text> or when focus
+          leaves the field. <Text kbd>Esc</Text> closes the popover, discarding
+          only a value still being typed, and returns focus to the field it was
+          opened from.
+        </Lead>
+
+        <Flex orientation="vertical" gap="m" style={{ width: 320 }}>
+          <Field label="Brand colour">
+            <ColorPicker
+              colorPresets={BRAND_COLORS}
+              value={color}
+              onChange={setColor}
+            />
+          </Field>
+          <Field label="Accent colour">
+            <ColorPicker value={accent} onChange={setAccent} />
+          </Field>
+        </Flex>
+      </Flex>
+    );
+  },
+};

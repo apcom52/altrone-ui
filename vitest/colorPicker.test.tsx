@@ -1,5 +1,5 @@
-import { expect, test, describe } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { expect, test, describe, vi } from 'vitest';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Application, ColorPicker } from '../src/components';
 import { COLORS } from '../src/components/colorPicker/COLORS';
 class ResizeObserver {
@@ -110,5 +110,77 @@ describe('ColorPicker', () => {
     const wrapper = screen.getByTestId('picker').closest('.cls');
     expect(wrapper).not.toBeNull();
     expect(wrapper).toHaveStyle('color: rgb(0, 0, 255)');
+  });
+
+  test('ArrowDown opens the picker with focus inside, Escape returns it to the input', async () => {
+    render(
+      <Application>
+        <ColorPicker
+          data-testid="picker"
+          value="#3dd68c"
+          onChange={() => null}
+        />
+      </Application>,
+    );
+
+    const input = screen.getByTestId('picker');
+    input.focus();
+    fireEvent.keyDown(input, { key: 'ArrowDown' });
+
+    await waitFor(() =>
+      expect(document.activeElement).toHaveAttribute('aria-label', 'Color'),
+    );
+
+    fireEvent.keyDown(document.activeElement!, { key: 'Escape' });
+
+    await waitFor(() => expect(document.activeElement).toBe(input));
+  });
+
+  test('Enter in the hex field commits the color without leaving it', async () => {
+    const handleChange = vi.fn();
+
+    render(
+      <Application>
+        <ColorPicker
+          data-testid="picker"
+          value="#3dd68c"
+          onChange={handleChange}
+        />
+      </Application>,
+    );
+
+    fireEvent.click(screen.getByTestId('picker'));
+
+    const hexField = await screen.findByPlaceholderText('000000');
+    fireEvent.change(hexField, { target: { value: 'ff0000' } });
+    fireEvent.keyDown(hexField, { key: 'Enter' });
+
+    expect(handleChange).toHaveBeenLastCalledWith('#ff0000', expect.anything());
+  });
+
+  test('arrow keys move focus between swatches, only one swatch is in the tab order', async () => {
+    render(
+      <Application>
+        <ColorPicker
+          data-testid="picker"
+          value={COLORS[1].value}
+          onChange={() => null}
+          colorPresets={COLORS}
+          allowPalette={false}
+        />
+      </Application>,
+    );
+
+    fireEvent.click(screen.getByTestId('picker'));
+
+    const selected = await screen.findByTitle(COLORS[1].title);
+    await waitFor(() => expect(document.activeElement).toBe(selected));
+
+    fireEvent.keyDown(selected, { key: 'ArrowRight' });
+
+    const next = screen.getByTitle(COLORS[2].title);
+    expect(document.activeElement).toBe(next);
+    expect(next).toHaveAttribute('tabindex', '0');
+    expect(selected).toHaveAttribute('tabindex', '-1');
   });
 });

@@ -1,10 +1,11 @@
 import { Application } from '../../components';
 import s from './decorator.module.scss';
 import { useEffect } from 'react';
-import { MotionConfig } from 'motion/react';
+import { setReducedMotionEmulation } from './reducedMotionEmulation';
 
 export const StorybookDecorator = (Story: any, options: any) => {
   const reduceMotion = options.globals.reduceMotion === 'on';
+  setReducedMotionEmulation(reduceMotion);
   const accent = options.globals.accent || 'blue';
   const backgroundValue: string = options.globals.backgrounds?.value ?? '';
 
@@ -37,17 +38,18 @@ export const StorybookDecorator = (Story: any, options: any) => {
   const fullBleed = options.parameters?.layout === 'fullscreen';
 
   return (
+    /**
+     * Workaround: `motion`'s `useReducedMotion` reads the preference once on
+     * mount, so the tree remounts when the toggle changes.
+     */
     <Application
+      key={String(reduceMotion)}
       className={fullBleed ? s.WrapperBleed : s.Wrapper}
       theme={options.globals.theme === 'dark' ? 'dark' : 'light'}
       language={(options.globals.lang || 'en').toLowerCase()}
       accent={options.globals.accent || 'blue'}
     >
-      {/* Innermost MotionConfig wins over Application's own
-          `reducedMotion="user"`, so the toolbar toggle can force it. */}
-      <MotionConfig reducedMotion={reduceMotion ? 'always' : 'user'}>
-        <Story />
-      </MotionConfig>
+      <Story />
     </Application>
   );
 };

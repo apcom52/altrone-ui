@@ -8,22 +8,26 @@
   --label-status-padding-left: 4px;
   --label-dot-size: 15px;
   --label-icon-size: 12px;
+  --label-radius: 8px;
+  --label-gap: 4px;
+  --label-font-size: var(--text-size-3);
+  --label-line-height: var(--line-height-3);
 
-  gap: 4px;
-  font-size: var(--text-size-3);
-  line-height: var(--line-height-3);
+  gap: var(--label-gap);
+  font-size: var(--label-font-size);
+  line-height: var(--label-line-height);
   font-weight: var(--text-weight-medium);
 }
 
 .Mini {
   --label-padding-x: 4px;
   --label-padding-y: 0px;
-  --label-status-padding-left: 0px;
+  --label-status-padding-left: 2px;
   --label-dot-size: 12px;
   --label-icon-size: 10px;
-
-  font-size: var(--text-size-1);
-  line-height: var(--line-height-1);
+  --label-radius: 4px;
+  --label-font-size: var(--text-size-1);
+  --label-line-height: var(--line-height-1);
 }
 
 .Small {
@@ -32,9 +36,9 @@
   --label-status-padding-left: 3px;
   --label-dot-size: 13px;
   --label-icon-size: 11px;
-
-  font-size: var(--text-size-2);
-  line-height: var(--line-height-2);
+  --label-radius: 6px;
+  --label-font-size: var(--text-size-2);
+  --label-line-height: var(--line-height-2);
 }
 
 .Large {
@@ -43,9 +47,9 @@
   --label-status-padding-left: 5px;
   --label-dot-size: 17px;
   --label-icon-size: 14px;
-
-  font-size: var(--text-size-4);
-  line-height: var(--line-height-4);
+  --label-radius: 8px;
+  --label-font-size: var(--text-size-4);
+  --label-line-height: var(--line-height-4);
 }
 
 .XLarge {
@@ -54,9 +58,9 @@
   --label-status-padding-left: 7px;
   --label-dot-size: 19px;
   --label-icon-size: 16px;
-
-  font-size: var(--text-size-5);
-  line-height: var(--line-height-5);
+  --label-radius: 12px;
+  --label-font-size: var(--text-size-5);
+  --label-line-height: var(--line-height-5);
 }
 
 /* `status` variant: pale fill (via Box's `material="pale"`) plus a hairline

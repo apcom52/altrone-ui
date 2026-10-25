@@ -1,11 +1,14 @@
+import { useEffect } from 'react';
 import { DropdownChildMenuProps } from '../Dropdown.types';
-import { CompositeItem } from '@floating-ui/react';
+import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { DropdownWrapper } from '../Dropdown.tsx';
 import { DropdownMenu } from './DropdownMenu.tsx';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import s from './action.module.scss';
 import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
+import { usePopoverCurrentIndex } from '../../popover/Popover.tsx';
+import { mergeRefs } from 'utils/mergeRefs';
 
 export function DropdownChildMenu({
   ref,
@@ -17,8 +20,21 @@ export function DropdownChildMenu({
   icon,
   ...props
 }: DropdownChildMenuProps) {
+  const currentIndex = usePopoverCurrentIndex();
+  const { ref: listItemRef, index } = useListItem();
+
+  const isFocused = currentIndex === index;
+
   const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
     useDropdownItemHover();
+
+  useEffect(() => {
+    if (isFocused) {
+      onMouseEnter();
+    } else {
+      onMouseLeave();
+    }
+  }, [isFocused]);
 
   const cls = clsx(s.Action, 'no-selection', className, {
     [s.DisabledAction]: disabled,
@@ -36,14 +52,17 @@ export function DropdownChildMenu({
       placement="right"
     >
       {({ open: opened }) => (
-        <CompositeItem
-          ref={ref}
-          disabled={disabled}
+        <div
+          ref={mergeRefs(ref, listItemRef)}
+          aria-disabled={disabled}
           className={clsx(cls, {
             [s.OpenedAction]: opened,
           })}
           style={styles}
           role="button"
+          tabIndex={-1}
+          data-active={isFocused}
+          data-index={index}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
           aria-expanded={opened}
@@ -55,7 +74,7 @@ export function DropdownChildMenu({
           <div className={s.Arrow}>
             {opened ? <ChevronLeft /> : <ChevronRight />}
           </div>
-        </CompositeItem>
+        </div>
       )}
     </DropdownWrapper>
   );

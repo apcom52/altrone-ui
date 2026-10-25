@@ -110,6 +110,13 @@
   &.SingleIcon {
     --button-icon-size: 10px;
   }
+
+  /** The control is 16px; an invisible ring keeps the hit area at 24px (see accessibility.md). */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+  }
 }
 
 .Small {

@@ -2,12 +2,16 @@
   --divider-color: var(--border-a1);
 }
 
+/** The inset is padding, not margin: `Flex` zeroes its children's margins,
+    and the line must stay centered there too. */
 .Divider {
-  width: calc(100% - var(--l-gap));
+  box-sizing: border-box;
+  width: 100%;
   height: 1px;
-  border-radius: 2px;
-  margin: var(--xs-gap) auto;
+  padding: 0 calc(var(--l-gap) / 2);
+  margin: var(--xs-gap) 0;
   background-color: var(--divider-color);
+  background-clip: content-box;
   border: none;
   flex-shrink: 0;
 }
@@ -15,6 +19,7 @@
 .Vertical {
   width: 1px;
   height: auto;
-  margin: var(--xs-gap) var(--l-gap);
+  padding: var(--xs-gap) 0;
+  margin: 0 var(--l-gap);
   align-self: stretch;
 }

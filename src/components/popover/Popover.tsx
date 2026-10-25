@@ -1,12 +1,16 @@
 import {
   FloatingFocusManager,
   FloatingList,
+  FloatingNode,
   FloatingPortal,
+  FloatingTree,
   OpenChangeReason,
   safePolygon,
   useClick,
   useDismiss,
   useFloating,
+  useFloatingNodeId,
+  useFloatingParentNodeId,
   useFocus,
   useHover,
   useInteractions,
@@ -28,7 +32,12 @@ import clsx from 'clsx';
 import s from './popover.module.scss';
 import { Box } from 'components/box';
 import { CloseButton } from 'components/closeButton';
-import { AnimatePresence, motion, type Transition } from 'motion/react';
+import {
+  AnimatePresence,
+  motion,
+  MotionContext,
+  type Transition,
+} from 'motion/react';
 import { getPlacementConfig } from './utils/placementUtils';
 import {
   createMiddleware,
@@ -59,7 +68,9 @@ const EXIT_TRANSITION: Transition = {
   ease: [0.4, 0, 1, 1],
 };
 
-export const Popover = ({
+const EMPTY_MOTION_CONTEXT = {};
+
+const PopoverBase = ({
   ref,
   controlRef,
   children,
@@ -86,6 +97,8 @@ export const Popover = ({
   ...restProps
 }: PopoverProps) => {
   const popoverId = useId();
+  const nodeId = useFloatingNodeId();
+  const parentNodeId = useFloatingParentNodeId();
   const headingId = `${popoverId}-heading`;
 
   const [activeIndex, setActiveIndex] = useState<number | null>(
@@ -152,6 +165,7 @@ export const Popover = ({
     strategy,
     placement: actualPlacement,
   } = useFloating({
+    nodeId,
     open: opened,
     onOpenChange: (state, event, reason) => {
       /* Workaround: with both `click` and `focus` triggers, a click on the
@@ -212,7 +226,7 @@ export const Popover = ({
     loop: true,
     virtual: virtualNavigationFocus,
     allowEscape: true,
-    nested: true,
+    nested: parentNodeId !== null,
   });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
@@ -240,7 +254,10 @@ export const Popover = ({
   );
 
   const popoverParentClose = usePopoverCloseContext();
-  const hideAllSequence = popoverParentClose ?? hide;
+  const hideAllSequence = useCallback(() => {
+    hide();
+    popoverParentClose?.();
+  }, [hide, popoverParentClose]);
 
   const childrenContext: PopoverChildrenContext = { open: opened, hide };
   const originChildElement =
@@ -372,12 +389,34 @@ export const Popover = ({
 
   return (
     <PopoverCloseContext.Provider value={hideAllSequence}>
-      {childrenElement}
-      <AnimatePresence mode="wait">
-        {opened && portalRoot && (
-          <FloatingPortal root={portalRoot}>{floatingBox}</FloatingPortal>
-        )}
-      </AnimatePresence>
+      <FloatingNode id={nodeId}>
+        {childrenElement}
+        <AnimatePresence mode="wait">
+          {opened && portalRoot && (
+            <FloatingPortal root={portalRoot}>
+              {/** Workaround: Motion links projection nodes through React context, not the DOM,
+                  so a nested popover's `layout` wrapper inverse-scales against its parent's exit `scale`. */}
+              <MotionContext.Provider value={EMPTY_MOTION_CONTEXT}>
+                {floatingBox}
+              </MotionContext.Provider>
+            </FloatingPortal>
+          )}
+        </AnimatePresence>
+      </FloatingNode>
     </PopoverCloseContext.Provider>
   );
+};
+
+export const Popover = (props: PopoverProps) => {
+  const parentNodeId = useFloatingParentNodeId();
+
+  if (parentNodeId === null) {
+    return (
+      <FloatingTree>
+        <PopoverBase {...props} />
+      </FloatingTree>
+    );
+  }
+
+  return <PopoverBase {...props} />;
 };

@@ -24,27 +24,27 @@ export const FilterRow = ({
   const { table, icons } = useDataTableContext();
   const column = table.getColumn(filter.id);
   const meta = column?.columnDef.meta;
-  const dataType = meta?.dataType;
+  const filterType = meta?.filterType;
 
   const rules = useMemo(() => {
-    const rulesData = dataType ? RulesByDataType[dataType] : undefined;
+    const rulesData = filterType ? RulesByDataType[filterType] : undefined;
     if (!rulesData) return [];
     return rulesData.map((item) => ({ value: item.value, label: t(item.label) }));
-  }, [dataType, t]);
+  }, [filterType, t]);
 
   const currentRule = filter.value?.rule;
   const currentValue = filter.value?.value;
 
   const currentRuleConfig = useMemo(() => {
-    const rulesData = dataType ? RulesByDataType[dataType] : undefined;
+    const rulesData = filterType ? RulesByDataType[filterType] : undefined;
     return rulesData?.find((item) => item.value === currentRule);
-  }, [dataType, currentRule]);
+  }, [filterType, currentRule]);
 
   const columnCount = currentRuleConfig?.columns ?? 0;
-  const isDateFilter = dataType === 'date';
-  const isNumberFilter = dataType === 'number' || dataType === 'currency';
-  const isSelectFilter = dataType === 'select';
-  const isColorFilter = dataType === 'color';
+  const isDateFilter = filterType === 'date';
+  const isNumberFilter = filterType === 'number' || filterType === 'currency';
+  const isSelectFilter = filterType === 'select';
+  const isColorFilter = filterType === 'color';
 
   const selectOptions = useMemo<Option[]>(() => {
     if (!isSelectFilter || !column) return [];

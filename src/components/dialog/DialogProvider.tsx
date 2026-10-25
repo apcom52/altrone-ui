@@ -20,7 +20,9 @@ type PromptValue = string | number | null;
 export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
   const t = useLocalization();
 
-  const [dialog, setDialog] = useState<DialogState | null>(null);
+  const [queue, setQueue] = useState<DialogState[]>([]);
+  const dialog = queue[0] ?? null;
+  const [closing, setClosing] = useState(false);
   const [promptValue, setPromptValue] = useState<PromptValue>(null);
 
   const [displayDialog, setDisplayDialog] = useState<DialogState | null>(null);
@@ -29,8 +31,9 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   useEffect(() => {
-    registerDialogHandler(setDialog);
-    return () => unregisterDialogHandler(setDialog);
+    const enqueue = (next: DialogState) => setQueue((prev) => [...prev, next]);
+    registerDialogHandler(enqueue);
+    return () => unregisterDialogHandler(enqueue);
   }, []);
 
   useEffect(() => {
@@ -41,7 +44,7 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
 
   /** Resolve with the "dismissed" value for the current dialog type. */
   const cancel = () => {
-    if (!dialog) return;
+    if (!dialog || closing) return;
 
     if (dialog.type === 'confirm') {
       dialog.resolve(false);
@@ -51,11 +54,11 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
       dialog.resolve();
     }
 
-    setDialog(null);
+    setClosing(true);
   };
 
   const accept = () => {
-    if (!dialog) return;
+    if (!dialog || closing) return;
 
     if (dialog.type === 'confirm') {
       dialog.resolve(true);
@@ -65,7 +68,12 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
       dialog.resolve();
     }
 
-    setDialog(null);
+    setClosing(true);
+  };
+
+  const showNext = () => {
+    setQueue((prev) => prev.slice(1));
+    setClosing(false);
   };
 
   const defaultTitle =
@@ -131,8 +139,9 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
 
       <Modal
         title={displayDialog?.title || defaultTitle}
-        open={Boolean(dialog)}
+        open={Boolean(dialog) && !closing}
         onClose={cancel}
+        onExitComplete={showNext}
         size="s"
         showCancelButton={false}
         content={

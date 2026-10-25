@@ -292,3 +292,104 @@ export const Prompts: StoryObj<typeof DialogProvider> = {
     );
   },
 };
+
+export const Queue: StoryObj<typeof DialogProvider> = {
+  name: 'Queue — one dialog at a time',
+  render: () => {
+    const [log, setLog] = useState<string[]>([]);
+
+    const runImport = () => {
+      const startedAt = Date.now();
+      const push = (source: string, line: string) => {
+        const seconds = ((Date.now() - startedAt) / 1000).toFixed(1);
+        setLog((prev) => [...prev, `${seconds}s  [${source}] ${line}`]);
+      };
+
+      setLog([]);
+
+      const importFlow = async () => {
+        push('import', 'showConfirm()');
+        const ok = await showConfirm({
+          title: 'Import 120 contacts?',
+          message: 'They will be added to your address book.',
+          confirmText: 'Import',
+        });
+        push('import', `← ${ok}`);
+        if (!ok) return;
+
+        push('import', 'showPrompt()');
+        const listName = await showPrompt({
+          title: 'Name the list',
+          message: 'Imported contacts go into a new list.',
+          placeholder: 'Conference leads',
+        });
+        push('import', `← ${JSON.stringify(listName)}`);
+        if (listName === null) return;
+
+        push('import', 'showAlert()');
+        await showAlert({
+          title: 'Import finished',
+          message: `120 contacts were added to “${listName || 'Untitled'}”.`,
+        });
+        push('import', '← closed');
+      };
+
+      const syncFlow = async () => {
+        push('sync', 'showAlert()');
+        await showAlert({
+          title: 'Connection lost',
+          message: 'Background sync stopped. Your changes are kept locally.',
+        });
+        push('sync', '← closed');
+
+        push('sync', 'showConfirm()');
+        const retry = await showConfirm({
+          title: 'Retry sync?',
+          message: 'The server is reachable again.',
+          confirmText: 'Retry',
+          cancelText: 'Later',
+        });
+        push('sync', `← ${retry}`);
+      };
+
+      void importFlow();
+      setTimeout(() => void syncFlow(), 400);
+      setTimeout(() => {
+        push('session', 'showAlert()');
+        void showAlert({
+          title: 'Session expires soon',
+          message: 'You will be signed out in 5 minutes.',
+          okText: 'Got it',
+        }).then(() => push('session', '← closed'));
+      }, 900);
+    };
+
+    return (
+      <Flex orientation="vertical" gap="l" align="start" style={{ padding: 24 }}>
+        <Heading>Queue</Heading>
+        <Paragraph>
+          Only one dialog is shown at a time. A call made while another dialog
+          is still open waits in a queue and appears once the current one has
+          finished its close animation — every promise settles, and dialogs are
+          shown in the order they were requested.
+        </Paragraph>
+        <Paragraph>
+          Below, three independent flows compete for the screen: an import
+          wizard (confirm → prompt → alert), a background sync that loses its
+          connection 0.4s in, and a session warning at 0.9s. Neither flow knows
+          about the others. Each step of the wizard is requested only after
+          the previous answer, so it joins the end of the queue — behind the
+          sync and session dialogs that were already waiting.
+        </Paragraph>
+        <Button label="Run import" onClick={runImport} />
+        {log.length > 0 && (
+          <Flex orientation="vertical" gap="xs" align="start">
+            {log.map((line, i) => (
+              <Result key={i}>{line}</Result>
+            ))}
+          </Flex>
+        )}
+      </Flex>
+    );
+  },
+};

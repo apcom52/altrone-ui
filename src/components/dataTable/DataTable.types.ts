@@ -147,6 +147,7 @@ export interface DataTableMeta {
 /** Per-column `meta`, reachable via `column.columnDef.meta`. */
 export interface DataTableColumnMeta<T extends object = AnyObject> {
   dataType: DataTableColumnType;
+  filterType: DataTableColumnType | undefined;
   options: DataTableColumn<T>['options'];
   columnConfig: DataTableColumn<T>;
 }

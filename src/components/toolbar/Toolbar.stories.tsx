@@ -1128,6 +1128,8 @@ export const Overflow: StoryObj<typeof Toolbar> = {
     const [textWidth, setTextWidth] = useState(640);
     const [leadingWidth, setLeadingWidth] = useState(640);
     const [fullWidth, setFullWidth] = useState(640);
+    const [mixedWidth, setMixedWidth] = useState(640);
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
     return (
       <Flex orientation="vertical" gap="l" style={{ maxWidth: 760 }}>
@@ -1149,8 +1151,14 @@ export const Overflow: StoryObj<typeof Toolbar> = {
           toolbar's center — the end of <Text code>Leading</Text>/
           <Text code>Center</Text> (chevrons pointing further in) or the start
           of <Text code>Trailing</Text> (chevrons pointing back in) — and its
-          own chevrons flip with it. Drag a slider below to reshape a toolbar
-          the same way a real window resize would.
+          own chevrons flip with it. A <Text code>Toolbar.Group</Text> only
+          collapses when every child has a menu form —{' '}
+          <Text code>Toolbar.Action</Text> or{' '}
+          <Text code>Toolbar.SidebarToggleAction</Text>; a group that also holds
+          a <Text code>Search</Text>, a <Text code>TextInput</Text> or any
+          custom element ignores its <Text code>priority</Text> and stays in the
+          row. Drag a slider below to reshape a toolbar the same way a real
+          window resize would.
         </Text>
 
         <Text block size={5} weight="bold" style={{ marginTop: 8 }}>
@@ -1352,6 +1360,60 @@ export const Overflow: StoryObj<typeof Toolbar> = {
             </Toolbar.Trailing>
           </Toolbar>
         </OverflowDemo>
+
+        <Text block size={5} weight="bold" style={{ marginTop: 8 }}>
+          Groups that can and can't collapse
+        </Text>
+        <Text block size={4} style={{ lineHeight: 1.6 }}>
+          A group folds into the menu only when every child has a menu form.
+          Every item in this flat toolbar is <Text code>'low'</Text>, so they
+          collapse left to right. The first group holds a{' '}
+          <Text code>Toolbar.SidebarToggleAction</Text> and a{' '}
+          <Text code>Toolbar.Action</Text>, so it goes first — the sidebar
+          toggle keeps working from the menu, and its label follows the sidebar
+          state. The search group comes next in reading order, but its{' '}
+          <Text code>TextInput</Text> has no menu form, so it never leaves the
+          row: <Text code>Share</Text> and <Text code>Print</Text> collapse
+          instead.
+        </Text>
+        <OverflowDemo width={mixedWidth} onChangeWidth={setMixedWidth} min={220}>
+          <Toolbar>
+            <Toolbar.Group priority="low">
+              <Toolbar.SidebarToggleAction
+                collapsed={sidebarCollapsed}
+                onClick={() => setSidebarCollapsed((v) => !v)}
+              />
+              <Toolbar.Action
+                label="New page"
+                icon={<Plus />}
+                showLabel={false}
+              />
+            </Toolbar.Group>
+            <Toolbar.Group priority="low">
+              <TextInput placeholder="Search" style={{ width: 120 }} />
+              <Toolbar.Action
+                label="Filter"
+                icon={<Filter />}
+                showLabel={false}
+              />
+            </Toolbar.Group>
+            <Toolbar.Action
+              label="Share"
+              icon={<Share />}
+              showLabel={false}
+              priority="low"
+            />
+            <Toolbar.Action
+              label="Print"
+              icon={<Printer />}
+              showLabel={false}
+              priority="low"
+            />
+          </Toolbar>
+        </OverflowDemo>
+        <Text size={3} color="muted">
+          Sidebar is currently {sidebarCollapsed ? 'collapsed' : 'expanded'}.
+        </Text>
       </Flex>
     );
   },

@@ -73,7 +73,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <Label color="amber">Amber</Label>
           <Label color="blue">Blue</Label>
           <Label color="brown">Brown</Label>
+          <Label color="green">Green</Label>
           <Label color="indigo">Indigo</Label>
+          <Label color="orange">Orange</Label>
           <Label color="pink">Pink</Label>
           <Label color="purple">Purple</Label>
           <Label color="red">Red</Label>
@@ -91,7 +93,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <Label color="amber" variant="soft">Amber</Label>
           <Label color="blue" variant="soft">Blue</Label>
           <Label color="brown" variant="soft">Brown</Label>
+          <Label color="green" variant="soft">Green</Label>
           <Label color="indigo" variant="soft">Indigo</Label>
+          <Label color="orange" variant="soft">Orange</Label>
           <Label color="pink" variant="soft">Pink</Label>
           <Label color="purple" variant="soft">Purple</Label>
           <Label color="red" variant="soft">Red</Label>
@@ -109,7 +113,9 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <Label color="amber" variant="outline">Amber</Label>
           <Label color="blue" variant="outline">Blue</Label>
           <Label color="brown" variant="outline">Brown</Label>
+          <Label color="green" variant="outline">Green</Label>
           <Label color="indigo" variant="outline">Indigo</Label>
+          <Label color="orange" variant="outline">Orange</Label>
           <Label color="pink" variant="outline">Pink</Label>
           <Label color="purple" variant="outline">Purple</Label>
           <Label color="red" variant="outline">Red</Label>
@@ -189,6 +195,30 @@ export const TextInputStory: StoryObj<typeof Flex> = {
           <Label color="primary" shape="pill" icon={<Clock />}>Pending</Label>
           <Label color="success" variant="soft" shape="pill" icon={<Check />}>Verified</Label>
           <Label color="danger" variant="outline" shape="pill" icon={<Ban />}>Revoked</Label>
+        </Flex>
+        <Text size={5} weight="bold" block>
+          Custom look through CSS variables
+        </Text>
+        <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
+          Padding, radius, gap and type come from{' '}
+          <Text code>--label-*</Text> variables, so a <Text code>style</Text>{' '}
+          override reaches every size and variant.
+        </Text>
+        <Flex gap="m" wrap align="center">
+          <Label
+            color="indigo"
+            icon={<Clock />}
+            style={
+              {
+                '--label-padding-x': '12px',
+                '--label-radius': '2px',
+                '--label-gap': '8px',
+                '--label-font-size': 'var(--text-size-2)',
+              } as React.CSSProperties
+            }
+          >
+            Scheduled
+          </Label>
         </Flex>
       </Flex>
     );

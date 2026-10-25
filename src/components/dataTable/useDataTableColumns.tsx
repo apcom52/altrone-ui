@@ -6,6 +6,7 @@ import {
   filterFnForType,
   sortFnForType,
 } from './DataTable.features.ts';
+import { columnFilterType } from './DataTable.constants.ts';
 
 /**
  * Translates the library's declarative `DataTableColumn` list into TanStack
@@ -22,8 +23,7 @@ export function useDataTableColumns<T extends object>(
       .filter((column) => column.visible !== false)
       .map((column): ColumnDef<DataTableFeatures, T, unknown> => {
         const type = column.type ?? 'string';
-        const filterType =
-          typeof column.filterable === 'string' ? column.filterable : type;
+        const filterType = columnFilterType(column);
 
         return {
           id: String(column.accessor),
@@ -32,11 +32,12 @@ export function useDataTableColumns<T extends object>(
           size: column.width,
           enableSorting: column.sortable === true,
           sortingFn: sortFnForType(type),
-          enableColumnFilter: Boolean(column.filterable),
-          filterFn: filterFnForType(filterType) ?? 'text',
+          enableColumnFilter: Boolean(filterType),
+          filterFn: (filterType && filterFnForType(filterType)) ?? 'text',
           enableResizing: column.resizable ?? resizableColumns,
           meta: {
             dataType: type,
+            filterType,
             options: column.options,
             columnConfig: column,
           } as DataTableColumnMeta,

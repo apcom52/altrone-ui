@@ -4,6 +4,7 @@ import { Application, Toolbar } from '../src/components';
 import {
   resolveToolbarOverflow,
   isFlexibleSpacer,
+  isCollapsible,
 } from '../src/components/toolbar/useToolbarOverflow.tsx';
 import { resolveToolbarRegionBalance } from '../src/components/toolbar/useToolbarRegionBalance.ts';
 
@@ -220,6 +221,27 @@ describe('Toolbar overflow', () => {
     expect(isFlexibleSpacer(<Toolbar.Separator variant="space" />)).toBe(true);
     expect(isFlexibleSpacer(<Toolbar.Separator variant="line" />)).toBe(false);
     expect(isFlexibleSpacer(<Toolbar.Action label="x" />)).toBe(false);
+  });
+
+  test('isCollapsible: a group collapses only if every child has an overflow-menu form', () => {
+    expect(
+      isCollapsible(
+        <Toolbar.Group>
+          <Toolbar.SidebarToggleAction />
+          <Toolbar.Action label="a" />
+        </Toolbar.Group>,
+      ),
+    ).toBe(true);
+    expect(
+      isCollapsible(
+        <Toolbar.Group>
+          <Toolbar.SidebarToggleAction />
+          <input />
+        </Toolbar.Group>,
+      ),
+    ).toBe(false);
+    expect(isCollapsible(<Toolbar.Group>text</Toolbar.Group>)).toBe(false);
+    expect(isCollapsible(<Toolbar.Group />)).toBe(false);
   });
 
   test('resolveToolbarOverflow: nothing is hidden when everything fits', () => {

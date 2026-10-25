@@ -595,6 +595,51 @@ export const Filtering: Story = {
         defaultFilters={[{ id: 'active', value: { rule: 'positive' } }]}
         columns={RICH_COLUMNS}
       />
+
+      <Section title="Links and custom cells">
+        A <Text code>link</Text> column filters by its raw value with the text
+        rules. A <Text code>custom</Text> column has no rules of its own, so{' '}
+        <Text code>filterable: true</Text> leaves it out of the{' '}
+        <Text code>Add filter</Text> menu — give it an explicit type instead.
+        Here <Text code>Employee</Text> is drawn by a custom renderer but
+        filtered as <Text code>'string'</Text>, while <Text code>Role</Text>{' '}
+        stays out of the menu.
+      </Section>
+
+      <DataTable<Employee>
+        data={EMPLOYEES}
+        rowsPerPage={8}
+        columns={[
+          {
+            accessor: 'name',
+            label: 'Employee',
+            type: 'custom',
+            filterable: 'string',
+            options: {
+              renderReadMode: ({ item }) => (
+                <Text weight="bold">{(item as Employee).name}</Text>
+              ),
+            },
+          },
+          {
+            accessor: 'role',
+            label: 'Role',
+            type: 'custom',
+            filterable: true,
+            options: {
+              renderReadMode: ({ item }) => (
+                <Text size={3}>{(item as Employee).role}</Text>
+              ),
+            },
+          },
+          {
+            accessor: 'profile',
+            label: 'Profile',
+            type: 'link',
+            filterable: true,
+          },
+        ]}
+      />
     </Flex>
   ),
 };

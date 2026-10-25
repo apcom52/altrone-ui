@@ -4,6 +4,8 @@
 }
 
 .Skeleton {
+  flex-shrink: 0;
+  border-radius: max(var(--radius-outer), var(--radius-mini));
   background-color: var(--skeleton-background-color);
   animation: skeleton-animate 3s ease-in-out infinite;
 

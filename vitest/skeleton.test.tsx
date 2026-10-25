@@ -31,13 +31,27 @@ describe('Skeleton', () => {
     });
   });
 
-  test('width/height also seed the min/max unless given explicitly', () => {
-    render(<Skeleton data-testid="s" width="200px" minWidth="50px" />);
+  test('keeps its own class next to a consumer className', () => {
+    render(<Skeleton data-testid="s" className="cls" />);
+    expect(screen.getByTestId('s').className).toMatch(/Skeleton/);
+  });
+
+  test('maxWidth caps an explicit width', () => {
+    render(<Skeleton data-testid="s" width="100%" maxWidth="320px" />);
     const el = screen.getByTestId('s');
-    expect(el).toHaveStyle({
-      width: '200px',
-      maxWidth: '200px',
-      minWidth: '50px',
-    });
+    expect(el.style.minWidth).toBe('');
+    expect(el).toHaveStyle({ maxWidth: '320px' });
+  });
+
+  test('falls back to one text line only when height is omitted', () => {
+    render(
+      <>
+        <Skeleton data-testid="auto" />
+        <Skeleton data-testid="bar" height={4} />
+      </>,
+    );
+    expect(screen.getByTestId('auto').style.minHeight).toBe('1lh');
+    expect(screen.getByTestId('bar').style.minHeight).toBe('');
+    expect(screen.getByTestId('bar')).toHaveStyle({ height: '4px' });
   });
 });

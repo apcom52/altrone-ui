@@ -91,6 +91,20 @@ export const Overview: StoryObj<typeof Skeleton> = {
           </Flex>
         ))}
       </Flex>
+
+      <Heading>Sizing</Heading>
+      <Paragraph>
+        Sizes take a number of pixels or any CSS length. With{' '}
+        <Text code>maxWidth</Text>, a fluid <Text code>width</Text> stops
+        growing at the cap. Without a <Text code>height</Text> the placeholder
+        is one text line tall, and without a <Text code>radius</Text> its
+        corners round to the ambient radius, never below{' '}
+        <Text code>--radius-mini</Text>.
+      </Paragraph>
+      <Flex orientation="vertical" gap="xs">
+        <Skeleton width="100%" maxWidth="320px" height={14} />
+        <Skeleton width="60%" />
+      </Flex>
     </Flex>
   ),
 };

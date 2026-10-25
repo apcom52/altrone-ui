@@ -1,4 +1,11 @@
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   FilePickerRemoveContext,
   FilePickerUploadContext,
@@ -84,7 +91,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
 
   const uploadContext = useMemo<FilePickerUploadContext>(() => {
     return {
-      url: String(url),
+      url: url ?? '',
       name: String(name),
       method: String(method),
       file: file as File,
@@ -98,18 +105,23 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
 
   const deleteContext = useMemo<FilePickerRemoveContext>(() => {
     return {
-      url: String(url),
+      url: url ?? '',
       name: String(name),
       file,
       pickerItem,
     };
   }, [url, name, file, pickerItem]);
 
+  const requestRef = useRef<XMLHttpRequest | null>(null);
+
+  useEffect(() => () => requestRef.current?.abort(), []);
+
   // SSR: requires client — XMLHttpRequest is browser-only
   const uploadFile = useCallback(
     async (context: FilePickerUploadContext) => {
       if (file) {
         const request = new XMLHttpRequest();
+        requestRef.current = request;
         request.open(context.method, context.url);
 
         const formData = new FormData();
@@ -143,23 +155,27 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
   const onRemoveClick = useCallback(
     async (event: React.MouseEvent) => {
       if (autoUpload) {
-        if (removeFileFn) {
-          await removeFileFn(deleteContext);
-        } else {
-          await deleteFileRequest(deleteContext);
+        try {
+          if (removeFileFn) {
+            await removeFileFn(deleteContext);
+          } else if (url) {
+            await deleteFileRequest(deleteContext);
+          }
+        } catch {
+          /** A rejected DELETE (e.g. 404 for a file that never uploaded) must not keep the chip stuck in the list. */
         }
       }
 
       onDeleteClick(pickerItem, event);
     },
-    [autoUpload, removeFileFn, deleteContext, onDeleteClick, pickerItem],
+    [autoUpload, removeFileFn, url, deleteContext, onDeleteClick, pickerItem],
   );
 
   useEffect(() => {
     if (autoUpload && uploadContext && file && status === 'selected') {
       if (autoUploadFn) {
         void autoUploadFn(uploadContext);
-      } else {
+      } else if (url) {
         void uploadFile(uploadContext);
       }
     }

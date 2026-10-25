@@ -10,6 +10,7 @@ import {
   HelpCircle,
   Info,
   Search,
+  X,
   XCircle,
 } from 'lucide-react';
 import { createContext, PropsWithChildren, useContext, useMemo } from 'react';
@@ -32,6 +33,7 @@ export const DEFAULT_ICONS: IconSet = {
   success: <CheckCircle2 />,
   warning: <AlertTriangle />,
   danger: <XCircle />,
+  dismiss: <X />,
 };
 
 const IconsContext = createContext<IconSet>(DEFAULT_ICONS);

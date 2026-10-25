@@ -91,7 +91,11 @@ export interface ToolbarGroupProps extends React.HTMLAttributes<HTMLDivElement> 
    * whatever the parent `Toolbar` uses.
    */
   variant?: ToolbarVariant;
-  /** Collapse priority for the whole group as one unit. @default 'medium' */
+  /**
+   * Collapse priority for the whole group as one unit. Ignored (the group
+   * never collapses) unless every child is a `Toolbar.Action` or
+   * `Toolbar.SidebarToggleAction`. @default 'medium'
+   */
   priority?: ToolbarActionPriority;
 }
 

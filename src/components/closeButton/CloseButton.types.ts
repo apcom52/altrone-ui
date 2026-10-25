@@ -1,8 +1,10 @@
 import type { ButtonHTMLAttributes, ReactElement, Ref } from 'react';
 import type { ButtonProps } from 'components/button/Button.types';
 
-export interface CloseButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label'> {
+export interface CloseButtonProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  'aria-label'
+> {
   ref?: Ref<HTMLButtonElement>;
   /** Control tier, forwarded to the underlying `Button`. Defaults to `'m'`. */
   size?: ButtonProps['size'];
@@ -13,6 +15,6 @@ export interface CloseButtonProps
    * `closeButton.ariaLabel` string.
    */
   label?: string;
-  /** Overrides the glyph. Defaults to an X. */
+  /** Overrides the glyph. Defaults to the `dismiss` icon role (an X). */
   icon?: ReactElement;
 }

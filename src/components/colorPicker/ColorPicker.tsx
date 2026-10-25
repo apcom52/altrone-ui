@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { ColorPickerProps, ColorPreset } from './ColorPicker.types';
 import { TextInput } from 'components/textInput/TextInput.tsx';
 import { Popover } from 'components/popover/Popover.tsx';
+import type { PopoverRef } from 'components/popover/Popover.types.ts';
 import { useLocalization } from 'components/application';
 import { Box } from 'components/box';
 import s from './styles.module.scss';
@@ -10,6 +11,8 @@ import { Size } from 'types';
 import {
   isValidElement,
   useCallback,
+  useRef,
+  type KeyboardEvent,
   type ReactElement,
   type SyntheticEvent,
 } from 'react';
@@ -51,8 +54,11 @@ export const ColorPicker = (props: ColorPickerProps) => {
     closeIcon,
     presetsTabIcon,
     paletteTabIcon,
+    onKeyDown,
     ...restProps
   } = props;
+
+  const popoverRef = useRef<PopoverRef>(null);
 
   const icons = useIcons();
   const { disabled: formFieldDisabled, size: formFieldSize } = useFormField();
@@ -68,12 +74,20 @@ export const ColorPicker = (props: ColorPickerProps) => {
     [onChange],
   );
 
+  const openOnArrowDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === 'ArrowDown' && !popoverRef.current?.open) {
+      event.preventDefault();
+      popoverRef.current?.show();
+    }
+  };
+
   const cls = clsx(s.ColorPicker, className, {
     [s.Readonly]: readOnly,
   });
 
   return (
     <Popover
+      controlRef={popoverRef}
       placement="bottom-start"
       title={t('colorPicker.title')}
       content={({ hide }) => (
@@ -90,8 +104,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
         />
       )}
       enabled={!readOnly}
-      defaultListNavigationIndex={-1}
-      listNavigation
+      focusTrapTargets={['content']}
       overlap
     >
       {({ open: opened }) => {
@@ -123,6 +136,13 @@ export const ColorPicker = (props: ColorPickerProps) => {
               }}
               data-value={value || undefined}
               data-opened={opened}
+              onKeyDown={(event: KeyboardEvent<HTMLElement>) => {
+                (
+                  childProps.onKeyDown as
+                    ((event: KeyboardEvent<HTMLElement>) => void) | undefined
+                )?.(event);
+                openOnArrowDown(event);
+              }}
             >
               {childElement}
             </Slot>
@@ -142,6 +162,10 @@ export const ColorPicker = (props: ColorPickerProps) => {
             size={inputSize}
             variant={transparent ? 'transparent' : undefined}
             onChange={() => null}
+            onKeyDown={(event) => {
+              onKeyDown?.(event);
+              openOnArrowDown(event);
+            }}
             {...restProps}
           >
             <TextInput.CustomIsland className={s.ColorPreviewWrapper}>

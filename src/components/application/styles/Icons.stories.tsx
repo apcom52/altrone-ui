@@ -11,9 +11,18 @@ import {
   OctagonAlert,
   SquareChevronDown,
   SquareChevronUp,
+  SquareX,
   TriangleAlert,
 } from 'lucide-react';
-import { Application, Flex, Pagination, Select, Switch, Text } from 'components';
+import {
+  Application,
+  CloseButton,
+  Flex,
+  Pagination,
+  Select,
+  Switch,
+  Text,
+} from 'components';
 import { StorybookDecorator } from 'global/storybook';
 
 const story: Meta = {
@@ -64,6 +73,7 @@ const ROLES: Array<[string, string, string]> = [
   ['success', 'CheckCircle2', 'Notifications, Result'],
   ['warning', 'AlertTriangle', 'Notifications, Result'],
   ['danger', 'XCircle', 'Notifications, Result'],
+  ['dismiss', 'X', 'CloseButton (Modal, Drawer, Popover, Message, toasts)'],
 ];
 
 const COUNTRIES = [
@@ -88,6 +98,7 @@ const LiveDemo = () => {
           clearable
         />
       </div>
+      <CloseButton />
     </Flex>
   );
 
@@ -110,6 +121,7 @@ const LiveDemo = () => {
             success: <BadgeCheck />,
             warning: <TriangleAlert />,
             danger: <CircleX />,
+            dismiss: <SquareX />,
           }}
         >
           {content}
@@ -119,10 +131,10 @@ const LiveDemo = () => {
       )}
       <Text size={3} color="muted">
         <Text code>Pagination</Text>&rsquo;s prev/next arrows and{' '}
-        <Text code>Select</Text>&rsquo;s open/close/clear icons all come
-        from the same <Text code>icons</Text> prop on a nested{' '}
-        <Text code>Application</Text> — toggle above to swap the whole set
-        at once.
+        <Text code>Select</Text>&rsquo;s open/close/clear icons and the{' '}
+        <Text code>CloseButton</Text> cross all come from the same{' '}
+        <Text code>icons</Text> prop on a nested <Text code>Application</Text> —
+        toggle above to swap the whole set at once.
       </Text>
     </Flex>
   );
@@ -138,22 +150,21 @@ export const Overview: StoryObj = {
       <Paragraph>
         Components ship with <Text code>lucide-react</Text> icons baked in —
         chevrons, status glyphs, search/clear controls. A consumer bringing
-        their own icon set would otherwise end up with a visual mismatch
-        between Altrone&rsquo;s built-in icons and the rest of their app.
-        Every built-in icon is overridable, through one of two mechanisms
-        depending on whether it&rsquo;s shared by several components or
-        unique to one.
+        their own icon set would otherwise end up with a visual mismatch between
+        Altrone&rsquo;s built-in icons and the rest of their app. Every built-in
+        icon is overridable, through one of two mechanisms depending on whether
+        it&rsquo;s shared by several components or unique to one.
       </Paragraph>
 
       <Heading>Shared roles — one override, everywhere</Heading>
       <Paragraph>
-        Several components use the exact same icon for the exact same
-        purpose — the prev/next chevrons in <Text code>Calendar</Text>,{' '}
+        Several components use the exact same icon for the exact same purpose —
+        the prev/next chevrons in <Text code>Calendar</Text>,{' '}
         <Text code>DatePicker</Text> and <Text code>Pagination</Text>, for
         example. These are grouped into an <Text code>IconSet</Text> and
         overridden once, via the <Text code>icons</Text> prop on{' '}
-        <Text code>Application</Text> — instead of separately on every
-        component that happens to use the same glyph:
+        <Text code>Application</Text> — instead of separately on every component
+        that happens to use the same glyph:
       </Paragraph>
       <Code>{`<Application icons={{ prev: <MyArrowLeft />, next: <MyArrowRight /> }}>
   <App />
@@ -162,8 +173,8 @@ export const Overview: StoryObj = {
       <Flex orientation="vertical" gap="xs">
         {ROLES.map(([role, def, usedBy]) => (
           <Text key={role} size={3} color="muted">
-            <Text code>{role}</Text> — default <Text code>{def}</Text>,
-            used by {usedBy}
+            <Text code>{role}</Text> — default <Text code>{def}</Text>, used by{' '}
+            {usedBy}
           </Text>
         ))}
       </Flex>
@@ -173,16 +184,15 @@ export const Overview: StoryObj = {
 
       <Heading>Icons unique to one component</Heading>
       <Paragraph>
-        An icon that only ever appears in a single component isn&rsquo;t
-        part of the shared set — merging it in would force every other
-        consumer of that role to also change, or would silently change that
-        one component&rsquo;s look the moment someone overrides an unrelated
-        role. It stays a local prop on that component instead, e.g.{' '}
-        <Text code>Button</Text>&rsquo;s <Text code>successIcon</Text>/
-        <Text code>failedIcon</Text>, or a grouped{' '}
-        <Text code>icons</Text> prop for components with several unique
-        icons of their own (<Text code>DataTable</Text>,{' '}
-        <Text code>Toolbar</Text>, <Text code>Splitter</Text>):
+        An icon that only ever appears in a single component isn&rsquo;t part of
+        the shared set — merging it in would force every other consumer of that
+        role to also change, or would silently change that one component&rsquo;s
+        look the moment someone overrides an unrelated role. It stays a local
+        prop on that component instead, e.g. <Text code>Button</Text>&rsquo;s{' '}
+        <Text code>successIcon</Text>/<Text code>failedIcon</Text>, or a grouped{' '}
+        <Text code>icons</Text> prop for components with several unique icons of
+        their own (<Text code>DataTable</Text>, <Text code>Toolbar</Text>,{' '}
+        <Text code>Splitter</Text>):
       </Paragraph>
       <Code>{`<Button state="succeeded" successIcon={<MyCheck />}>Save</Button>
 
@@ -190,8 +200,7 @@ export const Overview: StoryObj = {
       <Paragraph>
         Every icon prop in the library — shared or local — takes an
         already-instantiated element (<Text code>{'<MyIcon />'}</Text>), the
-        same convention every other icon-shaped prop in Altrone already
-        follows.
+        same convention every other icon-shaped prop in Altrone already follows.
       </Paragraph>
     </Flex>
   ),

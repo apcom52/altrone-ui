@@ -1,6 +1,6 @@
 import { expect, test, describe } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { CloseButton } from '../src/components';
+import { Application, CloseButton } from '../src/components';
 import { vi } from 'vitest';
 
 class ResizeObserver {
@@ -37,5 +37,15 @@ describe('CloseButton', () => {
     expect(screen.getByTestId('closeButton')).toHaveStyle(
       'color: rgb(255, 0, 0)',
     );
+  });
+
+  test('takes its glyph from the dismiss icon role', () => {
+    render(
+      <Application icons={{ dismiss: <span data-testid="glyph" /> }}>
+        <CloseButton />
+      </Application>,
+    );
+
+    expect(screen.getByTestId('glyph')).toBeInTheDocument();
   });
 });

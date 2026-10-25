@@ -85,6 +85,36 @@ describe('Dialogs', () => {
     expect(screen.getByText('This cannot be undone.')).toBeInTheDocument();
   });
 
+  test('a dialog opened while another is pending waits in the queue instead of replacing it', async () => {
+    render(
+      <Application>
+        <div />
+      </Application>,
+    );
+
+    let confirmResult!: Promise<boolean>;
+    let alertResult!: Promise<void>;
+    act(() => {
+      confirmResult = showConfirm({ title: 'Delete it?', message: 'First' });
+    });
+    await screen.findByText('First');
+
+    act(() => {
+      alertResult = showAlert({ title: 'Error', message: 'Second' });
+    });
+    expect(screen.getByText('First')).toBeInTheDocument();
+    expect(screen.queryByText('Second')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Confirm'));
+    await expect(confirmResult).resolves.toBe(true);
+    expect(screen.queryByText('Second')).not.toBeInTheDocument();
+
+    await screen.findByText('Second');
+    expect(screen.queryByText('First')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText('OK'));
+    await expect(alertResult).resolves.toBeUndefined();
+  });
+
   test('default button labels come from the active locale', async () => {
     render(
       <Application language="ru">

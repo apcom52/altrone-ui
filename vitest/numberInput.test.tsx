@@ -1,7 +1,23 @@
-import { createRef } from 'react';
-import { expect, test, describe } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { createRef, useState } from 'react';
+import { expect, test, describe, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Application, NumberInput, TextInput } from '../src';
+import { NumberInputProps } from '../src/components/numberInput/NumberInput.types';
+
+const ControlledNumberInput = ({
+  initial,
+  ...props
+}: Omit<NumberInputProps, 'onChange'> & { initial?: number }) => {
+  const [value, setValue] = useState(initial);
+  return (
+    <NumberInput
+      {...props}
+      value={value}
+      onChange={setValue}
+      data-testid="number"
+    />
+  );
+};
 
 describe('NumberInput', () => {
   test('formats the value with the grouping/decimal delimiters', () => {
@@ -64,5 +80,128 @@ describe('NumberInput', () => {
     );
 
     expect(screen.getByTestId('number')).toHaveAttribute('readonly');
+  });
+
+  test('accepts an intermediate value below `min` while typing', () => {
+    render(
+      <Application>
+        <ControlledNumberInput min={10} />
+      </Application>,
+    );
+    const input = screen.getByTestId('number');
+
+    fireEvent.change(input, { target: { value: '1' } });
+    fireEvent.change(input, { target: { value: '15' } });
+
+    expect(input).toHaveValue('15');
+  });
+
+  test('clamps an out-of-range value to `min` on blur and still calls the consumer `onBlur`', () => {
+    const onBlur = vi.fn();
+    render(
+      <Application>
+        <ControlledNumberInput min={10} onBlur={onBlur} />
+      </Application>,
+    );
+    const input = screen.getByTestId('number');
+
+    fireEvent.change(input, { target: { value: '3' } });
+    fireEvent.blur(input);
+
+    expect(input).toHaveValue('10');
+    expect(onBlur).toHaveBeenCalledTimes(1);
+  });
+
+  test('refuses a positive value above `max`, since more digits can only grow it', () => {
+    render(
+      <Application>
+        <ControlledNumberInput initial={5} max={9} />
+      </Application>,
+    );
+    const input = screen.getByTestId('number');
+
+    fireEvent.change(input, { target: { value: '50' } });
+
+    expect(input).toHaveValue('5');
+  });
+
+  test('`allowNegative` accepts negative numbers without an explicit `min`', () => {
+    render(
+      <Application>
+        <ControlledNumberInput allowNegative />
+      </Application>,
+    );
+    const input = screen.getByTestId('number');
+
+    fireEvent.change(input, { target: { value: '-42' } });
+    fireEvent.blur(input);
+
+    expect(input).toHaveValue('-42');
+  });
+
+  test('clearing the field reports `undefined` and keeps it empty', () => {
+    const onChange = vi.fn();
+    const Field = () => {
+      const [value, setValue] = useState<number | undefined>(20);
+      return (
+        <NumberInput
+          value={value}
+          onChange={(next) => {
+            onChange(next);
+            setValue(next);
+          }}
+          data-testid="number"
+        />
+      );
+    };
+    render(
+      <Application>
+        <Field />
+      </Application>,
+    );
+    const input = screen.getByTestId('number');
+
+    fireEvent.change(input, { target: { value: '' } });
+
+    expect(onChange).toHaveBeenLastCalledWith(undefined);
+    expect(input).toHaveValue('');
+  });
+
+  test('a lone minus survives in a controlled field on the way to a negative number', () => {
+    render(
+      <Application>
+        <ControlledNumberInput allowNegative />
+      </Application>,
+    );
+    const input = screen.getByTestId('number');
+
+    fireEvent.change(input, { target: { value: '-' } });
+    expect(input).toHaveValue('-');
+
+    fireEvent.change(input, { target: { value: '-5' } });
+    expect(input).toHaveValue('-5');
+  });
+
+  test('resetting `value` to `undefined` from outside clears the field', () => {
+    const Field = () => {
+      const [value, setValue] = useState<number | undefined>();
+      return (
+        <>
+          <NumberInput value={value} onChange={setValue} data-testid="number" />
+          <button onClick={() => setValue(undefined)}>reset</button>
+        </>
+      );
+    };
+    render(
+      <Application>
+        <Field />
+      </Application>,
+    );
+    const input = screen.getByTestId('number');
+
+    fireEvent.change(input, { target: { value: '80' } });
+    fireEvent.click(screen.getByText('reset'));
+
+    expect(input).toHaveValue('');
   });
 });

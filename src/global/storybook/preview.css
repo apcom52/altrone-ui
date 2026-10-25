@@ -16,8 +16,19 @@
 
 /* Базовые стили для Storybook */
 body {
-  font-family: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family:
+    'Inter Variable',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Roboto',
+    'Oxygen',
+    'Ubuntu',
+    'Cantarell',
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
@@ -26,7 +37,7 @@ body {
 
 * {
   box-sizing: border-box;
-} 
+}
 
 /* Image backgrounds (El Capitan, Tahoe, …) should cover the canvas. Tiled
    patterns must NOT — `StorybookDecorator` adds `sb-bg-cover` only for `url(...)`
@@ -40,15 +51,18 @@ body.sb-show-main.sb-bg-cover {
 /* "Reduced motion" toolbar toggle (StorybookDecorator adds the class). The
    `motion` library is handled in JS via <MotionConfig>; this covers plain CSS
    transitions/animations, including components that hardcode a duration instead
-   of using the --motion-duration-* tokens. */
+   of using the --motion-duration-* tokens. Elements marked
+   `data-motion-essential` (functional state, e.g. `Loading`) keep their motion. */
 html.sb-reduce-motion [data-altrone-root='true'] {
   --motion-duration-fast: 0s;
   --motion-duration-base: 0s;
 }
 
-html.sb-reduce-motion *,
-html.sb-reduce-motion *::before,
-html.sb-reduce-motion *::after {
+html.sb-reduce-motion *:not([data-motion-essential], [data-motion-essential] *),
+html.sb-reduce-motion
+  *:not([data-motion-essential], [data-motion-essential] *)::before,
+html.sb-reduce-motion
+  *:not([data-motion-essential], [data-motion-essential] *)::after {
   animation-duration: 0.001ms !important;
   animation-delay: 0s !important;
   animation-iteration-count: 1 !important;

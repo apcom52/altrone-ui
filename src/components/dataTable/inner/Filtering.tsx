@@ -40,14 +40,12 @@ export const Filtering = () => {
   const addFilter = useCallback(
     (column: Column<DataTableFeatures, AnyObject>) => {
       const meta = column.columnDef.meta;
-      const dataType = meta?.dataType;
-      if (!dataType || !RulesByDataType[dataType]) return;
-
-      const rules = RulesByDataType[dataType];
+      const filterType = meta?.filterType;
+      const rules = filterType ? RulesByDataType[filterType] : undefined;
       if (!rules || rules.length === 0) return;
 
       const value: DataTableFilterValue = { rule: String(rules[0].value) };
-      if (dataType === 'date') {
+      if (filterType === 'date') {
         value.level =
           (meta?.options as { level?: 'day' | 'month' | 'year' } | undefined)
             ?.level ?? 'day';

@@ -32,9 +32,7 @@ describe('Loading', () => {
     const { container } = render(<Loading size="32px" strokeWidth="1.5" />);
     const circles = container.querySelectorAll('circle');
     expect(circles.length).toBe(2);
-    circles.forEach((c) =>
-      expect(c.getAttribute('stroke-width')).toBe('1.5'),
-    );
+    circles.forEach((c) => expect(c.getAttribute('stroke-width')).toBe('1.5'));
   });
 
   test('the svg is sized from the size prop and hidden from AT', () => {
@@ -67,5 +65,25 @@ describe('Loading', () => {
       'aria-valuenow',
       '0',
     );
+  });
+
+  test('style.color applies when no color prop is given', () => {
+    render(<Loading style={{ color: 'red' }} />);
+    expect(screen.getByRole('status').style.color).toBe('red');
+  });
+
+  test('a non-px size still draws a visible circle', () => {
+    const { container } = render(<Loading size="2rem" />);
+    const svg = container.querySelector('svg')!;
+    expect(svg).toHaveAttribute('viewBox', '0 0 24 24');
+    expect(svg).toHaveAttribute('width', '2rem');
+    expect(
+      Number(container.querySelector('circle')!.getAttribute('r')),
+    ).toBeGreaterThan(0);
+  });
+
+  test('NaN value falls back to the indeterminate spinner', () => {
+    render(<Loading value={NaN} />);
+    expect(screen.getByRole('status')).not.toHaveAttribute('aria-valuenow');
   });
 });

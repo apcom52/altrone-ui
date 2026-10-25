@@ -68,15 +68,18 @@ export const Overview: StoryObj<typeof Loading> = {
 
       <Heading>Size &amp; stroke</Heading>
       <Paragraph>
-        <Text code>size</Text> is the diameter (px), <Text code>strokeWidth</Text>{' '}
+        <Text code>size</Text> is the diameter, <Text code>strokeWidth</Text>{' '}
         the ring thickness (fractions like <Text code>1.5</Text> are fine). A
-        faint full-circle track sits behind the sweep.
+        faint full-circle track sits behind the sweep. Any CSS length works as
+        a size — with a non-px one like <Text code>2rem</Text> the stroke
+        scales along, as if drawn on a 24px circle.
       </Paragraph>
       <Flex gap="l" align="center">
         <Loading size={16} strokeWidth={1.5} />
         <Loading size={24} />
         <Loading size={40} strokeWidth={3} />
         <Loading size={64} strokeWidth={4} />
+        <Loading size="2rem" />
       </Flex>
 
       <Heading>Determinate progress</Heading>
@@ -101,7 +104,8 @@ export const Overview: StoryObj<typeof Loading> = {
       <Paragraph>
         Defaults to <Text code>--loading-color</Text> (<Text code>--text-2</Text>
         ). Pass any CSS colour, or <Text code>currentColor</Text> to inherit
-        from the surrounding text.
+        from the surrounding text. A <Text code>color</Text> in{' '}
+        <Text code>style</Text> works too; the prop wins when both are set.
       </Paragraph>
       <Flex gap="l" align="center">
         <Loading size={28} />

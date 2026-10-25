@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { Box, Flex, Text } from 'components';
+import { Application, Box, Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { CloseButton } from './CloseButton.tsx';
@@ -102,7 +102,9 @@ export const Sizes: StoryObj<typeof CloseButton> = {
       </Text>
       <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
         The <Text code>size</Text> tier is the same one every control shares. A
-        close button is icon-only, so it renders as a circle at each tier.
+        close button is icon-only, so it renders as a circle at each tier. At{' '}
+        <Text code>mini</Text> it is 16px, but an invisible ring keeps the
+        clickable area at 24px.
       </Text>
       <Flex gap="l" align="center">
         {SIZES.map((size) => (
@@ -223,11 +225,17 @@ export const CustomIcon: StoryObj<typeof CloseButton> = {
         Overriding the glyph
       </Text>
       <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
-        <Text code>icon</Text> replaces the default <Text code>X</Text> —
-        useful when a consumer&rsquo;s own icon set shouldn&rsquo;t be mixed
-        with the library&rsquo;s defaults.
+        <Text code>icon</Text> replaces the default <Text code>X</Text> on one
+        button. To swap it everywhere — modals, drawers, toasts — set the{' '}
+        <Text code>dismiss</Text> role in <Text code>Application</Text>&rsquo;s{' '}
+        <Text code>icons</Text> instead.
       </Text>
-      <CloseButton icon={<CircleX />} />
+      <Flex gap="l" align="center">
+        <CloseButton icon={<CircleX />} />
+        <Application icons={{ dismiss: <CircleX /> }}>
+          <CloseButton />
+        </Application>
+      </Flex>
     </Flex>
   ),
 };

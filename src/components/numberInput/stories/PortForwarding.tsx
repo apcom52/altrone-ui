@@ -35,8 +35,8 @@ export const PortForwarding = () => {
         </Text>
         <Text block>
           Integer fields (<Text code>digitsAfterPoint=0</Text>) clamped to the
-          full port range, <Text code>min=1 max=65535</Text> — over-typing is
-          simply refused. Validation warnings sit outside the field.
+          full port range, <Text code>min=1 max=65535</Text> — typing past the
+          maximum is simply refused. Validation warnings sit outside the field.
         </Text>
       </Flex>
 
