@@ -1,6 +1,5 @@
 import s from './altroneApplication.module.scss';
-import { ApplicationProps, Theme } from './Application.types.ts';
-import { useMediaMatch } from 'utils';
+import { ApplicationProps, ResolvedTheme, Theme } from './Application.types.ts';
 import clsx from 'clsx';
 import {
   isValidElement,
@@ -30,12 +29,15 @@ import { AltroneIcons } from './useIcons.tsx';
 import { DialogProvider } from 'components/dialog/DialogProvider.tsx';
 import { useDocumentTitle } from './useDocumentTitle.ts';
 
-function resolveInitialTheme(initialTheme: Theme): Exclude<Theme, 'auto'> {
-  if (initialTheme !== 'auto') return initialTheme;
+const DARK_SCHEME_QUERY = '(prefers-color-scheme: dark)';
+
+function getSystemTheme(): ResolvedTheme {
   if (typeof window === 'undefined') return 'light';
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'dark'
-    : 'light';
+  return window.matchMedia(DARK_SCHEME_QUERY).matches ? 'dark' : 'light';
+}
+
+function isTheme(value: string | null): value is Theme {
+  return value === 'auto' || value === 'light' || value === 'dark';
 }
 
 export const Application = ({
@@ -57,33 +59,34 @@ export const Application = ({
   asChild = false,
   ...props
 }: ApplicationProps) => {
-  const [theme, setTheme] = useState<Theme>(() =>
-    resolveInitialTheme(initialTheme),
-  );
+  const [themePreference, setThemePreference] = useState<Theme>(initialTheme);
+  const [systemTheme, setSystemTheme] = useState<ResolvedTheme>(getSystemTheme);
+
+  const theme: ResolvedTheme =
+    themePreference === 'auto' ? systemTheme : themePreference;
 
   useDocumentTitle(applicationName, manageTitle);
 
-  const mediaScheme = useMediaMatch('(prefers-color-scheme: dark)');
-
-  // Respond to runtime changes: stored preference, system theme switch, or prop change
   useEffect(() => {
-    if (persistTheme) {
-      const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
-      if (stored === 'light' || stored === 'dark') {
-        setTheme(stored);
-        return;
-      }
-    }
-    if (initialTheme === 'auto') {
-      setTheme(mediaScheme ? 'dark' : 'light');
-    } else {
-      setTheme(initialTheme);
-    }
-  }, [mediaScheme, initialTheme, persistTheme]);
+    const mediaQueryList = window.matchMedia(DARK_SCHEME_QUERY);
+    const sync = () =>
+      setSystemTheme(mediaQueryList.matches ? 'dark' : 'light');
+
+    sync();
+    mediaQueryList.addEventListener('change', sync);
+    return () => mediaQueryList.removeEventListener('change', sync);
+  }, []);
+
+  useEffect(() => {
+    const stored = persistTheme
+      ? window.localStorage.getItem(THEME_STORAGE_KEY)
+      : null;
+    setThemePreference(isTheme(stored) ? stored : initialTheme);
+  }, [initialTheme, persistTheme]);
 
   const persistingSetTheme = useCallback(
     (next: Theme) => {
-      setTheme(next);
+      setThemePreference(next);
       if (persistTheme) {
         window.localStorage.setItem(THEME_STORAGE_KEY, next);
       }
@@ -147,10 +150,11 @@ export const Application = ({
 
   const themeContext = useMemo<ThemeContextType>(
     () => ({
-      theme: theme,
+      theme,
+      themePreference,
       setTheme: persistingSetTheme,
     }),
-    [theme, persistingSetTheme],
+    [theme, themePreference, persistingSetTheme],
   );
 
   const cls = clsx(s.AltroneApp, className);

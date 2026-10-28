@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import s from '../application/altroneApplication.module.scss';
 import { AltroneIcons } from '../application/useIcons.tsx';
 import { AltroneLocalization } from '../application/useLocalization.tsx';
-import { ThemeContext, useAltroneTheme } from '../application/useTheme.ts';
+import { ThemeContext, ThemeContextType } from '../application/useTheme.ts';
 import { OverrideProps } from './Override.types.ts';
 
 export const Override = ({
@@ -17,12 +17,17 @@ export const Override = ({
   children,
   ...props
 }: OverrideProps) => {
-  const parent = useAltroneTheme();
-  const resolvedTheme = theme ?? parent.theme;
-
-  const themeContext = useMemo(
-    () => ({ theme: resolvedTheme, setTheme: parent.setTheme }),
-    [resolvedTheme, parent.setTheme],
+  const parent = useContext(ThemeContext);
+  const themeContext = useMemo<ThemeContextType | null>(
+    () =>
+      theme
+        ? {
+            theme,
+            themePreference: theme,
+            setTheme: parent?.setTheme ?? (() => null),
+          }
+        : parent,
+    [theme, parent],
   );
 
   return (
@@ -31,7 +36,7 @@ export const Override = ({
       className={clsx(s.AltroneApp, className)}
       data-altrone-root="true"
       data-altrone-accent={accent}
-      data-altrone-theme={resolvedTheme === 'auto' ? undefined : resolvedTheme}
+      data-altrone-theme={themeContext?.theme}
       {...props}
     >
       <ThemeContext.Provider value={themeContext}>

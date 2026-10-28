@@ -21,7 +21,7 @@ export function getThemeInitScript(
 ): string {
   return `(function(){try{var t=${JSON.stringify(initialTheme)};${
     persist
-      ? `var s=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});if(s==='light'||s==='dark'){t=s;}`
+      ? `var s=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});if(s==='auto'||s==='light'||s==='dark'){t=s;}`
       : ''
   }if(t==='auto'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-altrone-theme',t);}catch(e){}})();`;
 }
