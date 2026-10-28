@@ -20,7 +20,7 @@ export function useDataTableColumns<T extends object>(
 ): ColumnDef<DataTableFeatures, T, unknown>[] {
   return useMemo(() => {
     return columns
-      .filter((column) => column.visible !== false)
+      .filter((column) => column.enabled !== false)
       .map((column): ColumnDef<DataTableFeatures, T, unknown> => {
         const type = column.type ?? 'string';
         const filterType = columnFilterType(column);

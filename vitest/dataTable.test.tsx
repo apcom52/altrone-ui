@@ -133,6 +133,23 @@ describe('DataTable component', () => {
     expect(ages()[0]).toContain('Ada');
   });
 
+  test('enabled: false removes the column from the table, sorting and filters', () => {
+    renderTable({
+      columns: [
+        { accessor: 'name', label: 'Name', sortable: true, filterable: true },
+        { accessor: 'age', label: 'Age', type: 'number', sortable: true, filterable: true, enabled: false },
+      ],
+    });
+
+    expect(screen.queryByTitle('age')).not.toBeInTheDocument();
+    expect(bodyRows()[0].textContent).not.toContain('36');
+
+    fireEvent.click(screen.getByText('Filters'));
+    fireEvent.click(screen.getByText('Add filter'));
+    expect(screen.getByRole('button', { name: 'Name' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Age' })).not.toBeInTheDocument();
+  });
+
   test('the filter panel adds a row for the chosen column', () => {
     renderTable();
 
