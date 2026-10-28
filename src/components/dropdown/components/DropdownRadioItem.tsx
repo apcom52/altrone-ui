@@ -1,42 +1,43 @@
 import { DropdownRadioListItem } from '../Dropdown.types';
-import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { useRadioListDropdownContext } from '../Dropdown.contexts.ts';
 import s from './action.module.scss';
 import { useId } from 'react';
-import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
+import { useDropdownListItem } from '../useDropdownListItem.tsx';
 import { mergeRefs } from 'utils/mergeRefs';
+import { composeEventHandlers } from 'utils/utils/composeEventHandlers';
 import { CheckIcon } from 'components/checkbox';
 
 export function DropdownRadioItem({
   ref,
+  id,
   value,
   label,
   disabled,
   className,
   style,
   focused,
+  onClick,
+  onKeyDown,
+  onMouseEnter,
+  onMouseLeave,
   ...props
 }: DropdownRadioListItem) {
-  const id = useId();
-  const { ref: listItemRef } = useListItem();
+  const generatedId = useId();
 
-  const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
-    useDropdownItemHover();
+  const listItem = useDropdownListItem();
 
   const cls = clsx(s.Action, 'no-selection', className, {
     [s.DisabledAction]: disabled,
     [s.Focused]: focused,
   });
 
-  const styles = {
-    ...style,
-  };
-
   const { value: selectedValue, onChange } = useRadioListDropdownContext();
 
   const onSelect = (
-    event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>,
+    event:
+      | React.MouseEvent<HTMLButtonElement>
+      | React.KeyboardEvent<HTMLButtonElement>,
   ) => {
     onChange(value, event);
   };
@@ -49,21 +50,23 @@ export function DropdownRadioItem({
 
   return (
     <button
-      ref={mergeRefs(listItemRef, ref)}
       type="button"
-      onKeyDown={onKeyDownPress}
-      onClick={onSelect}
+      {...props}
+      ref={mergeRefs(listItem.ref, ref)}
+      onKeyDown={composeEventHandlers(onKeyDown, onKeyDownPress)}
+      onClick={composeEventHandlers(onClick, onSelect)}
       disabled={disabled}
       role="radio"
       aria-checked={value === selectedValue}
       className={cls}
-      style={styles}
-      id={id}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      {...props}
+      style={style}
+      id={id ?? generatedId}
+      onMouseEnter={composeEventHandlers(onMouseEnter, listItem.onMouseEnter)}
+      onMouseLeave={composeEventHandlers(onMouseLeave, listItem.onMouseLeave)}
+      data-active={listItem.isFocused}
+      data-index={listItem.index}
     >
-      {itemBackgroundElement}
+      {listItem.itemBackgroundElement}
       <div className={s.Icon}>
         <CheckIcon checked={value === selectedValue} />
       </div>

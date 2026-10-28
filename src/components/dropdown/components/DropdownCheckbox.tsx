@@ -1,16 +1,21 @@
 import { DropdownCheckboxProps } from '../Dropdown.types';
-import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import s from './action.module.scss';
 import { useId } from 'react';
-import { useDropdownItemHover } from '../useDropdownItemHover';
+import { useDropdownListItem } from '../useDropdownListItem';
 import { mergeRefs } from 'utils/mergeRefs';
+import { composeEventHandlers } from 'utils/utils/composeEventHandlers';
 import { CheckIcon } from 'components/checkbox';
 
 export function DropdownCheckbox({
   ref,
+  id,
   checked,
   onChange,
+  onClick,
+  onKeyDown,
+  onMouseEnter,
+  onMouseLeave,
   disabled,
   label,
   className,
@@ -18,12 +23,9 @@ export function DropdownCheckbox({
   style,
   ...props
 }: DropdownCheckboxProps) {
-  const id = useId();
+  const generatedId = useId();
 
-  const { ref: listItemRef } = useListItem();
-
-  const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
-    useDropdownItemHover();
+  const listItem = useDropdownListItem();
 
   const cls = clsx(
     s.Action,
@@ -34,10 +36,6 @@ export function DropdownCheckbox({
     },
     className,
   );
-
-  const styles = {
-    ...style,
-  };
 
   const onSelect = (event: React.MouseEvent<HTMLButtonElement>) => {
     onChange(!checked, event);
@@ -52,21 +50,23 @@ export function DropdownCheckbox({
   return (
     <button
       type="button"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      onKeyDown={onKeyDownPress}
-      onClick={onSelect}
+      {...props}
+      onMouseEnter={composeEventHandlers(onMouseEnter, listItem.onMouseEnter)}
+      onMouseLeave={composeEventHandlers(onMouseLeave, listItem.onMouseLeave)}
+      onKeyDown={composeEventHandlers(onKeyDown, onKeyDownPress)}
+      onClick={composeEventHandlers(onClick, onSelect)}
       disabled={disabled}
       className={cls}
       role="checkbox"
       aria-checked={checked}
-      style={styles}
-      ref={mergeRefs(listItemRef, ref)}
-      id={id}
+      style={style}
+      ref={mergeRefs(listItem.ref, ref)}
+      id={id ?? generatedId}
       title={label}
-      {...props}
+      data-active={listItem.isFocused}
+      data-index={listItem.index}
     >
-      {itemBackgroundElement}
+      {listItem.itemBackgroundElement}
       <div className={s.Icon}>
         <CheckIcon checked={checked} />
       </div>
