@@ -280,6 +280,55 @@ export const AccountMenuStory: StoryObj<typeof Dropdown> = {
   ),
 };
 
+function TrackedSettingsMenu() {
+  const [autosave, setAutosave] = useState(true);
+  const [clicks, setClicks] = useState(0);
+
+  return (
+    <Flex orientation="horizontal" gap="m" align="center">
+      <Dropdown
+        content={
+          <Dropdown.Menu>
+            <Dropdown.Checkbox
+              checked={autosave}
+              onChange={setAutosave}
+              onClick={() => setClicks((count) => count + 1)}
+              label="Autosave"
+            />
+            <Dropdown.Checkbox
+              checked
+              onChange={() => undefined}
+              onClick={(event) => event.preventDefault()}
+              label="Sync (managed by admin)"
+            />
+          </Dropdown.Menu>
+        }
+      >
+        <Button label="Settings" />
+      </Dropdown>
+      <Text>Autosave clicks tracked: {clicks}</Text>
+    </Flex>
+  );
+}
+
+export const ItemHandlersStory: StoryObj<typeof Dropdown> = {
+  name: 'Own handlers on items',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Heading>Adding your own handlers</Heading>
+      <Paragraph>
+        <Text code>onClick</Text>, <Text code>onKeyDown</Text>,{' '}
+        <Text code>onMouseEnter</Text> and <Text code>onMouseLeave</Text> on a
+        menu item run before its built-in handling, not instead of it. The
+        Autosave checkbox counts clicks for analytics and still toggles. Call{' '}
+        <Text code>event.preventDefault()</Text> to skip the built-in step — the
+        Sync checkbox does that, so it can&rsquo;t be switched off.
+      </Paragraph>
+      <TrackedSettingsMenu />
+    </Flex>
+  ),
+};
+
 // ─── 3. Nested submenus (ChildMenu) ──────────────────────────────────────────
 
 function FileContextMenu() {

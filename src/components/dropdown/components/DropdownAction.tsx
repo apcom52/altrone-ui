@@ -1,12 +1,11 @@
-import { isValidElement, useEffect, useId } from 'react';
+import { isValidElement, useId } from 'react';
 import { DropdownActionProps } from '../Dropdown.types';
-import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { useCloseDropdownContext } from '../Dropdown.contexts.ts';
 import s from './action.module.scss';
-import { usePopoverCurrentIndex } from '../../popover/Popover.tsx';
 import { Badge } from 'internal/badge';
-import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
+import { useDropdownListItem } from '../useDropdownListItem.tsx';
+import { composeEventHandlers } from 'utils/utils/composeEventHandlers';
 import { Slot } from 'utils/components/Slot.tsx';
 import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
 import { AnyObject } from 'utils/types.ts';
@@ -26,26 +25,22 @@ export function DropdownAction(props: DropdownActionProps) {
     hintText,
     keyProp,
     badge,
+    onClick,
+    onKeyDown,
+    onMouseEnter,
+    onMouseLeave,
     ...htmlProps
   } = props;
 
   const id = useId();
 
-  const currentIndex = usePopoverCurrentIndex();
-  const { ref: listItemRef, index } = useListItem();
-
-  const isFocused = currentIndex === index;
-
-  const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
-    useDropdownItemHover();
-
-  useEffect(() => {
-    if (isFocused) {
-      onMouseEnter();
-    } else {
-      onMouseLeave();
-    }
-  }, [isFocused]);
+  const {
+    ref: listItemRef,
+    index,
+    isFocused,
+    itemBackgroundElement,
+    ...listItem
+  } = useDropdownListItem();
 
   const cls = clsx(
     s.Action,
@@ -64,8 +59,7 @@ export function DropdownAction(props: DropdownActionProps) {
 
   const hide = useCloseDropdownContext();
 
-  const onSelect = (event: React.MouseEvent<HTMLButtonElement>) => {
-    props?.onClick?.(event);
+  const onSelect = () => {
     hide();
   };
 
@@ -96,10 +90,10 @@ export function DropdownAction(props: DropdownActionProps) {
     'data-active': isFocused,
     'data-index': index,
     id: props.id || id,
-    onClick: onSelect,
-    onKeyDown: onKeyDownPress,
-    onMouseEnter,
-    onMouseLeave,
+    onClick: composeEventHandlers(onClick, onSelect),
+    onKeyDown: composeEventHandlers(onKeyDown, onKeyDownPress),
+    onMouseEnter: composeEventHandlers(onMouseEnter, listItem.onMouseEnter),
+    onMouseLeave: composeEventHandlers(onMouseLeave, listItem.onMouseLeave),
   };
 
   const mergedRef = mergeRefs(ref, listItemRef);
