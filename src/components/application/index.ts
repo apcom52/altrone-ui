@@ -6,6 +6,7 @@ export { getThemeInitScript } from './getThemeInitScript.ts';
 export { setPageTitle, resetPageTitle } from './documentTitle.ts';
 export type {
   Theme,
+  ResolvedTheme,
   Accent,
   Language,
   ApplicationProps,

@@ -58,6 +58,23 @@ describe('Override', () => {
     );
   });
 
+  test('outside Application leaves the theme to the page unless the prop is set', () => {
+    render(
+      <>
+        <Override data-testid="inherits" />
+        <Override theme="dark" data-testid="explicit" />
+      </>,
+    );
+
+    expect(screen.getByTestId('inherits')).not.toHaveAttribute(
+      'data-altrone-theme',
+    );
+    expect(screen.getByTestId('explicit')).toHaveAttribute(
+      'data-altrone-theme',
+      'dark',
+    );
+  });
+
   test('merges customLabels over the inherited language and icons over inherited icons', () => {
     render(
       <Application
