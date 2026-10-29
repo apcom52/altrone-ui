@@ -13,8 +13,8 @@ light &amp; dark themes, glass surfaces, concentric radii and motion that respec
 [![MIT license](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
 **[Documentation](https://altrone.vercel.app/)** ·
-**[Installation](https://altrone.vercel.app/blog/installation)** ·
-**[Blog](https://altrone.vercel.app/blog)**
+**[Installation](https://altrone.vercel.app/en/installation)** ·
+**[MCP](https://altrone.vercel.app/en/foundations/mcp)**
 
 </div>
 
@@ -24,7 +24,7 @@ light &amp; dark themes, glass surfaces, concentric radii and motion that respec
 
 - **50+ components** — controls, forms, overlays, navigation, data tables, feedback and layout primitives, all designed to work together.
 - **Real design system** — semantic tokens for color, spacing, radius, typography, elevation and motion instead of one-off values.
-- **Light & dark** — a first-class dark theme, with 10 accent colors and fixed `danger` / `success` / `warning` scales.
+- **Light & Dark + 10 accents** — all components work seamlessly with light and dark themes and adapt to the selected accent color.
 - **Application shell** — `Application` and `Screen` give you sidebar, header, aside and bottom navigation that adapt across breakpoints.
 - **Accessible** — keyboard navigation, focus management in overlays, `prefers-reduced-motion` support.
 - **SSR-friendly** — no `window` / `document` access during render.
@@ -99,7 +99,7 @@ Switch the theme at runtime with `useAltroneTheme()`. Dark mode is toggled throu
 
 ## Altrone MCP
 
-Using an AI assistant? [`@altrone/mcp`](https://github.com/apcom52/altrone-mcp) exposes the component documentation to MCP clients, so your assistant can look up props and usage instead of guessing.
+Using an AI assistant? [`@altrone/mcp`](https://altrone.vercel.app/en/foundations/mcp) exposes the component documentation to MCP clients, so your assistant can look up props and usage instead of guessing.
 
 ## License
 
