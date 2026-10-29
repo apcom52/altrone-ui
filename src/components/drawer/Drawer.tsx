@@ -1,4 +1,11 @@
-import { useCallback, useId, type MouseEvent } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type MouseEvent,
+} from 'react';
 import clsx from 'clsx';
 import { Sheet } from 'internal/sheet';
 import { DrawerContext, DrawerProps } from './Drawer.types.ts';
@@ -42,14 +49,26 @@ export const Drawer = (props: DrawerProps) => {
     disable: stopLoading,
   } = useBoolean(false);
 
+  const pendingOperation = useRef<symbol | null>(null);
+  const [shakeKey, setShakeKey] = useState(0);
+
+  useEffect(() => {
+    stopLoading();
+    return () => {
+      pendingOperation.current = null;
+    };
+  }, [isOpen, stopLoading]);
+
   const handleClose = useCallback(
     (event?: MouseEvent | KeyboardEvent) => {
+      pendingOperation.current = null;
+      stopLoading();
       if (!isControlled) {
         hide();
       }
       onClose?.(event);
     },
-    [isControlled, hide, onClose],
+    [isControlled, hide, onClose, stopLoading],
   );
 
   const drawerContext: DrawerContext = { hide: handleClose };
@@ -60,11 +79,27 @@ export const Drawer = (props: DrawerProps) => {
       return;
     }
 
+    if (!isOpen || pendingOperation.current !== null) {
+      return;
+    }
+
+    const operation = Symbol();
+    pendingOperation.current = operation;
     startLoading();
-    const result = await onDone(event);
-    stopLoading();
-    if (result !== false) {
-      handleClose(event);
+    try {
+      const result = await onDone(event);
+      if (pendingOperation.current === operation && result !== false) {
+        handleClose(event);
+      }
+    } catch {
+      if (pendingOperation.current === operation) {
+        setShakeKey((value) => value + 1);
+      }
+    } finally {
+      if (pendingOperation.current === operation) {
+        pendingOperation.current = null;
+        stopLoading();
+      }
     }
   };
 
@@ -101,6 +136,7 @@ export const Drawer = (props: DrawerProps) => {
       open={isOpen}
       onClose={handleClose}
       dismissible={dismissible}
+      shakeKey={shakeKey}
       className={className}
       style={style}
       aria-labelledby={title ? titleId : undefined}

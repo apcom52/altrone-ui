@@ -30,6 +30,7 @@ export interface SheetProps extends Omit<
    */
 
   open?: boolean;
+  shakeKey?: number;
 
   /**
    * `event` is the triggering backdrop click / Escape keydown, or undefined

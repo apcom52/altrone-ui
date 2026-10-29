@@ -99,6 +99,7 @@ export const Sheet = (props: SheetProps) => {
   const {
     ref,
     open = false,
+    shakeKey = 0,
     onClose,
     onExitComplete,
     dismissible = true,
@@ -150,6 +151,12 @@ export const Sheet = (props: SheetProps) => {
     setShaking(false);
     requestAnimationFrame(() => setShaking(true));
   }, []);
+
+  useEffect(() => {
+    if (shakeKey > 0) {
+      triggerShake();
+    }
+  }, [shakeKey, triggerShake]);
 
   const handleClose = useCallback(
     (event?: MouseEvent | KeyboardEvent) => {
