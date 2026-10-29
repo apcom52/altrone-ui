@@ -1,13 +1,17 @@
+import { useEffect } from 'react';
 import { DropdownChildMenuProps } from '../Dropdown.types';
-import { CompositeItem } from '@floating-ui/react';
+import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { DropdownWrapper } from '../Dropdown.tsx';
 import { DropdownMenu } from './DropdownMenu.tsx';
-import { Icon } from 'components/icon';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import s from './action.module.scss';
-import { useConfiguration } from 'components/configuration';
+import { useDropdownItemHover } from '../useDropdownItemHover.tsx';
+import { usePopoverCurrentIndex } from '../../popover/Popover.tsx';
+import { mergeRefs } from 'utils/mergeRefs';
 
 export function DropdownChildMenu({
+  ref,
   children,
   label,
   disabled,
@@ -16,20 +20,27 @@ export function DropdownChildMenu({
   icon,
   ...props
 }: DropdownChildMenuProps) {
-  const { dropdown: { childMenu: dropdownChildMenuConfiguration = {} } = {} } =
-    useConfiguration();
+  const currentIndex = usePopoverCurrentIndex();
+  const { ref: listItemRef, index } = useListItem();
 
-  const cls = clsx(
-    s.Action,
-    className,
-    {
-      [s.DisabledAction]: disabled,
-    },
-    dropdownChildMenuConfiguration.className,
-  );
+  const isFocused = currentIndex === index;
+
+  const { itemBackgroundElement, onMouseEnter, onMouseLeave } =
+    useDropdownItemHover();
+
+  useEffect(() => {
+    if (isFocused) {
+      onMouseEnter();
+    } else {
+      onMouseLeave();
+    }
+  }, [isFocused]);
+
+  const cls = clsx(s.Action, 'no-selection', className, {
+    [s.DisabledAction]: disabled,
+  });
 
   const styles = {
-    ...dropdownChildMenuConfiguration.style,
     ...style,
   };
 
@@ -40,23 +51,30 @@ export function DropdownChildMenu({
       }
       placement="right"
     >
-      {({ opened }) => (
-        <CompositeItem
-          disabled={disabled}
+      {({ open: opened }) => (
+        <div
+          ref={mergeRefs(ref, listItemRef)}
+          aria-disabled={disabled}
           className={clsx(cls, {
             [s.OpenedAction]: opened,
           })}
           style={styles}
           role="button"
+          tabIndex={-1}
+          data-active={isFocused}
+          data-index={index}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
           aria-expanded={opened}
           {...props}
         >
+          {itemBackgroundElement}
           <div className={s.Icon}>{icon}</div>
           <div className={s.Label}>{label}</div>
           <div className={s.Arrow}>
-            <Icon i={opened ? 'chevron_left' : 'chevron_right'} />
+            {opened ? <ChevronLeft /> : <ChevronRight />}
           </div>
-        </CompositeItem>
+        </div>
       )}
     </DropdownWrapper>
   );

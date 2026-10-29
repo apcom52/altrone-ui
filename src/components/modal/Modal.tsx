@@ -1,151 +1,137 @@
-import React, { memo, useEffect, useId, MouseEvent } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  type MouseEvent,
+  type ReactNode,
+} from 'react';
+import { Sheet } from 'internal/sheet';
 import { ModalContext, ModalProps } from './Modal.types.ts';
 import { CloseButton } from '../closeButton';
 import { Button } from '../button';
-import clsx from 'clsx';
-import { useConfiguration } from 'components/configuration';
-import { DOMUtils, GlobalUtils, useBoolean } from '../../utils';
-import { createPortal } from 'react-dom';
-import s from './modal.module.scss';
-import FocusTrap from 'focus-trap-react';
+import { useBoolean } from '../../utils';
 import { useLocalization } from '../application';
+import s from './modal.module.scss';
 
-export const Modal = memo<ModalProps>(
-  ({
-    children,
+const hasRenderableNodes = (node: ReactNode) =>
+  Array.isArray(node) ? node.some(Boolean) : Boolean(node);
+
+/** `s`/`l` get their own width; anything else (including `m`) is the default. */
+const MODAL_WIDTH = { s: 280, l: 640 } as const;
+
+export const Modal = (props: ModalProps) => {
+  const {
+    ref,
     content,
     enabled = true,
-    openedByDefault = false,
+    open,
+    defaultOpen = false,
     title,
-    leftActions,
+    additionalActions,
     actions,
     size = 'm',
     className,
     style,
     onClick,
+    onClose,
+    showCloseButton = true,
+    showCancelButton = true,
     ...restProps
-  }) => {
-    const t = useLocalization();
+  } = props;
 
-    const titleId = useId();
+  const t = useLocalization();
+  const titleId = useId();
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-    const { modal: modalConfig = {} } = useConfiguration();
-    const {
-      value: opened,
-      disable: hide,
-      enable: show,
-    } = useBoolean(openedByDefault);
+  const isControlled = open !== undefined;
+  const { value: internalOpened, disable: hide } = useBoolean(defaultOpen);
+  const opened = isControlled ? open : internalOpened;
 
-    const cls = clsx(
-      s.Backdrop,
-      {
-        [s.Small]: size === 's',
-        [s.Large]: size === 'l',
-      },
-      className,
-      modalConfig.className,
-    );
-
-    const styles = {
-      ...modalConfig.style,
-      ...style,
-    };
-
-    const originChildElement = children;
-    const safeChildElement = React.isValidElement(originChildElement) ? (
-      originChildElement
-    ) : (
-      <span>{originChildElement}</span>
-    );
-
-    const childrenElement = DOMUtils.cloneNode(safeChildElement, {
-      onClick: show,
-    });
-
-    const modalContext: ModalContext = { closeModal: hide };
-
-    const contentElement =
-      typeof content === 'function' ? content(modalContext) : content;
-    const leftActionsElement =
-      typeof leftActions === 'function'
-        ? leftActions(modalContext)
-        : leftActions;
-    const actionsElement =
-      typeof actions === 'function' ? actions(modalContext) : actions;
-
-    const onBackdropClick = (e: MouseEvent<HTMLDivElement>) => {
-      if (!(e.target as HTMLElement)?.closest('[aria-modal="true"]')) {
-        hide();
-      }
-
-      if (onClick) onClick(e);
-    };
-
-    const onKeyboardHandler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        hide();
-      }
-    };
-
-    useEffect(() => {
-      if (opened) {
-        document.body.addEventListener('keydown', onKeyboardHandler);
-      }
-
-      return () => {
-        document.body.removeEventListener('keydown', onKeyboardHandler);
-      };
-    }, [opened]);
-
-    const modalContent = (
-      <FocusTrap
-        focusTrapOptions={{
-          tabbableOptions: {
-            displayCheck: GlobalUtils.isTestEnvironment() ? 'none' : 'full',
-          },
-        }}
-      >
-        <div
-          className={cls}
-          style={styles}
-          role="dialog"
-          aria-labelledby={titleId}
-          {...restProps}
-          onClick={onBackdropClick}
-        >
-          <div className={s.Overlay} />
-          <div className={s.Dialog}>
-            <div className={s.ModalContent} aria-modal="true">
-              <div className={s.Title} id={titleId} aria-label={title}>
-                {title}
-                <CloseButton className={s.Close} onClick={hide} autoFocus />
-              </div>
-              <div className={s.Content}>{contentElement}</div>
-              <div className={s.Footer}>
-                <div className={s.LeftFooter}>{leftActionsElement}</div>
-                <div className={s.RightFooter}>
-                  <Button label={t('common.cancel')} onClick={hide} />
-                  {actionsElement}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </FocusTrap>
-    );
-
-    const altroneRoot =
-      document.querySelector('[data-altrone-root="true"]') || document.body;
-
-    if (!enabled) {
-      return <>{childrenElement}</>;
+  useEffect(() => {
+    if (!opened) {
+      return;
     }
 
-    return (
-      <>
-        {childrenElement}
-        {opened ? createPortal(modalContent, altroneRoot) : null}
-      </>
-    );
-  },
-);
+    /**
+     * Native `autoFocus` scrolls the focused element into view with no way
+     * to opt out — for a modal anchored near the top of a scrolling backdrop
+     * (see `Sheet`), that scroll can push the panel itself half off-screen.
+     * Focusing manually with `preventScroll` avoids it. Runs after `Sheet`'s
+     * own fallback panel-focus effect (a child's effects fire before its
+     * parent's), so this is what wins.
+     */
+    closeButtonRef.current?.focus({ preventScroll: true });
+  }, [opened]);
+
+  const handleClose = useCallback(
+    (event?: MouseEvent | KeyboardEvent) => {
+      if (!isControlled) {
+        hide();
+      }
+      onClose?.(event);
+    },
+    [isControlled, hide, onClose],
+  );
+
+  const modalContext: ModalContext = { hide: handleClose };
+
+  const contentElement =
+    typeof content === 'function' ? content(modalContext) : content;
+  const additionalActionsElement =
+    typeof additionalActions === 'function'
+      ? additionalActions(modalContext)
+      : additionalActions;
+  const actionsElement =
+    typeof actions === 'function' ? actions(modalContext) : actions;
+
+  const hasAdditionalActions = hasRenderableNodes(additionalActionsElement);
+  const showFooter =
+    showCancelButton ||
+    hasAdditionalActions ||
+    hasRenderableNodes(actionsElement);
+
+  return (
+    <Sheet
+      ref={ref}
+      placement="top"
+      width={MODAL_WIDTH[size as keyof typeof MODAL_WIDTH] ?? 400}
+      elevation="modal"
+      padding={0}
+      open={opened && enabled}
+      onClose={handleClose}
+      onClick={onClick}
+      className={className}
+      style={style}
+      aria-labelledby={title ? titleId : undefined}
+      {...restProps}
+    >
+      <div className={s.Body}>
+        <div className={s.Title} id={titleId}>
+          {title}
+          {showCloseButton && (
+            <CloseButton
+              ref={closeButtonRef}
+              className={s.Close}
+              onClick={handleClose}
+            />
+          )}
+        </div>
+        <div className={s.Content}>{contentElement}</div>
+        {showFooter && (
+          <div className={s.Footer}>
+            {hasAdditionalActions && (
+              <div className={s.LeftFooter}>{additionalActionsElement}</div>
+            )}
+            <div className={s.RightFooter}>
+              {showCancelButton && (
+                <Button label={t('common.cancel')} onClick={handleClose} />
+              )}
+              {actionsElement}
+            </div>
+          </div>
+        )}
+      </div>
+    </Sheet>
+  );
+};

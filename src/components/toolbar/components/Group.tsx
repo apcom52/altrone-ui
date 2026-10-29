@@ -1,40 +1,50 @@
 import { memo } from 'react';
 import { ToolbarGroupProps } from '../Toolbar.types.ts';
 import s from './group.module.scss';
-import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
+import { HTMLMotionProps, motion } from 'motion/react';
+import { useToolbarContext } from '../Toolbar.context.ts';
 
-export const Group = memo<ToolbarGroupProps>(
+export const Group = memo(
   ({
+    ref,
     children,
-    align = 'start',
-    weight = 1,
+    justify = 'start',
+    weight,
+    variant,
+    priority,
     className,
     style,
     ...restProps
-  }) => {
-    const { toolbar: toolbarConfig = {} } = useConfiguration();
+  }: ToolbarGroupProps) => {
+    const ctx = useToolbarContext();
+    const resolvedVariant = variant ?? ctx.variant;
 
     const cls = clsx(
       s.Group,
       {
-        [s.Center]: align === 'center',
-        [s.End]: align === 'end',
-        [s.Between]: align === 'between',
+        [s.Pill]: resolvedVariant !== 'plain',
+        [s.JustifyCenter]: justify === 'center',
+        [s.JustifyEnd]: justify === 'end',
+        [s.JustifyBetween]: justify === 'between',
       },
       className,
-      toolbarConfig.className,
     );
 
     const styles = {
+      ...(weight !== undefined && { flex: weight }),
       ...style,
-      flexGrow: weight,
     };
 
     return (
-      <div className={cls} style={styles} {...restProps}>
+      <motion.div
+        ref={ref}
+        className={cls}
+        style={styles}
+        {...(restProps as HTMLMotionProps<'div'>)}
+      >
         {children}
-      </div>
+      </motion.div>
     );
   },
 );

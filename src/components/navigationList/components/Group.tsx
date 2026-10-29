@@ -1,51 +1,49 @@
-import { memo, ReactElement, useMemo } from 'react';
+import { memo } from 'react';
 import clsx from 'clsx';
 import s from './group.module.scss';
 import { NavigationListGroupProps } from '../NavigationList.types.ts';
-import { useConfiguration } from 'components/configuration';
-import { AltChildren, DOMUtils } from '../../../utils';
-import { GroupAction } from './GroupAction.tsx';
+import { AltChildren } from '../../../utils';
+import { Text } from 'components/text/Text.tsx';
 
-export const Group = memo<NavigationListGroupProps>(
-  ({ title, children, className, style, ...restProps }) => {
-    const { navigationList: { group: groupConfig } = {} } = useConfiguration();
+export const Group = memo(
+  ({
+    ref,
+    title,
+    actions,
+    children,
+    className,
+    style,
+    ...restProps
+  }: NavigationListGroupProps) => {
+    const cls = clsx(s.Group, className);
 
-    const cls = clsx(s.Group, className, groupConfig?.className);
-    const titleCls = clsx(s.Title, groupConfig?.titleClassName);
+    const links = new AltChildren(children).filterNodes().toArray();
 
-    const styles = {
-      ...groupConfig?.style,
-      ...style,
-    };
-
-    const [actions, links] = useMemo(() => {
-      const actions: ReactElement[] = [];
-      const links: ReactElement[] = [];
-
-      const elements = new AltChildren(children);
-
-      elements
-        .filterNodes()
-        .toArray()
-        .forEach((elem) => {
-          const element = elem as ReactElement;
-
-          if (DOMUtils.containsElementType(element, [GroupAction])) {
-            actions.push(element);
-          } else {
-            links.push(element);
-          }
-        });
-
-      return [actions, links];
-    }, [children]);
+    const resolvedActions =
+      typeof actions === 'function' ? actions(undefined) : actions;
+    const hasHeader = Boolean(title) || Boolean(resolvedActions);
 
     return (
-      <div className={cls} style={styles} {...restProps}>
-        <div className={s.Header}>
-          {title ? <div className={titleCls}>{title}</div> : null}
-          <div className={s.Actions}>{actions}</div>
-        </div>
+      <div
+        ref={ref}
+        className={cls}
+        style={style}
+        role="group"
+        aria-label={title}
+        {...restProps}
+      >
+        {hasHeader ? (
+          <div className={s.Header}>
+            {title ? (
+              <Text className={s.Title} size={3} weight="medium" truncate>
+                {title}
+              </Text>
+            ) : null}
+            {resolvedActions ? (
+              <div className={s.Actions}>{resolvedActions}</div>
+            ) : null}
+          </div>
+        ) : null}
         {links}
       </div>
     );

@@ -1,58 +1,35 @@
-@import 'src/global/inputMixins';
-
-:global(:root) {
-  --selectBackgroundColor: var(--default-200);
-  --selectHoverBackgroundColor: var(--default-300);
-  --selectTextColor: var(--default-700);
-  --selectHoverTextColor: var(--default-800);
-  --selectPlaceholderTextColor: var(--default-400);
-  --selectPlaceholderHoverTextColor: var(--default-500);
-  --selectInvalidTextColor: var(--danger-800);
-  --selectIslandTextSize: 14px;
-  --selectIslandHeight: 20px;
-  --selectHorizontalOffset: var(--s-gap);
-  --selectVerticalOffset: var(--narrow-gap);
-}
-
-:global(.AltroneDark) {
-  --selectBackgroundColor: var(--default-800);
-  --selectHoverBackgroundColor: var(--default-700);
-  --selectTextColor: var(--default-100);
-  --selectHoverTextColor: var(--default-50);
-  --selectPlaceholderTextColor: var(--default-500);
-  --selectPlaceholderHoverTextColor: var(--default-400);
-  --selectInvalidTextColor: var(--danger-600);
+:global([data-altrone-root='true']) {
+  --select-menu-height: 250px;
 }
 
 .SelectWrapper {
   width: 100%;
 }
 
-.SelectContainer {
-  --height: 24px;
-
-  @include inputWrapper;
-}
-
 .Select {
   text-align: left;
   cursor: pointer;
+
+  /* Browsers set `cursor: text` on the native input regardless of `readonly`
+     — a specified UA value, which otherwise wins over the `pointer` this
+     wrapper inherits down. `inherit` only kicks in while the input is
+     actually read-only (i.e. not `searchable` in `searchMode`, where typing
+     is the point and the native text cursor is correct). */
+  input:read-only {
+    cursor: inherit;
+  }
 }
 
 .ArrowIcon {
-  @include inputIsland;
+  pointer-events: none;
 }
 
-.SelectValue {
-  flex: 1;
-  color: var(--fgColor);
+.Menu {
+  overflow: hidden;
 }
 
-.Placeholder {
-  flex: 1;
-  color: var(--placeholderColor);
-}
-
-.FormInputs {
-  display: none;
+.Empty {
+  padding: var(--space-content);
+  color: var(--text-2);
+  text-align: center;
 }

@@ -1,4 +1,9 @@
 .ColorPreset {
+  /**
+   * Literal black / white: the check mark has to stay legible on an arbitrary
+   * user-picked swatch, so this is a contrast pick against runtime data, not a
+   * themeable surface color. `.Dark` / `.Light` flip it based on the swatch luminance.
+   */
   --color-preset-selected-color: #000000;
 
   position: relative;
@@ -8,7 +13,7 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 0 0 1px var(--border-a2);
   cursor: pointer;
   transition: opacity 0.2s linear;
   border: none;
@@ -32,7 +37,7 @@
   }
 
   &:hover,
-  &:focus {
+  &:focus-visible {
     &::after {
       opacity: 0.75;
     }
@@ -40,12 +45,14 @@
 }
 
 .Selected {
-  font-size: 16px;
   color: var(--color-preset-selected-color);
 }
 
 .Icon {
-  // mix-blend-mode: difference;
+  --check-icon-size: 14px;
+
+  position: relative;
+  z-index: 2;
 }
 
 .Dark {

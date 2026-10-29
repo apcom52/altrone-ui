@@ -1,79 +1,92 @@
-import { memo, useEffect } from 'react';
-import { MessageProps } from './Message.types.ts';
-import { Flex, CloseButton } from 'components';
-import s from './message.module.scss';
+import { Ref } from 'react';
 import clsx from 'clsx';
-import { useConfiguration } from 'components/configuration';
-import { GlobalUtils } from '../../utils';
+import { Box, BoxTone } from 'components/box';
+import { Flex } from 'components/flex/Flex.tsx';
+import { CloseButton } from 'components/closeButton/CloseButton.tsx';
+import { MessageProps } from './Message.types.ts';
+import s from './message.module.scss';
 
-export const Message = memo<MessageProps>(
-  ({
-    children,
+const TONE_BY_SEVERITY: Record<
+  'primary' | 'success' | 'warning' | 'danger',
+  BoxTone
+> = {
+  primary: 'accent',
+  success: 'success',
+  warning: 'warning',
+  danger: 'danger',
+};
+
+export const Message = ({
+  ref,
+  children,
+  className,
+  style,
+  title,
+  icon,
+  severity,
+  ariaRole,
+  actions,
+  onClose,
+  compact = false,
+  ...restProps
+}: MessageProps) => {
+  const resolvedAriaRole =
+    ariaRole ?? (severity === 'danger' ? 'alert' : 'status');
+
+  const tone: BoxTone =
+    severity && severity !== 'default' ? TONE_BY_SEVERITY[severity] : 'neutral';
+
+  const cls = clsx(
+    s.Message,
+    {
+      [s.Compact]: compact,
+      [s.ActionsOnly]: !title && !children,
+      [s.WithClose]: !!onClose,
+    },
     className,
-    header,
-    icon,
-    role,
-    severity,
-    style,
-    ariaRole = 'alert',
-    actions,
-    onClose,
-    compact = false,
-    ...props
-  }) => {
-    const { message: messageConfig = {} } = useConfiguration();
+  );
 
-    // TODO: in 4.0 version we need to remove role prop
-    const messageRole = severity ?? role ?? 'default';
+  const resolvedActions =
+    typeof actions === 'function' ? actions(undefined) : actions;
 
-    const cls = clsx(
-      s.Message,
-      {
-        [s.RolePrimary]: messageRole === 'primary',
-        [s.RoleSuccess]: messageRole === 'success',
-        [s.RoleWarning]: messageRole === 'warning',
-        [s.RoleDanger]: messageRole === 'danger',
-        [s.Compact]: compact,
-      },
-      className,
-      messageConfig.className,
-    );
-
-    const styles = {
-      ...messageConfig.style,
-      ...style,
-    };
-
-    useEffect(() => {
-      if (role) {
-        GlobalUtils.deprecatedMessage('Message', 'role', 'severity', '4.0');
+  return (
+    <Box
+      ref={ref as Ref<HTMLElement>}
+      className={cls}
+      style={style}
+      role={resolvedAriaRole}
+      shape="rounded"
+      material="pale"
+      tone={tone}
+      padding={
+        icon
+          ? 'var(--space-content)'
+          : { x: 'calc(var(--space-content) * 2)', y: 'var(--space-content)' }
       }
-    }, [role]);
-
-    return (
+      {...restProps}
+    >
+      {icon ? (
+        <div className={s.Icon} aria-hidden="true">
+          {icon}
+        </div>
+      ) : null}
       <Flex
-        className={cls}
-        gap="l"
-        direction="horizontal"
-        style={styles}
-        role={ariaRole}
-        {...props}
+        orientation="vertical"
+        className={clsx(s.Content, { [s.HasActions]: !!resolvedActions })}
+        gap="m"
+        justify="center"
       >
-        {icon ? <div className={s.Icon}>{icon}</div> : null}
-        <Flex
-          direction="vertical"
-          className={s.Content}
-          gap="m"
-          justify="center"
-        >
+        {title || children ? (
           <div className={s.Text}>
-            {header ? <div className={s.Header}>{header}</div> : null}
+            {title ? <div className={s.Header}>{title}</div> : null}
             {children ? <div className={s.Body}>{children}</div> : null}
           </div>
-          {actions ? <div className={s.Actions}>{actions}</div> : null}
-        </Flex>
-        {onClose ? <CloseButton onClick={onClose} /> : null}
+        ) : null}
+        {resolvedActions ? (
+          <div className={s.Actions}>{resolvedActions}</div>
+        ) : null}
       </Flex>
-    );
-  },
-);
+      {onClose ? <CloseButton className={s.Close} onClick={onClose} /> : null}
+    </Box>
+  );
+};

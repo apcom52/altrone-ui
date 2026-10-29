@@ -1,5 +1,26 @@
-export interface PaginationProps extends React.HTMLAttributes<HTMLDivElement> {
-  currentPage: number;
+import React, { ReactElement } from 'react';
+import { Size } from 'types';
+
+export interface PaginationProps
+  extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange'> {
+  ref?: React.Ref<HTMLElement>;
+  /** One of the five control tiers; scales the page buttons and ellipsis. */
+  size?: Size;
+  /** Controlled current page (1-based) — clamp it in `onChange`. Omit for uncontrolled (`defaultPage`). */
+  currentPage?: number;
+  /** Initial page for the uncontrolled case. Default: `1`. */
+  defaultPage?: number;
   totalPages: number;
-  setPage: (page: number) => void;
+  onChange?: (page: number, event: React.MouseEvent<HTMLButtonElement>) => void;
+  /** Show the first/last page jump buttons. Default: `true`. */
+  showEdgeButtons?: boolean;
+  /** Page buttons to show on each side of the current page. Default: `1`. */
+  siblings?: number;
+
+  /** Overrides the previous/next page icons. Defaults to `Application.icons.prev`/`.next`. */
+  prevIcon?: ReactElement;
+  nextIcon?: ReactElement;
+  /** Overrides the first/last page jump icons — only used when `showEdgeButtons` is `true`. */
+  firstPageIcon?: ReactElement;
+  lastPageIcon?: ReactElement;
 }

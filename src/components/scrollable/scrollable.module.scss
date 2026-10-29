@@ -1,52 +1,19 @@
-@import 'src/global/mixins';
-
-:global(:root) {
-  --scrollbarShadowColor: rgba(0, 0, 0, 0.1);
-
-  :global(.AltroneDark) {
-    --scrollbarShadowColor: rgba(255, 255, 255, 0.2);
-  }
-}
-
 .Scrollable {
-  display: block;
-  position: relative;
+  /** `min-height: 0` lets it shrink and scroll inside a flex column parent. */
+  min-height: 0;
+  height: 100%;
+  /**
+   * Flex (not a plain block) so `.Os` below resolves a real height even when
+   * `maxHeight` overrides this element's own `height` to `auto` — a plain
+   * percentage height on `.Os` would resolve to `auto` too in that case
+   * (a box whose own height comes from `max-height`, not `height`, isn't
+   * "definite" for percentage-height children), silently breaking the cap.
+   */
+  display: flex;
+  flex-direction: column;
 }
 
-.Content {
-  display: block;
-  overflow-y: auto;
-  overflow-y: overlay;
-
-  @include scrollbars;
-}
-
-.Shadow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 5px;
-  background: radial-gradient(farthest-corner at center 0px, var(--scrollbarShadowColor) 0%, transparent 75%);
-}
-
-.EndShadow {
-  top: unset;
-  bottom: 0;
-  background: radial-gradient(farthest-corner at center 100%, var(--scrollbarShadowColor) 0%, transparent 75%);
-}
-
-.Horizontal {
-  .Shadow {
-    width: 5px;
-    height: 100%;
-    background: radial-gradient(farthest-corner at 0px center, var(--scrollbarShadowColor) 0%, transparent 75%);
-  }
-
-  .EndShadow {
-    top: 0;
-    left: unset;
-    right: 0;
-    background: radial-gradient(farthest-corner at 100% center, var(--scrollbarShadowColor) 0%, transparent 75%);
-  }
+.Os {
+  flex: 1 1 auto;
+  min-height: 0;
 }

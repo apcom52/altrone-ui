@@ -1,69 +1,199 @@
-import { memo, useId } from 'react';
-import { useConfiguration } from 'components/configuration';
-import { Icon } from 'components/icon';
-import { Popover } from 'components/popover';
-import { Text } from 'components/text';
-import { TooltipTypes } from './Tooltip.types.ts';
+import React, {
+  memo,
+  useCallback,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { TooltipProps } from './Tooltip.types.ts';
 import clsx from 'clsx';
 import s from './tooltip.module.scss';
-import { DOMUtils } from '../../utils';
+import { DOMUtils, mergeRefs, useBoolean } from '../../utils';
+import { useIcons } from '../application/useIcons.tsx';
+import {
+  arrow,
+  autoUpdate,
+  flip,
+  FloatingArrow,
+  FloatingPortal,
+  offset,
+  OpenChangeReason,
+  shift,
+  useClick,
+  useFloating,
+  useFocus,
+  useHover,
+  useInteractions,
+} from '@floating-ui/react';
+import { AnimatePresence, motion, useReducedMotionConfig } from 'motion/react';
 
-export const Tooltip = memo<TooltipTypes>(
+export const Tooltip = memo(
   ({
+    ref,
     content,
+    title,
     children,
     className,
     style,
-    childrenClassName,
+    kbd,
+    maxWidth,
+    triggerClassName,
+    triggerStyle,
+    triggerIcon,
+    placement = 'top',
+    defaultOpen = false,
+    trigger = ['hover', 'focus'],
+    onOpenChange,
     ...restProps
-  }) => {
-    const contentId = useId();
+  }: TooltipProps) => {
+    const icons = useIcons();
+    const { value: opened, setValue: setOpened } = useBoolean(defaultOpen);
+    const tooltipId = useId();
+    const reducedMotion = useReducedMotionConfig() ?? false;
 
-    const { tooltip: tooltipConfig = {} } = useConfiguration();
+    const arrowRef = useRef<SVGSVGElement>(null);
+    const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
 
-    const cls = clsx(className, tooltipConfig.className);
+    const cls = clsx(s.Tooltip, { [s.WithTitle]: title }, className);
     const styles = {
-      ...tooltipConfig.style,
       ...style,
+      ...(maxWidth !== undefined ? { maxWidth } : undefined),
     };
 
-    const tooltipContent =
-      typeof content === 'string' ? (
-        <Text.Paragraph id={contentId} size="s" className={cls} style={styles}>
-          {content}
-        </Text.Paragraph>
-      ) : (
-        DOMUtils.cloneNode(content, { id: contentId })
-      );
+    const triggersList = useMemo(
+      () => (Array.isArray(trigger) ? trigger : [trigger]),
+      [trigger],
+    );
 
-    const ariaAttributes = {
-      role: 'tooltip',
-      'aria-label': String(content),
-    };
+    const commitOpenChange = useCallback(
+      (state: boolean, event?: Event, reason?: OpenChangeReason) => {
+        setOpened(state);
+        onOpenChange?.(state, event, reason);
+      },
+      [setOpened, onOpenChange],
+    );
 
-    const childrenElement = DOMUtils.cloneNode(children, ariaAttributes) || (
+    const { refs, floatingStyles, context } = useFloating({
+      open: opened,
+      placement: placement,
+      onOpenChange: commitOpenChange,
+      middleware: [
+        offset(10),
+        flip(),
+        shift(),
+        arrow({ element: arrowRef, padding: -1 }),
+      ],
+      whileElementsMounted: autoUpdate,
+    });
+
+    const hoverTrigger = useHover(context, {
+      enabled: triggersList.includes('hover'),
+      mouseOnly: true,
+      delay: { open: 500, close: 0 },
+    });
+    const focusTrigger = useFocus(context, {
+      enabled: triggersList.includes('focus'),
+    });
+    const clickTrigger = useClick(context, {
+      enabled: triggersList.includes('click'),
+    });
+
+    const { getReferenceProps, getFloatingProps } = useInteractions([
+      hoverTrigger,
+      focusTrigger,
+      clickTrigger,
+    ]);
+
+    const safeChildElement = DOMUtils.cloneNode(children, {
+      'aria-describedby': tooltipId,
+    }) || (
       <button
         type="button"
-        role="tooltip"
-        aria-label={String(content)}
-        className={clsx(s.QuestionMark, childrenClassName)}
+        aria-describedby={tooltipId}
+        aria-label={typeof content === 'string' ? content : undefined}
+        className={clsx(s.QuestionMark, triggerClassName)}
+        style={triggerStyle}
       >
-        <Icon i="help_outline" />
+        {triggerIcon ?? icons.help}
       </button>
     );
 
+    const setReference = useCallback(
+      (element: HTMLElement | null) => {
+        refs.setReference(element);
+        setPortalRoot(
+          (element?.closest('[data-altrone-root]') as HTMLElement) ??
+            document.body,
+        );
+      },
+      [refs],
+    );
+
+    const childElement = DOMUtils.cloneNode(safeChildElement, {
+      ...getReferenceProps({
+        ...restProps,
+        ...(React.isValidElement(safeChildElement)
+          ? (safeChildElement.props as any)
+          : {}),
+      }),
+      /* Merges the child's own `ref` (e.g. `<Button ref={x}>` inside a
+         Tooltip) instead of overwriting it — see ref-forwarding.md. */
+      ref: mergeRefs(
+        React.isValidElement(safeChildElement)
+          ? (
+              safeChildElement as React.ReactElement<{
+                ref?: React.Ref<HTMLElement>;
+              }>
+            ).props.ref
+          : undefined,
+        setReference,
+        ref,
+      ),
+      tabIndex:
+        (React.isValidElement(safeChildElement)
+          ? (safeChildElement.props as any).tabIndex
+          : undefined) ?? 0,
+    });
+
     return (
       <>
-        <Popover
-          placement="top"
-          trigger={['click', 'hover']}
-          content={tooltipContent}
-          focusTrap={false}
-          showArrow={true}
-          {...restProps}
-        >
-          {childrenElement}
-        </Popover>
+        {childElement}
+        <AnimatePresence>
+          {opened && portalRoot && (
+            <FloatingPortal root={portalRoot}>
+              <motion.div
+                ref={refs.setFloating}
+                id={tooltipId}
+                role="tooltip"
+                className={cls}
+                style={{ ...floatingStyles, ...styles }}
+                {...(reducedMotion
+                  ? {}
+                  : {
+                      initial: { opacity: 0 },
+                      animate: { opacity: 1 },
+                      exit: { opacity: 0 },
+                    })}
+                {...getFloatingProps()}
+              >
+                {title ? <div className={s.Title}>{title}</div> : null}
+                <div className={s.Content}>
+                  {content}
+                  {kbd ? <span className={s.Kbd}>{kbd}</span> : null}
+                </div>
+                <FloatingArrow
+                  ref={arrowRef}
+                  context={context}
+                  tipRadius={4}
+                  width={8}
+                  height={4}
+                  fill="var(--tooltip-arrow-color)"
+                />
+              </motion.div>
+            </FloatingPortal>
+          )}
+        </AnimatePresence>
       </>
     );
   },

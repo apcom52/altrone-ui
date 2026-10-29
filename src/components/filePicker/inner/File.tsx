@@ -1,32 +1,58 @@
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   FilePickerRemoveContext,
   FilePickerUploadContext,
   FileProps,
   FileStatus,
 } from '../FilePicker.types.ts';
+import { Size } from '../../../types';
 import s from './file.module.scss';
-import { Icon } from 'components/icon';
-import { Loading } from 'components/loading';
 import { Popover } from 'components/popover';
+import { Tooltip } from 'components/tooltip';
 import { Text } from 'components/text';
+import { Progress } from 'components/progress';
 import clsx from 'clsx';
 import { FileUtils } from 'utils';
 import { useFilePickerContext } from '../FilePicker.context.ts';
 import { deleteFileRequest } from '../FilePicker.utils.ts';
 import { useLocalization } from '../../application/useLocalization.tsx';
+import { Button } from 'components/button/Button.tsx';
+import { motion, useReducedMotionConfig } from 'motion/react';
+
+/** Chip size -> size for its inline retry / delete buttons (a tier smaller). */
+const CONTROL_SIZE: Record<Size, Size> = {
+  mini: 'mini',
+  s: 'mini',
+  m: 's',
+  l: 's',
+  xl: 'm',
+};
 
 export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
   const t = useLocalization();
 
   const {
     url,
-    method = 'GET',
+    method = 'POST',
     name = 'file',
+    size = 'm',
+    disabled,
     autoUploadFn,
     removeFileFn,
     autoUpload,
+    errorIcon,
+    retryIcon,
+    deleteIcon,
   } = useFilePickerContext();
+
+  const controlSize = CONTROL_SIZE[size];
 
   const [status, setStatus] = useState<FileStatus>('selected');
   const [progress, setProgress] = useState(0);
@@ -65,7 +91,7 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
 
   const uploadContext = useMemo<FilePickerUploadContext>(() => {
     return {
-      url: String(url),
+      url: url ?? '',
       name: String(name),
       method: String(method),
       file: file as File,
@@ -79,64 +105,77 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
 
   const deleteContext = useMemo<FilePickerRemoveContext>(() => {
     return {
-      url: String(url),
+      url: url ?? '',
       name: String(name),
       file,
       pickerItem,
     };
   }, [url, name, file, pickerItem]);
 
-  const uploadFile = useCallback(async (context: FilePickerUploadContext) => {
-    if (file) {
-      const request = new XMLHttpRequest();
-      request.open(context.method, context.url);
+  const requestRef = useRef<XMLHttpRequest | null>(null);
 
-      const formData = new FormData();
-      formData.append(context.name, context.file);
+  useEffect(() => () => requestRef.current?.abort(), []);
 
-      context.startUploading();
+  // SSR: requires client — XMLHttpRequest is browser-only
+  const uploadFile = useCallback(
+    async (context: FilePickerUploadContext) => {
+      if (file) {
+        const request = new XMLHttpRequest();
+        requestRef.current = request;
+        request.open(context.method, context.url);
 
-      request.upload.addEventListener('progress', (e) => {
-        context.setProgress(e.loaded);
-      });
+        const formData = new FormData();
+        formData.append(context.name, context.file);
 
-      request.onerror = () => {
-        context.fail();
-      };
+        context.startUploading();
 
-      request.onload = (e: ProgressEvent<any>) => {
-        if (
-          e.target?.status &&
-          e.target.status >= 200 &&
-          e.target.status < 300
-        ) {
-          context.complete();
-        } else {
-          context.fail(t('filePicker.errorMessage'));
-        }
-      };
+        request.upload.addEventListener('progress', (e) => {
+          context.setProgress(e.loaded);
+        });
 
-      request.send(formData);
-    }
-  }, []);
+        request.onerror = () => {
+          context.fail();
+        };
 
-  const onRemoveClick = async () => {
-    if (autoUpload) {
-      if (removeFileFn) {
-        await removeFileFn(deleteContext);
-      } else {
-        await deleteFileRequest(deleteContext);
+        request.onload = (e: ProgressEvent) => {
+          const xhr = e.target as XMLHttpRequest;
+          if (xhr?.status >= 200 && xhr.status < 300) {
+            context.complete();
+          } else {
+            context.fail(t('filePicker.errorMessage'));
+          }
+        };
+
+        request.send(formData);
       }
-    }
+    },
+    [file],
+  );
 
-    onDeleteClick(pickerItem);
-  };
+  const onRemoveClick = useCallback(
+    async (event: React.MouseEvent) => {
+      if (autoUpload) {
+        try {
+          if (removeFileFn) {
+            await removeFileFn(deleteContext);
+          } else if (url) {
+            await deleteFileRequest(deleteContext);
+          }
+        } catch {
+          /** A rejected DELETE (e.g. 404 for a file that never uploaded) must not keep the chip stuck in the list. */
+        }
+      }
+
+      onDeleteClick(pickerItem, event);
+    },
+    [autoUpload, removeFileFn, url, deleteContext, onDeleteClick, pickerItem],
+  );
 
   useEffect(() => {
     if (autoUpload && uploadContext && file && status === 'selected') {
       if (autoUploadFn) {
         void autoUploadFn(uploadContext);
-      } else {
+      } else if (url) {
         void uploadFile(uploadContext);
       }
     }
@@ -144,51 +183,78 @@ export const File = memo<FileProps>(({ file, pickerItem, onDeleteClick }) => {
 
   const cls = clsx(s.File, {
     [s.Invalid]: status === 'failed',
+    [s.Mini]: size === 'mini',
+    [s.Small]: size === 's',
+    [s.Large]: size === 'l',
+    [s.XLarge]: size === 'xl',
   });
 
-  const fileName = pickerItem.filename || file?.name || 'Untitled file';
+  const fileName =
+    pickerItem.filename || file?.name || t('filePicker.untitledFile');
   const showFileSize = Boolean(file && file?.size > 0);
 
+  /* Animate the chip's size *and* position as contents change (name resolves,
+     size text / actions appear, failed state widens it) and as sibling chips
+     reflow around it — relative to the picker's `layoutRoot`. */
+  const animateLayout = useReducedMotionConfig() ? undefined : true;
+
   return (
-    <div className={cls} title={file?.name}>
-      <div className={s.Progress} style={{ width: `${progress}%` }} />
-      <div className={s.FileName}>{fileName}</div>
+    <motion.div
+      className={cls}
+      layout={animateLayout}
+      transition={{ layout: { duration: 0.25, ease: 'easeOut' } }}
+    >
+      {status === 'loading' ? (
+        <Progress
+          className={s.Progress}
+          value={progress}
+          label={() => null}
+          aria-label={fileName}
+        />
+      ) : null}
+      <Tooltip content={fileName} placement="top">
+        <span className={s.FileName}>{fileName}</span>
+      </Tooltip>
       {showFileSize ? (
-        <div className={s.Size}>{FileUtils.getFileSize(file?.size || 0)}</div>
+        <span className={s.Size}>{FileUtils.getFileSize(file?.size || 0)}</span>
       ) : null}
       {errorMessage ? (
         <Popover
           placement="top"
-          showArrow
           trigger={['click', 'hover']}
-          content={<Text.Paragraph size="s">{errorMessage}</Text.Paragraph>}
+          content={
+            <Text block size={4}>
+              {errorMessage}
+            </Text>
+          }
         >
-          <div className={s.Alert}>
-            <Icon i="warning" />
-          </div>
+          <button type="button" className={s.Alert} aria-label={errorMessage}>
+            {errorIcon}
+          </button>
         </Popover>
       ) : null}
-      {status === 'loading' ? <Loading size="12px" strokeWidth="1px" /> : null}
       {status === 'failed' ? (
-        <button
-          type="button"
-          className={s.Close}
-          title={t('common.refresh')}
+        <Button
+          className={s.Control}
+          size={controlSize}
+          disabled={disabled}
+          icon={retryIcon}
+          label={t('filePicker.retryUpload')}
           onClick={() => setStatus('selected')}
-        >
-          <Icon i="refresh" />
-        </button>
+          showLabel={false}
+        />
       ) : null}
       {status !== 'loading' ? (
-        <button
-          type="button"
-          className={s.Close}
-          title={t('common.delete')}
+        <Button
+          className={s.Control}
+          size={controlSize}
+          disabled={disabled}
+          icon={deleteIcon}
+          label={t('common.delete')}
           onClick={onRemoveClick}
-        >
-          <Icon i="close" />
-        </button>
+          showLabel={false}
+        />
       ) : null}
-    </div>
+    </motion.div>
   );
 });

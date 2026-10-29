@@ -1,5 +1,12 @@
+import type {
+  InputHTMLAttributes,
+  Ref,
+  SyntheticEvent,
+  MouseEvent,
+  ReactElement,
+  ReactNode,
+} from 'react';
 import { Size } from 'types';
-import { CustomRenderFunction } from 'utils';
 
 export type ColorPreset = {
   name: string;
@@ -9,22 +16,18 @@ export type ColorPreset = {
 
 export interface ColorPickerPresetProps extends ColorPreset {
   selected?: boolean;
-  onChange: (value: string) => void;
-}
-
-export interface ColorPickerContext {
-  opened: boolean;
-  value?: string;
-  setValue: (value?: string) => void;
+  onChange: (value: string, event: MouseEvent<HTMLButtonElement>) => void;
 }
 
 export interface ColorPickerProps
   extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    'onChange' | 'size' | 'value'
+    InputHTMLAttributes<HTMLInputElement>,
+    'onChange' | 'size' | 'value' | 'children'
   > {
+  ref?: Ref<HTMLInputElement>;
   value?: string;
-  onChange: (value?: string) => void;
+  // event is optional because some color sources (e.g. react-colorful) don't expose DOM events
+  onChange: (value: string | undefined, event?: SyntheticEvent) => void;
 
   colorPresets?: ColorPreset[];
 
@@ -32,7 +35,19 @@ export interface ColorPickerProps
 
   size?: Size;
   transparent?: boolean;
-  readonly?: boolean;
+  readOnly?: boolean;
   clearable?: boolean;
-  renderFunc?: CustomRenderFunction<ColorPickerContext>;
+
+  /** Trigger chevron shown when the popover is closed. Defaults to the shared `icons.open`. */
+  openIcon?: ReactElement;
+  /** Trigger chevron shown when the popover is open. Defaults to the shared `icons.close`. */
+  closeIcon?: ReactElement;
+  /** Icon for the "saved colors" tab. Defaults to a grid glyph. */
+  presetsTabIcon?: ReactElement;
+  /** Icon for the "palette" tab. Defaults to a palette glyph. */
+  paletteTabIcon?: ReactElement;
+
+  // When true, merges trigger props onto the single child element instead of rendering TextInput
+  asChild?: boolean;
+  children?: ReactNode;
 }

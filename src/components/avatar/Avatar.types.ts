@@ -1,9 +1,13 @@
+import React, { ReactElement } from 'react';
 import { Size } from 'types';
 
 export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
-  firstName: string;
+  ref?: React.Ref<HTMLDivElement>;
+  firstName?: string;
   lastName?: string;
   size?: Size;
-  color?: string;
+  backgroundColor?: string;
+  textColor?: string;
   imageSrc?: string;
+  icon?: ReactElement;
 }

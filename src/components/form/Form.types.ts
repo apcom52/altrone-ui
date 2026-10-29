@@ -1,19 +1,30 @@
+import { ReactElement } from 'react';
 import { AnyObject } from 'utils';
 import { Size } from 'types';
 
 export interface FormProps<FormState extends AnyObject>
   extends Omit<React.FormHTMLAttributes<HTMLFormElement>, 'size'> {
-  errorMessages?: Record<keyof FormState | string, string | undefined | null>;
+  ref?: React.Ref<HTMLFormElement>;
+  /**
+   * Field name → error text. Keys of `FormState` autocomplete; any other
+   * string is still accepted.
+   */
+  errorMessages?: Partial<
+    Record<keyof FormState | (string & {}), string | undefined | null>
+  >;
   size?: Size;
   disabled?: boolean;
 }
 
 export interface FormFieldProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'size'> {
+  ref?: React.Ref<HTMLDivElement>;
   name?: string;
   label?: string;
   required?: boolean;
   hintText?: string;
+  /** Icon for the hint tooltip trigger, shown when `hintText` is set. Defaults to the shared `icons.help`. */
+  hintIcon?: ReactElement;
   disabled?: boolean;
   errorMessage?: string;
   description?: string;
@@ -22,7 +33,7 @@ export interface FormFieldProps
 export interface FormContextType {
   size?: Size;
   disabled?: boolean;
-  errorMessages?: Record<string, string | undefined | boolean | null>;
+  errorMessages?: Record<string, string | undefined | null>;
 }
 
 export interface FormFieldContextType {

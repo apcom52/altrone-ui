@@ -1,5 +1,14 @@
 .ColorPicker {
   cursor: pointer;
+
+  /* Browsers set `cursor: text` on the native input regardless of `readonly`
+     — a specified UA value, which otherwise wins over the `pointer` this
+     wrapper inherits down. `inherit` lets the input track whatever this
+     class's own `cursor` resolves to (`pointer` here, `default` under
+     `.Readonly` below), instead of hardcoding one. */
+  input:read-only {
+    cursor: inherit;
+  }
 }
 
 .ColorPreviewWrapper {
@@ -7,10 +16,11 @@
 }
 
 .ColorPreview {
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
+  margin-left: 2px;
   border-radius: 50%;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 0 0 1px var(--border-a2);
 }
 
 .Readonly {

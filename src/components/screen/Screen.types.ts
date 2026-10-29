@@ -1,0 +1,164 @@
+import type { HTMLAttributes, MouseEvent, Ref } from 'react';
+import type { Size } from 'types';
+import type { BreakpointName } from 'utils';
+
+export type ScreenMobileBreakpoint = 'sm' | 'md' | 'lg';
+
+/**
+ * Viewport breakpoint token for a zone's `visibleFrom` / `hiddenFrom` —
+ * mirrors the `--breakpoint-*` custom properties (`useBreakpoint`).
+ */
+export type ScreenBreakpoint = BreakpointName;
+
+export interface ScreenProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
+  /** Constrains the width of `Screen.Content`. Default: no constraint. */
+  size?: Size;
+  /**
+   * Accessible name for the screen's root region (`aria-label` +
+   * `role="region"`) — nothing is rendered visibly. Also feeds
+   * `Application`'s automatic `document.title` ("<title> - <applicationName>"),
+   * unless `Application`'s `manageTitle` is `false`.
+   */
+  title?: string;
+  /**
+   * Centers `Screen.Content` in both axes (with `size`, a narrow centered
+   * column) — for sign-in / onboarding forms and full-page `Result` states.
+   * Default: `'start'`.
+   */
+  contentAlign?: 'start' | 'center';
+  /**
+   * Viewport width below which `Screen.Sidebar` switches from an inline grid
+   * column to an off-canvas overlay panel with a scrim. Independent of the
+   * zone's own `visibleFrom` / `hiddenFrom` (which control whether it renders
+   * at all). Default: `'md'`.
+   */
+  mobileBreakpoint?: ScreenMobileBreakpoint;
+  /** Width of the inline sidebar column. Default: `300px`. */
+  sidebarWidth?: string;
+  /**
+   * Width of the `Screen.Aside` column when it's a direct grid child (not
+   * wrapped in a `Splitter`, which owns its own sizing). Default: `320px`.
+   */
+  asideWidth?: string;
+}
+
+/**
+ * Breakpoint-gated visibility, shared by the zones that adapt per device
+ * (`Screen.Sidebar`, `Screen.BottomNavigation`). Set neither to keep the zone
+ * always mounted (its mode still adapts — e.g. the sidebar goes overlay below
+ * `mobileBreakpoint`). Set one, or both to bound the zone to a band. When out
+ * of range the zone renders nothing, so it reserves no layout space.
+ */
+interface ScreenZoneVisibilityProps {
+  /** Render this zone only at viewport widths `>=` the breakpoint. */
+  visibleFrom?: ScreenBreakpoint;
+  /** Render this zone only at viewport widths `<` the breakpoint. */
+  hiddenFrom?: ScreenBreakpoint;
+}
+
+export interface ScreenHeaderProps extends HTMLAttributes<HTMLElement> {
+  ref?: Ref<HTMLElement>;
+  /**
+   * Distance from the screen's leading edge to where the header toolbar
+   * starts — the gutter that keeps the bar clear of the overlapping
+   * `Screen.Sidebar`. A number is px, a string is used verbatim
+   * (`'var(--space-section)'`). Defaults to reserving the inline sidebar's
+   * width plus the standard content gutter; pass `0` to run the bar full
+   * width regardless of the sidebar.
+   */
+  insetStart?: number | string;
+  /**
+   * `true` (default) pins the header to the top of the viewport as fixed
+   * chrome — `Screen.Content`/`Screen.Aside` reserve clearance for it and
+   * `--top-safe-area` (which DataTable's sticky column header/footer offset
+   * by) accounts for its height. `false` puts it back in normal document
+   * flow so it scrolls away with the page; no clearance is reserved and
+   * `--top-safe-area` stays `0px`, so an in-content sticky header sticks
+   * flush to the true viewport top once this one scrolls out of view.
+   */
+  fixed?: boolean;
+}
+
+export interface ScreenSidebarProps
+  extends HTMLAttributes<HTMLElement>,
+    ScreenZoneVisibilityProps {
+  ref?: Ref<HTMLElement>;
+  /**
+   * `true` removes the sidebar from the layout. In both modes the panel
+   * animates out `Drawer`-style and unmounts; the `<aside>` anchor stays in
+   * the DOM (`inert`) and, inline, `Screen` reflows its content by animating
+   * a start inset (no overflow clipping).
+   *
+   * Controlled: pass this to own the state yourself — wire it to the same
+   * boolean you give `Toolbar.SidebarToggleAction`'s `collapsed`, and handle
+   * `onClose`/`onCollapsedChange` to write it back.
+   *
+   * Uncontrolled (omit this prop): the sidebar tracks its own state, seeded
+   * by `defaultCollapsed`, and auto-hides on entering overlay (a persistent
+   * column would otherwise cover the whole screen with no way to close it).
+   * A `Toolbar.SidebarToggleAction` elsewhere in the same `Screen` — also
+   * without its own `collapsed` — reads and toggles this automatically
+   * through `Screen`'s context, no shared state to wire up yourself.
+   */
+  collapsed?: boolean;
+  /** Initial collapsed state for an uncontrolled sidebar. Ignored once `collapsed` is passed. */
+  defaultCollapsed?: boolean;
+  /**
+   * Fires whenever the collapsed state is asked to change — the scrim,
+   * `Escape`, or a `Toolbar.SidebarToggleAction` toggle. Pairs with
+   * `collapsed`; in uncontrolled mode this is purely a notification (the
+   * sidebar already updated itself).
+   */
+  onCollapsedChange?: (collapsed: boolean) => void;
+  /**
+   * Called specifically when the user dismisses the *overlay* sidebar —
+   * clicking the scrim or pressing `Escape`. A narrower sibling of
+   * `onCollapsedChange` for consumers that only care about that one
+   * interaction; controlled, set your `collapsed` state to `true` here.
+   * Focus returns to wherever it was before the panel opened. Even without
+   * it, the scrim / `Escape` still visually dismiss the overlay (it's never
+   * a trap).
+   */
+  onClose?: (event: MouseEvent | KeyboardEvent) => void;
+}
+
+export interface ScreenContentProps extends HTMLAttributes<HTMLElement> {
+  ref?: Ref<HTMLElement>;
+  /**
+   * Caps the content column's width and centres it in the space it's given —
+   * empty gutters on either side (or the `Screen.Aside` column on the trailing
+   * side). A number is px, a string is used verbatim
+   * (`'clamp(320px, 50vw, 640px)'`). Overrides the width `Screen`'s `size`
+   * prop would otherwise impose. Default: no cap.
+   */
+  maxWidth?: number | string;
+}
+
+export interface ScreenFooterProps extends HTMLAttributes<HTMLElement> {
+  ref?: Ref<HTMLElement>;
+}
+
+export interface ScreenBottomNavigationProps
+  extends HTMLAttributes<HTMLElement>,
+    ScreenZoneVisibilityProps {
+  ref?: Ref<HTMLElement>;
+}
+
+export interface ScreenAsideProps
+  extends HTMLAttributes<HTMLElement>,
+    ScreenZoneVisibilityProps {
+  ref?: Ref<HTMLElement>;
+  /**
+   * `true` collapses the column to zero width and `Screen.Content` reclaims
+   * the space; the `<aside>` stays mounted as an `inert` anchor. Only
+   * meaningful when `Screen.Aside` is a direct grid column — inside a
+   * `Splitter`, the panel owns collapse.
+   *
+   * Controlled: pass this to own the state yourself. Omit it (uncontrolled)
+   * and the column tracks its own state, seeded by `defaultCollapsed`.
+   */
+  collapsed?: boolean;
+  /** Initial collapsed state for an uncontrolled aside. Ignored once `collapsed` is passed. */
+  defaultCollapsed?: boolean;
+}

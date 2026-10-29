@@ -1,35 +1,39 @@
-import { forwardRef } from 'react';
 import { DropdownMenuProps } from '../Dropdown.types';
 import clsx from 'clsx';
-import s from './menu.module.scss';
-import { useConfiguration } from 'components/configuration';
+import s from './action.module.scss';
+import { DropdownHoverProvider } from '../DropdownHover.contexts';
+import { Scrollable } from 'components/scrollable';
 
-export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
-  (
-    {
-      children,
-      className,
-      defaultFocusItemIndex = 0,
-      onChangeFocusItemIndex,
-      style,
-      ...props
-    },
-    ref,
-  ) => {
-    const { dropdown: { menu: dropdownMenuConfig = {} } = {} } =
-      useConfiguration();
+/** Keeps the menu above the iOS keyboard — see `applySize` in Popover's middleware. */
+const AVAILABLE_HEIGHT =
+  'max(96px, calc(var(--popover-available-height, 100dvh) - 2 * var(--space-content)))';
 
-    const cls = clsx(s.Menu, className, dropdownMenuConfig.className);
+export function DropdownMenu({
+  ref,
+  children,
+  className,
+  defaultFocusItemIndex = 0,
+  onChangeFocusItemIndex,
+  style,
+  maxHeight,
+  ...props
+}: DropdownMenuProps) {
+  const cls = clsx(s.Menu, 'no-selection', className);
 
-    const styles = {
-      ...dropdownMenuConfig.style,
-      ...style,
-    };
+  const styles = {
+    ...style,
+  };
 
-    return (
+  return (
+    <DropdownHoverProvider>
       <div ref={ref} className={cls} style={styles} {...props}>
-        {children}
+        <Scrollable
+          overflowX="hidden"
+          maxHeight={`min(${maxHeight ?? 'var(--dropdown-menu-max-height)'}, ${AVAILABLE_HEIGHT})`}
+        >
+          <div className={s.MenuContent}>{children}</div>
+        </Scrollable>
       </div>
-    );
-  },
-);
+    </DropdownHoverProvider>
+  );
+}

@@ -1,41 +1,49 @@
 import { ChangeEventHandler, memo, useCallback, useId, useMemo } from 'react';
 import clsx from 'clsx';
 import s from './radio.module.scss';
-import { useConfiguration } from 'components/configuration';
 import { RadioContext, RadioProps } from './Radio.types.ts';
 import { RadioItem } from './components';
 import { ArrayUtils } from 'utils';
 import { RadioContextWrapper } from './Radio.context.ts';
+import { useFormField } from '../form/components/Field.context.ts';
 
 const RadioWrapper = memo<RadioProps>(
   ({
+    ref,
     children,
     value,
     onChange,
     className,
     style,
-    direction = 'horizontal',
+    orientation = 'horizontal',
     name,
     disabled,
+    size,
     ...restProps
   }) => {
     const id = useId();
 
-    const radioName = typeof name === 'string' && name ? name : id;
+    const {
+      name: formFieldName,
+      disabled: formFieldDisabled,
+      size: formFieldSize,
+    } = useFormField();
 
-    const { radio: radioConfig = {} } = useConfiguration();
+    const radioName =
+      typeof name === 'string' && name ? name : formFieldName || id;
+    const radioDisabled =
+      typeof disabled === 'boolean' ? disabled : formFieldDisabled;
+    const radioSize = size || formFieldSize || 'm';
 
     const cls = clsx(
       s.RadioList,
       {
-        [s.Vertical]: direction === 'vertical',
+        [s.Vertical]: orientation === 'vertical',
       },
       className,
-      radioConfig.className,
     );
 
     const styles = {
-      ...radioConfig.style,
       ...style,
     };
 
@@ -51,14 +59,15 @@ const RadioWrapper = memo<RadioProps>(
       return {
         name: radioName,
         value,
-        disabled: Boolean(disabled),
+        disabled: Boolean(radioDisabled),
         onChange: onChangeHandler,
+        size: radioSize,
       };
-    }, [onChangeHandler, value, radioName, disabled]);
+    }, [onChangeHandler, value, radioName, radioDisabled, radioSize]);
 
     return (
       <RadioContextWrapper.Provider value={radioContext}>
-        <div className={cls} style={styles} {...restProps}>
+        <div ref={ref} className={cls} style={styles} {...restProps}>
           {safeChildren}
         </div>
       </RadioContextWrapper.Provider>

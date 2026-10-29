@@ -1,127 +1,181 @@
-import { memo, useEffect, useState } from 'react';
-import { Icon } from '../icon';
+import { memo, useMemo, useState } from 'react';
 import s from './pagination.module.scss';
 import clsx from 'clsx';
-import { Popover } from '../popover';
-import { Flex } from '../flex';
-import { NumberInput } from '../numberInput';
-import { Button } from '../button';
+import { ChevronFirst, ChevronLast } from 'lucide-react';
 import { PaginationProps } from './Pagination.types.ts';
-import { useConfiguration } from 'components/configuration';
 import { useLocalization } from '../application';
+import { useIcons } from '../application/useIcons.tsx';
+import { Button } from 'components/button/index.ts';
+import { Flex } from 'components/flex/Flex.tsx';
+
+type PageItem = number | '...';
+
+/**
+ * Page-number window: always the first and last page, up to `siblings` pages
+ * on each side of `current`, and an ellipsis wherever a gap is skipped.
+ */
+function buildPageItems(
+  current: number,
+  total: number,
+  siblings: number,
+): PageItem[] {
+  if (total <= 1) return [1];
+
+  const rangeStart = Math.max(1, current - siblings);
+  const rangeEnd = Math.min(total, current + siblings);
+
+  const items: PageItem[] = [];
+
+  if (rangeStart > 1) {
+    items.push(1);
+    if (rangeStart > 2) items.push('...');
+  }
+
+  for (let i = rangeStart; i <= rangeEnd; i++) {
+    items.push(i);
+  }
+
+  if (rangeEnd < total) {
+    if (rangeEnd < total - 1) items.push('...');
+    items.push(total);
+  }
+
+  return items;
+}
 
 export const Pagination = memo<PaginationProps>(
-  ({ currentPage, totalPages, setPage, className, style, ...restProps }) => {
-    const { pagination: paginationConfig = {} } = useConfiguration();
+  ({
+    ref,
+    currentPage,
+    defaultPage = 1,
+    totalPages,
+    onChange,
+    showEdgeButtons = true,
+    siblings = 1,
+    size = 'm',
+    className,
+    style,
+    prevIcon,
+    nextIcon,
+    firstPageIcon,
+    lastPageIcon,
+    ...restProps
+  }) => {
     const t = useLocalization();
+    const icons = useIcons();
 
-    const [virtualPage, setVirtualPage] = useState<number | undefined>(
-      currentPage,
+    const isControlled = currentPage !== undefined;
+    const [uncontrolledPage, setUncontrolledPage] = useState(defaultPage);
+    const page = isControlled ? currentPage : uncontrolledPage;
+
+    const handleChange = (
+      next: number,
+      event: React.MouseEvent<HTMLButtonElement>,
+    ) => {
+      if (!isControlled) setUncontrolledPage(next);
+      onChange?.(next, event);
+    };
+
+    if (
+      import.meta.env.DEV &&
+      isControlled &&
+      totalPages >= 1 &&
+      (page < 1 || page > totalPages)
+    ) {
+      console.warn(
+        `[Pagination] currentPage (${page}) is outside 1..${totalPages}. It's a controlled prop — clamp it in your onChange handler.`,
+      );
+    }
+
+    const pageItems = useMemo(
+      () => buildPageItems(page, totalPages, siblings),
+      [page, totalPages, siblings],
     );
 
-    useEffect(() => {
-      setVirtualPage(currentPage);
-    }, [currentPage]);
-
-    const cls = clsx(s.Pagination, className, paginationConfig.className);
-
-    const styles = {
-      ...paginationConfig.style,
-      ...style,
-    };
-
-    const onNextPageClick = () => {
-      if (currentPage < totalPages) {
-        setPage(currentPage + 1);
-      }
-    };
-
-    const onPrevPageClick = () => {
-      if (currentPage > 1) {
-        setPage(currentPage - 1);
-      }
-    };
-
-    const navigateToPage = () => {
-      let vp = Number(virtualPage || 1);
-
-      if (vp < 1) {
-        vp = 1;
-      } else if (vp > totalPages) {
-        vp = totalPages;
-      }
-
-      setVirtualPage(vp);
-      setPage(vp);
-    };
+    const isFirst = page <= 1;
+    const isLast = page >= totalPages;
 
     return (
-      <div
-        role="navigation"
-        aria-label="Pagination Navigation"
-        className={cls}
-        style={styles}
+      <Flex
+        ref={ref}
+        asChild
+        gap="xs"
+        align="center"
+        aria-label={t('pagination.navigation')}
+        className={clsx(
+          s.Pagination,
+          {
+            [s.Mini]: size === 'mini',
+            [s.Small]: size === 's',
+            [s.Large]: size === 'l',
+            [s.XLarge]: size === 'xl',
+          },
+          className,
+        )}
+        style={style}
         {...restProps}
       >
-        <button
-          type="button"
-          className={s.NavButton}
-          onClick={onPrevPageClick}
-          disabled={currentPage <= 1}
-        >
-          <Icon i="arrow_back_ios_new" />
-        </button>
-        <Popover
-          enabled={totalPages > 1}
-          title={t('pagination.title')}
-          placement="top"
-          showCloseButton
-          content={({ closePopup }) => (
-            <Flex direction="vertical" gap="m" align="end">
-              <NumberInput
-                value={virtualPage}
-                min={undefined}
-                onChange={setVirtualPage}
-                aria-label={t('pagination.title')}
-              />
+        <nav>
+          {showEdgeButtons && (
+            <Button
+              size={size}
+              icon={firstPageIcon ?? <ChevronFirst />}
+              disabled={isFirst}
+              label={t('pagination.firstPage')}
+              onClick={(e) => handleChange(1, e)}
+              showLabel={false}
+            />
+          )}
+
+          <Button
+            size={size}
+            icon={prevIcon ?? icons.prev}
+            disabled={isFirst}
+            label={t('pagination.previous')}
+            onClick={(e) => handleChange(page - 1, e)}
+            showLabel={false}
+          />
+
+          {pageItems.map((item, index) =>
+            item === '...' ? (
+              <span key={`ellipsis-${index}`} className={s.Ellipsis} aria-hidden>
+                …
+              </span>
+            ) : (
               <Button
-                severity="primary"
-                label={t('pagination.action')}
-                onClick={() => {
-                  navigateToPage();
-                  closePopup();
-                }}
+                key={item}
+                size={size}
+                label={String(item)}
+                variant="text"
+                selected={item === page}
+                onClick={(e) => handleChange(item, e)}
+                aria-label={t('pagination.page', { vars: { page: item } })}
+                aria-current={item === page ? 'page' : undefined}
               />
-            </Flex>
+            ),
           )}
-          trigger="click"
-        >
-          {({ opened }) => (
-            <button
-              type="button"
-              disabled={totalPages <= 1}
-              className={clsx(s.CurrentPage, {
-                [s.Opened]: opened,
-              })}
-            >
-              {t('pagination.progress', {
-                vars: {
-                  current: currentPage,
-                  total: totalPages,
-                },
-              })}
-            </button>
+
+          <Button
+            size={size}
+            icon={nextIcon ?? icons.next}
+            disabled={isLast}
+            label={t('pagination.next')}
+            onClick={(e) => handleChange(page + 1, e)}
+            showLabel={false}
+          />
+
+          {showEdgeButtons && (
+            <Button
+              size={size}
+              icon={lastPageIcon ?? <ChevronLast />}
+              disabled={isLast}
+              label={t('pagination.lastPage')}
+              onClick={(e) => handleChange(totalPages, e)}
+              showLabel={false}
+            />
           )}
-        </Popover>
-        <button
-          type="button"
-          className={s.NavButton}
-          onClick={onNextPageClick}
-          disabled={currentPage >= totalPages}
-        >
-          <Icon i="arrow_forward_ios" />
-        </button>
-      </div>
+        </nav>
+      </Flex>
     );
   },
 );

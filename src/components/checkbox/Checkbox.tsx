@@ -1,79 +1,89 @@
-import { ChangeEventHandler, KeyboardEventHandler, memo, useRef } from 'react';
+import { ChangeEventHandler, memo, useEffect, useRef } from 'react';
 import { CheckboxProps } from './Checkbox.types.ts';
 import clsx from 'clsx';
 import s from './checkbox.module.scss';
 import { CheckIcon } from './inner/checkIcon.tsx';
-import { useConfiguration } from 'components/configuration';
+import { useFormField } from '../form/components/Field.context.ts';
 
 export const Checkbox = memo<CheckboxProps>(
   ({
+    ref,
     children,
     checked = false,
     onChange,
     className,
     style,
     danger,
-    indeterminate,
+    indeterminate = false,
     disabled,
     name,
+    size,
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-describedby': ariaDescribedBy,
     ...restProps
   }) => {
-    const { checkbox: checkboxConfig = {} } = useConfiguration();
-
     const inputRef = useRef<HTMLInputElement | null>(null);
+
+    const {
+      name: formFieldName,
+      disabled: formFieldDisabled,
+      size: formFieldSize,
+    } = useFormField();
+
+    const inputName = typeof name === 'string' ? name : formFieldName;
+    const inputDisabled =
+      typeof disabled === 'boolean' ? disabled : formFieldDisabled;
+    const inputSize = size || formFieldSize || 'm';
+
+    /* `indeterminate` is a DOM property, not an attribute — it can only be set
+       imperatively, and it's what makes AT announce the checkbox as "mixed". */
+    useEffect(() => {
+      if (inputRef.current) {
+        inputRef.current.indeterminate = indeterminate;
+      }
+    }, [indeterminate]);
 
     const cls = clsx(
       s.Checkbox,
       {
-        [s.Checked]: checked,
-        [s.Disabled]: disabled,
+        [s.Checked]: checked || indeterminate,
+        [s.Disabled]: inputDisabled,
         [s.Danger]: danger,
+        [s.Mini]: inputSize === 'mini',
+        [s.Small]: inputSize === 's',
+        [s.Large]: inputSize === 'l',
+        [s.XLarge]: inputSize === 'xl',
       },
       className,
-      checkboxConfig.className,
     );
 
-    const styles = {
-      ...checkboxConfig.style,
-      ...style,
-    };
-
-    const onChangeHandler: ChangeEventHandler = (e) => {
-      onChange?.(!checked, e);
-    };
-
-    const onKeyDown: KeyboardEventHandler = (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        inputRef.current?.click();
-      }
+    const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (event) => {
+      onChange(!checked, event);
     };
 
     return (
-      <label
-        role="checkbox"
-        aria-checked={indeterminate ? 'mixed' : checked}
-        className={cls}
-        style={styles}
-        tabIndex={0}
-        onKeyDown={onKeyDown}
-        {...restProps}
-      >
+      <label ref={ref} className={cls} style={style} {...restProps}>
         <input
           ref={inputRef}
           type="checkbox"
-          onChange={onChangeHandler}
-          checked={checked}
-          name={name}
           className={s.Input}
+          checked={checked}
+          name={inputName}
+          disabled={inputDisabled}
+          onChange={onChangeHandler}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledBy}
+          aria-describedby={ariaDescribedBy}
         />
-        <div className={s.Button}>
+        <span className={s.Button}>
           {indeterminate ? (
-            <div className={s.Indetermination} />
+            <span className={s.Indetermination} />
           ) : (
             <CheckIcon checked={checked} />
           )}
-        </div>
-        {children ? <div className={s.Label}>{children}</div> : null}
+        </span>
+        {children ? <span className={s.Label}>{children}</span> : null}
       </label>
     );
   },

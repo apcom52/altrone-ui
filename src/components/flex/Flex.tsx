@@ -1,69 +1,75 @@
-import { createElement, memo } from 'react';
+import { isValidElement, ReactElement, Ref } from 'react';
 import { FlexProps } from './Flex.types.ts';
 import clsx from 'clsx';
 import s from './flex.module.scss';
-import { useConfiguration } from 'components/configuration';
 import { Gap } from 'types';
+import { Slot } from 'utils/components/Slot';
+import { AnyObject } from 'utils/types';
 
-const gapValues: Record<Gap, number> = {
-  none: 0,
-  xxs: 2,
-  xs: 4,
-  s: 6,
-  m: 8,
-  l: 12,
-  xl: 24,
-  xxl: 32,
+const gapVars: Record<Gap, string> = {
+  none: '0px',
+  xxs: 'var(--narrow-gap)',
+  xs: 'var(--xs-gap)',
+  s: 'var(--s-gap)',
+  m: 'var(--gap)',
+  l: 'var(--l-gap)',
+  xl: 'var(--xl-gap)',
+  xxl: 'var(--xxl-gap)',
 };
 
-export const Flex = memo<FlexProps>(
-  ({
-    tagName = 'div',
-    children,
+export const Flex = ({
+  ref,
+  asChild = false,
+  children,
+  className,
+  align,
+  justify,
+  gap = 'none',
+  orientation = 'horizontal',
+  style,
+  disableInnerMargins = true,
+  wrap = false,
+  ...restProps
+}: FlexProps) => {
+  const cls = clsx(
+    s.Flex,
+    {
+      [s.Flex_horizontal]: orientation === 'horizontal',
+      [s.Flex_alignStart]: align === 'start',
+      [s.Flex_alignCenter]: align === 'center',
+      [s.Flex_alignEnd]: align === 'end',
+      [s.Flex_justifyStart]: justify === 'start',
+      [s.Flex_justifyCenter]: justify === 'center',
+      [s.Flex_justifyEnd]: justify === 'end',
+      [s.Flex_justifyBetween]: justify === 'between',
+      [s.Flex_disableInnerMargins]: disableInnerMargins,
+      [s.Flex_wrap]: wrap,
+    },
     className,
-    align,
-    justify,
-    gap = 'none',
-    direction = 'horizontal',
-    style,
-    disableInnerMargins = true,
-    wrap = false,
-    ...props
-  }) => {
-    const { flex: flexConfig = {} } = useConfiguration();
+  );
 
-    const cls = clsx(
-      s.Flex,
-      {
-        [s.Flex_alignStart]: align === 'start',
-        [s.Flex_alignCenter]: align === 'center',
-        [s.Flex_alignEnd]: align === 'end',
-        [s.Flex_justifyStart]: justify === 'start',
-        [s.Flex_justifyCenter]: justify === 'center',
-        [s.Flex_justifyEnd]: justify === 'end',
-        [s.Flex_justifyBetween]: justify === 'between',
-        [s.Flex_horizontal]: direction === 'horizontal',
-        [s.Flex_disableInnerMargins]: disableInnerMargins,
-        [s.Flex_wrap]: wrap,
-      },
-      className,
-      flexConfig.className,
+  const styles = {
+    ...style,
+    gap: gapVars[gap],
+  };
+
+  if (asChild) {
+    if (!isValidElement(children)) {
+      console.error(
+        '[Flex] asChild requires a single valid React element as children',
+      );
+      return null;
+    }
+    return (
+      <Slot ref={ref} className={cls} style={styles} {...restProps}>
+        {children as ReactElement<AnyObject>}
+      </Slot>
     );
+  }
 
-    const styles = {
-      ...flexConfig.style,
-      ...style,
-      gap: `${gapValues[gap]}px`,
-    };
-
-    return createElement(
-      tagName,
-      {
-        ...props,
-        className: cls,
-        style: styles,
-      },
-      children,
-    );
-  },
-);
+  return (
+    <div ref={ref as Ref<HTMLDivElement>} className={cls} style={styles} {...restProps}>
+      {children}
+    </div>
+  );
+};

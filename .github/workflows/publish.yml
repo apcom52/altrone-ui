@@ -1,0 +1,98 @@
+name: Publish to npm
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to publish (e.g. 4.0.0-beta.3 or 4.0.0)
+        required: true
+        type: string
+      tag:
+        description: npm dist-tag
+        required: true
+        default: beta
+        type: choice
+        options:
+          - dev
+          - beta
+          - rc
+          - release
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ inputs.version }}
+      TAG: ${{ inputs.tag }}
+      BRANCH: ${{ github.ref_name }}
+    steps:
+      - name: Validate inputs
+        run: |
+          if [ "${{ github.ref_type }}" != "branch" ]; then
+            echo "::error::Publish must be run from a branch, not a tag"
+            exit 1
+          fi
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "::error::'$VERSION' is not a valid semver version"
+            exit 1
+          fi
+          if [ "$TAG" = "release" ] && [[ "$VERSION" == *-* ]]; then
+            echo "::error::A release publish must not use a prerelease version ('$VERSION')"
+            exit 1
+          fi
+          if [ "$TAG" != "release" ] && [[ "$VERSION" != *-* ]]; then
+            echo "::error::Tag '$TAG' requires a prerelease version (e.g. 4.0.0-$TAG.1), got '$VERSION'"
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+
+      - name: Check the tag is free
+        run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/v$VERSION" >/dev/null; then
+            echo "::error::Tag v$VERSION already exists"
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Bump version
+        run: npm version "$VERSION" --no-git-tag-version
+
+      - name: Build
+        run: npm run build
+
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      - name: Publish
+        run: |
+          if [ "$TAG" = "release" ]; then
+            npm publish --provenance --access public
+          else
+            npm publish --provenance --access public --tag "$TAG"
+          fi
+
+      - name: Commit version bump and tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git commit -m "[Release]: $VERSION"
+          git tag "v$VERSION"
+          git push --atomic origin "HEAD:refs/heads/$BRANCH" "v$VERSION"

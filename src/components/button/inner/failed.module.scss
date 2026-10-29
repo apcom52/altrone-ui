@@ -1,0 +1,16 @@
+.Failed {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: color(display-p3 0.83 0.329 0.324);
+  color: var(--white);
+  left: 50%;
+  top: 50%;
+  font-size: 16px;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px 0 color(display-p3 0.83 0.329 0.324 / 0.5);
+}

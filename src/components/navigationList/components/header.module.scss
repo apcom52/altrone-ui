@@ -1,0 +1,12 @@
+.Header {
+  z-index: var(--level-fixed);
+  /* Bleed over the container's padding so the bar spans the full width and
+     its top corners sit flush with the container's rounding. */
+  margin: calc(-1 * var(--navigation-list-padding))
+    calc(-1 * var(--navigation-list-padding)) 0;
+  padding: var(--space-content);
+  background: var(--navigation-list-chrome-background-color);
+  border-bottom: 1px solid var(--navigation-list-chrome-border-color);
+  border-radius: var(--navigation-list-rounding) var(--navigation-list-rounding) 0
+    0;
+}

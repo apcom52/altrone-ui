@@ -1,7 +1,6 @@
-import React from 'react';
-import { expect, test, describe } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { AltroneApplication, BottomNavigation, Icon } from '../src/components';
+import { expect, test, describe, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { BottomNavigation } from '../src/components';
 
 class ResizeObserver {
   observe() {}
@@ -10,69 +9,99 @@ class ResizeObserver {
 }
 
 beforeAll(() => {
-  // @ts-ignore
   window.ResizeObserver = ResizeObserver;
 });
 
 describe('BottomNavigation', () => {
-  test('BottomNavigation has to apply custom className and id', () => {
+  test('forwards className/style to the container and renders links as anchors', () => {
     render(
       <BottomNavigation
-        data-testid="list"
+        data-testid="bar"
         className="cls"
-        style={{ color: 'red' }}
+        style={{ color: 'rgb(255, 0, 0)' }}
       >
-        <BottomNavigation.Item
-          data-testid="action1"
-          label="Item1"
-          icon={<Icon i="face" />}
-          className="cls1"
-          style={{ color: 'rgb(0, 0, 255)' }}
-        />
-        <BottomNavigation.Item
-          data-testid="action2"
-          label="Item1"
-          icon={<Icon i="face" />}
+        <BottomNavigation.Link
+          data-testid="home"
+          label="Home"
+          icon={<span />}
         />
       </BottomNavigation>,
     );
 
-    expect(screen.getByTestId('list')).toHaveClass('cls');
-    expect(screen.getByTestId('list')).toHaveStyle('color: rgb(255, 0, 0)');
-    expect(screen.getByTestId('action1')).toHaveClass('cls1');
-    expect(screen.getByTestId('action1')).toHaveStyle('color: rgb(0, 0, 255)');
+    const bar = screen.getByTestId('bar');
+    expect(bar).toHaveClass('cls');
+    expect(bar).toHaveStyle('color: rgb(255, 0, 0)');
+    expect(screen.getByTestId('home').tagName).toBe('A');
   });
 
-  test('check that BottomNavigation configuration works correctly', () => {
+  test('the selected link is marked with aria-current', () => {
     render(
-      <AltroneApplication
-        config={{
-          bottomNavigation: {
-            className: 'cls',
-            style: { color: 'rgb(0, 0, 255)' },
-            selectedItemClassName: 'selected',
-          },
-        }}
-      >
-        <BottomNavigation data-testid="list">
-          <BottomNavigation.Item
-            data-testid="action1"
-            label="Item1"
-            icon={<Icon i="face" />}
-          />
-          <BottomNavigation.Item
-            selected={true}
-            data-testid="action2"
-            label="Item1"
-            icon={<Icon i="face" />}
-          />
-        </BottomNavigation>
-      </AltroneApplication>,
+      <BottomNavigation>
+        <BottomNavigation.Link
+          data-testid="home"
+          label="Home"
+          icon={<span />}
+        />
+        <BottomNavigation.Link
+          data-testid="search"
+          label="Search"
+          icon={<span />}
+          selected
+        />
+      </BottomNavigation>,
     );
 
-    expect(screen.getByTestId('list')).toHaveClass('cls');
-    expect(screen.getByTestId('list')).toHaveStyle('color: rgb(0, 0, 255)');
-    expect(screen.getByTestId('action1')).not.toHaveClass('selected');
-    expect(screen.getByTestId('action2')).toHaveClass('selected');
+    expect(screen.getByTestId('home')).not.toHaveAttribute('aria-current');
+    expect(screen.getByTestId('search')).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
+  });
+
+  test('renders the badge content', () => {
+    render(
+      <BottomNavigation>
+        <BottomNavigation.Link
+          label="Alerts"
+          icon={<span />}
+          badge="9+"
+          data-testid="alerts"
+        />
+      </BottomNavigation>,
+    );
+
+    expect(screen.getByTestId('alerts')).toHaveTextContent('9+');
+  });
+
+  test('fires onClick when a link is activated', () => {
+    const onClick = vi.fn();
+    render(
+      <BottomNavigation>
+        <BottomNavigation.Link
+          label="Home"
+          icon={<span />}
+          onClick={onClick}
+          data-testid="home"
+        />
+      </BottomNavigation>,
+    );
+
+    fireEvent.click(screen.getByTestId('home'));
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  test('asChild merges the link onto a custom element with the icon/label inside', () => {
+    render(
+      <BottomNavigation>
+        <BottomNavigation.Link asChild label="Home" icon={<span>ICON</span>}>
+          <div data-testid="custom" />
+        </BottomNavigation.Link>
+      </BottomNavigation>,
+    );
+
+    const custom = screen.getByTestId('custom');
+    expect(custom.tagName).toBe('DIV');
+    expect(custom).toHaveTextContent('ICON');
+    expect(custom).toHaveTextContent('Home');
   });
 });

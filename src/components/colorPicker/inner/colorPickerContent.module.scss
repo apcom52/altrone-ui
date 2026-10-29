@@ -1,8 +1,30 @@
 .ColorPicker {
-  width: 216px;
+  --color-picker-content-width: 312px;
+
+  width: var(--color-picker-content-width);
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.HexField {
+  width: 100%;
+}
+
+.ChannelRow {
+  width: 100%;
+}
+
+.ChannelCell {
+  flex: 1 1 0;
+  min-width: 0;
+
+  > * {
+    width: 100%;
+  }
 }
 
 .Palette {
+  /* !important overrides react-colorful's runtime-injected `.react-colorful { width: 200px }` — its stylesheet lands after CSS modules, so plain specificity loses. */
   width: 100% !important;
 
   :global(.react-colorful__saturation) {
@@ -10,26 +32,30 @@
     margin-bottom: 6px;
   }
 
+  :global(.react-colorful__interactive:focus-visible .react-colorful__pointer) {
+    outline: var(--focus-ring-width) solid var(--black);
+  }
+
   :global(.react-colorful__saturation-pointer) {
     width: 24px;
     height: 24px;
-    border-radius: 6px;
+    border-radius: 50%;
   }
 
   :global(.react-colorful__hue-pointer) {
     width: 16px;
     height: 16px;
-    border-radius: 6px;
+    border-radius: 50%;
   }
 
   :global(.react-colorful__alpha-pointer) {
     width: 16px;
     height: 16px;
-    border-radius: 6px;
+    border-radius: 50%;
   }
 
   :global(.react-colorful__pointer-fill) {
-    border-radius: 4px;
+    border-radius: 50%;
   }
 
   :global(.react-colorful__hue) {
@@ -43,12 +69,4 @@
     margin-bottom: 6px;
     border-radius: 4px;
   }
-}
-
-.InputLabel {
-  font-size: var(--labelFontSize);
-  text-align: center;
-  color: var(--default-500);
-  font-weight: var(--labelFontWeight);
-  line-height: var(--labelLineHeight);
 }

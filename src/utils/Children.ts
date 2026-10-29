@@ -42,7 +42,7 @@ export class AltChildren {
       for (const element of node) {
         if (
           _depth + 1 <= depth &&
-          isValidElement(element) &&
+          isValidElement<{ children?: unknown }>(element) &&
           Array.isArray(element.props.children)
         ) {
           checkNode(

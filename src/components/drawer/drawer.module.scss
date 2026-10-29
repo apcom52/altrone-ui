@@ -1,0 +1,79 @@
+:global([data-altrone-root='true']) {
+  --drawer-header-text-color: var(--text-2);
+  --drawer-padding: var(--space-content);
+  --drawer-content-padding: var(--space-content);
+}
+
+.Body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--drawer-padding);
+  gap: var(--gap);
+}
+
+.Header {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  min-height: 32px;
+  /** `.Content` cancels the flex `gap` below the header (see its own
+      comment), so this padding is the only space left above the content. */
+  padding-bottom: var(--drawer-content-padding);
+}
+
+/**
+ * The two action groups share the row equally (`flex: 1 1 0`), so the title
+ * between them stays centred on the panel regardless of how many buttons land
+ * on either side.
+ */
+.HeaderSide {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--xs-gap);
+}
+
+.HeaderEnd {
+  justify-content: flex-end;
+}
+
+.Title {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-size: var(--text-size-4);
+  font-weight: var(--text-weight-bold);
+  line-height: var(--line-height-4);
+  color: var(--drawer-header-text-color);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.Content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  /**
+   * Pull the scroll viewport out to the panel edges, cancelling the body
+   * padding, so the gutter can live *inside* the scroll box (`.ScrollInset`).
+   * Otherwise the viewport clips focus rings and shadows on edge content
+   * before they reach the visible panel edge.
+   */
+  margin: calc(var(--gap) * -1) calc(var(--drawer-padding) * -1)
+    calc(var(--drawer-padding) * -1);
+}
+
+.ScrollInset {
+  padding: var(--drawer-content-padding);
+}
+
+.Footer {
+  flex-shrink: 0;
+  /** Mirrors `.Header`'s `padding-bottom` — `.Content` cancels the flex
+      `gap` above the footer too. */
+  padding-top: var(--drawer-content-padding);
+}

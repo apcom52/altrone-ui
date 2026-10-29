@@ -1,0 +1,26 @@
+/* Passive island — a plain inline chip. */
+.CharCounterIsland {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  color: var(--text-1);
+  font-size: var(--text-input-font-size);
+  line-height: var(--line-height-4);
+  font-weight: var(--text-weight-medium);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* The island touching the field border (first at the start, last at the end)
+   gets an extra pad so it doesn't sit cramped against the edge. */
+:global([data-altrone-island='start']) > .CharCounterIsland:first-child {
+  padding-left: var(--space-inset-compact);
+}
+
+:global([data-altrone-island='end']) > .CharCounterIsland:last-child {
+  padding-right: var(--space-inset-compact);
+}
+
+.InvalidChars {
+  color: var(--danger-text-1);
+}

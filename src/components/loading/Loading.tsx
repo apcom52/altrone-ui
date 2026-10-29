@@ -1,58 +1,86 @@
 import { memo } from 'react';
 import clsx from 'clsx';
 import { LoadingProps } from './Loading.types.ts';
-import { useConfiguration } from '../configuration';
 import s from './loading.module.scss';
+import { useLocalization } from '../application';
+
+const PX_LENGTH = /^\d*\.?\d+(px)?$/;
+const DEFAULT_GEOMETRY_SIZE = 24;
 
 export const Loading = memo<LoadingProps>(
   ({
+    ref,
     color,
     size = '24px',
     strokeWidth = '2',
+    value,
     className,
     style,
+    'aria-label': ariaLabel,
     ...restProps
   }) => {
-    const { loading: loadingConfig = {} } = useConfiguration();
+    const t = useLocalization();
 
-    const currentColor = color ?? loadingConfig.color ?? 'var(--loadingColor)';
-
-    const cls = clsx(s.Loading, className, loadingConfig.className);
-    const styles = {
-      ...loadingConfig.style,
-      ...style,
-      color: currentColor,
-    };
-
-    const numericSize = parseInt(size);
-    const numericStroke = parseInt(strokeWidth);
-    const centerPoint = numericSize / 2;
+    /* SVG geometry needs a number: px sizes map 1:1, any other CSS length
+       (`2rem`, `50%`) draws in a 24-unit box that the `width`/`height`
+       scale, so `strokeWidth` stays relative to 24. */
+    const numericSize = PX_LENGTH.test(String(size).trim())
+      ? parseFloat(String(size))
+      : DEFAULT_GEOMETRY_SIZE;
+    const numericStroke = parseFloat(String(strokeWidth));
+    const center = numericSize / 2;
     const radius = Math.max(0, numericSize / 2 - numericStroke / 2);
 
+    const isDeterminate = value !== undefined && !Number.isNaN(value);
+    const clampedValue = isDeterminate
+      ? Math.min(100, Math.max(0, value))
+      : undefined;
+
+    const cls = clsx(s.Loading, className);
+
     return (
-      <div className={cls} style={styles} {...restProps}>
+      <div
+        ref={ref}
+        className={cls}
+        style={color === undefined ? style : { ...style, color }}
+        data-motion-essential=""
+        role={isDeterminate ? 'progressbar' : 'status'}
+        aria-label={ariaLabel ?? t('loading.label')}
+        aria-valuenow={clampedValue}
+        aria-valuemin={isDeterminate ? 0 : undefined}
+        aria-valuemax={isDeterminate ? 100 : undefined}
+        {...restProps}
+      >
         <svg
-          className={s.Spinner}
+          className={clsx(s.Spinner, { [s.Determinate]: isDeterminate })}
           viewBox={`0 0 ${numericSize} ${numericSize}`}
-          height={size}
           width={size}
+          height={size}
+          aria-hidden="true"
         >
           <circle
-            className={s.Active}
-            cx={centerPoint}
-            cy={centerPoint}
+            className={s.Track}
+            cx={center}
+            cy={center}
             r={radius}
-            pathLength="100"
-            strokeWidth={strokeWidth + 'px'}
+            strokeWidth={numericStroke}
             fill="none"
           />
           <circle
-            className={s.Background}
-            cx={centerPoint}
-            cy={centerPoint}
+            className={clsx(s.Active, { [s.Determinate]: isDeterminate })}
+            cx={center}
+            cy={center}
             r={radius}
             pathLength="100"
-            strokeWidth={strokeWidth + 'px'}
+            strokeWidth={numericStroke}
+            /* Inline style, not the stroke-dasharray attribute — a CSS class
+               rule (.Active's own dasharray) always beats a presentation
+               attribute, so the attribute alone would be silently ignored. */
+            style={
+              isDeterminate
+                ? { strokeDasharray: `${clampedValue}, 100` }
+                : undefined
+            }
             fill="none"
           />
         </svg>
