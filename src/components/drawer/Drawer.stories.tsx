@@ -215,6 +215,12 @@ export const Overview: StoryObj<typeof Drawer> = {
         (including nothing) closes it.
       </Paragraph>
       <ValidatingDrawer />
+      <Paragraph>
+        A rejected promise keeps the drawer open, shakes the panel, and restores
+        the Done button for another attempt. Handle error details in your content.
+        Closing and reopening the drawer discards the previous operation's result.
+      </Paragraph>
+      <RetryDrawer />
 
       <Heading>Header actions</Heading>
       <Paragraph>
@@ -488,3 +494,38 @@ const NoCloseButtonDrawerDemo = () => {
 };
 
 export { FilterPanelStory, RecordDetailStory };
+
+const RetryDrawer = () => {
+  const [open, setOpen] = useState(false);
+  const [failed, setFailed] = useState(false);
+  return (
+    <>
+      <Button
+        label="Simulate save failure"
+        onClick={() => {
+          setFailed(false);
+          setOpen(true);
+        }}
+      />
+      <Drawer
+        title="Save project"
+        open={open}
+        onClose={() => setOpen(false)}
+        onDone={async () => {
+          await new Promise((resolve) => setTimeout(resolve, 800));
+          if (!failed) {
+            setFailed(true);
+            throw new Error('Simulated network failure');
+          }
+        }}
+        content={
+          <Text block color={failed ? 'danger' : undefined}>
+            {failed
+              ? 'The save failed. Press Done to retry.'
+              : 'The first save fails; the next attempt succeeds.'}
+          </Text>
+        }
+      />
+    </>
+  );
+};
