@@ -34,6 +34,7 @@ import {
 import { Flex } from '../flex';
 import { Text } from '../text';
 import { Button } from '../button';
+import { Switch } from '../switch';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 
@@ -1016,6 +1017,61 @@ export const ColumnResizing: Story = {
       />
     </Flex>
   ),
+};
+
+/* ------------------------------------------------------------------ *
+ * Disabled columns
+ * ------------------------------------------------------------------ */
+
+export const DisabledColumns: Story = {
+  name: 'Unavailable columns',
+  render: () => {
+    const [canSeeSalary, setCanSeeSalary] = useState(false);
+
+    return (
+      <Flex orientation="vertical" gap="xl" style={{ maxWidth: 1000 }}>
+        <Section title="Columns the user has no access to">
+          Set <Text code>enabled={'{false}'}</Text> on a column the current user
+          isn't allowed to see. The column is dropped entirely: it isn't
+          rendered, can't be sorted and doesn't appear in the filter menu, so
+          its data can't leak through a filter either. Toggle the permission
+          below to see the salary column appear.
+        </Section>
+
+        <Switch checked={canSeeSalary} onChange={setCanSeeSalary}>
+          Can see salaries
+        </Switch>
+
+        <DataTable<Employee>
+          data={EMPLOYEES}
+          rowsPerPage={6}
+          columns={[
+            {
+              accessor: 'name',
+              label: 'Name',
+              sortable: true,
+              filterable: true,
+            },
+            {
+              accessor: 'role',
+              label: 'Role',
+              type: 'select',
+              filterable: true,
+            },
+            {
+              accessor: 'salary',
+              label: 'Salary',
+              type: 'currency',
+              sortable: true,
+              filterable: true,
+              options: { currencyAccessor: 'currency' },
+              enabled: canSeeSalary,
+            },
+          ]}
+        />
+      </Flex>
+    );
+  },
 };
 
 /* ------------------------------------------------------------------ *

@@ -59,7 +59,8 @@ export interface DataTableColumnBase<T extends object> {
   accessor: keyof T;
   label?: string;
   width?: number;
-  visible?: boolean;
+  /** `false` excludes the column entirely: not rendered, not sortable, not filterable. */
+  enabled?: boolean;
   filterable?: boolean | DataTableColumnType;
   sortable?: boolean;
   /** Opt this column out of resizing when the table has `resizableColumns`. */

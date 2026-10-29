@@ -166,7 +166,7 @@ const EpisodeCard = ({
 export const StreamingApp: StoryObj<typeof Screen> = {
   name: 'Streaming app',
   render: () => {
-    const { theme, setTheme } = useAltroneTheme();
+    const { themePreference, setTheme } = useAltroneTheme();
     const [current, setCurrent] = useState<EpisodeRef>(INITIAL);
     const [season, setSeason] = useState(INITIAL.season);
     const heroRef = useRef<HTMLDivElement>(null);
@@ -174,7 +174,7 @@ export const StreamingApp: StoryObj<typeof Screen> = {
 
     useEffect(() => {
       setTheme('dark');
-      return () => setTheme(theme);
+      return () => setTheme(themePreference);
     }, []);
 
     const play = (target: EpisodeRef) => {

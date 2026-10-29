@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Flex, Text, Switch } from 'components';
-import { useAltroneTheme } from 'components/application';
+import { Flex, Text, Radio } from 'components';
+import { Theme, useAltroneTheme } from 'components/application';
 import { StorybookDecorator } from 'global/storybook';
 
 const story: Meta = {
@@ -39,16 +39,22 @@ const Code = ({ children }: { children: string }) => (
 );
 
 const ThemeToggleDemo = () => {
-  const { theme, setTheme } = useAltroneTheme();
+  const { theme, themePreference, setTheme } = useAltroneTheme();
 
   return (
     <Flex orientation="vertical" gap="m">
-      <Switch
-        checked={theme === 'dark'}
-        onChange={(checked) => setTheme(checked ? 'dark' : 'light')}
+      <Radio
+        name="theme"
+        value={themePreference}
+        onChange={(value) => setTheme(value as Theme)}
       >
-        Dark theme
-      </Switch>
+        <Radio.Item value="auto">Auto</Radio.Item>
+        <Radio.Item value="light">Light</Radio.Item>
+        <Radio.Item value="dark">Dark</Radio.Item>
+      </Radio>
+      <Text>
+        Showing <Text code>{theme}</Text>
+      </Text>
       <Flex gap="m" wrap>
         <div
           style={{
@@ -139,10 +145,16 @@ export const Overview: StoryObj = {
         <code>&apos;auto&apos;</code> (default — follows{' '}
         <code>prefers-color-scheme</code>), <code>&apos;light&apos;</code>,
         or <code>&apos;dark&apos;</code>. From inside the tree, read or
-        change it with <code>useAltroneTheme()</code>:
+        change it with <code>useAltroneTheme()</code>.{' '}
+        <code>theme</code> is always the theme actually shown,{' '}
+        <code>&apos;light&apos;</code> or <code>&apos;dark&apos;</code>;{' '}
+        <code>themePreference</code> is what was chosen, so it can be{' '}
+        <code>&apos;auto&apos;</code>. <code>setTheme(&apos;auto&apos;)</code>{' '}
+        hands control back to the system preference:
       </Paragraph>
-      <Code>{`const { theme, setTheme } = useAltroneTheme();
-setTheme('dark');`}</Code>
+      <Code>{`const { theme, themePreference, setTheme } = useAltroneTheme();
+setTheme('dark');
+setTheme('auto');`}</Code>
       <Paragraph>Try it — this toggles the real app theme:</Paragraph>
       <ThemeToggleDemo />
 
