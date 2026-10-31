@@ -6,7 +6,7 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "baseUrl": "./src",
-    "types": ["node", "jest", "@testing-library/jest-dom", "vitest", "cypress"],
+    "types": ["node", "jest", "@testing-library/jest-dom", "vitest", "vitest/globals"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -22,7 +22,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
-  "exclude": ["src/global/storybook", "cypress", "./cypress.config.ts"],
+  "include": ["src", "vitest", "src/tanstack-table.d.ts"],
+  "exclude": ["src/global/storybook"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

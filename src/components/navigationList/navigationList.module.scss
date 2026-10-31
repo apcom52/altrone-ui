@@ -1,5 +1,71 @@
+:global([data-altrone-root='true']) {
+    --navigation-list-background-color: var(--glass-background-color);
+    --navigation-list-chrome-background-color: var(--background-1);
+    --navigation-list-chrome-border-color: var(--border-1);
+    --navigation-list-width: 300px;
+    --navigation-list-rounding: 24px;
+    /* `.Header`/`.Footer`'s own bleed (negative margin) cancels exactly this,
+       so they still sit flush against the rounded corners. */
+    --navigation-list-padding: 4px;
+    /* Separate, smaller inset on `.ScrollContent` (inside the scroll clip) —
+       gives hovered/selected link backgrounds a little breathing room from
+       the clip edge instead of being flush against it. */
+    --navigation-list-content-padding: 4px;
+
+    --navigation-list-group-text-size: 12px;
+    --navigation-list-group-text-color: var(--text-1);
+
+    --navigation-list-link-background-color: transparent;
+    --navigation-list-link-backdrop-color: var(--interactive-a1);
+    --navigation-list-link-rounding: 16px;
+    --navigation-list-secondary-link-border-color: var(--border-1);
+    --navigation-list-link-text-color: var(--text-2);
+    --navigation-list-link-text-size: 14px;
+    --navigation-list-link-icon-size: 18px;
+    --navigation-list-link-selected-background-color: var(--background-1);
+    --navigation-list-link-selected-text-color: var(--accent-12);
+}
+
 .NavigationList {
-  display: flex;
-  flex-direction: column;
-  padding: var(--xl-gap) var(--gap);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--navigation-list-background-color);
+    backdrop-filter: blur(32px) saturate(180%);
+    padding: var(--navigation-list-padding);
+    border-radius: var(--navigation-list-rounding);
+    width: var(--navigation-list-width);
+    box-shadow: var(--elevation-raised-shadow);
+    height: 100%;
+}
+
+/* Fills whatever height `.NavigationList` doesn't need for its own padding —
+   `min-height: 0` is what lets a flex item shrink below its content's
+   natural height so `Scrollable` can actually take over and scroll. */
+.ScrollArea {
+    flex: 1;
+    min-height: 0;
+}
+
+/* The positioning anchor `.HoverBackdrop` tracks against — a plain wrapper we
+   control inside `Scrollable`'s content, rather than relying on its
+   (undocumented) internal viewport structure. */
+.ScrollContent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding: var(--navigation-list-content-padding);
+}
+
+/* Single element shared across all links — moved onto the hovered one. Sits
+   behind the links (transparent bg) but above the container background. */
+.HoverBackdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    border-radius: var(--navigation-list-link-rounding);
+    background-color: var(--navigation-list-link-backdrop-color);
+    pointer-events: none;
 }

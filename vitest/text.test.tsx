@@ -1,265 +1,152 @@
-import React from 'react';
-import { expect, test, describe } from 'vitest';
+import { createRef } from 'react';
+import { expect, test, describe, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { AltroneApplication, Text } from '../src';
+import { Text } from '../src';
 
 describe('Text', () => {
-  test('Text has to have article tag and apply custom css class and id', () => {
+  test('renders a span and applies className, style and native attributes', () => {
     render(
-      <Text className="customClassName" data-testid="text">
+      <Text
+        className="customClassName"
+        style={{ color: 'rgb(0, 0, 255)' }}
+        id="text-id"
+        data-testid="text"
+      >
         content
       </Text>,
     );
 
-    expect(screen.getByText('content')).toBeInTheDocument();
-    expect(screen.getByTestId('text')).toHaveClass('customClassName');
-    expect(screen.getByTestId('text').tagName).toBe('ARTICLE');
-  });
-
-  test('Text.Section has to have article tag and apply custom css class and id', () => {
-    render(
-      <Text.Section className="customClassName" data-testid="section">
-        content
-      </Text.Section>,
-    );
-
-    expect(screen.getByText('content')).toBeInTheDocument();
-    expect(screen.getByTestId('section')).toHaveClass('customClassName');
-    expect(screen.getByTestId('section').tagName).toBe('SECTION');
-  });
-
-  test('ScreenName has to have h1 tag and apply custom css class and id', () => {
-    render(
-      <Text.ScreenName className="customClassName" id="text-id">
-        ScreenName heading
-      </Text.ScreenName>,
-    );
-
-    const element = screen.getByText('ScreenName heading');
-    expect(element.tagName).toBe('H1');
-    expect(element.className).toContain('customClassName');
+    const element = screen.getByTestId('text');
+    expect(element.tagName).toBe('SPAN');
+    expect(element).toHaveClass('customClassName');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
     expect(element.id).toBe('text-id');
   });
 
-  test('ScreenName has to have h1 tag and apply custom css class and id', () => {
-    render(
-      <Text.ScreenName className="customClassName" id="text-id">
-        ScreenName heading
-      </Text.ScreenName>,
-    );
-
-    const element = screen.getByText('ScreenName heading');
-    expect(element.tagName).toBe('H1');
-    expect(element.className).toContain('customClassName');
-    expect(element.id).toBe('text-id');
-  });
-
-  test('Heading has to have h2 and h4 tags and apply custom css class and id', () => {
+  test('picks the tag from block, list, item and href props', () => {
     render(
       <>
-        <Text.Heading level={2} className="customClassName">
-          Second Level Heading
-        </Text.Heading>
-        <Text.Heading level={4} id="text-id">
-          Forth Level Heading
-        </Text.Heading>
-      </>,
-    );
-
-    const element1 = screen.getByText('Second Level Heading');
-    expect(element1.tagName).toBe('H2');
-    expect(element1.className).toContain('customClassName');
-
-    const element2 = screen.getByText('Forth Level Heading');
-    expect(element2.tagName).toBe('H4');
-    expect(element2.id).toContain('text-id');
-  });
-
-  test('Paragraph has to have suitable tag and apply classes', () => {
-    render(
-      <>
-        <Text.Paragraph className="customClassName" id="paragraph">
-          Content
-        </Text.Paragraph>
-      </>,
-    );
-
-    const element1 = screen.getByText('Content');
-    expect(element1.tagName).toBe('P');
-    expect(element1.className).toContain('customClassName');
-    expect(element1.id).toBe('paragraph');
-  });
-
-  test('Inline has to have suitable tag and apply classes', () => {
-    render(
-      <>
-        <Text.Inline bold className="customClassName" id="bold">
-          Bold content
-        </Text.Inline>
-        <Text.Inline italic>Italic content</Text.Inline>
-        <Text.Inline underline>Underlined content</Text.Inline>
-        <Text.Inline deleted>Deleted content</Text.Inline>
-        <Text.Inline highlighted>Highlighted content</Text.Inline>
-      </>,
-    );
-
-    const element1 = screen.getByText('Bold content');
-    expect(element1.tagName).toBe('STRONG');
-    expect(element1.className).toContain('customClassName');
-    expect(element1.id).toBe('bold');
-
-    const element2 = screen.getByText('Italic content');
-    expect(element2.tagName).toBe('EM');
-
-    const element3 = screen.getByText('Underlined content');
-    expect(element3.tagName).toBe('U');
-
-    const element4 = screen.getByText('Deleted content');
-    expect(element4.tagName).toBe('DEL');
-
-    const element5 = screen.getByText('Highlighted content');
-    expect(element5.tagName).toBe('MARK');
-  });
-
-  test('Code has to have suitable tag and apply classes', () => {
-    render(
-      <>
-        <Text.Code className="customClassName" id="code">
-          Content
-        </Text.Code>
-      </>,
-    );
-
-    const element1 = screen.getByText('Content');
-    expect(element1.tagName).toBe('CODE');
-    expect(element1.className).toContain('customClassName');
-    expect(element1.id).toBe('code');
-  });
-
-  test('Keyboard has to have suitable tag and apply classes', () => {
-    render(
-      <>
-        <Text.Keyboard className="customClassName" id="keyboard">
-          Content
-        </Text.Keyboard>
-      </>,
-    );
-
-    const element1 = screen.getByText('Content');
-    expect(element1.tagName).toBe('KBD');
-    expect(element1.className).toContain('customClassName');
-    expect(element1.id).toBe('keyboard');
-  });
-
-  test('List and ListItem have to have suitable tag and apply classes', () => {
-    render(
-      <>
-        <Text.List
-          type="numeric"
-          className="customClassName"
-          id="list"
-          data-testid="list-1"
-        >
-          <Text.ListItem
-            className="item-classname"
-            id="item-id"
-            data-testid="item-1"
-          >
-            Item 1
-          </Text.ListItem>
-          <Text.ListItem>Item 2</Text.ListItem>
-        </Text.List>
-        <Text.List type="marked" data-testid="list-2">
-          <Text.ListItem>Item 3</Text.ListItem>
-          <Text.ListItem>Item 4</Text.ListItem>
-        </Text.List>
-      </>,
-    );
-
-    const element1 = screen.getByTestId('list-1');
-    expect(element1.tagName).toBe('OL');
-    expect(element1.className).toContain('customClassName');
-    expect(element1.id).toBe('list');
-
-    const element2 = screen.getByTestId('item-1');
-    expect(element2.tagName).toBe('LI');
-    expect(element2.className).toContain('item-classname');
-    expect(element2.id).toBe('item-id');
-
-    const element3 = screen.getByTestId('list-2');
-    expect(element3.tagName).toBe('UL');
-  });
-
-  test('check that Text configuration works correctly', () => {
-    render(
-      <AltroneApplication
-        config={{
-          text: {
-            section: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
-            screenName: {
-              className: 'cls',
-              style: { color: 'rgb(0, 0, 255)' },
-            },
-            heading: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
-            paragraph: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
-            inline: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
-            list: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
-            listItem: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
-            link: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
-            code: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
-            keyboard: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
-          },
-        }}
-      >
-        <Text data-testid="wrapper">
-          <Text.ScreenName data-testid="screenName">content</Text.ScreenName>
-          <Text.Section data-testid="section">content</Text.Section>
-          <Text.Heading data-testid="heading">content</Text.Heading>
-          <Text.Paragraph data-testid="paragraph">content</Text.Paragraph>
-          <Text.Inline data-testid="inline">content</Text.Inline>
-          <Text.List data-testid="list">content</Text.List>
-          <Text.ListItem data-testid="listItem">content</Text.ListItem>
-          <Text.Link data-testid="link">content</Text.Link>
-          <Text.Code data-testid="code">content</Text.Code>
-          <Text.Keyboard data-testid="keyboard">content</Text.Keyboard>
+        <Text block data-testid="block">
+          block
         </Text>
-      </AltroneApplication>,
+        <Text list="numeric" data-testid="numeric">
+          <Text item data-testid="item">
+            item
+          </Text>
+        </Text>
+        <Text list="marked" data-testid="marked">
+          marked
+        </Text>
+        <Text href="/page" data-testid="link">
+          link
+        </Text>
+      </>,
     );
 
-    const screenName = screen.getByTestId('screenName');
-    expect(screenName).toHaveClass('cls');
-    expect(screenName).toHaveStyle('color: rgb(0, 0, 255)');
+    expect(screen.getByTestId('block').tagName).toBe('P');
+    expect(screen.getByTestId('numeric').tagName).toBe('OL');
+    expect(screen.getByTestId('item').tagName).toBe('LI');
+    expect(screen.getByTestId('marked').tagName).toBe('UL');
+    expect(screen.getByTestId('link').tagName).toBe('A');
+  });
 
-    const heading = screen.getByTestId('heading');
-    expect(heading).toHaveClass('cls');
-    expect(heading).toHaveStyle('color: rgb(0, 0, 255)');
+  test('external link opens in a new tab and overrides target and rel', () => {
+    render(
+      <Text href="https://example.com" external target="_self" rel="author">
+        link
+      </Text>,
+    );
 
-    const paragraph = screen.getByTestId('paragraph');
-    expect(paragraph).toHaveClass('cls');
-    expect(paragraph).toHaveStyle('color: rgb(0, 0, 255)');
+    const link = screen.getByText('link');
+    expect(link).toHaveAttribute('href', 'https://example.com');
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+  });
 
-    const inline = screen.getByTestId('inline');
-    expect(inline).toHaveClass('cls');
-    expect(inline).toHaveStyle('color: rgb(0, 0, 255)');
+  test('internal link keeps the passed target and rel', () => {
+    render(
+      <Text href="/page" target="_self" rel="author">
+        link
+      </Text>,
+    );
 
-    const list = screen.getByTestId('list');
-    expect(list).toHaveClass('cls');
-    expect(list).toHaveStyle('color: rgb(0, 0, 255)');
+    const link = screen.getByText('link');
+    expect(link).toHaveAttribute('target', '_self');
+    expect(link).toHaveAttribute('rel', 'author');
+  });
 
-    const listItem = screen.getByTestId('listItem');
-    expect(listItem).toHaveClass('cls');
-    expect(listItem).toHaveStyle('color: rgb(0, 0, 255)');
+  test('lineClamp sets the css variable, including zero', () => {
+    render(
+      <Text lineClamp={0} data-testid="text">
+        content
+      </Text>,
+    );
 
-    const link = screen.getByTestId('link');
-    expect(link).toHaveClass('cls');
-    expect(link).toHaveStyle('color: rgb(0, 0, 255)');
+    expect(
+      screen.getByTestId('text').style.getPropertyValue('--_text-line-clamp'),
+    ).toBe('0');
+  });
 
-    const code = screen.getByTestId('code');
-    expect(code).toHaveClass('cls');
-    expect(code).toHaveStyle('color: rgb(0, 0, 255)');
+  test('modifier props add classes and do not leak onto the DOM node', () => {
+    render(
+      <Text
+        code
+        kbd
+        highlighted
+        italic
+        underline
+        deleted
+        truncate
+        nowrap
+        size={3}
+        weight="bold"
+        align="center"
+        color="danger"
+        data-testid="text"
+      >
+        content
+      </Text>,
+    );
 
-    const keyboard = screen.getByTestId('keyboard');
-    expect(keyboard).toHaveClass('cls');
-    expect(keyboard).toHaveStyle('color: rgb(0, 0, 255)');
+    const element = screen.getByTestId('text');
+    expect(element.classList.length).toBeGreaterThan(12);
+    ['code', 'kbd', 'highlighted', 'truncate', 'nowrap', 'weight'].forEach(
+      (attribute) => expect(element).not.toHaveAttribute(attribute),
+    );
+  });
+
+  test('forwards ref to the root element', () => {
+    const ref = createRef<HTMLSpanElement>();
+    render(<Text ref={ref}>content</Text>);
+
+    expect(ref.current).toBe(screen.getByText('content'));
+  });
+
+  test('asChild merges className, style and ref onto the child', () => {
+    const ref = createRef<HTMLElement>();
+    render(
+      <Text
+        asChild
+        ref={ref}
+        className="customClassName"
+        style={{ color: 'rgb(0, 0, 255)' }}
+      >
+        <h2 className="childClassName">content</h2>
+      </Text>,
+    );
+
+    const element = screen.getByText('content');
+    expect(element.tagName).toBe('H2');
+    expect(element).toHaveClass('customClassName', 'childClassName');
+    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
+    expect(ref.current).toBe(element);
+  });
+
+  test('asChild without an element child renders nothing', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { container } = render(<Text asChild>{'plain' as never}</Text>);
+
+    expect(container).toBeEmptyDOMElement();
+    warn.mockRestore();
   });
 });

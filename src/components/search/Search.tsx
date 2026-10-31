@@ -1,116 +1,132 @@
-import { forwardRef, useRef } from 'react';
+import { useRef } from 'react';
 import { SearchProps } from './Search.types.ts';
 import { TextInput } from 'components/textInput';
-import { Icon } from 'components/icon';
-import { useConfiguration } from 'components/configuration';
 import { useLocalization } from 'components/application';
+import { useIcons } from 'components/application/useIcons.tsx';
 import { AutocompleteInput } from 'components/autocompleteInput';
-import { PopoverRef } from 'components/popover';
-import { ArrayUtils, DOMUtils } from 'utils';
+import { ArrayUtils, mergeRefs } from 'utils';
 import clsx from 'clsx';
 import s from './search.module.scss';
 
-const GET_SUGGESTIONS_MOCK = () => [];
+export const Search = <T = string,>({
+  ref,
+  inputRef: consumerInputRef,
+  showControls,
+  children,
+  className,
+  style,
+  placeholder,
+  getSuggestions,
+  getSuggestionValue,
+  renderSuggestion,
+  onSelect,
+  onError,
+  minChars,
+  cacheResults,
+  errorIcon,
+  searchIcon,
+  clearIcon,
+  ...restProps
+}: SearchProps<T>) => {
+  const t = useLocalization();
+  const icons = useIcons();
 
-export const Search = forwardRef<PopoverRef, SearchProps>(
-  (
-    {
-      showControls,
-      children,
-      className,
-      style,
-      placeholder,
-      getSuggestions,
-      ...restProps
-    },
-    ref,
-  ) => {
-    const t = useLocalization();
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-    const textInputRef = useRef<PopoverRef | null>(null);
+  const haveValue = Boolean(restProps.value);
 
-    const { search: searchConfig = {} } = useConfiguration();
+  const needToShowControl = Boolean((showControls ?? true) && haveValue);
 
-    const haveValue = restProps.value;
+  const safeChildren = ArrayUtils.getSafeArray(children);
 
-    const needToShowControl = Boolean(
-      (showControls ?? searchConfig.showControls ?? true) && haveValue,
-    );
+  const fieldCls = clsx(s.Search, {
+    [s.Empty]: !haveValue,
+  });
 
-    const safeChildren = ArrayUtils.getSafeArray(children);
+  const placeholderCls = clsx(s.Placeholder, {
+    [s.DisabledPlaceholder]: restProps.disabled,
+  });
 
-    const cls = clsx(
-      s.Search,
-      {
-        [s.Empty]: !haveValue,
-      },
-      searchConfig.className,
-      className,
-    );
-    const styles = {
-      ...searchConfig.style,
-      ...style,
-    };
+  const placeholderText =
+    typeof placeholder === 'string' ? placeholder : t('search.placeholder');
 
-    const placeholderCls = clsx(s.Placeholder, {
-      [s.DisabledPlaceholder]: restProps.disabled,
-    });
+  const onClearClick = () => {
+    if (typeof window === 'undefined' || !inputRef.current) return;
 
-    const placeholderText =
-      typeof placeholder === 'string' ? placeholder : t('search.placeholder');
+    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+      HTMLInputElement.prototype,
+      'value',
+    )?.set;
+    nativeInputValueSetter?.call(inputRef.current, '');
 
-    const onClearClick = () => {
-      if (textInputRef.current) {
-        DOMUtils.triggerEvent({
-          element: textInputRef.current?.childrenNode as HTMLElement,
-          value: '',
-          eventType: 'change',
-          senderObject: window.HTMLInputElement.prototype,
-          propertyName: 'value',
-        });
-      }
-    };
+    const changeEvent = new Event('change', { bubbles: true });
+    inputRef.current.dispatchEvent(changeEvent);
+  };
 
+  const fieldChildren = (
+    <>
+      {haveValue && (
+        <TextInput.IconIsland
+          icon={searchIcon ?? icons.search}
+          placement="start"
+        />
+      )}
+      {haveValue ? safeChildren : null}
+      {needToShowControl ? (
+        <TextInput.ActionIsland
+          placement="end"
+          label={t('common.clear')}
+          showLabel={false}
+          disabled={restProps.disabled}
+          onClick={onClearClick}
+          icon={clearIcon ?? icons.clear}
+        />
+      ) : null}
+      {!haveValue ? (
+        <div className={placeholderCls}>
+          <div className={s.PlaceholderIcon}>{searchIcon ?? icons.search}</div>
+          <div className={s.PlaceholderText}>{placeholderText}</div>
+        </div>
+      ) : null}
+    </>
+  );
+
+  if (!getSuggestions) {
     return (
-      <AutocompleteInput
-        className={cls}
-        style={styles}
+      <TextInput
+        ref={ref}
+        inputRef={mergeRefs(inputRef, consumerInputRef)}
+        className={className}
+        style={style}
+        inputClassName={fieldCls}
         {...restProps}
         type="search"
-        getSuggestions={getSuggestions || GET_SUGGESTIONS_MOCK}
-        ref={(_ref) => {
-          textInputRef.current = _ref;
-          if (typeof ref === 'function') {
-            ref(_ref);
-          } else if (ref) {
-            ref.current = _ref;
-          }
-        }}
-        showControls={needToShowControl}
       >
-        {haveValue && (
-          <TextInput.IconIsland icon={<Icon i="search" />} placement="left" />
-        )}
-        {haveValue ? safeChildren : null}
-        {needToShowControl ? (
-          <TextInput.ActionIsland
-            placement="right"
-            label={t('common.clear')}
-            showLabel={false}
-            disabled={restProps.disabled}
-            onClick={onClearClick}
-            icon={<Icon i="backspace" />}
-          />
-        ) : null}
-        {!haveValue ? (
-          <div className={placeholderCls}>
-            <div className={s.PlaceholderIcon}>
-              <Icon i="search" />
-            </div>
-            <div className={s.PlaceholderText}>{placeholderText}</div>
-          </div>
-        ) : null}
-      </AutocompleteInput>
+        {fieldChildren}
+      </TextInput>
     );
-  },
-);
+  }
+
+  return (
+    <AutocompleteInput<T>
+      ref={ref}
+      inputRef={mergeRefs(inputRef, consumerInputRef)}
+      className={className}
+      style={style}
+      inputClassName={fieldCls}
+      {...restProps}
+      type="search"
+      getSuggestions={getSuggestions}
+      getSuggestionValue={getSuggestionValue}
+      renderSuggestion={renderSuggestion}
+      onSelect={onSelect}
+      onError={onError}
+      minChars={minChars}
+      cacheResults={cacheResults}
+      errorIcon={errorIcon}
+      showControls={needToShowControl}
+    >
+      {fieldChildren}
+    </AutocompleteInput>
+  );
+};

@@ -1,20 +1,46 @@
+import React, { ReactElement } from 'react';
 import { Dayjs } from 'dayjs';
+import { CalendarDateRange } from '../calendar/Calendar.types.ts';
 import { AnyObject } from '../../utils';
 import { TextInputProps } from '../textInput/TextInput.types.ts';
 
 export type Picker = 'day' | 'month' | 'year' | 'range';
 
-export type DateRangePosition = 'start' | 'end' | 'both';
+/** Live trigger state, for a custom control passed via `asChild`. */
+export interface DatePickerTriggerContextType {
+  /** `Dayjs` for day/month/year pickers, `(Dayjs | undefined)[]` for `RangePicker`. */
+  value: Dayjs | RangePickerValue | undefined;
+  /** The formatted string the default `TextInput` trigger would show. */
+  displayValue: string;
+  /** Whether the calendar popover is open. */
+  expanded: boolean;
+  disabled: boolean;
+  clear: (event?: React.MouseEvent<HTMLElement>) => void;
+}
 
 export interface BasicDatePickerProps<ValueType extends AnyObject = any>
-  extends Omit<TextInputProps, 'value' | 'onChange'> {
+  extends Omit<TextInputProps, 'value' | 'onChange' | 'ref' | 'children'> {
+  ref?: React.Ref<HTMLDivElement>;
   value?: ValueType;
-  onChange?: (value?: ValueType) => void;
+  onChange?: (
+    value?: ValueType,
+    event?: React.MouseEvent<HTMLButtonElement>
+  ) => void;
   clearable?: boolean;
   format?: string;
   minDate?: Dayjs;
   maxDate?: Dayjs;
   autoClose?: boolean;
+
+  /** Use `children` as the trigger, merging the picker's props onto it. */
+  asChild?: boolean;
+  children?: React.ReactElement;
+
+  /** Overrides the header's previous/next navigation icons. Defaults to `Application.icons.prev`/`.next`. */
+  prevIcon?: ReactElement;
+  nextIcon?: ReactElement;
+  /** Overrides the trigger's calendar glyph. Defaults to lucide's `Calendar`. */
+  triggerIcon?: ReactElement;
 }
 
 export interface DatePickerProps extends BasicDatePickerProps<Dayjs> {}
@@ -28,36 +54,25 @@ export type RangePickerValue = (Dayjs | undefined)[];
 export interface RangePickerProps
   extends BasicDatePickerProps<RangePickerValue> {}
 
-export interface CalendarProps<
-  IsDateRange extends boolean | undefined = false,
-> {
-  currentMonth: Dayjs;
-  startSelectedDate?: Dayjs;
-  endSelectedDate?: Dayjs;
-  onChange: (
-    position: DateRangePosition,
-    value?: Dayjs,
-    extraValue?: Dayjs,
-  ) => void;
-  minDate: Date;
-  maxDate: Date;
-  isDateRange: IsDateRange;
-  closePopup?: () => void;
-}
-
 export interface DatePickerViewContextType {
   viewMode: Picker;
   picker: Picker;
   setViewMode: (picker: Picker) => void;
   currentMonth: Dayjs;
   setCurrentMonth: (month: Dayjs) => void;
-  hoveredDate: Dayjs | undefined;
-  setHoveredDate: (date: Dayjs | undefined) => void;
 }
 
 export interface DatePickerContextType {
   selectedDates: Array<Dayjs>;
-  onDayClicked: (selectedDate: Dayjs | undefined) => void;
+  onDayClicked: (
+    selectedDate: Dayjs | undefined,
+    event?: React.MouseEvent<HTMLButtonElement>
+  ) => void;
+  /** Range selection from the `Calendar` in `mode="range"` (RangePicker only). */
+  onRangeChange?: (
+    range: CalendarDateRange,
+    event?: React.MouseEvent<HTMLButtonElement>
+  ) => void;
   minDate?: Dayjs;
   maxDate?: Dayjs;
 }
@@ -65,6 +80,8 @@ export interface DatePickerContextType {
 export interface DatePickerContentProps {
   clearable?: boolean;
   autoClose?: boolean;
+  prevIcon?: ReactElement;
+  nextIcon?: ReactElement;
 }
 
 export interface DatePickerFooterProps {

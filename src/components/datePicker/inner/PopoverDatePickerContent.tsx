@@ -8,22 +8,17 @@ import { useDatePickerViewContext } from '../DatePicker.contexts.ts';
 import { MonthPicker } from './MonthPicker.tsx';
 import { YearPicker } from './YearPicker.tsx';
 import { DatePickerContentProps } from '../DatePicker.types.ts';
-import { useConfiguration } from 'components/configuration';
 import clsx from 'clsx';
 
 export const PopoverDatePickerContent = memo<DatePickerContentProps>(
-  ({ clearable = false, autoClose = true }) => {
+  ({ clearable = false, autoClose = true, prevIcon, nextIcon }) => {
     const { viewMode } = useDatePickerViewContext();
-    const { datePicker: datePickerConfig = {} } = useConfiguration();
 
-    const cls = clsx(s.Calendar, datePickerConfig.popoverContentClassName);
-    const styles = {
-      ...datePickerConfig.popoverContentStyles,
-    };
+    const cls = clsx(s.Calendar);
 
     return (
-      <Flex direction="vertical" gap="l" className={cls} style={styles}>
-        <DatePickerHeader />
+      <Flex orientation="vertical" gap="l" className={cls}>
+        <DatePickerHeader prevIcon={prevIcon} nextIcon={nextIcon} />
         {viewMode === 'day' ? <DayPicker autoClose={autoClose} /> : null}
         {viewMode === 'month' ? <MonthPicker autoClose={autoClose} /> : null}
         {viewMode === 'year' ? <YearPicker autoClose={autoClose} /> : null}

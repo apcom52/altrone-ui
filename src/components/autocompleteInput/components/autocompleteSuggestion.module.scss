@@ -1,0 +1,25 @@
+.Suggestion {
+  display: flex;
+  position: relative;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 16px;
+  background-color: transparent;
+  color: var(--text-2);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  outline: 0;
+
+  &:active .SuggestionBackground {
+    background-color: var(--interactive-a2);
+    scale: 1.02;
+  }
+}
+
+.SuggestionBackground {
+  background-color: var(--interactive-a1);
+}

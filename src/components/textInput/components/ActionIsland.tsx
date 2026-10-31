@@ -1,54 +1,31 @@
-import { forwardRef } from 'react';
-import clsx from 'clsx';
+import { Button } from 'components/button';
 import { ActionIslandProps } from '../TextInput.types.ts';
-import s from './action.module.scss';
-import { useConfiguration } from 'components/configuration';
+import { useIslandSize, useTextInputDisabled } from '../TextInput.context.ts';
 
-export const ActionIsland = forwardRef<HTMLButtonElement, ActionIslandProps>(
-  (
-    {
-      showLabel = true,
-      label,
-      icon,
-      className,
-      placement,
-      danger = false,
-      style,
-      ...restProps
-    },
-    ref,
-  ) => {
-    const { textInput: { actionIsland: actionIslandConfig = {} } = {} } =
-      useConfiguration();
+/**
+ * A `Button` locked to the in-field `plate` chip. Everything else — press/focus
+ * feedback, icon-only circle + auto tooltip, `state`, `badge`, `disabled` — is
+ * `Button`'s own behaviour, not reimplemented here. A disabled field disables
+ * its actions too.
+ */
+export const ActionIsland = ({
+  ref,
+  placement,
+  size,
+  disabled,
+  ...restProps
+}: ActionIslandProps) => {
+  const islandSize = useIslandSize();
+  const fieldDisabled = useTextInputDisabled();
 
-    const cls = clsx(
-      s.ActionIsland,
-      {
-        [s.LeftSide]: !placement || placement === 'left',
-        [s.RightSide]: placement === 'right',
-        [s.Danger]: danger,
-      },
-      className,
-      actionIslandConfig.className,
-    );
-
-    const styles = {
-      ...actionIslandConfig.style,
-      ...style,
-    };
-
-    return (
-      <button
-        type="button"
-        title={label}
-        className={cls}
-        ref={ref}
-        style={styles}
-        {...restProps}
-      >
-        {icon ? <div className={s.Icon}>{icon}</div> : null}
-        {showLabel ? <div className={s.Label}>{label}</div> : null}
-      </button>
-    );
-  },
-);
+  return (
+    <Button
+      {...restProps}
+      ref={ref}
+      variant="default"
+      size={size ?? islandSize}
+      disabled={disabled || fieldDisabled}
+      data-placement={placement}
+    />
+  );
+};

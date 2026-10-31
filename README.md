@@ -1,163 +1,106 @@
-<p align='center'>
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://altrone.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Faltrone-dark.38721ddd.png&w=750&q=75">
-      <img width='240' height='48' src="https://altrone.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Faltrone-light.41e5b33d.png&w=750&q=75">
-    </picture>
-    <p align='center'>
-        A comprehensive React component library offering a versatile collection of reusable UI elements for streamlined and visually appealing web development.
-    </p>
-    <p align='center'>
-        <b><a href='https://altrone.vercel.app/'>Explore the docs</a></b> | <b><a href='https://altrone.vercel.app/blog'>Blog</a></b>
-    </p>
-</p>
+<div align="center">
+
+<img src="./assets/logo.png" width="96" height="96" alt="Altrone UI logo" />
+
+# Altrone UI
+
+A modern React component library with a built-in design system —<br />
+light &amp; dark themes, glass surfaces, concentric radii and motion that respects your users.
+
+[![npm](https://img.shields.io/npm/v/altrone-ui?color=0090ff&label=npm)](https://www.npmjs.com/package/altrone-ui)
+![React 19](https://img.shields.io/badge/React-19-61dafb)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)
+[![MIT license](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
+
+**[Documentation](https://altrone.vercel.app/)** ·
+**[Installation](https://altrone.vercel.app/en/installation)** ·
+**[MCP](https://altrone.vercel.app/en/foundations/mcp)**
+
+</div>
 
 ---
 
-## 🤠 Altrone 3.5
+## Why Altrone
 
-New **`Range`** component, **DataTable** row actions and new glass surface.
+- **50+ components** — controls, forms, overlays, navigation, data tables, feedback and layout primitives, all designed to work together.
+- **Real design system** — semantic tokens for color, spacing, radius, typography, elevation and motion instead of one-off values.
+- **Light & Dark + 10 accents** — all components work seamlessly with light and dark themes and adapt to the selected accent color.
+- **Application shell** — `Application` and `Screen` give you sidebar, header, aside and bottom navigation that adapt across breakpoints.
+- **Accessible** — keyboard navigation, focus management in overlays, `prefers-reduced-motion` support.
+- **SSR-friendly** — no `window` / `document` access during render.
+- **Typed** — written in strict TypeScript; every prop is documented and auto-completed.
+- **Localized** — built-in dictionaries for English, Russian, French, German, Spanish, Chinese, Portuguese and Turkish.
+- **Composable** — every component forwards its `ref`, and `asChild` lets you swap the root element for a router `<Link>` or your own markup.
 
-[**What's new in 3.5?**](https://altrone.vercel.app/blog/release-3.5)
+## Installation
 
-[**What's new in 3.4?**](https://altrone.vercel.app/blog/release-3.4)
+```bash
+npm install altrone-ui
+```
 
-[**What's new in 3.3?**](https://altrone.vercel.app/blog/release-3.3)
+Altrone UI requires **React 19** or newer.
 
-## Roadmap for Altrone 3
+## Quick start
 
-- [x] `LoadingIsland` for **`TextInput`** (released in 3.1)
-- [x] `GroupAction` for **`NavigationList`** (released in 3.1)
-- [x] Boolean filter for **`DataTable`** (released in 3.1)
-- [x] `LinkAction` for **`NavigationList`** (released in 3.2)
-- [x] New type property for **`DataTableColumn`** (released in 3.2)
-- [x] Better locale support (released in 3.2)
-- [x] Rich notifications (released in 3.2)
-- [x] Date filter for **`DataTable`** (released in 3.3)
-- [x] Nested links for **`NavigationList`** (released in 3.3)
-- [x] Default filters, sorting settings and pagination for **`DataTable`** (released in 3.3)
-- [x] new **`Badge`** component (released in 3.4)
-- [x] new **`ColorPicker`** component (released in 3.4)
-- [x] new **`Avatar`** component (released in 3.4)
-- [x] new **`Range`** component
+Import the stylesheet once, then wrap your app in `Application`:
 
-## Documentation
+```tsx
+import { Application, Button, Flex, Text } from 'altrone-ui';
+import 'altrone-ui/style.css';
 
-- [**Read the documentation**](https://altrone.vercel.app/)
+export default function App() {
+  return (
+    <Application theme="auto" accent="blue" language="en">
+      <Flex orientation="vertical" gap="m" align="start">
+        <Text size={6} weight="bold">
+          Hello, Altrone
+        </Text>
+        <Button
+          label="Get started"
+          variant="submit"
+          onClick={() => console.log('Hi!')}
+        />
+      </Flex>
+    </Application>
+  );
+}
+```
 
-- [**Installation and usage**](https://altrone.vercel.app/blog/installation)
+`Application` provides theming, localization, icons, dialogs and notifications to everything inside it.
 
-## Components Gallery
+## Components
 
-<table>
-    <tr>
-        <th width='33%'>General and Typography</th>
-        <th width='33%'>Containers</th>
-        <th width='33%'>Form controls</th>
-    </tr>
-    <tr valign='top'>
-        <td>
-<ul>
-    <li><a href="https://altrone.vercel.app/components/application">AltroneApplication</a></li>
-    <li><a href="https://altrone.vercel.app/components/configuration">Configuration</a></li>
-    <li><a href="https://altrone.vercel.app/components/text">Text</a></li>
-    <li><a href="https://altrone.vercel.app/components/icon">Icon</a></li>
-</ul>                
-</td>
-        <td>
-<ul>
-    <li><a href="https://altrone.vercel.app/components/grid">Grid</a></li>
-    <li><a href="https://altrone.vercel.app/components/flex">Flex</a></li>
-    <li><a href="https://altrone.vercel.app/components/list">List</a></li>
-    <li><a href="https://altrone.vercel.app/components/scrollable">Scrollable</a></li>
-    <li><a href="https://altrone.vercel.app/components/popover">Popover</a></li>
-    <li><a href="https://altrone.vercel.app/components/dropdown">Dropdown</a></li>
-    <li><a href="https://altrone.vercel.app/components/tooltip">Tooltip</a></li>
-    <li><a href="https://altrone.vercel.app/components/collapsedList">CollapsedList</a></li>
-    <li><a href="https://altrone.vercel.app/components/form">Form</a></li>
-    <li><a href="https://altrone.vercel.app/components/modal">Modal</a></li>
-    <li><a href="https://altrone.vercel.app/components/toolbar">Toolbar</a></li>
-    <li><a href="https://altrone.vercel.app/components/spoiler">Spoiler</a></li>
-</ul></td>
-        <td>
-<ul>
-    <li><a href="https://altrone.vercel.app/components/button">Button</a></li>
-    <li><a href="https://altrone.vercel.app/components/textInput">TextInput</a></li>
-    <li><a href="https://altrone.vercel.app/components/passwordInput">PasswordInput</a></li>
-    <li><a href="https://altrone.vercel.app/components/numberInput">NumberInput</a></li>
-    <li><a href="https://altrone.vercel.app/components/autocompleteInput">AutocompleteInput</a></li>
-    <li><a href="https://altrone.vercel.app/components/search">Search</a></li>
-    <li><a href="https://altrone.vercel.app/components/textarea">Textarea</a></li>
-    <li><a href="https://altrone.vercel.app/components/checkbox">Checkbox</a></li>
-    <li><a href="https://altrone.vercel.app/components/switcher">Switcher</a></li>
-    <li><a href="https://altrone.vercel.app/components/radio">Radio</a></li>
-    <li><a href="https://altrone.vercel.app/components/select">Select</a></li>
-    <li><a href="https://altrone.vercel.app/components/datePicker">DatePicker</a></li>
-    <li><a href="https://altrone.vercel.app/components/filePicker">FilePicker</a></li>
-    <li><a href="https://altrone.vercel.app/components/colorPicker">ColorPicker</a></li>
-    <li><a href="https://altrone.vercel.app/components/range">Range</a></li>
-</ul></td>
-    </tr>
-    <tr>
-        <th>Display</th>
-        <th>Navigation</th>
-        <th>Atoms</th>
-    </tr>
-<tr valign='top'>
-        <td>
-<ul>
-    <li><a href="https://altrone.vercel.app/components/calendar">Calendar</a></li>
-    <li><a href="https://altrone.vercel.app/components/dataTable">DataTable</a></li>
-    <li><a href="https://altrone.vercel.app/components/message">Message</a></li>
-    <li><a href="https://altrone.vercel.app/components/photoViewer">PhotoViewer</a></li>
-    <li><a href="https://altrone.vercel.app/components/progress">Progress</a></li>
-    <li><a href="https://altrone.vercel.app/components/tags">Tags</a></li>
-    <li><a href="https://altrone.vercel.app/components/toasts">Toast Notifications</a></li>
-</ul>                
-</td>
-        <td>
-<ul>
-    <li><a href="https://altrone.vercel.app/components/navigationList">NavigationList</a></li>
-    <li><a href="https://altrone.vercel.app/components/topNavigation">TopNavigation</a></li>
-    <li><a href="https://altrone.vercel.app/components/bottomNavigation">BottomNavigation</a></li>
-    <li><a href="https://altrone.vercel.app/components/sideNavigation">SideNavigation</a></li>
-    <li><a href="https://altrone.vercel.app/components/tabs">Tabs</a></li>
-    <li><a href="https://altrone.vercel.app/components/breadcrumbs">Breadcrumbs</a></li>
-    <li><a href="https://altrone.vercel.app/components/pagination">Pagination</a></li>
-</ul></td>
-        <td>
-<ul>
-    <li><a href="https://altrone.vercel.app/components/avatar">Avatar</a></li>
-    <li><a href="https://altrone.vercel.app/components/closeButton">CloseButton</a></li>
-    <li><a href="https://altrone.vercel.app/components/divider">Divider</a></li>
-    <li><a href="https://altrone.vercel.app/components/loading">Loading</a></li>
-    <li><a href="https://altrone.vercel.app/components/dummyBox">DummyBox</a></li>
-    <li><a href="https://altrone.vercel.app/components/dummyBox">Empty</a></li>
-</ul></td>
-    </tr>   
-</table>
+| Category       | Components                                                                                                                                                                  |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Layout**     | Application, Screen, Box, Grid, Flex, Splitter, Scrollable, Toolbar, Spoiler, CollapsedList, Divider                                                                        |
+| **Overlays**   | Modal, Dialog, Drawer, Popover, Dropdown, Tooltip                                                                                                                           |
+| **Controls**   | Button, Form, Label, TextInput, PasswordInput, NumberInput, TextArea, AutocompleteInput, Search, Select, Checkbox, Switch, Radio, Slider, DatePicker, ColorPicker, FilePicker |
+| **Content**    | Text, Image, Avatar, DataTable, Tags, Calendar                                                                                                                              |
+| **Feedback**   | Notifications, Message, Loading, Skeleton, Progress, Result                                                                                                                 |
+| **Navigation** | Tabs, NavigationList, SideNavigation, BottomNavigation, Breadcrumbs, Pagination                                                                                             |
+
+Browse live examples and full API docs in the [documentation](https://altrone.vercel.app/).
+
+## Examples
+
+The Storybook ships complete, realistic apps built only from Altrone components — a mail client, a kanban board, a music app, a streaming title page, a helpdesk, a catalog and more. Run `npm run storybook` and open **Applications**.
+
+## Theming
+
+Everything is driven by CSS custom properties, so overriding a token overrides it everywhere:
+
+```tsx
+<Application theme="dark" accent="teal">
+  …
+</Application>
+```
+
+Switch the theme at runtime with `useAltroneTheme()`. Dark mode is toggled through the `data-altrone-theme` attribute, and `getThemeInitScript` prevents a flash of the wrong theme on first paint.
+
+## Altrone MCP
+
+Using an AI assistant? [`@altrone/mcp`](https://altrone.vercel.app/en/foundations/mcp) exposes the component documentation to MCP clients, so your assistant can look up props and usage instead of guessing.
 
 ## License
 
-The MIT License (MIT)
-
-MIT License
-
-Copyright (c) 2025 Alexander Perevezentsev
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+[MIT](./LICENSE) © Alexander Perevezentsev

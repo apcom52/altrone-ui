@@ -1,85 +1,73 @@
-import React from 'react';
 import { expect, test, describe, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { AltroneApplication, Button, Icon } from '../src';
+import { Check, ArrowRight } from 'lucide-react';
+import { Application, Button } from '../src';
 
 describe('Button', () => {
-  test('need to render only icon when no label was passed', () => {
+  test('renders the label and the icon', () => {
     render(
-      <AltroneApplication>
-        <Button leftIcon={<Icon i="check" />} data-testid="element" />
-      </AltroneApplication>,
+      <Application>
+        <Button icon={<Check data-testid="icon" />} label="Button label" />
+      </Application>,
     );
 
-    const element = screen.getByTestId('element');
-    expect(element.children).toHaveLength(1);
+    expect(screen.getByText('Button label')).toBeInTheDocument();
+    expect(screen.getByTestId('icon')).toBeInTheDocument();
   });
 
-  test('need to render left and right icons', () => {
+  test('renders the additional icon next to the main one', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Button
-          leftIcon={<Icon i="check" />}
-          rightIcon={<Icon i="forward" />}
+          icon={<Check data-testid="icon" />}
+          additionalIcon={<ArrowRight data-testid="additional" />}
           label="Button label"
+        />
+      </Application>,
+    );
+
+    expect(screen.getByTestId('icon')).toBeInTheDocument();
+    expect(screen.getByTestId('additional')).toBeInTheDocument();
+  });
+
+  test('does not render the label text when showLabel is false', () => {
+    render(
+      <Application>
+        <Button
+          icon={<Check />}
+          label="Hidden label"
+          showLabel={false}
           data-testid="element"
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
-    const buttonLabel = screen.getByText('Button label');
-    const leftIcon = screen.getByText('check');
-    const rightIcon = screen.getByText('forward');
-
-    expect(buttonLabel).toBeInTheDocument();
-    expect(leftIcon).toBeInTheDocument();
-    expect(rightIcon).toBeInTheDocument();
+    expect(screen.getByTestId('element')).not.toHaveTextContent('Hidden label');
   });
 
-  test('check that onClick function works correctly', () => {
+  test('calls onClick', () => {
     const onClickHandler = vi.fn();
 
     render(
-      <AltroneApplication>
-        <Button
-          leftIcon={<Icon i="check" />}
-          data-testid="element"
-          onClick={onClickHandler}
-        />
-      </AltroneApplication>,
+      <Application>
+        <Button label="Click" data-testid="element" onClick={onClickHandler} />
+      </Application>,
     );
 
     fireEvent.click(screen.getByTestId('element'));
     expect(onClickHandler).toBeCalledTimes(1);
   });
 
-  test('check that custom className and styles works', () => {
+  test('applies custom className and style', () => {
     render(
       <Button
+        label="Label"
         data-testid="button"
         className="cls"
-        style={{
-          color: 'rgb(0, 0, 255)',
-        }}
+        style={{ color: 'rgb(0, 0, 255)' }}
       />,
     );
     expect(screen.getByTestId('button')).toHaveClass('cls');
     expect(screen.getByTestId('button')).toHaveStyle('color: rgb(0, 0, 255)');
-  });
-
-  test('check that configuration works', () => {
-    render(
-      <AltroneApplication
-        config={{
-          button: { className: 'cls', style: { color: 'rgb(0, 0, 255)' } },
-        }}
-      >
-        <Button data-testid="button" />
-      </AltroneApplication>,
-    );
-
-    const element = screen.getByTestId('button');
-    expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

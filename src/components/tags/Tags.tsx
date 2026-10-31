@@ -1,36 +1,37 @@
-import { memo } from 'react';
-import { TagsProps } from './Tags.types.ts';
+import { Ref } from 'react';
 import clsx from 'clsx';
+import { TagsProps } from './Tags.types.ts';
 import { Flex } from '../flex';
 import { Item } from './components/Item.tsx';
-import { useConfiguration } from '../configuration';
+import s from './tags.module.scss';
 
-const Tags = memo<TagsProps>(({ children, className, style, ...props }) => {
-  const { tags: tagsConfig = {} } = useConfiguration();
+const TagsBase = ({
+  ref,
+  children,
+  className,
+  style,
+  size = 'm',
+  ...props
+}: TagsProps) => (
+  <Flex
+    ref={ref as Ref<HTMLElement>}
+    className={clsx(
+      {
+        [s.Mini]: size === 'mini',
+        [s.Small]: size === 's',
+        [s.Large]: size === 'l',
+        [s.XLarge]: size === 'xl',
+      },
+      className,
+    )}
+    style={style}
+    orientation="horizontal"
+    gap="m"
+    wrap
+    {...props}
+  >
+    {children}
+  </Flex>
+);
 
-  const cls = clsx(className, tagsConfig.className);
-
-  const styles = {
-    ...tagsConfig.style,
-    ...style,
-  };
-
-  return (
-    <Flex
-      className={cls}
-      style={styles}
-      direction="horizontal"
-      gap="m"
-      {...props}
-      wrap
-    >
-      {children}
-    </Flex>
-  );
-});
-
-const TagsNamespace = Object.assign(Tags, {
-  Item,
-});
-
-export { TagsNamespace as Tags };
+export const Tags = Object.assign(TagsBase, { Item });

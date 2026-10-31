@@ -1,12 +1,22 @@
 import clsx from 'clsx';
 import { ColorPickerPresetProps } from '../ColorPicker.types';
 import s from './colorPreset.module.scss';
-import { Icon } from 'components/icon';
 import { GlobalUtils } from 'utils';
-import { useMemo } from 'react';
+import { useCallback, useMemo, MouseEvent, Ref } from 'react';
+import { CheckIcon } from 'components/checkbox';
+import { motion, useAnimationControls } from 'motion/react';
 
-export const ColorPreset = (props: ColorPickerPresetProps) => {
-  const { name, title, value, selected } = props;
+interface ColorPresetProps extends ColorPickerPresetProps {
+  ref?: Ref<HTMLButtonElement>;
+  tabIndex?: number;
+  onFocus?: () => void;
+}
+
+export const ColorPreset = (props: ColorPresetProps) => {
+  const { ref, name, title, value, selected, onChange, tabIndex, onFocus } =
+    props;
+
+  const controls = useAnimationControls();
 
   const colorLuminance = useMemo(() => {
     return GlobalUtils.getColorLuminance(value);
@@ -18,17 +28,33 @@ export const ColorPreset = (props: ColorPickerPresetProps) => {
     [s.Light]: colorLuminance === 'light',
   });
 
+  const handleClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      /** Squish, overshoot, settle. Suppressed under reduced motion by MotionConfig. */
+      controls.start({
+        scale: [1, 0.85, 1.08, 1],
+        transition: { duration: 0.32, times: [0, 0.35, 0.7, 1], ease: 'easeOut' },
+      });
+      onChange(value, event);
+    },
+    [controls, onChange, value],
+  );
+
   return (
-    <button
+    <motion.button
+      ref={ref}
+      type="button"
+      tabIndex={tabIndex}
+      onFocus={onFocus}
       title={title || name}
-      aria-valuetext={value}
+      aria-label={`${title || name}: ${value}`}
+      aria-pressed={Boolean(selected)}
       className={cls}
       style={{ backgroundColor: value }}
-      onClick={() => {
-        props.onChange(value);
-      }}
+      onClick={handleClick}
+      animate={controls}
     >
-      {selected ? <Icon i="check" className={s.Icon} /> : null}
-    </button>
+      <CheckIcon checked={Boolean(selected)} className={s.Icon} />
+    </motion.button>
   );
 };

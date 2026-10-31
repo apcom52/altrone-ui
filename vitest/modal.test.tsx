@@ -1,46 +1,155 @@
-import React from 'react';
-import { expect, test, describe } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { Configuration, AltroneApplication, Modal } from '../src/components';
+import { createPortal } from 'react-dom';
+import { expect, test, describe, vi } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { Application, Modal } from '../src/components';
 
 describe('Modal', () => {
-  test('check that className and style props works', () => {
+  test('className and style are applied to the root element', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Modal
           data-testid="modal"
           className="cls"
           style={{ color: 'rgb(0, 0, 255)' }}
           content={<div>content</div>}
-          openedByDefault={true}
-        >
-          <button>test</button>
-        </Modal>
-      </AltroneApplication>,
+          defaultOpen={true}
+        />
+      </Application>,
     );
 
     expect(screen.getByTestId('modal')).toHaveClass('cls');
     expect(screen.getByTestId('modal')).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
-  test('check that CollapsedList configuration works correctly', () => {
-    render(
-      <AltroneApplication>
-        <Configuration
-          modal={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
-        >
-          <Modal
-            data-testid="modal"
-            content={<div>content</div>}
-            openedByDefault={true}
-          >
-            <button>test</button>
-          </Modal>
-        </Configuration>
-      </AltroneApplication>,
+  test('`open` controls visibility', () => {
+    const { rerender } = render(
+      <Application>
+        <Modal content={<div>content</div>} open={false} />
+      </Application>,
     );
 
-    expect(screen.getByTestId('modal')).toHaveClass('cls');
-    expect(screen.getByTestId('modal')).toHaveStyle('color: rgb(0, 0, 255)');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+
+    rerender(
+      <Application>
+        <Modal content={<div>content</div>} open={true} />
+      </Application>,
+    );
+
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+
+  test('clicking the backdrop closes the modal', () => {
+    const onClose = vi.fn();
+
+    render(
+      <Application>
+        <Modal
+          content={<div>content</div>}
+          onClose={onClose}
+          defaultOpen={true}
+        />
+      </Application>,
+    );
+
+    fireEvent.click(document.querySelector('[class*="Backdrop"]')!);
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  test('clicking inside the dialog does not close the modal', () => {
+    const onClose = vi.fn();
+
+    render(
+      <Application>
+        <Modal
+          content={<div>content</div>}
+          onClose={onClose}
+          defaultOpen={true}
+        />
+      </Application>,
+    );
+
+    fireEvent.click(screen.getByText('content'));
+
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  test('clicking a modal-owned overlay that portals out does not close it', () => {
+    const onClose = vi.fn();
+
+    render(
+      <Application>
+        <Modal
+          content={
+            <>
+              content
+              {createPortal(<button>portaled option</button>, document.body)}
+            </>
+          }
+          onClose={onClose}
+          defaultOpen={true}
+        />
+      </Application>,
+    );
+
+    fireEvent.click(screen.getByText('portaled option'));
+
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  test('showCloseButton={false} hides the header close button, footer stays untouched', () => {
+    render(
+      <Application>
+        <Modal
+          content={<div>content</div>}
+          showCloseButton={false}
+          defaultOpen={true}
+        />
+      </Application>,
+    );
+
+    expect(
+      screen.queryByRole('button', { name: 'Close' }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
+  });
+
+  test('the empty area of the scrolling layer closes the modal, the panel does not', () => {
+    const onClose = vi.fn();
+
+    render(
+      <Application>
+        <Modal
+          content={<div>content</div>}
+          onClose={onClose}
+          defaultOpen={true}
+        />
+      </Application>,
+    );
+
+    fireEvent.click(screen.getByText('content'));
+    expect(onClose).not.toHaveBeenCalled();
+
+    fireEvent.click(document.querySelector('[class*="ScrollContent"]')!);
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  test('Escape closes the modal and calls onClose exactly once', () => {
+    const onClose = vi.fn();
+
+    render(
+      <Application>
+        <Modal
+          content={<div>content</div>}
+          onClose={onClose}
+          defaultOpen={true}
+        />
+      </Application>,
+    );
+
+    fireEvent.keyDown(document.body, { key: 'Escape' });
+
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 });

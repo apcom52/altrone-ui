@@ -1,6 +1,8 @@
-import { Direction } from 'types';
+import React from 'react';
+import { Orientation } from 'types';
 
 export interface DividerProps
   extends Omit<React.HTMLAttributes<HTMLHRElement>, 'children'> {
-  direction?: Direction;
+  ref?: React.Ref<HTMLHRElement>;
+  orientation?: Orientation;
 }

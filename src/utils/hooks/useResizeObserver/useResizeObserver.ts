@@ -13,6 +13,10 @@ export const useResizeObserver = <T extends HTMLElement>(elementRef: RefObject<T
   const [DOMRect, setDOMRect] = useState<DOMRectValues>();
 
   useEffect(() => {
+    if (typeof ResizeObserver === 'undefined') {
+      return;
+    }
+
     observerRef.current = new ResizeObserver((entries) => {
       const { bottom, height, left, right, top, width } = entries[0].contentRect;
       elementRef.current?.classList.add('alt-service--resizing');
@@ -29,18 +33,14 @@ export const useResizeObserver = <T extends HTMLElement>(elementRef: RefObject<T
       setDOMRect({ bottom, height, left, right, top, width });
     });
 
+    if (elementRef.current) {
+      observerRef.current.observe(elementRef.current);
+    }
+
     return () => {
-      if (observerRef.current?.disconnect) {
-        observerRef.current.disconnect();
-      }
+      observerRef.current?.disconnect();
     };
   }, []);
-
-  useEffect(() => {
-    if (elementRef.current) {
-      observerRef.current?.observe(elementRef.current);
-    }
-  }, [elementRef.current]);
 
   return DOMRect || (defaultReturn as DOMRectValues);
 };

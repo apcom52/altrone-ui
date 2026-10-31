@@ -1,38 +1,40 @@
-import { memo } from 'react';
-import { Icon } from 'components/icon';
-import s from './closeButton.module.scss';
-import clsx from 'clsx';
-import { useConfiguration } from 'components/configuration';
-import { useLocalization } from '../application';
+/* Import the hook by file, not the `application` barrel — the barrel pulls in
+   the whole provider tree (…→ Notifications → CloseButton), so a barrel import
+   here would close a module cycle. */
+import { useLocalization } from 'components/application/useLocalization.tsx';
+import { useIcons } from 'components/application/useIcons.tsx';
+import { Button } from 'components/button';
+import type { CloseButtonProps } from './CloseButton.types';
 
-export const CloseButton = memo(
-  ({
-    className,
-    style,
-    ...props
-  }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
-    const { closeButton: closeButtonConfig = {} } = useConfiguration();
+/**
+ * A ready-made icon button for dismissing panels, modals, toasts and cards.
+ *
+ * A `Button` defaulting to the shared `dismiss` icon role (an X, overridable
+ * via `icon` or `Application`'s `icons`) with
+ * `showLabel={false}`, its auto-tooltip off (the glyph is self-evident), and
+ * a localized accessible name pulled from `closeButton.ariaLabel`.
+ * `showLabel`/`tooltip` are applied after the spread, so they can't be
+ * overridden; everything else — `icon`, `size`, `onClick`, `disabled`,
+ * `className`, `ref`, `asChild`, native button attributes — passes straight
+ * through to `Button`.
+ */
+export const CloseButton = ({
+  ref,
+  label,
+  icon,
+  ...restProps
+}: CloseButtonProps) => {
+  const t = useLocalization();
+  const icons = useIcons();
 
-    const t = useLocalization();
-
-    const cls = clsx(s.CloseButton, className, closeButtonConfig.className);
-
-    const styles = {
-      ...closeButtonConfig.style,
-      ...style,
-    };
-
-    return (
-      <button
-        type="button"
-        className={cls}
-        style={styles}
-        aria-label={t('closeButton.ariaLabel')}
-        title={t('closeButton.ariaLabel')}
-        {...props}
-      >
-        <Icon i="close" />
-      </button>
-    );
-  },
-);
+  return (
+    <Button
+      ref={ref}
+      {...restProps}
+      label={label ?? t('closeButton.ariaLabel')}
+      icon={icon ?? icons.dismiss}
+      showLabel={false}
+      tooltip=""
+    />
+  );
+};

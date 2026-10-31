@@ -1,7 +1,6 @@
-import React from 'react';
 import { expect, test, describe } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { AltroneApplication, Configuration, Search, TextInput } from '../src';
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import { Application, Search, TextInput } from '../src';
 
 class ResizeObserver {
   observe() {}
@@ -16,7 +15,7 @@ beforeAll(() => {
 describe('Search', () => {
   test('check that custom className and styles works', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <Search
           getSuggestions={() => []}
           className="cls"
@@ -25,28 +24,31 @@ describe('Search', () => {
         >
           <TextInput.TextIsland data-testid="island" label="Text" />
         </Search>
-      </AltroneApplication>,
+      </Application>,
     );
 
-    expect(screen.getByTestId('search')).toHaveClass('cls');
-    expect(screen.getByTestId('search')).toHaveStyle('color: rgb(0, 0, 255)');
+    const wrapper = screen.getByTestId('search').closest('.cls');
+    expect(wrapper).not.toBeNull();
+    expect(wrapper).toHaveStyle('color: rgb(0, 0, 255)');
   });
 
-  test('check that configuration works', () => {
+  test('without getSuggestions it never shows the empty suggestions popup', async () => {
+    vi.useFakeTimers();
+
     render(
-      <AltroneApplication>
-        <Configuration
-          search={{
-            className: 'cls',
-            style: { color: 'red' },
-          }}
-        >
-          <Search getSuggestions={() => []} data-testid="search" />
-        </Configuration>
-      </AltroneApplication>,
+      <Application>
+        <Search value="query" onChange={() => undefined} data-testid="search" />
+      </Application>,
     );
 
-    expect(screen.getByTestId('search')).toHaveClass('cls');
-    expect(screen.getByTestId('search')).toHaveStyle('color: rgb(255, 0, 0)');
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(500);
+    });
+
+    fireEvent.focus(screen.getByTestId('search'));
+    fireEvent.click(screen.getByTestId('search'));
+
+    expect(screen.queryByText('No data')).toBeNull();
+    vi.useRealTimers();
   });
 });

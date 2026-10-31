@@ -1,18 +1,19 @@
-@import 'src/global/mixins';
-
-:global(:root) {
-  --iconIslandTextColor: var(--default-600);
-}
-
-:global(.AltroneDark) {
-  --iconIslandTextColor: var(--default-300);
-}
-
+/* Passive island. `font-size` drives the lucide glyph (global `svg { width: 1em }`). */
 .IconIsland {
   display: inline-flex;
   align-items: center;
-  font-size: var(--inputIslandTextSize);
-  color: var(--iconIslandTextColor);
-  font-weight: 500;
+  padding: 0;
+  font-size: var(--text-input-icon-size);
+  color: var(--text-1);
   pointer-events: none;
+}
+
+/* The island touching the field border (first at the start, last at the end)
+   gets an extra pad so it doesn't sit cramped against the edge. */
+:global([data-altrone-island='start']) > .IconIsland:first-child {
+  padding-left: var(--space-inset-compact);
+}
+
+:global([data-altrone-island='end']) > .IconIsland:last-child {
+  padding-right: var(--space-inset-compact);
 }

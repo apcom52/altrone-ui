@@ -1,24 +1,34 @@
-@import 'src/global/mixins';
-
-:global(:root) {
-  --loadingColor: var(--default-900);
-}
-
-:global(.AltroneDark) {
-  --loadingColor: var(--default-50);
+:global([data-altrone-root='true']) {
+  --loading-color: var(--text-2);
+  --loading-track-opacity: 0.16;
 }
 
 .Loading {
+  color: var(--loading-color);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/** Deliberately not reduced under prefers-reduced-motion: a functional loading
+    state, not decorative motion. */
 .Spinner {
   transform-origin: center;
   animation: rotate 2s linear infinite;
   will-change: transform;
   overflow: visible;
+}
+
+.Spinner.Determinate {
+  animation: none;
+  transform: rotate(-90deg);
+}
+
+.Track {
+  fill: none;
+  stroke: currentColor;
+  opacity: var(--loading-track-opacity);
+  transition: stroke var(--motion-duration-base) var(--motion-easing-standard);
 }
 
 .Active {
@@ -29,14 +39,14 @@
   stroke-linecap: round;
   animation: stretch 1.5s ease-in-out infinite;
   will-change: stroke-dasharray, stroke-dashoffset;
-  transition: stroke 0.5s ease;
+  transition: stroke var(--motion-duration-base) var(--motion-easing-standard);
 }
 
-.Background {
-  fill: none;
-  stroke: currentColor;
-  opacity: 0;
-  transition: stroke 0.5s ease;
+.Active.Determinate {
+  animation: none;
+  transition:
+    stroke-dasharray var(--motion-duration-base) var(--motion-easing-standard),
+    stroke var(--motion-duration-base) var(--motion-easing-standard);
 }
 
 @keyframes rotate {

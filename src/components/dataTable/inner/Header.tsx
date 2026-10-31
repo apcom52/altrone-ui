@@ -1,83 +1,90 @@
-import { memo, useMemo } from 'react';
-import { Icon } from 'components/icon';
-import { Button } from 'components/button';
+import { Children, CSSProperties, isValidElement, ReactNode } from 'react';
+import { Toolbar } from 'components/toolbar';
+import { Tooltip } from 'components/tooltip/Tooltip.tsx';
 import { useDataTableContext } from '../DataTable.context';
-import { DataTableProps } from '../DataTable.types';
-import { ArrayUtils } from 'utils';
-import s from './header.module.scss';
-import { Filtering } from './Filtering.tsx';
+import { DataTableHeaderProps } from '../DataTable.types';
 import { useLocalization } from '../../application';
+import { Filtering } from './Filtering.tsx';
 
-interface DataTableHeaderProps<T extends object> {
-  children: DataTableProps<T>['children'];
-  selectable: boolean;
+interface PartitionedActions {
+  leading: ReactNode[];
+  center: ReactNode[];
+  trailing: ReactNode[];
 }
 
-const DataTableHeader = <T extends object>({
-  children,
-  selectable,
-}: DataTableHeaderProps<T>) => {
-  const t = useLocalization();
+/**
+ * Splits `actions` into toolbar regions: content wrapped in `Toolbar.Center`
+ * / `Toolbar.Trailing` goes to that region, everything else (including
+ * `Toolbar.Leading`-wrapped content) joins the system leading controls.
+ */
+const partitionActions = (children: ReactNode): PartitionedActions => {
+  const result: PartitionedActions = { leading: [], center: [], trailing: [] };
 
-  const {
-    initialData,
-    filters,
-    searchBy,
-    columns,
-    selectableMode,
-    selectedRows,
-    setSelectableMode,
-  } = useDataTableContext();
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && child.type === Toolbar.Center) {
+      result.center.push((child.props as { children?: ReactNode }).children);
+    } else if (isValidElement(child) && child.type === Toolbar.Trailing) {
+      result.trailing.push((child.props as { children?: ReactNode }).children);
+    } else if (isValidElement(child) && child.type === Toolbar.Leading) {
+      result.leading.push((child.props as { children?: ReactNode }).children);
+    } else {
+      result.leading.push(child);
+    }
+  });
 
-  const selectedItems = useMemo(() => {
-    return selectedRows.map((index) => initialData[index] as T);
-  }, [selectedRows, initialData]);
-
-  const childrenActions =
-    typeof children === 'function'
-      ? children({
-          selectableMode,
-          selectedItems: selectedItems,
-        })
-      : children;
-
-  const safeChildrenArray = ArrayUtils.getSafeArray(childrenActions);
-
-  const isHeaderVisible = Boolean(
-    filters.length || searchBy || selectable || safeChildrenArray.length,
-  );
-
-  const columnsWithFilters = useMemo(() => {
-    return columns.filter((item) => item.filterable);
-  }, [columns]);
-
-  const selectableButton = selectable ? (
-    <Button
-      leftIcon={
-        <Icon i={selectableMode ? 'check_box_outline_blank' : 'check_box'} />
-      }
-      onClick={() => setSelectableMode(!selectableMode)}
-      title={
-        selectableMode
-          ? t('dataTable.disableSelectableMode')
-          : t('dataTable.selectableMode')
-      }
-    />
-  ) : null;
-
-  if (!isHeaderVisible) {
-    return null;
-  }
-
-  const actionsContainer = (
-    <div className={s.Actions}>
-      {selectableButton}
-      {childrenActions}
-      {columnsWithFilters.length > 0 ? <Filtering /> : null}
-    </div>
-  );
-
-  return <div className={s.Header}>{actionsContainer}</div>;
+  return result;
 };
 
-export default memo(DataTableHeader) as typeof DataTableHeader;
+export const DataTableHeader = <T extends object>({
+  actions,
+}: DataTableHeaderProps<T>) => {
+  const t = useLocalization();
+  const { table, icons, loading, selectable, selectMode, setSelectMode } =
+    useDataTableContext<T>();
+
+  const hasFilterableColumns = table
+    .getAllLeafColumns()
+    .some((column) => column.getCanFilter());
+
+  const selectedItems = table
+    .getSelectedRowModel()
+    .rows.map((row) => row.original);
+
+  const resolvedActions =
+    typeof actions === 'function'
+      ? actions({ selectableMode: selectMode, selectedItems })
+      : actions;
+
+  const { leading, center, trailing } = partitionActions(resolvedActions);
+
+  return (
+    <Toolbar variant="grouped" style={{ '--toolbar-inset': '8px' } as CSSProperties}>
+      <Toolbar.Leading>
+        {selectable ? (
+          <Toolbar.Group>
+            <Tooltip content={t('dataTable.selectableMode')}>
+              <Toolbar.Action
+                icon={selectMode ? icons.disableSelection : icons.enableSelection}
+                label={t('dataTable.selectableMode')}
+                showLabel={false}
+                onClick={(event) => setSelectMode(!selectMode, event)}
+                selected={selectMode}
+                disabled={loading}
+              />
+            </Tooltip>
+          </Toolbar.Group>
+        ) : null}
+        {hasFilterableColumns ? (
+          <Toolbar.Group>
+            <Filtering />
+          </Toolbar.Group>
+        ) : null}
+        {leading}
+      </Toolbar.Leading>
+      {center.length > 0 ? <Toolbar.Center>{center}</Toolbar.Center> : null}
+      {trailing.length > 0 ? (
+        <Toolbar.Trailing>{trailing}</Toolbar.Trailing>
+      ) : null}
+    </Toolbar>
+  );
+};

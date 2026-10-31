@@ -1,12 +1,6 @@
-import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import {
-  AltroneApplication,
-  Configuration,
-  PasswordInput,
-  TextInput,
-} from '../src';
+import { Application, PasswordInput, TextInput } from '../src';
 
 class ResizeObserver {
   observe() {}
@@ -21,62 +15,43 @@ beforeAll(() => {
 describe('Password', () => {
   test('need to show special island', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <PasswordInput data-testid="password">
           <TextInput.TextIsland data-testid="island" label="Text" />
         </PasswordInput>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('island')).toBeInTheDocument();
-    expect(screen.getByText('visibility')).toBeInTheDocument();
+    expect(screen.getByLabelText('Show password')).toBeInTheDocument();
   });
 
   test('need to hide special island when showControls is falsy', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <PasswordInput showControls={false} data-testid="password">
           <TextInput.TextIsland data-testid="island" label="Text" />
         </PasswordInput>
-      </AltroneApplication>,
+      </Application>,
     );
 
     expect(screen.getByTestId('island')).toBeInTheDocument();
-    expect(screen.queryByText('visibility')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Show password')).not.toBeInTheDocument();
   });
 
   test('check that custom className and styles works', () => {
     render(
-      <AltroneApplication>
+      <Application>
         <PasswordInput
           data-testid="input"
           className="cls"
           style={{ color: 'rgb(0, 0, 255)' }}
         />
-      </AltroneApplication>,
+      </Application>,
     );
 
-    expect(screen.getByTestId('input')).toHaveClass('cls');
-    expect(screen.getByTestId('input')).toHaveStyle('color: rgb(0, 0, 255)');
-  });
-
-  test('check that configuration works', () => {
-    render(
-      <AltroneApplication>
-        <Configuration
-          passwordInput={{
-            className: 'cls',
-            style: { color: 'red' },
-            showControls: false,
-          }}
-        >
-          <PasswordInput data-testid="input" />
-        </Configuration>
-      </AltroneApplication>,
-    );
-
-    expect(screen.getByTestId('input')).toHaveClass('cls');
-    expect(screen.getByTestId('input')).toHaveStyle('color: rgb(255, 0, 0)');
-    expect(screen.queryByText('visibility')).not.toBeInTheDocument();
+    const wrapper = screen.getByTestId('input').closest('.cls');
+    expect(wrapper).not.toBeNull();
+    expect(wrapper).toHaveStyle('color: rgb(0, 0, 255)');
   });
 });

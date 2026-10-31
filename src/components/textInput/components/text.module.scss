@@ -1,18 +1,26 @@
-@import 'src/global/mixins';
-
-:global(:root) {
-  --textIslandTextColor: var(--default-600);
-}
-
-:global(.AltroneDark) {
-  --textIslandTextColor: var(--default-300);
-}
-
+/* A passive island — a plain inline chip. No horizontal padding of its own; the
+   gap from the field edge is set by `.StartIslands`/`.EndIslands` (see
+   textInput.module.scss). */
 .TextIsland {
-  color: var(--textIslandTextColor);
-  @include paragraph;
-  font-size: var(--inputIslandTextSize);
-  line-height: var(--inputIslandHeight);
-  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  color: var(--text-1);
+  font-size: var(--text-input-font-size);
+  line-height: var(--line-height-4);
+  font-weight: var(--text-weight-medium);
+  white-space: nowrap;
   pointer-events: none;
+}
+
+/* A bare text affix ("$", ".00") sitting right against the field border reads
+   cramped in a way an icon doesn't — so the one touching the edge (first at the
+   start, last at the end) gets an extra pad. Islands further in the row keep
+   `.Field`'s gap and need none. */
+:global([data-altrone-island='start']) > .TextIsland:first-child {
+  padding-left: var(--space-inset-compact);
+}
+
+:global([data-altrone-island='end']) > .TextIsland:last-child {
+  padding-right: var(--space-inset-compact);
 }

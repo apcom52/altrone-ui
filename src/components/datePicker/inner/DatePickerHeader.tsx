@@ -1,13 +1,24 @@
-import { Icon } from 'components/icon';
+import { ReactElement } from 'react';
 import s from './header.module.scss';
 import { useDatePickerViewContext } from '../DatePicker.contexts.ts';
 import { useYearRanges } from '../utils.ts';
 import { useLocalizationContext } from '../../application/useLocalization.tsx';
+import { useIcons } from '../../application/useIcons.tsx';
+import { Button } from 'components/button';
 
-export const DatePickerHeader = () => {
+interface DatePickerHeaderProps {
+  prevIcon?: ReactElement;
+  nextIcon?: ReactElement;
+}
+
+export const DatePickerHeader = ({
+  prevIcon,
+  nextIcon,
+}: DatePickerHeaderProps) => {
   const { viewMode, setViewMode, currentMonth, setCurrentMonth } =
     useDatePickerViewContext();
   const { language = 'en' } = useLocalizationContext();
+  const icons = useIcons();
 
   const [startYear, endYear] = useYearRanges(currentMonth);
 
@@ -51,17 +62,21 @@ export const DatePickerHeader = () => {
 
   return (
     <div className={s.Header}>
+      <Button
+        icon={prevIcon ?? icons.prev}
+        onClick={onPrevClick}
+        label="Previous"
+        showLabel={false}
+      />
       <button type="button" className={s.CurrentDate} onClick={onHeaderClick}>
         {headerLabel}
       </button>
-      <div className={s.Navigation}>
-        <button type="button" className={s.Button} onClick={onPrevClick}>
-          <Icon i="navigate_before" />
-        </button>
-        <button type="button" className={s.Button} onClick={onNextClick}>
-          <Icon i="navigate_next" />
-        </button>
-      </div>
+      <Button
+        icon={nextIcon ?? icons.next}
+        onClick={onNextClick}
+        label="Next"
+        showLabel={false}
+      />
     </div>
   );
 };

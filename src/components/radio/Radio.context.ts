@@ -6,5 +6,6 @@ export const RadioContextWrapper = createContext<RadioContext>({
   onChange: () => null,
   name: '',
   disabled: false,
+  size: 'm',
 });
 export const useRadioContext = () => useContext(RadioContextWrapper);

@@ -1,21 +1,35 @@
+:global([data-altrone-root='true']) {
+  --avatar-image-size: 28px;
+  --avatar-text-size: 16px;
+  --avatar-text-weight: var(--text-weight-bold);
+  --avatar-icon-size: 18px;
+  --avatar-size: 32px;
+  /* Decorative top-left sheen — a fixed light source, not theme-driven. */
+  --avatar-sheen-color: rgba(255, 255, 255, 0.25);
+}
+
 .Avatar {
-  --avatar-image-size: 20px;
-  --avatar-letter-size: 12px;
-  --avatar-size: 24px;
+  --_avatar-bg: var(--interactive-1);
 
   position: relative;
+  /* Without this, `.Letters`'/`:after`'s `z-index` compare against unrelated
+     ancestors (e.g. a sticky DataTable footer) instead of staying local to
+     the avatar, since `position: relative` alone doesn't create a stacking context. */
+  isolation: isolate;
   display: inline-flex;
   border-radius: 50%;
   align-items: center;
   justify-content: center;
   width: var(--avatar-size);
   height: var(--avatar-size);
+  flex-shrink: 0;
   user-select: none;
   overflow: hidden;
+  background-color: var(--_avatar-bg);
 
   &:after {
     position: absolute;
-    top: 0%;
+    top: 0;
     left: 0;
     width: 100%;
     height: 100%;
@@ -23,7 +37,7 @@
     z-index: 0;
     background: radial-gradient(
       at 0% 0%,
-      rgba(255, 255, 255, 0.4),
+      var(--avatar-sheen-color),
       transparent 100%
     );
   }
@@ -34,27 +48,53 @@
   width: 100%;
   text-align: center;
   line-height: var(--avatar-size);
-  color: var(--default-900);
-  font-size: var(--avatar-letter-size);
-  font-weight: 500;
+  font-size: var(--avatar-text-size);
+  font-weight: var(--avatar-text-weight);
   z-index: 2;
+  /* auto-contrast via oklch relative colors: dark bg → white text, light bg → black text */
+  color: var(--_avatar-text-color, oklch(from var(--_avatar-bg) calc((0.5 - l) * 9999) 0 0));
 }
 
 .Image {
   width: var(--avatar-image-size);
   height: var(--avatar-image-size);
   border-radius: 50%;
-  margin: 2px;
+}
+
+.Icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  font-size: var(--avatar-icon-size);
+  /* auto-contrast via oklch relative colors: dark bg → white icon, light bg → black icon */
+  color: var(--_avatar-text-color, oklch(from var(--_avatar-bg) calc((0.5 - l) * 9999) 0 0));
+}
+
+.Mini {
+  --avatar-image-size: 14px;
+  --avatar-text-size: 9px;
+  --avatar-icon-size: 10px;
+  --avatar-size: 16px;
 }
 
 .Small {
-  --avatar-image-size: 16px;
-  --avatar-letter-size: 10px;
-  --avatar-size: 20px;
+  --avatar-image-size: 20px;
+  --avatar-text-size: 14px;
+  --avatar-icon-size: 14px;
+  --avatar-size: 24px;
 }
 
 .Large {
-  --avatar-image-size: 28px;
-  --avatar-letter-size: 14px;
-  --avatar-size: 32px;
+  --avatar-image-size: 36px;
+  --avatar-text-size: 18px;
+  --avatar-icon-size: 22px;
+  --avatar-size: 40px;
+}
+
+.XLarge {
+  --avatar-image-size: 42px;
+  --avatar-text-size: 22px;
+  --avatar-icon-size: 26px;
+  --avatar-size: 48px;
 }

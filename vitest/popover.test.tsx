@@ -1,117 +1,259 @@
-import React from 'react';
-import { expect, test, describe } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { Button, Configuration, Popover } from '../src';
+import React, { useEffect, useRef } from 'react';
+import { expect, test, describe, vi, beforeAll } from 'vitest';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { Application, Button, Popover } from '../src';
+import type { PopoverRef } from '../src/components/popover';
+
+class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+beforeAll(() => {
+  window.ResizeObserver = ResizeObserver;
+});
+
+const renderPopover = (
+  props: Partial<Omit<React.ComponentProps<typeof Popover>, 'children'>> & {
+    children?: React.ReactElement;
+  },
+) => {
+  const { children, ...rest } = props;
+  return render(
+    <Application>
+      <Popover content={<div>Popover content</div>} {...rest}>
+        {children ?? <Button label="Trigger" data-testid="trigger" />}
+      </Popover>
+    </Application>,
+  );
+};
 
 describe('Popover', () => {
-  test('need to be rendered when openByDefault prop is passed', () => {
-    render(
-      <Popover content="Popover content" openedByDefault data-testid="popover">
-        <Button label="Test" data-testid="button" />
-      </Popover>,
-    );
-
-    const content = screen.getByText('Popover content');
-    expect(content).toBeInTheDocument();
+  test('renders content when defaultOpen', () => {
+    renderPopover({ defaultOpen: true });
+    expect(screen.getByText('Popover content')).toBeInTheDocument();
   });
 
-  test('need to be rendered only after clicking on the button', () => {
+  test('opens on trigger click, closed until then', () => {
+    renderPopover({});
+    expect(screen.queryByText('Popover content')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId('trigger'));
+    expect(screen.getByText('Popover content')).toBeInTheDocument();
+  });
+
+  test('shows the title, and the close button only with showCloseButton', () => {
+    const { rerender } = renderPopover({
+      defaultOpen: true,
+      title: 'Popover title',
+    });
+    expect(screen.getByText('Popover title')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /close/i }),
+    ).not.toBeInTheDocument();
+
+    rerender(
+      <Application>
+        <Popover
+          content={<div>Popover content</div>}
+          defaultOpen
+          title="Popover title"
+          showCloseButton
+        >
+          <Button label="Trigger" data-testid="trigger" />
+        </Popover>
+      </Application>,
+    );
+    expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
+  });
+
+  test('a titled popover is a labelled dialog', () => {
+    renderPopover({ defaultOpen: true, title: 'Settings' });
+
+    const dialog = screen.getByRole('dialog');
+    const labelledBy = dialog.getAttribute('aria-labelledby');
+    expect(labelledBy).toBeTruthy();
+    expect(document.getElementById(labelledBy as string)).toHaveTextContent(
+      'Settings',
+    );
+  });
+
+  test('no dialog role for a plain (headerless) popover', () => {
+    renderPopover({ defaultOpen: true });
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  test('forces tabIndex on the trigger, preserving an explicit one', () => {
+    const { rerender } = renderPopover({
+      defaultOpen: true,
+      children: <Button label="Src" data-testid="src" tabIndex={2} />,
+    });
+    expect(screen.getByTestId('src')).toHaveAttribute('tabindex', '2');
+
+    rerender(
+      <Application>
+        <Popover content={<div>c</div>} defaultOpen>
+          <Button label="Src" data-testid="src" />
+        </Popover>
+      </Application>,
+    );
+    expect(screen.getByTestId('src')).toHaveAttribute('tabindex', '0');
+  });
+
+  test("merges the trigger's own ref instead of swallowing it", () => {
+    const captured: HTMLElement[] = [];
+    const Trigger = () => {
+      const ref = useRef<HTMLButtonElement>(null);
+      useEffect(() => {
+        if (ref.current) captured.push(ref.current);
+      });
+      return <Button ref={ref} label="Trigger" data-testid="trigger" />;
+    };
+
     render(
-      <Popover content="Popover content" data-testid="popover">
-        <Button label="Test" data-testid="button" />
-      </Popover>,
+      <Application>
+        <Popover content={<div>c</div>}>
+          <Trigger />
+        </Popover>
+      </Application>,
+    );
+
+    expect(captured[0]).toBe(screen.getByTestId('trigger'));
+  });
+
+  test("ref points at the trigger DOM element, alongside the trigger's own ref", () => {
+    const popoverRef = React.createRef<HTMLElement>();
+
+    render(
+      <Application>
+        <Popover ref={popoverRef} content={<div>c</div>}>
+          <Button label="Trigger" data-testid="trigger" />
+        </Popover>
+      </Application>,
+    );
+
+    expect(popoverRef.current).toBe(screen.getByTestId('trigger'));
+  });
+
+  test('controlRef opens and closes the popover', () => {
+    const Harness = () => {
+      const popoverRef = useRef<PopoverRef>(null);
+      return (
+        <>
+          <button
+            data-testid="ext-open"
+            onClick={() => popoverRef.current?.show()}
+          >
+            open
+          </button>
+          <Popover controlRef={popoverRef} content={<div>Popover content</div>}>
+            <Button label="Trigger" />
+          </Popover>
+        </>
+      );
+    };
+
+    render(
+      <Application>
+        <Harness />
+      </Application>,
     );
 
     expect(screen.queryByText('Popover content')).not.toBeInTheDocument();
-
-    const button = screen.getByTestId('button');
-    fireEvent.click(button);
-
-    expect(screen.queryByText('Popover content')).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('ext-open'));
+    expect(screen.getByText('Popover content')).toBeInTheDocument();
   });
 
-  test('need to be show title', () => {
-    render(
-      <Popover
-        title="Popover title"
-        content="Popover content"
-        openedByDefault
-        data-testid="popover"
-      >
-        <Button label="Test" data-testid="button" />
-      </Popover>,
-    );
+  test('onOpenChange reports the open state and a reason', () => {
+    const onOpenChange = vi.fn();
+    renderPopover({ onOpenChange });
 
-    expect(screen.getByText('Popover title')).toBeInTheDocument();
-    expect(screen.queryByText('close')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('trigger'));
+
+    expect(onOpenChange).toHaveBeenCalledWith(
+      true,
+      expect.anything(),
+      expect.any(String),
+    );
   });
 
-  test('need to be show close button with title', () => {
-    const { rerender } = render(
-      <Popover
-        title="Popover title"
-        content="Popover content"
-        openedByDefault
-        showCloseButton
-        data-testid="popover"
-      >
-        <Button label="Test" data-testid="button" />
-      </Popover>,
+  test('Escape requests a close with reason "escape-key"', () => {
+    const onOpenChange = vi.fn();
+    renderPopover({ defaultOpen: true, onOpenChange });
+
+    fireEvent.keyDown(document.body, { key: 'Escape' });
+
+    expect(onOpenChange).toHaveBeenCalledWith(
+      false,
+      expect.anything(),
+      'escape-key',
     );
-
-    expect(screen.getByText('Popover title')).toBeInTheDocument();
-    expect(screen.getByText('close')).toBeInTheDocument();
-
-    rerender(
-      <Popover
-        content="Popover content"
-        openedByDefault
-        showCloseButton
-        data-testid="popover"
-      >
-        <Button label="Test" data-testid="button" />
-      </Popover>,
-    );
-
-    expect(screen.queryByText('Popover title')).not.toBeInTheDocument();
-    expect(screen.getByText('close')).toBeInTheDocument();
   });
 
-  test('should configuration works correctly', () => {
-    render(
-      <Configuration
-        popover={{ className: 'cls', style: { color: 'rgb(0, 0, 255)' } }}
-      >
+  test('controlled `open`: Escape only asks via onOpenChange, stays open until fed back', () => {
+    const onOpenChange = vi.fn();
+    renderPopover({ open: true, onOpenChange });
+
+    fireEvent.keyDown(document.body, { key: 'Escape' });
+
+    expect(onOpenChange).toHaveBeenCalledWith(
+      false,
+      expect.anything(),
+      'escape-key',
+    );
+    // still open — the consumer hasn't fed the new value back in yet
+    expect(screen.getByText('Popover content')).toBeInTheDocument();
+  });
+
+  test('controlled `open`: fed back through onOpenChange, Escape closes it', async () => {
+    const Harness = () => {
+      const [open, setOpen] = React.useState(true);
+      return (
         <Popover
-          content={<div>content</div>}
-          openedByDefault
-          data-testid="element"
+          open={open}
+          onOpenChange={setOpen}
+          content={<div>Popover content</div>}
         >
-          <Button />
+          <Button label="Trigger" />
         </Popover>
-      </Configuration>,
+      );
+    };
+
+    render(
+      <Application>
+        <Harness />
+      </Application>,
     );
 
-    const element = screen.getByTestId('element');
-    expect(element).toHaveClass('cls');
-    expect(element).toHaveStyle('color: rgb(0, 0, 255)');
+    fireEvent.keyDown(document.body, { key: 'Escape' });
+
+    await waitFor(() =>
+      expect(screen.queryByText('Popover content')).not.toBeInTheDocument(),
+    );
   });
 
-  test('tabIndex prop need to applied automatically', () => {
-    const { rerender } = render(
-      <Popover content={<div>content</div>} openedByDefault>
-        <Button data-testid="source" tabIndex={2} />
-      </Popover>,
+  test('controlled `open`: imperative show/hide route through onOpenChange instead of self-managing', () => {
+    const onOpenChange = vi.fn();
+    const popoverRef = { current: null } as React.RefObject<PopoverRef | null>;
+
+    render(
+      <Application>
+        <Popover
+          controlRef={popoverRef as React.Ref<PopoverRef>}
+          open={false}
+          onOpenChange={onOpenChange}
+          content={<div>Popover content</div>}
+        >
+          <Button label="Trigger" />
+        </Popover>
+      </Application>,
     );
 
-    expect(screen.getByTestId('source')).toHaveAttribute('tabindex', '2');
+    popoverRef.current?.show();
 
-    rerender(
-      <Popover content={<div>content</div>} openedByDefault>
-        <Button data-testid="source" />
-      </Popover>,
-    );
-
-    expect(screen.getByTestId('source')).toHaveAttribute('tabindex', '0');
+    expect(onOpenChange).toHaveBeenCalledWith(true, undefined, undefined);
+    // still closed — controlled, and the prop wasn't updated
+    expect(screen.queryByText('Popover content')).not.toBeInTheDocument();
   });
 });

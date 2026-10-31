@@ -1,98 +1,171 @@
 import clsx from 'clsx';
 import { ColorPickerProps, ColorPreset } from './ColorPicker.types';
-import {
-  TextInput,
-  Popover,
-  Icon,
-  useConfiguration,
-  useLocalization,
-  DummyBox,
-} from 'components';
+import { TextInput } from 'components/textInput/TextInput.tsx';
+import { Popover } from 'components/popover/Popover.tsx';
+import type { PopoverRef } from 'components/popover/Popover.types.ts';
+import { useLocalization } from 'components/application';
+import { Box } from 'components/box';
 import s from './styles.module.scss';
 import { ColorPickerContent } from './inner/ColorPickerContent';
 import { Size } from 'types';
-import { useCallback } from 'react';
+import {
+  isValidElement,
+  useCallback,
+  useRef,
+  type KeyboardEvent,
+  type ReactElement,
+  type SyntheticEvent,
+} from 'react';
+import { Slot } from 'utils/components/Slot';
+import { useFormField } from '../form/components/Field.context.ts';
+import { useIcons } from 'components/application/useIcons.tsx';
+
 const EMPTY_COLOR_PRESETS: ColorPreset[] = [];
 
-const SIZES: Record<Size, number> = {
-  s: 12,
-  m: 16,
-  l: 24,
+/** Swatch diameter per tier — roughly two thirds of the matching `Box` height (16/24/32/40/48). */
+const PREVIEW_SIZES: Record<Size, number> = {
+  mini: 10,
+  s: 16,
+  m: 20,
+  l: 28,
+  xl: 32,
 };
 
 export const ColorPicker = (props: ColorPickerProps) => {
   const t = useLocalization();
 
   const {
+    ref,
     value,
     onChange,
     className,
     style,
     placeholder = t('colorPicker.placeholder'),
-    size = 'm',
+    size,
     allowPalette = true,
     colorPresets = EMPTY_COLOR_PRESETS,
     readOnly = false,
     clearable = false,
-    renderFunc,
+    transparent,
+    disabled,
+    asChild = false,
+    children,
+    openIcon,
+    closeIcon,
+    presetsTabIcon,
+    paletteTabIcon,
+    onKeyDown,
     ...restProps
   } = props;
 
+  const popoverRef = useRef<PopoverRef>(null);
+
+  const icons = useIcons();
+  const { disabled: formFieldDisabled, size: formFieldSize } = useFormField();
+
+  const inputDisabled =
+    typeof disabled === 'boolean' ? disabled : formFieldDisabled;
+  const inputSize = size || formFieldSize || 'm';
+
   const handleChange = useCallback(
-    (color?: string) => {
-      onChange(typeof color === 'string' ? color.toLowerCase() : value);
+    (color: string | undefined, event?: SyntheticEvent) => {
+      onChange(color?.toLowerCase(), event);
     },
     [onChange],
   );
 
-  const { colorPicker: colorPickerConfig = {} } = useConfiguration();
+  const openOnArrowDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === 'ArrowDown' && !popoverRef.current?.open) {
+      event.preventDefault();
+      popoverRef.current?.show();
+    }
+  };
 
-  const cls = clsx(s.ColorPicker, colorPickerConfig.className, className, {
+  const cls = clsx(s.ColorPicker, className, {
     [s.Readonly]: readOnly,
   });
 
-  const styles = {
-    ...colorPickerConfig.style,
-    ...style,
-  };
-
   return (
     <Popover
+      controlRef={popoverRef}
       placement="bottom-start"
-      content={({ closePopup }) => (
+      title={t('colorPicker.title')}
+      content={({ hide }) => (
         <ColorPickerContent
           colorPresets={colorPresets}
           value={value}
           onChange={handleChange}
           allowPalette={allowPalette}
           clearable={clearable}
-          closePopup={closePopup}
+          size={inputSize}
+          hide={hide}
+          presetsTabIcon={presetsTabIcon}
+          paletteTabIcon={paletteTabIcon}
         />
       )}
       enabled={!readOnly}
-      defaultListNavigationIndex={-1}
-      listNavigation
+      focusTrapTargets={['content']}
+      overlap
     >
-      {({ opened }) => {
-        if (typeof renderFunc === 'function') {
-          return renderFunc({
-            opened,
-            value,
-            setValue: handleChange,
-          });
+      {({ open: opened }) => {
+        if (asChild) {
+          if (!isValidElement(children)) {
+            console.error(
+              '[ColorPicker] asChild requires a single valid React element as children',
+            );
+            /* A bare `<span />`, not `null` — the render function feeds
+               Popover's `children`, which clones `ref`/interaction props
+               onto whatever it gets back. A DOM node still needs to exist
+               here to receive them; a `null`/Fragment return would silently
+               drop the trigger's event handlers. */
+            return <span />;
+          }
+
+          const childElement = children as ReactElement<
+            Record<string, unknown>
+          >;
+          const childProps = childElement.props;
+
+          return (
+            <Slot
+              ref={ref}
+              className={clsx(childProps.className as string | undefined, cls)}
+              style={{
+                ...(childProps.style as React.CSSProperties | undefined),
+                ...style,
+              }}
+              data-value={value || undefined}
+              data-opened={opened}
+              onKeyDown={(event: KeyboardEvent<HTMLElement>) => {
+                (
+                  childProps.onKeyDown as
+                    ((event: KeyboardEvent<HTMLElement>) => void) | undefined
+                )?.(event);
+                openOnArrowDown(event);
+              }}
+            >
+              {childElement}
+            </Slot>
+          );
         }
 
         return (
           <TextInput
+            ref={ref}
             className={cls}
-            style={styles}
+            style={style}
             value={value || ''}
             placeholder={placeholder}
             readOnly={true}
             readonlyStyles={readOnly}
-            size={size}
-            transparent={props.transparent}
+            disabled={inputDisabled}
+            size={inputSize}
+            variant={transparent ? 'transparent' : undefined}
             onChange={() => null}
+            onKeyDown={(event) => {
+              onKeyDown?.(event);
+              openOnArrowDown(event);
+            }}
             {...restProps}
           >
             <TextInput.CustomIsland className={s.ColorPreviewWrapper}>
@@ -101,23 +174,23 @@ export const ColorPicker = (props: ColorPickerProps) => {
                   className={s.ColorPreview}
                   style={{
                     backgroundColor: value,
-                    width: SIZES[size],
-                    height: SIZES[size],
+                    width: PREVIEW_SIZES[inputSize],
+                    height: PREVIEW_SIZES[inputSize],
                   }}
                 />
               ) : (
-                <DummyBox
-                  className={s.ColorPreview}
-                  width={SIZES[size] + 'px'}
-                  height={SIZES[size] + 'px'}
-                  radius="50%"
+                <Box
+                  shape="circle"
+                  material="pale"
+                  size={PREVIEW_SIZES[inputSize]}
+                  style={{ marginLeft: 2 }}
                 />
               )}
             </TextInput.CustomIsland>
             {!readOnly && (
               <TextInput.IconIsland
-                placement="right"
-                icon={<Icon i={opened ? 'expand_less' : 'expand_more'} />}
+                placement="end"
+                icon={opened ? (closeIcon ?? icons.close) : (openIcon ?? icons.open)}
               />
             )}
           </TextInput>

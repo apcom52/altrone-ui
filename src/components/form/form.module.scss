@@ -1,3 +1,15 @@
+:global([data-altrone-root='true']) {
+  --form-field-gap: var(--l-gap);
+}
+
 .Form {
+  width: 100%;
+}
+
+.FieldStack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--form-field-gap);
   width: 100%;
 }

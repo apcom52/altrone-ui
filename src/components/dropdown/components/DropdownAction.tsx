@@ -1,94 +1,126 @@
+import { isValidElement, useId } from 'react';
 import { DropdownActionProps } from '../Dropdown.types';
-import { useListItem } from '@floating-ui/react';
 import clsx from 'clsx';
 import { useCloseDropdownContext } from '../Dropdown.contexts.ts';
 import s from './action.module.scss';
-import { useConfiguration } from 'components/configuration';
-import { useId } from 'react';
-import { usePopoverCurrentIndex } from '../../popover/Popover.tsx';
-import { RenderFuncProp } from '../../../types';
-import { Badge } from 'components/badge/Badge.tsx';
-
-const dropdownActionRenderFunc: RenderFuncProp<
-  HTMLButtonElement,
-  DropdownActionProps & { keyProp?: string }
-> = (ref, props) => {
-  const { dropdown: { action: actionConfig = {} } = {} } = useConfiguration();
-  const { icon, label, hintText, keyProp, badge, ...restProps } = props;
-
-  const badgeCls = clsx(s.Badge, actionConfig.badgeClassName);
-
-  return (
-    <button type="button" role="button" ref={ref} {...restProps}>
-      <div className={s.Icon}>{icon}</div>
-      <div className={s.Label}>{label}</div>
-      {badge ? (
-        <Badge className={badgeCls}>{badge}</Badge>
-      ) : hintText ? (
-        <div className={s.Hint}>{hintText}</div>
-      ) : null}
-    </button>
-  );
-};
+import { Badge } from 'internal/badge';
+import { useDropdownListItem } from '../useDropdownListItem.tsx';
+import { composeEventHandlers } from 'utils/utils/composeEventHandlers';
+import { Slot } from 'utils/components/Slot.tsx';
+import { cloneWithRef } from 'utils/utils/cloneWithRef.ts';
+import { AnyObject } from 'utils/types.ts';
+import { mergeRefs } from 'utils/mergeRefs';
 
 export function DropdownAction(props: DropdownActionProps) {
   const {
+    ref,
     className,
     style,
     danger,
     focused,
-    renderFunc = dropdownActionRenderFunc,
-    ...restProps
+    asChild,
+    children,
+    icon,
+    label,
+    hintText,
+    keyProp,
+    badge,
+    onClick,
+    onKeyDown,
+    onMouseEnter,
+    onMouseLeave,
+    ...htmlProps
   } = props;
 
   const id = useId();
 
-  const currentIndex = usePopoverCurrentIndex();
-  const { ref, index } = useListItem();
-
-  const isFocused = currentIndex === index;
-
-  const { dropdown: { action: actionConfig = {} } = {} } = useConfiguration();
+  const {
+    ref: listItemRef,
+    index,
+    isFocused,
+    itemBackgroundElement,
+    ...listItem
+  } = useDropdownListItem();
 
   const cls = clsx(
     s.Action,
+    'no-selection',
     {
       [s.DisabledAction]: props.disabled,
       [s.DangerAction]: danger,
       [s.Focused]: focused,
     },
     className,
-    actionConfig.className,
   );
 
   const styles = {
-    ...actionConfig.style,
     ...style,
   };
 
-  const closePopup = useCloseDropdownContext();
+  const hide = useCloseDropdownContext();
 
   const onSelect = () => {
-    props?.onClick?.();
-    closePopup();
+    hide();
   };
 
-  const onKeyDownPress: React.KeyboardEventHandler = (e) => {
+  const onKeyDownPress: React.KeyboardEventHandler<HTMLButtonElement> = (e) => {
     if (e.key === 'Enter') {
-      onSelect?.();
+      e.currentTarget.click();
     }
   };
 
-  return renderFunc(ref, {
-    ...restProps,
-    type: 'button',
+  const actionContent = (
+    <>
+      {itemBackgroundElement}
+      <div className={s.Icon}>{icon}</div>
+      <div className={s.Label}>{label}</div>
+      {badge ? (
+        <Badge className={s.Badge}>{badge}</Badge>
+      ) : hintText ? (
+        <div className={s.Hint}>{hintText}</div>
+      ) : null}
+    </>
+  );
+
+  const sharedProps = {
+    ...htmlProps,
+    type: 'button' as const,
     style: styles,
     className: cls,
-    role: 'button',
     'data-active': isFocused,
+    'data-index': index,
     id: props.id || id,
-    onClick: onSelect,
-    onKeyDown: onKeyDownPress,
-  });
+    onClick: composeEventHandlers(onClick, onSelect),
+    onKeyDown: composeEventHandlers(onKeyDown, onKeyDownPress),
+    onMouseEnter: composeEventHandlers(onMouseEnter, listItem.onMouseEnter),
+    onMouseLeave: composeEventHandlers(onMouseLeave, listItem.onMouseLeave),
+  };
+
+  const mergedRef = mergeRefs(ref, listItemRef);
+
+  if (asChild) {
+    if (!isValidElement(children)) {
+      console.error(
+        '[DropdownAction] asChild requires a valid React element as children',
+      );
+      return null;
+    }
+
+    const childWithContent = cloneWithRef(children, {
+      children: actionContent,
+    });
+
+    return (
+      <Slot ref={mergedRef} role="button" {...(sharedProps as AnyObject)}>
+        {childWithContent}
+      </Slot>
+    );
+  }
+
+  return (
+    <button ref={mergedRef} {...sharedProps}>
+      {actionContent}
+    </button>
+  );
 }
 DropdownAction.displayName = 'DropdownAction';

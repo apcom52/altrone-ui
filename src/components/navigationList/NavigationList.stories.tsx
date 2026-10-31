@@ -1,267 +1,1318 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Dropdown, Flex, Icon, Text } from 'components';
+import { useState } from 'react';
+import { Dropdown, Flex, Text } from 'components';
 import { StorybookDecorator } from 'global/storybook';
+import { allModes } from '../../../.storybook/modes.ts';
 import { NavigationList } from './NavigationList.tsx';
-import { Link, LinkAction } from './components';
+import {
+  Archive,
+  BarChart2,
+  Bell,
+  Bug,
+  Calendar,
+  CheckCircle2,
+  ChevronsUp,
+  Circle,
+  Clock,
+  Code,
+  CreditCard,
+  FolderOpen,
+  GitBranch,
+  GitPullRequest,
+  Globe,
+  Hash,
+  Home,
+  Inbox,
+  LayoutDashboard,
+  Layers,
+  MessageSquare,
+  MoreHorizontal,
+  Package,
+  Pencil,
+  Play,
+  Plus,
+  Search,
+  Settings,
+  ShoppingBag,
+  ShoppingCart,
+  Star,
+  Tag,
+  Terminal,
+  Trash,
+  Truck,
+  Users,
+  Webhook,
+  Zap,
+} from 'lucide-react';
+import { Label } from 'components/label/Label.tsx';
+import { Button } from 'components/button/Button.tsx';
+import { Avatar } from 'components/avatar';
 
 const story: Meta<typeof NavigationList> = {
   title: 'Components/Navigation/NavigationList',
   component: NavigationList,
   decorators: [StorybookDecorator],
-  args: {},
-  argTypes: {},
-};
-
-export const NavigationListStory: StoryObj<typeof NavigationList> = {
-  name: 'Using NavigationList',
-  render: () => {
-    return (
-      <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Standard NavigationList</Text.Heading>
-        <div style={{ width: 350 }}>
-          <NavigationList>
-            <NavigationList.Group>
-              <NavigationList.Link
-                icon={<Icon i="arrow_back" />}
-                label="Back"
-              />
-            </NavigationList.Group>
-            <NavigationList.Group title="Personal settings">
-              <NavigationList.Link
-                href="#"
-                icon={<Icon i="tune" />}
-                label="Profile"
-              >
-                <LinkAction
-                  label="Create new profile"
-                  icon={<Icon i="add" />}
-                />
-                <LinkAction
-                  label="Manage profile settings"
-                  icon={<Icon i="settings" />}
-                  showOnlyOnHover
-                />
-              </NavigationList.Link>
-              <NavigationList.Link
-                href="#"
-                icon={<Icon i="account_circle" />}
-                badge="NEW"
-                label="Preferences"
-              >
-                <Dropdown
-                  content={
-                    <Dropdown.Menu>
-                      <Dropdown.Action label="Test" />
-                      <Dropdown.Action label="Test" />
-                      <Dropdown.Action label="Test" />
-                    </Dropdown.Menu>
-                  }
-                >
-                  <LinkAction
-                    label="Manage profile settings"
-                    icon={<Icon i="settings" />}
-                    showOnlyOnHover
-                  />
-                </Dropdown>
-              </NavigationList.Link>
-              <NavigationList.Link
-                href="#"
-                icon={<Icon i="notifications" />}
-                label="Notifications"
-              />
-              <NavigationList.Link
-                icon={<Icon i="keyboard_alt" />}
-                label="Keyboard shortcuts"
-              />
-            </NavigationList.Group>
-            <NavigationList.Group title="Product settings">
-              <NavigationList.GroupAction
-                label="Search"
-                icon={<Icon i="search" />}
-                disabled
-              />
-              <Dropdown
-                content={
-                  <Dropdown.Menu>
-                    <Dropdown.Action
-                      icon={<Icon i="groups" />}
-                      label="Browse teams"
-                    />
-                    <Dropdown.Action icon={<Icon i="add" />} label="Add team" />
-                  </Dropdown.Menu>
-                }
-              >
-                <NavigationList.GroupAction
-                  label="More"
-                  icon={<Icon i="more_horiz" />}
-                />
-              </Dropdown>
-              <NavigationList.Link label="Attributes" badge="4" />
-              <NavigationList.Link label="Automations" selected badge="2" />
-              <NavigationList.Link label="Copilot" />
-              <NavigationList.Link label="Group mentions" />
-              <NavigationList.Link label="Import" />
-              <NavigationList.Link label="Integrations" />
-              <NavigationList.Link label="Task forms" />
-            </NavigationList.Group>
-            <NavigationList.Group title="Workspace settings">
-              <NavigationList.GroupAction label="Add" icon={<Icon i="add" />} />
-              <NavigationList.Link label="General" />
-              <NavigationList.Link
-                icon={<Icon i="webhook" />}
-                label="API & Webhooks"
-              />
-              <NavigationList.Link label="Authentification" />
-              <NavigationList.Link label="Billing" />
-              <NavigationList.Link label="Security Log" />
-              <NavigationList.Link label="Users" />
-            </NavigationList.Group>
-          </NavigationList>
-        </div>
-      </Flex>
-    );
-  },
-};
-
-export const NavigationListWithNestedLinks: StoryObj<typeof NavigationList> = {
-  name: 'Using NavigationList with nested links',
-  render: () => {
-    return (
-      <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Standard NavigationList</Text.Heading>
-        <div style={{ width: 350 }}>
-          <NavigationList>
-            <NavigationList.Group>
-              <NavigationList.Link icon={<Icon i="home" />} label="Home" />
-            </NavigationList.Group>
-
-            <NavigationList.Group title="My Music">
-              <NavigationList.Link
-                icon={<Icon i="favorite" />}
-                label="Favorite Tracks"
-              />
-              <NavigationList.Link
-                icon={<Icon i="library_music" />}
-                label="My Library"
-              >
-                <LinkAction
-                  label="Add Playlist"
-                  icon={<Icon i="playlist_add" />}
-                />
-                <LinkAction label="Import Music" icon={<Icon i="upload" />} />
-              </NavigationList.Link>
-              <NavigationList.Link
-                icon={<Icon i="history" />}
-                label="Listening History"
-              />
-              <NavigationList.Link
-                icon={<Icon i="download" />}
-                label="Downloaded Tracks"
-              />
-            </NavigationList.Group>
-
-            <NavigationList.Group title="Playlists">
-              <NavigationList.GroupAction
-                label="Create Playlist"
-                icon={<Icon i="add" />}
-              />
-              <NavigationList.Link
-                icon={<Icon i="trending_up" />}
-                label="Top Charts"
-              >
-                <Dropdown
-                  content={
-                    <Dropdown.Menu>
-                      <Dropdown.Action label="United States" />
-                      <Dropdown.Action label="Global" />
-                      <Dropdown.Action label="United Kingdom" />
-                    </Dropdown.Menu>
-                  }
-                >
-                  <NavigationList.LinkAction
-                    label="Select Region"
-                    icon={<Icon i="arrow_drop_down" />}
-                  />
-                </Dropdown>
-              </NavigationList.Link>
-              <NavigationList.Link
-                icon={<Icon i="new_releases" />}
-                label="New Releases"
-              />
-              <NavigationList.Link icon={<Icon i="radio" />} label="Radio" />
-            </NavigationList.Group>
-
-            <NavigationList.Group title="Find music">
-              <NavigationList.GroupAction
-                label="Search"
-                icon={<Icon i="search" />}
-              />
-              <NavigationList.Link label="By region" icon={<Icon i="public" />}>
-                <NavigationList.Link label="World" />
-                <NavigationList.Link label="USA" />
-                <NavigationList.Link label="UK" />
-              </NavigationList.Link>
-              <NavigationList.Link
-                label="By genre"
-                icon={<Icon i="graphic_eq" />}
-                badge="5"
-                selected
-              >
-                <NavigationList.Link label="Pop" />
-                <NavigationList.Link label="Rock" />
-                <NavigationList.Link label="Hip-Hop" />
-                <NavigationList.Link label="Electronic" />
-                <NavigationList.Link label="Jazz" />
-                <NavigationList.Link
-                  label="Classical"
-                  icon={<Icon i="piano" />}
-                  selected
-                  badge="3"
-                >
-                  <NavigationList.Link label="Piano" />
-                  <NavigationList.Link label="Violin" />
-                  <NavigationList.Link label="Guitar" />
-                  <NavigationList.Link
-                    label="Opera"
-                    selected
-                    icon={<Icon i="spatial_audio_off" />}
-                  >
-                    <NavigationList.Link label="Live" selected />
-                    <NavigationList.Link label="Concert" badge="4" />
-                  </NavigationList.Link>
-                </NavigationList.Link>
-              </NavigationList.Link>
-            </NavigationList.Group>
-
-            <NavigationList.Group title="Settings">
-              <NavigationList.Link
-                icon={<Icon i="settings" />}
-                label="General"
-              />
-              <NavigationList.Link
-                icon={<Icon i="equalizer" />}
-                label="Equalizer"
-              />
-              <NavigationList.Link
-                icon={<Icon i="notifications" />}
-                label="Notifications"
-              />
-              <NavigationList.Link
-                icon={<Icon i="account_circle" />}
-                label="Account"
-              >
-                <LinkAction
-                  label="Edit Profile"
-                  icon={<Icon i="edit" />}
-                  showOnlyOnHover
-                />
-              </NavigationList.Link>
-            </NavigationList.Group>
-          </NavigationList>
-        </div>
-      </Flex>
-    );
+  parameters: {
+    chromatic: {
+      modes: {
+        light: allModes['light desktop'],
+        dark: allModes['dark desktop'],
+      },
+    },
   },
 };
 
 export default story;
+
+// ─── Prose helpers ───────────────────────────────────────────────────────────
+
+const Heading = ({ children }: { children: string }) => (
+  <Text block size={7} weight="bold" style={{ marginTop: 16 }}>
+    {children}
+  </Text>
+);
+
+const Paragraph = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={4} style={{ maxWidth: 640, lineHeight: 1.6 }}>
+    {children}
+  </Text>
+);
+
+/**
+ * A small icon-only button for `Group`/`Link`'s `actions` prop — the same
+ * shape `GroupAction`/`LinkAction` used to render before those sub-components
+ * were replaced by the prop.
+ */
+const NavAction = ({
+  label,
+  icon,
+}: {
+  label: string;
+  icon: React.JSX.Element;
+}) => (
+  <Button
+    size="s"
+    title={label}
+    label={label}
+    icon={icon}
+    showLabel={false}
+  />
+);
+
+// ─── Overview ────────────────────────────────────────────────────────────────
+
+export const Overview: StoryObj<typeof NavigationList> = {
+  name: 'Overview',
+  render: () => {
+    const [section, setSection] = useState('inbox');
+    const [team, setTeam] = useState('engineering');
+    const sel = (id: string) => section === id;
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={9} weight="bold">
+          NavigationList
+        </Text>
+
+        <Paragraph>
+          <Text code>NavigationList</Text> is the primary sidebar for an
+          application shell. It renders a semantic <Text code>&lt;nav&gt;</Text>{' '}
+          and arranges its content top&#8209;to&#8209;bottom: an optional{' '}
+          <Text code>Header</Text>, any number of <Text code>Group</Text>
+          sections, and an optional <Text code>Footer</Text> pinned to the
+          bottom. Every leaf is a <Text code>Link</Text>.
+        </Paragraph>
+
+        <Heading>Anatomy</Heading>
+        <Paragraph>
+          A <Text code>Link</Text> is a real <Text code>&lt;a&gt;</Text>. Pass{' '}
+          <Text code>href</Text> for navigation, or omit it and pass{' '}
+          <Text code>onClick</Text> to use the item as a button &mdash; in that
+          case it becomes focusable and responds to{' '}
+          <Text kbd>Enter</Text> / <Text kbd>Space</Text>. The active item is
+          marked <Text code>selected</Text>, which also sets{' '}
+          <Text code>aria-current="page"</Text> and shows the sliding backdrop
+          that animates between items as selection moves.
+        </Paragraph>
+
+        <NavigationList style={{ height: 'auto' }}>
+          <NavigationList.Group>
+            <NavigationList.Link
+              icon={<Home />}
+              label="Home"
+              selected={sel('home')}
+              onClick={() => setSection('home')}
+            />
+            <NavigationList.Link
+              icon={<Inbox />}
+              label="Inbox"
+              badge="8"
+              selected={sel('inbox')}
+              onClick={() => setSection('inbox')}
+            />
+            <NavigationList.Link
+              icon={<CheckCircle2 />}
+              label="My Issues"
+              badge="12"
+              selected={sel('my-issues')}
+              onClick={() => setSection('my-issues')}
+            />
+          </NavigationList.Group>
+        </NavigationList>
+
+        <Heading>Groups &amp; titles</Heading>
+        <Paragraph>
+          A <Text code>Group</Text> with a <Text code>title</Text> is exposed as
+          an accessible <Text code>role="group"</Text> labelled by that title.
+          Groups without a title are still useful for spacing a cluster of
+          top&#8209;level links apart from the rest.
+        </Paragraph>
+
+        <NavigationList style={{ height: 'auto' }}>
+          <NavigationList.Group title="Workspace">
+            <NavigationList.Link
+              icon={<LayoutDashboard />}
+              label="Dashboard"
+              selected={sel('dashboard')}
+              onClick={() => setSection('dashboard')}
+            />
+            <NavigationList.Link
+              icon={<BarChart2 />}
+              label="Reports"
+              selected={sel('reports')}
+              onClick={() => setSection('reports')}
+            />
+          </NavigationList.Group>
+          <NavigationList.Group title="Account">
+            <NavigationList.Link
+              icon={<CreditCard />}
+              label="Billing"
+              selected={sel('billing')}
+              onClick={() => setSection('billing')}
+            />
+            <NavigationList.Link
+              icon={<Settings />}
+              label="Settings"
+              selected={sel('settings')}
+              onClick={() => setSection('settings')}
+            />
+          </NavigationList.Group>
+        </NavigationList>
+
+        <Heading>Nested links</Heading>
+        <Paragraph>
+          A <Text code>Link</Text> can contain child <Text code>Link</Text>{' '}
+          elements. The sub&#8209;navigation is revealed only while the parent is{' '}
+          <Text code>selected</Text>, keeping the sidebar compact until you drill
+          into a section.
+        </Paragraph>
+
+        <NavigationList style={{ height: 'auto' }}>
+          <NavigationList.Group title="Teams">
+            <NavigationList.Link
+              icon={<Users />}
+              label="Engineering"
+              badge="8"
+              selected={sel('engineering-root')}
+              onClick={() => setSection('engineering-root')}
+            >
+              <NavigationList.Link
+                label="Frontend"
+                selected={team === 'frontend'}
+                onClick={() => setTeam('frontend')}
+              />
+              <NavigationList.Link
+                label="Backend"
+                selected={team === 'backend'}
+                onClick={() => setTeam('backend')}
+              />
+              <NavigationList.Link
+                label="DevOps"
+                badge="2"
+                selected={team === 'devops'}
+                onClick={() => setTeam('devops')}
+              />
+            </NavigationList.Link>
+            <NavigationList.Link
+              icon={<Layers />}
+              label="Design"
+              selected={sel('design')}
+              onClick={() => setSection('design')}
+            />
+          </NavigationList.Group>
+        </NavigationList>
+
+        <Heading>Custom expanded-state icon</Heading>
+        <Paragraph>
+          <Text code>childrenIcon</Text> overrides the chevron shown next to
+          a link while its nested links are expanded.
+        </Paragraph>
+
+        <NavigationList style={{ height: 'auto' }}>
+          <NavigationList.Group title="Teams">
+            <NavigationList.Link
+              icon={<Users />}
+              label="Engineering"
+              badge="8"
+              childrenIcon={<ChevronsUp />}
+              selected={sel('engineering-custom-icon')}
+              onClick={() => setSection('engineering-custom-icon')}
+            >
+              <NavigationList.Link label="Frontend" />
+              <NavigationList.Link label="Backend" />
+            </NavigationList.Link>
+          </NavigationList.Group>
+        </NavigationList>
+
+        <Heading>Row actions &amp; group actions</Heading>
+        <Paragraph>
+          <Text code>Link</Text> and <Text code>Group</Text> both accept an{' '}
+          <Text code>actions</Text> prop &mdash; a <Text code>JSX.Element</Text>{' '}
+          (or, for <Text code>Link</Text>, a{' '}
+          <Text code>{'(context) => JSX.Element'}</Text> that reads{' '}
+          <Text code>selected</Text>/<Text code>disabled</Text>) rendered at the
+          end of the row or in the group header. Clicks and keyboard activation
+          inside <Text code>actions</Text> are stopped from bubbling, so
+          triggering an action inside a <Text code>Link</Text> never also
+          navigates it.
+        </Paragraph>
+
+        <NavigationList style={{ height: 'auto' }}>
+          <NavigationList.Group
+            title="Projects"
+            actions={
+              <>
+                <NavAction label="New project" icon={<Plus />} />
+                <Dropdown
+                  content={
+                    <Dropdown.Menu>
+                      <Dropdown.Action label="Sort by name" />
+                      <Dropdown.Action label="Sort by activity" />
+                      <Dropdown.Action label="Hide archived" />
+                    </Dropdown.Menu>
+                  }
+                >
+                  <NavAction label="Options" icon={<MoreHorizontal />} />
+                </Dropdown>
+              </>
+            }
+          >
+            <NavigationList.Link
+              icon={<Hash />}
+              label="Alpha"
+              selected={sel('alpha')}
+              onClick={() => setSection('alpha')}
+            />
+            <NavigationList.Link
+              icon={<Hash />}
+              label="Beta — Redesign"
+              badge="3"
+              selected={sel('beta')}
+              onClick={() => setSection('beta')}
+              actions={
+                <>
+                  <NavAction label="Open in new tab" icon={<Globe />} />
+                  <NavAction label="Archive project" icon={<Archive />} />
+                </>
+              }
+            />
+          </NavigationList.Group>
+        </NavigationList>
+
+        <Heading>Badges &amp; trailing content</Heading>
+        <Paragraph>
+          <Text code>badge</Text> accepts a string, a number, or any element. For
+          richer trailing content &mdash; a status pill, a count with a colour
+          &mdash; drop a <Text code>Label</Text> straight into the link.
+        </Paragraph>
+
+        <NavigationList style={{ height: 'auto' }}>
+          <NavigationList.Group title="CI">
+            <NavigationList.Link
+              icon={<Play />}
+              label="Workflows"
+              selected={sel('workflows')}
+              onClick={() => setSection('workflows')}
+            />
+            <NavigationList.Link
+              icon={<Zap />}
+              label="Runs"
+              selected={sel('runs')}
+              onClick={() => setSection('runs')}
+            >
+              <Label color="danger" variant="soft" size="s">
+                2 failed
+              </Label>
+            </NavigationList.Link>
+            <NavigationList.Link
+              icon={<Archive />}
+              label="Artifacts"
+              badge={128}
+              selected={sel('artifacts')}
+              onClick={() => setSection('artifacts')}
+            />
+          </NavigationList.Group>
+        </NavigationList>
+
+        <Heading>Disabled</Heading>
+        <Paragraph>
+          A <Text code>disabled</Text> link drops its <Text code>href</Text>,
+          leaves the tab order (<Text code>tabindex="-1"</Text>), reports{' '}
+          <Text code>aria-disabled</Text>, and ignores clicks.
+        </Paragraph>
+
+        <NavigationList style={{ height: 'auto' }}>
+          <NavigationList.Group>
+            <NavigationList.Link
+              icon={<FolderOpen />}
+              label="Files"
+              selected={sel('files')}
+              onClick={() => setSection('files')}
+            />
+            <NavigationList.Link
+              icon={<GitBranch />}
+              label="Branches (upgrade to unlock)"
+              disabled
+            />
+          </NavigationList.Group>
+        </NavigationList>
+
+        <Heading>Long labels &amp; titles</Heading>
+        <Paragraph>
+          Group <Text code>title</Text> and link <Text code>label</Text> both
+          truncate with an ellipsis instead of wrapping or pushing the fixed{' '}
+          <Text code>--navigation-list-width</Text> wider — even when the
+          group also has header <Text code>actions</Text>, which keep their
+          own space and stay fully visible instead of being squeezed out.
+          The same holds for a link's badge, actions and nested&#8209;links
+          chevron.
+        </Paragraph>
+
+        <NavigationList style={{ height: 'auto' }}>
+          <NavigationList.Group
+            title="Quarterly Engineering Roadmap, Planning & Cross-functional Alignment"
+            actions={<NavAction label="Add item" icon={<Plus />} />}
+          >
+            <NavigationList.Link
+              icon={<LayoutDashboard />}
+              label="Cross-team Infrastructure Modernization Initiative"
+              selected={sel('long-1')}
+              onClick={() => setSection('long-1')}
+            />
+            <NavigationList.Link
+              icon={<Bell />}
+              label="Notifications and Alerting Pipeline Redesign"
+              badge="24"
+              selected={sel('long-2')}
+              onClick={() => setSection('long-2')}
+              actions={
+                <NavAction label="Open in new tab" icon={<Globe />} />
+              }
+            />
+            <NavigationList.Link
+              icon={<Users />}
+              label="Platform Reliability & On-call Rotation Working Group"
+              selected={sel('long-3')}
+              onClick={() => setSection('long-3')}
+            >
+              <NavigationList.Link
+                label="Incident Response Runbook Overhaul for Payment Services"
+                selected={sel('long-3-nested')}
+                onClick={() => setSection('long-3-nested')}
+              />
+            </NavigationList.Link>
+          </NavigationList.Group>
+        </NavigationList>
+
+        <Heading>Router integration with asChild</Heading>
+        <Paragraph>
+          Set <Text code>asChild</Text> and pass a single element &mdash; your
+          framework&apos;s <Text code>&lt;Link&gt;</Text> &mdash; as the child.{' '}
+          <Text code>NavigationList.Link</Text> merges its styling, ref and
+          interaction props onto that element instead of rendering its own{' '}
+          <Text code>&lt;a&gt;</Text>. The icon, label and badge still come from
+          props.
+        </Paragraph>
+
+        <NavigationList style={{ height: 'auto' }}>
+          <NavigationList.Group>
+            <NavigationList.Link
+              icon={<Home />}
+              label="Dashboard"
+              asChild
+              selected={sel('as-child')}
+              onClick={(e) => {
+                e.preventDefault();
+                setSection('as-child');
+              }}
+            >
+              <a href="#dashboard" />
+            </NavigationList.Link>
+          </NavigationList.Group>
+        </NavigationList>
+      </Flex>
+    );
+  },
+};
+
+// ─── Story: Project Management (Linear-style) ─────────────────────────────────
+
+type ProjectSection =
+  | 'home'
+  | 'inbox'
+  | 'my-issues'
+  | 'alpha'
+  | 'beta'
+  | 'gamma'
+  | 'delta'
+  | 'frontend'
+  | 'backend'
+  | 'devops'
+  | 'engineering'
+  | 'design'
+  | 'marketing'
+  | 'board'
+  | 'timeline'
+  | 'calendar';
+
+export const ProjectManagementStory: StoryObj<typeof NavigationList> = {
+  name: 'Project Management',
+  render: () => {
+    const [active, setActive] = useState<ProjectSection>('beta');
+    const sel = (id: ProjectSection) => active === id;
+
+    return (
+      <Flex gap="l" orientation="vertical">
+        <Text size={5} weight="bold" block>
+          Project Management
+        </Text>
+        <NavigationList>
+          <NavigationList.Header>
+            <Flex align="center" gap="s">
+              <Avatar firstName="Altrone" lastName="UI" size="s" />
+              <Flex
+                orientation="vertical"
+                gap="xs"
+                style={{ flex: 1, minWidth: 0 }}
+              >
+                <Text size={3} weight="bold" block>
+                  Altrone Workspace
+                </Text>
+                <Text size={2} color="muted" block>
+                  Free plan · 4 members
+                </Text>
+              </Flex>
+              <Button
+                icon={<Settings />}
+                showLabel={false}
+                label="Settings"
+                size="s"
+              />
+            </Flex>
+          </NavigationList.Header>
+
+          <NavigationList.Group>
+            <NavigationList.Link
+              icon={<Home />}
+              label="Home"
+              selected={sel('home')}
+              onClick={() => setActive('home')}
+            />
+            <NavigationList.Link
+              icon={<Inbox />}
+              label="Inbox"
+              selected={sel('inbox')}
+              onClick={() => setActive('inbox')}
+              badge="5"
+            />
+            <NavigationList.Link
+              icon={<CheckCircle2 />}
+              label="My Issues"
+              selected={sel('my-issues')}
+              onClick={() => setActive('my-issues')}
+              badge="12"
+            />
+          </NavigationList.Group>
+
+          <NavigationList.Group
+            title="Projects"
+            actions={
+              <>
+                <NavAction label="New project" icon={<Plus />} />
+                <Dropdown
+                  content={
+                    <Dropdown.Menu>
+                      <Dropdown.Action label="Sort by name" />
+                      <Dropdown.Action label="Sort by activity" />
+                      <Dropdown.Action label="Hide archived" />
+                    </Dropdown.Menu>
+                  }
+                >
+                  <NavAction label="Options" icon={<MoreHorizontal />} />
+                </Dropdown>
+              </>
+            }
+          >
+            <NavigationList.Link
+              icon={<Hash />}
+              label="Alpha"
+              selected={sel('alpha')}
+              onClick={() => setActive('alpha')}
+            />
+            <NavigationList.Link
+              icon={<Hash />}
+              label="Beta — Redesign"
+              selected={sel('beta')}
+              onClick={() => setActive('beta')}
+              badge="3"
+              actions={
+                <>
+                  <NavAction label="Open in new tab" icon={<Globe />} />
+                  <NavAction label="Archive project" icon={<Archive />} />
+                </>
+              }
+            />
+            <NavigationList.Link
+              icon={<Hash />}
+              label="Gamma"
+              selected={sel('gamma')}
+              onClick={() => setActive('gamma')}
+            />
+            <NavigationList.Link
+              icon={<Hash />}
+              label="Delta"
+              selected={sel('delta')}
+              onClick={() => setActive('delta')}
+              disabled
+            />
+          </NavigationList.Group>
+
+          <NavigationList.Group
+            title="Teams"
+            actions={<NavAction label="Add team" icon={<Plus />} />}
+          >
+            <NavigationList.Link
+              icon={<Users />}
+              label="Engineering"
+              selected={sel('engineering')}
+              onClick={() => setActive('engineering')}
+              badge="8"
+            >
+              <NavigationList.Link
+                label="Frontend"
+                selected={sel('frontend')}
+                onClick={() => setActive('frontend')}
+              />
+              <NavigationList.Link
+                label="Backend"
+                selected={sel('backend')}
+                onClick={() => setActive('backend')}
+              />
+              <NavigationList.Link
+                label="DevOps"
+                selected={sel('devops')}
+                onClick={() => setActive('devops')}
+                badge="2"
+              />
+            </NavigationList.Link>
+            <NavigationList.Link
+              icon={<Layers />}
+              label="Design"
+              selected={sel('design')}
+              onClick={() => setActive('design')}
+            />
+            <NavigationList.Link
+              icon={<BarChart2 />}
+              label="Marketing"
+              selected={sel('marketing')}
+              onClick={() => setActive('marketing')}
+            />
+          </NavigationList.Group>
+
+          <NavigationList.Group title="Views">
+            <NavigationList.Link
+              icon={<LayoutDashboard />}
+              label="Board"
+              selected={sel('board')}
+              onClick={() => setActive('board')}
+            />
+            <NavigationList.Link
+              icon={<GitBranch />}
+              label="Timeline"
+              selected={sel('timeline')}
+              onClick={() => setActive('timeline')}
+            />
+            <NavigationList.Link
+              icon={<Calendar />}
+              label="Calendar"
+              selected={sel('calendar')}
+              onClick={() => setActive('calendar')}
+            />
+          </NavigationList.Group>
+
+          <NavigationList.Footer>
+            <Flex align="center" gap="s">
+              <Avatar firstName="Alex" lastName="Chen" size="s" />
+              <Flex
+                orientation="vertical"
+                gap="xs"
+                style={{ flex: 1, minWidth: 0 }}
+              >
+                <Text size={3} block truncate>
+                  Alex Chen
+                </Text>
+                <Text size={2} color="muted" block>
+                  alex@altrone.dev
+                </Text>
+              </Flex>
+              <Button
+                icon={<Settings />}
+                showLabel={false}
+                label="Profile settings"
+                size="s"
+              />
+            </Flex>
+          </NavigationList.Footer>
+        </NavigationList>
+      </Flex>
+    );
+  },
+};
+
+// ─── Story: Code Repository (GitHub-style) ────────────────────────────────────
+
+type RepoSection =
+  | 'code'
+  | 'branches'
+  | 'tags'
+  | 'issues-all'
+  | 'issues-open'
+  | 'issues-closed'
+  | 'labels'
+  | 'pr-all'
+  | 'pr-draft'
+  | 'pr-review'
+  | 'runs'
+  | 'workflows'
+  | 'artifacts'
+  | 'general'
+  | 'branches-settings'
+  | 'access'
+  | 'webhooks';
+
+export const CodeRepositoryStory: StoryObj<typeof NavigationList> = {
+  name: 'Code Repository',
+  render: () => {
+    const [active, setActive] = useState<RepoSection>('pr-review');
+    const sel = (id: RepoSection) => active === id;
+
+    return (
+      <Flex gap="l" orientation="vertical">
+        <Text size={5} weight="bold" block>
+          Code Repository
+        </Text>
+        <NavigationList>
+          <NavigationList.Header>
+            <Flex orientation="vertical" gap="xs">
+              <Flex align="center" gap="s">
+                <Label color="blue" variant="soft" size="s">
+                  public
+                </Label>
+                <Text size={2} color="muted" block>
+                  altrone / altrone-ui
+                </Text>
+              </Flex>
+              <Flex align="center" gap="s" style={{ marginTop: 2 }}>
+                <Star size={14} />
+                <Text size={2} block>
+                  842 stars
+                </Text>
+                <GitBranch size={14} style={{ marginLeft: 8 }} />
+                <Text size={2} block>
+                  main
+                </Text>
+              </Flex>
+            </Flex>
+          </NavigationList.Header>
+
+          <NavigationList.Group title="Code">
+            <NavigationList.Link
+              icon={<FolderOpen />}
+              label="Files"
+              selected={sel('code')}
+              onClick={() => setActive('code')}
+              actions={<NavAction label="Clone repository" icon={<Globe />} />}
+            />
+            <NavigationList.Link
+              icon={<GitBranch />}
+              label="Branches"
+              selected={sel('branches')}
+              onClick={() => setActive('branches')}
+              badge="3"
+              actions={<NavAction label="New branch" icon={<Plus />} />}
+            />
+            <NavigationList.Link
+              icon={<Tag />}
+              label="Tags"
+              selected={sel('tags')}
+              onClick={() => setActive('tags')}
+              badge="12"
+            />
+          </NavigationList.Group>
+
+          <NavigationList.Group
+            title="Issues"
+            actions={
+              <>
+                <NavAction label="New issue" icon={<Plus />} />
+                <Dropdown
+                  content={
+                    <Dropdown.Menu>
+                      <Dropdown.Action label="Filter by assignee" />
+                      <Dropdown.Action label="Filter by label" />
+                      <Dropdown.Action label="Filter by milestone" />
+                    </Dropdown.Menu>
+                  }
+                >
+                  <NavAction label="Filter" icon={<Search />} />
+                </Dropdown>
+              </>
+            }
+          >
+            <NavigationList.Link
+              icon={<Circle />}
+              label="All issues"
+              selected={sel('issues-all')}
+              onClick={() => setActive('issues-all')}
+              badge="47"
+            />
+            <NavigationList.Link
+              icon={<Bug />}
+              label="Open"
+              selected={sel('issues-open')}
+              onClick={() => setActive('issues-open')}
+              badge="31"
+            />
+            <NavigationList.Link
+              icon={<CheckCircle2 />}
+              label="Closed"
+              selected={sel('issues-closed')}
+              onClick={() => setActive('issues-closed')}
+              badge="16"
+            />
+            <NavigationList.Link
+              icon={<Tag />}
+              label="Labels"
+              selected={sel('labels')}
+              onClick={() => setActive('labels')}
+            />
+          </NavigationList.Group>
+
+          <NavigationList.Group title="Pull Requests">
+            <NavigationList.Link
+              icon={<GitPullRequest />}
+              label="All PRs"
+              selected={sel('pr-all')}
+              onClick={() => setActive('pr-all')}
+              badge="4"
+            />
+            <NavigationList.Link
+              icon={<Pencil />}
+              label="Draft"
+              selected={sel('pr-draft')}
+              onClick={() => setActive('pr-draft')}
+              badge="1"
+            />
+            <NavigationList.Link
+              icon={<Zap />}
+              label="Review requested"
+              selected={sel('pr-review')}
+              onClick={() => setActive('pr-review')}
+              badge="2"
+              actions={<NavAction label="Approve all" icon={<CheckCircle2 />} />}
+            />
+          </NavigationList.Group>
+
+          <NavigationList.Group title="Actions">
+            <NavigationList.Link
+              icon={<Play />}
+              label="Workflows"
+              selected={sel('workflows')}
+              onClick={() => setActive('workflows')}
+            />
+            <NavigationList.Link
+              icon={<Zap />}
+              label="Runs"
+              selected={sel('runs')}
+              onClick={() => setActive('runs')}
+            >
+              <Label color="danger" variant="soft" size="s">
+                2 failed
+              </Label>
+            </NavigationList.Link>
+            <NavigationList.Link
+              icon={<Archive />}
+              label="Artifacts"
+              selected={sel('artifacts')}
+              onClick={() => setActive('artifacts')}
+              badge="8"
+            />
+          </NavigationList.Group>
+
+          <NavigationList.Group title="Settings">
+            <NavigationList.Link
+              icon={<Settings />}
+              label="General"
+              selected={sel('general')}
+              onClick={() => setActive('general')}
+            />
+            <NavigationList.Link
+              icon={<GitBranch />}
+              label="Branches"
+              selected={sel('branches-settings')}
+              onClick={() => setActive('branches-settings')}
+            />
+            <NavigationList.Link
+              icon={<Users />}
+              label="Collaborators"
+              selected={sel('access')}
+              onClick={() => setActive('access')}
+              badge="4"
+            />
+            <NavigationList.Link
+              icon={<Webhook />}
+              label="Webhooks"
+              selected={sel('webhooks')}
+              onClick={() => setActive('webhooks')}
+            />
+          </NavigationList.Group>
+
+          <NavigationList.Footer>
+            <Flex
+              align="center"
+              gap="s"
+              style={{ justifyContent: 'space-between' }}
+            >
+              <Flex align="center" gap="xs">
+                <Terminal size={14} />
+                <Text size={2} color="muted" block>
+                  v3.14.2 · MIT License
+                </Text>
+              </Flex>
+              <Button size="s" label="Clone" icon={<Code />} />
+            </Flex>
+          </NavigationList.Footer>
+        </NavigationList>
+      </Flex>
+    );
+  },
+};
+
+// ─── Story: E-commerce Admin ─────────────────────────────────────────────────
+
+type ShopSection =
+  | 'dashboard'
+  | 'products'
+  | 'categories'
+  | 'inventory'
+  | 'collections'
+  | 'orders-all'
+  | 'orders-new'
+  | 'orders-processing'
+  | 'orders-shipped'
+  | 'orders-returns'
+  | 'customers'
+  | 'segments'
+  | 'reviews'
+  | 'discounts'
+  | 'campaigns'
+  | 'email'
+  | 'payments'
+  | 'shipping'
+  | 'taxes'
+  | 'domains'
+  | 'integrations'
+  | 'team';
+
+export const EcommerceAdminStory: StoryObj<typeof NavigationList> = {
+  name: 'E-commerce Admin',
+  render: () => {
+    const [active, setActive] = useState<ShopSection>('orders-new');
+    const sel = (id: ShopSection) => active === id;
+
+    return (
+      <Flex gap="l" orientation="vertical">
+        <Text size={5} weight="bold" block>
+          E-commerce Admin
+        </Text>
+        <NavigationList>
+          <NavigationList.Header>
+            <Flex orientation="vertical" gap="s">
+              <Flex align="center" gap="s">
+                <Avatar firstName="Nova" lastName="Shop" size="s" />
+                <Flex orientation="vertical" gap="xs" style={{ flex: 1 }}>
+                  <Text size={3} weight="bold" block>
+                    Nova Shop
+                  </Text>
+                  <Flex align="center" gap="xs">
+                    <Label color="teal" variant="soft" size="s">
+                      Pro
+                    </Label>
+                    <Text size={2} color="muted" block>
+                      nova-shop.com
+                    </Text>
+                  </Flex>
+                </Flex>
+              </Flex>
+            </Flex>
+          </NavigationList.Header>
+
+          <NavigationList.Group>
+            <NavigationList.Link
+              icon={<LayoutDashboard />}
+              label="Dashboard"
+              selected={sel('dashboard')}
+              onClick={() => setActive('dashboard')}
+            />
+          </NavigationList.Group>
+
+          <NavigationList.Group
+            title="Catalog"
+            actions={<NavAction label="Add product" icon={<Plus />} />}
+          >
+            <NavigationList.Link
+              icon={<ShoppingBag />}
+              label="Products"
+              selected={sel('products')}
+              onClick={() => setActive('products')}
+              badge="1 240"
+              actions={
+                <>
+                  <NavAction label="Import via CSV" icon={<Package />} />
+                  <NavAction label="Bulk edit" icon={<Pencil />} />
+                </>
+              }
+            />
+            <NavigationList.Link
+              icon={<Layers />}
+              label="Categories"
+              selected={sel('categories')}
+              onClick={() => setActive('categories')}
+              badge="18"
+            />
+            <NavigationList.Link
+              icon={<Package />}
+              label="Inventory"
+              selected={sel('inventory')}
+              onClick={() => setActive('inventory')}
+            />
+            <NavigationList.Link
+              icon={<Star />}
+              label="Collections"
+              selected={sel('collections')}
+              onClick={() => setActive('collections')}
+              badge="6"
+            />
+          </NavigationList.Group>
+
+          <NavigationList.Group
+            title="Orders"
+            actions={<NavAction label="Export" icon={<Archive />} />}
+          >
+            <NavigationList.Link
+              icon={<ShoppingCart />}
+              label="All orders"
+              selected={sel('orders-all')}
+              onClick={() => setActive('orders-all')}
+              badge="384"
+            />
+            <NavigationList.Link
+              icon={<Zap />}
+              label="New"
+              selected={sel('orders-new')}
+              onClick={() => setActive('orders-new')}
+              badge="12"
+              actions={<NavAction label="Process all" icon={<CheckCircle2 />} />}
+            />
+            <NavigationList.Link
+              icon={<Clock />}
+              label="Processing"
+              selected={sel('orders-processing')}
+              onClick={() => setActive('orders-processing')}
+              badge="28"
+            />
+            <NavigationList.Link
+              icon={<Truck />}
+              label="Shipped"
+              selected={sel('orders-shipped')}
+              onClick={() => setActive('orders-shipped')}
+              badge="93"
+            />
+            <NavigationList.Link
+              icon={<Trash />}
+              label="Returns"
+              selected={sel('orders-returns')}
+              onClick={() => setActive('orders-returns')}
+              badge="7"
+            />
+          </NavigationList.Group>
+
+          <NavigationList.Group
+            title="Customers"
+            actions={<NavAction label="Add segment" icon={<Plus />} />}
+          >
+            <NavigationList.Link
+              icon={<Users />}
+              label="All customers"
+              selected={sel('customers')}
+              onClick={() => setActive('customers')}
+              badge="5 831"
+            />
+            <NavigationList.Link
+              icon={<Tag />}
+              label="Segments"
+              selected={sel('segments')}
+              onClick={() => setActive('segments')}
+              badge="9"
+            />
+            <NavigationList.Link
+              icon={<MessageSquare />}
+              label="Reviews"
+              selected={sel('reviews')}
+              onClick={() => setActive('reviews')}
+              badge="24"
+            />
+          </NavigationList.Group>
+
+          <NavigationList.Group title="Marketing">
+            <NavigationList.Link
+              icon={<Zap />}
+              label="Discounts"
+              selected={sel('discounts')}
+              onClick={() => setActive('discounts')}
+              badge="3 active"
+            />
+            <NavigationList.Link
+              icon={<BarChart2 />}
+              label="Campaigns"
+              selected={sel('campaigns')}
+              onClick={() => setActive('campaigns')}
+            />
+            <NavigationList.Link
+              icon={<Bell />}
+              label="Email"
+              selected={sel('email')}
+              onClick={() => setActive('email')}
+              badge="2"
+            />
+          </NavigationList.Group>
+
+          <NavigationList.Group title="Settings">
+            <NavigationList.Link
+              icon={<CreditCard />}
+              label="Payments"
+              selected={sel('payments')}
+              onClick={() => setActive('payments')}
+            />
+            <NavigationList.Link
+              icon={<Truck />}
+              label="Shipping"
+              selected={sel('shipping')}
+              onClick={() => setActive('shipping')}
+            />
+            <NavigationList.Link
+              icon={<Globe />}
+              label="Domains"
+              selected={sel('domains')}
+              onClick={() => setActive('domains')}
+            />
+            <NavigationList.Link
+              icon={<Webhook />}
+              label="Integrations"
+              selected={sel('integrations')}
+              onClick={() => setActive('integrations')}
+              badge="7"
+            />
+            <NavigationList.Link
+              icon={<Users />}
+              label="Team"
+              selected={sel('team')}
+              onClick={() => setActive('team')}
+              badge="6"
+            />
+          </NavigationList.Group>
+
+          <NavigationList.Footer>
+            <Flex
+              align="center"
+              gap="s"
+              style={{ justifyContent: 'space-between' }}
+            >
+              <Flex orientation="vertical" gap="xs">
+                <Text size={2} color="muted" block>
+                  Monthly revenue
+                </Text>
+                <Text size={3} weight="bold" block>
+                  $24 810
+                </Text>
+              </Flex>
+              <Label color="teal" variant="soft">
+                ↑ 12%
+              </Label>
+            </Flex>
+          </NavigationList.Footer>
+        </NavigationList>
+      </Flex>
+    );
+  },
+};
+
+// ─── Story: Nesting and truncation ────────────────────────────────────────────
+
+const LONG_LABEL =
+  'A very long item label that can never fit into the sidebar width';
+
+const DEEP_LEVELS = 6;
+
+const renderDeepLinks = (
+  level: number,
+  active: number,
+  setActive: (level: number) => void,
+): React.JSX.Element => (
+  <NavigationList.Link
+    icon={level % 2 ? <FolderOpen /> : <Layers />}
+    label={`Level ${level}`}
+    selected={active >= level}
+    onClick={(e) => {
+      e.preventDefault();
+      setActive(level);
+    }}
+  >
+    {level < DEEP_LEVELS ? renderDeepLinks(level + 1, active, setActive) : null}
+  </NavigationList.Link>
+);
+
+export const NestingAndTruncationStory: StoryObj<typeof NavigationList> = {
+  name: 'Nesting and Truncation',
+  render: () => {
+    const [active, setActive] = useState('own');
+    const [deepActive, setDeepActive] = useState(DEEP_LEVELS);
+    const sel = (id: string) => active === id;
+    const pick = (id: string) => (e: React.MouseEvent) => {
+      e.preventDefault();
+      setActive(id);
+    };
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={9} weight="bold">
+          Nesting and truncation
+        </Text>
+
+        <Paragraph>
+          Only the item that is actually selected gets the raised highlight. Its
+          parents stay selected too, but are marked with a quiet gray fill so
+          the path to the current page is visible without competing with it.
+          Every fill wraps the item's own content — icon included — at any
+          depth.
+        </Paragraph>
+
+        <Heading>Selected path</Heading>
+        <Paragraph>
+          Choose any item: the parents of the selected one are tinted gray.
+        </Paragraph>
+        <NavigationList>
+          <NavigationList.Group title="Restaurants">
+            <NavigationList.Link
+              icon={<FolderOpen />}
+              label="Restaurants"
+              selected={['own', 'franchise', 'franchise-all'].includes(active)}
+              onClick={pick('own')}
+            >
+              <NavigationList.Link
+                icon={<FolderOpen />}
+                label="Own"
+                selected={sel('own')}
+                onClick={pick('own')}
+              />
+              <NavigationList.Link
+                icon={<FolderOpen />}
+                label="Franchise"
+                selected={['franchise', 'franchise-all'].includes(active)}
+                onClick={pick('franchise')}
+              >
+                <NavigationList.Link
+                  icon={<Layers />}
+                  label="All franchise restaurants"
+                  selected={sel('franchise-all')}
+                  onClick={pick('franchise-all')}
+                />
+                <NavigationList.Link
+                  label="Without an icon"
+                  selected={sel('franchise-plain')}
+                  onClick={pick('franchise-plain')}
+                />
+              </NavigationList.Link>
+            </NavigationList.Link>
+          </NavigationList.Group>
+        </NavigationList>
+
+        <Heading>Deep nesting</Heading>
+        <Paragraph>
+          Six levels deep. Select any level to see the whole path above it
+          tinted gray.
+        </Paragraph>
+        <NavigationList>
+          <NavigationList.Group title="Deep tree">
+            {renderDeepLinks(1, deepActive, setDeepActive)}
+          </NavigationList.Group>
+        </NavigationList>
+
+        <Heading>Truncated labels</Heading>
+        <Paragraph>
+          A label that doesn't fit is cut with an ellipsis on every level, with
+          or without an icon, badge and actions.
+        </Paragraph>
+        <NavigationList>
+          <NavigationList.Group title={LONG_LABEL}>
+            <NavigationList.Link
+              icon={<Home />}
+              label={LONG_LABEL}
+              badge={12}
+              actions={<NavAction label="Edit" icon={<Pencil />} />}
+              selected
+            >
+              <NavigationList.Link
+                icon={<Inbox />}
+                label={LONG_LABEL}
+                badge={3}
+                actions={<NavAction label="Edit" icon={<Pencil />} />}
+                selected={sel('long-2')}
+                onClick={pick('long-2')}
+              >
+                <NavigationList.Link
+                  icon={<Tag />}
+                  label={LONG_LABEL}
+                  badge={7}
+                  actions={<NavAction label="Edit" icon={<Pencil />} />}
+                  selected={sel('long-3')}
+                  onClick={pick('long-3')}
+                />
+                <NavigationList.Link
+                  label={LONG_LABEL}
+                  selected={sel('long-3-plain')}
+                  onClick={pick('long-3-plain')}
+                />
+              </NavigationList.Link>
+            </NavigationList.Link>
+            <NavigationList.Link
+              label={LONG_LABEL}
+              disabled
+              icon={<Archive />}
+            />
+          </NavigationList.Group>
+        </NavigationList>
+      </Flex>
+    );
+  },
+};

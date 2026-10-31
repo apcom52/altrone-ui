@@ -1,18 +1,27 @@
-:global(:root) {
-  --breadcrumbsSeparatorColor: var(--default-300);
-}
+:global([data-altrone-root='true']) {
+  --breadcrumbs-item-text-color: var(--text-2);
+  --breadcrumbs-current-item-text-color: var(--accent-12);
+  --breadcrumbs-item-hover-text-color: var(--accent-11);
 
-:global(.AltroneDark) {
-  --breadcrumbsSeparatorColor: var(--default-600);
+  --breadcrumbs-text-size: var(--text-size-4);
+  --breadcrumbs-icon-size: 16px;
+
+  --breadcrumbs-separator-color: var(--border-3);
+  --breadcrumbs-separator-size: 16px;
 }
 
 .Breadcrumbs {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--l-gap);
+  min-width: 0;
 }
 
-.Separator {
-  color: var(--breadcrumbsSeparatorColor);
+.List {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--l-gap);
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }

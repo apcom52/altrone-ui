@@ -1,0 +1,29 @@
+:global([data-altrone-root='true']) {
+  /**
+   * Elevation pairs a z-index level with a shadow recipe under one named
+   * role, instead of the two being picked independently per component.
+   * z-index and box-shadow are different CSS properties, so a role can't
+   * be a single var() — apply both halves to the elevated element.
+   *
+   * @example
+   *   z-index: var(--elevation-modal-z-index);
+   *   box-shadow: var(--elevation-modal-shadow);
+   */
+  --elevation-flat-z-index: auto;
+  --elevation-flat-shadow: var(--shadow-none);
+
+  --elevation-raised-z-index: auto;
+  --elevation-raised-shadow: var(--shadow-1), var(--shadow-2);
+
+  --elevation-sticky-z-index: var(--level-sticky);
+  --elevation-sticky-shadow: var(--shadow-1);
+
+  --elevation-overlay-z-index: var(--level-popover);
+  --elevation-overlay-shadow: var(--shadow-1), var(--shadow-4);
+
+  --elevation-modal-z-index: var(--level-modal);
+  --elevation-modal-shadow: var(--shadow-1), var(--shadow-5);
+
+  --elevation-toast-z-index: var(--level-toast);
+  --elevation-toast-shadow: var(--shadow-1), var(--shadow-5);
+}

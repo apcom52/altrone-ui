@@ -1,17 +1,23 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Button, Divider, Flex, Text } from 'components';
+import { Button, Divider, Flex, Slider, Text, TextInput } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { ColorPicker } from './ColorPicker.tsx';
 import { COLORS } from './COLORS.ts';
 import { useState } from 'react';
+import { ColorPreset } from './ColorPicker.types.ts';
+import {
+  Baseline,
+  Bold,
+  Highlighter,
+  Italic,
+  Underline,
+} from 'lucide-react';
 
 const story: Meta<typeof ColorPicker> = {
-  title: 'Components/Form/ColorPicker',
+  title: 'Components/Controls/ColorPicker',
   component: ColorPicker,
   decorators: [StorybookDecorator],
-  args: {},
-  argTypes: {},
   parameters: {
     chromatic: {
       modes: {
@@ -21,111 +27,795 @@ const story: Meta<typeof ColorPicker> = {
   },
 };
 
-export const ColorPickerStory: StoryObj<typeof Divider> = {
-  name: 'Using ColorPicker',
+export default story;
+
+type Story = StoryObj<typeof ColorPicker>;
+
+const Heading = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={6} weight="bold" style={{ marginTop: 8 }}>
+    {children}
+  </Text>
+);
+
+const Lead = ({ children }: { children: React.ReactNode }) => (
+  <Text block size={3} style={{ maxWidth: 620, lineHeight: 1.6 }}>
+    {children}
+  </Text>
+);
+
+const Field = ({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) => (
+  <Flex orientation="vertical" gap="xs">
+    <Text size={2} color="muted">
+      {label}
+    </Text>
+    {children}
+  </Flex>
+);
+
+const BRAND_COLORS: ColorPreset[] = [
+  { name: 'Iris', title: 'Iris', value: '#5b5bd6' },
+  { name: 'Iris Deep', title: 'Iris Deep', value: '#3a3aa8' },
+  { name: 'Mint', title: 'Mint', value: '#3dd68c' },
+  { name: 'Sun', title: 'Sun', value: '#f5a623' },
+  { name: 'Ember', title: 'Ember', value: '#e5484d' },
+  { name: 'Ink', title: 'Ink', value: '#1c2024' },
+  { name: 'Fog', title: 'Fog', value: '#e6e8eb' },
+];
+
+/* ------------------------------------------------------------------ */
+/* 1. Three ways to pick                                               */
+/* ------------------------------------------------------------------ */
+
+export const ThreeWaysToPick: Story = {
+  name: 'Three ways to pick',
   render: () => {
-    const [color, setColor] = useState<string | undefined>(undefined);
-    const [color2, setColor2] = useState<string | undefined>('#abcdef');
-    const [color3, setColor3] = useState<string | undefined>(COLORS[8].value);
+    const [full, setFull] = useState<string | undefined>('#5b5bd6');
+    const [paletteOnly, setPaletteOnly] = useState<string | undefined>(
+      '#3dd68c',
+    );
+    const [presetsOnly, setPresetsOnly] = useState<string | undefined>(
+      COLORS[4].value,
+    );
+    const [erasable, setErasable] = useState<string | undefined>('#f5a623');
 
     return (
-      <Flex direction="vertical" gap="l">
-        <Text.Heading role="inner">Standard ColorPicker</Text.Heading>
-        <Flex direction="horizontal" gap="m">
-          <ColorPicker
-            colorPresets={COLORS}
-            value={color}
-            onChange={setColor}
-            clearable
-          />
-          <ColorPicker
-            placeholder="Only palette"
-            value={color2}
-            onChange={setColor2}
-          />
-          <ColorPicker
-            placeholder="Only saved colors"
-            colorPresets={COLORS}
-            value={color3}
-            onChange={setColor3}
-            allowPalette={false}
-          />
-        </Flex>
-        <Text.Heading role="inner">Transparent ColorPicker</Text.Heading>
-        <Flex direction="horizontal" gap="m">
-          <ColorPicker
-            placeholder="With saved colors and palette"
-            colorPresets={COLORS}
-            value={color}
-            onChange={setColor}
-            transparent
-          />
-        </Flex>
-        <Text.Heading role="inner">Disabled state</Text.Heading>
-        <Flex direction="horizontal" gap="m">
-          <ColorPicker
-            placeholder="Disabled state without value"
-            colorPresets={COLORS}
-            disabled
-            onChange={() => null}
-          />
-          <ColorPicker
-            disabled
-            value="#123abc"
-            onChange={() => null}
-            placeholder="Disabled state with value"
-          />
-        </Flex>
-        <Text.Heading role="inner">Readonly state</Text.Heading>
-        <Flex direction="horizontal" gap="m">
-          <ColorPicker
-            placeholder="Disabled state without value"
-            colorPresets={COLORS}
-            readOnly
-            onChange={() => null}
-          />
-          <ColorPicker
-            readOnly
-            value="#123abc"
-            onChange={() => null}
-            placeholder="Readonly state with value"
-          />
-        </Flex>
-        <Text.Heading role="inner">Different sizes</Text.Heading>
-        <Flex direction="horizontal" gap="m">
-          <ColorPicker
-            placeholder="With saved colors and palette"
-            colorPresets={COLORS}
-            value={color}
-            onChange={setColor}
-            size="s"
-          />
-          <ColorPicker
-            placeholder="With saved colors and palette"
-            colorPresets={COLORS}
-            value={color}
-            onChange={setColor}
-            size="l"
-          />
-        </Flex>
-        <Text.Heading role="inner">Custom render function</Text.Heading>
-        <Flex direction="horizontal" gap="m">
-          <ColorPicker
-            placeholder="Custom render function"
-            colorPresets={COLORS}
-            value={color}
-            onChange={setColor}
-            renderFunc={({ value, setValue }) => (
-              <div style={{ backgroundColor: color }}>
-                Current color is: {value}.{' '}
-                <Button label="clear" onClick={() => setValue(undefined)} />
-              </div>
-            )}
-          />
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 720 }}>
+        <Heading>Three ways to pick</Heading>
+        <Lead>
+          The popover adapts to what you give it. Pass{' '}
+          <Text code>colorPresets</Text> and consumers get a swatch grid; the
+          free-form palette rides alongside it on a second tab. Drop the presets
+          and the palette fills the whole popover. Set{' '}
+          <Text code>allowPalette={'{false}'}</Text> and the picker becomes a
+          strict swatch chooser with no way to invent an off-brand colour.{' '}
+          <Text code>clearable</Text> adds a &ldquo;Clear&rdquo; action that
+          calls <Text code>onChange(undefined)</Text> — the readout under the
+          last field confirms it actually lands as <Text code>undefined</Text>,
+          not just the field going blank visually.
+        </Lead>
+
+        <Flex orientation="horizontal" gap="l" wrap align="start">
+          <Field label="Presets + palette">
+            <ColorPicker
+              colorPresets={COLORS}
+              value={full}
+              onChange={setFull}
+            />
+          </Field>
+          <Field label="Palette only">
+            <ColorPicker
+              value={paletteOnly}
+              onChange={setPaletteOnly}
+              placeholder="Pick a colour"
+            />
+          </Field>
+          <Field label="Presets only — allowPalette={false}">
+            <ColorPicker
+              colorPresets={COLORS}
+              value={presetsOnly}
+              onChange={setPresetsOnly}
+              allowPalette={false}
+              placeholder="From the set"
+            />
+          </Field>
+          <Field label="clearable — adds a Clear action next to Apply">
+            <Flex orientation="vertical" gap="xs">
+              <ColorPicker
+                colorPresets={COLORS}
+                value={erasable}
+                onChange={setErasable}
+                clearable
+                placeholder="Optional colour"
+              />
+              <Text size={1} color="muted">
+                Stored value: {erasable ?? 'undefined (cleared)'}
+              </Text>
+            </Flex>
+          </Field>
         </Flex>
       </Flex>
     );
   },
 };
 
-export default story;
+/* ------------------------------------------------------------------ */
+/* 2. Gradient Forge                                                   */
+/* ------------------------------------------------------------------ */
+
+export const GradientForge: Story = {
+  name: 'Gradient Forge',
+  render: () => {
+    const [angle, setAngle] = useState(135);
+    const [stops, setStops] = useState<string[]>([
+      '#5b5bd6',
+      '#e5484d',
+      '#f5a623',
+    ]);
+
+    const css = `linear-gradient(${angle}deg, ${stops.join(', ')})`;
+
+    const setStop = (index: number, next?: string) =>
+      setStops((prev) =>
+        prev.map((stop, i) => (i === index ? next ?? stop : stop)),
+      );
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 640 }}>
+        <Heading>Gradient Forge</Heading>
+        <Lead>
+          Three pickers, one angle slider, and a running CSS declaration. Each
+          swatch feeds a stop in a <Text code>linear-gradient()</Text>; the
+          preview and the code block update on every change.
+        </Lead>
+
+        <div
+          style={{
+            height: 160,
+            borderRadius: 14,
+            border: '1px solid var(--border-1)',
+            background: css,
+          }}
+        />
+
+        <Flex orientation="horizontal" gap="l" wrap align="start">
+          {stops.map((stop, index) => (
+            <Field key={index} label={`Stop ${index + 1}`}>
+              <ColorPicker
+                value={stop}
+                onChange={(next) => setStop(index, next)}
+                colorPresets={BRAND_COLORS}
+              />
+            </Field>
+          ))}
+          <Field label={`Angle — ${angle}°`}>
+            <div style={{ width: 220 }}>
+              <Slider
+                min={0}
+                max={360}
+                value={angle}
+                onChange={setAngle}
+                renderLabel={(value) => `${value}°`}
+                showCurrentValue="always"
+              />
+            </div>
+          </Field>
+        </Flex>
+
+        <Text
+          block
+          code
+          style={{
+            display: 'block',
+            padding: '12px 16px',
+            background: 'var(--gray-a3)',
+            borderRadius: 'var(--radius-s)',
+            whiteSpace: 'pre-wrap',
+          }}
+        >
+          {`background: ${css};`}
+        </Text>
+      </Flex>
+    );
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* 3. Neon Sign Studio                                                 */
+/* ------------------------------------------------------------------ */
+
+export const NeonSignStudio: Story = {
+  name: 'Neon Sign Studio',
+  render: () => {
+    const [glow, setGlow] = useState<string | undefined>('#3dd68c');
+    const [wall, setWall] = useState<string | undefined>('#1c2024');
+    const [word, setWord] = useState('altrone');
+
+    const glowColor = glow ?? '#ffffff';
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 620 }}>
+        <Heading>Neon Sign Studio</Heading>
+        <Lead>
+          A picker is only as good as the thing it recolours. Here the glow
+          swatch drives a stack of <Text code>text-shadow</Text> layers and the
+          wall swatch paints the backdrop — the alpha channel of the palette is
+          handy for a soft outer bloom.
+        </Lead>
+
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: 200,
+            borderRadius: 16,
+            background: wall,
+            border: '1px solid var(--border-1)',
+          }}
+        >
+          <span
+            style={{
+              fontSize: 56,
+              fontWeight: 700,
+              letterSpacing: 4,
+              color: '#fdfdfd',
+              textShadow: `0 0 4px ${glowColor}, 0 0 12px ${glowColor}, 0 0 32px ${glowColor}, 0 0 64px ${glowColor}`,
+            }}
+          >
+            {word || 'neon'}
+          </span>
+        </div>
+
+        <Flex orientation="horizontal" gap="l" wrap align="start">
+          <Field label="Glow (try the alpha slider)">
+            <ColorPicker value={glow} onChange={setGlow} />
+          </Field>
+          <Field label="Wall">
+            <ColorPicker
+              value={wall}
+              onChange={setWall}
+              colorPresets={[
+                { name: 'Ink', title: 'Ink', value: '#1c2024' },
+                { name: 'Plum', title: 'Plum', value: '#2b1a2e' },
+                { name: 'Navy', title: 'Navy', value: '#13233b' },
+                { name: 'Coal', title: 'Coal', value: '#0a0a0a' },
+              ]}
+              allowPalette={false}
+            />
+          </Field>
+          <Field label="Sign text">
+            <TextInput
+              value={word}
+              maxLength={10}
+              onChange={setWord}
+              style={{ width: 160 }}
+            />
+          </Field>
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* 4. Building a palette                                               */
+/* ------------------------------------------------------------------ */
+
+const TOKENS = [
+  { name: '--accent', fallback: '#5b5bd6' },
+  { name: '--accent-hover', fallback: '#4a4ac2' },
+  { name: '--surface', fallback: '#ffffff' },
+  { name: '--text', fallback: '#1c2024' },
+];
+
+export const BuildingAPalette: Story = {
+  name: 'Building a palette',
+  render: () => {
+    const [values, setValues] = useState<Record<string, string | undefined>>(
+      Object.fromEntries(TOKENS.map((token) => [token.name, token.fallback])),
+    );
+
+    const resolve = (name: string) =>
+      values[name] ?? TOKENS.find((token) => token.name === name)?.fallback;
+
+    return (
+      <Flex orientation="horizontal" gap="xl" style={{ padding: 24 }} wrap>
+        <Flex orientation="vertical" gap="m" style={{ maxWidth: 380 }}>
+          <Heading>Building a palette</Heading>
+          <Lead>
+            Four tokens, four pickers. Brand presets keep the common choices one
+            click away; the palette tab is there for the moment a designer wants
+            a value that isn&apos;t in the system yet.
+          </Lead>
+
+          <Flex orientation="vertical" gap="s">
+            {TOKENS.map((token) => (
+              <Flex
+                key={token.name}
+                orientation="horizontal"
+                gap="m"
+                align="center"
+                style={{
+                  padding: '8px 12px',
+                  borderRadius: 8,
+                  border: '1px solid var(--border-1)',
+                  background: 'var(--background-2)',
+                }}
+              >
+                <div
+                  style={{
+                    width: 26,
+                    height: 26,
+                    borderRadius: 6,
+                    background: resolve(token.name),
+                    border: '1px solid var(--border-a2)',
+                    flexShrink: 0,
+                  }}
+                />
+                <Text code style={{ flex: 1, fontSize: 12 }}>
+                  {token.name}
+                </Text>
+                <ColorPicker
+                  value={values[token.name]}
+                  onChange={(next) =>
+                    setValues((prev) => ({ ...prev, [token.name]: next }))
+                  }
+                  colorPresets={BRAND_COLORS}
+                  size="s"
+                  clearable
+                />
+              </Flex>
+            ))}
+          </Flex>
+        </Flex>
+
+        <Flex orientation="vertical" gap="xs">
+          <Text size={2} color="muted">
+            Live preview
+          </Text>
+          <div
+            style={{
+              width: 260,
+              padding: 20,
+              borderRadius: 12,
+              background: resolve('--surface'),
+              border: '1px solid var(--border-1)',
+              color: resolve('--text'),
+            }}
+          >
+            <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 6 }}>
+              Weekly digest
+            </div>
+            <div style={{ fontSize: 13, opacity: 0.75, marginBottom: 16 }}>
+              Twelve people joined your workspace this week.
+            </div>
+            <button
+              style={{
+                border: 'none',
+                borderRadius: 8,
+                padding: '8px 14px',
+                color: '#fff',
+                fontWeight: 600,
+                cursor: 'pointer',
+                background: resolve('--accent'),
+              }}
+              onMouseEnter={(event) => {
+                event.currentTarget.style.background =
+                  resolve('--accent-hover') ?? '';
+              }}
+              onMouseLeave={(event) => {
+                event.currentTarget.style.background = resolve('--accent') ?? '';
+              }}
+            >
+              View report
+            </button>
+          </div>
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* 5. Writing desk                                                     */
+/* ------------------------------------------------------------------ */
+
+const TEXT_COLORS: ColorPreset[] = [
+  { name: 'Ink', title: 'Ink', value: '#1c2024' },
+  { name: 'Slate', title: 'Slate', value: '#3b4149' },
+  { name: 'Rust', title: 'Rust', value: '#ad1a12' },
+  { name: 'Pine', title: 'Pine', value: '#1a7f5a' },
+  { name: 'Sea', title: 'Sea', value: '#1f6feb' },
+  { name: 'Plum', title: 'Plum', value: '#7c3aed' },
+];
+
+const HIGHLIGHT_COLORS: ColorPreset[] = [
+  { name: 'Butter', title: 'Butter', value: '#fef08a' },
+  { name: 'Aloe', title: 'Aloe', value: '#bbf7d0' },
+  { name: 'Sky', title: 'Sky', value: '#bae6fd' },
+  { name: 'Rose', title: 'Rose', value: '#fbcfe8' },
+];
+
+export const WritingDesk: Story = {
+  name: 'Writing desk',
+  render: () => {
+    const [textColor, setTextColor] = useState<string | undefined>('#1c2024');
+    const [highlight, setHighlight] = useState<string | undefined>('#fef08a');
+    const [paper, setPaper] = useState<string | undefined>('#ffffff');
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 620 }}>
+        <Heading>Writing desk</Heading>
+        <Lead>
+          The realistic case: colour controls tucked into a formatting toolbar,
+          each one an <Text code>asChild</Text> trigger so the picker rides on a{' '}
+          <Text code>Button</Text> instead of a text field. Character colour and
+          page colour keep the full palette; the highlighter is locked to a
+          short preset list.
+        </Lead>
+
+        <Flex
+          orientation="horizontal"
+          gap="xs"
+          align="center"
+          style={{
+            border: '1px solid var(--border-1)',
+            borderRadius: 10,
+            padding: '6px 8px',
+            width: 'fit-content',
+          }}
+        >
+          <Button icon={<Bold />} label="Bold" showLabel={false} variant="text" />
+          <Button
+            icon={<Italic />}
+            label="Italic"
+            showLabel={false}
+            variant="text"
+          />
+          <Button
+            icon={<Underline />}
+            label="Underline"
+            showLabel={false}
+            variant="text"
+          />
+
+          <Divider orientation="vertical" style={{ height: 20, margin: '0 4px' }} />
+
+          <ColorPicker
+            value={textColor}
+            onChange={setTextColor}
+            colorPresets={TEXT_COLORS}
+            asChild
+          >
+            <Button
+              title="Character colour"
+              label="Character colour"
+              showLabel={false}
+              variant="text"
+              icon={
+                <Flex orientation="vertical" align="center" style={{ gap: 2 }}>
+                  <Baseline />
+                  <div
+                    style={{
+                      width: 14,
+                      height: 3,
+                      borderRadius: 2,
+                      background: textColor || 'var(--text-2)',
+                    }}
+                  />
+                </Flex>
+              }
+            />
+          </ColorPicker>
+
+          <ColorPicker
+            value={highlight}
+            onChange={setHighlight}
+            colorPresets={HIGHLIGHT_COLORS}
+            allowPalette={false}
+            asChild
+          >
+            <Button
+              title="Highlight colour"
+              label="Highlight colour"
+              showLabel={false}
+              variant="text"
+              icon={
+                <Flex orientation="vertical" align="center" style={{ gap: 2 }}>
+                  <Highlighter />
+                  <div
+                    style={{
+                      width: 14,
+                      height: 3,
+                      borderRadius: 2,
+                      background: highlight || 'transparent',
+                      border: highlight ? 'none' : '1px dashed var(--border-2)',
+                    }}
+                  />
+                </Flex>
+              }
+            />
+          </ColorPicker>
+
+          <Divider orientation="vertical" style={{ height: 20, margin: '0 4px' }} />
+
+          <ColorPicker
+            value={paper}
+            onChange={setPaper}
+            colorPresets={[
+              { name: 'White', title: 'White', value: '#ffffff' },
+              { name: 'Cream', title: 'Cream', value: '#fffbeb' },
+              { name: 'Mist', title: 'Mist', value: '#eff6ff' },
+              { name: 'Sage', title: 'Sage', value: '#f0fdf4' },
+            ]}
+            clearable
+            asChild
+          >
+            <Button label="Page colour" variant="text" showLabel={false} title="Page colour" />
+          </ColorPicker>
+        </Flex>
+
+        <div
+          style={{
+            padding: '28px 32px',
+            borderRadius: 12,
+            border: '1px solid var(--border-1)',
+            background: paper,
+            minHeight: 140,
+          }}
+        >
+          <p style={{ margin: 0, color: textColor, lineHeight: 1.7, fontSize: 15 }}>
+            The quick brown fox jumps over the lazy dog.{' '}
+            <span
+              style={{
+                background: highlight,
+                borderRadius: 3,
+                padding: '1px 3px',
+              }}
+            >
+              This clause is highlighted
+            </span>{' '}
+            and the paragraph as a whole uses the chosen character colour on the
+            chosen page colour.
+          </p>
+        </div>
+      </Flex>
+    );
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* 6. Sizes, states & custom triggers                                  */
+/* ------------------------------------------------------------------ */
+
+export const SizesStatesAndTriggers: Story = {
+  name: 'Sizes, states & custom triggers',
+  render: () => {
+    const [value, setValue] = useState<string | undefined>('#5b5bd6');
+    const [swatch, setSwatch] = useState<string | undefined>('#e5484d');
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 720 }}>
+        <Heading>Sizes</Heading>
+        <Lead>
+          The trigger is a <Text code>TextInput</Text> under the hood, so it
+          honours the same <Text code>size</Text> scale. The preview dot and the
+          hex / RGB inputs inside the popover follow suit.
+        </Lead>
+        <Flex orientation="horizontal" gap="l" align="center" wrap>
+          {(['mini', 's', 'm', 'l', 'xl'] as const).map((size) => (
+            <Field key={size} label={`size="${size}"`}>
+              <ColorPicker
+                value={value}
+                onChange={setValue}
+                size={size}
+                colorPresets={COLORS}
+              />
+            </Field>
+          ))}
+        </Flex>
+
+        <Divider />
+
+        <Heading>States</Heading>
+        <Lead>
+          With no <Text code>value</Text> and no explicit{' '}
+          <Text code>placeholder</Text>, the trigger falls back to
+          &ldquo;Choose a color&rdquo; and the preview swatch renders as a{' '}
+          <Text code>pale</Text>-material circle instead of a real color fill.
+        </Lead>
+        <Flex orientation="horizontal" gap="l" align="center" wrap>
+          <Field label="default">
+            <ColorPicker value="#5b5bd6" onChange={() => {}} />
+          </Field>
+          <Field label="readOnly">
+            <ColorPicker value="#5b5bd6" onChange={() => {}} readOnly />
+          </Field>
+          <Field label="disabled">
+            <ColorPicker value="#5b5bd6" onChange={() => {}} disabled />
+          </Field>
+          <Field label="empty — default placeholder">
+            <ColorPicker onChange={() => {}} />
+          </Field>
+          <Field label="transparent">
+            <ColorPicker value="#5b5bd6" onChange={() => {}} transparent />
+          </Field>
+        </Flex>
+
+        <Divider />
+
+        <Heading>Custom triggers</Heading>
+        <Lead>
+          <Text code>asChild</Text> merges the trigger behaviour onto whatever
+          single element you pass — a bare swatch, a labelled button, or an
+          inline chip inside running text.
+        </Lead>
+
+        <Flex orientation="horizontal" gap="xl" align="center" wrap>
+          <Field label="Bare swatch">
+            <ColorPicker
+              value={swatch}
+              onChange={setSwatch}
+              colorPresets={COLORS}
+              clearable
+              asChild
+            >
+              <div
+                title="Click to recolour"
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: '50%',
+                  background: swatch || 'var(--interactive-2)',
+                  border: '2px solid var(--border-2)',
+                  cursor: 'pointer',
+                }}
+              />
+            </ColorPicker>
+          </Field>
+
+          <Field label="Labelled button">
+            <ColorPicker
+              value={swatch}
+              onChange={setSwatch}
+              colorPresets={COLORS}
+              asChild
+            >
+              <Button
+                label={swatch ?? 'Choose'}
+                icon={
+                  <div
+                    style={{
+                      width: 12,
+                      height: 12,
+                      borderRadius: 3,
+                      background: swatch || 'var(--border-2)',
+                      border: '1px solid var(--border-a2)',
+                      flexShrink: 0,
+                    }}
+                  />
+                }
+              />
+            </ColorPicker>
+          </Field>
+
+          <Field label="Inline in text">
+            <Flex orientation="horizontal" gap="xs" align="center">
+              <Text>Accent</Text>
+              <ColorPicker value={swatch} onChange={setSwatch} asChild>
+                <span
+                  style={{
+                    display: 'inline-block',
+                    width: 18,
+                    height: 18,
+                    borderRadius: 4,
+                    background: swatch || 'var(--interactive-2)',
+                    border: '1px solid var(--border-2)',
+                    cursor: 'pointer',
+                    verticalAlign: 'middle',
+                  }}
+                />
+              </ColorPicker>
+              <Text>{swatch ?? '—'}</Text>
+            </Flex>
+          </Field>
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* 7. Custom icons                                                     */
+/* ------------------------------------------------------------------ */
+
+export const CustomIcons: Story = {
+  name: 'Custom icons',
+  render: () => {
+    const [value, setValue] = useState<string | undefined>('#5b5bd6');
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ padding: 24, maxWidth: 620 }}>
+        <Heading>Custom icons</Heading>
+        <Lead>
+          <Text code>openIcon</Text>/<Text code>closeIcon</Text> override the
+          trigger chevron (shared with other components via{' '}
+          <Text code>Application</Text>&apos;s <Text code>icons</Text> prop),
+          while <Text code>presetsTabIcon</Text>/<Text code>paletteTabIcon</Text>{' '}
+          are unique to <Text code>ColorPicker</Text> and only take a local
+          override.
+        </Lead>
+        <ColorPicker
+          value={value}
+          onChange={setValue}
+          colorPresets={BRAND_COLORS}
+          openIcon={<Underline />}
+          closeIcon={<Bold />}
+          presetsTabIcon={<Baseline />}
+          paletteTabIcon={<Italic />}
+        />
+      </Flex>
+    );
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* 8. Keyboard                                                         */
+/* ------------------------------------------------------------------ */
+
+export const Keyboard: Story = {
+  name: 'Keyboard',
+  render: () => {
+    const [color, setColor] = useState<string | undefined>('#5b5bd6');
+    const [accent, setAccent] = useState<string | undefined>('#3dd68c');
+
+    return (
+      <Flex
+        orientation="vertical"
+        gap="l"
+        style={{ padding: 24, maxWidth: 720 }}
+      >
+        <Heading>Picking a colour without a mouse</Heading>
+        <Lead>
+          Focus a field and press <Text kbd>Enter</Text>, <Text kbd>Space</Text>{' '}
+          or <Text kbd>↓</Text>. Focus moves straight into the popover and stays
+          there: <Text kbd>Tab</Text> and <Text kbd>Shift</Text>+
+          <Text kbd>Tab</Text> cycle through the tabs, the swatch grid, palette
+          sliders, fields and buttons, but never out onto the page — try it with
+          the second field right below.
+        </Lead>
+        <Lead>
+          The tabs switch with <Text kbd>←</Text> / <Text kbd>→</Text>. The
+          swatch grid is a single Tab stop: the arrow keys move focus between
+          swatches (<Text kbd>Home</Text> / <Text kbd>End</Text> jump to the
+          ends), <Text kbd>Enter</Text> or <Text kbd>Space</Text> picks one, and{' '}
+          <Text kbd>Tab</Text> goes straight on to the buttons. The palette
+          sliders move with the arrow keys. A value typed into the
+          hex or RGB fields is applied on <Text kbd>Enter</Text> or when focus
+          leaves the field. <Text kbd>Esc</Text> closes the popover, discarding
+          only a value still being typed, and returns focus to the field it was
+          opened from.
+        </Lead>
+
+        <Flex orientation="vertical" gap="m" style={{ width: 320 }}>
+          <Field label="Brand colour">
+            <ColorPicker
+              colorPresets={BRAND_COLORS}
+              value={color}
+              onChange={setColor}
+            />
+          </Field>
+          <Field label="Accent colour">
+            <ColorPicker value={accent} onChange={setAccent} />
+          </Field>
+        </Flex>
+      </Flex>
+    );
+  },
+};

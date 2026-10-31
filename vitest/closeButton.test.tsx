@@ -1,7 +1,6 @@
-import React from 'react';
 import { expect, test, describe } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { AltroneApplication, CloseButton } from '../src/components';
+import { Application, CloseButton } from '../src/components';
 import { vi } from 'vitest';
 
 class ResizeObserver {
@@ -40,23 +39,13 @@ describe('CloseButton', () => {
     );
   });
 
-  test('check that CloseButton configuration works correctly', () => {
+  test('takes its glyph from the dismiss icon role', () => {
     render(
-      <AltroneApplication
-        config={{
-          closeButton: {
-            className: 'cls',
-            style: { color: 'rgb(0, 0, 255)' },
-          },
-        }}
-      >
-        <CloseButton data-testid="closeButton" />
-      </AltroneApplication>,
+      <Application icons={{ dismiss: <span data-testid="glyph" /> }}>
+        <CloseButton />
+      </Application>,
     );
 
-    expect(screen.getByTestId('closeButton')).toHaveClass('cls');
-    expect(screen.getByTestId('closeButton')).toHaveStyle(
-      'color: rgb(0, 0, 255)',
-    );
+    expect(screen.getByTestId('glyph')).toBeInTheDocument();
   });
 });

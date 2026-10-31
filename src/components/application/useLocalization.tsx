@@ -1,4 +1,4 @@
-import { Localization, en, ru, ge, fr, sp } from 'locales';
+import { Localization, en, ru, de, fr, es, zh, pt, tr } from 'locales';
 import {
   createContext,
   PropsWithChildren,
@@ -8,18 +8,19 @@ import {
 } from 'react';
 import { NestedKeys } from 'utils';
 import { get, merge } from 'lodash-es';
+import { Language } from './Application.types.ts';
 
 interface LocalizationProps extends PropsWithChildren {
-  language: 'en' | 'ru';
-  customLabels: Partial<Localization>;
+  language?: Language;
+  customLabels?: Partial<Localization>;
 }
 
 interface LocalizationContextType {
   language: string;
-  dictionary: Record<string, any>;
+  dictionary: Localization;
 }
 
-type translationOptions = {
+type TranslationOptions = {
   defaultValue?: string;
   value?: number;
   plural?: boolean;
@@ -36,28 +37,39 @@ const DICTIONARIES = {
   en,
   ru,
   fr,
-  ge,
-  sp,
+  de,
+  es,
+  zh,
+  pt,
+  tr,
 };
 
 export const AltroneLocalization = ({
-  language = 'en',
+  language,
   customLabels = {},
   children,
 }: LocalizationProps) => {
+  const parent = useLocalizationContext();
+
   const context = useMemo(() => {
-    const lang = language.toLowerCase() || 'en';
+    if (!language) {
+      return {
+        language: parent.language,
+        dictionary: merge({}, parent.dictionary, customLabels),
+      };
+    }
+
     const dictionary = merge(
       {},
-      DICTIONARIES[lang as keyof typeof DICTIONARIES] || en,
+      DICTIONARIES[language as keyof typeof DICTIONARIES] || en,
       customLabels,
     );
 
     return {
-      language: lang,
+      language,
       dictionary,
     };
-  }, [language, customLabels]);
+  }, [language, customLabels, parent]);
 
   return (
     <LocalizationContext.Provider value={context}>
@@ -69,10 +81,8 @@ export const AltroneLocalization = ({
 export const useLocalization = () => {
   const { language, dictionary } = useLocalizationContext();
 
-  const lang = language.toLowerCase();
-
   return useCallback(
-    (t: NestedKeys<Localization> | string, config?: translationOptions) => {
+    (t: NestedKeys<Localization> | string, config?: TranslationOptions) => {
       const {
         defaultValue,
         value = 0,
@@ -82,7 +92,7 @@ export const useLocalization = () => {
       let localeString = '';
 
       if (plural) {
-        const rule = new Intl.PluralRules(lang).select(value);
+        const rule = new Intl.PluralRules(language).select(value);
         localeString = get(dictionary, t + `.${rule}`, defaultValue || t);
       } else {
         localeString = get(dictionary, t, defaultValue || t) as string;
@@ -94,6 +104,6 @@ export const useLocalization = () => {
 
       return localeString;
     },
-    [dictionary, lang],
+    [dictionary, language],
   );
 };

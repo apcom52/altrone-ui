@@ -1,94 +1,50 @@
-@import 'src/global/mixins';
-
-.Backdrop {
-  --modal-size: 400px;
-
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: var(--level-modal-backdrop);
-  overflow-x: hidden;
-  overflow-y: auto;
+:global([data-altrone-root='true']) {
+  --modal-header-text-color: var(--text-2);
+  --modal-padding: var(--space-content);
 }
 
-.Dialog {
-  display: flex;
-  justify-content: center;
-  position: relative;
-  width: 100%;
-  margin: 40px auto;
-  pointer-events: none;
-}
-
-.ModalContent {
+.Body {
   display: flex;
   flex-direction: column;
-  min-width: var(--modal-size);
-  width: var(--modal-size);
-  background: var(--glass-background-color);
-  border: 1px solid var(--glass-border-color);
-  backdrop-filter: var(--glass-background-blur);
-  border-radius: 8px;
-  box-shadow: 0 3px 15px 0 rgba(0, 0, 0, .1);
-  padding: 8px;
+  padding: var(--modal-padding);
   gap: var(--l-gap);
-  offset: 0;
-  z-index: var(--level-modal);
-  border: none;
-  pointer-events: all;
 }
 
 .Close {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: var(--modal-padding);
+  right: var(--modal-padding);
 }
 
 .Title {
   width: 100%;
-  @include group-heading;
-  padding: 0 28px;
+  font-size: var(--text-size-5);
+  font-weight: var(--text-weight-bold);
+  line-height: var(--line-height-8);
+  color: var(--modal-header-text-color);
   text-align: center;
 }
 
 .Content {
-  @include paragraph;
+  font-size: var(--text-size-4);
+  line-height: var(--line-height-4);
 }
 
 .Footer {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: var(--l-gap);
 }
 
-.LeftFooter, .RightFooter {
+.LeftFooter,
+.RightFooter {
   display: flex;
   align-items: center;
   gap: var(--gap);
 }
 
 .RightFooter {
+  margin-left: auto;
   justify-content: flex-end;
-}
-
-.Overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: var(--backdropColor);
-  pointer-events: none;
-}
-
-.Small {
-  --modal-size: 280px;
-}
-
-.Large {
-  --modal-size: 640px;
 }
