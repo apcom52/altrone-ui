@@ -181,7 +181,7 @@ describe('Overlay Escape ownership', () => {
           : screen.getByRole('combobox'),
       );
       const item = await screen.findByRole(
-        kind === 'Dropdown' ? 'button' : 'option',
+        kind === 'Dropdown' ? 'button' : 'checkbox',
         { name: kind === 'Dropdown' ? 'Menu action' : 'Draft' },
       );
       fireEvent.keyDown(item, { key: 'Escape' });
