@@ -3,11 +3,6 @@ name: Publish to npm
 on:
   workflow_dispatch:
     inputs:
-      branch:
-        description: Branch to publish from
-        required: true
-        default: next
-        type: string
       version:
         description: Version to publish (e.g. 4.0.0-beta.3 or 4.0.0)
         required: true
@@ -37,10 +32,14 @@ jobs:
     env:
       VERSION: ${{ inputs.version }}
       TAG: ${{ inputs.tag }}
-      BRANCH: ${{ inputs.branch }}
+      BRANCH: ${{ github.ref_name }}
     steps:
       - name: Validate inputs
         run: |
+          if [ "${{ github.ref_type }}" != "branch" ]; then
+            echo "::error::Publish must be run from a branch, not a tag"
+            exit 1
+          fi
           if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
             echo "::error::'$VERSION' is not a valid semver version"
             exit 1
@@ -55,16 +54,13 @@ jobs:
           fi
 
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.branch }}
 
-      - name: Check the tag is free and remember the base commit
+      - name: Check the tag is free
         run: |
           if git ls-remote --exit-code --tags origin "refs/tags/v$VERSION" >/dev/null; then
             echo "::error::Tag v$VERSION already exists"
             exit 1
           fi
-          echo "BASE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
 
       - uses: actions/setup-node@v4
         with:
@@ -75,28 +71,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build (pre-check)
-        run: npm run build
-
       - name: Bump version
         run: npm version "$VERSION" --no-git-tag-version
 
-      - name: Build (with bumped version)
+      - name: Build
         run: npm run build
 
-      - name: Commit version bump and tag
-        id: release_push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add package.json package-lock.json
-          git commit -m "[Release]: $VERSION"
-          git tag "v$VERSION"
-          git push --atomic origin "HEAD:refs/heads/$BRANCH" "v$VERSION"
+      - name: Update npm
+        run: npm install -g npm@latest
 
       - name: Publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           if [ "$TAG" = "release" ]; then
             npm publish --provenance --access public
@@ -104,8 +88,11 @@ jobs:
             npm publish --provenance --access public --tag "$TAG"
           fi
 
-      - name: Roll back version bump and tag
-        if: failure() && steps.release_push.conclusion == 'success'
+      - name: Commit version bump and tag
         run: |
-          git push --force-with-lease="refs/heads/$BRANCH:$(git rev-parse HEAD)" origin "$BASE_SHA:refs/heads/$BRANCH"
-          git push origin ":refs/tags/v$VERSION"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git commit -m "[Release]: $VERSION"
+          git tag "v$VERSION"
+          git push --atomic origin "HEAD:refs/heads/$BRANCH" "v$VERSION"
