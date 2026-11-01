@@ -21,6 +21,8 @@ import { Scrollable } from 'components/scrollable';
 import { GlobalUtils, useBreakpoint } from 'utils';
 import { SheetPlacement, SheetProps } from './Sheet.types.ts';
 import { lockPageScroll, unlockPageScroll } from './scrollLock.ts';
+import { registerSheetEscape } from './escapeStack.ts';
+import { SheetFocusContext, useSheetFocusScope } from './SheetFocus.context.ts';
 import { useVisualViewport } from './useVisualViewport.ts';
 import s from './sheet.module.scss';
 
@@ -124,6 +126,12 @@ export const Sheet = (props: SheetProps) => {
 
   const reducedMotion = useReducedMotionConfig() ?? false;
   const panelRef = useRef<HTMLElement>(null);
+  const [panelElement, setPanelElement] = useState<HTMLElement | null>(null);
+  const { registerPortal, portalElements, paused } = useSheetFocusScope();
+  const setPanelRef = useCallback((element: HTMLElement | null) => {
+    panelRef.current = element;
+    setPanelElement(element);
+  }, []);
   const viewportRect = useVisualViewport(open);
 
   const breakpoint = useBreakpoint();
@@ -169,20 +177,19 @@ export const Sheet = (props: SheetProps) => {
     [dismissible, triggerShake, onClose],
   );
 
+  const closeRef = useRef(handleClose);
+
+  useEffect(() => {
+    closeRef.current = handleClose;
+  }, [handleClose]);
+
   useEffect(() => {
     if (!open) {
       return;
     }
 
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        handleClose(event);
-      }
-    };
-
-    document.body.addEventListener('keydown', onKeyDown);
-    return () => document.body.removeEventListener('keydown', onKeyDown);
-  }, [open, handleClose]);
+    return registerSheetEscape((event) => closeRef.current(event));
+  }, [open]);
 
   useEffect(() => {
     if (!open) {
@@ -334,67 +341,74 @@ export const Sheet = (props: SheetProps) => {
             {isVerticalAutoScroll && resolvedPlacement === 'bottom' && (
               <div className={s.Spacer} />
             )}
-            <FocusTrap
-              focusTrapOptions={{
-                /**
-                 * Without this, focus-trap swallows pointer events landing
-                 * outside the trap, so a click on the backdrop never reaches
-                 * its own `onClick` and wouldn't close the sheet.
-                 */
-                allowOutsideClick: true,
-                tabbableOptions: {
-                  displayCheck: GlobalUtils.isTestEnvironment()
-                    ? 'none'
-                    : 'full',
-                },
-                /**
-                 * Content with no tabbable element of its own (a plain
-                 * message, a confirmation blurb) would otherwise make
-                 * focus-trap throw — fall back to the panel itself, which is
-                 * kept focusable via `tabIndex={-1}`.
-                 */
-                fallbackFocus: () => panelRef.current ?? document.body,
-                /**
-                 * Its own initial focus scrolls the target into view, which
-                 * would fight the screen-level scroller's resting position
-                 * for a panel taller than the viewport — the effect above
-                 * focuses the panel itself instead, with `preventScroll`.
-                 */
-                initialFocus: false,
-              }}
-            >
-              <motion.div
-                className={clsx(s.PanelSlot, { [s.Shake]: shaking })}
-                style={slotStyle}
-                onAnimationEnd={() => setShaking(false)}
-                {...panelAnimation}
+            <SheetFocusContext.Provider value={registerPortal}>
+              <FocusTrap
+                paused={paused}
+                containerElements={
+                  panelElement ? [panelElement, ...portalElements] : undefined
+                }
+                focusTrapOptions={{
+                  escapeDeactivates: false,
+                  /**
+                   * Without this, focus-trap swallows pointer events landing
+                   * outside the trap, so a click on the backdrop never reaches
+                   * its own `onClick` and wouldn't close the sheet.
+                   */
+                  allowOutsideClick: true,
+                  tabbableOptions: {
+                    displayCheck: GlobalUtils.isTestEnvironment()
+                      ? 'none'
+                      : 'full',
+                  },
+                  /**
+                   * Content with no tabbable element of its own (a plain
+                   * message, a confirmation blurb) would otherwise make
+                   * focus-trap throw — fall back to the panel itself, which is
+                   * kept focusable via `tabIndex={-1}`.
+                   */
+                  fallbackFocus: () => panelRef.current ?? document.body,
+                  /**
+                   * Its own initial focus scrolls the target into view, which
+                   * would fight the screen-level scroller's resting position
+                   * for a panel taller than the viewport — the effect above
+                   * focuses the panel itself instead, with `preventScroll`.
+                   */
+                  initialFocus: false,
+                }}
               >
-                <Box
-                  ref={panelRef}
-                  material={material}
-                  tone={tone}
-                  elevation={elevation}
-                  radius={radius}
-                  padding={padding}
-                  className={s.Panel}
-                  role="dialog"
-                  aria-modal="true"
-                  aria-labelledby={ariaLabelledBy}
-                  aria-label={ariaLabel}
-                  aria-describedby={ariaDescribedBy}
-                  tabIndex={-1}
+                <motion.div
+                  className={clsx(s.PanelSlot, { [s.Shake]: shaking })}
+                  style={slotStyle}
+                  onAnimationEnd={() => setShaking(false)}
+                  {...panelAnimation}
                 >
-                  {/* `isVerticalAutoScroll` already scrolls at `.ScrollContent`
+                  <Box
+                    ref={setPanelRef}
+                    material={material}
+                    tone={tone}
+                    elevation={elevation}
+                    radius={radius}
+                    padding={padding}
+                    className={s.Panel}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby={ariaLabelledBy}
+                    aria-label={ariaLabel}
+                    aria-describedby={ariaDescribedBy}
+                    tabIndex={-1}
+                  >
+                    {/* `isVerticalAutoScroll` already scrolls at `.ScrollContent`
                       (screen level, see sheet.module.scss) — Scrollable here
                       too would nest a second, inert scroll viewport. */}
-                  {isVerticalAutoScroll ? (
-                    children
-                  ) : (
-                    <Scrollable>{children}</Scrollable>
-                  )}
-                </Box>
-              </motion.div>
-            </FocusTrap>
+                    {isVerticalAutoScroll ? (
+                      children
+                    ) : (
+                      <Scrollable>{children}</Scrollable>
+                    )}
+                  </Box>
+                </motion.div>
+              </FocusTrap>
+            </SheetFocusContext.Provider>
             {isVerticalAutoScroll && resolvedPlacement === 'top' && (
               <div className={s.Spacer} />
             )}
