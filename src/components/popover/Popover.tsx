@@ -20,8 +20,10 @@ import React, {
   CSSProperties,
   ReactElement,
   useCallback,
+  useContext,
   useId,
   useImperativeHandle,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -32,6 +34,7 @@ import clsx from 'clsx';
 import s from './popover.module.scss';
 import { Box } from 'components/box';
 import { CloseButton } from 'components/closeButton';
+import { SheetFocusContext } from 'internal/sheet/SheetFocus.context';
 import {
   AnimatePresence,
   motion,
@@ -190,6 +193,33 @@ const PopoverBase = ({
     middleware,
     whileElementsMounted: autoUpdateWithViewport,
   });
+
+  const registerSheetPortal = useContext(SheetFocusContext);
+  const floatingElement = context.elements.floating;
+  useLayoutEffect(() => {
+    if (!opened || !enabled || !floatingElement || !registerSheetPortal) {
+      return;
+    }
+    const referenceElement = childrenRef.current;
+    const unregister = registerSheetPortal(floatingElement, focusTrap);
+    return () => {
+      const doc = floatingElement.ownerDocument;
+      const restoreFocus =
+        !focusTrap && floatingElement.contains(doc.activeElement);
+      unregister();
+      if (restoreFocus) {
+        queueMicrotask(() => {
+          if (
+            referenceElement?.isConnected &&
+            (doc.activeElement === doc.body ||
+              floatingElement.contains(doc.activeElement))
+          ) {
+            referenceElement.focus({ preventScroll: true });
+          }
+        });
+      }
+    };
+  }, [opened, enabled, floatingElement, registerSheetPortal, focusTrap]);
 
   /** Touch has no hover, so a hover-only popover falls back to a tap there. */
   const clickTrigger = useClick(context, {
