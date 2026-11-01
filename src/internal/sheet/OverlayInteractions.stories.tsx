@@ -20,7 +20,7 @@ const story = {
 
 export default story;
 
-type Scenario = 'confirm' | 'nested' | 'parallel' | 'menus';
+type Scenario = 'confirm' | 'nested' | 'parallel' | 'menus' | 'drawerMenus';
 
 const scenarios: Record<Scenario, { title: string; instructions: string }> = {
   confirm: {
@@ -42,6 +42,11 @@ const scenarios: Record<Scenario, { title: string; instructions: string }> = {
     title: 'Modal with floating overlays',
     instructions:
       'Open the modal, then try its popover, dropdown with a submenu, and select separately. Press Escape while focus is in the floating content. Compare the menu close request with the modal close request.',
+  },
+  drawerMenus: {
+    title: 'Drawer with floating overlays',
+    instructions:
+      'Open the drawer and try the floating panels with the keyboard. Tab enters the regular popover; the content-first popover and dropdown move focus into their panels. Escape returns focus to the trigger.',
   },
 };
 
@@ -96,10 +101,10 @@ const OverlayPlayground = ({ scenario }: { scenario: Scenario }) => {
     [closeOverlay],
   );
 
-  const confirm = async () => {
+  const confirm = async (title = 'Confirm inside drawer') => {
     record('Confirm: open');
     const result = await showConfirm({
-      title: 'Confirm inside drawer',
+      title,
       message: 'Press Escape once, then inspect the event log.',
     });
     record(`Confirm: resolved ${result}`);
@@ -139,9 +144,34 @@ const OverlayPlayground = ({ scenario }: { scenario: Scenario }) => {
             `Popover: ${open ? 'open' : 'close'} (${reason ?? 'programmatic'})`,
           )
         }
-        content={<Button label="Focus inside popover" />}
+        content={
+          <Flex orientation="vertical" gap="s">
+            <Button label="Focus inside popover" />
+            <Button
+              label="Confirm above popover"
+              onClick={() => void confirm('Confirm above popover')}
+            />
+          </Flex>
+        }
       >
         <Button label="Open popover" />
+      </Popover>
+      <Popover
+        focusTrapTargets={['content']}
+        content={
+          <Flex orientation="vertical" gap="s">
+            <Button label="First popover action" />
+            <Button label="Second popover action" />
+          </Flex>
+        }
+      >
+        <Button label="Open content-first popover" />
+      </Popover>
+      <Popover
+        focusTrap={false}
+        content={<Button label="Non-trapping popover action" />}
+      >
+        <Button label="Open non-trapping popover" />
       </Popover>
       <Dropdown
         placement="bottom-start"
@@ -192,6 +222,15 @@ const OverlayPlayground = ({ scenario }: { scenario: Scenario }) => {
         Each Escape closes only the most recently opened window. An open
         floating menu handles Escape before its containing window.
       </Text>
+      {(scenario === 'menus' || scenario === 'drawerMenus') && (
+        <Text block>
+          Use Tab and Shift+Tab to enter and cycle through a popover, and arrow
+          keys and Enter for menu items. A content-first panel focuses its
+          content on opening. A non-trapping popover shares the parent
+          window&apos;s focus boundary. After Escape, continue tabbing in the
+          parent window.
+        </Text>
+      )}
       <Text block color="muted">
         The log records real callbacks without intercepting keyboard events. It
         is repeated inside the windows and remains here after they close.
@@ -201,7 +240,7 @@ const OverlayPlayground = ({ scenario }: { scenario: Scenario }) => {
           label={
             scenario === 'parallel'
               ? 'Open three sibling overlays'
-              : scenario === 'confirm'
+              : scenario === 'confirm' || scenario === 'drawerMenus'
                 ? 'Open drawer'
                 : 'Open modal'
           }
@@ -211,7 +250,7 @@ const OverlayPlayground = ({ scenario }: { scenario: Scenario }) => {
               openOverlay('Drawer', setDrawerOpen);
               openOverlay('Second drawer', setSecondDrawerOpen);
               openOverlay('Modal', setModalOpen);
-            } else if (scenario === 'confirm') {
+            } else if (scenario === 'confirm' || scenario === 'drawerMenus') {
               openOverlay('Drawer', setDrawerOpen);
             } else {
               openOverlay('Modal', setModalOpen);
@@ -279,6 +318,7 @@ const OverlayPlayground = ({ scenario }: { scenario: Scenario }) => {
                   onClick={() => void confirm()}
                 />
               )}
+              {scenario === 'drawerMenus' && floatingControls}
               {eventLog}
             </Flex>
           }
@@ -309,4 +349,8 @@ export const ParallelWindows: StoryObj = {
 
 export const FloatingInsideModal: StoryObj = {
   render: () => <OverlayPlayground scenario="menus" />,
+};
+
+export const FloatingInsideDrawer: StoryObj = {
+  render: () => <OverlayPlayground scenario="drawerMenus" />,
 };
