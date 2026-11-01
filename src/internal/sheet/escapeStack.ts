@@ -7,7 +7,11 @@ const onKeyDown = (event: KeyboardEvent) => {
     return;
   }
 
-  handlers[handlers.length - 1]?.(event);
+  const handler = handlers[handlers.length - 1];
+  if (handler) {
+    event.stopPropagation();
+    handler(event);
+  }
 };
 
 export const registerSheetEscape = (handler: EscapeHandler) => {
