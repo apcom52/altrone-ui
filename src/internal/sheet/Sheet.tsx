@@ -21,6 +21,7 @@ import { Scrollable } from 'components/scrollable';
 import { GlobalUtils, useBreakpoint } from 'utils';
 import { SheetPlacement, SheetProps } from './Sheet.types.ts';
 import { lockPageScroll, unlockPageScroll } from './scrollLock.ts';
+import { registerSheetEscape } from './escapeStack.ts';
 import { useVisualViewport } from './useVisualViewport.ts';
 import s from './sheet.module.scss';
 
@@ -169,20 +170,19 @@ export const Sheet = (props: SheetProps) => {
     [dismissible, triggerShake, onClose],
   );
 
+  const closeRef = useRef(handleClose);
+
+  useEffect(() => {
+    closeRef.current = handleClose;
+  }, [handleClose]);
+
   useEffect(() => {
     if (!open) {
       return;
     }
 
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        handleClose(event);
-      }
-    };
-
-    document.body.addEventListener('keydown', onKeyDown);
-    return () => document.body.removeEventListener('keydown', onKeyDown);
-  }, [open, handleClose]);
+    return registerSheetEscape((event) => closeRef.current(event));
+  }, [open]);
 
   useEffect(() => {
     if (!open) {
@@ -336,6 +336,7 @@ export const Sheet = (props: SheetProps) => {
             )}
             <FocusTrap
               focusTrapOptions={{
+                escapeDeactivates: false,
                 /**
                  * Without this, focus-trap swallows pointer events landing
                  * outside the trap, so a click on the backdrop never reaches
