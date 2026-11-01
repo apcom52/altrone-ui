@@ -101,7 +101,7 @@ describe('Sheet portal focus', () => {
           : screen.getByRole('combobox'),
       );
       const item = await screen.findByRole(
-        kind === 'Dropdown' ? 'button' : 'checkbox',
+        kind === 'Dropdown' ? 'button' : 'option',
         { name: kind === 'Dropdown' ? 'First action' : 'Draft' },
       );
       act(() => item.focus());
