@@ -64,9 +64,20 @@ export function DropdownAction(props: DropdownActionProps) {
   };
 
   const onKeyDownPress: React.KeyboardEventHandler<HTMLButtonElement> = (e) => {
-    if (e.key === 'Enter') {
-      e.currentTarget.click();
+    if (props.disabled || (e.key !== 'Enter' && e.key !== ' ')) {
+      return;
     }
+    const element = e.currentTarget;
+    if (
+      element.tagName === 'BUTTON' ||
+      (e.key === 'Enter' &&
+        element.tagName === 'A' &&
+        element.hasAttribute('href'))
+    ) {
+      return;
+    }
+    e.preventDefault();
+    element.click();
   };
 
   const actionContent = (
