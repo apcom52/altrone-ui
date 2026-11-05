@@ -2,6 +2,9 @@ import { Meta, StoryObj } from '@storybook/react';
 import React, { useRef, useState } from 'react';
 import {
   AlignLeft,
+  RotateCw,
+  RotateCcw,
+  MousePointer2,
   Archive,
   Bold,
   Check,
@@ -37,6 +40,7 @@ import {
 } from 'lucide-react';
 import {
   Avatar,
+  Box,
   Button,
   Divider,
   Dropdown,
@@ -652,6 +656,140 @@ export const LongMenuStory: StoryObj<typeof Dropdown> = {
       >
         <Button label="Pick a timezone" additionalIcon={<ChevronDown />} />
       </Dropdown>
+    </Flex>
+  ),
+};
+
+type BoardShape = {
+  id: number;
+  label: string;
+  shape: 'rect' | 'rounded' | 'circle';
+  color: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  rotation: number;
+};
+
+const INITIAL_BOARD_SHAPES: BoardShape[] = [
+  { id: 1, label: 'Idea', shape: 'rounded', color: 'amber', x: 10, y: 55, width: 140, height: 120, rotation: -6 },
+  { id: 2, label: 'Research', shape: 'circle', color: 'blue', x: 44, y: 45, width: 140, height: 140, rotation: 0 },
+  { id: 3, label: 'Design', shape: 'rect', color: 'purple', x: 24, y: 250, width: 110, height: 110, rotation: 45 },
+  { id: 4, label: 'Build', shape: 'rounded', color: 'teal', x: 68, y: 245, width: 160, height: 100, rotation: 4 },
+];
+
+const ContextMenuBoard = () => {
+  const [shapes, setShapes] = useState(INITIAL_BOARD_SHAPES);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const nextId = useRef(5);
+  const selected = shapes.find((shape) => shape.id === selectedId);
+
+  const duplicate = (id: number) => {
+    const original = shapes.find((shape) => shape.id === id);
+    if (!original) return;
+    const copy = {
+      ...original,
+      id: nextId.current++,
+      label: `${original.label} copy`,
+      x: Math.min(original.x + 5, 70),
+      y: original.y > 300 ? 70 : original.y + 30,
+    };
+    setShapes((items) => [...items, copy]);
+    setSelectedId(copy.id);
+  };
+
+  const rotate = (id: number) => setShapes((items) => items.map((shape) =>
+    shape.id === id ? { ...shape, rotation: shape.rotation + 15 } : shape,
+  ));
+
+  const remove = (id: number) => {
+    setShapes((items) => items.filter((shape) => shape.id !== id));
+    setSelectedId(null);
+  };
+
+  return (
+    <Flex orientation="vertical" gap="m" style={{ width: '100%', maxWidth: 960 }}>
+      <Box material="plate" radius={24} padding={0} style={{ display: 'block', width: '100%', overflow: 'hidden' }}>
+        <Toolbar variant="plain" size="s">
+          <Toolbar.Leading>
+            <Toolbar.Group>
+              <Toolbar.Title title="Product workshop" />
+            </Toolbar.Group>
+          </Toolbar.Leading>
+          <Toolbar.Trailing>
+            <Toolbar.Group>
+              <Toolbar.Action label="Duplicate" icon={<Copy />} disabled={!selected} onClick={() => selected && duplicate(selected.id)} />
+              <Toolbar.Action label="Rotate" icon={<RotateCw />} disabled={!selected} onClick={() => selected && rotate(selected.id)} />
+              <Toolbar.Action label="Delete" icon={<Trash />} disabled={!selected} onClick={() => selected && remove(selected.id)} />
+              <Toolbar.Action label="Reset board" icon={<RotateCcw />} onClick={() => { setShapes(INITIAL_BOARD_SHAPES); setSelectedId(null); }} />
+            </Toolbar.Group>
+          </Toolbar.Trailing>
+        </Toolbar>
+        <Box material="dotted" shape="rect" width="100%" height={460} padding={0} style={{ position: 'relative', display: 'block', overflow: 'auto' }}>
+          {shapes.map((shape) => (
+            <Dropdown
+              key={shape.id}
+              trigger="contextmenu"
+              onOpenChange={(open) => { if (open) setSelectedId(shape.id); }}
+              content={
+                <Dropdown.Menu>
+                  <Text block size={3} color="muted" style={{ padding: 'var(--space-content)' }}>{shape.label}</Text>
+                  <Dropdown.Action label="Duplicate" icon={<Copy />} onClick={() => duplicate(shape.id)} />
+                  <Dropdown.Action label="Rotate 15°" icon={<RotateCw />} onClick={() => rotate(shape.id)} />
+                  <Divider />
+                  <Dropdown.Action label="Delete" icon={<Trash />} danger onClick={() => remove(shape.id)} />
+                </Dropdown.Menu>
+              }
+            >
+              <Box
+                role="button"
+                aria-label={`${shape.label} shape actions`}
+                shape={shape.shape}
+                color={shape.color}
+                material="solid"
+                elevation="raised"
+                radius={16}
+                width={shape.width}
+                height={shape.height}
+                focusable
+                style={{
+                  position: 'absolute',
+                  left: `${shape.x}%`,
+                  top: shape.y,
+                  transform: `rotate(${shape.rotation}deg)`,
+                  cursor: 'context-menu',
+                  outline: selectedId === shape.id ? '2px solid var(--accent-9)' : undefined,
+                  outlineOffset: 4,
+                }}
+              >
+                <Text weight="bold" style={{ transform: `rotate(${-shape.rotation}deg)` }}>{shape.label}</Text>
+              </Box>
+            </Dropdown>
+          ))}
+          <Box material="plate" shape="pill" width="auto" height="auto" padding={{ x: 16, y: 8 }} style={{ position: 'absolute', bottom: 16, left: 16, pointerEvents: 'none' }}>
+            <MousePointer2 size={16} />
+            <Text size={3}>Right-click a shape · Touch and hold</Text>
+          </Box>
+        </Box>
+      </Box>
+      <Caption>{selected ? `${selected.label} selected` : 'Select a shape to reveal its actions'} · {shapes.length} objects</Caption>
+    </Flex>
+  );
+};
+
+export const ContextMenuStory: StoryObj<typeof Dropdown> = {
+  name: 'Context menu — whiteboard',
+  render: () => (
+    <Flex orientation="vertical" gap="l">
+      <Heading>A whiteboard with context menus</Heading>
+      <Paragraph>
+        Right-click a shape or touch and hold to open its menu.
+        Right-click positions the menu at the pointer; Shift+F10 opens it
+        from the keyboard. Duplicate, rotate, and delete work on the selected
+        shape and are also available in the board toolbar.
+      </Paragraph>
+      <ContextMenuBoard />
     </Flex>
   ),
 };

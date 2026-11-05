@@ -13,7 +13,7 @@ import {
   Smile,
   Trash2,
 } from 'lucide-react';
-import { Button, Flex, Progress, Switch, Text, TextInput } from 'components';
+import { Box, Button, Flex, Progress, Switch, Text, TextInput } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Popover } from './Popover.tsx';
@@ -90,8 +90,8 @@ export const TriggersStory: StoryObj<typeof Popover> = {
         <Heading>Ways to open</Heading>
         <Paragraph>
           The <Text code>trigger</Text> prop takes <Text code>'click'</Text>,{' '}
-          <Text code>'hover'</Text>, <Text code>'focus'</Text>, or an array of
-          them.
+          <Text code>'hover'</Text>, <Text code>'focus'</Text>,{' '}
+          <Text code>'contextmenu'</Text>, or an array of them.
         </Paragraph>
         <Flex orientation="horizontal" gap="l" wrap>
           {cases.map(({ trigger, note }) => (
@@ -602,4 +602,29 @@ export const ControlledStory: StoryObj<typeof Popover> = {
       </Flex>
     );
   },
+};
+
+export const ContextMenuStory: StoryObj<typeof Popover> = {
+  name: 'Context menu',
+  render: () => (
+    <Flex orientation="vertical" gap="l">
+      <Heading>Context menu</Heading>
+      <Paragraph>
+        Right-click or hold for 500 ms to open at the pointer. Move your finger
+        to cancel. Focus the trigger and press Shift+F10 or ContextMenu to open
+        from the keyboard. Escape returns focus to the trigger.
+      </Paragraph>
+      <Popover trigger="contextmenu" content={<Button label="Context action" />}>
+        <Box material="dotted" radius={20} width={360} height={160} focusable role="button" aria-label="Panel context actions">
+          <Text>Right-click or hold this panel</Text>
+        </Box>
+      </Popover>
+      <Popover trigger={['click', 'contextmenu']} content={<Text>Click or context menu details</Text>}>
+        <Button label="Click, right-click, or hold" />
+      </Popover>
+      <Popover trigger="contextmenu" enabled={false} content={<Text>Disabled</Text>}>
+        <Button label="Native context menu is available here" />
+      </Popover>
+    </Flex>
+  ),
 };

@@ -4,7 +4,6 @@ import {
   FloatingNode,
   FloatingPortal,
   FloatingTree,
-  OpenChangeReason,
   safePolygon,
   useClick,
   useDismiss,
@@ -22,13 +21,18 @@ import React, {
   useCallback,
   useContext,
   useId,
+  useEffect,
   useImperativeHandle,
   useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
-import { PopoverProps, PopoverChildrenContext } from './Popover.types.ts';
+import {
+  PopoverProps,
+  PopoverChildrenContext,
+  PopoverOpenChangeReason,
+} from './Popover.types.ts';
 import { useBoolean, DOMUtils, mergeRefs } from 'utils';
 import clsx from 'clsx';
 import s from './popover.module.scss';
@@ -54,6 +58,8 @@ import {
   PopoverCurrentIndex,
   usePopoverCloseContext,
 } from './Popover.context.ts';
+
+import { useContextMenuTrigger } from './hooks/useContextMenuTrigger';
 
 export {
   usePopoverCurrentId,
@@ -90,7 +96,7 @@ const PopoverBase = ({
   listNavigation: enableListNavigation = false,
   defaultListNavigationIndex = null,
   virtualNavigationFocus = false,
-  focusTrapTargets = ['reference', 'content'],
+  focusTrapTargets,
   overlap = false,
   className,
   style,
@@ -121,7 +127,9 @@ const PopoverBase = ({
      (unstyled) — fixing itself only once something else re-renders it. */
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
 
-  const lastStateChangeReason = useRef<OpenChangeReason | undefined>(undefined);
+  const lastStateChangeReason = useRef<PopoverOpenChangeReason | undefined>(
+    undefined,
+  );
 
   const childrenRef = useRef<HTMLElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -131,13 +139,24 @@ const PopoverBase = ({
     [trigger],
   );
 
+  const hasContextMenu = triggersList.includes('contextmenu');
+  const [pointMode, setPointMode] = useState(false);
+  const effectiveOverlap = overlap && !hasContextMenu;
+  const effectiveParentWidth = parentWidth && !hasContextMenu;
+
+  useEffect(() => {
+    if (import.meta.env.DEV && hasContextMenu && (overlap || parentWidth)) {
+      console.warn('[Popover]: contextmenu ignores overlap and parentWidth.');
+    }
+  }, [hasContextMenu, overlap, parentWidth]);
+
   const isControlled = open !== undefined;
   const { value: internalOpened, setValue: setInternalOpened } =
     useBoolean(defaultOpen);
   const opened = isControlled ? open : internalOpened;
 
   const commitOpenChange = useCallback(
-    (state: boolean, event?: Event, reason?: OpenChangeReason) => {
+    (state: boolean, event?: Event, reason?: PopoverOpenChangeReason) => {
       if (!isControlled) setInternalOpened(state);
       onOpenChange?.(state, event, reason);
     },
@@ -148,16 +167,16 @@ const PopoverBase = ({
   const hide = useCallback(() => commitOpenChange(false), [commitOpenChange]);
 
   const placementConfig = useMemo(
-    () => getPlacementConfig(placement, overlap),
-    [placement, overlap],
+    () => getPlacementConfig(placement, effectiveOverlap, pointMode),
+    [placement, effectiveOverlap, pointMode],
   );
 
   const middleware = useMemo(
     () =>
-      overlap
-        ? createOverlapMiddleware(placementConfig, parentWidth)
-        : createMiddleware(placementConfig, parentWidth),
-    [overlap, placementConfig, parentWidth],
+      effectiveOverlap
+        ? createOverlapMiddleware(placementConfig, effectiveParentWidth)
+        : createMiddleware(placementConfig, effectiveParentWidth),
+    [effectiveOverlap, placementConfig, effectiveParentWidth],
   );
 
   const {
@@ -186,8 +205,14 @@ const PopoverBase = ({
         return;
       }
 
-      commitOpenChange(state, event, reason);
-      lastStateChangeReason.current = reason;
+      if (state && ['click', 'focus', 'hover'].includes(reason ?? '')) {
+        refs.setPositionReference(childrenRef.current);
+        setPointMode(false);
+      }
+      const changeReason =
+        reason ?? (state && event && hasContextMenu ? 'context-menu' : undefined);
+      commitOpenChange(state, event, changeReason);
+      lastStateChangeReason.current = changeReason;
     },
     placement: placementConfig.placement,
     middleware,
@@ -228,6 +253,14 @@ const PopoverBase = ({
     ignoreMouse: !triggersList.includes('click'),
   });
 
+  const contextMenuTrigger = useContextMenuTrigger(context, {
+    enabled: enabled && hasContextMenu,
+    onOpen: (event) => {
+      setPointMode(true);
+      context.onOpenChange(true, event);
+    },
+  });
+
   const hoverTrigger = useHover(context, {
     enabled: triggersList.includes('hover'),
     mouseOnly: true,
@@ -260,6 +293,7 @@ const PopoverBase = ({
   });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
+    contextMenuTrigger,
     clickTrigger,
     hoverTrigger,
     focusTrigger,
@@ -278,9 +312,9 @@ const PopoverBase = ({
       hide,
       show,
       actualPlacement,
-      transformOrigin: getTransformOrigin(actualPlacement, overlap),
+      transformOrigin: getTransformOrigin(actualPlacement, effectiveOverlap),
     }),
-    [opened, context, activeIndex, actualPlacement, hide, show, overlap],
+    [opened, context, activeIndex, actualPlacement, hide, show, effectiveOverlap],
   );
 
   const popoverParentClose = usePopoverCloseContext();
@@ -326,7 +360,7 @@ const PopoverBase = ({
 
   const floatingStyle: CSSProperties = {
     ...style,
-    transformOrigin: getTransformOrigin(actualPlacement, overlap),
+    transformOrigin: getTransformOrigin(actualPlacement, effectiveOverlap),
     left: x ?? 0,
     top: y ?? 0,
     position: strategy,
@@ -336,7 +370,10 @@ const PopoverBase = ({
     <FloatingFocusManager
       context={context}
       disabled={!focusTrap}
-      order={focusTrapTargets}
+      order={
+        focusTrapTargets ??
+        (pointMode ? ['content', 'reference'] : ['reference', 'content'])
+      }
     >
       <FloatingList elementsRef={listNavigationRef}>
         <PopoverCurrentIndex.Provider value={activeIndex}>
@@ -410,6 +447,9 @@ const PopoverBase = ({
       setReference,
       ref,
     ),
+    className: clsx(safeChildElement.props.className, {
+      [s.ContextMenuTrigger]: enabled && hasContextMenu,
+    }),
     tabIndex: safeChildElement.props.tabIndex ?? 0,
   });
 
