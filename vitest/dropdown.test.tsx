@@ -450,6 +450,98 @@ test('asChild actions preserve explicit tabIndex on the child and the action', (
   ).toHaveAttribute('tabindex', '0');
 });
 
+describe('Dropdown selection keyboard activation', () => {
+  test.each([
+    { role: 'checkbox', label: 'Autosave', next: true },
+    { role: 'radio', label: 'Comfortable', next: 'comfortable' },
+  ])(
+    '$role changes only on the native click after Enter',
+    ({ role, label, next }) => {
+      const onChange = vitest.fn();
+      const onClick = vitest.fn();
+      const onKeyDown = vitest.fn();
+      const controlRef = createRef<PopoverRef>();
+      render(
+        <Dropdown
+          defaultOpen
+          controlRef={controlRef}
+          content={
+            <Dropdown.Menu>
+              <Dropdown.Checkbox
+                label="Autosave"
+                checked={false}
+                onChange={onChange}
+                onClick={onClick}
+                onKeyDown={onKeyDown}
+              />
+              <Dropdown.RadioList value="compact" onChange={onChange}>
+                <Dropdown.RadioItem
+                  label="Comfortable"
+                  value="comfortable"
+                  onClick={onClick}
+                  onKeyDown={onKeyDown}
+                />
+              </Dropdown.RadioList>
+            </Dropdown.Menu>
+          }
+        >
+          <button type="button">Settings</button>
+        </Dropdown>,
+      );
+      const item = screen.getByRole(role, { name: label });
+      expect(fireEvent.keyDown(item, { key: 'Enter' })).toBe(true);
+      expect(onKeyDown).toHaveBeenCalledTimes(1);
+      expect(onChange).not.toHaveBeenCalled();
+      expect(onClick).not.toHaveBeenCalled();
+      fireEvent.click(item);
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange).toHaveBeenCalledWith(
+        next,
+        expect.objectContaining({ nativeEvent: expect.any(MouseEvent) }),
+      );
+      expect(onClick).toHaveBeenCalledTimes(1);
+      expect(controlRef.current?.open).toBe(true);
+    },
+  );
+
+  test.each(['checkbox', 'radio'])(
+    '%s preserves consumer keydown cancellation',
+    (role) => {
+      const onChange = vitest.fn();
+      const onKeyDown = vitest.fn((event) => event.preventDefault());
+      render(
+        <Dropdown
+          defaultOpen
+          content={
+            <Dropdown.Menu>
+              <Dropdown.Checkbox
+                label="Cancelled checkbox"
+                checked={false}
+                onChange={onChange}
+                onKeyDown={onKeyDown}
+              />
+              <Dropdown.RadioList value="compact" onChange={onChange}>
+                <Dropdown.RadioItem
+                  label="Cancelled radio"
+                  value="comfortable"
+                  onKeyDown={onKeyDown}
+                />
+              </Dropdown.RadioList>
+            </Dropdown.Menu>
+          }
+        >
+          <button type="button">Settings</button>
+        </Dropdown>,
+      );
+      expect(fireEvent.keyDown(screen.getByRole(role), { key: 'Enter' })).toBe(
+        false,
+      );
+      expect(onKeyDown).toHaveBeenCalledTimes(1);
+      expect(onChange).not.toHaveBeenCalled();
+    },
+  );
+});
+
 test('contextmenu opens a Dropdown at a point and focuses its actions', async () => {
   const controlRef = createRef<PopoverRef>();
   render(

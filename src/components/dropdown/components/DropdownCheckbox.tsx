@@ -41,19 +41,13 @@ export function DropdownCheckbox({
     onChange(!checked, event);
   };
 
-  const onKeyDownPress: React.KeyboardEventHandler<HTMLButtonElement> = (e) => {
-    if (e.key === 'Enter') {
-      onChange(!checked, e);
-    }
-  };
-
   return (
     <button
       type="button"
       {...props}
       onMouseEnter={composeEventHandlers(onMouseEnter, listItem.onMouseEnter)}
       onMouseLeave={composeEventHandlers(onMouseLeave, listItem.onMouseLeave)}
-      onKeyDown={composeEventHandlers(onKeyDown, onKeyDownPress)}
+      onKeyDown={onKeyDown}
       onClick={composeEventHandlers(onClick, onSelect)}
       disabled={disabled}
       className={cls}
