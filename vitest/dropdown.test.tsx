@@ -1,4 +1,4 @@
-import { createRef } from 'react';
+import { createRef, type ReactElement } from 'react';
 import { expect, test, describe, vitest } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Button, Dropdown, type PopoverRef } from '../src/components';
@@ -225,6 +225,101 @@ describe('Dropdown', () => {
     expect(screen.getByTestId('childmenu')).toHaveStyle(
       'color: rgb(0, 0, 255)',
     );
+  });
+});
+
+const renderAction = (action: ReactElement) => {
+  const controlRef = createRef<PopoverRef>();
+  const result = render(
+    <Dropdown
+      defaultOpen
+      controlRef={controlRef}
+      content={<Dropdown.Menu>{action}</Dropdown.Menu>}
+    >
+      <Button label="Actions" />
+    </Dropdown>,
+  );
+  return { ...result, controlRef };
+};
+
+describe('Dropdown.Action keyboard activation', () => {
+  test.each([
+    { name: 'default button', child: undefined },
+    { name: 'asChild button', child: <button /> },
+    { name: 'asChild link', child: <a href="#target" /> },
+  ])('$name leaves Enter activation to the browser', ({ child }) => {
+    const onClick = vitest.fn((event) => event.preventDefault());
+    renderAction(
+      <Dropdown.Action label="Run" asChild={Boolean(child)} onClick={onClick}>
+        {child}
+      </Dropdown.Action>,
+    );
+    const action = screen.getByRole('button', { name: 'Run' });
+    expect(fireEvent.keyDown(action, { key: 'Enter' })).toBe(true);
+    expect(onClick).not.toHaveBeenCalled();
+    fireEvent.click(action);
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  test.each(['Enter', ' '])(
+    'asChild non-native control synthesizes one click for %s',
+    (key) => {
+      const onClick = vitest.fn();
+      renderAction(
+        <Dropdown.Action label="Run" asChild onClick={onClick}>
+          <div />
+        </Dropdown.Action>,
+      );
+      const action = screen.getByRole('button', { name: 'Run' });
+      expect(fireEvent.keyDown(action, { key })).toBe(false);
+      expect(onClick).toHaveBeenCalledTimes(1);
+      expect(onClick.mock.calls[0][0].nativeEvent).toBeInstanceOf(MouseEvent);
+    },
+  );
+
+  test('Space activates an asChild link without leaving the page or closing a cancelled action', () => {
+    const onClick = vitest.fn((event) => event.preventDefault());
+    const { controlRef } = renderAction(
+      <Dropdown.Action label="Run" asChild onClick={onClick}>
+        <a href="#target" />
+      </Dropdown.Action>,
+    );
+    const action = screen.getByRole('button', { name: 'Run' });
+    expect(fireEvent.keyDown(action, { key: ' ' })).toBe(false);
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(controlRef.current?.open).toBe(true);
+    expect(window.location.hash).not.toBe('#target');
+  });
+
+  test('consumer keydown cancellation prevents a custom control click', () => {
+    const onClick = vitest.fn();
+    renderAction(
+      <Dropdown.Action
+        label="Run"
+        asChild
+        onClick={onClick}
+        onKeyDown={(event) => event.preventDefault()}
+      >
+        <div />
+      </Dropdown.Action>,
+    );
+    fireEvent.keyDown(screen.getByRole('button', { name: 'Run' }), {
+      key: 'Enter',
+    });
+    expect(onClick).not.toHaveBeenCalled();
+  });
+
+  test('a disabled custom control does not synthesize keyboard clicks', () => {
+    const onClick = vitest.fn();
+    renderAction(
+      <Dropdown.Action label="Run" asChild disabled onClick={onClick}>
+        <div />
+      </Dropdown.Action>,
+    );
+    const action = screen.getByRole('button', { name: 'Run' });
+    fireEvent.keyDown(action, { key: 'Enter' });
+    fireEvent.keyDown(action, { key: ' ' });
+    expect(onClick).not.toHaveBeenCalled();
   });
 });
 

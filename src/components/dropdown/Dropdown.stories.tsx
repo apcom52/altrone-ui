@@ -333,6 +333,47 @@ export const ItemHandlersStory: StoryObj<typeof Dropdown> = {
   ),
 };
 
+export const ActionActivationCheck: StoryObj<typeof Dropdown> = {
+  name: 'Action activation check (T-111)',
+  render: () => {
+    const [events, setEvents] = useState<string[]>([]);
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
+        <Heading>Action activation count</Heading>
+        <Paragraph>
+          Open the menu, focus Run action and press <Text kbd>Enter</Text>{' '}
+          once. Each activation should add one click to the counter. Compare
+          with a mouse click or <Text kbd>Space</Text>. The event log
+          distinguishes browser clicks from programmatic clicks.
+        </Paragraph>
+        <Dropdown
+          placement="bottom-start"
+          content={
+            <Dropdown.Menu>
+              <Dropdown.Action
+                label="Run action"
+                onClick={(event) => {
+                  const source = event.nativeEvent.isTrusted
+                    ? 'Browser click'
+                    : 'Programmatic click';
+                  setEvents((previous) => [...previous, source]);
+                }}
+              />
+            </Dropdown.Menu>
+          }
+        >
+          <Button label="Open action menu" />
+        </Dropdown>
+        <Text block role="status" aria-live="polite">
+          Click count: {events.length}. Events: {events.join(', ') || 'None'}.
+        </Text>
+        <Button label="Reset counter" onClick={() => setEvents([])} />
+      </Flex>
+    );
+  },
+};
+
 // ─── 3. Nested submenus (ChildMenu) ──────────────────────────────────────────
 
 function FileContextMenu() {
