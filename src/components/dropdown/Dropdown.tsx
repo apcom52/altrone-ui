@@ -13,7 +13,7 @@ export function DropdownWrapper(props: DropdownProps) {
     children,
     content,
     trigger,
-    placement = 'bottom',
+    placement,
     focusTrap = true,
     focusTrapTargets = ['content', 'reference'],
     className,
@@ -21,6 +21,10 @@ export function DropdownWrapper(props: DropdownProps) {
     closeParentPopover = true,
     ...restProps
   } = props;
+
+  const hasContextMenu = Array.isArray(trigger)
+    ? trigger.includes('contextmenu')
+    : trigger === 'contextmenu';
 
   const cls = clsx(s.DropdownPopover, className);
 
@@ -49,7 +53,7 @@ export function DropdownWrapper(props: DropdownProps) {
       ref={ref}
       className={cls}
       content={renderContent}
-      placement={placement}
+      placement={placement ?? (hasContextMenu ? 'auto' : 'bottom')}
       trigger={trigger}
       focusTrapTargets={focusTrapTargets}
       style={styles}

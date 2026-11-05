@@ -541,3 +541,17 @@ describe('Dropdown selection keyboard activation', () => {
     },
   );
 });
+
+test('contextmenu opens a Dropdown at a point and focuses its actions', async () => {
+  const controlRef = createRef<PopoverRef>();
+  render(
+    <Dropdown trigger="contextmenu" controlRef={controlRef} content={
+      <Dropdown.Menu><Dropdown.Action label="Rename file" /><Dropdown.Action label="Duplicate file" /></Dropdown.Menu>
+    }>
+      <Button label="Context file" />
+    </Dropdown>,
+  );
+  expect(fireEvent.contextMenu(screen.getByText('Context file'), { clientX: 140, clientY: 80 })).toBe(false);
+  expect(controlRef.current?.context.refs.reference.current?.getBoundingClientRect()).toMatchObject({ x: 140, y: 80, width: 0 });
+  await waitFor(() => expect(screen.getByText('Rename file').closest('button')).toHaveFocus());
+});

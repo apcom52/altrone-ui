@@ -22,7 +22,16 @@ const OVERLAP_PLACEMENT: Record<string, Placement> = {
 export const getPlacementConfig = (
   placement: 'auto' | Placement,
   overlap: boolean,
+  pointMode = false,
 ): PlacementConfig => {
+  if (pointMode) {
+    return {
+      offset: 4,
+      placement: placement === 'auto' ? 'bottom-start' : placement,
+      shouldUseAutoPlacement: false,
+    };
+  }
+
   if (overlap) {
     const resolved =
       placement === 'auto'

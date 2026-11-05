@@ -7,6 +7,7 @@ export type {
   PopoverRef,
   PopoverProps,
   PopoverTrigger,
+  PopoverOpenChangeReason,
   PopoverChildrenContext,
   PopoverContentContext,
 } from './Popover.types.ts';

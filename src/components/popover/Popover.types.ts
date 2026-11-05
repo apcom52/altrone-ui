@@ -2,7 +2,9 @@ import { FloatingContext, OpenChangeReason, Placement } from '@floating-ui/react
 import { ReactElement } from 'react';
 import { RenderFunction } from 'utils';
 
-export type PopoverTrigger = 'click' | 'focus' | 'hover';
+export type PopoverTrigger = 'click' | 'focus' | 'hover' | 'contextmenu';
+
+export type PopoverOpenChangeReason = OpenChangeReason | 'context-menu';
 
 export type PopoverRef = {
   open: boolean;
@@ -61,6 +63,6 @@ export interface PopoverProps
   onOpenChange?: (
     open: boolean,
     event?: Event,
-    reason?: OpenChangeReason,
+    reason?: PopoverOpenChangeReason,
   ) => void;
 }
