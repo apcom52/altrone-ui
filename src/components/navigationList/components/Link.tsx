@@ -169,17 +169,30 @@ const LinkInner = memo(
       onClick?.(event);
     };
 
-    /* An `<a>` without `href` isn't keyboard-activatable on its own, so relay
-       Enter/Space to the click handler when the item acts as a button. */
     const handleKeyDown = (event: KeyboardEvent<HTMLAnchorElement>) => {
       onKeyDown?.(event);
-      if (disabled || href || event.defaultPrevented) {
+      if (event.defaultPrevented) {
         return;
       }
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        onClick?.(event as unknown as MouseEvent<HTMLAnchorElement>);
+      if (event.key !== 'Enter' && event.key !== ' ') {
+        return;
       }
+      if (disabled) {
+        event.preventDefault();
+        return;
+      }
+      const element = event.currentTarget;
+      const isNativeLink =
+        element.tagName === 'A' && element.hasAttribute('href');
+      if (
+        element.tagName === 'BUTTON' ||
+        (event.key === 'Enter' && isNativeLink) ||
+        (!asChild && href)
+      ) {
+        return;
+      }
+      event.preventDefault();
+      element.click();
     };
 
     const resolvedHref = disabled ? undefined : href;

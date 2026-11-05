@@ -431,7 +431,8 @@ export const Overview: StoryObj<typeof NavigationList> = {
           <Text code>NavigationList.Link</Text> merges its styling, ref and
           interaction props onto that element instead of rendering its own{' '}
           <Text code>&lt;a&gt;</Text>. The icon, label and badge still come from
-          props.
+          props. Focus Dashboard and press Enter or Space to select it; the
+          router link receives a click event.
         </Paragraph>
 
         <NavigationList style={{ height: 'auto' }}>
