@@ -213,7 +213,7 @@ function AccountMenu() {
             label="Alex Petrov"
             hintText="@apcom"
           >
-            <div style={{ cursor: 'default' }} />
+            <div />
           </Dropdown.Action>
           <Divider />
           <Dropdown.Action
@@ -263,18 +263,20 @@ export const AccountMenuStory: StoryObj<typeof Dropdown> = {
         <Text code>Dropdown.RadioList</Text> for a mutually-exclusive theme,{' '}
         <Text code>Dropdown.Checkbox</Text> for independent toggles, and{' '}
         <Text code>badge</Text> on an action for a plan indicator. The first
-        row is <Text code>asChild</Text> on a non-interactive{' '}
-        <Text code>{'<div>'}</Text> — a way to show identity inside the menu
-        without it acting like a clickable item. Trigger is an{' '}
-        <Text code>Avatar</Text>.
+        row uses <Text code>asChild</Text> with a custom{' '}
+        <Text code>{'<div>'}</Text>. It remains a focusable action: open the
+        menu with <Text kbd>Enter</Text> on the <Text code>Avatar</Text>,
+        then press <Text kbd>ArrowDown</Text> to move from Alex Petrov to
+        Profile settings.
       </Paragraph>
       <Flex orientation="horizontal">
         <AccountMenu />
       </Flex>
       <Caption>
-        The name row doesn&rsquo;t close the menu or highlight on hover — it
-        renders <Text code>{'<div style={{ cursor: \'default\' }} />'}</Text>{' '}
-        as its child instead of a link or a button.
+        A custom root keeps the action's keyboard behavior. Without an explicit{' '}
+        <Text code>tabIndex</Text>, the active custom action gets{' '}
+        <Text code>tabIndex={0}</Text> and other custom actions get{' '}
+        <Text code>tabIndex={-1}</Text>.
       </Caption>
     </Flex>
   ),

@@ -93,8 +93,15 @@ export function DropdownAction(props: DropdownActionProps) {
     </>
   );
 
+  const childTabIndex = isValidElement<{ tabIndex?: number }>(children)
+    ? children.props.tabIndex
+    : undefined;
+
   const sharedProps = {
     ...htmlProps,
+    ...(asChild && {
+      tabIndex: htmlProps.tabIndex ?? childTabIndex ?? (isFocused ? 0 : -1),
+    }),
     type: 'button' as const,
     style: styles,
     className: cls,
