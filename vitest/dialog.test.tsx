@@ -1,3 +1,4 @@
+import type { PromptType } from '../src/components/dialog/dialog';
 import { expect, test, describe, vi } from 'vitest';
 import {
   render,
@@ -17,7 +18,9 @@ describe('Dialogs', () => {
   test('resolves immediately with the dismissed value when no provider is mounted', async () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-    await expect(showConfirm({ title: 'T', message: 'M' })).resolves.toBe(false);
+    await expect(showConfirm({ title: 'T', message: 'M' })).resolves.toBe(
+      false,
+    );
     expect(warn).toHaveBeenCalled();
 
     warn.mockRestore();
@@ -129,5 +132,64 @@ describe('Dialogs', () => {
     await waitFor(() => {
       expect(screen.getByText('ОК')).toBeInTheDocument();
     });
+  });
+});
+
+describe('Prompt focus', () => {
+  test.each<PromptType>(['string', 'text', 'password', 'number'])(
+    '%s prompt keeps autofocus on its input',
+    async (inputType) => {
+      render(
+        <Application>
+          <div />
+        </Application>,
+      );
+      let result!: Promise<string | number | null>;
+      act(() => {
+        result = showPrompt({
+          title: 'Focused prompt',
+          message: 'Enter a value',
+          inputType,
+          placeholder: 'Focus target',
+        });
+      });
+      const input = await screen.findByPlaceholderText('Focus target');
+      await waitFor(() => expect(input).toHaveFocus());
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Close', exact: true }),
+      );
+      await expect(result).resolves.toBeNull();
+    },
+  );
+
+  test('queued prompts focus the new input after the previous prompt closes', async () => {
+    render(
+      <Application>
+        <div />
+      </Application>,
+    );
+    let first!: Promise<string | number | null>;
+    let second!: Promise<string | number | null>;
+    act(() => {
+      first = showPrompt({
+        title: 'First',
+        message: 'First prompt',
+        placeholder: 'First input',
+      });
+      second = showPrompt({
+        title: 'Second',
+        message: 'Second prompt',
+        placeholder: 'Second input',
+      });
+    });
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText('First input')).toHaveFocus(),
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Close', exact: true }));
+    await expect(first).resolves.toBeNull();
+    const input = await screen.findByPlaceholderText('Second input');
+    await waitFor(() => expect(input).toHaveFocus());
+    fireEvent.click(screen.getByRole('button', { name: 'Close', exact: true }));
+    await expect(second).resolves.toBeNull();
   });
 });

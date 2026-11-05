@@ -228,7 +228,9 @@ export const Prompts: StoryObj<typeof DialogProvider> = {
           A single input in a dialog. <Text code>inputType</Text> switches
           between a text field, a number field, a password field and a{' '}
           <Text code>textarea</Text> (<Text code>'text'</Text>). Resolves with
-          the entered value, or <Text code>null</Text> if dismissed.
+          the entered value, or <Text code>null</Text> if dismissed. The input
+          receives focus on opening, so you can type immediately without clicking
+          it first.
         </Paragraph>
         <Flex gap="s" wrap>
           <Button

@@ -43,26 +43,22 @@ export const Modal = (props: ModalProps) => {
   const t = useLocalization();
   const titleId = useId();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
 
   const isControlled = open !== undefined;
   const { value: internalOpened, disable: hide } = useBoolean(defaultOpen);
   const opened = isControlled ? open : internalOpened;
 
   useEffect(() => {
-    if (!opened) {
+    const body = bodyRef.current;
+    if (!opened || !enabled || !body) {
       return;
     }
-
-    /**
-     * Native `autoFocus` scrolls the focused element into view with no way
-     * to opt out — for a modal anchored near the top of a scrolling backdrop
-     * (see `Sheet`), that scroll can push the panel itself half off-screen.
-     * Focusing manually with `preventScroll` avoids it. Runs after `Sheet`'s
-     * own fallback panel-focus effect (a child's effects fire before its
-     * parent's), so this is what wins.
-     */
+    if (body.contains(body.ownerDocument.activeElement)) {
+      return;
+    }
     closeButtonRef.current?.focus({ preventScroll: true });
-  }, [opened]);
+  }, [opened, enabled]);
 
   const handleClose = useCallback(
     (event?: MouseEvent | KeyboardEvent) => {
@@ -106,7 +102,7 @@ export const Modal = (props: ModalProps) => {
       aria-labelledby={title ? titleId : undefined}
       {...restProps}
     >
-      <div className={s.Body}>
+      <div ref={bodyRef} className={s.Body}>
         <div className={s.Title} id={titleId}>
           {title}
           {showCloseButton && (

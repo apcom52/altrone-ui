@@ -1,6 +1,6 @@
 import { createPortal } from 'react-dom';
 import { expect, test, describe, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Application, Modal } from '../src/components';
 
 describe('Modal', () => {
@@ -151,5 +151,62 @@ describe('Modal', () => {
     fireEvent.keyDown(document.body, { key: 'Escape' });
 
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('Modal initial focus', () => {
+  test('uses the close button when content does not claim focus', () => {
+    const { rerender } = render(
+      <Application>
+        <Modal open={false} content={<div>Content</div>} />
+      </Application>,
+    );
+    rerender(
+      <Application>
+        <Modal open content={<div>Content</div>} />
+      </Application>,
+    );
+    expect(
+      screen.getByRole('button', { name: 'Close', exact: true }),
+    ).toHaveFocus();
+  });
+
+  test('preserves autofocus in footer actions', () => {
+    render(
+      <Application>
+        <Modal
+          defaultOpen
+          content={<div>Content</div>}
+          actions={<button autoFocus>Primary action</button>}
+        />
+      </Application>,
+    );
+    expect(
+      screen.getByRole('button', { name: 'Primary action' }),
+    ).toHaveFocus();
+  });
+
+  test('autofocus is preserved when a modal is opened again', async () => {
+    const content = <input aria-label="Modal input" autoFocus />;
+    const { rerender } = render(
+      <Application>
+        <Modal open content={content} />
+      </Application>,
+    );
+    expect(screen.getByRole('textbox', { name: 'Modal input' })).toHaveFocus();
+    rerender(
+      <Application>
+        <Modal open={false} content={content} />
+      </Application>,
+    );
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+    );
+    rerender(
+      <Application>
+        <Modal open content={content} />
+      </Application>,
+    );
+    expect(screen.getByRole('textbox', { name: 'Modal input' })).toHaveFocus();
   });
 });
