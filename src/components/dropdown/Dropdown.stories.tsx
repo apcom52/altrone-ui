@@ -511,6 +511,68 @@ export const NestedStory: StoryObj<typeof Dropdown> = {
   ),
 };
 
+export const ChildMenuInteractionCheck: StoryObj<typeof Dropdown> = {
+  name: 'ChildMenu interaction checks (T-115)',
+  render: () => {
+    const [focusedItem, setFocusedItem] = useState('None');
+    const [lastAction, setLastAction] = useState('None');
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Heading>Submenu interaction</Heading>
+        <Paragraph>
+          Open either menu and use <Text kbd>ArrowDown</Text> and{' '}
+          <Text kbd>ArrowUp</Text> to move between its items. In the enabled
+          example, More should receive focus between Before and After; press{' '}
+          <Text kbd>Enter</Text> to open it. In the disabled example, More
+          should be skipped and should stay closed when clicked.
+        </Paragraph>
+        <Flex orientation="horizontal" gap="l" wrap>
+          {[false, true].map((disabled) => (
+            <Dropdown
+              key={String(disabled)}
+              placement="bottom-start"
+              content={
+                <Dropdown.Menu>
+                  <Dropdown.Action
+                    label="Before"
+                    onFocus={() => setFocusedItem('Before')}
+                    onClick={() => setLastAction('Before')}
+                  />
+                  <Dropdown.ChildMenu
+                    label="More"
+                    disabled={disabled}
+                    onFocus={() => setFocusedItem('More')}
+                  >
+                    <Dropdown.Action
+                      label="Nested action"
+                      onFocus={() => setFocusedItem('Nested action')}
+                      onClick={() => setLastAction('Nested action')}
+                    />
+                  </Dropdown.ChildMenu>
+                  <Dropdown.Action
+                    label="After"
+                    onFocus={() => setFocusedItem('After')}
+                    onClick={() => setLastAction('After')}
+                  />
+                </Dropdown.Menu>
+              }
+            >
+              <Button
+                label={disabled ? 'Open disabled submenu' : 'Open enabled submenu'}
+                onFocus={() => setFocusedItem('Menu trigger')}
+              />
+            </Dropdown>
+          ))}
+        </Flex>
+        <Text block role="status" aria-live="polite">
+          Focused item: {focusedItem}. Last action: {lastAction}.
+        </Text>
+      </Flex>
+    );
+  },
+};
+
 // ─── 4. Actions as links (asChild) ──────────────────────────────────────────
 
 function AsChildDemo() {
