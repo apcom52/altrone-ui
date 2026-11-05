@@ -6,6 +6,7 @@ import { Flex } from '../flex';
 import { Text } from '../text';
 import { Button } from '../button';
 import { Tooltip } from '../tooltip';
+import { TextInput } from '../textInput';
 import { Modal } from './Modal.tsx';
 import { PublishPostStory } from './stories/Modal.story.PublishPost.tsx';
 import { DeleteWorkspaceStory } from './stories/Modal.story.DeleteWorkspace.tsx';
@@ -334,3 +335,56 @@ const FakeSave = ({ onDone }: { onDone: () => void }) => {
 };
 
 export { PublishPostStory, DeleteWorkspaceStory, KeypadLockStory };
+
+export const InitialFocus: StoryObj<typeof Modal> = {
+  name: 'Initial focus',
+  render: () => {
+    const [open, setOpen] = useState(false);
+    const [mode, setMode] = useState<'input' | 'info'>('input');
+    const [value, setValue] = useState('');
+    return (
+      <Flex orientation="vertical" gap="l" align="start">
+        <Heading>Initial focus</Heading>
+        <Paragraph>
+          A field with <Text code>autoFocus</Text> receives focus when the
+          dialog opens, so you can start typing immediately. If no control
+          claims focus, the header close button receives it. Close and reopen
+          the dialog to check the same behavior on every opening.
+        </Paragraph>
+        <Flex gap="m">
+          <Button
+            label="Open input dialog"
+            onClick={() => {
+              setMode('input');
+              setOpen(true);
+            }}
+          />
+          <Button
+            label="Open informational dialog"
+            onClick={() => {
+              setMode('info');
+              setOpen(true);
+            }}
+          />
+        </Flex>
+        <Modal
+          open={open}
+          onClose={() => setOpen(false)}
+          title={mode === 'input' ? 'Project name' : 'About this project'}
+          content={
+            mode === 'input' ? (
+              <TextInput
+                autoFocus
+                placeholder="Project name"
+                value={value}
+                onChange={setValue}
+              />
+            ) : (
+              <Text block>This dialog has no autofocus control.</Text>
+            )
+          }
+        />
+      </Flex>
+    );
+  },
+};
