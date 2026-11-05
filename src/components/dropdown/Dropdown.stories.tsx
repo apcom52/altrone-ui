@@ -372,6 +372,83 @@ export const ActionActivationCheck: StoryObj<typeof Dropdown> = {
   },
 };
 
+export const SelectionActivationCheck: StoryObj<typeof Dropdown> = {
+  name: 'Checkbox and radio activation check (T-112)',
+  render: () => {
+    const [checked, setChecked] = useState(false);
+    const [focusedItem, setFocusedItem] = useState('None');
+    const [density, setDensity] = useState('compact');
+    const [checkboxChanges, setCheckboxChanges] = useState(0);
+    const [radioChanges, setRadioChanges] = useState(0);
+    const [events, setEvents] = useState<string[]>([]);
+
+    return (
+      <Flex
+        orientation="vertical"
+        gap="l"
+        style={{ maxWidth: 620 }}
+        onFocusCapture={(event) => {
+          setFocusedItem((event.target as HTMLElement).textContent?.trim() || 'None');
+        }}
+      >
+        <Heading>Selection activation count</Heading>
+        <Paragraph>
+          Open the menu with <Text kbd>Enter</Text>: DOM focus should move to
+          Autosave. The first <Text kbd>ArrowDown</Text> should move to Compact.
+          Press <Text kbd>Enter</Text> once on Autosave to check activation.
+          Use the arrow keys to reach Comfortable and press{' '}
+          <Text kbd>Enter</Text> once. Each gesture should update its change
+          counter once. Compare with <Text kbd>Space</Text> and a mouse click.
+        </Paragraph>
+        <Dropdown
+          placement="bottom-start"
+          content={
+            <Dropdown.Menu>
+              <Dropdown.Checkbox
+                label="Autosave"
+                checked={checked}
+                onChange={(next, event) => {
+                  setChecked(next);
+                  setCheckboxChanges((count) => count + 1);
+                  setEvents((previous) => [...previous, `Checkbox: ${event.type}`]);
+                }}
+              />
+              <Dropdown.RadioList
+                value={density}
+                onChange={(next, event) => {
+                  setDensity(next);
+                  setRadioChanges((count) => count + 1);
+                  setEvents((previous) => [...previous, `Radio: ${event.type}`]);
+                }}
+              >
+                <Dropdown.RadioItem label="Compact" value="compact" />
+                <Dropdown.RadioItem label="Comfortable" value="comfortable" />
+              </Dropdown.RadioList>
+            </Dropdown.Menu>
+          }
+        >
+          <Button label="Open selection menu" />
+        </Dropdown>
+        <Text block role="status" aria-live="polite">
+          DOM focus: {focusedItem}. Autosave: {String(checked)}. Checkbox changes: {checkboxChanges}.
+          Density: {density}. Radio changes: {radioChanges}.
+          Events: {events.join(', ') || 'None'}.
+        </Text>
+        <Button
+          label="Reset selection counters"
+          onClick={() => {
+            setChecked(false);
+            setDensity('compact');
+            setCheckboxChanges(0);
+            setRadioChanges(0);
+            setEvents([]);
+          }}
+        />
+      </Flex>
+    );
+  },
+};
+
 // ─── 3. Nested submenus (ChildMenu) ──────────────────────────────────────────
 
 function FileContextMenu() {
