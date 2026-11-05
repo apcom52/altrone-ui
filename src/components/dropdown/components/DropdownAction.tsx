@@ -64,9 +64,20 @@ export function DropdownAction(props: DropdownActionProps) {
   };
 
   const onKeyDownPress: React.KeyboardEventHandler<HTMLButtonElement> = (e) => {
-    if (e.key === 'Enter') {
-      e.currentTarget.click();
+    if (props.disabled || (e.key !== 'Enter' && e.key !== ' ')) {
+      return;
     }
+    const element = e.currentTarget;
+    if (
+      element.tagName === 'BUTTON' ||
+      (e.key === 'Enter' &&
+        element.tagName === 'A' &&
+        element.hasAttribute('href'))
+    ) {
+      return;
+    }
+    e.preventDefault();
+    element.click();
   };
 
   const actionContent = (
@@ -82,8 +93,15 @@ export function DropdownAction(props: DropdownActionProps) {
     </>
   );
 
+  const childTabIndex = isValidElement<{ tabIndex?: number }>(children)
+    ? children.props.tabIndex
+    : undefined;
+
   const sharedProps = {
     ...htmlProps,
+    ...(asChild && {
+      tabIndex: htmlProps.tabIndex ?? childTabIndex ?? (isFocused ? 0 : -1),
+    }),
     type: 'button' as const,
     style: styles,
     className: cls,

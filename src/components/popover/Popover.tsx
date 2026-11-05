@@ -255,6 +255,7 @@ const PopoverBase = ({
     onNavigate: setActiveIndex,
     loop: true,
     virtual: virtualNavigationFocus,
+    focusItemOnOpen: virtualNavigationFocus ? 'auto' : true,
     allowEscape: true,
     nested: parentNodeId !== null,
   });
@@ -337,6 +338,7 @@ const PopoverBase = ({
       context={context}
       disabled={!focusTrap}
       order={focusTrapTargets}
+      initialFocus={enableListNavigation && !virtualNavigationFocus ? -1 : 0}
     >
       <FloatingList elementsRef={listNavigationRef}>
         <PopoverCurrentIndex.Provider value={activeIndex}>

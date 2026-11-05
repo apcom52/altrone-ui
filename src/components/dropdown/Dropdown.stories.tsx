@@ -213,7 +213,7 @@ function AccountMenu() {
             label="Alex Petrov"
             hintText="@apcom"
           >
-            <div style={{ cursor: 'default' }} />
+            <div />
           </Dropdown.Action>
           <Divider />
           <Dropdown.Action
@@ -263,18 +263,20 @@ export const AccountMenuStory: StoryObj<typeof Dropdown> = {
         <Text code>Dropdown.RadioList</Text> for a mutually-exclusive theme,{' '}
         <Text code>Dropdown.Checkbox</Text> for independent toggles, and{' '}
         <Text code>badge</Text> on an action for a plan indicator. The first
-        row is <Text code>asChild</Text> on a non-interactive{' '}
-        <Text code>{'<div>'}</Text> — a way to show identity inside the menu
-        without it acting like a clickable item. Trigger is an{' '}
-        <Text code>Avatar</Text>.
+        row uses <Text code>asChild</Text> with a custom{' '}
+        <Text code>{'<div>'}</Text>. It remains a focusable action: open the
+        menu with <Text kbd>Enter</Text> on the <Text code>Avatar</Text>,
+        then press <Text kbd>ArrowDown</Text> to move from Alex Petrov to
+        Profile settings.
       </Paragraph>
       <Flex orientation="horizontal">
         <AccountMenu />
       </Flex>
       <Caption>
-        The name row doesn&rsquo;t close the menu or highlight on hover — it
-        renders <Text code>{'<div style={{ cursor: \'default\' }} />'}</Text>{' '}
-        as its child instead of a link or a button.
+        A custom root keeps the action's keyboard behavior. Without an explicit{' '}
+        <Text code>tabIndex</Text>, the active custom action gets{' '}
+        <Text code>tabIndex={0}</Text> and other custom actions get{' '}
+        <Text code>tabIndex={-1}</Text>.
       </Caption>
     </Flex>
   ),
@@ -327,6 +329,124 @@ export const ItemHandlersStory: StoryObj<typeof Dropdown> = {
       <TrackedSettingsMenu />
     </Flex>
   ),
+};
+
+export const ActionActivationCheck: StoryObj<typeof Dropdown> = {
+  name: 'Action activation check (T-111)',
+  render: () => {
+    const [events, setEvents] = useState<string[]>([]);
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
+        <Heading>Action activation count</Heading>
+        <Paragraph>
+          Open the menu, focus Run action and press <Text kbd>Enter</Text>{' '}
+          once. Each activation should add one click to the counter. Compare
+          with a mouse click or <Text kbd>Space</Text>. The event log
+          distinguishes browser clicks from programmatic clicks.
+        </Paragraph>
+        <Dropdown
+          placement="bottom-start"
+          content={
+            <Dropdown.Menu>
+              <Dropdown.Action
+                label="Run action"
+                onClick={(event) => {
+                  const source = event.nativeEvent.isTrusted
+                    ? 'Browser click'
+                    : 'Programmatic click';
+                  setEvents((previous) => [...previous, source]);
+                }}
+              />
+            </Dropdown.Menu>
+          }
+        >
+          <Button label="Open action menu" />
+        </Dropdown>
+        <Text block role="status" aria-live="polite">
+          Click count: {events.length}. Events: {events.join(', ') || 'None'}.
+        </Text>
+        <Button label="Reset counter" onClick={() => setEvents([])} />
+      </Flex>
+    );
+  },
+};
+
+export const SelectionActivationCheck: StoryObj<typeof Dropdown> = {
+  name: 'Checkbox and radio activation check (T-112)',
+  render: () => {
+    const [checked, setChecked] = useState(false);
+    const [focusedItem, setFocusedItem] = useState('None');
+    const [density, setDensity] = useState('compact');
+    const [checkboxChanges, setCheckboxChanges] = useState(0);
+    const [radioChanges, setRadioChanges] = useState(0);
+    const [events, setEvents] = useState<string[]>([]);
+
+    return (
+      <Flex
+        orientation="vertical"
+        gap="l"
+        style={{ maxWidth: 620 }}
+        onFocusCapture={(event) => {
+          setFocusedItem((event.target as HTMLElement).textContent?.trim() || 'None');
+        }}
+      >
+        <Heading>Selection activation count</Heading>
+        <Paragraph>
+          Open the menu with <Text kbd>Enter</Text>: DOM focus should move to
+          Autosave. The first <Text kbd>ArrowDown</Text> should move to Compact.
+          Press <Text kbd>Enter</Text> once on Autosave to check activation.
+          Use the arrow keys to reach Comfortable and press{' '}
+          <Text kbd>Enter</Text> once. Each gesture should update its change
+          counter once. Compare with <Text kbd>Space</Text> and a mouse click.
+        </Paragraph>
+        <Dropdown
+          placement="bottom-start"
+          content={
+            <Dropdown.Menu>
+              <Dropdown.Checkbox
+                label="Autosave"
+                checked={checked}
+                onChange={(next, event) => {
+                  setChecked(next);
+                  setCheckboxChanges((count) => count + 1);
+                  setEvents((previous) => [...previous, `Checkbox: ${event.type}`]);
+                }}
+              />
+              <Dropdown.RadioList
+                value={density}
+                onChange={(next, event) => {
+                  setDensity(next);
+                  setRadioChanges((count) => count + 1);
+                  setEvents((previous) => [...previous, `Radio: ${event.type}`]);
+                }}
+              >
+                <Dropdown.RadioItem label="Compact" value="compact" />
+                <Dropdown.RadioItem label="Comfortable" value="comfortable" />
+              </Dropdown.RadioList>
+            </Dropdown.Menu>
+          }
+        >
+          <Button label="Open selection menu" />
+        </Dropdown>
+        <Text block role="status" aria-live="polite">
+          DOM focus: {focusedItem}. Autosave: {String(checked)}. Checkbox changes: {checkboxChanges}.
+          Density: {density}. Radio changes: {radioChanges}.
+          Events: {events.join(', ') || 'None'}.
+        </Text>
+        <Button
+          label="Reset selection counters"
+          onClick={() => {
+            setChecked(false);
+            setDensity('compact');
+            setCheckboxChanges(0);
+            setRadioChanges(0);
+            setEvents([]);
+          }}
+        />
+      </Flex>
+    );
+  },
 };
 
 // ─── 3. Nested submenus (ChildMenu) ──────────────────────────────────────────
@@ -385,6 +505,68 @@ export const NestedStory: StoryObj<typeof Dropdown> = {
       </Flex>
     </Flex>
   ),
+};
+
+export const ChildMenuInteractionCheck: StoryObj<typeof Dropdown> = {
+  name: 'ChildMenu interaction checks (T-115)',
+  render: () => {
+    const [focusedItem, setFocusedItem] = useState('None');
+    const [lastAction, setLastAction] = useState('None');
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Heading>Submenu interaction</Heading>
+        <Paragraph>
+          Open either menu and use <Text kbd>ArrowDown</Text> and{' '}
+          <Text kbd>ArrowUp</Text> to move between its items. In the enabled
+          example, More should receive focus between Before and After; press{' '}
+          <Text kbd>Enter</Text> to open it. In the disabled example, More
+          should be skipped and should stay closed when clicked.
+        </Paragraph>
+        <Flex orientation="horizontal" gap="l" wrap>
+          {[false, true].map((disabled) => (
+            <Dropdown
+              key={String(disabled)}
+              placement="bottom-start"
+              content={
+                <Dropdown.Menu>
+                  <Dropdown.Action
+                    label="Before"
+                    onFocus={() => setFocusedItem('Before')}
+                    onClick={() => setLastAction('Before')}
+                  />
+                  <Dropdown.ChildMenu
+                    label="More"
+                    disabled={disabled}
+                    onFocus={() => setFocusedItem('More')}
+                  >
+                    <Dropdown.Action
+                      label="Nested action"
+                      onFocus={() => setFocusedItem('Nested action')}
+                      onClick={() => setLastAction('Nested action')}
+                    />
+                  </Dropdown.ChildMenu>
+                  <Dropdown.Action
+                    label="After"
+                    onFocus={() => setFocusedItem('After')}
+                    onClick={() => setLastAction('After')}
+                  />
+                </Dropdown.Menu>
+              }
+            >
+              <Button
+                label={disabled ? 'Open disabled submenu' : 'Open enabled submenu'}
+                onFocus={() => setFocusedItem('Menu trigger')}
+              />
+            </Dropdown>
+          ))}
+        </Flex>
+        <Text block role="status" aria-live="polite">
+          Focused item: {focusedItem}. Last action: {lastAction}.
+        </Text>
+      </Flex>
+    );
+  },
 };
 
 // ─── 4. Actions as links (asChild) ──────────────────────────────────────────
