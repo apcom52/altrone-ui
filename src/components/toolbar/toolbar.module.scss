@@ -219,3 +219,11 @@
     var(--toolbar-leading-track, 1fr) auto
     var(--toolbar-trailing-track, 1fr);
 }
+
+:is(.Top, .Bottom) > [data-toolbar-region]:only-child {
+  grid-column: 1 / -1;
+}
+
+:is(.Left, .Right) > [data-toolbar-region]:only-child {
+  grid-row: 1 / -1;
+}
