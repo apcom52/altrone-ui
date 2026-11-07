@@ -101,7 +101,7 @@ export const Darkroom: Story = {
           back on the number, and <Text code>onChangeEnd</Text> is where a
           real editor re-runs the expensive develop pass —{' '}
           <Text code>onChange</Text> only drives the cheap live preview. The develop pass receives the last
-          value from the gesture.
+          value from the gesture. Cancelling a drag skips that pass.
         </Lead>
 
         <div
