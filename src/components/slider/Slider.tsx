@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useRef, useEffect, useState } from 'react';
+import { useMemo, useCallback, useRef, useState } from 'react';
 import {
   autoUpdate,
   flip,
@@ -85,7 +85,6 @@ export const Slider = (props: SliderProps) => {
   const sliderSize = size || formFieldSize || 'm';
 
   const isDragging = useRef(false);
-  const sliderValue = useRef(value);
   const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
@@ -160,15 +159,17 @@ export const Slider = (props: SliderProps) => {
       target.setPointerCapture(event.pointerId);
       isDragging.current = true;
       setIsActive(true);
-      onChange(calculateValue(event.clientX, event.clientY), event);
+      let lastValue = calculateValue(event.clientX, event.clientY);
+      onChange(lastValue, event);
 
       const handleMove = (e: PointerEvent) => {
         if (!isDragging.current) return;
-        onChange(calculateValue(e.clientX, e.clientY), e);
+        lastValue = calculateValue(e.clientX, e.clientY);
+        onChange(lastValue, e);
       };
 
       const handleUp = (e: PointerEvent) => {
-        onChangeEnd?.(sliderValue.current, e);
+        onChangeEnd?.(lastValue, e);
         isDragging.current = false;
         setIsActive(false);
         target.releasePointerCapture(event.pointerId);
@@ -237,10 +238,6 @@ export const Slider = (props: SliderProps) => {
     },
     className,
   );
-
-  useEffect(() => {
-    sliderValue.current = value;
-  }, [value]);
 
   const showValue =
     showCurrentValue === 'always' || showCurrentValue === 'active';
