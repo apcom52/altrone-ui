@@ -100,7 +100,8 @@ export const Darkroom: Story = {
           through a neutral centre. <Text code>renderLabel</Text> puts the sign
           back on the number, and <Text code>onChangeEnd</Text> is where a
           real editor re-runs the expensive develop pass —{' '}
-          <Text code>onChange</Text> only drives the cheap live preview.
+          <Text code>onChange</Text> only drives the cheap live preview. The develop pass receives the last
+          value from the gesture.
         </Lead>
 
         <div
@@ -121,7 +122,7 @@ export const Darkroom: Story = {
               max={100}
               value={exposure}
               onChange={setExposure}
-              onChangeEnd={() => setApplied(`exposure ${signed(exposure)}`)}
+              onChangeEnd={(value) => setApplied(`exposure ${signed(value)}`)}
               icon={<Sun />}
               renderLabel={signed}
             />
@@ -132,7 +133,7 @@ export const Darkroom: Story = {
               max={100}
               value={contrast}
               onChange={setContrast}
-              onChangeEnd={() => setApplied(`contrast ${signed(contrast)}`)}
+              onChangeEnd={(value) => setApplied(`contrast ${signed(value)}`)}
               icon={<Contrast />}
               renderLabel={signed}
             />
@@ -143,8 +144,8 @@ export const Darkroom: Story = {
               max={100}
               value={saturation}
               onChange={setSaturation}
-              onChangeEnd={() =>
-                setApplied(`saturation ${signed(saturation)}`)
+              onChangeEnd={(value) =>
+                setApplied(`saturation ${signed(value)}`)
               }
               icon={<Droplet />}
               renderLabel={signed}
@@ -156,7 +157,7 @@ export const Darkroom: Story = {
               max={100}
               value={warmth}
               onChange={setWarmth}
-              onChangeEnd={() => setApplied(`warmth ${signed(warmth)}`)}
+              onChangeEnd={(value) => setApplied(`warmth ${signed(value)}`)}
               icon={<Thermometer />}
               renderLabel={signed}
             />

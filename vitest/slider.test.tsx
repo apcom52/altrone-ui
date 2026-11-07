@@ -1,8 +1,49 @@
-import { expect, test, describe } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { expect, test, describe, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Application, Slider } from '../src/components';
 
+function renderDragSlider() {
+  const onChange = vi.fn();
+  const onChangeEnd = vi.fn();
+  const { unmount } = render(
+    <Application>
+      <Slider value={10} onChange={onChange} onChangeEnd={onChangeEnd} />
+    </Application>,
+  );
+  const slider = screen.getByRole('slider');
+  let capturedPointer: number | undefined;
+  slider.setPointerCapture = (pointerId) => {
+    capturedPointer = pointerId;
+  };
+  slider.hasPointerCapture = (pointerId) => capturedPointer === pointerId;
+  slider.releasePointerCapture = () => {
+    capturedPointer = undefined;
+  };
+  vi.spyOn(slider.firstElementChild!.nextElementSibling!, 'getBoundingClientRect')
+    .mockReturnValue({ ...slider.getBoundingClientRect(), width: 100 });
+  return { slider, onChange, onChangeEnd, unmount };
+}
+
+function pointer(target: EventTarget, type: string, clientX = 0, pointerId = 1) {
+  const event = new MouseEvent(type, { bubbles: true, clientX });
+  Object.defineProperty(event, 'pointerId', { value: pointerId });
+  fireEvent(target, event);
+  return event;
+}
+
 describe('Slider', () => {
+  test('commits the last emitted drag value before the parent updates value', () => {
+    const { slider, onChange, onChangeEnd } = renderDragSlider();
+    pointer(slider, 'pointerdown', 30);
+    const move = pointer(document, 'pointermove', 75);
+    expect(slider).toHaveAttribute('data-slider-active', 'true');
+    expect(onChange).toHaveBeenLastCalledWith(75, move);
+    const end = pointer(document, 'pointerup', 75);
+    expect(onChangeEnd).toHaveBeenCalledTimes(1);
+    expect(onChangeEnd).toHaveBeenCalledWith(75, end);
+    expect(slider).toHaveAttribute('data-slider-active', 'false');
+  });
+
   test('check that inner input has all necessary attributes', () => {
     const { container } = render(
       <Application>
