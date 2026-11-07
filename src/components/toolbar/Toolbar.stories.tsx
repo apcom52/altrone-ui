@@ -1126,6 +1126,7 @@ export const Overflow: StoryObj<typeof Toolbar> = {
   render: () => {
     const [iconWidth, setIconWidth] = useState(640);
     const [textWidth, setTextWidth] = useState(640);
+    const [singleRegionWidth, setSingleRegionWidth] = useState(440);
     const [leadingWidth, setLeadingWidth] = useState(640);
     const [fullWidth, setFullWidth] = useState(640);
     const [mixedWidth, setMixedWidth] = useState(640);
@@ -1245,6 +1246,39 @@ export const Overflow: StoryObj<typeof Toolbar> = {
             <Toolbar.Action label="Archived" priority="low" />
             <Toolbar.Action label="Trash" priority="low" />
           </Toolbar>
+        </OverflowDemo>
+
+        <Text block size={5} weight="bold" style={{ marginTop: 8 }}>
+          A single region
+        </Text>
+        <Text block size={4} style={{ lineHeight: 1.6 }}>
+          A single region uses the full available width. Its actions align to
+          the start, center, or end and move into the overflow menu when they
+          run out of room.
+        </Text>
+        <OverflowDemo
+          width={singleRegionWidth}
+          onChangeWidth={setSingleRegionWidth}
+          max={440}
+        >
+          {([
+            ['Leading', Toolbar.Leading],
+            ['Center', Toolbar.Center],
+            ['Trailing', Toolbar.Trailing],
+          ] as const).map(([name, Region]) => (
+            <Toolbar key={name} aria-label={name} variant="plain">
+              <Region>
+                <Toolbar.Group priority="high">
+                  <Toolbar.Action label="Undo" icon={<Undo2 />} />
+                  <Toolbar.Action label="Redo" icon={<Redo2 />} />
+                </Toolbar.Group>
+                <Toolbar.Group priority="low">
+                  <Toolbar.Action label="Print" icon={<Printer />} />
+                  <Toolbar.Action label="Share" icon={<Share />} />
+                </Toolbar.Group>
+              </Region>
+            </Toolbar>
+          ))}
         </OverflowDemo>
 
         <Text block size={5} weight="bold" style={{ marginTop: 8 }}>
