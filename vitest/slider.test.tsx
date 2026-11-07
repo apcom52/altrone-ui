@@ -36,12 +36,45 @@ describe('Slider', () => {
     const { slider, onChange, onChangeEnd } = renderDragSlider();
     pointer(slider, 'pointerdown', 30);
     const move = pointer(document, 'pointermove', 75);
+    pointer(document, 'pointermove', 90, 2);
+    pointer(document, 'pointerup', 90, 2);
     expect(slider).toHaveAttribute('data-slider-active', 'true');
     expect(onChange).toHaveBeenLastCalledWith(75, move);
     const end = pointer(document, 'pointerup', 75);
+    pointer(slider, 'lostpointercapture');
     expect(onChangeEnd).toHaveBeenCalledTimes(1);
     expect(onChangeEnd).toHaveBeenCalledWith(75, end);
     expect(slider).toHaveAttribute('data-slider-active', 'false');
+  });
+
+  test.each(['pointercancel', 'lostpointercapture'])(
+    '%s discards the active drag and allows a new one',
+    (type) => {
+      const { slider, onChange, onChangeEnd } = renderDragSlider();
+      pointer(slider, 'pointerdown', 30);
+      pointer(slider, type);
+      expect(slider).toHaveAttribute('data-slider-active', 'false');
+      pointer(document, 'pointermove', 75);
+      pointer(document, 'pointerup', 75);
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChangeEnd).not.toHaveBeenCalled();
+
+      pointer(slider, 'pointerdown', 50, 2);
+      const end = pointer(document, 'pointerup', 50, 2);
+      expect(onChangeEnd).toHaveBeenCalledTimes(1);
+      expect(onChangeEnd).toHaveBeenCalledWith(50, end);
+    },
+  );
+
+  test('removes the active drag listeners on unmount', () => {
+    const { slider, onChange, onChangeEnd, unmount } = renderDragSlider();
+    pointer(slider, 'pointerdown', 30);
+    unmount();
+    pointer(document, 'pointermove', 75);
+    pointer(document, 'pointerup', 75);
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChangeEnd).not.toHaveBeenCalled();
+    expect(slider.hasPointerCapture(1)).toBe(false);
   });
 
   test('check that inner input has all necessary attributes', () => {

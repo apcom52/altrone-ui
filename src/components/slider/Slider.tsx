@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useRef, useState } from 'react';
+import { useMemo, useCallback, useRef, useLayoutEffect, useState } from 'react';
 import {
   autoUpdate,
   flip,
@@ -84,7 +84,7 @@ export const Slider = (props: SliderProps) => {
     typeof disabled === 'boolean' ? disabled : formFieldDisabled;
   const sliderSize = size || formFieldSize || 'm';
 
-  const isDragging = useRef(false);
+  const dragCleanupRef = useRef<(() => void) | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
@@ -149,36 +149,54 @@ export const Slider = (props: SliderProps) => {
     [min, max, step, orientation],
   );
 
-  // Move/up handlers are created inside the pointerdown closure so that
-  // removeEventListener always gets the exact reference addEventListener saw —
-  // a re-render mid-drag can't leave a stale listener bound to `document`.
   const handlePointerDown = useCallback(
     (event: React.PointerEvent<HTMLDivElement>) => {
+      if (dragCleanupRef.current) return;
+
       event.preventDefault();
       const target = event.currentTarget;
-      target.setPointerCapture(event.pointerId);
-      isDragging.current = true;
-      setIsActive(true);
+      const { pointerId } = event;
+      const ownerDocument = target.ownerDocument;
       let lastValue = calculateValue(event.clientX, event.clientY);
-      onChange(lastValue, event);
+      target.setPointerCapture(pointerId);
 
       const handleMove = (e: PointerEvent) => {
-        if (!isDragging.current) return;
+        if (e.pointerId !== pointerId) return;
         lastValue = calculateValue(e.clientX, e.clientY);
         onChange(lastValue, e);
       };
 
       const handleUp = (e: PointerEvent) => {
-        onChangeEnd?.(lastValue, e);
-        isDragging.current = false;
+        if (e.pointerId !== pointerId) return;
+        cleanup();
         setIsActive(false);
-        target.releasePointerCapture(event.pointerId);
-        document.removeEventListener('pointermove', handleMove);
-        document.removeEventListener('pointerup', handleUp);
+        onChangeEnd?.(lastValue, e);
       };
 
-      document.addEventListener('pointermove', handleMove);
-      document.addEventListener('pointerup', handleUp);
+      const handleCancel = (e: PointerEvent) => {
+        if (e.pointerId !== pointerId) return;
+        cleanup();
+        setIsActive(false);
+      };
+
+      const cleanup = () => {
+        dragCleanupRef.current = null;
+        ownerDocument.removeEventListener('pointermove', handleMove);
+        ownerDocument.removeEventListener('pointerup', handleUp);
+        ownerDocument.removeEventListener('pointercancel', handleCancel);
+        target.removeEventListener('lostpointercapture', handleCancel);
+        if (target.hasPointerCapture(pointerId)) {
+          target.releasePointerCapture(pointerId);
+        }
+      };
+
+      dragCleanupRef.current = cleanup;
+      ownerDocument.addEventListener('pointermove', handleMove);
+      ownerDocument.addEventListener('pointerup', handleUp);
+      ownerDocument.addEventListener('pointercancel', handleCancel);
+      target.addEventListener('lostpointercapture', handleCancel);
+      setIsActive(true);
+      onChange(lastValue, event);
     },
     [calculateValue, onChange, onChangeEnd],
   );
@@ -238,6 +256,8 @@ export const Slider = (props: SliderProps) => {
     },
     className,
   );
+
+  useLayoutEffect(() => () => dragCleanupRef.current?.(), []);
 
   const showValue =
     showCurrentValue === 'always' || showCurrentValue === 'active';
