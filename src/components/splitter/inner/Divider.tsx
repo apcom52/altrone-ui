@@ -26,6 +26,7 @@ export interface DividerProps {
   onPointerDown: (i: number, e: PointerEvent<HTMLDivElement>) => void;
   onPointerMove: (e: PointerEvent<HTMLDivElement>) => void;
   onPointerUp: (e: PointerEvent<HTMLDivElement>) => void;
+  onPointerCancel: (e: PointerEvent<HTMLDivElement>) => void;
   onKeyDown: (i: number, e: KeyboardEvent<HTMLDivElement>) => void;
   onCollapseLeft: (event: MouseEvent<HTMLButtonElement>) => void;
   onCollapseRight: (event: MouseEvent<HTMLButtonElement>) => void;
@@ -49,6 +50,7 @@ export const SplitterDivider = ({
   onPointerDown,
   onPointerMove,
   onPointerUp,
+  onPointerCancel,
   onKeyDown,
   onCollapseLeft,
   onCollapseRight,
@@ -98,6 +100,8 @@ export const SplitterDivider = ({
       onPointerDown={isDisabled ? undefined : (e) => onPointerDown(index, e)}
       onPointerMove={isDisabled ? undefined : onPointerMove}
       onPointerUp={isDisabled ? undefined : onPointerUp}
+      onPointerCancel={onPointerCancel}
+      onLostPointerCapture={onPointerCancel}
       onKeyDown={isDisabled ? undefined : (e) => onKeyDown(index, e)}
     >
       <div

@@ -11,6 +11,7 @@ export interface UseSplitterDragOptions {
   onResizeStartRef: React.RefObject<((sizes: number[], e: PointerEvent) => void) | undefined>;
   onResizeEndRef: React.RefObject<((sizes: number[], e: PointerEvent) => void) | undefined>;
   sizes: number[];
+  collapsed: boolean[];
   setSizes: React.Dispatch<React.SetStateAction<number[]>>;
   /** Hashed CSS class names used for DOM class toggling during drag. */
   cssClasses: { dividerActive: string; dragging: string };
@@ -24,6 +25,7 @@ export function useSplitterDrag({
   onResizeStartRef,
   onResizeEndRef,
   sizes,
+  collapsed,
   setSizes,
   cssClasses,
 }: UseSplitterDragOptions) {
@@ -37,6 +39,7 @@ export function useSplitterDrag({
   const isDragging = useRef(false);
 
   const dragRef = useRef<{
+    pointerId: number;
     index: number;
     startPos: number;
     startSizes: number[];
@@ -65,7 +68,7 @@ export function useSplitterDrag({
   const handlePointerDown = useCallback(
     (index: number, e: React.PointerEvent<HTMLDivElement>) => {
       // A press that originated on a collapse button is not a drag.
-      if ((e.target as HTMLElement).closest('button')) return;
+      if (dragRef.current || (e.target as HTMLElement).closest('button')) return;
 
       e.preventDefault();
 
@@ -77,7 +80,12 @@ export function useSplitterDrag({
 
       const startPos = orientationRef.current === 'horizontal' ? e.clientX : e.clientY;
       isDragging.current = true;
-      dragRef.current = { index, startPos, startSizes: [...liveSizes.current] };
+      dragRef.current = {
+        pointerId: e.pointerId,
+        index,
+        startPos,
+        startSizes: [...liveSizes.current],
+      };
 
       onResizeStartRef.current?.(liveSizes.current, e.nativeEvent);
     },
@@ -87,7 +95,10 @@ export function useSplitterDrag({
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!dragRef.current) return;
+      if (
+        dragRef.current?.pointerId !== e.pointerId ||
+        activeDividerRef.current !== e.currentTarget
+      ) return;
       const { index, startPos, startSizes } = dragRef.current;
 
       const currentPos = orientationRef.current === 'horizontal' ? e.clientX : e.clientY;
@@ -101,22 +112,44 @@ export function useSplitterDrag({
     [getContainerSize, applyToDOM, orientationRef, panelsRef, onResizeRef],
   );
 
-  const handlePointerUp = useCallback(
+  const clearDrag = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!dragRef.current) return;
+      if (
+        dragRef.current?.pointerId !== e.pointerId ||
+        activeDividerRef.current !== e.currentTarget
+      ) return false;
 
       activeDividerRef.current?.classList.remove(cssClasses.dividerActive);
       activeDividerRef.current = null;
       containerRef.current?.classList.remove(cssClasses.dragging);
       dragRef.current = null;
       isDragging.current = false;
+      return true;
+    },
+    [cssClasses.dividerActive, cssClasses.dragging, containerRef],
+  );
 
+  const handlePointerUp = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!clearDrag(e)) return;
       // Sync React state once at the end of the drag.
       const finalSizes = [...liveSizes.current];
       setSizes(finalSizes);
       onResizeEndRef.current?.(finalSizes, e.nativeEvent);
     },
-    [cssClasses.dividerActive, cssClasses.dragging, containerRef, setSizes, onResizeEndRef],
+    [clearDrag, setSizes, onResizeEndRef],
+  );
+
+  const handlePointerCancel = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!clearDrag(e)) return;
+      liveSizes.current = sizes;
+      applyToDOM(sizes.map((size, i) => (collapsed[i] ? 0 : size)));
+      if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      }
+    },
+    [clearDrag, sizes, collapsed, applyToDOM],
   );
 
   const handleKeyDown = useCallback(
@@ -151,6 +184,7 @@ export function useSplitterDrag({
     handlePointerDown,
     handlePointerMove,
     handlePointerUp,
+    handlePointerCancel,
     handleKeyDown,
   };
 }

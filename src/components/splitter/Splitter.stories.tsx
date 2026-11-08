@@ -427,8 +427,8 @@ export const ControlledSizesStory: StoryObj<typeof Splitter> = {
           <Text code>defaultSize</Text>) makes the whole layout controlled —
           the splitter renders whatever it's given and only asks to change it
           via <Text code>onSizesChange</Text>, fired at the end of a drag or
-          on collapse/expand. Useful for persisting a layout (e.g. to
-          localStorage) and restoring it on the next visit.
+          on collapse/expand. Cancelling a drag restores the current
+          <Text code>sizes</Text> without firing a change.
         </Text>
 
         <Flex gap="s">
