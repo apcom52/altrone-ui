@@ -1,5 +1,5 @@
 import { createContext, useContext, MouseEvent, SyntheticEvent } from 'react';
-import { ReactTable } from '@tanstack/react-table';
+import { ReactTable, ColumnVisibilityState } from '@tanstack/react-table';
 import { AnyObject } from '../../utils';
 import type { DataTableFeatures } from './DataTable.features.ts';
 import type { DataTableIconSet } from './DataTable.types.ts';
@@ -7,13 +7,18 @@ import type { DataTableIconSet } from './DataTable.types.ts';
 export interface DataTableContextValue<T extends object = AnyObject> {
   table: ReactTable<DataTableFeatures, T>;
   icons: DataTableIconSet;
+  defaultColumnVisibility: ColumnVisibilityState;
   /** `true` while `mode === 'loading'` — cells render skeletons. */
   loading: boolean;
   /** Whether row selection is available at all (the `selectable` prop). */
   selectable: boolean;
   /** `true` when the selection column (checkboxes) is visible. */
   selectMode: boolean;
-  setSelectMode: (next: boolean, event: MouseEvent<HTMLButtonElement>) => void;
+  setSelectMode: (
+    next: boolean,
+    event: MouseEvent<HTMLButtonElement>,
+    selectedRowId?: string,
+  ) => void;
   /**
    * Stashes the native event that triggered a table-state change (sort/page/
    * filter) so the corresponding `on*Change` callback, invoked later from

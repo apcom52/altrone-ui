@@ -11,6 +11,7 @@ import {
 } from '../DataTable.types.ts';
 import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
 import { CellRenderers } from '../DataTable.constants.ts';
+import { BodyCell } from './BodyCell';
 import { RowActionsCell } from './RowActionsCell.tsx';
 import s from './body.module.scss';
 
@@ -20,7 +21,7 @@ export const Body = <T extends object>({
   scrollableRef,
 }: DataTableBodyProps<T>) => {
   const t = useLocalization();
-  const { table, selectMode } = useDataTableContext<T>();
+  const { table, selectMode, setSelectMode } = useDataTableContext<T>();
 
   const columnsTemplate = useDataTableColumnsTemplate(
     selectMode,
@@ -75,13 +76,33 @@ export const Body = <T extends object>({
                 table,
               };
 
+              const copyFallback =
+                columnType === 'boolean' || columnType === 'color'
+                  ? String(rendererProps.value ?? '')
+                  : undefined;
+
               return (
-                <div key={cell.id} role="cell" className={s.Cell}>
+                <BodyCell
+                  key={cell.id}
+                  copyFallback={copyFallback}
+                  rowSelected={isSelected}
+                  onToggleRowSelection={
+                    row.getCanSelect()
+                      ? (event) => {
+                          if (selectMode) {
+                            row.toggleSelected();
+                          } else {
+                            setSelectMode(true, event, row.id);
+                          }
+                        }
+                      : undefined
+                  }
+                >
                   {createElement(
                     Renderer as FC<CellRenderer<T>>,
                     rendererProps,
                   )}
-                </div>
+                </BodyCell>
               );
             })}
             {rowActions ? (

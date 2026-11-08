@@ -4,6 +4,7 @@ import { Tooltip } from 'components/tooltip/Tooltip.tsx';
 import { useDataTableContext } from '../DataTable.context';
 import { DataTableHeaderProps } from '../DataTable.types';
 import { useLocalization } from '../../application';
+import { ColumnVisibility } from './ColumnVisibility';
 import { Filtering } from './Filtering.tsx';
 
 interface PartitionedActions {
@@ -37,6 +38,7 @@ const partitionActions = (children: ReactNode): PartitionedActions => {
 
 export const DataTableHeader = <T extends object>({
   actions,
+  hideableColumns,
 }: DataTableHeaderProps<T>) => {
   const t = useLocalization();
   const { table, icons, loading, selectable, selectMode, setSelectMode } =
@@ -77,6 +79,11 @@ export const DataTableHeader = <T extends object>({
         {hasFilterableColumns ? (
           <Toolbar.Group>
             <Filtering />
+          </Toolbar.Group>
+        ) : null}
+        {hideableColumns ? (
+          <Toolbar.Group>
+            <ColumnVisibility />
           </Toolbar.Group>
         ) : null}
         {leading}

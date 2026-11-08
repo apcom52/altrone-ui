@@ -10,6 +10,7 @@ export interface DataTableIconSet {
   sortAsc: ReactElement;
   sortDesc: ReactElement;
   filter: ReactElement;
+  columnVisibility: ReactElement;
   addFilter: ReactElement;
   deleteFilter: ReactElement;
   enableSelection: ReactElement;
@@ -183,6 +184,13 @@ export interface DataTableProps<T extends object> extends Omit<
   showEmptyBanner?: boolean;
   /** Lets every column be resized by dragging its header edge. Off by default. */
   resizableColumns?: boolean;
+  hideableColumns?: boolean;
+  hiddenColumns?: Array<keyof T>;
+  defaultHiddenColumns?: Array<keyof T>;
+  onHiddenColumnsChange?: (
+    hidden: Array<keyof T>,
+    event?: React.SyntheticEvent,
+  ) => void;
   /** Overrides for icons unique to `DataTable` (sort, filter, row actions, boolean cells). */
   icons?: Partial<DataTableIconSet>;
   /**
@@ -299,6 +307,7 @@ export interface DataTableBodyProps<T extends object> {
 
 export interface DataTableHeaderProps<T extends object> {
   actions?: DataTableProps<T>['actions'];
+  hideableColumns: boolean;
 }
 
 export interface DataTableRowActionProps extends Omit<ButtonProps, 'label'> {

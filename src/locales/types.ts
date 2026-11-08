@@ -75,6 +75,16 @@ export interface Localization {
     page: string;
   };
   dataTable: {
+    copyCell: string;
+    sortColumn: string;
+    noSort: string;
+    sortAscending: string;
+    sortDescending: string;
+    hideColumn: string;
+    columns: string;
+    columnVisibility: string;
+    showAllColumns: string;
+    resetColumns: string;
     filters: string;
     filtering: string;
     addFilter: string;

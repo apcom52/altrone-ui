@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { Application, DataTable } from '../src/components';
 import type { DataTableProps } from '../src/components/dataTable/DataTable.types';
 import {
@@ -133,6 +133,221 @@ describe('DataTable component', () => {
     expect(ages()[0]).toContain('Ada');
   });
 
+  test('sorts from the header context menu and marks the current radio option', async () => {
+    const onSortChange = vi.fn();
+    renderTable({ onSortChange });
+    const header = screen.getByTitle('age');
+    fireEvent.contextMenu(header, { button: 2, clientX: 100, clientY: 80 });
+    let group = await screen.findByRole('radiogroup', { name: 'Sort column' });
+    expect(within(group).getByRole('radio', { name: 'No sorting' })).toBeChecked();
+    expect(screen.queryByRole('button', { name: 'Hide' })).toBeNull();
+
+    fireEvent.click(within(group).getByRole('radio', { name: 'Sort ascending' }));
+    expect(header).toHaveAttribute('aria-sort', 'ascending');
+    await waitFor(() => expect(screen.queryByRole('radiogroup')).toBeNull());
+
+    fireEvent.contextMenu(header, { button: 2, clientX: 100, clientY: 80 });
+    group = await screen.findByRole('radiogroup', { name: 'Sort column' });
+    expect(within(group).getByRole('radio', { name: 'Sort ascending' })).toBeChecked();
+    fireEvent.click(within(group).getByRole('radio', { name: 'Sort descending' }));
+    expect(header).toHaveAttribute('aria-sort', 'descending');
+    await waitFor(() => expect(screen.queryByRole('radiogroup')).toBeNull());
+
+    fireEvent.contextMenu(header, { button: 2, clientX: 100, clientY: 80 });
+    group = await screen.findByRole('radiogroup', { name: 'Sort column' });
+    expect(within(group).getByRole('radio', { name: 'Sort descending' })).toBeChecked();
+    fireEvent.click(within(group).getByRole('radio', { name: 'No sorting' }));
+    expect(header).toHaveAttribute('aria-sort', 'none');
+    expect(onSortChange).toHaveBeenLastCalledWith(
+      undefined,
+      expect.objectContaining({ type: 'click' }),
+    );
+  });
+
+  test('opens a non-sortable header menu by keyboard and preserves the last column', async () => {
+    const onHiddenColumnsChange = vi.fn();
+    renderTable({
+      hideableColumns: true,
+      columns: [
+        { accessor: 'name', label: 'Name', sortable: true },
+        { accessor: 'role', label: 'Role' },
+      ],
+      onHiddenColumnsChange,
+    });
+
+    fireEvent.keyDown(screen.getByTitle('role'), { key: 'F10', shiftKey: true });
+    expect(screen.queryByRole('radiogroup')).toBeNull();
+    fireEvent.click(await screen.findByRole('button', { name: 'Hide' }));
+    expect(onHiddenColumnsChange).toHaveBeenCalledWith(
+      ['role'],
+      expect.objectContaining({ type: 'click' }),
+    );
+    expect(screen.queryByTitle('role')).toBeNull();
+
+    fireEvent.contextMenu(screen.getByTitle('name'), { button: 2 });
+    expect(await screen.findByRole('button', { name: 'Hide' })).toBeDisabled();
+    expect(screen.getByRole('separator')).toBeInTheDocument();
+  });
+
+  test('stages visibility changes, restores defaults and applies the draft', async () => {
+    renderTable({
+      hideableColumns: true,
+      defaultHiddenColumns: ['role', 'color', 'age'],
+      selectable: true,
+      mode: 'select',
+      rowActions: <DataTable.RowAction label="Edit" />,
+      columns: [
+        { accessor: 'name', label: 'Name' },
+        { accessor: 'role', label: 'Role' },
+        { accessor: 'age', label: 'Age', enabled: false },
+      ],
+    });
+
+    expect(within(screen.getByTestId('table')).queryByText('Role')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Column visibility' }));
+    const panel = await screen.findByRole('dialog', { name: 'Columns' });
+    const name = within(panel).getByRole('checkbox', { name: 'Name' });
+    const role = within(panel).getByRole('checkbox', { name: 'Role' });
+
+    expect(within(panel).getAllByRole('checkbox')).toHaveLength(2);
+    expect(name).toBeDisabled();
+    expect(role).not.toBeChecked();
+
+    fireEvent.click(role);
+    expect(within(screen.getByTestId('table')).queryByText('Role')).toBeNull();
+    fireEvent.click(name);
+    expect(within(screen.getByTestId('table')).getByText('Name')).toBeInTheDocument();
+    expect(role).toBeDisabled();
+
+    fireEvent.click(within(panel).getByRole('button', { name: 'Reset' }));
+    expect(name).toBeChecked();
+    expect(role).not.toBeChecked();
+
+    fireEvent.click(role);
+    fireEvent.click(name);
+    fireEvent.click(within(panel).getByRole('button', { name: 'Apply' }));
+    expect(within(screen.getByTestId('table')).getByText('Role')).toBeInTheDocument();
+    expect(within(screen.getByTestId('table')).queryByText('Name')).toBeNull();
+  });
+
+  test('shows all columns immediately and closes the picker', async () => {
+    const onHiddenColumnsChange = vi.fn();
+    renderTable({
+      hideableColumns: true,
+      defaultHiddenColumns: ['role'],
+      onHiddenColumnsChange,
+    });
+    const action = screen.getByRole('button', { name: 'Column visibility' });
+    fireEvent.click(action);
+    const panel = await screen.findByRole('dialog', { name: 'Columns' });
+    expect(within(panel).getByRole('checkbox', { name: 'Role' })).not.toBeChecked();
+
+    fireEvent.click(within(panel).getByRole('button', { name: 'Show all' }));
+    expect(onHiddenColumnsChange).toHaveBeenCalledWith(
+      [],
+      expect.objectContaining({ type: 'click' }),
+    );
+    expect(within(screen.getByTestId('table')).getByText('Role')).toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Columns' })).toBeNull());
+
+    fireEvent.click(action);
+    const reopenedPanel = await screen.findByRole('dialog', { name: 'Columns' });
+    for (const checkbox of within(reopenedPanel).getAllByRole('checkbox')) {
+      expect(checkbox).toBeChecked();
+    }
+  });
+
+  test('discards unapplied visibility changes when the picker closes', async () => {
+    renderTable({ hideableColumns: true });
+    const action = screen.getByRole('button', { name: 'Column visibility' });
+    fireEvent.click(action);
+    const panel = await screen.findByRole('dialog', { name: 'Columns' });
+    fireEvent.click(within(panel).getByRole('checkbox', { name: 'Age' }));
+    fireEvent.keyDown(panel, { key: 'Escape' });
+    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Columns' })).toBeNull());
+
+    fireEvent.click(action);
+    const reopenedPanel = await screen.findByRole('dialog', { name: 'Columns' });
+    expect(within(reopenedPanel).getByRole('checkbox', { name: 'Age' })).toBeChecked();
+  });
+
+  test('keeps controlled visibility until the caller updates it and forwards the event', async () => {
+    const onHiddenColumnsChange = vi.fn();
+    renderTable({
+      hideableColumns: true,
+      hiddenColumns: [],
+      defaultHiddenColumns: ['age'],
+      onHiddenColumnsChange,
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Column visibility' }));
+    const panel = await screen.findByRole('dialog', { name: 'Columns' });
+    const age = within(panel).getByRole('checkbox', { name: 'Age' });
+    expect(age).toBeChecked();
+    fireEvent.click(age);
+    expect(onHiddenColumnsChange).not.toHaveBeenCalled();
+    fireEvent.click(within(panel).getByRole('button', { name: 'Apply' }));
+
+    expect(onHiddenColumnsChange).toHaveBeenCalledWith(
+      ['age'],
+      expect.objectContaining({ type: 'click' }),
+    );
+    expect(within(screen.getByTestId('table')).getByText('Age')).toBeInTheDocument();
+  });
+
+  test('keeps one data column visible with controlled state and no change handler', async () => {
+    renderTable({ hideableColumns: true, hiddenColumns: ['name', 'role', 'age'] });
+    expect(screen.getAllByRole('columnheader')).toHaveLength(1);
+    expect(within(screen.getByTestId('table')).getByText('Name')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Column visibility' }));
+    const panel = await screen.findByRole('dialog', { name: 'Columns' });
+    fireEvent.click(within(panel).getByRole('checkbox', { name: 'Age' }));
+    fireEvent.click(within(panel).getByRole('button', { name: 'Apply' }));
+    expect(within(screen.getByTestId('table')).queryByText('Age')).toBeNull();
+  });
+
+  test('applies visibility without the toolbar and preserves filtering and sorting', () => {
+    renderTable({
+      hiddenColumns: ['role', 'age'],
+      defaultFilters: [{ id: 'role', value: { rule: 'has', value: ['Engineer'] } }],
+      defaultSort: { field: 'age', direction: 'desc' },
+    });
+    expect(screen.queryByRole('button', { name: 'Column visibility' })).toBeNull();
+    expect(within(screen.getByTestId('table')).queryByText('Role')).toBeNull();
+    expect(bodyRows().map((row) => row.textContent)).toEqual(['Edsger', 'Alan', 'Ada']);
+    fireEvent.click(screen.getByText('Filters'));
+    expect(screen.getByDisplayValue('Role')).toBeInTheDocument();
+  });
+
+  test('disables the visibility action while loading', () => {
+    renderTable({ hideableColumns: true, mode: 'loading' });
+    expect(screen.getByRole('button', { name: 'Column visibility' })).toBeDisabled();
+  });
+
+  test('keeps the resized width after hiding and showing a column', async () => {
+    renderTable({ hideableColumns: true, resizableColumns: true });
+    const handle = document.querySelector('[data-resize-handle="name"]')!;
+    fireEvent.mouseDown(handle, { clientX: 150, button: 0 });
+    fireEvent.mouseMove(document, { clientX: 210 });
+    fireEvent.mouseUp(document, { clientX: 210 });
+    expect(bodyRows()[0].style.gridTemplateColumns).toBe('210px 150px 150px');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Column visibility' }));
+    const panel = await screen.findByRole('dialog', { name: 'Columns' });
+    const name = within(panel).getByRole('checkbox', { name: 'Name' });
+    fireEvent.click(name);
+    fireEvent.click(within(panel).getByRole('button', { name: 'Apply' }));
+    expect(bodyRows()[0].style.gridTemplateColumns).toBe('150px 150px');
+
+    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Columns' })).toBeNull());
+    fireEvent.click(screen.getByRole('button', { name: 'Column visibility' }));
+    const reopenedPanel = await screen.findByRole('dialog', { name: 'Columns' });
+    fireEvent.click(within(reopenedPanel).getByRole('checkbox', { name: 'Name' }));
+    fireEvent.click(within(reopenedPanel).getByRole('button', { name: 'Apply' }));
+    expect(bodyRows()[0].style.gridTemplateColumns).toBe('210px 150px 150px');
+  });
+
   test('enabled: false removes the column from the table, sorting and filters', () => {
     renderTable({
       columns: [
@@ -214,6 +429,86 @@ describe('DataTable component', () => {
     fireEvent.click(screen.getByText('Filters'));
 
     expect(screen.getByDisplayValue('Role')).toBeInTheDocument();
+  });
+
+  test('copies rendered cell text without exposing masked values', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    const clipboard = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+
+    try {
+      renderTable({
+        columns: [
+          {
+            accessor: 'name',
+            type: 'link',
+            options: { textTransformer: (value) => `Profile: ${value}` },
+          },
+          { accessor: 'role', type: 'password' },
+        ],
+      });
+      const [linkCell, passwordCell] = within(bodyRows()[0]).getAllByRole('cell');
+
+      fireEvent.contextMenu(linkCell, { button: 2 });
+      expect(await screen.findByRole('button', { name: 'Copy' })).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'Select this row' })).toBeNull();
+      fireEvent.click(screen.getByRole('button', { name: 'Copy' }));
+      expect(writeText).toHaveBeenLastCalledWith('Profile: Ada');
+      await waitFor(() => expect(screen.queryByRole('button', { name: 'Copy' })).toBeNull());
+
+      fireEvent.contextMenu(passwordCell, { button: 2 });
+      fireEvent.click(await screen.findByRole('button', { name: 'Copy' }));
+      expect(writeText).toHaveBeenLastCalledWith('********');
+    } finally {
+      if (clipboard) {
+        Object.defineProperty(navigator, 'clipboard', clipboard);
+      } else {
+        Reflect.deleteProperty(navigator, 'clipboard');
+      }
+    }
+  });
+
+  test('cell menu enters selection mode and toggles rows without exiting it', async () => {
+    const onModeChange = vi.fn();
+    renderTable({ selectable: true, onModeChange });
+
+    fireEvent.keyDown(screen.getByText('Ada').closest('[role="cell"]')!, {
+      key: 'F10',
+      shiftKey: true,
+    });
+    fireEvent.click(await screen.findByRole('button', { name: 'Select this row' }));
+
+    expect(bodyRows()[0]).toHaveAttribute('aria-selected', 'true');
+    expect(bodyRows()[1]).toHaveAttribute('aria-selected', 'false');
+    expect(onModeChange).toHaveBeenCalledWith(
+      'select',
+      expect.objectContaining({ type: 'click' }),
+    );
+    await waitFor(() => expect(screen.queryByRole('button', { name: 'Copy' })).toBeNull());
+
+    fireEvent.contextMenu(screen.getByText('Alan').closest('[role="cell"]')!, { button: 2 });
+    fireEvent.click(await screen.findByRole('button', { name: 'Select this row' }));
+
+    expect(bodyRows()[0]).toHaveAttribute('aria-selected', 'true');
+    expect(bodyRows()[1]).toHaveAttribute('aria-selected', 'true');
+    for (const name of ['Ada', 'Alan']) {
+      await waitFor(() =>
+        expect(screen.queryByRole('button', { name: 'Copy' })).toBeNull(),
+      );
+      fireEvent.keyDown(screen.getByText(name).closest('[role="cell"]')!, {
+        key: 'F10',
+        shiftKey: true,
+      });
+      fireEvent.click(await screen.findByRole('button', { name: 'Deselect this row' }));
+      expect(screen.getByText(name).closest('[role="row"]')).toHaveAttribute(
+        'aria-selected',
+        'false',
+      );
+    }
+    expect(onModeChange).toHaveBeenCalledTimes(1);
   });
 
   test('selectable reveals a checkbox column only after toggling select mode', () => {

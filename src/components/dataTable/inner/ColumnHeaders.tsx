@@ -2,14 +2,18 @@ import type { Ref } from 'react';
 import clsx from 'clsx';
 import { motion } from 'motion/react';
 import { flexRender } from '@tanstack/react-table';
+import { EyeOff } from 'lucide-react';
 import { useDataTableContext } from '../DataTable.context.tsx';
 import { Text } from '../../text';
+import { Dropdown } from '../../dropdown';
+import { Divider } from '../../divider';
 import { useLocalization } from '../../application';
 import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
 import s from './columnHeaders.module.scss';
 
 interface ColumnHeadersProps {
   hasRowActions?: boolean;
+  hideableColumns: boolean;
   /** True when there's no `DataTable.Header` row above this one — see `.RoundTop`. */
   roundTop?: boolean;
   /** The sticky row itself — receives the per-side inset/radius custom properties. */
@@ -28,12 +32,16 @@ const resizeHandleVariants = {
 
 export const ColumnHeaders = ({
   hasRowActions = false,
+  hideableColumns,
   roundTop = false,
   rowRef,
   trackRef,
 }: ColumnHeadersProps) => {
   const t = useLocalization();
-  const { table, icons, selectMode, notePendingEvent } = useDataTableContext();
+  const { table, icons, loading, selectMode, notePendingEvent } =
+    useDataTableContext();
+
+  const canHideColumn = table.getVisibleLeafColumns().length > 1;
 
   const columnsTemplate = useDataTableColumnsTemplate(
     selectMode,
@@ -81,7 +89,9 @@ export const ColumnHeaders = ({
 
           const isResizing = header.column.getIsResizing();
 
-          return (
+          const hasMenu = !loading && (isSortable || hideableColumns);
+
+          const cell = (
             <motion.div
               key={header.id}
               className={clsx(s.Cell, { [s.Sortable]: isSortable })}
@@ -99,7 +109,7 @@ export const ColumnHeaders = ({
                     }
                   : undefined
               }
-              tabIndex={isSortable ? 0 : undefined}
+              tabIndex={isSortable || hasMenu ? 0 : undefined}
               role="columnheader"
               aria-sort={
                 !isSortable
@@ -142,6 +152,62 @@ export const ColumnHeaders = ({
                 </div>
               ) : null}
             </motion.div>
+          );
+
+          if (!hasMenu) return cell;
+
+          return (
+            <Dropdown
+              key={header.id}
+              trigger="contextmenu"
+              closeParentPopover={false}
+              content={({ hide }) => (
+                <Dropdown.Menu>
+                  {isSortable ? (
+                    <Dropdown.RadioList
+                      aria-label={t('dataTable.sortColumn')}
+                      value={sortDirection || 'none'}
+                      onChange={(direction, event) => {
+                        notePendingEvent(event);
+                        table.setSorting(
+                          direction === 'none'
+                            ? []
+                            : [{ id: header.column.id, desc: direction === 'desc' }],
+                        );
+                        hide();
+                      }}
+                    >
+                      <Dropdown.RadioItem
+                        value="none"
+                        label={t('dataTable.noSort')}
+                      />
+                      <Dropdown.RadioItem
+                        value="asc"
+                        label={t('dataTable.sortAscending')}
+                      />
+                      <Dropdown.RadioItem
+                        value="desc"
+                        label={t('dataTable.sortDescending')}
+                      />
+                    </Dropdown.RadioList>
+                  ) : null}
+                  {isSortable && hideableColumns ? <Divider /> : null}
+                  {hideableColumns ? (
+                    <Dropdown.Action
+                      label={t('dataTable.hideColumn')}
+                      icon={<EyeOff />}
+                      disabled={!canHideColumn}
+                      onClick={(event) => {
+                        notePendingEvent(event);
+                        header.column.toggleVisibility(false);
+                      }}
+                    />
+                  ) : null}
+                </Dropdown.Menu>
+              )}
+            >
+              {cell}
+            </Dropdown>
           );
         })}
         {hasRowActions ? (

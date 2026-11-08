@@ -420,6 +420,7 @@ export const Overview: Story = {
       </Section>
 
       <DataTable<Employee>
+        hideableColumns
         data={EMPLOYEES}
         rowsPerPage={6}
         columns={[
@@ -591,6 +592,7 @@ export const Filtering: Story = {
       </Section>
 
       <DataTable<Employee>
+        hideableColumns
         data={EMPLOYEES}
         rowsPerPage={8}
         defaultFilters={[{ id: 'active', value: { rule: 'positive' } }]}
@@ -684,7 +686,8 @@ export const RowSelection: Story = {
       <Section title="Selecting rows">
         <Text code>selectable</Text> adds a toggle to the header; turning it on
         reveals a checkbox column and switches the footer to a selection count.
-        Start already in selection mode with <Text code>mode="select"</Text>.
+        Right-click a cell to copy its text or select its row. Selecting a row
+        from the menu turns on selection mode if needed.
         Toolbar content passed as a function receives{' '}
         <Text code>{'{ selectableMode, selectedItems }'}</Text>.
       </Section>
@@ -693,7 +696,6 @@ export const RowSelection: Story = {
         data={EMPLOYEES}
         rowsPerPage={8}
         selectable
-        mode="select"
         columns={[
           { accessor: 'name', label: 'Name' },
           { accessor: 'role', label: 'Role' },
@@ -1000,6 +1002,7 @@ export const ColumnResizing: Story = {
       </Section>
 
       <DataTable<Employee>
+        hideableColumns
         data={EMPLOYEES}
         rowsPerPage={8}
         resizableColumns
@@ -1017,6 +1020,54 @@ export const ColumnResizing: Story = {
       />
     </Flex>
   ),
+};
+
+const visibilityColumns: DataTableColumn<Employee>[] = [
+  { accessor: 'name', label: 'Name', width: 180, sortable: true },
+  { accessor: 'role', label: 'Role', width: 180 },
+  { accessor: 'department', label: 'Department', width: 140 },
+  { accessor: 'hiredAt', label: 'Hired', type: 'date' },
+  { accessor: 'age', label: 'Age', type: 'number' },
+  { accessor: 'active', label: 'Active', type: 'boolean' },
+  { accessor: 'skills', label: 'Skills', type: 'select' },
+  { accessor: 'color', label: 'Color', type: 'color' },
+  { accessor: 'profile', label: 'Profile', type: 'link' },
+  { accessor: 'bio', label: 'Bio', type: 'text' },
+];
+
+export const ColumnVisibility: Story = {
+  render: function ColumnVisibilityStory() {
+    const [hidden, setHidden] = useState<Array<keyof Employee>>(['department']);
+
+    return (
+      <Flex orientation="vertical" gap="xl">
+        <Section title="Uncontrolled visibility">
+          Department is hidden initially. Open the column picker, select
+          Department and click <Text code>Apply</Text>. Right-click a header to
+          hide it or choose a sort direction on sortable columns.
+        </Section>
+        <DataTable<Employee>
+          data={EMPLOYEES}
+          columns={visibilityColumns}
+          rowsPerPage={5}
+          hideableColumns
+          defaultHiddenColumns={['department']}
+        />
+        <Section title="Controlled visibility">
+          Hidden columns: {hidden.join(', ') || 'None'}
+        </Section>
+        <DataTable<Employee>
+          data={EMPLOYEES}
+          columns={visibilityColumns}
+          rowsPerPage={5}
+          hideableColumns
+          hiddenColumns={hidden}
+          defaultHiddenColumns={['department']}
+          onHiddenColumnsChange={setHidden}
+        />
+      </Flex>
+    );
+  },
 };
 
 /* ------------------------------------------------------------------ *

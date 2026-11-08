@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import {
   ColumnFiltersState,
+  ColumnVisibilityState,
   functionalUpdate,
   PaginationState,
   SortingState,
@@ -12,6 +13,7 @@ import {
   ArrowDown,
   ArrowUp,
   Check,
+  Columns3Cog,
   Ellipsis,
   Funnel,
   Minus,
@@ -40,6 +42,7 @@ const DEFAULT_DATA_TABLE_ICONS: DataTableIconSet = {
   sortAsc: <ArrowUp />,
   sortDesc: <ArrowDown />,
   filter: <Funnel />,
+  columnVisibility: <Columns3Cog />,
   addFilter: <Plus />,
   deleteFilter: <Trash />,
   enableSelection: <SquareCheckBig />,
@@ -64,6 +67,10 @@ const DataTableComponent = <DataType extends object>(
     columns,
     showEmptyBanner = true,
     resizableColumns = false,
+    hideableColumns = false,
+    hiddenColumns,
+    defaultHiddenColumns,
+    onHiddenColumnsChange,
     icons,
     defaultPage = 0,
     defaultSort,
@@ -187,6 +194,52 @@ const DataTableComponent = <DataType extends object>(
     [currentSort?.field, currentSort?.direction],
   );
 
+  const columnAccessors = useMemo(
+    () =>
+      columns
+        .filter((column) => column.enabled !== false)
+        .map((column) => column.accessor),
+    [columns],
+  );
+
+  const [uncontrolledHiddenColumns, setUncontrolledHiddenColumns] =
+    useState(() => defaultHiddenColumns ?? []);
+  const currentHiddenColumns = hiddenColumns ?? uncontrolledHiddenColumns;
+
+  const getVisibilityState = useCallback(
+    (hidden: Array<keyof DataType>): ColumnVisibilityState => {
+      const hiddenAccessors = new Set(hidden);
+      const hiddenKeys = columnAccessors.filter((key) =>
+        hiddenAccessors.has(key),
+      );
+      if (hiddenKeys.length === columnAccessors.length) hiddenKeys.shift();
+      return Object.fromEntries(hiddenKeys.map((key) => [String(key), false]));
+    },
+    [columnAccessors],
+  );
+  const columnVisibility = useMemo(
+    () => getVisibilityState(currentHiddenColumns),
+    [currentHiddenColumns, getVisibilityState],
+  );
+  const defaultColumnVisibility = useMemo(
+    () => getVisibilityState(defaultHiddenColumns ?? []),
+    [defaultHiddenColumns, getVisibilityState],
+  );
+
+  const handleColumnVisibilityChange = useCallback(
+    (updater: Updater<ColumnVisibilityState>) => {
+      const event = consumePendingEvent();
+      const next = functionalUpdate(updater, columnVisibility);
+      const hidden = columnAccessors.filter(
+        (key) => next[String(key)] === false,
+      );
+      if (hidden.length === columnAccessors.length) hidden.shift();
+      if (hiddenColumns === undefined) setUncontrolledHiddenColumns(hidden);
+      onHiddenColumnsChange?.(hidden, event);
+    },
+    [columnVisibility, columnAccessors, hiddenColumns, onHiddenColumnsChange],
+  );
+
   const table = useTable<typeof dataTableFeatures, DataType>({
     features: dataTableFeatures,
     data,
@@ -195,6 +248,7 @@ const DataTableComponent = <DataType extends object>(
     meta: { mode, icons: resolvedIcons },
     enableRowSelection: selectable,
     enableColumnResizing: resizableColumns,
+    enableHiding: hideableColumns,
     columnResizeMode: 'onChange',
     /**
      * With a controlled `page`, the consumer owns page validity (e.g.
@@ -204,18 +258,28 @@ const DataTableComponent = <DataType extends object>(
     autoResetPageIndex: !isPageControlled,
     state: {
       pagination: paginationState,
+      columnVisibility,
       sorting: sortingState,
       columnFilters: currentFilters as unknown as ColumnFiltersState,
     },
+    onColumnVisibilityChange: handleColumnVisibilityChange,
     onPaginationChange: handlePaginationChange,
     onSortingChange: handleSortingChange,
     onColumnFiltersChange: handleColumnFiltersChange,
   });
 
   const setSelectMode = useCallback(
-    (next: boolean, event: React.MouseEvent<HTMLButtonElement>) => {
+    (
+      next: boolean,
+      event: React.MouseEvent<HTMLButtonElement>,
+      selectedRowId?: string,
+    ) => {
       setSelectModeState(next);
-      table.resetRowSelection();
+      if (selectedRowId !== undefined) {
+        table.setRowSelection({ [selectedRowId]: true });
+      } else {
+        table.resetRowSelection();
+      }
       onModeChange?.(next ? 'select' : 'read', event);
     },
     [table, onModeChange],
@@ -224,9 +288,12 @@ const DataTableComponent = <DataType extends object>(
   const headerVisible = useMemo(
     () =>
       Boolean(actions) ||
-      columns.some((column) => columnFilterType(column)) ||
+      columns.some(
+        (column) => column.enabled !== false && columnFilterType(column),
+      ) ||
+      hideableColumns ||
       selectable,
-    [actions, columns, selectable],
+    [actions, columns, selectable, hideableColumns],
   );
 
   const contextValue = useMemo(
@@ -238,6 +305,7 @@ const DataTableComponent = <DataType extends object>(
       selectMode: selectable && selectMode,
       setSelectMode,
       notePendingEvent,
+      defaultColumnVisibility,
     }),
     [
       table,
@@ -247,6 +315,7 @@ const DataTableComponent = <DataType extends object>(
       selectMode,
       setSelectMode,
       notePendingEvent,
+      defaultColumnVisibility,
     ],
   );
 
@@ -258,7 +327,9 @@ const DataTableComponent = <DataType extends object>(
       value={contextValue as unknown as DataTableContextValue<AnyObject>}
     >
       <div className={s.Wrapper} ref={ref}>
-        {headerVisible ? <Header actions={actions} /> : null}
+        {headerVisible ? (
+          <Header actions={actions} hideableColumns={hideableColumns} />
+        ) : null}
         <div
           role="table"
           className={clsx(s.Table, className)}
@@ -266,6 +337,7 @@ const DataTableComponent = <DataType extends object>(
           {...restProps}
         >
           <ColumnHeaders
+            hideableColumns={hideableColumns}
             hasRowActions={Boolean(rowActions)}
             roundTop={!headerVisible}
             rowRef={headerRowRef}
