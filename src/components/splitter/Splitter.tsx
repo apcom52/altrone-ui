@@ -114,6 +114,7 @@ const SplitterBase = ({
     handlePointerDown,
     handlePointerMove,
     handlePointerUp,
+    handlePointerCancel,
     handleKeyDown,
   } = useSplitterDrag({
     containerRef,
@@ -123,6 +124,7 @@ const SplitterBase = ({
     onResizeStartRef,
     onResizeEndRef,
     sizes,
+    collapsed,
     setSizes,
     cssClasses: { dividerActive: dividerActiveClass, dragging: s.Dragging },
   });
@@ -230,6 +232,7 @@ const SplitterBase = ({
                 onPointerDown={handlePointerDown}
                 onPointerMove={handlePointerMove}
                 onPointerUp={handlePointerUp}
+                onPointerCancel={handlePointerCancel}
                 onKeyDown={handleKeyDown}
                 onCollapseLeft={(e) => handleCollapse(i, undefined, e)}
                 onCollapseRight={(e) => handleCollapse(i + 1, undefined, e)}

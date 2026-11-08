@@ -22,6 +22,62 @@ const renderSplitter = (ui: React.ReactNode) =>
   render(<Application>{ui}</Application>);
 
 describe('Splitter', () => {
+  test.each([
+    ['pointercancel', false],
+    ['lostpointercapture', true],
+  ] as const)('restores confirmed sizes on %s and accepts the next drag', (type, controlled) => {
+    const controlRef = React.createRef<SplitterHandle>();
+    const onResizeEnd = vi.fn();
+    const onSizesChange = vi.fn();
+    const layout = (sizes?: number[]) => (
+      <Splitter
+        controlRef={controlRef}
+        sizes={sizes}
+        onResizeEnd={onResizeEnd}
+        onSizesChange={onSizesChange}
+      >
+        <Splitter.Panel defaultSize={50}>left</Splitter.Panel>
+        <Splitter.Panel>right</Splitter.Panel>
+      </Splitter>
+    );
+    const { rerender } = renderSplitter(layout(controlled ? [50, 50] : undefined));
+    const divider = screen.getByRole('separator');
+    const root = divider.parentElement!;
+    const rootClass = root.className;
+    const dividerClass = divider.className;
+    Object.defineProperty(root, 'offsetWidth', { value: 200 });
+    divider.setPointerCapture = vi.fn();
+    divider.hasPointerCapture = () => type === 'pointercancel';
+    divider.releasePointerCapture = vi.fn();
+    const pointer = (eventType: string, clientX: number, pointerId = 1) => {
+      const event = new MouseEvent(eventType, { bubbles: true, clientX });
+      Object.defineProperty(event, 'pointerId', { value: pointerId });
+      fireEvent(divider, event);
+    };
+
+    pointer('pointerdown', 100);
+    pointer('pointermove', 140);
+    expect(controlRef.current?.getSizes()).toEqual([70, 30]);
+    if (controlled) rerender(<Application>{layout([40, 60])}</Application>);
+    pointer(type, 140, 2);
+    expect(controlRef.current?.getSizes()).toEqual([70, 30]);
+    pointer(type, 140);
+    const restored = controlled ? 40 : 50;
+    expect(controlRef.current?.getSizes()).toEqual([restored, 100 - restored]);
+    expect(panelOf('left')).toHaveStyle({ flex: `${restored} ${restored} 0px` });
+    expect(root.className).toBe(rootClass);
+    expect(divider.className).toBe(dividerClass);
+    pointer('pointerup', 140);
+    expect(onSizesChange).not.toHaveBeenCalled();
+    expect(onResizeEnd).not.toHaveBeenCalled();
+
+    pointer('pointerdown', 100);
+    pointer('pointermove', 120);
+    pointer('pointerup', 120);
+    expect(onSizesChange).toHaveBeenCalledWith([restored + 10, 90 - restored]);
+    expect(onResizeEnd).toHaveBeenCalledTimes(1);
+  });
+
   test('renders one region per Panel and a separator between each pair', () => {
     renderSplitter(
       <Splitter>
