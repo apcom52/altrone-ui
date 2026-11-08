@@ -568,6 +568,47 @@ describe('DataTable component', () => {
     expect(screen.getByRole('button', { name: 'Edit Ada' })).toBeInTheDocument();
   });
 
+  test('cell context menu puts the current row actions before built-in actions', async () => {
+    const onEdit = vi.fn();
+    renderTable({
+      selectable: true,
+      rowActions: ({ row }) =>
+        row.name === 'Ada'
+          ? [
+              <DataTable.RowAction key="edit" label={`Edit ${row.name}`} onClick={onEdit} />,
+              null,
+              <DataTable.RowAction key="delete" label="Delete" collapsed disabled />,
+            ]
+          : null,
+    });
+
+    fireEvent.contextMenu(screen.getByText('Ada').closest('[role="cell"]')!, {
+      button: 2,
+    });
+    await screen.findByRole('button', { name: 'Copy' });
+    expect(screen.getAllByRole('button', { name: /^(Edit Ada|Delete|Copy|Select this row)$/ }).map((item) => item.textContent)).toEqual([
+      'Edit Ada',
+      'Delete',
+      'Copy',
+      'Select this row',
+    ]);
+    expect(screen.getByRole('separator')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Edit Ada' }));
+    expect(onEdit).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(screen.queryByRole('button', { name: 'Copy' })).toBeNull());
+
+    fireEvent.contextMenu(screen.getByText('Alan').closest('[role="cell"]')!, {
+      button: 2,
+    });
+    await screen.findByRole('button', { name: 'Copy' });
+    expect(screen.getAllByRole('button', { name: /^(Edit Ada|Delete|Copy|Select this row)$/ }).map((item) => item.textContent)).toEqual([
+      'Copy',
+      'Select this row',
+    ]);
+    expect(screen.queryByRole('separator')).toBeNull();
+  });
+
   test('controlled `page` ignores its own pagination until the consumer updates the prop', () => {
     const onPageChange = vi.fn();
     const { rerender } = renderTable({ page: 1, onPageChange });

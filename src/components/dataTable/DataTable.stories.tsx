@@ -743,7 +743,8 @@ export const Actions: Story = {
         <Text code>DataTable.RowAction</Text> (or several) per row, as a plain
         element or as <Text code>{'(context) => JSX.Element'}</Text>. Mark the
         less important ones <Text code>collapsed</Text> and they fold into an
-        overflow menu. Pass <Text code>getRowId</Text> whenever{' '}
+        overflow menu. Right-click a data cell to see its row actions above the
+        built-in commands. Pass <Text code>getRowId</Text> whenever{' '}
         <Text code>data</Text> can be reordered from outside the table (a
         refetch, a websocket update) &mdash; without it, row identity falls
         back to array position, so an already-open row menu (or any other

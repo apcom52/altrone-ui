@@ -43,6 +43,14 @@ export const Body = <T extends object>({
       ) : null}
       {rows.map((row) => {
         const isSelected = row.getIsSelected();
+        const actions =
+          typeof rowActions === 'function'
+            ? rowActions({
+                row: row.original,
+                rowIndex: row.index,
+                selected: isSelected,
+              })
+            : rowActions;
 
         return (
           <div
@@ -85,6 +93,7 @@ export const Body = <T extends object>({
                 <BodyCell
                   key={cell.id}
                   copyFallback={copyFallback}
+                  rowActions={actions}
                   rowSelected={isSelected}
                   onToggleRowSelection={
                     row.getCanSelect()
@@ -107,15 +116,7 @@ export const Body = <T extends object>({
             })}
             {rowActions ? (
               <div role="cell" className={s.Cell}>
-                <RowActionsCell>
-                  {typeof rowActions === 'function'
-                    ? rowActions({
-                        row: row.original,
-                        rowIndex: row.index,
-                        selected: isSelected,
-                      })
-                    : rowActions}
-                </RowActionsCell>
+                <RowActionsCell>{actions}</RowActionsCell>
               </div>
             ) : null}
           </div>
