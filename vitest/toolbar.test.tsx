@@ -1,5 +1,6 @@
-import { expect, test, describe, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { expect, test, describe, vi, beforeEach, afterEach } from 'vitest';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import { createRef, ReactNode } from 'react';
 import { Application, Toolbar } from '../src/components';
 import {
   resolveToolbarOverflow,
@@ -9,6 +10,41 @@ import {
 import { resolveToolbarRegionBalance } from '../src/components/toolbar/useToolbarRegionBalance.ts';
 
 describe('Toolbar', () => {
+  test('renders text and zero in the toolbar and every layout region', () => {
+    const { rerender } = render(
+      <Application>
+        <Toolbar data-testid="flat">{0} items</Toolbar>
+        <Toolbar>
+          <Toolbar.Leading data-testid="leading">
+            Untitled document
+          </Toolbar.Leading>
+          <Toolbar.Center data-testid="center">{0}</Toolbar.Center>
+          <Toolbar.Trailing data-testid="trailing">{0} selected</Toolbar.Trailing>
+        </Toolbar>
+      </Application>,
+    );
+
+    expect(screen.getByTestId('flat')).toHaveTextContent('0 items');
+    expect(screen.getByTestId('flat').children).toHaveLength(1);
+    expect(screen.getByTestId('leading')).toHaveTextContent('Untitled document');
+    expect(screen.getByTestId('center')).toHaveTextContent('0');
+    expect(screen.getByTestId('trailing')).toHaveTextContent('0 selected');
+
+    rerender(
+      <Application>
+        <Toolbar data-testid="flat">
+          {null}{false}{undefined}{12} items
+          <Toolbar.Action label="Refresh" />
+          {' saved'}
+        </Toolbar>
+      </Application>,
+    );
+
+    expect(screen.getByTestId('flat')).toHaveTextContent('12 itemsRefresh saved');
+    expect(screen.getByTestId('flat').children).toHaveLength(3);
+    expect(screen.getByRole('button', { name: 'Refresh' })).toBeInTheDocument();
+  });
+
   test('check that className and style props works', () => {
     render(
       <Application>
@@ -200,6 +236,63 @@ describe('Toolbar', () => {
 });
 
 describe('Toolbar overflow', () => {
+  test('measures text when it changes and keeps it visible while actions collapse', () => {
+    const previousResizeObserver = globalThis.ResizeObserver;
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        observe() {}
+        disconnect() {}
+        unobserve() {}
+      },
+    );
+    const clientWidth = vi
+      .spyOn(HTMLElement.prototype, 'clientWidth', 'get')
+      .mockReturnValue(220);
+    const offsetWidth = vi
+      .spyOn(HTMLElement.prototype, 'offsetWidth', 'get')
+      .mockImplementation(function (this: HTMLElement) {
+        if (this.tagName === 'SPAN') return (this.textContent?.length ?? 0) * 10;
+        return this.textContent === 'Refresh' ? 80 : 40;
+      });
+
+    const toolbar = (count: number) => (
+      <Application>
+        <Toolbar style={{ padding: 0, columnGap: 8 }}>
+          {count} items
+          <Toolbar.Action label="Refresh" priority="low" />
+          <Toolbar.Action label="Share" priority="medium" />
+        </Toolbar>
+      </Application>
+    );
+    const { rerender, unmount } = render(toolbar(0));
+
+    try {
+      expect(screen.getByText('0 items')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Refresh' })).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'More actions' })).toBeNull();
+
+      rerender(toolbar(1000));
+
+      expect(screen.getByText('1000 items')).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'Refresh' })).toBeNull();
+      expect(screen.getByRole('button', { name: 'Share' })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: 'More actions' }),
+      ).toBeInTheDocument();
+
+      rerender(toolbar(0));
+
+      expect(screen.getByRole('button', { name: 'Refresh' })).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'More actions' })).toBeNull();
+    } finally {
+      unmount();
+      clientWidth.mockRestore();
+      offsetWidth.mockRestore();
+      vi.stubGlobal('ResizeObserver', previousResizeObserver);
+    }
+  });
+
   test('`priority` is stripped before reaching the DOM node', () => {
     render(
       <Application>
@@ -347,5 +440,162 @@ describe('Toolbar header actions', () => {
     expect(
       screen.getByRole('button', { name: 'Expand sidebar' }),
     ).toBeInTheDocument();
+  });
+});
+
+describe('Toolbar overflow action behavior', () => {
+  const previousResizeObserver = globalThis.ResizeObserver;
+  let restoreMeasurements: () => void;
+
+  beforeEach(() => {
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        observe() {}
+        disconnect() {}
+        unobserve() {}
+      },
+    );
+    const width = vi
+      .spyOn(HTMLElement.prototype, 'clientWidth', 'get')
+      .mockReturnValue(30);
+    const itemWidth = vi
+      .spyOn(HTMLElement.prototype, 'offsetWidth', 'get')
+      .mockReturnValue(40);
+    restoreMeasurements = () => {
+      width.mockRestore();
+      itemWidth.mockRestore();
+      vi.stubGlobal('ResizeObserver', previousResizeObserver);
+    };
+  });
+
+  afterEach(() => restoreMeasurements());
+
+  const toolbar = (children: ReactNode) => (
+    <Application>
+      <Toolbar style={{ padding: 0, columnGap: 0 }}>{children}</Toolbar>
+    </Application>
+  );
+
+  test.each(['single', 'group'])('preserves a %s action link, shortcut, ref and handlers', async (mode) => {
+    const ref = createRef<HTMLButtonElement>();
+    const childClick = vi.fn();
+    const onClick = vi.fn((event) => event.preventDefault());
+    const action = (
+      <Toolbar.Action ref={ref} label="Settings" asChild kbd="⌘," onClick={onClick}>
+        <a href="#settings" target="_blank" rel="noreferrer" onClick={childClick} />
+      </Toolbar.Action>
+    );
+    render(toolbar(
+      mode === 'group' ? <Toolbar.Group>{action}</Toolbar.Group> : action,
+    ));
+    fireEvent.click(screen.getByRole('button', { name: 'More actions' }));
+    const link = await screen.findByRole('button', { name: /Settings/ });
+
+    expect(link.tagName).toBe('A');
+    expect(link).toHaveAttribute('href', '#settings');
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAttribute('rel', 'noreferrer');
+    expect(within(link).getByText('⌘,')).toBeInTheDocument();
+    expect(ref.current).toBe(link);
+    fireEvent.click(link);
+    expect(childClick).toHaveBeenCalledTimes(1);
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(link).toBeInTheDocument();
+  });
+
+  test('shows the selected checkbox icon and loading indicator as state changes', async () => {
+    const onClick = vi.fn();
+    const action = (state: 'idle' | 'loading', selected: boolean) =>
+      toolbar(
+        <Toolbar.Action
+          label="Autosave"
+          selected={selected}
+          state={state}
+          onClick={onClick}
+          icon={<svg data-testid="original-icon" />}
+        />,
+      );
+    const { rerender } = render(action('idle', true));
+    fireEvent.click(screen.getByRole('button', { name: 'More actions' }));
+    const selected = await screen.findByRole('button', { name: 'Autosave' });
+    expect(selected).toHaveAttribute('aria-pressed', 'true');
+    expect(selected.querySelector('svg path')).toHaveAttribute(
+      'stroke-dasharray', '40 0',
+    );
+    expect(within(selected).queryByTestId('original-icon')).toBeNull();
+
+    rerender(action('loading', true));
+    const loading = screen.getByRole('button', { name: 'Autosave' });
+    expect(loading).toBeDisabled();
+    expect(loading).toHaveAttribute('aria-busy', 'true');
+    expect(loading).toHaveAttribute('aria-pressed', 'true');
+    expect(loading.querySelector('circle')).not.toBeNull();
+    expect(loading.querySelector('svg')).toHaveAttribute(
+      'width', 'var(--dropdown-action-icon-size, 18px)',
+    );
+    fireEvent.click(loading);
+    expect(onClick).not.toHaveBeenCalled();
+
+    rerender(action('idle', false));
+    const idle = screen.getByRole('button', { name: 'Autosave' });
+    expect(idle).toBeEnabled();
+    expect(idle).toHaveAttribute('aria-pressed', 'false');
+    expect(idle).not.toHaveAttribute('aria-busy');
+    expect(within(idle).getByTestId('original-icon')).toBeInTheDocument();
+  });
+
+  test.each(['disabled', 'loading'])('blocks %s links for pointer and keyboard activation', async (mode) => {
+    const onClick = vi.fn();
+    const childClick = vi.fn();
+    render(toolbar(
+      <Toolbar.Action
+        label="Export"
+        asChild
+        disabled={mode === 'disabled'}
+        state={mode === 'loading' ? 'loading' : 'idle'}
+        onClick={onClick}
+      >
+        <a href="#export" onClick={childClick} />
+      </Toolbar.Action>,
+    ));
+    fireEvent.click(screen.getByRole('button', { name: 'More actions' }));
+    const link = await screen.findByRole('button', { name: 'Export' });
+    expect(link).toHaveAttribute('aria-disabled', 'true');
+    expect(fireEvent.click(link)).toBe(false);
+    expect(fireEvent.keyDown(link, { key: 'Enter' })).toBe(false);
+    expect(fireEvent.keyDown(link, { key: ' ' })).toBe(false);
+    expect(onClick).not.toHaveBeenCalled();
+    expect(childClick).not.toHaveBeenCalled();
+    expect(link).toBeInTheDocument();
+  });
+
+  test('keeps SidebarToggleAction behavior and state in overflow', async () => {
+    const onClick = vi.fn();
+    const { rerender } = render(toolbar(
+      <Toolbar.Group>
+        <Toolbar.SidebarToggleAction collapsed kbd="⌘B" selected onClick={onClick} />
+      </Toolbar.Group>,
+    ));
+    fireEvent.click(screen.getByRole('button', { name: 'More actions' }));
+    const action = await screen.findByRole('button', { name: /Expand sidebar/ });
+    expect(action).toHaveAttribute('aria-pressed', 'true');
+    expect(within(action).getByText('⌘B')).toBeInTheDocument();
+    fireEvent.click(action);
+    expect(onClick).toHaveBeenCalledTimes(1);
+
+    rerender(toolbar(
+      <Toolbar.SidebarToggleAction
+        collapsed={false}
+        state="loading"
+        onClick={onClick}
+      />,
+    ));
+    fireEvent.click(screen.getByRole('button', { name: 'More actions' }));
+    const loading = await screen.findByRole('button', { name: 'Collapse sidebar' });
+    expect(loading).toBeDisabled();
+    expect(loading).toHaveAttribute('aria-busy', 'true');
+    fireEvent.click(loading);
+    expect(onClick).toHaveBeenCalledTimes(1);
   });
 });

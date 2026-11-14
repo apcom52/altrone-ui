@@ -37,7 +37,15 @@ export type ToolbarBalancedRegion = 'leading' | 'trailing' | 'center';
  * not its real need.
  */
 export interface ToolbarBalanceApi {
-  reportNaturalSize: (region: ToolbarBalancedRegion, size: number) => void;
+  registerRegion: (
+    region: ToolbarBalancedRegion,
+    node: HTMLElement,
+  ) => () => void;
+  reportNaturalSize: (
+    region: ToolbarBalancedRegion,
+    node: HTMLElement,
+    size: number,
+  ) => void;
 }
 
 export const ToolbarBalanceContext = createContext<ToolbarBalanceApi | null>(

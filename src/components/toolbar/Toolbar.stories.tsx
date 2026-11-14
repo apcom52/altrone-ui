@@ -40,6 +40,8 @@ import {
 } from 'lucide-react';
 import { Dropdown } from 'components/dropdown/index.ts';
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
+import { Button } from 'components/button';
 import { Label } from 'components/label/Label.tsx';
 import { Avatar } from 'components/avatar/Avatar.tsx';
 import { TextInput } from 'components/textInput/TextInput.tsx';
@@ -1120,6 +1122,311 @@ function OverflowDemo({
     </Flex>
   );
 }
+
+export const ConditionalRegions: StoryObj<typeof Toolbar> = {
+  name: 'Conditional regions',
+  render: function ConditionalRegionsStory() {
+    const [width, setWidth] = useState(560);
+    const [leading, setLeading] = useState(true);
+    const [center, setCenter] = useState(true);
+    const [trailing, setTrailing] = useState(true);
+    const [vertical, setVertical] = useState(false);
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={7} weight="bold">
+          Conditional regions
+        </Text>
+        <Text block>
+          Regions can appear and disappear while the toolbar keeps the same
+          size. Remaining content uses the current layout; showing a region
+          again restores its share of the space. A single remaining region fills
+          the toolbar.
+        </Text>
+        <Flex gap="l" wrap>
+          <Switch checked={leading} onChange={setLeading}>
+            Leading
+          </Switch>
+          <Switch checked={center} onChange={setCenter}>
+            Center
+          </Switch>
+          <Switch checked={trailing} onChange={setTrailing}>
+            Trailing
+          </Switch>
+          <Switch checked={vertical} onChange={setVertical}>
+            Vertical
+          </Switch>
+        </Flex>
+        <Slider
+          value={width}
+          onChange={setWidth}
+          min={320}
+          max={640}
+          renderLabel={(value) => `${value}px`}
+          showCurrentValue="always"
+        />
+        <Flex
+          style={{
+            width: vertical ? 180 : width,
+            height: vertical ? width : undefined,
+          }}
+        >
+          <Toolbar edge={vertical ? 'left' : 'top'} style={{ width: '100%' }}>
+            {leading && (
+              <Toolbar.Leading key="leading">
+                <Toolbar.Group priority="low">
+                  <Toolbar.Action
+                    label="Back"
+                    icon={<ArrowLeft />}
+                    showLabel={false}
+                  />
+                  <Toolbar.Action
+                    label="Forward"
+                    icon={<ArrowRight />}
+                    showLabel={false}
+                  />
+                </Toolbar.Group>
+              </Toolbar.Leading>
+            )}
+            {center && (
+              <Toolbar.Center key="center">
+                <Toolbar.Title title="Report.pdf" />
+              </Toolbar.Center>
+            )}
+            {trailing && (
+              <Toolbar.Trailing key="trailing">
+                <Toolbar.Group priority="low">
+                  <Toolbar.Action label="Share" icon={<Share />} />
+                  <Toolbar.Action label="Download" icon={<Download />} />
+                  <Toolbar.Action label="Print" icon={<Printer />} />
+                </Toolbar.Group>
+              </Toolbar.Trailing>
+            )}
+          </Toolbar>
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
+function OptionalToolbarStatus({ visible }: { visible: boolean }) {
+  return visible ? <Label variant="soft">Synced</Label> : null;
+}
+
+function CustomToolbarDetails() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <>
+      <Button
+        label={expanded ? 'Hide details' : 'Show details'}
+        onClick={() => setExpanded((value) => !value)}
+        style={{ flexShrink: 0 }}
+      />
+      {expanded && (
+        <Label variant="soft" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
+          3 selected
+        </Label>
+      )}
+    </>
+  );
+}
+
+function ToolbarPortalNote({ host }: { host: HTMLElement | null }) {
+  return host
+    ? createPortal(<Label variant="soft">Portal content</Label>, host)
+    : null;
+}
+
+export const DynamicChildren: StoryObj<typeof Toolbar> = {
+  name: 'Custom content and fragments',
+  render: function DynamicChildrenStory() {
+    const [space, setSpace] = useState(440);
+    const [status, setStatus] = useState(false);
+    const [trailing, setTrailing] = useState(false);
+    const [vertical, setVertical] = useState(false);
+    const [host, setHost] = useState<HTMLElement | null>(null);
+    const Region = trailing ? Toolbar.Trailing : Toolbar.Leading;
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={7} weight="bold">
+          Custom content and fragments
+        </Text>
+        <Text block>
+          Each action here has its own priority. Fragments keep their actions in
+          the same row. Custom controls can render nothing or several elements;
+          their content stays in the row while low-priority actions move into
+          the menu. Portal content below the toolbar does not take space in the
+          row.
+        </Text>
+        <Flex gap="l">
+          <Switch checked={status} onChange={setStatus}>
+            Show status
+          </Switch>
+          <Switch checked={trailing} onChange={setTrailing}>
+            Trailing region
+          </Switch>
+          <Switch checked={vertical} onChange={setVertical}>
+            Vertical
+          </Switch>
+        </Flex>
+        <Slider
+          value={space}
+          onChange={setSpace}
+          min={160}
+          max={640}
+          renderLabel={(value) => `${value}px`}
+          showCurrentValue="always"
+        />
+        <Flex
+          style={{
+            width: vertical ? 180 : space,
+            height: vertical ? space : undefined,
+          }}
+        >
+          <Toolbar edge={vertical ? 'left' : 'top'} style={{ width: '100%' }}>
+            <Region>
+              <OptionalToolbarStatus visible={status} />
+              <CustomToolbarDetails />
+              <>
+                <Toolbar.Action
+                  label="Share"
+                  icon={<Share />}
+                  showLabel={false}
+                  priority="low"
+                />
+                <Toolbar.Action
+                  label="Print"
+                  icon={<Printer />}
+                  showLabel={false}
+                  priority="low"
+                />
+                <Toolbar.Action
+                  label="Star"
+                  icon={<Star />}
+                  showLabel={false}
+                  priority="high"
+                />
+              </>
+              <ToolbarPortalNote host={host} />
+            </Region>
+          </Toolbar>
+        </Flex>
+        <Flex ref={setHost} />
+      </Flex>
+    );
+  },
+};
+
+export const OverflowActionStates: StoryObj<typeof Toolbar> = {
+  name: 'Overflow action states',
+  render: function OverflowActionStatesStory() {
+    const [width, setWidth] = useState(220);
+    const [selected, setSelected] = useState(true);
+    const [loading, setLoading] = useState(true);
+    const [collapsed, setCollapsed] = useState(true);
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={7} weight="bold">
+          Overflow action states
+        </Text>
+        <Text block>
+          Collapsed actions keep their links and shortcut hints. Selected actions
+          show a checkbox checkmark. Loading actions show a spinner in the icon
+          slot and cannot be activated. Resize the toolbar to compare both forms.
+        </Text>
+        <Flex gap="l">
+          <Switch checked={selected} onChange={setSelected}>
+            Bold selected
+          </Switch>
+          <Switch checked={loading} onChange={setLoading}>
+            Download loading
+          </Switch>
+        </Flex>
+        <OverflowDemo width={width} onChangeWidth={setWidth}>
+          <Toolbar>
+            <Toolbar.Group priority="low">
+              <Toolbar.Action
+                label="Settings"
+                icon={<Settings />}
+                kbd="⌘,"
+                asChild
+              >
+                <a href="#toolbar-settings" />
+              </Toolbar.Action>
+              <Toolbar.Action
+                label="Bold"
+                icon={<Bold />}
+                kbd="⌘B"
+                selected={selected}
+                onClick={() => setSelected((value) => !value)}
+              />
+              <Toolbar.Action
+                label="Download"
+                icon={<Download />}
+                state={loading ? 'loading' : 'idle'}
+              />
+              <Toolbar.SidebarToggleAction collapsed={collapsed}
+                showLabel kbd="⌘\\" onClick={() => setCollapsed((value) => !value)} />
+            </Toolbar.Group>
+          </Toolbar>
+        </OverflowDemo>
+        <Text block id="toolbar-settings">
+          Settings link target
+        </Text>
+      </Flex>
+    );
+  },
+};
+
+export const TextChildren: StoryObj<typeof Toolbar> = {
+  name: 'Text and counters',
+  render: function TextChildrenStory() {
+    const [count, setCount] = useState(0);
+    const [title, setTitle] = useState('Untitled document');
+    const [width, setWidth] = useState(440);
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={7} weight="bold">
+          Text and counters
+        </Text>
+        <Text block>
+          Strings and numbers can sit beside actions in a flat toolbar or any
+          layout region. Adjacent text stays together, including zero counters.
+          Text remains visible when actions move into the overflow menu.
+        </Text>
+        <OverflowDemo width={width} onChangeWidth={setWidth}>
+          <Toolbar>
+            {count} items
+            <Toolbar.Group priority="low">
+              <Toolbar.Action
+                label="Add item"
+                onClick={() => setCount((value) => value + 1)}
+              />
+              <Toolbar.Action label="Reset" onClick={() => setCount(0)} />
+            </Toolbar.Group>
+          </Toolbar>
+        </OverflowDemo>
+        <Text block size={5} weight="bold">
+          Text in layout regions
+        </Text>
+        <TextInput
+          value={title}
+          onChange={setTitle}
+          placeholder="Document title"
+          aria-label="Document title"
+        />
+        <Toolbar>
+          <Toolbar.Leading>{title}</Toolbar.Leading>
+          <Toolbar.Center>{count} items</Toolbar.Center>
+          <Toolbar.Trailing>Saved</Toolbar.Trailing>
+        </Toolbar>
+      </Flex>
+    );
+  },
+};
 
 export const Overflow: StoryObj<typeof Toolbar> = {
   name: 'Overflow',

@@ -1,7 +1,16 @@
-import { RefObject, useCallback, useLayoutEffect, useMemo, useRef } from 'react';
+import {
+  RefObject,
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import { ToolbarBalanceApi, ToolbarBalancedRegion } from './Toolbar.context.ts';
 
-type NaturalSizes = Record<ToolbarBalancedRegion, number | null>;
+interface RegisteredRegion {
+  node: HTMLElement;
+  size: number | null;
+}
 
 /**
  * Splits `sideBudget` between `Leading`/`Trailing`: each gets its exact
@@ -34,17 +43,39 @@ export function useToolbarRegionBalance(
   containerRef: RefObject<HTMLElement | null>,
   orientation: 'horizontal' | 'vertical',
 ): ToolbarBalanceApi {
-  const naturalSizesRef = useRef<NaturalSizes>({
+  const regionsRef = useRef<
+    Record<ToolbarBalancedRegion, RegisteredRegion | null>
+  >({
     leading: null,
     trailing: null,
     center: null,
   });
   const recalculateRef = useRef<() => void>(() => {});
 
+  const registerRegion = useCallback(
+    (region: ToolbarBalancedRegion, node: HTMLElement) => {
+      const registration: RegisteredRegion = { node, size: null };
+      regionsRef.current[region] = registration;
+      recalculateRef.current();
+      return () => {
+        if (regionsRef.current[region] !== registration) return;
+        regionsRef.current[region] = null;
+        recalculateRef.current();
+      };
+    },
+    [],
+  );
+
   const reportNaturalSize = useCallback(
-    (region: ToolbarBalancedRegion, size: number) => {
-      if (naturalSizesRef.current[region] === size) return;
-      naturalSizesRef.current[region] = size;
+    (region: ToolbarBalancedRegion, node: HTMLElement, size: number) => {
+      const registration = regionsRef.current[region];
+      if (
+        !registration ||
+        registration.node !== node ||
+        registration.size === size
+      )
+        return;
+      registration.size = size;
       recalculateRef.current();
     },
     [],
@@ -52,20 +83,24 @@ export function useToolbarRegionBalance(
 
   useLayoutEffect(() => {
     const container = containerRef.current;
-    if (!container || typeof ResizeObserver === 'undefined') return;
+    if (!container) return;
 
     const recalculate = () => {
-      const leadingEl = container.querySelector(
-        ':scope > [data-toolbar-region="leading"]',
-      );
-      const trailingEl = container.querySelector(
-        ':scope > [data-toolbar-region="trailing"]',
-      );
-      const { leading, trailing, center } = naturalSizesRef.current;
+      const getSize = (region: ToolbarBalancedRegion) => {
+        const entry = regionsRef.current[region];
+        return entry?.node.parentElement === container ? entry.size : null;
+      };
+      const leading = getSize('leading');
+      const trailing = getSize('trailing');
+      const center = getSize('center');
 
-      if (!leadingEl || !trailingEl || leading === null || trailing === null) {
-        container.style.removeProperty('--toolbar-leading-track');
-        container.style.removeProperty('--toolbar-trailing-track');
+      if (leading === null || trailing === null) {
+        if (container.style.getPropertyValue('--toolbar-leading-track')) {
+          container.style.removeProperty('--toolbar-leading-track');
+        }
+        if (container.style.getPropertyValue('--toolbar-trailing-track')) {
+          container.style.removeProperty('--toolbar-trailing-track');
+        }
         return;
       }
 
@@ -101,20 +136,42 @@ export function useToolbarRegionBalance(
         sideBudget,
       );
 
-      container.style.setProperty('--toolbar-leading-track', `${leadingTrack}px`);
-      container.style.setProperty(
-        '--toolbar-trailing-track',
-        `${trailingTrack}px`,
-      );
+      if (
+        container.style.getPropertyValue('--toolbar-leading-track') !==
+        `${leadingTrack}px`
+      ) {
+        container.style.setProperty(
+          '--toolbar-leading-track',
+          `${leadingTrack}px`,
+        );
+      }
+      if (
+        container.style.getPropertyValue('--toolbar-trailing-track') !==
+        `${trailingTrack}px`
+      ) {
+        container.style.setProperty(
+          '--toolbar-trailing-track',
+          `${trailingTrack}px`,
+        );
+      }
     };
 
     recalculateRef.current = recalculate;
     recalculate();
 
-    const observer = new ResizeObserver(recalculate);
-    observer.observe(container);
-    return () => observer.disconnect();
+    const observer =
+      typeof ResizeObserver === 'undefined'
+        ? null
+        : new ResizeObserver(() => recalculateRef.current());
+    observer?.observe(container);
+    return () => {
+      recalculateRef.current = () => {};
+      observer?.disconnect();
+    };
   }, [containerRef, orientation]);
 
-  return useMemo(() => ({ reportNaturalSize }), [reportNaturalSize]);
+  return useMemo(
+    () => ({ registerRegion, reportNaturalSize }),
+    [registerRegion, reportNaturalSize],
+  );
 }
