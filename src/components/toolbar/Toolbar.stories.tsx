@@ -1123,6 +1123,92 @@ function OverflowDemo({
   );
 }
 
+export const ConditionalRegions: StoryObj<typeof Toolbar> = {
+  name: 'Conditional regions',
+  render: function ConditionalRegionsStory() {
+    const [width, setWidth] = useState(560);
+    const [leading, setLeading] = useState(true);
+    const [center, setCenter] = useState(true);
+    const [trailing, setTrailing] = useState(true);
+    const [vertical, setVertical] = useState(false);
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={7} weight="bold">
+          Conditional regions
+        </Text>
+        <Text block>
+          Regions can appear and disappear while the toolbar keeps the same
+          size. Remaining content uses the current layout; showing a region
+          again restores its share of the space. A single remaining region fills
+          the toolbar.
+        </Text>
+        <Flex gap="l" wrap>
+          <Switch checked={leading} onChange={setLeading}>
+            Leading
+          </Switch>
+          <Switch checked={center} onChange={setCenter}>
+            Center
+          </Switch>
+          <Switch checked={trailing} onChange={setTrailing}>
+            Trailing
+          </Switch>
+          <Switch checked={vertical} onChange={setVertical}>
+            Vertical
+          </Switch>
+        </Flex>
+        <Slider
+          value={width}
+          onChange={setWidth}
+          min={320}
+          max={640}
+          renderLabel={(value) => `${value}px`}
+          showCurrentValue="always"
+        />
+        <Flex
+          style={{
+            width: vertical ? 180 : width,
+            height: vertical ? width : undefined,
+          }}
+        >
+          <Toolbar edge={vertical ? 'left' : 'top'} style={{ width: '100%' }}>
+            {leading && (
+              <Toolbar.Leading key="leading">
+                <Toolbar.Group priority="low">
+                  <Toolbar.Action
+                    label="Back"
+                    icon={<ArrowLeft />}
+                    showLabel={false}
+                  />
+                  <Toolbar.Action
+                    label="Forward"
+                    icon={<ArrowRight />}
+                    showLabel={false}
+                  />
+                </Toolbar.Group>
+              </Toolbar.Leading>
+            )}
+            {center && (
+              <Toolbar.Center key="center">
+                <Toolbar.Title title="Report.pdf" />
+              </Toolbar.Center>
+            )}
+            {trailing && (
+              <Toolbar.Trailing key="trailing">
+                <Toolbar.Group priority="low">
+                  <Toolbar.Action label="Share" icon={<Share />} />
+                  <Toolbar.Action label="Download" icon={<Download />} />
+                  <Toolbar.Action label="Print" icon={<Printer />} />
+                </Toolbar.Group>
+              </Toolbar.Trailing>
+            )}
+          </Toolbar>
+        </Flex>
+      </Flex>
+    );
+  },
+};
+
 function OptionalToolbarStatus({ visible }: { visible: boolean }) {
   return visible ? <Label variant="soft">Synced</Label> : null;
 }
