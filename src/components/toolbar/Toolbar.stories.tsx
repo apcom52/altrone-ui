@@ -1121,6 +1121,54 @@ function OverflowDemo({
   );
 }
 
+export const TextChildren: StoryObj<typeof Toolbar> = {
+  name: 'Text and counters',
+  render: function TextChildrenStory() {
+    const [count, setCount] = useState(0);
+    const [title, setTitle] = useState('Untitled document');
+    const [width, setWidth] = useState(440);
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={7} weight="bold">
+          Text and counters
+        </Text>
+        <Text block>
+          Strings and numbers can sit beside actions in a flat toolbar or any
+          layout region. Adjacent text stays together, including zero counters.
+          Text remains visible when actions move into the overflow menu.
+        </Text>
+        <OverflowDemo width={width} onChangeWidth={setWidth}>
+          <Toolbar>
+            {count} items
+            <Toolbar.Group priority="low">
+              <Toolbar.Action
+                label="Add item"
+                onClick={() => setCount((value) => value + 1)}
+              />
+              <Toolbar.Action label="Reset" onClick={() => setCount(0)} />
+            </Toolbar.Group>
+          </Toolbar>
+        </OverflowDemo>
+        <Text block size={5} weight="bold">
+          Text in layout regions
+        </Text>
+        <TextInput
+          value={title}
+          onChange={setTitle}
+          placeholder="Document title"
+          aria-label="Document title"
+        />
+        <Toolbar>
+          <Toolbar.Leading>{title}</Toolbar.Leading>
+          <Toolbar.Center>{count} items</Toolbar.Center>
+          <Toolbar.Trailing>Saved</Toolbar.Trailing>
+        </Toolbar>
+      </Flex>
+    );
+  },
+};
+
 export const Overflow: StoryObj<typeof Toolbar> = {
   name: 'Overflow',
   render: () => {

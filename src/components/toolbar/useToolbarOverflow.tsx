@@ -12,6 +12,7 @@ import { Dropdown } from 'components/dropdown';
 import { useLocalization } from 'components/application';
 import { Action, Group, Separator, SidebarToggleAction } from './components';
 import { SidebarToggleMenuAction } from './components/SidebarToggleAction.tsx';
+import s from './toolbar.module.scss';
 import {
   ToolbarActionPriority,
   ToolbarActionProps,
@@ -212,10 +213,34 @@ export function useToolbarOverflow(
   const [hiddenKeys, setHiddenKeys] =
     useState<ReadonlySet<string>>(EMPTY_SET);
 
-  const childArray = useMemo(
-    () => Children.toArray(children).filter(isValidElement),
-    [children],
-  );
+  const childArray = useMemo(() => {
+    const nodes: (ReactElement | string)[] = [];
+
+    Children.toArray(children).forEach((child) => {
+      if (isValidElement(child)) {
+        nodes.push(child);
+      } else if (
+        typeof child === 'string' ||
+        typeof child === 'number' ||
+        typeof child === 'bigint'
+      ) {
+        const lastIndex = nodes.length - 1;
+        if (typeof nodes[lastIndex] === 'string') {
+          nodes[lastIndex] += String(child);
+        } else {
+          nodes.push(String(child));
+        }
+      }
+    });
+
+    return nodes.map((node, index) =>
+      typeof node === 'string' ? (
+        <span key={`text-${index}`} className={s.TextContent}>
+          {node}
+        </span>
+      ) : node,
+    );
+  }, [children]);
 
   const items = useMemo<OverflowItem[]>(
     () =>

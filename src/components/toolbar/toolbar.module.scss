@@ -7,6 +7,11 @@
   initial-value: 0px;
 }
 
+.TextContent {
+  flex-shrink: 0;
+  white-space: pre-wrap;
+}
+
 .Toolbar {
   --toolbar-size: 56px;
   --toolbar-inset: 12px;

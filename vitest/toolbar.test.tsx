@@ -9,6 +9,41 @@ import {
 import { resolveToolbarRegionBalance } from '../src/components/toolbar/useToolbarRegionBalance.ts';
 
 describe('Toolbar', () => {
+  test('renders text and zero in the toolbar and every layout region', () => {
+    const { rerender } = render(
+      <Application>
+        <Toolbar data-testid="flat">{0} items</Toolbar>
+        <Toolbar>
+          <Toolbar.Leading data-testid="leading">
+            Untitled document
+          </Toolbar.Leading>
+          <Toolbar.Center data-testid="center">{0}</Toolbar.Center>
+          <Toolbar.Trailing data-testid="trailing">{0} selected</Toolbar.Trailing>
+        </Toolbar>
+      </Application>,
+    );
+
+    expect(screen.getByTestId('flat')).toHaveTextContent('0 items');
+    expect(screen.getByTestId('flat').children).toHaveLength(1);
+    expect(screen.getByTestId('leading')).toHaveTextContent('Untitled document');
+    expect(screen.getByTestId('center')).toHaveTextContent('0');
+    expect(screen.getByTestId('trailing')).toHaveTextContent('0 selected');
+
+    rerender(
+      <Application>
+        <Toolbar data-testid="flat">
+          {null}{false}{undefined}{12} items
+          <Toolbar.Action label="Refresh" />
+          {' saved'}
+        </Toolbar>
+      </Application>,
+    );
+
+    expect(screen.getByTestId('flat')).toHaveTextContent('12 itemsRefresh saved');
+    expect(screen.getByTestId('flat').children).toHaveLength(3);
+    expect(screen.getByRole('button', { name: 'Refresh' })).toBeInTheDocument();
+  });
+
   test('check that className and style props works', () => {
     render(
       <Application>
@@ -200,6 +235,63 @@ describe('Toolbar', () => {
 });
 
 describe('Toolbar overflow', () => {
+  test('measures text when it changes and keeps it visible while actions collapse', () => {
+    const previousResizeObserver = globalThis.ResizeObserver;
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        observe() {}
+        disconnect() {}
+        unobserve() {}
+      },
+    );
+    const clientWidth = vi
+      .spyOn(HTMLElement.prototype, 'clientWidth', 'get')
+      .mockReturnValue(220);
+    const offsetWidth = vi
+      .spyOn(HTMLElement.prototype, 'offsetWidth', 'get')
+      .mockImplementation(function (this: HTMLElement) {
+        if (this.tagName === 'SPAN') return (this.textContent?.length ?? 0) * 10;
+        return this.textContent === 'Refresh' ? 80 : 40;
+      });
+
+    const toolbar = (count: number) => (
+      <Application>
+        <Toolbar style={{ padding: 0, columnGap: 8 }}>
+          {count} items
+          <Toolbar.Action label="Refresh" priority="low" />
+          <Toolbar.Action label="Share" priority="medium" />
+        </Toolbar>
+      </Application>
+    );
+    const { rerender, unmount } = render(toolbar(0));
+
+    try {
+      expect(screen.getByText('0 items')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Refresh' })).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'More actions' })).toBeNull();
+
+      rerender(toolbar(1000));
+
+      expect(screen.getByText('1000 items')).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'Refresh' })).toBeNull();
+      expect(screen.getByRole('button', { name: 'Share' })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: 'More actions' }),
+      ).toBeInTheDocument();
+
+      rerender(toolbar(0));
+
+      expect(screen.getByRole('button', { name: 'Refresh' })).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'More actions' })).toBeNull();
+    } finally {
+      unmount();
+      clientWidth.mockRestore();
+      offsetWidth.mockRestore();
+      vi.stubGlobal('ResizeObserver', previousResizeObserver);
+    }
+  });
+
   test('`priority` is stripped before reaching the DOM node', () => {
     render(
       <Application>
