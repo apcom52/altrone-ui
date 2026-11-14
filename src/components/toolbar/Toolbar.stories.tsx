@@ -40,6 +40,8 @@ import {
 } from 'lucide-react';
 import { Dropdown } from 'components/dropdown/index.ts';
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
+import { Button } from 'components/button';
 import { Label } from 'components/label/Label.tsx';
 import { Avatar } from 'components/avatar/Avatar.tsx';
 import { TextInput } from 'components/textInput/TextInput.tsx';
@@ -1120,6 +1122,115 @@ function OverflowDemo({
     </Flex>
   );
 }
+
+function OptionalToolbarStatus({ visible }: { visible: boolean }) {
+  return visible ? <Label variant="soft">Synced</Label> : null;
+}
+
+function CustomToolbarDetails() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <>
+      <Button
+        label={expanded ? 'Hide details' : 'Show details'}
+        onClick={() => setExpanded((value) => !value)}
+        style={{ flexShrink: 0 }}
+      />
+      {expanded && (
+        <Label variant="soft" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
+          3 selected
+        </Label>
+      )}
+    </>
+  );
+}
+
+function ToolbarPortalNote({ host }: { host: HTMLElement | null }) {
+  return host
+    ? createPortal(<Label variant="soft">Portal content</Label>, host)
+    : null;
+}
+
+export const DynamicChildren: StoryObj<typeof Toolbar> = {
+  name: 'Custom content and fragments',
+  render: function DynamicChildrenStory() {
+    const [space, setSpace] = useState(440);
+    const [status, setStatus] = useState(false);
+    const [trailing, setTrailing] = useState(false);
+    const [vertical, setVertical] = useState(false);
+    const [host, setHost] = useState<HTMLElement | null>(null);
+    const Region = trailing ? Toolbar.Trailing : Toolbar.Leading;
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={7} weight="bold">
+          Custom content and fragments
+        </Text>
+        <Text block>
+          Each action here has its own priority. Fragments keep their actions in
+          the same row. Custom controls can render nothing or several elements;
+          their content stays in the row while low-priority actions move into
+          the menu. Portal content below the toolbar does not take space in the
+          row.
+        </Text>
+        <Flex gap="l">
+          <Switch checked={status} onChange={setStatus}>
+            Show status
+          </Switch>
+          <Switch checked={trailing} onChange={setTrailing}>
+            Trailing region
+          </Switch>
+          <Switch checked={vertical} onChange={setVertical}>
+            Vertical
+          </Switch>
+        </Flex>
+        <Slider
+          value={space}
+          onChange={setSpace}
+          min={160}
+          max={640}
+          renderLabel={(value) => `${value}px`}
+          showCurrentValue="always"
+        />
+        <Flex
+          style={{
+            width: vertical ? 180 : space,
+            height: vertical ? space : undefined,
+          }}
+        >
+          <Toolbar edge={vertical ? 'left' : 'top'} style={{ width: '100%' }}>
+            <Region>
+              <OptionalToolbarStatus visible={status} />
+              <CustomToolbarDetails />
+              <>
+                <Toolbar.Action
+                  label="Share"
+                  icon={<Share />}
+                  showLabel={false}
+                  priority="low"
+                />
+                <Toolbar.Action
+                  label="Print"
+                  icon={<Printer />}
+                  showLabel={false}
+                  priority="low"
+                />
+                <Toolbar.Action
+                  label="Star"
+                  icon={<Star />}
+                  showLabel={false}
+                  priority="high"
+                />
+              </>
+              <ToolbarPortalNote host={host} />
+            </Region>
+          </Toolbar>
+        </Flex>
+        <Flex ref={setHost} />
+      </Flex>
+    );
+  },
+};
 
 export const OverflowActionStates: StoryObj<typeof Toolbar> = {
   name: 'Overflow action states',

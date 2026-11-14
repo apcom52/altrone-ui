@@ -1,6 +1,10 @@
 import {
   Children,
+  cloneElement,
+  Fragment,
   isValidElement,
+  Ref,
+  RefCallback,
   ReactElement,
   ReactNode,
   useLayoutEffect,
@@ -10,7 +14,17 @@ import {
 } from 'react';
 import { Dropdown } from 'components/dropdown';
 import { useLocalization } from 'components/application';
-import { Action, Group, Separator, SidebarToggleAction } from './components';
+import {
+  Action,
+  Center,
+  Group,
+  Leading,
+  Logo,
+  Separator,
+  SidebarToggleAction,
+  Title,
+  Trailing,
+} from './components';
 import { SidebarToggleMenuAction } from './components/SidebarToggleAction.tsx';
 import { ToolbarOverflowAction } from 'internal/toolbarOverflowAction';
 import s from './toolbar.module.scss';
@@ -32,6 +46,77 @@ const PRIORITY_WEIGHT: Record<ToolbarActionPriority, number> = {
 interface OverflowItem {
   key: string;
   priority: ToolbarActionPriority;
+  slots?: number;
+}
+
+interface ItemNode {
+  node: HTMLElement;
+  contents: boolean;
+}
+
+interface ItemRef {
+  original: Ref<HTMLElement> | undefined;
+  callback: RefCallback<HTMLElement>;
+  contents: boolean;
+}
+
+function normalizeChildren(children: ReactNode): ReactNode[] {
+  const nodes: ReactNode[] = [];
+  const visit = (children: ReactNode, prefix: string) => {
+    Children.toArray(children).forEach((child) => {
+      if (isValidElement<{ children?: ReactNode }>(child)) {
+        if (child.type === Fragment) {
+          visit(child.props.children, `${prefix}${child.key}/`);
+        } else {
+          nodes.push(
+            prefix
+              ? cloneElement(child, { key: `${prefix}${child.key}` })
+              : child,
+          );
+        }
+      } else if (
+        typeof child === 'string' ||
+        typeof child === 'number' ||
+        typeof child === 'bigint'
+      ) {
+        const lastIndex = nodes.length - 1;
+        if (typeof nodes[lastIndex] === 'string') {
+          nodes[lastIndex] += String(child);
+        } else {
+          nodes.push(String(child));
+        }
+      } else {
+        nodes.push(child);
+      }
+    });
+  };
+  visit(children, '');
+  return nodes.map((node, index) =>
+    typeof node === 'string' ? (
+      <span key={`text-${index}`} className={s.TextContent}>
+        {node}
+      </span>
+    ) : (
+      node
+    ),
+  );
+}
+
+function acceptsItemRef(child: ReactElement): boolean {
+  return (
+    typeof child.type === 'string' ||
+    [
+      Action,
+      Center,
+      Group,
+      Leading,
+      Logo,
+      Separator,
+      SidebarToggleAction,
+      Title,
+      Trailing,
+    ].some((type) => child.type === type)
+  );
 }
 
 /**
@@ -50,7 +135,8 @@ export function resolveToolbarOverflow(
 ): Set<string> {
   const totalSize =
     items.reduce((sum, item) => sum + (sizes.get(item.key) ?? 0), 0) +
-    gap * Math.max(items.length - 1, 0);
+    gap *
+      Math.max(items.reduce((sum, item) => sum + (item.slots ?? 1), 0) - 1, 0);
 
   if (totalSize <= availableSize) return new Set();
 
@@ -69,7 +155,7 @@ export function resolveToolbarOverflow(
   for (const item of removable) {
     if (remaining <= availableSize) break;
     hidden.add(item.key);
-    remaining -= (sizes.get(item.key) ?? 0) + gap;
+    remaining -= (sizes.get(item.key) ?? 0) + gap * (item.slots ?? 1);
   }
 
   return hidden;
@@ -99,12 +185,10 @@ function isMenuRepresentable(node: ReactNode): node is ReactElement {
  */
 export function isCollapsible(child: ReactElement): boolean {
   if (child.type === Group) {
-    const groupChildren = Children.toArray(
+    const groupChildren = normalizeChildren(
       (child.props as ToolbarGroupProps).children,
     );
-    return (
-      groupChildren.length > 0 && groupChildren.every(isMenuRepresentable)
-    );
+    return groupChildren.length > 0 && groupChildren.every(isMenuRepresentable);
   }
   return isMenuRepresentable(child);
 }
@@ -137,7 +221,7 @@ function toMenuItem(item: ReactElement): ReactElement {
 /** A collapsed `Toolbar.Group` flattens its own actions into the overflow menu — no nested grouping in the `Dropdown.Menu`. */
 function flattenHiddenItem(child: ReactElement): ReactElement[] {
   if (child.type === Group) {
-    return Children.toArray((child.props as ToolbarGroupProps).children)
+    return normalizeChildren((child.props as ToolbarGroupProps).children)
       .filter(isMenuRepresentable)
       .map(toMenuItem);
   }
@@ -202,57 +286,136 @@ export function useToolbarOverflow(
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const sizesRef = useRef(new Map<string, number>());
+  const slotsRef = useRef(new Map<string, number>());
+  const nodesRef = useRef(new Map<string, ItemNode>());
+  const refsRef = useRef(new Map<string, ItemRef>());
+  const contentsNodesRef = useRef(new Set<Node>());
+  const observerRef = useRef<ResizeObserver | null>(null);
+  const observedRef = useRef(new Set<Element>());
+  const recalculateRef = useRef<() => void>(() => {});
+  const scheduleRef = useRef<() => void>(() => {});
+  const watchContentsRef = useRef<() => void>(() => {});
   const hiddenKeysRef = useRef<ReadonlySet<string>>(EMPTY_SET);
-  const [hiddenKeys, setHiddenKeys] =
-    useState<ReadonlySet<string>>(EMPTY_SET);
+  const [hiddenKeys, setHiddenKeys] = useState<ReadonlySet<string>>(EMPTY_SET);
 
-  const childArray = useMemo(() => {
-    const nodes: (ReactElement | string)[] = [];
-
-    Children.toArray(children).forEach((child) => {
-      if (isValidElement(child)) {
-        nodes.push(child);
-      } else if (
-        typeof child === 'string' ||
-        typeof child === 'number' ||
-        typeof child === 'bigint'
-      ) {
-        const lastIndex = nodes.length - 1;
-        if (typeof nodes[lastIndex] === 'string') {
-          nodes[lastIndex] += String(child);
-        } else {
-          nodes.push(String(child));
-        }
-      }
-    });
-
-    return nodes.map((node, index) =>
-      typeof node === 'string' ? (
-        <span key={`text-${index}`} className={s.TextContent}>
-          {node}
-        </span>
-      ) : node,
-    );
-  }, [children]);
+  const childArray = useMemo(() => normalizeChildren(children), [children]);
+  const elements = useMemo(
+    () => childArray.filter(isValidElement),
+    [childArray],
+  );
 
   const items = useMemo<OverflowItem[]>(
     () =>
-      childArray.map((child) => ({
+      elements.map((child) => ({
         key: String(child.key),
         priority: getItemPriority(child),
       })),
-    [childArray],
+    [elements],
   );
 
   const flexibleSpacerKeys = useMemo(
     () =>
       new Set(
-        childArray
+        elements
           .filter((child) => isFlexibleSpacer(child))
           .map((child) => String(child.key)),
       ),
-    [childArray],
+    [elements],
   );
+
+  const getItemRef = (
+    key: string,
+    contents: boolean,
+    original?: Ref<HTMLElement>,
+  ): RefCallback<HTMLElement> => {
+    const cached = refsRef.current.get(key);
+    if (
+      cached &&
+      cached.original === original &&
+      cached.contents === contents
+    ) {
+      return cached.callback;
+    }
+    let previous: HTMLElement | null = null;
+    let cleanup: (() => void) | void;
+    const callback: RefCallback<HTMLElement> = (node) => {
+      if (previous === node) return;
+      if (previous) {
+        contentsNodesRef.current.delete(previous);
+        nodesRef.current.delete(key);
+        if (typeof cleanup === 'function') cleanup();
+        else if (typeof original === 'function') original(null);
+        else if (original) original.current = null;
+      }
+      previous = node;
+      cleanup = undefined;
+      if (node) {
+        nodesRef.current.set(key, { node, contents });
+        if (contents) contentsNodesRef.current.add(node);
+        if (typeof original === 'function') cleanup = original(node);
+        else if (original) original.current = node;
+      }
+      scheduleRef.current();
+    };
+    refsRef.current.set(key, { original, callback, contents });
+    return callback;
+  };
+
+  useLayoutEffect(() => {
+    const container = containerRef.current;
+    if (!container || typeof ResizeObserver === 'undefined') return;
+    let frame: number | null = null;
+    let active = true;
+    const schedule = () => {
+      if (!active || frame !== null) return;
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        recalculateRef.current();
+      });
+    };
+    scheduleRef.current = schedule;
+    const observer = new ResizeObserver(schedule);
+    observerRef.current = observer;
+    let mutations: MutationObserver | null = null;
+    let watching = false;
+    watchContentsRef.current = () => {
+      const needed = contentsNodesRef.current.size > 0;
+      if (needed === watching || typeof MutationObserver === 'undefined')
+        return;
+      if (needed) {
+        mutations ??= new MutationObserver((records) => {
+          if (
+            records.some(
+              (record) =>
+                contentsNodesRef.current.has(record.target) ||
+                (record.type === 'characterData' &&
+                  record.target.parentNode !== null &&
+                  contentsNodesRef.current.has(record.target.parentNode)),
+            )
+          )
+            schedule();
+        });
+        mutations.observe(container, {
+          subtree: true,
+          childList: true,
+          characterData: true,
+        });
+      } else {
+        mutations?.disconnect();
+      }
+      watching = needed;
+    };
+    return () => {
+      active = false;
+      scheduleRef.current = () => {};
+      watchContentsRef.current = () => {};
+      observerRef.current = null;
+      observer.disconnect();
+      observedRef.current.clear();
+      mutations?.disconnect();
+      if (frame !== null) cancelAnimationFrame(frame);
+    };
+  }, []);
 
   /**
    * `hiddenKeys` is a dep so this reruns once the trigger itself mounts,
@@ -263,21 +426,79 @@ export function useToolbarOverflow(
     if (!container || typeof ResizeObserver === 'undefined') return;
 
     const recalculate = () => {
-      const visibleItems = items.filter(
-        (item) => !hiddenKeysRef.current.has(item.key),
-      );
-      const nodes = Array.from(container.children) as HTMLElement[];
-      /** The trigger renders before the items when `triggerEdge` is `'start'` — offset past it. */
-      const nodeOffset =
-        triggerEdge === 'start' && hiddenKeysRef.current.size > 0 ? 1 : 0;
-
-      visibleItems.forEach((item, index) => {
-        const node = nodes[index + nodeOffset];
-        if (!node || flexibleSpacerKeys.has(item.key)) return;
-        const measured =
-          orientation === 'vertical' ? node.offsetHeight : node.offsetWidth;
-        if (measured > 0) sizesRef.current.set(item.key, measured);
-      });
+      const targets = new Set<Element>([container]);
+      if (triggerRef.current) targets.add(triggerRef.current);
+      const measure = (node: Node): { size: number; slots: number } => {
+        if (node instanceof Element) {
+          targets.add(node);
+          const size =
+            node instanceof HTMLElement
+              ? orientation === 'vertical'
+                ? node.offsetHeight
+                : node.offsetWidth
+              : node.getBoundingClientRect()[
+                  orientation === 'vertical' ? 'height' : 'width'
+                ];
+          return {
+            size,
+            slots: size > 0 || node.getClientRects().length > 0 ? 1 : 0,
+          };
+        }
+        return { size: 0, slots: 0 };
+      };
+      for (const item of items) {
+        if (hiddenKeysRef.current.has(item.key)) continue;
+        const entry = nodesRef.current.get(item.key);
+        let size = 0;
+        let slots = 0;
+        if (entry?.contents) {
+          let child = entry.node.firstChild;
+          while (child) {
+            if (child.nodeType === Node.TEXT_NODE) {
+              const start = child;
+              let text = child.textContent ?? '';
+              while (child.nextSibling?.nodeType === Node.TEXT_NODE) {
+                child = child.nextSibling;
+                text += child.textContent ?? '';
+              }
+              if (text.trim()) {
+                const range = document.createRange();
+                range.setStartBefore(start);
+                range.setEndAfter(child);
+                const rect = range.getBoundingClientRect();
+                size += orientation === 'vertical' ? rect.height : rect.width;
+                slots += 1;
+              }
+            } else {
+              const measured = measure(child);
+              size += measured.size;
+              slots += measured.slots;
+            }
+            child = child.nextSibling;
+          }
+        } else if (entry) {
+          const measured = measure(entry.node);
+          size = flexibleSpacerKeys.has(item.key) ? 0 : measured.size;
+          slots = measured.slots;
+        }
+        sizesRef.current.set(item.key, size);
+        slotsRef.current.set(item.key, slots);
+      }
+      const observer = observerRef.current;
+      watchContentsRef.current();
+      if (observer) {
+        for (const node of observedRef.current) {
+          if (!targets.has(node)) observer.unobserve(node);
+        }
+        for (const node of targets) {
+          if (!observedRef.current.has(node)) observer.observe(node);
+        }
+        observedRef.current = targets;
+      }
+      const measuredItems = items.map((item) => ({
+        ...item,
+        slots: slotsRef.current.get(item.key) ?? 1,
+      }));
 
       const style = getComputedStyle(container);
       const available =
@@ -294,8 +515,15 @@ export function useToolbarOverflow(
         ) || 0;
 
       const naturalSize =
-        items.reduce((sum, item) => sum + (sizesRef.current.get(item.key) ?? 0), 0) +
-        gap * Math.max(items.length - 1, 0);
+        measuredItems.reduce(
+          (sum, item) => sum + (sizesRef.current.get(item.key) ?? 0),
+          0,
+        ) +
+        gap *
+          Math.max(
+            measuredItems.reduce((sum, item) => sum + item.slots, 0) - 1,
+            0,
+          );
       onNaturalSizeChange?.(naturalSize);
 
       const triggerSize = triggerRef.current
@@ -305,7 +533,7 @@ export function useToolbarOverflow(
         : 0;
 
       const nextHidden = resolveToolbarOverflow(
-        items,
+        measuredItems,
         sizesRef.current,
         available,
         gap,
@@ -322,11 +550,16 @@ export function useToolbarOverflow(
       }
     };
 
+    const keys = new Set(items.map((item) => item.key));
+    for (const key of refsRef.current.keys()) {
+      if (!keys.has(key)) {
+        refsRef.current.delete(key);
+        sizesRef.current.delete(key);
+        slotsRef.current.delete(key);
+      }
+    }
+    recalculateRef.current = recalculate;
     recalculate();
-
-    const observer = new ResizeObserver(recalculate);
-    observer.observe(container);
-    return () => observer.disconnect();
   }, [
     items,
     orientation,
@@ -340,10 +573,32 @@ export function useToolbarOverflow(
   const hiddenElements: ReactElement[] = [];
 
   childArray.forEach((child) => {
+    if (!isValidElement(child)) {
+      visibleChildren.push(child);
+      return;
+    }
     if (hiddenKeys.has(String(child.key))) {
       hiddenElements.push(child);
     } else {
-      visibleChildren.push(child);
+      const key = String(child.key);
+      if (acceptsItemRef(child)) {
+        const element = child as ReactElement<{ ref?: Ref<HTMLElement> }>;
+        visibleChildren.push(
+          cloneElement(element, {
+            ref: getItemRef(key, false, element.props.ref),
+          }),
+        );
+      } else {
+        visibleChildren.push(
+          <div
+            key={key}
+            className={s.ItemContents}
+            ref={getItemRef(key, true)}
+          >
+            {child}
+          </div>,
+        );
+      }
     }
   });
 
