@@ -1121,6 +1121,68 @@ function OverflowDemo({
   );
 }
 
+export const OverflowActionStates: StoryObj<typeof Toolbar> = {
+  name: 'Overflow action states',
+  render: function OverflowActionStatesStory() {
+    const [width, setWidth] = useState(220);
+    const [selected, setSelected] = useState(true);
+    const [loading, setLoading] = useState(true);
+    const [collapsed, setCollapsed] = useState(true);
+
+    return (
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Text block size={7} weight="bold">
+          Overflow action states
+        </Text>
+        <Text block>
+          Collapsed actions keep their links and shortcut hints. Selected actions
+          show a checkbox checkmark. Loading actions show a spinner in the icon
+          slot and cannot be activated. Resize the toolbar to compare both forms.
+        </Text>
+        <Flex gap="l">
+          <Switch checked={selected} onChange={setSelected}>
+            Bold selected
+          </Switch>
+          <Switch checked={loading} onChange={setLoading}>
+            Download loading
+          </Switch>
+        </Flex>
+        <OverflowDemo width={width} onChangeWidth={setWidth}>
+          <Toolbar>
+            <Toolbar.Group priority="low">
+              <Toolbar.Action
+                label="Settings"
+                icon={<Settings />}
+                kbd="⌘,"
+                asChild
+              >
+                <a href="#toolbar-settings" />
+              </Toolbar.Action>
+              <Toolbar.Action
+                label="Bold"
+                icon={<Bold />}
+                kbd="⌘B"
+                selected={selected}
+                onClick={() => setSelected((value) => !value)}
+              />
+              <Toolbar.Action
+                label="Download"
+                icon={<Download />}
+                state={loading ? 'loading' : 'idle'}
+              />
+              <Toolbar.SidebarToggleAction collapsed={collapsed}
+                showLabel kbd="⌘\\" onClick={() => setCollapsed((value) => !value)} />
+            </Toolbar.Group>
+          </Toolbar>
+        </OverflowDemo>
+        <Text block id="toolbar-settings">
+          Settings link target
+        </Text>
+      </Flex>
+    );
+  },
+};
+
 export const TextChildren: StoryObj<typeof Toolbar> = {
   name: 'Text and counters',
   render: function TextChildrenStory() {

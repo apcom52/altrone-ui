@@ -12,6 +12,7 @@ import { Dropdown } from 'components/dropdown';
 import { useLocalization } from 'components/application';
 import { Action, Group, Separator, SidebarToggleAction } from './components';
 import { SidebarToggleMenuAction } from './components/SidebarToggleAction.tsx';
+import { ToolbarOverflowAction } from 'internal/toolbarOverflowAction';
 import s from './toolbar.module.scss';
 import {
   ToolbarActionPriority,
@@ -125,18 +126,10 @@ function toMenuItem(item: ReactElement): ReactElement {
     );
   }
 
-  const { label, icon, additionalIcon, danger, disabled, onClick } = (
-    item as ReactElement<ToolbarActionProps>
-  ).props;
-
   return (
-    <Dropdown.Action
+    <ToolbarOverflowAction
       key={item.key}
-      label={label}
-      icon={icon ?? additionalIcon}
-      danger={danger}
-      disabled={disabled}
-      onClick={onClick}
+      {...(item.props as ToolbarActionProps)}
     />
   );
 }

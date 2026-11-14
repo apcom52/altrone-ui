@@ -3,7 +3,7 @@ import { Action } from './Action.tsx';
 import { ToolbarSidebarToggleActionProps } from '../Toolbar.types.ts';
 import { useLocalization } from 'components/application';
 import { useScreenContext } from 'components/screen/Screen.context.ts';
-import { Dropdown } from 'components/dropdown';
+import { ToolbarOverflowAction } from 'internal/toolbarOverflowAction';
 import { useToolbarContext } from '../Toolbar.context.ts';
 
 function useSidebarToggle(
@@ -56,18 +56,16 @@ export const SidebarToggleAction = memo(
 /** `SidebarToggleAction`'s representation inside the toolbar's overflow menu. */
 export const SidebarToggleMenuAction = ({
   collapsed,
-  danger,
-  disabled,
   onClick,
+  ...restProps
 }: ToolbarSidebarToggleActionProps) => {
   const { label, icon, handleClick } = useSidebarToggle(collapsed, onClick);
 
   return (
-    <Dropdown.Action
+    <ToolbarOverflowAction
+      {...restProps}
       label={label}
       icon={icon}
-      danger={danger}
-      disabled={disabled}
       onClick={handleClick}
     />
   );
