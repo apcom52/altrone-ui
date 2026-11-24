@@ -21,13 +21,16 @@
 }
 
 .QuestionMark {
+  --tooltip-trigger-size: 24px;
+  --tooltip-trigger-icon-size: 16px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: var(--tooltip-trigger-size);
+  height: var(--tooltip-trigger-size);
   padding: 0;
-  font-size: 16px;
+  font-size: var(--tooltip-trigger-icon-size);
   background-color: var(--tooltip-button-background-color);
   border: 1px solid var(--tooltip-button-border-color);
   backdrop-filter: blur(32px) saturate(180%);
@@ -37,6 +40,41 @@
   transition:
     background-color 0.2s ease,
     color 0.2s ease;
+}
+
+.Mini {
+  --tooltip-trigger-size: 16px;
+  --tooltip-trigger-icon-size: 12px;
+}
+
+.Small {
+  --tooltip-trigger-size: 20px;
+  --tooltip-trigger-icon-size: 14px;
+}
+
+.Large {
+  --tooltip-trigger-size: 28px;
+  --tooltip-trigger-icon-size: 18px;
+}
+
+.XLarge {
+  --tooltip-trigger-size: 32px;
+  --tooltip-trigger-icon-size: 20px;
+}
+
+.Mini,
+.Small {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .Tooltip {

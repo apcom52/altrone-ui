@@ -1,5 +1,6 @@
 import { OpenChangeReason, Placement } from '@floating-ui/react';
 import type { CSSProperties, HTMLAttributes, ReactElement, ReactNode, Ref } from 'react';
+import type { Size } from 'types';
 
 export type TooltipTrigger = 'hover' | 'focus' | 'click';
 
@@ -23,6 +24,7 @@ export interface TooltipProps
   triggerStyle?: CSSProperties;
   /** Icon for the auto-generated trigger button. Defaults to the shared `icons.help`. Has no effect when a custom trigger is passed via `children`. */
   triggerIcon?: ReactElement;
+  triggerSize?: Size;
   placement?: Placement;
   /** Initial open state for the uncontrolled tooltip. */
   defaultOpen?: boolean;

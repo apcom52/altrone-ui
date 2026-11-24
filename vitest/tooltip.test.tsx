@@ -1,7 +1,8 @@
 import { createRef } from 'react';
 import { expect, test, describe, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Tooltip } from '../src/components';
+import { Form, Tooltip } from '../src/components';
+import s from '../src/components/tooltip/tooltip.module.scss';
 
 describe('Tooltip', () => {
   test('opens on focus and shows content', () => {
@@ -22,6 +23,56 @@ describe('Tooltip', () => {
     render(<Tooltip content="Your secret API key" />);
 
     expect(screen.getByRole('button')).toBeInTheDocument();
+  });
+
+  test.each([
+    ['mini', s.Mini],
+    ['s', s.Small],
+    ['m', undefined],
+    ['l', s.Large],
+    ['xl', s.XLarge],
+  ] as const)('applies the %s size to the built-in trigger', (size, sizeClass) => {
+    render(<Tooltip content="Field help" triggerSize={size} />);
+
+    const button = screen.getByRole('button', { name: 'Field help' });
+    expect(button.className).toBe([s.QuestionMark, sizeClass].filter(Boolean).join(' '));
+    expect(button).not.toHaveAttribute('triggerSize');
+  });
+
+  test('keeps the default trigger markup inside a differently sized form field', () => {
+    const { rerender } = render(
+      <Form size="xl">
+        <Form.Field label="Workspace">
+          <Tooltip content="Field help" />
+        </Form.Field>
+      </Form>,
+    );
+    const button = screen.getByRole('button', { name: 'Field help' });
+    const defaultMarkup = button.outerHTML;
+
+    expect(button.className).toBe(s.QuestionMark);
+    rerender(
+      <Form size="xl">
+        <Form.Field label="Workspace">
+          <Tooltip content="Field help" triggerSize="m" />
+        </Form.Field>
+      </Form>,
+    );
+
+    expect(screen.getByRole('button', { name: 'Field help' }).outerHTML).toBe(defaultMarkup);
+  });
+
+  test('leaves a custom trigger intact when a built-in trigger size is set', () => {
+    render(
+      <Tooltip content="Field help" triggerSize="xl">
+        <button className="own-trigger" style={{ width: 40 }}>Help</button>
+      </Tooltip>,
+    );
+
+    const button = screen.getByRole('button', { name: 'Help' });
+    expect(button.className).toBe('own-trigger');
+    expect(button).toHaveStyle({ width: '40px' });
+    expect(button).not.toHaveAttribute('triggerSize');
   });
 
   test("forwards ref to the trigger without clobbering the child's own ref", () => {

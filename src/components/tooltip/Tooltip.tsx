@@ -28,6 +28,14 @@ import {
 } from '@floating-ui/react';
 import { AnimatePresence, motion, useReducedMotionConfig } from 'motion/react';
 
+const triggerSizeClasses = {
+  mini: s.Mini,
+  s: s.Small,
+  m: undefined,
+  l: s.Large,
+  xl: s.XLarge,
+};
+
 export const Tooltip = memo(
   ({
     ref,
@@ -41,6 +49,7 @@ export const Tooltip = memo(
     triggerClassName,
     triggerStyle,
     triggerIcon,
+    triggerSize = 'm',
     placement = 'top',
     defaultOpen = false,
     trigger = ['hover', 'focus'],
@@ -112,7 +121,11 @@ export const Tooltip = memo(
         type="button"
         aria-describedby={tooltipId}
         aria-label={typeof content === 'string' ? content : undefined}
-        className={clsx(s.QuestionMark, triggerClassName)}
+        className={clsx(
+          s.QuestionMark,
+          triggerSizeClasses[triggerSize],
+          triggerClassName,
+        )}
         style={triggerStyle}
       >
         {triggerIcon ?? icons.help}
@@ -130,30 +143,21 @@ export const Tooltip = memo(
       [refs],
     );
 
+    const triggerProps = React.isValidElement<
+      React.HTMLAttributes<HTMLElement> & React.RefAttributes<HTMLElement>
+    >(safeChildElement)
+      ? safeChildElement.props
+      : undefined;
+
     const childElement = DOMUtils.cloneNode(safeChildElement, {
       ...getReferenceProps({
         ...restProps,
-        ...(React.isValidElement(safeChildElement)
-          ? (safeChildElement.props as any)
-          : {}),
+        ...triggerProps,
       }),
       /* Merges the child's own `ref` (e.g. `<Button ref={x}>` inside a
          Tooltip) instead of overwriting it — see ref-forwarding.md. */
-      ref: mergeRefs(
-        React.isValidElement(safeChildElement)
-          ? (
-              safeChildElement as React.ReactElement<{
-                ref?: React.Ref<HTMLElement>;
-              }>
-            ).props.ref
-          : undefined,
-        setReference,
-        ref,
-      ),
-      tabIndex:
-        (React.isValidElement(safeChildElement)
-          ? (safeChildElement.props as any).tabIndex
-          : undefined) ?? 0,
+      ref: mergeRefs(triggerProps?.ref, setReference, ref),
+      tabIndex: triggerProps?.tabIndex ?? 0,
     });
 
     return (

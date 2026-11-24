@@ -19,7 +19,7 @@ import {
   Trash,
   Underline,
 } from 'lucide-react';
-import { Avatar, Button, Divider, Flex, Text } from 'components';
+import { Avatar, Button, Divider, Flex, Text, TextInput } from 'components';
 import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Tooltip } from './Tooltip.tsx';
@@ -348,6 +348,44 @@ export const CustomIconStory: StoryObj<typeof Tooltip> = {
       <Flex orientation="horizontal" gap="l" align="center">
         <Tooltip content="What is this?" triggerIcon={<Sparkles />} />
       </Flex>
+    </Flex>
+  ),
+};
+
+const triggerSizes = [
+  { size: 'mini', textSize: 2 },
+  { size: 's', textSize: 3 },
+  { size: 'm', textSize: 4 },
+  { size: 'l', textSize: 5 },
+  { size: 'xl', textSize: 6 },
+] as const;
+
+export const TriggerSizesStory: StoryObj<typeof Tooltip> = {
+  name: 'Built-in trigger sizes',
+  render: () => (
+    <Flex orientation="vertical" gap="l" style={{ maxWidth: 620 }}>
+      <Heading>Match the help button to a field</Heading>
+      <Paragraph>
+        Use <Text code>triggerSize</Text> to align a help button with nearby text
+        and fields. Click any help button to open its tooltip.
+      </Paragraph>
+      {triggerSizes.map(({ size, textSize }) => (
+        <Flex key={size} gap="m" align="center" wrap>
+          <Text size={textSize} style={{ minWidth: 48 }}>
+            {size}
+          </Text>
+          <Tooltip
+            content={`Help for the ${size} field`}
+            trigger="click"
+            triggerSize={size}
+          />
+          <TextInput
+            aria-label={`${size} field`}
+            size={size}
+            placeholder="Workspace name"
+          />
+        </Flex>
+      ))}
     </Flex>
   ),
 };
