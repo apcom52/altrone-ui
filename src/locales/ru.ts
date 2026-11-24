@@ -182,6 +182,7 @@ export const ru: Localization = {
     ariaLabel: 'Закрыть',
   },
   notifications: {
+    dismissAll: 'Скрыть все',
     regionLabel: 'Уведомления',
   },
   dialog: {

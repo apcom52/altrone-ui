@@ -17,6 +17,7 @@ import { StorybookDecorator } from 'global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
 import { Notifications } from './Notifications';
 import {
+  dismissAllNotifications,
   dismissNotification,
   showNotification,
   showToast,
@@ -119,6 +120,39 @@ export const Overview: StoryObj<typeof Notifications> = {
       </Flex>
     );
   },
+};
+
+export const DismissStacks: StoryObj<typeof Notifications> = {
+  name: 'Dismiss stacks',
+  render: () => (
+    <Notifications toastPlacement="bottom" notificationPlacement="top-end">
+      <Flex orientation="vertical" gap="l" style={{ maxWidth: 720 }}>
+        <Section>Dismiss a stack</Section>
+        <Paragraph>
+          Add at least two cards of either kind to reveal its Dismiss all
+          button. Each stack can be cleared on its own. Use{' '}
+          <Text code>dismissAllNotifications()</Text> to clear both.
+        </Paragraph>
+        <Flex gap="s" wrap>
+          <Button
+            label="Add a toast"
+            onClick={() => showToast('Changes saved.', { autoClose: false })}
+          />
+          <Button
+            label="Add a notification"
+            onClick={() =>
+              showNotification({
+                title: 'New message',
+                content: 'The report is ready to review.',
+                autoClose: false,
+              })
+            }
+          />
+          <Button label="Clear both stacks" onClick={dismissAllNotifications} />
+        </Flex>
+      </Flex>
+    </Notifications>
+  ),
 };
 
 // ─── Toast messages ──────────────────────────────────────────────────────────
@@ -447,7 +481,7 @@ const PlacementDemo = () => {
 
 export const Placement: StoryObj<typeof Notifications> = {
   name: 'Placement',
-  render: () => {
+  render: function PlacementStory() {
     const [toastPlacement, setToastPlacement] =
       useState<ToastPlacement>('bottom');
     const [notificationPlacement, setNotificationPlacement] =

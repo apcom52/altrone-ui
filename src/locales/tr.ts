@@ -187,6 +187,7 @@ export const tr: Localization = {
     ariaLabel: 'Kapat',
   },
   notifications: {
+    dismissAll: 'Tümünü kapat',
     regionLabel: 'Bildirimler',
   },
   dialog: {

@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { motion, type Transition } from 'motion/react';
+import { motion, useReducedMotionConfig, type Transition } from 'motion/react';
 import clsx from 'clsx';
 import { Box } from 'components/box';
 import { Button } from 'components/button';
@@ -58,6 +58,7 @@ export const NotificationCard = ({
 }: NotificationCardProps) => {
   const { pause, resume } = useAutoClose(item.autoClose, item.duration, onClose);
   const icons = useIcons();
+  const reducedMotion = useReducedMotionConfig() ?? false;
   const variantIcon: Record<ToastVariant, ReactNode> = {
     default: icons.info,
     success: icons.success,
@@ -65,18 +66,20 @@ export const NotificationCard = ({
     danger: icons.danger,
   };
 
-  const enterExit = {
-    initial: { opacity: 0, scale: 0.9, x: enter.x, y: enter.y },
-    animate: { opacity: 1, scale: 1, x: 0, y: 0 },
-    exit: {
-      opacity: 0,
-      scale: 0.96,
-      x: enter.x * 0.5,
-      y: enter.y * 0.5,
-      transition: EXIT_TRANSITION,
-    },
-    transition: ENTER_TRANSITION,
-  };
+  const enterExit = reducedMotion
+    ? {}
+    : {
+        initial: { opacity: 0, scale: 0.9, x: enter.x, y: enter.y },
+        animate: { opacity: 1, scale: 1, x: 0, y: 0 },
+        exit: {
+          opacity: 0,
+          scale: 0.96,
+          x: enter.x * 0.5,
+          y: enter.y * 0.5,
+          transition: EXIT_TRANSITION,
+        },
+        transition: ENTER_TRANSITION,
+      };
 
   if (item.kind === 'toast') {
     const { message, variant, icon, action } = item;
@@ -85,7 +88,8 @@ export const NotificationCard = ({
 
     return (
       <motion.div
-        layout
+        layout={!reducedMotion}
+        data-notification-id={item.id}
         className={s.Slot}
         style={{ zIndex: stackIndex }}
         transition={LAYOUT_TRANSITION}
@@ -132,7 +136,8 @@ export const NotificationCard = ({
 
   return (
     <motion.div
-      layout
+      layout={!reducedMotion}
+      data-notification-id={item.id}
       className={s.Slot}
       style={{ zIndex: stackIndex }}
       transition={LAYOUT_TRANSITION}

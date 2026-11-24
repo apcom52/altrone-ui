@@ -3,6 +3,7 @@ export {
   showToast,
   showNotification,
   dismissNotification,
+  dismissAllNotifications,
 } from './notificationsRegistry';
 export type {
   NotificationsProviderProps,

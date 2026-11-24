@@ -183,6 +183,7 @@ export const es: Localization = {
     ariaLabel: 'Cerrar',
   },
   notifications: {
+    dismissAll: 'Cerrar todo',
     regionLabel: 'Notificaciones',
   },
   dialog: {

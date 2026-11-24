@@ -181,6 +181,7 @@ export const zh: Localization = {
     ariaLabel: '关闭',
   },
   notifications: {
+    dismissAll: '全部关闭',
     regionLabel: '通知',
   },
   dialog: {

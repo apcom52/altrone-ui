@@ -174,6 +174,7 @@ export interface Localization {
     ariaLabel: string;
   };
   notifications: {
+    dismissAll: string;
     regionLabel: string;
   };
   dialog: {

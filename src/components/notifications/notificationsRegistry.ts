@@ -4,6 +4,7 @@ export type NotificationsController = {
   toast: (message: string, options?: ToastOptions) => string;
   notification: (options: NotificationOptions) => string;
   dismiss: (id: string) => void;
+  dismissAll: () => void;
 };
 
 type ControllerEntry = {
@@ -65,4 +66,8 @@ export const showNotification = (options: NotificationOptions): string => {
 
 export const dismissNotification = (id: string): void => {
   getController()?.dismiss(id);
+};
+
+export const dismissAllNotifications = (): void => {
+  getController()?.dismissAll();
 };
