@@ -91,6 +91,8 @@ export interface Localization {
     selectableMode: string;
     disableSelectableMode: string;
     selectRow: string;
+    selectRowLabel: string;
+    selectPageRows: string;
     deselectRow: string;
     where: string;
     and: string;

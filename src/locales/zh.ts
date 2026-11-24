@@ -84,6 +84,8 @@ export const zh: Localization = {
     selectableMode: '选择行',
     disableSelectableMode: '关闭选择模式',
     selectRow: '选择此行',
+    selectRowLabel: '选择行 {{row}}',
+    selectPageRows: '选择本页的所有行',
     deselectRow: '取消选择此行',
     where: '条件',
     and: '且',

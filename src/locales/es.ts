@@ -85,6 +85,8 @@ export const es: Localization = {
     selectableMode: 'Seleccionar filas',
     disableSelectableMode: 'Desactivar modo de selección',
     selectRow: 'Seleccionar esta fila',
+    selectRowLabel: 'Seleccionar la fila {{row}}',
+    selectPageRows: 'Seleccionar todas las filas de esta página',
     deselectRow: 'Deseleccionar esta fila',
     where: 'Donde',
     and: 'Y',

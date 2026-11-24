@@ -84,6 +84,8 @@ export const tr: Localization = {
     selectableMode: 'Satırları seç',
     disableSelectableMode: 'Seçim modunu kapat',
     selectRow: 'Bu satırı seç',
+    selectRowLabel: '{{row}} satırını seç',
+    selectPageRows: 'Bu sayfadaki tüm satırları seç',
     deselectRow: 'Bu satırın seçimini kaldır',
     where: 'Koşul',
     and: 'VE',

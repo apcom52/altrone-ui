@@ -50,6 +50,11 @@
   padding: var(--data-table-padding);
 }
 
+.CheckboxCell {
+  display: grid;
+  place-items: center;
+}
+
 .Cell {
   display: flex;
   position: relative;

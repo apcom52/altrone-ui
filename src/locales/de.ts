@@ -85,6 +85,8 @@ export const de: Localization = {
     selectableMode: 'Zeilen auswählen',
     disableSelectableMode: 'Auswahlmodus deaktivieren',
     selectRow: 'Diese Zeile auswählen',
+    selectRowLabel: 'Zeile {{row}} auswählen',
+    selectPageRows: 'Alle Zeilen auf dieser Seite auswählen',
     deselectRow: 'Diese Zeile abwählen',
     where: 'Wo',
     and: 'UND',

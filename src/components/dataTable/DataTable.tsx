@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { SyntheticEvent } from 'react';
 import clsx from 'clsx';
 import {
   ColumnFiltersState,
@@ -9,6 +10,7 @@ import {
   Updater,
   useTable,
 } from '@tanstack/react-table';
+import type { Row, RowSelectionState } from '@tanstack/react-table';
 import {
   ArrowDown,
   ArrowUp,
@@ -22,7 +24,7 @@ import {
   SquareCheckBig,
   Trash,
 } from 'lucide-react';
-import { AnyObject } from '../../utils';
+import { AnyObject, GlobalUtils } from '../../utils';
 import {
   DataTableFilter,
   DataTableIconSet,
@@ -31,6 +33,7 @@ import {
 } from './DataTable.types';
 import { DataTableContext, DataTableContextValue } from './DataTable.context';
 import { dataTableFeatures } from './DataTable.features';
+import type { DataTableFeatures } from './DataTable.features';
 import { columnFilterType } from './DataTable.constants';
 import { useDataTableColumns } from './useDataTableColumns';
 import { useDataTableHorizontalScroll } from './useDataTableHorizontalScroll';
@@ -58,7 +61,15 @@ const DataTableComponent = <DataType extends object>(
   const {
     ref,
     actions,
-    selectable = false,
+    selectable,
+    selectionMode: explicitSelectionMode,
+    selectedRowIds,
+    defaultSelectedRowIds,
+    onSelectionChange,
+    isRowSelectable,
+    selectionToggle = true,
+    allowDeselect = true,
+    selectOnRowClick = false,
     showFooter = true,
     rowsPerPage = 20,
     data,
@@ -88,10 +99,37 @@ const DataTableComponent = <DataType extends object>(
     ...restProps
   } = props;
 
+  const legacySelection = explicitSelectionMode === undefined;
+  const selectionMode =
+    explicitSelectionMode ?? (selectable ? 'multiple' : 'none');
+  const selectionEnabled = selectionMode !== 'none';
+  const showSelectionToggle =
+    selectionEnabled && (legacySelection || selectionToggle);
+  const loading = mode === 'loading';
   const [selectMode, setSelectModeState] = useState(mode === 'select');
   useEffect(() => {
     setSelectModeState(mode === 'select');
   }, [mode]);
+
+  useEffect(() => {
+    if (import.meta.env.DEV && selectable !== undefined) {
+      GlobalUtils.deprecatedMessage('DataTable', 'selectable', 'selectionMode');
+    }
+  }, [selectable]);
+
+  const [uncontrolledRowIds, setUncontrolledRowIds] = useState(
+    () => [...(defaultSelectedRowIds ?? [])],
+  );
+  const rowIds = selectedRowIds ?? uncontrolledRowIds;
+  const effectiveRowIds = useMemo(() => {
+    if (!selectionEnabled) return new Set<string>();
+    return new Set(selectionMode === 'single' ? rowIds.slice(0, 1) : rowIds);
+  }, [rowIds, selectionEnabled, selectionMode]);
+  const rowSelection = useMemo(() => {
+    const state: RowSelectionState = Object.create(null);
+    for (const id of effectiveRowIds) state[id] = true;
+    return state;
+  }, [effectiveRowIds]);
 
   const columnDefs = useDataTableColumns<DataType>(columns, resizableColumns);
 
@@ -246,7 +284,11 @@ const DataTableComponent = <DataType extends object>(
     getRowId,
     columns: columnDefs,
     meta: { mode, icons: resolvedIcons },
-    enableRowSelection: selectable,
+    enableRowSelection:
+      selectionEnabled &&
+      (legacySelection || !isRowSelectable
+        ? true
+        : (row) => isRowSelectable(row.original)),
     enableColumnResizing: resizableColumns,
     enableHiding: hideableColumns,
     columnResizeMode: 'onChange',
@@ -261,6 +303,7 @@ const DataTableComponent = <DataType extends object>(
       columnVisibility,
       sorting: sortingState,
       columnFilters: currentFilters as unknown as ColumnFiltersState,
+      ...(!legacySelection && { rowSelection }),
     },
     onColumnVisibilityChange: handleColumnVisibilityChange,
     onPaginationChange: handlePaginationChange,
@@ -275,15 +318,68 @@ const DataTableComponent = <DataType extends object>(
       selectedRowId?: string,
     ) => {
       setSelectModeState(next);
-      if (selectedRowId !== undefined) {
-        table.setRowSelection({ [selectedRowId]: true });
-      } else {
-        table.resetRowSelection();
+      if (legacySelection) {
+        if (selectedRowId !== undefined) {
+          table.setRowSelection({ [selectedRowId]: true });
+        } else {
+          table.resetRowSelection();
+        }
       }
       onModeChange?.(next ? 'select' : 'read', event);
     },
-    [table, onModeChange],
+    [table, legacySelection, onModeChange],
   );
+
+  const commitSelection = (next: Set<string>, event: SyntheticEvent) => {
+    const ids = Array.from(next);
+    if (selectedRowIds === undefined) setUncontrolledRowIds([...ids]);
+    const nativeEvent = event.nativeEvent;
+    onSelectionChange?.(ids, {
+      rows: table.getCoreRowModel().rows.flatMap((row) =>
+        next.has(row.id) ? [row.original] : [],
+      ),
+      event:
+        nativeEvent instanceof MouseEvent ||
+        nativeEvent instanceof KeyboardEvent
+          ? nativeEvent
+          : undefined,
+    });
+  };
+
+  const toggleRowSelection = (
+    row: Row<DataTableFeatures, DataType>,
+    event: SyntheticEvent,
+  ) => {
+    if (!row.getCanSelect()) return;
+    if (legacySelection) {
+      row.toggleSelected();
+      return;
+    }
+    if (loading) return;
+
+    const selected = effectiveRowIds.has(row.id);
+    if (selectionMode === 'single') {
+      if (!selected || allowDeselect) {
+        commitSelection(new Set(selected ? [] : [row.id]), event);
+      }
+      return;
+    }
+
+    const next = new Set(effectiveRowIds);
+    if (selected) next.delete(row.id);
+    else next.add(row.id);
+    commitSelection(next, event);
+  };
+
+  const togglePageSelection = (checked: boolean, event: SyntheticEvent) => {
+    const next = new Set(effectiveRowIds);
+    for (const row of table.getRowModel().rows) {
+      if (!row.getCanSelect()) continue;
+      if (checked) next.add(row.id);
+      else next.delete(row.id);
+    }
+    commitSelection(next, event);
+  };
 
   const headerVisible = useMemo(
     () =>
@@ -292,35 +388,40 @@ const DataTableComponent = <DataType extends object>(
         (column) => column.enabled !== false && columnFilterType(column),
       ) ||
       hideableColumns ||
-      selectable,
-    [actions, columns, selectable, hideableColumns],
+      showSelectionToggle,
+    [actions, columns, showSelectionToggle, hideableColumns],
   );
 
-  const contextValue = useMemo(
-    () => ({
-      table,
-      icons: resolvedIcons,
-      loading: mode === 'loading',
-      selectable,
-      selectMode: selectable && selectMode,
-      setSelectMode,
-      notePendingEvent,
-      defaultColumnVisibility,
-    }),
-    [
-      table,
-      resolvedIcons,
-      mode,
-      selectable,
-      selectMode,
-      setSelectMode,
-      notePendingEvent,
-      defaultColumnVisibility,
-    ],
-  );
+  const contextValue: DataTableContextValue<DataType> = {
+    table,
+    icons: resolvedIcons,
+    loading,
+    selectionMode,
+    showSelectionToggle,
+    selectMode: selectionEnabled && (!showSelectionToggle || selectMode),
+    selectedRowIds: legacySelection ? undefined : effectiveRowIds,
+    allowDeselect,
+    selectOnRowClick: !legacySelection && selectOnRowClick,
+    toggleRowSelection,
+    togglePageSelection,
+    setSelectMode,
+    notePendingEvent,
+    defaultColumnVisibility,
+  };
 
   const { scrollableRef, headerRowRef, headerTrackRef } =
     useDataTableHorizontalScroll();
+
+  if (
+    import.meta.env.DEV &&
+    !legacySelection &&
+    selectionEnabled &&
+    !getRowId
+  ) {
+    throw new Error(
+      '[DataTable]: getRowId is required when selectionMode is single or multiple.',
+    );
+  }
 
   return (
     <DataTableContext.Provider

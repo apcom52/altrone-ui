@@ -5,9 +5,11 @@ import s from './footer.module.scss';
 
 export const Footer = () => {
   const t = useLocalization();
-  const { table, selectMode, notePendingEvent } = useDataTableContext();
+  const { table, selectMode, selectedRowIds, notePendingEvent } =
+    useDataTableContext();
 
-  const selectedRowCount = table.getSelectedRowModel().rows.length;
+  const selectedRowCount =
+    selectedRowIds?.size ?? table.getSelectedRowModel().rows.length;
   const visibleRowCount = table.getRowModel().rows.length;
   const { pageIndex } = table.state.pagination;
   const pageCount = table.getPageCount();

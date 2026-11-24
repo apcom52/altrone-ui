@@ -140,6 +140,22 @@ export type DataTableRenderRowActionsContext<T extends object = AnyObject> = {
 
 export type DataTableMode = 'loading' | 'read' | 'select';
 
+export type RowSelectionMode = 'none' | 'single' | 'multiple';
+
+export interface DataTableSelectionProps<T extends object> {
+  selectionMode?: RowSelectionMode;
+  selectedRowIds?: readonly string[];
+  defaultSelectedRowIds?: readonly string[];
+  onSelectionChange?: (
+    ids: string[],
+    context: { rows: T[]; event?: MouseEvent | KeyboardEvent },
+  ) => void;
+  isRowSelectable?: (row: T) => boolean;
+  selectionToggle?: boolean;
+  allowDeselect?: boolean;
+  selectOnRowClick?: boolean;
+}
+
 /** Per-table `meta`, reachable in cell renderers via `table.options.meta`. */
 export interface DataTableMeta {
   mode: DataTableMode;
@@ -154,10 +170,9 @@ export interface DataTableColumnMeta<T extends object = AnyObject> {
   columnConfig: DataTableColumn<T>;
 }
 
-export interface DataTableProps<T extends object> extends Omit<
-  React.HTMLAttributes<HTMLDivElement>,
-  'children'
-> {
+export interface DataTableProps<T extends object>
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'>,
+    DataTableSelectionProps<T> {
   ref?: React.Ref<HTMLDivElement>;
   data: T[];
   columns: DataTableColumn<T>[];
@@ -179,6 +194,7 @@ export interface DataTableProps<T extends object> extends Omit<
   actions?: RenderFunction<ReactNode, DataTableRenderContext<T>>;
   mode?: DataTableMode;
   rowsPerPage?: number;
+  /** @deprecated Use selectionMode instead. */
   selectable?: boolean;
   showFooter?: boolean;
   showEmptyBanner?: boolean;

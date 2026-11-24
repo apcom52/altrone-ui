@@ -218,7 +218,7 @@ export const Banner: Story = {
         columns={COLUMNS}
         getRowId={(account) => String(account.id)}
         rowsPerPage={9}
-        selectable
+        selectionMode="multiple"
         defaultSort={{ field: 'revenue', direction: 'desc' }}
         actions={
           <Toolbar.Group>

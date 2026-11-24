@@ -84,6 +84,8 @@ export const fr: Localization = {
     selectableMode: 'Sélectionner des lignes',
     disableSelectableMode: 'Désactiver le mode de sélection',
     selectRow: 'Sélectionner cette ligne',
+    selectRowLabel: 'Sélectionner la ligne {{row}}',
+    selectPageRows: 'Sélectionner toutes les lignes de cette page',
     deselectRow: 'Désélectionner cette ligne',
     where: 'Où',
     and: 'ET',

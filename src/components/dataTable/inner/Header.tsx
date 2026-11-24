@@ -41,7 +41,7 @@ export const DataTableHeader = <T extends object>({
   hideableColumns,
 }: DataTableHeaderProps<T>) => {
   const t = useLocalization();
-  const { table, icons, loading, selectable, selectMode, setSelectMode } =
+  const { table, icons, loading, showSelectionToggle, selectMode, setSelectMode } =
     useDataTableContext<T>();
 
   const hasFilterableColumns = table
@@ -62,7 +62,7 @@ export const DataTableHeader = <T extends object>({
   return (
     <Toolbar variant="grouped" style={{ '--toolbar-inset': '8px' } as CSSProperties}>
       <Toolbar.Leading>
-        {selectable ? (
+        {showSelectionToggle ? (
           <Toolbar.Group>
             <Tooltip content={t('dataTable.selectableMode')}>
               <Toolbar.Action

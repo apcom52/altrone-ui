@@ -5,6 +5,8 @@ export type {
   DataTableColumn,
   DataTableColumnType,
   DataTableMode,
+  DataTableSelectionProps,
+  RowSelectionMode,
   DataTableProps,
   DataTableFilter,
   DataTableFilterValue,

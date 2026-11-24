@@ -84,6 +84,8 @@ export const en: Localization = {
     selectableMode: 'Select rows',
     disableSelectableMode: 'Disable selectable mode',
     selectRow: 'Select this row',
+    selectRowLabel: 'Select row {{row}}',
+    selectPageRows: 'Select all rows on this page',
     deselectRow: 'Deselect this row',
     where: 'Where',
     and: 'AND',

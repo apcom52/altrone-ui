@@ -1,8 +1,9 @@
 import { createContext, useContext, MouseEvent, SyntheticEvent } from 'react';
 import { ReactTable, ColumnVisibilityState } from '@tanstack/react-table';
+import type { Row } from '@tanstack/react-table';
 import { AnyObject } from '../../utils';
 import type { DataTableFeatures } from './DataTable.features.ts';
-import type { DataTableIconSet } from './DataTable.types.ts';
+import type { DataTableIconSet, RowSelectionMode } from './DataTable.types.ts';
 
 export interface DataTableContextValue<T extends object = AnyObject> {
   table: ReactTable<DataTableFeatures, T>;
@@ -10,8 +11,16 @@ export interface DataTableContextValue<T extends object = AnyObject> {
   defaultColumnVisibility: ColumnVisibilityState;
   /** `true` while `mode === 'loading'` — cells render skeletons. */
   loading: boolean;
-  /** Whether row selection is available at all (the `selectable` prop). */
-  selectable: boolean;
+  selectionMode: RowSelectionMode;
+  showSelectionToggle: boolean;
+  selectedRowIds?: ReadonlySet<string>;
+  allowDeselect: boolean;
+  selectOnRowClick: boolean;
+  toggleRowSelection: (
+    row: Row<DataTableFeatures, T>,
+    event: SyntheticEvent,
+  ) => void;
+  togglePageSelection: (checked: boolean, event: SyntheticEvent) => void;
   /** `true` when the selection column (checkboxes) is visible. */
   selectMode: boolean;
   setSelectMode: (

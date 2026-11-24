@@ -84,6 +84,8 @@ export const ru: Localization = {
     selectableMode: 'Выделить строки',
     disableSelectableMode: 'Выйти из режима выделения строк',
     selectRow: 'Выделить строку',
+    selectRowLabel: 'Выбрать строку {{row}}',
+    selectPageRows: 'Выбрать все строки на этой странице',
     deselectRow: 'Снять выделение',
     where: 'Условие',
     and: 'ТАКЖЕ',

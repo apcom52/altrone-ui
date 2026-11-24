@@ -15,12 +15,15 @@ export class GlobalUtils {
     component: string,
     deprecatedProp: string,
     instead: string,
-    removedInVersion: string,
+    removedInVersion?: string,
   ) {
     if (typeof window !== 'undefined') {
       console.warn(
         GlobalUtils.formatConsoleMessage(
-          `[Altrone]: property [[${deprecatedProp}]] in ${component} is deprecated. Use [[${instead}]] instead. Will be removed in version ${removedInVersion}`,
+          `[Altrone]: property [[${deprecatedProp}]] in ${component} is deprecated. Use [[${instead}]] instead.` +
+            (removedInVersion
+              ? ` Will be removed in version ${removedInVersion}`
+              : ''),
         ),
       );
     }

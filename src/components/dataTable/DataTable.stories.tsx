@@ -34,6 +34,7 @@ import {
 import { Flex } from '../flex';
 import { Text } from '../text';
 import { Button } from '../button';
+import { Pagination as PaginationControl } from '../pagination';
 import { Switch } from '../switch';
 import { StorybookDecorator } from '../../global/storybook';
 import { allModes } from '../../../.storybook/modes.ts';
@@ -680,38 +681,93 @@ export const Pagination: Story = {
  * Row selection
  * ------------------------------------------------------------------ */
 
+const selectionColumns: DataTableColumn<Employee>[] = [
+  { accessor: 'name', label: 'Name' },
+  { accessor: 'role', label: 'Role' },
+];
+
+const getEmployeeId = (employee: Employee) => String(employee.id);
+
+const ServerPageSelection = () => {
+  const pageSize = 3;
+  const [page, setPage] = useState(1);
+  const [selectedIds, setSelectedIds] = useState(['1']);
+  const pageRows = useMemo(
+    () => EMPLOYEES.slice((page - 1) * pageSize, page * pageSize),
+    [page],
+  );
+
+  return (
+    <Flex orientation="vertical" gap="m">
+      <DataTable<Employee>
+        data={pageRows}
+        getRowId={getEmployeeId}
+        columns={selectionColumns}
+        selectionMode="multiple"
+        selectionToggle={false}
+        selectedRowIds={selectedIds}
+        onSelectionChange={setSelectedIds}
+        isRowSelectable={(employee) => employee.active}
+        showFooter={false}
+      />
+      <Flex gap="m" align="center">
+        <PaginationControl
+          currentPage={page}
+          totalPages={Math.ceil(EMPLOYEES.length / pageSize)}
+          onChange={setPage}
+        />
+        <Text>{selectedIds.length} selected across pages</Text>
+        <Button
+          label="Clear selection"
+          disabled={selectedIds.length === 0}
+          onClick={() => setSelectedIds([])}
+        />
+      </Flex>
+    </Flex>
+  );
+};
+
 export const RowSelection: Story = {
   render: () => (
     <Flex orientation="vertical" gap="xl" style={{ maxWidth: 900 }}>
       <Section title="Selecting rows">
-        <Text code>selectable</Text> adds a toggle to the header; turning it on
-        reveals a checkbox column and switches the footer to a selection count.
-        Right-click a cell to copy its text or select its row. Selecting a row
-        from the menu turns on selection mode if needed.
-        Toolbar content passed as a function receives{' '}
-        <Text code>{'{ selectableMode, selectedItems }'}</Text>.
+        Turn on selection in the toolbar to reveal the checkbox column.
+        <Text code>defaultSelectedRowIds</Text> starts Ada as selected. Use the
+        header checkbox to select the current page, or right-click a cell to
+        select its row. The toolbar receives the selected rows from the table data.
       </Section>
-
       <DataTable<Employee>
         data={EMPLOYEES}
-        rowsPerPage={8}
-        selectable
-        columns={[
-          { accessor: 'name', label: 'Name' },
-          { accessor: 'role', label: 'Role' },
-          { accessor: 'department', label: 'Department' },
-        ]}
+        getRowId={getEmployeeId}
+        rowsPerPage={3}
+        selectionMode="multiple"
+        defaultSelectedRowIds={['1']}
+        columns={selectionColumns}
         actions={({ selectableMode, selectedItems }) =>
-          selectableMode ? (
-            <Toolbar.Group key="email">
-              <DataTable.Action
-                label={`Email ${selectedItems.length} selected`}
-                onClick={() => undefined}
-              />
-            </Toolbar.Group>
-          ) : null
+          selectableMode && <Text>{selectedItems.length} selected in this data</Text>
         }
       />
+
+      <Section title="Choosing one row">
+        Radio buttons are visible from the start. Choosing a row replaces the
+        current choice. Click the selected radio again to clear it, or press
+        Space on the focused row.
+      </Section>
+      <DataTable<Employee>
+        data={EMPLOYEES.slice(0, 3)}
+        getRowId={getEmployeeId}
+        selectionMode="single"
+        selectionToggle={false}
+        selectOnRowClick
+        columns={selectionColumns}
+      />
+
+      <Section title="Keeping selection across server pages">
+        Each page replaces the table data. The parent keeps{' '}
+        <Text code>selectedRowIds</Text> across pages. Inactive employees are
+        disabled and the header checkbox affects eligible rows on the current page.
+      </Section>
+      <ServerPageSelection />
     </Flex>
   ),
 };
@@ -756,7 +812,7 @@ export const Actions: Story = {
         data={EMPLOYEES}
         getRowId={(employee) => String(employee.id)}
         rowsPerPage={8}
-        selectable
+        selectionMode="multiple"
         rowActions={({ rowIndex, selected }) => [
           <DataTable.RowAction
             key="edit"
@@ -869,8 +925,9 @@ export const CustomActions: Story = {
 
         <DataTable<Employee>
           data={data}
+          getRowId={getEmployeeId}
           rowsPerPage={8}
-          selectable
+          selectionMode="multiple"
           columns={[
             { accessor: 'name', label: 'Name' },
             { accessor: 'role', label: 'Role' },
@@ -1321,7 +1378,7 @@ export const CustomIcons: Story = {
       <DataTable<Employee>
         data={EMPLOYEES}
         getRowId={(employee) => String(employee.id)}
-        selectable
+        selectionMode="multiple"
         rowsPerPage={5}
         columns={RICH_COLUMNS}
         rowActions={() => [

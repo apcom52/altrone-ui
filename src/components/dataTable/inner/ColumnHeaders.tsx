@@ -7,6 +7,7 @@ import { useDataTableContext } from '../DataTable.context.tsx';
 import { Text } from '../../text';
 import { Dropdown } from '../../dropdown';
 import { Divider } from '../../divider';
+import { Checkbox } from '../../checkbox';
 import { useLocalization } from '../../application';
 import { useDataTableColumnsTemplate } from '../useDataTableColumnsTemplate.ts';
 import s from './columnHeaders.module.scss';
@@ -38,8 +39,26 @@ export const ColumnHeaders = ({
   trackRef,
 }: ColumnHeadersProps) => {
   const t = useLocalization();
-  const { table, icons, loading, selectMode, notePendingEvent } =
-    useDataTableContext();
+  const {
+    table,
+    icons,
+    loading,
+    selectMode,
+    selectionMode,
+    selectedRowIds,
+    togglePageSelection,
+    notePendingEvent,
+  } = useDataTableContext();
+
+  const hasPageSelection =
+    selectMode && selectionMode === 'multiple' && selectedRowIds !== undefined;
+  const selectableRows = hasPageSelection
+    ? table.getRowModel().rows.filter((row) => row.getCanSelect())
+    : [];
+  const selectedOnPage = selectableRows.filter((row) => row.getIsSelected()).length;
+  const allSelected =
+    selectableRows.length > 0 && selectedOnPage === selectableRows.length;
+  const partiallySelected = !allSelected && selectedOnPage > 0;
 
   const canHideColumn = table.getVisibleLeafColumns().length > 1;
 
@@ -80,7 +99,24 @@ export const ColumnHeaders = ({
         style={{ gridTemplateColumns: columnsTemplate }}
       >
         {selectMode ? (
-          <div role="columnheader" aria-label={t('dataTable.selectableMode')} />
+          <div
+            role="columnheader"
+            className={s.CheckboxCell}
+            aria-label={t('dataTable.selectableMode')}
+          >
+            {hasPageSelection ? (
+              <Checkbox
+                aria-label={t('dataTable.selectPageRows')}
+                checked={allSelected}
+                indeterminate={partiallySelected}
+                disabled={loading || selectableRows.length === 0}
+                onChange={(checked, event) => {
+                  event.currentTarget.indeterminate = partiallySelected;
+                  togglePageSelection(checked, event);
+                }}
+              />
+            ) : null}
+          </div>
         ) : null}
         {table.getFlatHeaders().map((header) => {
           const isSortable = header.column.getCanSort();

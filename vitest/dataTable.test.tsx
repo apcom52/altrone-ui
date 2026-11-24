@@ -52,6 +52,244 @@ const bodyRows = () =>
     screen.getByTestId('table').querySelectorAll('[data-selected]'),
   ) as HTMLElement[];
 
+describe('DataTable row selection', () => {
+  const selectionTable = (props: Partial<DataTableProps<Person>> = {}) => (
+    <Application language="en">
+      <DataTable
+        data={PEOPLE}
+        getRowId={(person) => String(person.id)}
+        columns={[{ accessor: 'name', label: 'Name' }]}
+        data-testid="table"
+        rowsPerPage={3}
+        selectionMode="multiple"
+        selectionToggle={false}
+        {...props}
+      />
+    </Application>
+  );
+
+  const checkbox = (name: string) =>
+    screen.getByRole('checkbox', { name: `Select row ${name}` });
+  const pageCheckbox = () =>
+    screen.getByRole('checkbox', { name: 'Select all rows on this page' });
+
+  test('keeps uncontrolled ids when data is replaced and returns the current row objects', () => {
+    const onSelectionChange = vi.fn();
+    const actions = vi.fn(() => null);
+    const props = { actions, onSelectionChange, defaultSelectedRowIds: ['1'] };
+    const { rerender } = render(selectionTable(props));
+
+    expect(checkbox('Ada')).toBeChecked();
+    expect(screen.queryByRole('button', { name: 'Select rows' })).toBeNull();
+    expect(onSelectionChange).not.toHaveBeenCalled();
+
+    rerender(selectionTable({ ...props, data: PEOPLE.slice(3) }));
+    fireEvent.click(checkbox('Katherine'));
+    expect(onSelectionChange).toHaveBeenLastCalledWith(
+      ['1', '4'],
+      { rows: [PEOPLE[3]], event: expect.any(MouseEvent) },
+    );
+    expect(actions).toHaveBeenLastCalledWith({
+      selectableMode: true,
+      selectedItems: [PEOPLE[3]],
+    });
+
+    const updatedAda = { ...PEOPLE[0], name: 'Ada Lovelace' };
+    rerender(selectionTable({ ...props, data: [PEOPLE[1], updatedAda] }));
+    expect(checkbox('Ada Lovelace')).toBeChecked();
+    expect(checkbox('Alan')).not.toBeChecked();
+    expect(actions).toHaveBeenLastCalledWith({
+      selectableMode: true,
+      selectedItems: [updatedAda],
+    });
+    expect(onSelectionChange).toHaveBeenCalledTimes(1);
+  });
+
+  test('a controlled selection and its mixed page checkbox wait for the next prop', () => {
+    const onSelectionChange = vi.fn();
+    const props = { onSelectionChange, selectedRowIds: ['1', 'outside'] };
+    const { rerender } = render(selectionTable(props));
+
+    fireEvent.click(checkbox('Alan'));
+    expect(checkbox('Alan')).not.toBeChecked();
+    expect(onSelectionChange).toHaveBeenLastCalledWith(
+      ['1', 'outside', '2'],
+      { rows: PEOPLE.slice(0, 2), event: expect.any(MouseEvent) },
+    );
+
+    expect(pageCheckbox()).toBePartiallyChecked();
+    fireEvent.click(pageCheckbox());
+    expect(pageCheckbox()).toBePartiallyChecked();
+    expect(checkbox('Alan')).not.toBeChecked();
+
+    rerender(selectionTable({ ...props, selectedRowIds: ['1', '2', '3', 'outside'] }));
+    expect(checkbox('Alan')).toBeChecked();
+    expect(pageCheckbox()).toBeChecked();
+    rerender(selectionTable({ ...props, selectedRowIds: [] }));
+    expect(checkbox('Ada')).not.toBeChecked();
+    expect(pageCheckbox()).not.toBeChecked();
+    expect(onSelectionChange).toHaveBeenCalledTimes(2);
+  });
+
+  test('bulk selection changes only eligible rows on the current filtered page', () => {
+    const onSelectionChange = vi.fn();
+    const { rerender } = render(selectionTable({
+      defaultSelectedRowIds: ['1', '4', 'outside'],
+      isRowSelectable: (person) => person.active,
+      onSelectionChange,
+    }));
+
+    expect(checkbox('Grace')).toBeDisabled();
+    expect(pageCheckbox()).toBePartiallyChecked();
+    fireEvent.click(pageCheckbox());
+    expect(pageCheckbox()).toBeChecked();
+    expect(onSelectionChange).toHaveBeenLastCalledWith(
+      ['1', '4', 'outside', '2'],
+      { rows: [PEOPLE[0], PEOPLE[1], PEOPLE[3]], event: expect.any(MouseEvent) },
+    );
+
+    const props: Partial<DataTableProps<Person>> = {
+      columns: [{ accessor: 'name', label: 'Name', filterable: true }],
+      isRowSelectable: (person) => person.active,
+      onSelectionChange,
+      filters: [{ id: 'name', value: { rule: 'contains', value: 'Ada' } }],
+    };
+    rerender(selectionTable(props));
+    expect(screen.queryByRole('checkbox', { name: 'Select row Alan' })).toBeNull();
+    fireEvent.click(pageCheckbox());
+    expect(onSelectionChange).toHaveBeenLastCalledWith(
+      ['4', 'outside', '2'],
+      { rows: [PEOPLE[1], PEOPLE[3]], event: expect.any(MouseEvent) },
+    );
+  });
+
+  test('single selection replaces the previous id and can disallow deselection', () => {
+    const onSelectionChange = vi.fn();
+    const props = { selectionMode: 'single' as const, onSelectionChange };
+    const { rerender } = render(selectionTable({ ...props, defaultSelectedRowIds: ['1'] }));
+    const ada = screen.getByRole('radio', { name: 'Select row Ada' });
+    const alan = screen.getByRole('radio', { name: 'Select row Alan' });
+    expect(ada).toBeChecked();
+    expect(screen.queryByRole('checkbox')).toBeNull();
+
+    fireEvent.click(alan);
+    expect(ada).not.toBeChecked();
+    expect(alan).toBeChecked();
+    expect(onSelectionChange).toHaveBeenLastCalledWith(
+      ['2'],
+      { rows: [PEOPLE[1]], event: expect.any(MouseEvent) },
+    );
+
+    rerender(selectionTable({ ...props, allowDeselect: false }));
+    fireEvent.click(alan);
+    expect(alan).toBeChecked();
+    expect(onSelectionChange).toHaveBeenCalledTimes(1);
+
+    rerender(selectionTable(props));
+    fireEvent.click(alan);
+    expect(alan).not.toBeChecked();
+    expect(onSelectionChange).toHaveBeenLastCalledWith(
+      [],
+      { rows: [], event: expect.any(MouseEvent) },
+    );
+  });
+
+  test('Space on a row and optional row clicks leave embedded controls alone', () => {
+    const onSelectionChange = vi.fn();
+    const openDetails = vi.fn();
+    render(selectionTable({
+      selectOnRowClick: true,
+      onSelectionChange,
+      columns: [{
+        accessor: 'name',
+        label: 'Name',
+        type: 'custom',
+        options: {
+          renderReadMode: ({ item }) => (
+            <>
+              <span>{item.name}</span>
+              <button onClick={openDetails}>Details {item.name}</button>
+            </>
+          ),
+        },
+      }],
+    }));
+
+    const ada = bodyRows()[0];
+    ada.focus();
+    expect(ada).toHaveFocus();
+    fireEvent.keyDown(ada, { key: ' ' });
+    fireEvent.keyDown(ada, { key: ' ', repeat: true });
+    expect(ada).toHaveAttribute('aria-selected', 'true');
+    expect(onSelectionChange).toHaveBeenLastCalledWith(
+      ['1'],
+      { rows: [PEOPLE[0]], event: expect.any(KeyboardEvent) },
+    );
+
+    const details = screen.getByRole('button', { name: 'Details Ada' });
+    fireEvent.keyDown(details, { key: ' ' });
+    fireEvent.click(details);
+    expect(openDetails).toHaveBeenCalledOnce();
+    expect(onSelectionChange).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByText('Alan'));
+    expect(checkbox('Alan')).toBeChecked();
+    fireEvent.click(checkbox('Ada'));
+    expect(checkbox('Ada')).not.toBeChecked();
+    expect(onSelectionChange).toHaveBeenCalledTimes(3);
+  });
+
+  test('the toggle and cell menu preserve the modern selection', async () => {
+    const onSelectionChange = vi.fn();
+    render(selectionTable({
+      selectionToggle: true,
+      defaultSelectedRowIds: ['2', 'outside'],
+      onSelectionChange,
+    }));
+    const toggle = screen.getByRole('button', { name: 'Select rows' });
+    expect(screen.queryByRole('checkbox')).toBeNull();
+    fireEvent.contextMenu(screen.getByText('Ada').closest('[role="cell"]')!);
+    fireEvent.click(await screen.findByRole('button', { name: 'Select this row' }));
+    await waitFor(() => {
+      expect(checkbox('Ada')).toBeChecked();
+      expect(checkbox('Alan')).toBeChecked();
+    });
+    expect(onSelectionChange).toHaveBeenLastCalledWith(
+      ['2', 'outside', '1'],
+      { rows: PEOPLE.slice(0, 2), event: expect.any(MouseEvent) },
+    );
+    fireEvent.click(toggle);
+    expect(screen.queryByRole('checkbox')).toBeNull();
+    fireEvent.click(toggle);
+    expect(checkbox('Ada')).toBeChecked();
+    expect(onSelectionChange).toHaveBeenCalledOnce();
+  });
+
+  test('loading keeps an always-visible selection column disabled', () => {
+    const onSelectionChange = vi.fn();
+    render(selectionTable({ mode: 'loading', onSelectionChange }));
+    expect(checkbox('Ada')).toBeDisabled();
+    expect(pageCheckbox()).toBeDisabled();
+    fireEvent.click(checkbox('Ada'));
+    expect(onSelectionChange).not.toHaveBeenCalled();
+  });
+
+  test('row selection labels fall back to the id when the first column masks passwords', () => {
+    render(selectionTable({
+      columns: [{ accessor: 'name', label: 'Password', type: 'password' }],
+    }));
+    expect(checkbox('1')).toBeEnabled();
+    expect(
+      screen.queryByRole('checkbox', { name: 'Select row Ada' }),
+    ).toBeNull();
+  });
+
+  test('an explicit selection mode requires getRowId in development', () => {
+    expect(() => render(selectionTable({ getRowId: undefined }))).toThrow(
+      /getRowId is required/,
+    );
+  });
+});
+
 describe('filter functions', () => {
   test('textFilterFn: contains is case-insensitive, empty/equal are exact', () => {
     expect(textFilterFn(row('Hello World'), 'c', { rule: 'contains', value: 'hello' })).toBe(true);
